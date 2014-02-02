@@ -1,0 +1,18 @@
+{% extends "layout.twig.html" %}
+
+{% block title %}Welcome{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="welcome">
+        <p class="lead">
+        {% if is_granted('ROLE_USER') %}
+            <p>Chat list !</p>
+        {% else %}
+            <p>Already registered, <a href="{{ path('user.login') }}">signin</a>.</p>
+            <p>Not already registered, <a href="{{ path('user.register') }}">signup.</a></p>
+        {% endif %}
+        </p>
+    </div>
+</div>
+{% endblock %}
