@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Chat" default="help">
+
+    <property file="./build.properties" />
+    <taskdef name="inject-sample" classname="app.Task.Sample" />
+
+    <!-- ============================================  -->
+    <!-- Target: help                                  -->
+    <!-- ============================================  -->
+    <target name="help" description="Displays help message.">
+        <echo msg="Usage:  phing &lt;target&gt; [options]" />
+        <echo msg="" />
+        <echo msg="    -l          Show Available target" />
+        <echo msg="     help       Show this help" />
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: showConfig                            -->
+    <!-- ============================================  -->
+    <target name="showConfig" depends="init" description="Show important configuration values.">
+        <echo msg="Current configuration:" />
+        <echo msg="-> dsn: ${db.dsn}" />
+        <echo msg="-> user: ${db.username}:${db.password}" />
+        <echo msg="-> basedir: ${basedir}" />
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: identifyPath                          -->
+    <!-- ============================================  -->
+    <target name="init" hidden="true">
+        <property name="db.dsn" value="${pdo.driver}:host=${db.host};dbname=${db.dbname}" />
+        <resolvepath propertyName="basedir" file="${project.basedir}"/>
+        <property name="datadir" value="${basedir}/data" />
+        <property name="sqldir" value="${basedir}/sql" />
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: dbRecreate                            -->
+    <!-- ============================================  -->
+    <target name="dbRecreate" depends="init">
+
+        <!-- Structure -->
+        <pdosqlexec url="${db.dsn}" userid="${db.username}" password="${db.password}" src="${sqldir}/structure.sql" />
+
+        <!-- Sample data -->
+        <inject-sample filename="${sqldir}/samples.json" />
+
+    </target>
+
+</project>

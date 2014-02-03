@@ -9,7 +9,7 @@ CREATE TABLE `users` (
   `email` VARCHAR(255) NOT NULL DEFAULT '',
   `salt` VARCHAR(255) NOT NULL DEFAULT '',
   `roles` VARCHAR(255) NOT NULL DEFAULT '',
-  `time_created` INT NOT NULL DEFAULT 0,
+  `time_created` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   `first_login` INT NOT NULL DEFAULT 0,
   `last_login` INT NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
