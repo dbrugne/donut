@@ -3,7 +3,7 @@
 {% block title %}Sign in{% endblock %}
 
 {% block content %}
-
+<div class="container">
     {% if app.user %}
         <p>Hello, {{ app.user.displayName }}.</p>
         <p><a href="{{ path('user.logout') }}">Sign out</a></p>
@@ -55,4 +55,5 @@
         </form>
 
     {% endif %}
+</div>
 {% endblock %}
