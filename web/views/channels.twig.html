@@ -7,7 +7,7 @@
     <div class="starter-template">
         <p class="lead">
             <h1>Channels</h1>
-            <section class="channels-list">
+            <section id="channels">
             <ul>
             {% for channel in channels %}
                 <li><a href="{{ path('chat', {id: channel.code}) }}"><div class="logo"><img src="/img/channels/{{ channel.logo }}" /></div><div class="name">{{ channel.name }}</div></a></li>
