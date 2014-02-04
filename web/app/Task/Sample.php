@@ -19,7 +19,9 @@ class Sample extends TaskAbstract
     {
         parent::main();
 
-        $samples = json_decode(file_get_contents($this->_filename));
+        $json = file_get_contents($this->_filename);
+        $samples = json_decode($json);
+        // @bug: UTF-8 broken in DB
 
         foreach ($samples as $table => $tuples)
         {
@@ -36,7 +38,6 @@ class Sample extends TaskAbstract
                     $this->log("User created {$tuple->username}");
                     continue;
                 }
-
                 $this->app['db']->insert($table, (array)$tuple);
                 $this->log("New line inserted in {$table} (id:{$this->app['db']->lastInsertId()})");
             }

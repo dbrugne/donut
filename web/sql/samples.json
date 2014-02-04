@@ -14,167 +14,74 @@
             "roles": ["ROLE_USER"]
         }
     ],
+    "rooms":
+    [
+        { "id": "1", "name": "TF1", "protected": "1" },
+        { "id": "2", "name": "France2", "protected": "1" },
+        { "id": "3", "name": "France3", "protected": "1" },
+        { "id": "4", "name": "canal+", "protected": "1" },
+        { "id": "5", "name": "France5", "protected": "1" },
+        { "id": "6", "name": "M6", "protected": "1" },
+        { "id": "7", "name": "Arte", "protected": "1" },
+        { "id": "8", "name": "D8", "protected": "1" },
+        { "id": "9", "name": "w9", "protected": "1" },
+        { "id": "10", "name": "TMC", "protected": "1" },
+        { "id": "11", "name": "NT1", "protected": "1" },
+        { "id": "12", "name": "NRJ12", "protected": "1" },
+        { "id": "13", "name": "LCP", "protected": "1" },
+        { "id": "14", "name": "France4", "protected": "1" },
+        { "id": "15", "name": "BFM TV", "protected": "1" },
+        { "id": "16", "name": "iTélé", "protected": "1" },
+        { "id": "17", "name": "D17", "protected": "1" },
+        { "id": "18", "name": "Gulli", "protected": "1" },
+        { "id": "19", "name": "FranceÔ", "protected": "1" },
+        { "id": "20", "name": "L'équipe 21", "protected": "1" },
+        { "id": "21", "name": "numéro 23", "protected": "1" },
+        { "id": "22", "name": "RMC découverte", "protected": "1" },
+        { "id": "23", "name": "Chérie 25", "protected": "1" },
+        { "id": "24", "name": "TV 8 Mont Blanc", "protected": "1" },
+        { "id": "25", "name": "BFM Business", "protected": "1" },
+        { "id": "26", "name": "CashTV", "protected": "1" },
+        { "id": "27", "name": "CNTV", "protected": "1" },
+        { "id": "28", "name": "Euronews", "protected": "1" },
+        { "id": "29", "name": "France24", "protected": "1" },
+        { "id": "30", "name": "M6 boutique", "protected": "1" },
+        { "id": "31", "name": "TV5", "protected": "1" },
+        { "id": "32", "name": "TV5 Monde", "protected": "1" }
+    ],
     "tv_channels":
     [
-        {
-            "name": "TF1",
-            "logo": "chaines_03.jpg",
-            "url": "http:\/\/www.tf1.fr:"
-        },
-        {
-            "name": "France2",
-            "logo": "chaines_04.jpg",
-            "url": "http:\/\/www.france2.fr\/"
-        },
-        {
-            "name": "France3",
-            "logo": "chaines_05.jpg",
-            "url": "http:\/\/www.france3.fr\/"
-        },
-        {
-            "name": "canal+",
-            "logo": "chaines_06.jpg",
-            "url": "http:\/\/www.canalplus.fr\/"
-        },
-        {
-            "name": "France5",
-            "logo": "chaines_07.jpg",
-            "url": "http:\/\/www.france5.fr\/"
-        },
-        {
-            "name": "M6",
-            "logo": "chaines_08.jpg",
-            "url": "http:\/\/www.M6.fr\/"
-        },
-        {
-            "name": "Arte",
-            "logo": "chaines_09.jpg",
-            "url": "http:\/\/www.arte.tv\/fr"
-        },
-        {
-            "name": "D8",
-            "logo": "chaines_11.jpg",
-            "url": "http:\/\/www.d8.tv\/"
-        },
-        {
-            "name": "w9",
-            "logo": "chaines_12.jpg",
-            "url": "http:\/\/www.w9.fr\/"
-        },
-        {
-            "name": "TMC",
-            "logo": "chaines_13.jpg",
-            "url": "http:\/\/www.tmc.tv\/"
-        },
-        {
-            "name": "NT1",
-            "logo": "chaines_14.jpg",
-            "url": "http:\/\/www.nt1.tv\/"
-        },
-        {
-            "name": "NRJ12",
-            "logo": "chaines_15.jpg",
-            "url": "http:\/\/www.nrj12.fr\/"
-        },
-        {
-            "name": "LCP",
-            "logo": "chaines_16.jpg",
-            "url": "http:\/\/www.lcp.fr\/"
-        },
-        {
-            "name": "France4",
-            "logo": "chaines_17.jpg",
-            "url": "http:\/\/www.france4.fr\/"
-        },
-        {
-            "name": "BFM TV",
-            "logo": "chaines_18.jpg",
-            "url": "http:\/\/www.bfmtv.com"
-        },
-        {
-            "name": "iTélé",
-            "logo": "chaines_19.jpg",
-            "url": "http:\/\/www.itele.fr\/"
-        },
-        {
-            "name": "D17",
-            "logo": "chaines_20.jpg",
-            "url": "http:\/\/www.d17.tv\/"
-        },
-        {
-            "name": "Gulli",
-            "logo": "chaines_21.jpg",
-            "url": "http:\/\/www.gulli.fr\/"
-        },
-        {
-            "name": "FranceÔ",
-            "logo": "chaines_22.jpg",
-            "url": "http:\/\/www.franceo.fr\/"
-        },
-        {
-            "name": "L'équipe 21",
-            "logo": "chaines_23.jpg",
-            "url": "http:\/\/www.lequipe21.fr\/"
-        },
-        {
-            "name": "numéro 23",
-            "logo": "chaines_24.jpg",
-            "url": "http:\/\/www.numero23.fr\/"
-        },
-        {
-            "name": "RMC découverte",
-            "logo": "chaines_25.jpg",
-            "url": "http:\/\/www.rmcdecouverte.com\/"
-        },
-        {
-            "name": "Chérie 25",
-            "logo": "chaines_26.jpg",
-            "url": "http:\/\/cherie25.fr\/"
-        },
-        {
-            "name": "TV 8 Mont Blanc",
-            "logo": "TNTSAT_TV8.jpg",
-            "url": "http:\/\/www.tv8montblanc.fr\/"
-        },
-        {
-            "name": "BFM Business",
-            "logo": "bfm-business.gif",
-            "url": "http:\/\/www.bfmtv.com\/"
-        },
-        {
-            "name": "CashTV",
-            "logo": "cashTV.gif",
-            "url": "http:\/\/www.cashtv.com\/"
-        },
-        {
-            "name": "CNTV",
-            "logo": "cctv.gif",
-            "url": "http:\/\/fr.cntv.cn\/"
-        },
-        {
-            "name": "Euronews",
-            "logo": "euronews.gif",
-            "url": "http:\/\/fr.euronews.net\/"
-        },
-        {
-            "name": "France24",
-            "logo": "france24.gif",
-            "url": "http:\/\/www.france24.com\/"
-        },
-        {
-            "name": "M6 boutique",
-            "logo": "m6boutique.gif",
-            "url": "http:\/\/www.m6boutique.com\/"
-        },
-        {
-            "name": "TV5",
-            "logo": "TV5europe.gif",
-            "url": "http:\/\/www.tv5.org\/TV5Site\/europe\/"
-        },
-        {
-            "name": "TV5 Monde",
-            "logo": "TV5monde.gif",
-            "url": "http:\/\/www.tv5.org\/"
-        }
+        { "room_id": "1", "name": "TF1", "logo": "chaines_03.jpg", "url": "http:\/\/www.tf1.fr\/" },
+        { "room_id": "2", "name": "France2", "logo": "chaines_04.jpg", "url": "http:\/\/www.france2.fr\/" },
+        { "room_id": "3", "name": "France3", "logo": "chaines_05.jpg", "url": "http:\/\/www.france3.fr\/" },
+        { "room_id": "4", "name": "canal+", "logo": "chaines_06.jpg", "url": "http:\/\/www.canalplus.fr\/" },
+        { "room_id": "5", "name": "France5", "logo": "chaines_07.jpg", "url": "http:\/\/www.france5.fr\/" },
+        { "room_id": "6", "name": "M6", "logo": "chaines_08.jpg", "url": "http:\/\/www.M6.fr\/" },
+        { "room_id": "7", "name": "Arte", "logo": "chaines_09.jpg", "url": "http:\/\/www.arte.tv\/fr" },
+        { "room_id": "8", "name": "D8", "logo": "chaines_11.jpg", "url": "http:\/\/www.d8.tv\/" },
+        { "room_id": "9", "name": "w9", "logo": "chaines_12.jpg", "url": "http:\/\/www.w9.fr\/" },
+        { "room_id": "10", "name": "TMC", "logo": "chaines_13.jpg", "url": "http:\/\/www.tmc.tv\/" },
+        { "room_id": "11", "name": "NT1", "logo": "chaines_14.jpg", "url": "http:\/\/www.nt1.tv\/" },
+        { "room_id": "12", "name": "NRJ12", "logo": "chaines_15.jpg", "url": "http:\/\/www.nrj12.fr\/" },
+        { "room_id": "13", "name": "LCP", "logo": "chaines_16.jpg", "url": "http:\/\/www.lcp.fr\/" },
+        { "room_id": "14", "name": "France4", "logo": "chaines_17.jpg", "url": "http:\/\/www.france4.fr\/" },
+        { "room_id": "15", "name": "BFM TV", "logo": "chaines_18.jpg", "url": "http:\/\/www.bfmtv.com" },
+        { "room_id": "16", "name": "iTélé", "logo": "chaines_19.jpg", "url": "http:\/\/www.itele.fr\/" },
+        { "room_id": "17", "name": "D17", "logo": "chaines_20.jpg", "url": "http:\/\/www.d17.tv\/" },
+        { "room_id": "18", "name": "Gulli", "logo": "chaines_21.jpg", "url": "http:\/\/www.gulli.fr\/" },
+        { "room_id": "19", "name": "FranceÔ", "logo": "chaines_22.jpg", "url": "http:\/\/www.franceo.fr\/" },
+        { "room_id": "20", "name": "L'équipe 21", "logo": "chaines_23.jpg", "url": "http:\/\/www.lequipe21.fr\/" },
+        { "room_id": "21", "name": "numéro 23", "logo": "chaines_24.jpg", "url": "http:\/\/www.numero23.fr\/" },
+        { "room_id": "22", "name": "RMC découverte", "logo": "chaines_25.jpg", "url": "http:\/\/www.rmcdecouverte.com\/" },
+        { "room_id": "23", "name": "Chérie 25", "logo": "chaines_26.jpg", "url": "http:\/\/cherie25.fr\/" },
+        { "room_id": "24", "name": "TV 8 Mont Blanc", "logo": "TNTSAT_TV8.jpg", "url": "http:\/\/www.tv8montblanc.fr\/" },
+        { "room_id": "25", "name": "BFM Business", "logo": "bfm-business.gif", "url": "http:\/\/www.bfmtv.com\/" },
+        { "room_id": "26", "name": "CashTV", "logo": "cashTV.gif", "url": "http:\/\/www.cashtv.com\/" },
+        { "room_id": "27", "name": "CNTV", "logo": "cctv.gif", "url": "http:\/\/fr.cntv.cn\/" },
+        { "room_id": "28", "name": "Euronews", "logo": "euronews.gif", "url": "http:\/\/fr.euronews.net\/" },
+        { "room_id": "29", "name": "France24", "logo": "france24.gif", "url": "http:\/\/www.france24.com\/" },
+        { "room_id": "30", "name": "M6 boutique", "logo": "m6boutique.gif", "url": "http:\/\/www.m6boutique.com\/" },
+        { "room_id": "31", "name": "TV5", "logo": "TV5europe.gif", "url": "http:\/\/www.tv5.org\/TV5Site\/europe\/" },
+        { "room_id": "32", "name": "TV5 Monde", "logo": "TV5monde.gif", "url": "http:\/\/www.tv5.org\/" }
     ]
 }
