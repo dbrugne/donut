@@ -1,3 +1,15 @@
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
 --
 -- Structure de la table `users`
 --
@@ -15,31 +27,6 @@ CREATE TABLE `users` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_username` (`username`),
   UNIQUE KEY `unique_email` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Structure de la table `chat_messages`
---
-DROP TABLE IF EXISTS `messages`;
-CREATE TABLE IF NOT EXISTS `messages` (
-  `id` int(11) NOT NULL auto_increment,
-  `user_id` int(11) NOT NULL,
-  `time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `message` varchar(255) collate latin1_general_ci NOT NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
---
--- Structure de la table `onlines`
---
-DROP TABLE IF EXISTS `onlines`;
-CREATE TABLE IF NOT EXISTS `onlines` (
-  `id` int(11) NOT NULL auto_increment,
-  `ip` varchar(100) collate latin1_general_ci NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `status` enum('0','1','2') collate latin1_general_ci NOT NULL,
-  `time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
@@ -47,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `onlines` (
 --
 DROP TABLE IF EXISTS `rooms`;
 CREATE TABLE IF NOT EXISTS `rooms` (
-  `id` int(11) NOT NULL auto_increment,
+  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` varchar(100) collate latin1_general_ci NOT NULL,
   `topic` varchar(300) collate latin1_general_ci NOT NULL,
   `protected` tinyint(1) NOT NULL,
@@ -55,13 +42,52 @@ CREATE TABLE IF NOT EXISTS `rooms` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
+-- Structure de la table `messages`
+--
+-- MyISAM engine for performance.
+-- Strict-transactional not needed, it's a kind of logging table.
+--
+DROP TABLE IF EXISTS `messages`;
+CREATE TABLE IF NOT EXISTS `messages` (
+  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `user_id` INT(11) UNSIGNED NOT NULL,
+  `room_id` INT(11) UNSIGNED NOT NULL,
+  `time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `message` varchar(255) collate latin1_general_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- Structure de la table `user_room`
+--
+DROP TABLE IF EXISTS `user_room`;
+CREATE TABLE IF NOT EXISTS `user_room` (
+  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `user_id` INT(11) UNSIGNED NOT NULL,
+  `room_id` INT(11) UNSIGNED NOT NULL,
+  `time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `unique_user_id_room_id` (`user_id`,`room_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
 -- Structure de la table `tv_channels`
 --
 DROP TABLE IF EXISTS `tv_channels`;
 CREATE TABLE IF NOT EXISTS `tv_channels` (
-  `id` int(11) NOT NULL auto_increment,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `room_id` int(11) NOT NULL,
   `name` varchar(100) collate latin1_general_ci NOT NULL,
   `logo` varchar(100) collate latin1_general_ci NOT NULL,
   `url` varchar(255) collate latin1_general_ci NOT NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
