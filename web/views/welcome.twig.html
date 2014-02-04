@@ -7,7 +7,12 @@
     <div id="welcome">
         <p class="lead">
         {% if is_granted('ROLE_USER') %}
-            <p>Chat list !</p>
+            <h1>Welcome to Chat!</h1>
+
+            <h2>Chat! c'est facile</h2>
+            <p>Le premier service de discussion instantanée dédié à la TV.</p>
+
+            {% include 'channels.twig.html' with {'channels': channels} %}
         {% else %}
             <p>Already registered, <a href="{{ path('user.login') }}">signin</a>.</p>
             <p>Not already registered, <a href="{{ path('user.register') }}">signup.</a></p>

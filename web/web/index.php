@@ -3,12 +3,13 @@
 /**********************************************
  * Bootstrap
  *********************************************/
-
 require_once __DIR__.'/../vendor/autoload.php';
 $app = new Silex\Application();
 use Symfony\Component\HttpFoundation\Request;
 use App\User;
+use App\Chat;
 $app['debug'] = true;
+
 
 /**********************************************
  * Services
@@ -50,33 +51,38 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
 
 $app['user.controller']->setLayoutTemplate('layout.twig.html');
 
+
 /**********************************************
  * Controllers
  *********************************************/
-
 $app->mount('/user', $u);
 
-//$app->post('setnickname', function (Request $request) use ($app) {
-//    $username = $request->request->get('username', null);
-//
-//    if (!$username) {
-//        return $app->redirect('/');
-//    }
-//
-//    // Register user in database
-//    $users = $app['db']->fetchAssoc("SELECT * FROM users WHERE username = ?", array($username));
-//    if ($users === false) {
-//        $app['db']->insert('users', array('username' => $username));
-//        $id = $app['db']->lastInsertId();
-//    }
-//
-//    $app['session']->set('user', array(
-//        'id' => $id,
-//        'username' => $username,
-//    ));
-//    return $app->redirect('/chat');
-//
-//});
+$app->get('/join/{room_id}', function($room_id) use ($app) {
+
+    if (null === $user = $app['user.manager']->getCurrentUser()) {
+        return $app->redirect('/');
+    }
+
+    $roomManager = new App\Chat\RoomManager($app);
+    if (null === $room = $roomManager->findOneBy(array('id' => $room_id))) {
+        return $app->redirect('/');
+    }
+
+    // If user is not already in the requested chat, register him
+    $userRoomManager = new App\Chat\UserRoomManager($app);
+    $criteria = array('user_id' => $user->getId(), 'room_id' => $room->getId());
+    if (null === $userRoom = $userRoomManager->findOneBy($criteria)) {
+        $userRoom = $userRoomManager->insert(array(
+            'user_id' => $user->getId(),
+            'room_id' => $room->getId(),
+        ));
+    }
+
+    // Redirect to chat
+    return $app->redirect('/chat');
+})
+->bind('join')
+->assert('room_id', '\d+');
 
 $app->get('/chat', function() use ($app) {
 
@@ -150,26 +156,19 @@ $app->get('/up', function() use ($app) {
     return $app->json($data, 200);
 });
 
-$app->get('/channels', function() use ($app) {
-
-    if (null === $user = $app['user.manager']->getCurrentUser()) {
-        return $app->redirect('/');
-    }
-
-    $sql = "SELECT id, name, logo FROM tv_channels";
-    $channels = $app['db']->fetchAll($sql);
-
-    return $app['twig']->render('channels.twig.html', array(
-        'channels' => $channels,
-    ));
-
-})->bind('channels');
-
 $app->get('/', function(Request $request) use ($app) {
+
+    $tvcm = new App\Chat\TvChannelManager($app);
+    $channels = array();
+    foreach ($tvcm->findBy() as $channel)
+    {
+        $channels[] = $channel->getData();
+    }
 
     return $app['twig']->render('welcome.twig.html', array(
         'error' => $app['security.last_error']($request),
         'last_username' => $app['session']->get('_security.last_username'),
+        'channels' => $channels,
     ));
 
 });
