@@ -1,129 +1,64 @@
 {% extends "layout.twig.html" %}
 
-{% block title %}room - {{user.username}}{% endblock %}
+{% block title %}chat!{% endblock %}
 
 {% block content %}
 <div id="chat">
     <section id="rooms">
-        <h2>Rooms</h2>
-        <ul>
-            <li>TF1</li>
-            <li>France2</li>
-            <li>France3</li>
-            <li>canal+</li>
-            <li>France5</li>
-            <li>M6</li>
-            <li>Arte</li>
-            <li>D8</li>
-            <li>w9</li>
-            <li>TMC</li>
-            <li>NT1</li>
-            <li>NRJ12</li>
-            <li>LCP</li>
-            <li>France4</li>
-            <li>BFM TV</li>
-            <li>iTélé</li>
-            <li>D17</li>
-            <li>Gulli</li>
-        </ul>
+        <div class="panel panel-default">
+            <div class="panel-heading">Rooms</div>
+            <div class="list-group">
+                {% for room in rooms %}
+                <a href="#" class="list-group-item room-item" data-room-id="{{ room.getId() }}"><span class="badge">14</span> {{ room.getName() }}</a>
+                {% endfor %}
+            </div>
+            <div class="panel-footer"><a href="#">Find rooms to join <span class="glyphicon glyphicon-plus"></span></a></div>
+        </div>
     </section>
     <div id="main">
-        <div id="main-container">
-            <section id="topic">Topic</section>
-            <section id="messages">
-                <p><span class="date">[19:47:28]</span> <span class="username">&lt;foxy&gt;</span> <span class="text">tu crois aux rêves prémonitoires ?</span></p>
-                <p><span class="date">[19:47:39]</span> <span class="username">&lt;albou&gt;</span> <span class="text">oui, mais pas tout le temps.</span></p>
-                <p><span class="date">[19:47:41]</span> <span class="username">&lt;foxy&gt;</span> <span class="text">hé bha cette nuit j'ai rêvé qu'on couchait ensemble!</span></p>
-                <p><span class="date">[19:47:42]</span> <span class="username">&lt;albou&gt;</span> <span class="text">bhen tu vois; pas tout le temps..</span></p>
-                <p><span class="date">[19:47:28]</span> <span class="username">&lt;foxy&gt;</span> <span class="text">tu crois aux rêves prémonitoires ?</span></p>
-                <p><span class="date">[19:47:39]</span> <span class="username">&lt;albou&gt;</span> <span class="text">oui, mais pas tout le temps.</span></p>
-                <p><span class="date">[19:47:41]</span> <span class="username">&lt;foxy&gt;</span> <span class="text">hé bha cette nuit j'ai rêvé qu'on couchait ensemble!</span></p>
-                <p><span class="date">[19:47:42]</span> <span class="username">&lt;albou&gt;</span> <span class="text">bhen tu vois; pas tout le temps..</span></p>
-                <p><span class="date">[19:47:28]</span> <span class="username">&lt;foxy&gt;</span> <span class="text">tu crois aux rêves prémonitoires ?</span></p>
-                <p><span class="date">[19:47:39]</span> <span class="username">&lt;albou&gt;</span> <span class="text">oui, mais pas tout le temps.</span></p>
-                <p><span class="date">[19:47:41]</span> <span class="username">&lt;foxy&gt;</span> <span class="text">hé bha cette nuit j'ai rêvé qu'on couchait ensemble!</span></p>
-                <p><span class="date">[19:47:42]</span> <span class="username">&lt;albou&gt;</span> <span class="text">bhen tu vois; pas tout le temps..</span></p>
-                <p><span class="date">[19:47:28]</span> <span class="username">&lt;foxy&gt;</span> <span class="text">tu crois aux rêves prémonitoires ?</span></p>
-                <p><span class="date">[19:47:39]</span> <span class="username">&lt;albou&gt;</span> <span class="text">oui, mais pas tout le temps.</span></p>
-                <p><span class="date">[19:47:41]</span> <span class="username">&lt;foxy&gt;</span> <span class="text">hé bha cette nuit j'ai rêvé qu'on couchait ensemble!</span></p>
-                <p><span class="date">[19:47:42]</span> <span class="username">&lt;albou&gt;</span> <span class="text">bhen tu vois; pas tout le temps..</span></p>
-                <p><span class="date">[19:47:39]</span> <span class="username">&lt;albou&gt;</span> <span class="text">oui, mais pas tout le temps.</span></p>
-                <p><span class="date">[19:47:41]</span> <span class="username">&lt;foxy&gt;</span> <span class="text">hé bha cette nuit j'ai rêvé qu'on couchait ensemble!</span></p>
-                <p><span class="date">[19:47:42]</span> <span class="username">&lt;albou&gt;</span> <span class="text">bhen tu vois; pas tout le temps..</span></p>
-                <p><span class="date">[19:47:28]</span> <span class="username">&lt;foxy&gt;</span> <span class="text">tu crois aux rêves prémonitoires ?</span></p>
-                <p><span class="date">[19:47:39]</span> <span class="username">&lt;albou&gt;</span> <span class="text">oui, mais pas tout le temps.</span></p>
-                <p><span class="date">[19:47:41]</span> <span class="username">&lt;foxy&gt;</span> <span class="text">hé bha cette nuit j'ai rêvé qu'on couchait ensemble!</span></p>
-                <p><span class="date">[19:47:42]</span> <span class="username">&lt;albou&gt;</span> <span class="text">bhen tu vois; pas tout le temps..</span></p>
-                <p><span class="date">[19:47:28]</span> <span class="username">&lt;foxy&gt;</span> <span class="text">tu crois aux rêves prémonitoires ?</span></p>
-                <p><span class="date">[19:47:39]</span> <span class="username">&lt;albou&gt;</span> <span class="text">oui, mais pas tout le temps.</span></p>
-                <p><span class="date">[19:47:41]</span> <span class="username">&lt;foxy&gt;</span> <span class="text">hé bha cette nuit j'ai rêvé qu'on couchait ensemble!</span></p>
-                <p><span class="date">[19:47:42]</span> <span class="username">&lt;albou&gt;</span> <span class="text">bhen tu vois; pas tout le temps..</span></p>
-                <p><span class="date">[19:47:28]</span> <span class="username">&lt;foxy&gt;</span> <span class="text">tu crois aux rêves prémonitoires ?</span></p>
-                <p><span class="date">[19:47:39]</span> <span class="username">&lt;albou&gt;</span> <span class="text">oui, mais pas tout le temps.</span></p>
-                <p><span class="date">[19:47:41]</span> <span class="username">&lt;foxy&gt;</span> <span class="text">hé bha cette nuit j'ai rêvé qu'on couchait ensemble!</span></p>
-                <p><span class="date">[19:47:42]</span> <span class="username">&lt;albou&gt;</span> <span class="text">bhen tu vois; pas tout le temps..</span></p>
-                <p><span class="date">[19:47:41]</span> <span class="username">&lt;foxy&gt;</span> <span class="text">hé bha cette nuit j'ai rêvé qu'on couchait ensemble!</span></p>
-                <p><span class="date">[19:47:42]</span> <span class="username">&lt;albou&gt;</span> <span class="text">bhen tu vois; pas tout le temps..</span></p>
-                <p><span class="date">[19:47:28]</span> <span class="username">&lt;foxy&gt;</span> <span class="text">tu crois aux rêves prémonitoires ?</span></p>
-                <p><span class="date">[19:47:39]</span> <span class="username">&lt;albou&gt;</span> <span class="text">oui, mais pas tout le temps.</span></p>
-                <p><span class="date">[19:47:41]</span> <span class="username">&lt;foxy&gt;</span> <span class="text">hé bha cette nuit j'ai rêvé qu'on couchait ensemble!</span></p>
-                <p><span class="date">[19:47:42]</span> <span class="username">&lt;albou&gt;</span> <span class="text">bhen tu vois; pas tout le temps..</span></p>
-                <p><span class="date">[19:47:41]</span> <span class="username">&lt;foxy&gt;</span> <span class="text">hé bha cette nuit j'ai rêvé qu'on couchait ensemble!</span></p>
-                <p><span class="date">[19:47:42]</span> <span class="username">&lt;albou&gt;</span> <span class="text">bhen tu vois; pas tout le temps..</span></p>
-                <p><span class="date">[19:47:28]</span> <span class="username">&lt;foxy&gt;</span> <span class="text">tu crois aux rêves prémonitoires ?</span></p>
-                <p><span class="date">[19:47:39]</span> <span class="username">&lt;albou&gt;</span> <span class="text">oui, mais pas tout le temps.</span></p>
-                <p><span class="date">[19:47:41]</span> <span class="username">&lt;foxy&gt;</span> <span class="text">hé bha cette nuit j'ai rêvé qu'on couchait ensemble!</span></p>
-                <p><span class="date">[19:47:42]</span> <span class="username">&lt;albou&gt;</span> <span class="text">bhen tu vois; pas tout le temps..</span></p>
-                <p><span class="date">[19:47:28]</span> <span class="username">&lt;foxy&gt;</span> <span class="text">tu crois aux rêves prémonitoires ?</span></p>
-                <p><span class="date">[19:47:39]</span> <span class="username">&lt;albou&gt;</span> <span class="text">oui, mais pas tout le temps.</span></p>
-                <p><span class="date">[19:47:41]</span> <span class="username">&lt;foxy&gt;</span> <span class="text">hé bha cette nuit j'ai rêvé qu'on couchait ensemble!</span></p>
-                <p><span class="date">[19:47:42]</span> <span class="username">&lt;albou&gt;</span> <span class="text">bhen tu vois; pas tout le temps..</span></p>
-                <p><span class="date">[19:47:28]</span> <span class="username">&lt;foxy&gt;</span> <span class="text">tu crois aux rêves prémonitoires ?</span></p>
-                <p><span class="date">[19:47:39]</span> <span class="username">&lt;albou&gt;</span> <span class="text">oui, mais pas tout le temps.</span></p>
-                <p><span class="date">[19:47:41]</span> <span class="username">&lt;foxy&gt;</span> <span class="text">hé bha cette nuit j'ai rêvé qu'on couchait ensemble!</span></p>
-                <p><span class="date">[19:47:42]</span> <span class="username">&lt;albou&gt;</span> <span class="text">bhen tu vois; pas tout le temps..</span></p>
-                <p><span class="date">[19:47:41]</span> <span class="username">&lt;foxy&gt;</span> <span class="text">hé bha cette nuit j'ai rêvé qu'on couchait ensemble!</span></p>
-                <p><span class="date">[19:47:42]</span> <span class="username">&lt;albou&gt;</span> <span class="text">bhen tu vois; pas tout le temps..</span></p>
-                <p><span class="date">[19:47:28]</span> <span class="username">&lt;foxy&gt;</span> <span class="text">tu crois aux rêves prémonitoires ?</span></p>
-                <p><span class="date">[19:47:39]</span> <span class="username">&lt;albou&gt;</span> <span class="text">oui, mais pas tout le temps.</span></p>
-                <p><span class="date">[19:47:41]</span> <span class="username">&lt;foxy&gt;</span> <span class="text">hé bha cette nuit j'ai rêvé qu'on couchait ensemble!</span></p>
-                <p><span class="date">[19:47:42]</span> <span class="username">&lt;albou&gt;</span> <span class="text">bhen tu vois; pas tout le temps..</span></p>
+        {% for room in rooms %}
+        <div class="room-container" data-room-id="{{ room.getId() }}" style="display: none;">
+            <section class="topic"><span class="name">{{ room.getName() }}</span> {{ room.getTopic() }}</section>
+            <section class="messages">
+                {% for message in room.getMessages() %}
+                <p><span class="date">[{{ message.getTime()|date("H:m:s") }}]</span> <span class="username">&lt;{{ message.getUsername() }}&gt;</span> <span class="text">{{ message.getMessage() }}</span></p>
+                {% endfor %}
             </section>
-            <section id="postbox">
+            <section class="postbox">
                 <a name="post"></a>
                 <form action="#">
-                    <input type="text" id="message" name="message" class="box" />
-                    <span class="glyphicon glyphicon-user icon"></span>
-                    <input class="button" type="submit" value="Send" />
+
+                    <div class="row">
+                        <div class="col-lg-1">
+                            <p class="text-center">
+                                <img src="/img/smiley-icon.png" width="29px" />
+                            </p>
+                        </div>
+                        <div class="col-lg-11">
+                            <div class="input-group">
+                                <input type="text" name="message" class="form-control">
+                                <span class="input-group-btn">
+                                <button class="btn btn-default" type="button">Send!</button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
                 </form>
             </section>
         </div>
+        {% endfor %}
     </div>
     <section id="users">
-        <h2>Users</h2>
-        <ul>
-            <li class="op">Pomf</li>
-            <li class="op">Gino34</li>
-            <li class="friend">Crhis</li>
-            <li>mini-pouce</li>
-            <li>ZZExw</li>
-            <li class="friend">Elea</li>
-            <li>RaoülCastorStop</li>
-            <li>Paind'uitre</li>
-            <li>Peetwit</li>
-            <li>Charles</li>
-            <li>Néné</li>
-            <li>Sandy</li>
-            <li>CupCake</li>
-            <li>Rayxxx</li>
-            <li>SexIbitch</li>
-            <li>Paind'uitre</li>
-            <li>Peetwit</li>
-            <li>Charles</li>
-            <li class="friend">Néné</li>
-            <li>Sandy</li>
-            <li>CupCake</li>
-        </ul>
+        {% for room in rooms %}
+        <div class="panel panel-default users-list" data-room-id="{{ room.getId() }}" style="display: none;">
+            <div class="panel-heading">Users</div>
+            <div class="list-group">
+                {% for user in room.getUsers() %}
+                <a href="#" class="list-group-item user-item op friend">{{ user.getUsername() }}</a>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
     </section>
 </div>
 
@@ -137,8 +72,25 @@ $(document).ready(function() {
         window.setInterval(upCall, reloadTime);
         $("#message").focus();
 }*/
-    $("#messages").each( function()
-    {
+    $( ".room-container" ).first().show();
+    $( ".users-list" ).first().show();
+    $( ".room-item" ).first().addClass('active');
+    $( ".room-item" ).click(function() {
+        var roomId = $(this).data('room-id');
+
+        // Room list
+        $( ".room-item").removeClass('active');
+        $('.room-item[data-room-id="'+roomId+'"]').addClass('active');
+
+        // Room content
+        $( ".room-container" ).hide();
+        $('.room-container[data-room-id="'+roomId+'"]').show();
+
+        // User list
+        $( ".users-list" ).hide();
+        $('.users-list[data-room-id="'+roomId+'"]').show();
+    });
+    $(".messages").each( function() {
         chatScrollDown(this);
     });
 });

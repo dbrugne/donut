@@ -90,71 +90,85 @@ $app->get('/chat', function() use ($app) {
         return $app->redirect('/');
     }
 
-    return $app['twig']->render('chat.twig.html', array('user' => $user,));
+    // Prepare rooms list (first load)
+    $urm = new App\Chat\UserRoomManager($app);
+    $mm = new App\Chat\MessageManager($app);
+    $rooms = $urm->roomsList($user->getId());
 
-    /**
-     * Return DOM of chat interface
-     *   Instanciate listener
-     */
+    foreach($rooms as $room)
+    {
+        // users list
+        $users = $urm->usersList($room->getId());
+        $room->setUsers($users);
+
+        // messages
+        $messages = $mm->findBy(array('room_id' => $room->getId()));
+        $room->setMessages($messages);
+    }
+
+    return $app['twig']->render('chat.twig.html', array(
+        'user' => $user,
+        'rooms' => $rooms,
+    ));
 
 })->bind('chat');
 
-$app->get('/up', function() use ($app) {
-
-    /**
-     * Le navigateur requête le serveur toutes les 1 seconde:
-     * - le serveur vérifie que le navigateur a une session
-     * - que l'utilisateur de la session existe toujours
-     * - update onlines
-     * - nettoie onlines
-     * - retourne les messages/membres/annonces
-     *
-     */
-
-    if (null === $user = $app['user.manager']->getCurrentUser()) {
-        $app->abort(403, "User not authenticated.");
-    }
-
-    // Is the user already registered in this room?
-    $online = $app['db']->fetchAssoc("SELECT * FROM onlines WHERE user_id = ?", array($user->getId()));
-    if ($online === false) {
-        // Register him
-        $app['db']->insert('onlines', array(
-            'ip' => $app['request']->server->get('REMOTE_ADDR'),
-            'user_id' => $user->getId(),
-            'status' => 2,
-        ));
-    } else {
-        // Update him
-        $app['db']->executeQuery("UPDATE onlines SET `time` = NOW() WHERE user_id = ?", array($user->getId()));
-    }
-
-    // Obsolete online rows
-    $app['db']->executeQuery("DELETE FROM onlines WHERE time < DATE_SUB(NOW(), INTERVAL 50 SECOND)", array());
-
-    // Data to return
-    $channel = $app['db']->fetchAssoc("SELECT topic FROM channels ORDER BY id DESC LIMIT 1");
-    $topic = ($channel !== false) ? $channel['topic'] : "";
-
-    $from = 0;
-    $sql = "SELECT m.id as id, m.user_id as user_id, m.time as time, m.message as message, u.username as username
-          FROM messages as m LEFT JOIN users as u ON m.user_id = u.id
-          WHERE m.id > :lastid
-          ORDER BY m.`time` ASC LIMIT 0,1000";
-    $messages = $app['db']->fetchAll($sql, array('lastid' => $from));
-
-    $sql = "SELECT u.username as username, o.status as status
-	FROM onlines as o LEFT JOIN users as u ON u.id = o.user_id ORDER BY u.username";
-    $members = $app['db']->fetchAll($sql, array());
-
-    $data = array(
-        'error' => 0,
-        'messages' => $messages,
-        'members' => $members,
-        'topic' => $topic,
-    );
-    return $app->json($data, 200);
-});
+//$app->get('/up', function() use ($app) {
+//
+//    /**
+//     * Le navigateur requête le serveur toutes les 1 seconde:
+//     * - le serveur vérifie que le navigateur a une session
+//     * - que l'utilisateur de la session existe toujours
+//     * - update onlines
+//     * - nettoie onlines
+//     * - retourne les messages/membres/annonces
+//     *
+//     */
+//
+//    if (null === $user = $app['user.manager']->getCurrentUser()) {
+//        $app->abort(403, "User not authenticated.");
+//    }
+//
+//    // Is the user already registered in this room?
+//    $online = $app['db']->fetchAssoc("SELECT * FROM onlines WHERE user_id = ?", array($user->getId()));
+//    if ($online === false) {
+//        // Register him
+//        $app['db']->insert('onlines', array(
+//            'ip' => $app['request']->server->get('REMOTE_ADDR'),
+//            'user_id' => $user->getId(),
+//            'status' => 2,
+//        ));
+//    } else {
+//        // Update him
+//        $app['db']->executeQuery("UPDATE onlines SET `time` = NOW() WHERE user_id = ?", array($user->getId()));
+//    }
+//
+//    // Obsolete online rows
+//    $app['db']->executeQuery("DELETE FROM onlines WHERE time < DATE_SUB(NOW(), INTERVAL 50 SECOND)", array());
+//
+//    // Data to return
+//    $channel = $app['db']->fetchAssoc("SELECT topic FROM channels ORDER BY id DESC LIMIT 1");
+//    $topic = ($channel !== false) ? $channel['topic'] : "";
+//
+//    $from = 0;
+//    $sql = "SELECT m.id as id, m.user_id as user_id, m.time as time, m.message as message, u.username as username
+//          FROM messages as m LEFT JOIN users as u ON m.user_id = u.id
+//          WHERE m.id > :lastid
+//          ORDER BY m.`time` ASC LIMIT 0,1000";
+//    $messages = $app['db']->fetchAll($sql, array('lastid' => $from));
+//
+//    $sql = "SELECT u.username as username, o.status as status
+//	FROM onlines as o LEFT JOIN users as u ON u.id = o.user_id ORDER BY u.username";
+//    $members = $app['db']->fetchAll($sql, array());
+//
+//    $data = array(
+//        'error' => 0,
+//        'messages' => $messages,
+//        'members' => $members,
+//        'topic' => $topic,
+//    );
+//    return $app->json($data, 200);
+//});
 
 $app->get('/', function(Request $request) use ($app) {
 
