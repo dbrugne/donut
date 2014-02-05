@@ -53,7 +53,8 @@ CREATE TABLE IF NOT EXISTS `messages` (
   `user_id` INT(11) UNSIGNED NOT NULL,
   `room_id` INT(11) UNSIGNED NOT NULL,
   `time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  `message` varchar(255) collate latin1_general_ci NOT NULL,
+  `username` VARCHAR(100) NOT NULL DEFAULT '',
+  `message` TEXT collate latin1_general_ci NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
