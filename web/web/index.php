@@ -195,6 +195,16 @@ $app->get('/chat', function() use ($app) {
 //    return $app->json($data, 200);
 //});
 
+$app->get('/sessTest', function(Request $request) use ($app) {
+    var_dump($_SESSION); exit;
+    return $app['session']->get('test');
+});
+
+$app->get('/sessSet', function(Request $request) use ($app) {
+    $app['session']->set('test', 'time: ' . time() . ' random: ' . rand(9,99999));
+    return $app['session']->get('test');
+});
+
 $app->get('/', function(Request $request) use ($app) {
 
     $tvcm = new App\Chat\TvChannelManager($app);
