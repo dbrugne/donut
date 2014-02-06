@@ -11,6 +11,16 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Structure de la table `sessions`
+--
+CREATE TABLE `sessions` (
+  `session_id` varchar(255) NOT NULL,
+  `session_value` text NOT NULL,
+  `session_time` int(11) NOT NULL,
+  PRIMARY KEY (`session_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
 -- Structure de la table `users`
 --
 DROP TABLE IF EXISTS `users`;

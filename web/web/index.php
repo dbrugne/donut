@@ -6,6 +6,7 @@
 require_once __DIR__.'/../vendor/autoload.php';
 $app = new Silex\Application();
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler;
 use App\User;
 use App\Chat;
 $app['debug'] = true;
@@ -15,13 +16,37 @@ $app['debug'] = true;
  * Services
  *********************************************/
 $app->register(new Silex\Provider\SessionServiceProvider());
+$app['pdo.dsn'] = 'mysql:dbname=chat';
+$app['pdo.user'] = 'root';
+$app['pdo.password'] = '';
+$app['session.db_options'] = array(
+    'db_table'      => 'sessions',
+    'db_id_col'     => 'session_id',
+    'db_data_col'   => 'session_value',
+    'db_time_col'   => 'session_time',
+);
+$app['pdo'] = $app->share(function () use ($app) {
+    return new PDO(
+        $app['pdo.dsn'],
+        $app['pdo.user'],
+        $app['pdo.password']
+    );
+});
+$app['pdo']->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+$app['session.storage.handler'] = $app->share(function () use ($app) {
+    return new PdoSessionHandler(
+        $app['pdo'],
+        $app['session.db_options'],
+        $app['session.storage.options']
+    );
+});
 $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
     'db.options' => array(
         'driver'   => 'pdo_mysql',
         'dbname'   => 'chat',
         'host'     => 'localhost',
-        'user'     => 'root',
-        'password' => '',
+        'user'     => $app['pdo.user'],
+        'password' => $app['pdo.password'],
     ),
 )); // doc: http://www.doctrine-project.org/api/dbal/2.4/class-Doctrine.DBAL.Connection.html
 $app->register(new Silex\Provider\SecurityServiceProvider(), array(
