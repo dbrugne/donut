@@ -1,2 +1,4 @@
 /.idea
 composer.lock
+/web/client.html
+/web/client_files/
