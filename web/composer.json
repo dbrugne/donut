@@ -8,24 +8,8 @@
         "symfony/twig-bridge": "2.1.*",
         "cboden/Ratchet": "0.3.*",
         "react/zmq": "0.2.*",
-        "monolog/monolog": "dev-master",
-        "gimite/web-socket-js": "dev-master"
+        "monolog/monolog": "dev-master"
     },
-    "repositories": [
-        {
-            "type": "package",
-            "package": {
-                "name": "gimite/web-socket-js",
-                "type": "library",
-                "version": "dev-master",
-                "source": {
-                    "url": "https://github.com/gimite/web-socket-js",
-                    "type": "git",
-                    "reference": "master"
-                }
-            }
-        }
-    ],
     "autoload": {
         "psr-0": {
             "App": "app",
