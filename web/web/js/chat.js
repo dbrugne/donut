@@ -1,49 +1,90 @@
-var reloadTime = 1000;
-var scrollBar = false;
+var GUI = function() {
 
-var postMessage = function() {
-    var msg = $('#message').val();
-    if (msg == "") {
-        alert("Empty message. Coquinou!");
-        return;
-    }
+    var Chat;
+    var focusRoom = '';
 
-    $.ajax({
-        type: "POST",
-        url: '/post',
-        data: "message="+msg,
-        success: function(r) {
-            $("#message").val('');
+    var Joined = [];
+    var Names  = {};
+
+    /**
+     * Interface initialization
+     */
+    var status = function() {
+        var btnStatus;
+
+        return {
+            init: function() {
+                btnStatus = $('#status');
+            },
+            update: function(status) {
+                btnStatus.removeClass().addClass('btn').addClass('btn btn-xs');
+                switch (status) {
+                    case 'online':
+                        btnStatus.addClass('btn-success').html('Online');
+                        break;
+                    case 'connecting':
+                        btnStatus.addClass('btn-warning').html('Connecting');
+                        break;
+                    case 'offline':
+                        btnStatus.addClass('btn-inverse').html('Offline');
+                        break;
+                    case 'error':
+                        btnStatus.addClass('btn-danger').html('Offline');
+                        break;
+                }
+            }
         }
-    });
-};
+    }();
+    status.init();
+    status.update('connecting');
 
-var upCall = function () {
-    $.getJSON('/up', function(data) {
-        if(data['error'] == '0') {
+    $(function() {
+        $('.sendMessage').click(function() {
+            Chat.send(Joined[0], 'test test test');
+        });
 
-            $('#chatHeader').empty();
-            $('#chatHeader').val("TF1 - "+data.topic);
+        Chat  = new ChatRoom(true);
 
-            $('#users').empty();
-            $.each( data.members, function( i, member ) {
-                $('#users').append("<li>"+member.username+" ("+member.status+")</li>");
+        $(Chat).bind('connect', function(e) {
+            status.update('online');
+
+            // Get rooms list
+            //Chat.getUserRooms("test", function(id, display) {
+            //});
+
+            Chat.create('Test', function(id, display) {
+                Chat.join(id);
+                Joined.push(id);
             });
+        });
 
-            $('#text').empty();
-            $.each( data.messages, function( i, message ) {
-                $('#text').append("<div><strong>"+message.username+":</strong> "+message.message+"</li>");
-            });
-        }
+        $(Chat).bind('close', function(e) {
+            status.update('offline');
+        });
+
+        $(Chat).bind('message', function(e, room, from, msg, time) {
+            var message = { "id" : 1212, "date" : time, "username": from, "text": msg };
+            chatAddMessage(message);
+        });
+
+        $(Chat).bind('openRoom', function(e, roomId, roomName) {
+        });
+
+        $(Chat).bind('closeRoom', function(e, room) {
+        });
+
+        $(Chat).bind('leftRoom', function(e, room, id) {
+        });
+
+        $(Chat).bind('joinRoom', function(e, room, id, name) {
+        });
     });
-}
 
-
+}();
 
 var chatScrollDown = function (e) {
     // certain browsers have a bug such that scrollHeight is too small
     // when content does not fill the client area of the element
-    console.log(e);
     var scrollHeight = Math.max(e.scrollHeight, e.clientHeight);
     e.scrollTop = scrollHeight - e.clientHeight;
 }
@@ -70,9 +111,8 @@ var chatAddMessage = function (message) {
      */
 
     var htmlCode = "<p data-message-id='"+message.id+"'><span class='date'>["+message.date+"]</span> <span class='username'>&lt;"+message.username+"&gt;</span> <span class='text'>"+message.text+"</span></p>";
-    $("#messages").append(htmlCode);
-
-    $("#messages").each( function() { chatScrollDown(this); });
+    $(".messages").append(htmlCode);
+    $(".messages").each( function() { chatScrollDown(this); });
 }
 
 var chatRemoveMessage = function (messageid) {

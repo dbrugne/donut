@@ -6,6 +6,12 @@
 <div id="chat">
     <section id="rooms">
         <div class="panel panel-default">
+            <div class="panel-body" style="position: relative;">
+                You are
+                <button type="button" id="status" class="" style="position: absolute; right: 15px;">...</button>
+            </div>
+        </div>
+        <div class="panel panel-default">
             <div class="panel-heading">Rooms</div>
             <div class="list-group">
                 {% for room in rooms %}
@@ -27,7 +33,6 @@
             <section class="postbox">
                 <a name="post"></a>
                 <form action="#">
-
                     <div class="row">
                         <div class="col-lg-1">
                             <p class="text-center">
@@ -38,7 +43,7 @@
                             <div class="input-group">
                                 <input type="text" name="message" class="form-control">
                                 <span class="input-group-btn">
-                                <button class="btn btn-default" type="button">Send!</button>
+                                <button class="btn btn-default sendMessage" type="button">Send!</button>
                                 </span>
                             </div>
                         </div>
@@ -65,6 +70,9 @@
 {% endblock %}
 
 {% block endofpage %}
+<script src="/js/when.js"></script>
+<script src="/js/autobahn.js"></script>
+<script src="/js/transport.js"></script>
 <script src="/js/chat.js"></script>
 <script>
 $(document).ready(function() {
