@@ -13,6 +13,7 @@
 --
 -- Structure de la table `sessions`
 --
+DROP TABLE IF EXISTS `sessions`;
 CREATE TABLE `sessions` (
   `session_id` varchar(255) NOT NULL,
   `session_value` text NOT NULL,
