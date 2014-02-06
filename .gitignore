@@ -2,3 +2,4 @@
 composer.lock
 /web/client.html
 /web/client_files/
+/web/js/chat-dev.js
