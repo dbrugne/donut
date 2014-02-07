@@ -13,8 +13,9 @@ use React\ZMQ\Context;
 
 use Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler;
 
-use Server\Components\Bot;
 use Server\Components\ChatRoom;
+use Server\Components\Bot;
+use Server\Components\Authentication;
 use Server\Components\PortLogger;
 use Server\Components\NullComponent;
 use Server\Components\MessageLogger;
@@ -23,7 +24,7 @@ use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 
 // Composer: The greatest thing since sliced bread
-require dirname(__DIR__) . '/vendor/autoload.php';
+require_once __DIR__.'/../vendor/autoload.php';
 
 // Setup logging
 $stdout = new StreamHandler('php://stdout');
@@ -77,10 +78,13 @@ $webServer = new IoServer(           // Basic I/O with clients, aww yeah
             new PortLogger($push, 8080,    // Compare vs the almost over 9000 conns
                 new MessageLogger(       // Log events in case of "oh noes"
                     new SessionProvider(
-                        new ServerProtocol(  // WAMP; the new hotness sub-protocol
-                            new Bot(         // People kept asking me if I was a bot, so I made one!
-                                new ChatRoom // ...and DISCUSS!
+                        new Authentication (
+                            new ServerProtocol(  // WAMP; the new hotness sub-protocol
+                                new Bot(         // People kept asking me if I was a bot, so I made one!
+                                    new ChatRoom // ...and DISCUSS!
+                                )
                             )
+                        , $pdo
                         )
                         , $sessionHandler
                     )
