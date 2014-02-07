@@ -5,8 +5,12 @@ use Ratchet\ConnectionInterface;
 class ConnectionStub implements ConnectionInterface {
     protected $onSend;
     protected $onClose;
+    public $User;
 
     public function __construct(\Closure $onSend = null, \Closure $onClose = null) {
+        $this->User = new \StdClass;
+        $this->User->id = 0;
+        $this->User->username = 'Bot user';
         $this->setSendCallback($onSend);
         $this->setCloseCallback($onClose);
     }
