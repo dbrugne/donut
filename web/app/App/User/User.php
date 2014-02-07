@@ -12,11 +12,11 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class User implements UserInterface, \Serializable
 {
     protected $id;
-    protected $email;
+    protected $username;
     protected $password;
     protected $salt;
     protected $roles = array();
-    protected $username = '';
+    protected $email = '';
     protected $timeCreated;
 
     /**
@@ -252,6 +252,7 @@ class User implements UserInterface, \Serializable
     {
         return serialize(array(
             $this->id,
+            $this->username,
         ));
     }
 
@@ -262,6 +263,7 @@ class User implements UserInterface, \Serializable
     {
         list (
             $this->id,
+            $this->username,
             ) = unserialize($serialized);
     }
 
