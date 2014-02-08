@@ -43,6 +43,13 @@ body { padding-top: 50px; }
     flex-direction: column;
     background-color: #FFFFFF;
 }
+#chat .room-container .default {
+    margin: auto auto;
+    color: #DDDDDD;
+    font-size: 30px;
+    font-weight: bold;
+    font-style: italic;
+}
 #users {
     background-color: darkgrey;
     flex: 2;

@@ -14,56 +14,29 @@
         <div class="panel panel-default">
             <div class="panel-heading">Rooms</div>
             <div class="list-group">
-                {% for room in rooms %}
-                <a href="#" class="list-group-item room-item" data-room-id="{{ room.getId() }}"><span class="badge">14</span> {{ room.getName() }}</a>
-                {% endfor %}
+                <!-- Default room -->
+                <a href="#" class="list-group-item room-item default" data-room-id="default">&nbsp;</a>
+                <!-- / Default room -->
             </div>
             <div class="panel-footer"><a href="#">Find rooms to join <span class="glyphicon glyphicon-plus"></span></a></div>
         </div>
     </section>
     <div id="main">
-        {% for room in rooms %}
-        <div class="room-container" data-room-id="{{ room.getId() }}" style="display: none;">
-            <section class="topic"><span class="name">{{ room.getName() }}</span> {{ room.getTopic() }}</section>
-            <section class="messages">
-                {% for message in room.getMessages() %}
-                <p><span class="date">[{{ message.getTime()|date("H:m:s") }}]</span> <span class="username">&lt;{{ message.getUsername() }}&gt;</span> <span class="text">{{ message.getMessage() }}</span></p>
-                {% endfor %}
-            </section>
-            <section class="postbox">
-                <a name="post"></a>
-                <form action="#">
-                    <div class="row">
-                        <div class="col-lg-1">
-                            <p class="text-center">
-                                <img src="/img/smiley-icon.png" width="29px" />
-                            </p>
-                        </div>
-                        <div class="col-lg-11">
-                            <div class="input-group">
-                                <input type="text" name="message" class="form-control">
-                                <span class="input-group-btn">
-                                <button class="btn btn-default sendMessage" type="button">Send!</button>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </section>
+        <!-- Default room column -->
+        <div class="room-container" data-room-id="default">
+            <section class="default">Not in room</section>
         </div>
-        {% endfor %}
+        <!-- / Default room column -->
     </div>
     <section id="users">
-        {% for room in rooms %}
-        <div class="panel panel-default users-list" data-room-id="{{ room.getId() }}" style="display: none;">
+        <!-- Default user list -->
+        <div class="panel panel-default users-list" data-room-id="default">
             <div class="panel-heading">Users</div>
             <div class="list-group">
-                {% for user in room.getUsers() %}
-                <a href="#" class="list-group-item user-item op friend">{{ user.getUsername() }}</a>
-                {% endfor %}
+                <a href="#" class="list-group-item user-item default">&nbsp;</a>
             </div>
         </div>
-        {% endfor %}
+        <!-- / Default user list -->
     </section>
 </div>
 
@@ -76,13 +49,9 @@
 <script src="/js/chat.js"></script>
 <script>
 $(document).ready(function() {
-    /*if(document.getElementById('message')) {
-        window.setInterval(upCall, reloadTime);
-        $("#message").focus();
-}*/
-    $( ".room-container" ).first().show();
-    $( ".users-list" ).first().show();
-    $( ".room-item" ).first().addClass('active');
+    //$( ".room-container" ).first().show();
+    //$( ".users-list" ).first().show();
+    //$( ".room-item" ).first().addClass('active');
     $( ".room-item" ).click(function() {
         var roomId = $(this).data('room-id');
 

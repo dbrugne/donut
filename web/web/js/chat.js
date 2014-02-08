@@ -49,13 +49,17 @@ var GUI = function() {
             status.update('online');
 
             // Get rooms list
-            //Chat.getUserRooms("test", function(id, display) {
-            //});
+            Chat.getUserRooms(function(roomList) {
+                // open chat room in browser :)
+                $.each( roomList.rooms, function( i, l ){
+                    //alert('open:'+l);
+                });
+            });
 
-            Chat.create('Test', function(id, display) {
+            /*Chat.create('Test', function(id, display) {
                 Chat.join(id);
                 Joined.push(id);
-            });
+            });*/
         });
 
         $(Chat).bind('close', function(e) {
