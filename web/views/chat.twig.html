@@ -14,29 +14,61 @@
         <div class="panel panel-default">
             <div class="panel-heading">Rooms</div>
             <div id="rooms-list" class="list-group">
-                <!-- Default room -->
-                <a href="#" class="list-group-item room-item default" data-room-id="default">&nbsp;</a>
-                <!-- / Default room -->
+                <!-- Default room-item -->
+                <a href="#" class="list-group-item room-item" data-room-id="default">&nbsp;</a>
+                <!-- / Default room-item -->
+                <!-- Template room-item -->
+                <a href="#" class="list-group-item room-item" data-room-id="template" style="display:none;">&nbsp;</a>
+                <!-- / Template room-item -->
             </div>
             <div class="panel-footer"><a href="#">Find rooms to join <span class="glyphicon glyphicon-plus"></span></a></div>
         </div>
+        <button class="btn" id="test">Test</button>
     </section>
     <div id="main">
-        <!-- Default room column -->
+        <!-- Default room container -->
         <div class="room-container" data-room-id="default">
             <section class="default">Not in room</section>
         </div>
-        <!-- / Default room column -->
+        <!-- / Default room container -->
+        <!-- Template room container -->
+        <div class="room-container" data-room-id="template" style="display: none;">
+            <section class="header"><span class="name"></span> <span class="topic"></span></section>
+            <section class="messages"></section>
+            <section class="postbox">
+                <a name="post"></a>
+                <div class="row">
+                    <div class="col-lg-1"><p class="text-center"><img src="/img/smiley-icon.png" width="29px" /></p></div>
+                    <div class="col-lg-11">
+                        <div class="input-group">
+                            <input type="text" name="message" class="form-control input-message" data-room-id="" />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default send-message" data-room-id="">Send!</button>
+                    </span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <!-- / Template room container -->
     </div>
     <section id="users">
-        <!-- Default user list -->
+        <!-- Default room user list -->
         <div class="panel panel-default users-list" data-room-id="default">
             <div class="panel-heading">Users</div>
             <div class="list-group">
                 <a href="#" class="list-group-item user-item default">&nbsp;</a>
             </div>
         </div>
-        <!-- / Default user list -->
+        <!-- / Default room user list -->
+        <!-- Template room user list -->
+        <div class="panel panel-default users-list" data-room-id="template" style="display: none;">
+           <div class="panel-heading">Users</div>
+           <div class="list-group">
+               <a href="#" class="list-group-item user-item" style="display: none;">&nbsp;</a>
+           </div>
+        </div>
+        <!-- / Template room user list -->
     </section>
 </div>
 
@@ -49,26 +81,22 @@
 <script src="/js/chat.js"></script>
 <script>
 $(document).ready(function() {
-    //$( ".room-container" ).first().show();
-    //$( ".users-list" ).first().show();
-    //$( ".room-item" ).first().addClass('active');
-    $( "body" ).on( "click", ".room-item", function () {
-        var roomId = $(this).data('room-id');
+//        $( "body" ).on( "click", ".room-item", function () {
+//            var roomId = $(this).data('room-id');
+//
+//            // Room list
+//            $( ".room-item").removeClass('active');
+//            $('.room-item[data-room-id="'+roomId+'"]').addClass('active');
+//
+//            // Room content
+//            $( ".room-container" ).hide();
+//            $('.room-container[data-room-id="'+roomId+'"]').show();
+//
+//            // User list
+//            $( ".users-list" ).hide();
+//            $('.users-list[data-room-id="'+roomId+'"]').show();
+//        });
 
-        // Room list
-        $( ".room-item").removeClass('active');
-        $('.room-item[data-room-id="'+roomId+'"]').addClass('active');
-
-        // Room content
-        $( ".room-container" ).hide();
-        $('.room-container[data-room-id="'+roomId+'"]').show();
-
-        // User list
-        $( ".users-list" ).hide();
-        $('.users-list[data-room-id="'+roomId+'"]').show();
-    });
-//    $( ".room-item" ).click(function() {
-//    });
     $(".messages").each( function() {
         chatScrollDown(this);
     });

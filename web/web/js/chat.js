@@ -41,20 +41,65 @@ var GUI = function() {
     /**
      * IHM function
      */
-    function roomListAddRoom(id, name) {
+    $("#test").click(function () {
+        //
+    });
+    function createRoomIhm(roomId, roomName, roomTopic) {
+        // If no already focused room
         if (focusRoom == '') {
-            focusRoom = id;
+            focusRoom = roomId;
         }
 
-        if (focusRoom == id) {
-            var focusClass = 'active';
-        } else {
-            var focusClass = '';
+        // Test if elements for this room are already in the DOM
+        if ($(".room-item[data-room-id='"+roomId+"']").length > 0){
+            return;
         }
 
-        var html = '<a href="#" class="list-group-item room-item '+focusClass+'" data-room-id="'+id+'">'+name+'</a>';
-        $('#rooms-list .default').remove();
-        $('#rooms-list').append(html);
+        // Hide default elements
+        $("[data-room-id='default']").hide();
+
+        // Create room in rooms-list
+        var newRoomItem = $(".room-item[data-room-id='template']").clone(false);
+        newRoomItem.attr('data-room-id', roomId);
+        newRoomItem.html(roomName);
+        newRoomItem.css('display', 'block');
+        newRoomItem.click(function() {
+            focusOnRoom(roomId);
+        });
+        $("#rooms-list").append(newRoomItem);
+
+        // Create room-container
+        var newRoomContainer = $(".room-container[data-room-id='template']").clone(false);
+        newRoomContainer.attr('data-room-id', roomId);
+        newRoomContainer.find('.name').html(roomName);
+        newRoomContainer.find('.topic').html(roomTopic);
+        newRoomContainer.find('.input-message').attr('data-room-id', roomId);
+        newRoomContainer.find('.send-message').attr('data-room-id', roomId);
+        $("#main").append(newRoomContainer);
+
+        // Create room users-list
+        var newUsersList = $(".users-list[data-room-id='template']").clone(false);
+        newUsersList.attr('data-room-id', roomId);
+        $("#users").append(newUsersList);
+
+        // Active this new room (if needed)
+        if (focusRoom == roomId) {
+            focusOnRoom(roomId);
+        }
+    }
+
+    function focusOnRoom(roomId) {
+        // Room list
+        $( ".room-item").removeClass('active');
+        $('.room-item[data-room-id="'+roomId+'"]').addClass('active');
+
+        // Room content
+        $( ".room-container" ).hide();
+        $('.room-container[data-room-id="'+roomId+'"]').show();
+
+        // User list
+        $( ".users-list" ).hide();
+        $('.users-list[data-room-id="'+roomId+'"]').show();
     }
 
     function roomListRemoveRoom(id) {
@@ -76,26 +121,6 @@ var GUI = function() {
         });
     }
 
-    function userListCreate(id) {
-        if (focusRoom == '') {
-            focusRoom = id;
-        }
-
-        if (focusRoom == id) {
-            var focusClass = 'block';
-        } else {
-            var focusClass = 'none';
-        }
-
-        var html = '';
-        html += '<div class="panel panel-default users-list" data-room-id="'+id+'" style="display: '+focusClass+';">';
-        html += '   <div class="panel-heading">Users</div>';
-        html += '   <div class="list-group"></div>';
-        html += '</div>';
-        $(".users-list[data-room-id='default']").hide();
-        $("#users").append(html);
-    }
-
     function userListAddUser(id, user) {
         var html = '<a href="#" class="list-group-item user-item" data-user-id="'+user.id+'">'+user.username+'</a>';
         $(".users-list[data-room-id='"+id+"'] > .list-group").append(html);
@@ -109,47 +134,15 @@ var GUI = function() {
 
     }
 
-    function roomContainerCreate(id, name, topic) {
-        if (focusRoom == '') {
-            focusRoom = id;
-        }
-
-        if (focusRoom == id) {
-            var focusClass = 'flex';
-        } else {
-            var focusClass = 'none';
-        }
-
-        var html = '';
-        html += '<div class="room-container" data-room-id="'+id+'" style="display: '+focusClass+';">';
-        html += '    <section class="topic"><span class="name">'+name+'</span> '+topic+'</section>';
-        html += '    <section class="messages"></section>';
-        html += '    <section class="postbox">';
-        html += '        <a name="post"></a>';
-        html += '        <div class="row">';
-        html += '            <div class="col-lg-1"><p class="text-center"><img src="/img/smiley-icon.png" width="29px" /></p></div>';
-        html += '            <div class="col-lg-11">';
-        html += '                <div class="input-group">';
-        html += '                    <input type="text" name="message" class="form-control input-message" data-room-id="'+id+'" />';
-        html += '                    <span class="input-group-btn">';
-        html += '                        <button type="button" class="btn btn-default send-message" data-room-id="'+id+'">Send!</button>';
-        html += '                    </span>';
-        html += '                </div>';
-        html += '            </div>';
-        html += '        </div>';
-        html += '    </section>';
-        html += '</div>';
-
-        $(".room-container[data-room-id='default']").hide();
-        $('#main').append(html);
-    }
-
     function roomContainerRemove(id) {
 
     }
 
     function roomContainerAddMessage(id, user_id, username, time, message) {
-        var html = '<p><span class="date">'+time+'</span> <span class="username">&lt;'+username+'&gt;</span> <span class="text">'+message+'</span></p>';
+        var date = new Date(time * 1000);
+        var dateText = date.getHours()+':'+date.getMinutes()+':'+date.getSeconds();
+
+        var html = '<p><span class="date">['+dateText+']</span> <span class="username">&lt;'+username+'&gt;</span> <span class="text">'+message+'</span></p>';
         $(".room-container[data-room-id='"+id+"'] > .messages").append(html);
     }
 
@@ -203,12 +196,6 @@ var GUI = function() {
      */
     $(function() {
 
-//        // TEST
-//        $('.sendMessage').click(function() {
-//            Chat.send(Joined[0], 'test test test');
-//        });
-//        // TEST
-
         Chat  = new ChatRoom(true);
 
         $(Chat).bind('connect', function(e) {
@@ -251,12 +238,13 @@ var GUI = function() {
                 return false;
             }
 
-            // Add room in rooms-list
-            roomListAddRoom(data.id, data.name);
-            // Create room-container
-            roomContainerCreate(data.id, data.name, data.topic);
-            // Create users-list
-            userListCreate(data.id);
+//            // Add room in rooms-list
+//            roomListAddRoom(data.id, data.name);
+//            // Create room-container
+//            roomContainerCreate(data.id, data.name, data.topic);
+//            // Create users-list
+//            userListCreate(data.id);
+            createRoomIhm(data.id, data.name, data.topic);
 
             // Subscribe to room
             Chat.join(data.id);

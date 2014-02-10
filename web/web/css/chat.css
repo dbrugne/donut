@@ -59,16 +59,16 @@ body { padding-top: 50px; }
 }
 #users li.op { font-weight: bold; text-decoration: underline; }
 #users li.friend { font-weight: bold; font-style: italic; }
-#chat .topic {
+#chat .header {
     flex: 1;
     max-height: 40px;
     padding: 10px 15px;
-    color: #333;
-    background-color: #f5f5f5;
     border-bottom: 1px solid transparent;
     border-color: #ddd;
+    background-color: #f5f5f5;
 }
-#chat .topic .name { color: #555555; font-weight: bolder; }
+#chat .header .topic { color: #333; }
+#chat .header .name { color: #555555; font-weight: bolder; }
 #chat .messages {
     flex: 10;
     overflow-y: scroll;
@@ -87,4 +87,8 @@ body { padding-top: 50px; }
     background-color: #f5f5f5;
     border-top: 1px solid transparent;
     border-color: #ddd;
+}
+
+#chat .panel-default > .panel-heading {
+    border-color: transparent;
 }
