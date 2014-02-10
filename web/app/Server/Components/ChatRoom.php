@@ -151,7 +151,7 @@ class ChatRoom implements WampServerInterface
                         $roomList[] = array('topic' => self::TOPIC_ROOM_PREFIX . $roomId);
                     }
                 }
-                var_dump($roomList);
+//                var_dump($roomList);
                 return $conn->callResult($id, $roomList);
                 break;
 

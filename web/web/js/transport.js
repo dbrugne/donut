@@ -128,7 +128,6 @@ ChatRoom = function(optDebug) {
             });
         }
 
-
         // DBR ajout
         , getUserRooms: function(callback) {
             sess.call('getUserRooms').then(function(args) {
@@ -155,7 +154,7 @@ ChatRoom = function(optDebug) {
 
             Debug('Connected! ' + api.sessionId);
 
-            $(api).trigger('connect');
+            $(api).trigger('connect'); // !! before subscribe to control
 
             sess.subscribe('ws://chat.local/control', function(topic, event) {
                 var action = event.action;

@@ -205,9 +205,7 @@ var GUI = function() {
             Chat.getUserRooms(function(roomList) {
                 $.each( roomList, function( i, room ){
                     // subscribe (and get name, topic and user list in return)
-                    Chat.join(room.topic, function(roomData) {
-                        //alert(roomData);
-                    });
+                    Chat.join(room.topic);
                 });
             });
         });
@@ -238,12 +236,6 @@ var GUI = function() {
                 return false;
             }
 
-//            // Add room in rooms-list
-//            roomListAddRoom(data.id, data.name);
-//            // Create room-container
-//            roomContainerCreate(data.id, data.name, data.topic);
-//            // Create users-list
-//            userListCreate(data.id);
             createRoomIhm(data.id, data.name, data.topic);
 
             // Subscribe to room
