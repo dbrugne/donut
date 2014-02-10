@@ -13,7 +13,7 @@
         </div>
         <div class="panel panel-default">
             <div class="panel-heading">Rooms</div>
-            <div class="list-group">
+            <div id="rooms-list" class="list-group">
                 <!-- Default room -->
                 <a href="#" class="list-group-item room-item default" data-room-id="default">&nbsp;</a>
                 <!-- / Default room -->
@@ -52,7 +52,7 @@ $(document).ready(function() {
     //$( ".room-container" ).first().show();
     //$( ".users-list" ).first().show();
     //$( ".room-item" ).first().addClass('active');
-    $( ".room-item" ).click(function() {
+    $( "body" ).on( "click", ".room-item", function () {
         var roomId = $(this).data('room-id');
 
         // Room list
@@ -67,9 +67,12 @@ $(document).ready(function() {
         $( ".users-list" ).hide();
         $('.users-list[data-room-id="'+roomId+'"]').show();
     });
+//    $( ".room-item" ).click(function() {
+//    });
     $(".messages").each( function() {
         chatScrollDown(this);
     });
+
 });
 </script>
 {% endblock %}

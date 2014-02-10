@@ -80,9 +80,9 @@ $webServer = new IoServer(           // Basic I/O with clients, aww yeah
                     new SessionProvider(
                         new Authentication (
                             new ServerProtocol(  // WAMP; the new hotness sub-protocol
-                                new Bot(         // People kept asking me if I was a bot, so I made one!
+                                //new Bot(         // People kept asking me if I was a bot, so I made one!
                                     new ChatRoom // ...and DISCUSS!
-                                )
+                                //)
                             )
                         , $pdo
                         )

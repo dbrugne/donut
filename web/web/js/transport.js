@@ -69,6 +69,20 @@ ChatRoom = function(optDebug) {
              * @param string Message received
              */
           , 'message'
+
+            /**
+             * We get roomData from control topic, probably user just subscribed to a room
+             * @event roomData
+             * @param Object
+             */
+          , 'roomData'
+
+         /**
+          * We get roomUserList from control topic, probably user just subscribed to a room
+          * @event roomUsers
+          * @param Object
+          */
+          , 'roomUsers'
         ]
 
       , debug: optDebug | false
@@ -80,14 +94,11 @@ ChatRoom = function(optDebug) {
             }, onError);
         }
 
-      , join: function(room) {
-            // check room name is clean
-            // No more than 32 characters
-            // Must be alpha numeric
-
-            sess.subscribe(room, function(room, msg) {
+        , join: function(roomId) {
+            sess.subscribe(roomId, function(room, msg) {
                 var action = msg.shift();
                 msg.unshift(room);
+
 
                 Debug([action, msg]);
 
@@ -99,10 +110,10 @@ ChatRoom = function(optDebug) {
             sess.unsubscribe(room);
         }
 
-      , send: function(room, msg) {
+      , send: function(roomId, msg) {
             // Message can not be longer than 140 characters
 
-            sess.publish(room, msg);
+            sess.publish('ws://chat.local/room#'+roomId, msg);
         }
 
       , end: function() {
@@ -119,13 +130,11 @@ ChatRoom = function(optDebug) {
 
 
         // DBR ajout
-        , getUserRooms: function(name, callback) {
-            sess.call('getUserRooms', name).then(function(args) {
-                alert(args.id+args.display);
-                callback(args.id, args.display);
+        , getUserRooms: function(callback) {
+            sess.call('getUserRooms').then(function(args) {
+                callback(args);
             }, function(args) {
-                alert(args.id+args.display+"2");
-                callback(args.id, args.display);
+                callback(args);
             });
         }
         // DBR ajout
@@ -146,20 +155,17 @@ ChatRoom = function(optDebug) {
 
             Debug('Connected! ' + api.sessionId);
 
-            sess.subscribe('ctrl:rooms', function(room, msg) {
-                Debug('ctrl:rooms: ' + msg);
-                var state = msg.pop();
+            $(api).trigger('connect');
 
-                if (1 == state) {
-                    api.rooms[msg[0]] = msg[1];
-                    $(api).trigger('openRoom', msg);
-                } else {
-                    delete api.rooms[msg[0]];
-                    $(api).trigger('closeRoom', msg);
+            sess.subscribe('ws://chat.local/control', function(topic, event) {
+                var action = event.action;
+                if (action == 'roomData') {
+                    $(api).trigger('roomData', event.data);
+                }
+                if (action == 'roomUsers') {
+                    $(api).trigger('roomUsers', event.data);
                 }
             });
-
-            $(api).trigger('connect');
         }
       , function() {
             Debug('Connection closed');
