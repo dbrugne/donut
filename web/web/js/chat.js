@@ -41,9 +41,6 @@ var GUI = function() {
     /**
      * IHM function
      */
-    $("#test").click(function () {
-        //
-    });
     function createRoomIhm(roomId, roomName, roomTopic) {
         // If no already focused room
         if (focusRoom == '') {
@@ -102,8 +99,11 @@ var GUI = function() {
         $('.users-list[data-room-id="'+roomId+'"]').show();
     }
 
-    function roomListRemoveRoom(id) {
-
+    function scrollDown(e) {
+        // certain browsers have a bug such that scrollHeight is too small
+        // when content does not fill the client area of the element
+        var scrollHeight = Math.max(e.scrollHeight, e.clientHeight);
+        e.scrollTop = scrollHeight - e.clientHeight;
     }
 
     function roomListNewMessageInRoom(id, num) {
@@ -126,34 +126,18 @@ var GUI = function() {
         $(".users-list[data-room-id='"+id+"'] > .list-group").append(html);
     }
 
-    function userListRemoveUser(id) {
-
-    }
-
-    function userListRemove(id) {
-
-    }
-
-    function roomContainerRemove(id) {
-
-    }
-
     function roomContainerAddMessage(id, user_id, username, time, message) {
         var date = new Date(time * 1000);
         var dateText = date.getHours()+':'+date.getMinutes()+':'+date.getSeconds();
-
         var html = '<p><span class="date">['+dateText+']</span> <span class="username">&lt;'+username+'&gt;</span> <span class="text">'+message+'</span></p>';
         $(".room-container[data-room-id='"+id+"'] > .messages").append(html);
-    }
-
-    function roomContainerChangeTopic(id) {
-
+        scrollDown($(".room-container[data-room-id='"+id+"'] > .messages"));
     }
 
     /**
      * Inteface action binding
      */
-//    $(function() {
+    $(function() {
 
         var postMessageCallback = function (e) {
             var roomId = $(e).data('roomId');
@@ -172,24 +156,12 @@ var GUI = function() {
                 postMessageCallback(this);
             }
         });
+
         $(document).on('click', '.send-message', function () {
               postMessageCallback(this);
-//            var roomId = $(this).data('roomId');
-//            var message = $('.input-message[data-room-id='+roomId+']').val();
-//            if (message == '') {
-//                return;
-//            }
-//
-//            // Send to server
-//            Chat.send(roomId, message);
-//
-//            // Empty the field
-//            $('.input-message[data-room-id='+roomId+']').val('');
-//
-////            return false;
         });
 
-//    });
+    });
 
     /**
      * Transport layer initialization
@@ -200,18 +172,30 @@ var GUI = function() {
 
         $(Chat).bind('connect', function(e) {
             status.update('online');
-
-            // Once the WebSocket is opened, retrieve user room list
-            Chat.getUserRooms(function(roomList) {
-                $.each( roomList, function( i, room ){
-                    // subscribe (and get name, topic and user list in return)
-                    Chat.join(room.topic);
-                });
-            });
         });
 
         $(Chat).bind('close', function(e) {
             status.update('offline');
+        });
+
+        $(Chat).bind('enterInRoom', function(jQevent, data) {
+            // Already in the room? (on this page)
+            if (-1 !== $.inArray(data.id, Joined)) {
+                console.log('Already in the room: '+data.id);
+                return false;
+            }
+
+            // Create room DOM element
+            createRoomIhm(data.id, data.name, data.topic);
+            $(data.users).each(function() {
+                userListAddUser(data.id, this);
+            });
+
+            // Subscribe to room
+            Chat.subscribe(data.id);
+
+            // Register room in already open room list
+            Joined.push(data.id);
         });
 
         $(Chat).bind('message', function(jQevent, topic, username, message, time) {
@@ -219,49 +203,13 @@ var GUI = function() {
             roomContainerAddMessage(roomId, '1', username, time, message);
             roomListNewMessageInRoom(roomId, '1');
         });
-
-        $(Chat).bind('openRoom', function(e, roomId, roomName) {
-        });
-
-        $(Chat).bind('closeRoom', function(e, room) {
-        });
-
-        $(Chat).bind('leftRoom', function(e, room, id) {
-        });
-
-        $(Chat).bind('roomData', function(jQevent, data) {
-            // Already in the room? (on this page)
-            if (-1 !== $.inArray(data.id, Joined)) {
-                alert('Already in the room: '+data.id);
-                return false;
-            }
-
-            createRoomIhm(data.id, data.name, data.topic);
-
-            // Subscribe to room
-            Chat.join(data.id);
-
-            // Add in Joined array
-            Joined.push(data.id);
-        });
-
-        $(Chat).bind('roomUsers', function(jQevent, data) {
-            $(data.users).each(function () {
-               userListAddUser(data.roomId, this);
-            });
-        });
     });
 
-}();
+    // TEST
+    $("#test").click(function () {
+        //
+    });
+    // TEST
 
-/**
- * $("#messages").each( function() { chatScrollDown(this); });
- * @param e
- */
-var chatScrollDown = function (e) {
-    // certain browsers have a bug such that scrollHeight is too small
-    // when content does not fill the client area of the element
-    var scrollHeight = Math.max(e.scrollHeight, e.clientHeight);
-    e.scrollTop = scrollHeight - e.clientHeight;
-}
+}();
 

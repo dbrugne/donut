@@ -143,17 +143,17 @@ class ChatRoom implements WampServerInterface
     {
         switch ($fn) {
 
-            case 'getUserRooms':
-                $roomList = array();
-                foreach ($this->userRoom as $roomId => $userRoomList)
-                {
-                    if ($userRoomList->contains($conn)) {
-                        $roomList[] = array('topic' => self::TOPIC_ROOM_PREFIX . $roomId);
-                    }
-                }
-//                var_dump($roomList);
-                return $conn->callResult($id, $roomList);
-                break;
+//            case 'getUserRooms':
+//                $roomList = array();
+//                foreach ($this->userRoom as $roomId => $userRoomList)
+//                {
+//                    if ($userRoomList->contains($conn)) {
+//                        $roomList[] = array('topic' => self::TOPIC_ROOM_PREFIX . $roomId);
+//                    }
+//                }
+////                var_dump($roomList);
+//                return $conn->callResult($id, $roomList);
+//                break;
 
 //            case 'createRoom':
 //                $topic   = $this->escape($params[0]);
@@ -196,8 +196,32 @@ class ChatRoom implements WampServerInterface
          * CONTROL TOPIC
          ***************/
         if ($topic == self::CONTROL_TOPIC) {
-            echo "{$conn->WAMP->sessionId} has just subscribed to {$topic}\n";
             $this->controlTopicUsers->attach($conn);
+
+            // Send room data to user
+            foreach ($this->userRoom as $roomId => $userRoomList)
+            {
+                if ($userRoomList->contains($conn)) {
+                    // Return room data on CONTROL topic
+                    $userList = array(
+                        1 => array(
+                            array('id' => 1, 'username'=> "damien"),
+                            array('id' => 2, 'username'=> "david"),
+                            array('id' => 3, 'username'=> "lili"),
+                            array('id' => 3, 'username'=> "néné"),
+                        ),
+                        2 => array(
+                            array('id' => 1, 'username'=> "damien"),
+                            array('id' => 3, 'username'=> "lili"),
+                        ),
+                    );
+                    $room = $this->roomsList[$roomId];
+                    $room['users'] = $userList[$roomId];
+                    $conn->event(self::CONTROL_TOPIC, array('action' => 'enterInRoom', 'data' => $room));
+                }
+            }
+
+            echo "{$conn->WAMP->sessionId} has just subscribed to {$topic}\n";
             return;
         }
 
@@ -210,13 +234,16 @@ class ChatRoom implements WampServerInterface
             return;
         }
         $roomId = $this->findIdFromTopic($topic);
-        echo "Room id is: {$roomId}";
 
         // This room was not already created
         if (!array_key_exists($roomId, $this->roomsList)) {
             echo "Room '{$topic}' not already exists, please call 'createRoom' before\n";
             return;
         }
+
+        // Add user to broadcast list
+        echo "{$conn->WAMP->sessionId} has just subscribed to {$topic}\n";
+        $this->userRoom[$roomId]->attach($conn);
 
 //        // The JS subscribe to static::CONTROL_TOPIC just after having opened the Websocket
 //        // So when subscription to static::CONTROL_TOPIC happen we send "room" list to browser
@@ -256,35 +283,6 @@ class ChatRoom implements WampServerInterface
 //            $conn->event($topic, array('joinRoom', $patron->WAMP->sessionId, $patron->User->username));
 //        }
 
-        echo "{$conn->WAMP->sessionId} has just subscribed to {$topic}\n";
-
-        // Add user to broadcast list
-        $this->userRoom[$roomId]->attach($conn);
-
-        // Return room data on CONTROL topic
-        $conn->event(self::CONTROL_TOPIC, array('action' => 'roomData', 'data' => $this->roomsList[$roomId]));
-
-        // Return room users on CONTROL topic
-        $userList = array(
-            1 => array(
-                array('id' => 1, 'username'=> "damien"),
-                array('id' => 2, 'username'=> "david"),
-                array('id' => 3, 'username'=> "lili"),
-                array('id' => 3, 'username'=> "néné"),
-            ),
-            2 => array(
-                array('id' => 1, 'username'=> "damien"),
-                array('id' => 3, 'username'=> "lili"),
-            )
-        );
-        $conn->event(self::CONTROL_TOPIC, array(
-            'action' => 'roomUsers',
-            'data' => array(
-                'roomId'  => $roomId,
-                'users' => $userList[$roomId],
-            )
-        ));
-
 //        $conn->Chat->rooms[$topic] = 1;
     }
 
@@ -323,7 +321,6 @@ class ChatRoom implements WampServerInterface
             return;
         }
         $roomId = $this->findIdFromTopic($topic);
-        echo "Room id is: {$roomId}";
 
         // This room was not already created
         if (!array_key_exists($roomId, $this->roomsList)) {

@@ -83,6 +83,14 @@ ChatRoom = function(optDebug) {
           * @param Object
           */
           , 'roomUsers'
+
+
+         /**
+          * Server asks to client to open this room in the interface
+          * @event enterInRoom
+          * @param Object
+          */
+          , 'enterInRoom'
         ]
 
       , debug: optDebug | false
@@ -94,15 +102,12 @@ ChatRoom = function(optDebug) {
             }, onError);
         }
 
-        , join: function(roomId) {
-            sess.subscribe(roomId, function(room, msg) {
-                var action = msg.shift();
-                msg.unshift(room);
-
-
-                Debug([action, msg]);
-
-                $(api).trigger(action, msg);
+        , subscribe: function(roomId) {
+            sess.subscribe('ws://chat.local/room#'+roomId, function(topic, event) {
+                var action = event.shift();
+                event.unshift(topic);
+                Debug([action, event]);
+                $(api).trigger(action, event);
             });
         }
 
@@ -112,7 +117,6 @@ ChatRoom = function(optDebug) {
 
       , send: function(roomId, msg) {
             // Message can not be longer than 140 characters
-
             sess.publish('ws://chat.local/room#'+roomId, msg);
         }
 
@@ -128,16 +132,6 @@ ChatRoom = function(optDebug) {
             });
         }
 
-        // DBR ajout
-        , getUserRooms: function(callback) {
-            sess.call('getUserRooms').then(function(args) {
-                callback(args);
-            }, function(args) {
-                callback(args);
-            });
-        }
-        // DBR ajout
-
       , sessionId: ''
 
       , rooms: {}
@@ -151,19 +145,10 @@ ChatRoom = function(optDebug) {
         'ws://' + window.location.hostname + ':8080/chat'
       , function() {
             api.sessionId = sess._session_id;
-
             Debug('Connected! ' + api.sessionId);
-
-            $(api).trigger('connect'); // !! before subscribe to control
-
+            $(api).trigger('connect');
             sess.subscribe('ws://chat.local/control', function(topic, event) {
-                var action = event.action;
-                if (action == 'roomData') {
-                    $(api).trigger('roomData', event.data);
-                }
-                if (action == 'roomUsers') {
-                    $(api).trigger('roomUsers', event.data);
-                }
+                $(api).trigger(event.action, event.data);
             });
         }
       , function() {
