@@ -189,6 +189,18 @@ var GUI = function() {
         $(".room-container[data-room-id='"+roomId+"']").find('.topic').html(topic);
     }
 
+    function availableRoomsAddRoom(room)
+    {
+        var newRoomItem = $(".available-room-item[data-room-id='template']").clone(false);
+        newRoomItem.attr('data-room-id', room.id);
+        newRoomItem.html(room.name);
+        newRoomItem.css('display', 'block');
+        newRoomItem.click(function() {
+            joinRoom(room.id);
+        });
+        $("#available-rooms-list").append(newRoomItem);
+    }
+
     /*****************************************************
      * Chat re-usable functions
      *****************************************************/
@@ -271,6 +283,13 @@ var GUI = function() {
             status.update('online');
 
             // @todo : should fire the RPC call to "re-open" existing session (= user room list)
+
+            // Retrieve available rooms
+            Chat.availableRooms(function(roomList) {
+                $.each( roomList, function( i, room ){
+                    availableRoomsAddRoom(room);
+                });
+            });
         });
 
         $(Chat).bind('close', function(e) {

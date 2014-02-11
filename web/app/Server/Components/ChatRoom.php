@@ -141,6 +141,16 @@ class ChatRoom implements WampServerInterface
     {
         switch ($fn) {
 
+            case 'availableRooms':
+                $roomList = array();
+                foreach ($this->roomManager->findBy() as $room)
+                {
+                    $roomList[] = $room->getData();
+                }
+//                var_dump($roomList);
+                return $conn->callResult($id, $roomList);
+                break;
+
 //            case 'getUserRooms':
 //                $roomList = array();
 //                foreach ($this->userRoom as $roomId => $userRoomList)
@@ -197,29 +207,6 @@ class ChatRoom implements WampServerInterface
             $this->controlTopicUsers->attach($conn);
 
             // @todo : it's the "remember my session" feature! Should be refactored in a RPC call that client can
-            //         request on DOM initialization
-//            // Send room data to user
-//            foreach ($this->userRoom as $roomId => $userRoomList)
-//            {
-//                if ($userRoomList->contains($conn)) {
-//                    // Return room data on CONTROL topic
-//                    $userList = array(
-//                        1 => array(
-//                            array('id' => 1, 'username'=> "damien"),
-//                            array('id' => 2, 'username'=> "david"),
-//                            array('id' => 3, 'username'=> "lili"),
-//                            array('id' => 3, 'username'=> "néné"),
-//                        ),
-//                        2 => array(
-//                            array('id' => 1, 'username'=> "damien"),
-//                            array('id' => 3, 'username'=> "lili"),
-//                        ),
-//                    );
-//                    $room = $this->roomsList[$roomId];
-//                    $room['users'] = $userList[$roomId];
-//                    $conn->event(self::CONTROL_TOPIC, array('action' => 'enterInRoom', 'data' => $room));
-//                }
-//            }
 
             echo "{$conn->WAMP->sessionId} has just subscribed to {$topic}\n";
             return;
@@ -247,7 +234,6 @@ class ChatRoom implements WampServerInterface
             $this->roomsList[$roomId] = $room;
             // Room user list
             $this->userRoom[$roomId] = new \SplObjectStorage();
-//            var_dump($room);
         }
 
         // Add user to broadcast list

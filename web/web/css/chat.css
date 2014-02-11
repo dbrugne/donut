@@ -93,3 +93,10 @@ body { padding-top: 50px; }
 #chat .panel-default > .panel-heading {
     border-color: transparent;
 }
+
+#available-rooms-list {
+    max-height: 200px;
+    overflow-y: scroll;
+    padding: 15px;
+}
+#chat .available-room-item { }

@@ -5,14 +5,19 @@
 {% block content %}
 <div id="chat">
     <section id="rooms">
+
+        <!-- Status panel -->
         <div class="panel panel-default">
             <div class="panel-body" style="position: relative;">
                 You are
                 <button type="button" id="status" class="" style="position: absolute; right: 15px;">...</button>
             </div>
         </div>
+        <!-- / Status panel -->
+
+        <!-- Already in rooms panel -->
         <div class="panel panel-default">
-            <div class="panel-heading">Rooms</div>
+            <div class="panel-heading">Your are in</div>
             <div id="rooms-list" class="list-group">
                 <!-- Default room-item -->
                 <a href="#" class="list-group-item room-item" data-room-id="default"><em>Not in room</em></a>
@@ -21,8 +26,21 @@
                 <a href="#" class="list-group-item room-item" data-room-id="template" style="display:none;">&nbsp;</a>
                 <!-- / Template room-item -->
             </div>
-            <div class="panel-footer"><a href="#">Find rooms to join <span class="glyphicon glyphicon-plus"></span></a></div>
         </div>
+        <!-- / Already in rooms panel -->
+
+        <!-- Available rooms panel -->
+        <div class="panel panel-default">
+            <div class="panel-heading">Available rooms</div>
+            <div id="available-rooms-list" class="list-group">
+                <!-- Template room-item -->
+                <a href="#" class="available-room-item" data-room-id="template" style="display:none;">&nbsp;</a>
+                <!-- / Template room-item -->
+            </div>
+            <div class="panel-footer"><a href="#">Create a room <span class="glyphicon glyphicon-plus"></span></a></div>
+        </div>
+        <!-- / Available rooms panel -->
+
         <button class="btn btn-success" id="test1">Test</button>
         <button class="btn btn-success" id="test2">Test</button>
         <button class="btn btn-success" id="test3">Test</button>
@@ -56,7 +74,7 @@
     </div>
     <section id="users">
         <!-- Default room user list -->
-        <div class="panel panel-default users-list" data-room-id="default">
+        <div class="panel panel-primary users-list" data-room-id="default">
             <div class="panel-heading">Users</div>
             <div class="list-group">
                 <a href="#" class="list-group-item user-item default">&nbsp;</a>

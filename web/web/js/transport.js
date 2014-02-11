@@ -134,6 +134,16 @@ ChatRoom = function(optDebug) {
             });
         }
 
+      , availableRooms: function(callback) {
+            sess.call('availableRooms').then(function(args) {
+                callback(args);
+            }, function(args) {
+                alert('Erreur !!');
+                callback(args);
+            });
+        }
+
+
       , sessionId: ''
 
       , rooms: {}
