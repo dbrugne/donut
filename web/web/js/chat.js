@@ -105,19 +105,16 @@ var GUI = function() {
         e.scrollTop = scrollHeight - e.clientHeight;
     }
 
-    function roomListNewMessageInRoom(id, num) {
-        var badges = $(('.room-item[data-room-id="'+id+'"] > .badge'));
+    function roomListNewMessageInRoom(roomId, num) {
+        var badges = $(('.room-item[data-room-id="'+roomId+'"] > .badge'));
         if (badges.length == 0) {
-            var html = '<span class="badge">'+num+'</span> ';
-            $('.room-item[data-room-id="'+id+'"]').prepend(html);
-            return;
+            var html = '<span class="badge">0</span> ';
+            $('.room-item[data-room-id="'+roomId+'"]').prepend(html);
         }
 
-        badges.first( function () {
-            var current = this.first().val();
-            current ++;
-            this.first().val(current);
-        });
+        var current = parseInt($(('.room-item[data-room-id="'+roomId+'"] > .badge')).html(), 10);
+        current += num;
+        $(('.room-item[data-room-id="'+roomId+'"] > .badge')).html(current);
     }
 
     function userListAddUser(roomId, user) {
@@ -132,12 +129,12 @@ var GUI = function() {
         $(".users-list[data-room-id='"+roomId+"'] > .list-group").append(html);
     }
 
-    function roomContainerAddMessage(id, user_id, username, time, message) {
-        var date = new Date(time * 1000);
+    function roomContainerAddMessage(roomId, message) {
+        var date = new Date(message.time * 1000);
         var dateText = date.getHours()+':'+date.getMinutes()+':'+date.getSeconds();
-        var html = '<p><span class="date">['+dateText+']</span> <span class="username">&lt;'+username+'&gt;</span> <span class="text">'+message+'</span></p>';
-        $(".room-container[data-room-id='"+id+"'] > .messages").append(html);
-        scrollDown($(".room-container[data-room-id='"+id+"'] > .messages"));
+        var html = '<p data-user-id="'+message.user_id+'"><span class="date">['+dateText+']</span> <span class="username">&lt;'+message.username+'&gt;</span> <span class="text">'+message.message+'</span></p>';
+        $(".room-container[data-room-id='"+roomId+"'] > .messages").append(html);
+        scrollDown($(".room-container[data-room-id='"+roomId+"'] > .messages"));
     }
 
     function setRoomTitle(roomId, topic)
@@ -210,24 +207,22 @@ var GUI = function() {
         });
 
         // When subscribe a room topic this "event" is send by server on control topic
-        $(Chat).bind('enterInRoom', function(jQevent, data) {
-            // Create room DOM element
+        $(Chat).bind('enterInRoom', function(jQevent, roomId, data) {
             createRoomIhm(data.id, data.name, data.topic);
         });
 
         // When subscribe a room topic this "event" is send by server on control topic for  each room user
-        $(Chat).bind('userInRoom', function(jQevent, data) {
-            userListAddUser('1', data);
+        $(Chat).bind('userInRoom', function(jQevent, roomId, data) {
+            userListAddUser(roomId, data);
         });
 
-        $(Chat).bind('roomTitle', function(jQevent, data) {
-            setRoomTitle('1', data);
+        $(Chat).bind('roomTitle', function(jQevent, roomId, data) {
+            setRoomTitle(roomId, data);
         });
 
-        $(Chat).bind('message', function(jQevent, topic, username, message, time) {
-            var roomId = topic.replace('ws://chat.local/room#', '');
-            roomContainerAddMessage(roomId, '1', username, time, message);
-            roomListNewMessageInRoom(roomId, '1');
+        $(Chat).bind('message', function(jQevent, roomId, data) {
+            roomContainerAddMessage(roomId, data);
+            roomListNewMessageInRoom(roomId, 1);
         });
     });
 

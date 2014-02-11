@@ -88,21 +88,24 @@ ChatRoom = function(optDebug) {
          /**
           * Server asks to client to open this room in the interface
           * @event enterInRoom
-          * @param Object
+          * @param int roomId
+          * @param Object data
           */
           , 'enterInRoom'
 
          /**
           * Server notify that a user is to display as room attendee
           * @event userInRoom
-          * @param Object
+          * @param int roomId
+          * @param Object data
           */
           , 'userInRoom'
 
          /**
           * The server inform the client that a room title was changed
           * @event roomTitle
-          * @param Object
+          * @param int roomId
+          * @param Object data
           */
           , 'roomTitle'
         ]
@@ -118,10 +121,11 @@ ChatRoom = function(optDebug) {
 
         , subscribe: function(roomId) {
             sess.subscribe('ws://chat.local/room#'+roomId, function(topic, event) {
-                var action = event.shift();
-                event.unshift(topic);
-                Debug([action, event]);
-                $(api).trigger(action, event);
+                var roomId = topic.replace('ws://chat.local/room#','');
+
+                Debug([event.action, roomId, event.data]);
+
+                $(api).trigger(event.action, [roomId, event.data]);
             });
         }
 
@@ -161,6 +165,8 @@ ChatRoom = function(optDebug) {
             api.sessionId = sess._session_id;
             Debug('Connected! ' + api.sessionId);
             $(api).trigger('connect');
+
+            // Subscribe to control topic
             sess.subscribe('ws://chat.local/control', function(topic, event) {
                 $(api).trigger(event.action, event.data);
             });

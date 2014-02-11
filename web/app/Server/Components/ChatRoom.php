@@ -258,18 +258,18 @@ class ChatRoom implements WampServerInterface
         $conn->Chat->rooms[$roomId] = true;
 
         // Push room data (on control topic)
-        $conn->event(self::CONTROL_TOPIC, array('action' => 'enterInRoom', 'data' => $this->roomsList[$roomId]->getData()));
+        $conn->event($topic, array('action' => 'enterInRoom', 'data' => $this->roomsList[$roomId]->getData()));
 
         // Push room users
         foreach ($this->userRoom[$roomId] as $attendee) {
-            $conn->event(self::CONTROL_TOPIC, array('action' => 'userInRoom', 'data' => array(
+            $conn->event($topic, array('action' => 'userInRoom', 'data' => array(
                 'id' => $attendee->User->id,
                 'username' => $attendee->User->username,
             )));
         }
 
         // Push room title
-        $conn->event(self::CONTROL_TOPIC, array('action' => 'roomTitle', 'data' => array(
+        $conn->event($topic, array('action' => 'roomTitle', 'data' => array(
             'title' => $this->roomsList[$roomId]->getTopic(),
         )));
 
@@ -342,9 +342,17 @@ class ChatRoom implements WampServerInterface
 //            return;
 //        }
 
-        $event = $this->escape($event);
+        $message = $this->escape($event);
 
-        $this->broadcast($roomId, array('message', $conn->User->username, $event, time()));
+        $this->broadcast($roomId, array(
+            'action' => 'message',
+            'data' => array(
+                'user_id' => $conn->User->id,
+                'username' => $conn->User->username,
+                'message' => $message,
+                'time' => time(),
+            ),
+        ));
     }
 
     /**
