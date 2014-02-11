@@ -119,7 +119,7 @@ ChatRoom = function(optDebug) {
             }, onError);
         }
 
-        , subscribe: function(roomId) {
+      , subscribe: function(roomId) {
             sess.subscribe('ws://chat.local/room#'+roomId, function(topic, event) {
                 var roomId = topic.replace('ws://chat.local/room#','');
 
@@ -129,8 +129,8 @@ ChatRoom = function(optDebug) {
             });
         }
 
-      , leave: function(room) {
-            sess.unsubscribe(room);
+      , unsubscribe: function(roomId) {
+            sess.unsubscribe('ws://chat.local/room#'+roomId);
         }
 
       , send: function(roomId, msg) {

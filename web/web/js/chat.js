@@ -42,11 +42,6 @@ var GUI = function() {
      * Interface re-usable functions
      ****************************************************/
     function createRoomIhm(roomId, roomName) {
-        // If no already focused room
-        if (focusRoom == '') {
-            focusRoom = roomId;
-        }
-
         // Test if elements for this room are already in the DOM
         if ($(".room-item[data-room-id='"+roomId+"']").length > 0){
             return;
@@ -79,12 +74,32 @@ var GUI = function() {
         $("#users").append(newUsersList);
 
         // Active this new room (if needed)
-        if (focusRoom == roomId) {
-            focusOnRoom(roomId);
+        focusOnRoom(roomId);
+    }
+
+    function removeRoomIhm(roomId) {
+        $(".room-item[data-room-id='"+roomId+"']").remove();
+        $(".room-container[data-room-id='"+roomId+"']").remove();
+        $(".users-list[data-room-id='"+roomId+"']").remove();
+
+        // If it was the last room open show() default
+        if (1 > $(".room-item[data-room-id!='default'][data-room-id!='template']").length) {
+            // Show default elements
+            $("[data-room-id='default']").show();
+        } else {
+            // At least one open room remain, we focus on it
+            focusOnRoom();
         }
     }
 
     function focusOnRoom(roomId) {
+        // If roomId is null focus the first opened room
+        if (roomId == undefined) {
+            roomId = $( ".room-item[data-room-id!='default'][data-room-id!='template']").first().data('roomId');
+        }
+
+        focusRoom = roomId;
+
         // Room list
         $( ".room-item").removeClass('active');
         $('.room-item[data-room-id="'+roomId+'"]').addClass('active');
@@ -145,7 +160,7 @@ var GUI = function() {
     /*****************************************************
      * Chat re-usable functions
      *****************************************************/
-    // Current user join a room
+    // Current user joins a room
     function joinRoom(roomId) {
         // Test if this room is already loaded in this browser page
         if (-1 !== $.inArray(roomId, Joined)) {
@@ -158,6 +173,24 @@ var GUI = function() {
 
         // Register room in already-opened-rooms list
         Joined.push(roomId);
+    }
+
+    // Current user leaves a room
+    function leaveRoom(roomId) {
+        // Test if this room is already loaded in this browser page
+        if (-1 === $.inArray(roomId, Joined)) {
+            console.log('Not in the room: '+roomId);
+            return false;
+        }
+
+        // IHM
+        removeRoomIhm(roomId);
+
+        // Subscribe to room
+        Chat.unsubscribe(roomId);
+
+        // Un-register room in already-opened-rooms list
+        delete Joined[$.inArray(roomId, Joined)];
     }
 
     /*****************************************************
@@ -187,6 +220,12 @@ var GUI = function() {
               postMessageCallback(this);
         });
 
+        $(document).on('click', '.close', function () {
+            var roomId = $(this).closest(".room-container").data('roomId');
+            console.log(roomId);
+            leaveRoom(roomId);
+        });
+
     });
 
     /*****************************************************
@@ -206,12 +245,12 @@ var GUI = function() {
             status.update('offline');
         });
 
-        // When subscribe a room topic this "event" is send by server on control topic
+        // When subscribe a room topic this "event" is send by server
         $(Chat).bind('enterInRoom', function(jQevent, roomId, data) {
-            createRoomIhm(data.id, data.name, data.topic);
+            createRoomIhm(roomId, data.name);
         });
 
-        // When subscribe a room topic this "event" is send by server on control topic for  each room user
+        // When subscribe a room topic this "event" is send by server for  each room user
         $(Chat).bind('userInRoom', function(jQevent, roomId, data) {
             userListAddUser(roomId, data);
         });

@@ -258,7 +258,9 @@ class ChatRoom implements WampServerInterface
         $conn->Chat->rooms[$roomId] = true;
 
         // Push room data (on control topic)
-        $conn->event($topic, array('action' => 'enterInRoom', 'data' => $this->roomsList[$roomId]->getData()));
+        $conn->event($topic, array('action' => 'enterInRoom', 'data' => array(
+            'name' => $this->roomsList[$roomId]->getName(),
+        )));
 
         // Push room users
         foreach ($this->userRoom[$roomId] as $attendee) {
@@ -295,7 +297,7 @@ class ChatRoom implements WampServerInterface
         $roomId = $this->findIdFromTopic($topic);
 
         unset($conn->Chat->rooms[$roomId]);
-        $this->rooms[$roomId]->detach($conn);
+        $this->userRoom[$roomId]->detach($conn);
 
 //        if ($this->isControl($topic)) {
 //            return;
