@@ -138,10 +138,27 @@ var GUI = function() {
             return;
         }
 
-        // @todo : Order alphabetically
-
         var html = '<a href="#" class="list-group-item user-item" data-user-id="'+user.id+'">'+user.username+'</a>';
         $(".users-list[data-room-id='"+roomId+"'] > .list-group").append(html);
+
+        // @todo : Order alphabetically
+
+        if (undefined == user.notify || user.notify == true) {
+            roomContainerAddApplicationMessage(roomId, 'info', "User <strong>"+user.username+"</strong> has joined the room");
+        }
+    }
+
+    function userListRemoveUser(roomId, user) {
+        $(".users-list[data-room-id='"+roomId+"']").find(".user-item[data-user-id='"+user.id+"']").remove();
+        roomContainerAddApplicationMessage(roomId, 'info', "User <strong>"+user.username+"</strong> has left the room");
+    }
+
+    function roomContainerAddApplicationMessage(roomId, type, message) {
+        var date = new Date();
+        var dateText = date.getHours()+':'+date.getMinutes()+':'+date.getSeconds();
+        var html = '<p class="'+type+'"><span class="date">['+dateText+']</span> <span class="text">'+message+'</span></p>';
+        $(".room-container[data-room-id='"+roomId+"'] > .messages").append(html);
+        scrollDown($(".room-container[data-room-id='"+roomId+"'] > .messages"));
     }
 
     function roomContainerAddMessage(roomId, message) {
@@ -183,11 +200,11 @@ var GUI = function() {
             return false;
         }
 
-        // IHM
-        removeRoomIhm(roomId);
-
         // Subscribe to room
         Chat.unsubscribe(roomId);
+
+        // IHM
+        removeRoomIhm(roomId);
 
         // Un-register room in already-opened-rooms list
         delete Joined[$.inArray(roomId, Joined)];
@@ -250,9 +267,14 @@ var GUI = function() {
             createRoomIhm(roomId, data.name);
         });
 
-        // When subscribe a room topic this "event" is send by server for  each room user
+        // When server indicate that someone enter in the room
         $(Chat).bind('userInRoom', function(jQevent, roomId, data) {
             userListAddUser(roomId, data);
+        });
+
+        // When server indicate that someone leave the room
+        $(Chat).bind('userOutRoom', function(jQevent, roomId, data) {
+            userListRemoveUser(roomId, data);
         });
 
         $(Chat).bind('roomTitle', function(jQevent, roomId, data) {

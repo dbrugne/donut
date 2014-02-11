@@ -67,8 +67,9 @@ body { padding-top: 50px; }
     border-color: #ddd;
     background-color: #f5f5f5;
 }
-#chat .header .topic { color: #333; }
 #chat .header .name { color: #555555; font-weight: bolder; }
+#chat .header .topic { color: #333; }
+#chat .header .close { color: #FF0000; }
 #chat .messages {
     flex: 10;
     overflow-y: scroll;

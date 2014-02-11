@@ -267,6 +267,7 @@ class ChatRoom implements WampServerInterface
             $conn->event($topic, array('action' => 'userInRoom', 'data' => array(
                 'id' => $attendee->User->id,
                 'username' => $attendee->User->username,
+                'notify' => false, // false to not notify this user addition in message list
             )));
         }
 
@@ -275,13 +276,12 @@ class ChatRoom implements WampServerInterface
             'title' => $this->roomsList[$roomId]->getTopic(),
         )));
 
-//        // Notify everyone this guy has joined the room they're in
-//        $this->broadcast($topic, array('joinRoom', $conn->WAMP->sessionId, $conn->User->username), $conn);
-//
-//        // List all the people already in the room to the person who just joined
-//        foreach ($this->rooms[$topic] as $patron) {
-//            $conn->event($topic, array('joinRoom', $patron->WAMP->sessionId, $patron->User->username));
-//        }
+        // Notify everyone this guy has joined the room
+        $this->broadcast($roomId, array('action' => 'userInRoom', 'data' => array(
+                'id' => $conn->User->id,
+                'username' => $conn->User->username,
+            ), $conn // exclude current user of this notification, he knows is in...
+        ));
     }
 
     /**
@@ -296,8 +296,19 @@ class ChatRoom implements WampServerInterface
         }
         $roomId = $this->findIdFromTopic($topic);
 
+        // Remove from user room list
         unset($conn->Chat->rooms[$roomId]);
+
+        // Remove from server room attendees list
         $this->userRoom[$roomId]->detach($conn);
+        echo "{$conn->WAMP->sessionId} has just UN-subscribed to {$topic}\n";
+
+        // Notify everyone this guy has leaved the room
+        $this->broadcast($roomId, array('action' => 'userOutRoom', 'data' => array(
+                'id' => $conn->User->id,
+                'username' => $conn->User->username,
+            ), $conn // exclude current user of this notification
+        ));
 
 //        if ($this->isControl($topic)) {
 //            return;
@@ -368,15 +379,17 @@ class ChatRoom implements WampServerInterface
      * Broadcast a message to subscribers
      *
      * @param int $id The ID of the room to broadcast for
-     * @param mixed $msg
+     * @param mixed $event
      * @param ConnectionInterface $exclude The user connection to exclude from broadcast
      */
-    protected function broadcast($roomId, $msg, ConnectionInterface $exclude = null)
+    protected function broadcast($roomId, $event, ConnectionInterface $exclude = null)
     {
         $topic = self::TOPIC_ROOM_PREFIX . $roomId;
+
+        // If at least one $conn registered
         foreach ($this->userRoom[$roomId] as $client) {
             if ($client !== $exclude) {
-                $client->event($topic, $msg);
+                $client->event($topic, $event);
             }
         }
     }

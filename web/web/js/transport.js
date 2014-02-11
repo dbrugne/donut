@@ -45,15 +45,6 @@ ChatRoom = function(optDebug) {
           , 'closeRoom'
 
             /**
-             * Another use has joined a room the current user is in
-             * @event joinRoom
-             * @param string Room name
-             * @param string Unique ID of the person who joined
-             * @param string Display name of the person who joined (make sure to store this in a lookup)
-             */
-          , 'joinRoom'
-
-            /**
              * Another use has left one of the rooms this user is in
              * @event leftRoom
              * @param string Room name
@@ -70,21 +61,6 @@ ChatRoom = function(optDebug) {
              */
           , 'message'
 
-            /**
-             * We get roomData from control topic, probably user just subscribed to a room
-             * @event roomData
-             * @param Object
-             */
-          , 'roomData'
-
-         /**
-          * We get roomUserList from control topic, probably user just subscribed to a room
-          * @event roomUsers
-          * @param Object
-          */
-          , 'roomUsers'
-
-
          /**
           * Server asks to client to open this room in the interface
           * @event enterInRoom
@@ -100,6 +76,14 @@ ChatRoom = function(optDebug) {
           * @param Object data
           */
           , 'userInRoom'
+
+        /**
+         * Server notify that a user is to display as room attendee
+         * @event userOutRoom
+         * @param int roomId
+         * @param Object data
+         */
+            , 'userOutRoom'
 
          /**
           * The server inform the client that a room title was changed
