@@ -7,6 +7,7 @@ use Ratchet\ConnectionInterface;
 use Ratchet\WebSocket\WsServerInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Security\Core\Authentication\Token\RememberMeToken;
 use App\User\User;
 
 class Authentication implements MessageComponentInterface, WsServerInterface
@@ -54,7 +55,9 @@ class Authentication implements MessageComponentInterface, WsServerInterface
         if (false === $token = unserialize($tokenDataRaw)) {
             $conn->close(10003);
         }
-        if (!($token instanceOf UsernamePasswordToken)) {
+        if (!($token instanceOf UsernamePasswordToken)
+                && !($token instanceOf RememberMeToken)) {
+            var_dump($token);
             $conn->close(10004);
         }
         if (!$token->isAuthenticated()) {
