@@ -141,11 +141,26 @@ var GUI = function() {
         var html = '<a href="#" class="list-group-item user-item" data-user-id="'+user.id+'">'+user.username+'</a>';
         $(".users-list[data-room-id='"+roomId+"'] > .list-group").append(html);
 
-        // @todo : Order alphabetically
+        userListSort(roomId);
 
         if (undefined == user.notify || user.notify == true) {
             roomContainerAddApplicationMessage(roomId, 'info', "User <strong>"+user.username+"</strong> has joined the room");
         }
+    }
+
+    function userListSort(roomId) {
+        var list = $(".users-list[data-room-id='"+roomId+"'] > .list-group");
+        var items = $('a', list);
+
+        items.sort(function(a, b) {
+            var keyA = $(a).text();
+            var keyB = $(b).text();
+            return (keyA > keyB) ? 1 : 0;
+        });
+
+        $.each(items, function(index, row) {
+            list.append(row);
+        });
     }
 
     function userListRemoveUser(roomId, user) {
