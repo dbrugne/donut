@@ -91,6 +91,20 @@ ChatRoom = function(optDebug) {
           * @param Object
           */
           , 'enterInRoom'
+
+         /**
+          * Server notify that a user is to display as room attendee
+          * @event userInRoom
+          * @param Object
+          */
+          , 'userInRoom'
+
+         /**
+          * The server inform the client that a room title was changed
+          * @event roomTitle
+          * @param Object
+          */
+          , 'roomTitle'
         ]
 
       , debug: optDebug | false

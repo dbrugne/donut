@@ -2,6 +2,8 @@
 namespace Server\Components;
 use Ratchet\ConnectionInterface;
 use Ratchet\Wamp\WampServerInterface;
+use App\Chat\RoomManager;
+use App\Chat\Room;
 
 class ChatRoom implements WampServerInterface
 {
@@ -77,22 +79,30 @@ class ChatRoom implements WampServerInterface
      */
     protected $userRoom = array();
 
+    /**
+     * @var \App\Orm\EntityManager
+     */
+    protected $roomManager = null;
 
     /**
      * Constructor
+     *
+     * @param Application $app
      */
-    public function __construct()
+    public function __construct(\Silex\Application $app)
     {
 //        $this->rooms[static::CONTROL_TOPIC] = new \SplObjectStorage;
         $this->controlTopicUsers = new \SplObjectStorage;
 
-        // TEST
-        // We create two rooms
-        $this->roomsList[1] = array('id' => 1, 'name' => 'TF1', 'topic' => 'topic room 1');
-        $this->roomsList[2] = array('id' => 2, 'name' => 'France 2', 'topic' => 'topic room 2');
-        $this->userRoom[1] = new \SplObjectStorage();
-        $this->userRoom[2] = new \SplObjectStorage();
-        // TEST
+        $this->roomManager = new \App\Chat\RoomManager($app);
+
+//        // TEST
+//        // We create two rooms
+//        $this->roomsList[1] = array('id' => 1, 'name' => 'TF1', 'topic' => 'topic room 1');
+//        $this->roomsList[2] = array('id' => 2, 'name' => 'France 2', 'topic' => 'topic room 2');
+//        $this->userRoom[1] = new \SplObjectStorage();
+//        $this->userRoom[2] = new \SplObjectStorage();
+//        // TEST
     }
 
     /**
@@ -103,26 +113,14 @@ class ChatRoom implements WampServerInterface
          * $conn->User->id
          * $conn->User->username
          */
-
         $conn->Chat        = new \StdClass;
         $conn->Chat->rooms = array();
 
-        // TEST
-        // We register the user in two stubbed rooms
-        $this->userRoom['1']->attach($conn);
-        $this->userRoom['2']->attach($conn);
-        // TEST
-
-//        $conn->Chat->name  = $conn->WAMP->sessionId;
-//        if (isset($conn->WebSocket)) {
-//            $conn->Chat->name = $this->escape($conn->WebSocket->request->getCookie('name'));
-//
-//            if (empty($conn->Chat->name)) {
-//                $conn->Chat->name  = 'Anonymous ' . $conn->resourceId;
-//            }
-//        } else {
-//            $conn->Chat->name  = 'Anonymous ' . $conn->resourceId;
-//        }
+//        // TEST
+//        // We register the user in two stubbed rooms
+//        $this->userRoom['1']->attach($conn);
+//        $this->userRoom['2']->attach($conn);
+//        // TEST
     }
 
     /**
@@ -198,28 +196,30 @@ class ChatRoom implements WampServerInterface
         if ($topic == self::CONTROL_TOPIC) {
             $this->controlTopicUsers->attach($conn);
 
-            // Send room data to user
-            foreach ($this->userRoom as $roomId => $userRoomList)
-            {
-                if ($userRoomList->contains($conn)) {
-                    // Return room data on CONTROL topic
-                    $userList = array(
-                        1 => array(
-                            array('id' => 1, 'username'=> "damien"),
-                            array('id' => 2, 'username'=> "david"),
-                            array('id' => 3, 'username'=> "lili"),
-                            array('id' => 3, 'username'=> "néné"),
-                        ),
-                        2 => array(
-                            array('id' => 1, 'username'=> "damien"),
-                            array('id' => 3, 'username'=> "lili"),
-                        ),
-                    );
-                    $room = $this->roomsList[$roomId];
-                    $room['users'] = $userList[$roomId];
-                    $conn->event(self::CONTROL_TOPIC, array('action' => 'enterInRoom', 'data' => $room));
-                }
-            }
+            // @todo : it's the "remember my session" feature! Should be refactored in a RPC call that client can
+            //         request on DOM initialization
+//            // Send room data to user
+//            foreach ($this->userRoom as $roomId => $userRoomList)
+//            {
+//                if ($userRoomList->contains($conn)) {
+//                    // Return room data on CONTROL topic
+//                    $userList = array(
+//                        1 => array(
+//                            array('id' => 1, 'username'=> "damien"),
+//                            array('id' => 2, 'username'=> "david"),
+//                            array('id' => 3, 'username'=> "lili"),
+//                            array('id' => 3, 'username'=> "néné"),
+//                        ),
+//                        2 => array(
+//                            array('id' => 1, 'username'=> "damien"),
+//                            array('id' => 3, 'username'=> "lili"),
+//                        ),
+//                    );
+//                    $room = $this->roomsList[$roomId];
+//                    $room['users'] = $userList[$roomId];
+//                    $conn->event(self::CONTROL_TOPIC, array('action' => 'enterInRoom', 'data' => $room));
+//                }
+//            }
 
             echo "{$conn->WAMP->sessionId} has just subscribed to {$topic}\n";
             return;
@@ -235,46 +235,44 @@ class ChatRoom implements WampServerInterface
         }
         $roomId = $this->findIdFromTopic($topic);
 
-        // This room was not already created
+        // Is this room already in memory?
         if (!array_key_exists($roomId, $this->roomsList)) {
-            echo "Room '{$topic}' not already exists, please call 'createRoom' before\n";
-            return;
+            // Is this room exists in database?
+            if (null === $room = $this->roomManager->findOneBy(array('id' => $roomId))) {
+                echo "Room '{$topic}' not already exists, please call 'createRoom' before\n";
+                return;
+            }
+
+            // Room data
+            $this->roomsList[$roomId] = $room;
+            // Room user list
+            $this->userRoom[$roomId] = new \SplObjectStorage();
+//            var_dump($room);
         }
 
         // Add user to broadcast list
         echo "{$conn->WAMP->sessionId} has just subscribed to {$topic}\n";
         $this->userRoom[$roomId]->attach($conn);
 
-//        // The JS subscribe to static::CONTROL_TOPIC just after having opened the Websocket
-//        // So when subscription to static::CONTROL_TOPIC happen we send "room" list to browser
-//        // List is sent as one $conn->event per opened room
-//        if (static::CONTROL_TOPIC == $topic) {
-//            foreach ($this->rooms as $roomTopic => $clientConnection) {
-//                if (!$this->isControl($roomTopic)) {
-//                    $conn->event(static::CONTROL_TOPIC, array($roomTopic, array_search($roomTopic, $this->roomLookup), 1));
-//                }
-//            }
-//        }
+        // Register this room in user connection
+        $conn->Chat->rooms[$roomId] = true;
 
-//        /**
-//         * When a user subscribe to as room, returns:
-//         * - Room id
-//         * - Room name
-//         * - Room topic
-//         * - Users list
-//         */
-//        $response = array(
-//            'id' => 'ws://chat.local/room#1',
-//            'name' => "TF1",
-//            'topic' => "Ce soir c'est The Voice !!",
-//            'users' => array(
-//                array('id' => 1, 'username'=> "damien"),
-//                array('id' => 2, 'username'=> "david"),
-//                array('id' => 3, 'username'=> "lili"),
-//            ),
-//        );
-//        $conn->event(static::CONTROL_TOPIC, $response);
-//
+        // Push room data (on control topic)
+        $conn->event(self::CONTROL_TOPIC, array('action' => 'enterInRoom', 'data' => $this->roomsList[$roomId]->getData()));
+
+        // Push room users
+        foreach ($this->userRoom[$roomId] as $attendee) {
+            $conn->event(self::CONTROL_TOPIC, array('action' => 'userInRoom', 'data' => array(
+                'id' => $attendee->User->id,
+                'username' => $attendee->User->username,
+            )));
+        }
+
+        // Push room title
+        $conn->event(self::CONTROL_TOPIC, array('action' => 'roomTitle', 'data' => array(
+            'title' => $this->roomsList[$roomId]->getTopic(),
+        )));
+
 //        // Notify everyone this guy has joined the room they're in
 //        $this->broadcast($topic, array('joinRoom', $conn->WAMP->sessionId, $conn->User->username), $conn);
 //
@@ -282,27 +280,33 @@ class ChatRoom implements WampServerInterface
 //        foreach ($this->rooms[$topic] as $patron) {
 //            $conn->event($topic, array('joinRoom', $patron->WAMP->sessionId, $patron->User->username));
 //        }
-
-//        $conn->Chat->rooms[$topic] = 1;
     }
 
     /**
      * {@inheritdoc}
      */
-    function onUnSubscribe(ConnectionInterface $conn, $topic) {
-        unset($conn->Chat->rooms[$topic]);
-        $this->rooms[$topic]->detach($conn);
-
-        if ($this->isControl($topic)) {
+    function onUnSubscribe(ConnectionInterface $conn, $topic)
+    {
+        // $topic is valid
+        if (!$this->topicIsRoom($topic)) {
+            echo "Topic '{$topic}' not corresponds to room topic pattern\n";
             return;
         }
+        $roomId = $this->findIdFromTopic($topic);
 
-        if ($this->rooms[$topic]->count() == 0) {
-            unset($this->rooms[$topic], $this->roomLookup[array_search($topic, $this->roomLookup)]);
-            $this->broadcast(static::CONTROL_TOPIC, array($topic, 0));
-        } else {
-            $this->broadcast($topic, array('leftRoom', $conn->WAMP->sessionId));
-        }
+        unset($conn->Chat->rooms[$roomId]);
+        $this->rooms[$roomId]->detach($conn);
+
+//        if ($this->isControl($topic)) {
+//            return;
+//        }
+
+//        if ($this->rooms[$topic]->count() == 0) {
+//            unset($this->rooms[$topic], $this->roomLookup[array_search($topic, $this->roomLookup)]);
+//            $this->broadcast(static::CONTROL_TOPIC, array($topic, 0));
+//        } else {
+//            $this->broadcast($topic, array('leftRoom', $conn->WAMP->sessionId));
+//        }
     }
 
     /**

@@ -26,12 +26,33 @@ use Monolog\Handler\StreamHandler;
 // Composer: The greatest thing since sliced bread
 require_once __DIR__.'/../vendor/autoload.php';
 
-// Setup logging
-$stdout = new StreamHandler('php://stdout');
-$logout = new Logger('SockOut');
-$login  = new Logger('Sock-In');
-$login->pushHandler($stdout);
-$logout->pushHandler($stdout);
+// Setup application
+$app = new Silex\Application();
+$app['debug'] = true;
+
+// Setup database
+$app['pdo.host'] = 'localhost';
+$app['pdo.dbname'] = 'chat';
+$app['pdo.user'] = 'root';
+$app['pdo.password'] = '';
+$app['pdo.dsn'] = 'mysql:dbname='.$app['pdo.dbname'];
+$app['pdo'] = $app->share(function () use ($app) {
+    return new PDO(
+        $app['pdo.dsn'],
+        $app['pdo.user'],
+        $app['pdo.password']
+    );
+});
+$app['pdo']->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+$app->register(new Silex\Provider\DoctrineServiceProvider(), array(
+    'db.options' => array(
+        'driver'   => 'pdo_mysql',
+        'dbname'   => $app['pdo.dbname'],
+        'host'     => $app['pdo.host'],
+        'user'     => $app['pdo.user'],
+        'password' => $app['pdo.password'],
+    ),
+));
 
 // Setup session
 $app['session.db_options'] = array(
@@ -40,22 +61,20 @@ $app['session.db_options'] = array(
     'db_data_col'   => 'session_value',
     'db_time_col'   => 'session_time',
 );
-$pdo = new PDO(
-    'mysql:dbname=chat',
-    'root',
-    ''
-);
-$pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-$sessionHandler = new PdoSessionHandler(
-    $pdo,
-    array(
-        'db_table'      => 'sessions',
-        'db_id_col'     => 'session_id',
-        'db_data_col'   => 'session_value',
-        'db_time_col'   => 'session_time',
-    ),
-    array()
-);
+$app['session.storage.handler'] = $app->share(function () use ($app) {
+    return new PdoSessionHandler(
+        $app['pdo'],
+        $app['session.db_options'],
+        array()
+    );
+});
+
+// Setup logging
+$stdout = new StreamHandler('php://stdout');
+$logout = new Logger('SockOut');
+$login  = new Logger('Sock-In');
+$login->pushHandler($stdout);
+$logout->pushHandler($stdout);
 
 // The all mighty event loop
 $loop = Factory::create();
@@ -81,12 +100,14 @@ $webServer = new IoServer(           // Basic I/O with clients, aww yeah
                         new Authentication (
                             new ServerProtocol(  // WAMP; the new hotness sub-protocol
                                 //new Bot(         // People kept asking me if I was a bot, so I made one!
-                                    new ChatRoom // ...and DISCUSS!
+                                    new ChatRoom( // ...and DISCUSS!
+                                        $app
+                                    )
                                 //)
                             )
-                        , $pdo
+                            , $app['pdo']
                         )
-                        , $sessionHandler
+                        , $app['session.storage.handler']
                     )
                     , $login
                     , $logout

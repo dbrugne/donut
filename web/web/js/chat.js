@@ -6,9 +6,9 @@ var GUI = function() {
     var Joined = [];
     var Names  = {};
 
-    /**
+    /****************************************************
      * Interface initialization
-     */
+     ****************************************************/
     var status = function() {
         var btnStatus;
 
@@ -38,10 +38,10 @@ var GUI = function() {
     status.init();
     status.update('connecting');
 
-    /**
-     * IHM function
-     */
-    function createRoomIhm(roomId, roomName, roomTopic) {
+    /****************************************************
+     * Interface re-usable functions
+     ****************************************************/
+    function createRoomIhm(roomId, roomName) {
         // If no already focused room
         if (focusRoom == '') {
             focusRoom = roomId;
@@ -69,7 +69,6 @@ var GUI = function() {
         var newRoomContainer = $(".room-container[data-room-id='template']").clone(false);
         newRoomContainer.attr('data-room-id', roomId);
         newRoomContainer.find('.name').html(roomName);
-        newRoomContainer.find('.topic').html(roomTopic);
         newRoomContainer.find('.input-message').attr('data-room-id', roomId);
         newRoomContainer.find('.send-message').attr('data-room-id', roomId);
         $("#main").append(newRoomContainer);
@@ -121,9 +120,16 @@ var GUI = function() {
         });
     }
 
-    function userListAddUser(id, user) {
+    function userListAddUser(roomId, user) {
+        // Check that user is not already in DOM
+        if ($(".users-list[data-room-id='"+roomId+"']").find(".user-item[data-user-id='"+user.id+"']").length > 0){
+            return;
+        }
+
+        // @todo : Order alphabetically
+
         var html = '<a href="#" class="list-group-item user-item" data-user-id="'+user.id+'">'+user.username+'</a>';
-        $(".users-list[data-room-id='"+id+"'] > .list-group").append(html);
+        $(".users-list[data-room-id='"+roomId+"'] > .list-group").append(html);
     }
 
     function roomContainerAddMessage(id, user_id, username, time, message) {
@@ -134,9 +140,32 @@ var GUI = function() {
         scrollDown($(".room-container[data-room-id='"+id+"'] > .messages"));
     }
 
-    /**
-     * Inteface action binding
-     */
+    function setRoomTitle(roomId, topic)
+    {
+        $(".room-container[data-room-id='"+roomId+"']").find('.topic').html(topic);
+    }
+
+    /*****************************************************
+     * Chat re-usable functions
+     *****************************************************/
+    // Current user join a room
+    function joinRoom(roomId) {
+        // Test if this room is already loaded in this browser page
+        if (-1 !== $.inArray(roomId, Joined)) {
+            console.log('Already in the room: '+roomId);
+            return false;
+        }
+
+        // Subscribe to room
+        Chat.subscribe(roomId);
+
+        // Register room in already-opened-rooms list
+        Joined.push(roomId);
+    }
+
+    /*****************************************************
+     * Interface binding
+     *****************************************************/
     $(function() {
 
         var postMessageCallback = function (e) {
@@ -163,39 +192,36 @@ var GUI = function() {
 
     });
 
-    /**
-     * Transport layer initialization
-     */
+    /*****************************************************
+     * Transport layer
+     *****************************************************/
     $(function() {
 
         Chat  = new ChatRoom(true);
 
         $(Chat).bind('connect', function(e) {
             status.update('online');
+
+            // @todo : should fire the RPC call to "re-open" existing session (= user room list)
         });
 
         $(Chat).bind('close', function(e) {
             status.update('offline');
         });
 
+        // When subscribe a room topic this "event" is send by server on control topic
         $(Chat).bind('enterInRoom', function(jQevent, data) {
-            // Already in the room? (on this page)
-            if (-1 !== $.inArray(data.id, Joined)) {
-                console.log('Already in the room: '+data.id);
-                return false;
-            }
-
             // Create room DOM element
             createRoomIhm(data.id, data.name, data.topic);
-            $(data.users).each(function() {
-                userListAddUser(data.id, this);
-            });
+        });
 
-            // Subscribe to room
-            Chat.subscribe(data.id);
+        // When subscribe a room topic this "event" is send by server on control topic for  each room user
+        $(Chat).bind('userInRoom', function(jQevent, data) {
+            userListAddUser('1', data);
+        });
 
-            // Register room in already open room list
-            Joined.push(data.id);
+        $(Chat).bind('roomTitle', function(jQevent, data) {
+            setRoomTitle('1', data);
         });
 
         $(Chat).bind('message', function(jQevent, topic, username, message, time) {
@@ -205,9 +231,21 @@ var GUI = function() {
         });
     });
 
+    /*****************************************************
+     * Stub code
+     *****************************************************/
     // TEST
-    $("#test").click(function () {
-        //
+    $("#test1").click(function () {
+        // Enter in ROOM 1
+        joinRoom(1);
+    });
+    $("#test2").click(function () {
+        // Enter in ROOM 2
+        joinRoom(2);
+    });
+    $("#test3").click(function () {
+        // Enter in ROOM 3
+        joinRoom(3);
     });
     // TEST
 
