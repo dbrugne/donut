@@ -221,12 +221,6 @@ var GUI = function() {
 
     // Current user leaves a room
     function leaveRoom(roomId) {
-        // Test if this room is already loaded in this browser page
-        if (-1 === $.inArray(roomId, Joined)) {
-            console.log('Not in the room: '+roomId);
-            return false;
-        }
-
         // Subscribe to room
         Chat.unsubscribe(roomId);
 
@@ -326,16 +320,13 @@ var GUI = function() {
      *****************************************************/
     // TEST
     $("#test1").click(function () {
-        // Enter in ROOM 1
-        joinRoom(1);
+
     });
     $("#test2").click(function () {
-        // Enter in ROOM 2
-        joinRoom(2);
+
     });
     $("#test3").click(function () {
-        // Enter in ROOM 3
-        joinRoom(3);
+
     });
     // TEST
 
