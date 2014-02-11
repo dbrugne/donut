@@ -37,7 +37,20 @@
                 <a href="#" class="available-room-item" data-room-id="template" style="display:none;">&nbsp;</a>
                 <!-- / Template room-item -->
             </div>
-            <div class="panel-footer"><a href="#">Create a room <span class="glyphicon glyphicon-plus"></span></a></div>
+            <div class="panel-footer">
+                <a href="#" id="create-room-toggle">Create a room <span class="glyphicon glyphicon-plus"></span></a>
+                <div id="create-room-form" style="display: none;">
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="create-room-name" placeholder="Room name">
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox"> Private room
+                        </label>
+                    </div>
+                    <button class="btn btn-primary" id="create-room-submit">Create</button>
+                </div>
+            </div>
         </div>
         <!-- / Available rooms panel -->
 

@@ -127,10 +127,10 @@ ChatRoom = function(optDebug) {
         }
 
       , create: function(name, callback) {
-            sess.call('createRoom', name).then(function(args) {
-                callback(args.id, args.display);
+            sess.call('createRoom', name).then(function(room) {
+                callback(room);
             }, function(args) {
-                callback(args.id, args.display);
+                callback(room);
             });
         }
 
@@ -142,7 +142,6 @@ ChatRoom = function(optDebug) {
                 callback(args);
             });
         }
-
 
       , sessionId: ''
 

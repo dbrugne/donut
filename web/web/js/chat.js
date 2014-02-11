@@ -260,8 +260,25 @@ var GUI = function() {
 
         $(document).on('click', '.close', function () {
             var roomId = $(this).closest(".room-container").data('roomId');
-            console.log(roomId);
             leaveRoom(roomId);
+        });
+
+        $('#create-room-toggle').click(function() {
+            $('#create-room-form').toggle();
+        });
+
+        $('#create-room-submit').click(function() {
+            var roomName = $('#create-room-name').val();
+            if ('' == roomName) {
+                return;
+            }
+
+            Chat.create(roomName, function(room) {
+                joinRoom(room.id);
+            });
+
+            $('#create-room-name').val('');
+            $('#create-room-form').toggle();
         });
 
     });

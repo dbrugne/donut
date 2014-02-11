@@ -91,36 +91,16 @@ class ChatRoom implements WampServerInterface
      */
     public function __construct(\Silex\Application $app)
     {
-//        $this->rooms[static::CONTROL_TOPIC] = new \SplObjectStorage;
         $this->controlTopicUsers = new \SplObjectStorage;
-
         $this->roomManager = new \App\Chat\RoomManager($app);
-
-//        // TEST
-//        // We create two rooms
-//        $this->roomsList[1] = array('id' => 1, 'name' => 'TF1', 'topic' => 'topic room 1');
-//        $this->roomsList[2] = array('id' => 2, 'name' => 'France 2', 'topic' => 'topic room 2');
-//        $this->userRoom[1] = new \SplObjectStorage();
-//        $this->userRoom[2] = new \SplObjectStorage();
-//        // TEST
     }
 
     /**
      * {@inheritdoc}
      */
     public function onOpen(ConnectionInterface $conn) {
-        /**
-         * $conn->User->id
-         * $conn->User->username
-         */
         $conn->Chat        = new \StdClass;
         $conn->Chat->rooms = array();
-
-//        // TEST
-//        // We register the user in two stubbed rooms
-//        $this->userRoom['1']->attach($conn);
-//        $this->userRoom['2']->attach($conn);
-//        // TEST
     }
 
     /**
@@ -147,47 +127,29 @@ class ChatRoom implements WampServerInterface
                 {
                     $roomList[] = $room->getData();
                 }
-//                var_dump($roomList);
                 return $conn->callResult($id, $roomList);
-                break;
+            break;
 
-//            case 'getUserRooms':
-//                $roomList = array();
-//                foreach ($this->userRoom as $roomId => $userRoomList)
-//                {
-//                    if ($userRoomList->contains($conn)) {
-//                        $roomList[] = array('topic' => self::TOPIC_ROOM_PREFIX . $roomId);
-//                    }
-//                }
-////                var_dump($roomList);
-//                return $conn->callResult($id, $roomList);
-//                break;
+            case 'createRoom':
+                $name   = $this->escape($params[0]);
+                $created = false;
 
-//            case 'createRoom':
-//                $topic   = $this->escape($params[0]);
-//                $created = false;
-//
-//                if (empty($topic)) {
-//                    return $conn->callError($id, 'Room name can not be empty');
-//                }
-//
-//                if (array_key_exists($topic, $this->roomList)) {
-//                    $roomId = $this->roomList[$topic];
-//                } else {
-//                    $created = true;
-//                    $roomId  = uniqid('room-');
-////                    $this->broadcast(static::CONTROL_TOPIC, array($roomId, $topic, 1));
-//                    $this->userRoom[$roomId] = new \SplObjectStorage;
-//                    $this->roomList[$topic] = $roomId;
-//                    return $conn->callResult($id, array('id' => $roomId, 'display' => $topic));
-//                }
-//
-//                if ($created) {
-//
-//                } else {
-//                    return $conn->callError($id, array('id' => $roomId, 'display' => $topic));
-//                }
-//            break;
+                if (empty($name)) {
+                    return $conn->callError($id, 'Room name can not be empty');
+                }
+
+                // Test if room not already exist in database
+                if (null === $room = $this->roomManager->findOneBy(array('name' => $name))) {
+                    // Create room in database
+                    $roomId = $this->roomManager->insert(array(
+                        'name' => $name,
+                    ));
+                    // Return as created to client
+                    return $conn->callResult($id, array('id' => $roomId, 'name' => $name));
+                } else {
+                    return $conn->callError($id, array('id' => $room->getId(), 'name' => $room->getName(), 'error' => 'Room already exists'));
+                }
+            break;
 
             default:
                 return $conn->callError($id, 'Unknown call');
