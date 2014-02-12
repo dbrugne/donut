@@ -112,6 +112,8 @@ class ChatRoom implements WampServerInterface
         {
             $this->onUnSubscribe($conn, $topic);
         }
+
+        $this->controlTopicUsers->detach($conn);
     }
 
     /**
