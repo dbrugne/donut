@@ -108,7 +108,7 @@ class ChatRoom implements WampServerInterface
      */
     public function onClose(ConnectionInterface $conn)
     {
-        foreach ($conn->Chat->rooms as $topic => $one)
+        foreach ($conn->Chat->rooms as $roomId => $topic)
         {
             $this->onUnSubscribe($conn, $topic);
         }
@@ -203,7 +203,7 @@ class ChatRoom implements WampServerInterface
         $this->userRoom[$roomId]->attach($conn);
 
         // Register this room in user connection
-        $conn->Chat->rooms[$roomId] = true;
+        $conn->Chat->rooms[$roomId] = $topic;
 
         // Push room data (on control topic)
         $conn->event($topic, array('action' => 'enterInRoom', 'data' => array(
