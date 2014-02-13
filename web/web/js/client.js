@@ -1,12 +1,15 @@
-var GUI = function() {
+var ChatClient = function(optDebug) {
 
-    var Chat;
+    var ChatServer;
     var focusRoom = '';
 
     var Joined = [];
     var Names  = {};
 
-    var debug = true;
+    if (undefined == optDebug || '' == optDebug) {
+        optDebug = false;
+    }
+    var debug = optDebug;
     var Debug = function(msg) {
         if (debug) {
             console.log(msg);
@@ -231,7 +234,7 @@ var GUI = function() {
         }
 
         // Subscribe to room
-        Chat.subscribe(roomId);
+        ChatServer.subscribe(roomId);
 
         // Register room in already-opened-rooms list
         Joined.push(roomId);
@@ -240,7 +243,7 @@ var GUI = function() {
     // Current user leaves a room
     function leaveRoom(roomId) {
         // Subscribe to room
-        Chat.unsubscribe(roomId);
+        ChatServer.unsubscribe(roomId);
 
         // IHM
         removeRoomIhm(roomId);
@@ -261,7 +264,7 @@ var GUI = function() {
                 return;
             }
             // Send to server
-            Chat.send(roomId, message);
+            ChatServer.send(roomId, message);
             // Empty the field
             $('.input-message[data-room-id='+roomId+']').val('');
         };
@@ -291,7 +294,7 @@ var GUI = function() {
                 return;
             }
 
-            Chat.create(roomName, function(room) {
+            ChatServer.create(roomName, function(room) {
                 joinRoom(room.id);
             });
 
@@ -323,7 +326,7 @@ var GUI = function() {
             var baseline = roomHeader.find('.room-baseline-input').val();
 
             // save
-            Chat.changeBaseline(focusRoom, baseline);
+            ChatServer.changeBaseline(focusRoom, baseline);
 
             roomHeader.find('.room-baseline-form').hide();
             roomHeader.find('.room-baseline-text').show();
@@ -355,45 +358,45 @@ var GUI = function() {
      *****************************************************/
     $(function() {
 
-        Chat  = new ChatRoom(true);
+        ChatServer = new ChatServerPrototype(true);
 
-        $(Chat).bind('connect', function(e) {
+        $(ChatServer).bind('connect', function(e) {
             status.update('online');
 
             // @todo : should fire the RPC call to "re-open" existing session (= user room list)
 
             // Retrieve available rooms
-            Chat.availableRooms(function(roomList) {
+            ChatServer.availableRooms(function(roomList) {
                 $.each( roomList, function( i, room ){
                     availableRoomsAddRoom(room);
                 });
             });
         });
 
-        $(Chat).bind('close', function(e) {
+        $(ChatServer).bind('close', function(e) {
             status.update('offline');
         });
 
         // When subscribe a room topic this "event" is send by server
-        $(Chat).bind('enterInRoom', function(jQevent, roomId, data) {
+        $(ChatServer).bind('enterInRoom', function(jQevent, roomId, data) {
             createRoomIhm(roomId, data.name);
         });
 
         // When server indicate that someone enter in the room
-        $(Chat).bind('userInRoom', function(jQevent, roomId, data) {
+        $(ChatServer).bind('userInRoom', function(jQevent, roomId, data) {
             userListAddUser(roomId, data);
         });
 
         // When server indicate that someone leave the room
-        $(Chat).bind('userOutRoom', function(jQevent, roomId, data) {
+        $(ChatServer).bind('userOutRoom', function(jQevent, roomId, data) {
             userListRemoveUser(roomId, data);
         });
 
-        $(Chat).bind('roomBaseline', function(jQevent, roomId, data) {
+        $(ChatServer).bind('roomBaseline', function(jQevent, roomId, data) {
             setRoomBaseline(roomId, data);
         });
 
-        $(Chat).bind('message', function(jQevent, roomId, data) {
+        $(ChatServer).bind('message', function(jQevent, roomId, data) {
             roomContainerAddMessage(roomId, data);
             roomListNewMessageInRoom(roomId, 1);
         });

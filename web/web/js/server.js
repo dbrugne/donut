@@ -1,4 +1,4 @@
-ChatRoom = function(optDebug) {
+ChatServerPrototype = function(optDebug) {
     var onError = function(error) {
         Debug('Error: ' + error);
     }
