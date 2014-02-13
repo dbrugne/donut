@@ -6,6 +6,13 @@ var GUI = function() {
     var Joined = [];
     var Names  = {};
 
+    var debug = true;
+    var Debug = function(msg) {
+        if (debug) {
+            console.log(msg);
+        }
+    }
+
     /****************************************************
      * Interface initialization
      ****************************************************/
@@ -219,7 +226,7 @@ var GUI = function() {
     function joinRoom(roomId) {
         // Test if this room is already loaded in this browser page
         if (-1 !== $.inArray(roomId, Joined)) {
-            console.log('Already in the room: '+roomId);
+            Debug('Already in the room: '+roomId);
             return false;
         }
 
