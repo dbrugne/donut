@@ -32,74 +32,99 @@ class Bot implements WampServerInterface {
 
         $that = $this;
         $this->stubBot->setSendCallback(function($msg) use ($that) {
+            var_dump($msg);
             $response     = json_decode($msg, true);
             $that->roomId = $response[2]['id'];
         });
 
         $this->app->onOpen($this->wampBot);
-        $this->app->onCall($this->wampBot, '1', 'createRoom', array('General'));
+//        $this->app->onCall($this->wampBot, '1', 'createRoom', array('General'));
         $this->stubBot->setSendCallback(null);
-        $this->app->onSubscribe($this->wampBot, $this->roomId);
+//        $this->app->onSubscribe($this->wampBot, $this->roomId);
     }
 
     public function onOpen(ConnectionInterface $conn) {
-        $conn->botWelcomed = false;
+        $conn->botWelcomed = array();
         $conn->alone       = false;
-
         $this->app->onOpen($conn);
     }
 
     public function onSubscribe(ConnectionInterface $conn, $topic) {
+
+        $this->app->onSubscribe($this->wampBot, $topic);
+
         $this->app->onSubscribe($conn, $topic);
 
-        if ((string)$topic == $this->roomId) {
-            $this->genCount++;
+        $conn->event($topic, array(
+            'action' => 'message',
+            'data' => array(
+                'user_id' => -1,
+                'username' => 'Lonely bot',
+                'message' => "Hi {$conn->User->username}, welcome on this chan. Please be polite and fair with others.",
+                'time' => time(),
+            ),
+        ));
 
-            if (false === $conn->botWelcomed) {
-                $conn->botWelcomed = true;
+//        if ((string)$topic == $this->roomId) {
+//            $this->genCount++;
+//
+//            if (false === $conn->botWelcomed) {
+//                $conn->botWelcomed = true;
+//
+//                $intro = (strstr($conn->Chat->name, 'Anonymous') ? 'Greetings' : "Hi {$conn->Chat->name}");
+//                $after = '';
+//
+//                if (1 == $this->genCount) {
+//                    $after = " Looks like it's just you and I at the moment...I'll play copycat until someone else joins.";
+//                    $conn->alone = true;
+//                }
 
-                $intro = (strstr($conn->Chat->name, 'Anonymous') ? 'Greetings' : "Hi {$conn->Chat->name}");
-                $after = '';
-
-                if (1 == $this->genCount) {
-                    $after = " Looks like it's just you and I at the moment...I'll play copycat until someone else joins.";
-                    $conn->alone = true;
-                }
-
-                $conn->event($topic, array(
-                    'message'
-                  , $this->wampBot->WAMP->sessionId
-                  , "{$intro}! This is an IRC-like chatroom powered by Ratchet.{$after}"
-                  , date('c')
-                ));
-            }
-        }
+//                $conn->event($topic, array(
+//                    'message'
+//                  , $this->wampBot->WAMP->sessionId
+//                  , "{$intro}! This is an IRC-like chatroom powered by Ratchet.{$after}"
+//                  , date('c')
+//                ));
+//            }
+//        }
     }
 
     public function onUnSubscribe(ConnectionInterface $conn, $topic) {
         $this->app->onUnSubscribe($conn, $topic);
 
-        if ((string)$topic == $this->roomId) {
-            $this->genCount--;
-        }
+//        if ((string)$topic == $this->roomId) {
+//            $this->genCount--;
+//        }
     }
 
     public function onPublish(ConnectionInterface $conn, $topic, $event, array $exclude = array(), array $eligible = array()) {
-        $this->app->onPublish($conn, $topic, $event, $exclude, $eligible);
-
-        if ((string)$topic == $this->roomId) {
-            if ($event == 'test') {
-                 return $conn->event($topic, array('message', $this->wampBot->WAMP->sessionId, 'pass', date('c')));
-            }
-
-            if ($event == 'help' || $event == '!help') {
-                return $conn->event($topic, array('message', $this->wampBot->WAMP->sessionId, 'No one can hear you scream in /dev/null', date('c')));
-            }
-
-            if ($conn->alone && 1 == $this->genCount) {
-                return $conn->event($topic, array('message', $this->wampBot->WAMP->sessionId, $event, date('c')));
-            }
+        if ($event == '!help') {
+            return $conn->event($topic, array(
+                'action' => 'message',
+                'data' => array(
+                    'user_id' => -1,
+                    'username' => 'Lonely bot',
+                    'message' => "Reboot!",
+                    'time' => time(),
+                ),
+            ));
+        } else {
+            // Only if not bot command
+            $this->app->onPublish($conn, $topic, $event, $exclude, $eligible);
         }
+//        if ((string)$topic == $this->roomId) {
+//            if ($event == 'test') {
+//                 return $conn->event($topic, array('message', $this->wampBot->WAMP->sessionId, 'pass', date('c')));
+//            }
+//
+//            if ($event == 'help' || $event == '!help') {
+//                return $conn->event($topic, array('message', $this->wampBot->WAMP->sessionId, 'No one can hear you scream in /dev/null', date('c')));
+//            }
+//
+//            if ($conn->alone && 1 == $this->genCount) {
+//                return $conn->event($topic, array('message', $this->wampBot->WAMP->sessionId, $event, date('c')));
+//            }
+//        }
     }
 
     public function onCall(ConnectionInterface $conn, $id, $topic, array $params) {
