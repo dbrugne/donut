@@ -82,33 +82,6 @@ $app['user.controller']->setLayoutTemplate('layout.twig.html');
  *********************************************/
 $app->mount('/user', $u);
 
-$app->get('/join/{room_id}', function($room_id) use ($app) {
-
-    if (null === $user = $app['user.manager']->getCurrentUser()) {
-        return $app->redirect('/');
-    }
-
-    $roomManager = new App\Chat\RoomManager($app);
-    if (null === $room = $roomManager->findOneBy(array('id' => $room_id))) {
-        return $app->redirect('/');
-    }
-
-    // If user is not already in the requested chat, register him
-    $userRoomManager = new App\Chat\UserRoomManager($app);
-    $criteria = array('user_id' => $user->getId(), 'room_id' => $room->getId());
-    if (null === $userRoom = $userRoomManager->findOneBy($criteria)) {
-        $userRoom = $userRoomManager->insert(array(
-            'user_id' => $user->getId(),
-            'room_id' => $room->getId(),
-        ));
-    }
-
-    // Redirect to chat
-    return $app->redirect('/chat');
-})
-->bind('join')
-->assert('room_id', '\d+');
-
 $app->get('/chat', function() use ($app) {
 
     if (null === $user = $app['user.manager']->getCurrentUser()) {

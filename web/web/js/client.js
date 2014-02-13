@@ -377,6 +377,15 @@ var ChatClient = function(optDebug) {
                     availableRoomsAddRoom(room);
                 });
             });
+
+            // Try to detect if a room was submitted in the URL (when user come from home for example)
+            if(window.location.hash)
+            {
+                // Hash found
+                var hash = window.location.hash.substring(1); // Puts hash in variable, and removes the # character
+                var roomId = parseInt(hash.replace('room=', ''));
+                joinRoom(roomId);
+            }
         });
 
         $(ChatServer).bind('close', function(e) {
