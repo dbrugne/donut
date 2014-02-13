@@ -237,7 +237,8 @@ var ChatClient = function(optDebug) {
         ChatServer.subscribe(roomId);
 
         // Register room in already-opened-rooms list
-        Joined.push(roomId);
+        Joined.push(parseInt(roomId));
+        // parseInt(): to avoid a "type"-bug when searching for this value
     }
 
     // Current user leaves a room
@@ -417,5 +418,5 @@ var ChatClient = function(optDebug) {
     });
     // TEST
 
-}();
+}(true);
 
