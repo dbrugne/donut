@@ -4,25 +4,13 @@ use Ratchet\ConnectionInterface;
 use Ratchet\Wamp\WampServerInterface;
 use App\Chat\RoomManager;
 use App\Chat\Room;
+use App\Chat\UserRoomManager;
+use App\Chat\UserRoom;
+use App\Chat\MessageManager;
+use App\Chat\Message;
 
 class ChatRoom implements WampServerInterface
 {
-
-    /**
-     * Room topics are used to broadcast room event to subscribed users:
-     * - message
-     * - a user enter in room
-     * - a user left the room
-     * - room 'topic (baseline)' change
-     * - room was closed by owner
-     */
-
-
-    const CTRL_PREFIX = 'ctrl:';
-    const CTRL_ROOMS  = 'ctrl:rooms';
-    protected $rooms = array();
-    protected $roomLookup = array();
-
 
     /**
      * A "control" topic is subscribed by each user that connect to the application
@@ -85,6 +73,16 @@ class ChatRoom implements WampServerInterface
     protected $roomManager = null;
 
     /**
+     * @var \App\Orm\EntityManager
+     */
+    protected $userRoomManager = null;
+
+    /**
+     * @var \App\Orm\EntityManager
+     */
+    protected $messageManager = null;
+
+    /**
      * Constructor
      *
      * @param Application $app
@@ -93,6 +91,8 @@ class ChatRoom implements WampServerInterface
     {
         $this->controlTopicUsers = new \SplObjectStorage;
         $this->roomManager = new \App\Chat\RoomManager($app);
+        $this->userRoomManager = new \App\Chat\UserRoomManager($app);
+        $this->messageManager = new \App\Chat\messageManager($app);
     }
 
     /**
@@ -108,11 +108,13 @@ class ChatRoom implements WampServerInterface
      */
     public function onClose(ConnectionInterface $conn)
     {
+        // Unsubscribe from rooms
         foreach ($conn->Chat->rooms as $roomId => $topic)
         {
             $this->onUnSubscribe($conn, $topic);
         }
 
+        // Unsubscribe from control topic
         $this->controlTopicUsers->detach($conn);
     }
 
@@ -182,6 +184,8 @@ class ChatRoom implements WampServerInterface
                 }
             break;
 
+            // @todo : add the "remember my session" feature! RPC method that return all user_room entry for this user
+
             default:
                 return $conn->callError($id, 'Unknown call');
             break;
@@ -198,9 +202,6 @@ class ChatRoom implements WampServerInterface
          ***************/
         if ($topic == self::CONTROL_TOPIC) {
             $this->controlTopicUsers->attach($conn);
-
-            // @todo : it's the "remember my session" feature! Should be refactored in a RPC call that client can
-
             echo "{$conn->WAMP->sessionId} has just subscribed to {$topic}\n";
             return;
         }
@@ -232,6 +233,21 @@ class ChatRoom implements WampServerInterface
         // Add user to broadcast list
         echo "{$conn->WAMP->sessionId} has just subscribed to {$topic}\n";
         $this->userRoom[$roomId]->attach($conn);
+
+        // Store user_room in database (if not already exists, user could be in this room in another device/browser)
+        $this->userRoomManager->insertOrUpdate(array(
+            'room_id' => $roomId,
+            'user_id' => $conn->User->id,
+        ));
+
+        // Inform other devices that they should join to room!
+        /**
+         * How can we find other devices:
+         * - Loop in control topic subscribers list to find $conn with same User
+         * OR
+         * - Create a new index: userConnections
+         */
+        // @todo : here
 
         // Register this room in user connection
         $conn->Chat->rooms[$roomId] = $topic;
@@ -285,12 +301,31 @@ class ChatRoom implements WampServerInterface
         $this->userRoom[$roomId]->detach($conn);
         echo "{$conn->WAMP->sessionId} has just UN-subscribed to {$topic}\n";
 
+        // Is user_room already exist in database (if not we have a problem Houston)
+        if (null !== $room = $this->userRoomManager->findOneBy(array('user_id' => $conn->User->id, 'room_id' => $roomId))) {
+            // Delete user_room in database
+            $this->userRoomManager->delete(array('user_id' => $conn->User->id, 'room_id' => $roomId));
+        }
+
+        // Inform other device that they should leave to room!
+        // @todo : here
+
         // Notify everyone this guy has leaved the room
         $this->broadcast($roomId, array('action' => 'userOutRoom', 'data' => array(
                 'id' => $conn->User->id,
                 'username' => $conn->User->username,
             ), $conn // exclude current user of this notification
         ));
+
+        // If it was the last user in room and if room is not protected
+        if (1 != $this->roomsList[$roomId]->getProtected()
+              && 1 > $this->userRoom[$roomId]->count()){
+            // Delete room in database
+            $this->roomManager->delete(array('id' => $roomId));
+            unset($this->userRoom[$roomId]);
+            unset($this->roomsList[$roomId]);
+            echo "Room {$roomId} deleted\n";
+        }
 
 //        if ($this->isControl($topic)) {
 //            return;
@@ -328,16 +363,20 @@ class ChatRoom implements WampServerInterface
         }
 
         // This room is not subscribed by user
-        // @todo
-//        if (!array_key_exists($topic, $conn->Chat->rooms) || !array_key_exists($topic, $this->rooms) || $this->isControl($topic)) {
-//            // error, can not publish to a room you're not subscribed to
-//            // not sure how to handle error - WAMP spec doesn't specify
-//            // for now, we're going to silently fail
-//
-//            return;
-//        }
+        if (!$this->userRoom[$roomId]->contains($conn)) {
+            echo "User has not subscribed to this room '{$roomId}'\n";
+            return;
+        }
 
         $message = $this->escape($event);
+
+        // Store message in database
+        $this->messageManager->insert(array(
+            'user_id' => $conn->User->id,
+            'room_id' => $roomId,
+            'username' => $conn->User->username,
+            'message' => $message,
+        ));
 
         $this->broadcast($roomId, array(
             'action' => 'message',
@@ -381,7 +420,7 @@ class ChatRoom implements WampServerInterface
      * @return boolean
      */
     protected function isControl($room) {
-        return (boolean)(substr($room, 0, strlen(static::CTRL_PREFIX)) == static::CTRL_PREFIX);
+        return (boolean)(substr($room, 0, strlen(static::CONTROL_TOPIC)) == static::CONTROL_TOPIC);
     }
 
     /**

@@ -53,4 +53,24 @@ class UserRoomManager extends EntityManager
             return $array;
         }
     }
+
+    /**
+     * Insert a new line or update an existing one and returns the affected rows count
+     *
+     * @param array $criteria
+     * @return int
+     */
+    public function insertOrUpdate( array $criteria )
+    {
+        $columns = $values = array();
+        foreach ($criteria as $k => $v) {
+            $columns[] = $k;
+            $values[] = $v;
+        }
+        $sql = "INSERT INTO {$this->app['db']->quoteIdentifier($this->table)}
+                (`user_id`, `room_id`) VALUES (:user_id, :room_id)
+                ON DUPLICATE KEY UPDATE `time` = NOW();";
+
+        return $this->app['db']->executeUpdate($sql, $criteria);
+    }
 } 
