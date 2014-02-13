@@ -66,7 +66,18 @@
         <!-- / Default room container -->
         <!-- Template room container -->
         <div class="room-container" data-room-id="template" style="display: none;">
-            <section class="header"><span class="name"></span> <span class="topic"></span> <span class="close glyphicon glyphicon-remove"></span></section>
+            <section class="header">
+                <span class="name"></span>
+                <div class="room-baseline-text">
+                    <span class="baseline">&nbsp;</span>
+                </div>
+                <span class="room-baseline-form" style="display: none;">
+                    <input type="text" class="room-baseline-input form-control" placeholder="Room baseline">
+                    <button class="btn btn-primary room-baseline-submit">Submit</button>
+                    <button class="btn btn-danger room-baseline-cancel">Cancel</button>
+                </span>
+                <span class="close glyphicon glyphicon-remove"></span>
+            </section>
             <section class="messages"></section>
             <section class="postbox">
                 <a name="post"></a>

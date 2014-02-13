@@ -132,6 +132,35 @@ class ChatRoom implements WampServerInterface
                 return $conn->callResult($id, $roomList);
             break;
 
+            case 'changeBaseline':
+                $roomId = $this->escape($params[0]);
+                $baseline = $this->escape($params[1]);
+                echo "Baseline change requested: room={$roomId} baseline={$baseline} \n";
+                if (!isset($this->roomsList[$roomId])) {
+                    return $conn->callError($id, "The room '{$roomId}' is not referenced in memory'");
+                }
+                if (null === $room = $this->roomManager->findOneBy(array('id' => $roomId))) {
+                    return $conn->callError($id, "The room '{$roomId}' not already exist in database'");
+                }
+
+                // Save in database
+                $this->roomManager->update(array('baseline' => $baseline), array('id' => $roomId));
+
+                // Save in memory
+                $this->roomsList[$roomId]->setBaseline($baseline);
+
+                // Push to users
+                $this->broadcast($roomId, array(
+                    'action' => 'roomBaseline',
+                    'data' => array(
+                        'baseline' => $baseline,
+                        'username' => $conn->User->username,
+                    ),
+                ));
+
+                return $conn->callResult($id);
+            break;
+
             case 'createRoom':
                 $name   = $this->escape($params[0]);
                 $created = false;
@@ -221,10 +250,13 @@ class ChatRoom implements WampServerInterface
             )));
         }
 
-        // Push room title
-        $conn->event($topic, array('action' => 'roomTitle', 'data' => array(
-            'title' => $this->roomsList[$roomId]->getTopic(),
-        )));
+        // Push room baseline
+        if (null != $this->roomsList[$roomId]->getBaseline()) {
+            $conn->event($topic, array('action' => 'roomBaseline', 'data' => array(
+                'baseline' => $this->roomsList[$roomId]->getBaseline(),
+                'notify' => false,
+            )));
+        }
 
         // Notify everyone this guy has joined the room
         $this->broadcast($roomId, array('action' => 'userInRoom', 'data' => array(

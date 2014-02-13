@@ -3,21 +3,33 @@
     [
         {
             "username": "damien",
-            "password": "password",
+            "password": "damien",
             "email": "damien.brugne@gmail.com",
             "roles": ["ROLE_USER","ROLE_ADMIN"]
         },
         {
             "username": "david",
-            "password": "password",
+            "password": "david",
             "email": "hageged@yahoo.com",
+            "roles": ["ROLE_USER"]
+        },
+        {
+            "username": "lili",
+            "password": "lili",
+            "email": "lili@lili",
+            "roles": ["ROLE_USER"]
+        },
+        {
+            "username": "elio",
+            "password": "elio",
+            "email": "elio@elio",
             "roles": ["ROLE_USER"]
         }
     ],
     "rooms":
     [
-        { "id": "1", "name": "TF1", "protected": "1", "topic": "Pagny, Jennifer, Garou le clash!!!!!" },
-        { "id": "2", "name": "France2", "protected": "1", "topic": "Le retour d'Agatha ce soir" },
+        { "id": "1", "name": "TF1", "protected": "1", "baseline": "Pagny, Jennifer, Garou le clash!!!!!" },
+        { "id": "2", "name": "France2", "protected": "1", "baseline": "Le retour d'Agatha ce soir" },
         { "id": "3", "name": "France3", "protected": "1" },
         { "id": "4", "name": "canal+", "protected": "1" },
         { "id": "5", "name": "France5", "protected": "1" },

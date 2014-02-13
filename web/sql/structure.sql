@@ -47,7 +47,7 @@ DROP TABLE IF EXISTS `rooms`;
 CREATE TABLE IF NOT EXISTS `rooms` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` varchar(100) collate latin1_general_ci NOT NULL,
-  `topic` varchar(300) collate latin1_general_ci NOT NULL,
+  `baseline` varchar(300) collate latin1_general_ci NOT NULL,
   `protected` tinyint(1) NOT NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;

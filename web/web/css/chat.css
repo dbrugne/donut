@@ -60,16 +60,21 @@ body { padding-top: 50px; }
 #users li.op { font-weight: bold; text-decoration: underline; }
 #users li.friend { font-weight: bold; font-style: italic; }
 #chat .header {
-    flex: 1;
-    max-height: 40px;
-    padding: 10px 15px;
+    /*flex: 1;*to fix bug on room header*/
+    max-height: 50px;
     border-bottom: 1px solid transparent;
     border-color: #ddd;
     background-color: #f5f5f5;
+    padding: 10px 15px;
 }
 #chat .header .name { color: #555555; font-weight: bolder; }
-#chat .header .topic { color: #333; }
+#chat .header .baseline { color: #333; }
 #chat .header .close { color: #FF0000; }
+#chat .header .room-baseline-text { display: inline-block; min-width: 75%; }
+#chat .header .room-baseline-form {  }
+#chat .header .room-baseline-input { display: inline-block; width: 50%; }
+#chat .header .room-baseline-submit { display: inline-block; }
+#chat .header .room-baseline-cancel { display: inline-block; }
 #chat .messages {
     flex: 10;
     overflow-y: scroll;

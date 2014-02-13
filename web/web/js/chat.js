@@ -184,9 +184,20 @@ var GUI = function() {
         scrollDown($(".room-container[data-room-id='"+roomId+"'] > .messages"));
     }
 
-    function setRoomTitle(roomId, topic)
+    function setRoomBaseline(roomId, data)
     {
-        $(".room-container[data-room-id='"+roomId+"']").find('.topic').html(topic);
+        var baseline = data.baseline;
+        if ('' == baseline) {
+            baseline = "&nbsp;";
+        }
+        $(".room-container[data-room-id='"+roomId+"']").find('.baseline').html(baseline);
+
+        if (undefined == data.notify || data.notify == true) {
+            if (undefined == data.username) {
+                data.username = '???';
+            }
+            roomContainerAddApplicationMessage(roomId, 'info', "Channel topic was changed by <strong>"+data.username+"</strong> to: <em>"+baseline+"</em>");
+        }
     }
 
     function availableRoomsAddRoom(room)
@@ -281,6 +292,55 @@ var GUI = function() {
             $('#create-room-form').toggle();
         });
 
+        $(document).on('click', '.room-baseline-text', function () {
+            if (undefined == focusRoom || '' == focusRoom) {
+                return;
+            }
+            var roomHeader = $(".room-container[data-room-id='"+focusRoom+"'] > .header");
+
+            roomHeader.find('.room-baseline-text').hide();
+            roomHeader.find('.room-baseline-form').show();
+            var currentBaseline = $(".room-container[data-room-id='"+focusRoom+"']").find('.baseline').html();
+            if ('&nbsp;' == currentBaseline) {
+                currentBaseline = '';
+            }
+            roomHeader.find('.room-baseline-input').val(currentBaseline);
+            roomHeader.find('.room-baseline-input').focus();
+        });
+
+        var changeBaselineCallback = function () {
+            if (undefined == focusRoom || '' == focusRoom) {
+                return;
+            }
+            var roomHeader = $(".room-container[data-room-id='"+focusRoom+"'] > .header");
+            var baseline = roomHeader.find('.room-baseline-input').val();
+
+            // save
+            Chat.changeBaseline(focusRoom, baseline);
+
+            roomHeader.find('.room-baseline-form').hide();
+            roomHeader.find('.room-baseline-text').show();
+            roomHeader.find('.room-baseline-input').val('');
+        };
+
+        $(document).on('click', '.room-baseline-submit', changeBaselineCallback);
+        $(document).on('keypress', '.room-baseline-input', function (e) {
+            if(e.which == 13) {
+                changeBaselineCallback();
+            }
+        });
+
+        $(document).on('click', '.room-baseline-cancel', function () {
+            if (undefined == focusRoom || '' == focusRoom) {
+                return;
+            }
+
+            var roomHeader = $(".room-container[data-room-id='"+focusRoom+"'] > .header");
+            roomHeader.find('.room-baseline-form').hide();
+            roomHeader.find('.room-baseline-text').show();
+            roomHeader.find('.room-baseline-input').val('');
+        });
+
     });
 
     /*****************************************************
@@ -322,8 +382,8 @@ var GUI = function() {
             userListRemoveUser(roomId, data);
         });
 
-        $(Chat).bind('roomTitle', function(jQevent, roomId, data) {
-            setRoomTitle(roomId, data);
+        $(Chat).bind('roomBaseline', function(jQevent, roomId, data) {
+            setRoomBaseline(roomId, data);
         });
 
         $(Chat).bind('message', function(jQevent, roomId, data) {

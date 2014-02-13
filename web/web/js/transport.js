@@ -86,22 +86,15 @@ ChatRoom = function(optDebug) {
             , 'userOutRoom'
 
          /**
-          * The server inform the client that a room title was changed
-          * @event roomTitle
+          * The server inform the client that a room baseline was changed
+          * @event roomBaseline
           * @param int roomId
           * @param Object data
           */
-          , 'roomTitle'
+          , 'roomBaseline'
         ]
 
       , debug: optDebug | false
-
-      , setName: function(name) {
-            // Name can not be longer than 32 characters
-
-            sess.call('setName', name).then(function() {
-            }, onError);
-        }
 
       , subscribe: function(roomId) {
             sess.subscribe('ws://chat.local/room#'+roomId, function(topic, event) {
@@ -141,6 +134,13 @@ ChatRoom = function(optDebug) {
                 alert('Erreur !!');
                 callback(args);
             });
+        }
+
+      , changeBaseline: function(roomId, baseline) {
+            sess.call('changeBaseline', roomId, baseline).then(
+                function() { }
+                , function() { alert('Error changeBaseline!!'); }
+            );
         }
 
       , sessionId: ''
