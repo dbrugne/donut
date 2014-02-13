@@ -184,7 +184,16 @@ class ChatRoom implements WampServerInterface
                 }
             break;
 
-            // @todo : add the "remember my session" feature! RPC method that return all user_room entry for this user
+            case 'userIsInRooms':
+                $roomList = array();
+                $roomsListDatabase = $this->userRoomManager->findBy(array('user_id' => $conn->User->id));
+                if (count($roomsListDatabase) > 0) {
+                    foreach($roomsListDatabase as $room) {
+                        $roomList[] = $room->getData();
+                    }
+                }
+                return $conn->callResult($id, $roomList);
+            break;
 
             default:
                 return $conn->callError($id, 'Unknown call');

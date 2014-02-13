@@ -131,7 +131,16 @@ ChatServerPrototype = function(optDebug) {
             sess.call('availableRooms').then(function(args) {
                 callback(args);
             }, function(args) {
-                alert('Erreur !!');
+                alert('Erreur availableRooms !!');
+                callback(args);
+            });
+        }
+
+      , userIsInRooms: function(callback) {
+            sess.call('userIsInRooms').then(function(args) {
+                callback(args);
+            }, function(args) {
+                alert('Erreur userIsInRooms !!');
                 callback(args);
             });
         }

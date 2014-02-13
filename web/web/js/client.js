@@ -364,7 +364,12 @@ var ChatClient = function(optDebug) {
         $(ChatServer).bind('connect', function(e) {
             status.update('online');
 
-            // @todo : should fire the RPC call to "re-open" existing session (= user room list)
+            // Retrieve rooms the user is in (maybe in other devices or browsers)
+            ChatServer.userIsInRooms(function(roomList) {
+                $.each( roomList, function( i, room ){
+                    joinRoom(room.id);
+                });
+            });
 
             // Retrieve available rooms
             ChatServer.availableRooms(function(roomList) {
