@@ -101,6 +101,7 @@ class ChatRoom implements WampServerInterface
     public function onOpen(ConnectionInterface $conn) {
         $conn->Chat        = new \StdClass;
         $conn->Chat->rooms = array();
+        $conn->closingConnection = false;
     }
 
     /**
@@ -108,6 +109,9 @@ class ChatRoom implements WampServerInterface
      */
     public function onClose(ConnectionInterface $conn)
     {
+        // Avoid "user_room" deletion to allow user to refind his session from database on next visit
+        $conn->closingConnection = true;
+
         // Unsubscribe from rooms
         foreach ($conn->Chat->rooms as $roomId => $topic)
         {
@@ -310,10 +314,12 @@ class ChatRoom implements WampServerInterface
         $this->userRoom[$roomId]->detach($conn);
         echo "{$conn->WAMP->sessionId} has just UN-subscribed to {$topic}\n";
 
-        // Is user_room already exist in database (if not we have a problem Houston)
-        if (null !== $room = $this->userRoomManager->findOneBy(array('user_id' => $conn->User->id, 'room_id' => $roomId))) {
-            // Delete user_room in database
-            $this->userRoomManager->delete(array('user_id' => $conn->User->id, 'room_id' => $roomId));
+        if ($conn->closingConnection !== true) {
+            // Is user_room already exist in database (if not we have a problem Houston)
+            if (null !== $room = $this->userRoomManager->findOneBy(array('user_id' => $conn->User->id, 'room_id' => $roomId))) {
+                // Delete user_room in database
+                $this->userRoomManager->delete(array('user_id' => $conn->User->id, 'room_id' => $roomId));
+            }
         }
 
         // Inform other device that they should leave to room!
