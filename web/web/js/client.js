@@ -367,7 +367,7 @@ var ChatClient = function(optDebug) {
             // Retrieve rooms the user is in (maybe in other devices or browsers)
             ChatServer.userIsInRooms(function(roomList) {
                 $.each( roomList, function( i, room ){
-                    joinRoom(room.id);
+                    joinRoom(room.room_id);
                 });
             });
 
@@ -404,7 +404,9 @@ var ChatClient = function(optDebug) {
 
         $(ChatServer).bind('message', function(jQevent, roomId, data) {
             roomContainerAddMessage(roomId, data);
-            roomListNewMessageInRoom(roomId, 1);
+            if (focusRoom != roomId) {
+                roomListNewMessageInRoom(roomId, 1);
+            }
         });
     });
 
