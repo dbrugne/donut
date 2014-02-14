@@ -223,6 +223,11 @@ var ChatClient = function(optDebug) {
         $("#available-rooms-list").append(newRoomItem);
     }
 
+    function availableRoomsRemoveRoom(room)
+    {
+        $("#available-rooms-list").find(".available-room-item[data-room-id='"+room.id+"']").remove();
+    }
+
     /*****************************************************
      * Chat re-usable functions
      *****************************************************/
@@ -418,6 +423,14 @@ var ChatClient = function(optDebug) {
 
         $(ChatServer).bind('leaveRoomFromOtherDevice', function(jQevent, data) {
             leaveRoom(data.room_id);
+        });
+
+        $(ChatServer).bind('newAvailableRoom', function(jQevent, data) {
+            availableRoomsAddRoom(data);
+        });
+
+        $(ChatServer).bind('removeAvailableRoom', function(jQevent, data) {
+            availableRoomsRemoveRoom(data);
         });
 
         $(ChatServer).bind('message', function(jQevent, roomId, data) {

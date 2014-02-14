@@ -106,6 +106,20 @@ ChatServerPrototype = function(optDebug) {
          * @param Object data
          */
             , 'leaveRoomFromOtherDevice'
+
+        /**
+         * The server inform that a new room was created
+         * @event newAvailableRoom
+         * @param Object data
+         */
+            , 'newAvailableRoom'
+
+        /**
+         * he server inform that a new room was closed
+         * @event removeAvailableRoom
+         * @param Object data
+         */
+            , 'removeAvailableRoom'
         ]
 
       , debug: optDebug | false
@@ -180,12 +194,13 @@ ChatServerPrototype = function(optDebug) {
       , function() {
             api.sessionId = sess._session_id;
             Debug('Connected! ' + api.sessionId);
-            $(api).trigger('connect');
 
             // Subscribe to control topic
-            sess.subscribe('ws://chat.local/control', function(topic, event) {
+            sess.subscribe("ws://chat.local/control", function(topic, event) {
                 $(api).trigger(event.action, event.data);
             });
+
+            $(api).trigger('connect');
         }
       , function() {
             Debug('Connection closed');

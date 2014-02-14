@@ -50,23 +50,36 @@ class Bot implements WampServerInterface {
 
     public function onSubscribe(ConnectionInterface $conn, $topic) {
 
-        if ($topic == ChatRoom::CONTROL_TOPIC) {
-            return;
+        // Bot subscribe to this channel, before user (except if it's a control topic subscription)
+        if ($topic != ChatRoom::CONTROL_TOPIC) {
+            // Only if bot is not already subscribed
+            $already = false;
+            foreach ($this->wampBot->Chat->rooms as $_topic) {
+                if ($topic == $_topic) {
+                    $already = true;
+                    break;
+                }
+            }
+            if (!$already) {
+                $this->app->onSubscribe($this->wampBot, $topic);
+            }
         }
 
-        $this->app->onSubscribe($this->wampBot, $topic);
-
+        // Subscribe the user $conn
         $this->app->onSubscribe($conn, $topic);
 
-        $conn->event($topic, array(
-            'action' => 'message',
-            'data' => array(
-                'user_id' => -1,
-                'username' => 'Lonely bot',
-                'message' => "Hi {$conn->User->username}, welcome on this chan. Please be polite and fair with others.",
-                'time' => time(),
-            ),
-        ));
+        // Then send to him a welcome message
+        if ($topic != ChatRoom::CONTROL_TOPIC) {
+            $conn->event($topic, array(
+                'action' => 'message',
+                'data' => array(
+                    'user_id' => -1,
+                    'username' => 'Lonely bot',
+                    'message' => "Hi {$conn->User->username}, welcome on this chan. Please be polite and fair with others.",
+                    'time' => time(),
+                ),
+            ));
+        }
 
 //        if ((string)$topic == $this->roomId) {
 //            $this->genCount++;

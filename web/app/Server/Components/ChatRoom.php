@@ -166,6 +166,7 @@ class ChatRoom implements WampServerInterface
                 {
                     $roomList[] = $room->getData();
                 }
+
                 return $conn->callResult($id, $roomList);
             break;
 
@@ -212,6 +213,18 @@ class ChatRoom implements WampServerInterface
                     $roomId = $this->roomManager->insert(array(
                         'name' => $name,
                     ));
+
+                    // Inform everyone that room was created (control topic)
+                    foreach($this->controlTopicUsers as $connToNotify) {
+                        $connToNotify->event(self::CONTROL_TOPIC, array(
+                            'action' => 'newAvailableRoom',
+                            'data' => array(
+                                'id' => $roomId,
+                                'name' => $name,
+                            ),
+                        ));
+                    }
+
                     // Return as created to client
                     return $conn->callResult($id, array('id' => $roomId, 'name' => $name));
                 } else {
@@ -368,12 +381,25 @@ class ChatRoom implements WampServerInterface
         ));
 
         // If it was the last user in room and if room is not protected
+        // The bot should be the last user
+        // @todo : refactor $this->userRoom to be able to know how many "real" user remain
         if (1 != $this->roomsList[$roomId]->getProtected()
-              && 1 > $this->userRoom[$roomId]->count()){
+              && 1 >= $this->userRoom[$roomId]->count()){
             // Delete room in database
             $this->roomManager->delete(array('id' => $roomId));
             unset($this->userRoom[$roomId]);
             unset($this->roomsList[$roomId]);
+
+            // Inform everyone that room was removed (control topic)
+            foreach($this->controlTopicUsers as $connToNotify) {
+                $connToNotify->event(self::CONTROL_TOPIC, array(
+                    'action' => 'removeAvailableRoom',
+                    'data' => array(
+                        'id' => $roomId,
+                    ),
+                ));
+            }
+
             echo "Room {$roomId} deleted\n";
         }
 
