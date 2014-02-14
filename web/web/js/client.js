@@ -121,6 +121,9 @@ var ChatClient = function(optDebug) {
         // User list
         $( ".users-list" ).hide();
         $('.users-list[data-room-id="'+roomId+'"]').show();
+
+        // Remove un-read message badge
+        $('.room-item[data-room-id="'+roomId+'"] > .badge').remove();
     }
 
     function scrollDown(e) {
