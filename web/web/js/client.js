@@ -292,10 +292,20 @@ var ChatClient = function(optDebug) {
         });
 
         $('#create-room-toggle').click(function() {
-            $('#create-room-form').toggle();
+            if ($('#create-room-form').is(':visible')) {
+                $('#create-room-form').hide();
+            } else {
+                $('#create-room-form').show();
+                $('#create-room-name').focus();
+            }
         });
 
-        $('#create-room-submit').click(function() {
+        $('#create-room-cancel').click(function() {
+            $('#create-room-name').val('');
+            $('#create-room-form').hide();
+        });
+
+        var submitCreateRoomForm = function () {
             var roomName = $('#create-room-name').val();
             if ('' == roomName) {
                 return;
@@ -306,7 +316,13 @@ var ChatClient = function(optDebug) {
             });
 
             $('#create-room-name').val('');
-            $('#create-room-form').toggle();
+            $('#create-room-form').hide();
+        }
+        $(document).on('click', '#create-room-submit', submitCreateRoomForm);
+        $(document).on('keypress', '#create-room-name', function (e) {
+            if(e.which == 13) {
+                submitCreateRoomForm();
+            }
         });
 
         $(document).on('click', '.room-baseline-text', function () {
