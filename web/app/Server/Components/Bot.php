@@ -32,7 +32,6 @@ class Bot implements WampServerInterface {
 
         $that = $this;
         $this->stubBot->setSendCallback(function($msg) use ($that) {
-            var_dump($msg);
             $response     = json_decode($msg, true);
             $that->roomId = $response[2]['id'];
         });
@@ -50,6 +49,10 @@ class Bot implements WampServerInterface {
     }
 
     public function onSubscribe(ConnectionInterface $conn, $topic) {
+
+        if ($topic == ChatRoom::CONTROL_TOPIC) {
+            return;
+        }
 
         $this->app->onSubscribe($this->wampBot, $topic);
 
