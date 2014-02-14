@@ -237,7 +237,8 @@ var ChatClient = function(optDebug) {
     function joinRoom(roomId) {
         // Test if this room is already loaded in this browser page
         if (-1 !== $.inArray(parseInt(roomId), Joined)) {
-            Debug('Already in the room: '+roomId);
+            Debug('Room already opened: '+roomId);
+            focusOnRoom(roomId);
             return false;
         }
 
