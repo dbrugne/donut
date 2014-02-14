@@ -108,6 +108,9 @@ class ChatRoom implements WampServerInterface
         $this->roomManager = new \App\Chat\RoomManager($app);
         $this->userRoomManager = new \App\Chat\UserRoomManager($app);
         $this->messageManager = new \App\Chat\messageManager($app);
+
+        echo "Current timestamp is: " . time() . "\n";
+        echo "Current date/hour is: " . date('c') . "\n";
     }
 
     /**

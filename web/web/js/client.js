@@ -182,17 +182,16 @@ var ChatClient = function(optDebug) {
     }
 
     function roomContainerAddApplicationMessage(roomId, type, message) {
-        var date = new Date();
-        var dateText = date.getHours()+':'+date.getMinutes()+':'+date.getSeconds();
+        var dateText = $.format.date(new Date(), "HH:mm:ss");
         var html = '<p class="'+type+'"><span class="date">['+dateText+']</span> <span class="text">'+message+'</span></p>';
         $(".room-container[data-room-id='"+roomId+"'] > .messages").append(html);
         scrollDown($(".room-container[data-room-id='"+roomId+"'] > .messages"));
     }
 
     function roomContainerAddMessage(roomId, message) {
-        Debug(message);
-        var date = new Date(message.time * 1000);
-        var dateText = date.getHours()+':'+date.getMinutes()+':'+date.getSeconds();
+        var dateText = $.format.date(new Date(message.time*1000), "HH:mm:ss");
+        console.log(dateText);
+        console.log(message.time);
         var html = '<p data-user-id="'+message.user_id+'"><span class="date">['+dateText+']</span> <span class="username">&lt;'+message.username+'&gt;</span> <span class="text">'+message.message+'</span></p>';
         $(".room-container[data-room-id='"+roomId+"'] > .messages").append(html);
         scrollDown($(".room-container[data-room-id='"+roomId+"'] > .messages"));
