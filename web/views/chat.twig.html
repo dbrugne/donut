@@ -79,19 +79,20 @@
                 <span class="close glyphicon glyphicon-remove"></span>
             </section>
             <section class="messages"></section>
-            <section class="postbox">
+            <section class="postbox form-inline">
                 <a name="post"></a>
                 <div class="row">
-                    <div class="col-lg-1"><p class="text-center"><img src="/img/smiley-icon.png" width="29px" /></p></div>
-                    <div class="col-lg-11">
+                    <div class="col-lg-12">
                         <div class="input-group">
-                            <input type="text" name="message" class="form-control input-message" data-room-id="" />
-                    <span class="input-group-btn">
-                        <button type="button" class="btn btn-default send-message" data-room-id="">Send!</button>
-                    </span>
-                        </div>
-                    </div>
-                </div>
+                            <span class="input-group-addon"><input type="image" src="/img/smiley-icon.png" class="" width="15px" /></span>
+                            <input type="text" name="message" class="input-message form-control" data-room-id="" />
+                          <span class="input-group-btn">
+                            <button type="button" class="btn btn-default send-message" data-room-id="">Send!</button>
+                          </span>
+                        </div><!-- /input-group -->
+                    </div><!-- /.col-lg-6 -->
+                </div><!-- /.row -->
+
             </section>
         </div>
         <!-- / Template room container -->
