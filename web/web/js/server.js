@@ -92,6 +92,20 @@ ChatServerPrototype = function(optDebug) {
           * @param Object data
           */
           , 'roomBaseline'
+
+        /**
+         * The server inform the client that a room was opened for this user account (probably from another device)
+         * @event joinRoomFromOtherDevice
+         * @param Object data
+         */
+            , 'joinRoomFromOtherDevice'
+
+        /**
+         * The server inform the client that a room was closed for this user account (probably from another device)
+         * @event leaveRoomFromOtherDevice
+         * @param Object data
+         */
+            , 'leaveRoomFromOtherDevice'
         ]
 
       , debug: optDebug | false

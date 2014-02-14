@@ -37,7 +37,7 @@ class ChatRoom implements WampServerInterface
     const TOPIC_ROOM_PREFIX = "ws://chat.local/room#";
 
     /**
-     * Existing rooms list
+     * Current rooms list
      *
      * array(
      *    id => array(
@@ -53,7 +53,7 @@ class ChatRoom implements WampServerInterface
     protected $roomsList = array();
 
     /**
-     * For each room the subscribed users
+     * Subscribed users of each room
      *
      * array(
      *   id => SplObjectStorage(
@@ -66,6 +66,21 @@ class ChatRoom implements WampServerInterface
      * @var array
      */
     protected $userRoom = array();
+
+    /**
+     * Opened $conn of a specific user account
+     *
+     * array(
+     *   user_id => SplObjectStorage(
+     *        ConnectionInterface,
+     *        ...
+     *     )
+     *   ...
+     * )
+     *
+     * @var array
+     */
+    protected $userConn = array();
 
     /**
      * @var \App\Orm\EntityManager
@@ -102,6 +117,14 @@ class ChatRoom implements WampServerInterface
         $conn->Chat        = new \StdClass;
         $conn->Chat->rooms = array();
         $conn->closingConnection = false;
+
+        // If not Bot only
+        if ($conn->resourceId != -1) {
+            if (!isset($this->userConn[$conn->User->id]) || !($this->userConn[$conn->User->id] instanceOf \SplObjectStorage)) {
+                $this->userConn[$conn->User->id] = new \SplObjectStorage;
+            }
+            $this->userConn[$conn->User->id]->attach($conn);
+        }
     }
 
     /**
@@ -120,6 +143,14 @@ class ChatRoom implements WampServerInterface
 
         // Unsubscribe from control topic
         $this->controlTopicUsers->detach($conn);
+
+        // If not Bot only
+        if ($conn->resourceId != -1) {
+            $this->userConn[$conn->User->id]->detach($conn);
+            if ($this->userConn[$conn->User->id]->count() < 1) {
+                unset($this->userConn[$conn->User->id]);
+            }
+        }
     }
 
     /**
@@ -254,13 +285,13 @@ class ChatRoom implements WampServerInterface
         ));
 
         // Inform other devices that they should join to room!
-        /**
-         * How can we find other devices:
-         * - Loop in control topic subscribers list to find $conn with same User
-         * OR
-         * - Create a new index: userConnections
-         */
-        // @todo : here
+        if ($conn->resourceId != -1) {
+            foreach ($this->userConn[$conn->User->id] as $connToNotify) {
+                if ($conn != $connToNotify) {
+                    $connToNotify->event(self::CONTROL_TOPIC, array('action' => 'joinRoomFromOtherDevice', 'data' => array('room_id' => $roomId)));
+                }
+            }
+        }
 
         // Register this room in user connection
         $conn->Chat->rooms[$roomId] = $topic;
@@ -323,7 +354,11 @@ class ChatRoom implements WampServerInterface
         }
 
         // Inform other device that they should leave to room!
-        // @todo : here
+        foreach ($this->userConn[$conn->User->id] as $connToNotify) {
+            if ($conn != $connToNotify) {
+                $connToNotify->event(self::CONTROL_TOPIC, array('action' => 'leaveRoomFromOtherDevice', 'data' => array('room_id' => $roomId)));
+            }
+        }
 
         // Notify everyone this guy has leaved the room
         $this->broadcast($roomId, array('action' => 'userOutRoom', 'data' => array(

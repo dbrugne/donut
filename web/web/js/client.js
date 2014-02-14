@@ -187,6 +187,7 @@ var ChatClient = function(optDebug) {
     }
 
     function roomContainerAddMessage(roomId, message) {
+        Debug(message);
         var date = new Date(message.time * 1000);
         var dateText = date.getHours()+':'+date.getMinutes()+':'+date.getSeconds();
         var html = '<p data-user-id="'+message.user_id+'"><span class="date">['+dateText+']</span> <span class="username">&lt;'+message.username+'&gt;</span> <span class="text">'+message.message+'</span></p>';
@@ -409,6 +410,14 @@ var ChatClient = function(optDebug) {
 
         $(ChatServer).bind('roomBaseline', function(jQevent, roomId, data) {
             setRoomBaseline(roomId, data);
+        });
+
+        $(ChatServer).bind('joinRoomFromOtherDevice', function(jQevent, data) {
+            joinRoom(data.room_id);
+        });
+
+        $(ChatServer).bind('leaveRoomFromOtherDevice', function(jQevent, data) {
+            leaveRoom(data.room_id);
         });
 
         $(ChatServer).bind('message', function(jQevent, roomId, data) {
