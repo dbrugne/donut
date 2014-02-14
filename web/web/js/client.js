@@ -116,14 +116,16 @@ var ChatClient = function(optDebug) {
 
         // Room content
         $( ".room-container" ).hide();
-        $('.room-container[data-room-id="'+roomId+'"]').show();
+        $('.room-container[data-room-id="'+roomId+'"]').fadeIn(400);
 
         // User list
         $( ".users-list" ).hide();
-        $('.users-list[data-room-id="'+roomId+'"]').show();
+        $('.users-list[data-room-id="'+roomId+'"]').fadeIn(400);
 
         // Remove un-read message badge
-        $('.room-item[data-room-id="'+roomId+'"] > .badge').remove();
+        $('.room-item[data-room-id="'+roomId+'"] > .badge').fadeOut(400, function () {
+            $('.room-item[data-room-id="'+roomId+'"] > .badge').remove();
+        });
     }
 
     function scrollDown(e) {
