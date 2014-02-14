@@ -127,10 +127,7 @@ var ChatClient = function(optDebug) {
     }
 
     function scrollDown(e) {
-        // certain browsers have a bug such that scrollHeight is too small
-        // when content does not fill the client area of the element
-        var scrollHeight = Math.max(e.scrollHeight, e.clientHeight);
-        e.scrollTop = scrollHeight - e.clientHeight;
+        $(".messages").scrollTop(100000);
     }
 
     function roomListNewMessageInRoom(roomId, num) {
@@ -151,7 +148,7 @@ var ChatClient = function(optDebug) {
             return;
         }
 
-        var html = '<a href="#" class="list-group-item user-item" data-user-id="'+user.id+'">'+user.username+'</a>';
+        var html = '<a href="#" class="user-item" data-user-id="'+user.id+'">'+user.username+'</a>';
         $(".users-list[data-room-id='"+roomId+"'] > .list-group").append(html);
 
         userListSort(roomId);
