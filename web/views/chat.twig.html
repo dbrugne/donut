@@ -7,16 +7,16 @@
     <section id="rooms">
 
         <!-- Status panel -->
-        <div class="panel panel-default">
+        <div class="panel panel-default block-status">
             <div class="panel-body" style="position: relative;">
                 You are
-                <button type="button" id="status" class="" style="position: absolute; right: 15px;">...</button>
+                <button type="button" id="status">...</button>
             </div>
         </div>
         <!-- / Status panel -->
 
         <!-- Already in rooms panel -->
-        <div class="panel panel-default">
+        <div class="panel panel-default block-room">
             <div class="panel-heading">Your are in</div>
             <div id="rooms-list" class="list-group">
                 <!-- Default room-item -->
@@ -55,9 +55,11 @@
         </div>
         <!-- / Available rooms panel -->
 
+        <!--
         <button class="btn btn-success" id="test1">Test</button>
         <button class="btn btn-success" id="test2">Test</button>
         <button class="btn btn-success" id="test3">Test</button>
+        -->
     </section>
     <div id="main">
         <!-- Default room container -->
@@ -85,7 +87,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="input-group">
-                            <span class="input-group-addon"><input type="image" src="/img/smiley-icon.png" class="" width="15px" /></span>
+                            <span class="input-group-addon"><input type="image" src="/img/smiley-icon.png" class="" width="16px" /></span>
                             <input type="text" name="message" class="input-message form-control" data-room-id="" />
                           <span class="input-group-btn">
                             <button type="button" class="btn btn-default send-message" data-room-id="">Send!</button>
@@ -103,7 +105,7 @@
         <div class="panel panel-default users-list" data-room-id="template" style="display: none;">
            <div class="panel-heading">Users</div>
            <div class="list-group">
-               <a href="#" class="list-group-item user-item" style="display: none;">&nbsp;</a>
+               <a href="#" class="user-item" style="display: none;">&nbsp;</a>
            </div>
         </div>
         <!-- / Template room user list -->
