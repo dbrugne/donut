@@ -1,5 +1,5 @@
 <?php
-// Dear FIG: Thank you for PSR-0!
+
 use Ratchet\Server\IoServer;
 use Ratchet\Server\FlashPolicy;
 use Ratchet\WebSocket\WsServer;
@@ -28,17 +28,22 @@ require_once __DIR__.'/../vendor/autoload.php';
 
 // Setup application
 $app = new Silex\Application();
-$app['debug'] = true;
 
-// Setup database
-$app['pdo.host'] = 'localhost';
-$app['pdo.dbname'] = 'chat';
-$app['pdo.user'] = 'root';
-$app['pdo.password'] = '';
-$app['pdo.dsn'] = 'mysql:dbname='.$app['pdo.dbname'];
+/**********************************************
+ * Configuration
+ *********************************************/
+$env = (isset($_SERVER['ENV']) && null != $_SERVER['ENV']) ? $_SERVER['ENV'] : 'dev';
+$configuration = parse_ini_file("../config/{$env}.ini");
+foreach ($configuration as $k => $v) {
+    $app[$k] = $v;
+}
+
+/**********************************************
+ * Database
+ *********************************************/
 $app['pdo'] = $app->share(function () use ($app) {
     return new PDO(
-        $app['pdo.dsn'],
+        $app['pdo.dsn'] = 'mysql:dbname='.$app['pdo.dbname'],
         $app['pdo.user'],
         $app['pdo.password']
     );
@@ -54,7 +59,9 @@ $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
     ),
 ));
 
-// Setup session
+/**********************************************
+ * Session
+ *********************************************/
 $app['session.db_options'] = array(
     'db_table'      => 'sessions',
     'db_id_col'     => 'session_id',
@@ -69,13 +76,18 @@ $app['session.storage.handler'] = $app->share(function () use ($app) {
     );
 });
 
-// Setup logging
+/**********************************************
+ * Logging
+ *********************************************/
 $stdout = new StreamHandler('php://stdout');
 $logout = new Logger('SockOut');
 $login  = new Logger('Sock-In');
 $login->pushHandler($stdout);
 $logout->pushHandler($stdout);
 
+/**********************************************
+ * Server
+ *********************************************/
 // The all mighty event loop
 $loop = Factory::create();
 

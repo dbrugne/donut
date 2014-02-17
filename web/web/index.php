@@ -9,16 +9,21 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler;
 use App\User;
 use App\Chat;
-$app['debug'] = true;
 
+/**********************************************
+ * Configuration
+ *********************************************/
+$env = (isset($_SERVER['ENV']) && null != $_SERVER['ENV']) ? $_SERVER['ENV'] : 'dev';
+$configuration = parse_ini_file("../config/{$env}.ini");
+foreach ($configuration as $k => $v) {
+    $app[$k] = $v;
+}
 
 /**********************************************
  * Services
  *********************************************/
 $app->register(new Silex\Provider\SessionServiceProvider());
-$app['pdo.dsn'] = 'mysql:dbname=chat';
-$app['pdo.user'] = 'root';
-$app['pdo.password'] = '';
+$app['pdo.dsn'] = 'mysql:dbname='.$app['pdo.dbname'];
 $app['session.db_options'] = array(
     'db_table'      => 'sessions',
     'db_id_col'     => 'session_id',
@@ -43,8 +48,8 @@ $app['session.storage.handler'] = $app->share(function () use ($app) {
 $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
     'db.options' => array(
         'driver'   => 'pdo_mysql',
-        'dbname'   => 'chat',
-        'host'     => 'localhost',
+        'dbname'   => $app['pdo.dbname'],
+        'host'     => $app['pdo.host'],
         'user'     => $app['pdo.user'],
         'password' => $app['pdo.password'],
     ),
