@@ -2,7 +2,11 @@
 <project name="Chat" default="help">
 
     <!-- Environment definition -->
-    <loadfile property="env" file="env"/>
+    <loadfile property="env" file="env">
+        <filterchain>
+            <striplinebreaks />
+        </filterchain>
+    </loadfile>
     <if>
         <equals arg1="${env}" arg2="" />
         <then>
