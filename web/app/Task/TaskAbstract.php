@@ -15,10 +15,10 @@ class TaskAbstract extends Task
         $this->app->register(new Silex\Provider\DoctrineServiceProvider(), array(
             'db.options' => array(
                 'driver'   => 'pdo_mysql',
-                'dbname'   => 'chat',
-                'host'     => 'localhost',
-                'user'     => 'root',
-                'password' => '',
+                'dbname'   => $this->project->getProperty('pdo.dbname'),
+                'host'     => $this->project->getProperty('pdo.host'),
+                'user'     => $this->project->getProperty('pdo.user'),
+                'password' => $this->project->getProperty('pdo.password'),
             ),
         ));
         $this->app->register(new Silex\Provider\SecurityServiceProvider());
