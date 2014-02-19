@@ -241,7 +241,7 @@ var ChatClient = function(optDebug) {
     function joinRoom(roomId) {
         // Test if this room is already loaded in this browser page
         if (-1 !== $.inArray(parseInt(roomId), Joined)) {
-            Debug('Room already opened: '+roomId);
+            Debug('Room already opened (joinRoom): '+roomId);
             focusOnRoom(roomId);
             return false;
         }
@@ -270,6 +270,11 @@ var ChatClient = function(optDebug) {
      * Interface binding
      *****************************************************/
     $(function() {
+
+        $(window).on('beforeunload', function() {
+            // prevent user leave the page un-intentionnaly
+            return "If you leave this page all the chatroom history will be lost.";
+        });
 
         var postMessageCallback = function (e) {
             var roomId = $(e).data('roomId');
@@ -419,6 +424,9 @@ var ChatClient = function(optDebug) {
 
         $(ChatServer).bind('close', function(e) {
             status.update('offline');
+
+            // To be sure that client will re-subscribe to any topic after re-connection
+            Joined = [];
         });
 
         // When subscribe a room topic this "event" is send by server
