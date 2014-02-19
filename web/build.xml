@@ -30,6 +30,7 @@
     <!-- Target: showConfig                            -->
     <!-- ============================================  -->
     <target name="showConfig" depends="init" description="Show important configuration values.">
+        <echo msg="Current environment: ${env}" />
         <echo msg="Current configuration:" />
         <echo msg="-> dsn: ${pdo.dsn}" />
         <echo msg="-> user: ${pdo.user}:${pdo.password}" />
