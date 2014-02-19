@@ -189,9 +189,10 @@ ChatServerPrototype = function(optDebug) {
     ab._debugpubsub = api.debug;
     ab._debugws     = api.debug;
 
-    var sess = new ab.Session(
+    ab.connect(
         'ws://' + window.location.hostname + ':8080/chat'
-      , function() {
+      , function(session) {
+            sess = session;
             api.sessionId = sess._session_id;
             Debug('Connected! ' + api.sessionId);
 
@@ -200,14 +201,17 @@ ChatServerPrototype = function(optDebug) {
                 $(api).trigger(event.action, event.data);
             });
 
-            $(api).trigger('connect');
+            $(api).trigger('connect'); // @todo : attention si c'est une reconnexion !!!
         }
-      , function() {
+      , function(code, reason, detail) {
             Debug('Connection closed');
+            Debug([code, reason, detail]);
             $(api).trigger('close');
         }
       , {
-            'skipSubprotocolCheck': true
+            'skipSubprotocolCheck': true,
+            'maxRetries': 60,
+            'retryDelay': 2000
         }
     );
 
