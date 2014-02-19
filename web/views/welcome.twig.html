@@ -9,11 +9,11 @@
         {% if is_granted('ROLE_USER') %}
             <h1>Welcome to Chat!</h1>
 
-            <h2>Chat! c'est facile</h2>
-            <p>Le premier service de discussion instantanée dédié à la TV.</p>
-
             {% include 'channels.twig.html' with {'channels': channels} %}
         {% else %}
+            <h1>Welcome to Chat!</h1>
+            <p>Chat! c'est simple! C'est du chat en temps réel, avec plein de gens dans des rooms thématiques ou non.</p>
+            <p>Que vous soyez une vieux nostalgique d'IRC ou un afficionados du forum de NRJ vous vous y retrouverez.</p>
             <p>Already registered, <a href="{{ path('user.login') }}">signin</a>.</p>
             <p>Not already registered, <a href="{{ path('user.register') }}">signup.</a></p>
         {% endif %}
