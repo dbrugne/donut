@@ -202,7 +202,7 @@ ChatServerPrototype = function(optDebug) {
                 $(api).trigger(event.action, event.data);
             });
 
-            $(api).trigger('connect'); // @todo : attention si c'est une reconnexion !!!
+            $(api).trigger('connect');
         }
       , function(code, reason, detail) {
             sess = null;
