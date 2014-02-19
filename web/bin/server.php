@@ -9,7 +9,7 @@ use Ratchet\Session\SessionProvider;
 
 use React\EventLoop\Factory;
 use React\Socket\Server as Reactor;
-use React\ZMQ\Context;
+//use React\ZMQ\Context;
 
 use Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler;
 
@@ -96,9 +96,9 @@ $loop = Factory::create();
 //  also connect on port 9000 and increment a counter if they connect.
 // Later, we can publish the results and find out if WebSockets over
 //  a port other than 80 is viable (theory is blocked by firewalls).
-$context = new Context($loop);
-$push = $context->getSocket(ZMQ::SOCKET_PUSH);
-$push->connect('tcp://127.0.0.1:5555');
+//$context = new Context($loop);
+//$push = $context->getSocket(ZMQ::SOCKET_PUSH);
+//$push->connect('tcp://127.0.0.1:5555');
 
 // Setup our Ratchet ChatRoom application
 $webSock = new Reactor($loop);
@@ -106,7 +106,7 @@ $webSock->listen(8080, '0.0.0.0');
 $webServer = new IoServer(           // Basic I/O with clients, aww yeah
     new HttpServer(
         new WsServer(                    // Boom! WebSockets
-            new PortLogger($push, 8080,    // Compare vs the almost over 9000 conns
+//            new PortLogger($push, 8080,    // Compare vs the almost over 9000 conns
                 new MessageLogger(       // Log events in case of "oh noes"
                     new SessionProvider(
                         new Authentication (
@@ -124,7 +124,7 @@ $webServer = new IoServer(           // Basic I/O with clients, aww yeah
                     , $login
                     , $logout
                 )
-            )
+//            )
         )
     )
     , $webSock
@@ -137,14 +137,14 @@ $policy = new FlashPolicy;
 $policy->addAllowedAccess('*', 8080);
 $webServer = new IoServer($policy, $flashSock);
 
-$logSock = new Reactor($loop);
-$logSock->listen(9000, '0.0.0.0');
-$zLogger = new IoServer(
-    new WsServer(
-        new PortLogger($push, 9000, new NullComponent)
-    )
-    , $logSock
-);
+//$logSock = new Reactor($loop);
+//$logSock->listen(9000, '0.0.0.0');
+//$zLogger = new IoServer(
+//    new WsServer(
+//        new PortLogger($push, 9000, new NullComponent)
+//    )
+//    , $logSock
+//);
 
 // GO GO GO!
 $loop->run();
