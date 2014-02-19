@@ -32,7 +32,9 @@ $app = new Silex\Application();
 /**********************************************
  * Configuration
  *********************************************/
-$env = (isset($_SERVER['ENV']) && null != $_SERVER['ENV']) ? $_SERVER['ENV'] : 'dev';
+if (!file_exists('../env') || null == $env = file_get_contents('../env')) {
+    die('no, sorry!');
+}
 $configuration = parse_ini_file("../config/{$env}.ini");
 foreach ($configuration as $k => $v) {
     $app[$k] = $v;

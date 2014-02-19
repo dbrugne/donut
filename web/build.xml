@@ -1,7 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="Chat" default="help">
 
+    <!-- Environment definition -->
+    <loadfile property="env" file="env"/>
+    <if>
+        <equals arg1="${env}" arg2="" />
+        <then>
+            <fail msg="Please create a env.properties file that contains the environment code for this project instance." />
+        </then>
+    </if>
+    <!-- Default configuration -->
     <property file="./build.properties" />
+    <!-- Override default configuration with per-environment configuration -->
+    <property file="./config/${env}.ini" override="true" />
+
     <taskdef name="inject-sample" classname="app.Task.Sample" />
 
     <!-- ============================================  -->
@@ -19,8 +31,8 @@
     <!-- ============================================  -->
     <target name="showConfig" depends="init" description="Show important configuration values.">
         <echo msg="Current configuration:" />
-        <echo msg="-> dsn: ${db.dsn}" />
-        <echo msg="-> user: ${db.username}:${db.password}" />
+        <echo msg="-> dsn: ${pdo.dsn}" />
+        <echo msg="-> user: ${pdo.user}:${pdo.password}" />
         <echo msg="-> basedir: ${basedir}" />
     </target>
 
@@ -28,7 +40,7 @@
     <!-- Target: identifyPath                          -->
     <!-- ============================================  -->
     <target name="init" hidden="true">
-        <property name="db.dsn" value="${pdo.driver}:host=${db.host};dbname=${db.dbname}" />
+        <property name="pdo.dsn" value="${pdo.driver}:host=${pdo.host};dbname=${pdo.dbname}" />
         <resolvepath propertyName="basedir" file="${project.basedir}"/>
         <property name="datadir" value="${basedir}/data" />
         <property name="sqldir" value="${basedir}/sql" />
@@ -40,7 +52,7 @@
     <target name="dbRecreate" depends="init">
 
         <!-- Structure -->
-        <pdosqlexec url="${db.dsn}" userid="${db.username}" password="${db.password}" src="${sqldir}/structure.sql" />
+        <pdosqlexec url="${pdo.dsn}" userid="${pdo.user}" password="${pdo.password}" src="${sqldir}/structure.sql" />
 
         <!-- Sample data -->
         <inject-sample filename="${sqldir}/samples.json" />

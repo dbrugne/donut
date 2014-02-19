@@ -1,6 +1,7 @@
 /.idea
 /web/composer.lock
 /web/vendor
+/web/env
 
 # dev/tests/stub files exclusion
 /web/web/client.html
