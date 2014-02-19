@@ -94,7 +94,7 @@ class UserController
                     $app['security']->setToken($token);
                 }
 
-                return $app->redirect($app['url_generator']->generate('user.view', array('id' => $user->getId())));
+                return $app->redirect($app['url_generator']->generate('homepage'));
 
             } catch (InvalidArgumentException $e) {
                 $error = $e->getMessage();

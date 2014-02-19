@@ -117,6 +117,6 @@ $app->get('/', function(Request $request) use ($app) {
         'channels' => $channels,
     ));
 
-});
+})->bind('homepage');
 
 $app->run();
