@@ -189,6 +189,7 @@ ChatServerPrototype = function(optDebug) {
     ab._debugpubsub = api.debug;
     ab._debugws     = api.debug;
 
+    var sess;
     ab.connect(
         'ws://' + window.location.hostname + ':8080/chat'
       , function(session) {
@@ -204,6 +205,7 @@ ChatServerPrototype = function(optDebug) {
             $(api).trigger('connect'); // @todo : attention si c'est une reconnexion !!!
         }
       , function(code, reason, detail) {
+            sess = null;
             Debug('Connection closed');
             Debug([code, reason, detail]);
             $(api).trigger('close');
