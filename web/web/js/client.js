@@ -214,6 +214,11 @@ var ChatClient = function(optDebug) {
 
     function availableRoomsAddRoom(room)
     {
+        // Only if not already in the list
+        if ($("#available-rooms-list").find(".available-room-item[data-room-id='"+room.id+"']").length > 0) {
+            return;
+        }
+
         var newRoomItem = $(".available-room-item[data-room-id='template']").clone(false);
         newRoomItem.attr('data-room-id', room.id);
         newRoomItem.html(room.name);
