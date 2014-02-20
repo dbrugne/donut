@@ -36,7 +36,9 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Welcome <strong>{{ app.user.displayName }}</strong> <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li><a href="{{ path('user') }}"><i class="icon-user"></i> your account</a></li>
+                            {% if is_granted('ROLE_ADMIN') %}
                             <li><a href="{{ path('user.list') }}"><i class="icon-list"></i> manager users</a></li>
+                            {% endif %}
                             <li class="divider"></li>
                             <li><a href="{{ path('user.logout') }}"><i class="icon-off"></i> logout</a></li>
                         </ul>
