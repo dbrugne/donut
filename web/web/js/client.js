@@ -488,10 +488,8 @@ var ChatClient = function(optDebug) {
     $("#test1").click(function () {
     });
     $("#test2").click(function () {
-
     });
     $("#test3").click(function () {
-
     });
     // TEST
 
