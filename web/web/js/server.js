@@ -180,6 +180,15 @@ ChatServerPrototype = function(optDebug) {
             );
         }
 
+      , searchForRooms: function(search, callback) {
+            sess.call('searchForRooms', search).then(
+                function(roomList) {
+                    callback(roomList);
+                }
+                , function() { alert('Error searchForRooms!!'); }
+            );
+        }
+
       , sessionId: ''
 
       , rooms: {}
@@ -213,7 +222,7 @@ ChatServerPrototype = function(optDebug) {
       , {
             'skipSubprotocolCheck': true,
             'maxRetries': 60,
-            'retryDelay': 2000
+            'retryDelay': 3500
         }
     );
 

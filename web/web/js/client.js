@@ -189,8 +189,6 @@ var ChatClient = function(optDebug) {
 
     function roomContainerAddMessage(roomId, message) {
         var dateText = $.format.date(new Date(message.time*1000), "HH:mm:ss");
-        console.log(dateText);
-        console.log(message.time);
         var html = '<p data-user-id="'+message.user_id+'"><span class="date">['+dateText+']</span> <span class="username">&lt;'+message.username+'&gt;</span> <span class="text">'+message.message+'</span></p>';
         $(".room-container[data-room-id='"+roomId+"'] > .messages").append(html);
         scrollDown($(".room-container[data-room-id='"+roomId+"'] > .messages"));
@@ -272,8 +270,11 @@ var ChatClient = function(optDebug) {
     $(function() {
 
         $(window).on('beforeunload', function() {
-            // prevent user leave the page un-intentionnaly
-            return "If you leave this page all the chatroom history will be lost.";
+            // only if at list one room is open
+            if (Joined.length > 0) {
+                // prevent user leave the page un-intentionnaly
+                return "If you leave this page all the chatroom history will be lost.";
+            }
         });
 
         var postMessageCallback = function (e) {
@@ -385,6 +386,45 @@ var ChatClient = function(optDebug) {
             roomHeader.find('.room-baseline-text').show();
             roomHeader.find('.room-baseline-input').val('');
         });
+
+        $("#search-room-link").click(function () {
+            $("#room-search-modal").modal();
+        });
+
+        var searchRoomsCallback = function() {
+            var inputModal = $("#room-search-modal").find(".room-search-input").first();
+            var search = inputModal.val();
+            if ('' == search) {
+                return;
+            }
+            ChatServer.searchForRooms(search, function(roomList) {
+                var ul =  $("#room-search-modal").find("ul.rooms-list").first();
+
+                // Empty list
+                $(ul).children('li').remove();
+
+                // No result
+                if (roomList.length < 1) {
+                    var html = '<li><span class="no-result">No result</span></li>';
+                    $(ul).append(html);
+                }
+
+                // Fill list with result
+                $(roomList).each(function() {
+                    var roomId = this.id;
+                    var html = '<li class="list-group-item search-room-item" data-room-id="'+roomId+'"><h4 class="list-group-item-heading">'+this.name+'</h4> <p class="list-group-item-text">'+this.baseline+'</p></li>';
+                    $(ul).append(html);
+
+                    $(ul).find("li.search-room-item[data-room-id='"+roomId+"']").first().click(function() {
+                        joinRoom(roomId);
+                        $("#room-search-modal").modal('hide');
+                    });
+                });
+            });
+        };
+
+        $("#room-search-modal").find(".room-search-submit").first().click(searchRoomsCallback);
+        $("#room-search-modal").find(".room-search-input").first().keyup(searchRoomsCallback);
 
     });
 

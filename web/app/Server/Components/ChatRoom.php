@@ -173,6 +173,18 @@ class ChatRoom implements WampServerInterface
                 return $conn->callResult($id, $roomList);
             break;
 
+            case 'searchForRooms':
+                $search = $this->escape($params[0]);
+                $roomList = array();
+                $criteria = array('name' => array('like' => $search));
+                foreach ($this->roomManager->findBy($criteria) as $room)
+                {
+                    $roomList[] = $room->getData();
+                }
+
+                return $conn->callResult($id, $roomList);
+            break;
+
             case 'changeBaseline':
                 $roomId = $this->escape($params[0]);
                 $baseline = $this->escape($params[1]);

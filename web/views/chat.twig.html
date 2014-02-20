@@ -1,9 +1,38 @@
 {% extends "layout.twig.html" %}
 
-{% block title %}Magento Object Reference{% endblock %}
+{% block title %}..a.!{% endblock %}
 
 {% block content %}
-<div id="chat">
+<!-- Room search modal -->
+<div class="modal fade" id="room-search-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Search for rooms</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="input-group">
+                            <input type="search" class="form-control room-search-input" placeholder="Search for rooms" />
+                            <span class="input-group-btn">
+                                <button class="btn btn-default room-search-submit" type="button"><span class="glyphicon glyphicon-search"></span></button>
+                            </span>
+                        </div><!-- /input-group -->
+                        <ul class="list-group rooms-list"></ul>
+                    </div><!-- /.col-lg-12 -->
+                </div><!-- /.row -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- / Room search modal -->
+
+<div id="chat" class="">
     <section id="rooms">
 
         <!-- Status panel -->
@@ -15,9 +44,9 @@
         </div>
         <!-- / Status panel -->
 
-        <!-- Already in rooms panel -->
+        <!-- Rooms panel -->
         <div class="panel panel-default block-room">
-            <div class="panel-heading">Your are in</div>
+            <div class="panel-heading">Rooms</div>
             <div id="rooms-list" class="list-group">
                 <!-- Default room-item -->
                 <a href="#" class="list-group-item room-item" data-room-id="default"><em>Not in room</em></a>
@@ -26,8 +55,28 @@
                 <a href="#" class="list-group-item room-item" data-room-id="template" style="display:none;">&nbsp;</a>
                 <!-- / Template room-item -->
             </div>
+            <div class="panel-footer">
+                <a href="#" id="create-room-toggle"><span class="glyphicon glyphicon-plus"></span> Create a room</a>
+                <div id="create-room-form" style="display: none;">
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="create-room-name" placeholder="Room name">
+                    </div>
+                    <!-- div class="checkbox">
+                        <label>
+                            <input name="private" type="checkbox"> Private room
+                        </label>
+                        <label>
+                            <input name="persistent" type="checkbox"> Persistent room
+                        </label>
+                    </div -->
+                    <button class="btn btn-primary" id="create-room-submit">Create</button>
+                    <button class="btn btn-error" id="create-room-cancel">Cancel</button>
+                </div>
+                <br />
+                <a href="#" id="search-room-link"><span class="glyphicon glyphicon-search"></span> Search a room</a>
+            </div>
         </div>
-        <!-- / Already in rooms panel -->
+        <!-- / Rooms panel -->
 
         <!-- Available rooms panel -->
         <div class="panel panel-default">
@@ -36,21 +85,6 @@
                 <!-- Template room-item -->
                 <a href="#" class="available-room-item" data-room-id="template" style="display:none;">&nbsp;</a>
                 <!-- / Template room-item -->
-            </div>
-            <div class="panel-footer">
-                <a href="#" id="create-room-toggle">Create a room <span class="glyphicon glyphicon-plus"></span></a>
-                <div id="create-room-form" style="display: none;">
-                    <div class="form-group">
-                        <input type="text" class="form-control" id="create-room-name" placeholder="Room name">
-                    </div>
-                    <<!-- div class="checkbox">
-                        <label>
-                            <input type="checkbox"> Private room
-                        </label>
-                    </div -->
-                    <button class="btn btn-primary" id="create-room-submit">Create</button>
-                    <button class="btn btn-error" id="create-room-cancel">Cancel</button>
-                </div>
             </div>
         </div>
         <!-- / Available rooms panel -->
@@ -61,6 +95,7 @@
         <button class="btn btn-success" id="test3">Test</button>
         -->
     </section>
+
     <div id="main">
         <!-- Default room container -->
         <div class="room-container" data-room-id="default">
@@ -93,13 +128,14 @@
                             <button type="button" class="btn btn-default send-message" data-room-id="">Send!</button>
                           </span>
                         </div><!-- /input-group -->
-                    </div><!-- /.col-lg-6 -->
+                    </div><!-- /.col-lg-12 -->
                 </div><!-- /.row -->
 
             </section>
         </div>
         <!-- / Template room container -->
     </div>
+
     <section id="users">
         <!-- Template room user list -->
         <div class="panel panel-default users-list" data-room-id="template" style="display: none;">
@@ -110,6 +146,7 @@
         </div>
         <!-- / Template room user list -->
     </section>
+
 </div>
 
 {% endblock %}
