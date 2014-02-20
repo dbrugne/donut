@@ -4,6 +4,7 @@ namespace App\Orm;
 
 use Doctrine\DBAL\Connection;
 use Silex\Application;
+use Symfony\Component\Security\Acl\Exception\Exception;
 
 abstract class EntityManager
 {
@@ -114,7 +115,7 @@ abstract class EntityManager
             $sql .= 'LIMIT ' . (int) $offset . ', ' . (int) $limit . ' ';
         }
 
-//        if ($this->table == 'user_room') { var_dump($sql, $params); exit;}
+//        if ($this->table == 'rooms') { var_dump($sql, $params); }
         $data = $this->app['db']->fetchAll($sql, $params);
 
         $entities = array();
@@ -163,6 +164,18 @@ abstract class EntityManager
     /**
      * Get SQL query fragment common to both find and count queries.
      *
+     * Each criteria could be a simple key => value:
+     *
+     *    array('id' => 1)
+     * Give:
+     *    WHERE id = '1'
+     *
+     * Or an array with operator => value:
+     *
+     *    array('name' => array('like' => 'foobar'))
+     * Give:
+     *    WHERE name LIKE '%foobar%'
+     *
      * @param array $criteria
      * @return array An array of SQL and query parameters, in the form array($sql, $params)
      */
@@ -175,8 +188,27 @@ abstract class EntityManager
         $first_crit = true;
         foreach ($criteria as $key => $val)
         {
-            $sql .= ($first_crit ? 'WHERE' : 'AND') . ' ' . $key . ' = :' . $key . ' ';
-            $params[$key] = $val;
+            $sql .= ($first_crit ? 'WHERE' : 'AND');
+
+            if (!is_array($val)) {
+                $sql .= " {$key} = :{$key} ";
+                $params[$key] = $val;
+            } else {
+                $criterion = each($val);
+                if ($criterion['key'] == 'like') {
+                    $sql .= " {$key} LIKE :{$key} ";
+                    $params[$key] = '%'.$criterion['value'].'%';
+                } elseif ($criterion['key'] == 'lt') {
+                    $sql .= " {$key} <= :{$key} ";
+                    $params[$key] = $val;
+                } elseif ($criterion['key'] == 'gt') {
+                    $sql .= " {$key} >= :{$key} ";
+                    $params[$key] = $val;
+                } else {
+                    throw new Exception("Unknown SQL operator: {$criterion['key']}");
+                }
+            }
+
             $first_crit = false;
         }
 
