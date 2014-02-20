@@ -147,8 +147,8 @@ var ChatClient = function(optDebug) {
     // Resize all .room-container > messages height in current document
     function resizeMessages() {
         $('.room-container').each(function () {
-            if ('template' == this.data('roomId')
-                || 'default' == this.data('roomId')) {
+            if ('template' == $(this).data('roomId')
+                || 'default' == $(this).data('roomId')) {
                 return;
             }
             var containerHeight = $(this).innerHeight();
