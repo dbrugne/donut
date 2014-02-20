@@ -89,6 +89,9 @@ var ChatClient = function(optDebug) {
         newUsersList.attr('data-room-id', roomId);
         $("#users").append(newUsersList);
 
+        // Set the height as with flexbox model
+        resizeMessages();
+
         // Active this new room (if needed)
         focusOnRoom(roomId);
     }
@@ -124,6 +127,9 @@ var ChatClient = function(optDebug) {
         $( ".room-container" ).hide();
         $('.room-container[data-room-id="'+roomId+'"]').fadeIn(400);
 
+        // Set the height as with flexbox model
+        resizeMessages();
+
         // User list
         $( ".users-list" ).hide();
         $('.users-list[data-room-id="'+roomId+'"]').fadeIn(400);
@@ -136,6 +142,18 @@ var ChatClient = function(optDebug) {
 
     function scrollDown(e) {
         $(".messages").scrollTop(100000);
+    }
+
+    // Resize all .room-container > messages height in current document
+    function resizeMessages() {
+        $('.room-container').each(function () {
+            var containerHeight = $(this).innerHeight();
+            var headerHeight = $(this).find('.header').outerHeight();
+            var postboxHeight = $(this).find('.postbox').outerHeight();
+            var messagesHeight = containerHeight - (headerHeight + postboxHeight + 10); // 10 is .messages margin
+            Debug(messagesHeight);
+            $(this).find('.messages').first().height(messagesHeight);
+        });
     }
 
     function roomListNewMessageInRoom(roomId, num) {
@@ -261,6 +279,11 @@ var ChatClient = function(optDebug) {
                 // prevent user leave the page un-intentionnaly
                 return "If you leave this page all the chatroom history will be lost.";
             }
+        });
+
+        // Emulate flexbox model for all browser
+        $(window).resize(function() {
+            resizeMessages();
         });
 
         var postMessageCallback = function (e) {
