@@ -163,16 +163,6 @@ class ChatRoom implements WampServerInterface
     {
         switch ($fn) {
 
-            case 'availableRooms':
-                $roomList = array();
-                foreach ($this->roomManager->findBy() as $room)
-                {
-                    $roomList[] = $room->getData();
-                }
-
-                return $conn->callResult($id, $roomList);
-            break;
-
             case 'searchForRooms':
                 $search = $this->escape($params[0]);
                 $roomList = array();
@@ -228,17 +218,6 @@ class ChatRoom implements WampServerInterface
                     $roomId = $this->roomManager->insert(array(
                         'name' => $name,
                     ));
-
-                    // Inform everyone that room was created (control topic)
-                    foreach($this->controlTopicUsers as $connToNotify) {
-                        $connToNotify->event(self::CONTROL_TOPIC, array(
-                            'action' => 'newAvailableRoom',
-                            'data' => array(
-                                'id' => $roomId,
-                                'name' => $name,
-                            ),
-                        ));
-                    }
 
                     // Return as created to client
                     return $conn->callResult($id, array('id' => $roomId, 'name' => $name));
@@ -404,17 +383,6 @@ class ChatRoom implements WampServerInterface
             $this->roomManager->delete(array('id' => $roomId));
             unset($this->userRoom[$roomId]);
             unset($this->roomsList[$roomId]);
-
-            // Inform everyone that room was removed (control topic)
-            foreach($this->controlTopicUsers as $connToNotify) {
-                $connToNotify->event(self::CONTROL_TOPIC, array(
-                    'action' => 'removeAvailableRoom',
-                    'data' => array(
-                        'id' => $roomId,
-                    ),
-                ));
-            }
-
             echo "Room {$roomId} deleted\n";
         }
 

@@ -106,20 +106,6 @@ ChatServerPrototype = function(optDebug) {
          * @param Object data
          */
             , 'leaveRoomFromOtherDevice'
-
-        /**
-         * The server inform that a new room was created
-         * @event newAvailableRoom
-         * @param Object data
-         */
-            , 'newAvailableRoom'
-
-        /**
-         * he server inform that a new room was closed
-         * @event removeAvailableRoom
-         * @param Object data
-         */
-            , 'removeAvailableRoom'
         ]
 
       , debug: optDebug | false
@@ -152,15 +138,6 @@ ChatServerPrototype = function(optDebug) {
                 callback(room);
             }, function(args) {
                 callback(room);
-            });
-        }
-
-      , availableRooms: function(callback) {
-            sess.call('availableRooms').then(function(args) {
-                callback(args);
-            }, function(args) {
-                alert('Erreur availableRooms !!');
-                callback(args);
             });
         }
 

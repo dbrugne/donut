@@ -112,7 +112,4 @@ body { padding-top: 50px; }
     border-color: #ddd;
 }
 
-#available-rooms-list { max-height: 200px; overflow-y: scroll; }
-#chat .available-room-item { padding: 2px 10px; font-size: 12px; }
-
 #create-room-form { margin-top: 10px; }
