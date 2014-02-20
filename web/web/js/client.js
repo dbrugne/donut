@@ -256,6 +256,8 @@ var ChatClient = function(optDebug) {
         $(window).on('beforeunload', function() {
             // only if at least one room is open
             if (Joined.length > 0) {
+                console.log("Joined as length: "+Joined.length);
+                console.log(Joined);
                 // prevent user leave the page un-intentionnaly
                 return "If you leave this page all the chatroom history will be lost.";
             }
@@ -408,6 +410,17 @@ var ChatClient = function(optDebug) {
 
         $("#room-search-modal").find(".room-search-submit").first().click(searchRoomsCallback);
         $("#room-search-modal").find(".room-search-input").first().keyup(searchRoomsCallback);
+
+        $(document).on('click', '#users > .users-list > .list-group > .user-item', function() {
+            var userId = $(this).data('userId');
+            if (undefined == userId || '' == userId) {
+                return;
+            }
+
+            $("#user-profile-modal").modal({
+                remote: "http://chat.local/u/"+userId+"?modal=true"
+            });
+        });
 
     });
 

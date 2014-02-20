@@ -263,6 +263,7 @@ class ChatRoom implements WampServerInterface
         // $topic is valid
         if (!$this->topicIsRoom($topic)) {
             echo "Topic '{$topic}' not corresponds to room topic pattern\n";
+            // @todo : send error to browser !!! The browser should now that there was a problem!
             return;
         }
         $roomId = $this->findIdFromTopic($topic);
@@ -272,6 +273,7 @@ class ChatRoom implements WampServerInterface
             // Is this room exists in database?
             if (null === $room = $this->roomManager->findOneBy(array('id' => $roomId))) {
                 echo "Room '{$topic}' not already exists, please call 'createRoom' before\n";
+                // @todo : send error to browser !!! The browser should now that room does not longer exist!
                 return;
             }
 

@@ -150,7 +150,16 @@ class UserController
             throw new NotFoundHttpException('No user was found with that ID.');
         }
 
-        return $app['twig']->render('@user/view.twig', array(
+        $modal = $request->query->get('modal', false);
+        if ($modal) {
+            // Modal optimized template
+            $twig = '@user/view-modal.twig';
+        } else {
+            // Standard full page template
+            $twig = '@user/view.twig';
+        }
+
+        return $app['twig']->render($twig, array(
             'layout_template' => $this->layoutTemplate,
             'user' => $user,
             'imageUrl' => $this->getGravatarUrl($user->getEmail()),
