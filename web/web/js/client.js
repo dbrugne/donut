@@ -16,6 +16,12 @@ var ChatClient = function(optDebug) {
         }
     }
 
+    Array.prototype.remove = function(from, to) {
+        var rest = this.slice((to || from) + 1 || this.length);
+        this.length = from < 0 ? this.length + from : from;
+        return this.push.apply(this, rest);
+    };
+
     /****************************************************
      * Interface initialization
      ****************************************************/
@@ -239,7 +245,7 @@ var ChatClient = function(optDebug) {
         removeRoomIhm(roomId);
 
         // Un-register room in already-opened-rooms list
-        delete Joined[$.inArray(roomId, Joined)];
+        Joined.remove($.inArray(roomId, Joined));
     }
 
     /*****************************************************
@@ -248,7 +254,7 @@ var ChatClient = function(optDebug) {
     $(function() {
 
         $(window).on('beforeunload', function() {
-            // only if at list one room is open
+            // only if at least one room is open
             if (Joined.length > 0) {
                 // prevent user leave the page un-intentionnaly
                 return "If you leave this page all the chatroom history will be lost.";
@@ -480,7 +486,6 @@ var ChatClient = function(optDebug) {
      *****************************************************/
     // TEST
     $("#test1").click(function () {
-
     });
     $("#test2").click(function () {
 
