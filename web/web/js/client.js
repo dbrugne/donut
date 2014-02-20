@@ -283,7 +283,7 @@ var ChatClient = function(optDebug) {
               postMessageCallback(this);
         });
 
-        $(document).on('click', '.close', function () {
+        $(document).on('click', '.room-container > .header > .close', function () {
             var roomId = $(this).closest(".room-container").data('roomId');
             leaveRoom(roomId);
         });
@@ -372,15 +372,14 @@ var ChatClient = function(optDebug) {
         });
 
         $("#search-room-link").click(function () {
+            $("#room-search-modal").find(".room-search-submit").first().trigger('click');
             $("#room-search-modal").modal();
         });
 
         var searchRoomsCallback = function() {
             var inputModal = $("#room-search-modal").find(".room-search-input").first();
             var search = inputModal.val();
-            if ('' == search) {
-                return;
-            }
+
             ChatServer.searchForRooms(search, function(roomList) {
                 var ul =  $("#room-search-modal").find("ul.rooms-list").first();
 
