@@ -82,7 +82,7 @@ var ChatClient = function(optDebug) {
         newRoomContainer.find('.name').html(roomName);
         newRoomContainer.find('.input-message').attr('data-room-id', roomId);
         newRoomContainer.find('.send-message').attr('data-room-id', roomId);
-        $("#main").append(newRoomContainer);
+        $("#room").append(newRoomContainer);
 
         // Create room users-list
         var newUsersList = $(".users-list[data-room-id='template']").clone(false);
