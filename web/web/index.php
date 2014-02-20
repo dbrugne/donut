@@ -63,11 +63,11 @@ $app->register(new Silex\Provider\SecurityServiceProvider(), array(
             'anonymous' => true,
             'remember_me' => array(),
             'form' => array(
-                'login_path' => '/user/login',
-                'check_path' => '/user/login_check',
+                'login_path' => '/u/login',
+                'check_path' => '/u/login_check',
             ),
             'logout' => array(
-                'logout_path' => '/user/logout',
+                'logout_path' => '/u/logout',
             ),
             'users' => $app->share(function($app) { return $app['user.manager']; }),
         ),
@@ -87,7 +87,7 @@ $app['user.controller']->setLayoutTemplate('layout.twig.html');
 /**********************************************
  * Controllers
  *********************************************/
-$app->mount('/user', $u);
+$app->mount('/u', $u);
 
 $app->get('/chat', function() use ($app) {
 
