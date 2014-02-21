@@ -15,7 +15,8 @@ v2:
 * Correct fluid on tablet/phone - done!
 * Open user profile in modal - done!
 * Install Libevent - done!
-* Deploy and send to David
+* Make it works on IE<10
+* Deploy and send to David - done!
 
 v3:
 * Smileys
