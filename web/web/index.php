@@ -13,10 +13,10 @@ use App\Chat;
 /**********************************************
  * Configuration
  *********************************************/
-if (!file_exists('../env') || null == $env = file_get_contents('../env')) {
+if (!file_exists(__DIR__.'/../env') || null == $env = file_get_contents(__DIR__.'/../env')) {
     die('no, sorry!');
 }
-$configuration = parse_ini_file("../config/{$env}.ini");
+$configuration = parse_ini_file(__DIR__."/../config/{$env}.ini");
 foreach ($configuration as $k => $v) {
     $app[$k] = $v;
 }
