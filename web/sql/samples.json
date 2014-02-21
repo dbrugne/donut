@@ -4,13 +4,13 @@
         {
             "username": "damien",
             "password": "damien",
-            "email": "damien.brugne@gmail.com",
+            "email": "damien@damien",
             "roles": ["ROLE_USER","ROLE_ADMIN"]
         },
         {
             "username": "david",
             "password": "david",
-            "email": "hageged@yahoo.com",
+            "email": "david@david",
             "roles": ["ROLE_USER"]
         },
         {
