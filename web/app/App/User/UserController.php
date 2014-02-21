@@ -162,7 +162,7 @@ class UserController
         return $app['twig']->render($twig, array(
             'layout_template' => $this->layoutTemplate,
             'user' => $user,
-            'imageUrl' => $this->getGravatarUrl($user->getEmail()),
+            'imageUrl' => $user->getAvatarUrl(),
         ));
 
     }
@@ -173,17 +173,6 @@ class UserController
         }
 
         return $app->redirect($app['url_generator']->generate('user.view', array('id' => $app['user']->getId())));
-    }
-
-    /**
-     * @param string $email
-     * @param int $size
-     * @return string
-     */
-    protected function getGravatarUrl($email, $size = 80)
-    {
-        // See https://en.gravatar.com/site/implement/images/ for available options.
-        return '//www.gravatar.com/avatar/' . md5(strtolower(trim($email))) . '?s=' . $size . '&d=identicon';
     }
 
     /**
@@ -233,7 +222,7 @@ class UserController
             'error' => implode("\n", $errors),
             'user' => $user,
             'available_roles' => array('ROLE_USER', 'ROLE_ADMIN'),
-            'image_url' => $this->getGravatarUrl($user->getEmail()),
+            'image_url' => $user->getAvatarUrl(),
         ));
     }
 
@@ -252,7 +241,7 @@ class UserController
         ));
 
         foreach ($users as $user) {
-            $user->imageUrl = $this->getGravatarUrl($user->getEmail(), 40);
+            $user->imageUrl = $user->getAvatarUrl(40);
         }
 
         $nextUrl = $prevUrl = null;

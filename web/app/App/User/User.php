@@ -298,4 +298,14 @@ class User implements UserInterface, \Serializable
         return $errors;
     }
 
+    /**
+     * @param int $size
+     * @return string
+     */
+    public function getAvatarUrl($size = 80)
+    {
+        // See https://en.gravatar.com/site/implement/images/ for available options.
+        return '//www.gravatar.com/avatar/' . md5(strtolower(trim($this->getEmail()))) . '?s=' . $size . '&d=identicon';
+    }
+
 }
