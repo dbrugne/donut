@@ -213,14 +213,14 @@ var ChatClient = function(optDebug) {
 
     function roomContainerAddApplicationMessage(roomId, type, message) {
         var dateText = $.format.date(new Date(), "HH:mm:ss");
-        var html = '<p class="'+type+'"><span class="date">['+dateText+']</span> <span class="text">'+message+'</span></p>';
+        var html = '<p class="'+type+'"><span class="date"><span class="glyphicon glyphicon-time"></span> '+dateText+'</span> <span class="text">'+message+'</span></p>';
         $(".room-container[data-room-id='"+roomId+"'] > .messages").append(html);
         scrollDown($(".room-container[data-room-id='"+roomId+"'] > .messages"));
     }
 
     function roomContainerAddMessage(roomId, message) {
         var dateText = $.format.date(new Date(message.time*1000), "HH:mm:ss");
-        var html = '<p data-user-id="'+message.user_id+'"><span class="date">['+dateText+']</span> <span class="username">&lt;'+message.username+'&gt;</span> <span class="text">'+message.message+'</span></p>';
+        var html = '<p data-user-id="'+message.user_id+'"><span class="avatar"><img src="'+message.avatar+'" /></span><span class="username">'+message.username+'</span><span class="date"><span class="glyphicon glyphicon-time"></span> '+dateText+'</span><span class="message">'+message.message+'</span></p>';
         $(".room-container[data-room-id='"+roomId+"'] > .messages").append(html);
         scrollDown($(".room-container[data-room-id='"+roomId+"'] > .messages"));
     }

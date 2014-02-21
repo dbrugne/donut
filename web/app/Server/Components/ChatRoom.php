@@ -123,10 +123,10 @@ class ChatRoom implements WampServerInterface
 
         // If not Bot only
         if ($conn->resourceId != -1) {
-            if (!isset($this->userConn[$conn->User->id]) || !($this->userConn[$conn->User->id] instanceOf \SplObjectStorage)) {
-                $this->userConn[$conn->User->id] = new \SplObjectStorage;
+            if (!isset($this->userConn[$conn->User->getId()]) || !($this->userConn[$conn->User->getId()] instanceOf \SplObjectStorage)) {
+                $this->userConn[$conn->User->getId()] = new \SplObjectStorage;
             }
-            $this->userConn[$conn->User->id]->attach($conn);
+            $this->userConn[$conn->User->getId()]->attach($conn);
         }
     }
 
@@ -149,9 +149,9 @@ class ChatRoom implements WampServerInterface
 
         // If not Bot only
         if ($conn->resourceId != -1) {
-            $this->userConn[$conn->User->id]->detach($conn);
-            if ($this->userConn[$conn->User->id]->count() < 1) {
-                unset($this->userConn[$conn->User->id]);
+            $this->userConn[$conn->User->getId()]->detach($conn);
+            if ($this->userConn[$conn->User->getId()]->count() < 1) {
+                unset($this->userConn[$conn->User->getId()]);
             }
         }
     }
@@ -197,7 +197,7 @@ class ChatRoom implements WampServerInterface
                     'action' => 'roomBaseline',
                     'data' => array(
                         'baseline' => $baseline,
-                        'username' => $conn->User->username,
+                        'username' => $conn->User->getUsername(),
                     ),
                 ));
 
@@ -228,7 +228,7 @@ class ChatRoom implements WampServerInterface
 
             case 'userIsInRooms':
                 $roomList = array();
-                $roomsListDatabase = $this->userRoomManager->findBy(array('user_id' => $conn->User->id));
+                $roomsListDatabase = $this->userRoomManager->findBy(array('user_id' => $conn->User->getId()));
                 if (count($roomsListDatabase) > 0) {
                     foreach($roomsListDatabase as $room) {
                         $roomList[] = $room->getData();
@@ -290,12 +290,12 @@ class ChatRoom implements WampServerInterface
         // Store user_room in database (if not already exists, user could be in this room in another device/browser)
         $this->userRoomManager->insertOrUpdate(array(
             'room_id' => $roomId,
-            'user_id' => $conn->User->id,
+            'user_id' => $conn->User->getId(),
         ));
 
         // Inform other devices that they should join to room!
         if ($conn->resourceId != -1) {
-            foreach ($this->userConn[$conn->User->id] as $connToNotify) {
+            foreach ($this->userConn[$conn->User->getId()] as $connToNotify) {
                 if ($conn != $connToNotify) {
                     $connToNotify->event(self::CONTROL_TOPIC, array('action' => 'joinRoomFromOtherDevice', 'data' => array('room_id' => $roomId)));
                 }
@@ -313,8 +313,9 @@ class ChatRoom implements WampServerInterface
         // Push room users
         foreach ($this->userRoom[$roomId] as $attendee) {
             $conn->event($topic, array('action' => 'userInRoom', 'data' => array(
-                'id' => $attendee->User->id,
-                'username' => $attendee->User->username,
+                'id' => $attendee->User->getId(),
+                'username' => $attendee->User->getUsername(),
+                'avatar' => $attendee->User->getAvatarUrl(20),
                 'notify' => false, // false to not notify this user addition in message list
             )));
         }
@@ -329,8 +330,9 @@ class ChatRoom implements WampServerInterface
 
         // Notify everyone this guy has joined the room
         $this->broadcast($roomId, array('action' => 'userInRoom', 'data' => array(
-                'id' => $conn->User->id,
-                'username' => $conn->User->username,
+                'id' => $conn->User->getId(),
+                'username' => $conn->User->getUsername(),
+                'avatar' => $attendee->User->getAvatarUrl(20),
             ), $conn // exclude current user of this notification, he knows is in...
         ));
     }
@@ -356,14 +358,14 @@ class ChatRoom implements WampServerInterface
 
         if ($conn->closingConnection !== true) {
             // Is user_room already exist in database (if not we have a problem Houston)
-            if (null !== $room = $this->userRoomManager->findOneBy(array('user_id' => $conn->User->id, 'room_id' => $roomId))) {
+            if (null !== $room = $this->userRoomManager->findOneBy(array('user_id' => $conn->User->getId(), 'room_id' => $roomId))) {
                 // Delete user_room in database
-                $this->userRoomManager->delete(array('user_id' => $conn->User->id, 'room_id' => $roomId));
+                $this->userRoomManager->delete(array('user_id' => $conn->User->getId(), 'room_id' => $roomId));
             }
         }
 
         // Inform other device that they should leave to room!
-        foreach ($this->userConn[$conn->User->id] as $connToNotify) {
+        foreach ($this->userConn[$conn->User->getId()] as $connToNotify) {
             if ($conn != $connToNotify) {
                 $connToNotify->event(self::CONTROL_TOPIC, array('action' => 'leaveRoomFromOtherDevice', 'data' => array('room_id' => $roomId)));
             }
@@ -371,8 +373,8 @@ class ChatRoom implements WampServerInterface
 
         // Notify everyone this guy has leaved the room
         $this->broadcast($roomId, array('action' => 'userOutRoom', 'data' => array(
-                'id' => $conn->User->id,
-                'username' => $conn->User->username,
+                'id' => $conn->User->getId(),
+                'username' => $conn->User->getUsername(),
             ), $conn // exclude current user of this notification
         ));
 
@@ -387,17 +389,6 @@ class ChatRoom implements WampServerInterface
             unset($this->roomsList[$roomId]);
             echo "Room {$roomId} deleted\n";
         }
-
-//        if ($this->isControl($topic)) {
-//            return;
-//        }
-
-//        if ($this->rooms[$topic]->count() == 0) {
-//            unset($this->rooms[$topic], $this->roomLookup[array_search($topic, $this->roomLookup)]);
-//            $this->broadcast(static::CONTROL_TOPIC, array($topic, 0));
-//        } else {
-//            $this->broadcast($topic, array('leftRoom', $conn->WAMP->sessionId));
-//        }
     }
 
     /**
@@ -433,17 +424,18 @@ class ChatRoom implements WampServerInterface
 
         // Store message in database
         $this->messageManager->insert(array(
-            'user_id' => $conn->User->id,
+            'user_id' => $conn->User->getId(),
             'room_id' => $roomId,
-            'username' => $conn->User->username,
+            'username' => $conn->User->getUsername(),
             'message' => $message,
         ));
 
         $this->broadcast($roomId, array(
             'action' => 'message',
             'data' => array(
-                'user_id' => $conn->User->id,
-                'username' => $conn->User->username,
+                'user_id' => $conn->User->getId(),
+                'username' => $conn->User->getUsername(),
+                'avatar' => $conn->User->getAvatarUrl(20),
                 'message' => $message,
                 'time' => time(),
             ),

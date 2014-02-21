@@ -8,6 +8,7 @@ use Ratchet\WebSocket\WsServerInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Authentication\Token\RememberMeToken;
+use App\User\UserManager;
 use App\User\User;
 
 class Authentication implements MessageComponentInterface, WsServerInterface
@@ -18,10 +19,16 @@ class Authentication implements MessageComponentInterface, WsServerInterface
     protected $_app;
 
     /**
-     * PDO connection to database
-     * @var PDO
+     * Silex App
+     * @var \Silex\Application
      */
-    protected $_pdo;
+    protected $_silexApp;
+
+    /**
+     * UserManager instance
+     * @var UserManager
+     */
+    protected $_userManager;
 
     /**
      * Constant
@@ -30,12 +37,13 @@ class Authentication implements MessageComponentInterface, WsServerInterface
 
     /**
      * @param \Ratchet\MessageComponentInterface          $app
-     * @param \PDO                                        $pdo
+     * \Silex\Application                                 $silexApp
      * @throws \RuntimeException
      */
-    public function __construct(MessageComponentInterface $app, \PDO $pdo) {
+    public function __construct(MessageComponentInterface $app, \Silex\Application $silexApp) {
         $this->_app     = $app;
-        $this->_pdo     = $pdo;
+        $this->_silexApp = $silexApp;
+        $this->_userManager = new UserManager($this->_silexApp['db'], $this->_silexApp);
     }
 
     /**
@@ -57,21 +65,22 @@ class Authentication implements MessageComponentInterface, WsServerInterface
         }
         if (!($token instanceOf UsernamePasswordToken)
                 && !($token instanceOf RememberMeToken)) {
-            var_dump($token);
             $conn->close(10004);
         }
         if (!$token->isAuthenticated()) {
             $conn->close(10005);
         }
         /** @var \App\User\User $user */
-        $user = $token->getUser();
-        if (!($user instanceOf User) || !$user->getId()) {
+        $sessionUser = $token->getUser();
+        if (!($sessionUser instanceOf User) || !$sessionUser->getId()) {
             $conn->close(10006);
         }
 
-        $conn->User = new \stdClass;
-        $conn->User->id = $user->getId();
-        $conn->User->username = $user->getUsername();
+        if (null == $user = $this->_userManager->findOneBy(array('id' => $sessionUser->getId()))) {
+            $conn->close(10007);
+        }
+
+        $conn->User = $user;
 
         return $this->_app->onOpen($conn);
     }

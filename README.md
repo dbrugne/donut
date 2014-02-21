@@ -15,43 +15,45 @@ v2:
 * Correct fluid on tablet/phone - done!
 * Open user profile in modal - done!
 * Install Libevent - done!
-* Make it works on IE<10
+* Make it work on IE<10 (Polyfill flexbox and WS/SWF) - done!
 * Deploy and send to David - done!
 
 v3:
+* Add user picture in messages - done!
+* Clean up date displaying in messages - done!
+* Hyperlink
 * Smileys
-* Add user picture in messages
-* Clean up date displaying in messages
-* Add open profile in messages
+* Add open profile in .messages
 * Multi-line postbox input
+
+v4:
+* (refactor) Add $logger in $app
+* (refactor) Chatroom code cleanup/refactoring/logging
 
 vx:
 * (irc) One to one discussion
+* Find user
+* Facebook Login + Invite your friends + page Facebook
+* Private Room / Permanent Room (will not be deleted on last user leave)
 * (irc) Kick users
 * (irc) ACL on room => who is OP, set OP, remove OP, can change baseline, can kick users
 * Add worldcup match in sample and on homepage
-* (refactor) Add logger to $app in server.php and log only with it but all
 * (refactor) Use only Joined and focusRoom in client.js
 * Add statistics: user loggin, user logout, user create/enter/leave a room, user chage title, search for room
-* Sanitize all user input in Websocket and implement data control
+* (refactor) Sanitize all user input in Websocket and implement data control
 * Translate in french
 * Google Analytics
 * Invite someone(s) in my room
 * Move room close button in room list
-* Facebook Login + Invite your friens + page Facebook
 * A page per room (as for user)
-* Private Room / Permanent Room (will not be deleted on last user leave)
-* IRC flavor
-  * Message history on arrow up/down
+* (irc) Message history on arrow up/down
 * Social
   * Like a message
-  * View profile
   * Follow profile (= friend)
   * Add a "Friends are in rooms" list
   * Mention a user in a message
-* Make it work on IE (Polyfill flexbox and WS/SWF)
 * (refactor) Use App extends instead of actual server.php
-* Each user can black-list other users
 
 Idea box:
+* Each user can black-list other users
 * Store messages and history in localstorage

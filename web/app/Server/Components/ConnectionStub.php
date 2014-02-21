@@ -1,6 +1,7 @@
 <?php
 namespace Server\Components;
 use Ratchet\ConnectionInterface;
+use App\User\User;
 
 class ConnectionStub implements ConnectionInterface {
     protected $onSend;
@@ -8,9 +9,9 @@ class ConnectionStub implements ConnectionInterface {
     public $User;
 
     public function __construct(\Closure $onSend = null, \Closure $onClose = null) {
-        $this->User = new \StdClass;
-        $this->User->id = 0;
-        $this->User->username = 'Bot user';
+        $this->User = new User('Room bot');
+        $this->User->setId(0);
+        $this->User->setEmail('bot@chat');
         $this->setSendCallback($onSend);
         $this->setCloseCallback($onClose);
     }

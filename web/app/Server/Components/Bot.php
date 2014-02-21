@@ -74,43 +74,17 @@ class Bot implements WampServerInterface {
                 'action' => 'message',
                 'data' => array(
                     'user_id' => -1,
-                    'username' => 'Lonely bot',
-                    'message' => "Hi {$conn->User->username}, welcome on this chan. Please be polite and fair with others.",
+                    'username' => $this->stubBot->User->getUsername(),
+                    'avatar' => $this->stubBot->User->getAvatarUrl(20),
+                    'message' => "Hi {$conn->User->getUsername()}, welcome on this chan. Please be polite and fair with others.",
                     'time' => time(),
                 ),
             ));
         }
-
-//        if ((string)$topic == $this->roomId) {
-//            $this->genCount++;
-//
-//            if (false === $conn->botWelcomed) {
-//                $conn->botWelcomed = true;
-//
-//                $intro = (strstr($conn->Chat->name, 'Anonymous') ? 'Greetings' : "Hi {$conn->Chat->name}");
-//                $after = '';
-//
-//                if (1 == $this->genCount) {
-//                    $after = " Looks like it's just you and I at the moment...I'll play copycat until someone else joins.";
-//                    $conn->alone = true;
-//                }
-
-//                $conn->event($topic, array(
-//                    'message'
-//                  , $this->wampBot->WAMP->sessionId
-//                  , "{$intro}! This is an IRC-like chatroom powered by Ratchet.{$after}"
-//                  , date('c')
-//                ));
-//            }
-//        }
     }
 
     public function onUnSubscribe(ConnectionInterface $conn, $topic) {
         $this->app->onUnSubscribe($conn, $topic);
-
-//        if ((string)$topic == $this->roomId) {
-//            $this->genCount--;
-//        }
     }
 
     public function onPublish(ConnectionInterface $conn, $topic, $event, array $exclude = array(), array $eligible = array()) {
@@ -119,7 +93,8 @@ class Bot implements WampServerInterface {
                 'action' => 'message',
                 'data' => array(
                     'user_id' => -1,
-                    'username' => 'Lonely bot',
+                    'username' => $this->stubBot->User->getUsername(),
+                    'avatar' => $this->stubBot->User->getAvatarUrl(20),
                     'message' => "Reboot!",
                     'time' => time(),
                 ),

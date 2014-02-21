@@ -107,7 +107,7 @@ $webServer = new IoServer(           // Basic I/O with clients, aww yeah
                                     )
                                 )
                             )
-                            , $app['pdo']
+                            , $app
                         )
                         , $app['session.storage.handler']
                     )
