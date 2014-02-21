@@ -133,11 +133,11 @@ $webServer = new IoServer(           // Basic I/O with clients, aww yeah
 );
 
 // Allow Flash sockets (Internet Explorer) to connect to our app
-//$flashSock = new Reactor($loop);
-//$flashSock->listen(843, '0.0.0.0');
-//$policy = new FlashPolicy;
-//$policy->addAllowedAccess('*', 8080);
-//$webServer = new IoServer($policy, $flashSock);
+$flashSock = new Reactor($loop);
+$flashSock->listen(843, '0.0.0.0');
+$policy = new FlashPolicy;
+$policy->addAllowedAccess('*', 8080);
+$webServer = new IoServer($policy, $flashSock);
 
 //$logSock = new Reactor($loop);
 //$logSock->listen(9000, '0.0.0.0');

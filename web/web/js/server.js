@@ -175,6 +175,12 @@ ChatServerPrototype = function(optDebug) {
     ab._debugpubsub = api.debug;
     ab._debugws     = api.debug;
 
+    // web_socket.js configuration
+    WEB_SOCKET_SWF_LOCATION = "/js/WebSocketMain.swf";
+    if (api.debug) {
+        WEB_SOCKET_DEBUG = true;
+    }
+
     var sess;
     ab.connect(
         'ws://' + window.location.hostname + ':8080/chat'
