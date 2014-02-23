@@ -68,25 +68,36 @@ var ChatClient = function(optDebug) {
 
         // Create room in rooms-list
         var newRoomItem = $(".room-item[data-room-id='template']").clone(false);
-        newRoomItem.attr('data-room-id', roomId);
-        newRoomItem.html(roomName);
-        newRoomItem.css('display', 'block');
-        newRoomItem.click(function() {
+        $(newRoomItem).attr('data-room-id', roomId);
+        $(newRoomItem).html(roomName);
+        $(newRoomItem).css('display', 'block');
+        $(newRoomItem).click(function() {
             focusOnRoom(roomId);
         });
         $("#rooms-list").append(newRoomItem);
 
         // Create room-container
         var newRoomContainer = $(".room-container[data-room-id='template']").clone(false);
-        newRoomContainer.attr('data-room-id', roomId);
-        newRoomContainer.find('.name').html(roomName);
-        newRoomContainer.find('.input-message').attr('data-room-id', roomId);
-        newRoomContainer.find('.send-message').attr('data-room-id', roomId);
+        $(newRoomContainer).attr('data-room-id', roomId);
+        $(newRoomContainer).find('.name').html(roomName);
+        $(newRoomContainer).find('.input-message').attr('data-room-id', roomId);
+        $(newRoomContainer).find('.send-message').attr('data-room-id', roomId);
+        $(newRoomContainer).find('.smileys-message').attr('data-room-id', roomId);
         $("#room").append(newRoomContainer);
+
+        // Bind smilies popover
+        $('body').popover({
+            selector:     ".smileys-message[data-room-id='"+roomId+"']",
+            content:      "liste des smileys"
+        });
+        $(".smileys-message[data-room-id='"+roomId+"']").on('show.bs.popover', function () {
+            // load html content
+            alert("show");
+        });
 
         // Create room users-list
         var newUsersList = $(".users-list[data-room-id='template']").clone(false);
-        newUsersList.attr('data-room-id', roomId);
+        $(newUsersList).attr('data-room-id', roomId);
         $("#users").append(newUsersList);
 
         // Set the height as with flexbox model
