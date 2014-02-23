@@ -22,34 +22,6 @@ var ChatClient = function(optDebug) {
         return this.push.apply(this, rest);
     };
 
-    var smileys = [
-        { label: 'smile', class: 'emoticon-smile', symbol: ":)" },
-        { label: 'grin', class: 'emoticon-grin', symbol: ":D" },
-        { label: 'joy', class: 'emoticon-joy', symbol: ":')" },
-        { label: 'wink', class: 'emoticon-wink', symbol: ";)" },
-        { label: 'cheeky', class: 'emoticon-cheeky', symbol: ":P" },
-        { label: 'surprised', class: 'emoticon-surprised', symbol: ":O" },
-        { label: 'kiss', class: 'emoticon-kiss', symbol: ":*" },
-        { label: 'frown', class: 'emoticon-frown', symbol: ":(" },
-        { label: 'tears', class: 'emoticon-tears', symbol: ":'(" },
-        { label: 'annoyed', class: 'emoticon-annoyed', symbol: ":/" },
-        { label: 'cool', class: 'emoticon-cool', symbol: ">B)" },
-        { label: 'angry', class: 'emoticon-angry', symbol: ":@" },
-        { label: 'confused', class: 'emoticon-confused', symbol: ":S" },
-        { label: 'angel', class: 'emoticon-angel', symbol: "O:)" },
-        { label: 'devil', class: 'emoticon-devil', symbol: "3:)" },
-        { label: 'music', class: 'emoticon-music', symbol: "(8)" },
-        { label: 'thumbs-up', class: 'emoticon-thumbs-up', symbol: "(Y)" },
-        { label: 'thumbs-down', class: 'emoticon-thumbs-down', symbol: "(N)" },
-        { label: 'heart', class: 'emoticon-heart', symbol: "&lt;3" },
-        { label: 'broken-heart', class: 'emoticon-broken-heart', symbol: "&lt;/3" }
-    ];
-    var smileysHtml = '<ul class="smileys"></ul>';
-    $(smileys).each(function (idx, smiley) {
-        smileysHtml += '<li class="emoticon-18px '+smiley.class+'">'+smiley.symbol+' - '+smiley.label+'</li>';
-    });
-    smileysHtml += '';
-
     /****************************************************
      * Interface initialization
      ****************************************************/
@@ -111,17 +83,25 @@ var ChatClient = function(optDebug) {
         $(newRoomContainer).find('.input-message').attr('data-room-id', roomId);
         $(newRoomContainer).find('.send-message').attr('data-room-id', roomId);
         $(newRoomContainer).find('.smileys-message').attr('data-room-id', roomId);
+        $(newRoomContainer).find('.smileys-popin-message').attr('data-room-id', roomId);
         $("#room").append(newRoomContainer);
 
         // Bind smilies popover
-        $(".room-container[data-room-id='"+roomId+"']").popover({
-            container:    "#room",
-            selector:     ".smileys-message[data-room-id='"+roomId+"']",
-            content:      smileysHtml
+        $(".smileys-message[data-room-id='"+roomId+"']").on('click', function () {
+            var popin = $('.smileys-popin-message[data-room-id="'+$(this).data('roomId')+'"]');
+            var position = $(this).position();
+
+            var newTop = position.top - $(popin).outerHeight();
+            var newLeft = (position.left + ($(this).outerWidth()/2)) - ($(popin).outerWidth()/2);
+
+            $(popin).css('top', newTop);
+            $(popin).css('left', newLeft);
+            $(popin).toggle();
         });
-        $(".smileys-message[data-room-id='"+roomId+"']").on('show.bs.popover', function (e) {
-            // load html content
-            Debug(e.target);
+        $('.smileys-popin-message[data-room-id="'+roomId+'"]').find('li').on('click', function () {
+            var symbol = $(this).data('symbol');
+            $(".input-message[data-room-id='"+roomId+"']").insertAtCaret(symbol);
+            $('.smileys-popin-message[data-room-id="'+roomId+'"]').hide();
         });
 
         // Create room users-list
