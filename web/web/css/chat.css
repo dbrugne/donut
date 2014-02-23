@@ -157,8 +157,39 @@ body { padding-top: 50px; }
 }
 
 /********************************************
- * 18px Emoticons *************************
+ * Emoticons *************************
  ***************************************/
+/* 16px Emoticons */
+.emoticon-16px {
+    background: url('../img/sprite-16px-png24.png') no-repeat;
+    display: inline-block;
+    height: 16px;
+    margin: 0 1px;
+    text-indent: -99999px;
+    vertical-align: middle;
+    width: 16px
+}
+.emoticon-16px.emoticon-smile { background-position: 0 0 }
+.emoticon-16px.emoticon-grin { background-position: -16px 0 }
+.emoticon-16px.emoticon-joy { background-position: -32px 0 }
+.emoticon-16px.emoticon-wink { background-position: -48px 0 }
+.emoticon-16px.emoticon-cheeky { background-position: -64px 0 }
+.emoticon-16px.emoticon-surprised { background-position: -80px 0 }
+.emoticon-16px.emoticon-kiss { background-position: -96px 0 }
+.emoticon-16px.emoticon-frown { background-position: -112px 0 }
+.emoticon-16px.emoticon-tears { background-position: -128px 0 }
+.emoticon-16px.emoticon-annoyed { background-position: -144px 0 }
+.emoticon-16px.emoticon-cool { background-position: -160px 0 }
+.emoticon-16px.emoticon-angry { background-position: -176px 0 }
+.emoticon-16px.emoticon-confused { background-position: -192px 0 }
+.emoticon-16px.emoticon-angel { background-position: -208px 0 }
+.emoticon-16px.emoticon-devil { background-position: -224px 0 }
+.emoticon-16px.emoticon-music { background-position: -240px 0 }
+.emoticon-16px.emoticon-thumbs-up { background-position: -256px 0 }
+.emoticon-16px.emoticon-thumbs-down { background-position: -272px 0 }
+.emoticon-16px.emoticon-heart { background-position: -288px 0 }
+.emoticon-16px.emoticon-broken-heart { background-position: -304px 0 }
+
 .emoticon-18px {
     background: url('../img/sprite-18px-png24.png') no-repeat;
     display: inline-block;
