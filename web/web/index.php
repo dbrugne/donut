@@ -97,10 +97,16 @@ $app->get('/chat', function() use ($app) {
 
     return $app['twig']->render('chat.twig.html', array(
         'user' => $user,
-//        'rooms' => $rooms,
     ));
 
 })->bind('chat');
+
+$app->get('/test', function() use ($app) {
+
+    return $app['twig']->render('test.twig.html', array(
+    ));
+
+})->bind('test');
 
 $app->get('/', function(Request $request) use ($app) {
 
