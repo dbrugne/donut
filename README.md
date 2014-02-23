@@ -22,15 +22,15 @@ v3:
 * Add user picture in messages - done!
 * Clean up date displaying in messages - done!
 * Smileys - done!
-* Hyperlink
-* Add open profile in .messages
-* Multi-line postbox input
+* Hyperlink - done!
+* Add open profile in .messages - done!
 
 v4:
 * (refactor) Add $logger in $app
 * (refactor) Chatroom code cleanup/refactoring/logging
 
 vx:
+* Multi-line postbox input bug
 * (irc) One to one discussion
 * Find user
 * Facebook Login + Invite your friends + page Facebook

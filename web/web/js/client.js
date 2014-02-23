@@ -293,7 +293,7 @@ var ChatClient = function(optDebug) {
         });
 
         // P
-        var html = '<p data-user-id="'+message.user_id+'"><span class="avatar"><img src="'+message.avatar+'" /></span><span class="username">'+message.username+'</span><span class="date"><span class="glyphicon glyphicon-time"></span> '+dateText+'</span><span class="message">'+messageHtml+'</span></p>';
+        var html = '<p><span class="avatar"><img src="'+message.avatar+'" /></span><span class="username" data-user-id="'+message.user_id+'">'+message.username+'</span><span class="date"><span class="glyphicon glyphicon-time"></span> '+dateText+'</span><span class="message">'+messageHtml+'</span></p>';
         $(".room-container[data-room-id='"+roomId+"'] > .messages").append(html);
         scrollDown($(".room-container[data-room-id='"+roomId+"'] > .messages"));
     }
@@ -524,15 +524,25 @@ var ChatClient = function(optDebug) {
         $("#room-search-modal").find(".room-search-submit").first().click(searchRoomsCallback);
         $("#room-search-modal").find(".room-search-input").first().keyup(searchRoomsCallback);
 
-        $(document).on('click', '#users > .users-list > .list-group > .user-item', function() {
-            var userId = $(this).data('userId');
-            if (undefined == userId || '' == userId) {
+        function userProfileCallback(o)
+        {
+            var userId = $(o).data('userId');
+            if (undefined == userId || '' == userId || 0 == userId) {
                 return;
             }
 
             $("#user-profile-modal").modal({
                 remote: "http://chat.local/u/"+userId+"?modal=true"
             });
+        }
+        $(document).on('click', '#users > .users-list > .list-group > .user-item', function() {
+            userProfileCallback(this);
+        });
+        $(document).on('click', '.messages > p > .username', function() {
+            userProfileCallback(this);
+        });
+        $('body').on('hidden.bs.modal', "#user-profile-modal", function () {
+            $(this).removeData('bs.modal');
         });
 
     });
