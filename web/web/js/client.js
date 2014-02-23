@@ -32,7 +32,7 @@ var ChatClient = function(optDebug) {
         { label: 'kiss', class: 'emoticon-kiss', symbol: ":*" },
         { label: 'frown', class: 'emoticon-frown', symbol: ":(" },
         { label: 'tears', class: 'emoticon-tears', symbol: ":'(" },
-        { label: 'annoyed', class: 'emoticon-annoyed', symbol: ":/" },
+
         { label: 'cool', class: 'emoticon-cool', symbol: "&gt;B)" },
         { label: 'angry', class: 'emoticon-angry', symbol: ":@" },
         { label: 'confused', class: 'emoticon-confused', symbol: ":S" },
@@ -44,6 +44,7 @@ var ChatClient = function(optDebug) {
         { label: 'heart', class: 'emoticon-heart', symbol: "&lt;3" },
         { label: 'broken-heart', class: 'emoticon-broken-heart', symbol: "&lt;/3" }
     ];
+    // { label: 'annoyed', class: 'emoticon-annoyed', symbol: ":/" },
     var smileysHtml = '';
     $(smileys).each(function (idx, smiley) {
         smileysHtml += '<li class="emoticon-18px '+smiley.class+'" data-symbol="'+smiley.symbol+'" data-sclass="'+smiley.class+'">'+smiley.symbol+' - '+smiley.label+'</li>';
@@ -277,10 +278,21 @@ var ChatClient = function(optDebug) {
     function roomContainerAddMessage(roomId, message) {
         var dateText = $.format.date(new Date(message.time*1000), "HH:mm:ss");
         var messageHtml = message.message;
+
+        // Multi-lines
         messageHtml = messageHtml.replace(/\n/g, '<br />');
+
+        // Hyperlinks
+        //URLs starting with http://, https://, or ftp://
+        urlPattern = /(\b(https?|ftp)?:\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim;
+        messageHtml = messageHtml.replace(urlPattern, '<a href="$1" target="_blank">$1</a>');
+
+        // Smileys
         $(smileys).each(function (idx, smiley) {
             messageHtml = messageHtml.replace(smiley.symbol, '<span class="smiley emoticon-16px '+smiley.class+'">'+smiley.symbol+'</span>');
         });
+
+        // P
         var html = '<p data-user-id="'+message.user_id+'"><span class="avatar"><img src="'+message.avatar+'" /></span><span class="username">'+message.username+'</span><span class="date"><span class="glyphicon glyphicon-time"></span> '+dateText+'</span><span class="message">'+messageHtml+'</span></p>';
         $(".room-container[data-room-id='"+roomId+"'] > .messages").append(html);
         scrollDown($(".room-container[data-room-id='"+roomId+"'] > .messages"));
