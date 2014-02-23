@@ -113,7 +113,10 @@ body { padding-top: 50px; }
     border-color: #ddd;
 }
 #create-room-form { margin-top: 10px; }
-
+#room .popover { max-width: 290px; /* for postbox smileys popover */ }
+#room .popover .popover-content { padding: 10px 0 5px 10px; }
+#room .popover ul { margin: 0; padding: 0; }
+#room .popover li { margin-right: 5px; margin-bottom: 5px; }
 #user-profile-modal {}
 #user-profile-modal .modal-header { padding: 10px; }
 #user-profile-modal .modal-body {  padding: 0; }
@@ -149,3 +152,36 @@ body { padding-top: 50px; }
         min-height: 100px;
     }
 }
+
+/********************************************
+ * 18px Emoticons *************************
+ ***************************************/
+.emoticon-18px {
+    background: url('../img/sprite-18px-png24.png') no-repeat;
+    display: inline-block;
+    height: 18px;
+    margin: 0 1px;
+    text-indent: -99999px;
+    vertical-align: middle;
+    width: 18px
+}
+.emoticon-18px.emoticon-smile { background-position: 0 0 }
+.emoticon-18px.emoticon-grin { background-position: -18px 0 }
+.emoticon-18px.emoticon-joy { background-position: -36px 0 }
+.emoticon-18px.emoticon-wink { background-position: -54px 0 }
+.emoticon-18px.emoticon-cheeky { background-position: -72px 0 }
+.emoticon-18px.emoticon-surprised { background-position: -90px 0 }
+.emoticon-18px.emoticon-kiss { background-position: -108px 0 }
+.emoticon-18px.emoticon-frown { background-position: -126px 0 }
+.emoticon-18px.emoticon-tears { background-position: -144px 0 }
+.emoticon-18px.emoticon-annoyed { background-position: -162px 0 }
+.emoticon-18px.emoticon-cool { background-position: -180px 0 }
+.emoticon-18px.emoticon-angry { background-position: -198px 0 }
+.emoticon-18px.emoticon-confused { background-position: -216px 0 }
+.emoticon-18px.emoticon-angel { background-position: -234px 0 }
+.emoticon-18px.emoticon-devil { background-position: -252px 0 }
+.emoticon-18px.emoticon-music { background-position: -270px 0 }
+.emoticon-18px.emoticon-thumbs-up { background-position: -288px 0 }
+.emoticon-18px.emoticon-thumbs-down { background-position: -306px 0 }
+.emoticon-18px.emoticon-heart { background-position: -324px 0 }
+.emoticon-18px.emoticon-broken-heart { background-position: -342px 0 }
