@@ -73,7 +73,7 @@ class Bot implements WampServerInterface {
             $conn->event($topic, array(
                 'action' => 'message',
                 'data' => array(
-                    'user_id' => -1,
+                    'user_id' => $this->stubBot->User->getId(),
                     'username' => $this->stubBot->User->getUsername(),
                     'avatar' => $this->stubBot->User->getAvatarUrl(20),
                     'message' => "Hi {$conn->User->getUsername()}, welcome on this chan. Please be polite and fair with others.",
