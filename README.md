@@ -21,8 +21,8 @@ v2:
 v3:
 * Add user picture in messages - done!
 * Clean up date displaying in messages - done!
+* Smileys - done!
 * Hyperlink
-* Smileys
 * Add open profile in .messages
 * Multi-line postbox input
 

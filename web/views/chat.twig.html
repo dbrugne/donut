@@ -118,7 +118,7 @@
                                 </div>
                                 <span class="input-group-addon smileys-message" data-toggle="popover" data-html="true" data-placement="top"><span class="emoticon-16px emoticon-smile">:)</span></span>
                                 <!-- / Smileys popin -->
-                                <input type="text" name="message" class="input-message form-control" data-room-id="" />
+                                <textarea class="input-message form-control" data-room-id="" style="resize: none; " rows="1" maxlength="1000"></textarea>
                                 <span class="input-group-btn">
                                     <button type="button" class="btn btn-default send-message" data-room-id="">Send!</button>
                                 </span>
@@ -146,6 +146,7 @@
 
 {% block endofpage %}
 <script src="/js/jquery-insertAtCaret.js"></script>
+<script src="/js/jquery.autosize.min.js"></script>
 <script src="/js/jquery-dateFormat.min.js"></script>
 <script src="/js/swfobject.js"></script>
 <script src="/js/web_socket.js"></script>

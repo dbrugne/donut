@@ -5,6 +5,7 @@ jQuery.fn.extend({
                 //For browsers like Internet Explorer
                 this.focus();
                 sel = document.selection.createRange();
+                console.log(myValue);
                 sel.text = myValue;
                 this.focus();
             }

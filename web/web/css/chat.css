@@ -95,14 +95,14 @@ body { padding-top: 50px; }
 #chat .messages p .date {
     position: absolute;
     right: 8px;
-    color: #269abc;
-    font-weight: bold;
+    color: #BDBDBD;
 }
 #chat .messages p .username {
     font-weight: bold;
 }
 #chat .messages p .message {
     display: block;
+    margin-left: 26px;
 }
 
 #chat .postbox {

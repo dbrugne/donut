@@ -46,7 +46,7 @@ var ChatClient = function(optDebug) {
     ];
     var smileysHtml = '';
     $(smileys).each(function (idx, smiley) {
-        smileysHtml += '<li class="emoticon-18px '+smiley.class+'" data-symbol="'+smiley.symbol+'">'+smiley.symbol+' - '+smiley.label+'</li>';
+        smileysHtml += '<li class="emoticon-18px '+smiley.class+'" data-symbol="'+smiley.symbol+'" data-sclass="'+smiley.class+'">'+smiley.symbol+' - '+smiley.label+'</li>';
     });
 
     /****************************************************
@@ -114,6 +114,9 @@ var ChatClient = function(optDebug) {
         $(newRoomContainer).find('ul.smileys').first().html(smileysHtml);
         $("#room").append(newRoomContainer);
 
+        // Textarea autosize
+        $(".input-message[data-room-id='"+roomId+"']").autosize();
+
         // Smileys management
         $(".smileys-message[data-room-id='"+roomId+"']").on('click', function () {
             var popin = $('.smileys-popin-message[data-room-id="'+$(this).data('roomId')+'"]');
@@ -127,7 +130,13 @@ var ChatClient = function(optDebug) {
             $(popin).toggle();
         });
         $('.smileys-popin-message[data-room-id="'+roomId+'"]').find('li').on('click', function () {
+
+            var smileyHtml = '<span class="smiley emoticon-16px '+sclass+'">'+symbol+'</span>';
+
             var symbol = $(this).data('symbol');
+            var sclass = $(this).data('sclass');
+            Debug([symbol, sclass]);
+
             $(".input-message[data-room-id='"+roomId+"']").insertAtCaret(symbol);
             $('.smileys-popin-message[data-room-id="'+roomId+'"]').hide();
         });
@@ -206,7 +215,6 @@ var ChatClient = function(optDebug) {
             if (messagesHeight < 100) {
                 messagesHeight = 100;
             }
-            Debug(messagesHeight);
             $(this).find('.messages').first().height(messagesHeight);
         });
     }
@@ -269,6 +277,7 @@ var ChatClient = function(optDebug) {
     function roomContainerAddMessage(roomId, message) {
         var dateText = $.format.date(new Date(message.time*1000), "HH:mm:ss");
         var messageHtml = message.message;
+        messageHtml = messageHtml.replace(/\n/g, '<br />');
         $(smileys).each(function (idx, smiley) {
             messageHtml = messageHtml.replace(smiley.symbol, '<span class="smiley emoticon-16px '+smiley.class+'">'+smiley.symbol+'</span>');
         });
@@ -354,12 +363,22 @@ var ChatClient = function(optDebug) {
             // Send to server
             ChatServer.send(roomId, message);
             // Empty the field
-            $('.input-message[data-room-id='+roomId+']').val('');
+            $('.input-message[data-room-id='+roomId+']').val('').trigger('autosize.resize');
         };
 
         $(document).on('keypress', '.input-message', function (e) {
-            if(e.which == 13) {
+            var key;
+            var isShift;
+            if (window.event) {
+                key = window.event.keyCode;
+                isShift = window.event.shiftKey ? true : false;
+            } else {
+                key = e.which;
+                isShift = e.shiftKey ? true : false;
+            }
+            if(!isShift && e.which == 13) {
                 postMessageCallback(this);
+                return false; // avoid adding a line break in field when submitting with "Enter"
             }
         });
 
