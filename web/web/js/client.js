@@ -165,7 +165,7 @@ var ChatClient = function(optDebug) {
             var containerHeight = $(this).innerHeight();
             var headerHeight = $(this).find('.header').outerHeight();
             var postboxHeight = $(this).find('.postbox').outerHeight();
-            var messagesHeight = containerHeight - (headerHeight + postboxHeight + 10); // 10 is .messages margin
+            var messagesHeight = containerHeight - (headerHeight + postboxHeight); // 10 is .messages margin
             if (messagesHeight < 100) {
                 messagesHeight = 100;
             }
