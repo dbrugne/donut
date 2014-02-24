@@ -532,7 +532,7 @@ var ChatClient = function(optDebug) {
             }
 
             $("#user-profile-modal").modal({
-                remote: "http://chat.local/u/"+userId+"?modal=true"
+                remote: 'http://' + window.location.hostname + '/u/'+userId+'?modal=true'
             });
         }
         $(document).on('click', '#users > .users-list > .list-group > .user-item', function() {
