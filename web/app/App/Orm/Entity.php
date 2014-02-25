@@ -47,18 +47,33 @@ abstract class Entity
         switch ($action)
         {
             case 'get':
-                $property = strtolower(substr($name, 3));
+                $property = $this->undescorize(substr($name, 3));
                 return (isset($this->data[$property])) ? $this->data[$property] : null;
                 break;
 
             case 'set':
-                $property = strtolower(substr($name, 3));
+                $property = $this->undescorize(substr($name, 3));
                 $this->data[$property] = $arguments[0];
                 break;
 
             default :
                 return false;
         }
+    }
+
+    /**
+     * Un-camelcased a string, for example:
+     *
+     * UserId = user_id
+     *
+     * @param $string
+     * @return mixed
+     */
+    protected function undescorize($string)
+    {
+        $string[0] = strtolower($string[0]);
+        $string = strtolower(preg_replace('/(.)([A-Z])/', "$1_$2", $string));
+        return $string;
     }
 
 } 
