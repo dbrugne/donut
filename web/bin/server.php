@@ -14,7 +14,6 @@ use React\Socket\Server as Reactor;
 use Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler;
 
 use Server\Components\ChatRoom;
-use Server\Components\Bot;
 use Server\Components\Authentication;
 use Server\Components\MessageLogger;
 
@@ -101,11 +100,9 @@ $webServer = new IoServer(           // Basic I/O with clients, aww yeah
                     new SessionProvider(
                         new Authentication (
                             new ServerProtocol(  // WAMP; the new hotness sub-protocol
-                                new Bot(         // People kept asking me if I was a bot, so I made one!
                                     new ChatRoom( // ...and DISCUSS!
                                         $app
                                     )
-                                )
                             )
                             , $app
                         )

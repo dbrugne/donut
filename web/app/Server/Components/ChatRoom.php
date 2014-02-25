@@ -8,6 +8,7 @@ use App\Chat\UserRoomManager;
 use App\Chat\UserRoom;
 use App\Chat\MessageManager;
 use App\Chat\Message;
+use App\User\User;
 
 class ChatRoom implements WampServerInterface
 {
@@ -37,50 +38,21 @@ class ChatRoom implements WampServerInterface
     const TOPIC_ROOM_PREFIX = "ws://chat.local/room#";
 
     /**
-     * Current rooms list
-     *
-     * array(
-     *    id => array(
-     *       'id' => int,
-     *       'name' => string,
-     *       'topic' => string,
-     *    )
-     *    ...
-     * )
-     *
-     * @var array
+     * @var Discussion[]
      */
-    protected $roomsList = array();
+    protected $_discussions = array();
 
     /**
-     * Subscribed users of each room
-     *
-     * array(
-     *   id => SplObjectStorage(
-     *        ConnectionInterface,
-     *        ...
-     *     )
-     *   ...
-     * )
-     *
-     * @var array
+     * @var Room[]
      */
-    protected $userRoom = array();
+    protected $_rooms = array();
 
     /**
      * Opened $conn of a specific user account
      *
-     * array(
-     *   user_id => SplObjectStorage(
-     *        ConnectionInterface,
-     *        ...
-     *     )
-     *   ...
-     * )
-     *
-     * @var array
+     * @var ConnectionInterface[]
      */
-    protected $userConn = array();
+    protected $userDevices = array();
 
     /**
      * @var \App\Orm\EntityManager
@@ -117,16 +89,14 @@ class ChatRoom implements WampServerInterface
      * {@inheritdoc}
      */
     public function onOpen(ConnectionInterface $conn) {
-        $conn->Chat        = new \StdClass;
-        $conn->Chat->rooms = array();
         $conn->closingConnection = false;
 
         // If not Bot only
         if ($conn->resourceId != -1) {
-            if (!isset($this->userConn[$conn->User->getId()]) || !($this->userConn[$conn->User->getId()] instanceOf \SplObjectStorage)) {
-                $this->userConn[$conn->User->getId()] = new \SplObjectStorage;
+            if (!isset($this->userDevices[$conn->User->getId()]) || !($this->userDevices[$conn->User->getId()] instanceOf \SplObjectStorage)) {
+                $this->userDevices[$conn->User->getId()] = new \SplObjectStorage;
             }
-            $this->userConn[$conn->User->getId()]->attach($conn);
+            $this->userDevices[$conn->User->getId()]->attach($conn);
         }
     }
 
@@ -139,21 +109,28 @@ class ChatRoom implements WampServerInterface
         $conn->closingConnection = true;
 
         // Unsubscribe from rooms
-        foreach ($conn->Chat->rooms as $roomId => $topic)
+        $subscribedRooms = $this->userRoomManager->findBy(array('user_id' => $conn->User->getId()));
+        foreach ($subscribedRooms as $subscribedRoom)
         {
-            $this->onUnSubscribe($conn, $topic);
+            $this->onUnSubscribe($conn, self::TOPIC_ROOM_PREFIX . $subscribedRoom->getRoomId());
         }
 
         // Unsubscribe from control topic
         $this->controlTopicUsers->detach($conn);
 
-        // If not Bot only
-        if ($conn->resourceId != -1) {
-            $this->userConn[$conn->User->getId()]->detach($conn);
-            if ($this->userConn[$conn->User->getId()]->count() < 1) {
-                unset($this->userConn[$conn->User->getId()]);
-            }
+        // Remove from user device list
+        $this->userDevices[$conn->User->getId()]->detach($conn);
+        if ($this->userDevices[$conn->User->getId()]->count() < 1) {
+            unset($this->userDevices[$conn->User->getId()]);
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function onError(ConnectionInterface $conn, \Exception $e)
+    {
+        $conn->close();
     }
 
     /**
@@ -178,22 +155,18 @@ class ChatRoom implements WampServerInterface
             case 'changeBaseline':
                 $roomId = $this->escape($params[0]);
                 $baseline = $this->escape($params[1]);
-                echo "Baseline change requested: room={$roomId} baseline={$baseline} \n";
-                if (!isset($this->roomsList[$roomId])) {
-                    return $conn->callError($id, "The room '{$roomId}' is not referenced in memory'");
-                }
-                if (null === $room = $this->roomManager->findOneBy(array('id' => $roomId))) {
-                    return $conn->callError($id, "The room '{$roomId}' not already exist in database'");
+                if (null == $room = $this->getRoom($roomId)) {
+                    return $conn->callError($id, "The room '{$roomId}' not already exist'");
                 }
 
                 // Save in database
                 $this->roomManager->update(array('baseline' => $baseline), array('id' => $roomId));
 
                 // Save in memory
-                $this->roomsList[$roomId]->setBaseline($baseline);
+                $room->setBaseline($baseline);
 
                 // Push to users
-                $this->broadcast($roomId, array(
+                $this->broadcastToRoomUsers($roomId, array(
                     'action' => 'roomBaseline',
                     'data' => array(
                         'baseline' => $baseline,
@@ -201,8 +174,9 @@ class ChatRoom implements WampServerInterface
                     ),
                 ));
 
+                echo "Baseline of '{$roomId}' changed to '{$baseline}' by '{$conn->User->getId()}'\n";
                 return $conn->callResult($id);
-            break;
+                break;
 
             case 'createRoom':
                 $name   = $this->escape($params[0]);
@@ -248,6 +222,8 @@ class ChatRoom implements WampServerInterface
      */
     function onSubscribe(ConnectionInterface $conn, $topic)
     {
+        // @todo: remove Bot and replace by local welcome message
+
         /****************
          * CONTROL TOPIC
          ***************/
@@ -258,60 +234,52 @@ class ChatRoom implements WampServerInterface
         }
 
         /****************
+         * ONE TO ONE
+         ***************/
+        // @todo
+
+        /****************
          * ROOM TOPIC
          ***************/
-        // $topic is valid
-        if (!$this->topicIsRoom($topic)) {
-            echo "Topic '{$topic}' not corresponds to room topic pattern\n";
-            // @todo : send error to browser !!! The browser should now that there was a problem!
+        // $topic is a valid rooms
+        if (false === $roomId = $this->retrieveRoomIdFromTopic($topic)) {
+            // @todo : handle that message on client side (or indicate error better)
+            $conn->event($topic, array("Topic '{$topic}' not corresponds to room topic pattern"));
             return;
         }
-        $roomId = $this->findIdFromTopic($topic);
 
-        // Is this room already in memory?
-        if (!array_key_exists($roomId, $this->roomsList)) {
-            // Is this room exists in database?
-            if (null === $room = $this->roomManager->findOneBy(array('id' => $roomId))) {
-                echo "Room '{$topic}' not already exists, please call 'createRoom' before\n";
-                // @todo : send error to browser !!! The browser should now that room does not longer exist!
-                return;
-            }
-
-            // Room data
-            $this->roomsList[$roomId] = $room;
-            // Room user list
-            $this->userRoom[$roomId] = new \SplObjectStorage();
+        // Is this room exists?
+        if (null == $room = $this->getRoom($roomId)) {
+            // @todo : handle that message on client side (or indicate error better)
+            $conn->event($topic, array("Room '{$topic}' not already exists (onSubscribe)"));
+            return;
         }
 
-        // Add user to broadcast list
-        echo "{$conn->WAMP->sessionId} has just subscribed to {$topic}\n";
-        $this->userRoom[$roomId]->attach($conn);
+        // Add user to room broadcast list
+        $this->addUserRoom($conn, $roomId);
 
-        // Store user_room in database (if not already exists, user could be in this room in another device/browser)
-        $this->userRoomManager->insertOrUpdate(array(
-            'room_id' => $roomId,
-            'user_id' => $conn->User->getId(),
+        // Inform other device that they should join to room!
+        $this->broadcastToUserDevices($conn->User->getId(), array(
+            'action' => 'joinRoomFromOtherDevice',
+            'data' => array('room_id' => $roomId)
         ));
 
-        // Inform other devices that they should join to room!
-        if ($conn->resourceId != -1) {
-            foreach ($this->userConn[$conn->User->getId()] as $connToNotify) {
-                if ($conn != $connToNotify) {
-                    $connToNotify->event(self::CONTROL_TOPIC, array('action' => 'joinRoomFromOtherDevice', 'data' => array('room_id' => $roomId)));
-                }
-            }
-        }
-
-        // Register this room in user connection
-        $conn->Chat->rooms[$roomId] = $topic;
-
         // Push room data (on control topic)
+        // @todo: bad thing, the client should be only responsible to createIhm after subscribing, remove this event!
         $conn->event($topic, array('action' => 'enterInRoom', 'data' => array(
-            'name' => $this->roomsList[$roomId]->getName(),
+            'name' => $room->getName(),
         )));
 
+        // Push room baseline
+        if (null != $room->getBaseline()) {
+            $conn->event($topic, array('action' => 'roomBaseline', 'data' => array(
+                'baseline' => $room->getBaseline(),
+                'notify' => false,
+            )));
+        }
+
         // Push room users
-        foreach ($this->userRoom[$roomId] as $attendee) {
+        foreach ($room->getUsers() as $attendee) {
             $conn->event($topic, array('action' => 'userInRoom', 'data' => array(
                 'id' => $attendee->User->getId(),
                 'username' => $attendee->User->getUsername(),
@@ -320,21 +288,32 @@ class ChatRoom implements WampServerInterface
             )));
         }
 
-        // Push room baseline
-        if (null != $this->roomsList[$roomId]->getBaseline()) {
-            $conn->event($topic, array('action' => 'roomBaseline', 'data' => array(
-                'baseline' => $this->roomsList[$roomId]->getBaseline(),
-                'notify' => false,
-            )));
-        }
+        // Push welcome message
+        $tmpUser = new User("Room bot");
+        $tmpUser->setId(0);
+        $tmpUser->setEmail("bot@bot.com");
+        $conn->event($topic, array(
+            'action' => 'message',
+            'data' => array(
+                'user_id' => $tmpUser->getId(),
+                'username' => $tmpUser->getUsername(),
+                'avatar' => $tmpUser->getAvatarUrl(20),
+                'message' => "Hi {$conn->User->getUsername()}, welcome on this chan. Please be polite and fair with others.",
+                'time' => time(),
+            ),
+        ));
 
-        // Notify everyone this guy has joined the room
-        $this->broadcast($roomId, array('action' => 'userInRoom', 'data' => array(
+        // Notify everyone this user has joined the room
+        $this->broadcastToRoomUsers($roomId, array(
+            'action' => 'userInRoom', // @todo: rename userEnterInRoom
+            'data' => array(
                 'id' => $conn->User->getId(),
                 'username' => $conn->User->getUsername(),
-                'avatar' => $attendee->User->getAvatarUrl(20),
-            ), $conn // exclude current user of this notification, he knows is in...
-        ));
+                'avatar' => $conn->User->getAvatarUrl(20),
+            )
+        ), $conn);
+
+        echo "User '{$conn->User->getId()}' ({$conn->WAMP->sessionId}) has just subscribed to {$topic}\n";
     }
 
     /**
@@ -342,53 +321,45 @@ class ChatRoom implements WampServerInterface
      */
     function onUnSubscribe(ConnectionInterface $conn, $topic)
     {
-        // $topic is valid
-        if (!$this->topicIsRoom($topic)) {
-            echo "Topic '{$topic}' not corresponds to room topic pattern\n";
+        // $topic is a valid rooms
+        if (false === $roomId = $this->retrieveRoomIdFromTopic($topic)) {
+            // @todo : handle that message on client side (or indicate error better)
+            $conn->event($topic, array("Topic '{$topic}' not corresponds to room topic pattern"));
             return;
         }
-        $roomId = $this->findIdFromTopic($topic);
 
-        // Remove from user room list
-        unset($conn->Chat->rooms[$roomId]);
-
-        // Remove from server room attendees list
-        $this->userRoom[$roomId]->detach($conn);
-        echo "{$conn->WAMP->sessionId} has just UN-subscribed to {$topic}\n";
-
-        if ($conn->closingConnection !== true) {
-            // Is user_room already exist in database (if not we have a problem Houston)
-            if (null !== $room = $this->userRoomManager->findOneBy(array('user_id' => $conn->User->getId(), 'room_id' => $roomId))) {
-                // Delete user_room in database
-                $this->userRoomManager->delete(array('user_id' => $conn->User->getId(), 'room_id' => $roomId));
-            }
+        // Is this room exists?
+        if (null == $room = $this->getRoom($roomId)) {
+            // @todo : handle that message on client side (or indicate error better)
+            $conn->event($topic, array("Room '{$topic}' not already exists (onUnSubscribe)"));
+            return;
         }
+
+        // Remove from room user list
+        $this->removeUserRoom($conn, $roomId);
 
         // Inform other device that they should leave to room!
-        foreach ($this->userConn[$conn->User->getId()] as $connToNotify) {
-            if ($conn != $connToNotify) {
-                $connToNotify->event(self::CONTROL_TOPIC, array('action' => 'leaveRoomFromOtherDevice', 'data' => array('room_id' => $roomId)));
-            }
-        }
-
-        // Notify everyone this guy has leaved the room
-        $this->broadcast($roomId, array('action' => 'userOutRoom', 'data' => array(
-                'id' => $conn->User->getId(),
-                'username' => $conn->User->getUsername(),
-            ), $conn // exclude current user of this notification
+        $this->broadcastToUserDevices($conn->User->getId(), array(
+            'action' => 'leaveRoomFromOtherDevice',
+            'data' => array('room_id' => $roomId)
         ));
 
-        // If it was the last user in room and if room is not protected
-        // The bot should be the last user
-        // @todo : refactor $this->userRoom to be able to know how many "real" user remain
-        if (1 != $this->roomsList[$roomId]->getProtected()
-              && 1 >= $this->userRoom[$roomId]->count()){
-            // Delete room in database
-            $this->roomManager->delete(array('id' => $roomId));
-            unset($this->userRoom[$roomId]);
-            unset($this->roomsList[$roomId]);
-            echo "Room {$roomId} deleted\n";
+        // Notify everyone this guy has leaved the room
+        $this->broadcastToRoomUsers($roomId, array(
+            'action' => 'userOutRoom', // @todo: rename userEnterInRoom
+            'data' => array(
+                'id' => $conn->User->getId(),
+                'username' => $conn->User->getUsername(),
+                'avatar' => $conn->User->getAvatarUrl(20),
+            )
+        ), $conn);
+
+        // Room should be removed? (last user just leaved and not protected)
+        if (count($room->getUsers()) < 1 && 1 != $room->getProtected()) {
+            $this->removeRoom($roomId);
         }
+
+        echo "{$conn->WAMP->sessionId} has just UN-subscribed to {$topic}\n";
     }
 
     /**
@@ -398,31 +369,33 @@ class ChatRoom implements WampServerInterface
     {
         $event = (string)$event;
         if (empty($event)) {
+            echo "Empty event published by '{$conn->User->getId()}' on '{$topic}'\n";
+            return;
+        }
+        $message = $this->escape($event);
+
+        // $topic is a valid rooms
+        if (false === $roomId = $this->retrieveRoomIdFromTopic($topic)) {
+            // @todo : handle that message on client side (or indicate error better)
+            $conn->event($topic, array("Topic '{$topic}' not corresponds to room topic pattern"));
             return;
         }
 
-        // $topic is valid
-        if (!$this->topicIsRoom($topic)) {
-            echo "Topic '{$topic}' not corresponds to room topic pattern\n";
-            return;
-        }
-        $roomId = $this->findIdFromTopic($topic);
-
-        // This room was not already created
-        if (!array_key_exists($roomId, $this->roomsList)) {
-            echo "Room '{$topic}' not already exists, please call 'createRoom' before\n";
+        // Is this room exists?
+        if (null == $room = $this->getRoom($roomId)) {
+            // @todo : handle that message on client side (or indicate error better)
+            $conn->event($topic, array("Room '{$topic}' not already exists (onPublish)"));
             return;
         }
 
         // This room is not subscribed by user
-        if (!$this->userRoom[$roomId]->contains($conn)) {
-            echo "User has not subscribed to this room '{$roomId}'\n";
+        if (!$room->getUsers()->contains($conn)) {
+            // @todo : handle that message on client side (or indicate error better)
+            $conn->event($topic, array("User '{$conn->User->getId()}' has not subscribed to the room '{$roomId}'\n"));
             return;
         }
 
-        $message = $this->escape($event);
-
-        // Store message in database
+        // Archive message in database
         $this->messageManager->insert(array(
             'user_id' => $conn->User->getId(),
             'room_id' => $roomId,
@@ -430,7 +403,7 @@ class ChatRoom implements WampServerInterface
             'message' => $message,
         ));
 
-        $this->broadcast($roomId, array(
+        $this->broadcastToRoomUsers($roomId, array(
             'action' => 'message',
             'data' => array(
                 'user_id' => $conn->User->getId(),
@@ -443,27 +416,31 @@ class ChatRoom implements WampServerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Broadcast an event on control topic to all $conn of a particular user
+     *
+     * @param int $userId
+     * @param mixed $event
      */
-    public function onError(ConnectionInterface $conn, \Exception $e) {
-        $conn->close();
+    protected function broadcastToUserDevices($userId, $event)
+    {
+        foreach ($this->userDevices[$userId] as $client) {
+            $client->event(self::CONTROL_TOPIC, $event);
+        }
     }
 
     /**
-     * Broadcast a message to subscribers
+     * Broadcast an event to all users of a particular room
      *
-     * @param int $id The ID of the room to broadcast for
+     * @param int $roomId
      * @param mixed $event
      * @param ConnectionInterface $exclude The user connection to exclude from broadcast
      */
-    protected function broadcast($roomId, $event, ConnectionInterface $exclude = null)
+    protected function broadcastToRoomUsers($roomId, $event, ConnectionInterface $exclude = null)
     {
         $topic = self::TOPIC_ROOM_PREFIX . $roomId;
-
-        // If at least one $conn registered
-        foreach ($this->userRoom[$roomId] as $client) {
-            if ($client !== $exclude) {
-                $client->event($topic, $event);
+        foreach ($this->getRoom($roomId)->getUsers() as $conn) {
+            if ($conn !== $exclude) {
+                $conn->event($topic, $event);
             }
         }
     }
@@ -485,23 +462,6 @@ class ChatRoom implements WampServerInterface
     }
 
     /**
-     * Check that $topic correspond to the room topic pattern.
-     *
-     * @param string $topic
-     * @return bool
-     */
-    protected function topicIsRoom($topic)
-    {
-        $match = preg_match("@^".self::TOPIC_ROOM_PREFIX."[1-9]+[0-9]*@", $topic);
-        if ($match === false) {
-            echo "REGEX error: " . __LINE__ . "\n";
-            return false;
-        }
-
-        return (bool)$match;
-    }
-
-    /**
      * Analyse $topic and return the corresponding room id
      *
      * @param string $topic
@@ -519,5 +479,119 @@ class ChatRoom implements WampServerInterface
         }
 
         return $matches[1];
+    }
+
+    /**
+     * Analyse $topic and return the corresponding room_id
+     * or false if $topic is not well formed
+     *
+     * @param string $topic
+     * @return int|false
+     */
+    protected function retrieveRoomIdFromTopic($topic)
+    {
+        $matches = array();
+        $match = preg_match("@^".self::TOPIC_ROOM_PREFIX."([1-9]+[0-9]*)@", $topic, $matches);
+        if ($match === false) {
+            return false;
+        } else if ($match == 0) {
+            return null;
+        }
+
+        return $matches[1];
+    }
+
+    /**
+     * Retrieve room in memory and return.
+     * If not in memory retrieve in database.
+     * If not in database return null.
+     *
+     * @param int $roomId
+     * @return Room|null
+     */
+    protected function getRoom($roomId)
+    {
+        // is in memory
+        if (!array_key_exists($roomId, $this->_rooms)) {
+            // is in database
+            if (null === $room = $this->roomManager->findOneBy(array('id' => $roomId))) {
+                echo "Room '{$roomId}' not already exists (getRoom)\n";
+                return null;
+            }
+
+            $this->_rooms[$roomId] = $room;
+            $this->_rooms[$roomId]->setUsers(new \SplObjectStorage());
+        }
+
+        return $this->_rooms[$roomId];
+    }
+
+    /**
+     * Remove room form memory and database.
+     *
+     * @param int $roomId
+     */
+    protected function removeRoom($roomId)
+    {
+        // database
+        $this->roomManager->delete(array(
+            'id' => $roomId,
+            'protected' => 0, // additionnal protection
+        ));
+
+        // memory
+        unset($this->_rooms[$roomId]);
+
+        echo "Room {$roomId} was deleted\n";
+    }
+
+    /**
+     * Add a new user room association
+     *
+     * @param $conn
+     * @param $roomId
+     */
+    protected function addUserRoom($conn, $roomId)
+    {
+        $room = $this->getRoom($roomId);
+        $userList = $room->getUsers();
+        if ($userList->contains($conn)) {
+            echo "User '{$conn->User->getId()}' already in the user list\n";
+            return;
+        }
+
+        // Store user_room in database
+        // (if not already exists, user could be in this room in another device/browser)
+        $this->userRoomManager->insertOrUpdate(array(
+            'room_id' => $roomId,
+            'user_id' => $conn->User->getId(),
+        ));
+
+        $userList->attach($conn);
+    }
+
+    /**
+     * Remove a user room association
+     *
+     * @param $conn
+     * @param $roomId
+     */
+    protected function removeUserRoom($conn, $roomId)
+    {
+        $room = $this->getRoom($roomId);
+        $userList = $room->getUsers();
+
+        // Remove from database
+        if ($conn->closingConnection !== true) {
+            $this->userRoomManager->delete(array('user_id' => $conn->User->getId(), 'room_id' => $roomId));
+        }
+
+        if (!$userList->contains($conn)) {
+            echo "User '{$conn->User->getId()}' NOT in the user list\n";
+            return;
+        }
+
+        // Remove from memory
+        $userList->detach($conn);
     }
 }

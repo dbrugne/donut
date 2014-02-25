@@ -26,34 +26,36 @@ v3:
 * Add open profile in .messages - done!
 
 v4:
+* Online / find user
+* (irc) One to one discussion
 * (refactor) Add $logger in $app
-* (refactor) Chatroom code cleanup/refactoring/logging
+* (refactor) Chatroom code cleanup/refactoring/logging - done!
 
 vx:
+* User account: photo, bio, town
+* Add user count on "room search" and "room tab"
+* Add tabbed-universe on homepage (TV, FIFA Worldcup, Sport, ...)
+* (refactor) Use App extends instead of actual server.php
 * Multi-line postbox input bug
-* (irc) One to one discussion
-* Find user
+* Move room close button in room list
 * Facebook Login + Invite your friends + page Facebook
 * Private Room / Permanent Room (will not be deleted on last user leave)
+* Invite someone(s) in my room
 * (irc) Kick users
 * (irc) ACL on room => who is OP, set OP, remove OP, can change baseline, can kick users
-* Add worldcup match in sample and on homepage
 * (refactor) Use only Joined and focusRoom in client.js
 * Add statistics: user loggin, user logout, user create/enter/leave a room, user chage title, search for room
 * (refactor) Sanitize all user input in Websocket and implement data control
 * Translate in french
 * Google Analytics
-* Invite someone(s) in my room
-* Move room close button in room list
 * A page per room (as for user)
 * (irc) Message history on arrow up/down
 * Social
-  * Like a message
   * Follow profile (= friend)
   * Add a "Friends are in rooms" list
-  * Mention a user in a message
-* (refactor) Use App extends instead of actual server.php
 
 Idea box:
+* (social) Like a message
 * Each user can black-list other users
 * Store messages and history in localstorage
+* (social) Automatic mention of a user in a message
