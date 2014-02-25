@@ -280,12 +280,14 @@ class ChatRoom implements WampServerInterface
 
         // Push room users
         foreach ($room->getUsers() as $attendee) {
-            $conn->event($topic, array('action' => 'userInRoom', 'data' => array(
-                'id' => $attendee->User->getId(),
-                'username' => $attendee->User->getUsername(),
-                'avatar' => $attendee->User->getAvatarUrl(20),
-                'notify' => false, // false to not notify this user addition in message list
-            )));
+            $conn->event($topic, array(
+                'action' => 'userInRoom',
+                'data' => array(
+                    'id' => $attendee->User->getId(),
+                    'username' => $attendee->User->getUsername(),
+                    'avatar' => $attendee->User->getAvatarUrl(20),
+                )
+            ));
         }
 
         // Push welcome message
@@ -305,7 +307,7 @@ class ChatRoom implements WampServerInterface
 
         // Notify everyone this user has joined the room
         $this->broadcastToRoomUsers($roomId, array(
-            'action' => 'userInRoom', // @todo: rename userEnterInRoom
+            'action' => 'userEnterInRoom',
             'data' => array(
                 'id' => $conn->User->getId(),
                 'username' => $conn->User->getUsername(),
@@ -346,7 +348,7 @@ class ChatRoom implements WampServerInterface
 
         // Notify everyone this guy has leaved the room
         $this->broadcastToRoomUsers($roomId, array(
-            'action' => 'userOutRoom', // @todo: rename userEnterInRoom
+            'action' => 'userOutRoom',
             'data' => array(
                 'id' => $conn->User->getId(),
                 'username' => $conn->User->getUsername(),

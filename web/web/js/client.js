@@ -232,7 +232,7 @@ var ChatClient = function(optDebug) {
         $(('.room-item[data-room-id="'+roomId+'"] > .badge')).html(current);
     }
 
-    function userListAddUser(roomId, user) {
+    function userListAddUser(roomId, user, notify) {
         // Check that user is not already in DOM
         if ($(".users-list[data-room-id='"+roomId+"']").find(".user-item[data-user-id='"+user.id+"']").length > 0){
             return;
@@ -243,7 +243,7 @@ var ChatClient = function(optDebug) {
 
         userListSort(roomId);
 
-        if (undefined == user.notify || user.notify == true) {
+        if (undefined == notify || notify != false) {
             roomContainerAddApplicationMessage(roomId, 'info', "User <strong>"+user.username+"</strong> has joined the room");
         }
     }
@@ -586,8 +586,13 @@ var ChatClient = function(optDebug) {
             createRoomIhm(roomId, data.name);
         });
 
-        // When server indicate that someone enter in the room
+        // When server push room attendees
         $(ChatServer).bind('userInRoom', function(jQevent, roomId, data) {
+            userListAddUser(roomId, data, false);
+        });
+
+        // When server indicate that someone enter in the room
+        $(ChatServer).bind('userEnterInRoom', function(jQevent, roomId, data) {
             userListAddUser(roomId, data);
         });
 

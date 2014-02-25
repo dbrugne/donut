@@ -70,12 +70,20 @@ ChatServerPrototype = function(optDebug) {
           , 'enterInRoom'
 
          /**
-          * Server notify that a user is to display as room attendee
+          * Server notify that a user is to add as room attendee
           * @event userInRoom
           * @param int roomId
           * @param Object data
           */
           , 'userInRoom'
+
+        /**
+         * Server notify that a user just arrived in the room
+         * @event userEnterInRoom
+         * @param int roomId
+         * @param Object data
+         */
+            , 'userEnterInRoom'
 
         /**
          * Server notify that a user is to display as room attendee
