@@ -222,8 +222,6 @@ class ChatRoom implements WampServerInterface
      */
     function onSubscribe(ConnectionInterface $conn, $topic)
     {
-        // @todo: remove Bot and replace by local welcome message
-
         /****************
          * CONTROL TOPIC
          ***************/
