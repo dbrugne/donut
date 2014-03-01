@@ -26,21 +26,25 @@ v3:
 * Add open profile in .messages - done!
 
 v4:
-* Online / find user
 * (irc) One to one discussion
+* Online / find user
 * (refactor) Add $logger in $app
+* (refactor) Process to enter in a room: on click subscribe/createIhm/getRoomData/getUsers + error handling
 * (refactor) Chatroom code cleanup/refactoring/logging - done!
 
 vx:
+* Extend the "room box" to include the user list
+* Add anchor by room, that change when selecting another room, could be shared with people
 * User account: photo, bio, town
 * Add user count on "room search" and "room tab"
 * Add tabbed-universe on homepage (TV, FIFA Worldcup, Sport, ...)
 * (refactor) Use App extends instead of actual server.php
 * Multi-line postbox input bug
 * Move room close button in room list
-* Facebook Login + Invite your friends + page Facebook
 * Private Room / Permanent Room (will not be deleted on last user leave)
+* Facebook Login + Invite your friends + page Facebook
 * Invite someone(s) in my room
+* Highlight messages of the same user of this message
 * (irc) Kick users
 * (irc) ACL on room => who is OP, set OP, remove OP, can change baseline, can kick users
 * (refactor) Use only Joined and focusRoom in client.js
@@ -53,9 +57,16 @@ vx:
 * Social
   * Follow profile (= friend)
   * Add a "Friends are in rooms" list
+* (refactor) Database on MongoDb
+* Develop mobile version with SenchaTouch
+* (refactor) Server on node.js/socket.io
 
 Idea box:
 * (social) Like a message
 * Each user can black-list other users
 * Store messages and history in localstorage
 * (social) Automatic mention of a user in a message
+* Public mod for a room (all the content is visible by anyone)
+* Anonymous person allowed (could be blocked by room)
+* Give ability to a room owner to "suspend a room" temporarily
+
