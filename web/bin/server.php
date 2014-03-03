@@ -6,21 +6,12 @@ use Ratchet\WebSocket\WsServer;
 use Ratchet\Wamp\ServerProtocol;
 use Ratchet\Http\HttpServer;
 use Ratchet\Session\SessionProvider;
-
 use React\EventLoop\Factory;
 use React\Socket\Server as Reactor;
-//use React\ZMQ\Context;
-
 use Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler;
-
-use Server\Components\ChatRoom;
 use Server\Components\Authentication;
-use Server\Components\MessageLogger;
+use Server\Components\ChatServer;
 
-use Monolog\Logger;
-use Monolog\Handler\StreamHandler;
-
-// Composer: The greatest thing since sliced bread
 require_once __DIR__.'/../vendor/autoload.php';
 
 // Setup application
@@ -59,6 +50,13 @@ $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
 ));
 
 /**********************************************
+ * Orm
+ *********************************************/
+$app['room.manager'] = new Server\Chat\RoomManager($app);
+$app['userRoom.manager'] = new App\Chat\UserRoomManager($app);
+$app['message.manager'] = new App\Chat\MessageManager($app);
+
+/**********************************************
  * Session
  *********************************************/
 $app['session.db_options'] = array(
@@ -78,11 +76,10 @@ $app['session.storage.handler'] = $app->share(function () use ($app) {
 /**********************************************
  * Logging
  *********************************************/
-$stdout = new StreamHandler('php://stdout');
-$logout = new Logger('SockOut');
-$login  = new Logger('Sock-In');
-$login->pushHandler($stdout);
-$logout->pushHandler($stdout);
+$app->register(new Silex\Provider\MonologServiceProvider(), array(
+    'monolog.name' => 'server',
+    'monolog.logfile' => 'php://stdout',
+));
 
 /**********************************************
  * Server
@@ -93,27 +90,18 @@ $loop = Factory::create();
 // Setup our Ratchet ChatRoom application
 $webSock = new Reactor($loop);
 $webSock->listen(8080, '0.0.0.0');
-$webServer = new IoServer(           // Basic I/O with clients, aww yeah
+$webServer = new IoServer(              // Basic I/O with clients, aww yeah
     new HttpServer(
-        new WsServer(                    // Boom! WebSockets
-                new MessageLogger(       // Log events in case of "oh noes"
-                    new SessionProvider(
-                        new Authentication (
-                            new ServerProtocol(  // WAMP; the new hotness sub-protocol
-                                    new ChatRoom( // ...and DISCUSS!
-                                        $app
-                                    )
-                            )
-                            , $app
-                        )
-                        , $app['session.storage.handler']
-                    )
-                    , $login
-                    , $logout
-                )
+        new WsServer(                   // Boom! WebSockets
+            new SessionProvider(
+                new Authentication (
+                    new ServerProtocol( // WAMP; the new hotness sub-protocol
+                        new ChatServer($app)
+                    ), $app
+                ), $app['session.storage.handler']
+            )
         )
-    )
-    , $webSock
+    ), $webSock
 );
 
 // Allow Flash sockets (Internet Explorer) to connect to our app

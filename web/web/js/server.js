@@ -10,7 +10,32 @@ ChatServerPrototype = function(optDebug) {
     }
 
     var api = {
-        events: [
+        
+        topicTypes: {
+            control: "ws://chat.local/control",
+            discussion: "ws://chat.local/discussion",
+            room_prefix: "ws://chat.local/room#"
+        }
+        , getTopicType: function(topic) {
+            if (topic == this.topicTypes.control) {
+                return 'control';
+            } else if (topic.indexOf(this.topicTypes.discussion) != -1) {
+                return 'discussion';
+            } else if (topic.indexOf(this.topicTypes.room_prefix) != -1) {
+                return 'room';
+            }
+        }
+        , isControlTopic: function(topic) {
+            return this.getTopicType(topic) == 'control';
+        }
+        , isRoomTopic: function(topic) {
+            return this.getTopicType(topic) == 'room';
+        }
+        , isDiscussionTopic: function(topic) {
+            return this.getTopicType(topic) == 'discussion';
+        }
+
+        , events: [
             /**
              * The user has connected to the server
              * @event connected
@@ -24,11 +49,18 @@ ChatServerPrototype = function(optDebug) {
           , 'disconnect'
 
             /**
-             * Crap crap crap!
-             * @event error
-             * @param string Message from the server
+             * Subscription to channel was accepted
+             * @event subscribeSuccess
+             * @param array
              */
-          , 'error'
+          , 'subscribeSuccess'
+
+            /**
+             * Subscription to channel was refused
+             * @event subscribeError
+             * @param array
+             */
+            , 'subscribeError'
 
             /**
              * A new room has been created by another user
@@ -62,20 +94,12 @@ ChatServerPrototype = function(optDebug) {
           , 'message'
 
          /**
-          * Server asks to client to open this room in the interface
-          * @event enterInRoom
-          * @param int roomId
-          * @param Object data
-          */
-          , 'enterInRoom'
-
-         /**
           * Server notify that a user is to add as room attendee
-          * @event userInRoom
+          * @event addRoomAttendee
           * @param int roomId
           * @param Object data
           */
-          , 'userInRoom'
+          , 'addRoomAttendee'
 
         /**
          * Server notify that a user just arrived in the room
@@ -102,39 +126,40 @@ ChatServerPrototype = function(optDebug) {
           , 'roomBaseline'
 
         /**
-         * The server inform the client that a room was opened for this user account (probably from another device)
-         * @event joinRoomFromOtherDevice
+         * Fired when the server ask to client to join this room (the user is reconnecting or the room was opened
+         * on another device)
+         *
+         * @event pleaseJoinRoom
          * @param Object data
          */
-            , 'joinRoomFromOtherDevice'
+            , 'pleaseJoinRoom'
 
         /**
-         * The server inform the client that a room was closed for this user account (probably from another device)
-         * @event leaveRoomFromOtherDevice
+         * Fired when the server ask to client to leave this room (room closed on another device or room deletion)
+         *
+         * @event pleaseLeaveRoom
          * @param Object data
          */
-            , 'leaveRoomFromOtherDevice'
+            , 'pleaseLeaveRoom'
         ]
 
       , debug: optDebug | false
 
-      , subscribe: function(roomId) {
-            sess.subscribe('ws://chat.local/room#'+roomId, function(topic, event) {
-                var roomId = topic.replace('ws://chat.local/room#','');
-
-                Debug([event.action, roomId, event.data]);
-
-                $(api).trigger(event.action, [roomId, event.data]);
+      , subscribe: function(topic) {
+            Debug("ATTENTION:"+topic);
+            sess.subscribe(topic, function(topic, event) {
+                Debug([event.action, topic, event.data]);
+                $(api).trigger(event.action, [topic, event.data]);
             });
         }
 
-      , unsubscribe: function(roomId) {
-            sess.unsubscribe('ws://chat.local/room#'+roomId);
+      , unsubscribe: function(topic) {
+            sess.unsubscribe(topic);
         }
 
-      , send: function(roomId, msg) {
+      , send: function(topic, msg) {
             // Message can not be longer than 140 characters
-            sess.publish('ws://chat.local/room#'+roomId, msg);
+            sess.publish(topic, msg);
         }
 
       , end: function() {
@@ -142,19 +167,10 @@ ChatServerPrototype = function(optDebug) {
         }
 
       , create: function(name, callback) {
-            sess.call('createRoom', name).then(function(room) {
-                callback(room);
+            sess.call('createRoom', name).then(function(data) {
+                callback(data);
             }, function(args) {
-                callback(room);
-            });
-        }
-
-      , userIsInRooms: function(callback) {
-            sess.call('userIsInRooms').then(function(args) {
-                callback(args);
-            }, function(args) {
-                alert('Erreur userIsInRooms !!');
-                callback(args);
+                callback(data);
             });
         }
 
@@ -176,7 +192,8 @@ ChatServerPrototype = function(optDebug) {
 
       , sessionId: ''
 
-      , rooms: {}
+      , userId: '' // @todo: fill on connect and use for avoiding self-discussion or other things
+
     }
 
     ab._debugrpc    = api.debug;
@@ -195,11 +212,15 @@ ChatServerPrototype = function(optDebug) {
       , function(session) {
             sess = session;
             api.sessionId = sess._session_id;
-            Debug('Connected! ' + api.sessionId);
 
             // Subscribe to control topic
-            sess.subscribe("ws://chat.local/control", function(topic, event) {
+            sess.subscribe(api.topicTypes.control, function(topic, event) {
                 $(api).trigger(event.action, event.data);
+            });
+
+            // Subscribe to discussion topic
+            sess.subscribe(api.topicTypes.discussion, function(topic, event) {
+                $(api).trigger(event.action, [topic, event.data]);
             });
 
             $(api).trigger('connect');

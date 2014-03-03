@@ -8,13 +8,6 @@ abstract class Entity
     protected $data = array();
 
     /**
-     * Constructor.
-     */
-    public function __construct()
-    {
-    }
-
-    /**
      * Return the current data array.
      *
      * @return array
@@ -57,7 +50,7 @@ abstract class Entity
                 break;
 
             default :
-                return false;
+                throw new \Exception("Unknown method '{$name}' called on " . __CLASS__);
         }
     }
 

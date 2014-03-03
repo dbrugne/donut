@@ -83,6 +83,19 @@ CREATE TABLE IF NOT EXISTS `user_room` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
+-- Structure de la table `discussions`
+--
+DROP TABLE IF EXISTS `discussions`;
+CREATE TABLE IF NOT EXISTS `discussions` (
+  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `from_user_id` INT(11) UNSIGNED NOT NULL,
+  `to_user_id` INT(11) UNSIGNED NOT NULL,
+  `time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `unique_from_to` (`from_user_id`,`to_user_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
 -- Structure de la table `tv_channels`
 --
 DROP TABLE IF EXISTS `tv_channels`;

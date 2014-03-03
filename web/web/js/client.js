@@ -1,10 +1,8 @@
 var ChatClient = function(optDebug) {
 
     var ChatServer;
-    var focusRoom = '';
-
-    var Joined = [];
-    var Names  = {};
+    var openedWindows = [];
+    var focusedWindow = '';
 
     if (undefined == optDebug || '' == optDebug) {
         optDebug = false;
@@ -32,7 +30,6 @@ var ChatClient = function(optDebug) {
         { label: 'kiss', class: 'emoticon-kiss', symbol: ":*" },
         { label: 'frown', class: 'emoticon-frown', symbol: ":(" },
         { label: 'tears', class: 'emoticon-tears', symbol: ":'(" },
-
         { label: 'cool', class: 'emoticon-cool', symbol: "&gt;B)" },
         { label: 'angry', class: 'emoticon-angry', symbol: ":@" },
         { label: 'confused', class: 'emoticon-confused', symbol: ":S" },
@@ -85,10 +82,28 @@ var ChatClient = function(optDebug) {
     /****************************************************
      * Interface re-usable functions
      ****************************************************/
-    function createRoomIhm(roomId, roomName) {
+    function isChatWindowExists(topic) {
+        if ($(".room-item[data-room-id='"+topic+"']").length > 0){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function newChatWindow(topic, data) {
         // Test if elements for this room are already in the DOM
-        if ($(".room-item[data-room-id='"+roomId+"']").length > 0){
+        if (isChatWindowExists(topic)) {
             return;
+        }
+
+        windowType = ChatServer.getTopicType(topic);
+
+        // Window name
+        var windowName;
+        if (windowType == 'room') {
+            windowName = data.name;
+        } else if (windowType == 'discussion') {
+            windowName = data.username;
         }
 
         // Hide default elements
@@ -96,31 +111,37 @@ var ChatClient = function(optDebug) {
 
         // Create room in rooms-list
         var newRoomItem = $(".room-item[data-room-id='template']").clone(false);
-        $(newRoomItem).attr('data-room-id', roomId);
-        $(newRoomItem).html(roomName);
+        $(newRoomItem).attr('data-room-id', topic);
+        $(newRoomItem).find('.name').html(windowName);
         $(newRoomItem).css('display', 'block');
         $(newRoomItem).click(function() {
-            focusOnRoom(roomId);
+            focusOnWindow(topic);
         });
         $("#rooms-list").append(newRoomItem);
 
         // Create room-container
         var newRoomContainer = $(".room-container[data-room-id='template']").clone(false);
-        $(newRoomContainer).attr('data-room-id', roomId);
-        $(newRoomContainer).find('.name').html(roomName);
-        $(newRoomContainer).find('.input-message').attr('data-room-id', roomId);
-        $(newRoomContainer).find('.send-message').attr('data-room-id', roomId);
-        $(newRoomContainer).find('.smileys-message').attr('data-room-id', roomId);
-        $(newRoomContainer).find('.smileys-popin-message').attr('data-room-id', roomId);
+        $(newRoomContainer).attr('data-room-id', topic);
+        $(newRoomContainer).find('.name').html(windowName);
+        $(newRoomContainer).find('.input-message').attr('data-room-id', topic);
+        $(newRoomContainer).find('.send-message').attr('data-room-id', topic);
+        $(newRoomContainer).find('.smileys-message').attr('data-room-id', topic);
+        $(newRoomContainer).find('.smileys-popin-message').attr('data-room-id', topic);
         $(newRoomContainer).find('ul.smileys').first().html(smileysHtml);
+        if (windowType == 'room') {
+            $(newRoomContainer).find('.baseline').html(data.baseline);
+        } else if (windowType == 'discussion') {
+            $(newRoomContainer).find('.baseline').remove();
+            $(newRoomContainer).find('.room-baseline-form').remove();
+        }
         $("#room").append(newRoomContainer);
 
         // Textarea autosize
-        $(".input-message[data-room-id='"+roomId+"']").autosize();
+        $(".input-message[data-room-id='"+topic+"']").autosize();
 
         // Smileys management
-        $(".smileys-message[data-room-id='"+roomId+"']").on('click', function () {
-            var popin = $('.smileys-popin-message[data-room-id="'+$(this).data('roomId')+'"]');
+        $(".smileys-message[data-room-id='"+topic+"']").on('click', function () {
+            var popin = $('.smileys-popin-message[data-room-id="'+$(this).data('topic')+'"]');
             var position = $(this).position();
 
             var newTop = position.top - $(popin).outerHeight();
@@ -130,34 +151,35 @@ var ChatClient = function(optDebug) {
             $(popin).css('left', newLeft);
             $(popin).toggle();
         });
-        $('.smileys-popin-message[data-room-id="'+roomId+'"]').find('li').on('click', function () {
-
+        $('.smileys-popin-message[data-room-id="'+topic+'"]').find('li').on('click', function () {
             var smileyHtml = '<span class="smiley emoticon-16px '+sclass+'">'+symbol+'</span>';
 
             var symbol = $(this).data('symbol');
             var sclass = $(this).data('sclass');
             Debug([symbol, sclass]);
 
-            $(".input-message[data-room-id='"+roomId+"']").insertAtCaret(symbol);
-            $('.smileys-popin-message[data-room-id="'+roomId+'"]').hide();
+            $(".input-message[data-room-id='"+topic+"']").insertAtCaret(symbol);
+            $('.smileys-popin-message[data-room-id="'+topic+'"]').hide();
         });
 
-        // Create room users-list
-        var newUsersList = $(".users-list[data-room-id='template']").clone(false);
-        $(newUsersList).attr('data-room-id', roomId);
-        $("#users").append(newUsersList);
+        if (windowType == 'room') {
+            // Create room users-list
+            var newUsersList = $(".users-list[data-room-id='template']").clone(false);
+            $(newUsersList).attr('data-room-id', topic);
+            $("#users").append(newUsersList);
+        }
 
         // Set the height as with flexbox model
         resizeMessages();
 
-        // Active this new room (if needed)
-        focusOnRoom(roomId);
+        // Register room in already-opened-rooms list
+        openedWindows.push(topic);
     }
 
-    function removeRoomIhm(roomId) {
-        $(".room-item[data-room-id='"+roomId+"']").remove();
-        $(".room-container[data-room-id='"+roomId+"']").remove();
-        $(".users-list[data-room-id='"+roomId+"']").remove();
+    function removeWindowDOM(topic) {
+        $(".room-item[data-room-id='"+topic+"']").remove();
+        $(".room-container[data-room-id='"+topic+"']").remove();
+        $(".users-list[data-room-id='"+topic+"']").remove();
 
         // If it was the last room open show() default
         if (1 > $(".room-item[data-room-id!='default'][data-room-id!='template']").length) {
@@ -165,36 +187,36 @@ var ChatClient = function(optDebug) {
             $("[data-room-id='default']").show();
         } else {
             // At least one open room remain, we focus on it
-            focusOnRoom();
+            focusOnWindow();
         }
     }
 
-    function focusOnRoom(roomId) {
-        // If roomId is null focus the first opened room
-        if (roomId == undefined) {
-            roomId = $( ".room-item[data-room-id!='default'][data-room-id!='template']").first().data('roomId');
+    function focusOnWindow(topic) {
+        // If topic is null focus the first opened room
+        if (topic == undefined) {
+            topic = $(".room-item[data-room-id!='default'][data-room-id!='template']").first().data('roomId');
         }
 
-        focusRoom = roomId;
+        focusedWindow = topic;
 
         // Room list
         $( ".room-item").removeClass('active');
-        $('.room-item[data-room-id="'+roomId+'"]').addClass('active');
+        $('.room-item[data-room-id="'+topic+'"]').addClass('active');
 
         // Room content
         $( ".room-container" ).hide();
-        $('.room-container[data-room-id="'+roomId+'"]').fadeIn(400);
+        $('.room-container[data-room-id="'+topic+'"]').fadeIn(400);
 
         // Set the height as with flexbox model
         resizeMessages();
 
         // User list
         $( ".users-list" ).hide();
-        $('.users-list[data-room-id="'+roomId+'"]').fadeIn(400);
+        $('.users-list[data-room-id="'+topic+'"]').fadeIn(400);
 
         // Remove un-read message badge
-        $('.room-item[data-room-id="'+roomId+'"] > .badge').fadeOut(400, function () {
-            $('.room-item[data-room-id="'+roomId+'"] > .badge').remove();
+        $('.room-item[data-room-id="'+topic+'"] > .badge').fadeOut(400, function () {
+            $('.room-item[data-room-id="'+topic+'"] > .badge').html(0);
         });
     }
 
@@ -220,36 +242,37 @@ var ChatClient = function(optDebug) {
         });
     }
 
-    function roomListNewMessageInRoom(roomId, num) {
-        var badges = $(('.room-item[data-room-id="'+roomId+'"] > .badge'));
-        if (badges.length == 0) {
-            var html = '<span class="badge">0</span> ';
-            $('.room-item[data-room-id="'+roomId+'"]').prepend(html);
-        }
-
-        var current = parseInt($(('.room-item[data-room-id="'+roomId+'"] > .badge')).html(), 10);
+    function addUnreadMessageBadge(topic, num) {
+        var current = parseInt($(('.room-item[data-room-id="'+topic+'"] > .badge')).html(), 10);
         current += num;
-        $(('.room-item[data-room-id="'+roomId+'"] > .badge')).html(current);
+        $(('.room-item[data-room-id="'+topic+'"] > .badge')).html(current);
+        $('.room-item[data-room-id="'+topic+'"] > .badge').show();
     }
 
-    function userListAddUser(roomId, user, notify) {
+    function userListAddUser(topic, user, notify) {
         // Check that user is not already in DOM
-        if ($(".users-list[data-room-id='"+roomId+"']").find(".user-item[data-user-id='"+user.id+"']").length > 0){
+        if ($(".users-list[data-room-id='"+topic+"']").find(".user-item[data-user-id='"+user.id+"']").length > 0){
             return;
         }
 
-        var html = '<a href="#" class="user-item" data-user-id="'+user.id+'">'+user.username+'</a>';
-        $(".users-list[data-room-id='"+roomId+"'] > .list-group").append(html);
+        var newUserItem = $(".user-item[data-user-id='template']").first().clone(false);
+        $(newUserItem).attr('data-user-id', user.id);
+        $(newUserItem).css('display', 'block');
+        $(newUserItem).find('.username').html(user.username);
+        console.log([newUserItem]);
+        /*var html = '<a href="#" class="user-item" data-user-id="'+user.id+'">'+user.username+'</a>';*/
+        $(".users-list[data-room-id='"+topic+"'] > .list-group").append(newUserItem);
+        console.log('add:'+user.id);
 
-        userListSort(roomId);
+        userListSort(topic);
 
         if (undefined == notify || notify != false) {
-            roomContainerAddApplicationMessage(roomId, 'info', "User <strong>"+user.username+"</strong> has joined the room");
+            roomContainerAddApplicationMessage(topic, 'info', "User <strong>"+user.username+"</strong> has joined the room");
         }
     }
 
-    function userListSort(roomId) {
-        var list = $(".users-list[data-room-id='"+roomId+"'] > .list-group");
+    function userListSort(topic) {
+        var list = $(".users-list[data-room-id='"+topic+"'] > .list-group");
         var items = $('a', list);
 
         items.sort(function(a, b) {
@@ -263,22 +286,21 @@ var ChatClient = function(optDebug) {
         });
     }
 
-    function userListRemoveUser(roomId, user) {
-        $(".users-list[data-room-id='"+roomId+"']").find(".user-item[data-user-id='"+user.id+"']").remove();
-        roomContainerAddApplicationMessage(roomId, 'info', "User <strong>"+user.username+"</strong> has left the room");
+    function userListRemoveUser(topic, user) {
+        $(".users-list[data-room-id='"+topic+"']").find(".user-item[data-user-id='"+user.id+"']").remove();
+        roomContainerAddApplicationMessage(topic, 'info', "User <strong>"+user.username+"</strong> has left the room");
     }
 
-    function roomContainerAddApplicationMessage(roomId, type, message) {
+    function roomContainerAddApplicationMessage(topic, type, message) {
         var dateText = $.format.date(new Date(), "HH:mm:ss");
         var html = '<p class="'+type+'"><span class="date"><span class="glyphicon glyphicon-time"></span> '+dateText+'</span> <span class="text">'+message+'</span></p>';
-        $(".room-container[data-room-id='"+roomId+"'] > .messages").append(html);
-        scrollDown($(".room-container[data-room-id='"+roomId+"'] > .messages"));
+        $(".room-container[data-room-id='"+topic+"'] > .messages").append(html);
+        scrollDown($(".room-container[data-room-id='"+topic+"'] > .messages"));
     }
 
-    function roomContainerAddMessage(roomId, message) {
+    function roomContainerAddMessage(topic, message) {
         var dateText = $.format.date(new Date(message.time*1000), "HH:mm:ss");
         var messageHtml = message.message;
-
         // Multi-lines
         messageHtml = messageHtml.replace(/\n/g, '<br />');
 
@@ -286,7 +308,6 @@ var ChatClient = function(optDebug) {
         //URLs starting with http://, https://, or ftp://
         urlPattern = /(\b(https?|ftp)?:\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim;
         messageHtml = messageHtml.replace(urlPattern, '<a href="$1" target="_blank">$1</a>');
-
         // Smileys
         $(smileys).each(function (idx, smiley) {
             messageHtml = messageHtml.replace(smiley.symbol, '<span class="smiley emoticon-16px '+smiley.class+'">'+smiley.symbol+'</span>');
@@ -294,23 +315,23 @@ var ChatClient = function(optDebug) {
 
         // P
         var html = '<p><span class="avatar"><img src="'+message.avatar+'" /></span><span class="username" data-user-id="'+message.user_id+'">'+message.username+'</span><span class="date"><span class="glyphicon glyphicon-time"></span> '+dateText+'</span><span class="message">'+messageHtml+'</span></p>';
-        $(".room-container[data-room-id='"+roomId+"'] > .messages").append(html);
-        scrollDown($(".room-container[data-room-id='"+roomId+"'] > .messages"));
+        $(".room-container[data-room-id='"+topic+"'] > .messages").append(html);
+        scrollDown($(".room-container[data-room-id='"+topic+"'] > .messages"));
     }
 
-    function setRoomBaseline(roomId, data)
+    function setRoomBaseline(topic, data)
     {
         var baseline = data.baseline;
         if ('' == baseline) {
             baseline = "&nbsp;";
         }
-        $(".room-container[data-room-id='"+roomId+"']").find('.baseline').html(baseline);
+        $(".room-container[data-room-id='"+topic+"']").find('.baseline').html(baseline);
 
         if (undefined == data.notify || data.notify == true) {
             if (undefined == data.username) {
                 data.username = '???';
             }
-            roomContainerAddApplicationMessage(roomId, 'info', "Channel topic was changed by <strong>"+data.username+"</strong> to: <em>"+baseline+"</em>");
+            roomContainerAddApplicationMessage(topic, 'info', "Channel topic was changed by <strong>"+data.username+"</strong> to: <em>"+baseline+"</em>");
         }
     }
 
@@ -318,32 +339,31 @@ var ChatClient = function(optDebug) {
      * Chat re-usable functions
      *****************************************************/
     // Current user joins a room
-    function joinRoom(roomId) {
+    function joinRoom(topic) {
         // Test if this room is already loaded in this browser page
-        if (-1 !== $.inArray(parseInt(roomId), Joined)) {
-            Debug('Room already opened (joinRoom): '+roomId);
-            focusOnRoom(roomId);
+        if (-1 !== $.inArray(parseInt(topic), openedWindows)) {
+            Debug('Room already opened (joinRoom): '+topic);
+            focusOnWindow(topic);
             return false;
         }
 
         // Subscribe to room
-        ChatServer.subscribe(roomId);
-
-        // Register room in already-opened-rooms list
-        Joined.push(parseInt(roomId));
-        // parseInt(): to avoid a "type"-bug when searching for this value
+        ChatServer.subscribe(topic);
     }
 
     // Current user leaves a room
-    function leaveRoom(roomId) {
-        // Subscribe to room
-        ChatServer.unsubscribe(roomId);
+    function leaveRoom(topic) {
+
+        if (ChatServer.isRoomTopic(topic)) {
+            // Subscribe to room
+            ChatServer.unsubscribe(topic);
+        }
 
         // IHM
-        removeRoomIhm(roomId);
+        removeWindowDOM(topic);
 
         // Un-register room in already-opened-rooms list
-        Joined.remove($.inArray(roomId, Joined));
+        openedWindows.remove($.inArray(topic, openedWindows));
     }
 
     /*****************************************************
@@ -353,9 +373,7 @@ var ChatClient = function(optDebug) {
 
         $(window).on('beforeunload', function() {
             // only if at least one room is open
-            if (Joined.length > 0) {
-                console.log("Joined as length: "+Joined.length);
-                console.log(Joined);
+            if (openedWindows.length > 0) {
                 // prevent user leave the page un-intentionnaly
                 return "If you leave this page all the chatroom history will be lost.";
             }
@@ -367,17 +385,26 @@ var ChatClient = function(optDebug) {
         });
 
         var postMessageCallback = function (e) {
-            var roomId = $(e).data('roomId');
-            var message = $('.input-message[data-room-id='+roomId+']').val();
+            var topic = $(e).data('roomId');
+            var topicType = ChatServer.getTopicType(topic);
+            var message = $('.input-message[data-room-id="'+topic+'"]').val();
             if (message == '') {
                 return;
             }
-            // Send to server
-            ChatServer.send(roomId, message);
-            // Empty the field
-            $('.input-message[data-room-id='+roomId+']').val('').trigger('autosize.resize');
-        };
 
+            if (topicType == 'room') {
+                data = {message: message};
+                ChatServer.send(topic, data);
+            }
+            if (topicType == 'discussion') {
+                var userId = topic.replace(ChatServer.topicTypes.discussion+"#", '');
+                data = {with_user_id: userId, message: message};
+                ChatServer.send(ChatServer.topicTypes.discussion, data);
+            }
+
+            // Empty the field
+            $('.input-message[data-room-id="'+topic+'"]').val('').trigger('autosize.resize');
+        };
         $(document).on('keypress', '.input-message', function (e) {
             var key;
             var isShift;
@@ -393,14 +420,17 @@ var ChatClient = function(optDebug) {
                 return false; // avoid adding a line break in field when submitting with "Enter"
             }
         });
-
         $(document).on('click', '.send-message', function () {
               postMessageCallback(this);
         });
 
+        $(document).on('click', '#rooms-list > .room-item > .close', function () {
+            var topic = $(this).closest(".room-item").data('roomId');
+            leaveRoom(topic);
+        });
         $(document).on('click', '.room-container > .header > .close', function () {
-            var roomId = $(this).closest(".room-container").data('roomId');
-            leaveRoom(roomId);
+            var topic = $(this).closest(".room-container").data('roomId');
+            leaveRoom(topic);
         });
 
         $('#create-room-toggle').click(function() {
@@ -423,8 +453,9 @@ var ChatClient = function(optDebug) {
                 return;
             }
 
-            ChatServer.create(roomName, function(room) {
-                joinRoom(room.id);
+            ChatServer.create(roomName, function(data) {
+                Debug(data);
+                joinRoom(data.topic);
             });
 
             $('#create-room-name').val('');
@@ -438,14 +469,14 @@ var ChatClient = function(optDebug) {
         });
 
         $(document).on('click', '.room-baseline-text', function () {
-            if (undefined == focusRoom || '' == focusRoom) {
+            if (undefined == focusedWindow || '' == focusedWindow) {
                 return;
             }
-            var roomHeader = $(".room-container[data-room-id='"+focusRoom+"'] > .header");
+            var roomHeader = $('.room-container[data-room-id="'+focusedWindow+'"] > .header');
 
             roomHeader.find('.room-baseline-text').hide();
             roomHeader.find('.room-baseline-form').show();
-            var currentBaseline = $(".room-container[data-room-id='"+focusRoom+"']").find('.baseline').html();
+            var currentBaseline = $('.room-container[data-room-id="'+focusedWindow+'"]').find('.baseline').html();
             if ('&nbsp;' == currentBaseline) {
                 currentBaseline = '';
             }
@@ -454,14 +485,14 @@ var ChatClient = function(optDebug) {
         });
 
         var changeBaselineCallback = function () {
-            if (undefined == focusRoom || '' == focusRoom) {
+            if (undefined == focusedWindow || '' == focusedWindow) {
                 return;
             }
-            var roomHeader = $(".room-container[data-room-id='"+focusRoom+"'] > .header");
+            var roomHeader = $('.room-container[data-room-id="'+focusedWindow+'"] > .header');
             var baseline = roomHeader.find('.room-baseline-input').val();
 
             // save
-            ChatServer.changeBaseline(focusRoom, baseline);
+            ChatServer.changeBaseline(focusedWindow, baseline);
 
             roomHeader.find('.room-baseline-form').hide();
             roomHeader.find('.room-baseline-text').show();
@@ -476,11 +507,11 @@ var ChatClient = function(optDebug) {
         });
 
         $(document).on('click', '.room-baseline-cancel', function () {
-            if (undefined == focusRoom || '' == focusRoom) {
+            if (undefined == focusedWindow || '' == focusedWindow) {
                 return;
             }
 
-            var roomHeader = $(".room-container[data-room-id='"+focusRoom+"'] > .header");
+            var roomHeader = $('.room-container[data-room-id="'+focusedWindow+'"] > .header');
             roomHeader.find('.room-baseline-form').hide();
             roomHeader.find('.room-baseline-text').show();
             roomHeader.find('.room-baseline-input').val('');
@@ -509,12 +540,12 @@ var ChatClient = function(optDebug) {
 
                 // Fill list with result
                 $(roomList).each(function() {
-                    var roomId = this.id;
-                    var html = '<li class="list-group-item search-room-item" data-room-id="'+roomId+'"><h4 class="list-group-item-heading">'+this.name+'</h4> <p class="list-group-item-text">'+this.baseline+'</p></li>';
+                    var html = '<li class="list-group-item search-room-item" data-room-id="'+this.topic+'"><h4 class="list-group-item-heading">'+this.name+'</h4> <p class="list-group-item-text">'+this.baseline+'</p></li>';
                     $(ul).append(html);
 
-                    $(ul).find("li.search-room-item[data-room-id='"+roomId+"']").first().click(function() {
-                        joinRoom(roomId);
+                    var topic = this.topic;
+                    $(ul).find('li.search-room-item[data-room-id="'+this.topic+'"]').first().click(function() {
+                        joinRoom(topic);
                         $("#room-search-modal").modal('hide');
                     });
                 });
@@ -526,7 +557,7 @@ var ChatClient = function(optDebug) {
 
         function userProfileCallback(o)
         {
-            var userId = $(o).data('userId');
+            var userId = $(o).closest('.user-item').data('userId');
             if (undefined == userId || '' == userId || 0 == userId) {
                 return;
             }
@@ -535,14 +566,35 @@ var ChatClient = function(optDebug) {
                 remote: 'http://' + window.location.hostname + '/u/'+userId+'?modal=true'
             });
         }
-        $(document).on('click', '#users > .users-list > .list-group > .user-item', function() {
+        $(document).on('click', '#users > .users-list > .list-group > .user-item > .actions > .user-profile', function() {
             userProfileCallback(this);
         });
-        $(document).on('click', '.messages > p > .username', function() {
+        $(document).on('dblclick', '.messages > p > .username', function() {
             userProfileCallback(this);
         });
         $('body').on('hidden.bs.modal', "#user-profile-modal", function () {
             $(this).removeData('bs.modal');
+        });
+
+        function discussionCallback(o)
+        {
+            var userItem = $(o).closest('.user-item');
+            var userId = $(userItem).data('userId');
+            if (undefined == userId || '' == userId || 0 == userId) {
+                return;
+            }
+
+            var username = $(userItem).find('.username').html();
+            var data = {id: userId, username: username};
+            var discussionTopic = ChatServer.topicTypes.discussion+"#"+userId;
+            newChatWindow(discussionTopic, data);
+            focusOnWindow(discussionTopic);
+        }
+        $(document).on('click', '#users > .users-list > .list-group > .user-item > .actions > .user-discussion', function() {
+            discussionCallback(this);
+        });
+        $(document).on('dblclick', '#users > .users-list > .list-group > .user-item > .username', function() {
+            discussionCallback(this);
         });
 
     });
@@ -557,20 +609,13 @@ var ChatClient = function(optDebug) {
         $(ChatServer).bind('connect', function(e) {
             status.update('online');
 
-            // Retrieve rooms the user is in (maybe in other devices or browsers)
-            ChatServer.userIsInRooms(function(roomList) {
-                $.each( roomList, function( i, room ){
-                    joinRoom(room.room_id);
-                });
-            });
-
             // Try to detect if a room was submitted in the URL (when user come from home for example)
             if(window.location.hash)
             {
                 // Hash found
                 var hash = window.location.hash.substring(1); // Puts hash in variable, and removes the # character
                 var roomId = parseInt(hash.replace('room=', ''));
-                joinRoom(roomId);
+                joinRoom(ChatServer.topicTypes.room_prefix+roomId);
             }
         });
 
@@ -578,45 +623,58 @@ var ChatClient = function(optDebug) {
             status.update('offline');
 
             // To be sure that client will re-subscribe to any topic after re-connection
-            Joined = [];
+            openedWindows = [];
         });
 
-        // When subscribe a room topic this "event" is send by server
-        $(ChatServer).bind('enterInRoom', function(jQevent, roomId, data) {
-            createRoomIhm(roomId, data.name);
+        // After a successful subscription server informs client
+        $(ChatServer).bind('subscribeSuccess', function(e, topic, room) {
+            newChatWindow(topic, room);
+            focusOnWindow(topic);
+        });
+
+        // After a successful subscription server informs client
+        $(ChatServer).bind('subscribeError', function(e, topic, data) {
+            alert(data.error);
         });
 
         // When server push room attendees
-        $(ChatServer).bind('userInRoom', function(jQevent, roomId, data) {
+        $(ChatServer).bind('addRoomAttendee', function(e, roomId, data) {
             userListAddUser(roomId, data, false);
         });
 
         // When server indicate that someone enter in the room
-        $(ChatServer).bind('userEnterInRoom', function(jQevent, roomId, data) {
+        $(ChatServer).bind('userEnterInRoom', function(e, roomId, data) {
             userListAddUser(roomId, data);
         });
 
         // When server indicate that someone leave the room
-        $(ChatServer).bind('userOutRoom', function(jQevent, roomId, data) {
+        $(ChatServer).bind('userOutRoom', function(e, roomId, data) {
             userListRemoveUser(roomId, data);
         });
 
-        $(ChatServer).bind('roomBaseline', function(jQevent, roomId, data) {
+        $(ChatServer).bind('roomBaseline', function(e, roomId, data) {
             setRoomBaseline(roomId, data);
         });
 
-        $(ChatServer).bind('joinRoomFromOtherDevice', function(jQevent, data) {
-            joinRoom(data.room_id);
+        $(ChatServer).bind('pleaseJoinRoom', function(e, data) {
+            joinRoom(data.topic);
         });
 
-        $(ChatServer).bind('leaveRoomFromOtherDevice', function(jQevent, data) {
-            leaveRoom(data.room_id);
+        $(ChatServer).bind('pleaseLeaveRoom', function(e, data) {
+            leaveRoom(data.topic);
         });
 
-        $(ChatServer).bind('message', function(jQevent, roomId, data) {
-            roomContainerAddMessage(roomId, data);
-            if (focusRoom != roomId) {
-                roomListNewMessageInRoom(roomId, 1);
+        $(ChatServer).bind('message', function(e, topic, data) {
+            // If message received on discussion and discussion window not already exists
+            if (ChatServer.isDiscussionTopic(topic)) {
+                topic = ChatServer.topicTypes.discussion+"#"+data.with_user_id;
+                if (!isChatWindowExists(topic)) {
+                    newChatWindow(topic, {user_id: data.with_user_id, username: data.username});
+                }
+            }
+            roomContainerAddMessage(topic, data);
+            if (focusedWindow != topic) {
+                addUnreadMessageBadge(topic, 1);
             }
         });
     });
@@ -634,4 +692,3 @@ var ChatClient = function(optDebug) {
     // TEST
 
 }(true);
-

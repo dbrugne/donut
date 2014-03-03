@@ -26,11 +26,13 @@ v3:
 * Add open profile in .messages - done!
 
 v4:
-* (irc) One to one discussion
+* (irc) One to one discussion - done!
+* (refactor) Process to enter in a room: on click subscribe/createIhm/getRoomData/getUsers + error handling - done!
+* (refactor) Add $logger in $app and log properly - done!
+* (refactor) Chatroom code cleanup/refactoring - done!
+* (refactor) Use only URI as identifier (room / discussion) in server.js and client.js - done!
+* Move room close button in room list - done!
 * Online / find user
-* (refactor) Add $logger in $app
-* (refactor) Process to enter in a room: on click subscribe/createIhm/getRoomData/getUsers + error handling
-* (refactor) Chatroom code cleanup/refactoring/logging - done!
 
 vx:
 * Extend the "room box" to include the user list
@@ -40,7 +42,6 @@ vx:
 * Add tabbed-universe on homepage (TV, FIFA Worldcup, Sport, ...)
 * (refactor) Use App extends instead of actual server.php
 * Multi-line postbox input bug
-* Move room close button in room list
 * Private Room / Permanent Room (will not be deleted on last user leave)
 * Facebook Login + Invite your friends + page Facebook
 * Invite someone(s) in my room

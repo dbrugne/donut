@@ -11,5 +11,4 @@ class RoomManager extends EntityManager
 
     /** @var string */
     protected $entityClass = "\\App\\Chat\\Room";
-
-} 
+}
