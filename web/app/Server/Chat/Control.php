@@ -28,6 +28,14 @@ class Control
         // Attach user to control topic
         $this->_subscribers->attach($conn);
 
+        // Push user_id
+        $conn->event($this->_app['channels']->getControlTopic(), array(
+            'action' => 'userId',
+            'data' => array(
+                'user_id' => $conn->User->getId(),
+            ),
+        ));
+
         // Push to user rooms where he is in
         $roomsListDatabase = $this->_app['userRoom.manager']->findBy(array('user_id' => $conn->User->getId()));
         if (count($roomsListDatabase) > 0) {

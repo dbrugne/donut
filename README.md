@@ -35,7 +35,8 @@ v4:
 
 v5:
 * Online / find user - done!
-* Get and store userId on connect on client side
+* Secure MongoDb and install on production - done!
+* Get and store userId on connect on client side on connect - done!
 * Add anchor by room, that change when selecting another room, could be shared with people
 * Add user count on "room search" and "room tab"
 

@@ -162,7 +162,6 @@ ChatServerPrototype = function(optDebug) {
       , debug: optDebug | false
 
       , subscribe: function(topic) {
-            Debug("ATTENTION:"+topic);
             sess.subscribe(topic, function(topic, event) {
                 Debug([event.action, topic, event.data]);
                 $(api).trigger(event.action, [topic, event.data]);
@@ -262,6 +261,11 @@ ChatServerPrototype = function(optDebug) {
             'retryDelay': 3500
         }
     );
+
+    // Store user_id
+    $(api).bind('userId', function(e, data) {
+        api.userId = data.user_id;
+    });
 
     return api;
 };
