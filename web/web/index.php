@@ -7,6 +7,7 @@ require_once __DIR__.'/../vendor/autoload.php';
 $app = new Silex\Application();
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler;
+use Symfony\Component\HttpFoundation\Session\Storage\Handler\MongoDbSessionHandler;
 use App\User;
 use App\Chat;
 
@@ -40,11 +41,16 @@ $app['pdo'] = $app->share(function () use ($app) {
     );
 });
 $app['pdo']->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+$app['mongo'] = $app->share(function () use ($app) {
+    return new MongoClient();
+});
 $app['session.storage.handler'] = $app->share(function () use ($app) {
-    return new PdoSessionHandler(
-        $app['pdo'],
-        $app['session.db_options'],
-        $app['session.storage.options']
+    return new MongoDbSessionHandler(
+        $app['mongo'],
+        array(
+            'database' => 'chat',
+            'collection' => 'chat_sessions',
+        )
     );
 });
 $app->register(new Silex\Provider\DoctrineServiceProvider(), array(

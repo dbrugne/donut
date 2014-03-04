@@ -9,6 +9,7 @@ use Ratchet\Session\SessionProvider;
 use React\EventLoop\Factory;
 use React\Socket\Server as Reactor;
 use Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler;
+use Symfony\Component\HttpFoundation\Session\Storage\Handler\MongoDbSessionHandler;
 use Server\Components\Authentication;
 use Server\Components\ChatServer;
 
@@ -48,6 +49,10 @@ $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
         'password' => $app['pdo.password'],
     ),
 ));
+$app['mongo'] = $app->share(function () use ($app) {
+    return new MongoClient(
+    );
+});
 
 /**********************************************
  * Orm
@@ -66,12 +71,22 @@ $app['session.db_options'] = array(
     'db_time_col'   => 'session_time',
 );
 $app['session.storage.handler'] = $app->share(function () use ($app) {
-    return new PdoSessionHandler(
-        $app['pdo'],
-        $app['session.db_options'],
-        array()
+    return new MongoDbSessionHandler(
+        $app['mongo'],
+        array(
+            'database' => 'chat',
+            'collection' => 'chat_sessions',
+        )
     );
 });
+
+/**********************************************
+ * Users
+ *********************************************/
+$app->register(new Silex\Provider\SecurityServiceProvider(), array(
+    // Empty for server
+));
+$app->register($u = new App\User\UserServiceProvider());
 
 /**********************************************
  * Logging

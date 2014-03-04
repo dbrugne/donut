@@ -34,10 +34,10 @@ v4:
 * Move room close button in room list - done!
 
 v5:
+* Online / find user - done!
 * Get and store userId on connect on client side
 * Add anchor by room, that change when selecting another room, could be shared with people
 * Add user count on "room search" and "room tab"
-* Online / find user
 
 v6:
 * (try) Extend the "room box" to include the user list
@@ -46,12 +46,14 @@ v7:
 * User account: photo, bio, town
 * A page per room (as for user)
 * (refactor) Database on MongoDb
+* (social) Facebook Login + Invite your friends + page Facebook
 
 v8:
 * (irc) ACL on room => who is OP, set OP, remove OP, can change baseline, can kick users
 * (irc) Kick users
 
 vx:
+* (bug) Fix "unlog" bug that maintain user logged in chat
 * (refactor) Sanitize all user input in Websocket and implement data control
 * (specs) Draw client/server protocol with list and structure of message, uniformize
 * Add tabbed-universe on homepage (TV, FIFA Worldcup, Sport, ...)
@@ -60,7 +62,6 @@ vx:
 * Multi-line postbox input bug
 * Private Room / Permanent Room (will not be deleted on last user leave)
 * Invite someone(s) in my room
-* (social) Facebook Login + Invite your friends + page Facebook
 * Highlight messages of the same user of this message
 * (stats) Add statistics counter: user loggin, user logout, user create/enter/leave a room, user chage title, search for room
 * (stats) Google Analytics

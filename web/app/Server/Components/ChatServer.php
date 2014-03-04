@@ -184,6 +184,21 @@ class ChatServer implements WampServerInterface
                 return $conn->callResult($id, $roomList);
             break;
 
+            case 'searchForUsers':
+                $this->_app['monolog']->info("searchForUsers: {$params[0]}");
+                $search = $this->escape($params[0]);
+                $userList = array();
+                $criteria = array('username' => array('like' => $search));
+                foreach ($this->_app['user.manager']->findBy($criteria) as $user) {
+                    $userList[] = array(
+                        'id' => $user->getId(),
+                        'username' => $user->getUsername(),
+                    );
+                }
+
+                return $conn->callResult($id, $userList);
+                break;
+
             case 'changeBaseline':
                 $entity = $this->_app['channels']->retrieveFromTopic($this->escape($params[0]));
                 if ($entity instanceOf Chat\Room) {

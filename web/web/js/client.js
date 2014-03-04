@@ -211,7 +211,7 @@ var ChatClient = function(optDebug) {
         resizeMessages();
 
         // User list
-        $( ".users-list" ).hide();
+        $("#users").find(".users-list").hide();
         $('.users-list[data-room-id="'+topic+'"]').fadeIn(400);
 
         // Remove un-read message badge
@@ -262,8 +262,6 @@ var ChatClient = function(optDebug) {
         $(newUserItem).attr('data-user-id', user.id);
         $(newUserItem).css('display', 'block');
         $(newUserItem).find('.username').html(user.username);
-        console.log([newUserItem]);
-        /*var html = '<a href="#" class="user-item" data-user-id="'+user.id+'">'+user.username+'</a>';*/
         $(".users-list[data-room-id='"+topic+"'] > .list-group").append(newUserItem);
         console.log('add:'+user.id);
 
@@ -335,6 +333,29 @@ var ChatClient = function(optDebug) {
                 data.username = '???';
             }
             roomContainerAddApplicationMessage(topic, 'info', "Channel topic was changed by <strong>"+data.username+"</strong> to: <em>"+baseline+"</em>");
+        }
+    }
+
+    function addOnlineUser(data)
+    {
+        // Hide default item
+        $('#online-users-list > [data-user-id="default"]').hide();
+
+        // Create new item
+        var newUserItem = $('#online-users-list > [data-user-id="template"]').clone();
+        $(newUserItem).attr('data-user-id', data.user_id);
+        $(newUserItem).find('.username').html(data.username);
+        $(newUserItem).find('.avatar > img').attr('src', data.avatar);
+        $('#online-users-list').append(newUserItem);
+    }
+
+    function removeOnlineUser(data)
+    {
+        $('#online-users-list > [data-user-id="'+data.user_id+'"]').remove();
+
+        // If last, shows default again
+        if ($("#online-users-list > .user-item[data-user-id!='default'][data-user-id!='template']").length < 1) {
+            $('#online-users-list > [data-user-id="default"]').show();
         }
     }
 
@@ -539,6 +560,7 @@ var ChatClient = function(optDebug) {
                 if (roomList.length < 1) {
                     var html = '<li><span class="no-result">No result</span></li>';
                     $(ul).append(html);
+                    return;
                 }
 
                 // Fill list with result
@@ -554,9 +576,44 @@ var ChatClient = function(optDebug) {
                 });
             });
         };
-
         $("#room-search-modal").find(".room-search-submit").first().click(searchRoomsCallback);
         $("#room-search-modal").find(".room-search-input").first().keyup(searchRoomsCallback);
+
+        $("#search-user-link").click(function () {
+            $("#user-search-modal").find(".user-search-submit").first().trigger('click');
+            $("#user-search-modal").modal();
+        });
+        var searchUsersCallback = function() {
+            var inputModal = $("#user-search-modal").find(".user-search-input").first();
+            var search = inputModal.val();
+
+            ChatServer.searchForUsers(search, function(userList) {
+                var ul =  $("#user-search-modal").find("ul.search-users-list").first();
+
+                // Empty list
+                $(ul).children('li').remove();
+
+                // No result
+                if (userList.length < 1) {
+                    var html = '<li><span class="no-result">No result</span></li>';
+                    $(ul).append(html);
+                    return;
+                }
+
+                // Fill list with results
+                $(userList).each(function() {
+                    var html = '<li class="list-group-item user-item" data-user-id="'+this.id+'"><span class="username">'+this.username+'</span></li>';
+                    $(ul).append(html);
+                    var id = this.id;
+                    $(ul).find('li.user-item[data-user-id="'+this.id+'"]').first().click(function() {
+                        userProfileCallback(this);
+                        $("#user-search-modal").modal('hide');
+                    });
+                });
+            });
+        };
+        $("#user-search-modal").find(".user-search-submit").first().click(searchUsersCallback);
+        $("#user-search-modal").find(".user-search-input").first().keyup(searchUsersCallback);
 
         function userProfileCallback(o)
         {
@@ -665,6 +722,14 @@ var ChatClient = function(optDebug) {
 
         $(ChatServer).bind('pleaseLeaveRoom', function(e, data) {
             leaveRoom(data.topic);
+        });
+
+        $(ChatServer).bind('newOnlineUser', function(e, data) {
+            addOnlineUser(data);
+        });
+
+        $(ChatServer).bind('removeOnlineUser', function(e, data) {
+            removeOnlineUser(data);
         });
 
         $(ChatServer).bind('message', function(e, topic, data) {

@@ -141,6 +141,22 @@ ChatServerPrototype = function(optDebug) {
          * @param Object data
          */
             , 'pleaseLeaveRoom'
+
+        /**
+         * Fired when a new user is online
+         *
+         * @event newOnlineUser
+         * @param Object data
+         */
+            , 'newOnlineUser'
+
+        /**
+         * Fired when a user goes offline
+         *
+         * @event removeOnlineUser
+         * @param Object data
+         */
+            , 'removeOnlineUser'
         ]
 
       , debug: optDebug | false
@@ -187,6 +203,15 @@ ChatServerPrototype = function(optDebug) {
                     callback(roomList);
                 }
                 , function() { alert('Error searchForRooms!!'); }
+            );
+        }
+
+        , searchForUsers: function(search, callback) {
+            sess.call('searchForUsers', search).then(
+                function(userList) {
+                    callback(userList);
+                }
+                , function() { alert('Error searchForUsers!!'); }
             );
         }
 

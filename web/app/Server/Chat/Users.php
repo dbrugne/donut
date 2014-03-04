@@ -63,4 +63,33 @@ class Users
         }
     }
 
+    /**
+     * Fired on subscription to control topic
+     * Push online users $conn
+     *
+     * @param ConnectionInterface $conn
+     */
+    public function pushOnlineUsers(ConnectionInterface $conn)
+    {
+        // @todo: add a limit to push only 'n' first $conn
+
+        // Push online users
+        foreach($this->_users as $userId => $userConns) {
+            if ($conn->User->getId() != $userId && count($userConns) > 0) {
+                $userConns->rewind();
+                $userConn = $userConns->current(); // only for user details
+
+                $conn->event($this->_app['channels']->getControlTopic(), array(
+                    'action' => 'newOnlineUser',
+                    'data' => array(
+                        'user_id' => $userConn->User->getId(),
+                        'username' => $userConn->User->getUsername(),
+                        'avatar' => $userConn->User->getAvatarUrl(20),
+                    ),
+                ));
+
+            }
+        }
+    }
+
 } 
