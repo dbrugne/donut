@@ -258,7 +258,7 @@ var ChatClient = function(optDebug) {
             return;
         }
 
-        var newUserItem = $(".user-item[data-user-id='template']").first().clone(false);
+        var newUserItem = $(".users-list[data-room-id='template'] > .list-group > .user-item[data-user-id='template']").first().clone(false);
         $(newUserItem).attr('data-user-id', user.id);
         $(newUserItem).css('display', 'block');
         $(newUserItem).find('.username').html(user.username);
