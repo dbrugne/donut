@@ -218,6 +218,9 @@ var ChatClient = function(optDebug) {
         $('.room-item[data-room-id="'+topic+'"] > .badge').fadeOut(400, function () {
             $('.room-item[data-room-id="'+topic+'"] > .badge').html(0);
         });
+
+        // Focus on input field
+        $('.input-message[data-room-id="'+topic+'"]').focus();
     }
 
     function scrollDown(e) {
