@@ -2865,7 +2865,6 @@ var global = this;
                }
 
                self._subscriptions[subid].forEach(function (callback) {
-                    console.log(callback);
                   callback(uri2, val);
                });
             }
