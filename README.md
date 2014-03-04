@@ -32,35 +32,43 @@ v4:
 * (refactor) Chatroom code cleanup/refactoring - done!
 * (refactor) Use only URI as identifier (room / discussion) in server.js and client.js - done!
 * Move room close button in room list - done!
+
+v5:
+* Get and store userId on connect on client side
+* Add anchor by room, that change when selecting another room, could be shared with people
+* Add user count on "room search" and "room tab"
 * Online / find user
 
-vx:
-* Extend the "room box" to include the user list
-* Add anchor by room, that change when selecting another room, could be shared with people
+v6:
+* (try) Extend the "room box" to include the user list
+
+v7:
 * User account: photo, bio, town
-* Add user count on "room search" and "room tab"
+* A page per room (as for user)
+* (refactor) Database on MongoDb
+
+v8:
+* (irc) ACL on room => who is OP, set OP, remove OP, can change baseline, can kick users
+* (irc) Kick users
+
+vx:
+* (refactor) Sanitize all user input in Websocket and implement data control
+* (specs) Draw client/server protocol with list and structure of message, uniformize
 * Add tabbed-universe on homepage (TV, FIFA Worldcup, Sport, ...)
+* Translate in french
 * (refactor) Use App extends instead of actual server.php
 * Multi-line postbox input bug
 * Private Room / Permanent Room (will not be deleted on last user leave)
-* Facebook Login + Invite your friends + page Facebook
 * Invite someone(s) in my room
+* (social) Facebook Login + Invite your friends + page Facebook
 * Highlight messages of the same user of this message
-* (irc) Kick users
-* (irc) ACL on room => who is OP, set OP, remove OP, can change baseline, can kick users
-* (refactor) Use only Joined and focusRoom in client.js
-* Add statistics: user loggin, user logout, user create/enter/leave a room, user chage title, search for room
-* (refactor) Sanitize all user input in Websocket and implement data control
-* Translate in french
-* Google Analytics
-* A page per room (as for user)
-* (irc) Message history on arrow up/down
-* Social
-  * Follow profile (= friend)
-  * Add a "Friends are in rooms" list
-* (refactor) Database on MongoDb
-* Develop mobile version with SenchaTouch
+* (stats) Add statistics counter: user loggin, user logout, user create/enter/leave a room, user chage title, search for room
+* (stats) Google Analytics
+* (social) Follow profile (= friend)
+* (social) Add a "Friends are in rooms" list
 * (refactor) Server on node.js/socket.io
+* (irc) Message history on arrow up/down
+* (mobile) Develop mobile version with SenchaTouch
 
 Idea box:
 * (social) Like a message
@@ -70,4 +78,3 @@ Idea box:
 * Public mod for a room (all the content is visible by anyone)
 * Anonymous person allowed (could be blocked by room)
 * Give ability to a room owner to "suspend a room" temporarily
-
