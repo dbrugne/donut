@@ -84,7 +84,8 @@ class ChatServer implements WampServerInterface
                 // Database
                 $entity->delete();
                 // Memory
-                unset($this->_app['channels'][$subscribedRoomTopic], $entity);
+                $this->_app['channels']->remove($subscribedRoomTopic);
+                unset($entity);
                 $this->_app['monolog']->info("Room '{$subscribedRoomTopic}' was removed");
             }
         }
