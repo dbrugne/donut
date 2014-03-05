@@ -251,8 +251,7 @@ ChatServerPrototype = function(optDebug) {
         }
       , function(code, reason, detail) {
             sess = null;
-            Debug('Connection closed');
-            Debug([code, reason, detail]);
+            Debug(['Connection closed', code, reason, detail]);
             $(api).trigger('close');
         }
       , {
@@ -262,7 +261,7 @@ ChatServerPrototype = function(optDebug) {
         }
     );
 
-    // Store user_id
+    // Store user_id on api
     $(api).bind('userId', function(e, data) {
         api.userId = data.user_id;
     });

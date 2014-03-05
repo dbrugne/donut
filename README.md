@@ -37,16 +37,16 @@ v5:
 * Online / find user - done!
 * Secure MongoDb and install on production - done!
 * Get and store userId on connect on client side on connect - done!
-* Add anchor by room, that change when selecting another room, could be shared with people
+* Add anchor by room, that change when selecting another room, could be shared with people - done!
 * Add user count on "room search" and "room tab"
 
 v6:
 * (try) Extend the "room box" to include the user list
 
 v7:
+* (refactor) Database on MongoDb
 * User account: photo, bio, town
 * A page per room (as for user)
-* (refactor) Database on MongoDb
 * (social) Facebook Login + Invite your friends + page Facebook
 
 v8:
@@ -54,6 +54,7 @@ v8:
 * (irc) Kick users
 
 vx:
+* (refactor) Create Room and Discussion objects with common prototype
 * (bug) Fix "unlog" bug that maintain user logged in chat
 * (refactor) Sanitize all user input in Websocket and implement data control
 * (specs) Draw client/server protocol with list and structure of message, uniformize

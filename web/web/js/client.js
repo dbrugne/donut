@@ -3,6 +3,8 @@ var ChatClient = function(optDebug) {
     var ChatServer;
     var openedWindows = [];
     var focusedWindow = '';
+    var pendingSubscriptions = []; // list the topic for who we wait the success callback
+    var shouldBeFocused = ''; // indicate if this topic should be focused on success callback or not, emptied instantly after focus
 
     if (undefined == optDebug || '' == optDebug) {
         optDebug = false;
@@ -114,13 +116,11 @@ var ChatClient = function(optDebug) {
         $(newRoomItem).attr('data-room-id', topic);
         $(newRoomItem).find('.name').html(windowName);
         $(newRoomItem).css('display', 'block');
-        $(newRoomItem).click(function() {
-            focusOnWindow(topic);
-        });
         $("#rooms-list").append(newRoomItem);
 
         // Create room-container
         var newRoomContainer = $(".room-container[data-room-id='template']").clone(false);
+        $(newRoomContainer).hide(); // to avoid all the room be displayed on same time if autofocus fails
         $(newRoomContainer).attr('data-room-id', topic);
         $(newRoomContainer).find('.name').html(windowName);
         $(newRoomContainer).find('.input-message').attr('data-room-id', topic);
@@ -139,41 +139,16 @@ var ChatClient = function(optDebug) {
         // Textarea autosize
         $(".input-message[data-room-id='"+topic+"']").autosize();
 
-        // Smileys management
-        $(".smileys-message[data-room-id='"+topic+"']").on('click', function () {
-            var popin = $('.smileys-popin-message[data-room-id="'+$(this).data('topic')+'"]');
-            var position = $(this).position();
-
-            var newTop = position.top - $(popin).outerHeight();
-            var newLeft = (position.left + ($(this).outerWidth()/2)) - ($(popin).outerWidth()/2);
-
-            $(popin).css('top', newTop);
-            $(popin).css('left', newLeft);
-            $(popin).toggle();
-        });
-        $('.smileys-popin-message[data-room-id="'+topic+'"]').find('li').on('click', function () {
-            var smileyHtml = '<span class="smiley emoticon-16px '+sclass+'">'+symbol+'</span>';
-
-            var symbol = $(this).data('symbol');
-            var sclass = $(this).data('sclass');
-            Debug([symbol, sclass]);
-
-            $(".input-message[data-room-id='"+topic+"']").insertAtCaret(symbol);
-            $('.smileys-popin-message[data-room-id="'+topic+'"]').hide();
-        });
-
         if (windowType == 'room') {
             // Create room users-list
             var newUsersList = $(".users-list[data-room-id='template']").clone(false);
+            $(newUsersList).hide(); // to avoid all the room be displayed on same time if autofocus fails
             $(newUsersList).attr('data-room-id', topic);
             $("#users").append(newUsersList);
         }
 
         // Set the height as with flexbox model
         resizeMessages();
-
-        // Register room in already-opened-rooms list
-        openedWindows.push(topic);
     }
 
     function removeWindowDOM(topic) {
@@ -197,23 +172,21 @@ var ChatClient = function(optDebug) {
             topic = $(".room-item[data-room-id!='default'][data-room-id!='template']").first().data('roomId');
         }
 
-        focusedWindow = topic;
-
         // Room list
         $( ".room-item").removeClass('active');
-        $('.room-item[data-room-id="'+topic+'"]').addClass('active');
 
+        $('.room-item[data-room-id="'+topic+'"]').addClass('active');
         // Room content
         $( ".room-container" ).hide();
-        $('.room-container[data-room-id="'+topic+'"]').fadeIn(400);
 
+        $('.room-container[data-room-id="'+topic+'"]').fadeIn(400);
         // Set the height as with flexbox model
         resizeMessages();
 
         // User list
         $("#users").find(".users-list").hide();
-        $('.users-list[data-room-id="'+topic+'"]').fadeIn(400);
 
+        $('.users-list[data-room-id="'+topic+'"]').fadeIn(400);
         // Remove un-read message badge
         $('.room-item[data-room-id="'+topic+'"] > .badge').fadeOut(400, function () {
             $('.room-item[data-room-id="'+topic+'"] > .badge').html(0);
@@ -221,6 +194,17 @@ var ChatClient = function(optDebug) {
 
         // Focus on input field
         $('.input-message[data-room-id="'+topic+'"]').focus();
+
+        // Set URL hash
+        if (ChatServer.isRoomTopic(topic)) {
+            var hash = 'room='+topic.replace(ChatServer.topicTypes.room_prefix, '');
+        } else {
+            var hash = 'discussion='+topic.replace(ChatServer.topicTypes.discussion+'#', '');
+        }
+        window.location.hash = hash;
+
+        // Store current window
+        focusedWindow = topic;
     }
 
     function scrollDown(e) {
@@ -263,7 +247,6 @@ var ChatClient = function(optDebug) {
         $(newUserItem).css('display', 'block');
         $(newUserItem).find('.username').html(user.username);
         $(".users-list[data-room-id='"+topic+"'] > .list-group").append(newUserItem);
-        console.log('add:'+user.id);
 
         userListSort(topic);
 
@@ -330,7 +313,7 @@ var ChatClient = function(optDebug) {
 
         if (undefined == data.notify || data.notify == true) {
             if (undefined == data.username) {
-                data.username = '???';
+                data.username = '?';
             }
             roomContainerAddApplicationMessage(topic, 'info', "Channel topic was changed by <strong>"+data.username+"</strong> to: <em>"+baseline+"</em>");
         }
@@ -365,13 +348,18 @@ var ChatClient = function(optDebug) {
     // Current user joins a room
     function joinRoom(topic) {
         // Test if this room is already loaded in this browser page
-        if (-1 !== $.inArray(parseInt(topic), openedWindows)) {
-            Debug('Room already opened (joinRoom): '+topic);
-            focusOnWindow(topic);
+        if ($.inArray(topic, openedWindows) !== -1) {
+            Debug('Room already opened: '+topic);
             return false;
         }
 
+        // Register room in already-subscribed list
+        // Note: should be here (early) to avoid re-subscription when topic is listed only after subscription callback
+        // and IHM creation
+        openedWindows.push(topic);
+
         // Subscribe to room
+        pendingSubscriptions.push(topic);
         ChatServer.subscribe(topic);
     }
 
@@ -406,6 +394,12 @@ var ChatClient = function(optDebug) {
         // Emulate flexbox model for all browser
         $(window).resize(function() {
             resizeMessages();
+        });
+
+        $(document).on('click', '#rooms-list > .room-item', function (e) {
+            e.preventDefault();
+            var topic = $(this).data('roomId');
+            focusOnWindow(topic);
         });
 
         var postMessageCallback = function (e) {
@@ -445,7 +439,7 @@ var ChatClient = function(optDebug) {
             }
         });
         $(document).on('click', '.send-message', function () {
-              postMessageCallback(this);
+            postMessageCallback(this);
         });
 
         $(document).on('click', '#rooms-list > .room-item > .close', function () {
@@ -457,7 +451,8 @@ var ChatClient = function(optDebug) {
             leaveRoom(topic);
         });
 
-        $('#create-room-toggle').click(function() {
+        $('#create-room-toggle').click(function(e) {
+            e.preventDefault();
             if ($('#create-room-form').is(':visible')) {
                 $('#create-room-form').hide();
             } else {
@@ -478,7 +473,7 @@ var ChatClient = function(optDebug) {
             }
 
             ChatServer.create(roomName, function(data) {
-                Debug(data);
+                shouldBeFocused = data.topic;
                 joinRoom(data.topic);
             });
 
@@ -541,7 +536,8 @@ var ChatClient = function(optDebug) {
             roomHeader.find('.room-baseline-input').val('');
         });
 
-        $("#search-room-link").click(function () {
+        $("#search-room-link").click(function (e) {
+            e.preventDefault();
             $("#room-search-modal").find(".room-search-submit").first().trigger('click');
             $("#room-search-modal").modal();
         });
@@ -570,6 +566,7 @@ var ChatClient = function(optDebug) {
 
                     var topic = this.topic;
                     $(ul).find('li.search-room-item[data-room-id="'+this.topic+'"]').first().click(function() {
+                        shouldBeFocused = topic;
                         joinRoom(topic);
                         $("#room-search-modal").modal('hide');
                     });
@@ -579,7 +576,8 @@ var ChatClient = function(optDebug) {
         $("#room-search-modal").find(".room-search-submit").first().click(searchRoomsCallback);
         $("#room-search-modal").find(".room-search-input").first().keyup(searchRoomsCallback);
 
-        $("#search-user-link").click(function () {
+        $("#search-user-link").click(function (e) {
+            e.preventDefault();
             $("#user-search-modal").find(".user-search-submit").first().trigger('click');
             $("#user-search-modal").modal();
         });
@@ -615,7 +613,7 @@ var ChatClient = function(optDebug) {
         $("#user-search-modal").find(".user-search-submit").first().click(searchUsersCallback);
         $("#user-search-modal").find(".user-search-input").first().keyup(searchUsersCallback);
 
-        function userProfileCallback(o)
+        var userProfileCallback = function(o)
         {
             var userId = $(o).closest('.user-item').data('userId');
             if (undefined == userId || '' == userId || 0 == userId) {
@@ -626,17 +624,19 @@ var ChatClient = function(optDebug) {
                 remote: 'http://' + window.location.hostname + '/u/'+userId+'?modal=true'
             });
         }
-        $(document).on('click', '#users > .users-list > .list-group > .user-item > .actions > .user-profile', function() {
+        $(document).on('click', '#users > .users-list > .list-group > .user-item > .actions > .user-profile', function(e) {
+            e.preventDefault();
             userProfileCallback(this);
         });
-        $(document).on('dblclick', '.messages > p > .username', function() {
+        $(document).on('dblclick', '.messages > p > .username', function(e) {
+            e.preventDefault();
             userProfileCallback(this);
         });
         $('body').on('hidden.bs.modal', "#user-profile-modal", function () {
             $(this).removeData('bs.modal');
         });
 
-        function discussionCallback(o)
+        var discussionCallback = function(o)
         {
             var userItem = $(o).closest('.user-item');
             var userId = $(userItem).data('userId');
@@ -650,13 +650,44 @@ var ChatClient = function(optDebug) {
             newChatWindow(discussionTopic, data);
             focusOnWindow(discussionTopic);
         }
-        $(document).on('click', '#users > .users-list > .list-group > .user-item > .actions > .user-discussion', function() {
+        $(document).on('click', '#users > .users-list > .list-group > .user-item > .actions > .user-discussion', function(e) {
+            e.preventDefault();
             discussionCallback(this);
         });
-        $(document).on('dblclick', '#users > .users-list > .list-group > .user-item > .username', function() {
+        $(document).on('click', '#users > .users-list > .list-group > .user-item > .username', function(e) {
+            e.preventDefault(); // a click event is fired before a dblclick event
+        });
+        $(document).on('dblclick', '#users > .users-list > .list-group > .user-item > .username', function(e) {
+            e.preventDefault();
             discussionCallback(this);
         });
 
+        $(document).on('click', '#online-users-list > .user-item', function(e) {
+            e.preventDefault();
+            userProfileCallback(this);
+        });
+
+        // Smileys management
+        $(document).on('click', '.smileys-message', function(e) {
+            var topic = $(this).data('roomId');
+            var popin = $('.smileys-popin-message[data-room-id="'+topic+'"]');
+
+            var position = $(this).position();
+            var newTop = position.top - $(popin).outerHeight();
+
+            var newLeft = (position.left + ($(this).outerWidth()/2)) - ($(popin).outerWidth()/2);
+            $(popin).css('top', newTop);
+            $(popin).css('left', newLeft);
+
+            $(popin).toggle();
+        });
+        $(document).on('click', '.smileys > li', function(e) {
+            var topic = $(this).closest('.smileys-popin-message').data('roomId');
+            var symbol = $(this).data('symbol');
+
+            $(".input-message[data-room-id='"+topic+"']").insertAtCaret(symbol);
+            $('.smileys-popin-message[data-room-id="'+topic+'"]').hide();
+        });
     });
 
     /*****************************************************
@@ -670,12 +701,18 @@ var ChatClient = function(optDebug) {
             status.update('online');
 
             // Try to detect if a room was submitted in the URL (when user come from home for example)
-            if(window.location.hash)
-            {
+            if (window.location.hash) {
                 // Hash found
                 var hash = window.location.hash.substring(1); // Puts hash in variable, and removes the # character
-                var roomId = parseInt(hash.replace('room=', ''));
-                joinRoom(ChatServer.topicTypes.room_prefix+roomId);
+                if (hash.indexOf('room=') !== -1) {
+                    var topic = ChatServer.topicTypes.room_prefix+hash.replace('room=', '');
+                    shouldBeFocused = topic;
+                    joinRoom(topic);
+                }
+                if (hash.indexOf('discussion=') !== -1) {
+                    var topic = ChatServer.topicTypes.discussion+'#'+hash.replace('discussion=', '');
+                    newChatWindow(topic, {username: '...'}); // @todo: bug, left username
+                }
             }
         });
 
@@ -688,13 +725,19 @@ var ChatClient = function(optDebug) {
 
         // After a successful subscription server informs client
         $(ChatServer).bind('subscribeSuccess', function(e, topic, room) {
+            pendingSubscriptions.remove($.inArray(topic, pendingSubscriptions));
             newChatWindow(topic, room);
-            focusOnWindow(topic);
+            if (shouldBeFocused == topic) {
+                shouldBeFocused = '';
+                focusOnWindow(topic);
+                // @todo: improve, if no room focused after end of "initialization", focus one
+            }
         });
 
-        // After a successful subscription server informs client
+        // After an error during subscription
         $(ChatServer).bind('subscribeError', function(e, topic, data) {
-            alert(data.error);
+            pendingSubscriptions.remove($.inArray(topic, pendingSubscriptions));
+            Debug(['subscribeError', data]);
         });
 
         // When server push room attendees
