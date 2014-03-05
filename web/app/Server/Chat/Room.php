@@ -75,21 +75,17 @@ class Room extends \App\Chat\Room
 
         // Push room users
         foreach ($this->_subscribers as $attendee) {
-            $conn->event($this->_topic, array(
-                'action' => 'addRoomAttendee',
-                'data' => array(
-                    'id' => $attendee->User->getId(),
-                    'username' => $attendee->User->getUsername(),
-                    'avatar' => $attendee->User->getAvatarUrl(20),
-                )
-            ));
+            if ($conn->User->getId() != $attendee->User->getId()) { // to prevent sending current user two times (addRoomAttendee and userEnterInRoom)
+                $conn->event($this->_topic, array(
+                    'action' => 'addRoomAttendee',
+                    'data' => array(
+                        'id' => $attendee->User->getId(),
+                        'username' => $attendee->User->getUsername(),
+                        'avatar' => $attendee->User->getAvatarUrl(20),
+                    )
+                ));
+            }
         }
-
-        // Inform other device that they should join to room!
-        $this->_app['users']->broadcastToUser($conn, array(
-            'action' => 'pleaseJoinRoom',
-            'data' => array('topic' => $this->_topic),
-        ));
 
         // Push welcome message
         $this->botMessage("Hi {$conn->User->getUsername()}, welcome on this chan. Please be polite and fair with others.", $conn);
@@ -103,6 +99,12 @@ class Room extends \App\Chat\Room
                 'avatar' => $conn->User->getAvatarUrl(20),
             )
         ), $conn);
+
+        // Inform other device that they should join to room!
+        $this->_app['users']->broadcastToUser($conn, array(
+            'action' => 'pleaseJoinRoom',
+            'data' => array('topic' => $this->_topic),
+        ));
     }
 
     public function unsubscribe(ConnectionInterface $conn, $closingConnection = false)
