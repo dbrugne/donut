@@ -179,6 +179,7 @@ class ChatServer implements WampServerInterface
                 foreach ($this->_app['room.manager']->findBy($criteria) as $room) {
                     $roomData = $room->getData();
                     $roomData['topic'] = $this->_app['channels']->getRoomTopic($room->getId());
+                    $roomData['count'] = $this->_app['channels']->countRoomUser($roomData['topic']);
                     $roomList[] = $roomData;
                 }
 

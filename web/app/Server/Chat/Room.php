@@ -17,6 +17,9 @@ class Room extends \App\Chat\Room
      */
     protected $_subscribers;
 
+    /** @var array */
+    protected $_users = array();
+
     /** @var string */
     protected $_topic;
 
@@ -60,6 +63,10 @@ class Room extends \App\Chat\Room
 
         // Memory
         $this->_subscribers->attach($conn);
+        if (!isset($this->_users[$conn->User->getId()])) {
+            $this->_users[$conn->User->getId()] = 0;
+        }
+        $this->_users[$conn->User->getId()] ++;
 
         // Store on $conn for future onClose
         // 'Indirect modification of overloaded property has no effect' fixing
@@ -121,6 +128,10 @@ class Room extends \App\Chat\Room
 
         // Memory
         $this->_subscribers->detach($conn);
+        $this->_users[$conn->User->getId()] --;
+        if ($this->_users[$conn->User->getId()] <= 0) {
+            unset($this->_users[$conn->User->getId()]);
+        }
 
         // Store on $conn for future onClose
         $subscribedRooms = $conn->subscribedRooms;
@@ -280,5 +291,15 @@ class Room extends \App\Chat\Room
         $this->_app['room.manager']->delete(array(
             'id' => $this->getId(),
         ));
+    }
+
+    /**
+     * Return the number of unique user participants
+     *
+     * @return int
+     */
+    public function countUsers()
+    {
+        return count($this->_users);
     }
 } 

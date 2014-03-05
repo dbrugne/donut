@@ -572,20 +572,21 @@ var ChatClient = function(optDebug) {
 
                 // No result
                 if (roomList.length < 1) {
-                    var html = '<li><span class="no-result">No result</span></li>';
+                    var html = '<li class="list-group-item"><span class="no-result">No result</span></li>';
                     $(ul).append(html);
                     return;
                 }
 
                 // Fill list with result
                 $(roomList).each(function() {
-                    var html = '<li class="list-group-item search-room-item" data-room-id="'+this.topic+'"><h4 class="list-group-item-heading">'+this.name+'</h4> <p class="list-group-item-text">'+this.baseline+'</p></li>';
+                    var html = '<li class="list-group-item search-room-item" data-room-id="'+this.topic+'"><h4 class="list-group-item-heading">'+this.name+' ('+this.count+')</h4> <p class="list-group-item-text">'+this.baseline+'</p></li>';
                     $(ul).append(html);
 
                     var topic = this.topic;
                     $(ul).find('li.search-room-item[data-room-id="'+this.topic+'"]').first().click(function() {
                         shouldBeFocused = topic;
                         joinRoom(topic);
+                        focusOnWindow(topic);
                         $("#room-search-modal").modal('hide');
                     });
                 });
@@ -611,7 +612,7 @@ var ChatClient = function(optDebug) {
 
                 // No result
                 if (userList.length < 1) {
-                    var html = '<li><span class="no-result">No result</span></li>';
+                    var html = '<li class="list-group-item"><span class="no-result">No result</span></li>';
                     $(ul).append(html);
                     return;
                 }

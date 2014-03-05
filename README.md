@@ -38,7 +38,8 @@ v5:
 * Secure MongoDb and install on production - done!
 * Get and store userId on connect on client side on connect - done!
 * Add anchor by room, that change when selecting another room, could be shared with people - done!
-* Add user count on "room search" and "room tab"
+* Add user count on "room tab" - done!
+* Add user count on "room search" - done!
 
 v6:
 * (try) Extend the "room box" to include the user list

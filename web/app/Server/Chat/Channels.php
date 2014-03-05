@@ -102,4 +102,16 @@ class Channels
     {
         return $this->retrieveFromTopic($this->getDiscussionTopic());
     }
+
+    /**
+     * Return number of unique user actually in this room and online
+     */
+    public function countRoomUser($topic)
+    {
+        if (!isset($this->_channels[$topic])) {
+            return 0;
+        }
+
+        return $this->_channels[$topic]->countUsers();
+    }
 }
