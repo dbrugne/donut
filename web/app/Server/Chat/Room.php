@@ -90,7 +90,7 @@ class Room extends \App\Chat\Room
         // Push welcome message
         $this->botMessage("Hi {$conn->User->getUsername()}, welcome on this chan. Please be polite and fair with others.", $conn);
 
-        // Notify everyone this user has joined the room
+        // Notify everyone (including myself) this user has joined the room
         $this->broadcastToSubscribers(array(
             'action' => 'userEnterInRoom',
             'data' => array(
@@ -98,7 +98,7 @@ class Room extends \App\Chat\Room
                 'username' => $conn->User->getUsername(),
                 'avatar' => $conn->User->getAvatarUrl(20),
             )
-        ), $conn);
+        ));
 
         // Inform other device that they should join to room!
         $this->_app['users']->broadcastToUser($conn, array(
