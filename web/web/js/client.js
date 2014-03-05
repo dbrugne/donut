@@ -116,6 +116,9 @@ var ChatClient = function(optDebug) {
         $(newRoomItem).attr('data-room-id', topic);
         $(newRoomItem).find('.name').html(windowName);
         $(newRoomItem).css('display', 'block');
+        if (windowType == 'discussion') {
+            $(newRoomItem).find('.users-count').remove();
+        }
         $("#rooms-list").append(newRoomItem);
 
         // Create room-container
@@ -239,6 +242,7 @@ var ChatClient = function(optDebug) {
     function userListAddUser(topic, user, notify) {
         // Check that user is not already in DOM
         if ($(".users-list[data-room-id='"+topic+"']").find(".user-item[data-user-id='"+user.id+"']").length > 0){
+            Debug(['User already in room user list', topic, user]);
             return;
         }
 
@@ -340,6 +344,20 @@ var ChatClient = function(optDebug) {
         if ($("#online-users-list > .user-item[data-user-id!='default'][data-user-id!='template']").length < 1) {
             $('#online-users-list > [data-user-id="default"]').show();
         }
+    }
+
+    function moreOneUserInRoom(topic)
+    {
+        var count = $("#rooms-list > .room-item[data-room-id='"+topic+"'] > .users-count > .count");
+        var newCount = parseInt($(count).html()) + 1;
+        $(count).html(newCount);
+    }
+
+    function lessOneUserInRoom(topic)
+    {
+        var count = $("#rooms-list > .room-item[data-room-id='"+topic+"'] > .users-count > .count");
+        var newCount = parseInt($(count).html()) - 1;
+        $(count).html(newCount);
     }
 
     /*****************************************************
@@ -741,18 +759,21 @@ var ChatClient = function(optDebug) {
         });
 
         // When server push room attendees
-        $(ChatServer).bind('addRoomAttendee', function(e, roomId, data) {
-            userListAddUser(roomId, data, false);
+        $(ChatServer).bind('addRoomAttendee', function(e, topic, data) {
+            userListAddUser(topic, data, false);
+            moreOneUserInRoom(topic);
         });
 
         // When server indicate that someone enter in the room
-        $(ChatServer).bind('userEnterInRoom', function(e, roomId, data) {
-            userListAddUser(roomId, data);
+        $(ChatServer).bind('userEnterInRoom', function(e, topic, data) {
+            userListAddUser(topic, data);
+            moreOneUserInRoom(topic);
         });
 
         // When server indicate that someone leave the room
-        $(ChatServer).bind('userOutRoom', function(e, roomId, data) {
-            userListRemoveUser(roomId, data);
+        $(ChatServer).bind('userOutRoom', function(e, topic, data) {
+            userListRemoveUser(topic, data);
+            lessOneUserInRoom(topic);
         });
 
         $(ChatServer).bind('roomBaseline', function(e, roomId, data) {
