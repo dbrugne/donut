@@ -44,10 +44,10 @@ body { padding-top: 50px; }
 #chat .users-list  { }
 #chat .user-item  { padding: 10px; }
 #chat .user-item .actions { visibility: hidden; }
-#chat a.user-item { position: relative; }
-#chat a.user-item:hover { background-color: #f5f5f5; }
-#chat a.user-item .actions { position: absolute; right: 10px; }
-#chat a.user-item:hover .actions { visibility: visible; }
+#chat .user-item { position: relative; }
+#chat .user-item:hover { background-color: #f5f5f5; }
+#chat .user-item .actions { position: absolute; right: 10px; }
+#chat .user-item:hover .actions { visibility: visible; }
 #users .op { font-weight: bold; text-decoration: underline; }
 #users .friend { font-weight: bold; font-style: italic; }
 #chat .header {
