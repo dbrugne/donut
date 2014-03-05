@@ -73,6 +73,11 @@ class Channels
         return $this->_channels[$topic];
     }
 
+    public function remove($topic)
+    {
+        unset($this->_channels[$topic]);
+    }
+
     public function getControlTopic()
     {
         return $this->_topics['control'];
