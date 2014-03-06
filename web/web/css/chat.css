@@ -17,39 +17,37 @@ body { padding-top: 50px; }
  */
 [data-template=true] { display: none; }
 #chat { background: #eee; margin: 0; padding: 0; font-size: 13px; }
-#chat > .row { margin: 0; /* Cancel bootstrap negative margin */ }
-#rooms { background-color: darkgrey; padding: 10px 10px; overflow-y:auto; }
-#room { background-color: grey; padding: 0; /* Cancel bootstrap native space between columns */ }
-#users { background-color: darkgrey; padding: 10px 10px; overflow-y:auto; }
+    #chat > .row { margin: 0; /* Cancel bootstrap negative margin */ }
+    #chat-left { background-color: darkgrey; padding: 10px 10px; overflow-y:auto; }
+        #block-status {}
+            #block-status .panel-body { position: relative; }
+            #block-status button { font-size: 11px; position: absolute; right: 10px; }
+        #block-rooms {}
+            #block-rooms .panel-heading { border-color: transparent; }
+            #block-rooms .room-item { font-size: 12px; }
+            #block-rooms .room-item .name {  }
+            #block-rooms .room-item .badge { display: none; margin-right: 5px; }
+            #block-rooms .room-item .close { font-size: 14px; color: #FF0000; }
+        #block-users {}
+#chat-left ul { list-style: none; padding: 10px 0; }
+    #chat-center { background-color: grey; padding: 0; /* Cancel bootstrap native space between columns */ }
+        .cwindow { height: 100%; background-color: #FFFFFF; }
+        .cwindow .default { text-align: center; line-height: 200px; color: #DDDDDD; font-size: 30px; font-weight: bold; font-style: italic; }
+
+    #chat-right { background-color: darkgrey; padding: 10px 10px; overflow-y:auto; }
+        .room-users  { }
+        .room-users .user-item  { padding: 10px; }
+        .room-users .user-item .actions { visibility: hidden; }
+        .room-users .user-item { position: relative; }
+        .room-users .user-item:hover { background-color: #f5f5f5; }
+        .room-users .user-item .actions { position: absolute; right: 10px; }
+        .room-users .user-item:hover .actions { visibility: visible; }
+        .room-users .user-item .op { font-weight: bold; text-decoration: underline; }
+        .room-users .user-item .friend { font-weight: bold; font-style: italic; }
+
 #chat .panel-heading { padding: 5px 10px; font-weight: bold; color: #8a8a8a; }
 #chat .panel-footer { padding: 5px 10px; }
 #chat .panel-body { padding: 9px 9px 12px 9px; }
-#status { font-size: 11px; position: absolute; right: 10px; }
-#rooms ul { list-style: none; padding: 10px 0; }
-#chat .block-room .panel-heading { border-color: transparent; }
-#rooms-list { }
-#rooms-list .room-item { font-size: 12px; }
-#rooms-list .room-item .name {  }
-#rooms-list .room-item .badge { display: none; margin-right: 5px; }
-#rooms-list .room-item .close { font-size: 14px; color: #FF0000; }
-#chat .room-container { height: 100%; background-color: #FFFFFF; }
-#chat .room-container .default {
-    text-align: center;
-    line-height: 200px;
-    color: #DDDDDD;
-    font-size: 30px;
-    font-weight: bold;
-    font-style: italic;
-}
-#chat .users-list  { }
-#chat .user-item  { padding: 10px; }
-#chat .user-item .actions { visibility: hidden; }
-#chat .user-item { position: relative; }
-#chat .user-item:hover { background-color: #f5f5f5; }
-#chat .user-item .actions { position: absolute; right: 10px; }
-#chat .user-item:hover .actions { visibility: visible; }
-#users .op { font-weight: bold; text-decoration: underline; }
-#users .friend { font-weight: bold; font-style: italic; }
 #chat .header {
     max-height: 50px;
     border-bottom: 1px solid transparent;
@@ -87,11 +85,11 @@ body { padding-top: 50px; }
     border-color: #ddd;
 }
 #create-room-form { display: none; margin-top: 10px; }
-#room .popover { max-width: 290px; /* for postbox smileys popover */ }
-#room .popover .popover-content { padding: 10px 0 5px 10px; }
-#room .popover ul { margin: 0; padding: 0; }
-#room .popover li { margin-right: 5px; margin-bottom: 5px; }
-#room .postbox .input-group-addon.smileys-message { border-right: 0; }
+#chat-center .popover { max-width: 290px; /* for postbox smileys popover */ }
+#chat-center .popover .popover-content { padding: 10px 0 5px 10px; }
+#chat-center .popover ul { margin: 0; padding: 0; }
+#chat-center .popover li { margin-right: 5px; margin-bottom: 5px; }
+#chat-center .postbox .input-group-addon.smileys-message { border-right: 0; }
 #user-profile-modal {}
 #user-profile-modal .modal-header { padding: 10px; }
 #user-profile-modal .modal-body {  padding: 0; }
@@ -115,7 +113,7 @@ body { padding-top: 50px; }
  * Small screen devices *******************
  ***************************************/
 @media screen and (min-width: 750px) {
-    #chat, #chat > .row, #rooms, #room, .room-container, #users {
+    #chat, #chat > .row, #chat-left, #chat-center, .cwindow, #chat-right {
         height: 100%;
     }
 }

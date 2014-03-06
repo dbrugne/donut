@@ -5,21 +5,18 @@
 {% block content %}
 <div id="chat" class="container-fluid">
     <div class="row">
-        <section id="rooms" class="col-sm-2 col-md-2 col-lg-2">
-            <!-- Status panel -->
-            <div class="panel panel-default block-status">
-                <div class="panel-body" style="position: relative;">
+        <div id="chat-left" class="col-sm-2 col-md-2 col-lg-2">
+            <div id="block-status" class="panel panel-default">
+                <div class="panel-body">
                     You are
-                    <button type="button" id="status">...</button>
+                    <button type="button" class="status">...</button>
                 </div>
             </div>
-            <!-- / Status panel -->
-            <!-- Rooms panel -->
-            <div class="panel panel-default block-room">
+            <div id="block-rooms" class="panel panel-default">
                 <div class="panel-heading">Rooms</div>
                 <div id="rooms-list" class="list-group">
                     <!-- Default room-item -->
-                    <a href="#" class="list-group-item room-item" data-topic="default"><em>Not in any room</em></a>
+                    <a href="#" class="list-group-item room-item" data-default="true"><em>Not in any room</em></a>
                     <!-- / Default room-item -->
                     <!-- Template room-item -->
                     <a href="#" class="list-group-item room-item" data-topic="" data-template="true"><span class="name"></span> <span class="users-count">(<span class="glyphicon glyphicon-user user-profile"></span> <span class="count">0</span>)</span> <span class="close glyphicon glyphicon-remove"></span> <span class="badge">0</span></a>
@@ -46,13 +43,11 @@
                     <a href="#" id="search-room-link"><span class="glyphicon glyphicon-search"></span> Search a room</a>
                 </div>
             </div>
-            <!-- / Rooms panel -->
-            <!-- Users panel -->
-            <div class="panel panel-default block-user">
+            <div id="block-users" class="panel panel-default">
                 <div class="panel-heading">Users</div>
                 <div id="online-users-list" class="list-group">
                     <!-- Default user-item -->
-                    <a href="#" class="list-group-item user-item" data-user-id="default"><em>No user online</em></a>
+                    <a href="#" class="list-group-item user-item" data-default="true"><em>No user online</em></a>
                     <!-- / Default user-item -->
                     <!-- Template user-item -->
                     <a href="#" class="list-group-item user-item" data-user-id="" data-template="true"><span class="avatar"><img src="" /></span> <span class="username"></span></a>
@@ -62,23 +57,16 @@
                     <a href="#" id="search-user-link"><span class="glyphicon glyphicon-search"></span> Search a user</a>
                 </div>
             </div>
-            <!-- / Users panel -->
-
             <!--
-            <button class="btn btn-success" id="test1">Test</button>
-            <button class="btn btn-success" id="test2">Test</button>
-            <button class="btn btn-success" id="test3">Test</button>
+            <button class="btn btn-success" id="test1">Test</button><button class="btn btn-success" id="test2">Test</button><button class="btn btn-success" id="test3">Test</button>
             -->
-        </section>
-        <section id="room" class="col-sm-8 col-md-8 col-lg-8">
-            <!-- Default room container -->
-            <div class="room-container" data-topic="default">
-                <section class="default">Not in room</section>
+        </div><!-- /.chat-left -->
+        <div id="chat-center" class="col-sm-8 col-md-8 col-lg-8">
+            <div class="cwindow" data-default="true">
+                <div class="default">Not in room</div>
             </div>
-            <!-- / Default room container -->
-            <!-- Template room container -->
-            <div class="room-container" data-topic="" data-template="true">
-                <section class="header">
+            <div class="cwindow" data-topic="" data-template="true">
+                <div class="header">
                     <span class="name"></span>
                     <div class="room-baseline-text">
                         <span class="baseline">&nbsp;</span>
@@ -89,9 +77,9 @@
                         <button class="btn btn-cancel room-baseline-cancel">Cancel</button>
                     </span>
                     <span class="close glyphicon glyphicon-remove"></span>
-                </section>
-                <section class="messages"></section>
-                <section class="postbox form-inline">
+                </div>
+                <div class="messages"></div>
+                <div class="postbox form-inline">
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="input-group">
@@ -109,20 +97,17 @@
                             </div><!-- /input-group -->
                         </div><!-- /.col-lg-12 -->
                     </div><!-- /.row -->
-                </section><!-- /.postbox -->
-            </div>
-            <!-- / Template room container -->
-        </section>
-        <section id="users" class="col-sm-2 col-md-2 col-lg-2">
-            <!-- Template room user list -->
-            <div class="panel panel-default users-list" data-topic="" data-template="true">
+                </div><!-- /.postbox -->
+            </div><!-- /.cwindow -->
+        </div><!-- /.chat-center -->
+        <div id="chat-right" class="col-sm-2 col-md-2 col-lg-2">
+            <div class="room-users panel panel-default" data-topic="" data-template="true">
                 <div class="panel-heading">Users</div>
                 <div class="list-group">
                     <a href="#" class="user-item" data-user-id="" data-template="true"><span class="username"></span> <span class="actions"><span class="glyphicon glyphicon-user user-profile"></span> <span class="glyphicon glyphicon-edit user-discussion"></span></span></a>
                 </div>
             </div>
-            <!-- / Template room user list -->
-        </section>
+        </div><!-- /.chat-right -->
     </div><!-- /.row -->
 </div><!-- /.container-fluid -->
 
