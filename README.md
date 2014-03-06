@@ -42,7 +42,11 @@ v5:
 * Add user count on "room search" - done!
 
 v6:
+* Change [data-room-id=] to [data-topic=] - done!
 * (try) Extend the "room box" to include the user list
+* Refactor Room/Discussion/ChatWindow prototype
+* Add indicate in page title when a new message come
+* Add sound on events
 
 v7:
 * (refactor) Database on MongoDb

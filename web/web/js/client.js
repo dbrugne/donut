@@ -1,3 +1,34 @@
+/*********************************************
+ *** cWindow *********************************
+ *********************************************/
+var cWindow = {
+
+};
+
+/*********************************************
+ *** Room ************************************
+ *********************************************/
+var Room = {
+
+};
+
+/*********************************************
+ *** Discussion ******************************
+ *********************************************/
+var Discussion = {
+
+};
+
+/*********************************************
+ *** cWindowManager **************************
+ *********************************************/
+var cWindowManager = {
+
+};
+
+/*********************************************
+ *** Legacy code *****************************
+ *********************************************/
 var ChatClient = function(optDebug) {
 
     var ChatServer;
@@ -85,7 +116,7 @@ var ChatClient = function(optDebug) {
      * Interface re-usable functions
      ****************************************************/
     function isChatWindowExists(topic) {
-        if ($(".room-item[data-room-id='"+topic+"']").length > 0){
+        if ($(".room-item[data-topic='"+topic+"']").length > 0){
             return true;
         } else {
             return false;
@@ -109,11 +140,12 @@ var ChatClient = function(optDebug) {
         }
 
         // Hide default elements
-        $("[data-room-id='default']").hide();
+        $("[data-topic='default']").hide();
 
         // Create room in rooms-list
-        var newRoomItem = $(".room-item[data-room-id='template']").clone(false);
-        $(newRoomItem).attr('data-room-id', topic);
+        var newRoomItem = $(".room-item[data-template='true']").clone(false);
+        $(newRoomItem).removeAttr('data-template');
+        $(newRoomItem).attr('data-topic', topic);
         $(newRoomItem).find('.name').html(windowName);
         $(newRoomItem).css('display', 'block');
         if (windowType == 'discussion') {
@@ -122,14 +154,15 @@ var ChatClient = function(optDebug) {
         $("#rooms-list").append(newRoomItem);
 
         // Create room-container
-        var newRoomContainer = $(".room-container[data-room-id='template']").clone(false);
+        var newRoomContainer = $(".room-container[data-template='true']").clone(false);
+        $(newRoomContainer).removeAttr('data-template');
         $(newRoomContainer).hide(); // to avoid all the room be displayed on same time if autofocus fails
-        $(newRoomContainer).attr('data-room-id', topic);
+        $(newRoomContainer).attr('data-topic', topic);
         $(newRoomContainer).find('.name').html(windowName);
-        $(newRoomContainer).find('.input-message').attr('data-room-id', topic);
-        $(newRoomContainer).find('.send-message').attr('data-room-id', topic);
-        $(newRoomContainer).find('.smileys-message').attr('data-room-id', topic);
-        $(newRoomContainer).find('.smileys-popin-message').attr('data-room-id', topic);
+        $(newRoomContainer).find('.input-message').attr('data-topic', topic);
+        $(newRoomContainer).find('.send-message').attr('data-topic', topic);
+        $(newRoomContainer).find('.smileys-message').attr('data-topic', topic);
+        $(newRoomContainer).find('.smileys-popin-message').attr('data-topic', topic);
         $(newRoomContainer).find('ul.smileys').first().html(smileysHtml);
         if (windowType == 'room') {
             $(newRoomContainer).find('.baseline').html(data.baseline);
@@ -140,13 +173,14 @@ var ChatClient = function(optDebug) {
         $("#room").append(newRoomContainer);
 
         // Textarea autosize
-        $(".input-message[data-room-id='"+topic+"']").autosize();
+        $(".input-message[data-topic='"+topic+"']").autosize();
 
         if (windowType == 'room') {
             // Create room users-list
-            var newUsersList = $(".users-list[data-room-id='template']").clone(false);
+            var newUsersList = $(".users-list[data-template='true']").clone(false);
+            $(newUsersList).removeAttr('data-template');
             $(newUsersList).hide(); // to avoid all the room be displayed on same time if autofocus fails
-            $(newUsersList).attr('data-room-id', topic);
+            $(newUsersList).attr('data-topic', topic);
             $("#users").append(newUsersList);
         }
 
@@ -155,14 +189,14 @@ var ChatClient = function(optDebug) {
     }
 
     function removeWindowDOM(topic) {
-        $(".room-item[data-room-id='"+topic+"']").remove();
-        $(".room-container[data-room-id='"+topic+"']").remove();
-        $(".users-list[data-room-id='"+topic+"']").remove();
+        $(".room-item[data-topic='"+topic+"']").remove();
+        $(".room-container[data-topic='"+topic+"']").remove();
+        $(".users-list[data-topic='"+topic+"']").remove();
 
         // If it was the last room open show() default
-        if (1 > $(".room-item[data-room-id!='default'][data-room-id!='template']").length) {
+        if (1 > $(".room-item[data-topic!='default'][data-topic!='template']").length) {
             // Show default elements
-            $("[data-room-id='default']").show();
+            $("[data-topic='default']").show();
         } else {
             // At least one open room remain, we focus on it
             focusOnWindow();
@@ -172,31 +206,31 @@ var ChatClient = function(optDebug) {
     function focusOnWindow(topic) {
         // If topic is null focus the first opened room
         if (topic == undefined) {
-            topic = $(".room-item[data-room-id!='default'][data-room-id!='template']").first().data('roomId');
+            topic = $(".room-item[data-topic!='default'][data-topic!='template']").first().data('topic');
         }
 
         // Room list
         $( ".room-item").removeClass('active');
 
-        $('.room-item[data-room-id="'+topic+'"]').addClass('active');
+        $('.room-item[data-topic="'+topic+'"]').addClass('active');
         // Room content
         $( ".room-container" ).hide();
 
-        $('.room-container[data-room-id="'+topic+'"]').fadeIn(400);
+        $('.room-container[data-topic="'+topic+'"]').fadeIn(400);
         // Set the height as with flexbox model
         resizeMessages();
 
         // User list
         $("#users").find(".users-list").hide();
 
-        $('.users-list[data-room-id="'+topic+'"]').fadeIn(400);
+        $('.users-list[data-topic="'+topic+'"]').fadeIn(400);
         // Remove un-read message badge
-        $('.room-item[data-room-id="'+topic+'"] > .badge').fadeOut(400, function () {
-            $('.room-item[data-room-id="'+topic+'"] > .badge').html(0);
+        $('.room-item[data-topic="'+topic+'"] > .badge').fadeOut(400, function () {
+            $('.room-item[data-topic="'+topic+'"] > .badge').html(0);
         });
 
         // Focus on input field
-        $('.input-message[data-room-id="'+topic+'"]').focus();
+        $('.input-message[data-topic="'+topic+'"]').focus();
 
         // Set URL hash
         if (ChatServer.isRoomTopic(topic)) {
@@ -217,8 +251,8 @@ var ChatClient = function(optDebug) {
     // Resize all .room-container > messages height in current document
     function resizeMessages() {
         $('.room-container').each(function () {
-            if ('template' == $(this).data('roomId')
-                || 'default' == $(this).data('roomId')) {
+            if ('template' == $(this).data('topic')
+                || 'default' == $(this).data('topic')) {
                 return;
             }
             var containerHeight = $(this).innerHeight();
@@ -233,24 +267,25 @@ var ChatClient = function(optDebug) {
     }
 
     function addUnreadMessageBadge(topic, num) {
-        var current = parseInt($(('.room-item[data-room-id="'+topic+'"] > .badge')).html(), 10);
+        var current = parseInt($(('.room-item[data-topic="'+topic+'"] > .badge')).html(), 10);
         current += num;
-        $(('.room-item[data-room-id="'+topic+'"] > .badge')).html(current);
-        $('.room-item[data-room-id="'+topic+'"] > .badge').show();
+        $(('.room-item[data-topic="'+topic+'"] > .badge')).html(current);
+        $('.room-item[data-topic="'+topic+'"] > .badge').show();
     }
 
     function userListAddUser(topic, user, notify) {
         // Check that user is not already in DOM
-        if ($(".users-list[data-room-id='"+topic+"']").find(".user-item[data-user-id='"+user.id+"']").length > 0){
+        if ($(".users-list[data-topic='"+topic+"']").find(".user-item[data-user-id='"+user.id+"']").length > 0){
             Debug(['User already in room user list', topic, user]);
             return;
         }
 
-        var newUserItem = $(".users-list[data-room-id='template'] > .list-group > .user-item[data-user-id='template']").first().clone(false);
+        var newUserItem = $(".users-list[data-template='true'] > .list-group > .user-item[data-template='true']").first().clone(false);
+        $(newUserItem).removeAttr('data-template');
         $(newUserItem).attr('data-user-id', user.id);
         $(newUserItem).css('display', 'block');
         $(newUserItem).find('.username').html(user.username);
-        $(".users-list[data-room-id='"+topic+"'] > .list-group").append(newUserItem);
+        $(".users-list[data-topic='"+topic+"'] > .list-group").append(newUserItem);
 
         userListSort(topic);
 
@@ -260,7 +295,7 @@ var ChatClient = function(optDebug) {
     }
 
     function userListSort(topic) {
-        var list = $(".users-list[data-room-id='"+topic+"'] > .list-group");
+        var list = $(".users-list[data-topic='"+topic+"'] > .list-group");
         var items = $('a', list);
 
         items.sort(function(a, b) {
@@ -275,15 +310,15 @@ var ChatClient = function(optDebug) {
     }
 
     function userListRemoveUser(topic, user) {
-        $(".users-list[data-room-id='"+topic+"']").find(".user-item[data-user-id='"+user.id+"']").remove();
+        $(".users-list[data-topic='"+topic+"']").find(".user-item[data-user-id='"+user.id+"']").remove();
         roomContainerAddApplicationMessage(topic, 'info', "User <strong>"+user.username+"</strong> has left the room");
     }
 
     function roomContainerAddApplicationMessage(topic, type, message) {
         var dateText = $.format.date(new Date(), "HH:mm:ss");
         var html = '<p class="'+type+'"><span class="date"><span class="glyphicon glyphicon-time"></span> '+dateText+'</span> <span class="text">'+message+'</span></p>';
-        $(".room-container[data-room-id='"+topic+"'] > .messages").append(html);
-        scrollDown($(".room-container[data-room-id='"+topic+"'] > .messages"));
+        $(".room-container[data-topic='"+topic+"'] > .messages").append(html);
+        scrollDown($(".room-container[data-topic='"+topic+"'] > .messages"));
     }
 
     function roomContainerAddMessage(topic, message) {
@@ -303,8 +338,8 @@ var ChatClient = function(optDebug) {
 
         // P
         var html = '<p><span class="avatar"><img src="'+message.avatar+'" /></span><span class="username" data-user-id="'+message.user_id+'">'+message.username+'</span><span class="date"><span class="glyphicon glyphicon-time"></span> '+dateText+'</span><span class="message">'+messageHtml+'</span></p>';
-        $(".room-container[data-room-id='"+topic+"'] > .messages").append(html);
-        scrollDown($(".room-container[data-room-id='"+topic+"'] > .messages"));
+        $(".room-container[data-topic='"+topic+"'] > .messages").append(html);
+        scrollDown($(".room-container[data-topic='"+topic+"'] > .messages"));
     }
 
     function setRoomBaseline(topic, data)
@@ -313,7 +348,7 @@ var ChatClient = function(optDebug) {
         if ('' == baseline) {
             baseline = "&nbsp;";
         }
-        $(".room-container[data-room-id='"+topic+"']").find('.baseline').html(baseline);
+        $(".room-container[data-topic='"+topic+"']").find('.baseline').html(baseline);
 
         if (undefined == data.notify || data.notify == true) {
             if (undefined == data.username) {
@@ -330,6 +365,7 @@ var ChatClient = function(optDebug) {
 
         // Create new item
         var newUserItem = $('#online-users-list > [data-user-id="template"]').clone();
+        $(newUserItem).removeAttr('data-template');
         $(newUserItem).attr('data-user-id', data.user_id);
         $(newUserItem).find('.username').html(data.username);
         $(newUserItem).find('.avatar > img').attr('src', data.avatar);
@@ -348,14 +384,14 @@ var ChatClient = function(optDebug) {
 
     function moreOneUserInRoom(topic)
     {
-        var count = $("#rooms-list > .room-item[data-room-id='"+topic+"'] > .users-count > .count");
+        var count = $("#rooms-list > .room-item[data-topic='"+topic+"'] > .users-count > .count");
         var newCount = parseInt($(count).html()) + 1;
         $(count).html(newCount);
     }
 
     function lessOneUserInRoom(topic)
     {
-        var count = $("#rooms-list > .room-item[data-room-id='"+topic+"'] > .users-count > .count");
+        var count = $("#rooms-list > .room-item[data-topic='"+topic+"'] > .users-count > .count");
         var newCount = parseInt($(count).html()) - 1;
         $(count).html(newCount);
     }
@@ -416,14 +452,14 @@ var ChatClient = function(optDebug) {
 
         $(document).on('click', '#rooms-list > .room-item', function (e) {
             e.preventDefault();
-            var topic = $(this).data('roomId');
+            var topic = $(this).data('topic');
             focusOnWindow(topic);
         });
 
         var postMessageCallback = function (e) {
-            var topic = $(e).data('roomId');
+            var topic = $(e).data('topic');
             var topicType = ChatServer.getTopicType(topic);
-            var message = $('.input-message[data-room-id="'+topic+'"]').val();
+            var message = $('.input-message[data-topic="'+topic+'"]').val();
             if (message == '') {
                 return;
             }
@@ -439,7 +475,7 @@ var ChatClient = function(optDebug) {
             }
 
             // Empty the field
-            $('.input-message[data-room-id="'+topic+'"]').val('').trigger('autosize.resize');
+            $('.input-message[data-topic="'+topic+'"]').val('').trigger('autosize.resize');
         };
         $(document).on('keypress', '.input-message', function (e) {
             var key;
@@ -461,11 +497,11 @@ var ChatClient = function(optDebug) {
         });
 
         $(document).on('click', '#rooms-list > .room-item > .close', function () {
-            var topic = $(this).closest(".room-item").data('roomId');
+            var topic = $(this).closest(".room-item").data('topic');
             leaveRoom(topic);
         });
         $(document).on('click', '.room-container > .header > .close', function () {
-            var topic = $(this).closest(".room-container").data('roomId');
+            var topic = $(this).closest(".room-container").data('topic');
             leaveRoom(topic);
         });
 
@@ -509,11 +545,11 @@ var ChatClient = function(optDebug) {
             if (undefined == focusedWindow || '' == focusedWindow) {
                 return;
             }
-            var roomHeader = $('.room-container[data-room-id="'+focusedWindow+'"] > .header');
+            var roomHeader = $('.room-container[data-topic="'+focusedWindow+'"] > .header');
 
             roomHeader.find('.room-baseline-text').hide();
             roomHeader.find('.room-baseline-form').show();
-            var currentBaseline = $('.room-container[data-room-id="'+focusedWindow+'"]').find('.baseline').html();
+            var currentBaseline = $('.room-container[data-topic="'+focusedWindow+'"]').find('.baseline').html();
             if ('&nbsp;' == currentBaseline) {
                 currentBaseline = '';
             }
@@ -525,7 +561,7 @@ var ChatClient = function(optDebug) {
             if (undefined == focusedWindow || '' == focusedWindow) {
                 return;
             }
-            var roomHeader = $('.room-container[data-room-id="'+focusedWindow+'"] > .header');
+            var roomHeader = $('.room-container[data-topic="'+focusedWindow+'"] > .header');
             var baseline = roomHeader.find('.room-baseline-input').val();
 
             // save
@@ -548,7 +584,7 @@ var ChatClient = function(optDebug) {
                 return;
             }
 
-            var roomHeader = $('.room-container[data-room-id="'+focusedWindow+'"] > .header');
+            var roomHeader = $('.room-container[data-topic="'+focusedWindow+'"] > .header');
             roomHeader.find('.room-baseline-form').hide();
             roomHeader.find('.room-baseline-text').show();
             roomHeader.find('.room-baseline-input').val('');
@@ -579,11 +615,11 @@ var ChatClient = function(optDebug) {
 
                 // Fill list with result
                 $(roomList).each(function() {
-                    var html = '<li class="list-group-item search-room-item" data-room-id="'+this.topic+'"><h4 class="list-group-item-heading">'+this.name+' ('+this.count+')</h4> <p class="list-group-item-text">'+this.baseline+'</p></li>';
+                    var html = '<li class="list-group-item search-room-item" data-topic="'+this.topic+'"><h4 class="list-group-item-heading">'+this.name+' ('+this.count+')</h4> <p class="list-group-item-text">'+this.baseline+'</p></li>';
                     $(ul).append(html);
 
                     var topic = this.topic;
-                    $(ul).find('li.search-room-item[data-room-id="'+this.topic+'"]').first().click(function() {
+                    $(ul).find('li.search-room-item[data-topic="'+this.topic+'"]').first().click(function() {
                         shouldBeFocused = topic;
                         joinRoom(topic);
                         focusOnWindow(topic);
@@ -688,8 +724,8 @@ var ChatClient = function(optDebug) {
 
         // Smileys management
         $(document).on('click', '.smileys-message', function(e) {
-            var topic = $(this).data('roomId');
-            var popin = $('.smileys-popin-message[data-room-id="'+topic+'"]');
+            var topic = $(this).data('topic');
+            var popin = $('.smileys-popin-message[data-topic="'+topic+'"]');
 
             var position = $(this).position();
             var newTop = position.top - $(popin).outerHeight();
@@ -701,11 +737,11 @@ var ChatClient = function(optDebug) {
             $(popin).toggle();
         });
         $(document).on('click', '.smileys > li', function(e) {
-            var topic = $(this).closest('.smileys-popin-message').data('roomId');
+            var topic = $(this).closest('.smileys-popin-message').data('topic');
             var symbol = $(this).data('symbol');
 
-            $(".input-message[data-room-id='"+topic+"']").insertAtCaret(symbol);
-            $('.smileys-popin-message[data-room-id="'+topic+'"]').hide();
+            $(".input-message[data-topic='"+topic+"']").insertAtCaret(symbol);
+            $('.smileys-popin-message[data-topic="'+topic+'"]').hide();
         });
     });
 

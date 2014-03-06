@@ -15,9 +15,9 @@ body { padding-top: 50px; }
 /**
  * Chat interface
  */
+[data-template=true] { display: none; }
 #chat { background: #eee; margin: 0; padding: 0; font-size: 13px; }
 #chat > .row { margin: 0; /* Cancel bootstrap negative margin */ }
-[data-room-id=template], [data-user-id=template] { display: none; }
 #rooms { background-color: darkgrey; padding: 10px 10px; overflow-y:auto; }
 #room { background-color: grey; padding: 0; /* Cancel bootstrap native space between columns */ }
 #users { background-color: darkgrey; padding: 10px 10px; overflow-y:auto; }
@@ -61,7 +61,7 @@ body { padding-top: 50px; }
 #chat .header .baseline { margin-left: 5px; color: #333; }
 #chat .header .close { color: #FF0000; }
 #chat .header .room-baseline-text { display: inline-block; min-width: 75%; }
-#chat .header .room-baseline-form {  }
+#chat .header .room-baseline-form { display:none; }
 #chat .header .room-baseline-input { display: inline-block; width: 50%; }
 #chat .header .room-baseline-submit { display: inline-block; }
 #chat .header .room-baseline-cancel { display: inline-block; }
@@ -86,7 +86,7 @@ body { padding-top: 50px; }
     border-top: 1px solid transparent;
     border-color: #ddd;
 }
-#create-room-form { margin-top: 10px; }
+#create-room-form { display: none; margin-top: 10px; }
 #room .popover { max-width: 290px; /* for postbox smileys popover */ }
 #room .popover .popover-content { padding: 10px 0 5px 10px; }
 #room .popover ul { margin: 0; padding: 0; }
