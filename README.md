@@ -43,10 +43,10 @@ v5:
 
 v6:
 * Change [data-room-id=] to [data-topic=] - done!
-* (try) Extend the "room box" to include the user list
+* (try) Extend the "room box" to include the user list - done!
+* Extend header width in chat/ - done!
 * Refactor Room/Discussion/ChatWindow prototype
 * Add indicate in page title when a new message come
-* Add sound on events
 
 v7:
 * (refactor) Database on MongoDb
@@ -55,16 +55,16 @@ v7:
 * (social) Facebook Login + Invite your friends + page Facebook
 
 v8:
+* Translate in french
 * (irc) ACL on room => who is OP, set OP, remove OP, can change baseline, can kick users
 * (irc) Kick users
 
 vx:
-* (refactor) Create Room and Discussion objects with common prototype
+* Pin a message
 * (bug) Fix "unlog" bug that maintain user logged in chat
 * (refactor) Sanitize all user input in Websocket and implement data control
 * (specs) Draw client/server protocol with list and structure of message, uniformize
 * Add tabbed-universe on homepage (TV, FIFA Worldcup, Sport, ...)
-* Translate in french
 * (refactor) Use App extends instead of actual server.php
 * Multi-line postbox input bug
 * Private Room / Permanent Room (will not be deleted on last user leave)
@@ -79,6 +79,7 @@ vx:
 * (mobile) Develop mobile version with SenchaTouch
 
 Idea box:
+* Add sound on events
 * (social) Like a message
 * Each user can black-list other users
 * Store messages and history in localstorage

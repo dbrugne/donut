@@ -1,34 +1,3 @@
-/*********************************************
- *** cWindow *********************************
- *********************************************/
-var cWindow = {
-
-};
-
-/*********************************************
- *** Room ************************************
- *********************************************/
-var Room = {
-
-};
-
-/*********************************************
- *** Discussion ******************************
- *********************************************/
-var Discussion = {
-
-};
-
-/*********************************************
- *** cWindowManager **************************
- *********************************************/
-var cWindowManager = {
-
-};
-
-/*********************************************
- *** Legacy code *****************************
- *********************************************/
 var ChatClient = function(optDebug) {
 
     var ChatServer;
@@ -140,7 +109,8 @@ var ChatClient = function(optDebug) {
         }
 
         // Hide default elements
-        $("[data-default='true']").hide();
+        $(".room-item[data-default='true']").hide();
+        $(".cwindow[data-default='true']").hide();
 
         // Create room in rooms-list
         var newRoomItem = $(".room-item[data-template='true']").clone(false);
@@ -175,15 +145,6 @@ var ChatClient = function(optDebug) {
         // Textarea autosize
         $(".input-message[data-topic='"+topic+"']").autosize();
 
-        if (windowType == 'room') {
-            // Create room users-list
-            var newUsersList = $(".room-users[data-template='true']").clone(false);
-            $(newUsersList).removeAttr('data-template');
-            $(newUsersList).hide(); // to avoid all the room be displayed on same time if autofocus fails
-            $(newUsersList).attr('data-topic', topic);
-            $("#chat-right").append(newUsersList);
-        }
-
         // Set the height as with flexbox model
         resizeMessages();
     }
@@ -196,7 +157,8 @@ var ChatClient = function(optDebug) {
         // If it was the last room open show() default
         if (1 > $(".room-item[data-default!='true'][data-template!='true']").length) {
             // Show default elements
-            $("[data-default='true']").show();
+            $(".room-item[data-default='true']").show();
+            $(".cwindow[data-default='true']").show();
         } else {
             // At least one open room remain, we focus on it
             focusOnWindow();
@@ -210,8 +172,9 @@ var ChatClient = function(optDebug) {
         }
 
         // If no window to focus on
-        if (topic == '') {
-            $("[data-default='true']").show();
+        if (topic == '' || topic == undefined) {
+            $(".room-item[data-default='true']").show();
+            $(".cwindow[data-default='true']").show();
             window.location.hash = '';
             return;
         }
@@ -240,7 +203,6 @@ var ChatClient = function(optDebug) {
         $('.input-message[data-topic="'+topic+'"]').focus();
 
         // Set URL hash
-        Debug(['ici', topic]);
         if (ChatServer.isRoomTopic(topic)) {
             var hash = 'room='+topic.replace(ChatServer.topicTypes.room_prefix, '');
             window.location.hash = hash;
@@ -259,10 +221,12 @@ var ChatClient = function(optDebug) {
     // Resize all .cwindow > messages height in current document
     function resizeMessages() {
         $('.cwindow').each(function () {
-            if ('template' == $(this).data('topic')
-                || 'default' == $(this).data('topic')) {
+
+            if ($(this).data('template') == true
+                || $(this).data('default') == true) {
                 return;
             }
+
             var containerHeight = $(this).innerHeight();
             var headerHeight = $(this).find('.header').outerHeight();
             var postboxHeight = $(this).find('.postbox').outerHeight();
@@ -282,18 +246,19 @@ var ChatClient = function(optDebug) {
     }
 
     function userListAddUser(topic, user, notify) {
+        var roomUsers = $(".cwindow[data-topic='"+topic+"']").find(".room-users").first();
         // Check that user is not already in DOM
-        if ($(".room-users[data-topic='"+topic+"']").find(".user-item[data-user-id='"+user.id+"']").length > 0){
+        if ($(roomUsers).find(".user-item[data-user-id='"+user.id+"']").length > 0){
             Debug(['User already in room user list', topic, user]);
             return;
         }
 
-        var newUserItem = $(".room-users[data-template='true'] > .list-group > .user-item[data-template='true']").first().clone(false);
+        var newUserItem = $(roomUsers).find(".user-item[data-template='true']").clone(false);
         $(newUserItem).removeAttr('data-template');
         $(newUserItem).attr('data-user-id', user.id);
         $(newUserItem).css('display', 'block');
         $(newUserItem).find('.username').html(user.username);
-        $(".room-users[data-topic='"+topic+"'] > .list-group").append(newUserItem);
+        $(roomUsers).find(".list-group").append(newUserItem);
 
         userListSort(topic);
 
@@ -346,7 +311,7 @@ var ChatClient = function(optDebug) {
 
         // P
         var html = '<p><span class="avatar"><img src="'+message.avatar+'" /></span><span class="username" data-user-id="'+message.user_id+'">'+message.username+'</span><span class="date"><span class="glyphicon glyphicon-time"></span> '+dateText+'</span><span class="message">'+messageHtml+'</span></p>';
-        $(".cwindow[data-topic='"+topic+"'] > .messages").append(html);
+        $(".cwindow[data-topic='"+topic+"']").find(".messages").append(html);
         scrollDown($(".cwindow[data-topic='"+topic+"'] > .messages"));
     }
 
@@ -372,7 +337,7 @@ var ChatClient = function(optDebug) {
         $('#online-users-list > [data-default="true"]').hide();
 
         // Create new item
-        var newUserItem = $('#online-users-list > [data-user-id="template"]').clone();
+        var newUserItem = $('#online-users-list > [data-template="true"]').clone();
         $(newUserItem).removeAttr('data-template');
         $(newUserItem).attr('data-user-id', data.user_id);
         $(newUserItem).find('.username').html(data.username);
@@ -506,13 +471,15 @@ var ChatClient = function(optDebug) {
 
         $(document).on('click', '#rooms-list > .room-item > .close', function (e) {
             e.stopPropagation();
+            e.preventDefault();
             var topic = $(this).closest(".room-item").data('topic');
             leaveRoom(topic);
+            focusOnWindow();
         });
-        $(document).on('click', '.cwindow > .header > .close', function (e) {
-            e.stopPropagation();
+        $(document).on('click', '.cwindow .header .close', function (e) {
             var topic = $(this).closest(".cwindow").data('topic');
             leaveRoom(topic);
+            focusOnWindow();
         });
 
         $('#create-room-toggle').click(function(e) {
@@ -551,50 +518,46 @@ var ChatClient = function(optDebug) {
             }
         });
 
-        $(document).on('click', '.room-baseline-text', function () {
-            if (undefined == focusedWindow || '' == focusedWindow) {
-                return;
-            }
-            var roomHeader = $('.cwindow[data-topic="'+focusedWindow+'"] > .header');
+        $(document).on('click', '.room-baseline-text', function (e) {
+            e.stopPropagation();
+            var topic = $(this).closest('.cwindow').data('topic');
+            var roomHeader = $(this).closest('.header');
+            $(roomHeader).find('.room-baseline-text').hide();
 
-            roomHeader.find('.room-baseline-text').hide();
-            roomHeader.find('.room-baseline-form').show();
-            var currentBaseline = $('.cwindow[data-topic="'+focusedWindow+'"]').find('.baseline').html();
+            $(roomHeader).find('.room-baseline-form').show();
+            var currentBaseline = $(roomHeader).find('.baseline').html();
             if ('&nbsp;' == currentBaseline) {
                 currentBaseline = '';
             }
-            roomHeader.find('.room-baseline-input').val(currentBaseline);
-            roomHeader.find('.room-baseline-input').focus();
+            $(roomHeader).find('.room-baseline-input').val(currentBaseline);
+            $(roomHeader).find('.room-baseline-input').focus();
         });
 
-        var changeBaselineCallback = function () {
-            if (undefined == focusedWindow || '' == focusedWindow) {
-                return;
-            }
-            var roomHeader = $('.cwindow[data-topic="'+focusedWindow+'"] > .header');
-            var baseline = roomHeader.find('.room-baseline-input').val();
+        var changeBaselineCallback = function (o) {
+            var topic = $(o).closest('.cwindow').data('topic');
+            var roomHeader = $(o).closest('.header');
+            var baseline = $(roomHeader).find('.room-baseline-input').val();
 
             // save
-            ChatServer.changeBaseline(focusedWindow, baseline);
+            ChatServer.changeBaseline(topic, baseline);
 
             roomHeader.find('.room-baseline-form').hide();
             roomHeader.find('.room-baseline-text').show();
             roomHeader.find('.room-baseline-input').val('');
         };
 
-        $(document).on('click', '.room-baseline-submit', changeBaselineCallback);
+        $(document).on('click', '.room-baseline-submit', function (e) {
+            e.stopPropagation();
+            changeBaselineCallback(this);
+        });
         $(document).on('keypress', '.room-baseline-input', function (e) {
             if(e.which == 13) {
-                changeBaselineCallback();
+                changeBaselineCallback(this);
             }
         });
 
         $(document).on('click', '.room-baseline-cancel', function () {
-            if (undefined == focusedWindow || '' == focusedWindow) {
-                return;
-            }
-
-            var roomHeader = $('.cwindow[data-topic="'+focusedWindow+'"] > .header');
+            var roomHeader = $(this).closest('.header');
             roomHeader.find('.room-baseline-form').hide();
             roomHeader.find('.room-baseline-text').show();
             roomHeader.find('.room-baseline-input').val('');
