@@ -504,11 +504,13 @@ var ChatClient = function(optDebug) {
             postMessageCallback(this);
         });
 
-        $(document).on('click', '#rooms-list > .room-item > .close', function () {
+        $(document).on('click', '#rooms-list > .room-item > .close', function (e) {
+            e.stopPropagation();
             var topic = $(this).closest(".room-item").data('topic');
             leaveRoom(topic);
         });
-        $(document).on('click', '.cwindow > .header > .close', function () {
+        $(document).on('click', '.cwindow > .header > .close', function (e) {
+            e.stopPropagation();
             var topic = $(this).closest(".cwindow").data('topic');
             leaveRoom(topic);
         });
