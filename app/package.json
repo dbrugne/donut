@@ -1,0 +1,19 @@
+{
+    "name": "chat-app",
+    "description": "Chat web application component (home, web pages, user account management and display",
+    "version": "0.0.1",
+    "private": true,
+    "dependencies": {
+        "express": "~3.4.8",
+        "underscore": "~1.6.0",
+        "underscore-express": "~0.0.4",
+        "mongoose" : "~3.8.8",
+        "passport": "~0.2.0",
+        "passport-local" : "~1.0.0",
+        "passport-facebook" : "~1.0.3",
+        "passport-twitter" : "~1.0.2",
+        "passport-google-oauth" : "~0.1.5",
+        "connect-flash" : "~0.1.1",
+        "bcrypt-nodejs" : "latest"
+    }
+}

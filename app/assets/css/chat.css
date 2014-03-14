@@ -1,0 +1,177 @@
+@import "http://fonts.googleapis.com/css?family=Open+Sans:400,600,700";
+
+html,body { font-family: "Open Sans"; height: 100%; }
+body { padding-top:80px; }
+.navbar-right { padding-right: 10px; }
+
+/**
+ * Welcome
+ */
+#rooms { }
+#rooms .logo { min-height: 66px; }
+
+/**
+ * Chat interface
+ */
+[data-template=true] { display: none; }
+#chat { background: #eee; margin: 0; padding: 0; font-size: 13px; }
+    #chat .panel-heading { font-weight: bold; color: #8a8a8a; }
+
+    #chat > .row { margin: 0; /* Cancel bootstrap negative .row margin */ }
+    #chat-left { background-color: darkgrey; padding: 10px 10px; overflow-y:auto; }
+        #block-status {}
+            #block-status .panel-body { position: relative; }
+            #block-status button { font-size: 11px; position: absolute; right: 10px; }
+        #block-rooms {}
+            #block-rooms .panel-heading { border-color: transparent; }
+            #block-rooms .room-item { font-size: 12px; }
+            #block-rooms .room-item .name {  }
+            #block-rooms .room-item .badge { display: none; margin-right: 5px; }
+            #block-rooms .room-item .close { font-size: 14px; color: #FF0000; }
+            #create-room-form { display: none; margin-top: 10px; }
+        #block-users {}
+            #block-users .panel-heading { border-color: transparent; }
+
+    #chat-center { padding: 0; /* Cancel bootstrap native space between columns */  position: relative; }
+        .default { height: 100%; z-index: -1; text-align: center; background-color: #FFFFFF; color: #DDDDDD; font-size: 30px; font-weight: bold; font-style: italic; padding-top: 15%; }
+        .cwindow { background-color: #FFFFFF; }
+        .cwindow .row-header { margin: 0px; /* Cancel bootstrap negative .row margin */ }
+        .cwindow .row-content { margin: 0px; /* Cancel bootstrap negative .row margin */ background-color: darkgrey; }
+        .cwindow .col-content { padding-left: 0; padding-right: 0; /* Cancel bootstrap native space between columns */ }
+        .cwindow .col-users { padding-left: 0; padding-right: 0; /* Cancel bootstrap native space between columns */  border-left: 1px solid #ddd; }
+        .cwindow .header { max-height: 50px; border-bottom: 1px solid transparent; border-color: #ddd; background-color: #f5f5f5; padding: 10px 15px; }
+        .cwindow .header .name { color: #555555; font-weight: bolder; font-size: 16px; }
+        .cwindow .header .baseline { margin-left: 5px; color: #333; }
+        .cwindow .header .close { color: #FF0000; }
+        .cwindow .header .room-baseline-text { display: inline-block; min-width: 75%; }
+        .cwindow .header .room-baseline-form { display:none; }
+        .cwindow .header .room-baseline-input { display: inline-block; width: 50%; }
+        .cwindow .header .room-baseline-submit { display: inline-block; }
+        .cwindow .header .room-baseline-cancel { display: inline-block; }
+        .cwindow .messages { background-color: #fff; overflow-y: scroll; }
+        .cwindow .messages p { margin: 0; padding: 4px 6px; color: #000; font-family: "Open Sans"; position: relative; border: 0; border-bottom: 1px solid #f5f5f5; }
+        .cwindow .messages p .avatar { float: left; margin-right: 5px; }
+        .cwindow .messages p .date { position: absolute; right: 8px; color: #BDBDBD; }
+        .cwindow .messages p .username { font-weight: bold; }
+        .cwindow .messages p .message { display: block; margin-left: 26px; }
+        .cwindow .postbox { padding: 10px 0; color: #333; background-color: #f5f5f5; border-top: 1px solid transparent; border-color: #ddd; }
+        .cwindow .postbox .row { margin: 0; /* Cancel bootstrap negative .row margin */ }
+        .cwindow .postbox .input-group-addon.smileys-message { border-right: 0; }
+        .cwindow .popover { max-width: 290px; /* for postbox smileys popover */ }
+        .cwindow .popover .popover-content { padding: 10px 0 5px 10px; }
+        .cwindow .popover ul { margin: 0; padding: 0; }
+        .cwindow .popover li { margin-right: 5px; margin-bottom: 5px; }
+        .cwindow .room-users  { background-color: #fff; }
+        .cwindow .room-users .list-group  { margin-bottom: 0; /* Cancel bootstrap native space after panel */ }
+        .cwindow .room-users .list-group-item  { border-left: 0; border-right: 0; }
+        .cwindow .room-users .list-group-item:last-child  { margin-bottom: 0; /* Cancel bootstrap native space after panel */ border-radius: 0; }
+        .cwindow .room-users .heading { padding: 10px 15px; background-color: #f5f5f5; font-weight: bold; color: #8a8a8a; }
+        .cwindow .room-users .footer { padding: 10px 15px; background-color: #f5f5f5; }
+        .cwindow .room-users .user-item  { padding: 10px; }
+        .cwindow .room-users .user-item .actions { visibility: hidden; }
+        .cwindow .room-users .user-item { position: relative; }
+        .cwindow .room-users .user-item:hover { background-color: #f5f5f5; }
+        .cwindow .room-users .user-item .actions { position: absolute; right: 10px; }
+        .cwindow .room-users .user-item:hover .actions { visibility: visible; }
+        .cwindow .room-users .user-item .op { font-weight: bold; text-decoration: underline; }
+        .cwindow .room-users .user-item .friend { font-weight: bold; font-style: italic; }
+
+#user-profile-modal {}
+#user-profile-modal .modal-header { padding: 10px; }
+#user-profile-modal .modal-body {  padding: 0; }
+#user-profile-modal .cover {
+    padding-bottom: 20px;
+    background-color: grey;
+    text-align: center;
+    color: #FFFFFF;
+}
+#user-profile-modal .modal-body .avatar { margin: 40px auto 10px; }
+#user-profile-modal .modal-body .username {
+    font-size: 24px;
+    font-weight: bold;
+    text-shadow: rgba(0, 0, 0, 0.498039) 0px 1px 1px;
+    margin-bottom: 10px;
+}
+#user-profile-modal .other { padding: 30px 20px; }
+#user-profile-modal .modal-footer { margin-top: 0; }
+
+/********************************************
+ * Small screen devices *******************
+ ***************************************/
+@media screen and (min-width: 750px) {
+    #chat, #chat > .row, #chat-left, #chat-center, .cwindow, .cwindow .col-users {
+        height: 100%;
+    }
+}
+/********************************************
+ * Small screen devices *******************
+ ***************************************/
+@media screen and (max-width: 750px) {
+    #chat .messages {
+        min-height: 100px;
+    }
+}
+
+/********************************************
+ * Emoticons *************************
+ ***************************************/
+/* 16px Emoticons */
+.emoticon-16px {
+    background: url('../img/sprite-16px-png24.png') no-repeat;
+    display: inline-block;
+    height: 16px;
+    margin: 0 1px;
+    text-indent: -99999px;
+    vertical-align: middle;
+    width: 16px
+}
+.emoticon-16px.emoticon-smile { background-position: 0 0 }
+.emoticon-16px.emoticon-grin { background-position: -16px 0 }
+.emoticon-16px.emoticon-joy { background-position: -32px 0 }
+.emoticon-16px.emoticon-wink { background-position: -48px 0 }
+.emoticon-16px.emoticon-cheeky { background-position: -64px 0 }
+.emoticon-16px.emoticon-surprised { background-position: -80px 0 }
+.emoticon-16px.emoticon-kiss { background-position: -96px 0 }
+.emoticon-16px.emoticon-frown { background-position: -112px 0 }
+.emoticon-16px.emoticon-tears { background-position: -128px 0 }
+.emoticon-16px.emoticon-annoyed { background-position: -144px 0 }
+.emoticon-16px.emoticon-cool { background-position: -160px 0 }
+.emoticon-16px.emoticon-angry { background-position: -176px 0 }
+.emoticon-16px.emoticon-confused { background-position: -192px 0 }
+.emoticon-16px.emoticon-angel { background-position: -208px 0 }
+.emoticon-16px.emoticon-devil { background-position: -224px 0 }
+.emoticon-16px.emoticon-music { background-position: -240px 0 }
+.emoticon-16px.emoticon-thumbs-up { background-position: -256px 0 }
+.emoticon-16px.emoticon-thumbs-down { background-position: -272px 0 }
+.emoticon-16px.emoticon-heart { background-position: -288px 0 }
+.emoticon-16px.emoticon-broken-heart { background-position: -304px 0 }
+
+.emoticon-18px {
+    background: url('../img/sprite-18px-png24.png') no-repeat;
+    display: inline-block;
+    height: 18px;
+    margin: 0 1px;
+    text-indent: -99999px;
+    vertical-align: middle;
+    width: 18px
+}
+.emoticon-18px.emoticon-smile { background-position: 0 0 }
+.emoticon-18px.emoticon-grin { background-position: -18px 0 }
+.emoticon-18px.emoticon-joy { background-position: -36px 0 }
+.emoticon-18px.emoticon-wink { background-position: -54px 0 }
+.emoticon-18px.emoticon-cheeky { background-position: -72px 0 }
+.emoticon-18px.emoticon-surprised { background-position: -90px 0 }
+.emoticon-18px.emoticon-kiss { background-position: -108px 0 }
+.emoticon-18px.emoticon-frown { background-position: -126px 0 }
+.emoticon-18px.emoticon-tears { background-position: -144px 0 }
+.emoticon-18px.emoticon-annoyed { background-position: -162px 0 }
+.emoticon-18px.emoticon-cool { background-position: -180px 0 }
+.emoticon-18px.emoticon-angry { background-position: -198px 0 }
+.emoticon-18px.emoticon-confused { background-position: -216px 0 }
+.emoticon-18px.emoticon-angel { background-position: -234px 0 }
+.emoticon-18px.emoticon-devil { background-position: -252px 0 }
+.emoticon-18px.emoticon-music { background-position: -270px 0 }
+.emoticon-18px.emoticon-thumbs-up { background-position: -288px 0 }
+.emoticon-18px.emoticon-thumbs-down { background-position: -306px 0 }
+.emoticon-18px.emoticon-heart { background-position: -324px 0 }
+.emoticon-18px.emoticon-broken-heart { background-position: -342px 0 }
