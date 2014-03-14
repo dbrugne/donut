@@ -45,38 +45,45 @@ v6:
 * Change [data-room-id=] to [data-topic=] - done!
 * (try) Extend the "room box" to include the user list - done!
 * Extend header width in chat/ - done!
-* Refactor Room/Discussion/ChatWindow prototype
 * Add indicate in page title when a new message come
 
 v7:
-* (refactor) Database on MongoDb
+* Fix old session bug
 * User account: photo, bio, town
 * A page per room (as for user)
+* (refactor) Database on MongoDb
+* (refactor) App on node.js/express + http://passportjs.org/
 * (social) Facebook Login + Invite your friends + page Facebook
 
 v8:
+* Refactor Room/Discussion/ChatWindow on Backbone.js
+
+v9:
 * Translate in french
 * (irc) ACL on room => who is OP, set OP, remove OP, can change baseline, can kick users
 * (irc) Kick users
 
 vx:
-* Pin a message
+* (refactor) Reset the communication protocole: exit Wamp, only directionnal events and logic
+* Add backend interface that is connect to server and give some informations
+* Add anonyme mode (user come on platform, connect to chat, join rooms, discuss)
 * (bug) Fix "unlog" bug that maintain user logged in chat
 * (refactor) Sanitize all user input in Websocket and implement data control
 * (specs) Draw client/server protocol with list and structure of message, uniformize
 * Add tabbed-universe on homepage (TV, FIFA Worldcup, Sport, ...)
-* (refactor) Use App extends instead of actual server.php
 * Multi-line postbox input bug
 * Private Room / Permanent Room (will not be deleted on last user leave)
 * Invite someone(s) in my room
 * Highlight messages of the same user of this message
-* (stats) Add statistics counter: user loggin, user logout, user create/enter/leave a room, user chage title, search for room
+* (stats) Add statistics counter: user loggin, user logout, user create/enter/leave a room, user change title, search for room
 * (stats) Google Analytics
 * (social) Follow profile (= friend)
 * (social) Add a "Friends are in rooms" list
-* (refactor) Server on node.js/socket.io
 * (irc) Message history on arrow up/down
-* (mobile) Develop mobile version with SenchaTouch
+* (refactor) Use App extends instead of actual server.php
+
+Mobile:
+* (mobile) Port a mobile version with SenchaTouch / Phonegap
 
 Idea box:
 * Add sound on events
@@ -87,3 +94,4 @@ Idea box:
 * Public mod for a room (all the content is visible by anyone)
 * Anonymous person allowed (could be blocked by room)
 * Give ability to a room owner to "suspend a room" temporarily
+* Pin a message
