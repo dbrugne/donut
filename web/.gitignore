@@ -1,4 +1,4 @@
-./composer.lock
-./vendor
-./env
-./log/*
+composer.lock
+vendor
+env
+log/*
