@@ -6,7 +6,7 @@
 // get all the tools we need
 var express  = require('express');
 var app      = express();
-var port     = 3000; // process.env.PORT || 8080;
+var port     = 80; // process.env.PORT || 8080;
 var mongoose = require('mongoose');
 var passport = require('passport');
 var flash 	 = require('connect-flash');
@@ -33,9 +33,25 @@ app.configure(function() {
     app.use(passport.session()); // persistent login sessions
     app.use(flash()); // use connect-flash for flash messages stored in session
 
+    // (auto)persist some data for view usage (@todo : probably not the best place to do that)
+    app.use(function(req, res, next) {
+        res.locals.isAuth = req.isAuthenticated();
+        if (req.isAuthenticated()) {
+            res.locals.currentUser = req.user;
+        } else {
+            res.locals.currentUser = {
+                local: {
+                    username: 'anonymous'
+                }
+            };
+        }
+        res.locals.title = "Here we chat!";
+
+        next();
+    });
+
     // static files
-    app.use("/assets", express.static(__dirname + '/assets'));
-    app.use("/medias", express.static(__dirname + '/medias'));
+    app.use("/public", express.static(__dirname + '/public'));
 
 });
 

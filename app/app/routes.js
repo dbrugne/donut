@@ -5,15 +5,12 @@ module.exports = function(app, passport) {
     // HOME PAGE (with login links) ========
     // =====================================
     app.get('/', function(req, res) {
-        var Room = require('../app/models/room'); // here ???
+        var Room = require('../app/models/room');
         Room.find({ permanent: true }, function(err, rooms) {
             if (err) return console.error(err);
-            var params = {
-                isAuthenticated: req.isAuthenticated(),
-                user: req.user,
+            res.render('index.html', {
                 rooms: rooms
-            };
-            res.render('index.html', params);
+            });
         });
     });
 
@@ -22,7 +19,6 @@ module.exports = function(app, passport) {
     // =====================================
     // show the login form
     app.get('/login', function(req, res) {
-
         // render the page and pass in any flash data if it exists
         res.render('login.html', { message: req.flash('loginMessage') });
     });
@@ -39,7 +35,6 @@ module.exports = function(app, passport) {
     // =====================================
     // show the signup form
     app.get('/signup', function(req, res) {
-
         // render the page and pass in any flash data if it exists
         res.render('signup.html', { message: req.flash('signupMessage') });
     });
@@ -58,7 +53,6 @@ module.exports = function(app, passport) {
     // we will use route middleware to verify this (the isLoggedIn function)
     app.get('/profile', isLoggedIn, function(req, res) {
         res.render('profile.html', {
-            isAuthenticated: true,
             user : req.user // get the user out of session and pass to template
         });
     });
@@ -72,13 +66,46 @@ module.exports = function(app, passport) {
     });
 
     // =====================================
+    // ROOM ==============================
+    // =====================================
+    app.get('/room/:roomkey', function(req, res) {
+
+        var Room = require('../app/models/room');
+
+        Room.findOne({ name: req.params.roomkey }, function(err, room) {
+            if (err) return console.error(err);
+            if (!room) return console.error('No room corresponds to: '+req.params.roomkey);
+
+            res.render('room.html', {
+                room: room
+            });
+        });
+
+    });
+
+    // =====================================
+    // USER ================================
+    // =====================================
+    app.get('/user/:userkey', function(req, res) {
+
+        var User = require('../app/models/user');
+
+        User.findOne({ name: req.params.userkey }, function(err, user) {
+            if (err) return console.error(err);
+            if (!user) return console.error('No user corresponds to: '+req.params.userkey);
+
+            res.render('user.html', {
+                user: user
+            });
+        });
+
+    });
+
+    // =====================================
     // CHAT ==============================
     // =====================================
     app.get('/chat', isLoggedIn, function(req, res) {
-        res.render('chat.html', {
-            isAuthenticated: true,
-            user : req.user // get the user out of session and pass to template
-        });
+        res.render('chat.html');
     });
 };
 
@@ -92,3 +119,4 @@ function isLoggedIn(req, res, next) {
     // if they aren't redirect them to the home page
     res.redirect('/');
 }
+

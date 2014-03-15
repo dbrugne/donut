@@ -2,11 +2,11 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title><% if (typeof title !== "undefined") { print(title); } else { print ("Here we chat!"); } %></title>
+    <title><%= title %></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/public/css/bootstrap.min.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/assets/css/chat.css">
+    <link rel="stylesheet" href="/public/css/chat.css">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -35,12 +35,12 @@
                 <!-- Here left menu entries -->
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <% if (typeof isAuthenticated !== "undefined" && isAuthenticated) { %>
+                <% if (isAuth) { %>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Welcome <strong><%= user.local.email %></strong> <b class="caret"></b></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Welcome <strong><%= currentUser.local.email %></strong> <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li><a href="/profile"><i class="icon-user"></i> your account</a></li>
-                        <% if (user.local.admin) { %>
+                        <% if (currentUser.local.admin) { %>
                         <li><a href="/admin-users"><i class="icon-list"></i> manager users</a></li>
                         <% } %>
                         <li class="divider"></li>
