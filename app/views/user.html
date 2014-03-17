@@ -1,0 +1,80 @@
+<!-- views/user.html -->
+<%= include('header') %>
+<div id="user-profile" class="container">
+
+    <div class="panel panel-default">
+        <div class="panel-body">
+
+            <img class="avatar" src="/public/u/<%= user._id %>.jpg" width="80" height="80">
+            <div class="text">
+                <h1 class="username"><%= user.local.username %></h1>
+                <h4 class="email"><%= user.local.email %></h4>
+                <h4 class="bio"><%= user.local.bio %></h4>
+                <% if (user.local.location || user.local.website) { %>
+                    <% if (user.local.location) { %>
+                        <span class="location"><%= user.local.location %></span>
+                    <% } %>
+                    <% if (user.local.location && user.local.website) { %> · <% } %>
+                    <% if (user.local.location) { %>
+                        <span class="website"><a href="<%= user.local.website %>"><%= user.local.website %></a></span>
+                    <% } %>
+                <% } %>
+            </div>
+
+        </div>
+        <div class="panel-footer"><button id="edit-profile" class="btn btn-default">Edit profile</button></div>
+    </div>
+
+    <div class="more">
+        Other information to be implemented ...
+    </div>
+</div>
+
+<div id="edit-profile-modal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Edit profile</h4>
+            </div>
+            <div class="modal-body">
+                <form role="form">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Email address</label>
+                        <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Password</label>
+                        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputFile">File input</label>
+                        <input type="file" id="exampleInputFile">
+                        <p class="help-block">Example block-level help text here.</p>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox"> Check me out
+                        </label>
+                    </div>
+                    <button type="submit" class="btn btn-default">Submit</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<%= include('scripts') %>
+<script>
+$(function() {
+    $("#edit-profile").click(function() {
+        $("#edit-profile-modal").modal({
+        });
+    });
+});
+</script>
+<%= include('footer') %>

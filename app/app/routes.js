@@ -90,12 +90,29 @@ module.exports = function(app, passport) {
 
         var User = require('../app/models/user');
 
-        User.findOne({ name: req.params.userkey }, function(err, user) {
+        User.findOne({ 'local.username': req.params.userkey }, function(err, user) {
             if (err) return console.error(err);
             if (!user) return console.error('No user corresponds to: '+req.params.userkey);
 
             res.render('user.html', {
                 user: user
+            });
+        });
+
+    });
+
+    // =====================================
+    // USER ================================
+    // =====================================
+    app.get('/directory', function(req, res) {
+        require('../app/models/room').find(function(err, rooms) {
+            require('../app/models/user').find(function(err, users) {
+                if (err) return console.error(err);
+
+                res.render('directory.html', {
+                    rooms: rooms,
+                    users: users
+                });
             });
         });
 

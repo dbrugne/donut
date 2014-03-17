@@ -11,6 +11,22 @@ body { padding-top:80px; }
 #rooms .logo { min-height: 66px; }
 
 /**
+ * User profile
+ */
+#user-profile { }
+#user-profile a { color: white; }
+#user-profile .panel-body { padding-bottom: 20px; background-color: grey; text-align: center; color: #FFFFFF;  }
+#user-profile .panel-footer { text-align: right; }
+#user-profile .avatar { margin: 40px auto 10px; }
+#user-profile .username {
+    font-size: 24px;
+    font-weight: bold;
+    text-shadow: rgba(0, 0, 0, 0.498039) 0px 1px 1px;
+    margin-bottom: 10px;
+}
+#user-profile .more { padding: 20px 20px; text-align: center; }
+
+/**
  * Chat interface
  */
 [data-template=true] { display: none; }
@@ -79,21 +95,21 @@ body { padding-top:80px; }
 #user-profile-modal {}
 #user-profile-modal .modal-header { padding: 10px; }
 #user-profile-modal .modal-body {  padding: 0; }
-#user-profile-modal .cover {
-    padding-bottom: 20px;
-    background-color: grey;
-    text-align: center;
-    color: #FFFFFF;
-}
-#user-profile-modal .modal-body .avatar { margin: 40px auto 10px; }
-#user-profile-modal .modal-body .username {
-    font-size: 24px;
-    font-weight: bold;
-    text-shadow: rgba(0, 0, 0, 0.498039) 0px 1px 1px;
-    margin-bottom: 10px;
-}
-#user-profile-modal .other { padding: 30px 20px; }
 #user-profile-modal .modal-footer { margin-top: 0; }
+.user .cover {
+padding-bottom: 20px;
+background-color: grey;
+text-align: center;
+color: #FFFFFF;
+    }
+.user  .avatar { margin: 40px auto 10px; }
+.user  .username {
+font-size: 24px;
+font-weight: bold;
+text-shadow: rgba(0, 0, 0, 0.498039) 0px 1px 1px;
+margin-bottom: 10px;
+}
+.user  .other { padding: 30px 20px; }
 
 /********************************************
  * Small screen devices *******************
