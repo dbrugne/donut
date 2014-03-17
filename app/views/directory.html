@@ -1,0 +1,23 @@
+<!-- views/index.html -->
+<%= include('header') %>
+
+<div class="container">
+
+    <h4>Rooms</h4>
+    <section id="rooms">
+        <% _.each(rooms, function(room) { %>
+        <a href="/room/<%= room.name %>"><img src="/public/r/<%= room._id %>.jpg" /> <%= room.name %></a>
+        <% }); %>
+    </section>
+
+    <h4>Users</h4>
+    <section id="users">
+        <% _.each(users, function(user) { %>
+        <a href="/user/<%= user.local.username %>"><img src="/public/u/<%= user._id %>.jpg" /> <%= user.local.username %></a>
+        <% }); %>
+    </section>
+
+</div>
+
+<%= include('scripts') %>
+<%= include('footer') %>
