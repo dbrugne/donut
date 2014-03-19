@@ -39,9 +39,9 @@ body { padding-top: 50px; }
         .cwindow { background-color: #FFFFFF; }
         .cwindow .default { text-align: center; line-height: 200px; color: #DDDDDD; font-size: 30px; font-weight: bold; font-style: italic; }
         .cwindow .row-header { margin: 0px; /* Cancel bootstrap negative .row margin */ }
-        .cwindow .row-content { margin: 0px; /* Cancel bootstrap negative .row margin */ background-color: darkgrey; }
+        .cwindow .row-content { margin: 0px; /* Cancel bootstrap negative .row margin */ }
         .cwindow .col-content { padding-left: 0; padding-right: 0; /* Cancel bootstrap native space between columns */ }
-        .cwindow .col-users { padding-left: 0; padding-right: 0; /* Cancel bootstrap native space between columns */  border-left: 1px solid #ddd; }
+        .cwindow .col-users { padding-left: 0; padding-right: 0; /* Cancel bootstrap native space between columns */  border-left: 1px solid #ddd;  background-color: darkgrey; }
         .cwindow .header { max-height: 50px; border-bottom: 1px solid transparent; border-color: #ddd; background-color: #f5f5f5; padding: 10px 15px; }
         .cwindow .header .name { color: #555555; font-weight: bolder; font-size: 16px; }
         .cwindow .header .baseline { margin-left: 5px; color: #333; }
@@ -51,7 +51,7 @@ body { padding-top: 50px; }
         .cwindow .header .room-baseline-input { display: inline-block; width: 50%; }
         .cwindow .header .room-baseline-submit { display: inline-block; }
         .cwindow .header .room-baseline-cancel { display: inline-block; }
-        .cwindow .messages { background-color: #fff; overflow-y: scroll; }
+        .cwindow .messages { background-color: #fff; overflow-y: scroll; height: 60%; }
         .cwindow .messages p { margin: 0; padding: 4px 6px; color: #000; font-family: "Open Sans"; position: relative; border: 0; border-bottom: 1px solid #f5f5f5; }
         .cwindow .messages p .avatar { float: left; margin-right: 5px; }
         .cwindow .messages p .date { position: absolute; right: 8px; color: #BDBDBD; }
@@ -102,7 +102,7 @@ body { padding-top: 50px; }
  * Small screen devices *******************
  ***************************************/
 @media screen and (min-width: 750px) {
-    #chat, #chat > .row, #chat-left, #chat-center, .cwindow, .cwindow .col-users {
+    #chat, #chat > .row, #chat-left, #chat-center, .cwindow, .cwindow .row-content, .cwindow .col-content,  .cwindow .col-users, #chat-center > div {
         height: 100%;
     }
 }

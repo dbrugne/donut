@@ -1,0 +1,68 @@
+<!-- ----------------- -->
+<!-- RoomsListItemView -->
+<!-- ----------------- -->
+<script type="text/template" id="rooms-list-item-template">
+    <a href="#" class="list-group-item room-item" data-room-id="<%= id %>">
+        <span class="name"><%= name %></span>
+        <span class="users-count">(<span class="glyphicon glyphicon-user user-profile"></span> <span class="count"><% users.length %></span>)</span>
+        <span class="close glyphicon glyphicon-remove"></span>
+        <span class="badge"><%= unread %></span>
+    </a>
+</script>
+
+<!-- ----------------- -->
+<!-- RoomView          -->
+<!-- ----------------- -->
+<script type="text/template" id="room-template">
+    <!-- <div class="cwindow" data-room-id="<%= id %>"> -->
+        <div class="row row-header">
+            <div class="header">
+                <span class="name"><%= name %></span>
+                <div class="room-baseline-text">
+                    <span class="baseline"><%= baseline %></span>
+                </div>
+                <span class="room-baseline-form">
+                    <input type="text" class="room-baseline-input form-control" placeholder="Room baseline">
+                    <button class="btn btn-primary room-baseline-submit">Submit</button>
+                    <button class="btn btn-cancel room-baseline-cancel">Cancel</button>
+                </span>
+                <span class="close glyphicon glyphicon-remove"></span>
+            </div>
+        </div>
+        <div class="row row-content">
+            <div class="col-content col-sm-9 col-md-9 col-lg-9">
+                <div class="messages"></div>
+                <div class="postbox form-inline">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="input-group">
+                                <!-- Smileys popin -->
+                                <div class="smileys-popin-message popover top" data-topic="" style="">
+                                    <div class="arrow"></div>
+                                    <div class="popover-content"><ul class="smileys"></ul></div>
+                                </div>
+                                <span class="input-group-addon smileys-message" data-toggle="popover" data-html="true" data-placement="top"><span class="emoticon-16px emoticon-smile">:)</span></span>
+                                <!-- / Smileys popin -->
+                                <textarea class="input-message form-control" data-topic="" style="resize: none; " rows="1" maxlength="1000"></textarea>
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default send-message" data-topic="">Send!</button>
+                                </span>
+                            </div><!-- /input-group -->
+                        </div><!-- /.col-lg-12 -->
+                    </div><!-- /.row -->
+                </div><!-- /.postbox -->
+            </div>
+            <div class="col-users col-sm-3 col-md-3 col-lg-3">
+                <div class="room-users">
+                    <div class="heading">Room users</div>
+                    <div class="list-group">
+                        <a href="#" class="user-item list-group-item" data-user-id="" data-template="true"><span class="username"></span> <span class="actions"><span class="glyphicon glyphicon-user user-profile"></span> <span class="glyphicon glyphicon-edit user-discussion"></span></span></a>
+                    </div>
+                    <div class="footer">
+                        <a href="#"><span class="glyphicon glyphicon-plus"></span> Invite a user</a>
+                    </div>
+                </div><!-- /.room-users -->
+            </div>
+        </div>
+    <!-- </div><!-- /.cwindow -->
+</script>

@@ -9,33 +9,18 @@
             <div id="block-status" class="panel panel-default">
                 <div class="panel-body">
                     You are
-                    <button type="button" class="status">...</button>
+                    <button id="button-status" type="button" class="status">...</button>
                 </div>
             </div>
             <div id="block-rooms" class="panel panel-default">
-                <div class="panel-heading">Rooms</div>
-                <div id="rooms-list" class="list-group">
-                    <!-- Default room-item -->
-                    <a href="#" class="list-group-item room-item" data-default="true"><em>Not in any room</em></a>
-                    <!-- / Default room-item -->
-                    <!-- Template room-item -->
-                    <a href="#" class="list-group-item room-item" data-topic="" data-template="true"><span class="name"></span> <span class="users-count">(<span class="glyphicon glyphicon-user user-profile"></span> <span class="count">0</span>)</span> <span class="close glyphicon glyphicon-remove"></span> <span class="badge">0</span></a>
-                    <!-- / Template room-item -->
-                </div>
+                <div class="panel-heading">Conversations</div>
+                <div id="rooms-list" class="list-group"></div>
                 <div class="panel-footer">
                     <a href="#" id="create-room-toggle"><span class="glyphicon glyphicon-plus"></span> Create a room</a>
                     <div id="create-room-form">
                         <div class="form-group">
                             <input type="text" class="form-control" id="create-room-name" placeholder="Room name">
                         </div>
-                        <!-- div class="checkbox">
-                            <label>
-                                <input name="private" type="checkbox"> Private room
-                            </label>
-                            <label>
-                                <input name="persistent" type="checkbox"> Persistent room
-                            </label>
-                        </div -->
                         <button class="btn btn-primary" id="create-room-submit">Create</button>
                         <button class="btn btn-error" id="create-room-cancel">Cancel</button>
                     </div>
@@ -57,54 +42,82 @@
                     <a href="#" id="search-user-link"><span class="glyphicon glyphicon-search"></span> Search a user</a>
                 </div>
             </div>
-            <!--
+
             <button class="btn btn-success" id="test1">Test</button><button class="btn btn-success" id="test2">Test</button><button class="btn btn-success" id="test3">Test</button>
-            -->
+
         </div><!-- /.chat-left -->
         <div id="chat-center" class="col-sm-10 col-md-10 col-lg-10">
             <div class="cwindow" data-default="true">
                 <div class="default">Not in room</div>
             </div>
-            <div class="cwindow" data-topic="" data-template="true">
-                <div class="row row-header">
-                    <div class="header">
-                        <span class="name"></span>
-                        <div class="room-baseline-text">
-                            <span class="baseline">&nbsp;</span>
-                        </div>
-                            <span class="room-baseline-form">
-                                <input type="text" class="room-baseline-input form-control" placeholder="Room baseline">
-                                <button class="btn btn-primary room-baseline-submit">Submit</button>
-                                <button class="btn btn-cancel room-baseline-cancel">Cancel</button>
-                            </span>
-                        <span class="close glyphicon glyphicon-remove"></span>
-                    </div>
-                </div>
-                <div class="row row-content">
-                    <div class="col-content col-sm-9 col-md-9 col-lg-9">
-                        <div class="messages"></div>
-                        <div class="postbox form-inline">
-                            {% include 'chat.postbox.twig.html' %}
-                        </div><!-- /.postbox -->
-                    </div>
-                    <div class="col-users col-sm-3 col-md-3 col-lg-3">
-                        <div class="room-users">
-                            <div class="heading">Room users</div>
-                            <div class="list-group">
-                                <a href="#" class="user-item list-group-item" data-user-id="" data-template="true"><span class="username"></span> <span class="actions"><span class="glyphicon glyphicon-user user-profile"></span> <span class="glyphicon glyphicon-edit user-discussion"></span></span></a>
-                            </div>
-                            <div class="footer">
-                                <a href="#"><span class="glyphicon glyphicon-plus"></span> Invite a user</a>
-                            </div>
-                        </div><!-- /.room-users -->
-                    </div>
-                </div>
-            </div><!-- /.cwindow -->
         </div><!-- /.chat-center -->
     </div><!-- /.row -->
 </div><!-- /.container-fluid -->
 
-{% include 'chat.modals.twig.html' %}
+<!-- User profile modal -->
+<div class="modal fade" id="user-profile-modal"></div>
+<!-- / User profile modal -->
+
+<!-- Room search modal -->
+<div class="modal fade" id="room-search-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Search for rooms</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="input-group">
+                            <input type="search" class="form-control room-search-input" placeholder="Search for rooms" />
+                            <span class="input-group-btn">
+                                <button class="btn btn-default room-search-submit" type="button"><span class="glyphicon glyphicon-search"></span></button>
+                            </span>
+                        </div><!-- /input-group -->
+                        <ul class="list-group rooms-list"></ul>
+                    </div><!-- /.col-lg-12 -->
+                </div><!-- /.row -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- / Room search modal -->
+
+<!-- User search modal -->
+<div class="modal fade" id="user-search-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Search for user</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="input-group">
+                            <input type="search" class="form-control user-search-input" placeholder="Search for users" />
+                            <span class="input-group-btn">
+                                <button class="btn btn-default user-search-submit" type="button"><span class="glyphicon glyphicon-search"></span></button>
+                            </span>
+                        </div><!-- /input-group -->
+                        <ul class="list-group search-users-list"></ul>
+                    </div><!-- /.col-lg-12 -->
+                </div><!-- /.row -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- / User search modal -->
+
+{% include 'chat.templates.twig.html' %}
+
 {% endblock %}
 
 {% block endofpage %}
@@ -114,9 +127,16 @@
 <script src="/js/swfobject.js"></script>
 <script src="/js/web_socket.js"></script>
 <script src="/js/when.js"></script>
-<script src="/js/autobahn.min.js"></script>
-<script src="/js/server.js"></script>
-<script src="/js/client.js"></script>
+<script src="/js/autobahn.js"></script>
+
+<script src="/public/vendor/underscore.js"></script>
+<script src="/public/vendor/backbone.js"></script>
+
+<!-- to be refactored with socket.io -->
+<script src="/public/js/server.js"></script>
+
+<script src="/public/js/chat.js"></script>
+
 <script>
 $(document).ready(function() {
 });
