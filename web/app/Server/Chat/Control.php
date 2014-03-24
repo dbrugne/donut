@@ -30,9 +30,11 @@ class Control
 
         // Push user_id
         $conn->event($this->_app['channels']->getControlTopic(), array(
-            'action' => 'userId',
+            'action' => 'userIdentity',
             'data' => array(
                 'user_id' => $conn->User->getId(),
+                'username' => $conn->User->getUsername(),
+                'avatar' => $conn->User->getAvatarUrl(20),
             ),
         ));
 
@@ -41,8 +43,11 @@ class Control
         if (count($roomsListDatabase) > 0) {
             foreach($roomsListDatabase as $roomUser) {
                 $conn->event($this->_app['channels']->getControlTopic(), array(
-                    'action' => 'pleaseJoinRoom',
-                    'data' => array('topic' => $this->_app['channels']->getRoomTopic($roomUser->getRoomId()))
+                    'action' => 'room:pleaseJoin',
+                    'data' => array(
+                        'room_id' => $roomUser->getRoomId(),
+                        'topic' => $this->_app['channels']->getRoomTopic($roomUser->getRoomId()),
+                    )
                 ));
                 $this->_app['monolog']->info("Push topic '{$this->_app['channels']->getRoomTopic($roomUser->getRoomId())}' to '{$conn->User->getId()}'");
             }

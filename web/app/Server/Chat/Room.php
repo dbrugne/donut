@@ -74,34 +74,34 @@ class Room extends \App\Chat\Room
         $subscribedRooms[] = $this->_topic;
         $conn->subscribedRooms = $subscribedRooms;
 
-        // Confirm subscription to user
-        $conn->event($this->_topic, array(
-            'action' => 'subscribeSuccess',
-            'data' => $this->getData()
-        ));
-
-        // Push room users
+        // Confirm subscription to user and send room details
+        $roomDetail = $this->getData();
+        $roomDetail['room_id'] = $this->getId();
+        // Room users
+        $roomDetail['users'] = array();
         foreach ($this->_subscribers as $attendee) {
-            if ($conn->User->getId() != $attendee->User->getId()) { // to prevent sending current user two times (addRoomAttendee and userEnterInRoom)
-                $conn->event($this->_topic, array(
-                    'action' => 'addRoomAttendee',
-                    'data' => array(
-                        'id' => $attendee->User->getId(),
-                        'username' => $attendee->User->getUsername(),
-                        'avatar' => $attendee->User->getAvatarUrl(20),
-                    )
-                ));
+            if ($conn->User->getId() != $attendee->User->getId()) { // to prevent sending current user two times (joinSuccess and userIn)
+                $roomDetail['users'][] = array(
+                    'user_id' => $attendee->User->getId(),
+                    'username' => $attendee->User->getUsername(),
+                    'avatar' => $attendee->User->getAvatarUrl(20),
+                );
             }
         }
+        $conn->event($this->_topic, array(
+            'action' => 'room:joinSuccess',
+            'data' => $roomDetail,
+        ));
 
         // Push welcome message
         $this->botMessage("Hi {$conn->User->getUsername()}, welcome on this chan. Please be polite and fair with others.", $conn);
 
         // Notify everyone (including myself) this user has joined the room
         $this->broadcastToSubscribers(array(
-            'action' => 'userEnterInRoom',
+            'action' => 'room:userIn',
             'data' => array(
-                'id' => $conn->User->getId(),
+                'room_id' => $this->getId(),
+                'user_id' => $conn->User->getId(),
                 'username' => $conn->User->getUsername(),
                 'avatar' => $conn->User->getAvatarUrl(20),
             )
@@ -109,8 +109,11 @@ class Room extends \App\Chat\Room
 
         // Inform other device that they should join to room!
         $this->_app['users']->broadcastToUser($conn, array(
-            'action' => 'pleaseJoinRoom',
-            'data' => array('topic' => $this->_topic),
+            'action' => 'room:pleaseJoin',
+            'data' => array(
+                'room_id' => $this->getId(),
+                'topic' => $this->_topic
+            ),
         ));
     }
 
@@ -141,16 +144,20 @@ class Room extends \App\Chat\Room
         // Inform other device that they should leave to room!
         if ($closingConnection !== true) {
             $this->_app['users']->broadcastToUser($conn, array(
-                'action' => 'pleaseLeaveRoom',
-                'data' => array('topic' => $this->_topic),
+                'action' => 'room:pleaseLeave',
+                'data' => array(
+                    'room_id' => $this->getId(),
+                    'topic' => $this->_topic
+                ),
             ));
         }
 
         // Notify everyone this guy has leaved the room
         $this->broadcastToSubscribers(array(
-            'action' => 'userOutRoom',
+            'action' => 'room:userOut',
             'data' => array(
-                'id' => $conn->User->getId(),
+                'room_id' => $this->getId(),
+                'user_id' => $conn->User->getId(),
                 'username' => $conn->User->getUsername(),
                 'avatar' => $conn->User->getAvatarUrl(20),
             )
@@ -182,8 +189,9 @@ class Room extends \App\Chat\Room
         ));
 
         $this->broadcastToSubscribers(array(
-            'action' => 'message',
+            'action' => 'room:message',
             'data' => array(
+                'room_id' => $this->getId(),
                 'user_id' => $conn->User->getId(),
                 'username' => $conn->User->getUsername(),
                 'avatar' => $conn->User->getAvatarUrl(20),
@@ -210,8 +218,9 @@ class Room extends \App\Chat\Room
 
         // Push to users
         $this->broadcastToSubscribers(array(
-            'action' => 'roomBaseline',
+            'action' => 'room:baseline',
             'data' => array(
+                'room_id' => $this->getId(),
                 'baseline' => $baseline,
                 'username' => $username,
             ),
@@ -244,8 +253,9 @@ class Room extends \App\Chat\Room
     public function botMessage($msg, ConnectionInterface $conn)
     {
         $conn->event($this->_topic, array(
-            'action' => 'message',
+            'action' => 'room:message',
             'data' => array(
+                'room_id' => $this->getId(),
                 'user_id' => $this->_bot->getId(),
                 'username' => $this->_bot->getUsername(),
                 'avatar' => $this->_bot->getAvatarUrl(20),
