@@ -30,7 +30,7 @@ v4:
 * (refactor) Process to enter in a room: on click subscribe/createIhm/getRoomData/getUsers + error handling - done!
 * (refactor) Add $logger in $app and log properly - done!
 * (refactor) Chatroom code cleanup/refactoring - done!
-* (refactor) Use only URI as identifier (room / discussion) in server.js and client.js - done!
+* (refactor) Use only URI as identifier (room / discussion) in old.server.js and client.js - done!
 * Move room close button in room list - done!
 
 v5:
