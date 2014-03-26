@@ -26,7 +26,7 @@ $(function() {
         },
 
         unsubscribe: function(model, collection, options) {
-            Chat.connection.unsubscribe('ws://chat.local/room#'+model.get('id'));
+            Chat.server.unsubscribe('ws://chat.local/room#'+model.get('id'));
         },
 
         focus: function() {
@@ -41,13 +41,13 @@ $(function() {
 
         initialize: function() {
 
-            this.listenTo(Chat.connection, 'room:pleaseJoin', this.joinRoom);
-            this.listenTo(Chat.connection, 'room:pleaseLeave', this.leaveRoom);
-            this.listenTo(Chat.connection, 'room:joinSuccess', this.joinSuccess);
-            this.listenTo(Chat.connection, 'room:userIn', this.userIn);
-            this.listenTo(Chat.connection, 'room:userOut', this.userOut);
-            this.listenTo(Chat.connection, 'room:baseline', this.changeBaseline);
-            this.listenTo(Chat.connection, 'room:message', this.roomMessage);
+            this.listenTo(Chat.server, 'room:pleaseJoin', this.joinRoom);
+            this.listenTo(Chat.server, 'room:pleaseLeave', this.leaveRoom);
+            this.listenTo(Chat.server, 'room:joinSuccess', this.joinSuccess);
+            this.listenTo(Chat.server, 'room:userIn', this.userIn);
+            this.listenTo(Chat.server, 'room:userOut', this.userOut);
+            this.listenTo(Chat.server, 'room:baseline', this.changeBaseline);
+            this.listenTo(Chat.server, 'room:message', this.roomMessage);
 
         },
 
@@ -56,7 +56,7 @@ $(function() {
         },
 
         joinRoom: function(params) {
-            Chat.connection.subscribe(params.topic);
+            Chat.server.subscribe(params.topic);
         },
 
         leaveRoom: function(params) {
@@ -128,7 +128,7 @@ $(function() {
 
         initialize: function() {
             // Binds on Rooms
-            this.listenTo(Chat.main.rooms, 'add', this.addRoom);
+            this.listenTo(Chat.rooms, 'add', this.addRoom);
         },
 
         addRoom: function(room) {
@@ -153,9 +153,9 @@ $(function() {
         },
 
         initialize: function() {
-            this.listenTo(Chat.main.rooms, 'remove', this.removeRoom);
+            this.listenTo(Chat.rooms, 'remove', this.removeRoom);
             this.listenTo(this.model, 'focus', this.focus);
-            this.listenTo(Chat.connection, 'message', this.addMessage);
+            this.listenTo(Chat.server, 'message', this.addMessage);
         },
 
         removeRoom: function(model) {
@@ -172,7 +172,7 @@ $(function() {
 
         closeThisRoom: function (event) {
             event.stopPropagation();
-            Chat.main.rooms.remove(this.model); // remove model from collection
+            Chat.rooms.remove(this.model); // remove model from collection
         },
 
         focusThisRoom: function(event) {
@@ -210,7 +210,7 @@ $(function() {
         },
 
         initialize: function() {
-            this.listenTo(Chat.main.rooms, 'remove', this.removeRoom);
+            this.listenTo(Chat.rooms, 'remove', this.removeRoom);
             this.listenTo(this.model, 'focus', this.focus);
             this.listenTo(this.model.users, 'add', this.renderUsers);
             this.listenTo(this.model.users, 'remove', this.renderUsers);
@@ -307,8 +307,8 @@ $(function() {
         },
 
         initialize: function() {
-            this.listenTo(Chat.connection, 'searchSuccess', this.searchSuccess);
-            this.listenTo(Chat.connection, 'searchError', this.searchError);
+            this.listenTo(Chat.server, 'searchSuccess', this.searchSuccess);
+            this.listenTo(Chat.server, 'searchError', this.searchError);
 
             this.search();
         },
@@ -334,7 +334,7 @@ $(function() {
             var search = this.$el.find('.room-search-input').first().val();
 
             // call RPC + render
-            Chat.connection.searchForRooms(search);
+            Chat.server.searchForRooms(search);
         },
 
         searchSuccess: function(results) {
@@ -348,7 +348,7 @@ $(function() {
 
         openSelected: function(event) {
             var topic = $(event.currentTarget).data('topic');
-            Chat.connection.subscribe(topic);
+            Chat.server.subscribe(topic);
 
             this.hide();
         }
