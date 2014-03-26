@@ -1,8 +1,8 @@
 $(function() {
 
-    window.Chat = window.Chat || { };
+    Chat = window.Chat || { };
 
-    window.Chat.User = Backbone.Model.extend({
+    Chat.User = Backbone.Model.extend({
 
         defaults: function() {
             return {
@@ -15,9 +15,9 @@ $(function() {
 
     });
 
-    window.Chat.UsersCollection = Backbone.Collection.extend({
+    Chat.UsersCollection = Backbone.Collection.extend({
 
-        model: window.Chat.User
+        model: Chat.User
 
     });
 

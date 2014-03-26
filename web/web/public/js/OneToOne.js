@@ -30,7 +30,7 @@ $(function() {
         model: Chat.OneToOne,
 
         initialize: function() {
-            this.listenTo(Chat.connection, 'messageFromUser', this.oneToOneMessage);
+            this.listenTo(Chat.server, 'messageFromUser', this.oneToOneMessage);
         },
 
         oneToOneMessage: function(params) {

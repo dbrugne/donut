@@ -6,7 +6,7 @@ $(function() {
     /* =====================  MODELS  ======================= */
     /* ====================================================== */
 
-    Chat.Server = Backbone.Model.extend({
+    Chat.ServerModel = Backbone.Model.extend({
 
         defaults: function() {
             return {

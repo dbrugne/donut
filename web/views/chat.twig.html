@@ -130,14 +130,16 @@
 <script src="/public/js/Message.js"></script>
 <script src="/public/js/Server.js"></script>
 <script src="/public/js/Chat.js"></script>
-<script src="/public/js/views.js"></script>
 <script>
 $(document).ready(function() {
 
     Chat = window.Chat || { };
 
     // Server
-    Chat.connection = new Chat.Server( {debugOn: true} );
+    Chat.server = new Chat.ServerModel( {debugOn: true} );
+
+    // Room collection
+    Chat.rooms = new Chat.RoomsCollection;
 
     // Interface
     Chat.main = new Chat.MainView;
