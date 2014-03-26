@@ -32,10 +32,9 @@ $(function() {
 
         run: function() {
             // Status view
-            new Chat.StatusView({model: Chat.connection});
+            new Chat.StatusView({model: Chat.server});
 
-            // Rooms
-            this.rooms = new Chat.RoomsCollection;
+            // Rooms view
             new Chat.RoomsView({collection: this.rooms});
 
             // One to ones @todo
@@ -44,12 +43,12 @@ $(function() {
 
             // Server events
             var that = this;
-            this.listenTo(Chat.connection, 'userIdentity', function(data) {
+            this.listenTo(Chat.server, 'userIdentity', function(data) {
                 that.currentUser = new Chat.User(data);
             });
 
             // Connection (only when all IHM are ready)
-            Chat.connection.connect();
+            Chat.server.connect();
         },
 
         // @todo : not here, should be in conversationsView
