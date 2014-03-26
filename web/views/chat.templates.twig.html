@@ -2,11 +2,11 @@
 <!-- RoomsListItemView -->
 <!-- ----------------- -->
 <script type="text/template" id="rooms-list-item-template">
-    <a href="#" class="list-group-item room-item" data-room-id="<%= id %>">
-        <span class="name"><%= name %></span>
+    <a href="#" class="list-group-item room-item" data-room-id="<%= room.id %>">
+        <span class="name"><%= room.name %></span>
         <span class="users-count">(<span class="glyphicon glyphicon-user user-profile"></span> <span class="count"><% users.length %></span>)</span>
         <span class="close glyphicon glyphicon-remove"></span>
-        <span class="badge"><%= unread %></span>
+        <span class="badge"><%= room.unread %></span>
     </a>
 </script>
 

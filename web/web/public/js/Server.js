@@ -75,6 +75,10 @@ $(function() {
             this.get('session').unsubscribe(topic);
         },
 
+        message: function(topic, msg) {
+            this.get('session').publish(topic, msg);
+        },
+
         searchForRooms: function(search, callbackSuccess, callbackError) {
             var that = this;
             this.get('session').call('searchForRooms', search).then(
