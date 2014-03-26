@@ -35,7 +35,10 @@ $(function() {
             new Chat.StatusView({model: Chat.server});
 
             // Rooms view
-            new Chat.RoomsView({collection: this.rooms});
+            new Chat.RoomsView({collection: Chat.rooms});
+
+            // Smileys view
+            new Chat.SmileysView({collection: Chat.smileys});
 
             // One to ones @todo
 //            this.onetoones = new Chat.OneToOnesCollection;
