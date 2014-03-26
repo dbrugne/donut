@@ -205,8 +205,7 @@ $(function() {
         messageTemplate: _.template($('#message-template').html()),
 
         events: {
-//            "click .close": "close",
-//            "click": "focus"
+            "click .close": "closeThisRoom"
         },
 
         initialize: function() {
@@ -229,9 +228,10 @@ $(function() {
             return this;
         },
 
-//        close: function () {
-//            Chat.conversations.remove(this.model); // remove model from collection
-//        },
+        closeThisRoom: function (event) {
+            event.stopPropagation();
+            Chat.rooms.remove(this.model); // remove model from collection
+        },
 
         focus: function() {
             $("#chat-center .cwindow").hide();
@@ -245,19 +245,6 @@ $(function() {
             this.$el.find('.room-users .list-group').html(html);
 
             return this;
-
-//            var newUserItem = $(roomUsers).find(".user-item[data-template='true']").clone(false);
-//            $(newUserItem).removeAttr('data-template');
-//            $(newUserItem).attr('data-user-id', user.id);
-//            $(newUserItem).css('display', 'block');
-//            $(newUserItem).find('.username').html(user.username);
-//            $(roomUsers).find(".list-group").append(newUserItem);
-//
-//            userListSort(topic);
-//
-//            if (undefined == notify || notify != false) {
-//                roomContainerAddApplicationMessage(topic, 'info', "User <strong>"+user.username+"</strong> has joined the room");
-//            }
         },
 
         addMessage: function(message) {
@@ -354,49 +341,5 @@ $(function() {
         }
 
     });
-
-//    Chat.searchRoomModal = Backbone.View.extend({
-//
-//        el: $('#room-search-modal'),
-//
-//        template: _.template($('#room-search-modal-template').html()),
-//
-//        events: {
-//            'hidden.bs.modal': 'teardown',
-//            'click .room-search-submit': 'search',
-//            'keyup .room-search-input': 'search'
-//        },
-//
-//        initialize: function() {
-//            this.render();
-//        },
-//
-//        show: function() {
-//            this.$el.modal('show');
-//        },
-//
-//        teardown: function() {
-//            this.$el.data('modal', null);
-////            this.remove();
-//        },
-//
-//        render: function() {
-//            this.renderView();
-//            return this;
-//        },
-//
-//        renderView: function(template) {
-//            var html = this.template({
-//                rooms: []
-//            });
-//            this.$el.html(html);
-//            this.$el.modal({show:false}); // dont show modal on instantiation
-//        },
-//
-//        search: function() {
-//            console.log('tu peux pas test');
-//        }
-//
-//    });
 
 });
