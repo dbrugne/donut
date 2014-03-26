@@ -1,17 +1,16 @@
 $(function() {
 
-    window.Chat = window.Chat || { };
+    Chat = window.Chat || { };
 
     /* ====================================================== */
     /* =====================  MODELS  ======================= */
     /* ====================================================== */
 
-    window.Chat.Room = Backbone.Model.extend({
+    Chat.Room = Backbone.Model.extend({
 
         defaults: function() {
             return {
                 // room
-                room_id: '',
                 name: '',
                 baseline: '',
                 users: [],
@@ -20,8 +19,14 @@ $(function() {
         },
 
         initialize: function() {
-            this.users = new window.Chat.UsersCollection();
-            this.messages = new window.Chat.MessagesCollection();
+            this.users = new Chat.UsersCollection();
+            this.messages = new Chat.MessagesCollection();
+
+            this.on('remove', this.unsubscribe);
+        },
+
+        unsubscribe: function(model, collection, options) {
+            Chat.connection.unsubscribe('ws://chat.local/room#'+model.get('id'));
         },
 
         focus: function() {
@@ -30,28 +35,33 @@ $(function() {
 
     });
 
-    window.Chat.RoomsCollection = Backbone.Collection.extend({
+    Chat.RoomsCollection = Backbone.Collection.extend({
 
-        model: window.Chat.Room,
+        model: Chat.Room,
 
         initialize: function() {
 
-            this.listenTo(window.Chat.main.server, 'room:pleaseJoin', this.joinRoom);
-            this.listenTo(window.Chat.main.server, 'room:pleaseLeave', this.leaveRoom);
-            this.listenTo(window.Chat.main.server, 'room:joinSuccess', this.joinSuccess);
-            this.listenTo(window.Chat.main.server, 'room:userIn', this.userIn);
-            this.listenTo(window.Chat.main.server, 'room:userOut', this.userOut);
-            this.listenTo(window.Chat.main.server, 'room:baseline', this.changeBaseline);
-            this.listenTo(window.Chat.main.server, 'room:message', this.roomMessage);
+            this.listenTo(Chat.connection, 'room:pleaseJoin', this.joinRoom);
+            this.listenTo(Chat.connection, 'room:pleaseLeave', this.leaveRoom);
+            this.listenTo(Chat.connection, 'room:joinSuccess', this.joinSuccess);
+            this.listenTo(Chat.connection, 'room:userIn', this.userIn);
+            this.listenTo(Chat.connection, 'room:userOut', this.userOut);
+            this.listenTo(Chat.connection, 'room:baseline', this.changeBaseline);
+            this.listenTo(Chat.connection, 'room:message', this.roomMessage);
 
+        },
+
+        _targetRoom: function(room_id) {
+            return this.get(room_id);
         },
 
         joinRoom: function(params) {
-            window.Chat.main.server.subscribe(params.topic);
+            Chat.connection.subscribe(params.topic);
         },
 
         leaveRoom: function(params) {
-            window.Chat.main.server.unsubscribe(params.topic);
+            var room = this._targetRoom(params.data.room_id);
+            this.remove(room);
         },
 
         joinSuccess: function(params) {
@@ -59,7 +69,7 @@ $(function() {
             var newRoomId = params.data.room_id;
 
             // Create room in browser
-            this.add(new window.Chat.Room({
+            this.add(new Chat.Room({
                 id: newRoomId,
                 name: params.data.name,
                 baseline: params.data.baseline
@@ -69,7 +79,7 @@ $(function() {
 
             // Add user in the room
             _.each(params.data.users, function(element, key, list) {
-                room.users.add(new window.Chat.User({
+                room.users.add(new Chat.User({
                     id: element.user_id,
                     username: element.username,
                     avatar: element.avatar
@@ -80,14 +90,10 @@ $(function() {
             //this.focus(params.data.id);
         },
 
-        _targetRoom: function(room_id) {
-            return this.get(room_id);
-        },
-
         userIn: function(params) {
             var room = this._targetRoom(params.data.room_id);
 
-            room.users.add(new window.Chat.User({
+            room.users.add(new Chat.User({
                 id: params.data.user_id,
                 username: params.data.username,
                 avatar: params.data.avatar
@@ -95,10 +101,7 @@ $(function() {
         },
 
         userOut: function(params) {
-            console.log('tu peux pas test');
-            console.log(params.data);
             var room = this._targetRoom(params.data.room_id);
-            console.log(room.users.get(params.data.user_id));
             var user = room.users.get(params.data.user_id);
             room.users.remove(user);
         },
@@ -109,7 +112,7 @@ $(function() {
 
         roomMessage: function(params) {
             var room = this._targetRoom(params.data.room_id);
-            room.messages.add(new window.Chat.Message(params.data)); // i pass everything, maybe not ideal
+            room.messages.add(new Chat.Message(params.data)); // i pass everything, maybe not ideal
         }
 
     });
@@ -118,29 +121,29 @@ $(function() {
     /* ======================  VIEWS  ======================= */
     /* ====================================================== */
 
-    window.Chat.RoomsView = Backbone.View.extend({
+    Chat.RoomsView = Backbone.View.extend({
 
         $roomsTabContainer: $("#rooms-list"),
         $roomsWindowContainer: $("#chat-center"),
 
         initialize: function() {
             // Binds on Rooms
-            this.listenTo(window.Chat.main.rooms, 'add', this.addRoom);
+            this.listenTo(Chat.main.rooms, 'add', this.addRoom);
         },
 
         addRoom: function(room) {
             // Create room tab
-            var viewItem = new window.Chat.RoomTabView({model: room});
+            var viewItem = new Chat.RoomTabView({model: room});
             this.$roomsTabContainer.append(viewItem.render().el);
 
             // Create room window
-            var viewRoom = new window.Chat.RoomView({model: room});
+            var viewRoom = new Chat.RoomView({model: room});
             this.$roomsWindowContainer.append(viewRoom.render().el);
         }
 
     });
 
-    window.Chat.RoomTabView = Backbone.View.extend({
+    Chat.RoomTabView = Backbone.View.extend({
 
         template: _.template($('#rooms-list-item-template').html()),
 
@@ -150,9 +153,9 @@ $(function() {
         },
 
         initialize: function() {
-            this.listenTo(window.Chat.main.rooms, 'remove', this.removeRoom);
+            this.listenTo(Chat.main.rooms, 'remove', this.removeRoom);
             this.listenTo(this.model, 'focus', this.focus);
-            this.listenTo(window.Chat.main.server, 'message', this.addMessage);
+            this.listenTo(Chat.connection, 'message', this.addMessage);
         },
 
         removeRoom: function(model) {
@@ -169,7 +172,7 @@ $(function() {
 
         closeThisRoom: function (event) {
             event.stopPropagation();
-            window.Chat.main.rooms.remove(this.model); // remove model from collection
+            Chat.main.rooms.remove(this.model); // remove model from collection
         },
 
         focusThisRoom: function(event) {
@@ -190,7 +193,7 @@ $(function() {
 
     });
 
-    window.Chat.RoomView = Backbone.View.extend({
+    Chat.RoomView = Backbone.View.extend({
 
         tagName: 'div',
         className: 'cwindow',
@@ -207,7 +210,7 @@ $(function() {
         },
 
         initialize: function() {
-            this.listenTo(window.Chat.main.rooms, 'remove', this.removeRoom);
+            this.listenTo(Chat.main.rooms, 'remove', this.removeRoom);
             this.listenTo(this.model, 'focus', this.focus);
             this.listenTo(this.model.users, 'add', this.renderUsers);
             this.listenTo(this.model.users, 'remove', this.renderUsers);
@@ -290,5 +293,110 @@ $(function() {
         }
 
     });
+
+    Chat.searchRoomModal = Backbone.View.extend({
+
+        el: $('#room-search-modal'),
+
+        template: _.template($('#room-search-modal-template').html()),
+
+        events: {
+            'click .room-search-submit': 'search',
+            'keyup .room-search-input': 'search',
+            'click .rooms-list li': 'openSelected'
+        },
+
+        initialize: function() {
+            this.listenTo(Chat.connection, 'searchSuccess', this.searchSuccess);
+            this.listenTo(Chat.connection, 'searchError', this.searchError);
+
+            this.search();
+        },
+
+        show: function() {
+            this.$el.modal('show');
+        },
+
+        hide: function() {
+            this.$el.modal('hide');
+        },
+
+        render: function(rooms) {
+            var html = this.template({
+                rooms: rooms
+            });
+            this.$el.find('.rooms-list').first().html(html);
+
+            return this;
+        },
+
+        search: function() {
+            var search = this.$el.find('.room-search-input').first().val();
+
+            // call RPC + render
+            Chat.connection.searchForRooms(search);
+        },
+
+        searchSuccess: function(results) {
+            this.render(results.rooms);
+        },
+
+        searchError: function() {
+            // @todo : implement error-callback in DOM
+            console.error('Error on searchForRooms call');
+        },
+
+        openSelected: function(event) {
+            var topic = $(event.currentTarget).data('topic');
+            Chat.connection.subscribe(topic);
+
+            this.hide();
+        }
+
+    });
+
+//    Chat.searchRoomModal = Backbone.View.extend({
+//
+//        el: $('#room-search-modal'),
+//
+//        template: _.template($('#room-search-modal-template').html()),
+//
+//        events: {
+//            'hidden.bs.modal': 'teardown',
+//            'click .room-search-submit': 'search',
+//            'keyup .room-search-input': 'search'
+//        },
+//
+//        initialize: function() {
+//            this.render();
+//        },
+//
+//        show: function() {
+//            this.$el.modal('show');
+//        },
+//
+//        teardown: function() {
+//            this.$el.data('modal', null);
+////            this.remove();
+//        },
+//
+//        render: function() {
+//            this.renderView();
+//            return this;
+//        },
+//
+//        renderView: function(template) {
+//            var html = this.template({
+//                rooms: []
+//            });
+//            this.$el.html(html);
+//            this.$el.modal({show:false}); // dont show modal on instantiation
+//        },
+//
+//        search: function() {
+//            console.log('tu peux pas test');
+//        }
+//
+//    });
 
 });

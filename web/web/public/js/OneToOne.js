@@ -1,12 +1,12 @@
 $(function() {
 
-    window.Chat = window.Chat || { };
+    Chat = window.Chat || { };
 
     /* ====================================================== */
     /* =====================  MODELS  ======================= */
     /* ====================================================== */
 
-    window.Chat.OneToOne = Backbone.Model.extend({
+    Chat.OneToOne = Backbone.Model.extend({
 
         defaults: function() {
             return {
@@ -16,7 +16,7 @@ $(function() {
         },
 
         initialize: function() {
-            this.messages = new window.Chat.MessagesCollection();
+            this.messages = new Chat.MessagesCollection();
         },
 
         focus: function() {
@@ -25,12 +25,12 @@ $(function() {
 
     });
 
-    window.Chat.OneToOnesCollection = Backbone.Collection.extend({
+    Chat.OneToOnesCollection = Backbone.Collection.extend({
 
-        model: window.Chat.OneToOne,
+        model: Chat.OneToOne,
 
         initialize: function() {
-            this.listenTo(window.Chat.main.server, 'messageFromUser', this.oneToOneMessage);
+            this.listenTo(Chat.connection, 'messageFromUser', this.oneToOneMessage);
         },
 
         oneToOneMessage: function(params) {

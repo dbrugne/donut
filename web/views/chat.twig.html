@@ -16,14 +16,7 @@
                 <div class="panel-heading">Conversations</div>
                 <div id="rooms-list" class="list-group"></div>
                 <div class="panel-footer">
-                    <a href="#" id="create-room-toggle"><span class="glyphicon glyphicon-plus"></span> Create a room</a>
-                    <div id="create-room-form">
-                        <div class="form-group">
-                            <input type="text" class="form-control" id="create-room-name" placeholder="Room name">
-                        </div>
-                        <button class="btn btn-primary" id="create-room-submit">Create</button>
-                        <button class="btn btn-error" id="create-room-cancel">Cancel</button>
-                    </div>
+                    <a href="#" id="create-room-link"><span class="glyphicon glyphicon-plus"></span> Create a room</a>
                     <br />
                     <a href="#" id="search-room-link"><span class="glyphicon glyphicon-search"></span> Search a room</a>
                 </div>
@@ -71,9 +64,9 @@
                     <div class="col-lg-12">
                         <div class="input-group">
                             <input type="search" class="form-control room-search-input" placeholder="Search for rooms" />
-                            <span class="input-group-btn">
-                                <button class="btn btn-default room-search-submit" type="button"><span class="glyphicon glyphicon-search"></span></button>
-                            </span>
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default room-search-submit" type="button"><span class="glyphicon glyphicon-search"></span></button>
+                                </span>
                         </div><!-- /input-group -->
                         <ul class="list-group rooms-list"></ul>
                     </div><!-- /.col-lg-12 -->
@@ -84,7 +77,7 @@
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+</div>
 <!-- / Room search modal -->
 
 <!-- User search modal -->
@@ -130,28 +123,31 @@
 <!-- @todo : replaced by socket.io --><script src="/js/web_socket.js"></script>
 <!-- @todo : replaced by socket.io --><script src="/js/when.js"></script>
 <!-- @todo : replaced by socket.io --><script src="/js/autobahn.js"></script>
-<!-- @todo : replaced by socket.io --><script src="/public/js/old.server.js"></script>
+
 <script src="/public/js/User.js"></script>
 <script src="/public/js/Room.js"></script>
 <script src="/public/js/OneToOne.js"></script>
 <script src="/public/js/Message.js"></script>
+<script src="/public/js/Server.js"></script>
 <script src="/public/js/Chat.js"></script>
 <script src="/public/js/views.js"></script>
 <script>
 $(document).ready(function() {
 
-    window.Chat = window.Chat || { };
-    window.Chat.main = new window.Chat.MainView;
-    window.Chat.main.run();
+    Chat = window.Chat || { };
+
+    // Server
+    Chat.connection = new Chat.Server( {debugOn: true} );
+
+    // Interface
+    Chat.main = new Chat.MainView;
+    Chat.main.run();
 
     $("#test1").click(function (e) {
-//        console.log(Conversations);
-//        Conversations.add(new OneToOne({ id: '4234234243278dsq7', user_id: 'fsdff'}));
-//        Conversations.add(new OneToOne({ id: '132465987qsdssqsq', user_id: 'xxxx'}));
-//        Conversations.add(new Room({ id: 'azeezezaezaezae', name: 'tdsest'}));
-//        Conversations.add(new Room({ id: 'g4fd456gdg45df54g', name: 'test'}));
-//        Conversations.add(new Room({ id: 'aze4a51dq1sqs2d3q', name: 'test2'}));
-//        Conversations.add(new OneToOne({ id: 'azzeazzeezzezeze', user_id: 'trerererest'}));
+        console.log(Chat.main.rooms);
+    });
+    $("#test2").click(function (e) {
+        Chat.main.rooms.joinRoom({ topic: 'ws://chat.local/room#1' });
     });
 
 });
