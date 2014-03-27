@@ -5,7 +5,7 @@
         <section id="channels">
         <ul>
         {% for channel in channels %}
-            <li><a href="{{ path('chat') }}#room={{ channel.room_id }}"><div class="logo"><img src="/img/channels/{{ channel.logo }}" /></div><div class="name">{{ channel.name }}</div></a></li>
+            <li><a href="{{ path('chat') }}#room/{{ channel.name }}"><div class="logo"><img src="/img/channels/{{ channel.logo }}" /></div><div class="name">{{ channel.name }}</div></a></li>
         {% endfor %}
         </ul>
         </section>

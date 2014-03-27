@@ -88,6 +88,10 @@ $(function() {
         },
 
         focusRoom: function(room_name) {
+            // @todo : auto-join room when arrive on interface with #room/TF1 (from homepage for example)
+                // should determine room topic and call subscribe (so easy)
+                // and maybe persist that room was call initially in a variable
+
             var room = Chat.rooms.findWhere({name: room_name});
             if (room == undefined) {
                 this.navigate('');
