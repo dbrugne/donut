@@ -1,60 +1,34 @@
 chat
 ====
 
-v1:
-* Auto-reconnect - done!
-* Block on window popin (do you want really leave this page?) - done!
-* Fix auto-reconnect bug to auto re-subscribe to topics - done!
-* Deploy on production - done!
-* Redirect on homepage when registered - done!
-
-v2:
-* Install Supervisor - done!
-* Replace available room by "search in available rooms" and do that in modal - done!
-* Remove availableRooms - done!
-* Correct fluid on tablet/phone - done!
-* Open user profile in modal - done!
-* Install Libevent - done!
-* Make it work on IE<10 (Polyfill flexbox and WS/SWF) - done!
-* Deploy and send to David - done!
-
-v3:
-* Add user picture in messages - done!
-* Clean up date displaying in messages - done!
-* Smileys - done!
-* Hyperlink - done!
-* Add open profile in .messages - done!
-
-v4:
-* (irc) One to one discussion - done!
-* (refactor) Process to enter in a room: on click subscribe/createIhm/getRoomData/getUsers + error handling - done!
-* (refactor) Add $logger in $app and log properly - done!
-* (refactor) Chatroom code cleanup/refactoring - done!
-* (refactor) Use only URI as identifier (room / discussion) in old.server.js and client.js - done!
-* Move room close button in room list - done!
-
-v5:
-* Online / find user - done!
-* Secure MongoDb and install on production - done!
-* Get and store userId on connect on client side on connect - done!
-* Add anchor by room, that change when selecting another room, could be shared with people - done!
-* Add user count on "room tab" - done!
-* Add user count on "room search" - done!
+v1: Refactor Backbone.js
+* Change baseline
+* View/search online users
+* View user profile
+* Block on window popin (do you want really leave this page?)
+* Import date display management in Backbone.js
+* Add open profile in .messages
+* One to one discussion
+* Smileys
+* Create room form
+* repair Add user count on "room tab"
+* repair Add user count on "room search"
+* Repair auto-join room when come from homepage
+* Repair unread badge + add count in page title
+* Review old code
+* Cleanup projects files
 
 v6:
-* Change [data-room-id=] to [data-topic=] - done!
-* (try) Extend the "room box" to include the user list - done!
-* Extend header width in chat/ - done!
+* Refactor node.js/passport/mongodb
+* Refactor socket.io (redis?)
+* Review all the messages exchanged between client/server
+** Remove topic to use room name instead
 
 v7:
-* Refactor Room/Discussion/ChatWindow on Backbone.js
-** Router + hash + focus - done!
-** Room window flexibility without JS
-** Change baseline
-** Review old code
+* Make it work on IE8-11/FF
+* Make it work on tablet/phone (browser)
 
 v8:
-* Add indicate in page title when a new message come
 * Fix old session bug
 * User account: photo, bio, town
 * A page per room (as for user)

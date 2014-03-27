@@ -353,7 +353,6 @@ $(function() {
             inputField.val('');
 
             // avoid line break addition in field when submitting with "Enter"
-            console.log(this.model);
             return false;
         },
 
@@ -384,9 +383,12 @@ $(function() {
             });
             this.$el.find('.messages').append(html);
 
-//            scrollDown($(".cwindow[data-topic='"+topic+"'] > .messages"));
-
+            this.scrollDown();
             return this;
+        },
+
+        scrollDown: function() {
+            this.$el.find(".messages").scrollTop(100000);
         }
 
     });

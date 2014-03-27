@@ -14,20 +14,18 @@
 <!-- RoomView          -->
 <!-- ----------------- -->
 <script type="text/template" id="room-template">
-    <div class="row row-header">
-        <div class="header">
-            <span class="name"><%= name %></span>
-            <div class="room-baseline-text">
-                <span class="baseline"><%= baseline %></span>
-            </div>
-            <span class="room-baseline-form">
-                <input type="text" class="room-baseline-input form-control" placeholder="Room baseline">
-                <button class="btn btn-primary room-baseline-submit">Submit</button>
-                <button class="btn btn-cancel room-baseline-cancel">Cancel</button>
-            </span>
-            <span class="close glyphicon glyphicon-remove"></span>
-        </div><!-- /.header -->
-    </div><!-- /.row-header -->
+    <div class="header">
+        <span class="name"><%= name %></span>
+        <div class="room-baseline-text">
+            <span class="baseline"><%= baseline %></span>
+        </div>
+        <span class="room-baseline-form">
+            <input type="text" class="room-baseline-input form-control" placeholder="Room baseline">
+            <button class="btn btn-primary room-baseline-submit">Submit</button>
+            <button class="btn btn-cancel room-baseline-cancel">Cancel</button>
+        </span>
+        <span class="close glyphicon glyphicon-remove"></span>
+    </div><!-- /.header -->
     <div class="row row-content">
         <div class="col-content col-sm-9 col-md-9 col-lg-9">
             <div class="messages"></div>

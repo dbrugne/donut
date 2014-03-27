@@ -36,13 +36,16 @@ body { padding-top: 50px; }
             #block-users .panel-heading { border-color: transparent; }
 
     #chat-center { padding: 0; /* Cancel bootstrap native space between columns */ }
-        .cwindow { background-color: #FFFFFF; }
+        .cwindow { background-color: #FFFFFF; position: relative;  padding-top: 45px; }
         .cwindow .default { text-align: center; line-height: 200px; color: #DDDDDD; font-size: 30px; font-weight: bold; font-style: italic; }
-        .cwindow .row-header { margin: 0px; /* Cancel bootstrap negative .row margin */ }
+        .cwindow .row-header { margin: 0px; /* Cancel bootstrap negative .row margin */  }
         .cwindow .row-content { margin: 0px; /* Cancel bootstrap negative .row margin */ }
-        .cwindow .col-content { padding-left: 0; padding-right: 0; /* Cancel bootstrap native space between columns */ }
+        .cwindow .col-content { padding-left: 0; padding-right: 0; /* Cancel bootstrap native space between columns */ padding-bottom: 55px; }
         .cwindow .col-users { padding-left: 0; padding-right: 0; /* Cancel bootstrap native space between columns */  border-left: 1px solid #ddd;  background-color: darkgrey; }
-        .cwindow .header { max-height: 50px; border-bottom: 1px solid transparent; border-color: #ddd; background-color: #f5f5f5; padding: 10px 15px; }
+        .cwindow .header {
+            border-bottom: 1px solid transparent; border-color: #ddd; background-color: #f5f5f5; padding: 10px 15px;
+            position: absolute; top:0; left:0; right:0; height: 45px; max-height: 45px; z-index: 10;
+        }
         .cwindow .header .name { color: #555555; font-weight: bolder; font-size: 16px; }
         .cwindow .header .baseline { margin-left: 5px; color: #333; }
         .cwindow .header .close { color: #FF0000; }
@@ -51,13 +54,13 @@ body { padding-top: 50px; }
         .cwindow .header .room-baseline-input { display: inline-block; width: 50%; }
         .cwindow .header .room-baseline-submit { display: inline-block; }
         .cwindow .header .room-baseline-cancel { display: inline-block; }
-        .cwindow .messages { background-color: #fff; overflow-y: scroll; height: 60%; }
+        .cwindow .messages { background-color: #fff; overflow-y: scroll; height: 100%; }
         .cwindow .messages p { margin: 0; padding: 4px 6px; color: #000; font-family: "Open Sans"; position: relative; border: 0; border-bottom: 1px solid #f5f5f5; }
         .cwindow .messages p .avatar { float: left; margin-right: 5px; }
         .cwindow .messages p .date { position: absolute; right: 8px; color: #BDBDBD; }
         .cwindow .messages p .username { font-weight: bold; }
         .cwindow .messages p .message { display: block; margin-left: 26px; }
-        .cwindow .postbox { padding: 10px 0; color: #333; background-color: #f5f5f5; border-top: 1px solid transparent; border-color: #ddd; }
+        .cwindow .postbox { padding: 10px 0; color: #333; background-color: #f5f5f5; border-top: 1px solid transparent; border-color: #ddd; height: 55px; max-height: 55px; position: absolute; bottom: 0px; left: 0; right: 0; }
         .cwindow .postbox .row { margin: 0; /* Cancel bootstrap negative .row margin */ }
         .cwindow .postbox .input-group-addon.smileys-message { border-right: 0; }
         .cwindow .popover { max-width: 290px; /* for postbox smileys popover */ }
