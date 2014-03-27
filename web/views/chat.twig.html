@@ -138,10 +138,12 @@
 <script>
 $(document).ready(function() {
 
+    // @todo : embeded init in an object
+
     Chat = window.Chat || { };
 
     // Server
-    Chat.server = new Chat.ServerModel( {debugOn: false} );
+    Chat.server = new Chat.ServerModel( {debugOn: true} );
 
     // Router
     Chat.router = new Chat.Routes();

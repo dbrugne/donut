@@ -79,6 +79,13 @@ $(function() {
             this.get('session').publish(topic, msg);
         },
 
+        baseline: function(topic, baseline) {
+            this.get('session').call('changeBaseline', topic, baseline).then(
+                function() { }
+                , function() { console.error('Error changeBaseline of '+topic+' with '+ baseline); }
+            );
+        },
+
         searchForRooms: function(search, callbackSuccess, callbackError) {
             var that = this;
             this.get('session').call('searchForRooms', search).then(

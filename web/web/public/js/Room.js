@@ -118,6 +118,8 @@ $(function() {
 
         changeBaseline: function(params) {
             var room = this._targetRoom(params.data.room_id);
+            room.set('baseline', params.data.baseline);
+            // @todo notif in room
         },
 
         roomMessage: function(params) {
@@ -254,6 +256,7 @@ $(function() {
 
     });
 
+    // @todo: create subview for user list, ...
     Chat.RoomView = Backbone.View.extend({
 
         tagName: 'div',
@@ -266,7 +269,7 @@ $(function() {
         messageTemplate: _.template($('#message-template').html()),
 
         events: {
-            'click .close': 'closeThisRoom',
+            'click .close': 'close',
             'keypress .input-message': 'postMessage',
             'click .send-message': 'postMessage'
         },
@@ -276,24 +279,40 @@ $(function() {
             this.listenTo(this.model.users, 'add', this.renderUsers);
             this.listenTo(this.model.users, 'remove', this.renderUsers);
             this.listenTo(this.model.messages, 'add', this.addMessage);
-
             this.listenTo(this.model, 'focus', this.focus);
             this.listenTo(this.model, 'unfocus', this.unfocus);
-        },
 
-        removeRoom: function(model) {
-            if (model === this.model) {
-                this.remove();
-            }
+            // Subviews
+            this.baselineView = new Chat.baselineView({model: this.model});
         },
 
         render: function() {
             var html = this.template(this.model.toJSON());
             this.$el.html(html);
+
+            // Append subviews
+            this.$el.find('.header .name').after(this.baselineView.$el);
+
             return this;
         },
 
-        closeThisRoom: function (event) {
+        renderUsers: function(user) {
+            var html = this.userTemplate({
+                users: _.sortBy(this.model.users.toJSON(), 'username')
+            });
+            this.$el.find('.room-users .list-group').html(html);
+
+            return this;
+        },
+
+        removeRoom: function(model) {
+            if (model === this.model) {
+                this.baselineView.remove();
+                this.remove();
+            }
+        },
+
+        close: function (event) {
             Chat.rooms.remove(this.model); // remove model from collection
 
             // After remove, the room still exists but not in the collection,
@@ -307,19 +326,11 @@ $(function() {
 
         focus: function() {
             this.$el.fadeIn(400);
+            this.$el.find('.input-message').focus();
         },
 
         unfocus: function() {
             this.$el.hide();
-        },
-
-        renderUsers: function(user) {
-            var html = this.userTemplate({
-                users: _.sortBy(this.model.users.toJSON(), 'username')
-            });
-            this.$el.find('.room-users .list-group').html(html);
-
-            return this;
         },
 
         postMessage: function(event) {
@@ -391,6 +402,72 @@ $(function() {
             this.$el.find(".messages").scrollTop(100000);
         }
 
+    });
+
+    Chat.baselineView = Backbone.View.extend({
+
+        tagName: 'div',
+        className: 'baseline-block',
+
+        template: _.template($('#room-baseline-template').html()),
+
+        defaultText: '<em>no baseline</em>',
+
+        events: {
+            'click .baseline': 'showForm',
+            'click .baseline-cancel': 'hideForm',
+            'click .baseline-submit': 'sendNewBaseline',
+            'keypress .baseline-input': function(event) {
+                if (event.which == 13) {
+                    this.sendNewBaseline(event);
+                }
+            }
+        },
+
+        initialize: function() {
+            this.listenTo(this.model, 'change:baseline', this.updateBaseline);
+            this.render();
+        },
+
+        render: function() {
+            var html = this.template();
+            this.$el.html(html);
+
+            var currentBaseline = this.model.get('baseline');
+            if (currentBaseline == '') {
+                currentBaseline = this.defaultText;
+            }
+
+            this.$el.find('.baseline').html(currentBaseline);
+            this.$el.find('.baseline-form').hide();
+
+            return this;
+        },
+
+        updateBaseline: function(room, baseline, options) {
+            if (baseline == '') {
+                baseline = this.defaultText;
+            }
+            this.$el.find('.baseline').html(baseline);
+        },
+
+        showForm: function() {
+            this.$el.find('.baseline').hide();
+            this.$el.find('.baseline-form').show();
+            this.$el.find('.baseline-input').val(this.model.get('baseline')).focus();
+        },
+
+        hideForm: function() {
+            this.$el.find('.baseline-form').hide();
+            this.$el.find('.baseline').show();
+        },
+
+        sendNewBaseline: function(event) {
+            var newBaseline = this.$el.find('.baseline-input').val();
+            Chat.server.baseline('ws://chat.local/room#'+this.model.get('id'), newBaseline);
+            this.$el.find('.baseline-input').val('')
+            this.hideForm();
+        }
     });
 
     Chat.searchRoomModal = Backbone.View.extend({

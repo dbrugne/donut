@@ -16,14 +16,6 @@
 <script type="text/template" id="room-template">
     <div class="header">
         <span class="name"><%= name %></span>
-        <div class="room-baseline-text">
-            <span class="baseline"><%= baseline %></span>
-        </div>
-        <span class="room-baseline-form">
-            <input type="text" class="room-baseline-input form-control" placeholder="Room baseline">
-            <button class="btn btn-primary room-baseline-submit">Submit</button>
-            <button class="btn btn-cancel room-baseline-cancel">Cancel</button>
-        </span>
         <span class="close glyphicon glyphicon-remove"></span>
     </div><!-- /.header -->
     <div class="row row-content">
@@ -53,6 +45,18 @@
             </div><!-- /.room-users -->
         </div><!-- /.col-users -->
     </div><!-- /.row-content -->
+</script>
+
+<!-- ----------------- -->
+<!-- RoomBaseline      -->
+<!-- ----------------- -->
+<script type="text/template" id="room-baseline-template">
+    <span class="baseline"></span>
+    <span class="baseline-form">
+        <input type="text" class="baseline-input form-control input-sm" placeholder="Room baseline" value="">
+        <button class="btn btn-primary btn-sm baseline-submit">Submit</button>
+        <button class="btn btn-cancel btn-sm baseline-cancel">Cancel</button>
+    </span>
 </script>
 
 <!-- ----------------- -->

@@ -2,7 +2,7 @@ chat
 ====
 
 v1: Refactor Backbone.js
-* Change baseline
+* Change baseline - done!
 * View/search online users
 * View user profile
 * Block on window popin (do you want really leave this page?)
@@ -23,6 +23,8 @@ v6:
 * Refactor socket.io (redis?)
 * Review all the messages exchanged between client/server
 ** Remove topic to use room name instead
+* Refactor grunt
+* Refactor less.css
 
 v7:
 * Make it work on IE8-11/FF
