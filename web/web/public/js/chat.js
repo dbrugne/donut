@@ -13,9 +13,7 @@ $(function() {
     /* ======================  VIEWS  ======================= */
     /* ====================================================== */
 
-    /**
-     * Whole interface View
-     */
+    // Whole interface View
     Chat.MainView = Backbone.View.extend({
 
         el: $("#chat"),
@@ -54,22 +52,6 @@ $(function() {
             Chat.server.connect();
         },
 
-        // @todo : not here, should be in conversationsView
-        focus: function(topic) {
-            if (!this.conversations.length) {
-                return;
-            }
-
-            var model;
-            if (topic) {
-                model = this.conversations.get(topic);
-            } else {
-                model = this.conversations.first();
-            }
-
-            model.focus();
-        },
-
         searchRoomModal: function() {
             if (!('searchRoomModalView' in this)) {
                 this.searchRoomModalView = new Chat.searchRoomModal();
@@ -86,6 +68,42 @@ $(function() {
 
         }
 
+    });
+
+    /* ====================================================== */
+    /* =====================  ROUTER  ======================= */
+    /* ====================================================== */
+
+    Chat.Routes = Backbone.Router.extend({
+
+        routes: {
+            '':                 'root',
+            'room/:name':       'focusRoom',
+            'user/:user':       'focusOneToOne',
+            '*default':         'default'
+        },
+
+        root: function() {
+            //
+        },
+
+        focusRoom: function(room_name) {
+            var room = Chat.rooms.findWhere({name: room_name});
+            if (room == undefined) {
+                this.navigate('');
+                return;
+            }
+            Chat.rooms.focus(room.get('id'));
+        },
+
+        focusOneToOne: function(user_id) {
+            //
+        },
+
+        default: function() {
+            console.log('go in default');
+            // @todo : handle 404 type behavior in DOM
+        }
     });
 
 });
