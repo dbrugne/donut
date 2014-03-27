@@ -28,6 +28,7 @@ body { padding-top: 50px; }
         #block-rooms {}
             #block-rooms .panel-heading { border-color: transparent; }
             #block-rooms .room-item { font-size: 12px; }
+            #block-rooms .unread .room-item { color: orangered; }
             #block-rooms .room-item .name {  }
             #block-rooms .room-item .badge { display: none; margin-right: 5px; }
             #block-rooms .room-item .close { font-size: 14px; color: #FF0000; }

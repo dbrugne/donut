@@ -22,7 +22,6 @@ $(function() {
         initialize: function() {
             this.users = new Chat.UsersCollection();
             this.messages = new Chat.MessagesCollection();
-
             this.on('remove', this.unsubscribe);
         },
 
@@ -125,6 +124,11 @@ $(function() {
         roomMessage: function(params) {
             var room = this._targetRoom(params.data.room_id);
             room.messages.add(new Chat.Message(params.data)); // i pass everything, maybe not ideal
+
+            if (!room.focused) {
+                var unread = room.get('unread');
+                room.set('unread', unread + 1);
+            }
         },
 
         focus: function(room_id) {
@@ -206,9 +210,9 @@ $(function() {
 
         initialize: function() {
             this.listenTo(Chat.rooms, 'remove', this.removeRoom);
-            this.listenTo(Chat.server, 'message', this.addMessage);
             this.listenTo(this.model, 'focus', this.focus);
             this.listenTo(this.model, 'unfocus', this.unfocus);
+            this.listenTo(this.model, 'change:unread', this.updateUnread);
         },
 
         removeRoom: function(model) {
@@ -241,22 +245,26 @@ $(function() {
 
         focus: function() {
             this.$el.find('.room-item').addClass('active');
+            this.model.set('unread', 0);
         },
 
         unfocus: function() {
             this.$el.find('.room-item').removeClass('active');
         },
 
-        addMessage: function(params) {
-            // @todo
-            // If current focused room
-            // return
-            // Else increment badge
+        updateUnread: function() {
+            this.$el.find('.badge').html(this.model.get('unread'));
+            if (this.model.get('unread') < 1) {
+                this.$el.find('.badge').fadeOut(400);
+                this.$el.removeClass('unread');
+            } else {
+                this.$el.find('.badge').fadeIn(400);
+                this.$el.addClass('unread');
+            }
         }
 
     });
 
-    // @todo: create subview for user list, ...
     Chat.RoomView = Backbone.View.extend({
 
         tagName: 'div',
@@ -284,6 +292,7 @@ $(function() {
 
             // Subviews
             this.baselineView = new Chat.baselineView({model: this.model});
+            // @todo: create subview for user list and postbox
         },
 
         render: function() {

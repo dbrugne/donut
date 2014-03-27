@@ -14,7 +14,8 @@ v1: Refactor Backbone.js
 * repair Add user count on "room tab"
 * repair Add user count on "room search"
 * Repair auto-join room when come from homepage
-* Repair unread badge + add count in page title
+* Repair unread badge - done!
+* Add count in page title
 * Review old code
 * Cleanup projects files
 
