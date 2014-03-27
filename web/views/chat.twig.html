@@ -13,7 +13,7 @@
                 </div>
             </div>
             <div id="block-rooms" class="panel panel-default">
-                <div class="panel-heading">Conversations</div>
+                <div class="panel-heading">Rooms</div>
                 <div id="rooms-list" class="list-group"></div>
                 <div class="panel-footer">
                     <a href="#" id="create-room-link"><span class="glyphicon glyphicon-plus"></span> Create a room</a>
@@ -36,7 +36,12 @@
                 </div>
             </div>
 
-            <button class="btn btn-success" id="test1">Test</button><button class="btn btn-success" id="test2">Test</button><button class="btn btn-success" id="test3">Test</button>
+            <button class="btn btn-success" id="test1">Test 1</button>
+            <button class="btn btn-success" id="test2">Test 2</button>
+            <button class="btn btn-success" id="test3">Test 3</button>
+            <button class="btn btn-success" id="test4">Test 4</button>
+            <button class="btn btn-success" id="test5">Test 5</button>
+            <button class="btn btn-success" id="test6">Test 6</button>
 
         </div><!-- /.chat-left -->
         <div id="chat-center" class="col-sm-10 col-md-10 col-lg-10">
@@ -136,7 +141,10 @@ $(document).ready(function() {
     Chat = window.Chat || { };
 
     // Server
-    Chat.server = new Chat.ServerModel( {debugOn: true} );
+    Chat.server = new Chat.ServerModel( {debugOn: false} );
+
+    // Router
+    Chat.router = new Chat.Routes();
 
     // Room collection
     Chat.rooms = new Chat.RoomsCollection;
@@ -145,13 +153,15 @@ $(document).ready(function() {
     Chat.main = new Chat.MainView;
     Chat.main.run();
 
-    $("#test1").click(function (e) {
-        console.log(Chat.main.rooms);
-    });
-    $("#test2").click(function (e) {
-        Chat.main.rooms.joinRoom({ topic: 'ws://chat.local/room#1' });
-    });
+    // Run router
+    Backbone.history.start();
 
+    /************************************************
+     * DEBUG
+     ***********************************************/
+
+    $("#test1").click(function (e) {
+    });
 });
 </script>
 {% endblock %}

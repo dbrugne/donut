@@ -45,18 +45,22 @@ v6:
 * Change [data-room-id=] to [data-topic=] - done!
 * (try) Extend the "room box" to include the user list - done!
 * Extend header width in chat/ - done!
-* Add indicate in page title when a new message come
 
 v7:
+* Refactor Room/Discussion/ChatWindow on Backbone.js
+** Router + hash + focus - done!
+** Room window flexibility without JS
+** Change baseline
+** Review old code
+
+v8:
+* Add indicate in page title when a new message come
 * Fix old session bug
 * User account: photo, bio, town
 * A page per room (as for user)
 * (refactor) Database on MongoDb
 * (refactor) App on node.js/express + http://passportjs.org/
 * (social) Facebook Login + Invite your friends + page Facebook
-
-v8:
-* Refactor Room/Discussion/ChatWindow on Backbone.js
 
 v9:
 * Translate in french

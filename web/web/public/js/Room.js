@@ -17,6 +17,8 @@ $(function() {
             };
         },
 
+        focused: false,
+
         initialize: function() {
             this.users = new Chat.UsersCollection();
             this.messages = new Chat.MessagesCollection();
@@ -29,7 +31,17 @@ $(function() {
         },
 
         focus: function() {
+            this.focused = true;
             this.trigger('focus');
+
+            // Update URL
+            Chat.router.navigate('room/'+this.get('name'));
+            // @todo : best place to do that?
+        },
+
+        unfocus: function() {
+            this.focused = false;
+            this.trigger('unfocus');
         }
 
     });
@@ -85,8 +97,7 @@ $(function() {
                 }));
             });
 
-            // @todo : how to focus room from here
-            //this.focus(params.data.id);
+            this.focus(room.get('id'));
         },
 
         userIn: function(params) {
@@ -112,6 +123,37 @@ $(function() {
         roomMessage: function(params) {
             var room = this._targetRoom(params.data.room_id);
             room.messages.add(new Chat.Message(params.data)); // i pass everything, maybe not ideal
+        },
+
+        focus: function(room_id) {
+            // No opened room, display default
+            if (this.models.length < 1) {
+                this.trigger('focusDefault');
+            } else {
+                this.trigger('unfocusDefault');
+            }
+
+            var room;
+            if (room_id == '' || room_id == undefined) {
+                // No room_id provided, try to find first opened room
+                room = this.first();
+            } else {
+                room = this.get(room_id);
+            }
+
+            // room_id provided doesn't exist,
+            if (room == undefined) {
+                console.error('Unable to find room to focus');
+                return;
+            }
+
+            // Unfocus every model
+            _.each(this.models, function(roomToUnfocus, key, list) {
+                roomToUnfocus.unfocus();
+            });
+
+            // Focus the one we want
+            room.focus();
         }
 
     });
@@ -127,7 +169,9 @@ $(function() {
 
         initialize: function() {
             // Binds on Rooms
-            this.listenTo(Chat.rooms, 'add', this.addRoom);
+            this.listenTo(this.collection, 'add', this.addRoom);
+            this.listenTo(this.collection, 'focusDefault', this.focusDefault);
+            this.listenTo(this.collection, 'unfocusDefault', this.unfocusDefault);
         },
 
         addRoom: function(room) {
@@ -138,6 +182,14 @@ $(function() {
             // Create room window
             var viewRoom = new Chat.RoomView({model: room});
             this.$roomsWindowContainer.append(viewRoom.render().el);
+        },
+
+        focusDefault: function() {
+            this.$roomsWindowContainer.find('.cwindow[data-default=true]').show();
+        },
+
+        unfocusDefault: function() {
+            this.$roomsWindowContainer.find('.cwindow[data-default=true]').hide();
         }
 
     });
@@ -147,14 +199,14 @@ $(function() {
         template: _.template($('#rooms-list-item-template').html()),
 
         events: {
-            "click .close": "closeThisRoom",
-            "click": "focusThisRoom"
+            "click .close": "closeThisRoom"
         },
 
         initialize: function() {
             this.listenTo(Chat.rooms, 'remove', this.removeRoom);
-            this.listenTo(this.model, 'focus', this.focus);
             this.listenTo(Chat.server, 'message', this.addMessage);
+            this.listenTo(this.model, 'focus', this.focus);
+            this.listenTo(this.model, 'unfocus', this.unfocus);
         },
 
         removeRoom: function(model) {
@@ -174,17 +226,23 @@ $(function() {
         },
 
         closeThisRoom: function (event) {
-            event.stopPropagation();
             Chat.rooms.remove(this.model); // remove model from collection
-        },
 
-        focusThisRoom: function(event) {
-            this.model.focus();
+            // After remove, the room still exists but not in the collection,
+            // = .focus() call will choose another room to be focused
+            if (this.model.focused) {
+                Chat.rooms.focus();
+            }
+
+            return false; // stop propagation
         },
 
         focus: function() {
-            $("#rooms-list .room-item").removeClass('active');
             this.$el.find('.room-item').addClass('active');
+        },
+
+        unfocus: function() {
+            this.$el.find('.room-item').removeClass('active');
         },
 
         addMessage: function(params) {
@@ -215,10 +273,12 @@ $(function() {
 
         initialize: function() {
             this.listenTo(Chat.rooms, 'remove', this.removeRoom);
-            this.listenTo(this.model, 'focus', this.focus);
             this.listenTo(this.model.users, 'add', this.renderUsers);
             this.listenTo(this.model.users, 'remove', this.renderUsers);
             this.listenTo(this.model.messages, 'add', this.addMessage);
+
+            this.listenTo(this.model, 'focus', this.focus);
+            this.listenTo(this.model, 'unfocus', this.unfocus);
         },
 
         removeRoom: function(model) {
@@ -239,8 +299,11 @@ $(function() {
         },
 
         focus: function() {
-            $("#chat-center .cwindow").hide();
             this.$el.fadeIn(400);
+        },
+
+        unfocus: function() {
+            this.$el.hide();
         },
 
         renderUsers: function(user) {
@@ -375,7 +438,17 @@ $(function() {
 
         openSelected: function(event) {
             var topic = $(event.currentTarget).data('topic');
-            Chat.server.subscribe(topic);
+
+            // Is already opened?
+            var room_id = topic.replace('ws://chat.local/room#', '');
+            var room = Chat.rooms.get(room_id);
+            if (room != undefined) {
+                Chat.rooms.focus(room.get('id'));
+
+            // Room not already open
+            } else {
+                Chat.server.subscribe(topic);
+            }
 
             this.hide();
         }

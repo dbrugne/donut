@@ -64,7 +64,7 @@ $(function() {
             }
         },
 
-        subscribe: function(topic) { // @todo : replace by room_id
+        subscribe: function(topic) {
             var that = this;
             this.get('session').subscribe(topic, function(topic, event) {
                 that.trigger(event.action, {topic: topic, data: event.data});
