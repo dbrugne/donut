@@ -294,8 +294,15 @@ $(function() {
         },
 
         closeThisRoom: function (event) {
-            event.stopPropagation();
             Chat.rooms.remove(this.model); // remove model from collection
+
+            // After remove, the room still exists but not in the collection,
+            // = .focus() call will choose another room to be focused
+            if (this.model.focused) {
+                Chat.rooms.focus();
+            }
+
+            return false; // stop propagation
         },
 
         focus: function() {
