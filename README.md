@@ -3,21 +3,21 @@ chat
 
 v1: Refactor Backbone.js
 * Change baseline - done!
-* View/search online users
-* View user profile
-* Block on window popin (do you want really leave this page?)
-* Import date display management in Backbone.js
-* Add open profile in .messages
+* View/search online users - done!
+* View user profile - done!
+* Repair unread badge - done!
+* Add open profile in .messages - done!
 * One to one discussion
 * Smileys
 * Create room form
 * repair Add user count on "room tab"
 * repair Add user count on "room search"
+* Restore add room notification when user enter/leave
 * Repair auto-join room when come from homepage
-* Repair unread badge - done!
 * Add count in page title
 * Review old code
 * Cleanup projects files
+* Block on window popin (do you want really leave this page?)
 
 v6:
 * Refactor node.js/passport/mongodb

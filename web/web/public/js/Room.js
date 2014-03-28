@@ -280,7 +280,16 @@ $(function() {
             'click .close': 'close',
             'keypress .input-message': 'postMessage',
             'click .send-message': 'postMessage',
-            'click .user-profile': 'openUserProfile'
+            'click .messages > p > .username': function(event) {
+                Chat.main.userProfileModal(
+                    $(event.currentTarget).data('userId')
+                );
+            },
+            'click .user-profile': function(event) {
+                Chat.main.userProfileModal(
+                    $(event.currentTarget).closest('.user-item').data('userId')
+                );
+            }
         },
 
         initialize: function() {
