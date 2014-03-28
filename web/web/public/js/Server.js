@@ -90,10 +90,22 @@ $(function() {
             var that = this;
             this.get('session').call('searchForRooms', search).then(
                 function(rooms) {
-                    that.trigger('searchSuccess', { rooms: rooms });
+                    that.trigger('room:searchSuccess', { rooms: rooms });
                 },
                 function() {
-                    that.trigger('searchError');
+                    that.trigger('room:searchError');
+                }
+            );
+        },
+
+        searchForUsers: function(search, callbackSuccess, callbackError) {
+            var that = this;
+            this.get('session').call('searchForUsers', search).then(
+                function(users) {
+                    that.trigger('user:searchSuccess', { users: users });
+                },
+                function() {
+                    that.trigger('user:searchError');
                 }
             );
         }

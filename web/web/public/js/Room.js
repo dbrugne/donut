@@ -492,8 +492,8 @@ $(function() {
         },
 
         initialize: function() {
-            this.listenTo(Chat.server, 'searchSuccess', this.searchSuccess);
-            this.listenTo(Chat.server, 'searchError', this.searchError);
+            this.listenTo(Chat.server, 'room:searchSuccess', this.searchSuccess);
+            this.listenTo(Chat.server, 'room:searchError', this.searchError);
 
             this.search();
         },
