@@ -7,11 +7,10 @@ v1: Refactor Backbone.js
 * View user profile - done!
 * Repair unread badge - done!
 * Add open profile in .messages - done!
+* repair Add user count on "room tab" - done!
 * One to one discussion
-* Smileys
+* Repair smileys popover and rendering
 * Create room form
-* repair Add user count on "room tab"
-* repair Add user count on "room search"
 * Restore add room notification when user enter/leave
 * Repair auto-join room when come from homepage
 * Add count in page title

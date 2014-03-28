@@ -213,6 +213,8 @@ $(function() {
             this.listenTo(this.model, 'focus', this.focus);
             this.listenTo(this.model, 'unfocus', this.unfocus);
             this.listenTo(this.model, 'change:unread', this.updateUnread);
+            this.listenTo(this.model.users, 'add', this.updateUsers);
+            this.listenTo(this.model.users, 'remove', this.updateUsers);
         },
 
         removeRoom: function(model) {
@@ -261,6 +263,10 @@ $(function() {
                 this.$el.find('.badge').fadeIn(400);
                 this.$el.addClass('unread');
             }
+        },
+
+        updateUsers: function() {
+            this.$el.find('.users-count .count').html(this.model.users.length);
         }
 
     });
