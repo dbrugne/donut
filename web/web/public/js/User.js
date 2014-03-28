@@ -83,7 +83,7 @@ $(function() {
         template: _.template($('#online-users-template').html()),
 
         events: {
-            'click .user-item': 'GLOBALACTIONPROFILEMODAL' // @todo
+            'click .user-item': 'openSelected' // @todo
         },
 
         initialize: function(options) {
@@ -99,7 +99,42 @@ $(function() {
             });
             this.$el.html(html);
             return this;
+        },
+
+        openSelected: function(event) {
+            var user_id = $(event.currentTarget).data('userId');
+            Chat.main.userProfileModal(user_id);
         }
+
+    });
+
+    Chat.userProfileModal = Backbone.View.extend({
+
+        el: $('#user-profile-modal'),
+
+        events: {
+            'hidden.bs.modal': 'teardown'
+        },
+
+        show: function(user_id) {
+            if (user_id == undefined || user_id == '') {
+                return;
+            }
+
+            this.$el.modal({
+                remote: 'http://' + window.location.hostname + '/u/'+user_id+'?modal=true'
+            });
+        },
+
+        hide: function() {
+            this.$el.modal('hide');
+        },
+
+        teardown: function() {
+            this.$el.data('modal', null);
+            this.remove();
+        }
+
     });
 
     Chat.searchUserModal = Backbone.View.extend({
@@ -154,20 +189,9 @@ $(function() {
         },
 
         openSelected: function(event) {
-//            var topic = $(event.currentTarget).data('topic');
-//
-//            // Is already opened?
-//            var room_id = topic.replace('ws://chat.local/room#', '');
-//            var room = Chat.rooms.get(room_id);
-//            if (room != undefined) {
-//                Chat.rooms.focus(room.get('id'));
-//
-//                // Room not already open
-//            } else {
-//                Chat.server.subscribe(topic);
-//            }
-//
-//            this.hide();
+            var user_id = $(event.currentTarget).data('userId');
+            Chat.main.userProfileModal(user_id);
+            this.hide();
         }
 
     });

@@ -279,7 +279,8 @@ $(function() {
         events: {
             'click .close': 'close',
             'keypress .input-message': 'postMessage',
-            'click .send-message': 'postMessage'
+            'click .send-message': 'postMessage',
+            'click .user-profile': 'openUserProfile'
         },
 
         initialize: function() {
@@ -409,6 +410,11 @@ $(function() {
 
         scrollDown: function() {
             this.$el.find(".messages").scrollTop(100000);
+        },
+
+        openUserProfile: function(event) {
+            var user_id = $(event.currentTarget).closest('.user-item').data('userId');
+            Chat.main.userProfileModal(user_id);
         }
 
     });

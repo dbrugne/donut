@@ -35,6 +35,9 @@ $(function() {
             // Rooms view
             new Chat.RoomsView({collection: Chat.rooms});
 
+            // Online users view
+            new Chat.UsersBlockView({collection: new Chat.OnlineUsersCollection()});
+
             // Smileys view
             new Chat.SmileysView({collection: Chat.smileys});
 
@@ -53,6 +56,7 @@ $(function() {
         },
 
         searchRoomModal: function() {
+            // @todo : move view instanciation in run function
             if (!('searchRoomModalView' in this)) {
                 this.searchRoomModalView = new Chat.searchRoomModal();
             }
@@ -65,7 +69,21 @@ $(function() {
         },
 
         searchUserLink: function() {
+            // @todo : move view instanciation in run function
+            if (!('searchUserModalView' in this)) {
+                this.searchUserModalView = new Chat.searchUserModal();
+            }
 
+            this.searchUserModalView.show();
+        },
+
+        userProfileModal: function(user_id) {
+            // @todo : move view instanciation in run function
+            if (!('userProfileModalView' in this)) {
+                this.userProfileModalView = new Chat.userProfileModal();
+            }
+
+            this.userProfileModalView.show(user_id);
         }
 
     });
