@@ -104,3 +104,16 @@
         </ul>
     </div>
 </script>
+
+<!-- ----------------- -->
+<!-- Online users      -->
+<!-- ----------------- -->
+<script type="text/template" id="online-users-template">
+    <% if (users.length < 1) { %>
+        <a href="#" class="list-group-item user-item"><em>No user online</em></a>
+    <% } else { %>
+        <% _.each(users, function(user) { %>
+            <a href="#" class="list-group-item user-item" data-user-id="<%= user.id %>"><span class="avatar"><img src="<%= user.avatar %>" /></span> <span class="username"><%= user.username %></span></a>
+        <% }); %>
+    <% } %>
+</script>

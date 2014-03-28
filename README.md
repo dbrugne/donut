@@ -32,6 +32,7 @@ v7:
 * Make it work on tablet/phone (browser)
 
 v8:
+* Add "presence" management
 * Fix old session bug
 * User account: photo, bio, town
 * A page per room (as for user)
