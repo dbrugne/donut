@@ -141,8 +141,9 @@ $(document).ready(function() {
     // Router
     Chat.router = new Chat.Routes();
 
-    // Room collection
+    // Opened conversations
     Chat.rooms = new Chat.RoomsCollection;
+    Chat.onetoones = new Chat.OneToOnesCollection;
 
     // Interface
     Chat.main = new Chat.MainView;

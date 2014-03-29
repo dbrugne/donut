@@ -40,6 +40,10 @@ $(function() {
                     that.get('session').subscribe('ws://chat.local/control', function(topic, event) {
                         that.trigger(event.action, event.data);
                     });
+                    // Subscribe to discussion topic (@todo : remove !!)
+                    that.get('session').subscribe('ws://chat.local/discussion', function(topic, event) {
+                        that.trigger(event.action, event.data);
+                    });
                 }
                 , function(code, reason, detail) {
                     that.set('session', null);

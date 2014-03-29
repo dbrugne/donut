@@ -131,6 +131,7 @@ $(function() {
             }
         },
 
+        // @todo : repair focus on close
         focus: function(room_id) {
             // No opened room, display default
             if (this.models.length < 1) {
@@ -168,34 +169,53 @@ $(function() {
     /* ======================  VIEWS  ======================= */
     /* ====================================================== */
 
-    Chat.RoomsView = Backbone.View.extend({
+    // @todo : move and rename this class in Chat
+    Chat.DiscussionsView = Backbone.View.extend({
 
-        $roomsTabContainer: $("#rooms-list"),
-        $roomsWindowContainer: $("#chat-center"),
+        $discussionsTabContainer: $("#rooms-list"), // @todo rename
+        $discussionsWindowContainer: $("#chat-center"),
 
-        initialize: function() {
+        initialize: function(options) {
+            this.roomsCollection =  options.rooms;
+            this.onetoonesCollection =  options.onetoones;
+
             // Binds on Rooms
-            this.listenTo(this.collection, 'add', this.addRoom);
-            this.listenTo(this.collection, 'focusDefault', this.focusDefault);
-            this.listenTo(this.collection, 'unfocusDefault', this.unfocusDefault);
+            this.listenTo(this.roomsCollection, 'add', this.addRoom);
+            this.listenTo(this.roomsCollection, 'focusDefault', this.focusDefault);
+            this.listenTo(this.roomsCollection, 'unfocusDefault', this.unfocusDefault);
+
+            // Binds on OneToOnes
+            this.listenTo(this.onetoonesCollection, 'add', this.addOneToOne);
+            this.listenTo(this.onetoonesCollection, 'focusDefault', this.focusDefault);
+            this.listenTo(this.onetoonesCollection, 'unfocusDefault', this.unfocusDefault);
         },
 
         addRoom: function(room) {
             // Create room tab
-            var viewItem = new Chat.RoomTabView({model: room});
-            this.$roomsTabContainer.append(viewItem.render().el);
+            var tabView = new Chat.RoomTabView({model: room});
+            this.$discussionsTabContainer.append(tabView.render().el);
 
             // Create room window
-            var viewRoom = new Chat.RoomView({model: room});
-            this.$roomsWindowContainer.append(viewRoom.render().el);
+            var windowView = new Chat.RoomView({model: room});
+            this.$discussionsWindowContainer.append(windowView.render().el);
+        },
+
+        addOneToOne: function(onetoone) {
+            // Create tab
+            var tabView = new Chat.OneToOneTabView({model: onetoone});
+            this.$discussionsTabContainer.append(tabView.render().el);
+
+            // Create window
+            var windowView = new Chat.OneToOneView({model: onetoone});
+            this.$discussionsWindowContainer.append(windowView.render().el);
         },
 
         focusDefault: function() {
-            this.$roomsWindowContainer.find('.cwindow[data-default=true]').show();
+            this.$discussionsWindowContainer.find('.cwindow[data-default=true]').show();
         },
 
         unfocusDefault: function() {
-            this.$roomsWindowContainer.find('.cwindow[data-default=true]').hide();
+            this.$discussionsWindowContainer.find('.cwindow[data-default=true]').hide();
         }
 
     });

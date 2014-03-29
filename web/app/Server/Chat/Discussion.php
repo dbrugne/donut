@@ -45,10 +45,10 @@ class Discussion
         }
 
         $outputEvent = array(
-            'action' => 'message',
+            'action' => 'user:message',
             'data' => array(
-                'with_user_id' => $event['with_user_id'],
-                'user_id' => $connFrom->User->getId(),
+                'to_user_id' => $event['to_user_id'],
+                'from_user_id' => $connFrom->User->getId(),
                 'username' => $connFrom->User->getUsername(),
                 'avatar' => $connFrom->User->getAvatarUrl(20),
                 'message' => $message,
@@ -56,18 +56,17 @@ class Discussion
             ),
         );
         $connFrom->event($this->_app['channels']->getDiscussionTopic(), $outputEvent);
-        if ($connFrom->User->getId() != $event['with_user_id']) { // user speak to himself
+        if ($connFrom->User->getId() != $event['to_user_id']) { // user speak to himself
             // @todo: optimize user search
             foreach($this->_subscribers as $connTo) {
-                if ($connTo->User->getId() == $event['with_user_id']) {
-                    $outputEvent['data']['with_user_id'] = $connFrom->User->getId();
+                if ($connTo->User->getId() == $event['to_user_id']) {
                     $connTo->event($this->_app['channels']->getDiscussionTopic(), $outputEvent);
                     break;
                 }
             }
         }
 
-        $this->_app['monolog']->info("New discussion message from '{$connFrom->User->getId()}' to '{$event['with_user_id']}': '{$message}'");
+        $this->_app['monolog']->info("New discussion message from '{$connFrom->User->getId()}' to '{$event['to_user_id']}': '{$message}'");
     }
 
     /**

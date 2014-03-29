@@ -12,8 +12,7 @@ $(function() {
             return {
                 user_id: '',
                 username: '',
-                avatar: '',
-                unread: 0
+                avatar: ''
             };
         }
 
@@ -83,7 +82,8 @@ $(function() {
         template: _.template($('#online-users-template').html()),
 
         events: {
-            'click .user-item': 'openSelected' // @todo
+            'click .user-profile': 'openProfile',
+            'click .user-discussion': 'openOneToOne'
         },
 
         initialize: function(options) {
@@ -101,9 +101,26 @@ $(function() {
             return this;
         },
 
-        openSelected: function(event) {
-            var user_id = $(event.currentTarget).data('userId');
+        openProfile: function(event) {
+            var user_id = $(event.currentTarget).closest('.user-item').data('userId');
             Chat.main.userProfileModal(user_id);
+        },
+
+        openOneToOne: function(event) {
+            var user_id = $(event.currentTarget).closest('.user-item').data('userId');
+
+            var user = this.collection.get(user_id);
+
+            // @todo : if not already exists, else focus
+
+            var onetoone = new Chat.OneToOne({
+                id: user_id,
+                user: user
+            });
+
+            Chat.onetoones.add(onetoone);
+
+            onetoone.focus();
         }
 
     });
