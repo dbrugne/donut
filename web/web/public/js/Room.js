@@ -6,103 +6,36 @@ $(function() {
     /* =====================  MODELS  ======================= */
     /* ====================================================== */
 
-    Chat.Room = Backbone.Model.extend({
+    Chat.Room = Chat.Discussion.extend({
 
         defaults: function() {
             return {
-                // room
+                room_id: '',
                 name: '',
                 baseline: '',
+                type: 'room',
+                focused: false,
                 unread: 0
             };
         },
 
-        focused: false,
-
-        initialize: function() {
+        _initialize: function() {
             this.users = new Chat.UsersCollection();
-            this.messages = new Chat.MessagesCollection();
             this.on('remove', this.unsubscribe);
+            this.listenTo(Chat.server, 'room:userIn', this.userIn);
+            this.listenTo(Chat.server, 'room:userOut', this.userOut);
+            this.listenTo(Chat.server, 'room:baseline', this.baseline);
         },
 
         unsubscribe: function(model, collection, options) {
-            Chat.server.unsubscribe('ws://chat.local/room#'+model.get('id'));
-        },
-
-        focus: function() {
-            this.focused = true;
-            this.trigger('focus');
-
-            // Update URL
-            Chat.router.navigate('room/'+this.get('name'));
-            // @todo : best place to do that?
-        },
-
-        unfocus: function() {
-            this.focused = false;
-            this.trigger('unfocus');
-        }
-
-    });
-
-    Chat.RoomsCollection = Backbone.Collection.extend({
-
-        model: Chat.Room,
-
-        initialize: function() {
-
-            this.listenTo(Chat.server, 'room:pleaseJoin', this.joinRoom);
-            this.listenTo(Chat.server, 'room:pleaseLeave', this.leaveRoom);
-            this.listenTo(Chat.server, 'room:joinSuccess', this.joinSuccess);
-            this.listenTo(Chat.server, 'room:userIn', this.userIn);
-            this.listenTo(Chat.server, 'room:userOut', this.userOut);
-            this.listenTo(Chat.server, 'room:baseline', this.changeBaseline);
-            this.listenTo(Chat.server, 'room:message', this.roomMessage);
-
-        },
-
-        _targetRoom: function(room_id) {
-            return this.get(room_id);
-        },
-
-        joinRoom: function(params) {
-            Chat.server.subscribe(params.topic);
-        },
-
-        leaveRoom: function(params) {
-            var room = this._targetRoom(params.data.room_id);
-            this.remove(room);
-        },
-
-        joinSuccess: function(params) {
-
-            var newRoomId = params.data.room_id;
-
-            // Create room in browser
-            this.add(new Chat.Room({
-                id: newRoomId,
-                name: params.data.name,
-                baseline: params.data.baseline
-            }));
-
-            var room = this._targetRoom(newRoomId);
-
-            // Add user in the room
-            _.each(params.data.users, function(element, key, list) {
-                room.users.add(new Chat.User({
-                    id: element.user_id,
-                    username: element.username,
-                    avatar: element.avatar
-                }));
-            });
-
-            this.focus(room.get('id'));
+            Chat.server.unsubscribe('ws://chat.local/room#'+model.get('room_id'));
         },
 
         userIn: function(params) {
-            var room = this._targetRoom(params.data.room_id);
-
-            room.users.add(new Chat.User({
+            if (params.data.room_id != this.get('room_id')) {
+                return;
+            }
+            this.users.add(new Chat.User({
                 id: params.data.user_id,
                 username: params.data.username,
                 avatar: params.data.avatar
@@ -110,57 +43,19 @@ $(function() {
         },
 
         userOut: function(params) {
-            var room = this._targetRoom(params.data.room_id);
-            var user = room.users.get(params.data.user_id);
-            room.users.remove(user);
-        },
-
-        changeBaseline: function(params) {
-            var room = this._targetRoom(params.data.room_id);
-            room.set('baseline', params.data.baseline);
-            // @todo notif in room
-        },
-
-        roomMessage: function(params) {
-            var room = this._targetRoom(params.data.room_id);
-            room.messages.add(new Chat.Message(params.data)); // i pass everything, maybe not ideal
-
-            if (!room.focused) {
-                var unread = room.get('unread');
-                room.set('unread', unread + 1);
-            }
-        },
-
-        // @todo : repair focus on close
-        focus: function(room_id) {
-            // No opened room, display default
-            if (this.models.length < 1) {
-                this.trigger('focusDefault');
-            } else {
-                this.trigger('unfocusDefault');
-            }
-
-            var room;
-            if (room_id == '' || room_id == undefined) {
-                // No room_id provided, try to find first opened room
-                room = this.first();
-            } else {
-                room = this.get(room_id);
-            }
-
-            // room_id provided doesn't exist,
-            if (room == undefined) {
-                console.error('Unable to find room to focus');
+            if (params.data.room_id != this.get('room_id')) {
                 return;
             }
+            var user = this.users.get(params.data.user_id);
+            this.users.remove(user);
+        },
 
-            // Unfocus every model
-            _.each(this.models, function(roomToUnfocus, key, list) {
-                roomToUnfocus.unfocus();
-            });
-
-            // Focus the one we want
-            room.focus();
+        baseline: function(params) {
+            if (params.data.room_id != this.get('room_id')) {
+                return;
+            }
+            this.set('baseline', params.data.baseline);
+            // @todo notif in room
         }
 
     });
@@ -169,120 +64,20 @@ $(function() {
     /* ======================  VIEWS  ======================= */
     /* ====================================================== */
 
-    // @todo : move and rename this class in Chat
-    Chat.DiscussionsView = Backbone.View.extend({
-
-        $discussionsTabContainer: $("#rooms-list"), // @todo rename
-        $discussionsWindowContainer: $("#chat-center"),
-
-        initialize: function(options) {
-            this.roomsCollection =  options.rooms;
-            this.onetoonesCollection =  options.onetoones;
-
-            // Binds on Rooms
-            this.listenTo(this.roomsCollection, 'add', this.addRoom);
-            this.listenTo(this.roomsCollection, 'focusDefault', this.focusDefault);
-            this.listenTo(this.roomsCollection, 'unfocusDefault', this.unfocusDefault);
-
-            // Binds on OneToOnes
-            this.listenTo(this.onetoonesCollection, 'add', this.addOneToOne);
-            this.listenTo(this.onetoonesCollection, 'focusDefault', this.focusDefault);
-            this.listenTo(this.onetoonesCollection, 'unfocusDefault', this.unfocusDefault);
-        },
-
-        addRoom: function(room) {
-            // Create room tab
-            var tabView = new Chat.RoomTabView({model: room});
-            this.$discussionsTabContainer.append(tabView.render().el);
-
-            // Create room window
-            var windowView = new Chat.RoomView({model: room});
-            this.$discussionsWindowContainer.append(windowView.render().el);
-        },
-
-        addOneToOne: function(onetoone) {
-            // Create tab
-            var tabView = new Chat.OneToOneTabView({model: onetoone});
-            this.$discussionsTabContainer.append(tabView.render().el);
-
-            // Create window
-            var windowView = new Chat.OneToOneView({model: onetoone});
-            this.$discussionsWindowContainer.append(windowView.render().el);
-        },
-
-        focusDefault: function() {
-            this.$discussionsWindowContainer.find('.cwindow[data-default=true]').show();
-        },
-
-        unfocusDefault: function() {
-            this.$discussionsWindowContainer.find('.cwindow[data-default=true]').hide();
-        }
-
-    });
-
-    Chat.RoomTabView = Backbone.View.extend({
+    Chat.RoomTabView = Chat.DiscussionTabView.extend({
 
         template: _.template($('#rooms-list-item-template').html()),
 
-        events: {
-            "click .close": "closeThisRoom"
-        },
-
-        initialize: function() {
-            this.listenTo(Chat.rooms, 'remove', this.removeRoom);
-            this.listenTo(this.model, 'focus', this.focus);
-            this.listenTo(this.model, 'unfocus', this.unfocus);
-            this.listenTo(this.model, 'change:unread', this.updateUnread);
+        _initialize: function(options) {
             this.listenTo(this.model.users, 'add', this.updateUsers);
             this.listenTo(this.model.users, 'remove', this.updateUsers);
         },
 
-        removeRoom: function(model) {
-            if (model === this.model) {
-                this.remove();
-            }
-        },
-
-        render: function() {
-            // users are not an "attribute", but an object properties
-            var html = this.template({
+        _renderData: function() {
+            return {
                 room: this.model.toJSON(),
-                users: this.model.users.toJSON()
-            });
-            this.$el.html(html);
-            return this;
-        },
-
-        closeThisRoom: function (event) {
-            Chat.rooms.remove(this.model); // remove model from collection
-
-            // After remove, the room still exists but not in the collection,
-            // = .focus() call will choose another room to be focused
-            if (this.model.focused) {
-                Chat.rooms.focus();
-            }
-
-            return false; // stop propagation
-        },
-
-        focus: function() {
-            this.$el.find('.room-item').addClass('active');
-            this.model.set('unread', 0);
-        },
-
-        unfocus: function() {
-            this.$el.find('.room-item').removeClass('active');
-        },
-
-        updateUnread: function() {
-            this.$el.find('.badge').html(this.model.get('unread'));
-            if (this.model.get('unread') < 1) {
-                this.$el.find('.badge').fadeOut(400);
-                this.$el.removeClass('unread');
-            } else {
-                this.$el.find('.badge').fadeIn(400);
-                this.$el.addClass('unread');
-            }
+                users: this.model.users.toJSON() // users are not an "attribute", but an object properties
+            };
         },
 
         updateUsers: function() {
@@ -291,16 +86,11 @@ $(function() {
 
     });
 
-    Chat.RoomView = Backbone.View.extend({
-
-        tagName: 'div',
-        className: 'cwindow',
+    Chat.RoomWindowView = Chat.DiscussionWindowView.extend({
 
         template: _.template($('#room-template').html()),
 
         userTemplate: _.template($('#user-template').html()),
-
-        messageTemplate: _.template($('#message-template').html()),
 
         events: {
             'click .close': 'close',
@@ -315,16 +105,17 @@ $(function() {
                 Chat.main.userProfileModal(
                     $(event.currentTarget).closest('.user-item').data('userId')
                 );
+            },
+            'click .user-discussion': function(event) {
+                var user_id = $(event.currentTarget).closest('.user-item').data('userId');
+                var model = this.collection.openOneToOne(this.model.users.get(user_id));
+                this.collection.focus(model);
             }
         },
 
-        initialize: function() {
-            this.listenTo(Chat.rooms, 'remove', this.removeRoom);
+        _initialize: function() {
             this.listenTo(this.model.users, 'add', this.renderUsers);
             this.listenTo(this.model.users, 'remove', this.renderUsers);
-            this.listenTo(this.model.messages, 'add', this.addMessage);
-            this.listenTo(this.model, 'focus', this.focus);
-            this.listenTo(this.model, 'unfocus', this.unfocus);
 
             // Subviews
             this.baselineView = new Chat.baselineView({model: this.model});
@@ -358,24 +149,15 @@ $(function() {
         },
 
         close: function (event) {
-            Chat.rooms.remove(this.model); // remove model from collection
+            this.collection.remove(this.model); // remove model from collection
 
             // After remove, the room still exists but not in the collection,
             // = .focus() call will choose another room to be focused
             if (this.model.focused) {
-                Chat.rooms.focus();
+                this.collection.focus();
             }
 
             return false; // stop propagation
-        },
-
-        focus: function() {
-            this.$el.fadeIn(400);
-            this.$el.find('.input-message').focus();
-        },
-
-        unfocus: function() {
-            this.$el.hide();
         },
 
         postMessage: function(event) {
@@ -403,53 +185,13 @@ $(function() {
             }
 
             // Post
-            Chat.server.message('ws://chat.local/room#'+this.model.get('id'), {message: message});
+            Chat.server.message('ws://chat.local/room#'+this.model.get('room_id'), {message: message});
 
             // Empty field
             inputField.val('');
 
             // avoid line break addition in field when submitting with "Enter"
             return false;
-        },
-
-        addMessage: function(message) {
-
-            // Date
-            var dateText = $.format.date(new Date(message.get('time')*1000), "HH:mm:ss");
-
-            // Message body
-            var messageHtml = message.get('message');
-            messageHtml = messageHtml.replace(/\n/g, '<br />');
-
-            // Hyperlinks (URLs starting with http://, https://, or ftp://)
-            urlPattern = /(\b(https?|ftp)?:\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim;
-            messageHtml = messageHtml.replace(urlPattern, '<a href="$1" target="_blank">$1</a>');
-
-            // Smileys
-//            $(smileys).each(function (idx, smiley) {
-//                messageHtml = messageHtml.replace(smiley.symbol, '<span class="smiley emoticon-16px '+smiley.class+'">'+smiley.symbol+'</span>');
-//            });
-
-            var html = this.messageTemplate({
-                user_id: message.get('user_id'),
-                avatar: message.get('avatar'),
-                username: message.get('username'),
-                message: messageHtml,
-                date: dateText
-            });
-            this.$el.find('.messages').append(html);
-
-            this.scrollDown();
-            return this;
-        },
-
-        scrollDown: function() {
-            this.$el.find(".messages").scrollTop(100000);
-        },
-
-        openUserProfile: function(event) {
-            var user_id = $(event.currentTarget).closest('.user-item').data('userId');
-            Chat.main.userProfileModal(user_id);
         }
 
     });
@@ -514,7 +256,7 @@ $(function() {
 
         sendNewBaseline: function(event) {
             var newBaseline = this.$el.find('.baseline-input').val();
-            Chat.server.baseline('ws://chat.local/room#'+this.model.get('id'), newBaseline);
+            Chat.server.baseline('ws://chat.local/room#'+this.model.get('room_id'), newBaseline);
             this.$el.find('.baseline-input').val('')
             this.hideForm();
         }
@@ -577,9 +319,9 @@ $(function() {
 
             // Is already opened?
             var room_id = topic.replace('ws://chat.local/room#', '');
-            var room = Chat.rooms.get(room_id);
+            var room = Chat.discussions.get('room'+room_id);
             if (room != undefined) {
-                Chat.rooms.focus(room.get('id'));
+                Chat.discussions.focus(room);
 
             // Room not already open
             } else {

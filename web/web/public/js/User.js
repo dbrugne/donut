@@ -111,16 +111,8 @@ $(function() {
 
             var user = this.collection.get(user_id);
 
-            // @todo : if not already exists, else focus
-
-            var onetoone = new Chat.OneToOne({
-                id: user_id,
-                user: user
-            });
-
-            Chat.onetoones.add(onetoone);
-
-            onetoone.focus();
+            var onetoone = Chat.discussions.openOneToOne(user);
+            Chat.discussions.focus(onetoone);
         }
 
     });

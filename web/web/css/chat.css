@@ -27,14 +27,15 @@ body { padding-top: 50px; }
             #block-status button { font-size: 11px; position: absolute; right: 10px; }
         #block-rooms {}
             #block-rooms .panel-heading { border-color: transparent; }
-            #block-rooms .room-item { font-size: 12px; }
-            #block-rooms .unread .room-item { color: orangered; }
-            #block-rooms .room-item .name {  }
-            #block-rooms .room-item .badge { display: none; margin-right: 5px; }
-            #block-rooms .room-item .close { font-size: 14px; color: #FF0000; }
+            #block-rooms .list-item { font-size: 12px; }
+            #block-rooms .unread .list-item { color: orangered; }
+            #block-rooms .list-item .name {  }
+            #block-rooms .list-item .badge { display: none; margin-right: 5px; }
+            #block-rooms .list-item .close { font-size: 14px; color: #FF0000; }
             #create-room-form { display: none; margin-top: 10px; }
         #block-users {}
             #block-users .panel-heading { border-color: transparent; }
+            #block-users .user-item .actions { position: absolute; right: 10px; }
 
     #chat-center { padding: 0; /* Cancel bootstrap native space between columns */ }
         .cwindow { background-color: #FFFFFF; position: relative;  padding-top: 45px; }

@@ -14,7 +14,7 @@
             </div>
             <div id="block-rooms" class="panel panel-default">
                 <div class="panel-heading">Rooms</div>
-                <div id="rooms-list" class="list-group"></div>
+                <div id="discussions-list" class="list-group"></div>
                 <div class="panel-footer">
                     <a href="#" id="create-room-link"><span class="glyphicon glyphicon-plus"></span> Create a room</a>
                     <br />
@@ -122,28 +122,29 @@
 <!-- @todo : replaced by socket.io --><script src="/js/when.js"></script>
 <!-- @todo : replaced by socket.io --><script src="/js/autobahn.js"></script>
 <script src="/public/js/Smiley.js"></script>
+<script src="/public/js/Discussion.js"></script>
 <script src="/public/js/User.js"></script>
 <script src="/public/js/Room.js"></script>
 <script src="/public/js/OneToOne.js"></script>
 <script src="/public/js/Message.js"></script>
 <script src="/public/js/Server.js"></script>
-<script src="/public/js/Chat.js"></script>
+<script src="/public/js/App.js"></script>
 <script>
 $(document).ready(function() {
 
-    // @todo : embeded init in an object
+    // @todo : embeded init in an App object
+    // @todo : require.js
 
     Chat = window.Chat || { };
 
     // Server
-    Chat.server = new Chat.ServerModel( {debugOn: false} );
+    Chat.server = new Chat.ServerModel( {debugOn: true} );
 
     // Router
     Chat.router = new Chat.Routes();
 
     // Opened conversations
-    Chat.rooms = new Chat.RoomsCollection;
-    Chat.onetoones = new Chat.OneToOnesCollection;
+    Chat.discussions = new Chat.DiscussionsCollection();
 
     // Interface
     Chat.main = new Chat.MainView;
