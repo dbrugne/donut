@@ -11,7 +11,6 @@ $(function() {
     /* ======================  VIEWS  ======================= */
     /* ====================================================== */
 
-    // Whole interface View
     Chat.MainView = Backbone.View.extend({
 
         el: $("#chat"),
@@ -37,7 +36,12 @@ $(function() {
             new Chat.DiscussionsView({collection: Chat.discussions});
 
             // Online users view
-            new Chat.UsersBlockView({collection: new Chat.OnlineUsersCollection()});
+            new Chat.OnlineUsersView({collection: new Chat.OnlineUsersCollection()});
+
+            // Modals (reusable)
+            this.searchRoomModalView = new Chat.SearchRoomModal();
+            this.searchUserModalView = new Chat.SearchUserModal();
+            this.userProfileModalView = new Chat.UserProfileModal();
 
             // Server events
             var that = this;
@@ -50,11 +54,7 @@ $(function() {
         },
 
         searchRoomModal: function() {
-            // @todo : move view instanciation in run function
-            if (!('searchRoomModalView' in this)) {
-                this.searchRoomModalView = new Chat.searchRoomModal();
-            }
-
+            this.searchRoomModalView.search();
             this.searchRoomModalView.show();
         },
 
@@ -63,20 +63,11 @@ $(function() {
         },
 
         searchUserLink: function() {
-            // @todo : move view instanciation in run function
-            if (!('searchUserModalView' in this)) {
-                this.searchUserModalView = new Chat.searchUserModal();
-            }
-
+            this.searchUserModalView.search();
             this.searchUserModalView.show();
         },
 
         userProfileModal: function(user_id) {
-            // @todo : move view instanciation in run function
-            if (!('userProfileModalView' in this)) {
-                this.userProfileModalView = new Chat.userProfileModal();
-            }
-
             this.userProfileModalView.show(user_id);
         }
 

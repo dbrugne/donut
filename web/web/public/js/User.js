@@ -53,33 +53,70 @@ $(function() {
     /* ======================  VIEWS  ======================= */
     /* ====================================================== */
 
-    Chat.UsersBlockView = Backbone.View.extend({
+    Chat.OnlineUsersView = Backbone.View.extend({
 
         el: $('#block-users'),
 
-        events: {
-        },
+        template: _.template($('#online-users-template').html()),
 
-        initialize: function() {
-            // Subview
-            new Chat.OnlineUsersView({
-                el: this.$el.find('#online-users-list'),
-                collection: new Chat.OnlineUsersCollection()
-            });
+        userSubviews: '',
+
+        initialize: function(options) {
+            this.listenTo(this.collection, 'add', this.addUser);
+            this.listenTo(this.collection, 'remove', this.removeUser);
+
+            this.render();
+
+            this.userSubviews = new Backbone.Collection();
+            this.$list = this.$el.find('.list-group');
         },
 
         render: function() {
+            this.$el.html(this.template());
             return this;
         },
 
-        openSearchUserModal: function(event) {
-            alert('cheap modal');
+        remove: function() {
+            this.userSubviews.each(function(item) {
+                item.get('view').remove();
+            });
+            Backbone.View.prototype.remove.apply(this, arguments);
+        },
+
+        addUser: function(model, collection, options) {
+            var view = new Chat.UserListView({model: model});
+            this.userSubviews.add({
+                id: model.get('id'),
+                username: model.get('username'),
+                view: view
+            });
+            this.$list.append(view.$el);
+
+            this.sort();
+        },
+
+        removeUser: function(model, collection, options) {
+            var view = this.userSubviews.get(model.get('id')).get('view').remove();
+            this.userSubviews.remove(model.get('id'));
+        },
+
+        sort: function() {
+            var sorted = _.sortBy(this.userSubviews.toJSON(), 'username');
+            this.$list.empty();
+
+            _.each(sorted, function(item) {
+                this.$list.append(item.view.$el);
+                item.view.delegateEvents();
+            }, this);
         }
+
     });
 
-    Chat.OnlineUsersView = Backbone.View.extend({
+    Chat.UserListView = Backbone.View.extend({
 
-        template: _.template($('#online-users-template').html()),
+        tagName: 'div',
+
+        template: _.template($('#user-template').html()),
 
         events: {
             'click .user-profile': 'openProfile',
@@ -87,37 +124,26 @@ $(function() {
         },
 
         initialize: function(options) {
-            this.listenTo(this.collection, 'add', this.render);
-            this.listenTo(this.collection, 'remove', this.render);
             this.render();
-
         },
 
         render: function() {
-            var html = this.template({
-                users: this.collection.toJSON()
-            });
-            this.$el.html(html);
+            this.$el.html(this.template(this.model.toJSON()));
             return this;
         },
 
         openProfile: function(event) {
-            var user_id = $(event.currentTarget).closest('.user-item').data('userId');
-            Chat.main.userProfileModal(user_id);
+            Chat.main.userProfileModal(this.model.get('id'));
         },
 
         openOneToOne: function(event) {
-            var user_id = $(event.currentTarget).closest('.user-item').data('userId');
-
-            var user = this.collection.get(user_id);
-
-            var onetoone = Chat.discussions.openOneToOne(user);
+            var onetoone = Chat.discussions.openOneToOne(this.model);
             Chat.discussions.focus(onetoone);
         }
 
     });
 
-    Chat.userProfileModal = Backbone.View.extend({
+    Chat.UserProfileModal = Backbone.View.extend({
 
         el: $('#user-profile-modal'),
 
@@ -146,7 +172,7 @@ $(function() {
 
     });
 
-    Chat.searchUserModal = Backbone.View.extend({
+    Chat.SearchUserModal = Backbone.View.extend({
 
         el: $('#user-search-modal'),
 
@@ -161,7 +187,6 @@ $(function() {
         initialize: function() {
             this.listenTo(Chat.server, 'user:searchSuccess', this.searchSuccess);
             this.listenTo(Chat.server, 'user:searchError', this.searchError);
-            this.search();
         },
 
         show: function() {

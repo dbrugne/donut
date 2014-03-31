@@ -71,9 +71,9 @@ body { padding-top: 50px; }
         .discussion .popover li { margin-right: 5px; margin-bottom: 5px; }
         .discussion .room-users  { background-color: #fff; }
         .discussion .room-users .list-group  { margin-bottom: 0; /* Cancel bootstrap native space after panel */ }
-        .discussion .room-users .list-group-item  { border-left: 0; border-right: 0; }
-        .discussion .room-users .list-group-item:last-child  { margin-bottom: 0; /* Cancel bootstrap native space after panel */ border-radius: 0; }
-        .discussion .room-users .heading { padding: 10px 15px; background-color: #f5f5f5; font-weight: bold; color: #8a8a8a; }
+        .discussion .room-users .list-group-item  { border-left: 0; border-right: 0; border-top: 0; }
+        .discussion .room-users .list-group-item:last-child { margin-bottom: 0; /* Cancel bootstrap native space after panel */ border-radius: 0; }
+        .discussion .room-users .heading { padding: 10px 15px; background-color: #f5f5f5; font-weight: bold; color: #8a8a8a; border-bottom: 1px solid #ddd; }
         .discussion .room-users .footer { padding: 10px 15px; background-color: #f5f5f5; }
         .discussion .room-users .user-item  { padding: 10px; }
         .discussion .room-users .user-item .actions { }

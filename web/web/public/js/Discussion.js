@@ -160,6 +160,9 @@ $(function() {
                 avatar: message.avatar
             }));
 
+            // To have the same data between room and user messages (= same view code)
+            message.user_id = message.from_user_id;
+
             model.message(message);
         },
 
@@ -181,8 +184,6 @@ $(function() {
             return model;
         }
 
-        /* OneToOne specific */
-
     });
 
     /* ====================================================== */
@@ -196,7 +197,7 @@ $(function() {
         $discussionsWindowContainer: $("#chat-center"),
 
         initialize: function(options) {
-            this.listenTo(this.collection, 'add', this.addModel);
+            this.listenTo(this.collection, 'add', this.addDiscussion);
             this.listenTo(this.collection, 'focusDefault', this.focusDefault);
             this.listenTo(this.collection, 'unfocusDefault', this.unfocusDefault);
 
@@ -204,7 +205,7 @@ $(function() {
             new Chat.SmileysView({collection: Chat.smileys});
         },
 
-        addModel: function(model, collection, options) {
+        addDiscussion: function(model, collection, options) {
             if (model.get('type') == 'room') {
                 var tabView = new Chat.RoomTabView({collection: collection, model: model });
                 var windowView = new Chat.RoomWindowView({ collection: collection, model: model });
@@ -215,16 +216,16 @@ $(function() {
                 return;
             }
 
-            this.$discussionsTabContainer.append(tabView.render().el);
-            this.$discussionsWindowContainer.append(windowView.render().el);
+            this.$discussionsTabContainer.append(tabView.$el);
+            this.$discussionsWindowContainer.append(windowView.$el);
         },
 
         focusDefault: function() {
-            this.$discussionsWindowContainer.find('.cwindow[data-default=true]').show();
+            this.$discussionsWindowContainer.find('.discussion[data-default=true]').show();
         },
 
         unfocusDefault: function() {
-            this.$discussionsWindowContainer.find('.cwindow[data-default=true]').hide();
+            this.$discussionsWindowContainer.find('.discussion[data-default=true]').hide();
         }
 
     });
@@ -245,6 +246,8 @@ $(function() {
             this.listenTo(this.collection, 'remove', this.removeView);
 
             this._initialize(options);
+
+            this.render();
         },
 
         // To override
@@ -304,25 +307,52 @@ $(function() {
 
     Chat.DiscussionWindowView = Backbone.View.extend({
 
-        // @todo : add postbox subview
-        // @todo : add messages subview
-        // [@todo : add users subview (room only)]
-
         tagName: 'div',
 
-        className: 'cwindow',
+        className: 'discussion',
 
-        messageTemplate: _.template($('#message-template').html()),
+        events: {
+            "click .close": "closeThis"
+        },
 
         initialize: function(options) {
-            this.listenTo(this.collection, 'remove', this.removeRoom);
-            this.listenTo(this.model.messages, 'add', this.addMessage);
+            // Events
+            this.listenTo(this.collection, 'remove', this.removeView);
             this.listenTo(this.model, 'change:focused', this.updateFocus);
+
+            // Parent view rendering
+            this.render(); // (now exists in DOM)
+
+            // Subviews initialization and rendering
+            this.messagesView = new Chat.DiscussionMessagesView({el: this.$el.find('.messages'), model: this.model.messages});
+            this.messageBoxView = new Chat.DiscussionMessageBoxView({el: this.$el.find('.message-box'), model: this.model});
+            // (later we will be able to re-render each subview individually without touching this view)
+
+            // Other subviews
             this._initialize(options);
         },
 
         // To override
         _initialize: function(options) {
+        },
+
+        // To override
+        _remove: function(model) {
+        },
+
+        // To override
+        _renderData: function() {
+        },
+
+        // To override
+        _render: function() {
+        },
+
+        render: function() {
+            var html = this.template(this._renderData());
+            this.$el.html(html);
+            this.$el.hide();
+            return this;
         },
 
         updateFocus: function() {
@@ -334,6 +364,50 @@ $(function() {
             }
         },
 
+        removeView: function(model) {
+            if (model === this.model) {
+                this._remove();
+                this.messagesView.remove();
+                this.messageBoxView.remove();
+                this.remove();
+            }
+        },
+
+        closeThis: function(event) { // @todo : duplicate code tab/window
+            this.collection.remove(this.model); // remove model from collection
+
+            // After remove, the room still exists but is not in the collection,
+            // = .focus() call will choose another room to be focused
+            if (this.model.get('focused')) {
+                this.collection.focus();
+            }
+
+            return false; // stop propagation
+        }
+
+    });
+
+    Chat.DiscussionMessagesView = Backbone.View.extend({
+
+        template: _.template($('#message-template').html()),
+
+        events: {
+            'click p > .username': function(event) {
+                Chat.main.userProfileModal(
+                    $(event.currentTarget).data('userId')
+                );
+            }
+        },
+
+        initialize: function(options) {
+            this.listenTo(this.model, 'add', this.addMessage);
+            this.render();
+        },
+
+        render: function() {
+            // nothing to add in this particular subview
+        },
+
         addMessage: function(message) {
             // Date
             var dateText = $.format.date(new Date(message.get('time')*1000), "HH:mm:ss");
@@ -343,7 +417,7 @@ $(function() {
             messageHtml = messageHtml.replace(/\n/g, '<br />');
 
             // Hyperlinks (URLs starting with http://, https://, or ftp://)
-            urlPattern = /(\b(https?|ftp)?:\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim;
+            var urlPattern = /(\b(https?|ftp)?:\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim;
             messageHtml = messageHtml.replace(urlPattern, '<a href="$1" target="_blank">$1</a>');
 
             // Smileys
@@ -351,28 +425,88 @@ $(function() {
 //                messageHtml = messageHtml.replace(smiley.symbol, '<span class="smiley emoticon-16px '+smiley.class+'">'+smiley.symbol+'</span>');
 //            });
 
-            var html = this.messageTemplate({
+            var html = this.template({
                 user_id: message.get('user_id'),
                 avatar: message.get('avatar'),
                 username: message.get('username'),
                 message: messageHtml,
                 date: dateText
             });
-            this.$el.find('.messages').append(html);
+            this.$el.append(html);
 
             this.scrollDown();
             return this;
         },
 
-        openUserProfile: function(event) {
-            var user_id = $(event.currentTarget).closest('.user-item').data('userId');
-            Chat.main.userProfileModal(user_id);
-        },
-
         scrollDown: function() {
-            this.$el.find(".messages").scrollTop(100000);
+            this.$el.scrollTop(100000);
         }
 
+    });
+
+    Chat.DiscussionMessageBoxView = Backbone.View.extend({
+
+        template: _.template($('#message-box-template').html()),
+
+        events: {
+            'keypress .input-message': 'message',
+            'click .send-message': 'message'
+        },
+
+        initialize: function(options) {
+            this.render();
+        },
+
+        render: function() {
+            this.$el.html(this.template());
+        },
+
+        message: function(event) {
+            // Enter in field handling
+            if (event.type == 'keypress') {
+                var key;
+                var isShift;
+                if (window.event) {
+                    key = window.event.keyCode;
+                    isShift = window.event.shiftKey ? true : false;
+                } else {
+                    key = event.which;
+                    isShift = event.shiftKey ? true : false;
+                }
+                if(isShift || event.which != 13) {
+                    return;
+                }
+            }
+
+            // Get the message
+            var inputField = this.$el.find('.input-message');
+            var message = inputField.val();
+            if (message == '') {
+                return;
+            }
+
+            // Post
+            if (this.model.get('type') == 'room') {
+                Chat.server.message(
+                    'ws://chat.local/room#'+this.model.get('room_id'),
+                    {message: message}
+                );
+            } else if (this.model.get('type') == 'onetoone') {
+                Chat.server.message(
+                    'ws://chat.local/discussion',
+                    {
+                        to_user_id: this.model.get('user_id'),
+                        message: message
+                    }
+                );
+            }
+
+            // Empty field
+            inputField.val('');
+
+            // avoid line break addition in field when submitting with "Enter"
+            return false;
+        }
     });
 
 });

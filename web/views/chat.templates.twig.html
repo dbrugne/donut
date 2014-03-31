@@ -11,39 +11,20 @@
 </script>
 
 <!-- ----------------- -->
-<!-- RoomWindowView    -->
+<!-- RoomWindow        -->
 <!-- ----------------- -->
 <script type="text/template" id="room-template">
     <div class="header">
         <span class="name"><%= name %></span>
+        <div class="baseline-block"></div>
         <span class="close glyphicon glyphicon-remove"></span>
     </div><!-- /.header -->
     <div class="row row-content">
         <div class="col-content col-sm-9 col-md-9 col-lg-9">
             <div class="messages"></div>
-            <div class="postbox form-inline">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="input-group">
-                            <span class="input-group-addon smileys-message" data-toggle="popover" data-html="true" data-placement="top"><span class="emoticon-16px emoticon-smile">:)</span></span>
-                            <textarea class="input-message form-control" data-topic="" style="resize: none; " rows="1" maxlength="1000"></textarea>
-                            <span class="input-group-btn">
-                                <button type="button" class="btn btn-default send-message" data-topic="">Send!</button>
-                            </span>
-                        </div><!-- /input-group -->
-                    </div><!-- /.col-lg-12 -->
-                </div><!-- /.row -->
-            </div><!-- /.postbox -->
+            <div class="message-box"></div>
         </div>
-        <div class="col-users col-sm-3 col-md-3 col-lg-3">
-            <div class="room-users">
-                <div class="heading">Room users</div>
-                <div class="list-group"><!-- users --></div>
-                <div class="footer">
-                    <a href="#"><span class="glyphicon glyphicon-plus"></span> Invite a user</a>
-                </div>
-            </div><!-- /.room-users -->
-        </div><!-- /.col-users -->
+        <div class="col-users col-sm-3 col-md-3 col-lg-3"></div>
     </div><!-- /.row-content -->
 </script>
 
@@ -60,12 +41,23 @@
 </script>
 
 <!-- ----------------- -->
+<!-- RoomUsers         -->
+<!-- ----------------- -->
+<script type="text/template" id="room-users-template">
+    <div class="room-users">
+        <div class="heading">Room users</div>
+        <div class="list-group"></div>
+        <div class="footer">
+            <a href="#"><span class="glyphicon glyphicon-plus"></span> Invite a user</a>
+        </div><!-- /.footer -->
+    </div><!-- /.room-users -->
+</script>
+
+<!-- ----------------- -->
 <!-- RoomUser          -->
 <!-- ----------------- -->
 <script type="text/template" id="user-template">
-    <% _.each(users, function(user) { %>
-        <a href="#" class="user-item list-group-item" data-user-id="<%= user.id %>"><span class="username"><%= user.username %></span> <span class="actions"><span class="glyphicon glyphicon-user user-profile"></span> <span class="glyphicon glyphicon-edit user-discussion"></span></span></a>
-    <% }); %>
+    <a href="#" class="user-item list-group-item" data-user-id="<%= id %>"><span class="username"><%= username %></span> <span class="actions"><span class="glyphicon glyphicon-user user-profile"></span> <span class="glyphicon glyphicon-edit user-discussion"></span></span></a>
 </script>
 
 <!-- ----------------- -->
@@ -90,22 +82,34 @@
     <div class="row row-content">
         <div class="col-content col-sm-12 col-md-12 col-lg-12">
             <div class="messages"></div>
-            <div class="postbox form-inline">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="input-group">
-                            <span class="input-group-addon smileys-message" data-toggle="popover" data-html="true" data-placement="top"><span class="emoticon-16px emoticon-smile">:)</span></span>
-                            <textarea class="input-message form-control" data-topic="" style="resize: none; " rows="1" maxlength="1000"></textarea>
-                            <span class="input-group-btn">
-                                <button type="button" class="btn btn-default send-message" data-topic="">Send!</button>
-                            </span>
-                        </div><!-- /input-group -->
-                    </div><!-- /.col-lg-12 -->
-                </div><!-- /.row -->
-            </div><!-- /.postbox -->
+            <div class="message-box"></div>
         </div>
     </div><!-- /.row-content -->
 </script>
+
+<!-- ----------------- -->
+<!-- MessageBox        -->
+<!-- ----------------- -->
+<script type="text/template" id="message-box-template">
+    <div class="form-inline">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="input-group">
+                    <span class="input-group-addon smileys-message" data-toggle="popover" data-html="true" data-placement="top"><span class="emoticon-16px emoticon-smile">:)</span></span>
+                    <textarea class="input-message form-control" data-topic="" style="resize: none; " rows="1" maxlength="1000"></textarea>
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default send-message" data-topic="">Send!</button>
+                    </span>
+                </div><!-- /input-group -->
+            </div><!-- /.col-lg-12 -->
+        </div><!-- /.row -->
+    </div>
+</script>
+
+<!-- ----------------- -->
+<!-- Messages          -->
+<!-- ----------------- -->
+<script type="text/template" id="messages-template"></script>
 
 <!-- ----------------- -->
 <!-- Message           -->
@@ -148,20 +152,11 @@
 <!-- Online users      -->
 <!-- ----------------- -->
 <script type="text/template" id="online-users-template">
-    <% if (users.length < 1) { %>
-        <a href="#" class="list-group-item user-item"><em>No user online</em></a>
-    <% } else { %>
-        <% _.each(users, function(user) { %>
-            <a href="#" class="list-group-item user-item" data-user-id="<%= user.id %>">
-                <span class="avatar"><img src="<%= user.avatar %>" /></span>
-                <span class="username"><%= user.username %></span>
-                <span class="actions">
-                    <span class="glyphicon glyphicon-user user-profile"></span>
-                    <span class="glyphicon glyphicon-edit user-discussion"></span>
-                </span>
-            </a>
-        <% }); %>
-    <% } %>
+    <div class="panel-heading">Users</div>
+    <div id="online-users-list" class="list-group"></div>
+    <div class="panel-footer">
+        <a href="#" id="search-user-link"><span class="glyphicon glyphicon-search"></span> Search a user</a>
+    </div>
 </script>
 
 <!-- ----------------- -->

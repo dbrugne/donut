@@ -46,13 +46,10 @@ $(function() {
 
         template: _.template($('#onetoone-template').html()),
 
-        events: {
-            'click .close': 'close',
-            'keypress .input-message': 'postMessage',       // @todo: deduplicate with message form subview
-            'click .send-message': 'postMessage',           // @todo: deduplicate with message form subview
-            'click .header > .name': function(event) {
+        _events: {
+            'click .header > .name': function(event) { // @todo : move in MainView (behavior is added in DOM only with CSS class
                 Chat.main.userProfileModal(
-                    $(event.currentTarget).data('userId')
+                    this.model.get('user_id')
                 );
             }
         },
@@ -60,44 +57,14 @@ $(function() {
         _initialize: function() {
         },
 
-        render: function() {
-            var html = this.template(this.model.toJSON());
-            this.$el.html(html);
-            return this;
+        _remove: function(model) {
         },
 
-        postMessage: function(event) {
-            // Enter in field handling
-            if (event.type == 'keypress') {
-                var key;
-                var isShift;
-                if (window.event) {
-                    key = window.event.keyCode;
-                    isShift = window.event.shiftKey ? true : false;
-                } else {
-                    key = event.which;
-                    isShift = event.shiftKey ? true : false;
-                }
-                if(isShift || event.which != 13) {
-                    return;
-                }
-            }
+        _renderData: function() {
+            return this.model.toJSON();
+        },
 
-            // Get the message
-            var inputField = this.$el.find('.input-message');
-            var message = inputField.val();
-            if (message == '') {
-                return;
-            }
-
-            // Post
-            Chat.server.message('ws://chat.local/discussion', {to_user_id: this.model.get('user_id'), message: message});
-
-            // Empty field
-            inputField.val('');
-
-            // avoid line break addition in field when submitting with "Enter"
-            return false;
+        _render: function() {
         }
 
     });

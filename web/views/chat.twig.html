@@ -21,13 +21,7 @@
                     <a href="#" id="search-room-link"><span class="glyphicon glyphicon-search"></span> Search a room</a>
                 </div>
             </div>
-            <div id="block-users" class="panel panel-default">
-                <div class="panel-heading">Users</div>
-                <div id="online-users-list" class="list-group"></div>
-                <div class="panel-footer">
-                    <a href="#" id="search-user-link"><span class="glyphicon glyphicon-search"></span> Search a user</a>
-                </div>
-            </div>
+            <div id="block-users" class="panel panel-default"></div>
 
             <button class="btn btn-success" id="test1">Test 1</button>
             <button class="btn btn-success" id="test2">Test 2</button>
@@ -38,7 +32,7 @@
 
         </div><!-- /.chat-left -->
         <div id="chat-center" class="col-sm-10 col-md-10 col-lg-10">
-            <div class="cwindow" data-default="true">
+            <div class="discussion" data-default="true">
                 <div class="default">Not in room</div>
             </div>
         </div><!-- /.chat-center -->
@@ -135,7 +129,7 @@ $(document).ready(function() {
     // @todo : embeded init in an App object
     // @todo : require.js
 
-    Chat = window.Chat || { };
+    var Chat = window.Chat || { };
 
     // Server
     Chat.server = new Chat.ServerModel( {debugOn: true} );

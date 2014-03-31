@@ -90,116 +90,26 @@ $(function() {
 
         template: _.template($('#room-template').html()),
 
-        userTemplate: _.template($('#user-template').html()),
-
-        events: {
-            'click .close': 'close',
-            'keypress .input-message': 'postMessage',
-            'click .send-message': 'postMessage',
-            'click .messages > p > .username': function(event) {
-                Chat.main.userProfileModal(
-                    $(event.currentTarget).data('userId')
-                );
-            },
-            'click .user-profile': function(event) {
-                Chat.main.userProfileModal(
-                    $(event.currentTarget).closest('.user-item').data('userId')
-                );
-            },
-            'click .user-discussion': function(event) {
-                var user_id = $(event.currentTarget).closest('.user-item').data('userId');
-                var model = this.collection.openOneToOne(this.model.users.get(user_id));
-                this.collection.focus(model);
-            }
-        },
-
         _initialize: function() {
-            this.listenTo(this.model.users, 'add', this.renderUsers);
-            this.listenTo(this.model.users, 'remove', this.renderUsers);
-
-            // Subviews
-            this.baselineView = new Chat.baselineView({model: this.model});
-            // @todo: create subview for user list and postbox
+            this.baselineView = new Chat.RoomBaselineView({el: this.$el.find('.header > .baseline-block'), model: this.model});
+            this.usersView = new Chat.RoomUsersView({el: this.$el.find('.col-users'), collection: this.model.users});
         },
 
-        render: function() {
-            var html = this.template(this.model.toJSON());
-            this.$el.html(html);
-
-            // Append subviews
-            this.$el.find('.header .name').after(this.baselineView.$el);
-
-            return this;
+        _remove: function(model) {
+            this.baselineView.remove();
+            this.usersView.remove();
         },
 
-        renderUsers: function(user) {
-            var html = this.userTemplate({
-                users: _.sortBy(this.model.users.toJSON(), 'username')
-            });
-            this.$el.find('.room-users .list-group').html(html);
-
-            return this;
+        _renderData: function() {
+            return this.model.toJSON();
         },
 
-        removeRoom: function(model) {
-            if (model === this.model) {
-                this.baselineView.remove();
-                this.remove();
-            }
-        },
-
-        close: function (event) {
-            this.collection.remove(this.model); // remove model from collection
-
-            // After remove, the room still exists but not in the collection,
-            // = .focus() call will choose another room to be focused
-            if (this.model.focused) {
-                this.collection.focus();
-            }
-
-            return false; // stop propagation
-        },
-
-        postMessage: function(event) {
-            // Enter in field handling
-            if (event.type == 'keypress') {
-                var key;
-                var isShift;
-                if (window.event) {
-                    key = window.event.keyCode;
-                    isShift = window.event.shiftKey ? true : false;
-                } else {
-                    key = event.which;
-                    isShift = event.shiftKey ? true : false;
-                }
-                if(isShift || event.which != 13) {
-                    return;
-                }
-            }
-
-            // Get the message
-            var inputField = this.$el.find('.input-message');
-            var message = inputField.val();
-            if (message == '') {
-                return;
-            }
-
-            // Post
-            Chat.server.message('ws://chat.local/room#'+this.model.get('room_id'), {message: message});
-
-            // Empty field
-            inputField.val('');
-
-            // avoid line break addition in field when submitting with "Enter"
-            return false;
+        _render: function() {
         }
 
     });
 
-    Chat.baselineView = Backbone.View.extend({
-
-        tagName: 'div',
-        className: 'baseline-block',
+    Chat.RoomBaselineView = Backbone.View.extend({
 
         template: _.template($('#room-baseline-template').html()),
 
@@ -222,8 +132,7 @@ $(function() {
         },
 
         render: function() {
-            var html = this.template();
-            this.$el.html(html);
+            this.$el.html(this.template());
 
             var currentBaseline = this.model.get('baseline');
             if (currentBaseline == '') {
@@ -257,12 +166,69 @@ $(function() {
         sendNewBaseline: function(event) {
             var newBaseline = this.$el.find('.baseline-input').val();
             Chat.server.baseline('ws://chat.local/room#'+this.model.get('room_id'), newBaseline);
-            this.$el.find('.baseline-input').val('')
+            this.$el.find('.baseline-input').val('');
             this.hideForm();
         }
     });
 
-    Chat.searchRoomModal = Backbone.View.extend({
+    Chat.RoomUsersView = Backbone.View.extend({
+
+        template: _.template($('#room-users-template').html()),
+
+        userSubviews: '',
+
+        initialize: function() {
+            this.listenTo(this.collection, 'add', this.addUser);
+            this.listenTo(this.collection, 'remove', this.removeUser);
+
+            this.render();
+
+            this.userSubviews = new Backbone.Collection();
+            this.$list = this.$el.find('.list-group');
+        },
+
+        render: function() {
+            this.$el.html(this.template());
+            return this;
+        },
+
+        remove: function() {
+            this.userSubviews.each(function(item) {
+                item.get('view').remove();
+            });
+            Backbone.View.prototype.remove.apply(this, arguments);
+        },
+
+        addUser: function(model, collection, options) {
+            var view = new Chat.UserListView({model: model});
+            this.userSubviews.add({
+                id: model.get('id'),
+                username: model.get('username'),
+                view: view
+            });
+            this.$list.append(view.$el);
+
+            this.sort();
+        },
+
+        removeUser: function(model, collection, options) {
+            var view = this.userSubviews.get(model.get('id')).get('view').remove();
+            this.userSubviews.remove(model.get('id'));
+        },
+
+        sort: function() {
+            var sorted = _.sortBy(this.userSubviews.toJSON(), 'username');
+            this.$list.empty();
+
+            _.each(sorted, function(item) {
+                this.$list.append(item.view.$el);
+                item.view.delegateEvents();
+            }, this);
+        }
+
+    });
+
+    Chat.SearchRoomModal = Backbone.View.extend({
 
         el: $('#room-search-modal'),
 
@@ -277,8 +243,6 @@ $(function() {
         initialize: function() {
             this.listenTo(Chat.server, 'room:searchSuccess', this.searchSuccess);
             this.listenTo(Chat.server, 'room:searchError', this.searchError);
-
-            this.search();
         },
 
         show: function() {
