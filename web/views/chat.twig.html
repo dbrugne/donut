@@ -108,7 +108,7 @@
 {% block endofpage %}
 <script src="/public/vendor/underscore.js"></script>
 <script src="/public/vendor/backbone.js"></script>
-<!-- @todo : embeded code in Backbone view --><script src="/js/jquery-insertAtCaret.js"></script>
+<script src="/public/vendor/jquery-insertAtCaret.js"></script>
 <!-- @todo : embeded code in Backbone view --><script src="/js/jquery.autosize.min.js"></script>
 <script src="/public/vendor/jquery-dateFormat.min.js"></script>
 <!-- @todo : replaced by socket.io --><script src="/js/swfobject.js"></script>
@@ -126,13 +126,10 @@
 <script>
 $(document).ready(function() {
 
-    // @todo : embeded init in an App object
-    // @todo : require.js
-
     var Chat = window.Chat || { };
 
     // Server
-    Chat.server = new Chat.ServerModel( {debugOn: true} );
+    Chat.server = new Chat.ServerModel( {debugOn: false} );
 
     // Router
     Chat.router = new Chat.Routes();

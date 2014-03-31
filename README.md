@@ -8,15 +8,18 @@ v1: Refactor Backbone.js
 * Repair unread badge - done!
 * Add open profile in .messages - done!
 * repair Add user count on "room tab" - done!
-* One to one discussion
-* Repair smileys popover and rendering
-* Create room form
+* One to one discussion - done!
+* Repair smileys popover and rendering - done!
 * Restore add room notification when user enter/leave
+* Restore room notification when user change baseline
+* Add unread count in page title
+* Create room form
 * Repair auto-join room when come from homepage
-* Add count in page title
+* Block on window popin (do you want really leave this page?)
 * Review old code
 * Cleanup projects files
-* Block on window popin (do you want really leave this page?)
+* embeded init in an App object
+* require.js
 
 v6:
 * Refactor node.js/passport/mongodb
@@ -25,6 +28,7 @@ v6:
 ** Remove topic to use room name instead
 * Refactor grunt
 * Refactor less.css
+* Sample activity generation
 
 v7:
 * Make it work on IE8-11/FF
@@ -35,9 +39,10 @@ v8:
 * Fix old session bug
 * User account: photo, bio, town
 * A page per room (as for user)
-* (refactor) Database on MongoDb
-* (refactor) App on node.js/express + http://passportjs.org/
-* (social) Facebook Login + Invite your friends + page Facebook
+
+v9:
+* Facebook Login
+* + Invite your friends + page Facebook
 
 v9:
 * Translate in french

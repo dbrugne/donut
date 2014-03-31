@@ -200,9 +200,6 @@ $(function() {
             this.listenTo(this.collection, 'add', this.addDiscussion);
             this.listenTo(this.collection, 'focusDefault', this.focusDefault);
             this.listenTo(this.collection, 'unfocusDefault', this.unfocusDefault);
-
-            // Smileys view
-            new Chat.SmileysView({collection: Chat.smileys});
         },
 
         addDiscussion: function(model, collection, options) {
@@ -400,7 +397,7 @@ $(function() {
         },
 
         initialize: function(options) {
-            this.listenTo(this.model, 'add', this.addMessage);
+            this.listenTo(this.model, 'add', this.message);
             this.render();
         },
 
@@ -408,7 +405,7 @@ $(function() {
             // nothing to add in this particular subview
         },
 
-        addMessage: function(message) {
+        message: function(message) {
             // Date
             var dateText = $.format.date(new Date(message.get('time')*1000), "HH:mm:ss");
 
@@ -421,9 +418,9 @@ $(function() {
             messageHtml = messageHtml.replace(urlPattern, '<a href="$1" target="_blank">$1</a>');
 
             // Smileys
-//            $(smileys).each(function (idx, smiley) {
-//                messageHtml = messageHtml.replace(smiley.symbol, '<span class="smiley emoticon-16px '+smiley.class+'">'+smiley.symbol+'</span>');
-//            });
+            Chat.smileys.each(function (smiley) {
+                messageHtml = messageHtml.replace(smiley.get('symbol'), '<span class="smiley emoticon-16px '+smiley.get('class')+'">'+smiley.get('symbol')+'</span>');
+            });
 
             var html = this.template({
                 user_id: message.get('user_id'),
@@ -449,16 +446,38 @@ $(function() {
         template: _.template($('#message-box-template').html()),
 
         events: {
-            'keypress .input-message': 'message',
-            'click .send-message': 'message'
+            'keypress .input-message':  'message',
+            'click .send-message':      'message',
+            'click .smileys-message':   'toggleSmileys'
         },
 
         initialize: function(options) {
             this.render();
+
+            // Smileys view
+            this.smileysView = new Chat.SmileysView({collection: Chat.smileys, onPick: this.pickSmiley});
+            this.$el.find('.smileys-message').append(this.smileysView.$el);
+            this.listenTo(this.smileysView, 'pick', this.pickSmiley);
         },
 
         render: function() {
             this.$el.html(this.template());
+        },
+
+        toggleSmileys: function(event) {
+            var $clicked = $(event.currentTarget);
+
+            // Recalculate position
+            var position = $clicked.position();
+            var newTop = position.top - this.smileysView.$el.outerHeight();
+            var newLeft = (position.left + ($clicked.outerWidth()/2)) - (this.smileysView.$el.outerWidth()/2);
+            this.smileysView.$el.css('top', newTop);
+            this.smileysView.$el.css('left', newLeft);
+            this.smileysView.$el.toggle();
+        },
+
+        pickSmiley: function(smiley) {
+            this.$el.find('.input-message').insertAtCaret(smiley.symbol);
         },
 
         message: function(event) {

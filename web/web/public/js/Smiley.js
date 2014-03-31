@@ -30,15 +30,18 @@ $(function() {
 
     Chat.SmileysView = Backbone.View.extend({
 
-        id: 'smileys-popover',
-
         tag: 'div',
 
-        className: 'popover top',
+        className: 'popover top smileys-popover',
 
         template: _.template($('#smileys-template').html()),
 
-        initialize: function() {
+        events: {
+            'click li': 'pick'
+        },
+
+        initialize: function(options) {
+            this.onPick= options.onPick;
             this.render();
         },
 
@@ -48,6 +51,15 @@ $(function() {
             this.$el.hide();
             $('body').append(this.$el);
             return this;
+        },
+
+        pick: function(event) {
+            this.$el.hide();
+            this.trigger('pick', {
+                symbol: $(event.currentTarget).data('symbol'),
+                cssclass: $(event.currentTarget).data('sclass')
+            });
+            return false; // stop propagation
         }
 
     });
