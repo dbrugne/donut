@@ -133,6 +133,8 @@ $(function() {
             });
 
             this.focus(room);
+
+            room.trigger('notification', {type: 'hello', name: room.get('name')});
         },
 
         /* Room specific */
@@ -321,8 +323,15 @@ $(function() {
             this.render(); // (now exists in DOM)
 
             // Subviews initialization and rendering
-            this.messagesView = new Chat.DiscussionMessagesView({el: this.$el.find('.messages'), model: this.model.messages});
-            this.messageBoxView = new Chat.DiscussionMessageBoxView({el: this.$el.find('.message-box'), model: this.model});
+            this.messagesView = new Chat.DiscussionMessagesView({
+                el: this.$el.find('.messages'),
+                model: this.model,
+                collection: this.model.messages
+            });
+            this.messageBoxView = new Chat.DiscussionMessageBoxView({
+                el: this.$el.find('.message-box'),
+                model: this.model
+            });
             // (later we will be able to re-render each subview individually without touching this view)
 
             // Other subviews
@@ -397,7 +406,8 @@ $(function() {
         },
 
         initialize: function(options) {
-            this.listenTo(this.model, 'add', this.message);
+            this.listenTo(this.collection, 'add', this.message);
+            this.listenTo(this.model, 'notification', this.notification);
             this.render();
         },
 
@@ -433,6 +443,35 @@ $(function() {
 
             this.scrollDown();
             return this;
+        },
+
+        /**
+         * Notifications:
+         *
+         * All notifications should have: { type, date }
+         *
+         * And by 'type' should also received:
+         * - hello: You enter in #room : {}
+         * - userIn: @user has joined : {user_id, username}
+         * - userOut: @user has left : {user_id, username}
+         * - disconnect @user quit (reason) : {user_id, username, reason}
+         * - baseline: @user changed topic for 'topic' : {user_id, username, baseline}
+         * - kick: : @user was kicked by @user 'reason' : {user_id, username, by_user_id, by_username, reason}
+         * - ban: @user was banned by @user (time) 'reason' : {user_id, username, by_user_id, by_username, reason}
+         * - op: @user was oped by @user : {user_id, username, by_user_id, by_username}
+         * - deop: @user was deoped by @user : {user_id, username, by_user_id, by_username}
+         */
+        notificationTemplate: _.template($('#notification-template').html()),
+        notification: function(data) {
+            if (data.type == undefined || data.type == '') {
+                return;
+            }
+
+            data.date = $.format.date(Number(new Date()), "HH:mm:ss");
+
+            var html = this.notificationTemplate(data);
+            this.$el.append(html);
+            this.scrollDown();
         },
 
         scrollDown: function() {

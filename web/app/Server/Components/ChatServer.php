@@ -206,7 +206,7 @@ class ChatServer implements WampServerInterface
                 $entity = $this->_app['channels']->retrieveFromTopic($this->escape($params[0]));
                 if ($entity instanceOf Chat\Room) {
                     $baseline = $this->escape($params[1]);
-                    $entity->changeBaseline($baseline, $conn->User->getUsername());
+                    $entity->changeBaseline($baseline, $conn->User);
                     $this->_app['monolog']->info("Baseline of '{$entity->getId()}' changed to '{$baseline}' by '{$conn->User->getId()}'");
                     return $conn->callResult($id);
                 } else {

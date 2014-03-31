@@ -22,8 +22,6 @@ $(function() {
 
     Chat.MessagesCollection = Backbone.Collection.extend({
 
-        model: Chat.Message
-
     });
 
     /* ====================================================== */

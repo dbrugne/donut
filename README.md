@@ -10,8 +10,8 @@ v1: Refactor Backbone.js
 * repair Add user count on "room tab" - done!
 * One to one discussion - done!
 * Repair smileys popover and rendering - done!
-* Restore add room notification when user enter/leave
-* Restore room notification when user change baseline
+* Restore add room notification when user enter/leave - done!
+* Restore room notification when user change baseline - done!
 * Add unread count in page title
 * Create room form
 * Repair auto-join room when come from homepage

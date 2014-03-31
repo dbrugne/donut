@@ -94,7 +94,7 @@ class Room extends \App\Chat\Room
         ));
 
         // Push welcome message
-        $this->botMessage("Hi {$conn->User->getUsername()}, welcome on this chan. Please be polite and fair with others.", $conn);
+//        $this->botMessage("Hi {$conn->User->getUsername()}, welcome on this chan. Please be polite and fair with others.", $conn);
 
         // Notify everyone (including myself) this user has joined the room
         $this->broadcastToSubscribers(array(
@@ -206,9 +206,10 @@ class Room extends \App\Chat\Room
      * If error return error message as string
      *
      * @param $baseline
+     * @param User $user
      * @return bool|string
      */
-    public function changeBaseline($baseline, $username)
+    public function changeBaseline($baseline, $user)
     {
         // Save in database
         $this->_app['room.manager']->update(array('baseline' => $baseline), array('id' => $this->getId()));
@@ -222,7 +223,8 @@ class Room extends \App\Chat\Room
             'data' => array(
                 'room_id' => $this->getId(),
                 'baseline' => $baseline,
-                'username' => $username,
+                'user_id' => $user->getId(),
+                'username' => $user->getUsername(),
             ),
         ));
 

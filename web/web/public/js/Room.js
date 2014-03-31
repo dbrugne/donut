@@ -35,11 +35,17 @@ $(function() {
             if (params.data.room_id != this.get('room_id')) {
                 return;
             }
-            this.users.add(new Chat.User({
+            var user = new Chat.User({
                 id: params.data.user_id,
                 username: params.data.username,
                 avatar: params.data.avatar
-            }));
+            });
+            this.users.add(user);
+            this.trigger('notification', {
+                type: 'userIn',
+                user_id: user.get('id'),
+                username: user.get('username')
+            });
         },
 
         userOut: function(params) {
@@ -48,6 +54,11 @@ $(function() {
             }
             var user = this.users.get(params.data.user_id);
             this.users.remove(user);
+            this.trigger('notification', {
+                type: 'userOut',
+                user_id: user.get('id'),
+                username: user.get('username')
+            });
         },
 
         baseline: function(params) {
@@ -55,7 +66,12 @@ $(function() {
                 return;
             }
             this.set('baseline', params.data.baseline);
-            // @todo notif in room
+            this.trigger('notification', {
+                type: 'baseline',
+                user_id: params.data.user_id,
+                username: params.data.username,
+                baseline: params.data.baseline
+            });
         }
 
     });
