@@ -20,10 +20,12 @@ $(function() {
         },
 
         focusRoom: function(name) {
+            console.log('router: focusRoom');
             Chat.discussions.focusRoomByName('#'+name);
         },
 
         focusOneToOne: function(username) {
+            console.log('router: focusOneToOne');
             Chat.discussions.focusOneToOneByUsername(username);
         },
 

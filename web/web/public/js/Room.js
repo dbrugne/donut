@@ -327,6 +327,7 @@ $(function() {
 
             // Room not already open
             } else {
+                Chat.discussions.thisDiscussionShouldBeFocusedOnSuccess = 'room'+room_id;
                 Chat.server.subscribe(data.topic);
             }
 
@@ -406,6 +407,7 @@ $(function() {
 
             // Room not already open
             } else {
+                Chat.discussions.thisDiscussionShouldBeFocusedOnSuccess = 'room'+room_id;
                 Chat.server.subscribe(topic);
             }
 

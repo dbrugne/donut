@@ -44,6 +44,8 @@ $(function() {
 
     Chat.DiscussionsCollection = Backbone.Collection.extend({
 
+        thisDiscussionShouldBeFocusedOnSuccess: '',
+
         initialize: function() {
             /* Room specific */
             this.listenTo(Chat.server, 'room:pleaseJoin', this.joinRoom);
@@ -135,7 +137,14 @@ $(function() {
                 }));
             });
 
-            this.focus(room);
+            if (this.thisDiscussionShouldBeFocusedOnSuccess == newRoomId) {
+                this.focus(room);
+            }
+
+             // @todo : now window reopen not pertubate routing:
+            // - should change room focus/open and onetoone focus open to use router only
+            // - should auto join room/onetoone on arriving on page
+            // - should auto focus first room if no is focused
 
             room.trigger('notification', {type: 'hello', name: room.get('name')});
         },
@@ -159,7 +168,7 @@ $(function() {
                 with_user_id = message.from_user_id; // i can also be this one if i spoke to myself...
             }
 
-            model = this.openOneToOne(new Chat.User({
+            model = this.addOneToOne(new Chat.User({
                 id: with_user_id,
                 username: message.username,
                 avatar: message.avatar
@@ -172,7 +181,7 @@ $(function() {
         },
 
         /* OneToOne specific */
-        openOneToOne: function(user) {
+        addOneToOne: function(user) {
             // Discussion already opened?
             var oneToOneId = 'onetoone'+user.get('id');
             var model = this.get(oneToOneId);

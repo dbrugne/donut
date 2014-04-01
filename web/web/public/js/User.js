@@ -119,8 +119,9 @@ $(function() {
         template: _.template($('#user-template').html()),
 
         events: {
-            'click .user-profile': 'openProfile',
-            'click .user-discussion': 'openOneToOne'
+            'click .user-profile':      'openProfile',
+            'click .user-discussion':   'openOneToOne',
+            'dblclick a.user-item':     'openOneToOne'
         },
 
         initialize: function(options) {
@@ -136,9 +137,11 @@ $(function() {
             Chat.main.userProfileModal(this.model.get('id'));
         },
 
-        openOneToOne: function(event) {
-            var onetoone = Chat.discussions.openOneToOne(this.model);
+        openOneToOne: function(event) { // @todo : should navigate to router instead
+            var onetoone = Chat.discussions.addOneToOne(this.model);
             Chat.discussions.focus(onetoone);
+
+            return false; // stop propagation
         }
 
     });
