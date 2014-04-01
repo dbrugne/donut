@@ -94,7 +94,7 @@ $(function() {
             // Update URL
             var uri;
             if (model.get('type') == 'room') {
-                uri = 'room/'+model.get('name');
+                uri = 'room/'+model.get('name').replace('#', '');
             } else {
                 uri = 'user/'+model.get('username');
             }
