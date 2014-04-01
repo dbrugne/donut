@@ -244,6 +244,103 @@ $(function() {
 
     });
 
+    Chat.CreateRoomModal = Backbone.View.extend({
+
+        el: $('#room-create-modal'),
+
+        events: {
+            'click #room-create-submit': 'submit',
+            'keyup #room-create-input': 'valid'
+        },
+
+        initialize: function() {
+            this.listenTo(Chat.server, 'room:createSuccess', this.createSuccess);
+            this.listenTo(Chat.server, 'room:createError', this.createError);
+
+            this.$input = this.$el.find('#room-create-input');
+            this.$formGroup = this.$el.find('.form-group');
+        },
+
+        show: function() {
+            this.$el.modal('show');
+            this.$input.focus(); // @todo not works!
+        },
+
+        hide: function() {
+            this.$el.modal('hide');
+        },
+
+        render: function(rooms) {
+            return this;
+        },
+
+        valid: function(event) {
+            if (this.$input.val() == '') {
+                this.$formGroup.removeClass('has-error').removeClass('has-success');
+            }
+
+            if (!this._valid()) {
+                this.$formGroup.addClass('has-error').removeClass('has-success');
+            } else {
+                this.$formGroup.addClass('has-success').removeClass('has-error');
+                this.$el.find('.create-message').fadeOut();
+            }
+        },
+
+        /**
+         * Room name should be:
+         * - between 2 and 30 length
+         * - accept alphanumeric characters
+         * - specials: - _ \ | [ ] { } @ ^ `
+         */
+        _valid: function() {
+            var name = this.$input.val();
+            var pattern = /^[-a-z0-9_\\|[\]{}@^`]{2,30}$/i;
+            if (pattern.test(name)) {
+                return true;
+            } else {
+                return false;
+            }
+        },
+
+        submit: function() {
+            if (!this._valid()) {
+                return false;
+            }
+
+            var name = this.$input.val();
+
+            // call RPC + render
+            Chat.server.createRoom(name);
+        },
+
+        createSuccess: function(data) {
+            // Is already opened?
+            var room_id = data.topic.replace('ws://chat.local/room#', '');
+            var room = Chat.discussions.get('room'+room_id);
+            if (room != undefined) {
+                Chat.discussions.focus(room);
+
+            // Room not already open
+            } else {
+                Chat.server.subscribe(data.topic);
+            }
+
+            this.$formGroup.removeClass('has-error').removeClass('has-success');
+            this.$input.val('');
+            this.hide();
+        },
+
+        createError: function(data) {
+            var error = data.uri.error;
+            this.$formGroup.addClass('has-error').removeClass('has-success');
+            this.$el.find('.create-message').remove();
+            var html = '<p class="create-message bg-danger">'+error+'</p>';
+            this.$formGroup.before(html);
+        }
+
+    });
+
     Chat.SearchRoomModal = Backbone.View.extend({
 
         el: $('#room-search-modal'),

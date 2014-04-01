@@ -12,14 +12,15 @@ v1: Refactor Backbone.js
 * Repair smileys popover and rendering - done!
 * Restore add room notification when user enter/leave - done!
 * Restore room notification when user change baseline - done!
+* Create room form (set owner_id)
 * Add unread count in page title
-* Create room form
 * Repair auto-join room when come from homepage
 * Block on window popin (do you want really leave this page?)
 * Review old code
 * Cleanup projects files
 * embeded init in an App object
 * require.js
+* Postbox on two lines (resizable?)
 
 v6:
 * Refactor node.js/passport/mongodb

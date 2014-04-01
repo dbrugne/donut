@@ -39,6 +39,7 @@ $(function() {
             new Chat.OnlineUsersView({collection: new Chat.OnlineUsersCollection()});
 
             // Modals (reusable)
+            this.createRoomModalView = new Chat.CreateRoomModal();
             this.searchRoomModalView = new Chat.SearchRoomModal();
             this.searchUserModalView = new Chat.SearchUserModal();
             this.userProfileModalView = new Chat.UserProfileModal();
@@ -59,7 +60,7 @@ $(function() {
         },
 
         createRoomModal: function() {
-            // @todo
+            this.createRoomModalView.show();
         },
 
         searchUserLink: function() {

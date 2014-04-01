@@ -83,6 +83,14 @@ $(function() {
             this.get('session').publish(topic, msg);
         },
 
+        createRoom: function(name) {
+            var that = this;
+            this.get('session').call('createRoom', name).then(
+                function(data) { that.trigger('room:createSuccess', data); }
+                , function(data) { that.trigger('room:createError', data); }
+            );
+        },
+
         baseline: function(topic, baseline) {
             this.get('session').call('changeBaseline', topic, baseline).then(
                 function() { }
@@ -90,7 +98,7 @@ $(function() {
             );
         },
 
-        searchForRooms: function(search, callbackSuccess, callbackError) {
+        searchForRooms: function(search) {
             var that = this;
             this.get('session').call('searchForRooms', search).then(
                 function(rooms) {
@@ -102,7 +110,7 @@ $(function() {
             );
         },
 
-        searchForUsers: function(search, callbackSuccess, callbackError) {
+        searchForUsers: function(search) {
             var that = this;
             this.get('session').call('searchForUsers', search).then(
                 function(users) {

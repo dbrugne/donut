@@ -43,6 +43,40 @@
 <div class="modal fade" id="user-profile-modal"></div>
 <!-- / User profile modal -->
 
+<!-- Room create modal -->
+<div class="modal fade" id="room-create-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Create a new room</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-group has-feedback">
+                            <label for="room-create-input">Room name</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">#</span>
+                                <input type="text" id="room-create-input" class="form-control" placeholder="Enter room name" />
+                            </div>
+                            <span class="help-block">Room name should be 2+ longer and use alphanumeric characters and specials characters (_ - \ [ ] { } ^ ` |)</span>
+                        </div>
+                        <button id="room-create-submit" class="btn btn-default" type="button">
+                            Create
+                            <span class="glyphicon glyphicon-plus"></span>
+                        </button>
+                    </div><!-- /.col-lg-12 -->
+                </div><!-- /.row -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<!-- / Room create modal -->
+
 <!-- Room search modal -->
 <div class="modal fade" id="room-search-modal">
     <div class="modal-dialog">
@@ -106,11 +140,10 @@
 {% endblock %}
 
 {% block endofpage %}
-<script src="/public/vendor/underscore.js"></script>
-<script src="/public/vendor/backbone.js"></script>
-<script src="/public/vendor/jquery-insertAtCaret.js"></script>
-<!-- @todo : embeded code in Backbone view --><script src="/js/jquery.autosize.min.js"></script>
-<script src="/public/vendor/jquery-dateFormat.min.js"></script>
+<script src="/public/vendor/underscore/underscore.js"></script>
+<script src="/public/vendor/backbone/backbone.js"></script>
+<script src="/public/vendor/jquery/jquery-insertAtCaret.js"></script>
+<script src="/public/vendor/jquery/jquery-dateFormat.min.js"></script>
 <!-- @todo : replaced by socket.io --><script src="/js/swfobject.js"></script>
 <!-- @todo : replaced by socket.io --><script src="/js/web_socket.js"></script>
 <!-- @todo : replaced by socket.io --><script src="/js/when.js"></script>
