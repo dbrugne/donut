@@ -14,9 +14,9 @@ v1: Refactor Backbone.js
 * Restore room notification when user change baseline - done!
 * Create room form (set owner_id) - done!
 * Add unread count in page title - done!
-* Block on window popin (do you want really leave this page?)
-* Repair auto-join room when come from homepage
+* Block on window popin (do you want really leave this page?) - done!
 * embeded init in an App object
+* Repair auto-join room when come from homepage
 * Review @todo
 * require.js
 * Postbox on two lines (resizable?)

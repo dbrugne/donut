@@ -32,6 +32,9 @@ $(function() {
             $(window).blur(function(event) {
                 that.onBlur();
             });
+            $(window).on('beforeunload', function() {
+                return that.onClose();
+            });
         },
 
         onBlur: function() {
@@ -55,6 +58,15 @@ $(function() {
 
             this.unread += 1;
             $(document).attr('title', '('+this.unread+') '+this.title);
+        },
+
+        onClose: function() {
+            // only if at least one room is open
+            if (Chat.discussions.length > 0) {
+                return "If you leave this page all the room history will be lost.";
+            } else {
+                return;
+            }
         }
 
     });
