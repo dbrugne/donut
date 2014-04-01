@@ -32,7 +32,7 @@ body { padding-top: 50px; }
             #block-rooms .list-item .name {  }
             #block-rooms .list-item .badge { display: none; margin-right: 5px; }
             #block-rooms .list-item .close { font-size: 14px; color: #FF0000; }
-            #create-room-form { display: none; margin-top: 10px; }
+            .create-message { padding: 15px; }
         #block-users {}
             #block-users .panel-heading { border-color: transparent; }
             #block-users .user-item .actions { position: absolute; right: 10px; }
@@ -125,7 +125,7 @@ body { padding-top: 50px; }
  ***************************************/
 /* 16px Emoticons */
 .emoticon-16px {
-    background: url('../img/sprite-16px-png24.png') no-repeat;
+    background: url('/img/sprite-16px-png24.png') no-repeat;
     display: inline-block;
     height: 16px;
     margin: 0 1px;
