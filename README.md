@@ -15,7 +15,7 @@ v1: Refactor Backbone.js
 * Create room form (set owner_id) - done!
 * Add unread count in page title - done!
 * Block on window popin (do you want really leave this page?) - done!
-* embeded init in an App object
+* embeded init in an App object - done!
 * Repair auto-join room when come from homepage
 * Review @todo
 * require.js

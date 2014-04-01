@@ -155,28 +155,11 @@
 <script src="/public/js/OneToOne.js"></script>
 <script src="/public/js/Message.js"></script>
 <script src="/public/js/Server.js"></script>
-<script src="/public/js/Chat.js"></script>
+<script src="/public/js/Window.js"></script>
+<script src="/public/js/Main.js"></script>
 <script src="/public/js/App.js"></script>
 <script>
 $(document).ready(function() {
-
-    var Chat = window.Chat || { };
-
-    // Server
-    Chat.server = new Chat.ServerModel( {debugOn: false} );
-
-    // Router
-    Chat.router = new Chat.Routes();
-
-    // Opened conversations
-    Chat.discussions = new Chat.DiscussionsCollection();
-
-    // Interface
-    Chat.main = new Chat.MainView;
-    Chat.main.run();
-
-    // Run router
-    Backbone.history.start();
 
     /************************************************
      * DEBUG
@@ -184,6 +167,7 @@ $(document).ready(function() {
 
     $("#test1").click(function (e) {
     });
+
 });
 </script>
 {% endblock %}
