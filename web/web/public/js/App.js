@@ -88,11 +88,11 @@ $(function() {
         },
 
         root: function() {
-            //
+            console.log('router: home');
         },
 
         focusRoom: function(name) {
-            Chat.discussions.focusRoomByName(name);
+            Chat.discussions.focusRoomByName('#'+name);
         },
 
         focusOneToOne: function(username) {
@@ -100,7 +100,7 @@ $(function() {
         },
 
         default: function() {
-            console.log('go in default');
+            console.log('router: default');
             // @todo : handle 404 type behavior in DOM
         }
     });

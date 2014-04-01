@@ -2,7 +2,8 @@
 <!-- RoomTabView       -->
 <!-- ----------------- -->
 <script type="text/template" id="rooms-list-item-template">
-    <a href="#room/<%= room.name %>" class="list-group-item list-item" data-room-id="<%= room.id %>">
+    <% var uriName = room.name.replace('#', ''); %>
+    <a href="#room/<%= uriName %>" class="list-group-item list-item" data-room-id="<%= room.id %>">
         <span class="name"><%= room.name %></span>
         <span class="users-count">(<span class="glyphicon glyphicon-user user-profile"></span> <span class="count"><% users.length %></span>)</span>
         <span class="close glyphicon glyphicon-remove"></span>
