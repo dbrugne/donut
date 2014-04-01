@@ -3,8 +3,8 @@
 <head>
     <title>{% block title %}{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/css/chat.css" rel="stylesheet">
+    <link href="/public/vendor/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <link href="/public/css/chat.css" rel="stylesheet">
     {% block headcss %}{% endblock %}
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -66,8 +66,8 @@
 
 {% block content %}{% endblock %}
 
-<script src="/public/vendor/jquery.js"></script>
-<script src="/js/bootstrap.min.js"></script>
+<script src="/public/vendor/jquery/jquery-1.11.0.js"></script>
+<script src="/public/vendor/bootstrap/bootstrap.js"></script>
 {% block endofpage %}{% endblock %}
 </body>
 </html>
