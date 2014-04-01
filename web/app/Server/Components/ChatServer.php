@@ -215,18 +215,24 @@ class ChatServer implements WampServerInterface
                 break;
 
             case 'createRoom':
-                $name   = $this->escape($params[0]);
-                $created = false;
+                $name = $this->escape($params[0]);
 
                 if (empty($name)) {
-                    return $conn->callError($id, 'Room name can not be empty');
+                    return $conn->callError($id, array('error' => 'Room name can not be empty'));
                 }
+
+                if (!preg_match('/^[-a-z0-9_\\|[\]{}@^`]{2,30}$/i', $name)) {
+                    return $conn->callError($id, array('error' => 'Room name not correspond to room name constrains'));
+                }
+
+                $name = '#' . $name;
 
                 // Test if room not already exist in database
                 if (null === $room = $this->_app['room.manager']->findOneBy(array('name' => $name))) {
                     // Create room in database
                     $roomId = $this->_app['room.manager']->insert(array(
                         'name' => $name,
+                        'owner_id' => $conn->User->getId(),
                     ));
 
                     // Return as created to client
