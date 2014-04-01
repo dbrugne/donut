@@ -282,7 +282,8 @@ class Room extends \App\Chat\Room
      */
     public function shouldBeRemoved()
     {
-        if (count($this->_subscribers) < 1 && $this->getProtected() != 1) {
+        $userInRoom = $this->_app['userRoom.manager']->findCount(array('room_id' => $this->getId()));;
+        if ($userInRoom < 1 && $this->getProtected() != 1) {
             return true;
         }
 
