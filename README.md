@@ -13,11 +13,11 @@ v1: Refactor Backbone.js
 * Restore add room notification when user enter/leave - done!
 * Restore room notification when user change baseline - done!
 * Create room form (set owner_id) - done!
-* Add unread count in page title
+* Add unread count in page title - done!
 * Block on window popin (do you want really leave this page?)
 * Repair auto-join room when come from homepage
-* Review @todo
 * embeded init in an App object
+* Review @todo
 * require.js
 * Postbox on two lines (resizable?)
 * Review old code
@@ -32,6 +32,17 @@ v6:
 * Refactor grunt
 * Refactor less.css
 * Sample activity generation
+
+v7:
+* Backend
+** Traditional page secured zone
+** Room crud
+** User crud
+** Instant online user list
+*** real time activity monitor (multi connections)
+** Instant active room list
+*** real time activity monitor
+** Server list and state
 
 v7:
 * Make it work on IE8-11/FF

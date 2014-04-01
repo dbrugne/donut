@@ -11,6 +11,54 @@ $(function() {
     /* ======================  VIEWS  ======================= */
     /* ====================================================== */
 
+    Chat.WindowView = Backbone.View.extend({
+
+        el: $(window),
+
+        focused: true,
+
+        unread: 0,
+
+        title: '',
+
+        initialize: function(options) {
+            this.title = $(document).attr('title');
+
+            // Bind events
+            that = this;
+            $(window).focus(function(event) {
+                that.onFocus();
+            });
+            $(window).blur(function(event) {
+                that.onBlur();
+            });
+        },
+
+        onBlur: function() {
+            this.focused = false;
+        },
+
+        onFocus: function() {
+            if (this.unread == 0) {
+                return;
+            }
+
+            $(document).attr('title', this.title);
+            this.unread = 0;
+            this.focused = true;
+        },
+
+        increment: function() {
+            if (this.focused) {
+                return;
+            }
+
+            this.unread += 1;
+            $(document).attr('title', '('+this.unread+') '+this.title);
+        }
+
+    });
+
     Chat.MainView = Backbone.View.extend({
 
         el: $("#chat"),
@@ -26,8 +74,9 @@ $(function() {
         },
 
         run: function() {
-
             // @todo move all of that in App init
+
+            var that = this;
 
             // Status view
             new Chat.StatusView({model: Chat.server});
@@ -44,8 +93,10 @@ $(function() {
             this.searchUserModalView = new Chat.SearchUserModal();
             this.userProfileModalView = new Chat.UserProfileModal();
 
+            // Window events
+            this.windowView = new Chat.WindowView();
+
             // Server events
-            var that = this;
             this.listenTo(Chat.server, 'userIdentity', function(data) {
                 that.currentUser = new Chat.User(data);
             });

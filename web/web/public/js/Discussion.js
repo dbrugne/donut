@@ -35,6 +35,9 @@ $(function() {
                 var unread = this.get('unread');
                 this.set('unread', unread + 1);
             }
+
+            // Unread indication in window title
+            Chat.main.windowView.increment();
         }
 
     });
