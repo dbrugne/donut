@@ -259,11 +259,15 @@ $(function() {
 
             this.$input = this.$el.find('#room-create-input');
             this.$formGroup = this.$el.find('.form-group');
+
+            this.$el.on('shown.bs.modal', function (e) {
+                that.$input.focus();
+            })
         },
 
         show: function() {
+            that = this;
             this.$el.modal('show');
-            this.$input.focus(); // @todo not works!
         },
 
         hide: function() {
