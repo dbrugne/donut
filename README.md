@@ -18,7 +18,7 @@ v1: Refactor Backbone.js
 * embeded init in an App object - done!
 * repair window load auto-focus - done!
 * Postbox on two lines (resizable?) - done!
-* Review @todo
+* Review @todo - done!
 * Review old code
 * Cleanup projects files
 * Merge
