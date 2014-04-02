@@ -17,15 +17,14 @@ v1: Refactor Backbone.js
 * Block on window popin (do you want really leave this page?) - done!
 * embeded init in an App object - done!
 * repair window load auto-focus - done!
+* Postbox on two lines (resizable?) - done!
 * Review @todo
 * require.js
-* Postbox on two lines (resizable?)
 * Review old code
 * Cleanup projects files
 * Merge
-* Repair auto-join room when come from homepage (need replacing room id with name everywhere)
 
-v6:
+v2:
 * Refactor node.js/passport/mongodb
 * Refactor socket.io (redis?)
 * Review all the messages exchanged between client/server
@@ -34,7 +33,12 @@ v6:
 * Refactor less.css
 * Sample activity generation
 
-v7:
+v3:
+* Repair auto-join room when come from homepage (need replacing room id with name everywhere)
+* (irc) ACL on room => who is OP, set OP, remove OP, can change baseline, can kick users
+* (irc) Kick users
+
+v4:
 * Backend
 ** Traditional page secured zone
 ** Room crud
@@ -45,24 +49,17 @@ v7:
 *** real time activity monitor
 ** Server list and state
 
-v7:
+v5:
 * Make it work on IE8-11/FF
 * Make it work on tablet/phone (browser)
 
-v8:
+v6:
 * Add "presence" management
-* Fix old session bug
-* User account: photo, bio, town
+* Fix old session bug (if still exists)
+* User account: photo, bio, location, website
 * A page per room (as for user)
-
-v9:
 * Facebook Login
 * + Invite your friends + page Facebook
-
-v9:
-* Translate in french
-* (irc) ACL on room => who is OP, set OP, remove OP, can change baseline, can kick users
-* (irc) Kick users
 
 vx:
 * (refactor) Reset the communication protocole: exit Wamp, only directionnal events and logic
@@ -72,7 +69,6 @@ vx:
 * (refactor) Sanitize all user input in Websocket and implement data control
 * (specs) Draw client/server protocol with list and structure of message, uniformize
 * Add tabbed-universe on homepage (TV, FIFA Worldcup, Sport, ...)
-* Multi-line postbox input bug
 * Private Room / Permanent Room (will not be deleted on last user leave)
 * Invite someone(s) in my room
 * Highlight messages of the same user of this message
