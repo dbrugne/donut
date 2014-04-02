@@ -62,6 +62,7 @@ $(function() {
             if (model == undefined) {
                 // Create room
                 // @todo : need to replace 'room.id' for identifying room by 'room.name' everywhere
+                return;
             }
 
             this.focus(model);
@@ -75,11 +76,8 @@ $(function() {
                 // Create onetoone
                 // @todo : need to replace 'user.id' for identifying room by 'user.username' everywhere
                 //         the gravatar URL should be estimated by the username hash
-                //   until that direct access to user one to one doesn't work
-//                this.addOneToOne(new Chat.User({
-//                    id: '',
-//                    username: username
-//                }));
+                //         until that direct access to user one to one doesn't work
+                return;
             }
 
             this.focus(model);

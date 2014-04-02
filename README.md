@@ -19,7 +19,6 @@ v1: Refactor Backbone.js
 * repair window load auto-focus - done!
 * Postbox on two lines (resizable?) - done!
 * Review @todo
-* require.js
 * Review old code
 * Cleanup projects files
 * Merge
@@ -54,14 +53,17 @@ v5:
 * Make it work on tablet/phone (browser)
 
 v6:
-* Add "presence" management
-* Fix old session bug (if still exists)
+* User profile
 * User account: photo, bio, location, website
-* A page per room (as for user)
+* Room profile
+* Room edit
 * Facebook Login
 * + Invite your friends + page Facebook
 
 vx:
+* Fix old session bug (if still exists)
+* Add "presence" management
+* Add require.js on client side to simplify code organization
 * (refactor) Reset the communication protocole: exit Wamp, only directionnal events and logic
 * Add backend interface that is connect to server and give some informations
 * Add anonyme mode (user come on platform, connect to chat, join rooms, discuss)
