@@ -19,8 +19,8 @@ v1: Refactor Backbone.js
 * repair window load auto-focus - done!
 * Postbox on two lines (resizable?) - done!
 * Review @todo - done!
-* Review old code
-* Cleanup projects files
+* Review old code - done!
+* Cleanup projects files - done!
 * Merge
 
 v2:
@@ -30,6 +30,8 @@ v2:
 ** Remove topic to use room name instead
 * Refactor grunt
 * Refactor less.css
+* Cleanup projects files
+* Merge
 * Sample activity generation
 
 v3:
