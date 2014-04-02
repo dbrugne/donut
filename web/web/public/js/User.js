@@ -121,7 +121,8 @@ $(function() {
         events: {
             'click .user-profile':      'openProfile',
             'click .user-discussion':   'openOneToOne',
-            'dblclick a.user-item':     'openOneToOne'
+            'dblclick a.user-item':     'openOneToOne',
+            'click a.user-item':     'stopPropagation'
         },
 
         initialize: function(options) {
@@ -137,11 +138,16 @@ $(function() {
             Chat.main.userProfileModal(this.model.get('id'));
         },
 
-        openOneToOne: function(event) { // @todo : should navigate to router instead
+        openOneToOne: function(event) {
             var onetoone = Chat.discussions.addOneToOne(this.model);
             Chat.discussions.focus(onetoone);
 
             return false; // stop propagation
+        },
+
+        stopPropagation: function(event) {
+            // correct bug due to the a.href=#
+            return false;
         }
 
     });
