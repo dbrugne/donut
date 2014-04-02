@@ -125,7 +125,7 @@ body { padding-top: 50px; }
  ***************************************/
 /* 16px Emoticons */
 .emoticon-16px {
-    background: url('/img/sprite-16px-png24.png') no-repeat;
+    background: url('/public/vendor/emoticon/sprite-16px-png24.png') no-repeat;
     display: inline-block;
     height: 16px;
     margin: 0 1px;
@@ -155,7 +155,7 @@ body { padding-top: 50px; }
 .emoticon-16px.emoticon-broken-heart { background-position: -304px 0 }
 
 .emoticon-18px {
-    background: url('../img/sprite-18px-png24.png') no-repeat;
+    background: url('/public/vendor/emoticon/sprite-18px-png24.png') no-repeat;
     display: inline-block;
     height: 18px;
     margin: 0 1px;
