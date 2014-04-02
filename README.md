@@ -16,13 +16,14 @@ v1: Refactor Backbone.js
 * Add unread count in page title - done!
 * Block on window popin (do you want really leave this page?) - done!
 * embeded init in an App object - done!
-* Repair auto-join room when come from homepage
+* repair window load auto-focus - done!
 * Review @todo
 * require.js
 * Postbox on two lines (resizable?)
 * Review old code
 * Cleanup projects files
 * Merge
+* Repair auto-join room when come from homepage (need replacing room id with name everywhere)
 
 v6:
 * Refactor node.js/passport/mongodb

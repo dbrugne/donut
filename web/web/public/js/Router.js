@@ -6,6 +6,11 @@ $(function() {
     /* =====================  ROUTER  ======================= */
     /* ====================================================== */
 
+    // @todo : now window reopen not pertubate routing:
+    // - should change room focus/open and onetoone focus open to use router only
+    // - should auto join room/onetoone on arriving on page
+    // - should auto focus first room if no is focused
+
     Chat.Routes = Backbone.Router.extend({
 
         routes: {
@@ -17,15 +22,16 @@ $(function() {
 
         root: function() {
             console.log('router: home');
+            Chat.discussions.focus();
         },
 
         focusRoom: function(name) {
-            console.log('router: focusRoom');
+            console.log('router: focusRoom '+name);
             Chat.discussions.focusRoomByName('#'+name);
         },
 
         focusOneToOne: function(username) {
-            console.log('router: focusOneToOne');
+            console.log('router: focusOneToOne ' + username);
             Chat.discussions.focusOneToOneByUsername(username);
         },
 

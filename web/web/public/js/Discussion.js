@@ -59,16 +59,30 @@ $(function() {
 
         focusRoomByName: function(name) {
             var model = this.findWhere({ type: 'room', name: name });
-            if (model != undefined) {
-                this.focus(model);
+            if (model == undefined) {
+                // Create room
+                // @todo : need to replace 'room.id' for identifying room by 'room.name' everywhere
             }
+
+            this.focus(model);
         },
 
         focusOneToOneByUsername: function(username) {
             var model = this.findWhere({ type: 'onetoone', username: username });
-            if (model != undefined) {
-                this.focus(model);
+
+            // Open discussion window if not already exist
+            if (model == undefined) {
+                // Create onetoone
+                // @todo : need to replace 'user.id' for identifying room by 'user.username' everywhere
+                //         the gravatar URL should be estimated by the username hash
+                //   until that direct access to user one to one doesn't work
+//                this.addOneToOne(new Chat.User({
+//                    id: '',
+//                    username: username
+//                }));
             }
+
+            this.focus(model);
         },
 
         focus: function(model) {
@@ -137,14 +151,12 @@ $(function() {
                 }));
             });
 
-            if (this.thisDiscussionShouldBeFocusedOnSuccess == newRoomId) {
+            // If caller indicate that this room should be focused on success
+            //  OR if this is the first opened discussion
+            if (this.thisDiscussionShouldBeFocusedOnSuccess == newRoomId
+                || Chat.discussions.length == 1) {
                 this.focus(room);
             }
-
-             // @todo : now window reopen not pertubate routing:
-            // - should change room focus/open and onetoone focus open to use router only
-            // - should auto join room/onetoone on arriving on page
-            // - should auto focus first room if no is focused
 
             room.trigger('notification', {type: 'hello', name: room.get('name')});
         },
