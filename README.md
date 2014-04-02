@@ -21,7 +21,7 @@ v1: Refactor Backbone.js
 * Review @todo - done!
 * Review old code - done!
 * Cleanup projects files - done!
-* Merge
+* Merge - done!
 
 v2:
 * Refactor node.js/passport/mongodb
