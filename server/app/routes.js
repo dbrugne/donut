@@ -1,3 +1,6 @@
+var User    = require('./models/user');
+var Room    = require('./models/room');
+
 module.exports = function(app, passport) {
 
     // =====================================
@@ -46,14 +49,36 @@ module.exports = function(app, passport) {
 
     app.get('/account', isLoggedIn, function(req, res) {
         res.locals.user = req.user;
-        res.render('account', { });
+        res.render('account', {});
     });
 
-    app.post('/account', isLoggedIn, function(req, res) {
+    app.get('/account/edit', isLoggedIn, function(req, res) {
         res.locals.user = req.user;
-        //
+        res.render('account_edit', {});
+        // @todo : implement form + JS validation
     });
 
+    app.post('/account/edit', isLoggedIn, function(req, res) {
+        res.locals.user = req.user;
+        // @todo : validate, sanitize and save then redirect on account/
+    });
+
+    app.get('/logout', function(req, res) {
+        req.logout();
+        res.redirect('/');
+    });
+
+    // Facebook: route authentication and login
+    app.get('/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));
+
+    // Facebook: handle the callback after facebook has authenticated the user
+    app.get('/auth/facebook/callback',
+        passport.authenticate('facebook', {
+            successRedirect : '/account',
+            failureRedirect : '/'
+        }));
+
+    // Facebook: route for logging out
     app.get('/logout', function(req, res) {
         req.logout();
         res.redirect('/');
@@ -63,10 +88,30 @@ module.exports = function(app, passport) {
     // PROFILES ============================
     // =====================================
 
-    app.get('/user/:username', isLoggedIn, function(req, res) {
-        res.locals.user = req.user;
-        res.render('user', {
-            user : req.user // get the user out of session and pass to template
+    app.get('/user/:username', function(req, res) {
+        var username = req.params.username;
+        if (username == undefined || username == '') {
+            res.render('404', {}, function(err, html) {
+                res.send(404, html);
+            });
+        }
+
+        User.findOne({ 'local.username': username }, function(err, user) {
+            if (err) {
+                req.flash('info', err)
+                res.redirect('/');
+            }
+
+            if (user) {
+                res.render('user', {
+                    user : user
+                });
+            } else {
+                res.render('404', {}, function(err, html) {
+                    res.send(404, html);
+                });
+            }
+
         });
     });
 
@@ -74,7 +119,6 @@ module.exports = function(app, passport) {
 
 // route middleware to make sure a user is logged in
 function isLoggedIn(req, res, next) {
-
     // if user is authenticated in the session, carry on
     if (req.isAuthenticated())
         return next();
