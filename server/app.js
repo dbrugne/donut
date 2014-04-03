@@ -8,8 +8,10 @@ var express = require('express'),
     bodyParser = require('body-parser'),
     mongoose = require('mongoose'),
     passport = require('passport'),
-    flash = require('connect-flash'),
-    configuration = require('./config/app_dev');
+    flash = require('connect-flash');
+
+// per-environment configuration
+configuration = require('./config/app_dev');
 
 // express
 var app = express();
@@ -25,7 +27,7 @@ app.engine('html', require('hogan-express'));
 app.set('views', path.join(__dirname, 'views'));
 app.set('layout', 'layout');
 app.set('view engine', 'html');
-app.locals.title = '...';
+app.locals.title = configuration.title;
 
 // http server
 app.use(favicon());
@@ -46,9 +48,9 @@ require('./app/routes')(app, passport);
 
 /// catch 404 and forwarding to error handler
 app.use(function(req, res, next) {
-    var err = new Error('Not Found');
-    err.status = 404;
-    next(err);
+    res.render('404', {}, function(err, html) {
+        res.send(404, html);
+    });
 });
 
 /// error handlers
