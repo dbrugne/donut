@@ -51,13 +51,9 @@
 </div>
 
 <div class="container">
-    {% if app.session.flashbag.has('alert') %}
-    {% for flashMessage in app.session.flashbag.get('alert') %}
-    <div class="alert">{{ flashMessage }}</div>
-    {% endfor %}
-    {% endif %}
 
     {{{ yield }}}
+
 </div><!-- /.container -->
 
 <script src="/javascript/jquery-1.11.0.js"></script>
