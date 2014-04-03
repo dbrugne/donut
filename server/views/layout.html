@@ -4,7 +4,7 @@
     <title>{{ title }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/stylesheets/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -28,23 +28,16 @@
             <ul class="nav navbar-nav">
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                {% if app.user %}
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Welcome <strong>{{ app.user.displayName }}</strong> <b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="/account"><i class="icon-user"></i> your account</a></li>
-                        {% if is_granted('ROLE_ADMIN') %}
-                        <li><a href="/backend#users"><i class="icon-list"></i> manager users</a></li>
-                        {% endif %}
-                        <li class="divider"></li>
-                        <li><a href="/logout"><i class="icon-off"></i> logout</a></li>
-                    </ul>
-                </li>
-                {% else %}
+                {{#user}}
+                <li><a href="/user/{{ user.local.username }}">Welcome {{ user.local.username }}</a></li>
+                <li><a href="/account"><i class="fa fa-cog"></i> your account</a></li>
+                <li><a href="/logout"><i class="glyphicon glyphicon-remove-circle"></i> logout</a></li>
+                {{/user}}
+                {{^user}}
                 <li><a href="/login">login</a></li>
                 <li><a>or</a></li>
                 <li><a href="/signup">signup</a></li>
-                {% endif %}
+                {{/user}}
             </ul>
         </div><!--/.nav-collapse -->
     </div>
@@ -56,7 +49,7 @@
 
 </div><!-- /.container -->
 
-<script src="/javascript/jquery-1.11.0.js"></script>
-<script src="/javascript/bootstrap.js"></script>
+<script src="/javascripts/jquery-1.11.0.js"></script>
+<script src="/javascripts/bootstrap.js"></script>
 </body>
 </html>
