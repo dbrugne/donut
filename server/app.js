@@ -21,8 +21,10 @@ mongoose.connect(configuration.mongo.url);
 require('./config/passport')(passport);
 
 // view engine setup
+app.engine('html', require('hogan-express'));
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'hjs');
+app.set('layout', 'layout');
+app.set('view engine', 'html');
 
 // http server
 app.use(favicon());
