@@ -18,7 +18,7 @@ var app = express();
 mongoose.connect(configuration.mongo.url);
 
 // passport
-require('./config/passport')(passport);
+require('./app/passport')(passport);
 
 // view engine setup
 app.engine('html', require('hogan-express'));

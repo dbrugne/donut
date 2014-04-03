@@ -1,10 +1,16 @@
 module.exports = function(app, passport) {
 
     // =====================================
-    // HOME PAGE (with login links) ========
+    // HOME PAGE (authenticated or not) ====
     // =====================================
     app.get('/', function(req, res) {
-        res.render('index', { title: 'index' });
+        var title = 'index';
+        if (req.isAuthenticated()) {
+            title += ' (authenticated!)';
+        } else {
+            title += ' (not authenticated!)';
+        }
+        res.render('index', { title: title });
     });
 
     app.get('/welcome', function(req, res) {
@@ -12,38 +18,35 @@ module.exports = function(app, passport) {
     });
 
     // =====================================
-    // LOGIN ===============================
+    // SIGNUP / LOGIN / LOGOUT =============
     // =====================================
-    // show the login form
     app.get('/login', function(req, res) {
-
-        // render the page and pass in any flash data if it exists
         res.render('login', { message: req.flash('loginMessage') });
     });
 
-    // process the login form
-    // app.post('/login', do all our passport stuff here);
+    app.post('/login', passport.authenticate('local-login', {
+        successRedirect : '/',
+        failureRedirect : '/login',
+        failureFlash : true
+    }));
 
-    // =====================================
-    // SIGNUP ==============================
-    // =====================================
-    // show the signup form
     app.get('/signup', function(req, res) {
-
-        // render the page and pass in any flash data if it exists
         res.render('signup', { message: req.flash('signupMessage') });
     });
 
-    // process the signup form
-    // app.post('/signup', do all our passport stuff here);
+    app.post('/signup', passport.authenticate('local-signup', {
+        successRedirect : '/',
+        failureRedirect : '/signup',
+        failureFlash : true
+    }));
 
     // =====================================
-    // PROFILE SECTION =====================
+    // USER PROFILE ========================
     // =====================================
     // we will want this protected so you have to be logged in to visit
     // we will use route middleware to verify this (the isLoggedIn function)
-    app.get('/profile', isLoggedIn, function(req, res) {
-        res.render('profile', {
+    app.get('/user', isLoggedIn, function(req, res) {
+        res.render('user', {
             user : req.user // get the user out of session and pass to template
         });
     });
