@@ -29,7 +29,8 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 {{#user}}
-                <li><a href="/user/{{ user.local.username }}">Welcome {{ user.local.username }}</a></li>
+                <li><p class="navbar-text">Welcome <strong>{{ user.local.username }}</strong></p></li>
+                <li><a href="/user/{{ user.local.username }}"><span class="glyphicon glyphicon-user"></span> your profile</a></li>
                 <li><a href="/account"><i class="fa fa-cog"></i> your account</a></li>
                 <li><a href="/logout"><i class="glyphicon glyphicon-remove-circle"></i> logout</a></li>
                 {{/user}}
