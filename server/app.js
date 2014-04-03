@@ -1,31 +1,45 @@
-var express = require('express');
-var http = require('http');
-var path = require('path');
-var favicon = require('static-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
+// Load dependencies
+var express = require('express'),
+    http = require('http'),
+    path = require('path'),
+    favicon = require('static-favicon'),
+    logger = require('morgan'),
+    cookieParser = require('cookie-parser'),
+    bodyParser = require('body-parser'),
+    mongoose = require('mongoose'),
+    passport = require('passport'),
+    flash = require('connect-flash'),
+    configuration = require('./config/app_dev');
 
-var routes = require('./routes');
-var users = require('./routes/user');
-
+// express
 var app = express();
+
+// mongoDB
+mongoose.connect(configuration.mongo.url);
+
+// passport
+require('./config/passport')(passport);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hjs');
 
+// http server
 app.use(favicon());
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(cookieParser());
+app.use(express.session({ secret: 'q4qsd65df45s4d5f45ds5fsf4s' }));
 app.use(require('less-middleware')({ src: path.join(__dirname, 'public') }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash());
 app.use(app.router);
 
-app.get('/', routes.index);
-app.get('/users', users.list);
+// routes
+require('./app/routes')(app, passport);
 
 /// catch 404 and forwarding to error handler
 app.use(function(req, res, next) {
@@ -35,7 +49,6 @@ app.use(function(req, res, next) {
 });
 
 /// error handlers
-
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
@@ -55,6 +68,5 @@ app.use(function(err, req, res, next) {
         error: {}
     });
 });
-
 
 module.exports = app;
