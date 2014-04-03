@@ -76,9 +76,57 @@ module.exports = function(app, passport) {
         passport.authenticate('facebook', {
             successRedirect : '/account',
             failureRedirect : '/'
-        }));
+        })
+    );
 
-    // Facebook: route for logging out
+    // =============================================================================
+    // AUTHORIZE (ALREADY LOGGED IN / CONNECTING OTHER SOCIAL ACCOUNT) =============
+    // =============================================================================
+
+    // locally --------------------------------
+    app.get('/connect/local', function(req, res) {
+        res.locals.user = req.user;
+        res.render('connect-local', { message: req.flash('loginMessage') });
+    });
+
+    app.post('/connect/local', passport.authenticate('local-signup', {
+        successRedirect : '/account', // redirect to the secure profile section
+        failureRedirect : '/connect/local', // redirect back to the signup page if there is an error
+        failureFlash : true // allow flash messages
+    }));
+
+    // facebook -------------------------------
+    // send to facebook to do the authentication
+    app.get('/connect/facebook', passport.authorize('facebook', { scope : 'email' }));
+
+    // handle the callback after facebook has authorized the user
+    app.get('/connect/facebook/callback',
+        passport.authorize('facebook', {
+            successRedirect : '/account',
+            failureRedirect : '/'
+        })
+    );
+
+    // local -----------------------------------
+    app.get('/unlink/local', function(req, res) {
+        var user = req.user;
+        user.local.email    = undefined;
+        user.local.password = undefined;
+        user.save(function(err) {
+            res.redirect('/profile');
+        });
+    });
+
+    // facebook -------------------------------
+    app.get('/unlink/facebook', function(req, res) {
+        var user = req.user;
+        user.facebook.token = undefined;
+        user.save(function(err) {
+            res.redirect('/profile');
+        });
+    });
+
+    // route for logging out
     app.get('/logout', function(req, res) {
         req.logout();
         res.redirect('/');
