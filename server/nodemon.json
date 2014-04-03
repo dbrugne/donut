@@ -1,5 +1,5 @@
 {
     "verbose": true,
-    "watch": ["app, views"],
+    "watch": ["app.js, app, config, views"],
     "ignore": ["*.log", "public/*"]
 }
