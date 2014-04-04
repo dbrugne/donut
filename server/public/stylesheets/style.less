@@ -12,14 +12,46 @@ a {
 
 #account {
 
-  .login {
-    > div {
-      .well;
+  .header {
+    .page-header;
+    .text-center;
+  }
+
+  .detail {
+    position: relative;
+    padding-left: 60px;
+
+    .avatar {
+      .img-rounded;
+      position: absolute;
+      top: 0; left: 0;
     }
   }
 
-  .facebook {
-    .well;
+  .global {
+    .make-sm-column(6);
+    line-height: 1.5;
+  }
+
+  .login {
+    .make-sm-column(6);
+    line-height: 1.5;
+
+    .facebook {
+      .well;
+      margin-bottom: 0;
+    }
+
+    .unlink {
+      .text-right;
+
+      a {
+        .btn;
+        .btn-primary;
+        .btn-sm;
+      }
+    }
+
   }
 
 }

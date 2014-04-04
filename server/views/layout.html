@@ -3,8 +3,6 @@
 <head>
     <title>{{ title }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="/stylesheets/bootstrap.min.css" rel="stylesheet">
-    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -30,15 +28,29 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 {{#user}}
-                <li><p class="navbar-text">Welcome <strong>{{ user.local.username }}</strong></p></li>
-                <li><a href="/user/{{ user.local.username }}"><span class="glyphicon glyphicon-user"></span> your profile</a></li>
+                <li>
+                    <p class="navbar-text">
+                        Welcome
+                        {{#user.username}}
+                        <strong>{{user.username}}</strong>
+                        {{/user.username}}
+                        {{^user.username}}
+                            {{#user.facebook.name}}
+                            <strong>{{user.facebook.name}}</strong>
+                            {{/user.facebook.name}}
+                        {{/user.username}}
+                    </p>
+                </li>
+                {{#user.username}}
+                <li><a href="/user/{{ user.username }}"><span class="glyphicon glyphicon-user"></span> your profile</a></li>
+                {{/user.username}}
                 <li><a href="/account"><i class="fa fa-cog"></i> your account</a></li>
                 <li><a href="/logout"><i class="glyphicon glyphicon-remove-circle"></i> logout</a></li>
                 {{/user}}
                 {{^user}}
                 <li><a href="/login">login</a></li>
                 <li><a>or</a></li>
-                <li><a href="/signup">signup</a></li>
+                <li><a href="/signup"><button type="submit" class="btn btn-success">Join for free</button></a></li>
                 {{/user}}
             </ul>
         </div><!--/.nav-collapse -->
