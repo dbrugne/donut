@@ -48,6 +48,9 @@ require('./app/routes')(app, passport);
 
 /// catch 404 and forwarding to error handler
 app.use(function(req, res, next) {
+    if (req.user) {
+        res.locals.user = req.user;
+    }
     res.render('404', {}, function(err, html) {
         res.send(404, html);
     });
@@ -60,7 +63,8 @@ if (app.get('env') === 'development') {
     app.use(function(err, req, res, next) {
         res.render('error', {
             message: err.message,
-            error: err
+            error: err,
+            layout: 'error_layout'
         });
     });
 }
