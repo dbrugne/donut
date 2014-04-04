@@ -38,6 +38,7 @@
                 <strong>email</strong>: {{user.facebook.email}}<br>
                 <strong>name</strong>: {{user.facebook.name}}
             </p>
+            <a href="/unlink/facebook" class="btn btn-primary">Unlink</a>
             {{/user.facebook.token}}
             {{^user.facebook.token}}
             <a href="/connect/facebook" class="btn btn-primary">Connect Facebook</a>

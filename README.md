@@ -25,9 +25,18 @@ v1: Refactor Backbone.js
 
 v2:
 * Refactor node.js/passport/mongodb
+** Need have a username in each case at the end of the process
+** Need to repair FB only account Local account association - done!
+** Move username in global context
+** Account form and post
+** Add CSRF on forms : http://dailyjs.com/2012/09/13/express-3-csrf-tutorial/
+
 * Refactor socket.io (redis?)
-* Review all the messages exchanged between client/server
-** Remove topic to use room name instead
+** Introduce guest mode
+** Introduce backend requests
+** Review all the messages exchanged between client/server
+** Remove topic to use room name instead (with prefix)
+
 * Refactor grunt
 * Refactor less.css
 * Cleanup projects files
