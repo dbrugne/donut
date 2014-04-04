@@ -50,7 +50,7 @@
                 {{^user}}
                 <li><a href="/login">login</a></li>
                 <li><a>or</a></li>
-                <li><a href="/signup"><button type="submit" class="btn btn-success">Join for free</button></a></li>
+                <li><a href="/signup"><button type="submit" class="btn btn-success btn-sm">Join for free</button></a></li>
                 {{/user}}
             </ul>
         </div><!--/.nav-collapse -->
@@ -58,6 +58,11 @@
 </div>
 
 <div class="container">
+
+    {{#success}}<div class="alert alert-success">{{success}}</div>{{/success}}
+    {{#info}}<div class="alert alert-info">{{info}}</div>{{/info}}
+    {{#warning}}<div class="alert alert-warning">{{warning}}</div>{{/warning}}
+    {{#error}}<div class="alert alert-danger">{{error}}</div>{{/error}}
 
     {{{ yield }}}
 

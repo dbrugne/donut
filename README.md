@@ -27,8 +27,9 @@ v2:
 * Refactor node.js/passport/mongodb
 ** Need have a username in each case at the end of the process
 ** Need to repair FB only account Local account association - done!
-** Move username in global context
-** Account form and post
+** Block FB account unlinking when no local, block local unlinking (= delete account instead) - done!
+** Move username in global context - done!
+** Account form and post (account, login, signup)
 ** Add CSRF on forms : http://dailyjs.com/2012/09/13/express-3-csrf-tutorial/
 
 * Refactor socket.io (redis?)
@@ -91,6 +92,7 @@ vx:
 * (social) Add a "Friends are in rooms" list
 * (irc) Message history on arrow up/down
 * (refactor) Use App extends instead of actual server.php
+* Hyperlink analyse and open graph extraction with hover popin in rooms and discussions
 
 Mobile:
 * (mobile) Port a mobile version with SenchaTouch / Phonegap

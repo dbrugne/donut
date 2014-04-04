@@ -10,10 +10,16 @@ module.exports = function(app, passport) {
 
         res.locals.user = req.user;
 
+        var data = {
+            success: req.flash('success'),
+            info: req.flash('info'),
+            warning: req.flash('warning'),
+            error: req.flash('error')
+        };
         if (!req.isAuthenticated()) {
-            res.render('index', { message: req.flash('message') });
+            res.render('index', data);
         } else {
-            res.render('welcome', { message: req.flash('message') });
+            res.render('welcome', data);
         }
 
     });
@@ -49,7 +55,13 @@ module.exports = function(app, passport) {
 
     app.get('/account', isLoggedIn, function(req, res) {
         res.locals.user = req.user;
-        res.render('account', {});
+        var data = {
+            success: req.flash('success'),
+            info: req.flash('info'),
+            warning: req.flash('warning'),
+            error: req.flash('error')
+        };
+        res.render('account', data);
     });
 
     app.get('/account/edit', isLoggedIn, function(req, res) {
@@ -108,22 +120,17 @@ module.exports = function(app, passport) {
     );
 
     // local -----------------------------------
-//    app.get('/unlink/local', function(req, res) {
-//        var user = req.user;
-//        user.local.email    = undefined;
-//        user.local.password = undefined;
-//        user.save(function(err) {
-//            res.redirect('/account');
-//        });
-//    });
     app.get('/user/delete', isLoggedIn, function(req, res) {
         var user = req.user;
         // @todo : remove files (avatars?)
-        // @todo : deauthenticate
-        // @todo : delete(disable) database entity
-        user.save(function(err) {
-//            req.logout(); @todo : reactive
-            req.flash('message', 'Account succesfully deleted');
+        user.remove(function(err) {
+            if (err) {
+                req.flash('error', err)
+                return res.redirect('/');
+            }
+
+            req.logout();
+            req.flash('success', 'Account successfully deleted');
             res.redirect('/');
         });
     });
@@ -133,9 +140,9 @@ module.exports = function(app, passport) {
         var user = req.user;
 
         if (!user.local.email) {
-            req.flash('message', 'You cannot remove your Facebook account until you have defined a local email and password.'
+            req.flash('warning', 'You cannot remove your Facebook account until you have defined a local email and password.'
                 +' If you want to remove all your data from the platform use the delete button');
-            res.redirect('/account');
+            return res.redirect('/account');
         }
 
         user.facebook.token = undefined;
@@ -164,8 +171,8 @@ module.exports = function(app, passport) {
 
         User.findOne({ 'local.username': username }, function(err, user) {
             if (err) {
-                req.flash('info', err)
-                res.redirect('/');
+                req.flash('error', err)
+                return res.redirect('/');
             }
 
             if (user) {
