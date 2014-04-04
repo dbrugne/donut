@@ -1,51 +1,84 @@
-<div class="page-header text-center">
-    <h1><span class="fa fa-anchor"></span> Your Account</h1>
-    <a href="/account/edit" class="btn btn-default btn-sm">Edit</a>
-</div>
+<div id="account">
 
-<div class="row">
+    {{#message}}
+    <div class="alert alert-danger">{{message}}</div>
+    {{/message}}
 
-    <!-- LOCAL INFORMATION -->
-    <div class="col-sm-6">
-        <div class="well">
-            <h3><span class="fa fa-user"></span> Local</h3>
-            {{#user.local.email}}
-            <p>
-                <strong>id</strong>: {{user._id}}<br>
-                <strong>email</strong>: {{user.local.email}}<br>
-                <strong>password</strong>: {{user.local.password}}<br>
-                <strong>bio</strong>: {{user.local.bio}}<br>
-                <strong>location</strong>: {{user.local.location}}<br>
-                <strong>website</strong>: {{user.local.website}}<br>
-                <strong>avatar</strong>: <img src="{{user.local.avatar}}" />
-            </p>
-            <a href="/unlink/local" class="btn btn-default">Unlink</a>
-            {{/user.local.email}}
-            {{^user.local.email}}
-            <a href="/connect/local" class="btn btn-default">Connect Local</a>
-            {{/user.local.email}}
-        </div>
+    <div class="header">
+        <h1><span class="fa fa-cog"></span> Your Account</h1>
+        <a href="/user/delete" class="btn btn-danger btn-sm">Delete account</a>
     </div>
 
-    <!-- FACEBOOK INFORMATION -->
-    <div class="col-sm-6">
-        <div class="well">
-            <h3 class="text-primary"><span class="fa fa-facebook"></span> Facebook</h3>
-            {{#user.facebook.token}}
-            <p>
-                <strong>id</strong>: {{user.facebook.id}}<br>
-                <strong>token</strong>: <div style="width: 500px; overflow-x: scroll; display: inline-block;">{{user.facebook.token}}</div><br>
-                <strong>email</strong>: {{user.facebook.email}}<br>
-                <strong>name</strong>: {{user.facebook.name}}
-            </p>
-            <a href="/unlink/facebook" class="btn btn-primary">Unlink</a>
-            {{/user.facebook.token}}
-            {{^user.facebook.token}}
-            <a href="/connect/facebook" class="btn btn-primary">Connect Facebook</a>
-            {{/user.facebook.token}}
+    <div class="row">
 
+        <!-- GLOBAL INFORMATION -->
+        <div class="global">
+            <div class="well">
+                <h3><span class="fa fa-user"></span> Profile </h3>
+                <p class="detail">
+                    {{#user.avatar}}
+                    <img class="avatar" src="{{user.avatar}}" />
+                    {{/user.avatar}}
+                    <strong>username</strong>: <strong>{{user.username}}</strong><br>
+                    <strong>bio</strong>: {{user.bio}}<br>
+                    <strong>location</strong>: {{user.location}}<br>
+                    <strong>website</strong>: {{user.website}}<br>
+                </p>
+                <p class="text-right">
+                    <a href="/account/edit" class="btn btn-success btn-sm">Edit your profile</a>
+                </p>
+            </div>
         </div>
-    </div>
 
+        <!-- LOGIN INFORMATION -->
+        <div class="login">
+            <div class="well">
+                <h3><span class="fa fa-lock"></span> Login</h3>
+                {{#user.local.email}}
+                <p>
+                    <strong>email</strong>: {{user.local.email}}<br>
+                    <strong>password</strong>:
+                        {{#user.local.password}}yes{{/user.local.password}}
+                        {{^user.local.password}}no{{/user.local.password}}
+                    <br>
+                </p>
+                {{/user.local.email}}
+                {{^user.local.email}}
+                <p>
+                    You haven't set <strong>{{title}}</strong> email and password.
+                    If you want to login without Facebook or unlink your Facebook account just set:
+                </p>
+                <a href="/connect/local" class="btn btn-default">Add email and password</a>
+                {{/user.local.email}}
+
+                <!-- FACEBOOK INFORMATION -->
+                <h3 class="text-primary"><span class="fa fa-facebook"></span> Facebook</h3>
+                {{#user.facebook.token}}
+                <p>Your account is linked to this Facebook account</p>
+                <div class="facebook">
+                    <p class="detail">
+                        <img class="avatar" src="https://graph.facebook.com/{{user.facebook.id}}/picture"/>
+                        <strong>{{user.facebook.name}}</strong><br>
+                        <strong>email</strong>: {{user.facebook.email}}<br>
+                    </p>
+                    {{#user.local.email}}
+                    <p class="unlink">
+                        <a href="/unlink/facebook" class="unlink">Unlink this Facebook account</a>
+                    </p>
+                    {{/user.local.email}}
+                </div>
+                {{/user.facebook.token}}
+                {{^user.facebook.token}}
+                <p>You can link this account to your Facebook account for easier login and social features:</p>
+                <a href="/connect/facebook" class="btn btn-primary"><span class="fa fa-facebook"></span> Connect with <strong>Facebook</strong></a>
+                {{/user.facebook.token}}
+            </div>
+        </div>
+
+        <div class="text-center">
+            <strong>id</strong>: {{user._id}}<br>
+        </div>
+
+    </div>
 
 </div>

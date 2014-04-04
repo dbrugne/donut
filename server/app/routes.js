@@ -11,9 +11,9 @@ module.exports = function(app, passport) {
         res.locals.user = req.user;
 
         if (!req.isAuthenticated()) {
-            res.render('index', { });
+            res.render('index', { message: req.flash('message') });
         } else {
-            res.render('welcome', { });
+            res.render('welcome', { message: req.flash('message') });
         }
 
     });
@@ -108,18 +108,36 @@ module.exports = function(app, passport) {
     );
 
     // local -----------------------------------
-    app.get('/unlink/local', function(req, res) {
+//    app.get('/unlink/local', function(req, res) {
+//        var user = req.user;
+//        user.local.email    = undefined;
+//        user.local.password = undefined;
+//        user.save(function(err) {
+//            res.redirect('/account');
+//        });
+//    });
+    app.get('/user/delete', isLoggedIn, function(req, res) {
         var user = req.user;
-        user.local.email    = undefined;
-        user.local.password = undefined;
+        // @todo : remove files (avatars?)
+        // @todo : deauthenticate
+        // @todo : delete(disable) database entity
         user.save(function(err) {
-            res.redirect('/account');
+//            req.logout(); @todo : reactive
+            req.flash('message', 'Account succesfully deleted');
+            res.redirect('/');
         });
     });
 
     // facebook -------------------------------
     app.get('/unlink/facebook', function(req, res) {
         var user = req.user;
+
+        if (!user.local.email) {
+            req.flash('message', 'You cannot remove your Facebook account until you have defined a local email and password.'
+                +' If you want to remove all your data from the platform use the delete button');
+            res.redirect('/account');
+        }
+
         user.facebook.token = undefined;
         user.save(function(err) {
             res.redirect('/account');
