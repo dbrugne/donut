@@ -86,7 +86,7 @@ module.exports = function(app, passport) {
     // locally --------------------------------
     app.get('/connect/local', function(req, res) {
         res.locals.user = req.user;
-        res.render('connect-local', { message: req.flash('signupMessage') });
+        res.render('connect_local', { message: req.flash('signupMessage') });
     });
 
     app.post('/connect/local', passport.authenticate('local-signup', {
@@ -113,7 +113,7 @@ module.exports = function(app, passport) {
         user.local.email    = undefined;
         user.local.password = undefined;
         user.save(function(err) {
-            res.redirect('/profile');
+            res.redirect('/account');
         });
     });
 
@@ -122,7 +122,7 @@ module.exports = function(app, passport) {
         var user = req.user;
         user.facebook.token = undefined;
         user.save(function(err) {
-            res.redirect('/profile');
+            res.redirect('/account');
         });
     });
 
