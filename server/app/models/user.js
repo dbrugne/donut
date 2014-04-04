@@ -1,24 +1,29 @@
 var mongoose = require('mongoose');
 var bcrypt   = require('bcrypt-nodejs');
 
+var Room     = require('./room');
+var Role     = require('./role');
+
 var userSchema = mongoose.Schema({
 
+    username       : String,
+    name           : String,
+    roles          : [Role],
+    bio            : String,
+    location       : String,
+    website        : String,
+    avatar         : String,
     local            : {
-        email        : String,
-        password     : String,
-        username     : String,
-        roles        : Array,
-        bio          : String,
-        location     : String,
-        website      : String,
-        avatar       : String
+        email      : String,
+        password   : String
     },
     facebook         : {
-        id           : String,
-        token        : String,
-        email        : String,
-        name         : String
-    }
+        id         : String,
+        token      : String,
+        email      : String,
+        name       : String
+    },
+    rooms            : [Room]
 
 });
 

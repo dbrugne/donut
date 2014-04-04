@@ -183,6 +183,12 @@ module.exports = function(passport) {
                             newUser.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName; // look at the passport user profile to see how names are returned
                             newUser.facebook.email = profile.emails[0].value; // facebook can return multiple emails so we'll take the first
 
+                            // prefill global data with Facebook profile (only on local profile creation)
+                            newUser.username = profile.username;
+                            newUser.name = profile.displayName;
+                            newUser.location = profile._json.location.name;
+                            newUser.avatar = 'https://graph.facebook.com/'+profile.id+'/picture';
+
                             // save our user to the database
                             newUser.save(function(err) {
                                 if (err)

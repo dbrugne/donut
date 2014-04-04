@@ -1,11 +1,13 @@
 var mongoose = require('mongoose');
 
+var User     = require('./user');
+
 var roomSchema = mongoose.Schema({
 
     name            : String,
-    owner_id        : String,
-    op              : Array,
-    bans            : Array,
+    owner_id        : User,
+    op              : [User],
+    bans            : [User],
     permanent       : Boolean,
     allow_guests    : Boolean,
     invisible       : Boolean,
@@ -14,5 +16,4 @@ var roomSchema = mongoose.Schema({
 
 });
 
-// create the model and expose it to our app
 module.exports = mongoose.model('Room', roomSchema);
