@@ -8,7 +8,8 @@ var express = require('express'),
     bodyParser = require('body-parser'),
     mongoose = require('mongoose'),
     passport = require('passport'),
-    flash = require('connect-flash');
+    flash = require('connect-flash'),
+    expressValidator = require('express-validator');
 
 // per-environment configuration
 configuration = require('./config/app_dev');
@@ -34,6 +35,7 @@ app.use(favicon());
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
+app.use(expressValidator());
 app.use(cookieParser());
 app.use(express.session({ secret: 'q4qsd65df45s4d5f45ds5fsf4s' }));
 app.use(require('less-middleware')({ src: path.join(__dirname, 'public') }));

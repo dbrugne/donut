@@ -19,6 +19,7 @@
     "passport-local": "1.x",
     "passport-facebook": "1.x",
     "connect-flash": "0.1.x",
-    "bcrypt-nodejs": "latest"
+    "bcrypt-nodejs": "latest",
+    "express-validator": "2.x"
   }
 }

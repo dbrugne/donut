@@ -1,12 +1,19 @@
 <div id="account">
 
-    {{#message}}
-    <div class="alert alert-danger">{{message}}</div>
-    {{/message}}
-
     <div class="header">
         <h1><span class="fa fa-cog"></span> Your Account</h1>
-        <a href="/user/delete" class="btn btn-danger btn-sm">Delete account</a>
+        <a href="/user/delete" id="delete-button" class="btn btn-danger btn-sm" data-dismiss="alert">Delete account</a>
+    </div>
+
+    <div id="delete-alert" class="alert alert-danger fade in hidden">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+        <h4>Are you sure?</h4>
+        <p>You will delete your account and all the linked data, you will not able to find this information again except
+            if you have a customized Dolorean with spatio-temporal convector.</p>
+        <p>
+            <button type="button" class="btn btn-danger">Delete my account</button>
+            <button type="button" class="btn btn-default">Cancel</button>
+        </p>
     </div>
 
     <div class="row">
@@ -15,14 +22,14 @@
         <div class="global">
             <div class="well">
                 <h3><span class="fa fa-user"></span> Profile </h3>
-                <p class="detail">
+                <p class="detail with-picture">
                     {{#user.avatar}}
                     <img class="avatar" src="{{user.avatar}}" />
                     {{/user.avatar}}
-                    <strong>username</strong>: <strong>{{user.username}}</strong><br>
-                    <strong>bio</strong>: {{user.bio}}<br>
-                    <strong>location</strong>: {{user.location}}<br>
-                    <strong>website</strong>: {{user.website}}<br>
+                    <span class="labels">username</span> <span class="values">{{user.username}}</span><br>
+                    <span class="labels">bio</span> <span class="values">{{user.bio}}</span><br>
+                    <span class="labels">location</span> <span class="values">{{user.location}}</span><br>
+                    <span class="labels">website</span> <span class="values">{{user.website}}</span><br>
                 </p>
                 <p class="text-right">
                     <a href="/account/edit" class="btn btn-success">Edit your profile</a>
@@ -35,11 +42,12 @@
             <div class="well">
                 <h3><span class="fa fa-lock"></span> Login</h3>
                 {{#user.local.email}}
-                <p>
-                    <strong>email</strong>: {{user.local.email}}<br>
-                    <strong>password</strong>:
-                        {{#user.local.password}}yes{{/user.local.password}}
-                        {{^user.local.password}}no{{/user.local.password}}
+                <p class="detail">
+                    <span class="labels">email</span>: <span class="values">{{user.local.email}} (<a href="#" id="email-modal-link">change email</a>)</span><br>
+                    <span class="labels">password</span>:
+                    <span class="values">
+                        <a href="#" id="password-modal-link">change password</a>
+                    </span>
                     <br>
                 </p>
                 {{/user.local.email}}
@@ -56,10 +64,10 @@
                 {{#user.facebook.token}}
                 <p>Your account is linked to this Facebook account</p>
                 <div class="facebook">
-                    <p class="detail">
+                    <p class="detail with-picture">
                         <img class="avatar" src="https://graph.facebook.com/{{user.facebook.id}}/picture"/>
-                        <strong>{{user.facebook.name}}</strong><br>
-                        <strong>email</strong>: {{user.facebook.email}}<br>
+                        <span class="labels">name</span> <span class="values">{{user.facebook.name}}</span><br>
+                        <span class="labels">email</span> <span class="values">{{user.facebook.email}}</span><br>
                     </p>
                     {{#user.local.email}}
                     <p class="unlink">
@@ -80,5 +88,64 @@
         </div>
 
     </div>
+
+    <div class="modal fade" id="email-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Change your account email</h4>
+                </div>
+                <div class="modal-body forms">
+                    <div class="controls">
+                        <label class="control-labels" for="email-field">Email address</label>
+                        <div class="control-fields">
+                            <input type="email" class="form-control" id="email-field" name="user[fields][email]" placeholder="Enter email" value="{{email}}">
+                            <p class="help-block">Used for login.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <div class="modal fade" id="password-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Change your account password</h4>
+                </div>
+                <div class="modal-body forms">
+                    <div class="controls">
+                        <label class="control-labels" for="password-field">Actual password</label>
+                        <div class="control-fields">
+                            <input type="password" class="form-control" id="actual-password-field" name="user[fields][password]" placeholder="actual password" value="">
+                        </div>
+                    </div>
+                    <div class="controls">
+                        <label class="control-labels" for="password-field">New password</label>
+                        <div class="control-fields">
+                            <input type="password" class="form-control" id="password-field" name="user[fields][new]" placeholder="new password" value="">
+                        </div>
+                    </div>
+                    <div class="controls">
+                        <label class="control-labels"></label>
+                        <div class="control-fields">
+                            <input type="password" class="form-control" id="confirm-field" name="user[fields][confirm]" placeholder="confirm new password" value="">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 
 </div>

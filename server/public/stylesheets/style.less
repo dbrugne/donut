@@ -6,25 +6,45 @@ body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
+#footer {
+  font-size: 12px;
+  color: rgb(153, 153, 153);
+  margin-top: 50px;
+  .text-center;
+}
+
 a {
   color: #00B7FF;
 }
 
+.header {
+  .page-header;
+  .text-center;
+}
+
 #account {
 
-  .header {
-    .page-header;
-    .text-center;
+  .with-picture {
+    padding-left: 60px;
   }
 
   .detail {
     position: relative;
-    padding-left: 60px;
 
     .avatar {
       .img-rounded;
       position: absolute;
       top: 0; left: 0;
+    }
+
+    .labels {
+      display: inline-block;
+      min-width: 80px;
+      margin-right: 20px;
+    }
+
+    .values {
+      font-weight: bold;
     }
   }
 
@@ -54,4 +74,62 @@ a {
 
   }
 
+}
+
+.forms {
+
+  .form-horizontal;
+
+  .errors {
+    .alert;
+    .alert-danger;
+  }
+
+  h4 {
+    border-bottom: 1px solid lightsteelblue;
+    padding-bottom: 5px;
+    .make-sm-column(8);
+    .make-sm-column-offset(2);
+  }
+
+  .controls {
+
+    margin-bottom: 10px;
+    .form-horizontal .form-group;
+    .has-feedback;
+
+    .control-labels {
+      .text-right;
+      .form-horizontal .control-label;
+      .make-sm-column(2);
+      .make-sm-column-offset(2);
+    }
+
+    .control-fields {
+      .make-sm-column(6);
+
+      input[type=text], input[type=email], input[type=password], input[type=url], select, textarea {
+      }
+
+      a {
+        padding-top: 6px;
+        display: inline-block;
+      }
+    }
+
+  }
+}
+
+.modal .forms {
+  h4 {
+    .make-sm-column(12);
+    .make-sm-column-offset(1);
+  }
+  .control-labels {
+    .make-sm-column(3);
+    .make-sm-column-offset(0);
+  }
+  .control-fields {
+    .make-sm-column(9);
+  }
 }

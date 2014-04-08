@@ -1,6 +1,72 @@
-<div class="page-header text-center">
-    <h1><span class="fa fa-anchor"></span> Your Account</h1>
-    <input type="submit" class="btn btn-primary" value="Save">
-    <a href="/account" type="button" class="btn btn-default">Cancel</a>
+<div id="account-edit">
+
+    <div class="header">
+        <h1><span class="fa fa-cog"></span> Your Account</h1>
+    </div>
+
+    <form action="/account/edit" method="post" role="form" class="forms">
+
+        {{#is_errors}}
+        <div class="errors">
+            {{#errors}}
+            {{#errors}}{{msg}}{{/errors}}<br>
+            {{/errors}}
+        </div>
+        {{/is_errors}}
+
+        <div class="controls">
+            <div class="col-sm-8 col-lg-offset-2 text-right">
+                <input type="submit" class="btn btn-primary btn-sm" value="Save and go back to account">
+                <a href="/account" type="button" class="btn btn-default btn-sm">Cancel</a>
+            </div>
+        </div>
+
+        <h4>Your profile</h4>
+
+        <div class="controls">
+            <label class="control-labels" for="username-field">Username</label>
+            <div class="control-fields">
+                <input type="text" class="form-control" id="username-field" name="user[fields][username]" placeholder="Enter username" value="{{userFields.username}}">
+                <p class="help-block">Your identity in chatrooms, should be unique.</p>
+            </div>
+        </div>
+        <div class="controls">
+            <label class="control-labels" for="bio-field">Bio</label>
+            <div class="control-fields">
+                <textarea class="form-control" id="bio-field" name="user[fields][bio]" placeholder="Describe in few words">{{userFields.bio}}</textarea>
+                <p class="help-block">Optional</p>
+            </div>
+        </div>
+        <div class="controls">
+            <label class="control-labels" for="location-field">Location</label>
+            <div class="control-fields">
+                <input type="text" class="form-control" id="location-field" name="user[fields][location]" placeholder="Town, Country" value="{{userFields.location}}">
+                <p class="help-block">Optional</p>
+            </div>
+        </div>
+        <div class="controls">
+            <label class="control-labels" for="website-field">Website</label>
+            <div class="control-fields">
+                <input type="url" class="form-control" id="website-field" name="user[fields][website]" placeholder="Your website URL" value="{{userFields.website}}">
+                <p class="help-block">Optional</p>
+            </div>
+        </div>
+        <div class="controls">
+            <label class="control-labels" for="avatar-field">Avatar</label>
+            <div class="control-fields">
+                <input type="file" class="form-control" id="avatar-field" name="avatar">
+            </div>
+        </div>
+
+        <h4> </h4>
+
+        <div class="controls">
+            <div class="col-sm-8 col-lg-offset-2 text-right">
+                <button type="submit" id="account-edit-submit" class="btn btn-primary btn-sm">Save and go back to account</button>
+                <a href="/account" type="button" class="btn btn-default btn-sm">Cancel</a>
+            </div>
+        </div>
+
+    </form>
+
 </div>
-<h1>Here the form !!</h1>

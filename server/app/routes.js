@@ -3,9 +3,6 @@ var Room    = require('./models/room');
 
 module.exports = function(app, passport) {
 
-    // =====================================
-    // HOME PAGE (authenticated or not) ====
-    // =====================================
     app.get('/', function(req, res) {
 
         res.locals.user = req.user;
@@ -24,9 +21,10 @@ module.exports = function(app, passport) {
 
     });
 
-    // =====================================
-    // USER ================================
-    // =====================================
+    app.get('/validator.min.js', function(req, res) {
+        res.sendfile('node_modules/express-validator/node_modules/validator/validator.min.js');
+    });
+
     app.get('/login', function(req, res) {
 
         res.locals.user = req.user;
@@ -35,13 +33,12 @@ module.exports = function(app, passport) {
     });
 
     app.post('/login', passport.authenticate('local-login', {
-        successRedirect : '/',
+        successRedirect : '/account/edit',
         failureRedirect : '/login',
         failureFlash : true
     }));
 
     app.get('/signup', function(req, res) {
-
         res.locals.user = req.user;
         res.render('signup', { message: req.flash('signupMessage') });
 
@@ -51,7 +48,7 @@ module.exports = function(app, passport) {
         successRedirect : '/',
         failureRedirect : '/signup',
         failureFlash : true
-    }));
+    })); // @todo : should save username to !
 
     app.get('/account', isLoggedIn, function(req, res) {
         res.locals.user = req.user;
@@ -66,13 +63,91 @@ module.exports = function(app, passport) {
 
     app.get('/account/edit', isLoggedIn, function(req, res) {
         res.locals.user = req.user;
-        res.render('account_edit', {});
-        // @todo : implement form + JS validation
+
+        var userFields = req.user.toObject();
+        res.render('account_edit', {
+            userFields: userFields,
+            scripts: [{src: '/validator.min.js'}]
+        });
     });
 
     app.post('/account/edit', isLoggedIn, function(req, res) {
-        res.locals.user = req.user;
-        // @todo : validate, sanitize and save then redirect on account/
+
+        console.log(req.body.user.fields);
+
+        req.checkBody(['user', 'fields','username'],'Username should be a string of min 2 and max 25 characters.').matches(/^[-a-z0-9_\\|[\]{}^`]{2,30}$/i);
+        req.checkBody(['user', 'fields','bio'],'Bio should be 70 characters max.').isLength(0, 200);
+        req.checkBody(['user', 'fields','location'],'Location should be 70 characters max.').isLength(0, 70);
+        if (req.body.user.fields.website){
+            req.checkBody(['user', 'fields','website'],'Website should be a valid site URL').isURL();
+        }
+
+        // @todo : test username unicity
+//        User.findOne({ 'username': req.body.user.fields.username }, function(err, user) {
+//            if (err) {
+//                req.flash('error', err)
+//                return res.redirect('/');
+//            }
+//
+//            if (user) {
+//                res.render('user', {
+//                    user : user
+//                });
+//            }
+//
+//        });
+
+        var errors = req.validationErrors();
+        if (errors) {
+            console.log(errors);
+            return res.render('account_edit', {
+                userFields: req.body.user.fields,
+                is_errors: true,
+                errors: errors,
+                scripts: [{src: '/validator.min.js'}]
+            });
+        }
+
+        // @todo : validate, also on client side
+
+         // Sanitize and set
+        console.log('test chain: '+req.sanitize(['user', 'fields','username']).escape());
+        req.sanitize(['user', 'fields','username']).escape();
+        req.sanitize(['user', 'fields','bio']).escape();
+        req.sanitize(['user', 'fields','location']).escape();
+        req.sanitize(['user', 'fields','website']).escape();
+
+        // @todo : handle file upload
+
+        // Update user
+        req.user.username = req.body.user.fields.username;
+        req.user.bio = req.body.user.fields.bio;
+        req.user.location = req.body.user.fields.location;
+        req.user.website = req.body.user.fields.website;
+
+        // Save
+        req.user.save(function(err) {
+            if (err) {
+                req.flash('error', err)
+                return res.redirect('/');
+            } else {
+                console.log('saved!');
+                req.flash('success', 'Your profile was updated');
+                res.redirect('/account');
+            }
+        });
+    });
+
+    app.post('/email', [isLoggedIn], function(req, res) {
+        // @todo : implement check email format and save and return success (will close modal) or error
+//        req.checkBody(['user', 'fields','email'],'Email should be a valid address.').isEmail();
+//        if (req.body.user.fields.email){
+//        }
+//        req.user.local.email = req.body.user.fields.email;
+    });
+
+    app.post('/password', [isLoggedIn], function(req, res) {
+        // @todo : implement check password, password matching, current password and save and return success (will close modal) or error
     });
 
     app.get('/logout', function(req, res) {
@@ -91,11 +166,6 @@ module.exports = function(app, passport) {
         })
     );
 
-    // =============================================================================
-    // AUTHORIZE (ALREADY LOGGED IN / CONNECTING OTHER SOCIAL ACCOUNT) =============
-    // =============================================================================
-
-    // locally --------------------------------
     app.get('/connect/local', function(req, res) {
         res.locals.user = req.user;
         res.render('connect_local', { message: req.flash('signupMessage') });
@@ -119,7 +189,6 @@ module.exports = function(app, passport) {
         })
     );
 
-    // local -----------------------------------
     app.get('/user/delete', isLoggedIn, function(req, res) {
         var user = req.user;
         // @todo : remove files (avatars?)
@@ -151,15 +220,10 @@ module.exports = function(app, passport) {
         });
     });
 
-    // route for logging out
     app.get('/logout', function(req, res) {
         req.logout();
         res.redirect('/');
     });
-
-    // =====================================
-    // PROFILES ============================
-    // =====================================
 
     app.get('/user/:username', function(req, res) {
         var username = req.params.username;
@@ -169,7 +233,7 @@ module.exports = function(app, passport) {
             });
         }
 
-        User.findOne({ 'local.username': username }, function(err, user) {
+        User.findOne({ 'username': username }, function(err, user) {
             if (err) {
                 req.flash('error', err)
                 return res.redirect('/');
@@ -190,12 +254,9 @@ module.exports = function(app, passport) {
 
 };
 
-// route middleware to make sure a user is logged in
 function isLoggedIn(req, res, next) {
-    // if user is authenticated in the session, carry on
     if (req.isAuthenticated())
         return next();
 
-    // if they aren't redirect them to the home page
     res.redirect('/');
 }
