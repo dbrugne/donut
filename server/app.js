@@ -33,8 +33,7 @@ app.locals.title = configuration.title;
 // http server
 app.use(favicon());
 app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded());
+app.use(express.bodyParser());
 app.use(expressValidator());
 app.use(cookieParser());
 app.use(express.session({ secret: 'q4qsd65df45s4d5f45ds5fsf4s' }));

@@ -5,20 +5,35 @@ module.exports = function(app, passport) {
 
     app.get('/', function(req, res) {
 
-        res.locals.user = req.user;
-
         var data = {
             success: req.flash('success'),
             info: req.flash('info'),
             warning: req.flash('warning'),
             error: req.flash('error')
         };
+
+        res.locals.user = req.user;
         if (!req.isAuthenticated()) {
-            res.render('index', data);
-        } else {
-            res.render('welcome', data);
+            return res.render('index', data);
         }
 
+        Room.find({}, function(err, rooms) {
+            if (err) {
+                req.flash('error', err);
+                res.redirect('/');
+            }
+
+            data.rooms = rooms;
+            console.log(data.rooms);
+            return res.render('welcome', data);
+        });
+    });
+
+    app.get('/!', function(req, res) {
+        res.locals.user = req.user;
+        return res.render('chat', {
+            layout: 'chat_layout'
+        });
     });
 
     app.get('/validator.min.js', function(req, res) {
@@ -33,7 +48,7 @@ module.exports = function(app, passport) {
     });
 
     app.post('/login', passport.authenticate('local-login', {
-        successRedirect : '/account',
+        successRedirect : '/',
         failureRedirect : '/login',
         failureFlash : true
     }));
@@ -65,7 +80,7 @@ module.exports = function(app, passport) {
         res.locals.user = req.user;
 
         var userFields = req.user.toObject();
-        res.render('account_edit', {
+        res.render('profile', {
             userFields: userFields,
             scripts: [{src: '/validator.min.js'}]
         });
@@ -73,7 +88,7 @@ module.exports = function(app, passport) {
 
     app.post('/profile', isLoggedIn, function(req, res) {
 
-        console.log(req.body.user.fields);
+        console.log(req.files);
 
         req.checkBody(['user', 'fields','username'],'Username should be a string of min 2 and max 25 characters.').matches(/^[-a-z0-9_\\|[\]{}^`]{2,30}$/i);
         req.checkBody(['user', 'fields','bio'],'Bio should be 70 characters max.').isLength(0, 200);
@@ -81,6 +96,16 @@ module.exports = function(app, passport) {
         if (req.body.user.fields.website){
             req.checkBody(['user', 'fields','website'],'Website should be a valid site URL').isURL();
         }
+        // @todo: implement with secure Formidable
+//        if (req.files.avatar.size > 0) {
+//            console.log(req.files.avatar.type);
+//            app.validator.isIn(req.files.avatar.type, ['image/png','image/jpeg','image/gif','image/bmp']);
+//            if (req.files.avatar.type) {
+//            }
+//            req.files.avatar.type
+//            req.files.avatar.size
+//            req.files.avatar.name
+//        }
 
         // @todo : test username unicity
 //        User.findOne({ 'username': req.body.user.fields.username }, function(err, user) {
@@ -100,7 +125,7 @@ module.exports = function(app, passport) {
         var errors = req.validationErrors();
         if (errors) {
             console.log(errors);
-            return res.render('account_edit', {
+            return res.render('profile', {
                 userFields: req.body.user.fields,
                 is_errors: true,
                 errors: errors,
@@ -111,11 +136,10 @@ module.exports = function(app, passport) {
         // @todo : validate, also on client side
 
          // Sanitize and set
-        console.log('test chain: '+req.sanitize(['user', 'fields','username']).escape());
-        req.sanitize(['user', 'fields','username']).escape();
-        req.sanitize(['user', 'fields','bio']).escape();
-        req.sanitize(['user', 'fields','location']).escape();
-        req.sanitize(['user', 'fields','website']).escape();
+        req.sanitize(['user','fields','username']).escape();
+        req.sanitize(['user','fields','bio']).escape();
+        req.sanitize(['user','fields','location']).escape();
+        req.sanitize(['user','fields','website']).escape();
 
         // @todo : handle file upload
 
