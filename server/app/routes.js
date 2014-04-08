@@ -33,7 +33,7 @@ module.exports = function(app, passport) {
     });
 
     app.post('/login', passport.authenticate('local-login', {
-        successRedirect : '/account/edit',
+        successRedirect : '/account',
         failureRedirect : '/login',
         failureFlash : true
     }));
@@ -61,7 +61,7 @@ module.exports = function(app, passport) {
         res.render('account', data);
     });
 
-    app.get('/account/edit', isLoggedIn, function(req, res) {
+    app.get('/profile', isLoggedIn, function(req, res) {
         res.locals.user = req.user;
 
         var userFields = req.user.toObject();
@@ -71,7 +71,7 @@ module.exports = function(app, passport) {
         });
     });
 
-    app.post('/account/edit', isLoggedIn, function(req, res) {
+    app.post('/profile', isLoggedIn, function(req, res) {
 
         console.log(req.body.user.fields);
 

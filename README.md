@@ -29,12 +29,15 @@ v2:
 ** Need to repair FB only account Local account association - done!
 ** Block FB account unlinking when no local, block local unlinking (= delete account instead) - done!
 ** Move username in global context - done!
+
+** Implement change email form
 ** Implement change password form
-** Account form and post
+** Account form and post (finished)
 ** Add confirmation message on delete account
 ** Add CSRF on forms (account, login, signup): http://dailyjs.com/2012/09/13/express-3-csrf-tutorial/
-** Room profile with chat callback => /!#DagnirDae
+
 ** Chat callback on homepage => /!#DagnirDae
+** Room profile with chat callback => /!#DagnirDae
 
 * Refactor socket.io (redis?)
 ** Introduce guest mode
