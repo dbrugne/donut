@@ -252,6 +252,33 @@ module.exports = function(app, passport) {
         });
     });
 
+    app.get('/room/:name', function(req, res) {
+        var name = req.params.name;
+        if (name == undefined || name == '') {
+            res.render('404', {}, function(err, html) {
+                res.send(404, html);
+            });
+        }
+
+        Room.findOne({ 'name': name }, function(err, room) {
+            if (err) {
+                req.flash('error', err)
+                return res.redirect('/');
+            }
+
+            if (room) {
+                res.render('room', {
+                    room : room
+                });
+            } else {
+                res.render('404', {}, function(err, html) {
+                    res.send(404, html);
+                });
+            }
+
+        });
+    });
+
 };
 
 function isLoggedIn(req, res, next) {
