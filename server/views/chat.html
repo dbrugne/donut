@@ -1,0 +1,359 @@
+<div id="chat" class="container-fluid">
+    <div class="row">
+        <div id="chat-left" class="col-sm-2 col-md-2 col-lg-2">
+            <div id="block-status" class="panel panel-default">
+                <div class="panel-body">
+                    You are
+                    <button id="button-status" type="button" class="status">...</button>
+                </div>
+            </div>
+            <div id="block-rooms" class="panel panel-default">
+                <div class="panel-heading">Rooms</div>
+                <div id="discussions-list" class="list-group"></div>
+                <div class="panel-footer">
+                    <a href="#" id="create-room-link"><span class="glyphicon glyphicon-plus"></span> Create a room</a>
+                    <br />
+                    <a href="#" id="search-room-link"><span class="glyphicon glyphicon-search"></span> Search a room</a>
+                </div>
+            </div>
+            <div id="block-users" class="panel panel-default"></div>
+
+            <button class="btn btn-success" id="test1">Test 1</button>
+            <button class="btn btn-success" id="test2">Test 2</button>
+            <button class="btn btn-success" id="test3">Test 3</button>
+            <button class="btn btn-success" id="test4">Test 4</button>
+            <button class="btn btn-success" id="test5">Test 5</button>
+            <button class="btn btn-success" id="test6">Test 6</button>
+
+        </div><!-- /.chat-left -->
+        <div id="chat-center" class="col-sm-10 col-md-10 col-lg-10">
+            <div class="discussion" data-default="true">
+                <div class="default">Not in room</div>
+            </div>
+        </div><!-- /.chat-center -->
+    </div><!-- /.row -->
+</div><!-- /.container-fluid -->
+
+<!-- User profile modal -->
+<div class="modal fade" id="user-profile-modal"></div>
+<!-- / User profile modal -->
+
+<!-- Room create modal -->
+<div class="modal fade" id="room-create-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Create a new room</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-group has-feedback">
+                            <label for="room-create-input">Room name</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">#</span>
+                                <input type="text" id="room-create-input" class="form-control" placeholder="Enter room name" />
+                            </div>
+                            <span class="help-block">Room name should be 2+ longer and use alphanumeric characters and specials characters (_ - \ [ ] { } ^ ` |)</span>
+                        </div>
+                        <button id="room-create-submit" class="btn btn-default" type="button">
+                            Create
+                            <span class="glyphicon glyphicon-plus"></span>
+                        </button>
+                    </div><!-- /.col-lg-12 -->
+                </div><!-- /.row -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<!-- / Room create modal -->
+
+<!-- Room search modal -->
+<div class="modal fade" id="room-search-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Search for rooms</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="input-group">
+                            <input type="search" class="form-control room-search-input" placeholder="Search for rooms" />
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default room-search-submit" type="button"><span class="glyphicon glyphicon-search"></span></button>
+                                </span>
+                        </div><!-- /input-group -->
+                        <ul class="list-group rooms-list"></ul>
+                    </div><!-- /.col-lg-12 -->
+                </div><!-- /.row -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<!-- / Room search modal -->
+
+<!-- User search modal -->
+<div class="modal fade" id="user-search-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Search for user</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="input-group">
+                            <input type="search" class="form-control user-search-input" placeholder="Search for users" />
+                            <span class="input-group-btn">
+                                <button class="btn btn-default user-search-submit" type="button"><span class="glyphicon glyphicon-search"></span></button>
+                            </span>
+                        </div><!-- /input-group -->
+                        <ul class="list-group users-list"></ul>
+                    </div><!-- /.col-lg-12 -->
+                </div><!-- /.row -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- / User search modal -->
+
+<!-- ----------------- -->
+<!-- RoomTabView       -->
+<!-- ----------------- -->
+<script type="text/template" id="rooms-list-item-template">
+    <% var uriName = room.name.replace('#', ''); %>
+    <a href="#room/<%= uriName %>" class="list-group-item list-item" data-room-id="<%= room.id %>">
+        <span class="name"><%= room.name %></span>
+        <span class="users-count">(<span class="glyphicon glyphicon-user user-profile"></span> <span class="count"><% users.length %></span>)</span>
+        <span class="close glyphicon glyphicon-remove"></span>
+        <span class="badge"><%= room.unread %></span>
+    </a>
+</script>
+
+<!-- ----------------- -->
+<!-- RoomWindow        -->
+<!-- ----------------- -->
+<script type="text/template" id="room-template">
+    <div class="header">
+        <span class="name"><%= name %></span>
+        <div class="baseline-block"></div>
+        <span class="close glyphicon glyphicon-remove"></span>
+    </div><!-- /.header -->
+    <div class="row row-content">
+        <div class="col-content col-sm-9 col-md-9 col-lg-9">
+            <div class="messages"></div>
+            <div class="message-box"></div>
+        </div>
+        <div class="col-users col-sm-3 col-md-3 col-lg-3"></div>
+    </div><!-- /.row-content -->
+</script>
+
+<!-- ----------------- -->
+<!-- RoomBaseline      -->
+<!-- ----------------- -->
+<script type="text/template" id="room-baseline-template">
+    <span class="baseline"></span>
+    <span class="baseline-form">
+        <input type="text" class="baseline-input form-control input-sm" placeholder="Room baseline" value="">
+        <button class="btn btn-primary btn-sm baseline-submit">Submit</button>
+        <button class="btn btn-cancel btn-sm baseline-cancel">Cancel</button>
+    </span>
+</script>
+
+<!-- ----------------- -->
+<!-- RoomUsers         -->
+<!-- ----------------- -->
+<script type="text/template" id="room-users-template">
+    <div class="room-users">
+        <div class="heading">Room users</div>
+        <div class="list-group"></div>
+        <div class="footer">
+            <a href="#"><span class="glyphicon glyphicon-plus"></span> Invite a user</a>
+        </div><!-- /.footer -->
+    </div><!-- /.room-users -->
+</script>
+
+<!-- ----------------- -->
+<!-- RoomUser          -->
+<!-- ----------------- -->
+<script type="text/template" id="user-template">
+    <a href="#" class="user-item list-group-item" data-user-id="<%= id %>"><span class="username"><%= username %></span> <span class="actions"><span class="glyphicon glyphicon-user user-profile"></span> <span class="glyphicon glyphicon-edit user-discussion"></span></span></a>
+</script>
+
+<!-- ----------------- -->
+<!-- OneToOneListItemView -->
+<!-- ----------------- -->
+<script type="text/template" id="onetoone-list-item-template">
+    <a href="#user/<%= username %>" class="list-group-item list-item" data-user-id="<%= user_id %>">
+        <span class="name"><%= username %></span>
+        <span class="close glyphicon glyphicon-remove"></span>
+        <span class="badge"><%= unread %></span>
+    </a>
+</script>
+
+<!-- ----------------- -->
+<!-- OneToOneView          -->
+<!-- ----------------- -->
+<script type="text/template" id="onetoone-template">
+    <div class="header">
+        <span class="avatar">
+            <img src="<%= avatar %>" />
+        </span>
+        <span class="name"><%= username %></span>
+        <span class="close glyphicon glyphicon-remove"></span>
+    </div><!-- /.header -->
+    <div class="row row-content">
+        <div class="col-content col-sm-12 col-md-12 col-lg-12">
+            <div class="messages"></div>
+            <div class="message-box"></div>
+        </div>
+    </div><!-- /.row-content -->
+</script>
+
+<!-- ----------------- -->
+<!-- MessageBox        -->
+<!-- ----------------- -->
+<script type="text/template" id="message-box-template">
+    <div class="form-inline">
+        <div class="input-group">
+            <span class="input-group-addon smileys-message" data-toggle="popover" data-html="true" data-placement="top"><span class="emoticon-16px emoticon-smile">:)</span></span>
+            <textarea class="input-message form-control" maxlength="1000"></textarea>
+            <span class="input-group-addon send-message">
+                Send!
+            </span>
+        </div><!-- /input-group -->
+    </div>
+</script>
+
+<!-- ----------------- -->
+<!-- Messages          -->
+<!-- ----------------- -->
+<script type="text/template" id="messages-template"></script>
+
+<!-- ----------------- -->
+<!-- Message           -->
+<!-- ----------------- -->
+<script type="text/template" id="message-template">
+    <p class="message">
+        <span class="avatar">
+            <img src="<%= avatar %>" />
+        </span>
+        <span class="username" data-user-id="<%= user_id %>"><%= username %></span>
+        <span class="date"><span class="glyphicon glyphicon-time"></span> <%= date %></span>
+        <span class="message"><%= message %></span>
+    </p>
+</script>
+
+<!-- ----------------- -->
+<!-- Notification      -->
+<!-- ----------------- -->
+<script type="text/template" id="notification-template">
+    <p class="notification notification-<%= type %>">
+        <% if (type =='hello') { %>
+        You enter in <%= name %>
+        <% } else if (type =='userIn') { %>
+        <span class="username" data-user-id="<%= user_id %>"><%= username %></span> has joined <strong><%= name %></strong>
+        <% } else if (type =='userOut') { %>
+        <span class="username" data-user-id="<%= user_id %>"><%= username %></span> has left <strong><%= name %></strong>
+        <% } else if (type =='disconnect') { %>
+        <span class="username" data-user-id="<%= user_id %>"><%= username %></span> was disconnected (<em><%= reason %></em>)
+        <% } else if (type =='baseline') { %>
+        <span class="username" data-user-id="<%= user_id %>"><%= username %></span> changed topic for <strong><%= baseline %></strong>
+        <% } else if (type =='kick') { %>
+        <span class="username" data-user-id="<%= user_id %>"><%= username %></span> was kicked by
+        <span class="username" data-user-id="<%= by_user_id %>"><%= by_username %></span> '<%= reason %>'
+        <% } else if (type =='ban') { %>
+        <span class="username" data-user-id="<%= user_id %>"><%= username %></span> was banned by
+        <span class="username" data-user-id="<%= by_user_id %>"><%= by_username %></span> (<%= time %>) '<em><%= reason %></em>'
+        <% } else if (type =='op') { %>
+        <span class="username" data-user-id="<%= user_id %>"><%= username %></span> was oped by
+        <span class="username" data-user-id="<%= by_user_id %>"><%= by_username %></span>
+        <% } else if (type =='deop') { %>
+        <span class="username" data-user-id="<%= user_id %>"><%= username %></span> was deoped by
+        <span class="username" data-user-id="<%= by_user_id %>"><%= by_username %></span>
+        <% } %>
+        <span class="date"><span class="glyphicon glyphicon-time"></span> <%= date %></span>
+    </p>
+</script>
+
+<!-- ----------------- -->
+<!-- Room search modal -->
+<!-- ----------------- -->
+<script type="text/template" id="room-search-modal-template">
+    <% if (rooms.length < 1) { %>
+    <li class="list-group-item"><span class="no-result">No result</span></li>
+    <% } else { %>
+    <% _.each(rooms, function(room) { %>
+    <li class="list-group-item search-room-item" data-topic="<%= room.topic %>">
+        <h4 class="list-group-item-heading"><%= room.name %> (<%= room.count %>)</h4>
+        <p class="list-group-item-text"><%= room.baseline %></p>
+    </li>
+    <% }); %>
+    <% } %>
+</script>
+
+<!-- ----------------- -->
+<!-- Smileys           -->
+<!-- ----------------- -->
+<script type="text/template" id="smileys-template">
+    <div class="arrow"></div>
+    <div class="popover-content">
+        <ul class="smileys">
+            <% _.each(smileys, function(smiley) { %>
+            <li class="emoticon-18px <%= smiley.class %>" data-symbol="<%= smiley.symbol %>" data-sclass="<%= smiley.class %>"><%= smiley.symbol %> - <%= smiley.label %></li>
+            <% }); %>
+        </ul>
+    </div>
+</script>
+
+<!-- ----------------- -->
+<!-- Online users      -->
+<!-- ----------------- -->
+<script type="text/template" id="online-users-template">
+    <div class="panel-heading">Users</div>
+    <div id="online-users-list" class="list-group"></div>
+    <div class="panel-footer">
+        <a href="#" id="search-user-link"><span class="glyphicon glyphicon-search"></span> Search a user</a>
+    </div>
+</script>
+
+<!-- ----------------- -->
+<!-- User search modal -->
+<!-- ----------------- -->
+<script type="text/template" id="user-search-modal-template">
+    <% if (users.length < 1) { %>
+    <li class="list-group-item"><span class="no-result">No result</span></li>
+    <% } else { %>
+    <% _.each(users, function(user) { %>
+    <li class="list-group-item user-item" data-user-id="<%= user.id %>">
+        <span class="username"><%= user.username %></span>
+    </li>
+    <% }); %>
+    <% } %>
+</script>
+
+<script>
+    $(document).ready(function() {
+
+        /************************************************
+         * DEBUG
+         ***********************************************/
+
+        $("#test1").click(function (e) {
+        });
+
+    });
+</script>
