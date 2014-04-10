@@ -52,6 +52,7 @@ v2:
 * Sample activity generation
 
 v3:
+* Add customizable color line on room
 * Repair auto-join room when come from homepage (need replacing room id with name everywhere)
 * (irc) ACL on room => who is OP, set OP, remove OP, can change baseline, can kick users
 * (irc) Kick users
