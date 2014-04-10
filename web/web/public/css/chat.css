@@ -1,94 +1,68 @@
-@import "http://fonts.googleapis.com/css?family=Open+Sans:400,600,700";
+#chat-left { }
+    #block-rooms {}
+        #block-rooms .panel-heading { border-color: transparent; }
+        #block-rooms .list-item { font-size: 12px; }
+        #block-rooms .unread .list-item { color: orangered; }
+        #block-rooms .list-item .name {  }
+        #block-rooms .list-item .badge { display: none; margin-right: 5px; }
+        #block-rooms .list-item .close { font-size: 14px; color: #FF0000; }
+        .create-message { padding: 15px; }
+    #block-users {}
+        #block-users .panel-heading { border-color: transparent; }
+        #block-users .user-item .actions { position: absolute; right: 10px; }
 
-html,body { font-family: "Open Sans"; height: 100%; }
-body { padding-top: 50px; }
-.navbar-right { padding-right: 10px; }
+#chat-center { }
+    .discussion { background-color: #FFFFFF; position: relative;  padding-top: 45px; }
+    .discussion .default { text-align: center; line-height: 200px; color: #DDDDDD; font-size: 30px; font-weight: bold; font-style: italic; }
+    .discussion .row-header { margin: 0px; /* Cancel bootstrap negative .row margin */  }
+    .discussion .row-content { margin: 0px; /* Cancel bootstrap negative .row margin */ }
+    .discussion .col-content { padding-left: 0; padding-right: 0; /* Cancel bootstrap native space between columns */ padding-bottom: 75px; }
+    .discussion .col-users { padding-left: 0; padding-right: 0; /* Cancel bootstrap native space between columns */  border-left: 1px solid #ddd;  background-color: darkgrey; }
+    .discussion .header {
+        border-bottom: 1px solid transparent; border-color: #ddd; background-color: #f5f5f5; padding: 10px 15px;
+        position: absolute; top:0; left:0; right:0; height: 45px; max-height: 45px; z-index: 10;
+    }
+    .discussion .header .name { color: #555555; font-weight: bolder; font-size: 16px; }
+    .discussion .header .baseline { margin-left: 5px; color: #333; }
+    .discussion .header .close { color: #FF0000; }
+    .discussion .header .baseline-block { display: inline-block; min-width: 75%; }
+    .discussion .header .baseline-form { display: inline-block; min-width: 75%; margin-left: 15px; }
+    .discussion .header .baseline-input { display: inline-block; width: 50%; }
+    .discussion .header .baseline-submit { display: inline-block; }
+    .discussion .header .baseline-cancel { display: inline-block; }
 
-/**
- * Welcome
- */
-#welcome { padding: 15px 15px; }
-#channels { }
-#channels ul { padding: 0; list-style: none; }
-#channels li { margin: 10px; float: left; width: 120px; text-align: center; height: 70px; }
-#channels .logo { min-height: 66px; }
+    .discussion .messages { background-color: #fff; overflow-y: scroll; height: 100%; }
+        .discussion .messages p { margin: 0; padding: 4px 6px; color: #000; font-family: "Open Sans"; position: relative; border: 0; border-bottom: 1px solid #f5f5f5; }
+        .discussion .messages p .avatar { float: left; margin-right: 5px; }
+        .discussion .messages p .date { position: absolute; right: 8px; color: #BDBDBD; }
+        .discussion .messages p .username { font-weight: bold; }
+        .discussion .messages p .message { display: block; margin-left: 26px; }
 
-/**
- * Chat interface
- */
-[data-template=true] { display: none; }
-#chat { background: #eee; margin: 0; padding: 0; font-size: 13px; }
-    #chat .panel-heading { font-weight: bold; color: #8a8a8a; }
+    .discussion .message-box { padding: 10px; color: #333; background-color: #f5f5f5; border-top: 1px solid transparent; border-color: #ddd; position: absolute; bottom: 0; left: 0; right: 0; }
+        .discussion .message-box .row { margin: 0; /* Cancel bootstrap negative .row margin */ }
+        .discussion .message-box .input-group-addon.smileys-message { border-right: 0; }
+        .discussion .message-box .input-message { border-right: 0; resize: vertical; min-height: 52px; }
+        .discussion .message-box .send-message { background-color: #ebebeb; }
+        .discussion .message-box .send-message:hover { background-color: #eee; }
 
-    #chat > .row { margin: 0; /* Cancel bootstrap negative .row margin */ }
-    #chat-left { background-color: darkgrey; padding: 10px 10px; overflow-y:auto; }
-        #block-status {}
-            #block-status .panel-body { position: relative; }
-            #block-status button { font-size: 11px; position: absolute; right: 10px; }
-        #block-rooms {}
-            #block-rooms .panel-heading { border-color: transparent; }
-            #block-rooms .list-item { font-size: 12px; }
-            #block-rooms .unread .list-item { color: orangered; }
-            #block-rooms .list-item .name {  }
-            #block-rooms .list-item .badge { display: none; margin-right: 5px; }
-            #block-rooms .list-item .close { font-size: 14px; color: #FF0000; }
-            .create-message { padding: 15px; }
-        #block-users {}
-            #block-users .panel-heading { border-color: transparent; }
-            #block-users .user-item .actions { position: absolute; right: 10px; }
-
-    #chat-center { padding: 0; /* Cancel bootstrap native space between columns */ }
-        .discussion { background-color: #FFFFFF; position: relative;  padding-top: 45px; }
-        .discussion .default { text-align: center; line-height: 200px; color: #DDDDDD; font-size: 30px; font-weight: bold; font-style: italic; }
-        .discussion .row-header { margin: 0px; /* Cancel bootstrap negative .row margin */  }
-        .discussion .row-content { margin: 0px; /* Cancel bootstrap negative .row margin */ }
-        .discussion .col-content { padding-left: 0; padding-right: 0; /* Cancel bootstrap native space between columns */ padding-bottom: 75px; }
-        .discussion .col-users { padding-left: 0; padding-right: 0; /* Cancel bootstrap native space between columns */  border-left: 1px solid #ddd;  background-color: darkgrey; }
-        .discussion .header {
-            border-bottom: 1px solid transparent; border-color: #ddd; background-color: #f5f5f5; padding: 10px 15px;
-            position: absolute; top:0; left:0; right:0; height: 45px; max-height: 45px; z-index: 10;
-        }
-        .discussion .header .name { color: #555555; font-weight: bolder; font-size: 16px; }
-        .discussion .header .baseline { margin-left: 5px; color: #333; }
-        .discussion .header .close { color: #FF0000; }
-        .discussion .header .baseline-block { display: inline-block; min-width: 75%; }
-        .discussion .header .baseline-form { display: inline-block; min-width: 75%; margin-left: 15px; }
-        .discussion .header .baseline-input { display: inline-block; width: 50%; }
-        .discussion .header .baseline-submit { display: inline-block; }
-        .discussion .header .baseline-cancel { display: inline-block; }
-
-        .discussion .messages { background-color: #fff; overflow-y: scroll; height: 100%; }
-            .discussion .messages p { margin: 0; padding: 4px 6px; color: #000; font-family: "Open Sans"; position: relative; border: 0; border-bottom: 1px solid #f5f5f5; }
-            .discussion .messages p .avatar { float: left; margin-right: 5px; }
-            .discussion .messages p .date { position: absolute; right: 8px; color: #BDBDBD; }
-            .discussion .messages p .username { font-weight: bold; }
-            .discussion .messages p .message { display: block; margin-left: 26px; }
-
-        .discussion .message-box { padding: 10px; color: #333; background-color: #f5f5f5; border-top: 1px solid transparent; border-color: #ddd; position: absolute; bottom: 0; left: 0; right: 0; }
-            .discussion .message-box .row { margin: 0; /* Cancel bootstrap negative .row margin */ }
-            .discussion .message-box .input-group-addon.smileys-message { border-right: 0; }
-            .discussion .message-box .input-message { border-right: 0; resize: vertical; min-height: 52px; }
-            .discussion .message-box .send-message { background-color: #ebebeb; }
-            .discussion .message-box .send-message:hover { background-color: #eee; }
-
-        .discussion .popover { max-width: 290px; /* for postbox smileys popover */ }
-        .discussion .popover .popover-content { padding: 10px 0 5px 10px; }
-        .discussion .popover ul { margin: 0; padding: 0; }
-        .discussion .popover li { margin-right: 5px; margin-bottom: 5px; }
-        .discussion .room-users  { background-color: #fff; }
-        .discussion .room-users .list-group  { margin-bottom: 0; /* Cancel bootstrap native space after panel */ }
-        .discussion .room-users .list-group-item  { border-left: 0; border-right: 0; border-top: 0; }
-        .discussion .room-users .list-group-item:last-child { margin-bottom: 0; /* Cancel bootstrap native space after panel */ border-radius: 0; }
-        .discussion .room-users .heading { padding: 10px 15px; background-color: #f5f5f5; font-weight: bold; color: #8a8a8a; border-bottom: 1px solid #ddd; }
-        .discussion .room-users .footer { padding: 10px 15px; background-color: #f5f5f5; }
-        .discussion .room-users .user-item  { padding: 10px; }
-        .discussion .room-users .user-item .actions { }
-        .discussion .room-users .user-item { position: relative; }
-        .discussion .room-users .user-item:hover { background-color: #f5f5f5; }
-        .discussion .room-users .user-item .actions { position: absolute; right: 10px; }
-        .discussion .room-users .user-item:hover .actions { }
-        .discussion .room-users .user-item .op { font-weight: bold; text-decoration: underline; }
-        .discussion .room-users .user-item .friend { font-weight: bold; font-style: italic; }
+    .discussion .popover { max-width: 290px; /* for postbox smileys popover */ }
+    .discussion .popover .popover-content { padding: 10px 0 5px 10px; }
+    .discussion .popover ul { margin: 0; padding: 0; }
+    .discussion .popover li { margin-right: 5px; margin-bottom: 5px; }
+    .discussion .room-users  { background-color: #fff; }
+    .discussion .room-users .list-group  { margin-bottom: 0; /* Cancel bootstrap native space after panel */ }
+    .discussion .room-users .list-group-item  { border-left: 0; border-right: 0; border-top: 0; }
+    .discussion .room-users .list-group-item:last-child { margin-bottom: 0; /* Cancel bootstrap native space after panel */ border-radius: 0; }
+    .discussion .room-users .heading { padding: 10px 15px; background-color: #f5f5f5; font-weight: bold; color: #8a8a8a; border-bottom: 1px solid #ddd; }
+    .discussion .room-users .footer { padding: 10px 15px; background-color: #f5f5f5; }
+    .discussion .room-users .user-item  { padding: 10px; }
+    .discussion .room-users .user-item .actions { }
+    .discussion .room-users .user-item { position: relative; }
+    .discussion .room-users .user-item:hover { background-color: #f5f5f5; }
+    .discussion .room-users .user-item .actions { position: absolute; right: 10px; }
+    .discussion .room-users .user-item:hover .actions { }
+    .discussion .room-users .user-item .op { font-weight: bold; text-decoration: underline; }
+    .discussion .room-users .user-item .friend { font-weight: bold; font-style: italic; }
 
 #user-profile-modal {}
 #user-profile-modal .modal-header { padding: 10px; }
@@ -113,7 +87,7 @@ body { padding-top: 50px; }
  * Small screen devices *******************
  ***************************************/
 @media screen and (min-width: 750px) {
-    #chat, #chat > .row, #chat-left, #chat-center, .discussion, .discussion .row-content, .discussion .col-content,  .discussion .col-users, #chat-center > div {
+    .discussion, .discussion .row-content, .discussion .col-content,  .discussion .col-users, #chat-center > div {
         height: 100%;
     }
 }

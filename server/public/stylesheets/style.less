@@ -1,15 +1,14 @@
 @import "bootstrap-3.1.1/less/bootstrap";
 @import "font-awesome-4.0.3/less/font-awesome";
+@import "http://fonts.googleapis.com/css?family=Open+Sans:400,600,700";
 
-body {
-  padding: 80px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-}
+body { padding-top: 80px; font-family: "Open Sans"; }
 
 #footer {
   font-size: 12px;
   color: rgb(153, 153, 153);
   margin-top: 50px;
+  margin-bottom: 25px;
   .text-center;
 }
 
@@ -21,6 +20,10 @@ a {
   .page-header;
   .text-center;
 }
+
+/* ================================================== */
+/* ================ Account interface =============== */
+/* ================================================== */
 
 #account {
 
@@ -132,4 +135,64 @@ a {
   .control-fields {
     .make-sm-column(9);
   }
+}
+
+/* ================================================== */
+/* ================= Chat interface ================= */
+/* ================================================== */
+.body-chat {
+  height: 100%;
+  padding-top: 50px;
+  .navbar-right { padding-right: 15px; }
+}
+
+#chat {
+
+  .container-fluid;
+  height: 100%;
+  background: #eee;
+  margin: 0;
+  padding: 0;
+  font-size: 13px;
+
+  > .row {
+    margin: 0; /* Cancel bootstrap negative .row margin */
+    height: 100%;
+  }
+
+  .panel-heading { font-weight: bold; color: #8a8a8a; }
+
+  #block-status {
+    .panel;
+    .panel-default;
+    .panel-body { position: relative; }
+  }
+
+  #button-status {
+    .btn;
+    .btn-xs;
+    position: absolute;
+    right: 10px;
+
+  }
+  #button-status:hover { color: #FFF; }
+
+  .online { .btn-success; }
+  .connecting { .btn-warning; }
+  .offline { .btn-default; }
+  .error { .btn-danger; }
+}
+
+#chat-left {
+  .make-sm-column(2);
+  height: 100%;
+  background-color: darkgrey;
+  padding: 10px 10px;
+  overflow-y:auto;
+}
+
+#chat-center {
+  .make-sm-column(10);
+  height: 100%;
+  padding: 0; /* Cancel bootstrap native space between columns */
 }

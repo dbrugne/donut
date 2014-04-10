@@ -1,7 +1,7 @@
-<div id="chat" class="container-fluid">
+<div id="chat">
     <div class="row">
-        <div id="chat-left" class="col-sm-2 col-md-2 col-lg-2">
-            <div id="block-status" class="panel panel-default">
+        <div id="chat-left">
+            <div id="block-status">
                 <div class="panel-body">
                     You are
                     <button id="button-status" type="button" class="status">...</button>
@@ -17,16 +17,8 @@
                 </div>
             </div>
             <div id="block-users" class="panel panel-default"></div>
-
-            <button class="btn btn-success" id="test1">Test 1</button>
-            <button class="btn btn-success" id="test2">Test 2</button>
-            <button class="btn btn-success" id="test3">Test 3</button>
-            <button class="btn btn-success" id="test4">Test 4</button>
-            <button class="btn btn-success" id="test5">Test 5</button>
-            <button class="btn btn-success" id="test6">Test 6</button>
-
         </div><!-- /.chat-left -->
-        <div id="chat-center" class="col-sm-10 col-md-10 col-lg-10">
+        <div id="chat-center">
             <div class="discussion" data-default="true">
                 <div class="default">Not in room</div>
             </div>
@@ -343,17 +335,4 @@
     </li>
     <% }); %>
     <% } %>
-</script>
-
-<script>
-    $(document).ready(function() {
-
-        /************************************************
-         * DEBUG
-         ***********************************************/
-
-        $("#test1").click(function (e) {
-        });
-
-    });
 </script>
