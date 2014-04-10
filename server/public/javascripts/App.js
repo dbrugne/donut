@@ -6,7 +6,7 @@ $(function() {
 
       init: function() {
           // Server
-          Chat.server = new Chat.ServerModel( {debugOn: false} );
+          Chat.server = new Chat.ServerModel();
 
           // Discussions
           Chat.discussions = new Chat.DiscussionsCollection();

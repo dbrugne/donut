@@ -20,6 +20,9 @@
     "passport-facebook": "1.x",
     "connect-flash": "0.1.x",
     "bcrypt-nodejs": "latest",
-    "express-validator": "2.x"
+    "express-validator": "2.x",
+    "socket.io": "0.x",
+    "passport.socketio": "3.x",
+    "connect-mongo": "0.x"
   }
 }

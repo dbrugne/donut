@@ -6,6 +6,7 @@ var express = require('express'),
     logger = require('morgan'),
     cookieParser = require('cookie-parser'),
     bodyParser = require('body-parser'),
+    MongoStore = require('connect-mongo')(express),
     mongoose = require('mongoose'),
     passport = require('passport'),
     flash = require('connect-flash'),
@@ -19,6 +20,8 @@ var app = express();
 
 // mongoDB
 mongoose.connect(configuration.mongo.url);
+var sessionStore;
+sessionStore = new MongoStore({ url: configuration.mongo.url });
 
 // passport
 require('./app/passport')(passport);
@@ -36,16 +39,13 @@ app.use(logger('dev'));
 app.use(express.bodyParser());
 app.use(expressValidator());
 app.use(cookieParser());
-app.use(express.session({ secret: 'q4qsd65df45s4d5f45ds5fsf4s' }));
+app.use(express.session({ secret: 'q4qsd65df45s4d5f45ds5fsf4s', key: 'express.sid', store: sessionStore }));
 app.use(require('less-middleware')({ src: path.join(__dirname, 'public') }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 app.use(app.router);
-
-// routes
-require('./app/routes')(app, passport);
 
 /// catch 404 and forwarding to error handler
 app.use(function(req, res, next) {
@@ -79,4 +79,11 @@ app.use(function(err, req, res, next) {
     });
 });
 
-module.exports = app;
+// go HTTP
+require('./app/routes')(app, passport);
+
+module.exports = {
+    app: app,
+    passport: passport,
+    sessionStore: sessionStore
+};

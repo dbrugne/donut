@@ -8,65 +8,80 @@ $(function() {
 
     Chat.ServerModel = Backbone.Model.extend({
 
-        defaults: function() {
-            return {
-                server: '',
-                sessionId: '',
-                debugOn: false
-            };
-        },
-
         initialize: function() {
-            // web_socket.js configuration
-            WEB_SOCKET_SWF_LOCATION = "/js/WebSocketMain.swf";
-
-            // Debug is on or not
-            ab._debugrpc     = this.get('debugOn');
-            ab._debugpubsub  = this.get('debugOn');
-            ab._debugws      = this.get('debugOn');
-            WEB_SOCKET_DEBUG = this.get('debugOn');
         },
 
+        // connect should be done at the end of App initialization to allow interface binding to work
         connect: function() {
+            this.socket = io.connect(window.location.hostname);
             var that = this;
-            // Autobahn connection
-            ab.connect(
-                'ws://' + window.location.hostname + ':8080/chat'
-                , function(session) {
-                    that.set('session', session); // session._session_id
-                    that.trigger('connect');
 
-                    // Subscribe to control topic
-                    that.get('session').subscribe('ws://chat.local/control', function(topic, event) {
-                        that.trigger(event.action, event.data);
-                    });
-                    // Subscribe to discussion topic (@todo : remove !!)
-                    that.get('session').subscribe('ws://chat.local/discussion', function(topic, event) {
-                        that.trigger(event.action, event.data);
-                    });
-                }
-                , function(code, reason, detail) {
-                    that.set('session', null);
-                    that.debug(['Connection closed', code, reason, detail]);
-                    that.trigger('close');
-                }
-                , {
-                    'skipSubprotocolCheck': true,
-                    'maxRetries': 60,
-                    'retryDelay': 3500
-                }
-            );
+            this.socket.on('welcome', function (data) {
+                console.log(data);
+            });
+
+            this.socket.on('news', function (data) {
+                console.log(data);
+                socket.emit('my other event', { my: 'data' });
+            });
+
+            // "connecting" is emitted when the socket is attempting to connect with the server
+            this.socket.on('connecting', function () {
+                that.trigger('connecting');
+            });
+
+            // "connect" is emitted when the socket connected successfully
+            this.socket.on('connect', function () {
+                that.trigger('connect');
+            });
+
+            // "disconnect" is emitted when the socket disconnected
+            this.socket.on('disconnect', function () {
+                that.trigger('disconnect');
+            });
+
+            // "connect_failed" is emitted when socket.io fails to establish a connection to the server and has no more transports to fallback to.
+            this.socket.on('connect_failed', function () {
+                that.trigger('connect_failed');
+            });
+
+            // "reconnecting" is emitted when the socket is attempting to reconnect with the server.
+            this.socket.on('reconnecting', function () {
+                that.trigger('reconnecting');
+            });
+
+            // "reconnect" is emitted when socket.io successfully reconnected to the server.
+            this.socket.on('reconnect', function () {
+                that.trigger('reconnect');
+            });
+
+            // "reconnect_failed" is emitted when socket.io fails to re-establish a working connection after the connection was dropped.
+            this.socket.on('reconnect_failed', function () {
+                that.trigger('reconnect_failed');
+            });
+
+            // "error" is emitted when an error occurs and it cannot be handled by the other event types.
+            this.socket.on('error', function () {
+                console.error('socket error');
+                console.debug(arguments);
+            });
+
+            // "message" is emitted when a message sent with socket.send is received. message is the sent message, and callback is an optional acknowledgement function.
+            this.socket.on('message', function (message, callback) {});
+
+            // "anything" can be any event except for the reserved ones. data is data, and callback can be used to send a reply.
+            this.socket.on('anything', function(data, callback) {});
         },
 
         error: function(error) {
-            this.debug('Error: ' + error);
-        },
 
-        debug: function(message) {
-            if (this.get('debugOn')) {
-                console.log(message);
-            }
         },
+//
+//        debug: function(message) {
+//            if (this.get('debugOn')) {
+//                console.log(message);
+//            }
+//        },
 
         subscribe: function(topic) {
             var that = this;
@@ -138,30 +153,42 @@ $(function() {
         initialize: function() {
             this.update('connecting');
 
-            this.listenTo(this.model, 'connect', function() {
-                this.update('online');
+            var that = this;
+
+            this.listenTo(this.model, 'connecting', function() {
+                that.update('connecting');
             });
 
-            this.listenTo(this.model, 'close', function() {
-                this.update('offline');
+            this.listenTo(this.model, 'connect', function() {
+                that.update('online');
+            });
+
+            this.listenTo(this.model, 'reconnecting', function() {
+                that.update('connecting');
+            });
+
+            this.listenTo(this.model, 'reconnect', function() {
+                that.update('online');
+            });
+
+            this.listenTo(this.model, 'disconnect', function() {
+                that.update('offline');
             });
         },
 
         update: function(status) {
-            // @todo : move this class as mixin in each status class
-            this.$el.removeClass().addClass('btn').addClass('btn btn-xs');
             switch (status) {
                 case 'online':
-                    this.$el.addClass('btn-success').html('Online');
+                    this.$el.removeClass().addClass('online').html('Online');
                     break;
                 case 'connecting':
-                    this.$el.addClass('btn-warning').html('Connecting');
+                    this.$el.removeClass().addClass('connecting').html('Connecting');
                     break;
                 case 'offline':
-                    this.$el.addClass('btn-inverse').html('Offline');
+                    this.$el.removeClass().addClass('offline').html('Offline');
                     break;
                 case 'error':
-                    this.$el.addClass('btn-danger').html('Offline');
+                    this.$el.removeClass().addClass('error').html('Offline');
                     break;
             }
         }
