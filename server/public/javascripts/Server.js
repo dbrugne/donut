@@ -20,7 +20,6 @@ $(function() {
             this.socket = io.connect(window.location.hostname);
             var that = this;
 
-             // connection
             this.socket.on('connecting', function () { that.trigger('connecting'); });
             this.socket.on('connect', function () { that.trigger('connect'); });
             this.socket.on('disconnect', function () { that.trigger('disconnect'); });
@@ -29,24 +28,15 @@ $(function() {
             this.socket.on('reconnect', function () { that.trigger('reconnect'); });
             this.socket.on('reconnect_failed', function () { that.trigger('reconnect_failed'); });
 
-            // error
             this.socket.on('error', function () { console.error('socket error');
                 that.debug(arguments);
             });
 
-            // welcome
             this.socket.on('welcome', function (data) {
                 that.debug(['io:in:welcome', data]);
                 that.trigger('welcome', data);
             });
 
-            // @todo : useless ? we never use row "message" event
-//            // "message" is emitted when a message sent with socket.send is received. message is the sent message, and callback is an optional acknowledgement function.
-//            this.socket.on('message', function (message, callback) {});
-
-            // room
-
-            // @todo : should move the dispatch room logic from collection.Discussion to here
             this.socket.on('room:join', function(data) {
                 that.debug(['io:in:room:join', data]);
                 that.trigger('room:join', data);
@@ -85,32 +75,32 @@ $(function() {
             });
         },
 
-        join: function(room) {
-            var data = {room: room};
+        join: function(name) {
+            var data = {name: name};
             this.socket.emit('room:join', data);
             this.debug(['io:out:room:join', data]);
         },
 
-        leave: function(room) {
-            var data = {room: room};
+        leave: function(name) {
+            var data = {name: name};
             this.socket.emit('room:leave', data);
             this.debug(['io:out:room:leave', data]);
         },
 
-        topic: function(room, topic) {
-            var data = {room: room, topic: topic};
+        topic: function(name, topic) {
+            var data = {name: name, topic: topic};
             this.socket.emit('room:topic', data);
             this.debug(['io:out:room:topic', data]);
         },
 
-        roomMessage: function(room, message) {
-            var data = {room: room, message: message};
+        roomMessage: function(name, message) {
+            var data = {name: name, message: message};
             this.socket.emit('room:message', data);
             this.debug(['io:out:room:message', data]);
         },
 
-        create: function(room) {
-            var data = {room: room};
+        create: function(name) {
+            var data = {name: name};
             this.socket.emit('room:create', data);
             this.debug(['io:out:room:create', data]);
         },
@@ -121,26 +111,11 @@ $(function() {
             this.debug(['io:out:room:search', data]);
         }
 
-//        unsubscribe: function(topic) { // @todo : replace by room_id
-//            this.get('session').unsubscribe(topic);
-//        },
-//
-//        message: function(topic, msg) {
-//            this.get('session').publish(topic, msg);
-//        },
-//
 //        createRoom: function(name) {
 //            var that = this;
 //            this.get('session').call('createRoom', name).then(
 //                function(data) { that.trigger('room:createSuccess', data); }
 //                , function(data) { that.trigger('room:createError', data); }
-//            );
-//        },
-//
-//        baseline: function(topic, baseline) {
-//            this.get('session').call('changeBaseline', topic, baseline).then(
-//                function() { }
-//                , function() { console.error('Error changeBaseline of '+topic+' with '+ baseline); }
 //            );
 //        },
 //

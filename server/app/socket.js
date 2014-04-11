@@ -62,14 +62,14 @@ module.exports = function(app, io, passport, sessionStore) {
             // send room details
             // persist
 
-            if (data.room == undefined || data.room == '') {
+            if (data.name == undefined || data.name == '') {
                 // @todo : implement error callback
                 return;
             }
 
             // @todo : test if room exist effectively (and why not creating rooms on the fly ?
 
-            Room.findOne({'name': data.room}, 'name topic users', function(err, room) {
+            Room.findOne({'name': data.name}, 'name topic users', function(err, room) {
                 if (err) {
                     console.log('Room.findOne: '+err);
                     return;
@@ -84,10 +84,10 @@ module.exports = function(app, io, passport, sessionStore) {
                     });
                 }
 
-                socket.join(data.room);
+                socket.join(data.name);
 
-                io.sockets.in(data.room).emit('room:in', {
-                    room: data.room,
+                io.sockets.in(data.name).emit('room:in', {
+                    name: data.name,
                     username: socket.handshake.user.username,
                     avatar: socket.handshake.user.avatar
                 });
@@ -101,20 +101,30 @@ module.exports = function(app, io, passport, sessionStore) {
             // broadcast user room
             // persist
             console.log(data);
-            socket.leave(data.room);
-            io.sockets.in(data.room).emit('room:out', {
-                room: data.room,
+            socket.leave(data.name);
+            io.sockets.in(data.name).emit('room:out', {
+                name: data.name,
                 username: socket.handshake.user.username
             });
             // @todo : persist
         });
         socket.on('room:topic', function (data) {
-            // @todo
-            // escape
-            // test validity (ASCII)
-            // test ACL
-            // broadcast
-            // persist in database
+            // @todo : test validity (ASCII)
+            // @todo : sanitize
+            // @todo : test ACL
+
+            // persist
+            console.log('update ' + data.name + ' with ' + data.topic);
+            Room.update({name: data.name}, {topic: data.topic}, function(err, numberAffected) {
+                if (err)
+                    console.error('room:topic error ' + err);
+
+                console.log('room updated '+numberAffected);
+                io.sockets.in(data.name).emit('room:topic', {
+                    name: data.name,
+                    topic: data.topic
+                });
+            });
 
             console.log(data);
         });
@@ -128,8 +138,8 @@ module.exports = function(app, io, passport, sessionStore) {
 
             console.log(data);
 
-            io.sockets.in(data.room).emit('room:message', {
-                room: data.room,
+            io.sockets.in(data.name).emit('room:message', {
+                name: data.name,
                 time: Date.now(),
                 message: data.message,
                 username: socket.handshake.user.username,

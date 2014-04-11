@@ -130,9 +130,9 @@ $(function() {
         onWelcome: function(room) {
             // Create room in browser
             var roomModel = new Chat.Room({
-                id: room.name,
+                id: room.name, // @todo : duplicate room.id and room.name ?
                 name: room.name,
-                baseline: room.topic
+                topic: room.topic
             });
 
             this.add(roomModel);
@@ -157,7 +157,7 @@ $(function() {
 
         /* Room specific */
         onRoomMessage: function(data) {
-            var model = this.get(data.room);
+            var model = this.get(data.name);
             model.message(data);
         },
 
@@ -470,10 +470,10 @@ $(function() {
          *
          * And by 'type' should also received:
          * - hello: You enter in #room : {}
-         * - userIn: @user has joined : {user_id, username}
-         * - userOut: @user has left : {user_id, username}
+         * - in: @user has joined : {user_id, username}
+         * - out: @user has left : {user_id, username}
          * - disconnect @user quit (reason) : {user_id, username, reason}
-         * - baseline: @user changed topic for 'topic' : {user_id, username, baseline}
+         * - topic: @user changed topic for 'topic' : {user_id, username, topic}
          * - kick: : @user was kicked by @user 'reason' : {user_id, username, by_user_id, by_username, reason}
          * - ban: @user was banned by @user (time) 'reason' : {user_id, username, by_user_id, by_username, reason}
          * - op: @user was oped by @user : {user_id, username, by_user_id, by_username}
@@ -557,8 +557,9 @@ $(function() {
             // Get the message
             var inputField = this.$el.find('.input-message');
             var message = inputField.val();
+            console.log('message is "'+message+'"');
             if (message == '') {
-                return;
+                return false;
             }
 
             if (this.model.get('type') == 'room') {

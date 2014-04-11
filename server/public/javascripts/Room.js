@@ -10,9 +10,8 @@ $(function() {
 
         defaults: function() {
             return {
-                room_id: '',
                 name: '',
-                baseline: '',
+                topic: '',
                 type: 'room',
                 focused: false,
                 unread: 0
@@ -21,20 +20,20 @@ $(function() {
 
         _initialize: function() {
             this.users = new Chat.UsersCollection();
-            this.on('remove', this.unsubscribe);
-            this.listenTo(Chat.server, 'room:in', this.userIn);
-            this.listenTo(Chat.server, 'room:out', this.userOut);
-            this.listenTo(Chat.server, 'room:baseline', this.baseline);
+            this.on('remove', this.leave);
+            this.listenTo(Chat.server, 'room:in', this.onIn);
+            this.listenTo(Chat.server, 'room:out', this.onOut);
+            this.listenTo(Chat.server, 'room:topic', this.onTopic);
         },
 
-        unsubscribe: function(model, collection, options) {
-            Chat.server.unsubscribe('ws://chat.local/room#'+model.get('room_id'));
+        leave: function(model, collection, options) {
+            Chat.server.leave(model.get('name'));
         },
 
-        userIn: function(data) {
+        onIn: function(data) {
             console.log('user in');
             console.log(data);
-            if (data.room != this.get('name')) {
+            if (data.name != this.get('name')) {
                 return;
             }
             var user = new Chat.User({
@@ -44,35 +43,35 @@ $(function() {
             });
             this.users.add(user);
             this.trigger('notification', {
-                type: 'userIn',
+                type: 'in',
                 user_id: user.get('id'),
                 username: user.get('username')
             });
         },
 
-        userOut: function(data) {
-            if (data.room != this.get('name')) {
+        onOut: function(data) {
+            if (data.name != this.get('name')) {
                 return;
             }
-            var user = this.users.get(data.room);
+            var user = this.users.get(data.name);
             this.users.remove(user);
             this.trigger('notification', {
-                type: 'userOut',
+                type: 'out',
                 user_id: user.get('id'),
                 username: user.get('username')
             });
         },
 
-        baseline: function(params) {
-            if (params.data.room_id != this.get('room_id')) {
+        onTopic: function(data) {
+            if (data.name != this.get('name')) {
                 return;
             }
-            this.set('baseline', params.data.baseline);
+            this.set('topic', data.topic);
             this.trigger('notification', {
-                type: 'baseline',
-                user_id: params.data.user_id,
-                username: params.data.username,
-                baseline: params.data.baseline
+                type: 'topic',
+                user_id: data.user_id,
+                username: data.username,
+                topic: data.topic
             });
         }
 
@@ -109,12 +108,12 @@ $(function() {
         template: _.template($('#room-template').html()),
 
         _initialize: function() {
-            this.baselineView = new Chat.RoomBaselineView({el: this.$el.find('.header > .baseline-block'), model: this.model});
+            this.TopicView = new Chat.RoomTopicView({el: this.$el.find('.header > .topic-block'), model: this.model});
             this.usersView = new Chat.RoomUsersView({el: this.$el.find('.col-users'), collection: this.model.users});
         },
 
         _remove: function(model) {
-            this.baselineView.remove();
+            this.TopicView.remove();
             this.usersView.remove();
         },
 
@@ -127,64 +126,64 @@ $(function() {
 
     });
 
-    Chat.RoomBaselineView = Backbone.View.extend({
+    Chat.RoomTopicView = Backbone.View.extend({
 
-        template: _.template($('#room-baseline-template').html()),
+        template: _.template($('#room-topic-template').html()),
 
-        defaultText: '<em>no baseline</em>',
+        defaultText: '<em>no topic</em>',
 
         events: {
-            'click .baseline': 'showForm',
-            'click .baseline-cancel': 'hideForm',
-            'click .baseline-submit': 'sendNewBaseline',
-            'keypress .baseline-input': function(event) {
+            'click .topic': 'showForm',
+            'click .topic-cancel': 'hideForm',
+            'click .topic-submit': 'sendNewTopic',
+            'keypress .topic-input': function(event) {
                 if (event.which == 13) {
-                    this.sendNewBaseline(event);
+                    this.sendNewTopic(event);
                 }
             }
         },
 
         initialize: function() {
-            this.listenTo(this.model, 'change:baseline', this.updateBaseline);
+            this.listenTo(this.model, 'change:topic', this.updateTopic);
             this.render();
         },
 
         render: function() {
             this.$el.html(this.template());
 
-            var currentBaseline = this.model.get('baseline');
-            if (currentBaseline == '') {
-                currentBaseline = this.defaultText;
+            var currentTopic = this.model.get('topic');
+            if (currentTopic == '') {
+                currentTopic = this.defaultText;
             }
 
-            this.$el.find('.baseline').html(currentBaseline);
-            this.$el.find('.baseline-form').hide();
+            this.$el.find('.topic').html(currentTopic);
+            this.$el.find('.topic-form').hide();
 
             return this;
         },
 
-        updateBaseline: function(room, baseline, options) {
-            if (baseline == '') {
-                baseline = this.defaultText;
+        updateTopic: function(room, topic, options) {
+            if (topic == '') {
+                topic = this.defaultText;
             }
-            this.$el.find('.baseline').html(baseline);
+            this.$el.find('.topic').html(topic);
         },
 
         showForm: function() {
-            this.$el.find('.baseline').hide();
-            this.$el.find('.baseline-form').show();
-            this.$el.find('.baseline-input').val(this.model.get('baseline')).focus();
+            this.$el.find('.topic').hide();
+            this.$el.find('.topic-form').show();
+            this.$el.find('.topic-input').val(this.model.get('baseline')).focus();
         },
 
         hideForm: function() {
-            this.$el.find('.baseline-form').hide();
-            this.$el.find('.baseline').show();
+            this.$el.find('.topic-form').hide();
+            this.$el.find('.topic').show();
         },
 
-        sendNewBaseline: function(event) {
-            var newBaseline = this.$el.find('.baseline-input').val();
-            Chat.server.baseline('ws://chat.local/room#'+this.model.get('room_id'), newBaseline);
-            this.$el.find('.baseline-input').val('');
+        sendNewTopic: function(event) {
+            var newTopic = this.$el.find('.topic-input').val();
+            Chat.server.topic(this.model.get('name'), newTopic);
+            this.$el.find('.topic-input').val('');
             this.hideForm();
         }
     });
@@ -322,15 +321,14 @@ $(function() {
 
         createSuccess: function(data) {
             // Is already opened?
-            var room_id = data.topic.replace('ws://chat.local/room#', '');
-            var room = Chat.discussions.get('room'+room_id);
+            var room = Chat.discussions.get(data.name);
             if (room != undefined) {
                 Chat.discussions.focus(room);
 
             // Room not already open
             } else {
-                Chat.discussions.thisDiscussionShouldBeFocusedOnSuccess = 'room'+room_id;
-                Chat.server.subscribe(data.topic);
+                Chat.discussions.thisDiscussionShouldBeFocusedOnSuccess = data.name;
+                Chat.server.join(data.name);
             }
 
             this.$formGroup.removeClass('has-error').removeClass('has-success');
@@ -397,18 +395,16 @@ $(function() {
         },
 
         openSelected: function(event) {
-            var topic = $(event.currentTarget).data('topic');
+            var name = $(event.currentTarget).data('name');
 
             // Is already opened?
-            var room_id = topic.replace('ws://chat.local/room#', '');
-            var room = Chat.discussions.get('room'+room_id);
+            var room = Chat.discussions.get(name);
             if (room != undefined) {
                 Chat.discussions.focus(room);
-
-            // Room not already open
             } else {
-                Chat.discussions.thisDiscussionShouldBeFocusedOnSuccess = 'room'+room_id;
-                Chat.server.join(topic);
+                // Room not already open
+                Chat.discussions.thisDiscussionShouldBeFocusedOnSuccess = name;
+                Chat.server.join(name);
             }
 
             this.hide();

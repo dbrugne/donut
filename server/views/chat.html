@@ -127,7 +127,7 @@
 <!-- ----------------- -->
 <script type="text/template" id="rooms-list-item-template">
     <% var uriName = room.name.replace('#', ''); %>
-    <a href="#room/<%= uriName %>" class="list-group-item list-item" data-room-id="<%= room.id %>">
+    <a href="#room/<%= uriName %>" class="list-group-item list-item" data-name="<%= room.name %>">
         <span class="name"><%= room.name %></span>
         <span class="users-count">(<span class="glyphicon glyphicon-user user-profile"></span> <span class="count"><% users.length %></span>)</span>
         <span class="close glyphicon glyphicon-remove"></span>
@@ -141,7 +141,7 @@
 <script type="text/template" id="room-template">
     <div class="header">
         <span class="name"><%= name %></span>
-        <div class="baseline-block"></div>
+        <div class="topic-block"></div>
         <span class="close glyphicon glyphicon-remove"></span>
     </div><!-- /.header -->
     <div class="row row-content">
@@ -154,14 +154,14 @@
 </script>
 
 <!-- ----------------- -->
-<!-- RoomBaseline      -->
+<!-- RoomTopic         -->
 <!-- ----------------- -->
-<script type="text/template" id="room-baseline-template">
-    <span class="baseline"></span>
-    <span class="baseline-form">
-        <input type="text" class="baseline-input form-control input-sm" placeholder="Room baseline" value="">
-        <button class="btn btn-primary btn-sm baseline-submit">Submit</button>
-        <button class="btn btn-cancel btn-sm baseline-cancel">Cancel</button>
+<script type="text/template" id="room-topic-template">
+    <span class="topic"></span>
+    <span class="topic-form">
+        <input type="text" class="topic-input form-control input-sm" placeholder="Room topic" value="">
+        <button class="btn btn-primary btn-sm topic-submit">Submit</button>
+        <button class="btn btn-cancel btn-sm topic-cancel">Cancel</button>
     </span>
 </script>
 
@@ -262,8 +262,8 @@
         <span class="username" data-user-id="<%= user_id %>"><%= username %></span> has left <strong><%= name %></strong>
         <% } else if (type =='disconnect') { %>
         <span class="username" data-user-id="<%= user_id %>"><%= username %></span> was disconnected (<em><%= reason %></em>)
-        <% } else if (type =='baseline') { %>
-        <span class="username" data-user-id="<%= user_id %>"><%= username %></span> changed topic for <strong><%= baseline %></strong>
+        <% } else if (type =='topic') { %>
+        <span class="username" data-user-id="<%= user_id %>"><%= username %></span> changed topic for <strong><%= topic %></strong>
         <% } else if (type =='kick') { %>
         <span class="username" data-user-id="<%= user_id %>"><%= username %></span> was kicked by
         <span class="username" data-user-id="<%= by_user_id %>"><%= by_username %></span> '<%= reason %>'
@@ -289,9 +289,9 @@
     <li class="list-group-item"><span class="no-result">No result</span></li>
     <% } else { %>
     <% _.each(rooms, function(room) { %>
-    <li class="list-group-item search-room-item" data-topic="<%= room.topic %>">
+    <li class="list-group-item search-room-item" data-name="<%= room.name %>">
         <h4 class="list-group-item-heading"><%= room.name %> (<%= room.count %>)</h4>
-        <p class="list-group-item-text"><%= room.baseline %></p>
+        <p class="list-group-item-text"><%= room.topic %></p>
     </li>
     <% }); %>
     <% } %>
