@@ -2,6 +2,7 @@
 @import "font-awesome-4.0.3/less/font-awesome";
 @import "http://fonts.googleapis.com/css?family=Open+Sans:400,600,700";
 
+html { height: 100%; }
 body { padding-top: 80px; font-family: "Open Sans"; }
 
 #footer {
@@ -16,8 +17,7 @@ a {
   color: #00B7FF;
 }
 
-.header {
-  .page-header;
+.page-header {
   .text-center;
 }
 
@@ -189,10 +189,190 @@ a {
   background-color: darkgrey;
   padding: 10px 10px;
   overflow-y:auto;
+
+  #block-rooms {
+    .panel-heading { border-color: transparent; }
+    .list-item { font-size: 12px; }
+    .unread .list-item { color: orangered; }
+    .list-item .name {  }
+    .list-item .badge { display: none; margin-right: 5px; }
+    .list-item .close { font-size: 14px; color: #FF0000; }
+  }
+  #block-users {
+    .panel-heading { border-color: transparent; }
+    .user-item .actions { position: absolute; right: 10px; }
+  }
 }
 
+#chat-center > div { height: 100%; }
 #chat-center {
   .make-sm-column(10);
   height: 100%;
   padding: 0; /* Cancel bootstrap native space between columns */
+
+  .discussion .default {
+    text-align: center;
+    line-height: 200px;
+    color: #DDDDDD;
+    font-size: 30px;
+    font-weight: bold;
+    font-style: italic;
+  }
+
+  .discussion {
+    background-color: #FFFFFF; 
+    position: relative;  
+    padding-top: 45px;
+    height: 100%;
+
+    .row-header, .row-content { margin: 0px; /* Cancel bootstrap negative .row margin */  }
+    .row-content { height: 100%; }
+    
+    .col-content { height: 100%; padding-left: 0; padding-right: 0; /* Cancel bootstrap native space between columns */ padding-bottom: 75px; }
+    .col-users { padding-left: 0; padding-right: 0; /* Cancel bootstrap native space between columns */  border-left: 1px solid #ddd;  background-color: darkgrey; }
+
+    .header {
+      border-bottom: 1px solid transparent; border-color: #ddd; background-color: #f5f5f5; padding: 10px 15px;
+      position: absolute; top:0; left:0; right:0; height: 45px; max-height: 45px; z-index: 10;
+    
+      .name { color: #555555; font-weight: bolder; font-size: 16px; }
+      .baseline { margin-left: 5px; color: #333; }
+      .close { color: #FF0000; }
+      .baseline-block { display: inline-block; min-width: 75%; }
+      .baseline-form { display: inline-block; min-width: 75%; margin-left: 15px; }
+      .baseline-input { display: inline-block; width: 50%; }
+      .baseline-submit { display: inline-block; }
+      .baseline-cancel { display: inline-block; }  
+    }
+    
+    .messages { 
+      background-color: #fff; 
+      overflow-y: scroll; 
+      height: 100%;
+
+      p {
+        margin: 0;
+        padding: 4px 6px;
+        color: #000;
+        font-family: "Open Sans";
+        position: relative;
+        border: 0;
+        border-bottom: 1px solid #f5f5f5;
+
+        .avatar { float: left; margin-right: 5px; height: 20px; width: 20px; }
+        .date { position: absolute; right: 8px; color: #BDBDBD; }
+        .username { font-weight: bold; }
+        .message { display: block; margin-left: 26px; }
+      }
+    }
+    
+    .message-box {
+      padding: 10px;
+      color: #333;
+      background-color: #f5f5f5;
+      border-top: 1px solid transparent;
+      border-color: #ddd;
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+
+      .row { margin: 0; /* Cancel bootstrap negative .row margin */ }
+      .input-group-addon.smileys-message { border-right: 0; }
+      .input-message { border-right: 0; resize: vertical; min-height: 52px; }
+      .send-message { background-color: #ebebeb; }
+      .send-message:hover { background-color: #eee; }
+
+      .popover {
+        max-width: 290px; /* for postbox smileys popover */
+
+        .popover-content { padding: 10px 0 5px 10px; }
+        ul { margin: 0; padding: 0; }
+        li { margin-right: 5px; margin-bottom: 5px; }
+      }
+    }
+
+    .col-users {
+      height: 100%;
+
+      .room-users  { 
+        background-color: #fff;
+        
+        .list-group  { margin-bottom: 0; /* Cancel bootstrap native space after panel */ }
+        .list-group-item  { border-left: 0; border-right: 0; border-top: 0; }
+        .list-group-item:last-child { margin-bottom: 0; /* Cancel bootstrap native space after panel */ border-radius: 0; }
+        .heading { padding: 10px 15px; background-color: #f5f5f5; font-weight: bold; color: #8a8a8a; border-bottom: 1px solid #ddd; }
+        .footer { padding: 10px 15px; background-color: #f5f5f5; }
+        .user-item  { padding: 10px; }
+        .user-item .actions { }
+        .user-item { position: relative; }
+        .user-item:hover { background-color: #f5f5f5; }
+        .user-item .actions { position: absolute; right: 10px; }
+        .user-item:hover .actions { }
+        .user-item .op { font-weight: bold; text-decoration: underline; }
+        .user-item .friend { font-weight: bold; font-style: italic; }
+      }
+    }
+  
+  }
 }
+
+.emoticon-16px {
+  background: url('../images/sprite-16px-png24.png') no-repeat;
+  display: inline-block;
+  height: 16px;
+  margin: 0 1px;
+  text-indent: -99999px;
+  vertical-align: middle;
+  width: 16px
+}
+.emoticon-16px.emoticon-smile { background-position: 0 0 }
+.emoticon-16px.emoticon-grin { background-position: -16px 0 }
+.emoticon-16px.emoticon-joy { background-position: -32px 0 }
+.emoticon-16px.emoticon-wink { background-position: -48px 0 }
+.emoticon-16px.emoticon-cheeky { background-position: -64px 0 }
+.emoticon-16px.emoticon-surprised { background-position: -80px 0 }
+.emoticon-16px.emoticon-kiss { background-position: -96px 0 }
+.emoticon-16px.emoticon-frown { background-position: -112px 0 }
+.emoticon-16px.emoticon-tears { background-position: -128px 0 }
+.emoticon-16px.emoticon-annoyed { background-position: -144px 0 }
+.emoticon-16px.emoticon-cool { background-position: -160px 0 }
+.emoticon-16px.emoticon-angry { background-position: -176px 0 }
+.emoticon-16px.emoticon-confused { background-position: -192px 0 }
+.emoticon-16px.emoticon-angel { background-position: -208px 0 }
+.emoticon-16px.emoticon-devil { background-position: -224px 0 }
+.emoticon-16px.emoticon-music { background-position: -240px 0 }
+.emoticon-16px.emoticon-thumbs-up { background-position: -256px 0 }
+.emoticon-16px.emoticon-thumbs-down { background-position: -272px 0 }
+.emoticon-16px.emoticon-heart { background-position: -288px 0 }
+.emoticon-16px.emoticon-broken-heart { background-position: -304px 0 }
+
+.emoticon-18px {
+  background: url('../images/sprite-18px-png24.png') no-repeat;
+  display: inline-block;
+  height: 18px;
+  margin: 0 1px;
+  text-indent: -99999px;
+  vertical-align: middle;
+  width: 18px
+}
+.emoticon-18px.emoticon-smile { background-position: 0 0 }
+.emoticon-18px.emoticon-grin { background-position: -18px 0 }
+.emoticon-18px.emoticon-joy { background-position: -36px 0 }
+.emoticon-18px.emoticon-wink { background-position: -54px 0 }
+.emoticon-18px.emoticon-cheeky { background-position: -72px 0 }
+.emoticon-18px.emoticon-surprised { background-position: -90px 0 }
+.emoticon-18px.emoticon-kiss { background-position: -108px 0 }
+.emoticon-18px.emoticon-frown { background-position: -126px 0 }
+.emoticon-18px.emoticon-tears { background-position: -144px 0 }
+.emoticon-18px.emoticon-annoyed { background-position: -162px 0 }
+.emoticon-18px.emoticon-cool { background-position: -180px 0 }
+.emoticon-18px.emoticon-angry { background-position: -198px 0 }
+.emoticon-18px.emoticon-confused { background-position: -216px 0 }
+.emoticon-18px.emoticon-angel { background-position: -234px 0 }
+.emoticon-18px.emoticon-devil { background-position: -252px 0 }
+.emoticon-18px.emoticon-music { background-position: -270px 0 }
+.emoticon-18px.emoticon-thumbs-up { background-position: -288px 0 }
+.emoticon-18px.emoticon-thumbs-down { background-position: -306px 0 }
+.emoticon-18px.emoticon-heart { background-position: -324px 0 }
+.emoticon-18px.emoticon-broken-heart { background-position: -342px 0 }
+
+.create-message { padding: 15px; }
