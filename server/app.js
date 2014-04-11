@@ -1,16 +1,16 @@
 // Load dependencies
-var express = require('express'),
-    http = require('http'),
-    path = require('path'),
-    favicon = require('static-favicon'),
-    logger = require('morgan'),
-    cookieParser = require('cookie-parser'),
-    bodyParser = require('body-parser'),
-    MongoStore = require('connect-mongo')(express),
-    mongoose = require('mongoose'),
-    passport = require('passport'),
-    flash = require('connect-flash'),
-    expressValidator = require('express-validator');
+var express = require('express')
+    , http = require('http')
+    , path = require('path')
+    , favicon = require('static-favicon')
+    , logger = require('morgan')
+    , cookieParser = require('cookie-parser')
+    , bodyParser = require('body-parser')
+    , MongoStore = require('connect-mongo')(express)
+    , mongoose = require('mongoose')
+    , passport = require('passport')
+    , flash = require('connect-flash')
+    , expressValidator = require('express-validator');
 
 // per-environment configuration
 configuration = require('./config/app_dev');
@@ -20,8 +20,7 @@ var app = express();
 
 // mongoDB
 mongoose.connect(configuration.mongo.url);
-var sessionStore;
-sessionStore = new MongoStore({ url: configuration.mongo.url });
+var sessionStore = new MongoStore({ url: configuration.mongo.url });
 
 // passport
 require('./app/passport')(passport);
