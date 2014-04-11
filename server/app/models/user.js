@@ -23,7 +23,7 @@ var userSchema = mongoose.Schema({
         email      : String,
         name       : String
     },
-    rooms            : [Room]
+    rooms            : [String]
 
 });
 

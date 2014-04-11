@@ -11,131 +11,150 @@ $(function() {
         initialize: function() {
         },
 
+        debug: function(message) {
+            console.log(message);
+        },
+
         // connect should be done at the end of App initialization to allow interface binding to work
         connect: function() {
             this.socket = io.connect(window.location.hostname);
             var that = this;
 
+             // connection
+            this.socket.on('connecting', function () { that.trigger('connecting'); });
+            this.socket.on('connect', function () { that.trigger('connect'); });
+            this.socket.on('disconnect', function () { that.trigger('disconnect'); });
+            this.socket.on('connect_failed', function () { that.trigger('connect_failed'); });
+            this.socket.on('reconnecting', function () { that.trigger('reconnecting'); });
+            this.socket.on('reconnect', function () { that.trigger('reconnect'); });
+            this.socket.on('reconnect_failed', function () { that.trigger('reconnect_failed'); });
+
+            // error
+            this.socket.on('error', function () { console.error('socket error');
+                that.debug(arguments);
+            });
+
+            // welcome
             this.socket.on('welcome', function (data) {
-                console.log(data);
+                that.debug(['io:in:welcome', data]);
+                that.trigger('welcome', data);
             });
 
-            this.socket.on('news', function (data) {
-                console.log(data);
-                socket.emit('my other event', { my: 'data' });
+            // @todo : useless ? we never use row "message" event
+//            // "message" is emitted when a message sent with socket.send is received. message is the sent message, and callback is an optional acknowledgement function.
+//            this.socket.on('message', function (message, callback) {});
+
+            // room
+
+            // @todo : should move the dispatch room logic from collection.Discussion to here
+            this.socket.on('room:join', function(data) {
+                that.debug(['io:in:room:join', data]);
+                that.trigger('room:join', data);
             });
-
-            // "connecting" is emitted when the socket is attempting to connect with the server
-            this.socket.on('connecting', function () {
-                that.trigger('connecting');
+            this.socket.on('room:leave', function(data) {
+                that.debug(['io:in:room:leave', data]);
+                that.trigger('room:leave', data);
             });
-
-            // "connect" is emitted when the socket connected successfully
-            this.socket.on('connect', function () {
-                that.trigger('connect');
+            this.socket.on('room:welcome', function(data) {
+                that.debug(['io:in:room:welcome', data]);
+                that.trigger('room:welcome', data);
             });
-
-            // "disconnect" is emitted when the socket disconnected
-            this.socket.on('disconnect', function () {
-                that.trigger('disconnect');
+            this.socket.on('room:topic', function(data) {
+                that.debug(['io:in:room:topic', data]);
+                that.trigger('room:topic', data);
             });
-
-            // "connect_failed" is emitted when socket.io fails to establish a connection to the server and has no more transports to fallback to.
-            this.socket.on('connect_failed', function () {
-                that.trigger('connect_failed');
+            this.socket.on('room:in', function(data) {
+                that.debug(['io:in:room:in', data]);
+                that.trigger('room:in', data);
             });
-
-            // "reconnecting" is emitted when the socket is attempting to reconnect with the server.
-            this.socket.on('reconnecting', function () {
-                that.trigger('reconnecting');
+            this.socket.on('room:out', function(data) {
+                that.debug(['io:in:room:out', data]);
+                that.trigger('room:out', data);
             });
-
-            // "reconnect" is emitted when socket.io successfully reconnected to the server.
-            this.socket.on('reconnect', function () {
-                that.trigger('reconnect');
+            this.socket.on('room:message', function(data) {
+                that.debug(['io:in:room:message', data]);
+                that.trigger('room:message', data);
             });
-
-            // "reconnect_failed" is emitted when socket.io fails to re-establish a working connection after the connection was dropped.
-            this.socket.on('reconnect_failed', function () {
-                that.trigger('reconnect_failed');
+            this.socket.on('room:searchsuccess', function(data) {
+                that.debug(['io:in:room:searchsuccess', data]);
+                that.trigger('room:searchsuccess', data);
             });
-
-            // "error" is emitted when an error occurs and it cannot be handled by the other event types.
-            this.socket.on('error', function () {
-                console.error('socket error');
-                console.debug(arguments);
-            });
-
-            // "message" is emitted when a message sent with socket.send is received. message is the sent message, and callback is an optional acknowledgement function.
-            this.socket.on('message', function (message, callback) {});
-
-            // "anything" can be any event except for the reserved ones. data is data, and callback can be used to send a reply.
-            this.socket.on('anything', function(data, callback) {});
-        },
-
-        error: function(error) {
-
-        },
-//
-//        debug: function(message) {
-//            if (this.get('debugOn')) {
-//                console.log(message);
-//            }
-//        },
-
-        subscribe: function(topic) {
-            var that = this;
-            this.get('session').subscribe(topic, function(topic, event) {
-                that.trigger(event.action, {topic: topic, data: event.data});
+            this.socket.on('room:searcherror', function(data) {
+                that.debug(['io:in:room:searcherror', data]);
+                that.trigger('room:searcherror', data);
             });
         },
 
-        unsubscribe: function(topic) { // @todo : replace by room_id
-            this.get('session').unsubscribe(topic);
+        join: function(room) {
+            var data = {room: room};
+            this.socket.emit('room:join', data);
+            this.debug(['io:out:room:join', data]);
         },
 
-        message: function(topic, msg) {
-            this.get('session').publish(topic, msg);
+        leave: function(room) {
+            var data = {room: room};
+            this.socket.emit('room:leave', data);
+            this.debug(['io:out:room:leave', data]);
         },
 
-        createRoom: function(name) {
-            var that = this;
-            this.get('session').call('createRoom', name).then(
-                function(data) { that.trigger('room:createSuccess', data); }
-                , function(data) { that.trigger('room:createError', data); }
-            );
+        topic: function(room, topic) {
+            var data = {room: room, topic: topic};
+            this.socket.emit('room:topic', data);
+            this.debug(['io:out:room:topic', data]);
         },
 
-        baseline: function(topic, baseline) {
-            this.get('session').call('changeBaseline', topic, baseline).then(
-                function() { }
-                , function() { console.error('Error changeBaseline of '+topic+' with '+ baseline); }
-            );
+        roomMessage: function(room, message) {
+            var data = {room: room, message: message};
+            this.socket.emit('room:message', data);
+            this.debug(['io:out:room:message', data]);
         },
 
-        searchForRooms: function(search) {
-            var that = this;
-            this.get('session').call('searchForRooms', search).then(
-                function(rooms) {
-                    that.trigger('room:searchSuccess', { rooms: rooms });
-                },
-                function() {
-                    that.trigger('room:searchError');
-                }
-            );
+        create: function(room) {
+            var data = {room: room};
+            this.socket.emit('room:create', data);
+            this.debug(['io:out:room:create', data]);
         },
 
-        searchForUsers: function(search) {
-            var that = this;
-            this.get('session').call('searchForUsers', search).then(
-                function(users) {
-                    that.trigger('user:searchSuccess', { users: users });
-                },
-                function() {
-                    that.trigger('user:searchError');
-                }
-            );
+        roomSearch: function(search) {
+            var data = {search: search};
+            this.socket.emit('room:search', data);
+            this.debug(['io:out:room:search', data]);
         }
+
+//        unsubscribe: function(topic) { // @todo : replace by room_id
+//            this.get('session').unsubscribe(topic);
+//        },
+//
+//        message: function(topic, msg) {
+//            this.get('session').publish(topic, msg);
+//        },
+//
+//        createRoom: function(name) {
+//            var that = this;
+//            this.get('session').call('createRoom', name).then(
+//                function(data) { that.trigger('room:createSuccess', data); }
+//                , function(data) { that.trigger('room:createError', data); }
+//            );
+//        },
+//
+//        baseline: function(topic, baseline) {
+//            this.get('session').call('changeBaseline', topic, baseline).then(
+//                function() { }
+//                , function() { console.error('Error changeBaseline of '+topic+' with '+ baseline); }
+//            );
+//        },
+//
+//        searchForUsers: function(search) {
+//            var that = this;
+//            this.get('session').call('searchForUsers', search).then(
+//                function(users) {
+//                    that.trigger('user:searchSuccess', { users: users });
+//                },
+//                function() {
+//                    that.trigger('user:searchError');
+//                }
+//            );
+//        }
 
     });
 
@@ -174,6 +193,14 @@ $(function() {
             this.listenTo(this.model, 'disconnect', function() {
                 that.update('offline');
             });
+
+            this.listenTo(this.model, 'connect_failed', function() {
+                that.update('error');
+            });
+
+            this.listenTo(this.model, 'reconnect_failed', function() {
+                that.update('error');
+            });
         },
 
         update: function(status) {
@@ -188,7 +215,7 @@ $(function() {
                     this.$el.removeClass().addClass('offline').html('Offline');
                     break;
                 case 'error':
-                    this.$el.removeClass().addClass('error').html('Offline');
+                    this.$el.removeClass().addClass('error').html('Error');
                     break;
             }
         }

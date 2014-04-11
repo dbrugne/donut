@@ -22,8 +22,8 @@ $(function() {
         _initialize: function() {
             this.users = new Chat.UsersCollection();
             this.on('remove', this.unsubscribe);
-            this.listenTo(Chat.server, 'room:userIn', this.userIn);
-            this.listenTo(Chat.server, 'room:userOut', this.userOut);
+            this.listenTo(Chat.server, 'room:in', this.userIn);
+            this.listenTo(Chat.server, 'room:out', this.userOut);
             this.listenTo(Chat.server, 'room:baseline', this.baseline);
         },
 
@@ -31,14 +31,16 @@ $(function() {
             Chat.server.unsubscribe('ws://chat.local/room#'+model.get('room_id'));
         },
 
-        userIn: function(params) {
-            if (params.data.room_id != this.get('room_id')) {
+        userIn: function(data) {
+            console.log('user in');
+            console.log(data);
+            if (data.room != this.get('name')) {
                 return;
             }
             var user = new Chat.User({
-                id: params.data.user_id,
-                username: params.data.username,
-                avatar: params.data.avatar
+                id: data.username,
+                username: data.username,
+                avatar: data.avatar
             });
             this.users.add(user);
             this.trigger('notification', {
@@ -48,11 +50,11 @@ $(function() {
             });
         },
 
-        userOut: function(params) {
-            if (params.data.room_id != this.get('room_id')) {
+        userOut: function(data) {
+            if (data.room != this.get('name')) {
                 return;
             }
-            var user = this.users.get(params.data.user_id);
+            var user = this.users.get(data.room);
             this.users.remove(user);
             this.trigger('notification', {
                 type: 'userOut',
@@ -359,8 +361,8 @@ $(function() {
         },
 
         initialize: function() {
-            this.listenTo(Chat.server, 'room:searchSuccess', this.searchSuccess);
-            this.listenTo(Chat.server, 'room:searchError', this.searchError);
+            this.listenTo(Chat.server, 'room:searchsuccess', this.onSuccess);
+            this.listenTo(Chat.server, 'room:searcherror', this.onError);
         },
 
         show: function() {
@@ -382,16 +384,14 @@ $(function() {
 
         search: function() {
             var search = this.$el.find('.room-search-input').first().val();
-
-            // call RPC + render
-            Chat.server.searchForRooms(search);
+            Chat.server.roomSearch(search);
         },
 
-        searchSuccess: function(results) {
-            this.render(results.rooms);
+        onSuccess: function(data) {
+            this.render(data.rooms);
         },
 
-        searchError: function() {
+        onError: function() {
             // @todo : implement error-callback in DOM
             console.error('Error on searchForRooms call');
         },
@@ -408,7 +408,7 @@ $(function() {
             // Room not already open
             } else {
                 Chat.discussions.thisDiscussionShouldBeFocusedOnSuccess = 'room'+room_id;
-                Chat.server.subscribe(topic);
+                Chat.server.join(topic);
             }
 
             this.hide();

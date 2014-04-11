@@ -39,8 +39,15 @@ $(function() {
 
             // Server (user identity)
             var that = this;
-            this.listenTo(Chat.server, 'userIdentity', function(data) {
+            this.listenTo(Chat.server, 'welcome', function(data) {
                 that.currentUser = new Chat.User(data);
+                this.currentUsername = data.username;
+                this.currentAvatar = data.avatar;
+                _.each(data.rooms, function(room) {
+                    console.log('join this: '+room);
+                    Chat.server.join(room);
+                });
+                // @todo : open rooms
             });
         },
 

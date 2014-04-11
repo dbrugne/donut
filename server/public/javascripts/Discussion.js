@@ -48,10 +48,10 @@ $(function() {
 
         initialize: function() {
             /* Room specific */
-            this.listenTo(Chat.server, 'room:pleaseJoin', this.joinRoom);
-            this.listenTo(Chat.server, 'room:pleaseLeave', this.leaveRoom);
-            this.listenTo(Chat.server, 'room:joinSuccess', this.joinSuccess);
-            this.listenTo(Chat.server, 'room:message', this.roomMessage);
+            this.listenTo(Chat.server, 'room:join', this.onJoin);
+            this.listenTo(Chat.server, 'room:leave', this.onLeave);
+            this.listenTo(Chat.server, 'room:welcome', this.onWelcome);
+            this.listenTo(Chat.server, 'room:message', this.onRoomMessage);
 
             /* OneToOne specific */
             this.listenTo(Chat.server, 'user:message', this.userMessage);
@@ -116,34 +116,30 @@ $(function() {
         },
 
         /* Room specific */
-        joinRoom: function(params) {
-            Chat.server.subscribe(params.topic);
+        onJoin: function(data) {
+            Chat.server.join(data.name);
         },
 
         /* Room specific */
-        leaveRoom: function(params) {
-            var room = this.get('room'+params.data.room_id);
+        onLeave: function(data) {
+            var room = this.get('room'+data.name);
             this.remove(room);
         },
 
         /* Room specific */
-        joinSuccess: function(params) {
-            var newRoomId = 'room'+params.data.room_id;
-
+        onWelcome: function(room) {
             // Create room in browser
-            var room = new Chat.Room({
-                id: newRoomId,
-                room_id: params.data.room_id,
-                name: params.data.name,
-                baseline: params.data.baseline
+            var roomModel = new Chat.Room({
+                id: room.name,
+                name: room.name,
+                baseline: room.topic
             });
 
-            this.add(room);
+            this.add(roomModel);
 
-            // Add user in the room
-            _.each(params.data.users, function(element, key, list) {
-                room.users.add(new Chat.User({
-                    id: element.user_id,
+            // Add users
+            _.each(room.users, function(element, key, list) {
+                roomModel.users.add(new Chat.User({
                     username: element.username,
                     avatar: element.avatar
                 }));
@@ -151,18 +147,18 @@ $(function() {
 
             // If caller indicate that this room should be focused on success
             //  OR if this is the first opened discussion
-            if (this.thisDiscussionShouldBeFocusedOnSuccess == newRoomId
+            if (this.thisDiscussionShouldBeFocusedOnSuccess == roomModel.get('name')
                 || Chat.discussions.length == 1) {
-                this.focus(room);
+                this.focus(roomModel);
             }
 
-            room.trigger('notification', {type: 'hello', name: room.get('name')});
+            roomModel.trigger('notification', {type: 'hello', name: roomModel.get('name')});
         },
 
         /* Room specific */
-        roomMessage: function(params) {
-            var model = this.get('room'+params.data.room_id);
-            model.message(params.data);
+        onRoomMessage: function(data) {
+            var model = this.get(data.room);
+            model.message(data);
         },
 
         /* OneToOne specific */
@@ -439,7 +435,7 @@ $(function() {
 
         message: function(message) {
             // Date
-            var dateText = $.format.date(new Date(message.get('time')*1000), "HH:mm:ss");
+            var dateText = $.format.date(new Date(message.get('time')), "HH:mm:ss");
 
             // Message body
             var messageHtml = message.get('message');
@@ -565,12 +561,8 @@ $(function() {
                 return;
             }
 
-            // Post
             if (this.model.get('type') == 'room') {
-                Chat.server.message(
-                    'ws://chat.local/room#'+this.model.get('room_id'),
-                    {message: message}
-                );
+                Chat.server.roomMessage(this.model.get('name'), message);
             } else if (this.model.get('type') == 'onetoone') {
                 Chat.server.message(
                     'ws://chat.local/discussion',
