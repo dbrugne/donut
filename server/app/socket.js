@@ -5,6 +5,12 @@ var passportSocketIo = require("passport.socketio");
 
 module.exports = function(app, io, passport, sessionStore) {
 
+    // big tasks
+     // @todo: escaped and valid input with clean return to caller
+     // @todo : make usage of room identifier and user identifier clear
+     // @todo: test ACL for each operation
+     // @todo: add "activity" entry for each action
+
     io.set('transports', [
         'websocket'
         , 'flashsocket'
@@ -58,8 +64,6 @@ module.exports = function(app, io, passport, sessionStore) {
             // test room identifier validity
             // test ACL
             // broadcast other devices
-            // broadcast user room
-            // send room details
             // persist
 
             if (data.name == undefined || data.name == '') {
@@ -68,28 +72,39 @@ module.exports = function(app, io, passport, sessionStore) {
             }
 
             // @todo : test if room exist effectively (and why not creating rooms on the fly ?
+              // creating a room could be equivalent to a "join" call from user == IRC like
 
             Room.findOne({'name': data.name}, 'name topic users', function(err, room) {
                 if (err) {
-                    console.log('Room.findOne: '+err);
+                    console.log('room:join '+err);
                     return;
                 }
-
-                if (room) {
-                    console.log('room:welcome' + room.name);
+                if (!room) {
+                    return console.log('room:join unable to find room '+data.name);
+                }
+                User.update({
+                    _id: socket.handshake.user._id
+                },{
+                    $addToSet: { rooms: room.name }
+                }, function(err, affectedDocuments) {
+                    if (err) {
+                        console.log('room:join '+err);
+                        return;
+                    }
+                    // socket subscription
+                    socket.join(data.name);
+                    // room details
                     socket.emit('room:welcome', {
                         name: room.name,
                         topic: room.topic,
                         users: room.users
                     });
-                }
-
-                socket.join(data.name);
-
-                io.sockets.in(data.name).emit('room:in', {
-                    name: data.name,
-                    username: socket.handshake.user.username,
-                    avatar: socket.handshake.user.avatar
+                    // inform room attendees
+                    io.sockets.in(data.name).emit('room:in', {
+                        name: data.name,
+                        username: socket.handshake.user.username,
+                        avatar: socket.handshake.user.avatar
+                    });
                 });
             });
         });
@@ -97,16 +112,31 @@ module.exports = function(app, io, passport, sessionStore) {
             // @todo
             // escape room identifier
             // test room identifier validity
+            // test room existence
             // broadcast other devices
-            // broadcast user room
-            // persist
-            console.log(data);
-            socket.leave(data.name);
-            io.sockets.in(data.name).emit('room:out', {
-                name: data.name,
-                username: socket.handshake.user.username
+
+            if (data.name == undefined || data.name == '') {
+                // @todo : implement error callback
+                return;
+            }
+
+            User.update({
+                _id: socket.handshake.user._id
+            },{
+                $pull: { rooms: data.name }
+            }, function(err, affectedDocuments) {
+                if (err) {
+                    console.log('room:leave '+err);
+                    return;
+                }
+                // socket unsubscription
+                socket.leave(data.name);
+                // inform room attendees
+                io.sockets.in(data.name).emit('room:out', {
+                    name: data.name,
+                    username: socket.handshake.user.username
+                });
             });
-            // @todo : persist
         });
         socket.on('room:topic', function (data) {
             // @todo : test validity (ASCII)
