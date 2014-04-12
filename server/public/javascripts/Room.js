@@ -31,8 +31,6 @@ $(function() {
         },
 
         onIn: function(data) {
-            console.log('user in');
-            console.log(data);
             if (data.name != this.get('name')) {
                 return;
             }

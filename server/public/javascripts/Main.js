@@ -44,10 +44,8 @@ $(function() {
                 this.currentUsername = data.username;
                 this.currentAvatar = data.avatar;
                 _.each(data.rooms, function(room) {
-                    console.log('join this: '+room);
                     Chat.server.join(room);
                 });
-                // @todo : open rooms
             });
         },
 

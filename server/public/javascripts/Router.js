@@ -21,22 +21,22 @@ $(function() {
         },
 
         root: function() {
-            console.log('router: home');
+//            console.log('router: home');
             Chat.discussions.focus();
         },
 
         focusRoom: function(name) {
-            console.log('router: focusRoom '+name);
+//            console.log('router: focusRoom '+name);
             Chat.discussions.focusRoomByName('#'+name);
         },
 
         focusOneToOne: function(username) {
-            console.log('router: focusOneToOne ' + username);
+//            console.log('router: focusOneToOne ' + username);
             Chat.discussions.focusOneToOneByUsername(username);
         },
 
         default: function() {
-            console.log('router: default');
+//            console.log('router: default');
             // @todo : handle 404 type behavior in DOM
         }
     });

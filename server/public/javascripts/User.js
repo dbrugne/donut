@@ -27,20 +27,24 @@ $(function() {
     Chat.OnlineUsersCollection = Chat.UsersCollection.extend({
 
         initialize: function() {
-            this.listenTo(Chat.server, 'newOnlineUser', this.addUser);
-            this.listenTo(Chat.server, 'removeOnlineUser', this.removeUser);
+            this.listenTo(Chat.server, 'user:online', this.onOnline);
+            this.listenTo(Chat.server, 'user:offline', this.onOffline);
         },
 
-        addUser: function(data) {
+        onOnline: function(data) {
+            console.log('on');
+            console.log(data);
             this.add({
-                id: data.user_id,
+                id: data.id,
                 username: data.username,
                 avatar: data.avatar
             });
         },
 
-        removeUser: function(data) {
-            var user = this.get(data.user_id);
+        onOffline: function(data) {
+            console.log('off');
+            console.log(data);
+            var user = this.get(data.id);
             if (user == undefined) {
                 return;
             }
@@ -68,7 +72,7 @@ $(function() {
             this.render();
 
             this.userSubviews = new Backbone.Collection();
-            this.$list = this.$el.find('.list-group');
+            this.$list = this.$el.find('.list');
         },
 
         render: function() {

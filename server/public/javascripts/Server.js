@@ -28,8 +28,8 @@ $(function() {
             this.socket.on('reconnect', function () { that.trigger('reconnect'); });
             this.socket.on('reconnect_failed', function () { that.trigger('reconnect_failed'); });
 
-            this.socket.on('error', function () { console.error('socket error');
-                that.debug(arguments);
+            this.socket.on('error', function () {
+                that.debug(['socket error', arguments]);
             });
 
             this.socket.on('welcome', function (data) {
@@ -72,6 +72,14 @@ $(function() {
             this.socket.on('room:searcherror', function(data) {
                 that.debug(['io:in:room:searcherror', data]);
                 that.trigger('room:searcherror', data);
+            });
+            this.socket.on('user:online', function(data) {
+                that.debug(['io:in:user:online', data]);
+                that.trigger('user:online', data);
+            });
+            this.socket.on('user:offline', function(data) {
+                that.debug(['io:in:user:offline', data]);
+                that.trigger('user:offline', data);
             });
         },
 

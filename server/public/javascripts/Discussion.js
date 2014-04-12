@@ -557,7 +557,6 @@ $(function() {
             // Get the message
             var inputField = this.$el.find('.input-message');
             var message = inputField.val();
-            console.log('message is "'+message+'"');
             if (message == '') {
                 return false;
             }

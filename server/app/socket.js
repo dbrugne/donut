@@ -5,6 +5,8 @@ var passportSocketIo = require("passport.socketio");
 
 module.exports = function(app, io, passport, sessionStore) {
 
+    // brodcast : https://github.com/LearnBoost/socket.io/wiki/How-do-I-send-a-response-to-all-clients-except-sender%3F
+
     // big tasks
      // @todo: escaped and valid input with clean return to caller
      // @todo : make usage of room identifier and user identifier clear
@@ -60,6 +62,24 @@ module.exports = function(app, io, passport, sessionStore) {
                 avatar: socket.handshake.user.avatar,
                 rooms: user.rooms
             });
+        });
+
+        // push online users to this socket
+        io.sockets.clients().forEach(function(online) {
+            if (online.handshake.user._id != socket.handshake.user._id) {
+                socket.emit('user:online', {
+                    id: online.handshake.user._id,
+                    username: online.handshake.user.username,
+                    avatar: online.handshake.user.avatar
+                });
+            }
+        });
+
+        // push this user to other socket
+        socket.broadcast.emit('user:online', {
+            id: socket.handshake.user._id,
+            username: socket.handshake.user.username,
+            avatar: socket.handshake.user.avatar
         });
 
         socket.on('room:join', function (data) {
@@ -217,6 +237,12 @@ module.exports = function(app, io, passport, sessionStore) {
                 socket.emit('room:searchsuccess', {
                     rooms: results
                 });
+            });
+        });
+
+        socket.on('disconnect', function() {
+            socket.broadcast.emit('user:offline', {
+                id: socket.handshake.user._id
             });
         });
 
