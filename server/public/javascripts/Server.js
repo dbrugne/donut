@@ -99,26 +99,12 @@ $(function() {
             this.debug(['io:out:room:message', data]);
         },
 
-        create: function(name) {
-            var data = {name: name};
-            this.socket.emit('room:create', data);
-            this.debug(['io:out:room:create', data]);
-        },
-
         roomSearch: function(search) {
             var data = {search: search};
             this.socket.emit('room:search', data);
             this.debug(['io:out:room:search', data]);
         }
 
-//        createRoom: function(name) {
-//            var that = this;
-//            this.get('session').call('createRoom', name).then(
-//                function(data) { that.trigger('room:createSuccess', data); }
-//                , function(data) { that.trigger('room:createError', data); }
-//            );
-//        },
-//
 //        searchForUsers: function(search) {
 //            var that = this;
 //            this.get('session').call('searchForUsers', search).then(

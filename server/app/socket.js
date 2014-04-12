@@ -11,6 +11,9 @@ module.exports = function(app, io, passport, sessionStore) {
      // @todo: test ACL for each operation
      // @todo: add "activity" entry for each action
 
+    // @todo : global escape input
+    // @todo : specific validation and sanitization for room name / user name
+
     io.set('transports', [
         'websocket'
         , 'flashsocket'
@@ -58,35 +61,23 @@ module.exports = function(app, io, passport, sessionStore) {
                 rooms: user.rooms
             });
         });
-        socket.on('room:join', function (data) {
-            // @todo
-            // escape room identifier
-            // test room identifier validity
-            // test ACL
-            // broadcast other devices
-            // persist
 
-            if (data.name == undefined || data.name == '') {
-                // @todo : implement error callback
+        socket.on('room:join', function (data) {
+            if (!validateRoom(data.name)) {
+                console.log('room:join bad room identifier '+data.name)
                 return;
             }
 
-            // @todo : test if room exist effectively (and why not creating rooms on the fly ?
-              // creating a room could be equivalent to a "join" call from user == IRC like
+            // @todo
+            // test ACL
+            // broadcast other devices
 
-            Room.findOne({'name': data.name}, 'name topic users', function(err, room) {
-                if (err) {
-                    console.log('room:join '+err);
-                    return;
-                }
-                if (!room) {
-                    return console.log('room:join unable to find room '+data.name);
-                }
+            var onRoom = function(room) {
                 User.update({
                     _id: socket.handshake.user._id
                 },{
                     $addToSet: { rooms: room.name }
-                }, function(err, affectedDocuments) {
+                }, function(err, numberAffected) {
                     if (err) {
                         console.log('room:join '+err);
                         return;
@@ -106,19 +97,35 @@ module.exports = function(app, io, passport, sessionStore) {
                         avatar: socket.handshake.user.avatar
                     });
                 });
+            }
+
+            Room.findOne({'name': data.name}, 'name topic users', function(err, room) {
+                if (err) {
+                    console.log('room:join '+err);
+                    return;
+                }
+                if (!room) {
+                    console.log('room:join unable to find room '+data.name+' we create it');
+                    room = new Room({name: data.name});
+                    room.save(function (err, product, numberAffected) {
+                        console.log('room:join room '+data.name+' created');
+                        onRoom(room);
+                    });
+                } else {
+                    onRoom(room);
+                }
             });
         });
         socket.on('room:leave', function (data) {
-            // @todo
-            // escape room identifier
-            // test room identifier validity
-            // test room existence
-            // broadcast other devices
-
-            if (data.name == undefined || data.name == '') {
-                // @todo : implement error callback
+            if (!validateRoom(data.name)) {
+                console.log('room:leave bad room identifier '+data.name)
                 return;
             }
+
+            // @todo
+            // test room existence
+            // broadcast other devices
+            // room deletion on last client leaved and permanent != 0
 
             User.update({
                 _id: socket.handshake.user._id
@@ -139,6 +146,11 @@ module.exports = function(app, io, passport, sessionStore) {
             });
         });
         socket.on('room:topic', function (data) {
+            if (!validateRoom(data.name)) {
+                console.log('room:topic bad room identifier '+data.name)
+                return;
+            }
+
             // @todo : test validity (ASCII)
             // @todo : sanitize
             // @todo : test ACL
@@ -159,6 +171,11 @@ module.exports = function(app, io, passport, sessionStore) {
             console.log(data);
         });
         socket.on('room:message', function (data) {
+            if (!validateRoom(data.name)) {
+                console.log('room:message bad room identifier '+data.name)
+                return;
+            }
+
             // @todo
             // escape
             // test message validity (not empty, ASCII)
@@ -175,10 +192,6 @@ module.exports = function(app, io, passport, sessionStore) {
                 username: socket.handshake.user.username,
                 avatar: socket.handshake.user.avatar
             });
-        });
-        socket.on('room:create', function (data) {
-            // @todo : import ratchet logic
-            console.log(data);
         });
         socket.on('room:search', function (data) {
             var search = {};
@@ -209,7 +222,13 @@ module.exports = function(app, io, passport, sessionStore) {
 
     });
 
-    // @todo : global escape input
-    // @todo : specific validation and sanitization for room name / user name
-
 };
+
+function validateRoom(name) {
+    var pattern = /^#[-a-z0-9_\\|[\]{}@^`]{2,30}$/i;
+    if (pattern.test(name)) {
+        return true;
+    } else {
+        return false;
+    }
+}

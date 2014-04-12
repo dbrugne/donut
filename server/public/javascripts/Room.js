@@ -290,6 +290,13 @@ $(function() {
                 this.$formGroup.addClass('has-success').removeClass('has-error');
                 this.$el.find('.create-message').fadeOut();
             }
+
+            // Enter in field handling
+            if (event.type == 'keyup') {
+                if(event.which == 13) {
+                    this.submit();
+                }
+            }
         },
 
         /**
@@ -299,8 +306,8 @@ $(function() {
          * - specials: - _ \ | [ ] { } @ ^ `
          */
         _valid: function() {
-            var name = this.$input.val();
-            var pattern = /^[-a-z0-9_\\|[\]{}@^`]{2,30}$/i;
+            var name = '#'+this.$input.val();
+            var pattern = /^#[-a-z0-9_\\|[\]{}@^`]{2,30}$/i;
             if (pattern.test(name)) {
                 return true;
             } else {
@@ -313,22 +320,15 @@ $(function() {
                 return false;
             }
 
-            var name = this.$input.val();
+            var name = '#'+this.$input.val();
 
-            // call RPC + render
-            Chat.server.createRoom(name);
-        },
-
-        createSuccess: function(data) {
             // Is already opened?
-            var room = Chat.discussions.get(data.name);
+            var room = Chat.discussions.get(name);
             if (room != undefined) {
                 Chat.discussions.focus(room);
-
-            // Room not already open
             } else {
-                Chat.discussions.thisDiscussionShouldBeFocusedOnSuccess = data.name;
-                Chat.server.join(data.name);
+                Chat.discussions.thisDiscussionShouldBeFocusedOnSuccess = name;
+                Chat.server.join(name);
             }
 
             this.$formGroup.removeClass('has-error').removeClass('has-success');
@@ -336,12 +336,16 @@ $(function() {
             this.hide();
         },
 
+        createSuccess: function(data){
+
+        },
+
         createError: function(data) {
-            var error = data.uri.error;
-            this.$formGroup.addClass('has-error').removeClass('has-success');
-            this.$el.find('.create-message').remove();
-            var html = '<p class="create-message bg-danger">'+error+'</p>';
-            this.$formGroup.before(html);
+//            var error = data.uri.error;
+//            this.$formGroup.addClass('has-error').removeClass('has-success');
+//            this.$el.find('.create-message').remove();
+//            var html = '<p class="create-message bg-danger">'+error+'</p>';
+//            this.$formGroup.before(html);
         }
 
     });
