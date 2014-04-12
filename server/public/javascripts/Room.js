@@ -201,7 +201,7 @@ $(function() {
             this.render();
 
             this.userSubviews = new Backbone.Collection();
-            this.$list = this.$el.find('.list-group');
+            this.$list = this.$el.find('.list');
         },
 
         render: function() {

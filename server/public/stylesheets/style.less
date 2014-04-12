@@ -160,12 +160,57 @@ a {
     height: 100%;
   }
 
-  .panel-heading { font-weight: bold; color: #8a8a8a; }
+  #block-status, #block-rooms, #block-users, .room-users{
+
+    background-color: #f5f5f5;
+    padding-bottom: 10px;
+
+    .heading {
+      padding: 10px 15px;
+      font-weight: bold;
+      color: #8a8a8a;
+      border-color: transparent;
+      border-bottom: 1px solid #ddd;
+    }
+    .body {
+      position: relative;
+      padding: 10px;
+      background-color: #fff;
+    }
+    .list {
+      .list-group;
+      margin-bottom: 0;
+      background-color: #fff;
+
+      .item {
+        .list-group-item;
+        border-left: 0;
+        border-right: 0;
+        border-top: 0;
+        color: #000000;
+        /** list-item  ?? */
+      }
+      /*.user-item  { padding: 10px; }
+      .user-item { position: relative; }
+      .user-item:hover { background-color: #f5f5f5; }*/
+      .item:last-child {
+        margin-bottom: 0;
+        border-radius: 0;
+        /** ?? */
+      }
+    }
+    .footer {
+      padding: 10px 15px;
+      background-color: #f5f5f5;
+    }
+  }
 
   #block-status {
-    .panel;
-    .panel-default;
-    .panel-body { position: relative; }
+    font-weight: bold;
+
+    .body {
+      background-color: darkgrey;
+    }
   }
 
   #button-status {
@@ -173,9 +218,7 @@ a {
     .btn-xs;
     position: absolute;
     right: 10px;
-
   }
-  #button-status:hover { color: #FFF; }
 
   .online { .btn-success; }
   .connecting { .btn-warning; }
@@ -187,19 +230,17 @@ a {
   .make-sm-column(2);
   height: 100%;
   background-color: darkgrey;
-  padding: 10px 10px;
+  padding: 0;
   overflow-y:auto;
+  border-right: 1px solid #ddd;
 
   #block-rooms {
-    .panel-heading { border-color: transparent; }
-    .list-item { font-size: 12px; }
-    .unread .list-item { color: orangered; }
-    .list-item .name {  }
-    .list-item .badge { display: none; margin-right: 5px; }
-    .list-item .close { font-size: 14px; color: #FF0000; }
+    .unread .item { color: orangered; }
+    .item .name {  }
+    .item .badge { display: none; margin-right: 5px; }
+    .item .close { font-size: 14px; color: #FF0000; }
   }
   #block-users {
-    .panel-heading { border-color: transparent; }
     .user-item .actions { position: absolute; right: 10px; }
   }
 }
@@ -228,8 +269,8 @@ a {
     .row-header, .row-content { margin: 0px; /* Cancel bootstrap negative .row margin */  }
     .row-content { height: 100%; }
     
-    .col-content { height: 100%; padding-left: 0; padding-right: 0; /* Cancel bootstrap native space between columns */ padding-bottom: 75px; }
-    .col-users { padding-left: 0; padding-right: 0; /* Cancel bootstrap native space between columns */  border-left: 1px solid #ddd;  background-color: darkgrey; }
+    .col-content { height: 100%; padding-left: 0; padding-right: 0; padding-bottom: 75px; }
+    .col-users { padding-left: 0; padding-right: 0; border-left: 1px solid #ddd;  background-color: darkgrey; }
 
     .header {
       border-bottom: 1px solid transparent; border-color: #ddd; background-color: #f5f5f5; padding: 10px 15px;
@@ -264,6 +305,10 @@ a {
         .username { font-weight: bold; }
         .message { display: block; margin-left: 26px; }
       }
+
+      .notification {
+        color: #737373;
+      }
     }
     
     .message-box {
@@ -293,20 +338,8 @@ a {
     .col-users {
       height: 100%;
 
-      .room-users  { 
-        background-color: #fff;
-        
-        .list-group  { margin-bottom: 0; /* Cancel bootstrap native space after panel */ }
-        .list-group-item  { border-left: 0; border-right: 0; border-top: 0; }
-        .list-group-item:last-child { margin-bottom: 0; /* Cancel bootstrap native space after panel */ border-radius: 0; }
-        .heading { padding: 10px 15px; background-color: #f5f5f5; font-weight: bold; color: #8a8a8a; border-bottom: 1px solid #ddd; }
-        .footer { padding: 10px 15px; background-color: #f5f5f5; }
-        .user-item  { padding: 10px; }
-        .user-item .actions { }
-        .user-item { position: relative; }
-        .user-item:hover { background-color: #f5f5f5; }
+      .room-users  {
         .user-item .actions { position: absolute; right: 10px; }
-        .user-item:hover .actions { }
         .user-item .op { font-weight: bold; text-decoration: underline; }
         .user-item .friend { font-weight: bold; font-style: italic; }
       }

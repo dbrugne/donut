@@ -213,7 +213,7 @@ $(function() {
     // View responsible of displaying room/onetoone tabs block and windows
     Chat.DiscussionsView = Backbone.View.extend({
 
-        $discussionsTabContainer: $("#discussions-list"),
+        $discussionsTabContainer: $("#block-rooms .list"),
         $discussionsWindowContainer: $("#chat-center"),
 
         initialize: function(options) {
