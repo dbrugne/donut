@@ -256,9 +256,9 @@
     <p class="notification notification-<%= type %>">
         <% if (type =='hello') { %>
         You enter in <%= name %>
-        <% } else if (type =='userIn') { %>
+        <% } else if (type =='in') { %>
         <span class="username" data-user-id="<%= user_id %>"><%= username %></span> has joined <strong><%= name %></strong>
-        <% } else if (type =='userOut') { %>
+        <% } else if (type =='out') { %>
         <span class="username" data-user-id="<%= user_id %>"><%= username %></span> has left <strong><%= name %></strong>
         <% } else if (type =='disconnect') { %>
         <span class="username" data-user-id="<%= user_id %>"><%= username %></span> was disconnected (<em><%= reason %></em>)
