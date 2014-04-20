@@ -59,6 +59,13 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('layout', 'layout');
 app.set('view engine', 'html');
 app.locals.title = configuration.title;
+app.use(function(req, res, next) { // pass flash messages to all views
+    res.locals.success = req.flash('success');
+    res.locals.info = req.flash('info');
+    res.locals.warning = req.flash('warning');
+    res.locals.error = req.flash('error');
+    next();
+});
 
 app.use(genericRoutes);
 app.use(chatRoutes);

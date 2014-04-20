@@ -3,15 +3,8 @@ var router = express.Router();
 var Room    = require('../app/models/room');
 
 router.get('/', function(req, res) {
-    var data = {
-        success: req.flash('success'),
-        info: req.flash('info'),
-        warning: req.flash('warning'),
-        error: req.flash('error')
-    };
-
     if (!req.isAuthenticated()) {
-        return res.render('index', data);
+        return res.render('index', {});
     }
 
     Room.find({}, function(err, rooms) {
@@ -20,7 +13,7 @@ router.get('/', function(req, res) {
             res.redirect('/');
         }
 
-        data.rooms = rooms;
+        var data = {rooms: rooms};
         return res.render('welcome', data);
     });
 });

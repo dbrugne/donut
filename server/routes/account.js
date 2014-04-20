@@ -1,15 +1,8 @@
 var express = require('express');
 var router = express.Router();
 
-router.route('/')
-    .get(isLoggedIn, function(req, res) {
-        var data = {
-            success: req.flash('success'),
-            info: req.flash('info'),
-            warning: req.flash('warning'),
-            error: req.flash('error')
-        };
-        res.render('account', data);
+router.get('/', isLoggedIn, function(req, res) {
+        res.render('account', {});
     });
 
 router.route('/edit/email')
