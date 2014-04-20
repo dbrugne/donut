@@ -60,7 +60,7 @@ app.use(genericRoutes);
 app.use(chatRoutes);
 app.use(authenticationRoutes);
 app.use('/account', accountRoutes);
-app.use(profileRoutes); // @todo : remove user/ and room/ prefix
+app.use(profileRoutes);
 
 /// catch 404 and forwarding to error handler
 app.use(function(req, res, next) {
