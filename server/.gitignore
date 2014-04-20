@@ -1,0 +1,5 @@
+# NPM dependencies
+node_modules/
+
+# Compiled files
+public/stylesheets/style.css
