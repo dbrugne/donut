@@ -1,11 +1,8 @@
-var LocalStrategy   = require('passport-local').Strategy;
+var LocalStrategy = require('passport-local').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
+var User = require('./models/user');
 
-var User       		= require('./models/user');
-
-configuration = require('../config/app_dev');
-
-module.exports = function(passport) {
+module.exports = function(passport, facebookConfiguration) {
 
     // =========================================================================
     // passport session setup ==================================================
@@ -30,7 +27,7 @@ module.exports = function(passport) {
     // =========================================================================
     // we are using named strategies since we have one for login and one for signup
     // by default, if there was no name, it would just be called 'local'
-
+    // @todo : how to validate sanitize posted values?
     passport.use('local-signup', new LocalStrategy({
             // by default, local strategy uses username and password, we will override with email
             usernameField : 'email',
@@ -38,12 +35,9 @@ module.exports = function(passport) {
             passReqToCallback : true // allows us to pass back the entire request to the callback
         },
         function(req, email, password, done) {
-
             // asynchronous
             // User.findOne wont fire unless data is sent back
             process.nextTick(function() {
-
-                // check if the user is already logged ina
                 if (!req.user) {
 
                     // find a user whose email is the same as the forms email
@@ -62,6 +56,7 @@ module.exports = function(passport) {
                             var newUser            = new User();
 
                             // set the user's local credentials
+                            newUser.username    = req.body.username;
                             newUser.local.email    = email;
                             newUser.local.password = newUser.generateHash(password);
 
@@ -133,9 +128,9 @@ module.exports = function(passport) {
     passport.use(new FacebookStrategy({
 
             // pull in our app id and secret from our auth.js file
-            clientID        : configuration.facebook.clientID,
-            clientSecret    : configuration.facebook.clientSecret,
-            callbackURL     : configuration.facebook.callbackURL,
+            clientID        : facebookConfiguration.clientID,
+            clientSecret    : facebookConfiguration.clientSecret,
+            callbackURL     : facebookConfiguration.callbackURL,
             passReqToCallback : true // allows us to pass in the req from our route (lets us check if a user is logged in or not)
         },
 

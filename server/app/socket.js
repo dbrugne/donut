@@ -1,6 +1,7 @@
 var User    = require('./models/user');
 var Room    = require('./models/room');
 var express = require("express");
+var cookieParser = require('cookie-parser');
 var passportSocketIo = require("passport.socketio");
 
 module.exports = function(app, io, passport, sessionStore) {
@@ -25,7 +26,7 @@ module.exports = function(app, io, passport, sessionStore) {
 
     // https://www.npmjs.org/package/passport.socketio
     io.set('authorization', passportSocketIo.authorize({
-        cookieParser: express.cookieParser,
+        cookieParser: cookieParser,
         key:         'express.sid',       // the name of the cookie where express/connect stores its session_id
         secret:      'q4qsd65df45s4d5f45ds5fsf4s',    // the session_secret to parse the cookie
         passport:    passport,

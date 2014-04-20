@@ -1,4 +1,4 @@
 {
     "verbose": true,
-    "watch": ["app.js", "bin/www", "app/", "config/", "views/"]
+    "watch": ["app.js", "bin/www", "app/", "config/", "views/", "routes/"]
 }

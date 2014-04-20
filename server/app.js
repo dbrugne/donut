@@ -1,13 +1,13 @@
 // Load dependencies
 var express = require('express')
-    , http = require('http')
     , path = require('path')
     , favicon = require('static-favicon')
     , logger = require('morgan')
     , cookieParser = require('cookie-parser')
     , bodyParser = require('body-parser')
-    , MongoStore = require('connect-mongo')(express)
-    , mongoose = require('mongoose')
+    , session = require('express-session');
+
+var mongoose = require('mongoose')
     , passport = require('passport')
     , flash = require('connect-flash')
     , expressValidator = require('express-validator');
@@ -15,15 +15,39 @@ var express = require('express')
 // per-environment configuration
 configuration = require('./config/app_dev');
 
+// routes
+var genericRoutes = require('./routes/index');
+var chatRoutes = require('./routes/chat');
+var authenticationRoutes = require('./routes/authentication');
+var accountRoutes = require('./routes/account');
+var profileRoutes = require('./routes/profile');
+
 // express
 var app = express();
 
-// mongoDB
+// MongoDB
 mongoose.connect(configuration.mongo.url);
-var sessionStore = new MongoStore({ url: configuration.mongo.url });
 
-// passport
-require('./app/passport')(passport);
+// Sessions in MongoDB
+var MongoStore = require('connect-mongo')({session: session}); // @todo: re-pass express instead of hash when npm will be updated https://www.npmjs.org/package/connect-mongo
+var sessionStore = new MongoStore({mongoose_connection: mongoose.connection});
+
+// Passport
+require('./app/passport')(passport, configuration.facebook); // note that will modify passport object and
+// @todo : important, populate automatically res.locals.user
+
+// http server
+app.use(favicon());
+app.use(logger('dev'));
+app.use(bodyParser());
+app.use(expressValidator()); // must be immediately after bodyParser()
+app.use(cookieParser());
+app.use(session({ secret: 'q4qsd65df45s4d5f45ds5fsf4s', key: 'express.sid', store: sessionStore }));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(require('less-middleware')({ src: path.join(__dirname, 'public') }));
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(flash());
 
 // view engine setup
 app.engine('html', require('hogan-express'));
@@ -32,19 +56,11 @@ app.set('layout', 'layout');
 app.set('view engine', 'html');
 app.locals.title = configuration.title;
 
-// http server
-app.use(favicon());
-app.use(logger('dev'));
-app.use(express.bodyParser());
-app.use(expressValidator());
-app.use(cookieParser());
-app.use(express.session({ secret: 'q4qsd65df45s4d5f45ds5fsf4s', key: 'express.sid', store: sessionStore }));
-app.use(require('less-middleware')({ src: path.join(__dirname, 'public') }));
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(passport.initialize());
-app.use(passport.session());
-app.use(flash());
-app.use(app.router);
+app.use(genericRoutes);
+app.use(chatRoutes);
+app.use(authenticationRoutes);
+app.use('/account', accountRoutes);
+app.use(profileRoutes); // @todo : remove user/ and room/ prefix
 
 /// catch 404 and forwarding to error handler
 app.use(function(req, res, next) {
@@ -61,6 +77,7 @@ app.use(function(req, res, next) {
 // will print stacktrace
 if (app.get('env') === 'development') {
     app.use(function(err, req, res, next) {
+        res.status(err.status || 500);
         res.render('error', {
             message: err.message,
             error: err,
@@ -72,14 +89,12 @@ if (app.get('env') === 'development') {
 // production error handler
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
+    res.status(err.status || 500);
     res.render('error', {
         message: err.message,
         error: {}
     });
 });
-
-// go HTTP
-require('./app/routes')(app, passport);
 
 module.exports = {
     app: app,

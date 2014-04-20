@@ -5,9 +5,9 @@ var User     = require('./user');
 var roomSchema = mongoose.Schema({
 
     name            : String,
-    owner_id        : User,
-    op              : [User],
-    bans            : [User],
+    owner_id        : mongoose.Schema.ObjectId,
+    op              : [mongoose.Schema.ObjectId],
+    bans            : [mongoose.Schema.ObjectId],
     permanent       : Boolean,
     allow_guests    : Boolean,
     invisible       : Boolean,
