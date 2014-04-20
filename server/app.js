@@ -45,6 +45,10 @@ app.use(cookieParser());
 app.use(session({ secret: 'q4qsd65df45s4d5f45ds5fsf4s', key: 'express.sid', store: sessionStore }));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(function(req, res, next) { // pass user to all views
+    res.locals.user = req.user;
+    next();
+});
 app.use(require('less-middleware')({ src: path.join(__dirname, 'public') }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(flash());
@@ -72,9 +76,6 @@ app.use(function(req, res, next) {
     });
 });
 
-/// error handlers
-// development error handler
-// will print stacktrace
 if (app.get('env') === 'development') {
     app.use(function(err, req, res, next) {
         res.status(err.status || 500);
@@ -86,8 +87,6 @@ if (app.get('env') === 'development') {
     });
 }
 
-// production error handler
-// no stacktraces leaked to user
 app.use(function(err, req, res, next) {
     res.status(err.status || 500);
     res.render('error', {

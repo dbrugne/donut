@@ -3,7 +3,6 @@ var router = express.Router();
 
 router.route('/')
     .get(isLoggedIn, function(req, res) {
-        res.locals.user = req.user;
         var data = {
             success: req.flash('success'),
             info: req.flash('info'),
@@ -35,8 +34,6 @@ router.route('/edit/password')
 
 router.route('/edit/profile')
     .get(isLoggedIn, function(req, res) {
-        res.locals.user = req.user;
-
         var userFields = req.user.toObject();
         res.render('account_edit_profile', {
             userFields: userFields,

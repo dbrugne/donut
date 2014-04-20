@@ -10,7 +10,6 @@ router.get('/', function(req, res) {
         error: req.flash('error')
     };
 
-    res.locals.user = req.user;
     if (!req.isAuthenticated()) {
         return res.render('index', data);
     }

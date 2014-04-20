@@ -4,9 +4,7 @@ var passport = require('passport');
 
 router.route('/signup')
     .get(function(req, res) {
-        res.locals.user = req.user;
         res.render('signup', { message: req.flash('signupMessage') });
-
     })
     .post(passport.authenticate('local-signup', {
         successRedirect : '/',
@@ -16,7 +14,6 @@ router.route('/signup')
 
 router.route('/login')
     .get(function(req, res) {
-        res.locals.user = req.user;
         res.render('login', { message: req.flash('loginMessage') });
     })
     .post(passport.authenticate('local-login', {
@@ -36,7 +33,6 @@ router.get('/login/facebook/callback', passport.authenticate('facebook', {
 
 router.route('/connect/local')
     .get(function(req, res) {
-        res.locals.user = req.user;
         res.render('connect_local', { message: req.flash('signupMessage') });
     })
     .post(passport.authenticate('local-signup', {
