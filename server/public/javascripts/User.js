@@ -66,8 +66,8 @@ $(function() {
         userSubviews: '',
 
         initialize: function(options) {
-            this.listenTo(this.collection, 'add', this.addUser);
-            this.listenTo(this.collection, 'remove', this.removeUser);
+            this.listenTo(this.collection, 'add', this.onAdd);
+            this.listenTo(this.collection, 'remove', this.onRemove);
 
             this.render();
 
@@ -87,7 +87,7 @@ $(function() {
             Backbone.View.prototype.remove.apply(this, arguments);
         },
 
-        addUser: function(model, collection, options) {
+        onAdd: function(model, collection, options) {
             var view = new Chat.UserListView({model: model});
             this.userSubviews.add({
                 id: model.get('id'),
@@ -99,7 +99,7 @@ $(function() {
             this.sort();
         },
 
-        removeUser: function(model, collection, options) {
+        onRemove: function(model, collection, options) {
             var view = this.userSubviews.get(model.get('id')).get('view').remove();
             this.userSubviews.remove(model.get('id'));
         },
