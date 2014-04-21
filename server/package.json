@@ -23,6 +23,7 @@
     "connect-flash": "0.1.x",
     "bcrypt-nodejs": "latest",
     "express-validator": "2.x",
+    "csurf": "1.x",
     "socket.io": "0.x",
     "passport.socketio": "3.x"
   }

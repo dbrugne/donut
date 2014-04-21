@@ -9,6 +9,9 @@
     <a href="/login/facebook" class="btn btn-primary btn-lg"><span class="fa fa-facebook"></span> Sign in with <strong>Facebook</strong></a>
     <p>OR</p>
     <form action="/login" method="post" role="form">
+
+        <input type="hidden" name="_csrf" value="{{token}}">
+
         <div class="form-group">
             <input type="text" id="signin-email" class="form-control" name="email" placeholder="Email or Username">
         </div>

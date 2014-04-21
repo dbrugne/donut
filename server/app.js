@@ -5,7 +5,8 @@ var express = require('express')
     , logger = require('morgan')
     , cookieParser = require('cookie-parser')
     , bodyParser = require('body-parser')
-    , session = require('express-session');
+    , session = require('express-session')
+    , csrf = require('csurf');
 
 var mongoose = require('mongoose')
     , passport = require('passport')
@@ -38,6 +39,8 @@ require('./app/passport')(passport, configuration.facebook); // note that will m
 // http server
 app.use(favicon());
 app.use(logger('dev'));
+app.use(require('less-middleware')({ src: path.join(__dirname, 'public') })); // maintain before other middleware to avoid useless computing
+app.use(express.static(path.join(__dirname, 'public'))); // maintain before other middleware to avoid useless computing
 app.use(bodyParser());
 app.use(expressValidator()); // must be immediately after bodyParser()
 app.use(cookieParser());
@@ -48,16 +51,12 @@ app.use(function(req, res, next) { // pass user to all views
     res.locals.user = req.user;
     next();
 });
-app.use(require('less-middleware')({ src: path.join(__dirname, 'public') }));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(csrf());
+app.use(function(req, res, next) { // add csrf helper in all views
+    res.locals.token = req.csrfToken();
+    next();
+});
 app.use(flash());
-
-// view engine setup
-app.engine('html', require('hogan-express'));
-app.set('views', path.join(__dirname, 'views'));
-app.set('layout', 'layout');
-app.set('view engine', 'html');
-app.locals.title = configuration.title;
 app.use(function(req, res, next) { // pass flash messages to all views
     res.locals.success = req.flash('success');
     res.locals.info = req.flash('info');
@@ -65,6 +64,13 @@ app.use(function(req, res, next) { // pass flash messages to all views
     res.locals.error = req.flash('error');
     next();
 });
+
+// view engine setup
+app.engine('html', require('hogan-express'));
+app.set('views', path.join(__dirname, 'views'));
+app.set('layout', 'layout');
+app.set('view engine', 'html');
+app.locals.title = configuration.title;
 
 app.use(genericRoutes);
 app.use(chatRoutes);
