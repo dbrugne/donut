@@ -38,7 +38,7 @@ User account:
 - [x] Implement change email form
 - [x] Implement change password form
 - [x] Account form and post (finish)
-- [] Add confirmation message on delete account
+- [x] Add confirmation message on delete account
 - [] Add CSRF on forms (account, login, signup): http://dailyjs.com/2012/09/13/express-3-csrf-tutorial/
 - [] Add color band field
 - [] Template user profile
