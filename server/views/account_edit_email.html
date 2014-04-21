@@ -1,0 +1,45 @@
+<div id="account-edit">
+
+    <div class="page-header">
+        <h1><span class="fa fa-cog"></span> Your Account</h1>
+    </div>
+
+    <form action="/account/edit/email" method="post" role="form" class="forms">
+
+        {{#is_errors}}
+        <div class="errors">
+            {{#errors}}
+            {{#errors}}{{msg}}{{/errors}}<br>
+            {{/errors}}
+        </div>
+        {{/is_errors}}
+
+        <div class="controls">
+            <div class="col-sm-8 col-lg-offset-2 text-right">
+                <input type="submit" class="btn btn-primary btn-sm" value="Save and go back to account">
+                <a href="/account" type="button" class="btn btn-default btn-sm">Cancel</a>
+            </div>
+        </div>
+
+        <h4>Your email</h4>
+
+        <div class="controls">
+            <label class="control-labels" for="email-field">Email</label>
+            <div class="control-fields">
+                <input type="email" class="form-control" id="email-field" name="user[fields][email]" placeholder="Enter valid email" value="{{userFields.email}}">
+                <p class="help-block">Your login to authenticate.</p>
+            </div>
+        </div>
+
+        <h4> </h4>
+
+        <div class="controls">
+            <div class="col-sm-8 col-lg-offset-2 text-right">
+                <button type="submit" id="account-email-submit" class="btn btn-primary btn-sm">Save and go back to account</button>
+                <a href="/account" type="button" class="btn btn-default btn-sm">Cancel</a>
+            </div>
+        </div>
+
+    </form>
+
+</div>

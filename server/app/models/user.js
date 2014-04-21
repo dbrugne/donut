@@ -1,14 +1,11 @@
 var mongoose = require('mongoose');
 var bcrypt   = require('bcrypt-nodejs');
 
-var Room     = require('./room');
-var Role     = require('./role');
-
 var userSchema = mongoose.Schema({
 
     username       : String,
     name           : String,
-    roles          : [Role],
+    roles          : [String],
     bio            : String,
     location       : String,
     website        : String,

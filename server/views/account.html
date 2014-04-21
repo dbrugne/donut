@@ -43,10 +43,10 @@
                 <h3><span class="fa fa-lock"></span> Login</h3>
                 {{#user.local.email}}
                 <p class="detail">
-                    <span class="labels">email</span>: <span class="values">{{user.local.email}} (<a href="#" id="email-modal-link">change email</a>)</span><br>
+                    <span class="labels">email</span>: <span class="values">{{user.local.email}} (<a href="/account/edit/email" id="email-modal-link">change email</a>)</span><br>
                     <span class="labels">password</span>:
                     <span class="values">
-                        <a href="#" id="password-modal-link">change password</a>
+                        <a href="/account/edit/password" id="password-modal-link">change password</a>
                     </span>
                     <br>
                 </p>

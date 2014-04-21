@@ -28,12 +28,12 @@ $(document).ready(function() {
         }
     });
 
-    $('#email-modal-link').click(function(event) {
+    /*$('#email-modal-link').click(function(event) {
       $('#email-modal').modal();
     });
 
     $('#password-modal-link').click(function(event) {
         $('#password-modal').modal();
-    });
+    });*/
 
 });

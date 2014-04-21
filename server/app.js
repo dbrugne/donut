@@ -10,7 +10,7 @@ var express = require('express')
 var mongoose = require('mongoose')
     , passport = require('passport')
     , flash = require('connect-flash')
-    , expressValidator = require('express-validator');
+    , expressValidator = require('./app/validator');
 
 // per-environment configuration
 configuration = require('./config/app_dev');
@@ -34,7 +34,6 @@ var sessionStore = new MongoStore({mongoose_connection: mongoose.connection});
 
 // Passport
 require('./app/passport')(passport, configuration.facebook); // note that will modify passport object and
-// @todo : important, populate automatically res.locals.user
 
 // http server
 app.use(favicon());

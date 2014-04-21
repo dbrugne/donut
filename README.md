@@ -31,17 +31,24 @@ node.js:
 - [x] Need to repair FB only account Local account association
 - [x] Block FB account unlinking when no local, block local unlinking (= delete account instead)
 - [x] Move username in global context
-- [] Upload files
 - [] Need have a username in each case at the end of the process
 
 User account:
-- [] Implement change email form
-- [] Implement change password form
-- [] Account form and post (finished)
-- [] Add upload file mechanism
+- [] Add form validation middleware for each form (account/*, login, signup)
+- [x] Implement change email form
+- [x] Implement change password form
+- [x] Account form and post (finish)
 - [] Add confirmation message on delete account
 - [] Add CSRF on forms (account, login, signup): http://dailyjs.com/2012/09/13/express-3-csrf-tutorial/
+- [] Add color band field
 - [] Template user profile
+- [] Add upload file mechanism and handle user pictures
+
+Room profile:
+- [] Add customizable color band on room
+- [] Repair auto-join room when come from homepage (need replacing room id with name everywhere)
+- [] (irc) ACL on room => who is OP, set OP, remove OP, can change baseline, can kick users
+- [] (irc) Kick users
 
 Chat:
 - [] Chat callback on homepage => /!#DagnirDae
@@ -52,18 +59,12 @@ socket.io:
 - [x] Refactor socket.io (redis?)
 -- [] Introduce guest mode
 -- [] Review all the messages exchanged between client/server
--- [] Remove topic to use room name instead (with prefix)
+-- [x] Remove topic to use room name instead (with prefix)
 
 - [] Refactor grunt
-- [] Refactor less.css
+- [x] Refactor less.css
 - [] Cleanup projects files
 - [] Merge
-
-v3:
-- [] Add customizable color line on room
-- [] Repair auto-join room when come from homepage (need replacing room id with name everywhere)
-- [] (irc) ACL on room => who is OP, set OP, remove OP, can change baseline, can kick users
-- [] (irc) Kick users
 
 v4:
 - [] Backend
@@ -81,6 +82,7 @@ Room profile:
 - [] Template
 
 vx:
+- [] Add form validation client-side: account/*, login, signup
 - [] Fix old session bug (if still exists)
 - [] Add "presence" management
 - [] Add require.js on client side to simplify code organization
