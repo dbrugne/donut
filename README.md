@@ -9,6 +9,7 @@ Clone the project, go in server/ folder and install dependencies:
 
 ```
 npm install
+bower install
 ```
 
 Then launch the application:
@@ -22,7 +23,10 @@ npm start
 # Pre-requisites
 
 * node.js + npm
+* Bower
 * MongoDB
+* ImageMagick convert CLI command
+* Python 2.7 (and not 3.x, for mongoose-crate)
 
 # Roadmap
 
@@ -66,6 +70,11 @@ socket.io:
 - [x] Refactor less.css
 - [] Cleanup projects files
 - [] Merge
+
+Security/performance:
+- [] Multiparty
+- [] Implement the new connect-multiparty version or fork the project to avoid tmpFiles
+- [] Customized configuration (maxFiles, MaxFilesSize...)
 
 v4:
 - [] Backend

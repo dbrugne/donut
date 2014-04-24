@@ -1,0 +1,11 @@
+{
+    "name": "chat-server",
+    "version": "0.0.1",
+    "dependencies": {
+        "requirejs": "latest",
+        "jquery": "~1.11.0",
+        "bootstrap": "latest",
+        "underscore-amd": "latest",
+        "backbone-amd": "latest"
+    }
+}

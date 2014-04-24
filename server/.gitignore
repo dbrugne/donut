@@ -1,5 +1,6 @@
-# NPM dependencies
+# Dependencies
 node_modules/
+public/javascripts/vendor/
 
 # Compiled files
 public/stylesheets/style.css
