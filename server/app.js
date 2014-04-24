@@ -40,6 +40,7 @@ require('./app/passport')(passport, configuration.facebook); // note that will m
 app.use(favicon());
 app.use(logger('dev'));
 app.use(require('less-middleware')({ src: path.join(__dirname, 'public') })); // maintain before other middleware to avoid useless computing
+app.use('/medias', express.static(path.join(__dirname, 'medias'))); // maintain before other middleware to avoid useless computing
 app.use(express.static(path.join(__dirname, 'public'))); // maintain before other middleware to avoid useless computing
 app.use(bodyParser());
 app.use(expressValidator()); // must be immediately after bodyParser()

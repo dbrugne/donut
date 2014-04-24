@@ -106,6 +106,43 @@ router.route('/edit/password')
         });
     });
 
+router.route('/edit/profile/avatar')
+  .get(isLoggedIn, function(req, res) {
+    res.render('account_edit_profile_avatar', {
+      layout: 'layout_light'
+    });
+  })
+  .post([isLoggedIn, multipartMiddleware], function(req, res) {
+    var user = req.user;
+    var avatar = req.files.user.fields.avatar;
+
+    console.log(avatar);
+    console.log(avatar.path);
+
+    user.attach('avatar', avatar, function(err) {
+      if (err) {
+        req.flash('error', err)
+        return res.redirect('/');
+      }
+      user.save(function(err) {
+        if (err) {
+          req.flash('error', err)
+          return res.redirect('/');
+        } else {
+          req.flash('success', 'Your profile was updated');
+          res.redirect('/account');
+        }
+      });
+    });
+  });
+
+router.route('/edit/profile/background')
+  .get(isLoggedIn, function(req, res) {
+    res.render('account_edit_profile_background', {
+      layout: 'layout_light'
+    });
+  })
+
 router.route('/edit/profile')
     // Form
     .get(isLoggedIn, function(req, res) {
@@ -119,8 +156,6 @@ router.route('/edit/profile')
     .post([
         // User credential
         isLoggedIn,
-        // File upload
-        multipartMiddleware,
         // Field validation
         function(req, res, next) {
             req.checkBody(['user', 'fields','username'],'Username should be a string of min 2 and max 25 characters.').matches(/^[-a-z0-9_\\|[\]{}^`]{2,30}$/i);
@@ -182,28 +217,16 @@ router.route('/edit/profile')
         user.location = req.body.user.fields.location;
         user.website = req.body.user.fields.website;
 
-        var userTest            = new User();
-        userTest.attach('avatar', req.files.image, function(err) {});
-
-        // File upload attachment (@todo : move in middleware the attachement ... or move upload in individual form
-        var avatar = req.files.user.fields.avatar;
-        console.log(avatar);
-        console.log(avatar.path);
-        user.attach('avatar', avatar, function(err) {
+        // Save
+        user.save(function(err) {
           if (err) {
-            console.log('user.attach: '+err);
+            console.log(err);
+            req.flash('error', err)
+            return res.redirect('/');
+          } else {
+            req.flash('success', 'Your profile was updated');
+            res.redirect('/account');
           }
-          // Save
-          user.save(function(err) {
-            if (err) {
-              console.log(err);
-              req.flash('error', err)
-              return res.redirect('/');
-            } else {
-              req.flash('success', 'Your profile was updated');
-              res.redirect('/account');
-            }
-          });
         });
     });
 

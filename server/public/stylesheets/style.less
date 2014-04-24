@@ -4,6 +4,7 @@
 
 html { height: 100%; }
 body { padding-top: 80px; font-family: "Open Sans"; }
+body.light { padding: 0; }
 
 #footer {
   font-size: 12px;
@@ -143,7 +144,35 @@ a {
         display: inline-block;
       }
     }
+  }
 
+  .controls-inline {
+    .controls;
+    .form-inline;
+
+    .control-fields {
+      display: inline-block;
+    }
+
+    .form-control {
+      width: 75%;
+      display: inline-block;
+    }
+  }
+
+  iframe {
+    .make-sm-column(8);
+    .make-sm-column-offset(2);
+    border: 0;
+    margin-left: 0 !important;
+    height: 75px;
+    width: 500px !important;
+  }
+}
+
+body.light {
+  .forms .controls-inline .control-fields {
+    padding-left: 0;
   }
 }
 
@@ -285,21 +314,21 @@ a {
   }
 
   .discussion {
-    background-color: #FFFFFF; 
-    position: relative;  
+    background-color: #FFFFFF;
+    position: relative;
     padding-top: 45px;
     height: 100%;
 
     .row-header, .row-content { margin: 0px; /* Cancel bootstrap negative .row margin */  }
     .row-content { height: 100%; }
-    
+
     .col-content { height: 100%; padding-left: 0; padding-right: 0; padding-bottom: 75px; }
     .col-users { padding-left: 0; padding-right: 0; border-left: 1px solid #ddd;  background-color: darkgrey; }
 
     .header {
       border-bottom: 1px solid transparent; border-color: #ddd; background-color: #f5f5f5; padding: 10px 15px;
       position: absolute; top:0; left:0; right:0; height: 45px; max-height: 45px; z-index: 10;
-    
+
       .name { color: #555555; font-weight: bolder; font-size: 16px; }
       .topic { margin-left: 5px; color: #333; }
       .close { color: #FF0000; }
@@ -309,10 +338,10 @@ a {
       .topic-submit { display: inline-block; }
       .topic-cancel { display: inline-block; }
     }
-    
-    .messages { 
-      background-color: #fff; 
-      overflow-y: scroll; 
+
+    .messages {
+      background-color: #fff;
+      overflow-y: scroll;
       height: 100%;
 
       p {
@@ -334,7 +363,7 @@ a {
         color: #737373;
       }
     }
-    
+
     .message-box {
       padding: 10px;
       color: #333;
@@ -368,7 +397,7 @@ a {
         .user-item .friend { font-weight: bold; font-style: italic; }
       }
     }
-  
+
   }
 }
 

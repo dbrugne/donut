@@ -1,0 +1,13 @@
+<div class="container-fluid">
+    <form action="/account/edit/profile/avatar?_csrf={{token}}" method="post" role="form" class="forms" enctype="multipart/form-data">
+        <div class="controls-inline">
+            <div class="control-fields">
+                {{#user.avatar}}
+                <img class="avatar" src="/{{user.avatar.small.url}}" />
+                {{/user.avatar}}
+                <input type="file" class="form-control" id="avatar-field" name="user[fields][avatar]">
+                <button type="submit" id="account-edit-avatar-submit" class="btn btn-primary btn-sm">Save</button>
+            </div>
+        </div>
+    </form>
+</div>
