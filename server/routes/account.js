@@ -1,6 +1,13 @@
 var express = require('express');
 var router = express.Router();
+var path = require('path');
 var User = require('../app/models/user');
+var util = require('util');
+
+/************************************************/
+var multipart = require('connect-multiparty');
+var multipartMiddleware = multipart({uploadDir: 'medias/tmp'}); // @todo customize configuration: https://www.npmjs.org/package/multiparty
+/************************************************/
 
 router.get('/', isLoggedIn, function(req, res) {
     res.render('account', {});
@@ -112,12 +119,15 @@ router.route('/edit/profile')
     .post([
         // User credential
         isLoggedIn,
+        // File upload
+        multipartMiddleware,
         // Field validation
         function(req, res, next) {
             req.checkBody(['user', 'fields','username'],'Username should be a string of min 2 and max 25 characters.').matches(/^[-a-z0-9_\\|[\]{}^`]{2,30}$/i);
             req.checkBody(['user', 'fields','bio'],'Bio should be 70 characters max.').isLength(0, 200);
             req.checkBody(['user', 'fields','location'],'Location should be 70 characters max.').isLength(0, 70);
-            if (req.body.user.fields.website)
+
+            if (req.body.user.fields.website && '' != req.body.user.fields.website)
                 req.checkBody(['user', 'fields','website'],'Website should be a valid site URL').isURL();
 
             if (req.validationErrors()) {
@@ -164,22 +174,36 @@ router.route('/edit/profile')
             });
         }
     ], function(req, res) {
-        // @todo : handle file upload
-        // Update user
-        req.user.username = req.body.user.fields.username;
-        req.user.bio = req.body.user.fields.bio;
-        req.user.location = req.body.user.fields.location;
-        req.user.website = req.body.user.fields.website;
+        var user = req.user;
 
-        // Save
-        req.user.save(function(err) {
+        // Update user
+        user.username = req.body.user.fields.username;
+        user.bio = req.body.user.fields.bio;
+        user.location = req.body.user.fields.location;
+        user.website = req.body.user.fields.website;
+
+        var userTest            = new User();
+        userTest.attach('avatar', req.files.image, function(err) {});
+
+        // File upload attachment (@todo : move in middleware the attachement ... or move upload in individual form
+        var avatar = req.files.user.fields.avatar;
+        console.log(avatar);
+        console.log(avatar.path);
+        user.attach('avatar', avatar, function(err) {
+          if (err) {
+            console.log('user.attach: '+err);
+          }
+          // Save
+          user.save(function(err) {
             if (err) {
-                req.flash('error', err)
-                return res.redirect('/');
+              console.log(err);
+              req.flash('error', err)
+              return res.redirect('/');
             } else {
-                req.flash('success', 'Your profile was updated');
-                res.redirect('/account');
+              req.flash('success', 'Your profile was updated');
+              res.redirect('/account');
             }
+          });
         });
     });
 

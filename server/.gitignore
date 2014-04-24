@@ -4,3 +4,6 @@ public/javascripts/vendor/
 
 # Compiled files
 public/stylesheets/style.css
+
+# User files
+medias/

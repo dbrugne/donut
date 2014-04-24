@@ -1,4 +1,8 @@
 var mongoose = require('mongoose');
+var crate = require("mongoose-crate");
+var LocalFS = require("mongoose-crate-localfs");
+var ImageMagick = require("mongoose-crate-imagemagick");
+var path = require('path');
 var bcrypt   = require('bcrypt-nodejs');
 
 var userSchema = mongoose.Schema({
@@ -9,7 +13,6 @@ var userSchema = mongoose.Schema({
     bio            : String,
     location       : String,
     website        : String,
-    avatar         : String,
     local            : {
         email      : String,
         password   : String
@@ -23,6 +26,33 @@ var userSchema = mongoose.Schema({
     rooms            : [String]
 
 });
+
+userSchema.plugin(crate, {
+  storage: new LocalFS({
+    directory: 'medias/u'
+  }),
+  fields: {
+    avatar: {
+      processor: new ImageMagick({
+        tmpDir: "medias/tmp",
+        formats: ["JPEG", "GIF", "PNG"],
+        transforms: {
+          original: {
+            // keep the original file
+          },
+          small: {
+            resize: "20x20",
+            format: ".jpg"
+          },
+          medium: {
+            resize: "150x150",
+            format: ".jpg"
+          }
+        }
+      })
+    }
+  }
+}); // @todo : format should be defined in configuration file
 
 // methods ======================
 // generating a hash
