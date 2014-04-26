@@ -47,13 +47,19 @@ User account:
 - [] Add color band field
 - [] Refactor form error message display (use layout message box and middleware)
 - [] Template user profile
-- [] Add upload file mechanism and handle user pictures
+- [x] Add upload file mechanism and handle user pictures
 
 Room profile:
+- [] Edit form
+- [] Template
 - [] Add customizable color band on room
 - [] Repair auto-join room when come from homepage (need replacing room id with name everywhere)
 - [] (irc) ACL on room => who is OP, set OP, remove OP, can change baseline, can kick users
 - [] (irc) Kick users
+
+Repair:
+- [] CSRF and nested forms and 304
+- [] Auto removing of tmp files => #cloudinary integration
 
 Chat:
 - [] Chat callback on homepage => /!#DagnirDae
@@ -66,30 +72,27 @@ socket.io:
 -- [] Review all the messages exchanged between client/server
 -- [x] Remove topic to use room name instead (with prefix)
 
+- Refactor Bower + require.js
 - [] Refactor grunt
 - [x] Refactor less.css
 - [] Cleanup projects files
 - [] Merge
 
 Security/performance:
-- [] Multiparty
-- [] Implement the new connect-multiparty version or fork the project to avoid tmpFiles
-- [] Customized configuration (maxFiles, MaxFilesSize...)
+- [] Multiparty => #cloudinary integration
+- [] Implement the new connect-multiparty version or fork the project to avoid tmpFiles => #cloudinary integration
+- [] Customized configuration (maxFiles, MaxFilesSize...) => #cloudinary integration
 
 v4:
-- [] Backend
--- [] Traditional page secured zone
--- [] Room crud
--- [] User crud
--- [] Instant online user list
---- [] real time activity monitor (multi connections)
--- [] Instant active room list
---- [] real time activity monitor
--- [] Server list and state
-
-Room profile:
-- [] Edit form
-- [] Template
+Backend
+- [] Traditional page secured zone
+- [] Room crud
+- [] User crud
+- [] Instant online user list
+-- [] real time activity monitor (multi connections)
+- [] Instant active room list
+-- [] real time activity monitor
+- [] Server list and state
 
 vx:
 - [] Add form validation client-side: account/*, login, signup
