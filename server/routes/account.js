@@ -9,11 +9,11 @@ var multipart = require('connect-multiparty');
 var multipartMiddleware = multipart({uploadDir: 'medias/tmp'}); // @todo customize configuration: https://www.npmjs.org/package/multiparty
 /************************************************/
 
-router.get('/', isLoggedIn, function(req, res) {
+router.get('/account', isLoggedIn, function(req, res) {
     res.render('account', {});
 });
 
-router.route('/edit/email')
+router.route('/account/edit/email')
     .get(isLoggedIn, function(req, res) {
         var userFields = {email: req.user.local.email}
         res.render('account_edit_email', {
@@ -75,7 +75,7 @@ router.route('/edit/email')
         });
     });
 
-router.route('/edit/password')
+router.route('/account/edit/password')
     .get(isLoggedIn, function(req, res) {
         res.render('account_edit_password', {
             scripts: [{src: '/validator.min.js'}]
@@ -106,7 +106,7 @@ router.route('/edit/password')
         });
     });
 
-router.route('/edit/profile/avatar')
+router.route('/account/edit/profile/avatar')
   .get(isLoggedIn, function(req, res) {
     res.render('account_edit_profile_avatar', {
       layout: 'layout_light'
@@ -114,36 +114,45 @@ router.route('/edit/profile/avatar')
   })
   .post([isLoggedIn, multipartMiddleware], function(req, res) {
     var user = req.user;
-    var avatar = req.files.user.fields.avatar;
-
-    console.log(avatar);
-    console.log(avatar.path);
-
-    user.attach('avatar', avatar, function(err) {
+    var media = req.files.user.fields.avatar;
+    user.attach('avatar', media, function(err) {
       if (err) {
-        req.flash('error', err)
-        return res.redirect('/');
+        return res.send('error: '+err);
       }
       user.save(function(err) {
         if (err) {
-          req.flash('error', err)
-          return res.redirect('/');
+          return res.send('error: '+err);
         } else {
-          req.flash('success', 'Your profile was updated');
-          res.redirect('/account');
+          res.redirect('/account/edit/profile/background');
         }
       });
     });
   });
 
-router.route('/edit/profile/background')
+router.route('/account/edit/profile/background')
   .get(isLoggedIn, function(req, res) {
     res.render('account_edit_profile_background', {
       layout: 'layout_light'
     });
   })
+  .post([isLoggedIn, multipartMiddleware], function(req, res) {
+    var user = req.user;
+    var media = req.files.user.fields.background;
+    user.attach('background', media, function(err) {
+      if (err) {
+        return res.send('error: '+err);
+      }
+      user.save(function(err) {
+        if (err) {
+          return res.send('error: '+err);
+        } else {
+          res.redirect('/account/edit/profile/background');
+        }
+      });
+    });
+  });
 
-router.route('/edit/profile')
+router.route('/account/edit/profile')
     // Form
     .get(isLoggedIn, function(req, res) {
         var userFields = req.user.toObject();
@@ -230,7 +239,7 @@ router.route('/edit/profile')
         });
     });
 
-router.get('/delete', isLoggedIn, function(req, res) {
+router.get('/account/delete', isLoggedIn, function(req, res) {
     var user = req.user;
     user.remove(function(err) {
         if (err) {
@@ -248,18 +257,6 @@ function isLoggedIn(req, res, next) {
         return next();
 
     res.redirect('/');
-}
-
-function validateEmailForm(req, res, next) {
-    // @todo : validate, also client side
-    // @todo: implement
-    return !req.validationErrors() || req.validationErrors().length === 0;
-}
-
-function validatePasswordForm(req, res, next) {
-    // @todo : validate, also client side
-    // @todo: implement
-    return !req.validationErrors() || req.validationErrors().length === 0;
 }
 
 module.exports = router;

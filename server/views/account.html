@@ -24,7 +24,7 @@
                 <h3><span class="fa fa-user"></span> Profile </h3>
                 <p class="detail with-picture">
                     {{#user.avatar}}
-                    <img class="avatar" src="{{user.avatar}}" />
+                    <img class="avatar" src="{{user.avatar.medium.url}}" />
                     {{/user.avatar}}
                     <span class="labels">username</span> <span class="values">{{user.username}}</span><br>
                     <span class="labels">bio</span> <span class="values">{{user.bio}}</span><br>

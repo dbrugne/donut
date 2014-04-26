@@ -16,13 +16,6 @@ var mongoose = require('mongoose')
 // per-environment configuration
 configuration = require('./config/app_dev');
 
-// routes
-var genericRoutes = require('./routes/index');
-var chatRoutes = require('./routes/chat');
-var authenticationRoutes = require('./routes/authentication');
-var accountRoutes = require('./routes/account');
-var profileRoutes = require('./routes/profile');
-
 // express
 var app = express();
 
@@ -52,9 +45,9 @@ app.use(function(req, res, next) { // pass user to all views
     res.locals.user = req.user;
     next();
 });
-app.use(csrf());
+//app.use(csrf()); // @todo : CSRF doesn't work everytinme (espacially with nested forms)
 app.use(function(req, res, next) { // add csrf helper in all views
-    res.locals.token = req.csrfToken();
+    res.locals.token = "xxx";//req.csrfToken();
     next();
 });
 app.use(flash());
@@ -73,11 +66,12 @@ app.set('layout', 'layout');
 app.set('view engine', 'html');
 app.locals.title = configuration.title;
 
-app.use(genericRoutes);
-app.use(chatRoutes);
-app.use(authenticationRoutes);
-app.use('/account', accountRoutes);
-app.use(profileRoutes);
+// routes
+app.use(require('./routes/index'));
+app.use(require('./routes/chat'));
+app.use(require('./routes/authentication'));
+app.use(require('./routes/account'));
+app.use(require('./routes/profile'));
 
 /// catch 404 and forwarding to error handler
 app.use(function(req, res, next) {

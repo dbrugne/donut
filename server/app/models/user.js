@@ -27,6 +27,9 @@ var userSchema = mongoose.Schema({
 
 });
 
+/**
+ * Pictures
+ */
 userSchema.plugin(crate, {
   storage: new LocalFS({
     directory: 'medias/u'
@@ -45,7 +48,26 @@ userSchema.plugin(crate, {
             format: ".jpg"
           },
           medium: {
+            resize: "50x50",
+            format: ".jpg"
+          },
+          large: {
             resize: "150x150",
+            format: ".jpg"
+          }
+        }
+      })
+    },
+    background: {
+      processor: new ImageMagick({
+        tmpDir: "medias/tmp",
+        formats: ["JPEG", "GIF", "PNG"],
+        transforms: {
+          original: {
+            // keep the original file
+          },
+          small: {
+            resize: "50x50",
             format: ".jpg"
           }
         }
