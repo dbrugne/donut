@@ -2,7 +2,6 @@ var express = require('express');
 var router = express.Router();
 var path = require('path');
 var User = require('../app/models/user');
-var util = require('util');
 
 /************************************************/
 var multipart = require('connect-multiparty');
