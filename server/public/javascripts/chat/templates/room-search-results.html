@@ -1,0 +1,10 @@
+<% if (rooms.length < 1) { %>
+<li class="list-group-item"><span class="no-result">No result</span></li>
+<% } else { %>
+<% _.each(rooms, function(room) { %>
+<li class="list-group-item search-room-item" data-name="<%= room.name %>">
+    <h4 class="list-group-item-heading"><%= room.name %> (<%= room.count %>)</h4>
+    <p class="list-group-item-text"><%= room.topic %></p>
+</li>
+<% }); %>
+<% } %>

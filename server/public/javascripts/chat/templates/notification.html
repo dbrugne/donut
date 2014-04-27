@@ -1,0 +1,26 @@
+<p class="notification notification-<%= type %>">
+    <% if (type =='hello') { %>
+    You enter in <%= name %>
+    <% } else if (type =='in') { %>
+    <span class="username" data-user-id="<%= user_id %>"><%= username %></span> has joined <strong><%= name %></strong>
+    <% } else if (type =='out') { %>
+    <span class="username" data-user-id="<%= user_id %>"><%= username %></span> has left <strong><%= name %></strong>
+    <% } else if (type =='disconnect') { %>
+    <span class="username" data-user-id="<%= user_id %>"><%= username %></span> was disconnected (<em><%= reason %></em>)
+    <% } else if (type =='topic') { %>
+    <span class="username" data-user-id="<%= user_id %>"><%= username %></span> changed topic for <strong><%= topic %></strong>
+    <% } else if (type =='kick') { %>
+    <span class="username" data-user-id="<%= user_id %>"><%= username %></span> was kicked by
+    <span class="username" data-user-id="<%= by_user_id %>"><%= by_username %></span> '<%= reason %>'
+    <% } else if (type =='ban') { %>
+    <span class="username" data-user-id="<%= user_id %>"><%= username %></span> was banned by
+    <span class="username" data-user-id="<%= by_user_id %>"><%= by_username %></span> (<%= time %>) '<em><%= reason %></em>'
+    <% } else if (type =='op') { %>
+    <span class="username" data-user-id="<%= user_id %>"><%= username %></span> was oped by
+    <span class="username" data-user-id="<%= by_user_id %>"><%= by_username %></span>
+    <% } else if (type =='deop') { %>
+    <span class="username" data-user-id="<%= user_id %>"><%= username %></span> was deoped by
+    <span class="username" data-user-id="<%= by_user_id %>"><%= by_username %></span>
+    <% } %>
+    <span class="date"><span class="glyphicon glyphicon-time"></span> <%= date %></span>
+</p>

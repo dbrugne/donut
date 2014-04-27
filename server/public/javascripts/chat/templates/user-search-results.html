@@ -1,0 +1,9 @@
+<% if (users.length < 1) { %>
+<li class="list-group-item"><span class="no-result">No result</span></li>
+<% } else { %>
+<% _.each(users, function(user) { %>
+<li class="list-group-item user-item" data-user-id="<%= user.id %>">
+    <span class="username"><%= user.username %></span>
+</li>
+<% }); %>
+<% } %>

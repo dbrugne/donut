@@ -241,6 +241,10 @@ module.exports = function(app, io, passport, sessionStore) {
             });
         });
 
+        socket.on('user:message', function(data) {
+          // @todo
+        });
+
         socket.on('disconnect', function() {
             socket.broadcast.emit('user:offline', {
                 id: socket.handshake.user._id

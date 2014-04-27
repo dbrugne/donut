@@ -10,6 +10,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge"/><!-- Avoid IE compatibility mode -->
 </head>
 <body class="light">
-    {{{ yield }}}
+{{{ yield }}}
+<script src="/javascripts/vendor/jquery/dist/jquery.min.js"></script>
+<script src="/javascripts/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="/javascripts/script.js"></script>
+{{#scripts}}
+<script src="{{src}}"></script>
+{{/scripts}}
 </body>
 </html>
