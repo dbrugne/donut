@@ -23,30 +23,34 @@ define([
 
     initialize: function () {
       // Server connection is established
-      this.listenTo(client, 'connect', function(data) {
-        if (!window.historyStarted) {
-          Backbone.history.start();
-          window.historyStarted = true;
-        }
-      });
+      this.listenTo(client, 'connect', this.onServerConnect);
 
       // Get user identity from server
-      var that = this;
-      this.listenTo(client, 'welcome', function(data) {
-        // Update current user data
-        _.each(Object.keys(data), function(propertyKey) {
-          currentUser.set(propertyKey, data[propertyKey]);
-        });
-        console.log('Hello '+currentUser.get('username')+'!');
-
-        // Join current user rooms
-        _.each(data.rooms, function(room) {
-          client.join(room);
-        });
-      });
+      this.listenTo(client, 'welcome', this.onServerWelcome);
 
       // Everything is in place/bound, connection!
       client.connect();
+    },
+
+    onServerConnect: function(data) {
+      if (!window.historyStarted) {
+        Backbone.history.start();
+        window.historyStarted = true;
+      }
+    },
+
+    onServerWelcome: function(data) {
+      // Update current user data
+      _.each(Object.keys(data), function(propertyKey) {
+        currentUser.set(propertyKey, data[propertyKey]);
+      });
+
+      console.log('Hello '+currentUser.get('username')+'!');
+
+      // Join current user rooms
+      _.each(data.rooms, function(room) {
+        client.join(room);
+      });
     },
 
     root: function() {
