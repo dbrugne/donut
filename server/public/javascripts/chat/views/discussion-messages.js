@@ -12,6 +12,8 @@ define([
 
     template: _.template(messageTemplate),
 
+    timeFormat: "HH:mm",
+
     events: {
       'click p > .username': function(event) {
         mainView.userProfileModal(
@@ -28,7 +30,7 @@ define([
 
     message: function(message) {
       // Date
-      var dateText = $.format.date(new Date(message.get('time')), "HH:mm:ss");
+      var dateText = $.format.date(new Date(message.get('time')), this.timeFormat);
 
       // Message body
       var messageHtml = message.get('message');
@@ -78,7 +80,7 @@ define([
         return;
       }
 
-      data.date = $.format.date(Number(new Date()), "HH:mm:ss");
+      data.date = $.format.date(Number(new Date()), this.timeFormat);
 
       var html = this.notificationTemplate(data);
       this.$el.append(html);
