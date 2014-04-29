@@ -130,12 +130,12 @@ define([
     userMessage: function(message) {
       // Current user is emitter or recipient?
       var with_user_id;
-      if (currentUser.get('user_id') == message.from_user_id) {
+      if (currentUser.get('user_id') == message.from) {
         // Emitter
-        with_user_id = message.to_user_id;
-      } else if (currentUser.get('user_id') == message.to_user_id) {
+        with_user_id = message.to;
+      } else if (currentUser.get('user_id') == message.to) {
         // Recipient
-        with_user_id = message.from_user_id; // i can also be this one if i spoke to myself...
+        with_user_id = message.from; // i can also be this one if i spoke to myself...
       }
 
       model = this.addOneToOne(new UserModel({
@@ -145,7 +145,7 @@ define([
       }));
 
       // To have the same data between room and user messages (= same view code)
-      message.user_id = message.from_user_id;
+      message.user_id = message.from;
 
       model.message(message);
     },

@@ -78,6 +78,10 @@ define([
         that.debug(['io:in:user:offline', data]);
         that.trigger('user:offline', data);
       });
+      this.socket.on('user:message', function(data) {
+        that.debug(['io:in:user:message', data]);
+        that.trigger('user:message', data);
+      });
     },
 
     join: function(name) {
@@ -110,8 +114,8 @@ define([
       this.debug(['io:out:room:search', data]);
     },
 
-    userMessage: function(user_id, message) {
-      var data = {user_id: user_id, message: message};
+    userMessage: function(to, message) {
+      var data = {to: to, message: message};
       this.socket.emit('user:message', data);
       this.debug(['io:out:user:message', data]);
     }

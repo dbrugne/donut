@@ -29,6 +29,7 @@
     "mongoose-crate-localfs": "1.0.x",
     "mongoose-crate-imagemagick": "1.0.x",
     "socket.io": "0.x",
-    "passport.socketio": "3.x"
+    "passport.socketio": "3.x",
+    "underscore": "~1.6.0"
   }
 }

@@ -30,24 +30,27 @@ npm start
 
 # Roadmap
 
+critical:
+- [] Need have a username in each case at the end of the process
+- [] Introduce guest mode
+
 node.js:
 - [x] Refactor node.js/passport/mongodb
 - [x] Need to repair FB only account Local account association
 - [x] Block FB account unlinking when no local, block local unlinking (= delete account instead)
 - [x] Move username in global context
-- [] Need have a username in each case at the end of the process
 
 User account:
-- [] Add form validation middleware for each form (account/*, login, signup)
 - [x] Implement change email form
 - [x] Implement change password form
 - [x] Account form and post (finish)
 - [x] Add confirmation message on delete account
 - [x] Add CSRF on forms (account, login, signup): http://dailyjs.com/2012/09/13/express-3-csrf-tutorial/
+- [x] Add upload file mechanism and handle user pictures
+- [] Add form validation middleware for each form (account/*, login, signup)
 - [] Add color band field
 - [] Refactor form error message display (use layout message box and middleware)
 - [] Template user profile
-- [x] Add upload file mechanism and handle user pictures
 
 Room profile:
 - [] Edit form
@@ -68,7 +71,6 @@ Chat:
 
 socket.io:
 - [x] Refactor socket.io (redis?)
--- [] Introduce guest mode
 -- [] Review all the messages exchanged between client/server
 -- [x] Remove topic to use room name instead (with prefix)
 
@@ -83,8 +85,7 @@ Security/performance:
 - [] Implement the new connect-multiparty version or fork the project to avoid tmpFiles => #cloudinary integration
 - [] Customized configuration (maxFiles, MaxFilesSize...) => #cloudinary integration
 
-v4:
-Backend
+Backend:
 - [] Traditional page secured zone
 - [] Room crud
 - [] User crud
@@ -94,11 +95,18 @@ Backend
 -- [] real time activity monitor
 - [] Server list and state
 
+MVP:
+- [] Chat default panel with homepage content
+- [] Share room on Twitter/Facebook
+- [] Room personalization
+- [] User profile
+- [] Bookmark user
+- [] Invite friend in room
+
 vx:
 - [] Add form validation client-side: account/*, login, signup
-- [] Fix old session bug (if still exists)
 - [] Add "presence" management
-- [] Add require.js on client side to simplify code organization
+- [x] Add require.js on client side to simplify code organization
 - [] (refactor) Reset the communication protocole: exit Wamp, only directionnal events and logic
 - [] Add backend interface that is connect to server and give some informations
 - [] Add anonyme mode (user come on platform, connect to chat, join rooms, discuss)

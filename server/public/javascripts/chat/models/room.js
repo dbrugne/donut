@@ -35,7 +35,7 @@ define([
         return;
       }
       var user = new UserModel({
-        id: data.username,
+        id: data.user_id,
         username: data.username,
         avatar: data.avatar
       });

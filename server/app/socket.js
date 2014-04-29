@@ -24,7 +24,7 @@ module.exports = function(app, io, passport, sessionStore) {
       , 'flashsocket'
   ]);
 
-  io.set('log level', 2);
+  io.set('log level', 3);
 
   // https://www.npmjs.org/package/passport.socketio
   io.set('authorization', passportSocketIo.authorize({
@@ -56,22 +56,20 @@ module.exports = function(app, io, passport, sessionStore) {
   var socketsByUsers = {};
 
   io.sockets.on('connection', function (socket) {
-    // Multi-devices
-    if (!_.has(socketsByUsers, socket.handshake.user._id)) {
-      socketsByUsers[socket.handshake.user._id] = {};
-    }
-    socketsByUsers[socket.handshake.user._id][socket.id] = socket;
-    console.log('socketsByUsers');
-    console.log(socketsByUsers);
+    // Multi-devices: create a virtual room by user
+    socket.join('user:'+socket.handshake.user._id);
+    console.log(['rooms', io.sockets.manager.rooms]);
 
+    // Welcome data
     User.findById(socket.handshake.user._id, function(err, user) {
       if (err) {
         console.log('io.sockets.on.connection: '+err);
         user.rooms = [];
       }
       socket.emit('welcome', {
+        user_id: socket.handshake.user._id,
         username: socket.handshake.user.username,
-        avatar: socket.handshake.user.avatar,
+        avatar: '/'+socket.handshake.user.avatar.small.url,
         rooms: user.rooms
       });
     });
@@ -82,7 +80,7 @@ module.exports = function(app, io, passport, sessionStore) {
         socket.emit('user:online', {
           id: online.handshake.user._id,
           username: online.handshake.user.username,
-          avatar: online.handshake.user.avatar
+          avatar: online.handshake.user.avatar.small.url
         });
       }
     });
@@ -91,62 +89,64 @@ module.exports = function(app, io, passport, sessionStore) {
     socket.broadcast.emit('user:online', {
       id: socket.handshake.user._id,
       username: socket.handshake.user.username,
-      avatar: socket.handshake.user.avatar
+      avatar: '/'+socket.handshake.user.avatar.small.url
     });
 
     socket.on('room:join', function (data) {
-        if (!validateRoom(data.name)) {
-            console.log('room:join bad room identifier '+data.name)
+      if (!validateRoom(data.name)) {
+          console.log('room:join bad room identifier '+data.name)
+          return;
+      }
+
+      // @todo
+      // test ACL
+      // broadcast other devices
+      // persist room.users => no! replace with list of current socket/user: io.sockets.clients('room')
+
+      var onRoom = function(room) {
+        User.update({
+          _id: socket.handshake.user._id
+        },{
+          $addToSet: { rooms: room.name }
+        }, function(err, numberAffected) {
+          if (err) {
+            console.log('room:join '+err);
             return;
-        }
-
-        // @todo
-        // test ACL
-        // broadcast other devices
-
-        var onRoom = function(room) {
-            User.update({
-                _id: socket.handshake.user._id
-            },{
-                $addToSet: { rooms: room.name }
-            }, function(err, numberAffected) {
-                if (err) {
-                    console.log('room:join '+err);
-                    return;
-                }
-                // socket subscription
-                socket.join(data.name);
-                // room details
-                socket.emit('room:welcome', {
-                    name: room.name,
-                    topic: room.topic,
-                    users: room.users
-                });
-                // inform room attendees
-                io.sockets.in(data.name).emit('room:in', {
-                    name: data.name,
-                    username: socket.handshake.user.username,
-                    avatar: socket.handshake.user.avatar
-                });
-            });
-        }
-
-        Room.findOne({'name': data.name}, 'name topic users', function(err, room) {
-            if (err) {
-                console.log('room:join '+err);
-                return;
-            }
-            if (!room) {
-                console.log('room:join unable to find room '+data.name+' we create it');
-                room = new Room({name: data.name});
-                room.save(function (err, product, numberAffected) {
-                    console.log('room:join room '+data.name+' created');
-                    onRoom(room);
-                });
-            } else {
-                onRoom(room);
-            }
+          }
+          // socket subscription
+          socket.join(data.name);
+          // room details
+          socket.emit('room:welcome', {
+            name: room.name,
+            topic: room.topic,
+            users: room.users
+          });
+          // inform room attendees
+          io.sockets.in(data.name).emit('room:in', {
+            name: data.name,
+            user_id: socket.handshake.user._id,
+            username: socket.handshake.user.username,
+            avatar: '/'+socket.handshake.user.avatar.small.url
+          });
         });
+      }
+
+      Room.findOne({'name': data.name}, 'name topic users', function(err, room) {
+        if (err) {
+          console.log('room:join '+err);
+          return;
+        }
+        if (!room) {
+          console.log('room:join unable to find room '+data.name+' we create it');
+          room = new Room({name: data.name});
+          room.save(function (err, product, numberAffected) {
+            console.log('room:join room '+data.name+' created');
+            onRoom(room);
+          });
+        } else {
+          onRoom(room);
+        }
+      });
     });
     socket.on('room:leave', function (data) {
         if (!validateRoom(data.name)) {
@@ -217,7 +217,7 @@ module.exports = function(app, io, passport, sessionStore) {
             time: Date.now(),
             message: data.message,
             username: socket.handshake.user.username,
-            avatar: socket.handshake.user.avatar
+            avatar: '/'+socket.handshake.user.avatar.small.url
         });
     });
     socket.on('room:search', function (data) {
@@ -250,34 +250,30 @@ module.exports = function(app, io, passport, sessionStore) {
     // @todo : onetoone close
 
     socket.on('user:message', function(data) {
-      console.log(data);
-
-//          for (var i=0; i<io.sockets.length; i++) {
-//            console.log(io.sockets[i]);
-//          }
-
+      var from = socket.handshake.user._id;
+      var to = data.to;
       var output = {
-        from: socket.handshake.user._id,
+        from: from,
+        to: to,
         time: Date.now(),
         message: data.message,
         username: socket.handshake.user.username,
-        avatar: socket.handshake.user.avatar
+        avatar: '/'+socket.handshake.user.avatar.small.url
       };
-      socket.emit('user:message', output);
+      io.sockets.in('user:'+from).emit('user:message', output);
+      if (from != to) {
+        // only if sender is not also the receiver
+        io.sockets.in('user:'+to).emit('user:message', output);
+      }
     });
 
     socket.on('disconnect', function() {
+      // Multi-devices
+      socket.leave('user:'+socket.handshake.user._id);
+
       socket.broadcast.emit('user:offline', {
         id: socket.handshake.user._id
       });
-
-      // Multi-devices
-      delete socketsByUsers[socket.handshake.user._id][socket.id];
-      if (Object.keys(socketsByUsers[socket.handshake.user._id]).length == 0) {
-        delete socketsByUsers[socket.handshake.user._id];
-      }
-      console.log('socketsByUsers');
-      console.log(socketsByUsers);
     });
 
   });
