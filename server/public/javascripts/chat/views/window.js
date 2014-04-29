@@ -24,7 +24,7 @@ define([
       this.title = this.$document.attr('title');
 
       // Bind events
-      that = this;
+      var that = this;
       this.$window.focus(function(event) {
         that.onFocus();
       });
