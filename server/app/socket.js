@@ -216,6 +216,7 @@ module.exports = function(app, io, passport, sessionStore) {
             name: data.name,
             time: Date.now(),
             message: data.message,
+            user_id: socket.handshake.user._id,
             username: socket.handshake.user.username,
             avatar: '/'+socket.handshake.user.avatar.small.url
         });
@@ -257,6 +258,7 @@ module.exports = function(app, io, passport, sessionStore) {
         to: to,
         time: Date.now(),
         message: data.message,
+        user_id: socket.handshake.user._id,
         username: socket.handshake.user.username,
         avatar: '/'+socket.handshake.user.avatar.small.url
       };
@@ -287,6 +289,19 @@ module.exports = function(app, io, passport, sessionStore) {
         }
         socket.emit('user:searchsuccess', {
           users: results
+        });
+      });
+    });
+
+    socket.on('user:profile', function (data) {
+      User.findById(data.user_id, 'username bio location website avatar background', function(err, user) {
+        if (err) {
+          console.log('user:searcherror: '+err);
+          socket.emit('user:searcherror');
+          return;
+        }
+        socket.emit('user:profile', {
+          user: user
         });
       });
     });

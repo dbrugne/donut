@@ -61,8 +61,11 @@ Room profile:
 - [] (irc) Kick users
 
 Repair:
+- [] Move open onetoone and view profile in MainView
 - [] CSRF and nested forms and 304
-- [] Auto removing of tmp files => #cloudinary integration
+- Image
+-- [] Auto removing of tmp files => #cloudinary integration
+-- [] Rationnalize avatar/background with common accessor (client/server) that return only a valid url
 
 Chat:
 - [] Chat callback on homepage => /!#DagnirDae

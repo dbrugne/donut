@@ -93,6 +93,10 @@ define([
         that.debug(['io:in:user:searcherror', data]);
         that.trigger('user:searcherror', data);
       });
+      this.socket.on('user:profile', function(data) {
+        that.debug(['io:in:user:profile', data]);
+        that.trigger('user:profile', data);
+      });
     },
 
     // ROOM
@@ -136,6 +140,11 @@ define([
       var data = {search: search};
       this.socket.emit('user:search', data);
       this.debug(['io:out:user:search', data]);
+    },
+    userProfile: function(userId) {
+      var data = {user_id: userId};
+      this.socket.emit('user:profile', data);
+      this.debug(['io:out:user:profile', data]);
     }
 
   });

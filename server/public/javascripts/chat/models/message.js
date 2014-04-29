@@ -6,6 +6,7 @@ define([
 
     defaults: function() {
       return {
+        user_id: '',
         username: '',
         avatar: '',
         date: '',

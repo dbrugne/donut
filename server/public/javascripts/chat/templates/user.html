@@ -1,1 +1,7 @@
-<a href="#" class="user-item item" data-user-id="<%= id %>"><span class="username"><%= username %></span> <span class="actions"><span class="glyphicon glyphicon-user user-profile"></span> <span class="glyphicon glyphicon-edit user-discussion"></span></span></a>
+<span href="#" class="user-item item">
+    <span class="username dbl-open-user-profile" data-user-id="<%= id %>"><%= username %></span>
+    <span class="actions">
+        <span data-user-id="<%= id %>" class="glyphicon glyphicon-user open-user-profile"></span>
+        <span data-user-id="<%= id %>" class="glyphicon glyphicon-edit open-onetoone"></span>
+    </span>
+</span>

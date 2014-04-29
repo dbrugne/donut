@@ -9,8 +9,6 @@ define([
 
     template: _.template(roomUsersTemplate),
 
-    userSubviews: '',
-
     initialize: function() {
       this.listenTo(this.collection, 'add', this.addUser);
       this.listenTo(this.collection, 'remove', this.removeUser);

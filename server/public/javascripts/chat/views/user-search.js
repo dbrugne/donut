@@ -3,10 +3,9 @@ define([
   'underscore',
   'backbone',
   'models/client',
-  'views/main',
   'text!templates/user-search-results.html',
   'bootstrap'
-], function ($, _, Backbone, client, mainView, resultsTemplate) {
+], function ($, _, Backbone, client, resultsTemplate) {
   var UserSearchView = Backbone.View.extend({
 
     el: $('#user-search-modal'),
@@ -15,8 +14,7 @@ define([
 
     events: {
       'click .user-search-submit': 'search',
-      'keyup .user-search-input': 'search',
-      'click .users-list li': 'openSelected'
+      'keyup .user-search-input': 'search'
     },
 
     initialize: function() {
@@ -53,12 +51,6 @@ define([
     onError: function() {
       // @todo : implement error-callback in DOM
       console.error('Error on searchForUsers call');
-    },
-
-    openSelected: function(event) {
-      var user_id = $(event.currentTarget).data('userId');
-      mainView.userProfileModal(user_id);
-      this.hide();
     }
 
   });

@@ -2,24 +2,37 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'models/client',
+  'text!templates/user-profile.html',
   'bootstrap'
-], function ($, _, Backbone) {
+], function ($, _, Backbone, client, profileTemplate) {
   var UserProfileView = Backbone.View.extend({
 
     el: $('#user-profile-modal'),
+
+    template: _.template(profileTemplate),
 
     events: {
       'hidden.bs.modal': 'teardown'
     },
 
-    show: function(user_id) {
-      if (user_id == undefined || user_id == '') {
-        return;
-      }
+    initialize: function() {
+      this.listenTo(client, 'user:profile', this.onProfile)
+    },
 
-      this.$el.modal({
-        remote: 'http://' + window.location.hostname + '/u/'+user_id+'?modal=true'
-      });
+    onProfile: function(data) {
+      this.render(data.user).show();
+    },
+
+    render: function(user) {
+      console.log(user);
+      var html = this.template({user: user});
+      this.$el.find('.modal-body').first().html(html);
+      return this;
+    },
+
+    show: function() {
+      this.$el.modal('show');
     },
 
     hide: function() {
@@ -28,7 +41,7 @@ define([
 
     teardown: function() {
       this.$el.data('modal', null);
-      this.remove();
+//      this.remove();
     }
 
   });

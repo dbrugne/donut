@@ -2,25 +2,18 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'views/main',
   'collections/smileys',
   'text!templates/message.html',
   'text!templates/notification.html',
   'jquery.dateformat'
-], function ($, _, Backbone, mainView, smileys, messageTemplate, notificationTemplate) {
+], function ($, _, Backbone, smileys, messageTemplate, notificationTemplate) {
   var DiscussionMessagesView = Backbone.View.extend({
 
     template: _.template(messageTemplate),
 
     timeFormat: "HH:mm",
 
-    events: {
-      'click p > .username': function(event) {
-        mainView.userProfileModal(
-          $(event.currentTarget).data('userId')
-        );
-      }
-    },
+    events: {},
 
     initialize: function(options) {
       this.listenTo(this.collection, 'add', this.message);
