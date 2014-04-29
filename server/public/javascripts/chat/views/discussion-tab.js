@@ -46,10 +46,10 @@ define([
 
     updateFocus: function() {
       if (this.model.get('focused')) {
-        this.$el.find('.list-item').addClass('active');
+        this.$el.find('.item').addClass('active');
         this.model.set('unread', 0);
       } else {
-        this.$el.find('.list-item').removeClass('active');
+        this.$el.find('.item').removeClass('active');
       }
     },
 
