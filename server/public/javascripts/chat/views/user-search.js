@@ -20,8 +20,8 @@ define([
     },
 
     initialize: function() {
-      this.listenTo(client, 'user:searchSuccess', this.searchSuccess);
-      this.listenTo(client, 'user:searchError', this.searchError);
+      this.listenTo(client, 'user:searchsuccess', this.onSuccess);
+      this.listenTo(client, 'user:searcherror', this.onError);
     },
 
     show: function() {
@@ -43,14 +43,14 @@ define([
 
     search: function() {
       var search = this.$el.find('.user-search-input').first().val();
-      client.searchForUsers(search);
+      client.userSearch(search);
     },
 
-    searchSuccess: function(results) {
-      this.render(results.users);
+    onSuccess: function(data) {
+      this.render(data.users);
     },
 
-    searchError: function() {
+    onError: function() {
       // @todo : implement error-callback in DOM
       console.error('Error on searchForUsers call');
     },

@@ -24,15 +24,14 @@ define([
       this.socket.on('reconnecting', function () { that.trigger('reconnecting'); });
       this.socket.on('reconnect', function () { that.trigger('reconnect'); });
       this.socket.on('reconnect_failed', function () { that.trigger('reconnect_failed'); });
-
-      this.socket.on('error', function () {
-        that.debug(['socket error', arguments]);
-      });
-
+      this.socket.on('error', function () { that.debug(['socket error', arguments]); });
       this.socket.on('welcome', function (data) {
         that.debug(['io:in:welcome', data]);
         that.trigger('welcome', data);
       });
+
+      // ROOM
+      // ======================================================
 
       this.socket.on('room:join', function(data) {
         that.debug(['io:in:room:join', data]);
@@ -70,6 +69,10 @@ define([
         that.debug(['io:in:room:searcherror', data]);
         that.trigger('room:searcherror', data);
       });
+
+      // USER
+      // ======================================================
+
       this.socket.on('user:online', function(data) {
         that.debug(['io:in:user:online', data]);
         that.trigger('user:online', data);
@@ -82,55 +85,58 @@ define([
         that.debug(['io:in:user:message', data]);
         that.trigger('user:message', data);
       });
+      this.socket.on('user:searchsuccess', function(data) {
+        that.debug(['io:in:user:searchsuccess', data]);
+        that.trigger('user:searchsuccess', data);
+      });
+      this.socket.on('user:searcherror', function(data) {
+        that.debug(['io:in:user:searcherror', data]);
+        that.trigger('user:searcherror', data);
+      });
     },
+
+    // ROOM
+    // ======================================================
 
     join: function(name) {
       var data = {name: name};
       this.socket.emit('room:join', data);
       this.debug(['io:out:room:join', data]);
     },
-
     leave: function(name) {
       var data = {name: name};
       this.socket.emit('room:leave', data);
       this.debug(['io:out:room:leave', data]);
     },
-
     topic: function(name, topic) {
       var data = {name: name, topic: topic};
       this.socket.emit('room:topic', data);
       this.debug(['io:out:room:topic', data]);
     },
-
     roomMessage: function(name, message) {
       var data = {name: name, message: message};
       this.socket.emit('room:message', data);
       this.debug(['io:out:room:message', data]);
     },
-
     roomSearch: function(search) {
       var data = {search: search};
       this.socket.emit('room:search', data);
       this.debug(['io:out:room:search', data]);
     },
 
+    // USER
+    // ======================================================
+
     userMessage: function(to, message) {
       var data = {to: to, message: message};
       this.socket.emit('user:message', data);
       this.debug(['io:out:user:message', data]);
+    },
+    userSearch: function(search) {
+      var data = {search: search};
+      this.socket.emit('user:search', data);
+      this.debug(['io:out:user:search', data]);
     }
-
-//        searchForUsers: function(search) {
-//            var that = this;
-//            this.get('session').call('searchForUsers', search).then(
-//                function(users) {
-//                    that.trigger('user:searchSuccess', { users: users });
-//                },
-//                function() {
-//                    that.trigger('user:searchError');
-//                }
-//            );
-//        }
 
   });
 

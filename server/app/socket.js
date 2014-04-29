@@ -267,6 +267,30 @@ module.exports = function(app, io, passport, sessionStore) {
       }
     });
 
+    socket.on('user:search', function (data) {
+      var search = {};
+      if (data.search) {
+        search = {username: new RegExp(data.search, "i")};
+      }
+      User.find(search, 'username', function(err, users) {
+        if (err) {
+          console.log('user:searcherror: '+err);
+          socket.emit('user:searcherror');
+          return;
+        }
+
+        var results = [];
+        for(var i=0; i<users.length; i++) {
+          results.push({
+            username: users[i].username
+          });
+        }
+        socket.emit('user:searchsuccess', {
+          users: results
+        });
+      });
+    });
+
     socket.on('disconnect', function() {
       // Multi-devices
       socket.leave('user:'+socket.handshake.user._id);
