@@ -75,7 +75,7 @@ userSchema.plugin(crate, {
       })
     }
   }
-}); // @todo : image formats should be defined in configuration file
+});
 
 // methods ======================
 // generating a hash
