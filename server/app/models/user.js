@@ -4,6 +4,7 @@ var LocalFS = require("mongoose-crate-localfs");
 var ImageMagick = require("mongoose-crate-imagemagick");
 var path = require('path');
 var bcrypt   = require('bcrypt-nodejs');
+var configuration = require('../../config/app_dev');
 
 var userSchema = mongoose.Schema({
 
@@ -40,20 +41,18 @@ userSchema.plugin(crate, {
         tmpDir: "medias/tmp",
         formats: ["JPEG", "GIF", "PNG"],
         transforms: {
-          original: {
-            // keep the original file
-          },
+          original: {},
           small: {
-            resize: "20x20",
-            format: ".jpg"
+            resize: configuration.pictures.user.avatar.small,
+            format: configuration.pictures.format
           },
           medium: {
-            resize: "50x50",
-            format: ".jpg"
+            resize: configuration.pictures.user.avatar.medium,
+            format: configuration.pictures.format
           },
           large: {
-            resize: "150x150",
-            format: ".jpg"
+            resize: configuration.pictures.user.avatar.large,
+            format: configuration.pictures.format
           }
         }
       })
@@ -63,18 +62,20 @@ userSchema.plugin(crate, {
         tmpDir: "medias/tmp",
         formats: ["JPEG", "GIF", "PNG"],
         transforms: {
-          original: {
-            // keep the original file
+          original: {},
+          medium: {
+            resize: configuration.pictures.user.avatar.medium,
+            format: configuration.pictures.format
           },
-          small: {
-            resize: "50x50",
-            format: ".jpg"
+          large: {
+            resize: configuration.pictures.user.avatar.large,
+            format: configuration.pictures.format
           }
         }
       })
     }
   }
-}); // @todo : format should be defined in configuration file
+}); // @todo : image formats should be defined in configuration file
 
 // methods ======================
 // generating a hash
