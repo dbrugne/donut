@@ -1,10 +1,6 @@
-var User    = require('./models/user');
-var Room    = require('./models/room');
-var express = require("express");
 var cookieParser = require('cookie-parser');
 var passportSocketIo = require("passport.socketio");
 var _ = require('underscore');
-
 var delegate_authorization = require('./socket/authorization');
 var delegate_connection = require('./socket/connection');
 var delegate_disconnect = require('./socket/disconnect');
