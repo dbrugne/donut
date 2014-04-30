@@ -1,7 +1,5 @@
 var mongoose = require('mongoose');
 
-var User     = require('./user');
-
 var roomSchema = mongoose.Schema({
 
     name            : String,
@@ -15,5 +13,21 @@ var roomSchema = mongoose.Schema({
     description     : String
 
 });
+
+roomSchema.statics.validateName = function (name) {
+  var pattern = /^#[-a-z0-9_\\|[\]{}@^`]{2,30}$/i;
+  if (pattern.test(name)) {
+    return true;
+  }
+  return false;
+}
+
+roomSchema.statics.validateTopic = function (topic) {
+  var pattern = /^.{0,200}$/i;
+  if (pattern.test(topic)) {
+    return true;
+  }
+  return false;
+}
 
 module.exports = mongoose.model('Room', roomSchema);

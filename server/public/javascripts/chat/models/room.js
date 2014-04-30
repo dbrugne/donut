@@ -51,7 +51,7 @@ define([
       if (data.name != this.get('name')) {
         return;
       }
-      var user = this.users.get(data.name);
+      var user = this.users.get(data.user_id);
       this.users.remove(user);
       this.trigger('notification', {
         type: 'out',
