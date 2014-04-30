@@ -14,7 +14,7 @@ var mongoose = require('mongoose')
     , expressValidator = require('./app/validator');
 
 // per-environment configuration
-configuration = require('./config/app_dev');
+var configuration = require('./config/app_dev');
 
 // express
 var app = express();
@@ -38,7 +38,11 @@ app.use(express.static(path.join(__dirname, 'public'))); // maintain before othe
 app.use(bodyParser());
 app.use(expressValidator()); // must be immediately after bodyParser()
 app.use(cookieParser());
-app.use(session({ secret: 'q4qsd65df45s4d5f45ds5fsf4s', key: 'express.sid', store: sessionStore }));
+app.use(session({
+  secret:   configuration.sessions.secret,
+  key:      configuration.sessions.key,
+  store:    sessionStore
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(function(req, res, next) { // pass user to all views

@@ -1,5 +1,6 @@
 var cookieParser = require('cookie-parser');
-var passportSocketIo = require("passport.socketio");
+var passportSocketIo = require('passport.socketio');
+var configuration = require('../config/app_dev');
 var _ = require('underscore');
 var delegate_authorization = require('./socket/authorization');
 var delegate_connection = require('./socket/connection');
@@ -14,15 +15,15 @@ var delegate_user_message = require('./socket/room-message');
 var delegate_user_search = require('./socket/user-search');
 var delegate_user_profile = require('./socket/user-profile');
 
+
+// @todo: test ACL for each operation => add todo comment everywhere
+// @todo: add "activity" entry for each action
+// @todo : other devices broadcast => add todo comment everywhere
+// @todo : global escape input => add todo comment everywhere
+// @todo : specific validation and sanitization for room name / user name => add todo comment everywhere
+// broadcast : https://github.com/LearnBoost/socket.io/wiki/How-do-I-send-a-response-to-all-clients-except-sender%3F
+
 module.exports = function(app, io, passport, sessionStore) {
-
-  // broadcast : https://github.com/LearnBoost/socket.io/wiki/How-do-I-send-a-response-to-all-clients-except-sender%3F
-
-  // @todo: test ACL for each operation => add todo comment everywhere
-  // @todo: add "activity" entry for each action
-  // @todo : other devices broadcast => add todo comment everywhere
-  // @todo : global escape input => add todo comment everywhere
-  // @todo : specific validation and sanitization for room name / user name => add todo comment everywhere
 
   io.set('transports', [
       'websocket'
@@ -34,8 +35,8 @@ module.exports = function(app, io, passport, sessionStore) {
   // doc: https://www.npmjs.org/package/passport.socketio
   io.set('authorization', passportSocketIo.authorize({
       cookieParser: cookieParser,
-      key:         'express.sid', // @todo : move in configuration
-      secret:      'q4qsd65df45s4d5f45ds5fsf4s', // @todo : move in configuration
+      key:         configuration.sessions.key,
+      secret:      configuration.sessions.secret,
       passport:    passport,
       store:       sessionStore,
       success:     delegate_authorization.success,
@@ -60,7 +61,5 @@ module.exports = function(app, io, passport, sessionStore) {
     // @todo : onetoone open
     // @todo : onetoone close
 
-
   });
-
 };
