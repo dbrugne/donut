@@ -49,7 +49,7 @@ module.exports = function(io, socket, data) {
         name: room.name,
         topic: room.topic,
         users: room.users
-      });
+      }); // @todo : bug! room users are not sent
 
       // Inform other room users
       // @todo : only on first socket join for this user (multi-device)

@@ -76,6 +76,7 @@ socket.io:
 - [x] Refactor socket.io (redis?)
 -- [] Review all the messages exchanged between client/server
 -- [x] Remove topic to use room name instead (with prefix)
+- [] Add chat interface "alert" popin and handle errors on: room:join, room:topic, user:message, room:create
 
 - Refactor Bower + require.js
 - [] Refactor grunt

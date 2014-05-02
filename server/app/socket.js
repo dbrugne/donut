@@ -11,10 +11,11 @@ var delegate_room_topic = require('./socket/room-topic');
 var delegate_room_message = require('./socket/room-message');
 var delegate_room_search = require('./socket/room-search');
 var delegate_room_profile = require('./socket/room-profile');
-var delegate_user_message = require('./socket/room-message');
+var delegate_user_message = require('./socket/user-message');
 var delegate_user_search = require('./socket/user-search');
 var delegate_user_profile = require('./socket/user-profile');
-
+var delegate_user_open = require('./socket/user-open');
+var delegate_user_close = require('./socket/user-close');
 
 // @todo: test ACL for each operation => add todo comment everywhere
 // @todo: add "activity" entry for each action
@@ -55,6 +56,8 @@ module.exports = function(app, io, passport, sessionStore) {
     socket.on('room:search', function (data) { delegate_room_search(io, socket, data); });
     socket.on('room:profile', function (data) { delegate_room_profile(io, socket, data); });
 
+    socket.on('user:open', function(data) { delegate_user_open(io, socket, data); });
+    socket.on('user:close', function(data) { delegate_user_close(io, socket, data); });
     socket.on('user:message', function(data) { delegate_user_message(io, socket, data); });
     socket.on('user:search', function (data) { delegate_user_search(io, socket, data); });
     socket.on('user:profile', function (data) { delegate_user_profile(io, socket, data); });

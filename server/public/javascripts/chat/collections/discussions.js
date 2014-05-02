@@ -19,6 +19,8 @@ define([
       this.listenTo(client, 'room:message', this.onRoomMessage);
 
       /* OneToOne specific */
+      this.listenTo(client, 'user:open', this.userOpen);
+      this.listenTo(client, 'user:close', this.userClose);
       this.listenTo(client, 'user:message', this.userMessage);
     },
 
@@ -127,6 +129,23 @@ define([
     },
 
     /* OneToOne specific */
+    userOpen: function(data) {
+      var onetoone = this.addOneToOne(new UserModel({
+        id: data.user_id,
+        username: data.username,
+        avatar: data.avatar
+      }));
+      this.focus(onetoone);
+    },
+    userClose: function(data) {
+      var onetoone = this.get(data.user_id);
+      if (onetone) {
+        this.remove(onetone);
+        if (!onetoone.get('focused')) {
+          this.focus();
+        }
+      }
+    },
     userMessage: function(message) {
       // Current user is emitter or recipient?
       var with_user_id;

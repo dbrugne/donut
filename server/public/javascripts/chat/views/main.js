@@ -56,9 +56,7 @@ define([
       this._handleAction(event);
       var userId = $(event.currentTarget).data('userId');
       if (userId) {
-        // @todo : should implement onetoone open/close
-        var onetoone = discussions.addOneToOne(this.model);
-        discussions.focus(onetoone);
+        client.open(userId);
       }
 
       return false; // stop propagation
