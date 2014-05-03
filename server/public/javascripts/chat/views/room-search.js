@@ -4,9 +4,10 @@ define([
   'backbone',
   'models/client',
   'collections/discussions',
+  'views/alert',
   'text!templates/room-search-results.html',
   'bootstrap'
-], function ($, _, Backbone, client, discussions, resultsTemplate) {
+], function ($, _, Backbone, client, discussions, alertView, resultsTemplate) {
   var RoomSearchView = Backbone.View.extend({
 
     el: $('#room-search-modal'),
@@ -51,8 +52,8 @@ define([
     },
 
     onError: function() {
-      // @todo : implement error-callback in DOM
-      console.error('Error on searchForRooms call');
+      this.hide();
+      alertView.show('error', "Something didn't work. Please retry in few minutes.");
     },
 
     openSelected: function(event) {

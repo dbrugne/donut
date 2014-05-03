@@ -197,6 +197,25 @@ body.light {
   height: 100%;
   padding-top: 50px;
   .navbar-right { padding-right: 15px; }
+
+  #alert-container {
+    .alert {
+      display: none;
+      padding: .4em .6em .4em;
+      background-color: #999;
+      color: #FFF;
+      font-weight: bold;
+      text-align: center;
+      white-space: nowrap;
+      -webkit-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+      -moz-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+      border-radius: 0;
+    }
+    .alert.info { background-color: #31b0d5; }
+    .alert.warn { background-color: #ec971f; }
+    .alert.error { background-color: #c9302c; }
+  }
 }
 
 #chat {

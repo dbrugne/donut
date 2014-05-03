@@ -47,8 +47,8 @@ User account:
 - [x] Add confirmation message on delete account
 - [x] Add CSRF on forms (account, login, signup): http://dailyjs.com/2012/09/13/express-3-csrf-tutorial/
 - [x] Add upload file mechanism and handle user pictures
-- [] Add form validation middleware for each form (account/*, login, signup)
 - [] Add color band field
+- [] Add form validation middleware for each form (account/*, login, signup)
 - [] Refactor form error message display (use layout message box and middleware)
 - [] Template user profile
 - [] #cloudinary integration
@@ -60,35 +60,35 @@ User account:
 
 Room profile:
 - [] Edit form
-- [] Template
+- [] Room profile templating
 - [] Add customizable color band on room
+- [] Allow guests option
+- [] Male permanent option
 - [] (irc) ACL on room => who is OP, set OP, remove OP, can change baseline, can kick users
 - [] (irc) Kick users
 - [] #cloudinary integration
 
 Repair:
-- [] Repair auto-join room when come from homepage (need replacing room id with name everywhere)
 - [x] Move open onetoone and view profile in MainView
-- [] CSRF and nested forms and 304
 
 Chat:
 - [] Chat callback on homepage => /!#DagnirDae
 - [] Room profile with chat callback => /!#DagnirDae
+- Add homepage tab
 - [] On one to one or room open show last messages of this conversation
+- [] Add "presence" management (who is actually online?)
 
 socket.io:
 - [x] Refactor socket.io (redis?)
--- [] Review all the messages exchanged between client/server
+-- [x] Review all the messages exchanged between client/server
 -- [x] Remove topic to use room name instead (with prefix)
-- [] Add chat interface "alert" popin and handle errors on: room:join, room:topic, user:message, room:create
+- [x] Add chat interface "alert" popin and handle errors on: room:search
 
 - Refactor Bower + require.js
 - [] Refactor grunt
 - [x] Refactor less.css
 - [x] Cleanup projects files
 - [] Merge
-
-Security/performance:
 
 Backend:
 - [] Traditional page secured zone
@@ -99,55 +99,52 @@ Backend:
 - [] Instant active room list
 -- [] real time activity monitor
 - [] Server list and state
+- [] Aggregate some data to have count (connect, disconnect, join/leave, create, message, ...)
 
 MVP:
 - [] Chat default panel with homepage content
 - [] Share room on Twitter/Facebook
+- [] Room permanent
 - [] Room personalization
 - [] User profile
 - [] Bookmark user
 - [] Invite friend in room
+- [] Private room
+
+Security/performance:
+- [] Scalability: implement Redis for sessions, MongoDb data cache (all User and Room documents used by socket.io) and sockets.
+- [] CSRF and 304!
 
 Multi-devices:
 - [] Re-implement
 
-vx:
+Finishing:
 - [] Add form validation client-side: account/*, login, signup
-- [] Add "presence" management
-- [x] Add require.js on client side to simplify code organization
-- [] (refactor) Reset the communication protocole: exit Wamp, only directionnal events and logic
-- [] Add backend interface that is connect to server and give some informations
-- [] Add anonyme mode (user come on platform, connect to chat, join rooms, discuss)
-- [] (bug) Fix "unlog" bug that maintain user logged in chat
-- [] (refactor) Sanitize all user input in Websocket and implement data control
-- [] (specs) Draw client/server protocol with list and structure of message, uniformize
-- [] Private Room / Permanent Room (will not be deleted on last user leave)
-- [] Invite someone(s) in my room
-- [] Highlight messages of the same user of this message
-- [] (stats) Add statistics counter: user loggin, user logout, user create/enter/leave a room, user change title, search for room
-- [] (stats) Google Analytics
-- [] (social) Follow profile (= friend)
-- [] (social) Add a "Friends are in rooms" list
-- [] (irc) Message history on arrow up/down
-- [] (refactor) Use App extends instead of actual server.php
-- [] Hyperlink analyse and open graph extraction with hover popin in rooms and discussions (specific template for YouTube content)
+
+vx:
+- [] Fix "unlog" bug that maintain user logged in chat
 - [] Sample activity generation (rooms, users, messages, enter/leave room, one to one)
-- [] Loyalty, advanced offline notification system (email, sms, frequency (instant, daily, weekly), filter (all activity, mentions, one to one, room where i am) with direct link to room/one to one allow fast anwser (even on mobile)
-- [] Make it work on IE8-11/FF
+- [] Highlight messages of the same user of this message
+- [] (stats) Google Analytics
+- [] Add a "Friends are in rooms" list
+- [] Test it on IE8-11/FF
 - [] Make it work on tablet/phone (browser)
 - [] + Invite your friends + page Facebook
 
 Mobile:
 - [] (mobile) Port a mobile version with Steroids.js
+- [] Identify and track devices for each socket/activity
 
-Idea box:
-- [] Room block code to past on this website to invite user to come
+Features:
+- [] Room block code to paste on website to invite user to come
+- [] Hyperlink analyse and open graph extraction with hover popin in rooms and discussions (specific template for YouTube content)
 - [] Add sound on events
-- [] (social) Like a message
-- [] Each user can black-list other users
-- [] Store messages and history in localstorage
-- [] (social) Automatic mention of a user in a message
+- [] User can black-list other users (avoir invitation and onetoone)
+- [] Store activity in local storage
+- [] Automatic mention of a user in a message
+- [] Message history on arrow up/down
+
+Ideas:
+- [] Loyalty, advanced offline notification system (email, sms, frequency (instant, daily, weekly), filter (all activity, mentions, one to one, room where i am) with direct link to room/one to one allow fast anwser (even on mobile)
 - [] Public mod for a room (all the content is visible by anyone)
-- [] Anonymous person allowed (could be blocked by room)
-- [] Give ability to a room owner to "suspend a room" temporarily
 - [] Pin a message

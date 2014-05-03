@@ -10,9 +10,8 @@ define([
   'views/onlines',
   'views/room-create',
   'views/room-search',
-  'views/user-search',
-  'views/user-profile'
-], function ($, _, Backbone, client, discussions, windowView, statusView, discussionsView, onlinesView, roomCreateView, roomSearchView, userSearchView, userProfileView) {
+  'views/user-search'
+], function ($, _, Backbone, client, discussions, windowView, statusView, discussionsView, onlinesView, roomCreateView, roomSearchView, userSearchView) {
   var MainView = Backbone.View.extend({
 
     el: $("#chat"),

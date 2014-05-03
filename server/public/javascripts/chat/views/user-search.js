@@ -3,9 +3,10 @@ define([
   'underscore',
   'backbone',
   'models/client',
+  'views/alert',
   'text!templates/user-search-results.html',
   'bootstrap'
-], function ($, _, Backbone, client, resultsTemplate) {
+], function ($, _, Backbone, client, alertView, resultsTemplate) {
   var UserSearchView = Backbone.View.extend({
 
     el: $('#user-search-modal'),
@@ -49,8 +50,8 @@ define([
     },
 
     onError: function() {
-      // @todo : implement error-callback in DOM
-      console.error('Error on searchForUsers call');
+      this.hide();
+      alertView.show('error', "Something didn't work. Please retry in few minutes.");
     }
 
   });
