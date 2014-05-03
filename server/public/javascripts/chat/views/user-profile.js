@@ -25,7 +25,6 @@ define([
     },
 
     render: function(user) {
-      console.log(user);
       var html = this.template({user: user});
       this.$el.find('.modal-body').first().html(html);
       return this;
@@ -41,7 +40,6 @@ define([
 
     teardown: function() {
       this.$el.data('modal', null);
-//      this.remove();
     }
 
   });
