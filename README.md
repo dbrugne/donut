@@ -34,19 +34,7 @@ Critical:
 - [] Need have a username in each case at the end of the process
 - [] Introduce guest mode
 
-node.js:
-- [x] Refactor node.js/passport/mongodb
-- [x] Need to repair FB only account Local account association
-- [x] Block FB account unlinking when no local, block local unlinking (= delete account instead)
-- [x] Move username in global context
-
 User account:
-- [x] Implement change email form
-- [x] Implement change password form
-- [x] Account form and post (finish)
-- [x] Add confirmation message on delete account
-- [x] Add CSRF on forms (account, login, signup): http://dailyjs.com/2012/09/13/express-3-csrf-tutorial/
-- [x] Add upload file mechanism and handle user pictures
 - [] Add color band field
 - [] Add form validation middleware for each form (account/*, login, signup)
 - [] Refactor form error message display (use layout message box and middleware)
@@ -69,27 +57,12 @@ Room profile:
 - [] (irc) Kick users
 - [] #cloudinary integration
 
-Repair:
-- [x] Move open onetoone and view profile in MainView
-
 Chat:
-- [x] Chat callback on homepage => /!#DagnirDae
 - [] Separate onetoone and room list in left column (different views, collections and ... 'client' binds) => ?
 - [] Add homepage tab => ?
 - [] On one to one or room open show last messages of this conversation
 - [] Add "presence" management (who is actually online in this room?)
 - [] Add onetoone persistence: only open/close persistence for the user. Then reopen on connection as for rooms
-
-socket.io:
-- [x] Refactor socket.io (redis?)
--- [x] Review all the messages exchanged between client/server
--- [x] Remove topic to use room name instead (with prefix)
-- [x] Add chat interface "alert" popin and handle errors on: room:search
-
-- Refactor Bower + require.js
-- [x] Refactor less.css
-- [x] Cleanup projects files
-- [x] Merge
 
 Backend:
 - [] Traditional page secured zone
