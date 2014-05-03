@@ -8,7 +8,7 @@ module.exports = function(io, socket) {
 
   // Update users online users list
   socket.broadcast.emit('user:offline', {
-    id: socket.getUserId()
+    user_id: socket.getUserId()
   });
 
   // Activity

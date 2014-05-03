@@ -50,7 +50,7 @@ module.exports = function(io, socket) {
 
   // Push this user to other users
   socket.broadcast.emit('user:online', {
-    id: socket.getUserId(),
+    user_id: socket.getUserId(),
     username: socket.getUsername(),
     avatar: '/'+socket.getAvatar()
   });

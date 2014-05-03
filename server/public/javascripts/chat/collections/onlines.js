@@ -13,14 +13,14 @@ define([
 
     onOnline: function(data) {
       this.add({
-        id: data.id,
+        id: data.user_id,
         username: data.username,
         avatar: data.avatar
       });
     },
 
     onOffline: function(data) {
-      var user = this.get(data.id);
+      var user = this.get(data.user_id);
       if (user == undefined) {
         return;
       }
