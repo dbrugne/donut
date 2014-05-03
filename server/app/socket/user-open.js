@@ -19,29 +19,16 @@ module.exports = function(io, socket, data) {
       return;
     }
 
-    // @todo : persist?
-//    // persist
-//    User.update({
-//      _id: socket.getUserId()
-//    },{
-//      $addToSet: { onetoones: user._id }
-//    }, function(err, numberAffected) {
-//      if (err) {
-//        delegate_error('Unable to update user', __dirname+'/'+__filename);
-//        return;
-//      }
+    // push user data
+    socket.emit('user:open', {
+      user_id: user._id,
+      username: user.username,
+      avatar: '/'+user.avatar.small.url
+    });
 
-      // push user data
-      socket.emit('user:open', {
-        user_id: user._id,
-        username: user.username,
-        avatar: '/'+user.avatar.small.url
-      });
+    // Activity
+    activityRecorder('user:open', socket.getUserId(), data);
 
-      // Activity
-      activityRecorder('user:open', socket.getUserId(), data);
-
-//    });
   });
 
 };

@@ -20,7 +20,6 @@ define([
 
       /* OneToOne specific */
       this.listenTo(client, 'user:open', this.userOpen);
-      this.listenTo(client, 'user:close', this.userClose);
       this.listenTo(client, 'user:message', this.userMessage);
     },
 
@@ -106,7 +105,6 @@ define([
 
       // Add users
       _.each(room.users, function(element, key, list) {
-        console.log('add:'+element.user_id);
         roomModel.users.add(new UserModel({
           id: element.user_id,
           username: element.username,
@@ -139,15 +137,15 @@ define([
       }));
       this.focus(onetoone);
     },
-    userClose: function(data) {
-      var onetoone = this.get(data.user_id);
-      if (onetone) {
-        this.remove(onetone);
-        if (!onetoone.get('focused')) {
-          this.focus();
-        }
-      }
-    },
+//    userClose: function(data) {
+//      var onetoone = this.get(data.user_id);
+//      if (onetone) {
+//        this.remove(onetone);
+//        if (!onetoone.get('focused')) {
+//          this.focus();
+//        }
+//      }
+//    },
     userMessage: function(message) {
       // Current user is emitter or recipient?
       var with_user_id;
@@ -174,7 +172,7 @@ define([
     /* OneToOne specific */
     addOneToOne: function(user) {
       // Discussion already opened?
-      var oneToOneId = 'onetoone'+user.get('id');
+      var oneToOneId = user.get('id');
       var model = this.get(oneToOneId);
       if (model == undefined) {
         model = new OneToOneModel({

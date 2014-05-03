@@ -85,10 +85,6 @@ define([
         that.debug(['io:in:user:open', data]);
         that.trigger('user:open', data);
       });
-      this.socket.on('user:close', function(data) {
-        that.debug(['io:in:user:close', data]);
-        that.trigger('user:close', data);
-      });
       this.socket.on('user:message', function(data) {
         that.debug(['io:in:user:message', data]);
         that.trigger('user:message', data);
@@ -143,11 +139,6 @@ define([
       var data = {user_id: user_id};
       this.socket.emit('user:open', data);
       this.debug(['io:out:user:open', data]);
-    },
-    close: function(user_id) {
-      var data = {user_id: user_id};
-      this.socket.emit('user:close', data);
-      this.debug(['io:out:user:close', data]);
     },
     userMessage: function(to, message) {
       var data = {to: to, message: message};
