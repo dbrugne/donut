@@ -137,15 +137,6 @@ define([
       }));
       this.focus(onetoone);
     },
-//    userClose: function(data) {
-//      var onetoone = this.get(data.user_id);
-//      if (onetone) {
-//        this.remove(onetone);
-//        if (!onetoone.get('focused')) {
-//          this.focus();
-//        }
-//      }
-//    },
     userMessage: function(message) {
       // Current user is emitter or recipient?
       var with_user_id;

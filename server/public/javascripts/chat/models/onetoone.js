@@ -18,13 +18,8 @@ define([
     },
 
     _initialize: function() {
-//      this.on('remove', this.close);
     }
-//    ,
-//
-//    close: function(model, collection, options) {
-//      client.close(model.get('id'));
-//    }
+
 
   });
 
