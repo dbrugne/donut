@@ -1,11 +1,10 @@
+var _ = require('underscore');
 var delegate_error = require('./error');
 var Room = require('../models/room');
 var User = require('../models/user');
 var activityRecorder = require('../activity-recorder');
 
-// @todo test ACL
-// @todo broadcast other devices
-// @todo persist room.users => no! replace with list of current socket/user: io.sockets.clients('room')
+// @todo : persist room.users and user.rooms correctly
 
 module.exports = function(io, socket, data) {
 
@@ -14,23 +13,17 @@ module.exports = function(io, socket, data) {
     return;
   }
 
-  Room.findOne({'name': data.name}, 'name topic users', function(err, room) {
-    if (err) {
-      delegate_error('Unable to retrieve room '+err, __dirname+'/'+__filename);
-      return;
-    }
+  Room.findById(data.name, 'name topic users', function(err, room) {
+    if (err) return console.log(err);
 
     // Create room if needed
     if (!room) {
-      room = new Room({name: data.name, owner_id: socket.getUserId()});
+      room = new Room({_id: data.name, owner_id: socket.getUserId()});
       room.save(function (err, product, numberAffected) {
-        if (err) {
-          delegate_error('Unable to create room '+err, __dirname+'/'+__filename);
-          return;
-        }
+        if (err) return console.log(err);
 
         onSuccess(room);
-        activityRecorder('room:create', socket.getUserId(), {name: data.name});
+        activityRecorder('room:create', socket.getUserId(), {_id: data.name});
       });
     } else {
       onSuccess(room);
@@ -38,38 +31,53 @@ module.exports = function(io, socket, data) {
   });
 
   function onSuccess(room) {
-    User.update({
-      _id: socket.getUserId()
-    },{
-      $addToSet: { rooms: room.name }
-    }, function(err, numberAffected) {
-      if (err) {
-        delegate_error('Unable to update user '+err, __dirname+'/'+__filename);
-        return;
-      }
-      // socket subscription
-      socket.join(data.name);
+    User.findOneAndUpdate({_id: socket.getUserId()}, {$addToSet: { rooms: room._id }}, function(err, user) {
+      if (err) return console.log(err);
 
-      // Room welcome
-      socket.emit('room:welcome', {
-        name: room.name,
-        topic: room.topic,
-        users: room.users
-      }); // @todo : bug! room users are not sent cause they are not persisted ! should read current socket list instead
+      Room.findOneAndUpdate({_id: room.get('_id')}, {$addToSet: { users: socket.getUserId() }}, function(err, room) {
+        if (err) return console.log(err);
+        room.populate('users', 'username avatar', function(err, room) {
+          if (err) return console.log(err);
+          // socket subscription
+          socket.join(data.name);
 
-      // Inform other room users
-      // @todo : only on first socket join for this user (multi-device)
-      io.sockets.in(data.name).emit('room:in', {
-        name: data.name,
-        user_id: socket.getUserId(),
-        username: socket.getUsername(),
-        avatar: '/'+socket.getAvatar()
-      });
+          // Decorate user list
+          var users = [];
+          _.each(room.users, function(dbUser) {
+            var avatarUrl = '';
+            if (dbUser.avatar && dbUser.avatar.small.url) {
+              avatarUrl = dbUser.avatar.small.url;
+            }
+            users.push({
+              user_id: dbUser._id,
+              username: dbUser.username,
+              avatar: avatarUrl
+            });
+          });
 
-      // Activity
-      activityRecorder('room:join', socket.getUserId(), data);
+          // Room welcome
+          socket.emit('room:welcome', {
+            name: room._id,
+            topic: room.topic,
+            users: users
+          });
 
-    });
+          // Inform other room users
+          io.sockets.in(data.name).emit('room:in', {
+            name: data.name,
+            user_id: socket.getUserId(),
+            username: socket.getUsername(),
+            avatar: '/'+socket.getAvatar()
+          });
+
+          // Activity
+          activityRecorder('room:join', socket.getUserId(), data);
+
+            });
+          });
+        });
+//      });
+//    });
   };
 
 };

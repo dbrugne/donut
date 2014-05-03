@@ -6,7 +6,7 @@ module.exports = function (io, socket, data) {
 
   var search = {};
   if (data.search) {
-    search = {name: new RegExp(data.search, "i")};
+    search = {_id: new RegExp(data.search, "i")};
   }
 
   // Search
@@ -21,9 +21,9 @@ module.exports = function (io, socket, data) {
     var results = [];
     for (var i=0; i<rooms.length; i++) {
       results.push({
-        name: rooms[i].name,
+        name: rooms[i]._id,
         topic: rooms[i].topic,
-        count: io.sockets.clients(rooms[i].name).length // @todo: bug, count socket and not users!
+        count: rooms[i].users.length
       });
     }
 

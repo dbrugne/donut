@@ -24,8 +24,8 @@ var userSchema = mongoose.Schema({
         email      : String,
         name       : String
     },
-    rooms            : [String],
-    onetoones        : [String]
+    rooms            : [{ type: String, ref: 'Room' }],
+    onetoones        : [{ type: mongoose.Schema.ObjectId, ref: 'User' }]
 
 });
 

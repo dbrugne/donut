@@ -2,9 +2,6 @@ var delegate_error = require('./error');
 var User = require('../models/user');
 var activityRecorder = require('../activity-recorder');
 
-// @todo test ACL
-// @todo broadcast other devices
-
 module.exports = function(io, socket, data) {
 
   if (undefined == data.user_id || '' == data.user_id) {

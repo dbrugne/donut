@@ -8,6 +8,9 @@ module.exports = function(io, socket) {
   socket.join('user:'+socket.handshake.user._id);
 
   // Decorate socket (shortcut)
+  socket.getUser = function() {
+    return this.handshake.user;
+  };
   socket.getUsername = function() {
     return this.handshake.user.username;
   }

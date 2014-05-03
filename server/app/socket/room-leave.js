@@ -14,28 +14,29 @@ module.exports = function(io, socket, data) {
     return;
   }
 
-  User.update({
-    _id: socket.getUserId()
-  },{
-    $pull: { rooms: data.name }
-  }, function(err, affectedDocuments) {
+  socket.getUser().update({$pull: { rooms: data.name }}, function(err, affectedDocuments) {
     if (err) {
-      delegate_error('Unable to update user on exiting room '+data.name, __dirname+'/'+__filename);
+      delegate_error('Unable to update user on exiting room '+err, __dirname+'/'+__filename);
       return;
     }
 
-    // Socket unsubscription
-    socket.leave(data.name);
+    Room.update({_id: data.name}, {$pull: { users: socket.getUserId() }}, function(err, affectedDocuments) {
+      if (err) {
+        delegate_error('Unable to update room on exiting user '+err, __dirname+'/'+__filename);
+        return;
+      }
 
-    // Inform other room users
-    // @todo : only on last socket leave for this user (multi-device)
-    io.sockets.in(data.name).emit('room:out', {
-      name: data.name,
-      user_id: socket.getUserId()
+      // Socket unsubscription
+      socket.leave(data.name);
+
+      // Inform other room users
+      io.sockets.in(data.name).emit('room:out', {
+        name: data.name,
+        user_id: socket.getUserId()
+      });
+
+      // Activity
+      activityRecorder('room:leave', socket.getUserId(), data);
     });
-
-    // Activity
-    activityRecorder('room:leave', socket.getUserId(), data);
-
   });
 };

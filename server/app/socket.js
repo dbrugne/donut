@@ -17,12 +17,20 @@ var delegate_user_profile = require('./socket/user-profile');
 var delegate_user_open = require('./socket/user-open');
 var delegate_user_close = require('./socket/user-close');
 
-// @todo: test ACL for each operation => add todo comment everywhere
-// @todo: add "activity" entry for each action
-// @todo : other devices broadcast => add todo comment everywhere
-// @todo : global escape input => add todo comment everywhere
-// @todo : specific validation and sanitization for room name / user name => add todo comment everywhere
-// broadcast : https://github.com/LearnBoost/socket.io/wiki/How-do-I-send-a-response-to-all-clients-except-sender%3F
+// @todo : pass on each socket delegation and:
+//         - identify input test to process (and report method in models)
+//         - identify sanitization to process
+//         - identify broadcast to other device to do
+//         - ACL to implement
+
+/**
+ * Send/broadcast help page https://github.com/LearnBoost/socket.io/wiki/How-do-I-send-a-response-to-all-clients-except-sender%3F
+ *
+ * @param app
+ * @param io
+ * @param passport
+ * @param sessionStore
+ */
 
 module.exports = function(app, io, passport, sessionStore) {
 
@@ -61,8 +69,6 @@ module.exports = function(app, io, passport, sessionStore) {
     socket.on('user:message', function(data) { delegate_user_message(io, socket, data); });
     socket.on('user:search', function (data) { delegate_user_search(io, socket, data); });
     socket.on('user:profile', function (data) { delegate_user_profile(io, socket, data); });
-    // @todo : onetoone open
-    // @todo : onetoone close
 
   });
 };

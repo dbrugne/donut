@@ -2,9 +2,6 @@ var delegate_error = require('./error');
 var Room = require('../models/room');
 var activityRecorder = require('../activity-recorder');
 
-// @todo : load validator and escape topic
-// @todo : test ACL
-
 module.exports = function(io, socket, data) {
   if (!Room.validateName(data.name)) {
     delegate_error('Invalid room name '+data.name, __dirname+'/'+__filename);
@@ -16,7 +13,7 @@ module.exports = function(io, socket, data) {
   }
 
   // Save
-  Room.update({name: data.name}, {topic: data.topic}, function(err, numberAffected) {
+  Room.update({_id: data.name}, {topic: data.topic}, function(err, numberAffected) {
     if (err) {
       delegate_error('Unable to change room '+data.name+' topic '+data.topic, __dirname+'/'+__filename);
       return;

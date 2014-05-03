@@ -106,7 +106,9 @@ define([
 
       // Add users
       _.each(room.users, function(element, key, list) {
+        console.log('add:'+element.user_id);
         roomModel.users.add(new UserModel({
+          id: element.user_id,
           username: element.username,
           avatar: element.avatar
         }));

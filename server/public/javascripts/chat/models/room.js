@@ -34,6 +34,11 @@ define([
       if (data.name != this.get('name')) {
         return;
       }
+      // already in?
+      console.log('add:'+data.user_id);
+      if (this.users.get(data.user_id)) {
+        return;
+      }
       var user = new UserModel({
         id: data.user_id,
         username: data.username,
