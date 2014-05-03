@@ -35,7 +35,6 @@ define([
         return;
       }
       // already in?
-      console.log('add:'+data.user_id);
       if (this.users.get(data.user_id)) {
         return;
       }
