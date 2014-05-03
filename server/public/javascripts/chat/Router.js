@@ -25,7 +25,7 @@ define([
       // Server connection is established
       this.listenTo(client, 'connect', this.onServerConnect);
 
-      // Get user identity from server
+      // Get hello from server
       this.listenTo(client, 'welcome', this.onServerWelcome);
 
       // Everything is in place/bound, connection!
@@ -54,22 +54,23 @@ define([
     },
 
     root: function() {
-//      console.log('router: home');
+      console.log('router: home');
       discussions.focus();
+      // @todo : replace by default homepage
     },
 
     focusRoom: function(name) {
-//      console.log('router: focusRoom '+name);
+      console.log('router: focusRoom '+name);
       discussions.focusRoomByName('#'+name);
     },
 
     focusOneToOne: function(username) {
-//      console.log('router: focusOneToOne ' + username);
+      console.log('router: focusOneToOne ' + username);
       discussions.focusOneToOneByUsername(username);
     },
 
     default: function() {
-//      console.log('router: default');
+      console.log('router: default');
       // @todo : handle 404 type behavior in DOM
     }
   });

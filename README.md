@@ -74,7 +74,8 @@ Repair:
 
 Chat:
 - [x] Chat callback on homepage => /!#DagnirDae
-- [] Add homepage tab
+- [] Separate onetoone and room list in left column (different views, collections and ... 'client' binds) => ?
+- [] Add homepage tab => ?
 - [] On one to one or room open show last messages of this conversation
 - [] Add "presence" management (who is actually online in this room?)
 - [] Add onetoone persistence: only open/close persistence for the user. Then reopen on connection as for rooms
