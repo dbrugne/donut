@@ -14,8 +14,11 @@ module.exports = function(io, socket, data) {
       return;
     }
 
+    var userData = user.toJSON();
+    userData.user_id = userData._id;
+    delete userData._id;
     socket.emit('user:profile', {
-      user: user
+      user: userData
     });
 
     // Activity

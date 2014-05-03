@@ -14,8 +14,10 @@ module.exports = function(io, socket, data) {
       return;
     }
 
+    var roomData = user.toJSON();
+    delete roomData._id;
     socket.emit('room:profile', {
-      room: room
+      room: roomData
     });
   });
 

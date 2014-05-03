@@ -30,7 +30,7 @@ npm start
 
 # Roadmap
 
-critical:
+Critical:
 - [] Need have a username in each case at the end of the process
 - [] Introduce guest mode
 
@@ -61,9 +61,10 @@ User account:
 Room profile:
 - [] Edit form
 - [] Room profile templating
+- [] Room header templating
 - [] Add customizable color band on room
 - [] Allow guests option
-- [] Male permanent option
+- [] Make room permanent option
 - [] (irc) ACL on room => who is OP, set OP, remove OP, can change baseline, can kick users
 - [] (irc) Kick users
 - [] #cloudinary integration
@@ -74,9 +75,9 @@ Repair:
 Chat:
 - [] Chat callback on homepage => /!#DagnirDae
 - [] Room profile with chat callback => /!#DagnirDae
-- Add homepage tab
+- [] Add homepage tab
 - [] On one to one or room open show last messages of this conversation
-- [] Add "presence" management (who is actually online?)
+- [] Add "presence" management (who is actually online in this room?)
 
 socket.io:
 - [x] Refactor socket.io (redis?)
