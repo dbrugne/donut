@@ -1,5 +1,5 @@
 var express = require('express');
-var router = express.Router();
+var router  = express.Router();
 var Room    = require('../app/models/room');
 
 router.get('/', function(req, res) {
@@ -9,11 +9,11 @@ router.get('/', function(req, res) {
 
     Room.find({}, function(err, rooms) {
         if (err) {
-            req.flash('error', err);
-            res.redirect('/');
+          return res.send('Error'+err);
         }
 
         var data = {rooms: rooms};
+      console.log(data);
         return res.render('welcome', data);
     });
 });
