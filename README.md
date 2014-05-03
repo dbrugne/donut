@@ -73,11 +73,11 @@ Repair:
 - [x] Move open onetoone and view profile in MainView
 
 Chat:
-- [] Chat callback on homepage => /!#DagnirDae
-- [] Room profile with chat callback => /!#DagnirDae
+- [x] Chat callback on homepage => /!#DagnirDae
 - [] Add homepage tab
 - [] On one to one or room open show last messages of this conversation
 - [] Add "presence" management (who is actually online in this room?)
+- [] Add onetoone persistence: only open/close persistence for the user. Then reopen on connection as for rooms
 
 socket.io:
 - [x] Refactor socket.io (redis?)
@@ -86,7 +86,6 @@ socket.io:
 - [x] Add chat interface "alert" popin and handle errors on: room:search
 
 - Refactor Bower + require.js
-- [] Refactor grunt
 - [x] Refactor less.css
 - [x] Cleanup projects files
 - [] Merge
@@ -121,6 +120,9 @@ Multi-devices:
 
 Finishing:
 - [] Add form validation client-side: account/*, login, signup
+
+Automation:
+- [] Refactor grunt
 
 vx:
 - [] Fix "unlog" bug that maintain user logged in chat

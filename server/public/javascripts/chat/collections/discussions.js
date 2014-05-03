@@ -15,7 +15,7 @@ define([
       /* Room specific */
       this.listenTo(client, 'room:join', this.onJoin);
       this.listenTo(client, 'room:leave', this.onLeave);
-      this.listenTo(client, 'room:welcome', this.onWelcome);
+      this.listenTo(client, 'room:welcome', this.onRoomWelcome);
       this.listenTo(client, 'room:message', this.onRoomMessage);
 
       /* OneToOne specific */
@@ -27,7 +27,7 @@ define([
       var model = this.findWhere({ type: 'room', name: name });
       if (model == undefined) {
         // Create room
-        // @todo : need to replace 'room.id' for identifying room by 'room.name' everywhere
+        client.join(name);
         return;
       }
 
@@ -93,7 +93,7 @@ define([
     },
 
     /* Room specific */
-    onWelcome: function(room) {
+    onRoomWelcome: function(room) {
       // Create room in browser
       var roomModel = new RoomModel({
         id: room.name, // @todo : duplicate room.id and room.name ?
