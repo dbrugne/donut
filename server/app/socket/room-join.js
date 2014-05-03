@@ -18,7 +18,9 @@ module.exports = function(io, socket, data) {
 
     // Create room if needed
     if (!room) {
-      room = new Room({_id: data.name, owner_id: socket.getUserId()});
+      var name = new String(data.name);
+      name = name.replace('#', '');
+      room = new Room({_id: data.name, name: name, owner_id: socket.getUserId()});
       room.save(function (err, product, numberAffected) {
         if (err) return console.log(err);
 
