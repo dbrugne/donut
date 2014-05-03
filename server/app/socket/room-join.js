@@ -1,6 +1,7 @@
 var delegate_error = require('./error');
 var Room = require('../models/room');
 var User = require('../models/user');
+var activityRecorder = require('../activity-recorder');
 
 // @todo test ACL
 // @todo broadcast other devices
@@ -21,10 +22,15 @@ module.exports = function(io, socket, data) {
 
     // Create room if needed
     if (!room) {
-      // @todo activity
-      room = new Room({name: data.name});
+      room = new Room({name: data.name, owner_id: socket.getUserId()});
       room.save(function (err, product, numberAffected) {
+        if (err) {
+          delegate_error('Unable to create room '+err, __dirname+'/'+__filename);
+          return;
+        }
+
         onSuccess(room);
+        activityRecorder('room:create', socket.getUserId(), {name: data.name});
       });
     } else {
       onSuccess(room);
@@ -38,7 +44,7 @@ module.exports = function(io, socket, data) {
       $addToSet: { rooms: room.name }
     }, function(err, numberAffected) {
       if (err) {
-        console.log('room:join '+err);
+        delegate_error('Unable to update user '+err, __dirname+'/'+__filename);
         return;
       }
       // socket subscription
@@ -49,7 +55,7 @@ module.exports = function(io, socket, data) {
         name: room.name,
         topic: room.topic,
         users: room.users
-      }); // @todo : bug! room users are not sent
+      }); // @todo : bug! room users are not sent cause they are not persisted ! should read current socket list instead
 
       // Inform other room users
       // @todo : only on first socket join for this user (multi-device)
@@ -60,7 +66,9 @@ module.exports = function(io, socket, data) {
         avatar: '/'+socket.getAvatar()
       });
 
-      // @todo : activity
+      // Activity
+      activityRecorder('room:join', socket.getUserId(), data);
+
     });
   };
 

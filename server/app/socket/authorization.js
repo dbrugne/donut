@@ -1,11 +1,14 @@
 var delegate_error = require('./error');
+var activityRecorder = require('../activity-recorder');
 
 module.exports = {
 
   success: function(data, accept) {
     // could add ACL check here if needed
+
     accept(null, true);
-    // @todo : activity
+
+    activityRecorder('authorization:success', '', data);
   },
 
   fail: function(data, message, error, accept) {
@@ -13,10 +16,13 @@ module.exports = {
       throw new Error(message);
     }
 
-    delegate_error('Unable to log this socket: '+message+' ('+error+')')
-
     accept(null, false);
-    // @todo : activity
+
+    activityRecorder('authorization:fail', '', {
+      data: data,
+      message: message,
+      error: error
+    });
   }
 
 };

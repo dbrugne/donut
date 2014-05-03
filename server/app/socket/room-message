@@ -1,5 +1,6 @@
 var delegate_error = require('./error');
 var Room = require('../models/room');
+var activityRecorder = require('../activity-recorder');
 
 // @todo : load validator and escape message
 // @todo : improve message validity test (ASCII)
@@ -24,7 +25,8 @@ module.exports = function(io, socket, data) {
     avatar: '/'+socket.getAvatar()
   });
 
-  // @todo: activity
+  // Activity
+  activityRecorder('room:message', socket.getUserId(), data);
 
 };
 

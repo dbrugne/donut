@@ -1,5 +1,6 @@
 var delegate_error = require('./error');
 var Room = require('../models/room');
+var activityRecorder = require('../activity-recorder');
 
 module.exports = function(io, socket, data) {
   if (!Room.validateName(data.name)) {
@@ -18,6 +19,7 @@ module.exports = function(io, socket, data) {
     });
   });
 
-  // @todo: activity
+  // Activity
+  activityRecorder('room:profile', socket.getUserId(), data);
 
 };

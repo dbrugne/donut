@@ -51,21 +51,25 @@ User account:
 - [] Add color band field
 - [] Refactor form error message display (use layout message box and middleware)
 - [] Template user profile
+- [] #cloudinary integration
+-- [] Remove Multiparty and crate
+-- [] Implement the new connect-multiparty version or fork the project to avoid tmpFiles
+-- [] Customized configuration (maxFiles, MaxFilesSize...)
+-- [] Auto removing of tmp files
+-- [] Rationnalize avatar/background with common accessor (client/server) that return only a valid url
 
 Room profile:
 - [] Edit form
 - [] Template
 - [] Add customizable color band on room
-- [] Repair auto-join room when come from homepage (need replacing room id with name everywhere)
 - [] (irc) ACL on room => who is OP, set OP, remove OP, can change baseline, can kick users
 - [] (irc) Kick users
+- [] #cloudinary integration
 
 Repair:
-- [] Move open onetoone and view profile in MainView
+- [] Repair auto-join room when come from homepage (need replacing room id with name everywhere)
+- [x] Move open onetoone and view profile in MainView
 - [] CSRF and nested forms and 304
-- Image
--- [] Auto removing of tmp files => #cloudinary integration
--- [] Rationnalize avatar/background with common accessor (client/server) that return only a valid url
 
 Chat:
 - [] Chat callback on homepage => /!#DagnirDae
@@ -81,13 +85,10 @@ socket.io:
 - Refactor Bower + require.js
 - [] Refactor grunt
 - [x] Refactor less.css
-- [] Cleanup projects files
+- [x] Cleanup projects files
 - [] Merge
 
 Security/performance:
-- [] Multiparty => #cloudinary integration
-- [] Implement the new connect-multiparty version or fork the project to avoid tmpFiles => #cloudinary integration
-- [] Customized configuration (maxFiles, MaxFilesSize...) => #cloudinary integration
 
 Backend:
 - [] Traditional page secured zone
@@ -106,6 +107,9 @@ MVP:
 - [] User profile
 - [] Bookmark user
 - [] Invite friend in room
+
+Multi-devices:
+- [] Re-implement
 
 vx:
 - [] Add form validation client-side: account/*, login, signup

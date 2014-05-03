@@ -1,6 +1,7 @@
 var delegate_error = require('./error');
 var Room = require('../models/room');
 var User = require('../models/user');
+var activityRecorder = require('../activity-recorder');
 
 // @todo test room existence
 // @todo broadcast other devices
@@ -33,7 +34,8 @@ module.exports = function(io, socket, data) {
       user_id: socket.getUserId()
     });
 
-    // @todo : activity
+    // Activity
+    activityRecorder('room:leave', socket.getUserId(), data);
 
   });
 };

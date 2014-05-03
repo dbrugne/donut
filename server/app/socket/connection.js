@@ -1,5 +1,6 @@
 var delegate_error = require('./error');
 var User = require('../models/user');
+var activityRecorder = require('../activity-recorder');
 
 module.exports = function(io, socket) {
 
@@ -53,5 +54,8 @@ module.exports = function(io, socket) {
     username: socket.getUsername(),
     avatar: '/'+socket.getAvatar()
   });
+
+  // Activity
+  activityRecorder('connection', socket.getUserId(), {});
 
 };

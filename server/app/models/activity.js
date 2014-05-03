@@ -3,8 +3,9 @@ var mongoose = require('mongoose');
 var activitySchema = mongoose.Schema({
 
   type            : String,
-  user_id         : mongoose.Schema.ObjectId,
-  data            : Mixed
+  time            : { type: Date, default: Date.now },
+  user_id         : String,
+  data            : mongoose.Schema.Types.Mixed
 
 });
 

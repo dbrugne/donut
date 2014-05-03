@@ -1,5 +1,6 @@
 var delegate_error = require('./error');
 var Room = require('../models/room');
+var activityRecorder = require('../activity-recorder');
 
 // @todo : load validator and escape topic
 // @todo : test ACL
@@ -26,7 +27,9 @@ module.exports = function(io, socket, data) {
       topic: data.topic
     });
 
-    // @todo: activity
+    // Activity
+    activityRecorder('room:topic', socket.getUserId(), data);
 
   });
+
 };

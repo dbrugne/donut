@@ -1,5 +1,6 @@
 var delegate_error = require('./error');
 var User = require('../models/user');
+var activityRecorder = require('../activity-recorder');
 
 module.exports = function(io, socket, data) {
 
@@ -29,7 +30,11 @@ module.exports = function(io, socket, data) {
       users: results
     });
 
-    // @todo: activity
+    // Activity
+    activityRecorder('user:search', socket.getUserId(), {
+      data: data,
+      count: results.length
+    });
 
   });
 };

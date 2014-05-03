@@ -1,4 +1,5 @@
 var delegate_error = require('./error');
+var activityRecorder = require('../activity-recorder');
 
 module.exports = function(io, socket) {
 
@@ -10,6 +11,7 @@ module.exports = function(io, socket) {
     id: socket.getUserId()
   });
 
-  // @todo : activity
+  // Activity
+  activityRecorder('disconnect', socket.getUserId());
 
 };

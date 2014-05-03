@@ -1,5 +1,6 @@
 var delegate_error = require('./error');
 var User = require('../models/user');
+var activityRecorder = require('../activity-recorder');
 
 module.exports = function(io, socket, data) {
   if (undefined == data.user_id || '' == data.user_id) {
@@ -16,8 +17,10 @@ module.exports = function(io, socket, data) {
     socket.emit('user:profile', {
       user: user
     });
-  });
 
-  // @todo: activity
+    // Activity
+    activityRecorder('user:profile', socket.getUserId(), data);
+
+  });
 
 };

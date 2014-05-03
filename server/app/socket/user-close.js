@@ -1,5 +1,6 @@
 var delegate_error = require('./error');
 var User = require('../models/user');
+var activityRecorder = require('../activity-recorder');
 
 /****
  * IS THIS EVENT USED FOR ANYTHING ?????

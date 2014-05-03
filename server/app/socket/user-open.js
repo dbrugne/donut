@@ -1,5 +1,6 @@
 var delegate_error = require('./error');
 var User = require('../models/user');
+var activityRecorder = require('../activity-recorder');
 
 // @todo test ACL
 // @todo broadcast other devices
@@ -40,7 +41,9 @@ module.exports = function(io, socket, data) {
         avatar: '/'+user.avatar.small.url
       });
 
-      // @todo : activity
+      // Activity
+      activityRecorder('user:open', socket.getUserId(), data);
+
 //    });
   });
 
