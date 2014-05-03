@@ -41,7 +41,7 @@ module.exports = function(io, socket) {
   io.sockets.clients().forEach(function(online) {
     if (online.getUserId() != socket.getUserId()) {
       socket.emit('user:online', {
-        id: online.getUserId(),
+        user_id: online.getUserId(),
         username: online.getUsername(),
         avatar: online.getAvatar()
       });
