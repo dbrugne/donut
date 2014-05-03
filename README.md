@@ -89,7 +89,7 @@ socket.io:
 - Refactor Bower + require.js
 - [x] Refactor less.css
 - [x] Cleanup projects files
-- [] Merge
+- [x] Merge
 
 Backend:
 - [] Traditional page secured zone
