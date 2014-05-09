@@ -25,9 +25,6 @@
     "express-validator": "2.x",
     "csurf": "1.x",
     "connect-multiparty": "1.x",
-    "mongoose-crate": "1.0.x",
-    "mongoose-crate-localfs": "1.0.x",
-    "mongoose-crate-imagemagick": "1.0.x",
     "socket.io": "0.x",
     "passport.socketio": "3.x",
     "underscore": "~1.6.0"

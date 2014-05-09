@@ -23,41 +23,49 @@ npm start
 # Pre-requisites
 
 * node.js + npm
+* nodemon
 * Bower
 * MongoDB
-* ImageMagick convert CLI command
-* Python 2.7 (and not 3.x, for mongoose-crate)
 
 # Roadmap
 
 ## MVP
 
+- Images
+- [x] Remove crate
+- [ ] Integrate cloudinary and user picture
+- [ ] Customized configuration in configuration file (maxFiles, MaxFilesSize...)
+- [ ] Rationnalize avatar/background with common accessor (client/server) that return only a valid url
+
 - Chat
-- [ ] Mettre au propre les mockups du MVP
 - [ ] Chat default panel with homepage content
 - [ ] Chat default room with auto-join on connection
 - [ ] Separate onetoone and room list in left column (different views, collections and ... 'client' binds)
 - [ ] Sort room list alphabetically and change rendering pattern to "redrawn" everytime
+
 - [ ] Remove "your profile" in header and put the link on username
-- [ ] Add an intermediate "form" to choose a username when entering in chatroom
-- [ ] Removed "logged" homepage to replace with automatic redirection to chat interface (expect for account/)
 - [ ] Modify "header" link to open account/ in blank
-- [ ] Template user profile (without image)
+- [ ] Removed "logged" homepage to replace with automatic redirection to chat interface (expect for account/)
+
+- [ ] Add an intermediate "form" to choose a username when entering in chatroom
+
+- [ ] Template user profile
 - [ ] Test it on IE8-11/FF
+
 - Signup
 - [ ] Remove username from signup form (comment)
 - Account
-- [ ] Remove Multiparty and crate
 - [ ] Add form validation middleware for each form (account/*, login, signup)
 - [ ] Refactor form error message display (use layout message box and middleware)
 - [ ] CSRF and 304!
 - [ ] Forgotten password
+- [ ] Add color band field
+
 - Site
+- [x] Mettre au propre les mockups du MVP
 - [ ] Design integration
 - [ ] Google Analytics (HP, interface de chat)
 - [ ] Deploy/backup/monitor
-- Images
-- [ ] Question on cloudinary and user picture
 
 ## Next
 
@@ -66,11 +74,6 @@ Critical:
 - [ ] Re-introduce room_id (if needed)
 
 User account:
-- [ ] Add color band field
-- [ ] #cloudinary integration
--- [ ] Customized configuration (maxFiles, MaxFilesSize...)
--- [ ] Rationnalize avatar/background with common accessor (client/server) that return only a valid url
-- [ ] Template user profile (with image)
 
 Room profile:
 - [ ] Edit form

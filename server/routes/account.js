@@ -9,6 +9,7 @@ var multipartMiddleware = multipart({uploadDir: 'medias/tmp'}); // @todo customi
 /************************************************/
 
 router.get('/account', isLoggedIn, function(req, res) {
+    req.user.avatarUrl = req.user.avatarUrl();
     res.render('account', {});
 });
 

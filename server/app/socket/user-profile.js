@@ -8,7 +8,7 @@ module.exports = function(io, socket, data) {
     return;
   }
 
-  User.findById(data.user_id, 'username bio location website avatar background', function(err, user) {
+  User.findById(data.user_id, 'username bio location website', function(err, user) {
     if (err) {
       delegate_error('Unable to retrieve user '+err, __dirname+'/'+__filename);
       return;
@@ -17,6 +17,7 @@ module.exports = function(io, socket, data) {
     var userData = user.toJSON();
     userData.user_id = userData._id;
     delete userData._id;
+    userData.avatar = user.avatarUrl();
     socket.emit('user:profile', {
       user: userData
     });

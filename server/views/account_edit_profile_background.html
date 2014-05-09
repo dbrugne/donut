@@ -3,7 +3,7 @@
         <div class="controls-inline">
             <div class="control-fields">
                 {{#user.background}}
-                <img class="background" src="/{{user.background.small.url}}" />
+                <img class="background" src="/{{user.avatarUrl()}}" />
                 {{/user.background}}
                 <input type="file" class="form-control" id="background-field" name="user[fields][background]">
                 <button type="submit" id="account-edit-background-submit" class="btn btn-primary btn-sm">Save</button>

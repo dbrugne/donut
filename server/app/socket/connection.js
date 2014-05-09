@@ -18,9 +18,9 @@ module.exports = function(io, socket) {
     return this.handshake.user._id;
   }
   socket.getAvatar = function() {
-    var uri = this.handshake.user.avatar.small.url;
+    var uri = this.handshake.user.avatarUrl();
     if (uri) {
-      return '/'+uri.replace('\\', '/');
+      return uri.replace('\\', '/');
     } else {
       return 'default.jpg';
     }
@@ -55,7 +55,7 @@ module.exports = function(io, socket) {
   socket.broadcast.emit('user:online', {
     user_id: socket.getUserId(),
     username: socket.getUsername(),
-    avatar: '/'+socket.getAvatar()
+    avatar: socket.getAvatar()
   });
 
   // Activity

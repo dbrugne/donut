@@ -3,7 +3,7 @@
         <div class="controls-inline">
             <div class="control-fields">
                 {{#user.avatar}}
-                <img class="avatar" src="/{{user.avatar.small.url}}" />
+                <img class="avatar" src="/{{user.avatarUrl()}}" />
                 {{/user.avatar}}
                 <input type="file" class="form-control" id="avatar-field" name="user[fields][avatar]">
                 <button type="submit" id="account-edit-avatar-submit" class="btn btn-primary btn-sm">Save</button>

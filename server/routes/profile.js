@@ -51,7 +51,8 @@ router.param('user', function(req, res, next, username) {
         }
 
         if (user) {
-            req.user = user;
+            req.requestedUser = user;
+            user.avatarUrl = user.avatarUrl();
             next();
         } else {
             res.render('404', {}, function(err, html) {
@@ -62,8 +63,9 @@ router.param('user', function(req, res, next, username) {
     });
 });
 router.get('/user/:user', function(req, res) {
+    console.log(req.requestedUser);
     res.render('user', {
-        user : req.user
+        user : req.requestedUser
     });
 });
 

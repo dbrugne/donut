@@ -47,9 +47,7 @@ module.exports = function(io, socket, data) {
           var users = [];
           _.each(room.users, function(dbUser) {
             var avatarUrl = '';
-            if (dbUser.avatar && dbUser.avatar.small.url) {
-              avatarUrl = dbUser.avatar.small.url;
-            }
+            avatarUrl = dbUser.avatarUrl();
             users.push({
               user_id: dbUser._id,
               username: dbUser.username,
@@ -69,7 +67,7 @@ module.exports = function(io, socket, data) {
             name: data.name,
             user_id: socket.getUserId(),
             username: socket.getUsername(),
-            avatar: '/'+socket.getAvatar()
+            avatar: socket.getAvatar()
           });
 
           // Activity
