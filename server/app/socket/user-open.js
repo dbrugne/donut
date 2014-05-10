@@ -23,7 +23,7 @@ module.exports = function(io, socket, data) {
     socket.emit('user:open', {
       user_id: user._id,
       username: user.username,
-      avatar: user.avatarUrl()
+      avatar: user.avatar
     });
 
     // Activity

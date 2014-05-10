@@ -54,43 +54,44 @@
             </div>
         </div>
 
-        <h4> </h4>
+        <h4>Apparence</h4>
+
+        <div class="controls">
+            <label class="control-labels">Avatar</label>
+            <div class="control-fields">
+                <!-- Current avatar -->
+                <div class="uploader-current" data-current="{{& userFields.avatar}}">
+                    <span class="current"></span> (<a href="#_" class="uploader-show-form">change</a>).
+                </div>
+                <!-- State upload form -->
+                <div class="uploader-form">
+                    {{& uploadTag}}
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                            0% complete
+                        </div>
+                    </div>
+                    <div class="preview"></div>
+                    (<a href="#_" class="uploader-cancel-form">cancel</a>)
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <label class="control-labels" for="color-field">Theme color</label>
+            <div class="control-fields">
+                <input type="color" id="color-field" name="user[fields][color]" value="{{userFields.color}}">
+            </div>
+        </div>
+
+        <h4></h4>
 
         <div class="controls">
             <div class="col-sm-8 col-lg-offset-2 text-right">
-                <button type="submit" id="account-edit-submit" class="btn btn-primary btn-sm">Save and go back to account</button>
+                <button type="submit" class="btn btn-primary btn-sm account-edit-submit">Save and go back to account</button>
                 <a href="/account" type="button" class="btn btn-default btn-sm">Cancel</a>
             </div>
         </div>
 
     </form>
-
-    <div class="forms">
-
-        <h4>Pictures</h4>
-
-        <div class="controls">
-            <label class="control-labels" for="website-field">Avatar</label>
-            <div class="control-fields">
-                <iframe src="/account/edit/profile/avatar" seamless="seamless"></iframe>
-            </div>
-        </div>
-
-        <div class="controls">
-            <label class="control-labels" for="website-field">Profile background</label>
-            <div class="control-fields">
-                <iframe src="/account/edit/profile/background" seamless="seamless"></iframe>
-            </div>
-        </div>
-
-        <h4> </h4>
-
-        <div class="controls">
-            <div class="col-sm-8 col-lg-offset-2 text-right">
-                <a href="/account" type="button" class="btn btn-default btn-sm">Cancel</a>
-            </div>
-        </div>
-
-    </div>
-
 </div>

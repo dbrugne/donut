@@ -2,15 +2,12 @@ var express = require('express');
 var router = express.Router();
 var path = require('path');
 var User = require('../app/models/user');
-
-/************************************************/
-var multipart = require('connect-multiparty');
-var multipartMiddleware = multipart({uploadDir: 'medias/tmp'}); // @todo customize configuration: https://www.npmjs.org/package/multiparty
-/************************************************/
+var cloudinary = require('../app/cloudinary');
 
 router.get('/account', isLoggedIn, function(req, res) {
-    req.user.avatarUrl = req.user.avatarUrl();
-    res.render('account', {});
+    res.render('account', {
+      avatarUrl: cloudinary.cloudinary.url(req.user.avatar, { width: 50, height: 50, crop: 'fill' })
+    });
 });
 
 router.route('/account/edit/email')
@@ -106,63 +103,25 @@ router.route('/account/edit/password')
         });
     });
 
-router.route('/account/edit/profile/avatar')
-  .get(isLoggedIn, function(req, res) {
-    res.render('account_edit_profile_avatar', {
-      layout: 'layout_light'
-    });
-  })
-  .post([isLoggedIn, multipartMiddleware], function(req, res) {
-    var user = req.user;
-    var media = req.files.user.fields.avatar;
-    user.attach('avatar', media, function(err) {
-      if (err) {
-        return res.send('error: '+err);
-      }
-      user.save(function(err) {
-        if (err) {
-          return res.send('error: '+err);
-        } else {
-          res.redirect('/account/edit/profile/background');
-        }
-      });
-    });
-  });
-
-router.route('/account/edit/profile/background')
-  .get(isLoggedIn, function(req, res) {
-    res.render('account_edit_profile_background', {
-      layout: 'layout_light'
-    });
-  })
-  .post([isLoggedIn, multipartMiddleware], function(req, res) {
-    var user = req.user;
-    var media = req.files.user.fields.background;
-    user.attach('background', media, function(err) {
-      if (err) {
-        return res.send('error: '+err);
-      }
-      user.save(function(err) {
-        if (err) {
-          return res.send('error: '+err);
-        } else {
-          res.redirect('/account/edit/profile/background');
-        }
-      });
-    });
-  });
-
 router.route('/account/edit/profile')
     // Form
     .get(isLoggedIn, function(req, res) {
         var userFields = req.user.toObject();
         res.render('account_edit_profile', {
-            userFields: userFields,
-            scripts: [{src: '/validator.min.js'}]
+          userFields: userFields,
+          uploadTag: cloudinary.uploadTag(req, 'user[fields][avatar]'),
+          scripts: [
+            {src: '/validator.min.js'},
+            {src: '/javascripts/vendor/blueimp-file-upload/js/vendor/jquery.ui.widget.js'},
+            {src: '/javascripts/vendor/blueimp-file-upload/js/jquery.iframe-transport.js'},
+            {src: '/javascripts/vendor/blueimp-file-upload/js/jquery.fileupload.js'},
+            {src: '/javascripts/vendor/cloudinary_js/js/jquery.cloudinary.js'}
+          ]
         });
     })
     // Post
-    .post([
+    .post(
+      [
         // User credential
         isLoggedIn,
         // Field validation
@@ -217,7 +176,8 @@ router.route('/account/edit/profile')
                 return next();
             });
         }
-    ], function(req, res) {
+      ],
+      function(req, res) {
         var user = req.user;
 
         // Update user
@@ -225,6 +185,18 @@ router.route('/account/edit/profile')
         user.bio = req.body.user.fields.bio;
         user.location = req.body.user.fields.location;
         user.website = req.body.user.fields.website;
+
+        // Cloudinary image
+        if (req.body.user.fields.avatar) {
+          console.log(req.body.user.fields.avatar);
+          var preloaded_file = new cloudinary.cloudinary.PreloadedFile(req.body.user.fields.avatar);
+          if (preloaded_file.is_valid()) {
+            user.avatar = preloaded_file.identifier();
+            console.log(user.avatar);
+          } else {
+            throw("Invalid upload signature");
+          }
+        }
 
         // Save
         user.save(function(err) {

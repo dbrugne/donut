@@ -18,12 +18,7 @@ module.exports = function(io, socket) {
     return this.handshake.user._id;
   }
   socket.getAvatar = function() {
-    var uri = this.handshake.user.avatarUrl();
-    if (uri) {
-      return uri.replace('\\', '/');
-    } else {
-      return 'default.jpg';
-    }
+    return this.handshake.user.avatar;
   }
 
   // Welcome data

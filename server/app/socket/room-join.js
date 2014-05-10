@@ -46,12 +46,10 @@ module.exports = function(io, socket, data) {
           // Decorate user list
           var users = [];
           _.each(room.users, function(dbUser) {
-            var avatarUrl = '';
-            avatarUrl = dbUser.avatarUrl();
             users.push({
               user_id: dbUser._id,
               username: dbUser.username,
-              avatar: avatarUrl
+              avatar: dbUser.avatar
             });
           });
 

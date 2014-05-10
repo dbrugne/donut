@@ -24,9 +24,9 @@
     "bcrypt-nodejs": "latest",
     "express-validator": "2.x",
     "csurf": "1.x",
-    "connect-multiparty": "1.x",
     "socket.io": "0.x",
     "passport.socketio": "3.x",
-    "underscore": "~1.6.0"
+    "underscore": "~1.6.0",
+    "cloudinary": "~1.0.9"
   }
 }

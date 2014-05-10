@@ -15,7 +15,9 @@
                 <strong>location</strong>: {{user.location}}<br>
                 <strong>website</strong>: {{user.website}}<br>
                 <strong>avatar</strong>:<br>
-                    <img src="{{user.avatarUrl}}" /><br>
+                {{#avatarUrl}}
+                <img src="{{avatarUrl}}"><br>
+                {{/avatarUrl}}
             </p>
 
         </div>

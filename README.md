@@ -32,10 +32,16 @@ npm start
 ## MVP
 
 - Images
-- [x] Remove crate
+- [x] Remove multiparty and crate
 - [ ] Integrate cloudinary and user picture
-- [ ] Customized configuration in configuration file (maxFiles, MaxFilesSize...)
-- [ ] Rationnalize avatar/background with common accessor (client/server) that return only a valid url
+-- [ ] re-Add a method on model with "format" parameter (use in account/, user/ and #header)
+-- [ ] in chat and on account/edit pass only the cloudinary id and implement image loading on client side
+-- [ ] define avatar 'formats' in configuration file
+-- [ ] configure well upload constrains (maxsize, format ..)
+-- [ ] handle default image
+-- [ ] add "delete" image
+-- [ ] make add/edit picture work in all cases (inclusing "cancel")
+-- [ ] remove nasty cloudinary.cloudinary code
 
 - Chat
 - [ ] Chat default panel with homepage content
@@ -54,12 +60,13 @@ npm start
 
 - Signup
 - [ ] Remove username from signup form (comment)
+
 - Account
 - [ ] Add form validation middleware for each form (account/*, login, signup)
 - [ ] Refactor form error message display (use layout message box and middleware)
 - [ ] CSRF and 304!
 - [ ] Forgotten password
-- [ ] Add color band field
+- [ ] Add color theme field
 
 - Site
 - [x] Mettre au propre les mockups du MVP

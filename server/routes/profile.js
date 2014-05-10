@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var User = require('../app/models/user');
 var Room = require('../app/models/room');
+var cloudinary = require('../app/cloudinary');
 
 // ROOM PROFILE
 // ==============================================
@@ -52,7 +53,6 @@ router.param('user', function(req, res, next, username) {
 
         if (user) {
             req.requestedUser = user;
-            user.avatarUrl = user.avatarUrl();
             next();
         } else {
             res.render('404', {}, function(err, html) {
@@ -63,9 +63,9 @@ router.param('user', function(req, res, next, username) {
     });
 });
 router.get('/user/:user', function(req, res) {
-    console.log(req.requestedUser);
     res.render('user', {
-        user : req.requestedUser
+        user : req.requestedUser,
+        avatarUrl: cloudinary.cloudinary.url(req.requestedUser.avatar, { width: 50, height: 50, crop: 'fill' })
     });
 });
 
