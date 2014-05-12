@@ -34,7 +34,7 @@ npm start
 - Images
 - [x] Remove multiparty and crate
 - [ ] Integrate cloudinary and user picture
--- [ ] re-Add a method on model with "format" parameter (use in account/, user/ and #header)
+-- [ ] re-Add a method on user model with "format" parameter (use in account/, user/ and #header)
 -- [ ] in chat and on account/edit pass only the cloudinary id and implement image loading on client side
 -- [ ] define avatar 'formats' in configuration file
 -- [ ] configure well upload constrains (maxsize, format ..)
