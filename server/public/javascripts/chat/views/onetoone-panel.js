@@ -16,7 +16,16 @@ define([
     },
 
     _renderData: function() {
-      return this.model.toJSON();
+      var data = this.model.toJSON();
+
+      data.avatar = $.cloudinary.url('avatar-'+this.model.get('user_id'), {
+        default_image: 'avatar_default.png', // @todo : get from configuration file
+        crop: 'fill',
+        width: '20', // @todo : get from configuration file
+        height: '20' // @todo : get from configuration file
+      });
+
+      return data;
     },
 
     _render: function() {
