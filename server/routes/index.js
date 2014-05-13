@@ -18,8 +18,4 @@ router.get('/', function(req, res) {
     });
 });
 
-router.get('/validator.min.js', function(req, res) {
-    res.sendfile('node_modules/express-validator/node_modules/validator/validator.min.js');
-});
-
 module.exports = router;
