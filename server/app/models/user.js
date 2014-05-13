@@ -42,14 +42,14 @@ userSchema.methods.validPassword = function(password) {
 
 // avatar URL
 userSchema.methods.avatarUrl = function(format) {
-  if (!this.avatar) return null;
-
   var options = {crop: 'fill'};
   if (!format) format = 'small';
   options.width = configuration.pictures.user.avatar[format]['width'];
   options.height = configuration.pictures.user.avatar[format]['height'];
+  options.default_image = configuration.pictures.user.avatar.default;
 
-  return cloudinary.url(this.avatar, options);
+  return cloudinary.url(this._id.toString(), options);
+  // default image will be handled by cloudinary if image doesn't exist for this id
 };
 
 // create the model for users and expose it to our app

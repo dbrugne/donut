@@ -34,14 +34,15 @@ npm start
 - Images
 - [x] Remove multiparty and crate
 - [ ] Integrate cloudinary and user picture
--- [ ] re-Add a method on user model with "format" parameter (use in account/, user/ and #header)
+-- [x] define avatar 'formats' in configuration file
+-- [x] remove nasty cloudinary.cloudinary code
+-- [x] make add/edit picture work in all cases (inclusing "cancel")
+-- [x] re-Add a method on user model with "format" parameter (use in account/, user/ and #header)
 -- [ ] in chat and on account/edit pass only the cloudinary id and implement image loading on client side
--- [ ] define avatar 'formats' in configuration file
--- [ ] configure well upload constrains (maxsize, format ..)
--- [ ] handle default image
--- [ ] add "delete" image
--- [ ] make add/edit picture work in all cases (inclusing "cancel")
--- [ ] remove nasty cloudinary.cloudinary code
+-- [-] configure well upload constrains (maxsize, format ..) => not supported by jQuery uploader
+-- [x] handle default image
+-- [ ] add "delete" image (delete action in form and removing on clound)
+-- [ ] on image change "delete" previous image
 
 - Chat
 - [ ] Chat default panel with homepage content

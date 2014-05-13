@@ -14,11 +14,13 @@ $(document).ready(function() {
     $('#delete-alert-placeholder').on('click', '.confirm', function (event) {
       window.location.href = '/account/delete';
     });
+
   }
 
   // ACCOUNT EDIT =============================================================
   // ==========================================================================
   if ($('#account-edit').length) {
+
     // @todo : form validator implementation
 
     /**
@@ -26,6 +28,7 @@ $(document).ready(function() {
      */
     $.cloudinary.config({ cloud_name: 'roomly', api_key: '962274636195222'});
     $('.uploader-form').hide();
+    $('.uploader-progress').hide()
     var current = $('.uploader-current').data('current');
     if (current) {
       $('.uploader-current .current').html(
@@ -39,45 +42,39 @@ $(document).ready(function() {
     }
     $('.uploader-show-form').click(function(event) {
       $('.uploader-current').hide();
+      $('.uploader-progress').hide();
       $('.uploader-form').show();
       updateProgress('reset');
     });
     $('.uploader-cancel-form').click(function(event) {
       $('.uploader-current').show();
       $('.uploader-form').hide();
+      $('.uploader-progress').hide();
       updateProgress('reset');
-      $('input[type="hidden"][name="user[fields][avatar]"]').remove();
     });
 
     /**
      * Avatar upload
      */
       // @todo : delete picture
-      // @todo : move params in configuration
     $('.cloudinary-fileupload').fileupload({
-      imageMaxWidth: 800,
-      imageMaxHeight: 600,
-      acceptFileTypes: /(\.|\/)(gif|jpe?g|png|bmp|ico)$/i,
-      maxFileSize: 10000000, // 10MB
       start: function (e) {
-        console.log('start');
-        $('.cloudinary-fileupload').hide();
+        $('.uploader-form').hide();
+        $('.uploader-progress').show();
         updateProgress(0);
       },
       progress: function (e, data) {
-        console.log('progress');
         updateProgress(
           Math.round((data.loaded * 100.0) / data.total)
         );
       },
       fail: function (e, data) {
-        console.log('fail');
+        console.log(data);
         updateProgress('fail');
       }
     })
       .off('cloudinarydone')
       .on('cloudinarydone', function (e, data) {
-        console.log('done');
         $('.uploader-current .current').html(
           $.cloudinary.image(data.result.public_id, {
             format: data.result.format,
@@ -85,7 +82,7 @@ $(document).ready(function() {
             crop: 'fill', width: 50, height: 50
           })
         );
-        $('.uploader-form').hide();
+        $('.uploader-progress').hide();
         $('.uploader-current').show();
       });
 
@@ -126,6 +123,7 @@ $(document).ready(function() {
         $('.progress').hide();
       }
     }
+
   }
 
 });

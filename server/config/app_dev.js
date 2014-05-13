@@ -15,6 +15,7 @@ module.exports = {
     pictures: {
       user: {
         avatar: {
+          default: 'avatar_default.png',
           small: {width: 20, height: 20},
           medium: {width: 50, height: 50},
           large: {width: 150, height: 150}

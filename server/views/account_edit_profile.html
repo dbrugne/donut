@@ -63,16 +63,18 @@
                 <div class="uploader-current" data-current="{{& userFields.avatar}}">
                     <span class="current"></span> (<a href="#_" class="uploader-show-form">change</a>).
                 </div>
-                <!-- State upload form -->
+                <!-- Avatar upload form -->
                 <div class="uploader-form">
-                    {{& uploadTag}}
+                    {{& uploadTag}} (<a href="#_" class="uploader-cancel-form">cancel</a>)
+                </div>
+                <!-- Avatar upload progress -->
+                <div class="uploader-progress">
                     <div class="progress">
                         <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
                             0% complete
                         </div>
                     </div>
                     <div class="preview"></div>
-                    (<a href="#_" class="uploader-cancel-form">cancel</a>)
                 </div>
             </div>
         </div>

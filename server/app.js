@@ -75,6 +75,10 @@ app.use(require('./routes/index'));
 app.use(require('./routes/chat'));
 app.use(require('./routes/authentication'));
 app.use(require('./routes/account'));
+app.use(require('./routes/account-delete'));
+app.use(require('./routes/account-edit-email'));
+app.use(require('./routes/account-edit-password'));
+app.use(require('./routes/account-edit-profile'));
 app.use(require('./routes/user-profile'));
 app.use(require('./routes/room-profile'));
 
