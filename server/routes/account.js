@@ -1,13 +1,14 @@
 var express = require('express');
 var router = express.Router();
-var path = require('path');
 var User = require('../app/models/user');
 var cloudinary = require('../app/cloudinary');
 
 router.get('/account', isLoggedIn, function(req, res) {
-    res.render('account', {
-      avatarUrl: cloudinary.cloudinary.url(req.user.avatar, { width: 50, height: 50, crop: 'fill' })
-    });
+  var avatarUrl = (req.user.avatar)
+    ? req.user.avatarUrl('medium')
+    : null;
+console.log(req.user.avatar);
+    res.render('account', { avatarUrl: avatarUrl });
 });
 
 router.route('/account/edit/email')
@@ -106,10 +107,15 @@ router.route('/account/edit/password')
 router.route('/account/edit/profile')
     // Form
     .get(isLoggedIn, function(req, res) {
-        var userFields = req.user.toObject();
         res.render('account_edit_profile', {
-          userFields: userFields,
-          uploadTag: cloudinary.uploadTag(req, 'user[fields][avatar]'),
+          userFields: req.user.toObject(),
+          uploadTag: cloudinary.uploader.image_upload_tag('user[fields][avatar]', {
+            callback: "http://" + req.headers.host + "/javascripts/vendor/cloudinary_js/html/cloudinary_cors.html",
+            tags: "user-avatar",
+            crop: "limit", width: 1000, height: 1000,
+            eager: { crop: "fill", width: 150, height: 100 },
+            html: { style: "" }
+          }),
           scripts: [
             {src: '/validator.min.js'},
             {src: '/javascripts/vendor/blueimp-file-upload/js/vendor/jquery.ui.widget.js'},
@@ -188,8 +194,7 @@ router.route('/account/edit/profile')
 
         // Cloudinary image
         if (req.body.user.fields.avatar) {
-          console.log(req.body.user.fields.avatar);
-          var preloaded_file = new cloudinary.cloudinary.PreloadedFile(req.body.user.fields.avatar);
+          var preloaded_file = new cloudinary.PreloadedFile(req.body.user.fields.avatar);
           if (preloaded_file.is_valid()) {
             user.avatar = preloaded_file.identifier();
             console.log(user.avatar);

@@ -40,5 +40,17 @@ userSchema.methods.validPassword = function(password) {
     return bcrypt.compareSync(password, this.local.password);
 };
 
+// avatar URL
+userSchema.methods.avatarUrl = function(format) {
+  if (!this.avatar) return null;
+
+  var options = {crop: 'fill'};
+  if (!format) format = 'small';
+  options.width = configuration.pictures.user.avatar[format]['width'];
+  options.height = configuration.pictures.user.avatar[format]['height'];
+
+  return cloudinary.url(this.avatar, options);
+};
+
 // create the model for users and expose it to our app
 module.exports = mongoose.model('User', userSchema);

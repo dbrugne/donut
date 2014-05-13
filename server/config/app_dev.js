@@ -13,28 +13,18 @@ module.exports = {
         'callbackURL' 	: 'http://chat.local/login/facebook/callback'
     },
     pictures: {
-      format: ".jpg",
       user: {
         avatar: {
-          small: "20x20",
-          medium: "50x50",
-          large: "150x150"
-        },
-        background: {
-          medium: "100x100",
-          large: "1024x500"
+          small: {width: 20, height: 20},
+          medium: {width: 50, height: 50},
+          large: {width: 150, height: 150}
         }
       },
-      room: {
-        avatar: {
-          small: "20x20",
-          medium: "50x50",
-          large: "150x150"
-        },
-        background: {
-          medium: "100x100",
-          large: "1024x500"
-        }
-      }
+      room: { }
+    },
+    cloudinary: {
+      cloud_name: 'roomly',
+      api_key: '962274636195222',
+      api_secret: 'ayS9zUnK7sDxkme4sLquIPOmNVU'
     }
 };

@@ -65,7 +65,7 @@ router.param('user', function(req, res, next, username) {
 router.get('/user/:user', function(req, res) {
     res.render('user', {
         user : req.requestedUser,
-        avatarUrl: cloudinary.cloudinary.url(req.requestedUser.avatar, { width: 50, height: 50, crop: 'fill' })
+        avatarUrl: req.requestedUser.avatarUrl('large')
     });
 });
 
