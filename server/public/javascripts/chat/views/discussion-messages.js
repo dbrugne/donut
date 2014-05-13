@@ -40,7 +40,12 @@ define([
 
       var html = this.template({
         user_id: message.get('user_id'),
-        avatar: message.get('avatar'),
+        avatar: $.cloudinary.url('avatar-'+message.get('user_id'), {
+          default_image: 'avatar_default.png', // @todo : get from configuration file
+          crop: 'fill',
+          width: '20', // @todo : get from configuration file
+          height: '20' // @todo : get from configuration file
+        }),
         username: message.get('username'),
         message: messageHtml,
         date: dateText

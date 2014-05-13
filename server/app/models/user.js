@@ -48,7 +48,7 @@ userSchema.methods.avatarUrl = function(format) {
   options.height = configuration.pictures.user.avatar[format]['height'];
   options.default_image = configuration.pictures.user.avatar.default;
 
-  return cloudinary.url(this._id.toString(), options);
+  return cloudinary.url('avatar-'+this._id.toString(), options);
   // default image will be handled by cloudinary if image doesn't exist for this id
 };
 

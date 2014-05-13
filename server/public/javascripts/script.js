@@ -26,6 +26,7 @@ $(document).ready(function() {
     /**
      * Default avatar display
      */
+    // @todo : get params from configuration
     $.cloudinary.config({ cloud_name: 'roomly', api_key: '962274636195222'});
     $('.uploader-form').hide();
     $('.uploader-progress').hide()
@@ -33,7 +34,7 @@ $(document).ready(function() {
     if (current) {
       $('.uploader-current .current').html(
         $.cloudinary.image(current, {
-          // @todo : move params in configuration
+          // @todo : get params from configuration
           crop: 'fill', width: 50, height: 50
         })
       );

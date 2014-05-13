@@ -40,8 +40,7 @@ define([
       }
       var user = new UserModel({
         id: data.user_id,
-        username: data.username,
-        avatar: data.avatar
+        username: data.username
       });
       this.users.add(user);
       this.trigger('notification', {

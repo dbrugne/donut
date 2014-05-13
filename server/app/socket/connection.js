@@ -17,9 +17,6 @@ module.exports = function(io, socket) {
   socket.getUserId = function() {
     return this.handshake.user._id;
   }
-  socket.getAvatar = function() {
-    return this.handshake.user.avatar;
-  }
 
   // Welcome data
   User.findById(socket.getUserId(), 'rooms', function(err, user) {
@@ -30,7 +27,6 @@ module.exports = function(io, socket) {
     socket.emit('welcome', {
       user_id: socket.getUserId(),
       username: socket.getUsername(),
-      avatar: socket.getAvatar(),
       rooms: user.rooms
     });
   });
@@ -40,8 +36,7 @@ module.exports = function(io, socket) {
     if (online.getUserId() != socket.getUserId()) {
       socket.emit('user:online', {
         user_id: online.getUserId(),
-        username: online.getUsername(),
-        avatar: online.getAvatar()
+        username: online.getUsername()
       });
     }
   });
@@ -49,8 +44,7 @@ module.exports = function(io, socket) {
   // Push this user to other users
   socket.broadcast.emit('user:online', {
     user_id: socket.getUserId(),
-    username: socket.getUsername(),
-    avatar: socket.getAvatar()
+    username: socket.getUsername()
   });
 
   // Activity

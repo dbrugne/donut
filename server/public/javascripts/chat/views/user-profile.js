@@ -25,7 +25,15 @@ define([
     },
 
     render: function(user) {
-      var html = this.template({user: user});
+      var html = this.template({
+        user: user,
+        avatar: $.cloudinary.url('avatar-'+user.user_id, {
+          default_image: 'avatar_default.png', // @todo : get from configuration file
+          crop: 'fill',
+          width: '100', // @todo : get from configuration file
+          height: '100' // @todo : get from configuration file
+        })
+      });
       this.$el.find('.modal-body').first().html(html);
       return this;
     },

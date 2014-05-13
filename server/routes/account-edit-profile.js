@@ -67,7 +67,7 @@ router.route('/account/edit/profile')
         userFields: req.user.toObject(),
         uploadTag: cloudinary.uploader.image_upload_tag('user[fields][avatar]', {
           callback: "http://" + req.headers.host + "/javascripts/vendor/cloudinary_js/html/cloudinary_cors.html",
-          public_id: req.user._id,
+          public_id: 'avatar-'+req.user._id,
           tags: "user-avatar",
           crop: "limit", width: 800, height: 600,
           html: { style: "" }
@@ -103,6 +103,8 @@ router.route('/account/edit/profile')
         var preloaded_file = new cloudinary.PreloadedFile(req.body.user.fields.avatar);
         if (preloaded_file.is_valid()) {
           user.avatar = preloaded_file.identifier();
+          // just to know that a avatar exist on cloudinary,
+          // we use the user '_id' in code to find avatar
         } else {
           throw("Invalid upload signature");
         }

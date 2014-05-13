@@ -9,7 +9,6 @@ define([
     defaults: function() {
       return {
         username: '',
-        avatar: '',
         user_id: '',
         type: 'onetoone',
         focused: false,

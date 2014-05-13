@@ -17,7 +17,6 @@ module.exports = function(io, socket, data) {
     var userData = user.toJSON();
     userData.user_id = userData._id;
     delete userData._id;
-    userData.avatar = user.avatar;
     socket.emit('user:profile', {
       user: userData
     });

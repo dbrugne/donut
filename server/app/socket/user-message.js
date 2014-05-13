@@ -15,8 +15,7 @@ module.exports = function(io, socket, data) {
     time: Date.now(),
     message: data.message,
     user_id: socket.getUserId(),
-    username: socket.getUsername(),
-    avatar: socket.getAvatar()
+    username: socket.getUsername()
   };
 
   io.sockets.in('user:'+from).emit('user:message', message);

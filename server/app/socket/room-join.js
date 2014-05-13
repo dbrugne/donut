@@ -38,7 +38,7 @@ module.exports = function(io, socket, data) {
 
       Room.findOneAndUpdate({_id: room.get('_id')}, {$addToSet: { users: socket.getUserId() }}, function(err, room) {
         if (err) return console.log(err);
-        room.populate('users', 'username avatar', function(err, room) {
+        room.populate('users', 'username', function(err, room) {
           if (err) return console.log(err);
           // socket subscription
           socket.join(data.name);
@@ -48,8 +48,7 @@ module.exports = function(io, socket, data) {
           _.each(room.users, function(dbUser) {
             users.push({
               user_id: dbUser._id,
-              username: dbUser.username,
-              avatar: dbUser.avatar
+              username: dbUser.username
             });
           });
 
@@ -64,8 +63,7 @@ module.exports = function(io, socket, data) {
           io.sockets.in(data.name).emit('room:in', {
             name: data.name,
             user_id: socket.getUserId(),
-            username: socket.getUsername(),
-            avatar: socket.getAvatar()
+            username: socket.getUsername()
           });
 
           // Activity

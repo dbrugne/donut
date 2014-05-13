@@ -12,7 +12,8 @@ define([
   'views/room-search',
   'views/user-search',
   'views/user-profile', // need to be loaded here to instantiate DOM
-  'views/room-profile' // idem
+  'views/room-profile', // idem
+  'jquery.cloudinary'
 ], function ($, _, Backbone, client, discussions, windowView, statusView, discussionsView, onlinesView, roomCreateView, roomSearchView, userSearchView, userProfile, roomProfile) {
   var MainView = Backbone.View.extend({
 
@@ -28,6 +29,10 @@ define([
     },
 
     initialize: function() {
+      $.cloudinary.config({
+        cloud_name: 'roomly', // @todo : get from configuration file
+        api_key:    '962274636195222' // @todo : get from configuration file
+      });
     },
 
     searchRoomModal: function() {

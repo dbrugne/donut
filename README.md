@@ -38,10 +38,10 @@ npm start
 -- [x] remove nasty cloudinary.cloudinary code
 -- [x] make add/edit picture work in all cases (inclusing "cancel")
 -- [x] re-Add a method on user model with "format" parameter (use in account/, user/ and #header)
--- [ ] in chat and on account/edit pass only the cloudinary id and implement image loading on client side
+-- [x] in chat and on account/edit pass only the cloudinary id and implement image loading on client side
 -- [-] configure well upload constrains (maxsize, format ..) => not supported by jQuery uploader
 -- [x] handle default image
--- [ ] add "delete" image (delete action in form and removing on clound)
+-- [ ] add "delete" image (delete action in form and removing on cloud)
 -- [ ] on image change "delete" previous image
 
 - Chat
@@ -49,6 +49,8 @@ npm start
 - [ ] Chat default room with auto-join on connection
 - [ ] Separate onetoone and room list in left column (different views, collections and ... 'client' binds)
 - [ ] Sort room list alphabetically and change rendering pattern to "redrawn" everytime
+- [ ] Repair room first routing bug (double join when room is both in URL and user mongo entity)
+- [ ] Add a proxy for room:join/room:success to avoid previous bug in better way
 
 - [ ] Remove "your profile" in header and put the link on username
 - [ ] Modify "header" link to open account/ in blank

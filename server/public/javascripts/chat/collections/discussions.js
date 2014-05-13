@@ -27,6 +27,7 @@ define([
       var model = this.findWhere({ type: 'room', name: name });
       if (model == undefined) {
         // Create room
+        this.thisDiscussionShouldBeFocusedOnSuccess = name; // @todo : this line is still helpful now?
         client.join(name);
         return;
       }
@@ -41,7 +42,6 @@ define([
       if (model == undefined) {
         // Create onetoone
         // @todo : need to replace 'user.id' for identifying room by 'user.username' everywhere
-        //         the gravatar URL should be estimated by the username hash
         //         until that direct access to user one to one doesn't work
         return;
       }
@@ -107,8 +107,7 @@ define([
       _.each(room.users, function(element, key, list) {
         roomModel.users.add(new UserModel({
           id: element.user_id,
-          username: element.username,
-          avatar: element.avatar
+          username: element.username
         }));
       });
 
@@ -132,8 +131,7 @@ define([
     userOpen: function(data) {
       var onetoone = this.addOneToOne(new UserModel({
         id: data.user_id,
-        username: data.username,
-        avatar: data.avatar
+        username: data.username
       }));
       this.focus(onetoone);
     },
@@ -150,8 +148,7 @@ define([
 
       model = this.addOneToOne(new UserModel({
         id: with_user_id,
-        username: message.username,
-        avatar: message.avatar
+        username: message.username
       }));
 
       // To have the same data between room and user messages (= same view code)
@@ -169,8 +166,7 @@ define([
         model = new OneToOneModel({
           id: oneToOneId,
           user_id: user.get('id'),
-          username: user.get('username'),
-          avatar: user.get('avatar')
+          username: user.get('username')
         });
         this.add(model);
       }

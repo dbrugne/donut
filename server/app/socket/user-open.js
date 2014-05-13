@@ -9,7 +9,7 @@ module.exports = function(io, socket, data) {
     return;
   } // @todo : check user_id validity
 
-  User.findById(data.user_id, 'username avatar', function(err, user) {
+  User.findById(data.user_id, 'username', function(err, user) {
     if (err) {
       delegate_error('Unable to retrieve user ' + err, __dirname + '/' + __filename);
       return;
@@ -22,8 +22,7 @@ module.exports = function(io, socket, data) {
     // push user data
     socket.emit('user:open', {
       user_id: user._id,
-      username: user.username,
-      avatar: user.avatar
+      username: user.username
     });
 
     // Activity
