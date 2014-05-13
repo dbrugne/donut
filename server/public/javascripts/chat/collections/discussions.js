@@ -125,6 +125,8 @@ define([
     onRoomMessage: function(data) {
       var model = this.get(data.name);
       model.message(data);
+      // Window new message indication
+      this.trigger('newMessage');
     },
 
     /* OneToOne specific */
@@ -155,6 +157,9 @@ define([
       message.user_id = message.from;
 
       model.message(message);
+
+      // Window new message indication
+      this.trigger('newMessage');
     },
 
     /* OneToOne specific */

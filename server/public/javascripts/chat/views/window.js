@@ -23,7 +23,7 @@ define([
 
       this.title = this.$document.attr('title');
 
-      // Bind events
+      // Bind events to browser window
       var that = this;
       this.$window.focus(function(event) {
         that.onFocus();
@@ -34,6 +34,9 @@ define([
       this.$window.on('beforeunload', function() {
         return that.onClose();
       });
+
+      // Bind events to model
+      this.listenTo(discussions, 'newMessage', this.increment());
     },
 
     onBlur: function() {

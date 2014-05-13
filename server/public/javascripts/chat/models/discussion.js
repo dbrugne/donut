@@ -2,9 +2,8 @@ define([
   'underscore',
   'backbone',
   'collections/messages',
-  'models/message',
-  'views/window'
-], function (_, Backbone, MessagesCollection, MessageModel, windowView) {
+  'models/message'
+], function (_, Backbone, MessagesCollection, MessageModel) {
   var DiscussionModel = Backbone.Model.extend({
 
     defaults: function() {
@@ -30,9 +29,6 @@ define([
         var unread = this.get('unread');
         this.set('unread', unread + 1);
       }
-
-      // Unread indication in window title
-      windowView.increment();
     }
 
   });
