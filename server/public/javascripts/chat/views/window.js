@@ -61,7 +61,7 @@ define([
 
     onClose: function() {
       // only if at least one room is open
-      if (discussions.length > 0) {
+      if (discussions && discussions.length > 0) {
         return "If you leave this page all the room history will be lost.";
       } else {
         return;
