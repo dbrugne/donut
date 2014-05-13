@@ -41,10 +41,7 @@ define([
       var html = this.template({
         user_id: message.get('user_id'),
         avatar: $.cloudinary.url('avatar-'+message.get('user_id'), {
-          default_image: 'avatar_default.png', // @todo : get from configuration file
-          crop: 'fill',
-          width: '20', // @todo : get from configuration file
-          height: '20' // @todo : get from configuration file
+          transformation: 'user-avatar-small'
         }),
         username: message.get('username'),
         message: messageHtml,
