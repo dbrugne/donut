@@ -1,5 +1,4 @@
 var mongoose = require('mongoose');
-var configuration = require('../../config/app_dev');
 
 var roomSchema = mongoose.Schema({
 

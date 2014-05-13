@@ -34,8 +34,7 @@ $(document).ready(function() {
     if (current) {
       $('.uploader-current .current').html(
         $.cloudinary.image(current, {
-          // @todo : get params from configuration
-          crop: 'fill', width: 50, height: 50
+          transformation: 'user-avatar-medium'
         })
       );
     } else {
@@ -80,10 +79,7 @@ $(document).ready(function() {
           $.cloudinary.image(data.result.public_id, {
             format: data.result.format,
             version: data.result.version,
-            crop: 'fill',
-            width: 50,                          // @todo : get from config
-            height: 50,                         // @todo : get from config
-            default_image: 'avatar_default.png' // @todo : get from config
+            transformation: 'user-avatar-medium'
           })
         );
         $('.uploader-progress').hide();

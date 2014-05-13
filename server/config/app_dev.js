@@ -12,17 +12,6 @@ module.exports = {
         'clientSecret' 	: '7211182b85110f06e17efce2b4fb004a', // your App Secret
         'callbackURL' 	: 'http://chat.local/login/facebook/callback'
     },
-    pictures: {
-      user: {
-        avatar: {
-          default: 'avatar_default.png',
-          small: {width: 20, height: 20},
-          medium: {width: 50, height: 50},
-          large: {width: 150, height: 150}
-        }
-      },
-      room: { }
-    },
     cloudinary: {
       cloud_name: 'roomly',
       api_key: '962274636195222',

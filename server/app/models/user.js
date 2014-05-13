@@ -2,7 +2,6 @@ var mongoose = require('mongoose');
 var path = require('path');
 var bcrypt   = require('bcrypt-nodejs');
 var cloudinary = require('../cloudinary');
-var configuration = require('../../config/app_dev');
 
 var userSchema = mongoose.Schema({
 
@@ -42,14 +41,11 @@ userSchema.methods.validPassword = function(password) {
 
 // avatar URL
 userSchema.methods.avatarUrl = function(format) {
-  var options = {crop: 'fill'};
   if (!format) format = 'small';
-  options.width = configuration.pictures.user.avatar[format]['width'];
-  options.height = configuration.pictures.user.avatar[format]['height'];
-  options.default_image = configuration.pictures.user.avatar.default;
-
+  var options = {};
+  options.transformation = 'user-avatar-'+format;
   return cloudinary.url('avatar-'+this._id.toString(), options);
-  // default image will be handled by cloudinary if image doesn't exist for this id
+  // cloudinary handle default image
 };
 
 // create the model for users and expose it to our app
