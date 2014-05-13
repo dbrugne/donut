@@ -75,7 +75,8 @@ app.use(require('./routes/index'));
 app.use(require('./routes/chat'));
 app.use(require('./routes/authentication'));
 app.use(require('./routes/account'));
-app.use(require('./routes/profile'));
+app.use(require('./routes/user-profile'));
+app.use(require('./routes/room-profile'));
 
 /// catch 404 and forwarding to error handler
 app.use(function(req, res, next) {
