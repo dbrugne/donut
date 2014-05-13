@@ -64,8 +64,8 @@ router.param('user', function(req, res, next, username) {
 });
 router.get('/user/:user', function(req, res) {
     res.render('user', {
-        user : req.requestedUser,
-        avatarUrl: req.requestedUser.avatarUrl('large')
+      requestedUser: req.requestedUser,
+      avatarUrl: req.requestedUser.avatarUrl('large')
     });
 });
 
