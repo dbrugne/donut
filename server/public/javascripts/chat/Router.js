@@ -33,10 +33,6 @@ define([
     },
 
     onServerConnect: function(data) {
-      if (!window.historyStarted) {
-        Backbone.history.start();
-        window.historyStarted = true;
-      }
     },
 
     onServerWelcome: function(data) {
@@ -51,6 +47,13 @@ define([
       _.each(data.rooms, function(room) {
         client.join(room);
       });
+
+      if (!window.historyStarted) {
+        // @todo : bug, when arriving on http://FQDN/!#room/toulouse with #toulouse already opened in user entity
+        // => provoke a double room:join and a double room:welcome and broke routing
+        Backbone.history.start();
+        window.historyStarted = true;
+      }
     },
 
     root: function() {
