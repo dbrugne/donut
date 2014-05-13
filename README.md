@@ -43,6 +43,7 @@ npm start
 -- [x] handle default image
 -- [ ] add "delete" image (delete action in form and removing on cloud)
 -- [ ] on image change "delete" previous image
+-- [ ] cloudinary cache bug http://cloudinary.com/documentation/jquery_image_manipulation#image_versions
 
 - Chat
 - [ ] Chat default panel with homepage content
