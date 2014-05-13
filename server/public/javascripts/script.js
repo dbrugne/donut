@@ -79,7 +79,10 @@ $(document).ready(function() {
           $.cloudinary.image(data.result.public_id, {
             format: data.result.format,
             version: data.result.version,
-            crop: 'fill', width: 50, height: 50
+            crop: 'fill',
+            width: 50,                          // @todo : get from config
+            height: 50,                         // @todo : get from config
+            default_image: 'avatar_default.png' // @todo : get from config
           })
         );
         $('.uploader-progress').hide();

@@ -69,8 +69,7 @@ router.route('/account/edit/profile')
           callback: "http://" + req.headers.host + "/javascripts/vendor/cloudinary_js/html/cloudinary_cors.html",
           public_id: req.user._id,
           tags: "user-avatar",
-          crop: "limit", width: 1000, height: 1000,
-          eager: { crop: "fill", width: 150, height: 150 },
+          crop: "limit", width: 800, height: 600,
           html: { style: "" }
         }),
         scripts: [
