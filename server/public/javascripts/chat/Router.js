@@ -6,12 +6,6 @@ define([
   'models/current-user',
   'views/main'
 ], function (_, Backbone, discussions, client, currentUser, mainView) {
-
-    // @todo : now window reopen not pertubate routing:
-    // - should change room focus/open and onetoone focus open to use router only
-    // - should auto join room/onetoone on arriving on page
-    // - should auto focus first room if no is focused
-
   var ChatRouter = Backbone.Router.extend({
 
     routes: {
