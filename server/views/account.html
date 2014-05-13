@@ -22,15 +22,19 @@
         <div class="global">
             <div class="well">
                 <h3><span class="fa fa-user"></span> Profile </h3>
-                <p class="detail with-picture">
+                <div class="detail">
                     {{#avatarUrl}}
-                    <img class="avatar" src="{{avatarUrl}}" />
+                    <a href="/user/{{user.username}}" class="picture pull-left">
+                        <img src="{{avatarUrl}}">
+                    </a>
                     {{/avatarUrl}}
-                    <span class="labels">username</span> <span class="values">{{user.username}}</span><br>
-                    <span class="labels">bio</span> <span class="values">{{user.bio}}</span><br>
-                    <span class="labels">location</span> <span class="values">{{user.location}}</span><br>
-                    <span class="labels">website</span> <span class="values">{{user.website}}</span><br>
-                </p>
+                    <div class="body">
+                        <span class="labels">username</span> <span class="values">{{user.username}}</span><br>
+                        <span class="labels">bio</span> <span class="values">{{user.bio}}</span><br>
+                        <span class="labels">location</span> <span class="values">{{user.location}}</span><br>
+                        <span class="labels">website</span> <span class="values">{{user.website}}</span><br>
+                    </div>
+                </div>
                 <p class="text-right">
                     <a href="/account/edit/profile" class="btn btn-success">Edit your profile</a>
                 </p>
