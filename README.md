@@ -51,7 +51,7 @@ npm start
 - [ ] Separate onetoone and room list in left column (different views, collections and ... 'client' binds)
 - [ ] Sort room list alphabetically and change rendering pattern to "redrawn" everytime
 - [ ] Review the chat interface loading process
--- [ ] Repair room first routing bug (double join when room is both in URL and user mongo entity)
+-- [ ] Repair URL-room-auto-join (double join when room is both in URL and user mongo entity, broke the routing)
 -- [ ] Add a proxy for room:join/room:success to avoid previous bug in better way
 
 - [x] Remove "your profile" in header and put the link on username
@@ -66,9 +66,9 @@ npm start
 - Account
 - [ ] Add form validation middleware for each form (account/*, login, signup)
 - [ ] Refactor form error message display (use layout message box and middleware)
+- [ ] Add color theme field
 - [ ] CSRF and 304!
 - [ ] Forgotten password
-- [ ] Add color theme field
 - [ ] Template user profile
 
 - Site
