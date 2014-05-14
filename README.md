@@ -64,7 +64,7 @@ npm start
 - [ ] Test it on IE8-11/FF
 
 - Signup
-- [ ] Remove username from signup form (comment)
+- [x] Remove username from signup form (comment)
 
 - Account
 - [ ] Add form validation middleware for each form (account/*, login, signup)
