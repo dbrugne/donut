@@ -9,8 +9,6 @@ define([
     el: $('#button-status'),
 
     initialize: function() {
-      this.update('connecting');
-
       var that = this;
 
       this.listenTo(this.model, 'connecting', function() {
