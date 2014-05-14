@@ -77,6 +77,7 @@ app.use(require('./routes/authentication'));
 app.use(require('./routes/user-profile'));
 app.use(require('./routes/room-profile'));
 app.use(require('./routes/chat'));
+app.use(require('./routes/choose-username'));
 app.use(require('./routes/account'));
 app.use(require('./routes/account-delete'));
 app.use(require('./routes/account-edit-email'));

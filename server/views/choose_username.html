@@ -1,0 +1,51 @@
+<div id="choose-username">
+
+    <div class="page-header">
+        <h1><span class="fa fa-cog"></span> Please, choose a username</h1>
+    </div>
+
+    <form action="/choose-username" method="post" role="form" class="forms">
+
+        <input type="hidden" name="_csrf" value="{{token}}">
+
+        {{#is_errors}}
+        <div class="errors">
+            {{#errors}}
+            {{#errors}}{{msg}}{{/errors}}<br>
+            {{/errors}}
+        </div>
+        {{/is_errors}}
+
+        <div class="controls">
+            <div class="col-sm-8 col-lg-offset-2 text-right">
+                <input type="submit" class="btn btn-primary btn-sm" value="Save and enter in chat">
+                <a href="/account" type="button" class="btn btn-default btn-sm">Cancel</a>
+            </div>
+        </div>
+
+        <h4>Your username</h4>
+
+        <div class="col-sm-10 col-lg-offset-2">
+            <strong>This username will be your identity in chatroom, you can change your username later in your acccount.</strong>
+        </div>
+
+        <div class="controls">
+            <label class="control-labels" for="username-field">Username</label>
+            <div class="control-fields">
+                <input type="username" class="form-control" id="username-field" name="user[fields][username]" placeholder="Enter valid username" value="{{userFields.username}}">
+                <p class="help-block">The username should be at least 3 characters length and you can use letters, numbers and some special characters.</p>
+            </div>
+        </div>
+
+        <h4> </h4>
+
+        <div class="controls">
+            <div class="col-sm-8 col-lg-offset-2 text-right">
+                <input type="submit" class="btn btn-primary btn-sm" value="Save and enter in chat">
+                <a href="/account" type="button" class="btn btn-default btn-sm">Cancel</a>
+            </div>
+        </div>
+
+    </form>
+
+</div>

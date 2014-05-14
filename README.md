@@ -58,11 +58,7 @@ npm start
 - [x] Modify "header" link to open account/ in blank
 - [x] Add a chat button in logged header
 - [x] Removed "logged" homepage to replace with automatic redirection to chat interface (expect for account/)
-
-- [ ] Add an intermediate "form" to choose a username when entering in chatroom
-
-- [ ] Template user profile
-- [ ] Test it on IE8-11/FF
+- [x] Add an intermediate "form" to choose a username when entering in chatroom
 
 - Signup
 - [x] Remove username from signup form (comment)
@@ -73,9 +69,11 @@ npm start
 - [ ] CSRF and 304!
 - [ ] Forgotten password
 - [ ] Add color theme field
+- [ ] Template user profile
 
 - Site
 - [x] Mettre au propre les mockups du MVP
+- [ ] Test it on IE8-11/FF
 - [ ] Design integration
 - [ ] Google Analytics (HP, interface de chat)
 - [ ] Deploy/backup/monitor
