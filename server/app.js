@@ -24,6 +24,7 @@ mongoose.connect(configuration.mongo.url);
 
 // Sessions in MongoDB
 var MongoStore = require('connect-mongo')({session: session}); // @todo: re-pass express instead of hash when npm will be updated https://www.npmjs.org/package/connect-mongo
+// @todo : was update, upgrade and test https://www.npmjs.org/package/connect-mongo
 var sessionStore = new MongoStore({mongoose_connection: mongoose.connection});
 
 // Passport
@@ -49,9 +50,9 @@ app.use(function(req, res, next) { // pass user to all views
     res.locals.user = req.user;
     next();
 });
-//app.use(csrf()); // @todo : CSRF doesn't work everytinme (espacially with nested forms)
+app.use(csrf());
 app.use(function(req, res, next) { // add csrf helper in all views
-    res.locals.token = "xxx";//req.csrfToken();
+    res.locals.token = req.csrfToken();
     next();
 });
 app.use(flash());
@@ -72,15 +73,15 @@ app.locals.title = configuration.title;
 
 // routes
 app.use(require('./routes/index'));
-app.use(require('./routes/chat'));
 app.use(require('./routes/authentication'));
+app.use(require('./routes/user-profile'));
+app.use(require('./routes/room-profile'));
+app.use(require('./routes/chat'));
 app.use(require('./routes/account'));
 app.use(require('./routes/account-delete'));
 app.use(require('./routes/account-edit-email'));
 app.use(require('./routes/account-edit-password'));
 app.use(require('./routes/account-edit-profile'));
-app.use(require('./routes/user-profile'));
-app.use(require('./routes/room-profile'));
 
 /// catch 404 and forwarding to error handler
 app.use(function(req, res, next) {

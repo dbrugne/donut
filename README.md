@@ -56,7 +56,7 @@ npm start
 - [x] Remove "your profile" in header and put the link on username
 - [x] Modify "header" link to open account/ in blank
 - [x] Add a chat button in logged header
-- [ ] Removed "logged" homepage to replace with automatic redirection to chat interface (expect for account/)
+- [x] Removed "logged" homepage to replace with automatic redirection to chat interface (expect for account/)
 
 - [ ] Add an intermediate "form" to choose a username when entering in chatroom
 
