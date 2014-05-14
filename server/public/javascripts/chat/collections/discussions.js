@@ -26,8 +26,8 @@ define([
     focusRoomByName: function(name) {
       var model = this.findWhere({ type: 'room', name: name });
       if (model == undefined) {
-        // Create room
-        this.thisDiscussionShouldBeFocusedOnSuccess = name; // @todo : this line is still helpful now?
+        // Not already open
+        this.thisDiscussionShouldBeFocusedOnSuccess = name;
         client.join(name);
         return;
       }
