@@ -32,7 +32,7 @@
                     <p class="navbar-text">
                         Welcome
                         {{#user.username}}
-                        <strong>{{user.username}}</strong>
+                        <a href="/user/{{ user.username }}" target="_blank"><strong>{{user.username}}</strong></a>
                         {{/user.username}}
                         {{^user.username}}
                         {{#user.facebook.name}}
@@ -41,10 +41,7 @@
                         {{/user.username}}
                     </p>
                 </li>
-                {{#user.username}}
-                <li><a href="/user/{{ user.username }}"><span class="glyphicon glyphicon-user"></span> your profile</a></li>
-                {{/user.username}}
-                <li><a href="/account"><i class="fa fa-cog"></i> your account</a></li>
+                <li><a href="/account" target="_blank"><i class="fa fa-cog"></i> your account</a></li>
                 <li><a href="/logout"><i class="glyphicon glyphicon-remove-circle"></i> logout</a></li>
                 {{/user}}
                 {{^user}}

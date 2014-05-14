@@ -28,11 +28,12 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 {{#user}}
+                <li><a href="/!"><i class="fa fa-bullhorn"></i> chat now</a></li>
                 <li>
                     <p class="navbar-text">
                         Welcome
                         {{#user.username}}
-                        <strong>{{user.username}}</strong>
+                        <a href="/user/{{ user.username }}"><strong>{{user.username}}</strong></a>
                         {{/user.username}}
                         {{^user.username}}
                             {{#user.facebook.name}}
@@ -41,9 +42,6 @@
                         {{/user.username}}
                     </p>
                 </li>
-                {{#user.username}}
-                <li><a href="/user/{{ user.username }}"><span class="glyphicon glyphicon-user"></span> your profile</a></li>
-                {{/user.username}}
                 <li><a href="/account"><i class="fa fa-cog"></i> your account</a></li>
                 <li><a href="/logout"><i class="glyphicon glyphicon-remove-circle"></i> logout</a></li>
                 {{/user}}

@@ -53,8 +53,9 @@ npm start
 - [ ] Repair room first routing bug (double join when room is both in URL and user mongo entity)
 - [ ] Add a proxy for room:join/room:success to avoid previous bug in better way
 
-- [ ] Remove "your profile" in header and put the link on username
-- [ ] Modify "header" link to open account/ in blank
+- [x] Remove "your profile" in header and put the link on username
+- [x] Modify "header" link to open account/ in blank
+- [x] Add a chat button in logged header
 - [ ] Removed "logged" homepage to replace with automatic redirection to chat interface (expect for account/)
 
 - [ ] Add an intermediate "form" to choose a username when entering in chatroom
