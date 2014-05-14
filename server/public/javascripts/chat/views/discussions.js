@@ -39,11 +39,11 @@ define([
     },
 
     focusDefault: function() {
-      this.$PanelContainer.find('.discussion[data-default=true]').show();
+      this.$PanelContainer.find('#home').show();
     },
 
     unfocusDefault: function() {
-      this.$PanelContainer.find('.discussion[data-default=true]').hide();
+      this.$PanelContainer.find('#home').hide();
     }
 
   });
