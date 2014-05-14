@@ -24,21 +24,31 @@ module.exports = function(io, socket) {
       delegate_error(err, __dirname+'/'+__filename);
       user.rooms = [];
     }
-    socket.emit('welcome', {
-      user_id: socket.getUserId(),
-      username: socket.getUsername(),
-      rooms: user.rooms
-    });
-  });
 
-  // Push online users list
-  io.sockets.clients().forEach(function(online) {
-    if (online.getUserId() != socket.getUserId()) {
-      socket.emit('user:online', {
+    // Online users list
+    // @todo: should list users and not sockets
+    var onlines = [];
+    io.sockets.clients().forEach(function(online) {
+      if (online.getUserId() == socket.getUserId()) return;
+      onlines.push({
         user_id: online.getUserId(),
         username: online.getUsername()
       });
-    }
+    });
+
+    // Welcome
+    socket.emit('welcome', {
+      user: {
+        user_id: socket.getUserId(),
+        username: socket.getUsername()
+      },
+      rooms: user.rooms,
+      onlines: onlines,
+      home: {
+        welcome: ['Bienvenue sur l\'interface de chat de roomly'],
+        rooms: ['#toulouse', '#paintball', '#dagnirDae']
+      }
+    });
   });
 
   // Push this user to other users

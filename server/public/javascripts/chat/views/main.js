@@ -4,6 +4,7 @@ define([
   'backbone',
   'models/client',
   'collections/discussions',
+  'models/current-user',
   'views/window',
   'views/status',
   'views/home',
@@ -14,8 +15,11 @@ define([
   'views/user-search',
   'views/user-profile', // need to be loaded here to instantiate DOM
   'views/room-profile', // idem
+  // jQuery plugins, load and attach to $ once
+  'jquery.insertatcaret',
+  'jquery.dateformat',
   'jquery.cloudinary'
-], function ($, _, Backbone, client, discussions, windowView, statusView, homeView, discussionsView, onlinesView, roomCreateView, roomSearchView, userSearchView, userProfile, roomProfile) {
+], function ($, _, Backbone, client, discussions, currentUser, windowView, statusView, homeView, discussionsView, onlinesView, roomCreateView, roomSearchView, userSearchView, userProfile, roomProfile) {
   var MainView = Backbone.View.extend({
 
     el: $("#chat"),
@@ -30,9 +34,39 @@ define([
     },
 
     initialize: function() {
+      // Prepare things
       $.cloudinary.config({
-        cloud_name: 'roomly', // @todo : get from configuration file
+        cloud_name: 'roomly',         // @todo : get from configuration file
         api_key:    '962274636195222' // @todo : get from configuration file
+      });
+
+      this.listenTo(client, 'welcome', this.onWelcome);
+    },
+
+    /**
+     * Executed each time the connexion with server is re-up
+     * (can occurs multiple time in a session)
+     * @param data
+     */
+    onWelcome: function(data) {
+      // Update current user data
+      _.each(Object.keys(data.user), function(propertyKey) {
+        currentUser.set(propertyKey, data.user[propertyKey]);
+      });
+      console.log('Hello '+currentUser.get('username')+'!');
+
+      // Render home
+      homeView.render(data.home);
+
+      // Render onlines
+      // @todo : data.onlines
+
+      // Join #General
+      client.join('#General');
+
+      // Join rooms
+      _.each(data.rooms, function(room) {
+        client.join(room);
       });
     },
 

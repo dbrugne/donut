@@ -29,18 +29,6 @@ require.config({
 //  // some custom jquery to do on raw DOM?
 //});
 
-require(['router'], function (Router) {
-  Router.initialize();
-
-  // Initialize client
-  // Initialize router
-  // Initialize main view
-
-  // Connect client
-  // Receive welcome (store rooms to joins, render home panel, render online panel)
-  // Run router (join the URI room if needed)
-  // Join 'general'
-  // Join welcome rooms
-
-  // ready
+require(['app'], function (app) {
+  app.initialize();
 });

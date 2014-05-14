@@ -4,8 +4,7 @@ define([
   'backbone',
   'collections/smileys',
   'text!templates/message.html',
-  'text!templates/notification.html',
-  'jquery.dateformat'
+  'text!templates/notification.html'
 ], function ($, _, Backbone, smileys, messageTemplate, notificationTemplate) {
   var DiscussionMessagesView = Backbone.View.extend({
 

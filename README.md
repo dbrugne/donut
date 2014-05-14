@@ -50,7 +50,7 @@ npm start
 - [ ] Chat default room with auto-join on connection
 - [ ] Separate onetoone and room list in left column (different views, collections and ... 'client' binds)
 - [ ] Sort room list alphabetically and change rendering pattern to "redrawn" everytime
-- [ ] Review the chat interface loading process (init: {client, main, router}, run: (client-connect, ->welcome, home content, router start, join route hash, then join room welcome)
+- [x] Review the chat interface loading process (init: {client, main, router}, run: (client-connect, ->welcome, home content, router start, join route hash, then join room welcome)
 -- [x] Repair URL-room-auto-join (double join when room is both in URL and user mongo entity, broke the routing)
 -- [x] Add a proxy for room:join/room:success to avoid previous bug in better way
 

@@ -4,8 +4,7 @@ define([
   'backbone',
   'models/client',
   'views/smileys',
-  'text!templates/messagebox.html',
-  'jquery.insertatcaret' // load and attache plugin to jQuery instance
+  'text!templates/messagebox.html'
 ], function ($, _, Backbone, client, SmileysView, MessageBoxTemplate) {
   var DiscussionMessageBoxView = Backbone.View.extend({
 

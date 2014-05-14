@@ -1,13 +1,10 @@
 define([
   'underscore',
   'backbone',
-  'collections/discussions',
   'models/client',
-  'models/current-user',
-  'views/main'
-], function (_, Backbone, discussions, client, currentUser, mainView) {
+  'collections/discussions'
+], function (_, Backbone, client, discussions) {
   var ChatRouter = Backbone.Router.extend({
-
     routes: {
       '':                 'root',
       'room/:name':       'focusRoom',
@@ -15,39 +12,19 @@ define([
       '*default':         'default'
     },
 
-    initialize: function () {
-      // Server connection is established
-      this.listenTo(client, 'connect', this.onServerConnect);
+    clientOnline: false,
 
-      // Get hello from server
-      this.listenTo(client, 'welcome', this.onServerWelcome);
-
-      // Everything is in place/bound, connection!
-      client.connect();
-    },
-
-    onServerConnect: function(data) {
-    },
-
-    onServerWelcome: function(data) {
-      // Update current user data
-      _.each(Object.keys(data), function(propertyKey) {
-        currentUser.set(propertyKey, data[propertyKey]);
-      });
-
-      console.log('Hello '+currentUser.get('username')+'!');
-
-      // Join current user rooms
-      _.each(data.rooms, function(room) {
-        client.join(room);
-      });
-
-      if (!window.historyStarted) {
-        // @todo : bug, when arriving on http://FQDN/!#room/toulouse with #toulouse already opened in user entity
-        // => provoke a double room:join and a double room:welcome and broke routing
+    initialize: function(options) {
+      var that = this;
+      // Watch for client connection state
+      this.listenTo(client, 'connect', function() {
+        that.clientOnline = true;
         Backbone.history.start();
-        window.historyStarted = true;
-      }
+      });
+      this.listenTo(client, 'disconnect', function() {
+        that.clientOnline = false;
+        Backbone.history.stop();
+      });
     },
 
     root: function() {
@@ -71,12 +48,5 @@ define([
     }
   });
 
-  var initialize = function () {
-    var router = new ChatRouter();
-  };
-
-  return {
-    initialize: initialize
-  };
-
+  return new ChatRouter();
 });
