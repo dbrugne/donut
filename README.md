@@ -50,7 +50,7 @@ npm start
 - [ ] Chat default room with auto-join on connection
 - [ ] Separate onetoone and room list in left column (different views, collections and ... 'client' binds)
 - [ ] Sort room list alphabetically and change rendering pattern to "redrawn" everytime
-- [ ] Review the chat interface loading process
+- [ ] Review the chat interface loading process (init: {client, main, router}, run: (client-connect, ->welcome, home content, router start, join route hash, then join room welcome)
 -- [ ] Repair URL-room-auto-join (double join when room is both in URL and user mongo entity, broke the routing)
 -- [ ] Add a proxy for room:join/room:success to avoid previous bug in better way
 
@@ -68,7 +68,7 @@ npm start
 - [ ] Refactor form error message display (use layout message box and middleware)
 - [ ] Add color theme field
 - [ ] CSRF and 304!
-- [ ] Forgotten password
+- [ ] Forgotten password (https://github.com/substack/node-password-reset && http://stackoverflow.com/questions/20277020/reset-change-password-in-nodejs-with-passportjs)
 - [ ] Template user profile
 
 - Site

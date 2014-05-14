@@ -52,7 +52,6 @@ define([
 
     root: function() {
       console.log('router: home');
-      discussions.focus();
       // @todo : replace by default homepage
     },
 

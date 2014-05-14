@@ -6,6 +6,7 @@ define([
   'collections/discussions',
   'views/window',
   'views/status',
+  'views/home',
   'views/discussions',
   'views/onlines',
   'views/room-create',
@@ -14,7 +15,7 @@ define([
   'views/user-profile', // need to be loaded here to instantiate DOM
   'views/room-profile', // idem
   'jquery.cloudinary'
-], function ($, _, Backbone, client, discussions, windowView, statusView, discussionsView, onlinesView, roomCreateView, roomSearchView, userSearchView, userProfile, roomProfile) {
+], function ($, _, Backbone, client, discussions, windowView, statusView, homeView, discussionsView, onlinesView, roomCreateView, roomSearchView, userSearchView, userProfile, roomProfile) {
   var MainView = Backbone.View.extend({
 
     el: $("#chat"),

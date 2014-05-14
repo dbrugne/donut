@@ -17,6 +17,8 @@ define([
       this.socket = io.connect(window.location.hostname);
       var that = this;
 
+      // @todo : improve welcome : add home data and online user data
+
       this.socket.on('connecting', function () { that.trigger('connecting'); });
       this.socket.on('connect', function () { that.trigger('connect'); });
       this.socket.on('disconnect', function () { that.trigger('disconnect'); });
@@ -28,6 +30,10 @@ define([
       this.socket.on('welcome', function (data) {
         that.debug(['io:in:welcome', data]);
         that.trigger('welcome', data);
+      });
+      this.socket.on('home', function (data) {
+        that.debug(['io:in:home', data]);
+        that.trigger('home', data);
       });
 
       // ROOM
@@ -101,6 +107,14 @@ define([
         that.debug(['io:in:user:profile', data]);
         that.trigger('user:profile', data);
       });
+    },
+
+    // GENERAL
+    // ======================================================
+
+    home: function() {
+      this.socket.emit('home', {});
+      this.debug(['io:out:home', {}]);
     },
 
     // ROOM
