@@ -1,6 +1,13 @@
 <div id="chat">
     <div class="row">
         <div id="chat-left">
+            <div id="block-home">
+                <div class="body">
+                    <a href="#home"><span class="fa fa-home"></span> Home</a>
+                    <br />
+                    <a href="#room/support"><span class="fa fa-question-circle"></span> Support</a>
+                </div>
+            </div>
             <div id="block-rooms">
                 <div class="heading">Rooms</div>
                 <div class="list"></div>
@@ -9,8 +16,12 @@
                     <br />
                     <a href="#" id="search-room-link"><span class="glyphicon glyphicon-search"></span> Search a room</a>
                 </div>
-            </div>
-            <div id="block-users"></div>
+            </div><!-- /#block-rooms -->
+            <div id="block-onetoones">
+                <div class="heading">One to one</div>
+                <div class="list"></div>
+            </div><!-- /#block-onetoones -->
+            <div id="block-users"></div><!-- /#block-users -->
         </div><!-- /.chat-left -->
         <div id="chat-center">
             <div class="discussion" data-default="true">
