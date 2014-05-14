@@ -5,6 +5,8 @@ define([
 ], function (_, Backbone, io) {
   var ClientModel = Backbone.Model.extend({
 
+    joinRequests: [],
+
     initialize: function() {
     },
 
@@ -48,6 +50,7 @@ define([
         that.trigger('room:leave', data);
       });
       this.socket.on('room:welcome', function(data) {
+        delete that.joinRequests[that.joinRequests.indexOf(data.name)];
         that.debug(['io:in:room:welcome', data]);
         that.trigger('room:welcome', data);
       });
@@ -121,6 +124,10 @@ define([
     // ======================================================
 
     join: function(name) {
+      if (this.joinRequests.indexOf(name) != -1) {
+        return;
+      }
+      this.joinRequests.push(name);
       var data = {name: name};
       this.socket.emit('room:join', data);
       this.debug(['io:out:room:join', data]);
