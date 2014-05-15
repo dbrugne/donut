@@ -80,6 +80,7 @@ define([
 
       // Focus the one we want
       model.set('focused', true);
+      this.trigger('refreshTabs'); // @todo : nasty!!!
 
       // Update URL
       var uri;

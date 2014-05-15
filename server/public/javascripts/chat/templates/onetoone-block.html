@@ -1,0 +1,17 @@
+<% if (list.length > 0) { %>
+<div class="heading">One to one</div>
+<div class="list">
+    <% _.each(list, function(one) { %>
+    <a href="#user/<%= one.username %>" class="item <% if (one.focused) { %>active<% }; %>" data-user-id="<%= one.user_id %>">
+        <span class="name"><%= one.username %></span>
+        <span class="close glyphicon glyphicon-remove"></span>
+        <% if (one.unread > 0) { %>
+            <span class="badge"><%= one.unread %></span>
+        <% }; %>
+    </a>
+    <% }); %>
+</div>
+<div class="footer">
+    <a href="#" id="search-user-link"><span class="glyphicon glyphicon-search"></span> Search a user</a>
+</div>
+<% }; %>
