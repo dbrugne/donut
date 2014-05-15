@@ -20,6 +20,8 @@ module.exports = function(io, socket, data) {
     }
 
     io.sockets.in(data.name).emit('room:topic', {
+      user_id: socket.getUserId(),
+      username: socket.getUsername(),
       name: data.name,
       topic: data.topic
     });
