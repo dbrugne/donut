@@ -56,7 +56,7 @@ npm start
 - [x] Removed "logged" homepage to replace with automatic redirection to chat interface (expect for account/)
 - [x] Add an intermediate "form" to choose a username when entering in chatroom
 - [x] Separate onetoone and room list in left column (different views, collections and ... 'client' binds)
-- [ ] Chat default panel with homepage content
+- [x] Chat default panel with homepage content
 - [ ] Sort room list alphabetically
 - [ ] Remove onlines block (now listed on home)
 - [ ] Change rendering pattern to "redrawn" everytime on rooms block, onetoones block and room user block
