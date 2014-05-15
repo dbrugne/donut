@@ -3,8 +3,7 @@ define([
   'underscore',
   'backbone',
   'models/client',
-  'collections/discussions',
-  'bootstrap'
+  'collections/discussions'
 ], function ($, _, Backbone, client, discussions) {
   var RoomCreateView = Backbone.View.extend({
 

@@ -4,8 +4,7 @@ define([
   'backbone',
   'models/client',
   'views/alert',
-  'text!templates/user-search-results.html',
-  'bootstrap'
+  'text!templates/user-search-results.html'
 ], function ($, _, Backbone, client, alertView, resultsTemplate) {
   var UserSearchView = Backbone.View.extend({
 

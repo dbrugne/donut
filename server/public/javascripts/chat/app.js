@@ -1,10 +1,16 @@
 define([
+  'jquery',
   'underscore',
   'backbone',
   'router',
   'models/client',
-  'views/main'
-], function (_, Backbone, router, client, mainView) {
+  'views/main',
+  // jQuery plugins, load and attach to $ once
+  'jquery.insertatcaret',
+  'jquery.dateformat',
+  'jquery.cloudinary',
+  'bootstrap'
+], function ($, _, Backbone, router, client, mainView) {
   /**
    * The init process is the following:
    * - Load router - done by require.js
@@ -36,7 +42,14 @@ define([
    */
   var App = {
 
+    // The main part of the job is done by require.js loader
     initialize: function() {
+      // Prepare things
+      $.cloudinary.config({
+        cloud_name: 'roomly',         // @todo : get from configuration file
+        api_key:    '962274636195222' // @todo : get from configuration file
+      });
+
       // Everything was already loaded by require.js,
       // it just left to establish connection:
       client.connect();

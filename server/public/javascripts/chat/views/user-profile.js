@@ -3,8 +3,7 @@ define([
   'underscore',
   'backbone',
   'models/client',
-  'text!templates/user-profile.html',
-  'bootstrap'
+  'text!templates/user-profile.html'
 ], function ($, _, Backbone, client, profileTemplate) {
   var UserProfileView = Backbone.View.extend({
 

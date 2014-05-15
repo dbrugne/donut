@@ -3,11 +3,10 @@ define([
   'underscore',
   'backbone',
   'models/client',
-  'collections/discussions',
+  'views/main',
   'views/alert',
-  'text!templates/room-search-results.html',
-  'bootstrap'
-], function ($, _, Backbone, client, discussions, alertView, resultsTemplate) {
+  'text!templates/room-search-results.html'
+], function ($, _, Backbone, client, mainView, alertView, resultsTemplate) {
   var RoomSearchView = Backbone.View.extend({
 
     el: $('#room-search-modal'),
@@ -58,17 +57,7 @@ define([
 
     openSelected: function(event) {
       var name = $(event.currentTarget).data('name');
-
-      // Is already opened?
-      var room = discussions.get(name);
-      if (room != undefined) {
-        discussions.focus(room);
-      } else {
-        // Room not already open
-        discussions.thisDiscussionShouldBeFocusedOnSuccess = name;
-        client.join(name);
-      }
-
+      mainView.openRoom(name);
       this.hide();
     }
 
