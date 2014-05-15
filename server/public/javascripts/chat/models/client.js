@@ -19,8 +19,6 @@ define([
       this.socket = io.connect(window.location.hostname);
       var that = this;
 
-      // @todo : improve welcome : add home data and online user data
-
       this.socket.on('connecting', function () { that.trigger('connecting'); });
       this.socket.on('connect', function () { that.trigger('connect'); });
       this.socket.on('disconnect', function () { that.trigger('disconnect'); });

@@ -27,7 +27,7 @@ npm start
 * Bower
 * MongoDB
 
-# Roadmap
+# Todo list
 
 ## MVP
 
@@ -55,21 +55,36 @@ npm start
 - [x] Add a chat button in logged header
 - [x] Removed "logged" homepage to replace with automatic redirection to chat interface (expect for account/)
 - [x] Add an intermediate "form" to choose a username when entering in chatroom
-- [ ] Chat default panel with homepage content
 - [x] Separate onetoone and room list in left column (different views, collections and ... 'client' binds)
+- [ ] Chat default panel with homepage content
 - [ ] Sort room list alphabetically
-- [ ] Change rendering pattern to "redrawn" everytime on rooms block, onetoones block, onlines blocks and room user block
- 
+- [ ] Remove onlines block (now listed on home)
+- [ ] Change rendering pattern to "redrawn" everytime on rooms block, onetoones block and room user block
+- [ ] Persist onetoone open/close and reopen on 'welcome' event
+- [ ] Get last 50 viewed on room/onetoone opening
+- [ ] In welcome.users message list users and not sockets
+- [ ] Persist correctly user.rooms and room.users
+- [ ] On room join make room search case insensitive
+- [ ] Handle empty room deletion on last user leave
+- [ ] One one to one message check that to user exists in database
+- [ ] Implement central username/room.name validator/sanitization
+- [ ] Handle default route to display home (with redirect?) with alert message
+- [ ] Implement room creation success/error alert message
+
 - Signup
 - [x] Remove username from signup form (comment)
 
 - Account
-- [ ] Add form validation middleware for each form (account/*, login, signup)
+- [ ] Add form validation/sanitization middleware for each form (account/*, login, signup)
 - [ ] Refactor form error message display (use layout message box and middleware)
 - [ ] Add color theme field
-- [ ] CSRF and 304!
 - [ ] Forgotten password (https://github.com/substack/node-password-reset && http://stackoverflow.com/questions/20277020/reset-change-password-in-nodejs-with-passportjs)
 - [ ] Template user profile
+
+- Finishing
+- [ ] CSRF and 304!
+- [ ] Update connect-mongo module
+- [ ] Review all socket delegation and report: validation/sanitization, multi-device, ACL
 
 - Site
 - [x] Mettre au propre les mockups du MVP
@@ -78,13 +93,11 @@ npm start
 - [ ] Google Analytics (HP, interface de chat)
 - [ ] Deploy/backup/monitor
 
-## Next
+## Next releases
 
 Critical:
 - [ ] Introduce guest mode
 - [ ] Re-introduce room_id (if needed)
-
-User account:
 
 Room profile:
 - [ ] Edit form
@@ -115,42 +128,43 @@ Backend:
 
 Security/performance:
 - [ ] Scalability: implement Redis for sessions, MongoDb data cache (all User and Room documents used by socket.io) and sockets.
-
-Multi-devices:
-- [ ] Re-implement
+- [ ] Security: use https://www.npmjs.org/package/google-caja on each input (especially socket inputs and messages)
+- [ ] Move cloudinary params in configuration for both client and server
 
 Automation:
 - [ ] Refactor grunt
-
-vx:
-- [ ] Fix "unlog" bug that maintain user logged in chat
 - [ ] Sample activity generation (rooms, users, messages, enter/leave room, one to one)
-- [ ] Add a "Friends are in rooms" list
-- [ ] Make it work on tablet/phone (browser)
-- [ ] + Invite your friends + page Facebook
 
-Mobile:
-- [ ] (mobile) Port a mobile version with Steroids.js
-- [ ] Identify and track devices for each socket/activity
+Bugs:
+- [ ] Fix "unlog" bug that maintain user logged in chat
 
 Features:
 - [ ] Highlight messages of the same user of this message
-- [ ] Share room on Twitter/Facebook
 - [ ] Room permanent
 - [ ] Room personalization
 - [ ] Bookmark user
+- [ ] Bookmark room
 - [ ] Invite friend in room
 - [ ] Private room
-- [ ] Room widget to paste on a website to incentive website visitor to join the room
-- [ ] Hyperlink analyse and open graph extraction with hover popin in rooms and discussions (specific template for YouTube content)
 - [ ] Add sound on events
 - [ ] User can black-list other users (avoir invitation and onetoone)
 - [ ] Store activity in local storage
 - [ ] Automatic mention of a user in a message
 - [ ] Message history on arrow up/down
 - [ ] Add form validation client-side: account/*, login, signup
+- [ ] Add a "Friends are in rooms" list
+- [ ] + Invite your friends + page Facebook
+
+Mobile:
+- [ ] (mobile) Port a mobile version with Steroids.js
+- [ ] Identify and track devices for each socket/activity
+- [ ] Re-implement multi-devices
+- [ ] Make it work on tablet/phone (browser)
 
 Ideas:
+- [ ] Share room on Twitter/Facebook
 - [ ] Loyalty, advanced offline notification system (email, sms, frequency (instant, daily, weekly), filter (all activity, mentions, one to one, room where i am) with direct link to room/one to one allow fast anwser (even on mobile)
 - [ ] Public mod for a room (all the content is visible by anyone)
 - [ ] Pin a message
+- [ ] Room widget to paste on a website to incentive website visitor to join the room
+- [ ] Hyperlink analyse and open graph extraction with hover popin in rooms and discussions (specific template for YouTube content)

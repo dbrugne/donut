@@ -29,7 +29,7 @@ define([
 
     root: function() {
       console.log('router: home');
-      // @todo : replace by default homepage
+      discussions.focusHome();
     },
 
     focusRoom: function(name) {

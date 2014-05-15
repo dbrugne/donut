@@ -23,6 +23,15 @@ define([
       this.listenTo(client, 'user:message', this.userMessage);
     },
 
+    focusHome: function() {
+      // Unfocus every model
+      this.each(function(discussion, key, list) {
+        discussion.set('focused', false);
+      });
+      this.trigger('focusDefault');
+    },
+
+    // router should use only this method and never focus() (cause focus() change the #uri)
     focusRoomByName: function(name) {
       var model = this.findWhere({ type: 'room', name: name });
       if (model == undefined) {
@@ -35,6 +44,7 @@ define([
       this.focus(model);
     },
 
+    // router should use only this method and never focus() (cause focus() change the #uri)
     focusOneToOneByUsername: function(username) {
       var model = this.findWhere({ type: 'onetoone', username: username });
 
@@ -85,14 +95,10 @@ define([
     onJoin: function(data) {
       client.join(data.name);
     },
-
-    /* Room specific */
     onLeave: function(data) {
       var room = this.get('room'+data.name);
       this.remove(room);
     },
-
-    /* Room specific */
     onRoomWelcome: function(room) {
       // Create room in browser
       var roomModel = new RoomModel({
@@ -120,8 +126,6 @@ define([
 
       roomModel.trigger('notification', {type: 'hello', name: roomModel.get('name')});
     },
-
-    /* Room specific */
     onRoomMessage: function(data) {
       var model = this.get(data.name);
       model.message(data);
@@ -161,8 +165,6 @@ define([
       // Window new message indication
       this.trigger('newMessage');
     },
-
-    /* OneToOne specific */
     addOneToOne: function(user) {
       // Discussion already opened?
       var oneToOneId = user.get('id');
