@@ -13,6 +13,7 @@ module.exports = function(io, socket, data) {
     return;
   }
 
+  // @todo : should be non-case-sensitive !!
   Room.findById(data.name, 'name topic users', function(err, room) {
     if (err) return console.log(err);
 

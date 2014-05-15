@@ -57,7 +57,8 @@ npm start
 - [x] Add an intermediate "form" to choose a username when entering in chatroom
 - [ ] Chat default panel with homepage content
 - [x] Separate onetoone and room list in left column (different views, collections and ... 'client' binds)
-- [ ] Sort room list alphabetically and change rendering pattern to "redrawn" everytime
+- [ ] Sort room list alphabetically
+- [ ] Change rendering pattern to "redrawn" everytime on rooms block, onetoones block, onlines blocks and room user block
  
 - Signup
 - [x] Remove username from signup form (comment)
