@@ -3,10 +3,8 @@ define([
   'underscore',
   'backbone',
   'models/client',
-  'views/main',
-  'views/alert',
   'text!templates/room-search-results.html'
-], function ($, _, Backbone, client, mainView, alertView, resultsTemplate) {
+], function ($, _, Backbone, client, resultsTemplate) {
   var RoomSearchView = Backbone.View.extend({
 
     el: $('#room-search-modal'),
@@ -19,7 +17,9 @@ define([
       'click .rooms-list li': 'openSelected'
     },
 
-    initialize: function() {
+    initialize: function(options) {
+      this.mainView = options.mainView;
+
       this.listenTo(client, 'room:searchsuccess', this.onSuccess);
       this.listenTo(client, 'room:searcherror', this.onError);
     },
@@ -52,16 +52,16 @@ define([
 
     onError: function() {
       this.hide();
-      alertView.show('error', "Something didn't work. Please retry in few minutes.");
+      this.mainView.alert('error', "Something didn't work. Please retry in few minutes.");
     },
 
     openSelected: function(event) {
       var name = $(event.currentTarget).data('name');
-      mainView.openRoom(name);
+      this.mainView.openRoom(name);
       this.hide();
     }
 
   });
 
-  return new RoomSearchView();
+  return RoomSearchView;
 });

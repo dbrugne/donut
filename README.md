@@ -46,20 +46,19 @@ npm start
 -- [ ] cloudinary cache bug http://cloudinary.com/documentation/jquery_image_manipulation#image_versions
 
 - Chat
-- [ ] Chat default panel with homepage content
-- [ ] Chat default room with auto-join on connection
-- [ ] Separate onetoone and room list in left column (different views, collections and ... 'client' binds)
-- [ ] Sort room list alphabetically and change rendering pattern to "redrawn" everytime
+- [x] Chat default room with auto-join on connection
 - [x] Review the chat interface loading process (init: {client, main, router}, run: (client-connect, ->welcome, home content, router start, join route hash, then join room welcome)
 -- [x] Repair URL-room-auto-join (double join when room is both in URL and user mongo entity, broke the routing)
 -- [x] Add a proxy for room:join/room:success to avoid previous bug in better way
-
 - [x] Remove "your profile" in header and put the link on username
 - [x] Modify "header" link to open account/ in blank
 - [x] Add a chat button in logged header
 - [x] Removed "logged" homepage to replace with automatic redirection to chat interface (expect for account/)
 - [x] Add an intermediate "form" to choose a username when entering in chatroom
-
+- [ ] Chat default panel with homepage content
+- [ ] Separate onetoone and room list in left column (different views, collections and ... 'client' binds)
+- [ ] Sort room list alphabetically and change rendering pattern to "redrawn" everytime
+ 
 - Signup
 - [x] Remove username from signup form (comment)
 

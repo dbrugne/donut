@@ -7,40 +7,55 @@ define([
   'models/current-user',
   'views/window',
   'views/status',
+  'views/alert',
   'views/home',
-  'views/discussions',
   'views/onlines',
   'views/room-create',
   'views/room-search',
   'views/user-search',
+  'views/room-tab',
+  'views/room-panel',
+  'views/onetoone-tab',
+  'views/onetoone-panel',
   'views/user-profile', // need to be loaded here to instantiate DOM
-  'views/room-profile', // idem
-  // jQuery plugins, load and attach to $ once
-  'jquery.insertatcaret',
-  'jquery.dateformat',
-  'jquery.cloudinary'
-], function ($, _, Backbone, client, discussions, currentUser, windowView, statusView, homeView, discussionsView, onlinesView, roomCreateView, roomSearchView, userSearchView, userProfile, roomProfile) {
+  'views/room-profile' // idem
+], function ($, _, Backbone, client, discussions, currentUser, windowView,
+             statusView, alertView, homeView, onlinesView, RoomCreateView,
+             RoomSearchView, UserSearchView, RoomTabView, RoomPanelView,
+             OneToOnePanelView, OneToOneTabView, userProfile, roomProfile) {
+
   var MainView = Backbone.View.extend({
 
     el: $("#chat"),
 
+    $roomsTabsContainer: $("#block-rooms .list"),
+
+    $onetoonesTabsContainer: $("#block-onetoones .list"),
+
+    $discussionsPanelsContainer: $("#chat-center"),
+
     events: {
-      'click #search-room-link': 'searchRoomModal',
-      'click #create-room-link': 'createRoomModal',
-      'click #search-user-link': 'searchUserLink',
+      'click #search-room-link': 'openSearchRoomModal',
+      'click #create-room-link': 'openCreateRoomModal',
+      'click #search-user-link': 'openSearchUserModal',
       'click .open-user-profile': 'openUserProfile',
       'dblclick .dbl-open-user-profile': 'openUserProfile',
       'click .open-onetoone': 'openUserOneToOne'
     },
 
     initialize: function() {
-      // Prepare things
-      $.cloudinary.config({
-        cloud_name: 'roomly',         // @todo : get from configuration file
-        api_key:    '962274636195222' // @todo : get from configuration file
-      });
-
       this.listenTo(client, 'welcome', this.onWelcome);
+
+      this.listenTo(discussions, 'add', this.onAdd); // @todo : replace by a method in main that ADD to collection and create views
+      this.listenTo(discussions, 'focusDefault', this.onFocusHome);
+      this.listenTo(discussions, 'unfocusDefault', this.onUnfocusHome);
+    },
+
+    alert: function(type, message) {
+      if (!type) {
+        type = 'info';
+      }
+      alertView.show(type, message);
     },
 
     /**
@@ -70,18 +85,27 @@ define([
       });
     },
 
-    searchRoomModal: function() {
-      roomSearchView.search();
-      roomSearchView.show();
+    openSearchRoomModal: function() {
+      if (!this.searchRoomModal) {
+        this.searchRoomModal = new RoomSearchView({mainView: this});
+        this.searchRoomModal.search();
+      }
+      this.searchRoomModal.show();
     },
 
-    createRoomModal: function() {
-      roomCreateView.show();
+    openCreateRoomModal: function() {
+      if (!this.createRoomModal) {
+        this.createRoomModal = new RoomCreateView({mainView: this});
+      }
+      this.createRoomModal.show();
     },
 
-    searchUserLink: function() {
-      userSearchView.search();
-      userSearchView.show();
+    openSearchUserModal: function() {
+      if (!this.userSearchModal) {
+        this.userSearchModal = new UserSearchView({mainView: this});
+        this.userSearchModal.search();
+      }
+      this.userSearchModal.show();
     },
 
     openUserProfile: function(event) {
@@ -107,6 +131,53 @@ define([
       event.preventDefault();
       event.stopPropagation();
       $('.modal').modal('hide');
+    },
+
+    // DISCUSSIONS MANAGEMENT
+    // ======================================================================
+
+    // @todo : replace by a method in main that ADD to collection and create views
+    onAdd: function(model, collection, options) {
+      if (model.get('type') == 'room') {
+        var tabView = new RoomTabView({collection: collection, model: model });
+        var windowView = new RoomPanelView({ collection: collection, model: model });
+        this.$roomsTabsContainer.append(tabView.$el);
+        this.$discussionsPanelsContainer.append(windowView.$el);
+      } else if (model.get('type') == 'onetoone') {
+        var tabView = new OneToOnePanelView({ collection: collection, model: model });
+        var windowView = new OneToOneTabView({ collection: collection, model: model });
+        this.$onetoonesTabsContainer.append(tabView.$el);
+        this.$discussionsPanelsContainer.append(windowView.$el);
+      } else {
+        return;
+      }
+    },
+    // @todo : replace by a method in main that ADD to collection and create views
+
+    openRoom: function(name) {
+      // Is already opened?
+      var room = discussions.get(name);
+      if (room != undefined) {
+        discussions.focus(room); // @todo : should use this.focus
+      } else {
+        // Room not already open
+        discussions.thisDiscussionShouldBeFocusedOnSuccess = name;
+        client.join(name);
+      }
+    },
+
+    openOnetoone: function(user_id) {
+
+    },
+
+    // FOCUS TAB/PANEL MANAGEMENT
+    // ======================================================================
+
+    onFocusHome: function() {
+      this.$discussionsPanelsContainer.find('#home').show();
+    },
+    onUnfocusHome: function() {
+      this.$discussionsPanelsContainer.find('#home').hide();
     }
 
   });

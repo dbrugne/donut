@@ -2,9 +2,8 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'models/client',
-  'collections/discussions'
-], function ($, _, Backbone, client, discussions) {
+  'models/client'
+], function ($, _, Backbone, client) {
   var RoomCreateView = Backbone.View.extend({
 
     el: $('#room-create-modal'),
@@ -14,7 +13,9 @@ define([
       'keyup #room-create-input': 'valid'
     },
 
-    initialize: function() {
+    initialize: function(options) {
+      this.mainView = options.mainView;
+
       this.listenTo(client, 'room:createSuccess', this.createSuccess);
       this.listenTo(client, 'room:createError', this.createError);
 
@@ -82,14 +83,7 @@ define([
 
       var name = '#'+this.$input.val();
 
-      // Is already opened?
-      var room = discussions.get(name);
-      if (room != undefined) {
-        discussions.focus(room);
-      } else {
-        discussions.thisDiscussionShouldBeFocusedOnSuccess = name;
-        client.join(name);
-      }
+      this.mainView.openRoom(name);
 
       this.$formGroup.removeClass('has-error').removeClass('has-success');
       this.$input.val('');
@@ -97,11 +91,11 @@ define([
     },
 
     createSuccess: function(data){
-      // @todo : nothing to do?
+      // @todo : display alert with confirmation message
     },
 
     createError: function(data) {
-      // @todo : handle error with popin
+      // @todo : display alert with apologize
 //            var error = data.uri.error;
 //            this.$formGroup.addClass('has-error').removeClass('has-success');
 //            this.$el.find('.create-message').remove();
@@ -111,5 +105,5 @@ define([
 
   });
 
-  return new RoomCreateView();
+  return RoomCreateView;
 });
