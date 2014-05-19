@@ -19,8 +19,10 @@ define([
     },
     // Server confirm that we was joined to the room and give us some data on room
     openPong: function(room) {
+      if (this.get(room.name) != undefined) return; // when reconnecting
+
       var model = new RoomModel({
-        id: room.room_id,
+        id: room.name,
         name: room.name,
         topic: room.topic
       });
