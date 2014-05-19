@@ -36,13 +36,13 @@ define([
     thisDiscussionShouldBeFocusedOnSuccess: '',
 
     events: {
-      'click #search-room-link': 'openSearchRoomModal',
-      'click #create-room-link': 'openCreateRoomModal',
-      'click #search-user-link': 'openSearchUserModal',
-      'click .open-user-profile': 'openUserProfile',
+      'click #search-room-link':    'openSearchRoomModal',
+      'click #create-room-link':    'openCreateRoomModal',
+      'click #search-user-link':    'openSearchUserModal',
+      'click .open-user-profile':     'openUserProfile',
       'dblclick .dbl-open-user-profile': 'openUserProfile',
-      'click .close-room': 'onCloseDiscussion',
-      'click .close-onetoone': 'onCloseDiscussion'
+      'click .close-room':          'onCloseDiscussion',
+      'click .close-onetoone':      'onCloseDiscussion'
     },
 
     initialize: function() {
@@ -142,7 +142,6 @@ define([
 //
 //      return false; // stop propagation
 //    },
-//
 //    closeOneToOne: function(event) {
 //      this._handleAction(event);
 //      var userId = $(event.currentTarget).data('userId');
@@ -241,7 +240,7 @@ define([
       this.$home.hide();
     },
 
-    // called by router
+    // called by router only
     focusHome: function() {
       this.unfocusAll();
       this.$home.show();
@@ -249,7 +248,7 @@ define([
       this.onetooneBlockView.render();
     },
 
-    // called by router
+    // called by router only
     focusRoomByName: function(name) {
       var model = rooms.findWhere({ type: 'room', name: name });
       if (model == undefined) {
@@ -262,20 +261,19 @@ define([
       }
     },
 
-//    // router should use only this method and never focus() (cause focus() change the #uri)
-//    focusOneToOneByUsername: function(username) {
-//      var model = this.findWhere({ type: 'onetoone', username: username });
-//
-//      // Open discussion window if not already exist
-//      if (model == undefined) {
-//        // Create onetoone
-//        // @todo : need to replace 'user.id' for identifying room by 'user.username' everywhere
-//        //         until that direct access to user one to one doesn't work
-//        return;
-//      }
-//
-//      this.focus(model);
-//    },
+    // called by router only
+    focusOneToOneByUsername: function(username) {
+      var model = onetoones.findWhere({ type: 'onetoone', username: username });
+      if (model == undefined) {
+        // Not already open
+        // @todo : reprise
+//        this.thisDiscussionShouldBeFocusedOnSuccess = name;
+//        o.openPing(name);
+        return;
+      } else {
+        this.focus(model);
+      }
+    },
 
     focus: function(model) {
       // No opened discussion, display default
