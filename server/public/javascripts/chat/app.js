@@ -44,6 +44,9 @@ define([
 
     // The main part of the job is done by require.js loader
     initialize: function() {
+      // Give the router a global scope (some views need to router.navigate())
+      window.router = router;
+
       // Prepare things
       $.cloudinary.config({
         cloud_name: 'roomly',         // @todo : get from configuration file
