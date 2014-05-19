@@ -55,12 +55,6 @@ define([
       this.mainView.alert('error', "Something didn't work. Please retry in few minutes.");
     }
 
-//    openSelected: function(event) {
-//      var name = $(event.currentTarget).data('name');
-//      this.mainView.openRoom(name);
-//      this.hide();
-//    }
-
   });
 
   return RoomSearchView;
