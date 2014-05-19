@@ -31,7 +31,7 @@ module.exports = function(io, socket, data) {
     };
 
     io.sockets.in('user:' + from).emit('user:message', message);
-    if (from != to) { // only if sender is not also the receiver
+    if (fromUsername !==  toUsername) { // only if sender is not also the receiver
       io.sockets.in('user:' + to).emit('user:message', message);
     }
 
