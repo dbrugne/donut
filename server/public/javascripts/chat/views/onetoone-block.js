@@ -17,7 +17,6 @@ define([
     initialize: function(options) {
       this.listenTo(this.collection, 'add', this.onAddRemove);
       this.listenTo(this.collection, 'remove', this.onAddRemove);
-      this.listenTo(this.collection, 'refreshTabs', this.render);
 
       this.render();
     },

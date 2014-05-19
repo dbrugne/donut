@@ -95,7 +95,7 @@
 //      client.join(data.name);
 //    },
 //    onLeave: function(data) {
-//      var room = this.get('room'+data.name);
+//      var room = this.get(data.name);
 //      this.remove(room);
 //    },
 //    onRoomWelcome: function(room) {

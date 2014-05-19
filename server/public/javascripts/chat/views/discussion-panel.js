@@ -12,7 +12,6 @@ define([
     className: 'discussion',
 
     events: {
-      "click .close": "closeThis"
     },
 
     initialize: function(options) {
@@ -78,18 +77,6 @@ define([
         this.messageBoxView.remove();
         this.remove();
       }
-    },
-
-    closeThis: function(event) { // @todo : duplicate code tab/window
-      this.collection.remove(this.model); // remove model from collection
-
-      // After remove, the room still exists but is not in the collection,
-      // = .focus() call will choose another room to be focused
-      if (this.model.get('focused')) {
-        this.collection.focus();
-      }
-
-      return false; // stop propagation
     }
 
   });

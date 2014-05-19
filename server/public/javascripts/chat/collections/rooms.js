@@ -7,21 +7,20 @@ define([
   'models/user'
 ], function (_, Backbone, client, currentUser, RoomModel, UserModel) {
   var RoomsCollection = Backbone.Collection.extend({
-
     initialize: function() {
       this.listenTo(client, 'room:join', this.onJoin);
       this.listenTo(client, 'room:leave', this.onLeave);
       this.listenTo(client, 'room:welcome', this.openPong);
-      this.listenTo(client, 'room:message', this.onRoomMessage);
+      this.listenTo(client, 'room:message', this.onMessage);
     },
-
+    // We ask to server to join us in this room
     openPing: function(name) {
       client.join(name);
     },
-
+    // Server confirm that we was joined to the room and give us some data on room
     openPong: function(room) {
       var model = new RoomModel({
-        id: room.name, // @todo : duplicate room.id and room.name ?
+        id: room.name, // @todo : duplicate room.id and room.name ? # => no, exhange _id instead
         name: room.name,
         topic: room.topic
       });
@@ -37,17 +36,17 @@ define([
       this.add(model);
       model.trigger('notification', {type: 'hello', name: model.get('name')}); // @todo move it from here ?
     },
-
+    // Server asks to this client to join this room
     onJoin: function(data) {
-      client.join(data.name);
+      this.openPing(data.name);
     },
-
+    // Server asks to this client to leave this room
     onLeave: function(data) {
-      var room = this.get('room'+data.name);
+      var room = this.get(data.name);
       this.remove(room);
     },
 
-    onRoomMessage: function(data) { // @todo : move it on room model
+    onMessage: function(data) { // @todo : move it on room model
       var model = this.get(data.name);
       model.message(data);
       // Window new message indication

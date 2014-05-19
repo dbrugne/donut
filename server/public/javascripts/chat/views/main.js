@@ -41,17 +41,17 @@ define([
       'click #search-user-link': 'openSearchUserModal',
       'click .open-user-profile': 'openUserProfile',
       'dblclick .dbl-open-user-profile': 'openUserProfile',
-//      'click .open-room': 'openRoom', // @todo : we use router everywhere to open room, this method is helpful ?
-      'click .close-room': 'closeRoom',
-//      'click .open-onetoone': 'openOne', // @todo : we use router everywhere to open one, this method is helpful ?
-      'click .close-onetoone': 'closeOne'
+      'click .close-room': 'onCloseDiscussion',
+      'click .close-onetoone': 'onCloseDiscussion'
     },
 
     initialize: function() {
       this.listenTo(client, 'welcome', this.onWelcome);
 
       this.listenTo(rooms, 'add', this.onRoomPong);
+//      this.listenTo(rooms, 'remove', this.onRoomRemove);
       this.listenTo(onetoones, 'add', this.onOnePong);
+//      this.listenTo(onetoones, 'remove', this.onRoomRemove);
 
       this.roomBlockView = new RoomBlockView({collection: rooms});
       this.onetooneBlockView = new OnetooneBlockView({collection: onetoones});
@@ -89,11 +89,11 @@ define([
       // @todo : data.onlines
 
       // Join #General
-      client.join('#General');
+      client.join('#General'); // @todo : should be called on collection
 
       // Join rooms
       _.each(data.rooms, function(room) {
-        client.join(room);
+        client.join(room); // @todo : should be called on collection
       });
     },
 
@@ -170,6 +170,10 @@ define([
         model:      model
       });
       this.$discussionsPanelsContainer.append(view.$el);
+
+      if (this.thisDiscussionShouldBeFocusedOnSuccess == model.get('name')) {
+        this.focus(model);
+      }
     },
 
     onOnePong: function(model, collection, options) {
@@ -187,28 +191,41 @@ define([
       }
     },
 
-//    openRoom: function(name) {
-//      // Is already opened?
-//      var room = discussions.get(name);
-//      if (room != undefined) {
-//        discussions.focus(room); // @todo : should use this.focus
-//      } else {
-//        // Room not already open
-//        discussions.thisDiscussionShouldBeFocusedOnSuccess = name;
-//        client.join(name);
-//      }
-//    },
+    onCloseDiscussion: function(event) {
+      this._handleAction(event);
 
-    closeRoom: function(name) {
+      var $currentTarget = $(event.currentTarget);
+      console.log($currentTarget.hasClass('close-room'));
+      console.log($currentTarget.hasClass('close-onetoone'));
 
+      if ($currentTarget.hasClass('close-room')) {
+        var name = $currentTarget.data('name');
+        if (!name) return false;
+        this.closeRoom(name);
+      } else if ($currentTarget.hasClass('close-onetoone')) {
+        var userId = $currentTarget.data('userId');
+        if (!userId) return false;
+        this.closeOne(userId);
+      }
+
+      return false; // stop propagation
     },
 
-    openOne: function(user_id) {
+    closeRoom: function(name) {
+      var model = rooms.findWhere({ type: 'room', name: name });
+      if (model == undefined) return;
 
+      // Remove entity (on remove: panel will autodestroy and model will client.leave)
+      rooms.remove(model);
+
+      // Focus another panel
+      this.focus();
     },
 
     closeOne: function(user_id) {
-
+      // Send close message
+      // Remove from DOM
+      // Remove entity
     },
 
     // FOCUS TAB/PANEL MANAGEMENT
@@ -228,6 +245,8 @@ define([
     focusHome: function() {
       this.unfocusAll();
       this.$home.show();
+      this.roomBlockView.render();
+      this.onetooneBlockView.render();
     },
 
     // called by router
@@ -277,7 +296,7 @@ define([
 
       // Focus the one we want
       model.set('focused', true);
-      this.trigger('refreshTabs'); // @todo : nasty!!!
+      this.roomBlockView.render();
 
       // Update URL
 //      var uri;
@@ -286,7 +305,7 @@ define([
 //      } else {
 //        uri = 'user/'+model.get('username');
 //      }
-//      Backbone.history.navigate(uri); // @todo : warning! focusing a room should be done only by router, so the URL is already up to date no ?
+//      Backbone.history.navigate(uri); // @todo : warning! focusing a room should be done only by router, so the URL is already up to date no ? => to confirm and then delete this block
     }
 
   });

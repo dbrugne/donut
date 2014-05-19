@@ -1,7 +1,0 @@
-<% var uriName = room.name.replace('#', ''); %>
-<a href="#room/<%= uriName %>" class="item" data-name="<%= room.name %>">
-    <span class="name"><%= room.name %></span>
-    <span class="users-count">(<span class="glyphicon glyphicon-user"></span> <span class="count"><% users.length %></span>)</span>
-    <span class="close glyphicon glyphicon-remove"></span>
-    <span class="badge"><%= room.unread %></span>
-</a>
