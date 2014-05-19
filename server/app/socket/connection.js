@@ -44,7 +44,6 @@ module.exports = function(io, socket) {
       _.each(user.onetoones, function(userDb) {
         onetoones.push(userDb.username);
       });
-      console.log(onetoones);
 
       // Welcome
       socket.emit('welcome', {
