@@ -83,7 +83,9 @@ define([
 
       var name = '#'+this.$input.val();
 
-      this.mainView.openRoom(name);
+//      this.mainView.openRoom(name);
+      var uri = 'room/'+name.replace('#', '');
+      Backbone.history.navigate(uri);
 
       this.$formGroup.removeClass('has-error').removeClass('has-success');
       this.$input.val('');

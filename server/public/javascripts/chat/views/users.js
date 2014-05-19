@@ -2,9 +2,8 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'collections/discussions',
   'text!templates/user.html'
-], function ($, _, Backbone, discussions, userTemplate) {
+], function ($, _, Backbone, userTemplate) {
   var UsersView = Backbone.View.extend({
 
     tagName: 'div',

@@ -5,7 +5,7 @@
     <a href="#room/<%= uriName %>" class="item <% if (room.focused) { %>active<% }; %>" data-name="<%= room.name %>">
         <span class="name"><%= room.name %></span>
         <span class="users-count">(<span class="glyphicon glyphicon-user"></span> <span class="count"><% room.users %></span>)</span>
-        <span class="close glyphicon glyphicon-remove"></span>
+        <span class="close glyphicon glyphicon-remove close-room"></span>
         <% if (room.unread > 0) { %>
             <span class="badge"><%= room.unread %></span>
         <% }; %>

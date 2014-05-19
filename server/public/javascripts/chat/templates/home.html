@@ -11,7 +11,7 @@
         <li class="">
             <%= room %>
             - <a href="#room/<%= room.replace('#', '') %>">rejoindre</a>
-            </li>
+        </li>
         <% }); %>
     </ul>
 
@@ -19,7 +19,7 @@
         <% _.each(users, function(user) { %>
         <li class="">
             <%= user.username %>
-            - <a href="#user/<%= user.username %>" class="open-onetoone" data-user-id="<%= user.user_id %>">discuter</a>
+            - <a href="#user/<%= user.username %>" data-user-id="<%= user.user_id %>">discuter</a>
         </li>
         <% }); %>
     <ul>

@@ -3,7 +3,8 @@ define([
   'underscore',
   'backbone',
   'models/client',
-  'collections/discussions',
+  'collections/rooms',
+  'collections/onetoones',
   'models/current-user',
   'views/window',
   'views/status',
@@ -19,7 +20,7 @@ define([
   'views/onetoone-block',
   'views/user-profile', // need to be loaded here to instantiate DOM
   'views/room-profile' // idem
-], function ($, _, Backbone, client, discussions, currentUser, windowView,
+], function ($, _, Backbone, client, rooms, onetoones, currentUser, windowView,
              statusView, alertView, homeView, onlinesView, RoomCreateView,
              RoomSearchView, UserSearchView, RoomPanelView, OneToOnePanelView,
              RoomBlockView, OnetooneBlockView, userProfileView, roomProfileView) {
@@ -28,7 +29,11 @@ define([
 
     el: $("#chat"),
 
+    $home: $('#home'),
+
     $discussionsPanelsContainer: $("#chat-center"),
+
+    thisDiscussionShouldBeFocusedOnSuccess: '',
 
     events: {
       'click #search-room-link': 'openSearchRoomModal',
@@ -36,19 +41,20 @@ define([
       'click #search-user-link': 'openSearchUserModal',
       'click .open-user-profile': 'openUserProfile',
       'dblclick .dbl-open-user-profile': 'openUserProfile',
-      'click .open-onetoone': 'openOneToOne',
-      'click .close-onetoone': 'closeOneToOne'
+//      'click .open-room': 'openRoom', // @todo : we use router everywhere to open room, this method is helpful ?
+      'click .close-room': 'closeRoom',
+//      'click .open-onetoone': 'openOne', // @todo : we use router everywhere to open one, this method is helpful ?
+      'click .close-onetoone': 'closeOne'
     },
 
     initialize: function() {
       this.listenTo(client, 'welcome', this.onWelcome);
 
-      this.listenTo(discussions, 'add', this.onAdd);
-      this.listenTo(discussions, 'focusDefault', this.onFocusHome);
-      this.listenTo(discussions, 'unfocusDefault', this.onUnfocusHome);
+      this.listenTo(rooms, 'add', this.onRoomPong);
+      this.listenTo(onetoones, 'add', this.onOnePong);
 
-      this.roomBlockView = new RoomBlockView({collection: discussions});
-      this.onetooneBlockView = new OnetooneBlockView({collection: discussions});
+      this.roomBlockView = new RoomBlockView({collection: rooms});
+      this.onetooneBlockView = new OnetooneBlockView({collection: onetoones});
     },
 
     alert: function(type, message) {
@@ -56,6 +62,12 @@ define([
         type = 'info';
       }
       alertView.show(type, message);
+    },
+
+    _handleAction: function(event) {
+      event.preventDefault();
+      event.stopPropagation();
+      $('.modal').modal('hide');
     },
 
     /**
@@ -84,6 +96,9 @@ define([
         client.join(room);
       });
     },
+
+    // MODALS
+    // ======================================================================
 
     openSearchRoomModal: function() {
       if (!this.searchRoomModal) {
@@ -141,57 +156,137 @@ define([
 //        }
 //        client.close(userId);
 //      }
+//
+//      return false; // stop propagation
+//    },
 
-      return false; // stop propagation
-    },
-
-    _handleAction: function(event) {
-      event.preventDefault();
-      event.stopPropagation();
-      $('.modal').modal('hide');
-    },
 
     // DISCUSSIONS MANAGEMENT
     // ======================================================================
 
-    // @todo : replace by a method in main that ADD to collection and create views
-    onAdd: function(model, collection, options) {
-      if (model.get('type') == 'room') {
-        var windowView = new RoomPanelView({ collection: collection, model: model });
-                this.$discussionsPanelsContainer.append(windowView.$el);
-      } else if (model.get('type') == 'onetoone') {
-        var windowView = new OneToOnePanelView({ collection: collection, model: model });
-        this.$discussionsPanelsContainer.append(windowView.$el);
-      } else {
-        return;
-      }
+    onRoomPong: function(model, collection, options) {
+      var view = new RoomPanelView({
+        collection: collection,
+        model:      model
+      });
+      this.$discussionsPanelsContainer.append(view.$el);
     },
-    // @todo : replace by a method in main that ADD to collection and create views
 
-    openRoom: function(name) {
-      // Is already opened?
-      var room = discussions.get(name);
-      if (room != undefined) {
-        discussions.focus(room); // @todo : should use this.focus
-      } else {
-        // Room not already open
-        discussions.thisDiscussionShouldBeFocusedOnSuccess = name;
-        client.join(name);
+    onOnePong: function(model, collection, options) {
+      var view = new OneToOnePanelView({
+        collection: collection,
+        model:      model
+      });
+      this.$discussionsPanelsContainer.append(view.$el);
+
+      // If caller indicate that this room should be focused on success
+      //  OR if this is the first opened discussion
+      if (this.thisDiscussionShouldBeFocusedOnSuccess == model.get('name')
+        || this.length == 1) {
+        this.focus(model);
       }
     },
 
-    openOnetoone: function(user_id) {
+//    openRoom: function(name) {
+//      // Is already opened?
+//      var room = discussions.get(name);
+//      if (room != undefined) {
+//        discussions.focus(room); // @todo : should use this.focus
+//      } else {
+//        // Room not already open
+//        discussions.thisDiscussionShouldBeFocusedOnSuccess = name;
+//        client.join(name);
+//      }
+//    },
+
+    closeRoom: function(name) {
+
+    },
+
+    openOne: function(user_id) {
+
+    },
+
+    closeOne: function(user_id) {
 
     },
 
     // FOCUS TAB/PANEL MANAGEMENT
     // ======================================================================
 
-    onFocusHome: function() {
-      this.$discussionsPanelsContainer.find('#home').show();
+    unfocusAll: function() {
+      rooms.each(function(o, key, list) {
+        o.set('focused', false);
+      });
+      onetoones.each(function(o, key, list) {
+        o.set('focused', false);
+      });
+      this.$home.hide();
     },
-    onUnfocusHome: function() {
-      this.$discussionsPanelsContainer.find('#home').hide();
+
+    // called by router
+    focusHome: function() {
+      this.unfocusAll();
+      this.$home.show();
+    },
+
+    // called by router
+    focusRoomByName: function(name) {
+      var model = rooms.findWhere({ type: 'room', name: name });
+      if (model == undefined) {
+        // Not already open
+        this.thisDiscussionShouldBeFocusedOnSuccess = name;
+        rooms.openPing(name);
+        return;
+      } else {
+        this.focus(model);
+      }
+    },
+
+//    // router should use only this method and never focus() (cause focus() change the #uri)
+//    focusOneToOneByUsername: function(username) {
+//      var model = this.findWhere({ type: 'onetoone', username: username });
+//
+//      // Open discussion window if not already exist
+//      if (model == undefined) {
+//        // Create onetoone
+//        // @todo : need to replace 'user.id' for identifying room by 'user.username' everywhere
+//        //         until that direct access to user one to one doesn't work
+//        return;
+//      }
+//
+//      this.focus(model);
+//    },
+
+    focus: function(model) {
+      // No opened discussion, display default
+      if (rooms.length < 1 && onetoones.length < 1) {
+        return this.focusHome();
+      }
+
+      // No discussion provided, take first
+      if (model == undefined) {
+        model = rooms.first();
+        if (model == undefined) {
+          model = onetoones.first();
+        }
+      }
+
+      // Unfocus every model
+      this.unfocusAll();
+
+      // Focus the one we want
+      model.set('focused', true);
+      this.trigger('refreshTabs'); // @todo : nasty!!!
+
+      // Update URL
+//      var uri;
+//      if (model.get('type') == 'room') {
+//        uri = 'room/'+model.get('name').replace('#', '');
+//      } else {
+//        uri = 'user/'+model.get('username');
+//      }
+//      Backbone.history.navigate(uri); // @todo : warning! focusing a room should be done only by router, so the URL is already up to date no ?
     }
 
   });

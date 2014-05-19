@@ -14,7 +14,7 @@ define([
     events: {
       'click .room-search-submit': 'search',
       'keyup .room-search-input': 'search',
-      'click .rooms-list li': 'openSelected'
+      'click .rooms-list li a': 'hide'
     },
 
     initialize: function(options) {
@@ -53,13 +53,13 @@ define([
     onError: function() {
       this.hide();
       this.mainView.alert('error', "Something didn't work. Please retry in few minutes.");
-    },
-
-    openSelected: function(event) {
-      var name = $(event.currentTarget).data('name');
-      this.mainView.openRoom(name);
-      this.hide();
     }
+
+//    openSelected: function(event) {
+//      var name = $(event.currentTarget).data('name');
+//      this.mainView.openRoom(name);
+//      this.hide();
+//    }
 
   });
 

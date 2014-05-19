@@ -4,7 +4,7 @@
     <% _.each(list, function(one) { %>
     <a href="#user/<%= one.username %>" class="item <% if (one.focused) { %>active<% }; %>" data-user-id="<%= one.user_id %>">
         <span class="name"><%= one.username %></span>
-        <span class="close glyphicon glyphicon-remove"></span>
+        <span class="close glyphicon glyphicon-remove close-onetoone"></span>
         <% if (one.unread > 0) { %>
             <span class="badge"><%= one.unread %></span>
         <% }; %>

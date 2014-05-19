@@ -2,8 +2,9 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'collections/discussions'
-], function ($, _, Backbone, discussions) {
+  'collections/rooms',
+  'collections/onetoones'
+], function ($, _, Backbone, rooms, onetoones) {
   /**
    * Represent the browser window
    */
@@ -36,7 +37,7 @@ define([
       });
 
       // Bind events to model
-      this.listenTo(discussions, 'newMessage', this.increment());
+//      this.listenTo(discussions, 'newMessage', this.increment()); // @todo : nasty event (and cannot work now with rooms and onetoones collections)
     },
 
     onBlur: function() {
@@ -64,7 +65,7 @@ define([
 
     onClose: function() {
       // only if at least one room is open
-      if (discussions && discussions.length > 0) {
+      if ((rooms && rooms.length > 0) || (onetoones && onetoones.length > 0)) {
         return "If you leave this page all the room history will be lost.";
       } else {
         return;

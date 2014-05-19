@@ -2,8 +2,8 @@ define([
   'underscore',
   'backbone',
   'models/client',
-  'collections/discussions'
-], function (_, Backbone, client, discussions) {
+  'views/main'
+], function (_, Backbone, client, mainView) {
   var ChatRouter = Backbone.Router.extend({
     routes: {
       '':                 'root',
@@ -29,17 +29,17 @@ define([
 
     root: function() {
       console.log('router: home');
-      discussions.focusHome();
+      mainView.focusHome();
     },
 
     focusRoom: function(name) {
       console.log('router: focusRoom '+name);
-      discussions.focusRoomByName('#'+name);
+      mainView.focusRoomByName('#'+name);
     },
 
     focusOneToOne: function(username) {
       console.log('router: focusOneToOne ' + username);
-      discussions.focusOneToOneByUsername(username);
+      mainView.focusOneToOneByUsername(username);
     },
 
     default: function() {
