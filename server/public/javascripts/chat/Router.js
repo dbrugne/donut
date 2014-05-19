@@ -17,7 +17,7 @@ define([
     initialize: function(options) {
       var that = this;
       // Watch for client connection state
-      this.listenTo(client, 'connect', function() {
+      this.listenTo(mainView, 'ready', function() {
         that.clientOnline = true;
         Backbone.history.start();
       });
