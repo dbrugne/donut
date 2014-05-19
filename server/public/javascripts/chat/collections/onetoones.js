@@ -15,7 +15,7 @@ define([
       client.open(username);
     },
     openPong: function(user) {
-      model = new OneToOneModel({
+      var model = new OneToOneModel({
         id: user.user_id,
         user_id: user.user_id,
         username: user.username
@@ -25,19 +25,19 @@ define([
     },
     onMessage: function(message) {
       // Current user is emitter or recipient?
-      var with_user_id;
+      var with_username;
       if (currentUser.get('username') == message.from) {
         // Emitter
-        with_user_id = message.to;
+        with_username = message.to;
       } else if (currentUser.get('username') == message.to) {
         // Recipient
-        with_user_id = message.from; // i can also be this one if i spoke to myself...
+        with_username = message.from; // i can also be this one if i spoke to myself...
       }
 
-      // @todo : case when i receive message from another user and discussio is not already open
+      var model = this.findWhere({username: with_username});
+      if (model == undefined) return; // @todo : case when i receive message from another user and discussio is not already open
 //      model = this.addOneToOne(new UserModel({
-//        id: with_user_id,
-//        username: message.username
+//        username: with_username
 //      }));
 
 //      // To have the same data between room and user messages (= same view code)
