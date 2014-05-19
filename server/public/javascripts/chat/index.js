@@ -19,7 +19,7 @@ require.config({
     'jquery.cloudinary': ['jquery'],
     'jquery.dateformat': ['jquery'],
     'jquery.insertatcaret': ['jquery'],
-    'jquery.bootstrap': {
+    'bootstrap': {
       deps: ['jquery']
     }
   }
