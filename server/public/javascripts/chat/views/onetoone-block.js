@@ -22,7 +22,6 @@ define([
     },
 
     onAddRemove: function(model, collection, options) {
-      if (model.get('type') != 'onetoone') return;
       this.render();
     },
 

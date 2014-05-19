@@ -3,63 +3,50 @@ define([
   'backbone',
   'models/client',
   'models/current-user',
-  'models/onetoone',
-  'models/user'
-], function (_, Backbone, client, currentUser, OneToOneModel, UserModel) {
+  'models/onetoone'
+], function (_, Backbone, client, currentUser, OneToOneModel) {
   var OnetoonesCollection = Backbone.Collection.extend({
 
     initialize: function() {
-      this.listenTo(client, 'user:open', this.userOpen);
-      this.listenTo(client, 'user:message', this.userMessage);
+      this.listenTo(client, 'user:open', this.openPong);
+      this.listenTo(client, 'user:message', this.onMessage);
     },
-
-    userOpen: function(data) {
-      var onetoone = this.addOneToOne(new UserModel({
-        id: data.user_id,
-        username: data.username
-      }));
-      this.focus(onetoone);
+    openPing: function(username) {
+      client.open(username);
     },
+    openPong: function(user) {
+      model = new OneToOneModel({
+        id: user.user_id,
+        user_id: user.user_id,
+        username: user.username
+      });
 
-    userMessage: function(message) {
+      this.add(model);
+    },
+    onMessage: function(message) {
       // Current user is emitter or recipient?
       var with_user_id;
-      if (currentUser.get('user_id') == message.from) {
+      if (currentUser.get('username') == message.from) {
         // Emitter
         with_user_id = message.to;
-      } else if (currentUser.get('user_id') == message.to) {
+      } else if (currentUser.get('username') == message.to) {
         // Recipient
         with_user_id = message.from; // i can also be this one if i spoke to myself...
       }
 
-      model = this.addOneToOne(new UserModel({
-        id: with_user_id,
-        username: message.username
-      }));
+      // @todo : case when i receive message from another user and discussio is not already open
+//      model = this.addOneToOne(new UserModel({
+//        id: with_user_id,
+//        username: message.username
+//      }));
 
-      // To have the same data between room and user messages (= same view code)
-      message.user_id = message.from;
+//      // To have the same data between room and user messages (= same view code)
+//      message.user_id = message.from;
 
       model.message(message);
 
       // Window new message indication
       this.trigger('newMessage');
-    },
-
-    addOneToOne: function(user) {
-      // Discussion already opened?
-      var oneToOneId = user.get('id');
-      var model = this.get(oneToOneId);
-      if (model == undefined) {
-        model = new OneToOneModel({
-          id: oneToOneId,
-          user_id: user.get('id'),
-          username: user.get('username')
-        });
-        this.add(model);
-      }
-
-      return model;
     }
 
   });

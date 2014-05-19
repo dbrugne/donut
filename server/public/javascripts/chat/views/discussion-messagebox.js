@@ -73,7 +73,7 @@ define([
       if (this.model.get('type') == 'room') {
         client.roomMessage(this.model.get('name'), message);
       } else if (this.model.get('type') == 'onetoone') {
-        client.userMessage(this.model.get('user_id'), message);
+        client.userMessage(this.model.get('username'), message);
       }
 
       // Empty field

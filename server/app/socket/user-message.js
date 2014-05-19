@@ -4,26 +4,38 @@ var activityRecorder = require('../activity-recorder');
 
 module.exports = function(io, socket, data) {
 
-  var from = socket.getUserId();
+  var fromUsername = socket.getUsername();
+  var toUsername = data.to;
 
-  // @todo : test that data.to exists in database
-  var to = data.to;
+  var regexp = new RegExp(['^',toUsername,'$'].join(''),'i');
+  User.findOne({ username: regexp }, 'username', function(err, userTo) {
+    if (err) {
+      delegate_error('Unable to retrieve user ' + err, __dirname + '/' + __filename);
+      return;
+    }
+    if (!userTo) {
+      delegate_error('Unable to retrieve this user: ' + data.username, __dirname + '/' + __filename);
+      return;
+    }
 
-  var message = {
-    from: from,
-    to: to,
-    time: Date.now(),
-    message: data.message,
-    user_id: socket.getUserId(),
-    username: socket.getUsername()
-  };
+    var from = socket.getUserId();
+    var to = userTo._id; // @todo : test that data.to exists in database
 
-  io.sockets.in('user:'+from).emit('user:message', message);
-  if (from != to) { // only if sender is not also the receiver
-    io.sockets.in('user:'+to).emit('user:message', message);
-  }
+    var message = {
+      from: fromUsername,
+      to: userTo.username,
+      time: Date.now(),
+      message: data.message,
+      user_id: from,
+      username: fromUsername
+    };
 
-  // Activity
-  activityRecorder('user:message', socket.getUserId(), data);
+    io.sockets.in('user:' + from).emit('user:message', message);
+    if (from != to) { // only if sender is not also the receiver
+      io.sockets.in('user:' + to).emit('user:message', message);
+    }
 
+    // Activity
+    activityRecorder('user:message', socket.getUserId(), data);
+  });
 };

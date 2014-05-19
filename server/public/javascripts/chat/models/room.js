@@ -12,7 +12,7 @@ define([
       return {
         name: '',
         topic: '',
-        type: 'room',
+        type: 'room', // @todo : remove
         focused: false,
         unread: 0
       };

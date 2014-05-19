@@ -95,6 +95,14 @@ define([
       _.each(data.rooms, function(room) {
         client.join(room); // @todo : should be called on collection
       });
+
+      // Open onetoones
+      _.each(data.onetoones, function(onetoone) {
+        client.open(onetoone); // @todo : should be called on collection
+      });
+
+      // Run routing
+      this.trigger('ready');
     },
 
     // MODALS
@@ -132,34 +140,6 @@ define([
       return false; // stop propagation
     },
 
-//    openOneToOne: function(event) {
-//      this._handleAction(event);
-//      var userId = $(event.currentTarget).data('userId');
-//      if (userId) {
-//        client.open(userId);
-//        var one = discussions.get(userId);
-//      }
-//
-//      return false; // stop propagation
-//    },
-//    closeOneToOne: function(event) {
-//      this._handleAction(event);
-//      var userId = $(event.currentTarget).data('userId');
-//      if (userId) {
-//        this.collection.remove(this.model); // remove model from collection
-//
-//        // After remove, the room still exists but is not in the collection,
-//        // = .focus() call will choose another room to be focused
-//        if (this.model.get('focused')) {
-//          this.collection.focus();
-//        }
-//        client.close(userId);
-//      }
-//
-//      return false; // stop propagation
-//    },
-
-
     // DISCUSSIONS MANAGEMENT
     // ======================================================================
 
@@ -184,7 +164,7 @@ define([
 
       // If caller indicate that this room should be focused on success
       //  OR if this is the first opened discussion
-      if (this.thisDiscussionShouldBeFocusedOnSuccess == model.get('name')
+      if (this.thisDiscussionShouldBeFocusedOnSuccess == model.get('username')
         || this.length == 1) {
         this.focus(model);
       }
@@ -194,37 +174,40 @@ define([
       this._handleAction(event);
 
       var $currentTarget = $(event.currentTarget);
-      console.log($currentTarget.hasClass('close-room'));
-      console.log($currentTarget.hasClass('close-onetoone'));
 
       if ($currentTarget.hasClass('close-room')) {
         var name = $currentTarget.data('name');
         if (!name) return false;
         this.closeRoom(name);
       } else if ($currentTarget.hasClass('close-onetoone')) {
-        var userId = $currentTarget.data('userId');
-        if (!userId) return false;
-        this.closeOne(userId);
+        var username = $currentTarget.data('username');
+        if (!username) return false;
+        this.closeOne(username);
       }
 
       return false; // stop propagation
     },
 
     closeRoom: function(name) {
-      var model = rooms.findWhere({ type: 'room', name: name });
+      var model = rooms.findWhere({ name: name });
       if (model == undefined) return;
 
       // Remove entity (on remove: panel will autodestroy and model will client.leave)
       rooms.remove(model);
 
-      // Focus another panel
-      this.focus();
+      // Focus default
+      this.focusHome();
     },
 
-    closeOne: function(user_id) {
-      // Send close message
-      // Remove from DOM
-      // Remove entity
+    closeOne: function(username) {
+      var model = onetoones.findWhere({ username: username });
+      if (model == undefined) return;
+
+      // Remove entity (on remove: panel will autodestroy and model will client.close)
+      onetoones.remove(model);
+
+      // Focus default
+      this.focusHome();
     },
 
     // FOCUS TAB/PANEL MANAGEMENT
@@ -250,7 +233,7 @@ define([
 
     // called by router only
     focusRoomByName: function(name) {
-      var model = rooms.findWhere({ type: 'room', name: name });
+      var model = rooms.findWhere({ name: name });
       if (model == undefined) {
         // Not already open
         this.thisDiscussionShouldBeFocusedOnSuccess = name;
@@ -263,12 +246,11 @@ define([
 
     // called by router only
     focusOneToOneByUsername: function(username) {
-      var model = onetoones.findWhere({ type: 'onetoone', username: username });
+      var model = onetoones.findWhere({ username: username });
       if (model == undefined) {
         // Not already open
-        // @todo : reprise
-//        this.thisDiscussionShouldBeFocusedOnSuccess = name;
-//        o.openPing(name);
+        this.thisDiscussionShouldBeFocusedOnSuccess = username;
+        onetoones.openPing(username);
         return;
       } else {
         this.focus(model);
@@ -286,6 +268,9 @@ define([
         model = rooms.first();
         if (model == undefined) {
           model = onetoones.first();
+          if (model == undefined) {
+            return this.focusHome();
+          }
         }
       }
 
@@ -295,6 +280,7 @@ define([
       // Focus the one we want
       model.set('focused', true);
       this.roomBlockView.render();
+      this.onetooneBlockView.render();
 
       // Update URL
 //      var uri;
@@ -304,6 +290,7 @@ define([
 //        uri = 'user/'+model.get('username');
 //      }
 //      Backbone.history.navigate(uri); // @todo : warning! focusing a room should be done only by router, so the URL is already up to date no ? => to confirm and then delete this block
+      // @todo : bug when closing a panel and focusing another discussion
     }
 
   });

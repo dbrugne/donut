@@ -20,7 +20,7 @@ define([
     // Server confirm that we was joined to the room and give us some data on room
     openPong: function(room) {
       var model = new RoomModel({
-        id: room.name, // @todo : duplicate room.id and room.name ? # => no, exhange _id instead
+        id: room.room_id,
         name: room.name,
         topic: room.topic
       });
@@ -47,7 +47,7 @@ define([
     },
 
     onMessage: function(data) { // @todo : move it on room model
-      var model = this.get(data.name);
+      var model = this.findWhere({ name: data.name });
       model.message(data);
       // Window new message indication
       this.trigger('newMessage');

@@ -10,7 +10,7 @@ module.exports = function(io, socket, data) {
   } // @todo : check user_id validity
 
   var regexp = new RegExp(['^',data.username,'$'].join(''),'i');
-  User.findOne({ username: regexp }, 'username', function(err, userTo) {
+  User.findOne({ username: regexp }, function(err, userTo) {
     if (err) {
       delegate_error('Unable to retrieve user ' + err, __dirname + '/' + __filename);
       return;
@@ -20,17 +20,11 @@ module.exports = function(io, socket, data) {
       return;
     }
 
-    User.findOneAndUpdate({_id: socket.getUserId()}, {$addToSet: { onetoones: userTo._id }}, function(err, userFrom) {
+    User.findOneAndUpdate({_id: socket.getUserId()}, {$pull: { onetoones: userTo._id }}, function(err, userFrom) {
       if (err) return console.log('User.findOneAndUpdate: ' + err);
 
-      // push user data
-      socket.emit('user:open', {
-        user_id: userTo._id,
-        username: userTo.username
-      });
-
       // Activity
-      activityRecorder('user:open', socket.getUserId(), data);
+      activityRecorder('user:close', socket.getUserId(), data);
     });
   });
 

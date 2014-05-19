@@ -154,10 +154,15 @@ define([
     // USER
     // ======================================================
 
-    open: function(user_id) {
-      var data = {user_id: user_id};
+    open: function(username) {
+      var data = {username: username};
       this.socket.emit('user:open', data);
       this.debug(['io:out:user:open', data]);
+    },
+    close: function(username) {
+      var data = {username: username};
+      this.socket.emit('user:close', data);
+      this.debug(['io:out:user:close', data]);
     },
     userMessage: function(to, message) {
       var data = {to: to, message: message};
