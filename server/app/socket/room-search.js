@@ -21,7 +21,7 @@ module.exports = function (io, socket, data) {
     var results = [];
     for (var i=0; i<rooms.length; i++) {
       results.push({
-        name: rooms[i]._id,
+        name: rooms[i].name,
         topic: rooms[i].topic,
         count: rooms[i].users.length
       });

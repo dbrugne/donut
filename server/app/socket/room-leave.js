@@ -20,7 +20,8 @@ module.exports = function(io, socket, data) {
       return;
     }
 
-    Room.update({_id: data.name}, {$pull: { users: socket.getUserId() }}, function(err, affectedDocuments) {
+    var regexp = new RegExp(['^', data.name, '$'].join(''), 'i');
+    Room.findOneAndUpdate({ name: regexp }, {$pull: { users: socket.getUserId() }}, function(err, room) {
       if (err) {
         delegate_error('Unable to update room on exiting user '+err, __dirname+'/'+__filename);
         return;
