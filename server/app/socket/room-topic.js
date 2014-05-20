@@ -13,7 +13,8 @@ module.exports = function(io, socket, data) {
   }
 
   // Save
-  Room.update({_id: data.name}, {topic: data.topic}, function(err, numberAffected) {
+  var regexp = new RegExp(['^',data.name,'$'].join(''),'i');
+  Room.findOneAndUpdate({ name: regexp }, {topic: data.topic}, function(err, room) {
     if (err) {
       delegate_error('Unable to change room '+data.name+' topic '+data.topic, __dirname+'/'+__filename);
       return;
