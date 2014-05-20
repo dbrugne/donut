@@ -24,7 +24,7 @@ define([
       _.each(this.collection.models, function(o) {
         listJSON.push(o.toJSON());
       });
-console.log(listJSON);
+
       var html = this.template({list: listJSON});
       this.$el.html(html);
       return this;
