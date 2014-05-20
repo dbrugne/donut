@@ -35,7 +35,14 @@ define([
       }
 
       var model = this.findWhere({username: with_username});
-      if (model == undefined) return; // @todo : case when i receive message from another user and discussio is not already open
+      if (model == undefined) {
+        var model = new OneToOneModel({
+          id: with_username,
+          user_id: with_username,
+          username: message.username
+        });
+        this.add(model);
+      } // @todo : case when i receive message from another user and discussio is not already open
 //      model = this.addOneToOne(new UserModel({
 //        username: with_username
 //      }));
