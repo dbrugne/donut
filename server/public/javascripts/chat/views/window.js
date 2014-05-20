@@ -43,11 +43,9 @@ define([
 
     onBlur: function() {
       this.focused = false;
-      console.log('blur');
     },
 
     onFocus: function() {
-      console.log('focus');
       if (this.unread == 0) {
         return;
       }
@@ -58,7 +56,6 @@ define([
     },
 
     increment: function() {
-      console.log('++');
       if (this.focused) {
         return;
       }
