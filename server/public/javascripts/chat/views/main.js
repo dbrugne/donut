@@ -49,9 +49,7 @@ define([
       this.listenTo(client, 'welcome', this.onWelcome);
 
       this.listenTo(rooms, 'add', this.onRoomPong);
-//      this.listenTo(rooms, 'remove', this.onRoomRemove);
       this.listenTo(onetoones, 'add', this.onOnePong);
-//      this.listenTo(onetoones, 'remove', this.onRoomRemove);
 
       this.roomBlockView = new RoomBlockView({collection: rooms});
       this.onetooneBlockView = new OnetooneBlockView({collection: onetoones});
