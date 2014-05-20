@@ -277,6 +277,7 @@ define([
 
       // Focus the one we want
       model.set('focused', true);
+      model.set('unread', 0);
       this.roomBlockView.render();
       this.onetooneBlockView.render();
 
