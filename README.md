@@ -5,17 +5,17 @@ chat
 
 - Images
 - [x] Remove multiparty and crate
-- [ ] Integrate cloudinary and user picture
--- [x] define avatar 'formats' in configuration file
--- [x] remove nasty cloudinary.cloudinary code
--- [x] make add/edit picture work in all cases (inclusing "cancel")
--- [x] re-Add a method on user model with "format" parameter (use in account/, user/ and #header)
--- [x] in chat and on account/edit pass only the cloudinary id and implement image loading on client side
--- [-] configure well upload constrains (maxsize, format ..) => not supported by jQuery uploader
--- [x] handle default image
--- [ ] add "delete" image (delete action in form and removing on cloud)
--- [ ] on image change "delete" previous image
--- [ ] cloudinary cache bug http://cloudinary.com/documentation/jquery_image_manipulation#image_versions
+- Integrate cloudinary and user picture
+- [x] define avatar 'formats' in configuration file
+- [x] remove nasty cloudinary.cloudinary code
+- [x] make add/edit picture work in all cases (inclusing "cancel")
+- [x] re-Add a method on user model with "format" parameter (use in account/, user/ and #header)
+- [x] in chat and on account/edit pass only the cloudinary id and implement image loading on client side
+- [-] configure well upload constrains (maxsize, format ..) => not supported by jQuery uploader
+- [x] handle default image
+- [ ] add "delete" image (delete action in form and removing on cloud)
+- [ ] on image change "delete" previous image
+- [ ] cloudinary cache bug http://cloudinary.com/documentation/jquery_image_manipulation#image_versions
 
 - Chat
 - [x] Chat default room with auto-join on connection
@@ -29,18 +29,19 @@ chat
 - [x] Add an intermediate "form" to choose a username when entering in chatroom
 - [x] Separate onetoone and room list in left column (different views, collections and ... 'client' binds)
 - [x] Chat default panel with homepage content
-- [ ] Sort room list alphabetically
-- [ ] Remove onlines block (now listed on home)
-- [ ] Change rendering pattern to "redrawn" everytime on rooms block, onetoones block and room user block
+- [x] Change rendering pattern to "redrawn" everytime on rooms block, onetoones block and room user block
 - [x] Persist onetoone open/close and reopen on 'welcome' event
-- [ ] Get last 50 viewed on room/onetoone opening
-- [ ] In welcome.users message list users and not sockets
 - [ ] Persist correctly user.rooms and room.users
 - [ ] On room join make room search case insensitive
+- [ ] Sort room/onetoone/room users lists alphabetically
+- [ ] Move onlines block on home
+- [ ] Refresh home on focus
+- [ ] Get last 50 viewed on room/onetoone opening
+- [ ] In welcome.users message list users and not sockets
 - [ ] Handle empty room deletion on last user leave
 - [ ] One one to one message check that to user exists in database
 - [ ] Implement central username/room.name validator/sanitization
-- [ ] Handle default route to display home (with redirect?) with alert message
+- [ ] Handle backnone 'default' route to display home (with redirect?) with alert message
 - [ ] Implement room creation success/error alert message
 
 - Signup
@@ -55,7 +56,7 @@ chat
 
 - Finishing
 - [ ] CSRF and 304!
-- [ ] Update connect-mongo module
+- [x] Update connect-mongo module
 - [ ] Review all socket delegation and report: validation/sanitization, multi-device, ACL
 
 - Site
@@ -63,13 +64,16 @@ chat
 - [ ] Test it on IE8-11/FF
 - [ ] Design integration
 - [ ] Google Analytics (HP, interface de chat)
-- [ ] Deploy/backup/monitor
+- [x] Deploy
+- [ ] Backup
+- [ ] Monitor
 
 ## Next releases
 
 Critical:
 - [ ] Introduce guest mode
-- [ ] Re-introduce room_id (if needed)
+- [ ] Separate socket/web apps
+- [ ] Introduce Redis
 
 Room profile:
 - [ ] Edit form
