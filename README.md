@@ -3,7 +3,7 @@ chat
 
 ## MVP
 
-- Images
+**Images**
 - [x] Remove multiparty and crate
 - Integrate cloudinary and user picture
 - [x] define avatar 'formats' in configuration file
@@ -11,17 +11,17 @@ chat
 - [x] make add/edit picture work in all cases (inclusing "cancel")
 - [x] re-Add a method on user model with "format" parameter (use in account/, user/ and #header)
 - [x] in chat and on account/edit pass only the cloudinary id and implement image loading on client side
-- [-] configure well upload constrains (maxsize, format ..) => not supported by jQuery uploader
+- [ ] configure well upload constrains (maxsize, format ..) => not supported by jQuery uploader
 - [x] handle default image
 - [ ] add "delete" image (delete action in form and removing on cloud)
 - [ ] on image change "delete" previous image
 - [ ] cloudinary cache bug http://cloudinary.com/documentation/jquery_image_manipulation#image_versions
 
-- Chat
+**Chat**
 - [x] Chat default room with auto-join on connection
 - [x] Review the chat interface loading process (init: {client, main, router}, run: (client-connect, ->welcome, home content, router start, join route hash, then join room welcome)
--- [x] Repair URL-room-auto-join (double join when room is both in URL and user mongo entity, broke the routing)
--- [x] Add a proxy for room:join/room:success to avoid previous bug in better way
+- [x] Repair URL-room-auto-join (double join when room is both in URL and user mongo entity, broke the routing)
+- [x] Add a proxy for room:join/room:success to avoid previous bug in better way
 - [x] Remove "your profile" in header and put the link on username
 - [x] Modify "header" link to open account/ in blank
 - [x] Add a chat button in logged header
@@ -44,22 +44,22 @@ chat
 - [ ] Handle backnone 'default' route to display home (with redirect?) with alert message
 - [ ] Implement room creation success/error alert message
 
-- Signup
+**Signup**
 - [x] Remove username from signup form (comment)
 
-- Account
+**Account**
 - [ ] Add form validation/sanitization middleware for each form (account/*, login, signup)
 - [ ] Refactor form error message display (use layout message box and middleware)
 - [ ] Add color theme field
 - [ ] Forgotten password (https://github.com/substack/node-password-reset && http://stackoverflow.com/questions/20277020/reset-change-password-in-nodejs-with-passportjs)
 - [ ] Template user profile
 
-- Finishing
+**Finishing**
 - [ ] CSRF and 304!
 - [x] Update connect-mongo module
 - [ ] Review all socket delegation and report: validation/sanitization, multi-device, ACL
 
-- Site
+**Site**
 - [x] Mettre au propre les mockups du MVP
 - [ ] Test it on IE8-11/FF
 - [ ] Design integration
