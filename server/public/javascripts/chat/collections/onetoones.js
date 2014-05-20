@@ -34,6 +34,7 @@ define([
         with_username = message.from; // i can also be this one if i spoke to myself...
       }
 
+      // Find or create the model
       var model = this.findWhere({username: with_username});
       if (model == undefined) {
         var model = new OneToOneModel({
@@ -45,7 +46,6 @@ define([
       }
 
       model.message(message);
-
       // Window new message indication
       this.trigger('newMessage');
     }

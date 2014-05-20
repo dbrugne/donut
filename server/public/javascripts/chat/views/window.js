@@ -37,14 +37,17 @@ define([
       });
 
       // Bind events to model
-//      this.listenTo(discussions, 'newMessage', this.increment()); // @todo : nasty event (and cannot work now with rooms and onetoones collections)
+      this.listenTo(rooms, 'newMessage', this.increment); // @todo : nasty event
+      this.listenTo(onetoones, 'newMessage', this.increment); // @todo : nasty event
     },
 
     onBlur: function() {
       this.focused = false;
+      console.log('blur');
     },
 
     onFocus: function() {
+      console.log('focus');
       if (this.unread == 0) {
         return;
       }
@@ -55,6 +58,7 @@ define([
     },
 
     increment: function() {
+      console.log('++');
       if (this.focused) {
         return;
       }
