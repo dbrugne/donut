@@ -1,6 +1,5 @@
 var cloudinary = require('cloudinary');
-var configuration = require('../config/app_dev');
+var conf = require('../config/index');
 
-cloudinary.config(configuration.cloudinary);
-
+cloudinary.config(conf.cloudinary);
 module.exports = cloudinary;

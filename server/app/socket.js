@@ -1,6 +1,6 @@
 var cookieParser = require('cookie-parser');
 var passportSocketIo = require('passport.socketio');
-var configuration = require('../config/app_dev');
+var conf = require('../config/index');
 var _ = require('underscore');
 var delegate_authorization = require('./socket/authorization');
 var delegate_connection = require('./socket/connection');
@@ -44,8 +44,8 @@ module.exports = function(app, io, passport, sessionStore) {
   // doc: https://www.npmjs.org/package/passport.socketio
   io.set('authorization', passportSocketIo.authorize({
       cookieParser: cookieParser,
-      key:         configuration.sessions.key,
-      secret:      configuration.sessions.secret,
+      key:         conf.sessions.key,
+      secret:      conf.sessions.secret,
       passport:    passport,
       store:       sessionStore,
       success:     delegate_authorization.success,

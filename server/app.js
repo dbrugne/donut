@@ -1,34 +1,32 @@
 // Load dependencies
-var express = require('express')
-    , path = require('path')
-    , favicon = require('static-favicon')
-    , logger = require('morgan')
-    , cookieParser = require('cookie-parser')
-    , bodyParser = require('body-parser')
-    , session = require('express-session')
-    , csrf = require('csurf');
-
-var mongoose = require('mongoose')
-    , passport = require('passport')
-    , flash = require('connect-flash')
-    , expressValidator = require('./app/validator');
-
-// per-environment configuration
-var configuration = require('./config/app_dev');
+var express = require('express');
+var path = require('path');
+var favicon = require('static-favicon');
+var logger = require('morgan');
+var cookieParser = require('cookie-parser');
+var bodyParser = require('body-parser');
+var session = require('express-session');
+var csrf = require('csurf');
+var mongoose = require('mongoose');
+var passport = require('passport');
+var flash = require('connect-flash');
+var expressValidator = require('./app/validator');
+var conf = require('./config/index');
 
 // express
 var app = express();
 
 // MongoDB
-mongoose.connect(configuration.mongo.url);
+mongoose.connect(conf.mongo.url);
 
 // Sessions in MongoDB
-var MongoStore = require('connect-mongo')({session: session}); // @todo: re-pass express instead of hash when npm will be updated https://www.npmjs.org/package/connect-mongo
+var MongoStore = require('connect-mongo')({session: session});
+// @todo: re-pass express instead of hash when npm will be updated https://www.npmjs.org/package/connect-mongo
 // @todo : was update, upgrade and test https://www.npmjs.org/package/connect-mongo
 var sessionStore = new MongoStore({mongoose_connection: mongoose.connection});
 
 // Passport
-require('./app/passport')(passport, configuration.facebook); // note that will modify passport object and
+require('./app/passport')(passport, conf.facebook); // note that will modify passport object and
 
 // http server
 app.use(favicon());
@@ -40,28 +38,28 @@ app.use(bodyParser());
 app.use(expressValidator()); // must be immediately after bodyParser()
 app.use(cookieParser());
 app.use(session({
-  secret:   configuration.sessions.secret,
-  key:      configuration.sessions.key,
-  store:    sessionStore
+  secret: conf.sessions.secret,
+  key   : conf.sessions.key,
+  store : sessionStore
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(function(req, res, next) { // pass user to all views
-    res.locals.user = req.user;
-    next();
+app.use(function (req, res, next) { // pass user to all views
+  res.locals.user = req.user;
+  next();
 });
 app.use(csrf());
-app.use(function(req, res, next) { // add csrf helper in all views
-    res.locals.token = req.csrfToken();
-    next();
+app.use(function (req, res, next) { // add csrf helper in all views
+  res.locals.token = req.csrfToken();
+  next();
 });
 app.use(flash());
-app.use(function(req, res, next) { // pass flash messages to all views
-    res.locals.success = req.flash('success');
-    res.locals.info = req.flash('info');
-    res.locals.warning = req.flash('warning');
-    res.locals.error = req.flash('error');
-    next();
+app.use(function (req, res, next) { // pass flash messages to all views
+  res.locals.success = req.flash('success');
+  res.locals.info = req.flash('info');
+  res.locals.warning = req.flash('warning');
+  res.locals.error = req.flash('error');
+  next();
 });
 
 // view engine setup
@@ -69,7 +67,7 @@ app.engine('html', require('hogan-express'));
 app.set('views', path.join(__dirname, 'views'));
 app.set('layout', 'layout');
 app.set('view engine', 'html');
-app.locals.title = configuration.title;
+app.locals.title = conf.title;
 
 // routes
 app.use(require('./routes/index'));
@@ -85,36 +83,36 @@ app.use(require('./routes/account-edit-password'));
 app.use(require('./routes/account-edit-profile'));
 
 /// catch 404 and forwarding to error handler
-app.use(function(req, res, next) {
-    if (req.user) {
-        res.locals.user = req.user;
-    }
-    res.render('404', {}, function(err, html) {
-        res.send(404, html);
-    });
+app.use(function (req, res, next) {
+  if (req.user) {
+    res.locals.user = req.user;
+  }
+  res.render('404', {}, function (err, html) {
+    res.send(404, html);
+  });
 });
 
 if (app.get('env') === 'development') {
-    app.use(function(err, req, res, next) {
-        res.status(err.status || 500);
-        res.render('error', {
-            message: err.message,
-            error: err,
-            layout: 'error_layout'
-        });
-    });
-}
-
-app.use(function(err, req, res, next) {
+  app.use(function (err, req, res, next) {
     res.status(err.status || 500);
     res.render('error', {
-        message: err.message,
-        error: {}
+      message: err.message,
+      error  : err,
+      layout : 'error_layout'
     });
+  });
+}
+
+app.use(function (err, req, res, next) {
+  res.status(err.status || 500);
+  res.render('error', {
+    message: err.message,
+    error  : {}
+  });
 });
 
 module.exports = {
-    app: app,
-    passport: passport,
-    sessionStore: sessionStore
+  app         : app,
+  passport    : passport,
+  sessionStore: sessionStore
 };
