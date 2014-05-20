@@ -5,6 +5,7 @@ define([
   'models/client',
   'collections/rooms',
   'collections/onetoones',
+  'collections/onlines',
   'models/current-user',
   'views/window',
   'views/status',
@@ -20,7 +21,7 @@ define([
   'views/onetoone-block',
   'views/user-profile', // need to be loaded here to instantiate DOM
   'views/room-profile' // idem
-], function ($, _, Backbone, client, rooms, onetoones, currentUser, windowView,
+], function ($, _, Backbone, client, rooms, onetoones, onlines, currentUser, windowView,
              statusView, alertView, homeView, onlinesView, RoomCreateView,
              RoomSearchView, UserSearchView, RoomPanelView, OneToOnePanelView,
              RoomBlockView, OnetooneBlockView, userProfileView, roomProfileView) {
@@ -84,7 +85,12 @@ define([
       homeView.render(data.home);
 
       // Render onlines
-      // @todo : data.onlines
+      _.each(data.onlines, function(online) {
+        onlines.add({
+          id: online.user_id,
+          username: online.username
+        });
+      });
 
       // Join #General
       client.join('#General'); // @todo : should be called on collection
