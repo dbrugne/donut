@@ -1,8 +1,9 @@
 // Load dependencies
 var express = require('express');
 var path = require('path');
-var favicon = require('static-favicon');
+var favicon = require('serve-favicon');
 var logger = require('morgan');
+var less = require('less-middleware');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
@@ -20,18 +21,16 @@ var app = express();
 mongoose.connect(conf.mongo.url);
 
 // Sessions in MongoDB
-var MongoStore = require('connect-mongo')({session: session});
-// @todo: re-pass express instead of hash when npm will be updated https://www.npmjs.org/package/connect-mongo
-// @todo : was update, upgrade and test https://www.npmjs.org/package/connect-mongo
+var MongoStore = require('connect-mongo')(session);
 var sessionStore = new MongoStore({mongoose_connection: mongoose.connection});
 
 // Passport
 require('./app/passport')(passport, conf.facebook); // note that will modify passport object and
 
 // http server
-app.use(favicon());
+app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
-app.use(require('less-middleware')({ src: path.join(__dirname, 'public') })); // maintain before other middleware to avoid useless computing
+app.use(less(__dirname+'/public')); // maintain before other middleware to avoid useless computing
 app.use('/medias', express.static(path.join(__dirname, 'medias'))); // maintain before other middleware to avoid useless computing
 app.use(express.static(path.join(__dirname, 'public'))); // maintain before other middleware to avoid useless computing
 app.use(bodyParser());
