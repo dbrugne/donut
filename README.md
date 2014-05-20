@@ -1,33 +1,7 @@
 chat
 ====
 
-# Install
-
-Meet the pre-requisites: **see below**.
-
-Clone the project, go in server/ folder and install dependencies:
-
-```
-npm install
-bower install
-```
-
-Then launch the application:
-
-```
-npm start
-```
-
-*nodemon* will detect changes and restart automatically application when needed. Just type "rs" and Enter in terminal to relaunch manually.
-
-# Pre-requisites
-
-* node.js + npm
-* nodemon
-* Bower
-* MongoDB
-
-# Todo list
+# Roadmap
 
 ## MVP
 
@@ -60,7 +34,7 @@ npm start
 - [ ] Sort room list alphabetically
 - [ ] Remove onlines block (now listed on home)
 - [ ] Change rendering pattern to "redrawn" everytime on rooms block, onetoones block and room user block
-- [ ] Persist onetoone open/close and reopen on 'welcome' event
+- [x] Persist onetoone open/close and reopen on 'welcome' event
 - [ ] Get last 50 viewed on room/onetoone opening
 - [ ] In welcome.users message list users and not sockets
 - [ ] Persist correctly user.rooms and room.users
