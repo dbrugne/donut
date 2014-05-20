@@ -42,13 +42,7 @@ define([
           username: message.username
         });
         this.add(model);
-      } // @todo : case when i receive message from another user and discussio is not already open
-//      model = this.addOneToOne(new UserModel({
-//        username: with_username
-//      }));
-
-//      // To have the same data between room and user messages (= same view code)
-//      message.user_id = message.from;
+      }
 
       model.message(message);
 
