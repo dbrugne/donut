@@ -1,5 +1,5 @@
 var conf = module.exports = {
-  title: '',
+  title: 'roomly chat!',
   mongo: {
     'url' : ''
   },
