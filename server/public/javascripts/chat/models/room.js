@@ -40,6 +40,7 @@ define([
       }
       var user = new UserModel({
         id: data.user_id,
+        user_id: data.user_id,
         username: data.username
       });
       this.users.add(user);

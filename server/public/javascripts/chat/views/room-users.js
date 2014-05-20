@@ -10,53 +10,46 @@ define([
     template: _.template(roomUsersTemplate),
 
     initialize: function() {
-      this.listenTo(this.collection, 'add', this.addUser);
-      this.listenTo(this.collection, 'remove', this.removeUser);
+      this.listenTo(this.collection, 'add', this.onAddRemove);
+      this.listenTo(this.collection, 'remove', this.onAddRemove);
 
       this.render();
-
-      this.userSubviews = new Backbone.Collection();
-      this.$list = this.$el.find('.list');
     },
 
     render: function() {
-      this.$el.html(this.template());
+      // @todo : sort collection
+//      this.sort();
+
+      var listJSON = [];
+      _.each(this.collection.models, function(o) {
+        listJSON.push(o.toJSON());
+      });
+console.log(listJSON);
+      var html = this.template({list: listJSON});
+      this.$el.html(html);
       return this;
     },
 
-    remove: function() {
-      this.userSubviews.each(function(item) {
-        item.get('view').remove();
-      });
-      Backbone.View.prototype.remove.apply(this, arguments);
-    },
+//    remove: function() {
+//      this.userSubviews.each(function(item) {
+//        item.get('view').remove();
+//      });
+//      Backbone.View.prototype.remove.apply(this, arguments);
+//    },
 
-    addUser: function(model, collection, options) {
-      var view = new UsersView({model: model});
-      this.userSubviews.add({
-        id: model.get('id'),
-        username: model.get('username'),
-        view: view
-      });
-      this.$list.append(view.$el);
-
-      this.sort();
-    },
-
-    removeUser: function(model, collection, options) {
-      var view = this.userSubviews.get(model.get('id')).get('view').remove();
-      this.userSubviews.remove(model.get('id'));
-    },
-
-    sort: function() {
-      var sorted = _.sortBy(this.userSubviews.toJSON(), 'username');
-      this.$list.empty();
-
-      _.each(sorted, function(item) {
-        this.$list.append(item.view.$el);
-        item.view.delegateEvents();
-      }, this);
+    onAddRemove: function(model, collection, options) {
+      this.render();
     }
+
+//    sort: function() {
+//      var sorted = _.sortBy(this.userSubviews.toJSON(), 'username');
+//      this.$list.empty();
+//
+//      _.each(sorted, function(item) {
+//        this.$list.append(item.view.$el);
+//        item.view.delegateEvents();
+//      }, this);
+//    }
 
   });
 

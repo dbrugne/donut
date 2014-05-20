@@ -1,4 +1,14 @@
 <div class="room-users">
     <div class="heading">Room users</div>
-    <div class="list"></div>
+    <div class="list">
+        <% _.each(list, function(roomUser) { %>
+        <span class="user-item item">
+            <span class="username dbl-open-user-profile" data-user-id="<%= roomUser.user_id %>"><%= roomUser.username %></span>
+            <span class="actions">
+                <span data-user-id="<%= roomUser.user_id %>" class="glyphicon glyphicon-user open-user-profile"></span>
+                <a href="#user/<%= roomUser.username %>"><span class="glyphicon glyphicon-edit"></span></a>
+            </span>
+        </span>
+        <% }); %>
+    </div>
 </div><!-- /.room-users -->

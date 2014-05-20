@@ -31,6 +31,7 @@ define([
       _.each(room.users, function(element, key, list) {
         model.users.add(new UserModel({
           id: element.user_id,
+          user_id: element.user_id,
           username: element.username
         }));
       });
