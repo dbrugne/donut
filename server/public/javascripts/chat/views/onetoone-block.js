@@ -27,11 +27,8 @@ define([
 
     render: function() {
       // @todo : sort collection
-      var listObjects = _.filter(this.collection.models, function(m){
-        return m.get('type') == 'onetoone';
-      });
       var listJSON = [];
-      _.each(listObjects, function(o) {
+      _.each(this.collection.models, function(o) {
         listJSON.push(o.toJSON());
       });
 
