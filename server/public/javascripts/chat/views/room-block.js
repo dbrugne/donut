@@ -27,11 +27,8 @@ define([
 
     render: function() {
       // @todo : sort collection
-      var listObjects = _.filter(this.collection.models, function(m){
-        return m.get('type') == 'room';
-      });
       var listJSON = [];
-      _.each(listObjects, function(o) {
+      _.each(this.collection.models, function(o) {
         var userCount = o.users.length;
         var json = o.toJSON();
         json.users = userCount; // users are not an "attribute", but an object properties
