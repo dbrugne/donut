@@ -1,8 +1,6 @@
 chat
 ====
 
-# Roadmap
-
 ## MVP
 
 - Images
