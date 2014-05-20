@@ -2,7 +2,7 @@
 var debug = require('debug')('chat-server');
 var appServer = require('../app');
 
-appServer.app.set('port', process.env.PORT || 80);
+appServer.app.set('port', process.env.PORT || 3000);
 
 var server = appServer.app.listen(appServer.app.get('port'), function() {
   debug('Express server listening on port ' + server.address().port);
