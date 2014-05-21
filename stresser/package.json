@@ -1,0 +1,13 @@
+{
+  "name": "chat-stresser",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node ./stresser.js"
+  },
+  "dependencies": {
+    "debug": "0.8.x",
+    "socket.io-client": "latest",
+    "mongoose": "3.x"
+  }
+}
