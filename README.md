@@ -11,7 +11,7 @@ chat
 - [x] make add/edit picture work in all cases (inclusing "cancel")
 - [x] re-Add a method on user model with "format" parameter (use in account/, user/ and #header)
 - [x] in chat and on account/edit pass only the cloudinary id and implement image loading on client side
-- [ ] configure well upload constrains (maxsize, format ..) => not supported by jQuery uploader
+- [x] configure well upload constrains (maxsize, format ..) => !! not supported by jQuery uploader !!
 - [x] handle default image
 - [ ] add "delete" image (delete action in form and removing on cloud)
 - [ ] on image change "delete" previous image
@@ -38,6 +38,7 @@ chat
 - [ ] Refresh home on focus
 - [ ] Get last 50 viewed on room/onetoone opening
 - [ ] In welcome.users message list users and not sockets
+- [ ] In room.welcome message list connected sockets and not users
 - [ ] Handle empty room deletion on last user leave
 - [ ] One one to one message check that to user exists in database
 - [ ] Implement central username/room.name validator/sanitization
