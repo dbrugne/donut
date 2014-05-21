@@ -46,11 +46,17 @@ module.exports = function(io, socket, data) {
 
           // Decorate user list
           var users = [];
-          _.each(room.users, function(dbUser) {
-            users.push({
-              user_id: dbUser._id,
-              username: dbUser.username
-            });
+          var already = [];
+          // @todo : remove duplicate entries (a same user can have multiple socket) -> test
+          io.sockets.clients(room.name).forEach(function(client) {
+            var cid = client.getUserId();
+            if (!_.contains(already, cid)) {
+              already.push(cid);
+              users.push({
+                user_id: cid,
+                username: client.getUsername()
+              });
+            }
           });
 
           // Room welcome
