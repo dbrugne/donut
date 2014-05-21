@@ -1,5 +1,4 @@
 var mongoose = require('mongoose');
-var path = require('path');
 var bcrypt   = require('bcrypt-nodejs');
 var cloudinary = require('../cloudinary');
 
