@@ -33,6 +33,7 @@ module.exports = function(io, socket) {
       // Online users list
       var onlines = helper.connectedUsers(io, 5);
 
+    // Onetoones list
       var onetoones = [];
       _.each(user.onetoones, function(userDb) {
         onetoones.push(userDb.username);
