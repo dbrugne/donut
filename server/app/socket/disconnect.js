@@ -1,4 +1,5 @@
 var delegate_error = require('./error');
+var helper = require('./helper');
 var activityRecorder = require('../activity-recorder');
 
 module.exports = function(io, socket) {
@@ -7,11 +8,9 @@ module.exports = function(io, socket) {
   socket.leave('user:'+socket.getUserId());
 
   // Inform other rooms users
-  Object.keys(io.sockets.manager.roomClients[socket.id]).forEach(function(key) {
-    if (key == '') return;
-    if (key.substring(0, 2) != '/#') return;
-
-    var roomName = key.substring(1);
+  var rooms = helper.socketRooms(io, socket);
+  for (var i=0; i < rooms.length; i++) {
+    var roomName = rooms[i];
 
     // Inform room clients that this user leave the room
     // (only if it was the last socket for this user)
@@ -21,7 +20,7 @@ module.exports = function(io, socket) {
         user_id: socket.getUserId()
       });
     }
-  });
+  }
 
   // Update users online users list
   socket.broadcast.emit('user:offline', {

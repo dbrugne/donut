@@ -42,13 +42,13 @@ module.exports = {
   socketRooms: function(io, socket) {
     var rawList = io.sockets.manager.roomClients[socket.id];
     var list = [];
-    Object.keys(rawList.forEach(function(key) {
+    Object.keys(rawList).forEach(function(key) {
       if (key == '') return; // common room for all socket (socket.io)
       if (key.substring(0, 2) != '/#') return; // only our rooms
 
       var name = key.substring(1); // remove initial '/'
       list.push(name);
-    }));
+    });
     return list;
   },
 
