@@ -2,7 +2,6 @@ var delegate_error = require('./error');
 var User = require('../models/user');
 var activityRecorder = require('../activity-recorder');
 var helper = require('./helper');
-var _ = require('underscore');
 
 module.exports = function(io, socket) {
 
@@ -33,11 +32,8 @@ module.exports = function(io, socket) {
       // Online users list
       var onlines = helper.connectedUsers(io, 5);
 
-    // Onetoones list
-      var onetoones = [];
-      _.each(user.onetoones, function(userDb) {
-        onetoones.push(userDb.username);
-      });
+      // Onetoones list
+      var onetoones = user.onetoonesList();
 
       // Welcome
       socket.emit('welcome', {
@@ -65,5 +61,4 @@ module.exports = function(io, socket) {
 
   // Activity
   activityRecorder('connection', socket.getUserId(), {});
-
 };

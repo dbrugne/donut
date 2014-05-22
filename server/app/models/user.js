@@ -47,5 +47,15 @@ userSchema.methods.avatarUrl = function(format) {
   // cloudinary handle default image
 };
 
+// onetoones list
+userSchema.methods.onetoonesList = function() {
+  var list = [];
+  for (var i=0; i < this.onetoones.length; i++) {
+    var u = this.onetoones[i];
+    list.push(u.username);
+  }
+  return list;
+};
+
 // create the model for users and expose it to our app
 module.exports = mongoose.model('User', userSchema);
