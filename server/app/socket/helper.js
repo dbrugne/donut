@@ -28,6 +28,53 @@ module.exports = {
     return list;
   },
 
+  socketUser: function(io, socket) {
+    // @todo
+    return [];
+  },
+
+  /**
+   * * List room for a particular socket
+   * @param io
+   * @param socket
+   * @returns {*}
+   */
+  socketRooms: function(io, socket) {
+    var rawList = io.sockets.manager.roomClients[socket.id];
+    var list = [];
+    Object.keys(rawList.forEach(function(key) {
+      if (key == '') return; // common room for all socket (socket.io)
+      if (key.substring(0, 2) != '/#') return; // only our rooms
+
+      var name = key.substring(1); // remove initial '/'
+      list.push(name);
+    }));
+    return list;
+  },
+
+  /**
+   * List sockets for a particular user (id)
+   * @param io
+   * @param userId
+   * @returns {Array}
+   */
+  userSockets: function(io, userId) {
+    return this.roomSockets(io, 'user:'+userId);
+  },
+
+  /**
+   * List room for a particular user_id
+   * Based on first socket found for this user (all the user socket should have
+   * same subscriptions)
+   * @param io
+   * @param userId
+   * @returns {Array}
+   */
+  userRooms: function(io, userId) {
+    var socket = this.userSockets(io, userId)[0]; // take first
+    return this.socketRooms(io, socket);
+  },
+
   /**
    * List room de-duplicated sockets list (and not room.users or only socket list)
    * @param io
@@ -49,6 +96,15 @@ module.exports = {
       }
     }
     return list;
+  },
+
+  /**
+   * List sockets in a particular room
+   * @param name
+   * @returns {Array}
+   */
+  roomSockets: function(io, name) {
+    return io.sockets.clients(name);
   }
 
 };

@@ -33,7 +33,7 @@ chat
 - [x] Persist onetoone open/close and reopen on 'welcome' event
 - [x] In welcome.users message list users and not sockets
 - [x] In room.welcome message list connected sockets and not users
-- [ ] On room leave don't send room:out if another socket is active for this user
+- [x] On disconnect don't send room:out if another socket is active for this user
 - [ ] Persist correctly user.rooms and room.users
 - [ ] On room join make room search case insensitive
 - [ ] Sort room/onetoone/room users lists alphabetically
