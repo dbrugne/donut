@@ -1,6 +1,7 @@
 var delegate_error = require('./error');
 var User = require('../models/user');
 var activityRecorder = require('../activity-recorder');
+var helper = require('./helper');
 var _ = require('underscore');
 
 module.exports = function(io, socket) {
@@ -16,7 +17,7 @@ module.exports = function(io, socket) {
     return this.handshake.user.username;
   }
   socket.getUserId = function() {
-    return this.handshake.user._id;
+    return this.handshake.user._id.toString();
   }
 
   // Welcome data
@@ -30,15 +31,7 @@ module.exports = function(io, socket) {
       if (err) return console.log(err);
 
       // Online users list
-      // @todo: should list users and not sockets
-      var onlines = [];
-      io.sockets.clients().forEach(function(online) {
-        if (online.getUserId() == socket.getUserId()) return;
-        onlines.push({
-          user_id: online.getUserId(),
-          username: online.getUsername()
-        });
-      });
+      var onlines = helper.connectedUsers(io, 5);
 
       var onetoones = [];
       _.each(user.onetoones, function(userDb) {

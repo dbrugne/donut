@@ -31,14 +31,14 @@ chat
 - [x] Chat default panel with homepage content
 - [x] Change rendering pattern to "redrawn" everytime on rooms block, onetoones block and room user block
 - [x] Persist onetoone open/close and reopen on 'welcome' event
+- [x] In welcome.users message list users and not sockets
+- [ ] In room.welcome message list connected sockets and not users
 - [ ] Persist correctly user.rooms and room.users
 - [ ] On room join make room search case insensitive
 - [ ] Sort room/onetoone/room users lists alphabetically
 - [ ] Move onlines block on home
 - [ ] Refresh home on focus
 - [ ] Get last 50 viewed on room/onetoone opening
-- [ ] In welcome.users message list users and not sockets
-- [ ] In room.welcome message list connected sockets and not users
 - [ ] Handle empty room deletion on last user leave
 - [ ] One one to one message check that to user exists in database
 - [ ] Implement central username/room.name validator/sanitization
