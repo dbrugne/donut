@@ -1,5 +1,6 @@
 var _ = require('underscore');
 var delegate_error = require('./error');
+var helper = require('./helper');
 var Room = require('../models/room');
 var User = require('../models/user');
 var activityRecorder = require('../activity-recorder');
@@ -45,19 +46,7 @@ module.exports = function(io, socket, data) {
           socket.join(room.name);
 
           // Decorate user list
-          var users = [];
-          var already = [];
-          // @todo : remove duplicate entries (a same user can have multiple socket) -> test
-          io.sockets.clients(room.name).forEach(function(client) {
-            var cid = client.getUserId();
-            if (!_.contains(already, cid)) {
-              already.push(cid);
-              users.push({
-                user_id: cid,
-                username: client.getUsername()
-              });
-            }
-          });
+          var users = helper.roomUsers(io, room.name);
 
           // Room welcome
           socket.emit('room:welcome', {
