@@ -10,7 +10,7 @@ var conf = module.exports = {
   facebook: {
     'clientID' 		: '283401498489213', // your App ID
     'clientSecret' 	: '7211182b85110f06e17efce2b4fb004a', // your App Secret
-    'callbackURL' 	: 'http://chat.local/login/facebook/callback'
+    'callbackURL' 	: ''
   },
   cloudinary: {
     cloud_name: 'roomly',
