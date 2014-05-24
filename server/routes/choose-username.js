@@ -17,6 +17,7 @@ router.route('/choose-username')
     isLoggedIn,
     function (req, res, next) {
       req.checkBody(['user', 'fields', 'username'], 'Username should be a string of min 2 and max 25 characters.').matches(/^[-a-z0-9_\\|[\]{}^`]{2,30}$/i);
+      // @todo : use User.validateUsername instead (and remove this fucking connect-validator ?)
       if (req.validationErrors()) {
         return res.render('choose_username', {
           userFields: req.body.user.fields,
