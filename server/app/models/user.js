@@ -38,6 +38,14 @@ userSchema.methods.validPassword = function(password) {
     return bcrypt.compareSync(password, this.local.password);
 };
 
+userSchema.statics.validateUsername = function (username) {
+  var pattern = /^[-a-z0-9_\\|[\]{}^`]{2,30}$/i;
+  if (pattern.test(username)) {
+    return true;
+  }
+  return false;
+}
+
 // avatar URL
 userSchema.methods.avatarUrl = function(format) {
   if (!format) format = 'small';
