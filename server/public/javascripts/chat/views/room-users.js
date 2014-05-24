@@ -30,26 +30,9 @@ define([
       return this;
     },
 
-//    remove: function() {
-//      this.userSubviews.each(function(item) {
-//        item.get('view').remove();
-//      });
-//      Backbone.View.prototype.remove.apply(this, arguments);
-//    },
-
     onAddRemove: function(model, collection, options) {
       this.render();
     }
-
-//    sort: function() {
-//      var sorted = _.sortBy(this.userSubviews.toJSON(), 'username');
-//      this.$list.empty();
-//
-//      _.each(sorted, function(item) {
-//        this.$list.append(item.view.$el);
-//        item.view.delegateEvents();
-//      }, this);
-//    }
 
   });
 
