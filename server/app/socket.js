@@ -5,6 +5,7 @@ var _ = require('underscore');
 var delegate_authorization = require('./socket/authorization');
 var delegate_connection = require('./socket/connection');
 var delegate_disconnect = require('./socket/disconnect');
+var delegate_home = require('./socket/home');
 var delegate_room_join = require('./socket/room-join');
 var delegate_room_leave = require('./socket/room-leave');
 var delegate_room_topic = require('./socket/room-topic');
@@ -56,6 +57,8 @@ module.exports = function(app, io, passport, sessionStore) {
 
     delegate_connection(io, socket);
     socket.on('disconnect', function() { delegate_disconnect(io, socket); });
+
+    socket.on('home', function() { delegate_home(io, socket); });
 
     socket.on('room:join', function (data) { delegate_room_join(io, socket, data); });
     socket.on('room:leave', function (data) { delegate_room_leave(io, socket, data); });

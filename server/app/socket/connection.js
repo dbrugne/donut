@@ -45,7 +45,7 @@ module.exports = function(io, socket) {
         onetoones: onetoones,
         onlines: onlines,
         home: {
-          welcome: ["Vous trouverez sur cette page une liste des rooms existantes et des utilisateurs en ligne. N'hésitez pas à rejoindre notre chat de support #Aide pour toute question, remarque ou demande de fonctionnalité."],
+          welcome: "Vous trouverez sur cette page une liste des rooms existantes et des utilisateurs en ligne. N'hésitez pas à rejoindre notre chat de support #Aide pour toute question, remarque ou demande de fonctionnalité.",
           rooms: ['#toulouse', '#paintball', '#dagnirDae']
         }
       });

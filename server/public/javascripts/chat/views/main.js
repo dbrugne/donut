@@ -37,18 +37,19 @@ define([
     thisDiscussionShouldBeFocusedOnSuccess: '',
 
     events: {
-      'click #search-room-link':    'openSearchRoomModal',
-      'click #create-room-link':    'openCreateRoomModal',
-      'click #search-user-link':    'openSearchUserModal',
-      'click .open-user-profile':     'openUserProfile',
-      'dblclick .dbl-open-user-profile': 'openUserProfile',
-      'click .close-room':          'onCloseDiscussion',
-      'click .close-onetoone':      'onCloseDiscussion'
+      'click #search-room-link':          'openSearchRoomModal',
+      'click #create-room-link':          'openCreateRoomModal',
+      'click #search-user-link':          'openSearchUserModal',
+      'click .open-user-profile':         'openUserProfile',
+      'dblclick .dbl-open-user-profile':  'openUserProfile',
+      'click .close-room':                'onCloseDiscussion',
+      'click .close-onetoone':            'onCloseDiscussion',
+      'click .home-link':                 'onHomeClick' // maintain on 'link clicking' to avoid too many home request to server
     },
 
     initialize: function() {
       this.listenTo(client, 'welcome', this.onWelcome);
-
+      this.listenTo(client, 'home', this.onHome);
       this.listenTo(rooms, 'add', this.onRoomPong);
       this.listenTo(onetoones, 'add', this.onOnePong);
 
@@ -107,6 +108,14 @@ define([
 
       // Run routing
       this.trigger('ready');
+    },
+
+    onHome: function(data) {
+      homeView.render(data);
+    },
+
+    onHomeClick: function(event) {
+      client.home();
     },
 
     // MODALS

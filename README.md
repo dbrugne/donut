@@ -46,7 +46,7 @@ chat
 - [x] Repair room user number on room tab
 - [x] Handle empty room deletion on last user leave
 - [x] Move onlines block on home
-- [ ] Refresh home on focus
+- [x] Refresh home on focus
 - [ ] Get last 50 viewed on room/onetoone opening
 
 **Signup**
