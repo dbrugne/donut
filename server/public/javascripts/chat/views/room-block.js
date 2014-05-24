@@ -18,6 +18,7 @@ define([
       this.listenTo(this.collection, 'add', this.onAddRemove);
       this.listenTo(this.collection, 'remove', this.onAddRemove);
       this.listenTo(this.collection, 'newMessage', this.render); // @todo : nasty event
+      this.listenTo(this.collection, 'inOut', this.render); // @todo : nasty event
 
       this.render();
     },
@@ -31,7 +32,7 @@ define([
       _.each(this.collection.models, function(o) {
         var userCount = o.users.length;
         var json = o.toJSON();
-        json.users = userCount; // users are not an "attribute", but an object properties
+        json.count = userCount; // users are not an "attribute", but an object properties
         listJSON.push(json);
       });
 

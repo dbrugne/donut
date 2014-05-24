@@ -49,6 +49,7 @@ define([
         user_id: user.get('id'),
         username: user.get('username')
       });
+      this.trigger('inOut');
     },
 
     onOut: function(data) {
@@ -62,6 +63,7 @@ define([
         user_id: user.get('id'),
         username: user.get('username')
       });
+      this.trigger('inOut');
     },
 
     onTopic: function(data) {

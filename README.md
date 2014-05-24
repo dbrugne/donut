@@ -41,11 +41,11 @@ chat
 - [x] One one to one message check that to user exists in database
 - [x] Implement central username/room.name validator/sanitization
 - [x] Handle backbone 'default' route to display home (with redirect?) with alert message
-- [ ] Move onlines block on home
-- [ ] Refresh home on focus
 - [x] Implement room creation success/error alert message => to complicated at this stage to modify the room creation flow (deep in room:join)
 - [x] Make discuss button in profile modal work
-- [ ] Repair room user number on room tab
+- [ ] Move onlines block on home
+- [ ] Refresh home on focus
+- [x] Repair room user number on room tab
 - [ ] Handle empty room deletion on last user leave
 - [ ] Get last 50 viewed on room/onetoone opening
 
@@ -81,7 +81,11 @@ chat
 ## Next releases
 
 Critical:
-- [ ] Introduce guest mode
+- [ ] Room is permanent
+- [ ] Room op (owner + list)
+- [ ] Room kick
+- [ ] Room profile
+- [ ] Introduce guest mode (= no ?)
 - [ ] Separate socket/web apps
 - [ ] Introduce Redis
 
