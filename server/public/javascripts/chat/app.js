@@ -2,7 +2,7 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'router',
+  'routeur',
   'models/client',
   'views/main',
   // jQuery plugins, load and attach to $ once
