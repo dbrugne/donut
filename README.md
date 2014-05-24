@@ -43,10 +43,10 @@ chat
 - [x] Handle backbone 'default' route to display home (with redirect?) with alert message
 - [ ] Move onlines block on home
 - [ ] Refresh home on focus
-- [ ] Get last 50 viewed on room/onetoone opening
-- [ ] Implement room creation success/error alert message
+- [x] Implement room creation success/error alert message => to complicated at this stage to modify the room creation flow (deep in room:join)
 - [ ] Make discuss button in profile modal work
 - [ ] Handle empty room deletion on last user leave
+- [ ] Get last 50 viewed on room/onetoone opening
 
 **Signup**
 - [x] Remove username from signup form (comment)
