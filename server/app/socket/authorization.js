@@ -19,7 +19,7 @@ module.exports = {
     if (process.env.NODE_ENV == 'dev' || process.env.NODE_ENV == 'test') {
       User.findById(data.query.virtualuserid, function(err, virtualUser) {
         if (err) throw new Error('Error while retrieving virtual user: '+err);
-        if (!virtualUser) throw new Error('No corresponding virtual user found');
+        if (!virtualUser) return console.log('No corresponding virtual user found');
         data['user'] = virtualUser;
         data['logged_in'] = true;
         accept(null, true);
