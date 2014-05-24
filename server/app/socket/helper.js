@@ -46,7 +46,7 @@ module.exports = {
           owner_id: socket.getUserId()
         });
         room.save(function (err, room, numberAffected) {
-          if (err) return error('Unable to save room: '+err);
+          if (err) return error('Unable to create room: '+err);
 
           success(room);
           activityRecorder('room:create', socket.getUserId(), {_id: room.get('_id'), name: room.get('name')});
