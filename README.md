@@ -42,9 +42,9 @@ chat
 - [ ] Refresh home on focus
 - [ ] Get last 50 viewed on room/onetoone opening
 - [ ] Handle empty room deletion on last user leave
-- [ ] One one to one message check that to user exists in database
-- [ ] Implement central username/room.name validator/sanitization
-- [ ] Handle backnone 'default' route to display home (with redirect?) with alert message
+- [x] One one to one message check that to user exists in database
+- [x] Implement central username/room.name validator/sanitization
+- [ ] Handle backbone 'default' route to display home (with redirect?) with alert message
 - [ ] Implement room creation success/error alert message
 
 **Signup**
