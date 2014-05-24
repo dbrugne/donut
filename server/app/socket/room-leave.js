@@ -2,8 +2,6 @@ var handleError = require('./error');
 var helper = require('./helper');
 var activityRecorder = require('../activity-recorder');
 
-// @todo room deletion on last client leaved and permanent != 0
-
 module.exports = function(io, socket, data) {
 
   // Find and return room model
@@ -11,11 +9,11 @@ module.exports = function(io, socket, data) {
 
   function handleSuccess(room) {
     // Socket unsubscription
-    socket.leave(data.name);
+    socket.leave(room.name);
 
     // Inform other room users
-    io.sockets.in(data.name).emit('room:out', {
-      name: data.name,
+    io.sockets.in(room.name).emit('room:out', {
+      name: room.name,
       user_id: socket.getUserId()
     });
 
@@ -25,10 +23,16 @@ module.exports = function(io, socket, data) {
     });
 
     // Persistence
-    socket.getUser().update({$pull: { rooms: data.name }}, function(err, affectedDocuments) {
+    socket.getUser().update({$pull: { rooms: room.name }}, function(err, affectedDocuments) {
       if (err)
         return error('Unable to update user on exiting room '+err);
     });
+
+    // Room deletion (if needed)
+    if (helper.roomSockets(io, room.name).length < 1) {
+      room.remove();
+      activityRecorder('room:delete', socket.getUserId(), {_id: room.get('_id'), name: room.get('name')});
+    }
 
     // Activity
     activityRecorder('room:leave', socket.getUserId(), data);
