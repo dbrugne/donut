@@ -12,7 +12,8 @@ define([
     template: _.template(profileTemplate),
 
     events: {
-      'hidden.bs.modal': 'teardown'
+      'hidden.bs.modal': 'teardown',
+      'click .discuss': 'hide' // hide modal when user click on onetoone button
     },
 
     initialize: function() {

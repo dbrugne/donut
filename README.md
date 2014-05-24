@@ -44,7 +44,8 @@ chat
 - [ ] Move onlines block on home
 - [ ] Refresh home on focus
 - [x] Implement room creation success/error alert message => to complicated at this stage to modify the room creation flow (deep in room:join)
-- [ ] Make discuss button in profile modal work
+- [x] Make discuss button in profile modal work
+- [ ] Repair room user number on room tab
 - [ ] Handle empty room deletion on last user leave
 - [ ] Get last 50 viewed on room/onetoone opening
 
