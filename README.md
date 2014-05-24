@@ -37,7 +37,7 @@ chat
 - [x] Persist correctly user.rooms and room.users
 - [x] On room join make room search case insensitive
 - [ ] Sort room/onetoone/room users lists alphabetically
-- [ ] On client side, leaving a room change panel focus but not uri (if i F5 i get the room re-open)
+- [ ] On client side, leaving a room/onetoone panel focus corretly the home but not change uri (if i F5 i get the room re-open)
 - [ ] Move onlines block on home
 - [ ] Refresh home on focus
 - [ ] Get last 50 viewed on room/onetoone opening
@@ -58,7 +58,7 @@ chat
 - [ ] Template user profile
 
 **Finishing**
-- [ ] CSRF and 304!
+- [x] CSRF and 304!
 - [x] Update connect-mongo module
 - [ ] Review all socket delegation and report: validation/sanitization, multi-device, ACL
 
@@ -70,6 +70,11 @@ chat
 - [x] Deploy
 - [ ] Backup
 - [ ] Monitor
+
+**Additionnal**
+- [ ] Minimum virtual trafic generation
+- [ ] Basic backend
+- [ ] Basic grunt sample data injection
 
 ## Next releases
 
