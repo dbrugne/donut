@@ -65,7 +65,7 @@ define([
       model.message(data);
       // Window new message indication
       this.trigger('newMessage');
-    },
+    }
 
   });
 
