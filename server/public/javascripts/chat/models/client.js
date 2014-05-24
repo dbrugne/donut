@@ -92,6 +92,10 @@ define([
         that.debug(['io:in:user:open', data]);
         that.trigger('user:open', data);
       });
+      this.socket.on('user:close', function(data) {
+        that.debug(['io:in:user:close', data]);
+        that.trigger('user:close', data);
+      });
       this.socket.on('user:message', function(data) {
         that.debug(['io:in:user:message', data]);
         that.trigger('user:message', data);

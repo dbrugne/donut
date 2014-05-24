@@ -20,18 +20,18 @@ module.exports = function(io, socket, data) {
       return;
     }
 
-    User.findOneAndUpdate({_id: socket.getUserId()}, {$addToSet: { onetoones: userTo._id }}, function(err, userFrom) {
-      if (err) return error('Unable to update onetoones: '+err);
-
-      // push user data
-      socket.emit('user:open', {
-        user_id: userTo._id,
-        username: userTo.username
-      });
-
-      // Activity
-      activityRecorder('user:open', socket.getUserId(), data);
+    // Push user data to all user devices
+    io.sockets.in('user:'+socket.getUserId()).emit('user:open', {
+      user_id: userTo._id,
+      username: userTo.username
     });
+
+    User.findOneAndUpdate({_id: socket.getUserId()}, {$addToSet: { onetoones: userTo._id }}, function(err, userFrom) {
+      if (err) error('Unable to update onetoones: '+err);
+    });
+
+    // Activity
+    activityRecorder('user:open', socket.getUserId(), data);
   });
 
 };

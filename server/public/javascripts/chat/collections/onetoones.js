@@ -9,6 +9,7 @@ define([
 
     initialize: function() {
       this.listenTo(client, 'user:open', this.openPong);
+      this.listenTo(client, 'user:close', this.onClose);
       this.listenTo(client, 'user:message', this.onMessage);
     },
     openPing: function(username) {
@@ -22,6 +23,12 @@ define([
       });
 
       this.add(model);
+    },
+    onClose: function(data) {
+      var model = this.get(data.user_id);
+      if (model) {
+        this.remove(model);
+      }
     },
     onMessage: function(message) {
       // Current user is emitter or recipient?

@@ -14,6 +14,13 @@ module.exports = function(io, socket, data) {
     if (err) return error('Unable to retrieve user ' + err);
     if (!userTo) return error('Unable to retrieve this user: '+data.username);
 
+    // Push user data to all user devices
+    var with_user_id = userTo._id.toString();
+    io.sockets.in('user:'+socket.getUserId()).emit('user:close', {
+      user_id: with_user_id,
+      username: userTo.username
+    });
+
     // Persistence
     User.findOneAndUpdate({_id: socket.getUserId()}, {$pull: { onetoones: userTo._id }}, function(err, userFrom) {
       if (err) error('Unable to update user.onetoones: ' + err);
