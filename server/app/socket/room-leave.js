@@ -6,7 +6,7 @@ var activityRecorder = require('../activity-recorder');
 
 module.exports = function(io, socket, data) {
 
-  // Find, create and return room model
+  // Find and return room model
   helper.findRoom(data.name, handleSuccess, handleError);
 
   function handleSuccess(room) {
