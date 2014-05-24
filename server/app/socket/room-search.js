@@ -1,4 +1,5 @@
 var error = require('./error');
+var helper = require('./helper');
 var Room = require('../models/room');
 var activityRecorder = require('../activity-recorder');
 
@@ -6,13 +7,13 @@ module.exports = function (io, socket, data) {
 
   var search = {};
   if (data.search) {
-    search = {_id: new RegExp(data.search, "i")};
+    search = {name: new RegExp(data.search, "i")};
   }
 
   // Search
   Room.find(search, 'name topic users', function (err, rooms) {
     if (err) {
-      error('Error while searching rooms: '+data.search);
+      error('Error while searching rooms "'+data.search+'": '+err);
       socket.emit('room:searcherror');
       return;
     }
@@ -23,7 +24,7 @@ module.exports = function (io, socket, data) {
       results.push({
         name: rooms[i].name,
         topic: rooms[i].topic,
-        count: 0 // @todo : replace with a count on connected socket instead (helper)
+        count: helper.roomUsers(io, rooms[i].name).length
       });
     }
 
