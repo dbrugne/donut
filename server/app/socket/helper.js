@@ -36,7 +36,10 @@ module.exports = {
    * @param error
    */
   findCreateRoom: function(name, socket, success, error) {
-    this.findRoom(name, function(room) {
+    if (!Room.validateName(name)) return error('Invalid room name');
+
+    Room.findByName(name).exec(function(err, room) {
+      if (err) return error('Unable to Room.findByName: '+err);
       if (!room) { // create room if needed
         room = new Room({
           name: name,
