@@ -23,7 +23,7 @@ module.exports = function (io, socket, data) {
       results.push({
         name: rooms[i].name,
         topic: rooms[i].topic,
-        count: rooms[i].users.length
+        count: 0 // @todo : replace with a count on connected socket instead (helper)
       });
     }
 

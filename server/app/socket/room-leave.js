@@ -9,35 +9,40 @@ var activityRecorder = require('../activity-recorder');
 
 module.exports = function(io, socket, data) {
 
+  // @todo : create method in helper that:
+  // - check room name validity
+  // - 'find room in cache'
+  // - find room in mongo
+  // - return room or error
+
   if (!Room.validateName(data.name)) {
     delegate_error('Invalid room name '+data.name, __dirname+'/'+__filename);
     return;
   }
 
-  socket.getUser().update({$pull: { rooms: data.name }}, function(err, affectedDocuments) {
+  var regexp = new RegExp(['^', data.name, '$'].join(''), 'i');
+  Room.findOne({ name: regexp }, function(err, room) {
     if (err) {
-      delegate_error('Unable to update user on exiting room '+err, __dirname+'/'+__filename);
+      delegate_error('Unable to update room on exiting user '+err, __dirname+'/'+__filename);
       return;
     }
 
-    var regexp = new RegExp(['^', data.name, '$'].join(''), 'i');
-    Room.findOneAndUpdate({ name: regexp }, {$pull: { users: socket.getUserId() }}, function(err, room) {
-      if (err) {
-        delegate_error('Unable to update room on exiting user '+err, __dirname+'/'+__filename);
-        return;
-      }
+    // Socket unsubscription
+    socket.leave(data.name);
 
-      // Socket unsubscription
-      socket.leave(data.name);
-
-      // Inform other room users
-      io.sockets.in(data.name).emit('room:out', {
-        name: data.name,
-        user_id: socket.getUserId()
-      });
-
-      // Activity
-      activityRecorder('room:leave', socket.getUserId(), data);
+    // Inform other room users
+    io.sockets.in(data.name).emit('room:out', {
+      name: data.name,
+      user_id: socket.getUserId()
     });
+
+    // Persistence
+    socket.getUser().update({$pull: { rooms: data.name }}, function(err, affectedDocuments) {
+      if (err)
+        return delegate_error('Unable to update user on exiting room '+err, __dirname+'/'+__filename);
+    });
+
+    // Activity
+    activityRecorder('room:leave', socket.getUserId(), data);
   });
 };

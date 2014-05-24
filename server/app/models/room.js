@@ -6,7 +6,6 @@ var roomSchema = mongoose.Schema({
     owner_id        : { type: mongoose.Schema.ObjectId, ref: 'User' },
     op              : [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
     bans            : [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
-    users           : [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
     permanent       : Boolean,
     allow_guests    : Boolean,
     invisible       : Boolean,
