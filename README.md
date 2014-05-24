@@ -37,15 +37,15 @@ chat
 - [x] Persist correctly user.rooms and room.users
 - [x] On room join make room search case insensitive
 - [x] Sort room/onetoone/room users lists alphabetically
-- [ ] On client side, leaving a room/onetoone panel focus corretly the home but not change uri (if i F5 i get the room re-open)
+- [x] On client side, leaving a room/onetoone panel focus correctly the home but not change uri (if i F5 i get the room re-open)
 - [ ] Move onlines block on home
 - [ ] Refresh home on focus
 - [ ] Get last 50 viewed on room/onetoone opening
-- [ ] Handle empty room deletion on last user leave
 - [x] One one to one message check that to user exists in database
 - [x] Implement central username/room.name validator/sanitization
 - [ ] Handle backbone 'default' route to display home (with redirect?) with alert message
 - [ ] Implement room creation success/error alert message
+- [ ] Handle empty room deletion on last user leave
 
 **Signup**
 - [x] Remove username from signup form (comment)
