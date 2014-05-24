@@ -30,10 +30,10 @@ module.exports = function(io, socket, data) {
       username: socket.getUsername()
     });
 
-//    // Inform other devices @todo : bug on client side that rejoin the room automatically == loop
-//    io.sockets.in('user:'+socket.getUserId()).emit('room:join', {
-//      name: room.name
-//    });
+    // Inform other devices
+    io.sockets.in('user:'+socket.getUserId()).emit('room:join', {
+      name: room.name
+    });
 
     // Persistence
     User.findOneAndUpdate({_id: socket.getUserId()}, {$addToSet: { rooms: room.name }}, function(err, user) {

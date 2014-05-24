@@ -41,12 +41,18 @@ define([
     },
     // Server asks to this client to join this room
     onJoin: function(data) {
-      this.openPing(data.name);
+      // Only if not already joined
+      if (!this.get(data.name)) {
+        this.openPing(data.name);
+      }
     },
     // Server asks to this client to leave this room
     onLeave: function(data) {
       var room = this.get(data.name);
-      this.remove(room);
+      // Only if already joined
+      if (room) {
+        this.remove(room);
+      }
     },
 
     onMessage: function(data) { // @todo : move it on room model

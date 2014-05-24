@@ -19,10 +19,10 @@ module.exports = function(io, socket, data) {
       user_id: socket.getUserId()
     });
 
-//    // Inform other devices @todo : bug on client side that rejoin the room automatically == loop
-//    io.sockets.in('user:'+socket.getUserId()).emit('room:leave', {
-//      name: room.name
-//    });
+    // Inform other devices
+    io.sockets.in('user:'+socket.getUserId()).emit('room:leave', {
+      name: room.name
+    });
 
     // Persistence
     socket.getUser().update({$pull: { rooms: data.name }}, function(err, affectedDocuments) {
