@@ -27,7 +27,6 @@ define([
     },
 
     render: function() {
-      // @todo : sort collection
       var listJSON = [];
       _.each(this.collection.models, function(o) {
         listJSON.push(o.toJSON());
