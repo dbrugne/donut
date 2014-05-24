@@ -44,7 +44,7 @@ define([
 
     default: function() {
       console.log('router: default');
-      // @todo : handle 404 type behavior in DOM
+      Backbone.history.navigate('#', {trigger: true}); // redirect on home
     }
   });
 
