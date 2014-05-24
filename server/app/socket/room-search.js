@@ -1,4 +1,4 @@
-var delegate_error = require('./error');
+var error = require('./error');
 var Room = require('../models/room');
 var activityRecorder = require('../activity-recorder');
 
@@ -12,7 +12,7 @@ module.exports = function (io, socket, data) {
   // Search
   Room.find(search, 'name topic users', function (err, rooms) {
     if (err) {
-      delegate_error('Error while searching room '+data.search, __dirname+'/'+__filename);
+      error('Error while searching rooms: '+data.search);
       socket.emit('room:searcherror');
       return;
     }

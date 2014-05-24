@@ -1,4 +1,4 @@
-var delegate_error = require('./error');
+var error = require('./error');
 var helper = require('./helper');
 var activityRecorder = require('../activity-recorder');
 

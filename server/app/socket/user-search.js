@@ -1,4 +1,4 @@
-var delegate_error = require('./error');
+var error = require('./error');
 var User = require('../models/user');
 var activityRecorder = require('../activity-recorder');
 
@@ -11,7 +11,7 @@ module.exports = function(io, socket, data) {
 
   User.find(search, 'username', function(err, users) {
     if (err) {
-      delegate_error('Error while searching user '+data.search, __dirname+'/'+__filename);
+      error('Error while searching user '+data.search);
       socket.emit('user:searcherror');
       return;
     }

@@ -1,4 +1,4 @@
-var delegate_error = require('./error');
+var error = require('./error');
 var User = require('../models/user');
 var activityRecorder = require('../activity-recorder');
 var helper = require('./helper');
@@ -22,12 +22,12 @@ module.exports = function(io, socket) {
   // Welcome data
   User.findById(socket.getUserId(), 'rooms onetoones', function(err, user) {
     if (err) {
-      delegate_error(err, __dirname+'/'+__filename);
+      error('Unable to find user: '+err);
       user.rooms = [];
     }
 
     user.populate('onetoones', 'username', function(err, user) {
-      if (err) return console.log(err);
+      if (err) error('Unable to populate user: '+err);
 
       // Online users list
       var onlines = helper.connectedUsers(io, 5);

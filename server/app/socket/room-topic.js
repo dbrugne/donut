@@ -1,22 +1,18 @@
-var delegate_error = require('./error');
+var error = require('./error');
 var Room = require('../models/room');
 var activityRecorder = require('../activity-recorder');
 
 module.exports = function(io, socket, data) {
-  if (!Room.validateName(data.name)) {
-    delegate_error('Invalid room name '+data.name, __dirname+'/'+__filename);
-    return;
-  }
-  if (!Room.validateTopic(data.topic)) {
-    delegate_error('Invalid room topic '+data.topic, __dirname+'/'+__filename);
-    return;
-  }
+  if (!Room.validateName(data.name))
+    return error('Invalid room name '+data.name);
+  if (!Room.validateTopic(data.topic))
+    return error('Invalid room topic '+data.topic);
 
   // Save
   var regexp = new RegExp(['^',data.name,'$'].join(''),'i');
   Room.findOneAndUpdate({ name: regexp }, {topic: data.topic}, function(err, room) {
     if (err) {
-      delegate_error('Unable to change room '+data.name+' topic '+data.topic, __dirname+'/'+__filename);
+      error('Unable to change room '+data.name+' topic '+data.topic);
       return;
     }
 

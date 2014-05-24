@@ -1,4 +1,4 @@
-var delegate_error = require('./error');
+var error = require('./error');
 var Room = require('../models/room');
 var activityRecorder = require('../activity-recorder');
 
@@ -8,11 +8,11 @@ var activityRecorder = require('../activity-recorder');
 
 module.exports = function(io, socket, data) {
   if (!Room.validateName(data.name)) {
-    delegate_error('Invalid room name '+data.name, __dirname+'/'+__filename);
+    error('Invalid room name '+data.name);
     return;
   }
   if (!validateMessage(data.message)) {
-    delegate_error('Invalid room name '+data.name, __dirname+'/'+__filename);
+    error('Invalid message: '+data.name+' => '+data.message);
     return;
   }
 

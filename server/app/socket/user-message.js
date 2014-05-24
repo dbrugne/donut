@@ -1,4 +1,4 @@
-var delegate_error = require('./error');
+var error = require('./error');
 var User = require('../models/user');
 var activityRecorder = require('../activity-recorder');
 
@@ -9,14 +9,9 @@ module.exports = function(io, socket, data) {
 
   var regexp = new RegExp(['^',toUsername,'$'].join(''),'i');
   User.findOne({ username: regexp }, 'username', function(err, userTo) {
-    if (err) {
-      delegate_error('Unable to retrieve user ' + err, __dirname + '/' + __filename);
-      return;
-    }
-    if (!userTo) {
-      delegate_error('Unable to retrieve this user: ' + data.username, __dirname + '/' + __filename);
-      return;
-    }
+    if (err) return error('Unable to retrieve user ' + err);
+    if (!userTo)
+      return error('Unable to retrieve this user: ' + data.username);
 
     var from = socket.getUserId();
     var to = userTo._id; // @todo : test that data.to exists in database
