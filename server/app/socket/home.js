@@ -17,7 +17,7 @@ module.exports = function (io, socket) {
     }
 
     socket.emit('home', {
-      welcome: "Vous trouverez sur cette page une liste des rooms existantes et des utilisateurs en ligne. N'hésitez pas à rejoindre notre chat de support #Aide pour toute question, remarque ou demande de fonctionnalité ...",
+      welcome: "Vous trouverez sur cette page une liste des rooms existantes et des utilisateurs en ligne. N'hésitez pas à rejoindre notre chat de support #Support pour toute question, remarque ou demande de fonctionnalité ...",
       rooms: roomsList
     });
 
