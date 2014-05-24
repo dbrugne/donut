@@ -36,14 +36,17 @@ module.exports = {
    * @param error
    */
   findCreateRoom: function(name, socket, success, error) {
-    this.findRoom(name, function(room) {
+    if (!Room.validateName(name)) return error('Invalid room name');
+
+    Room.findByName(name).exec(function(err, room) {
+      if (err) return error('Unable to Room.findByName: '+err);
       if (!room) { // create room if needed
         room = new Room({
           name: name,
           owner_id: socket.getUserId()
         });
         room.save(function (err, room, numberAffected) {
-          if (err) return error('Unable to save room: '+err);
+          if (err) return error('Unable to create room: '+err);
 
           success(room);
           activityRecorder('room:create', socket.getUserId(), {_id: room.get('_id'), name: room.get('name')});

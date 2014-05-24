@@ -36,16 +36,18 @@ chat
 - [x] On disconnect don't send room:out if another socket is active for this user
 - [x] Persist correctly user.rooms and room.users
 - [x] On room join make room search case insensitive
-- [ ] Sort room/onetoone/room users lists alphabetically
-- [ ] On client side, leaving a room/onetoone panel focus corretly the home but not change uri (if i F5 i get the room re-open)
-- [ ] Move onlines block on home
-- [ ] Refresh home on focus
-- [ ] Get last 50 viewed on room/onetoone opening
-- [ ] Handle empty room deletion on last user leave
+- [x] Sort room/onetoone/room users lists alphabetically
+- [x] On client side, leaving a room/onetoone panel focus correctly the home but not change uri (if i F5 i get the room re-open)
 - [x] One one to one message check that to user exists in database
 - [x] Implement central username/room.name validator/sanitization
-- [ ] Handle backbone 'default' route to display home (with redirect?) with alert message
-- [ ] Implement room creation success/error alert message
+- [x] Handle backbone 'default' route to display home (with redirect?) with alert message
+- [ ] Move onlines block on home
+- [ ] Refresh home on focus
+- [x] Implement room creation success/error alert message => to complicated at this stage to modify the room creation flow (deep in room:join)
+- [x] Make discuss button in profile modal work
+- [ ] Repair room user number on room tab
+- [ ] Handle empty room deletion on last user leave
+- [ ] Get last 50 viewed on room/onetoone opening
 
 **Signup**
 - [x] Remove username from signup form (comment)

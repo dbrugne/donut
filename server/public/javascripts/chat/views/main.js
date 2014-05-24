@@ -233,6 +233,7 @@ define([
       this.$home.show();
       this.roomBlockView.render();
       this.onetooneBlockView.render();
+      Backbone.history.navigate('#'); // just change URI, not run route action
     },
 
     // called by router only
@@ -262,6 +263,7 @@ define([
     },
 
     focus: function(model) {
+      console.log(['focus', model]);
       // No opened discussion, display default
       if (rooms.length < 1 && onetoones.length < 1) {
         return this.focusHome();
@@ -287,15 +289,14 @@ define([
       this.roomBlockView.render();
       this.onetooneBlockView.render();
 
-      // Update URL
-//      var uri;
-//      if (model.get('type') == 'room') {
-//        uri = 'room/'+model.get('name').replace('#', '');
-//      } else {
-//        uri = 'user/'+model.get('username');
-//      }
-//      Backbone.history.navigate(uri); // @todo : warning! focusing a room should be done only by router, so the URL is already up to date no ? => to confirm and then delete this block
-      // @todo : bug when closing a panel and focusing another discussion
+      // Update URL (always!)
+      var uri;
+      if (model.get('type') == 'room') {
+        uri = 'room/'+model.get('name').replace('#', '');
+      } else {
+        uri = 'user/'+model.get('username');
+      }
+      Backbone.history.navigate(uri); // just change URI, not run route action
     }
 
   });
