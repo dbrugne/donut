@@ -2,9 +2,8 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'views/users',
   'text!templates/room-users.html'
-], function ($, _, Backbone, UsersView, roomUsersTemplate) {
+], function ($, _, Backbone, roomUsersTemplate) {
   var RoomUsersView = Backbone.View.extend({
 
     template: _.template(roomUsersTemplate),

@@ -1,30 +1,14 @@
-<h2>Home</h2>
-<div class="body">
-    <div class="well">
-        <h3>Bienvenue sur roomly !</h3>
-        <p><%= welcome %></p>
-    </div>
-
-    <h4>Rooms existantes</h4>
-    <ul>
-        <% _.each(rooms, function(room) { %>
-        <li class="">
-            <%= room %>
-            - <a href="#room/<%= room.replace('#', '') %>">rejoindre</a>
-        </li>
-        <% }); %>
-    </ul>
-
-    <h3>Utilisateurs en ligne</h3>
-        <% _.each(users, function(user) { %>
-        <li class="">
-            <%= user.username %>
-            - <a href="#user/<%= user.username %>" data-user-id="<%= user.user_id %>">discuter</a>
-        </li>
-        <% }); %>
-    <ul>
-
-    </ul>
-
-
+<div class="well">
+    <h3>Bienvenue sur roomly !</h3>
+    <p><%= welcome %></p>
 </div>
+
+<h4>Rooms existantes</h4>
+<ul>
+    <% _.each(rooms, function(room) { %>
+    <li class="">
+        <%= room %>
+        - <a href="#room/<%= room.replace('#', '') %>">rejoindre</a>
+    </li>
+    <% }); %>
+</ul>

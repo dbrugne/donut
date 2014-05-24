@@ -45,7 +45,7 @@ chat
 - [x] Make discuss button in profile modal work
 - [x] Repair room user number on room tab
 - [x] Handle empty room deletion on last user leave
-- [ ] Move onlines block on home
+- [x] Move onlines block on home
 - [ ] Refresh home on focus
 - [ ] Get last 50 viewed on room/onetoone opening
 

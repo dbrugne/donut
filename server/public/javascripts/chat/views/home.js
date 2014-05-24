@@ -7,7 +7,7 @@ define([
 ], function ($, _, Backbone, client, homeTemplate) {
   var HomeView = Backbone.View.extend({
 
-    el: $('#home'),
+    el: $('#home-content'),
 
     template: _.template(homeTemplate),
 
