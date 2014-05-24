@@ -1,6 +1,46 @@
 var _ = require('underscore');
+var Room = require('../models/room');
+var activityRecorder = require('../activity-recorder');
 
 module.exports = {
+
+  /**
+   * Search, create and return a room model:
+   * - validate room name format
+   * [- search for room in memory cache] @todo
+   * - search for room in Mongo store (case-insensitive test)
+   * - if not exist "create the room" in Mongo store [and memory cache] @todo
+   * - callback
+   * @param name
+   * @returns {boolean}|Room
+   */
+  findCreateRoom: function(name, socket, success, error) {
+    this.findRoom(name, function(room) {
+      if (!room) { // create room if needed
+        room = new Room({
+          name: name,
+          owner_id: socket.getUserId()
+        });
+        room.save(function (err, room, numberAffected) {
+          if (err) return error('Unable to save room: '+err);
+
+          success(room);
+          activityRecorder('room:create', socket.getUserId(), {_id: room.get('_id'), name: room.get('name')});
+        });
+      } else {
+        success(room);
+      }
+    }, error);
+  },
+
+  findRoom: function(name, success, error) {
+    if (!Room.validateName(name)) return error('Invalid room name');
+
+    Room.findByName(name).exec(function(err, room) {
+      if (err) return error('Unable to Room.findByName: '+err);
+      success(room);
+    });
+  },
 
   /**
    * List connected users (and not sockets)

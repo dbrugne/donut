@@ -30,4 +30,9 @@ roomSchema.statics.validateTopic = function (topic) {
   return false;
 }
 
+roomSchema.statics.findByName = function (name) {
+  var regexp = new RegExp(['^',name,'$'].join(''),'i');
+  return this.findOne({ name: regexp }, 'name owner_id topic');
+}
+
 module.exports = mongoose.model('Room', roomSchema);
