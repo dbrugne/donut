@@ -34,8 +34,8 @@ chat
 - [x] In welcome.users message list users and not sockets
 - [x] In room.welcome message list connected sockets and not users
 - [x] On disconnect don't send room:out if another socket is active for this user
-- [ ] Persist correctly user.rooms and room.users
-- [ ] On room join make room search case insensitive
+- [x] Persist correctly user.rooms and room.users
+- [x] On room join make room search case insensitive
 - [ ] Sort room/onetoone/room users lists alphabetically
 - [ ] Move onlines block on home
 - [ ] Refresh home on focus
