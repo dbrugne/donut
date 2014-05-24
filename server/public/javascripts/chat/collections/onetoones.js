@@ -7,6 +7,11 @@ define([
 ], function (_, Backbone, client, currentUser, OneToOneModel) {
   var OnetoonesCollection = Backbone.Collection.extend({
 
+    comparator: function(model1, model2) {
+      return model1.get('username').toLowerCase()
+        .localeCompare(model2.get('username').toLowerCase());
+    },
+
     initialize: function() {
       this.listenTo(client, 'user:open', this.openPong);
       this.listenTo(client, 'user:close', this.onClose);

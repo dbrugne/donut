@@ -36,7 +36,7 @@ chat
 - [x] On disconnect don't send room:out if another socket is active for this user
 - [x] Persist correctly user.rooms and room.users
 - [x] On room join make room search case insensitive
-- [ ] Sort room/onetoone/room users lists alphabetically
+- [x] Sort room/onetoone/room users lists alphabetically
 - [ ] On client side, leaving a room/onetoone panel focus corretly the home but not change uri (if i F5 i get the room re-open)
 - [ ] Move onlines block on home
 - [ ] Refresh home on focus

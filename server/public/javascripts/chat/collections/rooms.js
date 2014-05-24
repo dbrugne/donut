@@ -7,6 +7,12 @@ define([
   'models/user'
 ], function (_, Backbone, client, currentUser, RoomModel, UserModel) {
   var RoomsCollection = Backbone.Collection.extend({
+
+    comparator: function(model1, model2) {
+      return model1.get('name').replace('#', '').toLowerCase()
+        .localeCompare(model2.get('name').replace('#', '').toLowerCase());
+    },
+
     initialize: function() {
       this.listenTo(client, 'room:join', this.onJoin);
       this.listenTo(client, 'room:leave', this.onLeave);
@@ -54,13 +60,12 @@ define([
         this.remove(room);
       }
     },
-
     onMessage: function(data) { // @todo : move it on room model
       var model = this.findWhere({ name: data.name });
       model.message(data);
       // Window new message indication
       this.trigger('newMessage');
-    }
+    },
 
   });
 
