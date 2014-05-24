@@ -1,5 +1,5 @@
-var error = require('./error');
-var Room = require('../models/room');
+var handleError = require('./error');
+var helper = require('./helper');
 var activityRecorder = require('../activity-recorder');
 
 // @todo : load validator and escape message
@@ -7,29 +7,30 @@ var activityRecorder = require('../activity-recorder');
 // @todo : ACL (user in room)
 
 module.exports = function(io, socket, data) {
-  if (!Room.validateName(data.name)) {
-    error('Invalid room name '+data.name);
-    return;
-  }
-  if (!validateMessage(data.message)) {
-    error('Invalid message: '+data.name+' => '+data.message);
-    return;
-  }
 
-  io.sockets.in(data.name).emit('room:message', {
-    name: data.name,
-    time: Date.now(),
-    message: data.message,
-    user_id: socket.getUserId(),
-    username: socket.getUsername()
-  });
+  // Find and return room model
+  helper.findRoom(data.name, handleSuccess, handleError);
 
-  // Activity
-  activityRecorder('room:message', socket.getUserId(), data);
+  function handleSuccess(room) {
+    if (!validateMessage(data.message))
+      return error('Invalid message for '+data.name+' => '+data.message);
+
+    // Broadcast message
+    io.sockets.in(data.name).emit('room:message', {
+      name: data.name,
+      time: Date.now(),
+      message: data.message,
+      user_id: socket.getUserId(),
+      username: socket.getUsername()
+    });
+
+    // Activity
+    activityRecorder('room:message', socket.getUserId(), data);
+  }
 
 };
 
-function validateMessage(message) {
+function validateMessage(message) { // @todo delegate to model ?
   var pattern = /^.{1,1000}$/i;
   if (pattern.test(message)) {
     return true;

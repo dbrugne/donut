@@ -1,31 +1,31 @@
-var error = require('./error');
+var handleError = require('./error');
+var helper = require('./helper');
 var Room = require('../models/room');
 var activityRecorder = require('../activity-recorder');
 
 module.exports = function(io, socket, data) {
-  if (!Room.validateName(data.name))
-    return error('Invalid room name '+data.name);
+
   if (!Room.validateTopic(data.topic))
-    return error('Invalid room topic '+data.topic);
+    return handleError('Invalid room topic '+data.topic);
 
-  // Save
-  var regexp = new RegExp(['^',data.name,'$'].join(''),'i');
-  Room.findOneAndUpdate({ name: regexp }, {topic: data.topic}, function(err, room) {
-    if (err) {
-      error('Unable to change room '+data.name+' topic '+data.topic);
-      return;
-    }
+  // Find and return room model
+  helper.findRoom(data.name, handleSuccess, handleError);
 
-    io.sockets.in(data.name).emit('room:topic', {
-      user_id: socket.getUserId(),
-      username: socket.getUsername(),
-      name: data.name,
-      topic: data.topic
+  function handleSuccess(room) {
+    room.update({topic: data.topic}, function(err) {
+      if (err)
+        return handleError('Unable to change room '+data.name+' topic '+data.topic);
+
+      io.sockets.in(data.name).emit('room:topic', {
+        user_id: socket.getUserId(),
+        username: socket.getUsername(),
+        name: data.name,
+        topic: data.topic
+      });
+
+      // Activity
+      activityRecorder('room:topic', socket.getUserId(), data);
     });
-
-    // Activity
-    activityRecorder('room:topic', socket.getUserId(), data);
-
-  });
+  }
 
 };
