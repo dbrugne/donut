@@ -1,18 +1,39 @@
 var _ = require('underscore');
+var User = require('../models/user');
 var Room = require('../models/room');
 var activityRecorder = require('../activity-recorder');
 
 module.exports = {
 
   /**
+   * Search and return user model:
+   * [- search in memory cache] @todo
+   * - search in Mongo
+   * - callback
+   * @param username
+   * @param success
+   * @param error
+   */
+  findUser: function(username, success, error) {
+    if (!User.validateUsername(username)) return error('Invalid username');
+
+    User.findByUsername(username).exec(function(err, user) {
+      if (err) return error('Unable to retrieve user ' + err);
+      if (!user) return error('Unable to retrieve this user: ' + username);
+
+      success(user);
+    });
+  },
+
+  /**
    * Search, create and return a room model:
-   * - validate room name format
-   * [- search for room in memory cache] @todo
-   * - search for room in Mongo store (case-insensitive test)
+   * - search room
    * - if not exist "create the room" in Mongo store [and memory cache] @todo
    * - callback
    * @param name
-   * @returns {boolean}|Room
+   * @param socket
+   * @param success
+   * @param error
    */
   findCreateRoom: function(name, socket, success, error) {
     this.findRoom(name, function(room) {
@@ -33,11 +54,24 @@ module.exports = {
     }, error);
   },
 
+  /**
+   * Search and return room model:
+   * - validate room name format
+   * [- search for room in memory cache] @todo
+   * - search for room in Mongo store (case-insensitive test)
+   * - callback
+   * @param name
+   * @param success
+   * @param error
+   * @returns {*}
+   */
   findRoom: function(name, success, error) {
     if (!Room.validateName(name)) return error('Invalid room name');
 
     Room.findByName(name).exec(function(err, room) {
       if (err) return error('Unable to Room.findByName: '+err);
+      if (!room) return error('Room not found');
+
       success(room);
     });
   },

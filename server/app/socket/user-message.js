@@ -1,17 +1,20 @@
-var error = require('./error');
+var handleError = require('./error');
+var helper = require('./helper');
 var User = require('../models/user');
 var activityRecorder = require('../activity-recorder');
 
 module.exports = function(io, socket, data) {
+
+//  helper.findUser(data.username, handleSuccess, handleError);
 
   var fromUsername = socket.getUsername();
   var toUsername = data.to;
 
   var regexp = new RegExp(['^',toUsername,'$'].join(''),'i');
   User.findOne({ username: regexp }, 'username', function(err, userTo) {
-    if (err) return error('Unable to retrieve user ' + err);
+    if (err) return handleError('Unable to retrieve user ' + err);
     if (!userTo)
-      return error('Unable to retrieve this user: ' + data.username);
+      return handleError('Unable to retrieve this user: ' + data.username);
 
     var from = socket.getUserId();
     var to = userTo._id.toString(); // @todo : test that data.to exists in database

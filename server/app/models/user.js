@@ -46,6 +46,11 @@ userSchema.statics.validateUsername = function (username) {
   return false;
 }
 
+userSchema.statics.findByUsername = function (username) {
+  var regexp = new RegExp(['^',username,'$'].join(''),'i');
+  return this.findOne({ username: regexp }, 'username rooms onetoones');
+}
+
 // avatar URL
 userSchema.methods.avatarUrl = function(format) {
   if (!format) format = 'small';
