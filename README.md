@@ -37,6 +37,7 @@ chat
 - [x] Persist correctly user.rooms and room.users
 - [x] On room join make room search case insensitive
 - [ ] Sort room/onetoone/room users lists alphabetically
+- [ ] On client side, leaving a room change panel focus but not uri (if i F5 i get the room re-open)
 - [ ] Move onlines block on home
 - [ ] Refresh home on focus
 - [ ] Get last 50 viewed on room/onetoone opening
