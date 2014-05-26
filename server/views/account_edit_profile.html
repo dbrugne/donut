@@ -26,13 +26,6 @@
         <h4>Your profile</h4>
 
         <div class="controls">
-            <label class="control-labels" for="username-field">Username</label>
-            <div class="control-fields">
-                <input type="text" class="form-control" id="username-field" name="user[fields][username]" placeholder="Enter username" value="{{userFields.username}}">
-                <p class="help-block">Your identity in chatrooms, should be unique.</p>
-            </div>
-        </div>
-        <div class="controls">
             <label class="control-labels" for="bio-field">Bio</label>
             <div class="control-fields">
                 <textarea class="form-control" id="bio-field" name="user[fields][bio]" placeholder="Describe in few words">{{userFields.bio}}</textarea>
@@ -51,6 +44,12 @@
             <div class="control-fields">
                 <input type="url" class="form-control" id="website-field" name="user[fields][website]" placeholder="Your website URL" value="{{userFields.website}}">
                 <p class="help-block">Optional</p>
+            </div>
+        </div>
+        <div class="controls">
+            <label class="control-labels" for="username-field">Username</label>
+            <div class="control-fields">
+                Le nom d'utilisateur ne peut par être changé manuellement. Veuillez demander à un opérateur de faire l'opération pour vous dans la room #Support.
             </div>
         </div>
 

@@ -5,7 +5,6 @@ var isLoggedIn = require('../app/isloggedin');
 var cloudinary = require('../app/cloudinary');
 
 var validateInput = function(req, res, next) {
-  req.checkBody(['user', 'fields','username'],'Username should be a string of min 2 and max 25 characters.').isUsername();
   req.checkBody(['user', 'fields','bio'],'Bio should be 70 characters max.').isLength(0, 200);
   req.checkBody(['user', 'fields','location'],'Location should be 70 characters max.').isLength(0, 70);
 
@@ -34,20 +33,6 @@ var sanitizeInput = function(req, res, next) {
   return next();
 };
 
-function validateAvailability(req, res, next) {
-  var handleError = function (err) {
-    return res.render('account_edit_profile', {
-      userFields: req.body.user.fields,
-      error: err,
-      scripts: [
-        {src: '/validator.min.js'}
-      ]
-    });
-  };
-  req.user.usernameAvailability(
-    req.body.user.fields.username, next, handleError);
-}
-
 router.route('/account/edit/profile')
   // Form
   .get(isLoggedIn, function(req, res) {
@@ -74,14 +59,12 @@ router.route('/account/edit/profile')
     [
       isLoggedIn,
       validateInput,
-      sanitizeInput,
-      validateAvailability
+      sanitizeInput
     ],
     function(req, res) {
       var user = req.user;
 
       // Update user
-      user.username = req.body.user.fields.username;
       user.bio = req.body.user.fields.bio;
       user.location = req.body.user.fields.location;
       user.website = req.body.user.fields.website;
