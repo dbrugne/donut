@@ -25,7 +25,6 @@ router.route('/account/edit/email')
             }
 
             req.sanitize(['user','fields','email']).escape();
-            req.sanitize(['user','fields','email']).toLowerCase(); // to test
 
             var r = new RegExp('^'+req.body.user.fields.email+'$', 'i');
             User.findOne({
@@ -53,7 +52,8 @@ router.route('/account/edit/email')
             });
         }
     ], function(req, res) {
-        req.user.local.email = req.body.user.fields.email;
+        var email = req.body.user.fields.email;
+        req.user.local.email = email.toLowerCase();
         req.user.save(function(err) {
             if (err) {
                 req.flash('error', err)
