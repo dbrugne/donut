@@ -78,6 +78,12 @@ chat
 - [ ] Basic backend
 - [ ] Basic grunt sample data injection
 
+**Improvment**
+- [ ] Changing username on site shoud change it in chat interface (= Redis cache, form invalidate cache, how to send a message between www and ws without queue system)
+- Avoid disconnected message transmission
+- [ ] Search engine: remove profile (ping/pong) button if user not online
+- [ ] Onetoone: on focus trigger a (ping/pong) to ask for connectivity and block message posting
+
 ## Next releases
 
 Critical:

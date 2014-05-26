@@ -5,7 +5,7 @@ var isLoggedIn = require('../app/isloggedin');
 var cloudinary = require('../app/cloudinary');
 
 var validateInput = function(req, res, next) {
-  req.checkBody(['user', 'fields','username'],'Username should be a string of min 2 and max 25 characters.').matches(/^[-a-z0-9_\\|[\]{}^`]{2,30}$/i);
+  req.checkBody(['user', 'fields','username'],'Username should be a string of min 2 and max 25 characters.').isUsername();
   req.checkBody(['user', 'fields','bio'],'Bio should be 70 characters max.').isLength(0, 200);
   req.checkBody(['user', 'fields','location'],'Location should be 70 characters max.').isLength(0, 70);
 
@@ -25,7 +25,6 @@ var validateInput = function(req, res, next) {
 };
 
 var sanitizeInput = function(req, res, next) {
-  req.sanitize(['user','fields','username']).escape();
   req.sanitize(['user','fields','bio']).trim();
   req.sanitize(['user','fields','bio']).escape();
   req.sanitize(['user','fields','location']).trim();
@@ -35,30 +34,19 @@ var sanitizeInput = function(req, res, next) {
   return next();
 };
 
-var validateUsername = function(req, res, next) {
-  var r = new RegExp('^'+req.body.user.fields.username+'$', 'i');
-  User.findOne({
-    $and: [
-      {username: {$regex: r}},
-      {_id: { $ne: req.user._id }}
-    ]
-  }, function(err, user) {
-    if (err) {
-      req.flash('error', 'Error while searching existing username: ' + err);
-      return res.redirect('/account');
-    }
-
-    if (user) {
-      return res.render('account_edit_profile', {
-        userFields: req.body.user.fields,
-        error: 'This username is already taken',
-        scripts: [{src: '/validator.min.js'}]
-      });
-    }
-
-    return next();
-  });
-};
+function validateAvailability(req, res, next) {
+  var handleError = function (err) {
+    return res.render('account_edit_profile', {
+      userFields: req.body.user.fields,
+      error: err,
+      scripts: [
+        {src: '/validator.min.js'}
+      ]
+    });
+  };
+  req.user.usernameAvailability(
+    req.body.user.fields.username, next, handleError);
+}
 
 router.route('/account/edit/profile')
   // Form
@@ -87,7 +75,7 @@ router.route('/account/edit/profile')
       isLoggedIn,
       validateInput,
       sanitizeInput,
-      validateUsername
+      validateAvailability
     ],
     function(req, res) {
       var user = req.user;

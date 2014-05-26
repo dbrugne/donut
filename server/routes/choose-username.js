@@ -3,6 +3,35 @@ var router = express.Router();
 var User = require('../app/models/user');
 var isLoggedIn = require('../app/isloggedin');
 
+function validateInput (req, res, next) {
+  req.checkBody(['user', 'fields', 'username'], 'Username should be a string of min 2 and max 25 characters.').isUsername();
+  if (req.validationErrors()) {
+    return res.render('choose_username', {
+      userFields: req.body.user.fields,
+      is_errors : true,
+      errors    : req.validationErrors(),
+      scripts   : [
+        {src: '/validator.min.js'}
+      ]
+    });
+  }
+  next();
+}
+
+function validateAvailability(req, res, next) {
+  var handleError = function (err) {
+    return res.render('choose_username', {
+      userFields: req.body.user.fields,
+      error: err,
+      scripts: [
+        {src: '/validator.min.js'}
+      ]
+    });
+  };
+  req.user.usernameAvailability(
+    req.body.user.fields.username, next, handleError);
+}
+
 router.route('/choose-username')
   .get(isLoggedIn, function (req, res) {
     var userFields = {username: req.username};
@@ -13,50 +42,7 @@ router.route('/choose-username')
       ]
     });
   })
-  .post([
-    isLoggedIn,
-    function (req, res, next) {
-      req.checkBody(['user', 'fields', 'username'], 'Username should be a string of min 2 and max 25 characters.').matches(/^[-a-z0-9_\\|[\]{}^`]{2,30}$/i);
-      // @todo : use User.validateUsername instead (and remove this fucking connect-validator ?)
-      if (req.validationErrors()) {
-        return res.render('choose_username', {
-          userFields: req.body.user.fields,
-          is_errors: true,
-          errors: req.validationErrors(),
-          scripts: [
-            {src: '/validator.min.js'}
-          ]
-        });
-      }
-
-      req.sanitize(['user', 'fields', 'username']).escape();
-
-      var r = new RegExp('^' + req.body.user.fields.username + '$', 'i');
-      User.findOne({
-        $and: [
-          {'username': {$regex: r}},
-          {_id: { $ne: req.user._id }}
-        ]
-      }, function (err, user) {
-        if (err) {
-          req.flash('error', 'Error while searching existing username: ' + err);
-          return res.redirect('/account');
-        }
-
-        if (user) {
-          return res.render('choose_username', {
-            userFields: req.body.user.fields,
-            error: 'This username is already taken by another user',
-            scripts: [
-              {src: '/validator.min.js'}
-            ]
-          });
-        }
-
-        return next();
-      });
-    }
-  ], function (req, res) {
+  .post([isLoggedIn, validateInput, validateAvailability], function (req, res) {
     req.user.username = req.body.user.fields.username;
     req.user.save(function (err) {
       if (err) {
