@@ -5,6 +5,8 @@ var activityRecorder = require('../activity-recorder');
 
 module.exports = function(io, socket, data) {
 
+  // @todo : persist user.onetones here for both users
+
   helper.findUser(data.to, handleSuccess, handleError);
 
   function handleSuccess(userTo) {
