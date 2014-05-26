@@ -2,18 +2,20 @@
 
     <h1><span class="fa fa-sign-in"></span> Signup</h1>
 
-    {{#message}}
-    <div class="alert alert-danger">{{message}}</div>
-    {{/message}}
-
     <a href="/login/facebook" class="btn btn-primary btn-lg"><span class="fa fa-facebook"></span> Sign in with <strong>Facebook</strong></a>
     <p>OR</p>
-    <form action="/signup" method="post" role="form">
+    <form action="/signup" method="post" role="form" class="forms">
 
         <input type="hidden" name="_csrf" value="{{token}}">
 
+        {{#is_errors}}
+        <div class="errors">
+            {{#errors}}{{msg}}<br>{{/errors}}
+        </div>
+        {{/is_errors}}
+
         <div class="form-group">
-            <input type="text" class="form-control" name="email" placeholder="Email">
+            <input type="text" class="form-control" name="email" placeholder="Email" value="{{userFields.email}}">
         </div>
         <div class="form-group">
             <input type="password" class="form-control" name="password" placeholder="Password">

@@ -70,7 +70,9 @@ app.locals.title = conf.title;
 
 // routes
 app.use(require('./routes/index'));
-app.use(require('./routes/authentication'));
+app.use(require('./routes/signup'));
+app.use(require('./routes/account-login'));
+app.use(require('./routes/account-link'));
 app.use(require('./routes/user-profile'));
 app.use(require('./routes/room-profile'));
 app.use(require('./routes/chat'));

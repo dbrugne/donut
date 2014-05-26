@@ -50,7 +50,7 @@ module.exports = function (passport, facebookConfiguration) {
 
             // check to see if theres already a user with that email
             if (user) {
-              return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
+              return done(null, false, req.flash('error', 'That email is already taken.'));
             } else {
               // if there is no user with that email
               // create the user
@@ -109,12 +109,16 @@ module.exports = function (passport, facebookConfiguration) {
           return done(err);
 
         // if no user is found, return the message
-        if (!user)
-          return done(null, false, req.flash('loginMessage', 'No user found.')); // req.flash is the way to set flashdata using connect-flash
+        if (!user) {
+          req.flash('email', email);
+          return done(null, false, req.flash('error', 'No user found.'));
+        }
 
         // if the user is found but the password is wrong
-        if (!user.validPassword(password))
-          return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')); // create the loginMessage and save it to session as flashdata
+        if (!user.validPassword(password)) {
+          req.flash('email', email);
+          return done(null, false, req.flash('error', 'Oops! Wrong password.'));
+        }
 
         // all is well, return successful user
         return done(null, user);

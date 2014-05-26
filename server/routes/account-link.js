@@ -2,35 +2,6 @@ var express = require('express');
 var router = express.Router();
 var passport = require('passport');
 
-router.route('/signup')
-    .get(function(req, res) {
-        res.render('signup', { message: req.flash('signupMessage') });
-    })
-    .post(passport.authenticate('local-signup', {
-        successRedirect : '/',
-        failureRedirect : '/signup',
-        failureFlash : true
-    }));
-
-router.route('/login')
-    .get(function(req, res) {
-        res.render('login', { message: req.flash('loginMessage') });
-    })
-    .post(passport.authenticate('local-login', {
-        successRedirect : '/',
-        failureRedirect : '/login',
-        failureFlash : true
-    }));
-
-router.get('/login/facebook', passport.authenticate('facebook', {
-    scope : 'email'
-}));
-
-router.get('/login/facebook/callback', passport.authenticate('facebook', {
-        successRedirect : '/account',
-        failureRedirect : '/'
-}));
-
 router.route('/connect/local')
     .get(function(req, res) {
         res.render('connect_local', { message: req.flash('signupMessage') });
@@ -61,11 +32,6 @@ router.get('/unlink/facebook', function(req, res) {
     user.save(function(err) {
         res.redirect('/account');
     });
-});
-
-router.get('/logout', function(req, res) {
-    req.logout();
-    res.redirect('/');
 });
 
 module.exports = router;

@@ -53,23 +53,25 @@ chat
 - [x] Remove username from signup form (comment)
 
 **Account**
-- [ ] Add form validation/sanitization middleware for each form (account/*, login, signup)
-- [ ] Refactor form error message display (use layout message box and middleware)
-- [ ] Add color theme field
-- [ ] Forgotten password (https://github.com/substack/node-password-reset && http://stackoverflow.com/questions/20277020/reset-change-password-in-nodejs-with-passportjs)
-- [ ] Template user profile
 - [x] Remove change username field in profile
 - [x] Block choose-username controller if username already set on req.user
+- [x] Add form validation/sanitization middleware for each form (account/*, login, signup)
+- [ ] Add color theme field
+- [ ] Forgotten password (https://github.com/substack/node-password-reset && http://stackoverflow.com/questions/20277020/reset-change-password-in-nodejs-with-passportjs)
 
 **Finishing**
 - [x] CSRF and 304!
 - [x] Update connect-mongo module
 - [ ] Review all socket delegation and report: validation/sanitization, multi-device, ACL
 
+**Design**
+
+- [ ] Global theme
+- [ ] Template user profile
+
 **Site**
 - [x] Mettre au propre les mockups du MVP
 - [ ] Test it on IE8-11/FF
-- [ ] Design integration
 - [ ] Google Analytics (HP, interface de chat)
 - [x] Deploy
 - [ ] Backup
@@ -152,6 +154,7 @@ Features:
 - [ ] Automatic mention of a user in a message
 - [ ] Message history on arrow up/down
 - [ ] Add form validation client-side: account/*, login, signup
+- [ ] Refactor form error message display (use layout message box and middleware)
 - [ ] Add a "Friends are in rooms" list
 - [ ] + Invite your friends + page Facebook
 
