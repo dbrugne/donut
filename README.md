@@ -59,7 +59,7 @@ chat
 - [ ] Forgotten password (https://github.com/substack/node-password-reset && http://stackoverflow.com/questions/20277020/reset-change-password-in-nodejs-with-passportjs)
 - [ ] Template user profile
 - [ ] Remove change username field in profile
-- [ ] Block choose-username controller if username already set on req.user
+- [x] Block choose-username controller if username already set on req.user
 
 **Finishing**
 - [x] CSRF and 304!
