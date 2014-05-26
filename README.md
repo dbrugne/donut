@@ -58,6 +58,8 @@ chat
 - [ ] Add color theme field
 - [ ] Forgotten password (https://github.com/substack/node-password-reset && http://stackoverflow.com/questions/20277020/reset-change-password-in-nodejs-with-passportjs)
 - [ ] Template user profile
+- [ ] Remove change username field in profile
+- [ ] Block choose-username controller if username already set on req.user
 
 **Finishing**
 - [x] CSRF and 304!
@@ -81,8 +83,10 @@ chat
 **Improvment**
 - [ ] Changing username on site shoud change it in chat interface (= Redis cache, form invalidate cache, how to send a message between www and ws without queue system)
 - Avoid disconnected message transmission
-- [ ] Search engine: remove profile (ping/pong) button if user not online
+- [ ] Search engine: remove profile button if user not online (info in user:profile)
 - [ ] Onetoone: on focus trigger a (ping/pong) to ask for connectivity and block message posting
+- [ ] Persist user.onetones here for both users message
+- [ ] OR : reintroduce onetoone for room => open+message join room, disconnect leave+room, room expire on last user in
 
 ## Next releases
 
