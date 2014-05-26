@@ -1,26 +1,26 @@
-<div class="page-header text-center">
-    <h1><span class="fa fa-anchor"></span> Profile Page</h1>
-</div>
+<div id="user-profile">
 
-<div class="row">
+    <div class="row">
 
-    <!-- LOCAL INFORMATION -->
-    <div class="col-sm-12">
-        <div class="well">
-            <h3><span class="fa fa-user"></span> Local</h3>
+        <div class="cover">
+            {{#avatarUrl}}
+            <div class="avatar"><img src="{{avatarUrl}}"></div>
+            {{/avatarUrl}}
 
-            <p>
-                <strong>username</strong>: {{requestedUser.username}}<br>
-                <strong>bio</strong>: {{requestedUser.bio}}<br>
-                <strong>location</strong>: {{requestedUser.location}}<br>
-                <strong>website</strong>: {{requestedUser.website}}<br>
-                <strong>avatar</strong>:<br>
-                {{#avatarUrl}}
-                <img src="{{avatarUrl}}"><br>
-                {{/avatarUrl}}
-            </p>
+            <h1>{{requestedUser.username}}</h1>
 
-        </div>
-    </div>
+            {{#requestedUser.bio}}
+            <h3>{{requestedUser.bio}}</h3>
+            {{/requestedUser.bio}}
+
+            <div>
+                {{#requestedUser.location}}{{requestedUser.location}}{{/requestedUser.location}}
+                {{#requestedUser.location}}{{#requestedUser.website}} - {{/requestedUser.website}}{{/requestedUser.location}}
+                {{#requestedUser.website}}{{requestedUser.website}}{{/requestedUser.website}}
+            </div>
+        </div><!-- /.col-sm-12 -->
+
+        <div class="color" style="background-color: {{requestedUser.color}};"></div>
+    </div><!-- /.row -->
 
 </div>

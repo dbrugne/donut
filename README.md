@@ -15,6 +15,7 @@ chat
 - [x] handle default image
 - [ ] add "delete" image (delete action in form and removing on cloud)
 - [ ] on image change "delete" previous image
+- [ ] Passe cloudinary conf in DOM to chat interface
 - [ ] cloudinary cache bug http://cloudinary.com/documentation/jquery_image_manipulation#image_versions
 
 **Chat**
@@ -47,6 +48,7 @@ chat
 - [x] Handle empty room deletion on last user leave
 - [x] Move onlines block on home
 - [x] Refresh home on focus
+- [ ] Add avatar in room user list and home online user list and onetoone tab and onetoone header
 - [ ] Get last 50 viewed on room/onetoone opening
 
 **Signup**
@@ -56,7 +58,7 @@ chat
 - [x] Remove change username field in profile
 - [x] Block choose-username controller if username already set on req.user
 - [x] Add form validation/sanitization middleware for each form (account/*, login, signup)
-- [ ] Add color theme field
+- [x] Add color theme field
 - [ ] Forgotten password (https://github.com/substack/node-password-reset && http://stackoverflow.com/questions/20277020/reset-change-password-in-nodejs-with-passportjs)
 
 **Finishing**
@@ -67,7 +69,7 @@ chat
 **Design**
 
 - [ ] Global theme
-- [ ] Template user profile
+- [x] Template user profile
 
 **Site**
 - [x] Mettre au propre les mockups du MVP

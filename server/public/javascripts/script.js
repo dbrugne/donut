@@ -24,6 +24,24 @@ $(document).ready(function() {
     // @todo : form validator implementation
 
     /**
+     * Color picker
+     */
+    var defaultColor = $('#color-field').val();
+    $('.color-input .preview').css('background-color','#' + defaultColor);
+    $('#color-field').colpick({
+      color: defaultColor ? defaultColor : 'ffffff',
+      layout:'hex',
+      submit:0,
+      onChange: function(hsb,hex,rgb,el,bySetColor) {
+        $(el).closest('.color-input').find('.preview').css('background-color','#'+hex);
+        // Fill the text box just if the color was set using the picker, and not the colpickSetColor function.
+        if(!bySetColor) $(el).val(hex);
+      }
+    }).keyup(function(){
+      $(this).colpickSetColor(this.value);
+    });
+
+    /**
      * Default avatar display
      */
     // @todo : get params from configuration

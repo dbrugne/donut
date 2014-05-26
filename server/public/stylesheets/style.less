@@ -1,6 +1,7 @@
 @import "bootstrap-3.1.1/less/bootstrap";
 @import "font-awesome-4.0.3/less/font-awesome";
 @import "http://fonts.googleapis.com/css?family=Open+Sans:400,600,700";
+@import "../javascripts/vendor/colpick/css/colpick.css";
 
 html { height: 100%; }
 body { padding-top: 80px; font-family: "Open Sans"; }
@@ -141,6 +142,27 @@ a {
         display: inline-block;
       }
     }
+
+    .color-input {
+      color: #555;
+      font-size: 16px;
+      font-weight: bold;
+      input, .preview {
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      .preview {
+        width: 30px;
+        height: 30px;
+        margin-right: 5px;
+        float:left;
+      }
+      input {
+        width:90px;
+        margin-left: 3px;
+        padding: 3px 6px;
+      }
+    }
   }
 
   .controls-inline {
@@ -184,6 +206,34 @@ body.light {
   }
   .control-fields {
     .make-sm-column(9);
+  }
+}
+
+#user-profile {
+  .make-sm-column(12);
+  .cover {
+    .well;
+    margin-bottom: 0;
+    padding-top: 50px;
+    text-align: center;
+    min-height: 320px;
+    .avatar img {
+      border: 1px solid #ccc;
+      border-radius: 10px;
+    }
+    h1 {
+      margin-top: 5px;
+    }
+    h3 {
+      margin-top: 5px;
+      font-style: italic;
+      font-size: 20px;
+    }
+  }
+  .color {
+    height: 10px;
+    background-color: #ffffff;
+    margin-bottom: 20px;
   }
 }
 

@@ -79,7 +79,10 @@
         <div class="controls">
             <label class="control-labels" for="color-field">Theme color</label>
             <div class="control-fields">
-                <input type="color" id="color-field" name="user[fields][color]" value="{{userFields.color}}">
+                <div class="color-input">
+                    <div class="preview"></div>
+                    #<input type="text" id="color-field" name="user[fields][color]" value="{{userFields.color}}">
+                </div>
             </div>
         </div>
 

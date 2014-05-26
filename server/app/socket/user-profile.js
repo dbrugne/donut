@@ -6,7 +6,7 @@ module.exports = function(io, socket, data) {
   if (undefined == data.user_id || '' == data.user_id)
     return error('Invalid user id '+data.user_id);
 
-  User.findById(data.user_id, 'username bio location website', function(err, user) {
+  User.findById(data.user_id, 'username bio location website color', function(err, user) {
     if (err) return error('Unable to retrieve user: '+err);
 
     var userData = user.toJSON();

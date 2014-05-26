@@ -4,11 +4,12 @@
     "dependencies": {
         "requirejs": "latest",
         "requirejs-text": "latest",
-        "jquery": "1.11.0",
+        "jquery": "1.x",
         "bootstrap": "latest",
         "underscore-amd": "latest",
         "backbone-amd": "latest",
         "cloudinary_js": "latest",
-        "validator-js": "latest"
+        "validator-js": "latest",
+        "colpick": "latest"
     }
 }

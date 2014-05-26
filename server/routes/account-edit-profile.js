@@ -4,20 +4,55 @@ var User = require('../app/models/user');
 var isLoggedIn = require('../app/isloggedin');
 var cloudinary = require('../app/cloudinary');
 
+var renderForm = function(req, res) {
+  var options = {
+    uploadTag: cloudinary.uploader.image_upload_tag('user[fields][avatar]', {
+      callback: "http://" + req.headers.host + "/javascripts/vendor/cloudinary_js/html/cloudinary_cors.html",
+      public_id: 'avatar-'+req.user._id,
+      tags: "user-avatar",
+      crop: "limit", width: 800, height: 600,
+      html: { style: "" }
+    }),
+    scripts: [
+      {src: '/javascripts/vendor/validator-js/validator.min.js'},
+      {src: '/javascripts/vendor/colpick/js/colpick.js'},
+      {src: '/javascripts/vendor/blueimp-file-upload/js/vendor/jquery.ui.widget.js'},
+      {src: '/javascripts/vendor/blueimp-file-upload/js/jquery.iframe-transport.js'},
+      {src: '/javascripts/vendor/blueimp-file-upload/js/jquery.fileupload.js'},
+      {src: '/javascripts/vendor/cloudinary_js/js/jquery.cloudinary.js'}
+    ]
+  };
+
+  if (req.body.fields) {
+    options.userFields = req.body.user.fields;
+  } else {
+    options.userFields = req.user.toObject();
+  }
+
+  if (options.userFields.color) {
+    options.userFields.color = options.userFields.color.replace('#', '');
+  }
+
+  if (req.validationErrors()) {
+    options.is_errors = true;
+    options.errors = req.validationErrors();
+  }
+
+  return res.render('account_edit_profile', options);
+};
+
 var validateInput = function(req, res, next) {
   req.checkBody(['user', 'fields','bio'],'Bio should be 70 characters max.').isLength(0, 200);
   req.checkBody(['user', 'fields','location'],'Location should be 70 characters max.').isLength(0, 70);
+
+  if (req.body.user.fields.color && '' != req.body.user.fields.color)
+    req.checkBody(['user', 'fields','color'],'Color should be explained has hexadecimal (e.g.: #FF00AA).').isHexColor();
 
   if (req.body.user.fields.website && '' != req.body.user.fields.website)
     req.checkBody(['user', 'fields','website'],'Website should be a valid site URL').isURL();
 
   if (req.validationErrors()) {
-    return res.render('account_edit_profile', {
-      userFields: req.body.user.fields,
-      is_errors: true,
-      errors: req.validationErrors(),
-      scripts: [{src: '/validator.min.js'}]
-    });
+    return renderForm(req, res);
   }
 
   return next();
@@ -29,38 +64,15 @@ var sanitizeInput = function(req, res, next) {
   req.sanitize(['user','fields','location']).trim();
   req.sanitize(['user','fields','location']).escape();
   req.sanitize(['user','fields','website']).escape();
-
   return next();
 };
 
 router.route('/account/edit/profile')
   // Form
-  .get(isLoggedIn, function(req, res) {
-      res.render('account_edit_profile', {
-        userFields: req.user.toObject(),
-        uploadTag: cloudinary.uploader.image_upload_tag('user[fields][avatar]', {
-          callback: "http://" + req.headers.host + "/javascripts/vendor/cloudinary_js/html/cloudinary_cors.html",
-          public_id: 'avatar-'+req.user._id,
-          tags: "user-avatar",
-          crop: "limit", width: 800, height: 600,
-          html: { style: "" }
-        }),
-        scripts: [
-          {src: '/javascripts/vendor/validator-js/validator.min.js'},
-          {src: '/javascripts/vendor/blueimp-file-upload/js/vendor/jquery.ui.widget.js'},
-          {src: '/javascripts/vendor/blueimp-file-upload/js/jquery.iframe-transport.js'},
-          {src: '/javascripts/vendor/blueimp-file-upload/js/jquery.fileupload.js'},
-          {src: '/javascripts/vendor/cloudinary_js/js/jquery.cloudinary.js'}
-        ]
-      });
-  })
+  .get(isLoggedIn, renderForm)
   // Post
   .post(
-    [
-      isLoggedIn,
-      validateInput,
-      sanitizeInput
-    ],
+    [isLoggedIn,validateInput,sanitizeInput],
     function(req, res) {
       var user = req.user;
 
@@ -68,6 +80,11 @@ router.route('/account/edit/profile')
       user.bio = req.body.user.fields.bio;
       user.location = req.body.user.fields.location;
       user.website = req.body.user.fields.website;
+      if (req.body.user.fields.color) {
+        user.color = '#'+req.body.user.fields.color;
+      } else {
+        user.color = '';
+      }
 
       // Cloudinary image
       if (req.body.user.fields.avatar) {
