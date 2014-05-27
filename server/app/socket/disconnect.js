@@ -24,12 +24,14 @@ module.exports = function(io, socket) {
     }
   }
 
-  // Update users online users list
-  socket.broadcast.emit('user:offline', {
-    user_id: socket.getUserId(),
-    username: socket.getUsername(),
-    avatar: socket.getAvatar()
-  });
+  // Update users online users list (only if last socket for this user)
+  if (helper.userSockets(io, socket.getUserId()).length < 1) {
+    socket.broadcast.emit('user:offline', {
+      user_id: socket.getUserId(),
+      username: socket.getUsername(),
+      avatar: socket.getAvatar()
+    });
+  }
 
   // Activity
   activityRecorder('disconnect', socket.getUserId());

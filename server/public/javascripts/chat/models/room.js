@@ -59,7 +59,11 @@ define([
         return;
       }
       var user = this.users.get(data.user_id);
+
+      if (!user) return; // if user has more that one socket we receive n room:out
+
       this.users.remove(user);
+
       this.trigger('notification', {
         type: 'out',
         user_id: user.get('id'),
