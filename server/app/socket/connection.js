@@ -23,11 +23,15 @@ module.exports = function(io, socket) {
   };
 
   // Welcome data
-  User.findById(socket.getUserId(), 'rooms onetoones', function(err, user) {
+  User.findById(socket.getUserId(), 'username avatar rooms onetoones', function(err, user) {
     if (err) {
       error('Unable to find user: '+err);
       user.rooms = [];
     }
+
+    // force user entity in memory refresh to avoid old data persistence (avatar)
+    socket.handshake.user.username = user.username;
+    socket.handshake.user.avatar = user.avatar;
 
     user.populate('onetoones', 'username', function(err, user) {
       if (err) error('Unable to populate user: '+err);
