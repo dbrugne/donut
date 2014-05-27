@@ -1,6 +1,5 @@
 var express = require('express');
 var router = express.Router();
-var conf = require('../config');
 
 router.get('/!', function(req, res) {
 
@@ -17,8 +16,7 @@ router.get('/!', function(req, res) {
 
   // ... otherwise open chat
   return res.render('chat', {
-    layout: 'chat_layout',
-    cloudinary: conf.cloudinary
+    layout: 'chat_layout'
   });
 
 });
