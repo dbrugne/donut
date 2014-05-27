@@ -2,9 +2,8 @@ var handleError = require('./error');
 var helper = require('./helper');
 var activityRecorder = require('../activity-recorder');
 
-// @todo : load validator and escape message
-// @todo : improve message validity test (ASCII)
-// @todo : ACL (user in room)
+// @todo : CAJA Validation
+// @todo : ACL : user in room ?
 
 module.exports = function(io, socket, data) {
 
