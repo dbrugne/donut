@@ -72,11 +72,16 @@ $(document).ready(function() {
       $('.uploader-progress').hide();
       updateProgress('reset');
     });
+    $('.uploader-delete').click(function(event) {
+      $('.uploader-current .current').text('No avatar,');
+      $("input[type='hidden'][name='user[fields][avatar]']").remove();
+      $("input[type='hidden'][name='user[fields][avatarversion]']").val('');
+      $("input[type='hidden'][name='user[fields][avatardelete]']").val('true');
+    });
 
     /**
      * Avatar upload
      */
-      // @todo : delete picture
     $('.cloudinary-fileupload').fileupload({
       start: function (e) {
         $('.uploader-form').hide();
@@ -102,6 +107,8 @@ $(document).ready(function() {
             transformation: 'user-avatar-medium'
           })
         );
+        $("input[type='hidden'][name='user[fields][avatarversion]']").val(data.result.version);
+        $("input[type='hidden'][name='user[fields][avatardelete]']").val('');
         $('.uploader-progress').hide();
         $('.uploader-current').show();
       });

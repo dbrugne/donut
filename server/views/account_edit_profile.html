@@ -45,7 +45,7 @@
             </div>
         </div>
         <div class="controls">
-            <label class="control-labels" for="username-field">Username</label>
+            <label class="control-labels">Username</label>
             <div class="control-fields">
                 Le nom d'utilisateur ne peut par être changé manuellement. Veuillez demander à un opérateur de faire l'opération pour vous dans la room #Support.
             </div>
@@ -58,7 +58,9 @@
             <div class="control-fields">
                 <!-- Current avatar -->
                 <div class="uploader-current" data-current="{{& userFields.avatar}}">
-                    <span class="current"></span> (<a href="#_" class="uploader-show-form">change</a>).
+                    <span class="current"></span> (<a href="#_" class="uploader-show-form">change</a> or <a href="#_" class="uploader-delete">delete</a>).
+                    <input type="hidden" name="user[fields][avatardelete]" value="">
+                    <input type="hidden" name="user[fields][avatarversion]" value="">
                 </div>
                 <!-- Avatar upload form -->
                 <div class="uploader-form">
