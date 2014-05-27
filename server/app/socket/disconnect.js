@@ -4,7 +4,7 @@ var activityRecorder = require('../activity-recorder');
 
 module.exports = function(io, socket) {
 
-  // Multi-devices (should done before room users information)
+  // Multi-devices (should done before room:out)
   socket.leave('user:'+socket.getUserId());
 
   // Inform other rooms users
