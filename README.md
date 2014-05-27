@@ -61,7 +61,7 @@ chat
 - [x] Add correct cloudinary string in user:online
 - [x] Add correct cloudinary string in user:profile
 - [x] Add avatar in room user list and home online user list and onetoone tab
-- [ ] Connection stat on user:search
+- [x] Connection stat on user:search
 - [ ] Get last 50 viewed on room/onetoone opening
 
 **Signup**

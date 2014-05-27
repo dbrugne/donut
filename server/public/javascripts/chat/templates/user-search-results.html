@@ -5,6 +5,9 @@
 <li class="list-group-item user-item open-user-profile" data-user-id="<%= user.user_id %>">
     <img src="<%= user.avatar %>">
     <span class="username"><%= user.username %></span>
+    <% if (user.status) { %>
+    <button class="btn btn-success">online</button>
+    <% }; %>
 </li>
 <% }); %>
 <% } %>
