@@ -3,6 +3,9 @@ var helper = require('./helper');
 var Room = require('../models/room');
 var activityRecorder = require('../activity-recorder');
 
+// @todo : CAJA Validation
+// @todo : ACL : is owner ?
+
 module.exports = function(io, socket, data) {
 
   if (!Room.validateTopic(data.topic))

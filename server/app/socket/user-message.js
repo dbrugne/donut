@@ -3,6 +3,8 @@ var helper = require('./helper');
 var User = require('../models/user');
 var activityRecorder = require('../activity-recorder');
 
+// @todo : CAJA Validation
+
 module.exports = function(io, socket, data) {
 
   helper.findUser(data.to, handleSuccess, handleError);
