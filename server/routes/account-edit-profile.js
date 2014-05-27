@@ -3,6 +3,7 @@ var router = express.Router();
 var User = require('../app/models/user');
 var isLoggedIn = require('../app/isloggedin');
 var cloudinary = require('../app/cloudinary');
+var conf = require('../config');
 
 var renderForm = function(req, res) {
   var options = {
@@ -13,6 +14,7 @@ var renderForm = function(req, res) {
       crop: "limit", width: 800, height: 600,
       html: { style: "" }
     }),
+    cloudinary: conf.cloudinary,
     scripts: [
       {src: '/javascripts/vendor/validator-js/validator.min.js'},
       {src: '/javascripts/vendor/colpick/js/colpick.js'},

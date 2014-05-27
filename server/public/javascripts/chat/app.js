@@ -49,8 +49,8 @@ define([
 
       // Prepare things
       $.cloudinary.config({
-        cloud_name: 'roomly',         // @todo : get from configuration file
-        api_key:    '962274636195222' // @todo : get from configuration file
+        cloud_name: window.cloudinary_cloud_name,
+        api_key: window.cloudinary_api_key
       });
 
       // Everything was already loaded by require.js,

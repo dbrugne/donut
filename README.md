@@ -15,7 +15,7 @@ chat
 - [x] handle default image
 - [ ] add "delete" image (delete action in form and removing on cloud)
 - [ ] on image change "delete" previous image
-- [ ] Passe cloudinary conf in DOM to chat interface
+- [x] Passe cloudinary conf in DOM to chat interface
 - [ ] cloudinary cache bug http://cloudinary.com/documentation/jquery_image_manipulation#image_versions
 
 **Chat**
@@ -48,7 +48,7 @@ chat
 - [x] Handle empty room deletion on last user leave
 - [x] Move onlines block on home
 - [x] Refresh home on focus
-- [ ] Add avatar in room user list and home online user list and onetoone tab and onetoone header
+- [ ] Add avatar in room user list and home online user list and onetoone tab
 - [ ] Get last 50 viewed on room/onetoone opening
 
 **Signup**
@@ -70,6 +70,7 @@ chat
 
 - [ ] Global theme
 - [x] Template user profile
+- [ ] Template room block and user block (chat home page)
 
 **Site**
 - [x] Mettre au propre les mockups du MVP

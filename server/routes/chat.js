@@ -1,10 +1,10 @@
 var express = require('express');
 var router = express.Router();
+var conf = require('../config');
 
 router.get('/!', function(req, res) {
 
   // Is user authenticated
-  // @todo : guest support
   if (!req.isAuthenticated()) {
     req.flash('warning', 'You should be authenticated to access chat.');
     return res.redirect('/');
@@ -17,7 +17,8 @@ router.get('/!', function(req, res) {
 
   // ... otherwise open chat
   return res.render('chat', {
-    layout: 'chat_layout'
+    layout: 'chat_layout',
+    cloudinary: conf.cloudinary
   });
 
 });

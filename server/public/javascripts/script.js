@@ -44,8 +44,10 @@ $(document).ready(function() {
     /**
      * Default avatar display
      */
-    // @todo : get params from configuration
-    $.cloudinary.config({ cloud_name: 'roomly', api_key: '962274636195222'});
+    $.cloudinary.config({
+      cloud_name: window.cloudinary_cloud_name,
+      api_key: window.cloudinary_api_key
+    });
     $('.uploader-form').hide();
     $('.uploader-progress').hide()
     var current = $('.uploader-current').data('current');

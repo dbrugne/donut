@@ -63,7 +63,10 @@
 </div>
 
 {{{ yield }}}
-
+<script>
+    window.cloudinary_cloud_name = '{{cloudinary.cloud_name}}';
+    window.cloudinary_api_key = '{{cloudinary.api_key}}';
+</script>
 <script data-main="/javascripts/chat/index.js" src="/javascripts/vendor/requirejs/require.js"></script>
 </body>
 </html>
