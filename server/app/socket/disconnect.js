@@ -17,14 +17,16 @@ module.exports = function(io, socket) {
     if (io.sockets.clients('user:'+socket.getUserId()).length < 1) {
       io.sockets.in(roomName).emit('room:out', {
         name: roomName,
-        user_id: socket.getUserId()
+        user_id: socket.getUserId(),
+        username: socket.getUsername()
       });
     }
   }
 
   // Update users online users list
   socket.broadcast.emit('user:offline', {
-    user_id: socket.getUserId()
+    user_id: socket.getUserId(),
+    username: socket.getUsername()
   });
 
   // Activity

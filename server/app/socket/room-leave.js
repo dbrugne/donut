@@ -14,7 +14,8 @@ module.exports = function(io, socket, data) {
     // Inform other room users
     io.sockets.in(room.name).emit('room:out', {
       name: room.name,
-      user_id: socket.getUserId()
+      user_id: socket.getUserId(),
+      username: socket.getUsername()
     });
 
     // Inform other devices

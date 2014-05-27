@@ -47,7 +47,12 @@ chat
 - [x] Handle empty room deletion on last user leave
 - [x] Move onlines block on home
 - [x] Refresh home on focus
+- [x] Add username in room:out
+- [x] Add username in user:offline
+- [ ] Replace user_id by username in user:profile
+- [ ] Add correct cloudinary string in all S->C user transmission
 - [ ] Add avatar in room user list and home online user list and onetoone tab
+- [ ] Connection stat on user search
 - [ ] Get last 50 viewed on room/onetoone opening
 
 **Signup**
