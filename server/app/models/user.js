@@ -98,7 +98,14 @@ userSchema.methods.avatarUrl = function(format) {
   if (!format) format = 'small';
   var options = {};
   options.transformation = 'user-avatar-'+format;
-  return cloudinary.url('avatar-'+this._id.toString(), options);
+
+  var cloudinaryId = this._id.toString();
+  if (this.avatar) {
+    var cloudinaryData = this.avatar.split('/');
+    cloudinaryId = cloudinaryData[1];
+    options.version = cloudinaryData[0].substring(1);
+  }
+  return cloudinary.url(cloudinaryId, options);
   // cloudinary handle default image
 };
 
