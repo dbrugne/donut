@@ -15,11 +15,6 @@ module.exports = function(io, socket, data) {
       avatar: userWith.avatarUrl()
     });
 
-    // Persistence
-    User.findOneAndUpdate({_id: socket.getUserId()}, {$addToSet: {onetoones: userWith._id}}, function(err, userFrom) {
-      if (err) handleError('Unable to update onetoones: '+err);
-    });
-
     // Activity
     activityRecorder('user:open', socket.getUserId(), data);
   }

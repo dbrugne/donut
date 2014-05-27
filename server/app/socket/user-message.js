@@ -5,8 +5,6 @@ var activityRecorder = require('../activity-recorder');
 
 module.exports = function(io, socket, data) {
 
-  // @todo : persist user.onetones here for both users
-
   helper.findUser(data.to, handleSuccess, handleError);
 
   function handleSuccess(userTo) {
@@ -29,6 +27,14 @@ module.exports = function(io, socket, data) {
     // (if sender!=receiver) Broadcast message to all 'receiver' devices
     if (from !==  to)
       io.sockets.in('user:'+to).emit('user:message', message);
+
+    // Persist that "onetoone is open" on both user
+    var updated = function(err, userFrom) {
+      if (err) handleError('Unable to update onetoones: '+err);
+    };
+    User.findOneAndUpdate({_id: from}, {$addToSet: {onetoones: to}}, updated);
+    if (from !==  to)
+      User.findOneAndUpdate({_id: to}, {$addToSet: {onetoones: from}}, updated);
 
     // Activity
     activityRecorder('user:message', socket.getUserId(), data);
