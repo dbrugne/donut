@@ -94,17 +94,22 @@ userSchema.methods.usernameAvailability = function (username, success, error) {
  * @param format
  * @returns {*}
  */
+userSchema.methods.avatarId = function() {
+  if (!this.avatar) return '';
+  var data = this.avatar.split('/');
+  if (!data[1]) return '';
+  var id = data[1].substr(0, data[1].lastIndexOf('.'));
+  return id;
+};
 userSchema.methods.avatarUrl = function(format) {
   if (!format) format = 'small';
   var options = {};
   options.transformation = 'user-avatar-'+format;
 
-  var cloudinaryId = this._id.toString();
-  if (this.avatar) {
-    var cloudinaryData = this.avatar.split('/');
-    cloudinaryId = cloudinaryData[1];
-    options.version = cloudinaryData[0].substring(1);
-  }
+  var cloudinaryId = (this.avatar) ?
+    this.avatar
+    : this._id.toString();
+
   return cloudinary.url(cloudinaryId, options);
   // cloudinary handle default image
 };

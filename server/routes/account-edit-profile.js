@@ -3,7 +3,6 @@ var router = express.Router();
 var User = require('../app/models/user');
 var isLoggedIn = require('../app/isloggedin');
 var cloudinary = require('../app/cloudinary');
-var conf = require('../config');
 
 var renderForm = function(req, res) {
   var options = {
@@ -14,7 +13,6 @@ var renderForm = function(req, res) {
       crop: "limit", width: 800, height: 600,
       html: { style: "" }
     }),
-    cloudinary: conf.cloudinary,
     scripts: [
       {src: '/javascripts/vendor/validator-js/validator.min.js'},
       {src: '/javascripts/vendor/colpick/js/colpick.js'},
@@ -98,7 +96,13 @@ router.route('/account/edit/profile')
         } else {
           throw("Invalid upload signature");
         }
-      }
+      } else if (req.body.user.fields.avatardelete == 'true') {
+        if (req.user.avatar) { // asynchronous
+          cloudinary.api.delete_resources([req.user.avatarId()],
+            function(result){ console.log(result.deleted); });
+        }
+        user.avatar = '';
+      };
 
       // Save
       user.save(function(err) {

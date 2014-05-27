@@ -13,9 +13,8 @@ chat
 - [x] in chat and on account/edit pass only the cloudinary id and implement image loading on client side
 - [x] configure well upload constrains (maxsize, format ..) => !! not supported by jQuery uploader !!
 - [x] handle default image
-- [ ] add "delete" image (delete action in form and removing on cloud)
-- [ ] on image change "delete" previous image
-- [x] Passe cloudinary conf in DOM to chat interface
+- [x] add "delete" image (delete action in form and removing on cloud)
+- [x] Pass cloudinary conf in DOM to chat interface
 - [ ] cloudinary cache bug http://cloudinary.com/documentation/jquery_image_manipulation#image_versions
 
 **Chat**
