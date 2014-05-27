@@ -62,6 +62,7 @@ chat
 - [x] Add correct cloudinary string in user:profile
 - [x] Add avatar in room user list and home online user list and onetoone tab
 - [x] Connection stat on user:search
+- [x] user:offline only it's the last socket
 - [ ] Get last 50 viewed on room/onetoone opening
 
 **Signup**
@@ -81,15 +82,15 @@ chat
 
 **Design**
 
-- [ ] Global theme
 - [x] Template user profile
+- [ ] Global theme
 - [ ] Template room block and user block (chat home page)
 
 **Site**
 - [x] Mettre au propre les mockups du MVP
-- [ ] Test it on IE8-11/FF
-- [ ] Google Analytics (HP, interface de chat)
 - [x] Deploy
+- [ ] Google Analytics (HP, interface de chat)
+- [ ] Test it on IE8-11/FF
 - [ ] Backup
 - [ ] Monitor
 
