@@ -25,12 +25,7 @@ define([
     },
 
     render: function(user) {
-      var html = this.template({
-        user: user,
-        avatar: $.cloudinary.url('avatar-'+user.user_id, {
-          transformation: 'user-avatar-large'
-        })
-      });
+      var html = this.template({user: user});
       this.$el.find('.modal-body').first().html(html);
       return this;
     },

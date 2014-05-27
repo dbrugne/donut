@@ -9,7 +9,7 @@ module.exports = function(io, socket, data) {
     search = {username: new RegExp(data.search, "i")};
   }
 
-  User.find(search, 'username', function(err, users) {
+  User.find(search, 'username avatar', function(err, users) {
     if (err) {
       error('Error while searching user '+data.search);
       socket.emit('user:searcherror');
@@ -21,7 +21,8 @@ module.exports = function(io, socket, data) {
     for(var i=0; i<users.length; i++) {
       results.push({
         user_id: users[i]._id,
-        username: users[i].username
+        username: users[i].username,
+        avatar: users[i].avatarUrl('medium')
       });
     }
 

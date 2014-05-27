@@ -21,7 +21,8 @@ module.exports = function(io, socket, data) {
       time: Date.now(),
       message: data.message,
       user_id: socket.getUserId(),
-      username: socket.getUsername()
+      username: socket.getUsername(),
+      avatar: socket.getAvatar()
     });
 
     // Activity

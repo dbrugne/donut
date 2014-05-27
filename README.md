@@ -15,7 +15,7 @@ chat
 - [x] handle default image
 - [x] add "delete" image (delete action in form and removing on cloud)
 - [x] Pass cloudinary conf in DOM to chat interface
-- [ ] cloudinary cache bug http://cloudinary.com/documentation/jquery_image_manipulation#image_versions
+- [x] cloudinary cache bug http://cloudinary.com/documentation/jquery_image_manipulation#image_versions
 
 **Chat**
 - [x] Chat default room with auto-join on connection
@@ -49,9 +49,19 @@ chat
 - [x] Refresh home on focus
 - [x] Add username in room:out
 - [x] Add username in user:offline
-- [ ] Add correct cloudinary string in all S->C user transmission
-- [ ] Add avatar in room user list and home online user list and onetoone tab
-- [ ] Connection stat on user search
+- [x] Add correct cloudinary string in welcome.user, welcome.onlines
+- [x] Add correct cloudinary string in room:welcome.users
+- [x] Add correct cloudinary string in room:in
+- [x] Add correct cloudinary string in room:out
+- [x] Add correct cloudinary string in room:message
+- [x] Add correct cloudinary string in room:topic
+- [x] Add correct cloudinary string in user:open
+- [x] Add correct cloudinary string in user:message
+- [x] Add correct cloudinary string in user:search
+- [x] Add correct cloudinary string in user:online
+- [x] Add correct cloudinary string in user:profile
+- [x] Add avatar in room user list and home online user list and onetoone tab
+- [ ] Connection stat on user:search
 - [ ] Get last 50 viewed on room/onetoone opening
 
 **Signup**

@@ -38,7 +38,8 @@ define([
         model.users.add(new UserModel({
           id: element.user_id,
           user_id: element.user_id,
-          username: element.username
+          username: element.username,
+          avatar: element.avatar
         }));
       });
 

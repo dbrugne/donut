@@ -17,11 +17,6 @@ define([
 
     _renderData: function() {
       var data = this.model.toJSON();
-
-      data.avatar = $.cloudinary.url('avatar-'+this.model.get('user_id'), {
-        transformation: 'user-avatar-small'
-      });
-
       return data;
     },
 

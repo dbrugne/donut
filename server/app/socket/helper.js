@@ -98,7 +98,8 @@ module.exports = {
         already.push(u.getUserId());
         list.push({
           user_id: u.getUserId(),
-          username: u.getUsername()
+          username: u.getUsername(),
+          avatar: u.getAvatar('medium')
         });
       }
     }
@@ -168,7 +169,8 @@ module.exports = {
         already.push(u.getUserId());
         list.push({
           user_id: u.getUserId(),
-          username: u.getUsername()
+          username: u.getUsername(),
+          avatar: u.getAvatar()
         });
       }
     }

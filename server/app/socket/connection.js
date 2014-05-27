@@ -12,12 +12,15 @@ module.exports = function(io, socket) {
   socket.getUser = function() {
     return this.handshake.user;
   };
-  socket.getUsername = function() {
-    return this.handshake.user.username;
-  }
   socket.getUserId = function() {
     return this.handshake.user._id.toString();
-  }
+  };
+  socket.getUsername = function() {
+    return this.handshake.user.username;
+  };
+  socket.getAvatar = function(format) {
+    return this.handshake.user.avatarUrl(format);
+  };
 
   // Welcome data
   User.findById(socket.getUserId(), 'rooms onetoones', function(err, user) {
@@ -39,7 +42,8 @@ module.exports = function(io, socket) {
       socket.emit('welcome', {
         user: {
           user_id: socket.getUserId(),
-          username: socket.getUsername()
+          username: socket.getUsername(),
+          avatar: socket.getAvatar()
         },
         rooms: user.rooms,
         onetoones: onetoones,
@@ -55,7 +59,8 @@ module.exports = function(io, socket) {
   // Push this user to other users
   socket.broadcast.emit('user:online', {
     user_id: socket.getUserId(),
-    username: socket.getUsername()
+    username: socket.getUsername(),
+    avatar: socket.getAvatar('medium')
   });
 
   // Activity

@@ -24,7 +24,8 @@ define([
       var model = new OneToOneModel({
         id: user.user_id,
         user_id: user.user_id,
-        username: user.username
+        username: user.username,
+        avatar: user.avatar
       });
 
       this.add(model);
@@ -52,7 +53,8 @@ define([
         var model = new OneToOneModel({
           id: with_username,
           user_id: with_username,
-          username: message.username
+          username: message.username,
+          avatar: message.avatar
         });
         this.add(model);
       }

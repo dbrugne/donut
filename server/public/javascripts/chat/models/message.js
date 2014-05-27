@@ -8,6 +8,7 @@ define([
       return {
         user_id: '',
         username: '',
+        avatar: '',
         date: '',
         message: ''
       };

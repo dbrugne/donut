@@ -3,6 +3,7 @@
     <div class="list">
         <% _.each(list, function(roomUser) { %>
         <span class="user-item item">
+            <img src="<%= roomUser.avatar %>">
             <span class="username dbl-open-user-profile" data-user-id="<%= roomUser.user_id %>"><%= roomUser.username %></span>
             <span class="actions">
                 <span data-user-id="<%= roomUser.user_id %>" class="glyphicon glyphicon-user open-user-profile"></span>

@@ -89,7 +89,8 @@ define([
       _.each(data.onlines, function(online) {
         onlines.add({
           id: online.user_id,
-          username: online.username
+          username: online.username,
+          avatar: online.avatar
         });
       });
 

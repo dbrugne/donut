@@ -41,13 +41,15 @@ define([
       var user = new UserModel({
         id: data.user_id,
         user_id: data.user_id,
-        username: data.username
+        username: data.username,
+        avatar: data.avatar
       });
       this.users.add(user);
       this.trigger('notification', {
         type: 'in',
         user_id: user.get('id'),
-        username: user.get('username')
+        username: user.get('username'),
+        avatar: user.get('avatar')
       });
       this.trigger('inOut');
     },
@@ -61,7 +63,8 @@ define([
       this.trigger('notification', {
         type: 'out',
         user_id: user.get('id'),
-        username: user.get('username')
+        username: user.get('username'),
+        avatar: user.get('avatar')
       });
       this.trigger('inOut');
     },
@@ -75,6 +78,7 @@ define([
         type: 'topic',
         user_id: data.user_id,
         username: data.username,
+        avatar: data.avatar,
         topic: data.topic
       });
     }

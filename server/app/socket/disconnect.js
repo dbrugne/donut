@@ -18,7 +18,8 @@ module.exports = function(io, socket) {
       io.sockets.in(roomName).emit('room:out', {
         name: roomName,
         user_id: socket.getUserId(),
-        username: socket.getUsername()
+        username: socket.getUsername(),
+        avatar: socket.getAvatar()
       });
     }
   }
@@ -26,7 +27,8 @@ module.exports = function(io, socket) {
   // Update users online users list
   socket.broadcast.emit('user:offline', {
     user_id: socket.getUserId(),
-    username: socket.getUsername()
+    username: socket.getUsername(),
+    avatar: socket.getAvatar()
   });
 
   // Activity

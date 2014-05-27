@@ -39,9 +39,7 @@ define([
 
       var html = this.template({
         user_id: message.get('user_id'),
-        avatar: $.cloudinary.url('avatar-'+message.get('user_id'), {
-          transformation: 'user-avatar-small'
-        }),
+        avatar: message.get('avatar'),
         username: message.get('username'),
         message: messageHtml,
         date: dateText

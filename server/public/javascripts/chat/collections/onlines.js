@@ -17,7 +17,8 @@ define([
     onOnline: function(data) {
       this.add({
         id: data.user_id,
-        username: data.username
+        username: data.username,
+        avatar: data.avatar
       });
     },
     onOffline: function(data) {

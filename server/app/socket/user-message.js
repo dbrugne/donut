@@ -19,7 +19,8 @@ module.exports = function(io, socket, data) {
       time: Date.now(),
       message: data.message,
       user_id: from,
-      username: socket.getUsername()
+      username: socket.getUsername(),
+      avatar: socket.getAvatar()
     };
 
     // Broadcast message to all 'sender' devices

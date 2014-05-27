@@ -51,7 +51,7 @@ define([
     showForm: function() {
       this.$el.find('.topic').hide();
       this.$el.find('.topic-form').show();
-      this.$el.find('.topic-input').val(this.model.get('baseline')).focus();
+      this.$el.find('.topic-input').val(this.model.get('topic')).focus();
     },
 
     hideForm: function() {

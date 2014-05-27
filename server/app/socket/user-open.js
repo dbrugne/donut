@@ -11,7 +11,8 @@ module.exports = function(io, socket, data) {
     // Push user data to all user devices
     io.sockets.in('user:'+socket.getUserId()).emit('user:open', {
       user_id: userWith._id,
-      username: userWith.username
+      username: userWith.username,
+      avatar: userWith.avatarUrl()
     });
 
     // Persistence

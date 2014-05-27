@@ -2,6 +2,7 @@
 <ul>
     <% _.each(list, function(userOnline) { %>
     <li class="">
+        <img src="<%= userOnline.avatar %>">
         <%= userOnline.username %>
         - <a href="#user/<%= userOnline.username %>" data-user-id="<%= userOnline.user_id %>">discuter</a>
     </li>
