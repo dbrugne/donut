@@ -49,7 +49,6 @@ chat
 - [x] Refresh home on focus
 - [x] Add username in room:out
 - [x] Add username in user:offline
-- [ ] Replace user_id by username in user:profile
 - [ ] Add correct cloudinary string in all S->C user transmission
 - [ ] Add avatar in room user list and home online user list and onetoone tab
 - [ ] Connection stat on user search
@@ -103,7 +102,6 @@ Critical:
 - [ ] Room is permanent
 - [ ] Room op (owner + list)
 - [ ] Room kick
-- [ ] Room profile
 - [ ] Introduce guest mode (= no ?)
 - [ ] Separate socket/web apps
 - [ ] Introduce Redis
@@ -122,7 +120,7 @@ Room profile:
 Chat:
 - [ ] On one to one or room open show last messages of this conversation
 - [ ] Add "presence" management (who is actually online in this room?)
-- [ ] Add onetoone persistence: only open/close persistence for the user. Then reopen on connection as for rooms
+- [ ] Replace user_id by username in user:profile
 
 Backend:
 - [ ] Traditional page secured zone
@@ -137,15 +135,14 @@ Backend:
 
 Security/performance:
 - [ ] Scalability: implement Redis for sessions, MongoDb data cache (all User and Room documents used by socket.io) and sockets.
-- [ ] Security: use https://www.npmjs.org/package/google-caja on each input (especially socket inputs and messages)
-- [ ] Move cloudinary params in configuration for both client and server
+- [ ] Security: use https://www.npmjs.org/package/google-caja on message input (especially socket inputs and messages)
 
 Automation:
 - [ ] Refactor grunt
 - [ ] Sample activity generation (rooms, users, messages, enter/leave room, one to one)
 
 Bugs:
-- [ ] Fix "unlog" bug that maintain user logged in chat
+- [ ] Fix bug that maintain user logged in chat on logout
 
 Features:
 - [ ] Highlight messages of the same user of this message
@@ -168,7 +165,6 @@ Features:
 Mobile:
 - [ ] (mobile) Port a mobile version with Steroids.js
 - [ ] Identify and track devices for each socket/activity
-- [ ] Re-implement multi-devices
 - [ ] Make it work on tablet/phone (browser)
 
 Ideas:
