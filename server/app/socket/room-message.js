@@ -2,7 +2,6 @@ var handleError = require('./error');
 var helper = require('./helper');
 var activityRecorder = require('../activity-recorder');
 
-// @todo : CAJA Validation
 // @todo : ACL : user in room ?
 
 module.exports = function(io, socket, data) {
@@ -13,6 +12,9 @@ module.exports = function(io, socket, data) {
   function handleSuccess(room) {
     if (!validateMessage(data.message))
       return error('Invalid message for '+data.name+' => '+data.message);
+
+    // Input filtering
+    data.message = helper.inputFilter(data.message, 512);
 
     // Broadcast message
     io.sockets.in(data.name).emit('room:message', {

@@ -1,6 +1,8 @@
 var _ = require('underscore');
 var User = require('../models/user');
 var Room = require('../models/room');
+var sanitize = require('sanitize-caja');
+var expressValidator = require('../validator');
 var activityRecorder = require('../activity-recorder');
 
 module.exports = {
@@ -184,6 +186,25 @@ module.exports = {
    */
   roomSockets: function(io, name) {
     return io.sockets.clients(name);
+  },
+
+  /**
+   * Check for maximal length, sanitize and escape input
+   * Return filtered string or empty string if too long or empty.
+   * @param value
+   * @param max
+   * @return '' or filtered String
+   */
+  inputFilter: function(value, maxLength) {
+    maxLength = maxLength || 512;
+    if (!expressValidator.validator.isLength(value, 1, 512))
+      return;
+
+    var filtered;
+    filtered = sanitize(value);
+    filtered = expressValidator.validator.escape(filtered);
+
+    return filtered;
   }
 
 };

@@ -3,7 +3,6 @@ var helper = require('./helper');
 var Room = require('../models/room');
 var activityRecorder = require('../activity-recorder');
 
-// @todo : CAJA Validation
 // @todo : ACL : is owner ?
 
 module.exports = function(io, socket, data) {
@@ -15,6 +14,9 @@ module.exports = function(io, socket, data) {
   helper.findRoom(data.name, handleSuccess, handleError);
 
   function handleSuccess(room) {
+    // Input filtering
+    data.topic = helper.inputFilter(data.topic, 130);
+
     room.update({topic: data.topic}, function(err) {
       if (err)
         return handleError('Unable to change room '+data.name+' topic '+data.topic);

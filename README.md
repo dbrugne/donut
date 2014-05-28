@@ -63,10 +63,9 @@ chat
 - [x] Add avatar in room user list and home online user list and onetoone tab
 - [x] Connection stat on user:search
 - [x] user:offline only it's the last socket
-- [ ] room:message Caja sanitization
-- [ ] room:topic Caja sanitization
-- [ ] user:message Caja sanitization
-- [ ] room:message and user:message validation
+- [x] room:message Caja sanitization
+- [x] room:topic Caja sanitization
+- [x] user:message Caja sanitization
 - [ ] ACL room:topic
 - [ ] ACL room:message
 - [x] Add length limit on messagebox/topic
