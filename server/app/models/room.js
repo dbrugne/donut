@@ -2,15 +2,15 @@ var mongoose = require('mongoose');
 
 var roomSchema = mongoose.Schema({
 
-    name            : String,
-    owner_id        : { type: mongoose.Schema.ObjectId, ref: 'User' },
-    op              : [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
-    bans            : [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
-    permanent       : Boolean,
-    allow_guests    : Boolean,
-    invisible       : Boolean,
-    topic           : String,
-    description     : String
+    name          : String,
+    owner         : { type: mongoose.Schema.ObjectId, ref: 'User' },
+    op            : [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
+    bans          : [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
+    permanent     : Boolean,
+    allow_guests  : Boolean,
+    invisible     : Boolean,
+    topic         : String,
+    description   : String
 
 });
 
@@ -32,7 +32,7 @@ roomSchema.statics.validateTopic = function (topic) {
 
 roomSchema.statics.findByName = function (name) {
   var regexp = new RegExp(['^',name,'$'].join(''),'i');
-  return this.findOne({ name: regexp }, 'name owner_id topic');
+  return this.findOne({ name: regexp }, 'name owner topic');
 }
 
 module.exports = mongoose.model('Room', roomSchema);

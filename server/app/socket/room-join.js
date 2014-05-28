@@ -16,6 +16,11 @@ module.exports = function(io, socket, data) {
     // Room welcome
     socket.emit('room:welcome', {
       name: room.name,
+      owner: {
+        user_id: room.owner._id,
+        username: room.owner.username,
+        avatar: room.owner.avatarUrl('small')
+      },
       topic: room.topic,
       users: users
     });

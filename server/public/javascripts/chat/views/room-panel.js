@@ -22,7 +22,10 @@ define([
     },
 
     _renderData: function() {
-      return this.model.toJSON();
+      var owner = this.model.get('owner').toJSON()
+      var data = this.model.toJSON();
+      data.owner = owner;
+      return data;
     },
 
     _render: function() {

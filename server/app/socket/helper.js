@@ -76,16 +76,25 @@ module.exports = {
       if (!room) { // create room if needed
         room = new Room({
           name: name,
-          owner_id: socket.getUserId()
+          owner: socket.getUserId()
         });
         room.save(function (err, room, numberAffected) {
           if (err) return error('Unable to create room: '+err);
 
-          success(room);
+          // code recursion 1
+          room.populate('owner', 'username avatar', function(err, room) {
+            if (err) return error('Unable to room.populate: '+err);
+            success(room);
+          });
           that.record('room:create', socket, {_id: room.get('_id'), name: room.get('name')});
         });
       } else {
-        success(room);
+        if (!room) return error('Room not found');
+        // code recursion 1
+        room.populate('owner', 'username avatar', function(err, room) {
+          if (err) return error('Unable to room.populate: '+err);
+          success(room);
+        });
       }
     }, error);
   },
@@ -107,8 +116,11 @@ module.exports = {
     Room.findByName(name).exec(function(err, room) {
       if (err) return error('Unable to Room.findByName: '+err);
       if (!room) return error('Room not found');
-
-      success(room);
+      // code recursion 1
+      room.populate('owner', 'username avatar', function(err, room) {
+        if (err) return error('Unable to room.populate: '+err);
+        success(room);
+      });
     });
   },
 
@@ -151,8 +163,11 @@ module.exports = {
    * @returns {*}
    */
   socketRooms: function(io, socket) {
-    var rawList = io.sockets.manager.roomClients[socket.id];
     var list = [];
+
+    var rawList = io.sockets.manager.roomClients[socket.id];
+    if (!rawList || rawList.length < 1) return list;
+
     Object.keys(rawList).forEach(function(key) {
       if (key == '') return; // common room for all socket (socket.io)
       if (key.substring(0, 2) != '/#') return; // only our rooms
@@ -217,6 +232,17 @@ module.exports = {
    */
   roomSockets: function(io, name) {
     return io.sockets.clients(name);
+  },
+
+  /**
+   *
+   * @param socket
+   * @param name
+   * @return boolean
+   */
+  isSocketInRoom: function(io, socket, name) {
+    if (this.socketRooms(io, socket).indexOf(name) == -1) return false;
+    else return true;
   },
 
   /**

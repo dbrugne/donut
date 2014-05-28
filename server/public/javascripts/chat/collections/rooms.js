@@ -27,9 +27,16 @@ define([
     openPong: function(room) {
       if (this.get(room.name) != undefined) return; // when reconnecting
 
+      var owner = new UserModel({
+        id: room.owner.user_id,
+        user_id: room.owner.user_id,
+        username: room.owner.username,
+        avatar: room.owner.avatar
+      });
       var model = new RoomModel({
         id: room.name,
         name: room.name,
+        owner: owner,
         topic: room.topic
       });
 
@@ -63,6 +70,8 @@ define([
     },
     onMessage: function(data) { // @todo : move it on room model
       var model = this.findWhere({ name: data.name });
+      if (!model) return;
+
       model.message(data);
       // Window new message indication
       this.trigger('newMessage');
