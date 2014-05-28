@@ -68,9 +68,14 @@ chat
 - [x] user:message Caja sanitization
 - [x] Add length limit on messagebox/topic
 - [x] Move error handler and activity recorder in helper
-- [ ] ACL room:topic
-- [ ] ACL room:message
-- [ ] Get last 50 viewed on room/onetoone opening
+- [x] ACL room:topic (server/client)
+- [x] ACL room:message
+- [ ] user:search avoid user without username
+- [ ] Permanent room management
+- [ ] Room profile
+- [ ] room:op, room:deop
+- [ ] Helper: avoid room populate code recursion in helper
+- [ ] Get last 50 viewed on onetoone opening
 
 **Signup**
 - [x] Remove username from signup form (comment)
@@ -82,16 +87,23 @@ chat
 - [x] Add color theme field
 - [x] Caja validation on bio and location
 - [ ] Forgotten password (https://github.com/substack/node-password-reset && http://stackoverflow.com/questions/20277020/reset-change-password-in-nodejs-with-passportjs)
-
+ 
 **Finishing**
 - [x] CSRF and 304!
 - [x] Update connect-mongo module
 
 **Design**
 
-- [x] Template user profile
 - [ ] Global theme
-- [ ] Template room block and user block (chat home page)
+- [x] Template user profile
+- [ ] Template room block and user tiles (chat home page)
+- [ ] Room profile page
+
+**Improvment**
+- Avoid disconnected message transmission
+- [x] Search engine: remove profile button if user not online (info in user:profile)
+- [x] Persist user.onetones here for both users message
+- [ ] Onetoone: on focus trigger a (ping/pong) to ask for connectivity and block message posting
 
 **Site**
 - [x] Mettre au propre les mockups du MVP
@@ -105,14 +117,6 @@ chat
 - [ ] Minimum virtual trafic generation
 - [ ] Basic backend
 - [ ] Basic grunt sample data injection
-
-**Improvment**
-- [ ] Changing username on site shoud change it in chat interface (= Redis cache, form invalidate cache, how to send a message between www and ws without queue system)
-- Avoid disconnected message transmission
-- [ ] Search engine: remove profile button if user not online (info in user:profile)
-- [ ] Onetoone: on focus trigger a (ping/pong) to ask for connectivity and block message posting
-- [ ] Persist user.onetones here for both users message
-- [ ] OR : reintroduce onetoone for room => open+message join room, disconnect leave+room, room expire on last user in
 
 ## Next releases
 
@@ -133,12 +137,12 @@ Room profile:
 - [ ] Make room permanent option
 - [ ] (irc) ACL on room => who is OP, set OP, remove OP, can change topic, can kick users
 - [ ] (irc) Kick users
-- [ ] #cloudinary integration
 
 Chat:
-- [ ] On one to one or room open show last messages of this conversation
+- [ ] Get last 50 viewed on room opening
 - [ ] Add "presence" management (who is actually online in this room?)
 - [ ] Replace user_id by username in user:profile
+- [ ] Changing username/avatar on site should change it in chat interface (= Redis cache, form invalidate cache, how to send a message between www and ws without queue system)
 
 Backend:
 - [ ] Traditional page secured zone
