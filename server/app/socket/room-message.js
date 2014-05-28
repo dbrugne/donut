@@ -1,13 +1,15 @@
 var helper = require('./helper');
 
-// @todo : ACL : user in room ?
-
 module.exports = function(io, socket, data) {
 
   // Find and return room model
   helper.findRoom(data.name, handleSuccess, helper.handleError);
 
   function handleSuccess(room) {
+    // Test if the current socket is in room
+    if (!helper.isSocketInRoom(io, socket, room.name))
+     return helper.handleError('This socket is not currently in room');
+
     // Input filtering
     data.message = helper.inputFilter(data.message, 512);
     if (data.message == '') return;
