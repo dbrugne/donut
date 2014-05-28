@@ -3,8 +3,9 @@ define([
   'underscore',
   'backbone',
   'models/client',
+  'models/current-user',
   'text!templates/room-topic.html'
-], function ($, _, Backbone, client, topicTemplate) {
+], function ($, _, Backbone, client, currentUser, topicTemplate) {
   var RoomTopicView = Backbone.View.extend({
 
     template: _.template(topicTemplate),
@@ -49,6 +50,8 @@ define([
     },
 
     showForm: function() {
+      if (!this.isGranted()) return false;
+
       this.$el.find('.topic').hide();
       this.$el.find('.topic-form').show();
       this.$el.find('.topic-input').val(this.model.get('topic')).focus();
@@ -60,6 +63,8 @@ define([
     },
 
     sendNewTopic: function(event) {
+      if (!this.isGranted()) return false;
+
       var newTopic = this.$el.find('.topic-input').val();
       // only if not too long
       if (newTopic.length <= 130) client.topic(this.model.get('name'), newTopic);
@@ -67,7 +72,15 @@ define([
       // reset form state
       this.$el.find('.topic-input').val('');
       this.hideForm();
+    },
+
+    isGranted: function() {
+      if (this.model.get('owner').get('user_id') == currentUser.get('user_id')) {
+        return true;
+      }
+      return false;
     }
+
   });
 
   return RoomTopicView;

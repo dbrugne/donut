@@ -1,8 +1,6 @@
 var helper = require('./helper');
 var Room = require('../models/room');
 
-// @todo : ACL : is owner ?
-
 module.exports = function(io, socket, data) {
 
   if (!Room.validateTopic(data.topic))
@@ -12,6 +10,10 @@ module.exports = function(io, socket, data) {
   helper.findRoom(data.name, handleSuccess, helper.handleError);
 
   function handleSuccess(room) {
+    // Is user a room owner?
+    if (room.owner._id.toString() != socket.getUserId())
+      return helper.handleError('Room topic, user is not room owner');
+
     // Input filtering
     data.topic = helper.inputFilter(data.topic, 130);
 
