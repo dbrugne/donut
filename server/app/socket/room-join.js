@@ -14,16 +14,20 @@ module.exports = function(io, socket, data) {
     var users = helper.roomUsers(io, room.name);
 
     // Room welcome
-    socket.emit('room:welcome', {
+    var welcome = {
       name: room.name,
-      owner: {
+      owner: {},
+      topic: room.topic,
+      users: users
+    };
+    if (room.owner) {
+      welcome.owner = {
         user_id: room.owner._id,
         username: room.owner.username,
         avatar: room.owner.avatarUrl('small')
-      },
-      topic: room.topic,
-      users: users
-    });
+      };
+    }
+    socket.emit('room:welcome', welcome);
 
     // Inform other room users
     io.sockets.in(room.name).emit('room:in', {
