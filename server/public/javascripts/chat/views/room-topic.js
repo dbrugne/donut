@@ -61,7 +61,10 @@ define([
 
     sendNewTopic: function(event) {
       var newTopic = this.$el.find('.topic-input').val();
-      client.topic(this.model.get('name'), newTopic);
+      // only if not too long
+      if (newTopic.length <= 130) client.topic(this.model.get('name'), newTopic);
+
+      // reset form state
       this.$el.find('.topic-input').val('');
       this.hideForm();
     }

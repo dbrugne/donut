@@ -69,7 +69,7 @@ chat
 - [ ] room:message and user:message validation
 - [ ] ACL room:topic
 - [ ] ACL room:message
-- [ ] Add length limit on messagebox/topic
+- [x] Add length limit on messagebox/topic
 - [ ] Move error handler and activity recorder in helper
 - [ ] Get last 50 viewed on room/onetoone opening
 

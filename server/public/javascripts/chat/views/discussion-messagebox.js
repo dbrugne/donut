@@ -65,9 +65,8 @@ define([
       // Get the message
       var inputField = this.$el.find('.input-message');
       var message = inputField.val();
-      if (message == '') {
-        return false;
-      }
+      if (message == '') return false;
+      if (message.length > 512) return false;
 
       // @todo: cleanup this code...
       if (this.model.get('type') == 'room') {
