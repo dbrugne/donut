@@ -2,7 +2,7 @@
     <div class="col-lg-12" style="<% if (room.background) { print('background-image: '+room.background); } %>">
         <% if (room.avatar) { %><img src="<%= room.avatar.small.url %>"><% } %>
         <h2><%= room.name %></h2>
-        <p>owner <em><%= room.owner_id %></em></p>
+        <p>owner <em><%= room.owner %></em></p>
         <button type="button" class="btn btn-primary open-onetoone" data-room-id="<%= room.name %>" data-dismiss="modal">Open</button>
     </div><!-- /.col-lg-12 -->
 </div><!-- /.row -->
