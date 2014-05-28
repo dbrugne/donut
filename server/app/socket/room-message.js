@@ -1,20 +1,16 @@
-var handleError = require('./error');
 var helper = require('./helper');
-var activityRecorder = require('../activity-recorder');
 
 // @todo : ACL : user in room ?
 
 module.exports = function(io, socket, data) {
 
   // Find and return room model
-  helper.findRoom(data.name, handleSuccess, handleError);
+  helper.findRoom(data.name, handleSuccess, helper.handleError);
 
   function handleSuccess(room) {
-    if (!validateMessage(data.message))
-      return error('Invalid message for '+data.name+' => '+data.message);
-
     // Input filtering
     data.message = helper.inputFilter(data.message, 512);
+    if (data.message == '') return;
 
     // Broadcast message
     io.sockets.in(data.name).emit('room:message', {
@@ -27,15 +23,7 @@ module.exports = function(io, socket, data) {
     });
 
     // Activity
-    activityRecorder('room:message', socket.getUserId(), data);
+    helper.record('room:message', socket, data);
   }
 
 };
-
-function validateMessage(message) { // @todo delegate to model ?
-  var pattern = /^.{1,1000}$/i;
-  if (pattern.test(message)) {
-    return true;
-  }
-  return false;
-}

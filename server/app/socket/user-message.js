@@ -1,11 +1,9 @@
-var handleError = require('./error');
 var helper = require('./helper');
 var User = require('../models/user');
-var activityRecorder = require('../activity-recorder');
 
 module.exports = function(io, socket, data) {
 
-  helper.findUser(data.to, handleSuccess, handleError);
+  helper.findUser(data.to, handleSuccess, helper.handleError);
 
   function handleSuccess(userTo) {
     var from = socket.getUserId();
@@ -13,6 +11,7 @@ module.exports = function(io, socket, data) {
 
     // Input filtering
     data.message = helper.inputFilter(data.message, 512);
+    if (data.message == '') return;
 
     var message = {
       from: socket.getUsername(),
@@ -40,6 +39,6 @@ module.exports = function(io, socket, data) {
       User.findOneAndUpdate({_id: to}, {$addToSet: {onetoones: from}}, updated);
 
     // Activity
-    activityRecorder('user:message', socket.getUserId(), data);
+    helper.record('user:message', socket, data);
   }
 };

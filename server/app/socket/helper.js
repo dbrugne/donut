@@ -1,11 +1,41 @@
+var debug = require('debug')('chat-server');
 var _ = require('underscore');
-var User = require('../models/user');
-var Room = require('../models/room');
 var sanitize = require('sanitize-caja');
 var expressValidator = require('../validator');
-var activityRecorder = require('../activity-recorder');
+var User = require('../models/user');
+var Room = require('../models/room');
+var Activity = require('../models/activity');
 
 module.exports = {
+
+  /**
+   * Handle error triggered in socket logics
+   * @param err
+   */
+  handleError: function(err) {
+    debug('Error triggered: '+err);
+  },
+
+  /**
+   * Add a new record in the activity log in database
+   * @param type
+   * @param user_id
+   * @param data
+   */
+  record: function(type, socket, data) {
+    if (data == undefined) {
+      data = {};
+    }
+    var user_id = (socket != '')
+     ? socket.getUserId()
+     : '';
+    var activity = new Activity({
+      type: type,
+      user_id: user_id,
+      data: data
+    });
+    activity.save();
+  },
 
   /**
    * Search and return user model:
@@ -40,6 +70,7 @@ module.exports = {
   findCreateRoom: function(name, socket, success, error) {
     if (!Room.validateName(name)) return error('Invalid room name');
 
+    var that = this;
     Room.findByName(name).exec(function(err, room) {
       if (err) return error('Unable to Room.findByName: '+err);
       if (!room) { // create room if needed
@@ -51,7 +82,7 @@ module.exports = {
           if (err) return error('Unable to create room: '+err);
 
           success(room);
-          activityRecorder('room:create', socket.getUserId(), {_id: room.get('_id'), name: room.get('name')});
+          that.record('room:create', socket, {_id: room.get('_id'), name: room.get('name')});
         });
       } else {
         success(room);
@@ -198,7 +229,7 @@ module.exports = {
   inputFilter: function(value, maxLength) {
     maxLength = maxLength || 512;
     if (!expressValidator.validator.isLength(value, 1, 512))
-      return;
+      return '';
 
     var filtered;
     filtered = sanitize(value);

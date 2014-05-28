@@ -1,11 +1,9 @@
-var handleError = require('./error');
 var helper = require('./helper');
 var User = require('../models/user');
-var activityRecorder = require('../activity-recorder');
 
 module.exports = function(io, socket, data) {
 
-  helper.findUser(data.username, handleSuccess, handleError);
+  helper.findUser(data.username, handleSuccess, helper.handleError);
 
   function handleSuccess(userWith) {
     // Push user data to all user devices
@@ -17,11 +15,11 @@ module.exports = function(io, socket, data) {
 
     // Persistence
     User.findOneAndUpdate({_id: socket.getUserId()}, {$pull: {onetoones: userWith._id}}, function(err, userFrom) {
-      if (err) handleError('Unable to update user.onetoones: ' + err);
+      if (err) helper.handleError('Unable to update user.onetoones: ' + err);
     });
 
     // Activity
-    activityRecorder('user:close', socket.getUserId(), data);
+    helper.record('user:close', socket, data);
   }
 
 };

@@ -1,7 +1,5 @@
-var error = require('./error');
 var helper = require('./helper');
 var User = require('../models/user');
-var activityRecorder = require('../activity-recorder');
 
 module.exports = function(io, socket, data) {
 
@@ -12,7 +10,7 @@ module.exports = function(io, socket, data) {
 
   User.find(search, 'username avatar', function(err, users) {
     if (err) {
-      error('Error while searching user '+data.search);
+      helper.handleError('Error while searching user '+data.search);
       socket.emit('user:searcherror');
       return;
     }
@@ -37,7 +35,7 @@ module.exports = function(io, socket, data) {
     });
 
     // Activity
-    activityRecorder('user:search', socket.getUserId(), {
+    helper.record('user:search', socket, {
       data: data,
       count: results.length
     });

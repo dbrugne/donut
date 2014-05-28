@@ -1,11 +1,10 @@
-var handleError = require('./error');
-var activityRecorder = require('../activity-recorder');
+var helper = require('./helper');
 var Room = require('../models/room');
 
 module.exports = function (io, socket) {
 
   Room.find({}, 'name', function (err, rooms) {
-    if (err) return handleError('Unable to retrieve room list: '+err);
+    if (err) return helper.handleError('Unable to retrieve room list: '+err);
 
     handleSuccess(rooms);
   });
@@ -21,7 +20,7 @@ module.exports = function (io, socket) {
       rooms: roomsList
     });
 
-    activityRecorder('home', socket.getUserId(), {});
+    helper.record('home', socket, {});
   }
 
 };

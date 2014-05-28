@@ -1,17 +1,15 @@
-var handleError = require('./error');
 var helper = require('./helper');
 var Room = require('../models/room');
-var activityRecorder = require('../activity-recorder');
 
 // @todo : ACL : is owner ?
 
 module.exports = function(io, socket, data) {
 
   if (!Room.validateTopic(data.topic))
-    return handleError('Invalid room topic '+data.topic);
+    return helper.handleError('Invalid room topic '+data.topic);
 
   // Find and return room model
-  helper.findRoom(data.name, handleSuccess, handleError);
+  helper.findRoom(data.name, handleSuccess, helper.handleError);
 
   function handleSuccess(room) {
     // Input filtering
@@ -19,7 +17,7 @@ module.exports = function(io, socket, data) {
 
     room.update({topic: data.topic}, function(err) {
       if (err)
-        return handleError('Unable to change room '+data.name+' topic '+data.topic);
+        return helper.handleError('Unable to change room '+data.name+' topic '+data.topic);
 
       io.sockets.in(data.name).emit('room:topic', {
         user_id: socket.getUserId(),
@@ -30,7 +28,7 @@ module.exports = function(io, socket, data) {
       });
 
       // Activity
-      activityRecorder('room:topic', socket.getUserId(), data);
+      helper.record('room:topic', socket, data);
     });
   }
 

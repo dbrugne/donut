@@ -1,11 +1,9 @@
-var handleError = require('./error');
 var helper = require('./helper');
-var activityRecorder = require('../activity-recorder');
 
 module.exports = function(io, socket, data) {
 
   // Find and return room model
-  helper.findRoom(data.name, handleSuccess, handleError);
+  helper.findRoom(data.name, handleSuccess, helper.handleError);
 
   function handleSuccess(room) {
     // Socket unsubscription
@@ -27,7 +25,7 @@ module.exports = function(io, socket, data) {
     // Persistence
     socket.getUser().update({$pull: { rooms: room.name }}, function(err, affectedDocuments) {
       if (err)
-        return error('Unable to update user on exiting room '+err);
+        return helper.handleError('Unable to update user on exiting room '+err);
     });
 
     // Room deletion (if needed)
@@ -35,10 +33,10 @@ module.exports = function(io, socket, data) {
         && room.name.toLowerCase() != '#general'
         && room.name.toLowerCase() != '#support' ) { // @todo dirty hack until permanent room management
       room.remove();
-      activityRecorder('room:delete', socket.getUserId(), {_id: room.get('_id'), name: room.get('name')});
+      helper.record('room:delete', socket, {_id: room.get('_id'), name: room.get('name')});
     }
 
     // Activity
-    activityRecorder('room:leave', socket.getUserId(), data);
+    helper.record('room:leave', socket, data);
   };
 };

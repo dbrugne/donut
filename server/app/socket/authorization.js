@@ -1,5 +1,4 @@
-var error = require('./error');
-var activityRecorder = require('../activity-recorder');
+var helper = require('./helper');
 var User = require('../models/user');
 
 module.exports = {
@@ -7,7 +6,7 @@ module.exports = {
   success: function(data, accept) {
     // could add ACL check here if needed
     accept(null, true);
-    activityRecorder('authorization:success', '', data);
+    helper.record('authorization:success', '', data);
   },
 
   fail: function(data, message, error, accept) {
@@ -30,7 +29,7 @@ module.exports = {
 
     accept(null, false);
 
-    activityRecorder('authorization:fail', '', {
+    helper.record('authorization:fail', '', {
       data: data,
       message: message,
       error: error

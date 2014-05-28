@@ -1,11 +1,9 @@
-var handleError = require('./error');
 var helper = require('./helper');
 var User = require('../models/user');
-var activityRecorder = require('../activity-recorder');
 
 module.exports = function(io, socket, data) {
 
-  helper.findUser(data.username, handleSuccess, handleError);
+  helper.findUser(data.username, handleSuccess, helper.handleError);
 
   function handleSuccess(userWith) {
     // Push user data to all user devices
@@ -16,7 +14,7 @@ module.exports = function(io, socket, data) {
     });
 
     // Activity
-    activityRecorder('user:open', socket.getUserId(), data);
+    helper.record('user:open', socket, data);
   }
 
 };

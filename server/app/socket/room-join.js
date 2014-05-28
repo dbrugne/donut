@@ -1,13 +1,10 @@
-var _ = require('underscore');
-var handleError = require('./error');
 var helper = require('./helper');
 var User = require('../models/user');
-var activityRecorder = require('../activity-recorder');
 
 module.exports = function(io, socket, data) {
 
   // Find, create and return room model
-  helper.findCreateRoom(data.name, socket, handleSuccess, handleError);
+  helper.findCreateRoom(data.name, socket, handleSuccess, helper.handleError);
 
   function handleSuccess(room) {
     // socket subscription
@@ -38,11 +35,11 @@ module.exports = function(io, socket, data) {
 
     // Persistence
     User.findOneAndUpdate({_id: socket.getUserId()}, {$addToSet: { rooms: room.name }}, function(err, user) {
-      if (err) error('Unable to update user.rooms: '+err);
+      if (err) helper.handleError('Unable to update user.rooms: '+err);
     });
 
     // Activity
-    activityRecorder('room:join', socket.getUserId(), data);
+    helper.record('room:join', socket, data);
   }
 
 };

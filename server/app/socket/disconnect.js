@@ -1,6 +1,4 @@
-var error = require('./error');
 var helper = require('./helper');
-var activityRecorder = require('../activity-recorder');
 
 module.exports = function(io, socket) {
 
@@ -34,6 +32,5 @@ module.exports = function(io, socket) {
   }
 
   // Activity
-  activityRecorder('disconnect', socket.getUserId());
-
+  helper.record('disconnect', socket);
 };

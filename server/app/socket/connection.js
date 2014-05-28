@@ -1,7 +1,5 @@
-var error = require('./error');
-var User = require('../models/user');
-var activityRecorder = require('../activity-recorder');
 var helper = require('./helper');
+var User = require('../models/user');
 
 module.exports = function(io, socket) {
 
@@ -25,7 +23,7 @@ module.exports = function(io, socket) {
   // Welcome data
   User.findById(socket.getUserId(), 'username avatar rooms onetoones', function(err, user) {
     if (err) {
-      error('Unable to find user: '+err);
+      helper.handleError('Unable to find user: '+err);
       user.rooms = [];
     }
 
@@ -34,7 +32,7 @@ module.exports = function(io, socket) {
     socket.handshake.user.avatar = user.avatar;
 
     user.populate('onetoones', 'username', function(err, user) {
-      if (err) error('Unable to populate user: '+err);
+      if (err) helper.handleError('Unable to populate user: '+err);
 
       // Online users list
       var onlines = helper.connectedUsers(io, 5);
@@ -68,5 +66,5 @@ module.exports = function(io, socket) {
   });
 
   // Activity
-  activityRecorder('connection', socket.getUserId(), {});
+  helper.record('connection', socket, {});
 };
