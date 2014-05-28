@@ -15,7 +15,7 @@
     "debug": "0.8.x",
     "hogan-express": "0.x",
     "less-middleware": "1.x",
-    "mongoose": "3.x",
+    "mongoose": "3.8.x",
     "connect-mongo": "0.x",
     "passport": "0.2.x",
     "passport-local": "1.x",
@@ -27,6 +27,7 @@
     "socket.io": "0.x",
     "passport.socketio": "3.x",
     "underscore": "~1.6.0",
-    "cloudinary": "~1.0.9"
+    "cloudinary": "~1.0.9",
+    "sanitize-caja": "0.x"
   }
 }

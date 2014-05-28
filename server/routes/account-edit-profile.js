@@ -3,6 +3,7 @@ var router = express.Router();
 var User = require('../app/models/user');
 var isLoggedIn = require('../app/isloggedin');
 var cloudinary = require('../app/cloudinary');
+var sanitize = require('sanitize-caja');
 
 var renderForm = function(req, res) {
   var options = {
@@ -60,10 +61,16 @@ var validateInput = function(req, res, next) {
 
 var sanitizeInput = function(req, res, next) {
   req.sanitize(['user','fields','bio']).trim();
+  req.body.user.fields.bio = sanitize(req.body.user.fields.bio);
   req.sanitize(['user','fields','bio']).escape();
+
   req.sanitize(['user','fields','location']).trim();
+  req.body.user.fields.location = sanitize(req.body.user.fields.location);
   req.sanitize(['user','fields','location']).escape();
+
+  req.sanitize(['user','fields','website']).trim();
   req.sanitize(['user','fields','website']).escape();
+
   return next();
 };
 

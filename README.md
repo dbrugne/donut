@@ -63,6 +63,14 @@ chat
 - [x] Add avatar in room user list and home online user list and onetoone tab
 - [x] Connection stat on user:search
 - [x] user:offline only it's the last socket
+- [ ] room:message Caja sanitization
+- [ ] room:topic Caja sanitization
+- [ ] user:message Caja sanitization
+- [ ] room:message and user:message validation
+- [ ] ACL room:topic
+- [ ] ACL room:message
+- [ ] Add length limit on messagebox/topic
+- [ ] Move error handler and activity recorder in helper
 - [ ] Get last 50 viewed on room/onetoone opening
 
 **Signup**
@@ -74,11 +82,11 @@ chat
 - [x] Add form validation/sanitization middleware for each form (account/*, login, signup)
 - [x] Add color theme field
 - [ ] Forgotten password (https://github.com/substack/node-password-reset && http://stackoverflow.com/questions/20277020/reset-change-password-in-nodejs-with-passportjs)
+- [x] Caja validation on bio and location
 
 **Finishing**
 - [x] CSRF and 304!
 - [x] Update connect-mongo module
-- [ ] Review all socket delegation and report: validation/sanitization, multi-device, ACL
 
 **Design**
 
