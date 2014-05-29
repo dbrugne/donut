@@ -100,7 +100,8 @@ module.exports = {
         // Create Room
         room = new Room({
           name: o.name,
-          owner: o.socket.getUserId()
+          owner: o.socket.getUserId(),
+          permanent: false
         });
         room.save(function (err, room, numberAffected) {
           if (err) return o.error('Unable to create room: '+err);
@@ -150,6 +151,31 @@ module.exports = {
       success: success,
       error: error
     });
+  },
+
+  /**
+   * Check if the room corresponding to 'name' is empty (no socket) and if yes
+   * remove it
+   * @param io
+   * @param name
+   */
+  deleteRoom: function(io, name) {
+    // Room is empty?
+    if (this.roomSockets(io, name).length < 1) {
+      var that = this;
+      Room.findOneAndRemove(
+        {$and: [{name: name}, {permanent: false}]},
+        {select: 'name'},
+        function(err, room) {
+          if (err)
+            return that.error('Unable to delete room: '+err);
+
+          // a room was found
+          if (room)
+            that.record('room:delete', '', {_id: room.get('_id'), name: room.get('name')});
+        }
+      );
+    }
   },
 
   /**

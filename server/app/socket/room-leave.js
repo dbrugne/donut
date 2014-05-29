@@ -29,12 +29,7 @@ module.exports = function(io, socket, data) {
     });
 
     // Room deletion (if needed)
-    if (helper.roomSockets(io, room.name).length < 1
-        && room.name.toLowerCase() != '#general'
-        && room.name.toLowerCase() != '#support' ) { // @todo dirty hack until permanent room management
-      room.remove();
-      helper.record('room:delete', socket, {_id: room.get('_id'), name: room.get('name')});
-    }
+    helper.deleteRoom(io, room.name);
 
     // Activity
     helper.record('room:leave', socket, data);

@@ -2,15 +2,15 @@ var mongoose = require('mongoose');
 
 var roomSchema = mongoose.Schema({
 
-    name          : String,
-    owner         : { type: mongoose.Schema.ObjectId, ref: 'User' },
-    op            : [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
-    bans          : [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
-    permanent     : Boolean,
-    allow_guests  : Boolean,
-    invisible     : Boolean,
-    topic         : String,
-    description   : String
+  name          : String,
+  owner         : { type: mongoose.Schema.ObjectId, ref: 'User' },
+  permanent     : Boolean,
+  op            : [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
+  bans          : [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
+  allow_guests  : Boolean,
+  invisible     : Boolean,
+  topic         : String,
+  description   : String
 
 });
 

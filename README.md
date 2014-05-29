@@ -9,7 +9,7 @@ chat
 - [x] Helper: avoid room populate code recursion in helper
 - [x] user:search avoid user without username
 - [x] user:profile remove discuss button if not online
-- [ ] Also delete room on disconnect if needed (only on leave actually)
+- [x] Also delete room on disconnect if needed (only on leave actually)
 - [ ] Improve hyperlinking in topic and *:message (www.xxxx.com, http://, ftp://, ...) => http://soapbox.github.io/jQuery-linkify/
 - [ ] Repair smileys (< and > and '3:)') => http://os.alfajango.com/css-emoticons/
 - [ ] Avoir room:join/room:leave for socket that made the action to join/leave
