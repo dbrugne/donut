@@ -3,14 +3,20 @@ var User = require('../models/user');
 
 module.exports = function(io, socket, data) {
 
-  var search = {};
-  if (data.search) {
+  // prevent retrieving user without username (not already came in chat)
+  var search = {
+    $and: [
+      {username: {$exists: true}},
+      {username: {$ne: ''}}
+    ]
+  };
+  if (data.search != '') {
     search = {username: new RegExp(data.search, "i")};
   }
 
   User.find(search, 'username avatar', function(err, users) {
     if (err) {
-      helper.handleError('Error while searching user '+data.search);
+      helper.handleError('Error while searching user "'+data.search+'": '+err);
       socket.emit('user:searcherror');
       return;
     }
