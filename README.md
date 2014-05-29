@@ -6,20 +6,21 @@ chat
 ## MVP
 
 **Chat**
-- [ ] Helper: avoid room populate code recursion in helper
-- [ ] On onetoone focus trigger a (user:status<->user:status) to ask for connectivity and block message posting
+- [x] Helper: avoid room populate code recursion in helper
 - [ ] user:search avoid user without username
 - [ ] user:profile remove discuss button if not online
 - [ ] Also delete room on disconnect if needed (only on leave actually)
+- [ ] Improve hyperlinking in topic and *:message (www.xxxx.com, http://, ftp://, ...) => http://soapbox.github.io/jQuery-linkify/
+- [ ] Repair smileys (< and > and '3:)') => http://os.alfajango.com/css-emoticons/
+- [ ] Avoir room:join/room:leave for socket that made the action to join/leave
+- [ ] Replace "no topic" by "Choose a topic" and add a pen icon (all clickable)
+- [ ] Use user color in "home", "onetoone" panel and tab and room user list
+- [ ] On onetoone focus trigger a (user:status<->user:status) to ask for connectivity and block message posting
+- [ ] Get last 50 viewed on onetoone opening
 - [ ] Permanent room
 - [ ] Room profile
 - [ ] Room ops (room:op, room:deop, room:topic)
-- [ ] Get last 50 viewed on onetoone opening
-- [ ] Improve hyperlinking in topic and *:message (www.xxxx.com, http://, ftp://, ...) => http://soapbox.github.io/jQuery-linkify/
 - [ ] Auto-mention user in room message
-- [ ] Repair smileys (< and > and '3:)') => http://os.alfajango.com/css-emoticons/
-- [ ] Replace "no topic" by "Choose a topic" and add a pen icon (all clickable)
-- [ ] Use user color in "home", "onetoone" panel and tab and room user list
 
 **User**
 - [ ] Forgotten password (https://github.com/substack/node-password-reset && http://stackoverflow.com/questions/20277020/reset-change-password-in-nodejs-with-passportjs)

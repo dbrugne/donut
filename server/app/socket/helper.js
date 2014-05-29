@@ -58,6 +58,62 @@ module.exports = {
   },
 
   /**
+   * Method that search for a Room in database.
+   * Can create it if needed.
+   *
+   * @param options
+   * @private
+   */
+  _retrieveRoom: function(options) {
+    var o = {
+      name: '',
+      socket: '',
+      success: '',
+      error: '',
+      create: false
+    };
+    o = _.extend(o, options);
+
+    if (o.name == '')
+      return o.error('o.name not found');
+    if (o.create === true && o.socket == '')
+      return o.error('socket is needed for on-the-fly room creation');
+    if (!Room.validateName(o.name))
+      return o.error('Invalid room name');
+
+    var populate = function(room, success, error) {
+      room.populate('owner', 'username avatar', function(err, room) {
+        if (err) return error('Unable to room.populate: '+err);
+        success(room);
+      });
+    }
+
+    var that = this;
+    Room.findByName(o.name).exec(function(err, room) {
+      if (err)
+        return o.error('Unable to Room.findByName: '+err);
+      if (!room) {
+        if (o.create !== true) {
+          return o.error('Room not found');
+        }
+
+        // Create Room
+        room = new Room({
+          name: o.name,
+          owner: o.socket.getUserId()
+        });
+        room.save(function (err, room, numberAffected) {
+          if (err) return o.error('Unable to create room: '+err);
+          populate(room, o.success, o.error);
+          that.record('room:create', o.socket, {_id: room.get('_id'), name: room.get('name')});
+        });
+      }
+
+      populate(room, o.success, o.error);
+    });
+  },
+
+  /**
    * Search, create and return a room model:
    * - search room
    * - if not exist "create the room" in Mongo store [and memory cache] @todo
@@ -68,35 +124,13 @@ module.exports = {
    * @param error
    */
   findCreateRoom: function(name, socket, success, error) {
-    if (!Room.validateName(name)) return error('Invalid room name');
-
-    var that = this;
-    Room.findByName(name).exec(function(err, room) {
-      if (err) return error('Unable to Room.findByName: '+err);
-      if (!room) { // create room if needed
-        room = new Room({
-          name: name,
-          owner: socket.getUserId()
-        });
-        room.save(function (err, room, numberAffected) {
-          if (err) return error('Unable to create room: '+err);
-
-          // code recursion 1
-          room.populate('owner', 'username avatar', function(err, room) {
-            if (err) return error('Unable to room.populate: '+err);
-            success(room);
-          });
-          that.record('room:create', socket, {_id: room.get('_id'), name: room.get('name')});
-        });
-      } else {
-        if (!room) return error('Room not found');
-        // code recursion 1
-        room.populate('owner', 'username avatar', function(err, room) {
-          if (err) return error('Unable to room.populate: '+err);
-          success(room);
-        });
-      }
-    }, error);
+    this._retrieveRoom({
+      name: name,
+      socket: socket,
+      success: success,
+      error: error,
+      create: true
+    });
   },
 
   /**
@@ -111,16 +145,10 @@ module.exports = {
    * @returns {*}
    */
   findRoom: function(name, success, error) {
-    if (!Room.validateName(name)) return error('Invalid room name');
-
-    Room.findByName(name).exec(function(err, room) {
-      if (err) return error('Unable to Room.findByName: '+err);
-      if (!room) return error('Room not found');
-      // code recursion 1
-      room.populate('owner', 'username avatar', function(err, room) {
-        if (err) return error('Unable to room.populate: '+err);
-        success(room);
-      });
+    this._retrieveRoom({
+      name: name,
+      success: success,
+      error: error
     });
   },
 
