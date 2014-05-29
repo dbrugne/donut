@@ -21,8 +21,6 @@ $(document).ready(function() {
   // ==========================================================================
   if ($('#account-edit').length) {
 
-    // @todo : form validator implementation
-
     /**
      * Color picker
      */

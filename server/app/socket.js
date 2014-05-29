@@ -18,12 +18,6 @@ var delegate_user_profile = require('./socket/user-profile');
 var delegate_user_open = require('./socket/user-open');
 var delegate_user_close = require('./socket/user-close');
 
-// @todo : pass on each socket delegation and:
-//         - identify input test to process (and report method in models)
-//         - identify sanitization to process
-//         - identify broadcast to other device to do
-//         - ACL to implement
-
 /**
  * Send/broadcast help page https://github.com/LearnBoost/socket.io/wiki/How-do-I-send-a-response-to-all-clients-except-sender%3F
  *
