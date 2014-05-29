@@ -313,7 +313,6 @@ module.exports = {
 
     var filtered;
     filtered = sanitize(value);
-    filtered = expressValidator.validator.escape(filtered);
 
     return filtered;
   }

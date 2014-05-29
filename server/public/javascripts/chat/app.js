@@ -9,6 +9,7 @@ define([
   'jquery.insertatcaret',
   'jquery.dateformat',
   'jquery.cloudinary',
+  'jquery.linkify',
   'bootstrap'
 ], function ($, _, Backbone, router, client, mainView) {
   /**

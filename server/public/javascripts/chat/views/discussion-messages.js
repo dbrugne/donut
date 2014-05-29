@@ -28,10 +28,6 @@ define([
       var messageHtml = message.get('message');
       messageHtml = messageHtml.replace(/\n/g, '<br />');
 
-      // Hyperlinks (URLs starting with http://, https://, or ftp://)
-      var urlPattern = /(\b(https?|ftp)?:\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim;
-      messageHtml = messageHtml.replace(urlPattern, '<a href="$1" target="_blank">$1</a>');
-
       // Smileys
       smileys.each(function (smiley) {
         messageHtml = messageHtml.replace(smiley.get('symbol'), '<span class="smiley emoticon-16px '+smiley.get('class')+'">'+smiley.get('symbol')+'</span>');
@@ -44,7 +40,7 @@ define([
         message: messageHtml,
         date: dateText
       });
-      this.$el.append(html);
+      $(html).appendTo(this.$el).linkify();
 
       this.scrollDown();
       return this;
@@ -75,7 +71,7 @@ define([
       data.date = $.format.date(Number(new Date()), this.timeFormat);
 
       var html = this.notificationTemplate(data);
-      this.$el.append(html);
+      $(html).appendTo(this.$el).linkify();
       this.scrollDown();
     },
 

@@ -46,7 +46,8 @@ define([
       if (topic == '') {
         topic = this.defaultText;
       }
-      this.$el.find('.topic').html(topic);
+      this.$el.find('.topic').text(topic);
+      this.$el.find('.topic').linkify();
     },
 
     showForm: function() {

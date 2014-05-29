@@ -10,9 +10,10 @@ chat
 - [x] user:search avoid user without username
 - [x] user:profile remove discuss button if not online
 - [x] Also delete room on disconnect if needed (only on leave actually)
-- [ ] Improve hyperlinking in topic and *:message (www.xxxx.com, http://, ftp://, ...) => http://soapbox.github.io/jQuery-linkify/
+- [x] Improve hyperlinking in topic and *:message (www.xxxx.com, http://, ftp://, ...) => http://soapbox.github.io/jQuery-linkify/
 - [ ] Repair smileys (< and > and '3:)') => http://os.alfajango.com/css-emoticons/
-- [ ] Avoir room:join/room:leave for socket that made the action to join/leave
+- [ ] Avoid room:join/room:leave for socket that made the action to join/leave
+- [ ] Replace room:out by user:disconnect sometimes 
 - [ ] Replace "no topic" by "Choose a topic" and add a pen icon (all clickable)
 - [ ] Use user color in "home", "onetoone" panel and tab and room user list
 - [ ] On onetoone focus trigger a (user:status<->user:status) to ask for connectivity and block message posting
