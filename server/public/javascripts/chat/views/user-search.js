@@ -16,7 +16,9 @@ define([
       'keyup .user-search-input': 'search'
     },
 
-    initialize: function() {
+    initialize: function(options) {
+      this.mainView = options.mainView;
+
       this.listenTo(client, 'user:searchsuccess', this.onSuccess);
       this.listenTo(client, 'user:searcherror', this.onError);
     },
