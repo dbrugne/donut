@@ -13,7 +13,8 @@ chat
 - [x] Improve hyperlinking in topic and *:message (www.xxxx.com, http://, ftp://, ...) => http://soapbox.github.io/jQuery-linkify/
 - [ ] Repair smileys (< and > and '3:)') => http://os.alfajango.com/css-emoticons/
 - [ ] Avoid room:join/room:leave for socket that made the action to join/leave
-- [ ] Replace room:out by user:disconnect sometimes 
+- [ ] Replace room:out by user:disconnect sometimes
+- [x] Move room:message logic in room model instead of collections
 - [ ] Replace "no topic" by "Choose a topic" and add a pen icon (all clickable)
 - [ ] Use user color in "home", "onetoone" panel and tab and room user list
 - [ ] On onetoone focus trigger a (user:status<->user:status) to ask for connectivity and block message posting

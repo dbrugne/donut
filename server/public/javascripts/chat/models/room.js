@@ -24,12 +24,17 @@ define([
       this.listenTo(client, 'room:in', this.onIn);
       this.listenTo(client, 'room:out', this.onOut);
       this.listenTo(client, 'room:topic', this.onTopic);
+      this.listenTo(client, 'room:message', this.onMessage);
     },
-
     leave: function(model, collection, options) {
       client.leave(model.get('name'));
     },
-
+    onMessage: function(data) {
+      if (data.name != this.get('name')) return;
+      this.message(data);
+      // Window new message indication
+      this.trigger('newMessage');
+    },
     onIn: function(data) {
       if (data.name != this.get('name')) {
         return;

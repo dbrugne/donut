@@ -17,7 +17,6 @@ define([
       this.listenTo(client, 'room:join', this.onJoin);
       this.listenTo(client, 'room:leave', this.onLeave);
       this.listenTo(client, 'room:welcome', this.openPong);
-      this.listenTo(client, 'room:message', this.onMessage);
     },
     // We ask to server to join us in this room
     openPing: function(name) {
@@ -67,14 +66,6 @@ define([
       if (room) {
         this.remove(room);
       }
-    },
-    onMessage: function(data) { // @todo : move it on room model
-      var model = this.findWhere({ name: data.name });
-      if (!model) return;
-
-      model.message(data);
-      // Window new message indication
-      this.trigger('newMessage');
     }
 
   });
