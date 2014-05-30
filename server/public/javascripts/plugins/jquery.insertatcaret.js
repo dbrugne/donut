@@ -1,12 +1,10 @@
 jQuery.fn.extend({
     insertAtCaret: function(myValue){
         return this.each(function(i) {
-            console.log(this.selectionStart);
             if (document.selection) {
                 //For browsers like Internet Explorer
                 this.focus();
                 sel = document.selection.createRange();
-                console.log(myValue);
                 sel.text = myValue;
                 this.focus();
             }
