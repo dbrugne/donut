@@ -28,22 +28,22 @@ define([
     },
 
     root: function() {
-      console.log('router: home');
+//      console.log('router: home');
       mainView.focusHome();
     },
 
     focusRoom: function(name) {
-      console.log('router: focusRoom '+name);
+//      console.log('router: focusRoom '+name);
       mainView.focusRoomByName('#'+name);
     },
 
     focusOneToOne: function(username) {
-      console.log('router: focusOneToOne ' + username);
+//      console.log('router: focusOneToOne ' + username);
       mainView.focusOneToOneByUsername(username);
     },
 
     default: function() {
-      console.log('router: default');
+//      console.log('router: default');
       Backbone.history.navigate('#', {trigger: true}); // redirect on home
     }
   });
