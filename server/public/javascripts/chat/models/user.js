@@ -9,9 +9,6 @@ define([
         user_id: '',
         username: ''
       };
-    },
-    avatarUrl: function() {
-      return $.cloudinary.url(this.get('user_id'), {crop: 'fill', width: 20, height: 20, default_image:''})
     }
   });
 
