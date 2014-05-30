@@ -300,7 +300,7 @@ body.light {
     }
   }
 
-  #block-rooms, #block-onetoones, .room-users{
+  #block-rooms, #block-onetoones, .room-users {
 
     background-color: #f5f5f5;
     padding-bottom: 10px;
@@ -328,11 +328,7 @@ body.light {
         border-right: 0;
         border-top: 0;
         color: #000000;
-        /** list-item  ?? */
       }
-      /*.user-item  { padding: 10px; }
-      .user-item { position: relative; }
-      .user-item:hover { background-color: #f5f5f5; }*/
       .item:last-child {
         margin-bottom: 0;
         border-radius: 0;
@@ -346,6 +342,10 @@ body.light {
         background-color: #428bca;
         border-color: #428bca;
       }
+      .item.unread { background-color: orangered; color: #fff; }
+      .item .name {  }
+      .item .badge { margin-right: 5px; }
+      .item .close { font-size: 14px; color: #FF0000; }
     }
     .footer {
       padding: 10px 15px;
@@ -361,13 +361,6 @@ body.light {
   padding: 0;
   overflow-y:auto;
   border-right: 1px solid #ddd;
-
-  #block-rooms, #block-onetoones {
-    .unread .item { color: orangered; }
-    .item .name {  }
-    .item .badge { margin-right: 5px; }
-    .item .close { font-size: 14px; color: #FF0000; }
-  }
 }
 
 #chat-center > div { height: 100%; }
@@ -379,6 +372,76 @@ body.light {
   #home {
     padding: 20px;
     overflow-y: scroll;
+
+    h2 {
+      margin-top: 0;
+    }
+
+    .rooms, .users {
+      .make-md-column(12);
+      margin-top: -15px;
+      margin-right: -20px;
+
+      .tile {
+        .pull-left;
+        position: relative;
+        width: 300px;
+        height: 283px;
+        background-color: #fff;
+        margin-right: 20px;
+        margin-top: 15px;
+        border: 1px #c0c0c0 solid;
+        border-radius: 4px;
+
+        .cover {
+          background-color: red;
+          height: 95px;
+        }
+        .content {
+          margin-left: 20px;
+          margin-right: 20px;
+          .title {
+            .name {
+              font-size: 24px;
+              font-weight: bold;
+            }
+            .owner {
+            }
+          }
+          .avatar {
+            margin-top: -45px;
+            border: 3px solid #fff;
+            border-radius: 4px;
+          }
+          .description {
+            margin-top: 10px;
+            margin-left: 10px;
+            font-style: italic;
+            position: relative;
+            min-height: 70px;
+            max-height: 80px;
+            .text {
+            }
+            .fa {
+              color: #999999;
+              position: absolute;
+            }
+            .fa:first-child { top: 0; left: -15px; }
+            .fa:last-child { bottom: 0; right: -5px; }
+          }
+          .users {
+            position: absolute;
+            right: 15px; bottom: 10px;
+          }
+          .actions {
+            position: absolute;
+            right: 20px; top: 25px;
+            font-size: 16px;
+          }
+        }
+      }
+
+    }
   }
 
   .discussion {

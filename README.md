@@ -13,12 +13,18 @@ chat
 - [x] Improve hyperlinking in topic and *:message (www.xxxx.com, http://, ftp://, ...) => http://soapbox.github.io/jQuery-linkify/
 - [x] Move room:message logic in room model instead of collections
 - [x] Repair smileys (< and > and '3:)') => http://os.alfajango.com/css-emoticons/
-- [ ] Replace "no topic" by "Choose a topic" and add a pen icon (all clickable)
+- [ ] Template room and user tiles
+ - [x] Template room tile
+ - [ ] Template user tile 
+ - [ ] Make room list dynamic
+ - [ ] Make join and discuss button work
+ - [ ] Use tile template in user:search and room:search
+ - [ ] Replace "no topic" by "Choose a topic" and add a pen icon (all clickable)
 - [ ] Use user color in "home", "onetoone" panel and tab and room user list
 - [ ] Permanent room
 - [ ] Room profile
 - [ ] Room ops (room:op, room:deop, room:topic)
-- [ ] Auto-mention user in room message ($.fn.mentionize()
+- [ ] Auto-mention user in room message ($.fn.mentionize())
 - [ ] Get last 50 viewed on onetoone opening
 - [ ] On onetoone focus trigger a (user:status<->user:status) to ask for connectivity and block message posting
 - [ ] Replace room:out by user:disconnect sometimes
@@ -39,7 +45,6 @@ chat
 
 **Design**
 
-- [ ] Template room block and user tiles (chat home page)
 - [ ] Global theme
 
 **Contenu**

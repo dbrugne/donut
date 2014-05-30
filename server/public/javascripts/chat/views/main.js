@@ -83,7 +83,7 @@ define([
       console.log('Hello '+currentUser.get('username')+'!');
 
       // Render home
-      homeView.render(data.home);
+      client.home();
 
       // Render onlines
       _.each(data.onlines, function(online) {

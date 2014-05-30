@@ -49,11 +49,7 @@ module.exports = function(io, socket) {
         },
         rooms: user.rooms,
         onetoones: onetoones,
-        onlines: onlines,
-        home: {
-          welcome: "Vous trouverez sur cette page une liste des rooms existantes et des utilisateurs en ligne. N'hésitez pas à rejoindre notre chat de support #Support pour toute question, remarque ou demande de fonctionnalité.",
-          rooms: ['#toulouse', '#paintball', '#dagnirDae']
-        }
+        onlines: onlines
       });
     });
   });

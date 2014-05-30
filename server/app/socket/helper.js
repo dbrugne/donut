@@ -299,6 +299,59 @@ module.exports = {
     else return true;
   },
 
+
+  homeData: function(success) {
+    var data = {};
+
+    data.rooms = [];
+    data.welcome = "Vous trouverez sur cette page une liste des rooms existantes "
+                    +"et des utilisateurs en ligne."
+                    +"N'hésitez pas à rejoindre notre chat de support #Support "
+                    +"pour toute question, remarque ou demande de fonctionnalité.";
+
+//    var q = Room.find({}, 'name owner permanent topic avatar color')
+//      .populate('owner', 'username avatar');
+//
+//    var that = this;
+//    var onResult = function(err, rooms) {
+//      if (err) return that.handleError('Unable to retrieve room list: '+err);
+//      if (rooms.length < 1) return success(data);
+//
+//      for (var i=0; i<rooms.length; i++) {
+//        var room = rooms[i];
+//        var roomData = {
+//          name: room.name,
+//          permanent: room.permanent,
+//          topic: room.topic,
+//          color: room.color,
+//          avatar: room.avatar,
+//          owner: {
+//            user_id: room.owner._id.toString(),
+//            username: room.owner.username,
+//            avatar: room.owner.avatar
+//          },
+//          users: 0
+//        };
+//
+//        roomData.users = that.roomUsers.length;
+//        data.rooms.push(roomData);
+//      }
+//
+//      return success(data);
+//    };
+
+//    q.exec(onResult);
+    data.rooms = [
+      {name: '#toulouse', topic: "Ce soir c'est cassoulet !!", color: '#FF0000', avatar: 'https://pbs.twimg.com/profile_images/697870595/VFTD_twitter2_bigger.jpg', permanent: true, owner: { user_id: 'fakeid', username: 'yangs'}, users: 10 },
+      {name: '#paintball', topic: "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression. Le Lorem Ipsum est le faux texte standard.", color: '#CCCCCC', avatar: 'https://pbs.twimg.com/profile_images/220364439/Oliver_Lang_5-09_437-lo_bigger.jpg', permanent: true, owner: {user_id: 'fakeid', username: 'DavidH.'}, users: 2},
+      {name: '#dagnirDae', topic: "", color: '#0084B4', avatar: 'https://pbs.twimg.com/profile_images/1447728498/image.php_bigger.jpeg', permanent: false, owner: {user_id: 'fakeid', username: 'yangs'}, users: 120},
+      {name: '#Support', topic: "Demandez !", color: '', avatar: 'https://pbs.twimg.com/profile_images/697870595/VFTD_twitter2_bigger.jpg', permanent: true, owner: {user_id: 'fakeid', username: 'roomly-official'}, users: 9},
+      {name: '#businessParis', topic: "CAC 40 +0.03pts, bien mais pas top", color: 'yellow', avatar: '', permanent: true, owner: {user_id: 'fakeid', username: 'DavidH.'}, users: 15},
+      {name: '#stringsAGogo', topic: "SPRING-BREAK", color: 'pink', avatar: 'https://pbs.twimg.com/profile_images/378800000548355775/85e692a450ffe554d78b19a847672086_bigger.jpeg', permanent: false, owner: {user_id: 'fakeid', username: 'néné'}, users: 20}
+    ];
+    return success(data);
+  },
+
   /**
    * Check for maximal length, sanitize and escape input
    * Return filtered string or empty string if too long or empty.

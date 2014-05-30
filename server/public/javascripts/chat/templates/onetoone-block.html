@@ -2,7 +2,7 @@
 <div class="heading">One to one</div>
 <div class="list">
     <% _.each(list, function(one) { %>
-    <a href="#user/<%= one.username %>" class="item <% if (one.focused) { %>active<% }; %>" data-user-id="<%= one.user_id %>">
+    <a href="#user/<%= one.username %>" class="item <% if (one.focused) { %>active<% }; %> <% if (room.unread > 0) {%>unread<%}; %>" data-user-id="<%= one.user_id %>">
         <img src="<%= one.avatar %>">
         <span class="name"><%= one.username %></span>
         <span class="close glyphicon glyphicon-remove close-onetoone" data-username="<%= one.username %>"></span>

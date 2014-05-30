@@ -1,10 +1,12 @@
 <h3>Utilisateurs en ligne</h3>
-<ul>
-    <% _.each(list, function(userOnline) { %>
-    <li class="">
-        <img src="<%= userOnline.avatar %>">
-        <%= userOnline.username %>
-        - <a href="#user/<%= userOnline.username %>" data-user-id="<%= userOnline.user_id %>">discuter</a>
-    </li>
-    <% }); %>
-</ul>
+<div class="row">
+    <div class="users">
+        <% _.each(list, function(userOnline) { %>
+        <div class="tile">
+            <img src="<%= userOnline.avatar %>">
+            <%= userOnline.username %>
+            - <a href="#user/<%= userOnline.username %>" data-user-id="<%= userOnline.user_id %>">discuter</a>
+        </div>
+        <% }); %>
+    </div>
+</div>

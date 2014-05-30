@@ -3,7 +3,7 @@ define([
   'underscore',
   'backbone',
   'models/client',
-  'text!templates/room_profile.html'
+  'text!templates/room-profile.html'
 ], function ($, _, Backbone, client, profileTemplate) {
   var RoomProfileView = Backbone.View.extend({
 
