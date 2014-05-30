@@ -42,7 +42,8 @@ define([
     },
 
     pickSmiley: function(smiley) {
-      this.$el.find('.input-message').insertAtCaret(smiley.symbol);
+      var symbol = $().smilify('symbol', smiley);
+      this.$el.find('.input-message').insertAtCaret(symbol);
     },
 
     message: function(event) {

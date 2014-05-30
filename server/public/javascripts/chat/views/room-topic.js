@@ -36,7 +36,10 @@ define([
         currentTopic = this.defaultText;
       }
 
-      this.$el.find('.topic').html(currentTopic);
+      this.$el.find('.topic')
+        .text(currentTopic)
+        .smilify()
+        .linkify();
       this.$el.find('.topic-form').hide();
 
       return this;
@@ -46,8 +49,10 @@ define([
       if (topic == '') {
         topic = this.defaultText;
       }
-      this.$el.find('.topic').text(topic);
-      this.$el.find('.topic').linkify();
+      this.$el.find('.topic')
+        .text(topic)
+        .smilify()
+        .linkify();
     },
 
     showForm: function() {

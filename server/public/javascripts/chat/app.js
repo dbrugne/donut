@@ -10,6 +10,7 @@ define([
   'jquery.dateformat',
   'jquery.cloudinary',
   'jquery.linkify',
+  'jquery.smilify',
   'bootstrap'
 ], function ($, _, Backbone, router, client, mainView) {
   /**

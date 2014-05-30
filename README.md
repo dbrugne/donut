@@ -11,18 +11,19 @@ chat
 - [x] user:profile remove discuss button if not online
 - [x] Also delete room on disconnect if needed (only on leave actually)
 - [x] Improve hyperlinking in topic and *:message (www.xxxx.com, http://, ftp://, ...) => http://soapbox.github.io/jQuery-linkify/
-- [ ] Repair smileys (< and > and '3:)') => http://os.alfajango.com/css-emoticons/
-- [ ] Avoid room:join/room:leave for socket that made the action to join/leave
-- [ ] Replace room:out by user:disconnect sometimes
 - [x] Move room:message logic in room model instead of collections
+- [x] Repair smileys (< and > and '3:)') => http://os.alfajango.com/css-emoticons/
 - [ ] Replace "no topic" by "Choose a topic" and add a pen icon (all clickable)
 - [ ] Use user color in "home", "onetoone" panel and tab and room user list
-- [ ] On onetoone focus trigger a (user:status<->user:status) to ask for connectivity and block message posting
-- [ ] Get last 50 viewed on onetoone opening
 - [ ] Permanent room
 - [ ] Room profile
 - [ ] Room ops (room:op, room:deop, room:topic)
-- [ ] Auto-mention user in room message
+- [ ] Auto-mention user in room message ($.fn.mentionize()
+- [ ] Get last 50 viewed on onetoone opening
+- [ ] On onetoone focus trigger a (user:status<->user:status) to ask for connectivity and block message posting
+- [ ] Replace room:out by user:disconnect sometimes
+- [ ] Avoid room:join/room:leave for socket that made the action to join/leave
+- [ ] Change the to server->client messages : room:join/leave and user:open/close (for something like ?)
 
 **User**
 - [ ] Forgotten password (https://github.com/substack/node-password-reset && http://stackoverflow.com/questions/20277020/reset-change-password-in-nodejs-with-passportjs)

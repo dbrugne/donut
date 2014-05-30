@@ -14,13 +14,15 @@ require.config({
       'jquery.cloudinary'         : '../vendor/cloudinary_js/js/jquery.cloudinary',
       'jquery.dateformat'         : '../plugins/jquery.dateformat',
       'jquery.insertatcaret'      : '../plugins/jquery.insertatcaret',
-      'jquery.linkify'            : '../plugins/jquery.linkify.min'
+      'jquery.linkify'            : '../plugins/jquery.linkify.min',
+      'jquery.smilify'            : '../plugins/jquery.smilify'
   },
   shim: {
     'jquery.cloudinary'     : ['jquery'],
     'jquery.dateformat'     : ['jquery'],
     'jquery.insertatcaret'  : ['jquery'],
     'jquery.linkify'        : ['jquery'],
+    'jquery.smilify'        : ['jquery'],
     'bootstrap': {
       deps: ['jquery']
     }

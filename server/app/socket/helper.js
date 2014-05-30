@@ -312,9 +312,15 @@ module.exports = {
       return '';
 
     var filtered;
-    filtered = sanitize(value);
-
+    filtered = value.replace('<3', '#!#!#heart#!#!#').replace('</3', '#!#!#bheart#!#!#'); // very common but particular case
+    filtered = sanitize(filtered);
+    filtered = value.replace('#!#!#heart#!#!#', '<3').replace('#!#!#bheart#!#!#', '</3');
     return filtered;
+    /**
+     * Test string :
+     *
+     * words are :P >B) <3 </3 :) but style is still <strong>enabled</strong>, and <a href="http://google.com">links</a>. Or www.google.com and http://yahoo.fr/ with an XSS <script>alert('go go go!')</script>
+     */
   }
 
 };

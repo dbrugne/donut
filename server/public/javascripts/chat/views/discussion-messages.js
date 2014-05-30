@@ -2,10 +2,9 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'collections/smileys',
   'text!templates/message.html',
   'text!templates/notification.html'
-], function ($, _, Backbone, smileys, messageTemplate, notificationTemplate) {
+], function ($, _, Backbone, messageTemplate, notificationTemplate) {
   var DiscussionMessagesView = Backbone.View.extend({
 
     template: _.template(messageTemplate),
@@ -24,23 +23,17 @@ define([
       // Date
       var dateText = $.format.date(new Date(message.get('time')), this.timeFormat);
 
-      // Message body
-      var messageHtml = message.get('message');
-      messageHtml = messageHtml.replace(/\n/g, '<br />');
-
-      // Smileys
-      smileys.each(function (smiley) {
-        messageHtml = messageHtml.replace(smiley.get('symbol'), '<span class="smiley emoticon-16px '+smiley.get('class')+'">'+smiley.get('symbol')+'</span>');
-      });
-
       var html = this.template({
         user_id: message.get('user_id'),
         avatar: message.get('avatar'),
         username: message.get('username'),
-        message: messageHtml,
         date: dateText
       });
-      $(html).appendTo(this.$el).linkify();
+      $(html).appendTo(this.$el)
+              .find('.message')
+              .text(message.get('message')+"")
+              .smilify()
+              .linkify();
 
       this.scrollDown();
       return this;
@@ -71,7 +64,9 @@ define([
       data.date = $.format.date(Number(new Date()), this.timeFormat);
 
       var html = this.notificationTemplate(data);
-      $(html).appendTo(this.$el).linkify();
+      $(html).appendTo(this.$el)
+        .smilify()
+        .linkify();
       this.scrollDown();
     },
 
