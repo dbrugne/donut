@@ -11,7 +11,7 @@
                     <span class="location"><%= userOnline.location %></span>
                 </div>
                 <div class="description">
-                    <% if (userOnline.bio != '') { %>
+                    <% if (userOnline.bio && userOnline.bio != '') { %>
                     <i class="fa fa-quote-left"></i>
                     <div class="text"><%= userOnline.bio %></div>
                     <i class="fa fa-quote-right"></i>

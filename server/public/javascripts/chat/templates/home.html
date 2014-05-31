@@ -16,7 +16,7 @@
                 <span class="owner">by <%= room.owner.username %></span>
             </div>
             <div class="description">
-                <% if (room.topic != '') { %>
+                <% if (room.topic && room.topic != '') { %>
                 <i class="fa fa-quote-left"></i>
                 <div class="text"><%= room.topic %></div>
                 <i class="fa fa-quote-right"></i>
