@@ -18,11 +18,12 @@ chat
  - [x] Template user tile 
  - [x] Make join and discuss button work
  - [x] Make room list dynamic
-- [ ] Upgrade socket.io
+ 
 - [ ] Replace "no topic" by "Choose a topic" and add a pen icon (all clickable)
-- [ ] Use user color in "home", "onetoone" panel and tab and room user list
 - [ ] Permanent room
-- [ ] Room profile
+- [ ] Room profile form/page/modal
+
+- [ ] Use user color in "home", "onetoone" panel and tab and room user list
 - [ ] Room ops (room:op, room:deop, room:topic)
 - [ ] Auto-mention user in room message ($.fn.mentionize())
 - [ ] Get last 50 viewed on onetoone opening
@@ -32,19 +33,16 @@ chat
 - [ ] Change the to server->client messages : room:join/leave and user:open/close (for something like ?)
 - [ ] Add a check on connection to verify is user have "username"
 - [ ] Use tile template in user:search and room:search and move search in page (as for home)
+- [ ] Upgrade socket.io
 
 **User**
 - [ ] Add help text for each field
+- [ ] Add "your rooms" list on account page
 - [ ] Forgotten password (https://github.com/substack/node-password-reset && http://stackoverflow.com/questions/20277020/reset-change-password-in-nodejs-with-passportjs)
 - [ ] Welcome email on signup
 - [ ] Softness the hyperlink validation on profile => make it clickable on profile page
 - [ ] Add accepted format and expected size on file uploader + test before uploading
 - [ ] Add "left characters" indication on "bio" field
-
-**Room**
-- [ ] Room profile form
-- [ ] Room profile page
-- [ ] Add help text for each field
 
 **Site**
 - [ ] Global theme
