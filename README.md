@@ -17,9 +17,8 @@ chat
  - [x] Template room tile
  - [x] Template user tile 
  - [x] Make join and discuss button work
- - [ ] Make room list dynamic
+ - [x] Make room list dynamic
  - [ ] Use tile template in user:search and room:search
- - [ ] Add "user is in room" list on user tile
 - [ ] Upgrade socket.io
 - [ ] Replace "no topic" by "Choose a topic" and add a pen icon (all clickable)
 - [ ] Use user color in "home", "onetoone" panel and tab and room user list
@@ -32,6 +31,7 @@ chat
 - [ ] Replace room:out by user:disconnect sometimes
 - [ ] Avoid room:join/room:leave for socket that made the action to join/leave
 - [ ] Change the to server->client messages : room:join/leave and user:open/close (for something like ?)
+- [ ] Add a check on connection to verify is user have "username"
 
 **User**
 - [ ] Add help text for each field
