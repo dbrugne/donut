@@ -8,7 +8,7 @@
     <div class="rooms">
     <% _.each(rooms, function(room) { %>
     <div class="tile">
-        <div class="cover" style="background-color: <%= room.color %>"></div>
+        <div class="cover" style="background-color: <% if (room.color) { print(room.color); } else { print('#ccc'); } %>"></div>
         <div class="content">
             <img class="avatar" src="<%= room.avatar %>">
             <div class="title">
@@ -25,9 +25,10 @@
             <div class="actions">
                 <a class="btn btn-primary btn-sm" href="#room/<%= room.name.replace('#', '') %>">rejoindre</a>
             </div>
-            <div class="footer">
-                En ce moment <strong><%= room.users %></strong> utilisateurs
-            </div>
+        </div>
+        <div class="footer">
+            <span class="pull-left"><% if (room.permanent == true) { %><i class="fa fa-certificate"></i> permanent<% } %></span>
+            <span class="pull-right">En ce moment <strong><%= room.users %></strong> utilisateurs</span>
         </div>
     </div>
     <% }); %>

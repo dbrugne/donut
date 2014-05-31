@@ -397,6 +397,7 @@ body.light {
         .content {
           margin-left: 20px;
           margin-right: 20px;
+          position: relative;
 
           .title {
             .name {
@@ -425,20 +426,20 @@ body.light {
           }
           .actions {
             position: absolute;
-            right: 20px; top: 25px;
+            right: 0; top: -65px;
             font-size: 16px;
           }
-          .footer {
-            position: absolute;
-            right: 15px; bottom: 10px;
-          }
+        }
+        .footer {
+          position: absolute;
+          left: 10px; right: 10px; bottom: 10px;
         }
       }
     }
 
     .rooms {
       .tile {
-        .cover { }
+        .cover {}
         .content {
           .title {
             .name { }
@@ -446,8 +447,6 @@ body.light {
           }
           .avatar { margin-top: -45px; }
           .description {}
-          .actions {}
-          .footer {}
         }
       }
     }
@@ -462,8 +461,6 @@ body.light {
           }
           .avatar { margin-top: -115px; }
           .description {}
-          .actions {}
-          .footer {}
         }
       }
     }

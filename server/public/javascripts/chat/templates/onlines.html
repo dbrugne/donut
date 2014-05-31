@@ -17,10 +17,14 @@
                     <i class="fa fa-quote-right"></i>
                     <% } %>
                 </div>
-                <div class="footer"><%= userOnline.website %></div>
                 <div class="actions">
                     <a class="btn btn-primary btn-sm" href="#user/<%= userOnline.username %>" data-user-id="<%= userOnline.user_id %>">discuter</a>
                 </div>
+            </div>
+            <div class="footer">
+                <% if (userOnline.website != '') { %>
+                Site Web: <span class="website"><%= userOnline.website %></span>
+                <% } %>
             </div>
         </div>
         <% }); %>

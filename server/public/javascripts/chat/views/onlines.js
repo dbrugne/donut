@@ -22,6 +22,7 @@ define([
       });
 
       this.$el.html(this.template({list: listJSON}));
+      this.$el.find('.website').linkify();
       return this;
     }
   });
