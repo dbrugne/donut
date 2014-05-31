@@ -34,6 +34,13 @@ var renderForm = function(req, res) {
     options.userFields.color = options.userFields.color.replace('#', '');
   }
 
+  options.action = '/account/edit/profile';
+
+  if (req.query.embed == '1') {
+    options.layout = "layout_light";
+    options.action += '?embed=1';
+  }
+
   if (req.validationErrors()) {
     options.is_errors = true;
     options.errors = req.validationErrors();
@@ -119,7 +126,9 @@ router.route('/account/edit/profile')
           return res.redirect('/');
         } else {
           req.flash('success', 'Your profile was updated');
-          res.redirect('/account');
+          var destination = '/account';
+          if (req.query.embed == '1') destination = '/account/edit/profile?embed=1';
+          res.redirect(destination);
         }
       });
   });

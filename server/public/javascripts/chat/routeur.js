@@ -9,6 +9,7 @@ define([
       '':                 'root',
       'room/:name':       'focusRoom',
       'user/:user':       'focusOneToOne',
+      'account':          'focusAccount',
       '*default':         'default'
     },
 
@@ -40,6 +41,11 @@ define([
     focusOneToOne: function(username) {
 //      console.log('router: focusOneToOne ' + username);
       mainView.focusOneToOneByUsername(username);
+    },
+
+    focusAccount: function(username) {
+//      console.log('router: focusAccount');
+      mainView.focusAccount(username);
     },
 
     default: function() {

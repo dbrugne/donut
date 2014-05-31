@@ -30,6 +30,8 @@ define([
 
     $home: $('#home'),
 
+    $account: $('#account'),
+
     $discussionsPanelsContainer: $("#chat-center"),
 
     thisDiscussionShouldBeFocusedOnSuccess: '',
@@ -219,6 +221,7 @@ define([
         o.set('focused', false);
       });
       this.$home.hide();
+      this.$account.hide();
     },
 
     // called by router only
@@ -228,6 +231,12 @@ define([
       this.roomBlockView.render();
       this.onetooneBlockView.render();
       Backbone.history.navigate('#'); // just change URI, not run route action
+    },
+
+    focusAccount: function() {
+      this.unfocusAll();
+      this.$account.show();
+      Backbone.history.navigate('#account'); // just change URI, not run route action
     },
 
     // called by router only

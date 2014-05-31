@@ -10,12 +10,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge"/><!-- Avoid IE compatibility mode -->
 </head>
 <body class="light">
+{{#success}}<div class="alert alert-success">{{success}}</div>{{/success}}
+{{#info}}<div class="alert alert-info">{{info}}</div>{{/info}}
+{{#warning}}<div class="alert alert-warning">{{warning}}</div>{{/warning}}
+{{#error}}<div class="alert alert-danger">{{error}}</div>{{/error}}
 {{{ yield }}}
 <script src="/javascripts/vendor/jquery/dist/jquery.min.js"></script>
 <script src="/javascripts/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
-<script src="/javascripts/script.js"></script>
+<script>
+    window.cloudinary_cloud_name = '{{cloudinary.cloud_name}}';
+    window.cloudinary_api_key = '{{cloudinary.api_key}}';
+</script>
 {{#scripts}}
 <script src="{{src}}"></script>
 {{/scripts}}
+<script src="/javascripts/script.js"></script>
 </body>
 </html>
