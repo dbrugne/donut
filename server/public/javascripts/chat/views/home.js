@@ -3,8 +3,9 @@ define([
   'underscore',
   'backbone',
   'models/client',
+  'views/onlines',
   'text!templates/home.html'
-], function ($, _, Backbone, client, homeTemplate) {
+], function ($, _, Backbone, client, onlinesView, homeTemplate) {
   var HomeView = Backbone.View.extend({
 
     el: $('#home-content'),
@@ -14,11 +15,6 @@ define([
     initialize: function() {
       this.listenTo(client, 'home', this.render);
     },
-
-    load: function() {
-      client.home();
-    },
-
     render: function(data) {
       var html = this.template(data);
       this.$el.html(html);

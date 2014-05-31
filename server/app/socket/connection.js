@@ -34,9 +34,6 @@ module.exports = function(io, socket) {
     user.populate('onetoones', 'username', function(err, user) {
       if (err) helper.handleError('Unable to populate user: '+err);
 
-      // Online users list
-      var onlines = helper.connectedUsers(io, 5);
-
       // Onetoones list
       var onetoones = user.onetoonesList();
 
@@ -48,8 +45,7 @@ module.exports = function(io, socket) {
           avatar: socket.getAvatar()
         },
         rooms: user.rooms,
-        onetoones: onetoones,
-        onlines: onlines
+        onetoones: onetoones
       });
     });
   });

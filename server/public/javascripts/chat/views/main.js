@@ -5,13 +5,11 @@ define([
   'models/client',
   'collections/rooms',
   'collections/onetoones',
-  'collections/onlines',
   'models/current-user',
   'views/window',
   'views/status',
   'views/alert',
   'views/home',
-  'views/onlines',
   'views/room-create',
   'views/room-search',
   'views/user-search',
@@ -21,8 +19,8 @@ define([
   'views/onetoone-block',
   'views/user-profile', // need to be loaded here to instantiate DOM
   'views/room-profile' // idem
-], function ($, _, Backbone, client, rooms, onetoones, onlines, currentUser, windowView,
-             statusView, alertView, homeView, onlinesView, RoomCreateView,
+], function ($, _, Backbone, client, rooms, onetoones, currentUser, windowView,
+             statusView, alertView, homeView, RoomCreateView,
              RoomSearchView, UserSearchView, RoomPanelView, OneToOnePanelView,
              RoomBlockView, OnetooneBlockView, userProfileView, roomProfileView) {
 
@@ -49,7 +47,6 @@ define([
 
     initialize: function() {
       this.listenTo(client, 'welcome', this.onWelcome);
-      this.listenTo(client, 'home', this.onHome);
       this.listenTo(rooms, 'add', this.onRoomPong);
       this.listenTo(onetoones, 'add', this.onOnePong);
 
@@ -85,15 +82,6 @@ define([
       // Render home
       client.home();
 
-      // Render onlines
-      _.each(data.onlines, function(online) {
-        onlines.add({
-          id: online.user_id,
-          username: online.username,
-          avatar: online.avatar
-        });
-      });
-
       // Join #General
       client.join('#General'); // @todo : should be called on collection
 
@@ -109,10 +97,6 @@ define([
 
       // Run routing
       this.trigger('ready');
-    },
-
-    onHome: function(data) {
-      homeView.render(data);
     },
 
     onHomeClick: function(event) {

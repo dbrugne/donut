@@ -289,7 +289,7 @@ module.exports = {
   },
 
   /**
-   *
+   * Return true if provided 'socket' is in 'room'
    * @param socket
    * @param name
    * @return boolean
@@ -299,7 +299,11 @@ module.exports = {
     else return true;
   },
 
-
+  /**
+   * Find and decorate home page data
+    * @param success
+   * @returns {*}
+   */
   homeData: function(success) {
     var data = {};
 
@@ -350,6 +354,50 @@ module.exports = {
       {name: '#stringsAGogo', topic: "SPRING-BREAK", color: 'pink', avatar: 'https://pbs.twimg.com/profile_images/378800000548355775/85e692a450ffe554d78b19a847672086_bigger.jpeg', permanent: false, owner: {user_id: 'fakeid', username: 'néné'}, users: 20}
     ];
     return success(data);
+  },
+
+  /**
+   * Find and decorate online user list data
+   * @param success
+   * @returns {*}
+   */
+  onlineData: function(io, limit, success) {
+    limit = limit || 5;
+
+    var onlines = this.connectedUsers(io, limit);
+
+    var idList = [];
+    for (var i=0; i < onlines.length; i++) {
+      idList.push(onlines[i].user_id);
+    }
+
+    var q = User.find({_id: { $in: idList }}, 'username avatar bio location website color');
+
+    var that = this;
+    var onResult = function(err, users) {
+      if (err) return that.handleError('Unable to retrieve online user data: '+err);
+      if (users.length < 1) return success([]);
+
+      var data = [];
+      for (var i=0; i<users.length; i++) {
+        var user = users[i];
+        var roomData = {
+          user_id: user._id.toString(),
+          username: user.username,
+          avatar: user.avatarUrl('medium'),
+          color: user.color,
+          bio: user.bio,
+          location: user.location,
+          website: user.website
+        };
+
+        data.push(roomData);
+      }
+
+      return success(data);
+    };
+
+    q.exec(onResult);
   },
 
   /**
