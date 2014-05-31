@@ -38,7 +38,7 @@ module.exports = function(io, socket, data) {
     });
 
     // Inform other devices
-    io.sockets.in('user:'+socket.getUserId()).emit('room:join', {
+    socket.broadcast.to('user:'+socket.getUserId()).emit('room:join', {
       name: room.name
     });
 

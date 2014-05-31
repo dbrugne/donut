@@ -18,6 +18,7 @@ chat
  - [x] Template user tile 
  - [x] Make join and discuss button work
  - [x] Make room list dynamic
+- [x] Avoid room:join/room:leave for socket that made the action to join/leave => broadcast call modified by receive "other" socket join notification
  
 - [ ] Replace "no topic" by "Choose a topic" and add a pen icon (all clickable)
 - [ ] Permanent room
@@ -29,7 +30,6 @@ chat
 - [ ] Get last 50 viewed on onetoone opening
 - [ ] On onetoone focus trigger a (user:status<->user:status) to ask for connectivity and block message posting
 - [ ] Replace room:out by user:disconnect sometimes
-- [ ] Avoid room:join/room:leave for socket that made the action to join/leave
 - [ ] Change the to server->client messages : room:join/leave and user:open/close (for something like ?)
 - [ ] Add a check on connection to verify is user have "username"
 - [ ] Use tile template in user:search and room:search and move search in page (as for home)
