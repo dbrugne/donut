@@ -13,12 +13,11 @@ chat
 - [x] Improve hyperlinking in topic and *:message (www.xxxx.com, http://, ftp://, ...) => http://soapbox.github.io/jQuery-linkify/
 - [x] Move room:message logic in room model instead of collections
 - [x] Repair smileys (< and > and '3:)') => http://os.alfajango.com/css-emoticons/
-- [ ] Template room and user tiles
+- [x] Template room and user tiles
  - [x] Template room tile
  - [x] Template user tile 
  - [x] Make join and discuss button work
  - [x] Make room list dynamic
- - [ ] Use tile template in user:search and room:search
 - [ ] Upgrade socket.io
 - [ ] Replace "no topic" by "Choose a topic" and add a pen icon (all clickable)
 - [ ] Use user color in "home", "onetoone" panel and tab and room user list
@@ -32,6 +31,7 @@ chat
 - [ ] Avoid room:join/room:leave for socket that made the action to join/leave
 - [ ] Change the to server->client messages : room:join/leave and user:open/close (for something like ?)
 - [ ] Add a check on connection to verify is user have "username"
+- [ ] Use tile template in user:search and room:search and move search in page (as for home)
 
 **User**
 - [ ] Add help text for each field
