@@ -43,8 +43,7 @@ define([
       'click .open-user-profile':         'openUserProfile',
       'dblclick .dbl-open-user-profile':  'openUserProfile',
       'click .close-room':                'onCloseDiscussion',
-      'click .close-onetoone':            'onCloseDiscussion',
-      'click .home-link':                 'onHomeClick' // maintain on 'link clicking' to avoid too many home request to server
+      'click .close-onetoone':            'onCloseDiscussion'
     },
 
     initialize: function() {
@@ -82,7 +81,7 @@ define([
       console.log('Hello '+currentUser.get('username')+'!');
 
       // Render home
-      client.home();
+//      client.home();
 
       // Join #General
       client.join('#General'); // @todo : should be called on collection
@@ -99,10 +98,6 @@ define([
 
       // Run routing
       this.trigger('ready');
-    },
-
-    onHomeClick: function(event) {
-      client.home();
     },
 
     // MODALS
@@ -226,6 +221,7 @@ define([
 
     // called by router only
     focusHome: function() {
+      client.home(); // render home by asking data to server
       this.unfocusAll();
       this.$home.show();
       this.roomBlockView.render();
