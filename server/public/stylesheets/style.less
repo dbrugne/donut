@@ -377,7 +377,7 @@ body.light {
       margin-top: 0;
     }
 
-    .rooms, .users {
+    .rooms, .onlines {
       .make-md-column(12);
       margin-top: -15px;
       margin-right: -20px;
@@ -386,30 +386,25 @@ body.light {
         .pull-left;
         position: relative;
         width: 300px;
-        height: 283px;
         background-color: #fff;
         margin-right: 20px;
         margin-top: 15px;
         border: 1px #c0c0c0 solid;
         border-radius: 4px;
+        height: 283px;
 
-        .cover {
-          background-color: red;
-          height: 95px;
-        }
+        .cover { height: 95px; }
         .content {
           margin-left: 20px;
           margin-right: 20px;
+
           .title {
             .name {
               font-size: 24px;
               font-weight: bold;
             }
-            .owner {
-            }
           }
           .avatar {
-            margin-top: -45px;
             border: 3px solid #fff;
             border-radius: 4px;
           }
@@ -420,8 +415,7 @@ body.light {
             position: relative;
             min-height: 70px;
             max-height: 80px;
-            .text {
-            }
+            .text { }
             .fa {
               color: #999999;
               position: absolute;
@@ -429,18 +423,49 @@ body.light {
             .fa:first-child { top: 0; left: -15px; }
             .fa:last-child { bottom: 0; right: -5px; }
           }
-          .users {
-            position: absolute;
-            right: 15px; bottom: 10px;
-          }
           .actions {
             position: absolute;
             right: 20px; top: 25px;
             font-size: 16px;
           }
+          .footer {
+            position: absolute;
+            right: 15px; bottom: 10px;
+          }
         }
       }
+    }
 
+    .rooms {
+      .tile {
+        .cover { }
+        .content {
+          .title {
+            .name { }
+            .owner { }
+          }
+          .avatar { margin-top: -45px; }
+          .description {}
+          .actions {}
+          .footer {}
+        }
+      }
+    }
+
+    .onlines {
+      .tile {
+        .cover { }
+        .content {
+          .title {
+            margin-top: -10px;
+            .name { }
+          }
+          .avatar { margin-top: -115px; }
+          .description {}
+          .actions {}
+          .footer {}
+        }
+      }
     }
   }
 

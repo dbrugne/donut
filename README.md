@@ -3,7 +3,7 @@ chat
 
 ***"Une plateforme de discussion temps réel autour de thématique. Pour ce faire la plateforme permet la création de "room" dans laquelle les utilisateurs pourront échanger autour d'un sujet, d'une communauté ou de tout et rien"***
 
-## MVP
+## Release 1
 
 **Chat**
 - [x] Helper: avoid room populate code recursion in helper
@@ -15,11 +15,13 @@ chat
 - [x] Repair smileys (< and > and '3:)') => http://os.alfajango.com/css-emoticons/
 - [ ] Template room and user tiles
  - [x] Template room tile
- - [ ] Template user tile 
+ - [x] Template user tile 
+ - [x] Make join and discuss button work
  - [ ] Make room list dynamic
- - [ ] Make join and discuss button work
  - [ ] Use tile template in user:search and room:search
- - [ ] Replace "no topic" by "Choose a topic" and add a pen icon (all clickable)
+ - [ ] Add "user is in room" list on user tile
+- [ ] Upgrade socket.io
+- [ ] Replace "no topic" by "Choose a topic" and add a pen icon (all clickable)
 - [ ] Use user color in "home", "onetoone" panel and tab and room user list
 - [ ] Permanent room
 - [ ] Room profile
@@ -32,29 +34,20 @@ chat
 - [ ] Change the to server->client messages : room:join/leave and user:open/close (for something like ?)
 
 **User**
+- [ ] Add help text for each field
 - [ ] Forgotten password (https://github.com/substack/node-password-reset && http://stackoverflow.com/questions/20277020/reset-change-password-in-nodejs-with-passportjs)
 - [ ] Welcome email on signup
 - [ ] Softness the hyperlink validation on profile => make it clickable on profile page
 - [ ] Add accepted format and expected size on file uploader + test before uploading
-- [ ] Room list on user profile
+- [ ] Add "left characters" indication on "bio" field
 
 **Room**
 - [ ] Room profile form
 - [ ] Room profile page
-- [ ] User list on room profile
-
-**Design**
-
-- [ ] Global theme
-
-**Contenu**
-- [ ] Homepage content
-- [ ] Help block with capture to explain the Facebook signup procedure (find best practices on internet)
-- [ ] First entrance 'tutorial' (5 slides) + button to replay
-- [ ] Help infobox on chat interface + help button
-- [ ] 
+- [ ] Add help text for each field
 
 **Site**
+- [ ] Global theme
 - [ ] Google Analytics (HP, interface de chat)
 - [ ] Traduction fr
 - [ ] Test it on IE8-11/FF
@@ -65,6 +58,22 @@ chat
 - [ ] Minimum virtual trafic generation
 - [ ] Basic backend
 - [ ] Basic grunt sample data injection (connect, disconnect, join/leave, create, message, ...)
+
+## Release 2
+
+**Performance/security**
+- [ ] Compress JS: https://github.com/JakeWharton/uglify-js-middleware
+
+**Help**
+- [ ] Help infobox on chat interface + help button
+- [ ] Help block with capture to explain the Facebook signup procedure (find best practices on internet)
+- [ ] First entrance 'tutorial' (5 slides) + button to replay
+
+**Contents**
+- [ ] User list (avatar) on room tile
+- [ ] Room list on user tile
+- [ ] User list on room profile
+- [ ] Room list on user profile
 
 ## Next releases
 

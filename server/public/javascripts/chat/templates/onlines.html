@@ -1,11 +1,27 @@
 <h3>Utilisateurs en ligne</h3>
 <div class="row">
-    <div class="users">
+    <div class="onlines">
         <% _.each(list, function(userOnline) { %>
         <div class="tile">
-            <img src="<%= userOnline.avatar %>">
-            <%= userOnline.username %>
-            - <a href="#user/<%= userOnline.username %>" data-user-id="<%= userOnline.user_id %>">discuter</a>
+            <div class="cover" style="background-color: <%= userOnline.color %>"></div>
+            <div class="content">
+                <img class="avatar" src="<%= userOnline.avatar %>">
+                <div class="title">
+                    <span class="name"><%= userOnline.username %></span>
+                    <span class="location"><%= userOnline.location %></span>
+                </div>
+                <div class="description">
+                    <% if (userOnline.bio != '') { %>
+                    <i class="fa fa-quote-left"></i>
+                    <div class="text"><%= userOnline.bio %></div>
+                    <i class="fa fa-quote-right"></i>
+                    <% } %>
+                </div>
+                <div class="footer"><%= userOnline.website %></div>
+                <div class="actions">
+                    <a class="btn btn-primary btn-sm" href="#user/<%= userOnline.username %>" data-user-id="<%= userOnline.user_id %>">discuter</a>
+                </div>
+            </div>
         </div>
         <% }); %>
     </div>
