@@ -28,7 +28,7 @@ chat
 - [x] Home replace topic by description
 - [ ] Room permanent switch in header
 - [ ] Room ops (room:op, room:deop, room:topic)
-
+ 
 - [ ] Use "user color" in "home", "onetoone" panel and tab and room user list
 - [ ] Use "room color" in room tab
 

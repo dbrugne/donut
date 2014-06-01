@@ -20,6 +20,7 @@ module.exports = function(io, socket, data) {
       avatar: room.avatarUrl('medium'),
       color: room.color,
       topic: room.topic,
+      permanent: room.permanent,
       users: users
     };
     if (room.owner) {

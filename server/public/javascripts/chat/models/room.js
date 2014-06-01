@@ -12,6 +12,9 @@ define([
       return {
         name: '',
         topic: '',
+        permanent: false,
+        avatar: '',
+        color: '#fff',
         type: 'room', // @todo : remove
         focused: false,
         unread: 0

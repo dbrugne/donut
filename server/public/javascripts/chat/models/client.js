@@ -76,6 +76,10 @@ define([
         that.debug(['io:in:room:searcherror', data]);
         that.trigger('room:searcherror', data);
       });
+      this.socket.on('room:permanent', function(data) {
+        that.debug(['io:in:room:permanent', data]);
+        that.trigger('room:permanent', data);
+      });
 
       // USER
       // ======================================================
@@ -153,6 +157,11 @@ define([
       var data = {search: search};
       this.socket.emit('room:search', data);
       this.debug(['io:out:room:search', data]);
+    },
+    roomPermanent: function(name, permanent) {
+      var data = {name: name, permanent: permanent};
+      this.socket.emit('room:permanent', data);
+      this.debug(['io:out:room:permanent', data]);
     },
 
     // USER

@@ -12,6 +12,7 @@ var delegate_room_topic = require('./socket/room-topic');
 var delegate_room_message = require('./socket/room-message');
 var delegate_room_search = require('./socket/room-search');
 var delegate_room_profile = require('./socket/room-profile');
+var delegate_room_permanent = require('./socket/room-permanent');
 var delegate_user_message = require('./socket/user-message');
 var delegate_user_search = require('./socket/user-search');
 var delegate_user_profile = require('./socket/user-profile');
@@ -60,6 +61,7 @@ module.exports = function(app, io, passport, sessionStore) {
     socket.on('room:message', function (data) { delegate_room_message(io, socket, data); });
     socket.on('room:search', function (data) { delegate_room_search(io, socket, data); });
     socket.on('room:profile', function (data) { delegate_room_profile(io, socket, data); });
+    socket.on('room:permanent', function (data) { delegate_room_permanent(io, socket, data); });
 
     socket.on('user:open', function(data) { delegate_user_open(io, socket, data); });
     socket.on('user:close', function(data) { delegate_user_close(io, socket, data); });

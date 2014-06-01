@@ -35,6 +35,7 @@ define([
       var model = new RoomModel({
         id: room.name,
         name: room.name,
+        permanent: room.permanent,
         owner: owner,
         topic: room.topic,
         avatar: room.avatar,

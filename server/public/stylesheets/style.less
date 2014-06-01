@@ -3,6 +3,7 @@
 @import "http://fonts.googleapis.com/css?family=Open+Sans:400,600,700";
 @import "./smilify.less";
 @import "../javascripts/vendor/colpick/css/colpick.css";
+@import "../javascripts/vendor/css-toggle-switch/src/toggle-switch.less";
 
 html { height: 100%; }
 body { padding-top: 80px; font-family: "Open Sans";}
@@ -527,6 +528,15 @@ body.light {
         position: absolute;
         left: 0; right: 0; top: 0px;
         height: 10px;
+      }
+      .actions {
+        position: absolute;
+        top:20px; right:80px;
+        width: 200px;
+
+        .toggle {
+          display: inline-block;
+        }
       }
       .avatar {
         .pull-left;
