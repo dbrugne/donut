@@ -8,10 +8,11 @@ var roomSchema = mongoose.Schema({
   permanent     : Boolean,
   op            : [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
   bans          : [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
-  avatar         : String,
-  color          : String,
+  avatar        : String,
+  color         : String,
   topic         : String,
-  description   : String
+  description   : String,
+  website       : String
 
 });
 
@@ -33,9 +34,21 @@ roomSchema.statics.validateTopic = function (topic) {
 
 roomSchema.statics.findByName = function (name) {
   var regexp = new RegExp(['^',name,'$'].join(''),'i');
-  return this.findOne({ name: regexp }, 'name owner topic');
+  return this.findOne({ name: regexp });
 }
 
+/**
+ * Return avatar URL for the current room
+ * @param format
+ * @returns {*}
+ */
+roomSchema.methods.avatarId = function() {
+  if (!this.avatar) return '';
+  var data = this.avatar.split('/');
+  if (!data[1]) return '';
+  var id = data[1].substr(0, data[1].lastIndexOf('.'));
+  return id;
+};
 roomSchema.methods.avatarUrl = function(format) {
   if (!format) format = 'small';
   var options = {};

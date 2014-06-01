@@ -17,9 +17,9 @@ $(document).ready(function() {
 
   }
 
-  // ACCOUNT EDIT =============================================================
+  // ACCOUNT OR ROOM EDIT =====================================================
   // ==========================================================================
-  if ($('#account-edit').length) {
+  if ($('#account-edit').length || $('#room-edit').length) {
 
     /**
      * Color picker

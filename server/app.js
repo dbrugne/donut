@@ -83,6 +83,7 @@ app.use(require('./routes/account-delete'));
 app.use(require('./routes/account-edit-email'));
 app.use(require('./routes/account-edit-password'));
 app.use(require('./routes/account-edit-profile'));
+app.use(require('./routes/room-edit'));
 
 /// catch 404 and forwarding to error handler
 app.use(function (req, res, next) {
