@@ -1,26 +1,41 @@
-<div class="page-header text-center">
-    <h1><span class="fa fa-anchor"></span> Room Page</h1>
-</div>
+<div id="room-profile">
 
-<div class="row">
+    <div class="row">
 
-    <h3><span class="fa fa-user"></span> {{room.name}}</h3>
+        <div class="cover">
+            {{#avatarUrl}}
+            <div class="avatar"><img src="{{avatarUrl}}"></div>
+            {{/avatarUrl}}
 
-    <div class="col-sm-12">
-        <div class="well">
+            <h1>{{room.name}}</h1>
 
-            <p>
-                <strong>id</strong>: {{room._id}}<br>
-                <strong>name</strong>: {{room.name}}<br>
-                <strong>permanent</strong>: {{room.permanent}}<br>
-                <strong>allow_guests</strong>: {{room.allow_guests}}<br>
-                <strong>invisible</strong>: {{room.invisible}}<br>
-                <strong>topic</strong>: {{room.topic}}<br>
-                <strong>description</strong>: {{room.description}}<br>
-                <strong>owner</strong>: {{room.owner}}
-            </p>
+            {{#room.description}}
+            <h3>{{room.description}}</h3>
+            {{/room.description}}
 
-        </div>
-    </div>
+            {{#room.topic}}
+            <h3>{{room.topic}}</h3>
+            {{/room.topic}}
+
+            {{#room.permanent}}<i class="fa fa-certificate"></i> permanent{{/room.permanent}}
+            {{^room.permanent}}volatile{{/room.permanent}}
+
+            <div>
+                {{#room.owner}}{{room.owner.username}} - {{room.owner.avatar}}{{/room.owner}}
+            </div>
+
+            <div>
+                {{#room.website}}{{room.website}}{{/room.website}}
+            </div>
+
+            {{#isOwner}}
+            <a href="/room/edit/{{uri}}" class="btn btn-primary">Editer</a>
+            {{/isOwner}}
+        </div><!-- /.col-sm-12 -->
+
+        <div class="color" style="background-color: {{room.color}};"></div>
+    </div><!-- /.row -->
+
+    <div><strong>id</strong>: {{room._id}}</div>
 
 </div>
