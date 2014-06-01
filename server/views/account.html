@@ -87,10 +87,24 @@
             </div>
         </div>
 
-        <div class="text-center">
-            <strong>id</strong>: {{user._id}}<br>
+    </div><!--/.row-->
+
+    <div class="row">
+
+        <!-- ROOMS -->
+        <div class="rooms">
+            <div class="well">
+                <h3><span class="fa fa-glass"></span> Les rooms dont vous êtes propriétaire</h3>
+                {{#rooms}}
+                    <a href="/room/{{uri}}">{{name}}</a> - {{topic}} - {{owner}} - {{avatar}} - {{descript}} - {{color}}<br>
+                {{/rooms}}
+            </div>
         </div>
 
+    </div><!--/.row-->
+
+    <div class="text-center">
+        <strong>id</strong>: {{user._id}}<br>
     </div>
 
 </div>
