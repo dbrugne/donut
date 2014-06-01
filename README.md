@@ -22,9 +22,9 @@ chat
 - [x] Room profile form/page/modal
 - [x] Replace "no topic" by "Choose a topic" and add a pen icon (all clickable)
 - [ ] Permanent room
+- [ ] Room ops (room:op, room:deop, room:topic)
 
 - [ ] Use user color in "home", "onetoone" panel and tab and room user list
-- [ ] Room ops (room:op, room:deop, room:topic)
 - [ ] Auto-mention user in room message ($.fn.mentionize())
 
 - [ ] Get last 50 viewed on onetoone opening
@@ -32,9 +32,11 @@ chat
 
 - [ ] Replace room:out by user:disconnect sometimes
 - [ ] Change the to server->client messages : room:join/leave and user:open/close (for something like ?)
-- [ ] Add a check on connection to verify is user have "username"
+
 - [ ] Use tile template in user:search and room:search and move search in page (as for home)
-- [ ] Upgrade socket.io
+
+- [ ] Upgrade socket.io to 1.0
+- [ ] Add a check on connection to verify is user have "username"
 
 **User**
 - [ ] Add help text for each field
