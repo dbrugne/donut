@@ -262,7 +262,6 @@ define([
     },
 
     focus: function(model) {
-      console.log(['focus', model]);
       // No opened discussion, display default
       if (rooms.length < 1 && onetoones.length < 1) {
         return this.focusHome();
