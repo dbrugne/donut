@@ -27,8 +27,10 @@ chat
 - [ ] Use user color in "home", "onetoone" panel and tab and room user list
 - [ ] Room ops (room:op, room:deop, room:topic)
 - [ ] Auto-mention user in room message ($.fn.mentionize())
+
 - [ ] Get last 50 viewed on onetoone opening
 - [ ] On onetoone focus trigger a (user:status<->user:status) to ask for connectivity and block message posting
+
 - [ ] Replace room:out by user:disconnect sometimes
 - [ ] Change the to server->client messages : room:join/leave and user:open/close (for something like ?)
 - [ ] Add a check on connection to verify is user have "username"
