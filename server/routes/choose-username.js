@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var User = require('../app/models/user');
-var isLoggedIn = require('../app/isloggedin');
+var isLoggedIn = require('../app/middlewares/isloggedin');
 
 var validateInput = function (req, res, next) {
   req.checkBody(['user', 'fields', 'username'], 'Username should be a string of min 2 and max 25 characters.').isUsername();

@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var User = require('../app/models/user');
-var isLoggedIn = require('../app/isloggedin');
+var isLoggedIn = require('../app/middlewares/isloggedin');
 var cloudinary = require('../app/cloudinary');
 var sanitize = require('sanitize-caja');
 

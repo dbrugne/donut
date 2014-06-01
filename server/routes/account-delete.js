@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var isLoggedIn = require('../app/isloggedin');
+var isLoggedIn = require('../app/middlewares/isloggedin');
 var cloudinary = require('../app/cloudinary');
 
 router.get('/account/delete', isLoggedIn, function(req, res) {
