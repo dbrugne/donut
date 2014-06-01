@@ -1,4 +1,7 @@
-<span class="topic"></span>
+<span class="topic-current">
+    <span class="topic"></span>
+    <% if (isGranted == true) { %><i class="fa fa-pencil-square-o edit"></i><% }; %>
+</span>
 <span class="topic-form">
     <input type="text" class="topic-input form-control input-sm" placeholder="Room topic" value="" maxlength="130">
     <button class="btn btn-primary btn-sm topic-submit">Submit</button>

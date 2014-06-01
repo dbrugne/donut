@@ -19,10 +19,9 @@ chat
  - [x] Make join and discuss button work
  - [x] Make room list dynamic
 - [x] Avoid room:join/room:leave for socket that made the action to join/leave => broadcast call modified by receive "other" socket join notification
- 
-- [ ] Replace "no topic" by "Choose a topic" and add a pen icon (all clickable)
+- [x] Room profile form/page/modal
+- [x] Replace "no topic" by "Choose a topic" and add a pen icon (all clickable)
 - [ ] Permanent room
-- [ ] Room profile form/page/modal
 
 - [ ] Use user color in "home", "onetoone" panel and tab and room user list
 - [ ] Room ops (room:op, room:deop, room:topic)

@@ -10,10 +10,10 @@ define([
 
     template: _.template(topicTemplate),
 
-    defaultText: '<em>no topic</em>',
+    defaultText: '<em>choose a topic</em>',
 
     events: {
-      'click .topic': 'showForm',
+      'click .topic-current': 'showForm',
       'click .topic-cancel': 'hideForm',
       'click .topic-submit': 'sendNewTopic',
       'keypress .topic-input': function(event) {
@@ -29,43 +29,46 @@ define([
     },
 
     render: function() {
-      this.$el.html(this.template());
+      this.$el.html(this.template({
+        isGranted: this.isGranted()
+      }));
 
       var currentTopic = this.model.get('topic');
+
+      // Default
       if (currentTopic == '') {
-        currentTopic = this.defaultText;
+        if (this.isGranted()) {
+          this.$el.find('.topic').html(this.defaultText);
+        } else {
+          this.$el.find('.topic').html('');
+        }
+      } else {
+        // Topic
+        this.$el.find('.topic')
+          .text(currentTopic)
+          .smilify()
+          .linkify();
       }
 
-      this.$el.find('.topic')
-        .text(currentTopic)
-        .smilify()
-        .linkify();
       this.$el.find('.topic-form').hide();
-
       return this;
     },
 
     updateTopic: function(room, topic, options) {
-      if (topic == '') {
-        topic = this.defaultText;
-      }
-      this.$el.find('.topic')
-        .text(topic)
-        .smilify()
-        .linkify();
+      this.render();
     },
 
     showForm: function() {
       if (!this.isGranted()) return false;
 
-      this.$el.find('.topic').hide();
+      this.$el.find('.topic-current').hide();
       this.$el.find('.topic-form').show();
       this.$el.find('.topic-input').val(this.model.get('topic')).focus();
     },
 
     hideForm: function() {
       this.$el.find('.topic-form').hide();
-      this.$el.find('.topic').show();
+      this.$el.find('.topic-current').show();
     },
 
     sendNewTopic: function(event) {
