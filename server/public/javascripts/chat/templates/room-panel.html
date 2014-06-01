@@ -1,8 +1,10 @@
 <div class="header">
+    <div class="avatar"><img src="<%= avatar %>"></div>
     <span class="name"><%= name %></span>
     <div class="topic-block"></div>
     <div class="owner">par <img src="<%= owner.avatar %>"><span class="username"><%= owner.username %></span></div>
     <span class="close glyphicon glyphicon-remove close-room" data-name="<%= name %>"></span>
+    <div class="color" style="background-color: <%= color %>"></div>
 </div><!-- /.header -->
 <div class="row row-content">
     <div class="col-content col-sm-9 col-md-9 col-lg-9">

@@ -17,6 +17,8 @@ module.exports = function(io, socket, data) {
     var welcome = {
       name: room.name,
       owner: {},
+      avatar: room.avatarUrl('medium'),
+      color: room.color,
       topic: room.topic,
       users: users
     };

@@ -36,7 +36,9 @@ define([
         id: room.name,
         name: room.name,
         owner: owner,
-        topic: room.topic
+        topic: room.topic,
+        avatar: room.avatar,
+        color: room.color
       });
 
       // Add users
