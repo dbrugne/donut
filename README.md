@@ -21,11 +21,16 @@ chat
 - [x] Avoid room:join/room:leave for socket that made the action to join/leave => broadcast call modified by receive "other" socket join notification
 - [x] Room profile form/page/modal
 - [x] Replace "no topic" by "Choose a topic" and add a pen icon (all clickable)
-- [ ] Permanent room
+- [x] Room avatar/color in header
+- [ ] Room link to profile in room header
+- [ ] Room link to profile in room tile on homepage
+- [ ] Room profile modal (with hyperlink to profile form) 
+- [x] Home replace topic by description
+- [ ] Room permanent switch in header
 - [ ] Room ops (room:op, room:deop, room:topic)
 
-- [ ] Use user color in "home", "onetoone" panel and tab and room user list
-- [ ] Auto-mention user in room message ($.fn.mentionize())
+- [ ] Use "user color" in "home", "onetoone" panel and tab and room user list
+- [ ] Use "room color" in room tab
 
 - [ ] Get last 50 viewed on onetoone opening
 - [ ] On onetoone focus trigger a (user:status<->user:status) to ask for connectivity and block message posting
@@ -69,6 +74,9 @@ chat
 - [ ] Help infobox on chat interface + help button
 - [ ] Help block with capture to explain the Facebook signup procedure (find best practices on internet)
 - [ ] First entrance 'tutorial' (5 slides) + button to replay
+
+**Chat**
+- [ ] Auto-mention user in room message ($.fn.mentionize())
 
 **Contents**
 - [ ] User list (avatar) on room tile

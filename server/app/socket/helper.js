@@ -313,7 +313,7 @@ module.exports = {
                     +"N'hésitez pas à rejoindre notre chat de support #Support "
                     +"pour toute question, remarque ou demande de fonctionnalité.";
 
-    var q = Room.find({}, 'name owner permanent topic avatar color')
+    var q = Room.find({}, 'name owner permanent topic description avatar color')
       .limit(10)
       .populate('owner', 'username avatar');
 
@@ -328,6 +328,7 @@ module.exports = {
           name: room.name,
           permanent: room.permanent,
           topic: room.topic,
+          description: room.description,
           color: room.color,
           avatar: room.avatarUrl('medium'),
           owner: {
