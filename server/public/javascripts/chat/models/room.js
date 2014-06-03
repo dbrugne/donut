@@ -28,6 +28,7 @@ define([
       this.listenTo(client, 'room:out', this.onOut);
       this.listenTo(client, 'room:topic', this.onTopic);
       this.listenTo(client, 'room:message', this.onMessage);
+      this.listenTo(client, 'room:permanent', this.onPermanent);
     },
     leave: function(model, collection, options) {
       client.leave(model.get('name'));
@@ -61,7 +62,6 @@ define([
       });
       this.trigger('inOut');
     },
-
     onOut: function(data) {
       if (data.name != this.get('name')) {
         return;
@@ -80,7 +80,6 @@ define([
       });
       this.trigger('inOut');
     },
-
     onTopic: function(data) {
       if (data.name != this.get('name')) {
         return;
@@ -93,6 +92,12 @@ define([
         avatar: data.avatar,
         topic: data.topic
       });
+    },
+    onPermanent: function(data) {
+      if (data.name != this.get('name')) {
+        return;
+      }
+      this.set('permanent', data.permanent);
     }
 
   });

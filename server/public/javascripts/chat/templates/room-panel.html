@@ -2,25 +2,27 @@
     <div class="avatar"><img src="<%= avatar %>"></div>
     <span class="name"><%= name %></span>
     <div class="topic-block"></div>
-    <div class="owner">par <img src="<%= owner.avatar %>"><span class="username"><%= owner.username %></span></div>
+    <div class="owner">par <img src="<%= owner.avatar %>"> <a class="username" href="#user/<%= owner.username %>" data-user-id="<%= owner.user_id %>"><%= owner.username %></a></div>
     <span class="close glyphicon glyphicon-remove close-room" data-name="<%= name %>"></span>
     <div class="actions">
-        <div class="permanent">
-            <label class="switch-light well">
-                <input type="checkbox" class="switch" <% if (permanent) { %>checked="checked"<% }; %>>
-            <span>
-                Wireless
-                <span>Off</span>
-                <span>On</span>
-            </span>
-                <a class="btn btn-primary"></a>
-            </label>
-        </div>
-        <script>
-            $(".chbx").change(function(){
-                alert('changed');
-            });
-        </script>
+        <% if (isGranted == true) { %>
+        <div class="settings">
+            <a href="#_" class="settings"><i class="fa fa-cog"></i> Settings</a>
+            <div class="content">
+                <div class="permanent">
+                    <label class="switch-light well">
+                        <input type="checkbox" class="switch" <% if (permanent) { %>checked="checked"<% }; %>>
+                    <span>
+                        Permanent
+                        <span>Non</span>
+                        <span>Oui</span>
+                    </span>
+                        <a class="btn btn-primary"></a>
+                    </label>
+                </div><!--/.permanent-->
+            </div><!--/.content-->
+        </div><!--/.settings-->
+        <% }; %>
     </div>
     <div class="color" style="background-color: <%= color %>"></div>
 </div><!-- /.header -->

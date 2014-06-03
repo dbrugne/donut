@@ -27,7 +27,6 @@ define([
       this.listenTo(this.model, 'change:topic', this.updateTopic);
       this.render();
     },
-
     render: function() {
       this.$el.html(this.template({
         isGranted: this.isGranted()
@@ -53,11 +52,9 @@ define([
       this.$el.find('.topic-form').hide();
       return this;
     },
-
     updateTopic: function(room, topic, options) {
       this.render();
     },
-
     showForm: function() {
       if (!this.isGranted()) return false;
 
@@ -65,12 +62,10 @@ define([
       this.$el.find('.topic-form').show();
       this.$el.find('.topic-input').val(this.model.get('topic')).focus();
     },
-
     hideForm: function() {
       this.$el.find('.topic-form').hide();
       this.$el.find('.topic-current').show();
     },
-
     sendNewTopic: function(event) {
       if (!this.isGranted()) return false;
 
@@ -82,7 +77,6 @@ define([
       this.$el.find('.topic-input').val('');
       this.hideForm();
     },
-
     isGranted: function() {
       if (this.model.get('owner').get('user_id') == currentUser.get('user_id')) {
         return true;
