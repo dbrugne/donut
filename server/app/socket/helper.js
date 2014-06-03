@@ -324,6 +324,14 @@ module.exports = {
 
       for (var i=0; i<rooms.length; i++) {
         var room = rooms[i];
+        var ownerData = {};
+        if (room.owner != undefined) {
+          ownerData = {
+            user_id: room.owner._id.toString(),
+            username: room.owner.username,
+            avatar: room.owner.avatar
+          };
+        }
         var roomData = {
           name: room.name,
           permanent: room.permanent,
@@ -331,11 +339,7 @@ module.exports = {
           description: room.description,
           color: room.color,
           avatar: room.avatarUrl('medium'),
-          owner: {
-            user_id: room.owner._id.toString(),
-            username: room.owner.username,
-            avatar: room.owner.avatar
-          },
+          owner: ownerData,
           users: 0
         };
 
