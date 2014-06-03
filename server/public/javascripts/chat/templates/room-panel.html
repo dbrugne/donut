@@ -24,7 +24,7 @@
         </div><!--/.settings-->
         <% }; %>
     </div>
-    <div class="color" style="background-color: <%= color %>"></div>
+    <div class="color" style="<% if (color) { %>background-color: <%= color %><% }; %>"></div>
 </div><!-- /.header -->
 <div class="row row-content">
     <div class="col-content col-sm-9 col-md-9 col-lg-9">
