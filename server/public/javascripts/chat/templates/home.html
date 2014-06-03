@@ -10,10 +10,10 @@
     <div class="tile">
         <div class="cover" style="background-color: <% if (room.color) { print(room.color); } else { print('#ccc'); } %>"></div>
         <div class="content">
-            <img class="avatar" src="<%= room.avatar %>">
+            <img class="avatar open-room-profile" data-room-name="<%= room.name %>" src="<%= room.avatar %>">
             <div class="title">
-                <span class="name"><%= room.name %></span>
-                <span class="owner">by <%= room.owner.username %></span>
+                <span class="name open-room-profile" data-room-name="<%= room.name %>"><%= room.name %></span>
+                <span class="owner open-user-profile" data-user-id="<%= room.owner.user_id %>">by <%= room.owner.username %></span>
             </div>
             <div class="description">
                 <% if (room.description && room.description != '') { %>

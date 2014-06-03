@@ -68,6 +68,10 @@ define([
         that.debug(['io:in:room:message', data]);
         that.trigger('room:message', data);
       });
+      this.socket.on('room:profile', function(data) {
+        that.debug(['io:in:room:profile', data]);
+        that.trigger('room:profile', data);
+      });
       this.socket.on('room:searchsuccess', function(data) {
         that.debug(['io:in:room:searchsuccess', data]);
         that.trigger('room:searchsuccess', data);
@@ -152,6 +156,11 @@ define([
       var data = {name: name, message: message};
       this.socket.emit('room:message', data);
       this.debug(['io:out:room:message', data]);
+    },
+    roomProfile: function(name) {
+      var data = {name: name};
+      this.socket.emit('room:profile', data);
+      this.debug(['io:out:room:profile', data]);
     },
     roomSearch: function(search) {
       var data = {search: search};

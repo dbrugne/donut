@@ -1,6 +1,6 @@
 <div class="header">
-    <div class="avatar"><img src="<%= avatar %>"></div>
-    <span class="name"><%= name %></span>
+    <div class="avatar open-room-profile" data-room-name="<%= name %>"><img src="<%= avatar %>"></div>
+    <span class="name open-room-profile" data-room-name="<%= name %>"><%= name %></span>
     <span class="owner">par <img src="<%= owner.avatar %>"> <a class="username" href="#user/<%= owner.username %>" data-user-id="<%= owner.user_id %>"><%= owner.username %></a></span>
     <div class="topic-block"></div>
     <div class="actions">

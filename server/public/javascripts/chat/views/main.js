@@ -42,6 +42,7 @@ define([
       'click #search-user-link':          'openSearchUserModal',
       'click .open-user-profile':         'openUserProfile',
       'dblclick .dbl-open-user-profile':  'openUserProfile',
+      'click .open-room-profile':         'openRoomProfile',
       'click .close-room':                'onCloseDiscussion',
       'click .close-onetoone':            'onCloseDiscussion'
     },
@@ -129,9 +130,18 @@ define([
     openUserProfile: function(event) {
       this._handleAction(event);
       var userId = $(event.currentTarget).data('userId');
-      if (userId) {
+      if (userId)
         client.userProfile(userId);
-      }
+
+      return false; // stop propagation
+    },
+
+    openRoomProfile: function(event) {
+      this._handleAction(event);
+      var roomName = $(event.currentTarget).data('roomName');
+      if (roomName)
+        client.roomProfile(roomName);
+
       return false; // stop propagation
     },
 

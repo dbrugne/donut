@@ -5,9 +5,9 @@
         <div class="tile">
             <div class="cover" style="background-color: <%= userOnline.color %>"></div>
             <div class="content">
-                <img class="avatar" src="<%= userOnline.avatar %>">
+                <img class="avatar open-user-profile" data-user-id="<%= userOnline.user_id %>" src="<%= userOnline.avatar %>">
                 <div class="title">
-                    <span class="name"><%= userOnline.username %></span>
+                    <span class="name open-user-profile" data-user-id="<%= userOnline.user_id %>"><%= userOnline.username %></span>
                     <span class="location"><%= userOnline.location %></span>
                 </div>
                 <div class="description">

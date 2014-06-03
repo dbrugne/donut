@@ -22,26 +22,26 @@ chat
 - [x] Room profile form/page/modal
 - [x] Replace "no topic" by "Choose a topic" and add a pen icon (all clickable)
 - [x] Room avatar/color in header
-- [ ] Room link to profile in room header
-- [ ] Room link to profile in room tile on homepage
-- [ ] Room profile modal (with hyperlink to profile form) 
+- [x] Room link to profile in room header
+- [x] Room link to profile in room tile on homepage
+- [x] Room profile modal 
 - [x] Home replace topic by description
 - [x] Room permanent switch in header
-- [ ] Room ops (room:op, room:deop, room:topic)
- 
 - [ ] Use "user color" in "home", "onetoone" panel and tab and room user list
 - [ ] Use "room color" in room tab
-
 - [ ] Get last 50 viewed on onetoone opening
 - [ ] On onetoone focus trigger a (user:status<->user:status) to ask for connectivity and block message posting
-
 - [ ] Replace room:out by user:disconnect sometimes
 - [ ] Change the to server->client messages : room:join/leave and user:open/close (for something like ?)
-
+- [ ] Room profile in a popin
+- [ ] User profile in a popin
+- [ ] Room ops (room:op, room:deop, room:topic)
 - [ ] Use tile template in user:search and room:search and move search in page (as for home)
-
 - [ ] Upgrade socket.io to 1.0
-- [ ] Add a check on connection to verify is user have "username"
+  - [ ] Use redis for sessions (for socket and express)
+  - [ ] user:nickname, user:avatar, user:color messages
+  - [ ] room:avatar, user:color messages
+  - [ ] Add a check on connection to verify is user have "username"
 
 **User**
 - [ ] Add help text for each field
