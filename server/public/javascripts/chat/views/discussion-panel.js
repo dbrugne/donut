@@ -58,6 +58,7 @@ define([
       var html = this.template(this._renderData());
       this.$el.html(html);
       this.$el.hide();
+      this._render();
       return this;
     },
 
