@@ -164,7 +164,14 @@ module.exports = {
     if (this.roomSockets(io, name).length < 1) {
       var that = this;
       Room.findOneAndRemove(
-        {$and: [{name: name}, {permanent: false}]},
+        {
+          $and: [
+            {name: name},
+            {$or: [
+              {permanent: { $exists: false }},
+              {permanent: false}
+            ]}
+          ]},
         {select: 'name'},
         function(err, room) {
           if (err)
@@ -313,7 +320,7 @@ module.exports = {
                     +"N'hésitez pas à rejoindre notre chat de support #Support "
                     +"pour toute question, remarque ou demande de fonctionnalité.";
 
-    var q = Room.find({}, 'name owner permanent topic description avatar color')
+    var q = Room.find({permanent: true}, 'name owner permanent topic description avatar color')
       .limit(10)
       .populate('owner', 'username avatar');
 
