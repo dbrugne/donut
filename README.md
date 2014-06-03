@@ -26,7 +26,7 @@ chat
 - [ ] Room link to profile in room tile on homepage
 - [ ] Room profile modal (with hyperlink to profile form) 
 - [x] Home replace topic by description
-- [ ] Room permanent switch in header
+- [x] Room permanent switch in header
 - [ ] Room ops (room:op, room:deop, room:topic)
  
 - [ ] Use "user color" in "home", "onetoone" panel and tab and room user list

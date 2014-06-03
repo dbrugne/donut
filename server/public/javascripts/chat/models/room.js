@@ -14,7 +14,7 @@ define([
         topic: '',
         permanent: false,
         avatar: '',
-        color: '#fff',
+        color: '',
         type: 'room', // @todo : remove
         focused: false,
         unread: 0

@@ -2,14 +2,19 @@ var helper = require('./helper');
 
 module.exports = function(io, socket, data) {
 
+  // Validate input
+  if (data.permanent !== true && data.permanent !== false)
+    return helper.handleError('Invalid permanent value: '+data.permanent);
+
   // Find and return room model
   helper.findRoom(data.name, handleSuccess, helper.handleError);
 
   function handleSuccess(room) {
 
-    // @todo : check that user is owner
+    // Is user the room owner
+    if (!room.owner._id || room.owner._id.toString() != socket.getUserId())
+      return helper.handleError('This user is not the owner of '+data.name);
 
-    // @todo : check that data.permanent is boolean
     var bool = (data.permanent === true)
       ? true
       : false;

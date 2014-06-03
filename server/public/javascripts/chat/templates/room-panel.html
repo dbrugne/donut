@@ -1,28 +1,15 @@
 <div class="header">
     <div class="avatar"><img src="<%= avatar %>"></div>
     <span class="name"><%= name %></span>
+    <span class="owner">par <img src="<%= owner.avatar %>"> <a class="username" href="#user/<%= owner.username %>" data-user-id="<%= owner.user_id %>"><%= owner.username %></a></span>
     <div class="topic-block"></div>
-    <div class="owner">par <img src="<%= owner.avatar %>"> <a class="username" href="#user/<%= owner.username %>" data-user-id="<%= owner.user_id %>"><%= owner.username %></a></div>
-    <span class="close glyphicon glyphicon-remove close-room" data-name="<%= name %>"></span>
     <div class="actions">
+        <span class="permanent-label"><i class="fa fa-lock"></i> Permanent: <strong><% if (permanent) { %>oui<% } else { %>non<% }; %></strong></span>
         <% if (isGranted == true) { %>
-        <div class="settings">
-            <a href="#_" class="settings"><i class="fa fa-cog"></i> Settings</a>
-            <div class="content">
-                <div class="permanent">
-                    <label class="switch-light well">
-                        <input type="checkbox" class="switch" <% if (permanent) { %>checked="checked"<% }; %>>
-                    <span>
-                        Permanent
-                        <span>Non</span>
-                        <span>Oui</span>
-                    </span>
-                        <a class="btn btn-primary"></a>
-                    </label>
-                </div><!--/.permanent-->
-            </div><!--/.content-->
-        </div><!--/.settings-->
+        <input type="checkbox" class="permanent-switch" <% if (permanent) { %>checked<% }; %>>
+        <span class="settings" ><i class="fa fa-cog"></i> Settings</span>
         <% }; %>
+        <span class="close glyphicon glyphicon-remove close-room" data-name="<%= name %>"></span>
     </div>
     <div class="color" style="<% if (color) { %>background-color: <%= color %><% }; %>"></div>
 </div><!-- /.header -->
