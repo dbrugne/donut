@@ -26,8 +26,8 @@
         <div class="controls">
             <label class="control-labels" for="description-field">Description</label>
             <div class="control-fields">
-                <textarea class="form-control" id="description-field" name="room[fields][description]" placeholder="Describe in few words">{{roomFields.description}}</textarea>
-                <p class="help-block">Optional</p>
+                <textarea class="form-control" id="description-field" name="room[fields][description]" placeholder="Describe in few words" maxlength="200">{{roomFields.description}}</textarea>
+                <p class="help-block">Optional, max 200 char.</p>
             </div>
         </div>
         <div class="controls">
@@ -52,6 +52,7 @@
                 <!-- Avatar upload form -->
                 <div class="uploader-form">
                     {{& uploadTag}} (<a href="#_" class="uploader-cancel-form">cancel</a>)
+                    <p class="help-block">Should be an image file (.jpeg, .jpg, .png or .gif), will be cropped to 150x150px format.</p>
                 </div>
                 <!-- Avatar upload progress -->
                 <div class="uploader-progress">
@@ -71,6 +72,7 @@
                 <div class="color-input">
                     <div class="preview"></div>
                     #<input type="text" id="color-field" name="room[fields][color]" value="{{roomFields.color}}">
+                    <p class="help-block">Optional</p>
                 </div>
             </div>
         </div>

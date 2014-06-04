@@ -26,22 +26,22 @@
         <div class="controls">
             <label class="control-labels" for="bio-field">Bio</label>
             <div class="control-fields">
-                <textarea class="form-control" id="bio-field" name="user[fields][bio]" placeholder="Describe in few words">{{userFields.bio}}</textarea>
-                <p class="help-block">Optional</p>
+                <textarea class="form-control" id="bio-field" name="user[fields][bio]" placeholder="Describe in few words" maxlength="200">{{userFields.bio}}</textarea>
+                <p class="help-block">Optional, max 200 char.</p>
             </div>
         </div>
         <div class="controls">
             <label class="control-labels" for="location-field">Location</label>
             <div class="control-fields">
-                <input type="text" class="form-control" id="location-field" name="user[fields][location]" placeholder="Town, Country" value="{{userFields.location}}">
-                <p class="help-block">Optional</p>
+                <input type="text" class="form-control" id="location-field" name="user[fields][location]" placeholder="Town, Country" value="{{userFields.location}}" maxlength="70">
+                <p class="help-block">Optional, max 70 char.</p>
             </div>
         </div>
         <div class="controls">
             <label class="control-labels" for="website-field">Website</label>
             <div class="control-fields">
-                <input type="url" class="form-control" id="website-field" name="user[fields][website]" placeholder="Your website URL" value="{{userFields.website}}">
-                <p class="help-block">Optional</p>
+                <input type="text" class="form-control" id="website-field" name="user[fields][website]" placeholder="Your website URL" value="{{userFields.website}}">
+                <p class="help-block">Optional, should be a valid website address (with or without http://)</p>
             </div>
         </div>
         <div class="controls">
@@ -65,6 +65,7 @@
                 <!-- Avatar upload form -->
                 <div class="uploader-form">
                     {{& uploadTag}} (<a href="#_" class="uploader-cancel-form">cancel</a>)
+                    <p class="help-block">Should be an image file (.jpeg, .jpg, .png or .gif), will be cropped to 150x150px format.</p>
                 </div>
                 <!-- Avatar upload progress -->
                 <div class="uploader-progress">
@@ -84,6 +85,7 @@
                 <div class="color-input">
                     <div class="preview"></div>
                     #<input type="text" id="color-field" name="user[fields][color]" value="{{userFields.color}}">
+                    <p class="help-block">Optional</p>
                 </div>
             </div>
         </div>
