@@ -16,6 +16,7 @@ router.get('/account', isLoggedIn, function(req, res) {
     for (var i=0; i<rooms.length; i++) {
       var _json = rooms[i].toJSON();
       _json.uri = _json.name.replace('#', '');
+      _json.avatar = rooms[i].avatarUrl('small');
       json.push(_json);
     }
 
@@ -25,7 +26,9 @@ router.get('/account', isLoggedIn, function(req, res) {
     });
   };
 
-  Room.find({owner: req.user._id.toString()}, onSuccess);
+  Room.find({owner: req.user._id.toString()})
+    .populate('owner', 'username avatar')
+    .exec(onSuccess);
 
 });
 

@@ -96,7 +96,7 @@
             <div class="well">
                 <h3><span class="fa fa-glass"></span> Les rooms dont vous êtes propriétaire</h3>
                 {{#rooms}}
-                    <a href="/room/{{uri}}">{{name}}</a> - {{topic}} - {{owner}} - {{avatar}} - {{descript}} - {{color}}<br>
+                    <a href="/room/{{uri}}"><img src="{{avatar}}">{{name}}</a> par {{owner.username}}<br>
                 {{/rooms}}
             </div>
         </div>
