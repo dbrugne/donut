@@ -123,7 +123,7 @@ router.route('/room/edit/:room')
           return res.redirect('/');
         } else {
           req.flash('success', 'Your profile was updated');
-          var destination = '/room/'+room.name.replace('#', '');
+          var destination = '/room/edit/'+room.name.replace('#', '');
           if (req.query.embed == '1') destination += '?embed=1';
           res.redirect(destination);
         }

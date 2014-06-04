@@ -126,8 +126,8 @@ router.route('/account/edit/profile')
           return res.redirect('/');
         } else {
           req.flash('success', 'Your profile was updated');
-          var destination = '/account';
-          if (req.query.embed == '1') destination = '/account/edit/profile?embed=1';
+          var destination = '/account/edit/profile';
+          if (req.query.embed == '1') destination += '?embed=1';
           res.redirect(destination);
         }
       });
