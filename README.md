@@ -33,7 +33,6 @@ chat
 - Improve usage
 - [ ] Room profile form in a popin
 - [ ] User profile form in a popin
-- [ ] Use tile template in user:search and room:search and move search in page (as for home)
 - [ ] Get last 50 viewed on onetoone opening
 - [ ] On onetoone focus trigger a (user:status<->user:status) to ask for connectivity and block message posting
 - Improve protocol
@@ -53,14 +52,11 @@ chat
 - [x] Add accepted format and expected size on file uploader + test before uploading
 - [x] Add "left characters" indication on "bio" field
 - [x] Make website clickable on user and room profile page (page and modal)
-- [ ] Add user rooms on user profile
-- [ ] Add rooms users on room profile
 - [ ] Add "your rooms" list on account page
 - [ ] Forgotten password (https://github.com/substack/node-password-reset && http://stackoverflow.com/questions/20277020/reset-change-password-in-nodejs-with-passportjs)
 - [ ] Welcome email on signup
 
 **Site**
-- [ ] Global theme
 - [ ] Google Analytics (HP, interface de chat)
 - [ ] Traduction fr
 - [ ] Test it on IE8-11/FF
@@ -85,11 +81,19 @@ chat
 **Chat**
 - [ ] Auto-mention user in room message ($.fn.mentionize())
 
-**Contents**
-- [ ] User list (avatar) on room tile
-- [ ] Room list on user tile
-- [ ] User list on room profile
-- [ ] Room list on user profile
+**Room/user design**
+- [ ] Room
+  - [ ] Tile
+    - [ ] User list (avatar list) = chat homepage + chat search + account page
+  - [ ] Profile
+    - [ ] User list
+- [ ] User
+  - [ ] Tile
+    - [ ] Room list = chat homepage
+  - [ ] Profile
+    - [ ] Room list
+- [ ] Use tiles in user:search and room:search and move search in page (as for home)
+- [ ] Global theme integration
 
 ## Next releases
 
