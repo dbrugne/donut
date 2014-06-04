@@ -50,7 +50,7 @@ var renderForm = function(req, res) {
 };
 
 var validateInput = function(req, res, next) {
-  req.checkBody(['user', 'fields','bio'],'Bio should be 70 characters max.').isLength(0, 200);
+  req.checkBody(['user', 'fields','bio'],'Bio should be 200 characters max.').isLength(0, 200);
   req.checkBody(['user', 'fields','location'],'Location should be 70 characters max.').isLength(0, 70);
 
   if (req.body.user.fields.color && '' != req.body.user.fields.color)
