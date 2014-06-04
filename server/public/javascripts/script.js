@@ -38,6 +38,9 @@ $(document).ready(function() {
     }).keyup(function(){
       $(this).colpickSetColor(this.value);
     });
+    $('.color-input .preview').click(function() {
+      $('#color-field').trigger('click');
+    });
 
     /**
      * Default avatar display
