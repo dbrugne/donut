@@ -22,6 +22,18 @@ $(document).ready(function() {
   if ($('#account-edit').length || $('#room-edit').length) {
 
     /**
+     * Textarea counter
+     */
+    $("#bio-field").maxlength({
+      counterContainer: $("#bio-field").siblings('.help-block').find('.counter'),
+      text: '<strong>%left</strong> left'
+    });
+    $("#description-field").maxlength({
+      counterContainer: $("#description-field").siblings('.help-block').find('.counter'),
+      text: '<strong>%left</strong> left'
+    });
+
+    /**
      * Color picker
      */
     var defaultColor = $('#color-field').val();

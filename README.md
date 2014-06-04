@@ -51,7 +51,7 @@ chat
 - [x] Make color picker open on click on preview
 - [x] Softness the hyperlink validation on profile
 - [x] Add accepted format and expected size on file uploader + test before uploading
-- [ ] Add "left characters" indication on "bio" field
+- [x] Add "left characters" indication on "bio" field
 - [ ] Make website clickable on profile page (page and modal)
 - [ ] Add user rooms on user profile
 - [ ] Add rooms users on room profile
