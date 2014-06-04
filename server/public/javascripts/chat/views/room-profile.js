@@ -26,7 +26,9 @@ define([
 
     render: function(room) {
       var html = this.template({room: room});
-      this.$el.find('.modal-body').first().html(html);
+      var $body = this.$el.find('.modal-body').first();
+      $body.html(html);
+      $body.find('.website').linkify();
       return this;
     },
 

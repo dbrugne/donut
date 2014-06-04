@@ -12,8 +12,12 @@ router.get('/room/:room', function(req, res) {
     res.render('room_profile', {
       room: req.room,
       avatarUrl: req.room.avatarUrl('large'),
+      ownerAvatarUrl: req.user.avatarUrl('small'),
       isOwner: isOwner,
-      uri: req.room.name.replace('#', '')
+      uri: req.room.name.replace('#', ''),
+      scripts: [
+        {src: '/javascripts/plugins/jquery.linkify.min.js'}
+      ]
     });
 });
 

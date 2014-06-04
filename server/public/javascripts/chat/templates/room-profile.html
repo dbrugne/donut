@@ -24,7 +24,9 @@
             <% if (room.permanent) { %><i class="fa fa-certificate"></i> permanent<% } else { %>volatile<% }; %>
 
             <div>
-                <% if (room.website) { %><%= room.website %><% }; %>
+                <% if (room.website) { %>
+                <span class="website"><%= room.website %></span>
+                <% }; %>
             </div>
 
             <a href="#room/<%= room.name %>" class="btn btn-primary join">rejoindre</a>

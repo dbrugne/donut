@@ -16,7 +16,9 @@
             <div>
                 <% if (user.location) { %><%= user.location %><% }; %>
                 <% if (user.location && user.website) { %> - <% }; %>
-                <% if (user.website) { %><%= user.website %><% }; %>
+                <% if (user.website) { %>
+                <span class="website"><%= user.website %></span>
+                <% }; %>
             </div>
 
             <% if (user.status == 'online') { %>

@@ -20,11 +20,15 @@
             {{#room.permanent}}<i class="fa fa-certificate"></i> permanent{{/room.permanent}}
             {{^room.permanent}}volatile{{/room.permanent}}
 
-            <div>
-                {{#room.owner}}{{room.owner.username}} - {{room.owner.avatar}}{{/room.owner}}
+            <div class="owner">
+                {{#room.owner}}
+                <a href="/user/{{room.owner.username}}">
+                    {{room.owner.username}} <img src="{{ownerAvatarUrl}}">
+                </a>
+                {{/room.owner}}
             </div>
 
-            <div>
+            <div class="website">
                 {{#room.website}}{{room.website}}{{/room.website}}
             </div>
 

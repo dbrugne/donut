@@ -52,7 +52,7 @@ chat
 - [x] Softness the hyperlink validation on profile
 - [x] Add accepted format and expected size on file uploader + test before uploading
 - [x] Add "left characters" indication on "bio" field
-- [ ] Make website clickable on profile page (page and modal)
+- [x] Make website clickable on user and room profile page (page and modal)
 - [ ] Add user rooms on user profile
 - [ ] Add rooms users on room profile
 - [ ] Add "your rooms" list on account page

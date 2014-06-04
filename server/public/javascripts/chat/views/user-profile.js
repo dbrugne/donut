@@ -26,7 +26,9 @@ define([
 
     render: function(user) {
       var html = this.template({user: user});
-      this.$el.find('.modal-body').first().html(html);
+      var $body = this.$el.find('.modal-body').first();
+      $body.html(html);
+      $body.find('.website').linkify();
       return this;
     },
 
