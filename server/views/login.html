@@ -1,35 +1,51 @@
-<div class="col-sm-6 col-sm-offset-3">
+<div id="login">
 
     <h1><span class="fa fa-sign-in"></span> Login</h1>
 
-    <a href="/login/facebook" class="btn btn-primary btn-lg"><span class="fa fa-facebook"></span> Sign in with <strong>Facebook</strong></a>
-    <p>OR</p>
-    <form action="/login" method="post" role="form" class="forms">
+    <div class="login-form">
 
-        <input type="hidden" name="_csrf" value="{{token}}">
-
-        {{#is_errors}}
-        <div class="errors">
-            {{#errors}}{{msg}}<br>{{/errors}}
+        <div class="method-facebook">
+            <a href="/login/facebook" class="facebook-button"><span class="fa fa-facebook"></span> Sign in with <strong>Facebook</strong></a>
         </div>
-        {{/is_errors}}
 
-        <div class="form-group">
-            <input type="text" id="signin-email" class="form-control" name="email" placeholder="Email" value="{{userFields.email}}">
-        </div>
-        <div class="form-group">
-            <input type="password"  id="signin-password" class="form-control" name="password" placeholder="Password">
-        </div>
-        <div class="checkbox">
-            <label>
-                <input type="checkbox" checked="checked"> Remember me
-            </label>
-        </div>
-        <button type="submit" class="btn btn-warning btn-lg">Sign in</button>
-    </form>
+        <div class="method-or">OR</div>
 
-    <hr>
+        <div class="method-password">
+            <form action="/login" method="post" role="form" class="forms">
 
-    <p>Need an account? <a href="/signup">Signup</a></p>
+                <input type="hidden" name="_csrf" value="{{token}}">
+
+                {{#is_errors}}
+                <div class="errors">
+                    {{#errors}}{{msg}}<br>{{/errors}}
+                </div>
+                {{/is_errors}}
+
+                <div class="form-group">
+                    Use your email and password:
+                </div>
+                <div class="form-group">
+                    <input type="text" id="signin-email" class="form-control" name="email" placeholder="Email" value="{{userFields.email}}">
+                </div>
+                <div class="form-group">
+                    <input type="password"  id="signin-password" class="form-control" name="password" placeholder="Password">
+                </div>
+                <div class="form-group">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" checked="checked"> Remember me
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="submit">Sign in</button>
+                    <a href="/reset-password" class="forgot">Mot de passe oublié ?</a>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+    <p>Need an account? <a href="/signup">Join us</a></p>
 
 </div>

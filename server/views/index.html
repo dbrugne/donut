@@ -1,46 +1,58 @@
-<div class="row">
+<div id="home">
 
-    {{#message}}
-    <div class="alert alert-danger">{{message}}</div>
-    {{/message}}
+    <div class="row">
+        {{#message}}
+        <div class="alert alert-danger">{{message}}</div>
+        {{/message}}
 
-    <div class="col-lg-7 well" style="height: 270px; background-color: lightyellow; text-align: center;">
-        <h1>What is it?</h1>
-        <p>Create a room to discuss with your friends, your community, your family...</p>
-    </div>
-    <div class="col-lg-5">
-        <div class="well">
-            <h2><span class="fa fa-sign-in"></span> Login</h2>
+        <div class="col-lg-7 well" style="height: 270px; background-color: lightyellow; text-align: center;">
+            <h1>What is it?</h1>
+            <p>Create a room to discuss with your friends, your community, your family...</p>
+        </div>
+        <div class="col-lg-5">
+            <div class="login-form">
+                <h2><span class="fa fa-sign-in"></span> Identifiez-vous</h2>
 
-            <a href="/login/facebook" class="btn btn-primary btn-lg"><span class="fa fa-facebook"></span> Sign in with <strong>Facebook</strong></a>
-            <p>OR</p>
-            <form action="/login" method="post" role="form">
-
-                <input type="hidden" name="_csrf" value="{{token}}">
-
-                <div class="form-group">
-                    <input type="text" id="signin-email" class="form-control" name="email" placeholder="Email or Username">
+                <div class="method-facebook">
+                    <a href="/login/facebook" class="facebook-button"><span class="fa fa-facebook"></span> Sign in with <strong>Facebook</strong></a>
                 </div>
-                <div class="form-group">
-                    <input type="password"  id="signin-password" class="form-control" name="password" placeholder="Password">
+                <div class="method-or">OU</div>
+                <div class="method-password">
+                    <form action="/login" method="post" role="form">
+
+                        <input type="hidden" name="_csrf" value="{{token}}">
+
+                        <div class="form-group">
+                            <input type="text" id="signin-email" class="form-control" name="email" placeholder="Email or Username">
+                        </div>
+                        <div class="form-group">
+                            <input type="password"  id="signin-password" class="form-control" name="password" placeholder="Password">
+                        </div>
+                        <div class="form-group">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" checked="checked"> Se souvenir de moi
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="submit">S'identifier</button>
+                            <a href="/reset-password" class="forgot">Mot de passe oublié ?</a>
+                        </div>
+                    </form>
                 </div>
-                <div class="checkbox">
-                    <label>
-                        <input type="checkbox" checked="checked"> Remember me
-                    </label>
-                </div>
-                <button type="submit" class="btn btn-warning">Sign in</button>
-            </form>
+            </div>
         </div>
     </div>
-</div>
-<div class="row">
-    <div class="col-lg-12" style="height: 200px; background-color: lightblue; text-align: center;">
-        <h1>Featured content!</h1>
+    <div class="row">
+        <div class="col-lg-12" style="height: 200px; background-color: lightblue; text-align: center;">
+            <h1>Featured content!</h1>
+        </div>
     </div>
-</div>
-<div class="row">
-    <div class="col-lg-12" style="height: 200px; margin-top: 15px; background-color: lightgreen; text-align: center;">
-        <h1>Other stuff!</h1>
+    <div class="row">
+        <div class="col-lg-12" style="height: 200px; margin-top: 15px; background-color: lightgreen; text-align: center;">
+            <h1>Other stuff!</h1>
+        </div>
     </div>
+
 </div>
