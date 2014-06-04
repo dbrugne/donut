@@ -117,14 +117,14 @@ router.route('/room/edit/:room')
 
       // Save
       room.save(function(err) {
+        var destination = '/room/edit/'+room.name.replace('#', '');
+        if (req.query.embed == '1') destination += '?embed=1';
         if (err) {
           console.log(err);
           req.flash('error', err)
-          return res.redirect('/');
+          return res.redirect(destination);
         } else {
           req.flash('success', 'Your profile was updated');
-          var destination = '/room/edit/'+room.name.replace('#', '');
-          if (req.query.embed == '1') destination += '?embed=1';
           res.redirect(destination);
         }
       });

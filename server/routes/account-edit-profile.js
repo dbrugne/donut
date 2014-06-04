@@ -120,14 +120,14 @@ router.route('/account/edit/profile')
 
       // Save
       user.save(function(err) {
+        var destination = '/account/edit/profile';
+        if (req.query.embed == '1') destination += '?embed=1';
         if (err) {
           console.log(err);
           req.flash('error', err)
-          return res.redirect('/');
+          return res.redirect(destination);
         } else {
           req.flash('success', 'Your profile was updated');
-          var destination = '/account/edit/profile';
-          if (req.query.embed == '1') destination += '?embed=1';
           res.redirect(destination);
         }
       });
