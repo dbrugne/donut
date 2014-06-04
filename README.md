@@ -47,14 +47,17 @@ chat
   - [ ] Add a check on connection to verify is user have "username"
 
 **User**
-- [ ] Add help text for each field
+- [x] Add help text for each field
 - [x] Make color picker open on click on preview
+- [x] Softness the hyperlink validation on profile
+- [x] Add accepted format and expected size on file uploader + test before uploading
+- [ ] Add "left characters" indication on "bio" field
+- [ ] Make website clickable on profile page (page and modal)
+- [ ] Add user rooms on user profile
+- [ ] Add rooms users on room profile
 - [ ] Add "your rooms" list on account page
 - [ ] Forgotten password (https://github.com/substack/node-password-reset && http://stackoverflow.com/questions/20277020/reset-change-password-in-nodejs-with-passportjs)
 - [ ] Welcome email on signup
-- [ ] Softness the hyperlink validation on profile => make it clickable on profile page
-- [ ] Add accepted format and expected size on file uploader + test before uploading
-- [ ] Add "left characters" indication on "bio" field
 
 **Site**
 - [ ] Global theme
