@@ -10,7 +10,7 @@
     <![endif]-->
     <meta http-equiv="X-UA-Compatible" content="IE=Edge"/><!-- Avoid IE compatibility mode -->
 </head>
-<body>
+<body class="{{#embed}}embed{{/embed}}">
 {{^embed}}
 <div class="navbar navbar-default navbar-fixed-top" role="navigation">
     <div class="container">
@@ -68,12 +68,11 @@
     {{{ yield }}}
     </div>
 
+{{^embed}}
     <div id="footer">
         <hr />
         {{title}} - powered with heart
     </div>
-
-{{^embed}}
 </div><!-- /.container -->
 {{/embed}}
 <script src="/javascripts/vendor/jquery/dist/jquery.min.js"></script>
