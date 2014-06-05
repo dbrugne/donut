@@ -147,3 +147,9 @@ Ideas:
 - [ ] Public mod for a room (all the content is visible by anyone)
 - [ ] Pin a message
 - [ ] Hyperlink analyse and open graph extraction with hover popin in rooms and discussions (specific template for YouTube content)
+
+## Project
+
+- [ ] Run OPQAST security checklist
+- [ ] Mocha/Chai + casperjs tests
+- [ ] Uniformize back and front template engine / i18n
