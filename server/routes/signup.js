@@ -6,7 +6,6 @@ var validateInput = function(req, res, next) {
   req.checkBody('email','Email should be a valid address.').isEmail();
   req.checkBody('password','Password should be at least 6 characters.').isLength(6, 50);
   if (req.validationErrors()) {
-    console.log(req.validationErrors());
     return res.render('signup', {
       userFields: {email: req.body.email},
       is_errors: true,

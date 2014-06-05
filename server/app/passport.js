@@ -1,6 +1,7 @@
 var LocalStrategy = require('passport-local').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
 var User = require('./models/user');
+var welcomeEmail = require('./welcome-email');
 
 module.exports = function (passport, facebookConfiguration) {
 
@@ -37,51 +38,49 @@ module.exports = function (passport, facebookConfiguration) {
       // asynchronous
       // User.findOne wont fire unless data is sent back
       process.nextTick(function () {
-        if (!req.user) {
 
-          // find a user whose email is the same as the forms email
-          // we are checking to see if the user trying to login already exists
-          email = email.toLowerCase();
-          User.findOne({ 'local.email': email }, function (err, user) {
-            // if there are any errors, return the error
-            if (err)
-              return done(err);
-
-            // check to see if theres already a user with that email
-            if (user) {
-              return done(null, false, req.flash('error', 'That email is already taken.'));
-            } else {
-              // if there is no user with that email
-              // create the user
-              var newUser = new User();
-
-              // set the user's local credentials
-              newUser.local.email = email;
-              newUser.local.password = newUser.generateHash(password);
-
-              // save the user
-              newUser.save(function (err) {
-                if (err)
-                  throw err;
-                return done(null, newUser);
-              });
-            }
-
-          });
-
-        } else {
-
+        if (req.user) {
+          // happen for a user already authenticated with another method (e.g.: Facebook)
           var user = req.user;
           user.local.email = email;
           user.local.password = user.generateHash(password);
           user.save(function (err) {
             if (err)
               throw err;
+
             return done(null, user);
           });
 
+          return;
         }
 
+        // find a user whose email is the same as the forms email
+        // we are checking to see if the user trying to login already exists
+        email = email.toLowerCase();
+        User.findOne({ 'local.email': email }, function (err, user) {
+          // if there are any errors, return the error
+          if (err)
+            return done(err);
+
+          // check to see if theres already a user with that email
+          if (user)
+            return done(null, false, req.flash('error', 'That email is already taken.'));
+
+          // if there is no user with that email create him
+          var newUser = new User();
+          newUser.local.email = email;
+          newUser.local.password = newUser.generateHash(password);
+
+          // save the user
+          newUser.save(function (err) {
+            if (err)
+              throw err;
+
+            welcomeEmail(newUser); // only on new user creation, asynchronous
+
+            return done(null, newUser);
+          });
+        });
       });
 
     }));
@@ -203,17 +202,27 @@ module.exports = function (passport, facebookConfiguration) {
           // user already exists and is logged in, we have to link accounts
           var user = req.user;
 
-          // update the current users facebook credentials
-          user.facebook.id = profile.id;
-          user.facebook.token = token;
-          user.facebook.name = profile.name.givenName + ' ' + profile.name.familyName;
-          user.facebook.email = profile.emails[0].value;
-
-          // save the user
-          user.save(function (err) {
+          // Look for another user account that use this identifier
+          User.findOne({ 'facebook.id': profile.id }, function (err, user) {
             if (err)
-              throw err;
-            return done(null, user);
+              return done(err);
+
+            if (user)
+              return done(null, false,
+                req.flash('error', 'This Facebook account is already used by another account'));
+
+            // update the current users facebook credentials
+            user.facebook.id = profile.id;
+            user.facebook.token = token;
+            user.facebook.name = profile.name.givenName + ' ' + profile.name.familyName;
+            user.facebook.email = profile.emails[0].value;
+
+            // save the user
+            user.save(function (err) {
+              if (err)
+                throw err;
+              return done(null, user);
+            });
           });
 
         }

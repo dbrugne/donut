@@ -35,12 +35,8 @@ chat
 - [ ] On onetoone focus trigger a (user:status<->user:status) to ask for connectivity and block message posting
 - [ ] Replace room:out by user:disconnect sometimes
 - [ ] Change the to server->client messages : room:join/leave and user:open/close (for something like ?)
+- [ ] Add "your rooms" on homepage
 - [ ] Room ops (room:op, room:deop, room:topic)
-- [ ] Upgrade socket.io to 1.0
-  - [ ] Use redis for sessions (for socket and express)
-  - [ ] user:nickname, user:avatar, user:color messages
-  - [ ] room:avatar, user:color messages
-  - [ ] Add a check on connection to verify is user have "username"
 
 **User**
 - [x] Add help text for each field
@@ -51,7 +47,7 @@ chat
 - [x] Make website clickable on user and room profile page (page and modal)
 - [x] Add "your rooms" list on account page
 - [x] Forgotten password (http://sahatyalkabov.com/how-to-implement-password-reset-in-nodejs/)
-- [ ] Welcome email on signup
+- [x] Welcome email on signup
 
 **Site**
 - [ ] Google Analytics (HP, interface de chat)
@@ -69,6 +65,8 @@ chat
 
 **Content**
 - [ ] Emails: forgot, password changed, signup
+- [ ] Find i18n solution
+- [ ] Find email factorisation solution
 
 **Performance/security**
 - [ ] Compress JS: https://github.com/JakeWharton/uglify-js-middleware
@@ -80,6 +78,11 @@ chat
 - [ ] First entrance 'tutorial' (5 slides) + button to replay
 
 **Chat**
+- [ ] Upgrade socket.io to 1.0
+  - [ ] Use redis for sessions (for socket and express)
+  - [ ] user:nickname, user:avatar, user:color messages
+  - [ ] room:avatar, user:color messages
+  - [ ] Add a check on connection to verify is user have "username"
 - [ ] Auto-mention user in room message ($.fn.mentionize())
 
 **Room/user design**
