@@ -5,6 +5,12 @@ chat
 
 ## Release 1
 
+** REPRISE **
+- [ ] Il faut ajuster le popin "account" dans l'interface de chat
+- [ ] Il faut binder le popin d'édition de la room depuis le popin de profile de la room
+- [ ] Il faut tester le popin d'édition de la room
+- [ ] Il faut réparer le bouton "close" dans les popins
+
 **Chat**
 - [x] Helper: avoid room populate code recursion in helper
 - [x] user:search avoid user without username
