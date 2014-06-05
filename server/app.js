@@ -72,6 +72,7 @@ app.locals.cloudinary = conf.cloudinary;
 // routes
 app.use(require('./routes/index'));
 app.use(require('./routes/signup'));
+app.use(require('./routes/reset-password'));
 app.use(require('./routes/account-login'));
 app.use(require('./routes/account-link'));
 app.use(require('./routes/user-profile'));
@@ -95,13 +96,13 @@ app.use(function (req, res, next) {
   });
 });
 
-if (app.get('env') === 'development') {
+if (app.get('env') === 'dev') {
   app.use(function (err, req, res, next) {
     res.status(err.status || 500);
     res.render('error', {
-      message: err.message,
+      message      : err.message,
       errorObject  : err,
-      layout : 'error_layout'
+      layout       : 'error_layout'
     });
   });
 }
@@ -109,8 +110,9 @@ if (app.get('env') === 'development') {
 app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.render('error', {
-    message: err.message,
-    error  : {}
+    message   : err.message,
+    error     : {},
+    layout    : 'error_layout'
   });
 });
 

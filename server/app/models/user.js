@@ -13,8 +13,10 @@ var userSchema = mongoose.Schema({
     avatar         : String,
     color          : String,
     local            : {
-        email      : String,
-        password   : String
+        email         : String,
+        password      : String,
+        resetToken    : String,
+        resetExpires  : Date
     },
     facebook         : {
         id         : String,

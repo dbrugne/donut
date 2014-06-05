@@ -50,7 +50,7 @@ chat
 - [x] Add "left characters" indication on "bio" field
 - [x] Make website clickable on user and room profile page (page and modal)
 - [x] Add "your rooms" list on account page
-- [ ] Forgotten password (https://github.com/substack/node-password-reset && http://stackoverflow.com/questions/20277020/reset-change-password-in-nodejs-with-passportjs)
+- [x] Forgotten password (http://sahatyalkabov.com/how-to-implement-password-reset-in-nodejs/)
 - [ ] Welcome email on signup
 
 **Site**
@@ -67,8 +67,12 @@ chat
 
 ## Release 2
 
+**Content**
+- [ ] Emails: forgot, password changed, signup
+
 **Performance/security**
 - [ ] Compress JS: https://github.com/JakeWharton/uglify-js-middleware
+- [ ] Strongify password constrains (signup, login and forgot, very long or complex)
 
 **Help**
 - [ ] Help infobox on chat interface + help button
