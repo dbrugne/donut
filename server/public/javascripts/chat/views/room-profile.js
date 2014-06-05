@@ -8,9 +8,12 @@ define([
 ], function ($, _, Backbone, client, modalView, profileTemplate) {
   var RoomProfileView = modalView.extend({
 
+    id      : 'room-profile-modal',
+    title   : 'Room Profile',
+
     template: _.template(profileTemplate),
 
-    events: {
+    events  : {
       'click .join': 'hide' // hide modal when user click on onetoone button
     },
 

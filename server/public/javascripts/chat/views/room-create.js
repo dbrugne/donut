@@ -8,9 +8,11 @@ define([
 ], function ($, _, Backbone, client, ModalView, roomCreateTemplate) {
   var RoomCreateView = ModalView.extend({
 
+    id      : 'room-create-modal',
+    title   : 'Create a New Room',
     template: _.template(roomCreateTemplate),
 
-    events: {
+    events  : {
       'click #room-create-submit': 'submit',
       'keyup #room-create-input': 'valid'
     },

@@ -8,9 +8,12 @@ define([
 ], function ($, _, Backbone, client, ModalView, profileTemplate) {
   var UserProfileView = ModalView.extend({
 
+    id      : 'user-profile-modal',
+    title   : 'User Profile',
+
     template: _.template(profileTemplate),
 
-    events: {
+    events  : {
       'click .discuss': 'hide' // hide modal when user click on onetoone button
     },
 
