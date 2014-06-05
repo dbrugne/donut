@@ -4,9 +4,7 @@ var isLoggedIn = require('../app/middlewares/isloggedin');
 var isRoomOwner = require('../app/middlewares/isroomowner')
 var cloudinary = require('../app/cloudinary');
 var sanitize = require('sanitize-caja');
-
-var paramHandler = require('../app/middlewares/room-param');
-router.param('room', paramHandler);
+var roomParamHandler = require('../app/middlewares/room-param');
 
 var renderForm = function(req, res) {
   var options = {
@@ -41,7 +39,7 @@ var renderForm = function(req, res) {
   options.action = '/room/edit/'+req.room.name.replace('#', '');
 
   if (req.query.embed == '1') {
-    options.layout = "layout_light";
+    options.embed = true;
     options.action += '?embed=1';
   }
 
@@ -80,6 +78,7 @@ var sanitizeInput = function(req, res, next) {
   return next();
 };
 
+router.param('room', roomParamHandler);
 router.route('/room/edit/:room')
   // Form
   .get([isLoggedIn, isRoomOwner], renderForm)

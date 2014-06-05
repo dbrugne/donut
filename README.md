@@ -51,26 +51,26 @@ chat
 
 **Site**
 - [x] Google Analytics (HP, interface de chat)
+- [x] Cleanup layout mess
 - [ ] Traduction fr
 - [ ] Test it on IE8-11/FF
-- [ ] Backup
-- [ ] Monitor
 
 **Tooling**
-- [ ] Minimum virtual trafic generation
 - [ ] Basic backend
-- [ ] Basic grunt sample data injection (connect, disconnect, join/leave, create, message, ...)
 
 ## Release 2
 
 **Content**
 - [ ] Emails: forgot, password changed, signup
-- [ ] Find i18n solution
-- [ ] Find email factorisation solution
 
 **Performance/security**
 - [ ] Compress JS: https://github.com/JakeWharton/uglify-js-middleware
 - [ ] Strongify password constrains (signup, login and forgot, very long or complex)
+
+**Cleaning**
+- [ ] Find i18n solution
+- [ ] Find email factorisation/rendering solution
+- [ ] Move email configuration in conf files
 
 **Help**
 - [ ] Help infobox on chat interface + help button
@@ -99,6 +99,12 @@ chat
 - [ ] Use tils in room list on account page
 - [ ] Use tiles in user:search and room:search and move search in page (as for home)
 - [ ] Global theme integration
+
+**Tooling**
+- [ ] Backup
+- [ ] Monitoring
+- [ ] Minimum virtual trafic generation
+- [ ] Basic grunt sample data injection (connect, disconnect, join/leave, create, message, ...)
 
 ## Next releases
 

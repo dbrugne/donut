@@ -104,7 +104,7 @@ if (app.get('env') === 'dev') {
     res.render('error', {
       message      : err.message,
       errorObject  : err,
-      layout       : 'error_layout'
+      layout       : false
     });
   });
 }
@@ -114,7 +114,7 @@ app.use(function (err, req, res, next) {
   res.render('error', {
     message   : err.message,
     error     : {},
-    layout    : 'error_layout'
+    layout    : false
   });
 });
 

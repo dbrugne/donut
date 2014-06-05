@@ -16,7 +16,7 @@ router.get('/!', function(req, res) {
 
   // ... otherwise open chat
   return res.render('chat', {
-    layout: 'chat_layout'
+    layout: false
   });
 
 });

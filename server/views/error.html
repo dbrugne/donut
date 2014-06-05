@@ -1,7 +1,24 @@
-<div class="jumbotron">
-    <h1>Error</h1>
-    <h2>Guru Meditation:</h2>
-    <h3>{{message}}</h3>
-    {{#errorObject.status}}<h3>{{errorObject.status}}</h3>{{/errorObject.status}}
-    {{#errorObject.stack}}<pre>{{errorObject.stack}}</pre>{{/errorObject.stack}}
-</div>
+<!doctype html>
+<html lang="fr">
+<head>
+    <title>{{ title }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge"/><!-- Avoid IE compatibility mode -->
+</head>
+<body>
+    <div class="container">
+        <div class="jumbotron">
+            <h1>Error</h1>
+            <h2>Guru Meditation:</h2>
+            <h3>{{message}}</h3>
+            {{#errorObject.status}}<h3>{{errorObject.status}}</h3>{{/errorObject.status}}
+            {{#errorObject.stack}}<pre>{{errorObject.stack}}</pre>{{/errorObject.stack}}
+        </div><!-- /.jumbotron -->
+    </div><!-- /.container -->
+</body>
+</html>

@@ -38,7 +38,7 @@ var renderForm = function(req, res) {
   options.action = '/account/edit/profile';
 
   if (req.query.embed == '1') {
-    options.layout = "layout_light";
+    options.embed = true;
     options.action += '?embed=1';
   }
 
