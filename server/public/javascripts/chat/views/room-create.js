@@ -2,44 +2,39 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'models/client'
-], function ($, _, Backbone, client) {
-  var RoomCreateView = Backbone.View.extend({
+  'models/client',
+  'views/modal',
+  'text!templates/room-create.html'
+], function ($, _, Backbone, client, ModalView, roomCreateTemplate) {
+  var RoomCreateView = ModalView.extend({
 
-    el: $('#room-create-modal'),
+    template: _.template(roomCreateTemplate),
 
     events: {
       'click #room-create-submit': 'submit',
       'keyup #room-create-input': 'valid'
     },
 
-    initialize: function(options) {
-      this.mainView = options.mainView;
-
+    _initialize: function(options) {
       this.listenTo(client, 'room:createSuccess', this.createSuccess);
       this.listenTo(client, 'room:createError', this.createError);
+
+      this.render();
 
       this.$input = this.$el.find('#room-create-input');
       this.$formGroup = this.$el.find('.form-group');
 
+      var that = this;
       this.$el.on('shown.bs.modal', function (e) {
         that.$input.focus();
-      })
+      });
     },
-
-    show: function() {
-      that = this;
-      this.$el.modal('show');
-    },
-
-    hide: function() {
-      this.$el.modal('hide');
-    },
-
-    render: function(rooms) {
+    render: function() {
+      var html = this.template();
+      var $body = this.$el.find('.modal-body').first();
+      $body.html(html);
       return this;
     },
-
     valid: function(event) {
       if (this.$input.val() == '') {
         this.$formGroup.removeClass('has-error').removeClass('has-success');
@@ -59,7 +54,6 @@ define([
         }
       }
     },
-
     /**
      * Room name should be:
      * - between 2 and 30 length
@@ -77,9 +71,7 @@ define([
     },
 
     submit: function() {
-      if (!this._valid()) {
-        return false;
-      }
+      if (!this._valid()) return false;
 
       var name = '#'+this.$input.val();
 
@@ -91,17 +83,8 @@ define([
       this.hide();
     },
 
-    createSuccess: function(data){
-      // @todo : display alert with confirmation message
-    },
-
     createError: function(data) {
-      // @todo : display alert with apologize
-//            var error = data.uri.error;
-//            this.$formGroup.addClass('has-error').removeClass('has-success');
-//            this.$el.find('.create-message').remove();
-//            var html = '<p class="create-message bg-danger">'+error+'</p>';
-//            this.$formGroup.before(html);
+      // @todo : display alert with apologize (socket should send a 'room:createerror' message)
     }
 
   });

@@ -22,7 +22,7 @@ define([
 ], function ($, _, Backbone, client, rooms, onetoones, currentUser, windowView,
              statusView, alertView, homeView, RoomCreateView,
              RoomSearchView, UserSearchView, RoomPanelView, OneToOnePanelView,
-             RoomBlockView, OnetooneBlockView, userProfileView, roomProfileView) {
+             RoomBlockView, OnetooneBlockView, UserProfileView, RoomProfileView) {
 
   var MainView = Backbone.View.extend({
 
@@ -114,7 +114,11 @@ define([
 
     openCreateRoomModal: function() {
       if (!this.createRoomModal) {
-        this.createRoomModal = new RoomCreateView({mainView: this});
+        this.createRoomModal = new RoomCreateView({
+          mainView: this,
+          id  : 'room-create-modal',
+          title   : 'Create a New Room'
+        });
       }
       this.createRoomModal.show();
     },
@@ -129,6 +133,15 @@ define([
 
     openUserProfile: function(event) {
       this._handleAction(event);
+
+      if (!this.userProfileModal) {
+        this.userProfileModal = new UserProfileView({
+          mainView: this,
+          id  : 'user-profile-modal',
+          title   : 'User Profile'
+        });
+      }
+
       var userId = $(event.currentTarget).data('userId');
       if (userId)
         client.userProfile(userId);
@@ -138,6 +151,15 @@ define([
 
     openRoomProfile: function(event) {
       this._handleAction(event);
+
+      if (!this.roomProfileModal) {
+        this.roomProfileModal = new RoomProfileView({
+          mainView: this,
+          id  : 'room-profile-modal',
+          title   : 'Room Profile'
+        });
+      }
+
       var roomName = $(event.currentTarget).data('roomName');
       if (roomName)
         client.roomProfile(roomName);
