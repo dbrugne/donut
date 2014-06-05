@@ -50,7 +50,7 @@ chat
 - [x] Welcome email on signup
 
 **Site**
-- [ ] Google Analytics (HP, interface de chat)
+- [x] Google Analytics (HP, interface de chat)
 - [ ] Traduction fr
 - [ ] Test it on IE8-11/FF
 - [ ] Backup

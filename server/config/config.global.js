@@ -16,5 +16,10 @@ var conf = module.exports = {
     cloud_name: 'roomly',
     api_key: '962274636195222',
     api_secret: 'ayS9zUnK7sDxkme4sLquIPOmNVU'
+  },
+  google: {
+    analytics: {
+      uid: ''
+    }
   }
 };

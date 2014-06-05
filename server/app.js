@@ -13,6 +13,7 @@ var passport = require('passport');
 var flash = require('connect-flash');
 var expressValidator = require('./app/validator');
 var conf = require('./config/index');
+var googleanalytics = require('./app/middlewares/googleanalytics');
 
 // express
 var app = express();
@@ -60,6 +61,7 @@ app.use(function (req, res, next) { // pass flash messages to all views
   res.locals.error = req.flash('error');
   next();
 });
+app.use(googleanalytics());
 
 // view engine setup
 app.engine('html', require('hogan-express'));
