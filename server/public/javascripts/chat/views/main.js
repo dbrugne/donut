@@ -17,12 +17,14 @@ define([
   'views/onetoone-panel',
   'views/room-block',
   'views/onetoone-block',
+  'views/account',
+  'views/room-edit',
   'views/user-profile', // need to be loaded here to instantiate DOM
   'views/room-profile' // idem
 ], function ($, _, Backbone, client, rooms, onetoones, currentUser, windowView,
              statusView, alertView, homeView, RoomCreateView,
              RoomSearchView, UserSearchView, RoomPanelView, OneToOnePanelView,
-             RoomBlockView, OnetooneBlockView, UserProfileView, RoomProfileView) {
+             RoomBlockView, OnetooneBlockView, AccountView, RoomEditView, UserProfileView, RoomProfileView) {
 
   var MainView = Backbone.View.extend({
 
@@ -30,7 +32,7 @@ define([
 
     $home: $('#home'),
 
-    $account: $('#account'),
+    $search: $('#search'),
 
     $discussionsPanelsContainer: $("#chat-center"),
 
@@ -52,6 +54,11 @@ define([
       this.listenTo(rooms, 'add', this.onRoomPong);
       this.listenTo(onetoones, 'add', this.onOnePong);
 
+      var that = this;
+      $('#youraccount').click(this, function(event) {
+        that.openAccount(event);
+      }); // link is outside div#chat
+
       this.roomBlockView = new RoomBlockView({collection: rooms});
       this.onetooneBlockView = new OnetooneBlockView({collection: onetoones});
     },
@@ -64,6 +71,7 @@ define([
     },
 
     _handleAction: function(event) {
+      if (!event) return false;
       event.preventDefault();
       event.stopPropagation();
       $('.modal').modal('hide');
@@ -104,42 +112,31 @@ define([
     // MODALS
     // ======================================================================
 
-    openSearchRoomModal: function() {
+    openSearchRoomModal: function(event) {
       if (!this.searchRoomModal) {
         this.searchRoomModal = new RoomSearchView({mainView: this});
         this.searchRoomModal.search();
       }
       this.searchRoomModal.show();
     },
-
-    openCreateRoomModal: function() {
+    openCreateRoomModal: function(event) {
       if (!this.createRoomModal) {
-        this.createRoomModal = new RoomCreateView({
-          mainView: this,
-          id  : 'room-create-modal',
-          title   : 'Create a New Room'
-        });
+        this.createRoomModal = new RoomCreateView({mainView: this});
       }
       this.createRoomModal.show();
     },
-
-    openSearchUserModal: function() {
+    openSearchUserModal: function(event) {
       if (!this.userSearchModal) {
         this.userSearchModal = new UserSearchView({mainView: this});
         this.userSearchModal.search();
       }
       this.userSearchModal.show();
     },
-
     openUserProfile: function(event) {
       this._handleAction(event);
 
       if (!this.userProfileModal) {
-        this.userProfileModal = new UserProfileView({
-          mainView: this,
-          id  : 'user-profile-modal',
-          title   : 'User Profile'
-        });
+        this.userProfileModal = new UserProfileView({ mainView: this });
       }
 
       var userId = $(event.currentTarget).data('userId');
@@ -148,21 +145,38 @@ define([
 
       return false; // stop propagation
     },
-
     openRoomProfile: function(event) {
       this._handleAction(event);
 
       if (!this.roomProfileModal) {
-        this.roomProfileModal = new RoomProfileView({
-          mainView: this,
-          id  : 'room-profile-modal',
-          title   : 'Room Profile'
-        });
+        this.roomProfileModal = new RoomProfileView({ mainView: this });
       }
 
       var roomName = $(event.currentTarget).data('roomName');
       if (roomName)
         client.roomProfile(roomName);
+
+      return false; // stop propagation
+    },
+    openAccount: function(event) {
+      this._handleAction(event);
+
+      if (!this.accountModal) {
+        this.accountModal = new AccountView({ mainView: this });
+      }
+
+      this.accountModal.show();
+
+      return false; // stop propagation
+    },
+    openRoomEdit: function(event) {
+      this._handleAction(event);
+
+      if (!this.roomEditModal) {
+        this.roomEditModal = new RoomEditView({ mainView: this });
+      }
+
+      this.roomEditModal.show();
 
       return false; // stop propagation
     },
@@ -248,7 +262,7 @@ define([
         o.set('focused', false);
       });
       this.$home.hide();
-      this.$account.hide();
+      this.$search.hide();
     },
 
     // called by router only
@@ -261,10 +275,10 @@ define([
       Backbone.history.navigate('#'); // just change URI, not run route action
     },
 
-    focusAccount: function() {
+    focusSearch: function() {
       this.unfocusAll();
-      this.$account.show();
-      Backbone.history.navigate('#account'); // just change URI, not run route action
+      this.$search.show();
+      Backbone.history.navigate('#search'); // just change URI, not run route action
     },
 
     // called by router only

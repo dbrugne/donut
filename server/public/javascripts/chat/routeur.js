@@ -43,9 +43,9 @@ define([
       mainView.focusOneToOneByUsername(username);
     },
 
-    focusAccount: function(username) {
-//      console.log('router: focusAccount');
-      mainView.focusAccount(username);
+    focusSearch: function(username) {
+//      console.log('router: focusSearch');
+      mainView.focusSearch(username);
     },
 
     default: function() {
