@@ -27,10 +27,10 @@ chat
 - [x] Room profile modal 
 - [x] Home replace topic by description
 - [x] Room permanent switch in header
-- [ ] Use "user color" in "home", "onetoone" panel and tab and room user list
-- [ ] Use "room color" in room tab
 - [ ] Room profile form in a popin
 - [ ] User profile form in a popin
+- [ ] Use "user color" in "home", "onetoone" panel and tab and room user list
+- [ ] Use "room color" in room tab
 - [ ] Get last 50 viewed on onetoone opening
 - [ ] On onetoone focus trigger a (user:status<->user:status) to ask for connectivity and block message posting
 - [ ] Replace room:out by user:disconnect sometimes
