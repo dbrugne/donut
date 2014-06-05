@@ -224,6 +224,14 @@ a {
     }
   }
 
+  .controls.top-actions, .controls.bottom-actions {
+    > div {
+      .make-sm-column(8);
+      .make-sm-column-offset(2);
+      .text-right;
+    }
+  }
+
   .controls-inline {
     .controls;
     .form-inline;
@@ -236,15 +244,6 @@ a {
       width: 75%;
       display: inline-block;
     }
-  }
-
-  iframe {
-    .make-sm-column(8);
-    .make-sm-column-offset(2);
-    border: 0;
-    margin-left: 0 !important;
-    height: 75px;
-    width: 500px !important;
   }
 }
 
@@ -328,373 +327,48 @@ body.light {
 }
 
 /* ================================================== */
-/* ================= Chat interface ================= */
+/* ================ Account interface =============== */
 /* ================================================== */
-.body-chat {
-  height: 100%;
-  padding-top: 50px;
-  overflow-y: hidden;
-  .navbar-right { padding-right: 15px; }
-
-  #alert-container {
-    .alert {
-      display: none;
-      padding: .4em .6em .4em;
-      background-color: #999;
-      color: #FFF;
-      font-weight: bold;
-      text-align: center;
-      white-space: nowrap;
-      -webkit-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
-      -moz-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
-      box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
-      border-radius: 0;
-    }
-    .alert.info { background-color: #31b0d5; }
-    .alert.warn { background-color: #ec971f; }
-    .alert.error { background-color: #c9302c; }
-  }
-
-  #button-status {
-    .btn;
-    .btn-xs;
-  }
-  .online { .btn-success; }
-  .connecting { .btn-warning; }
-  .offline { .btn-default; }
-  .error { .btn-danger; }
-
-  .open-room-profile, .open-user-profile {
-    cursor:pointer;
-  }
-}
-
-#chat {
-
-  .container-fluid;
-  height: 100%;
-  background: #eee;
-  margin: 0;
-  padding: 0;
-  font-size: 13px;
+body.embed {
+  padding-top: 0;
+  width: 858px - 20;
 
   > .row {
-    margin: 0; /* Cancel bootstrap negative .row margin */
-    height: 100%;
+    margin: 0;
   }
 
-  #block-home {
-    background-color: #f5f5f5;
-    padding: 10px 15px;
-    border-color: transparent;
-    border-bottom: 1px solid #ddd;
-
-    a {
-      color: #000;
-    }
+  #account-edit, #room-edit {
+    padding: 0;
+    .page-header { display: none; }
   }
 
-  #block-rooms, #block-onetoones, .room-users {
-
-    background-color: #f5f5f5;
-    padding-bottom: 10px;
-
-    .heading {
-      padding: 10px 15px;
-      font-weight: bold;
-      color: #8a8a8a;
-      border-color: transparent;
-      border-bottom: 1px solid #ddd;
+  .forms {
+    h4 {
+      .make-sm-column(12);
+      .make-sm-column-offset(0);
+      border-bottom: 0;
     }
-    .body {
-      position: relative;
-      padding: 10px;
-      background-color: #fff;
+    .controls {
+      margin-left: 0;
+      margin-right: 0;
+      .control-labels {
+        .make-sm-column(2);
+        .make-sm-column-offset(0);
+      }
+      .control-fields {
+        .make-sm-column(10);
+      }
     }
-    .list {
-      .list-group;
-      margin-bottom: 0;
-      background-color: #fff;
-
-      .item {
-        .list-group-item;
-        border-left: 0;
-        border-right: 0;
-        border-top: 0;
-        color: #000000;
-      }
-      .item:last-child {
-        margin-bottom: 0;
-        border-radius: 0;
-      }
-
-      .item.active,
-      .item.active:hover,
-      .item.active:focus {
-        z-index: 2;
-        color: #ffffff;
-        background-color: #428bca;
-        border-color: #428bca;
-      }
-      .item.unread { background-color: orangered; color: #fff; }
-      .item .name {  }
-      .item .badge { margin-right: 5px; }
-      .item .close { font-size: 14px; color: #FF0000; }
+    .controls.top-actions {
+      display: none;
     }
-    .footer {
-      padding: 10px 15px;
-      background-color: #f5f5f5;
+    .controls.bottom-actions {
+      > div {
+        .make-sm-column(12);
+        .make-sm-column-offset(0);
+      }
     }
   }
 }
 
-#chat-left {
-  .make-sm-column(2);
-  height: 100%;
-  background-color: darkgrey;
-  padding: 0;
-  overflow-y:auto;
-  border-right: 1px solid #ddd;
-}
-
-#chat-center > div { height: 100%; }
-#chat-center {
-  .make-sm-column(10);
-  height: 100%;
-  padding: 0; /* Cancel bootstrap native space between columns */
-
-  #home {
-    padding: 20px;
-    overflow-y: scroll;
-
-    h2 {
-      margin-top: 0;
-    }
-
-    .rooms, .onlines {
-      .make-md-column(12);
-      margin-top: -15px;
-      margin-right: -20px;
-
-      .tile {
-        .pull-left;
-        position: relative;
-        width: 300px;
-        background-color: #fff;
-        margin-right: 20px;
-        margin-top: 15px;
-        border: 1px #c0c0c0 solid;
-        border-radius: 4px;
-        height: 283px;
-
-        .cover { height: 95px; }
-        .content {
-          margin-left: 20px;
-          margin-right: 20px;
-          position: relative;
-
-          .title {
-            .name {
-              font-size: 24px;
-              font-weight: bold;
-            }
-          }
-          .avatar {
-            border: 3px solid #fff;
-            border-radius: 4px;
-          }
-          .description {
-            margin-top: 10px;
-            margin-left: 10px;
-            font-style: italic;
-            position: relative;
-            min-height: 70px;
-            max-height: 80px;
-            .text { }
-            .fa {
-              color: #999999;
-              position: absolute;
-            }
-            .fa:first-child { top: 0; left: -15px; }
-            .fa:last-child { bottom: 0; right: -5px; }
-          }
-          .actions {
-            position: absolute;
-            right: 0; top: -65px;
-            font-size: 16px;
-          }
-        }
-        .footer {
-          position: absolute;
-          left: 10px; right: 10px; bottom: 10px;
-        }
-      }
-    }
-
-    .rooms {
-      .tile {
-        .cover {}
-        .content {
-          .title {
-            .name { }
-            .owner { }
-          }
-          .avatar { margin-top: -45px; }
-          .description {}
-        }
-      }
-    }
-
-    .onlines {
-      .tile {
-        .cover { }
-        .content {
-          .title {
-            margin-top: -10px;
-            .name { }
-          }
-          .avatar { margin-top: -115px; }
-          .description {}
-        }
-      }
-    }
-  }
-
-  #account {
-    iframe {
-      width: 100%;
-      height: 100%;
-      border: 0;
-    }
-  }
-
-  .discussion {
-    background-color: #FFFFFF;
-    position: relative;
-    height: 100%;
-
-    .row-header, .row-content { margin: 0px; /* Cancel bootstrap negative .row margin */  }
-    .row-content { height: 100%; padding-top: 83px; }
-
-    .col-content { height: 100%; padding-left: 0; padding-right: 0; padding-bottom: 75px; }
-    .col-users { padding-left: 0; padding-right: 0; border-left: 1px solid #ddd;  background-color: darkgrey; }
-
-    .header {
-      border-bottom: 1px solid transparent;
-      border-color: #ddd;
-      background-color: #f5f5f5;
-      padding: 15px 10px;
-      z-index: 10;
-      position: absolute;
-      top:0; left:0; right:0;
-
-      .color {
-        position: absolute;
-        left: 0; right: 0; top: 0px;
-        height: 10px;
-        background-color: #f5f5f5; /* default color, same as header */
-      }
-      .actions {
-        position: absolute; top:20px; right:15px;
-        width: 270px;
-        text-align: right;
-
-        .settings {
-          margin-left: 10px;
-          cursor:pointer;
-          :hover { text-decoration: underline; }
-        }
-        .close { color: #FF0000; margin-left: 10px; }
-      }
-      .avatar {
-        .pull-left;
-        margin-right: 10px;
-
-        img {
-          border-radius: 4px;
-          border: 1px solid #999999;
-        }
-      }
-      .name { color: #555555; font-weight: bolder; font-size: 16px; }
-      .owner { margin-top: 5px; }
-      .topic-block { min-width: 200px; margin-top: 10px;}
-      .topic-current {
-        .topic { margin-left: 5px; color: #333; }
-        .edit { margin-left: 5px; }
-      }
-      .topic-form {
-        display: inline-block;
-        min-width: 75%;
-        margin-left: 15px;
-
-        .topic-input { display: inline-block; width: 50%; }
-        .topic-submit { display: inline-block; }
-        .topic-cancel { display: inline-block; }
-      }
-    }
-
-    .messages {
-      background-color: #fff;
-      overflow-y: scroll;
-      height: 100%;
-
-      p {
-        margin: 0;
-        padding: 4px 6px;
-        color: #000;
-        font-family: "Open Sans";
-        position: relative;
-        border: 0;
-        border-bottom: 1px solid #f5f5f5;
-
-        .avatar { float: left; margin-right: 10px; height: 20px; width: 20px; }
-        .date { position: absolute; right: 8px; color: #BDBDBD; }
-        .username { font-weight: bold; }
-        .message { display: block; margin-left: 26px; white-space: pre; }
-      }
-
-      .notification {
-        color: #737373;
-        margin-right: 10px;
-      }
-    }
-
-    .message-box {
-      padding: 10px;
-      color: #333;
-      background-color: #f5f5f5;
-      border-top: 1px solid transparent;
-      border-color: #ddd;
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-
-      .row { margin: 0; /* Cancel bootstrap negative .row margin */ }
-      .input-group-addon.smileys-message { border-right: 0; }
-      .input-message { border-right: 0; resize: vertical; min-height: 52px; }
-      .send-message { background-color: #ebebeb; }
-      .send-message:hover { background-color: #eee; }
-
-      .popover {
-        max-width: 290px; /* for postbox smileys popover */
-
-        .popover-content { padding: 10px 0 5px 10px; }
-        ul { margin: 0; padding: 0; }
-        li { margin-right: 5px; margin-bottom: 5px; }
-      }
-    }
-
-    .col-users {
-      height: 100%;
-
-      .room-users  {
-        .list { overflow-y: scroll; }
-        .user-item .actions { position: absolute; right: 10px; }
-        .user-item .op { font-weight: bold; text-decoration: underline; }
-        .user-item .friend { font-weight: bold; font-style: italic; }
-      }
-    }
-
-  }
-}
-
-.create-message { padding: 15px; }
+@import "./chat.less";
