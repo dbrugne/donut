@@ -46,13 +46,14 @@ define([
     },
 
     onFocus: function() {
+      this.focused = true;
+      
       if (this.unread == 0) {
         return;
       }
 
       this.$document.attr('title', this.title);
       this.unread = 0;
-      this.focused = true;
     },
 
     increment: function() {
