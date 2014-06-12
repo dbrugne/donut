@@ -1,3 +1,5 @@
+var _ = require('underscore');
+
 module.exports = {
   chars: '0123456789abcdefghiklmnopqrstuvwxyz', // ABCDEFGHIJKLMNOPQRSTUVWXYZ
   number: function(length) {
@@ -19,5 +21,11 @@ module.exports = {
   },
   email: function() {
     return this.string(10)+'@'+this.string(15)+'.'+this.string(3);
+  },
+  probability: function(percentage) {
+    var r = Math.random(); // returns [0,1]
+    return (r < (percentage / 100.0))
+      ? true
+      : false;
   }
 };

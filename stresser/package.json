@@ -8,6 +8,7 @@
   "dependencies": {
     "debug": "0.8.x",
     "socket.io-client": "latest",
-    "mongoose": "3.x"
+    "mongoose": "3.8.x",
+    "underscore": "latest"
   }
 }
