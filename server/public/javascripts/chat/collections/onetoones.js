@@ -3,8 +3,9 @@ define([
   'backbone',
   'models/client',
   'models/current-user',
-  'models/onetoone'
-], function (_, Backbone, client, currentUser, OneToOneModel) {
+  'models/onetoone',
+  'models/message'
+], function (_, Backbone, client, currentUser, OneToOneModel, MessageModel) {
   var OnetoonesCollection = Backbone.Collection.extend({
 
     comparator: function(model1, model2) {
@@ -29,6 +30,21 @@ define([
       });
 
       this.add(model);
+
+      // Display history messages
+      _.each(user.history, function(message) {
+        if (message.to_user_id == currentUser.get('user_id')) {
+          message.username = currentUser.get('username');
+          message.avatar = currentUser.get('avatar');
+        } else {
+          message.username = message.to;
+          message.avatar = model.get('avatar');
+        }
+
+        delete message.to;
+        model.messages.add(new MessageModel(message));
+      });
+      model.trigger('separator', '^^ Previous messages ^^');
     },
     onClose: function(data) {
       var model = this.get(data.user_id);
@@ -48,7 +64,7 @@ define([
       }
 
       // Find or create the model
-      var model = this.findWhere({username: with_username});
+      var model = this.findWhere({username: with_username}); // @todo : how to get the message history in this case ???
       if (model == undefined) {
         var model = new OneToOneModel({
           id: with_username,
