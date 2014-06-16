@@ -7,6 +7,10 @@
             <div class="avatar"><img src="<%= room.avatar %>"></div>
             <% }; %>
 
+            <% if (room.isOwner) { %>
+            <button class="btn btn-primary edit open-room-edit" data-room-name="<%= room.name %>"><i class="fa fa-pencil-square-o"></i> Editer</button>
+            <% }; %>
+
             <h1><%= room.name %></h1>
 
             <div>

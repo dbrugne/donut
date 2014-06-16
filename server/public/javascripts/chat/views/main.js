@@ -45,6 +45,7 @@ define([
       'click .open-user-profile':         'openUserProfile',
       'dblclick .dbl-open-user-profile':  'openUserProfile',
       'click .open-room-profile':         'openRoomProfile',
+      'click .open-room-edit':            'openRoomEdit',
       'click .close-room':                'onCloseDiscussion',
       'click .close-onetoone':            'onCloseDiscussion'
     },
@@ -176,6 +177,14 @@ define([
         this.roomEditModal = new RoomEditView({ mainView: this });
       }
 
+      var roomName = $(event.currentTarget).data('roomName');
+
+      if (!roomName)
+        return;
+
+      // @todo : hide all other modal before?
+      this.roomEditModal.setUrl(roomName);
+      this.roomEditModal.iframeRender(roomName);
       this.roomEditModal.show();
 
       return false; // stop propagation

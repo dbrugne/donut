@@ -7,6 +7,8 @@ module.exports = function(io, socket, data) {
   function handleSuccess(room) {
     var ownerData = room.owner.toJSON();
     ownerData.avatar = room.owner.avatarUrl('small');
+    ownerData.user_id = ownerData._id;
+    delete ownerData._id;
 
     var roomData = room.toJSON();
     roomData.owner = ownerData;

@@ -3,9 +3,10 @@ define([
   'underscore',
   'backbone',
   'models/client',
+  'models/current-user',
   'views/modal',
   'text!templates/room-profile.html'
-], function ($, _, Backbone, client, modalView, profileTemplate) {
+], function ($, _, Backbone, client, currentUser, modalView, profileTemplate) {
   var RoomProfileView = modalView.extend({
 
     id      : 'room-profile-modal',
@@ -24,6 +25,10 @@ define([
       this.render(data.room).show();
     },
     render: function(room) {
+      room.isOwner = (room.owner.user_id == currentUser.get('user_id'))
+        ? true
+        : false;
+
       var html = this.template({room: room});
       var $body = this.$el.find('.modal-body').first();
       $body.html(html);

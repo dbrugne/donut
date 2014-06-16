@@ -7,7 +7,7 @@
         <span class="permanent-label"><i class="fa fa-lock"></i> Permanent: <strong><% if (permanent) { %>oui<% } else { %>non<% }; %></strong></span>
         <% if (isGranted == true) { %>
         <input type="checkbox" class="permanent-switch" <% if (permanent) { %>checked<% }; %>>
-        <span class="settings" ><i class="fa fa-cog"></i> Settings</span>
+        <!-- span class="settings" ><i class="fa fa-cog"></i> Settings</span -->
         <% }; %>
         <span class="close glyphicon glyphicon-remove close-room" data-name="<%= name %>"></span>
     </div>

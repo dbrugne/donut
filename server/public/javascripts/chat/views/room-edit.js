@@ -9,12 +9,15 @@ define([
 
     id  : 'room-edit-modal',
     title   : 'Edit The Room',
-    url: '/room/edit/toulouse?embed=1',
+    url: '', // model /room/edit/toulouse?embed=1
 
     events: {
     },
-
     _initialize: function() {
+    },
+    setUrl: function(name) {
+     if (name[0] == '#') name = name.replace('#', '');
+     this.url = '/room/edit/'+name+'?embed=1';
     }
 
   });

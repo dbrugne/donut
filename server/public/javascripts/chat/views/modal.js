@@ -28,7 +28,7 @@ define([
       this.modalRender(options);
 
       // Modal could be an iframe
-      if (this.url) this.iframeRender(options);
+      if (this.url) this.iframeRender(options); // the if allow lazy load
 
       // Child object initializer
       this._initialize(options);
