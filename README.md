@@ -156,7 +156,7 @@ Features:
 - [ ] Invite users in room
 - [ ] Invite users in room (Facebook)
 - [ ] Invite users in room (email)
-- [ ] Invite your friend on roomly (Facebook)
+- [ ] Invite your friend on donut (Facebook)
 - [ ] Add sound on events
 - [ ] Private room
 - [ ] User can black-list other users (avoir invitation and onetoone)

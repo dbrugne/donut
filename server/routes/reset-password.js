@@ -50,7 +50,7 @@ var forgot = function(req, res) {
       var mailOptions = {
         to: user.local.email,
         from: 'contact@chatworldcup.com',
-        subject: 'Roomly password reset',
+        subject: 'Donut password reset',
         text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
           'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
           'http://' + req.headers.host + '/reset/' + token + '\n\n' +

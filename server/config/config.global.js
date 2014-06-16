@@ -1,5 +1,5 @@
 var conf = module.exports = {
-  title: 'roomly chat!',
+  title: 'donut.me | old flavour chat rooms',
   mongo: {
     'url' : ''
   },

@@ -11,8 +11,8 @@ module.exports = function(user) {
     var mailOptions = {
       to: user.local.email,
       from: 'contact@chatworldcup.com',
-      subject: 'Roomly account created',
-      text: 'You are receiving this because you created an account on Roomly. Welcome !\n\n' +
+      subject: 'Donut account created',
+      text: 'You are receiving this because you created an account on Donut. Welcome !\n\n' +
         'If you did not request this, please ignore this email.\n'
     };
     smtpTransport.sendMail(mailOptions, function(err) {
