@@ -29,7 +29,6 @@ chat
 - [x] Room permanent switch in header
 - [x] Room profile form in a popin
 - [x] User profile form in a popin
-- [ ] Get last 50 viewed on onetoone opening
 - [ ] On onetoone focus trigger a (user:status<->user:status) to ask for connectivity and block message posting
 - [ ] Replace room:out by user:disconnect on socket disconnection
 - [ ] Add "your rooms" on homepage
@@ -38,6 +37,13 @@ chat
 - [ ] Repair modal close button form form moadls
 - [-] Use "user color" in "home", "onetoone" panel and tab and room user list - no, design
 - [-] Use "room color" in room tab - no, design
+
+- Get last 50 viewed on onetoone opening
+  - [ ] Add a new user:history message
+  - [ ] Factorize retrieving in helper
+  - [ ] Call this message on user open (client side)
+  - [ ] Call this message on user:message if onetoone creation (client side)
+  - [ ] Add link to get previous messages (cf. Skype)
 
 **User**
 - [x] Add help text for each field
@@ -118,8 +124,6 @@ Critical:
 - [ ] Introduce Redis
 - [ ] Introduce guest mode (= no ?) and allow guest option
 - [ ] Page Facebook
-- [ ] File transfert in one to one
-- [ ] Colorize a particular user messages in room
 
 Chat:
 - [ ] Replace user_id by username in user:profile request
@@ -139,6 +143,7 @@ Backend:
 - [ ] Aggregate some data to have count 
 
 Features:
+- [ ] Store activity in local storage (= no ?)
 - [ ] Message history on arrow up/down (localstorage ?)
 - [ ] Highlight messages of the same user of this message
 - [ ] Bookmark user
