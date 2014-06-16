@@ -35,14 +35,14 @@ chat
 - [x] Room permanent switch in header
 - [ ] Room profile form in a popin
 - [ ] User profile form in a popin
-- [ ] Use "user color" in "home", "onetoone" panel and tab and room user list
-- [ ] Use "room color" in room tab
 - [ ] Get last 50 viewed on onetoone opening
 - [ ] On onetoone focus trigger a (user:status<->user:status) to ask for connectivity and block message posting
-- [ ] Replace room:out by user:disconnect sometimes
-- [ ] Change the to server->client messages : room:join/leave and user:open/close (for something like ?)
+- [ ] Replace room:out by user:disconnect on socket disconnection
 - [ ] Add "your rooms" on homepage
 - [ ] Room ops (room:op, room:deop, room:topic)
+- [ ] Use moment.js for date display
+- [-] Use "user color" in "home", "onetoone" panel and tab and room user list - no, design
+- [-] Use "room color" in room tab - no, design
 
 **User**
 - [x] Add help text for each field
@@ -90,6 +90,7 @@ chat
   - [ ] room:avatar, user:color messages
   - [ ] Add a check on connection to verify is user have "username"
 - [ ] Auto-mention user in room message ($.fn.mentionize())
+- [ ] Change the to server->client messages : room:join/leave and user:open/close (for something like ?)
 
 **Room/user design**
 - [ ] Room
