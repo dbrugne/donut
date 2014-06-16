@@ -3,8 +3,9 @@ define([
   'underscore',
   'backbone',
   'text!templates/message.html',
-  'text!templates/notification.html'
-], function ($, _, Backbone, messageTemplate, notificationTemplate) {
+  'text!templates/notification.html',
+  'text!templates/separator.html'
+], function ($, _, Backbone, messageTemplate, notificationTemplate, separatorTemplate) {
   var DiscussionMessagesView = Backbone.View.extend({
 
     template: _.template(messageTemplate),
@@ -16,6 +17,7 @@ define([
     initialize: function(options) {
       this.listenTo(this.collection, 'add', this.message);
       this.listenTo(this.model, 'notification', this.notification);
+      this.listenTo(this.model, 'separator', this.separator);
       this.render();
     },
 
@@ -67,6 +69,17 @@ define([
       $(html).appendTo(this.$el)
         .smilify()
         .linkify();
+      this.scrollDown();
+    },
+
+    /**
+     * Separator, to indicated limit with message history
+     */
+    separatorTemplate: _.template(separatorTemplate),
+    separator: function(msg) {
+      if (!msg) msg = ' ';
+      var html = this.separatorTemplate({message: msg});
+      $(html).appendTo(this.$el);
       this.scrollDown();
     },
 
