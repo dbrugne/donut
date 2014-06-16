@@ -41,7 +41,6 @@ chat
 - Get last 50 viewed on onetoone opening
   - [ ] Add a new user:history message
   - [ ] Factorize retrieving in helper
-  - [ ] Call this message on user open (client side)
   - [ ] Call this message on user:message if onetoone creation (client side)
   - [ ] Add link to get previous messages (cf. Skype)
 
