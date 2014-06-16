@@ -327,6 +327,43 @@ module.exports = {
   },
 
   /**
+   * Return all user:message between userWith and socket.getUserId()
+   * (both direction)
+   * @param io
+   * @param socket
+   * @param withUserId
+   * @param success
+   */
+  userHistory: function(io, socket, withUserId, success) {
+
+    var criteria = {
+      type: 'user:message',
+      $or: [
+        {$and: [{user_id: socket.getUserId()}, {'data.to_user_id': withUserId}]},
+        {$and: [{user_id: withUserId}, {'data.to_user_id': socket.getUserId()}]}
+      ]
+    };
+
+    var q = Activity.find(criteria).sort({time: -1}).limit(10);
+
+    var that = this;
+    var onResult = function(err, messages) {
+      if (err) return that.handleError('Unable to retrieve user:message history: '+err);
+
+      // Push user data to all user devices
+      var messages = _.map(messages, function(o) {
+        var m = o.toJSON();
+        return m.data;
+      });
+      messages.reverse();
+
+      return success(messages);
+    };
+
+    q.exec(onResult);
+  },
+
+  /**
    * Find and decorate home page data
     * @param success
    * @returns {*}

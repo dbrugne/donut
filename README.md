@@ -34,13 +34,18 @@ chat
 - [ ] Add "your rooms" on homepage
 - [ ] Room ops (room:op, room:deop, room:topic)
 - [ ] Use moment.js for date display
-- [ ] Repair modal close button form form moadls
+- [ ] Repair modal close button form form modals
 - [-] Use "user color" in "home", "onetoone" panel and tab and room user list - no, design
 - [-] Use "room color" in room tab - no, design
 
 - Get last 50 viewed on onetoone opening
+  - [x] Factorize retrieving in helper
+    - [ ] Add avatar
+    - [ ] Add time
+    - [ ] Add from
+    - [ ] Add to
+    - [ ] Update wiki user:open
   - [ ] Add a new user:history message
-  - [ ] Factorize retrieving in helper
   - [ ] Call this message on user:message if onetoone creation (client side)
   - [ ] Add link to get previous messages (cf. Skype)
 
@@ -91,6 +96,7 @@ chat
   - [ ] Add a check on connection to verify is user have "username"
 - [ ] Auto-mention user in room message ($.fn.mentionize())
 - [ ] Change the to server->client messages : room:join/leave and user:open/close (for something like ?)
+- [ ] Implement async series/waterfall in socket code
 
 **Room/user design**
 - [ ] Room
