@@ -39,6 +39,7 @@ module.exports = function(io, socket, data) {
       User.findOneAndUpdate({_id: to}, {$addToSet: {onetoones: from}}, updated);
 
     // Activity
+    data.to_user_id = to;
     helper.record('user:message', socket, data);
   }
 };
