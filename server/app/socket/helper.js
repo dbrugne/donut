@@ -21,8 +21,9 @@ module.exports = {
    * @param type
    * @param user_id
    * @param data
+   * @param receivers
    */
-  record: function(type, socket, data) {
+  record: function(type, socket, data, receivers) {
     if (data == undefined) {
       data = {};
     }
@@ -34,6 +35,8 @@ module.exports = {
       user_id: user_id,
       data: data
     });
+
+    if (receivers) activity.receivers = receivers;
     activity.save();
   },
 
@@ -263,7 +266,24 @@ module.exports = {
   },
 
   /**
-   * List room de-duplicated sockets list (and not room.users or only socket list)
+   * List room de-duplicated user_id list (and not simple room sockets list)
+   * @param io
+   * @param name
+   * @returns {Array}
+   */
+  roomUsersId: function(io, name) {
+    var list = this.roomUsers(io, name);
+
+    var ids = [];
+    _.each(list, function(o) {
+      ids.push(o.user_id);
+    });
+
+    return ids;
+  },
+
+  /**
+   * List room de-duplicated user list (and not simple room sockets list)
    * @param io
    * @param name
    * @returns {Array}

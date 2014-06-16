@@ -25,7 +25,8 @@ module.exports = function(io, socket, data) {
     });
 
     // Activity
-    helper.record('room:message', socket, data);
+    var receivers = helper.roomUsersId(io, data.name);
+    helper.record('room:message', socket, data, receivers);
   }
 
 };
