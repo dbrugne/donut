@@ -85,6 +85,9 @@ chat
 - [ ] Help block with capture to explain the Facebook signup procedure (find best practices on internet)
 - [ ] First entrance 'tutorial' (5 slides) + button to replay
 
+**Features**
+- [ ] Add bookmark a room star in header with favorties rooms in home and account and profile
+
 **Chat**
 - [ ] Upgrade socket.io to 1.0
   - [ ] Use redis for sessions (for socket and express)
