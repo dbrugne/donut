@@ -35,8 +35,8 @@ chat
 - [ ] Room ops (room:op, room:deop, room:topic)
 - [ ] Use moment.js for date display
 - [ ] Repair modal close button form form modals
-- [-] Use "user color" in "home", "onetoone" panel and tab and room user list - no, design
-- [-] Use "room color" in room tab - no, design
+- [x] Le pico d'édition du topic devrait changer le pointeur en main au survol
+- [x] bouton rejoindre dans la popin de room qui ne fonctionnent plus
 
 - Get last 50 viewed on onetoone opening
   - [x] Factorize retrieving in helper
@@ -65,9 +65,6 @@ chat
 - [x] Cleanup layout mess
 - [ ] Traduction fr
 - [ ] Test it on IE8-11/FF
-
-**Tooling**
-- [ ] Basic backend
 
 ## Release 2
 
@@ -116,6 +113,7 @@ chat
 **Tooling**
 - [ ] Backup
 - [ ] Monitoring
+- [ ] Basic backend
 - [ ] Minimum virtual trafic generation
 - [ ] Basic grunt sample data injection (connect, disconnect, join/leave, create, message, ...)
 

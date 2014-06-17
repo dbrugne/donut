@@ -33,7 +33,7 @@
                 <% }; %>
             </div>
 
-            <a href="#room/<%= room.name %>" class="btn btn-primary join">rejoindre</a>
+            <a href="#room/<%= room.name.replace('#', '') %>" class="btn btn-primary join">rejoindre</a>
         </div><!-- /.col-sm-12 -->
 
         <div class="color" style="background-color: <%= room.color %>;"></div>
