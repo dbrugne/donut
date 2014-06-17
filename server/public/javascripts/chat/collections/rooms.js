@@ -4,8 +4,9 @@ define([
   'models/client',
   'models/current-user',
   'models/room',
-  'models/user'
-], function (_, Backbone, client, currentUser, RoomModel, UserModel) {
+  'models/user',
+  'models/message'
+], function (_, Backbone, client, currentUser, RoomModel, UserModel, MessageModel) {
   var RoomsCollection = Backbone.Collection.extend({
 
     comparator: function(model1, model2) {
@@ -52,7 +53,17 @@ define([
         }));
       });
 
-      this.add(model);
+      this.add(model); // now the view exists (created by mainView)
+
+      // Add history
+      if (room.history) {
+        _.each(room.history, function(event) {
+          if (event.type != 'room:message') return;
+          model.messages.add(new MessageModel(event));
+        });
+        model.trigger('separator', '^^ Previous messages ^^');
+      }
+
       model.trigger('notification', {type: 'hello', name: model.get('name')}); // @todo move it from here ?
     },
     // Server asks to this client to join this room

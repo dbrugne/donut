@@ -29,22 +29,16 @@ define([
         avatar: user.avatar
       });
 
-      this.add(model);
+      this.add(model); // now the view exists (created by mainView)
 
-      // Display history messages
-      _.each(user.history, function(message) {
-        if (message.to_user_id == currentUser.get('user_id')) {
-          message.username = currentUser.get('username');
-          message.avatar = currentUser.get('avatar');
-        } else {
-          message.username = message.to;
-          message.avatar = model.get('avatar');
-        }
-
-        delete message.to;
-        model.messages.add(new MessageModel(message));
-      });
-      model.trigger('separator', '^^ Previous messages ^^');
+      // Add history
+      if (user.history) {
+        _.each(user.history, function(event) {
+          if (event.type != 'user:message') return;
+          model.messages.add(new MessageModel(event));
+        });
+        model.trigger('separator', '^^ Previous messages ^^');
+      }
     },
     onClose: function(data) {
       var model = this.get(data.user_id);
@@ -54,21 +48,21 @@ define([
     },
     onMessage: function(message) {
       // Current user is emitter or recipient?
-      var with_username;
-      if (currentUser.get('username') == message.from) {
+      var with_user_id;
+      if (currentUser.get('user_id') == message.user_id) {
         // Emitter
-        with_username = message.to;
-      } else if (currentUser.get('username') == message.to) {
+        with_user_id = message.to_user_id;
+      } else if (currentUser.get('user_id') == message.to_user_id) {
         // Recipient
-        with_username = message.from; // i can also be this one if i spoke to myself...
+        with_user_id = message.user_id; // i can also be this one if i spoke to myself...
       }
 
       // Find or create the model
-      var model = this.findWhere({username: with_username}); // @todo : how to get the message history in this case ???
+      var model = this.findWhere({user_id: with_user_id}); // @todo : how to get the message history in this case ???
       if (model == undefined) {
         var model = new OneToOneModel({
-          id: with_username,
-          user_id: with_username,
+          id: with_user_id,
+          user_id: with_user_id,
           username: message.username,
           avatar: message.avatar
         });
