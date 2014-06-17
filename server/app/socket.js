@@ -47,6 +47,7 @@ module.exports = function(app, io, passport, sessionStore) {
     socket.on('room:search', function (data) { require('./socket/room-search')(io, socket, data); });
     socket.on('room:profile', function (data) { require('./socket/room-profile')(io, socket, data); });
     socket.on('room:permanent', function (data) { require('./socket/room-permanent')(io, socket, data); });
+    socket.on('room:history', function (data) { require('./socket/room-history')(io, socket, data); });
 
     socket.on('user:open', function(data) { require('./socket/user-open')(io, socket, data); });
     socket.on('user:close', function(data) { require('./socket/user-close')(io, socket, data); });

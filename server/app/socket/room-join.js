@@ -4,9 +4,16 @@ var User = require('../models/user');
 module.exports = function(io, socket, data) {
 
   // Find, create and return room model
-  helper.findCreateRoom(data.name, socket, handleSuccess, helper.handleError);
+  helper.findCreateRoom(data.name, socket, handleHistory, helper.handleError);
 
-  function handleSuccess(room) {
+  // Retrieve room history for this user
+  function handleHistory(room) {
+    helper.roomHistory(io, socket, room.name, 30, function(history) {
+      handleSuccess(room, history);
+    });
+  }
+
+  function handleSuccess(room, history) {
     // socket subscription
     socket.join(room.name);
 
@@ -21,6 +28,7 @@ module.exports = function(io, socket, data) {
       color: room.color,
       topic: room.topic,
       permanent: room.permanent,
+      history: history,
       users: users
     };
     if (room.owner) {
@@ -33,12 +41,13 @@ module.exports = function(io, socket, data) {
     socket.emit('room:welcome', welcome);
 
     // Inform other room users
-    io.sockets.in(room.name).emit('room:in', {
+    var roomInEvent = {
       name: room.name,
       user_id: socket.getUserId(),
       username: socket.getUsername(),
       avatar: socket.getAvatar()
-    });
+    };
+    io.sockets.in(room.name).emit('room:in', roomInEvent);
 
     // Inform other devices
     socket.broadcast.to('user:'+socket.getUserId()).emit('room:join', {
@@ -51,8 +60,8 @@ module.exports = function(io, socket, data) {
     });
 
     // Activity
-    var receivers = helper.roomUsersId(io, data.name);
-    helper.record('room:join', socket, data, receivers);
+    var receivers = helper.roomUsersId(io, room.name);
+    helper.record('room:in', socket, roomInEvent, receivers);
   }
 
 };

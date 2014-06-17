@@ -13,22 +13,21 @@ module.exports = function(io, socket, data) {
     data.message = helper.inputFilter(data.message, 512);
     if (data.message == '') return;
 
-    var message = {
-      from: socket.getUsername(),
-      to: userTo.username,
-      time: Date.now(),
-      message: data.message,
+    var messageEvent = {
+      to_user_id: to,
       user_id: from,
       username: socket.getUsername(),
-      avatar: socket.getAvatar()
+      avatar: socket.getAvatar(),
+      time: Date.now(),
+      message: data.message
     };
 
     // Broadcast message to all 'sender' devices
-    io.sockets.in('user:'+from).emit('user:message', message);
+    io.sockets.in('user:'+from).emit('user:message', messageEvent);
 
     // (if sender!=receiver) Broadcast message to all 'receiver' devices
     if (from !==  to)
-      io.sockets.in('user:'+to).emit('user:message', message);
+      io.sockets.in('user:'+to).emit('user:message', messageEvent);
 
     // Persist that "onetoone is open" on both user
     var updated = function(err, userFrom) {
@@ -39,7 +38,6 @@ module.exports = function(io, socket, data) {
       User.findOneAndUpdate({_id: to}, {$addToSet: {onetoones: from}}, updated);
 
     // Activity
-    data.to_user_id = to;
-    helper.record('user:message', socket, data);
+    helper.record('user:message', socket, messageEvent);
   }
 };

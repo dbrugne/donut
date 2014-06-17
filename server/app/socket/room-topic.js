@@ -21,17 +21,18 @@ module.exports = function(io, socket, data) {
       if (err)
         return helper.handleError('Unable to change room '+data.name+' topic '+data.topic);
 
-      io.sockets.in(data.name).emit('room:topic', {
-        user_id: socket.getUserId(),
+      var roomTopicEvent = {
+        user_id : socket.getUserId(),
         username: socket.getUsername(),
-        avatar: socket.getAvatar(),
-        name: data.name,
-        topic: data.topic
-      });
+        avatar  : socket.getAvatar(),
+        name    : data.name,
+        topic   : data.topic
+      };
+      io.sockets.in(data.name).emit('room:topic', roomTopicEvent);
 
       // Activity
-      var receivers = helper.roomUsersId(io, data.name);
-      helper.record('room:topic', socket, data, receivers);
+      var receivers = helper.roomUsersId(io, room.name);
+      helper.record('room:topic', socket, roomTopicEvent, receivers);
     });
   }
 

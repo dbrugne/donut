@@ -10,12 +10,13 @@ module.exports = function(io, socket, data) {
     socket.leave(room.name);
 
     // Inform other room users
-    io.sockets.in(room.name).emit('room:out', {
+    var roomOutEvent = {
       name: room.name,
       user_id: socket.getUserId(),
       username: socket.getUsername(),
       avatar: socket.getAvatar()
-    });
+    };
+    io.sockets.in(room.name).emit('room:out', roomOutEvent);
 
     // Inform other devices
     socket.broadcast.to('user:'+socket.getUserId()).emit('room:leave', {
@@ -33,6 +34,6 @@ module.exports = function(io, socket, data) {
 
     // Activity
     var receivers = helper.roomUsersId(io, room.name);
-    helper.record('room:leave', socket, data, receivers);
+    helper.record('room:out', socket, roomOutEvent, receivers);
   };
 };

@@ -332,32 +332,74 @@ module.exports = {
    * @param io
    * @param socket
    * @param withUserId
+   * @param since (number of minutes from now)
    * @param success
    */
-  userHistory: function(io, socket, withUserId, success) {
+  userHistory: function(io, socket, withUserId, since, success) {
+    var sinceMs = since * 1000 * 60; // since is in minutes
+    var now = new Date();
+    var sinceDate = now - sinceMs;
 
     var criteria = {
       type: 'user:message',
       $or: [
-        {$and: [{user_id: socket.getUserId()}, {'data.to_user_id': withUserId}]},
-        {$and: [{user_id: withUserId}, {'data.to_user_id': socket.getUserId()}]}
-      ]
+        {$and: [{'data.user_id': socket.getUserId()}, {'data.to_user_id': withUserId}]},
+        {$and: [{'data.user_id': withUserId}, {'data.to_user_id': socket.getUserId()}]}
+      ],
+      time: {$gte: sinceDate}
     };
 
-    var q = Activity.find(criteria).sort({time: -1}).limit(10);
+    var q = Activity.find(criteria).sort({time: -1}).limit(500);
 
     var that = this;
-    var onResult = function(err, messages) {
+    var onResult = function(err, events) {
       if (err) return that.handleError('Unable to retrieve user:message history: '+err);
-
-      // Push user data to all user devices
-      var messages = _.map(messages, function(o) {
-        var m = o.toJSON();
-        return m.data;
+      var list = _.map(events, function(event) {
+        var output = event.toJSON();
+        output.data.type = output.type;
+        return output.data;
       });
-      messages.reverse();
+      list.reverse();
+      return success(list);
+    };
 
-      return success(messages);
+    q.exec(onResult);
+  },
+
+  /**
+   * Return all room:message/in/out for name
+   * @param io
+   * @param socket
+   * @param name
+   * @param since (number of minutes from now)
+   * @param success
+   */
+  roomHistory: function(io, socket, name, since, success) {
+
+    var sinceMs = since * 1000 * 60; // since is in minutes
+    var now = new Date();
+    var sinceDate = now - sinceMs;
+
+    var criteria = {
+      type: { $in: ['room:message', 'room:in', 'room:out', 'room:topic'] },
+      'data.name': name,
+      receivers: { $in: [socket.getUserId()] },
+      time: {$gte: sinceDate}
+    };
+
+    var q = Activity.find(criteria).sort({time: -1}).limit(500);
+
+    var that = this;
+    var onResult = function(err, events) {
+      if (err) return that.handleError('Unable to retrieve room:history: '+err);
+
+      var list = _.map(events, function(event) {
+        var output = event.toJSON();
+        output.data.type = output.type;
+        return output.data;
+      });
+      list.reverse();
+      return success(list);
     };
 
     q.exec(onResult);

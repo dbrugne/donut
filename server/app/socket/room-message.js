@@ -15,18 +15,19 @@ module.exports = function(io, socket, data) {
     if (data.message == '') return;
 
     // Broadcast message
-    io.sockets.in(data.name).emit('room:message', {
-      name: data.name,
+    var messageEvent = {
+      name: room.name,
       time: Date.now(),
       message: data.message,
       user_id: socket.getUserId(),
       username: socket.getUsername(),
       avatar: socket.getAvatar()
-    });
+    };
+    io.sockets.in(data.name).emit('room:message', messageEvent);
 
     // Activity
-    var receivers = helper.roomUsersId(io, data.name);
-    helper.record('room:message', socket, data, receivers);
+    var receivers = helper.roomUsersId(io, room.name);
+    helper.record('room:message', socket, messageEvent, receivers);
   }
 
 };

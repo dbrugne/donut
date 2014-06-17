@@ -9,7 +9,7 @@ module.exports = function(io, socket, data) {
   helper.findUser(data.username, retrieveHistory, helper.handleError);
 
   function retrieveHistory(userWith) {
-    helper.userHistory(io, socket, userWith._id.toString(), function(messages) {
+    helper.userHistory(io, socket, userWith._id.toString(), 30, function(messages) {
       handleSuccess(userWith, messages);
     });
   }
