@@ -84,6 +84,10 @@ define([
         that.debug(['io:in:room:permanent', data]);
         that.trigger('room:permanent', data);
       });
+      this.socket.on('room:history', function(data) {
+        that.debug(['io:in:room:history', data]);
+        that.trigger('room:history', data);
+      });
 
       // USER
       // ======================================================
@@ -171,6 +175,12 @@ define([
       var data = {name: name, permanent: permanent};
       this.socket.emit('room:permanent', data);
       this.debug(['io:out:room:permanent', data]);
+    },
+    roomHistory: function(name, number) {
+      number = number || 50;
+      var data = {name: name, number: number};
+      this.socket.emit('room:history', data);
+      this.debug(['io:out:room:history', data]);
     },
 
     // USER
