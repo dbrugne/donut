@@ -7,6 +7,9 @@ module.exports = function(io, socket) {
   socket.join('user:'+socket.handshake.user._id);
 
   // Decorate socket (shortcut)
+  // @todo : add robustness code in following methods, sometimes (in debug session for example) the socket expires,
+  // but the object still exists, and calling this.[handshake.user._id.toString()] on a it throw a :
+  //    TypeError: Cannot read property 'user' of undefined
   socket.getUser = function() {
     return this.handshake.user;
   };
