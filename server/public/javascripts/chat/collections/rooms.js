@@ -58,8 +58,18 @@ define([
       // Add history
       if (room.history) {
         _.each(room.history, function(event) {
-          if (event.type != 'room:message') return;
-          model.messages.add(new MessageModel(event));
+          if (event.type == 'room:message') {
+            model.messages.add(new MessageModel(event));
+          } else if (event.type == 'room:in') {
+            event.type = 'in';
+            model.trigger('notification', event);
+          } else if (event.type == 'room:out') {
+            event.type = 'out';
+            model.trigger('notification', event);
+          } else if (event.type = 'room:topic') {
+            event.type = 'topic';
+            model.trigger('notification', event);
+          }
         });
         model.trigger('separator', '^^ Previous messages ^^');
       }

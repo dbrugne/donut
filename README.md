@@ -30,24 +30,18 @@ chat
 - [x] Room profile form in a popin
 - [x] User profile form in a popin
 - [ ] On onetoone focus trigger a (user:status<->user:status) to ask for connectivity and block message posting
-- [ ] Replace room:out by user:disconnect on socket disconnection
 - [ ] Add "your rooms" on homepage
 - [ ] Room ops (room:op, room:deop, room:topic)
-- [ ] Use moment.js for date display
 - [ ] Repair modal close button form form modals
+- [ ] Use moment.js for date display
 - [x] Le pico d'édition du topic devrait changer le pointeur en main au survol
 - [x] bouton rejoindre dans la popin de room qui ne fonctionnent plus
 
 - Get last 50 viewed on onetoone opening
   - [x] Factorize retrieving in helper
-    - [ ] Add avatar
-    - [ ] Add time
-    - [ ] Add from
-    - [ ] Add to
-    - [ ] Update wiki user:open
-  - [ ] Add a new user:history message
-  - [ ] Call this message on user:message if onetoone creation (client side)
+  - [x] Implement room:in/out/topic management when recreating history on room:pong
   - [ ] Add link to get previous messages (cf. Skype)
+  - [ ] Handle history on onetoone creation on user:message
 
 **User**
 - [x] Add help text for each field
@@ -97,6 +91,7 @@ chat
 - [ ] Auto-mention user in room message ($.fn.mentionize())
 - [ ] Change the to server->client messages : room:join/leave and user:open/close (for something like ?)
 - [ ] Implement async series/waterfall in socket code
+- [ ] Replace room:out by user:disconnect on socket disconnection
 
 **Room/user design**
 - [ ] Room
