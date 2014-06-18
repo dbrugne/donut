@@ -34,8 +34,17 @@ chat
 - [x] On onetoone focus trigger a (user:status<->user:status) to ask for connectivity and block message posting
 - [ ] Room ops (room:op, room:deop, room:topic)
 - [ ] Add "your rooms" on homepage
-- [ ] Repair modal close button form form modals
+- [x] Repair modal close button form form modals
+- [ ] Add edit room button for owner in header
+- [ ] Close modal on form save
 - [ ] Use moment.js for date display (refreshed each minute on room focus)
+
+- Implement a real presence management:
+  - [ ] Each user received on client side (room user, owner, onetoone user, home users ... but not search engine users) are instanciated as a User Model
+  - [ ] This model is stored ALSO in a global knownUsers collection
+  - [ ] Each model "listen for a user presence" socket.io room
+  - [ ] View of this model (could have lot of different template) ... should listen for model modification : how to handle user list (room users) that are re-drawn totally? With the block listening for collection/model change?
+  - [ ] How to cleanup users that have totally leave our vision space (no longer in the room we are, no one to one open, not displayed on room
 
 - Get last 50 viewed on onetoone opening
   - [x] Factorize retrieving in helper
