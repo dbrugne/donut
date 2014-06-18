@@ -17,7 +17,10 @@ define([
     },
 
     initialize: function(options) {
+      this.listenTo(this.model, 'change:status', this.onStatus);
+
       this.render();
+      this.onStatus();
 
       // Smileys view
       this.smileysView = new SmileysView({onPick: this.pickSmiley});
@@ -27,6 +30,16 @@ define([
 
     render: function() {
       this.$el.html(this.template());
+    },
+
+    onStatus: function() {
+      if (this.model.get('type') != 'onetoone') return;
+      console.log('passe ici');
+      if (this.model.get('status')) {
+        this.$el.find('textarea').attr('disabled', false);
+      } else {
+        this.$el.find('textarea').attr('disabled', true);
+      }
     },
 
     toggleSmileys: function(event) {
@@ -47,6 +60,10 @@ define([
     },
 
     message: function(event) {
+      if (this.model.get('type') == 'onetoone'
+        &&!this.model.get('status'))
+        return console.log('user visibly offline, do nothing');
+
       // Press-enter in field handling
       if (event.type == 'keypress') {
         var key;

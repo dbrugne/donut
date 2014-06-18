@@ -29,13 +29,13 @@ chat
 - [x] Room permanent switch in header
 - [x] Room profile form in a popin
 - [x] User profile form in a popin
-- [ ] On onetoone focus trigger a (user:status<->user:status) to ask for connectivity and block message posting
-- [ ] Add "your rooms" on homepage
-- [ ] Room ops (room:op, room:deop, room:topic)
-- [ ] Repair modal close button form form modals
-- [ ] Use moment.js for date display
 - [x] Le pico d'édition du topic devrait changer le pointeur en main au survol
 - [x] bouton rejoindre dans la popin de room qui ne fonctionnent plus
+- [x] On onetoone focus trigger a (user:status<->user:status) to ask for connectivity and block message posting
+- [ ] Room ops (room:op, room:deop, room:topic)
+- [ ] Add "your rooms" on homepage
+- [ ] Repair modal close button form form modals
+- [ ] Use moment.js for date display (refreshed each minute on room focus)
 
 - Get last 50 viewed on onetoone opening
   - [x] Factorize retrieving in helper
@@ -57,6 +57,7 @@ chat
 **Site**
 - [x] Google Analytics (HP, interface de chat)
 - [x] Cleanup layout mess
+- [ ] Add i18n on backend and frontend
 - [ ] Traduction fr
 - [ ] Test it on IE8-11/FF
 
@@ -64,6 +65,8 @@ chat
 
 **Content**
 - [ ] Emails: forgot, password changed, signup
+- [ ] Homepage
+- [ ] Formulaire : libellés des champs, messages d'aide, messages de confirmation
 
 **Performance/security**
 - [ ] Compress JS: https://github.com/JakeWharton/uglify-js-middleware
@@ -81,6 +84,7 @@ chat
 
 **Features**
 - [ ] Add bookmark a room star in header with favorties rooms in home and account and profile
+- [ ] Add option to no join #General on connection
 
 **Chat**
 - [ ] Upgrade socket.io to 1.0
@@ -88,10 +92,12 @@ chat
   - [ ] user:nickname, user:avatar, user:color messages
   - [ ] room:avatar, user:color messages
   - [ ] Add a check on connection to verify is user have "username"
-- [ ] Auto-mention user in room message ($.fn.mentionize())
+- [ ] What's happen when a message is posted by someone (on a room) and my client is in sleep (eg. : tablet) ?
 - [ ] Change the to server->client messages : room:join/leave and user:open/close (for something like ?)
 - [ ] Implement async series/waterfall in socket code
 - [ ] Replace room:out by user:disconnect on socket disconnection
+- [ ] On reconnection not "reopen" existing room views to not lost history
+- [ ] Auto-mention user in room message ($.fn.mentionize())
 
 **Room/user design**
 - [ ] Room

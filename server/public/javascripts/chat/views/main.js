@@ -336,6 +336,10 @@ define([
       // Unfocus every model
       this.unfocusAll();
 
+      // Onetoone particular case, we check for user status
+      if (model.get('type') == 'onetoone')
+        client.userStatus(model.get('username'));
+
       // Focus the one we want
       model.set('focused', true);
       model.set('unread', 0);

@@ -11,10 +11,15 @@ module.exports = function(io, socket, data) {
   }
 
   function handleSuccess(userWith, messages) {
+    var status = (helper.userSockets(io, userWith._id).length > 0)
+      ? true
+      : false;
+
     io.sockets.in('user:'+socket.getUserId()).emit('user:open', {
       user_id: userWith._id,
       username: userWith.username,
       avatar: userWith.avatarUrl(),
+      status: status,
       history: messages
     });
 
