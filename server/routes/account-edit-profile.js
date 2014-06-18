@@ -25,7 +25,7 @@ var renderForm = function(req, res) {
     ]
   };
 
-  if (req.body.fields) {
+  if (req.body.user) {
     options.userFields = req.body.user.fields;
   } else {
     options.userFields = req.user.toObject();
@@ -45,6 +45,11 @@ var renderForm = function(req, res) {
   if (req.validationErrors()) {
     options.is_errors = true;
     options.errors = req.validationErrors();
+  }
+
+  // In case of successful saved form IN embed mode
+  if (req.query.embed == '1' && res.locals.success && res.locals.success.length > 0) {
+    options.notifiy_parent_js = true;
   }
 
   return res.render('account_edit_profile', options);

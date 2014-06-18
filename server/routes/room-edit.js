@@ -26,7 +26,7 @@ var renderForm = function(req, res) {
     ]
   };
 
-  if (req.body.fields) {
+  if (req.body.room) {
     options.roomFields = req.body.room.fields;
   } else {
     options.roomFields = req.room.toObject();
@@ -46,6 +46,11 @@ var renderForm = function(req, res) {
   if (req.validationErrors()) {
     options.is_errors = true;
     options.errors = req.validationErrors();
+  }
+
+  // In case of successful saved form IN embed mode
+  if (req.query.embed == '1' && res.locals.success && res.locals.success.length > 0) {
+    options.notifiy_parent_js = true;
   }
 
   return res.render('room_edit', options);
@@ -124,7 +129,7 @@ router.route('/room/edit/:room')
           req.flash('error', err)
           return res.redirect(destination);
         } else {
-          req.flash('success', 'Your profile was updated');
+          req.flash('success', 'Room profile was updated');
           res.redirect(destination);
         }
       });

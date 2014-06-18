@@ -32,25 +32,12 @@ chat
 - [x] Le pico d'édition du topic devrait changer le pointeur en main au survol
 - [x] bouton rejoindre dans la popin de room qui ne fonctionnent plus
 - [x] On onetoone focus trigger a (user:status<->user:status) to ask for connectivity and block message posting
-- [ ] Room ops (room:op, room:deop, room:topic)
-- [ ] Add "your rooms" on homepage
 - [x] Repair modal close button form form modals
 - [x] Add edit room button for owner in header
-- [ ] Close modal on form save
+- [x] Close modal on form save
+- [ ] Add "your rooms" on homepage
 - [ ] Use moment.js for date display (refreshed each minute on room focus)
-
-- Implement a real presence management:
-  - [ ] Each user received on client side (room user, owner, onetoone user, home users ... but not search engine users) are instanciated as a User Model
-  - [ ] This model is stored ALSO in a global knownUsers collection
-  - [ ] Each model "listen for a user presence" socket.io room
-  - [ ] View of this model (could have lot of different template) ... should listen for model modification : how to handle user list (room users) that are re-drawn totally? With the block listening for collection/model change?
-  - [ ] How to cleanup users that have totally leave our vision space (no longer in the room we are, no one to one open, not displayed on room
-
-- Get last 50 viewed on onetoone opening
-  - [x] Factorize retrieving in helper
-  - [x] Implement room:in/out/topic management when recreating history on room:pong
-  - [ ] Add link to get previous messages (cf. Skype)
-  - [ ] Handle history on onetoone creation on user:message
+- [ ] Room ops (room:op, room:deop, room:topic)
 
 **User**
 - [x] Add help text for each field
@@ -66,9 +53,22 @@ chat
 **Site**
 - [x] Google Analytics (HP, interface de chat)
 - [x] Cleanup layout mess
-- [ ] Add i18n on backend and frontend
+- [ ] Add i18n on client and server
 - [ ] Traduction fr
 - [ ] Test it on IE8-11/FF
+
+- Implement a real presence management:
+  - [ ] Each user received on client side (room user, owner, onetoone user, home users ... but not search engine users) are instanciated as a User Model
+  - [ ] This model is stored ALSO in a global knownUsers collection
+  - [ ] Each model "listen for a user presence" socket.io room
+  - [ ] View of this model (could have lot of different template) ... should listen for model modification : how to handle user list (room users) that are re-drawn totally? With the block listening for collection/model change?
+  - [ ] How to cleanup users that have totally leave our vision space (no longer in the room we are, no one to one open, not displayed on room
+
+- Get last 50 viewed on onetoone opening
+  - [x] Factorize retrieving in helper
+  - [x] Implement room:in/out/topic management when recreating history on room:pong
+  - [ ] Add link to get previous messages (cf. Skype)
+  - [ ] Handle history on onetoone creation on user:message
 
 ## Release 2
 

@@ -23,7 +23,7 @@ define([
         .addClass(typeOfAlert)
         .html(message)
         .slideDown('fast')
-        .delay(5000)
+        .delay(2000)
         .slideUp('fast')
       ;
 

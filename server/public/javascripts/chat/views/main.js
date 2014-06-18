@@ -166,6 +166,7 @@ define([
         this.accountModal = new AccountView({ mainView: this });
       }
 
+      this.accountModal.iframeRender();
       this.accountModal.show();
 
       return false; // stop propagation
@@ -182,9 +183,8 @@ define([
       if (!roomName)
         return;
 
-      // @todo : hide all other modal before?
       this.roomEditModal.setUrl(roomName);
-      this.roomEditModal.iframeRender(roomName);
+      this.roomEditModal.iframeRender();
       this.roomEditModal.show();
 
       return false; // stop propagation
