@@ -22,7 +22,6 @@ define([
     _render: function() {
     },
     updateStatus: function() {
-      console.log('passe ici');
       if (this.model.get('status')) {
         this.$el.find('.header .status').text('online');
       } else {

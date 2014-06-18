@@ -34,7 +34,7 @@ define([
 
     onStatus: function() {
       if (this.model.get('type') != 'onetoone') return;
-      console.log('passe ici');
+
       if (this.model.get('status')) {
         this.$el.find('textarea').attr('disabled', false);
       } else {
