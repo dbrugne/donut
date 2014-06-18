@@ -35,7 +35,7 @@ chat
 - [ ] Room ops (room:op, room:deop, room:topic)
 - [ ] Add "your rooms" on homepage
 - [x] Repair modal close button form form modals
-- [ ] Add edit room button for owner in header
+- [x] Add edit room button for owner in header
 - [ ] Close modal on form save
 - [ ] Use moment.js for date display (refreshed each minute on room focus)
 
