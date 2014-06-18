@@ -26,18 +26,19 @@ define([
         id: user.user_id,
         user_id: user.user_id,
         username: user.username,
-        avatar: user.avatar
+        avatar: user.avatar,
+        status: user.status
       });
 
       this.add(model); // now the view exists (created by mainView)
 
       // Add history
-      if (user.history) {
+      if (user.history && user.history.length > 0) {
         _.each(user.history, function(event) {
           if (event.type != 'user:message') return;
           model.messages.add(new MessageModel(event));
         });
-        model.trigger('separator', '^^ Previous messages ^^');
+        model.trigger('separator', 'Previous messages');
       }
     },
     onClose: function(data) {

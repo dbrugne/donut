@@ -56,7 +56,7 @@ define([
       this.add(model); // now the view exists (created by mainView)
 
       // Add history
-      if (room.history) {
+      if (room.history && room.history.length > 0) {
         _.each(room.history, function(event) {
           if (event.type == 'room:message') {
             model.messages.add(new MessageModel(event));
@@ -71,7 +71,7 @@ define([
             model.trigger('notification', event);
           }
         });
-        model.trigger('separator', '^^ Previous messages ^^');
+        model.trigger('separator', 'Previous messages');
       }
 
       model.trigger('notification', {type: 'hello', name: model.get('name')}); // @todo move it from here ?
