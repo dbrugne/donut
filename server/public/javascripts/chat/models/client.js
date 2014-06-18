@@ -8,6 +8,8 @@ define([
     joinRequests: [],
 
     initialize: function() {
+      // temp debug
+      window.client = this;
     },
 
     debug: function(message) {
@@ -124,6 +126,10 @@ define([
         that.debug(['io:in:user:profile', data]);
         that.trigger('user:profile', data);
       });
+      this.socket.on('user:status', function(data) {
+        that.debug(['io:in:user:status', data]);
+        that.trigger('user:status', data);
+      });
     },
 
     // GENERAL
@@ -210,6 +216,11 @@ define([
       var data = {user_id: userId};
       this.socket.emit('user:profile', data);
       this.debug(['io:out:user:profile', data]);
+    },
+    userStatus: function(username) {
+      var data = {username: username};
+      this.socket.emit('user:status', data);
+      this.debug(['io:out:user:status', data]);
     }
 
   });

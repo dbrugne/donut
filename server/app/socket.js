@@ -54,6 +54,7 @@ module.exports = function(app, io, passport, sessionStore) {
     socket.on('user:message', function(data) { require('./socket/user-message')(io, socket, data); });
     socket.on('user:search', function (data) { require('./socket/user-search')(io, socket, data); });
     socket.on('user:profile', function (data) { require('./socket/user-profile')(io, socket, data); });
+    socket.on('user:status', function (data) { require('./socket/user-status')(io, socket, data); });
 
   });
 };
