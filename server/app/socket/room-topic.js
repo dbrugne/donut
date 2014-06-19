@@ -22,10 +22,11 @@ module.exports = function(io, socket, data) {
         return helper.handleError('Unable to change room '+data.name+' topic '+data.topic);
 
       var roomTopicEvent = {
+        name    : data.name,
+        time: Date.now(),
         user_id : socket.getUserId(),
         username: socket.getUsername(),
         avatar  : socket.getAvatar(),
-        name    : data.name,
         topic   : data.topic
       };
       io.sockets.in(data.name).emit('room:topic', roomTopicEvent);

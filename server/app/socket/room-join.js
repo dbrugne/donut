@@ -43,6 +43,7 @@ module.exports = function(io, socket, data) {
     // Inform other room users
     var roomInEvent = {
       name: room.name,
+      time: Date.now(),
       user_id: socket.getUserId(),
       username: socket.getUsername(),
       avatar: socket.getAvatar()
