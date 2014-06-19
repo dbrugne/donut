@@ -8,7 +8,7 @@ define([
     joinRequests: [],
 
     initialize: function() {
-      // temp debug
+      // @todo : temp debug
       window.client = this;
     },
 
