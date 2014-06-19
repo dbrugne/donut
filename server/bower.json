@@ -10,6 +10,7 @@
       "backbone-amd": "latest",
       "cloudinary_js": "latest",
       "validator-js": "latest",
-      "colpick": "latest"
+      "colpick": "latest",
+      "moment": "latest"
     }
 }
