@@ -36,7 +36,7 @@ chat
 - [x] Add edit room button for owner in header
 - [x] Close modal on form save
 - [ ] Add "your rooms" on homepage
-- [ ] Use moment.js for date display (refreshed each minute on room focus)
+- [x] Use moment.js for date display (refreshed each minute on room focus)
 - [ ] Room ops (room:op, room:deop, room:topic)
 
 **User**
@@ -105,7 +105,8 @@ chat
 - [ ] Change the to server->client messages : room:join/leave and user:open/close (for something like ?)
 - [ ] Implement async series/waterfall in socket code
 - [ ] Replace room:out by user:disconnect on socket disconnection
-- [ ] On reconnection not "reopen" existing room views to not lost history
+- [ ] On reconnection client reconnection, receive in welcome anything needed to refresh all views: room and onetoone, refresh views and keep the message history, add a separator
+- [ ] Change protocole like that : socket.io:room subscription is automatically handled by server side on welcome and room:welcome, now "join" is only triggered on client on user "click" to open a room explicitly, a new message "room:pleasejoin" indicate to client that he should create a model/view for this room (but he is already subscribed)
 - [ ] Auto-mention user in room message ($.fn.mentionize())
 
 **Room/user design**

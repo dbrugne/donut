@@ -2,17 +2,20 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'moment',
   'routeur',
   'models/client',
   'views/main',
   // jQuery plugins, load and attach to $ once
   'jquery.insertatcaret',
-  'jquery.dateformat',
   'jquery.cloudinary',
   'jquery.linkify',
   'jquery.smilify',
-  'bootstrap'
-], function ($, _, Backbone, router, client, mainView) {
+  'jquery.momentify',
+  'jquery.momentify',
+  'bootstrap',
+  'moment-fr'
+], function ($, _, Backbone, moment, router, client, mainView) {
   /**
    * The init process is the following:
    * - Load router - done by require.js
@@ -46,14 +49,18 @@ define([
 
     // The main part of the job is done by require.js loader
     initialize: function() {
-      // Give the router a global scope (some views need to router.navigate())
+      // Give some object to global scope to allow other context to use it
       window.router = router;
+      window.moment = moment;
 
-      // Prepare things
+      // Cloudinary setup
       $.cloudinary.config({
         cloud_name: window.cloudinary_cloud_name,
         api_key: window.cloudinary_api_key
       });
+
+      // Moment language
+      moment.lang('fr');
 
       // Everything was already loaded by require.js,
       // it just left to establish connection:

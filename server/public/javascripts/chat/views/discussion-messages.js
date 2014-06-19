@@ -2,15 +2,14 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'moment',
   'text!templates/message.html',
   'text!templates/notification.html',
   'text!templates/separator.html'
-], function ($, _, Backbone, messageTemplate, notificationTemplate, separatorTemplate) {
+], function ($, _, Backbone, moment, messageTemplate, notificationTemplate, separatorTemplate) {
   var DiscussionMessagesView = Backbone.View.extend({
 
     template: _.template(messageTemplate),
-
-    timeFormat: "HH:mm",
 
     events: {},
 
@@ -18,24 +17,36 @@ define([
       this.listenTo(this.collection, 'add', this.message);
       this.listenTo(this.model, 'notification', this.notification);
       this.listenTo(this.model, 'separator', this.separator);
+      this.listenTo(this.model, 'change:focused', this.updateMoment);
       this.render();
+
+      // Regularly update moment times
+      var that = this;
+      setInterval(function() { that.updateMoment(); }, 60*1000); // any minutes
+    },
+
+    // Update all .moment of the discussion panel
+    updateMoment: function() {
+      if (!this.model.get('focused')) return;
+      this.$el.find('.moment').momentify();
     },
 
     message: function(message) {
-      // Date
-      var dateText = $.format.date(new Date(message.get('time')), this.timeFormat);
-
-      var html = this.template({
+     var html = this.template({
         user_id: message.get('user_id'),
         avatar: message.get('avatar'),
         username: message.get('username'),
-        date: dateText
+        time: message.get('time')
       });
-      $(html).appendTo(this.$el)
-              .find('.message')
-              .text(message.get('message')+"")
-              .smilify()
-              .linkify();
+      var el = $(html).appendTo(this.$el);
+
+      el.find('.message')
+        .text(message.get('message')+"")
+        .smilify()
+        .linkify();
+
+      el.find('.moment')
+        .momentify();
 
       this.scrollDown();
       return this;
@@ -58,17 +69,25 @@ define([
      * - deop: @user was deoped by @user : {user_id, username, by_user_id, by_username}
      */
     notificationTemplate: _.template(notificationTemplate),
-    notification: function(data) {
-      if (data.type == undefined || data.type == '') {
+    notification: function(notification) {
+      if (notification.type == undefined || notification.type == '') {
         return;
       }
 
-      data.date = $.format.date(Number(new Date()), this.timeFormat);
+      // e.g. : hello
+      if (!notification.time) {
+        notification.time = Number(new Date());
+      }
 
-      var html = this.notificationTemplate(data);
-      $(html).appendTo(this.$el)
-        .smilify()
+      var html = this.notificationTemplate(notification);
+      var el = $(html).appendTo(this.$el);
+
+      el.smilify()
         .linkify();
+
+      el.find('.moment')
+        .momentify();
+
       this.scrollDown();
     },
 
