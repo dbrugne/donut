@@ -229,6 +229,11 @@ module.exports = {
   socketRooms: function(io, socket) {
     var list = [];
 
+    // Robustness code: sometime this function is called and socket not longer
+    // exists (e.g.: disconnection)
+    if (!io.sockets.connected[socket.id])
+      return list;
+
     var rawList = io.sockets.connected[socket.id].rooms;
     if (!rawList || rawList.length < 1) return list;
 
