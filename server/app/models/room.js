@@ -1,4 +1,4 @@
-var mongoose = require('mongoose');
+var mongoose = require('../mongoose');
 var cloudinary = require('../cloudinary');
 
 var roomSchema = mongoose.Schema({

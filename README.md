@@ -8,6 +8,7 @@ chat
 **Chat**
 - [x] Upgrade socket.io to 1.0
   - [x] Use redis for sessions (for socket and express)
+  - [ ] Improve lisibility by separate socket and http server codes
 - [ ] Room ops (room:op, room:deop, room:topic)
 - [ ] user:nickname, user:avatar, user:color messages
 - [ ] room:avatar, user:color messages
@@ -20,7 +21,6 @@ chat
   - [ ] Update room header
   - [ ] Update onetoone header
   - [ ] Add a separator
-- [ ] Improve lisibility by separate socket and http server codes
 
 **Theme**
 - [ ] Implement the new global construction

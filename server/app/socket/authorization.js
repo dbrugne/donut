@@ -13,8 +13,8 @@ module.exports = {
     if(error)
       throw new Error(message);
 
-    // Test environment only! (allow virtual client connexion opening)
-    if (process.env.NODE_ENV == 'dev' || process.env.NODE_ENV == 'test') {
+    // Non-production environment only! (allow virtual client connexion opening)
+    if (process.env.NODE_ENV != 'production') {
       User.findById(data.query.virtualuserid, function(err, virtualUser) {
         if (err) throw new Error('Error while retrieving virtual user: '+err);
         if (!virtualUser) return console.log('No corresponding virtual user found');
@@ -24,7 +24,7 @@ module.exports = {
       });
       return;
     }
-    // End - Test environment only!
+    // End - Non-production environments only!
 
     accept(null, false);
 
