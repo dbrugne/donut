@@ -32,6 +32,13 @@ chat
 - [ ] Create Facebook page
 - [ ] Create Google Analytics account
 
+**Branding**
+- [ ] Créer la page Facebook
+- [ ] Changer le proriétaire du domaine : MARTINE BLAJMAN
+- [ ] Soumettre le site à Google
+- [ ] Créer une email contact@
+- [ ] Créer une email martine@
+
 ## Release 3
 
 **Chat**
