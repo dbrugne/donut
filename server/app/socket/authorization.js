@@ -10,9 +10,8 @@ module.exports = {
   },
 
   fail: function(data, message, error, accept) {
-    if(error) {
+    if(error)
       throw new Error(message);
-    }
 
     // Test environment only! (allow virtual client connexion opening)
     if (process.env.NODE_ENV == 'dev' || process.env.NODE_ENV == 'test') {

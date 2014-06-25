@@ -3,88 +3,60 @@ chat
 
 ***"Une plateforme de discussion temps réel autour de thématique. Pour ce faire la plateforme permet la création de "room" dans laquelle les utilisateurs pourront échanger autour d'un sujet, d'une communauté ou de tout et rien"***
 
-## Release 1
+## Release 2
 
 **Chat**
-- [x] Helper: avoid room populate code recursion in helper
-- [x] user:search avoid user without username
-- [x] user:profile remove discuss button if not online
-- [x] Also delete room on disconnect if needed (only on leave actually)
-- [x] Improve hyperlinking in topic and *:message (www.xxxx.com, http://, ftp://, ...) => http://soapbox.github.io/jQuery-linkify/
-- [x] Move room:message logic in room model instead of collections
-- [x] Repair smileys (< and > and '3:)') => http://os.alfajango.com/css-emoticons/
-- [x] Template room and user tiles
- - [x] Template room tile
- - [x] Template user tile 
- - [x] Make join and discuss button work
- - [x] Make room list dynamic
-- [x] Avoid room:join/room:leave for socket that made the action to join/leave => broadcast call modified by receive "other" socket join notification
-- [x] Room profile form/page/modal
-- [x] Replace "no topic" by "Choose a topic" and add a pen icon (all clickable)
-- [x] Room avatar/color in header
-- [x] Room link to profile in room header
-- [x] Room link to profile in room tile on homepage
-- [x] Room profile modal 
-- [x] Home replace topic by description
-- [x] Room permanent switch in header
-- [x] Room profile form in a popin
-- [x] User profile form in a popin
-- [x] Le pico d'édition du topic devrait changer le pointeur en main au survol
-- [x] bouton rejoindre dans la popin de room qui ne fonctionnent plus
-- [x] On onetoone focus trigger a (user:status<->user:status) to ask for connectivity and block message posting
-- [x] Repair modal close button form form modals
-- [x] Add edit room button for owner in header
-- [x] Close modal on form save
-- [ ] Add "your rooms" on homepage
-- [x] Use moment.js for date display (refreshed each minute on room focus)
+- [x] Upgrade socket.io to 1.0
+  - [x] Use redis for sessions (for socket and express)
 - [ ] Room ops (room:op, room:deop, room:topic)
+- [ ] user:nickname, user:avatar, user:color messages
+- [ ] room:avatar, user:color messages
+- [ ] Add a check on connection to verify is user have "username"
+- [ ] What's happen when a message is posted by someone (on a room) and my client is in sleep (eg. : tablet) ?
+- [ ] Change protocole like that : socket.io:room subscription is automatically handled by server side on welcome and room:welcome, now "join" is only triggered on client on user "click" to open a room explicitly, a new message "room:pleasejoin" indicate to client that he should create a model/view for this room (but he is already subscribed)
+- [ ] On reconnection client reconnection:
+  - [ ] Receive in welcome anything needed to refresh views: room (user, profile[, history]) and onetoone (profile[, history])
+  - [ ] Update room user list and re-render
+  - [ ] Update room header
+  - [ ] Update onetoone header
+  - [ ] Add a separator
+- [ ] Improve lisibility by separate socket and http server codes
 
-**User**
-- [x] Add help text for each field
-- [x] Make color picker open on click on preview
-- [x] Softness the hyperlink validation on profile
-- [x] Add accepted format and expected size on file uploader + test before uploading
-- [x] Add "left characters" indication on "bio" field
-- [x] Make website clickable on user and room profile page (page and modal)
-- [x] Add "your rooms" list on account page
-- [x] Forgotten password (http://sahatyalkabov.com/how-to-implement-password-reset-in-nodejs/)
-- [x] Welcome email on signup
+**Theme**
+- [ ] Implement the new global construction
+- [ ] Find i18n solution on client and server
+  - [ ] Traduction fr
 
-**Site**
-- [x] Google Analytics (HP, interface de chat)
-- [x] Cleanup layout mess
-- [ ] Add i18n on client and server
-- [ ] Traduction fr
-- [ ] Test it on IE8-11/FF
+**Hosting**
+- [ ] Implement base FQDN conf and logic to redirect each request on it (HTTP requests only)
+- [ ] Create Facebook page
+- [ ] Create Google Analytics account
 
+## Release 3
+
+**Chat**
+- [ ] Change the to server->client messages : room:join/leave and user:open/close (for something like ?)
+- [ ] Implement async series/waterfall in socket code
+- [ ] Replace room:out by user:disconnect on socket disconnection
+- Room/onetoone history step 2
+  - [ ] Add Skype link to load more history
+  - [ ] Implement in user:open process
 - Implement a real presence management:
   - [ ] Each user received on client side (room user, owner, onetoone user, home users ... but not search engine users) are instanciated as a User Model
   - [ ] This model is stored ALSO in a global knownUsers collection
   - [ ] Each model "listen for a user presence" socket.io room
   - [ ] View of this model (could have lot of different template) ... should listen for model modification : how to handle user list (room users) that are re-drawn totally? With the block listening for collection/model change?
-  - [ ] How to cleanup users that have totally leave our vision space (no longer in the room we are, no one to one open, not displayed on room
-
-- Get last 50 viewed on onetoone opening
-  - [x] Factorize retrieving in helper
-  - [x] Implement room:in/out/topic management when recreating history on room:pong
-  - [ ] Add link to get previous messages (cf. Skype)
-  - [ ] Handle history on onetoone creation on user:message
-
-## Release 2
+  - [ ] How to cleanup users that have totally leave our vision space (no longer in the room we are, no one to one open, not displayed on room)
 
 **Content**
 - [ ] Emails: forgot, password changed, signup
 - [ ] Homepage
 - [ ] Formulaire : libellés des champs, messages d'aide, messages de confirmation
 
-**Performance/security**
-- [ ] Compress JS: https://github.com/JakeWharton/uglify-js-middleware
-- [ ] Strongify password constrains (signup, login and forgot, very long or complex)
-
 **Cleaning**
-- [ ] Find i18n solution
 - [ ] Find email factorisation/rendering solution
 - [ ] Move email configuration in conf files
+- [ ] Test it on IE8-11/FF
 
 **Help**
 - [ ] Help infobox on chat interface + help button
@@ -92,44 +64,31 @@ chat
 - [ ] First entrance 'tutorial' (5 slides) + button to replay
 
 **Features**
-- [ ] Add bookmark a room star in header with favorties rooms in home and account and profile
-- [ ] Add option to no join #General on connection
-
-**Chat**
-- [ ] Upgrade socket.io to 1.0
-  - [ ] Use redis for sessions (for socket and express)
-  - [ ] user:nickname, user:avatar, user:color messages
-  - [ ] room:avatar, user:color messages
-  - [ ] Add a check on connection to verify is user have "username"
-- [ ] What's happen when a message is posted by someone (on a room) and my client is in sleep (eg. : tablet) ?
-- [ ] Change the to server->client messages : room:join/leave and user:open/close (for something like ?)
-- [ ] Implement async series/waterfall in socket code
-- [ ] Replace room:out by user:disconnect on socket disconnection
-- [ ] On reconnection client reconnection, receive in welcome anything needed to refresh all views: room and onetoone, refresh views and keep the message history, add a separator
-- [ ] Change protocole like that : socket.io:room subscription is automatically handled by server side on welcome and room:welcome, now "join" is only triggered on client on user "click" to open a room explicitly, a new message "room:pleasejoin" indicate to client that he should create a model/view for this room (but he is already subscribed)
-- [ ] Auto-mention user in room message ($.fn.mentionize())
+- [ ] Add bookmark a room star in header with favorites rooms in home and account and profile
 
 **Room/user design**
-- [ ] Room
-  - [ ] Tile
-    - [ ] User list (avatar list) = chat homepage + chat search + account page
-  - [ ] Profile
-    - [ ] User list
-- [ ] User
-  - [ ] Tile
-    - [ ] Room list = chat homepage
-  - [ ] Profile
-    - [ ] Room list
-- [ ] Use tils in room list on account page
-- [ ] Use tiles in user:search and room:search and move search in page (as for home)
 - [ ] Global theme integration
+- [ ] Add "your rooms" on homepage
 
 **Tooling**
 - [ ] Backup
 - [ ] Monitoring
 - [ ] Basic backend
-- [ ] Minimum virtual trafic generation
+- [ ] Minimum virtual traffic generation
 - [ ] Basic grunt sample data injection (connect, disconnect, join/leave, create, message, ...)
+
+## Release 4
+
+**Chat**
+- [ ] Auto-mention user in room message ($.fn.mentionize())
+
+**Performance/security/maintenability**
+- [ ] Compress JS: https://github.com/JakeWharton/uglify-js-middleware
+- [ ] Strongify password constrains (signup, login and forgot, very long or complex)
+- [ ] Remove HOGAN and re-add EJS
+
+**Features**
+- [ ] Add option to no join #General on connection
 
 ## Next releases
 

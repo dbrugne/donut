@@ -15,25 +15,31 @@ var delegate_authorization = require('./socket/authorization');
 
 module.exports = function(app, io, passport, sessionStore) {
 
-  io.set('transports', [
-      'websocket'
-      , 'flashsocket'
-  ]);
-
-  io.set('log level', 3);
+//  io.set('transports', [
+//      'websocket'
+//      , 'flashsocket'
+//  ]);
 
   // doc: https://www.npmjs.org/package/passport.socketio
-  io.set('authorization', passportSocketIo.authorize({
-      cookieParser: cookieParser,
-      key:         conf.sessions.key,
-      secret:      conf.sessions.secret,
-      passport:    passport,
-      store:       sessionStore,
-      success:     delegate_authorization.success,
-      fail:        delegate_authorization.fail
+//  io.set('authorization', passportSocketIo.authorize({
+//      cookieParser: cookieParser,
+//      key:         conf.sessions.key,
+//      secret:      conf.sessions.secret,
+//      passport:    passport,
+//      store:       sessionStore,
+//      success:     delegate_authorization.success,
+//      fail:        delegate_authorization.fail
+//  }));
+  io.use(passportSocketIo.authorize({
+    cookieParser: cookieParser,
+    key:         conf.sessions.key,
+    secret:      conf.sessions.secret,
+    store:       sessionStore,
+    success:     delegate_authorization.success,
+    fail:        delegate_authorization.fail
   }));
 
-  io.sockets.on('connection', function (socket) {
+  io.on('connection', function (socket) {
 
     require('./socket/connection')(io, socket);
     socket.on('disconnect', function() { require('./socket/disconnect')(io, socket); });

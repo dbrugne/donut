@@ -4,23 +4,23 @@ var User = require('../models/user');
 module.exports = function(io, socket) {
 
   // Multi-devices: create a virtual room by user
-  socket.join('user:'+socket.handshake.user._id);
+  socket.join('user:'+socket.request.user._id);
 
   // Decorate socket (shortcut)
   // @todo : add robustness code in following methods, sometimes (in debug session for example) the socket expires,
   // but the object still exists, and calling this.[handshake.user._id.toString()] on a it throw a :
   //    TypeError: Cannot read property 'user' of undefined
   socket.getUser = function() {
-    return this.handshake.user;
+    return this.request.user;
   };
   socket.getUserId = function() {
-    return this.handshake.user._id.toString();
+    return this.request.user._id.toString();
   };
   socket.getUsername = function() {
-    return this.handshake.user.username;
+    return this.request.user.username;
   };
   socket.getAvatar = function(format) {
-    return this.handshake.user.avatarUrl(format);
+    return this.request.user.avatarUrl(format);
   };
 
   // Welcome data
@@ -31,8 +31,8 @@ module.exports = function(io, socket) {
     }
 
     // force user entity in memory refresh to avoid old data persistence (avatar)
-    socket.handshake.user.username = user.username;
-    socket.handshake.user.avatar = user.avatar;
+    socket.request.user.username = user.username;
+    socket.request.user.avatar = user.avatar;
 
     user.populate('onetoones', 'username', function(err, user) {
       if (err) helper.handleError('Unable to populate user: '+err);

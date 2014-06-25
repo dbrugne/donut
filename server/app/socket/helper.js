@@ -199,10 +199,10 @@ module.exports = {
 
     var list = [];
     var already = [];
-    var sockets = io.sockets.clients();
-    var until = (sockets.length < limit) ? sockets.length : limit;
+    var sockets = io.sockets.in();
+    var until = (sockets.sockets.length < limit) ? sockets.sockets.length : limit;
     for (var i=0; i < until; i++) {
-      var u = sockets[i];
+      var u = sockets.sockets[i];
       if (!_.contains(already, u.getUserId())) {
         already.push(u.getUserId());
         list.push({
@@ -229,16 +229,21 @@ module.exports = {
   socketRooms: function(io, socket) {
     var list = [];
 
-    var rawList = io.sockets.manager.roomClients[socket.id];
+    var rawList = io.sockets.connected[socket.id].rooms;
     if (!rawList || rawList.length < 1) return list;
 
-    Object.keys(rawList).forEach(function(key) {
-      if (key == '') return; // common room for all socket (socket.io)
-      if (key.substring(0, 2) != '/#') return; // only our rooms
-
-      var name = key.substring(1); // remove initial '/'
+    _.each(rawList, function(name) {
+      if (name == '') return; // common room for all socket (socket.io)
+      if (name.substring(0, 1) != '#') return; // only our rooms
       list.push(name);
     });
+//    Object.keys(rawList).forEach(function(key) {
+//      if (key == '') return; // common room for all socket (socket.io)
+//      if (key.substring(0, 2) != '/#') return; // only our rooms
+//
+//      var name = key.substring(1); // remove initial '/'
+//      list.push(name);
+//    });
     return list;
   },
 
@@ -249,7 +254,7 @@ module.exports = {
    * @returns {Array}
    */
   userSockets: function(io, userId) {
-    return this.roomSockets(io, 'user:'+userId);
+    return this.roomSockets(io, 'user:'+userId).sockets;
   },
 
   /**
@@ -291,7 +296,7 @@ module.exports = {
   roomUsers: function(io, name) {
     var list = [];
     var already = [];
-    var sockets = io.sockets.clients(name);
+    var sockets = io.sockets.in(name);
     for (var i=0; i < sockets.length; i++) {
       var u = sockets[i];
       if (!_.contains(already, u.getUserId())) {
@@ -312,7 +317,7 @@ module.exports = {
    * @returns {Array}
    */
   roomSockets: function(io, name) {
-    return io.sockets.clients(name);
+    return io.sockets.in(name);
   },
 
   /**

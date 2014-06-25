@@ -7,6 +7,7 @@ var less = require('less-middleware');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
+var RedisStore = require('connect-redis')(session);
 var csrf = require('csurf');
 var mongoose = require('mongoose');
 var passport = require('passport');
@@ -18,15 +19,14 @@ var googleanalytics = require('./app/middlewares/googleanalytics');
 // express
 var app = express();
 
+// session store
+var redisStore = new RedisStore({});
+
 // MongoDB
 mongoose.connect(conf.mongo.url);
 
-// Sessions in MongoDB
-var MongoStore = require('connect-mongo')(session);
-var sessionStore = new MongoStore({mongoose_connection: mongoose.connection});
-
 // Passport
-require('./app/passport')(passport, conf.facebook); // note that will modify passport object and
+require('./app/passport')(passport, conf.facebook); // note: will modify passport object
 
 // http server
 app.use(favicon(__dirname + '/public/favicon.ico'));
@@ -38,9 +38,9 @@ app.use(bodyParser());
 app.use(expressValidator()); // must be immediately after bodyParser()
 app.use(cookieParser());
 app.use(session({
+  store : redisStore,
   secret: conf.sessions.secret,
-  key   : conf.sessions.key,
-  store : sessionStore
+  key   : conf.sessions.key
 }));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -121,5 +121,5 @@ app.use(function (err, req, res, next) {
 module.exports = {
   app         : app,
   passport    : passport,
-  sessionStore: sessionStore
+  sessionStore: redisStore
 };
