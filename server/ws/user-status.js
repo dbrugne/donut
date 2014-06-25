@@ -1,7 +1,4 @@
 var helper = require('./helper');
-var User = require('../models/user');
-
-var _ = require('underscore');
 
 module.exports = function(io, socket, data) {
 

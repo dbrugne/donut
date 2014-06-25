@@ -1,5 +1,4 @@
 var helper = require('./helper');
-var Room = require('../models/room');
 
 module.exports = function (io, socket) {
 

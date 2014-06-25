@@ -1,10 +1,10 @@
-var debug = require('debug')('chat-server');
 var _ = require('underscore');
+var debug = require('debug')('chat-server');
+var User = require('../app/models/user');
+var Room = require('../app/models/room');
+var Activity = require('../app/models/activity');
 var sanitize = require('sanitize-caja');
-var expressValidator = require('../validator');
-var User = require('../models/user');
-var Room = require('../models/room');
-var Activity = require('../models/activity');
+var expressValidator = require('../app/validator');
 
 module.exports = {
 

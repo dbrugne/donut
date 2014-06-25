@@ -1,5 +1,5 @@
 var helper = require('./helper');
-var User = require('../models/user');
+var User = require('../app/models/user');
 
 module.exports = {
 
