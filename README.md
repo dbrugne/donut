@@ -8,22 +8,29 @@ chat
 **Chat**
 - [x] Upgrade socket.io to 1.0
   - [x] Use redis for sessions (for socket and express)
-  - [ ] Improve lisibility by separate socket and http server codes
+  - [x] Improve lisibility by cleaning http/socket launching
 - [ ] Room ops (room:op, room:deop, room:topic)
-- [ ] user:nickname, user:avatar, user:color messages
-- [ ] room:avatar, user:color messages
-- [ ] Add a check on connection to verify is user have "username"
-- [ ] What's happen when a message is posted by someone (on a room) and my client is in sleep (eg. : tablet) ?
 - [ ] Change protocole like that : socket.io:room subscription is automatically handled by server side on welcome and room:welcome, now "join" is only triggered on client on user "click" to open a room explicitly, a new message "room:pleasejoin" indicate to client that he should create a model/view for this room (but he is already subscribed)
-- [ ] On reconnection client reconnection:
-  - [ ] Receive in welcome anything needed to refresh views: room (user, profile[, history]) and onetoone (profile[, history])
-  - [ ] Update room user list and re-render
-  - [ ] Update room header
-  - [ ] Update onetoone header
-  - [ ] Add a separator
+- Bug fixes
+  - [ ] Add a check on connection to verify is user have "username"
+  - [ ] What's happen when a message is posted by someone (on a room) and my client is in sleep (eg. : tablet) ?
+  - [ ] On reconnection client reconnection:
+    - [ ] Receive in welcome anything needed to refresh views: room (user, profile[, history]) and onetoone (profile[, history])
+    - [ ] Update room user list and re-render
+    - [ ] Update room tab/header
+    - [ ] Update onetoone tab/header
+   - [ ] Add a separator
+- [ ] Auto-update of the interface on room/user:change
+  - [ ] WS: implement REDIS cache for user and room
+  - [ ] WS: read in REDIS cache only "even" for socket.getUsername-like function to have always last data
+  - [ ] HTTP: implement emitter in user and room form POST
+  - [ ] HTTP: invalidate REDIS cache in user and room form POST
+  - [ ] WS: implement corresponding events: room:update/user:update (or user:nickname, user:avatar, user:color, room:avatar and user:color)
+  - [ ] JS: on previous events update IHM: room tab/header, onetoone tab/header
 
 **Theme**
 - [ ] Implement the new global construction
+- [ ] Remove HOGAN and use EJS on server side instead
 - [ ] Find i18n solution on client and server
   - [ ] Traduction fr
 
