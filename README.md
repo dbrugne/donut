@@ -30,17 +30,15 @@ chat
 
 **Theme**
 - [ ] Implement the new global construction
-- [ ] Remove HOGAN and use EJS on server side instead
 - [ ] Find i18n solution on client and server
   - [ ] Traduction fr
 
 **Hosting**
 - [ ] Implement base FQDN conf and logic to redirect each request on it (HTTP requests only)
-- [ ] Create Facebook page
-- [ ] Create Google Analytics account
 
 **Branding**
 - [ ] Créer la page Facebook
+- [ ] Create Google Analytics account
 - [ ] Changer le proriétaire du domaine : MARTINE BLAJMAN
 - [ ] Soumettre le site à Google
 - [ ] Créer une email contact@
@@ -55,12 +53,6 @@ chat
 - Room/onetoone history step 2
   - [ ] Add Skype link to load more history
   - [ ] Implement in user:open process
-- Implement a real presence management:
-  - [ ] Each user received on client side (room user, owner, onetoone user, home users ... but not search engine users) are instanciated as a User Model
-  - [ ] This model is stored ALSO in a global knownUsers collection
-  - [ ] Each model "listen for a user presence" socket.io room
-  - [ ] View of this model (could have lot of different template) ... should listen for model modification : how to handle user list (room users) that are re-drawn totally? With the block listening for collection/model change?
-  - [ ] How to cleanup users that have totally leave our vision space (no longer in the room we are, no one to one open, not displayed on room)
 
 **Content**
 - [ ] Emails: forgot, password changed, signup
@@ -68,9 +60,8 @@ chat
 - [ ] Formulaire : libellés des champs, messages d'aide, messages de confirmation
 
 **Cleaning**
-- [ ] Find email factorisation/rendering solution
 - [ ] Move email configuration in conf files
-- [ ] Test it on IE8-11/FF
+- [ ] Test it on IE8-11/FF/tablet
 
 **Help**
 - [ ] Help infobox on chat interface + help button
@@ -81,45 +72,52 @@ chat
 - [ ] Add bookmark a room star in header with favorites rooms in home and account and profile
 
 **Room/user design**
-- [ ] Global theme integration
 - [ ] Add "your rooms" on homepage
+- [ ] Add "room owned/oped/joined" on user profile
 
 **Tooling**
 - [ ] Backup
 - [ ] Monitoring
-- [ ] Basic backend
 - [ ] Minimum virtual traffic generation
 - [ ] Basic grunt sample data injection (connect, disconnect, join/leave, create, message, ...)
 
 ## Release 4
 
 **Chat**
+- [ ] Room kick
 - [ ] Auto-mention user in room message ($.fn.mentionize())
 
 **Performance/security/maintenability**
 - [ ] Compress JS: https://github.com/JakeWharton/uglify-js-middleware
 - [ ] Strongify password constrains (signup, login and forgot, very long or complex)
 - [ ] Remove HOGAN and re-add EJS
+- [ ] Find email factorisation/rendering solution
+
+**Social**
+- [ ] Invite users in room
+- [ ] Invite users in room (Facebook)
+- [ ] Invite users in room (email)
+- [ ] Invite your friend on donut (Facebook)
 
 **Features**
 - [ ] Add option to no join #General on connection
 
+**Presence management**
+  - [ ] Each user received on client side (room user, owner, onetoone user, home users ... but not search engine users) are instanciated as a User Model
+  - [ ] This model is stored ALSO in a global knownUsers collection
+  - [ ] Each model "listen for a user presence" socket.io room
+  - [ ] View of this model (could have lot of different template) ... should listen for model modification : how to handle user list (room users) that are re-drawn totally? With the block listening for collection/model change?
+  - [ ] How to cleanup users that have totally leave our vision space (no longer in the room we are, no one to one open, not displayed on room)
+
 ## Next releases
 
 Critical:
-- [ ] Room kick
 - [ ] Room ban (time and permanent)
 - [ ] Fix bug that maintain user logged in chat on logout
-- [ ] Separate socket/web apps
-- [ ] Introduce Redis
 - [ ] Introduce guest mode (= no ?) and allow guest option
-- [ ] Page Facebook
 
 Chat:
 - [ ] Replace user_id by username in user:profile request
-- [ ] Get last 50 viewed on room opening
-- [ ] Add "presence" management (who is actually online in this room?)
-- [ ] Changing username/avatar on site should change it in chat interface (= Redis cache, form invalidate cache, how to send a message between www and ws without queue system)
 
 Backend:
 - [ ] Traditional page secured zone
@@ -133,18 +131,12 @@ Backend:
 - [ ] Aggregate some data to have count 
 
 Features:
-- [ ] Store activity in local storage (= no ?)
 - [ ] Message history on arrow up/down (localstorage ?)
 - [ ] Highlight messages of the same user of this message
 - [ ] Bookmark user
-- [ ] Bookmark room
-- [ ] Invite users in room
-- [ ] Invite users in room (Facebook)
-- [ ] Invite users in room (email)
-- [ ] Invite your friend on donut (Facebook)
 - [ ] Add sound on events
 - [ ] Private room
-- [ ] User can black-list other users (avoir invitation and onetoone)
+- [ ] User can black-list other users (invitation and onetoone)
 - [ ] Add form validation client-side: account/*, login, signup
 
 Mobile:
@@ -163,4 +155,3 @@ Ideas:
 
 - [ ] Run OPQAST security checklist
 - [ ] Mocha/Chai + casperjs tests
-- [ ] Uniformize back and front template engine / i18n
