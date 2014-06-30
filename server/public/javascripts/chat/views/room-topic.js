@@ -29,14 +29,15 @@ define([
     },
     render: function() {
       this.$el.html(this.template({
-        isGranted: this.isGranted()
+        isOwner: this.model.currentUserIsOwner(),
+        isOp: this.model.currentUserIsOp()
       }));
 
       var currentTopic = this.model.get('topic');
 
       // Default
       if (currentTopic == '') {
-        if (this.isGranted()) {
+        if (this.model.currentUserIsOp() || this.model.currentUserIsOwner()) {
           this.$el.find('.topic').html(this.defaultText);
         } else {
           this.$el.find('.topic').html('');
@@ -56,7 +57,7 @@ define([
       this.render();
     },
     showForm: function() {
-      if (!this.isGranted()) return false;
+      if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner()) return false;
 
       this.$el.find('.topic-current').hide();
       this.$el.find('.topic-form').show();
@@ -67,7 +68,7 @@ define([
       this.$el.find('.topic-current').show();
     },
     sendNewTopic: function(event) {
-      if (!this.isGranted()) return false;
+      if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner()) return false;
 
       var newTopic = this.$el.find('.topic-input').val();
       // only if not too long
@@ -76,12 +77,6 @@ define([
       // reset form state
       this.$el.find('.topic-input').val('');
       this.hideForm();
-    },
-    isGranted: function() {
-      if (this.model.get('owner').get('user_id') == currentUser.get('user_id')) {
-        return true;
-      }
-      return false;
     }
 
   });

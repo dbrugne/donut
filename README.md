@@ -9,21 +9,15 @@ chat
 - [x] Upgrade socket.io to 1.0
   - [x] Use redis for sessions (for socket and express)
   - [x] Improve lisibility by cleaning http/socket launching
-- [ ] Room ops (room:op, room:deop, room:topic)
-  - [ ] Take in consideration for room:topic (centralize isGranted)
-  - [ ] Repair room:deop client crash
-  - [ ] Sort room users list also on ownership/op status
-  - [ ] Add a 'room ops' list
+- [ ] Disconnection bugs
+  - [ ] Receive in welcome anything needed to refresh views: room (user, profile[, history]) and onetoone (profile[, history])
+  - [ ] Update room user list and room data (and re-render user list and header)
+  - [ ] Update onetoone data and re-render header
+  - [ ] Add a separator
 - [ ] Change protocole like that : socket.io:room subscription is automatically handled by server side on welcome and room:welcome, now "join" is only triggered on client on user "click" to open a room explicitly, a new message "room:pleasejoin" indicate to client that he should create a model/view for this room (but he is already subscribed)
 - Bug fixes
   - [ ] Add a check on connection to verify is user have "username"
   - [ ] What's happen when a message is posted by someone (on a room) and my client is in sleep (eg. : tablet) ?
-  - [ ] On reconnection client reconnection:
-    - [ ] Receive in welcome anything needed to refresh views: room (user, profile[, history]) and onetoone (profile[, history])
-    - [ ] Update room user list and re-render
-    - [ ] Update room tab/header
-    - [ ] Update onetoone tab/header
-   - [ ] Add a separator
 - [ ] Auto-update of the interface on room/user:change
   - [ ] WS: implement REDIS cache for user and room
   - [ ] WS: read in REDIS cache only "even" for socket.getUsername-like function to have always last data
@@ -31,6 +25,14 @@ chat
   - [ ] HTTP: invalidate REDIS cache in user and room form POST
   - [ ] WS: implement corresponding events: room:update/user:update (or user:nickname, user:avatar, user:color, room:avatar and user:color)
   - [ ] JS: on previous events update IHM: room tab/header, onetoone tab/header
+
+**Room ops**
+- [x] Take in consideration for room:topic (centralize isGranted)
+- [ ] Redraw also the room header
+- [ ] Repair room:deop client crash
+- [ ] Sort room users list also on ownership/op status
+- [ ] Add a 'room ops' list
+- [ ] Factorize socket room op/owner detection in helper and update room:op/deop events
 
 **Theme**
 - [ ] Implement the new global construction

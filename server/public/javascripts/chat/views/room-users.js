@@ -35,20 +35,16 @@ define([
         listJSON.push(u);
       });
 
-      var html = this.template({list: listJSON, isGranted: this.isGranted()});
+      var html = this.template({
+        list: listJSON,
+        isOwner: this.model.currentUserIsOwner(),
+        isOp: this.model.currentUserIsOp()
+      });
       this.$el.html(html);
       return this;
     },
     onAddRemove: function(model, collection, options) {
       this.render();
-    },
-    isGranted: function() {
-      var isOwner = (this.model.get('owner').get('user_id') == currentUser.get('user_id'));
-      var isOp = (this.model.get('op').indexOf(currentUser.get('user_id')) !== -1);
-      if (isOwner || isOp) {
-        return true;
-      }
-      return false;
     }
   });
 

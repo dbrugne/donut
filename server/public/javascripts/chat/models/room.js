@@ -2,10 +2,11 @@ define([
   'underscore',
   'backbone',
   'models/client',
+  'models/current-user',
   'models/discussion',
   'models/user',
   'collections/users'
-], function (_, Backbone, client, DiscussionModel, UserModel, UsersCollection) {
+], function (_, Backbone, client, currentUser, DiscussionModel, UserModel, UsersCollection) {
   var RoomModel = DiscussionModel.extend({
 
     defaults: function() {
@@ -35,6 +36,22 @@ define([
     },
     leave: function(model, collection, options) {
       client.leave(model.get('name'));
+    },
+    currentUserIsOwner: function() {
+      if (!this.get('owner'))
+        return false;
+
+      return (this.get('owner').get('user_id') == currentUser.get('user_id'))
+        ? true
+        : false;
+    },
+    currentUserIsOp: function() {
+      if (!this.get('op'))
+        return false;
+
+      return (this.get('op').indexOf(currentUser.get('user_id')) !== -1)
+          ? true
+          : false;
     },
     onMessage: function(data) {
       if (data.name != this.get('name')) return;

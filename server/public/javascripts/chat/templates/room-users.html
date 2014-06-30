@@ -7,7 +7,7 @@
             <span class="username dbl-open-user-profile" data-user-id="<%= roomUser.user_id %>"><%= roomUser.username %></span>
             <span class="actions">
                 <span data-user-id="<%= roomUser.user_id %>" class="fa fa-user open-user-profile"></span>
-                <% if (isGranted) { %>
+                <% if (isOp === true || isOwner === true) { %>
                     <% if (roomUser.op === true) { %>
                         <span data-username="<%= roomUser.username %>" class="fa fa-arrow-circle-down deop-user" title="Deop this user"></span>
                     <% } else { %>

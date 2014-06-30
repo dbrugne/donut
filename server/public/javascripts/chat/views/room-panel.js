@@ -35,13 +35,13 @@ define([
       var owner = this.model.get('owner').toJSON()
       var data = this.model.toJSON();
       data.owner = owner;
-      data.isGranted = this.isGranted();
+      data.isOwner = this.model.currentUserIsOwner();
       return data;
     },
     _render: function() {
     },
     switchPermanent: function(event) {
-      if (!this.isGranted()) return false;
+      if (!this.model.currentUserIsOwner()) return false;
       var newState = this.$permanentSwitch.prop('checked');
       client.roomPermanent(this.model.get('name'), newState);
     },
@@ -61,12 +61,6 @@ define([
       var username = $(event.currentTarget).data('username');
       if (username)
         client.roomDeop(this.model.get('name'), username);
-    },
-    isGranted: function() {
-      if (this.model.get('owner').get('user_id') == currentUser.get('user_id')) {
-        return true;
-      }
-      return false;
     }
 
   });
