@@ -2,8 +2,9 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'models/current-user',
   'text!templates/room-users.html'
-], function ($, _, Backbone, roomUsersTemplate) {
+], function ($, _, Backbone, currentUser, roomUsersTemplate) {
   var RoomUsersView = Backbone.View.extend({
 
     template: _.template(roomUsersTemplate),
@@ -11,25 +12,44 @@ define([
     initialize: function() {
       this.listenTo(this.collection, 'add', this.onAddRemove);
       this.listenTo(this.collection, 'remove', this.onAddRemove);
+      this.listenTo(this.collection, 'redraw', this.render);
 
       this.render();
     },
 
     render: function() {
       var listJSON = [];
+      var that = this;
       _.each(this.collection.models, function(o) {
-        listJSON.push(o.toJSON());
+        var u = o.toJSON();
+
+        // Is owner?
+        var owner = that.model.get('owner');
+        if (owner && owner.get('user_id').indexOf(o.get('user_id')) !== -1)
+          u.owner = true;
+
+        // Is OP?
+        if (that.model.get('op').indexOf(o.get('user_id')) !== -1)
+          u.op = true;
+
+        listJSON.push(u);
       });
 
-      var html = this.template({list: listJSON});
+      var html = this.template({list: listJSON, isGranted: this.isGranted()});
       this.$el.html(html);
       return this;
     },
-
     onAddRemove: function(model, collection, options) {
       this.render();
+    },
+    isGranted: function() {
+      var isOwner = (this.model.get('owner').get('user_id') == currentUser.get('user_id'));
+      var isOp = (this.model.get('op').indexOf(currentUser.get('user_id')) !== -1);
+      if (isOwner || isOp) {
+        return true;
+      }
+      return false;
     }
-
   });
 
   return RoomUsersView;

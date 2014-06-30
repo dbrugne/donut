@@ -16,9 +16,11 @@
     <span class="username open-user-profile" data-user-id="<%= user_id %>"><%= username %></span> was banned by
     <span class="username open-user-profile" data-user-id="<%= by_user_id %>"><%= by_username %></span> (<%= time %>) '<em><%= reason %></em>'
     <% } else if (type =='op') { %>
+    <img class="avatar" src="<%= avatar %>">
     <span class="username open-user-profile" data-user-id="<%= user_id %>"><%= username %></span> was oped by
     <span class="username open-user-profile" data-user-id="<%= by_user_id %>"><%= by_username %></span>
     <% } else if (type =='deop') { %>
+    <img class="avatar" src="<%= avatar %>">
     <span class="username open-user-profile" data-user-id="<%= user_id %>"><%= username %></span> was deoped by
     <span class="username open-user-profile" data-user-id="<%= by_user_id %>"><%= by_username %></span>
     <% } %>

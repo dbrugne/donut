@@ -399,10 +399,24 @@
       height: 100%;
 
       .room-users  {
-        .list { overflow-y: scroll; }
-        .user-item .actions { position: absolute; right: 10px; }
-        .user-item .op { font-weight: bold; text-decoration: underline; }
-        .user-item .friend { font-weight: bold; font-style: italic; }
+        .list {
+          overflow-y: scroll;
+
+          .user-item.owner {
+            .username { font-weight: bold; text-decoration: italic; }
+          }
+          .user-item.op {
+            .username { font-weight: bold; }
+          }
+          .user-item .actions {
+            position: absolute;
+            right: 10px;
+
+            .op-user, .deop-user {
+              cursor: pointer;
+            }
+          }
+        }
       }
     }
 

@@ -10,6 +10,10 @@ chat
   - [x] Use redis for sessions (for socket and express)
   - [x] Improve lisibility by cleaning http/socket launching
 - [ ] Room ops (room:op, room:deop, room:topic)
+  - [ ] Take in consideration for room:topic (centralize isGranted)
+  - [ ] Repair room:deop client crash
+  - [ ] Sort room users list also on ownership/op status
+  - [ ] Add a 'room ops' list
 - [ ] Change protocole like that : socket.io:room subscription is automatically handled by server side on welcome and room:welcome, now "join" is only triggered on client on user "click" to open a room explicitly, a new message "room:pleasejoin" indicate to client that he should create a model/view for this room (but he is already subscribed)
 - Bug fixes
   - [ ] Add a check on connection to verify is user have "username"

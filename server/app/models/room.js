@@ -5,8 +5,8 @@ var roomSchema = mongoose.Schema({
 
   name          : String,
   owner         : { type: mongoose.Schema.ObjectId, ref: 'User' },
-  permanent     : Boolean,
   op            : [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
+  permanent     : Boolean,
   bans          : [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
   avatar        : String,
   color         : String,

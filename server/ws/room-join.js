@@ -24,10 +24,11 @@ module.exports = function(io, socket, data) {
     var welcome = {
       name: room.name,
       owner: {},
+      op: room.op || [],
+      permanent: room.permanent,
       avatar: room.avatarUrl('medium'),
       color: room.color,
       topic: room.topic,
-      permanent: room.permanent,
       history: history,
       users: users
     };

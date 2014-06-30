@@ -90,6 +90,14 @@ define([
         that.debug(['io:in:room:history', data]);
         that.trigger('room:history', data);
       });
+      this.socket.on('room:op', function(data) {
+        that.debug(['io:in:room:op', data]);
+        that.trigger('room:op', data);
+      });
+      this.socket.on('room:deop', function(data) {
+        that.debug(['io:in:room:deop', data]);
+        that.trigger('room:deop', data);
+      });
 
       // USER
       // ======================================================
@@ -187,6 +195,16 @@ define([
       var data = {name: name, number: number};
       this.socket.emit('room:history', data);
       this.debug(['io:out:room:history', data]);
+    },
+    roomOp: function(name, username) {
+      var data = {name: name, username: username};
+      this.socket.emit('room:op', data);
+      this.debug(['io:out:room:op', data]);
+    },
+    roomDeop: function(name, username) {
+      var data = {name: name, username: username};
+      this.socket.emit('room:deop', data);
+      this.debug(['io:out:room:deop', data]);
     },
 
     // USER

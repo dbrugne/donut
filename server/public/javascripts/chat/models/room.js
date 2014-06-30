@@ -11,6 +11,7 @@ define([
     defaults: function() {
       return {
         name: '',
+        op: [],
         topic: '',
         permanent: false,
         avatar: '',
@@ -29,6 +30,8 @@ define([
       this.listenTo(client, 'room:topic', this.onTopic);
       this.listenTo(client, 'room:message', this.onMessage);
       this.listenTo(client, 'room:permanent', this.onPermanent);
+      this.listenTo(client, 'room:op', this.onOp);
+      this.listenTo(client, 'room:deop', this.onDeop);
     },
     leave: function(model, collection, options) {
       client.leave(model.get('name'));
@@ -98,6 +101,42 @@ define([
         return;
       }
       this.set('permanent', data.permanent);
+    },
+    onOp: function(data) {
+      if (this.get('op').indexOf(data.user_id) !== -1)
+        return;
+
+      this.get('op').push(data.user_id);
+
+      this.users.trigger('redraw');
+
+      this.trigger('notification', {
+        type: 'op',
+        user_id: data.user_id,
+        username: data.username,
+        avatar: data.avatar,
+        by_user_id: data.by_user_id,
+        by_username: data.by_username,
+        by_avatar: data.by_avatar
+      });
+    },
+    onDeop: function(data) {
+      if (this.get('op').indexOf(data.user_id) === -1)
+        return;
+
+      this.get('op').pull(data.user_id);
+
+      this.users.trigger('redraw');
+
+      this.trigger('notification', {
+        type: 'deop',
+        user_id: data.user_id,
+        username: data.username,
+        avatar: data.avatar,
+        by_user_id: data.by_user_id,
+        by_username: data.by_username,
+        by_avatar: data.by_avatar
+      });
     }
 
   });

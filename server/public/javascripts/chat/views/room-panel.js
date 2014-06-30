@@ -14,13 +14,15 @@ define([
     template: _.template(roomPanelTemplate),
 
     events: {
-      'change .permanent-switch': 'switchPermanent'
+      'change .permanent-switch': 'switchPermanent',
+      'click .op-user': 'opUser',
+      'click .deop-user': 'deopUser'
     },
     _initialize: function() {
       this.listenTo(this.model, 'change:permanent', this.onPermanent);
 
       this.TopicView = new RoomTopicView({el: this.$el.find('.header > .topic-block'), model: this.model});
-      this.usersView = new RoomUsersView({el: this.$el.find('.col-users'), collection: this.model.users});
+      this.usersView = new RoomUsersView({el: this.$el.find('.col-users'), model: this.model, collection: this.model.users});
 
       this.$permanentSwitch = this.$el.find('.permanent-switch');
       this.$permanentLabel = this.$el.find('.permanent-label');
@@ -49,6 +51,16 @@ define([
         ? 'oui'
         : 'non';
       this.$permanentLabel.find('strong').text(label);
+    },
+    opUser: function(event) {
+      var username = $(event.currentTarget).data('username');
+      if (username)
+        client.roomOp(this.model.get('name'), username);
+    },
+    deopUser: function(event) {
+      var username = $(event.currentTarget).data('username');
+      if (username)
+        client.roomDeop(this.model.get('name'), username);
     },
     isGranted: function() {
       if (this.model.get('owner').get('user_id') == currentUser.get('user_id')) {

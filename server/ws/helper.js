@@ -301,7 +301,7 @@ module.exports = {
   roomUsers: function(io, name) {
     var list = [];
     var already = [];
-    var sockets = io.sockets.in(name);
+    var sockets = io.sockets.in(name).sockets;
     for (var i=0; i < sockets.length; i++) {
       var u = sockets[i];
       if (!_.contains(already, u.getUserId())) {
@@ -333,6 +333,17 @@ module.exports = {
    */
   isSocketInRoom: function(io, socket, name) {
     if (this.socketRooms(io, socket).indexOf(name) == -1) return false;
+    else return true;
+  },
+
+  /**
+   * Return true if provided 'user' is in 'room'
+   * @param userId
+   * @param name
+   * @return boolean
+   */
+  isUserInRoom: function(io, userId, name) {
+    if (this.userRooms(io, userId.toString()).indexOf(name) == -1) return false;
     else return true;
   },
 
