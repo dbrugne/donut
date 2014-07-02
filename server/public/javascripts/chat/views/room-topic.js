@@ -22,7 +22,6 @@ define([
         }
       }
     },
-
     initialize: function() {
       this.listenTo(this.model, 'change:topic', this.updateTopic);
       this.render();
