@@ -114,9 +114,9 @@ define([
       });
     },
     onPermanent: function(data) {
-      if (data.name != this.get('name')) {
+      if (data.name != this.get('name'))
         return;
-      }
+
       this.set('permanent', data.permanent);
     },
     onOp: function(data) {
