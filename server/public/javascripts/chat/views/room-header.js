@@ -31,7 +31,7 @@ define([
       this.$el.html(html);
 
       // re-render topic subview
-      new RoomTopicView({el: this.$el.find('.topic-block'), model: this.model});
+      this.topicView = new RoomTopicView({el: this.$el.find('.topic-block'), model: this.model});
 
       return this;
     },
