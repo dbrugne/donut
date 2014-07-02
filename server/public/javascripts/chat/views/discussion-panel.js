@@ -20,7 +20,7 @@ define([
       this.listenTo(this.model, 'change:focused', this.updateFocus);
 
       // Parent view rendering
-      this.render(); // (now exists in DOM)
+      this.render();
 
       // Subviews initialization and rendering
       this.messagesView = new DiscussionMessageView({
