@@ -22,6 +22,8 @@ define([
       client.open(username);
     },
     openPong: function(user) {
+      // @todo : implement same logic as rooms:openPong (if model already exist update, else create)
+      // @todo : rename addModel
       var model = new OneToOneModel({
         id: user.user_id,
         user_id: user.user_id,

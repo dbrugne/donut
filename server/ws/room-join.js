@@ -1,3 +1,4 @@
+_ = require('underscore');
 var helper = require('./helper');
 var User = require('../app/models/user');
 
@@ -14,8 +15,14 @@ module.exports = function(io, socket, data) {
   }
 
   function handleSuccess(room, history) {
-    // socket subscription
-    socket.join(room.name);
+    // current socket subscription
+    socket.join(room.name); // may be useless if room is re-opened on reconnection (already subscribed in connection event)
+
+    // subscribe this user socket(s) to the room
+    // @todo : carreful = infinite loop !! until we have modified the client to send room:join only on user click
+//    _.each(helper.userSockets(io, socket.getUserId()), function(s) {
+//      s.join(room.name);
+//    });
 
     // Room user list
     var users = helper.roomUsers(io, room.name);
@@ -49,10 +56,10 @@ module.exports = function(io, socket, data) {
       username: socket.getUsername(),
       avatar: socket.getAvatar()
     };
-    io.sockets.in(room.name).emit('room:in', roomInEvent);
+    io.sockets.in(room.name).emit('room:in', roomInEvent);// @todo : send room:in before to avoid receiving it
 
     // Inform other devices
-    socket.broadcast.to('user:'+socket.getUserId()).emit('room:join', {
+    socket.broadcast.to('user:'+socket.getUserId()).emit('room:join', { // @todo : rename to room:pleasejoin + send all room data to allow client only do a rooms.addModel()
       name: room.name
     });
 

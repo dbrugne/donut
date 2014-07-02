@@ -52,8 +52,8 @@ define([
 
     initialize: function() {
       this.listenTo(client, 'welcome', this.onWelcome);
-      this.listenTo(rooms, 'add', this.onRoomPong);
-      this.listenTo(onetoones, 'add', this.onOnePong);
+      this.listenTo(rooms, 'add', this.addRoomView);
+      this.listenTo(onetoones, 'add', this.addOneView);
 
       var that = this;
       $('#youraccount').click(this, function(event) {
@@ -88,17 +88,13 @@ define([
       _.each(Object.keys(data.user), function(propertyKey) {
         currentUser.set(propertyKey, data.user[propertyKey]);
       });
-      console.log('Hello '+currentUser.get('username')+'!');
-
-      // Render home
-//      client.home();
 
       // Join #General
       client.join('#General'); // @todo : should be called on collection
 
       // Join rooms
       _.each(data.rooms, function(room) {
-        client.join(room); // @todo : should be called on collection
+        rooms.addModel(room);
       });
 
       // Open onetoones
@@ -193,7 +189,7 @@ define([
     // DISCUSSIONS MANAGEMENT
     // ======================================================================
 
-    onRoomPong: function(model, collection, options) {
+    addRoomView: function(model, collection, options) {
       var view = new RoomPanelView({
         collection: collection,
         model:      model
@@ -205,7 +201,7 @@ define([
       }
     },
 
-    onOnePong: function(model, collection, options) {
+    addOneView: function(model, collection, options) {
       var view = new OneToOnePanelView({
         collection: collection,
         model:      model

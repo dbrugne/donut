@@ -11,10 +11,14 @@ chat
   - [x] Improve lisibility by cleaning http/socket launching
 - [ ] Disconnection bugs
   - [ ] Receive in welcome anything needed to refresh views: room (user, profile[, history]) and onetoone (profile[, history])
-  - [ ] Update room user list and room data (and re-render user list and header)
+    - [ ] History ?
+  - [x] Update room user list and room data (and re-render user list and header)
   - [ ] Update onetoone data and re-render header
   - [ ] Add a separator
-- [ ] Change protocole like that : socket.io:room subscription is automatically handled by server side on welcome and room:welcome, now "join" is only triggered on client on user "click" to open a room explicitly, a new message "room:pleasejoin" indicate to client that he should create a model/view for this room (but he is already subscribed)
+- Change protocol join/leave protocol
+  - [ ] socket.io:room subscription is automatically handled by server side on welcome (for current socket) and room:welcome (for other socket)
+  - [ ] now "join" is only triggered by client-side on a "click" to open a room
+  - [ ] a new message "room:pleasejoin" indicate to client that he should create a model/view for this room (but he is already subscribed)
 - Bug fixes
   - [ ] Add a check on connection to verify is user have "username"
   - [ ] What's happen when a message is posted by someone (on a room) and my client is in sleep (eg. : tablet) ?
@@ -28,7 +32,7 @@ chat
 
 **Room ops**
 - [x] Take in consideration for room:topic (centralize isGranted)
-- [ ] Redraw also the room header
+- [x] Redraw also the room header
 - [ ] Repair room:deop client crash
 - [ ] Sort room users list also on ownership/op status
 - [ ] Add a 'room ops' list

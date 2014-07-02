@@ -17,24 +17,22 @@ define([
     initialize: function() {
       this.listenTo(client, 'room:join', this.onJoin);
       this.listenTo(client, 'room:leave', this.onLeave);
-      this.listenTo(client, 'room:welcome', this.openPong);
+      this.listenTo(client, 'room:welcome', this.addModel);
     },
     // We ask to server to join us in this room
     openPing: function(name) {
       client.join(name);
     },
     // Server confirm that we was joined to the room and give us some data on room
-    openPong: function(room) {
-      if (this.get(room.name) != undefined) return; // when reconnecting
-
+    addModel: function(room) {
+      // prepare model data
       var owner = new UserModel({
         id: room.owner.user_id,
         user_id: room.owner.user_id,
         username: room.owner.username,
         avatar: room.owner.avatar
       });
-      var model = new RoomModel({
-        id: room.name,
+      var roomData = {
         name: room.name,
         owner: owner,
         op: room.op,
@@ -42,9 +40,21 @@ define([
         topic: room.topic,
         avatar: room.avatar,
         color: room.color
-      });
+      };
+
+      // update model
+      if (this.get(room.name) != undefined) {
+        // room already exist in IHM (maybe reconnecting)
+        var model = this.get(room.name);
+        model.set(roomData);
+      } else {
+        // new room in IHM
+        roomData.id = room.name;
+        var model = new RoomModel(roomData);
+      }
 
       // Add users
+      model.users.reset();
       _.each(room.users, function(element, key, list) {
         model.users.add(new UserModel({
           id: element.user_id,

@@ -1,5 +1,7 @@
+var async = require('async');
 var helper = require('./helper');
 var User = require('../app/models/user');
+var Room = require('../app/models/room');
 
 module.exports = function(io, socket) {
 
@@ -24,42 +26,111 @@ module.exports = function(io, socket) {
   };
 
   // Welcome data
-  User.findById(socket.getUserId(), 'username avatar rooms onetoones', function(err, user) {
-    if (err) {
-      helper.handleError('Unable to find user: '+err);
-      user.rooms = [];
-    }
+  async.waterfall([
 
-    // force user entity in memory refresh to avoid old data persistence (avatar)
-    socket.request.user.username = user.username;
-    socket.request.user.avatar = user.avatar;
+    function retrieveUser(callback){
+      User.findById(socket.getUserId(), 'username avatar rooms onetoones', function(err, user) {
+        if (err)
+          return callback('Unable to find user: '+err, null);
 
-    user.populate('onetoones', 'username', function(err, user) {
-      if (err) helper.handleError('Unable to populate user: '+err);
+        return callback(null, user);
+      });
+    },
 
-      // Onetoones list
-      var onetoones = user.onetoonesList();
+    function populateOnes(user, callback){
+      user.populate('onetoones', 'username', function(err, user) {
+        if (err)
+          return callback('Unable to populate user: '+err, null);
 
-      // Welcome
+        return callback(null, user);
+      });
+    },
+
+    function populateRooms(user, callback){
+      if (user.rooms.length < 1)
+        return callback(null, user);
+
+      var q = Room.find({name: { $in: user.rooms } })
+            .populate('owner', 'username avatar');
+
+      q.exec(function(err, rooms) {
+        if (err)
+          return callback('Unable to retrieve user rooms data: '+err, null);
+
+        if (rooms.length < 1) {
+          user.rooms = [];
+          return callback(null, user);
+        }
+
+        var userRooms = [];
+        for (var i = 0; i < rooms.length; i++) {
+          var room = rooms[i];
+
+          var users = helper.roomUsers(io, room.name);
+          var roomData = {
+            name: room.name,
+            owner: {},
+            op: room.op || [],
+            permanent: room.permanent,
+            avatar: room.avatarUrl('medium'),
+            color: room.color,
+            topic: room.topic || '',
+            history: [], //history, @todo
+            users: users
+          };
+          if (room.owner) {
+            roomData.owner = {
+              user_id: room.owner._id,
+              username: room.owner.username,
+              avatar: room.owner.avatarUrl('small')
+            };
+          }
+
+          userRooms.push(roomData);
+        }
+
+        user.roomsToSend = userRooms;
+        return callback(null, user);
+      });
+
+    },
+
+    function subscribeSocket(user, callback) { // @todo : case of non existing room
+      for (var i = 0; i < user.rooms.length; i++) {
+        var room = user.rooms[i];
+        socket.join(room); // automatic socket subscription to user rooms
+        console.log('socket '+socket.id+' subscribed to room '+room);
+      }
+
+      return callback(null, user);
+    },
+
+    function emitWelcome(user, callback) {
       socket.emit('welcome', {
         user: {
           user_id: socket.getUserId(),
           username: socket.getUsername(),
           avatar: socket.getAvatar()
         },
-        rooms: user.rooms,
-        onetoones: onetoones
+        rooms: user.roomsToSend, // problem when using directly user.rooms on mongoose model
+        onetoones: user.onetoonesList()
       });
+
+      return callback(null, user);
+    }
+
+  ], function (err, user) {
+    if (err)
+      return helper.handleError(err);
+
+    // push this user to other users
+    socket.broadcast.emit('user:online', {
+      user_id: socket.getUserId(),
+      username: socket.getUsername(),
+      avatar: socket.getAvatar('medium')
     });
-  });
 
-  // Push this user to other users
-  socket.broadcast.emit('user:online', {
-    user_id: socket.getUserId(),
-    username: socket.getUsername(),
-    avatar: socket.getAvatar('medium')
+    // activity
+    helper.record('connection', socket, {});
   });
-
-  // Activity
-  helper.record('connection', socket, {});
 };
