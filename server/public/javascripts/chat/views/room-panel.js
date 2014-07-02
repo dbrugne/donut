@@ -22,7 +22,9 @@ define([
       this.usersView = new RoomUsersView({el: this.$el.find('.col-users'), model: this.model, collection: this.model.users});
     },
     _remove: function(model) {
-      this.headerView.topicView.remove();
+      if (this.headerView.topicView)
+        this.headerView.topicView.remove();
+
       this.headerView.remove();
       this.usersView.remove();
     },
