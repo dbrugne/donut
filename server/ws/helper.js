@@ -82,7 +82,7 @@ module.exports = {
     if (o.create === true && o.socket == '')
       return o.error('socket is needed for on-the-fly room creation');
     if (!Room.validateName(o.name))
-      return o.error('Invalid room name');
+      return o.error('Invalid room name: '+o.name);
 
     var populate = function(room, success, error) {
       room.populate('owner', 'username avatar', function(err, room) {
@@ -238,17 +238,11 @@ module.exports = {
     if (!rawList || rawList.length < 1) return list;
 
     _.each(rawList, function(name) {
-      if (name == '') return; // common room for all socket (socket.io)
+      if (!name) return; // common room for all socket (socket.io)
       if (name.substring(0, 1) != '#') return; // only our rooms
       list.push(name);
     });
-//    Object.keys(rawList).forEach(function(key) {
-//      if (key == '') return; // common room for all socket (socket.io)
-//      if (key.substring(0, 2) != '/#') return; // only our rooms
-//
-//      var name = key.substring(1); // remove initial '/'
-//      list.push(name);
-//    });
+
     return list;
   },
 
