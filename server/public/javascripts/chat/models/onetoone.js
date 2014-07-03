@@ -12,7 +12,7 @@ define([
         user_id: '',
         avatar: '',
         status: '',
-        type: 'onetoone', // @todo : remove
+        type: 'onetoone',
         focused: false,
         unread: 0
       };

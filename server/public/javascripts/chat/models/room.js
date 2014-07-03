@@ -17,7 +17,7 @@ define([
         permanent: false,
         avatar: '',
         color: '',
-        type: 'room', // @todo : remove
+        type: 'room',
         focused: false,
         unread: 0
       };
