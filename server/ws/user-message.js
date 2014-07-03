@@ -23,11 +23,11 @@ module.exports = function(io, socket, data) {
     };
 
     // Broadcast message to all 'sender' devices
-    io.sockets.in('user:'+from).emit('user:message', messageEvent);
+    io.to('user:'+from).emit('user:message', messageEvent);
 
     // (if sender!=receiver) Broadcast message to all 'receiver' devices
     if (from !==  to)
-      io.sockets.in('user:'+to).emit('user:message', messageEvent);
+      io.to('user:'+to).emit('user:message', messageEvent);
 
     // Persist that "onetoone is open" on both user
     var updated = function(err, userFrom) {

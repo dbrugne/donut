@@ -199,17 +199,19 @@ module.exports = {
 
     var list = [];
     var already = [];
-    var sockets = io.sockets.in();
-    var until = (sockets.sockets.length < limit) ? sockets.sockets.length : limit;
+    var sockets = io.sockets.adapter.nsp.connected;
+    var until = (sockets.length < limit) ? sockets.length : limit;
     for (var i=0; i < until; i++) {
-      var u = sockets.sockets[i];
-      if (!_.contains(already, u.getUserId())) {
-        already.push(u.getUserId());
-        list.push({
-          user_id: u.getUserId(),
-          username: u.getUsername(),
-          avatar: u.getAvatar('medium')
-        });
+      var u = sockets[i];
+      if (u) { // sometime socket has expired
+        if (!_.contains(already, u.getUserId())) {
+          already.push(u.getUserId());
+          list.push({
+            user_id: u.getUserId(),
+            username: u.getUsername(),
+            avatar: u.getAvatar('medium')
+          });
+        }
       }
     }
     return list;
@@ -231,10 +233,10 @@ module.exports = {
 
     // Robustness code: sometime this function is called and socket not longer
     // exists (e.g.: disconnection)
-    if (!io.sockets.connected[socket.id])
+    if (!io.sockets.adapter.nsp.connected[socket.id])
       return list;
 
-    var rawList = io.sockets.connected[socket.id].rooms;
+    var rawList = io.sockets.adapter.nsp.connected[socket.id].rooms;
     if (!rawList || rawList.length < 1) return list;
 
     _.each(rawList, function(name) {
@@ -298,13 +300,15 @@ module.exports = {
     var sockets = this.roomSockets(io, name);
     for (var i=0; i < sockets.length; i++) {
       var u = sockets[i];
-      if (!_.contains(already, u.getUserId())) {
-        already.push(u.getUserId());
-        list.push({
-          user_id: u.getUserId(),
-          username: u.getUsername(),
-          avatar: u.getAvatar()
-        });
+      if (u) { // = socket has maybe expired
+        if (!_.contains(already, u.getUserId())) {
+          already.push(u.getUserId());
+          list.push({
+            user_id: u.getUserId(),
+            username: u.getUsername(),
+            avatar: u.getAvatar()
+          });
+        }
       }
     }
     return list;

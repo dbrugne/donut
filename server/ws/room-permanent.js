@@ -23,7 +23,7 @@ module.exports = function(io, socket, data) {
     room.save();
 
     // Inform other room users
-    io.sockets.in(room.name).emit('room:permanent', {
+    io.to(room.name).emit('room:permanent', {
       name: room.name,
       permanent: bool
     });

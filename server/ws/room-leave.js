@@ -6,8 +6,11 @@ module.exports = function(io, socket, data) {
   helper.findRoom(data.name, handleSuccess, helper.handleError);
 
   function handleSuccess(room) {
-    // Socket unsubscription
-    socket.leave(room.name);
+
+    // unsubscribe this user socket(s) to the room
+    _.each(helper.userSockets(io, socket.getUserId()), function(s) {
+      s.leave(room.name);
+    });
 
     // Inform other room users
     var roomOutEvent = {
@@ -17,10 +20,10 @@ module.exports = function(io, socket, data) {
       username: socket.getUsername(),
       avatar: socket.getAvatar()
     };
-    io.sockets.in(room.name).emit('room:out', roomOutEvent);
+    io.to(room.name).emit('room:out', roomOutEvent);
 
     // Inform other devices
-    socket.broadcast.to('user:'+socket.getUserId()).emit('room:leave', {
+    io.to('user:'+socket.getUserId()).emit('room:leave', {
       name: room.name
     });
 

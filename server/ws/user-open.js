@@ -15,7 +15,7 @@ module.exports = function(io, socket, data) {
       ? true
       : false;
 
-    io.sockets.in('user:'+socket.getUserId()).emit('user:open', {
+    io.to('user:'+socket.getUserId()).emit('user:open', {
       user_id: userWith._id,
       username: userWith.username,
       avatar: userWith.avatarUrl(),

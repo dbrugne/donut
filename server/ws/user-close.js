@@ -8,7 +8,7 @@ module.exports = function(io, socket, data) {
   function handleSuccess(userWith) {
     // Push user data to all user devices
     var with_user_id = userWith._id.toString();
-    io.sockets.in('user:'+socket.getUserId()).emit('user:close', {
+    io.to('user:'+socket.getUserId()).emit('user:close', {
       user_id: with_user_id,
       username: userWith.username
     });

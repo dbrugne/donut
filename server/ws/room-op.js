@@ -40,7 +40,7 @@ module.exports = function(io, socket, data) {
     };
 
     // Inform other room users
-    io.sockets.in(room.name).emit('room:op', opEvent);
+    io.to(room.name).emit('room:op', opEvent);
 
     // Activity
     helper.record('room:op', socket, opEvent);

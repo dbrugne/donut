@@ -29,7 +29,7 @@ module.exports = function(io, socket, data) {
         avatar  : socket.getAvatar(),
         topic   : data.topic
       };
-      io.sockets.in(data.name).emit('room:topic', roomTopicEvent);
+      io.to(data.name).emit('room:topic', roomTopicEvent);
 
       // Activity
       var receivers = helper.roomUsersId(io, room.name);

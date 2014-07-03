@@ -15,7 +15,7 @@ module.exports = function(io, socket) {
     // Inform room clients that this user leave the room
     // (only if it was the last socket for this user)
     if (helper.userSockets(io, socket.getUserId()).length < 1) {
-      io.sockets.in(roomName).emit('room:out', {
+      io.to(roomName).emit('room:out', {
         name: roomName,
         user_id: socket.getUserId(),
         username: socket.getUsername(),

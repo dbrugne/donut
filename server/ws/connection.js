@@ -5,9 +5,6 @@ var Room = require('../app/models/room');
 
 module.exports = function(io, socket) {
 
-  // Multi-devices: create a virtual room by user
-  socket.join('user:'+socket.request.user._id);
-
   // Decorate socket (shortcut)
   // @todo : add robustness code in following methods, sometimes (in debug session for example) the socket expires,
   // but the object still exists, and calling this.[handshake.user._id.toString()] on a it throw a :
@@ -27,6 +24,13 @@ module.exports = function(io, socket) {
 
   // Welcome data
   async.waterfall([
+
+    function addSocketToUserRoom(callback) {
+      // create a virtual room by user
+      socket.join('user:'+socket.request.user._id, function() {
+        return callback(null);
+      });
+    },
 
     function retrieveUser(callback){
       User.findById(socket.getUserId(), 'username avatar rooms onetoones', function(err, user) {
