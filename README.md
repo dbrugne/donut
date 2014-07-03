@@ -16,16 +16,9 @@ chat
   - [x] Add a separator
 - Change protocol join/leave protocol
   - [x] socket.io:room subscription is automatically handled by server side on welcome (for current socket)
-  - [ ] ... and room:welcome (for other socket)
-  - [ ] now "join" is only triggered by client-side on a "click" to open a room
-  - [ ] a new message "room:pleasejoin" indicate to client that he should create a model/view for this room (but he is already subscribed)
-- [ ] Auto-update of the interface on room/user:change
-  - [ ] WS: implement REDIS cache for user and room
-  - [ ] WS: read in REDIS cache only "even" for socket.getUsername-like function to have always last data
-  - [ ] HTTP: implement emitter in user and room form POST
-  - [ ] HTTP: invalidate REDIS cache in user and room form POST
-  - [ ] WS: implement corresponding events: room:update/user:update (or user:nickname, user:avatar, user:color, room:avatar and user:color)
-  - [ ] JS: on previous events update IHM: room tab/header, onetoone tab/header
+  - [x] ... and room:welcome (for other socket)
+  - [x] On client join a room the room:welcome is broadcasted to all user sockets
+  - [x] now "join" is only triggered by client-side on a "click" to open a room
 - Bug fixes
   - [ ] What's happen when a message is posted by someone (on a room) and my client is in sleep (eg. : tablet) ?
   - [ ] On room closing view / model already exist and we can not join the room again, also a problem with "home" focusing occurs
@@ -35,7 +28,7 @@ chat
 - [x] Redraw also the room header
 - [x] Repair room:deop client crash
 - [ ] Sort room users list also on ownership/op status
-- [ ] Add a 'room ops' list
+- [ ] Add a 'room ops' list with 'remove user from op list' button
 - [ ] Factorize socket room op/owner detection in helper and update room:op/deop events
 
 **Theme**
@@ -65,6 +58,13 @@ chat
   - [ ] Cleanup history retrieving in welcome and open/join. Send last-24h activity < 500 events
   - [ ] Add Skype link to load more history
   - [ ] Implement in user:open process
+- [ ] Update chat interface on room/user details when room/user is edited
+    - [ ] WS: implement REDIS cache for user and room
+    - [ ] WS: read in REDIS cache only "even" for socket.getUsername-like function to have always last data
+    - [ ] HTTP: implement emitter in user and room form POST
+    - [ ] HTTP: invalidate REDIS cache in user and room form POST
+    - [ ] WS: implement corresponding events: room:update/user:update (or user:nickname, user:avatar, user:color, room:avatar and user:color)
+    - [ ] JS: on previous events update IHM: room tab/header, onetoone tab/header
 
 **Content**
 - [ ] Emails: forgot, password changed, signup
