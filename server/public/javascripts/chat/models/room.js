@@ -138,10 +138,14 @@ define([
       });
     },
     onDeop: function(data) {
+      if (data.name != this.get('name'))
+        return;
+
       if (this.get('op').indexOf(data.user_id) === -1)
         return;
 
-      this.get('op').pull(data.user_id);
+      var ops = _.without(this.get('op'), data.user_id);
+      this.set('op', ops);
 
       this.users.trigger('redraw');
 
