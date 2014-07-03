@@ -38,10 +38,30 @@ module.exports = function(io, socket) {
     },
 
     function populateOnes(user, callback){
-      user.populate('onetoones', 'username', function(err, user) {
+      user.populate('onetoones', 'username avatar color', function(err, user) {
         if (err)
           return callback('Unable to populate user: '+err, null);
 
+        if (user.onetoones.length < 1)
+          return callback(null, user);
+
+        var userOnes = [];
+        for (var i = 0; i < user.onetoones.length; i++) {
+          var one = user.onetoones[i];
+          var status = (helper.userSockets(io, one._id).length > 0)
+            ? true
+            : false;
+
+          userOnes.push({
+            user_id: one._id,
+            username: one.username,
+            avatar: one.avatarUrl(),
+            status: status,
+            history: [] // @todo : history
+          });
+        }
+
+        user.onesToSend = userOnes;
         return callback(null, user);
       });
     },
@@ -67,6 +87,12 @@ module.exports = function(io, socket) {
           var room = rooms[i];
 
           var users = helper.roomUsers(io, room.name);
+          users.push({ // add myself, not already subscribed
+            user_id: socket.getUserId(),
+            username: socket.getUsername(),
+            avatar: socket.getAvatar()
+          });
+
           var roomData = {
             name: room.name,
             owner: {},
@@ -75,7 +101,7 @@ module.exports = function(io, socket) {
             avatar: room.avatarUrl('medium'),
             color: room.color,
             topic: room.topic || '',
-            history: [], //history, @todo
+            history: [], // @todo : history
             users: users
           };
           if (room.owner) {
@@ -113,7 +139,7 @@ module.exports = function(io, socket) {
           avatar: socket.getAvatar()
         },
         rooms: user.roomsToSend, // problem when using directly user.rooms on mongoose model
-        onetoones: user.onetoonesList()
+        onetoones: user.onesToSend
       });
 
       return callback(null, user);

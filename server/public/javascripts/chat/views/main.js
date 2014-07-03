@@ -79,28 +79,13 @@ define([
     },
 
     /**
-     * Executed each time the connexion with server is re-up
-     * (can occurs multiple time in a session)
+     * Executed each time the connexion with server is re-up (can occurs multiple
+     * time in a same session)
      * @param data
      */
     onWelcome: function(data) {
-      // Update current user data
-      _.each(Object.keys(data.user), function(propertyKey) {
-        currentUser.set(propertyKey, data.user[propertyKey]);
-      });
-
       // Join #General
-      client.join('#General'); // @todo : should be called on collection
-
-      // Join rooms
-      _.each(data.rooms, function(room) {
-        rooms.addModel(room);
-      });
-
-      // Open onetoones
-      _.each(data.onetoones, function(onetoone) {
-        client.open(onetoone); // @todo : should be called on collection
-      });
+//      client.join('#General'); // @todo : should be called on collection
 
       // Run routing
       this.trigger('ready');

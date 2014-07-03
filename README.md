@@ -9,12 +9,11 @@ chat
 - [x] Upgrade socket.io to 1.0
   - [x] Use redis for sessions (for socket and express)
   - [x] Improve lisibility by cleaning http/socket launching
-- [ ] Disconnection bugs
-  - [ ] Receive in welcome anything needed to refresh views: room (user, profile[, history]) and onetoone (profile[, history])
-    - [ ] History ?
+- [x] Disconnection bugs
+  - [x] Receive in welcome anything needed to refresh views: room (user, profile[, history]) and onetoone (profile[, history])
   - [x] Update room user list and room data (and re-render user list and header)
-  - [ ] Update onetoone data and re-render header
-  - [ ] Add a separator
+  - [x] Update onetoone data and re-render header
+  - [x] Add a separator
 - Change protocol join/leave protocol
   - [ ] socket.io:room subscription is automatically handled by server side on welcome (for current socket) and room:welcome (for other socket)
   - [ ] now "join" is only triggered by client-side on a "click" to open a room
@@ -58,9 +57,10 @@ chat
 
 **Chat**
 - [ ] Change the to server->client messages : room:join/leave and user:open/close (for something like ?)
-- [ ] Implement async series/waterfall in socket code
+- [ ] Correct room:in for user that "reconnect"
 - [ ] Replace room:out by user:disconnect on socket disconnection
 - Room/onetoone history step 2
+  - [ ] Cleanup history retrieving in welcome and open/join. Send last-24h activity < 500 events
   - [ ] Add Skype link to load more history
   - [ ] Implement in user:open process
 
@@ -94,6 +94,7 @@ chat
 ## Release 4
 
 **Chat**
+- [ ] Implement async series/waterfall in socket code
 - [ ] Room kick
 - [ ] Auto-mention user in room message ($.fn.mentionize())
 

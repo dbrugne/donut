@@ -19,6 +19,7 @@ define([
       this.listenTo(this.collection, 'remove', this.onAddRemove);
       this.listenTo(this.collection, 'newMessage', this.render); // @todo : nasty event
       this.listenTo(this.collection, 'inOut', this.render); // @todo : nasty event
+      this.listenTo(this.collection, 'redraw', this.render);
 
       this.render();
     },

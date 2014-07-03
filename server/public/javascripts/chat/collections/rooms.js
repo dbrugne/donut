@@ -15,9 +15,22 @@ define([
     },
 
     initialize: function() {
+      this.listenTo(client, 'welcome', this.onWelcome);
       this.listenTo(client, 'room:join', this.onJoin);
       this.listenTo(client, 'room:leave', this.onLeave);
       this.listenTo(client, 'room:welcome', this.addModel);
+    },
+    /**
+     * Executed each time the connexion with server is re-up (can occurs multiple
+     * time in a same session)
+     * @param data
+     */
+    onWelcome: function(data) {
+      var that = this;
+      _.each(data.rooms, function(room) {
+        that.addModel(room);
+      });
+      this.trigger('redraw');
     },
     // We ask to server to join us in this room
     openPing: function(name) {
@@ -46,7 +59,10 @@ define([
       };
 
       // update model
-      if (this.get(room.name) != undefined) {
+      var isNew = (this.get(room.name) == undefined)
+        ? true
+        : false;
+      if (!isNew) {
         // already exist in IHM (maybe reconnecting)
         var model = this.get(room.name);
         model.set(roomData);
@@ -70,6 +86,7 @@ define([
       this.add(model); // now the view exists (created by mainView)
 
       // Add history
+      // @todo : deduplicate in case of reconnection (empty list?)
       if (room.history && room.history.length > 0) {
         _.each(room.history, function(event) {
           if (event.type == 'room:message') {
@@ -87,8 +104,11 @@ define([
         });
         model.trigger('separator', 'Previous messages');
       }
-
-      model.trigger('notification', {type: 'hello', name: model.get('name')}); // @todo move it from here ?
+      if (!isNew) {
+        model.trigger('separator', 'Reconnected');
+      } else {
+        model.trigger('notification', {type: 'hello', name: model.get('name')});
+      }
     },
     // Server asks to this client to join this room
     onJoin: function(data) {
