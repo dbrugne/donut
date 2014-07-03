@@ -39,10 +39,6 @@ define([
       // ROOM
       // ======================================================
 
-      this.socket.on('room:join', function(data) {
-        that.debug(['io:in:room:join', data]);
-        that.trigger('room:join', data);
-      });
       this.socket.on('room:leave', function(data) {
         that.debug(['io:in:room:leave', data]);
         that.trigger('room:leave', data);

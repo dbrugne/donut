@@ -15,7 +15,8 @@ chat
   - [x] Update onetoone data and re-render header
   - [x] Add a separator
 - Change protocol join/leave protocol
-  - [ ] socket.io:room subscription is automatically handled by server side on welcome (for current socket) and room:welcome (for other socket)
+  - [x] socket.io:room subscription is automatically handled by server side on welcome (for current socket)
+  - [ ] ... and room:welcome (for other socket)
   - [ ] now "join" is only triggered by client-side on a "click" to open a room
   - [ ] a new message "room:pleasejoin" indicate to client that he should create a model/view for this room (but he is already subscribed)
 - [ ] Auto-update of the interface on room/user:change
@@ -27,6 +28,7 @@ chat
   - [ ] JS: on previous events update IHM: room tab/header, onetoone tab/header
 - Bug fixes
   - [ ] What's happen when a message is posted by someone (on a room) and my client is in sleep (eg. : tablet) ?
+  - [ ] On room closing view / model already exist and we can not join the room again, also a problem with "home" focusing occurs
 
 **Room ops**
 - [x] Take in consideration for room:topic (centralize isGranted)

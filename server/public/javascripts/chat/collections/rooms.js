@@ -16,7 +16,6 @@ define([
 
     initialize: function() {
       this.listenTo(client, 'welcome', this.onWelcome);
-      this.listenTo(client, 'room:join', this.onJoin);
       this.listenTo(client, 'room:leave', this.onLeave);
       this.listenTo(client, 'room:welcome', this.addModel);
     },
@@ -108,13 +107,6 @@ define([
         model.trigger('separator', 'Reconnected');
       } else {
         model.trigger('notification', {type: 'hello', name: model.get('name')});
-      }
-    },
-    // Server asks to this client to join this room
-    onJoin: function(data) {
-      // Only if not already joined
-      if (!this.get(data.name)) {
-        this.openPing(data.name);
       }
     },
     // Server asks to this client to leave this room
