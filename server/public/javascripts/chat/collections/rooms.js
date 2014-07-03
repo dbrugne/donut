@@ -26,12 +26,15 @@ define([
     // Server confirm that we was joined to the room and give us some data on room
     addModel: function(room) {
       // prepare model data
-      var owner = new UserModel({
-        id: room.owner.user_id,
-        user_id: room.owner.user_id,
-        username: room.owner.username,
-        avatar: room.owner.avatar
-      });
+      var owner = (room.owner.user_id)
+        ? new UserModel({
+            id: room.owner.user_id,
+            user_id: room.owner.user_id,
+            username: room.owner.username,
+            avatar: room.owner.avatar
+          })
+        : new UserModel();
+
       var roomData = {
         name: room.name,
         owner: owner,
@@ -44,11 +47,11 @@ define([
 
       // update model
       if (this.get(room.name) != undefined) {
-        // room already exist in IHM (maybe reconnecting)
+        // already exist in IHM (maybe reconnecting)
         var model = this.get(room.name);
         model.set(roomData);
       } else {
-        // new room in IHM
+        // add in IHM
         roomData.id = room.name;
         var model = new RoomModel(roomData);
       }
