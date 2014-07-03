@@ -253,7 +253,7 @@ module.exports = {
    * @returns {Array}
    */
   userSockets: function(io, userId) {
-    return this.roomSockets(io, 'user:'+userId).sockets;
+    return this.roomSockets(io, 'user:'+userId);
   },
 
   /**
@@ -295,7 +295,7 @@ module.exports = {
   roomUsers: function(io, name) {
     var list = [];
     var already = [];
-    var sockets = io.sockets.in(name).sockets;
+    var sockets = this.roomSockets(io, name);
     for (var i=0; i < sockets.length; i++) {
       var u = sockets[i];
       if (!_.contains(already, u.getUserId())) {
@@ -316,7 +316,17 @@ module.exports = {
    * @returns {Array}
    */
   roomSockets: function(io, name) {
-    return io.sockets.in(name);
+//    return io.sockets.in(name);
+    // source: http://stackoverflow.com/questions/23858604/how-to-get-rooms-clients-list-in-socket-io-1-0
+    // until a cleaner method is implemented in socket.io
+    var res = [];
+    var room = io.sockets.adapter.rooms[name];
+    if (room) {
+      for (var id in room) {
+        res.push(io.sockets.adapter.nsp.connected[id]);
+      }
+    }
+    return res;
   },
 
   /**
