@@ -50,7 +50,7 @@ module.exports = {
    * @param error
    */
   findUser: function(username, success, error) {
-    if (!User.validateUsername(username)) return error('Invalid username');
+    if (!User.validateUsername(username)) return error('findUser invalid username: '+username);
 
     User.findByUsername(username).exec(function(err, user) {
       if (err) return error('Unable to retrieve user ' + err);
