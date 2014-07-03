@@ -2,6 +2,7 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'i18next',
   'moment',
   'routeur',
   'models/client',
@@ -15,7 +16,7 @@ define([
   'jquery.momentify',
   'bootstrap',
   'moment-fr'
-], function ($, _, Backbone, moment, router, client, mainView) {
+], function ($, _, Backbone, i18next, moment, router, client, mainView) {
   /**
    * The init process is the following:
    * - Load router - done by require.js
@@ -52,6 +53,16 @@ define([
       // Give some object to global scope to allow other context to use it
       window.router = router;
       window.moment = moment;
+
+      // i18n setup
+      i18next.init({
+        lng: 'fr-FR',
+        fallbackLng: ['fr-FR', 'en-EN'],
+        resGetPath: '/locales/resources.json?lng=__lng__&ns=__ns__',
+        dynamicLoad: true,
+        saveMissing: true,
+        debug: true
+      });
 
       // Cloudinary setup
       $.cloudinary.config({

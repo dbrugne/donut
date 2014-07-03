@@ -5,7 +5,6 @@ var conf = require('../../config/index');
  */
 module.exports = function() {
   return function (req, res, next) {
-
     // pass current session user to all views
     res.locals.user = req.user;
 

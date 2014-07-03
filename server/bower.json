@@ -11,6 +11,7 @@
       "cloudinary_js": "latest",
       "validator-js": "latest",
       "colpick": "latest",
-      "moment": "latest"
+      "moment": "latest",
+      "i18next": "latest"
     }
 }

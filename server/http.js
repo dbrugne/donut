@@ -10,6 +10,7 @@ var session = require('./app/middlewares/session');
 var passport = require('./app/passport');
 var csrf = require('csurf');
 var flash = require('connect-flash');
+var i18n = require('./app/middlewares/i18n');
 var prepareViews = require('./app/middlewares/prepareviews');
 var expressValidator = require('./app/validator');
 var googleAnalytics = require('./app/middlewares/googleanalytics');
@@ -35,6 +36,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(csrf());
 app.use(flash());
+app.use(i18n.middleware);
+app.use(i18n.router);
 app.use(prepareViews());
 app.use(googleAnalytics());
 

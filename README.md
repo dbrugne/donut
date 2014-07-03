@@ -32,9 +32,10 @@ chat
 - [ ] Factorize socket room op/owner detection in helper and update room:op/deop events
 
 **Theme**
+- [x] Find i18n solution on client and server
+  - [x] Implement i18next on server
+  - [x] Implement i18next on client
 - [ ] Implement the new global construction
-- [ ] Find i18n solution on client and server
-  - [ ] Traduction fr
 
 **Hosting**
 - [ ] Implement base FQDN conf and logic to redirect each request on it (HTTP requests only)

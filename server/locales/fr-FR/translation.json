@@ -1,0 +1,9 @@
+{
+    "title": "donut.me",
+    "home": {
+        "title": "bienvenue",
+        "baseline": "la baseline",
+        "authenticate": "Authentifiez-vous",
+        "facebooksignin": "Sign in with <strong>Facebook</strong>"
+    }
+}

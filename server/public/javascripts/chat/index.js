@@ -6,6 +6,7 @@ require.config({
       'socket.io'                 : '/socket.io/socket.io',
       'underscore'                : '../vendor/underscore-amd/underscore',
       'backbone'                  : '../vendor/backbone-amd/backbone',
+      'i18next'                   : '../vendor/i18next/i18next.amd.withJQuery',
       'moment'                    : '../vendor/moment/moment',
       'moment-fr'                 : '../vendor/moment/lang/fr',
        // for cloudinary upload, not really used but a sucker dev have implement AMD as a bastard
@@ -30,10 +31,6 @@ require.config({
     }
   }
 });
-
-//require(['jquery', 'bootstrap'], function ($, bootstrap) {
-//  // some custom jquery to do on raw DOM?
-//});
 
 require(['app'], function (app) {
   app.initialize();

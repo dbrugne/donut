@@ -6,15 +6,15 @@
         {{/message}}
 
         <div class="col-lg-7 well" style="height: 270px; background-color: lightyellow; text-align: center;">
-            <h1>What is it?</h1>
-            <p>Create a room to discuss with your friends, your community, your family...</p>
+            <h1>{{#i}}home.title{{/i}}</h1>
+            <p>{{#i}}home.baseline{{/i}}</p>
         </div>
         <div class="col-lg-5">
             <div class="login-form">
-                <h2><span class="fa fa-sign-in"></span> Identifiez-vous</h2>
+                <h2><span class="fa fa-sign-in"></span> {{#i}}home.authenticate{{/i}}</h2>
 
                 <div class="method-facebook">
-                    <a href="/login/facebook" class="facebook-button"><span class="fa fa-facebook"></span> Sign in with <strong>Facebook</strong></a>
+                    <a href="/login/facebook" class="facebook-button"><span class="fa fa-facebook"></span> {{#i}}home.facebooksignin{{/i}}</a>
                 </div>
                 <div class="method-or">OU</div>
                 <div class="method-password">
