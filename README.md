@@ -115,6 +115,7 @@ chat
 
 **Features**
 - [ ] Add option to no join #General on connection
+- [ ] Implement "remember me" mechanisme on login form
 
 **Presence management**
   - [ ] Each user received on client side (room user, owner, onetoone user, home users ... but not search engine users) are instanciated as a User Model
