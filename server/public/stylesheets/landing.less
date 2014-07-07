@@ -1,0 +1,414 @@
+.big-button {
+  .btn;
+  padding: 12px 20px;
+  font-family: 'Raleway Medium', sans-serif;
+  font-size: 1.7em;
+  text-transform:uppercase;
+  border: 5px solid @cl-second;
+  color: @cl-second;
+  -webkit-border-radius: 90px;
+  -moz-border-radius: 90px;
+  border-radius: 90px;
+}
+
+.input-picto {
+  color: @cl-first;
+  font-size: 22px;
+  top: 0;
+  left: 10px;
+  position: absolute;
+  z-index: 2;
+  display: block;
+  width: 34px;
+  height: 34px;
+  line-height: 34px;
+  text-align: center;
+}
+
+#landing {
+  .container-fluid;
+  padding: 0; /** cancel bootstrap container side padding **/
+  height: 100%;
+
+  .header {
+    .row;
+    height: 100%;
+    background-image: url(@img-homepage);
+    background-repeat: no-repeat;
+    background-position: right 100px;
+
+    .cover {
+      .make-sm-column(9);
+      padding: 30px;
+      padding-top: 100px;
+      padding-left: 90px;
+
+      .title {
+        min-height: 80px;
+        h1.logo {
+          display: inline-block;
+          margin-top: 0;
+          min-width: 300px;
+          min-height: 80px;
+        }
+        /*.separator {
+          display: inline-block;
+          position: relative;
+          margin-left: 15px;
+          margin-right: 15px;
+          z-index: -99;
+          background-color: red;
+          .c {
+            position: absolute;
+            top: -200px; left: -400px;
+            width: 400px;
+            height: 400px;
+            background-color: green;
+            -moz-border-radius: 200px;
+            -webkit-border-radius: 200px;
+            border-radius: 200px;
+            -moz-box-shadow:    5px 0px 18px -5px #656565;
+            -webkit-box-shadow: 5px 0px 18px -5px #656565;
+            -o-box-shadow:      5px 0px 18px -5px #656565;
+            box-shadow:         5px 0px 18px -5px #656565;
+          }
+          .p {
+            position: absolute;
+            top: -210px; left: -418px;
+            width: 420px;
+            height: 420px;
+            background-color: white;
+          }
+        }*/
+        /*.baseline {
+          display: inline-block;
+          width: 100px;
+          margin: 0 0 0 25px;
+          vertical-align: middle;
+          text-transform:uppercase;
+          font-style: italic;
+          font-size: 1em;
+        }*/
+      }
+
+      .text {
+        clear: both;
+        margin-top: 65px;
+        p {
+          font-family: 'Raleway Heavy', sans-serif;
+          color: @cl-first;
+          font-size: 2.6em;
+          text-transform:uppercase;
+          margin-bottom: 0;
+          line-height: normal;
+        }
+      }
+      .btn-knowmore {
+        .big-button;
+        margin-top: 45px;
+      }
+    }
+
+    .login {
+      .make-sm-column(3);
+      padding: 0; /** cancel bootstrap column side padding **/
+
+      background-color: rgb(255, 255, 255);
+      background-color: rgba(255, 255, 255, 0.8);
+      background-image: url(@img-homepage-blur);
+      background-repeat: no-repeat;
+      background-position: right 100px;
+      /*:before {
+        content: "";
+        position: absolute; top:0; right:0;
+        right: 0;
+        z-index: -1;
+        display: block;
+        .cover-background;
+        width: 100%;
+        height: 800px;
+        -webkit-filter: blur(5px);
+        -moz-filter: blur(5px);
+        -o-filter: blur(5px);
+        -ms-filter: blur(5px);
+        filter: blur(5px);
+      }*/
+
+      > div {
+        padding: 90px 20px;
+        text-align: center;
+      }
+
+      h2 {
+        font-family: 'Raleway Heavy', sans-serif;
+        color: @cl-first;
+        font-size: 2.5em;
+        text-transform: uppercase;
+        font-weight: normal;
+      }
+
+      .btn-facebook {
+        .btn;
+        margin-top: 64px;
+        background-color: #4a649d;
+        color: #ffffff;
+        text-transform: uppercase;
+        border-radius: 25px;
+        padding: 11px 20px;
+        font-family: 'Raleway Medium', sans-serif;
+        font-size: 1.3em;
+
+        span {
+          margin-left: 7px;
+        }
+        i {
+          font-size: 1.4em;
+          margin-right: 8px;
+          vertical-align: middle;
+        }
+      }
+      .btn-facebook:hover {
+        color: #ffffff;
+        span {text-decoration: underline;}
+      }
+
+      .logic {
+        :before, :after {
+          content: " ─ ";
+        }
+        margin-top: 40px;
+        text-align: center;
+        font-size: 1.1em;
+        text-transform:uppercase;
+        font-family: 'Raleway Medium', sans-serif;
+        color: @cl-detail;
+
+        i {
+          font-size: 1.3em;
+          margin: 0 5px;
+          font-style: none;
+        }
+      }
+
+      .form {
+        .make-sm-column(12);
+        margin-top: 40px;
+        margin-bottom: 80px;
+        .form-group {
+          margin-bottom: 1px; /** cancel bootstrap .form-group margin **/
+          position: relative;
+        }
+        i {
+          .input-picto;
+        }
+        i.right {
+          right: 10px;
+          left: inherit;
+        }
+        .form-control {
+        }
+        input[type=submit] {
+          background-color: #FD2063;
+          color: #ffffff;
+          font-family: 'Raleway Medium', sans-serif;
+          text-transform:uppercase;
+          border-radius: 25px;
+          font-size: 1.4em;
+          padding: 10px 20px;
+          margin-top: 30px;
+        }
+    }
+
+    .btn-signup {
+      .big-button;
+      padding: 25px 25px 15px;
+      p {
+        line-height: 1.0;
+      }
+      p:first-child {
+        font-family: 'Raleway Heavy', sans-serif;
+        margin-bottom: 0;
+      }
+      p:last-child{
+        font-size: 0.8em;
+      }
+    }
+  }
+}
+
+.description {
+  .row;
+  padding-top: 50px;
+  padding-left: 50px;
+  padding-right: 50px;
+  background-color: @cl-first;
+  font-family: 'Raleway Heavy', sans-serif;
+  color: #ffffff;
+
+  h2 {
+    .make-sm-column(4);
+    text-transform: uppercase;
+    line-height: 0.6;
+    font-weight: normal;
+    p {
+      font-size: 2.15em;
+
+      .asterisk {
+        vertical-align: text-top;
+      }
+    }
+    p:first-child {
+      font-size: 3.0em;
+    }
+  }
+  .definition {
+    .make-sm-column(5);
+    font-size: 1.8em;
+    line-height: 1.2;
+    padding-top: 25px;
+    .asterisk {
+      font-size: 1.8em;
+      vertical-align: middle;
+      margin-top: -5px;
+      padding-right: 5px;
+      height: 70px;
+      .pull-left;
+    }
+  }
+
+  .illustrations {
+    .row;
+    padding-bottom: 105px;
+
+    .illus {
+      .make-sm-column(4);
+      text-align: center;
+      font-size: 1.3em;
+
+      img {
+        min-width: 430px;
+        min-height: 330px;
+        background-color: deepskyblue;
+      }
+      i {
+        content: " ";
+          padding: 5px;
+          width: 82px;
+          display: block;
+          margin: auto;
+          border-bottom: 1px solid #ffffff;
+        }
+        p {
+          margin: 25px auto;
+          max-width: 305px;
+        }
+
+      }
+    }
+  }
+
+  .signup {
+    .row;
+    > div {
+      .make-sm-column(12);
+    }
+
+    background-color: @cl-second;
+    padding-top: 100px;
+    padding-bottom: 32px;
+    text-align: center;
+
+    .title {
+      font-family: 'Raleway Heavy', sans-serif;
+      color: #ffffff;
+      font-size: 1.8em;
+      text-transform: uppercase;
+
+      img {
+        margin-left: 10px;
+        margin-right: 10px;
+        vertical-align: initial;
+      }
+    }
+
+    .form {
+      .row;
+      margin-top: 30px;
+
+      .form-content {
+        .make-sm-column(4);
+        .make-sm-column-offset(4);
+        padding: 20px;
+        .fields {
+          .make-sm-column(6);
+          .form-group {
+            margin-bottom: 20px;
+
+          }
+          .form-group:last-child {
+            margin-bottom: 0;
+          }
+        }
+        .submit {
+          .make-sm-column(6);
+          .form-group {
+            margin-bottom: 0;
+          }
+
+          input[type=submit] {
+            .big-button;
+            background-color: @cl-second;
+            border-color: #ffffff;
+            color: #ffffff;
+            margin-top: 20px;
+          }
+        }
+      }
+    }
+
+    .disclaimer {
+      margin-top: 60px;
+      text-align: center;
+      color: @cl-detail;
+    }
+  }
+
+  .footer {
+    text-align: center;
+    margin-top: 16px;
+    margin-bottom: 22px;
+    ul {
+      li:before {
+        content: "•";
+        margin-left: 5px;
+        margin-right: 5px;
+      }
+      li:first-child:before {
+        content: "";
+      }
+      li {
+        display: inline-block;
+      }
+    }
+
+  }
+
+  .form {
+    .form-group {
+      position: relative;
+
+      i {
+        .input-picto;
+      }
+    }
+    input[type=text].form-control, input[type=password].form-control {
+      border-radius: 0;
+      border: 0;
+      background-color: #ffffff;
+      font-family: "Open Sans";
+      text-transform: uppercase;
+      padding: 14px 14px 14px 48px;
+      color: @cl-second;
+    }
+  }
+}

@@ -1,9 +1,49 @@
 {
     "title": "donut.me",
+    "baseline": "vous avez des choses à (vous) dire !",
     "home": {
-        "title": "bienvenue",
-        "baseline": "la baseline",
-        "authenticate": "Authentifiez-vous",
-        "facebooksignin": "Sign in with <strong>Facebook</strong>"
+        "cover": {
+            "line1": "donut vous permet",
+            "line2": "de discuter",
+            "line3": "autour de",
+            "line4": "vos centres d'intérêt",
+            "line5": "et d'animer",
+            "line6": "vos communautés !",
+            "knowmore": "en savoir +"
+        },
+        "description": {
+            "title1": "tasty",
+            "title2": "chatrooms",
+            "definition": "Un donut est un espace convivial de discussion<br> instantanée, un salon de discussion,<br> une chat room en fait !",
+            "line1": "Vous pouvez créer votre donut personnalisé et retrouver votre communauté ...",
+            "line2": "... ou vous joindre aux discussions en cours autour de vos centres d'intérêt ...",
+            "line3": "... et découvrir des gens qui vous ressemblent, au cours de véritables conversations !",
+            "illustration1": "home.description.illustration1",
+            "illustration2": "home.description.illustration2",
+            "illustration3": "home.description.illustration3"
+        },
+        "signup": {
+            "title1": "Créez un compte",
+            "title2": "ici en 1 bouchée",
+            "etvoila": "et voilà !",
+            "disclaimer": "En cliquant sur \"Et voilà !\" j’accepte les conditions d'utilisation de Donut"
+        },
+        "footer": {
+            "link1": "Notre philosophie",
+            "link2": "Conditions d'utilisations",
+            "link3": "Copyright Donut"
+        }
+    },
+    "login": {
+        "title": "se connecter",
+        "withfacebook": "avec Facebook",
+        "or": "ou",
+        "youremail": "votre email",
+        "yourpassword": "votre mot de passe",
+        "connexion": "connexion",
+        "forgottenpassword": "mot de passe oublié",
+        "else": "sinon",
+        "createanaccount1": "créer un compte,",
+        "createanaccount2": "c'est gratuit !"
     }
 }

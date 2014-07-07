@@ -1,0 +1,109 @@
+<div id="landing">
+    <div class="header">
+        <div class="cover">
+            <div class="title">
+                <h1 class="logo"><a href="/"><img src="/images/logo.jpg" alt="{{#i}}title{{/i}} - {{#i}}baseline{{/i}}"/></a></h1>
+                <!--div class="separator">
+                    <div class="c">&nbsp;</div>
+                    <div class="p">&nbsp;</div>
+                </div-->
+                <!--h2 class="baseline">{{#i}}baseline{{/i}}</h2-->
+            </div>
+            <div class="text">
+                <p>{{#i}}home.cover.line1{{/i}}</p>
+                <p>{{#i}}home.cover.line2{{/i}}</p>
+                <p>{{#i}}home.cover.line3{{/i}}</p>
+                <p>{{#i}}home.cover.line4{{/i}}</p>
+                <p>{{#i}}home.cover.line5{{/i}}</p>
+                <p>{{#i}}home.cover.line6{{/i}}</p>
+            </div>
+            <a href="#knowmore" class="btn-knowmore">{{#i}}home.cover.knowmore{{/i}}</a>
+        </div><!--/.cover-->
+        <div class="login">
+            <div>
+                <h2>{{#i}}login.title{{/i}}</h2>
+                <a href="/login/facebook" class="btn-facebook"><i class="fa fa-facebook"></i> | <span>{{#i}}login.withfacebook{{/i}}</span></a>
+                <p class="logic"><span>{{#i}}login.or{{/i}}</span></p>
+                <form action="/login" method="post" role="form" class="form">
+                    {{#message}}
+                    <div class="alert alert-danger">{{message}}</div>
+                    {{/message}}
+                    <input type="hidden" name="_csrf" value="{{token}}">
+                    <div class="form-group">
+                        <input type="text" id="signin-email" class="form-control" name="email" placeholder="{{#i}}login.youremail{{/i}}">
+                        <i class="fa fa-arrow-right left"></i>
+                    </div>
+                    <div class="form-group">
+                        <i class="fa fa-arrow-right left"></i>
+                        <a href="/forgot" title="{{#i}}login.forgottenpassword{{/i}}"><i class="fa fa-question-circle right"></i></a>
+                        <input type="password" id="signin-password" class="form-control" name="password" placeholder="{{#i}}login.yourpassword{{/i}}">
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="{{#i}}login.connexion{{/i}}">
+                    </div>
+                </form>
+                <p class="logic"><span>{{#i}}login.else{{/i}}</span></p>
+                <a href="#signup" class="btn-signup">
+                    <p>{{#i}}login.createanaccount1{{/i}}</p>
+                    <p>{{#i}}login.createanaccount2{{/i}}</p>
+                </a>
+            </div>
+        </div><!--/.login-->
+    </div><!--/.header-->
+    <div class="description">
+        <a name="knowmore"></a>
+        <div class="row">
+            <h2>
+                <p>Tasty</p>
+                <p>chatrooms<span class="asterisk">*</span></p>
+            </h2>
+            <div class="definition">
+                <p class="asterisk">*</p>
+                <p>{{#i}}home.description.definition{{/i}}</p>
+            </div>
+        </div>
+        <div class="illustrations">
+            <div class="illus"><img src="/images/illustration-1.jpg" alt="{{#i}}home.description.illustration1{{/i}}"><i></i><p>{{#i}}home.description.line1{{/i}}</p></div>
+            <div class="illus"><img src="/images/illustration-2.jpg" alt="{{#i}}home.description.illustration2{{/i}}"><i></i><p>{{#i}}home.description.line2{{/i}}</p></div>
+            <div class="illus"><img src="/images/illustration-3.jpg" alt="{{#i}}home.description.illustration3{{/i}}"><i></i><p>{{#i}}home.description.line3{{/i}}</p></div>
+        </div>
+    </div><!--/.description-->
+    <div class="signup">
+        <a name="signup"></a>
+        <div>
+            <div class="title">
+                <span>{{#i}}home.signup.title1{{/i}}</span>
+                <img src="/images/signup-logo.jpg" alt="{{#i}}title{{/i}}">
+                <span>{{#i}}home.signup.title2{{/i}}</span>
+            </div>
+            <form action="/signup" method="post" role="form" class="form">
+                <input type="hidden" name="_csrf" value="{{token}}">
+                <div class="form-content">
+                    <div class="fields">
+                        <div class="form-group">
+                            <input type="text" id="signup-email" class="form-control" name="email" placeholder="{{#i}}login.youremail{{/i}}">
+                            <i class="fa fa-envelope-o"></i>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" id="signup-password" class="form-control" name="password" placeholder="{{#i}}login.yourpassword{{/i}}">
+                            <i class="fa fa-lock"></i>
+                        </div>
+                    </div>
+                    <div class="form-group submit">
+                        <input type="submit" value="{{#i}}home.signup.etvoila{{/i}}" />
+                    </div>
+                </div>
+            </form>
+            <div class="disclaimer">{{#i}}home.signup.disclaimer{{/i}}</div>
+        </div>
+    </div><!--/.signup-->
+    <div class="footer">
+        <div class="col-sm-12">
+            <ul>
+                <li><a href="/philosophy">{{#i}}home.footer.link1{{/i}}</a></li>
+                <li><a href="/termsofuse">{{#i}}home.footer.link2{{/i}}</a></li>
+                <li>{{#i}}home.footer.link3{{/i}}</li>
+            </ul>
+        </div>
+    </div><!--/.footer-->
+</div><!--/#home-->

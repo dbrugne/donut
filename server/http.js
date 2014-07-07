@@ -46,7 +46,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('layout', 'layout');
 app.set('view engine', 'html');
 
-app.use(require('./http/index'));
+app.use(require('./http/landing'));
 app.use(require('./http/signup'));
 app.use(require('./http/reset-password'));
 app.use(require('./http/account-login'));

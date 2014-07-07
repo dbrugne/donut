@@ -3,12 +3,14 @@ var router  = express.Router();
 var Room    = require('../app/models/room');
 
 router.get('/', function(req, res) {
-  if (!req.isAuthenticated()) {
-    return res.render('index', {});
+  if (req.isAuthenticated()) {
+    // If authenticated go to chat directly
+    return res.redirect('/!');
   }
 
-  // If authenticated go to chat directly
-  return res.redirect('/!');
+  return res.render('landing', {
+    layout: 'l'
+  });
 });
 
 module.exports = router;
