@@ -35,7 +35,11 @@ chat
 - [x] Find i18n solution on client and server
   - [x] Implement i18next on server
   - [x] Implement i18next on client
-- [ ] Implement the new global construction
+- [ ] Implement the new design
+  - Favicon
+  - Pictos SVG
+  - [ ] Landing page
+    - [ ] Responsive
 
 **Hosting**
 - [ ] Implement base FQDN conf and logic to redirect each request on it (HTTP requests only)
