@@ -1,6 +1,6 @@
-@import "bootstrap-3.1.1/less/bootstrap";
-@import "font-awesome-4.0.3/less/font-awesome";
-@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,800,300);
+@import "bootstrap-3.2.0/less/bootstrap";
+@import "font-awesome-4.1.0/less/font-awesome";
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:700italic,400,700,300,800);
 @import url(http://fonts.googleapis.com/css?family=Raleway:500,900,400);
 @import "./smilify.less";
 @import "../javascripts/vendor/colpick/css/colpick.css";
@@ -14,22 +14,23 @@
 @img-homepage: '/images/cover.jpg';
 @img-homepage-blur: '/images/cover-blur.jpg';
 
-.ft-opensans { font-family: "Open Sans"; -webkit-font-smoothing: antialiased; }
-.ft-opensans-light { font-family: "Open Sans Light"; -webkit-font-smoothing: antialiased; }
-.ft-raleway-medium { font-family: 'Raleway Medium', sans-serif; -webkit-font-smoothing: antialiased; }
-.ft-raleway-heavy { font-family: 'Raleway Heavy', sans-serif; -webkit-font-smoothing: antialiased; }
+.ft-opensans { font-family: "Open Sans"; }
+.ft-opensans-light { font-family: "Open Sans Light"; }
+.ft-opensans-bold { font-family: "Open Sans Bold"; }
+.ft-opensans-bold-italic { font-family: "Open Sans Bold Italic"; }
+.ft-raleway-medium { font-family: 'Raleway Medium', sans-serif; }
+.ft-raleway-heavy { font-family: 'Raleway Heavy', sans-serif; }
 
 html { height: 100%; }
 body {
-  .ft-opensans-light;
-  font-size: 14px;
-  overflow-x: hidden;
-  a {
-    color: @cl-second;
-    :hover { color: @cl-second; }
-  }
+ .ft-opensans-light;
+ font-size: 14px;
+ overflow-x: hidden;
+ a { color: @cl-second; }
+ a:hover { color: @cl-second; }
 }
-body.light { padding: 0; overflow-x: hidden; overflow-y: auto;  }
+
+body.light { padding: 0; overflow-y: auto; }
 
 @import "./landing.less"; /* = non authenticated homepage */
 @import "./account.less";
