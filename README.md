@@ -37,12 +37,12 @@ chat
   - [x] Implement i18next on client
 - [ ] Implement the new design
   - Favicon
-  - Pictos SVG
   - [ ] Landing page
     - [x] Responsive
     - [x] Hovers
     - [ ] Fluid login background
     - [ ] Rouleaux
+    - [ ] Pictos SVG
 
 **Hosting**
 - [ ] Implement base FQDN conf and logic to redirect each request on it (HTTP requests only)
