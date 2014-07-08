@@ -444,10 +444,6 @@ module.exports = {
     var data = {};
 
     data.rooms = [];
-    data.welcome = "Vous trouverez sur cette page une liste des rooms existantes "
-                    +"et des utilisateurs en ligne."
-                    +"N'hésitez pas à rejoindre notre chat de support #Support "
-                    +"pour toute question, remarque ou demande de fonctionnalité.";
 
     var q = Room.find({permanent: true}, 'name owner permanent topic description avatar color')
       .limit(10)
