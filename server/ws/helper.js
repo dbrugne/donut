@@ -201,8 +201,9 @@ module.exports = {
     var already = [];
     var sockets = io.sockets.adapter.nsp.connected;
     var until = (sockets.length < limit) ? sockets.length : limit;
+    var keys = Object.keys(sockets);
     for (var i=0; i < until; i++) {
-      var u = sockets[i];
+      var u = sockets[keys[i]];
       if (u) { // sometime socket has expired
         if (!_.contains(already, u.getUserId())) {
           already.push(u.getUserId());
