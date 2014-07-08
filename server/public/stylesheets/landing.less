@@ -1,7 +1,7 @@
 .big-button {
   .btn;
   padding: 12px 20px;
-  font-family: 'Raleway Medium', sans-serif;
+  .ft-raleway-medium;
   font-size: 1.7em;
   text-transform:uppercase;
   border: 5px solid @cl-second;
@@ -95,7 +95,7 @@
         clear: both;
         margin-top: 65px;
         p {
-          font-family: 'Raleway Heavy', sans-serif;
+          .ft-raleway-heavy;
           color: @cl-first;
           font-size: 2.6em;
           text-transform:uppercase;
@@ -140,7 +140,7 @@
       }
 
       h2 {
-        font-family: 'Raleway Heavy', sans-serif;
+        .ft-raleway-heavy;
         color: @cl-first;
         font-size: 2.5em;
         text-transform: uppercase;
@@ -155,7 +155,7 @@
         text-transform: uppercase;
         border-radius: 25px;
         padding: 11px 20px;
-        font-family: 'Raleway Medium', sans-serif;
+        .ft-raleway-medium;
         font-size: 1.3em;
 
         span {
@@ -180,7 +180,7 @@
         text-align: center;
         font-size: 1.1em;
         text-transform:uppercase;
-        font-family: 'Raleway Medium', sans-serif;
+        .ft-raleway-medium;
         color: @cl-detail;
 
         i {
@@ -210,7 +210,7 @@
         input[type=submit] {
           background-color: #FD2063;
           color: #ffffff;
-          font-family: 'Raleway Medium', sans-serif;
+          .ft-raleway-medium;
           text-transform:uppercase;
           border-radius: 25px;
           font-size: 1.4em;
@@ -226,7 +226,7 @@
         line-height: 1.0;
       }
       p:first-child {
-        font-family: 'Raleway Heavy', sans-serif;
+        .ft-raleway-heavy;
         margin-bottom: 0;
       }
       p:last-child{
@@ -242,7 +242,7 @@
   padding-left: 50px;
   padding-right: 50px;
   background-color: @cl-first;
-  font-family: 'Raleway Heavy', sans-serif;
+  .ft-raleway-heavy;
   color: #ffffff;
 
   h2 {
@@ -319,7 +319,7 @@
     text-align: center;
 
     .title {
-      font-family: 'Raleway Heavy', sans-serif;
+      .ft-raleway-heavy;
       color: #ffffff;
       font-size: 1.8em;
       text-transform: uppercase;
@@ -374,6 +374,10 @@
   }
 
   .footer {
+    .row;
+    > div {
+      .make-sm-column(12);
+    }
     text-align: center;
     margin-top: 16px;
     margin-bottom: 22px;
@@ -405,7 +409,7 @@
       border-radius: 0;
       border: 0;
       background-color: #ffffff;
-      font-family: "Open Sans";
+      .ft-opensans;
       text-transform: uppercase;
       padding: 14px 14px 14px 48px;
       color: @cl-second;
