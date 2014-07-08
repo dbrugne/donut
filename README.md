@@ -39,7 +39,10 @@ chat
   - Favicon
   - Pictos SVG
   - [ ] Landing page
-    - [ ] Responsive
+    - [x] Responsive
+    - [x] Hovers
+    - [ ] Fluid login background
+    - [ ] Rouleaux
 
 **Hosting**
 - [ ] Implement base FQDN conf and logic to redirect each request on it (HTTP requests only)
