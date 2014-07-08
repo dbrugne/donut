@@ -1,15 +1,7 @@
-@cl-left: #e2e2e2;
-@cl-left-subtext: #b6b6b6;
-@cl-left-subtext2: #777777;
-@cl-left-subtext3: #313131;
-@cl-lines: #dadada;
 
 .body-chat {
   height: 100%;
   overflow-y: hidden;
-  .ft-opensans;
-  font-size: 12px;
-  padding-top: 20px;
 
   #alert-container {
     .alert {
@@ -30,6 +22,15 @@
     .alert.error { background-color: #c9302c; }
   }
 
+  #button-status {
+    .btn;
+    .btn-xs;
+  }
+  .online { .btn-success; }
+  .connecting { .btn-warning; }
+  .offline { .btn-default; }
+  .error { .btn-danger; }
+
   .open-room-profile, .open-user-profile {
     cursor:pointer;
   }
@@ -40,180 +41,17 @@
 }
 
 #chat {
+
   .container-fluid;
   height: 100%;
+  background: #eee;
   margin: 0;
   padding: 0;
+  font-size: 13px;
 
   > .row {
     margin: 0; /* Cancel bootstrap negative .row margin */
     height: 100%;
-  }
-
-  hr {
-    border-top-color: @cl-lines;
-    margin-top: 18px;
-    margin-bottom: 18px;
-  }
-
-  .big-link {
-    .ft-opensans-bold;
-    color: @cl-first;
-    font-size: 1.1em;
-  }
-
-  #color {
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 20px;
-    background-color: @cl-first;
-  }
-
-  #left {
-    .make-sm-column(2);
-    height: 100%;
-    background-color: @cl-left;
-    overflow-y:auto;
-
-    h1.logo {
-      margin-top: 30px;
-      margin-bottom: 22px;
-      text-align: center;
-    }
-
-    .help {
-      position: absolute;
-      top: 8px; right: 10px;
-      font-size: 18px;
-      color: @cl-left-subtext;
-    }
-
-    #block-current-user {
-      .avatar {
-        .pull-left;
-        margin-right: 10px;
-        width: 60px;
-        height: 60px;
-      }
-      .welcome {
-        padding-top: 5px;
-        margin-bottom: 0;
-      }
-      .username {
-        .ft-opensans-bold;
-        margin-bottom: 0;
-      }
-      .actions {
-        padding-top: 5px;
-        a {
-          color: @cl-left-subtext;
-          margin-right: 10px;
-        }
-        a:hover {
-          color: @cl-left-subtext2;
-          text-decoration: none;
-        }
-      }
-
-      .status { font-size: 10px; font-weight: bold; color: #ffffff; }
-      .status.online { color: #4fedc0; }
-      .status.connecting { color: #ffda3e; }
-      .status.offline { color: #777777; }
-      .status.error { color: #ff3838; }
-    }
-
-    #block-search {
-      position: relative;
-      padding: 0 10px;
-      input[type=text] {
-        width: 100%;
-        border: 1px solid #ffffff;
-        border-radius: 25px;
-        padding: 6px 30px 6px 15px;
-        .ft-opensans-bold-italic;
-        color: @cl-left-subtext2;
-      }
-      input[type=text]:focus {
-      }
-      i {
-        position: absolute;
-        top: 6px; right: 21px;
-        font-size: 17px;
-        color: @cl-left-subtext2;
-      }
-    }
-
-    #block-rooms, #block-onetoones {
-      .list {
-        .item {
-          display: block;
-          margin-left: -15px;
-          margin-right: -15px;
-          padding: 12px 20px;
-
-          a {
-            color: @cl-left-subtext3;
-          }
-
-          span {
-            font-size: 1.1em;
-          }
-          .users-count {
-            background-color: #ffffff;
-            padding: 3px 10px;
-            margin-left: 10px;
-            border-radius: 20px;
-          }
-
-          .close-room, .close-onetoone {
-            .pull-right;
-            color: @cl-left-subtext;
-            font-size: 18px;
-          }
-        }
-
-        .item:hover {
-          text-decoration: none;
-          span.name {
-            text-decoration: underline;
-          }
-        }
-        .item.active,
-        .item.active:hover,
-        .item.active:focus {
-          background-color: #ffffff;
-          border-color: #428bca;
-
-          .users-count {
-            background-color: @cl-left;
-          }
-        }
-        .item.unread { background-color: orangered; color: #fff; }
-        .item .name {  }
-        .item .badge { margin-right: 5px; }
-        .item .close { color: @cl-left-subtext3; }
-      }
-
-      .footer {
-        margin-top: 15px;
-        a {
-          .big-link;
-        }
-      }
-    }
-  }
-
-  #center {
-    .make-sm-column(10);
-    height: 100%;
-    > div { height: 100%; }
-  }
-
-  #left > .sign {
-    position: absolute;
-    left: 0; right: 0; bottom: 10px;
-    text-align: center;
-    color: @cl-left-subtext;
   }
 
   #modals {
@@ -249,11 +87,90 @@
       }
     }
   }
+
+  #block-home {
+    background-color: #f5f5f5;
+    padding: 10px 15px;
+    border-color: transparent;
+    border-bottom: 1px solid #ddd;
+
+    a {
+      color: #000;
+    }
+  }
+
+  #block-rooms, #block-onetoones, .room-users {
+
+    background-color: #f5f5f5;
+    padding-bottom: 10px;
+
+    .heading {
+      padding: 10px 15px;
+      font-weight: bold;
+      color: #8a8a8a;
+      border-color: transparent;
+      border-bottom: 1px solid #ddd;
+    }
+    .body {
+      position: relative;
+      padding: 10px;
+      background-color: #fff;
+    }
+    .list {
+      .list-group;
+      margin-bottom: 0;
+      background-color: #fff;
+
+      .item {
+        .list-group-item;
+        border-left: 0;
+        border-right: 0;
+        border-top: 0;
+        color: #000000;
+      }
+      .item:last-child {
+        margin-bottom: 0;
+        border-radius: 0;
+      }
+
+      .item.active,
+      .item.active:hover,
+      .item.active:focus {
+        z-index: 2;
+        color: #ffffff;
+        background-color: #428bca;
+        border-color: #428bca;
+      }
+      .item.unread { background-color: orangered; color: #fff; }
+      .item .name {  }
+      .item .badge { margin-right: 5px; }
+      .item .close { font-size: 14px; color: #FF0000; }
+    }
+    .footer {
+      padding: 10px 15px;
+      background-color: #f5f5f5;
+    }
+  }
 }
 
-#center {
+#chat-left {
+  .make-sm-column(2);
+  height: 100%;
+  background-color: darkgrey;
+  padding: 0;
+  overflow-y:auto;
+  border-right: 1px solid #ddd;
+}
+
+#chat-center > div { height: 100%; }
+#chat-center {
+  .make-sm-column(10);
+  height: 100%;
+  padding: 0; /* Cancel bootstrap native space between columns */
+
   #home {
     padding: 20px;
+    overflow-y: scroll;
 
     h2 {
       margin-top: 0;

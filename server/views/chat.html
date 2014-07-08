@@ -11,81 +11,37 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge"/><!-- Avoid IE compatibility mode -->
 </head>
 <body class="body-chat">
-<div class="navbar navbar-default navbar-fixed-top" role="navigation">
-    <div class="fluid-container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="/!#">{{#i}}title{{/i}}</a>
-        </div>
-        <div class="collapse navbar-collapse">
-            <ul class="nav navbar-nav">
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li id="block-status">
-                    <p class="navbar-text">
-                        You are <span id="button-status" class="status">...</span>
-                    </p>
-                </li>
-                {{#user}}
-                <li>
-                    <p class="navbar-text">
-                        Welcome
-                        {{#user.username}}
-                        <a href="/user/{{ user.username }}" target="_blank"><strong>{{user.username}}</strong></a>
-                        {{/user.username}}
-                        {{^user.username}}
-                        {{#user.facebook.name}}
-                        <strong>{{user.facebook.name}}</strong>
-                        {{/user.facebook.name}}
-                        {{/user.username}}
-                    </p>
-                </li>
-                <li><a href="#" id="youraccount"><i class="fa fa-cog"></i> your account</a></li>
-                <li><a href="/logout"><i class="glyphicon glyphicon-remove-circle"></i> logout</a></li>
-                {{/user}}
-                {{^user}}
-                <li><a href="/login">login</a></li>
-                <li><a>or</a></li>
-                <li><a href="/signup"><button type="submit" class="btn btn-success btn-sm">Join for free</button></a></li>
-                {{/user}}
-            </ul>
-        </div><!--/.nav-collapse -->
-    </div>
-    <div id="alert-container" role="banner" class="line">
-        <div class="alert biggest tiny-smaller"></div>
-    </div>
-</div><!--/.navbar-->
 <div id="chat">
+    <div id="color"></div><!-- /#color -->
     <div class="row">
-        <div id="chat-left">
-            <div id="block-home">
-                <div class="body">
-                    <a href="#" class="home-link"><span class="fa fa-home"></span> Home</a>
-                    <br />
-                    <a href="#room/Support"><span class="fa fa-question-circle"></span> Support</a>
-                </div>
+        <div id="left">
+            <h1 class="logo"><a href="/!#"><img src="/images/chat-logo.jpg" alt="{{#i}}title{{/i}} - {{#i}}baseline{{/i}}"/></a></h1>
+            <a href="#room/Support" class="help" title="Help and support room"><i class="fa fa-question-circle right"></i></a>
+            <div id="block-current-user"></div><!-- /#current-user-block -->
+            <hr>
+            <div id="block-search">
+                <input type="text" placeholder="Search">
+                <i class="fa fa-search"></i>
             </div>
+            <hr>
             <div id="block-rooms"></div>
+            <hr>
             <div id="block-onetoones"></div>
-        </div><!-- /.chat-left -->
-        <div id="chat-center">
+            <div class="sign">made with love</div>
+        </div><!-- /#left -->
+        <div id="center">
             <div id="home">
                 <div class="body">
                     <div id="home-content"></div>
                     <div id="block-onlines"></div>
                 </div>
             </div>
-            <div id="search">
+            <div id="account">
                 search here!
             </div>
-        </div><!-- /.chat-center -->
+        </div><!-- /#center -->
     </div><!-- /.row -->
+
     <div id="modals"></div>
 
     <!-- Room search modal -->

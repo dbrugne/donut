@@ -16,17 +16,46 @@ define([
 
     // connect should be done at the end of App initialization to allow interface binding to work
     connect: function() {
-      this.socket = io.connect(window.location.hostname);
-      var that = this;
+      this.socket = io(window.location.hostname, {
+        //multiplex: true,
+        //reconnection: true,
+        //reconnectionDelay: 1000,
+        //reconnectionDelayMax: 5000,
+        //timeout: 20000, // = between 2 heartbeat pings
+        //autoConnect: true
+      });
 
-      this.socket.on('connecting', function () { that.trigger('connecting'); });
-      this.socket.on('connect', function () { that.trigger('connect'); });
-      this.socket.on('disconnect', function () { that.trigger('disconnect'); });
-      this.socket.on('connect_failed', function () { that.trigger('connect_failed'); });
-      this.socket.on('reconnecting', function () { that.trigger('reconnecting'); });
-      this.socket.on('reconnect', function () { that.trigger('reconnect'); });
-      this.socket.on('reconnect_failed', function () { that.trigger('reconnect_failed'); });
-      this.socket.on('error', function () { that.debug(['socket error', arguments]); });
+      // CONNECTION EVENTS
+      // ======================================================
+      var that = this;
+      this.socket.on('connect', function () {
+        that.trigger('online');
+      });
+      this.socket.on('reconnect', function (num) {
+        that.debug('socket.io-client successful reconnected at #'+num+' attempt');
+        that.trigger('online');
+      });
+      this.socket.on('reconnect_attempt', function () {
+        that.trigger('connecting');
+      });
+      this.socket.on('reconnecting', function (num) {
+        that.debug('socket.io-client try to reconnect, #'+num+' attempt');
+        that.trigger('connecting');
+      });
+      this.socket.on('connect_timeout', function () {
+        that.debug('socket.io-client timeout');
+        that.trigger('connecting');
+      });
+      var onError = function(err) {
+        that.debug('socket.io-client error: '+err);
+        that.trigger('error');
+      };
+      this.socket.on('connect_error', onError);
+      this.socket.on('reconnect_error', onError);
+      this.socket.on('reconnect_failed', onError);
+
+      // GLOBAL EVENTS
+      // ======================================================
       this.socket.on('welcome', function (data) {
         that.debug(['io:in:welcome', data]);
         that.trigger('welcome', data);
@@ -36,7 +65,7 @@ define([
         that.trigger('home', data);
       });
 
-      // ROOM
+      // ROOM EVENTS
       // ======================================================
 
       this.socket.on('room:leave', function(data) {
@@ -93,7 +122,7 @@ define([
         that.trigger('room:deop', data);
       });
 
-      // USER
+      // USER EVENTS
       // ======================================================
 
       this.socket.on('user:online', function(data) {
@@ -134,7 +163,7 @@ define([
       });
     },
 
-    // GENERAL
+    // GLOBAL METHODS
     // ======================================================
 
     home: function() {
@@ -142,7 +171,7 @@ define([
       this.debug(['io:out:home', {}]);
     },
 
-    // ROOM
+    // ROOM METHODS
     // ======================================================
 
     join: function(name) {
@@ -201,7 +230,7 @@ define([
       this.debug(['io:out:room:deop', data]);
     },
 
-    // USER
+    // USER METHODS
     // ======================================================
 
     open: function(username) {

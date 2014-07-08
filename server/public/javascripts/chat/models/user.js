@@ -7,7 +7,9 @@ define([
     defaults: function() {
       return {
         user_id: '',
-        username: ''
+        username: '',
+        avatar: '',
+        status: ''
       };
     }
   });

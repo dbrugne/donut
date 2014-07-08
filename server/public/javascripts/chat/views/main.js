@@ -7,7 +7,7 @@ define([
   'collections/onetoones',
   'models/current-user',
   'views/window',
-  'views/status',
+  'views/current-user',
   'views/alert',
   'views/home',
   'views/room-create',
@@ -22,7 +22,7 @@ define([
   'views/user-profile', // need to be loaded here to instantiate DOM
   'views/room-profile' // idem
 ], function ($, _, Backbone, client, rooms, onetoones, currentUser, windowView,
-             statusView, alertView, homeView, RoomCreateView,
+             CurrentUserView, alertView, homeView, RoomCreateView,
              RoomSearchView, UserSearchView, RoomPanelView, OneToOnePanelView,
              RoomBlockView, OnetooneBlockView, AccountView, RoomEditView, UserProfileView, RoomProfileView) {
 
@@ -32,9 +32,9 @@ define([
 
     $home: $('#home'),
 
-    $search: $('#search'),
+    $account: $('#account'),
 
-    $discussionsPanelsContainer: $("#chat-center"),
+    $discussionsPanelsContainer: $("#center"),
 
     thisDiscussionShouldBeFocusedOnSuccess: '',
 
@@ -60,6 +60,7 @@ define([
         that.openAccount(event);
       }); // link is outside div#chat
 
+      this.currentUserView = new CurrentUserView({model: currentUser});
       this.roomBlockView = new RoomBlockView({collection: rooms});
       this.onetooneBlockView = new OnetooneBlockView({collection: onetoones});
     },
@@ -252,7 +253,7 @@ define([
         o.set('focused', false);
       });
       this.$home.hide();
-      this.$search.hide();
+      this.$account.hide();
     },
 
     // called by router only
@@ -267,7 +268,7 @@ define([
 
     focusSearch: function() {
       this.unfocusAll();
-      this.$search.show();
+      this.$account.show();
       Backbone.history.navigate('#search'); // just change URI, not run route action
     },
 

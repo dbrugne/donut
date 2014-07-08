@@ -1,18 +1,17 @@
 <% if (list.length > 0) { %>
-<div class="heading">One to one</div>
 <div class="list">
     <% _.each(list, function(one) { %>
     <a href="#user/<%= one.username %>" class="item <% if (one.focused) { %>active<% }; %> <% if (one.unread > 0) {%>unread<%}; %>" data-user-id="<%= one.user_id %>">
         <img src="<%= one.avatar %>">
         <span class="name"><%= one.username %></span>
-        <span class="close glyphicon glyphicon-remove close-onetoone" data-username="<%= one.username %>"></span>
         <% if (one.unread > 0) { %>
             <span class="badge"><%= one.unread %></span>
         <% }; %>
+        <i class="fa fa-times close-onetoone" data-username="<%= one.username %>"></i>
     </a>
     <% }); %>
 </div>
 <% }; %>
 <div class="footer">
-    <a href="#" id="search-user-link"><span class="glyphicon glyphicon-search"></span> Search a user</a>
+    <a href="#"><i class="fa fa-search"></i> Invite a user now!</a>
 </div>
