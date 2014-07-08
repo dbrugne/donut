@@ -25,7 +25,6 @@ define([
       var data = currentUser.toJSON();
 
       data.welcome = 'Nice to see you,'; // @todo : random hello
-      console.log('status: '+data.status);
 
       var html = this.template(data);
       this.$el.html(html);
