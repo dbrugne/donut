@@ -10,7 +10,8 @@ var validateInput = function(req, res, next) {
       userFields: {email: req.body.email},
       is_errors: true,
       errors: req.validationErrors(),
-      scripts: [{src: '/validator.min.js'}]
+      scripts: [{src: '/validator.min.js'}],
+      layout: 'l2'
     });
   }
 
@@ -19,7 +20,7 @@ var validateInput = function(req, res, next) {
 
 router.route('/signup')
     .get(function(req, res) {
-        res.render('signup', {});
+        res.render('signup', {layout: 'l2'});
     })
     .post(validateInput, passport.authenticate('local-signup', {
         successRedirect : '/',
