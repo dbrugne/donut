@@ -48,10 +48,10 @@ chat
 - [x] Implement base FQDN conf and logic to redirect each request on it (HTTP requests only)
 
 **Branding**
-- [ ] Créer la page Facebook
-- [ ] Create Google Analytics account
+- [x] Créer la page Facebook
+- [x] Create Google Analytics account
+- [x] Soumettre le site à Google
 - [ ] Changer le proriétaire du domaine : MARTINE BLAJMAN
-- [ ] Soumettre le site à Google
 - [ ] Créer une email contact@
 - [ ] Créer une email martine@
 
