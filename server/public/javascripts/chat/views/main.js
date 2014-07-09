@@ -10,7 +10,8 @@ define([
   'views/current-user',
   'views/alert',
   'views/home-content',
-  'views/room-create',
+  'views/drawer',
+  'views/drawer-room-create',
   'views/room-search',
   'views/user-search',
   'views/room-panel',
@@ -22,7 +23,8 @@ define([
   'views/user-profile', // need to be loaded here to instantiate DOM
   'views/room-profile' // idem
 ], function ($, _, Backbone, client, rooms, onetoones, currentUser, windowView,
-             CurrentUserView, alertView, homeContentView, RoomCreateView,
+             CurrentUserView, AlertView, homeContentView,
+             DrawerView, DrawerRoomCreateView,
              RoomSearchView, UserSearchView, RoomPanelView, OneToOnePanelView,
              RoomBlockView, OnetooneBlockView, AccountView, RoomEditView, UserProfileView, RoomProfileView) {
 
@@ -40,7 +42,8 @@ define([
 
     events: {
       'click #search-room-link':          'openSearchRoomModal',
-      'click #create-room-link':          'openCreateRoomModal',
+//      'click #create-room-link':          'openCreateRoomModal',
+      'click #create-room-link':          'openCreateRoom',
       'click #search-user-link':          'openSearchUserModal',
       'click .open-user-profile':         'openUserProfile',
       'dblclick .dbl-open-user-profile':  'openUserProfile',
@@ -63,13 +66,22 @@ define([
       this.currentUserView = new CurrentUserView({model: currentUser});
       this.roomBlockView = new RoomBlockView({collection: rooms});
       this.onetooneBlockView = new OnetooneBlockView({collection: onetoones});
+      this.drawerView = new DrawerView({mainView: this});
+      this.alertView = new AlertView({mainView: this});
     },
 
     alert: function(type, message) {
-      if (!type) {
-        type = 'info';
-      }
-      alertView.show(type, message);
+      type = type || 'info';
+      this.alertView.show(type, message);
+    },
+
+    popin: function(data) {
+      this.drawerView.render(data);
+      this.drawerView.show();
+    },
+
+    unpopin: function(data) {
+      this.drawerView.hide();
     },
 
     _handleAction: function(event) {
@@ -102,12 +114,24 @@ define([
       }
       this.searchRoomModal.show();
     },
-    openCreateRoomModal: function(event) {
-      if (!this.createRoomModal) {
-        this.createRoomModal = new RoomCreateView({mainView: this});
+    openCreateRoom: function(event) {
+      this._handleAction(event);
+
+      if (!this.drawerRoomCreate) {
+        this.drawerRoomCreate = new DrawerRoomCreateView({mainView: this});
       }
-      this.createRoomModal.show();
+
+      this.popin({
+        el: this.drawerRoomCreate.$el
+      });
+      this.drawerRoomCreate.$el.trigger('shown');
     },
+//    openCreateRoomModal: function(event) {
+//      if (!this.createRoomModal) {
+//        this.createRoomModal = new RoomCreateView({mainView: this});
+//      }
+//      this.createRoomModal.show();
+//    },
     openSearchUserModal: function(event) {
       if (!this.userSearchModal) {
         this.userSearchModal = new UserSearchView({mainView: this});
