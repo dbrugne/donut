@@ -182,7 +182,8 @@ passport.use(new FacebookStrategy({
 
             // prefill global data with Facebook profile (only on local profile creation)
             newUser.name = profile.displayName;
-            newUser.location = profile._json.location.name;
+            if (profile._json.location && profile._json.location.name)
+              newUser.location = profile._json.location.name;
             newUser.avatar = 'https://graph.facebook.com/' + profile.id + '/picture';
 
             // save our user to the database

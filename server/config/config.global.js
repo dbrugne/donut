@@ -8,8 +8,8 @@ var conf = module.exports = {
     secret: 'q4qsd65df45s4d5f45ds5fsf4s'
   },
   facebook: {
-    'clientID' 		: '283401498489213', // your App ID
-    'clientSecret' 	: '7211182b85110f06e17efce2b4fb004a', // your App Secret
+    'clientID' 		: '328600083963864', // your App ID
+    'clientSecret' 	: '89a61eab36ab0971e0400f9f3934addb', // your App Secret
     'callbackURL' 	: ''
   },
   cloudinary: {
