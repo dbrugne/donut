@@ -45,7 +45,7 @@ chat
     - [ ] Pictos SVG
 
 **Hosting**
-- [ ] Implement base FQDN conf and logic to redirect each request on it (HTTP requests only)
+- [x] Implement base FQDN conf and logic to redirect each request on it (HTTP requests only)
 
 **Branding**
 - [ ] Créer la page Facebook

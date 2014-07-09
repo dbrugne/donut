@@ -4,6 +4,7 @@ var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var less = require('less-middleware');
+var fqdn = require('./app/middlewares/fqdn');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('./app/middlewares/session');
@@ -27,7 +28,7 @@ app.use(logger('dev'));
 app.use(less(__dirname+'/public'));
 app.use('/medias', express.static(path.join(__dirname, 'medias')));
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(fqdn());
 app.use(bodyParser());
 app.use(expressValidator()); // must be immediately after bodyParser()
 app.use(cookieParser());
