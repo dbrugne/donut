@@ -3,12 +3,12 @@ define([
   'underscore',
   'backbone',
   'models/client',
-  'views/onlines',
-  'text!templates/home.html'
-], function ($, _, Backbone, client, onlinesView, homeTemplate) {
+  'views/home-onlines',
+  'text!templates/home-content.html'
+], function ($, _, Backbone, client, homeOnlinesView, homeTemplate) {
   var HomeView = Backbone.View.extend({
 
-    el: $('#home-content'),
+    el: $('#content'),
 
     template: _.template(homeTemplate),
 

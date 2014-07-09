@@ -3,11 +3,11 @@ define([
   'underscore',
   'backbone',
   'collections/onlines',
-  'text!templates/onlines.html'
+  'text!templates/home-onlines.html'
 ], function ($, _, Backbone, onlines, onlinesTemplate) {
   var OnlinesView = Backbone.View.extend({
 
-    el: $('#block-onlines'),
+    el: $('#onlines'),
 
     template: _.template(onlinesTemplate),
 

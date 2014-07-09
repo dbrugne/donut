@@ -9,7 +9,7 @@ define([
   'views/window',
   'views/current-user',
   'views/alert',
-  'views/home',
+  'views/home-content',
   'views/room-create',
   'views/room-search',
   'views/user-search',
@@ -22,7 +22,7 @@ define([
   'views/user-profile', // need to be loaded here to instantiate DOM
   'views/room-profile' // idem
 ], function ($, _, Backbone, client, rooms, onetoones, currentUser, windowView,
-             CurrentUserView, alertView, homeView, RoomCreateView,
+             CurrentUserView, alertView, homeContentView, RoomCreateView,
              RoomSearchView, UserSearchView, RoomPanelView, OneToOnePanelView,
              RoomBlockView, OnetooneBlockView, AccountView, RoomEditView, UserProfileView, RoomProfileView) {
 

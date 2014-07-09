@@ -1,0 +1,26 @@
+<div class="rooms">
+    <% _.each(rooms, function(room) { %>
+    <% var bgColor = txtColor = ''; %>
+    <% if (room.color) {
+        bgColor = "background-color: "+room.color;
+        txtColor = "color: "+room.color;
+    }; %>
+    <div class="item">
+        <div class="cover">
+            <img class="avatar open-room-profile" data-room-name="<%= room.name %>" src="<%= room.avatar %>">
+            <p class="name"><span class="open-room-profile" data-room-name="<%= room.name %>"><%= room.name %></span></p>
+            <p class="owner">by <span class="open-user-profile" data-user-id="<%= room.owner.user_id %>"><%= room.owner.username %></span></p>
+            <p class="topic"><%= room.topic %></p>
+            <p class="join"><a href="#room/<%= room.name.replace('#', '') %>" style="<%= bgColor %>">Join <strong><%= room.users %></strong> <i class="fa fa-child"></i></a></p>
+            <% if (room.permanent == true) { %><p class="permanent"><i class="fa fa-lock"></i></p><% } %>
+        </div>
+        <div class="back" style="<%= bgColor %>">
+            <img class="avatar open-room-profile" data-room-name="<%= room.name %>" src="<%= room.avatar %>">
+            <p class="name"><span class="open-room-profile" data-room-name="<%= room.name %>"><%= room.name %></span></p>
+            <p class="owner">by <span class="open-user-profile" data-user-id="<%= room.owner.user_id %>"><%= room.owner.username %></span></p>
+            <p class="description"><%= room.description %></p>
+            <p class="join"><a href="#room/<%= room.name.replace('#', '') %>" style="<%= txtColor %>">Join <strong><%= room.users %></strong> <i class="fa fa-child"></i></a></p>
+        </div>
+    </div>
+    <% }); %>
+</div>
