@@ -11,25 +11,6 @@
   overflow-y: hidden;
   .ft-opensans;
   font-size: 12px;
-
-  #alert {
-    .alert {
-      display: none;
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      z-index: 15;
-      padding: .4em .6em .4em;
-      background-color: @cl-neutral;
-      .ft-opensans-bold;
-      font-size: 1.5em;
-      color: @cl-background;
-      text-align: center;
-      white-space: nowrap;
-    }
-    .alert.info { background-color: @cl-success;}
-    .alert.warning { background-color: @cl-warning; }
-    .alert.error { background-color: @cl-error; }
-  }
 }
 
 #chat {
@@ -61,11 +42,30 @@
     cursor:pointer;
   }
 
-  .sign {
+  #sign {
     position: absolute;
     right: 15px; bottom: 10px;
     text-align: center;
     color: @cl-column-subtext;
+  }
+
+  #alert {
+    .alert {
+      display: none;
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      z-index: 15;
+      padding: .4em .6em .4em;
+      background-color: @cl-neutral;
+      .ft-opensans-bold;
+      font-size: 1.5em;
+      color: @cl-background;
+      text-align: center;
+      white-space: nowrap;
+    }
+    .alert.info { background-color: @cl-success;}
+    .alert.warning { background-color: @cl-warning; }
+    .alert.error { background-color: @cl-error; }
   }
 
   #color {
