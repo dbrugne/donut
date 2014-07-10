@@ -14,6 +14,9 @@ define([
 
     initialize: function(options) {
       this.mainView = options.mainView;
+
+      this.shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+      this.longhandRegex = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i;
     },
 
     /**
@@ -22,33 +25,53 @@ define([
      */
     render: function(data) {
       if (!data.el) return this;
+      this.$contentEl = data.el;
+
+      /**
+       * On append chaque modal a #drawer content
+       *   si elle n'y est pas déjà
+       * On stocke la couleur en micro data
+       */
 
       if (data.el.attr('id') == this.$el.find('.content > div').first().attr('id'))
         return this; // avoid re-rendering of the same modal that unbind all events
 
-      if (!data.color) data.color = '#000000';
+      // Size
+      if (!data.width) data.width = '260px';
+      this.$el.find('.wrap').first().css('width', data.width);
 
       // Color
+      if (!this._validHex()) data.color = '#000000';
       var rgb = this._hexToRgb(data.color);
       var rgbBg = 'rgba('+rgb.r+', '+rgb.g+', '+rgb.b+', 0.6)';
       this.$el.find('.opacity').first().css('background-color', rgbBg);
 
       // HTML
-      this.$el.find('.content')
-        .first()
+      this.$el.find('.content').first()
         .empty()
         .append(data.el);
 
       return this;
     },
+    _validHex: function(hex) {
+      if (!hex)
+       return false;
+
+      if (hex.test(this.shorthandRegex))
+        return true;
+
+      if (hex.test(this.longhandRegex))
+        return true;
+
+      return false;
+    },
     _hexToRgb: function(hex) {
       // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
-      var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-      hex = hex.replace(shorthandRegex, function(m, r, g, b) {
+      hex = hex.replace(this.shorthandRegex, function(m, r, g, b) {
         return r + r + g + g + b + b;
       });
 
-      var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+      var result = this.longhandRegex.exec(hex);
       return result ? {
         r: parseInt(result[1], 16),
         g: parseInt(result[2], 16),
@@ -57,9 +80,11 @@ define([
     },
     show: function() {
       this.$el.show();
+      this.$contentEl.trigger('shown');
     },
     hide: function() {
       this.$el.hide();
+      this.$contentEl.trigger('hidden');
     },
     onClose: function(event) {
       this.hide();

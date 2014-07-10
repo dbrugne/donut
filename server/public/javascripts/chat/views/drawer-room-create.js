@@ -9,7 +9,7 @@ define([
 
     template: _.template(roomCreateTemplate),
 
-    id: '#room-create-content',
+    id: 'room-create',
 
     events  : {
       'keyup .input': 'valid',
@@ -22,7 +22,6 @@ define([
       this.render();
 
       this.$input = this.$el.find('.input');
-      this.$formGroup = this.$el.find('.form-group');
 
       var that = this;
       this.$el.on('shown', function (e) {
@@ -31,7 +30,6 @@ define([
     },
     /**
      * Only set this.$el content
-     * @returns {DrawerRoomCreateView}
      */
     render: function() {
       var html = this.template();
@@ -40,14 +38,14 @@ define([
     },
     valid: function(event) {
       if (this.$input.val() == '') {
-        this.$formGroup.removeClass('has-error').removeClass('has-success');
+        this.$el.removeClass('has-error').removeClass('has-success');
+        return;
       }
 
       if (!this._valid()) {
-        this.$formGroup.addClass('has-error').removeClass('has-success');
+        this.$el.addClass('has-error').removeClass('has-success');
       } else {
-        this.$formGroup.addClass('has-success').removeClass('has-error');
-        this.$el.find('.create-message').fadeOut();
+        this.$el.addClass('has-success').removeClass('has-error');
       }
 
       // Enter in field handling
@@ -80,8 +78,7 @@ define([
       var uri = 'room/'+name.replace('#', '');
       window.router.navigate(uri, {trigger: true});
 
-      this.$formGroup.removeClass('has-error').removeClass('has-success');
-      this.$input.val('');
+      this.$el.removeClass('has-error').removeClass('has-success').val('');
       this.mainView.unpopin();
     }
 

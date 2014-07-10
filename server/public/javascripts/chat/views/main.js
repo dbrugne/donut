@@ -12,6 +12,7 @@ define([
   'views/home-content',
   'views/drawer',
   'views/drawer-room-create',
+  'views/drawer-room-profile',
   'views/room-search',
   'views/user-search',
   'views/room-panel',
@@ -24,7 +25,7 @@ define([
   'views/room-profile' // idem
 ], function ($, _, Backbone, client, rooms, onetoones, currentUser, windowView,
              CurrentUserView, AlertView, homeContentView,
-             DrawerView, DrawerRoomCreateView,
+             DrawerView, DrawerRoomCreateView, DrawerRoomProfileView,
              RoomSearchView, UserSearchView, RoomPanelView, OneToOnePanelView,
              RoomBlockView, OnetooneBlockView, AccountView, RoomEditView, UserProfileView, RoomProfileView) {
 
@@ -122,16 +123,11 @@ define([
       }
 
       this.popin({
-        el: this.drawerRoomCreate.$el
+        el: this.drawerRoomCreate.$el,
+        width: '320px'
       });
       this.drawerRoomCreate.$el.trigger('shown');
     },
-//    openCreateRoomModal: function(event) {
-//      if (!this.createRoomModal) {
-//        this.createRoomModal = new RoomCreateView({mainView: this});
-//      }
-//      this.createRoomModal.show();
-//    },
     openSearchUserModal: function(event) {
       if (!this.userSearchModal) {
         this.userSearchModal = new UserSearchView({mainView: this});
@@ -155,8 +151,8 @@ define([
     openRoomProfile: function(event) {
       this._handleAction(event);
 
-      if (!this.roomProfileModal) {
-        this.roomProfileModal = new RoomProfileView({ mainView: this });
+      if (!this.drawerRoomProfile) {
+        this.drawerRoomProfile = new DrawerRoomProfileView({ mainView: this });
       }
 
       var roomName = $(event.currentTarget).data('roomName');
