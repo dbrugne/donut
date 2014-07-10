@@ -11,49 +11,50 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge"/><!-- Avoid IE compatibility mode -->
 </head>
 <body class="body-chat">
-<div id="chat">
-    <div id="color"></div><!-- /#color -->
-    <div class="row">
-        <div id="left">
-            <h1 class="logo"><a href="/!#"><img src="/images/chat-logo.jpg" alt="{{#i}}title{{/i}} - {{#i}}baseline{{/i}}"/></a></h1>
-            <a href="#room/Support" class="help" title="Help and support room"><i class="fa fa-question-circle right"></i></a>
-            <div id="block-current-user"></div><!-- /#current-user-block -->
-            <hr>
-            <div id="block-search">
-                <input type="text" placeholder="Search">
-                <i class="fa fa-search"></i>
-            </div>
-            <hr>
-            <div id="block-rooms"></div>
-            <hr>
-            <div id="block-onetoones"></div>
-        </div><!-- /#left -->
-        <div id="center">
-            <div id="drawer">
-                <div class="opacity">
-                    <div class="wrap">
-                        <div class="content">la la la la</div>
-                        <div class="close"><i class="fa fa-times"></i></div>
+    <div id="chat">
+        <div id="alert" role="banner"><div class="alert"></div></div>
+        <div id="color"></div><!-- /#color -->
+        <div class="row">
+            <div id="left">
+                <h1 class="logo"><a href="/!#"><img src="/images/chat-logo.jpg" alt="{{#i}}title{{/i}} - {{#i}}baseline{{/i}}"/></a></h1>
+                <a href="#room/Support" class="help" title="Help and support room"><i class="fa fa-question-circle right"></i></a>
+                <div id="block-current-user"></div><!-- /#current-user-block -->
+                <hr>
+                <div id="block-search">
+                    <input type="text" placeholder="Search">
+                    <i class="fa fa-search"></i>
+                </div>
+                <hr>
+                <div id="block-rooms"></div>
+                <hr>
+                <div id="block-onetoones"></div>
+            </div><!-- /#left -->
+            <div id="center">
+                <div id="drawer">
+                    <div class="opacity">
+                        <div class="wrap">
+                            <div class="content">la la la la</div>
+                            <div class="close"><i class="fa fa-times"></i></div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div id="home">
-                <div class="left">
-                    <div class="search">
-                        <input type="text" placeholder="Search donut or user here">
-                        <i class="fa fa-search"></i>
+                <div id="home">
+                    <div class="left">
+                        <div class="search">
+                            <input type="text" placeholder="Search donut or user here">
+                            <i class="fa fa-search"></i>
+                        </div>
+                        <div id="content"></div>
                     </div>
-                    <div id="content"></div>
+                    <div id="onlines" class="right"></div>
                 </div>
-                <div id="onlines" class="right"></div>
-            </div>
-            <div id="account">
-                account here!
-            </div>
-        </div><!-- /#center -->
-    </div><!-- /.row -->
-    <div class="sign">made with <span title="love">♥</span></div>
-</div><!-- /.container-fluid -->
+                <div id="account">
+                    account here!
+                </div>
+            </div><!-- /#center -->
+        </div><!-- /.row -->
+        <div class="sign">made with <span title="love">♥</span></div>
+    </div><!-- /#chat -->
 <script>
     window.cloudinary_cloud_name = '{{cloudinary.cloud_name}}';
     window.cloudinary_api_key = '{{cloudinary.api_key}}';

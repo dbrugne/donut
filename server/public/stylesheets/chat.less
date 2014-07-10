@@ -1,3 +1,4 @@
+@size-color: 20px;
 @cl-column: #e2e2e2;
 @cl-column-subtext: #b6b6b6;
 @cl-column-subtext2: #777777;
@@ -10,25 +11,24 @@
   overflow-y: hidden;
   .ft-opensans;
   font-size: 12px;
-  padding-top: 20px;
 
-  #alert-container {
+  #alert {
     .alert {
       display: none;
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      z-index: 15;
       padding: .4em .6em .4em;
-      background-color: #999;
-      color: #FFF;
-      font-weight: bold;
+      background-color: @cl-neutral;
+      .ft-opensans-bold;
+      font-size: 1.5em;
+      color: @cl-background;
       text-align: center;
       white-space: nowrap;
-      -webkit-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
-      -moz-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
-      box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
-      border-radius: 0;
     }
-    .alert.info { background-color: #31b0d5; }
-    .alert.warn { background-color: #ec971f; }
-    .alert.error { background-color: #c9302c; }
+    .alert.info { background-color: @cl-success;}
+    .alert.warning { background-color: @cl-warning; }
+    .alert.error { background-color: @cl-error; }
   }
 }
 
@@ -40,7 +40,9 @@
 
   > .row {
     margin: 0; /* Cancel bootstrap negative .row margin */
-    height: 100%;
+    height: -webkit-calc(~'100%' - @size-color);
+    height: -o-calc(~'100%' - @size-color);
+    height: calc(~'100%' - @size-color);
   }
 
   hr {
@@ -67,9 +69,8 @@
   }
 
   #color {
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 20px;
+    width: 100%;
+    height: @size-color;
     background-color: @cl-first;
   }
 
@@ -498,36 +499,6 @@
   }
 }
 
-#modals {
-  .modal-iframe {
-    .modal-dialog {
-      width: @modal-lg;
-      height: 680px;
-
-      .modal-content {
-        height: 100%;
-
-        .modal-header {
-        }
-
-        .modal-body{
-          height: 620px;
-        }
-
-        .modal-footer {
-          display: none;
-        }
-      }
-    }
-
-    iframe {
-      width: 100%;
-      height: 100%;
-      border: 0;
-    }
-  }
-}
-
 #center {
  .discussion {
     background-color: @cl-background;
@@ -683,6 +654,5 @@
         }
       }
     }
-
   }
 }

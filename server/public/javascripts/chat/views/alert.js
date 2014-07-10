@@ -6,7 +6,7 @@ define([
   var AlertView = Backbone.View.extend({
 
     initialize: function () {
-      this.$alert = $('#alert-container > .alert');
+      this.$alert = $('#alert > .alert');
     },
 
     /**
@@ -19,7 +19,7 @@ define([
     show: function (typeOfAlert, message) {
       this.$alert
         .finish()
-        .removeClass('info warn error')
+        .removeClass('info warning error')
         .addClass(typeOfAlert)
         .html(message)
         .slideDown('fast')
