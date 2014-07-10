@@ -14,17 +14,18 @@
 @img-homepage: '/images/cover.jpg';
 @img-homepage-blur: '/images/cover-blur.jpg';
 
-.ft-opensans { font-family: "Open Sans"; }
-.ft-opensans-light { font-family: "Open Sans Light"; }
-.ft-opensans-italic { font-family: "Open Sans Italic"; }
-.ft-opensans-bold { font-family: "Open Sans Bold"; }
-.ft-opensans-bold-italic { font-family: "Open Sans Bold Italic"; }
-.ft-raleway-medium { font-family: 'Raleway Medium', sans-serif; }
-.ft-raleway-heavy { font-family: 'Raleway Heavy', sans-serif; }
+.ft-opensans { font-family: 'Open Sans', sans-serif; font-weight: normal; }
+.ft-opensans-light { .ft-opensans; font-weight: 300; }
+.ft-opensans-italic { .ft-opensans; font-weight: 300; font-style: italic; }
+.ft-opensans-bold { .ft-opensans; font-weight: bold; }
+.ft-opensans-bold-italic { .ft-opensans; font-weight: bold; font-style: italic; }
+.ft-raleway { font-family: 'Raleway', sans-serif; font-weight: normal; }
+.ft-raleway-medium { .ft-raleway; font-weight: 500; }
+.ft-raleway-heavy { .ft-raleway; font-weight: 900; }
 
 html { height: 100%; }
 body {
- .ft-opensans-light;
+ .ft-opensans;
  font-size: 14px;
  overflow-x: hidden;
  a { color: @cl-second; }
