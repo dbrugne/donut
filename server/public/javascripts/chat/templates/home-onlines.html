@@ -1,12 +1,5 @@
 <div class="onlines">
 <%
-chars = '0123456789-_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-function randomString() {
-    var result = '';
-    var l = _.sample([5, 6, 7, 8, 9, 10,11,12,13,14,15,16,17,18,19,20]);
-    for (var i = l; i > 0; --i) result += chars[Math.round(Math.random() * (chars.length - 1))];
-    return result;
-}
 var more = [];
 for (var i = 0; i < 20; i++) {
     for (var i2 = 0; i2 < list.length; i2++) {
