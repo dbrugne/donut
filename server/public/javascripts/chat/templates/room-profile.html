@@ -11,7 +11,7 @@ txtColor = "color: "+room.color;
     <% if (room.topic) { %><p class="topic"><%= room.topic %></p><% }; %>
     <% if (room.website) { %><p class="website"><%= room.website %></p><% }; %>
 
-    <p class="join"><a href="#room/<%= room.name.replace('#', '') %>" style="<%= bgColor %>">Join <strong><%= room.users %></strong> <i class="fa fa-child"></i></a></p>
+    <p class="join"><a href="#room/<%= room.name.replace('#', '') %>" style="<%= bgColor %>">Join <%= room.users %> <i class="fa fa-child"></i></a></p>
 
     <% if (room.isOwner) { %>
     <a class="edit open-room-edit" data-room-name="<%= room.name %>"><i class="fa fa-pencil-square-o"></i> éditer</a>

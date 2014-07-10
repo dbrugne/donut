@@ -1,6 +1,7 @@
 @size-color: 20px;
 @cl-title: #313131;
 @cl-column: #e2e2e2;
+@cl-column-subtext0: #f2f2f2;
 @cl-column-subtext: #b6b6b6;
 @cl-column-subtext2: #777777;
 @cl-column-subtext4: #6b6b6b;
@@ -11,6 +12,9 @@
   overflow-y: hidden;
   .ft-opensans;
   font-size: 12px;
+
+  a { color: @text-color; }
+  a:hover { color: @text-color; }
 }
 
 #chat {
@@ -113,8 +117,18 @@
   }
 
   .user {
+    text-align: center;
+    p { margin-bottom: 0; }
     .username {
-
+      .ft-raleway-heavy;
+      font-size: 2.0em;
+      line-height: 1.2;
+      color: @cl-title;
+    }
+    .avatar {
+      width: 80px;
+      height: 80px;
+      border: 5px solid @cl-background; /* customized by code */
     }
   }
 
@@ -550,15 +564,27 @@
     .name {
       margin-top: 20px;
     }
-    .topic, .description {
+    .owner { font-size: 1.2em;  }
+    .topic, .description, .website {
       margin-top: 30px;
+      font-size: 1.2em;
+    }
+    .topic {
+      background-color: @cl-column-subtext0;
+      padding: 2.0em;
+      -webkit-border-radius: 35px;
+      -moz-border-radius: 35px;
+      border-radius: 35px;
     }
     .website {
-      margin-top: 30px;
+      text-decoration: underline;
     }
     .join {
       margin-top: 60px;
-      font-size: 1.5em;
+      a {
+        font-size: 2.0em;
+        padding: 0.5em 1em;
+      }
     }
     .permanent {
       position: absolute;
