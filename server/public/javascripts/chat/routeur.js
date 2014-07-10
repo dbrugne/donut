@@ -22,7 +22,7 @@ define([
         that.clientOnline = true;
         Backbone.history.start();
       });
-      this.listenTo(client, 'disconnect', function() {
+      this.listenTo(client, 'offline', function() {
         that.clientOnline = false;
         Backbone.history.stop();
       });

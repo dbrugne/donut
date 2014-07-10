@@ -31,6 +31,10 @@ define([
       this.socket.on('connect', function () {
         that.trigger('online');
       });
+      this.socket.on('disconnect', function () {
+        that.debug('socket.io-client disconnect');
+        that.trigger('offline');
+      });
       this.socket.on('reconnect', function (num) {
         that.debug('socket.io-client successful reconnected at #'+num+' attempt');
         that.trigger('online');
@@ -42,7 +46,7 @@ define([
         that.debug('socket.io-client try to reconnect, #'+num+' attempt');
         that.trigger('connecting');
       });
-      this.socket.on('connect_timeout', function () {
+      this.socket.on('connect_timeout', function () { // fired on socket or only on manager? http://socket.io/docs/client-api/#socket
         that.debug('socket.io-client timeout');
         that.trigger('connecting');
       });
@@ -50,9 +54,10 @@ define([
         that.debug('socket.io-client error: '+err);
         that.trigger('error');
       };
-      this.socket.on('connect_error', onError);
+      this.socket.on('connect_error', onError); // fired on socket or only on manager? http://socket.io/docs/client-api/#socket
       this.socket.on('reconnect_error', onError);
       this.socket.on('reconnect_failed', onError);
+      this.socket.on('error', onError); // on socket
 
       // GLOBAL EVENTS
       // ======================================================
