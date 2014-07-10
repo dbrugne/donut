@@ -22,9 +22,9 @@ list = _.shuffle(more);
     bgColor = "background-color: "+userOnline.color;
     txtColor = "color: "+userOnline.color;
     }; %>
-    <div class="item">
+    <div class="item open-user-profile" data-user-id="<%= userOnline.user_id %>">
         <div class="username" style="<%= bgColor %>"><%= userOnline.username %></div>
-        <img class="avatar open-user-profile" data-user-id="<%= userOnline.user_id %>" src="<%= userOnline.avatar %>">
+        <img class="avatar" src="<%= userOnline.avatar %>">
     </div>
     <% }); %>
 </div>
