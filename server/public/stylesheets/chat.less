@@ -42,6 +42,13 @@
     font-size: 1.1em;
   }
 
+  .border-shadow {
+    border: 5px solid rgba(125, 125, 125, 0.1);
+    /*-webkit-box-shadow: 1px 0px 5px 1px rgba(50, 50, 50, 0.2);
+    -moz-box-shadow:    1px 0px 5px 1px rgba(50, 50, 50, 0.2);
+    box-shadow:         1px 0px 5px 1px rgba(25, 25, 25, 0.2);*/
+  }
+
   .open-room-profile, .open-user-profile {
     cursor:pointer;
   }
@@ -54,7 +61,7 @@
       .img-circle;
       width: 80px;
       height: 80px;
-      border: 5px solid @cl-background; /* customized by code */
+      .border-shadow;
     }
     .name {
       .ft-raleway-heavy;
@@ -129,6 +136,32 @@
       width: 80px;
       height: 80px;
       border: 5px solid @cl-background; /* customized by code */
+      .border-shadow;
+    }
+    .bio {
+      .ft-opensans-italic;
+      font-size: 1em;
+    }
+    .website {}
+    .discuss {
+      a {
+        background-color: @cl-first; /** customizable color **/
+        .ft-raleway-medium;
+        color: #ffffff;
+        -webkit-border-radius: 100px;
+        -moz-border-radius: 100px;
+        border-radius: 100px;
+        padding: 0.9em 1.2em;
+        text-transform: uppercase;
+        i {
+          color: @cl-warning;
+        }
+      }
+    }
+    .discuss:hover {
+      a {
+        text-decoration: none;
+      }
     }
   }
 
@@ -381,7 +414,6 @@
             .avatar {
               width: 145px;
               height: 145px;
-              border: 0;
             }
             .name {
               margin-top: 17px;
@@ -594,6 +626,37 @@
       position: absolute;
       bottom: 20px;
       left: 50px;
+    }
+  }
+  #user-profile {
+    .username {
+      margin-top: 20px;
+    }
+    .bio, .location {
+      margin-top: 30px;
+    }
+    .bio {
+      background-color: @cl-column-subtext0;
+      padding: 2.0em;
+      -webkit-border-radius: 35px;
+      -moz-border-radius: 35px;
+      border-radius: 35px;
+      font-size: 1.2em;
+    }
+    .website {
+      text-decoration: underline;
+      font-size: 1.2em;
+    }
+    .location {
+      .ft-opensans-bold;
+      font-size: 1.2em;
+    }
+    .discuss {
+      margin-top: 60px;
+      a {
+        font-size: 2.0em;
+        padding: 0.5em 1em;
+      }
     }
   }
 }

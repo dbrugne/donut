@@ -1,12 +1,12 @@
-<%= user.color %>
-<% if (user.avatar) { %><div class="avatar"><img src="<%= user.avatar %>"></div><% }; %>
-<p><%= user.username %></p>
-<% if (user.bio) { %><h3><%= user.bio %></h3><% }; %>
-<% if (user.location) { %><%= user.location %><% }; %>
-<% if (user.location && user.website) { %> - <% }; %>
-<% if (user.website) { %><span class="website"><%= user.website %></span><% }; %>
-<% if (user.status == 'online') { %>
-    <a href="#user/<%= user.username %>">Discuss</a>
-<% } else { %>
-    <button>Offline</button>
-<% }; %>
+<div class="user">
+    <img class="avatar" src="<%= user.avatar %>" alt="<%= user.username %> avatar">
+    <p class="username"><%= user.username %></p>
+    <% if (user.bio) { %><p class="bio"><%= user.bio %></p><% }; %>
+    <% if (user.location) { %><p class="location"><%= user.location %></p><% }; %>
+    <% if (user.website) { %><p class="website"><%= user.website %></p><% }; %>
+    <% if (user.status == 'online') { %>
+    <p class="discuss"><a href="#user/<%= user.username %>" style="background-color: <%= user.color %>">discuter</a></p>
+    <% } else { %>
+    <button>offline</button>
+    <% }; %>
+</div>
