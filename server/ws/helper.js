@@ -8,6 +8,8 @@ var expressValidator = require('../app/validator');
 
 module.exports = {
 
+  _: _,
+
   /**
    * Handle error triggered in socket logics
    * @param err
@@ -38,6 +40,13 @@ module.exports = {
 
     if (receivers) activity.receivers = receivers;
     activity.save();
+
+    var identity = (socket.getUsername)
+      ? socket.getUsername()
+      : ((socket.getUserId)
+        ? socket.getUserId()
+        : socket.id);
+    debug('[ws] socket "'+identity+'" has "'+type+'"');
   },
 
   /**

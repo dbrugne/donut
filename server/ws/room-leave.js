@@ -8,7 +8,7 @@ module.exports = function(io, socket, data) {
   function handleSuccess(room) {
 
     // unsubscribe this user socket(s) to the room
-    _.each(helper.userSockets(io, socket.getUserId()), function(s) {
+    helper._.each(helper.userSockets(io, socket.getUserId()), function(s) {
       s.leave(room.name);
     });
 
