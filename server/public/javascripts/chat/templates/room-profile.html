@@ -1,42 +1,18 @@
-<div id="room-profile">
+<% var bgColor = txtColor = ''; %>
+<% if (room.color) {
+bgColor = "background-color: "+room.color;
+txtColor = "color: "+room.color;
+}; %>
+<img class="avatar" src="<%= room.avatar %>">
+<p class="name"><%= room.name %></p>
+<p class="owner">by <span class="open-user-profile" data-user-id="<%= room.owner.user_id %>"><%= room.owner.username %></span></p>
+<% if (room.description) { %><p class="description"><%= room.description %></p><% }; %>
+<% if (room.topic) { %><p class="topic"><%= room.topic %></p><% }; %>
+<% if (room.website) { %><span class="website"><%= room.website %></span><% }; %>
 
-    <div class="row">
+<p class="join"><a href="#room/<%= room.name.replace('#', '') %>" style="<%= bgColor %>">Join <strong><%= room.users %></strong> <i class="fa fa-child"></i></a></p>
+<% if (room.permanent == true) { %><p class="permanent"><i class="fa fa-lock" title="permanent donut"></i></p><% } %>
 
-        <div class="cover">
-            <% if (room.avatar) { %>
-            <div class="avatar"><img src="<%= room.avatar %>"></div>
-            <% }; %>
-
-            <% if (room.isOwner) { %>
-            <button class="btn btn-primary edit open-room-edit" data-room-name="<%= room.name %>"><i class="fa fa-pencil-square-o"></i> Editer</button>
-            <% }; %>
-
-            <h1><%= room.name %></h1>
-
-            <div>
-                par <%= room.owner.username %> <img src="<%= room.owner.avatar %>">
-            </div>
-
-            <% if (room.description) { %>
-            <h3><%= room.description %></h3>
-            <% }; %>
-
-            <% if (room.topic) { %>
-            <h3><%= room.topic%></h3>
-            <% }; %>
-
-            <% if (room.permanent) { %><i class="fa fa-certificate"></i> permanent<% } else { %>volatile<% }; %>
-
-            <div>
-                <% if (room.website) { %>
-                <span class="website"><%= room.website %></span>
-                <% }; %>
-            </div>
-
-            <a href="#room/<%= room.name.replace('#', '') %>" class="btn btn-primary join">rejoindre</a>
-        </div><!-- /.col-sm-12 -->
-
-        <div class="color" style="background-color: <%= room.color %>;"></div>
-    </div><!-- /.row -->
-
-</div><!-- /#user-profile -->
+<% if (room.isOwner) { %>
+<button class="btn btn-primary edit open-room-edit" data-room-name="<%= room.name %>"><i class="fa fa-pencil-square-o"></i> Editer</button>
+<% }; %>

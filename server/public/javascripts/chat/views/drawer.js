@@ -79,12 +79,38 @@ define([
       } : null;
     },
     show: function() {
+      // show
       this.$el.show();
-      this.$contentEl.trigger('shown');
+
+      // transition content
+      var that = this;
+      var w = this.$el.find('.wrap').width();
+      this.$el.find('.wrap').css('left', '-'+w+'px');
+      this.$el.find('.wrap').animate({
+        left: '0',
+        opacity: 1
+      }, {
+        duration: 500,
+        complete: function () {
+          that.$contentEl.trigger('shown');
+        }
+      });
     },
     hide: function() {
-      this.$el.hide();
-      this.$contentEl.trigger('hidden');
+      // transition content
+      var that = this;
+      var w = this.$el.find('.wrap').width();
+      this.$el.find('.wrap').animate({
+        left: '-'+w+'px',
+        opacity: 0
+      }, {
+        duration: 500,
+        complete: function () {
+          that.$el.find('.wrap').css('left', '-10000px');
+          that.$el.hide();
+          that.$contentEl.trigger('hidden');
+        }
+      });
     },
     onClose: function(event) {
       this.hide();

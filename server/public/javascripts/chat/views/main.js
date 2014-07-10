@@ -13,6 +13,7 @@ define([
   'views/drawer',
   'views/drawer-room-create',
   'views/drawer-room-profile',
+  'views/drawer-user-profile',
   'views/room-search',
   'views/user-search',
   'views/room-panel',
@@ -20,14 +21,12 @@ define([
   'views/room-block',
   'views/onetoone-block',
   'views/account',
-  'views/room-edit',
-  'views/user-profile', // need to be loaded here to instantiate DOM
-  'views/room-profile' // idem
+  'views/room-edit'
 ], function ($, _, Backbone, client, rooms, onetoones, currentUser, windowView,
              CurrentUserView, AlertView, homeContentView,
-             DrawerView, DrawerRoomCreateView, DrawerRoomProfileView,
+             DrawerView, DrawerRoomCreateView, DrawerRoomProfileView, DrawerUserProfileView,
              RoomSearchView, UserSearchView, RoomPanelView, OneToOnePanelView,
-             RoomBlockView, OnetooneBlockView, AccountView, RoomEditView, UserProfileView, RoomProfileView) {
+             RoomBlockView, OnetooneBlockView, AccountView, RoomEditView) {
 
   var MainView = Backbone.View.extend({
 
@@ -43,7 +42,6 @@ define([
 
     events: {
       'click #search-room-link':          'openSearchRoomModal',
-//      'click #create-room-link':          'openCreateRoomModal',
       'click #create-room-link':          'openCreateRoom',
       'click #search-user-link':          'openSearchUserModal',
       'click .open-user-profile':         'openUserProfile',
@@ -64,6 +62,7 @@ define([
         that.openAccount(event);
       }); // link is outside div#chat
 
+      // generate and attach subviews
       this.currentUserView = new CurrentUserView({model: currentUser});
       this.roomBlockView = new RoomBlockView({collection: rooms});
       this.onetooneBlockView = new OnetooneBlockView({collection: onetoones});
@@ -138,8 +137,8 @@ define([
     openUserProfile: function(event) {
       this._handleAction(event);
 
-      if (!this.userProfileModal) {
-        this.userProfileModal = new UserProfileView({ mainView: this });
+      if (!this.drawerUserProfile) {
+        this.drawerUserProfile = new DrawerUserProfileView({ mainView: this });
       }
 
       var userId = $(event.currentTarget).data('userId');

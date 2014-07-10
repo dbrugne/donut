@@ -27,7 +27,6 @@
             <div id="block-rooms"></div>
             <hr>
             <div id="block-onetoones"></div>
-            <div class="sign">made with ♥</div>
         </div><!-- /#left -->
         <div id="center">
             <div id="drawer">
@@ -53,67 +52,7 @@
             </div>
         </div><!-- /#center -->
     </div><!-- /.row -->
-
-    <div id="modals"></div>
-
-    <!-- Room search modal -->
-    <div class="modal fade" id="room-search-modal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Search for rooms</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="input-group">
-                                <input type="search" class="form-control room-search-input" placeholder="Search for rooms" />
-                                    <span class="input-group-btn">
-                                        <button class="btn btn-default room-search-submit" type="button"><span class="glyphicon glyphicon-search"></span></button>
-                                    </span>
-                            </div><!-- /input-group -->
-                            <ul class="list-group rooms-list"></ul>
-                        </div><!-- /.col-lg-12 -->
-                    </div><!-- /.row -->
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div>
-    <!-- / Room search modal -->
-
-    <!-- User search modal -->
-    <div class="modal fade" id="user-search-modal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">Search for user</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="input-group">
-                                <input type="search" class="form-control user-search-input" placeholder="Search for users" />
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default user-search-submit" type="button"><span class="glyphicon glyphicon-search"></span></button>
-                                </span>
-                            </div><!-- /input-group -->
-                            <ul class="list-group users-list"></ul>
-                        </div><!-- /.col-lg-12 -->
-                    </div><!-- /.row -->
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
-    <!-- / User search modal -->
-
+    <div class="sign">made with <span title="love">♥</span></div>
 </div><!-- /.container-fluid -->
 <script>
     window.cloudinary_cloud_name = '{{cloudinary.cloud_name}}';

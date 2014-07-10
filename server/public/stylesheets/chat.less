@@ -30,14 +30,6 @@
     .alert.warn { background-color: #ec971f; }
     .alert.error { background-color: #c9302c; }
   }
-
-  .open-room-profile, .open-user-profile {
-    cursor:pointer;
-  }
-
-  .open-room-profile:hover, .open-user-profile:hover {
-    text-decoration: underline;
-  }
 }
 
 #chat {
@@ -63,6 +55,17 @@
     font-size: 1.1em;
   }
 
+  .open-room-profile, .open-user-profile {
+    cursor:pointer;
+  }
+
+  .sign {
+    position: absolute;
+    right: 15px; bottom: 10px;
+    text-align: center;
+    color: @cl-column-subtext;
+  }
+
   #color {
     position: absolute;
     top: 0; left: 0; right: 0;
@@ -75,6 +78,7 @@
     height: 100%;
     background-color: @cl-column;
     overflow-y:auto;
+    z-index: 10;
 
     h1.logo {
       margin-top: 30px;
@@ -204,13 +208,6 @@
           .big-link;
         }
       }
-    }
-
-    .sign {
-      position: absolute;
-      left: 0; right: 0; bottom: 10px;
-      text-align: center;
-      color: @cl-column-subtext;
     }
   }
 
@@ -409,7 +406,7 @@
     position: absolute;
     width: 100%;
     height: 100%;
-    z-index: 99999;
+    z-index: 5;
 
     .opacity {
       width: 100%;
@@ -417,6 +414,7 @@
       background-color: rgba(252, 32, 99, 0.6);
       .wrap {
         position: relative;
+        left: -10000px;
         width: 260px; /* customizable by code */
         height: 100%;
         .content {
