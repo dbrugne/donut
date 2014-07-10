@@ -22,7 +22,6 @@ define([
       this.render();
 
       this.$input = this.$el.find('.input');
-//      this.$submit = this.$el.find('.submit');
       this.$formGroup = this.$el.find('.form-group');
 
       var that = this;
