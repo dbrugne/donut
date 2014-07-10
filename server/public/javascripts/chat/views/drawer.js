@@ -27,17 +27,11 @@ define([
       if (!data.el) return this;
       this.$contentEl = data.el;
 
-      /**
-       * On append chaque modal a #drawer content
-       *   si elle n'y est pas déjà
-       * On stocke la couleur en micro data
-       */
-
       if (data.el.attr('id') == this.$el.find('.content > div').first().attr('id'))
         return this; // avoid re-rendering of the same modal that unbind all events
 
       // Size
-      if (!data.width) data.width = '260px';
+      if (!data.width) data.width = '280px';
       this.$el.find('.wrap').first().css('width', data.width);
 
       // Color

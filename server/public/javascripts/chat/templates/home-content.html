@@ -5,11 +5,11 @@
         bgColor = "background-color: "+room.color;
         txtColor = "color: "+room.color;
     }; %>
-    <div class="item">
+    <div class="room">
         <div class="cover">
             <img class="avatar" src="<%= room.avatar %>">
             <p class="name"><%= room.name %></p>
-            <p class="owner">by <span><%= room.owner.username %></span></p>
+            <p class="owner">by <a><%= room.owner.username %></a></p>
             <p class="topic"><%= room.topic %></p>
             <p class="join"><a href="#room/<%= room.name.replace('#', '') %>" style="<%= bgColor %>">Join <strong><%= room.users %></strong> <i class="fa fa-child"></i></a></p>
             <% if (room.permanent == true) { %><p class="permanent"><i class="fa fa-lock" title="permanent donut"></i></p><% } %>
@@ -18,10 +18,11 @@
             <div class="open-room-profile" data-room-name="<%= room.name %>">
                 <img class="avatar" src="<%= room.avatar %>">
                 <p class="name"><%= room.name %></p>
-                <p class="owner">by <span class="open-user-profile" data-user-id="<%= room.owner.user_id %>"><%= room.owner.username %></span></p>
+                <p class="owner">by <a class="open-user-profile" data-user-id="<%= room.owner.user_id %>"><%= room.owner.username %></a></p>
                 <p class="description"><%= room.description %></p>
             </div>
             <p class="join"><a href="#room/<%= room.name.replace('#', '') %>" style="<%= txtColor %>">Join <strong><%= room.users %></strong> <i class="fa fa-child"></i></a></p>
+            <% if (room.permanent == true) { %><p class="permanent"><i class="fa fa-lock" title="permanent donut"></i></p><% } %>
         </div>
     </div>
     <% }); %>

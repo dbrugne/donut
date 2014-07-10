@@ -29,9 +29,11 @@ define([
      * Set this.$el content and call mainView.popin()
      */
     render: function(room) {
-      room.isOwner = (room.owner.user_id == currentUser.get('user_id'))
-        ? true
-        : false;
+      room.isOwner = (room.owner)
+       ? (room.owner.user_id == currentUser.get('user_id'))
+         ? true
+         : false
+       : false;
 
       var html = this.template({room: room});
       this.$el.html(html);
@@ -40,12 +42,11 @@ define([
         el: this.$el,
         color: room.color
       });
-//      this.$el.trigger('shown');
 
       return this;
     },
     onProfile: function(data) {
-      this.render(data.room);
+      this.render(data);
     }
 
   });

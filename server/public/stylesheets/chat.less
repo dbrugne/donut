@@ -1,8 +1,8 @@
 @size-color: 20px;
+@cl-title: #313131;
 @cl-column: #e2e2e2;
 @cl-column-subtext: #b6b6b6;
 @cl-column-subtext2: #777777;
-@cl-column-subtext3: #313131;
 @cl-column-subtext4: #6b6b6b;
 @cl-lines: #dadada;
 
@@ -42,6 +42,82 @@
     cursor:pointer;
   }
 
+  /* Room profiles common style */
+  .room {
+    text-align: center;
+    p { margin-bottom: 0; }
+    .avatar {
+      .img-circle;
+      width: 80px;
+      height: 80px;
+      border: 5px solid @cl-background; /* customized by code */
+    }
+    .name {
+      .ft-raleway-heavy;
+      font-size: 2.0em;
+      line-height: 1.2;
+      color: @cl-title;
+    }
+    .owner {
+      .ft-opensans;
+      font-size: 0.9em;
+      a { color: @cl-first; }
+    }
+    .topic, .description {
+      .ft-opensans-italic;
+      font-size: 1em;
+    }
+    .website {}
+    .join {
+      a {
+        background-color: @cl-first; /** customizable color **/
+        .ft-raleway-medium;
+        color: #ffffff;
+        -webkit-border-radius: 100px;
+        -moz-border-radius: 100px;
+        border-radius: 100px;
+        padding: 0.9em 1.2em;
+        text-transform: uppercase;
+        i {
+          color: @cl-warning;
+        }
+      }
+    }
+    .join:hover {
+      a {
+        text-decoration: none;
+      }
+    }
+    .permanent {
+      padding: 0 4px;
+      border: 2px solid @cl-lines;
+      -webkit-border-radius: 25px;
+      -moz-border-radius: 25px;
+      border-radius: 25px;
+      i {
+        color: @cl-lines;
+      }
+    }
+    .edit {
+      color: @cl-column-subtext;
+      .ft-raleway-medium;
+      font-size: 3.0em;
+      i {
+        font-size: 0.9em;
+      }
+    }
+    .edit:hover {
+      text-decoration: none;
+      cursor: pointer;
+    }
+  }
+
+  .user {
+    .username {
+
+    }
+  }
+
   #sign {
     position: absolute;
     right: 15px; bottom: 10px;
@@ -66,6 +142,38 @@
     .alert.info { background-color: @cl-success;}
     .alert.warning { background-color: @cl-warning; }
     .alert.error { background-color: @cl-error; }
+  }
+
+  #drawer {
+    display: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 5;
+
+    .opacity {
+      width: 100%;
+      height: 100%;
+      background-color: rgba(252, 32, 99, 0.6);
+      .wrap {
+        position: relative;
+        left: -10000px;
+        width: 280px; /* customizable by code */
+        height: 100%;
+        .content {
+          width: 100%;
+          height: 100%;
+          padding: 45px 10px 10px;
+          background-color: @cl-background;
+          > div { height: 100%; }
+        }
+        .close {
+          position: absolute;
+          top: 10px; right: 10px;
+          font-size: 1.4em;
+        }
+      }
+    }
   }
 
   #color {
@@ -160,7 +268,7 @@
           padding: 12px 20px;
 
           a {
-            color: @cl-column-subtext3;
+            color: @cl-title;
           }
 
           span {
@@ -200,7 +308,7 @@
         .item.unread { background-color: @cl-warning; color: #fff; }
         .item .name {  }
         .item .badge { margin-right: 5px; }
-        .item .close { color: @cl-column-subtext3; }
+        .item .close { color: @cl-title; }
       }
 
       .footer {
@@ -250,32 +358,21 @@
 
         .rooms {
           margin-top: 40px;
-
-          .item {
+          .room {
             .pull-left;
             position: relative;
             width: 228px;
             height: 326px;
-            text-align: center;
-            p { margin-bottom: 0; }
-
+            margin-top: 10px;
             .avatar {
-              .img-circle;
               width: 145px;
               height: 145px;
+              border: 0;
             }
             .name {
-              .ft-raleway-heavy;
               margin-top: 17px;
-              line-height: 1.2;
-              font-size: 1.7em;
-              color: @cl-column-subtext3;
             }
             .owner {
-              font-size: 0.9em;
-              span {
-                color: @cl-first;
-              }
             }
             .topic, .description {
               margin-top: 22px;
@@ -283,25 +380,14 @@
               padding-left: 20px;
               padding-right: 20px;
               overflow-y: auto;
-              .ft-opensans-italic;
-              font-size: 1em;
             }
             .join {
               position: absolute;
               left: 10px; right: 10px; bottom: 30px;
-              a {
-                background-color: @cl-first; /** customizable color **/
-                .ft-raleway-medium;
-                color: #ffffff;
-                -webkit-border-radius: 25px;
-                -moz-border-radius: 25px;
-                border-radius: 25px;
-                padding: 8px 16px;
-                text-transform: uppercase;
-                i {
-                  color: @cl-warning;
-                }
-              }
+            }
+            .permanent {
+              position: absolute;
+              top: 20px; right: 14px;
             }
 
             .back {
@@ -315,13 +401,12 @@
               .name { color: #ffffff; }
               .avatar {
                 margin-top: 30px;
-                width: 72px;
-                height: 72px;
-                border: 3px;
+                width: 80px;
+                height: 80px;
               }
               .owner {
                 color: #ffffff;
-                span { color: #ffffff; }
+                a { color: #ffffff; }
               }
               .description {
                 margin-top: 17px;
@@ -331,23 +416,16 @@
               .join a {
                 background-color: #ffffff;
                 color: @cl-first; /** customizable color **/
-
               }
-            }
-            .permanent {
-              position: absolute;
-              top: 20px; right: 14px;
-              padding: 0 4px;
-              border: 2px solid @cl-lines;
-              -webkit-border-radius: 25px;
-              -moz-border-radius: 25px;
-              border-radius: 25px;
-              i {
-                color: @cl-lines;
+              .permanent {
+                border-color: @cl-background;
+                i {
+                  color: @cl-background;
+                }
               }
             }
           }
-          .item:hover {
+          .room:hover {
             .cover { display: none; }
             .back { display: block; }
           }
@@ -401,38 +479,9 @@
       }
     }
   }
+}
 
-  #drawer {
-    display: none;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    z-index: 5;
-
-    .opacity {
-      width: 100%;
-      height: 100%;
-      background-color: rgba(252, 32, 99, 0.6);
-      .wrap {
-        position: relative;
-        left: -10000px;
-        width: 260px; /* customizable by code */
-        height: 100%;
-        .content {
-          width: 100%;
-          height: 100%;
-          padding: 45px 10px 10px;
-          background-color: @cl-background;
-        }
-        .close {
-          position: absolute;
-          top: 10px; right: 10px;
-          font-size: 1.4em;
-        }
-      }
-    }
-  }
-
+#drawer {
   #room-create {
     text-align: center;
     > p {
@@ -495,6 +544,30 @@
     .submit {
       border-color: @cl-success;
       color: @cl-success;
+    }
+  }
+  #room-profile {
+    .name {
+      margin-top: 20px;
+    }
+    .topic, .description {
+      margin-top: 30px;
+    }
+    .website {
+      margin-top: 30px;
+    }
+    .join {
+      margin-top: 60px;
+      font-size: 1.5em;
+    }
+    .permanent {
+      position: absolute;
+      top: -10px; right: 60px;
+    }
+    .edit {
+      position: absolute;
+      bottom: 20px;
+      left: 50px;
     }
   }
 }
