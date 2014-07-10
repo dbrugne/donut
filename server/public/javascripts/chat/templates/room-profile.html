@@ -4,7 +4,7 @@ bgColor = "background-color: "+room.color;
 txtColor = "color: "+room.color;
 }; %>
 <div class="room">
-    <img class="avatar" src="<%= room.avatar %>">
+    <img class="avatar" src="<%= room.avatar %>" alt="<%= room.name %> avatar">
     <p class="name"><%= room.name %></p>
     <p class="owner">by <a class="open-user-profile" data-user-id="<%= room.owner.user_id %>"><%= room.owner.username %></a></p>
     <% if (room.description) { %><p class="description"><%= room.description %></p><% }; %>
