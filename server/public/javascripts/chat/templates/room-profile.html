@@ -1,17 +1,12 @@
-<% var bgColor = txtColor = ''; %>
-<% if (room.color) {
-bgColor = "background-color: "+room.color;
-txtColor = "color: "+room.color;
-}; %>
-<div class="room">
+<div class="room" data-colorify="<%= room.color %>">
     <img class="avatar" src="<%= room.avatar %>" alt="<%= room.name %> avatar">
     <p class="name"><%= room.name %></p>
-    <p class="owner">by <a class="open-user-profile" data-user-id="<%= room.owner.user_id %>"><%= room.owner.username %></a></p>
+    <p class="owner">by <a class="open-user-profile" data-user-id="<%= room.owner.user_id %>" data-colorify-text="#ffffff"><%= room.owner.username %></a></p>
     <% if (room.description) { %><p class="description"><%= room.description %></p><% }; %>
     <% if (room.topic) { %><p class="topic"><%= room.topic %></p><% }; %>
     <% if (room.website) { %><p class="website"><%= room.website %></p><% }; %>
 
-    <p class="join"><a href="#room/<%= room.name.replace('#', '') %>" style="<%= bgColor %>">Join <%= room.users %> <i class="fa fa-child"></i></a></p>
+    <p class="join"><a href="#room/<%= room.name.replace('#', '') %>" data-colorify-background="color" data-colorify-text="contrast">Join <%= room.users %> <i class="fa fa-child"></i></a></p>
 
     <% if (room.isOwner) { %>
     <a class="edit open-room-edit" data-room-name="<%= room.name %>"><i class="fa fa-pencil-square-o"></i> éditer</a>

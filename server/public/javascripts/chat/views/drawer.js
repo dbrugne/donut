@@ -5,12 +5,18 @@ define([
 ], function ($, _, Backbone) {
   var DrawerView = Backbone.View.extend({
 
+    defaultSize: '280px',
+
+    defaultColor: '#000000',
+
     el: $('#drawer'),
 
     events: {
       'click .close': 'onClose',
       'mouseup .opacity': 'detectOutsideClick'
     },
+
+    currentColor: '',
 
     initialize: function(options) {
       this.mainView = options.mainView;
@@ -27,18 +33,20 @@ define([
       if (!data.el) return this;
       this.$contentEl = data.el;
 
-      if (data.el.attr('id') == this.$el.find('.content > div').first().attr('id'))
-        return this; // avoid re-rendering of the same modal that unbind all events
-
       // Size
-      if (!data.width) data.width = '280px';
+      if (!data.width) data.width = this.defaultSize;
       this.$el.find('.wrap').first().css('width', data.width);
 
       // Color
-      if (!this._validHex()) data.color = '#000000';
-      var rgb = this._hexToRgb(data.color);
+      this.currentColor = (!this._validHex(data.color))
+        ? this.defaultColor
+        : data.color;
+      var rgb = this._hexToRgb(this.currentColor);
       var rgbBg = 'rgba('+rgb.r+', '+rgb.g+', '+rgb.b+', 0.6)';
       this.$el.find('.opacity').first().css('background-color', rgbBg);
+
+      if (data.el.attr('id') == this.$el.find('.content > div').first().attr('id'))
+        return this; // avoid emptying and refilling content for the same drawer to avoid events unbind
 
       // HTML
       this.$el.find('.content').first()
@@ -51,10 +59,10 @@ define([
       if (!hex)
        return false;
 
-      if (hex.test(this.shorthandRegex))
+      if (this.shorthandRegex.test(hex))
         return true;
 
-      if (hex.test(this.longhandRegex))
+      if (this.longhandRegex.test(hex))
         return true;
 
       return false;
@@ -76,13 +84,15 @@ define([
       // show
       this.$el.show();
 
+      // color
+      $('#color').css('background-color', this.currentColor);
+
       // transition content
       var that = this;
       var w = this.$el.find('.wrap').width();
       this.$el.find('.wrap').css('left', '-'+w+'px');
       this.$el.find('.wrap').animate({
-        left: '0',
-        opacity: 1
+        left: '0'
       }, {
         duration: 500,
         complete: function () {
@@ -95,13 +105,13 @@ define([
       var that = this;
       var w = this.$el.find('.wrap').width();
       this.$el.find('.wrap').animate({
-        left: '-'+w+'px',
-        opacity: 0
+        left: '-'+w+'px'
       }, {
         duration: 500,
         complete: function () {
           that.$el.find('.wrap').css('left', '-10000px');
           that.$el.hide();
+          $('#color').css('background-color', '#fc2063'); // @todo : store in better place
           that.$contentEl.trigger('hidden');
         }
       });

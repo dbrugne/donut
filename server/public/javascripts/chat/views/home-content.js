@@ -18,6 +18,7 @@ define([
     render: function(data) {
       var html = this.template(data);
       this.$el.html(html);
+      this.$el.colorify();
       return this;
     }
 

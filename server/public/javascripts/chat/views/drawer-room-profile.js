@@ -37,6 +37,7 @@ define([
 
       var html = this.template({room: room});
       this.$el.html(html);
+      this.$el.colorify();
 
       this.mainView.popin({
         el: this.$el,

@@ -1,28 +1,32 @@
 <div class="rooms">
     <% _.each(rooms, function(room) { %>
-    <% var bgColor = txtColor = ''; %>
-    <% if (room.color) {
-        bgColor = "background-color: "+room.color;
-        txtColor = "color: "+room.color;
-    }; %>
-    <div class="room">
+    <div class="room" data-colorify="<%= room.color %>">
         <div class="cover">
             <img class="avatar" src="<%= room.avatar %>">
             <p class="name"><%= room.name %></p>
-            <p class="owner">by <a><%= room.owner.username %></a></p>
+            <p class="owner">by <a data-colorify-text="#ffffff"><%= room.owner.username %></a></p>
             <p class="topic"><%= room.topic %></p>
-            <p class="join"><a href="#room/<%= room.name.replace('#', '') %>" style="<%= bgColor %>">Join <%= room.users %> <i class="fa fa-child"></i></a></p>
+            <p class="join">
+                <a href="#room/<%= room.name.replace('#', '') %>" data-colorify-background="color" data-colorify-text="contrast">
+                    Join <%= room.users %>
+                    <i class="fa fa-child"></i>
+                </a>
+            </p>
             <% if (room.permanent == true) { %><p class="permanent"><i class="fa fa-lock" title="permanent donut"></i></p><% } %>
         </div>
-        <div class="back" style="<%= bgColor %>">
+        <div class="back" data-colorify-background="color" data-colorify-text="contrast">
             <div class="open-room-profile" data-room-name="<%= room.name %>">
-                <img class="avatar" src="<%= room.avatar %>">
-                <p class="name"><%= room.name %></p>
-                <p class="owner">by <a class="open-user-profile" data-user-id="<%= room.owner.user_id %>"><%= room.owner.username %></a></p>
+                <img class="avatar" src="<%= room.avatar %>" data-colorify-border="lighter">
+                <p class="name" data-colorify-text="contrast"><%= room.name %></p>
+                <p class="owner">by <a class="open-user-profile" data-user-id="<%= room.owner.user_id %>" data-colorify-text="contrast"><%= room.owner.username %></a></p>
                 <p class="description"><%= room.description %></p>
             </div>
-            <p class="join"><a href="#room/<%= room.name.replace('#', '') %>" style="<%= txtColor %>">Join <strong><%= room.users %></strong> <i class="fa fa-child"></i></a></p>
-            <% if (room.permanent == true) { %><p class="permanent"><i class="fa fa-lock" title="permanent donut"></i></p><% } %>
+            <p class="join">
+                <a href="#room/<%= room.name.replace('#', '') %>" data-colorify-background="<%= room.color %>" data-colorify-text="contrast">
+                    Join <%= room.users %> <i class="fa fa-child"></i>
+                </a>
+            </p>
+            <% if (room.permanent == true) { %><p class="permanent" data-colorify-border="<%= room.color %>"><i class="fa fa-lock" data-colorify-text="<%= room.color %>" title="permanent donut"></i></p><% } %>
         </div>
     </div>
     <% }); %>

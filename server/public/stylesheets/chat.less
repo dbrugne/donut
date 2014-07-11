@@ -43,10 +43,8 @@
   }
 
   .border-shadow {
-    border: 5px solid rgba(125, 125, 125, 0.1);
-    /*-webkit-box-shadow: 1px 0px 5px 1px rgba(50, 50, 50, 0.2);
-    -moz-box-shadow:    1px 0px 5px 1px rgba(50, 50, 50, 0.2);
-    box-shadow:         1px 0px 5px 1px rgba(25, 25, 25, 0.2);*/
+    border: 5px solid rgb(250, 250, 250);
+    border: 5px solid rgba(167, 167, 167, 0.1);
   }
 
   .open-room-profile, .open-user-profile {
@@ -71,8 +69,8 @@
     }
     .owner {
       .ft-opensans;
-      font-size: 0.9em;
-      a { color: @cl-first; }
+      font-size: 1.1em;
+      a { color: #000000; }
     }
     .topic, .description {
       .ft-opensans-italic;
@@ -81,7 +79,7 @@
     .website {}
     .join {
       a {
-        background-color: @cl-first; /** customizable color **/
+        background-color: #ffffff; /** customizable color **/
         .ft-raleway-medium;
         color: #ffffff;
         -webkit-border-radius: 100px;
@@ -89,6 +87,7 @@
         border-radius: 100px;
         padding: 0.9em 1.2em;
         text-transform: uppercase;
+        font-size: 1.2em;
         i {
           color: @cl-warning;
         }
@@ -145,9 +144,9 @@
     .website {}
     .discuss {
       a {
-        background-color: @cl-first; /** customizable color **/
-        .ft-raleway-medium;
+        background-color: #000000; /** customizable color **/
         color: #ffffff;
+        .ft-raleway-medium;
         -webkit-border-radius: 100px;
         -moz-border-radius: 100px;
         border-radius: 100px;
@@ -158,9 +157,21 @@
         }
       }
     }
-    .discuss:hover {
+    .discuss:hover, .offline:hover {
       a {
         text-decoration: none;
+      }
+    }
+    .offline {
+      a {
+        background-color: @cl-neutral;
+        color: #ffffff;
+        .ft-raleway-medium;
+        -webkit-border-radius: 100px;
+        -moz-border-radius: 100px;
+        border-radius: 100px;
+        padding: 0.9em 1.2em;
+        text-transform: uppercase;
       }
     }
   }
@@ -444,23 +455,19 @@
               -webkit-border-radius: 25px;
               -moz-border-radius: 25px;
               border-radius: 25px;
-              .name { color: #ffffff; }
+              .name {  }
               .avatar {
                 margin-top: 30px;
                 width: 80px;
                 height: 80px;
               }
               .owner {
-                color: #ffffff;
-                a { color: #ffffff; }
               }
               .description {
                 margin-top: 17px;
                 max-height: 85px;
-                color: #ffffff;
               }
               .join a {
-                background-color: #ffffff;
                 color: @cl-first; /** customizable color **/
               }
               .permanent {
@@ -651,7 +658,7 @@
       .ft-opensans-bold;
       font-size: 1.2em;
     }
-    .discuss {
+    .discuss, .offline {
       margin-top: 60px;
       a {
         font-size: 2.0em;

@@ -35,6 +35,7 @@ define([
 
       var html = this.template({user: user});
       this.$el.html(html);
+      this.$el.colorify();
 
       this.mainView.popin({
         el: this.$el,

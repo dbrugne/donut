@@ -1,12 +1,12 @@
-<div class="user">
+<div class="user" data-colorify="<%= user.color %>">
     <img class="avatar" src="<%= user.avatar %>" alt="<%= user.username %> avatar">
     <p class="username"><%= user.username %></p>
     <% if (user.bio) { %><p class="bio"><%= user.bio %></p><% }; %>
     <% if (user.location) { %><p class="location"><%= user.location %></p><% }; %>
     <% if (user.website) { %><p class="website"><%= user.website %></p><% }; %>
     <% if (user.status == 'online') { %>
-    <p class="discuss"><a href="#user/<%= user.username %>" style="background-color: <%= user.color %>">discuter</a></p>
+    <p class="discuss"><a href="#user/<%= user.username %>" data-colorify-background="color" data-colorify-text="contrast">discuter</a></p>
     <% } else { %>
-    <button>offline</button>
+    <p class="offline"><a>offline</a></p>
     <% }; %>
 </div>
