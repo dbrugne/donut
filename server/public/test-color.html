@@ -1,0 +1,449 @@
+<!doctype html>
+<html>
+<head>
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<script src="/javascripts/vendor/jquery/dist/jquery.min.js"></script>
+<style>
+body { font-family: 'Open Sans', sans-serif; } 
+.button { position: fixed; top: 10px; right: 10px; z-index: 5; background-color: rgba(0, 0, 0, 0.4); padding: 15px; border: 5px solid grey; color: white; }
+#ponderation { width: 50px;}
+.info { display: block; font-size: 11px;}
+.item { position:relative; margin: 20px 20px; }
+.color { padding: 20px 35px; display: block; }
+.brightness { position:absolute; right: 10px; top: 10px; display: block; width: 20%; height: 42px; text-align: center; line-height: 2.5; }
+</style>
+<script>
+
+$(document).ready(function() {
+
+    function hexToRgb(hex) {
+        // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
+        var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+        hex = hex.replace(shorthandRegex, function(m, r, g, b) {
+            return r + r + g + g + b + b;
+        });
+
+        var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        return result ? {
+            r: parseInt(result[1], 16),
+            g: parseInt(result[2], 16),
+            b: parseInt(result[3], 16)
+        } : null;
+    }
+
+	function getBrightness(rgb) {
+		var s = 0.299 * rgb.r^2 + 0.587 * rgb.g^2 + 0.114 * rgb.b^2;
+		return Math.sqrt(s);
+	}
+
+	var WHITE = getBrightness(hexToRgb('#ffffff'));
+	var BLACK = getBrightness(hexToRgb('#000000'));
+	  
+	function run() {
+	// mediane
+	var ponderation = parseFloat($('#ponderation').val())
+	if (isNaN(ponderation)) ponderation = 0.2;
+	$('#ponderation').val(ponderation);
+	var mediane = ((WHITE - BLACK) / 2) + BLACK + ponderation;
+	
+	$('.button .info')
+		.html(
+		'((WHITE - BLACK) /2) + BLACK + ponderation = mediane'+'<br>'
+		+ 'mediane = (('+WHITE+' - '+BLACK+') /2) + '+BLACK+' + '+ponderation+' = '+mediane
+		);
+
+	$('.item').each(function(index, element) { 
+		var hex = $(this).find('.color').data('color');
+		var rgb = hexToRgb(hex);
+		var brightness = getBrightness(rgb);
+		var isClear = (brightness > mediane) 
+		  ? true
+		  : false;
+		  
+		var label = (isClear)
+		  ? 'clear'
+		  : 'dark';
+		  
+		var contrastColor = (!isClear)
+		  ? '#ffffff'
+		  : '#000000';
+		  
+		console.log(hex+' -> rgb('+rgb.r+','+rgb.g+','+rgb.b+') -> '+brightness+' this color is '+label+'(contrast: '+contrastColor+')');
+		
+		$(this)
+		 .css('background-color', hex)
+		 .css('color', contrastColor)
+		 .find('.brightness')
+		 .html('this color is '+label+' ('+brightness+')')
+		 ;
+	});
+	}
+  
+  $('#ponderation').keypress(function(e) {
+    if (e.which == 13) run();
+  });
+  
+  $('.button button').click(function(e) {
+    run();
+  });
+  
+  run();
+ 
+});
+</script>
+</head>
+<body>
+    <div class="button">
+		<label for="ponderation">ponderation: </label><input id="ponderation" type="text"><button>run</button>
+		<span class="info"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#ffe263">HKS 1 K : #ffe263 : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#ffe300">HKS 2 K : #ffe300 : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#ffdb00">HKS 3 K : #ffdb00 : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#ffc900">HKS 4 K : #ffc900 : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#ffb800">HKS 5 K : #ffb800 : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#ff8f00">HKS 6 K : #ff8f00 : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#ff7100">HKS 7 K : #ff7100 : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#ff6400">HKS 8 K : #ff6400 : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#ff4c02">HKS 10 K : #ff4c02 : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#ff9b75">HKS 11 K : #ff9b75 : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#f33b1d">HKS 12 K : #f33b1d : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#f73429">HKS 13 K : #f73429 : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#e2382a">HKS 14 K : #e2382a : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#cc1f2f">HKS 15 K : #cc1f2f : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#a52f33">HKS 16 K : #a52f33 : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#a71f3c">HKS 17 K : #a71f3c : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#782235">HKS 18 K : #782235 : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#ff8997">HKS 21 K : #ff8997 : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#fe443a">HKS 22 K : #fe443a : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#e81e41">HKS 23 K : #e81e41 : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#ca2f56">HKS 24 K : #ca2f56 : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#d3225d">HKS 25 K : #d3225d : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#c0106f">HKS 26 K : #c0106f : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#e70097">HKS 27 K : #e70097 : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#b22052">HKS 28 K : #b22052 : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#9b348e">HKS 29 K : #9b348e : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#ca0f86">HKS 31 K : #ca0f86 : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#c60769">HKS 32 K : #c60769 : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#b028b6">HKS 33 K : #b028b6 : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#6e3b90">HKS 34 K : #6e3b90 : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#4f478e">HKS 35 K : #4f478e : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#633e96">HKS 36 K : #633e96 : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#543478">HKS 37 K : #543478 : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#233c4c">HKS 38 K : #233c4c : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#117acb">HKS 39 K : #117acb : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#009ab7">HKS 40 K : #009ab7 : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#284156">HKS 41 K : #284156 : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#2f53a7">HKS 42 K : #2f53a7 : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#2c57d2">HKS 43 K : #2c57d2 : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#0078b8">HKS 44 K : #0078b8 : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#5566a4">HKS 45 K : #5566a4 : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#2796b6">HKS 46 K : #2796b6 : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#00acd3">HKS 47 K : #00acd3 : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#00afc4">HKS 48 K : #00afc4 : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#0095b1">HKS 49 K : #0095b1 : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#00d2e2">HKS 50 K : #00d2e2 : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#00aaa0">HKS 51 K : #00aaa0 : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#00a8a3">HKS 52 K : #00a8a3 : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#00ce9d">HKS 53 K : #00ce9d : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#009864">HKS 54 K : #009864 : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#007755">HKS 55 K : #007755 : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#006651">HKS 56 K : #006651 : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#008a4e">HKS 57 K : #008a4e : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#396a37">HKS 58 K : #396a37 : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#008a7d">HKS 59 K : #008a7d : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#3a9c00">HKS 60 K : #3a9c00 : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#2a5349">HKS 61 K : #2a5349 : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#696a19">HKS 62 K : #696a19 : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#467a40">HKS 63 K : #467a40 : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#00a513">HKS 64 K : #00a513 : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#46bb00">HKS 65 K : #46bb00 : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#7fc600">HKS 66 K : #7fc600 : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#fcc700">HKS 68 K : #fcc700 : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#eae000">HKS 69 K : #eae000 : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#f0a930">HKS 71 K : #f0a930 : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#e29200">HKS 72 K : #e29200 : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#ba832c">HKS 73 K : #ba832c : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#926a24">HKS 74 K : #926a24 : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#856d2a">HKS 75 K : #856d2a : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#58462b">HKS 76 K : #58462b : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#644327">HKS 77 K : #644327 : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#7a4228">HKS 78 K : #7a4228 : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#cb5e24">HKS 81 K : #cb5e24 : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#a5451f">HKS 82 K : #a5451f : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#7e4531">HKS 83 K : #7e4531 : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#663c2e">HKS 84 K : #663c2e : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#23221b">HKS 88 K : #23221b : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#b7ad8d">HKS 89 K : #b7ad8d : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#3e352c">HKS 90 K : #3e352c : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#adb9a6">HKS 91 K : #adb9a6 : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#7a8077">HKS 92 K : #7a8077 : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#505a59">HKS 93 K : #505a59 : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#a0a397">HKS 95 K : #a0a397 : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#838678">HKS 96 K : #838678 : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	<div class="item">
+	    <span class="color" data-color="#3a4136">HKS 97 K : #3a4136 : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+	    <div class="item">
+	    <span class="color" data-color="#ffffff">WHITE : #ffffff : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+		<div class="item">
+	    <span class="color" data-color="#000000">BLACK : #000000 : Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+        <span class="brightness"></span>
+	</div>
+</body>
+</html>
