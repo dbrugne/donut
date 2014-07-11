@@ -44,10 +44,15 @@ chat
     - [ ] Rouleaux
     - [ ] Pictos SVG
   - [ ] Chat interface
-    - [ ] Factorize custom 'main' and 'contrast' colors in views (http://stackoverflow.com/questions/1855884/determine-font-color-based-on-background-color - http://stackoverflow.com/questions/596216/formula-to-determine-brightness-of-rgb-color)
+    - [x] Factorize custom 'main' and 'contrast' colors in views (http://stackoverflow.com/questions/1855884/determine-font-color-based-on-background-color - http://stackoverflow.com/questions/596216/formula-to-determine-brightness-of-rgb-color)
+    - [ ] Integration discussion window
     - [ ] Review all pictures size and update form/cloudinary transformations (room : avatar, background, user: avatar)
     - [ ] Responsivness
     - [ ] Pictos SVG
+
+**Account**
+- [ ] Implement clean user form in IHM
+- [ ] Implement clean room form in IHM
 
 **Hosting**
 - [x] Implement base FQDN conf and logic to redirect each request on it (HTTP requests only)
