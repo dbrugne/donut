@@ -13,7 +13,7 @@ define([
   'jquery.linkify',
   'jquery.smilify',
   'jquery.momentify',
-  'jquery.momentify',
+  'jquery.colorify',
   'bootstrap',
   'moment-fr'
 ], function ($, _, Backbone, i18next, moment, router, client, mainView) {
@@ -52,6 +52,7 @@ define([
     initialize: function() {
       // Give some object to global scope to allow other context to use it
       window.router = router;
+      window.main =   mainView;
       window.moment = moment;
 
       // i18n setup

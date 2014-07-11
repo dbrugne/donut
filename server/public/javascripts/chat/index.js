@@ -18,7 +18,8 @@ require.config({
       'jquery.insertatcaret'      : '../plugins/jquery.insertatcaret',
       'jquery.linkify'            : '../plugins/jquery.linkify.min',
       'jquery.smilify'            : '../plugins/jquery.smilify',
-      'jquery.momentify'          : '../plugins/jquery.momentify'
+      'jquery.momentify'          : '../plugins/jquery.momentify',
+      'jquery.colorify'          : '../plugins/jquery.colorify'
   },
   shim: {
     'jquery.cloudinary'     : ['jquery'],
@@ -26,6 +27,7 @@ require.config({
     'jquery.linkify'        : ['jquery'],
     'jquery.smilify'        : ['jquery'],
     'jquery.momentify'      : ['jquery'],
+    'jquery.colorify'       : ['jquery'],
     'bootstrap': {
       deps: ['jquery']
     }
