@@ -42,7 +42,7 @@ $(document).ready(function() {
 	function run() {
 	// mediane
 	var ponderation = parseFloat($('#ponderation').val())
-	if (isNaN(ponderation)) ponderation = 0.2;
+	if (isNaN(ponderation)) ponderation = 2.0;
 	$('#ponderation').val(ponderation);
 	var mediane = ((WHITE - BLACK) / 2) + BLACK + ponderation;
 	
