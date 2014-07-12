@@ -28,7 +28,7 @@ module.exports = function(server) {
   var io = socketio(server, {});
 
   // Redis storage
-  io.adapter(socketioRedis({ host: 'localhost', port: 6379 }));
+  io.adapter(socketioRedis({}));
 
   // Authentication
   io.use(socketioPassport.authorize({
