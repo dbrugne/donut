@@ -241,7 +241,9 @@
   }
 
   #left {
-    .make-sm-column(2);
+    .make-xs-column(6);
+    .make-sm-column(3);
+    .make-lg-column(2);
     height: 100%;
     background-color: @cl-column;
     overflow-y:auto;
@@ -379,7 +381,9 @@
   }
 
   #center {
-    .make-sm-column(10);
+    .make-xs-column(6);
+    .make-sm-column(9);
+    .make-lg-column(10);
     height: 100%;
     padding-left: 0; /* Cancel Bootstrap side padding */
     padding-right: 0; /* Cancel Bootstrap side padding */
@@ -387,7 +391,9 @@
     #home {
       height: 100%;
       .left {
-        .make-md-column(10);
+        .make-xs-column(12);
+        .make-sm-column(10);
+        .make-lg-column(9);
         height: 100%;
         padding: 30px 40px;
         overflow-x: auto;
@@ -485,7 +491,9 @@
         }
       }
       .right {
-        .make-md-column(2);
+        .make-xs-column(0);
+        .make-sm-column(2);
+        .make-lg-column(3);
         height: 100%;
         padding: 20px 8px 0 18px;
         background-color: @cl-column;
