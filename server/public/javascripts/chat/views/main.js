@@ -75,6 +75,14 @@ define([
       this.alertView.show(type, message);
     },
 
+    defaultFirstColor: '#fc2063',
+
+    colorize: function(color) {
+      color = color || this.defaultFirstColor;
+      this.$el.find('#color').css('background-color', color);
+      this.$el.find('#create-room-link').css('color', color);
+    },
+
     popin: function(data) {
       this.drawerView.render(data);
       this.drawerView.show();

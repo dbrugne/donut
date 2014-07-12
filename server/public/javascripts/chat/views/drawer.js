@@ -85,7 +85,7 @@ define([
       this.$el.show();
 
       // color
-      $('#color').css('background-color', this.currentColor);
+      this.mainView.colorize(this.currentColor);
 
       // transition content
       var that = this;
@@ -94,7 +94,7 @@ define([
       this.$el.find('.wrap').animate({
         left: '0'
       }, {
-        duration: 500,
+        duration: 250,
         complete: function () {
           that.$contentEl.trigger('shown');
         }
@@ -107,11 +107,11 @@ define([
       this.$el.find('.wrap').animate({
         left: '-'+w+'px'
       }, {
-        duration: 500,
+        duration: 250,
         complete: function () {
           that.$el.find('.wrap').css('left', '-10000px');
           that.$el.hide();
-          $('#color').css('background-color', '#fc2063'); // @todo : store in better place
+          that.mainView.colorize();
           that.$contentEl.trigger('hidden');
         }
       });
