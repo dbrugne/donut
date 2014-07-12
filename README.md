@@ -36,7 +36,7 @@ chat
   - [x] Implement i18next on server
   - [x] Implement i18next on client
 - [ ] Implement the new design
-  - Favicon
+  - [x] Favicon
   - [ ] Landing page
     - [x] Responsive
     - [x] Hovers
@@ -50,6 +50,11 @@ chat
     - [ ] Review all pictures size and update form/cloudinary transformations (room : avatar, background, user: avatar)
     - [ ] Responsivness
     - [ ] Pictos SVG
+  - [ ] Contents
+    - [ ] FAQ
+    - [ ] Contact (from HP and chat interface)
+    - [ ] CGU (from HP and chat interface)
+    - [ ] Traduction emails
 
 **Account**
 - [ ] Implement clean user form in IHM
@@ -57,7 +62,7 @@ chat
 
 **Hosting**
 - [x] Implement base FQDN conf and logic to redirect each request on it (HTTP requests only)
-- [ ] Add test instance on the same server
+- [ ] Add test instance on the same server (donut.me subdomain and new IP from OVH)
 **Branding**
 - [x] Créer la page Facebook
 - [x] Create Google Analytics account
