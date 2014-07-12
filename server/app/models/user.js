@@ -91,11 +91,6 @@ userSchema.methods.usernameAvailability = function (username, success, error) {
   });
 };
 
-/**
- * Return avatar URL for the current user
- * @param format
- * @returns {*}
- */
 userSchema.methods.avatarId = function() {
   if (!this.avatar) return '';
   var data = this.avatar.split('/');
@@ -103,10 +98,15 @@ userSchema.methods.avatarId = function() {
   var id = data[1].substr(0, data[1].lastIndexOf('.'));
   return id;
 };
+/**
+ * Return avatar URL for the current user
+ * @param format (large|medium|small)
+ * @returns {*}
+ */
 userSchema.methods.avatarUrl = function(format) {
-  if (!format) format = 'small';
+  if (!format) format = 'large';
   var options = {};
-  options.transformation = 'user-avatar-'+format;
+  options.transformation = 'user-'+format;
 
   var cloudinaryId = (this.avatar) ?
     this.avatar

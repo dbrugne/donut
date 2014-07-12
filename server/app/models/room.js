@@ -9,6 +9,7 @@ var roomSchema = mongoose.Schema({
   permanent     : Boolean,
   bans          : [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
   avatar        : String,
+  poster        : String,
   color         : String,
   topic         : String,
   description   : String,
@@ -37,11 +38,6 @@ roomSchema.statics.findByName = function (name) {
   return this.findOne({ name: regexp });
 }
 
-/**
- * Return avatar URL for the current room
- * @param format
- * @returns {*}
- */
 roomSchema.methods.avatarId = function() {
   if (!this.avatar) return '';
   var data = this.avatar.split('/');
@@ -49,16 +45,35 @@ roomSchema.methods.avatarId = function() {
   var id = data[1].substr(0, data[1].lastIndexOf('.'));
   return id;
 };
+
+/**
+ * Return avatar URL for the current room
+ * @param format (large|xlarge)
+ * @returns {*}
+ */
 roomSchema.methods.avatarUrl = function(format) {
-  if (!format) format = 'small';
+  if (!format) format = 'large';
   var options = {};
-  options.transformation = 'room-avatar-'+format;
+  options.transformation = 'room-'+format;
 
   var cloudinaryId = (this.avatar) ?
     this.avatar
     : this._id.toString();
 
   return cloudinary.url(cloudinaryId, options);
+  // cloudinary handle default image
+};
+
+/**
+ * Return poster URL for the current room
+ * @returns {*}
+ */
+roomSchema.methods.posterUrl = function() {
+  var cloudinaryId = (this.poster) ?
+    this.poster
+    : this._id.toString()+'-poster';
+
+  return cloudinary.url(cloudinaryId, {transformation: 'room-poster'});
   // cloudinary handle default image
 };
 
