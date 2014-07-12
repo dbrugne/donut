@@ -57,7 +57,7 @@ chat
 
 **Hosting**
 - [x] Implement base FQDN conf and logic to redirect each request on it (HTTP requests only)
-
+- [ ] Add test instance on the same server
 **Branding**
 - [x] Créer la page Facebook
 - [x] Create Google Analytics account
