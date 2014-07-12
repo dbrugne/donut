@@ -59,7 +59,7 @@ module.exports = function(io, socket) {
           userOnes.push({
             user_id: one._id,
             username: one.username,
-            avatar: one.avatarUrl(),
+            avatar: one.avatarUrl('medium'),
             status: status,
             history: [] // @todo : history
           });
@@ -102,7 +102,7 @@ module.exports = function(io, socket) {
             owner: {},
             op: room.op || [],
             permanent: room.permanent,
-            avatar: room.avatarUrl('medium'),
+            avatar: room.avatarUrl('large'),
             color: room.color,
             topic: room.topic || '',
             history: [], // @todo : history
@@ -111,8 +111,7 @@ module.exports = function(io, socket) {
           if (room.owner) {
             roomData.owner = {
               user_id: room.owner._id,
-              username: room.owner.username,
-              avatar: room.owner.avatarUrl('small')
+              username: room.owner.username
             };
           }
 

@@ -9,8 +9,7 @@ module.exports = function(io, socket, data) {
     if (room.owner) {
       owner = {
         user_id: room.owner._id,
-        username: room.owner.username,
-        avatar: room.owner.avatarUrl('small')
+        username: room.owner.username
       };
     }
 

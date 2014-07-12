@@ -479,7 +479,7 @@ module.exports = {
           topic: room.topic,
           description: room.description,
           color: room.color,
-          avatar: room.avatarUrl('medium'),
+          avatar: room.avatarUrl('xlarge'),
           owner: ownerData,
           users: 0
         };

@@ -37,6 +37,7 @@ chat
   - [x] Implement i18next on client
 - [ ] Implement the new design
   - [x] Favicon
+  - [ ] Scrollbar
   - [ ] Landing page
     - [x] Responsive
     - [x] Hovers
@@ -47,9 +48,10 @@ chat
     - [x] Factorize custom 'main' and 'contrast' colors in views (http://stackoverflow.com/questions/1855884/determine-font-color-based-on-background-color - http://stackoverflow.com/questions/596216/formula-to-determine-brightness-of-rgb-color)
     - [ ] Integration room list on user profile
     - [ ] Integration discussion window
-    - [ ] Review all pictures size and update form/cloudinary transformations (room : avatar, background, user: avatar)
+    - [x] Review all pictures size and update form/cloudinary transformations (room : avatar, background, user: avatar)
     - [ ] Responsivness
     - [ ] Pictos SVG
+    - [ ] Add room owner/ops list on room profile
   - [ ] Contents
     - [ ] FAQ
     - [ ] Contact (from HP and chat interface)

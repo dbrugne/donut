@@ -29,7 +29,7 @@ module.exports = function(io, socket, data) {
       owner: {},
       op: room.op || [],
       permanent: room.permanent,
-      avatar: room.avatarUrl('medium'),
+      avatar: room.avatarUrl('large'),
       color: room.color,
       topic: room.topic,
       history: history,
@@ -38,8 +38,7 @@ module.exports = function(io, socket, data) {
     if (room.owner) {
       welcome.owner = {
         user_id: room.owner._id,
-        username: room.owner.username,
-        avatar: room.owner.avatarUrl('small')
+        username: room.owner.username
       };
     }
 //    socket.emit('room:welcome', welcome);
