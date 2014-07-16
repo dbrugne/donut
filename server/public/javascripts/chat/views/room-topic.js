@@ -37,13 +37,13 @@ define([
       // Default
       if (currentTopic == '') {
         if (this.model.currentUserIsOp() || this.model.currentUserIsOwner()) {
-          this.$el.find('.topic').html(this.defaultText);
+          this.$el.find('.txt').html(this.defaultText);
         } else {
-          this.$el.find('.topic').html('');
+          this.$el.find('.txt').html('');
         }
       } else {
         // Topic
-        this.$el.find('.topic')
+        this.$el.find('.txt')
           .text(currentTopic)
           .smilify()
           .linkify();

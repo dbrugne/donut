@@ -4,15 +4,15 @@ define([
   'backbone',
   'models/client',
   'views/smileys',
-  'text!templates/messagebox.html'
-], function ($, _, Backbone, client, SmileysView, MessageBoxTemplate) {
+  'text!templates/input.html'
+], function ($, _, Backbone, client, SmileysView, InputTemplate) {
   var DiscussionMessageBoxView = Backbone.View.extend({
 
-    template: _.template(MessageBoxTemplate),
+    template: _.template(InputTemplate),
 
     events: {
       'keypress .input-message':  'message',
-      'click .send-message':      'message',
+      'click .send':              'message',
       'click .smileys-message':   'toggleSmileys'
     },
 

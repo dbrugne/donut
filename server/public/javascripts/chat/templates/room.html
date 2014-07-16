@@ -1,0 +1,14 @@
+<div class="content">
+    <div class="header room">
+        <img class="avatar open-room-profile" data-room-name="<%= name %>" src="<%= avatar %>" alt="<%= name %> avatar">
+        <p class="name open-room-profile" data-room-name="<%= name %>"><%= name %></p>
+        <p class="owner">by <a class="open-user-profile" data-user-id="<%= owner.user_id %>" data-colorify-text="#ffffff"><%= owner.username %></a></p>
+        <p class="topic"><!-- topic view --></p>
+        <p class="permanent"><i class="fa fa-lock" title="permanent donut"></i></p>
+    </div>
+    <div class="messages"></div>
+    <div class="input" data-colorify-background="color" data-colorify-background="text"></div>
+</div><!-- /.content -->
+<div class="side">
+    <div class="users"><% if (isOwner === true) { %>owner !<% }; %><%= color %></div>
+</div>

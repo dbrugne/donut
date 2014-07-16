@@ -13,6 +13,8 @@ define([
 
     events: {},
 
+    lastMessageUser: '',
+
     initialize: function(options) {
       this.listenTo(this.collection, 'add', this.message);
       this.listenTo(this.model, 'notification', this.notification);
@@ -32,21 +34,39 @@ define([
     },
 
     message: function(message) {
-     var html = this.template({
-        user_id: message.get('user_id'),
-        avatar: message.get('avatar'),
-        username: message.get('username'),
-        time: message.get('time')
-      });
-      var el = $(html).appendTo(this.$el);
+     var sameUser = (message.get('user_id') == this.lastMessageUser)
+       ? true
+       : false;
+    this.lastMessageUser = message.get('user_id');
 
-      el.find('.message')
-        .text(message.get('message')+"")
-        .smilify()
-        .linkify();
+     if (sameUser) { // we had span.text to the last p.message
+       var $last = this.$el.find('p.message').last();
+       var html = $('<span class="text"></span>')
+         .text(message.get('message')+"")
+         .smilify()
+         .linkify();
+       var el = $(html).appendTo($last);
+       $last.find('.data .moment')
+         .attr('data-time', message.get('time'))
+         .momentify();
+     } else { // render a full p.message
+       var html = this.template({
+         user_id: message.get('user_id'),
+         avatar: message.get('avatar'),
+         username: message.get('username'),
+         time: message.get('time'),
+         sameUser: sameUser
+       });
+       var el = $(html).appendTo(this.$el);
 
-      el.find('.moment')
-        .momentify();
+       el.find('.text')
+         .text(message.get('message')+"")
+         .smilify()
+         .linkify();
+
+       el.find('.moment')
+         .momentify();
+     }
 
       this.scrollDown();
       return this;

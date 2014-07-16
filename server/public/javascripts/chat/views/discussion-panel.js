@@ -2,9 +2,9 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'views/discussion-messages',
-  'views/discussion-messagebox'
-], function ($, _, Backbone, DiscussionMessageView, DiscussionMessageBoxView) {
+  'views/messages',
+  'views/input'
+], function ($, _, Backbone, MessagesView, InputView) {
   var DiscussionPanelView = Backbone.View.extend({
 
     tagName: 'div',
@@ -15,6 +15,8 @@ define([
     },
 
     initialize: function(options) {
+      this.mainView = options.mainView;
+
       // Events
       this.listenTo(this.collection, 'remove', this.removeView);
       this.listenTo(this.model, 'change:focused', this.updateFocus);
@@ -23,13 +25,13 @@ define([
       this.render();
 
       // Subviews initialization and rendering
-      this.messagesView = new DiscussionMessageView({
+      this.messagesView = new MessagesView({
         el: this.$el.find('.messages'),
         model: this.model,
         collection: this.model.messages
       });
-      this.messageBoxView = new DiscussionMessageBoxView({
-        el: this.$el.find('.message-box'),
+      this.messageBoxView = new InputView({
+        el: this.$el.find('.input'),
         model: this.model
       });
       // (later we will be able to re-render each subview individually without touching this view)
@@ -54,6 +56,14 @@ define([
     _render: function() {
     },
 
+    // To override
+    _focus: function() {
+    },
+
+    // To override
+    _unfocus: function() {
+    },
+
     render: function() {
       var html = this.template(this._renderData());
       this.$el.html(html);
@@ -64,10 +74,12 @@ define([
 
     updateFocus: function() {
       if (this.model.get('focused')) {
-        this.$el.fadeIn(400);
+        this.$el.show();
         this.$el.find('.input-message').focus();
+        this._focus();
       } else {
         this.$el.hide();
+        this._unfocus();
       }
     },
 

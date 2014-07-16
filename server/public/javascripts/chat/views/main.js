@@ -16,7 +16,7 @@ define([
   'views/drawer-user-profile',
   'views/room-search',
   'views/user-search',
-  'views/room-panel',
+  'views/room',
   'views/onetoone-panel',
   'views/room-block',
   'views/onetoone-block',
@@ -25,7 +25,7 @@ define([
 ], function ($, _, Backbone, client, rooms, onetoones, currentUser, windowView,
              CurrentUserView, AlertView, homeContentView,
              DrawerView, DrawerRoomCreateView, DrawerRoomProfileView, DrawerUserProfileView,
-             RoomSearchView, UserSearchView, RoomPanelView, OneToOnePanelView,
+             RoomSearchView, UserSearchView, RoomView, OneToOnePanelView,
              RoomBlockView, OnetooneBlockView, AccountView, RoomEditView) {
 
   var MainView = Backbone.View.extend({
@@ -80,7 +80,8 @@ define([
     colorize: function(color) {
       color = color || this.defaultFirstColor;
       this.$el.find('#color').css('background-color', color);
-      this.$el.find('#create-room-link').css('color', color);
+      this.$el.find('#create-room-link').css('color', 'black');
+      this.$el.find('#create-room-link').remove();
     },
 
     popin: function(data) {
@@ -203,9 +204,10 @@ define([
     // ======================================================================
 
     addRoomView: function(model, collection, options) {
-      var view = new RoomPanelView({
+      var view = new RoomView({
         collection: collection,
-        model:      model
+        model:      model,
+        mainView:   this
       });
       this.$discussionsPanelsContainer.append(view.$el);
 
@@ -217,7 +219,8 @@ define([
     addOneView: function(model, collection, options) {
       var view = new OneToOnePanelView({
         collection: collection,
-        model:      model
+        model:      model,
+        mainView:   this
       });
       this.$discussionsPanelsContainer.append(view.$el);
 
