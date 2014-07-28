@@ -30,9 +30,9 @@ module.exports = function(io, socket, data) {
       op: room.op || [],
       permanent: room.permanent,
       avatar: room.avatarUrl('large'),
+      poster: room.posterUrl(),
       color: room.color,
       topic: room.topic,
-      history: history,
       users: users
     };
     if (room.owner) {

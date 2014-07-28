@@ -54,6 +54,7 @@ define([
         permanent: room.permanent,
         topic: room.topic,
         avatar: room.avatar,
+        poster: room.poster,
         color: room.color
       };
 
