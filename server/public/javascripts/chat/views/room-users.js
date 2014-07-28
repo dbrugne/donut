@@ -16,7 +16,6 @@ define([
 
       this.render();
     },
-
     render: function() {
       var listJSON = [];
       var that = this;
@@ -34,6 +33,14 @@ define([
 
         listJSON.push(u);
       });
+
+      // hack
+      for (var i=0; i <= 3 ; i ++) {
+        $.each(listJSON, function() {
+          listJSON.push(this);
+        });
+      }
+      // hack
 
       var html = this.template({
         list: listJSON,

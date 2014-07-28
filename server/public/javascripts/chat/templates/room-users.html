@@ -1,11 +1,21 @@
-<div class="room-users">
-    <div class="heading">Room users</div>
-    <div class="list">
+<div>
+    <div class="header">
+        <p class="count">
+            <strong><%= list.length %></strong> user<% if (list.length > 1) { %>s<% }; %>
+        </p>
+        <p class="actions">
+            <i class="fa fa-chevron-down"></i> <strong>A-Z</strong>
+            <span class="between">|</span>
+            <i class="fa fa-align-left"></i>
+        </p>
+    </div>
+    <hr>
+    <ul class="list">
         <% _.each(list, function(roomUser) { %>
-        <span class="user-item item <% if (roomUser.owner === true) { %>owner<% }; %> <% if (roomUser.op === true) { %>op<% }; %>">
-            <img src="<%= roomUser.avatar %>">
-            <span class="username dbl-open-user-profile" data-user-id="<%= roomUser.user_id %>"><%= roomUser.username %></span>
-            <span class="actions">
+        <li class="item <% if (roomUser.owner === true) { %>owner<% }; %> <% if (roomUser.op === true) { %>op<% }; %>">
+            <img class="open-user-profile" data-user-id="<%= roomUser.user_id %>" src="<%= roomUser.avatar %>" alt="<%= roomUser.username %> avatar">
+            <span class="username open-user-profile" data-user-id="<%= roomUser.user_id %>"><%= roomUser.username %></span>
+            <!-- span class="actions">
                 <span data-user-id="<%= roomUser.user_id %>" class="fa fa-user open-user-profile"></span>
                 <% if (isOp === true || isOwner === true) { %>
                     <% if (roomUser.op === true) { %>
@@ -15,8 +25,8 @@
                     <% }; %>
                 <% }; %>
                 <a href="#user/<%= roomUser.username %>"><span class="fa fa-pencil-square-o"></span></a>
-            </span>
-        </span>
+            </span -->
+        </li>
         <% }); %>
-    </div>
-</div><!-- /.room-users -->
+    </ul>
+</div>

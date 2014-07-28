@@ -35,9 +35,17 @@ define([
     },
     _renderData: function() {
       var data = this.model.toJSON();
+
+      // owner
       var owner = this.model.get('owner').toJSON();
       data.owner = owner;
       data.isOwner = this.model.currentUserIsOwner();
+
+      // poster
+      data.posterblured = data.poster.replace('t_room-poster', 't_room-poster-blured');
+      console.log(data.poster);
+      console.log(data.posterblured);
+
       return data;
     },
     _render: function() {

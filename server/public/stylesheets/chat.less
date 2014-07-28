@@ -670,14 +670,72 @@
         .make-lg-column(4);
         height: 100%;
         background-repeat: no-repeat;
-        background-position: right top;
+        background-position: left top;
         margin: 0;
         padding: 0;
         .users {
+          .make-lg-column(6);
+          padding-left: 0; /* cancel Bootstrap columm margin */
+          padding-right: 0; /* cancel Bootstrap columm margin */
           height: 100%;
-          width: 220px;
-          background-color: rgba(255, 255, 255, 0.4);
-          padding: 10px;
+          color: @cl-background;
+          a { color: @cl-background; }
+          font-size: 1.1em;
+          > div {
+            background-color: rgba(0, 0, 0, 0.2);
+            height: 100%;
+            padding: 10px 14px;
+            @header-height: 35px;
+            .header {
+              position: absolute;
+              top: 14px; left: 20px; right: 20px;
+
+              .count {
+                .pull-left;
+              }
+              .between {
+                font-size: 1.2em;
+                line-height: 1;
+                padding-left: 10px;
+                padding-right: 10px;
+              }
+              .actions {
+                .pull-right;
+              }
+            }
+            > hr {
+              position: absolute;
+              left: 14px; right: 14px; top: @header-height;
+            }
+            .list {
+              height: -webkit-calc(~'100%' - @header-height);
+              height: -o-calc(~'100%' - @header-height);
+              height: calc(~'100%' - @header-height);
+              margin-top: -webkit-calc(@header-height + 10px);
+              margin-top: -o-calc(@header-height + 10px);
+              margin-top: calc(@header-height + 10px);
+              padding: 0 6px 10px;
+              background-repeat: no-repeat;
+              background-position: left top;
+              overflow-x: hidden;
+              overflow-y: scroll;
+
+              .item {
+                margin-top: 10px;
+                .username { margin-left: 9px; }
+                font-weight: bold;
+              }
+
+              .item.owner {
+                img {
+                  border: 2px solid @cl-success;
+                  -webkit-border-radius: 5px;
+                  -moz-border-radius: 5px;
+                  border-radius: 5px;
+                }
+              }
+            }
+          }
         }
       }
     }

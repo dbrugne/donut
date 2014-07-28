@@ -17,6 +17,7 @@ define([
         permanent: false,
         avatar: '',
         poster: '',
+        posterblured: '',
         color: '',
         type: 'room',
         focused: false,
