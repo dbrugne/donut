@@ -60,8 +60,7 @@ module.exports = function(io, socket) {
             user_id: one._id,
             username: one.username,
             avatar: one.avatarUrl('medium'),
-            status: status,
-            history: [] // @todo : history
+            status: status
           });
         }
 
@@ -94,7 +93,7 @@ module.exports = function(io, socket) {
           users.push({ // add myself, not already subscribed
             user_id: socket.getUserId(),
             username: socket.getUsername(),
-            avatar: socket.getAvatar()
+            avatar: socket.getAvatar('medium')
           });
 
           var roomData = {
@@ -103,9 +102,9 @@ module.exports = function(io, socket) {
             op: room.op || [],
             permanent: room.permanent,
             avatar: room.avatarUrl('large'),
+            poster: room.posterUrl(),
             color: room.color,
             topic: room.topic || '',
-            history: [], // @todo : history
             users: users
           };
           if (room.owner) {
