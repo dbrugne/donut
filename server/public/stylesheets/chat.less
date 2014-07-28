@@ -591,9 +591,17 @@
           overflow-y: auto;
           font-size: 1.1em;
 
-          p.message {
+          p.notification, p.message {
             position: relative;
             margin-bottom: 0;
+            .date {
+              position: absolute;
+              top: 0; right: 0;
+              font-size: 0.9em;
+            }
+          }
+
+          p.message {
             padding-top: 10px;
             padding-left: 40px;
             .avatar {
@@ -606,11 +614,6 @@
               top: 0; left: 40px;
               .ft-opensans-bold;
               font-size: 1em;
-            }
-            .date {
-              position: absolute;
-              top: 0; right: 0;
-              font-size: 0.9em;
             }
             .text {
               display: block;
@@ -666,9 +669,15 @@
       .side {
         .make-lg-column(4);
         height: 100%;
+        background-repeat: no-repeat;
+        background-position: right top;
+        margin: 0;
+        padding: 0;
         .users {
           height: 100%;
-          background-color: #ebccd1;
+          width: 220px;
+          background-color: rgba(255, 255, 255, 0.4);
+          padding: 10px;
         }
       }
     }

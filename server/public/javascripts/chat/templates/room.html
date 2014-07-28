@@ -9,6 +9,6 @@
     <div class="messages"></div>
     <div class="input" data-colorify-background="color" data-colorify-background="text"></div>
 </div><!-- /.content -->
-<div class="side">
+<div class="side" <% if (poster) { %>style="background-image: url(<%= poster %>);"<% }; %>>
     <div class="users"><% if (isOwner === true) { %>owner !<% }; %><%= color %></div>
 </div>
