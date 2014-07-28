@@ -708,22 +708,34 @@
               left: 14px; right: 14px; top: @header-height;
             }
             .list {
-              height: -webkit-calc(~'100%' - @header-height);
-              height: -o-calc(~'100%' - @header-height);
-              height: calc(~'100%' - @header-height);
+              height: -webkit-calc(~'100%' - @header-height + 10px);
+              height: -o-calc(~'100%' - @header-height + 10px);
+              height: calc(~'100%' - @header-height + 10px);
               margin-top: -webkit-calc(@header-height + 10px);
               margin-top: -o-calc(@header-height + 10px);
               margin-top: calc(@header-height + 10px);
+              margin-bottom: 0;
               padding: 0 6px 10px;
               background-repeat: no-repeat;
               background-position: left top;
               overflow-x: hidden;
-              overflow-y: scroll;
+              overflow-y: auto;
 
               .item {
+                position: relative;
                 margin-top: 10px;
                 .username { margin-left: 9px; }
                 font-weight: bold;
+                .actions {
+                  position: absolute;
+                  right: 0;
+                  display: none;
+                }
+              }
+              .item:hover {
+                .actions {
+                  display: inline-block;
+                }
               }
 
               .item.owner {
