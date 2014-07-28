@@ -37,7 +37,7 @@ chat
   - [x] Implement i18next on client
 - [ ] Implement the new design
   - [x] Favicon
-  - [ ] Scrollbars
+  - [ ] Scrollbar
   - [ ] Landing page
     - [x] Responsive
     - [x] Hovers
@@ -46,7 +46,7 @@ chat
     - [ ] Pictos SVG
   - [ ] Chat interface
     - [x] Factorize custom 'main' and 'contrast' colors in views (http://stackoverflow.com/questions/1855884/determine-font-color-based-on-background-color - http://stackoverflow.com/questions/596216/formula-to-determine-brightness-of-rgb-color)
-    - [x] Integration room list on user profile
+    - [ ] Integration room list on user profile
     - [ ] Integration discussion window
     - [x] Review all pictures size and update form/cloudinary transformations (room : avatar, background, user: avatar)
     - [ ] Responsivness
