@@ -1,3 +1,4 @@
+var debug = require('debug')('chat-server');
 var conf = require('./config/index');
 var socketio = require('socket.io');
 var socketioRedis = require('socket.io-redis');
@@ -42,6 +43,8 @@ module.exports = function(server) {
   }));
 
   io.on('connection', function (socket) {
+
+    debug('new ws connection');
 
     require('./ws/connection')(io, socket);
     socket.on('disconnect', function() { require('./ws/disconnect')(io, socket); });
