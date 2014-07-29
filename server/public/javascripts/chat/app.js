@@ -62,7 +62,7 @@ define([
         resGetPath: '/locales/resources.json?lng=__lng__&ns=__ns__',
         dynamicLoad: true,
         saveMissing: true,
-        debug: true
+        debug: false // @debug
       });
 
       // Cloudinary setup
