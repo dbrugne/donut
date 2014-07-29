@@ -3,12 +3,14 @@ var VirtualUser = require('./virtual-user');
 var random = require('./random');
 
 var sequence = 0; // first will be '1'
-var max = 10;
+var max = 8;
 var users = {};
 var activities = {
-  join: { percent: 5.0 },
-  leave: { percent: 2.5 },
-  message: { percent: 3 }
+//  join: { percent: 5.0 },
+//  leave: { percent: 0.1 },
+  disconnect: { percent: 0.1 },
+  reconnect: { percent: 15 },
+  message: { percent: 2 }
 };
 
 module.exports = function() {
@@ -23,20 +25,18 @@ module.exports = function() {
     });
   }
 
-//  // #2 - Shall we remove a user?
-//  if (random.probability(activities.leave.percent)) {
-//    console.log('remove user @todo');
-//  }
+  // #2 - Shall we do something for each user?
+  _.each(users, function(user) {
 
-//  // #3 - Shall we do something for each user?
-//  _.each(users, function(user) {
-//    // #3.1 - Shall we do or skip?
-//    if (random.probability(25)) return;
-//
-//    // #3.1 - Choose an activity
-//    var l = _.shuffle(Object.keys(activities));
-//    var a = _.first(l);
-//    console.log(a);
-//  });
+    // #2.1 - Shall we do something or skip?
+    if (random.probability(75)) return;
+
+    // #2.2- Evaluate activities
+    for (activity in activities) {
+      if (random.probability(activities[activity].percent)) {
+        user[activity]();
+      }
+    }
+  });
 
 };

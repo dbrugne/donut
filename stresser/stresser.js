@@ -10,6 +10,6 @@ mongoose.connection.on('error', function() {
 mongoose.connection.once('open', function() {
 
   console.log('mongodb opened - runing intervaller');
-  setInterval(activity, 100); // each 250ms we launch our magic
+  setInterval(activity, 100); // each 100ms we launch our magic
 
 });
