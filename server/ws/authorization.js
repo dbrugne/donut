@@ -14,7 +14,8 @@ module.exports = {
       throw new Error(message);
 
     // Non-production environment only! (allow virtual client connexion opening)
-    if (process.env.NODE_ENV != 'production') {
+//    if (process.env.NODE_ENV != 'production') { // @todo : TEMPORARY, ALLOW STRESSER ON PRODUCTION FOR TEST
+    if (true) {
       User.findById(data._query.virtualuserid, function(err, virtualUser) {
         if (err) throw new Error('Error while retrieving virtual user: '+err);
         if (!virtualUser) return console.log('No corresponding virtual user found');
