@@ -1,18 +1,20 @@
 <p class="notification notification-<%= type %>">
     <% if (type =='hello') { %>
-    You enter in <%= name %>
+    <i class="fa fa-lg fa-sign-in"></i> You enter in <%= name %>
     <% } else if (type =='in') { %>
-    <img class="avatar" src="<%= avatar %>"><span class="username open-user-profile" data-user-id="<%= user_id %>"><%= username %></span> has joined <strong><%= name %></strong>
+    <i class="fa fa-lg fa-sign-in"></i> <img class="avatar" src="<%= avatar %>"><span class="username open-user-profile" data-user-id="<%= user_id %>"><%= username %></span> has joined <strong><%= name %></strong>
     <% } else if (type =='out') { %>
-    <img class="avatar" src="<%= avatar %>"><span class="username open-user-profile" data-user-id="<%= user_id %>"><%= username %></span> has left <strong><%= name %></strong>
+    <i class="fa fa-lg fa-sign-out"></i> <img class="avatar" src="<%= avatar %>"><span class="username open-user-profile" data-user-id="<%= user_id %>"><%= username %></span> has left <strong><%= name %></strong>
     <% } else if (type =='disconnect') { %>
-    <span class="username open-user-profile" data-user-id="<%= user_id %>"><%= username %></span> was disconnected (<em><%- reason %></em>)
+    <i class="fa fa-lg fa-sign-out"></i> <span class="username open-user-profile" data-user-id="<%= user_id %>"><%= username %></span> was disconnected (<em><%- reason %></em>)
     <% } else if (type =='topic') { %>
     <img class="avatar" src="<%= avatar %>"><span class="username open-user-profile" data-user-id="<%= user_id %>"><%= username %></span> changed topic for <strong><%- topic %></strong>
     <% } else if (type =='kick') { %>
+    <i class="fa fa-lg fa-ban"></i>
     <span class="username open-user-profile" data-user-id="<%= user_id %>"><%= username %></span> was kicked by
     <span class="username open-user-profile" data-user-id="<%= by_user_id %>"><%= by_username %></span> '<%= reason %>'
     <% } else if (type =='ban') { %>
+    <i class="fa fa-lg fa-ban"></i>
     <span class="username open-user-profile" data-user-id="<%= user_id %>"><%= username %></span> was banned by
     <span class="username open-user-profile" data-user-id="<%= by_user_id %>"><%= by_username %></span> (<%= time %>) '<em><%= reason %></em>'
     <% } else if (type =='op') { %>
@@ -26,3 +28,4 @@
     <% } %>
     <span class="date"><span class="moment" data-time="<%= time %>"></span></span>
 </p>
+<hr>

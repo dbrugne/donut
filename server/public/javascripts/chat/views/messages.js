@@ -102,7 +102,8 @@ define([
       var html = this.notificationTemplate(notification);
       var el = $(html).appendTo(this.$el);
 
-      el.smilify()
+      el.find('.notification')
+        .smilify()
         .linkify();
 
       el.find('.moment')

@@ -365,9 +365,9 @@
             background-color: @cl-column;
           }
         }
-        .item.unread { background-color: @cl-warning; color: #fff; }
+        .item.unread {  }
         .item .name {  }
-        .item .badge { margin-right: 5px; }
+        .item .badge { position: absolute; right: 40px; background-color: @cl-warning; color: @cl-column-subtext2; }
         .item .close { color: @cl-title; }
       }
 
@@ -601,6 +601,14 @@
             }
           }
 
+          p.notification {
+            .avatar { width: 20px; height: 20px; }
+            i { color: @cl-success; }
+          }
+          p.notification-out, p.notification-disconnect, p.notification-kick, p.notification-ban {
+            i { color: @cl-error; }
+          }
+
           p.message {
             padding-top: 10px;
             padding-left: 40px;
@@ -741,6 +749,14 @@
               .item.owner {
                 img {
                   border: 2px solid @cl-success;
+                  -webkit-border-radius: 5px;
+                  -moz-border-radius: 5px;
+                  border-radius: 5px;
+                }
+              }
+              .item.op {
+                img {
+                  border: 2px solid @cl-first;
                   -webkit-border-radius: 5px;
                   -moz-border-radius: 5px;
                   border-radius: 5px;
