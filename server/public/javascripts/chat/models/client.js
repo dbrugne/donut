@@ -8,10 +8,11 @@ define([
     joinRequests: [],
 
     initialize: function() {
+      localStorage.debug=''; // @debug
     },
 
     debug: function(message) {
-      console.log(message);
+      console.log(message); // @debug
     },
 
     // connect should be done at the end of App initialization to allow interface binding to work
