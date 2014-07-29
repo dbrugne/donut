@@ -43,8 +43,6 @@ define([
 
       // poster
       data.posterblured = data.poster.replace('t_room-poster', 't_room-poster-blured');
-      console.log(data.poster);
-      console.log(data.posterblured);
 
       return data;
     },
