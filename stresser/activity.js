@@ -10,7 +10,7 @@ var activities = {
 //  leave: { percent: 0.1 },
   disconnect: { percent: 0.1 },
   reconnect: { percent: 15 },
-  message: { percent: 0.5 }
+  message: { percent: 1.5 }
 };
 
 module.exports = function() {

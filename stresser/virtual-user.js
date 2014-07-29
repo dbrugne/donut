@@ -19,20 +19,23 @@ module.exports = function VirtualUser(sequence) {
       virtualUser.model = user;
 
       // now socket it!
-      virtualUser.connect();
-
-      fn(virtualUser);
+      virtualUser.connect(fn);
     });
   };
 
   // @doc: https://github.com/Automattic/socket.io-client#nodejs-server-side-usage
   // @doc: https://github.com/Automattic/engine.io-client#methods
-  this.connect = function() {
+  this.connect = function(fn) {
     var virtualUser = this;
+
+    if (virtualUser.socket && virtualUser.socket.connected)
+      return;
+
     var url = 'ws://localhost:3000/?virtualuserid='+virtualUser.model._id;
     var socket = virtualUser.socket = require('socket.io-client')(url, {
       multiplex: false,
-      timeout: 2000 // connection timeout before a connect_error and connect_timeout events are emitted (20000)
+      timeout: 2000, // connection timeout before a connect_error and connect_timeout events are emitted (20000)
+      transports: ['websocket']
     });
 
     console.log('try to connect '+virtualUser.username+' to '+url);
@@ -57,6 +60,8 @@ module.exports = function VirtualUser(sequence) {
           socket.emit('room:message', {name: data.name, message: 'ah ah'});
         }
       });
+
+      if (fn) fn(virtualUser);
     });
   };
 
@@ -76,9 +81,6 @@ module.exports = function VirtualUser(sequence) {
   };
 
   this.reconnect = function() {
-    if (this.socket.connected)
-      return;
-
     this.connect();
   };
 
