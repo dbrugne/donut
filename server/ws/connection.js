@@ -126,6 +126,17 @@ module.exports = function(io, socket) {
     function subscribeSocket(user, callback) { // @todo : case of non existing room
       for (var i = 0; i < user.rooms.length; i++) {
         var room = user.rooms[i];
+
+        // Inform other room users
+        var roomInEvent = {
+          name: room,
+          time: Date.now(),
+          user_id: socket.getUserId(),
+          username: socket.getUsername(),
+          avatar: socket.getAvatar('medium')
+        };
+        io.to(room).emit('room:in', roomInEvent);
+
         socket.join(room); // automatic socket subscription to user rooms
         console.log('socket '+socket.id+' subscribed to room '+room);
       }
