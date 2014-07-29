@@ -8,7 +8,7 @@ module.exports = function(code, app) {
         res.locals.user = req.user;
       }
       res.render('404', {}, function (err, html) {
-        res.send(404, html);
+        res.status(404).send(html);
       });
     };
   }
