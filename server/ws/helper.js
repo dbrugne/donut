@@ -241,12 +241,15 @@ module.exports = {
   socketRooms: function(io, socket) {
     var list = [];
 
-    // Robustness code: sometime this function is called and socket not longer
-    // exists (e.g.: disconnection)
-    if (!io.sockets.adapter.nsp.connected[socket.id])
-      return list;
+    // On disconnection socket is no longer present in io.sockets.adapter.nsp.connected
+    // but still exist (socket)
+    var rawList = [];
+    if (io.sockets.adapter.nsp.connected[socket.id]) {
+      rawList = io.sockets.adapter.nsp.connected[socket.id].rooms;
+    } else if (socket.rooms) {
+      rawList = socket.rooms;
+    }
 
-    var rawList = io.sockets.adapter.nsp.connected[socket.id].rooms;
     if (!rawList || rawList.length < 1) return list;
 
     _.each(rawList, function(name) {
