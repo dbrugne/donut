@@ -28,31 +28,30 @@ chat
 - [x] Redraw also the room header
 - [x] Repair room:deop client crash
 - [ ] Sort room users list also on ownership/op status
+- [ ] Allow user to change room user sort order
+- [ ] Allow user to change room user display
 - [ ] Add a 'room ops' list with 'remove user from op list' button
 - [ ] Factorize socket room op/owner detection in helper and update room:op/deop events
 
 **Theme**
-- [x] Find i18n solution on client and server
-  - [x] Implement i18next on server
-  - [x] Implement i18next on client
 - [ ] Implement the new design
   - [x] Favicon
-  - [ ] Scrollbar
-  - [ ] Landing page
+  - [ ] Scrollbars
+  - [ ] Pictos SVG
+  - Landing page
     - [x] Responsive
     - [x] Hovers
     - [ ] Fluid login background
     - [ ] Rouleaux
-    - [ ] Pictos SVG
-  - [ ] Chat interface
+  - Chat interface
     - [x] Factorize custom 'main' and 'contrast' colors in views (http://stackoverflow.com/questions/1855884/determine-font-color-based-on-background-color - http://stackoverflow.com/questions/596216/formula-to-determine-brightness-of-rgb-color)
-    - [ ] Integration room list on user profile
-    - [ ] Integration discussion window
+    - [x] Integration discussion window
     - [x] Review all pictures size and update form/cloudinary transformations (room : avatar, background, user: avatar)
+    - [ ] Integration room list on user profile
     - [ ] Responsivness
-    - [ ] Pictos SVG
     - [ ] Add room owner/ops list on room profile
-  - [ ] Contents
+    - [ ] Translate texts
+  - Contents
     - [ ] FAQ
     - [ ] Contact (from HP and chat interface)
     - [ ] CGU (from HP and chat interface)
