@@ -1,14 +1,4 @@
 <div class="onlines">
-<%
-var more = [];
-for (var i = 0; i < 20; i++) {
-    for (var i2 = 0; i2 < list.length; i2++) {
-        var u = list[i2];
-        more.push(u);
-    }
-}
-list = _.shuffle(more);
-%>
     <% _.each(list, function(userOnline) { %>
     <% var bgColor = txtColor = ''; %>
     <% if (userOnline.color) {
