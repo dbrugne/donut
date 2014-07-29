@@ -24,7 +24,7 @@ define([
 
       // Regularly update moment times
       var that = this;
-      setInterval(function() { that.updateMoment(); }, 60*1000); // any minutes
+      setInterval(function() { that.updateMoment(); }, 45*1000); // any minutes
     },
 
     // Update all .moment of the discussion panel

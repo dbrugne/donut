@@ -72,7 +72,23 @@ define([
       });
 
       // Moment language
-      moment.lang('fr');
+      moment.lang('fr', {
+        relativeTime : {
+          future : "dans %s",
+          past : "%s",
+          s : "à l'instant",
+          m : "1mn",
+          mm : "%dmin",
+          h : "1h",
+          hh : "%dh",
+          d : "un jour",
+          dd : "%d jours",
+          M : "un mois",
+          MM : "%d mois",
+          y : "un an",
+          yy : "%d ans"
+        }
+      });
 
       // Everything was already loaded by require.js,
       // it just left to establish connection:
