@@ -4,10 +4,10 @@ var random = require('./random');
 
 var configuration = {
   currentSequence: 0, // first will be '1'
-  maxVirtualUsers: 12,
+  maxVirtualUsers: 8,
   activities: {
     disconnect  : { percent: 0.1 },
-    reconnect   : { percent: 15 },
+    reconnect   : { percent: 5 },
     message     : { percent: 2 }
   },
   pause: false
