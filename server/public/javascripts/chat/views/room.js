@@ -15,8 +15,7 @@ define([
 
     events: {
       'click .op-user': 'opUser',
-      'click .deop-user': 'deopUser'/*,
-      'change .permanent-switch': 'switchPermanent'*/
+      'click .deop-user': 'deopUser'
     },
     _initialize: function() {
       this.listenTo(this.model, 'change:color', this.onColor);
@@ -27,6 +26,8 @@ define([
 
       this.topicView = new TopicView({el: this.$el.find('.topic'), model: this.model});
       this.usersView = new UsersView({el: this.$el.find('.users'), model: this.model, collection: this.model.users});
+
+      this.$el.attr('data-colorify', this.model.get('color'));
       this.$el.colorify();
     },
     _remove: function(model) {
@@ -47,7 +48,6 @@ define([
       return data;
     },
     _render: function() {
-      this.$el.attr('data-colorify', this.model.get('color'));
     },
     _focus: function() {
       this.mainView.colorize(this.model.get('color'));
@@ -60,13 +60,6 @@ define([
      * User actions methods
      */
 
-//    switchPermanent: function(event) {
-//      if (!this.model.currentUserIsOwner())
-//        return false;
-//
-//      var newState = this.$el.find('.permanent-switch').prop('checked');
-//      client.roomPermanent(this.model.get('name'), newState);
-//    },
     opUser: function(event) {
       var username = $(event.currentTarget).data('username');
       if (username)

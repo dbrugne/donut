@@ -19,7 +19,8 @@ require.config({
       'jquery.linkify'            : '../plugins/jquery.linkify.min',
       'jquery.smilify'            : '../plugins/jquery.smilify',
       'jquery.momentify'          : '../plugins/jquery.momentify',
-      'jquery.colorify'          : '../plugins/jquery.colorify'
+      'jquery.colorify'           : '../plugins/jquery.colorify',
+      'jquery.scroller'           : '../vendor/Scroller/jquery.fs.scroller.min'
   },
   shim: {
     'jquery.cloudinary'     : ['jquery'],
@@ -28,6 +29,7 @@ require.config({
     'jquery.smilify'        : ['jquery'],
     'jquery.momentify'      : ['jquery'],
     'jquery.colorify'       : ['jquery'],
+    'jquery.scroller'       : ['jquery'],
     'bootstrap': {
       deps: ['jquery']
     }

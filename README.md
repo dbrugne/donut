@@ -6,32 +6,18 @@ chat
 ## Release 2
 
 **Chat**
-- [x] Upgrade socket.io to 1.0
-  - [x] Use redis for sessions (for socket and express)
-  - [x] Improve lisibility by cleaning http/socket launching
-- [x] Disconnection bugs
-  - [x] Receive in welcome anything needed to refresh views: room (user, profile[, history]) and onetoone (profile[, history])
-  - [x] Update room user list and room data (and re-render user list and header)
-  - [x] Update onetoone data and re-render header
-  - [x] Add a separator
-- Change protocol join/leave protocol
-  - [x] socket.io:room subscription is automatically handled by server side on welcome (for current socket)
-  - [x] ... and room:welcome (for other socket)
-  - [x] On client join a room the room:welcome is broadcasted to all user sockets
-  - [x] now "join" is only triggered by client-side on a "click" to open a room
+- [ ] Search engine
+- [ ] Allow user to change room user sort order
+- [ ] Allow user to change room user display
 - Bug fixes
   - [ ] What's happen when a message is posted by someone (on a room) and my client is in sleep (eg. : tablet) ?
   - [ ] On room closing view / model already exist and we can not join the room again, also a problem with "home" focusing occurs
 
 **Room ops**
-- [x] Take in consideration for room:topic (centralize isGranted)
-- [x] Redraw also the room header
-- [x] Repair room:deop client crash
 - [ ] Sort room users list also on ownership/op status
-- [ ] Allow user to change room user sort order
-- [ ] Allow user to change room user display
 - [ ] Add a 'room ops' list with 'remove user from op list' button
 - [ ] Factorize socket room op/owner detection in helper and update room:op/deop events
+- [ ] Kick a user
 
 **Theme**
 - [ ] Implement the new design
@@ -64,12 +50,8 @@ chat
 - [ ] Repair forgotten password integration in new HP
 
 **Hosting**
-- [x] Implement base FQDN conf and logic to redirect each request on it (HTTP requests only)
 - [ ] Add test instance on the same server (donut.me subdomain and new IP from OVH)
 **Branding**
-- [x] Créer la page Facebook
-- [x] Create Google Analytics account
-- [x] Soumettre le site à Google
 - [ ] Changer le proriétaire du domaine : MARTINE BLAJMAN
 - [ ] Créer une email contact@
 - [ ] Créer une email martine@
@@ -81,6 +63,8 @@ chat
 - [ ] Correct room:in for user that "reconnect"
 - [ ] Replace room:out by user:disconnect on socket disconnection
 - [ ] Add a check on connection to verify is user have "username"
+- [ ] Add a cleanup method that empty .messages periodically to avoid memory leak
+- [ ] Bug : room user list scroll is not active when entering in room (but work once the first redraw)
 - Room/onetoone history step 2
   - [ ] Cleanup history retrieving in welcome and open/join. Send last-24h activity < 500 events
   - [ ] Add Skype link to load more history

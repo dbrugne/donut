@@ -12,6 +12,7 @@
       "validator-js": "latest",
       "colpick": "latest",
       "moment": "latest",
-      "i18next": "latest"
+      "i18next": "latest",
+      "Scroller": "latest"
     }
 }

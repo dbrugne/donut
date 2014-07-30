@@ -24,11 +24,19 @@ define([
       this.listenTo(this.model, 'notification', this.notification);
       this.listenTo(this.model, 'separator', this.separator);
       this.listenTo(this.model, 'change:focused', this.updateMoment);
+
       this.render();
 
       // Regularly update moment times
       var that = this;
       setInterval(function() { that.updateMoment(); }, 45*1000); // any minutes
+    },
+
+    render: function() {
+      this.$el.scroller();
+      this.$scroller = this.$el.find('.scroller-content');
+        // Scroller will automatically move content in div.scroller-content
+      return this;
     },
 
     // Update all .moment of the discussion panel
@@ -49,8 +57,14 @@ define([
        var html = $('<span class="text"></span>')
          .text(message.get('message')+"")
          .smilify()
-         .linkify();
+         .linkify({
+           linkAttributes: {
+             'data-colorify': this.model.get('color'),
+             'data-colorify-text': 'color'
+           }
+         });
        var el = $(html).appendTo($last);
+       el.colorify();
        $last.find('.data .moment')
          .attr('data-time', message.get('time'))
          .momentify();
@@ -62,12 +76,19 @@ define([
          time: message.get('time'),
          sameUser: sameUser
        });
-       var el = $(html).appendTo(this.$el);
+       var el = $(html).appendTo(this.$scroller);
 
        el.find('.text')
          .text(message.get('message')+"")
          .smilify()
-         .linkify();
+         .linkify({
+           linkAttributes: {
+             'data-colorify': this.model.get('color'),
+             'data-colorify-text': 'color'
+           }
+         });
+
+       el.colorify();
 
        el.find('.moment')
          .momentify();
@@ -121,7 +142,7 @@ define([
       var html = this.notificationTemplate(notification);
 
       if (!shouldAggregated) {
-        var el = $(html).appendTo(this.$el);
+        var el = $(html).appendTo(this.$scroller);
       } else {
         var $last = this.$el.find('.notification-inout').last();
         var el = $(html).find('.item').appendTo($last);
@@ -129,7 +150,14 @@ define([
 
       el.find('.notification')
         .smilify()
-        .linkify();
+        .linkify({
+          linkAttributes: {
+            'data-colorify': this.model.get('color'),
+            'data-colorify-text': 'color'
+          }
+        });
+
+      el.colorify();
 
       el.find('.moment')
         .momentify();
@@ -144,12 +172,14 @@ define([
     separator: function(msg) {
       if (!msg) msg = ' ';
       var html = this.separatorTemplate({message: msg});
-      $(html).appendTo(this.$el);
+      $(html).appendTo(this.$scroller);
       this.scrollDown();
     },
 
     scrollDown: function() {
-      this.$el.scrollTop(100000);
+      this.$el
+        .scroller('reset')
+        .scroller('scroll', this.$scroller.prop('scrollHeight'));
     }
 
   });

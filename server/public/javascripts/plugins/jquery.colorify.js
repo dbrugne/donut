@@ -168,7 +168,7 @@
 
   $.fn.colorify = function() {
 
-    this.find('[data-colorify]').each(function() {
+    var process = function() {
       var color = $(this).attr('data-colorify')
 
       if (!color || !validateHex(color))
@@ -217,7 +217,16 @@
         '[data-colorify-text], [data-colorify-background], [data-colorify-border]'
       ).each(process);
 
-    });
+    };
+
+    // current element
+    var attr = this.attr('data-colorify');
+    if (typeof attr !== typeof undefined && attr !== false) {
+      process.apply(this);
+    }
+
+    // children
+    this.find('[data-colorify]').each(process);
 
     return this;
 

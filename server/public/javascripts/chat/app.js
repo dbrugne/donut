@@ -14,6 +14,7 @@ define([
   'jquery.smilify',
   'jquery.momentify',
   'jquery.colorify',
+  'jquery.scroller',
   'bootstrap',
   'moment-fr'
 ], function ($, _, Backbone, i18next, moment, router, client, mainView) {

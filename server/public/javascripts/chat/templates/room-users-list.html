@@ -1,0 +1,17 @@
+<% _.each(list, function(roomUser) { %>
+<p class="item <% if (roomUser.owner === true) { %>owner<% }; %> <% if (roomUser.op === true) { %>op<% }; %>">
+    <img class="open-user-profile" data-user-id="<%= roomUser.user_id %>" src="<%= roomUser.avatar %>" alt="<%= roomUser.username %> avatar">
+    <span class="username open-user-profile" data-user-id="<%= roomUser.user_id %>"><%= roomUser.username %></span>
+        <span class="actions">
+            <span data-user-id="<%= roomUser.user_id %>" class="fa fa-user open-user-profile"></span>
+            <% if (isOp === true || isOwner === true) { %>
+                <% if (roomUser.op === true) { %>
+                    <span data-username="<%= roomUser.username %>" class="fa fa-arrow-circle-down deop-user" title="Deop this user"></span>
+                <% } else { %>
+                    <span data-username="<%= roomUser.username %>" class="fa fa-arrow-circle-up op-user" title="Op this user"></span>
+                <% }; %>
+            <% }; %>
+            <a href="#user/<%= roomUser.username %>"><span class="fa fa-pencil-square-o"></span></a>
+        </span>
+</p>
+<% }); %>

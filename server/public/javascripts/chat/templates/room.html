@@ -2,14 +2,16 @@
     <div class="header room">
         <img class="avatar open-room-profile" data-room-name="<%= name %>" src="<%= avatar %>" alt="<%= name %> avatar">
         <p class="name open-room-profile" data-room-name="<%= name %>"><%= name %></p>
-        <p class="owner">by <a class="open-user-profile" data-user-id="<%= owner.user_id %>" data-colorify-text="#ffffff"><%= owner.username %></a></p>
+        <p class="owner">by <a class="open-user-profile" data-user-id="<%= owner.user_id %>" data-colorify-text="color"><%= owner.username %></a></p>
         <p class="topic"><!-- topic view --></p>
         <p class="permanent"><i class="fa fa-lock" title="permanent donut"></i></p>
     </div>
     <div class="messages"></div>
-    <div class="input" data-colorify-background="color" data-colorify-background="text"></div>
+    <div class="input"></div>
 </div><!-- /.content -->
 <div class="side" <% if (poster) { %>style="background-image: url(<%= poster %>);"<% }; %>>
-    <div class="users" <% if (posterblured) { %>style="background-image: url(<%= posterblured %>);"<% }; %>></div>
-    <% if (isOwner === true) { %>owner !<% }; %>
+    <div class="blur" <% if (posterblured) { %>style="background-image: url(<%= posterblured %>);"<% }; %>>
+        <div class="users"></div>
+    </div>
 </div>
+<!-- <% if (isOwner === true) { %>owner !<% }; %> -->
