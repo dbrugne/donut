@@ -1,31 +1,52 @@
-<p class="notification notification-<%= type %>">
+<div class="notification notification-<%= type %>">
     <% if (type =='hello') { %>
-    <i class="fa fa-lg fa-sign-in"></i> You enter in <%= name %>
-    <% } else if (type =='in') { %>
-    <i class="fa fa-lg fa-sign-in"></i> <img class="avatar" src="<%= avatar %>"><span class="username open-user-profile" data-user-id="<%= user_id %>"><%= username %></span> has joined <strong><%= name %></strong>
-    <% } else if (type =='out') { %>
-    <i class="fa fa-lg fa-sign-out"></i> <img class="avatar" src="<%= avatar %>"><span class="username open-user-profile" data-user-id="<%= user_id %>"><%= username %></span> has left <strong><%= name %></strong>
-    <% } else if (type =='disconnect') { %>
-    <i class="fa fa-lg fa-sign-out"></i> <span class="username open-user-profile" data-user-id="<%= user_id %>"><%= username %></span> was disconnected (<em><%- reason %></em>)
+    <i class="fa fa-flag"></i> You enter in <%= name %>
+    <span class="date"><span class="moment" data-time="<%= time %>"></span></span>
     <% } else if (type =='topic') { %>
     <img class="avatar" src="<%= avatar %>"><span class="username open-user-profile" data-user-id="<%= user_id %>"><%= username %></span> changed topic for <strong><%- topic %></strong>
+    <span class="date"><span class="moment" data-time="<%= time %>"></span></span>
     <% } else if (type =='kick') { %>
     <i class="fa fa-lg fa-ban"></i>
     <span class="username open-user-profile" data-user-id="<%= user_id %>"><%= username %></span> was kicked by
     <span class="username open-user-profile" data-user-id="<%= by_user_id %>"><%= by_username %></span> '<%= reason %>'
+    <span class="date"><span class="moment" data-time="<%= time %>"></span></span>
     <% } else if (type =='ban') { %>
     <i class="fa fa-lg fa-ban"></i>
     <span class="username open-user-profile" data-user-id="<%= user_id %>"><%= username %></span> was banned by
     <span class="username open-user-profile" data-user-id="<%= by_user_id %>"><%= by_username %></span> (<%= time %>) '<em><%= reason %></em>'
+    <span class="date"><span class="moment" data-time="<%= time %>"></span></span>
     <% } else if (type =='op') { %>
     <img class="avatar" src="<%= avatar %>">
     <span class="username open-user-profile" data-user-id="<%= user_id %>"><%= username %></span> was oped by
     <span class="username open-user-profile" data-user-id="<%= by_user_id %>"><%= by_username %></span>
+    <span class="date"><span class="moment" data-time="<%= time %>"></span></span>
     <% } else if (type =='deop') { %>
     <img class="avatar" src="<%= avatar %>">
     <span class="username open-user-profile" data-user-id="<%= user_id %>"><%= username %></span> was deoped by
     <span class="username open-user-profile" data-user-id="<%= by_user_id %>"><%= by_username %></span>
-    <% } %>
     <span class="date"><span class="moment" data-time="<%= time %>"></span></span>
-</p>
+    <% } %>
+    <% if (type == 'inout') { %>
+        <% if (subtype =='in') { %>
+        <div class="item <%= subtype %>" data-time="<%= time %>">
+            <i class="fa fa-lg fa-sign-in"></i>
+            <img class="avatar" src="<%= avatar %>">
+            <span class="username open-user-profile" data-user-id="<%= user_id %>"><%= username %></span>
+        </div>
+        <% } else if (subtype =='out') { %>
+        <div class="item <%= subtype %>" data-time="<%= time %>">
+            <i class="fa fa-lg fa-sign-out"></i>
+            <img class="avatar" src="<%= avatar %>">
+            <span class="username open-user-profile" data-user-id="<%= user_id %>"><%= username %></span>
+        </div>
+        <% } else if (type =='disconnect') { %>
+        <div class="item <%= subtype %>" data-time="<%= time %>">
+            <i class="fa fa-lg fa-sign-out"></i>
+            <img class="avatar" src="<%= avatar %>">
+            <span class="username open-user-profile" data-user-id="<%= user_id %>"><%= username %></span> was disconnected (<em><%- reason %></em>)
+            <span class="date"><span class="moment" data-time="<%= time %>"></span></span>
+        </div>
+        <% } %>
+    <% } %>
+</div>
 <hr>

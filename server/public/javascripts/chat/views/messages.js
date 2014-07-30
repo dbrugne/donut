@@ -13,7 +13,11 @@ define([
 
     events: {},
 
+    lastEvent: '',
+
     lastMessageUser: '',
+
+    lastNotificationWasInOut: '',
 
     initialize: function(options) {
       this.listenTo(this.collection, 'add', this.message);
@@ -34,6 +38,7 @@ define([
     },
 
     message: function(message) {
+     this.lastEvent = 'message';
      var sameUser = (message.get('user_id') == this.lastMessageUser)
        ? true
        : false;
@@ -90,8 +95,22 @@ define([
      */
     notificationTemplate: _.template(notificationTemplate),
     notification: function(notification) {
-      if (notification.type == undefined || notification.type == '') {
+      if (notification.type == undefined || notification.type == '')
         return;
+
+      var shouldAggregated = ((notification.type == 'in' || notification.type == 'out' || notification.type == 'disconnect')
+        && this.lastNotificationWasInOut && this.lastEvent == 'notification')
+        ? true
+        : false;
+
+      this.lastEvent = 'notification';
+
+      if (notification.type == 'in' || notification.type == 'out' || notification.type == 'disconnect') {
+        this.lastNotificationWasInOut = true;
+        notification.subtype = notification.type;
+        notification.type = 'inout';
+      } else {
+        this.lastNotificationWasInOut = false;
       }
 
       // e.g. : hello
@@ -100,7 +119,13 @@ define([
       }
 
       var html = this.notificationTemplate(notification);
-      var el = $(html).appendTo(this.$el);
+
+      if (!shouldAggregated) {
+        var el = $(html).appendTo(this.$el);
+      } else {
+        var $last = this.$el.find('.notification-inout').last();
+        var el = $(html).find('.item').appendTo($last);
+      }
 
       el.find('.notification')
         .smilify()
