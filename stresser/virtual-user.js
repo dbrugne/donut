@@ -4,8 +4,8 @@ var random = require('./random');
 var fixtures = require('./fixtures');
 //var io = require('socket.io-client');
 
-module.exports = function VirtualUser(sequence) {
-  this.username = 'stresser-'+sequence;
+module.exports = function VirtualUser(configuration) {
+  this.username = 'stresser-'+configuration.currentSequence;
   this.model = undefined;
   this.socket = undefined;
   this.chatUser = undefined;
@@ -56,6 +56,19 @@ module.exports = function VirtualUser(sequence) {
       socket.on('reconnect_failed', function() { console.log('reconnect_failed for '+virtualUser.chatUser.username+' socket'); });
 
       socket.on('room:message', function(data){
+        if (data.message == '/pause' && !configuration.pause) {
+          console.log('stresser paused');
+          socket.emit('room:message', {name: data.name, message: 'stresser paused'});
+          configuration.pause = true;
+          return;
+        }
+        if (data.message == '/play' && configuration.pause) {
+          console.log('stresser unpaused');
+          socket.emit('room:message', {name: data.name, message: 'stresser unpaused'});
+          configuration.pause = false;
+          return;
+        }
+
         if (data.username.indexOf('stresser-') === -1 && random.probability(12)) {
           socket.emit('room:message', {name: data.name, message: 'ah ah'});
         }
@@ -64,14 +77,6 @@ module.exports = function VirtualUser(sequence) {
       if (fn) fn(virtualUser);
     });
   };
-
-//  this.leave = function() {
-//    this.socket.emit('room:leave', {name: '#General'});
-//  };
-//
-//  this.rejoin = function() {
-//    this.socket.emit('room:join', {name: '#General'});
-//  };
 
   this.disconnect = function() {
     if (!this.socket.connected)
