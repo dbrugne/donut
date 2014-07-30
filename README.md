@@ -55,12 +55,13 @@ chat
     - [ ] FAQ
     - [ ] Contact (from HP and chat interface)
     - [ ] CGU (from HP and chat interface)
-    - [ ] Traduction emails
+    - [ ] Emails : https://github.com/dbrugne/chat/issues/6
     - [ ] Welcome messages
 
 **Account**
 - [ ] Implement clean user form in IHM
 - [ ] Implement clean room form in IHM
+- [ ] Repair forgotten password integration in new HP
 
 **Hosting**
 - [x] Implement base FQDN conf and logic to redirect each request on it (HTTP requests only)
