@@ -38,13 +38,9 @@
             <i class="fa fa-lg fa-sign-out"></i>
             <img class="avatar" src="<%= avatar %>">
             <span class="username open-user-profile" data-user-id="<%= user_id %>"><%= username %></span>
-        </div>
-        <% } else if (type =='disconnect') { %>
-        <div class="item <%= subtype %>" data-time="<%= time %>">
-            <i class="fa fa-lg fa-sign-out"></i>
-            <img class="avatar" src="<%= avatar %>">
-            <span class="username open-user-profile" data-user-id="<%= user_id %>"><%= username %></span> was disconnected (<em><%- reason %></em>)
-            <span class="date"><span class="moment" data-time="<%= time %>"></span></span>
+            <% if (reason == 'disconnect') { %>
+            <span class="reason">(disconnected)</span>
+            <% } %>
         </div>
         <% } %>
     <% } %>

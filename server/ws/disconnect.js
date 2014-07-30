@@ -19,7 +19,8 @@ module.exports = function(io, socket) {
         name: roomName,
         user_id: socket.getUserId(),
         username: socket.getUsername(),
-        avatar: socket.getAvatar()
+        avatar: socket.getAvatar(),
+        reason: 'disconnect'
       });
     }
 

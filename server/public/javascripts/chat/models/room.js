@@ -98,7 +98,8 @@ define([
         type: 'out',
         user_id: user.get('id'),
         username: user.get('username'),
-        avatar: user.get('avatar')
+        avatar: user.get('avatar'),
+        reason: data.reason
       });
       this.trigger('inOut');
     },
