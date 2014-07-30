@@ -65,13 +65,13 @@ module.exports = function VirtualUser(sequence) {
     });
   };
 
-  this.join = function() {
-    // choose a room in fixture and join
-  };
-
-  this.leave = function() {
-    // choose a room in room list and join
-  };
+//  this.leave = function() {
+//    this.socket.emit('room:leave', {name: '#General'});
+//  };
+//
+//  this.rejoin = function() {
+//    this.socket.emit('room:join', {name: '#General'});
+//  };
 
   this.disconnect = function() {
     if (!this.socket.connected)
@@ -91,7 +91,6 @@ module.exports = function VirtualUser(sequence) {
     this.sendRoomMessage();
     // maybe send other messages
     for (var i = 15 ; i > 0 ; i = i - 5) {
-      console.log('i est égale à '+i);
       if (random.probability(10)) {
         this.sendRoomMessage();
       }

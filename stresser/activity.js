@@ -3,11 +3,11 @@ var VirtualUser = require('./virtual-user');
 var random = require('./random');
 
 var sequence = 0; // first will be '1'
-var max = 8;
+var max = 2;
 var users = {};
 var activities = {
-//  join: { percent: 5.0 },
-//  leave: { percent: 0.1 },
+//  leave: { percent: 0.5 },
+//  rejoin: { percent: 15 },
   disconnect: { percent: 0.1 },
   reconnect: { percent: 15 },
   message: { percent: 2 }
