@@ -13,6 +13,7 @@ define([
   'views/drawer',
   'views/drawer-room-create',
   'views/drawer-room-profile',
+  'views/drawer-room-edit',
   'views/drawer-user-profile',
   'views/room-search',
   'views/user-search',
@@ -24,9 +25,11 @@ define([
   'views/room-edit'
 ], function ($, _, Backbone, client, rooms, onetoones, currentUser, windowView,
              CurrentUserView, AlertView, homeContentView,
-             DrawerView, DrawerRoomCreateView, DrawerRoomProfileView, DrawerUserProfileView,
+             DrawerView,
+             DrawerRoomCreateView, DrawerRoomProfileView, DrawerRoomEditView,
+             DrawerUserProfileView,
              RoomSearchView, UserSearchView, RoomView, OneToOnePanelView,
-             RoomBlockView, OnetooneBlockView, AccountView, RoomEditView) {
+             RoomBlockView, OnetooneBlockView, AccountView) {
 
   var MainView = Backbone.View.extend({
 
@@ -183,18 +186,14 @@ define([
     openRoomEdit: function(event) {
       this._handleAction(event);
 
-      if (!this.roomEditModal) {
-        this.roomEditModal = new RoomEditView({ mainView: this });
+      if (!this.drawerRoomEdit) {
+        this.drawerRoomEdit = new DrawerRoomEditView({ mainView: this });
       }
 
       var roomName = $(event.currentTarget).data('roomName');
 
       if (!roomName)
         return;
-
-      this.roomEditModal.setUrl(roomName);
-      this.roomEditModal.iframeRender();
-      this.roomEditModal.show();
 
       return false; // stop propagation
     },
