@@ -1,0 +1,128 @@
+h1.logo {
+  margin-top: 30px;
+  margin-bottom: 22px;
+  text-align: center;
+}
+
+.help {
+  position: absolute;
+  top: 8px; right: 10px;
+  font-size: 18px;
+  color: @cl-subtext2;
+}
+
+#block-current-user {
+  .avatar {
+    .pull-left;
+    margin-right: 10px;
+    width: 60px;
+    height: 60px;
+  }
+  .welcome {
+    padding-top: 5px;
+    margin-bottom: 0;
+  }
+  .username {
+    .ft-opensans-bold;
+    margin-bottom: 0;
+  }
+  .actions {
+    padding-top: 5px;
+    a {
+      color: @cl-subtext2;
+      margin-right: 10px;
+    }
+    a:hover {
+      color: @cl-subtext3;
+      text-decoration: none;
+    }
+  }
+
+  .status { font-size: 10px; font-weight: bold; color: @cl-background; }
+  .status.online { color: @cl-success; }
+  .status.connecting { color: @cl-warning; }
+  .status.offline { color: @cl-neutral; }
+  .status.error { color: @cl-error; }
+}
+
+#block-search {
+  position: relative;
+  padding: 0 10px;
+  input[type=text] {
+    width: 100%;
+    border: 1px solid #ffffff;
+    -webkit-border-radius: 25px;
+    -moz-border-radius: 25px;
+    border-radius: 25px;
+    padding: 6px 30px 6px 15px;
+    .ft-opensans-bold-italic;
+    color: @cl-subtext3;
+  }
+  input[type=text]:focus {
+  }
+  i {
+    position: absolute;
+    top: 6px; right: 21px;
+    font-size: 17px;
+    color: @cl-subtext3;
+  }
+}
+
+#block-rooms, #block-onetoones {
+  .list {
+    .item {
+      display: block;
+      margin-left: -15px;
+      margin-right: -15px;
+      padding: 12px 20px;
+
+      a {
+        color: @cl-title;
+      }
+
+      span {
+        font-size: 1.1em;
+      }
+      .users-count {
+        background-color: #ffffff;
+        padding: 3px 10px;
+        margin-left: 10px;
+        -webkit-border-radius: 20px;
+        -moz-border-radius: 20px;
+        border-radius: 20px;
+      }
+
+      .close-room, .close-onetoone {
+        .pull-right;
+        color: @cl-subtext2;
+        font-size: 18px;
+      }
+    }
+
+    .item:hover {
+      text-decoration: none;
+      span.name {
+        text-decoration: underline;
+      }
+    }
+    .item.active,
+    .item.active:hover,
+    .item.active:focus {
+      background-color: @cl-background;
+
+      .users-count {
+        background-color: @cl-subtext1;
+      }
+    }
+    .item.unread {  }
+    .item .name {  }
+    .item .badge { position: absolute; right: 40px; background-color: @cl-warning; color: @cl-subtext3; }
+    .item .close { color: @cl-title; }
+  }
+}
+
+a.links {
+  display: block;
+  margin-top: 15px;
+  .big-link;
+}

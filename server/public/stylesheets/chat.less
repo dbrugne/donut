@@ -63,123 +63,6 @@
     background-color: red;
   }
 
-  /* Room profiles common style */
-  .room {
-    p { margin-bottom: 0; }
-    .avatar {
-      .img-circle;
-      .border-shadow;
-    }
-    .name {
-      .ft-raleway-heavy;
-      font-size: 2.0em;
-      line-height: 1.2;
-      color: @cl-title;
-    }
-    .owner {
-      .ft-opensans;
-      font-size: 1.1em;
-      a { color: #000000; }
-    }
-    .topic, .description {
-      .ft-opensans-italic;
-      font-size: 1em;
-    }
-    .website {}
-    .join {
-      a {
-        background-color: #ffffff; /** customizable color **/
-        .ft-raleway-medium;
-        color: #ffffff;
-        -webkit-border-radius: 100px;
-        -moz-border-radius: 100px;
-        border-radius: 100px;
-        padding: 0.9em 1.2em;
-        text-transform: uppercase;
-        font-size: 1.2em;
-        i {
-          color: @cl-warning;
-        }
-      }
-    }
-    .join:hover {
-      a {
-        text-decoration: none;
-      }
-    }
-    .permanent {
-      padding: 0 4px;
-      border: 2px solid @cl-subtext1;
-      -webkit-border-radius: 25px;
-      -moz-border-radius: 25px;
-      border-radius: 25px;
-      i {
-        color: @cl-subtext1;
-      }
-    }
-    .edit {
-      color: @cl-subtext2;
-      .ft-raleway-medium;
-      i {
-      }
-    }
-    .edit:hover {
-      text-decoration: none;
-      cursor: pointer;
-    }
-  }
-
-  .user {
-    p { margin-bottom: 0; }
-    .username {
-      .ft-raleway-heavy;
-      font-size: 2.0em;
-      line-height: 1.2;
-      color: @cl-title;
-    }
-    .avatar {
-      border: 5px solid @cl-background; /* customized by code */
-      .border-shadow;
-    }
-    .bio {
-      .ft-opensans-italic;
-      font-size: 1em;
-    }
-    .website {}
-    .discuss {
-      a {
-        background-color: #000000; /** customizable color **/
-        color: #ffffff;
-        .ft-raleway-medium;
-        -webkit-border-radius: 100px;
-        -moz-border-radius: 100px;
-        border-radius: 100px;
-        padding: 0.9em 1.2em;
-        text-transform: uppercase;
-        i {
-          color: @cl-warning;
-        }
-      }
-    }
-    .discuss:hover, .offline:hover {
-      a {
-        text-decoration: none;
-      }
-    }
-    .offline {
-      a {
-        background-color: @cl-neutral;
-        color: #ffffff;
-        .ft-raleway-medium;
-        -webkit-border-radius: 100px;
-        -moz-border-radius: 100px;
-        border-radius: 100px;
-        padding: 0.9em 1.2em;
-        text-transform: uppercase;
-      }
-    }
-  }
-
   #sign {
     position: absolute;
     right: 15px; bottom: 10px;
@@ -238,6 +121,105 @@
     }
   }
 
+  /* Room profiles common style */
+  .room {
+    p { margin-bottom: 0; }
+    .avatar {
+      .img-circle;
+      .border-shadow;
+    }
+    .name {
+      .ft-raleway-heavy;
+      font-size: 2.0em;
+      line-height: 1.2;
+      color: @cl-title;
+    }
+    .owner {
+      .ft-opensans;
+      font-size: 1.1em;
+      a { color: #000000; }
+    }
+    .topic, .description {
+      .ft-opensans-italic;
+      font-size: 1em;
+    }
+    .website {}
+    .join {
+      a {
+        background-color: #ffffff; /** customizable color **/
+        .ft-raleway-medium;
+        color: #ffffff;
+        -webkit-border-radius: 100px;
+        -moz-border-radius: 100px;
+        border-radius: 100px;
+        padding: 0.9em 1.2em;
+        text-transform: uppercase;
+        font-size: 1.2em;
+        i {
+          color: @cl-warning;
+        }
+      }
+    }
+    .join:hover {
+      a {
+        text-decoration: none;
+      }
+    }
+    .permanent { }
+  }
+
+  /* User profiles common style */
+  .user {
+    p { margin-bottom: 0; }
+    .username {
+      .ft-raleway-heavy;
+      font-size: 2.0em;
+      line-height: 1.2;
+      color: @cl-title;
+    }
+    .avatar {
+      border: 5px solid @cl-background; /* customized by code */
+      .border-shadow;
+    }
+    .bio {
+      .ft-opensans-italic;
+      font-size: 1em;
+    }
+    .website {}
+    .discuss {
+      a {
+        background-color: #000000; /** customizable color **/
+        color: #ffffff;
+        .ft-raleway-medium;
+        -webkit-border-radius: 100px;
+        -moz-border-radius: 100px;
+        border-radius: 100px;
+        padding: 0.9em 1.2em;
+        text-transform: uppercase;
+        i {
+          color: @cl-warning;
+        }
+      }
+    }
+    .discuss:hover, .offline:hover {
+      a {
+        text-decoration: none;
+      }
+    }
+    .offline {
+      a {
+        background-color: @cl-neutral;
+        color: #ffffff;
+        .ft-raleway-medium;
+        -webkit-border-radius: 100px;
+        -moz-border-radius: 100px;
+        border-radius: 100px;
+        padding: 0.9em 1.2em;
+        text-transform: uppercase;
+      }
+    }
+  }
+
   #color {
     width: 100%;
     height: @size-color;
@@ -253,134 +235,7 @@
     overflow-y:auto;
     z-index: 10;
 
-    h1.logo {
-      margin-top: 30px;
-      margin-bottom: 22px;
-      text-align: center;
-    }
-
-    .help {
-      position: absolute;
-      top: 8px; right: 10px;
-      font-size: 18px;
-      color: @cl-subtext2;
-    }
-
-    #block-current-user {
-      .avatar {
-        .pull-left;
-        margin-right: 10px;
-        width: 60px;
-        height: 60px;
-      }
-      .welcome {
-        padding-top: 5px;
-        margin-bottom: 0;
-      }
-      .username {
-        .ft-opensans-bold;
-        margin-bottom: 0;
-      }
-      .actions {
-        padding-top: 5px;
-        a {
-          color: @cl-subtext2;
-          margin-right: 10px;
-        }
-        a:hover {
-          color: @cl-subtext3;
-          text-decoration: none;
-        }
-      }
-
-      .status { font-size: 10px; font-weight: bold; color: @cl-background; }
-      .status.online { color: @cl-success; }
-      .status.connecting { color: @cl-warning; }
-      .status.offline { color: @cl-neutral; }
-      .status.error { color: @cl-error; }
-    }
-
-    #block-search {
-      position: relative;
-      padding: 0 10px;
-      input[type=text] {
-        width: 100%;
-        border: 1px solid #ffffff;
-        -webkit-border-radius: 25px;
-        -moz-border-radius: 25px;
-        border-radius: 25px;
-        padding: 6px 30px 6px 15px;
-        .ft-opensans-bold-italic;
-        color: @cl-subtext3;
-      }
-      input[type=text]:focus {
-      }
-      i {
-        position: absolute;
-        top: 6px; right: 21px;
-        font-size: 17px;
-        color: @cl-subtext3;
-      }
-    }
-
-    #block-rooms, #block-onetoones {
-      .list {
-        .item {
-          display: block;
-          margin-left: -15px;
-          margin-right: -15px;
-          padding: 12px 20px;
-
-          a {
-            color: @cl-title;
-          }
-
-          span {
-            font-size: 1.1em;
-          }
-          .users-count {
-            background-color: #ffffff;
-            padding: 3px 10px;
-            margin-left: 10px;
-            -webkit-border-radius: 20px;
-            -moz-border-radius: 20px;
-            border-radius: 20px;
-          }
-
-          .close-room, .close-onetoone {
-            .pull-right;
-            color: @cl-subtext2;
-            font-size: 18px;
-          }
-        }
-
-        .item:hover {
-          text-decoration: none;
-          span.name {
-            text-decoration: underline;
-          }
-        }
-        .item.active,
-        .item.active:hover,
-        .item.active:focus {
-          background-color: @cl-background;
-
-          .users-count {
-            background-color: @cl-subtext1;
-          }
-        }
-        .item.unread {  }
-        .item .name {  }
-        .item .badge { position: absolute; right: 40px; background-color: @cl-warning; color: @cl-subtext3; }
-        .item .close { color: @cl-title; }
-      }
-    }
-
-    a.links {
-      display: block;
-      margin-top: 15px;
-      .big-link;
-    }
+    @import "chat-left";
   }
 
   #center {
@@ -391,570 +246,10 @@
     padding-left: 0; /* Cancel Bootstrap side padding */
     padding-right: 0; /* Cancel Bootstrap side padding */
 
-    #home {
-      height: 100%;
-      .left {
-        .make-xs-column(12);
-        .make-sm-column(10);
-        .make-lg-column(9);
-        height: 100%;
-        padding: 30px 40px;
-        overflow-x: auto;
+    @import "chat-home";
 
-        .search {
-          position: relative;
-          font-size: 2.3em;
-          input[type=text] {
-            width: 100%;
-            border: 1px solid @cl-subtext1;
-            -webkit-border-radius: 50px;
-            -moz-border-radius: 50px;
-            border-radius: 50px;
-            padding: 5px 75px 6px 30px;
-            .ft-raleway-heavy;
-            color: @cl-subtext5;
-          }
-          input[type=text]:focus {
-          }
-          i {
-            position: absolute;
-            top: 12px; right: 21px;
-            color: @cl-subtext5;
-          }
-        }
-
-        .rooms {
-          margin-top: 40px;
-          .room {
-            .pull-left;
-            position: relative;
-            width: 228px;
-            height: 326px;
-            margin-top: 10px;
-            text-align: center;
-            .avatar {
-              width: 145px;
-              height: 145px;
-            }
-            .name {
-              margin-top: 17px;
-            }
-            .owner {
-            }
-            .topic, .description {
-              margin-top: 22px;
-              max-height: 35px;
-              padding-left: 20px;
-              padding-right: 20px;
-              overflow-y: auto;
-            }
-            .join {
-              position: absolute;
-              left: 10px; right: 10px; bottom: 30px;
-            }
-            .permanent {
-              position: absolute;
-              top: 20px; right: 14px;
-            }
-
-            .back {
-              display: none;
-              width: 100%;
-              height: 100%;
-              background-color: @cl-subtext1; /** customizable color **/
-              -webkit-border-radius: 25px;
-              -moz-border-radius: 25px;
-              border-radius: 25px;
-              .name {  }
-              .avatar {
-                margin-top: 30px;
-                width: 80px;
-                height: 80px;
-              }
-              .owner {
-              }
-              .description {
-                margin-top: 17px;
-                max-height: 85px;
-              }
-              .join a {
-                color: @cl-first; /** customizable color **/
-              }
-              .permanent {
-                border-color: @cl-background;
-                i {
-                  color: @cl-background;
-                }
-              }
-            }
-          }
-          .room:hover {
-            .cover { display: none; }
-            .back { display: block; }
-          }
-        }
-      }
-      .right {
-        .make-xs-column(0);
-        .make-sm-column(2);
-        .make-lg-column(3);
-        height: 100%;
-        padding: 20px 8px 0 18px;
-        background-color: @cl-subtext1;
-
-        .onlines {
-          .item {
-            .pull-left;
-            position: relative;
-            margin-top: 10px;
-            margin-right: 10px;
-            .avatar {
-              width: 30px;
-              height: 30px;
-            }
-            .username {
-              display: none;
-              position: absolute;
-              top: 0; right: -20px;
-              height: 30px;
-              line-height: 30px;
-              margin-right: 50px;
-              padding-left: 10px;
-              padding-right: 8px;
-              background-color: @cl-subtext1;
-              -moz-border-radius-topleft: 4px;
-              -webkit-border-top-left-radius: 4px;
-              border-top-left-radius: 4px;
-              -moz-border-radius-bottomleft: 4px;
-              -webkit-border-bottom-left-radius: 4px;
-              border-bottom-left-radius: 4px;
-              text-align: left;
-              .ft-opensans-bold;
-              color: #ffffff;
-              z-index: 99999;
-              white-space:nowrap;
-            }
-          }
-          .item:hover {
-            .username {
-              display: block;
-            }
-          }
-        }
-      }
-    }
-
-    .discussion {
-      .row;
-      height: 100%;
-      .content {
-        height: 100%;
-        .make-lg-column(8);
-        position: relative;
-        padding-top: 30px;
-        padding-left: 40px;
-        .header {
-          .avatar {
-            position: absolute;
-            top: 30px; left: 40px;
-          }
-          .name {
-            display: inline-block;
-            margin-top: 2px;
-            margin-left: 105px;
-            font-size: 2.2em;
-          }
-          .owner {
-            display: inline-block;
-            margin-left: 5px;
-            font-size: 1.2em;
-          }
-          .topic {
-            .txt-bubble;
-            max-width: 600px;
-            margin-top: 14px;
-            margin-left: 105px;
-            font-size: 1.3em;
-            padding: 5px 15px;
-            i {
-            }
-          }
-          .permanent {
-            position: absolute;
-            top: 31px; right: 35px;
-          }
-        }
-        .messages {
-          margin-top: 20px;
-          height: -webkit-calc(~'100%' - 220px);
-          height: -o-calc(~'100%' - 220px);
-          height: calc(~'100%' - 220px);
-          font-size: 1.1em;
-
-          .notification, p.message {
-            position: relative;
-            margin-bottom: 0;
-            .date {
-              position: absolute;
-              top: 0; right: 0;
-              color: @cl-subtext3;
-              font-size: 0.8em;
-            }
-          }
-          .notification {
-            text-align: right;
-            font-style: italic;
-            font-weight: bold;
-            color: @cl-subtext2;
-            .date { display: none;}
-            .avatar {
-              width: 20px;
-              height: 20px;
-              margin-left: 8px;
-              margin-right: 8px;
-              -webkit-border-radius: 2px;
-              -moz-border-radius: 2px;
-              border-radius: 2px;
-            }
-            i { color: @cl-success; }
-          }
-          .notification-out, .notification-disconnect, .notification-kick, .notification-ban {
-            i { color: @cl-error; }
-          }
-          .notification-inout {
-            .date { display: none; }
-            .item {
-              display: inline-block;
-              padding: 4px;
-            }
-            .item.in {
-              i { color: @cl-success; }
-            }
-            .item.out {
-              i { color: @cl-error; }
-            }
-          }
-          p.message {
-            padding-top: 10px;
-            padding-left: 40px;
-            .avatar {
-              position: absolute;
-              top: 0; left: 0;
-              border: none;
-            }
-            .username {
-              position: absolute;
-              top: 0; left: 40px;
-              .ft-opensans-bold;
-              font-size: 1em;
-            }
-            .text {
-              display: block;
-              padding-top: 5px;
-              a { font-weight: bold; }
-            }
-          }
-          hr {
-            margin-top: 5px;
-            margin-bottom: 5px;
-            clear: both;
-            border-color: @cl-subtext0;
-          }
-        }
-        .messages.scroller {
-          .scroller-bar { background: none; border: 0; }
-          .scroller-track { background: none; }
-          .scroller-handle { right: 0; border: 0; width: 4px; background-color: @cl-subtext0; min-height: 20px; }
-          .scroller-content { padding: 0; padding-right: 15px; }
-        }
-        .messages.scroller-active {
-          .scroller-content { padding-right: 5px; }
-        }
-        .input {
-          position: absolute;
-          left:40px; right: 25px; bottom: 20px;
-          border: 1px solid @cl-subtext1;
-          padding: 0;
-          textarea {
-            display: inline-block;
-            width: -webkit-calc(~'100%' - 60px);
-            width: -o-calc(~'100%' - 60px);
-            width: calc(~'100%' - 60px);
-            margin: 0;
-            border: none;
-            overflow: auto;
-            outline: none;
-            resize: none;
-            -webkit-box-shadow: none;
-            -moz-box-shadow: none;
-            box-shadow: none;
-            height: 80px;
-            padding: 12px 15px;
-            font-size: 1.1em;
-          }
-          .send {
-            position: absolute;
-            top:0; bottom: 0; right:0;
-            width: 65px;
-            margin: 0;
-            border: 0;
-            padding-top: 20px;
-            padding-left: 5px;
-            display: inline-block;
-            background-color: @cl-first;
-            color: @cl-background;
-            text-align: center;
-            img {
-              width: 35px;
-            }
-          }
-          .send:after {
-            content: "";
-            position: absolute;
-            bottom: -13px;
-            left: 19px;
-            border-style: solid;
-            border-width: 15px 15px 0;
-            border-right-color: transparent;
-            border-left-color: transparent;
-            border-top-color: inherit;
-            border-bottom-color: inherit;
-            display: block;
-            width: 0;
-            z-index: 1;
-          }
-
-        }
-      }
-      .side {
-        .make-lg-column(4);
-        height: 100%;
-        background-repeat: no-repeat;
-        background-position: left top;
-        margin: 0;
-        padding: 0;
-        .blur {
-          .make-lg-column(6);
-          padding-left: 0; /* cancel Bootstrap columm margin */
-          padding-right: 0; /* cancel Bootstrap columm margin */
-          height: 100%;
-          color: @cl-background;
-          a { color: @cl-background; }
-          font-size: 1.1em;
-          .users {
-            background-color: rgba(0, 0, 0, 0.2);
-            height: 100%;
-            padding: 10px 14px;
-            @header-height: 35px;
-            .header {
-              position: absolute;
-              top: 14px; left: 20px; right: 20px;
-              .count { .pull-left; }
-              .between {
-                font-size: 1.2em;
-                line-height: 1;
-                padding-left: 10px;
-                padding-right: 10px;
-              }
-              .actions { .pull-right; }
-            }
-            > hr {
-              position: absolute;
-              left: 14px; right: 14px; top: @header-height;
-            }
-            .list {
-              height: -webkit-calc(~'100%' - @header-height + 5px);
-              height: -o-calc(~'100%' - @header-height + 5px);
-              height: calc(~'100%' - @header-height + 5px);
-              margin-top: -webkit-calc(@header-height + 10px);
-              margin-top: -o-calc(@header-height + 10px);
-              margin-top: calc(@header-height + 10px);
-              margin-bottom: 0;
-              padding: 0 6px 10px;
-              background-repeat: no-repeat;
-              background-position: left top;
-              position: relative;
-              overflow: hidden;
-              .scroller-content {
-                .item {
-                  position: relative;
-                  margin-top: 10px;
-                  font-size: 0.9em;
-                  .username { margin-left: 9px; }
-                  font-weight: bold;
-                  .actions {
-                    position: absolute;
-                    right: 0;
-                    display: none;
-                  }
-                }
-                .item:hover {
-                  .actions {
-                    display: inline-block;
-                  }
-                }
-                .item.owner {
-                  img {
-                    border: 2px solid @cl-success;
-                    -webkit-border-radius: 5px;
-                    -moz-border-radius: 5px;
-                    border-radius: 5px;
-                  }
-                }
-                .item.op {
-                  img {
-                    border: 2px solid @cl-first;
-                    -webkit-border-radius: 5px;
-                    -moz-border-radius: 5px;
-                    border-radius: 5px;
-                  }
-                }
-              }
-            }
-            .list.scroller {
-              .scroller-bar { background: none; border: 0; top: 10px; }
-              .scroller-track { background: none; }
-              .scroller-handle { right: 0; width: 5px; }
-              .scroller-content { padding: 0; }
-            }
-            .list.scroller-active {
-              .scroller-content {  }
-            }
-          }
-        }
-      }
-    }
+    @import "chat-discussion";
   }
 
-  #drawer {
-    #room-create {
-      text-align: center;
-      > p {
-        width: 100%;
-        margin-top: 30px;
-      }
-      h2 {
-        .ft-raleway-heavy;
-        font-size: 1.5em;
-        margin-bottom: 20px;
-        color: @cl-subtext2;
-      }
-      .hash {
-        margin-right: 3px;
-        vertical-align: bottom;
-        .ft-raleway-heavy;
-        font-size: 2.4em;
-        color: @cl-subtext2;
-      }
-      .input {
-        border: 4px solid @cl-subtext1;
-        -webkit-border-radius: 25px;
-        -moz-border-radius: 25px;
-        border-radius: 25px;
-        padding: 5px 10px;
-        width: 260px;
-        .ft-raleway;
-        color: @cl-subtext5;
-        font-size: 1.5em;
-      }
-      .help {
-        .ft-opensans-light;
-        margin-top: 10px;
-        text-align: left;
-        color: @cl-subtext2;
-        font-style: italic;
-      }
-      .submit {
-        .big-button;
-        margin-top: 30px;
-        font-size: 1.1em;
-        .ft-raleway-heavy;
-        background-color: @cl-background;
-        border-color: @cl-subtext1;
-        color: @cl-subtext2;
-      }
-    }
-    #room-create.has-error {
-      .input {
-        border-color: @cl-error;
-      }
-    }
-    #room-create.has-success {
-      .input {
-        border-color: @cl-success;
-      }
-      .hash {
-        color: @cl-success;
-      }
-      .submit {
-        border-color: @cl-success;
-        color: @cl-success;
-      }
-    }
-    #room-profile {
-      text-align: center;
-      .name {
-        margin-top: 20px;
-      }
-      .owner { font-size: 1.2em;  }
-      .topic, .description, .website {
-        margin-top: 30px;
-        font-size: 1.2em;
-      }
-      .topic {
-        .txt-bubble;
-      }
-      .website {
-        text-decoration: underline;
-      }
-      .join {
-        margin-top: 60px;
-        a {
-          font-size: 2.0em;
-          padding: 0.5em 1em;
-        }
-      }
-      .permanent {
-        position: absolute;
-        top: -10px; right: 60px;
-      }
-      .edit {
-        position: absolute;
-        bottom: 20px;
-        left: 50px;
-      }
-    }
-    #user-profile {
-      text-align: center;
-      .username {
-        margin-top: 20px;
-      }
-      .bio, .location {
-        margin-top: 30px;
-      }
-      .bio {
-        background-color: @cl-subtext0;
-        padding: 2.0em;
-        -webkit-border-radius: 35px;
-        -moz-border-radius: 35px;
-        border-radius: 35px;
-        font-size: 1.2em;
-      }
-      .website {
-        text-decoration: underline;
-        font-size: 1.2em;
-      }
-      .location {
-        .ft-opensans-bold;
-        font-size: 1.2em;
-      }
-      .discuss, .offline {
-        margin-top: 60px;
-        a {
-          font-size: 2.0em;
-          padding: 0.5em 1em;
-        }
-      }
-    }
-  }
+  @import "chat-drawer";
 }
