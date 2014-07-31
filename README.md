@@ -66,9 +66,8 @@ chat
 - [ ] Add a cleanup method that empty .messages periodically to avoid memory leak
 - [ ] Bug : room user list scroll is not active when entering in room (but work once the first redraw)
 - Room/onetoone history step 2
-  - [ ] Cleanup history retrieving in welcome and open/join. Send last-24h activity < 500 events
-  - [ ] Add Skype link to load more history
-  - [ ] Implement in user:open process
+  - [ ] No history retrieving in open/join. Display only local (dom) history
+  - [ ] Add Skype link to load more history on scroll top
 - [ ] Update chat interface on room/user details when room/user is edited
     - [ ] WS: implement REDIS cache for user and room
     - [ ] WS: read in REDIS cache only "even" for socket.getUsername-like function to have always last data
