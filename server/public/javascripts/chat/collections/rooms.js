@@ -87,25 +87,25 @@ define([
 
       // Add history
       // @todo : deduplicate in case of reconnection (empty list?)
-      if (room.history && room.history.length > 0) {
-        _.each(room.history, function(event) {
-          if (event.type == 'room:message') {
-            model.messages.add(new MessageModel(event));
-          } else if (event.type == 'room:in') {
-            event.type = 'in';
-            model.trigger('notification', event);
-          } else if (event.type == 'room:out') {
-            event.type = 'out';
-            model.trigger('notification', event);
-          } else if (event.type = 'room:topic') {
-            event.type = 'topic';
-            model.trigger('notification', event);
-          }
-        });
-        model.trigger('separator', 'Previous messages');
-      }
+//      if (room.history && room.history.length > 0) {
+//        _.each(room.history, function(event) {
+//          if (event.type == 'room:message') {
+//            model.messages.add(new MessageModel(event));
+//          } else if (event.type == 'room:in') {
+//            event.type = 'in';
+//            model.trigger('notification', event);
+//          } else if (event.type == 'room:out') {
+//            event.type = 'out';
+//            model.trigger('notification', event);
+//          } else if (event.type = 'room:topic') {
+//            event.type = 'topic';
+//            model.trigger('notification', event);
+//          }
+//        });
+//        model.trigger('separator', 'Previous messages');
+//      }
       if (!isNew) {
-        model.trigger('separator', 'Reconnected');
+        model.trigger('notification', {type: 'reconnect', name: model.get('name')});
       } else {
         model.trigger('notification', {type: 'hello', name: model.get('name')});
       }

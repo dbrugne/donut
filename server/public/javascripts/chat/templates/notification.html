@@ -2,6 +2,9 @@
     <% if (type =='hello') { %>
     <i class="fa fa-flag"></i> You enter in <%= name %>
     <span class="date"><span class="moment" data-time="<%= time %>"></span></span>
+    <% } else if (type =='reconnect') { %>
+    <i class="fa fa-flag"></i> You were reconnected
+    <span class="date"><span class="moment" data-time="<%= time %>"></span></span>
     <% } else if (type =='topic') { %>
     <img class="avatar" src="<%= avatar %>"><span class="username open-user-profile" data-user-id="<%= user_id %>"><%= username %></span> changed topic for <strong><%- topic %></strong>
     <span class="date"><span class="moment" data-time="<%= time %>"></span></span>

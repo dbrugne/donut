@@ -60,16 +60,16 @@ define([
       this.add(model); // now the view exists (created by mainView)
 
       // Add history
-      // @todo : deduplicate in case of reconnection (empty list?)
-      if (user.history && user.history.length > 0) {
-        _.each(user.history, function(event) {
-          if (event.type != 'user:message') return;
-          model.messages.add(new MessageModel(event));
-        });
-        model.trigger('separator', 'Previous messages');
-      }
+//      // @todo : deduplicate in case of reconnection (empty list?)
+//      if (user.history && user.history.length > 0) {
+//        _.each(user.history, function(event) {
+//          if (event.type != 'user:message') return;
+//          model.messages.add(new MessageModel(event));
+//        });
+//        model.trigger('separator', 'Previous messages');
+//      }
       if (!isNew) {
-        model.trigger('separator', 'Reconnected');
+        model.trigger('notification', {type: 'reconnect'});
       }
     },
     onClose: function(data) {

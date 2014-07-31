@@ -4,9 +4,8 @@ define([
   'backbone',
   'moment',
   'text!templates/message.html',
-  'text!templates/notification.html',
-  'text!templates/separator.html'
-], function ($, _, Backbone, moment, messageTemplate, notificationTemplate, separatorTemplate) {
+  'text!templates/notification.html'
+], function ($, _, Backbone, moment, messageTemplate, notificationTemplate) {
   var DiscussionMessagesView = Backbone.View.extend({
 
     template: _.template(messageTemplate),
@@ -22,7 +21,6 @@ define([
     initialize: function(options) {
       this.listenTo(this.collection, 'add', this.message);
       this.listenTo(this.model, 'notification', this.notification);
-      this.listenTo(this.model, 'separator', this.separator);
       this.listenTo(this.model, 'change:focused', this.updateMoment);
 
       this.render();
@@ -162,17 +160,6 @@ define([
       el.find('.moment')
         .momentify();
 
-      this.scrollDown();
-    },
-
-    /**
-     * Separator, to indicated limit with message history
-     */
-    separatorTemplate: _.template(separatorTemplate),
-    separator: function(msg) {
-      if (!msg) msg = ' ';
-      var html = this.separatorTemplate({message: msg});
-      $(html).appendTo(this.$scroller);
       this.scrollDown();
     },
 
