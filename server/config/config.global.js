@@ -1,5 +1,12 @@
 var conf = module.exports = {
   title: 'donut.me | old flavour chat rooms',
+  room: {
+    default: {
+      avatar: 'room-default.png',
+      poster: 'poster-default.png',
+      color: '#cdcccc'
+    }
+  },
   mongo: {
     'url' : ''
   },

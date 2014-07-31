@@ -1,5 +1,6 @@
 var _ = require('underscore');
 var debug = require('debug')('chat-server');
+var configuration = require('../config/index');
 var User = require('../app/models/user');
 var Room = require('../app/models/room');
 var Activity = require('../app/models/activity');
@@ -113,6 +114,9 @@ module.exports = {
         room = new Room({
           name: o.name,
           owner: o.socket.getUserId(),
+          avatar: configuration.room.default.avatar,
+          poster: configuration.room.default.poster,
+          color: configuration.room.default.color,
           permanent: false
         });
         room.save(function (err, room, numberAffected) {
