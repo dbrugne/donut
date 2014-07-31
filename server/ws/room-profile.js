@@ -18,7 +18,7 @@ module.exports = function(io, socket, data) {
       owner: owner,
       op: room.op,
       users: helper.roomUsers(io, room.name).length,
-      permanent: room.pemanent,
+      permanent: room.permanent,
       avatar: room.avatarUrl('large'),
       color: room.color,
       website: room.website,
