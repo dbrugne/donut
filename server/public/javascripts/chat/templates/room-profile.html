@@ -12,5 +12,10 @@
     <a class="edit open-room-edit" data-room-name="<%= room.name %>"><i class="fa fa-pencil-square-o"></i> éditer</a>
     <% }; %>
 
-    <% if (room.permanent == true) { %><p class="permanent"><i class="fa fa-lock" title="permanent donut"></i></p><% } %>
+    <% if (room.permanent === true) { %>
+    <span class="fa-stack permanent">
+      <i class="fa fa-circle-thin fa-stack-2x"></i>
+      <i class="fa fa-lock fa-stack-1x" title="permanent donut"></i>
+    </span>
+    <% } %>
 </div>

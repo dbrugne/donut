@@ -1,17 +1,29 @@
 <div class="content">
     <div class="header room">
         <img class="avatar open-room-profile" data-room-name="<%= name %>" src="<%= avatar %>" alt="<%= name %> avatar">
-        <p class="name open-room-profile" data-room-name="<%= name %>"><%= name %></p>
-        <p class="owner">by <a class="open-user-profile" data-user-id="<%= owner.user_id %>" data-colorify-text="color"><%= owner.username %></a></p>
-        <p class="topic"><!-- topic view --></p>
-        <p class="permanent"><i class="fa fa-lock" title="permanent donut"></i></p>
+        <div class="name open-room-profile" data-room-name="<%= name %>"><%= name %></div>
+        <div class="owner">by <a class="open-user-profile" data-user-id="<%= owner.user_id %>" data-colorify-text="color"><%= owner.username %></a></div>
+        <div class="topic"><!-- topic view --></div>
+        <div class="actions">
+            <% if (permanent === true) { %>
+            <span class="fa-stack permanent">
+              <i class="fa fa-circle-thin fa-stack-2x"></i>
+              <i class="fa fa-lock fa-stack-1x" title="permanent donut"></i>
+            </span>
+            <% }; %>
+            <% if (isOwner === true) { %>
+            <span class="fa-stack room-edit">
+              <i class="fa fa-circle-thin fa-stack-2x"></i>
+              <i class="fa fa-cog fa-stack-1x" title="edit this donut"></i>
+            </span>
+            <% }; %>
+        </div>
     </div>
-    <div class="messages"></div>
-    <div class="input"></div>
+    <div class="messages"><!-- messages view --></div>
+    <div class="input"><!-- input view --></div>
 </div><!-- /.content -->
 <div class="side" <% if (poster) { %>style="background-image: url(<%= poster %>);"<% }; %>>
     <div class="blur" <% if (posterblured) { %>style="background-image: url(<%= posterblured %>);"<% }; %>>
-        <div class="users"></div>
+        <div class="users"><!-- users view --></div>
     </div>
-</div>
-<!-- <% if (isOwner === true) { %>owner !<% }; %> -->
+</div><!-- /.side -->
