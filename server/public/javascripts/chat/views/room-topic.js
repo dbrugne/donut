@@ -14,8 +14,9 @@ define([
 
     events: {
       'click .topic-current': 'showForm',
-      'click .topic-cancel': 'hideForm',
-      'click .topic-submit': 'sendNewTopic',
+      'click .edit'         : 'showForm',
+      'click .topic-cancel' : 'hideForm',
+      'click .topic-submit' : 'sendNewTopic',
       'keypress .topic-input': function(event) {
         if (event.which == 13) {
           this.sendNewTopic(event);
