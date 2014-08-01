@@ -1,11 +1,11 @@
 @size-color: 20px;
-@cl-title: #313131;
 @cl-subtext0: #f2f2f2;
 @cl-subtext1: #e2e2e2;
 @cl-subtext2: #b6b6b6;
 @cl-subtext3: #777777;
 @cl-subtext4: #6f6f6f;
 @cl-subtext5: #6b6b6b;
+@cl-title: #313131;
 
 .body-chat {
   height: 100%;
@@ -38,7 +38,7 @@
 
   .big-link {
     .ft-opensans-bold;
-    color: @cl-first;
+    color: @cl-subtext5;
     font-size: 1.1em;
   }
 
@@ -87,38 +87,6 @@
     .alert.info { background-color: @cl-success;}
     .alert.warning { background-color: @cl-warning; }
     .alert.error { background-color: @cl-error; }
-  }
-
-  #drawer {
-    display: none;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    z-index: 5;
-
-    .opacity {
-      width: 100%;
-      height: 100%;
-      background-color: rgba(252, 32, 99, 0.6);
-      .wrap {
-        position: relative;
-        left: -10000px;
-        width: 280px; /* customizable by code */
-        height: 100%;
-        .content {
-          width: 100%;
-          height: 100%;
-          padding: 45px 10px 10px;
-          background-color: @cl-background;
-          > div { height: 100%; }
-        }
-        .close {
-          position: absolute;
-          top: 10px; right: 10px;
-          font-size: 1.4em;
-        }
-      }
-    }
   }
 
   /* Room profiles common style */
