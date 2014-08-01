@@ -43,6 +43,8 @@ chat
     - [ ] CGU (from HP and chat interface)
     - [ ] Emails : https://github.com/dbrugne/chat/issues/6
     - [ ] Welcome messages
+  - [ ] Room page
+  - [ ] User page
 
 **Account**
 - [ ] Implement clean user form in IHM
@@ -58,16 +60,21 @@ chat
 
 ## Release 3
 
+**Discussion history**
+- Room/onetoone history step 2
+  - [ ] Store discussion message in localstorage
+  - [ ] Limit localstorage to n last event [/room]
+  - [ ] Message history on arrow up/down based on localstorage
+  - [ ] Add [Skype link|autoloader] to load more history on scroll top
+  - [ ] No history retrieving in open/join, display only (already in DOM or localstorage) history
+  - [ ] Add a cleanup method that empty .messages periodically to avoid memory leak
+
 **Chat**
 - [ ] Change the to server->client messages : room:join/leave and user:open/close (for something like ?)
 - [ ] Correct room:in for user that "reconnect"
 - [ ] Replace room:out by user:disconnect on socket disconnection
 - [ ] Add a check on connection to verify is user have "username"
-- [ ] Add a cleanup method that empty .messages periodically to avoid memory leak
 - [ ] Bug : room user list scroll is not active when entering in room (but work once the first redraw)
-- Room/onetoone history step 2
-  - [ ] No history retrieving in open/join. Display only local (dom) history
-  - [ ] Add Skype link to load more history on scroll top
 - [ ] Update chat interface on room/user details when room/user is edited
     - [ ] WS: implement REDIS cache for user and room
     - [ ] WS: read in REDIS cache only "even" for socket.getUsername-like function to have always last data
@@ -155,7 +162,6 @@ Backend:
 - [ ] Aggregate some data to have count 
 
 Features:
-- [ ] Message history on arrow up/down (localstorage ?)
 - [ ] Highlight messages of the same user of this message
 - [ ] Bookmark user
 - [ ] Add sound on events
