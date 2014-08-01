@@ -25,7 +25,7 @@ var app = express();
 
 app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
-app.use(less(__dirname+'/public'));
+app.use(less(__dirname+'/public', { force: conf.less.force }));
 app.use('/medias', express.static(path.join(__dirname, 'medias')));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(fqdn());

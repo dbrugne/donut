@@ -1,5 +1,8 @@
 var conf = module.exports = {
   title: 'donut.me | old flavour chat rooms',
+  less: {
+    force: false
+  },
   room: {
     default: {
       avatar: 'room-default.png',
