@@ -8,10 +8,11 @@
       "bootstrap": "latest",
       "underscore-amd": "latest",
       "backbone-amd": "latest",
+      "backbone.iobind": "latest",
       "cloudinary_js": "latest",
       "validator-js": "latest",
       "colpick": "latest",
-      "moment": "latest",
+      "moment": "2.7.x",
       "i18next": "latest",
       "Scroller": "latest"
     }

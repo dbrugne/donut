@@ -1,9 +1,6 @@
 # Dependencies
 node_modules/
-public/javascripts/vendor/
+public/vendor/
 
 # Compiled files
 public/stylesheets/style.css
-
-# User files
-medias/
