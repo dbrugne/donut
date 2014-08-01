@@ -83,7 +83,6 @@ define([
     colorize: function(color) {
       color = color || this.defaultFirstColor;
       this.$el.find('#color').css('background-color', color);
-      this.$el.find('#left > a.links').css('color', color);
     },
 
     popin: function(data) {

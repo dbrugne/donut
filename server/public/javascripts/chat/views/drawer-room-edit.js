@@ -42,7 +42,8 @@ define([
 
       this.mainView.popin({
         el: this.$el,
-        color: room.color
+        color: room.color,
+        width: '450px'
       });
 
       return this;

@@ -1,1 +1,104 @@
-here the template
+<div class="room">
+    <p class="name"><%= room.name %></p>
+</div>
+<form role="form">
+    <button type="submit" class="btn btn-default">Annuler</button>
+    <button type="submit" class="btn btn-primary">Sauver et fermer</button>
+    <h3>Profil & apparence</h3>
+    <div class="form-group">
+        <label for="roomDescription">Description</label>
+        <textarea name="description" class="form-control" id="roomDescription" placeholder="Describe the donut in few words"></textarea>
+        <p class="help-block">Optional, max 200 char.</p>
+    </div>
+    <div class="form-group">
+        <label for="roomWebsite">Website</label>
+        <input name="website" type="text" class="form-control" id="roomWebsite" placeholder="Your website URL">
+        <p class="help-block">Optional</p>
+    </div>
+    <div class="form-group">
+        <label for="roomAvatar">Avatar</label>
+        <!-- Current avatar -->
+        <div class="uploader-current" data-current="{{& roomFields.avatar}}">
+            <span class="current"></span> (<a href="#_" class="uploader-show-form">change</a> or <a href="#_" class="uploader-delete">delete</a>).
+            <input type="hidden" name="room[fields][avatardelete]" value="">
+            <input type="hidden" name="room[fields][avatarversion]" value="">
+        </div>
+        <!-- Avatar upload form -->
+        <div class="uploader-form">
+            {{& uploadTag}} (<a href="#_" class="uploader-cancel-form">cancel</a>)
+            <p class="help-block">Should be an image file (.jpeg, .jpg, .png or .gif), will be cropped to 150x150px format.</p>
+        </div>
+        <!-- Avatar upload progress -->
+        <div class="uploader-progress">
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                    0% complete
+                </div>
+            </div>
+            <div class="preview"></div>
+        </div>
+        <p class="help-block">Should be an image file (.jpeg, .jpg, .png or .gif), will be cropped to 150x150px format.</p>
+    </div>
+    <div class="form-group">
+        <label for="roomPoster">Avatar</label>
+        <div>complex</div>
+        <p class="help-block">Should be an image file (.jpeg, .jpg, .png or .gif), will be stretch to fit the browser right column (about 500x1100px).</p>
+    </div>
+    <div class="form-group">
+        <label for="roomColor">Couleur</label>
+        <div>complex</div>
+        <p class="help-block">Optional</p>
+    </div>
+    <h3>Paramétres</h3>
+    <div class="form-group">
+        <div class="radio">
+            <label>
+                <input type="radio" name="permanent" id="roomPermanentYes" value="1">
+                La room est permanent et sera conservé même lorsque vous vous déconnecterez
+            </label>
+        </div>
+        <div class="radio">
+            <label>
+                <input type="radio" name="permanent" id="roomPermanentNo" value="0">
+                La room n'est pas permanent et sera supprimé dés que le dernier utilisateur la quittera
+            </label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="roomOps">Modérateurs</label>
+        <table style="width: 100%">
+            <body>
+                <tr>
+                    <td>José</td>
+                    <td><i class="fa fa-times"></i></td>
+                </tr>
+                <tr>
+                    <td>Néné</td>
+                    <td><i class="fa fa-times"></i></td>
+                </tr>
+                <tr>
+                    <td>Damien</td>
+                    <td><i class="fa fa-times"></i></td>
+                </tr>
+            </body>
+        </table>
+        <p class="help-block">This table list the current configured user to be automatically moderator on room join.</p>
+    </div>
+    <button type="submit" class="btn btn-default">Annuler</button>
+    <button type="submit" class="btn btn-primary">Sauver et fermer</button>
+</form>
+
+<pre>
+Infos:
+- Name / owner / avatar
+
+Profil & apparence:
+  - Description
+  - Website
+  - Avatar
+  - Poster
+  - Color
+Settings:
+  - Permanent
+  - Ops
+</pre>
