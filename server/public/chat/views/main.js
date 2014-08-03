@@ -166,7 +166,7 @@ define([
 
       var roomName = $(event.currentTarget).data('roomName');
       if (roomName)
-        client.roomProfile(roomName);
+        client.roomRead(roomName);
 
       return false; // stop propagation
     },

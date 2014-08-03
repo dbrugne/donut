@@ -26,8 +26,8 @@ module.exports = function(io, socket, data) {
       description: room.description
     };
 
-    socket.emit('room:profile', profileEvent);
+    socket.emit('room:read', profileEvent);
     // Activity
-    helper.record('room:profile', socket, profileEvent);
+    helper.record('room:read', socket, profileEvent);
   }
 };

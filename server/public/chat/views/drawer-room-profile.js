@@ -18,7 +18,7 @@ define([
     initialize: function(options) {
       this.mainView = options.mainView;
 
-      this.listenTo(client, 'room:profile', this.onProfile);
+      this.listenTo(client, 'room:read', this.onProfile);
 
       var that = this;
       this.$el.on('shown', function (e) {

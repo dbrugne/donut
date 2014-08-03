@@ -19,7 +19,7 @@ define([
       this.mainView = options.mainView;
 
       this.render({});
-//      this.listenTo(client, 'room:profile', this.onProfile);
+//      this.listenTo(client, 'room:read', this.onProfile);
 //
 //      var that = this;
 //      this.$el.on('shown', function (e) {
