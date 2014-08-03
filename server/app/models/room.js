@@ -3,6 +3,7 @@ var cloudinary = require('../cloudinary');
 
 var roomSchema = mongoose.Schema({
 
+  _id           : String,
   name          : String,
   owner         : { type: mongoose.Schema.ObjectId, ref: 'User' },
   op            : [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
@@ -15,6 +16,22 @@ var roomSchema = mongoose.Schema({
   description   : String,
   website       : String
 
+});
+
+/**
+ * Custom setter to set '_id' on 'name' set
+ * @source: Custom String _id doc: https://gist.github.com/aheckmann/3658511
+ */
+roomSchema.path('name').set(function (v) {
+  if (this.isNew) {
+    var salt = Math.floor((1 + Math.random()) * 0x10000)
+      .toString(16)
+      .substring(1);
+    var clean = (v || '').replace(/\s+/g, '').toLocaleLowerCase();
+    this._id = 'room'+salt+'_'+ clean;
+    console.log('new room _id is: '+this._id+' ('+v+')');
+  }
+  return v;
 });
 
 roomSchema.statics.validateName = function (name) {
