@@ -34,7 +34,7 @@ module.exports = function(io, socket, data) {
     });
 
     // Room deletion (if needed)
-    helper.deleteRoom(io, room.name);
+//    helper.deleteRoom(io, room.name);
 
     // Activity
     var receivers = helper.roomUsersId(io, room.name);

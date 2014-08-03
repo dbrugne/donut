@@ -25,7 +25,7 @@ module.exports = function(io, socket) {
     }
 
     // Room deletion (if needed)
-    helper.deleteRoom(io, roomName);
+//    helper.deleteRoom(io, roomName);
   }
 
   // Update users online users list (only if last socket for this user)
