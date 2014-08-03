@@ -9,9 +9,13 @@ chat
 - [ ] Search engine
 - [ ] Allow user to change room user sort order
 - [ ] Allow user to change room user display
+- Update chat interface on room/user details when room/user is edited
+    - [ ] WS: implement corresponding events: room:update/user:update (or user:nickname, user:avatar, user:color, room:avatar and user:color)
+    - [ ] JS: on previous events update IHM: room tab/header, onetoone tab/header
 - Bug fixes
   - [ ] What's happen when a message is posted by someone (on a room) and my client is in sleep (eg. : tablet) ?
   - [ ] On room closing view / model already exist and we can not join the room again, also a problem with "home" focusing occurs
+  - [ ] Colorize vs. drawer
 
 **Room ops**
 - [ ] Sort room users list also on ownership/op status
@@ -75,13 +79,9 @@ chat
 - [ ] Replace room:out by user:disconnect on socket disconnection
 - [ ] Add a check on connection to verify is user have "username"
 - [ ] Bug : room user list scroll is not active when entering in room (but work once the first redraw)
-- [ ] Update chat interface on room/user details when room/user is edited
-    - [ ] WS: implement REDIS cache for user and room
-    - [ ] WS: read in REDIS cache only "even" for socket.getUsername-like function to have always last data
-    - [ ] HTTP: implement emitter in user and room form POST
-    - [ ] HTTP: invalidate REDIS cache in user and room form POST
-    - [ ] WS: implement corresponding events: room:update/user:update (or user:nickname, user:avatar, user:color, room:avatar and user:color)
-    - [ ] JS: on previous events update IHM: room tab/header, onetoone tab/header
+- [ ] WS: implement REDIS cache for user and room and read in REDIS cache only "even" for socket.getUsername-like function to have always last data
+- [ ] WS: implement async pattern in all WS methods
+- [ ] Bugfix: on room auto-deletion reactivation. Should handle in 'connection.populateRoom' the room recreation. Otherwise a room automatically removed cannot be re-join automatically by client cause room populate try to find room in DB before sending it to client in welcome
 
 **Content**
 - [ ] Emails: forgot, password changed, signup
