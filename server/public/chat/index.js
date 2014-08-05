@@ -15,12 +15,12 @@ require.config({
       'jquery.fileupload'         : '../vendor/blueimp-file-upload/js/jquery.fileupload',
        // end of bastard
       'jquery.cloudinary'         : '../vendor/cloudinary_js/js/jquery.cloudinary',
+      'jquery.scroller'           : '../vendor/Scroller/jquery.fs.scroller.min',
       'jquery.insertatcaret'      : '../javascripts/plugins/jquery.insertatcaret',
       'jquery.linkify'            : '../javascripts/plugins/jquery.linkify.min',
       'jquery.smilify'            : '../javascripts/plugins/jquery.smilify',
       'jquery.momentify'          : '../javascripts/plugins/jquery.momentify',
-      'jquery.colorify'           : '../javascripts/plugins/jquery.colorify',
-      'jquery.scroller'           : '../vendor/Scroller/jquery.fs.scroller.min'
+      'jquery.colorify'           : '../javascripts/plugins/jquery.colorify'
   },
   shim: {
     'jquery.cloudinary'     : ['jquery'],
