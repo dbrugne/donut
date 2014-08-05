@@ -73,7 +73,7 @@ $(document).ready(function() {
     if (current) {
       $('.uploader-current .current').html(
         $.cloudinary.image(current, {
-          transformation: 'user-avatar-medium'
+          transformation: 'user-medium'
         })
       );
     } else {
