@@ -8,20 +8,20 @@ var sanitize = require('sanitize-caja');
 var renderForm = function(req, res) {
   var options = {
     uploadTag: cloudinary.uploader.image_upload_tag('user[fields][avatar]', {
-      callback: "http://" + req.headers.host + "/javascripts/vendor/cloudinary_js/html/cloudinary_cors.html",
+      callback: "http://" + req.headers.host + "/vendor/cloudinary_js/html/cloudinary_cors.html",
       public_id: 'avatar-'+req.user._id,
       tags: "user-avatar",
       crop: "limit", width: 800, height: 600,
       html: { style: "" }
     }),
     scripts: [
-      {src: '/javascripts/vendor/validator-js/validator.min.js'},
-      {src: '/javascripts/vendor/colpick/js/colpick.js'},
+      {src: '/vendor/validator-js/validator.min.js'},
+      {src: '/vendor/colpick/js/colpick.js'},
       {src: '/javascripts/plugins/jquery.maxlength.js'},
-      {src: '/javascripts/vendor/blueimp-file-upload/js/vendor/jquery.ui.widget.js'},
-      {src: '/javascripts/vendor/blueimp-file-upload/js/jquery.iframe-transport.js'},
-      {src: '/javascripts/vendor/blueimp-file-upload/js/jquery.fileupload.js'},
-      {src: '/javascripts/vendor/cloudinary_js/js/jquery.cloudinary.js'}
+      {src: '/vendor/blueimp-file-upload/js/vendor/jquery.ui.widget.js'},
+      {src: '/vendor/blueimp-file-upload/js/jquery.iframe-transport.js'},
+      {src: '/vendor/blueimp-file-upload/js/jquery.fileupload.js'},
+      {src: '/vendor/cloudinary_js/js/jquery.cloudinary.js'}
     ]
   };
 
