@@ -33,24 +33,23 @@ define([
         isOp: this.model.currentUserIsOp()
       }));
 
+      this.$el.find('.topic-current, .topic-form').hide();
       var currentTopic = this.model.get('topic');
-
-      // Default
       if (currentTopic == '') {
         if (this.model.currentUserIsOp() || this.model.currentUserIsOwner()) {
           this.$el.find('.txt').html(this.defaultText);
+          this.$el.find('.topic-current').show();
         } else {
           this.$el.find('.txt').html('');
         }
       } else {
-        // Topic
         this.$el.find('.txt')
           .text(currentTopic)
           .smilify()
           .linkify();
+        this.$el.find('.topic-current').show();
       }
 
-      this.$el.find('.topic-form').hide();
       return this;
     },
     updateTopic: function(room, topic, options) {
