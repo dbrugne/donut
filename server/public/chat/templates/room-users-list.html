@@ -1,6 +1,6 @@
 <% _.each(list, function(roomUser) { %>
 <p class="item <% if (roomUser.owner === true) { %>owner<% }; %> <% if (roomUser.op === true) { %>op<% }; %>">
-    <img class="open-user-profile" data-user-id="<%= roomUser.user_id %>" src="<%= roomUser.avatar %>" alt="<%= roomUser.username %> avatar">
+    <span class="avatar"><img class="open-user-profile" data-user-id="<%= roomUser.user_id %>" src="<%= roomUser.avatar %>" alt="<%= roomUser.username %> avatar"></span>
     <span class="username open-user-profile" data-user-id="<%= roomUser.user_id %>"><%= roomUser.username %></span>
         <span class="actions">
             <% if (isOp === true || isOwner === true) { %>

@@ -52,6 +52,9 @@
       .notification, p.message {
         position: relative;
         margin-bottom: 0;
+        .text {
+          white-space: pre;
+        }
         .date {
           position: absolute;
           top: 0; right: 0;
@@ -133,6 +136,13 @@
       left:40px; right: 25px; bottom: 20px;
       border: 1px solid @cl-subtext1;
       padding: 0;
+      padding-left: 70px;
+      .avatar {
+        position: absolute;
+        left: 14px; top: 12px;
+        width: 60px;
+        height: 60px;
+      }
       textarea {
         display: inline-block;
         width: -webkit-calc(~'100%' - 60px);
@@ -239,6 +249,7 @@
               margin-top: 10px;
               font-size: 0.9em;
               .username { margin-left: 9px; }
+              .avatar { position: relative; }
               font-weight: bold;
               .actions {
                 position: absolute;
@@ -247,25 +258,45 @@
                 display: none;
               }
             }
-            .item:hover {
-              .actions {
-                display: inline-block;
-              }
-            }
             .item.owner {
-              img {
-                border: 2px solid @cl-success;
-                -webkit-border-radius: 5px;
-                -moz-border-radius: 5px;
-                border-radius: 5px;
+              .avatar {
+                img {
+                  border: 2px solid @cl-success;
+                  -webkit-border-radius: 5px;
+                  -moz-border-radius: 5px;
+                  border-radius: 5px;
+                }
+              }
+              .avatar::before {
+                content: url("/images/op.svg");
+                z-index: 5;
+                position: absolute;
+                top: -15px; left: 7px;
+                width: 20px;
+                height: 20px;
               }
             }
             .item.op {
-              img {
-                border: 2px solid @cl-first;
-                -webkit-border-radius: 5px;
-                -moz-border-radius: 5px;
-                border-radius: 5px;
+              .avatar {
+                img {
+                  border: 2px solid @cl-first;
+                  -webkit-border-radius: 5px;
+                  -moz-border-radius: 5px;
+                  border-radius: 5px;
+                }
+              }
+              .avatar::before {
+                content: url("/images/op.svg");
+                z-index: 5;
+                position: absolute;
+                top: -15px; left: 7px;
+                width: 20px;
+                height: 20px;
+              }
+            }
+            .item:hover {
+              .actions {
+                display: inline-block;
               }
             }
           }
