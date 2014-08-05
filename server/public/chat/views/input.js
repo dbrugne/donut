@@ -3,9 +3,10 @@ define([
   'underscore',
   'backbone',
   'models/client',
+  'models/current-user',
   'views/smileys',
   'text!templates/input.html'
-], function ($, _, Backbone, client, SmileysView, InputTemplate) {
+], function ($, _, Backbone, client, currentUser, SmileysView, InputTemplate) {
   var DiscussionMessageBoxView = Backbone.View.extend({
 
     template: _.template(InputTemplate),
@@ -29,7 +30,11 @@ define([
     },
 
     render: function() {
-      this.$el.html(this.template());
+      var avatar = '';
+      if (currentUser.get('avatar'))
+        avatar = currentUser.get('avatar');
+
+      this.$el.html(this.template({avatar: avatar}));
     },
 
     onStatus: function() {
