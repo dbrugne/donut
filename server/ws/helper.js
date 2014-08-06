@@ -461,7 +461,7 @@ module.exports = {
 
     data.rooms = [];
 
-    var q = Room.find({permanent: true}, 'name owner permanent topic description avatar color')
+    var q = Room.find({}, 'name owner permanent topic description avatar color')
       .limit(10)
       .populate('owner', 'username avatar');
 
