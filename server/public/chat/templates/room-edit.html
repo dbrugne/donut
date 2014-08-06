@@ -1,18 +1,17 @@
 <div class="room">
-    <p class="name"><%= room.name %></p>
+    <span class="name"><%= room.name %></span>
+    <span class="owner">by <a class="open-user-profile" data-user-id="<%= room.owner.user_id %>" data-colorify-text="#ffffff"><%= room.owner.username %></a></span>
 </div>
-<form role="form">
-    <button type="submit" class="btn btn-default">Annuler</button>
-    <button type="submit" class="btn btn-primary">Sauver et fermer</button>
+<form class="room-form" role="form">
     <h3>Profil & apparence</h3>
     <div class="form-group">
         <label for="roomDescription">Description</label>
-        <textarea name="description" class="form-control" id="roomDescription" placeholder="Describe the donut in few words"></textarea>
+        <textarea name="description" class="form-control" id="roomDescription" placeholder="Describe the donut in few words"><%= room.description %></textarea>
         <p class="help-block">Optional, max 200 char.</p>
     </div>
     <div class="form-group">
         <label for="roomWebsite">Website</label>
-        <input name="website" type="text" class="form-control" id="roomWebsite" placeholder="Your website URL">
+        <input name="website" type="text" class="form-control" id="roomWebsite" placeholder="Your website URL" value="<%= room.website %>">
         <p class="help-block">Optional</p>
     </div>
     <div class="form-group">
@@ -45,8 +44,8 @@
         <p class="help-block">Should be an image file (.jpeg, .jpg, .png or .gif), will be stretch to fit the browser right column (about 500x1100px).</p>
     </div>
     <div class="form-group">
-        <label for="roomColor">Couleur</label>
-        <div>complex</div>
+        <label>Couleur</label>
+        <div class="room-color"></div>
         <p class="help-block">Optional</p>
     </div>
     <h3>Paramétres</h3>
@@ -84,21 +83,6 @@
         </table>
         <p class="help-block">This table list the current configured user to be automatically moderator on room join.</p>
     </div>
-    <button type="submit" class="btn btn-default">Annuler</button>
-    <button type="submit" class="btn btn-primary">Sauver et fermer</button>
+    <button type="submit" class="btn btn-default btn-sm">Annuler</button>
+    <button type="submit" class="btn btn-primary btn-sm">Sauver</button>
 </form>
-
-<pre>
-Infos:
-- Name / owner / avatar
-
-Profil & apparence:
-  - Description
-  - Website
-  - Avatar
-  - Poster
-  - Color
-Settings:
-  - Permanent
-  - Ops
-</pre>
