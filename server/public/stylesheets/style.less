@@ -43,3 +43,57 @@ body.light { padding: 0; overflow-y: auto; }
 @import "./landing.less"; /* = non authenticated homepage */
 @import "./account.less";
 @import "./chat.less";
+
+.color-picker {
+  position: relative;
+  color: #555;
+  font-size: 16px;
+  .preview {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 30px;
+    height: 30px;
+    margin-right: 5px;
+    float:left;
+  }
+  .hexadecimal {
+    width:90px;
+    margin-left: 3px;
+    padding: 3px 6px;
+    font-weight: bold;
+    line-height: 1.9;
+  }
+  .picker {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    left: 125px; top: -100px;
+    z-index: 99;
+    width: 254px;
+    padding: 34px 10px 10px 10px;
+    .hexagone {
+
+    }
+    .color-map {
+      area {
+        cursor: pointer;
+      }
+    }
+    a.close-picker {
+      position: absolute;
+      top: 6px;
+      right: 7px;
+      font-size: 1.1em;
+      line-height: 1;
+      color: #000;
+      text-shadow: 0 1px 0 #fff;
+      opacity: .2;
+      cursor: pointer;
+    }
+    a.close-picker:hover {
+      text-decoration: none;
+      opacity: 1;
+    }
+  }
+}
