@@ -4,52 +4,55 @@ define([
   'backbone',
   'models/client',
   'models/current-user',
-  'text!templates/room-profile.html'
-], function ($, _, Backbone, client, currentUser, roomProfileTemplate) {
+  'text!templates/room-profile.html',
+  'text!templates/spinner.html'
+], function ($, _, Backbone, client, currentUser, roomProfileTemplate, spinnerTemplate) {
   var DrawerRoomProfileView = Backbone.View.extend({
 
-    template: _.template(roomProfileTemplate),
+      template: _.template(roomProfileTemplate),
 
-    id: 'room-profile',
+      id: 'room-profile',
 
-    events  : {
-    },
+      events: {
+      },
 
-    initialize: function(options) {
-      this.mainView = options.mainView;
+      initialize: function (options) {
+          this.mainView = options.mainView;
+          this.roomName = options.name;
 
-      this.listenTo(client, 'room:read', this.onProfile);
+          // show spinner as temp content
+          this.render();
 
-      var that = this;
-      this.$el.on('shown', function (e) {
-        that.$el.find('.website').linkify();
-      });
-    },
-    /**
-     * Set this.$el content and call mainView.popin()
-     */
-    render: function(room) {
-      room.isOwner = (room.owner)
-       ? (room.owner.user_id == currentUser.get('user_id'))
-         ? true
-         : false
-       : false;
+          // ask for data
+          client.roomRead(this.roomName);
 
-      var html = this.template({room: room});
-      this.$el.html(html);
-      this.$el.colorify();
+          // on response show profile
+          this.listenTo(client, 'room:read', this.onRead);
 
-      this.mainView.popin({
-        el: this.$el,
-        color: room.color
-      });
+//          var that = this;
+//          this.$el.on('shown', function (e) {
+//              that.$el.find('.website').linkify();
+//          });
+      },
+      render: function () {
+          // render spinner only
+          this.$el.html(_.template(spinnerTemplate)());
+          return this;
+      },
+      onRead: function (room) {
+        room.isOwner = (room.owner)
+          ? (room.owner.user_id == currentUser.get('user_id'))
+          ? true
+          : false
+          : false;
 
-      return this;
-    },
-    onProfile: function(data) {
-      this.render(data);
-    }
+        var html = this.template({room: room});
+        this.$el.html(html);
+        this.$el.colorify();
 
+        if (room.color)
+          this.trigger('color', room.color);
+      }
   });
 
   return DrawerRoomProfileView;

@@ -21,8 +21,7 @@ define([
   'views/onetoone-panel',
   'views/room-block',
   'views/onetoone-block',
-  'views/account',
-  'views/room-edit'
+  'views/account'
 ], function ($, _, Backbone, client, rooms, onetoones, currentUser, windowView,
              CurrentUserView, AlertView, homeContentView,
              DrawerView,
@@ -78,20 +77,23 @@ define([
       this.alertView.show(type, message);
     },
 
-    defaultFirstColor: '#fc2063',
+    defaultColor: '#fc2063', // @todo : put this value somewhere in DOM, modifiable by users
 
-    colorize: function(color) {
-      color = color || this.defaultFirstColor;
+    currentColor: '',
+
+    _color: function(color) {
       this.$el.find('#color').css('background-color', color);
     },
+    color: function(color, temporary, reset) {
+      if (reset)
+        return this._color(this.currentColor);
 
-    popin: function(data) {
-      this.drawerView.render(data);
-      this.drawerView.show();
-    },
+      color = color || this.defaultColor;
 
-    unpopin: function(data) {
-      this.drawerView.hide();
+      if (!temporary)
+        this.currentColor = color;
+
+      return this._color(color);
     },
 
     _handleAction: function(event) {
@@ -114,59 +116,64 @@ define([
       this.trigger('ready');
     },
 
-    // MODALS
+    // DRAWERS
     // ======================================================================
 
-    openSearchRoomModal: function(event) {
-      if (!this.searchRoomModal) {
-        this.searchRoomModal = new RoomSearchView({mainView: this});
-        this.searchRoomModal.search();
-      }
-      this.searchRoomModal.show();
-    },
+//    openSearchRoomModal: function(event) {
+//      if (!this.searchRoomModal) {
+//        this.searchRoomModal = new RoomSearchView({mainView: this});
+//        this.searchRoomModal.search();
+//      }
+//      this.searchRoomModal.show();
+//    },
     openCreateRoom: function(event) {
       this._handleAction(event);
 
-      if (!this.drawerRoomCreate) {
-        this.drawerRoomCreate = new DrawerRoomCreateView({mainView: this});
-      }
+      var view = new DrawerRoomCreateView({ mainView: this });
+      this.drawerView.setSize('320px').setView(view).open();
 
-      this.popin({
-        el: this.drawerRoomCreate.$el,
-        width: '320px'
-      });
-      this.drawerRoomCreate.$el.trigger('shown');
+      return false; // stop propagation
     },
-    openSearchUserModal: function(event) {
-      if (!this.userSearchModal) {
-        this.userSearchModal = new UserSearchView({mainView: this});
-        this.userSearchModal.search();
-      }
-      this.userSearchModal.show();
-    },
+//    openSearchUserModal: function(event) {
+//      if (!this.userSearchModal) {
+//        this.userSearchModal = new UserSearchView({mainView: this});
+//        this.userSearchModal.search();
+//      }
+//      this.userSearchModal.show();
+//    },
     openUserProfile: function(event) {
       this._handleAction(event);
 
-      if (!this.drawerUserProfile) {
-        this.drawerUserProfile = new DrawerUserProfileView({ mainView: this });
-      }
-
       var userId = $(event.currentTarget).data('userId');
-      if (userId)
-        client.userProfile(userId);
+      if (!userId)
+        return;
+
+      var view = new DrawerUserProfileView({ mainView: this, userId: userId });
+      this.drawerView.setSize('280px').setView(view).open();
 
       return false; // stop propagation
     },
     openRoomProfile: function(event) {
       this._handleAction(event);
 
-      if (!this.drawerRoomProfile) {
-        this.drawerRoomProfile = new DrawerRoomProfileView({ mainView: this });
-      }
+      var name = $(event.currentTarget).data('roomName');
+      if (!name)
+        return;
 
-      var roomName = $(event.currentTarget).data('roomName');
-      if (roomName)
-        client.roomRead(roomName);
+      var view = new DrawerRoomProfileView({ mainView: this, name: name });
+      this.drawerView.setSize('280px').setView(view).open();
+
+      return false; // stop propagation
+    },
+    openRoomEdit: function(event) {
+      this._handleAction(event);
+
+      var name = $(event.currentTarget).data('roomName');
+      if (!name)
+        return;
+
+      var view = new DrawerRoomEditView({ mainView: this, name: name });
+      this.drawerView.setSize('450px').setView(view).open();
 
       return false; // stop propagation
     },
@@ -179,20 +186,6 @@ define([
 
       this.accountModal.iframeRender();
       this.accountModal.show();
-
-      return false; // stop propagation
-    },
-    openRoomEdit: function(event) {
-      this._handleAction(event);
-
-      if (!this.drawerRoomEdit) {
-        this.drawerRoomEdit = new DrawerRoomEditView({ mainView: this });
-      }
-
-      var roomName = $(event.currentTarget).data('roomName');
-
-      if (!roomName)
-        return;
 
       return false; // stop propagation
     },
@@ -290,6 +283,7 @@ define([
       this.$home.show();
       this.roomBlockView.render();
       this.onetooneBlockView.render();
+      this.color(this.defaultColor);
       Backbone.history.navigate('#'); // just change URI, not run route action
     },
 
@@ -354,6 +348,12 @@ define([
       model.set('unread', 0);
       this.roomBlockView.render();
       this.onetooneBlockView.render();
+
+      // Change interface color
+      if (model.get('type') == 'room')
+        this.color(model.get('color'))
+      else
+        this.color('#FF00AA')
 
       // Update URL (always!)
       var uri;

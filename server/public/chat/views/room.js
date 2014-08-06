@@ -50,10 +50,8 @@ define([
     _render: function() {
     },
     _focus: function() {
-      this.mainView.colorize(this.model.get('color'));
     },
     _unfocus: function() {
-//      this.mainView.colorize();
     },
 
     /**

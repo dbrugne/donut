@@ -4,8 +4,9 @@ define([
   'backbone',
   'models/client',
   'models/current-user',
-  'text!templates/user-profile.html'
-], function ($, _, Backbone, client, currentUser, userProfileTemplate) {
+  'text!templates/user-profile.html',
+  'text!templates/spinner.html'
+], function ($, _, Backbone, client, currentUser, userProfileTemplate, spinnerTemplate) {
   var DrawerUserProfileView = Backbone.View.extend({
 
     template: _.template(userProfileTemplate),
@@ -17,18 +18,24 @@ define([
 
     initialize: function(options) {
       this.mainView = options.mainView;
+      this.userId = options.userId;
 
-      this.listenTo(client, 'user:profile', this.onProfile);
+    // show spinner as temp content
+    this.render();
 
-      var that = this;
-      this.$el.on('shown', function (e) {
-        that.$el.find('.website').linkify();
-      });
+    // ask for data
+    client.userProfile(this.userId);
+
+    // on response show profile
+    this.listenTo(client, 'user:profile', this.onProfile);
     },
-    /**
-     * Set this.$el content and call mainView.popin()
-     */
-    render: function(user) {
+    render: function () {
+      // render spinner only
+      this.$el.html(_.template(spinnerTemplate)());
+      return this;
+    },
+    onProfile: function (data) {
+      var user = data.user;
       user.isCurrent = (user.user_id == currentUser.get('user_id'))
         ? true
         : false;
@@ -36,16 +43,10 @@ define([
       var html = this.template({user: user});
       this.$el.html(html);
       this.$el.colorify();
+      this.$el.find('.website').linkify();
 
-      this.mainView.popin({
-        el: this.$el,
-        color: user.color
-      });
-
-      return this;
-    },
-    onProfile: function(data) {
-      this.render(data.user);
+      if (user.color)
+        this.trigger('color', user.color);
     }
 
   });

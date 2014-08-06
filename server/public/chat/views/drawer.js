@@ -12,52 +12,109 @@ define([
     el: $('#drawer'),
 
     events: {
-      'click .close': 'onClose',
+      'click .close': 'close',
       'mouseup .opacity': 'detectOutsideClick'
     },
-
-    currentColor: '',
 
     initialize: function(options) {
       this.mainView = options.mainView;
 
+      this.$opacity = this.$el.find('.opacity').first();
+      this.$wrap = this.$el.find('.wrap').first();
+      this.$content = this.$el.find('.content').first();
+
       this.shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
       this.longhandRegex = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i;
+
+      this.listenTo(this, 'hidden', this.onHidden);
     },
+    render: function() {
+      return this; // drawer container is already in DOM,
+    },
+    setSize: function(size) {
+      this.currentSize = size;
+      return this;
+    },
+    setColor: function(color) {
+      this.currentColor = color;
+      return this;
+    },
+    setView: function(view) {
+      this.contentView = view;
+      this.$content.html(view.$el);
 
-    /**
-     * The drawer container is already in DOM, this.render(data) only set the
-     * drawer content and backcolor.
-     */
-    render: function(data) {
-      if (!data.el) return this;
-      this.$contentEl = data.el;
-
-      // Size
-      if (!data.width) data.width = this.defaultSize;
-      this.$el.find('.wrap').first().css('width', data.width);
-
-      // Color
-      this.currentColor = (!this._validHex(data.color))
-        ? this.defaultColor
-        : data.color;
-      var rgb = this._hexToRgb(this.currentColor);
-      var rgbBg = 'rgba('+rgb.r+', '+rgb.g+', '+rgb.b+', 0.6)';
-      this.$el.find('.opacity').first().css('background-color', rgbBg);
-
-      if (data.el.attr('id') == this.$el.find('.content > div').first().attr('id'))
-        return this; // avoid emptying and refilling content for the same drawer to avoid events unbind
-
-      // HTML
-      this.$el.find('.content').first()
-        .empty()
-        .append(data.el);
+      this.listenTo(view, 'color', this.color);
+      this.listenTo(view, 'close', this.close);
 
       return this;
     },
+    open: function() {
+
+      this._show();
+
+      this.trigger('shown');
+      return this;
+    },
+    close: function() {
+      this._hide();
+    },
+    onHidden: function(event) {
+      this.contentView.remove();
+    },
+    color: function(color) {
+      color = (this._validHex(color))
+          ? color
+          : this.defaultColor;
+      var rgb = this._hexToRgb(color);
+      var rgbBg = 'rgba('+rgb.r+', '+rgb.g+', '+rgb.b+', 0.6)';
+      this.$opacity.css('background-color', rgbBg);
+      this.mainView.color(color, true);
+    },
+    detectOutsideClick: function(event) {
+      var subject = this.$el.find('.content').first();
+      if(event.target.className != subject.attr('class') && !subject.has(event.target).length)
+        this.close();
+    },
+    _show: function() {
+      this.trigger('show');
+
+      var size = this.currentSize || this.defaultSize;
+      this.$wrap.css('width', size);
+
+      this.color(this.currentColor);
+
+      this.$el.show();
+      var that = this;
+      var width = this.$wrap.width();
+      this.$wrap.css('left', '-'+width+'px');
+      this.$wrap.animate({
+        left: '0'
+      }, {
+        duration: 250,
+        complete: function () {
+          that.trigger('shown');
+        }
+      });
+    },
+    _hide: function() {
+      this.trigger('hide');
+      var that = this;
+      var width = this.$wrap.width();
+      this.$wrap.animate({
+        left: '-'+width+'px'
+      }, {
+        duration: 250,
+        complete: function () {
+          that.$wrap.css('left', '-10000px');
+          that.$el.hide();
+          that.mainView.color('', false, true);
+          that.trigger('hidden');
+        }
+      });
+    },
     _validHex: function(hex) {
       if (!hex)
-       return false;
+        return false;
 
       if (this.shorthandRegex.test(hex))
         return true;
@@ -79,50 +136,6 @@ define([
         g: parseInt(result[2], 16),
         b: parseInt(result[3], 16)
       } : null;
-    },
-    show: function() {
-      // show
-      this.$el.show();
-
-      // color
-      this.mainView.colorize(this.currentColor);
-
-      // transition content
-      var that = this;
-      var w = this.$el.find('.wrap').width();
-      this.$el.find('.wrap').css('left', '-'+w+'px');
-      this.$el.find('.wrap').animate({
-        left: '0'
-      }, {
-        duration: 250,
-        complete: function () {
-          that.$contentEl.trigger('shown');
-        }
-      });
-    },
-    hide: function() {
-      // transition content
-      var that = this;
-      var w = this.$el.find('.wrap').width();
-      this.$el.find('.wrap').animate({
-        left: '-'+w+'px'
-      }, {
-        duration: 250,
-        complete: function () {
-          that.$el.find('.wrap').css('left', '-10000px');
-          that.$el.hide();
-          that.mainView.colorize();
-          that.$contentEl.trigger('hidden');
-        }
-      });
-    },
-    onClose: function(event) {
-      this.hide();
-    },
-    detectOutsideClick: function(event) {
-      var subject = this.$el.find('.content').first();
-      if(event.target.className != subject.attr('class') && !subject.has(event.target).length)
-        this.hide();
     }
 
   });

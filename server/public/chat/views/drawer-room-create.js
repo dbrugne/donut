@@ -23,10 +23,10 @@ define([
 
       this.$input = this.$el.find('.input');
 
-      var that = this;
-      this.$el.on('shown', function (e) {
-        that.$input.focus();
-      });
+//      var that = this;
+//      this.$el.on('shown', function (e) {
+//        that.$input.focus();
+//      });
     },
     /**
      * Only set this.$el content
@@ -79,7 +79,7 @@ define([
       window.router.navigate(uri, {trigger: true});
 
       this.$el.removeClass('has-error').removeClass('has-success').val('');
-      this.mainView.unpopin();
+      this.trigger('close');
     }
 
   });
