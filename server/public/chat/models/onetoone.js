@@ -11,6 +11,7 @@ define([
         username: '',
         user_id: '',
         avatar: '',
+        color: '',
         status: '',
         type: 'onetoone',
         focused: false,
