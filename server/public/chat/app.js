@@ -9,6 +9,7 @@ define([
   'views/main',
   // jQuery plugins, load and attach to $ once
   'jquery.insertatcaret',
+  'jquery.maxlength',
   'jquery.cloudinary',
   'jquery.linkify',
   'jquery.smilify',

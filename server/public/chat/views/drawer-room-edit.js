@@ -48,9 +48,17 @@ define([
 
       var html = this.template({room: room});
       this.$el.html(html);
-      this.$el.colorify();
-      this.$el.find('.website').linkify();
 
+      // color form
+      this.$el.find('.room').colorify();
+
+      // description
+      this.$el.find('#roomDescription').maxlength({
+        counterContainer: this.$el.find('#roomDescription').siblings('.help-block').find('.counter'),
+        text: '<strong>%left</strong> left'
+      });
+
+      // color
       var colorPicker = new ColorPicker({
         color: room.color,
         name: 'color',

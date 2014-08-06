@@ -17,6 +17,7 @@ require.config({
       'jquery.cloudinary'         : '../vendor/cloudinary_js/js/jquery.cloudinary',
       'jquery.scroller'           : '../vendor/Scroller/jquery.fs.scroller.min',
       'jquery.insertatcaret'      : '../javascripts/plugins/jquery.insertatcaret',
+      'jquery.maxlength'          : '../javascripts/plugins/jquery.maxlength',
       'jquery.linkify'            : '../javascripts/plugins/jquery.linkify.min',
       'jquery.smilify'            : '../javascripts/plugins/jquery.smilify',
       'jquery.momentify'          : '../javascripts/plugins/jquery.momentify',
@@ -25,6 +26,7 @@ require.config({
   shim: {
     'jquery.cloudinary'     : ['jquery'],
     'jquery.insertatcaret'  : ['jquery'],
+    'jquery.maxlength'      : ['jquery'],
     'jquery.linkify'        : ['jquery'],
     'jquery.smilify'        : ['jquery'],
     'jquery.momentify'      : ['jquery'],
