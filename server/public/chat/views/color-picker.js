@@ -2,8 +2,7 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'text!templates/color-picker.html',
-  'text!templates/modal-iframe.html'
+  'text!templates/color-picker.html'
 ], function ($, _, Backbone, colorPickerTemplate) {
   var ColorPickerView = Backbone.View.extend({
 
