@@ -10,14 +10,13 @@ var renderForm = function(req, res) {
   var options = {
     uploadTag: cloudinary.uploader.image_upload_tag('room[fields][avatar]', {
       callback: "http://" + req.headers.host + "/vendor/cloudinary_js/html/cloudinary_cors.html",
-      public_id: 'avatar-'+req.room._id,
+      public_id: 'avatar-'+req.room._id.replace('#', ''),
       tags: "room-avatar",
       crop: "limit", width: 800, height: 600,
       html: { style: "" }
     }),
     scripts: [
       {src: '/vendor/validator-js/validator.min.js'},
-      {src: '/vendor/colpick/js/colpick.js'},
       {src: '/javascripts/plugins/jquery.maxlength.js'},
       {src: '/vendor/blueimp-file-upload/js/vendor/jquery.ui.widget.js'},
       {src: '/vendor/blueimp-file-upload/js/jquery.iframe-transport.js'},

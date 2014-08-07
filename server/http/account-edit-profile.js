@@ -16,7 +16,6 @@ var renderForm = function(req, res) {
     }),
     scripts: [
       {src: '/vendor/validator-js/validator.min.js'},
-      {src: '/vendor/colpick/js/colpick.js'},
       {src: '/javascripts/plugins/jquery.maxlength.js'},
       {src: '/vendor/blueimp-file-upload/js/vendor/jquery.ui.widget.js'},
       {src: '/vendor/blueimp-file-upload/js/jquery.iframe-transport.js'},

@@ -1,9 +1,7 @@
 @import "bootstrap-3.2.0/less/bootstrap";
 @import "font-awesome-4.1.0/less/font-awesome";
-@import url(http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700,300,800);
-@import url(http://fonts.googleapis.com/css?family=Raleway:500,900,400);
+@import "./fonts.less";
 @import "./smilify.less";
-@import "../vendor/colpick/css/colpick.css";
 @import "../vendor/Scroller/jquery.fs.scroller.css";
 
 @cl-background: #ffffff;
@@ -19,15 +17,6 @@
 
 @img-homepage: '/images/cover.jpg';
 @img-homepage-blur: '/images/cover-blur.jpg';
-
-.ft-opensans { font-family: 'Open Sans', sans-serif; font-weight: normal; }
-.ft-opensans-light { .ft-opensans; font-weight: 300; }
-.ft-opensans-italic { .ft-opensans; font-weight: 300; font-style: italic; }
-.ft-opensans-bold { .ft-opensans; font-weight: bold; }
-.ft-opensans-bold-italic { .ft-opensans; font-weight: bold; font-style: italic; }
-.ft-raleway { font-family: 'Raleway', sans-serif; font-weight: normal; }
-.ft-raleway-medium { .ft-raleway; font-weight: 500; }
-.ft-raleway-heavy { .ft-raleway; font-weight: 900; }
 
 html { height: 100%; }
 body {
@@ -99,4 +88,7 @@ body.light { padding: 0; overflow-y: auto; }
 }
 .help-block {
   .counter { .pull-right; }
+}
+.image-uploader {
+  a { cursor: pointer; }
 }
