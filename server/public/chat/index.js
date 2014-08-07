@@ -9,11 +9,9 @@ require.config({
       'i18next'                   : '../vendor/i18next/i18next.amd.withJQuery',
       'moment'                    : '../vendor/moment/moment',
       'moment-fr'                 : '../vendor/moment/lang/fr',
-       // for cloudinary upload, not really used but a sucker dev have implement AMD as a bastard
       'jquery.ui.widget'          : '../vendor/blueimp-file-upload/js/vendor/jquery.ui.widget',
       'jquery.iframe-transport'   : '../vendor/blueimp-file-upload/js/jquery.iframe-transport',
       'jquery.fileupload'         : '../vendor/blueimp-file-upload/js/jquery.fileupload',
-       // end of bastard
       'jquery.cloudinary'         : '../vendor/cloudinary_js/js/jquery.cloudinary',
       'jquery.scroller'           : '../vendor/Scroller/jquery.fs.scroller.min',
       'jquery.insertatcaret'      : '../javascripts/plugins/jquery.insertatcaret',
