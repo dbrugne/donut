@@ -39,6 +39,7 @@ chat
     - [x] Review all pictures size and update form/cloudinary transformations (room : avatar, background, user: avatar)
     - [ ] Integration room list on user profile
     - [ ] Responsivness
+    - [ ] Fix left and right column and center is flexible
     - [ ] Add room owner/ops list on room profile
     - [ ] Translate texts
   - Contents
