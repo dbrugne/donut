@@ -27,8 +27,7 @@ define([
       this.topicView = new TopicView({el: this.$el.find('.topic'), model: this.model});
       this.usersView = new UsersView({el: this.$el.find('.users'), model: this.model, collection: this.model.users});
 
-      this.$el.attr('data-colorify', this.model.get('color'));
-      this.$el.colorify();
+      this._colorify();
     },
     _remove: function(model) {
       this.topicView.remove();
@@ -53,6 +52,11 @@ define([
     },
     _unfocus: function() {
     },
+    _colorify: function() {
+      this.$el.attr('data-colorify', this.model.get('color'));
+      this.$el.colorify();
+      this.mainView.color(this.model.get('color'));
+    },
 
     /**
      * User actions methods
@@ -74,19 +78,35 @@ define([
      */
 
     onColor: function(model, value, options) {
-      // colorize this.$el
+      this._colorify();
     },
     onAvatar: function(model, value, options) {
-      // change avatar
+      // @todo : handle default image
+      var url = $.cloudinary.url(value, {
+        transformation: 'room-large'
+      });
+      this.$el.find('.header img.avatar').attr('src', url);
     },
     onPoster: function(model, value, options) {
-      // change poster
+      // @todo : handle default image
+      var url = $.cloudinary.url(value, {
+        transformation: 'room-poster'
+      });
+      this.$el.find('div.side').css('background-image', 'url('+url+')');
+
+      var urlb = $.cloudinary.url(value, {
+        transformation: 'room-poster-blured'
+      });
+      this.$el.find('div.blur').css('background-image', 'url('+urlb+')');
     },
     onOwner: function(model, value, options) {
       // change owner link
     },
     onPermanent: function(model, value, options) {
-      this.$el.find('.permanent-switch').prop('checked', value);
+      if (value)
+        this.$el.find('.permanent').show();
+      else
+        this.$el.find('.permanent').hide();
     }
 
   });

@@ -35,6 +35,7 @@ define([
       this.listenTo(client, 'room:permanent', this.onPermanent);
       this.listenTo(client, 'room:op', this.onOp);
       this.listenTo(client, 'room:deop', this.onDeop);
+      this.listenTo(client, 'room:updated', this.onUpdated);
     },
     leave: function(model, collection, options) {
       client.leave(model.get('name'));
@@ -160,6 +161,15 @@ define([
         by_user_id: data.by_user_id,
         by_username: data.by_username,
         by_avatar: data.by_avatar
+      });
+    },
+    onUpdated: function(data) {
+      if (data.name != this.get('name'))
+        return;
+
+      var that = this;
+      _.each(data.data, function(value, key, list) {
+        that.set(key, value);
       });
     }
 
