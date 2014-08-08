@@ -131,6 +131,31 @@ module.exports = {
   },
 
   /**
+   * ** alternative to _retrieveRoom, async compliant **
+   *
+   * Method that search for a Room in cache, database.
+   *
+   * @param options
+   * @private
+   */
+  retrieveRoom: function(name, callback)  {
+    if (!name)
+      return callback('retrieveRoom: Name is mandatory');
+    if (!Room.validateName(name))
+      return callback('retrieveRoom: Invalid room name: '+name);
+
+    var that = this;
+    Room.retrieveRoom(name).exec(function(err, room) {
+
+      if (err)
+        callback('retrieveRoom: Unable to run query: '+err);
+
+      callback(null, room);
+
+    });
+  },
+
+  /**
    * Search, create and return a room model:
    * - search room
    * - if not exist "create the room" in Mongo store [and memory cache] @todo

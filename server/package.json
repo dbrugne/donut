@@ -23,6 +23,7 @@
     "connect-flash": "0.1.x",
     "bcrypt-nodejs": "latest",
     "express-validator": "2.x",
+    "validator": "3.x",
     "csurf": "1.x",
     "socket.io": "1.x",
     "socket.io-redis": "0.1.x",
