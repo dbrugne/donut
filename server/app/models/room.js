@@ -48,12 +48,23 @@ roomSchema.statics.validateTopic = function (topic) {
     return true;
   }
   return false;
-}
+};
 
 roomSchema.statics.findByName = function (name) {
   var regexp = new RegExp(['^',name,'$'].join(''),'i');
   return this.findOne({ name: regexp });
-}
+};
+
+/**
+ * Retrieve and return an hydrated room instance
+ * @param name
+ * @returns {Query}
+ */
+roomSchema.statics.retrieveRoom = function (name) {
+  var regexp = new RegExp(['^',name,'$'].join(''),'i');
+  return this.findOne({ name: regexp })
+    .populate('owner', 'username avatar');
+};
 
 roomSchema.methods.avatarId = function() {
   if (!this.avatar) return '';
@@ -92,6 +103,14 @@ roomSchema.methods.posterUrl = function() {
 
   return cloudinary.url(cloudinaryId, {transformation: 'room-poster'});
   // cloudinary handle default image
+};
+
+roomSchema.methods.posterId = function() {
+  if (!this.poster) return '';
+  var data = this.poster.split('/');
+  if (!data[1]) return '';
+  var id = data[1].substr(0, data[1].lastIndexOf('.'));
+  return id;
 };
 
 module.exports = mongoose.model('Room', roomSchema);

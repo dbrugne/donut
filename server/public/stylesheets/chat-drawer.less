@@ -173,13 +173,21 @@
     .room {
       text-align: center;
       margin-top: -10px;
-      .name, .owner {
+      > p {
+        display: inline-block;
         vertical-align: middle;
+      }
+      .name, .owner {
       }
       .avatar {
         width: 60px;
         margin-right: 5px;
       }
+    }
+    .errors {
+      .alert;
+      .alert-warning;
+      display: none;
     }
   }
 }

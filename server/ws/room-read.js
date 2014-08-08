@@ -13,21 +13,24 @@ module.exports = function(io, socket, data) {
       };
     }
 
-    var profileEvent = {
+    var readEvent = {
       name: room.name,
       owner: owner,
       op: room.op,
       users: helper.roomUsers(io, room.name).length,
       permanent: room.permanent,
       avatar: room.avatarUrl('large'),
+      avatar_raw: room.avatar,
+      poster: room.posterUrl(),
+      poster_raw: room.poster,
       color: room.color,
       website: room.website,
       topic: room.topic,
       description: room.description
     };
 
-    socket.emit('room:read', profileEvent);
+    socket.emit('room:read', readEvent);
     // Activity
-    helper.record('room:read', socket, profileEvent);
+    helper.record('room:read', socket, readEvent);
   }
 };

@@ -4,10 +4,11 @@ define([
   'backbone',
   'models/client',
   'models/current-user',
+  'views/image-uploader',
   'views/color-picker',
   'text!templates/room-edit.html',
   'text!templates/spinner.html'
-], function ($, _, Backbone, client, currentUser, ColorPicker, roomEditTemplate, spinnerTemplate) {
+], function ($, _, Backbone, client, currentUser, ImageUploader, ColorPicker, roomEditTemplate, spinnerTemplate) {
   var DrawerRoomEditView = Backbone.View.extend({
 
     template: _.template(roomEditTemplate),
@@ -25,11 +26,14 @@ define([
       // show spinner as temp content
       this.render();
 
-      // ask for data
-      client.roomRead(this.roomName);
+      // ask for (editable) data
+      client.roomRead(this.roomName, true);
 
       // on response show form
       this.listenTo(client, 'room:read', this.onRead);
+
+      // on room:update callback
+      this.listenTo(client, 'room:update', this.onUpdate);
     },
     render: function() {
       // render spinner only
@@ -39,6 +43,10 @@ define([
     onRead: function(room) {
 
       this.roomName = room.name;
+
+      // colorize drawer .opacity
+      if (room.color)
+        this.trigger('color', room.color);
 
       room.isOwner = (room.owner)
           ? (room.owner.user_id == currentUser.get('user_id'))
@@ -65,17 +73,57 @@ define([
         el: this.$el.find('.room-color').first()
       });
 
-      if (room.color)
-        this.trigger('color', room.color);
+      // avatar
+      this.avatarUploader = new ImageUploader({
+        el: this.$el.find('.room-avatar').first(),
+        current: room.avatar_raw,
+        tags: 'room,avatar',
+        field_name: 'avatar'
+      });
+
+      // poster
+      this.posterUploader = new ImageUploader({
+        el: this.$el.find('.room-poster').first(),
+        current: room.poster_raw,
+        tags: 'room,poster',
+        field_name: 'poster'
+      });
     },
     onSubmit: function(event) {
       event.preventDefault();
 
-      client.roomUpdate(this.roomName, {
+      var updateData = {
         description: this.$el.find('textarea[name=description]').val(),
         website: this.$el.find('input[name=website]').val(),
-        color: this.$el.find('input[name=color]').val()
-      });
+        color: this.$el.find('input[name=color]').val(),
+        permanent: this.$el.find('input[type=radio].room-permanent-yes').prop('checked')
+      };
+
+      if (this.avatarUploader.data)
+        updateData.avatar = this.avatarUploader.data;
+
+      if (this.posterUploader.data)
+        updateData.poster = this.posterUploader.data;
+
+      client.roomUpdate(this.roomName, updateData);
+    },
+    onUpdate: function(data) {
+      if (!data.name
+        || data.name.toLocaleLowerCase() != this.roomName.toLocaleLowerCase())
+        return;
+
+      this.$el.find('.errors').hide();
+
+      if (!data.success) {
+        var message = '';
+        _.each(data.errors, function(error) {
+          message += error+'<br>';
+        });
+        this.$el.find('.errors').html(message).show();
+        return;
+      }
+
+      this.trigger('close');
     }
 
   });

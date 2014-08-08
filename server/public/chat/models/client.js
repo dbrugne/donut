@@ -103,6 +103,10 @@ define([
         that.debug(['io:in:room:read', data]);
         that.trigger('room:read', data);
       });
+      this.socket.on('room:update', function(data) {
+        that.debug(['io:in:room:update', data]);
+        that.trigger('room:update', data);
+      });
       this.socket.on('room:updated', function(data) {
         that.debug(['io:in:room:updated', data]);
         that.trigger('room:updated', data);
