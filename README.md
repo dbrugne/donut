@@ -40,6 +40,8 @@ chat
     - [ ] Integration room list on user profile
     - [ ] Responsivness
     - [ ] Fix left and right column and center is flexible
+    - [ ] Fix line break in messages and description/bio by adding a nl2br method
+    - [ ] Avatar now send only partial uri (v465645656/sq4654dz54q1d11qsd.jpg) and interface handle URL rendering with $.cloudinary
     - [ ] Add room owner/ops list on room profile
     - [ ] Translate texts
   - Contents
