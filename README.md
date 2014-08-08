@@ -77,6 +77,7 @@ chat
   - [ ] Add a cleanup method that empty .messages periodically to avoid memory leak
 
 **Chat**
+- [ ] Room ops drawer for owner
 - [ ] Change the to server->client messages : room:join/leave and user:open/close (for something like ?)
 - [ ] Correct room:in for user that "reconnect"
 - [ ] Replace room:out by user:disconnect on socket disconnection
