@@ -38,7 +38,7 @@ define([
       if (currentTopic == '') {
         if (this.model.currentUserIsOp() || this.model.currentUserIsOwner()) {
           this.$el.find('.txt').html(this.defaultText);
-          this.$el.find('.topic-current').show();
+          this.$el.find('.topic-current').css('display', 'inline-block');
         } else {
           this.$el.find('.txt').html('');
         }
@@ -47,7 +47,7 @@ define([
           .text(currentTopic)
           .smilify()
           .linkify();
-        this.$el.find('.topic-current').show();
+        this.$el.find('.topic-current').css('display', 'inline-block');
       }
 
       return this;
@@ -59,12 +59,12 @@ define([
       if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner()) return false;
 
       this.$el.find('.topic-current').hide();
-      this.$el.find('.topic-form').show();
+      this.$el.find('.topic-form').css('display', 'inline-block');
       this.$el.find('.topic-input').val(this.model.get('topic')).focus();
     },
     hideForm: function() {
       this.$el.find('.topic-form').hide();
-      this.$el.find('.topic-current').show();
+      this.$el.find('.topic-current').css('display', 'inline-block');
     },
     sendNewTopic: function(event) {
       if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner()) return false;
