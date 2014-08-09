@@ -190,7 +190,6 @@ module.exports = function(io, socket, data) {
     function broadcast(room, sanitized, callback) {
 
       // notify only certain fields
-      console.log('before: ',sanitized);
       var sanitizedToNotify = {};
       var fieldToNotify = ['avatar','poster','color','permanent'];
       helper._.each(Object.keys(sanitized), function(key) {
@@ -198,7 +197,6 @@ module.exports = function(io, socket, data) {
           sanitizedToNotify[key] = sanitized[key];
         }
       });
-      console.log('after: ',sanitizedToNotify);
 
       if (Object.keys(sanitizedToNotify).length > 0) {
         var updatedEvent = {
