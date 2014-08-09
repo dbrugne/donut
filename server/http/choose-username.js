@@ -9,10 +9,7 @@ var validateInput = function (req, res, next) {
     return res.render('choose_username', {
       userFields: req.body.user.fields,
       is_errors : true,
-      errors    : req.validationErrors(),
-      scripts   : [
-        {src: '/validator.min.js'}
-      ]
+      errors    : req.validationErrors()
     });
   }
   next();
