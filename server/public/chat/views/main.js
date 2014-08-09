@@ -102,7 +102,13 @@ define([
      * @param data
      */
     onWelcome: function(data) {
-      // Run routing
+      // Hello
+      if (data.hello){
+        this.currentUserView.hello = data.hello;
+        this.currentUserView.render();
+      }
+
+      // Run routing only when everything in interface is ready
       this.trigger('ready');
     },
 

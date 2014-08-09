@@ -12,19 +12,26 @@ define([
 
     el: $('#block-current-user'),
 
+    hello: '',
+
     events: {
 
     },
 
     initialize: function(options) {
       this.listenTo(this.model, 'change', this.render);
-      this.render();
+//      this.render(); // bugfix: call render to early and jQuery plugins are not
+      // yet configured
     },
 
     render: function() {
       var data = currentUser.toJSON();
 
-      data.welcome = 'Nice to see you,'; // @todo : random hello
+      data.hello = this.hello;
+
+      data.avatar = $.cloudinary.url(data.avatar, {
+        transformation: 'user-large'
+      });
 
       var html = this.template(data);
       this.$el.html(html);

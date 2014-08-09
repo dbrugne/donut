@@ -2,6 +2,7 @@ var async = require('async');
 var helper = require('./helper');
 var User = require('../app/models/user');
 var Room = require('../app/models/room');
+var hello = require('../app/hello-dolly');
 
 module.exports = function(io, socket) {
 
@@ -154,14 +155,14 @@ module.exports = function(io, socket) {
 
     function emitWelcome(user, callback) {
       socket.emit('welcome', {
+        hello: hello(),
         user: {
           user_id: user._id.toString(),
           username: user.username,
           avatar: user.avatar
         },
         rooms: user.roomsToSend, // problem when using directly user.rooms on mongoose model
-        onetoones: user.onesToSend,
-        general: user.general // auto-join #General on connexion
+        onetoones: user.onesToSend
       });
 
       return callback(null, user);
