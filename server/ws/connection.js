@@ -33,9 +33,12 @@ module.exports = function(io, socket) {
     },
 
     function retrieveUser(callback){
-      User.findById(socket.getUserId(), 'username avatar rooms onetoones', function(err, user) {
+      User.findById(socket.getUserId(), 'username avatar rooms onetoones general', function(err, user) {
         if (err)
           return callback('Unable to find user: '+err, null);
+
+        if (user.general == true && user.rooms.indexOf('#General') == -1)
+          user.rooms.push('#General');
 
         return callback(null, user);
       });
@@ -59,7 +62,7 @@ module.exports = function(io, socket) {
           userOnes.push({
             user_id: one._id,
             username: one.username,
-            avatar: one.avatarUrl('medium'),
+            avatar: one.avatar,
             status: status
           });
         }
@@ -73,6 +76,11 @@ module.exports = function(io, socket) {
       if (user.rooms.length < 1)
         return callback(null, user);
 
+      // @todo: bug, if some user.rooms not still exist the socket is subscribed
+      // to this room, and the room list persist in user.rooms
+      // but the user IHM never get this rooms in welcome.rooms
+      // => until he joins the room and leave the room they persist in user db
+      //    entity
       var q = Room.find({name: { $in: user.rooms } })
             .populate('owner', 'username avatar');
 
@@ -147,12 +155,13 @@ module.exports = function(io, socket) {
     function emitWelcome(user, callback) {
       socket.emit('welcome', {
         user: {
-          user_id: socket.getUserId(),
-          username: socket.getUsername(),
-          avatar: socket.getAvatar()
+          user_id: user._id.toString(),
+          username: user.username,
+          avatar: user.avatar
         },
         rooms: user.roomsToSend, // problem when using directly user.rooms on mongoose model
-        onetoones: user.onesToSend
+        onetoones: user.onesToSend,
+        general: user.general // auto-join #General on connexion
       });
 
       return callback(null, user);
