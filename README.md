@@ -37,10 +37,10 @@ chat
     - [x] Factorize custom 'main' and 'contrast' colors in views (http://stackoverflow.com/questions/1855884/determine-font-color-based-on-background-color - http://stackoverflow.com/questions/596216/formula-to-determine-brightness-of-rgb-color)
     - [x] Integration discussion window
     - [x] Review all pictures size and update form/cloudinary transformations (room : avatar, background, user: avatar)
+    - [x] Avatar now send only partial uri (v465645656/sq4654dz54q1d11qsd.jpg) and interface handle URL rendering with $.cloudinary
     - [ ] Responsivness
     - [ ] Fix left and right column and center is flexible
     - [ ] Fix line break in messages and description/bio by adding a nl2br method
-    - [ ] Avatar now send only partial uri (v465645656/sq4654dz54q1d11qsd.jpg) and interface handle URL rendering with $.cloudinary
     - [ ] Add room owner/ops list on room profile
     - [ ] Integration room list on user profile
     - [ ] Translate texts
