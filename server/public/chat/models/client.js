@@ -171,6 +171,18 @@ define([
         that.debug(['io:in:user:profile', data]);
         that.trigger('user:profile', data);
       });
+      this.socket.on('user:read', function(data) {
+        that.debug(['io:in:user:read', data]);
+        that.trigger('user:read', data);
+      });
+      this.socket.on('user:update', function(data) {
+        that.debug(['io:in:user:update', data]);
+        that.trigger('user:update', data);
+      });
+      this.socket.on('user:updated', function(data) {
+        that.debug(['io:in:user:updated', data]);
+        that.trigger('user:updated', data);
+      });
       this.socket.on('user:status', function(data) {
         that.debug(['io:in:user:status', data]);
         that.trigger('user:status', data);
@@ -276,6 +288,15 @@ define([
       var data = {user_id: userId};
       this.socket.emit('user:profile', data);
       this.debug(['io:out:user:profile', data]);
+    },
+    userRead: function() {
+      this.socket.emit('user:read', {});
+      this.debug(['io:out:user:read', {}]);
+    },
+    userUpdate: function(fields) {
+      var data = {data: fields};
+      this.socket.emit('user:update', data);
+      this.debug(['io:out:user:update', data]);
     },
     userStatus: function(username) {
       var data = {username: username};

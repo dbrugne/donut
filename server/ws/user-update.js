@@ -1,5 +1,6 @@
 var async = require('async');
 var helper = require('./helper');
+var User = require('../app/models/user');
 var validator = require('validator');
 var sanitize = require('sanitize-caja');
 var cloudinary = require('../app/cloudinary');
@@ -8,34 +9,21 @@ module.exports = function(io, socket, data) {
 
   async.waterfall([
 
-    function retrieveRoom(callback) {
+    function retrieveUser(callback) {
 
-      helper.retrieveRoom(data.name, function (err, room) {
+      User.findById(socket.getUserId(), function(err, user) {
 
         if (err)
           return callback('Unable to find user: ' + err, null);
 
-        return callback(null, room);
+        return callback(null, user);
 
       });
 
     },
 
-    function permissions(room, callback) {
-
-      if (!room.owner || !room.owner._id)
-        return callback('This room "'+data.name+'" hasn\'t owner specified');
-
-      if (socket.getUserId() != room.owner._id.toString())
-        return callback('Current user "'+socket.getUsername()+'" is not allowed'
-          +' to edit this room "'+data.name);
-
-      return callback(null, room);
-
-    },
-
     // validate, sanitized and identify field to be update
-    function validate(room, callback) {
+    function validate(user, callback) {
 
       // @doc: https://www.npmjs.org/package/validator
 
@@ -45,17 +33,30 @@ module.exports = function(io, socket, data) {
       var errors = {};
       var sanitized = {};
 
-      // description
-      if (helper._.has(data.data, 'description')) {
-        if (!validator.isLength(data.data.description, 0, 200)) {
-          errors.description = 'Description should be 200 characters max.';
+      // bio
+      if (helper._.has(data.data, 'bio')) {
+        if (!validator.isLength(data.data.bio, 0, 200)) {
+          errors.bio = 'Bio should be 200 characters max.';
         } else {
-          var description = data.data.description;
-          description = validator.stripLow(description, true);
-          description = sanitize(description);
-          description = validator.escape(description);
-          if (description != room.description)
-            sanitized.description = description;
+          var bio = data.data.bio;
+          bio = validator.stripLow(bio, true);
+          bio = sanitize(bio);
+          bio = validator.escape(bio);
+          if (bio != user.bio)
+            sanitized.bio = bio;
+        }
+      }
+
+      // location
+      if (helper._.has(data.data, 'location')) {
+        if (!validator.isLength(data.data.location, 0, 70)) {
+          errors.location = 'Location should be 70 characters max.';
+        } else {
+          var location = data.data.location;
+          location = validator.trim(location);
+          location = validator.escape(location);
+          if (location != user.location)
+            sanitized.location = location;
         }
       }
 
@@ -72,7 +73,7 @@ module.exports = function(io, socket, data) {
           var website = data.data.website;
           website = validator.trim(website);
           website = validator.escape(website);
-          if (website != room.website)
+          if (website != user.website)
             sanitized.website = website;
         }
       }
@@ -83,33 +84,32 @@ module.exports = function(io, socket, data) {
           errors.color = 'Color should be explained has hexadecimal (e.g.: #FF00AA).';
         } else {
           var color = data.data.color.toLocaleUpperCase();
-          if (color != room.color)
+          if (color != user.color)
             sanitized.color = color;
         }
       }
 
-      // permanent
-      if (helper._.has(data.data, 'permanent')) {
-        var permanent = validator.toBoolean(data.data.permanent);
-        if (permanent != room.permanent)
-          sanitized.permanent = permanent;
+      // general
+      if (helper._.has(data.data, 'general')) {
+        var general = validator.toBoolean(data.data.general);
+        if (general != user.general)
+          sanitized.general = general;
       }
 
       var errNum = Object.keys(errors).length;
       if (errNum > 0) {
-        socket.emit('room:update', {
-          name: room.name,
+        socket.emit('user:update', {
           success: false,
           errors: errors
         });
         return callback('Errors in form data: '+Object.keys(errors).toString());
       }
 
-      return callback(null, room, sanitized);
+      return callback(null, user, sanitized);
 
     },
 
-    function images(room, sanitized, callback) {
+    function images(user, sanitized, callback) {
 
       /**
        * We receive following fields (e.g.: data.data.avatar):
@@ -135,11 +135,11 @@ module.exports = function(io, socket, data) {
           sanitized.avatar = avatar.path;
 
         // remove actual image
-        if (avatar.remove && avatar.remove == true && room.avatar) {
+        if (avatar.remove && avatar.remove == true && user.avatar) {
           sanitized.avatar = '';
 
           // remove previous picture from cloudinary?
-          cloudinary.api.delete_resources([room.avatarId()], function(result){
+          cloudinary.api.delete_resources([user.avatarId()], function(result){
               console.log(result.deleted);
           });
         }
@@ -153,61 +153,73 @@ module.exports = function(io, socket, data) {
           sanitized.poster = poster.path;
 
         // remove actual image
-        if (poster.remove && poster.remove == true && room.poster) {
+        if (poster.remove && poster.remove == true && user.poster) {
           sanitized.poster = '';
 
           // remove previous picture from cloudinary?
-          cloudinary.api.delete_resources([room.posterId()], function(result){
+          cloudinary.api.delete_resources([user.posterId()], function(result){
             console.log(result.deleted);
           });
         }
       }
 
-      return callback(null, room, sanitized);
+      return callback(null, user, sanitized);
 
     },
 
-    function update(room, sanitized, callback) {
+    function update(user, sanitized, callback) {
 
       for (var field in sanitized) {
-        room.set(field, sanitized[field]);
+        user.set(field, sanitized[field]);
       }
 
-      room.save(function(err) {
+      user.save(function(err) {
         if (err)
-          return callback('Error when saving room "'+room.name+'": '+err);
+          return callback('Error when saving user "'+user.username+'": '+err);
 
-        socket.emit('room:update', {
-          name: room.name,
+        socket.emit('user:update', {
           success: true
         });
 
-        return callback(null, room, sanitized);
+        return callback(null, user, sanitized);
       });
 
     },
 
-    function broadcast(room, sanitized, callback) {
+    function broadcast(user, sanitized, callback) {
 
       var updatedEvent = {};
       if (Object.keys(sanitized).length > 0) {
-        // push room modifcations to room sockets
+
         updatedEvent = {
-          name: room.name,
+          user_id: user._id.toString(),
+          username: user.username,
           data: sanitized
         };
-        io.to(room.name).emit('room:updated', updatedEvent);
+
+        // user itself
+        io.to('user:'+socket.request.user._id).emit('user:updated', updatedEvent);
+
+        // rooms user
+        var rooms = helper.userRooms(io, user._id.toString());
+        helper._.each(rooms, function(room) {
+          console.log(room);
+          io.to(room).emit('user:updated', updatedEvent);
+        });
+
+        // @todo : onetoone attendees
+
       }
 
-      return callback(null, room, sanitized, updatedEvent);
+      return callback(null, user, sanitized, updatedEvent);
     },
 
-  ], function (err, room, sanitized, event) {
+  ], function (err, user, sanitized, event) {
     if (err)
       return helper.handleError(err);
 
     // activity
-    // helper.record('room:updated', socket, data);
+    // helper.record('user:updated', socket, data);
     // @todo : specific event log, no in room/message history
   });
 

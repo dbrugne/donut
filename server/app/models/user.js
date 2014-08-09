@@ -11,7 +11,9 @@ var userSchema = mongoose.Schema({
     location       : String,
     website        : String,
     avatar         : String,
+    poster         : String,
     color          : String,
+    general        : Boolean,
     local            : {
         email         : String,
         password      : String,
@@ -91,6 +93,23 @@ userSchema.methods.usernameAvailability = function (username, success, error) {
   });
 };
 
+/**
+ * Return avatar URL for the current user
+ * @param format (large|medium|small)
+ * @returns {*}
+ */
+userSchema.methods.avatarUrl = function(format) {
+  if (!this.avatar)
+    return '';
+
+  if (!format) format = 'large';
+  var options = {};
+  options.transformation = 'user-'+format;
+
+  return cloudinary.url(this.avatar, options);
+  // cloudinary handle default image
+};
+
 userSchema.methods.avatarId = function() {
   if (!this.avatar) return '';
   var data = this.avatar.split('/');
@@ -98,23 +117,27 @@ userSchema.methods.avatarId = function() {
   var id = data[1].substr(0, data[1].lastIndexOf('.'));
   return id;
 };
+
 /**
- * Return avatar URL for the current user
- * @param format (large|medium|small)
+ * Return poster URL for the current user
  * @returns {*}
  */
-userSchema.methods.avatarUrl = function(format) {
-  if (!format) format = 'large';
-  var options = {};
-  options.transformation = 'user-'+format;
+userSchema.methods.posterUrl = function() {
+  if (!this.poster)
+    return '';
 
-  var cloudinaryId = (this.avatar) ?
-    this.avatar
-    : this._id.toString();
-
-  return cloudinary.url(cloudinaryId, options);
+  return cloudinary.url(this.poster, { transformation: 'user-poster' });
   // cloudinary handle default image
 };
 
-// create the model for users and expose it to our app
+userSchema.methods.posterId = function() {
+  if (!this.poster)
+    return '';
+
+  var data = this.poster.split('/');
+  if (!data[1]) return '';
+  var id = data[1].substr(0, data[1].lastIndexOf('.'));
+  return id;
+};
+
 module.exports = mongoose.model('User', userSchema);

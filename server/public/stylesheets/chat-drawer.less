@@ -168,8 +168,15 @@
       }
     }
   }
-  #room-edit {
+  #room-edit, #user-edit {
     font-size: 1.1em;
+    .errors {
+      .alert;
+      .alert-warning;
+      display: none;
+    }
+  }
+  #room-edit {
     .room {
       text-align: center;
       margin-top: -10px;
@@ -184,10 +191,13 @@
         margin-right: 5px;
       }
     }
-    .errors {
-      .alert;
-      .alert-warning;
-      display: none;
+  }
+  #user-edit {
+    .user {
+      text-align: center;
+      .username {
+        vertical-align: middle;
+      }
     }
   }
 }

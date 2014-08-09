@@ -1,0 +1,43 @@
+<div class="user" data-colorify="<%= user.color %>">
+    <img class="avatar" src="<%= user.avatar %>" alt="<%= user.username %> avatar">
+    <span class="username"><%= user.username %></span>
+</div>
+<div class="errors"></div>
+<form class="user-form" role="form">
+    <div class="form-group">
+        <label for="userBio">Bio</label>
+        <textarea name="bio" class="form-control" id="userBio" placeholder="Describe yourself in few words" maxlength="200"><%= user.bio %></textarea>
+        <p class="help-block">Optional, max 200 char. <span class="counter"></span></p>
+    </div>
+    <div class="form-group">
+        <label for="userLocation">Location</label>
+        <input name="location" type="text" class="form-control" id="userLocation" placeholder="Town, Country" value="<%= user.location %>">
+        <p class="help-block">Optional, max 70 char.</p>
+    </div>
+    <div class="form-group">
+        <label for="userWebsite">Website</label>
+        <input name="website" type="text" class="form-control" id="userWebsite" placeholder="Your website URL" value="<%= user.website %>">
+        <p class="help-block">Optional, should be a valid website address (with or without http://)</p>
+    </div>
+    <div class="form-group">
+        <label>Avatar</label>
+        <div class="user-avatar"></div>
+    </div>
+    <div class="form-group">
+        <label>Poster</label>
+        <div class="user-poster"></div>
+    </div>
+    <div class="form-group">
+        <label>Couleur</label>
+        <div class="user-color"></div>
+        <p class="help-block">Optional</p>
+    </div>
+    <h3>Paramétres</h3>
+    <div class="checkbox">
+        <label>
+            <input type="checkbox" class="general" <% if (user.general) { %>checked<% } %>> Rejoindre automatique <strong>#Général</strong> quand vous vous connectez
+        </label>
+    </div>
+    <button type="submit" class="btn btn-default btn-sm">Annuler</button>
+    <button type="submit" class="btn btn-primary btn-sm">Sauver</button>
+</form>

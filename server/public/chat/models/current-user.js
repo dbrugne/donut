@@ -14,6 +14,8 @@ define([
       this.listenTo(client, 'connecting', function() { that.set('status', 'connecting'); });
       this.listenTo(client, 'offline',    function() { that.set('status', 'offline'); });
       this.listenTo(client, 'error',      function() { that.set('status', 'error'); });
+
+      this._initialize(options);
     },
     /**
      * Executed each time the connexion with server is re-up (can occurs multiple

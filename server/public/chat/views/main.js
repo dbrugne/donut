@@ -15,20 +15,20 @@ define([
   'views/drawer-room-profile',
   'views/drawer-room-edit',
   'views/drawer-user-profile',
+  'views/drawer-user-edit',
   'views/room-search',
   'views/user-search',
   'views/room',
   'views/onetoone-panel',
   'views/room-block',
-  'views/onetoone-block',
-  'views/account'
+  'views/onetoone-block'
 ], function ($, _, Backbone, client, rooms, onetoones, currentUser, windowView,
              CurrentUserView, AlertView, homeContentView,
              DrawerView,
              DrawerRoomCreateView, DrawerRoomProfileView, DrawerRoomEditView,
-             DrawerUserProfileView,
+             DrawerUserProfileView, DrawerUserEditView,
              RoomSearchView, UserSearchView, RoomView, OneToOnePanelView,
-             RoomBlockView, OnetooneBlockView, AccountView) {
+             RoomBlockView, OnetooneBlockView) {
 
   var MainView = Backbone.View.extend({
 
@@ -43,9 +43,8 @@ define([
     thisDiscussionShouldBeFocusedOnSuccess: '',
 
     events: {
-      'click #search-room-link':          'openSearchRoomModal',
       'click #create-room-link':          'openCreateRoom',
-      'click #search-user-link':          'openSearchUserModal',
+      'click .open-user-edit':            'openUserEdit',
       'click .open-user-profile':         'openUserProfile',
       'dblclick .dbl-open-user-profile':  'openUserProfile',
       'click .open-room-profile':         'openRoomProfile',
@@ -58,11 +57,6 @@ define([
       this.listenTo(client, 'welcome', this.onWelcome);
       this.listenTo(rooms, 'add', this.addRoomView);
       this.listenTo(onetoones, 'add', this.addOneView);
-
-      var that = this;
-      $('#youraccount').click(this, function(event) {
-        that.openAccount(event);
-      }); // link is outside div#chat
 
       // generate and attach subviews
       this.currentUserView = new CurrentUserView({model: currentUser});
@@ -100,7 +94,6 @@ define([
       if (!event) return false;
       event.preventDefault();
       event.stopPropagation();
-      $('.modal').modal('hide');
     },
 
     /**
@@ -177,15 +170,11 @@ define([
 
       return false; // stop propagation
     },
-    openAccount: function(event) {
+    openUserEdit: function(event) {
       this._handleAction(event);
 
-      if (!this.accountModal) {
-        this.accountModal = new AccountView({ mainView: this });
-      }
-
-      this.accountModal.iframeRender();
-      this.accountModal.show();
+      var view = new DrawerUserEditView({ mainView: this });
+      this.drawerView.setSize('450px').setView(view).open();
 
       return false; // stop propagation
     },
@@ -273,11 +262,12 @@ define([
         o.set('focused', false);
       });
       this.$home.hide();
-      this.$account.hide();
     },
 
     // called by router only
     focusHome: function() {
+      // @todo : change pattern to render page with spinner and replace content
+      // on callback
       client.home(); // render home by asking data to server
       this.unfocusAll();
       this.$home.show();
@@ -285,12 +275,6 @@ define([
       this.onetooneBlockView.render();
       this.color(this.defaultColor);
       Backbone.history.navigate('#'); // just change URI, not run route action
-    },
-
-    focusSearch: function() {
-      this.unfocusAll();
-      this.$account.show();
-      Backbone.history.navigate('#search'); // just change URI, not run route action
     },
 
     // called by router only

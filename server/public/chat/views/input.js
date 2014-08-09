@@ -19,6 +19,7 @@ define([
 
     initialize: function(options) {
       this.listenTo(this.model, 'change:status', this.onStatus);
+      this.listenTo(currentUser, 'change:avatar', this.onAvatar);
 
       this.render();
       this.onStatus();
@@ -35,6 +36,12 @@ define([
         avatar = currentUser.get('avatar');
 
       this.$el.html(this.template({avatar: avatar}));
+    },
+
+    onAvatar: function(model, value, options) {
+      this.$el.find('.avatar').prop('src', $.cloudinary.url(value, {
+        transformation: 'user-large'
+      }));
     },
 
     onStatus: function() {

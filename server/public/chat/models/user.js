@@ -1,9 +1,11 @@
 define([
   'underscore',
   'backbone',
-  'jquery'
-], function (_, Backbone, $) {
+  'jquery',
+  'models/client'
+], function (_, Backbone, $, client) {
   var UserModel = Backbone.Model.extend({
+
     defaults: function() {
       return {
         user_id: '',
@@ -11,7 +13,26 @@ define([
         avatar: '',
         status: ''
       };
+    },
+
+    initialize: function(options) {
+      this._initialize();
+    },
+
+    _initialize: function(options) {
+      this.listenTo(client, 'user:updated', this.onUpdated);
+    },
+
+    onUpdated: function(data) {
+      if (data.user_id != this.get('user_id'))
+        return;
+
+      var that = this;
+      _.each(data.data, function(value, key, list) {
+        that.set(key, value);
+      });
     }
+
   });
 
   return UserModel;

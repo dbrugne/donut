@@ -68,6 +68,8 @@ module.exports = function(server) {
     socket.on('user:message', function(data) { require('./ws/user-message')(io, socket, data); });
     socket.on('user:search', function (data) { require('./ws/user-search')(io, socket, data); });
     socket.on('user:profile', function (data) { require('./ws/user-profile')(io, socket, data); });
+    socket.on('user:read', function (data) { require('./ws/user-read')(io, socket, data); });
+    socket.on('user:update', function (data) { require('./ws/user-update')(io, socket, data); });
     socket.on('user:status', function (data) { require('./ws/user-status')(io, socket, data); });
 
   });
