@@ -102,9 +102,6 @@ define([
      * @param data
      */
     onWelcome: function(data) {
-      // Join #General
-//      client.join('#General'); // @todo : should be called on collection
-
       // Run routing
       this.trigger('ready');
     },
