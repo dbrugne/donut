@@ -8,9 +8,7 @@
       "bootstrap": "latest",
       "underscore-amd": "latest",
       "backbone-amd": "latest",
-      "backbone.iobind": "latest",
       "cloudinary_js": "latest",
-      "validator-js": "latest",
       "moment": "2.7.x",
       "i18next": "latest",
       "Scroller": "latest"
