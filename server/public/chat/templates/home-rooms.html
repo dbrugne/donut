@@ -1,4 +1,7 @@
 <div class="rooms">
+    <% if (rooms.length < 1) { %>
+        <div class="nothing">Aucun donut a afficher ;)</div>
+    <% } %>
     <% _.each(rooms, function(room) { %>
     <div class="room" data-colorify="<%= room.color %>">
         <div class="cover">

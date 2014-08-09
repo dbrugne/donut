@@ -1,4 +1,7 @@
 <div class="onlines">
+    <% if (users.length < 1) { %>
+        <div class="nothing">Aucun utilisateur a afficher ;)</div>
+    <% } %>
     <% _.each(users, function(userOnline) { %>
         <% var bgColor = txtColor = ''; %>
         <% if (userOnline.color) {
