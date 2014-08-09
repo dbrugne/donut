@@ -41,9 +41,9 @@ chat
     - [ ] Responsivness
     - [ ] Fix left and right column and center is flexible
     - [ ] Fix line break in messages and description/bio by adding a nl2br method
+    - [ ] One to one
     - [ ] Add room owner/ops list on room profile
     - [ ] Integration room list on user profile
-    - [ ] Translate texts
   - [ ] Room page
   - [ ] User page
 
@@ -62,6 +62,7 @@ chat
 - [ ] Créer une email martine@
 
 **Contents**
+- [ ] Translate texts
 - [ ] FAQ
 - [ ] Contact (from HP and chat interface)
 - [ ] CGU (from HP and chat interface)
