@@ -51,7 +51,7 @@ module.exports = function(server) {
 
     socket.on('home', function() { require('./ws/home')(io, socket); });
 
-    socket.on('search', function() { require('./ws/search')(io, socket); });
+    socket.on('search', function(data) { require('./ws/search')(io, socket, data); });
 
     socket.on('room:join', function (data) { require('./ws/room-join')(io, socket, data); });
     socket.on('room:leave', function (data) { require('./ws/room-leave')(io, socket, data); });

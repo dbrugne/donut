@@ -5,6 +5,9 @@ var User = require('../app/models/user');
 
 module.exports = function (io, socket, data) {
 
+  if (!data.search)
+   return;
+
   var regexp = new RegExp(data.search, "i");
 
   async.parallel([
@@ -12,11 +15,14 @@ module.exports = function (io, socket, data) {
       function roomSearch(callback) {
 
         var search = {
-          name: regexp,
-          description: regexp
+          name: regexp
+//          $or: [
+//            { name: regexp },
+//            { description: regexp }
+//          ]
         };
 
-        var q = Room.find(search, 'name permanent description topic avatar color').populate('owner', 'username');
+        var q = Room.find(search, 'name permanent owner description topic avatar color').populate('owner', 'username');
         q.exec(function(err, rooms) {
           if (err)
             return callback('Error while searching for rooms: '+err);
@@ -60,9 +66,9 @@ module.exports = function (io, socket, data) {
 
           var results = [];
           helper._.each(users, function(user) {
-            var status = (helper.userSockets(io, users[i]._id).length)
-              ? 1
-              : 0;
+            var status = (helper.userSockets(io, user._id.toString()).length)
+              ? true
+              : false;
 
             results.push({
               username: user.username,
