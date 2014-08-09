@@ -11,6 +11,7 @@ module.exports = function(io, socket, data) {
 
   function handleSuccess(room) {
     // Is user a room owner?
+    // @todo : allow also op, factorize helper.isOwner(room, user) and helper.isOp(room, user) methods
     if (room.owner._id.toString() != socket.getUserId())
       return helper.handleError('Room topic, user is not room owner');
 
@@ -26,7 +27,7 @@ module.exports = function(io, socket, data) {
         time: Date.now(),
         user_id : socket.getUserId(),
         username: socket.getUsername(),
-        avatar  : socket.getAvatar(),
+        avatar  : socket.getAvatar('medium'),
         topic   : data.topic
       };
       io.to(data.name).emit('room:topic', roomTopicEvent);
