@@ -5,8 +5,6 @@ var conf = module.exports = {
   },
   room: {
     default: {
-      avatar: 'room-default.png',
-      poster: 'poster-default.png',
       color: '#cdcccc'
     }
   },
@@ -14,7 +12,7 @@ var conf = module.exports = {
     'url' : ''
   },
   sessions: {
-    key: 'c.sid',
+    key: 'donut.sid',
     secret: 'q4qsd65df45s4d5f45ds5fsf4s'
   },
   facebook: {

@@ -114,8 +114,6 @@ module.exports = {
         room = new Room({
           name: o.name,
           owner: o.socket.getUserId(),
-          avatar: configuration.room.default.avatar,
-          poster: configuration.room.default.poster,
           color: configuration.room.default.color,
           permanent: false
         });
