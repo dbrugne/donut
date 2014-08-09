@@ -68,6 +68,7 @@ passport.use('local-signup', new LocalStrategy({
 
         // if there is no user with that email create him
         var newUser = new User();
+        // @todo : default values for .general, .color, .avatar and .poster
         newUser.local.email = email;
         newUser.local.password = newUser.generateHash(password);
 
