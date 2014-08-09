@@ -48,7 +48,8 @@ define([
      var sameUser = (message.get('user_id') == this.lastMessageUser)
        ? true
        : false;
-    this.lastMessageUser = message.get('user_id');
+
+     this.lastMessageUser = message.get('user_id');
 
      if (sameUser) { // we had span.text to the last p.message
        var $last = this.$el.find('p.message').last();
@@ -69,7 +70,7 @@ define([
      } else { // render a full p.message
        var html = this.template({
          user_id: message.get('user_id'),
-         avatar: message.get('avatar'),
+         avatar: $.c.userAvatar(message.get('avatar'), 'user-medium'),
          username: message.get('username'),
          time: message.get('time'),
          sameUser: sameUser
