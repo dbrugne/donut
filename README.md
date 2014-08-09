@@ -52,6 +52,7 @@ chat
 - [x] Implement clean user profile form in IHM
 - [ ] Implement clean account form (email, password, Facebook) in IHM
 - [ ] Repair forgotten password integration in new HP
+- [ ] Implement user login and signup errors on landing forms
 
 **Hosting**
 - [ ] Add test instance on the same server (donut.me subdomain and new IP from OVH)
