@@ -31,17 +31,13 @@ define([
     },
 
     render: function() {
-      var avatar = '';
-      if (currentUser.get('avatar'))
-        avatar = currentUser.get('avatar');
-
-      this.$el.html(this.template({avatar: avatar}));
+      this.$el.html(this.template({
+        avatar: $.c.userAvatar(currentUser.get('avatar'), 'user-large')
+      }));
     },
 
     onAvatar: function(model, value, options) {
-      this.$el.find('.avatar').prop('src', $.cloudinary.url(value, {
-        transformation: 'user-large'
-      }));
+      this.$el.find('.avatar').prop('src', $.c.userAvatar(value, 'user-large'));
     },
 
     onStatus: function() {

@@ -137,6 +137,9 @@ define([
         notification.time = Number(new Date());
       }
 
+      if (notification.avatar)
+        notification.avatar = $.c.userAvatar(notification.avatar, 'user-medium');
+
       var html = this.notificationTemplate(notification);
 
       if (!shouldAggregated) {

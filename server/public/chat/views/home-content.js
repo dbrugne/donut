@@ -16,7 +16,13 @@ define([
       this.listenTo(client, 'home', this.render);
     },
     render: function(data) {
-      var html = this.template(data);
+      var rooms = [];
+      _.each(data.rooms, function(room) {
+        room.avatar = $.c.roomAvatar(room.avatar, 'room-xlarge');
+        rooms.push(room);
+      });
+
+      var html = this.template({rooms: rooms});
       this.$el.html(html);
       this.$el.colorify();
       return this;

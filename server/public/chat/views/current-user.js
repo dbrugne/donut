@@ -29,9 +29,7 @@ define([
 
       data.hello = this.hello;
 
-      data.avatar = $.cloudinary.url(data.avatar, {
-        transformation: 'user-large'
-      });
+      data.avatar = $.c.userAvatar(data.avatar, 'user-large');
 
       var html = this.template(data);
       this.$el.html(html);

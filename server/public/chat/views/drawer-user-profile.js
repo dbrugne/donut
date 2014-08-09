@@ -40,6 +40,8 @@ define([
         ? true
         : false;
 
+      user.avatar = $.c.userAvatar(user.avatar, 'user-large');
+
       var html = this.template({user: user});
       this.$el.html(html);
       this.$el.colorify();

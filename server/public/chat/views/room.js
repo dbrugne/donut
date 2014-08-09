@@ -40,8 +40,12 @@ define([
       data.owner = owner;
       data.isOwner = this.model.currentUserIsOwner();
 
+      // avatar
+      data.avatar = $.c.roomAvatar(data.avatar, 'room-large');
+
       // poster
-      data.posterblured = data.poster.replace('t_room-poster', 't_room-poster-blured');
+      data.poster = $.c.roomPoster(data.poster, 'room-poster');
+      data.posterblured = $.c.roomPoster(data.poster, 'room-poster-blured');
 
       return data;
     },
@@ -80,22 +84,13 @@ define([
       this._colorify();
     },
     onAvatar: function(model, value, options) {
-      // @todo : handle default image
-      var url = $.cloudinary.url(value, {
-        transformation: 'room-large'
-      });
+      var url = $.c.roomAvatar(value, 'room-large');
       this.$el.find('.header img.avatar').attr('src', url);
     },
     onPoster: function(model, value, options) {
-      // @todo : handle default image
-      var url = $.cloudinary.url(value, {
-        transformation: 'room-poster'
-      });
+      var url = $.c.roomPoster(value, 'room-poster');
       this.$el.find('div.side').css('background-image', 'url('+url+')');
-
-      var urlb = $.cloudinary.url(value, {
-        transformation: 'room-poster-blured'
-      });
+      var urlb = $.c.roomPoster(value, 'room-poster-blured');
       this.$el.find('div.blur').css('background-image', 'url('+urlb+')');
     },
     onPermanent: function(model, value, options) {

@@ -41,6 +41,8 @@ define([
           : false
           : false;
 
+        room.avatar = $.c.roomAvatar(room.avatar, 'room-large');
+
         var html = this.template({room: room});
         this.$el.html(html);
         this.$el.colorify();

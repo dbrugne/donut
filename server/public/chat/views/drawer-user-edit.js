@@ -44,6 +44,9 @@ define([
       if (user.color)
         this.trigger('color', user.color);
 
+      var currentAvatar = user.avatar;
+      user.avatar = $.c.userAvatar(user.avatar, 'user-large');
+
       var html = this.template({user: user});
       this.$el.html(html);
 
@@ -66,7 +69,7 @@ define([
       // avatar
       this.avatarUploader = new ImageUploader({
         el: this.$el.find('.user-avatar').first(),
-        current: user.avatar,
+        current: currentAvatar,
         tags: 'user,avatar',
         field_name: 'avatar'
       });

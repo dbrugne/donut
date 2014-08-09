@@ -72,6 +72,30 @@ define([
         cloud_name: window.cloudinary_cloud_name,
         api_key: window.cloudinary_api_key
       });
+      $.c = {
+        roomAvatar: function(identifier, transformation) {
+          return this._url(identifier, transformation, 'default/room-avatar-default');
+        },
+        roomPoster: function(identifier, transformation) {
+          return this._url(identifier, transformation, 'default/room-poster-default');
+        },
+        userAvatar: function(identifier, transformation) {
+          return this._url(identifier, transformation, 'default/user-avatar-default');
+        },
+        userPoster: function(identifier, transformation) {
+          return this._url(identifier, transformation, 'default/user-poster-default');
+        },
+        _url: function(identifier, transformation, defaultIdentifier) {
+          var options = {};
+          if (transformation)
+            var options = {transformation: transformation};
+
+          if (!identifier)
+            identifier = defaultIdentifier || 'default/default';
+
+          return $.cloudinary.url(identifier, options);
+        }
+      };
 
       // Moment language
       moment.lang('fr', {

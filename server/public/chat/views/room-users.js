@@ -51,6 +51,9 @@ define([
         if (that.model.get('op').indexOf(o.get('user_id')) !== -1)
           u.op = true;
 
+        // avatar
+        u.avatar = $.c.userAvatar(u.avatar, 'user-medium');
+
         listJSON.push(u);
       });
 

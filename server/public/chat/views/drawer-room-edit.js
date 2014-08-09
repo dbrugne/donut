@@ -54,6 +54,9 @@ define([
           : false
           : false;
 
+      var currentAvatar = room.avatar;
+      room.avatar = $.c.roomAvatar(room.avatar, 'room-large');
+
       var html = this.template({room: room});
       this.$el.html(html);
 
@@ -76,7 +79,7 @@ define([
       // avatar
       this.avatarUploader = new ImageUploader({
         el: this.$el.find('.room-avatar').first(),
-        current: room.avatar,
+        current: currentAvatar,
         tags: 'room,avatar',
         field_name: 'avatar'
       });
