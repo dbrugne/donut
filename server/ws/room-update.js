@@ -189,20 +189,29 @@ module.exports = function(io, socket, data) {
 
     function broadcast(room, sanitized, callback) {
 
-      var updatedEvent = {};
-      if (Object.keys(sanitized).length > 0) {
-        // push room modifcations to room sockets
-        updatedEvent = {
+      // notify only certain fields
+      console.log('before: ',sanitized);
+      var sanitizedToNotify = {};
+      var fieldToNotify = ['avatar','poster','color','permanent'];
+      helper._.each(Object.keys(sanitized), function(key) {
+        if (fieldToNotify.indexOf(key) != -1) {
+          sanitizedToNotify[key] = sanitized[key];
+        }
+      });
+      console.log('after: ',sanitizedToNotify);
+
+      if (Object.keys(sanitizedToNotify).length > 0) {
+        var updatedEvent = {
           name: room.name,
-          data: sanitized
+          data: sanitizedToNotify
         };
         io.to(room.name).emit('room:updated', updatedEvent);
       }
 
-      return callback(null, room, sanitized, updatedEvent);
+      return callback(null, room, sanitized);
     },
 
-  ], function (err, room, sanitized, event) {
+  ], function (err, room, sanitized) {
     if (err)
       return helper.handleError(err);
 

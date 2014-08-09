@@ -188,13 +188,22 @@ module.exports = function(io, socket, data) {
 
     function broadcast(user, sanitized, callback) {
 
-      var updatedEvent = {};
-      if (Object.keys(sanitized).length > 0) {
+      // notify only certain fields
+      console.log('before: ',sanitized);
+      var sanitizedToNotify = {};
+      var fieldToNotify = ['avatar','poster','color'];
+      helper._.each(Object.keys(sanitized), function(key) {
+        if (fieldToNotify.indexOf(key) != -1) {
+          sanitizedToNotify[key] = sanitized[key];
+        }
+      });
+      console.log('after: ',sanitizedToNotify);
 
-        updatedEvent = {
+      if (Object.keys(sanitizedToNotify).length > 0) {
+        var updatedEvent = {
           user_id: user._id.toString(),
           username: user.username,
-          data: sanitized
+          data: sanitizedToNotify
         };
 
         // user itself
@@ -208,13 +217,12 @@ module.exports = function(io, socket, data) {
         });
 
         // @todo : onetoone attendees
-
       }
 
-      return callback(null, user, sanitized, updatedEvent);
+      return callback(null, user, sanitized);
     },
 
-  ], function (err, user, sanitized, event) {
+  ], function (err, user, sanitized) {
     if (err)
       return helper.handleError(err);
 
