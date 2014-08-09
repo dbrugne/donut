@@ -21,7 +21,6 @@ define([
       this.listenTo(this.model, 'change:color', this.onColor);
       this.listenTo(this.model, 'change:avatar', this.onAvatar);
       this.listenTo(this.model, 'change:poster', this.onPoster);
-      this.listenTo(this.model, 'change:owner', this.onOwner);
       this.listenTo(this.model, 'change:permanent', this.onPermanent);
 
       this.topicView = new TopicView({el: this.$el.find('.topic'), model: this.model});
@@ -98,9 +97,6 @@ define([
         transformation: 'room-poster-blured'
       });
       this.$el.find('div.blur').css('background-image', 'url('+urlb+')');
-    },
-    onOwner: function(model, value, options) {
-      // change owner link
     },
     onPermanent: function(model, value, options) {
       if (value)
