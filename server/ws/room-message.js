@@ -21,7 +21,7 @@ module.exports = function(io, socket, data) {
       message: data.message,
       user_id: socket.getUserId(),
       username: socket.getUsername(),
-      avatar: socket.getAvatar('medium')
+      avatar: socket.getAvatar()
     };
     io.to(data.name).emit('room:message', messageEvent);
 

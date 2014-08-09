@@ -18,7 +18,7 @@ module.exports = function(io, socket, data) {
     io.to('user:'+socket.getUserId()).emit('user:open', {
       user_id: userWith._id,
       username: userWith.username,
-      avatar: userWith.avatarUrl('medium'),
+      avatar: userWith.avatar,
       status: status,
       history: messages
     });

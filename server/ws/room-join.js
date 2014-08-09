@@ -29,8 +29,8 @@ module.exports = function(io, socket, data) {
       owner: {},
       op: room.op || [],
       permanent: room.permanent,
-      avatar: room.avatarUrl('large'),
-      poster: room.posterUrl(),
+      avatar: room.avatar,
+      poster: room.poster,
       color: room.color,
       topic: room.topic,
       users: users
@@ -50,7 +50,7 @@ module.exports = function(io, socket, data) {
       time: Date.now(),
       user_id: socket.getUserId(),
       username: socket.getUsername(),
-      avatar: socket.getAvatar('medium')
+      avatar: socket.getAvatar()
     };
     io.to(room.name).emit('room:in', roomInEvent);// @todo : send room:in before to avoid receiving it
 

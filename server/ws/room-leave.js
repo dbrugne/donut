@@ -18,7 +18,7 @@ module.exports = function(io, socket, data) {
       time: Date.now(),
       user_id: socket.getUserId(),
       username: socket.getUsername(),
-      avatar: socket.getAvatar('medium')
+      avatar: socket.getAvatar()
     };
     io.to(room.name).emit('room:out', roomOutEvent);
 

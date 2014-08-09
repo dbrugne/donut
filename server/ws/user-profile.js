@@ -14,7 +14,7 @@ module.exports = function(io, socket, data) {
     userData.user_id = userData._id;
     delete userData._id;
     // avatar
-    userData.avatar = user.avatarUrl('large');
+    userData.avatar = user.avatar;
     // status
     userData.status = (helper.userSockets(io, user._id).length > 0)
       ? 'online'

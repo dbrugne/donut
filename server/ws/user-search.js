@@ -30,7 +30,7 @@ module.exports = function(io, socket, data) {
       results.push({
         user_id: users[i]._id.toString(),
         username: users[i].username,
-        avatar: users[i].avatarUrl('large'),
+        avatar: users[i].avatar,
         status: status
       });
     }

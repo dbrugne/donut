@@ -36,7 +36,7 @@ module.exports = function(io, socket, data) {
       by_avatar  : socket.getAvatar(),
       user_id: user._id.toString(),
       username: user.username,
-      avatar: user.avatarUrl('medium')
+      avatar: user.avatar
     };
 
     // Inform other room users

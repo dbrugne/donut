@@ -248,7 +248,7 @@ module.exports = {
           list.push({
             user_id: u.getUserId(),
             username: u.getUsername(),
-            avatar: u.getAvatar('medium')
+            avatar: u.getAvatar()
           });
         }
       }
@@ -348,7 +348,7 @@ module.exports = {
           list.push({
             user_id: u.getUserId(),
             username: u.getUsername(),
-            avatar: u.getAvatar('medium')
+            avatar: u.getAvatar()
           });
         }
       }
@@ -511,7 +511,7 @@ module.exports = {
           topic: room.topic,
           description: room.description,
           color: room.color,
-          avatar: room.avatarUrl('xlarge'),
+          avatar: room.avatar,
           owner: ownerData,
           users: 0
         };
@@ -554,7 +554,7 @@ module.exports = {
         var roomData = {
           user_id: user._id.toString(),
           username: user.username,
-          avatar: user.avatarUrl('medium'),
+          avatar: user.avatar,
           color: user.color,
           bio: user.bio,
           location: user.location,

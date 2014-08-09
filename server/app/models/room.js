@@ -80,15 +80,16 @@ roomSchema.methods.avatarId = function() {
  * @returns {*}
  */
 roomSchema.methods.avatarUrl = function(format) {
-  if (!format) format = 'large';
+  if (!this.avatar)
+    return '';
+
+  if (!format)
+    format = 'large';
+
   var options = {};
   options.transformation = 'room-'+format;
 
-  var cloudinaryId = (this.avatar) ?
-    this.avatar
-    : this._id.toString();
-
-  return cloudinary.url(cloudinaryId, options);
+  return cloudinary.url(this.avatar, options);
   // cloudinary handle default image
 };
 
@@ -97,11 +98,10 @@ roomSchema.methods.avatarUrl = function(format) {
  * @returns {*}
  */
 roomSchema.methods.posterUrl = function() {
-  var cloudinaryId = (this.poster) ?
-    this.poster
-    : this._id.toString()+'-poster';
+  if (!this.poster)
+    return '';
 
-  return cloudinary.url(cloudinaryId, {transformation: 'room-poster'});
+  return cloudinary.url(this.poster, {transformation: 'room-poster'});
   // cloudinary handle default image
 };
 

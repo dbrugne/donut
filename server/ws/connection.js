@@ -19,8 +19,8 @@ module.exports = function(io, socket) {
   socket.getUsername = function() {
     return this.request.user.username;
   };
-  socket.getAvatar = function(format) {
-    return this.request.user.avatarUrl(format);
+  socket.getAvatar = function() {
+    return this.request.user.avatar;
   };
 
   // Welcome data
@@ -102,7 +102,7 @@ module.exports = function(io, socket) {
           users.push({ // add myself, not already subscribed
             user_id: socket.getUserId(),
             username: socket.getUsername(),
-            avatar: socket.getAvatar('medium')
+            avatar: socket.getAvatar()
           });
 
           var roomData = {
@@ -110,8 +110,8 @@ module.exports = function(io, socket) {
             owner: {},
             op: room.op || [],
             permanent: room.permanent,
-            avatar: room.avatarUrl('large'),
-            poster: room.posterUrl(),
+            avatar: room.avatar,
+            poster: room.poster,
             color: room.color,
             topic: room.topic || '',
             users: users
@@ -142,7 +142,7 @@ module.exports = function(io, socket) {
           time: Date.now(),
           user_id: socket.getUserId(),
           username: socket.getUsername(),
-          avatar: socket.getAvatar('medium')
+          avatar: socket.getAvatar()
         };
         io.to(room).emit('room:in', roomInEvent);
 
@@ -176,7 +176,7 @@ module.exports = function(io, socket) {
     socket.broadcast.emit('user:online', {
       user_id: socket.getUserId(),
       username: socket.getUsername(),
-      avatar: socket.getAvatar('medium')
+      avatar: socket.getAvatar()
     });
 
     // activity

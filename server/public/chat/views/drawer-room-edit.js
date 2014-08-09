@@ -76,7 +76,7 @@ define([
       // avatar
       this.avatarUploader = new ImageUploader({
         el: this.$el.find('.room-avatar').first(),
-        current: room.avatar_raw,
+        current: room.avatar,
         tags: 'room,avatar',
         field_name: 'avatar'
       });
@@ -84,7 +84,7 @@ define([
       // poster
       this.posterUploader = new ImageUploader({
         el: this.$el.find('.room-poster').first(),
-        current: room.poster_raw,
+        current: room.poster,
         tags: 'room,poster',
         field_name: 'poster'
       });

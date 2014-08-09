@@ -66,7 +66,7 @@ define([
       // avatar
       this.avatarUploader = new ImageUploader({
         el: this.$el.find('.user-avatar').first(),
-        current: user.avatar_raw,
+        current: user.avatar,
         tags: 'user,avatar',
         field_name: 'avatar'
       });
@@ -74,7 +74,7 @@ define([
       // poster
       this.posterUploader = new ImageUploader({
         el: this.$el.find('.user-poster').first(),
-        current: user.poster_raw,
+        current: user.poster,
         tags: 'user,poster',
         field_name: 'poster'
       });

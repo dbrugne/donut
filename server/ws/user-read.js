@@ -17,12 +17,10 @@ module.exports = function(io, socket, data) {
     delete userData._id;
 
     // avatar
-    userData.avatar = user.avatarUrl('medium');
-    userData.avatar_raw = user.avatar;
+    userData.avatar = user.avatar;
 
     // poster
-    userData.poster = user.posterUrl();
-    userData.poster_raw = user.poster;
+    userData.poster = user.poster;
 
     socket.emit('user:read', userData);
 
