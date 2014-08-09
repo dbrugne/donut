@@ -28,11 +28,6 @@ define([
 
           // on response show profile
           this.listenTo(client, 'room:read', this.onRead);
-
-//          var that = this;
-//          this.$el.on('shown', function (e) {
-//              that.$el.find('.website').linkify();
-//          });
       },
       render: function () {
           // render spinner only
@@ -49,6 +44,7 @@ define([
         var html = this.template({room: room});
         this.$el.html(html);
         this.$el.colorify();
+        this.$el.find('.website').linkify();
 
         if (room.color)
           this.trigger('color', room.color);
