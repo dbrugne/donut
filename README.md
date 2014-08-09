@@ -9,6 +9,7 @@ chat
 - [ ] Search engine
 - [ ] Allow user to change room user sort order
 - [ ] Allow user to change room user display
+- [ ] Sort room users list also on ownership/op status
 - Update chat interface on room/user details when room/user is edited
     - [ ] WS: implement corresponding events: room:update/user:update (or user:nickname, user:avatar, user:color, room:avatar and user:color)
     - [ ] JS: on previous events update IHM: room tab/header, onetoone tab/header
@@ -18,20 +19,19 @@ chat
   - [x] Colorize vs. drawer
 
 **Room ops**
-- [ ] Sort room users list also on ownership/op status
 - [ ] Add a 'room ops' list with 'remove user from op list' button
-- [ ] Factorize socket room op/owner detection in helper and update room:op/deop events
+- [ ] Factorize socket room op/owner detection in helper and update room:op/deop/topic/update events
 - [ ] Kick a user
 
 **Theme**
-- [ ] Implement the new design
+- Implement the new design
   - [x] Favicon
-  - [ ] Scrollbars
+  - [ ] Scrollbars adding (home content, user and room edit drawer) and improvments (room messages and users)
   - [ ] Pictos SVG
   - Landing page
     - [x] Responsive
     - [x] Hovers
-    - [ ] Fluid login background
+    - [ ] Fluid login background (on small resolutions display donut background w/ opacity)
     - [ ] Rouleaux
   - Chat interface
     - [x] Factorize custom 'main' and 'contrast' colors in views (http://stackoverflow.com/questions/1855884/determine-font-color-based-on-background-color - http://stackoverflow.com/questions/596216/formula-to-determine-brightness-of-rgb-color)
@@ -44,18 +44,13 @@ chat
     - [ ] Add room owner/ops list on room profile
     - [ ] Integration room list on user profile
     - [ ] Translate texts
-  - Contents
-    - [ ] FAQ
-    - [ ] Contact (from HP and chat interface)
-    - [ ] CGU (from HP and chat interface)
-    - [ ] Emails : https://github.com/dbrugne/chat/issues/6
-    - [ ] Welcome messages
   - [ ] Room page
   - [ ] User page
 
 **Account**
-- [ ] Implement clean user form in IHM
 - [x] Implement clean room form in IHM
+- [x] Implement clean user profile form in IHM
+- [ ] Implement clean account form (email, password, Facebook) in IHM
 - [ ] Repair forgotten password integration in new HP
 
 **Hosting**
@@ -64,6 +59,16 @@ chat
 - [ ] Changer le proriétaire du domaine : MARTINE BLAJMAN
 - [ ] Créer une email contact@
 - [ ] Créer une email martine@
+
+**Contents**
+- [ ] FAQ
+- [ ] Contact (from HP and chat interface)
+- [ ] CGU (from HP and chat interface)
+- [ ] Emails : https://github.com/dbrugne/chat/issues/6
+- [ ] Welcome messages
+
+**Other**
+- [ ] @todo review
 
 ## Release 3
 
