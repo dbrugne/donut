@@ -21,6 +21,7 @@ define([
 
       this.$opacity = this.$el.find('.opacity').first();
       this.$wrap = this.$el.find('.wrap').first();
+      this.$content = this.$el.find('.content').first();
 
       this.shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
       this.longhandRegex = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i;
