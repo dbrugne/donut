@@ -34,7 +34,6 @@ define([
    * - Receive welcome (in mainView)
    *   - Store current user
    *   - Render the home panel
-   *   - Render the online users block
    *   - Join 'general' room (no focus)
    *   - Join rooms received in welcome (no focus)
    *

@@ -9,25 +9,23 @@ define([
   'views/window',
   'views/current-user',
   'views/alert',
-  'views/home-content',
+  'views/home',
   'views/drawer',
   'views/drawer-room-create',
   'views/drawer-room-profile',
   'views/drawer-room-edit',
   'views/drawer-user-profile',
   'views/drawer-user-edit',
-  'views/room-search',
-  'views/user-search',
   'views/room',
   'views/onetoone-panel',
   'views/room-block',
   'views/onetoone-block'
 ], function ($, _, Backbone, client, rooms, onetoones, currentUser, windowView,
-             CurrentUserView, AlertView, homeContentView,
+             CurrentUserView, AlertView, HomeView,
              DrawerView,
              DrawerRoomCreateView, DrawerRoomProfileView, DrawerRoomEditView,
              DrawerUserProfileView, DrawerUserEditView,
-             RoomSearchView, UserSearchView, RoomView, OneToOnePanelView,
+             RoomView, OneToOnePanelView,
              RoomBlockView, OnetooneBlockView) {
 
   var MainView = Backbone.View.extend({
@@ -62,6 +60,7 @@ define([
       this.currentUserView = new CurrentUserView({model: currentUser});
       this.roomBlockView = new RoomBlockView({collection: rooms});
       this.onetooneBlockView = new OnetooneBlockView({collection: onetoones});
+      this.homeView = new HomeView({});
       this.drawerView = new DrawerView({mainView: this});
       this.alertView = new AlertView({mainView: this});
     },
@@ -115,13 +114,6 @@ define([
     // DRAWERS
     // ======================================================================
 
-//    openSearchRoomModal: function(event) {
-//      if (!this.searchRoomModal) {
-//        this.searchRoomModal = new RoomSearchView({mainView: this});
-//        this.searchRoomModal.search();
-//      }
-//      this.searchRoomModal.show();
-//    },
     openCreateRoom: function(event) {
       this._handleAction(event);
 
@@ -130,13 +122,6 @@ define([
 
       return false; // stop propagation
     },
-//    openSearchUserModal: function(event) {
-//      if (!this.userSearchModal) {
-//        this.userSearchModal = new UserSearchView({mainView: this});
-//        this.userSearchModal.search();
-//      }
-//      this.userSearchModal.show();
-//    },
     openUserProfile: function(event) {
       this._handleAction(event);
 
