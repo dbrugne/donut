@@ -70,6 +70,10 @@ define([
         that.debug(['io:in:home', data]);
         that.trigger('home', data);
       });
+      this.socket.on('search', function(data) {
+        that.debug(['io:in:search', data]);
+        that.trigger('search', data);
+      });
 
       // ROOM EVENTS
       // ======================================================
@@ -111,14 +115,6 @@ define([
         that.debug(['io:in:room:updated', data]);
         that.trigger('room:updated', data);
       });
-      this.socket.on('room:searchsuccess', function(data) {
-        that.debug(['io:in:room:searchsuccess', data]);
-        that.trigger('room:searchsuccess', data);
-      });
-      this.socket.on('room:searcherror', function(data) {
-        that.debug(['io:in:room:searcherror', data]);
-        that.trigger('room:searcherror', data);
-      });
       this.socket.on('room:permanent', function(data) {
         that.debug(['io:in:room:permanent', data]);
         that.trigger('room:permanent', data);
@@ -159,14 +155,6 @@ define([
         that.debug(['io:in:user:message', data]);
         that.trigger('user:message', data);
       });
-      this.socket.on('user:searchsuccess', function(data) {
-        that.debug(['io:in:user:searchsuccess', data]);
-        that.trigger('user:searchsuccess', data);
-      });
-      this.socket.on('user:searcherror', function(data) {
-        that.debug(['io:in:user:searcherror', data]);
-        that.trigger('user:searcherror', data);
-      });
       this.socket.on('user:profile', function(data) {
         that.debug(['io:in:user:profile', data]);
         that.trigger('user:profile', data);
@@ -195,6 +183,11 @@ define([
     home: function() {
       this.socket.emit('home', {});
       this.debug(['io:out:home', {}]);
+    },
+    search: function(search) {
+      var data = {search: search};
+      this.socket.emit('search', data);
+      this.debug(['io:out:search', data]);
     },
 
     // ROOM METHODS
@@ -233,11 +226,6 @@ define([
       var data = {name: name, data: fields};
       this.socket.emit('room:update', data);
       this.debug(['io:out:room:update', data]);
-    },
-    roomSearch: function(search) {
-      var data = {search: search};
-      this.socket.emit('room:search', data);
-      this.debug(['io:out:room:search', data]);
     },
     roomPermanent: function(name, permanent) {
       var data = {name: name, permanent: permanent};
@@ -278,11 +266,6 @@ define([
       var data = {to: to, message: message};
       this.socket.emit('user:message', data);
       this.debug(['io:out:user:message', data]);
-    },
-    userSearch: function(search) {
-      var data = {search: search};
-      this.socket.emit('user:search', data);
-      this.debug(['io:out:user:search', data]);
     },
     userProfile: function(userId) {
       var data = {user_id: userId};

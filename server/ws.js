@@ -51,11 +51,12 @@ module.exports = function(server) {
 
     socket.on('home', function() { require('./ws/home')(io, socket); });
 
+    socket.on('search', function() { require('./ws/search')(io, socket); });
+
     socket.on('room:join', function (data) { require('./ws/room-join')(io, socket, data); });
     socket.on('room:leave', function (data) { require('./ws/room-leave')(io, socket, data); });
     socket.on('room:topic', function (data) { require('./ws/room-topic')(io, socket, data); });
     socket.on('room:message', function (data) { require('./ws/room-message')(io, socket, data); });
-    socket.on('room:search', function (data) { require('./ws/room-search')(io, socket, data); });
     socket.on('room:read', function (data) { require('./ws/room-read')(io, socket, data); });
     socket.on('room:update', function (data) { require('./ws/room-update')(io, socket, data); });
     socket.on('room:permanent', function (data) { require('./ws/room-permanent')(io, socket, data); });
@@ -66,7 +67,6 @@ module.exports = function(server) {
     socket.on('user:open', function(data) { require('./ws/user-open')(io, socket, data); });
     socket.on('user:close', function(data) { require('./ws/user-close')(io, socket, data); });
     socket.on('user:message', function(data) { require('./ws/user-message')(io, socket, data); });
-    socket.on('user:search', function (data) { require('./ws/user-search')(io, socket, data); });
     socket.on('user:profile', function (data) { require('./ws/user-profile')(io, socket, data); });
     socket.on('user:read', function (data) { require('./ws/user-read')(io, socket, data); });
     socket.on('user:update', function (data) { require('./ws/user-update')(io, socket, data); });
