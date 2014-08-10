@@ -6,7 +6,9 @@ chat
 ## Release 2
 
 **Chat**
-- [ ] Search engine
+- Search engine
+  - [x] Search on home
+  - [ ] Quick search in left column (with 'light' param to get only username/name + avatar) and link for 'more results' that focus and fill the homepage search
 - [ ] Allow user to change room user sort order
 - [ ] Allow user to change room user display
 - [ ] Sort room users list also on ownership/op status
@@ -19,20 +21,19 @@ chat
   - [x] Colorize vs. drawer
 
 **Room ops**
-- [ ] Add a 'room ops' list with 'remove user from op list' button
+- [ ] Add a 'room ops' drawer with 'remove user from op list' button (only for owner)
 - [ ] Factorize socket room op/owner detection in helper and update room:op/deop/topic/update events
 - [ ] Kick a user
 
 **Theme**
 - Implement the new design
-  - [x] Favicon
-  - [ ] Scrollbars adding (home content, user and room edit drawer) and improvments (room messages and users)
+  - [ ] Favicon
   - [ ] Pictos SVG
   - Landing page
     - [x] Responsive
     - [x] Hovers
     - [ ] Fluid login background (on small resolutions display donut background w/ opacity)
-    - [ ] Rouleaux
+    - [ ] Animated 'rollers' for alternative texts
   - Chat interface
     - [x] Factorize custom 'main' and 'contrast' colors in views (http://stackoverflow.com/questions/1855884/determine-font-color-based-on-background-color - http://stackoverflow.com/questions/596216/formula-to-determine-brightness-of-rgb-color)
     - [x] Integration discussion window
@@ -52,7 +53,9 @@ chat
 - [x] Implement clean user profile form in IHM
 - [ ] Implement clean account form (email, password, Facebook) in IHM
 - [ ] Repair forgotten password integration in new HP
-- [ ] Implement user login and signup errors on landing forms
+- [ ] Re-add login/signup page with design
+- [ ] Set User.general to true and default color on user creation
+- [ ] Handle Facebook image storage/retrieving
 
 **Hosting**
 - [ ] Add test instance on the same server (donut.me subdomain and new IP from OVH)
@@ -72,16 +75,22 @@ chat
 **Other**
 - [ ] @todo review
 
+
 ## Release 3
 
-**Discussion history**
-- Room/onetoone history step 2
-  - [ ] Store discussion message in localstorage
-  - [ ] Limit localstorage to n last event [/room]
-  - [ ] Message history on arrow up/down based on localstorage
-  - [ ] Add [Skype link|autoloader] to load more history on scroll top
-  - [ ] No history retrieving in open/join, display only (already in DOM or localstorage) history
-  - [ ] Add a cleanup method that empty .messages periodically to avoid memory leak
+**History**
+- [ ] Store discussion message in localstorage
+- [ ] Limit localstorage to n last event [/room]
+- [ ] Message history on arrow up/down based on localstorage
+- [ ] Add [Skype link|autoloader] to load more history on scroll top
+- [ ] No history retrieving in open/join, display only (already in DOM or localstorage) history
+- [ ] Add a cleanup method that empty .messages periodically to avoid memory leak
+
+**Search**
+- [ ] Add pagination with limit of results
+- Avoid noise queries
+  - [ ] Set a setInterval and clearInterval tracker on 150ms
+  - [ ] Test also that previous request has return (more than) one result if i just added a letter on the right of my request
 
 **Chat**
 - [ ] Room ops drawer for owner
@@ -93,11 +102,10 @@ chat
 - [ ] WS: implement REDIS cache for user and room and read in REDIS cache only "even" for socket.getUsername-like function to have always last data
 - [ ] WS: implement async pattern in all WS methods
 - [ ] Bugfix: on room auto-deletion reactivation. Should handle in 'connection.populateRoom' the room recreation. Otherwise a room automatically removed cannot be re-join automatically by client cause room populate try to find room in DB before sending it to client in welcome
+- [ ] Scrollbars adding (home content, user and room edit drawer) and improvments (room messages and users)
 
 **Content**
-- [ ] Emails: forgot, password changed, signup
-- [ ] Homepage
-- [ ] Formulaire : libellés des champs, messages d'aide, messages de confirmation
+- [ ] Formulaire; faire le tour des libellés des champs, messages d'aide, messages de confirmation
 
 **Cleaning**
 - [ ] Move email configuration in conf files
@@ -119,13 +127,12 @@ chat
 - [ ] Backup
 - [ ] Monitoring
 - [ ] Minimum virtual traffic generation
-- [ ] Basic grunt sample data injection (connect, disconnect, join/leave, create, message, ...)
+- [ ] Basic grunt sample data injection (users and rooms) with production and dev fixture sets
 
 ## Release 4
 
 **Chat**
 - [ ] Implement async series/waterfall in socket code
-- [ ] Room kick
 - [ ] Auto-mention user in room message ($.fn.mentionize())
 
 **Performance/security/maintenability**
@@ -135,14 +142,14 @@ chat
 - [ ] Find email factorisation/rendering solution
 
 **Social**
-- [ ] Invite users in room
+- [ ] Invite users in room (donut)
 - [ ] Invite users in room (Facebook)
 - [ ] Invite users in room (email)
 - [ ] Invite your friend on donut (Facebook)
 
 **Features**
-- [ ] Add option to no join #General on connection
-- [ ] Implement "remember me" mechanisme on login form
+- [x] Add option to no join #General on connection
+- [ ] Implement "remember me" mechanism on login form
 
 **Presence management**
   - [ ] Each user received on client side (room user, owner, onetoone user, home users ... but not search engine users) are instanciated as a User Model
@@ -182,7 +189,7 @@ Features:
 
 Mobile:
 - [ ] Make it work on tablet/phone (browser)
-- [ ] (mobile) Port a mobile version with Steroids.js
+- [ ] (mobile) Port a mobile version with Cordova
 - [ ] Identify and track devices for each socket/activity
 
 Ideas:
@@ -191,6 +198,7 @@ Ideas:
 - [ ] Public mod for a room (all the content is visible by anyone)
 - [ ] Pin a message
 - [ ] Hyperlink analyse and open graph extraction with hover popin in rooms and discussions (specific template for YouTube content)
+- [ ] Images drag&drop in input box + direct upload to cloudinary and hyperlink addition in message
 
 ## Project
 

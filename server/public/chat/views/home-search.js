@@ -6,14 +6,6 @@ define([
 ], function ($, _, Backbone, client) {
   var SearchView = Backbone.View.extend({
 
-    /**
-     * @todo :
-     * - Pagination (infinite scrollbar)
-     * - avoid noise query with setInterval and clearInterval set on 150ms
-     * - test also that previous request has return (more than) one result if
-     *   i just added a letter on the right of my request
-     */
-
     lastSearch: '',
 
     events: {
