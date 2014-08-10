@@ -44,6 +44,8 @@ chat
     - [ ] One to one
     - [ ] Add room owner/ops list on room profile
     - [ ] Integration room list on user profile
+    - [ ] Replace actual color panel with PAM colors
+    - [ ] FAQ / contact / CGU in left column (_blank)
   - [ ] Room page
   - [ ] User page
 
@@ -102,6 +104,7 @@ chat
 - [ ] WS: implement async pattern in all WS methods
 - [ ] Bugfix: on room auto-deletion reactivation. Should handle in 'connection.populateRoom' the room recreation. Otherwise a room automatically removed cannot be re-join automatically by client cause room populate try to find room in DB before sending it to client in welcome
 - [ ] Scrollbars adding (home content, user and room edit drawer) and improvments (room messages and users)
+- [ ] Smileys popin
 
 **Content**
 - [ ] Formulaire; faire le tour des libellés des champs, messages d'aide, messages de confirmation
