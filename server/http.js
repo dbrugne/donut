@@ -60,8 +60,6 @@ app.use(require('./http/account'));
 app.use(require('./http/account-delete'));
 app.use(require('./http/account-edit-email'));
 app.use(require('./http/account-edit-password'));
-app.use(require('./http/account-edit-profile'));
-app.use(require('./http/room-edit'));
 
 app.use(errors('404'));
 app.use(errors('500', app));
