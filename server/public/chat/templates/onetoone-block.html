@@ -1,4 +1,5 @@
 <% if (list.length > 0) { %>
+<hr>
 <div class="list">
     <% _.each(list, function(one) { %>
     <a href="#user/<%= one.username %>" class="item <% if (one.focused) { %>active<% }; %> <% if (one.unread > 0) {%>unread<%}; %>" data-user-id="<%= one.user_id %>">
