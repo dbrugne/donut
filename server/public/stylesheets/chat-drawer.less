@@ -170,33 +170,54 @@
   }
   #room-edit, #user-edit {
     font-size: 1.1em;
+    padding: 0 15px;
     .errors {
       .alert;
       .alert-warning;
       display: none;
     }
+    label {
+      color: @cl-subtext4;
+    }
+    .buttons {
+      text-align: right;
+      margin-top: 24px;
+      .cancel, input[type=submit] {
+        .big-button;
+        background-color: @cl-background;
+        color: @cl-subtext5;
+        border-color: @cl-subtext5;
+        font-size: 1.1em;
+        padding: 7px 12px;
+        border-width: 4px;
+      }
+      .cancel {
+        font-size: 1.1em;
+        margin-right: 5px;
+      }
+      input[type=submit] {
+        font-weight: bold;
+      }
+    }
+
   }
   #room-edit {
     .room {
-      text-align: center;
-      margin-top: -10px;
+      margin-bottom: 15px;
       > p {
         display: inline-block;
         vertical-align: middle;
       }
       .name, .owner {
       }
-      .avatar {
-        width: 60px;
-        margin-right: 5px;
-      }
     }
   }
   #user-edit {
     .user {
-      text-align: center;
+      margin-bottom: 15px;
       .username {
         vertical-align: middle;
+        margin-right: 3px;
       }
     }
   }

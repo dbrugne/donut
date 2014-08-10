@@ -1,9 +1,6 @@
 <div class="room" data-colorify="<%= room.color %>">
-    <img class="avatar" src="<%= room.avatar %>" alt="<%= room.name %> avatar">
-    <p>
-        <span class="name"><%= room.name %></span>
-        <span class="owner">by <a class="open-user-profile" data-user-id="<%= room.owner.user_id %>" data-colorify-text="#ffffff"><%= room.owner.username %></a></span>
-    </p>
+    <span class="name"><%= room.name %></span>
+    <span class="owner">by <a class="open-user-profile" data-user-id="<%= room.owner.user_id %>" data-colorify-text="#ffffff"><%= room.owner.username %></a></span>
 </div>
 <div class="errors"></div>
 <form class="room-form" role="form">
@@ -30,7 +27,7 @@
         <div class="room-color"></div>
         <p class="help-block">Optional</p>
     </div>
-    <h3>Paramétres</h3>
+    <label>Autres paramétres</label>
     <div class="form-group">
         <div class="radio">
             <label>
@@ -45,6 +42,8 @@
             </label>
         </div>
     </div>
-    <button type="submit" class="btn btn-default btn-sm">Annuler</button>
-    <button type="submit" class="btn btn-primary btn-sm">Sauver</button>
+    <div class="form-group buttons">
+        <a class="btn btn-default btn-sm cancel">Annuler</a>
+        <input type="submit" value="Sauver">
+    </div>
 </form>

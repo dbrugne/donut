@@ -1,5 +1,4 @@
 <div class="user" data-colorify="<%= user.color %>">
-    <img class="avatar" src="<%= user.avatar %>" alt="<%= user.username %> avatar">
     <span class="username"><%= user.username %></span>
 </div>
 <div class="errors"></div>
@@ -32,12 +31,14 @@
         <div class="user-color"></div>
         <p class="help-block">Optional</p>
     </div>
-    <h3>Paramétres</h3>
+    <label>Autres paramétres</label>
     <div class="checkbox">
         <label>
             <input type="checkbox" class="general" <% if (user.general) { %>checked<% } %>> Rejoindre automatique <strong>#Général</strong> quand vous vous connectez
         </label>
     </div>
-    <button type="submit" class="btn btn-default btn-sm">Annuler</button>
-    <button type="submit" class="btn btn-primary btn-sm">Sauver</button>
+    <div class="form-group buttons">
+        <a class="btn btn-default btn-sm cancel">Annuler</a>
+        <input type="submit" value="Sauver">
+    </div>
 </form>

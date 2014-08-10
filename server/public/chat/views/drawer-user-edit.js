@@ -45,7 +45,7 @@ define([
         this.trigger('color', user.color);
 
       var currentAvatar = user.avatar;
-      user.avatar = $.c.userAvatar(user.avatar, 'user-large');
+//      user.avatar = $.c.userAvatar(user.avatar, 'user-medium');
 
       var html = this.template({user: user});
       this.$el.html(html);

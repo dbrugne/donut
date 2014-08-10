@@ -13,6 +13,7 @@ define([
 
     events: {
       'click .close': 'close',
+      'click .cancel': 'close',
       'mouseup .opacity': 'detectOutsideClick'
     },
 
