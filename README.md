@@ -13,16 +13,15 @@ chat
 - [ ] Allow user to change room user display
 - [ ] Sort room users list also on ownership/op status
 - Update chat interface on room/user details when room/user is edited
-    - [ ] WS: implement corresponding events: room:update/user:update (or user:nickname, user:avatar, user:color, room:avatar and user:color)
-    - [ ] JS: on previous events update IHM: room tab/header, onetoone tab/header
+  - [x] WS: implement corresponding events: room:update/user:update (or user:nickname, user:avatar, user:color, room:avatar and user:color)
+  - [x] JS: on previous events update IHM: room tab/header, onetoone tab/header
 - Bug fixes
-  - [ ] What's happen when a message is posted by someone (on a room) and my client is in sleep (eg. : tablet) ?
-  - [ ] On room closing view / model already exist and we can not join the room again, also a problem with "home" focusing occurs
   - [x] Colorize vs. drawer
+  - [ ] What's happen when a message is posted by someone (on a room) and my client is in sleep (eg. : tablet) ?
 
 **Room ops**
-- [ ] Add a 'room ops' drawer with 'remove user from op list' button (only for owner)
 - [ ] Factorize socket room op/owner detection in helper and update room:op/deop/topic/update events
+- [ ] Add a 'room ops' drawer with 'remove user from op list' button (only for owner)
 - [ ] Kick a user
 
 **Theme**
@@ -52,8 +51,8 @@ chat
 - [x] Implement clean room form in IHM
 - [x] Implement clean user profile form in IHM
 - [ ] Implement clean account form (email, password, Facebook) in IHM
-- [ ] Repair forgotten password integration in new HP
-- [ ] Re-add login/signup page with design
+- [x] Repair forgotten password integration in new HP
+- [x] Re-add login/signup page with design
 - [ ] Set User.general to true and default color on user creation
 - [ ] Handle Facebook image storage/retrieving
 
