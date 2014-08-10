@@ -27,12 +27,31 @@ body {
  a:hover { color: @cl-second; }
 }
 
-body.light { padding: 0; overflow-y: auto; }
-
-@import "./landing.less"; /* = non authenticated homepage */
-@import "./account.less";
-@import "./chat.less";
-
+.big-button {
+  .btn;
+  padding: 12px 20px;
+  .ft-raleway-medium;
+  font-size: 1.7em;
+  text-transform:uppercase;
+  border: 5px solid @cl-second;
+  color: @cl-second;
+  -webkit-border-radius: 90px;
+  -moz-border-radius: 90px;
+  border-radius: 90px;
+}
+.input-picto {
+  color: @cl-first;
+  font-size: 22px;
+  top: 0;
+  left: 10px;
+  position: absolute;
+  z-index: 2;
+  display: block;
+  width: 34px;
+  height: 34px;
+  line-height: 34px;
+  text-align: center;
+}
 .color-picker {
   position: relative;
   color: #555;
@@ -92,3 +111,8 @@ body.light { padding: 0; overflow-y: auto; }
 .image-uploader {
   a { cursor: pointer; }
 }
+
+@import "./landing.less"; /* = non authenticated homepage */
+@import "./pages.less"; /* login, signup, forgot and choose-username pages */
+@import "./account.less";
+@import "./chat.less";

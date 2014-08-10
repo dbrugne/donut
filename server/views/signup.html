@@ -1,31 +1,39 @@
-<div class="col-sm-6 col-sm-offset-3">
+<div id="signup">
 
-    <h1><span class="fa fa-sign-in"></span> Signup</h1>
+    <h2>Enregistrez-vous</h2>
 
-    <a href="/login/facebook" class="btn btn-primary btn-lg"><span class="fa fa-facebook"></span> Sign in with <strong>Facebook</strong></a>
-    <p>OR</p>
-    <form action="/signup" method="post" role="form" class="forms">
+    <div class="method-facebook">
+        <a href="/login/facebook" class="facebook-button"><span class="fa fa-facebook"></span> Connexion avec <strong>Facebook</strong></a>
+    </div>
 
-        <input type="hidden" name="_csrf" value="{{token}}">
+    <div class="or">OU</div>
 
-        {{#is_errors}}
-        <div class="errors">
-            {{#errors}}{{msg}}<br>{{/errors}}
-        </div>
-        {{/is_errors}}
+    <div class="method-password">
+        <form method="post" role="form">
 
-        <div class="form-group">
-            <input type="text" class="form-control" name="email" placeholder="Email" value="{{userFields.email}}">
-        </div>
-        <div class="form-group">
-            <input type="password" class="form-control" name="password" placeholder="Password">
-        </div>
+            <input type="hidden" name="_csrf" value="{{token}}">
 
-        <button type="submit" class="btn btn-warning btn-lg">Signup</button>
-    </form>
+            {{#is_errors}}
+            <div class="errors">
+                {{#errors}}{{msg}}<br>{{/errors}}
+            </div>
+            {{/is_errors}}
 
-    <hr>
-
-    <p>Already have an account? <a href="/login">Login</a></p>
+            <div class="form-group">
+                Connexion par mot de passe :
+            </div>
+            <div class="form-group">
+                <input type="text" id="signin-email" class="form-control" name="email" placeholder="Email" value="{{userFields.email}}">
+            </div>
+            <div class="form-group">
+                <a href="/forgot" title="mot de passe oublié"><i class="fa fa-question-circle right"></i></a>
+                <input type="password" id="signin-password" class="form-control" name="password" placeholder="Password">
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Et voilà">
+            </div>
+            <div class="disclaimer">En cliquant sur "Et voilà !" j’accepte les conditions d'utilisation de Donut</div>
+        </form>
+    </div>
 
 </div>

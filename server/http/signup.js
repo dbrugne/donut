@@ -9,9 +9,7 @@ var validateInput = function(req, res, next) {
     return res.render('signup', {
       userFields: {email: req.body.email},
       is_errors: true,
-      errors: req.validationErrors(),
-      scripts: [{src: '/validator.min.js'}],
-      layout: 'l2'
+      errors: req.validationErrors()
     });
   }
 
@@ -20,7 +18,7 @@ var validateInput = function(req, res, next) {
 
 router.route('/signup')
     .get(function(req, res) {
-        res.render('signup', {layout: 'l2'});
+        res.render('signup', {});
     })
     .post(validateInput, passport.authenticate('local-signup', {
         successRedirect : '/',

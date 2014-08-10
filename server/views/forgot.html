@@ -1,35 +1,26 @@
 <div id="forgot">
 
-    <h1><span class="fa fa-sign-in"></span> Réinitialiser votre mot de passe</h1>
+    <h2>Réinitialiser votre mot de passe</h2>
 
-    <div class="login-form">
+    <div class="method-password">
 
-        <div class="method-password">
-            <form action="/forgot" method="post" role="form" class="forms">
+        <form method="post" role="form">
 
-                <input type="hidden" name="_csrf" value="{{token}}">
+            <input type="hidden" name="_csrf" value="{{token}}">
 
-                {{#is_errors}}
-                <div class="errors">
-                    {{#errors}}{{msg}}<br>{{/errors}}
-                </div>
-                {{/is_errors}}
+            {{#is_errors}}
+            <div class="errors">
+                {{#errors}}{{msg}}<br>{{/errors}}
+            </div>
+            {{/is_errors}}
 
-                <div class="form-group">
-                    Veuillez saisir votre email:
-                </div>
-                <div class="form-group">
-                    <label class="sr-only" for="reset-password-email">Email</label>
-                    <input type="text" id="reset-password-email" class="form-control" name="email" placeholder="Email" value="{{email}}" autofocus="autofocus">
-                </div>
-                <div class="form-group">
-                    <button type="submit" class="submit">Réinitialiser le mot de passe</button>
-                </div>
-            </form>
-        </div>
-
+            <div class="form-group">
+                <input type="text" class="form-control" name="email" placeholder="Veuillez saisir votre email" value="{{email}}" autofocus="autofocus">
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Réinitialiser">
+            </div>
+        </form>
     </div>
-
-    <p>Need an account? <a href="/signup">Join us</a></p>
 
 </div>

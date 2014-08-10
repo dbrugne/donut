@@ -1,0 +1,115 @@
+.body-pages {
+  height: 100%;
+  .ft-opensans;
+  background-color: @cl-first;
+  color: @cl-background;
+}
+
+.wrapper {
+  width: 430px;
+  margin-left: auto;
+  margin-right: auto;
+
+  position: relative;
+  top: 40%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+
+  h1.logo {
+  }
+  .upon {
+
+  }
+  .content {
+    background-color: @cl-background;
+    color: @cl-second;
+    padding: 10px;
+    h2 {
+      margin-top: 0;
+      .ft-raleway-heavy;
+    }
+  }
+  .above {
+    text-align: right;
+    padding: 5px;
+    a {
+      color: @cl-background;
+      font-weight: bold;
+    }
+  }
+}
+
+#login, #signup, #forgot, #choose-username {
+  .errors {
+    padding: 10px;
+    border: 1px solid @cl-first;
+    background-color: #fcf0f4;
+    color: @cl-first;
+    margin-bottom: 20px;
+  }
+  .form-group {
+    position: relative;
+
+    i {
+      .input-picto;
+    }
+    i.right {
+      right: 10px;
+      left: inherit;
+    }
+  }
+  .form-group.center {
+    text-align: center;
+  }
+  .method-facebook {
+    text-align: center;
+    padding-top: 15px;
+    .facebook-button {
+      .btn;
+      .btn-primary;
+      .btn-lg;
+    }
+  }
+  .or {
+    margin: 20px auto;
+    text-align: center;
+    font-weight: bold;
+    .ft-raleway-heavy;
+  }
+  .method-password {
+    text-align: center;
+  }
+  input[type=submit] {
+    .big-button;
+    background-color: @cl-first;
+    border-color: #ffffff;
+    color: #ffffff;
+    margin-top: 20px;
+  }
+  input[type=submit]:hover {
+    color: #ffffff;
+    text-decoration: underline;
+  }
+  input[type=submit]:focus {
+    color: #ffffff;
+  }
+}
+
+#signup {
+  .disclaimer {
+    font-size: 0.9em;
+  }
+}
+#forgot {
+  h2 {
+    margin-top: 20px;
+    margin-bottom: 30px;
+    font-size: 1.7em;
+  }
+}
+#choose-username {
+  h2 {
+    font-size: 1.3em;
+  }
+}

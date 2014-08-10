@@ -10,8 +10,7 @@ var validateInput = function(req, res, next) {
     return res.render('login', {
       userFields: {email: req.body.email},
       is_errors: true,
-      errors: req.validationErrors(),
-      scripts: [{src: '/validator.min.js'}]
+      errors: req.validationErrors()
     });
   }
 
