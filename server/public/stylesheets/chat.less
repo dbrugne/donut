@@ -1,4 +1,6 @@
 @size-color: 20px;
+@size-left: 215px;
+@size-right: 430px;
 @cl-subtext0: #f2f2f2;
 @cl-subtext1: #e2e2e2;
 @cl-subtext2: #b6b6b6;
@@ -31,9 +33,11 @@
   }
 
   hr {
-    border-top-color: @cl-subtext1;
+    border-top-color: #dadada;
     margin-top: 18px;
     margin-bottom: 18px;
+    margin-left: 18px;
+    margin-right: 18px;
   }
 
   .big-link {
@@ -195,24 +199,25 @@
   }
 
   #left {
-    .make-xs-column(6);
-    .make-sm-column(3);
-    .make-lg-column(2);
+    float: left;
+    width: @size-left;
     height: 100%;
     background-color: @cl-subtext1;
     overflow-y:auto;
     z-index: 10;
+    position: relative;
 
     @import "chat-left";
   }
 
   #center {
-    .make-xs-column(6);
-    .make-sm-column(9);
-    .make-lg-column(10);
+    float: left;
+    width: -webkit-calc(~'100%' - @size-left);
+    width: -o-calc(~'100%' - @size-left);
+    width: calc(~'100%' - @size-left);
+
     height: 100%;
-    padding-left: 0; /* Cancel Bootstrap side padding */
-    padding-right: 0; /* Cancel Bootstrap side padding */
+    z-index: 5;
 
     @import "chat-home";
 

@@ -1,10 +1,12 @@
-
 .discussion {
   .row;
   height: 100%;
   .content {
     height: 100%;
-    .make-lg-column(8);
+    float: left;
+    width: -webkit-calc(~'100%' - @size-right);
+    width: -o-calc(~'100%' - @size-right);
+    width: calc(~'100%' - @size-right);
     position: relative;
     padding-top: 30px;
     padding-left: 40px;
@@ -200,16 +202,18 @@
     }
   }
   .side {
-    .make-lg-column(4);
+    float: left;
+    width: @size-right;
     height: 100%;
     background-repeat: no-repeat;
     background-position: left top;
     margin: 0;
     padding: 0;
     .blur {
-      .make-lg-column(6);
-      padding-left: 0; /* cancel Bootstrap columm margin */
-      padding-right: 0; /* cancel Bootstrap columm margin */
+      width: -webkit-calc(@size-right/2);
+      width: -o-calc(@size-right/2);
+      width: calc(@size-right/2);
+      position: relative;
       height: 100%;
       color: @cl-background;
       a { color: @cl-background; }
@@ -316,6 +320,23 @@
           .scroller-content {  }
         }
       }
+    }
+  }
+}
+
+/** for <=1024 screens resolutions **/
+@media screen and (max-width: 1100px) {
+  .discussion {
+    .content {
+      width: -webkit-calc(~'100%' - (@size-right/2));
+      width: -o-calc(~'100%' - (@size-right/2));
+      width: calc(~'100%' - (@size-right/2));
+    }
+    .side {
+      width: -webkit-calc(@size-right/2);
+      width: -o-calc(@size-right/2);
+      width: calc(@size-right/2);
+      background: none !important;
     }
   }
 }
