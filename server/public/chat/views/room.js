@@ -44,8 +44,9 @@ define([
       data.avatar = $.c.roomAvatar(data.avatar, 'room-large');
 
       // poster
-      data.poster = $.c.roomPoster(data.poster, 'room-poster');
-      data.posterblured = $.c.roomPoster(data.poster, 'room-poster-blured');
+      var posterPath = data.poster;
+      data.poster = $.c.roomPoster(posterPath, 'room-poster');
+      data.posterblured = $.c.roomPoster(posterPath, 'room-poster-blured');
 
       return data;
     },
