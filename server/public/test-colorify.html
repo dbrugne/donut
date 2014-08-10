@@ -2,7 +2,7 @@
 <html>
 <head>
 <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
-<script src="/javascripts/vendor/jquery/dist/jquery.min.js"></script>
+<script src="/vendor/jquery/dist/jquery.min.js"></script>
 <script src="/javascripts/plugins/jquery.colorify.js"></script>
 <style>
 body { font-family: 'Open Sans', sans-serif; font-size: 14px; }
@@ -44,7 +44,7 @@ body { font-family: 'Open Sans', sans-serif; font-size: 14px; }
 $(document).ready(function() {
 
     $('.item').each(function(index) {
-        var html = '<img data-colorify-border="lighter" class="avatar" src="http://res.cloudinary.com/roomly/image/upload/t_room-avatar-medium/v1401637873/avatar-5389cc8c0b8418e3ca1c694d.jpg">'
+        var html = '<img data-colorify-border="lighter" class="avatar" src="http://res.cloudinary.com/roomly/image/upload/t_room-large/v1407620282/ndzhuj8swvdh8jd5jsxe.jpg">'
                 +$(this).find('p.content').html();
 
         $('<span data-colorify-background="color" data-colorify-text="contrast">'+html+'</span>')
@@ -56,9 +56,9 @@ $(document).ready(function() {
                 .append('<button data-colorify-background="color" data-colorify-text="contrast">Join us !</button>')
                 .appendTo($(this));
 
-        $('<span data-colorify-text="#000000" style="background-color: #000000;">'+html+'</span>')
-                .append('<button data-colorify-background="color" data-colorify-text="contrast">Join us !</button>')
-                .appendTo($(this));
+//        $('<span data-colorify-text="#000000" style="background-color: #000000;">'+html+'</span>')
+//                .append('<button data-colorify-background="color" data-colorify-text="contrast">Join us !</button>')
+//                .appendTo($(this));
 
     });
   $('body').colorify();
