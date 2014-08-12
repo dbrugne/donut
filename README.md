@@ -9,7 +9,7 @@ chat
 - Search engine
   - [x] Search on home
   - [ ] Quick search in left column (with 'light' param to get only username/name + avatar) and link for 'more results' that focus and fill the homepage search
-- [ ] Sort room users list on ownership/op status
+- [x] Sort room users list on ownership/op status
 - Update chat interface on room/user details when room/user is edited
   - [x] WS: implement corresponding events: room:update/user:update (or user:nickname, user:avatar, user:color, room:avatar and user:color)
   - [x] JS: on previous events update IHM: room tab/header, onetoone tab/header

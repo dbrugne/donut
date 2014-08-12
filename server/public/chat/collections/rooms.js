@@ -75,13 +75,22 @@ define([
       // Add users
       model.users.reset();
       _.each(room.users, function(element, key, list) {
+        var is_op = (room.op.indexOf(element.user_id) !== -1)
+          ? true
+          : false;
+        var is_owner = (room.owner.user_id && room.owner.user_id == element.user_id)
+          ? true
+          : false;
         model.users.add(new UserModel({
           id: element.user_id,
           user_id: element.user_id,
           username: element.username,
-          avatar: element.avatar
+          avatar: element.avatar,
+          is_owner: is_owner,
+          is_op: is_op
         }));
       });
+      window.t = model.users;
 
       this.add(model); // now the view exists (created by mainView)
 

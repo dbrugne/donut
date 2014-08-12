@@ -5,8 +5,8 @@ define([
   'models/current-user',
   'models/discussion',
   'models/user',
-  'collections/users'
-], function (_, Backbone, client, currentUser, DiscussionModel, UserModel, UsersCollection) {
+  'collections/room-users'
+], function (_, Backbone, client, currentUser, DiscussionModel, UserModel, RoomUsersCollection) {
   var RoomModel = DiscussionModel.extend({
 
     defaults: function() {
@@ -26,7 +26,7 @@ define([
     },
 
     _initialize: function() {
-      this.users = new UsersCollection();
+      this.users = new RoomUsersCollection();
       this.on('remove', this.leave);
       this.listenTo(client, 'room:in', this.onIn);
       this.listenTo(client, 'room:out', this.onOut);
@@ -68,13 +68,25 @@ define([
       }
       // already in?
       if (this.users.get(data.user_id)) {
+        // @todo : maybe we should update some user attribute?
         return;
       }
+
+      var is_owner = (this.get('owner') && this.get('owner').get('user_id') == data.user_id)
+       ? true
+       : false;
+
+      var is_op = (this.get('op') && this.get('op').indexOf(data.user_id) != -1)
+        ? true
+        : false;
+
       var user = new UserModel({
         id: data.user_id,
         user_id: data.user_id,
         username: data.username,
-        avatar: data.avatar
+        avatar: data.avatar,
+        is_owner: is_owner,
+        is_op: is_op
       });
       this.users.add(user);
       this.trigger('notification', {
@@ -127,7 +139,12 @@ define([
       if (this.get('op').indexOf(data.user_id) !== -1)
         return;
 
+      // room.get('op')
       this.get('op').push(data.user_id);
+
+      // user.get('is_op')
+      this.users.get(data.user_id).set({is_op: true});
+      this.users.sort();
 
       this.users.trigger('redraw');
 
@@ -148,8 +165,13 @@ define([
       if (this.get('op').indexOf(data.user_id) === -1)
         return;
 
+      // room.get('op')
       var ops = _.without(this.get('op'), data.user_id);
       this.set('op', ops);
+
+      // user.get('is_op')
+      this.users.get(data.user_id).set({is_op: false});
+      this.users.sort();
 
       this.users.trigger('redraw');
 

@@ -40,16 +40,10 @@ define([
       var listJSON = [];
       var that = this;
       _.each(this.collection.models, function(o) {
+
+//        console.log('user '+ o.get('username') + ' - is_owner:' + o.get('is_owner') + ' - is_op:' +  o.get('is_op'));
+
         var u = o.toJSON();
-
-        // Is owner?
-        var owner = that.model.get('owner');
-        if (owner && owner.get('user_id').indexOf(o.get('user_id')) !== -1)
-          u.owner = true;
-
-        // Is OP?
-        if (that.model.get('op').indexOf(o.get('user_id')) !== -1)
-          u.op = true;
 
         // avatar
         u.avatar = $.c.userAvatar(u.avatar, 'user-medium');
