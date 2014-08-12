@@ -9,9 +9,7 @@ chat
 - Search engine
   - [x] Search on home
   - [ ] Quick search in left column (with 'light' param to get only username/name + avatar) and link for 'more results' that focus and fill the homepage search
-- [ ] Allow user to change room user sort order
-- [ ] Allow user to change room user display
-- [ ] Sort room users list also on ownership/op status
+- [ ] Sort room users list on ownership/op status
 - Update chat interface on room/user details when room/user is edited
   - [x] WS: implement corresponding events: room:update/user:update (or user:nickname, user:avatar, user:color, room:avatar and user:color)
   - [x] JS: on previous events update IHM: room tab/header, onetoone tab/header
@@ -43,9 +41,10 @@ chat
     - [ ] Fix line break in messages and description/bio by adding a nl2br method
     - [ ] One to one
     - [ ] Add room owner/ops list on room profile
-    - [ ] Integration room list on user profile
+    - [ ] Add owned/opsed room list on user profile
+    - [ ] Add room where the user is in on user profile
     - [ ] Replace actual color panel with PAM colors
-    - [ ] FAQ / contact / CGU in left column (_blank)
+    - [ ] FAQ / contact / CGU / help in left column (_blank)
   - [ ] Room page
   - [ ] User page
 
@@ -55,8 +54,10 @@ chat
 - [ ] Implement clean account form (email, password, Facebook) in IHM
 - [x] Repair forgotten password integration in new HP
 - [x] Re-add login/signup page with design
-- [ ] Set User.general to true and default color on user creation
+- [x] Set User.general to true on user creation
+- [ ] Set color to random color on user creation
 - [ ] Handle Facebook image storage/retrieving
+- [ ] Allow dot in username (aaron.aronson)
 
 **Hosting**
 - [ ] Add test instance on the same server (donut.me subdomain and new IP from OVH)
@@ -124,6 +125,7 @@ chat
 **Room/user design**
 - [ ] Add "your rooms" on homepage
 - [ ] Add "room owned/oped/joined" on user profile
+- [ ] Add a bouncer feature when an unlogged user click on #!... URL (to room/user profile)
 
 **Tooling**
 - [ ] Backup
@@ -136,6 +138,8 @@ chat
 **Chat**
 - [ ] Implement async series/waterfall in socket code
 - [ ] Auto-mention user in room message ($.fn.mentionize())
+- [ ] Allow user to change room-user list sort order
+- [ ] Allow user to change room-user list display
 
 **Performance/security/maintenability**
 - [ ] Compress JS: https://github.com/JakeWharton/uglify-js-middleware
