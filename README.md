@@ -43,7 +43,7 @@ chat
     - [ ] Add room owner/ops list on room profile
     - [ ] Add owned/opsed room list on user profile
     - [ ] Add room where the user is in on user profile
-    - [ ] Replace actual color panel with PAM colors
+    - [ ] Replace actual color panel with HKS colors
     - [ ] FAQ / contact / CGU / help in left column (_blank)
   - [ ] Room page
   - [ ] User page
@@ -51,10 +51,10 @@ chat
 **Account**
 - [x] Implement clean room form in IHM
 - [x] Implement clean user profile form in IHM
-- [ ] Implement clean account form (email, password, Facebook) in IHM
 - [x] Repair forgotten password integration in new HP
 - [x] Re-add login/signup page with design
 - [x] Set User.general to true on user creation
+- [ ] Implement clean account form (email, password, Facebook) in IHM
 - [ ] Set color to random color on user creation
 - [ ] Handle Facebook image storage/retrieving
 - [ ] Allow dot in username (aaron.aronson)
