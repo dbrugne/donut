@@ -11,10 +11,11 @@ chat
 
 **Chat**
 - [ ] Quick search in left column (with 'light' param to get only username/name + avatar) and link for 'more results' that focus and fill the homepage search
+- [ ] Replace room:out by room:disconnect on socket disconnection
+- [ ] Add a local notification: disconnect (connection was lost), reconnect (reconnect is done)
 
 **Room ops**
 - [ ] Factorize socket room op/owner detection in helper and update room:op/deop/topic/update events
-- [ ] Add a 'room ops' drawer with 'remove user from op list' button (only for owner)
 - [ ] Kick a user
 
 **Theme**
@@ -24,7 +25,6 @@ chat
   - Landing page
     - [ ] Animated 'rollers' for alternative texts
   - Chat interface
-    - [x] Fix line break in messages and description/bio by adding a nl2br method
     - [ ] One to one
     - [ ] Add room owner/ops list on room profile
     - [ ] Add owned/opsed room list on user profile
@@ -35,11 +35,6 @@ chat
   - [ ] User page
 
 **Account**
-- [x] Implement clean room form in IHM
-- [x] Implement clean user profile form in IHM
-- [x] Repair forgotten password integration in new HP
-- [x] Re-add login/signup page with design
-- [x] Set User.general to true on user creation
 - [ ] Implement clean account form (email, password, Facebook) in IHM
 - [ ] Set color to random color on user creation
 - [ ] Handle Facebook image storage/retrieving
@@ -63,7 +58,6 @@ chat
 **Other**
 - [ ] @todo review
 
-
 ## Release 3
 
 **History**
@@ -81,17 +75,21 @@ chat
   - [ ] Test also that previous request has return (more than) one result if i just added a letter on the right of my request
 
 **Chat**
-- [ ] Room ops drawer for owner
+- [ ] Add a 'room ops' drawer with 'remove user from op list' button (only for owner)
 - [ ] Change the to server->client messages : room:join/leave and user:open/close (for something like ?)
 - [ ] Correct room:in for user that "reconnect"
-- [ ] Replace room:out by user:disconnect on socket disconnection
-- [ ] Add a check on connection to verify is user have "username"
+- [ ] Add a check on ws connection to verify is user have "username"
 - [ ] Bug : room user list scroll is not active when entering in room (but work once the first redraw)
 - [ ] WS: implement REDIS cache for user and room and read in REDIS cache only "even" for socket.getUsername-like function to have always last data
 - [ ] WS: implement async pattern in all WS methods
 - [ ] Bugfix: on room auto-deletion reactivation. Should handle in 'connection.populateRoom' the room recreation. Otherwise a room automatically removed cannot be re-join automatically by client cause room populate try to find room in DB before sending it to client in welcome
-- [ ] Scrollbars adding (home content, user and room edit drawer) and improvments (room messages and users)
-- [ ] Smileys popin
+- [ ] Scrollbars adding (left column, home content, user and room edit drawer) and improvments (room messages and users)
+- Small and usefull features:
+  - [ ] Own messages history on up and down
+  - [ ] Ability to switch .messages display as compact (hide usernames, preserve date on right)
+  - [ ] Ability to disabled auto-post on Enter (in this case enter will add break line in input box)
+  - [ ] Color this user messages by simply clicking on a user (stored in browser memory only)
+  - [ ] Smileys popin
 
 **Content**
 - [ ] Formulaire; faire le tour des libellés des champs, messages d'aide, messages de confirmation
