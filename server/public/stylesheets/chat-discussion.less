@@ -217,11 +217,12 @@
       height: 100%;
       color: @cl-background;
       a { color: @cl-background; }
+      hr { margin-left: 0; margin-right: 0; }
       font-size: 1.1em;
       .users {
         background-color: rgba(0, 0, 0, 0.2);
         height: 100%;
-        padding: 10px 14px;
+        padding: 10px 0 10px 0;
         @header-height: 35px;
         .header {
           position: absolute;
@@ -247,66 +248,75 @@
           margin-top: -o-calc(@header-height + 10px);
           margin-top: calc(@header-height + 10px);
           margin-bottom: 0;
-          padding: 0 6px 10px;
+          padding: 0 0 10px 0;
           background-repeat: no-repeat;
           background-position: left top;
           position: relative;
           overflow: hidden;
-          .scroller-content {
-            .item {
+          .item {
+            position: relative;
+            margin-top: 10px;
+            font-size: 0.9em;
+            .username { margin-left: 9px; }
+            .avatar {
               position: relative;
-              margin-top: 10px;
-              font-size: 0.9em;
-              .username { margin-left: 9px; }
-              .avatar { position: relative; }
-              font-weight: bold;
-              .actions {
-                position: absolute;
-                right: 0;
-                line-height: 2.7;
-                display: none;
+              img { width: 34px; height: 34px; }
+            }
+            font-weight: bold;
+            .actions {
+              position: absolute;
+              right: 0;
+              line-height: 2.7;
+              display: none;
+              img {
+                width: 16px; height: 21px;
+              }
+              .deop-user, .op-user {
+                cursor: pointer;
               }
             }
-            .item.owner {
-              .avatar {
-                img {
-                  border: 2px solid @cl-success;
-                  -webkit-border-radius: 5px;
-                  -moz-border-radius: 5px;
-                  border-radius: 5px;
-                }
-              }
-              .avatar::before {
-                content: url("/images/op.svg");
-                z-index: 5;
-                position: absolute;
-                top: -15px; left: 7px;
-                width: 20px;
-                height: 20px;
+          }
+          .item.op, .item.owner {
+            .avatar {
+              img {
+                border-style: solid;
+                border-width: 2px;
+                -webkit-border-radius: 5px;
+                -moz-border-radius: 5px;
+                border-radius: 5px;
               }
             }
-            .item.op {
-              .avatar {
-                img {
-                  border: 2px solid @cl-first;
-                  -webkit-border-radius: 5px;
-                  -moz-border-radius: 5px;
-                  border-radius: 5px;
-                }
-              }
-              .avatar::before {
-                content: url("/images/op.svg");
-                z-index: 5;
-                position: absolute;
-                top: -15px; left: 7px;
-                width: 20px;
-                height: 20px;
+            .avatar::before {
+              content: "";
+              z-index: 5;
+              position: absolute;
+            }
+          }
+          .item.op {
+            .avatar {
+              img {
+                border-color: @cl-success !important; // override .op if needed;
               }
             }
-            .item:hover {
-              .actions {
-                display: inline-block;
+            .avatar::before {
+              content: url("/images/op.svg");
+              top: -13px; left: -7px;
+            }
+          }
+          .item.owner {
+            .avatar {
+              img {
+                border-color: #fbec4d !important; // override .op if needed;
               }
+            }
+            .avatar::before {
+              content: url("/images/owner.svg") !important; // override .op if needed
+              top: -20px !important; left: 9px !important;
+            }
+          }
+          .item:hover {
+            .actions {
+              display: inline-block;
             }
           }
         }
@@ -314,7 +324,7 @@
           .scroller-bar { background: none; border: 0; top: 10px; }
           .scroller-track { background: none; }
           .scroller-handle { right: 0; width: 5px; }
-          .scroller-content { padding: 0; }
+          .scroller-content { padding: 6px 9px 0 14px; }
         }
         .list.scroller-active {
           .scroller-content {  }
