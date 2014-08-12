@@ -11,41 +11,34 @@ chat
 
 **Chat**
 - [ ] Quick search in left column (with 'light' param to get only username/name + avatar) and link for 'more results' that focus and fill the homepage search
-- [ ] Replace room:out by room:disconnect on socket disconnection
+- [x] On socket disconnection replace room:out by room:disconnect
 - [ ] Add a local notification: disconnect (connection was lost), reconnect (reconnect is done)
+- [x] User change (avatar) is not applied to current socket.getAvatar
 
 **Room ops**
 - [ ] Factorize socket room op/owner detection in helper and update room:op/deop/topic/update events
 - [ ] Kick a user
 
 **Theme**
-- Implement the new design
-  - [ ] Favicon
-  - [ ] Pictos SVG
-  - Landing page
+- [ ] Favicon
+- [ ] Pictos SVG
+- Landing page
     - [ ] Animated 'rollers' for alternative texts
-  - Chat interface
+- Chat interface
     - [ ] One to one
     - [ ] Add room owner/ops list on room profile
     - [ ] Add owned/opsed room list on user profile
     - [ ] Add room where the user is in on user profile
     - [x] Replace actual color panel with HKS colors
     - [ ] FAQ / contact / CGU / help in left column (_blank)
-  - [ ] Room page
-  - [ ] User page
+- [ ] Room page
+- [ ] User page
 
 **Account**
 - [ ] Implement clean account form (email, password, Facebook) in IHM
 - [ ] Set color to random color on user creation
 - [ ] Handle Facebook image storage/retrieving
 - [ ] Allow dot in username (aaron.aronson)
-
-**Hosting**
-- [ ] Add test instance on the same server (donut.me subdomain and new IP from OVH)
-**Branding**
-- [ ] Changer le proriétaire du domaine : MARTINE BLAJMAN
-- [ ] Créer une email contact@
-- [ ] Créer une email martine@
 
 **Contents**
 - [ ] Translate texts
@@ -54,6 +47,13 @@ chat
 - [ ] CGU (from HP and chat interface)
 - [ ] Emails : https://github.com/dbrugne/chat/issues/6
 - [ ] Welcome messages
+
+**Hosting**
+- [ ] Add test instance on the same server (donut.me subdomain and new IP from OVH)
+**Branding**
+- [ ] Changer le proriétaire du domaine : MARTINE BLAJMAN
+- [ ] Créer une email contact@
+- [ ] Créer une email martine@
 
 **Other**
 - [ ] @todo review

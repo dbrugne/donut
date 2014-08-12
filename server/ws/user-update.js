@@ -186,6 +186,13 @@ module.exports = function(io, socket, data) {
 
     },
 
+    function updateSocket(user, sanitized, callback) {
+      // update socket avatar (socket.getAvatar)
+      socket.request.user.avatar = user.avatar;
+
+      return callback(null, user, sanitized);
+    },
+
     function broadcast(user, sanitized, callback) {
 
       // notify only certain fields

@@ -140,6 +140,10 @@ define([
 
       if (notification.avatar)
         notification.avatar = $.c.userAvatar(notification.avatar, 'user-medium');
+      else if (notification.user_id && this.model.users.get(notification.user_id))
+        notification.avatar = $.c.userAvatar(
+          this.model.users.get(notification.user_id)
+          , 'user-medium');
 
       var html = this.notificationTemplate(notification);
 
