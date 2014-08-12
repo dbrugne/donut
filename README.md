@@ -5,17 +5,12 @@ chat
 
 ## Release 2
 
-**Chat**
-- Search engine
-  - [x] Search on home
-  - [ ] Quick search in left column (with 'light' param to get only username/name + avatar) and link for 'more results' that focus and fill the homepage search
-- [x] Sort room users list on ownership/op status
-- Update chat interface on room/user details when room/user is edited
-  - [x] WS: implement corresponding events: room:update/user:update (or user:nickname, user:avatar, user:color, room:avatar and user:color)
-  - [x] JS: on previous events update IHM: room tab/header, onetoone tab/header
 - Bug fixes
-  - [x] Colorize vs. drawer
   - [ ] What's happen when a message is posted by someone (on a room) and my client is in sleep (eg. : tablet) ?
+  - [ ] Fluid landing background on small resolutions (display donut background w/ opacity)
+
+**Chat**
+- [ ] Quick search in left column (with 'light' param to get only username/name + avatar) and link for 'more results' that focus and fill the homepage search
 
 **Room ops**
 - [ ] Factorize socket room op/owner detection in helper and update room:op/deop/topic/update events
@@ -27,18 +22,9 @@ chat
   - [ ] Favicon
   - [ ] Pictos SVG
   - Landing page
-    - [x] Responsive
-    - [x] Hovers
-    - [ ] Fluid login background (on small resolutions display donut background w/ opacity)
     - [ ] Animated 'rollers' for alternative texts
   - Chat interface
-    - [x] Factorize custom 'main' and 'contrast' colors in views (http://stackoverflow.com/questions/1855884/determine-font-color-based-on-background-color - http://stackoverflow.com/questions/596216/formula-to-determine-brightness-of-rgb-color)
-    - [x] Integration discussion window
-    - [x] Review all pictures size and update form/cloudinary transformations (room : avatar, background, user: avatar)
-    - [x] Avatar now send only partial uri (v465645656/sq4654dz54q1d11qsd.jpg) and interface handle URL rendering with $.cloudinary
-    - [x] Responsivness
-    - [x] Fix left and right column and center is flexible
-    - [ ] Fix line break in messages and description/bio by adding a nl2br method
+    - [x] Fix line break in messages and description/bio by adding a nl2br method
     - [ ] One to one
     - [ ] Add room owner/ops list on room profile
     - [ ] Add owned/opsed room list on user profile
