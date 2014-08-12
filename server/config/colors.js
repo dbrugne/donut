@@ -1,4 +1,6 @@
-var x = [
+var _ = require('underscore');
+
+var colors = [
   {name: 'HKS 1 K',  hex: '#ffe263'},
   {name: 'HKS 2 K',  hex: '#ffe300'},
   {name: 'HKS 3 K',  hex: '#ffdb00'},
@@ -23,6 +25,7 @@ var x = [
   {name: 'HKS 25 K', hex: '#d3225d'},
   {name: 'HKS 26 K', hex: '#c0106f'},
   {name: 'HKS 27 K', hex: '#e70097'},
+  {name: 'donut pink', hex: '#fc2063'},
   {name: 'HKS 28 K', hex: '#b22052'},
   {name: 'HKS 29 K', hex: '#9b348e'},
   {name: 'HKS 31 K', hex: '#ca0f86'},
@@ -36,6 +39,7 @@ var x = [
   {name: 'HKS 39 K', hex: '#117acb'},
   {name: 'HKS 40 K', hex: '#009ab7'},
   {name: 'HKS 41 K', hex: '#284156'},
+  {name: 'donut blue', hex: '#253b6c'},
   {name: 'HKS 42 K', hex: '#2f53a7'},
   {name: 'HKS 43 K', hex: '#2c57d2'},
   {name: 'HKS 44 K', hex: '#0078b8'},
@@ -45,6 +49,7 @@ var x = [
   {name: 'HKS 48 K', hex: '#00afc4'},
   {name: 'HKS 49 K', hex: '#0095b1'},
   {name: 'HKS 50 K', hex: '#00d2e2'},
+  {name: 'donut lime', hex: '#4fedc0'},
   {name: 'HKS 51 K', hex: '#00aaa0'},
   {name: 'HKS 52 K', hex: '#00a8a3'},
   {name: 'HKS 53 K', hex: '#00ce9d'},
@@ -85,3 +90,14 @@ var x = [
   {name: 'HKS 96 K', hex: '#838678'},
   {name: 'HKS 97 K', hex: '#3a4136'}
 ];
+
+module.exports = {
+  list: colors,
+  toString: function() {
+    var list = [];
+    _.each(colors, function(color) {
+      list.push("'"+color.hex+"'");
+    });
+    return '['+list.join(',')+']';
+  }
+};

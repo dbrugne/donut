@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 
+var colors = require('../config/colors');
+
 router.get('/!', function(req, res) {
 
   // Is user authenticated
@@ -16,7 +18,8 @@ router.get('/!', function(req, res) {
 
   // ... otherwise open chat
   return res.render('chat', {
-    layout: false
+    layout: false,
+    colors: colors.toString()
   });
 
 });

@@ -3,12 +3,9 @@
     <div class="preview" style="background-color: <%= color %>;"></div>
     <span class="hexadecimal"><%= color %></span>
     <div class="picker">
-        <img id="hexagone" src="/images/color-picker.gif" usemap="color-map">
-        <map name="color-map" class="color-map">
         <% _.each(colors, function(c) { %>
-            <area shape="poly" coords="<%= c.coords %>" alt="<%= c.hex %>">
+            <div class="color" data-color="<%= c %>" style="background-color: <%= c %>; width: 15px; height: 15px; margin: 2px; float: left;"></div>
         <% }); %>
-        </map>
         <a class="close-picker">close <i class="fa fa-times"></i></a>
     </div>
 </div>

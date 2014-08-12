@@ -29,7 +29,7 @@ chat
     - [ ] Add room owner/ops list on room profile
     - [ ] Add owned/opsed room list on user profile
     - [ ] Add room where the user is in on user profile
-    - [ ] Replace actual color panel with HKS colors
+    - [x] Replace actual color panel with HKS colors
     - [ ] FAQ / contact / CGU / help in left column (_blank)
   - [ ] Room page
   - [ ] User page
