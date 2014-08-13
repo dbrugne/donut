@@ -5,15 +5,8 @@ chat
 
 ## Release 2
 
-- Bug fixes
-  - [ ] What's happen when a message is posted by someone (on a room) and my client is in sleep (eg. : tablet) ?
-  - [ ] Fluid landing background on small resolutions (display donut background w/ opacity)
-
 **Chat**
 - [ ] Quick search in left column (with 'light' param to get only username/name + avatar) and link for 'more results' that focus and fill the homepage search
-- [x] On socket disconnection replace room:out by room:disconnect
-- [x] Add a local notification: disconnect (connection was lost), reconnect (reconnect is done)
-- [x] User change (avatar) is not applied to current socket.getAvatar
 
 **Room ops**
 - [ ] Factorize socket room op/owner detection in helper and update room:op/deop/topic/update events
@@ -29,16 +22,21 @@ chat
     - [ ] Add room owner/ops list on room profile
     - [ ] Add owned/opsed room list on user profile
     - [ ] Add room where the user is in on user profile
-    - [x] Replace actual color panel with HKS colors
     - [ ] FAQ / contact / CGU / help in left column (_blank)
 - [ ] Room page
 - [ ] User page
 
 **Account**
 - [ ] Implement clean account form (email, password, Facebook) in IHM
-- [ ] Set color to random color on user creation
-- [ ] Handle Facebook image storage/retrieving
 - [ ] Allow dot in username (aaron.aronson)
+- [ ] Add signup with Facebook button on landing page
+
+**Customization**
+- [ ] Handle Facebook image storage/retrieving
+- [ ] Set color to random color on user creation
+- [ ] Deal with default user avatar and poster
+- [ ] Set room default color as pink
+- [ ] Set room default avatar and poster with the same as user
 
 **Contents**
 - [ ] Translate texts
@@ -48,10 +46,15 @@ chat
 - [ ] Emails : https://github.com/dbrugne/chat/issues/6
 - [ ] Welcome messages
 
+**Bug fixes**
+  - [ ] What's happen when a message is posted by someone (on a room) and my client is in sleep (eg. : tablet) ?
+  - [ ] Fluid landing background on small resolutions (display donut background w/ opacity)
+
 **Hosting**
 - [ ] Add test instance on the same server (donut.me subdomain and new IP from OVH)
+
 **Branding**
-- [ ] Changer le proriétaire du domaine : MARTINE BLAJMAN
+- [ ] Changer le proriétaire du domaine : MARTINE BLAJMAN (in progress)
 - [ ] Créer une email contact@
 - [ ] Créer une email martine@
 
@@ -59,6 +62,12 @@ chat
 - [ ] @todo review
 
 ## Release 3
+
+**Social**
+- [ ] Invite users in room (donut)
+- [ ] Invite users in room (Facebook)
+- [ ] Invite users in room (email)
+- [ ] Invite your friend on donut (Facebook)
 
 **History**
 - [ ] Store discussion message in localstorage
@@ -77,14 +86,14 @@ chat
 **Chat**
 - [ ] Add a 'room ops' drawer with 'remove user from op list' button (only for owner)
 - [ ] Change the to server->client messages : room:join/leave and user:open/close (for something like ?)
-- [ ] Correct room:in for user that "reconnect"
+- [x] Correct room:in for user that "reconnect"
 - [ ] Add a check on ws connection to verify is user have "username"
 - [ ] Bug : room user list scroll is not active when entering in room (but work once the first redraw)
 - [ ] WS: implement REDIS cache for user and room and read in REDIS cache only "even" for socket.getUsername-like function to have always last data
 - [ ] WS: implement async pattern in all WS methods
 - [ ] Bugfix: on room auto-deletion reactivation. Should handle in 'connection.populateRoom' the room recreation. Otherwise a room automatically removed cannot be re-join automatically by client cause room populate try to find room in DB before sending it to client in welcome
 - [ ] Scrollbars adding (left column, home content, user and room edit drawer) and improvments (room messages and users)
-- Small and usefull features:
+- Small and helpfull features:
   - [ ] Own messages history on up and down
   - [ ] Ability to switch .messages display as compact (hide usernames, preserve date on right)
   - [ ] Ability to disabled auto-post on Enter (in this case enter will add break line in input box)
@@ -130,12 +139,6 @@ chat
 - [ ] Strongify password constrains (signup, login and forgot, very long or complex)
 - [ ] Remove HOGAN and re-add EJS
 - [ ] Find email factorisation/rendering solution
-
-**Social**
-- [ ] Invite users in room (donut)
-- [ ] Invite users in room (Facebook)
-- [ ] Invite users in room (email)
-- [ ] Invite your friend on donut (Facebook)
 
 **Features**
 - [x] Add option to no join #General on connection
