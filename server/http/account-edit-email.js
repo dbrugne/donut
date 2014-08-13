@@ -14,7 +14,8 @@ var validateInput = function(req, res, next) {
     });
   }
 
-  var r = new RegExp('^'+req.body.user.fields.email+'$', 'i');
+  var pattern = req.body.user.fields.email.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+  var r = new RegExp('^'+pattern+'$', 'i');
   User.findOne({
     $and: [
       {'local.email': {$regex: r}},

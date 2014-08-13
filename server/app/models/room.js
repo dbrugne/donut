@@ -35,7 +35,7 @@ roomSchema.path('name').set(function (v) {
 });
 
 roomSchema.statics.validateName = function (name) {
-  var pattern = /^#[-a-z0-9_\\|[\]{}@^`]{2,30}$/i;
+  var pattern = /^#[-a-z0-9_\\|[\]@^]{2,30}$/i;
   if (pattern.test(name)) {
     return true;
   }
@@ -51,7 +51,8 @@ roomSchema.statics.validateTopic = function (topic) {
 };
 
 roomSchema.statics.findByName = function (name) {
-  var regexp = new RegExp(['^',name,'$'].join(''),'i');
+  var pattern = name.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+  var regexp = new RegExp('^'+pattern+'$','i');
   return this.findOne({ name: regexp });
 };
 
@@ -61,7 +62,8 @@ roomSchema.statics.findByName = function (name) {
  * @returns {Query}
  */
 roomSchema.statics.retrieveRoom = function (name) {
-  var regexp = new RegExp(['^',name,'$'].join(''),'i');
+  var pattern = name.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+  var regexp = new RegExp('^'+pattern+'$','i');
   return this.findOne({ name: regexp })
     .populate('owner', 'username avatar');
 };

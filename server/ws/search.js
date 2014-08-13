@@ -8,7 +8,8 @@ module.exports = function (io, socket, data) {
   if (!data.search)
    return;
 
-  var regexp = new RegExp(data.search, "i");
+  var pattern = data.search.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+  var regexp = new RegExp(pattern, "i");
 
   async.parallel([
 

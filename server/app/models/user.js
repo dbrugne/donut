@@ -55,20 +55,26 @@ userSchema.methods.validPassword = function (password) {
  * @returns {boolean}
  */
 userSchema.statics.validateUsername = function (username) {
-  var pattern = /^[-a-z0-9_|[\]{}^`]{2,25}$/i;
+  // Good length, only allowed chars.
+  var pattern = /^[-a-z0-9\._|[\]^]{3,25}$/i;
   if (pattern.test(username)) {
-    return true;
+    // Must contains at least one letter or number
+    var pattern2 = /[a-z0-9]+/i;
+    if (pattern2.test(username)) {
+      return true;
+    }
   }
   return false;
 };
 
 /**
- * Return the first database user that correpsond to username
+ * Return the first database user that correspond to username
  * @param username
  * @returns {*}
  */
 userSchema.statics.findByUsername = function (username) {
-  var regexp = new RegExp(['^',username,'$'].join(''),'i');
+  var pattern = username.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+  var regexp = new RegExp('^'+pattern+'$','i');
   return this.findOne({ username: regexp }, 'username avatar rooms onetoones');
 };
 
@@ -79,7 +85,8 @@ userSchema.statics.findByUsername = function (username) {
  * @param error
  */
 userSchema.methods.usernameAvailability = function (username, success, error) {
-  var regexp = new RegExp(['^',username,'$'].join(''),'i');
+  var pattern = username.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+  var regexp = new RegExp('^'+pattern+'$','i');
   this.constructor.findOne({
     $and: [
       {'username': {$regex: regexp}},
