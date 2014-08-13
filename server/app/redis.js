@@ -1,7 +1,7 @@
 var debug = require('debug')('chat-server');
 var redis = require("redis");
 
-redis.debug_mode = false;
+redis.debug_mode = false; // @debug
 
 var client = redis.createClient(null, null, {
   detect_buffers: true
