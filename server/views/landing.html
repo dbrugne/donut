@@ -23,16 +23,16 @@
                     {{/message}}
                     <input type="hidden" name="_csrf" value="{{token}}">
                     <div class="form-group">
-                        <input type="text" id="signin-email" class="form-control" name="email" placeholder="{{#i}}login.youremail{{/i}}">
+                        <input type="text" id="signin-email" class="form-control" name="email" placeholder="{{#i}}login.youremail{{/i}}" tabindex="1">
                         <i class="fa fa-arrow-right left"></i>
                     </div>
                     <div class="form-group">
                         <i class="fa fa-arrow-right left"></i>
-                        <a href="/forgot" title="{{#i}}login.forgottenpassword{{/i}}"><i class="fa fa-question-circle right"></i></a>
-                        <input type="password" id="signin-password" class="form-control" name="password" placeholder="{{#i}}login.yourpassword{{/i}}">
+                        <a href="/forgot" title="{{#i}}login.forgottenpassword{{/i}}" tabindex="4"><i class="fa fa-question-circle right"></i></a>
+                        <input type="password" id="signin-password" class="form-control" name="password" placeholder="{{#i}}login.yourpassword{{/i}}" tabindex="2">
                     </div>
                     <div class="form-group">
-                        <input type="submit" value="{{#i}}login.connexion{{/i}}">
+                        <input type="submit" value="{{#i}}login.connexion{{/i}}" tabindex="3">
                     </div>
                 </form>
                 <p class="logic"><span>{{#i}}login.else{{/i}}</span></p>

@@ -3,7 +3,7 @@
     <h2>Enregistrez-vous</h2>
 
     <div class="method-facebook">
-        <a href="/login/facebook" class="facebook-button"><span class="fa fa-facebook"></span> Connexion avec <strong>Facebook</strong></a>
+        <a href="/login/facebook" class="facebook-button" tabindex="1"><span class="fa fa-facebook"></span> Connexion avec <strong>Facebook</strong></a>
     </div>
 
     <div class="or">OU</div>
@@ -23,14 +23,13 @@
                 Connexion par mot de passe :
             </div>
             <div class="form-group">
-                <input type="text" id="signin-email" class="form-control" name="email" placeholder="Email" value="{{userFields.email}}">
+                <input type="text" id="signin-email" class="form-control" name="email" placeholder="Email" value="{{userFields.email}}" tabindex="2">
             </div>
             <div class="form-group">
-                <a href="/forgot" title="mot de passe oublié"><i class="fa fa-question-circle right"></i></a>
-                <input type="password" id="signin-password" class="form-control" name="password" placeholder="Password">
+                <input type="password" id="signin-password" class="form-control" name="password" placeholder="Password" tabindex="3">
             </div>
             <div class="form-group">
-                <input type="submit" value="Et voilà">
+                <input type="submit" value="Et voilà" tabindex="4">
             </div>
             <div class="disclaimer">En cliquant sur "Et voilà !" j’accepte les conditions d'utilisation de Donut</div>
         </form>
