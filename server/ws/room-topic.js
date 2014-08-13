@@ -10,10 +10,9 @@ module.exports = function(io, socket, data) {
   helper.findRoom(data.name, handleSuccess, helper.handleError);
 
   function handleSuccess(room) {
-    // Is user a room owner?
-    // @todo : allow also op, factorize helper.isOwner(room, user) and helper.isOp(room, user) methods
-    if (room.owner._id.toString() != socket.getUserId())
-      return helper.handleError('Room topic, user is not room owner');
+    // Is user a room owner or op
+    if (!helper.isOwnerOrOp(io, room, socket.getUserId()))
+      return helper.handleError('Room topic, requesting user is not room owner or op');
 
     // Input filtering
     data.topic = helper.inputFilter(data.topic, 130);

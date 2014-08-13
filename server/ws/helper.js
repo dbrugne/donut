@@ -590,6 +590,51 @@ module.exports = {
      *
      * words are :P >B) <3 </3 :) but style is still <strong>enabled</strong>, and <a href="http://google.com">links</a>. Or www.google.com and http://yahoo.fr/ with an XSS <script>alert('go go go!')</script>
      */
+  },
+
+  /**
+   * Check that user is the room owner
+   * @param io
+   * @param room
+   * @param user_id
+   */
+  isOwner: function(io, room, user_id) {
+    if (!room.owner || !room.owner._id)
+      return false;
+
+    if (room.owner._id.toString() != user_id)
+      return false;
+
+    return true;
+  },
+
+  /**
+   * Check that user is a room op
+   * @param io
+   * @param room
+   * @param user_id
+   */
+  isOp: function(io, room, user_id) {
+    if (!room.op)
+      return false;
+
+    if (room.op.indexOf(user_id) === -1)
+      return false;
+
+    return true;
+  },
+
+  /**
+   * Check that user is the room owner or an op
+   * @param io
+   * @param room
+   * @param user_id
+   */
+  isOwnerOrOp: function(io, room, user_id) {
+    if (this.isOwner(io, room, user_id) || this.isOp(io, room, user_id))
+      return true;
+
+    return false;
   }
 
 };

@@ -9,7 +9,7 @@ chat
 - [ ] Quick search in left column (with 'light' param to get only username/name + avatar) and link for 'more results' that focus and fill the homepage search
 
 **Room ops**
-- [ ] Factorize socket room op/owner detection in helper and update room:op/deop/topic/update events
+- [x] Factorize socket room op/owner detection in helper and update room:op/deop/topic/update events
 - [ ] Kick a user
 
 **Theme**

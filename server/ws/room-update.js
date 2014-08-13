@@ -23,10 +23,7 @@ module.exports = function(io, socket, data) {
 
     function permissions(room, callback) {
 
-      if (!room.owner || !room.owner._id)
-        return callback('This room "'+data.name+'" hasn\'t owner specified');
-
-      if (socket.getUserId() != room.owner._id.toString())
+      if (!helper.isOwner(io, room, socket.getUserId()))
         return callback('Current user "'+socket.getUsername()+'" is not allowed'
           +' to edit this room "'+data.name);
 

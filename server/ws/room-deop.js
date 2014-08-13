@@ -12,13 +12,9 @@ module.exports = function(io, socket, data) {
   }
 
   function handleSuccess(room, user) {
-    // Is the requesting user the room owner or an deop
-    if (room.owner._id.toString() != socket.getUserId() && (room.op.indexOf(socket.getUserId()) === -1))
-      return helper.handleError('User '+user.username+' is not allowed to deOP in '+room.name);
-
-    // Is the targeted user is in room
-    if (!helper.isUserInRoom(io, user._id, room.name))
-      return helper.handleError('User '+user.username+' is not in '+room.name);
+    // Is user a room owner or op
+    if (!helper.isOwnerOrOp(io, room, socket.getUserId()))
+      return helper.handleError('Room deop, requesting user is not room owner or op');
 
     // Is the targeted user already not a OP of this room
     if (room.op.indexOf(user._id) === -1)
