@@ -12,7 +12,7 @@ chat
 **Chat**
 - [ ] Quick search in left column (with 'light' param to get only username/name + avatar) and link for 'more results' that focus and fill the homepage search
 - [x] On socket disconnection replace room:out by room:disconnect
-- [ ] Add a local notification: disconnect (connection was lost), reconnect (reconnect is done)
+- [x] Add a local notification: disconnect (connection was lost), reconnect (reconnect is done)
 - [x] User change (avatar) is not applied to current socket.getAvatar
 
 **Room ops**

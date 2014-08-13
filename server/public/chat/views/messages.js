@@ -105,8 +105,9 @@ define([
      * And by 'type' should also received:
      * - hello: You enter in #room : {}
      * - in: @user has joined : {user_id, username}
-     * - out: @user has left : {user_id, username}
-     * - disconnect @user quit (reason) : {user_id, username, reason}
+     * - out: @user has left : {user_id, username, [reason: 'disconnect']}
+     * - disconnected @connexion lost
+     * - reconnected @connexion re-established
      * - topic: @user changed topic for 'topic' : {user_id, username, topic}
      * - kick: : @user was kicked by @user 'reason' : {user_id, username, by_user_id, by_username, reason}
      * - ban: @user was banned by @user (time) 'reason' : {user_id, username, by_user_id, by_username, reason}
@@ -115,17 +116,21 @@ define([
      */
     notificationTemplate: _.template(notificationTemplate),
     notification: function(notification) {
+
+      if (notification.type == 'reconnected')
+        console.log('reco notify');
+
       if (notification.type == undefined || notification.type == '')
         return;
 
-      var shouldAggregated = ((notification.type == 'in' || notification.type == 'out' || notification.type == 'disconnect')
+      var shouldAggregated = ((notification.type == 'in' || notification.type == 'out')
         && this.lastNotificationWasInOut && this.lastEvent == 'notification')
         ? true
         : false;
 
       this.lastEvent = 'notification';
 
-      if (notification.type == 'in' || notification.type == 'out' || notification.type == 'disconnect') {
+      if (notification.type == 'in' || notification.type == 'out') {
         this.lastNotificationWasInOut = true;
         notification.subtype = notification.type;
         notification.type = 'inout';
@@ -140,10 +145,6 @@ define([
 
       if (notification.avatar)
         notification.avatar = $.c.userAvatar(notification.avatar, 'user-medium');
-      else if (notification.user_id && this.model.users.get(notification.user_id))
-        notification.avatar = $.c.userAvatar(
-          this.model.users.get(notification.user_id)
-          , 'user-medium');
 
       var html = this.notificationTemplate(notification);
 

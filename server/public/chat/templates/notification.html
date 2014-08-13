@@ -2,8 +2,11 @@
     <% if (type =='hello') { %>
     <i class="fa fa-flag"></i> You enter in <%= name %>
     <span class="date"><span class="moment" data-time="<%= time %>"></span></span>
-    <% } else if (type =='reconnect') { %>
-    <i class="fa fa-flag"></i> You were reconnected
+    <% } else if (type =='disconnected') { %>
+    <i class="fa fa-flag"></i> You were disconnected
+    <span class="date"><span class="moment" data-time="<%= time %>"></span></span>
+    <% } else if (type =='reconnected') { %>
+    <i class="fa fa-flag"></i> You were reconnected <span style="font-weight: normal;">(maybe you missed some messages in this room)</span>
     <span class="date"><span class="moment" data-time="<%= time %>"></span></span>
     <% } else if (type =='topic') { %>
     <img class="avatar" src="<%= avatar %>"><span class="username open-user-profile" data-user-id="<%= user_id %>"><%= username %></span> changed topic for <strong><%- topic %></strong>

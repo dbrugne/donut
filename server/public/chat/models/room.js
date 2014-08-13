@@ -36,6 +36,9 @@ define([
       this.listenTo(client, 'room:op', this.onOp);
       this.listenTo(client, 'room:deop', this.onDeop);
       this.listenTo(client, 'room:updated', this.onUpdated);
+
+      this.listenTo(client, 'reconnected', this.onOnline);
+      this.listenTo(client, 'disconnected', this.onOffline);
     },
     leave: function(model, collection, options) {
       client.leave(model.get('name'));
@@ -193,7 +196,13 @@ define([
       _.each(data.data, function(value, key, list) {
         that.set(key, value);
       });
-    }
+    },
+    onOnline: function() {
+      this.trigger('notification', { type: 'reconnected' });
+    },
+    onOffline: function() {
+      this.trigger('notification', { type: 'disconnected' });
+    },
 
   });
 

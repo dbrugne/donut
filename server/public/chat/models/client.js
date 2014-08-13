@@ -8,7 +8,7 @@ define([
     joinRequests: [],
 
     initialize: function() {
-      localStorage.debug=''; // @debug
+      localStorage.debug = ''; // @debug ('*')
     },
 
     debug: function(message) {
@@ -17,6 +17,9 @@ define([
 
     // connect should be done at the end of App initialization to allow interface binding to work
     connect: function() {
+
+      window.client = this; // @debug
+
       this.socket = io(window.location.hostname, {
         //multiplex: true,
         //reconnection: true,
@@ -30,15 +33,15 @@ define([
       // ======================================================
       var that = this;
       this.socket.on('connect', function () {
-        that.trigger('online');
+        that.trigger('connected');
       });
       this.socket.on('disconnect', function () {
         that.debug('socket.io-client disconnect');
-        that.trigger('offline');
+        that.trigger('disconnected');
       });
       this.socket.on('reconnect', function (num) {
         that.debug('socket.io-client successful reconnected at #'+num+' attempt');
-        that.trigger('online');
+        that.trigger('reconnected');
       });
       this.socket.on('reconnect_attempt', function () {
         that.trigger('connecting');
@@ -175,6 +178,15 @@ define([
         that.debug(['io:in:user:status', data]);
         that.trigger('user:status', data);
       });
+    },
+
+    disconnect: function() {
+      this.socket.destroy();
+//      this.socket.cleanup();
+    },
+
+    reconnect: function() {
+      this.socket.reconnect();
     },
 
     // GLOBAL METHODS

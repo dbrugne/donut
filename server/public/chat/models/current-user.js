@@ -10,9 +10,10 @@ define([
       this.listenTo(client, 'welcome', this.onWelcome);
 
       var that = this;
-      this.listenTo(client, 'online',     function() { that.set('status', 'online'); });
       this.listenTo(client, 'connecting', function() { that.set('status', 'connecting'); });
-      this.listenTo(client, 'offline',    function() { that.set('status', 'offline'); });
+      this.listenTo(client, 'connected',     function() { that.set('status', 'online'); });
+      this.listenTo(client, 'disconnected',    function() { that.set('status', 'offline'); });
+      this.listenTo(client, 'reconnected',     function() { that.set('status', 'online'); });
       this.listenTo(client, 'error',      function() { that.set('status', 'error'); });
 
       this._initialize(options);
