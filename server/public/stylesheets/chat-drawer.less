@@ -17,9 +17,16 @@
       .content {
         width: 100%;
         height: 100%;
-        padding: 45px 10px 10px;
+        @cont-pad: 45px;
+        padding: @cont-pad 10px 10px;
         background-color: @cl-background;
-        > div { height: 100%; }
+        > div {
+          height: 100%;
+//          height: -webkit-calc(~'100%' - (@cont-pad + 5px));
+//          height: -o-calc(~'100%' - (@cont-pad + 5px));
+//          height: calc(~'100%' - (@cont-pad + 5px));
+//          overflow-x: auto; overflow-y: auto;
+        }
         .spinner { width: 100%; height: 100%; text-align: center; color: @cl-subtext1; }
       }
       .close {
@@ -119,6 +126,7 @@
     }
     .users {
       margin-top: 40px;
+      margin-right: -10px;
       text-align: left;
       .user {
         display: inline-block;
@@ -258,6 +266,29 @@
       a {
         font-size: 2.0em;
         padding: 0.5em 1em;
+      }
+    }
+    .rooms {
+      margin-top: 40px;
+      margin-left: -15px;
+      margin-right: -25px;
+      text-align: center;
+      .room {
+        .pull-left;
+        display: inline-block;
+        padding-right: 25px;
+        -webkit-border-radius: 25px;
+        -moz-border-radius: 25px;
+        border-radius: 25px;
+        margin-right: 10px;
+        margin-top: 10px;
+        .avatar {
+
+        }
+        .name {
+          .ft-opensans-bold;
+          font-size: 1em;
+        }
       }
     }
   }

@@ -63,7 +63,7 @@ define([
         var list = [];
 
         var alreadyIn = [];
-        function pushUsers(user, owner, op) {
+        function pushNew(user, owner, op) {
           if (!user.user_id)
             return;
 
@@ -84,17 +84,17 @@ define([
         }
 
         if (room.owner)
-          pushUsers(room.owner, true, false);
+          pushNew(room.owner, true, false);
 
         if (room.op && room.op.length > 0) {
           _.each(room.op, function(user) {
-            pushUsers(user, false, true);
+            pushNew(user, false, true);
           });
         }
 
         if (room.users && room.users.length > 0) {
           _.each(room.users, function(user) {
-            pushUsers(user, false, false);
+            pushNew(user, false, false);
           });
         }
 

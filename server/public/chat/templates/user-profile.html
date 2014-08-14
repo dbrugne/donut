@@ -9,4 +9,12 @@
     <% } else { %>
     <p class="offline"><a>offline</a></p>
     <% }; %>
+    <div class="rooms">
+        <% _.each(user.rooms_list, function(room) { %>
+        <div class="room open-room-profile" data-room-name="<%= room.name %>" data-colorify="<%= room.color %>" data-colorify-background="color">
+            <img class="avatar" src="<%= room.avatar %>" />
+            <span class="name" data-colorify-text="contrast"><%= room.name %></span>
+        </div>
+        <% }); %>
+    </div>
 </div>

@@ -20,8 +20,8 @@ chat
 - Chat interface
     - [ ] One to one
     - [x] Add room owner/ops list on room profile
-    - [ ] Add owned/opsed room list on user profile
-    - [ ] Add room where the user is in on user profile
+    - [x] Add owned/opsed room list on user profile
+    - [x] Add room where the user is in on user profile
     - [ ] FAQ / contact / CGU / help in left column (_blank)
 - [ ] Room page
 - [ ] User page
