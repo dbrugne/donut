@@ -362,7 +362,7 @@ module.exports = {
   roomSockets: function(io, name) {
 //    return io.sockets.in(name);
     // source: http://stackoverflow.com/questions/23858604/how-to-get-rooms-clients-list-in-socket-io-1-0
-    // until a cleaner method is implemented in socket.io
+    // until a cleaner method is implemented in socket.io : https://github.com/Automattic/socket.io-redis/pull/15
     var res = [];
     var room = io.sockets.adapter.rooms[name];
     if (room) {
@@ -485,7 +485,7 @@ module.exports = {
     data.rooms = [];
 
     var q = Room.find({}, 'name owner permanent topic description avatar color')
-      .limit(10)
+      .limit(25)
       .populate('owner', 'username avatar');
 
     var that = this;
