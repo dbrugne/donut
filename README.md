@@ -28,7 +28,7 @@ chat
 
 **Account**
 - [ ] Implement clean account form (email, password, Facebook) in IHM
-- [ ] Allow dot in username (aaron.aronson)
+- [x] Allow dot in username (aaron.aronson)
 - [ ] Add signup with Facebook button on landing page
 
 **Customization**
