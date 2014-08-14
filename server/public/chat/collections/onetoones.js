@@ -68,9 +68,6 @@ define([
 //        });
 //        model.trigger('separator', 'Previous messages');
 //      }
-      if (!isNew) {
-        model.trigger('notification', {type: 'reconnect'});
-      }
     },
     onClose: function(data) {
       var model = this.get(data.user_id);

@@ -113,9 +113,7 @@ define([
 //        });
 //        model.trigger('separator', 'Previous messages');
 //      }
-      if (!isNew) {
-        model.trigger('notification', {type: 'reconnect', name: model.get('name')});
-      } else {
+      if (isNew) {
         model.trigger('notification', {type: 'hello', name: model.get('name')});
       }
     },
