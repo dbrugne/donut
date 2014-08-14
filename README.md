@@ -97,6 +97,7 @@ chat
   - [ ] Own messages history on up and down
   - [ ] Ability to switch .messages display as compact (hide usernames, preserve date on right)
   - [ ] Ability to disabled auto-post on Enter (in this case enter will add break line in input box)
+  - [ ] Hide notification (display only a colored line with number of notifications in bubble, on click show notifications)
   - [ ] Color this user messages by simply clicking on a user (stored in browser memory only)
   - [ ] Smileys popin
 
