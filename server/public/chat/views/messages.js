@@ -116,10 +116,6 @@ define([
      */
     notificationTemplate: _.template(notificationTemplate),
     notification: function(notification) {
-
-      if (notification.type == 'reconnected')
-        console.log('reco notify');
-
       if (notification.type == undefined || notification.type == '')
         return;
 
