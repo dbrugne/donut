@@ -9,26 +9,21 @@ chat
 - [ ] Quick search in left column (with 'light' param to get only username/name + avatar) and link for 'more results' that focus and fill the homepage search
 
 **Room ops**
-- [x] Factorize socket room op/owner detection in helper and update room:op/deop/topic/update events
 - [ ] Kick a user
 
 **Theme**
 - [ ] Favicon
 - [ ] Pictos SVG
+- [ ] Room page
+- [ ] User page
 - Landing page
     - [ ] Animated 'rollers' for alternative texts
 - Chat interface
     - [ ] One to one
-    - [x] Add room owner/ops list on room profile
-    - [x] Add owned/opsed room list on user profile
-    - [x] Add room where the user is in on user profile
     - [ ] FAQ / contact / CGU / help in left column (_blank)
-- [ ] Room page
-- [ ] User page
 
 **Account**
 - [ ] Implement clean account form (email, password, Facebook) in IHM
-- [x] Allow dot in username (aaron.aronson)
 - [ ] Add signup with Facebook button on landing page
 
 **Customization**
@@ -54,7 +49,7 @@ chat
 - [ ] Add test instance on the same server (donut.me subdomain and new IP from OVH)
 
 **Branding**
-- [ ] Changer le proriétaire du domaine : MARTINE BLAJMAN (in progress)
+- [x] Changer le proriétaire du domaine : MARTINE BLAJMAN
 - [ ] Créer une email contact@
 - [ ] Créer une email martine@
 
