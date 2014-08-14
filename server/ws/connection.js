@@ -22,6 +22,9 @@ module.exports = function(io, socket) {
   socket.getAvatar = function() {
     return this.request.user.avatar;
   };
+  socket.getColor = function() {
+    return this.request.user.color;
+  };
 
   // Welcome data
   async.waterfall([
