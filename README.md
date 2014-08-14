@@ -49,7 +49,6 @@ chat
 - [ ] Add test instance on the same server (donut.me subdomain and new IP from OVH)
 
 **Branding**
-- [x] Changer le proriétaire du domaine : MARTINE BLAJMAN
 - [ ] Créer une email contact@
 - [ ] Créer une email martine@
 
