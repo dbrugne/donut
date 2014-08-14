@@ -43,6 +43,8 @@ define([
 
         room.avatar = $.c.roomAvatar(room.avatar, 'room-large');
 
+        this._users(room); // decorate room object with users_list
+
         var html = this.template({room: room});
         this.$el.html(html);
         this.$el.colorify();
@@ -50,7 +52,55 @@ define([
 
         if (room.color)
           this.trigger('color', room.color);
+      },
+      /**
+       * Construct the room users list for profile displaying
+       * For each set user_id, username, avatar and color
+       * @param room
+       * @private
+       */
+      _users: function (room) {
+        var list = [];
+
+        var alreadyIn = [];
+        function pushUsers(user, owner, op) {
+          if (!user.user_id)
+            return;
+
+          if (alreadyIn.indexOf(user.user_id) !== -1)
+            return;
+          else
+            alreadyIn.push(user.user_id);
+
+          if (owner === true)
+            user.isOwner = true;
+
+          if (op === true)
+            user.isOp = true;
+
+          user.avatar = $.c.userAvatar(user.avatar, 'user-medium');
+
+          list.push(user);
+        }
+
+        if (room.owner)
+          pushUsers(room.owner, true, false);
+
+        if (room.op && room.op.length > 0) {
+          _.each(room.op, function(user) {
+            pushUsers(user, false, true);
+          });
+        }
+
+        if (room.users && room.users.length > 0) {
+          _.each(room.users, function(user) {
+            pushUsers(user, false, false);
+          });
+        }
+
+        room.users_list = list;
       }
+
   });
 
   return DrawerRoomProfileView;

@@ -117,6 +117,99 @@
         padding: 0.5em 1em;
       }
     }
+    .users {
+      margin-top: 40px;
+      text-align: left;
+      .user {
+        display: inline-block;
+        position: relative;
+        margin-right: 7px;
+        margin-bottom: 10px;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+        .text {
+          display: none;
+          position: absolute;
+          top: 0; bottom: 0; left: 35px;
+          padding: 5px 10px 0 10px;
+          -webkit-border-top-right-radius: 5px;
+          -moz-border-top-right-radius: 5px;
+          border-top-right-radius: 5px;
+          -webkit-border-bottom-right-radius: 5px;
+          -moz-border-bottom-right-radius: 5px;
+          border-bottom-right-radius: 5px;
+          .username {
+            .ft-opensans-bold;
+            font-size: 12px;
+            white-space: nowrap;
+          }
+          .role {
+            font-size: 10px;
+            margin-top: -3px;
+          }
+        }
+        .avatar {
+          position: relative;
+          img {
+            width: 34px;
+            height: 34px;
+            border-style: solid;
+            border-width: 2px;
+            border-color: rgba(167, 167, 167, 0.3);
+            -webkit-border-radius: 0;
+            -moz-border-radius: 0;
+            border-radius: 0;
+          }
+        }
+      }
+      .user.op, .user.owner {
+        .avatar {
+          img {
+            border-style: solid;
+            border-width: 2px;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            border-radius: 5px;
+          }
+        }
+        .avatar::after {
+          content: "";
+          position: absolute;
+        }
+      }
+      .user.op {
+        .avatar {
+          img {
+            border-color: @cl-success !important; // override .op if needed;
+          }
+        }
+        .avatar::after {
+          content: url("/images/op.svg");
+          top: -13px; left: -7px;
+        }
+      }
+      .user.owner {
+        .avatar {
+          img {
+            border-color: #fbec4d !important; // override .op if needed;
+          }
+        }
+        .avatar::after {
+          content: url("/images/owner.svg") !important; // override .op if needed
+          top: -20px !important; left: 9px !important;
+        }
+      }
+      .user:hover {
+        .avatar {
+          z-index: 7;
+        }
+        .text {
+          display: block;
+          z-index: 6;
+        }
+      }
+    }
     .permanent {
       position: absolute;
       top: -10px; right: 60px;

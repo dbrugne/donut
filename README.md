@@ -19,7 +19,7 @@ chat
     - [ ] Animated 'rollers' for alternative texts
 - Chat interface
     - [ ] One to one
-    - [ ] Add room owner/ops list on room profile
+    - [x] Add room owner/ops list on room profile
     - [ ] Add owned/opsed room list on user profile
     - [ ] Add room where the user is in on user profile
     - [ ] FAQ / contact / CGU / help in left column (_blank)
@@ -97,6 +97,7 @@ chat
   - [ ] Own messages history on up and down
   - [ ] Ability to switch .messages display as compact (hide usernames, preserve date on right)
   - [ ] Ability to disabled auto-post on Enter (in this case enter will add break line in input box)
+  - [ ] Commands handling: "/j|join room" "/l|leave room" "/msg user" "/info room|user" "/kick room user"
   - [ ] Hide notification (display only a colored line with number of notifications in bubble, on click show notifications)
   - [ ] Color this user messages by simply clicking on a user (stored in browser memory only)
   - [ ] Smileys popin
@@ -118,7 +119,6 @@ chat
 
 **Room/user design**
 - [ ] Add "your rooms" on homepage
-- [ ] Add "room owned/oped/joined" on user profile
 - [ ] Add a bouncer feature when an unlogged user click on #!... URL (to room/user profile)
 
 **Tooling**

@@ -6,7 +6,22 @@
     <% if (room.topic) { %><p class="topic"><%= room.topic %></p><% }; %>
     <% if (room.website) { %><p class="website"><%= room.website %></p><% }; %>
 
-    <p class="join"><a href="#room/<%= room.name.replace('#', '') %>" data-colorify-background="color" data-colorify-text="contrast">Join <%= room.users %> <i class="fa fa-child"></i></a></p>
+    <p class="join"><a href="#room/<%= room.name.replace('#', '') %>" data-colorify-background="color" data-colorify-text="contrast">Join <%= room.users_count %> <i class="fa fa-child"></i></a></p>
+
+    <div class="users">
+        <% _.each(room.users_list, function(user) { %>
+        <div class="user open-user-profile <% if (user.isOwner) { %>owner<% }; %> <% if (user.isOp) { %>op<% }; %>" data-user-id="<%= user.user_id %>" data-colorify="<%= user.color %>">
+            <span class="avatar"><img src="<%= user.avatar %>" /></span>
+            <div class="text" data-colorify-background="color">
+                <div class="username" data-colorify-text="contrast"><%= user.username %></div>
+                <div class="role" data-colorify-text="contrast">
+                    <% if (user.isOwner) { %>propriétaire<% }; %>
+                    <% if (user.isOp) { %>modérateur<% }; %>
+                </div>
+            </div>
+        </div>
+        <% }); %>
+    </div>
 
     <% if (room.isOwner) { %>
     <a class="edit open-room-edit" data-room-name="<%= room.name %>"><i class="fa fa-pencil-square-o"></i> éditer</a>

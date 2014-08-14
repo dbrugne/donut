@@ -346,7 +346,8 @@ module.exports = {
           list.push({
             user_id: u.getUserId(),
             username: u.getUsername(),
-            avatar: u.getAvatar()
+            avatar: u.getAvatar(),
+            color: u.getColor()
           });
         }
       }
