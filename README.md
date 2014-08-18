@@ -33,11 +33,11 @@ chat
   - [ ] Account
   - [ ] Edit button (edit room profile, edit profile)
 
-**Chat**
-- [ ] Quick search in left column (with 'light' param to get only username/name + avatar) and link for 'more results' that focus and fill the homepage search
-
 **Room ops**
 - [ ] Add kick reason form
+
+**Search**
+- [ ] Quick search in left column (with 'light' param to get only username/name + avatar) and link for 'more results' that focus and fill the homepage search
 
 **Customization**
 - [ ] Handle Facebook image storage/retrieving
@@ -173,6 +173,10 @@ Critical:
 
 Chat:
 - [ ] Replace user_id by username in user:profile request
+- [ ] Message improving
+  - [ ] Code syntax indexing
+- [ ] Hyperlink analyse and open graph extraction with hover popin in rooms and discussions (specific template for YouTube content)
+- [ ] Images drag&drop in input box + direct upload to cloudinary and hyperlink addition in message
 
 Backend:
 - [ ] Traditional page secured zone
@@ -203,8 +207,7 @@ Ideas:
 - [ ] Loyalty, advanced offline notification system (email, sms, frequency (instant, daily, weekly), filter (all activity, mentions, one to one, room where i am) with direct link to room/one to one allow fast anwser (even on mobile)
 - [ ] Public mod for a room (all the content is visible by anyone)
 - [ ] Pin a message
-- [ ] Hyperlink analyse and open graph extraction with hover popin in rooms and discussions (specific template for YouTube content)
-- [ ] Images drag&drop in input box + direct upload to cloudinary and hyperlink addition in message
+
 
 ## Project
 
