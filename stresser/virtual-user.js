@@ -47,6 +47,7 @@ module.exports = function VirtualUser(configuration) {
         virtualUser.chatUser = data.user;
         socket.emit('room:join', {name: '#General'});
       });
+      socket.on('disconnect', function() { console.log(virtualUser.chatUser.username+' disconnected'); });
       socket.on('connect_error', function(err) { console.log('connect_error for '+virtualUser.chatUser.username+' socket (error: '+err+')'); });
       socket.on('connect_timeout', function() { console.log('connect_timeout for '+virtualUser.chatUser.username+' socket'); });
       socket.on('reconnect', function(num) { console.log('reconnect for '+virtualUser.chatUser.username+' socket (attempt '+num+')'); });
@@ -54,6 +55,16 @@ module.exports = function VirtualUser(configuration) {
       socket.on('reconnecting', function(num) { console.log('reconnecting for '+virtualUser.chatUser.username+' socket (attempt '+num+')'); });
       socket.on('reconnect_error', function(err) { console.log('reconnect_error for '+virtualUser.chatUser.username+' socket (error: '+err+')'); });
       socket.on('reconnect_failed', function() { console.log('reconnect_failed for '+virtualUser.chatUser.username+' socket'); });
+
+      socket.on('room:welcome', function(data) {
+        if (data.name)
+          virtualUser.rooms.push(data.name);
+      });
+
+      socket.on('room:leave', function(data) {
+        if (data.name)
+          virtualUser.rooms = _.without(virtualUser.rooms, data.name);
+      });
 
       socket.on('room:message', function(data){
         if (data.message == '/pause' && !configuration.pause) {
@@ -69,8 +80,16 @@ module.exports = function VirtualUser(configuration) {
           return;
         }
 
-        if (data.username.indexOf('stresser-') === -1 && random.probability(12)) {
+        if (data.username.indexOf('stresser-') === -1 && random.probability(1)) {
           socket.emit('room:message', {name: data.name, message: 'ah ah'});
+        }
+
+        if (data.username.indexOf('stresser-') === -1 && random.probability(1)) {
+          socket.emit('room:message', {name: data.name, message: 'pas d\'accord'});
+        }
+
+        if (data.username.indexOf('stresser-') === -1 && random.probability(1)) {
+          socket.emit('room:message', {name: data.name, message: 'oui oui'});
         }
       });
 
@@ -89,21 +108,33 @@ module.exports = function VirtualUser(configuration) {
     this.connect();
   };
 
+  this.join = function() {
+    var name = _.sample(fixtures.rooms);
+    this.socket.emit('room:join', {name: name});
+  };
+
+  this.leave = function() {
+    var name = _.sample(this.rooms);
+    this.socket.emit('room:leave', {name: name});
+  };
+
   this.message = function() {
     if (!this.socket.connected)
       return;
 
-    this.sendRoomMessage();
+    var name = _.sample(this.rooms);
+
+    this.sendRoomMessage(name);
     // maybe send other messages
     for (var i = 15 ; i > 0 ; i = i - 5) {
       if (random.probability(10)) {
-        this.sendRoomMessage();
+        this.sendRoomMessage(name);
       }
     }
   };
-  this.sendRoomMessage = function() {
+  this.sendRoomMessage = function(name) {
     var m = _.sample(fixtures.messages);
-    this.socket.emit('room:message', {name: '#General', message: m});
+    this.socket.emit('room:message', {name: name, message: m});
   };
 
 };

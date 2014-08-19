@@ -4,10 +4,12 @@ var random = require('./random');
 
 var configuration = {
   currentSequence: 0, // first will be '1'
-  maxVirtualUsers: 8,
+  maxVirtualUsers: 30,
   activities: {
-    disconnect  : { percent: 0.1 },
-    reconnect   : { percent: 5 },
+    disconnect  : { percent: 0.001 },
+    reconnect   : { percent: 0.5 },
+    leave       : { percent: 0.01 },
+    join        : { percent: 0.5 },
     message     : { percent: 2 }
   },
   pause: false
@@ -31,7 +33,7 @@ module.exports = function() {
   // #2 - Shall we do something for each user?
   _.each(users, function(user) {
     // #2.1 - Shall we do something or skip?
-    if (random.probability(90)) return;
+    if (random.probability(99)) return;
 
     // #2.2- Evaluate activities
     for (activity in configuration.activities) {
