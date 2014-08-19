@@ -154,6 +154,30 @@ module.exports = {
   },
 
   /**
+   * Method that search for a Room in cache, database.
+   * async compliant
+   *
+   * @param options
+   * @private
+   */
+  retrieveUser: function(username, callback)  {
+    if (!username)
+      return callback('retrieveUser: Username is mandatory');
+    if (!User.validateUsername(username))
+      return callback('retrieveUser: Invalid username: '+username);
+
+    var that = this;
+    User.retrieveUser(username).exec(function(err, user) {
+
+      if (err)
+        callback('retrieveUser: Unable to run query: '+err);
+
+      callback(null, user);
+
+    });
+  },
+
+  /**
    * Search, create and return a room model:
    * - search room
    * - if not exist "create the room" in Mongo store [and memory cache] @todo
@@ -620,7 +644,7 @@ module.exports = {
       return false;
 
     if (room.op.indexOf(user_id) === -1)
-      return false;
+      return false; // @todo: ??? it works also with hydrated room.op???
 
     return true;
   },

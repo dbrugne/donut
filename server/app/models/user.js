@@ -79,6 +79,18 @@ userSchema.statics.findByUsername = function (username) {
 };
 
 /**
+ * Retrieve and return an hydrated user instance
+ * @param name
+ * @returns {Query}
+ */
+userSchema.statics.retrieveUser = function (username) {
+  var pattern = username.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+  var regexp = new RegExp('^'+pattern+'$','i');
+  return this.findOne({ name: regexp }, 'username avatar poster color rooms onetoones')
+    .populate('room', 'name');
+};
+
+/**
  * Check for username availability (call success)
  * @param username
  * @param success
