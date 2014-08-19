@@ -139,6 +139,9 @@ define([
       this.set('permanent', data.permanent);
     },
     onOp: function(data) {
+      if (data.name != this.get('name'))
+        return;
+
       if (this.get('op').indexOf(data.user_id) !== -1)
         return;
 
@@ -146,7 +149,10 @@ define([
       this.get('op').push(data.user_id);
 
       // user.get('is_op')
-      this.users.get(data.user_id).set({is_op: true});
+      var user = this.users.get(data.user_id);
+      if (!user)
+        return;
+      user.set({is_op: true});
       this.users.sort();
 
       this.users.trigger('redraw');
@@ -173,7 +179,10 @@ define([
       this.set('op', ops);
 
       // user.get('is_op')
-      this.users.get(data.user_id).set({is_op: false});
+      var user = this.users.get(data.user_id);
+      if (!user)
+        return;
+      user.set({is_op: false});
       this.users.sort();
 
       this.users.trigger('redraw');

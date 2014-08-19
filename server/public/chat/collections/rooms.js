@@ -18,6 +18,8 @@ define([
       this.listenTo(client, 'welcome', this.onWelcome);
       this.listenTo(client, 'room:leave', this.onLeave);
       this.listenTo(client, 'room:welcome', this.addModel);
+
+      window.rooms = this; // @debug
     },
     /**
      * Executed each time the connexion with server is re-up (can occurs multiple
@@ -90,9 +92,6 @@ define([
           is_op: is_op
         }));
       });
-      window.t = model.users;
-
-      this.add(model); // now the view exists (created by mainView)
 
       // Add history
       // @todo : deduplicate in case of reconnection (empty list?)
@@ -114,6 +113,7 @@ define([
 //        model.trigger('separator', 'Previous messages');
 //      }
       if (isNew) {
+        this.add(model); // now the view exists (created by mainView)
         model.trigger('notification', {type: 'hello', name: model.get('name')});
       }
     },
@@ -123,6 +123,7 @@ define([
       // Only if already joined
       if (room) {
         this.remove(room);
+        room.destroy();
       }
     }
 
