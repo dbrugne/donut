@@ -15,7 +15,8 @@ define([
 
     events: {
       'click .op-user': 'opUser',
-      'click .deop-user': 'deopUser'
+      'click .deop-user': 'deopUser',
+      'click .kick-user': 'kickUser'
     },
     _initialize: function() {
       this.listenTo(this.model, 'change:color', this.onColor);
@@ -75,6 +76,11 @@ define([
       var username = $(event.currentTarget).data('username');
       if (username)
         client.roomDeop(this.model.get('name'), username);
+    },
+    kickUser: function(event) {
+      var username = $(event.currentTarget).data('username');
+      if (username)
+        client.roomKick(this.model.get('name'), username);
     },
 
     /**

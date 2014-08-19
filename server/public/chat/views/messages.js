@@ -98,21 +98,7 @@ define([
     },
 
     /**
-     * Notifications:
-     *
-     * All notifications should have: { type, date }
-     *
-     * And by 'type' should also received:
-     * - hello: You enter in #room : {}
-     * - in: @user has joined : {user_id, username}
-     * - out: @user has left : {user_id, username, [reason: 'disconnect']}
-     * - disconnected @connexion lost
-     * - reconnected @connexion re-established
-     * - topic: @user changed topic for 'topic' : {user_id, username, topic}
-     * - kick: : @user was kicked by @user 'reason' : {user_id, username, by_user_id, by_username, reason}
-     * - ban: @user was banned by @user (time) 'reason' : {user_id, username, by_user_id, by_username, reason}
-     * - op: @user was oped by @user : {user_id, username, by_user_id, by_username}
-     * - deop: @user was deoped by @user : {user_id, username, by_user_id, by_username}
+     * Notifications
      */
     notificationTemplate: _.template(notificationTemplate),
     notification: function(notification) {
@@ -141,6 +127,9 @@ define([
 
       if (notification.avatar)
         notification.avatar = $.c.userAvatar(notification.avatar, 'user-medium');
+
+      if (notification.by_avatar)
+        notification.by_avatar = $.c.userAvatar(notification.by_avatar, 'user-medium');
 
       var html = this.notificationTemplate(notification);
 

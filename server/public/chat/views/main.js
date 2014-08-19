@@ -55,6 +55,7 @@ define([
       this.listenTo(client, 'welcome', this.onWelcome);
       this.listenTo(rooms, 'add', this.addRoomView);
       this.listenTo(onetoones, 'add', this.addOneView);
+      this.listenTo(rooms, 'kicked', this.roomKicked); // @todo: nasty event
 
       // generate and attach subviews
       this.currentUserView = new CurrentUserView({model: currentUser});
@@ -109,6 +110,21 @@ define([
 
       // Run routing only when everything in interface is ready
       this.trigger('ready');
+    },
+
+    /**
+     * Trigger when currentUser is kicked from a room to handle focus and
+     * notification
+     * @param event
+     * @returns {boolean}
+     */
+     roomKicked: function(data) {
+      this.focusHome();
+
+      var message = 'You were kicked from '+data.name;
+      if (data.reason)
+        message += ' (reason: '+data.reason+')';
+      this.alert('warning', message);
     },
 
     // DRAWERS

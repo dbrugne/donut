@@ -18,6 +18,7 @@ define([
       this.listenTo(client, 'welcome', this.onWelcome);
       this.listenTo(client, 'room:leave', this.onLeave);
       this.listenTo(client, 'room:welcome', this.addModel);
+      this.listenTo(client, 'room:kick', this.onKick);
 
       window.rooms = this; // @debug
     },
@@ -123,9 +124,43 @@ define([
       // Only if already joined
       if (room) {
         this.remove(room);
-        room.destroy();
       }
-    }
+    },
+    onKick: function(data) {
+      if (!data.name)
+        return;
+
+      var room = this.get(data.name);
+      if (!room)
+        return;
+
+      // if i'm the kicked user destroy the model/view
+      if (currentUser.get('user_id') == data.user_id) {
+        this.remove(room);
+        this.trigger('kicked', data); // focus + alert
+        return;
+      }
+
+      // check that target is in room.users
+      var user = room.users.get(data.user_id);
+      if (!user)
+        return;
+
+      // remove from this.users
+      room.users.remove(user);
+
+      // trigger notification
+      room.trigger('notification', {
+        type: 'kick',
+        user_id: data.user_id,
+        username: data.username,
+        avatar: data.avatar,
+        by_user_id: data.by_user_id,
+        by_username: data.by_username,
+        by_avatar: data.by_avatar,
+        reason: (data.reason) ? data.reason : false
+      });
+    },
 
   });
 

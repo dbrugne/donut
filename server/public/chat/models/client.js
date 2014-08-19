@@ -181,7 +181,7 @@ define([
     },
 
     disconnect: function() {
-      this.socket.destroy();
+//      this.socket.destroy();
 //      this.socket.cleanup();
     },
 
@@ -255,8 +255,10 @@ define([
       this.socket.emit('room:deop', data);
       this.debug(['io:out:room:deop', data]);
     },
-    roomKick: function(name, username) {
+    roomKick: function(name, username, reason) {
       var data = {name: name, username: username};
+      if (reason)
+        data.reason = reason;
       this.socket.emit('room:kick', data);
       this.debug(['io:out:room:kick', data]);
     },

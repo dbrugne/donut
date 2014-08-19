@@ -86,7 +86,7 @@ userSchema.statics.findByUsername = function (username) {
 userSchema.statics.retrieveUser = function (username) {
   var pattern = username.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
   var regexp = new RegExp('^'+pattern+'$','i');
-  return this.findOne({ name: regexp }, 'username avatar poster color rooms onetoones')
+  return this.findOne({ username: regexp }, 'username avatar poster color rooms onetoones')
     .populate('room', 'name');
 };
 

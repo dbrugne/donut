@@ -144,11 +144,10 @@ module.exports = {
 
     var that = this;
     Room.retrieveRoom(name).exec(function(err, room) {
-
       if (err)
-        callback('retrieveRoom: Unable to run query: '+err);
+        return callback('retrieveRoom: Unable to run query: '+err);
 
-      callback(null, room);
+      return callback(null, room);
 
     });
   },
@@ -168,11 +167,10 @@ module.exports = {
 
     var that = this;
     User.retrieveUser(username).exec(function(err, user) {
-
       if (err)
-        callback('retrieveUser: Unable to run query: '+err);
+        return callback('retrieveUser: Unable to run query: '+err);
 
-      callback(null, user);
+      return callback(null, user);
 
     });
   },
@@ -640,13 +638,25 @@ module.exports = {
    * @param user_id
    */
   isOp: function(io, room, user_id) {
-    if (!room.op)
+    if (!room || !room.op)
       return false;
 
-    if (room.op.indexOf(user_id) === -1)
-      return false; // @todo: ??? it works also with hydrated room.op???
+    // non-hydrated room.op list
+    if (room.op.indexOf(user_id) !== -1)
+      return true;
 
-    return true;
+    // hydrated room.op list
+    var isIn = false;
+    _.each(room.op, function(user) {
+      if (user._id.toString() == user_id) {
+        isIn = true;
+      }
+    });
+
+    if (isIn)
+      return true;
+
+    return false;
   },
 
   /**

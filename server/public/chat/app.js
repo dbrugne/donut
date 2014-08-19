@@ -85,12 +85,17 @@ define([
           return this._url(identifier, transformation, 'default/user-poster-default');
         },
         _url: function(identifier, transformation, defaultIdentifier) {
-          var options = {};
-          if (transformation)
-            var options = {transformation: transformation};
+          defaultIdentifier = defaultIdentifier || 'default/default';
 
           if (!identifier)
-            identifier = defaultIdentifier || 'default/default';
+            identifier = defaultIdentifier;
+
+          var options = {
+            default: defaultIdentifier
+          };
+
+          if (transformation)
+            options.transformation = transformation;
 
           return $.cloudinary.url(identifier, options);
         }

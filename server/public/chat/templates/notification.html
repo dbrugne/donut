@@ -1,54 +1,57 @@
 <div class="notification notification-<%= type %>">
-    <% if (type =='hello') { %>
+<% if (type =='hello') { %>
     <i class="fa fa-flag"></i> You enter in <%= name %>
     <span class="date"><span class="moment" data-time="<%= time %>"></span></span>
-    <% } else if (type =='disconnected') { %>
+<% } else if (type =='disconnected') { %>
     <i class="fa fa-flag"></i> You were disconnected
     <span class="date"><span class="moment" data-time="<%= time %>"></span></span>
-    <% } else if (type =='reconnected') { %>
+<% } else if (type =='reconnected') { %>
     <i class="fa fa-flag"></i> You were reconnected <span style="font-weight: normal;">(maybe you missed some messages in this room)</span>
     <span class="date"><span class="moment" data-time="<%= time %>"></span></span>
-    <% } else if (type =='topic') { %>
+<% } else if (type =='topic') { %>
     <img class="avatar" src="<%= avatar %>"><span class="username open-user-profile" data-user-id="<%= user_id %>"><%= username %></span> changed topic for <strong><%- topic %></strong>
     <span class="date"><span class="moment" data-time="<%= time %>"></span></span>
-    <% } else if (type =='kick') { %>
-    <i class="fa fa-lg fa-ban"></i>
-    <span class="username open-user-profile" data-user-id="<%= user_id %>"><%= username %></span> was kicked by
-    <span class="username open-user-profile" data-user-id="<%= by_user_id %>"><%= by_username %></span> '<%= reason %>'
+<% } else if (type =='kick') { %>
+    <img src="images/kick.svg">
+    <img class="avatar" src="<%= avatar %>"><span class="username open-user-profile" data-user-id="<%= user_id %>"><%= username %></span> was kicked by
+    <img class="avatar" src="<%= by_avatar %>"><span class="username open-user-profile" data-user-id="<%= by_user_id %>"><%= by_username %></span>
+    <% if (reason) { %> : '<%= reason %>'<% }; %>
     <span class="date"><span class="moment" data-time="<%= time %>"></span></span>
-    <% } else if (type =='ban') { %>
-    <i class="fa fa-lg fa-ban"></i>
+<% } else if (type =='ban') { %>
+    <img src="images/ban.svg">
     <span class="username open-user-profile" data-user-id="<%= user_id %>"><%= username %></span> was banned by
-    <span class="username open-user-profile" data-user-id="<%= by_user_id %>"><%= by_username %></span> (<%= time %>) '<em><%= reason %></em>'
+    <img class="avatar" src="<%= by_avatar %>"><span class="username open-user-profile" data-user-id="<%= by_user_id %>"><%= by_username %></span> (<%= time %>) '<em><%= reason %></em>'
     <span class="date"><span class="moment" data-time="<%= time %>"></span></span>
-    <% } else if (type =='op') { %>
+<% } else if (type =='op') { %>
+    <img src="images/op.svg">
     <img class="avatar" src="<%= avatar %>">
     <span class="username open-user-profile" data-user-id="<%= user_id %>"><%= username %></span> was oped by
-    <span class="username open-user-profile" data-user-id="<%= by_user_id %>"><%= by_username %></span>
+    <img class="avatar" src="<%= by_avatar %>"><span class="username open-user-profile" data-user-id="<%= by_user_id %>"><%= by_username %></span>
     <span class="date"><span class="moment" data-time="<%= time %>"></span></span>
-    <% } else if (type =='deop') { %>
+<% } else if (type =='deop') { %>
+    <img src="images/deop.svg">
     <img class="avatar" src="<%= avatar %>">
     <span class="username open-user-profile" data-user-id="<%= user_id %>"><%= username %></span> was deoped by
-    <span class="username open-user-profile" data-user-id="<%= by_user_id %>"><%= by_username %></span>
+    <img class="avatar" src="<%= by_avatar %>"><span class="username open-user-profile" data-user-id="<%= by_user_id %>"><%= by_username %></span>
     <span class="date"><span class="moment" data-time="<%= time %>"></span></span>
-    <% } %>
-    <% if (type == 'inout') { %>
-        <% if (subtype =='in') { %>
-        <div class="item <%= subtype %>" data-time="<%= time %>">
-            <i class="fa fa-lg fa-sign-in"></i>
-            <img class="avatar" src="<%= avatar %>">
-            <span class="username open-user-profile" data-user-id="<%= user_id %>"><%= username %></span>
-        </div>
-        <% } else if (subtype =='out') { %>
-        <div class="item <%= subtype %>" data-time="<%= time %>">
-            <i class="fa fa-lg fa-sign-out"></i>
-            <img class="avatar" src="<%= avatar %>">
-            <span class="username open-user-profile" data-user-id="<%= user_id %>"><%= username %></span>
-            <% if (reason == 'disconnect') { %>
-            <span class="reason">(disconnected)</span>
-            <% } %>
-        </div>
+<% } %>
+<% if (type == 'inout') { %>
+    <% if (subtype =='in') { %>
+    <div class="item <%= subtype %>" data-time="<%= time %>">
+        <img src="images/in.svg">
+        <img class="avatar" src="<%= avatar %>">
+        <span class="username open-user-profile" data-user-id="<%= user_id %>"><%= username %></span>
+    </div>
+    <% } else if (subtype =='out') { %>
+    <div class="item <%= subtype %>" data-time="<%= time %>">
+        <img src="images/out.svg">
+        <img class="avatar" src="<%= avatar %>">
+        <span class="username open-user-profile" data-user-id="<%= user_id %>"><%= username %></span>
+        <% if (reason == 'disconnect') { %>
+        <span class="reason">(disconnected)</span>
         <% } %>
+    </div>
     <% } %>
+<% } %>
 </div>
 <hr>

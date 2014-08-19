@@ -59,6 +59,7 @@
       .notification, p.message {
         position: relative;
         margin-bottom: 0;
+        .avatar { width: 30px; height: 30px; }
         .text { white-space: pre-wrap !important; }
         .date {
           position: absolute;
@@ -73,6 +74,7 @@
         font-weight: bold;
         color: @cl-subtext2;
         .date { display: none;}
+        img { height: 20px; }
         .avatar {
           width: 20px;
           height: 20px;
@@ -84,20 +86,11 @@
         }
         i { color: @cl-success; }
       }
-      .notification-out, .notification-disconnected, .notification-kick, .notification-ban {
-        i { color: @cl-error; }
-      }
       .notification-inout {
         .date { display: none; }
         .item {
           display: inline-block;
           padding: 4px;
-        }
-        .item.in {
-          i { color: @cl-success; }
-        }
-        .item.out {
-          i { color: @cl-error; }
         }
       }
       p.message {
@@ -266,11 +259,15 @@
               right: 0;
               line-height: 2.7;
               display: none;
-              img {
-                width: 16px; height: 21px;
+              .deop-user, .op-user, .kick-user {
+                cursor: pointer;
+                margin-left: 3px;
               }
               .deop-user, .op-user {
-                cursor: pointer;
+                height: 21px;
+              }
+              .kick-user {
+                height: 17px;
               }
             }
           }
@@ -319,13 +316,15 @@
           }
         }
         .list.scroller {
-          .scroller-bar { background: none; border: 0; top: 10px; }
+          .scroller-bar { background: none; border: 0; top: 10px; width: 13px; padding-right: 3px; }
           .scroller-track { background: none; }
           .scroller-handle { right: 0; width: 5px; }
           .scroller-content { padding: 6px 9px 0 14px; }
         }
         .list.scroller-active {
-          .scroller-content {  }
+          .item .actions {
+            right: -9px;
+          }
         }
       }
     }

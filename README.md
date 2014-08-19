@@ -9,7 +9,9 @@ chat
 - [ ] Quick search in left column (with 'light' param to get only username/name + avatar) and link for 'more results' that focus and fill the homepage search
 
 **Room ops**
-- [ ] Kick a user
+- [x] Kick a user
+- [ ] Add kick reason form
+- [ ] Add ban event
 
 **Theme**
 - [ ] Favicon
