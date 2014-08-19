@@ -6,14 +6,19 @@ var cloudinary = require('../app/cloudinary');
 
 module.exports = function(io, socket, data) {
 
+  if (!data.name)
+    return helper.handleError('room:update require room name param');
+
   async.waterfall([
 
     function retrieveRoom(callback) {
 
       helper.retrieveRoom(data.name, function (err, room) {
-
         if (err)
           return callback('Unable to find user: ' + err, null);
+
+        if (!room)
+          return callback('Unable to retrieve room in room:update: '+data.name);
 
         return callback(null, room);
 

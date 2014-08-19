@@ -2,11 +2,23 @@ var helper = require('./helper');
 
 module.exports = function(io, socket, data) {
 
+  if (!data.name)
+    return helper.handleError('room:op require room name param');
+
+  if (!data.username)
+    return helper.handleError('room:op require username param');
+
   // Find and return room model
   helper.findRoom(data.name, handleRoom, helper.handleError);
 
   function handleRoom(room) {
+    if (!room)
+      return helper.handleError('Unable to retrieve room in room:op: '+data.name);
+
     helper.findUser(data.username, function(user) {
+      if (!user)
+        return helper.handleError('Unable to retrieve user in room:op: '+data.username);
+
       handleSuccess(room, user);
     }, helper.handleError);
   }
