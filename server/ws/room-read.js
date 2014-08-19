@@ -8,11 +8,7 @@ module.exports = function(io, socket, data) {
 
     function retrieve(callback) {
 
-      var q = Room.findByName(data.name)
-        .populate('owner', 'username avatar color')
-        .populate('op', 'username avatar color');
-
-      q.exec(function(err, room) {
+      helper.retrieveRoom(data.name, function (err, room) {
         if (err)
           return callback('Error while retrieving room in room:read: '+err);
 
