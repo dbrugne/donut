@@ -19,8 +19,9 @@ chat
 - Landing page
     - [ ] Animated 'rollers' for alternative texts
 - Chat interface
-    - [ ] One to one
-    - [ ] FAQ / contact / CGU / help in left column (_blank)
+  - [ ] One to one
+  - [ ] FAQ / contact / CGU / help in left column (_blank)
+  - [ ] Left SVG icons in message/actions: hello, disconnected, reconnected, topic, kick, ban, deop (on white)
 
 **Account**
 - [ ] Implement clean account form (email, password, Facebook) in IHM
@@ -32,6 +33,7 @@ chat
 - [ ] Deal with default user avatar and poster
 - [ ] Set room default color as pink
 - [ ] Set room default avatar and poster with the same as user
+- [ ] Default room/user avatar and poster not well set on named transformation
 
 **Contents**
 - [ ] Translate texts
