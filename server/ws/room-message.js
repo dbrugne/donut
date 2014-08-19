@@ -8,7 +8,7 @@ module.exports = function(io, socket, data) {
   function handleSuccess(room) {
     // Test if the current socket is in room
     if (!helper.isSocketInRoom(io, socket, room.name))
-     return helper.handleError('This socket is not currently in room');
+     return helper.handleError('room:message, this socket is not currently in room');
 
     // Input filtering
     data.message = helper.inputFilter(data.message, 512);
