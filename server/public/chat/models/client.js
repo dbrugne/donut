@@ -118,10 +118,6 @@ define([
         that.debug(['io:in:room:updated', data]);
         that.trigger('room:updated', data);
       });
-      this.socket.on('room:permanent', function(data) {
-        that.debug(['io:in:room:permanent', data]);
-        that.trigger('room:permanent', data);
-      });
       this.socket.on('room:history', function(data) {
         that.debug(['io:in:room:history', data]);
         that.trigger('room:history', data);
@@ -133,6 +129,10 @@ define([
       this.socket.on('room:deop', function(data) {
         that.debug(['io:in:room:deop', data]);
         that.trigger('room:deop', data);
+      });
+      this.socket.on('room:kick', function(data) {
+        that.debug(['io:in:room:kick', data]);
+        that.trigger('room:kick', data);
       });
 
       // USER EVENTS
@@ -239,11 +239,6 @@ define([
       this.socket.emit('room:update', data);
       this.debug(['io:out:room:update', data]);
     },
-    roomPermanent: function(name, permanent) {
-      var data = {name: name, permanent: permanent};
-      this.socket.emit('room:permanent', data);
-      this.debug(['io:out:room:permanent', data]);
-    },
     roomHistory: function(name, number) {
       number = number || 50;
       var data = {name: name, number: number};
@@ -259,6 +254,11 @@ define([
       var data = {name: name, username: username};
       this.socket.emit('room:deop', data);
       this.debug(['io:out:room:deop', data]);
+    },
+    roomKick: function(name, username) {
+      var data = {name: name, username: username};
+      this.socket.emit('room:kick', data);
+      this.debug(['io:out:room:kick', data]);
     },
 
     // USER METHODS
