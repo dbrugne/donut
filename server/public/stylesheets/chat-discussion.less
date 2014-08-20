@@ -35,9 +35,53 @@
         .topic-current {
           .txt-bubble;
           display: inline-block;
-          padding: 10px 25px;
-          > i {
-            padding-left: 10px;
+          padding: 10px 17px 10px 11px;
+          img {
+            margin-right: 5px;
+            width: 30px;
+            cursor: pointer;
+          }
+        }
+        .topic-form {
+          .txt-bubble;
+          padding: 8px 25px;
+          width: 100%;
+          label {
+            color: @cl-subtext2;
+            font-size: 0.9em;
+            margin-right: 10px;
+            font-weight: normal;
+          }
+          input[type=text] {
+            .form-control;
+            display: inline-block;
+
+            width: -webkit-calc(~'100%' - 295px);
+            width: -o-calc(~'100%' - 295px);
+            width: calc(~'100%' - 295px);
+
+            -webkit-border-radius: 25px;
+            -moz-border-radius: 25px;
+            border-radius: 25px;
+            padding: 6px 30px 6px 15px;
+          }
+          .submit, .cancel {
+            .big-button;
+            background-color: @cl-background;
+            color: @cl-subtext4;
+            border-color: @cl-subtext4;
+            font-size: 0.8em;
+            padding: 6px 9px;
+            border-width: 3px;
+            font-style: normal;
+            display: inline-block;
+            margin-left: 5px;
+          }
+          .cancel {
+            margin-right: 5px;
+          }
+          .submit {
+            font-weight: bold;
           }
         }
       }
