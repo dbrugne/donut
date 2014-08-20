@@ -1,9 +1,10 @@
 <p class="topic-current">
+    <% if (isOwner === true || isOp === true) { %><img src="/images/topic.svg" title="Changer le topic"><% }; %>
     <span class="txt"></span>
-    <% if (isOwner === true || isOp === true) { %><i class="fa fa-pencil-square-o edit"></i><% }; %>
 </p>
 <p class="topic-form">
-    <input type="text" class="topic-input form-control input-sm" placeholder="Room topic" value="" maxlength="130">
-    <button class="btn btn-primary btn-sm topic-submit">Submit</button>
-    <button class="btn btn-cancel btn-sm topic-cancel">Cancel</button>
+    <label>Nouveau topic</label>
+    <input type="text" class="topic-input" placeholder="Room topic" value="" maxlength="130">
+    <button class="submit">Changer</button>
+    <button class="cancel">Annuler</button>
 </p>

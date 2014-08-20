@@ -15,8 +15,8 @@ define([
     events: {
       'click .topic-current': 'showForm',
       'click .edit'         : 'showForm',
-      'click .topic-cancel' : 'hideForm',
-      'click .topic-submit' : 'sendNewTopic',
+      'click .cancel' : 'hideForm',
+      'click .submit' : 'sendNewTopic',
       'keypress .topic-input': function(event) {
         if (event.which == 13) {
           this.sendNewTopic(event);
@@ -59,7 +59,7 @@ define([
       if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner()) return false;
 
       this.$el.find('.topic-current').hide();
-      this.$el.find('.topic-form').css('display', 'inline-block');
+      this.$el.find('.topic-form').css('display', 'block');
       this.$el.find('.topic-input').val(this.model.get('topic')).focus();
     },
     hideForm: function() {
