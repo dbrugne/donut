@@ -63,6 +63,14 @@ h1.logo {
   }
 }
 
+.scrollable {
+  overflow: auto;
+  padding-bottom: 10px;
+  height: -webkit-calc(~'100%' - 320px);
+  height: -o-calc(~'100%' - 320px);
+  height: calc(~'100%' - 320px);
+}
+
 #block-rooms, #block-onetoones {
   .list {
     .item {
@@ -115,4 +123,28 @@ a.links {
   display: block;
   padding: 12px 18px 0;
   .big-link;
+}
+
+#block-links {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  padding-bottom: 18px;
+  text-align: center;
+  color: @cl-subtext2;
+  span:before {
+    content: "• ";
+  }
+  span:first-child:before {
+    content: "";
+  }
+  span {
+    a {
+      color: @cl-subtext2;
+      text-transform: uppercase;
+      font-size: 0.9em;
+    }
+    a:hover {
+      color: @cl-subtext3;
+    }
+  }
 }

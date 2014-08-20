@@ -5,28 +5,53 @@ chat
 
 ## Release 2
 
-**Chat**
-- [ ] Quick search in left column (with 'light' param to get only username/name + avatar) and link for 'more results' that focus and fill the homepage search
-
-**Room ops**
-- [x] Kick a user
-- [ ] Add kick reason form
-
 **Theme**
 - [x] Favicon
-- [ ] Pictos SVG
 - [ ] Room page
 - [ ] User page
 - Landing page
   - [ ] Animated 'rollers' for alternative texts
 - Chat interface
   - [ ] One to one
-  - [ ] FAQ / contact / CGU / help in left column (_blank)
-  - [ ] Left SVG icons in message/actions: hello, disconnected, reconnected, topic, kick, ban, deop (on white)
+  - [x] FAQ / contact / CGU / help in left column (_blank)
+
+**Pictos SVG**
+- Landing
+  - [ ] F Facebook
+  - [ ] -> Inputs
+  - [ ] ? password
+  - [ ] Mail input email
+  - [ ] Lock input password
+  - [ ] Replicate on signup/login/forgot/choose-username
+- Chat
+  - [ ] Logout
+  - [ ] Account
+  - [ ] Profile pen
+  - [ ] Close
+  - [ ] Plus (create) (=> + with typo)
+  - [ ] Permanent
+  - [ ] Search
+  - [ ] Edit button
+  - [ ] Join personas
+- Room
+  - [ ] hello notification
+  - [ ] disconnected notification
+  - [ ] reconnected notification
+  - [ ] topic notification
+  - [ ] kick notification
+  - [ ] ban notification
+  - [ ] deop notification (on white)
 
 **Account**
 - [ ] Implement clean account form (email, password, Facebook) in IHM
 - [ ] Add signup with Facebook button on landing page
+
+**Chat**
+- [ ] Quick search in left column (with 'light' param to get only username/name + avatar) and link for 'more results' that focus and fill the homepage search
+
+**Room ops**
+- [x] Kick a user
+- [ ] Add kick reason form
 
 **Customization**
 - [ ] Handle Facebook image storage/retrieving
