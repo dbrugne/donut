@@ -8,8 +8,6 @@ chat
 **Theme**
 - [ ] Room page
 - [ ] User page
-- Landing page
-  - [ ] Animated 'rollers' for alternative texts
 - Chat interface
   - [ ] One to one
 
@@ -25,7 +23,7 @@ chat
   - [ ] Logout
   - [ ] Account
   - [ ] Profile pen
-  - [ ] Close
+  - [x] Close
   - [ ] Plus (create) (=> + with typo)
   - [ ] Permanent
   - [ ] Search
@@ -110,7 +108,7 @@ chat
   - [ ] Own messages history on up and down
   - [ ] Ability to switch .messages display as compact (hide usernames, preserve date on right)
   - [ ] Ability to disabled auto-post on Enter (in this case enter will add break line in input box)
-  - [ ] Commands handling: "/j|join room" "/l|leave room" "/msg user" "/info room|user" "/kick room user"
+  - [ ] Commands handling: "/j|join room" "/l|leave room" "/msg user" "/info room|user" "/kick room user", "/whois user", "/quit", "/ping"
   - [ ] Hide notification (display only a colored line with number of notifications in bubble, on click show notifications)
   - [ ] Color this user messages by simply clicking on a user (stored in browser memory only)
   - [ ] Smileys popin
@@ -118,6 +116,7 @@ chat
 
 **Content**
 - [ ] Formulaire; faire le tour des libellés des champs, messages d'aide, messages de confirmation
+- [ ] Animated 'rollers' for alternative texts on landing
 
 **Cleaning**
 - [ ] Move email configuration in conf files

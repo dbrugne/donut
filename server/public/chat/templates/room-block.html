@@ -7,7 +7,7 @@
         <% if (room.unread > 0) { %>
             <span class="badge"><%= room.unread %></span>
         <% }; %>
-        <i class="fa fa-times close-room" data-name="<%= room.name %>"></i>
+        <img src="/images/close.svg" class="close-room" data-name="<%= room.name %>" alt="close" title="Close this discussion">
     </a>
     <% }); %>
 </div>

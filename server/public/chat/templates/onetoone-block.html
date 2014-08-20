@@ -8,7 +8,7 @@
         <% if (one.unread > 0) { %>
             <span class="badge"><%= one.unread %></span>
         <% }; %>
-        <i class="fa fa-times close-onetoone" data-username="<%= one.username %>"></i>
+        <img src="/images/close.svg" class="close-onetoone" data-username="<%= one.username %>" alt="close" title="Close this discussion">
     </a>
     <% }); %>
 </div>
