@@ -237,22 +237,28 @@ define([
       var model = rooms.findWhere({ name: name });
       if (model == undefined) return;
 
+      var focused = model.get('focused');
+
       // Remove entity (on remove: panel will autodestroy and model will client.leave)
       rooms.remove(model);
 
       // Focus default
-      this.focusHome();
+      if (focused)
+        this.focusHome();
     },
 
     closeOne: function(username) {
       var model = onetoones.findWhere({ username: username });
       if (model == undefined) return;
 
+      var focused = model.get('focused');
+
       // Remove entity (on remove: panel will autodestroy and model will client.close)
       onetoones.remove(model);
 
       // Focus default
-      this.focusHome();
+      if (focused)
+        this.focusHome();
     },
 
     // FOCUS TAB/PANEL MANAGEMENT
