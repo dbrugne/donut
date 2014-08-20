@@ -34,13 +34,12 @@ chat
   - [ ] Edit button
   - [ ] Join personas
 - Room
-  - [ ] hello notification
-  - [ ] disconnected notification
-  - [ ] reconnected notification
-  - [ ] topic notification
-  - [ ] kick notification
-  - [ ] ban notification
-  - [ ] deop notification (on white)
+  - [x] hello notification
+  - [x] disconnected notification
+  - [x] reconnected notification
+  - [x] topic notification
+  - [x] kick notification (on white)
+  - [x] deop notification (on white)
 
 **Account**
 - [ ] Implement clean account form (email, password, Facebook) in IHM
@@ -63,9 +62,9 @@ chat
 
 **Contents**
 - [ ] Translate texts
-- [ ] FAQ
-- [ ] Contact (from HP and chat interface)
-- [ ] CGU (from HP and chat interface)
+- [ ] FAQ (link in HP and chat interface)
+- [ ] Contact (link in HP and chat interface)
+- [ ] CGU (link in HP and chat interface)
 - [ ] Emails : https://github.com/dbrugne/chat/issues/6
 - [ ] Welcome messages
 

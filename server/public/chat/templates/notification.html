@@ -1,15 +1,15 @@
 <div class="notification notification-<%= type %>">
 <% if (type =='hello') { %>
-    <i class="fa fa-flag"></i> You enter in <%= name %>
+    <img src="images/hello.svg"> You enter in <%= name %>
     <span class="date"><span class="moment" data-time="<%= time %>"></span></span>
 <% } else if (type =='disconnected') { %>
-    <i class="fa fa-flag"></i> You were disconnected
+    <img src="images/disconnect.svg"> You were disconnected
     <span class="date"><span class="moment" data-time="<%= time %>"></span></span>
 <% } else if (type =='reconnected') { %>
-    <i class="fa fa-flag"></i> You were reconnected <span style="font-weight: normal;">(maybe you missed some messages in this room)</span>
+    <img src="images/connect.svg"> You were reconnected <span style="font-weight: normal;">(maybe you missed some messages in this room)</span>
     <span class="date"><span class="moment" data-time="<%= time %>"></span></span>
 <% } else if (type =='topic') { %>
-    <img class="avatar" src="<%= avatar %>"><span class="username open-user-profile" data-user-id="<%= user_id %>"><%= username %></span> changed topic for <strong><%- topic %></strong>
+    <img src="images/topic-w.svg"> <img class="avatar" src="<%= avatar %>"><span class="username open-user-profile" data-user-id="<%= user_id %>"><%= username %></span> changed topic for <strong><%- topic %></strong>
     <span class="date"><span class="moment" data-time="<%= time %>"></span></span>
 <% } else if (type =='kick') { %>
     <img src="images/kick.svg">
@@ -29,7 +29,7 @@
     <img class="avatar" src="<%= by_avatar %>"><span class="username open-user-profile" data-user-id="<%= by_user_id %>"><%= by_username %></span>
     <span class="date"><span class="moment" data-time="<%= time %>"></span></span>
 <% } else if (type =='deop') { %>
-    <img src="images/deop.svg">
+    <img src="images/deop-w.svg">
     <img class="avatar" src="<%= avatar %>">
     <span class="username open-user-profile" data-user-id="<%= user_id %>"><%= username %></span> was deoped by
     <img class="avatar" src="<%= by_avatar %>"><span class="username open-user-profile" data-user-id="<%= by_user_id %>"><%= by_username %></span>
