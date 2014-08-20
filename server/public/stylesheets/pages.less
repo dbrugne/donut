@@ -3,6 +3,24 @@
   .ft-opensans;
   background-color: @cl-first;
   color: @cl-background;
+
+  input[type=text].form-control, input[type=password].form-control {
+    border-radius: 0;
+    border: 1px solid @cl-subtext1;
+    background-color: @cl-background;
+    .ft-opensans;
+    padding: 4px 14px 4px 14px;
+    color: @cl-second;
+  }
+  ::-webkit-input-placeholder {
+    text-transform: uppercase;
+  }
+  ::-moz-placeholder {
+    text-transform: uppercase;
+  }
+  :-ms-input-placeholder {
+    text-transform: uppercase;
+  }
 }
 
 .wrapper {
@@ -83,7 +101,7 @@
   input[type=submit] {
     .big-button;
     background-color: @cl-first;
-    border-color: #ffffff;
+    border: 0;
     color: #ffffff;
     margin-top: 20px;
   }

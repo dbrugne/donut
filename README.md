@@ -23,7 +23,6 @@ chat
   - [ ] Logout
   - [ ] Account
   - [ ] Profile pen
-  - [x] Close
   - [ ] Plus (create) (=> + with typo)
   - [ ] Permanent
   - [ ] Search
