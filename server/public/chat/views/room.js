@@ -4,12 +4,12 @@ define([
   'backbone',
   'models/client',
   'models/current-user',
-  'views/discussion-panel',
+  'views/discussion',
   'views/room-topic',
   'views/room-users',
   'text!templates/room.html'
-], function ($, _, Backbone, client, currentUser, DiscussionPanelView, TopicView, UsersView, roomTemplate) {
-  var RoomView = DiscussionPanelView.extend({
+], function ($, _, Backbone, client, currentUser, DiscussionView, TopicView, UsersView, roomTemplate) {
+  var RoomView = DiscussionView.extend({
 
     template: _.template(roomTemplate),
 
@@ -27,7 +27,7 @@ define([
       this.topicView = new TopicView({el: this.$el.find('.topic'), model: this.model});
       this.usersView = new UsersView({el: this.$el.find('.users'), model: this.model, collection: this.model.users});
 
-      this._colorify();
+      this.colorify();
     },
     _remove: function(model) {
       this.topicView.remove();
@@ -57,11 +57,6 @@ define([
     },
     _unfocus: function() {
     },
-    _colorify: function() {
-      this.$el.attr('data-colorify', this.model.get('color'));
-      this.$el.colorify();
-      this.mainView.color(this.model.get('color'));
-    },
 
     /**
      * User actions methods
@@ -88,7 +83,7 @@ define([
      */
 
     onColor: function(model, value, options) {
-      this._colorify();
+      this.colorify();
     },
     onAvatar: function(model, value, options) {
       var url = $.c.roomAvatar(value, 'room-large');

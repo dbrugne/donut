@@ -26,8 +26,7 @@ var userSchema = mongoose.Schema({
         email      : String,
         name       : String
     },
-    rooms            : [{ type: String, ref: 'Room' }],
-    onetoones        : [{ type: mongoose.Schema.ObjectId, ref: 'User' }]
+    rooms            : [{ type: String, ref: 'Room' }]
 
 });
 
@@ -75,7 +74,7 @@ userSchema.statics.validateUsername = function (username) {
 userSchema.statics.findByUsername = function (username) {
   var pattern = username.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
   var regexp = new RegExp('^'+pattern+'$','i');
-  return this.findOne({ username: regexp }, 'username avatar rooms onetoones');
+  return this.findOne({ username: regexp }, 'username avatar rooms');
 };
 
 /**
@@ -86,7 +85,7 @@ userSchema.statics.findByUsername = function (username) {
 userSchema.statics.retrieveUser = function (username) {
   var pattern = username.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
   var regexp = new RegExp('^'+pattern+'$','i');
-  return this.findOne({ username: regexp }, 'username avatar poster color rooms onetoones')
+  return this.findOne({ username: regexp }, 'username avatar poster color bio location website rooms')
     .populate('room', 'name');
 };
 

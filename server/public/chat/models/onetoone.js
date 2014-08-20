@@ -11,7 +11,10 @@ define([
         username: '',
         user_id: '',
         avatar: '',
+        poster: '',
         color: '',
+        location: '',
+        website: '',
         status: '',
         type: 'onetoone',
         focused: false,
@@ -20,10 +23,6 @@ define([
     },
     _initialize: function() {
       this.listenTo(client, 'user:status', this.onStatus);
-      this.on('remove', this.close);
-    },
-    close: function(model, collection, options) {
-      client.close(model.get('username'));
     },
     onStatus: function(data) {
       if (data.username != this.get('username')) return;

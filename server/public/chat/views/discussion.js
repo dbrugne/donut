@@ -90,7 +90,13 @@ define([
         this.messageBoxView.remove();
         this.remove();
       }
-    }
+    },
+
+    colorify: function() {
+      this.$el.attr('data-colorify', this.model.get('color'));
+      this.$el.colorify();
+      this.mainView.color(this.model.get('color'));
+    },
 
   });
 

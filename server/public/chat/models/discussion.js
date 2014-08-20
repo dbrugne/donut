@@ -23,7 +23,7 @@ define([
     },
 
     message: function(message) {
-      this.messages.add(new MessageModel(message)); // passing everything is maybe not ideal
+      this.messages.add(new MessageModel(message));
 
       if (!this.get('focused')) {
         var unread = this.get('unread');

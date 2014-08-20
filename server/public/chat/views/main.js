@@ -17,7 +17,7 @@ define([
   'views/drawer-user-profile',
   'views/drawer-user-edit',
   'views/room',
-  'views/onetoone-panel',
+  'views/onetoone',
   'views/room-block',
   'views/onetoone-block'
 ], function ($, _, Backbone, client, rooms, onetoones, currentUser, windowView,
@@ -25,7 +25,7 @@ define([
              DrawerView,
              DrawerRoomCreateView, DrawerRoomProfileView, DrawerRoomEditView,
              DrawerUserProfileView, DrawerUserEditView,
-             RoomView, OneToOnePanelView,
+             RoomView, OneToOneView,
              RoomBlockView, OnetooneBlockView) {
 
   var MainView = Backbone.View.extend({
@@ -64,6 +64,11 @@ define([
       this.homeView = new HomeView({});
       this.drawerView = new DrawerView({mainView: this});
       this.alertView = new AlertView({mainView: this});
+
+      window.main = this; // @debug
+      window.client = client; // @debug
+      window.rooms = rooms; // @debug
+      window.onetoones = onetoones; // @debug
     },
 
     alert: function(type, message) {
@@ -141,11 +146,11 @@ define([
     openUserProfile: function(event) {
       this._handleAction(event);
 
-      var userId = $(event.currentTarget).data('userId');
-      if (!userId)
+      var username = $(event.currentTarget).data('username');
+      if (!username)
         return;
 
-      var view = new DrawerUserProfileView({ mainView: this, userId: userId });
+      var view = new DrawerUserProfileView({ mainView: this, username: username });
       this.drawerView.setSize('280px').setView(view).open();
 
       return false; // stop propagation
@@ -200,19 +205,12 @@ define([
     },
 
     addOneView: function(model, collection, options) {
-      var view = new OneToOnePanelView({
+      var view = new OneToOneView({
         collection: collection,
         model:      model,
         mainView:   this
       });
       this.$discussionsPanelsContainer.append(view.$el);
-
-      // If caller indicate that this room should be focused on success
-      //  OR if this is the first opened discussion
-      if (this.thisDiscussionShouldBeFocusedOnSuccess == model.get('username')
-        || this.length == 1) {
-        this.focus(model);
-      }
     },
 
     onCloseDiscussion: function(event) {
@@ -302,15 +300,9 @@ define([
 
     // called by router only
     focusOneToOneByUsername: function(username) {
-      var model = onetoones.findWhere({ username: username });
-      if (model == undefined) {
-        // Not already open
-        this.thisDiscussionShouldBeFocusedOnSuccess = username;
-        onetoones.openPing(username);
-        return;
-      } else {
-        this.focus(model);
-      }
+      // @todo : we can have additionnal data (avatar, user_id ...) depending of call context (user profile)
+      var model = onetoones.getModel({ username: username });
+      return this.focus(model);
     },
 
     focus: function(model) {
@@ -334,7 +326,7 @@ define([
       this.unfocusAll();
 
       // Onetoone particular case, we check for user status
-      if (model.get('type') == 'onetoone')
+      if (model.get('type') == 'onetoone' && model.get('username') != undefined)
         client.userStatus(model.get('username'));
 
       // Focus the one we want
@@ -344,7 +336,7 @@ define([
       this.onetooneBlockView.render();
 
       // Change interface color
-      if (model.get('type') == 'room')
+      if (model.get('color'))
         this.color(model.get('color'))
       else
         this.color('#FF00AA')
@@ -357,6 +349,8 @@ define([
         uri = 'user/'+model.get('username');
       }
       Backbone.history.navigate(uri); // just change URI, not run route action
+
+      this.drawerView.close();
     }
 
   });

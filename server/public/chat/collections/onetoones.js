@@ -14,60 +14,86 @@ define([
     },
 
     initialize: function() {
-      this.listenTo(client, 'welcome', this.onWelcome);
-      this.listenTo(client, 'user:open', this.addModel);
       this.listenTo(client, 'user:close', this.onClose);
       this.listenTo(client, 'user:message', this.onMessage);
     },
     /**
-     * Executed each time the connexion with server is re-up (can occurs multiple
-     * time in a same session)
-     * @param data
+     * Retrieve the current onetoone model OR create a new one
+     * @param user
+     * @return OnetooneModel
      */
-    onWelcome: function(data) {
-      var that = this;
-      _.each(data.onetoones, function(onetoone) {
-        that.addModel(onetoone);
-      });
-      this.trigger('redraw');
-    },
-    openPing: function(username) {
-      client.open(username);
-    },
-    addModel: function(user) {
-      // prepare data
-      var data = {
-        user_id: user.user_id,
-        username: user.username,
-        avatar: user.avatar,
-        status: user.status
-      };
+    getModel: function(user) {
+      if (!user.username)
+        return;
 
-      // update model
-      var isNew = (this.get(user.user_id) == undefined)
-        ? true
-        : false;
-      if (!isNew) {
-        // already exist in IHM (maybe reconnecting)
-        var model = this.get(user.user_id);
-        model.set(data);
+      var model = this.get(user.username);
+      if (model == undefined) {
+        // a new one
+        user.id = user.username;
+        model = new OneToOneModel(user);
+        this.add(model);
+
+        // async !!
+        client.userProfile(user.username);
+        model.listenTo(client, 'user:profile', function (data) {
+          if (!data.user || data.user.username != model.get('username'))
+            return;
+
+          console.log('refresh user', data.user);
+          model.set(data.user);
+         // model.stopListening('user:profile');
+        });
       } else {
-        // add in IHM
-        data.id = user.user_id;
-        var model = new OneToOneModel(data);
+        // an existing one, update field if needed
+        _.each(['avatar', 'poster', 'color', 'location', 'website'], function(key) {
+          if (!_.has(user, key))
+            return;
+
+          var current = model.get(key);
+          var fresh = user[key];
+          if (current != fresh)
+            model.set(key, fresh);
+        });
       }
 
-      this.add(model); // now the view exists (created by mainView)
+      return model;
+    },
+    onMessage: function(message) {
+      var withUser;
+      if (currentUser.get('user_id') == message.from_user_id) {
+        // i'm emitter
+        withUser = {
+          username  : message.to_username,
+          user_id   : message.to_user_id,
+          avatar    : message.to_avatar,
+          poster    : message.to_poster,
+          color     : message.to_color
+        };
+      } else if (currentUser.get('user_id') == message.to_user_id) {
+        // i'm recipient
+        withUser = {
+          username  : message.from_username,
+          user_id   : message.from_user_id,
+          avatar    : message.from_avatar,
+          poster    : message.from_poster,
+          color     : message.from_color
+        };
+      } else {
+        return; // visibly something goes wrong
+      }
 
-      // Add history
-//      // @todo : deduplicate in case of reconnection (empty list?)
-//      if (user.history && user.history.length > 0) {
-//        _.each(user.history, function(event) {
-//          if (event.type != 'user:message') return;
-//          model.messages.add(new MessageModel(event));
-//        });
-//        model.trigger('separator', 'Previous messages');
-//      }
+      // Find or create the model
+      var model = this.getModel(withUser);
+
+      // Rework message object
+      model.message({
+        user_id: message.from_user_id,
+        username: message.from_username,
+        avatar: message.from_avatar,
+        time: message.time,
+        message: message.message
+      });
+      this.trigger('newMessage');
     },
     onClose: function(data) {
       var model = this.get(data.user_id);
@@ -75,33 +101,6 @@ define([
         this.remove(model);
       }
     },
-    onMessage: function(message) {
-      // Current user is emitter or recipient?
-      var with_user_id;
-      if (currentUser.get('user_id') == message.user_id) {
-        // Emitter
-        with_user_id = message.to_user_id;
-      } else if (currentUser.get('user_id') == message.to_user_id) {
-        // Recipient
-        with_user_id = message.user_id; // i can also be this one if i spoke to myself...
-      }
-
-      // Find or create the model
-      var model = this.findWhere({user_id: with_user_id}); // @todo : how to get the message history in this case ???
-      if (model == undefined) {
-        var model = new OneToOneModel({
-          id: with_user_id,
-          user_id: with_user_id,
-          username: message.username,
-          avatar: message.avatar
-        });
-        this.add(model);
-      }
-
-      model.message(message);
-      // Window new message indication
-      this.trigger('newMessage');
-    }
 
   });
 

@@ -1,0 +1,12 @@
+<div class="content">
+    <div class="header user">
+        <img class="avatar open-user-profile" data-username="<%= username %>" src="<%= avatar %>" alt="<%= username %> avatar">
+        <div class="username open-user-profile" data-username="<%= username %>"><%= username %></div>
+        <span class="status"></span>
+        <div class="location"></div>
+        <div class="website"></div>
+    </div>
+    <div class="messages"><!-- messages view --></div>
+    <div class="input"><!-- input view --></div>
+</div><!-- /.content -->
+<div class="side" <% if (poster) { %>style="background-image: url(<%= poster %>);"<% }; %>></div>

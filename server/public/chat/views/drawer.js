@@ -58,7 +58,8 @@ define([
       this._hide();
     },
     onHidden: function(event) {
-      this.contentView.remove();
+      if (this.contentView)
+        this.contentView.remove();
     },
     color: function(color) {
       color = (this._validHex(color))

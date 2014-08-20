@@ -18,13 +18,13 @@ define([
 
     initialize: function(options) {
       this.mainView = options.mainView;
-      this.userId = options.userId;
+      this.username = options.username;
 
     // show spinner as temp content
     this.render();
 
     // ask for data
-    client.userProfile(this.userId);
+    client.userProfile(this.username);
 
     // on response show profile
     this.listenTo(client, 'user:profile', this.onProfile);
@@ -43,7 +43,6 @@ define([
       user.avatar = $.c.userAvatar(user.avatar, 'user-large');
 
       this._rooms(user); // decorate user object with rooms_list
-      console.log(user.rooms_list);
 
       var html = this.template({user: user});
       this.$el.html(html);

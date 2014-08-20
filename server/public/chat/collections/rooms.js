@@ -19,8 +19,6 @@ define([
       this.listenTo(client, 'room:leave', this.onLeave);
       this.listenTo(client, 'room:welcome', this.addModel);
       this.listenTo(client, 'room:kick', this.onKick);
-
-      window.rooms = this; // @debug
     },
     /**
      * Executed each time the connexion with server is re-up (can occurs multiple

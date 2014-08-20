@@ -22,6 +22,9 @@ module.exports = function(io, socket) {
   socket.getAvatar = function() {
     return this.request.user.avatar;
   };
+  socket.getPoster = function() {
+    return this.request.user.poster;
+  };
   socket.getColor = function() {
     return this.request.user.color;
   };
@@ -37,7 +40,7 @@ module.exports = function(io, socket) {
     },
 
     function retrieveUser(callback){
-      User.findById(socket.getUserId(), 'username avatar rooms onetoones general', function(err, user) {
+      User.findById(socket.getUserId(), 'username avatar rooms general', function(err, user) {
         if (err)
           return callback('Unable to find user: '+err, null);
 
@@ -49,31 +52,8 @@ module.exports = function(io, socket) {
     },
 
     function populateOnes(user, callback){
-      user.populate('onetoones', 'username avatar color', function(err, user) {
-        if (err)
-          return callback('Unable to populate user: '+err, null);
-
-        if (user.onetoones.length < 1)
-          return callback(null, user);
-
-        var userOnes = [];
-        for (var i = 0; i < user.onetoones.length; i++) {
-          var one = user.onetoones[i];
-          var status = (helper.userSockets(io, one._id).length > 0)
-            ? true
-            : false;
-
-          userOnes.push({
-            user_id: one._id,
-            username: one.username,
-            avatar: one.avatar,
-            status: status
-          });
-        }
-
-        user.onesToSend = userOnes;
-        return callback(null, user);
-      });
+      // @todo later:  pass non received user:message for this user (messages send when user was offline)
+      return callback(null, user);
     },
 
     function populateRooms(user, callback){
@@ -164,8 +144,7 @@ module.exports = function(io, socket) {
           username: user.username,
           avatar: user.avatar
         },
-        rooms: user.roomsToSend, // problem when using directly user.rooms on mongoose model
-        onetoones: user.onesToSend
+        rooms: user.roomsToSend // problem when using directly user.rooms on mongoose model
       });
 
       return callback(null, user);

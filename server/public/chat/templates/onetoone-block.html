@@ -2,8 +2,8 @@
 <hr>
 <div class="list">
     <% _.each(list, function(one) { %>
-    <a href="#user/<%= one.username %>" class="item <% if (one.focused) { %>active<% }; %> <% if (one.unread > 0) {%>unread<%}; %>" data-user-id="<%= one.user_id %>">
-        <img src="<%= one.avatar %>">
+    <a href="#user/<%= one.username %>" class="item <% if (one.focused) { %>active<% }; %> <% if (one.unread > 0) {%>unread<%}; %>" data-username="<%= one.username %>">
+        <img src="<%= one.avatar %>" class="avatar" alt="<%= one.username %> avatar">
         <span class="name"><%= one.username %></span>
         <% if (one.unread > 0) { %>
             <span class="badge"><%= one.unread %></span>

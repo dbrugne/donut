@@ -19,6 +19,7 @@ define([
       this.listenTo(this.collection, 'remove', this.onAddRemove);
       this.listenTo(this.collection, 'newMessage', this.render); // @todo : nasty event
       this.listenTo(this.collection, 'redraw', this.render);
+      this.listenTo(this.collection, 'change:avatar', this.render);
 
       this.render();
     },
@@ -30,7 +31,9 @@ define([
     render: function() {
       var listJSON = [];
       _.each(this.collection.models, function(o) {
-        listJSON.push(o.toJSON());
+        var json = o.toJSON();
+        json.avatar = $.c.userAvatar(json.avatar, 'user-medium');
+        listJSON.push(json);
       });
 
       var html = this.template({list: listJSON});

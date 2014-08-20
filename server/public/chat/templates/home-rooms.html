@@ -21,7 +21,7 @@
             <div class="open-room-profile" data-room-name="<%= room.name %>">
                 <img class="avatar" src="<%= room.avatar %>" data-colorify-border="lighter">
                 <p class="name" data-colorify-text="contrast"><%= room.name %></p>
-                <p class="owner">by <a class="open-user-profile" data-user-id="<%= room.owner.user_id %>" data-colorify-text="contrast"><%= room.owner.username %></a></p>
+                <p class="owner">by <a class="open-user-profile" data-username="<%= room.owner.username %>" data-colorify-text="contrast"><%= room.owner.username %></a></p>
                 <p class="description"><%= room.description %></p>
             </div>
             <p class="join">

@@ -64,8 +64,6 @@ module.exports = function(server) {
     socket.on('room:deop', function (data) { require('./ws/room-deop')(io, socket, data); });
     socket.on('room:kick', function (data) { require('./ws/room-kick')(io, socket, data); });
 
-    socket.on('user:open', function(data) { require('./ws/user-open')(io, socket, data); });
-    socket.on('user:close', function(data) { require('./ws/user-close')(io, socket, data); });
     socket.on('user:message', function(data) { require('./ws/user-message')(io, socket, data); });
     socket.on('user:profile', function (data) { require('./ws/user-profile')(io, socket, data); });
     socket.on('user:read', function (data) { require('./ws/user-read')(io, socket, data); });

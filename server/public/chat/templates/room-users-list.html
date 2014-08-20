@@ -1,7 +1,7 @@
 <% _.each(list, function(user) { %>
 <p class="item <% if (user.is_op === true) { %>op<% }; %> <% if (user.is_owner === true) { %>owner<% }; %>">
-    <span class="avatar" title="<% if (user.is_op === true) { %>Cet utilisateur est modérateur de ce donut<% } else if (user.is_owner === true) { %>Cet utilisateur est le propriétaire de ce donut<% }; %>"><img class="open-user-profile" data-user-id="<%= user.user_id %>" src="<%= user.avatar %>" alt="<%= user.username %> avatar"></span>
-    <span class="username open-user-profile" data-user-id="<%= user.user_id %>"><%= user.username %></span>
+    <span class="avatar" title="<% if (user.is_op === true) { %>Cet utilisateur est modérateur de ce donut<% } else if (user.is_owner === true) { %>Cet utilisateur est le propriétaire de ce donut<% }; %>"><img class="open-user-profile" data-username="<%= user.username %>" src="<%= user.avatar %>" alt="<%= user.username %> avatar"></span>
+    <span class="username open-user-profile" data-username="<%= user.username %>"><%= user.username %></span>
         <span class="actions">
             <% if (!user.is_owner && (isOp === true || isOwner === true)) { %>
                 <% if (user.is_op === true) { %>

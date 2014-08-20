@@ -4,8 +4,8 @@ var User = require('../app/models/user');
 var Room = require('../app/models/room');
 
 module.exports = function(io, socket, data) {
-  if (undefined == data.user_id || '' == data.user_id)
-    return helper.handleError('Invalid user id '+data.user_id);
+  if (!data.username)
+    return helper.handleError('Param username is mandatory for user:profile');
 
   roomFields = 'name avatar color owner op';
 
@@ -13,10 +13,12 @@ module.exports = function(io, socket, data) {
 
       function retrieve(callback) {
 
-        var q = User.findById(data.user_id, 'username avatar poster bio location website color rooms');
-        q.exec(function (err, user) {
+        helper.retrieveUser(data.username, function (err, user) {
           if (err)
             return callback('Error while retrieving user in user:profile: '+err);
+
+          if (!user)
+            return callback('Unable to retrieve user in user:profile: '+data.username);
 
           return callback(null, user);
         });
