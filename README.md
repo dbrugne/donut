@@ -6,14 +6,12 @@ chat
 ## Release 2
 
 **Theme**
-- [x] Favicon
 - [ ] Room page
 - [ ] User page
 - Landing page
   - [ ] Animated 'rollers' for alternative texts
 - Chat interface
   - [ ] One to one
-  - [x] FAQ / contact / CGU / help in left column (_blank)
 
 **Pictos SVG**
 - Landing
@@ -42,7 +40,6 @@ chat
 - [ ] Quick search in left column (with 'light' param to get only username/name + avatar) and link for 'more results' that focus and fill the homepage search
 
 **Room ops**
-- [x] Kick a user
 - [ ] Add kick reason form
 
 **Customization**
@@ -62,7 +59,7 @@ chat
 - [ ] Welcome messages
 
 **Bug fixes**
-  - [ ] What's happen when a message is posted by someone (on a room) and my client is in sleep (eg. : tablet) ?
+  - [ ] What's happen when a message is posted by someone (on a room) and my client is in sleep (eg. : tablet) ? (normaly if the message arrive before heartbeat check the message is spooled in redis by socketio)
   - [ ] Fluid landing background on small resolutions (display donut background w/ opacity)
 
 **Hosting**
@@ -117,6 +114,7 @@ chat
   - [ ] Hide notification (display only a colored line with number of notifications in bubble, on click show notifications)
   - [ ] Color this user messages by simply clicking on a user (stored in browser memory only)
   - [ ] Smileys popin
+  - [ ] /me commande to describe current action
 
 **Content**
 - [ ] Formulaire; faire le tour des libellés des champs, messages d'aide, messages de confirmation
