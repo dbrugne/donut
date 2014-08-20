@@ -33,13 +33,6 @@ chat
   - [ ] Search
   - [ ] Edit button
   - [ ] Join personas
-- Room
-  - [x] hello notification
-  - [x] disconnected notification
-  - [x] reconnected notification
-  - [x] topic notification
-  - [x] kick notification (on white)
-  - [x] deop notification (on white)
 
 **Account**
 - [ ] Implement clean account form (email, password, Facebook) in IHM
