@@ -6,10 +6,13 @@ chat
 ## Release 2
 
 **Theme**
+- [ ] One to one
 - [ ] Room page
 - [ ] User page
-- Chat interface
-  - [ ] One to one
+- [ ] Add an edit link in drawer profile pages (if owner)
+- [ ] Add the external page URL link in drawer profile pages (if owner)
+- [ ] Add open graph data on landing
+- [ ] Add open graph data profile pages
 
 **Pictos SVG**
 - Landing
