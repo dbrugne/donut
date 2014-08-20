@@ -11,15 +11,14 @@ chat
 **Room ops**
 - [x] Kick a user
 - [ ] Add kick reason form
-- [ ] Add ban event
 
 **Theme**
-- [ ] Favicon
+- [x] Favicon
 - [ ] Pictos SVG
 - [ ] Room page
 - [ ] User page
 - Landing page
-    - [ ] Animated 'rollers' for alternative texts
+  - [ ] Animated 'rollers' for alternative texts
 - Chat interface
   - [ ] One to one
   - [ ] FAQ / contact / CGU / help in left column (_blank)
@@ -82,7 +81,9 @@ chat
   - [ ] Test also that previous request has return (more than) one result if i just added a letter on the right of my request
 
 **Chat**
+- [ ] Add ban
 - [ ] Add a 'room ops' drawer with 'remove user from op list' button (only for owner)
+- [ ] Add a 'room bans' drawer with 'remove user from ban list' button (for op)
 - [ ] Change the to server->client messages : room:join/leave and user:open/close (for something like ?)
 - [x] Correct room:in for user that "reconnect"
 - [ ] Add a check on ws connection to verify is user have "username"
