@@ -2,6 +2,9 @@ var helper = require('./helper');
 
 module.exports = function(io, socket, data) {
 
+  if (!data.username)
+    return helper.handleError('username is mandatory in user:status');
+
   helper.findUser(data.username, handleSuccess, helper.handleError);
 
   function handleSuccess(user) {
