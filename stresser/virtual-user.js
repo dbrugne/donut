@@ -93,6 +93,17 @@ module.exports = function VirtualUser(configuration) {
         }
       });
 
+      socket.on('user:message', function(data) {
+        if (data.from_username.indexOf('stresser-') === -1 && random.probability(50)) {
+          var m = _.sample(fixtures.messages);
+          var event  = {
+            username: data.from_username,
+            message: m
+          };
+          this.socket.emit('user:message', event);
+        }
+      });
+
       if (fn) fn(virtualUser);
     });
   };
