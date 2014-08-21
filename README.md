@@ -6,7 +6,7 @@ chat
 ## Release 2
 
 **Theme**
-- [ ] One to one
+- [x] One to one
 - [ ] Room page
 - [ ] User page
 - [ ] Add an edit link in drawer profile pages (if owner)
@@ -57,6 +57,7 @@ chat
 - [ ] CGU (link in HP and chat interface)
 - [ ] Emails : https://github.com/dbrugne/chat/issues/6
 - [ ] Welcome messages
+- [ ] Balise open graph & SEO landing
 
 **Bug fixes**
   - [ ] What's happen when a message is posted by someone (on a room) and my client is in sleep (eg. : tablet) ? (normaly if the message arrive before heartbeat check the message is spooled in redis by socketio)
@@ -106,7 +107,10 @@ chat
 - [ ] WS: implement async pattern in all WS methods
 - [ ] Bugfix: on room auto-deletion reactivation. Should handle in 'connection.populateRoom' the room recreation. Otherwise a room automatically removed cannot be re-join automatically by client cause room populate try to find room in DB before sending it to client in welcome
 - [ ] Scrollbars adding (left column, home content, user and room edit drawer) and improvments (room messages and users)
+- [ ] Activity logic and tracking : online, afk, offline (used on user profile, one to one, room users, ...)
 - Small and helpfull features:
+  - [ ] Auto fill room user name in input
+  - [ ] Hilight user name in messages
   - [ ] Own messages history on up and down
   - [ ] Ability to switch .messages display as compact (hide usernames, preserve date on right)
   - [ ] Ability to disabled auto-post on Enter (in this case enter will add break line in input box)
