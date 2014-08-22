@@ -12,10 +12,9 @@
             <p class="join">
                 <a href="#room/<%= room.name.replace('#', '') %>" data-colorify-background="color" data-colorify-text="contrast">
                     Join <%= room.users %>
-                    <i class="fa fa-child"></i>
                 </a>
             </p>
-            <% if (room.permanent == true) { %><p class="permanent"><i class="fa fa-lock" title="permanent donut"></i></p><% } %>
+            <% if (room.permanent == true) { %><img class="permanent" src="/images/permanent.svg" alt="permanent room logo"><% } %>
         </div>
         <div class="back" data-colorify-background="color" data-colorify-text="contrast">
             <div class="open-room-profile" data-room-name="<%= room.name %>">
@@ -26,10 +25,10 @@
             </div>
             <p class="join">
                 <a href="#room/<%= room.name.replace('#', '') %>" data-colorify-background="<%= room.color %>" data-colorify-text="contrast">
-                    Join <%= room.users %> <i class="fa fa-child"></i>
+                    Join <%= room.users %>
                 </a>
             </p>
-            <% if (room.permanent == true) { %><p class="permanent" data-colorify-border="<%= room.color %>"><i class="fa fa-lock" data-colorify-text="<%= room.color %>" title="permanent donut"></i></p><% } %>
+            <% if (room.permanent == true) { %><img class="permanent" src="/images/permanent-w.svg" alt="permanent room logo"><% } %>
         </div>
     </div>
     <% }); %>

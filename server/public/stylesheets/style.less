@@ -23,6 +23,10 @@
 @cl-subtext5: #6b6b6b;
 @cl-title: #313131;
 
+@size-color: 20px; /* color top bar (chat and profiles) */
+@size-left: 215px;
+@size-right: 430px;
+
 @img-homepage: '/images/cover.jpg';
 @img-homepage-blur: '/images/cover-blur.jpg';
 
@@ -112,8 +116,137 @@ body {
 .image-uploader {
   a { cursor: pointer; }
 }
+.border-shadow {
+  border: 5px solid rgb(250, 250, 250);
+  border: 5px solid rgba(167, 167, 167, 0.1);
+}
+
+.txt-bubble {
+  position: relative;
+  background-color: @cl-subtext0;
+  padding: 1.2em 1.3em;
+  -webkit-border-radius: 25px;
+  -moz-border-radius: 25px;
+  border-radius: 25px;
+  &:before {
+    content: url(/images/tail.svg);
+    position: absolute;
+    bottom: -5px;
+    left: -10px;
+    width: 20px;
+  }
+}
+/* Room profiles common style */
+.room {
+  p { margin-bottom: 0; }
+  .avatar {
+    .img-circle;
+    .border-shadow;
+  }
+  .name {
+    .ft-raleway-heavy;
+    font-size: 2.0em;
+    line-height: 1.2;
+    color: @cl-title;
+  }
+  .owner {
+    .ft-opensans;
+    font-size: 1.1em;
+    a { color: #000000; }
+  }
+  .topic, .description {
+    .ft-opensans-italic;
+    font-size: 1em;
+  }
+  .website {}
+  .join {
+    a {
+      position: relative;
+      background-color: #ffffff; /** customizable color **/
+      .ft-raleway-medium;
+      color: #ffffff;
+      -webkit-border-radius: 100px;
+      -moz-border-radius: 100px;
+      border-radius: 100px;
+      padding: 0.9em 1.2em;
+      padding-right: 33px;
+      text-transform: uppercase;
+      font-size: 1.2em;
+      &:after {
+        content: " ";
+        background-image: url('/images/user.svg');
+        background-size: 10px 15px;
+        position: absolute;
+        top: 17px; right: 15px;
+        width: 10px; height: 15px;
+      }
+    }
+  }
+  .join:hover {
+    a {
+      text-decoration: none;
+    }
+  }
+  .permanent {
+    width: 20px;
+    > img { width: 20px; }
+  }
+}
+
+/* User profiles common style */
+.user {
+  p { margin-bottom: 0; }
+  .username {
+    .ft-raleway-heavy;
+    font-size: 2.0em;
+    line-height: 1.2;
+    color: @cl-title;
+  }
+  .avatar {
+    border: 5px solid @cl-background; /* customized by code */
+    .border-shadow;
+  }
+  .bio {
+    .ft-opensans-italic;
+    font-size: 1em;
+  }
+  .website {}
+  .discuss {
+    a {
+      background-color: #000000; /** customizable color **/
+      color: #ffffff;
+      .ft-raleway-medium;
+      -webkit-border-radius: 100px;
+      -moz-border-radius: 100px;
+      border-radius: 100px;
+      padding: 0.9em 1.2em;
+      text-transform: uppercase;
+      i {
+        color: @cl-warning;
+      }
+    }
+  }
+  .discuss:hover, .offline:hover {
+    a {
+      text-decoration: none;
+    }
+  }
+  .offline {
+    a {
+      background-color: @cl-neutral;
+      color: #ffffff;
+      .ft-raleway-medium;
+      -webkit-border-radius: 100px;
+      -moz-border-radius: 100px;
+      border-radius: 100px;
+      padding: 0.9em 1.2em;
+      text-transform: uppercase;
+    }
+  }
+}
 
 @import "./landing.less"; /* = non authenticated homepage */
 @import "./pages.less"; /* login, signup, forgot and choose-username pages */
+@import "./profile.less"; /* room and user */
 @import "./account.less";
 @import "./chat.less";

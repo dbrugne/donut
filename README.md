@@ -11,8 +11,7 @@ chat
 - [ ] User page
 - [ ] Add an edit link in drawer profile pages (if owner)
 - [ ] Add the external page URL link in drawer profile pages (if owner)
-- [ ] Add open graph data on landing
-- [ ] Add open graph data profile pages
+- [ ] Implement user count on room profile
 
 **Pictos SVG**
 - Landing
@@ -23,18 +22,20 @@ chat
   - [ ] Lock input password
   - [ ] Replicate on signup/login/forgot/choose-username
 - Chat
+  - [x] Plus (create) (=> + with typo)
+  - [x] Permanent
+  - [x] Join personas
+  - [x] Tail on text bubble
   - [ ] Logout
-  - [ ] Account
-  - [ ] Profile pen
-  - [ ] Plus (create) (=> + with typo)
-  - [ ] Permanent
   - [ ] Search
-  - [ ] Edit button
-  - [ ] Join personas
+  - [ ] Profile pen
+  - [ ] Account
+  - [ ] Edit button (edit room profile, edit profile)
 
 **Account**
 - [ ] Implement clean account form (email, password, Facebook) in IHM
 - [ ] Add signup with Facebook button on landing page
+- [ ] Handle landing display when i'm logged (replace login form)
 
 **Chat**
 - [ ] Quick search in left column (with 'light' param to get only username/name + avatar) and link for 'more results' that focus and fill the homepage search
@@ -49,6 +50,7 @@ chat
 - [ ] Set room default color as pink
 - [ ] Set room default avatar and poster with the same as user
 - [ ] Default room/user avatar and poster not well set on named transformation
+- [ ] Add user-xlarge size for user profile
 
 **Contents**
 - [ ] Translate texts

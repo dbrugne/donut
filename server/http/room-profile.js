@@ -5,16 +5,16 @@ var paramHandler = require('../app/middlewares/room-param');
 router.param('room', paramHandler);
 
 router.get('/room/:room', function(req, res) {
-    var isOwner = (req.user._id.toString() == req.room.owner._id.toString())
-      ? true
-      : false;
+
+    // @todo : add open graph, add description, add canonical url
+    // @todo : users list and count
 
     res.render('room_profile', {
+      layout: 'layout-profile',
       room: req.room,
-      avatarUrl: req.room.avatarUrl('large'),
-      ownerAvatarUrl: req.user.avatarUrl('small'),
-      isOwner: isOwner,
-      uri: req.room.name.replace('#', ''),
+      poster: req.room.poster,
+      color: req.room.color,
+      partials: {user: '_user'},
       scripts: [
         {src: '/javascripts/plugins/jquery.linkify.min.js'}
       ]

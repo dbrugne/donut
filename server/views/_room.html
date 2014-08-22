@@ -1,0 +1,26 @@
+<div class="room card {{#isOwner}}owner{{/isOwner}} {{#isOp}}op{{/isOp}}">
+    <div class="cover">
+        <a href="{{url}}"><img src="{{avatar}}" class="avatar" alt="{{name}} avatar"></a>
+        <div class="text">
+            <div class="name"><a href="{{url}}">{{name}}</a></div>
+           {{#owner}}
+           <p class="owner">
+               by <a href="{{owner.url}}" {{#color}}style="color: {{color}};"{{/color}}>{{owner.username}}</a>
+           </p>
+           {{/owner}}
+       </div>
+        <p class="join"><a href="{{room.url}}" {{#color}}style="background-color: {{color}};"{{/color}}>Join ##</a></p>
+    </div>
+    <div class="back" {{#color}}style="background-color: {{color}};"{{/color}}>
+        <img src="{{avatar}}" class="avatar" alt="{{name}} avatar">
+        <div class="text">
+            <div class="name"><a href="{{url}}">{{name}}</a></div>
+            {{#owner}}
+            <p class="owner">
+                by <a href="{{owner.url}}" {{#color}}style="color: {{color}};"{{/color}}>{{owner.username}}</a>
+            </p>
+            {{/owner}}
+        </div>
+    <p class="join"><a href="{{room.url}}" {{#color}}style="color: {{color}};"{{/color}}>Join ##</a></p>
+    </div>
+</div>

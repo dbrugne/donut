@@ -1,0 +1,18 @@
+<a href="{{url}}" class="user card {{#isOwner}}owner{{/isOwner}} {{#isOp}}op{{/isOp}}">
+    <div class="cover">
+        <img src="{{avatar}}" class="avatar" alt="{{username}} avatar">
+        <div class="text">
+            <div class="username" style="color: {{color}};">{{username}}</div>
+            {{#location}}<p class="location">{{location}}</p>{{/location}}
+            {{#website}}<p class="website">{{website}}</p>{{/website}}
+        </div>
+    </div>
+    <div class="back" {{#color}}style="background-color: {{color}};"{{/color}}>
+        <img src="{{avatar}}" class="avatar" alt="{{username}} avatar">
+        <div class="text">
+            <div class="username">{{username}}</div>
+            {{#location}}<p class="location">{{location}}</p>{{/location}}
+            {{#website}}<p class="website">{{website}}</p>{{/website}}
+        </div>
+    </div>
+</a>

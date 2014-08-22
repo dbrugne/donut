@@ -1,7 +1,3 @@
-@size-color: 20px;
-@size-left: 215px;
-@size-right: 430px;
-
 .body-chat {
   height: 100%;
   overflow-y: hidden;
@@ -39,19 +35,6 @@
     font-size: 1.1em;
   }
 
-  .border-shadow {
-    border: 5px solid rgb(250, 250, 250);
-    border: 5px solid rgba(167, 167, 167, 0.1);
-  }
-
-  .txt-bubble {
-    background-color: @cl-subtext0;
-    padding: 25px;
-    -webkit-border-radius: 25px;
-    -moz-border-radius: 25px;
-    border-radius: 25px;
-  }
-
   .open-room-profile, .open-user-profile, .open-room-edit, .open-user-edit {
     cursor:pointer;
   }
@@ -84,105 +67,6 @@
     .alert.info { background-color: @cl-success;}
     .alert.warning { background-color: @cl-warning; }
     .alert.error { background-color: @cl-error; }
-  }
-
-  /* Room profiles common style */
-  .room {
-    p { margin-bottom: 0; }
-    .avatar {
-      .img-circle;
-      .border-shadow;
-    }
-    .name {
-      .ft-raleway-heavy;
-      font-size: 2.0em;
-      line-height: 1.2;
-      color: @cl-title;
-    }
-    .owner {
-      .ft-opensans;
-      font-size: 1.1em;
-      a { color: #000000; }
-    }
-    .topic, .description {
-      .ft-opensans-italic;
-      font-size: 1em;
-    }
-    .website {}
-    .join {
-      a {
-        background-color: #ffffff; /** customizable color **/
-        .ft-raleway-medium;
-        color: #ffffff;
-        -webkit-border-radius: 100px;
-        -moz-border-radius: 100px;
-        border-radius: 100px;
-        padding: 0.9em 1.2em;
-        text-transform: uppercase;
-        font-size: 1.2em;
-        i {
-          color: @cl-warning;
-        }
-      }
-    }
-    .join:hover {
-      a {
-        text-decoration: none;
-      }
-    }
-    .permanent { }
-  }
-
-  /* User profiles common style */
-  .user {
-    p { margin-bottom: 0; }
-    .username {
-      .ft-raleway-heavy;
-      font-size: 2.0em;
-      line-height: 1.2;
-      color: @cl-title;
-    }
-    .avatar {
-      border: 5px solid @cl-background; /* customized by code */
-      .border-shadow;
-    }
-    .bio {
-      .ft-opensans-italic;
-      font-size: 1em;
-    }
-    .website {}
-    .discuss {
-      a {
-        background-color: #000000; /** customizable color **/
-        color: #ffffff;
-        .ft-raleway-medium;
-        -webkit-border-radius: 100px;
-        -moz-border-radius: 100px;
-        border-radius: 100px;
-        padding: 0.9em 1.2em;
-        text-transform: uppercase;
-        i {
-          color: @cl-warning;
-        }
-      }
-    }
-    .discuss:hover, .offline:hover {
-      a {
-        text-decoration: none;
-      }
-    }
-    .offline {
-      a {
-        background-color: @cl-neutral;
-        color: #ffffff;
-        .ft-raleway-medium;
-        -webkit-border-radius: 100px;
-        -moz-border-radius: 100px;
-        border-radius: 100px;
-        padding: 0.9em 1.2em;
-        text-transform: uppercase;
-      }
-    }
   }
 
   #color {

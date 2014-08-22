@@ -1,0 +1,282 @@
+.body-profile {
+  height: 100%;
+  .ft-opensans;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: 0 @size-color;
+  background-size: auto 100%;
+  background-color: @cl-background;
+  .color {
+    position: fixed;
+    left: 0; right: 0; top: 0;
+    height: @size-color;
+    background-color: @cl-first;
+    z-index: 10;
+  }
+  hr {
+    border-top-color: #dadada;
+    margin-top: 18px;
+    margin-bottom: 18px;
+    margin-left: 0;
+    margin-right: 18px;
+  }
+  hr.clear {
+    border-top-color: transparent;
+    clear: both;
+    margin: 0;
+  }
+}
+
+#profile {
+  position: relative;
+  min-height: 100%;
+  background-color: @cl-background;
+  margin-left: @size-right;
+  padding-top: @size-color + 55px;
+  padding-left: 50px;
+  padding-bottom: @size-color;
+  > .cover {
+    position: absolute;
+    top: @size-color + 55px; left: 50px;
+    min-height: 270px;
+    text-align: center;
+    .avatar {
+      width: 160px;
+      height: 160px;
+    }
+    .join, .discuss {
+      margin-top: 30px;
+    }
+  }
+  > .text {
+    min-height: 230px;
+    margin-left: 160px;
+    padding-left: 30px;
+    padding-top: 20px;
+    .separation {
+      color: @cl-title;
+      font-size: 16px;
+      font-weight: bold;
+    }
+    .website {
+      margin-top: 20px;
+      font-size: 1.3em;
+      a {
+        color: inherit;
+      }
+    }
+    .description, .bio {
+      margin-top: 20px;
+      margin-bottom: 20px;
+      max-width: 475px;
+      .description-content, .bio-content {
+        .txt-bubble;
+        font-size: 1.1em;
+        display: inline-block;
+      }
+    }
+  }
+  .title {
+    display: block;
+    .ft-raleway-heavy;
+    font-size: 2em;
+    margin-bottom: 10px;
+  }
+  .disclaimer {
+    p {
+      font-size: 0.9em;
+      color: @cl-subtext3;
+      float: left;
+      width: 90%;
+    }
+    img {
+      width: 100px;
+      margin: 3px;
+      float: left;
+    }
+  }
+}
+
+.room-profile {
+  > .cover {
+    .avatar {}
+  }
+  > .text {
+    .name {
+      font-size: 4.2em;
+    }
+    .owner {
+      font-size: 1.3em;
+    }
+    .permanent {
+      width: 25px;
+      > img { width: 25px; }
+    }
+  }
+  .topic {
+    margin-top: 30px;
+    .topic-content {
+      .txt-bubble;
+      > img {
+        width: 30px;
+        margin-right: 7px;
+        vertical-align: middle;
+      }
+    }
+  }
+}
+
+.user-profile {
+  > .cover {
+    .avatar {
+    }
+    .join {
+    }
+  }
+  > .text {
+    .username {
+      font-size: 4.2em;
+    }
+    .location {
+      font-size: 1.3em;
+      font-weight: bold;
+    }
+  }
+}
+
+.cards {
+  margin-bottom: 15px;
+  .no {
+    padding: 5px 0;
+    margin-top: 30px;
+    margin-bottom: 10px;
+    font-weight: bold;
+    font-style: italic;
+  }
+  .card {
+    position: relative;
+    display: block;
+    width: 190px;
+    .pull-left;
+    margin-top: -7px;
+    text-align: center;
+    text-decoration: none;
+    color: @cl-title;
+    .cover, .back {
+      min-height: 190px;
+      .avatar {
+        margin: auto;
+        margin-top: 24px;
+        width: 80px;
+        height: 80px;
+      }
+      .text {
+        padding-bottom: 20px;
+      }
+    }
+    .cover { }
+    .back {
+      display: none;
+      -webkit-border-radius: 12px;
+      -moz-border-radius: 12px;
+      border-radius: 12px;
+      color: @cl-background;
+    }
+    &:hover {
+      .cover { display: none; }
+      .back { display: block; }
+    }
+  }
+}
+
+.rooms.cards {
+  .card {
+    .name {
+      font-size: 1.3em;
+    }
+    .owner {
+      font-size: 0.9em;
+      > strong {
+        font-weight: normal;
+      }
+    }
+    .join {
+      padding: 0.7em 1.0em;
+      padding-right: 33px;
+      font-size: 1.0em;
+    }
+  }
+}
+.users.cards {
+  .card {
+    .cover, .back {
+      .avatar {
+        border: 5px solid transparent;
+      }
+      .text {
+        .username {
+          font-weight: 700;
+          font-size: 1.3em;
+          line-height: 1.8;
+        }
+        .location {
+          font-size: 0.8em;
+          font-weight: bold;
+        }
+        .website {
+          font-size: 0.8em;
+          overflow: hidden;
+          white-space: pre;
+          max-width: 180px;
+          margin: auto;
+        }
+      }
+    }
+    .back {
+      .avatar {
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+        border-color: @cl-background;
+      }
+      .username { color: @cl-background; }
+      .website { a { color: @cl-background; } }
+    }
+    &.owner {
+      .cover:after {
+        content: " ";
+        position: absolute;
+        left: 86px;
+        top: 16px;
+        width: 20px;
+        height: 13px;
+        background-image: url('/images/owner-g.svg');
+        background-size: 20px 13px;
+      }
+      .back:before {
+        content: " ";
+        position: absolute;
+        left: 86px;
+        top: 12px;
+        width: 20px;
+        height: 13px;
+        background-image: url('/images/owner-w.svg');
+        background-size: 20px 13px;
+      }
+    }
+    &.op {
+      .cover:before {
+        content: url('/images/op.svg');
+        position: absolute;
+        left: 28px;
+        top: 18px;
+      }
+      .back:before {
+        content: url('/images/deop.svg');
+        position: absolute;
+        left: 28px;
+        top: 18px;
+      }
+    }
+  }
+}

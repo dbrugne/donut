@@ -1,4 +1,6 @@
 var Room = require('../models/room');
+var cloudinary = require('../cloudinary');
+var _ = require('underscore');
 
 module.exports = function(req, res, next, roomname) {
   if (roomname == undefined || roomname == '') {
@@ -8,7 +10,8 @@ module.exports = function(req, res, next, roomname) {
   }
 
   Room.findByName('#'+roomname)
-    .populate('owner')
+    .populate('owner', 'username avatar color location website')
+    .populate('op', 'username avatar color location website')
     .exec(function(err, room) {
       if (err) {
         req.flash('error', err)
@@ -16,6 +19,45 @@ module.exports = function(req, res, next, roomname) {
       }
 
       if (room) {
+        // avatar & poster
+        room.avatar = cloudinary.roomAvatar(room.avatar, 'room-xlarge');
+        room.poster = cloudinary.roomPoster(room.poster, 'room-poster');
+
+        // url
+        room.url = req.protocol + '://' + req.get('host') + '/room/' + room.name.toLocaleLowerCase();
+
+        // owner
+        if (room.owner && room.owner._id) {
+          room.owner.avatar = cloudinary.userAvatar(room.owner.avatar, 'user-large');
+          room.owner.url = (room.owner.username)
+            ? req.protocol + '://' + req.get('host') + '/user/' + room.owner.username.toLocaleLowerCase()
+            : '';
+          room.owner.isOwner = true;
+        }
+
+        // op
+        if (room.op && room.op.length) {
+          var opList = [];
+          _.each(room.op, function(op) {
+            if (room.owner && room.owner._id && room.owner._id.toString() == op._id.toString()) {
+              room.owner = true;
+              return;
+            }
+
+            op.avatar = cloudinary.userAvatar(op.avatar, 'user-large');
+            op.url = (op.username)
+              ? req.protocol + '://' + req.get('host') + '/user/' + op.username.toLocaleLowerCase()
+              : '';
+            op.isOp = true;
+            opList.push(op);
+          });
+          room.op = opList;
+        }
+
+        // users @todo
+        room.users = [];
+        room.users_count = 0;
+
         req.room = room;
         next();
       } else {

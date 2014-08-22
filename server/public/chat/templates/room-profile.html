@@ -6,7 +6,7 @@
     <% if (room.topic) { %><p class="topic"><%= room.topic %></p><% }; %>
     <% if (room.website) { %><p class="website"><%= room.website %></p><% }; %>
 
-    <p class="join"><a href="#room/<%= room.name.replace('#', '') %>" data-colorify-background="color" data-colorify-text="contrast">Join <%= room.users_count %> <i class="fa fa-child"></i></a></p>
+    <p class="join"><a href="#room/<%= room.name.replace('#', '') %>" data-colorify-background="color" data-colorify-text="contrast">Join <%= room.users_count %></a></p>
 
     <div class="users">
         <% _.each(room.users_list, function(user) { %>
@@ -28,9 +28,6 @@
     <% }; %>
 
     <% if (room.permanent === true) { %>
-    <span class="fa-stack permanent">
-      <i class="fa fa-circle-thin fa-stack-2x"></i>
-      <i class="fa fa-lock fa-stack-1x" title="permanent donut"></i>
-    </span>
+    <img src="/images/permanent.svg" class="permanent" alt="permanent room logo">
     <% } %>
 </div>

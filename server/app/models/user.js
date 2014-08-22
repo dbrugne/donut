@@ -74,7 +74,7 @@ userSchema.statics.validateUsername = function (username) {
 userSchema.statics.findByUsername = function (username) {
   var pattern = username.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
   var regexp = new RegExp('^'+pattern+'$','i');
-  return this.findOne({ username: regexp }, 'username avatar rooms');
+  return this.findOne({ username: regexp }, 'username avatar poster color location website bio rooms');
 };
 
 /**
