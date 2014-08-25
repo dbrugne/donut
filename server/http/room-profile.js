@@ -6,10 +6,9 @@ router.param('room', paramHandler);
 
 router.get('/room/:room', function(req, res) {
 
-  res.locals.title = req.room.name + ' profile | donut.me';
-
     res.render('room_profile', {
       layout: 'layout-profile',
+      subtitle: req.room.name,
       room: req.room,
       poster: req.room.poster,
       color: req.room.color,

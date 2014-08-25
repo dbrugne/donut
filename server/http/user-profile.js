@@ -6,10 +6,9 @@ router.param('user', paramHandler);
 
 router.get('/user/:user', function(req, res) {
 
-  res.locals.title = req.requestedUser.username + ' profile | donut.me';
-
   res.render('user_profile', {
     layout: 'layout-profile',
+    subtitle: req.requestedUser.username,
     user: req.requestedUser,
     poster: req.requestedUser.poster,
     color: req.requestedUser.color,
