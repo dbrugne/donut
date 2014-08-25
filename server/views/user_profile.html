@@ -5,7 +5,7 @@
         <p class="discuss"><a href="{{user.url.chat}}" {{#user.color}}style="background-color: {{user.color}};"{{/user.color}}>Discuter</a></p>
     </div>
     <div class="text user">
-        <p class="username">{{user.username}}</p>
+        <a href="{{user.url}}" class="username">{{user.username}}</a>
         {{#user.location}}
         <span class="location">
             {{user.location}}
