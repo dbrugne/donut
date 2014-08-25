@@ -9,18 +9,21 @@
            </p>
            {{/owner}}
        </div>
-        <p class="join"><a href="{{room.url}}" {{#color}}style="background-color: {{color}};"{{/color}}>Join ##</a></p>
+        <p class="join"><a href="{{url}}" {{#color}}style="background-color: {{color}};"{{/color}}>Join ##</a></p>
     </div>
     <div class="back" {{#color}}style="background-color: {{color}};"{{/color}}>
-        <img src="{{avatar}}" class="avatar" alt="{{name}} avatar">
+        <a href="{{url}}"><img src="{{avatar}}" class="avatar" alt="{{name}} avatar"></a>
         <div class="text">
             <div class="name"><a href="{{url}}">{{name}}</a></div>
             {{#owner}}
             <p class="owner">
-                by <a href="{{owner.url}}" {{#color}}style="color: {{color}};"{{/color}}>{{owner.username}}</a>
+                by <a href="{{owner.url}}">{{owner.username}}</a>
             </p>
             {{/owner}}
+            {{#description}}
+            <p class="description">{{description}}</p>
+            {{/description}}
         </div>
-    <p class="join"><a href="{{room.url}}" {{#color}}style="color: {{color}};"{{/color}}>Join ##</a></p>
+    <p class="join"><a href="{{url}}" {{#color}}style="color: {{color}};"{{/color}}>Join ##</a></p>
     </div>
 </div>

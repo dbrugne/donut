@@ -24,7 +24,7 @@ module.exports = function(req, res, next, roomname) {
         room.poster = cloudinary.roomPoster(room.poster, 'room-poster');
 
         // url
-        room.url = req.protocol + '://' + req.get('host') + '/room/' + room.name.toLocaleLowerCase();
+        room.url = req.protocol + '://' + req.get('host') + '/room/' + room.name.replace('#', '').toLocaleLowerCase();
 
         // owner
         if (room.owner && room.owner._id) {

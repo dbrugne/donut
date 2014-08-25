@@ -2,7 +2,7 @@
 <div id="profile" class="room-profile">
     <div class="cover room">
         <a href="{{room.url}}"><img class="avatar" src="{{room.avatar}}" alt="{{room.name}} avatar"></a>
-        <p class="join"><a href="{{room.url.chat}}" {{#room.color}}style="background-color: {{room.color}};"{{/room.color}}>Join ##</a></p>
+        <p class="join"><a href="{{room.url}}" {{#room.color}}style="background-color: {{room.color}};"{{/room.color}}>Join ##</a></p>
     </div>
     <div class="text room">
         <p class="name">{{room.name}} {{#room.permanent}}<img src="/images/permanent.svg" class="permanent" alt="permanent room logo">{{/room.permanent}}</p>
@@ -44,7 +44,7 @@
     </div>
     <hr>
     <div class="disclaimer">
-        <p>Cette page est le profil de la room <strong>{{room.name}}</strong> sur la plateforme de chat <a href="/">donut.me</a>. donut.me vous permet de créer une room thématique sur le sujet de votre choix et d'y discuter avec "des" gens ou les gens de votre communauté.</p>
+        <p>Cette page est le profil de la room <a href="{{room.url}}">{{room.name}}</a> sur la plateforme de chat <a href="/">donut.me</a>. donut.me vous permet de créer une room thématique sur le sujet de votre choix et d'y discuter avec "des" gens ou les gens de votre communauté.</p>
         <a href="/"><img src="/images/logo-onecolor-gr.svg" alt="donut.me log"></a>
     </div>
     <hr class="clear">

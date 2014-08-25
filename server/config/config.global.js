@@ -1,5 +1,5 @@
 var conf = module.exports = {
-  title: 'donut.me | old flavour chat rooms',
+  title: 'donut.me | chatrooms et plus si affinités',
   less: {
     force: false
   },

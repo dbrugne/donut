@@ -6,8 +6,7 @@ router.param('room', paramHandler);
 
 router.get('/room/:room', function(req, res) {
 
-    // @todo : add open graph, add description, add canonical url
-    // @todo : users list and count
+  res.locals.title = req.room.name + ' profile | donut.me';
 
     res.render('room_profile', {
       layout: 'layout-profile',

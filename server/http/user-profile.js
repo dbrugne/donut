@@ -6,8 +6,7 @@ router.param('user', paramHandler);
 
 router.get('/user/:user', function(req, res) {
 
-  // @todo : add open graph, add description, add canonical url
-  // @todo : users list and count
+  res.locals.title = req.requestedUser.username + ' profile | donut.me';
 
   res.render('user_profile', {
     layout: 'layout-profile',

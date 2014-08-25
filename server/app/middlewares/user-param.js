@@ -59,7 +59,9 @@ module.exports = function(req, res, next, username) {
 
         _.each(rooms, function(dbroom) {
           var room = dbroom.toJSON();
-//          if (room.owner) {
+          if (room.owner)
+            room.owner.url = req.protocol + '://' + req.get('host') + '/user/' + room.owner.username.toLocaleLowerCase();
+
 ////            room.owner = room.owner.toJSON();
 //            if (room.owner._id && room.owner._id.toString() == user._id.toString())
 //              room.isOwner = true;
@@ -70,7 +72,7 @@ module.exports = function(req, res, next, username) {
 
           room.avatar = cloudinary.roomAvatar(room.avatar, 'room-large');
           room.url = (room.name)
-            ? req.protocol + '://' + req.get('host') + '/room/' + room.name.toLocaleLowerCase()
+            ? req.protocol + '://' + req.get('host') + '/room/' + room.name.replace('#', '').toLocaleLowerCase()
             : '';
 
           list.push(room);

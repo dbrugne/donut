@@ -125,12 +125,9 @@
     }
   }
 }
-
 .user-profile {
   > .cover {
     .avatar {
-    }
-    .join {
     }
   }
   > .text {
@@ -164,12 +161,6 @@
     color: @cl-title;
     .cover, .back {
       min-height: 190px;
-      .avatar {
-        margin: auto;
-        margin-top: 24px;
-        width: 80px;
-        height: 80px;
-      }
       .text {
         padding-bottom: 20px;
       }
@@ -181,6 +172,9 @@
       -moz-border-radius: 12px;
       border-radius: 12px;
       color: @cl-background;
+      .avatar {
+        margin-top: 14px;
+      }
     }
     &:hover {
       .cover { display: none; }
@@ -188,22 +182,62 @@
     }
   }
 }
-
 .rooms.cards {
   .card {
-    .name {
-      font-size: 1.3em;
-    }
-    .owner {
-      font-size: 0.9em;
-      > strong {
-        font-weight: normal;
+    .cover, .back {
+      .avatar {
+        margin: auto;
+        margin-top: 10px;
+        width: 85px;
+        height: 85px;
+        border: 5px solid transparent;
+      }
+      .name {
+        font-size: 1.1em;
+      }
+      .owner {
+        font-size: 0.8em;
+        line-height: 1;
+      }
+      .join {
+        position: absolute;
+        bottom: 21px;
+        text-align: center;
+        width: 100%;
+        a {
+          padding: 0.9em 1.1em;
+          padding-right: 30px;
+          font-size: 0.9em;
+          &:after {
+            top: 12px; right: 13px;
+          }
+        }
       }
     }
-    .join {
-      padding: 0.7em 1.0em;
-      padding-right: 33px;
-      font-size: 1.0em;
+    .back {
+      .avatar {
+        margin-top: 15px;
+        width: 50px;
+        height: 50px;
+        border-color: rgba(167,167,167,0.2);
+      }
+      .name {
+        color: @cl-background;
+        a { color: @cl-background; }
+      }
+      .description {
+        font-size: 0.8em;
+        overflow: hidden;
+        padding: 5px 5px 0;
+        max-height: 38px;
+      }
+    }
+    &:hover {
+      .back {
+        .owner a {
+          color: @cl-background;
+        }
+      }
     }
   }
 }
@@ -211,6 +245,10 @@
   .card {
     .cover, .back {
       .avatar {
+        margin: auto;
+        margin-top: 24px;
+        width: 85px;
+        height: 85px;
         border: 5px solid transparent;
       }
       .text {
