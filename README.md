@@ -1,17 +1,22 @@
 chat
 ====
 
-***"Une plateforme de discussion temps réel autour de thématique. Pour ce faire la plateforme permet la création de "room" dans laquelle les utilisateurs pourront échanger autour d'un sujet, d'une communauté ou de tout et rien"***
-
-## Release 2
+## v1.0 : opening platform to real people
 
 **Theme**
-- [x] One to one
-- [ ] Room page
-- [ ] User page
-- [ ] Add an edit link in drawer profile pages (if owner)
-- [ ] Add the external page URL link in drawer profile pages (if owner)
+- [ ] Add the external page URL link in drawer profile pages (user and room)
+- [ ] Add an edit link in room profile drawer (if owner)
+- [ ] Add new socket.io-redis
 - [ ] Implement user count on room profile
+- [ ] Implement user online status on user profile
+- [ ] Implement current user list on room profile
+- [ ] If current user is logged put chat URL on join/discusso button elseif landing URL
+- [ ] Implement open graph and SEO description and canonical url in room/user profile meta
+- [ ] Implement open graph and SEO description and canonical url on landing
+- [ ] Implement clean account form for email, password and Facebook in chat
+- [ ] Add signup with Facebook button on landing page
+- [ ] Handle landing display when i'm logged (replace login form)
+- [ ] Fluid landing background on small resolutions (display donut background w/ opacity)
 
 **Pictos SVG**
 - Landing
@@ -22,20 +27,11 @@ chat
   - [ ] Lock input password
   - [ ] Replicate on signup/login/forgot/choose-username
 - Chat
-  - [x] Plus (create) (=> + with typo)
-  - [x] Permanent
-  - [x] Join personas
-  - [x] Tail on text bubble
   - [ ] Logout
   - [ ] Search
   - [ ] Profile pen
   - [ ] Account
   - [ ] Edit button (edit room profile, edit profile)
-
-**Account**
-- [ ] Implement clean account form (email, password, Facebook) in IHM
-- [ ] Add signup with Facebook button on landing page
-- [ ] Handle landing display when i'm logged (replace login form)
 
 **Chat**
 - [ ] Quick search in left column (with 'light' param to get only username/name + avatar) and link for 'more results' that focus and fill the homepage search
@@ -59,11 +55,8 @@ chat
 - [ ] CGU (link in HP and chat interface)
 - [ ] Emails : https://github.com/dbrugne/chat/issues/6
 - [ ] Welcome messages
-- [ ] Balise open graph & SEO landing
 
-**Bug fixes**
-  - [ ] What's happen when a message is posted by someone (on a room) and my client is in sleep (eg. : tablet) ? (normaly if the message arrive before heartbeat check the message is spooled in redis by socketio)
-  - [ ] Fluid landing background on small resolutions (display donut background w/ opacity)
+## Release 3
 
 **Hosting**
 - [ ] Add test instance on the same server (donut.me subdomain and new IP from OVH)
@@ -74,8 +67,6 @@ chat
 
 **Other**
 - [ ] @todo review
-
-## Release 3
 
 **Social**
 - [ ] Invite users in room (donut)
