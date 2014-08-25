@@ -5,7 +5,7 @@ var conf = module.exports = {
   },
   room: {
     default: {
-      color: '#cdcccc'
+      color: '#fc2063'
     }
   },
   mongo: {
