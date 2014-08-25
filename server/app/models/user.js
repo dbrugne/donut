@@ -1,6 +1,9 @@
 var mongoose = require('../mongoose');
+
 var bcrypt   = require('bcrypt-nodejs');
 var cloudinary = require('../cloudinary');
+var _ = require('underscore');
+var colors = require('../../config/colors');
 
 var userSchema = mongoose.Schema({
 
@@ -29,6 +32,18 @@ var userSchema = mongoose.Schema({
     rooms            : [{ type: String, ref: 'Room' }]
 
 });
+
+/**
+ * Return new User instance with some attributes pre-filled with default values
+ * @returns {User}
+ */
+userSchema.statics.getNewUser = function () {
+  var model = new this();
+  var color = _.sample(colors.list);
+  model.color = color.hex;
+  model.general = true;
+  return model;
+};
 
 /**
  * Generating a hash of given password

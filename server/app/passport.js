@@ -67,12 +67,9 @@ passport.use('local-signup', new LocalStrategy({
           return done(null, false, req.flash('error', 'That email is already taken.'));
 
         // if there is no user with that email create him
-        var newUser = new User();
-        // @todo : default values for .color (random color)
+        var newUser = User.getNewUser();
         newUser.local.email = email;
         newUser.local.password = newUser.generateHash(password);
-        newUser.general = true; // will join #General automatically on each
-                                 // connect until he disable this option
 
         // save the user
         newUser.save(function (err) {
@@ -176,16 +173,13 @@ passport.use(new FacebookStrategy({
             return done(null, user); // user found, return that user
           } else {
             // if there is no user found with that facebook id, create them
-            var newUser = new User();
+            var newUser = User.getNewUser();
 
             // set all of the facebook information in our user model
             newUser.facebook.id = profile.id; // set the users facebook id
             newUser.facebook.token = token; // we will save the token that facebook provides to the user
             newUser.facebook.name = profile.name.givenName + ' ' + profile.name.familyName; // look at the passport user profile to see how names are returned
             newUser.facebook.email = profile.emails[0].value; // facebook can return multiple emails so we'll take the first
-
-            // will join #General automatically on each onnect until he disable this option
-            newUser.general = true;
 
             // prefill global data with Facebook profile (only on local profile creation)
             newUser.name = profile.displayName;
