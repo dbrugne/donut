@@ -7,6 +7,7 @@ define([
   'routeur',
   'models/client',
   'views/main',
+//  'facebook',
   // jQuery plugins, load and attach to $ once
   'jquery.insertatcaret',
   'jquery.maxlength',
@@ -119,6 +120,19 @@ define([
           yy : "%d ans"
         }
       });
+
+//      // Facebook setup
+//      try {
+//        facebook.init({
+//          appId: window.facebook_app_id,
+//          version: 'v2.1',
+//          status: true,
+//          xfbml: true
+//        });
+//      } catch (e) {
+//        console.log(e);
+//        return false;
+//      }
 
       // Everything was already loaded by require.js,
       // it just left to establish connection:
