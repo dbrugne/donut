@@ -15,6 +15,8 @@
       .avatar {
         position: absolute;
         top: 30px; left: 40px;
+        width: 100px;
+        height: 100px;
       }
       .name, .username {
         display: inline-block;
@@ -127,7 +129,6 @@
       .notification {
         text-align: right;
         font-style: italic;
-        font-weight: bold;
         color: @cl-subtext2;
         .date { display: none;}
         img { height: 20px; }
@@ -140,6 +141,7 @@
           -moz-border-radius: 2px;
           border-radius: 2px;
         }
+        .username { font-weight: bold; }
         i { color: @cl-success; }
       }
       .notification-inout {
