@@ -3,6 +3,16 @@ chat
 
 ## v1.0 : opening platform to real people
 
+**Customization**
+- [x] Set color to random color on user creation
+- [x] Set room default color as pink
+- [ ] Deal with default user avatar and poster
+- [ ] Set room default avatar and poster with the same as user
+- [ ] Default room/user avatar and poster not well set on named transformation
+- [ ] Add user-xlarge size for user profile
+- [ ] Handle Facebook image storage/retrieving
+- [x] Add hyperlink on room name and user username on room/user profile pages
+
 **Theme**
 - [ ] Add the external page URL link in drawer profile pages (user and room)
 - [ ] Add an edit link in room profile drawer (if owner)
@@ -38,15 +48,6 @@ chat
 
 **Search**
 - [ ] Quick search in left column (with 'light' param to get only username/name + avatar) and link for 'more results' that focus and fill the homepage search
-
-**Customization**
-- [ ] Handle Facebook image storage/retrieving
-- [ ] Set color to random color on user creation
-- [ ] Deal with default user avatar and poster
-- [ ] Set room default color as pink
-- [ ] Set room default avatar and poster with the same as user
-- [ ] Default room/user avatar and poster not well set on named transformation
-- [ ] Add user-xlarge size for user profile
 
 **Contents**
 - [ ] Translate texts
