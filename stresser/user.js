@@ -11,6 +11,8 @@ var userSchema = mongoose.Schema({
   website        : String,
   avatar         : String,
   color          : String,
+  general          : Boolean,
+  test          : Boolean,
   local            : {
     email         : String,
     password      : String,
@@ -23,8 +25,7 @@ var userSchema = mongoose.Schema({
     email      : String,
     name       : String
   },
-  rooms            : [{ type: String, ref: 'Room' }],
-  onetoones        : [{ type: mongoose.Schema.ObjectId, ref: 'User' }]
+  rooms            : [{ type: String, ref: 'Room' }]
 
 });
 
@@ -43,11 +44,12 @@ userSchema.statics.findOrCreate = function(username, fn) {
       username: username,
       avatar: username+'.jpg',
       color: '#006651',
+      stresser: true,
       local: {
         email: random.email(),
         password: random.string(10)
       },
-      rooms: ['#General'],
+      general: true,
       bio: username+' life is cool',
       location: 'Toulouse, FRANCE',
       website: 'http://www.overblog.com/'+username
