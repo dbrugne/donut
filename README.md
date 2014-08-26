@@ -3,17 +3,8 @@ chat
 
 ## v1.0 : opening platform to real people
 
-**Customization**
-- [x] Set color to random color on user creation
-- [x] Set room default color as pink
-- [x] Deal with default user avatar and poster
-- [x] Set room default avatar and poster with the same as user
-- [x] Default room/user avatar and poster not well set on named transformation
-- [x] Add user-xlarge size for user profile
-- [x] Add hyperlink on room name and user username on room/user profile pages
+**Tasks**
 - [ ] Handle Facebook image storage/retrieving
-
-**Theme**
 - [ ] Add the external page URL link in drawer profile pages (user and room)
 - [ ] Add an edit link in room profile drawer (if owner)
 - [ ] Add new socket.io-redis
@@ -45,9 +36,6 @@ chat
 
 **Room ops**
 - [ ] Add kick reason form
-
-**Search**
-- [ ] Quick search in left column (with 'light' param to get only username/name + avatar) and link for 'more results' that focus and fill the homepage search
 
 **Contents**
 - [ ] Translate texts
@@ -141,6 +129,9 @@ chat
 - [ ] Monitoring
 - [ ] Minimum virtual traffic generation
 - [ ] Basic grunt sample data injection (users and rooms) with production and dev fixture sets
+
+**Search**
+- [ ] Quick search in left column (with 'light' param to get only username/name + avatar) and link for 'more results' that focus and fill the homepage search
 
 ## Release 4
 
