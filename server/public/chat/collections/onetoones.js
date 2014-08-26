@@ -39,9 +39,7 @@ define([
           if (!data.user || data.user.username != model.get('username'))
             return;
 
-          console.log('refresh user', data.user);
           model.set(data.user);
-         // model.stopListening('user:profile');
         });
       } else {
         // an existing one, update field if needed
