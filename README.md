@@ -68,6 +68,7 @@ chat
 
 **Other**
 - [ ] @todo review
+- [ ] Delete existing user/room image on cloudinary when user change image
 
 **Social**
 - [ ] Invite users in room (donut)
