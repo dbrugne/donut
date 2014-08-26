@@ -4,7 +4,7 @@ var random = require('./random');
 
 var configuration = {
   currentSequence: 0, // first will be '1'
-  maxVirtualUsers: 30,
+  maxVirtualUsers: 20,
   activities: {
     disconnect  : { percent: 0.001 },
     reconnect   : { percent: 0.5 },
@@ -14,6 +14,7 @@ var configuration = {
   },
   pause: false
 };
+console.log('Will run until '+configuration.maxVirtualUsers+' concurent user(s).')
 
 var users = {};
 module.exports = function() {
