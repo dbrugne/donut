@@ -70,7 +70,7 @@ define([
      } else { // render a full p.message
        var html = this.template({
          user_id: message.get('user_id'),
-         avatar: $.c.userAvatar(message.get('avatar'), 'user-medium'),
+         avatar: $.cd.userAvatar(message.get('avatar'), 30, message.get('color')),
          username: message.get('username'),
          time: message.get('time'),
          sameUser: sameUser
@@ -126,10 +126,10 @@ define([
       }
 
       if (notification.avatar)
-        notification.avatar = $.c.userAvatar(notification.avatar, 'user-medium');
+        notification.avatar = $.cd.userAvatar(notification.avatar, 20, notification.color);
 
       if (notification.by_avatar)
-        notification.by_avatar = $.c.userAvatar(notification.by_avatar, 'user-medium');
+        notification.by_avatar = $.cd.userAvatar(notification.by_avatar, 20, notification.color);
 
       var html = this.notificationTemplate(notification);
 

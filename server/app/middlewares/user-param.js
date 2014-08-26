@@ -32,8 +32,8 @@ module.exports = function(req, res, next, username) {
     function prepare(user, callback) {
 
       // avatar & poster
-      user.avatar = cloudinary.userAvatar(user.avatar, 'user-xlarge');
-      user.poster = cloudinary.userPoster(user.poster, 'user-poster');
+      user.avatar = cloudinary.userAvatar(user.avatar, 160, user.color);
+      user.poster = cloudinary.poster(user.poster, user.color);
 
       // url
       user.url = req.protocol + '://' + req.get('host') + '/user/' + user.username.toLocaleLowerCase();
@@ -62,15 +62,7 @@ module.exports = function(req, res, next, username) {
           if (room.owner)
             room.owner.url = req.protocol + '://' + req.get('host') + '/user/' + room.owner.username.toLocaleLowerCase();
 
-////            room.owner = room.owner.toJSON();
-//            if (room.owner._id && room.owner._id.toString() == user._id.toString())
-//              room.isOwner = true;
-//          }
-//
-//          if (room.op && room.op.indexOf(user._id.toString()))
-//            room.isOp = true;
-
-          room.avatar = cloudinary.roomAvatar(room.avatar, 'room-large');
+          room.avatar = cloudinary.roomAvatar(room.avatar, 80, room.color);
           room.url = (room.name)
             ? req.protocol + '://' + req.get('host') + '/room/' + room.name.replace('#', '').toLocaleLowerCase()
             : '';

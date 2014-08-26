@@ -32,12 +32,12 @@ define([
 
     render: function() {
       this.$el.html(this.template({
-        avatar: $.c.userAvatar(currentUser.get('avatar'), 'user-large')
+        avatar: $.cd.userAvatar(currentUser.get('avatar'), 80, currentUser.get('color'))
       }));
     },
 
     onAvatar: function(model, value, options) {
-      this.$el.find('.avatar').prop('src', $.c.userAvatar(value, 'user-large'));
+      this.$el.find('.avatar').prop('src', $.cd.userAvatar(value, 80, model.get('color')));
     },
 
     onStatus: function() {

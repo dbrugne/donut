@@ -20,15 +20,15 @@ module.exports = function(req, res, next, roomname) {
 
       if (room) {
         // avatar & poster
-        room.avatar = cloudinary.roomAvatar(room.avatar, 'room-xlarge');
-        room.poster = cloudinary.roomPoster(room.poster, 'room-poster');
+        room.avatar = cloudinary.roomAvatar(room.avatar, 160, room.color);
+        room.poster = cloudinary.poster(room.poster, room.color);
 
         // url
         room.url = req.protocol + '://' + req.get('host') + '/room/' + room.name.replace('#', '').toLocaleLowerCase();
 
         // owner
         if (room.owner && room.owner._id) {
-          room.owner.avatar = cloudinary.userAvatar(room.owner.avatar, 'user-large');
+          room.owner.avatar = cloudinary.userAvatar(room.owner.avatar, 80, room.owner.color);
           room.owner.url = (room.owner.username)
             ? req.protocol + '://' + req.get('host') + '/user/' + room.owner.username.toLocaleLowerCase()
             : '';
@@ -44,7 +44,7 @@ module.exports = function(req, res, next, roomname) {
               return;
             }
 
-            op.avatar = cloudinary.userAvatar(op.avatar, 'user-large');
+            op.avatar = cloudinary.userAvatar(op.avatar, 80, op.color);
             op.url = (op.username)
               ? req.protocol + '://' + req.get('host') + '/user/' + op.username.toLocaleLowerCase()
               : '';

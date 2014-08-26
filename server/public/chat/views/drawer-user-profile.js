@@ -40,7 +40,7 @@ define([
         ? true
         : false;
 
-      user.avatar = $.c.userAvatar(user.avatar, 'user-large');
+      user.avatar = $.cd.userAvatar(user.avatar, 90, user.color);
 
       this._rooms(user); // decorate user object with rooms_list
 
@@ -80,7 +80,7 @@ define([
         if (oped === true)
           room.oped = true;
 
-        room.avatar = $.c.roomAvatar(room.avatar, 'room-medium');
+        room.avatar = $.cd.roomAvatar(room.avatar, 40, room.color);
 
         user.rooms_list.push(room);
       }

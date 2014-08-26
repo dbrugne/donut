@@ -55,7 +55,6 @@ define([
           : false;
 
       var currentAvatar = room.avatar;
-//      room.avatar = $.c.roomAvatar(room.avatar, 'room-medium');
 
       var html = this.template({room: room});
       this.$el.html(html);

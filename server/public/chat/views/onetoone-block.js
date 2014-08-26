@@ -29,10 +29,12 @@ define([
     },
 
     render: function() {
-      var listJSON = [];
+      var listJSON = [
+
+      ];
       _.each(this.collection.models, function(o) {
         var json = o.toJSON();
-        json.avatar = $.c.userAvatar(json.avatar, 'user-medium');
+        json.avatar = $.cd.userAvatar(json.avatar, 20, json.color);
         listJSON.push(json);
       });
 

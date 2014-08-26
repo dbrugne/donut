@@ -40,13 +40,10 @@ define([
       var listJSON = [];
       var that = this;
       _.each(this.collection.models, function(o) {
-
-//        console.log('user '+ o.get('username') + ' - is_owner:' + o.get('is_owner') + ' - is_op:' +  o.get('is_op'));
-
         var u = o.toJSON();
 
         // avatar
-        u.avatar = $.c.userAvatar(u.avatar, 'user-medium');
+        u.avatar = $.cd.userAvatar(u.avatar, 34, u.color);
 
         listJSON.push(u);
       });

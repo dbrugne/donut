@@ -14,6 +14,7 @@ require.config({
       'jquery.iframe-transport'   : '../vendor/blueimp-file-upload/js/jquery.iframe-transport',
       'jquery.fileupload'         : '../vendor/blueimp-file-upload/js/jquery.fileupload',
       'jquery.cloudinary'         : '../vendor/cloudinary_js/js/jquery.cloudinary',
+      'jquery.cloudinary-donut'   : '../javascripts/plugins/jquery.cloudinary-donut',
       'jquery.scroller'           : '../vendor/Scroller/jquery.fs.scroller.min',
       'jquery.insertatcaret'      : '../javascripts/plugins/jquery.insertatcaret',
       'jquery.maxlength'          : '../javascripts/plugins/jquery.maxlength',
@@ -23,14 +24,15 @@ require.config({
       'jquery.colorify'           : '../javascripts/plugins/jquery.colorify'
   },
   shim: {
-    'jquery.cloudinary'     : ['jquery'],
-    'jquery.insertatcaret'  : ['jquery'],
-    'jquery.maxlength'      : ['jquery'],
-    'jquery.linkify'        : ['jquery'],
-    'jquery.smilify'        : ['jquery'],
-    'jquery.momentify'      : ['jquery'],
-    'jquery.colorify'       : ['jquery'],
-    'jquery.scroller'       : ['jquery'],
+    'jquery.cloudinary'       : ['jquery'],
+    'jquery.cloudinary-donut' : ['jquery'],
+    'jquery.insertatcaret'    : ['jquery'],
+    'jquery.maxlength'        : ['jquery'],
+    'jquery.linkify'          : ['jquery'],
+    'jquery.smilify'          : ['jquery'],
+    'jquery.momentify'        : ['jquery'],
+    'jquery.colorify'         : ['jquery'],
+    'jquery.scroller'         : ['jquery'],
     'bootstrap': {
       deps: ['jquery']
     },

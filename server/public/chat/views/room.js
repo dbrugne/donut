@@ -42,12 +42,12 @@ define([
       data.isOwner = this.model.currentUserIsOwner();
 
       // avatar
-      data.avatar = $.c.roomAvatar(data.avatar, 'room-large');
+      data.avatar = $.cd.roomAvatar(data.avatar, 100, data.color);
 
       // poster
       var posterPath = data.poster;
-      data.poster = $.c.roomPoster(posterPath, 'room-poster');
-      data.posterblured = $.c.roomPoster(posterPath, 'room-poster-blured');
+      data.poster = $.cd.poster(posterPath, data.color);
+      data.posterblured = $.cd.posterBlured(posterPath, data.color);
 
       return data;
     },
@@ -84,15 +84,17 @@ define([
 
     onColor: function(model, value, options) {
       this.colorify();
+      this.onAvatar(model, model.get('avatar'), options);
+      this.onPoster(model, model.get('poster'), options);
     },
     onAvatar: function(model, value, options) {
-      var url = $.c.roomAvatar(value, 'room-large');
+      var url = $.cd.roomAvatar(value, 100, model.get('color'));
       this.$el.find('.header img.avatar').attr('src', url);
     },
     onPoster: function(model, value, options) {
-      var url = $.c.roomPoster(value, 'room-poster');
+      var url = $.cd.poster(value, model.get('color'));
       this.$el.find('div.side').css('background-image', 'url('+url+')');
-      var urlb = $.c.roomPoster(value, 'room-poster-blured');
+      var urlb = $.cd.posterBlured(value, model.get('color'));
       this.$el.find('div.blur').css('background-image', 'url('+urlb+')');
     },
     onPermanent: function(model, value, options) {

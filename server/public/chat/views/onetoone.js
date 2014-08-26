@@ -25,8 +25,8 @@ define([
     _renderData: function() {
       var data = this.model.toJSON();
 
-      data.avatar = $.c.userAvatar(data.avatar, 'user-large');
-      data.poster = $.c.userPoster(data.poster, 'user-poster');
+      data.avatar = $.cd.userAvatar(data.avatar, 100, data.color);
+      data.poster = $.cd.poster(data.poster, data.color);
 
       return data;
     },
@@ -45,11 +45,11 @@ define([
       this.colorify();
     },
     onAvatar: function(model, value, options) {
-      var url = $.c.userAvatar(value, 'user-large');
+      var url = $.cd.userAvatar(value, 100, model.get('color'));
       this.$el.find('.header img.avatar').attr('src', url);
     },
     onPoster: function(model, value, options) {
-      var url = $.c.userPoster(value, 'user-poster');
+      var url = $.cd.poster(value, model.get('color'));
       this.$el.find('div.side').css('background-image', 'url('+url+')');
     },
     onLocation: function(model, value, options) {

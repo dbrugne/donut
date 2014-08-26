@@ -12,6 +12,7 @@ define([
   'jquery.insertatcaret',
   'jquery.maxlength',
   'jquery.cloudinary',
+  'jquery.cloudinary-donut',
   'jquery.linkify',
   'jquery.smilify',
   'jquery.momentify',
@@ -72,35 +73,6 @@ define([
         cloud_name: window.cloudinary_cloud_name,
         api_key: window.cloudinary_api_key
       });
-      $.c = {
-        roomAvatar: function(identifier, transformation) {
-          return this._url(identifier, transformation, 'default/room-avatar-default');
-        },
-        roomPoster: function(identifier, transformation) {
-          return this._url(identifier, transformation, 'default/room-poster-default');
-        },
-        userAvatar: function(identifier, transformation) {
-          return this._url(identifier, transformation, 'default/user-avatar-default');
-        },
-        userPoster: function(identifier, transformation) {
-          return this._url(identifier, transformation, 'default/user-poster-default');
-        },
-        _url: function(identifier, transformation, defaultIdentifier) {
-          defaultIdentifier = defaultIdentifier || 'default/default';
-
-          if (!identifier)
-            identifier = defaultIdentifier;
-
-          var options = {
-            default: defaultIdentifier
-          };
-
-          if (transformation)
-            options.transformation = transformation;
-
-          return $.cloudinary.url(identifier, options);
-        }
-      };
 
       // Moment language
       moment.lang('fr', {

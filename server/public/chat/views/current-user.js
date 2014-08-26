@@ -29,7 +29,7 @@ define([
 
       data.hello = this.hello;
 
-      data.avatar = $.c.userAvatar(data.avatar, 'user-large');
+      data.avatar = $.cd.userAvatar(data.avatar, 60, data.color);
 
       var html = this.template(data);
       this.$el.html(html);

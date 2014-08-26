@@ -6,12 +6,12 @@ chat
 **Customization**
 - [x] Set color to random color on user creation
 - [x] Set room default color as pink
-- [ ] Deal with default user avatar and poster
-- [ ] Set room default avatar and poster with the same as user
-- [ ] Default room/user avatar and poster not well set on named transformation
-- [ ] Add user-xlarge size for user profile
-- [ ] Handle Facebook image storage/retrieving
+- [x] Deal with default user avatar and poster
+- [x] Set room default avatar and poster with the same as user
+- [x] Default room/user avatar and poster not well set on named transformation
+- [x] Add user-xlarge size for user profile
 - [x] Add hyperlink on room name and user username on room/user profile pages
+- [ ] Handle Facebook image storage/retrieving
 
 **Theme**
 - [ ] Add the external page URL link in drawer profile pages (user and room)
@@ -69,6 +69,7 @@ chat
 **Other**
 - [ ] @todo review
 - [ ] Delete existing user/room image on cloudinary when user change image
+- [ ] Change poster and avatar also when room/user color was changed
 
 **Social**
 - [ ] Invite users in room (donut)
