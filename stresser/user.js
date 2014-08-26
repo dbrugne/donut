@@ -42,7 +42,7 @@ userSchema.statics.findOrCreate = function(username, fn) {
     model.create({
       username: username,
       avatar: username+'.jpg',
-      color: '#e2e2e2',
+      color: '#006651',
       local: {
         email: random.email(),
         password: random.string(10)
