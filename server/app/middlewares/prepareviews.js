@@ -19,6 +19,7 @@ module.exports = function() {
 
     res.locals.title = conf.title;
     res.locals.cloudinary = conf.cloudinary;
+    res.locals.facebook = conf.facebook;
 
     next();
   };

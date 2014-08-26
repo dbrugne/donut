@@ -11,6 +11,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge"/><!-- Avoid IE compatibility mode -->
 </head>
 <body class="body-chat">
+    <div id="fb-root"></div>
     <div id="chat">
         <div id="alert" role="banner"><div class="alert"></div></div>
         <div id="color"></div><!-- /#color -->
@@ -53,6 +54,7 @@
 <script>
     window.cloudinary_cloud_name = '{{cloudinary.cloud_name}}';
     window.cloudinary_api_key = '{{cloudinary.api_key}}';
+    window.facebook_app_id = '{{facebook.clientID}}';
     window.colors = {{&colors}};
 </script>
 <script data-main="/chat/index.js" src="/vendor/requirejs/require.js"></script>
