@@ -1,7 +1,7 @@
 <% if (type !='hello') { %><hr><% } %>
 <div class="notification notification-<%= type %>">
 <% if (type =='hello') { %>
-    <img src="images/hello.svg"> You enter in <%= name %>
+    <img src="images/hello.svg"> You enter in <strong><%= name %></strong>
     <span class="date"><span class="moment" data-time="<%= time %>"></span></span>
 <% } else if (type =='disconnected') { %>
     <img src="images/disconnect.svg"> You were disconnected
@@ -10,7 +10,7 @@
     <img src="images/connect.svg"> You were reconnected <span style="font-weight: normal;">(maybe you missed some messages in this room)</span>
     <span class="date"><span class="moment" data-time="<%= time %>"></span></span>
 <% } else if (type =='topic') { %>
-    <img src="images/topic-w.svg"> <img class="avatar" src="<%= avatar %>"><span class="username open-user-profile" data-username="<%= username %>"><%= username %></span> changed topic for <strong><%- topic %></strong>
+    <img src="images/topic-w.svg"> <img class="avatar" src="<%= avatar %>"><span class="username open-user-profile" data-username="<%= username %>"><%= username %></span> changed topic for "<strong><%- topic %></strong>"
     <span class="date"><span class="moment" data-time="<%= time %>"></span></span>
 <% } else if (type =='kick') { %>
     <img src="images/kick.svg">
