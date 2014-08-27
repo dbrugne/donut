@@ -22,7 +22,7 @@ function _url(identifier, defaultIdentifier, width, height, background, gravity,
     ? height
     : 20;
 
-  background = background || '#4fedc0'; // lime green
+  background = background || '#ffffff';
   gravity = gravity || 'face';
 
   if (!identifier) {
