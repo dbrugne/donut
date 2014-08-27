@@ -29,7 +29,6 @@ module.exports = function(io, socket) {
     return this.request.user.color;
   };
 
-  // Welcome data
   async.waterfall([
 
     function addSocketToUserRoom(callback) {
