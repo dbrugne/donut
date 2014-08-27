@@ -50,7 +50,8 @@ module.exports = function(io, socket, data) {
       time: Date.now(),
       user_id: socket.getUserId(),
       username: socket.getUsername(),
-      avatar: socket.getAvatar()
+      avatar: socket.getAvatar(),
+      color: socket.getColor()
     };
     io.to(room.name).emit('room:in', roomInEvent);// @todo : send room:in before to avoid receiving it
 

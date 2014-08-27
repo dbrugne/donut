@@ -87,6 +87,7 @@ define([
           user_id: element.user_id,
           username: element.username,
           avatar: element.avatar,
+          color: element.color,
           is_owner: is_owner,
           is_op: is_op
         }));

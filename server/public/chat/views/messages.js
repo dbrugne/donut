@@ -125,11 +125,12 @@ define([
         notification.time = Number(new Date());
       }
 
-      if (notification.avatar)
+
+      if (_.has(notification, 'avatar')) // case of user without avatar (avatar == '')
         notification.avatar = $.cd.userAvatar(notification.avatar, 20, notification.color);
 
-      if (notification.by_avatar)
-        notification.by_avatar = $.cd.userAvatar(notification.by_avatar, 20, notification.color);
+      if (_.has(notification, 'by_avatar'))
+        notification.by_avatar = $.cd.userAvatar(notification.by_avatar, 20, notification.by_color);
 
       var html = this.notificationTemplate(notification);
 

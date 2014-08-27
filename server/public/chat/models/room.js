@@ -88,6 +88,7 @@ define([
         user_id: data.user_id,
         username: data.username,
         avatar: data.avatar,
+        color: data.color,
         is_owner: is_owner,
         is_op: is_op
       });
@@ -96,7 +97,8 @@ define([
         type: 'in',
         user_id: user.get('id'),
         username: user.get('username'),
-        avatar: user.get('avatar')
+        avatar: user.get('avatar'),
+        color: user.get('color')
       });
       this.trigger('inOut');
     },
@@ -115,6 +117,7 @@ define([
         user_id: user.get('id'),
         username: user.get('username'),
         avatar: user.get('avatar'),
+        color: user.get('color'),
         reason: data.reason
       });
       this.trigger('inOut');

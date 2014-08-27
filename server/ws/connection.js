@@ -84,7 +84,8 @@ module.exports = function(io, socket) {
           users.push({ // add myself, not already subscribed
             user_id: socket.getUserId(),
             username: socket.getUsername(),
-            avatar: socket.getAvatar()
+            avatar: socket.getAvatar(),
+            color: socket.getColor()
           });
 
           var roomData = {
@@ -124,7 +125,8 @@ module.exports = function(io, socket) {
           time: Date.now(),
           user_id: socket.getUserId(),
           username: socket.getUsername(),
-          avatar: socket.getAvatar()
+          avatar: socket.getAvatar(),
+          color: socket.getColor()
         };
         io.to(room).emit('room:in', roomInEvent);
 

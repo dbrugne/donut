@@ -1,36 +1,36 @@
 <% if (type !='hello') { %><hr><% } %>
 <div class="notification notification-<%= type %>">
 <% if (type =='hello') { %>
-    <img src="images/hello.svg"> You enter in <strong><%= name %></strong>
+    <img src="/images/hello.svg"> You enter in <strong><%= name %></strong>
     <span class="date"><span class="moment" data-time="<%= time %>"></span></span>
 <% } else if (type =='disconnected') { %>
-    <img src="images/disconnect.svg"> You were disconnected
+    <img src="/images/disconnect.svg"> You were disconnected
     <span class="date"><span class="moment" data-time="<%= time %>"></span></span>
 <% } else if (type =='reconnected') { %>
-    <img src="images/connect.svg"> You were reconnected <span style="font-weight: normal;">(maybe you missed some messages in this room)</span>
+    <img src="/images/connect.svg"> You were reconnected <span style="font-weight: normal;">(maybe you missed some messages in this room)</span>
     <span class="date"><span class="moment" data-time="<%= time %>"></span></span>
 <% } else if (type =='topic') { %>
-    <img src="images/topic-w.svg"> <img class="avatar" src="<%= avatar %>"><span class="username open-user-profile" data-username="<%= username %>"><%= username %></span> changed topic for "<strong><%- topic %></strong>"
+    <img src="/images/topic-w.svg"> <img class="avatar" src="<%= avatar %>"><span class="username open-user-profile" data-username="<%= username %>"><%= username %></span> changed topic for "<strong><%- topic %></strong>"
     <span class="date"><span class="moment" data-time="<%= time %>"></span></span>
 <% } else if (type =='kick') { %>
-    <img src="images/kick.svg">
+    <img src="/images/kick.svg">
     <img class="avatar" src="<%= avatar %>"><span class="username open-user-profile" data-username="<%= username %>"><%= username %></span> was kicked by
     <img class="avatar" src="<%= by_avatar %>"><span class="username open-user-profile" data-username="<%= by_username %>"><%= by_username %></span>
     <% if (reason) { %> : '<%= reason %>'<% }; %>
     <span class="date"><span class="moment" data-time="<%= time %>"></span></span>
 <% } else if (type =='ban') { %>
-    <img src="images/ban.svg">
+    <img src="/images/ban.svg">
     <span class="username open-user-profile" data-username="<%= username %>"><%= username %></span> was banned by
     <img class="avatar" src="<%= by_avatar %>"><span class="username open-user-profile" data-username="<%= by_username %>"><%= by_username %></span> (<%= time %>) '<em><%= reason %></em>'
     <span class="date"><span class="moment" data-time="<%= time %>"></span></span>
 <% } else if (type =='op') { %>
-    <img src="images/op.svg">
+    <img src="/images/op.svg">
     <img class="avatar" src="<%= avatar %>">
     <span class="username open-user-profile" data-username="<%= username %>"><%= username %></span> was oped by
     <img class="avatar" src="<%= by_avatar %>"><span class="username open-user-profile" data-username="<%= by_username %>"><%= by_username %></span>
     <span class="date"><span class="moment" data-time="<%= time %>"></span></span>
 <% } else if (type =='deop') { %>
-    <img src="images/deop-w.svg">
+    <img src="/images/deop-w.svg">
     <img class="avatar" src="<%= avatar %>">
     <span class="username open-user-profile" data-username="<%= username %>"><%= username %></span> was deoped by
     <img class="avatar" src="<%= by_avatar %>"><span class="username open-user-profile" data-username="<%= by_username %>"><%= by_username %></span>
@@ -39,13 +39,13 @@
 <% if (type == 'inout') { %>
     <% if (subtype =='in') { %>
     <div class="item <%= subtype %>" data-time="<%= time %>">
-        <img src="images/in.svg">
+        <img src="/images/in.svg">
         <img class="avatar" src="<%= avatar %>">
         <span class="username open-user-profile" data-username="<%= username %>"><%= username %></span>
     </div>
     <% } else if (subtype =='out') { %>
     <div class="item <%= subtype %>" data-time="<%= time %>">
-        <img src="images/out.svg">
+        <img src="/images/out.svg">
         <img class="avatar" src="<%= avatar %>">
         <span class="username open-user-profile" data-username="<%= username %>"><%= username %></span>
         <% if (reason == 'disconnect') { %>
