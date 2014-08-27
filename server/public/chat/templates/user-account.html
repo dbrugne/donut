@@ -26,11 +26,17 @@
     <% if (user.facebook && user.facebook.token) { %>
     <p class="values">Your account is linked to this Facebook account</p>
     <div class="facebook">
-        <p class="infos">
+        <div class="infos">
             <img class="avatar" src="https://graph.facebook.com/<%= user.facebook.id %>/picture"/>
-            <span class="labels">Nom</span> <span class="values"><%= user.facebook.name %></span>
-            <span class="labels">Email</span> <span class="values"><%= user.facebook.email %></span>
-        </p>
+            <p>
+                <span class="labels">Nom</span>
+                <span class="values"><%= user.facebook.name %></span>
+            </p>
+            <p>
+                <span class="labels">Email</span>
+                <span class="values"><%= user.facebook.email %></span>
+            </p>
+        </div>
         <% if (user.email) { %>
         <p class="unlink">
             <a href="/unlink/facebook" target="_blank" class="unlink">Unlink this Facebook account</a>

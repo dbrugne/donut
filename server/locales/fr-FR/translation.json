@@ -1,6 +1,9 @@
 {
     "title": "donut.me",
     "baseline": "vous avez des choses à (vous) dire !",
+    "logout": "déconnexion",
+    "login": "connexion",
+    "signup": "inscription",
     "home": {
         "cover": {
             "line1": "donut vous permet",
@@ -45,5 +48,9 @@
         "else": "sinon",
         "createanaccount1": "créer un compte,",
         "createanaccount2": "c'est gratuit !"
+    },
+    "logged": {
+        "title": "Déjà connecté",
+        "text": "Vous êtes déjà connecter vous pouvez donc accéder au "
     }
 }

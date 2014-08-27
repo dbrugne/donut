@@ -78,25 +78,6 @@ roomSchema.methods.avatarId = function() {
 };
 
 /**
- * Return avatar URL for the current room
- * @param format (large|xlarge)
- * @returns {*}
- */
-roomSchema.methods.avatarUrl = function(format) {
-  if (!this.avatar)
-    return '';
-
-  if (!format)
-    format = 'large';
-
-  var options = {};
-  options.transformation = 'room-'+format;
-
-  return cloudinary.url(this.avatar, options);
-  // cloudinary handle default image
-};
-
-/**
  * Return poster URL for the current room
  * @returns {*}
  */

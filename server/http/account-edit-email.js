@@ -24,7 +24,7 @@ var validateInput = function(req, res, next) {
   }, function(err, user) {
     if (err) {
       req.flash('error', 'Error while searching existing email: ' + err);
-      return res.redirect('/account');
+      return res.redirect('/account/edit/email');
     }
 
     if (user) {

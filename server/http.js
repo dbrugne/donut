@@ -56,7 +56,6 @@ app.use(require('./http/user-profile'));
 app.use(require('./http/room-profile'));
 app.use(require('./http/chat'));
 app.use(require('./http/choose-username'));
-app.use(require('./http/account'));
 app.use(require('./http/account-delete'));
 app.use(require('./http/account-edit-email'));
 app.use(require('./http/account-edit-password'));

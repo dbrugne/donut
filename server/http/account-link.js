@@ -7,7 +7,7 @@ router.route('/connect/local')
         res.render('connect_local', { message: req.flash('signupMessage') });
     })
     .post(passport.authenticate('local-signup', {
-        successRedirect : '/account', // redirect to the secure profile section
+        successRedirect : '/!', // redirect to the secure profile section
         failureRedirect : '/connect/local', // redirect back to the signup page if there is an error
         failureFlash : true // allow flash messages
     }));
@@ -15,7 +15,7 @@ router.route('/connect/local')
 router.get('/connect/facebook', passport.authorize('facebook', { scope : 'email' }));
 
 router.get('/connect/facebook/callback', passport.authorize('facebook', {
-    successRedirect : '/account',
+    successRedirect : '/!',
     failureRedirect : '/'
 }));
 
@@ -25,12 +25,12 @@ router.get('/unlink/facebook', function(req, res) {
     if (!user.local.email) {
         req.flash('warning', 'You cannot remove your Facebook account until you have defined a local email and password.'
             +' If you want to remove all your data from the platform use the delete button');
-        return res.redirect('/account');
+        return res.redirect('/');
     }
 
     user.facebook.token = undefined;
     user.save(function(err) {
-        res.redirect('/account');
+        res.redirect('/!');
     });
 });
 

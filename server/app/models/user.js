@@ -126,23 +126,6 @@ userSchema.methods.usernameAvailability = function (username, success, error) {
   });
 };
 
-/**
- * Return avatar URL for the current user
- * @param format (large|medium|small)
- * @returns {*}
- */
-userSchema.methods.avatarUrl = function(format) {
-  if (!this.avatar)
-    return '';
-
-  if (!format) format = 'large';
-  var options = {};
-  options.transformation = 'user-'+format;
-
-  return cloudinary.url(this.avatar, options);
-  // cloudinary handle default image
-};
-
 userSchema.methods.avatarId = function() {
   if (!this.avatar) return '';
   var data = this.avatar.split('/');

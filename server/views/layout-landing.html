@@ -11,6 +11,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge"/><!-- Avoid IE compatibility mode -->
 </head>
 <body>
+<div class="upon">
+{{#success}}<div class="alert alert-success">{{success}}</div>{{/success}}
+{{#info}}<div class="alert alert-info">{{info}}</div>{{/info}}
+{{#warning}}<div class="alert alert-warning">{{warning}}</div>{{/warning}}
+{{#error}}<div class="alert alert-danger">{{error}}</div>{{/error}}
+</div>
 {{{ yield }}}
 <script src="/vendor/jquery/dist/jquery.min.js"></script>
 <script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>

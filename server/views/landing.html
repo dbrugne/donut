@@ -13,6 +13,13 @@
             <a href="#knowmore" class="btn-knowmore">{{#i}}home.cover.knowmore{{/i}}</a>
         </div><!--/.cover-->
         <div class="login">
+            {{#logged}}
+            <h2>{{#i}}logged.title{{/i}}</h2>
+            <div class="logged">
+                {{#i}}logged.text{{/i}} <a href="/!">chat</a> ou <a href="/logout">{{#i}}logout{{/i}}</a>
+            </div>
+            {{/logged}}
+            {{^logged}}
             <div>
                 <h2>{{#i}}login.title{{/i}}</h2>
                 <a href="/login/facebook" class="btn-facebook"><i class="fa fa-facebook"></i> | <span>{{#i}}login.withfacebook{{/i}}</span></a>
@@ -41,6 +48,7 @@
                     <p>{{#i}}login.createanaccount2{{/i}}</p>
                 </a>
             </div>
+            {{/logged}}
         </div><!--/.login-->
     </div><!--/.header-->
     <div class="description">
