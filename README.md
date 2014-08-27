@@ -14,10 +14,10 @@ chat
 - [ ] Room/user profile cards in drawer
 
 **Profile/account**
-- [ ] Chat room => edit room link
+- [x] Chat room => edit room link
+- [x] Add the external page URL link in drawer profile pages (user and room)
+- [x] Add an edit link in room profile drawer (if owner)
 - [ ] Handle Facebook image storage/retrieving
-- [ ] Add the external page URL link in drawer profile pages (user and room)
-- [ ] Add an edit link in room profile drawer (if owner)
 
 **Room ops**
 - [ ] Add kick reason form

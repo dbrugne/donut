@@ -7,10 +7,7 @@
         <div class="actions">
             <img src="/images/permanent.svg" class="permanent" alt="permanent room logo" style="display: <% if (permanent === true) { %>inline-block<% } else { %>none<% }; %>;">
             <% if (isOwner === true) { %>
-            <span class="fa-stack open-room-edit" data-room-name="<%= name %>">
-              <i class="fa fa-circle-thin fa-stack-2x"></i>
-              <i class="fa fa-cog fa-stack-1x" title="edit this donut"></i>
-            </span>
+            <img src="/images/settings.svg" class="edit open-room-edit" data-room-name="<%= name %>" alt="edit room logo">
             <% }; %>
         </div>
     </div>

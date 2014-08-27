@@ -43,6 +43,8 @@ define([
 
         room.avatar = $.cd.roomAvatar(room.avatar, 90, room.color);
 
+        room.url = window.location.origin + '/room/' + room.name.replace('#', '').toLocaleLowerCase();
+
         this._users(room); // decorate room object with users_list
 
         var html = this.template({room: room});
