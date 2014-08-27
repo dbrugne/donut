@@ -9,8 +9,8 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="47.719723"
-   height="47.719723"
+   width="20.193066"
+   height="20.193066"
    id="svg2"
    version="1.1"
    inkscape:version="0.48.5 r10040"
@@ -25,8 +25,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="3.959798"
-     inkscape:cx="-26.314967"
-     inkscape:cy="45.762899"
+     inkscape:cx="-26.314963"
+     inkscape:cy="18.23624"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -35,8 +35,8 @@
      fit-margin-right="0"
      fit-margin-bottom="0"
      inkscape:window-width="1920"
-     inkscape:window-height="1017"
-     inkscape:window-x="-8"
+     inkscape:window-height="1057"
+     inkscape:window-x="1912"
      inkscape:window-y="-8"
      inkscape:window-maximized="1" />
   <metadata
@@ -47,7 +47,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -65,15 +65,15 @@
        sodipodi:ry="27.142857"
        d="m 434.28571,385.21933 c 0,14.99059 -12.15227,27.14286 -27.14286,27.14286 -14.99058,0 -27.14285,-12.15227 -27.14285,-27.14286 0,-14.99059 12.15227,-27.14286 27.14285,-27.14286 14.99059,0 27.14286,12.15227 27.14286,27.14286 z"
        style="fill:#253b6c;fill-opacity:0.4"
-       transform="matrix(0.87904752,0,0,0.87904752,50.527932,41.289931)"
+       transform="matrix(0.37197752,0,0,0.37197752,243.21453,222.85977)"
        inkscape:export-filename="J:\www\chat\server\public\images\forgot.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
     <text
        xml:space="preserve"
-       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Sans"
-       x="400"
-       y="395.21933"
+       style="font-size:16.92638969px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Sans"
+       x="391.09705"
+       y="372.62845"
        id="text2985"
        sodipodi:linespacing="125%"
        inkscape:export-filename="J:\www\chat\server\public\images\forgot.png"
@@ -81,8 +81,8 @@
        inkscape:export-ydpi="90"><tspan
          sodipodi:role="line"
          id="tspan2987"
-         x="400"
-         y="395.21933"
-         style="font-size:42px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;fill:#ffffff;fill-opacity:1;font-family:Open Sans;-inkscape-font-specification:Open Sans Bold">?</tspan></text>
+         x="391.09705"
+         y="372.62845"
+         style="font-size:17.77270889px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;fill:#ffffff;fill-opacity:1;font-family:Open Sans;-inkscape-font-specification:Open Sans Bold">?</tspan></text>
   </g>
 </svg>
