@@ -61,7 +61,7 @@ router.route('/account/edit/email')
                 return res.redirect('/');
             } else {
                 req.flash('success', 'Your email was updated');
-                res.redirect('/account');
+                res.redirect('/account/edit/email');
             }
         });
     });

@@ -28,7 +28,7 @@ router.route('/account/edit/password')
                 return res.redirect('/');
             } else {
                 req.flash('success', 'Your account password was updated');
-                res.redirect('/account');
+                res.redirect('/account/edit/password');
             }
         });
     });

@@ -1,10 +1,8 @@
-<div id="account-edit">
+<div id="email-edit">
 
-    <div class="page-header">
-        <h1><span class="fa fa-cog"></span> Your Account</h1>
-    </div>
+    <h2>Modifier votre email</h2>
 
-    <form action="/account/edit/email" method="post" role="form" class="forms">
+    <form method="post" role="form">
 
         <input type="hidden" name="_csrf" value="{{token}}">
 
@@ -15,31 +13,19 @@
             {{/errors}}
         </div>
         {{/is_errors}}
+        {{#success}}
+        <div class="success">
+            {{success}}
+        </div>
+        {{/success}}
 
-        <div class="controls">
-            <div class="col-sm-8 col-lg-offset-2 text-right">
-                <input type="submit" class="btn btn-primary btn-sm" value="Save and go back to account">
-                <a href="/account" type="button" class="btn btn-default btn-sm">Cancel</a>
-            </div>
+        <div class="form-group">
+            <input type="email" class="form-control" id="email-field" name="user[fields][email]" placeholder="Enter valid email" value="{{userFields.email}}">
+            <p class="help-block">Your login to authenticate.</p>
         </div>
 
-        <h4>Your email</h4>
-
-        <div class="controls">
-            <label class="control-labels" for="email-field">Email</label>
-            <div class="control-fields">
-                <input type="email" class="form-control" id="email-field" name="user[fields][email]" placeholder="Enter valid email" value="{{userFields.email}}">
-                <p class="help-block">Your login to authenticate.</p>
-            </div>
-        </div>
-
-        <h4> </h4>
-
-        <div class="controls">
-            <div class="col-sm-8 col-lg-offset-2 text-right">
-                <button type="submit" id="account-email-submit" class="btn btn-primary btn-sm">Save and go back to account</button>
-                <a href="/account" type="button" class="btn btn-default btn-sm">Cancel</a>
-            </div>
+        <div class="form-group center">
+            <input type="submit" value="Enregistrer" tabindex="3">
         </div>
 
     </form>
