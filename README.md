@@ -14,11 +14,6 @@ chat
 - [ ] Room/user profile cards in drawer
 
 **Profile/account**
-- [x] Chat account (settings) => drawer with email/password/FB and edit profile links
-- [x] Chat profile (on picture) => edit profile link
-- [x] Implement clean account form for email, password and Facebook in chat
-- [x] Add signup with Facebook button on landing page
-- [x] Handle landing display when i'm logged (replace login form)
 - [ ] Chat room => edit room link
 - [ ] Handle Facebook image storage/retrieving
 - [ ] Add the external page URL link in drawer profile pages (user and room)
