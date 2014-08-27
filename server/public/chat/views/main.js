@@ -337,9 +337,9 @@ define([
 
       // Change interface color
       if (model.get('color'))
-        this.color(model.get('color'))
+        this.color(model.get('color'));
       else
-        this.color('#FF00AA')
+        this.color(this.defaultColor);
 
       // Update URL (always!)
       var uri;
