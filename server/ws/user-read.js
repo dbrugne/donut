@@ -7,25 +7,36 @@ var User = require('../app/models/user');
 
 module.exports = function(io, socket, data) {
 
-  User.findById(socket.getUserId(), 'username avatar poster bio location website color general', function(err, user) {
+  User.findById(socket.getUserId(), 'username avatar poster bio location website color general local facebook', function(err, user) {
     if (err) return helper.handleError('Unable to retrieve user: '+err);
 
-    var userData = user.toJSON();
+    var event = {
+      user_id: user._id.toString(),
+      username: user.username,
+      avatar: user.avatar,
+      poster: user.poster,
+      color: user.color,
+      bio: user.bio,
+      location: user.location,
+      website: user.website,
+      general: user.general
+    };
 
-    // user_id
-    userData.user_id = userData._id;
-    delete userData._id;
+    if (user.local && user.local.email)
+      event.email = user.local.email;
 
-    // avatar
-    userData.avatar = user.avatar;
+    if (user.facebook)
+      event.facebook = {
+        id: user.facebook.id,
+        token: user.facebook.token,
+        email: user.facebook.email,
+        name: user.facebook.name
+      };
 
-    // poster
-    userData.poster = user.poster;
-
-    socket.emit('user:read', userData);
+    socket.emit('user:read', event);
 
     // Activity
-    helper.record('user:read', socket, {username: userData.username});
+    helper.record('user:read', socket, {username: event.username});
 
   });
 

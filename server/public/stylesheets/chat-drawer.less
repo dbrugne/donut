@@ -107,6 +107,9 @@
   }
   #room-profile {
     text-align: center;
+    .room {
+      position: relative;
+    }
     .name {
       margin-top: 20px;
     }
@@ -344,6 +347,55 @@
         vertical-align: middle;
         margin-right: 3px;
       }
+    }
+  }
+  #user-account {
+    .user {
+      margin-bottom: 10px;
+    }
+    .group {
+      margin-top: 30px;
+    }
+    .title {
+      font-size: 1.3em;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+    .labels {
+      font-weight: bold;
+      font-size: 1.1em;
+    }
+    .values {
+      font-size: 1.1em;
+    }
+    a {
+      text-decoration: underline;
+    }
+    .btn-facebook {
+      .btn;
+      margin-top: 15px;
+      margin-left: 21px;
+      background-color: #4a649d;
+      color: #ffffff;
+      border-radius: 25px;
+      padding: 11px 20px;
+      .ft-opensans-light;
+      font-size: 1.3em;
+      text-decoration: none;
+      display: inline-block;
+      span {
+        margin-left: 7px;
+      }
+      i {
+        font-size: 1.4em;
+        margin-right: 8px;
+        vertical-align: middle;
+      }
+    }
+    .btn-facebook:hover {
+      color: #ffffff;
+      i { color: #ffffff; }
+      span { color: #ffffff; text-decoration: underline; }
     }
   }
 }

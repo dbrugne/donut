@@ -16,6 +16,7 @@ define([
   'views/drawer-room-edit',
   'views/drawer-user-profile',
   'views/drawer-user-edit',
+  'views/drawer-user-account',
   'views/room',
   'views/onetoone',
   'views/room-block',
@@ -24,7 +25,7 @@ define([
              CurrentUserView, AlertView, HomeView,
              DrawerView,
              DrawerRoomCreateView, DrawerRoomProfileView, DrawerRoomEditView,
-             DrawerUserProfileView, DrawerUserEditView,
+             DrawerUserProfileView, DrawerUserEditView, DrawerUserAccountView,
              RoomView, OneToOneView,
              RoomBlockView, OnetooneBlockView) {
 
@@ -43,6 +44,7 @@ define([
     events: {
       'click #create-room-link':          'openCreateRoom',
       'click .open-user-edit':            'openUserEdit',
+      'click .open-user-account':         'openUserAccount',
       'click .open-user-profile':         'openUserProfile',
       'dblclick .dbl-open-user-profile':  'openUserProfile',
       'click .open-room-profile':         'openRoomProfile',
@@ -139,6 +141,14 @@ define([
       this._handleAction(event);
 
       var view = new DrawerRoomCreateView({ mainView: this });
+      this.drawerView.setSize('320px').setView(view).open();
+
+      return false; // stop propagation
+    },
+    openUserAccount: function(event) {
+      this._handleAction(event);
+
+      var view = new DrawerUserAccountView({ mainView: this });
       this.drawerView.setSize('320px').setView(view).open();
 
       return false; // stop propagation

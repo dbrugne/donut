@@ -1,9 +1,12 @@
-<img class="avatar open-user-profile" data-username="<%= username %>" src="<%= avatar %>" alt="<%= username %> avatar">
+<div class="avatar">
+    <img class="open-user-profile" data-username="<%= username %>" src="<%= avatar %>" alt="<%= username %> avatar">
+    <i class="fa fa-pencil-square-o open-user-edit"></i>
+</div>
 <div class="content">
     <p class="hello"><%= hello %></p>
     <p class="username open-user-profile" data-username="<%= username %>"><%= username %> <i class="fa fa-circle-o status <%= status %>" title="<%= status %>"></i></p>
 </div>
 <div class="actions">
-    <a class="open-user-edit"><i class="fa fa-cog"></i> account</a>
+    <a class="open-user-account"><i class="fa fa-cog"></i> account</a>
     <a href="/logout"><i class="fa fa-power-off"></i> logout</a>
 </div>

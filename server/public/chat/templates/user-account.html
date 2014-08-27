@@ -1,0 +1,49 @@
+<div class="user" data-colorify="<%= user.color %>">
+    <span class="username"><%= user.username %></span>
+</div>
+<div class="group">
+    <div class="title">Email et mot de passe</div>
+    <% if (user.email) { %>
+    <p>
+        <span class="labels">Email</span>
+        <span class="values"><%= user.email %> (<a href="/account/edit/email" target="_blank" id="email-modal-link">change email</a>)</span>
+    </p>
+    <p>
+        <span class="labels">Mot de passe</span>
+        <span class="values"><a href="/account/edit/password" target="_blank" id="password-modal-link">change password</a></span>
+    </p>
+    <% } else { %>
+    <p class="values">
+        You haven't set an email and password.
+        If you want to login without Facebook or unlink your Facebook account just set:
+    </p>
+    <a href="/connect/local" target="_blank" class="btn btn-default">Add email and password</a>
+    <% } %>
+</div>
+
+<div class="group">
+    <div class="title">Facebook</div>
+    <% if (user.facebook && user.facebook.token) { %>
+    <p class="values">Your account is linked to this Facebook account</p>
+    <div class="facebook">
+        <p class="infos">
+            <img class="avatar" src="https://graph.facebook.com/<%= user.facebook.id %>/picture"/>
+            <span class="labels">Nom</span> <span class="values"><%= user.facebook.name %></span>
+            <span class="labels">Email</span> <span class="values"><%= user.facebook.email %></span>
+        </p>
+        <% if (user.email) { %>
+        <p class="unlink">
+            <a href="/unlink/facebook" target="_blank" class="unlink">Unlink this Facebook account</a>
+        </p>
+        <% } %>
+    </div>
+    <% } else { %>
+    <p class="values">You can link this account to your Facebook account for easier login and social features:</p>
+    <a href="/connect/facebook" target="_blank" class="btn-facebook"><i class="fa fa-facebook"></i> | Connect with <strong>Facebook</strong></a>
+    <% } %>
+</div>
+
+<div class="group">
+    <div class="title">Profil</div>
+    <p class="values">Vous pouvez éditer votre profil <a class="open-user-edit">sur cette page</a>.</p>
+</div>
