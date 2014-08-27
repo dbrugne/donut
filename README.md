@@ -18,21 +18,11 @@ chat
 - [ ] Add signup with Facebook button on landing page
 - [ ] Handle landing display when i'm logged (replace login form)
 - [ ] Fluid landing background on small resolutions (display donut background w/ opacity)
+- [ ] Adjust join buttons
 
-**Pictos SVG**
-- Landing
-  - [ ] F Facebook
-  - [ ] -> Inputs
-  - [ ] ? password
-  - [ ] Mail input email
-  - [ ] Lock input password
-  - [ ] Replicate on signup/login/forgot/choose-username
-- Chat
-  - [ ] Logout
-  - [ ] Search
-  - [ ] Profile pen
-  - [ ] Account
-  - [ ] Edit button (edit room profile, edit profile)
+- [ ] Chat account (settings) => drawer with email/password/FB and edit profile links
+- [ ] Chat profile (on picture) => edit profile link
+- [ ] Chat room => edit room link
 
 **Room ops**
 - [ ] Add kick reason form
