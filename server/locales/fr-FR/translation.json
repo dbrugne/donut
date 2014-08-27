@@ -2,7 +2,18 @@
     "title": "donut.me",
     "baseline": "vous avez des choses à (vous) dire !",
     "logout": "déconnexion",
-    "login": "connexion",
+    "login": {
+        "title": "se connecter",
+        "withfacebook": "avec Facebook",
+        "or": "ou",
+        "youremail": "votre email",
+        "yourpassword": "votre mot de passe",
+        "connexion": "connexion",
+        "forgottenpassword": "mot de passe oublié",
+        "else": "sinon",
+        "createanaccount1": "créer un compte,",
+        "createanaccount2": "c'est gratuit !"
+    },
     "signup": "inscription",
     "home": {
         "cover": {
@@ -29,25 +40,14 @@
             "title1": "Créez un compte",
             "title2": "ici en 1 bouchée",
             "etvoila": "et voilà !",
-            "disclaimer": "En cliquant sur \"Et voilà !\" j’accepte les conditions d'utilisation de Donut"
+            "disclaimer": "En cliquant sur \"Et voilà !\" j’accepte les conditions d'utilisation de Donut",
+            "withfacebook": "Avec Facebook"
         },
         "footer": {
             "link1": "Notre philosophie",
             "link2": "Conditions d'utilisations",
             "link3": "Copyright Donut"
         }
-    },
-    "login": {
-        "title": "se connecter",
-        "withfacebook": "avec Facebook",
-        "or": "ou",
-        "youremail": "votre email",
-        "yourpassword": "votre mot de passe",
-        "connexion": "connexion",
-        "forgottenpassword": "mot de passe oublié",
-        "else": "sinon",
-        "createanaccount1": "créer un compte,",
-        "createanaccount2": "c'est gratuit !"
     },
     "logged": {
         "title": "Déjà connecté",

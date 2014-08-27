@@ -19,7 +19,7 @@ chat
 - [x] Chat profile (on picture) => edit profile link
 - [x] Implement clean account form for email, password and Facebook in chat
 - [ ] Chat room => edit room link
-- [ ] Add signup with Facebook button on landing page
+- [x] Add signup with Facebook button on landing page
 - [x] Handle landing display when i'm logged (replace login form)
 - [ ] Handle Facebook image storage/retrieving
 - [ ] Add the external page URL link in drawer profile pages (user and room)
