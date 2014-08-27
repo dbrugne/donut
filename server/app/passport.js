@@ -129,8 +129,6 @@ passport.use('local-login', new LocalStrategy({
 // FACEBOOK ================================================================
 // =========================================================================
 passport.use(new FacebookStrategy({
-
-    // pull in our app id and secret from our auth.js file
     clientID: conf.facebook.clientID,
     clientSecret: conf.facebook.clientSecret,
     callbackURL: conf.facebook.callbackURL,
@@ -205,11 +203,11 @@ passport.use(new FacebookStrategy({
         var user = req.user;
 
         // Look for another user account that use this identifier
-        User.findOne({ 'facebook.id': profile.id }, function (err, user) {
+        User.findOne({ 'facebook.id': profile.id }, function (err, existingUser) {
           if (err)
             return done(err);
 
-          if (user)
+          if (existingUser)
             return done(null, false,
               req.flash('error', 'This Facebook account is already used by another account'));
 
