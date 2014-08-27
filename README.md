@@ -4,27 +4,26 @@ chat
 ## v1.0 : opening platform to real people
 
 **Tasks**
-- [ ] Handle Facebook image storage/retrieving
-- [ ] Add the external page URL link in drawer profile pages (user and room)
-- [ ] Add an edit link in room profile drawer (if owner)
-- [ ] Add new socket.io-redis
+- [x] Add new socket.io-redis
 - [ ] Implement user count on room profile
 - [ ] Implement user online status on user profile
 - [ ] Implement current user list on room profile
 - [ ] If current user is logged put chat URL on join/discusso button elseif landing URL
-- [ ] Implement open graph and SEO description and canonical url in room/user profile meta
-- [ ] Implement open graph and SEO description and canonical url on landing
 - [ ] Fluid landing background on small resolutions (display donut background w/ opacity)
 - [ ] Adjust join buttons
 - [ ] Bug with color and focus onetoone
 - [ ] Room/user profile cards in drawer
 
-- [ ] Chat account (settings) => drawer with email/password/FB and edit profile links
-- [ ] Chat profile (on picture) => edit profile link
+**Profile/account**
+- [x] Chat account (settings) => drawer with email/password/FB and edit profile links
+- [x] Chat profile (on picture) => edit profile link
+- [x] Implement clean account form for email, password and Facebook in chat
 - [ ] Chat room => edit room link
-- [ ] Implement clean account form for email, password and Facebook in chat
 - [ ] Add signup with Facebook button on landing page
-- [ ] Handle landing display when i'm logged (replace login form)
+- [x] Handle landing display when i'm logged (replace login form)
+- [ ] Handle Facebook image storage/retrieving
+- [ ] Add the external page URL link in drawer profile pages (user and room)
+- [ ] Add an edit link in room profile drawer (if owner)
 
 **Room ops**
 - [ ] Add kick reason form
@@ -36,6 +35,8 @@ chat
 - [ ] CGU (link in HP and chat interface)
 - [ ] Emails : https://github.com/dbrugne/chat/issues/6
 - [ ] Welcome messages
+- [ ] Implement open graph and SEO description and canonical url in room/user profile meta
+- [ ] Implement open graph and SEO description and canonical url on landing
 
 ## Release 3
 
