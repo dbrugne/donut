@@ -14,15 +14,15 @@ chat
 - [ ] If current user is logged put chat URL on join/discusso button elseif landing URL
 - [ ] Implement open graph and SEO description and canonical url in room/user profile meta
 - [ ] Implement open graph and SEO description and canonical url on landing
-- [ ] Implement clean account form for email, password and Facebook in chat
-- [ ] Add signup with Facebook button on landing page
-- [ ] Handle landing display when i'm logged (replace login form)
 - [ ] Fluid landing background on small resolutions (display donut background w/ opacity)
 - [ ] Adjust join buttons
 
 - [ ] Chat account (settings) => drawer with email/password/FB and edit profile links
 - [ ] Chat profile (on picture) => edit profile link
 - [ ] Chat room => edit room link
+- [ ] Implement clean account form for email, password and Facebook in chat
+- [ ] Add signup with Facebook button on landing page
+- [ ] Handle landing display when i'm logged (replace login form)
 
 **Room ops**
 - [ ] Add kick reason form
