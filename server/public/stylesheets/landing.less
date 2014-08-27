@@ -9,6 +9,9 @@
       i {
         .input-picto;
       }
+      img {
+        .input-picto;
+      }
     }
     input[type=text].form-control, input[type=password].form-control {
       border-radius: 0;
@@ -129,7 +132,6 @@
         text-transform:uppercase;
         .ft-raleway-medium;
         color: @cl-detail;
-
         i {
           font-size: 1.3em;
           margin: 0 5px;
@@ -145,12 +147,18 @@
           margin-bottom: 1px; /** cancel bootstrap .form-group margin **/
           position: relative;
         }
-        i {
+        img {
           .input-picto;
+          width: 15px;
+          height: 15px;
+          top: 9px;
         }
-        i.right {
-          right: 10px;
+        img.right {
+          right: 15px;
           left: inherit;
+          width: 20px;
+          height: 20px;
+          top: 9px;
         }
         input[type=submit] {
           margin-top: 20px;
@@ -291,17 +299,21 @@
         .make-md-column-offset(2);
         .make-lg-column(6);
         .make-lg-column-offset(3);
-
         padding: 20px 0 0 0;
         .fields {
           .make-xs-column(12);
           .make-md-column(6);
-          .form-group {
+          .email-group {
             margin-bottom: 20px;
-
+            img {
+              width: 25px;
+            }
           }
-          .form-group:last-child {
-            margin-bottom: 0;
+          .password-group {
+            img {
+              width: 19px;
+              left: 12px;
+            }
           }
         }
         .submit {
