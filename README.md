@@ -16,6 +16,8 @@ chat
 - [ ] Implement open graph and SEO description and canonical url on landing
 - [ ] Fluid landing background on small resolutions (display donut background w/ opacity)
 - [ ] Adjust join buttons
+- [ ] Bug with color and focus onetoone
+- [ ] Room/user profile cards in drawer
 
 - [ ] Chat account (settings) => drawer with email/password/FB and edit profile links
 - [ ] Chat profile (on picture) => edit profile link
