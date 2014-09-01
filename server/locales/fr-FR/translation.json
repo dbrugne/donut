@@ -1,20 +1,63 @@
 {
-    "title": "donut.me",
+    "title": {
+        "default": "Donut vous permet de discuter autour de vos centres d'intérêt et d'animer vos communautés!",
+        "landing": "Donut! Discussions instantanées autour de vos centres d'intérêt",
+        "profile": "Profil de"
+    },
     "baseline": "vous avez des choses à (vous) dire !",
-    "logout": "déconnexion",
+    "actions": {
+        "login": "connexion",
+        "tologin": "connecter",
+        "logout": "déconnexion",
+        "tologout": "déconnecter",
+        "home": "retourner à l'accueil",
+        "signup": "créer un compte",
+        "forgot": "mot de passe oublié",
+        "save": "enregistrer"
+    },
+    "global": {
+        "or": "ou",
+        "else": "sinon",
+        "footer": {
+            "before": "Vous souhaitez vous",
+            "after": " ?"
+        }
+    },
     "login": {
         "title": "se connecter",
         "withfacebook": "avec Facebook",
-        "or": "ou",
-        "youremail": "votre email",
-        "yourpassword": "votre mot de passe",
-        "connexion": "connexion",
-        "forgottenpassword": "mot de passe oublié",
-        "else": "sinon",
+        "withpassword": "par mot de passe",
+        "email-placeholder": "votre email",
+        "password-placeholder": "votre mot de passe",
+        "confirm-placeholder": "confirmer le mot de passe",
+        "username-placeholder": "choisissez un nom d'utilisateur",
         "createanaccount1": "créer un compte,",
         "createanaccount2": "c'est gratuit !"
     },
-    "signup": "inscription",
+    "forgot": {
+        "email-placeholder": "Veuillez saisir votre email",
+        "password-placeholder": "Veuillez saisir votre nouveau mot de passe",
+        "confirm-placeholder": "Veuillez confirmer votre mot de passe",
+        "save": "Réinitialiser"
+    },
+    "signup": {
+        "disclaimer": "En cliquant sur \"Et voilà !\" j’accepte les conditions d'utilisation de Donut"
+    },
+    "choose-username": {
+        "title": "Il est temps de choisir un nom d'utilisateur !",
+        "description": "Le nom d'utilisateur sera votre identité sur donut. Les autres utilisateurs le verront. Il n'est pas modifiable.",
+        "help": "Entre 3 et 25 caractères. Lettres et/ou chiffres et/ou certains caractères spéciaux."
+    },
+    "connect-local": {
+      "title": "Créer un mot de passe",
+      "description": "Ajouter une adresse email et un mot de passe à votre compte "
+    },
+    "edit-email": {
+      "title": "Modifier votre email"
+    },
+    "edit-password": {
+      "title": "Modifier votre mot de passe"
+    },
     "home": {
         "cover": {
             "line1": "donut vous permet",
@@ -39,9 +82,7 @@
         "signup": {
             "title1": "Créez un compte",
             "title2": "ici en 1 bouchée",
-            "etvoila": "et voilà !",
-            "disclaimer": "En cliquant sur \"Et voilà !\" j’accepte les conditions d'utilisation de Donut",
-            "withfacebook": "Avec Facebook"
+            "etvoila": "et voilà !"
         },
         "footer": {
             "link1": "Notre philosophie",
@@ -52,5 +93,9 @@
     "logged": {
         "title": "Déjà connecté",
         "text": "Vous êtes déjà connecter vous pouvez donc accéder au "
+    },
+    "404": {
+      "title": "Page non trouvée",
+      "description": "Désolé nous n'avons pas été en mesure de trouver cette ressource ! Vous pouvez peut être juste cliquer sur ce petit lien :"
     }
 }

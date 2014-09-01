@@ -16,33 +16,33 @@
             {{#logged}}
             <h2>{{#i}}logged.title{{/i}}</h2>
             <div class="logged">
-                {{#i}}logged.text{{/i}} <a href="/!">chat</a> ou <a href="/logout">{{#i}}logout{{/i}}</a>
+                {{#i}}logged.text{{/i}} <a href="/!">chat</a> ou <a href="/logout">{{#i}}actions.logout{{/i}}</a>
             </div>
             {{/logged}}
             {{^logged}}
             <div>
                 <h2>{{#i}}login.title{{/i}}</h2>
                 <a href="/login/facebook" class="btn-facebook"><i class="fa fa-facebook"></i> | <span>{{#i}}login.withfacebook{{/i}}</span></a>
-                <p class="logic"><span>{{#i}}login.or{{/i}}</span></p>
+                <p class="logic"><span>{{#i}}global.or{{/i}}</span></p>
                 <form id="login" action="/login" method="post" role="form" class="form">
                     {{#message}}
                     <div class="alert alert-danger">{{message}}</div>
                     {{/message}}
                     <input type="hidden" name="_csrf" value="{{token}}">
                     <div class="form-group">
-                        <input type="text" id="signin-email" class="form-control" name="email" placeholder="{{#i}}login.youremail{{/i}}" tabindex="1">
+                        <input type="text" id="signin-email" class="form-control" name="email" placeholder="{{#i}}login.email-placeholder{{/i}}" tabindex="1">
                         <img src="/images/arrow.svg">
                     </div>
                     <div class="form-group">
                         <img src="/images/arrow.svg">
-                        <a href="/forgot" title="{{#i}}login.forgottenpassword{{/i}}" tabindex="4"><img src="/images/forgot.svg" class="right"></a>
-                        <input type="password" id="signin-password" class="form-control" name="password" placeholder="{{#i}}login.yourpassword{{/i}}" tabindex="2">
+                        <a href="/forgot" title="{{#i}}actions.forgot{{/i}}" tabindex="4"><img src="/images/forgot.svg" class="right"></a>
+                        <input type="password" id="signin-password" class="form-control" name="password" placeholder="{{#i}}login.password-placeholder{{/i}}" tabindex="2">
                     </div>
                     <div class="form-group">
-                        <input type="submit" value="{{#i}}login.connexion{{/i}}" tabindex="3">
+                        <input type="submit" value="{{#i}}actions.login{{/i}}" tabindex="3">
                     </div>
                 </form>
-                <p class="logic"><span>{{#i}}login.else{{/i}}</span></p>
+                <p class="logic"><span>{{#i}}global.else{{/i}}</span></p>
                 <a href="#signup" class="btn-signup">
                     <p>{{#i}}login.createanaccount1{{/i}}</p>
                     <p>{{#i}}login.createanaccount2{{/i}}</p>
@@ -82,11 +82,11 @@
                 <div class="form-content">
                     <div class="fields">
                         <div class="form-group email-group">
-                            <input type="text" id="signup-email" class="form-control" name="email" placeholder="{{#i}}login.youremail{{/i}}">
+                            <input type="text" id="signup-email" class="form-control" name="email" placeholder="{{#i}}login.email-placeholder{{/i}}">
                             <img src="/images/email.svg">
                         </div>
                         <div class="form-group password-group">
-                            <input type="password" id="signup-password" class="form-control" name="password" placeholder="{{#i}}login.yourpassword{{/i}}">
+                            <input type="password" id="signup-password" class="form-control" name="password" placeholder="{{#i}}login.password-placeholder{{/i}}">
                             <img src="/images/password.svg">
                         </div>
                     </div>
@@ -94,12 +94,12 @@
                         <input type="submit" value="{{#i}}home.signup.etvoila{{/i}}" />
                     </div>
                     <div class="facebook">
-                        <p class="logic"><span>{{#i}}login.or{{/i}}</span></p>
-                        <a href="/login/facebook" class="btn-facebook"><i class="fa fa-facebook"></i> | <span>{{#i}}home.signup.withfacebook{{/i}}</span></a>
+                        <p class="logic"><span>{{#i}}global.or{{/i}}</span></p>
+                        <a href="/login/facebook" class="btn-facebook"><i class="fa fa-facebook"></i> | <span>{{#i}}login.withfacebook{{/i}}</span></a>
                     </div>
                 </div>
             </form>
-            <div class="disclaimer">{{#i}}home.signup.disclaimer{{/i}}</div>
+            <div class="disclaimer">{{#i}}signup.disclaimer{{/i}}</div>
         </div>
     </div><!--/.signup-->
     <div class="footer">

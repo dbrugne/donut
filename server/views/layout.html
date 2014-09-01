@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="fr">
 <head>
-    <title>{{#i}}title{{/i}}</title>
+    <title>{{#i}}title.default{{/i}}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <!--[if lt IE 9]>
@@ -24,10 +24,10 @@
     </div>
     <div class="above">
         {{#user}}
-        Hi, do you want to <a href="/logout">logout</a> or go back to <a href="/">home</a>?
+        {{#i}}global.footer.before{{/i}} <a href="/logout">{{#i}}actions.tologout{{/i}}</a> {{#i}}global.or{{/i}} <a href="/">{{#i}}actions.home{{/i}}</a>{{#i}}global.footer.after{{/i}}
         {{/user}}
         {{^user}}
-        Hi, do you want to <a href="/login">login</a> or <a href="/signup">signup</a>?
+        {{#i}}global.footer.before{{/i}} <a href="/login">{{#i}}actions.tologin{{/i}}</a> {{#i}}global.or{{/i}} <a href="/signup">{{#i}}actions.signup{{/i}}</a>{{#i}}global.footer.after{{/i}}
         {{/user}}
     </div>
 </div><!-- /.wrapper -->

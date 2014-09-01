@@ -1,39 +1,31 @@
-<div id="reset">
+<div id="forgot">
 
-    <h1><span class="fa fa-sign-in"></span> Réinitialiser votre mot de passe</h1>
+    <h2>{{#i}}actions.forgot{{/i}}</h2>
 
-    <div class="login-form">
+    <div class="method-password">
 
-        <div class="method-password">
-            <form method="post" role="form" class="forms">
+        <form method="post" role="form">
 
-                <input type="hidden" name="_csrf" value="{{token}}">
+            <input type="hidden" name="_csrf" value="{{token}}">
 
-                {{#is_errors}}
-                <div class="errors">
-                    {{#errors}}{{msg}}<br>{{/errors}}
-                </div>
-                {{/is_errors}}
+            {{#is_errors}}
+            <div class="errors">
+                {{#errors}}{{msg}}<br>{{/errors}}
+            </div>
+            {{/is_errors}}
 
-                <div class="form-group">
-                    Veuillez saisir votre nouveau mot de passe :
-                </div>
-                <div class="form-group">
-                    <label class="sr-only" for="reset-password">Nouveau mot de passe</label>
-                    <input type="password" id="reset-password" class="form-control" name="password" placeholder="New Password" autofocus="autofocus">
-                </div>
-                <div class="form-group">
-                    <label class="sr-only" for="reset-password-confirm">Confirmer le mot de passe</label>
-                    <input type="password" id="reset-password-confirm" class="form-control" name="confirm" placeholder="Confirm Password">
-                </div>
-                <div class="form-group">
-                    <button type="submit" class="submit">Mettre à jour le mot de passe</button>
-                </div>
-            </form>
-        </div>
+            <div class="form-group">
+                <input type="password" class="form-control" name="password" placeholder="{{#i}}forgot.password-placeholder{{/i}}" autofocus="autofocus" tabindex="1">
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" name="confirm" placeholder="{{#i}}forgot.confirm-placeholder{{/i}}" tabindex="2">
+            </div>
+            <div class="form-group">
+                <input type="submit" value="{{#i}}forgot.save{{/i}}" tabindex="3">
+            </div>
+
+        </form>
 
     </div>
-
-    <p>Need an account? <a href="/signup">Join us</a></p>
 
 </div>

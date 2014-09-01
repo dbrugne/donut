@@ -1,12 +1,12 @@
 <div id="login">
 
-    <h2>Connectez-vous</h2>
+    <h2>{{#i}}actions.login{{/i}}</h2>
 
     <div class="method-facebook">
-        <a href="/login/facebook" class="facebook-button" tabindex="1"><span class="fa fa-facebook"></span> Connexion avec <strong>Facebook</strong></a>
+        <a href="/login/facebook" class="facebook-button" tabindex="1"><span class="fa fa-facebook"></span> {{#i}}actions.login{{/i}} {{#i}}login.withfacebook{{/i}}</a>
     </div>
 
-    <div class="or">OU</div>
+    <div class="or">{{#i}}global.or{{/i}}</div>
 
     <div class="method-password">
         <form method="post" role="form">
@@ -20,17 +20,17 @@
             {{/is_errors}}
 
             <div class="form-group">
-                Connexion par mot de passe :
+                {{#i}}actions.login{{/i}} {{#i}}login.withpassword{{/i}}
             </div>
             <div class="form-group">
-                <input type="text" id="signin-email" class="form-control" name="email" placeholder="Email" value="{{userFields.email}}" tabindex="2">
+                <input type="text" id="signin-email" class="form-control" name="email" placeholder="{{#i}}login.email-placeholder{{/i}}" value="{{userFields.email}}" tabindex="2">
             </div>
             <div class="form-group">
-                <a href="/forgot" title="mot de passe oublié" tabindex="5"><i class="fa fa-question-circle right"></i></a>
-                <input type="password" id="signin-password" class="form-control" name="password" placeholder="Password" tabindex="3">
+                <a href="/forgot" title="{{#i}}actions.forgot{{/i}}" tabindex="5"><i class="fa fa-question-circle right"></i></a>
+                <input type="password" id="signin-password" class="form-control" name="password" placeholder="{{#i}}login.password-placeholder{{/i}}" tabindex="3">
             </div>
             <div class="form-group">
-                <input type="submit" value="Connexion" tabindex="4">
+                <input type="submit" value="{{#i}}actions.login{{/i}}" tabindex="4">
             </div>
         </form>
     </div>

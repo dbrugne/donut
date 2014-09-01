@@ -1,6 +1,6 @@
 <div id="email-edit">
 
-    <h2>Modifier votre email</h2>
+    <h2>{{#i}}edit-email.title{{/i}}</h2>
 
     <form method="post" role="form">
 
@@ -20,12 +20,11 @@
         {{/success}}
 
         <div class="form-group">
-            <input type="email" class="form-control" id="email-field" name="user[fields][email]" placeholder="Enter valid email" value="{{userFields.email}}">
-            <p class="help-block">Your login to authenticate.</p>
+            <input type="email" class="form-control" id="email-field" name="user[fields][email]" placeholder="{{#i}}login.email-placeholder{{/i}}" value="{{userFields.email}}">
         </div>
 
         <div class="form-group center">
-            <input type="submit" value="Enregistrer" tabindex="3">
+            <input type="submit" value="{{#i}}actions.save{{/i}}" tabindex="3">
         </div>
 
     </form>
