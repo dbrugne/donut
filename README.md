@@ -9,14 +9,10 @@ chat
 - [ ] Implement user online status on user profile
 - [ ] Implement current user list on room profile
 - [ ] If current user is logged put chat URL on join/discusso button elseif landing URL
+- [ ] Handle Facebook image storage/retrieving
 - [ ] Fluid landing background on small resolutions (display donut background w/ opacity)
 - [ ] Adjust join buttons
 - [ ] Room/user profile cards in drawer
-
-**Profile/account**
-- [ ] Handle Facebook image storage/retrieving
-
-**Room ops**
 - [ ] Add kick reason form
 
 **Contents**
