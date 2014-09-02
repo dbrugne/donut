@@ -22,7 +22,7 @@ router.route('/login')
         res.render('login', {userFields: {email: req.flash('email')}});
     })
     .post(validateInput, passport.authenticate('local-login', {
-        successRedirect : '/',
+        successRedirect : '/!',
         failureRedirect : '/login',
         failureFlash : true
     }));
