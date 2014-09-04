@@ -59,6 +59,11 @@ chat
   - [ ] Set a setInterval and clearInterval tracker on 150ms
   - [ ] Test also that previous request has return (more than) one result if i just added a letter on the right of my request
 
+**Account**
+- [ ] Delete account (link on account drawer with target _blank) to /delete, confirmation page with text and field to type password + cancel button, reuse existing delete action + password check
+- [ ] Change username
+- [ ] Logout "cut" all user socket
+
 **Chat**
 - [ ] Add ban
 - [ ] Add a 'room ops' drawer with 'remove user from op list' button (only for owner)
