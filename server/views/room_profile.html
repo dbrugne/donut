@@ -2,7 +2,7 @@
 <div id="profile" class="room-profile">
     <div class="cover room">
         <a href="{{room.url}}"><img class="avatar" src="{{room.avatar}}" alt="{{room.name}} avatar"></a>
-        <p class="join"><a href="{{room.url}}" {{#room.color}}style="background-color: {{room.color}};"{{/room.color}}>Join ##</a></p>
+        <p class="join"><a href="{{room.url}}" {{#room.color}}style="background-color: {{room.color}};"{{/room.color}}>{{#i}}actions.join{{/i}} ##</a></p>
     </div>
     <div class="text room">
         <p class="name-content"><a href="{{room.url}}" class="name">{{room.name}}</a> {{#room.permanent}}<img src="/images/permanent.svg" class="permanent" alt="permanent room logo">{{/room.permanent}}</p>
@@ -25,7 +25,7 @@
     </div>
     <hr class="clear">
     <hr>
-    <p class="title">Les tauliers</p>
+    <p class="title">{{#i}}profile.room.ownerops{{/i}}</p>
     <div class="users cards">
         {{#room.owner}}{{> user}}{{/room.owner}}
         {{#room.op}}{{> user}}{{/room.op}}
@@ -33,19 +33,23 @@
     <hr class="clear">
     <hr>
     {{#room.topic}}
-    <p class="title">Actuellement</p>
+    <p class="title">{{#i}}profile.room.now{{/i}}</p>
     <p class="topic">
         <span class="topic-content"><img src="/images/topic.svg" alt="topic icon"> {{room.topic}}</span>
     </p>
     {{/room.topic}}
     <div class="users cards">
         {{#room.users}}{{> user}}{{/room.users}}
-        {{^room.users}}<div class="no">Pas d'utilisateurs dans la room en ce moment</div>{{/room.users}}
+        {{^room.users}}<div class="no">{{#i}}profile.room.nouser{{/i}}</div>{{/room.users}}
     </div>
     <hr>
     <div class="disclaimer">
-        <p>Cette page est le profil de la room <a href="{{room.url}}">{{room.name}}</a> sur la plateforme de chat <a href="/">donut.me</a>. donut.me vous permet de créer une room thématique sur le sujet de votre choix et d'y discuter avec "des" gens ou les gens de votre communauté.</p>
-        <a href="/"><img src="/images/logo-onecolor-gr.svg" alt="donut.me logo"></a>
+        <p>
+            {{#i}}profile.room.disclaimer.before{{/i}}
+            <a href="{{room.url}}">{{room.name}}</a>
+            {{#i}}profile.room.disclaimer.after{{/i}}
+        </p>
+        <a href="/"><img src="/images/logo-onecolor-gr.svg" alt="DONUT logo"></a>
     </div>
     <hr class="clear">
 </div>

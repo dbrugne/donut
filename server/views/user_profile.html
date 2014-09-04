@@ -2,7 +2,7 @@
 <div id="profile" class="user-profile">
     <div class="cover user">
         <a href="{{user.url}}"><img class="avatar" src="{{user.avatar}}" alt="{{user.name}} avatar"></a>
-        <p class="discuss"><a href="{{user.url.chat}}" {{#user.color}}style="background-color: {{user.color}};"{{/user.color}}>Discuter</a></p>
+        <p class="discuss"><a href="{{user.url.chat}}" {{#user.color}}style="background-color: {{user.color}};"{{/user.color}}>{{#i}}actions.discuss{{/i}}</a></p>
     </div>
     <div class="text user">
         <a href="{{user.url}}" class="username">{{user.username}}</a>
@@ -26,7 +26,7 @@
     <hr class="clear">
     <hr>
     {{#user.hasRooms}}
-    <p class="title">Ses rooms</p>
+    <p class="title">{{#i}}profile.user.hisrooms{{/i}}</p>
     <div class="rooms cards">
         {{#user.roomsList}}{{> room}}{{/user.roomsList}}
     </div>
@@ -34,8 +34,12 @@
     <hr>
     {{/user.hasRooms}}
     <div class="disclaimer">
-        <p>Cette page est le profil de l'utilisateur <a href="{{user.url}}">{{user.username}}</a> sur la plateforme de chat <a href="/">donut.me</a>. donut.me vous permet de créer une room thématique sur le sujet de votre choix et d'y discuter avec "des" gens ou les gens de votre communauté.</p>
-        <a href="/"><img src="/images/logo-onecolor-gr.svg" alt="donut.me logo"></a>
+        <p>
+            {{#i}}profile.user.disclaimer.before{{/i}}
+            <a href="{{user.url}}">{{user.username}}</a>
+            {{#i}}profile.user.disclaimer.after{{/i}}
+        </p>
+        <a href="/"><img src="/images/logo-onecolor-gr.svg" alt="DONUT logo"></a>
     </div>
     <hr class="clear">
 </div>

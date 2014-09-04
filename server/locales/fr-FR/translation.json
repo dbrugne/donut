@@ -13,7 +13,9 @@
         "home": "retourner à l'accueil",
         "signup": "créer un compte",
         "forgot": "mot de passe oublié",
-        "save": "enregistrer"
+        "save": "enregistrer",
+        "join": "rejoindre",
+        "discuss": "discuter"
     },
     "global": {
         "or": "ou",
@@ -93,6 +95,24 @@
     "logged": {
         "title": "Déjà connecté",
         "text": "Vous êtes déjà connecter vous pouvez donc accéder au "
+    },
+    "profile": {
+      "room": {
+        "ownerops": "Les tauliers",
+        "now": "Actuellement",
+        "nouser": "Pas d'utilisateurs dans la room en ce moment",
+        "disclaimer": {
+          "before": "Cette page est le profil du donut ",
+          "after": "sur la plateforme de chat <a href=\"/\">DONUT</a>. donut.me vous permet de créer une room thématique sur le sujet de votre choix et d'y discuter avec \"des\" gens ou les gens de votre communauté."
+        }
+      },
+      "user": {
+        "hisrooms": "Ses rooms",
+        "disclaimer": {
+          "before": "Cette page est le profil de l'utilisateur",
+          "after": "sur la plateforme de chat <a href=\"/\">DONUT</a>. donut.me vous permet de créer une room thématique sur le sujet de votre choix et d'y discuter avec \"des\" gens ou les gens de votre communauté."
+        }
+      }
     },
     "404": {
       "title": "Page non trouvée",
