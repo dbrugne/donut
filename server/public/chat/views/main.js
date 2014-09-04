@@ -67,8 +67,6 @@ define([
       this.drawerView = new DrawerView({mainView: this});
       this.alertView = new AlertView({mainView: this});
 
-      window.main = this; // @debug
-      window.client = client; // @debug
       window.rooms = rooms; // @debug
       window.onetoones = onetoones; // @debug
     },

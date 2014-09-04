@@ -1,14 +1,13 @@
 define([
+  /************************************
+   * Load dependencies and plugins
+   ************************************/
   'jquery',
   'underscore',
   'backbone',
   'i18next',
   'moment',
-  'routeur',
-  'models/client',
-  'views/main',
-//  'facebook',
-  // jQuery plugins, load and attach to $ once
+  // Load (once) and attach plugins to jQuery and underscore
   'jquery.insertatcaret',
   'jquery.maxlength',
   'jquery.cloudinary',
@@ -19,8 +18,9 @@ define([
   'jquery.colorify',
   'jquery.scroller',
   'bootstrap',
-  'moment-fr'
-], function ($, _, Backbone, i18next, moment, router, client, mainView) {
+  'moment-fr',
+  'underscore.template-helpers'
+], function ($, _, Backbone, i18next, moment) {
   /**
    * The init process is the following:
    * - Load router - done by require.js
@@ -53,11 +53,6 @@ define([
 
     // The main part of the job is done by require.js loader
     initialize: function() {
-      // Give some object to global scope to allow other context to use it
-      window.router = router;
-      window.main =   mainView;
-      window.moment = moment;
-
       // i18n setup
       i18next.init({
         lng: 'fr-FR',
@@ -67,6 +62,8 @@ define([
         saveMissing: true,
         debug: false // @debug
       });
+      // make i18next available from all underscore templates views (<%= t('key') %>)
+      _.addTemplateHelpers({t: i18next.t});
 
       // Cloudinary setup
       $.cloudinary.config({
@@ -75,6 +72,7 @@ define([
       });
 
       // Moment language
+      window.moment = moment;
       moment.lang('fr', {
         relativeTime : {
           future : "dans %s",
@@ -106,9 +104,16 @@ define([
 //        return false;
 //      }
 
-      // Everything was already loaded by require.js,
-      // it just left to establish connection:
-      client.connect();
+      // Every dependencies was loaded on this file load by require.js
+      // Now we launch the app by loading principal elements
+      require(['routeur','models/client', 'views/main'], function(router, client, mainView) {
+        // Give some object to global scope to allow other context to use it
+        // @debug
+        window.router = router;
+        window.client = client;
+        window.main   =   mainView;
+        client.connect();
+      });
     }
   };
 

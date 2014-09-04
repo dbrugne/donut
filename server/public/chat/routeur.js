@@ -2,7 +2,7 @@ define([
   'underscore',
   'backbone',
   'models/client',
-  'views/main'
+  'views/main' // will load all needed subviews
 ], function (_, Backbone, client, mainView) {
   var ChatRouter = Backbone.Router.extend({
     routes: {
