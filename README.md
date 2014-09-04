@@ -11,9 +11,11 @@ chat
 - [ ] If current user is logged put chat URL on join/discusso button elseif landing URL
 - [ ] Handle Facebook image storage/retrieving
 - [ ] Fluid landing background on small resolutions (display donut background w/ opacity)
-- [ ] Adjust join buttons
-- [ ] Room/user profile cards in drawer
 - [ ] Add kick reason form
+- [ ] Adjust join buttons
+- [ ] Join/discuss link on room profile
+- [ ] Room/user profile cards in drawer
+- [ ] On room/user profile page, left colum is closed by default and opened by JS on background load (avoir repeated background display on load)
 
 **Contents**
 - [ ] Translate texts
@@ -21,7 +23,7 @@ chat
 - [ ] Contact (link in HP and chat interface)
 - [ ] CGU (link in HP and chat interface)
 - [ ] Emails : https://github.com/dbrugne/chat/issues/6
-- [ ] Welcome messages
+- [ ] Welcome messages in welcome event (i18n)
 - [ ] Implement open graph and SEO description and canonical url in room/user profile meta
 - [ ] Implement open graph and SEO description and canonical url on landing
 
