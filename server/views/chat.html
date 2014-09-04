@@ -17,7 +17,7 @@
         <div id="color"></div><!-- /#color -->
         <div class="row">
             <div id="left">
-                <h1 class="logo"><a href="/!#"><img src="/images/logo-onecolor.svg" alt="{{#i}}title{{/i}} - {{#i}}baseline{{/i}}" style="width: 177px;"></a></h1>
+                <h1 class="logo"><a href="/!#"><img src="/images/logo-onecolor.svg" alt="{{#i}}title.chat{{/i}}" style="width: 177px;"></a></h1>
                 <div id="block-current-user"></div><!-- /#current-user-block -->
                 <!-- hr>
                 <!-- div id="block-search">
@@ -27,14 +27,14 @@
                 <hr>
                 <div class="scrollable">
                     <div id="block-rooms"></div>
-                    <a href="#" id="create-room-link" class="links"><strong>+</strong> Create a donut now!</a>
+                    <a href="#" id="create-room-link" class="links"><strong>+</strong> {{#i}}chat.createdonut{{/i}}</a>
                     <div id="block-onetoones"></div>
                 </div>
                 <div id="block-links">
-                    <span><a href="/faq" target="_blank">FAQ</a></span>
-                    <span><a href="#!room/Support" target="_blank">Help</a></span>
-                    <span><a href="/contact" target="_blank">Contact</a></span>
-                    <span><a href="/terms-of-use" target="_blank">CGU</a></span>
+                    <span><a href="/faq" target="_blank">{{#i}}page.faq.title{{/i}}</a></span>
+                    <span><a href="#!room/Support" target="_blank">{{#i}}chat.help{{/i}}</a></span>
+                    <span><a href="/contact" target="_blank">{{#i}}page.contact.title{{/i}}</a></span>
+                    <span><a href="/terms-of-use" target="_blank">{{#i}}page.eutc.title{{/i}}</a></span>
                 </div>
             </div><!-- /#left -->
             <div id="center">
@@ -49,7 +49,6 @@
                 <div id="home"><!--home content--></div>
             </div><!-- /#center -->
         </div><!-- /.row -->
-        <div id="sign">made with <span title="love">♥</span></div>
     </div><!-- /#chat -->
 <script>
     window.cloudinary_cloud_name = '{{cloudinary.cloud_name}}';
@@ -61,3 +60,4 @@
 {{{googleanalytics}}}
 </body>
 </html>
+<!-- made with ♥ -->

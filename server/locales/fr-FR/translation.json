@@ -1,8 +1,13 @@
 {
+    "404": {
+        "title": "Page non trouvée",
+        "description": "Désolé nous n'avons pas été en mesure de trouver cette ressource ! Vous pouvez peut être juste cliquer sur ce petit lien :"
+    },
     "title": {
-        "default": "Donut vous permet de discuter autour de vos centres d'intérêt et d'animer vos communautés!",
-        "landing": "Donut! Discussions instantanées autour de vos centres d'intérêt",
-        "profile": "Profil de"
+        "default": "DONUT vous permet de discuter autour de vos centres d'intérêt et d'animer vos communautés!",
+        "landing": "DONUT - Discussions instantanées autour de vos centres d'intérêt",
+        "profile": "Profil de",
+        "chat": "DONUT"
     },
     "baseline": "vous avez des choses à (vous) dire !",
     "actions": {
@@ -43,26 +48,26 @@
         "save": "Réinitialiser"
     },
     "signup": {
-        "disclaimer": "En cliquant sur \"Et voilà !\" j’accepte les conditions d'utilisation de Donut"
+        "disclaimer": "En cliquant sur \"Et voilà !\" j’accepte les conditions d'utilisation de DONUT"
     },
     "choose-username": {
         "title": "Il est temps de choisir un nom d'utilisateur !",
-        "description": "Le nom d'utilisateur sera votre identité sur donut. Les autres utilisateurs le verront. Il n'est pas modifiable.",
+        "description": "Le nom d'utilisateur sera votre identité sur DONUT. Les autres utilisateurs le verront. Il n'est pas modifiable.",
         "help": "Entre 3 et 25 caractères. Lettres et/ou chiffres et/ou certains caractères spéciaux."
     },
     "connect-local": {
-      "title": "Créer un mot de passe",
-      "description": "Ajouter une adresse email et un mot de passe à votre compte "
+        "title": "Créer un mot de passe",
+        "description": "Ajouter une adresse email et un mot de passe à votre compte "
     },
     "edit-email": {
-      "title": "Modifier votre email"
+        "title": "Modifier votre email"
     },
     "edit-password": {
-      "title": "Modifier votre mot de passe"
+        "title": "Modifier votre mot de passe"
     },
     "home": {
         "cover": {
-            "line1": "donut vous permet",
+            "line1": "DONUT vous permet",
             "line2": "de discuter",
             "line3": "autour de",
             "line4": "vos centres d'intérêt",
@@ -73,8 +78,8 @@
         "description": {
             "title1": "tasty",
             "title2": "chatrooms",
-            "definition": "Un donut est un espace convivial de discussion<br> instantanée, un salon de discussion,<br> une chat room en fait !",
-            "line1": "Vous pouvez créer votre donut personnalisé et retrouver votre communauté ...",
+            "definition": "Un DONUT est un espace convivial de discussion<br> instantanée, un salon de discussion,<br> une chat room en fait !",
+            "line1": "Vous pouvez créer votre DONUT personnalisé et retrouver votre communauté ...",
             "line2": "... ou vous joindre aux discussions en cours autour de vos centres d'intérêt ...",
             "line3": "... et découvrir des gens qui vous ressemblent, au cours de véritables conversations !",
             "illustration1": "home.description.illustration1",
@@ -89,7 +94,7 @@
         "footer": {
             "link1": "Notre philosophie",
             "link2": "Conditions d'utilisations",
-            "link3": "Copyright Donut"
+            "link3": "Copyright DONUT"
         }
     },
     "logged": {
@@ -97,25 +102,36 @@
         "text": "Vous êtes déjà connecter vous pouvez donc accéder au "
     },
     "profile": {
-      "room": {
-        "ownerops": "Les tauliers",
-        "now": "Actuellement",
-        "nouser": "Pas d'utilisateurs dans la room en ce moment",
-        "disclaimer": {
-          "before": "Cette page est le profil du donut ",
-          "after": "sur la plateforme de chat <a href=\"/\">DONUT</a>. donut.me vous permet de créer une room thématique sur le sujet de votre choix et d'y discuter avec \"des\" gens ou les gens de votre communauté."
+        "room": {
+            "ownerops": "Les tauliers",
+            "now": "Actuellement",
+            "nouser": "Pas d'utilisateurs dans la room en ce moment",
+            "disclaimer": {
+                "before": "Cette page est le profil du donut ",
+                "after": "sur la plateforme de chat <a href=\"/\">DONUT</a>. DONUT vous permet de créer une room thématique sur le sujet de votre choix et d'y discuter avec \"des\" gens ou les gens de votre communauté."
+            }
+        },
+        "user": {
+            "hisrooms": "Ses rooms",
+            "disclaimer": {
+                "before": "Cette page est le profil de l'utilisateur",
+                "after": "sur la plateforme de chat <a href=\"/\">DONUT</a>. DONUT vous permet de créer une room thématique sur le sujet de votre choix et d'y discuter avec \"des\" gens ou les gens de votre communauté."
+            }
         }
-      },
-      "user": {
-        "hisrooms": "Ses rooms",
-        "disclaimer": {
-          "before": "Cette page est le profil de l'utilisateur",
-          "after": "sur la plateforme de chat <a href=\"/\">DONUT</a>. donut.me vous permet de créer une room thématique sur le sujet de votre choix et d'y discuter avec \"des\" gens ou les gens de votre communauté."
-        }
-      }
     },
-    "404": {
-      "title": "Page non trouvée",
-      "description": "Désolé nous n'avons pas été en mesure de trouver cette ressource ! Vous pouvez peut être juste cliquer sur ce petit lien :"
+    "chat": {
+        "createdonut": "Créer un donut !",
+        "help": "Aide"
+    },
+    "page": {
+        "faq": {
+            "title": "FAQ"
+        },
+        "contact": {
+            "title": "Contact"
+        },
+        "eutc": {
+            "title": "CGU"
+        }
     }
 }
