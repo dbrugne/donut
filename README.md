@@ -69,7 +69,6 @@ chat
 - [ ] Add a 'room ops' drawer with 'remove user from op list' button (only for owner)
 - [ ] Add a 'room bans' drawer with 'remove user from ban list' button (for op)
 - [ ] Change the to server->client messages : room:join/leave and user:open/close (for something like ?)
-- [x] Correct room:in for user that "reconnect"
 - [ ] Add a check on ws connection to verify is user have "username"
 - [ ] Bug : room user list scroll is not active when entering in room (but work once the first redraw)
 - [ ] WS: implement REDIS cache for user and room and read in REDIS cache only "even" for socket.getUsername-like function to have always last data
