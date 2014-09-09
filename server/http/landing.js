@@ -8,7 +8,7 @@ router.get('/', function(req, res) {
     : false;
 
   return res.render('landing', {
-    layout: 'layout-landing',
+    layout: false,
     logged: logged
   });
 });

@@ -14,10 +14,10 @@
 <div class="wrapper">
     <h1 class="logo"><a href="/"><img src="/images/logo-onecolor.svg" alt="{{#i}}title{{/i}} - {{#i}}baseline{{/i}}"></a></h1>
     <div class="upon">
-    {{#success}}<div class="alert alert-success">{{success}}</div>{{/success}}
-    {{#info}}<div class="alert alert-info">{{info}}</div>{{/info}}
-    {{#warning}}<div class="alert alert-warning">{{warning}}</div>{{/warning}}
-    {{#error}}<div class="alert alert-danger">{{error}}</div>{{/error}}
+        {{#success}}<div class="alert alert-success">{{{success}}}</div>{{/success}}
+        {{#info}}<div class="alert alert-info">{{{info}}}</div>{{/info}}
+        {{#warning}}<div class="alert alert-warning">{{{warning}}}</div>{{/warning}}
+        {{#error}}<div class="alert alert-danger">{{{error}}}</div>{{/error}}
     </div>
     <div class="content">
     {{{ yield }}}
