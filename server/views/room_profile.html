@@ -2,13 +2,13 @@
 <div id="profile" class="room-profile">
     <div class="cover room">
         <a href="{{room.url}}"><img class="avatar" src="{{room.avatar}}" alt="{{room.name}} avatar"></a>
-        <p class="join"><a href="{{room.url}}" {{#room.color}}style="background-color: {{room.color}};"{{/room.color}}>{{#i}}actions.join{{/i}} ##</a></p>
+        <p class="join"><a href="{{room.url}}" {{#room.color}}style="background-color: {{room.color}};"{{/room.color}}>{{#i}}actions.join{{/i}} </a></p>
     </div>
     <div class="text room">
         <p class="name-content"><a href="{{room.url}}" class="name">{{room.name}}</a> {{#room.permanent}}<img src="/images/permanent.svg" class="permanent" alt="permanent room logo">{{/room.permanent}}</p>
         {{#room.owner}}
         <span class="owner">
-            by <a href="{{room.owner.url}}" {{#room.color}}style="color: {{room.color}};"{{/room.color}}>{{room.owner.username}}</a>
+            {{#i}}global.by{{/i}} <a href="{{room.owner.url}}" {{#room.color}}style="color: {{room.color}};"{{/room.color}}>{{room.owner.username}}</a>
         </span>
         {{/room.owner}}
         {{#room.website}}

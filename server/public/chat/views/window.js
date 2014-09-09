@@ -68,7 +68,7 @@ define([
     onClose: function() {
       // only if at least one room is open
       if ((rooms && rooms.length > 0) || (onetoones && onetoones.length > 0)) {
-        return "If you leave this page all the room history will be lost.";
+        return $.t("chat.closemessage");
       } else {
         return;
       }

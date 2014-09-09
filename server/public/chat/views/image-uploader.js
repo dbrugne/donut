@@ -76,7 +76,7 @@ define([
           crop: 'limit',
           gravity: 'face',
           width: 800,
-          height: 600
+          height: 600 // @todo: different constrains for poster and avatar
         });
         $cloudinaryFileupload.bind('cloudinaryprogress', function(e, data) {
 

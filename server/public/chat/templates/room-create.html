@@ -1,7 +1,7 @@
-<h2>Créer un donut</h2>
-<p class="help">Room name should be 2+ long and use alphanumeric characters and specials characters (_ - \ [ ] { } ^ ` |)</p>
+<h2><%= t('chat.create.label') %></h2>
+<p class="help"><%= t('chat.create.help') %></p>
 <p>
     <span class="hash">#</span>
-    <input type="text" class="input" placeholder="Enter the name" />
+    <input type="text" class="input" placeholder="<%= t('chat.create.placeholder') %>" />
 </p>
-<button class="submit" type="button">Créer ou rejoindre</button>
+<button class="submit" type="button"><%= t('chat.create.submit') %></button>

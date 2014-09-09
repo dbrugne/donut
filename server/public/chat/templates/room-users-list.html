@@ -1,15 +1,15 @@
 <% _.each(list, function(user) { %>
 <p class="item <% if (user.is_op === true) { %>op<% }; %> <% if (user.is_owner === true) { %>owner<% }; %>">
-    <span class="avatar" title="<% if (user.is_op === true) { %>Cet utilisateur est modérateur de ce donut<% } else if (user.is_owner === true) { %>Cet utilisateur est le propriétaire de ce donut<% }; %>"><img class="open-user-profile" data-username="<%= user.username %>" src="<%= user.avatar %>" alt="<%= user.username %> avatar"></span>
+    <span class="avatar" title="<% if (user.is_op === true) { %><%= t('chat.op.is') %><% } else if (user.is_owner === true) { %><%= t('chat.owner.is') %><% }; %>"><img class="open-user-profile" data-username="<%= user.username %>" src="<%= user.avatar %>" alt="<%= user.username %> avatar"></span>
     <span class="username open-user-profile" data-username="<%= user.username %>"><%= user.username %></span>
         <span class="actions">
             <% if (!user.is_owner && (isOp === true || isOwner === true)) { %>
                 <% if (user.is_op === true) { %>
-                <img src="images/deop.svg" class="deop-user" title="Retirer les droits de modérateur à cet utilisateur" data-username="<%= user.username %>">
+                <img src="images/deop.svg" class="deop-user" title="<%= t('chat.deop.infobox') %>" data-username="<%= user.username %>">
                 <% } else { %>
-                <img src="images/op.svg" class="op-user" title="Faire de cet utilisateur un modérateur" data-username="<%= user.username %>">
+                <img src="images/op.svg" class="op-user" title="<%= t('chat.op.infobox') %>" data-username="<%= user.username %>">
                 <% }; %>
-                <img src="images/kick-w.svg" height="17px" class="kick-user" title="Expulser cet utilisateur de la room" data-username="<%= user.username %>">
+                <img src="images/kick-w.svg" height="17px" class="kick-user" title="<%= t('chat.kick.infobox') %>" data-username="<%= user.username %>">
             <% }; %>
         </span>
 </p>

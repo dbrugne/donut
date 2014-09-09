@@ -2,7 +2,7 @@
     <div class="header room">
         <img class="avatar open-room-profile" data-room-name="<%= name %>" src="<%= avatar %>" alt="<%= name %> avatar">
         <div class="name open-room-profile" data-room-name="<%= name %>"><%= name %></div>
-        <div class="owner">by <a class="open-user-profile" data-username="<%= owner.username %>" data-colorify-text="color"><%= owner.username %></a></div>
+        <div class="owner"><%= t('global.by') %> <a class="open-user-profile" data-username="<%= owner.username %>" data-colorify-text="color"><%= owner.username %></a></div>
         <div class="topic"><!-- topic view --></div>
         <div class="actions">
             <img src="/images/permanent.svg" class="permanent" alt="permanent room logo" style="display: <% if (permanent === true) { %>inline-block<% } else { %>none<% }; %>;">

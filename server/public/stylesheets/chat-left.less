@@ -14,30 +14,35 @@ h1.logo {
       width: 60px;
       height: 60px;
     }
-    i {
-      color: @cl-background;
-      position: absolute;
-      bottom: 0px; right: 2px;
+    .edit {
       display: none;
-      font-size: 1.5em;
+      position: absolute;
+      bottom: 0px; right: 0px;
+      background-color: rgb(49, 49, 49);
+      background-color: rgba(49, 49, 49, 0.5);
+      padding: 2px 5px;
+      color: @cl-background;
+      i {
+        font-size: 1.1em;
+      }
     }
+
     &:hover {
-      i { display: inline; cursor: pointer; }
+      .edit { display: inline; cursor: pointer; }
     }
   }
   .hello {
     margin-bottom: 0;
-  }
-  .username {
-    .ft-opensans-bold;
-    margin-bottom: 0;
+    .username {
+      .ft-opensans-bold;
+    }
   }
   .actions {
     padding-top: 5px;
     clear: both;
     a {
+      display: block;
       color: @cl-subtext2;
-      margin-right: 10px;
       cursor: pointer;
     }
     a:hover {

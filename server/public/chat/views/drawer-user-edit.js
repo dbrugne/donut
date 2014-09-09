@@ -55,7 +55,7 @@ define([
       // description
       this.$el.find('#userBio').maxlength({
         counterContainer: this.$el.find('#userBio').siblings('.help-block').find('.counter'),
-        text: '<strong>%left</strong> left'
+        text: $.t("edit.left")
       });
 
       // color
@@ -89,7 +89,7 @@ define([
         location: this.$el.find('input[name=location]').val(),
         website: this.$el.find('input[name=website]').val(),
         color: this.$el.find('input[name=color]').val(),
-        general: this.$el.find('input[type=checkbox].general').prop('checked')
+        general: this.$el.find('input[type=checkbox].autojoin').prop('checked')
       };
 
       if (this.avatarUploader.data)

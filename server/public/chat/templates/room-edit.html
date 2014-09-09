@@ -1,49 +1,48 @@
 <div class="room" data-colorify="<%= room.color %>">
     <span class="name"><%= room.name %></span>
-    <span class="owner">by <a class="open-user-profile" data-username="<%= room.owner.username %>" data-colorify-text="#ffffff"><%= room.owner.username %></a></span>
+    <span class="owner"><%= t('global.by') %> <a class="open-user-profile" data-username="<%= room.owner.username %>" data-colorify-text="#ffffff"><%= room.owner.username %></a></span>
 </div>
 <div class="errors"></div>
 <form class="room-form" role="form">
     <div class="form-group">
-        <label for="roomDescription">Description</label>
-        <textarea name="description" class="form-control" id="roomDescription" placeholder="Describe the donut in few words" maxlength="200"><%= room.description %></textarea>
-        <p class="help-block">Optional, max 200 char. <span class="counter"></span></p>
+        <label for="roomDescription"><%= t('edit.description.label') %></label>
+        <textarea name="description" class="form-control" id="roomDescription" placeholder="<%= t('edit.description.placeholder') %>" maxlength="200"><%= room.description %></textarea>
+        <p class="help-block"><%= t('edit.description.help') %> <span class="counter"></span></p>
     </div>
     <div class="form-group">
-        <label for="roomWebsite">Website</label>
-        <input name="website" type="text" class="form-control" id="roomWebsite" placeholder="Your website URL" value="<%= room.website %>">
-        <p class="help-block">Optional</p>
+        <label for="roomWebsite"><%= t('edit.website.label') %></label>
+        <input name="website" type="text" class="form-control" id="roomWebsite" placeholder="<%= t('edit.website.placeholder') %>" value="<%= room.website %>">
+        <p class="help-block"><%= t('edit.website.help') %></p>
     </div>
     <div class="form-group">
-        <label>Avatar</label>
+        <label><%= t('edit.avatar.label') %></label>
         <div class="room-avatar"></div>
     </div>
     <div class="form-group">
-        <label>Poster</label>
+        <label><%= t('edit.poster.label') %></label>
         <div class="room-poster"></div>
     </div>
     <div class="form-group">
-        <label>Couleur</label>
+        <label><%= t('edit.color.label') %></label>
         <div class="room-color"></div>
-        <p class="help-block">Optional</p>
     </div>
-    <label>Autres paramétres</label>
+    <label><%= t('edit.othersettings') %></label>
     <div class="form-group">
         <div class="radio">
             <label>
                 <input type="radio" name="permanent" class="room-permanent-yes" value="1" <% if (room.permanent) { %>checked<% } %>>
-                La room est permanent et sera conservée même lorsque vous vous déconnecterez
+                <%= t('edit.permanent.yes') %>
             </label>
         </div>
         <div class="radio">
             <label>
                 <input type="radio" name="permanent" class="room-permanent-no" value="0" <% if (!room.permanent) { %>checked<% } %>>
-                La room n'est pas permanent et sera supprimé au bout de quelques heures après que le dernier utilisateur l'aura quitté
+                <%= t('edit.permanent.no') %>
             </label>
         </div>
     </div>
     <div class="form-group buttons">
-        <a class="btn btn-default btn-sm cancel">Annuler</a>
-        <input type="submit" value="Sauver">
+        <a class="btn btn-default btn-sm cancel"><%= t('global.cancel') %></a>
+        <input type="submit" value="<%= t('global.save') %>">
     </div>
 </form>

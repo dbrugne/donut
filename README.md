@@ -8,9 +8,9 @@ chat
 - [ ] Handle Facebook image storage/retrieving on cloudinary
 - [ ] Adjust join buttons
 - [ ] Room/user profile cards in drawer
-- [x] Fluid landing background on small resolutions (display donut background w/ opacity)
+- [ ] Fluid landing background on small resolutions (display donut background w/ opacity)
 - [ ] Add kick reason form
-- [ ] On room/user profile page, left colum is closed by default and opened by JS on background load (avoir repeated background display on load)
+- [ ] On room/user profile page, left colum is closed by default and opened by JS on background load (avoid repeated background display on load)
 - [ ] Order donuts on home page (date or activity or ...)
 - [ ] Add title in topic bubbles
 - [x] Add new socket.io-redis
@@ -27,7 +27,6 @@ chat
 - [ ] Create donut drawer: help message under field + size, main color name grey
 - [ ] Add word-break on room name and user username in drawer
 - [ ] room name and user username length constrains : 24
-- [ ] "Créer ou rejoindre" in create room drawer => "Créer"
 - [ ] Remove room permanent support, and add delete room feature
 - [ ] Add avatar in left column en room
 - [ ] Remove unread message count on left column badge
@@ -47,13 +46,13 @@ chat
 - [ ] Show permanently the actions on room user list (not only on hover)
 - [ ] Test and make it work on IE9 + Safari Windows
 - [ ] Add a min-width on topic input field
-- [ ] In/out aligned to left in rooms
+- [x] In/out aligned to left in rooms
 - [ ] Change alert = 25s + close button
 - [ ] Add offline message when a user send a message to a user that is not longer connected
 - [ ] Go down to .messages on discussion focus
 - [ ] On onetoone default avatar (color problem) doesn't work in .messages
 - [ ] On room profile default avatar of "owner" (color problem) doesn't work (and OP)
-- [ ] On room messages/notification, if i post a message, a notification is thrown, i repost a message my second message go on same line than previous message (add a test to detect that last message wasn't a notification)
+- [x] On room messages/notification, if i post a message, a notification is thrown, i repost a message my second message go on same line than previous message (add a test to detect that last message wasn't a notification)
 - [ ] Room description/user bio justify and left align
 - [ ] User profile drawer add edit your profile if it's mine
 - [ ] User/room drawer add a scroll

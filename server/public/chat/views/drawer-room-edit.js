@@ -65,7 +65,7 @@ define([
       // description
       this.$el.find('#roomDescription').maxlength({
         counterContainer: this.$el.find('#roomDescription').siblings('.help-block').find('.counter'),
-        text: '<strong>%left</strong> left'
+        text: $.t("edit.left")
       });
 
       // color

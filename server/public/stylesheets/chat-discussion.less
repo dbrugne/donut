@@ -130,7 +130,6 @@
         }
       }
       .notification {
-        text-align: right;
         font-style: italic;
         color: @cl-subtext2;
         .date { display: none;}
@@ -138,20 +137,27 @@
         .avatar {
           width: 20px;
           height: 20px;
-          margin-left: 8px;
-          margin-right: 8px;
+          margin-right: 4px;
           -webkit-border-radius: 2px;
           -moz-border-radius: 2px;
           border-radius: 2px;
         }
         .username { font-weight: bold; }
+        .detail { font-weight: normal; }
         i { color: @cl-success; }
       }
       .notification-inout {
         .date { display: none; }
         .item {
           display: inline-block;
-          padding: 4px;
+          padding: 0 4px 4px 0;
+          .username { display: none; }
+          .avatar {
+            margin-right: 0px;
+          }
+          .icon {
+            margin-right: 6px;
+          }
         }
       }
       p.message {

@@ -5,22 +5,22 @@
             <% if (imgTag) { %>
                 <%= imgTag %>
             <% } else { %>
-                No picture,
+                <%= t('edit.upload.nopicture') %>,
             <% } %>
         </span>
-        (<a class="change">change</a> or <a class="remove">delete</a>).
+        (<a class="change"><%= t('global.change') %></a> <%= t('global.or') %> <a class="remove"><%= t('global.delete') %></a>).
     </div>
     <% } else if (type == 'uploader') { %>
     <div class="uploader-form">
-        <input type="file" name="file" class="cloudinary_fileupload"> (<a class="cancel">cancel</a>)
-        <p class="help-block">Should be an image file (.jpeg, .jpg, .png or .gif), will be cropped to 150x150px format.</p>
+        <input type="file" name="file" class="cloudinary_fileupload"> (<a class="cancel"><%= t('global.cancel') %></a>)
+        <p class="help-block"><%= t('edit.avatarhelp') %></p>
     </div>
     <div class="progress" style="display: none;"></div>
     <% } else if (type == 'error') { %>
     <div class="uploader-error">
         <div class="progress">
             <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%;">
-                Upload failed
+                <%= t('edit.upload.failed') %>
             </div>
         </div>
     </div>

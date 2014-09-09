@@ -4,41 +4,40 @@
 <div class="errors"></div>
 <form class="user-form" role="form">
     <div class="form-group">
-        <label for="userBio">Bio</label>
-        <textarea name="bio" class="form-control" id="userBio" placeholder="Describe yourself in few words" maxlength="200"><%= user.bio %></textarea>
-        <p class="help-block">Optional, max 200 char. <span class="counter"></span></p>
+        <label for="userBio"><%= t('edit.bio.label') %></label>
+        <textarea name="bio" class="form-control" id="userBio" placeholder="<%= t('edit.bio.placeholder') %>" maxlength="200"><%= user.bio %></textarea>
+        <p class="help-block"><%= t('edit.bio.help') %><span class="counter"></span></p>
     </div>
     <div class="form-group">
-        <label for="userLocation">Location</label>
-        <input name="location" type="text" class="form-control" id="userLocation" placeholder="Town, Country" value="<%= user.location %>">
-        <p class="help-block">Optional, max 70 char.</p>
+        <label for="userLocation"><%= t('edit.location.label') %></label>
+        <input name="location" type="text" class="form-control" id="userLocation" placeholder="<%= t('edit.location.placeholder') %>" value="<%= user.location %>">
+        <p class="help-block"><%= t('edit.location.help') %></p>
     </div>
     <div class="form-group">
-        <label for="userWebsite">Website</label>
-        <input name="website" type="text" class="form-control" id="userWebsite" placeholder="Your website URL" value="<%= user.website %>">
-        <p class="help-block">Optional, should be a valid website address (with or without http://)</p>
+        <label for="userWebsite"><%= t('edit.website.label') %></label>
+        <input name="website" type="text" class="form-control" id="userWebsite" placeholder="<%= t('edit.website.placeholder') %>" value="<%= user.website %>">
+        <p class="help-block"><%= t('edit.website.help') %></p>
     </div>
     <div class="form-group">
-        <label>Avatar</label>
+        <label><%= t('edit.avatar.label') %></label>
         <div class="user-avatar"></div>
     </div>
     <div class="form-group">
-        <label>Poster</label>
+        <label><%= t('edit.poster.label') %></label>
         <div class="user-poster"></div>
     </div>
     <div class="form-group">
-        <label>Couleur</label>
+        <label><%= t('edit.color.label') %></label>
         <div class="user-color"></div>
-        <p class="help-block">Optional</p>
     </div>
-    <label>Autres paramétres</label>
+    <label><%= t('edit.othersettings') %></label>
     <div class="checkbox">
         <label>
-            <input type="checkbox" class="general" <% if (user.general) { %>checked<% } %>> Rejoindre automatique <strong>#Général</strong> quand vous vous connectez
+            <input type="checkbox" class="autojoin" <% if (user.general) { %>checked<% } %>> <%= t('edit.autojoindonut.yes') %>
         </label>
     </div>
     <div class="form-group buttons">
-        <a class="btn btn-default btn-sm cancel">Annuler</a>
-        <input type="submit" value="Sauver">
+        <a class="btn btn-default btn-sm cancel"><%= t('global.cancel') %></a>
+        <input type="submit" value="<%= t('global.save') %>">
     </div>
 </form>

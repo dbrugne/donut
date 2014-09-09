@@ -1,7 +1,7 @@
 {
     "404": {
         "title": "Page non trouvée",
-        "description": "Désolé nous n'avons pas été en mesure de trouver cette ressource ! Vous pouvez peut être juste cliquer sur ce petit lien :"
+        "description": "Désolé, nous n'avons pas trouvé ce que vous cherchiez. Et si on repartait du bon pied ? Cliquez ici :"
     },
     "title": {
         "default": "DONUT vous permet de discuter autour de vos centres d'intérêt et d'animer vos communautés!",
@@ -18,13 +18,22 @@
         "home": "retourner à l'accueil",
         "signup": "créer un compte",
         "forgot": "mot de passe oublié",
-        "save": "enregistrer",
         "join": "rejoindre",
-        "discuss": "discuter"
+        "discuss": "discuter",
+        "account": "mon compte"
     },
     "global": {
         "or": "ou",
         "else": "sinon",
+        "close": "fermer",
+        "change": "modifier",
+        "edit": "éditer",
+        "delete": "supprimer",
+        "save": "enregistrer",
+        "cancel": "annuler",
+        "online": "en ligne",
+        "offline": "hors ligne",
+        "by": "par",
         "footer": {
             "before": "Vous souhaitez vous",
             "after": " ?"
@@ -103,25 +112,140 @@
     },
     "profile": {
         "room": {
-            "ownerops": "Les tauliers",
-            "now": "Actuellement",
-            "nouser": "Pas d'utilisateurs dans la room en ce moment",
+            "ownerops": "Les habitués",
+            "now": "En ce moment",
+            "nouser": "Pas d'utilisateur dans le donut",
             "disclaimer": {
                 "before": "Cette page est le profil du donut ",
-                "after": "sur la plateforme de chat <a href=\"/\">DONUT</a>. DONUT vous permet de créer une room thématique sur le sujet de votre choix et d'y discuter avec \"des\" gens ou les gens de votre communauté."
+                "after": "sur la plateforme de chat <a href=\"/\">DONUT.me</a>. DONUT.me vous permet de rejoindre ou créer un salon de discussion thématique (donut) sur ce qui vous plait. Vous pouvez y discuter avec des gens qui partagent vos centres d'intérêt"
             }
         },
         "user": {
             "hisrooms": "Ses rooms",
             "disclaimer": {
                 "before": "Cette page est le profil de l'utilisateur",
-                "after": "sur la plateforme de chat <a href=\"/\">DONUT</a>. DONUT vous permet de créer une room thématique sur le sujet de votre choix et d'y discuter avec \"des\" gens ou les gens de votre communauté."
+                "after": "sur la plateforme de chat <a href=\"/\">DONUT.me</a>. DONUT.me vous permet de rejoindre ou créer un salon de discussion thématique (donut) sur ce qui vous plait. Vous pouvez y discuter avec des gens qui partagent vos centres d'intérêt"
             }
         }
     },
     "chat": {
-        "createdonut": "Créer un donut !",
-        "help": "Aide"
+      "create": {
+        "label": "Créez votre donut",
+        "help": "Caractères autorisés: lettres, chiffres et : \"<strong>_-[]|</strong>\". Caractères interdits: espace, # et autres trucs improbables !",
+        "placeholder": "Nom du donut",
+        "submit": "Créer"
+      },
+      "help": "Aide",
+      "search": {
+        "placeholder": "Rechercher un donut ou un utilisateur ici",
+        "noroom": "Aucun résultat de recherche",
+        "nouser": "Aucun résultat de recherche"
+      },
+      "topic": {
+        "label": "Changer le sujet",
+        "placeholder": "Nouveau sujet",
+        "default": "<em>Cliquer pour changer le sujet</em>"
+      },
+      "owner": {
+        "is": "Cet utilisateur est le propriétaire de ce donut"
+      },
+      "op": {
+        "is": "Cet utilisateur est modérateur de ce donut",
+        "infobox": "Faire de cet utilisateur un modérateur"
+      },
+      "deop": {
+        "infobox": "Retirer les droits de modérateur à cet utilisateur"
+      },
+      "kick": {
+        "infobox": "Expulser cet utilisateur de ce donut"
+      },
+      "notifications": {
+        "hello": "Vous entrez dans",
+        "disconnected": "Vous avez été deconnecté du serveur, veuillez patienter",
+        "reconnected": "Vous êtes reconnecté <span class=\"detail\">(vous avez peut être manquer des messages dans ce donut)</span>",
+        "topic": "à changé le sujet pour",
+        "kick": "a été expulsé de ce donut par",
+        "ban": "a été banni de ce donut par",
+        "op": " a été promu modérateur par",
+        "deop": "a été destitué du range de modérateur par",
+        "in": "est entré à",
+        "out": "est sorti à"
+      },
+      "closemessage": "Etes-vous sur de vouloir quitter, l’historique de vos conversations sera perdu.",
+      "kickmessage": "Vous venez d'être expulsé de"
+    },
+    "account": {
+      "emailandpassword": {
+        "label": "Email et mot de passe",
+        "help": "Vous n'avez pas renseigné d'e-mail et mot de passe. Pour vous connecter sans Facebook ou délier votre compte de Facebook :",
+        "add": "Ajouter e-mail et mot de passe"
+      },
+      "email": {
+        "label": "Email"
+      },
+      "password": {
+        "label": "Mot de passe"
+      },
+      "facebook": {
+        "label": "Facebook",
+        "help": "Votre compte est lié à ce compte Facebook :",
+        "name": "Nom",
+        "email": "Email",
+        "unlink": "Délier de ce compte Facebook",
+        "linkhelp": "Vous pouvez lier votre compte à un compte Facebook pour vous connecter plus facilement et profiter d'une expérience plus sociale :",
+        "connectwith": "Lier ce compte à "
+      },
+      "profile": {
+        "label": "Profil",
+        "help": "Vous pouvez éditer votre profil",
+        "link": "sur cette page"
+      }
+    },
+    "edit": {
+      "upload": {
+        "nopicture": "Pas de photo",
+        "failed": "Téléchargement échoué",
+        "done": "Téléchargement terminé, attendez pour le traitement de l'image"
+      },
+      "avatarhelp": "Fichier image (.jpeg, .jpg, .png or .gif). Sera automatiquement redimenssionné au format 150x150px.",
+      "left": "<strong>%left</strong> restant",
+      "othersettings": "Autres paramètres",
+      "description": {
+        "label": "Description",
+        "placeholder": "Décrivez le donut en quelques mots",
+        "help": "Facultatif"
+      },
+      "bio": {
+        "label": "Bio",
+        "placeholder": "Décrivez-vous en quelques mots",
+        "help": "Facultatif"
+      },
+      "location": {
+        "label": "Lieu",
+        "placeholder": "Ville, pays où vous êtes",
+        "help": "Facultatif"
+      },
+      "website": {
+        "label": "Site web",
+        "placeholder": "L'adresse d'un site web lié à ce profil",
+        "help": "Facultatif"
+      },
+      "avatar": {
+        "label": "Avatar"
+      },
+      "poster": {
+        "label": "Poster"
+      },
+      "color": {
+        "label": "Couleur"
+      },
+      "permanent": {
+        "yes": "Donut permanent",
+        "no": "Donut temporaire: sera supprimé 12 heures après le départ du dernier utilisateur."
+      },
+      "autojoindonut": {
+        "yes": "Rejoindre automatique <strong>#donut</strong> quand vous vous connectez"
+      }
     },
     "page": {
         "faq": {
@@ -133,5 +257,8 @@
         "eutc": {
             "title": "CGU"
         }
+    },
+    "errors": {
+      "chatrequirelogin": "You should be authenticated to access chat.",
     }
 }

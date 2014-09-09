@@ -5,9 +5,9 @@
     <% if (user.location) { %><p class="location"><%= user.location %></p><% }; %>
     <% if (user.website) { %><p class="website"><%= user.website %></p><% }; %>
     <% if (user.status == 'online') { %>
-    <p class="discuss"><a href="#user/<%= user.username %>" data-colorify-background="color" data-colorify-text="contrast">discuter</a></p>
+    <p class="discuss"><a href="#user/<%= user.username %>" data-colorify-background="color" data-colorify-text="contrast"><%= t('actions.discuss') %></a></p>
     <% } else { %>
-    <p class="offline"><a>offline</a></p>
+    <p class="offline"><a><%= t('global.offline') %></a></p>
     <% }; %>
     <div class="rooms">
         <% _.each(user.rooms_list, function(room) { %>

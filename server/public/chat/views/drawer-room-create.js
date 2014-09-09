@@ -22,11 +22,6 @@ define([
       this.render();
 
       this.$input = this.$el.find('.input');
-
-//      var that = this;
-//      this.$el.on('shown', function (e) {
-//        that.$input.focus();
-//      });
     },
     /**
      * Only set this.$el content

@@ -20,14 +20,14 @@ define([
 
     initialize: function(options) {
       this.listenTo(this.model, 'change', this.render);
-//      this.render(); // bugfix: call render to early and jQuery plugins are not
-      // yet configured
     },
 
     render: function() {
       var data = currentUser.toJSON();
 
-      data.hello = this.hello;
+      var tpl = new String('<span class="username open-user-profile" data-username="%username">%username</span>');
+      tpl = tpl.replace(/%username/g, currentUser.get('username'))
+      data.hello = this.hello.replace('%u', tpl);
 
       data.avatar = $.cd.userAvatar(data.avatar, 60, data.color);
 

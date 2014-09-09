@@ -10,13 +10,13 @@ define([
 
     template: _.template(topicTemplate),
 
-    defaultText: '<em>choose a topic</em>',
+    defaultText: $.t("chat.topic.default"),
 
     events: {
       'click .topic-current': 'showForm',
       'click .edit'         : 'showForm',
-      'click .cancel' : 'hideForm',
-      'click .submit' : 'sendNewTopic',
+      'click .cancel'       : 'hideForm',
+      'click .submit'       : 'sendNewTopic',
       'keypress .topic-input': function(event) {
         if (event.which == 13) {
           this.sendNewTopic(event);

@@ -125,8 +125,7 @@ define([
      */
      roomKicked: function(data) {
       this.focusHome();
-
-      var message = 'You were kicked from '+data.name;
+      var message = $.t("chat.kickmessage")+data.name;
       if (data.reason)
         message += ' (reason: '+data.reason+')';
       this.alert('warning', message);

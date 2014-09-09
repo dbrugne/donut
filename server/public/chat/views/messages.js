@@ -44,14 +44,14 @@ define([
     },
 
     message: function(message) {
-     this.lastEvent = 'message';
-     var sameUser = (message.get('user_id') == this.lastMessageUser)
-       ? true
-       : false;
+     var shouldAgregate = (this.lastEvent == 'message' && message.get('user_id') == this.lastMessageUser)
+      ? true
+      : false;
 
+     this.lastEvent = 'message';
      this.lastMessageUser = message.get('user_id');
 
-     if (sameUser) { // we had span.text to the last p.message
+     if (shouldAgregate) { // we had span.text to the last p.message
        var $last = this.$el.find('p.message').last();
        var html = $('<span class="text"></span>')
          .text(message.get('message')+"")
@@ -72,8 +72,7 @@ define([
          user_id: message.get('user_id'),
          avatar: $.cd.userAvatar(message.get('avatar'), 30, message.get('color')),
          username: message.get('username'),
-         time: message.get('time'),
-         sameUser: sameUser
+         time: message.get('time')
        });
        var el = $(html).appendTo(this.$scroller);
 

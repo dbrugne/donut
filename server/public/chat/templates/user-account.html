@@ -2,54 +2,53 @@
     <span class="username"><%= user.username %></span>
 </div>
 <div class="group">
-    <div class="title">Email et mot de passe</div>
+    <div class="title"><%= t('account.emailandpassword.label') %></div>
     <% if (user.email) { %>
     <p>
-        <span class="labels">Email</span>
-        <span class="values"><%= user.email %> (<a href="/account/edit/email" target="_blank" id="email-modal-link">change email</a>)</span>
+        <span class="labels"><%= t('account.email.label') %></span>
+        <span class="values"><%= user.email %> (<a href="/account/edit/email" target="_blank" id="email-modal-link"><%= t('global.change') %></a>)</span>
     </p>
     <p>
-        <span class="labels">Mot de passe</span>
-        <span class="values"><a href="/account/edit/password" target="_blank" id="password-modal-link">change password</a></span>
+        <span class="labels"><%= t('account.password.label') %></span>
+        <span class="values"><a href="/account/edit/password" target="_blank" id="password-modal-link"><%= t('global.change') %></a></span>
     </p>
     <% } else { %>
     <p class="values">
-        You haven't set an email and password.
-        If you want to login without Facebook or unlink your Facebook account just set:
+        <%= t('account.emailandpassword.help') %>
     </p>
-    <a href="/connect/local" target="_blank" class="btn btn-default">Add email and password</a>
+    <a href="/connect/local" target="_blank" class="btn btn-default"><%= t('account.emailandpassword.add') %></a>
     <% } %>
 </div>
 
 <div class="group">
-    <div class="title">Facebook</div>
+    <div class="title"><%= t('account.facebook.label') %></div>
     <% if (user.facebook && user.facebook.token) { %>
-    <p class="values">Your account is linked to this Facebook account</p>
+    <p class="values"><%= t('account.facebook.help') %></p>
     <div class="facebook">
         <div class="infos">
             <img class="avatar" src="https://graph.facebook.com/<%= user.facebook.id %>/picture"/>
             <p>
-                <span class="labels">Nom</span>
+                <span class="labels"><%= t('account.facebook.email') %></span>
                 <span class="values"><%= user.facebook.name %></span>
             </p>
             <p>
-                <span class="labels">Email</span>
+                <span class="labels"><%= t('account.facebook.name') %></span>
                 <span class="values"><%= user.facebook.email %></span>
             </p>
         </div>
         <% if (user.email) { %>
         <p class="unlink">
-            <a href="/unlink/facebook" target="_blank" class="unlink">Unlink this Facebook account</a>
+            <a href="/unlink/facebook" target="_blank" class="unlink"><%= t('account.facebook.unlink') %></a>
         </p>
         <% } %>
     </div>
     <% } else { %>
-    <p class="values">You can link this account to your Facebook account for easier login and social features:</p>
-    <a href="/connect/facebook" target="_blank" class="btn-facebook"><i class="fa fa-facebook"></i> | Connect with <strong>Facebook</strong></a>
+    <p class="values"><%= t('account.facebook.linkhelp') %></p>
+    <a href="/connect/facebook" target="_blank" class="btn-facebook"><i class="fa fa-facebook"></i> | <%= t('account.facebook.connectwith') %> <strong><%= t('account.facebook.label') %></strong></a>
     <% } %>
 </div>
 
 <div class="group">
-    <div class="title">Profil</div>
-    <p class="values">Vous pouvez éditer votre profil <a class="open-user-edit">sur cette page</a>.</p>
+    <div class="title"><%= t('account.profile.label') %></div>
+    <p class="values"><%= t('account.profile.help') %> <a class="open-user-edit"><%= t('account.profile.link') %></a>.</p>
 </div>

@@ -1,7 +1,7 @@
 <div class="progress-bar <% if (percentage >= 100) { %>progress-bar-success<% } %>" role="progressbar" aria-valuenow="<%= percentage %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= percentage %>%;">
     <% if (percentage < 100) { %>
-    <%= percentage %>% complete
+    <%= percentage %>%
     <% } else { %>
-    Upload done, wait picture processing
+    <%= t('edit.upload.done') %>
     <% } %>
 </div>

@@ -1,7 +1,7 @@
 <div class="room" data-colorify="<%= room.color %>">
     <img class="avatar" src="<%= room.avatar %>" alt="<%= room.name %> avatar">
     <p class="name"><%= room.name %></p>
-    <p class="owner">by <a class="open-user-profile" data-username="<%= room.owner.username %>" data-colorify-text="#ffffff"><%= room.owner.username %></a></p>
+    <p class="owner"><%= t('global.by') %> <a class="open-user-profile" data-username="<%= room.owner.username %>" data-colorify-text="#ffffff"><%= room.owner.username %></a></p>
     <% if (room.description) { %><p class="description"><%= room.description %></p><% }; %>
     <% if (room.topic) { %><p class="topic"><%= room.topic %></p><% }; %>
     <% if (room.website) { %><p class="website"><%= room.website %></p><% }; %>
@@ -28,9 +28,9 @@
     <% } %>
 
     <div class="footer">
-        <a href="<%= room.url %>" target="_blank">Lien permanent vers <strong><%= room.name %></strong> <i class="fa fa-external-link"></i></a>
+        <a href="<%= room.url %>" target="_blank">Lien permanent vers ce profil <i class="fa fa-external-link"></i></a>
         <% if (room.isOwner) { %>
-        <a class="edit open-room-edit" data-room-name="<%= room.name %>">Pour éditer <strong><%= room.name %></strong> cliquer ici <i class="fa fa-pencil-square-o"></i></a>
+        <a class="edit open-room-edit" data-room-name="<%= room.name %>">Pour éditer ce profil cliquer ici <i class="fa fa-pencil-square-o"></i></a>
         <% }; %>
     </div>
 </div>

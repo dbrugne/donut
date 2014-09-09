@@ -1,6 +1,6 @@
 <div class="onlines">
     <% if (users.length < 1) { %>
-        <div class="nothing">Aucun utilisateur a afficher ;)</div>
+        <div class="nothing"><%= t('chat.search.nouser') %></div>
     <% } %>
     <% _.each(users, function(userOnline) { %>
         <% var bgColor = txtColor = ''; %>
