@@ -1,4 +1,5 @@
 var nodemailer = require('nodemailer');
+var i18next = require('./i18next');
 
 module.exports = function(user) {
   if (!user || !user.local.email) return;

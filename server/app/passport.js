@@ -4,6 +4,7 @@ var FacebookStrategy = require('passport-facebook').Strategy;
 var User = require('./models/user');
 var welcomeEmail = require('./welcome-email');
 var conf = require('../config/index');
+var i18next = require('./i18next');
 
 // =========================================================================
 // passport session setup ==================================================
@@ -64,7 +65,7 @@ passport.use('local-signup', new LocalStrategy({
 
         // check to see if theres already a user with that email
         if (user)
-          return done(null, false, req.flash('error', 'That email is already taken.'));
+          return done(null, false, req.flash('error', i18next.t("account.email.error.alreadyexists")));
 
         // if there is no user with that email create him
         var newUser = User.getNewUser();
@@ -110,13 +111,13 @@ passport.use('local-login', new LocalStrategy({
       // if no user is found, return the message
       if (!user) {
         req.flash('email', email);
-        return done(null, false, req.flash('error', 'No user found.'));
+        return done(null, false, req.flash('error', i18next.t("account.error.invalid")));
       }
 
       // if the user is found but the password is wrong
       if (!user.validPassword(password)) {
         req.flash('email', email);
-        return done(null, false, req.flash('error', 'Oops! Wrong password.'));
+        return done(null, false, req.flash('error', i18next.t("account.error.invalid")));
       }
 
       // all is well, return successful user
@@ -209,7 +210,7 @@ passport.use(new FacebookStrategy({
 
           if (existingUser)
             return done(null, false,
-              req.flash('error', 'This Facebook account is already used by another account'));
+              req.flash('error', i18next.t("account.facebook.error.alreadylinked")));
 
           // update the current users facebook credentials
           user.facebook.id = profile.id;

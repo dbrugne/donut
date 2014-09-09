@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var i18next = require('../app/i18next');
 
 var colors = require('../config/colors');
 
@@ -7,7 +8,7 @@ router.get('/!', function(req, res) {
 
   // Is user authenticated
   if (!req.isAuthenticated()) {
-    req.flash('warning', 'You should be authenticated to access chat.');
+    req.flash('warning', i18next.t("chat.shouldauthenticated"));
     return res.redirect('/');
   }
 

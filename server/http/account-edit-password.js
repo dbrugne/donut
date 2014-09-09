@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var isLoggedIn = require('../app/middlewares/isloggedin');
+var i18next = require('../app/i18next');
 
 router.route('/account/edit/password')
     .get(isLoggedIn, function(req, res) {
@@ -9,8 +10,8 @@ router.route('/account/edit/password')
         });
     })
     .post([isLoggedIn, function(req, res, next) {
-        req.checkBody(['user','fields','password'],'Passwords don\'t match.').equals(req.body.user.fields.confirm);
-        req.checkBody(['user','fields','password'],'Password should be at least 6 characters.').isLength(6, 50);
+        req.checkBody(['user','fields','password'], i18next.t("account.password.error.confirm")).equals(req.body.user.fields.confirm);
+        req.checkBody(['user','fields','password'], i18next.t("account.password.error.length")).isLength(6, 50);
         if (req.validationErrors()) {
             return res.render('account_edit_password', {
                 userFields: req.body.user.fields,
@@ -27,7 +28,7 @@ router.route('/account/edit/password')
                 req.flash('error', err)
                 return res.redirect('/');
             } else {
-                req.flash('success', 'Your account password was updated');
+                req.flash('success', i18next.t("account.password.success"));
                 res.redirect('/account/edit/password');
             }
         });

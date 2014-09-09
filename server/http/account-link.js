@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var passport = require('passport');
+var i18next = require('../app/i18next');
 
 router.route('/connect/local')
     .get(function(req, res) {
@@ -23,8 +24,7 @@ router.get('/unlink/facebook', function(req, res) {
     var user = req.user;
 
     if (!user.local.email) {
-        req.flash('warning', 'You cannot remove your Facebook account until you have defined a local email and password.'
-            +' If you want to remove all your data from the platform use the delete button');
+        req.flash('warning', i18next.t("account.facebook.error.needemailpassword"));
         return res.redirect('/');
     }
 

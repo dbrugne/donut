@@ -2,9 +2,10 @@ var express = require('express');
 var router = express.Router();
 var User = require('../app/models/user');
 var isLoggedIn = require('../app/middlewares/isloggedin');
+var i18next = require('../app/i18next');
 
 var validateInput = function (req, res, next) {
-  req.checkBody(['user', 'fields', 'username'], "Username doesn't match contrains described below.").isUsername();
+  req.checkBody(['user', 'fields', 'username'], i18next.t("choose-username.usernameerror")).isUsername();
   if (req.validationErrors()) {
     return res.render('choose_username', {
       userFields: req.body.user.fields,

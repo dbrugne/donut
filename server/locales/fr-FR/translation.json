@@ -48,13 +48,21 @@
         "confirm-placeholder": "confirmer le mot de passe",
         "username-placeholder": "choisissez un nom d'utilisateur",
         "createanaccount1": "créer un compte,",
-        "createanaccount2": "c'est gratuit !"
+        "createanaccount2": "c'est gratuit !",
+        "emailerror": "Votre adresse e-mail n'est pas valide",
+        "passworderror": "Vous avez oublié de saisir votre mot de passe"
     },
     "forgot": {
         "email-placeholder": "Veuillez saisir votre email",
         "password-placeholder": "Veuillez saisir votre nouveau mot de passe",
         "confirm-placeholder": "Veuillez confirmer votre mot de passe",
-        "save": "Réinitialiser"
+        "save": "Réinitialiser",
+        "sent": "Un email a été envoyé à __email__ avec la suite des instructions.",
+        "success": "Le mot de passe a été réinitialisé avec succès",
+        "error": {
+            "notexists": "Désolé, ce compte n'existe pas",
+            "expired": "Le jeton de changement de mot de passe a déjà été utilisé ou a éxpiré, veuillez recommencer la procédure"
+        }
     },
     "signup": {
         "disclaimer": "En cliquant sur \"Et voilà !\" j’accepte les conditions d'utilisation de DONUT"
@@ -62,7 +70,9 @@
     "choose-username": {
         "title": "Il est temps de choisir un nom d'utilisateur !",
         "description": "Le nom d'utilisateur sera votre identité sur DONUT. Les autres utilisateurs le verront. Il n'est pas modifiable.",
-        "help": "Entre 3 et 25 caractères. Lettres et/ou chiffres et/ou certains caractères spéciaux."
+        "help": "Entre 3 et 25 caractères. Lettres et/ou chiffres et/ou certains caractères spéciaux.",
+        "usernameerror": "Ce nom d'utilisateur ne respecte pas les contraintes.",
+        "usernameexists": "Ce nom d'utilisateur est déjà pris par un autre utilisateur."
     },
     "connect-local": {
         "title": "Créer un mot de passe",
@@ -129,123 +139,144 @@
         }
     },
     "chat": {
-      "create": {
-        "label": "Créez votre donut",
-        "help": "Caractères autorisés: lettres, chiffres et : \"<strong>_-[]|</strong>\". Caractères interdits: espace, # et autres trucs improbables !",
-        "placeholder": "Nom du donut",
-        "submit": "Créer"
-      },
-      "help": "Aide",
-      "search": {
-        "placeholder": "Rechercher un donut ou un utilisateur ici",
-        "noroom": "Aucun résultat de recherche",
-        "nouser": "Aucun résultat de recherche"
-      },
-      "topic": {
-        "label": "Changer le sujet",
-        "placeholder": "Nouveau sujet",
-        "default": "<em>Cliquer pour changer le sujet</em>"
-      },
-      "owner": {
-        "is": "Cet utilisateur est le propriétaire de ce donut"
-      },
-      "op": {
-        "is": "Cet utilisateur est modérateur de ce donut",
-        "infobox": "Faire de cet utilisateur un modérateur"
-      },
-      "deop": {
-        "infobox": "Retirer les droits de modérateur à cet utilisateur"
-      },
-      "kick": {
-        "infobox": "Expulser cet utilisateur de ce donut"
-      },
-      "notifications": {
-        "hello": "Vous entrez dans",
-        "disconnected": "Vous avez été deconnecté du serveur, veuillez patienter",
-        "reconnected": "Vous êtes reconnecté <span class=\"detail\">(vous avez peut être manquer des messages dans ce donut)</span>",
-        "topic": "à changé le sujet pour",
-        "kick": "a été expulsé de ce donut par",
-        "ban": "a été banni de ce donut par",
-        "op": " a été promu modérateur par",
-        "deop": "a été destitué du range de modérateur par",
-        "in": "est entré à",
-        "out": "est sorti à"
-      },
-      "closemessage": "Etes-vous sur de vouloir quitter, l’historique de vos conversations sera perdu.",
-      "kickmessage": "Vous venez d'être expulsé de"
+        "create": {
+            "label": "Créez votre donut",
+            "help": "Caractères autorisés: lettres, chiffres et : \"<strong>_-[]|</strong>\". Caractères interdits: espace, # et autres trucs improbables !",
+            "placeholder": "Nom du donut",
+            "submit": "Créer"
+        },
+        "help": "Aide",
+        "search": {
+            "placeholder": "Rechercher un donut ou un utilisateur ici",
+            "noroom": "Aucun résultat de recherche",
+            "nouser": "Aucun résultat de recherche"
+        },
+        "topic": {
+            "label": "Changer le sujet",
+            "placeholder": "Nouveau sujet",
+            "default": "<em>Cliquer pour changer le sujet</em>"
+        },
+        "owner": {
+            "is": "Cet utilisateur est le propriétaire de ce donut"
+        },
+        "op": {
+            "is": "Cet utilisateur est modérateur de ce donut",
+            "infobox": "Faire de cet utilisateur un modérateur"
+        },
+        "deop": {
+            "infobox": "Retirer les droits de modérateur à cet utilisateur"
+        },
+        "kick": {
+            "infobox": "Expulser cet utilisateur de ce donut"
+        },
+        "notifications": {
+            "hello": "Vous entrez dans",
+            "disconnected": "Vous avez été deconnecté du serveur, veuillez patienter",
+            "reconnected": "Vous êtes reconnecté <span class=\"detail\">(vous avez peut être manquer des messages dans ce donut)</span>",
+            "topic": "à changé le sujet pour",
+            "kick": "a été expulsé de ce donut par",
+            "ban": "a été banni de ce donut par",
+            "op": " a été promu modérateur par",
+            "deop": "a été destitué du range de modérateur par",
+            "in": "est entré à",
+            "out": "est sorti à"
+        },
+        "shouldauthenticated": "Vous devez être identifié pour accéder aux discussions",
+        "closemessage": "Etes-vous sur de vouloir quitter, l’historique de vos conversations sera perdu ?",
+        "kickmessage": "Vous venez d'être expulsé de"
     },
     "account": {
-      "emailandpassword": {
-        "label": "Email et mot de passe",
-        "help": "Vous n'avez pas renseigné d'e-mail et mot de passe. Pour vous connecter sans Facebook ou délier votre compte de Facebook :",
-        "add": "Ajouter e-mail et mot de passe"
-      },
-      "email": {
-        "label": "Email"
-      },
-      "password": {
-        "label": "Mot de passe"
-      },
-      "facebook": {
-        "label": "Facebook",
-        "help": "Votre compte est lié à ce compte Facebook :",
-        "name": "Nom",
-        "email": "Email",
-        "unlink": "Délier de ce compte Facebook",
-        "linkhelp": "Vous pouvez lier votre compte à un compte Facebook pour vous connecter plus facilement et profiter d'une expérience plus sociale :",
-        "connectwith": "Lier ce compte à "
-      },
-      "profile": {
-        "label": "Profil",
-        "help": "Vous pouvez éditer votre profil",
-        "link": "sur cette page"
-      }
+        "error": {
+          "invalid": "Désolé, ce compte n'existe pas ou le mot de passe est invalide"
+        },
+        "emailandpassword": {
+            "label": "Email et mot de passe",
+            "help": "Vous n'avez pas renseigné d'e-mail et mot de passe. Pour vous connecter sans Facebook ou délier votre compte de Facebook :",
+            "add": "Ajouter e-mail et mot de passe"
+        },
+        "email": {
+            "label": "Email",
+            "success": "Votre nouvelle adresse email a bien été enregistrée",
+            "error": {
+                "format": "Cette adresse email n'est valide",
+                "alreadyexists": "Cette adresse email est déjà utilisé par un autre compte"
+            }
+        },
+        "password": {
+            "label": "Mot de passe",
+            "success": "Votre nouveau mot de passe a bien été enregistré",
+            "error": {
+                "confirm": "Les deux mots de passe ne sont pas identiques",
+                "length": "Le mot de passe doit au moins faire 6 caractères de long."
+            }
+        },
+        "facebook": {
+            "label": "Facebook",
+            "help": "Votre compte est lié à ce compte Facebook :",
+            "name": "Nom",
+            "email": "Email",
+            "unlink": "Délier de ce compte Facebook",
+            "linkhelp": "Vous pouvez lier votre compte à un compte Facebook pour vous connecter plus facilement et profiter d'une expérience plus sociale :",
+            "connectwith": "Lier ce compte à ",
+            "error": {
+              "needemailpassword": "Il n'est possible de délier votre compte Facebook de ce compte donut. Vous devez d'abord définir <a href='/connect/local'>un email et un mot de passe associés à votre compte</a>",
+              "alreadylinked": "Ce compte Facebook est déjà lié à un autre compte"
+            }
+        },
+        "profile": {
+            "label": "Profil",
+            "help": "Vous pouvez éditer votre profil",
+            "link": "sur cette page"
+        },
+        "delete": {
+            "success": "Compte supprimé avec succés, à bientôt !"
+        }
     },
     "edit": {
-      "upload": {
-        "nopicture": "Pas de photo",
-        "failed": "Téléchargement échoué",
-        "done": "Téléchargement terminé, attendez pour le traitement de l'image"
-      },
-      "avatarhelp": "Fichier image (.jpeg, .jpg, .png or .gif). Sera automatiquement redimenssionné au format 150x150px.",
-      "left": "<strong>%left</strong> restant",
-      "othersettings": "Autres paramètres",
-      "description": {
-        "label": "Description",
-        "placeholder": "Décrivez le donut en quelques mots",
-        "help": "Facultatif"
-      },
-      "bio": {
-        "label": "Bio",
-        "placeholder": "Décrivez-vous en quelques mots",
-        "help": "Facultatif"
-      },
-      "location": {
-        "label": "Lieu",
-        "placeholder": "Ville, pays où vous êtes",
-        "help": "Facultatif"
-      },
-      "website": {
-        "label": "Site web",
-        "placeholder": "L'adresse d'un site web lié à ce profil",
-        "help": "Facultatif"
-      },
-      "avatar": {
-        "label": "Avatar"
-      },
-      "poster": {
-        "label": "Poster"
-      },
-      "color": {
-        "label": "Couleur"
-      },
-      "permanent": {
-        "yes": "Donut permanent",
-        "no": "Donut temporaire: sera supprimé 12 heures après le départ du dernier utilisateur."
-      },
-      "autojoindonut": {
-        "yes": "Rejoindre automatique <strong>#donut</strong> quand vous vous connectez"
-      }
+        "upload": {
+            "nopicture": "Pas de photo",
+            "failed": "Téléchargement échoué",
+            "done": "Téléchargement terminé, attendez pour le traitement de l'image"
+        },
+        "avatarhelp": "Fichier image (.jpeg, .jpg, .png or .gif). Sera automatiquement redimenssionné au format 150x150px.",
+        "left": "<strong>%left</strong> restant",
+        "othersettings": "Autres paramètres",
+        "description": {
+            "label": "Description",
+            "placeholder": "Décrivez le donut en quelques mots",
+            "help": "Facultatif"
+        },
+        "bio": {
+            "label": "Bio",
+            "placeholder": "Décrivez-vous en quelques mots",
+            "help": "Facultatif"
+        },
+        "location": {
+            "label": "Lieu",
+            "placeholder": "Ville, pays où vous êtes",
+            "help": "Facultatif"
+        },
+        "website": {
+            "label": "Site web",
+            "placeholder": "L'adresse d'un site web lié à ce profil",
+            "help": "Facultatif"
+        },
+        "avatar": {
+            "label": "Avatar"
+        },
+        "poster": {
+            "label": "Poster"
+        },
+        "color": {
+            "label": "Couleur"
+        },
+        "permanent": {
+            "yes": "Donut permanent",
+            "no": "Donut temporaire: sera supprimé 12 heures après le départ du dernier utilisateur."
+        },
+        "autojoindonut": {
+            "yes": "Rejoindre automatique <strong>#donut</strong> quand vous vous connectez"
+        }
     },
     "page": {
         "faq": {
@@ -257,8 +288,5 @@
         "eutc": {
             "title": "CGU"
         }
-    },
-    "errors": {
-      "chatrequirelogin": "You should be authenticated to access chat.",
     }
 }

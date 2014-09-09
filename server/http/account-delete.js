@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var isLoggedIn = require('../app/middlewares/isloggedin');
 var cloudinary = require('../app/cloudinary');
+var i18next = require('../app/i18next');
 
 router.get('/account/delete', isLoggedIn, function(req, res) {
   var user = req.user;
@@ -19,7 +20,7 @@ router.get('/account/delete', isLoggedIn, function(req, res) {
     }
 
     req.logout();
-    req.flash('success', 'Account successfully deleted');
+    req.flash('success', i18next.t("account.delete.success"));
     res.redirect('/');
   });
 });

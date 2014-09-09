@@ -48,10 +48,10 @@ app.set('layout', 'layout');
 app.set('view engine', 'html');
 
 app.use(require('./http/landing'));
-app.use(require('./http/signup'));
-app.use(require('./http/forgot'));
+app.use(require('./http/account-signup'));
 app.use(require('./http/account-login'));
 app.use(require('./http/account-link'));
+app.use(require('./http/account-forgot'));
 app.use(require('./http/user-profile'));
 app.use(require('./http/room-profile'));
 app.use(require('./http/chat'));

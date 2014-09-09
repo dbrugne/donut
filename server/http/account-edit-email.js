@@ -2,9 +2,10 @@ var express = require('express');
 var router = express.Router();
 var User = require('../app/models/user');
 var isLoggedIn = require('../app/middlewares/isloggedin');
+var i18next = require('../app/i18next');
 
 var validateInput = function(req, res, next) {
-  req.checkBody(['user','fields','email'],'Email should be a valid address.').isEmail();
+  req.checkBody(['user','fields','email'], i18next.t("account.email.error.format")).isEmail();
   if (req.validationErrors()) {
     return res.render('account_edit_email', {
       userFields: req.body.user.fields,
@@ -30,7 +31,7 @@ var validateInput = function(req, res, next) {
     if (user) {
       return res.render('account_edit_email', {
         userFields: req.body.user.fields,
-        error: 'This email is already used',
+        error: i18next.t("account.email.error.alreadyexists"),
         scripts: [
           {src: '/validator.min.js'}
         ]
@@ -60,7 +61,7 @@ router.route('/account/edit/email')
                 req.flash('error', err)
                 return res.redirect('/');
             } else {
-                req.flash('success', 'Your email was updated');
+                req.flash('success', i18next.t("account.email.success"));
                 res.redirect('/account/edit/email');
             }
         });

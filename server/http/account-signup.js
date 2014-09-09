@@ -1,10 +1,11 @@
 var express = require('express');
 var router = express.Router();
 var passport = require('passport');
+var i18next = require('../app/i18next');
 
 var validateInput = function(req, res, next) {
-  req.checkBody('email','Email should be a valid address.').isEmail();
-  req.checkBody('password','Password should be at least 6 characters.').isLength(6, 50);
+  req.checkBody('email', i18next.t("account.email.error.format")).isEmail();
+  req.checkBody('password', i18next.t("account.password.error.length")).isLength(6, 50);
   if (req.validationErrors()) {
     return res.render('signup', {
       userFields: {email: req.body.email},

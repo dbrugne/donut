@@ -4,6 +4,7 @@ var bcrypt   = require('bcrypt-nodejs');
 var cloudinary = require('../cloudinary');
 var _ = require('underscore');
 var colors = require('../../config/colors');
+var i18next = require('../i18next');
 
 var userSchema = mongoose.Schema({
 
@@ -120,7 +121,7 @@ userSchema.methods.usernameAvailability = function (username, success, error) {
     ]
   }, function(err, user) {
     if (err) return error('Error while searching existing username: ' + err);
-    if (user) return error('This username is already taken by another user');
+    if (user) return error(i18next.t("choose-username.usernameexists"));
 
     success();
   });

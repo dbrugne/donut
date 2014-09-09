@@ -5,13 +5,14 @@ var async = require('async');
 var crypto = require('crypto');
 var User = require('../app/models/user');
 var isLoggedIn = require('../app/middlewares/isloggedin');
+var i18next = require('../app/i18next');
 
 // @doc: http://sahatyalkabov.com/how-to-implement-password-reset-in-nodejs/
 
 var validateInput = function (req, res, next) {
-  req.checkBody(['email'], 'Email is not valid.').isEmail();
+  req.checkBody(['email'], i18next.t("account.email.format")).isEmail();
   if (req.validationErrors()) {
-    return res.render('forgot', {
+    return res.render('account_forgot', {
       email: req.body.email,
       is_errors : true,
       errors    : req.validationErrors()
@@ -31,7 +32,7 @@ var forgot = function(req, res) {
     function(token, done) {
       User.findOne({ 'local.email': req.body.email }, function(err, user) {
         if (!user) {
-          req.flash('error', 'No account with that email address exists.');
+          req.flash('error', i18next.t("forgot.error.notexists"));
           return res.redirect('/forgot');
         }
 
@@ -57,7 +58,7 @@ var forgot = function(req, res) {
           'If you did not request this, please ignore this email and your password will remain unchanged.\n'
       };
       smtpTransport.sendMail(mailOptions, function(err) {
-        req.flash('info', 'An e-mail has been sent to ' + user.local.email + ' with further instructions.');
+        req.flash('info', i18next.t("forgot.sent", {email: user.local.email}));
         done(err, 'done');
       });
     }
@@ -71,7 +72,7 @@ var forgot = function(req, res) {
 var reset = function(req, res) {
   if (!req.body.password || !req.body.confirm
     || req.body.password != req.body.confirm) {
-    req.flash('error', 'Password doesn\'t correspond.');
+    req.flash('error', i18next.t("account.password.error.confirm"));
     return res.redirect('back');
   }
 
@@ -82,7 +83,7 @@ var reset = function(req, res) {
         'local.resetExpires': { $gt: Date.now() }
       }, function(err, user) {
         if (!user) {
-          req.flash('error', 'Password reset token is invalid or has expired.');
+          req.flash('error', i18next.t("forgot.error.expired"));
           return res.redirect('back');
         }
 
@@ -109,7 +110,7 @@ var reset = function(req, res) {
           'This is a confirmation that the password for your account ' + user.local.email + ' has just been changed.\n'
       };
       smtpTransport.sendMail(mailOptions, function(err) {
-        req.flash('success', 'Success! Your password has been changed.');
+        req.flash('success', i18next.t("forgot.success"));
         done(err);
       });
     }
@@ -120,7 +121,7 @@ var reset = function(req, res) {
 
 router.route('/forgot')
   .get(function (req, res) {
-    res.render('forgot', {
+    res.render('account_forgot', {
     });
   })
   .post(validateInput, forgot);
@@ -132,10 +133,10 @@ router.route('/reset/:token')
       'local.resetExpires': { $gt: Date.now() }
     }, function(err, user) {
       if (!user) {
-        req.flash('error', 'Password reset token is invalid or has expired.');
+        req.flash('error', i18next.t("forgot.error.expired"));
         return res.redirect('/forgot');
       }
-      res.render('reset', {
+      res.render('account_reset', {
         user: req.user
       });
     });
