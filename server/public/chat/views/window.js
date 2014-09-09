@@ -16,13 +16,15 @@ define([
 
     unread: 0,
 
+    defaultTitle: '',
+
     title: '',
 
     initialize: function(options) {
       this.$window = this.$el;
       this.$document = $(document);
 
-      this.title = this.$document.attr('title');
+      this.defaultTitle = document.title; // save original title on page load
 
       // Bind events to browser window
       var that = this;
@@ -41,6 +43,25 @@ define([
       this.listenTo(onetoones, 'newMessage', this.increment); // @todo : nasty event
     },
 
+    renderTitle: function() {
+      var title = '';
+
+      if (this.unread > 0)
+        title += '('+this.unread+') ';
+
+      title += this.defaultTitle;
+
+      if (this.title && this.title.length)
+        title += ' | '+this.title;
+
+      document.title = title;
+    },
+
+    setTitle: function(title) {
+      this.title = title;
+      this.renderTitle();
+    },
+
     onBlur: function() {
       this.focused = false;
     },
@@ -52,8 +73,8 @@ define([
         return;
       }
 
-      this.$document.attr('title', this.title);
       this.unread = 0;
+      this.renderTitle();
     },
 
     increment: function() {
@@ -62,7 +83,7 @@ define([
       }
 
       this.unread += 1;
-      this.$document.attr('title', '('+this.unread+') '+this.title);
+      this.renderTitle();
     },
 
     onClose: function() {

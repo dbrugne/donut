@@ -41,6 +41,10 @@ define([
 
     thisDiscussionShouldBeFocusedOnSuccess: '',
 
+    defaultColor: '#fc2063', // @todo : put this value somewhere in DOM, modifiable by users
+
+    currentColor: '',
+
     events: {
       'click #create-room-link':          'openCreateRoom',
       'click .open-user-edit':            'openUserEdit',
@@ -76,13 +80,10 @@ define([
       this.alertView.show(type, message);
     },
 
-    defaultColor: '#fc2063', // @todo : put this value somewhere in DOM, modifiable by users
-
-    currentColor: '',
-
     _color: function(color) {
       this.$el.find('#color').css('background-color', color);
     },
+
     color: function(color, temporary, reset) {
       if (reset)
         return this._color(this.currentColor);
@@ -281,11 +282,11 @@ define([
 
     // called by router only
     focusHome: function() {
-      // @todo : change pattern to render page with spinner and replace content
-      // on callback
+      // @todo : change pattern to render page with spinner and replace content on callback
       client.home(); // render home by asking data to server
       this.unfocusAll();
       this.$home.show();
+      windowView.setTitle();
       this.roomBlockView.render();
       this.onetooneBlockView.render();
       this.color(this.defaultColor);
@@ -348,13 +349,17 @@ define([
       else
         this.color(this.defaultColor);
 
-      // Update URL (always!)
+      // Update URL (always!) and page title
       var uri;
+      var title;
       if (model.get('type') == 'room') {
         uri = 'room/'+model.get('name').replace('#', '');
+        title = model.get('name');
       } else {
         uri = 'user/'+model.get('username');
+        title = model.get('username');
       }
+      windowView.setTitle(title);
       Backbone.history.navigate(uri); // just change URI, not run route action
 
       this.drawerView.close();
