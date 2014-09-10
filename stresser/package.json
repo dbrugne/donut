@@ -6,7 +6,7 @@
     "start": "node ./stresser.js"
   },
   "dependencies": {
-    "debug": "0.8.x",
+    "debug": "latest",
     "socket.io-client": "latest",
     "mongoose": "3.8.x",
     "underscore": "latest"
