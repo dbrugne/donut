@@ -20,10 +20,7 @@ var validateAvailability = function (req, res, next) {
   var handleError = function (err) {
     return res.render('choose_username', {
       userFields: req.body.user.fields,
-      error: err,
-      scripts: [
-        {src: '/validator.min.js'}
-      ]
+      error: err
     });
   };
   req.user.usernameAvailability(
@@ -42,11 +39,7 @@ var hasNotUsername = function(req, res, next) {
 
 router.route('/choose-username')
   .get(isLoggedIn, hasNotUsername, function (req, res) {
-    res.render('choose_username', {
-      scripts: [
-        {src: '/validator.min.js'}
-      ]
-    });
+    res.render('choose_username', {});
   })
   .post([isLoggedIn, hasNotUsername, validateInput, validateAvailability], function (req, res) {
     req.user.username = req.body.user.fields.username;
