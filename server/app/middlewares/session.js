@@ -1,9 +1,11 @@
 var conf = require('../../config/index');
-var Session = require('express-session');
+var session = require('express-session');
 var redisStore = require('../redissessions');
 
-module.exports = Session({
-  store   : redisStore,
-  secret  : conf.sessions.secret,
-  key     : conf.sessions.key
+module.exports = session({
+  store             : redisStore,
+  secret            : conf.sessions.secret,
+  key               : conf.sessions.key,
+  resave            : true,
+  saveUninitialized : true
 });

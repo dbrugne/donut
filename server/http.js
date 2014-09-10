@@ -29,7 +29,7 @@ app.use(less(__dirname+'/public', { force: conf.less.force }));
 app.use('/medias', express.static(path.join(__dirname, 'medias')));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(fqdn());
-app.use(bodyParser());
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(expressValidator()); // must be immediately after bodyParser()
 app.use(cookieParser());
 app.use(session);
