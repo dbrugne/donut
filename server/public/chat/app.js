@@ -21,34 +21,6 @@ define([
   'moment-fr',
   'underscore.template-helpers'
 ], function ($, _, Backbone, i18next, moment) {
-  /**
-   * The init process is the following:
-   * - Load router - done by require.js
-   * - Load client - done by require.js
-   * - Load main view and subviews - done by require.js
-   *   - Models and views bound client's events
-   *
-   * <now everything is ready to begin chat>
-   *
-   * - Connect client
-   *   - Trigger router run
-   *
-   * - Receive welcome (in mainView)
-   *   - Store current user
-   *   - Render the home panel
-   *   - Join 'general' room (no focus)
-   *   - Join rooms received in welcome (no focus)
-   *
-   * - Join the URI-requested room if needed (and focus)
-   *
-   * In case of deconnection:
-   * - <disconnect>
-   * - Stop router
-   * - <reconnect>
-   * - Start router
-   * - Receive welcome (in mainView)
-   * ...
-   */
   var App = {
 
     // The main part of the job is done by require.js loader
