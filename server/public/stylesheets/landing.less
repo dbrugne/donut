@@ -416,8 +416,6 @@
     .header {
       .cover {
         background-color: rgba(255, 255, 255, 0.8);
-        .text p { font-size: 1.6em; }
-        .btn-knowmore { font-size: 1.6em; }
       }
     }
   }
@@ -425,7 +423,7 @@
   /* Medium devices (desktops, 992px and up) */
   @media (min-width: @screen-md-min) {
     .header {
-      .cover { padding: 100px 30px 100px 75px; }
+      .cover { padding: 100px 30px 100px 75px; background: none; }
       .text { margin-top: 65px; }
       .btn-knowmore { margin-top: 75px; }
     }
@@ -455,6 +453,9 @@
 
   /* Large devices (large desktops, 1200px and up) */
   @media (min-width: @screen-lg-min) {
-    .header { height: 995px; }
+    .header {
+      height: 995px;
+      .cover { background: none; }
+    }
   }
 }
