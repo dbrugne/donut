@@ -1,5 +1,4 @@
 var mongoose = require('../mongoose');
-var cloudinary = require('../cloudinary');
 
 var roomSchema = mongoose.Schema({
 
@@ -75,18 +74,6 @@ roomSchema.methods.avatarId = function() {
   if (!data[1]) return '';
   var id = data[1].substr(0, data[1].lastIndexOf('.'));
   return id;
-};
-
-/**
- * Return poster URL for the current room
- * @returns {*}
- */
-roomSchema.methods.posterUrl = function() {
-  if (!this.poster)
-    return '';
-
-  return cloudinary.url(this.poster, {transformation: 'room-poster'});
-  // cloudinary handle default image
 };
 
 roomSchema.methods.posterId = function() {

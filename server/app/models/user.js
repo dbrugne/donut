@@ -1,7 +1,6 @@
 var mongoose = require('../mongoose');
 
 var bcrypt   = require('bcrypt-nodejs');
-var cloudinary = require('../cloudinary');
 var _ = require('underscore');
 var colors = require('../../config/colors');
 var i18next = require('../i18next');
@@ -133,18 +132,6 @@ userSchema.methods.avatarId = function() {
   if (!data[1]) return '';
   var id = data[1].substr(0, data[1].lastIndexOf('.'));
   return id;
-};
-
-/**
- * Return poster URL for the current user
- * @returns {*}
- */
-userSchema.methods.posterUrl = function() {
-  if (!this.poster)
-    return '';
-
-  return cloudinary.url(this.poster, { transformation: 'user-poster' });
-  // cloudinary handle default image
 };
 
 userSchema.methods.posterId = function() {
