@@ -29,7 +29,9 @@ var userSchema = mongoose.Schema({
         email      : String,
         name       : String
     },
-    rooms            : [{ type: String, ref: 'Room' }]
+    rooms         : [{ type: String, ref: 'Room' }],
+    created_at    : { type: Date, default: Date.now },
+    lastlogin_at  : { type: Date }
 
 });
 

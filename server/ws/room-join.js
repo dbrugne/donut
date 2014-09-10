@@ -65,6 +65,13 @@ module.exports = function(io, socket, data) {
       if (err) helper.handleError('Unable to update user.rooms: '+err);
     });
 
+    // Last join date
+    room.lastjoin_at = Date.now();
+    room.save(function(err) {
+      if (err)
+        console.log('Error while saving lastjoin_at on room: '+err);
+    });
+
     // Activity
     var receivers = helper.roomUsersId(io, room.name);
     helper.record('room:in', socket, roomInEvent, receivers);

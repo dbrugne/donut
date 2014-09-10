@@ -45,6 +45,7 @@ passport.use('local-signup', new LocalStrategy({
         var user = req.user;
         user.local.email = email;
         user.local.password = user.generateHash(password);
+        user.lastlogin_at = Date.now();
         user.save(function (err) {
           if (err)
             throw err;
@@ -71,6 +72,7 @@ passport.use('local-signup', new LocalStrategy({
         var newUser = User.getNewUser();
         newUser.local.email = email;
         newUser.local.password = newUser.generateHash(password);
+        user.lastlogin_at = Date.now();
 
         // save the user
         newUser.save(function (err) {
@@ -125,7 +127,13 @@ passport.use('local-login', new LocalStrategy({
       }
 
       // all is well, return successful user
-      return done(null, user);
+      user.lastlogin_at = Date.now();
+      user.save(function(err) {
+        if (err)
+          console.log(err); // not a problem
+
+        return done(null, user);
+      });
     });
 
   }));
@@ -159,21 +167,20 @@ passport.use(new FacebookStrategy({
 
           // if the user is found, then log them in
           if (user) {
+            user.lastlogin_at = Date.now();
             // if there is a user id already but no token (user was linked at one point and then removed)
             // just add our token and profile information
             if (!user.facebook.token) {
               user.facebook.token = token;
               user.facebook.name = profile.name.givenName + ' ' + profile.name.familyName;
               user.facebook.email = profile.emails[0].value;
-
-              user.save(function (err) {
-                if (err)
-                  throw err;
-                return done(null, user);
-              });
             }
+            user.save(function (err) {
+              if (err)
+                throw err;
 
-            return done(null, user); // user found, return that user
+              return done(null, user); // user found, return that user
+            });
           } else {
             // if there is no user found with that facebook id, create them
             var newUser = User.getNewUser();
@@ -188,6 +195,8 @@ passport.use(new FacebookStrategy({
             newUser.name = profile.displayName;
             if (profile._json.location && profile._json.location.name)
               newUser.location = profile._json.location.name;
+
+            newUser.lastlogin_at = Date.now();
 
             // save our user to the database
             newUser.save(function (err) {

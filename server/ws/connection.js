@@ -107,6 +107,13 @@ module.exports = function(io, socket) {
           }
 
           userRooms.push(roomData);
+
+          // Last join date
+          room.lastjoin_at = Date.now();
+          room.save(function(err) {
+            if (err)
+              console.log('Error while saving lastjoin_at on room: '+err);
+          });
         }
 
         user.roomsToSend = userRooms;
@@ -115,24 +122,22 @@ module.exports = function(io, socket) {
 
     },
 
-    function subscribeSocket(user, callback) { // @todo : case of non existing room
-      for (var i = 0; i < user.rooms.length; i++) {
-        var room = user.rooms[i];
-
+    function subscribeSocket(user, callback) {
+      helper._.each(user.roomsToSend, function(room) {
         // Inform other room users
         var roomInEvent = {
-          name: room,
+          name: room.name,
           time: Date.now(),
           user_id: socket.getUserId(),
           username: socket.getUsername(),
           avatar: socket.getAvatar(),
           color: socket.getColor()
         };
-        io.to(room).emit('room:in', roomInEvent);
+        io.to(room.name).emit('room:in', roomInEvent);
 
-        socket.join(room); // automatic socket subscription to user rooms
-        console.log('socket '+socket.id+' subscribed to room '+room);
-      }
+        socket.join(room.name); // automatic socket subscription to user rooms
+        console.log('socket '+socket.id+' subscribed to room '+room.name);
+      });
 
       return callback(null, user);
     },
