@@ -3,6 +3,7 @@ var router = express.Router();
 var User = require('../app/models/user');
 var isLoggedIn = require('../app/middlewares/isloggedin');
 var i18next = require('../app/i18next');
+var emailer = require('../app/emailer');
 
 var validateInput = function(req, res, next) {
   req.checkBody(['user','fields','email'], i18next.t("account.email.error.format")).isEmail();
@@ -61,8 +62,13 @@ router.route('/account/edit/email')
                 req.flash('error', err)
                 return res.redirect('/');
             } else {
-                req.flash('success', i18next.t("account.email.success"));
-                res.redirect('/account/edit/email');
+              emailer.emailChanged(req.user.local.email, req.get('host'), function(err) {
+                if (err)
+                  return console.log('Unable to sent email changed email: '+err);
+              });
+
+              req.flash('success', i18next.t("account.email.success"));
+              res.redirect('/account/edit/email');
             }
         });
     });

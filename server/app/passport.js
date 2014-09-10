@@ -2,7 +2,7 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
 var User = require('./models/user');
-var welcomeEmail = require('./welcome-email');
+var emailer = require('./emailer');
 var conf = require('../config/index');
 var i18next = require('./i18next');
 
@@ -77,7 +77,11 @@ passport.use('local-signup', new LocalStrategy({
           if (err)
             throw err;
 
-          welcomeEmail(newUser); // only on new user creation, asynchronous
+          // email will be send on next tick but done() is called immediatly
+          emailer.welcome(newUser.local.email, req.get('host'), function(err) {
+            if (err)
+              return console.log('Unable to sent welcome email: '+err);
+          });
 
           return done(null, newUser);
         });

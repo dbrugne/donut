@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var isLoggedIn = require('../app/middlewares/isloggedin');
 var i18next = require('../app/i18next');
+var emailer = require('../app/emailer');
 
 router.route('/account/edit/password')
     .get(isLoggedIn, function(req, res) {
@@ -28,8 +29,13 @@ router.route('/account/edit/password')
                 req.flash('error', err)
                 return res.redirect('/');
             } else {
-                req.flash('success', i18next.t("account.password.success"));
-                res.redirect('/account/edit/password');
+              emailer.passwordChanged(req.user.local.email, req.get('host'), function(err) {
+                if (err)
+                  return console.log('Unable to sent password changed email: '+err);
+              });
+
+              req.flash('success', i18next.t("account.password.success"));
+              res.redirect('/account/edit/password');
             }
         });
     });

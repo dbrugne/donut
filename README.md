@@ -58,12 +58,12 @@ chat
 - [ ] User/room drawer add a scroll
 
 **Contents**
-- [ ] Translate texts
+- [x] Translate texts
 - [ ] FAQ (link in HP and chat interface)
 - [ ] Contact (link in HP and chat interface)
 - [ ] CGU (link in HP and chat interface)
-- [ ] Emails : https://github.com/dbrugne/chat/issues/6
-- [ ] Welcome messages in welcome event (i18n)
+- [x] Emails : https://github.com/dbrugne/chat/issues/6
+- [x] Welcome messages in welcome event (i18n)
 - [ ] Implement open graph and SEO description and canonical url in room/user profile meta
 - [ ] Implement open graph and SEO description and canonical url on landing
 
@@ -73,8 +73,10 @@ chat
 - [ ] Add test instance on the same server (donut.me subdomain and new IP from OVH)
 
 **Branding**
-- [ ] Créer une email contact@
 - [ ] Créer une email martine@
+- [ ] Créer une email hello@
+- [ ] Créer une email david@
+- [ ] Créer une email damien@
 
 **Other**
 - [ ] @todo review
@@ -105,7 +107,7 @@ chat
 - [ ] Delete account (link on account drawer with target _blank) to /delete, confirmation page with text and field to type password + cancel button, reuse existing delete action + password check
 - [ ] Change username
 - [ ] Logout "cut" all user socket
-- [ ] Add confirmation email on email or password changing
+- [x] Add confirmation email on email or password changing
 
 **Chat**
 - [ ] Add ban
@@ -136,7 +138,7 @@ chat
 - [ ] Animated 'rollers' for alternative texts on landing
 
 **Cleaning**
-- [ ] Move email configuration in conf files
+- [x] Move email configuration in conf files
 - [ ] Test it on IE8-11/FF/tablet
 
 **Help**
@@ -172,7 +174,7 @@ chat
 - [ ] Compress JS: https://github.com/JakeWharton/uglify-js-middleware
 - [ ] Strongify password constrains (signup, login and forgot, very long or complex)
 - [ ] Remove HOGAN and re-add EJS
-- [ ] Find email factorisation/rendering solution
+- [x] Find email factorisation/rendering solution
 
 **Features**
 - [x] Add option to no join #General on connection

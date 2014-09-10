@@ -1,5 +1,4 @@
 var conf = module.exports = {
-  title: 'donut.me | chatrooms et plus si affinités',
   less: {
     force: false
   },
@@ -14,6 +13,12 @@ var conf = module.exports = {
   sessions: {
     key: 'donut.sid',
     secret: 'q4qsd65df45s4d5f45ds5fsf4s'
+  },
+  email: {
+    from: {
+      name: "DONUT.me",
+      email: "hello@donut.me"
+    }
   },
   facebook: {
     'clientID' 		: '328600083963864', // your App ID

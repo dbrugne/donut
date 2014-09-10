@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var nodemailer = require('nodemailer');
+var emailer = require('../app/emailer');
 var async = require('async');
 var crypto = require('crypto');
 var User = require('../app/models/user');
@@ -45,26 +45,18 @@ var forgot = function(req, res) {
       });
     },
     function(token, user, done) {
-      var smtpTransport = nodemailer.createTransport('SMTP', {
-        ignoreTLS: true // TLS not work on smtp4dev Windows 8
-      });
-      var mailOptions = {
-        to: user.local.email,
-        from: 'contact@chatworldcup.com',
-        subject: 'Donut password reset',
-        text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
-          'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-          'http://' + req.headers.host + '/reset/' + token + '\n\n' +
-          'If you did not request this, please ignore this email and your password will remain unchanged.\n'
-      };
-      smtpTransport.sendMail(mailOptions, function(err) {
+      emailer.forgot(user.local.email, req.get('host'), token, function(err) {
+        if (err)
+          return done('Unable to sent forgot email: '+err);
+
         req.flash('info', i18next.t("forgot.sent", {email: user.local.email}));
-        done(err, 'done');
+        return done(err);
       });
     }
   ], function(err) {
-//    if (err) return next(err);
-    if (err) return console.log(err);
+    if (err)
+      return console.log(err);
+
     res.redirect('/forgot');
   });
 };
@@ -99,19 +91,12 @@ var reset = function(req, res) {
       });
     },
     function(user, done) {
-      var smtpTransport = nodemailer.createTransport('SMTP', {
-        ignoreTLS: true // TLS not work on smtp4dev Windows 8
-      });
-      var mailOptions = {
-        to: user.local.email,
-        from: 'contact@chatworldcup.com',
-        subject: 'Your password has been changed',
-        text: 'Hello,\n\n' +
-          'This is a confirmation that the password for your account ' + user.local.email + ' has just been changed.\n'
-      };
-      smtpTransport.sendMail(mailOptions, function(err) {
+      emailer.passwordChanged(user.local.email, req.get('host'), function(err) {
+        if (err)
+          return done('Unable to sent password changed (forgot) email: '+err);
+
         req.flash('success', i18next.t("forgot.success"));
-        done(err);
+        return done(err);
       });
     }
   ], function(err) {

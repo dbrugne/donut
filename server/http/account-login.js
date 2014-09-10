@@ -42,4 +42,23 @@ router.get('/logout', function(req, res) {
     res.redirect('/');
 });
 
+var emailer = require('../app/emailer');
+router.route('/test')
+  .get(function(req, res) {
+
+    callback = function(err) {
+      if (err)
+        return console.log('error while sending: '+err);
+
+      return console.log('email sent');
+    };
+
+    emailer.welcome('yangs@yangs.net', req.get('host'), callback);
+    emailer.forgot('yangs@yangs.net', req.get('host'), 'mon token à moi', callback);
+    emailer.passwordChanged('yangs@yangs.net', req.get('host'), callback);
+    emailer.emailChanged('yangs@yangs.net', req.get('host'), callback);
+
+    res.render('test', {layout:false});
+  })
+
 module.exports = router;

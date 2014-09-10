@@ -17,7 +17,6 @@ module.exports = function() {
     // pass CSRF token to all views
     res.locals.token = req.csrfToken();
 
-    res.locals.title = conf.title;
     res.locals.cloudinary = conf.cloudinary;
     res.locals.facebook = conf.facebook;
 
