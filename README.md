@@ -8,7 +8,7 @@ chat
 - [x] Handle Facebook image storage/retrieving on cloudinary
 - [ ] Adjust join buttons
 - [ ] Room/user profile cards in drawer
-- [ ] Fluid landing background on small resolutions (display donut background w/ opacity)
+- [x] Fluid landing background on small resolutions (display donut background w/ opacity)
 - [ ] Add kick reason form
 - [ ] On room/user profile page, left colum is closed by default and opened by JS on background load (avoid repeated background display on load)
 - [ ] Order donuts on home page (date or activity or ...)
