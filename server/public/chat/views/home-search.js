@@ -22,7 +22,7 @@ define([
       event.preventDefault();
 
       if(event.which == 13) {
-        return console.log('submit !');
+        this.search();
       }
 
       this.search();
