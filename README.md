@@ -13,10 +13,6 @@ chat
 - [ ] On room/user profile page, left colum is closed by default and opened by JS on background load (avoid repeated background display on load)
 - [ ] Order donuts on home page (date or activity or ...)
 - [ ] Add title in topic bubbles
-- [x] Add new socket.io-redis
-  - [ ] Implement user count on room profile
-  - [ ] Implement user online status on user profile
-  - [ ] Implement current user list on room profile
 - [ ] Remove A in op badge (test M)
 - [ ] Review room/onetonone tabs to fix users badge on right (absolute) with room name above
 - [ ] Add click on search block in left column focus home + focus input
@@ -56,7 +52,10 @@ chat
 - [ ] Room description/user bio justify and left align
 - [ ] User profile drawer add edit your profile if it's mine
 - [ ] User/room drawer add a scroll
-
+- [ ] Add new socket.io-redis
+  - [ ] Implement user count on room profile
+  - [ ] Implement user online status on user profile
+  - [ ] Implement current user list on room profile
 **Contents**
 - [x] Translate texts
 - [ ] FAQ (link in HP and chat interface)
