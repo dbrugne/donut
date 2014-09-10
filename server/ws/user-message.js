@@ -34,12 +34,10 @@ module.exports = function(io, socket, data) {
         from_user_id  : socket.getUserId(),
         from_username : socket.getUsername(),
         from_avatar   : socket.getAvatar(),
-        from_poster   : socket.getPoster(),
         from_color    : socket.getColor(),
         to_user_id    : user._id.toString(),
         to_username   : user.username,
-        to_avatar     : user.avatar,
-        to_poster     : user.poster,
+        to_avatar     : user._avatar(),
         to_color      : user.color,
         time          : Date.now(),
         message       : message

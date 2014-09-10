@@ -13,7 +13,7 @@ module.exports = function(io, socket, data) {
     var event = {
       user_id: user._id.toString(),
       username: user.username,
-      avatar: user.avatar,
+      avatar: user._avatar(),
       poster: user.poster,
       color: user.color,
       bio: user.bio,
@@ -26,9 +26,13 @@ module.exports = function(io, socket, data) {
       event.email = user.local.email;
 
     if (user.facebook)
+      var securedToken = (user.facebook.token)
+        ? 'yes'
+        : '';
+
       event.facebook = {
         id: user.facebook.id,
-        token: user.facebook.token,
+        token: securedToken,
         email: user.facebook.email,
         name: user.facebook.name
       };

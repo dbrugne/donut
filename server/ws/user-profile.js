@@ -84,14 +84,16 @@ module.exports = function(io, socket, data) {
 
       function send(user, roomsList, callback) {
 
-        var userData = user.toJSON();
-
-        // user_id
-        userData.user_id = userData._id;
-        delete userData._id;
-
-        // avatar
-        userData.avatar = user.avatar;
+        var userData = {
+          user_id   : user._id.toString(),
+          username  : user.username,
+          color     : user.color,
+          avatar    : user._avatar(),
+          poster    : user.poster,
+          bio       : user.bio,
+          location  : user.location,
+          website   : user.website
+        };
 
         // status
         userData.status = (helper.userSockets(io, user._id).length > 0)

@@ -268,7 +268,8 @@ module.exports = {
           list.push({
             user_id: u.getUserId(),
             username: u.getUsername(),
-            avatar: u.getAvatar()
+            avatar: u.getAvatar(),
+            color: u.getColor()
           });
         }
       }
@@ -522,8 +523,7 @@ module.exports = {
         if (room.owner != undefined) {
           ownerData = {
             user_id: room.owner._id.toString(),
-            username: room.owner.username,
-            avatar: room.owner.avatar
+            username: room.owner.username
           };
         }
         var roomData = {
@@ -554,41 +554,8 @@ module.exports = {
    */
   onlineData: function(io, limit, success) {
     limit = limit || 5;
-
     var onlines = this.connectedUsers(io, limit);
-
-    var idList = [];
-    for (var i=0; i < onlines.length; i++) {
-      idList.push(onlines[i].user_id);
-    }
-
-    var q = User.find({_id: { $in: idList }}, 'username avatar bio location website color');
-
-    var that = this;
-    var onResult = function(err, users) {
-      if (err) return that.handleError('Unable to retrieve online user data: '+err);
-      if (users.length < 1) return success([]);
-
-      var data = [];
-      for (var i=0; i<users.length; i++) {
-        var user = users[i];
-        var roomData = {
-          user_id: user._id.toString(),
-          username: user.username,
-          avatar: user.avatar,
-          color: user.color,
-          bio: user.bio,
-          location: user.location,
-          website: user.website
-        };
-
-        data.push(roomData);
-      }
-
-      return success(data);
-    };
-
-    q.exec(onResult);
+    return success(onlines);
   },
 
   /**

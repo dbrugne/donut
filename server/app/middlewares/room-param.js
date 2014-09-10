@@ -10,8 +10,8 @@ module.exports = function(req, res, next, roomname) {
   }
 
   Room.findByName('#'+roomname)
-    .populate('owner', 'username avatar color location website')
-    .populate('op', 'username avatar color location website')
+    .populate('owner', 'username avatar color location website facebook')
+    .populate('op', 'username avatar color location website  facebook')
     .exec(function(err, room) {
       if (err) {
         req.flash('error', err)
@@ -29,7 +29,7 @@ module.exports = function(req, res, next, roomname) {
 
         // owner
         if (room.owner && room.owner._id) {
-          room.owner.avatar = cloudinary.userAvatar(room.owner.avatar, 80, room.owner.color);
+          room.owner.avatar = cloudinary.userAvatar(room.owner._avatar(), 80, room.owner.color);
           room.owner.url = (room.owner.username)
             ? req.protocol + '://' + req.get('host') + '/user/' + room.owner.username.toLocaleLowerCase()
             : '';
@@ -45,7 +45,7 @@ module.exports = function(req, res, next, roomname) {
               return;
             }
 
-            op.avatar = cloudinary.userAvatar(op.avatar, 80, op.color);
+            op.avatar = cloudinary.userAvatar(op._avatar(), 80, op.color);
             op.url = (op.username)
               ? req.protocol + '://' + req.get('host') + '/user/' + op.username.toLocaleLowerCase()
               : '';

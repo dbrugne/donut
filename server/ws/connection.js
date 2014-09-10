@@ -20,7 +20,7 @@ module.exports = function(io, socket) {
     return this.request.user.username;
   };
   socket.getAvatar = function() {
-    return this.request.user.avatar;
+    return this.request.user._avatar();
   };
   socket.getPoster = function() {
     return this.request.user.poster;
@@ -39,7 +39,7 @@ module.exports = function(io, socket) {
     },
 
     function retrieveUser(callback){
-      User.findById(socket.getUserId(), 'username avatar color rooms general', function(err, user) {
+      User.findById(socket.getUserId(), function(err, user) {
         if (err)
           return callback('Unable to find user: '+err, null);
 
@@ -143,7 +143,7 @@ module.exports = function(io, socket) {
         user: {
           user_id: user._id.toString(),
           username: user.username,
-          avatar: user.avatar,
+          avatar: user._avatar(),
           color: user.color
         },
         rooms: user.roomsToSend // problem when using directly user.rooms on mongoose model

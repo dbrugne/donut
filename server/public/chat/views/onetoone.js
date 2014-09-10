@@ -43,6 +43,7 @@ define([
 
     onColor: function(model, value, options) {
       this.colorify();
+      this.onPoster(model, model.get('poster'), options);
     },
     onAvatar: function(model, value, options) {
       var url = $.cd.userAvatar(value, 100, model.get('color'));

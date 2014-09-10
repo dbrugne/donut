@@ -35,20 +35,15 @@ define([
 
         // async !!
         client.userProfile(user.username);
-        model.listenTo(client, 'user:profile', function (data) {
-          if (!data.user || data.user.username != model.get('username'))
-            return;
-
-          model.set(data.user);
-        });
       } else {
         // an existing one, update field if needed
-        _.each(['avatar', 'poster', 'color', 'location', 'website'], function(key) {
+        _.each(['avatar', 'color'], function(key) {
           if (!_.has(user, key))
             return;
 
           var current = model.get(key);
           var fresh = user[key];
+
           if (current != fresh)
             model.set(key, fresh);
         });
@@ -64,7 +59,6 @@ define([
           username  : message.to_username,
           user_id   : message.to_user_id,
           avatar    : message.to_avatar,
-          poster    : message.to_poster,
           color     : message.to_color
         };
       } else if (currentUser.get('user_id') == message.to_user_id) {
@@ -73,7 +67,6 @@ define([
           username  : message.from_username,
           user_id   : message.from_user_id,
           avatar    : message.from_avatar,
-          poster    : message.from_poster,
           color     : message.from_color
         };
       } else {

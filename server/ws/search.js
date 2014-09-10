@@ -60,7 +60,7 @@ module.exports = function (io, socket, data) {
           username: regexp
         };
 
-        var q = User.find(search, 'username avatar color');
+        var q = User.find(search, 'username avatar color facebook');
         q.exec(function(err, users) {
           if (err)
             return callback('Error while searching for users: '+err);
@@ -73,7 +73,7 @@ module.exports = function (io, socket, data) {
 
             results.push({
               username: user.username,
-              avatar: user.avatar,
+              avatar: user._avatar(),
               color: user.color,
               status: status
             });

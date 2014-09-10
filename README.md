@@ -5,7 +5,7 @@ chat
 
 **Tasks**
 - [x] On profile pages put chat/page URL regarding if user is logged or not on join/discuss button
-- [ ] Handle Facebook image storage/retrieving on cloudinary
+- [x] Handle Facebook image storage/retrieving on cloudinary
 - [ ] Adjust join buttons
 - [ ] Room/user profile cards in drawer
 - [ ] Fluid landing background on small resolutions (display donut background w/ opacity)

@@ -32,7 +32,7 @@ module.exports = function(req, res, next, username) {
     function prepare(user, callback) {
 
       // avatar & poster
-      user.avatar = cloudinary.userAvatar(user.avatar, 160, user.color);
+      user.avatar = cloudinary.userAvatar(user._avatar(), 160, user.color);
       user.poster = cloudinary.poster(user.poster, user.color);
 
       // url

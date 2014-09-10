@@ -89,7 +89,7 @@ userSchema.statics.validateUsername = function (username) {
 userSchema.statics.findByUsername = function (username) {
   var pattern = username.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
   var regexp = new RegExp('^'+pattern+'$','i');
-  return this.findOne({ username: regexp }, 'username avatar poster color location website bio rooms');
+  return this.findOne({ username: regexp });
 };
 
 /**
@@ -100,7 +100,7 @@ userSchema.statics.findByUsername = function (username) {
 userSchema.statics.retrieveUser = function (username) {
   var pattern = username.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
   var regexp = new RegExp('^'+pattern+'$','i');
-  return this.findOne({ username: regexp }, 'username avatar poster color bio location website rooms')
+  return this.findOne({ username: regexp })
     .populate('room', 'name');
 };
 
@@ -124,6 +124,18 @@ userSchema.methods.usernameAvailability = function (username, success, error) {
 
     success();
   });
+};
+
+// Method to get avatar identifier (including Facebook logic)
+userSchema.methods._avatar = function() {
+  if (!this.avatar
+    && this.facebook
+    && this.facebook.token
+    && this.facebook.id) {
+    return 'facebook/'+this.facebook.id;
+  }
+
+  return this.avatar;
 };
 
 userSchema.methods.avatarId = function() {

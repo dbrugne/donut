@@ -188,7 +188,6 @@ passport.use(new FacebookStrategy({
             newUser.name = profile.displayName;
             if (profile._json.location && profile._json.location.name)
               newUser.location = profile._json.location.name;
-            newUser.avatar = 'https://graph.facebook.com/' + profile.id + '/picture';
 
             // save our user to the database
             newUser.save(function (err) {

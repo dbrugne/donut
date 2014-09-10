@@ -23,10 +23,17 @@ define([
     },
     _initialize: function() {
       this.listenTo(client, 'user:status', this.onStatus);
+      this.listenTo(client, 'user:profile', this.onProfile);
     },
     onStatus: function(data) {
       if (data.username != this.get('username')) return;
       this.set({status: data.status});
+    },
+    onProfile: function (data) {
+      if (!data.user || data.user.username != this.get('username'))
+        return;
+
+      this.set(data.user);
     }
 
   });

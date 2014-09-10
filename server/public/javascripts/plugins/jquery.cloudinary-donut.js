@@ -22,13 +22,6 @@
     background = background || '#ffffff';
     gravity = gravity || 'face';
 
-    if (!identifier) {
-      if (defaultIdentifier.indexOf('.png') === -1)
-        identifier = defaultIdentifier;
-      else
-        identifier = defaultIdentifier.substr(0, defaultIdentifier.indexOf('.png'));
-    }
-
     var options = {
       fetch_format: 'jpg',
       crop: 'fill',
@@ -44,8 +37,17 @@
     if (effect)
       options.effect = effect;
 
-    if (!identifier)
-      return '';
+    if (!identifier) {
+      if (defaultIdentifier.indexOf('.png') === -1)
+        identifier = defaultIdentifier;
+      else
+        identifier = defaultIdentifier.substr(0, defaultIdentifier.indexOf('.png'));
+    }
+
+    if (identifier.indexOf('facebook/') !== -1) {
+      options.type = 'facebook';
+      return 'https://graph.facebook.com/'+identifier.replace('facebook/', '')+'/picture?height='+height+'&width='+width;
+    }
 
     return $.cloudinary.url(identifier, options);
   }
