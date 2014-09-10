@@ -4,7 +4,7 @@ chat
 ## v1.0 : opening platform to real people
 
 **Tasks**
-- [ ] On profile pages put chat/page URL regarding if user is logged or not on join/discuss button
+- [x] On profile pages put chat/page URL regarding if user is logged or not on join/discuss button
 - [ ] Handle Facebook image storage/retrieving on cloudinary
 - [ ] Adjust join buttons
 - [ ] Room/user profile cards in drawer

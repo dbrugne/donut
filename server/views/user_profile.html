@@ -1,42 +1,42 @@
-<input type="hidden" name="id" value="{{user._id}}"><!-- petit curieux -->
+<input type="hidden" name="id" value="{{_user._id}}"><!-- petit curieux -->
 <div id="profile" class="user-profile">
     <div class="cover user">
-        <a href="{{user.url}}"><img class="avatar" src="{{user.avatar}}" alt="{{user.name}} avatar"></a>
-        <p class="discuss"><a href="{{user.url.chat}}" {{#user.color}}style="background-color: {{user.color}};"{{/user.color}}>{{#i}}actions.discuss{{/i}}</a></p>
+        <a href="{{_user.url}}"><img class="avatar" src="{{_user.avatar}}" alt="{{_user.name}} avatar"></a>
+        <p class="discuss"><a href="{{^user}}/signup{{/user}}{{#user}}{{_user.chat}}{{/user}}" {{#_user.color}}style="background-color: {{_user.color}};"{{/_user.color}}>{{#i}}actions.discuss{{/i}}</a></p>
     </div>
     <div class="text user">
-        <a href="{{user.url}}" class="username">{{user.username}}</a>
-        {{#user.location}}
+        <a href="{{_user.url}}" class="username">{{_user.username}}</a>
+        {{#_user.location}}
         <span class="location">
-            {{user.location}}
+            {{_user.location}}
         </span>
-        {{/user.location}}
-        {{#user.website}}
-        {{#user.location}}<span class="separation">|</span>{{/user.location}}
-        <span class="website" {{#user.color}}style="color: {{user.color}};"{{/user.color}}>
-        {{user.website}}
+        {{/_user.location}}
+        {{#_user.website}}
+        {{#_user.location}}<span class="separation">|</span>{{/_user.location}}
+        <span class="website" {{#_user.color}}style="color: {{_user.color}};"{{/_user.color}}>
+        {{_user.website}}
         </span>
-        {{/user.website}}
-        {{#user.bio}}
+        {{/_user.website}}
+        {{#_user.bio}}
         <div class="bio">
-            <p class="bio-content">{{user.bio}}</p>
+            <p class="bio-content">{{_user.bio}}</p>
         </div>
-        {{/user.bio}}
+        {{/_user.bio}}
     </div>
     <hr class="clear">
     <hr>
-    {{#user.hasRooms}}
+    {{#_user.hasRooms}}
     <p class="title">{{#i}}profile.user.hisrooms{{/i}}</p>
     <div class="rooms cards">
-        {{#user.roomsList}}{{> room}}{{/user.roomsList}}
+        {{#_user.roomsList}}{{> room}}{{/_user.roomsList}}
     </div>
     <hr class="clear">
     <hr>
-    {{/user.hasRooms}}
+    {{/_user.hasRooms}}
     <div class="disclaimer">
         <p>
             {{#i}}profile.user.disclaimer.before{{/i}}
-            <a href="{{user.url}}">{{user.username}}</a>
+            <a href="{{_user.url}}">{{_user.username}}</a>
             {{#i}}profile.user.disclaimer.after{{/i}}
         </p>
         <a href="/"><img src="/images/logo-onecolor-gr.svg" alt="DONUT logo"></a>

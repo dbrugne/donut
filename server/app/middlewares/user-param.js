@@ -37,6 +37,7 @@ module.exports = function(req, res, next, username) {
 
       // url
       user.url = req.protocol + '://' + req.get('host') + '/user/' + user.username.toLocaleLowerCase();
+      user.chat = req.protocol + '://' + req.get('host') + '/!#user/' + user.username;
 
       return callback(null, user);
 

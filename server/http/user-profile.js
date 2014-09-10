@@ -5,11 +5,10 @@ var paramHandler = require('../app/middlewares/user-param');
 router.param('user', paramHandler);
 
 router.get('/user/:user', function(req, res) {
-
   res.render('user_profile', {
     layout: 'layout-profile',
     subtitle: req.requestedUser.username,
-    user: req.requestedUser,
+    _user: req.requestedUser,
     poster: req.requestedUser.poster,
     color: req.requestedUser.color,
     partials: {room: '_room'},
