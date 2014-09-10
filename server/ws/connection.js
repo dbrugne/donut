@@ -3,6 +3,7 @@ var helper = require('./helper');
 var User = require('../app/models/user');
 var Room = require('../app/models/room');
 var hello = require('../app/hello-dolly');
+var conf = require('../config/index');
 
 module.exports = function(io, socket) {
 
@@ -43,8 +44,8 @@ module.exports = function(io, socket) {
         if (err)
           return callback('Unable to find user: '+err, null);
 
-        if (user.general == true && user.rooms.indexOf('#General') == -1)
-          user.rooms.push('#General');
+        if (user.general == true && user.rooms.indexOf(conf.room.general) == -1)
+          user.rooms.push(conf.room.general);
 
         return callback(null, user);
       });

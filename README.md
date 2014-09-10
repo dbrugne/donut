@@ -31,7 +31,7 @@ chat
 - [ ] Send name/username constrains to David to have help translations
 - [ ] Success message is displayed two time on page form layout/view
 - [ ] Change page layout footer to have /! on "go back to homepage"
-- [ ] #General => #donut
+- [x] #General => #donut
 - [ ] Landing tasty pictures cropped on iPad
 - [ ] Home tiles: show description only on hover, justify, overflow hidden
 - [ ] Reduce home name size
