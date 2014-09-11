@@ -25,6 +25,18 @@ chat
 - [ ] Traduire online/offline dans l'entête one to one et ajouter le cercle de couleur
 - [ ] Landing "déjà *connecté*" + passer les deux actions sur deux lignes différentes + "déconnexion" => « vous déconnecter »
 - [ ] Success message is displayed two time on page form layout/view
+- [ ] Landing tasty pictures cropped on iPad
+- [ ] Home tiles: show description only on hover, justify, overflow hidden
+- [ ] Reduce home name size
+- [ ] Add a title on online on home : "Utilisateurs en ligne"
+- [ ] Home search results add title over users:  "Utilisateurs correspondant à votre recherche" + show username
+- [ ] Show permanently the actions on room user list (not only on hover)
+- [ ] Add a min-width on topic input field
+- [ ] On onetoone default avatar (color problem) doesn't work in .messages
+- [ ] On room profile default avatar of "owner" (color problem) doesn't work (and OP)
+- [ ] Room description/user bio justify and left align
+- [ ] User profile drawer add edit your profile if it's mine
+- [ ] User/room drawer add a scroll
 
 **Code**
 - [ ] room name and user username length constrains : 24
@@ -33,24 +45,11 @@ chat
 - [ ] Remove room permanent support
 - [ ] Add delete room feature
 - [ ] Send name/username constrains to David to have help translations
-- [x] Change page layout footer to have /! on "go back to homepage"
-- [ ] Landing tasty pictures cropped on iPad
-- [ ] Home tiles: show description only on hover, justify, overflow hidden
-- [ ] Reduce home name size
-- [ ] Add a title on online on home : "Utilisateurs en ligne"
 - [ ] Home search form : add submit on enter and on click on magnifier
-- [ ] Home search results add title over users:  "Utilisateurs correspondant à votre recherche" + show username
 - [ ] Remove home tile over on touch screen
-- [ ] Show permanently the actions on room user list (not only on hover)
 - [ ] Test and make it work on IE9 + Safari Windows
-- [ ] Add a min-width on topic input field
-- [ ] Add offline message when a user send a message to a user that is not longer connected
 - [ ] Go down to .messages on discussion focus
-- [ ] On onetoone default avatar (color problem) doesn't work in .messages
-- [ ] On room profile default avatar of "owner" (color problem) doesn't work (and OP)
-- [ ] Room description/user bio justify and left align
-- [ ] User profile drawer add edit your profile if it's mine
-- [ ] User/room drawer add a scroll
+- [ ] Add offline message when a user send a message to a user that is not longer connected
 - [ ] Add kick reason form
 - [ ] Add new socket.io-redis
   - [ ] Implement user count on room profile
@@ -104,7 +103,6 @@ chat
 - [ ] Delete account (link on account drawer with target _blank) to /delete, confirmation page with text and field to type password + cancel button, reuse existing delete action + password check
 - [ ] Change username
 - [ ] Logout "cut" all user socket
-- [x] Add confirmation email on email or password changing
 
 **Chat**
 - [ ] Add ban
@@ -118,6 +116,7 @@ chat
 - [ ] Bugfix: on room auto-deletion reactivation. Should handle in 'connection.populateRoom' the room recreation. Otherwise a room automatically removed cannot be re-join automatically by client cause room populate try to find room in DB before sending it to client in welcome
 - [ ] Scrollbars adding (left column, home content, user and room edit drawer) and improvments (room messages and users)
 - [ ] Activity logic and tracking : online, afk, offline (used on user profile, one to one, room users, ...)
+- [ ] For onetoone discussion (only), persist if a message was delivered or not and delivered it on welcome
 - Small and helpfull features:
   - [ ] Auto fill room user name in input
   - [ ] Hilight user name in messages
@@ -135,7 +134,6 @@ chat
 - [ ] Animated 'rollers' for alternative texts on landing
 
 **Cleaning**
-- [x] Move email configuration in conf files
 - [ ] Test it on IE8-11/FF/tablet
 
 **Help**
@@ -171,10 +169,8 @@ chat
 - [ ] Compress JS: https://github.com/JakeWharton/uglify-js-middleware
 - [ ] Strongify password constrains (signup, login and forgot, very long or complex)
 - [ ] Remove HOGAN and re-add EJS
-- [x] Find email factorisation/rendering solution
 
 **Features**
-- [x] Add option to no join #General on connection
 - [ ] Implement "remember me" mechanism on login form
 
 **Presence management**
