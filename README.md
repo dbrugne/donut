@@ -4,34 +4,36 @@ chat
 ## v1.0 : opening platform to real people
 
 **Tasks**
-- [x] On profile pages put chat/page URL regarding if user is logged or not on join/discuss button
-- [x] Handle Facebook image storage/retrieving on cloudinary
+
+**Design**
 - [ ] Adjust join buttons
 - [ ] Room/user profile cards in drawer
-- [x] Fluid landing background on small resolutions (display donut background w/ opacity)
-- [ ] Add kick reason form
 - [ ] On room/user profile page, left colum is closed by default and opened by JS on background load (avoid repeated background display on load)
-- [ ] Order donuts on home page (date or activity or ...)
 - [ ] Add title in topic bubbles
 - [ ] Remove A in op badge (test M)
 - [ ] Review room/onetonone tabs to fix users badge on right (absolute) with room name above
-- [ ] Add click on search block in left column focus home + focus input
 - [ ] Create donut in left column => button + put on top
 - [ ] Image uploader, display current avatar even if no avatar set
 - [ ] Add permalink on user profile drawer
 - [ ] Add a title on room user list: "XX utilisateurs dans ce donut"
+- [ ] Image uploader help message with expected size
 - [ ] Create donut drawer: help message under field + size, main color name grey
 - [ ] Add word-break on room name and user username in drawer
-- [ ] room name and user username length constrains : 24
-- [ ] Remove room permanent support, and add delete room feature
-- [ ] Add avatar in left column en room
+- [ ] Change alert = 25s + close button
+- [ ] Add avatar in left column on room
 - [ ] Remove unread message count on left column badge
 - [ ] Traduire online/offline dans l'entête one to one et ajouter le cercle de couleur
 - [ ] Landing "déjà *connecté*" + passer les deux actions sur deux lignes différentes + "déconnexion" => « vous déconnecter »
-- [ ] Send name/username constrains to David to have help translations
 - [ ] Success message is displayed two time on page form layout/view
-- [ ] Change page layout footer to have /! on "go back to homepage"
-- [x] #General => #donut
+
+**Code**
+- [ ] room name and user username length constrains : 24
+- [ ] Order donuts on home page (date or activity or ...)
+- [ ] Add click on search block in left column focus home + focus input
+- [ ] Remove room permanent support
+- [ ] Add delete room feature
+- [ ] Send name/username constrains to David to have help translations
+- [x] Change page layout footer to have /! on "go back to homepage"
 - [ ] Landing tasty pictures cropped on iPad
 - [ ] Home tiles: show description only on hover, justify, overflow hidden
 - [ ] Reduce home name size
@@ -42,27 +44,23 @@ chat
 - [ ] Show permanently the actions on room user list (not only on hover)
 - [ ] Test and make it work on IE9 + Safari Windows
 - [ ] Add a min-width on topic input field
-- [x] In/out aligned to left in rooms
-- [ ] Change alert = 25s + close button
 - [ ] Add offline message when a user send a message to a user that is not longer connected
 - [ ] Go down to .messages on discussion focus
 - [ ] On onetoone default avatar (color problem) doesn't work in .messages
 - [ ] On room profile default avatar of "owner" (color problem) doesn't work (and OP)
-- [x] On room messages/notification, if i post a message, a notification is thrown, i repost a message my second message go on same line than previous message (add a test to detect that last message wasn't a notification)
 - [ ] Room description/user bio justify and left align
 - [ ] User profile drawer add edit your profile if it's mine
 - [ ] User/room drawer add a scroll
+- [ ] Add kick reason form
 - [ ] Add new socket.io-redis
   - [ ] Implement user count on room profile
   - [ ] Implement user online status on user profile
   - [ ] Implement current user list on room profile
+
 **Contents**
-- [x] Translate texts
 - [ ] FAQ (link in HP and chat interface)
 - [ ] Contact (link in HP and chat interface)
 - [ ] CGU (link in HP and chat interface)
-- [x] Emails : https://github.com/dbrugne/chat/issues/6
-- [x] Welcome messages in welcome event (i18n)
 - [ ] Implement open graph and SEO description and canonical url in room/user profile meta
 - [ ] Implement open graph and SEO description and canonical url on landing
 
