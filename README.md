@@ -16,7 +16,7 @@ chat
 
 - [x] Landing "déjà *connecté*" + passer les deux actions sur deux lignes différentes + "déconnexion" => « vous déconnecter »
 - [x] Success message is displayed two time on page form layout/view
-- [ ] Landing tasty pictures cropped on iPad
+- [x] Landing tasty pictures cropped on iPad
 
 - [ ] Home tiles: show description only on hover, justify, overflow hidden
 - [ ] Reduce home name size
