@@ -100,7 +100,7 @@ module.exports = function VirtualUser(configuration) {
             username: data.from_username,
             message: m
           };
-          this.socket.emit('user:message', event);
+          socket.emit('user:message', event);
         }
       });
 
