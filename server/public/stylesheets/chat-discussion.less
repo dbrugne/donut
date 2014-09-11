@@ -43,25 +43,32 @@
         margin-left: 100px;
         font-size: 1.2em;
         padding: 5px 15px;
+        label {
+          color: @cl-subtext2;
+          font-size: 0.9em;
+          margin-right: 10px;
+          font-weight: normal;
+        }
         .topic-current {
           .txt-bubble;
           padding: 0.6em 1.2em;
           display: inline-block;
-          img {
-            margin-right: 5px;
-            width: 30px;
-            cursor: pointer;
+          em {
+            color: @cl-subtext2;
+            &:hover {
+              color: @cl-subtext5;
+            }
           }
         }
         .topic-form {
           .txt-bubble;
           width: 100%;
-          label {
-            color: @cl-subtext2;
-            font-size: 0.9em;
-            margin-right: 10px;
-            font-weight: normal;
-          }
+//          label {
+//            color: @cl-subtext2;
+//            font-size: 0.9em;
+//            margin-right: 10px;
+//            font-weight: normal;
+//          }
           input[type=text] {
             .form-control;
             display: inline-block;
@@ -69,6 +76,8 @@
             width: -webkit-calc(~'100%' - 295px);
             width: -o-calc(~'100%' - 295px);
             width: calc(~'100%' - 295px);
+
+            min-width: 300px;
 
             -webkit-border-radius: 25px;
             -moz-border-radius: 25px;
@@ -335,6 +344,8 @@
               right: 0;
               line-height: 2.7;
               padding: 0 10px;
+              -webkit-border-radius: 15px;
+              -moz-border-radius: 15px;
               border-radius: 15px;
               .deop-user, .op-user, .kick-user {
                 cursor: pointer;
