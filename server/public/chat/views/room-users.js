@@ -30,10 +30,7 @@ define([
     },
     render: function() {
       // update user count
-      var countHtml = '<strong>'+this.collection.models.length+'</strong> user';
-      countHtml += (this.collection.models.length > 1)
-        ? 's'
-        : '';
+      var countHtml = $.t("chat.userscount", {count: this.collection.models.length});
       this.$count.html(countHtml);
 
       // redraw user list

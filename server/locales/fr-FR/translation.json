@@ -163,6 +163,8 @@
             "noroom": "Aucun résultat de recherche",
             "nouser": "Aucun résultat de recherche"
         },
+        "userscount": "<strong>__count__</strong> utilisateur dans ce donut",
+        "userscount_plural": "<strong>__count__</strong> utilisateurs dans ce donut",
         "topic": {
             "label": "En ce moment",
             "placeholder": "Entrez ici le sujet de la conversation, l'humeur, l'ambiance ...",

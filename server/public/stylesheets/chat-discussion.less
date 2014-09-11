@@ -293,7 +293,7 @@
         @header-height: 35px;
         .header {
           position: absolute;
-          top: 14px; left: 20px; right: 20px;
+          top: 14px; left: 16px; right: 10px;
           .count { .pull-left; }
           .between {
             font-size: 1.2em;
@@ -334,7 +334,8 @@
               position: absolute;
               right: 0;
               line-height: 2.7;
-              display: none;
+              padding: 0 10px;
+              border-radius: 15px;
               .deop-user, .op-user, .kick-user {
                 cursor: pointer;
                 margin-left: 3px;
@@ -387,7 +388,8 @@
           }
           .item:hover {
             .actions {
-              display: inline-block;
+//              display: inline-block;
+              background-color: rgba(67, 67, 67, 0.5);
             }
           }
         }
