@@ -6,13 +6,12 @@ chat
 **Tasks**
 
 **Design**
-- [x] Adjust join buttons
 - [ ] Room/user profile cards in drawer
 - [ ] On room/user profile page, left colum is closed by default and opened by JS on background load (avoid repeated background display on load)
 - [ ] Poster display: no default image, put color on DOM element,
 - [ ] Image uploader, display current avatar even if no avatar set
 - [ ] Image uploader help message with expected size
-- [ ] Add word-break on room name and user username in drawer
+- [ ] Add word-break on room name and user username everywhere
 - [ ] Room description/user bio justify and left align
 - [ ] Add permalink on user profile drawer
 - [ ] User profile drawer add edit your profile if it's mine
