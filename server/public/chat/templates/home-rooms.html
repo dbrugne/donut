@@ -14,6 +14,7 @@
             <p class="join">
                 <a href="#room/<%= room.name.replace('#', '') %>" data-colorify-background="color" data-colorify-text="contrast">
                     <%= t('actions.join') %> <%= room.users %>
+                    <img src="/images/user.svg" alt="user icon">
                 </a>
             </p>
             <% if (room.permanent == true) { %><img class="permanent" src="/images/permanent.svg" alt="permanent room logo"><% } %>
@@ -30,6 +31,7 @@
             <p class="join">
                 <a href="#room/<%= room.name.replace('#', '') %>" data-colorify-background="<%= room.color %>" data-colorify-text="contrast">
                     <%= t('actions.join') %> <%= room.users %>
+                    <img src="/images/user.svg" alt="user icon">
                 </a>
             </p>
             <% if (room.permanent == true) { %><img class="permanent" src="/images/permanent-w.svg" alt="permanent room logo"><% } %>

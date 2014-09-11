@@ -1,10 +1,10 @@
 <input type="hidden" name="id" value="{{room._id}}"><!-- petit curieux -->
-<div id="profile" class="room-profile room">
-    <div class="cover">
+<div id="profile" class="room-profile">
+    <div class="cover room">
         <a href="{{room.url}}"><img class="avatar" src="{{room.avatar}}" alt="{{room.name}} avatar"></a>
-        <p class="join"><a href="{{^user}}/signup{{/user}}{{#user}}{{room.chat}}{{/user}}" {{#room.color}}style="background-color: {{room.color}};"{{/room.color}}>{{#i}}actions.join{{/i}} </a></p>
+        <p class="join"><a href="{{^user}}/signup{{/user}}{{#user}}{{room.chat}}{{/user}}" {{#room.color}}style="background-color: {{room.color}};"{{/room.color}}>{{#i}}actions.join{{/i}} <img src="/images/user.svg" alt="user icon"></a></p>
     </div>
-    <div class="text">
+    <div class="text room">
         <p class="name-content"><a href="{{room.url}}" class="name">{{room.name}}</a> {{#room.permanent}}<img src="/images/permanent.svg" class="permanent" alt="permanent room logo">{{/room.permanent}}</p>
         {{#room.owner}}
         <span class="owner">
@@ -31,12 +31,14 @@
         {{#room.op}}{{> user}}{{/room.op}}
     </div>
     <hr class="clear">
-    <hr>
+    <hr class="push-bottom">
     {{#room.topic}}
-    <p class="title">{{#i}}profile.room.now{{/i}}</p>
-    <p class="topic">
-        <span class="topic-content"><label>{{#i}}chat.topic.label{{/i}}</label> {{room.topic}}</span>
-    </p>
+    <div class="room">
+        <p class="title">{{#i}}profile.room.now{{/i}}</p>
+        <p class="topic">
+            <span class="topic-content"><label>{{#i}}chat.topic.label{{/i}}</label> {{room.topic}}</span>
+        </p>
+    </div>
     {{/room.topic}}
     <div class="users cards">
         {{#room.users}}{{> user}}{{/room.users}}

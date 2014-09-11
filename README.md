@@ -6,34 +6,34 @@ chat
 **Tasks**
 
 **Design**
-- [x] Review room/onetonone tabs to fix users badge on right (absolute) with room name above
-- [x] Add avatar in left column on room
-- [x] Remove unread message count on left column badge
-- [ ] Adjust join buttons
+- [x] Adjust join buttons
 - [ ] Room/user profile cards in drawer
 - [ ] On room/user profile page, left colum is closed by default and opened by JS on background load (avoid repeated background display on load)
+- [ ] Poster display: no default image, put color on DOM element,
 - [ ] Image uploader, display current avatar even if no avatar set
 - [ ] Image uploader help message with expected size
-- [ ] Add permalink on user profile drawer
 - [ ] Add word-break on room name and user username in drawer
-- [ ] Traduire online/offline dans l'entête one to one et ajouter le cercle de couleur
+- [ ] Room description/user bio justify and left align
+- [ ] Add permalink on user profile drawer
+- [ ] User profile drawer add edit your profile if it's mine
+- [ ] User/room drawer add a scroll
+
 - [ ] Landing "déjà *connecté*" + passer les deux actions sur deux lignes différentes + "déconnexion" => « vous déconnecter »
 - [ ] Success message is displayed two time on page form layout/view
 - [ ] Landing tasty pictures cropped on iPad
+
 - [ ] Home tiles: show description only on hover, justify, overflow hidden
 - [ ] Reduce home name size
 - [ ] Add a title on online on home : "Utilisateurs en ligne"
 - [ ] Home search results add title over users:  "Utilisateurs correspondant à votre recherche" + show username
+
 - [ ] On onetoone default avatar (color problem) doesn't work in .messages
+- [ ] Traduire online/offline dans l'entête one to one et ajouter le cercle de couleur
 - [ ] On room profile default avatar of "owner" (color problem) doesn't work (and OP)
-- [ ] Room description/user bio justify and left align
-- [ ] User profile drawer add edit your profile if it's mine
-- [ ] User/room drawer add a scroll
 - [ ] Add poster helpmessage : "Le poster est la grande image pleine hauteur que vos interlocuteurs voient à droite de la conversation"
 - Bug : Je crée un compte à partir avec FB. Je saisis ensuite un e-mail/mdp. Je me déconnecte. Je ne peux me connecter qu’avec FB, la connexion email/mdp ne marche pas. En fait, lorsque je saisis comme adresse e-mail de compte DONUT, la même adresse mail que j'avais saisie à l'inscription à FB, ça marche pas. En revanche, quand je saisis une autre adresse e-mail, ça marche, je peux me connecter. C'est embêtant parce que le plus souvent, on saisis quand même la même adresse e-mail.
 
 **Code**
-- [ ] room name and user username length constrains : 24
 - [ ] Order donuts on home page (date or activity or ...)
 - [ ] Add click on search block in left column focus home + focus input
 - [ ] Remove room permanent support

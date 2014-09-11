@@ -148,6 +148,13 @@ body {
     font-size: 2.0em;
     line-height: 1.2;
     color: @cl-title;
+    word-break: break-all;
+    a {
+      color: @cl-title;
+      &:hover {
+        text-decoration: none;
+      }
+    }
   }
   .owner {
     .ft-opensans;
@@ -178,18 +185,10 @@ body {
       -webkit-border-radius: 100px;
       -moz-border-radius: 100px;
       border-radius: 100px;
-      padding: 0.9em 1.2em;
-      padding-right: 33px;
       text-transform: uppercase;
-      font-size: 1.2em;
-      &:after {
-        content: " ";
-        background-image: url('/images/user.svg');
-        background-size: 10px 15px;
-        position: absolute;
-        top: 17px; right: 15px;
-        width: 10px; height: 15px;
-      }
+      padding: 15px 20px;
+      font-size: 17px;
+      img {width: 10px; height: 15px;}
     }
   }
   .join:hover {
@@ -229,8 +228,9 @@ body {
       -webkit-border-radius: 100px;
       -moz-border-radius: 100px;
       border-radius: 100px;
-      padding: 0.9em 1.2em;
       text-transform: uppercase;
+      padding: 15px 20px;
+      font-size: 17px;
       i {
         color: @cl-warning;
       }
