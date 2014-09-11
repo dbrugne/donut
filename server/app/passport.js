@@ -72,7 +72,7 @@ passport.use('local-signup', new LocalStrategy({
         var newUser = User.getNewUser();
         newUser.local.email = email;
         newUser.local.password = newUser.generateHash(password);
-        user.lastlogin_at = Date.now();
+        newUser.lastlogin_at = Date.now();
 
         // save the user
         newUser.save(function (err) {
