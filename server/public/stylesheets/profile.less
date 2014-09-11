@@ -1,11 +1,9 @@
 .body-profile {
   height: 100%;
   .ft-opensans;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-position: 0 @size-color;
-  background-size: auto 100%;
   background-color: @cl-background;
+  background-repeat: no-repeat;
+  background-position: 0 @size-color;
   .color {
     position: fixed;
     left: 0; right: 0; top: 0;
@@ -32,12 +30,14 @@
 
 #profile {
   position: relative;
-  min-height: 100%;
+  height: 100%;
   background-color: @cl-background;
   margin-left: @size-right;
   padding-top: @size-color + 55px;
   padding-left: 50px;
   padding-bottom: @size-color;
+  overflow-x: hidden;
+  overflow-y: auto;
   > .cover {
     position: absolute;
     top: @size-color + 55px; left: 50px;
@@ -124,6 +124,8 @@
     margin-top: 30px;
     .topic-content {
       .txt-bubble;
+      margin-right: 30px;
+      display: inline-block;
       > img {
         width: 30px;
         margin-right: 7px;
