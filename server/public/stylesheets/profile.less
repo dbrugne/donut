@@ -11,6 +11,29 @@
     background-color: @cl-first;
     z-index: 10;
   }
+  a.logo {
+    position: absolute;
+    top: 40px; left: 39px;
+    opacity: 0.5;
+    color: @cl-background;
+    img {
+      width: 326px;
+      height: 79px;
+    }
+    span.text {
+      display: none;
+      .ft-raleway-medium;
+      font-size: 1.3em;
+      text-align: center;
+    }
+    &:hover {
+      opacity: 1;
+      text-decoration: none;
+      span.text {
+        display: block;
+      }
+    }
+  }
   hr {
     border-top-color: #dadada;
     margin-top: 18px;
@@ -203,8 +226,8 @@
       .avatar {
         margin: auto;
         margin-top: 10px;
-        width: 85px;
-        height: 85px;
+        width: 90px;
+        height: 90px;
         border: 5px solid transparent;
       }
       .name {

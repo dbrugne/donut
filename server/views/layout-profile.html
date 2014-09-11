@@ -10,8 +10,12 @@
     <![endif]-->
     <meta http-equiv="X-UA-Compatible" content="IE=Edge"/><!-- Avoid IE compatibility mode -->
 </head>
-<body class="body-profile" {{#poster}}style="background-image: url({{poster}});"{{/poster}}>
+<body class="body-profile" style="{{#color}}background-color: {{color}};{{/color}} {{#poster}}background-image: url({{poster}});{{/poster}}">
 <div class="color" {{#color}}style="background-color: {{color}};"{{/color}}></div>
+<a href="/" class="logo">
+    <img src="/images/logo-onecolor-w.svg">
+    <span class="text">{{#i}}baseline{{/i}}</span>
+</a>
 {{{ yield }}}
 <script src="/vendor/jquery/dist/jquery.min.js"></script>
 <script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>

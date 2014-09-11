@@ -60,9 +60,15 @@
       return _url(identifier, userAvatarDefault, size, size, background);
     },
     poster: function(identifier, background) {
-      return _url(identifier, posterDefault, 0, 975, background, 'north_east');
+      if (!identifier)
+        return '';
+
+      return _url(identifier, '', 0, 975, background, 'north_east');
     },
     posterBlured: function(identifier, background, blured) {
+      if (!identifier)
+        return '';
+
       return _url(identifier, '', 0, 975, background, 'north_east', 'blur:800');
     }
   };

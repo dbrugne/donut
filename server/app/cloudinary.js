@@ -59,9 +59,13 @@ cloudinary.roomAvatar = function(identifier, size, background) {
   return _url(identifier, roomAvatarDefault, size, size, background);
 };
 cloudinary.userAvatar = function(identifier, size, background) {
+  if (!identifier)
+    return '';
   return _url(identifier, userAvatarDefault, size, size, background);
 };
 cloudinary.poster = function(identifier, background) {
+  if (!identifier)
+    return '';
   return _url(identifier, posterDefault, 0, 975, background, 'north_east');
 };
 
