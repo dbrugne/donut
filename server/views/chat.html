@@ -20,14 +20,21 @@
                 <h1 class="logo"><a href="/!#"><img src="/images/logo-onecolor.svg" alt="{{#i}}title.chat{{/i}}" style="width: 177px;"></a></h1>
                 <div id="block-current-user"></div><!-- /#current-user-block -->
                 <hr>
+                <div>
                 <div id="block-search">
-                    <input type="text" placeholder="Search">
+                    <input type="text" placeholder="{{#i}}chat.search.placeholder{{/i}}">
                     <i class="fa fa-search"></i>
+                </div>
+                <div id="block-create">
+                    <a href="#" id="create-room-link">
+                        <span class="logic">{{#i}}global.or{{/i}}</span>
+                        {{#i}}chat.create.label{{/i}}
+                    </a>
+                </div>
                 </div>
                 <hr>
                 <div class="scrollable">
                     <div id="block-rooms"></div>
-                    <a href="#" id="create-room-link" class="links"><strong>+</strong> {{#i}}chat.create.label{{/i}}</a>
                     <div id="block-onetoones"></div>
                 </div>
                 <div id="block-links">

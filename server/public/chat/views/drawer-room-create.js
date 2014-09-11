@@ -46,19 +46,13 @@ define([
       // Enter in field handling
       if (event.type == 'keyup') {
         if(event.which == 13) {
-          this.submit();
+          return;
         }
       }
     },
     _valid: function() {
-      /**
-       * Room name should be:
-       * - between 2 and 30 length
-       * - accept alphanumeric characters
-       * - specials: - _ \ | [ ] { } @ ^ `
-       */
       var name = '#'+this.$input.val();
-      var pattern = /^#[-a-z0-9_\\|[\]{}@^`]{2,30}$/i;
+      var pattern = /^#[-a-z0-9\._|[\]^]{3,24}$/i;
       if (pattern.test(name)) {
         return true;
       } else {

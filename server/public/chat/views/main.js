@@ -139,7 +139,7 @@ define([
       this._handleAction(event);
 
       var view = new DrawerRoomCreateView({ mainView: this });
-      this.drawerView.setSize('320px').setView(view).open();
+      this.drawerView.setSize('450px').setView(view).open();
 
       return false; // stop propagation
     },

@@ -5,7 +5,7 @@ h1.logo {
 }
 
 #block-current-user {
-  padding: 12px 18px;
+  padding: 12px 18px 6px;
   .avatar {
     .pull-left;
     margin-right: 10px;
@@ -39,7 +39,6 @@ h1.logo {
   }
   .actions {
     padding-top: 5px;
-    clear: both;
     a {
       display: block;
       color: @cl-subtext2;
@@ -68,7 +67,7 @@ h1.logo {
     -moz-border-radius: 25px;
     border-radius: 25px;
     padding: 6px 30px 6px 15px;
-    .ft-opensans-italic;
+    .ft-opensans;
     color: @cl-subtext3;
     outline: none; /* avoid Google Chrome blue outline on focused input */
   }
@@ -79,6 +78,34 @@ h1.logo {
     top: 6px; right: 21px;
     font-size: 17px;
     color: @cl-subtext3;
+  }
+  &:hover {
+    i {
+      color: @cl-first;
+    }
+  }
+}
+#block-create {
+  text-align: center;
+  margin-top: 10px;
+  padding: 0 10px;
+  a {
+    display: block;
+    color: @cl-subtext3;
+    font-size: 1.0em;
+    text-transform: uppercase;
+    font-weight: bold;
+    padding: 6px 7px;
+    border-radius: 25px;
+    .logic {
+      text-transform: lowercase;
+      font-size: 0.9em;
+    }
+    &:hover {
+      text-decoration: none;
+      color: @cl-background;
+      background-color: @cl-first;
+    }
   }
 }
 
@@ -138,16 +165,6 @@ h1.logo {
     .item.unread {  }
     .item .name {  }
     .item .badge { position: absolute; right: 40px; background-color: @cl-warning; color: @cl-subtext3; }
-  }
-}
-
-a.links {
-  display: block;
-  padding: 12px 18px 0;
-  .big-link;
-  strong {
-    font-size: 1.1em;
-    font-weight: 500;
   }
 }
 

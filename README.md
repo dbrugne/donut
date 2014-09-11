@@ -12,12 +12,12 @@ chat
 - [ ] Add title in topic bubbles
 - [ ] Remove A in op badge (test M)
 - [ ] Review room/onetonone tabs to fix users badge on right (absolute) with room name above
-- [ ] Create donut in left column => button + put on top
+- [x] Create donut in left column => button + put on top
 - [ ] Image uploader, display current avatar even if no avatar set
 - [ ] Add permalink on user profile drawer
 - [ ] Add a title on room user list: "XX utilisateurs dans ce donut"
 - [ ] Image uploader help message with expected size
-- [ ] Create donut drawer: help message under field + size, main color name grey
+- [x] Create donut drawer: help message under field + size, main color name grey
 - [ ] Add word-break on room name and user username in drawer
 - [ ] Change alert = 25s + close button
 - [ ] Add avatar in left column on room
@@ -37,6 +37,7 @@ chat
 - [ ] Room description/user bio justify and left align
 - [ ] User profile drawer add edit your profile if it's mine
 - [ ] User/room drawer add a scroll
+- [ ] Add poster helpmessage : "Le poster est la grande image pleine hauteur que vos interlocuteurs voient à droite de la conversation"
 
 **Code**
 - [ ] room name and user username length constrains : 24
