@@ -1,10 +1,10 @@
 <input type="hidden" name="id" value="{{room._id}}"><!-- petit curieux -->
-<div id="profile" class="room-profile">
-    <div class="cover room">
+<div id="profile" class="room-profile room">
+    <div class="cover">
         <a href="{{room.url}}"><img class="avatar" src="{{room.avatar}}" alt="{{room.name}} avatar"></a>
         <p class="join"><a href="{{^user}}/signup{{/user}}{{#user}}{{room.chat}}{{/user}}" {{#room.color}}style="background-color: {{room.color}};"{{/room.color}}>{{#i}}actions.join{{/i}} </a></p>
     </div>
-    <div class="text room">
+    <div class="text">
         <p class="name-content"><a href="{{room.url}}" class="name">{{room.name}}</a> {{#room.permanent}}<img src="/images/permanent.svg" class="permanent" alt="permanent room logo">{{/room.permanent}}</p>
         {{#room.owner}}
         <span class="owner">
@@ -35,7 +35,7 @@
     {{#room.topic}}
     <p class="title">{{#i}}profile.room.now{{/i}}</p>
     <p class="topic">
-        <span class="topic-content"><img src="/images/topic.svg" alt="topic icon"> {{room.topic}}</span>
+        <span class="topic-content"><label>{{#i}}chat.topic.label{{/i}}</label> {{room.topic}}</span>
     </p>
     {{/room.topic}}
     <div class="users cards">

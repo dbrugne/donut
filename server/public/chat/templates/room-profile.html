@@ -3,7 +3,7 @@
     <p class="name"><%= room.name %></p>
     <p class="owner"><%= t('global.by') %> <a class="open-user-profile" data-username="<%= room.owner.username %>" data-colorify-text="#ffffff"><%= room.owner.username %></a></p>
     <% if (room.description) { %><p class="description"><%= room.description %></p><% }; %>
-    <% if (room.topic) { %><p class="topic"><%= room.topic %></p><% }; %>
+    <% if (room.topic) { %><p class="topic"><label><%= t('chat.topic.label') %></label><%= room.topic %></p><% }; %>
     <% if (room.website) { %><p class="website"><%= room.website %></p><% }; %>
 
     <p class="join"><a href="#room/<%= room.name.replace('#', '') %>" data-colorify-background="color" data-colorify-text="contrast">Join <%= room.users_count %></a></p>

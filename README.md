@@ -9,12 +9,11 @@ chat
 - [ ] Adjust join buttons
 - [ ] Room/user profile cards in drawer
 - [ ] On room/user profile page, left colum is closed by default and opened by JS on background load (avoid repeated background display on load)
-- [ ] Add title in topic bubbles
-- [x] Remove A in op badge (test M)
+- [x] Add title in topic bubbles
+- [x] Add a min-width on topic input field
 - [ ] Review room/onetonone tabs to fix users badge on right (absolute) with room name above
 - [ ] Image uploader, display current avatar even if no avatar set
 - [ ] Add permalink on user profile drawer
-- [x] Add a title on room user list: "XX utilisateurs dans ce donut"
 - [ ] Image uploader help message with expected size
 - [ ] Add word-break on room name and user username in drawer
 - [ ] Change alert = 25s + close button
@@ -28,8 +27,6 @@ chat
 - [ ] Reduce home name size
 - [ ] Add a title on online on home : "Utilisateurs en ligne"
 - [ ] Home search results add title over users:  "Utilisateurs correspondant à votre recherche" + show username
-- [x] Show permanently the actions on room user list (not only on hover)
-- [ ] Add a min-width on topic input field
 - [ ] On onetoone default avatar (color problem) doesn't work in .messages
 - [ ] On room profile default avatar of "owner" (color problem) doesn't work (and OP)
 - [ ] Room description/user bio justify and left align

@@ -168,7 +168,7 @@
         "topic": {
             "label": "En ce moment",
             "placeholder": "Entrez ici le sujet de la conversation, l'humeur, l'ambiance ...",
-            "default": "<em>Cliquer pour changer le sujet</em>"
+            "default": "<em>Aucun sujet, cliquer ici pour modifier</em>"
         },
         "owner": {
             "is": "Cet utilisateur est le propriétaire de ce donut"
