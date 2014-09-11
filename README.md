@@ -14,10 +14,6 @@ chat
 - [ ] Add permalink on user profile drawer and edit link profile if it's mine
 - [ ] User/room drawer add a scroll
 
-- [x] Landing "déjà *connecté*" + passer les deux actions sur deux lignes différentes + "déconnexion" => « vous déconnecter »
-- [x] Success message is displayed two time on page form layout/view
-- [x] Landing tasty pictures cropped on iPad
-
 - [ ] Home tiles: show description only on hover, justify, overflow hidden
 - [ ] Reduce home name size
 - [ ] Add a title on online on home : "Utilisateurs en ligne"
