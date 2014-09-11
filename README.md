@@ -7,16 +7,14 @@ chat
 
 **Design**
 - [ ] Room/user profile cards in drawer
-- [ ] On room/user profile page, left colum is closed by default and opened by JS on background load (avoid repeated background display on load)
+- [ ] Add word-break on room name and user username everywhere
+- [ ] Room description/user bio justify and left align everywhere
 - [ ] Image uploader, display current avatar even if no avatar set
 - [ ] Image uploader help message with expected size
-- [ ] Add word-break on room name and user username everywhere
-- [ ] Room description/user bio justify and left align
-- [ ] Add permalink on user profile drawer
-- [ ] User profile drawer add edit your profile if it's mine
+- [ ] Add permalink on user profile drawer and edit link profile if it's mine
 - [ ] User/room drawer add a scroll
 
-- [ ] Landing "déjà *connecté*" + passer les deux actions sur deux lignes différentes + "déconnexion" => « vous déconnecter »
+- [x] Landing "déjà *connecté*" + passer les deux actions sur deux lignes différentes + "déconnexion" => « vous déconnecter »
 - [ ] Success message is displayed two time on page form layout/view
 - [ ] Landing tasty pictures cropped on iPad
 

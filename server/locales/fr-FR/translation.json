@@ -125,7 +125,8 @@
     },
     "logged": {
         "title": "Déjà connecté",
-        "text": "Vous êtes déjà connecter vous pouvez donc accéder au "
+        "text": "Vous êtes déjà connecté, cliquez ici pour accéder au ",
+        "text2": "Vous pouvez également vous "
     },
     "profile": {
         "room": {
