@@ -4,10 +4,10 @@
     <% _.each(list, function(one) { %>
     <a href="#user/<%= one.username %>" class="item <% if (one.focused) { %>active<% }; %> <% if (one.unread > 0) {%>unread<%}; %>" data-username="<%= one.username %>">
         <img src="<%= one.avatar %>" class="avatar" alt="<%= one.username %> avatar">
-        <span class="name"><%= one.username %></span>
         <% if (one.unread > 0) { %>
-            <span class="badge"><%= one.unread %></span>
+        <span class="unread"><%= one.unread %></span>
         <% }; %>
+        <span class="name"><%= one.username %></span>
         <img src="/images/close.svg" class="close-onetoone" data-username="<%= one.username %>" alt="close" title="Close this discussion">
     </a>
     <% }); %>

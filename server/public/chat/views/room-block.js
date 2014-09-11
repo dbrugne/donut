@@ -33,6 +33,7 @@ define([
       _.each(this.collection.models, function(o) {
         var userCount = o.users.length;
         var json = o.toJSON();
+        json.avatar = $.cd.roomAvatar(json.avatar, 20, json.color);
         json.count = userCount; // users are not an "attribute", but an object properties
         listJSON.push(json);
       });

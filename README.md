@@ -6,8 +6,9 @@ chat
 **Tasks**
 
 **Design**
-- [ ] Review room/onetonone tabs to fix users badge on right (absolute) with room name above
-
+- [x] Review room/onetonone tabs to fix users badge on right (absolute) with room name above
+- [x] Add avatar in left column on room
+- [x] Remove unread message count on left column badge
 - [ ] Adjust join buttons
 - [ ] Room/user profile cards in drawer
 - [ ] On room/user profile page, left colum is closed by default and opened by JS on background load (avoid repeated background display on load)
@@ -15,9 +16,6 @@ chat
 - [ ] Image uploader help message with expected size
 - [ ] Add permalink on user profile drawer
 - [ ] Add word-break on room name and user username in drawer
-- [x] Change alert = 25s + close button
-- [ ] Add avatar in left column on room
-- [ ] Remove unread message count on left column badge
 - [ ] Traduire online/offline dans l'entête one to one et ajouter le cercle de couleur
 - [ ] Landing "déjà *connecté*" + passer les deux actions sur deux lignes différentes + "déconnexion" => « vous déconnecter »
 - [ ] Success message is displayed two time on page form layout/view
