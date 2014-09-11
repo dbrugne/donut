@@ -7,6 +7,17 @@ define([
 
     initialize: function () {
       this.$alert = $('#alert > .alert');
+      this.$message = $('#alert > .alert > .message');
+      this.$close = $('#alert > .alert > .close-btn');
+
+      var that = this;
+      this.$close.click(function (event) {
+        that.$message.html('');
+        that.$alert
+          .finish()
+          .slideUp('fast')
+          .removeClass('info warning error');
+      });
     },
 
     /**
@@ -17,18 +28,20 @@ define([
      * @returns {AlertView}
      */
     show: function (typeOfAlert, message) {
+      this.$message
+        .html(message);
       this.$alert
         .finish()
         .removeClass('info warning error')
         .addClass(typeOfAlert)
-        .html(message)
         .slideDown('fast')
-        .delay(2000)
+        .delay(1000*30)
         .slideUp('fast')
       ;
 
       return this;
     }
+
   });
 
   return AlertView;

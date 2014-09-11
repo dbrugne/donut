@@ -6,17 +6,16 @@ chat
 **Tasks**
 
 **Design**
+- [ ] Review room/onetonone tabs to fix users badge on right (absolute) with room name above
+
 - [ ] Adjust join buttons
 - [ ] Room/user profile cards in drawer
 - [ ] On room/user profile page, left colum is closed by default and opened by JS on background load (avoid repeated background display on load)
-- [x] Add title in topic bubbles
-- [x] Add a min-width on topic input field
-- [ ] Review room/onetonone tabs to fix users badge on right (absolute) with room name above
 - [ ] Image uploader, display current avatar even if no avatar set
-- [ ] Add permalink on user profile drawer
 - [ ] Image uploader help message with expected size
+- [ ] Add permalink on user profile drawer
 - [ ] Add word-break on room name and user username in drawer
-- [ ] Change alert = 25s + close button
+- [x] Change alert = 25s + close button
 - [ ] Add avatar in left column on room
 - [ ] Remove unread message count on left column badge
 - [ ] Traduire online/offline dans l'entête one to one et ajouter le cercle de couleur
@@ -33,6 +32,7 @@ chat
 - [ ] User profile drawer add edit your profile if it's mine
 - [ ] User/room drawer add a scroll
 - [ ] Add poster helpmessage : "Le poster est la grande image pleine hauteur que vos interlocuteurs voient à droite de la conversation"
+- Bug : Je crée un compte à partir avec FB. Je saisis ensuite un e-mail/mdp. Je me déconnecte. Je ne peux me connecter qu’avec FB, la connexion email/mdp ne marche pas. En fait, lorsque je saisis comme adresse e-mail de compte DONUT, la même adresse mail que j'avais saisie à l'inscription à FB, ça marche pas. En revanche, quand je saisis une autre adresse e-mail, ça marche, je peux me connecter. C'est embêtant parce que le plus souvent, on saisis quand même la même adresse e-mail.
 
 **Code**
 - [ ] room name and user username length constrains : 24
