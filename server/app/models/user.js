@@ -72,7 +72,7 @@ userSchema.methods.validPassword = function (password) {
  */
 userSchema.statics.validateUsername = function (username) {
   // Good length, only allowed chars.
-  var pattern = /^[-a-z0-9\._|[\]^]{3,25}$/i;
+  var pattern = /^[-a-z0-9\._|[\]^]{3,24}$/i;
   if (pattern.test(username)) {
     // Must contains at least one letter or number
     var pattern2 = /[a-z0-9]+/i;

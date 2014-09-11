@@ -71,7 +71,11 @@
     "choose-username": {
         "title": "Il est temps de choisir un nom d'utilisateur !",
         "description": "Le nom d'utilisateur sera votre identité sur DONUT. Les autres utilisateurs le verront. Il n'est pas modifiable.",
-        "help": "Entre 3 et 25 caractères. Lettres et/ou chiffres et/ou certains caractères spéciaux.",
+        "help": [
+          "Entre 3 et 24 caractères.<br>",
+          "Autorisés : lettres, chiffres et caractères spéciaux (-._|[]^)<br>",
+          "Interdits : espaces et caractères spéciaux non listés ci-dessus.<br>"
+        ],
         "usernameerror": "Ce nom d'utilisateur ne respecte pas les contraintes.",
         "usernameexists": "Ce nom d'utilisateur est déjà pris par un autre utilisateur."
     },
@@ -143,10 +147,15 @@
     },
     "chat": {
         "create": {
+            "info": "Attention le nom du donut ne sera plus modifiable !",
             "label": "Créez votre donut",
-            "help": "Caractères autorisés: lettres, chiffres et : \"<strong>_-[]|</strong>\". Caractères interdits: espace, # et autres trucs improbables !",
+            "help": [
+              "Entre 3 et 24 caractères.<br>",
+              "Autorisés : lettres, chiffres et caractères spéciaux (-._|[]^)<br>",
+              "Interdits : espaces et caractères spéciaux non listés ci-dessus.<br>"
+            ],
             "placeholder": "Nom du donut",
-            "submit": "Créer"
+            "submit": "Créer le donut"
         },
         "help": "Aide",
         "search": {
@@ -155,8 +164,8 @@
             "nouser": "Aucun résultat de recherche"
         },
         "topic": {
-            "label": "Changer le sujet",
-            "placeholder": "Nouveau sujet",
+            "label": "En ce moment",
+            "placeholder": "Entrez ici le sujet de la conversation, l'humeur, l'ambiance ...",
             "default": "<em>Cliquer pour changer le sujet</em>"
         },
         "owner": {

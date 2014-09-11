@@ -36,7 +36,7 @@ roomSchema.path('name').set(function (v) {
 });
 
 roomSchema.statics.validateName = function (name) {
-  var pattern = /^#[-a-z0-9_\\|[\]@^]{2,30}$/i;
+  var pattern = /^#[-a-z0-9\._|[\]^]{3,24}$/i;
   if (pattern.test(name)) {
     return true;
   }
