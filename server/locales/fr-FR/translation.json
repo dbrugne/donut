@@ -72,7 +72,7 @@
         "title": "Il est temps de choisir un nom d'utilisateur !",
         "description": "Le nom d'utilisateur sera votre identité sur DONUT. Les autres utilisateurs le verront. Il n'est pas modifiable.",
         "help": [
-          "Entre 3 et 24 caractères.<br>",
+          "Entre 3 et 15 caractères.<br>",
           "Autorisés : lettres, chiffres et caractères spéciaux (-._|[]^)<br>",
           "Interdits : espaces et caractères spéciaux non listés ci-dessus.<br>"
         ],
