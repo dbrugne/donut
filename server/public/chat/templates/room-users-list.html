@@ -1,5 +1,5 @@
 <% _.each(list, function(user) { %>
-<p class="item <% if (user.is_op === true) { %>op<% }; %> <% if (user.is_owner === true) { %>owner<% }; %>">
+<div class="item <% if (user.is_op === true) { %>op<% }; %> <% if (user.is_owner === true) { %>owner<% }; %>">
     <span class="avatar" title="<% if (user.is_op === true) { %><%= t('chat.op.is') %><% } else if (user.is_owner === true) { %><%= t('chat.owner.is') %><% }; %>"><img class="open-user-profile" data-username="<%= user.username %>" src="<%= user.avatar %>" alt="<%= user.username %> avatar"></span>
     <span class="username open-user-profile" data-username="<%= user.username %>"><%= user.username %></span>
         <span class="actions">
@@ -12,5 +12,5 @@
                 <img src="images/kick-w.svg" height="17px" class="kick-user" title="<%= t('chat.kick.infobox') %>" data-username="<%= user.username %>">
             <% }; %>
         </span>
-</p>
+</div>
 <% }); %>
