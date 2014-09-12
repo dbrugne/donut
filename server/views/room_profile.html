@@ -19,7 +19,7 @@
         {{/room.website}}
         {{#room.description}}
         <div class="description">
-            <p class="description-content">{{room.description}}</p>
+            <p class="description-content">{{{room.description}}}</p>
         </div>
         {{/room.description}}
     </div>
@@ -36,7 +36,7 @@
     <div class="room">
         <p class="title">{{#i}}profile.room.now{{/i}}</p>
         <div class="topic">
-            <div class="topic-content"><label>{{#i}}chat.topic.label{{/i}}</label> {{room.topic}}</div>
+            <div class="topic-content"><label>{{#i}}chat.topic.label{{/i}}</label> {{{room.topic}}}</div>
         </div>
     </div>
     {{/room.topic}}

@@ -8,7 +8,7 @@
         <a href="{{_user.url}}" class="username">{{_user.username}}</a>
         {{#_user.location}}
         <span class="location">
-            {{_user.location}}
+            {{{_user.location}}}
         </span>
         {{/_user.location}}
         {{#_user.website}}
@@ -19,7 +19,7 @@
         {{/_user.website}}
         {{#_user.bio}}
         <div class="bio">
-            <p class="bio-content">{{_user.bio}}</p>
+            <p class="bio-content">{{{_user.bio}}}</p>
         </div>
         {{/_user.bio}}
     </div>
