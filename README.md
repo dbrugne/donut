@@ -7,7 +7,7 @@ chat
 
 **Design**
 - [ ] Room/user profile cards in drawer
-- [ ] Add word-break on room name and user username everywhere
+- [x] Add word-break on room name and user username everywhere
 - [ ] Room description/user bio justify and left align everywhere
 - [ ] Image uploader, display current avatar even if no avatar set
 - [ ] Image uploader help message with expected size
