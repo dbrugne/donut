@@ -136,14 +136,18 @@
             "disclaimer": {
                 "before": "Cette page est le profil du donut ",
                 "after": "sur la plateforme de chat <a href=\"/\">DONUT.me</a>. DONUT.me vous permet de rejoindre ou créer un salon de discussion thématique (donut) sur ce qui vous plait. Vous pouvez y discuter avec des gens qui partagent vos centres d'intérêt"
-            }
+            },
+            "permalink": "Lien permanent vers ce profil",
+            "editlink": "Pour éditer ce profil cliquer ici"
         },
         "user": {
             "hisrooms": "Ses rooms",
             "disclaimer": {
                 "before": "Cette page est le profil de l'utilisateur",
                 "after": "sur la plateforme de chat <a href=\"/\">DONUT.me</a>. DONUT.me vous permet de rejoindre ou créer un salon de discussion thématique (donut) sur ce qui vous plait. Vous pouvez y discuter avec des gens qui partagent vos centres d'intérêt"
-            }
+            },
+            "permalink": "Lien permanent vers ce profil",
+            "editlink": "Pour éditer votre profil cliquer ici"
         }
     },
     "chat": {
@@ -285,10 +289,6 @@
         },
         "color": {
             "label": "Couleur"
-        },
-        "permanent": {
-            "yes": "Donut permanent",
-            "no": "Donut temporaire: sera supprimé 12 heures après le départ du dernier utilisateur."
         },
         "autojoindonut": {
             "yes": "Rejoindre automatique <strong>#donut</strong> quand vous vous connectez"

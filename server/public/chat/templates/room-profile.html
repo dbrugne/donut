@@ -27,14 +27,10 @@
         <% }); %>
     </div>
 
-    <% if (room.permanent === true) { %>
-    <img src="/images/permanent.svg" class="permanent" alt="permanent room logo">
-    <% } %>
-
     <div class="footer">
-        <a href="<%= room.url %>" target="_blank">Lien permanent vers ce profil <i class="fa fa-external-link"></i></a>
+        <a href="<%= room.url %>" target="_blank"><%= t('profile.room.permalink') %> <i class="fa fa-external-link"></i></a>
         <% if (room.isOwner) { %>
-        <a class="edit open-room-edit" data-room-name="<%= room.name %>">Pour éditer ce profil cliquer ici <i class="fa fa-pencil-square-o"></i></a>
+        <a class="edit open-room-edit" data-room-name="<%= room.name %>"><%= t('profile.room.editlink') %> <i class="fa fa-pencil-square-o"></i></a>
         <% }; %>
     </div>
 </div>

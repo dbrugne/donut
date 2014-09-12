@@ -19,9 +19,9 @@
     </div>
 
     <div class="footer">
-        <a href="<%= user.url %>" target="_blank">Lien permanent vers ce profil <i class="fa fa-external-link"></i></a>
+        <a href="<%= user.url %>" target="_blank"><%= t('profile.user.permalink') %> <i class="fa fa-external-link"></i></a>
         <% if (user.isCurrent) { %>
-        <a class="edit open-user-edit" data-username="<%= user.username %>">Pour éditer votre profil cliquer ici <i class="fa fa-pencil-square-o"></i></a>
+        <a class="edit open-user-edit" data-username="<%= user.username %>"><%= t('profile.user.editlink') %> <i class="fa fa-pencil-square-o"></i></a>
         <% }; %>
     </div>
 </div>
