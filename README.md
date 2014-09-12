@@ -6,32 +6,29 @@ chat
 **Tasks**
 
 **Design**
+- [ ] User/room drawers add a scroll
 - [ ] Room/user profile cards in drawer
 - [ ] Room description/user bio justify and left align everywhere
+- [ ] Home: reduce room name size, show description only on hover+justify+overflow hidden, no hover on touch screens, add title "Utilisateurs en ligne" on onlines
+- [ ] Home search : add submit on enter and on click on magnifier
+- [ ] Home search : show title for user results "Utilisateurs correspondant à votre recherche" + show username
 - [ ] Image uploader, display current avatar even if no avatar set
 - [ ] Image uploader help message with expected size
-- [ ] User/room drawer add a scroll
-- [ ] Home tiles: show description only on hover, justify, overflow hidden
-- [ ] Reduce home name size
-- [ ] Add a title on online on home : "Utilisateurs en ligne"
-- [ ] Home search results add title over users:  "Utilisateurs correspondant à votre recherche" + show username
-- [ ] On onetoone default avatar (color problem) doesn't work in .messages
-- [ ] Traduire online/offline dans l'entête one to one et ajouter le cercle de couleur
-- [ ] On room profile default avatar of "owner" (color problem) doesn't work (and OP)
-- [ ] Add poster helpmessage : "Le poster est la grande image pleine hauteur que vos interlocuteurs voient à droite de la conversation"
-- Bug : Je crée un compte à partir avec FB. Je saisis ensuite un e-mail/mdp. Je me déconnecte. Je ne peux me connecter qu’avec FB, la connexion email/mdp ne marche pas. En fait, lorsque je saisis comme adresse e-mail de compte DONUT, la même adresse mail que j'avais saisie à l'inscription à FB, ça marche pas. En revanche, quand je saisis une autre adresse e-mail, ça marche, je peux me connecter. C'est embêtant parce que le plus souvent, on saisis quand même la même adresse e-mail.
+- [ ] Add poster help: "Le poster est la grande image pleine hauteur que vos interlocuteurs voient à droite de la conversation. Il rescommandé d'avoir une largeur de XXXpx et une hauteur d'au moins XXXpx. La partie visible de l'image sera la zone en haut à gauche."
+- [ ] Default avatar (color problem) doesn't work well in .messages, room drawer owner/op,
+- [ ] Translate online/offline in onetoone header et add color circle
 
 **Code**
-- [ ] Order donuts on home page (date or activity or ...)
-- [ ] Add click on search block in left column focus home + focus input
-- [ ] Home search form : add submit on enter and on click on magnifier
-- [x] Remove room permanent support
-- [ ] Add delete room feature
-- [ ] Remove home tile over on touch screen
 - [ ] Go down to .messages on discussion focus
+- [ ] Order donuts on home page (last_join_at desc)
+- [ ] Add click on search block in left column focus home + focus input
+- [ ] Add delete room feature
 - [ ] Add offline message when a user send a message to a user that is not longer connected
-- [ ] Test and make it work on IE9 + Safari Windows
-- [ ] Add new socket.io-redis
+- [ ] Bug : Je crée un compte à partir avec FB. Je saisis ensuite un e-mail/mdp. Je me déconnecte. Je ne peux me connecter qu’avec FB, la connexion email/mdp ne marche pas. En fait, lorsque je saisis comme adresse e-mail de compte DONUT, la même adresse mail que j'avais saisie à l'inscription à FB, ça marche pas. En revanche, quand je saisis une autre adresse e-mail, ça marche, je peux me connecter. C'est embêtant parce que le plus souvent, on saisis quand même la même adresse e-mail.
+- [ ] Test and make it work on IE9+ and Safari Windows
+- [ ] Test and make it work on iPad
+- [ ] Add old browser disclaimer
+- [ ] Add new socket.io-redis (https://github.com/Automattic/socket.io/issues/1630)
   - [ ] Implement user count on room profile
   - [ ] Implement user online status on user profile
   - [ ] Implement current user list on room profile
