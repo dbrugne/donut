@@ -7,7 +7,6 @@ chat
 
 **Design**
 - [ ] Room/user profile cards in drawer
-- [x] Add word-break on room name and user username everywhere
 - [ ] Room description/user bio justify and left align everywhere
 - [ ] Image uploader, display current avatar even if no avatar set
 - [ ] Image uploader help message with expected size
@@ -28,15 +27,13 @@ chat
 **Code**
 - [ ] Order donuts on home page (date or activity or ...)
 - [ ] Add click on search block in left column focus home + focus input
+- [ ] Home search form : add submit on enter and on click on magnifier
 - [ ] Remove room permanent support
 - [ ] Add delete room feature
-- [ ] Send name/username constrains to David to have help translations
-- [ ] Home search form : add submit on enter and on click on magnifier
 - [ ] Remove home tile over on touch screen
-- [ ] Test and make it work on IE9 + Safari Windows
 - [ ] Go down to .messages on discussion focus
 - [ ] Add offline message when a user send a message to a user that is not longer connected
-- [ ] Add kick reason form
+- [ ] Test and make it work on IE9 + Safari Windows
 - [ ] Add new socket.io-redis
   - [ ] Implement user count on room profile
   - [ ] Implement user online status on user profile
@@ -92,6 +89,7 @@ chat
 
 **Chat**
 - [ ] Add ban
+- [ ] Add kick reason form
 - [ ] Add a 'room ops' drawer with 'remove user from op list' button (only for owner)
 - [ ] Add a 'room bans' drawer with 'remove user from ban list' button (for op)
 - [ ] Change the to server->client messages : room:join/leave and user:open/close (for something like ?)
