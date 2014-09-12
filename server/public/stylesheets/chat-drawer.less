@@ -107,6 +107,26 @@
       border-color: @cl-success;
     }
   }
+  #room-profile, #user-profile {
+    .footer {
+      margin-top: 20px;
+
+      a {
+        display: block;
+        margin-top: 5px;
+        color: @cl-subtext5;
+        i {
+        }
+      }
+      .edit {
+
+      }
+      .edit:hover {
+        text-decoration: none;
+        cursor: pointer;
+      }
+    }
+  }
   #room-profile {
     text-align: center;
     .room {
@@ -232,24 +252,6 @@
     .permanent {
       position: absolute;
       top: -5px; right: 60px;
-    }
-    .footer {
-      margin-top: 20px;
-
-      a {
-        display: block;
-        margin-top: 5px;
-        color: @cl-subtext5;
-        i {
-        }
-      }
-      .edit {
-
-      }
-      .edit:hover {
-        text-decoration: none;
-        cursor: pointer;
-      }
     }
   }
   #user-profile {

@@ -10,14 +10,12 @@ chat
 - [ ] Room description/user bio justify and left align everywhere
 - [ ] Image uploader, display current avatar even if no avatar set
 - [ ] Image uploader help message with expected size
-- [ ] Add permalink on user profile drawer and edit link profile if it's mine
+- [x] Add permalink on user profile drawer and edit link profile if it's mine
 - [ ] User/room drawer add a scroll
-
 - [ ] Home tiles: show description only on hover, justify, overflow hidden
 - [ ] Reduce home name size
 - [ ] Add a title on online on home : "Utilisateurs en ligne"
 - [ ] Home search results add title over users:  "Utilisateurs correspondant à votre recherche" + show username
-
 - [ ] On onetoone default avatar (color problem) doesn't work in .messages
 - [ ] Traduire online/offline dans l'entête one to one et ajouter le cercle de couleur
 - [ ] On room profile default avatar of "owner" (color problem) doesn't work (and OP)
