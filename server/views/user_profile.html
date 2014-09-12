@@ -1,7 +1,7 @@
 <input type="hidden" name="id" value="{{_user._id}}"><!-- petit curieux -->
 <div id="profile" class="user-profile">
     <div class="cover user">
-        <a href="{{_user.url}}"><img class="avatar" src="{{_user.avatar}}" alt="{{_user.name}} avatar"></a>
+        <a href="{{_user.url}}"><img class="avatar" src="{{_user.avatar}}" alt="{{_user.username}} avatar"></a>
         <p class="discuss"><a href="{{^user}}/login{{/user}}{{#user}}{{_user.chat}}{{/user}}" {{#_user.color}}style="background-color: {{_user.color}};"{{/_user.color}}>{{#i}}actions.discuss{{/i}}</a></p>
     </div>
     <div class="text user">
