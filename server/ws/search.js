@@ -23,7 +23,7 @@ module.exports = function (io, socket, data) {
 //          ]
         };
 
-        var q = Room.find(search, 'name permanent owner description topic avatar color').populate('owner', 'username');
+        var q = Room.find(search, 'name owner description topic avatar color').populate('owner', 'username');
         q.exec(function(err, rooms) {
           if (err)
             return callback('Error while searching for rooms: '+err);
@@ -39,7 +39,6 @@ module.exports = function (io, socket, data) {
             }
             results.push({
               name: room.name,
-              permanent: room.permanent,
               owner: owner,
               description: room.description,
               topic: room.topic,

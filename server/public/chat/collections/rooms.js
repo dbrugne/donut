@@ -52,7 +52,6 @@ define([
         name: room.name,
         owner: owner,
         op: room.op,
-        permanent: room.permanent,
         topic: room.topic,
         avatar: room.avatar,
         poster: room.poster,

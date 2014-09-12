@@ -22,7 +22,6 @@ define([
       this.listenTo(this.model, 'change:color', this.onColor);
       this.listenTo(this.model, 'change:avatar', this.onAvatar);
       this.listenTo(this.model, 'change:poster', this.onPoster);
-      this.listenTo(this.model, 'change:permanent', this.onPermanent);
 
       this.topicView = new TopicView({el: this.$el.find('.topic'), model: this.model});
       this.usersView = new UsersView({el: this.$el.find('.users'), model: this.model, collection: this.model.users});
@@ -96,12 +95,6 @@ define([
       this.$el.find('div.side').css('background-image', 'url('+url+')');
       var urlb = $.cd.posterBlured(value, model.get('color'));
       this.$el.find('div.blur').css('background-image', 'url('+urlb+')');
-    },
-    onPermanent: function(model, value, options) {
-      if (value)
-        this.$el.find('.permanent').show();
-      else
-        this.$el.find('.permanent').hide();
     }
 
   });

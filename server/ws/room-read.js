@@ -54,7 +54,6 @@ module.exports = function(io, socket, data) {
         op: ops,
         users: users,
         users_count: users_count,
-        permanent: room.permanent,
         avatar: room.avatar,
         poster: room.poster,
         color: room.color,

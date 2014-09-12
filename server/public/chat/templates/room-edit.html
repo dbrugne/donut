@@ -26,21 +26,6 @@
         <label><%= t('edit.color.label') %></label>
         <div class="room-color"></div>
     </div>
-    <label><%= t('edit.othersettings') %></label>
-    <div class="form-group">
-        <div class="radio">
-            <label>
-                <input type="radio" name="permanent" class="room-permanent-yes" value="1" <% if (room.permanent) { %>checked<% } %>>
-                <%= t('edit.permanent.yes') %>
-            </label>
-        </div>
-        <div class="radio">
-            <label>
-                <input type="radio" name="permanent" class="room-permanent-no" value="0" <% if (!room.permanent) { %>checked<% } %>>
-                <%= t('edit.permanent.no') %>
-            </label>
-        </div>
-    </div>
     <div class="form-group buttons">
         <a class="btn btn-default btn-sm cancel"><%= t('global.cancel') %></a>
         <input type="submit" value="<%= t('global.save') %>">

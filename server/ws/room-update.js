@@ -90,13 +90,6 @@ module.exports = function(io, socket, data) {
         }
       }
 
-      // permanent
-      if (helper._.has(data.data, 'permanent')) {
-        var permanent = validator.toBoolean(data.data.permanent);
-        if (permanent != room.permanent)
-          sanitized.permanent = permanent;
-      }
-
       var errNum = Object.keys(errors).length;
       if (errNum > 0) {
         socket.emit('room:update', {
@@ -193,7 +186,7 @@ module.exports = function(io, socket, data) {
 
       // notify only certain fields
       var sanitizedToNotify = {};
-      var fieldToNotify = ['avatar','poster','color','permanent'];
+      var fieldToNotify = ['avatar','poster','color'];
       helper._.each(Object.keys(sanitized), function(key) {
         if (fieldToNotify.indexOf(key) != -1) {
           sanitizedToNotify[key] = sanitized[key];

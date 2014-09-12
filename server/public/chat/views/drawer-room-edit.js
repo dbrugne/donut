@@ -97,8 +97,7 @@ define([
       var updateData = {
         description: this.$el.find('textarea[name=description]').val(),
         website: this.$el.find('input[name=website]').val(),
-        color: this.$el.find('input[name=color]').val(),
-        permanent: this.$el.find('input[type=radio].room-permanent-yes').prop('checked')
+        color: this.$el.find('input[name=color]').val()
       };
 
       if (this.avatarUploader.data)

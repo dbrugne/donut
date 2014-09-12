@@ -93,7 +93,6 @@ module.exports = function(io, socket) {
             name: room.name,
             owner: {},
             op: room.op || [],
-            permanent: room.permanent,
             avatar: room.avatar,
             poster: room.poster,
             color: room.color,

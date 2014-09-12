@@ -114,8 +114,7 @@ module.exports = {
         room = new Room({
           name: o.name,
           owner: o.socket.getUserId(),
-          color: configuration.room.default.color,
-          permanent: false
+          color: configuration.room.default.color
         });
         room.save(function (err, room, numberAffected) {
           if (err) return o.error('Unable to create room: '+err);
@@ -508,7 +507,7 @@ module.exports = {
 
     data.rooms = [];
 
-    var q = Room.find({}, 'name owner permanent topic description avatar color')
+    var q = Room.find({})
       .limit(25)
       .populate('owner', 'username avatar');
 
@@ -528,7 +527,6 @@ module.exports = {
         }
         var roomData = {
           name: room.name,
-          permanent: room.permanent,
           topic: room.topic,
           description: room.description,
           color: room.color,

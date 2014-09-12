@@ -14,7 +14,6 @@ define([
         name: '',
         op: [],
         topic: '',
-        permanent: false,
         avatar: '',
         poster: '',
         posterblured: '',
@@ -32,7 +31,6 @@ define([
       this.listenTo(client, 'room:out', this.onOut);
       this.listenTo(client, 'room:topic', this.onTopic);
       this.listenTo(client, 'room:message', this.onMessage);
-      this.listenTo(client, 'room:permanent', this.onPermanent);
       this.listenTo(client, 'room:op', this.onOp);
       this.listenTo(client, 'room:deop', this.onDeop);
       this.listenTo(client, 'room:updated', this.onUpdated);
@@ -134,12 +132,6 @@ define([
         avatar: data.avatar,
         topic: data.topic
       });
-    },
-    onPermanent: function(data) {
-      if (data.name != this.get('name'))
-        return;
-
-      this.set('permanent', data.permanent);
     },
     onOp: function(data) {
       if (data.name != this.get('name'))

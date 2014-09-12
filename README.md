@@ -10,7 +10,6 @@ chat
 - [ ] Room description/user bio justify and left align everywhere
 - [ ] Image uploader, display current avatar even if no avatar set
 - [ ] Image uploader help message with expected size
-- [x] Add permalink on user profile drawer and edit link profile if it's mine
 - [ ] User/room drawer add a scroll
 - [ ] Home tiles: show description only on hover, justify, overflow hidden
 - [ ] Reduce home name size
@@ -26,7 +25,7 @@ chat
 - [ ] Order donuts on home page (date or activity or ...)
 - [ ] Add click on search block in left column focus home + focus input
 - [ ] Home search form : add submit on enter and on click on magnifier
-- [ ] Remove room permanent support
+- [x] Remove room permanent support
 - [ ] Add delete room feature
 - [ ] Remove home tile over on touch screen
 - [ ] Go down to .messages on discussion focus
