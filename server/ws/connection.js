@@ -30,6 +30,8 @@ module.exports = function(io, socket) {
     return this.request.user.color;
   };
 
+  socket.helper = require('./helper-socket')(io);
+
   async.waterfall([
 
     function addSocketToUserRoom(callback) {
