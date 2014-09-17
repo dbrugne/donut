@@ -6,8 +6,7 @@ chat
 **Tasks**
 
 **Design**
-- [-] Image uploader, display current avatar even if no avatar set (too complex)
-- [ ] Translate online/offline in onetoone header et add color circle
+- [x] Translate online/offline in onetoone header et add color circle
 
 **Code**
 - [ ] Add click on search block in left column focus home + focus input

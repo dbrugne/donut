@@ -74,6 +74,12 @@
     .alert.error { background-color: @cl-error; }
   }
 
+  .status { font-size: 10px; font-weight: bold; color: @cl-background; }
+  .status.online { color: @cl-success; }
+  .status.connecting { color: @cl-warning; }
+  .status.offline { color: @cl-neutral; }
+  .status.error { color: @cl-error; }
+
   #color {
     width: 100%;
     height: @size-color;

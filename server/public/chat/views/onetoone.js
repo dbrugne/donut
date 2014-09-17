@@ -62,9 +62,15 @@ define([
     },
     onStatus: function() {
       if (this.model.get('status')) {
-        this.$el.find('.header .status').text('online');
+        this.$el.find('.header .status-block em').text($.t("global.online"));
+        this.$el.find('.header .status')
+          .removeClass('offline online')
+          .addClass('online');
       } else {
-        this.$el.find('.header .status').text('offline');
+        this.$el.find('.header .status-block em').text($.t("global.offline"));
+        this.$el.find('.header .status')
+          .removeClass('offline online')
+          .addClass('offline');
       }
     }
 
