@@ -264,9 +264,9 @@
         "upload": {
             "nopicture": "Pas de photo",
             "failed": "Téléchargement échoué",
-            "done": "Téléchargement terminé, attendez pour le traitement de l'image"
+            "done": "Téléchargement terminé, attendez pour le traitement de l'image",
+            "help": "Fichier image (.jpeg, .jpg, .png or .gif). Sera automatiquement redimenssionné au format __resized_width__x__resized_height__px."
         },
-        "avatarhelp": "Fichier image (.jpeg, .jpg, .png or .gif). Sera automatiquement redimenssionné au format 150x150px.",
         "left": "<strong>%left</strong> restant",
         "othersettings": "Autres paramètres",
         "description": {

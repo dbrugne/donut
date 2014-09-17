@@ -13,7 +13,7 @@
     <% } else if (type == 'uploader') { %>
     <div class="uploader-form">
         <input type="file" name="file" class="cloudinary_fileupload"> (<a class="cancel"><%= t('global.cancel') %></a>)
-        <p class="help-block"><%= t('edit.avatarhelp') %></p>
+        <p class="help-block"><%= t('edit.upload.help', {resized_width: resized_width, resized_height: resized_height}) %></p>
     </div>
     <div class="progress" style="display: none;"></div>
     <% } else if (type == 'error') { %>

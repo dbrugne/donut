@@ -70,7 +70,11 @@ define([
         el: this.$el.find('.user-avatar').first(),
         current: currentAvatar,
         tags: 'user,avatar',
-        field_name: 'avatar'
+        field_name: 'avatar',
+        stored_width: 800,
+        stored_height: 600,
+        resized_width: 150,
+        resized_height: 150
       });
 
       // poster
@@ -78,7 +82,11 @@ define([
         el: this.$el.find('.user-poster').first(),
         current: user.poster,
         tags: 'user,poster',
-        field_name: 'poster'
+        field_name: 'poster',
+        stored_width: 430,
+        stored_height: 600,
+        resized_width: 430,
+        resized_height: 1200
       });
     },
     onSubmit: function(event) {

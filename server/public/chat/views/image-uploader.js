@@ -23,7 +23,11 @@ define([
       this.options = _.extend({
         current: '',
         field_name: 'image',
-        tags: ''
+        tags: '',
+        stored_width: 800,
+        stored_height: 600,
+        resized_width: 150,
+        resized_height: 150
       }, options);
 
       // current == v1401656005/avatar-537b98832244d66015d7692f.jpg
@@ -75,8 +79,8 @@ define([
           tags: this.options.tags,
           crop: 'limit',
           gravity: 'face',
-          width: 800,
-          height: 600 // @todo: different constrains for poster and avatar
+          width: this.options.stored_width,
+          height: this.options.stored_height
         });
         $cloudinaryFileupload.bind('cloudinaryprogress', function(e, data) {
 

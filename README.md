@@ -7,15 +7,15 @@ chat
 
 **Design**
 - [ ] Image uploader, display current avatar even if no avatar set
-- [ ] Image uploader help message with expected size
+- [x] Image uploader help message with expected size
 - [ ] Add poster help: "Le poster est la grande image pleine hauteur que vos interlocuteurs voient à droite de la conversation. Il rescommandé d'avoir une largeur de XXXpx et une hauteur d'au moins XXXpx. La partie visible de l'image sera la zone en haut à gauche."
 - [ ] Translate online/offline in onetoone header et add color circle
 
 **Code**
-- [x] Order donuts on home page (last_join_at desc)
 - [ ] Add click on search block in left column focus home + focus input
 - [ ] Add delete room feature
 - [ ] Add offline message when a user send a message to a user that is not longer connected
+- [ ] Bug: if i create a room (the topic is empty) and the default message is not displayed until i refresh page
 - [ ] Bug : Je crée un compte à partir avec FB. Je saisis ensuite un e-mail/mdp. Je me déconnecte. Je ne peux me connecter qu’avec FB, la connexion email/mdp ne marche pas. En fait, lorsque je saisis comme adresse e-mail de compte DONUT, la même adresse mail que j'avais saisie à l'inscription à FB, ça marche pas. En revanche, quand je saisis une autre adresse e-mail, ça marche, je peux me connecter. C'est embêtant parce que le plus souvent, on saisis quand même la même adresse e-mail.
 - [ ] Add new socket.io-redis (https://github.com/Automattic/socket.io/issues/1630)
   - [ ] On connect/disconnect/join/leave maintain redis user set for each room
@@ -36,17 +36,25 @@ chat
 - [ ] CGU (link in HP and chat interface)
 - [ ] Implement open graph and SEO description and canonical url in room/user profile meta
 - [ ] Implement open graph and SEO description and canonical url on landing
+- [ ] Créer une email martine@
+- [ ] Créer une email hello@
+- [ ] Créer une email david@
+- [ ] Créer une email damien@
+
+## v1.1 : minimal features against competitors
+
+- [ ] Discussion history
+- [ ] Post images in discussion
+- [ ] Onetoone message delivering (even for offline users) + onetoone refactoring
+- [ ] Kick reason form
+- [ ] Ban from room
+- [ ] Op user list edit
+- [ ] Multi-node support
 
 ## Release 3
 
 **Hosting**
 - [ ] Add test instance on the same server (donut.me subdomain and new IP from OVH)
-
-**Branding**
-- [ ] Créer une email martine@
-- [ ] Créer une email hello@
-- [ ] Créer une email david@
-- [ ] Créer une email damien@
 
 **Other**
 - [ ] @todo review
