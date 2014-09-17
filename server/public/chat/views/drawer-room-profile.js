@@ -50,7 +50,8 @@ define([
         var html = this.template({room: room});
         this.$el.html(html);
         this.$el.colorify();
-        this.$el.find('.website').linkify();
+        this.$el.find('.website span').linkify();
+        this.$el.find('.created span').momentify('date');
 
         if (room.color)
           this.trigger('color', room.color);

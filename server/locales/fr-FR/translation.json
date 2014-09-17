@@ -138,16 +138,18 @@
                 "after": "sur la plateforme de chat <a href=\"/\">DONUT.me</a>. DONUT.me vous permet de rejoindre ou créer un salon de discussion thématique (donut) sur ce qui vous plait. Vous pouvez y discuter avec des gens qui partagent vos centres d'intérêt"
             },
             "permalink": "Lien permanent vers ce profil",
-            "editlink": "Pour éditer ce profil cliquer ici"
+            "editlink": "Pour éditer ce profil cliquer ici",
+            "createdat": "créé le"
         },
         "user": {
-            "hisrooms": "Ses rooms",
+            "hisrooms": "Ses donuts",
             "disclaimer": {
                 "before": "Cette page est le profil de l'utilisateur",
                 "after": "sur la plateforme de chat <a href=\"/\">DONUT.me</a>. DONUT.me vous permet de rejoindre ou créer un salon de discussion thématique (donut) sur ce qui vous plait. Vous pouvez y discuter avec des gens qui partagent vos centres d'intérêt"
             },
             "permalink": "Lien permanent vers ce profil",
-            "editlink": "Pour éditer votre profil cliquer ici"
+            "editlink": "Pour éditer votre profil cliquer ici",
+            "signuped": "inscrit le"
         }
     },
     "chat": {

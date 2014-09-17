@@ -6,16 +6,19 @@ chat
 **Tasks**
 
 **Design**
-- [x] User/room drawers add a scroll
-- [ ] Room/user profile cards in drawer
+- [x] Room/user profile cards in drawer
 - [ ] Room description/user bio justify and left align everywhere
+
 - [ ] Home: reduce room name size, show description only on hover+justify+overflow hidden, no hover on touch screens, add title "Utilisateurs en ligne" on onlines
 - [ ] Home search : add submit on enter and on click on magnifier
 - [ ] Home search : show title for user results "Utilisateurs correspondant à votre recherche" + show username
+
 - [ ] Image uploader, display current avatar even if no avatar set
 - [ ] Image uploader help message with expected size
 - [ ] Add poster help: "Le poster est la grande image pleine hauteur que vos interlocuteurs voient à droite de la conversation. Il rescommandé d'avoir une largeur de XXXpx et une hauteur d'au moins XXXpx. La partie visible de l'image sera la zone en haut à gauche."
-- [ ] Default avatar (color problem) doesn't work well in .messages, room drawer owner/op,
+
+- [ ] Default avatar (color problem) doesn't work well in .messages
+
 - [ ] Translate online/offline in onetoone header et add color circle
 
 **Code**

@@ -92,7 +92,8 @@ module.exports = function(io, socket, data) {
           poster    : user.poster,
           bio       : user.bio,
           location  : user.location,
-          website   : user.website
+          website   : user.website,
+          registered: user.created_at
         };
 
         // status

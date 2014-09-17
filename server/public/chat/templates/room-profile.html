@@ -3,34 +3,40 @@
     <p class="name"><%= room.name %></p>
     <p class="owner"><%= t('global.by') %> <a class="open-user-profile" data-username="<%= room.owner.username %>" data-colorify-text="#ffffff"><%= room.owner.username %></a></p>
     <% if (room.description) { %><p class="description"><%= room.description %></p><% }; %>
+    <% if (room.website) { %><p class="website"><i class="fa fa-link"></i> <span><%= room.website %></span></p><% }; %>
+    <% if (room.created) { %><p class="created"><i class="fa fa-clock-o"></i> <%= t('profile.room.createdat') %> <span data-time="<%= room.created %>"></span></p><% }; %>
+    <% if (room.users_list.length > 0) { %>
+    <div class="users">
+        <p class="title"><i class="fa fa-users"></i> <%= t('profile.room.ownerops') %></p>
+        <% _.each(room.users_list, function(user) { %>
+        <div class="user open-user-profile <% if (user.isOwner) { %>owner<% }; %> <% if (user.isOp) { %>op<% }; %>" data-username="<%= user.username %>" data-colorify="<%= user.color %>">
+            <div class="cover">
+                <span class="avatar"><img src="<%= user.avatar %>"></span>
+                <div class="text">
+                    <div class="username"><%= user.username %></div>
+                </div>
+            </div>
+            <div class="back" data-colorify-background="color">
+                <span class="avatar"><img src="<%= user.avatar %>"></span>
+                <div class="text">
+                    <div class="username" data-colorify-text="contrast"><%= user.username %></div>
+                </div>
+            </div>
+        </div>
+        <% }); %>
+        <hr>
+    </div>
+    <% } %>
     <p class="join">
         <a href="#room/<%= room.name.replace('#', '') %>" data-colorify-background="color" data-colorify-text="contrast">
             <%= t('actions.join') %> <%= room.users_count %>
             <img src="/images/user.svg" alt="user icon">
         </a>
     </p>
-    <% if (room.topic) { %><p class="topic"><label><%= t('chat.topic.label') %></label><%= room.topic %></p><% }; %>
-    <% if (room.website) { %><p class="website"><%= room.website %></p><% }; %>
-
-    <div class="users">
-        <% _.each(room.users_list, function(user) { %>
-        <div class="user open-user-profile <% if (user.isOwner) { %>owner<% }; %> <% if (user.isOp) { %>op<% }; %>" data-username="<%= user.username %>" data-colorify="<%= user.color %>">
-            <span class="avatar"><img src="<%= user.avatar %>" /></span>
-            <div class="text" data-colorify-background="color">
-                <div class="username" data-colorify-text="contrast"><%= user.username %></div>
-                <div class="role" data-colorify-text="contrast">
-                    <% if (user.isOwner) { %>propriétaire<% }; %>
-                    <% if (user.isOp) { %>modérateur<% }; %>
-                </div>
-            </div>
-        </div>
-        <% }); %>
-    </div>
-
     <div class="footer">
-        <a href="<%= room.url %>" target="_blank"><%= t('profile.room.permalink') %> <i class="fa fa-external-link"></i></a>
+        <a href="<%= room.url %>" target="_blank"><i class="fa fa-external-link"></i> <%= t('profile.room.permalink') %></a>
         <% if (room.isOwner) { %>
-        <a class="edit open-room-edit" data-room-name="<%= room.name %>"><%= t('profile.room.editlink') %> <i class="fa fa-pencil-square-o"></i></a>
+        <a class="edit open-room-edit" data-room-name="<%= room.name %>"><i class="fa fa-pencil-square-o"></i> <%= t('profile.room.editlink') %></a>
         <% }; %>
     </div>
 </div>

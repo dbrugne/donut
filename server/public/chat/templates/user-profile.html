@@ -2,26 +2,30 @@
     <img class="avatar" src="<%= user.avatar %>" alt="<%= user.username %> avatar">
     <p class="username"><%= user.username %></p>
     <% if (user.bio) { %><p class="bio"><%= user.bio %></p><% }; %>
-    <% if (user.location) { %><p class="location"><%= user.location %></p><% }; %>
-    <% if (user.website) { %><p class="website"><%= user.website %></p><% }; %>
+    <% if (user.location) { %><p class="location"><i class="fa fa-map-marker"></i> <%= user.location %></p><% }; %>
+    <% if (user.website) { %><p class="website"><i class="fa fa-link"></i> <span><%= user.website %></span></p><% }; %>
+    <% if (user.registered) { %><p class="created"><i class="fa fa-clock-o"></i> <%= t('profile.user.signuped') %> <span data-time="<%= user.registered %>"></span></p><% }; %>
+    <% if (user.rooms_list.length > 0) { %>
+    <div class="rooms">
+        <p class="title"><i class="fa fa-empire"></i> <%= t('profile.user.hisrooms') %></p>
+        <% _.each(user.rooms_list, function(room) { %>
+        <div class="room open-room-profile <% if (room.oped) { %>op<% } %> <% if (room.owned) { %>owner<% } %>" data-room-name="<%= room.name %>" data-colorify="<%= room.color %>">
+            <img class="avatar" src="<%= room.avatar %>" />
+            <span class="name"><%= room.name %></span>
+        </div>
+        <% }); %>
+        <hr>
+    </div>
+    <% } %>
     <% if (user.status == 'online') { %>
     <p class="discuss"><a href="#user/<%= user.username %>" data-colorify-background="color" data-colorify-text="contrast"><%= t('actions.discuss') %></a></p>
     <% } else { %>
     <p class="offline"><a><%= t('global.offline') %></a></p>
     <% }; %>
-    <div class="rooms">
-        <% _.each(user.rooms_list, function(room) { %>
-        <div class="room open-room-profile" data-room-name="<%= room.name %>" data-colorify="<%= room.color %>" data-colorify-background="color">
-            <img class="avatar" src="<%= room.avatar %>" />
-            <span class="name" data-colorify-text="contrast"><%= room.name %></span>
-        </div>
-        <% }); %>
-    </div>
-
     <div class="footer">
-        <a href="<%= user.url %>" target="_blank"><%= t('profile.user.permalink') %> <i class="fa fa-external-link"></i></a>
+        <a href="<%= user.url %>" target="_blank"><i class="fa fa-external-link"></i> <%= t('profile.user.permalink') %></a>
         <% if (user.isCurrent) { %>
-        <a class="edit open-user-edit" data-username="<%= user.username %>"><%= t('profile.user.editlink') %> <i class="fa fa-pencil-square-o"></i></a>
+        <a class="edit open-user-edit" data-username="<%= user.username %>"><i class="fa fa-pencil-square-o"></i> <%= t('profile.user.editlink') %></a>
         <% }; %>
     </div>
 </div>

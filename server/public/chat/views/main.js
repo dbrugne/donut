@@ -159,7 +159,7 @@ define([
         return;
 
       var view = new DrawerUserProfileView({ mainView: this, username: username });
-      this.drawerView.setSize('280px').setView(view).open();
+      this.drawerView.setSize('320px').setView(view).open();
 
       return false; // stop propagation
     },
@@ -171,7 +171,7 @@ define([
         return;
 
       var view = new DrawerRoomProfileView({ mainView: this, name: name });
-      this.drawerView.setSize('280px').setView(view).open();
+      this.drawerView.setSize('320px').setView(view).open();
 
       return false; // stop propagation
     },

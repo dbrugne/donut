@@ -49,7 +49,8 @@ define([
       var html = this.template({user: user});
       this.$el.html(html);
       this.$el.colorify();
-      this.$el.find('.website').linkify();
+      this.$el.find('.website span').linkify();
+      this.$el.find('.created span').momentify('date');
 
       if (user.color)
         this.trigger('color', user.color);
