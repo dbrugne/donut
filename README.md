@@ -12,20 +12,23 @@ chat
 - [ ] Translate online/offline in onetoone header et add color circle
 
 **Code**
-- [x] Go down to .messages on discussion focus
-- [ ] Order donuts on home page (last_join_at desc)
+- [x] Order donuts on home page (last_join_at desc)
 - [ ] Add click on search block in left column focus home + focus input
 - [ ] Add delete room feature
 - [ ] Add offline message when a user send a message to a user that is not longer connected
 - [ ] Bug : Je crée un compte à partir avec FB. Je saisis ensuite un e-mail/mdp. Je me déconnecte. Je ne peux me connecter qu’avec FB, la connexion email/mdp ne marche pas. En fait, lorsque je saisis comme adresse e-mail de compte DONUT, la même adresse mail que j'avais saisie à l'inscription à FB, ça marche pas. En revanche, quand je saisis une autre adresse e-mail, ça marche, je peux me connecter. C'est embêtant parce que le plus souvent, on saisis quand même la même adresse e-mail.
+- [ ] Add new socket.io-redis (https://github.com/Automattic/socket.io/issues/1630)
+  - [ ] On connect/disconnect/join/leave maintain redis user set for each room
+  - [ ] On connect/disconnect maintain redis user set
+  - [ ] Implement user count on room profile
+  - [ ] Implement user online status on user profile
+  - [ ] Implement current user list on room profile
+
+**Compliance**
 - [ ] Home: no hover on touch screens
 - [ ] Test and make it work on IE9+ and Safari Windows
 - [ ] Test and make it work on iPad
 - [ ] Add old browser disclaimer
-- [ ] Add new socket.io-redis (https://github.com/Automattic/socket.io/issues/1630)
-  - [ ] Implement user count on room profile
-  - [ ] Implement user online status on user profile
-  - [ ] Implement current user list on room profile
 
 **Contents**
 - [ ] FAQ (link in HP and chat interface)
