@@ -7,7 +7,7 @@ chat
 
 **Design**
 - [x] Room/user profile cards in drawer
-- [ ] Room description/user bio justify and left align everywhere
+- [x] Room description/user bio justify and left align everywhere
 
 - [ ] Home: reduce room name size, show description only on hover+justify+overflow hidden, no hover on touch screens, add title "Utilisateurs en ligne" on onlines
 - [ ] Home search : add submit on enter and on click on magnifier
