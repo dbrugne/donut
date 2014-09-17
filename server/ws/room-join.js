@@ -40,7 +40,6 @@ module.exports = function(io, socket, data) {
         username: room.owner.username
       };
     }
-//    socket.emit('room:welcome', welcome);
     io.to('user:'+socket.getUserId()).emit('room:welcome', welcome);
 
     // Inform other room users
