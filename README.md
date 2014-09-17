@@ -6,9 +6,8 @@ chat
 **Tasks**
 
 **Design**
+- [x] Add poster help: "Le poster est la grande image en pleine hauteur que vos interlocuteurs voient à droite de la conversation. Il rescommandé d'avoir une largeur de XXXpx et une hauteur d'au moins XXXpx. La partie visible de l'image sera la zone en haut à gauche."
 - [ ] Image uploader, display current avatar even if no avatar set
-- [x] Image uploader help message with expected size
-- [ ] Add poster help: "Le poster est la grande image pleine hauteur que vos interlocuteurs voient à droite de la conversation. Il rescommandé d'avoir une largeur de XXXpx et une hauteur d'au moins XXXpx. La partie visible de l'image sera la zone en haut à gauche."
 - [ ] Translate online/offline in onetoone header et add color circle
 
 **Code**

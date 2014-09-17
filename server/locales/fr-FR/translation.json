@@ -293,7 +293,8 @@
             "label": "Avatar"
         },
         "poster": {
-            "label": "Poster"
+            "label": "Poster",
+            "help": "Le poster est la grande image en pleine hauteur que vos interlocuteurs voient à droite de la conversation. Il recommandé d'avoir une largeur de 430px et une hauteur d'au moins 975px. La partie visible de l'image sera la zone en haut à gauche."
         },
         "color": {
             "label": "Couleur"
