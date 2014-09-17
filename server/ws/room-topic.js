@@ -33,6 +33,7 @@ module.exports = function(io, socket, data) {
         user_id : socket.getUserId(),
         username: socket.getUsername(),
         avatar  : socket.getAvatar(),
+        color: socket.getColor(),
         topic   : data.topic
       };
       io.to(data.name).emit('room:topic', roomTopicEvent);

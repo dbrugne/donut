@@ -6,11 +6,6 @@ chat
 **Tasks**
 
 **Design**
-- [x] Home: reduce room name size, show description only on hover+justify+overflow hidden
-- [x] Home: add title "Voici les donut existants, vous pouvez également en <>créer un<>:", add title "Utilisateurs en ligne" on onlines
-- [x] Home search : add submit on enter and on click on magnifier
-- [x] Home search : show title for user results "Utilisateurs correspondant à votre recherche" + show username
-- [ ] Home: no hover on touch screens
 - [ ] Image uploader, display current avatar even if no avatar set
 - [ ] Image uploader help message with expected size
 - [ ] Add poster help: "Le poster est la grande image pleine hauteur que vos interlocuteurs voient à droite de la conversation. Il rescommandé d'avoir une largeur de XXXpx et une hauteur d'au moins XXXpx. La partie visible de l'image sera la zone en haut à gauche."
@@ -18,13 +13,13 @@ chat
 
 **Code**
 - [ ] Go down to .messages on discussion focus
-- [ ] Default avatar (color problem) doesn't work well in .messages
-
+- [x] Default avatar (color problem) doesn't work well in .messages
 - [ ] Order donuts on home page (last_join_at desc)
 - [ ] Add click on search block in left column focus home + focus input
 - [ ] Add delete room feature
 - [ ] Add offline message when a user send a message to a user that is not longer connected
 - [ ] Bug : Je crée un compte à partir avec FB. Je saisis ensuite un e-mail/mdp. Je me déconnecte. Je ne peux me connecter qu’avec FB, la connexion email/mdp ne marche pas. En fait, lorsque je saisis comme adresse e-mail de compte DONUT, la même adresse mail que j'avais saisie à l'inscription à FB, ça marche pas. En revanche, quand je saisis une autre adresse e-mail, ça marche, je peux me connecter. C'est embêtant parce que le plus souvent, on saisis quand même la même adresse e-mail.
+- [ ] Home: no hover on touch screens
 - [ ] Test and make it work on IE9+ and Safari Windows
 - [ ] Test and make it work on iPad
 - [ ] Add old browser disclaimer

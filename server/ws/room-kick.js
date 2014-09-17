@@ -81,9 +81,11 @@ module.exports = function(io, socket, data) {
         by_user_id : socket.getUserId(),
         by_username: socket.getUsername(),
         by_avatar  : socket.getAvatar(),
+        by_color  : socket.getColor(),
         user_id: user._id.toString(),
         username: user.username,
-        avatar: user._avatar()
+        avatar: user._avatar(),
+        color: user.color
       };
 
       if (data.reason)

@@ -130,6 +130,7 @@ define([
         user_id: data.user_id,
         username: data.username,
         avatar: data.avatar,
+        color: data.color,
         topic: data.topic
       });
     },
@@ -157,9 +158,11 @@ define([
         user_id: data.user_id,
         username: data.username,
         avatar: data.avatar,
+        color: data.color,
         by_user_id: data.by_user_id,
         by_username: data.by_username,
-        by_avatar: data.by_avatar
+        by_avatar: data.by_avatar,
+        by_color: data.by_color
       });
     },
     onDeop: function(data) {
@@ -187,9 +190,11 @@ define([
         user_id: data.user_id,
         username: data.username,
         avatar: data.avatar,
+        color: data.color,
         by_user_id: data.by_user_id,
         by_username: data.by_username,
-        by_avatar: data.by_avatar
+        by_avatar: data.by_avatar,
+        by_color: data.by_color
       });
     },
     onUpdated: function(data) {
