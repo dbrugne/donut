@@ -11,29 +11,41 @@ module.exports = function (io) {
 
     _: _,
 
-    connectedUsersCount: function(fn) {
-
+    addUserOnline: function(fn) {
+      // sadd user in Redis connected SET
     },
 
-    addUserInRoom: function(fn) {
-      // sadd user in room
-      // join
+    remUserOnline: function(fn) {
+      // srem user in Redis connected SET ONLY IF LAST USER SOCKET
+    },
+
+    connectedUsers: function(fn) {
+      // read Redis connected SET
+    },
+
+    addUserInRoom: function(name, fn) {
+      // sadd user in Redis room SET
+        // same for other user sockets
+      // persist in Mongo
+      // join socket to sio room
+
+      // call calback
+    },
+    remUserInRoom: function(name, fn) {
+      // srem user in Redis room SET
+        // same for other user sockets
+      // persist in Mongo
+      // join socket to sio room
+
+      // call calback
     },
 
     roomUsers: function(name, fn) {
-
+      // read Redis set
     },
 
     roomUsersCount: function(name, fn) {
-
-    },
-
-    roomUsersCount: function(name, fn) {
-
-    },
-
-    isUserOnline: function(user_id, fn) {
-
+      // read Redis set
     }
 
   };
