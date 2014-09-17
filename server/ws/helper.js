@@ -276,11 +276,6 @@ module.exports = {
     return list;
   },
 
-  socketUser: function(io, socket) {
-    // @todo
-    return [];
-  },
-
   /**
    * * List room for a particular socket
    * @param io
@@ -495,65 +490,6 @@ module.exports = {
     };
 
     q.exec(onResult);
-  },
-
-  /**
-   * Find and decorate home page data
-    * @param success
-   * @returns {*}
-   */
-  homeData: function(io, success) {
-    var data = {};
-
-    data.rooms = [];
-
-    var q = Room.find({})
-      .limit(25)
-      .populate('owner', 'username avatar');
-
-    var that = this;
-    var onResult = function(err, rooms) {
-      if (err) return that.handleError('Unable to retrieve room list: '+err);
-      if (rooms.length < 1) return success(data);
-
-      for (var i=0; i<rooms.length; i++) {
-        var room = rooms[i];
-        var ownerData = {};
-        if (room.owner != undefined) {
-          ownerData = {
-            user_id: room.owner._id.toString(),
-            username: room.owner.username
-          };
-        }
-        var roomData = {
-          name: room.name,
-          topic: room.topic,
-          description: room.description,
-          color: room.color,
-          avatar: room.avatar,
-          owner: ownerData,
-          users: 0
-        };
-
-        roomData.users = that.roomUsers(io, room.name).length;
-        data.rooms.push(roomData);
-      }
-
-      return success(data);
-    };
-
-    q.exec(onResult);
-  },
-
-  /**
-   * Find and decorate online user list data
-   * @param success
-   * @returns {*}
-   */
-  onlineData: function(io, limit, success) {
-    limit = limit || 5;
-    var onlines = this.connectedUsers(io, limit);
-    return success(onlines);
   },
 
   /**
