@@ -52,7 +52,7 @@ module.exports = function (io, socket) {
         return callback(null, rooms, onlines);
       },
 
-      function send() {
+      function send(rooms, onlines, callback) {
 
         var event = {
           rooms: rooms,
