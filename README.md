@@ -6,8 +6,7 @@ chat
 **Tasks**
 
 **Design**
-- [x] Add poster help: "Le poster est la grande image en pleine hauteur que vos interlocuteurs voient à droite de la conversation. Il rescommandé d'avoir une largeur de XXXpx et une hauteur d'au moins XXXpx. La partie visible de l'image sera la zone en haut à gauche."
-- [ ] Image uploader, display current avatar even if no avatar set
+- [-] Image uploader, display current avatar even if no avatar set (too complex)
 - [ ] Translate online/offline in onetoone header et add color circle
 
 **Code**
@@ -19,9 +18,10 @@ chat
 - [ ] Add new socket.io-redis (https://github.com/Automattic/socket.io/issues/1630)
   - [ ] On connect/disconnect/join/leave maintain redis user set for each room
   - [ ] On connect/disconnect maintain redis user set
-  - [ ] Implement user count on room profile
-  - [ ] Implement user online status on user profile
-  - [ ] Implement current user list on room profile
+  - [ ] Implement user count on room card on chat home
+  - [ ] Implement user count on room profile (drawer and pages)
+  - [ ] Implement current user list on room profile (drawer and pages)
+  - [ ] Implement user online status on user profile (drawer)
 
 **Compliance**
 - [ ] Home: no hover on touch screens
