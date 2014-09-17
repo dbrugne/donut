@@ -75,6 +75,7 @@ define([
     updateFocus: function() {
       if (this.model.get('focused')) {
         this.$el.show();
+        this.messagesView.scrollDown();
         this.$el.find('.input-message').focus();
         this._focus();
       } else {

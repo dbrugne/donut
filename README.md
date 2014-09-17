@@ -12,8 +12,7 @@ chat
 - [ ] Translate online/offline in onetoone header et add color circle
 
 **Code**
-- [ ] Go down to .messages on discussion focus
-- [x] Default avatar (color problem) doesn't work well in .messages
+- [x] Go down to .messages on discussion focus
 - [ ] Order donuts on home page (last_join_at desc)
 - [ ] Add click on search block in left column focus home + focus input
 - [ ] Add delete room feature
