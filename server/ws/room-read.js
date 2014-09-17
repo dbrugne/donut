@@ -59,7 +59,8 @@ module.exports = function(io, socket, data) {
         color: room.color,
         website: room.website,
         topic: room.topic,
-        description: room.description
+        description: room.description,
+        created: room.created_at
       };
       socket.emit('room:read', event);
 
