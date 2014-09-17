@@ -5,6 +5,12 @@
   height: 100%;
   z-index: 5;
 
+  .scrollbar {
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 10px;
+  }
+
   .opacity {
     width: 100%;
     height: 100%;
@@ -42,6 +48,7 @@
   }
 
   #room-create {
+    padding-left: 10px;
     .room {
       margin-top: 30px;
 
@@ -128,6 +135,7 @@
     }
   }
   #room-profile {
+    .scrollbar;
     text-align: center;
     .room {
       position: relative;
@@ -251,6 +259,7 @@
     }
   }
   #user-profile {
+    .scrollbar;
     text-align: center;
     .username {
       margin-top: 20px;
@@ -300,6 +309,7 @@
     }
   }
   #room-edit, #user-edit {
+    .scrollbar;
     font-size: 1.1em;
     padding: 0 15px;
     .errors {
@@ -353,6 +363,7 @@
     }
   }
   #user-account {
+    .scrollbar;
     .user {
       margin-bottom: 10px;
     }

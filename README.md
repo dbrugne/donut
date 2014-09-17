@@ -6,7 +6,7 @@ chat
 **Tasks**
 
 **Design**
-- [ ] User/room drawers add a scroll
+- [x] User/room drawers add a scroll
 - [ ] Room/user profile cards in drawer
 - [ ] Room description/user bio justify and left align everywhere
 - [ ] Home: reduce room name size, show description only on hover+justify+overflow hidden, no hover on touch screens, add title "Utilisateurs en ligne" on onlines
