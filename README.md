@@ -6,23 +6,20 @@ chat
 **Tasks**
 
 **Design**
-- [x] Room/user profile cards in drawer
-- [x] Room description/user bio justify and left align everywhere
-
-- [ ] Home: reduce room name size, show description only on hover+justify+overflow hidden, no hover on touch screens, add title "Utilisateurs en ligne" on onlines
-- [ ] Home search : add submit on enter and on click on magnifier
-- [ ] Home search : show title for user results "Utilisateurs correspondant à votre recherche" + show username
-
+- [x] Home: reduce room name size, show description only on hover+justify+overflow hidden
+- [x] Home: add title "Voici les donut existants, vous pouvez également en <>créer un<>:", add title "Utilisateurs en ligne" on onlines
+- [x] Home search : add submit on enter and on click on magnifier
+- [x] Home search : show title for user results "Utilisateurs correspondant à votre recherche" + show username
+- [ ] Home: no hover on touch screens
 - [ ] Image uploader, display current avatar even if no avatar set
 - [ ] Image uploader help message with expected size
 - [ ] Add poster help: "Le poster est la grande image pleine hauteur que vos interlocuteurs voient à droite de la conversation. Il rescommandé d'avoir une largeur de XXXpx et une hauteur d'au moins XXXpx. La partie visible de l'image sera la zone en haut à gauche."
-
-- [ ] Default avatar (color problem) doesn't work well in .messages
-
 - [ ] Translate online/offline in onetoone header et add color circle
 
 **Code**
 - [ ] Go down to .messages on discussion focus
+- [ ] Default avatar (color problem) doesn't work well in .messages
+
 - [ ] Order donuts on home page (last_join_at desc)
 - [ ] Add click on search block in left column focus home + focus input
 - [ ] Add delete room feature

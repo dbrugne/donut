@@ -31,14 +31,15 @@ define([
     },
     onHome: function(data) {
       if (data.rooms)
-        this.roomsView.render(data.rooms);
+        this.roomsView.render(data);
 
       if (data.users)
-        this.usersView.render(data.users);
+        this.usersView.render(data);
     },
     onSearch: function(data) {
+      data.search = true;
       this.onHome(data);
-    },
+    }
 
   });
 

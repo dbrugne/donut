@@ -23,7 +23,10 @@ module.exports = function (io, socket, data) {
 //          ]
         };
 
-        var q = Room.find(search, 'name owner description topic avatar color').populate('owner', 'username');
+        var q = Room
+          .find(search, 'name owner description topic avatar color')
+          .sort({'lastjoin_at': -1})
+          .populate('owner', 'username');
         q.exec(function(err, rooms) {
           if (err)
             return callback('Error while searching for rooms: '+err);

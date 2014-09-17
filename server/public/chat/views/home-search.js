@@ -9,7 +9,8 @@ define([
     lastSearch: '',
 
     events: {
-      'keyup input[type=text]': 'onKeyup'
+      'keyup input[type=text]': 'onKeyup',
+      'click i.fa-search': 'onKeyup'
     },
 
     initialize: function(options) {
@@ -20,24 +21,16 @@ define([
     },
     onKeyup: function(event) {
       event.preventDefault();
-
-      if(event.which == 13) {
-        this.search();
-      }
-
       this.search();
     },
     search: function() {
       var s = this.$search.val();
       if (!s || s.length < 1)
-        return;
-
-      if (s == this.lastSearch)
-        return; // avoid keyup noise
+        return client.home();
 
       this.lastSearch = s;
       client.search(s);
-    },
+    }
 
   });
 

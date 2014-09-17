@@ -1,4 +1,7 @@
-<div class="onlines">
+<div class="list <% if (search == true) { %>search<% } %>">
+    <div class="title">
+        <% if (search == true) { %><%= t('chat.search.userstitle') %><% } else { %><%= t('chat.home.userstitle') %><% } %>
+    </div>
     <% if (users.length < 1) { %>
         <div class="nothing"><%= t('chat.search.nouser') %></div>
     <% } %>

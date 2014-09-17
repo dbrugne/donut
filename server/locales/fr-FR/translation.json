@@ -165,10 +165,16 @@
             "submit": "Créer le donut"
         },
         "help": "Aide",
+        "home": {
+          "roomstitle": "Voici les donut existants, vous pouvez également en <a class='open-create-room'>créer un</a> :",
+          "userstitle": "Utilisateurs en ligne"
+        },
         "search": {
             "placeholder": "Rechercher un donut ou un utilisateur ici",
             "noroom": "Aucun résultat de recherche",
-            "nouser": "Aucun résultat de recherche"
+            "nouser": "Aucun résultat de recherche",
+            "roomstitle": "Voici les donut correspondant à votre recherche, vous pouvez aussi en <a class='open-create-room'>créer un nouveau</a> :",
+            "userstitle": "Utilisateurs correspondants"
         },
         "userscount": "<strong>__count__</strong> utilisateur dans ce donut",
         "userscount_plural": "<strong>__count__</strong> utilisateurs dans ce donut",

@@ -1,10 +1,23 @@
 #home {
   height: 100%;
 
+  .title {
+    .ft-raleway-medium;
+    color: @cl-subtext3;
+    font-size: 1.6em;
+    a {
+      color: @cl-first;
+      &:hover {
+        opacity: 0.5;
+      }
+    }
+  }
   .nothing {
     .ft-raleway-medium;
+    color: @cl-subtext3;
     text-align: center;
     font-size: 1.2em;
+    margin-top: 20px;
   }
   .left {
     .make-xs-column(12);
@@ -14,9 +27,9 @@
     padding: 30px 40px;
     overflow-x: auto;
 
-    .search {
+    > .search {
       position: relative;
-      font-size: 2.3em;
+      font-size: 1.8em;
       input[type=text] {
         width: 100%;
         border: 1px solid @cl-subtext1;
@@ -24,7 +37,7 @@
         -moz-border-radius: 50px;
         border-radius: 50px;
         padding: 5px 75px 6px 30px;
-        .ft-raleway-heavy;
+        .ft-raleway-medium;
         color: @cl-subtext5;
         outline: none; /* avoid Google Chrome blue outline on focused input */
       }
@@ -32,13 +45,17 @@
       }
       i {
         position: absolute;
-        top: 12px; right: 21px;
+        top: 9px; right: 19px;
         color: @cl-subtext5;
+        cursor: pointer;
       }
     }
 
     .rooms {
-      margin-top: 40px;
+      .title {
+        margin-top: 30px;
+        margin-bottom: 10px;
+      }
       .room {
         .pull-left;
         position: relative;
@@ -52,19 +69,17 @@
         }
         .name {
           margin-top: 17px;
+          font-size: 1.8em;
         }
         .owner {
-        }
-        .topic, .description {
-          margin-top: 22px;
-          max-height: 35px;
-          padding-left: 20px;
-          padding-right: 20px;
-          overflow-y: auto;
         }
         .join {
           position: absolute;
           left: 10px; right: 10px; bottom: 30px;
+          a {
+            padding: 13px 20px;
+            font-size: 1.2em;
+          }
         }
 
         .back {
@@ -82,10 +97,19 @@
             height: 80px;
           }
           .owner {
+            a:hover {
+              opacity: 0.5;
+              text-decoration: none;
+            }
           }
           .description {
-            margin-top: 17px;
-            max-height: 85px;
+            margin-top: 7px;
+            max-height: 75px;
+            overflow: hidden;
+            text-align: justify;
+            font-size: 1.1em;
+            padding-left: 20px;
+            padding-right: 20px;
           }
           .join a {
             color: @cl-first; /** customizable color **/
@@ -107,43 +131,69 @@
     background-color: @cl-subtext1;
 
     .users {
-      .item {
-        .pull-left;
-        position: relative;
-        margin-top: 10px;
-        margin-right: 10px;
-        .avatar {
-          width: 30px;
-          height: 30px;
+      .list {
+        .item {
+          .pull-left;
+          position: relative;
+          margin-top: 10px;
+          margin-right: 10px;
+          .avatar {
+            width: 30px;
+            height: 30px;
+          }
+          .username {
+            display: none;
+            position: absolute;
+            top: 0; right: -20px;
+            height: 30px;
+            line-height: 30px;
+            margin-right: 50px;
+            padding-left: 10px;
+            padding-right: 8px;
+            background-color: @cl-subtext1;
+            -moz-border-radius-topleft: 4px;
+            -webkit-border-top-left-radius: 4px;
+            border-top-left-radius: 4px;
+            -moz-border-radius-bottomleft: 4px;
+            -webkit-border-bottom-left-radius: 4px;
+            border-bottom-left-radius: 4px;
+            text-align: left;
+            .ft-opensans-bold;
+            color: #ffffff;
+            z-index: 99999;
+            white-space:nowrap;
+          }
         }
-        .username {
-          display: none;
-          position: absolute;
-          top: 0; right: -20px;
-          height: 30px;
-          line-height: 30px;
-          margin-right: 50px;
-          padding-left: 10px;
-          padding-right: 8px;
-          background-color: @cl-subtext1;
-          -moz-border-radius-topleft: 4px;
-          -webkit-border-top-left-radius: 4px;
-          border-top-left-radius: 4px;
-          -moz-border-radius-bottomleft: 4px;
-          -webkit-border-bottom-left-radius: 4px;
-          border-bottom-left-radius: 4px;
-          text-align: left;
-          .ft-opensans-bold;
-          color: #ffffff;
-          z-index: 99999;
-          white-space:nowrap;
+        .item:hover {
+          .username {
+            display: block;
+          }
         }
       }
-      .item:hover {
-        .username {
-          display: block;
+      .list.search {
+        .item {
+          .avatar {
+            margin-left: -3px;
+            margin-top: -1px;
+            .pull-left;
+          }
+          .username {
+            display: inline-block;
+            position: relative;
+            right: inherit;
+            margin-right: 0;
+            color: @cl-title;
+            background-color: transparent !important;
+            font-size: 1.1em;
+          }
+        }
+        .item:hover {
+          .username {
+            display: inline-block;
+          }
         }
       }
     }
+
   }
 }

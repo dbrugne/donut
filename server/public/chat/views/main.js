@@ -46,7 +46,7 @@ define([
     currentColor: '',
 
     events: {
-      'click #create-room-link':          'openCreateRoom',
+      'click .open-create-room':          'openCreateRoom',
       'click .open-user-edit':            'openUserEdit',
       'click .open-user-account':         'openUserAccount',
       'click .open-user-profile':         'openUserProfile',
