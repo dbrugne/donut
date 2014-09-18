@@ -13,6 +13,29 @@
     padding-right: 10px;
   }
 
+  .footer {
+    margin-top: 40px;
+    text-align: left;
+    a {
+      display: block;
+      margin-top: 5px;
+      color: @cl-subtext5;
+      i {}
+    }
+    .edit {}
+    .edit:hover {
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .delete {
+      a {
+        color: @cl-error;
+        font-weight: bold;
+        display: inline-block;
+      }
+    }
+  }
+
   .opacity {
     width: 100%;
     height: 100%;
@@ -114,25 +137,6 @@
     .submit {
       background-color: @cl-success;
       border-color: @cl-success;
-    }
-  }
-  #room-profile, #user-profile {
-    .footer {
-      margin-top: 40px;
-      text-align: left;
-      a {
-        display: block;
-        margin-top: 5px;
-        color: @cl-subtext5;
-        i {}
-      }
-      .edit {
-
-      }
-      .edit:hover {
-        text-decoration: none;
-        cursor: pointer;
-      }
     }
   }
   #room-profile {
