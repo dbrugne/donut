@@ -54,7 +54,7 @@ define([
       this.$el.find('div.side').css('background-image', 'url('+url+')');
     },
     onLocation: function(model, value, options) {
-      this.$el.find('.header .location').text(value);
+      this.$el.find('.header .location').html(value);
     },
     onWebsite: function(model, value, options) {
       this.$el.find('.header .website').text(value);
