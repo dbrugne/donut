@@ -10,6 +10,7 @@ define([
   'views/current-user',
   'views/alert',
   'views/home',
+  'views/quick-search',
   'views/drawer',
   'views/drawer-room-create',
   'views/drawer-room-profile',
@@ -22,7 +23,7 @@ define([
   'views/room-block',
   'views/onetoone-block'
 ], function ($, _, Backbone, client, rooms, onetoones, currentUser, windowView,
-             CurrentUserView, AlertView, HomeView,
+             CurrentUserView, AlertView, HomeView, QuickSearchView,
              DrawerView,
              DrawerRoomCreateView, DrawerRoomProfileView, DrawerRoomEditView,
              DrawerUserProfileView, DrawerUserEditView, DrawerUserAccountView,
@@ -67,9 +68,13 @@ define([
       this.currentUserView = new CurrentUserView({model: currentUser});
       this.roomBlockView = new RoomBlockView({collection: rooms});
       this.onetooneBlockView = new OnetooneBlockView({collection: onetoones});
-      this.homeView = new HomeView({});
       this.drawerView = new DrawerView({mainView: this});
       this.alertView = new AlertView({mainView: this});
+      this.homeView = new HomeView({});
+      this.quickSearchView = new QuickSearchView({
+        el: this.$el.find('#block-search'),
+        mainView: this
+      });
 
       window.rooms = rooms; // @debug
       window.onetoones = onetoones; // @debug
