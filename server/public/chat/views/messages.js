@@ -124,7 +124,6 @@ define([
         notification.time = Number(new Date());
       }
 
-
       if (_.has(notification, 'avatar')) // case of user without avatar (avatar == '')
         notification.avatar = $.cd.userAvatar(notification.avatar, 20, notification.color);
 
