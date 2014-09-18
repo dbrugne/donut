@@ -18,7 +18,10 @@ module.exports = {
     if (true) {
       User.findById(data._query.virtualuserid, function(err, virtualUser) {
         if (err) throw new Error('Error while retrieving virtual user: '+err);
-        if (!virtualUser) return console.log('No corresponding virtual user found');
+        if (!virtualUser) {
+          console.log('No corresponding virtual user found, refuse connection');
+          accept(null, false);
+        }
         data['user'] = virtualUser;
         data['logged_in'] = true;
         accept(null, true);
