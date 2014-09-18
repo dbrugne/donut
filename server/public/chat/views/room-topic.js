@@ -35,7 +35,7 @@ define([
 
       this.$el.find('.topic-current, .topic-form').hide();
       var currentTopic = this.model.get('topic');
-      if (currentTopic == '') {
+      if (currentTopic == undefined || currentTopic == '') {
         if (this.model.currentUserIsOp() || this.model.currentUserIsOwner()) {
           this.$el.find('.txt').html(this.defaultText);
           this.$el.find('.topic-current').css('display', 'inline-block');
