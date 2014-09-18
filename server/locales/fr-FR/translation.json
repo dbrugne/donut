@@ -200,6 +200,7 @@
             "hello": "Vous entrez dans",
             "disconnected": "Vous avez été deconnecté du serveur, veuillez patienter",
             "reconnected": "Vous êtes reconnecté <span class=\"detail\">(vous avez peut être manquer des messages dans ce donut)</span>",
+            "offline": "Cet utilisateur est pour le moment hors ligne, le message ne peut donc pas être acheminé.",
             "topic": "à changé le sujet pour",
             "kick": "a été expulsé de ce donut par",
             "ban": "a été banni de ce donut par",

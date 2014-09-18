@@ -413,6 +413,13 @@ module.exports = {
     else return true;
   },
 
+  isUserOnline: function(io, userId) {
+    var sockets = this.userSockets(io, userId);
+    return (sockets.length > 0)
+      ? true
+      : false;
+  },
+
   /**
    * Return all user:message between userWith and socket.getUserId()
    * (both direction)

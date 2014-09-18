@@ -76,6 +76,12 @@ define([
       // Find or create the model
       var model = this.getModel(withUser);
 
+      // Offline user error
+      if (message.error) {
+        model.trigger('notification', {type: 'offline'});
+        return;
+      }
+
       // Rework message object
       model.message({
         user_id: message.from_user_id,

@@ -20,7 +20,7 @@
     <% if (user.status == 'online') { %>
     <p class="discuss"><a href="#user/<%= user.username %>" data-colorify-background="color" data-colorify-text="contrast"><%= t('actions.discuss') %></a></p>
     <% } else { %>
-    <p class="offline"><a><%= t('global.offline') %></a></p>
+    <p class="offline"><a href="#user/<%= user.username %>"><%= t('global.offline') %></a></p>
     <% }; %>
     <div class="footer">
         <a href="<%= user.url %>" target="_blank"><i class="fa fa-external-link"></i> <%= t('profile.user.permalink') %></a>

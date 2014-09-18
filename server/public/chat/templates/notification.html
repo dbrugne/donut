@@ -9,6 +9,9 @@
 <% } else if (type =='reconnected') { %>
     <img src="/images/connect.svg"> <%= t('chat.notifications.reconnected') %>
     <span class="date"><span class="moment" data-time="<%= time %>"></span></span>
+<% } else if (type =='offline') { %>
+    <img src="/images/disconnect.svg"> <%= t('chat.notifications.offline') %>
+    <span class="date"><span class="moment" data-time="<%= time %>"></span></span>
 <% } else if (type =='topic') { %>
     <img src="/images/topic-w.svg"> <img class="avatar" src="<%= avatar %>"><span class="username open-user-profile" data-username="<%= username %>"><%= username %></span> <%= t('chat.notifications.topic') %> "<strong><%- topic %></strong>"
     <span class="date"><span class="moment" data-time="<%= time %>"></span></span>
