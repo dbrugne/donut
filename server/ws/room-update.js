@@ -15,7 +15,7 @@ module.exports = function(io, socket, data) {
 
       helper.retrieveRoom(data.name, function (err, room) {
         if (err)
-          return callback('Unable to find user: ' + err, null);
+          return callback('Unable to find room: ' + err, null);
 
         if (!room)
           return callback('Unable to retrieve room in room:update: '+data.name);
