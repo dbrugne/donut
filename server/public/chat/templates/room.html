@@ -6,7 +6,7 @@
         <div class="topic"><!-- topic view --></div>
         <div class="actions">
             <% if (isOwner === true) { %>
-            <img src="/images/settings.svg" class="edit open-room-edit" data-room-name="<%= name %>" alt="edit room logo">
+            <a class="edit open-room-edit" data-room-name="<%= name %>"><%= t('global.edit') %> <img src="/images/settings.svg" alt="edit room logo"></a>
             <% }; %>
         </div>
     </div>

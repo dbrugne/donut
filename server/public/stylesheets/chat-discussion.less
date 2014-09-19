@@ -103,10 +103,18 @@
         position: absolute;
         top: 40px;
         right: 40px;
-        i { color: @cl-subtext1; }
-        font-size: 0.9em;
+        a {
+          &:hover {
+            text-decoration: none;
+          }
+        }
         .edit {
-          width: 25px;
+          color: @cl-subtext2;
+          font-size: 1.1em;
+          img {
+            width: 25px;
+            height: 25px;
+          }
         }
       }
     }
