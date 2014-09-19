@@ -13,9 +13,17 @@
     padding-right: 10px;
   }
 
+  .errors {
+    .alert;
+    .alert-warning;
+    display: none;
+    font-size: 1.1em;
+  }
+
   .footer {
     margin-top: 40px;
     text-align: left;
+    font-size: 1.1em;
     a {
       display: block;
       margin-top: 5px;
@@ -28,10 +36,12 @@
       cursor: pointer;
     }
     .delete {
+      font-size: 0.9em;
       a {
         color: @cl-error;
         font-weight: bold;
         display: inline-block;
+        cursor: pointer;
       }
     }
   }
@@ -72,11 +82,10 @@
     }
   }
 
-  #room-create {
+  #room-create, #room-delete {
     padding-left: 10px;
     .room {
       margin-top: 30px;
-
     }
     .field {
       margin-top: 21px;
@@ -121,22 +130,42 @@
         color: @cl-background;
       }
     }
-  }
-  #room-create.has-error {
-    .input {
-      border-color: @cl-error;
+    &.has-error {
+      .input {
+        border-color: @cl-error;
+      }
+    }
+    &.has-success {
+      .input {
+        border-color: @cl-success;
+      }
+      .hash {
+        color: @cl-success;
+      }
+      .submit {
+        background-color: @cl-success;
+        border-color: @cl-success;
+      }
+      .help-block {
+        color: lighten(@text-color, 25%);
+      }
     }
   }
-  #room-create.has-success {
-    .input {
-      border-color: @cl-success;
-    }
-    .hash {
-      color: @cl-success;
-    }
-    .submit {
-      background-color: @cl-success;
-      border-color: @cl-success;
+  #room-delete {
+    .buttons {
+      font-size: 1.1em;
+      .submit {
+        vertical-align: baseline;
+        padding: 8px 16px;
+        margin-right: 5px;
+      }
+      a.cancel-lnk {
+        color: @cl-first;
+        font-weight: bold;
+        &:hover {
+          opacity: 0.8;
+        }
+      }
     }
   }
   #room-profile {
@@ -201,11 +230,6 @@
         }
         .cover { display: block;  }
         .back { display: none; }
-//        &:hover {
-//          .cover { display: none; }
-//          .back { display: block; }
-//        }
-
         .avatar {
           position: absolute;
           top: 10px; left: 24px;
@@ -383,11 +407,6 @@
     .scrollbar;
     font-size: 1.1em;
     padding: 0 15px;
-    .errors {
-      .alert;
-      .alert-warning;
-      display: none;
-    }
     label {
       color: @cl-subtext4;
     }

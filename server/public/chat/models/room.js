@@ -26,7 +26,6 @@ define([
 
     _initialize: function() {
       this.users = new RoomUsersCollection();
-      this.on('remove', this.leave);
       this.listenTo(client, 'room:in', this.onIn);
       this.listenTo(client, 'room:out', this.onOut);
       this.listenTo(client, 'room:topic', this.onTopic);
@@ -38,8 +37,8 @@ define([
       this.listenTo(client, 'reconnected', this.onOnline);
       this.listenTo(client, 'disconnected', this.onOffline);
     },
-    leave: function(model, collection, options) {
-      client.leave(model.get('name'));
+    leave: function() {
+      client.leave(this.get('name'));
     },
     currentUserIsOwner: function() {
       if (!this.get('owner'))

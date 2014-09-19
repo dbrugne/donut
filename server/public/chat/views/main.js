@@ -15,6 +15,7 @@ define([
   'views/drawer-room-create',
   'views/drawer-room-profile',
   'views/drawer-room-edit',
+  'views/drawer-room-delete',
   'views/drawer-user-profile',
   'views/drawer-user-edit',
   'views/drawer-user-account',
@@ -26,6 +27,7 @@ define([
              CurrentUserView, AlertView, HomeView, QuickSearchView,
              DrawerView,
              DrawerRoomCreateView, DrawerRoomProfileView, DrawerRoomEditView,
+             DrawerRoomDeleteView,
              DrawerUserProfileView, DrawerUserEditView, DrawerUserAccountView,
              RoomView, OneToOneView,
              RoomBlockView, OnetooneBlockView) {
@@ -54,6 +56,7 @@ define([
       'dblclick .dbl-open-user-profile':  'openUserProfile',
       'click .open-room-profile':         'openRoomProfile',
       'click .open-room-edit':            'openRoomEdit',
+      'click .open-room-delete':          'openRoomDelete',
       'click .close-room':                'onCloseDiscussion',
       'click .close-onetoone':            'onCloseDiscussion'
     },
@@ -63,6 +66,7 @@ define([
       this.listenTo(rooms, 'add', this.addRoomView);
       this.listenTo(onetoones, 'add', this.addOneView);
       this.listenTo(rooms, 'kicked', this.roomKicked); // @todo: nasty event
+      this.listenTo(rooms, 'deleted', this.roomRoomDeleted); // @todo: nasty event
 
       // generate and attach subviews
       this.currentUserView = new CurrentUserView({model: currentUser});
@@ -130,11 +134,16 @@ define([
      * @returns {boolean}
      */
      roomKicked: function(data) {
-      this.focusHome();
+      this.focus();
       var message = $.t("chat.kickmessage")+data.name;
       if (data.reason)
         message += ' (reason: '+data.reason+')';
       this.alert('warning', message);
+    },
+    roomRoomDeleted: function(data) {
+      this.focus();
+      if (data.reason)
+        this.alert('warning', data.reason);
     },
 
     // DRAWERS
@@ -188,6 +197,18 @@ define([
         return;
 
       var view = new DrawerRoomEditView({ mainView: this, name: name });
+      this.drawerView.setSize('450px').setView(view).open();
+
+      return false; // stop propagation
+    },
+    openRoomDelete: function(event) {
+      this._handleAction(event);
+
+      var name = $(event.currentTarget).data('roomName');
+      if (!name)
+        return;
+
+      var view = new DrawerRoomDeleteView({ mainView: this, name: name });
       this.drawerView.setSize('450px').setView(view).open();
 
       return false; // stop propagation
@@ -251,6 +272,7 @@ define([
       var focused = model.get('focused');
 
       // Remove entity (on remove: panel will autodestroy and model will client.leave)
+      model.leave();
       rooms.remove(model);
 
       // Focus default

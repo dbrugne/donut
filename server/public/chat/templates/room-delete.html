@@ -1,0 +1,18 @@
+<div class="room">
+    <span class="name"><%= t('edit.room.delete.title') %></span>
+    <span class="name"><%= room.name %></span>
+</div>
+<div class="form-group">
+    <p class="help-block"><%= t('edit.room.delete.info', {name: room.name}) %></p>
+</div>
+<div class="errors"></div>
+<div class="form-group">
+    <div class="field">
+        <span class="hash">#</span>
+        <input type="text" class="input" name="name" placeholder="<%= t('edit.room.delete.placeholder') %>" maxlength="24" />
+    </div>
+</div>
+<div class="field buttons">
+    <button class="submit" type="button"><%= t('global.delete') %></button>
+    <%= t('global.or') %> <a class="cancel-lnk open-room-edit" data-room-name="<%= room.name %>"><%= t('global.cancel') %></a>
+</div>

@@ -211,7 +211,8 @@
         },
         "shouldauthenticated": "Vous devez être identifié pour accéder aux discussions",
         "closemessage": "Etes-vous sur de vouloir quitter, l’historique de vos conversations sera perdu ?",
-        "kickmessage": "Vous venez d'être expulsé de"
+        "kickmessage": "Vous venez d'être expulsé de",
+        "deletemessage": "Le donut __name__ vient d'être supprimé pas son auteur"
     },
     "account": {
         "error": {
@@ -302,6 +303,21 @@
         },
         "autojoindonut": {
             "yes": "Rejoindre automatique <strong>#donut</strong> quand vous vous connectez"
+        },
+        "room": {
+          "delete": {
+            "link": "Vous pouvez également supprimer ce donut <a class='open-room-delete' data-room-name=\"__name__\">en cliquant ici</a>.",
+            "title": "Supprimer",
+            "info": [
+              "Vous êtes sur le point de supprimer ce donut, cette opération est immédiate et irréversible.<br><br>",
+              "Veuillez confirmer la suppression en saissant le nom du donut (<strong>__name__</strong>) puis en cliquant sur supprimer :"
+            ],
+            "placeholder": "Saisir le nom du donut",
+            "success": "donut supprimé !",
+            "error": {
+              "permanent": "Il n'est pas possible de supprimer un donut 'permanent'"
+            }
+          }
         }
     },
     "page": {

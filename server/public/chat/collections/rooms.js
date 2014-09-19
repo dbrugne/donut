@@ -122,6 +122,11 @@ define([
       // Only if already joined
       if (room) {
         this.remove(room);
+
+        if (data.reason && data.reason == 'deleted')
+          this.trigger('deleted', {reason: $.t("chat.deletemessage", {name: data.name})});
+        else
+          this.trigger('deleted');
       }
     },
     onKick: function(data) {

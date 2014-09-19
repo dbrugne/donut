@@ -6,8 +6,7 @@ chat
 **Tasks**
 
 **Code**
-- [x] Add click on search block in left column focus home + focus input
-- [ ] Add delete room feature
+- [x] Add delete room feature
 - [ ] Add new socket.io-redis (https://github.com/Automattic/socket.io/issues/1630)
   - [ ] On connect/disconnect/join/leave maintain redis user set for each room
   - [ ] On connect/disconnect maintain redis user set
