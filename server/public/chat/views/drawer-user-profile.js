@@ -42,7 +42,7 @@ define([
 
       user.avatar = $.cd.userAvatar(user.avatar, 90, user.color);
 
-      user.url = window.location.origin + '/user/' + user.username.toLocaleLowerCase();
+      user.url = '/user/' + user.username.toLocaleLowerCase();
 
       this._rooms(user); // decorate user object with rooms_list
 
