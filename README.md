@@ -5,20 +5,18 @@ chat
 
 **Tasks**
 
-**Code**
-- [x] Add delete room feature
-- [ ] Add new socket.io-redis (https://github.com/Automattic/socket.io/issues/1630)
-  - [ ] On connect/disconnect/join/leave maintain redis user set for each room
-  - [ ] On connect/disconnect maintain redis user set
-  - [ ] Implement user count on room card on chat home
-  - [ ] Implement user count on room profile (drawer and pages)
-  - [ ] Implement current user list on room profile (drawer and pages)
-  - [ ] Implement user online status on user profile (drawer)
-
 **Compliance**
+- [ ] Test Firefox
+- [x] Test IE11
+- [x] Test IE10
+- [ ] Test IE9
+  - [ ] CSS 4095 rules limit (http://blogs.msdn.com/b/ieinternals/archive/2011/05/14/10164546.aspx)
+  - [ ] Drawer scrollbar (probably due to 4095 limit)
+  - [ ] Image uploader doesn't work
+- [ ] Test IE8
+- [ ] Test 1024
 - [ ] Home: no hover on touch screens
-- [ ] Test and make it work on IE9+ and Safari Windows
-- [ ] Test and make it work on iPad
+- [ ] Test iPad
 - [ ] Add old browser disclaimer
 
 **Contents**
@@ -27,6 +25,15 @@ chat
 - [ ] CGU (link in HP and chat interface)
 - [ ] Implement open graph and SEO description and canonical url in room/user profile meta
 - [ ] Implement open graph and SEO description and canonical url on landing
+
+**Code**
+- [ ] Add new socket.io-redis (https://github.com/Automattic/socket.io/issues/1630)
+  - [ ] On connect/disconnect/join/leave maintain redis user set for each room
+  - [ ] On connect/disconnect maintain redis user set
+  - [ ] Implement user count on room card on chat home
+  - [ ] Implement user count on room profile (drawer and pages)
+  - [ ] Implement current user list on room profile (drawer and pages)
+  - [ ] Implement user online status on user profile (drawer)
 
 ## v1.1 : minimal features against competitors
 
