@@ -36,7 +36,7 @@ module.exports = function(io, socket) {
 
     function addSocketToUserRoom(callback) {
       // create a virtual room by user
-      socket.join('user:'+socket.request.user._id, function() {
+      socket.join('user:'+socket.getUserId(), function() {
         return callback(null);
       });
     },
