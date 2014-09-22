@@ -8,7 +8,7 @@ router.param('user', paramHandler);
 router.get('/user/:user', function(req, res) {
   var meta = {
     url         : req.requestedUser.url,
-    description : req.requestedUser.description,
+    description : req.requestedUser.bio,
     title       : i18next.t("meta.profile.title", {subtitle: req.requestedUser.username}),
     image       : req.requestedUser.avatar
   };

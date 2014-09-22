@@ -13,8 +13,8 @@ router.get('/', function(req, res) {
     url         : baseUrl,
     description : i18next.t("meta.landing.description"),
     keywords    : i18next.t("meta.landing.keywords"),
-    title       : i18next.t("meta.sitename"),
-    image       : baseUrl+"/images/donut.png"
+    title       : i18next.t("meta.landing.title"),
+    image       : baseUrl+"images/donut.png"
   };
 
   return res.render('landing', {
