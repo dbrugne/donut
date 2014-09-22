@@ -6,7 +6,7 @@ chat
 **Tasks**
 
 **Compliance**
-- [ ] Test Firefox
+- [x] Test Firefox
 - [x] Test IE11
 - [x] Test IE10
 - [ ] Test IE9
