@@ -5,14 +5,10 @@ chat
 
 **Tasks**
 
-**Contents**
-- [x] Implement open graph and SEO description and canonical url in room/user profile meta
-- [x] Implement open graph and SEO description and canonical url on landing
-
 **Compliance**
 - [ ] Test IE9
-  - [ ] CSS 4095 rules limit (http://blogs.msdn.com/b/ieinternals/archive/2011/05/14/10164546.aspx)
-  - [ ] Drawer scrollbar (probably due to 4095 limit)
+  - [x] CSS 4095 rules limit (http://blogs.msdn.com/b/ieinternals/archive/2011/05/14/10164546.aspx)
+  - [x] Drawer scrollbar (probably due to 4095 limit)
   - [ ] Image uploader doesn't work
 - [ ] Test IE8
 - [ ] Test 1024
