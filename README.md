@@ -5,6 +5,13 @@ chat
 
 **Tasks**
 
+**Contents**
+- [x] FAQ (link in HP and chat interface)
+- [x] Contact (link in HP and chat interface)
+- [x] CGU (link in HP and chat interface)
+- [ ] Implement open graph and SEO description and canonical url in room/user profile meta
+- [ ] Implement open graph and SEO description and canonical url on landing
+
 **Compliance**
 - [x] Test Firefox
 - [x] Test IE11
@@ -18,13 +25,6 @@ chat
 - [ ] Home: no hover on touch screens
 - [ ] Test iPad
 - [ ] Add old browser disclaimer
-
-**Contents**
-- [ ] FAQ (link in HP and chat interface)
-- [ ] Contact (link in HP and chat interface)
-- [ ] CGU (link in HP and chat interface)
-- [ ] Implement open graph and SEO description and canonical url in room/user profile meta
-- [ ] Implement open graph and SEO description and canonical url on landing
 
 **Code**
 - [ ] Add new socket.io-redis (https://github.com/Automattic/socket.io/issues/1630)

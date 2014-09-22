@@ -59,6 +59,7 @@ app.use(require('./http/choose-username'));
 app.use(require('./http/account-delete'));
 app.use(require('./http/account-edit-email'));
 app.use(require('./http/account-edit-password'));
+app.use(require('./http/static'));
 
 app.use(errors('404'));
 app.use(errors('500', app));

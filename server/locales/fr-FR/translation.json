@@ -7,7 +7,12 @@
         "default": "DONUT vous permet de discuter autour de vos centres d'intérêt et d'animer vos communautés!",
         "landing": "DONUT - Discussions instantanées autour de vos centres d'intérêt",
         "profile": "Profil de",
-        "chat": "DONUT"
+        "chat": "DONUT",
+        "static": {
+          "faq": "Foire aux questions - DONUT",
+          "eutc": "Conditions Générales d'Utilisation - DONUT",
+          "legals": "Mentions légales - DONUT"
+        }
     },
     "baseline": "vous avez des choses à (vous) dire !",
     "actions": {
@@ -118,9 +123,10 @@
             "etvoila": "et voilà !"
         },
         "footer": {
-            "link1": "Notre philosophie",
-            "link2": "Conditions d'utilisations",
-            "link3": "Copyright DONUT"
+            "faq": "FAQ",
+            "eutc": "Conditions d'utilisations",
+            "legals": "Mentions légales",
+            "contact": "Contact"
         }
     },
     "logged": {

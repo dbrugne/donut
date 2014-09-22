@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <title>{{#title}}{{title}}{{/title}}{{^title}}{{#i}}title.default{{/i}}{{/title}}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+    <!--[if lte IE 9]>
+    <script src="/javascripts/plugins/placeholders.min.js"></script>
+    <![endif]-->
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge"/><!-- Avoid IE compatibility mode -->
+</head>
+<body class="body-static">
+<div class="container">
+    <div class="logo">
+        <a href="/"><img src="/images/logo.png" alt="{{#i}}title{{/i}} - {{#i}}baseline{{/i}}"></a>
+    </div>
+    <div class="main">
+        <div class="content">
+            {{{ yield }}}
+        </div>
+    </div>
+    <div class="footer">
+        {{#user}}
+        {{#i}}global.footer.before{{/i}} <a href="/logout">{{#i}}actions.tologout{{/i}}</a> {{#i}}global.or{{/i}} <a href="/!">{{#i}}actions.home{{/i}}</a>{{#i}}global.footer.after{{/i}}
+        {{/user}}
+        {{^user}}
+        {{#i}}global.footer.before{{/i}} <a href="/login">{{#i}}actions.tologin{{/i}}</a> {{#i}}global.or{{/i}} <a href="/signup">{{#i}}actions.signup{{/i}}</a>{{#i}}global.footer.after{{/i}}
+        {{/user}}
+    </div>
+</div>
+<script src="/vendor/jquery/dist/jquery.min.js"></script>
+<script src="/javascripts/script.js"></script>
+{{{googleanalytics}}}
+</body>
+</html>
