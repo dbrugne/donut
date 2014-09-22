@@ -2,9 +2,10 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'models/client',
   'collections/rooms',
   'collections/onetoones'
-], function ($, _, Backbone, rooms, onetoones) {
+], function ($, _, Backbone, client, rooms, onetoones) {
   /**
    * Represent the browser window
    */
@@ -19,6 +20,8 @@ define([
     defaultTitle: '',
 
     title: '',
+
+    preventPopin: false,
 
     initialize: function(options) {
       this.$window = this.$el;
@@ -39,6 +42,7 @@ define([
       });
 
       // Bind events to model
+      this.listenTo(client, 'notlogged', this.onNotLogged);
       this.listenTo(rooms, 'newMessage', this.increment); // @todo : nasty event
       this.listenTo(onetoones, 'newMessage', this.increment); // @todo : nasty event
     },
@@ -88,11 +92,16 @@ define([
 
     onClose: function() {
       // only if at least one room is open
-      if ((rooms && rooms.length > 0) || (onetoones && onetoones.length > 0)) {
+      if (!this.preventPopin && (rooms && rooms.length > 0) || (onetoones && onetoones.length > 0)) {
         return $.t("chat.closemessage");
       } else {
         return;
       }
+    },
+
+    onNotLogged: function() {
+      this.preventPopin = true;
+      window.location.assign('/');
     }
 
   });

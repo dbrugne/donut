@@ -54,7 +54,11 @@ define([
       });
       var onError = function(err) {
         that.debug('socket.io-client error: '+err);
-        that.trigger('error');
+
+        if (err == 'notlogged')
+          that.trigger('notlogged');
+        else
+          that.trigger('error');
       };
       this.socket.on('connect_error', onError); // fired on socket or only on manager? http://socket.io/docs/client-api/#socket
       this.socket.on('reconnect_error', onError);

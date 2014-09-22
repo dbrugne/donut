@@ -5,32 +5,34 @@ module.exports = {
 
   success: function(data, accept) {
     // could add ACL check here if needed
-    accept(null, true);
+    accept();
     helper.record('authorization:success', '', data);
   },
 
   fail: function(data, message, error, accept) {
     if(error)
-      throw new Error(message);
+      accept(new Error("Error in autorization:fail: "+message));
 
     // Non-production environment only! (allow virtual client connexion opening)
 //    if (process.env.NODE_ENV != 'production') { // @todo : TEMPORARY, ALLOW STRESSER ON PRODUCTION FOR TEST
-    if (true) {
+    if (data._query.virtualuserid && true) {
       User.findById(data._query.virtualuserid, function(err, virtualUser) {
-        if (err) throw new Error('Error while retrieving virtual user: '+err);
+        if (err)
+          accept(new Error('Error while retrieving virtual user: '+err));
         if (!virtualUser) {
-          console.log('No corresponding virtual user found, refuse connection');
-          accept(null, false);
+          var errMsg = 'No corresponding virtual user found, refuse connection';
+          console.log(errMsg);
+          accept(new Error(errMsg));
         }
         data['user'] = virtualUser;
         data['logged_in'] = true;
-        accept(null, true);
+        accept();
       });
       return;
     }
     // End - Non-production environments only!
 
-    accept(null, false);
+    accept(new Error('notlogged')); // String tested on client side to fire browser redirect
 
     helper.record('authorization:fail', '', {
       data: data,
