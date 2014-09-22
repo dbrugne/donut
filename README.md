@@ -6,16 +6,10 @@ chat
 **Tasks**
 
 **Contents**
-- [x] FAQ (link in HP and chat interface)
-- [x] Contact (link in HP and chat interface)
-- [x] CGU (link in HP and chat interface)
-- [ ] Implement open graph and SEO description and canonical url in room/user profile meta
-- [ ] Implement open graph and SEO description and canonical url on landing
+- [x] Implement open graph and SEO description and canonical url in room/user profile meta
+- [x] Implement open graph and SEO description and canonical url on landing
 
 **Compliance**
-- [x] Test Firefox
-- [x] Test IE11
-- [x] Test IE10
 - [ ] Test IE9
   - [ ] CSS 4095 rules limit (http://blogs.msdn.com/b/ieinternals/archive/2011/05/14/10164546.aspx)
   - [ ] Drawer scrollbar (probably due to 4095 limit)

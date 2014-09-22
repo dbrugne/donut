@@ -2,6 +2,18 @@
 <html lang="fr">
 <head>
     <title>{{#i}}title.profile{{/i}} {{subtitle}} - {{#i}}title.default{{/i}}</title>
+    {{#meta}}
+    {{#meta.url}}<link rel="canonical" href="{{{meta.url}}}" />{{/meta.url}}
+    {{#meta.description}}<meta name="description" content="{{{meta.description}}}"> {{/meta.description}}
+    {{#meta.keywords}}<meta name="keywords" content="{{{meta.keywords}}}"> {{/meta.keywords}}
+    {{#meta.url}}<meta property="og:url" content="{{{meta.url}}}" />{{/meta.url}}
+    {{#meta.title}}<meta property="og:title" content="{{{meta.title}}}" />{{/meta.title}}
+    {{#meta.description}}<meta property="og:description" content="{{{meta.description}}}" />{{/meta.description}}
+    {{#meta.image}}<meta property="og:image" content="{{{meta.image}}}" />{{/meta.image}}
+    {{/meta}}
+    <meta property="og:locale" content="{{#i}}meta.locale{{/i}}" />
+    <meta property="og:site_name" content="{{#i}}meta.sitename{{/i}}" />
+    <meta property="og:type" content="object" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <!--[if lt IE 9]>

@@ -14,6 +14,17 @@
           "legals": "Mentions légales - DONUT"
         }
     },
+    "meta": {
+      "locale": "fr_FR",
+      "sitename": "DONUT.me",
+      "landing": {
+        "description": "DONUT est une plateforme de chatrooms thématiques (un peu comme IRC, mais en plus simple)",
+        "keywords": "discussion,chat,chatroom,irc"
+      },
+      "profile": {
+        "title": "__subtitle__ sur DONUT.me"
+      }
+    },
     "baseline": "vous avez des choses à (vous) dire !",
     "actions": {
         "login": "connexion",
@@ -112,10 +123,7 @@
             "definition": "Un donut est un espace convivial de discussion<br> instantanée, un salon de discussion,<br> une chat room en fait !",
             "line1": "Vous pouvez créer votre donut personnalisé et retrouver votre communauté ...",
             "line2": "... ou vous joindre aux discussions en cours autour de vos centres d'intérêt ...",
-            "line3": "... et découvrir des gens qui vous ressemblent, au cours de véritables conversations !",
-            "illustration1": "home.description.illustration1",
-            "illustration2": "home.description.illustration2",
-            "illustration3": "home.description.illustration3"
+            "line3": "... et découvrir des gens qui vous ressemblent, au cours de véritables conversations !"
         },
         "signup": {
             "title1": "Créez un compte",
