@@ -141,6 +141,11 @@ define([
         height: 30,
         crop: 'fill'
       };
+
+      if (imageId.indexOf('facebook/') !== -1) {
+        return '<img src="https://graph.facebook.com/'+imageId.replace('facebook/', '')+'/picture?height='+opts.height+'&width='+opts.width+'">';
+      }
+
       if (version)
         opts.version = version;
 
