@@ -6,9 +6,9 @@ h1.logo {
 
 #block-current-user {
   padding: 12px 18px 6px;
+  position: relative;
+  min-height: 88px;
   .avatar {
-    .pull-left;
-    margin-right: 10px;
     position: relative;
     img {
       width: 60px;
@@ -26,27 +26,31 @@ h1.logo {
         font-size: 1.1em;
       }
     }
-
     &:hover {
       .edit { display: inline; cursor: pointer; }
     }
   }
-  .hello {
-    margin-bottom: 0;
-    .username {
-      .ft-opensans-bold;
+  .content {
+    position: absolute;
+    left: 88px; top: 12px;
+    width: 120px;
+    .hello {
+      margin-bottom: 0;
+      .username {
+        .ft-opensans-bold;
+      }
     }
-  }
-  .actions {
-    padding-top: 5px;
-    a {
-      display: block;
-      color: @cl-subtext2;
-      cursor: pointer;
-    }
-    a:hover {
-      color: @cl-subtext3;
-      text-decoration: none;
+    .actions {
+      padding-top: 5px;
+      a {
+        display: block;
+        color: @cl-subtext2;
+        cursor: pointer;
+      }
+      a:hover {
+        color: @cl-subtext3;
+        text-decoration: none;
+      }
     }
   }
 }
