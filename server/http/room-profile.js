@@ -22,10 +22,7 @@ router.get('/room/:room', function(req, res) {
     subtitle: req.room.name,
     room: req.room,
     poster: req.room.poster,
-    color: req.room.color,
-    scripts: [
-      {src: '/javascripts/plugins/jquery.linkify.min.js'}
-    ]
+    color: req.room.color
   });
 });
 

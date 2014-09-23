@@ -22,10 +22,7 @@ router.get('/user/:user', function(req, res) {
     subtitle: req.requestedUser.username,
     _user: req.requestedUser,
     poster: req.requestedUser.poster,
-    color: req.requestedUser.color,
-    scripts: [
-      {src: '/javascripts/plugins/jquery.linkify.min.js'}
-    ]
+    color: req.requestedUser.color
   });
 });
 
