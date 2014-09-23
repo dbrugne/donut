@@ -30,6 +30,7 @@ define([
         resGetPath: '/locales/resources.json?lng=__lng__&ns=__ns__',
         dynamicLoad: true,
         saveMissing: true,
+        cookieName: 'donut.lng',
         debug: false // @debug
       });
       // make i18next available from all underscore templates views (<%= t('key') %>)
