@@ -8,7 +8,7 @@ router.route('/account/edit/password')
     .get(isLoggedIn, function(req, res) {
         res.render('account_edit_password', {
           layout: 'layout-form',
-          partials: {head: '_head'},
+          partials: {head: '_head', foot: '_foot'},
           meta: {title: i18next.t("title.default")}
         });
     })
@@ -18,7 +18,7 @@ router.route('/account/edit/password')
         if (req.validationErrors()) {
             return res.render('account_edit_password', {
               layout: 'layout-form',
-              partials: {head: '_head'},
+              partials: {head: '_head', foot: '_foot'},
               meta: {title: i18next.t("title.default")},
               userFields: req.body.user.fields,
               is_errors: true,

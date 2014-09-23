@@ -10,7 +10,7 @@ var validateInput = function(req, res, next) {
   if (req.validationErrors()) {
     return res.render('account_edit_email', {
       layout: 'layout-form',
-      partials: {head: '_head'},
+      partials: {head: '_head', foot: '_foot'},
       meta: {title: i18next.t("title.default")},
       userFields: req.body.user.fields,
       is_errors: true,
@@ -35,7 +35,7 @@ var validateInput = function(req, res, next) {
     if (user) {
       return res.render('account_edit_email', {
         layout: 'layout-form',
-        partials: {head: '_head'},
+        partials: {head: '_head', foot: '_foot'},
         meta: {title: i18next.t("title.default")},
         userFields: req.body.user.fields,
         error: i18next.t("account.email.error.alreadyexists"),
@@ -54,7 +54,7 @@ router.route('/account/edit/email')
         var userFields = {email: req.user.local.email}
         res.render('account_edit_email', {
           layout: 'layout-form',
-          partials: {head: '_head'},
+          partials: {head: '_head', foot: '_foot'},
           meta: {title: i18next.t("title.default")},
           userFields: userFields,
           scripts: [{src: '/validator.min.js'}]

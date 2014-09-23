@@ -14,7 +14,7 @@ var validateInput = function (req, res, next) {
   if (req.validationErrors()) {
     return res.render('account_forgot', {
       layout: 'layout-form',
-      partials: {head: '_head'},
+      partials: {head: '_head', foot: '_foot'},
       meta: {title: i18next.t("title.default")},
       email: req.body.email,
       is_errors : true,
@@ -111,7 +111,7 @@ router.route('/forgot')
   .get(function (req, res) {
     res.render('account_forgot', {
       layout: 'layout-form',
-      partials: {head: '_head'},
+      partials: {head: '_head', foot: '_foot'},
       meta: {title: i18next.t("title.default")}
     });
   })
@@ -129,7 +129,7 @@ router.route('/reset/:token')
       }
       res.render('account_reset', {
         layout: 'layout-form',
-        partials: {head: '_head'},
+        partials: {head: '_head', foot: '_foot'},
         meta: {title: i18next.t("title.default")},
         user: req.user
       });

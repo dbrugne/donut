@@ -21,7 +21,7 @@ router.get('/', function(req, res) {
 
   return res.render('landing', {
     layout: false,
-    partials: {head: '_head'},
+    partials: {head: '_head', foot: '_foot'},
     meta: meta,
     logged: logged
   });

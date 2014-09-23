@@ -9,7 +9,7 @@ var validateInput = function(req, res, next) {
   if (req.validationErrors()) {
     return res.render('signup', {
       layout: 'layout-form',
-      partials: {head: '_head'},
+      partials: {head: '_head', foot: '_foot'},
       meta: {title: i18next.t("title.default")},
       userFields: {email: req.body.email},
       is_errors: true,
@@ -24,7 +24,7 @@ router.route('/signup')
     .get(function(req, res) {
         res.render('signup', {
           layout: 'layout-form',
-          partials: {head: '_head'},
+          partials: {head: '_head', foot: '_foot'},
           meta: {title: i18next.t("title.default")}
         });
     })

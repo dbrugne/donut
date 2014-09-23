@@ -9,7 +9,7 @@ var validateInput = function (req, res, next) {
   if (req.validationErrors()) {
     return res.render('choose_username', {
       layout: 'layout-form',
-      partials: {head: '_head'},
+      partials: {head: '_head', foot: '_foot'},
       meta: {title: i18next.t("title.default")},
       userFields: req.body.user.fields,
       is_errors : true,
@@ -23,7 +23,7 @@ var validateAvailability = function (req, res, next) {
   var handleError = function (err) {
     return res.render('choose_username', {
       layout: 'layout-form',
-      partials: {head: '_head'},
+      partials: {head: '_head', foot: '_foot'},
       meta: {title: i18next.t("title.default")},
       userFields: req.body.user.fields,
       error: err
@@ -47,7 +47,7 @@ router.route('/choose-username')
   .get(isLoggedIn, hasNotUsername, function (req, res) {
     res.render('choose_username', {
       layout: 'layout-form',
-      partials: {head: '_head'},
+      partials: {head: '_head', foot: '_foot'},
       meta: {title: i18next.t("title.default")}
     });
   })

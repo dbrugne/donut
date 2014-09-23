@@ -17,7 +17,7 @@ router.get('/room/:room', function(req, res) {
 
   res.render('room_profile', {
     layout: 'layout-profile',
-    partials: {head: '_head', user: '_user'},
+    partials: {head: '_head', foot: '_foot', user: '_user'},
     meta: meta,
     subtitle: req.room.name,
     room: req.room,

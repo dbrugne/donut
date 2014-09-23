@@ -9,7 +9,7 @@ var validateEmail = function(req, res, next) {
   if (req.validationErrors()) {
     return res.render('connect_local', {
       layout: 'layout-form',
-      partials: {head: '_head'},
+      partials: {head: '_head', foot: '_foot'},
       meta: {title: i18next.t("title.default")},
       userFields: req.body,
       is_errors: true,
@@ -33,7 +33,7 @@ var validateEmail = function(req, res, next) {
     if (user) {
       return res.render('connect_local', {
         layout: 'layout-form',
-        partials: {head: '_head'},
+        partials: {head: '_head', foot: '_foot'},
         meta: {title: i18next.t("title.default")},
         userFields: req.body,
         error: i18next.t("account.email.error.alreadyexists")
@@ -48,7 +48,7 @@ router.route('/connect/local')
     .get(function(req, res) {
         res.render('connect_local', {
           layout: 'layout-form',
-          partials: {head: '_head'},
+          partials: {head: '_head', foot: '_foot'},
           meta: {title: i18next.t("title.default")},
           message: req.flash('signupMessage')
         });
