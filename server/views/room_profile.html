@@ -5,7 +5,10 @@
         <p class="join"><a href="{{^user}}/login{{/user}}{{#user}}{{room.chat}}{{/user}}" {{#room.color}}style="background-color: {{room.color}};"{{/room.color}}>{{#i}}actions.join{{/i}} <img src="/images/user.svg" alt="user icon"></a></p>
     </div>
     <div class="text room">
-        <p class="name-content"><a href="{{room.url}}" class="name">{{room.name}}</a></p>
+        <div class="name-content">
+            <a href="{{room.url}}" class="name">{{room.name}}</a>
+            <div class="fb-like" data-href="{{room.url}}" data-layout="button" data-action="like" data-show-faces="false" data-share="true" data-ref="profile-page"></div>
+        </div>
         {{#room.owner}}
         <span class="owner">
             {{#i}}global.by{{/i}} <a href="{{room.owner.url}}" {{#room.color}}style="color: {{room.color}};"{{/room.color}}>{{room.owner.username}}</a>

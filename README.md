@@ -15,8 +15,8 @@ chat
 - [ ] Change user card integration on room profile drawer
 
 **Social**
-- [ ] Add a Facebook like button on landing
-- [ ] Add a Facebook like button on user/room profile page
+- [x] Add a Facebook like button on landing
+- [x] Add a Facebook like button on user/room profile page
 - [ ] Add a Facebook like button on user/room profile drawer
 
 **Code**
