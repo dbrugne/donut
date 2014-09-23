@@ -10,11 +10,21 @@ chat
   - [x] CSS 4095 rules limit (http://blogs.msdn.com/b/ieinternals/archive/2011/05/14/10164546.aspx)
   - [x] Drawer scrollbar (probably due to 4095 limit)
   - [ ] Image uploader doesn't work
-- [ ] Test IE8
+- [-] Test IE8
+  - [-] SVG
+  - [-] Border radius
+  - [-] Input fields
+  - [-] Calc
 - [ ] Test 1024
 - [ ] Home: no hover on touch screens
 - [ ] Test iPad
-- [ ] Add old browser disclaimer
+- [x] Add old browser disclaimer
+- [ ] Add a beta mention
+
+**Social**
+- [ ] Add a Facebook like button on landing
+- [ ] Add a Facebook like button on user/room profile page
+- [ ] Add a Facebook like button on user/room profile drawer
 
 **Code**
 - [ ] Add new socket.io-redis (https://github.com/Automattic/socket.io/issues/1630)
@@ -95,6 +105,7 @@ chat
   - [ ] Color this user messages by simply clicking on a user (stored in browser memory only)
   - [ ] Smileys popin
   - [ ] /me commande to describe current action
+  - [ ] Add an option to avoid exit popin on chat interface
 
 **Content**
 - [ ] Formulaire; faire le tour des libellés des champs, messages d'aide, messages de confirmation
