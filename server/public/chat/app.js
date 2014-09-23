@@ -27,8 +27,6 @@ define([
     initialize: function() {
       // i18n setup
       i18next.init({
-        lng: 'fr-FR',
-        fallbackLng: ['fr-FR', 'en-EN'],
         resGetPath: '/locales/resources.json?lng=__lng__&ns=__ns__',
         dynamicLoad: true,
         saveMissing: true,

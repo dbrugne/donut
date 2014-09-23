@@ -55,7 +55,8 @@
         "footer": {
             "before": "Vous souhaitez vous",
             "after": " ?"
-        }
+        },
+        "switchlanguage": "changer la langue"
     },
     "login": {
         "title": "se connecter",
