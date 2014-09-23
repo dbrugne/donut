@@ -7,9 +7,13 @@ chat
 
 **Compliance**
 - [ ] Test 1024
-- [ ] Home: no hover on touch screens
 - [ ] Test iPad
-- [x] Add a beta mention
+    - [ ] Home: no hover on touch screens
+    - [ ] Room: user list actions doesn't work
+- [ ] Bugs avatar Facebook David
+
+**Design**
+- [ ] Change user card integration on room profile drawer
 
 **Social**
 - [ ] Add a Facebook like button on landing
@@ -17,6 +21,7 @@ chat
 - [ ] Add a Facebook like button on user/room profile drawer
 
 **Code**
+- [ ] Test language detection
 - [ ] Add new socket.io-redis (https://github.com/Automattic/socket.io/issues/1630)
   - [ ] On connect/disconnect/join/leave maintain redis user set for each room
   - [ ] On connect/disconnect maintain redis user set
@@ -24,6 +29,9 @@ chat
   - [ ] Implement user count on room profile (drawer and pages)
   - [ ] Implement current user list on room profile (drawer and pages)
   - [ ] Implement user online status on user profile (drawer)
+
+**Hosting**
+- [ ] Deploy on a strong infrastructure
 
 ## v1.1 : minimal features against competitors
 
@@ -96,6 +104,7 @@ chat
   - [ ] Smileys popin
   - [ ] /me commande to describe current action
   - [ ] Add an option to avoid exit popin on chat interface
+  - [ ] Improve backlog experience when refocus a room with lot of unread messages (button to jump on last viewed message and display highligth on unread messages)
 
 **Content**
 - [ ] Formulaire; faire le tour des libellés des champs, messages d'aide, messages de confirmation

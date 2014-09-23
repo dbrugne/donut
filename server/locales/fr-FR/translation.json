@@ -90,8 +90,8 @@
         "description": "Le nom d'utilisateur sera votre identité sur DONUT. Les autres utilisateurs le verront. Il n'est pas modifiable.",
         "help": [
           "Entre 3 et 15 caractères.<br>",
-          "Autorisés : lettres, chiffres et caractères spéciaux (-._|[]^)<br>",
-          "Interdits : espaces et caractères spéciaux non listés ci-dessus.<br>"
+          "Autorisés : lettres, chiffres et caractères spéciaux : <strong>-._|[]^</strong><br>",
+          "Interdits : espaces, accents et caractères spéciaux non listés ci-dessus.<br>"
         ],
         "usernameerror": "Ce nom d'utilisateur ne respecte pas les contraintes.",
         "usernameexists": "Ce nom d'utilisateur est déjà pris par un autre utilisateur."
@@ -153,7 +153,7 @@
                 "after": "sur la plateforme de chat <a href=\"/\">DONUT.me</a>. DONUT.me vous permet de rejoindre ou créer un salon de discussion thématique (donut) sur ce qui vous plait. Vous pouvez y discuter avec des gens qui partagent vos centres d'intérêt"
             },
             "permalink": "Lien permanent vers ce profil",
-            "editlink": "Pour éditer ce profil cliquer ici",
+            "editlink": "Pour éditer ce profil cliquez ici",
             "createdat": "créé le"
         },
         "user": {
@@ -163,7 +163,7 @@
                 "after": "sur la plateforme de chat <a href=\"/\">DONUT.me</a>. DONUT.me vous permet de rejoindre ou créer un salon de discussion thématique (donut) sur ce qui vous plait. Vous pouvez y discuter avec des gens qui partagent vos centres d'intérêt"
             },
             "permalink": "Lien permanent vers ce profil",
-            "editlink": "Pour éditer votre profil cliquer ici",
+            "editlink": "Pour éditer votre profil cliquez ici",
             "signuped": "inscrit le"
         }
     },
@@ -173,22 +173,22 @@
             "label": "Créez votre donut",
             "help": [
               "Entre 3 et 24 caractères.<br>",
-              "Autorisés : lettres, chiffres et caractères spéciaux (-._|[]^)<br>",
-              "Interdits : espaces et caractères spéciaux non listés ci-dessus.<br>"
+              "Autorisés : lettres, chiffres et caractères spéciaux : <strong>-._|[]^</strong><br>",
+              "Interdits : espaces, accents et caractères spéciaux non listés ci-dessus.<br>"
             ],
             "placeholder": "Nom du donut",
             "submit": "Créer le donut"
         },
         "help": "Aide",
         "home": {
-          "roomstitle": "Voici les donut existants, vous pouvez également en <a class='open-create-room'>créer un</a> :",
+          "roomstitle": "Voici les donuts existants, vous pouvez également en <a class='open-create-room'>créer un</a> :",
           "userstitle": "Utilisateurs en ligne"
         },
         "search": {
-            "placeholder": "Rechercher un donut ou un utilisateur ici",
+            "placeholder": "Recherchez un donut ou un utilisateur ici",
             "noroom": "Aucun résultat de recherche",
             "nouser": "Aucun résultat de recherche",
-            "roomstitle": "Voici les donut correspondant à votre recherche, vous pouvez aussi en <a class='open-create-room'>créer un nouveau</a> :",
+            "roomstitle": "Voici les donuts correspondant à votre recherche, vous pouvez aussi en <a class='open-create-room'>créer un nouveau</a> :",
             "userstitle": "Utilisateurs correspondants"
         },
         "userscount": "<strong>__count__</strong> utilisateur dans ce donut",
@@ -196,7 +196,7 @@
         "topic": {
             "label": "En ce moment",
             "placeholder": "Entrez ici le sujet de la conversation, l'humeur, l'ambiance ...",
-            "default": "<em>Aucun sujet, cliquer ici pour modifier</em>"
+            "default": "<em>Aucun sujet, cliquez ici pour modifier</em>"
         },
         "owner": {
             "is": "Cet utilisateur est le propriétaire de ce donut"
@@ -214,20 +214,20 @@
         "notifications": {
             "hello": "Vous entrez dans",
             "disconnected": "Vous avez été deconnecté du serveur, veuillez patienter",
-            "reconnected": "Vous êtes reconnecté <span class=\"detail\">(vous avez peut être manquer des messages dans ce donut)</span>",
+            "reconnected": "Vous êtes reconnecté <span class=\"detail\">(vous avez peut-être manqué des messages dans ce donut)</span>",
             "offline": "Cet utilisateur est pour le moment hors ligne, le message ne peut donc pas être acheminé.",
-            "topic": "à changé le sujet pour",
+            "topic": "a changé le sujet pour",
             "kick": "a été expulsé de ce donut par",
             "ban": "a été banni de ce donut par",
             "op": " a été promu modérateur par",
-            "deop": "a été destitué du range de modérateur par",
+            "deop": "n'est plus modérateur à la demande de",
             "in": "est entré à",
             "out": "est sorti à"
         },
         "shouldauthenticated": "Vous devez être identifié pour accéder aux discussions",
         "closemessage": "Etes-vous sur de vouloir quitter, l’historique de vos conversations sera perdu ?",
         "kickmessage": "Vous venez d'être expulsé de",
-        "deletemessage": "Le donut __name__ vient d'être supprimé pas son auteur"
+        "deletemessage": "Le donut __name__ vient d'être supprimé pas son créateur"
     },
     "account": {
         "error": {
@@ -311,13 +311,13 @@
         },
         "poster": {
             "label": "Poster",
-            "help": "Le poster est la grande image en pleine hauteur que vos interlocuteurs voient à droite de la conversation. Il recommandé d'avoir une largeur de 430px et une hauteur d'au moins 975px. La partie visible de l'image sera la zone en haut à gauche."
+            "help": "Le poster est la grande image en pleine hauteur que vos interlocuteurs voient à droite de la conversation. La partie visible de l'image sera la zone en haut à gauche. Dimensions recommandées : largeur 430px, hauteur 975px mini."
         },
         "color": {
             "label": "Couleur"
         },
         "autojoindonut": {
-            "yes": "Rejoindre automatique <strong>#donut</strong> quand vous vous connectez"
+            "yes": "Rejoindre <strong>#donut</strong> quand vous vous connectez"
         },
         "room": {
           "delete": {
@@ -402,7 +402,7 @@
             ]
         },
         "passwordchanged": {
-            "subject": "Succès ! Votre mot de passe DONUT.me a été changé avec succès",
+            "subject": "Succès ! Votre mot de passe DONUT.me a été changée avec succès",
             "text": [
                 "Vous avez procédé à un changement de mot de passe. Votre nouveau mot de passe est désormais actif. Il est grand temps d’en profiter !",
                 "",
