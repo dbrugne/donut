@@ -9,7 +9,7 @@ var validateInput = function(req, res, next) {
   req.checkBody(['user','fields','email'], i18next.t("account.email.error.format")).isEmail();
   if (req.validationErrors()) {
     return res.render('account_edit_email', {
-      layout: 'layout',
+      layout: 'layout-form',
       partials: {head: '_head'},
       meta: {title: i18next.t("title.default")},
       userFields: req.body.user.fields,
@@ -34,7 +34,7 @@ var validateInput = function(req, res, next) {
 
     if (user) {
       return res.render('account_edit_email', {
-        layout: 'layout',
+        layout: 'layout-form',
         partials: {head: '_head'},
         meta: {title: i18next.t("title.default")},
         userFields: req.body.user.fields,
@@ -53,7 +53,7 @@ router.route('/account/edit/email')
     .get(isLoggedIn, function(req, res) {
         var userFields = {email: req.user.local.email}
         res.render('account_edit_email', {
-          layout: 'layout',
+          layout: 'layout-form',
           partials: {head: '_head'},
           meta: {title: i18next.t("title.default")},
           userFields: userFields,

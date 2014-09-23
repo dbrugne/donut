@@ -9,7 +9,7 @@ var validateInput = function(req, res, next) {
   if (req.validationErrors()) {
     console.log(req.validationErrors());
     return res.render('login', {
-      layout: 'layout',
+      layout: 'layout-form',
       partials: {head: '_head'},
       meta: {title: i18next.t("title.default")},
       userFields: {email: req.body.email},
@@ -24,7 +24,7 @@ var validateInput = function(req, res, next) {
 router.route('/login')
     .get(function(req, res) {
         res.render('login', {
-          layout: 'layout',
+          layout: 'layout-form',
           partials: {head: '_head'},
           meta: {title: i18next.t("title.default")},
           userFields: {email: req.flash('email')}

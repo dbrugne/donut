@@ -8,7 +8,7 @@ module.exports = function(code, app) {
         res.locals.user = req.user;
       }
       res.render('404', {
-        layout       : 'layout',
+        layout       : 'layout-form',
         partials: {head: '_head'},
         meta: {title: '404 (donuts) error'}
       }, function (err, html) {

@@ -44,7 +44,7 @@ app.use(googleAnalytics());
 
 app.engine('html', require('hogan-express'));
 app.set('views', path.join(__dirname, 'views'));
-app.set('layout', 'layout');
+app.set('layout', false);
 app.set('view engine', 'html');
 
 app.use(require('./http/landing'));

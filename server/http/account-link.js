@@ -8,7 +8,7 @@ var validateEmail = function(req, res, next) {
   req.checkBody('email', i18next.t("account.email.error.format")).isEmail();
   if (req.validationErrors()) {
     return res.render('connect_local', {
-      layout: 'layout',
+      layout: 'layout-form',
       partials: {head: '_head'},
       meta: {title: i18next.t("title.default")},
       userFields: req.body,
@@ -32,7 +32,7 @@ var validateEmail = function(req, res, next) {
 
     if (user) {
       return res.render('connect_local', {
-        layout: 'layout',
+        layout: 'layout-form',
         partials: {head: '_head'},
         meta: {title: i18next.t("title.default")},
         userFields: req.body,
@@ -47,7 +47,7 @@ var validateEmail = function(req, res, next) {
 router.route('/connect/local')
     .get(function(req, res) {
         res.render('connect_local', {
-          layout: 'layout',
+          layout: 'layout-form',
           partials: {head: '_head'},
           meta: {title: i18next.t("title.default")},
           message: req.flash('signupMessage')

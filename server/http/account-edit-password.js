@@ -7,7 +7,7 @@ var emailer = require('../app/emailer');
 router.route('/account/edit/password')
     .get(isLoggedIn, function(req, res) {
         res.render('account_edit_password', {
-          layout: 'layout',
+          layout: 'layout-form',
           partials: {head: '_head'},
           meta: {title: i18next.t("title.default")}
         });
@@ -17,7 +17,7 @@ router.route('/account/edit/password')
         req.checkBody(['user','fields','password'], i18next.t("account.password.error.length")).isLength(6, 50);
         if (req.validationErrors()) {
             return res.render('account_edit_password', {
-              layout: 'layout',
+              layout: 'layout-form',
               partials: {head: '_head'},
               meta: {title: i18next.t("title.default")},
               userFields: req.body.user.fields,
