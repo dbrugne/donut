@@ -1,13 +1,48 @@
 var express = require('express');
 var router = express.Router();
 var passport = require('passport');
+var User = require('../app/models/user');
 var i18next = require('../app/i18next');
+
+var validateEmail = function(req, res, next) {
+  req.checkBody('email', i18next.t("account.email.error.format")).isEmail();
+  if (req.validationErrors()) {
+    return res.render('connect_local', {
+      userFields: req.body,
+      is_errors: true,
+      errors: req.validationErrors()
+    });
+  }
+
+  var pattern = req.body.email.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+  var r = new RegExp('^'+pattern+'$', 'i');
+  User.findOne({
+    $and: [
+      {'local.email': {$regex: r}},
+      {_id: { $ne: req.user._id }}
+    ]
+  }, function(err, user) {
+    if (err) {
+      req.flash('error', 'Error while searching existing email: ' + err);
+      return res.redirect('/connect/local');
+    }
+
+    if (user) {
+      return res.render('connect_local', {
+        userFields: req.body,
+        error: i18next.t("account.email.error.alreadyexists")
+      });
+    }
+
+    return next();
+  });
+};
 
 router.route('/connect/local')
     .get(function(req, res) {
         res.render('connect_local', { message: req.flash('signupMessage') });
     })
-    .post(passport.authenticate('local-signup', {
+    .post([validateEmail], passport.authenticate('local-signup', {
         successRedirect : '/!', // redirect to the secure profile section
         failureRedirect : '/connect/local', // redirect back to the signup page if there is an error
         failureFlash : true // allow flash messages
