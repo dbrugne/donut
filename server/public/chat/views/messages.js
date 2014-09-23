@@ -64,7 +64,7 @@ define([
          });
        var el = $(html).appendTo($last);
        el.colorify();
-       $last.find('.data .moment')
+       $last.find('.date .moment')
          .attr('data-time', message.get('time'))
          .momentify();
      } else { // render a full p.message
