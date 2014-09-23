@@ -142,7 +142,7 @@ define([
     },
     roomRoomDeleted: function(data) {
       this.focus();
-      if (data.reason)
+      if (data && data.reason)
         this.alert('warning', data.reason);
     },
 
