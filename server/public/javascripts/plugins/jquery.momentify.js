@@ -18,7 +18,7 @@
         element.text(dateObject.format("dddd Do MMMM YYYY"));
       }
 
-      element.attr('title', dateObject.format("dddd Do MMMM YYYY à hh:mm:ss"));
+      element.attr('title', dateObject.format("dddd Do MMMM YYYY à HH:mm:ss"));
     });
 
   };

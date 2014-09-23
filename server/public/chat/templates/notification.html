@@ -41,13 +41,13 @@
 <% } %>
 <% if (type == 'inout') { %>
     <% if (subtype =='in') { %>
-    <div class="item <%= subtype %>" data-time="<%= time %>" title="<%= username %> <%= t('chat.notifications.in') %> <% print(moment().format('hh:mm:ss')) %>">
+    <div class="item <%= subtype %>" data-time="<%= time %>" title="<%= username %> <%= t('chat.notifications.in') %> <% print(moment().format('HH:mm:ss')) %>">
         <img class="avatar open-user-profile" src="<%= avatar %>" data-username="<%= username %>">
         <img class="icon" src="/images/in.svg">
         <span class="username open-user-profile" data-username="<%= username %>"><%= username %></span>
     </div>
     <% } else if (subtype =='out') { %>
-    <div class="item <%= subtype %>" data-time="<%= time %>" title="<%= username %> <%= t('chat.notifications.out') %> <% print(moment().format('hh:mm:ss')) %> rt<% if (reason == 'disconnect') { %>(disconnected)<% } %>">
+    <div class="item <%= subtype %>" data-time="<%= time %>" title="<%= username %> <%= t('chat.notifications.out') %> <% print(moment().format('HH:mm:ss')) %> <% if (reason == 'disconnect') { %>(disconnected)<% } %>">
         <img class="avatar open-user-profile" src="<%= avatar %>" data-username="<%= username %>">
         <img class="icon" src="/images/out.svg">
         <span class="username open-user-profile" data-username="<%= username %>"><%= username %></span>
