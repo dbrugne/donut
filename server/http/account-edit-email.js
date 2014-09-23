@@ -14,8 +14,7 @@ var validateInput = function(req, res, next) {
       meta: {title: i18next.t("title.default")},
       userFields: req.body.user.fields,
       is_errors: true,
-      errors: req.validationErrors(),
-      scripts: [{src: '/validator.min.js'}]
+      errors: req.validationErrors()
     });
   }
 
@@ -38,10 +37,7 @@ var validateInput = function(req, res, next) {
         partials: {head: '_head', foot: '_foot'},
         meta: {title: i18next.t("title.default")},
         userFields: req.body.user.fields,
-        error: i18next.t("account.email.error.alreadyexists"),
-        scripts: [
-          {src: '/validator.min.js'}
-        ]
+        error: i18next.t("account.email.error.alreadyexists")
       });
     }
 
@@ -56,8 +52,7 @@ router.route('/account/edit/email')
           layout: 'layout-form',
           partials: {head: '_head', foot: '_foot'},
           meta: {title: i18next.t("title.default")},
-          userFields: userFields,
-          scripts: [{src: '/validator.min.js'}]
+          userFields: userFields
         });
     })
     .post([
