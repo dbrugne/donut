@@ -7,7 +7,11 @@ module.exports = function(code, app) {
       if (req.user) {
         res.locals.user = req.user;
       }
-      res.render('404', {}, function (err, html) {
+      res.render('404', {
+        layout       : 'layout',
+        partials: {head: '_head'},
+        meta: {title: '404 (donuts) error'}
+      }, function (err, html) {
         res.status(404).send(html);
       });
     };
@@ -21,7 +25,9 @@ module.exports = function(code, app) {
       res.render('error', {
         message: err.message,
         error  : {},
-        layout : false
+        layout : false,
+        partials: {head: '_head'},
+        meta: {title: '500 (donuts) error'}
       });
     };
   } else {
@@ -31,7 +37,9 @@ module.exports = function(code, app) {
       res.render('error', {
         message      : err.message,
         errorObject  : err,
-        layout       : false
+        layout       : false,
+        partials: {head: '_head'},
+        meta: {title: '500 (donuts) error'}
       });
     };
   }

@@ -20,6 +20,8 @@ router.get('/!', function(req, res) {
   // ... otherwise open chat
   return res.render('chat', {
     layout: false,
+    partials: {head: '_head'},
+    meta: {title: i18next.t("title.chat")},
     colors: colors.toString()
   });
 

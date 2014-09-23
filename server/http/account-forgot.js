@@ -13,6 +13,9 @@ var validateInput = function (req, res, next) {
   req.checkBody(['email'], i18next.t("account.email.format")).isEmail();
   if (req.validationErrors()) {
     return res.render('account_forgot', {
+      layout: 'layout',
+      partials: {head: '_head'},
+      meta: {title: i18next.t("title.default")},
       email: req.body.email,
       is_errors : true,
       errors    : req.validationErrors()
@@ -107,6 +110,9 @@ var reset = function(req, res) {
 router.route('/forgot')
   .get(function (req, res) {
     res.render('account_forgot', {
+      layout: 'layout',
+      partials: {head: '_head'},
+      meta: {title: i18next.t("title.default")}
     });
   })
   .post(validateInput, forgot);
@@ -122,6 +128,9 @@ router.route('/reset/:token')
         return res.redirect('/forgot');
       }
       res.render('account_reset', {
+        layout: 'layout',
+        partials: {head: '_head'},
+        meta: {title: i18next.t("title.default")},
         user: req.user
       });
     });

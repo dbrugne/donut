@@ -4,9 +4,9 @@
         "description": "Désolé, nous n'avons pas trouvé ce que vous cherchiez. Et si on repartait du bon pied ? Cliquez ici :"
     },
     "title": {
-        "default": "DONUT vous permet de discuter autour de vos centres d'intérêt et d'animer vos communautés!",
+        "default": "DONUT vous permet de discuter autour de vos centres d'intérêt et d'animer vos communautés !",
         "landing": "DONUT - Discussions instantanées autour de vos centres d'intérêt",
-        "profile": "Profil de",
+        "profile": "Profil de __subtitle__ - DONUT vous permet de discuter autour de vos centres d'intérêt et d'animer vos communautés !",
         "chat": "DONUT",
         "static": {
           "faq": "Foire aux questions - DONUT",

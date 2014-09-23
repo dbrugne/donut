@@ -8,6 +8,9 @@ var validateInput = function (req, res, next) {
   req.checkBody(['user', 'fields', 'username'], i18next.t("choose-username.usernameerror")).isUsername();
   if (req.validationErrors()) {
     return res.render('choose_username', {
+      layout: 'layout',
+      partials: {head: '_head'},
+      meta: {title: i18next.t("title.default")},
       userFields: req.body.user.fields,
       is_errors : true,
       errors    : req.validationErrors()
@@ -19,6 +22,9 @@ var validateInput = function (req, res, next) {
 var validateAvailability = function (req, res, next) {
   var handleError = function (err) {
     return res.render('choose_username', {
+      layout: 'layout',
+      partials: {head: '_head'},
+      meta: {title: i18next.t("title.default")},
       userFields: req.body.user.fields,
       error: err
     });
@@ -39,7 +45,11 @@ var hasNotUsername = function(req, res, next) {
 
 router.route('/choose-username')
   .get(isLoggedIn, hasNotUsername, function (req, res) {
-    res.render('choose_username', {});
+    res.render('choose_username', {
+      layout: 'layout',
+      partials: {head: '_head'},
+      meta: {title: i18next.t("title.default")}
+    });
   })
   .post([isLoggedIn, hasNotUsername, validateInput, validateAvailability], function (req, res) {
     req.user.username = req.body.user.fields.username;

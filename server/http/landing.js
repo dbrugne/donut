@@ -11,14 +11,17 @@ router.get('/', function(req, res) {
   var baseUrl = req.protocol + '://' + req.get('host') + '/';
   var meta = {
     url         : baseUrl,
+    title       : i18next.t("title.landing"),
     description : i18next.t("meta.landing.description"),
     keywords    : i18next.t("meta.landing.keywords"),
-    title       : i18next.t("meta.landing.title"),
-    image       : baseUrl+"images/donut.png"
+    ogtitle     : i18next.t("meta.landing.title"),
+    image       : baseUrl+"images/donut.png",
+    type        : 'website'
   };
 
   return res.render('landing', {
     layout: false,
+    partials: {head: '_head'},
     meta: meta,
     logged: logged
   });

@@ -8,6 +8,9 @@ var validateInput = function(req, res, next) {
   req.checkBody('password', i18next.t("account.password.error.length")).isLength(6, 50);
   if (req.validationErrors()) {
     return res.render('signup', {
+      layout: 'layout',
+      partials: {head: '_head'},
+      meta: {title: i18next.t("title.default")},
       userFields: {email: req.body.email},
       is_errors: true,
       errors: req.validationErrors()
@@ -19,7 +22,11 @@ var validateInput = function(req, res, next) {
 
 router.route('/signup')
     .get(function(req, res) {
-        res.render('signup', {});
+        res.render('signup', {
+          layout: 'layout',
+          partials: {head: '_head'},
+          meta: {title: i18next.t("title.default")}
+        });
     })
     .post(validateInput, passport.authenticate('local-signup', {
         successRedirect : '/',

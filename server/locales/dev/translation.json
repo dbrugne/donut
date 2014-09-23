@@ -6,7 +6,7 @@
     "title": {
         "default": "DONUT vous permet de discuter autour de vos centres d'intérêt et d'animer vos communautés!(EN)",
         "landing": "DONUT - Discussions instantanées autour de vos centres d'intérêt(EN)",
-        "profile": "Profil de(EN)",
+        "profile": "Profil de __subtitle__ - DONUT vous permet de discuter autour de vos centres d'intérêt et d'animer vos communautés!(EN)",
         "chat": "DONUT(EN)",
         "static": {
             "faq": "Foire aux questions - DONUT(EN)",
@@ -15,7 +15,8 @@
         }
     },
     "meta": {
-        "locale": "fr_FR(EN)",
+        "lang": "en",
+        "locale": "en_EN",
         "sitename": "DONUT.me(EN)",
         "landing": {
             "title": "Chatrooms thématiques pour tout les goûts(EN)",
@@ -444,5 +445,6 @@
                 "PS : Si vous n'êtes pas à l'origine de cette démarche, veuillez nous en avertir en faisant suivre cet e-mail sur <a href='mailto:__email__'>__email__</a> ou plus simplement en en répondant à cet e-mail.<br>"
             ]
         }
-    }
+    },
+    "lang": "lang"
 }

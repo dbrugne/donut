@@ -9,6 +9,9 @@ var validateInput = function(req, res, next) {
   if (req.validationErrors()) {
     console.log(req.validationErrors());
     return res.render('login', {
+      layout: 'layout',
+      partials: {head: '_head'},
+      meta: {title: i18next.t("title.default")},
       userFields: {email: req.body.email},
       is_errors: true,
       errors: req.validationErrors()
@@ -20,7 +23,12 @@ var validateInput = function(req, res, next) {
 
 router.route('/login')
     .get(function(req, res) {
-        res.render('login', {userFields: {email: req.flash('email')}});
+        res.render('login', {
+          layout: 'layout',
+          partials: {head: '_head'},
+          meta: {title: i18next.t("title.default")},
+          userFields: {email: req.flash('email')}
+        });
     })
     .post(validateInput, passport.authenticate('local-login', {
         successRedirect : '/!',

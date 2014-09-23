@@ -8,6 +8,9 @@ var validateEmail = function(req, res, next) {
   req.checkBody('email', i18next.t("account.email.error.format")).isEmail();
   if (req.validationErrors()) {
     return res.render('connect_local', {
+      layout: 'layout',
+      partials: {head: '_head'},
+      meta: {title: i18next.t("title.default")},
       userFields: req.body,
       is_errors: true,
       errors: req.validationErrors()
@@ -29,6 +32,9 @@ var validateEmail = function(req, res, next) {
 
     if (user) {
       return res.render('connect_local', {
+        layout: 'layout',
+        partials: {head: '_head'},
+        meta: {title: i18next.t("title.default")},
         userFields: req.body,
         error: i18next.t("account.email.error.alreadyexists")
       });
@@ -40,7 +46,12 @@ var validateEmail = function(req, res, next) {
 
 router.route('/connect/local')
     .get(function(req, res) {
-        res.render('connect_local', { message: req.flash('signupMessage') });
+        res.render('connect_local', {
+          layout: 'layout',
+          partials: {head: '_head'},
+          meta: {title: i18next.t("title.default")},
+          message: req.flash('signupMessage')
+        });
     })
     .post([validateEmail], passport.authenticate('local-signup', {
         successRedirect : '/!', // redirect to the secure profile section
