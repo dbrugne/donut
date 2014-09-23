@@ -5,22 +5,12 @@ chat
 
 **Tasks**
 
-**Compliance**
+- [ ] Change user card integration on room profile drawer
+- [ ] Add a Facebook like button on user/room profile drawer
 - [ ] Test 1024
 - [ ] Test iPad
     - [ ] Home: no hover on touch screens
     - [ ] Room: user list actions doesn't work
-
-**Design**
-- [ ] Change user card integration on room profile drawer
-
-**Social**
-- [x] Add a Facebook like button on landing
-- [x] Add a Facebook like button on user/room profile page
-- [ ] Add a Facebook like button on user/room profile drawer
-
-**Code**
-- [x] Test language detection
 - [ ] Add new socket.io-redis (https://github.com/Automattic/socket.io/issues/1630)
   - [ ] On connect/disconnect/join/leave maintain redis user set for each room
   - [ ] On connect/disconnect maintain redis user set
