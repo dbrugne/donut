@@ -9,7 +9,7 @@ chat
 - [ ] Test 1024
 - [ ] Home: no hover on touch screens
 - [ ] Test iPad
-- [ ] Add a beta mention
+- [x] Add a beta mention
 
 **Social**
 - [ ] Add a Facebook like button on landing
