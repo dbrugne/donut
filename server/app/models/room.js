@@ -66,8 +66,8 @@ roomSchema.statics.retrieveRoom = function (name) {
   var pattern = name.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
   var regexp = new RegExp('^'+pattern+'$','i');
   return this.findOne({ name: regexp })
-    .populate('owner', 'username avatar color')
-    .populate('op', 'username avatar color');
+    .populate('owner', 'username avatar color facebook')
+    .populate('op', 'username avatar color facebook');
 };
 
 roomSchema.methods.avatarId = function() {

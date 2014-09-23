@@ -25,7 +25,7 @@ module.exports = function(io, socket, data) {
         owner = {
           user_id: room.owner._id,
           username: room.owner.username,
-          avatar: room.owner.avatar,
+          avatar: room.owner._avatar(),
           color: room.owner.color
         };
       }
@@ -37,7 +37,7 @@ module.exports = function(io, socket, data) {
           ops.push({
             user_id: op._id.toString(),
             username: op.username,
-            avatar: op.avatar,
+            avatar: op._avatar(),
             color: op.color
           });
         });
