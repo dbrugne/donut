@@ -6,19 +6,9 @@ chat
 **Tasks**
 
 **Compliance**
-- [ ] Test IE9
-  - [x] CSS 4095 rules limit (http://blogs.msdn.com/b/ieinternals/archive/2011/05/14/10164546.aspx)
-  - [x] Drawer scrollbar (probably due to 4095 limit)
-  - [ ] Image uploader doesn't work
-- [-] Test IE8
-  - [-] SVG
-  - [-] Border radius
-  - [-] Input fields
-  - [-] Calc
 - [ ] Test 1024
 - [ ] Home: no hover on touch screens
 - [ ] Test iPad
-- [x] Add old browser disclaimer
 - [ ] Add a beta mention
 
 **Social**
@@ -111,8 +101,8 @@ chat
 - [ ] Formulaire; faire le tour des libellés des champs, messages d'aide, messages de confirmation
 - [ ] Animated 'rollers' for alternative texts on landing
 
-**Cleaning**
-- [ ] Test it on IE8-11/FF/tablet
+**Compliance**
+- [ ] Image uploader doesn't work on IE9 and <
 
 **Help**
 - [ ] Help infobox on chat interface + help button
