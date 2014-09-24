@@ -5,10 +5,6 @@ chat
 
 **Tasks**
 
-- [ ] Test 1024
-- [ ] Test iPad
-    - [ ] Home: no hover on touch screens
-    - [ ] Room: user list actions doesn't work
 - [ ] Add new socket.io-redis (https://github.com/Automattic/socket.io/issues/1630)
   - [ ] On connect/disconnect/join/leave maintain redis user set for each room
   - [ ] On connect/disconnect maintain redis user set
@@ -17,6 +13,13 @@ chat
   - [ ] Implement current user list on room profile (drawer and pages)
   - [ ] Implement user online status on user profile (drawer)
 - [ ] Deploy on a strong infrastructure
+
+- [ ] Test 1024
+- [ ] Test iPad
+    - [ ] Home: no hover on touch screens
+    - [ ] Room: user list actions doesn't work (to verify)
+    - [ ] Discussion bottom collision .input/.messages
+    - [ ] Make discussion more compact (reduce left padding, reduce user column width)
 
 ## v1.1 : minimal features against competitors
 
