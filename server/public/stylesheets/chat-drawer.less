@@ -173,36 +173,36 @@
     text-align: center;
     .room {
       position: relative;
-    }
-    .name {
-      margin-top: 20px;
-    }
-    .owner { font-size: 1.2em;  }
-    .description {
-      margin-top: 20px;
-      font-size: 1.2em;
-      text-align: justify;
-      padding-left: 10px;
-    }
-    .website {
-      margin-top: 20px;
-      text-align: left;
-      font-size: 1.2em;
-      padding-left: 10px;
-      i { color: @cl-subtext3; }
-      a:hover { text-decoration: underline; }
-    }
-    .created {
-      margin-top: 5px;
-      text-align: left;
-      font-size: 1.2em;
-      padding-left: 10px;
-      i { color: @cl-subtext3; }
-    }
-    .join {
-      margin-top: 30px;
-      margin-bottom: 40px;
-      a {}
+      .name {
+        margin-top: 20px;
+      }
+      .owner { font-size: 1.2em;  }
+      .description {
+        margin-top: 20px;
+        font-size: 1.2em;
+        text-align: justify;
+        padding-left: 10px;
+      }
+      .website {
+        margin-top: 20px;
+        text-align: left;
+        font-size: 1.2em;
+        padding-left: 10px;
+        i { color: @cl-subtext3; }
+        a:hover { text-decoration: underline; }
+      }
+      .created {
+        margin-top: 5px;
+        text-align: left;
+        font-size: 1.2em;
+        padding-left: 10px;
+        i { color: @cl-subtext3; }
+      }
+      .join {
+        margin-top: 30px;
+        margin-bottom: 40px;
+        a {}
+      }
     }
     .users {
       margin-top: 5px;
@@ -215,103 +215,32 @@
         i { color: @cl-subtext3; }
       }
       .user {
-        position: relative;
-        width: 93px;
-        .pull-left;
-        font-size: 1.1em;
-        text-align: center;
-
-        .cover, .back {
-          width: 100%;
-          min-height: 90px;
-          padding: 55px 5px 5px;
-          -webkit-border-radius: 5px;
-          -moz-border-radius: 5px;
-          border-radius: 5px;
-        }
-        .cover { display: block;  }
-        .back { display: none; }
         .avatar {
-          position: absolute;
-          top: 10px; left: 24px;
-          img {
-            width: 34px;
-            height: 34px;
-            border-style: solid;
-            border-width: 2px;
-            border-color: rgba(167, 167, 167, 0.3);
-            -webkit-border-radius: 0;
-            -moz-border-radius: 0;
-            border-radius: 0;
-          }
+          width: 40px;
+          height: 40px;
         }
-        .text {
+        .username {
+          .ft-opensans;
+          font-size: 1.1em;
+        }
+        &:hover {
           .username {
-            .ft-opensans-bold;
-            font-size: 1.0em;
-            word-break: break-all;
+            color: @cl-subtext3;
           }
         }
-      }
-      .user.op, .user.owner {
-        .avatar {
-          img {
-            border-style: solid;
-            border-width: 2px;
-            -webkit-border-radius: 5px;
-            -moz-border-radius: 5px;
-            border-radius: 5px;
-          }
+        &.op::after {
+          content: " ";
+          display: inline-block;
+          background-image: url("/images/op.svg");
+          background-size: 10px 14px;
+          background-position: 0 5px;
+          background-repeat: no-repeat;
+          width: 20px;
+          height: 20px;
         }
-        .avatar::after {
-          content: "";
-          position: absolute;
-        }
-      }
-      .user.op {
-        .cover {
-          .avatar {
-            img { border-color: @cl-success; }
-          }
-          .avatar::after {
-            content: url("/images/op.svg");
-            top: -8px; left: -21px;
-          }
-        }
-        .back {
-          .avatar {
-            img {
-              border-color: @cl-background;
-              border-width: 3px;
-            }
-          }
-          .avatar::after {
-            content: url("/images/deop.svg");
-            top: -8px; left: -21px;
-          }
-        }
-      }
-      .user.owner {
-        .cover {
-          .avatar {
-            img { border-color: @cl-warning !important; } // override .op if needed;
-          }
-          .avatar::after {
-            content: url("/images/owner.svg") !important; // override .op if needed
-            top: -13px; left: 9px;
-          }
-        }
-        .back {
-          .avatar {
-            img {
-              border-width: 3px;
-              border-color: @cl-background !important; // override .op if needed;
-            }
-          }
-          .avatar::after {
-            content: url("/images/owner-w.svg") !important; // override .op if needed
-            top: -13px; left: 9px;
-          }
+        &.owner::after {
+          content: url("/images/owner-g.svg");
+          margin-left: 5px;
         }
       }
     }
@@ -352,6 +281,7 @@
     }
     .discuss {
       margin-top: 20px;
+      margin-bottom: 40px;
     }
     .offline {
       margin-top: 20px;
