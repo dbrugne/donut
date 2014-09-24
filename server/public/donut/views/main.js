@@ -322,7 +322,7 @@ define([
 
     // called by router only
     focusRoomByName: function(name) {
-      var model = rooms.findWhere({ name: name });
+      var model = rooms.iwhere('name', name);
       if (model == undefined) {
         // Not already open
         this.thisDiscussionShouldBeFocusedOnSuccess = name;

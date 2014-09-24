@@ -13,6 +13,16 @@ define([
       return model1.get('name').replace('#', '').toLowerCase()
         .localeCompare(model2.get('name').replace('#', '').toLowerCase());
     },
+    iwhere : function(key, val){ // insencitive case search
+      var matches = this.filter(function(item){
+        return item.get(key).toLocaleLowerCase() === val.toLocaleLowerCase();
+      });
+
+      if (matches.length < 1)
+        return undefined;
+
+      return matches[0];
+    },
 
     initialize: function() {
       this.listenTo(client, 'welcome', this.onWelcome);
