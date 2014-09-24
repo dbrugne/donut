@@ -6,7 +6,7 @@ chat
 **Tasks**
 
 - [ ] Change user card integration on room profile drawer
-- [ ] Add a Facebook like button on user/room profile drawer
+- [ ] Add a Facebook like button on user/room profile drawers
 - [ ] Test 1024
 - [ ] Test iPad
     - [ ] Home: no hover on touch screens
@@ -18,8 +18,6 @@ chat
   - [ ] Implement user count on room profile (drawer and pages)
   - [ ] Implement current user list on room profile (drawer and pages)
   - [ ] Implement user online status on user profile (drawer)
-
-**Hosting**
 - [ ] Deploy on a strong infrastructure
 
 ## v1.1 : minimal features against competitors
@@ -29,8 +27,14 @@ chat
 - [ ] Onetoone message delivering (even for offline users) + onetoone refactoring
 - [ ] Kick reason form
 - [ ] Ban from room
+- [ ] Ban user list edit
 - [ ] Op user list edit
 - [ ] Multi-node support
+
+**Other**
+- Compress JS with require JS optimizer to reduce page load
+- User /logout not send a notlogged event
+- Image uploader doesn't work on <=IE9
 
 ## Release 3
 
@@ -65,11 +69,8 @@ chat
 **Account**
 - [ ] Delete account (link on account drawer with target _blank) to /delete, confirmation page with text and field to type password + cancel button, reuse existing delete action + password check
 - [ ] Change username
-- [ ] Logout "cut" all user socket
 
 **Chat**
-- [ ] Add ban
-- [ ] Add kick reason form
 - [ ] Add a 'room ops' drawer with 'remove user from op list' button (only for owner)
 - [ ] Add a 'room bans' drawer with 'remove user from ban list' button (for op)
 - [ ] Change the to server->client messages : room:join/leave and user:open/close (for something like ?)
@@ -98,9 +99,6 @@ chat
 **Content**
 - [ ] Formulaire; faire le tour des libellés des champs, messages d'aide, messages de confirmation
 - [ ] Animated 'rollers' for alternative texts on landing
-
-**Compliance**
-- [ ] Image uploader doesn't work on IE9 and <
 
 **Help**
 - [ ] Help infobox on chat interface + help button
