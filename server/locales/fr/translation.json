@@ -245,7 +245,7 @@
             "success": "Votre nouvelle adresse email a bien été enregistrée",
             "error": {
                 "format": "Cette adresse email n'est valide",
-                "alreadyexists": "Cette adresse email est déjà utilisé par un autre compte"
+                "alreadyexists": "Cette adresse email est déjà utilisée par un autre compte"
             },
             "format": "account.email.format"
         },
