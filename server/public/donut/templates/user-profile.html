@@ -22,6 +22,7 @@
     <% } else { %>
     <p class="offline"><a href="#user/<%= user.username %>"><%= t('global.offline') %></a></p>
     <% }; %>
+    <div class="fb-like" data-href="<%= user.url %>" data-ref="profile-drawer" data-layout="button" data-share="true" data-width="300" data-show-faces="true"></div>
     <div class="footer">
         <a href="<%= user.url %>" target="_blank"><i class="fa fa-external-link"></i> <%= t('profile.user.permalink') %></a>
         <% if (user.isCurrent) { %>

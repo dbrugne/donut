@@ -2,11 +2,12 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'facebook',
   'models/client',
   'models/current-user',
   'text!templates/room-profile.html',
   'text!templates/spinner.html'
-], function ($, _, Backbone, client, currentUser, roomProfileTemplate, spinnerTemplate) {
+], function ($, _, Backbone, facebook, client, currentUser, roomProfileTemplate, spinnerTemplate) {
   var DrawerRoomProfileView = Backbone.View.extend({
 
       template: _.template(roomProfileTemplate),
@@ -52,6 +53,10 @@ define([
         this.$el.colorify();
         this.$el.find('.website span').linkify();
         this.$el.find('.created span').momentify('date');
+
+        // Facebook Like button
+        facebook.XFBML.parse(this.$el.get(0));
+
 
         if (room.color)
           this.trigger('color', room.color);

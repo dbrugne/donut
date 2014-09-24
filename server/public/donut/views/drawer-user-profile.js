@@ -2,11 +2,12 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'facebook',
   'models/client',
   'models/current-user',
   'text!templates/user-profile.html',
   'text!templates/spinner.html'
-], function ($, _, Backbone, client, currentUser, userProfileTemplate, spinnerTemplate) {
+], function ($, _, Backbone, facebook, client, currentUser, userProfileTemplate, spinnerTemplate) {
   var DrawerUserProfileView = Backbone.View.extend({
 
     template: _.template(userProfileTemplate),
@@ -51,6 +52,9 @@ define([
       this.$el.colorify();
       this.$el.find('.website span').linkify();
       this.$el.find('.created span').momentify('date');
+
+      // Facebook Like button
+      facebook.XFBML.parse(this.$el.get(0));
 
       if (user.color)
         this.trigger('color', user.color);

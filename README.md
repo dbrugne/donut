@@ -6,7 +6,7 @@ chat
 **Tasks**
 
 - [ ] Change user card integration on room profile drawer
-- [ ] Add a Facebook like button on user/room profile drawers
+- [x] Add a Facebook like button on user/room profile drawers
 - [ ] Test 1024
 - [ ] Test iPad
     - [ ] Home: no hover on touch screens
