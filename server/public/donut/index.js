@@ -9,7 +9,7 @@ require.config({
     'i18next'                     : '../vendor/i18next/i18next.amd.withJQuery',
     'moment'                      : '../vendor/moment/moment',
     'moment-fr'                   : '../vendor/moment/lang/fr',
-    'facebook'                    : '//connect.facebook.net/en_US/all',
+    'facebook'                    : '//connect.facebook.net/fr_FR/all',
     'jquery.ui.widget'            : '../vendor/blueimp-file-upload/js/vendor/jquery.ui.widget',
     'jquery.iframe-transport'     : '../vendor/blueimp-file-upload/js/jquery.iframe-transport',
     'jquery.fileupload'           : '../vendor/blueimp-file-upload/js/jquery.fileupload',

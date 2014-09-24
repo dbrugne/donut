@@ -6,6 +6,7 @@ define([
   'underscore',
   'backbone',
   'i18next',
+  'facebook',
   'moment',
   // Load (once) and attach plugins to jQuery and underscore
   'jquery.insertatcaret',
@@ -20,7 +21,7 @@ define([
   'bootstrap',
   'moment-fr',
   'underscore.template-helpers'
-], function ($, _, Backbone, i18next, moment) {
+], function ($, _, Backbone, i18next, facebook, moment) {
   var App = {
 
     // The main part of the job is done by require.js loader
@@ -62,18 +63,18 @@ define([
         }
       });
 
-//      // Facebook setup
-//      try {
-//        facebook.init({
-//          appId: window.facebook_app_id,
-//          version: 'v2.1',
-//          status: true,
-//          xfbml: true
-//        });
-//      } catch (e) {
-//        console.log(e);
-//        return false;
-//      }
+      // Facebook setup
+      try {
+        facebook.init({
+          appId: window.facebook_app_id,
+          version: 'v2.1',
+          status: true,
+          xfbml: false
+        });
+      } catch (e) {
+        console.log(e);
+        return false;
+      }
 
       // Every dependencies was loaded on this file load by require.js
       // Now we launch the app by loading principal elements
