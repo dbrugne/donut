@@ -63,13 +63,13 @@
       if (!identifier)
         return '';
 
-      return _url(identifier, '', 0, 975, background, 'north_east');
+      return _url(identifier, '', 0, 1100, background, 'north_east');
     },
     posterBlured: function(identifier, background, blured) {
       if (!identifier)
         return '';
 
-      return _url(identifier, '', 0, 975, background, 'north_east', 'blur:800');
+      return _url(identifier, '', 0, 1100, background, 'north_east', 'blur:800');
     }
   };
 })(jQuery);

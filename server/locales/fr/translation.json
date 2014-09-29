@@ -313,7 +313,7 @@
         },
         "poster": {
             "label": "Poster",
-            "help": "Le poster est la grande image en pleine hauteur que vos interlocuteurs voient à droite de la conversation. La partie visible de l'image sera la zone en haut à gauche. Dimensions recommandées : largeur 430px, hauteur 975px mini."
+            "help": "Le poster est la grande image en pleine hauteur que vos interlocuteurs voient à droite de la conversation. La partie visible de l'image sera la zone en haut à gauche. Dimensions recommandées : largeur 430px, hauteur 1100px mini."
         },
         "color": {
             "label": "Couleur"

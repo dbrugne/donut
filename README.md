@@ -11,7 +11,6 @@ chat
 - Horodatage de timeline ("à l'instant" --> "just now")
 - "dans à l'instant", received time is after current machine time
 - Change Backbone bootstrap for Optimizer
-- Change poster maxheight in cloudinary request (1100)
 - email to Dagnir
 
 - [ ] Add new socket.io-redis (https://github.com/Automattic/socket.io/issues/1630)

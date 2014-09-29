@@ -64,7 +64,7 @@ cloudinary.userAvatar = function(identifier, size, background) {
 cloudinary.poster = function(identifier, background) {
   if (!identifier)
     return '';
-  return _url(identifier, posterDefault, 0, 975, background, 'north_east');
+  return _url(identifier, posterDefault, 0, 1100, background, 'north_east');
 };
 
 module.exports = cloudinary;

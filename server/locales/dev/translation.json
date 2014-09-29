@@ -310,7 +310,7 @@
     },
     "poster": {
       "label": "Poster",
-      "help": "The poster is the large vertical image on the right-hand side of the chat thread. The visible part of the image will start on the top-left-hand corner. Recommended dimensions: 430px width, 975px height."
+      "help": "The poster is the large vertical image on the right-hand side of the chat thread. The visible part of the image will start on the top-left-hand corner. Recommended dimensions: 430px width, 1100px height."
     },
     "color": {
       "label": "Color"
