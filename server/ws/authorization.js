@@ -14,8 +14,7 @@ module.exports = {
       accept(new Error("Error in autorization:fail: "+message));
 
     // Non-production environment only! (allow virtual client connexion opening)
-//    if (process.env.NODE_ENV != 'production') { // @todo : TEMPORARY, ALLOW STRESSER ON PRODUCTION FOR TEST
-    if (data._query.virtualuserid && true) {
+    if (data._query.virtualuserid && process.env.NODE_ENV != 'production') {
       User.findById(data._query.virtualuserid, function(err, virtualUser) {
         if (err)
           accept(new Error('Error while retrieving virtual user: '+err));
