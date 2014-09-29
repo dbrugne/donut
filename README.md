@@ -5,8 +5,6 @@ chat
 
 **Tasks**
 
-- email to Dagnir
-
 - [ ] Add new socket.io-redis (https://github.com/Automattic/socket.io/issues/1630)
   - [ ] On connect/disconnect/join/leave maintain redis user set for each room
   - [ ] On connect/disconnect maintain redis user set
