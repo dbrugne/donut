@@ -27,6 +27,7 @@ define([
     // The main part of the job is done by require.js loader
     initialize: function() {
       // i18n setup
+      window.i18next = i18next;
       i18next.init({
         resGetPath: '/locales/resources.json?lng=__lng__&ns=__ns__',
         dynamicLoad: true,
@@ -45,23 +46,42 @@ define([
 
       // Moment language
       window.moment = moment;
-      moment.lang('fr', {
+      var momentFormat = (i18next.lng() == 'fr')
+        ? {
+            relativeTime : {
+              future : "%s",
+              past : "%s",
+              s : "à l'instant",
+              m : "1mn",
+              mm : "%dmin",
+              h : "1h",
+              hh : "%dh",
+              d : "un jour",
+              dd : "%d jours",
+              M : "un mois",
+              MM : "%d mois",
+              y : "un an",
+              yy : "%d ans"
+            }
+          }
+        : {
         relativeTime : {
-          future : "dans %s",
+          future : "%s",
           past : "%s",
-          s : "à l'instant",
+          s : "just now",
           m : "1mn",
           mm : "%dmin",
           h : "1h",
           hh : "%dh",
-          d : "un jour",
-          dd : "%d jours",
-          M : "un mois",
-          MM : "%d mois",
-          y : "un an",
-          yy : "%d ans"
+          d : "one day",
+          dd : "%d days",
+          M : "one month",
+          MM : "%d months",
+          y : "one year",
+          yy : "%d years"
         }
-      });
+      };
+      moment.lang(i18next.lng(), momentFormat);
 
       // Facebook setup
       try {

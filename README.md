@@ -5,11 +5,8 @@ chat
 
 **Tasks**
 
-- La date de création sur les fiches profil
 - La salutation ("Content de vous voir Joe"). Dans le fichier Excel de traduction ( https://irc.box.com/s/yqec6xpi1hjraw6oot3t ) à partir de la ligne 63.
 - Boutons FB
-- Horodatage de timeline ("à l'instant" --> "just now")
-- "dans à l'instant", received time is after current machine time
 - Change Backbone bootstrap for Optimizer
 - email to Dagnir
 
