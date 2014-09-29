@@ -5,6 +5,15 @@ chat
 
 **Tasks**
 
+- La date de création sur les fiches profil
+- La salutation ("Content de vous voir Joe"). Dans le fichier Excel de traduction ( https://irc.box.com/s/yqec6xpi1hjraw6oot3t ) à partir de la ligne 63.
+- Boutons FB
+- Horodatage de timeline ("à l'instant" --> "just now")
+- "dans à l'instant", received time is after current machine time
+- Change Backbone bootstrap for Optimizer
+- Change poster maxheight in cloudinary request (1100)
+- email to Dagnir
+
 - [ ] Add new socket.io-redis (https://github.com/Automattic/socket.io/issues/1630)
   - [ ] On connect/disconnect/join/leave maintain redis user set for each room
   - [ ] On connect/disconnect maintain redis user set
@@ -14,23 +23,16 @@ chat
   - [ ] Implement user online status on user profile (drawer)
 - [ ] Deploy on a strong infrastructure
 
-- [-] Test 1024
-- [-] Test iPad
-    - [-] Home: no hover on touch screens
-    - [-] Room: user list actions doesn't work (to verify)
-    - [-] Discussion bottom collision .input/.messages
-    - [-] Make discussion more compact (reduce left padding, reduce user column width)
-
 ## v1.1 : minimal features against competitors
 
+- [ ] Multi-node support
+- [ ] Onetoone message delivering (even for offline users) + onetoone refactoring
 - [ ] Discussion history
 - [ ] Post images in discussion
-- [ ] Onetoone message delivering (even for offline users) + onetoone refactoring
 - [ ] Kick reason form
 - [ ] Ban from room
 - [ ] Ban user list edit
 - [ ] Op user list edit
-- [ ] Multi-node support
 
 **Other**
 - Compress JS with require JS optimizer to reduce page load
