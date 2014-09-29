@@ -1,113 +1,25 @@
 define([
-  /************************************
-   * Load dependencies and plugins
-   ************************************/
   'jquery',
   'underscore',
   'backbone',
-  'i18next',
-  'facebook',
-  'moment',
-  // Load (once) and attach plugins to jQuery and underscore
-  'jquery.insertatcaret',
-  'jquery.maxlength',
-  'jquery.cloudinary',
-  'jquery.cloudinary-donut',
-  'jquery.linkify',
-  'jquery.smilify',
-  'jquery.momentify',
-  'jquery.colorify',
-  'jquery.scroller',
-  'bootstrap',
-  'moment-fr',
-  'underscore.template-helpers'
-], function ($, _, Backbone, i18next, facebook, moment) {
+  'routeur',
+  'models/client',
+  'views/main'
+], function ($, _, Backbone, router, client, mainView) {
   var App = {
-
-    // The main part of the job is done by require.js loader
     initialize: function() {
-      // i18n setup
-      window.i18next = i18next;
-      i18next.init({
-        resGetPath: '/locales/resources.json?lng=__lng__&ns=__ns__',
-        dynamicLoad: true,
-        saveMissing: true,
-        cookieName: 'donut.lng',
-        debug: false // @debug
-      });
-      // make i18next available from all underscore templates views (<%= t('key') %>)
-      _.addTemplateHelpers({t: i18next.t});
+      // Render IHM
+      mainView.run();
 
-      // Cloudinary setup
-      $.cloudinary.config({
-        cloud_name: window.cloudinary_cloud_name,
-        api_key: window.cloudinary_api_key
-      });
+      // Give some object to global scope to allow other context to use it
+      // @debug
+      window.router = router;
+      window.client = client;
+      window.main   = mainView;
 
-      // Moment language
-      window.moment = moment;
-      var momentFormat = (i18next.lng() == 'fr')
-        ? {
-            relativeTime : {
-              future : "%s",
-              past : "%s",
-              s : "à l'instant",
-              m : "1mn",
-              mm : "%dmin",
-              h : "1h",
-              hh : "%dh",
-              d : "un jour",
-              dd : "%d jours",
-              M : "un mois",
-              MM : "%d mois",
-              y : "un an",
-              yy : "%d ans"
-            }
-          }
-        : {
-        relativeTime : {
-          future : "%s",
-          past : "%s",
-          s : "just now",
-          m : "1mn",
-          mm : "%dmin",
-          h : "1h",
-          hh : "%dh",
-          d : "one day",
-          dd : "%d days",
-          M : "one month",
-          MM : "%d months",
-          y : "one year",
-          yy : "%d years"
-        }
-      };
-      moment.lang(i18next.lng(), momentFormat);
-
-      // Facebook setup
-      try {
-        facebook.init({
-          appId: window.facebook_app_id,
-          version: 'v2.1',
-          status: true,
-          xfbml: false
-        });
-      } catch (e) {
-        console.log(e);
-        return false;
-      }
-
-      // Every dependencies was loaded on this file load by require.js
-      // Now we launch the app by loading principal elements
-      require(['routeur','models/client', 'views/main'], function(router, client, mainView) {
-        // Give some object to global scope to allow other context to use it
-        // @debug
-        window.router = router;
-        window.client = client;
-        window.main   =   mainView;
-        client.connect();
-      });
+      // Establish connection
+      client.connect();
     }
   };
-
   return App;
 });

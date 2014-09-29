@@ -44,6 +44,105 @@ require.config({
   }
 });
 
-require(['app'], function (app) {
+require([
+  'app',
+  /************************************
+   * Load librairies
+   ************************************/
+  'jquery',
+  'underscore',
+  'backbone',
+  'i18next',
+  'facebook',
+  'moment',
+  /************************************
+   * Load (once) and attach plugins to jQuery and underscore
+   ************************************/
+  'jquery.insertatcaret',
+  'jquery.maxlength',
+  'jquery.cloudinary',
+  'jquery.cloudinary-donut',
+  'jquery.linkify',
+  'jquery.smilify',
+  'jquery.momentify',
+  'jquery.colorify',
+  'jquery.scroller',
+  'bootstrap',
+  'moment-fr',
+  'underscore.template-helpers'
+], function (app, $, _, Backbone, i18next, facebook, moment) {
+
+  // i18n setup
+  window.i18next = i18next;
+  i18next.init({
+    resGetPath: '/locales/resources.json?lng=__lng__&ns=__ns__',
+    dynamicLoad: true,
+    saveMissing: true,
+    cookieName: 'donut.lng',
+    debug: false // @debug
+  });
+  // make i18next available from all underscore templates views (<%= t('key') %>)
+  _.addTemplateHelpers({t: i18next.t});
+
+  // Cloudinary setup
+  $.cloudinary.config({
+    cloud_name: window.cloudinary_cloud_name,
+    api_key: window.cloudinary_api_key
+  });
+
+  // Moment language
+  window.moment = moment;
+  var momentFormat = (i18next.lng() == 'fr')
+    ? {
+    relativeTime : {
+      future : "%s",
+      past : "%s",
+      s : "à l'instant",
+      m : "1mn",
+      mm : "%dmin",
+      h : "1h",
+      hh : "%dh",
+      d : "un jour",
+      dd : "%d jours",
+      M : "un mois",
+      MM : "%d mois",
+      y : "un an",
+      yy : "%d ans"
+    }
+  }
+    : {
+    relativeTime : {
+      future : "%s",
+      past : "%s",
+      s : "just now",
+      m : "1mn",
+      mm : "%dmin",
+      h : "1h",
+      hh : "%dh",
+      d : "one day",
+      dd : "%d days",
+      M : "one month",
+      MM : "%d months",
+      y : "one year",
+      yy : "%d years"
+    }
+  };
+  moment.lang(i18next.lng(), momentFormat);
+
+  // Facebook setup
+  try {
+    facebook.init({
+      appId: window.facebook_app_id,
+      version: 'v2.1',
+      status: true,
+      xfbml: false
+    });
+  } catch (e) {
+    console.log(e);
+    return false;
+  }
+
+  // run
   app.initialize();
+
 });

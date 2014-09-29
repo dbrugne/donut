@@ -67,7 +67,9 @@ define([
       this.listenTo(onetoones, 'add', this.addOneView);
       this.listenTo(rooms, 'kicked', this.roomKicked); // @todo: nasty event
       this.listenTo(rooms, 'deleted', this.roomRoomDeleted); // @todo: nasty event
+    },
 
+    run: function() {
       // generate and attach subviews
       this.currentUserView = new CurrentUserView({model: currentUser});
       this.roomBlockView = new RoomBlockView({collection: rooms});
