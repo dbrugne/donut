@@ -14,12 +14,12 @@ chat
   - [ ] Implement user online status on user profile (drawer)
 - [ ] Deploy on a strong infrastructure
 
-- [ ] Test 1024
-- [ ] Test iPad
-    - [ ] Home: no hover on touch screens
-    - [ ] Room: user list actions doesn't work (to verify)
-    - [ ] Discussion bottom collision .input/.messages
-    - [ ] Make discussion more compact (reduce left padding, reduce user column width)
+- [-] Test 1024
+- [-] Test iPad
+    - [-] Home: no hover on touch screens
+    - [-] Room: user list actions doesn't work (to verify)
+    - [-] Discussion bottom collision .input/.messages
+    - [-] Make discussion more compact (reduce left padding, reduce user column width)
 
 ## v1.1 : minimal features against competitors
 
