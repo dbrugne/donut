@@ -19,7 +19,7 @@
     "locale": "en",
     "sitename": "DONUT.me",
     "landing": {
-      "title": "Thematic chatrooms for all tastes(EN)",
+      "title": "Thematic chatrooms for all tastes",
       "description": "DONUT is thematic chat platform (a bit like IRC but easier)",
       "keywords": "discussion,chat,chatroom,irc"
     },
@@ -115,7 +115,7 @@
       "line1": "DONUT is made",
       "line2": "for you to",
       "line3": "chat about",
-      "line4": "your interest",
+      "line4": "your interests",
       "line5": "and engage",
       "line6": "your communities!",
       "knowmore": "More"
@@ -123,14 +123,14 @@
     "description": {
       "title1": "tasty",
       "title2": "chatrooms",
-      "definition": "A donut is a cosy discussion spot,<br>a cool place to hang out,<br> une chat room indeed!",
+      "definition": "A donut is a cosy discussion spot,<br>a cool place to hang out,<br> a chat room indeed!",
       "line1": "You can create your very own customized donut and hang out with you community...",
       "line2": "...or join ongoing discussions around your interests...",
       "line3": "...and discover like-minded people, during true conversations!"
     },
     "signup": {
       "title1": "Create your",
-      "title2": "accout here 1 bite",
+      "title2": "account here in 1 bite",
       "etvoila": "Here we go!"
     },
     "footer": {
@@ -156,7 +156,7 @@
       },
       "permalink": "Permanent link to this profile",
       "editlink": "To edit this profile click here",
-      "createdat": "created on"
+      "createdat": "Created on"
     },
     "user": {
       "hisrooms": "Active in these donuts",
@@ -166,32 +166,32 @@
       },
       "permalink": "Permanent link to this profile",
       "editlink": "To edit this profile click here",
-      "signuped": "signed up on"
+      "signuped": "Signed up on"
     }
   },
   "chat": {
     "create": {
-      "info": "Attention, the donut name will not be editable later!",
+      "info": "Attention, the donut name will not be editable later.",
       "label": "Create your donut",
       "help": [
-        "Between 3 and 15 characters.<br>",
-        "Valid : letters, numbers and special characters: <strong>-._|[]^</strong><br>",
-        "Invalid: spaces, accents and special characters not listed above.<br>"
-      ],
+      "Between 3 and 15 characters.<br>",
+      "Valid : letters, numbers and special characters: <strong>-._|[]^</strong><br>",
+      "Invalid: spaces, accents and special characters not listed above.<br>"
+    ],
       "placeholder": "Donut name",
       "submit": "Create"
     },
     "help": "Help",
     "home": {
-      "roomstitle": "Here are the existing donuts, you can also <a class='open-create-room'>create on</a>:",
+      "roomstitle": "Here are the existing donuts, you can also <a class='open-create-room'>create one</a>:",
       "userstitle": "Online users"
     },
     "search": {
       "placeholder": "Search donut or user here",
       "noroom": "No match found",
       "nouser": "No match found",
-      "roomstitle": "Here are the donuts marching your request, you can also <a class='open-create-room'>create one</a> :(EN)",
-      "userstitle": "Matchin users"
+      "roomstitle": "Here are the donuts matching your request, you can also <a class='open-create-room'>create one</a> :",
+      "userstitle": "Matching users"
     },
     "userscount": "<strong>__count__</strong> user in this donut",
     "userscount_plural": "<strong>__count__</strong> users in this donut",
@@ -216,8 +216,8 @@
     "notifications": {
       "hello": "You enter",
       "disconnected": "You have been disconnected from the server, please wait",
-      "reconnected": "You have been reconnected <span class=\"detail\">(you may have missed messages in this donut)</span>(EN)",
-      "offline": "This user is currently offline, the message cannot be sent.(EN)",
+      "reconnected": "You have been reconnected <span class=\"detail\">(you may have missed messages in this donut)</span>",
+      "offline": "This user is currently offline, the message cannot be sent.",
       "topic": "changed topic for",
       "kick": "was kicked out of this donut by",
       "ban": "was banned from this donut by",
@@ -242,7 +242,7 @@
     },
     "email": {
       "label": "E-mail",
-      "success": "Your new e-mail had been saved",
+      "success": "Your new e-mail has been saved",
       "error": {
         "format": "Invalid e-mail",
         "alreadyexists": "This e-mail is already used by another account"
@@ -263,7 +263,7 @@
       "linkhelp": "You can link your account to Facebook to log in more easily and enjoy a more social experience:",
       "connectwith": "Link this account to",
       "error": {
-        "needemailpassword": "You cannot unlink this account from Facebook. First you need to set <a href='/connect/local'>an e-mail and a password for your account</a>(EN)",
+        "needemailpassword": "You cannot unlink this account from Facebook. First you need to set <a href='/connect/local'>an e-mail and a password for your account</a>",
         "alreadylinked": "This Facebook account is already linked to another account"
       }
     },
@@ -281,19 +281,19 @@
       "nopicture": "No picture",
       "failed": "Upload failed",
       "done": "Upload successful, please wait during image rendering",
-      "help": "Image file (.jpeg, .jpg, .png or .gif). Will be automatically resized to  __resized_width__x__resized_height__px."
+      "help": "Image file (.jpeg, .jpg, .png or .gif). Will be automatically resized to __resized_width__x__resized_height__px."
     },
-    "left": "<strong>%left</strong> to go(EN)",
+    "left": "<strong>%left</strong> to go",
     "othersettings": "Other settings",
     "description": {
       "label": "Description",
-      "placeholder": "Discribe the donut in a few words",
+      "placeholder": "Describe the donut in a few words",
       "help": "Optional"
     },
     "bio": {
       "label": "Bio",
-      "placeholder": "Discribe yourself in a few words",
-      "help": "Facultatif"
+      "placeholder": "Describe yourself in a few words",
+      "help": "Optional"
     },
     "location": {
       "label": "Place",
@@ -302,7 +302,7 @@
     },
     "website": {
       "label": "Website",
-      "placeholder": "URL of a website linked to this account",
+      "placeholder": "URL of a website related to this account",
       "help": "Optional"
     },
     "avatar": {
@@ -310,21 +310,21 @@
     },
     "poster": {
       "label": "Poster",
-      "help": "The poster is the large vertical image on the right-hand side of the chat thread. The visible part of the image will start on the top-left-hand corner. Recommended dimensions: 430px width, 1100px height."
+      "help": "The poster is the large vertical image on the right-hand side of the chat thread. The visible part of the image will start on the top-left-hand corner. Recommended dimensions: 430px width, 975px height."
     },
     "color": {
       "label": "Color"
     },
     "autojoindonut": {
-      "yes": "Join <strong>#donut</strong> when you login"
+      "yes": "Join <strong>#donut</strong> when you log in"
     },
     "room": {
       "delete": {
-        "link": "You could also delete this donut <a class='open-room-delete' data-room-name=\"__name__\"> clicking here</a>.(EN)",
+        "link": "To delete this donut <a class='open-room-delete' data-room-name=\"__name__\"> click here</a>.",
         "title": "Delete",
         "info": [
-          "You are about to delete this donut. This action is immediate and cannot be undone.<br><br>(EN)",
-          "Please confirm deletion by typing the donut name (<strong>__name__</strong>) en then clicking the button:"
+          "You are about to delete this donut. This action is immediate and cannot be undone.<br><br>",
+          "To confirm deletion please enter donut name (<strong>__name__</strong>) and then click the button:"
         ],
         "placeholder": "Enter the donut name",
         "success": "donut deleted!",
@@ -359,7 +359,7 @@
         "",
         "The DONUT.me team",
         "",
-        "PS : If you did not initiate this action,, please report by forwarding this e-mail to __email__ or replying this e-mail."
+        "PS : If you did not initiate this action, please report by forwarding this e-mail to __email__ or replying this e-mail."
       ],
       "html": [
         "Congratualations! Your user account was successfully created.<br>",
@@ -372,7 +372,7 @@
         "<br>",
         "The DONUT.me team<br>",
         "<br>",
-        "PS : If you did not initiate this action,, please report by forwarding this e-mail to <a href='mailto:__email__'>__email__</a> or replying this e-mail.<br>"
+        "PS : If you did not initiate this action, please report by forwarding this e-mail to <a href='mailto:__email__'>__email__</a> or replying this e-mail.<br>"
       ]
     },
     "forgot": {
@@ -383,42 +383,42 @@
         "http://__fqdn__/reset/__token__",
         "",
         "If you ignore this e-mail your password will remain unchanged.",
-        "(EN)",
-        "L'équipe DONUT.me(EN)",
-        "(EN)",
-        "PS : If you did not initiate this action,, please report by forwarding this e-mail to __email__ or replying this e-mail."
+        "",
+        "The DONUT.me team",
+        "",
+        "PS : If you did not initiate this action, please report by forwarding this e-mail to __email__ or replying this e-mail."
       ],
       "html": [
         "You are receiving this e-mail because you have requested a password reset. Please click on the following link to complete the process:<br>",
         "<br>",
-        "<a href='http://__fqdn__/reset/__token__'>Réinitialiser votre mot de passe</a><br>",
+        "<a href='http://__fqdn__/reset/__token__'>Reset your password</a><br>",
         "<br>",
         "If you ignore this e-mail your password will remain unchanged.<br>",
         "<br>",
         "The DONUT.me team<br>",
         "<br>",
-        "PS : If you did not initiate this action,, please report by forwarding this e-mail to <a href='mailto:__email__'>__email__</a> or replying this e-mail.<br>"
+        "PS : If you did not initiate this action, please report by forwarding this e-mail to <a href='mailto:__email__'>__email__</a> or replying this e-mail.<br>"
       ]
     },
     "passwordchanged": {
       "subject": "Success ! Your password has been successfully changed.",
       "text": [
-        "You are receiving this e-mail as the final confirmation of your password change. Let’s go back to DONUT.me and join tasty conversations!",
+        "You are receiving this e-mail as the final confirmation of your password change. Let's go back to DONUT.me and join tasty conversations!",
         "",
         "http://__fqdn__",
         "",
         "The DONUT.me team",
         "",
-        "PS : If you did not initiate this action,, please report by forwarding this e-mail to __email__ or replying this e-mail."
+        "PS : If you did not initiate this action, please report by forwarding this e-mail to __email__ or replying this e-mail."
       ],
       "html": [
-        "You are receiving this e-mail as the final confirmation of your password change. Let’s go back to DONUT.me and join tasty conversations!<br>",
+        "You are receiving this e-mail as the final confirmation of your password change. Let's go back to DONUT.me and join tasty conversations!<br>",
         "<br>",
         "<a href='http://__fqdn__'>Connectez-vous en cliquant ici</a><br>",
         "<br>",
         "The DONUT.me team<br>",
         "<br>",
-        "PS : If you did not initiate this action,, please report by forwarding this e-mail to <a href='mailto:__email__'>__email__</a> or replying this e-mail.<br>"
+        "PS : If you did not initiate this action, please report by forwarding this e-mail to <a href='mailto:__email__'>__email__</a> or replying this e-mail.<br>"
       ]
     },
     "emailchanged": {
@@ -430,16 +430,16 @@
         "",
         "The DONUT.me team",
         "",
-        "PS : If you did not initiate this action,, please report by forwarding this e-mail to __email__ or replying this e-mail."
+        "PS : If you did not initiate this action, please report by forwarding this e-mail to __email__ or replying this e-mail."
       ],
       "html": [
-        "You are receiving this e-mail because you requested to change the e-mail linked to yout DONUT.me account. It worked perfectly! You can use it to log in:",
+"You are receiving this e-mail because you requested to change the e-mail linked to yout DONUT.me account. It worked perfectly! You can use it to log in:",
         "<br>",
-        "<a href='http://__fqdn__'>Connectez-vous en cliquant ici</a><br>",
+        "<a href='http://__fqdn__'>Click her eto log in</a><br>",
         "<br>",
-        "L'équipe DONUT.me<br>",
+        "The DONUT.me team<br>",
         "<br>",
-        "PS : If you did not initiate this action,, please report by forwarding this e-mail to <a href='mailto:__email__'>__email__</a> or replying this e-mail.<br>"
+        "PS : If you did not initiate this action, please report by forwarding this e-mail to <a href='mailto:__email__'>__email__</a> or replying this e-mail.<br>"
       ]
     }
   },
