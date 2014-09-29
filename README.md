@@ -5,7 +5,6 @@ chat
 
 **Tasks**
 
-- Boutons FB
 - Change Backbone bootstrap for Optimizer
 - email to Dagnir
 
