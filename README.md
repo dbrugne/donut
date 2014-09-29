@@ -5,7 +5,6 @@ chat
 
 **Tasks**
 
-- La salutation ("Content de vous voir Joe"). Dans le fichier Excel de traduction ( https://irc.box.com/s/yqec6xpi1hjraw6oot3t ) à partir de la ligne 63.
 - Boutons FB
 - Change Backbone bootstrap for Optimizer
 - email to Dagnir
