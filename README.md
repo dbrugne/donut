@@ -5,7 +5,6 @@ chat
 
 **Tasks**
 
-- Change Backbone bootstrap for Optimizer
 - email to Dagnir
 
 - [ ] Add new socket.io-redis (https://github.com/Automattic/socket.io/issues/1630)
