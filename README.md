@@ -5,14 +5,24 @@ chat
 
 **Tasks**
 
-- [ ] Add new socket.io-redis (https://github.com/Automattic/socket.io/issues/1630)
-  - [ ] On connect/disconnect/join/leave maintain redis user set for each room
-  - [ ] On connect/disconnect maintain redis user set
-  - [ ] Implement user count on room card on chat home
-  - [ ] Implement user count on room profile (drawer and pages)
-  - [ ] Implement current user list on room profile (drawer and pages)
-  - [ ] Implement user online status on user profile (drawer)
-- [ ] Deploy on a strong infrastructure
+- Bouncer
+- [ ] Add bouncer when i'm clicking on a chat link and not authenticated:
+- [ ] Should be redirected to profile /!#room/AutismeLPPAD => /room/AutismeLPPAD
+- [ ] On profile page if I click on join should pesist request URL and redirect me after login
+- [ ] Signup success redirect to chat interface (or persisted URL)
+
+- History
+- [ ] User disconnected still appear in room
+- [ ] View room history even events where i was offline
+
+- [ ] Add notification to owner/op when a user enter in room
+- [ ] Add a feature to post on Facebook to invite users
+- [ ] Add email to notify of user connection
+- [ ] Bug: some user left in room users list
+- [ ] Restore user count on room cards on homepage and profile drawer
+- [ ] Sort room card by user count on homepage
+- [ ] Add mentions in room (highlight room user in messages)
+- [ ] Type notification when someone type something in input
 
 ## v1.1 : minimal features against competitors
 
@@ -29,6 +39,17 @@ chat
 - Compress JS with require JS optimizer to reduce page load
 - User /logout not send a notlogged event
 - Image uploader doesn't work on <=IE9
+
+## Scalability
+
+- [ ] Add new socket.io-redis (https://github.com/Automattic/socket.io/issues/1630)
+  - [ ] On connect/disconnect/join/leave maintain redis user set for each room
+  - [ ] On connect/disconnect maintain redis user set
+  - [ ] Implement user count on room card on chat home
+  - [ ] Implement user count on room profile (drawer and pages)
+  - [ ] Implement current user list on room profile (drawer and pages)
+  - [ ] Implement user online status on user profile (drawer)
+- [ ] Deploy on a strong infrastructure
 
 ## Release 3
 
