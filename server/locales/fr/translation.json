@@ -234,8 +234,12 @@
         "deletemessage": "Le donut __name__ vient d'être supprimé pas son créateur",
         "share": {
           "inviteyourfriends": "Invitez vos amis à discuter sur ce donut !",
-          "title": "",
-          "description": ""
+          "title": "Venez discuter dans le donut __name__",
+          "description": "DONUT est une plateforme de chat thématique gourmande et craquante.",
+          "email": {
+            "subject": "Rejoins moi sur DONUT.me",
+            "message": "Viens discuter avec moi sur DONUT.me, je suis dans le donut __name__"
+          }
         }
     },
     "account": {

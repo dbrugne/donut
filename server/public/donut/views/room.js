@@ -44,6 +44,14 @@ define([
               app_id: window.facebook_app_id,
               load_sdk: false
             },
+            twitter: {
+              title: $.t('chat.share.title', {name: that.model.get('name')}),
+              description: $.t('chat.share.description', {name: that.model.get('name')})
+            },
+            email: {
+              title: $.t('chat.share.email.subject', {name: that.model.get('name')}),
+              description: $.t('chat.share.email.message', {name: that.model.get('name')})
+            },
             pinterest: {
               enabled: false
             }
