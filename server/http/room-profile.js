@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var i18next = require('../app/i18next');
+var bouncer = require('../app/middlewares/bouncer');
 
 var paramHandler = require('../app/middlewares/room-param');
 router.param('room', paramHandler);
@@ -24,6 +25,13 @@ router.get('/room/:room', function(req, res) {
     poster: req.room.poster,
     color: req.room.color
   });
+});
+
+router.get('/room/join/:room', function(req, res) {
+
+  bouncer.set(req, req.room.chat);
+  res.redirect('/login');
+
 });
 
 module.exports = router;

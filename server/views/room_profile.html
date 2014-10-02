@@ -2,7 +2,7 @@
 <div id="profile" class="room-profile">
     <div class="cover room">
         <a href="{{room.url}}"><img class="avatar" src="{{room.avatar}}" alt="{{room.name}} avatar"></a>
-        <p class="join"><a href="{{^user}}/login{{/user}}{{#user}}{{room.chat}}{{/user}}" {{#room.color}}style="background-color: {{room.color}};"{{/room.color}}>{{#i}}actions.join{{/i}} <img src="/images/user.svg" alt="user icon"></a></p>
+        <p class="join"><a href="{{^user}}{{room.join}}{{/user}}{{#user}}{{room.chat}}{{/user}}" {{#room.color}}style="background-color: {{room.color}};"{{/room.color}}>{{#i}}actions.join{{/i}} <img src="/images/user.svg" alt="user icon"></a></p>
     </div>
     <div class="text room">
         <div class="name-content">

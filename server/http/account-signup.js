@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var passport = require('passport');
 var i18next = require('../app/i18next');
+var bouncer = require('../app/middlewares/bouncer');
 
 var validateInput = function(req, res, next) {
   req.checkBody('email', i18next.t("account.email.error.format")).isEmail();
@@ -28,10 +29,9 @@ router.route('/signup')
           meta: {title: i18next.t("title.default")}
         });
     })
-    .post(validateInput, passport.authenticate('local-signup', {
-        successRedirect : '/',
+    .post([validateInput, passport.authenticate('local-signup', {
         failureRedirect : '/signup',
         failureFlash : true
-    }));
+    })], bouncer.redirect);
 
 module.exports = router;

@@ -2,12 +2,12 @@ var express = require('express');
 var router = express.Router();
 var passport = require('passport');
 var i18next = require('../app/i18next');
+var bouncer = require('../app/middlewares/bouncer');
 
 var validateInput = function(req, res, next) {
   req.checkBody('email', i18next.t("login.emailerror")).isEmail();
   req.checkBody('password', i18next.t("login.passworderror")).isLength(1);
   if (req.validationErrors()) {
-    console.log(req.validationErrors());
     return res.render('login', {
       layout: 'layout-form',
       partials: {head: '_head', foot: '_foot'},
@@ -30,20 +30,18 @@ router.route('/login')
           userFields: {email: req.flash('email')}
         });
     })
-    .post(validateInput, passport.authenticate('local-login', {
-        successRedirect : '/!',
+    .post([validateInput, passport.authenticate('local-login', {
         failureRedirect : '/login',
         failureFlash : true
-    }));
+    })], bouncer.redirect);
 
 router.get('/login/facebook', passport.authenticate('facebook', {
-    scope : 'email'
+  scope : 'email'
 }));
 
 router.get('/login/facebook/callback', passport.authenticate('facebook', {
-        successRedirect : '/!',
-        failureRedirect : '/'
-}));
+  failureRedirect : '/'
+}), bouncer.redirect);
 
 router.get('/logout', function(req, res) {
     req.logout();

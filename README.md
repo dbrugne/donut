@@ -6,18 +6,21 @@ chat
 **Tasks**
 
 - Bouncer
-- [ ] Add bouncer when i'm clicking on a chat link and not authenticated:
-- [ ] Should be redirected to profile /!#room/AutismeLPPAD => /room/AutismeLPPAD
-- [ ] On profile page if I click on join should pesist request URL and redirect me after login
-- [ ] Signup success redirect to chat interface (or persisted URL)
+- [x] Add bouncer when i'm clicking on a chat link and not authenticated:
+- [ ] Should be redirected to profile /!#room/AutismeLPPAD => /room/AutismeLPPAD => not possible due to hash non visibility
+- [x] On profile page if I click on join should pesist request URL and redirect me after login
+- [x] Signup success redirect to chat interface (or persisted URL)
 
 - History
 - [ ] User disconnected still appear in room
 - [ ] View room history even events where i was offline
 - [ ] Bug: some user left in room users list => just send a user:offline notification to everyone in user room (get room list from Mongo)
 
+- Share
+- [ ] Add in room action block : view profile, share : on facebook or permanent URL
+(- [ ] Add a feature to post on Facebook to invite users)
+
 - [ ] Add notification to owner/op when a user enter in room
-- [ ] Add a feature to post on Facebook to invite users
 - [ ] Add email to notify of user connection
 - [ ] Restore user count on room cards on homepage and profile drawer
 - [ ] Sort room card by user count on homepage
@@ -29,7 +32,7 @@ chat
 - [ ] Multi-node support
 - [ ] Onetoone message delivering (even for offline users) + onetoone refactoring
 - [ ] Discussion history
-- [ ] Post images in discussion
+- [ ] Post images in discussion (drag&drop or upload field, put URL in message + thumbnail on over)
 - [ ] Kick reason form
 - [ ] Ban from room
 - [ ] Ban user list edit

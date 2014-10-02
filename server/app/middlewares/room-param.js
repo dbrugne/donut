@@ -26,6 +26,7 @@ module.exports = function(req, res, next, roomname) {
         // url
         room.url = req.protocol + '://' + req.get('host') + '/room/' + room.name.replace('#', '').toLocaleLowerCase();
         room.chat = req.protocol + '://' + req.get('host') + '/!#room/' + room.name.replace('#', '');
+        room.join = req.protocol + '://' + req.get('host') + '/room/join/' + room.name.replace('#', '');
 
         // owner
         if (room.owner && room.owner._id) {

@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var i18next = require('../app/i18next');
-
+var bouncer = require('../app/middlewares/bouncer');
 var colors = require('../config/colors');
 
 router.get('/!', function(req, res) {
@@ -18,6 +18,10 @@ router.get('/!', function(req, res) {
   }
 
   // ... otherwise open chat
+
+  bouncer.reset(req); // cleanup bouncer (not before cause other middleware can redirect
+                      // browser before, e.g.: choose-username)
+
   return res.render('chat', {
     layout: false,
     partials: {head: '_head'},

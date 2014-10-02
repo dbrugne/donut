@@ -3,6 +3,7 @@ var router = express.Router();
 var User = require('../app/models/user');
 var isLoggedIn = require('../app/middlewares/isloggedin');
 var i18next = require('../app/i18next');
+var bouncer = require('../app/middlewares/bouncer');
 
 var validateInput = function (req, res, next) {
   req.checkBody(['user', 'fields', 'username'], i18next.t("choose-username.usernameerror")).isUsername();
@@ -58,7 +59,7 @@ router.route('/choose-username')
         req.flash('error', err)
         return res.redirect('/');
       } else {
-        return res.redirect('/!');
+        return bouncer.redirect(req, res);
       }
     });
   });
