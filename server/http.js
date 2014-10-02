@@ -24,10 +24,9 @@ var conf = require('./config/index');
 var app = express();
 
 app.use(favicon(__dirname + '/public/favicon.ico'));
-app.use(logger('dev'));
 app.use(less(__dirname+'/public', { force: conf.less.force }));
-app.use('/medias', express.static(path.join(__dirname, 'medias')));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(logger('dev'));
 app.use(fqdn());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(expressValidator()); // must be immediately after bodyParser()
