@@ -7,7 +7,7 @@ chat
 
 - Bouncer
 - [x] Add bouncer when i'm clicking on a chat link and not authenticated:
-- [ ] Should be redirected to profile /!#room/AutismeLPPAD => /room/AutismeLPPAD => not possible due to hash non visibility
+- [x] Should be redirected to profile /!#room/AutismeLPPAD => /room/AutismeLPPAD => not possible due to hash non visibility
 - [x] On profile page if I click on join should pesist request URL and redirect me after login
 - [x] Signup success redirect to chat interface (or persisted URL)
 

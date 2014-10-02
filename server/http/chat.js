@@ -8,8 +8,17 @@ router.get('/!', function(req, res) {
 
   // Is user authenticated
   if (!req.isAuthenticated()) {
+    // set Flash message (display on profile page or landing page depending
+    // requested URL hash)
     req.flash('warning', i18next.t("chat.shouldauthenticated"));
-    return res.redirect('/');
+
+    // render an HTML DOM that redirect browser on corresponding profile page
+    return res.render('chat_track_anchor', {
+      layout: false,
+      partials: {head: '_head'},
+      meta: {title: i18next.t("title.chat")},
+      colors: colors.toString()
+    });
   }
 
   // Has user a username
