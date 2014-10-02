@@ -14,11 +14,11 @@ chat
 - History
 - [ ] User disconnected still appear in room
 - [ ] View room history even events where i was offline
+- [ ] Bug: some user left in room users list => just send a user:offline notification to everyone in user room (get room list from Mongo)
 
 - [ ] Add notification to owner/op when a user enter in room
 - [ ] Add a feature to post on Facebook to invite users
 - [ ] Add email to notify of user connection
-- [ ] Bug: some user left in room users list
 - [ ] Restore user count on room cards on homepage and profile drawer
 - [ ] Sort room card by user count on homepage
 - [ ] Add mentions in room (highlight room user in messages)

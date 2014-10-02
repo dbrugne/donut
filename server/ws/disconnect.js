@@ -6,6 +6,15 @@ module.exports = function(io, socket) {
   socket.leave('user:'+socket.getUserId());
 
   // Logic for room where user was in
+  /***
+   * CAN'T WORK!
+   *
+   * AT THIS STEP THE socket OBJECT DOESN'T LONG HOLD ROOMS LIST
+   * WE SHOULD REQUEST MONGO TO GET USER ROOMS AND BROADCAST A user:offline
+   * EVENT + handle event on client side
+   *
+   * @todo
+   */
   var rooms = helper.socketRooms(io, socket);
   for (var i=0; i < rooms.length; i++) {
     var roomName = rooms[i];
