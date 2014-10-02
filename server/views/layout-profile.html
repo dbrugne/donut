@@ -1,5 +1,16 @@
 {{> head}}
 <body class="body-profile" style="{{#color}}background-color: {{color}};{{/color}} {{#poster}}background-image: url({{poster}});{{/poster}}">
+<div class="upon">
+    {{#success}}<div class="alert alert-success">{{{success}}}</div>{{/success}}
+    {{#info}}<div class="alert alert-info">{{{info}}}</div>{{/info}}
+    {{#warning}}<div class="alert alert-warning">{{{warning}}}</div>{{/warning}}
+    {{#error}}<div class="alert alert-danger">{{{error}}}</div>{{/error}}
+</div>
+<div id="languages">
+    <span>{{#i}}global.switchlanguage{{/i}} :</span>
+    <a data-language="fr" class="switch">fr</a> -
+    <a data-language="en" class="switch">en</a>
+</div>
 <div class="color" {{#color}}style="background-color: {{color}};"{{/color}}></div>
 <a href="/" class="logo">
     <img src="/images/logo-onecolor-w.svg">
