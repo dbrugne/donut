@@ -26,7 +26,31 @@ define([
       this.topicView = new TopicView({el: this.$el.find('.topic'), model: this.model});
       this.usersView = new UsersView({el: this.$el.find('.users'), model: this.model, collection: this.model.users});
 
+      // color
       this.colorify();
+
+      // run only when the DOM is ready (0ms timeout)
+      var that = this;
+      setTimeout(function() {
+        // share button
+        new Share(that.share.selector, {
+          url: that.model.getUrl(),
+          ui: {
+            flyout: 'bottom right',
+            button_text: $.t('chat.share.inviteyourfriends')
+          },
+          networks: {
+            facebook: {
+              app_id: window.facebook_app_id,
+              load_sdk: false
+            },
+            pinterest: {
+              enabled: false
+            }
+          }
+        });
+
+      }, 0);
     },
     _remove: function(model) {
       this.topicView.remove();
@@ -47,6 +71,18 @@ define([
       var posterPath = data.poster;
       data.poster = $.cd.poster(posterPath, data.color);
       data.posterblured = $.cd.posterBlured(posterPath, data.color);
+
+      // url
+      data.url = this.model.getUrl();
+
+      // share widget
+      var share = 'share-room-'
+        + this.model.get('name').replace('#', '').toLocaleLowerCase()
+      this.share = {
+        class: share,
+        selector: '.'+share
+      }
+      data.share = this.share.class;
 
       return data;
     },

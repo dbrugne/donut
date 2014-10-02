@@ -3,12 +3,16 @@
         <img class="avatar open-room-profile" data-room-name="<%= name %>" src="<%= avatar %>" alt="<%= name %> avatar">
         <div class="name open-room-profile" data-room-name="<%= name %>"><%= name %></div>
         <div class="owner"><%= t('global.by') %> <a class="open-user-profile" data-username="<%= owner.username %>" data-colorify-text="color"><%= owner.username %></a></div>
-        <div class="topic"><!-- topic view --></div>
         <div class="actions">
+            <span class="url"><i class="fa fa-link"></i> <a href="<%= url %>" target="_blank" title="<%= name %> <%= t('global.permalink') %>"><%= url.replace('http://', '') %></a></span>
+            <span class="separation">|</span>
             <% if (isOwner === true) { %>
-            <a class="edit open-room-edit" data-room-name="<%= name %>"><%= t('global.edit') %> <img src="/images/settings.svg" alt="edit room logo"></a>
+            <span class="edit"><i class="fa fa-cog"></i> <a class="open-room-edit" data-room-name="<%= name %>"><%= t('global.edit') %></a></span>
             <% }; %>
+            <span class="profile"><i class="fa fa-eye"></i> <a class="open-room-profile" data-room-name="<%= name %>"><%= t('global.viewprofile') %></a></span>
         </div>
+        <div class="share-button <%= share %>" data-colorify-background="color" data-colorify-text="contrast"></div>
+        <div class="topic"><!-- topic view --></div>
     </div>
     <div class="messages"><!-- messages view --></div>
     <div class="input"><!-- input view --></div>

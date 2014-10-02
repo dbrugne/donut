@@ -211,6 +211,12 @@ define([
     onOffline: function() {
       this.trigger('notification', { type: 'disconnected' });
     },
+    getUrl: function() {
+      return window.location.protocol
+        +'//'+window.location.host
+        +'/room/'
+        +this.get('name').replace('#', '').toLocaleLowerCase();
+    }
 
   });
 

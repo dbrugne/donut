@@ -1,5 +1,9 @@
 .discussion {
   .row;
+
+  /* preload disconnect image */
+  background: url(/images/disconnect.svg) no-repeat -9999px -9999px;
+
   height: 100%;
   .content {
     height: 100%;
@@ -100,21 +104,67 @@
       }
 
       .actions {
-        position: absolute;
-        top: 40px;
-        right: 40px;
+        color: @cl-subtext3;
+        margin-top: 4px;
+        margin-left: 106px;
+        i {
+          color: @cl-subtext2;
+          font-size: 0.9em;
+        }
         a {
+          font-size: 1em;
+          text-decoration: none;
+          border-bottom: 1px solid @cl-subtext1;
+          color: @cl-subtext3;
           &:hover {
+            text-decoration: none;
+            border-bottom: 1px solid @cl-subtext3;
+            color: @cl-title;
+          }
+        }
+        .separation {
+          margin-left: 5px;
+          margin-right: 3px;
+        }
+        .url {
+          margin-top: 2px;
+          font-size: 1em;
+          i {
+            color: @cl-subtext3;
+            font-size: 0.9em;
+          }
+          a {
             text-decoration: none;
           }
         }
         .edit {
-          color: @cl-subtext2;
-          font-size: 1.1em;
-          img {
-            width: 25px;
-            height: 25px;
+          margin-right: 5px;
+        }
+        .profile {
+
+        }
+      }
+
+      .share-button {
+        position: absolute;
+        top: 30px;
+        right: 25px;
+        width: inherit;
+        height: 35px;
+        border-radius: 25px;
+        label {
+          color: inherit;
+          background-color: transparent;
+          padding: 5px 12px;
+          span {
+            text-transform: none;
+            .ft-opensans-bold;
           }
+        }
+        .social.networks-4 {
+          width: inherit;
+          z-index: 10;
+          position: relative;
         }
       }
     }

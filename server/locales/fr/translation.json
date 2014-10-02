@@ -50,8 +50,10 @@
         "save": "enregistrer",
         "cancel": "annuler",
         "view": "voir",
+        "viewprofile": "voir le profil",
         "online": "en ligne",
         "offline": "hors ligne",
+        "permalink": "permalien",
         "by": "par",
         "footer": {
             "before": "Vous souhaitez vous",
@@ -229,7 +231,12 @@
         "shouldauthenticated": "Vous devez être identifié pour accéder aux discussions (<a href='/signup'>créer un compte</a> ou <a href='/login'>s'identifier</a>)",
         "closemessage": "Etes-vous sur de vouloir quitter, l’historique de vos conversations sera perdu ?",
         "kickmessage": "Vous venez d'être expulsé de",
-        "deletemessage": "Le donut __name__ vient d'être supprimé pas son créateur"
+        "deletemessage": "Le donut __name__ vient d'être supprimé pas son créateur",
+        "share": {
+          "inviteyourfriends": "Invitez vos amis à discuter sur ce donut !",
+          "title": "",
+          "description": ""
+        }
     },
     "account": {
         "error": {

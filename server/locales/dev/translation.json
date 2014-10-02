@@ -50,8 +50,10 @@
     "save": "save",
     "cancel": "cancel",
     "view": "view",
+    "viewprofile": "view profile",
     "online": "online",
     "offline": "offline",
+    "permalink": "permalink",
     "by": "by",
     "footer": {
       "before": "Would you like to",
@@ -229,7 +231,12 @@
     "shouldauthenticated": "You must be logged in to access chat (<a href='/signup'>signup</a> or <a href='/login'>login</a>)",
     "closemessage": "Are you sure you want to leave? Your conversation log will be lost.",
     "kickmessage": "You have been kicked out of",
-    "deletemessage": "Th donut __name__ has been deleted by its creator"
+    "deletemessage": "Th donut __name__ has been deleted by its creator",
+    "share": {
+      "inviteyourfriends": "Invite your friends on this donut!",
+      "title": "",
+      "description": ""
+    }
   },
   "account": {
     "error": {
