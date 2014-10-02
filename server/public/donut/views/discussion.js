@@ -98,7 +98,7 @@ define([
       this.$el.colorify();
       this.mainView.color(this.model.get('color'));
       // + change data-colorify for side and blur (=darker)
-    },
+    }
 
   });
 
