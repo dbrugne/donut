@@ -226,7 +226,7 @@
       "in": "entered at",
       "out": "left at"
     },
-    "shouldauthenticated": "You muse be logged in to access chat",
+    "shouldauthenticated": "You must be logged in to access chat (<a href='/signup'>signup</a> or <a href='/login'>login</a>)",
     "closemessage": "Are you sure you want to leave? Your conversation log will be lost.",
     "kickmessage": "You have been kicked out of",
     "deletemessage": "Th donut __name__ has been deleted by its creator"
