@@ -59,7 +59,7 @@
             "before": "Vous souhaitez vous",
             "after": " ?"
         },
-        "switchlanguage": "changer la langue"
+        "switchlanguage": "Language :"
     },
     "login": {
         "title": "se connecter",
