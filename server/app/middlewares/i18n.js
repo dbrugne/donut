@@ -37,8 +37,11 @@ i18n.middleware = function(req, res, next) {
  * Note: not using serveClientScript, we use instead the bower-AMD-jQuery
  * compliant version
  */
+var options = {
+  maxAge: 60 * 60 // 1h, default: 60 * 60 * 24 * 30
+};
 i18next
-  .serveDynamicResources(router)
-  .serveMissingKeyRoute(router);
+  .serveDynamicResources(router, options)
+  .serveMissingKeyRoute(router, options);
 
 i18n.router = router;
