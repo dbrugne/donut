@@ -228,7 +228,7 @@
             "in": "est entré à",
             "out": "est sorti à"
         },
-        "shouldauthenticated": "Vous devez être identifié pour accéder aux discussions (<a href='/signup'>créer un compte</a> ou <a href='/login'>s'identifier</a>)",
+        "shouldauthenticated": "Vous devez être identifié pour accéder aux discussions (<a href='/signup'>créer un compte</a> ou <a href='/login'>se connecter</a>)",
         "closemessage": "Etes-vous sur de vouloir quitter, l’historique de vos conversations sera perdu ?",
         "kickmessage": "Vous venez d'être expulsé de",
         "deletemessage": "Le donut __name__ vient d'être supprimé pas son créateur",
