@@ -2,6 +2,7 @@ var async = require('async');
 var helper = require('./helper');
 var cloudinary = require('../app/cloudinary');
 var i18next = require('../app/i18next');
+var User = require('../app/models/user');
 
 module.exports = function(io, socket, data) {
 
@@ -92,7 +93,20 @@ module.exports = function(io, socket, data) {
 
     },
 
-    function deleteMongo(room, callback) {
+    function deleteMongoUsers(room, callback) {
+
+      User.update({rooms: {$in: [room.name]}}, {$pull: {rooms: room.name}}, {multi: true}, function(err, updated) {
+          if (err)
+            return callback('Error while deleting room '+room.name+' on users in Mongo: '+err);
+          else
+            console.log('User.update result: '+updated);
+
+          return callback(null, room);
+      });
+
+    },
+
+    function deleteMongoRoom(room, callback) {
 
       var _room = { name: room.name };
       room.remove(function(err) {
@@ -114,7 +128,7 @@ module.exports = function(io, socket, data) {
 
       return callback(null, room, event);
 
-    },
+    }
 
   ], function (err, room, event) {
     if (err)
