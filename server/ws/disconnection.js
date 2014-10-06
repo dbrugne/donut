@@ -42,6 +42,7 @@ module.exports = function(io, socket) {
   if (helper.userSockets(io, socket.getUserId()).length < 1) {
     socket.broadcast.emit('user:offline', {
       user_id: socket.getUserId(),
+      time: Date.now(),
       username: socket.getUsername(),
       avatar: socket.getAvatar(),
       color: socket.getColor()

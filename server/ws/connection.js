@@ -132,6 +132,7 @@ module.exports = function(io, socket) {
       // @todo : only populated rooms and onetoone users sockets
       socket.broadcast.emit('user:online', {
         user_id: socket.getUserId(),
+        time: Date.now(),
         username: socket.getUsername(),
         avatar: socket.getAvatar(),
         color: socket.getColor()
