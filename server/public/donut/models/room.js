@@ -106,6 +106,7 @@ define([
         return;
       }
 
+      data.status = 'online'; // only an online user can join a room
       var user = this.addUser(data);
 
       this.trigger('notification', {

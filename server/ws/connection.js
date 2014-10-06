@@ -49,6 +49,7 @@ module.exports = function(io, socket) {
             if (err)
               return callback('Unable to persist #donut on user: '+err);
 
+            user.newToGeneral = true;
             return callback(null, user);
           });
         } else {
@@ -92,15 +93,22 @@ module.exports = function(io, socket) {
     function subscribeSocket(user, callback) {
       helper._.each(user.roomsToSend, function(room) {
         // Inform other room users
-        var roomInEvent = {
-          name: room.name,
+        var roomEvent = {
           time: Date.now(),
           user_id: socket.getUserId(),
           username: socket.getUsername(),
           avatar: socket.getAvatar(),
           color: socket.getColor()
         };
-        io.to(room.name).emit('room:in', roomInEvent);
+
+        // special case of #donut room
+        if (room.name == conf.room.general && user.newToGeneral == true) {
+          roomEvent.name = room.name;
+          io.to(room.name).emit('room:in', roomEvent);
+        } else {
+          // standard room
+          io.to(room.name).emit('room:online', roomEvent);
+        }
 
         socket.join(room.name);
         console.log('socket '+socket.id+' subscribed to room '+room.name);

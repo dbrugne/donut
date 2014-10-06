@@ -1,54 +1,73 @@
+var async = require('async');
 var helper = require('./helper');
+var User = require('../app/models/user');
 
 module.exports = function(io, socket) {
 
-  // Multi-devices (should done before room:out)
-  socket.leave('user:'+socket.getUserId());
+  // At least an other socket is live for this user or not
+  var lastSocket = (helper.userSockets(io, socket.getUserId()).length >= 2)
+    ? false
+    : true;
 
-  // Logic for room where user was in
-  /***
-   * CAN'T WORK!
-   *
-   * AT THIS STEP THE socket OBJECT DOESN'T LONG HOLD ROOMS LIST
-   * WE SHOULD REQUEST MONGO TO GET USER ROOMS AND BROADCAST A user:offline
-   * EVENT + handle event on client side
-   *
-   * @todo
-   */
-  var rooms = helper.socketRooms(io, socket);
-  for (var i=0; i < rooms.length; i++) {
-    var roomName = rooms[i];
-    // Socket unsubscription
-    socket.leave(roomName);
+  async.waterfall([
 
-    // Inform room clients that this user leave the room
-    // (only if it was the last socket for this user)
-    if (helper.userSockets(io, socket.getUserId()).length < 1) {
-      io.to(roomName).emit('room:out', {
-        name: roomName,
-        user_id: socket.getUserId(),
-        username: socket.getUsername(),
-        avatar: socket.getAvatar(),
-        reason: 'disconnect'
+    function sockets(callback) {
+      // @todo: not sure it's still helpfull: socket is autmatically removed from all rooms
+      // and for room:out to other socket maybe we can just handle the (room:out event + ===currentUser)
+      // to remove the view
+//      // Multi-devices (should done before room:out)
+//      socket.leave('user:'+socket.getUserId());
+
+      return callback(null);
+    },
+
+    function prepareEvent(callback) {
+      var event = {
+        user_id   : socket.getUserId(),
+        time      : Date.now(),
+        username  : socket.getUsername(),
+        avatar    : socket.getAvatar(),
+        color     : socket.getColor()
+      };
+      return callback(null, event);
+    },
+
+    function informRooms(event, callback) {
+      if (!lastSocket)
+        return callback(null, event);
+
+      // Inform room clients that this user leave the room
+      User.findById(socket.getUserId(), 'rooms', function(err, user) {
+        if (err)
+          return callback('Unable to retrieve user\'s rooms: '+err);
+
+        if (user.rooms.length < 1)
+          return callback(null, event);
+
+        helper._.each(user.rooms, function(name) {
+          io.to(name).emit('user:offline', event);
+        });
+        return callback(null, event);
       });
+
+    },
+
+    function informOnetoones(event, callback) {
+      if (!lastSocket)
+        return callback(null, event);
+
+      // @todo : same logic as for rooms but with persisted onetoones
+      return callback(null, event);
     }
 
-    // Room deletion (if needed)
-//    helper.deleteRoom(io, roomName);
-  }
+  ], function(err, event) {
+    if (err)
+      return helper.handleError(err);
 
-  // Update users online users list (only if last socket for this user)
-  // @todo : only populated rooms and onetoone users sockets
-  if (helper.userSockets(io, socket.getUserId()).length < 1) {
-    socket.broadcast.emit('user:offline', {
-      user_id: socket.getUserId(),
-      time: Date.now(),
-      username: socket.getUsername(),
-      avatar: socket.getAvatar(),
-      color: socket.getColor()
-    });
-  }
+    // Activity
+    helper.record('disconnect', socket);
 
-  // Activity
-  helper.record('disconnect', socket);
+    // @todo : record 'event' in discussion log + receivers
+  });
+
 };

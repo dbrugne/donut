@@ -78,7 +78,7 @@ define([
 
       // Offline user error
       if (message.error) {
-        model.trigger('notification', {type: 'offline'});
+        model.trigger('notification', {type: 'oneOffline'});
         return;
       }
 
