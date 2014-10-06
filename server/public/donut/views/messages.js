@@ -104,14 +104,16 @@ define([
       if (notification.type == undefined || notification.type == '')
         return;
 
-      var shouldAggregated = ((notification.type == 'in' || notification.type == 'out')
+      var shouldAggregated = ((notification.type == 'in' || notification.type == 'out'
+        || notification.type == 'online' || notification.type == 'offline')
         && this.lastNotificationWasInOut && this.lastEvent == 'notification')
         ? true
         : false;
 
       this.lastEvent = 'notification';
 
-      if (notification.type == 'in' || notification.type == 'out') {
+      if (notification.type == 'in' || notification.type == 'out'
+        || notification.type == 'online' || notification.type == 'offline') {
         this.lastNotificationWasInOut = true;
         notification.subtype = notification.type;
         notification.type = 'inout';
