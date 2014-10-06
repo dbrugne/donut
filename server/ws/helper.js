@@ -325,6 +325,10 @@ module.exports = {
    */
   userRooms: function(io, userId) {
     var socket = this.userSockets(io, userId)[0]; // take first
+
+    if (!socket)
+      return null;
+
     return this.socketRooms(io, socket);
   },
 

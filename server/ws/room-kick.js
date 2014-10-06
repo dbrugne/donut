@@ -53,7 +53,7 @@ module.exports = function(io, socket, data) {
         return callback('Can\'t kick owner out of room: '+data.name);
 
       // Targeted user should be in room
-      if (!helper.isUserInRoom(io, user._id.toString(), room.name))
+      if (user.rooms.indexOf(room.name) !== -1)
         return callback('Can\'t kick user that is not actually in the room: '+data.name);
 
       return callback(null, room, user);

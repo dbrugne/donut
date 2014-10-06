@@ -1,78 +1,120 @@
+var async = require('async');
 var helper = require('./helper');
+var roomDataHelper = require('./_room-data.js');
+var Room = require('../app/models/room');
 var User = require('../app/models/user');
+var configuration = require('../config/index');
 
 module.exports = function(io, socket, data) {
 
-  // Find, create and return room model
-  helper.findCreateRoom(data.name, socket, handleHistory, helper.handleError);
+  async.waterfall([
 
-  // Retrieve room history for this user
-  function handleHistory(room) {
-    helper.roomHistory(io, socket, room.name, 30, function(history) {
-      handleSuccess(room, history);
-    });
-  }
+    function check(callback) {
+      if (!data.name)
+        return callback('name is mandatory for room:join');
 
-  function handleSuccess(room, history) {
+      if (!Room.validateName(data.name))
+        return callback('Invalid room name on room:join: '+data.name);
 
-    // subscribe this user socket(s) to the room
-    helper._.each(helper.userSockets(io, socket.getUserId()), function(s) {
-      s.join(room.name);
-    });
+      return callback(null);
+    },
 
-    // Room user list
-    var users = helper.roomUsers(io, room.name);
+    function findOrCreateRoom(callback) {
+      var q = Room.findByName(data.name);
+      q.exec(function(err, room) {
+        if (err)
+          return callback('Error while retrieving room in room:join: '+err);
 
-    // Room welcome
-    var welcome = {
-      name: room.name,
-      owner: {},
-      op: room.op || [],
-      avatar: room.avatar,
-      poster: room.poster,
-      color: room.color,
-      topic: room.topic,
-      users: users
-    };
-    if (room.owner) {
-      welcome.owner = {
-        user_id: room.owner._id,
-        username: room.owner.username
+        // Found an existing one
+        if (room)
+          return callback(null, room);
+
+        // Create a new one
+        room = new Room({
+          name: data.name,
+          owner: socket.getUserId(),
+          color: configuration.room.default.color
+        });
+        room.save(function (err, room) {
+          if (err)
+            return callback('Error while creating room: '+err);
+
+          helper.record('room:create', socket, {_id: room.get('_id'), name: room.get('name')});
+          return callback(null, room);
+        });
+      });
+    },
+
+    function lastJoined(room, callback) {
+      // Last join date
+      room.lastjoin_at = Date.now();
+      room.save(function(err) {
+        if (err)
+          return callback('Error while saving lastjoin_at on room: '+err);
+
+        return callback(null, room);
+      });
+    },
+
+    function persistOnUser(room, callback) {
+      // persist on user
+      User.findOneAndUpdate({_id: socket.getUserId()}, {$addToSet: { rooms: room.name }}, function(err, user) {
+        if (err)
+          return callback('Unable to persist ($addToSet) rooms on user: '+err);
+
+        return callback(null, room);
+      });
+    },
+
+    function joinSockets(room, callback) {
+
+      // subscribe this user socket(s) to the room
+      helper._.each(helper.userSockets(io, socket.getUserId()), function(s) {
+        s.join(room.name);
+      });
+
+      return callback(null, room);
+    },
+
+    function getWelcomeData(room, callback) {
+      roomDataHelper(io, socket, room.name, function(err, roomData) {
+        if (err)
+          return callback(err);
+
+        if (roomData == null)
+          return callback('roomDataHelper was unable to return excepted room data: '+room.name);
+
+        return callback(null, room, roomData);
+      });
+    },
+
+    function sendToUser(room, roomData, callback) {
+      io.to('user:'+socket.getUserId()).emit('room:welcome', roomData);
+      return callback(null, room);
+    },
+
+    function sendToUsers(room, callback) {
+      // Inform other room users
+      var event = {
+        name: room.name,
+        time: Date.now(),
+        user_id: socket.getUserId(),
+        username: socket.getUsername(),
+        avatar: socket.getAvatar(), // @todo : avatar could be outdated
+        color: socket.getColor()  // @todo : color could be outdated
       };
+      io.to(room.name).emit('room:in', event);
+
+      return callback(null, room, event);
     }
-    io.to('user:'+socket.getUserId()).emit('room:welcome', welcome);
 
-    // Inform other room users
-    var roomInEvent = {
-      name: room.name,
-      time: Date.now(),
-      user_id: socket.getUserId(),
-      username: socket.getUsername(),
-      avatar: socket.getAvatar(),
-      color: socket.getColor()
-    };
-    io.to(room.name).emit('room:in', roomInEvent);// @todo : send room:in before to avoid receiving it
-
-//    // Inform other devices => see room:welcome broadcasted to all user socket
-//    io.to('user:'+socket.getUserId()).emit('room:join', { // @todo : rename to room:pleasejoin + send all room data to allow client only do a rooms.addModel()
-//      name: room.name
-//    });
-
-    // Persistence
-    User.findOneAndUpdate({_id: socket.getUserId()}, {$addToSet: { rooms: room.name }}, function(err, user) {
-      if (err) helper.handleError('Unable to update user.rooms: '+err);
-    });
-
-    // Last join date
-    room.lastjoin_at = Date.now();
-    room.save(function(err) {
-      if (err)
-        console.log('Error while saving lastjoin_at on room: '+err);
-    });
+  ], function(err, room, event) {
+    if (err)
+      return helper.handleError(err);
 
     // Activity
     var receivers = helper.roomUsersId(io, room.name);
-    helper.record('room:in', socket, roomInEvent, receivers);
-  }
+    helper.record('room:in', socket, event, receivers);
+  });
 
 };

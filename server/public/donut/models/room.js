@@ -37,6 +37,42 @@ define([
       this.listenTo(client, 'reconnected', this.onOnline);
       this.listenTo(client, 'disconnected', this.onOffline);
     },
+    addUser: function(data) {
+      // already in?
+      var model = this.users.get(data.user_id);
+      if (model) {
+        // not sure this update is used in any case, but it's not expensive
+        model.set('avatar', data.avatar);
+        model.set('color', data.color);
+        return model;
+      }
+
+      var is_owner = (this.get('owner') && this.get('owner').get('user_id') == data.user_id)
+       ? true
+       : false;
+
+      var is_op = false;
+      if (this.get('op')) {
+        _.each(this.get('op'), function(opUser) {
+          if (opUser.user_id == data.user_id) {
+            is_op = true;
+          }
+        });
+      }
+
+      model = new UserModel({
+        id: data.user_id,
+        user_id: data.user_id,
+        username: data.username,
+        avatar: data.avatar,
+        color: data.color,
+        is_owner: is_owner,
+        is_op: is_op,
+        status: data.status
+      });
+      this.users.add(model);
+      return model;
+    },
     leave: function() {
       client.leave(this.get('name'));
     },
@@ -66,30 +102,9 @@ define([
       if (data.name != this.get('name')) {
         return;
       }
-      // already in?
-      if (this.users.get(data.user_id)) {
-        // @todo : maybe we should update some user attribute?
-        return;
-      }
 
-      var is_owner = (this.get('owner') && this.get('owner').get('user_id') == data.user_id)
-       ? true
-       : false;
+      var user = this.addUser(data);
 
-      var is_op = (this.get('op') && this.get('op').indexOf(data.user_id) != -1)
-        ? true
-        : false;
-
-      var user = new UserModel({
-        id: data.user_id,
-        user_id: data.user_id,
-        username: data.username,
-        avatar: data.avatar,
-        color: data.color,
-        is_owner: is_owner,
-        is_op: is_op
-      });
-      this.users.add(user);
       this.trigger('notification', {
         type: 'in',
         user_id: user.get('id'),

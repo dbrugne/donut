@@ -4,6 +4,7 @@ var User = require('../app/models/user');
 var Room = require('../app/models/room');
 var hello = require('../app/hello-dolly');
 var conf = require('../config/index');
+var roomDataHelper = require('./_room-data.js');
 
 module.exports = function(io, socket) {
 
@@ -43,8 +44,14 @@ module.exports = function(io, socket) {
         if (err)
           return callback('Unable to find user: '+err, null);
 
-        if (user.general == true && user.rooms.indexOf(conf.room.general) == -1)
-          user.rooms.push(conf.room.general);
+        if (user.general == true && user.rooms.indexOf(conf.room.general) == -1) {
+          User.findOneAndUpdate({_id: socket.getUserId()}, {$addToSet: { rooms: conf.room.general }}, function(err, user) {
+            if (err)
+              return callback('Unable to persist #donut on user: '+err);
+
+            return callback(null, user);
+          });
+        }
 
         return callback(null, user);
       });
@@ -55,70 +62,30 @@ module.exports = function(io, socket) {
       return callback(null, user);
     },
 
-    function populateRooms(user, callback){
+    function populateRooms(user, callback) {
       if (user.rooms.length < 1)
         return callback(null, user);
 
-      // @todo: bug, if some user.rooms not still exist the socket is subscribed
-      // to this room, and the room list persist in user.rooms
-      // but the user IHM never get this rooms in welcome.rooms
-      // => until he joins the room and leave the room they persist in user db
-      //    entity
-      var q = Room.find({name: { $in: user.rooms } })
-            .populate('owner', 'username avatar');
-
-      q.exec(function(err, rooms) {
-        if (err)
-          return callback('Unable to retrieve user rooms data: '+err, null);
-
-        if (rooms.length < 1) {
-          user.rooms = [];
-          return callback(null, user);
-        }
-
-        var userRooms = [];
-        for (var i = 0; i < rooms.length; i++) {
-          var room = rooms[i];
-
-          var users = helper.roomUsers(io, room.name);
-          users.push({ // add myself, not already subscribed
-            user_id: socket.getUserId(),
-            username: socket.getUsername(),
-            avatar: socket.getAvatar(),
-            color: socket.getColor()
-          });
-
-          var roomData = {
-            name: room.name,
-            owner: {},
-            op: room.op || [],
-            avatar: room.avatar,
-            poster: room.poster,
-            color: room.color,
-            topic: room.topic || '',
-            users: users
-          };
-          if (room.owner) {
-            roomData.owner = {
-              user_id: room.owner._id,
-              username: room.owner.username
-            };
-          }
-
-          userRooms.push(roomData);
-
-          // Last join date
-          room.lastjoin_at = Date.now();
-          room.save(function(err) {
+      var parallels = [];
+      helper._.each(user.rooms, function(name) {
+        parallels.push(function(fn) {
+          var roomData = roomDataHelper(io, socket, name, function(err, room) {
             if (err)
-              console.log('Error while saving lastjoin_at on room: '+err);
+              return fn(err);
+            else
+              return fn(null, room);
           });
-        }
+        });
+      });
+      async.parallel(parallels, function(err, results) {
+        if (err)
+          return callback('Error while populating rooms: '+err);
 
-        user.roomsToSend = userRooms;
+        user.roomsToSend = helper._.filter(results, function(r) {
+          return r !== null;
+        });
         return callback(null, user);
       });
-
     },
 
     function subscribeSocket(user, callback) {
@@ -134,7 +101,7 @@ module.exports = function(io, socket) {
         };
         io.to(room.name).emit('room:in', roomInEvent);
 
-        socket.join(room.name); // automatic socket subscription to user rooms
+        socket.join(room.name);
         console.log('socket '+socket.id+' subscribed to room '+room.name);
       });
 

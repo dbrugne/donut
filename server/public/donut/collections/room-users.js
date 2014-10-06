@@ -12,34 +12,19 @@ define([
         return str1.toLowerCase().localeCompare(str2.toLowerCase())
       };
 
-      // both are owner
-      if (model1.get('is_owner') && model2.get('is_owner')) {
-        return stringCompare(model1.get('username'), model2.get('username'));
-      }
-      // model1 is owner and model2 not
-      if (model1.get('is_owner') && !model2.get('is_owner')) {
-        return -1;
-      }
-      // model2 is owner and model1 not
-      if (!model1.get('is_owner') && model2.get('is_owner')) {
-        return 1;
-      }
+      // create strings (sortable as string: aabfoobar)
+      var string1 = '';
+      string1 += (model1.get('status') == 'online') ? 'a' : 'b';
+      string1 += (model1.get('is_owner')) ? 'a' : 'b';
+      string1 += (model1.get('is_op')) ? 'a' : 'b';
+      string1 += model1.get('username').toLowerCase();
+      var string2 = '';
+      string2 += (model2.get('status') == 'online') ? 'a' : 'b';
+      string2 += (model2.get('is_owner')) ? 'a' : 'b';
+      string2 += (model2.get('is_op')) ? 'a' : 'b';
+      string2 += model2.get('username').toLowerCase();
 
-      // both are op
-      if (model1.get('is_op') && model2.get('is_op')) {
-        return stringCompare(model1.get('username'), model2.get('username'));
-      }
-      // model1 is op and model2 not
-      if (model1.get('is_op') && !model2.get('is_op')) {
-        return -1;
-      }
-      // model2 is op and model1 not
-      if (!model1.get('is_op') && model2.get('is_op')) {
-        return 1;
-      }
-
-      // both are standard users
-      return stringCompare(model1.get('username'), model2.get('username'));
+      return string1.toLowerCase().localeCompare(string2.toLowerCase());
     },
 
     initialize: function(options) {

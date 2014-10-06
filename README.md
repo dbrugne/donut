@@ -5,28 +5,19 @@ chat
 
 **Tasks**
 
-- Bouncer
-- [x] Add bouncer when i'm clicking on a chat link and not authenticated:
-- [x] Should be redirected to profile /!#room/AutismeLPPAD => /room/AutismeLPPAD => not possible due to hash non visibility
-- [x] On profile page if I click on join should pesist request URL and redirect me after login
-- [x] Signup success redirect to chat interface (or persisted URL)
-
-- Share
-- [x] Add in room action block : view profile, share : on facebook or permanent URL
-(- [x] Add a feature to post on Facebook to invite users)
-
 - History
-- [ ] User disconnected still appear in room
+- [x] User disconnected still appear in room (+handle in kick)
 - [ ] View room history even events where i was offline
 - [ ] Bug: some user left in room users list => just send a user:offline notification to everyone in user room (get room list from Mongo)
 
-- [ ] Like button on each post
-- [ ] Add notification to owner/op when a user enter in room
-- [ ] Add email to notify of user connection
 - [ ] Restore user count on room cards on homepage and profile drawer
 - [ ] Sort room card by user count on homepage
+
+- [ ] Add notification to owner/op when a user enter in room
 - [ ] Add mentions in room (highlight room user in messages)
-- [ ] Type notification when someone type something in input
+- [ ] Add email to notify us of user connection
+
+- [ ] Badge for websites
 
 ## v1.1 : minimal features against competitors
 
@@ -113,6 +104,8 @@ chat
   - [ ] /me commande to describe current action
   - [ ] Add an option to avoid exit popin on chat interface
   - [ ] Improve backlog experience when refocus a room with lot of unread messages (button to jump on last viewed message and display highligth on unread messages)
+  - [ ] Type notification when someone type something in input
+  - [ ] Like button on each post
 
 **Content**
 - [ ] Formulaire; faire le tour des libellés des champs, messages d'aide, messages de confirmation
