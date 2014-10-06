@@ -98,8 +98,6 @@ module.exports = function(io, socket, data) {
       User.update({rooms: {$in: [room.name]}}, {$pull: {rooms: room.name}}, {multi: true}, function(err, updated) {
           if (err)
             return callback('Error while deleting room '+room.name+' on users in Mongo: '+err);
-          else
-            console.log('User.update result: '+updated);
 
           return callback(null, room);
       });
