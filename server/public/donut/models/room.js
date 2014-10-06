@@ -34,6 +34,9 @@ define([
       this.listenTo(client, 'room:deop', this.onDeop);
       this.listenTo(client, 'room:updated', this.onUpdated);
 
+      this.listenTo(client, 'user:online', this.onUserOnline);
+      this.listenTo(client, 'user:offline', this.onUserOffline);
+
       this.listenTo(client, 'reconnected', this.onOnline);
       this.listenTo(client, 'disconnected', this.onOffline);
     },
@@ -231,6 +234,26 @@ define([
         +'//'+window.location.host
         +'/room/'
         +this.get('name').replace('#', '').toLocaleLowerCase();
+    },
+    onUserOnline: function(data) {
+      var model = this.users.get(data.user_id);
+      if (!model)
+        return;
+
+      if (model.get('status') == 'online')
+        return;
+
+      model.set({status: 'online'});
+    },
+    onUserOffline: function(data) {
+      var model = this.users.get(data.user_id);
+      if (!model)
+        return;
+
+      if (model.get('status') == 'offline')
+        return;
+
+      model.set({status: 'offline'});
     }
 
   });

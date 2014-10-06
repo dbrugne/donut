@@ -38,11 +38,13 @@ module.exports = function(io, socket) {
   }
 
   // Update users online users list (only if last socket for this user)
+  // @todo : only populated rooms and onetoone users sockets
   if (helper.userSockets(io, socket.getUserId()).length < 1) {
     socket.broadcast.emit('user:offline', {
       user_id: socket.getUserId(),
       username: socket.getUsername(),
-      avatar: socket.getAvatar()
+      avatar: socket.getAvatar(),
+      color: socket.getColor()
     });
   }
 

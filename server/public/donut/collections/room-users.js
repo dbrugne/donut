@@ -31,6 +31,7 @@ define([
       this.on("change:avatar", this.onChange);
       this.on("change:poster", this.onChange);
       this.on("change:color", this.onChange);
+      this.on("change:status", this.onChange);
     },
 
     /**
@@ -44,6 +45,7 @@ define([
      * @param options
      */
     onChange: function(model, value, options) {
+      this.sort(); // for 'status' attribute
       this.trigger('redraw');
     }
 

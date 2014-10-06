@@ -127,12 +127,16 @@ module.exports = function(io, socket) {
     if (err)
       return helper.handleError(err);
 
-    // push this user to other users
-    socket.broadcast.emit('user:online', {
-      user_id: socket.getUserId(),
-      username: socket.getUsername(),
-      avatar: socket.getAvatar()
-    });
+    // push this user to other users (only for first socket)
+    if (helper.userSockets(io, socket.getUserId()).length == 1) {
+      // @todo : only populated rooms and onetoone users sockets
+      socket.broadcast.emit('user:online', {
+        user_id: socket.getUserId(),
+        username: socket.getUsername(),
+        avatar: socket.getAvatar(),
+        color: socket.getColor()
+      });
+    }
 
     // activity
     helper.record('connection', socket, {});
