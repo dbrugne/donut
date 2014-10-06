@@ -235,25 +235,30 @@ define([
         +'/room/'
         +this.get('name').replace('#', '').toLocaleLowerCase();
     },
-    onUserOnline: function(data) {
+    _onStatus: function(expect, data) {
       var model = this.users.get(data.user_id);
       if (!model)
         return;
 
-      if (model.get('status') == 'online')
+      if (model.get('status') == expect)
         return;
 
-      model.set({status: 'online'});
+      model.set({status: expect});
+
+      this.trigger('notification', {
+        type    : expect,
+        time    : data.time,
+        user_id : model.get('user_id'),
+        avatar  : model.get('avatar'),
+        color   : model.get('color'),
+        username: model.get('username')
+      });
+    },
+    onUserOnline: function(data) {
+      this._onStatus('online', data);
     },
     onUserOffline: function(data) {
-      var model = this.users.get(data.user_id);
-      if (!model)
-        return;
-
-      if (model.get('status') == 'offline')
-        return;
-
-      model.set({status: 'offline'});
+      this._onStatus('offline', data);
     }
 
   });

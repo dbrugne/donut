@@ -46,10 +46,22 @@
         <img class="icon" src="/images/in.svg">
         <span class="username open-user-profile" data-username="<%= username %>"><%= username %></span>
     </div>
-    <% } else if (subtype =='out') { %>
+    <% } else if (subtype == 'out') { %>
     <div class="item <%= subtype %>" data-time="<%= time %>" title="<%= username %> <%= t('chat.notifications.out') %> <% print(moment().format('HH:mm:ss')) %> <% if (reason == 'disconnect') { %>(disconnected)<% } %>">
         <img class="avatar open-user-profile" src="<%= avatar %>" data-username="<%= username %>">
         <img class="icon" src="/images/out.svg">
+        <span class="username open-user-profile" data-username="<%= username %>"><%= username %></span>
+    </div>
+    <% } else if (subtype == 'online') { %>
+    <div class="item <%= subtype %>" data-time="<%= time %>" title="<%= username %> <%= t('chat.notifications.online') %> <% print(moment().format('HH:mm:ss')) %>">
+        <img class="avatar open-user-profile" src="<%= avatar %>" data-username="<%= username %>">
+        <img class="icon" src="/images/connect.svg">
+        <span class="username open-user-profile" data-username="<%= username %>"><%= username %></span>
+    </div>
+    <% } else if (subtype == 'offline') { %>
+    <div class="item <%= subtype %>" data-time="<%= time %>" title="<%= username %> <%= t('chat.notifications.offline') %> <% print(moment().format('HH:mm:ss')) %>">
+        <img class="avatar open-user-profile" src="<%= avatar %>" data-username="<%= username %>">
+        <img class="icon" src="/images/disconnect.svg">
         <span class="username open-user-profile" data-username="<%= username %>"><%= username %></span>
     </div>
     <% } %>

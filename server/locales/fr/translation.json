@@ -226,7 +226,9 @@
             "op": " a été promu modérateur par",
             "deop": "n'est plus modérateur à la demande de",
             "in": "est entré à",
-            "out": "est sorti à"
+            "out": "est sorti à",
+            "online": "est en ligne,",
+            "offline": "n'est plus en ligne,"
         },
         "shouldauthenticated": "Vous devez être identifié pour accéder aux discussions (<a href='/signup'>créer un compte</a> ou <a href='/login'>se connecter</a>)",
         "closemessage": "Etes-vous sur de vouloir quitter, l’historique de vos conversations sera perdu ?",
