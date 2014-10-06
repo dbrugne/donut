@@ -11,16 +11,6 @@ module.exports = function(io, socket) {
 
   async.waterfall([
 
-    function sockets(callback) {
-      // @todo: not sure it's still helpfull: socket is autmatically removed from all rooms
-      // and for room:out to other socket maybe we can just handle the (room:out event + ===currentUser)
-      // to remove the view
-//      // Multi-devices (should done before room:out)
-//      socket.leave('user:'+socket.getUserId());
-
-      return callback(null);
-    },
-
     function prepareEvent(callback) {
       var event = {
         user_id   : socket.getUserId(),
