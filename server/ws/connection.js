@@ -51,9 +51,10 @@ module.exports = function(io, socket) {
 
             return callback(null, user);
           });
+        } else {
+          return callback(null, user);
         }
 
-        return callback(null, user);
       });
     },
 
