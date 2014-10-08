@@ -29,7 +29,7 @@ module.exports = function(io, socket, data) {
     };
     io.to(data.name).emit('room:message', messageEvent);
 
-    helper.history.room('room:message', messageEvent);
+    helper.history.room.record('room:message', messageEvent);
   }
 
 };

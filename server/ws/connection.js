@@ -119,7 +119,7 @@ module.exports = function(io, socket) {
         }
 
         io.to(room.name).emit(eventName, eventData);
-        helper.history.room(eventName, eventData);
+        helper.history.room.record(eventName, eventData);
 
         socket.join(room.name);
         console.log('socket '+socket.id+' subscribed to room '+room.name);

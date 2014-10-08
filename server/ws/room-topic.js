@@ -38,7 +38,7 @@ module.exports = function(io, socket, data) {
       };
       io.to(data.name).emit('room:topic', roomTopicEvent);
 
-      helper.history.room('room:topic', roomTopicEvent);
+      helper.history.room.record('room:topic', roomTopicEvent);
     });
   }
 

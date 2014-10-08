@@ -24,9 +24,14 @@ var historySchema = mongoose.Schema({
  * - room:deop
  * - room:kick
  */
-historySchema.statics.recorder = function() {
+historySchema.statics.record = function() {
   var that = this;
-  return function(event, data) {
+  /**
+   * @param event - event name as String
+   * @param data - event data as Object
+   * @return event with event_id set
+   */
+  return function(event, data, fn) {
 
     // @todo : purify model.data (remove time, name, avatar, color)
 
@@ -50,5 +55,14 @@ historySchema.statics.recorder = function() {
     });
   }
 };
+
+// @todo : store history before emit and add objectId in each event emitted
+historySchema.statics.retrieve = function() {
+  var that = this;
+  return function(name, userId, since, limit, fn) {
+    var history = [];
+    return fn(history);
+  }
+}
 
 module.exports = mongoose.model('HistoryRoom', historySchema, 'history-room');

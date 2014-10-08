@@ -88,7 +88,7 @@ module.exports = function(io, socket, data) {
     if (err)
       return helper.handleError(err);
 
-    helper.history.room('room:out', event);
+    helper.history.room.record('room:out', event);
   });
 
 };

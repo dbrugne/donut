@@ -37,7 +37,7 @@ module.exports = function(io, socket) {
         helper._.each(user.rooms, function(name) {
           io.to(name).emit('user:offline', event);
           event.name = name;
-          helper.history.room('user:offline', event);
+          helper.history.room.record('user:offline', event);
         });
         return callback(null, event);
       });

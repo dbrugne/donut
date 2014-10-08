@@ -113,7 +113,7 @@ module.exports = function(io, socket, data) {
     if (err)
       return helper.handleError(err);
 
-    helper.history.room('room:in', event);
+    helper.history.room.record('room:in', event);
   });
 
 };
