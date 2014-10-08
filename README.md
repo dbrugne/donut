@@ -5,8 +5,6 @@ chat
 
 **Tasks**
 
-- [x] Sort room card by user count on homepage
-
 - History
 - [ ] View room history even when i was offline
 - [ ] Cleanup helper roomUsers/roomUsersId
