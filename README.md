@@ -5,10 +5,7 @@ chat
 
 **Tasks**
 
-- [x] Restore user count on room cards on homepage and profile drawer
-  - [x] Implement user count on room profile (pages)
-  - [x] Implement current user list on room profile (pages)
-- [ ] Sort room card by user count on homepage
+- [x] Sort room card by user count on homepage
 
 - History
 - [ ] View room history even when i was offline
@@ -16,7 +13,11 @@ chat
 
 - Welcome message (donut default + custom by owner)
 
-- on to one
+- user highlight in .messages
+
+- add @ before every username
+
+- one to one
 
 - [ ] Add notification to owner/op when a user enter in room
 - [ ] Add mentions in room (highlight room user in messages)

@@ -24,7 +24,7 @@ module.exports = function (io, socket, data) {
         };
 
         var q = Room
-          .find(search, 'name owner description topic avatar color users')
+          .find(search, 'name owner description topic avatar color users lastjoin_at')
           .sort({'lastjoin_at': -1})
           .populate('owner', 'username');
         q.exec(function(err, rooms) {
@@ -52,8 +52,20 @@ module.exports = function (io, socket, data) {
               topic: room.topic,
               avatar: room.avatar,
               color: room.color,
-              users: count
+              users: count,
+              lastjoin_at: new Date(room.lastjoin_at).getTime()
             });
+          });
+
+          // sort (users, lastjoin_at, name)
+          results.sort(function(a, b) {
+            if (a.users != b.users)
+              return (b.users - a.users); // b - a == descending
+
+            if (a.lastjoin_at != b.lastjoin_at)
+              return (b.lastjoin_at - a.lastjoin_at); // b - a == descending
+
+            return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
           });
 
           return callback(null, results);
