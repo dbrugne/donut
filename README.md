@@ -7,10 +7,11 @@ chat
 
 - [ ] Restore user count on room cards on homepage and profile drawer
 - [ ] Sort room card by user count on homepage
-- [x] FAQ
 
 - History
 - [ ] View room history even when i was offline
+
+- Welcome message (donut default + custom by owner)
 
 - [ ] Add notification to owner/op when a user enter in room
 - [ ] Add mentions in room (highlight room user in messages)
@@ -18,12 +19,14 @@ chat
 
 - [ ] Badge for websites
 
+- [ ] Kick reason form
+
+[- [ ] Private room](??)
+
 ## v1.1 : minimal features against competitors
 
 - [ ] Multi-node support
 - [ ] Onetoone message delivering (even for offline users) + onetoone refactoring
-- [ ] Discussion history
-- [ ] Post images in discussion (drag&drop or upload field, put URL in message + thumbnail on over)
 - [ ] Kick reason form
 - [ ] Ban from room
 - [ ] Ban user list edit
