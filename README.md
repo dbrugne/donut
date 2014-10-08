@@ -5,13 +5,18 @@ chat
 
 **Tasks**
 
-- [ ] Restore user count on room cards on homepage and profile drawer
+- [x] Restore user count on room cards on homepage and profile drawer
+  - [x] Implement user count on room profile (pages)
+  - [x] Implement current user list on room profile (pages)
 - [ ] Sort room card by user count on homepage
 
 - History
 - [ ] View room history even when i was offline
+- [ ] Cleanup helper roomUsers/roomUsersId
 
 - Welcome message (donut default + custom by owner)
+
+- on to one
 
 - [ ] Add notification to owner/op when a user enter in room
 - [ ] Add mentions in room (highlight room user in messages)
@@ -19,7 +24,7 @@ chat
 
 - [ ] Badge for websites
 
-- [ ] Kick reason form
+- [ ] Image in discussion
 
 [- [ ] Private room](??)
 
@@ -41,9 +46,6 @@ chat
 - [ ] Add new socket.io-redis (https://github.com/Automattic/socket.io/issues/1630)
   - [ ] On connect/disconnect/join/leave maintain redis user set for each room
   - [ ] On connect/disconnect maintain redis user set
-  - [ ] Implement user count on room card on chat home
-  - [ ] Implement user count on room profile (drawer and pages)
-  - [ ] Implement current user list on room profile (drawer and pages)
   - [ ] Implement user online status on user profile (drawer)
 - [ ] Deploy on a strong infrastructure
 

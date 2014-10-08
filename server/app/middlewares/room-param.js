@@ -11,7 +11,8 @@ module.exports = function(req, res, next, roomname) {
 
   Room.findByName('#'+roomname)
     .populate('owner', 'username avatar color location website facebook')
-    .populate('op', 'username avatar color location website  facebook')
+    .populate('op', 'username avatar color location website facebook')
+    .populate('users', 'username avatar color location website facebook')
     .exec(function(err, room) {
       if (err) {
         req.flash('error', err)
@@ -40,9 +41,9 @@ module.exports = function(req, res, next, roomname) {
         // op
         if (room.op && room.op.length) {
           var opList = [];
+          var opIds = [];
           _.each(room.op, function(op) {
             if (room.owner && room.owner._id && room.owner._id.toString() == op._id.toString()) {
-              room.owner = true;
               return;
             }
 
@@ -51,14 +52,30 @@ module.exports = function(req, res, next, roomname) {
               ? req.protocol + '://' + req.get('host') + '/user/' + op.username.toLocaleLowerCase()
               : '';
             op.isOp = true;
+            opIds.push(op._id.toString());
             opList.push(op);
           });
           room.op = opList;
         }
 
-        // users @todo
-        room.users = [];
-        room.users_count = 0;
+        // users
+        if (room.users && room.users.length) {
+          var usersList = [];
+          _.each(room.users, function(u) {
+//            if (room.owner && room.owner._id && room.owner._id.toString() == u._id.toString())
+//              return;
+//            if (room.op && opIds && opIds.indexOf(u._id.toString()) !== -1)
+//              return;
+
+            u.avatar = cloudinary.userAvatar(u._avatar(), 80, u.color);
+            u.url = (u.username)
+              ? req.protocol + '://' + req.get('host') + '/user/' + u.username.toLocaleLowerCase()
+              : '';
+            usersList.push(u);
+          });
+          room.users = usersList;
+          room.usersCount = usersList.length;
+        }
 
         req.room = room;
         next();

@@ -45,22 +45,13 @@ module.exports = function(io, socket, data) {
       });
     },
 
-    function lastJoined(room, callback) {
+    function persistOnRoom(room, callback) {
       // Last join date
       room.lastjoin_at = Date.now();
+      room.users.addToSet(socket.getUserId());
       room.save(function(err) {
         if (err)
-          return callback('Error while saving lastjoin_at on room: '+err);
-
-        return callback(null, room);
-      });
-    },
-
-    function persistOnRoom(room, callback) {
-      // persist on room
-      room.update({$addToSet: { users: socket.getUserId() }}, function(err) {
-        if (err)
-          return callback('Unable to persist ($addToSet) users on room: '+err);
+          return callback('Error while updating room on room:join: '+err);
 
         return callback(null, room);
       });

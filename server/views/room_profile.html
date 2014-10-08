@@ -2,7 +2,7 @@
 <div id="profile" class="room-profile">
     <div class="cover room">
         <a href="{{room.url}}"><img class="avatar" src="{{room.avatar}}" alt="{{room.name}} avatar"></a>
-        <p class="join"><a href="{{^user}}{{room.join}}{{/user}}{{#user}}{{room.chat}}{{/user}}" {{#room.color}}style="background-color: {{room.color}};"{{/room.color}}>{{#i}}actions.join{{/i}} <img src="/images/user.svg" alt="user icon"></a></p>
+        <p class="join"><a href="{{^user}}{{room.join}}{{/user}}{{#user}}{{room.chat}}{{/user}}" {{#room.color}}style="background-color: {{room.color}};"{{/room.color}}>{{#i}}actions.join{{/i}} {{#room.usersCount}}{{room.usersCount}}{{/room.usersCount}} <img src="/images/user.svg" alt="user icon"></a></p>
     </div>
     <div class="text room">
         <div class="name-content">
@@ -47,7 +47,8 @@
         {{#room.users}}{{> user}}{{/room.users}}
         {{^room.users}}<div class="no">{{#i}}profile.room.nouser{{/i}}</div>{{/room.users}}
     </div>
-    <hr>
+    <hr class="clear">
+    <hr class="push-bottom">
     <div class="disclaimer">
         <p>
             {{#i}}profile.room.disclaimer.before{{/i}}

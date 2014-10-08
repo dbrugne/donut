@@ -5,8 +5,6 @@ define([
 ], function (_, Backbone, io) {
   var ClientModel = Backbone.Model.extend({
 
-    joinRequests: [],
-
     initialize: function() {
       localStorage.debug = ''; // @debug ('*')
     },
@@ -204,10 +202,6 @@ define([
     // ======================================================
 
     join: function(name) {
-      if (this.joinRequests.indexOf(name) != -1) {
-        return;
-      }
-      this.joinRequests.push(name);
       var data = {name: name};
       this.socket.emit('room:join', data);
       this.debug(['io:out:room:join', data]);
