@@ -375,7 +375,6 @@ module.exports = {
     }
     return list;
   },
-
   /**
    * List sockets in a particular room
    * @param name
