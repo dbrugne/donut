@@ -38,10 +38,22 @@ module.exports = function (io, socket) {
               color      : room.color,
               avatar     : room.avatar,
               owner      : _owner,
-              users      : count
+              users      : count,
+              lastjoin_at: new Date(room.lastjoin_at).getTime()
             };
 
             _rooms.push(_data);
+          });
+
+          // sort (users, lastjoin_at, name)
+          _rooms.sort(function(a, b) {
+            if (a.users != b.users)
+              return (b.users - a.users); // b - a == descending
+
+            if (a.lastjoin_at != b.lastjoin_at)
+              return (b.lastjoin_at - a.lastjoin_at); // b - a == descending
+
+            return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
           });
 
           return callback(null, _rooms);

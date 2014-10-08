@@ -26,6 +26,7 @@ module.exports = function (io, socket, data) {
         var q = Room
           .find(search, 'name owner description topic avatar color users lastjoin_at')
           .sort({'lastjoin_at': -1})
+          .limit(150)
           .populate('owner', 'username');
         q.exec(function(err, rooms) {
           if (err)
