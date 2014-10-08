@@ -11,52 +11,12 @@ var redis = require('../app/redis');
  * Helpers are available on each socket: socket.helper.foo()
  *
  * Use the alias-variable 'socket' to get current socket Object
- *
- * @param io
- * @returns {{_: (*|_|exports), addUserOnline: addUserOnline, remUserOnline: remUserOnline, addUserInRoom: addUserInRoom, remUserInRoom: remUserInRoom, connectedUsers: connectedUsers, roomUsers: roomUsers, roomUsersCount: roomUsersCount}}
  */
 module.exports = function (io, socket) {
   return {
 
     _: _,
 
-//    addUserOnline: function(fn) {
-//      // sadd user in Redis connected SET
-//      // persist on mongo user (last connect)
-//
-//      // call calback
-//    },
-//    remUserOnline: function(fn) {
-//      // srem user in Redis connected SET ONLY IF LAST USER SOCKET (check user: room for that)
-//
-//      // call calback
-//    },
-//    addUserInRoom: function(name, fn) {
-//      // sadd user in Redis room SET
-//      // persist in Mongo on room
-//      // join socket to sio room
-//        // same for other user sockets
-//
-//      // call calback
-//    },
-//    remUserInRoom: function(name, fn) {
-//      // srem user in Redis room SET
-//      // persist in Mongo
-//      // leave socket to sio room
-//      // same for other user sockets
-//
-//      // call calback
-//    },
-//    connectedUsers: function(fn) {
-//      // read Redis connected SET
-//    },
-//    roomUsers: function(name, fn) {
-//      // read Redis room users set
-//    },
-//    roomUsersCount: function(name, fn) {
-//      // read Redis room users set
-//    },
-//
     /**
      * Throw on socket connection
      * @param fn
@@ -145,20 +105,6 @@ module.exports = function (io, socket) {
         return fn(bool);
       });
     }
-
-//    getOnlineUsers: function(fn) {
-//      redis.smember('donut:users', function(err, users) {
-//        if (err)
-//          console.log('Error while smember on donut:users: '+err);
-//
-//        var onlines = [];
-//        return (is === 1) ? true : false;
-//      });
-//    }
-
-//    getRoom: function(fn) {},
-//    getUser: function(fn) {},
-//    getRoomUsers: function(fn) {},
 
   };
 };
