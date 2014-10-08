@@ -86,7 +86,6 @@ define([
         that.trigger('room:leave', data);
       });
       this.socket.on('room:welcome', function(data) {
-        delete that.joinRequests[that.joinRequests.indexOf(data.name)];
         that.debug(['io:in:room:welcome', data]);
         that.trigger('room:welcome', data);
       });
