@@ -56,6 +56,16 @@ module.exports = function(io, socket, data) {
       });
     },
 
+    function persistOnRoom(room, callback) {
+      // persist on room
+      room.update({$addToSet: { users: socket.getUserId() }}, function(err) {
+        if (err)
+          return callback('Unable to persist ($addToSet) users on room: '+err);
+
+        return callback(null, room);
+      });
+    },
+
     function persistOnUser(room, callback) {
       // persist on user
       User.findOneAndUpdate({_id: socket.getUserId()}, {$addToSet: { rooms: room.name }}, function(err, user) {

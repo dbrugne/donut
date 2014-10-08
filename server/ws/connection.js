@@ -48,9 +48,12 @@ module.exports = function(io, socket) {
           User.findOneAndUpdate({_id: socket.getUserId()}, {$addToSet: { rooms: conf.room.general }}, function(err, user) {
             if (err)
               return callback('Unable to persist #donut on user: '+err);
-
-            user.newToGeneral = true;
-            return callback(null, user);
+            Room.findOneAndUpdate({name: conf.room.general}, {$addToSet: { users: socket.getUserId() }}, function(err) {
+              if (err)
+                return callback('Unable to persist user on #donut: '+err);
+              user.newToGeneral = true;
+              return callback(null, user);
+            });
           });
         } else {
           return callback(null, user);

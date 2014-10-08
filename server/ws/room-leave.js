@@ -24,7 +24,19 @@ module.exports = function(io, socket, data) {
       });
     },
 
-    function persist(room, callback) {
+    function persistOnRoom(room, callback) {
+
+      // persist on user
+      room.update({$pull: { users: socket.getUserId() }}, function(err) {
+        if (err)
+          return callback('Unable to persist ($pull) users on room: '+err);
+
+        return callback(null, room);
+      });
+
+    },
+
+    function persistOnUser(room, callback) {
 
       // persist on user
       User.findOneAndUpdate({_id: socket.getUserId()}, {$pull: { rooms: room.name }}, function(err, user) {
