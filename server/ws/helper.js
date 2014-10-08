@@ -336,50 +336,6 @@ module.exports = {
 
     return this.socketRooms(io, socket);
   },
-
-  /**
-   * List room de-duplicated user_id list (and not simple room sockets list)
-   * @param io
-   * @param name
-   * @returns {Array}
-   */
-  roomUsersId: function(io, name) {
-    var list = this.roomUsers(io, name);
-
-    var ids = [];
-    _.each(list, function(o) {
-      ids.push(o.user_id);
-    });
-
-    return ids;
-  },
-
-  /**
-   * List room de-duplicated user list (and not simple room sockets list)
-   * @param io
-   * @param name
-   * @returns {Array}
-   */
-  roomUsers: function(io, name) {
-    var list = [];
-    var already = [];
-    var sockets = this.roomSockets(io, name);
-    for (var i=0; i < sockets.length; i++) {
-      var u = sockets[i];
-      if (u) { // = socket has maybe expired
-        if (!_.contains(already, u.getUserId())) {
-          already.push(u.getUserId());
-          list.push({
-            user_id: u.getUserId(),
-            username: u.getUsername(),
-            avatar: u.getAvatar(),
-            color: u.getColor()
-          });
-        }
-      }
-    }
-    return list;
-  },
   /**
    * List sockets in a particular room
    * @param name

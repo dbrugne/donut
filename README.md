@@ -7,7 +7,7 @@ chat
 
 - History
 - [ ] View room history even when i was offline
-- [ ] Cleanup helper roomUsers/roomUsersId
+- [x] Cleanup helper roomUsers/roomUsersId
 
 - Welcome message (donut default + custom by owner)
 
