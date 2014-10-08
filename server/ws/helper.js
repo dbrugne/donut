@@ -4,7 +4,7 @@ var configuration = require('../config/index');
 var User = require('../app/models/user');
 var Room = require('../app/models/room');
 var Activity = require('../app/models/activity');
-var HistoryRoom = require('../app/models/history_room');
+var HistoryRoom = require('../app/models/historyroom');
 var sanitize = require('sanitize-caja');
 var expressValidator = require('../app/validator');
 
