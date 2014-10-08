@@ -81,16 +81,14 @@ module.exports = function(io, socket, data) {
       };
       io.to(room.name).emit('room:out', event);
 
-      return callback(null, room, event);
+      return callback(null, event);
     }
 
-  ], function(err, room, event) {
+  ], function(err, event) {
     if (err)
       return helper.handleError(err);
 
-    // Activity
-    var receivers = helper.roomUsersId(io, room.name);
-    helper.record('room:out', socket, event, receivers);
+    helper.history.room('room:out', event);
   });
 
 };

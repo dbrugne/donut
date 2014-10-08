@@ -96,7 +96,8 @@ module.exports = function(io, socket) {
     function subscribeSocket(user, callback) {
       helper._.each(user.roomsToSend, function(room) {
         // Inform other room users
-        var roomEvent = {
+        var eventName;
+        var eventData = {
           time: Date.now(),
           user_id: socket.getUserId(),
           username: socket.getUsername(),
@@ -105,13 +106,20 @@ module.exports = function(io, socket) {
         };
 
         // special case of #donut room
+        var event;
         if (room.name == conf.room.general && user.newToGeneral == true) {
-          roomEvent.name = room.name;
-          io.to(room.name).emit('room:in', roomEvent);
+          eventName = 'room:in';
+          eventData.name = room.name;
         } else {
           // standard room
-          io.to(room.name).emit('room:online', roomEvent);
+          eventName = 'user:online';
+          // /!\ arbitrary add name !!!
+          // @todo : add async step: list room channel (room + user:* of ones) to send user:online and iterate to emit() + historized
+          eventData.name = room.name;
         }
+
+        io.to(room.name).emit(eventName, eventData);
+        helper.history.room(eventName, eventData);
 
         socket.join(room.name);
         console.log('socket '+socket.id+' subscribed to room '+room.name);

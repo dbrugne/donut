@@ -115,8 +115,7 @@ module.exports = function(io, socket, data) {
     if (err)
       return helper.handleError(err);
 
-    // Activity
-    helper.record('room:kick', socket, event);
+    helper.history.room('room:kick', event);
 
   });
 

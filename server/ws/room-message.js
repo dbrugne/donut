@@ -29,9 +29,7 @@ module.exports = function(io, socket, data) {
     };
     io.to(data.name).emit('room:message', messageEvent);
 
-    // Activity
-    var receivers = helper.roomUsersId(io, room.name);
-    helper.record('room:message', socket, messageEvent, receivers);
+    helper.history.room('room:message', messageEvent);
   }
 
 };

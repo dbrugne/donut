@@ -29,18 +29,16 @@ module.exports = function(io, socket, data) {
 
       var roomTopicEvent = {
         name    : data.name,
-        time: Date.now(),
+        time    : Date.now(),
         user_id : socket.getUserId(),
         username: socket.getUsername(),
         avatar  : socket.getAvatar(),
-        color: socket.getColor(),
+        color   : socket.getColor(),
         topic   : data.topic
       };
       io.to(data.name).emit('room:topic', roomTopicEvent);
 
-      // Activity
-      var receivers = helper.roomUsersId(io, room.name);
-      helper.record('room:topic', socket, roomTopicEvent, receivers);
+      helper.history.room('room:topic', roomTopicEvent);
     });
   }
 

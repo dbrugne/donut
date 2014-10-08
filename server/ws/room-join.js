@@ -113,9 +113,7 @@ module.exports = function(io, socket, data) {
     if (err)
       return helper.handleError(err);
 
-    // Activity
-    var receivers = helper.roomUsersId(io, room.name);
-    helper.record('room:in', socket, event, receivers);
+    helper.history.room('room:in', event);
   });
 
 };

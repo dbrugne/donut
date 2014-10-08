@@ -52,7 +52,6 @@ module.exports = function(io, socket, data) {
     // Inform other room users
     io.to(room.name).emit('room:op', opEvent);
 
-    // Activity
-    helper.record('room:op', socket, opEvent);
+    helper.history.room('room:op', opEvent);
   };
 };
