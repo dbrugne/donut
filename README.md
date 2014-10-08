@@ -7,6 +7,7 @@ chat
 
 - [ ] Restore user count on room cards on homepage and profile drawer
 - [ ] Sort room card by user count on homepage
+- [x] FAQ
 
 - History
 - [ ] View room history even when i was offline
@@ -102,8 +103,6 @@ chat
   - [ ] /me commande to describe current action
   - [ ] Add an option to avoid exit popin on chat interface
   - [ ] Improve backlog experience when refocus a room with lot of unread messages (button to jump on last viewed message and display highligth on unread messages)
-  - [ ] Type notification when someone type something in input
-  - [ ] Like button on each post
 
 **Content**
 - [ ] Formulaire; faire le tour des libellés des champs, messages d'aide, messages de confirmation
