@@ -26,6 +26,11 @@ module.exports = function (io, socket) {
                 username: room.owner.username
               };
             }
+
+            var count = (room.users)
+              ? room.users.length
+              : 0;
+
             var _data = {
               name       : room.name,
               topic      : room.topic,
@@ -33,11 +38,8 @@ module.exports = function (io, socket) {
               color      : room.color,
               avatar     : room.avatar,
               owner      : _owner,
-              users      : 0
+              users      : count
             };
-
-            // @todo : get room users count
-//            roomData.users = that.roomUsers(io, room.name).length;
 
             _rooms.push(_data);
           });

@@ -6,9 +6,20 @@ module.exports = function(io, socket, data) {
 
   async.waterfall([
 
+    function check(callback) {
+      if (!data.name)
+        return callback("room:read 'name' is mandatory");
+      if (!Room.validateName(data.name))
+        return callback('room:read Invalid room name: '+data.name);
+
+      return callback(null);
+    },
+
     function retrieve(callback) {
 
-      helper.retrieveRoom(data.name, function (err, room) {
+      Room.retrieveRoom(data.name)
+        .populate('users', 'username avatar color facebook')
+        .exec(function(err, room) {
         if (err)
           return callback('Error while retrieving room in room:read: '+err);
 
@@ -44,16 +55,23 @@ module.exports = function(io, socket, data) {
       }
 
       // users
-      var users = helper.roomUsers(io, room.name);
-      var users_count = users.length;
-      // @todo : will need to read that better : having a global user count, and then get some (maybe 15 first) user hydrated
+      var users = [];
+      if (room.users && room.users.length > 0) {
+        helper._.each(room.users, function(u) {
+          users.push({
+            user_id: u._id.toString(),
+            username: u.username,
+            avatar: u._avatar(),
+            color: u.color
+          });
+        });
+      }
 
       var event = {
         name: room.name,
         owner: owner,
         op: ops,
         users: users,
-        users_count: users_count,
         avatar: room.avatar,
         poster: room.poster,
         color: room.color,

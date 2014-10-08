@@ -24,7 +24,7 @@ module.exports = function (io, socket, data) {
         };
 
         var q = Room
-          .find(search, 'name owner description topic avatar color')
+          .find(search, 'name owner description topic avatar color users')
           .sort({'lastjoin_at': -1})
           .populate('owner', 'username');
         q.exec(function(err, rooms) {
@@ -40,6 +40,11 @@ module.exports = function (io, socket, data) {
                 username: room.owner.username
               };
             }
+
+            var count = (room.users)
+              ? room.users.length
+              : 0;
+
             results.push({
               name: room.name,
               owner: owner,
@@ -47,7 +52,7 @@ module.exports = function (io, socket, data) {
               topic: room.topic,
               avatar: room.avatar,
               color: room.color,
-              users: helper.roomUsers(io, room.name).length
+              users: count
             });
           });
 
