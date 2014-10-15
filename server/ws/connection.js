@@ -135,6 +135,10 @@ module.exports = function(io, socket) {
       });
     },
 
+    /**
+     * @todo : dedicated steps to inform rooms and onetones users (with user:online)
+     */
+
     function emitWelcome(user, callback) {
       welcome.user = {
         user_id: user._id.toString(),
