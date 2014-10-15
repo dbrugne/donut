@@ -419,45 +419,6 @@ module.exports = {
     q.exec(onResult);
   },
 
-//  /**
-//   * Return all room:message/in/out for name
-//   * @param io
-//   * @param socket
-//   * @param name
-//   * @param since (number of minutes from now)
-//   * @param success
-//   */
-//  roomHistory: function(io, socket, name, since, success) {
-//
-//    var sinceMs = since * 1000 * 60; // since is in minutes
-//    var now = new Date();
-//    var sinceDate = now - sinceMs;
-//
-//    var criteria = {
-//      type: { $in: ['room:message', 'room:in', 'room:out', 'room:topic'] },
-//      'data.name': name,
-//      receivers: { $in: [socket.getUserId()] },
-//      time: {$gte: sinceDate}
-//    };
-//
-//    var q = Activity.find(criteria).sort({time: -1}).limit(500);
-//
-//    var that = this;
-//    var onResult = function(err, events) {
-//      if (err) return that.handleError('Unable to retrieve room:history: '+err);
-//
-//      var list = _.map(events, function(event) {
-//        var output = event.toJSON();
-//        output.data.type = output.type;
-//        return output.data;
-//      });
-//      list.reverse();
-//      return success(list);
-//    };
-//
-//    q.exec(onResult);
-//  },
-
   /**
    * Check for maximal length, sanitize and escape input
    * Return filtered string or empty string if too long or empty.
