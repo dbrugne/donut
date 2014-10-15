@@ -4,6 +4,7 @@ var roomDataHelper = require('./_room-data.js');
 var Room = require('../app/models/room');
 var User = require('../app/models/user');
 var configuration = require('../config/index');
+var roomEmitter = require('./_room-emitter');
 
 module.exports = function(io, socket, data) {
 
@@ -95,25 +96,21 @@ module.exports = function(io, socket, data) {
     },
 
     function sendToUsers(room, callback) {
-      // Inform other room users
+      // Inform room users
       var event = {
-        name: room.name,
-        time: Date.now(),
         user_id: socket.getUserId(),
         username: socket.getUsername(),
         avatar: socket.getAvatar(), // @todo : avatar could be outdated
         color: socket.getColor()  // @todo : color could be outdated
       };
-      io.to(room.name).emit('room:in', event);
-
-      return callback(null, room, event);
+      roomEmitter(io, room.name, 'room:in', event, function(err) {
+        return callback(err);
+      });
     }
 
-  ], function(err, room, event) {
+  ], function(err) {
     if (err)
       return helper.handleError(err);
-
-    helper.history.room.record('room:in', event);
   });
 
 };

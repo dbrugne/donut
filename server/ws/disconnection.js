@@ -1,6 +1,7 @@
 var async = require('async');
 var helper = require('./helper');
 var User = require('../app/models/user');
+var roomEmitter = require('./_room-emitter');
 
 module.exports = function(io, socket) {
 
@@ -14,7 +15,6 @@ module.exports = function(io, socket) {
     function prepareEvent(callback) {
       var event = {
         user_id   : socket.getUserId(),
-        time      : Date.now(),
         username  : socket.getUsername(),
         avatar    : socket.getAvatar(),
         color     : socket.getColor()
@@ -34,12 +34,20 @@ module.exports = function(io, socket) {
         if (user.rooms.length < 1)
           return callback(null, event);
 
+        var tasks = [];
         helper._.each(user.rooms, function(name) {
-          io.to(name).emit('user:offline', event);
-          event.name = name;
-          helper.history.room.record('user:offline', event);
+          tasks.push(function(callback) {
+            roomEmitter(io, name, 'user:offline', event, function(err) {
+              return callback(err);
+            });
+          });
         });
-        return callback(null, event);
+        async.parallel(tasks, function(err, results) {
+          if (err)
+            return callback(err);
+
+          return callback(null, event);
+        });
       });
 
     },

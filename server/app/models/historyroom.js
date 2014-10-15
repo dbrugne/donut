@@ -29,6 +29,7 @@ historySchema.statics.record = function() {
   /**
    * @param event - event name as String
    * @param data - event data as Object
+   * @param fn - callback function
    * @return event with event_id set
    */
   return function(event, data, fn) {
@@ -42,15 +43,18 @@ historySchema.statics.record = function() {
     model.data  = data;
     Room.findOne({name: model.name}, 'users', function(err, room) {
       if (err)
-        debug('Unable to retrieve room users list '+model.event+' for '+model.name);
+        return fn('Unable to retrieve room users list '+model.event+' for '+model.name);
+
       if (!room)
-        debug('Room not found '+model.event+' for '+model.name);
+        return fn('Room not found '+model.event+' for '+model.name);
       else
         model.users = room.users;
 
       model.save(function(err) {
         if (err)
-          debug('Unable to save roomHistory '+model.event+' for '+model.name);
+          return fn('Unable to save roomHistory '+model.event+' for '+model.name);
+
+        return fn(null, model);
       })
     });
   }

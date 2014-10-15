@@ -1,3 +1,4 @@
+var debug = require('debug')('chat-server:connection');
 var async = require('async');
 var helper = require('./helper');
 var User = require('../app/models/user');
@@ -5,6 +6,7 @@ var Room = require('../app/models/room');
 var hello = require('../app/hello-dolly');
 var conf = require('../config/index');
 var roomDataHelper = require('./_room-data.js');
+var roomEmitter = require('./_room-emitter');
 
 module.exports = function(io, socket) {
 
@@ -30,40 +32,63 @@ module.exports = function(io, socket) {
 
   socket.helper = require('./helper-socket')(io);
 
-  async.waterfall([
+  // welcome event data
+  var welcome = {
+    hello: hello()
+  };
 
-    function addSocketToUserRoom(callback) {
-      // create a virtual room by user
-      socket.join('user:'+socket.getUserId(), function() {
-        return callback(null);
-      });
-    },
+  // room:in / user:online event
+  var inEvent = {
+    user_id: socket.getUserId(),
+    username: socket.getUsername(),
+    avatar: socket.getAvatar(),
+    color: socket.getColor()
+  };
+
+  async.waterfall([
 
     function retrieveUser(callback){
       User.findById(socket.getUserId(), function(err, user) {
         if (err)
           return callback('Unable to find user: '+err, null);
 
-        if (user.general == true && user.rooms.indexOf(conf.room.general) == -1) {
-          User.findOneAndUpdate({_id: socket.getUserId()}, {$addToSet: { rooms: conf.room.general }}, function(err, user) {
-            if (err)
-              return callback('Unable to persist #donut on user: '+err);
-            Room.findOneAndUpdate({name: conf.room.general}, {$addToSet: { users: socket.getUserId() }}, function(err) {
-              if (err)
-                return callback('Unable to persist user on #donut: '+err);
-              user.newToGeneral = true;
-              return callback(null, user);
-            });
-          });
-        } else {
-          return callback(null, user);
-        }
-
+        return callback(null, user);
       });
     },
 
+    function addSocketToUserRoom(user, callback) {
+      // create a virtual room by user
+      socket.join('user:'+user._id.toString(), function() {
+        return callback(null, user);
+      });
+    },
+
+    function generalRoom(user, callback) {
+      // special case of #donut room autojoin
+      if (user.general == true && user.rooms.indexOf(conf.room.general) == -1) {
+        User.findOneAndUpdate({_id: user._id}, {$addToSet: { rooms: conf.room.general }}, function(err, user) {
+          if (err)
+            return callback('Unable to persist #donut on user: '+err);
+
+          Room.findOneAndUpdate({name: conf.room.general}, {$addToSet: {users: user._id}}, function(err) {
+            if (err)
+              return callback('Unable to persist user on #donut: '+err);
+
+//            user.newToGeneral = true;
+
+            // Inform other room users (user:online)
+            roomEmitter(io, conf.room.general, 'room:in', inEvent, function(err) {
+              return callback(err, user);
+            });
+          });
+        });
+      } else {
+        return callback(null, user);
+      }
+    },
+
     function populateOnes(user, callback){
-      // @todo later:  pass non received user:message for this user (messages send when user was offline)
+      // @todo:  pass non received user:message for this user (messages send when user was offline)
       return callback(null, user);
     },
 
@@ -86,7 +111,7 @@ module.exports = function(io, socket) {
         if (err)
           return callback('Error while populating rooms: '+err);
 
-        user.roomsToSend = helper._.filter(results, function(r) {
+        welcome.rooms = helper._.filter(results, function(r) {
           return r !== null;
         });
         return callback(null, user);
@@ -94,51 +119,30 @@ module.exports = function(io, socket) {
     },
 
     function subscribeSocket(user, callback) {
-      helper._.each(user.roomsToSend, function(room) {
-        // Inform other room users
-        var eventName;
-        var eventData = {
-          time: Date.now(),
-          user_id: socket.getUserId(),
-          username: socket.getUsername(),
-          avatar: socket.getAvatar(),
-          color: socket.getColor()
-        };
-
-        // special case of #donut room
-        var event;
-        if (room.name == conf.room.general && user.newToGeneral == true) {
-          eventName = 'room:in';
-          eventData.name = room.name;
-        } else {
-          // standard room
-          eventName = 'user:online';
-          // /!\ arbitrary add name !!!
-          // @todo : add async step: list room channel (room + user:* of ones) to send user:online and iterate to emit() + historized
-          eventData.name = room.name;
-        }
-
-        io.to(room.name).emit(eventName, eventData);
-        helper.history.room.record(eventName, eventData);
-
+      var roomsToInform = [];
+      helper._.each(welcome.rooms, function(room) {
+        // Add socket to the room
         socket.join(room.name);
-        console.log('socket '+socket.id+' subscribed to room '+room.name);
+        debug('socket '+socket.id+' subscribed to room '+room.name);
+
+        // Add room to notification list
+        roomsToInform.push(room.name);
       });
 
-      return callback(null, user);
+      // Inform other room users (user:online)
+      roomEmitter(io, roomsToInform, 'user:online', inEvent, function(err) {
+        return callback(err, user);
+      });
     },
 
     function emitWelcome(user, callback) {
-      socket.emit('welcome', {
-        hello: hello(),
-        user: {
-          user_id: user._id.toString(),
-          username: user.username,
-          avatar: user._avatar(),
-          color: user.color
-        },
-        rooms: user.roomsToSend // problem when using directly user.rooms on mongoose model
-      });
+      welcome.user = {
+        user_id: user._id.toString(),
+        username: user.username,
+        avatar: user._avatar(),
+        color: user.color
+      };
+      socket.emit('welcome', welcome);
 
       return callback(null, user);
     }

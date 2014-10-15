@@ -2,6 +2,7 @@ var async = require('async');
 var helper = require('./helper');
 var Room = require('../app/models/room');
 var User = require('../app/models/user');
+var roomEmitter = require('./_room-emitter');
 
 module.exports = function(io, socket, data) {
 
@@ -53,8 +54,8 @@ module.exports = function(io, socket, data) {
         return callback('Can\'t kick owner out of room: '+data.name);
 
       // Targeted user should be in room
-      if (user.rooms.indexOf(room.name) !== -1)
-        return callback('Can\'t kick user that is not actually in the room: '+data.name);
+      if (user.rooms.indexOf(room.name) === -1)
+        return callback('Can\'t kick user '+user.username+' that is not actually in the room: '+data.name);
 
       return callback(null, room, user);
 
@@ -76,8 +77,6 @@ module.exports = function(io, socket, data) {
     function send(room, user, callback) {
 
       var event = {
-        name: room.name,
-        time: Date.now(),
         by_user_id : socket.getUserId(),
         by_username: socket.getUsername(),
         by_avatar  : socket.getAvatar(),
@@ -91,11 +90,13 @@ module.exports = function(io, socket, data) {
       if (data.reason)
         event.reason = data.reason;
 
-      // Inform other room users
-      io.to(room.name).emit('room:kick', event);
+      // Inform room users
+      roomEmitter(io, room.name, 'room:kick', event, function(err) {
+        if (err)
+          return callback(err);
 
-      return callback(null, room, user, event);
-
+        return callback(null, room, user, event);
+      });
     },
 
     function leave(room, user, callback) {
@@ -111,12 +112,9 @@ module.exports = function(io, socket, data) {
 
     }
 
-  ], function(err, room, user, event) {
+  ], function(err) {
     if (err)
       return helper.handleError(err);
-
-    helper.history.room.record('room:kick', event);
-
   });
 
 };

@@ -1,4 +1,5 @@
 var helper = require('./helper');
+var roomEmitter = require('./_room-emitter');
 
 module.exports = function(io, socket, data) {
 
@@ -37,8 +38,6 @@ module.exports = function(io, socket, data) {
     room.save();
 
     var deopEvent = {
-      name: room.name,
-      time: Date.now(),
       by_user_id : socket.getUserId(),
       by_username: socket.getUsername(),
       by_avatar  : socket.getAvatar(),
@@ -49,9 +48,10 @@ module.exports = function(io, socket, data) {
       color: user.color
     };
 
-    // Inform other room users
-    io.to(room.name).emit('room:deop', deopEvent);
-
-    helper.history.room.record('room:deop', deopEvent);
+    // Inform room users
+    roomEmitter(io, room.name, 'room:deop', deopEvent, function(err) {
+      if (err)
+        return helper.handleError(err);
+    });
   };
 };

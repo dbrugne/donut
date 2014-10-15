@@ -1,5 +1,6 @@
 var helper = require('./helper');
 var Room = require('../app/models/room');
+var roomEmitter = require('./_room-emitter');
 
 module.exports = function(io, socket, data) {
 
@@ -28,17 +29,17 @@ module.exports = function(io, socket, data) {
         return helper.handleError('Unable to change room '+data.name+' topic '+data.topic);
 
       var roomTopicEvent = {
-        name    : data.name,
-        time    : Date.now(),
         user_id : socket.getUserId(),
         username: socket.getUsername(),
         avatar  : socket.getAvatar(),
         color   : socket.getColor(),
         topic   : data.topic
       };
-      io.to(data.name).emit('room:topic', roomTopicEvent);
-
-      helper.history.room.record('room:topic', roomTopicEvent);
+      // Inform room users
+      roomEmitter(io, data.name, 'room:topic', roomTopicEvent, function(err) {
+        if (err)
+          return helper.handleError(err);
+      });
     });
   }
 
