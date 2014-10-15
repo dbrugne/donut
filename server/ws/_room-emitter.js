@@ -42,8 +42,6 @@ module.exports = function(io, roomName, eventName, eventData, callback) {
 
   // run tasks
   async.parallel(parallels, function(err, results) {
-    // @todo TEMP TEMP TEMP
-    if (callback)
     return callback(err);
   });
 
