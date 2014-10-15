@@ -2,6 +2,7 @@ var async = require('async');
 var helper = require('./helper');
 var Room = require('../app/models/room');
 var User = require('../app/models/user');
+var retriever = require('../app/models/historyroom').retrieve();
 
 /**
  * Helper to retrieve/prepare all the room data needed for 'welcome' and
@@ -58,8 +59,12 @@ module.exports = function(io, socket, name, fn) {
 
     function history(room, users, callback) {
       var history = [];
-      // @todo
-      return callback(null, room, users, history);
+      retriever(room.name, socket.getUserId(), false, 0, function(err, history) {
+        if (err)
+          return callback(err);
+
+        return callback(null, room, users, history);
+      });
     },
 
     function prepare(room, users, history, callback) {

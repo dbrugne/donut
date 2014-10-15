@@ -1,4 +1,5 @@
 var debug = require('debug')('chat-server:history');
+var _ = require('underscore');
 var mongoose = require('../mongoose');
 var Room = require('./room');
 
@@ -60,12 +61,34 @@ historySchema.statics.record = function() {
   }
 };
 
-// @todo : store history before emit and add objectId in each event emitted
 historySchema.statics.retrieve = function() {
   var that = this;
   return function(name, userId, since, limit, fn) {
-    var history = [];
-    return fn(history);
+    limit = limit || 15; // 15 last events
+
+    // @todo : implement 'since'
+
+    var q = that.find({
+      name: name,
+      users: { $in: [userId] }
+    })
+      .sort({time: 'desc'})
+      .limit(limit);
+
+    q.exec(function(err, entries) {
+      if (err)
+        return fn('Error while retrieving room history: '+err);
+
+      var history = [];
+      _.each(entries, function(entry) {
+        history.push({
+          event: entry.event,
+          data: entry.data
+        });
+      });
+
+      return fn(null, history);
+    });
   }
 }
 
