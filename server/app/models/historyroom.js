@@ -81,11 +81,15 @@ historySchema.statics.retrieve = function() {
 
       var history = [];
       _.each(entries, function(entry) {
+        entry.data.id = entry._id.toString();
         history.push({
-          event: entry.event,
+          type: entry.event,
           data: entry.data
         });
       });
+
+      // return chronologic list
+      history.reverse();
 
       return fn(null, history);
     });
