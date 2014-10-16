@@ -41,7 +41,7 @@ module.exports = function(io, socket, data) {
 
     function checkSocket(room, user, callback) {
       // Test if the current user is in room
-      if (!user.rooms.indexOf(room.name))
+      if (user.rooms.indexOf(room.name) === -1)
         return callback('room:message, this socket '+socket.getUsername()+' is not currently in room '+room.name);
 
       return callback(null, room);

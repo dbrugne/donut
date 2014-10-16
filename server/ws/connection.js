@@ -129,10 +129,12 @@ module.exports = function(io, socket) {
         roomsToInform.push(room.name);
       });
 
-      // Inform other room users (user:online)
-      roomEmitter(io, roomsToInform, 'user:online', inEvent, function(err) {
-        return callback(err, user);
-      });
+      // Inform other room users (user:online, only for first socket)
+      if (helper.userSockets(io, socket.getUserId()).length == 1) {
+        roomEmitter(io, roomsToInform, 'user:online', inEvent, function (err) {
+          return callback(err, user);
+        });
+      }
     },
 
     /**

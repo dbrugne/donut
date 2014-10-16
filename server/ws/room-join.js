@@ -46,8 +46,24 @@ module.exports = function(io, socket, data) {
       });
     },
 
+    /**
+     * This step happen BEFORE user/room persistence and room subscription
+     * to avoid noisy notifications
+     */
+    function sendToUsers(room, callback) {
+      // Inform room users
+      var event = {
+        user_id: socket.getUserId(),
+        username: socket.getUsername(),
+        avatar: socket.getAvatar(), // @todo : avatar could be outdated
+        color: socket.getColor()  // @todo : color could be outdated
+      };
+      roomEmitter(io, room.name, 'room:in', event, function(err) {
+        return callback(err, room);
+      });
+    },
+
     function persistOnRoom(room, callback) {
-      // Last join date
       room.lastjoin_at = Date.now();
       room.users.addToSet(socket.getUserId());
       room.save(function(err) {
@@ -93,19 +109,6 @@ module.exports = function(io, socket, data) {
     function sendToUser(room, roomData, callback) {
       io.to('user:'+socket.getUserId()).emit('room:welcome', roomData);
       return callback(null, room);
-    },
-
-    function sendToUsers(room, callback) {
-      // Inform room users
-      var event = {
-        user_id: socket.getUserId(),
-        username: socket.getUsername(),
-        avatar: socket.getAvatar(), // @todo : avatar could be outdated
-        color: socket.getColor()  // @todo : color could be outdated
-      };
-      roomEmitter(io, room.name, 'room:in', event, function(err) {
-        return callback(err);
-      });
     }
 
   ], function(err) {

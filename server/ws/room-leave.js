@@ -70,6 +70,10 @@ module.exports = function(io, socket, data) {
 
     },
 
+    /**
+     * This step happen AFTER user/room persistence and room subscription
+     * to avoid noisy notifications
+     */
     function sendToUsers(room, callback) {
       // Inform room users
       var event = {
