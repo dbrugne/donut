@@ -10,8 +10,7 @@ chat
 
 - Welcome message (donut default + custom by owner)
 
-- user highlight in .messages
-
+- user highlight in .messages with @
 - add @ before every username
 
 - one to one
