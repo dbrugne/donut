@@ -8,20 +8,21 @@ chat
 - History
 - [ ] View room history even when i was offline
 
-- Welcome message (donut default + custom by owner)
+- Welcome message (donut default)
+- Welcome message (custom by owner)
 
-- user highlight in .messages with @
-- add @ before every username
-
-- one to one
-
-- [ ] Add notification to owner/op when a user enter in room
+- [ ] user highlight in .messages with @
+- [ ] add @ before every username
 - [ ] Add mentions in room (highlight room user in messages)
-- [ ] Add email to notify us of user connection
-
-- [ ] Badge for websites
 
 - [ ] Image in discussion
+
+- [ ] Add notification to owner/op when a user enter in room
+- [ ] Add email to notify us of user connection
+
+- [ ] Refactoring one to one
+
+- [ ] Badge for websites
 
 [- [ ] Private room](??)
 
@@ -31,11 +32,10 @@ chat
 - [ ] Onetoone message delivering (even for offline users) + onetoone refactoring
 - [ ] Kick reason form
 - [ ] Ban from room
-- [ ] Ban user list edit
-- [ ] Op user list edit
+- [ ] Ban user list edit => appears in bottom on room users list
 
 **Other**
-- User /logout not send a notlogged event
+- User /logout not send a notlogged event (setInterval + check for cookie, if cookie expired or has disapeared : redirect to home)
 - Image uploader doesn't work on <=IE9
 
 ## Scalability
@@ -63,11 +63,8 @@ chat
 - [ ] Invite your friend on donut (Facebook)
 
 **History**
-- [ ] Store discussion message in localstorage
-- [ ] Limit localstorage to n last event [/room]
+- [ ] Store posted messages in localstorage
 - [ ] Message history on arrow up/down based on localstorage
-- [ ] Add [Skype link|autoloader] to load more history on scroll top
-- [ ] No history retrieving in open/join, display only (already in DOM or localstorage) history
 - [ ] Add a cleanup method that empty .messages periodically to avoid memory leak
 
 **Search**
@@ -81,13 +78,10 @@ chat
 - [ ] Change username
 
 **Chat**
-- [ ] Add a 'room ops' drawer with 'remove user from op list' button (only for owner)
-- [ ] Add a 'room bans' drawer with 'remove user from ban list' button (for op)
 - [ ] Change the to server->client messages : room:join/leave and user:open/close (for something like ?)
 - [ ] Add a check on ws connection to verify is user have "username"
 - [ ] Bug : room user list scroll is not active when entering in room (but work once the first redraw)
 - [ ] WS: implement REDIS cache for user and room and read in REDIS cache only "even" for socket.getUsername-like function to have always last data
-- [ ] WS: implement async pattern in all WS methods
 - [ ] Bugfix: on room auto-deletion reactivation. Should handle in 'connection.populateRoom' the room recreation. Otherwise a room automatically removed cannot be re-join automatically by client cause room populate try to find room in DB before sending it to client in welcome
 - [ ] Scrollbars adding (left column, home content, user and room edit drawer) and improvments (room messages and users)
 - [ ] Activity logic and tracking : online, afk, offline (used on user profile, one to one, room users, ...)
@@ -107,7 +101,6 @@ chat
   - [ ] Improve backlog experience when refocus a room with lot of unread messages (button to jump on last viewed message and display highligth on unread messages)
 
 **Content**
-- [ ] Formulaire; faire le tour des libellés des champs, messages d'aide, messages de confirmation
 - [ ] Animated 'rollers' for alternative texts on landing
 
 **Help**
@@ -130,6 +123,9 @@ chat
 
 **Search**
 - [ ] Quick search in left column (with 'light' param to get only username/name + avatar) and link for 'more results' that focus and fill the homepage search
+
+**SEO**
+- [ ] Create an IRC channel page with Google Adwords campaign
 
 ## Release 4
 
