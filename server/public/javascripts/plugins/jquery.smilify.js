@@ -47,6 +47,8 @@
     },
     parse: function (text) {
 
+      text = text || '';
+
       var $s = $t.settings;
 
       for (var pattern in $s.map) {
