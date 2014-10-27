@@ -4,8 +4,8 @@ define([
   'models/client',
   'models/current-user',
   'models/onetoone',
-  'models/message'
-], function (_, Backbone, client, currentUser, OneToOneModel, MessageModel) {
+  'models/event'
+], function (_, Backbone, client, currentUser, OneToOneModel, EventModel) {
   var OnetoonesCollection = Backbone.Collection.extend({
 
     comparator: function(model1, model2) {
@@ -78,7 +78,9 @@ define([
 
       // Offline user error
       if (message.error) {
-        model.trigger('notification', {type: 'oneOffline'});
+        model.events.addEvent({
+          type: 'oneOffline'
+        })
         return;
       }
 
@@ -97,7 +99,7 @@ define([
       if (model) {
         this.remove(model);
       }
-    },
+    }
 
   });
 

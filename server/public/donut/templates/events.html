@@ -1,0 +1,107 @@
+<% if (type == 'hello') { %>
+<hr>
+<div class="notification notification-<%= type %>" data-event-id="<%= data.id %>">
+    <img src="/images/hello.svg"> <%= t('chat.notifications.hello') %>  <strong><%= data.name %></strong>
+    <span class="date"><span class="moment" data-time="<%= data.time %>"></span></span>
+</div>
+<% } else if (type =='disconnected') { %>
+<hr>
+<div class="notification notification-<%= type %>" data-event-id="<%= data.id %>">
+    <img src="/images/disconnect.svg"> <%= t('chat.notifications.disconnected') %>
+    <span class="date"><span class="moment" data-time="<%= data.time %>"></span></span>
+</div>
+<% } else if (type =='reconnected') { %>
+<hr>
+<div class="notification notification-<%= type %>" data-event-id="<%= data.id %>">
+    <img src="/images/connect.svg"> <%= t('chat.notifications.reconnected') %>
+    <span class="date"><span class="moment" data-time="<%= data.time %>"></span></span>
+</div>
+<% } else if (type =='oneOffline') { %>
+<hr>
+<div class="notification notification-<%= type %>" data-event-id="<%= data.id %>">
+    <img src="/images/disconnect.svg"> <%= t('chat.notifications.offline') %>
+    <span class="date"><span class="moment" data-time="<%= data.time %>"></span></span>
+</div>
+<% } else if (type =='room:topic') { %>
+<hr>
+<div class="notification notification-<%= type %>" data-event-id="<%= data.id %>">
+    <img class="avatar" src="<%= data.avatar %>"><span class="username open-user-profile" data-username="<%= data.username %>"><%= data.username %></span> <%= t('chat.notifications.topic') %> "<strong><%- data.topic %></strong>"
+    <span class="date"><span class="moment" data-time="<%= data.time %>"></span></span>
+</div>
+<% } else if (type =='room:kick') { %>
+<hr>
+<div class="notification notification-<%= type %>" data-event-id="<%= data.id %>">
+    <img src="/images/kick.svg">
+    <img class="avatar" src="<%= data.avatar %>"><span class="username open-user-profile" data-username="<%= data.username %>"><%= data.username %></span> <%= t('chat.notifications.kick') %>
+    <img class="avatar" src="<%= data.by_avatar %>"><span class="username open-user-profile" data-username="<%= data.by_username %>"><%= data.by_username %></span>
+    <% if (data.reason) { %> : '<%= data.reason %>'<% }; %>
+    <span class="date"><span class="moment" data-time="<%= data.time %>"></span></span>
+</div>
+<% } else if (type =='ban') { %>
+<hr>
+<div class="notification notification-<%= type %>" data-event-id="<%= data.id %>">
+    <img src="/images/ban.svg">
+    <span class="username open-user-profile" data-username="<%= data.username %>"><%= data.username %></span> <%= t('chat.notifications.ban') %>
+    <img class="avatar" src="<%= data.by_avatar %>"><span class="username open-user-profile" data-username="<%= data.by_username %>"><%= data.by_username %></span> (<%= data.time %>) '<em><%= data.reason %></em>'
+    <span class="date"><span class="moment" data-time="<%= data.time %>"></span></span>
+</div>
+<% } else if (type =='op') { %>
+<hr>
+<div class="notification notification-<%= type %>" data-event-id="<%= data.id %>">
+    <img src="/images/op.svg">
+    <img class="avatar" src="<%= data.avatar %>">
+    <span class="username open-user-profile" data-username="<%= data.username %>"><%= data.username %></span> <%= t('chat.notifications.op') %>
+    <img class="avatar" src="<%= data.by_avatar %>"><span class="username open-user-profile" data-username="<%= data.by_username %>"><%= data.by_username %></span>
+    <span class="date"><span class="moment" data-time="<%= data.time %>"></span></span>
+</div>
+<% } else if (type =='deop') { %>
+<hr>
+<div class="notification notification-<%= type %>" data-event-id="<%= data.id %>">
+    <img src="/images/deop-w.svg">
+    <img class="avatar" src="<%= data.avatar %>">
+    <span class="username open-user-profile" data-username="<%= data.username %>"><%= data.username %></span> <%= t('chat.notifications.deop') %>
+    <img class="avatar" src="<%= data.by_avatar %>"><span class="username open-user-profile" data-username="<%= data.by_username %>"><%= data.by_username %></span>
+    <span class="date"><span class="moment" data-time="<%= data.time %>"></span></span>
+</div>
+<% } else if (type == 'room:message') { %>
+<div class="item" data-event-id="<%= data.id %>">
+    <span class="text"></span>
+</div>
+<% } else if (type == 'user:online') { %>
+<div class="item <%= type %>" data-time="<%= data.time %>" title="<%= data.username %> <%= t('chat.notifications.online') %> <% print(moment().format('HH:mm:ss')) %>" data-event-id="<%= data.id %>">
+    <img class="avatar open-user-profile" src="<%= data.avatar %>" data-username="<%= data.username %>">
+    <img class="icon" src="/images/connect.svg">
+    <span class="username open-user-profile" data-username="<%= data.username %>"><%= data.username %></span>
+</div>
+<% } else if (type == 'user:offline') { %>
+<div class="item <%= type %>" data-time="<%= data.time %>" title="<%= data.username %> <%= t('chat.notifications.offline') %> <% print(moment().format('HH:mm:ss')) %>" data-event-id="<%= data.id %>">
+    <img class="avatar open-user-profile" src="<%= data.avatar %>" data-username="<%= data.username %>">
+    <img class="icon" src="/images/disconnect.svg">
+    <span class="username open-user-profile" data-username="<%= data.username %>"><%= data.username %></span>
+</div>
+<% } else if (type =='room:in') { %>
+<div class="item <%= type %>" data-time="<%= data.time %>" title="<%= data.username %> <%= t('chat.notifications.in') %> <% print(moment().format('HH:mm:ss')) %>" data-event-id="<%= data.id %>">
+    <img class="avatar open-user-profile" src="<%= data.avatar %>" data-username="<%= data.username %>">
+    <img class="icon" src="/images/in.svg">
+    <span class="username open-user-profile" data-username="<%= data.username %>"><%= data.username %></span>
+</div>
+<% } else if (type == 'room:out') { %>
+<div class="item <%= type %>" data-time="<%= data.time %>" title="<%= data.username %> <%= t('chat.notifications.out') %> <% print(moment().format('HH:mm:ss')) %> <% if (data.reason == 'disconnect') { %>(disconnected)<% } %>" data-event-id="<%= data.id %>">
+    <img class="avatar open-user-profile" src="<%= data.avatar %>" data-username="<%= data.username %>">
+    <img class="icon" src="/images/out.svg">
+    <span class="username open-user-profile" data-username="<%= data.username %>"><%= data.username %></span>
+</div>
+<% } else if (type == 'messageBlock') { %>
+<hr>
+<div class="event block message">
+    <img class="avatar open-user-profile" data-username="<%= data.username %>" src="<%= data.avatar %>" alt="<%= data.username %> avatar" />
+    <span class="username open-user-profile" data-username="<%= data.username %>"><%= data.username %></span>
+    <span class="date"><span class="moment" data-time="<%= data.time %>"></span></span>
+    <div class="items"></div>
+</div>
+<% } else if (type == 'inOutBlock') { %>
+<hr>
+<div class="event block inout">
+    <div class="items"></div>
+</div>
+<% } %>

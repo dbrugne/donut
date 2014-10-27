@@ -174,8 +174,12 @@
       height: -o-calc(~'100%' - 250px);
       height: calc(~'100%' - 250px);
       font-size: 1.1em;
+      hr {
+        margin-left: 0;
+        margin-right: 0;
+      }
 
-      .notification, p.message {
+      .event {
         position: relative;
         margin-bottom: 0;
         .avatar { width: 30px; height: 30px; }
@@ -185,6 +189,49 @@
           top: 0; right: 0;
           color: @cl-subtext3;
           font-size: 0.8em;
+        }
+        &.message {
+          padding-top: 10px;
+          padding-left: 40px;
+          .avatar {
+            position: absolute;
+            top: 0; left: 0;
+            border: none;
+          }
+          .username {
+            position: absolute;
+            top: 0; left: 40px;
+            .ft-opensans-bold;
+            font-size: 1em;
+          }
+          .text {
+            display: block;
+            padding-top: 5px;
+            a { font-weight: bold; }
+          }
+        }
+        &.inout {
+          .date { display: none; }
+          .item {
+            display: inline-block;
+            margin: 0 4px 4px 0;
+            padding: 4px;
+            border: 2px solid transparent;
+            -webkit-border-radius: 10px;
+            -moz-border-radius: 10px;
+            border-radius: 10px;
+            .username { display: none; }
+            .avatar {
+              margin-right: 0px;
+            }
+            .icon {}
+            &.in:hover {
+              border-color: @cl-success;
+            }
+            &.out:hover {
+              border-color: @cl-error;
+            }
+          }
         }
       }
       .notification {
@@ -202,49 +249,6 @@
         .username { font-weight: bold; }
         .detail { font-weight: normal; }
         i { color: @cl-success; }
-      }
-      .notification-inout {
-        .date { display: none; }
-        .item {
-          display: inline-block;
-          margin: 0 4px 4px 0;
-          padding: 4px;
-          border: 2px solid transparent;
-          -webkit-border-radius: 10px;
-          -moz-border-radius: 10px;
-          border-radius: 10px;
-          .username { display: none; }
-          .avatar {
-            margin-right: 0px;
-          }
-          .icon {}
-          &.in:hover {
-            border-color: @cl-success;
-          }
-          &.out:hover {
-            border-color: @cl-error;
-          }
-        }
-      }
-      p.message {
-        padding-top: 10px;
-        padding-left: 40px;
-        .avatar {
-          position: absolute;
-          top: 0; left: 0;
-          border: none;
-        }
-        .username {
-          position: absolute;
-          top: 0; left: 40px;
-          .ft-opensans-bold;
-          font-size: 1em;
-        }
-        .text {
-          display: block;
-          padding-top: 5px;
-          a { font-weight: bold; }
-        }
       }
       hr {
         margin-top: 5px;

@@ -5,8 +5,9 @@ define([
   'models/current-user',
   'models/discussion',
   'models/user',
+  'models/event',
   'collections/room-users'
-], function (_, Backbone, client, currentUser, DiscussionModel, UserModel, RoomUsersCollection) {
+], function (_, Backbone, client, currentUser, DiscussionModel, UserModel, EventModel, RoomUsersCollection) {
   var RoomModel = DiscussionModel.extend({
 
     defaults: function() {
@@ -96,10 +97,10 @@ define([
           : false;
     },
     onMessage: function(data) {
-      if (data.name != this.get('name')) return;
-      this.message(data);
-      // Window new message indication
-      this.trigger('newMessage');
+      if (data.name != this.get('name'))
+        return;
+
+      this.onEvent('room:message', data);
     },
     onIn: function(data) {
       if (data.name != this.get('name')) {
@@ -109,12 +110,9 @@ define([
       data.status = 'online'; // only an online user can join a room
       var user = this.addUser(data);
 
-      this.trigger('notification', {
-        type: 'in',
-        user_id: user.get('id'),
-        username: user.get('username'),
-        avatar: user.get('avatar'),
-        color: user.get('color')
+      this.events.addEvent({
+        type: 'room:in',
+        data: data
       });
       this.trigger('inOut');
     },
@@ -128,13 +126,9 @@ define([
 
       this.users.remove(user);
 
-      this.trigger('notification', {
-        type: 'out',
-        user_id: user.get('id'),
-        username: user.get('username'),
-        avatar: user.get('avatar'),
-        color: user.get('color'),
-        reason: data.reason
+      this.events.addEvent({
+        type: 'room:out',
+        data: data
       });
       this.trigger('inOut');
     },
@@ -143,13 +137,9 @@ define([
         return;
       }
       this.set('topic', data.topic);
-      this.trigger('notification', {
-        type: 'topic',
-        user_id: data.user_id,
-        username: data.username,
-        avatar: data.avatar,
-        color: data.color,
-        topic: data.topic
+      this.events.addEvent({
+        type: 'room:topic',
+        data: data
       });
     },
     onOp: function(data) {
@@ -171,16 +161,9 @@ define([
 
       this.users.trigger('redraw');
 
-      this.trigger('notification', {
-        type: 'op',
-        user_id: data.user_id,
-        username: data.username,
-        avatar: data.avatar,
-        color: data.color,
-        by_user_id: data.by_user_id,
-        by_username: data.by_username,
-        by_avatar: data.by_avatar,
-        by_color: data.by_color
+      this.events.addEvent({
+        type: 'room:op',
+        data: data
       });
     },
     onDeop: function(data) {
@@ -203,16 +186,9 @@ define([
 
       this.users.trigger('redraw');
 
-      this.trigger('notification', {
-        type: 'deop',
-        user_id: data.user_id,
-        username: data.username,
-        avatar: data.avatar,
-        color: data.color,
-        by_user_id: data.by_user_id,
-        by_username: data.by_username,
-        by_avatar: data.by_avatar,
-        by_color: data.by_color
+      this.events.addEvent({
+        type: 'room:deop',
+        data: data
       });
     },
     onUpdated: function(data) {
@@ -225,10 +201,14 @@ define([
       });
     },
     onOnline: function() {
-      this.trigger('notification', { type: 'reconnected' });
+      this.events.addEvent({
+        type: 'reconnected'
+      });
     },
     onOffline: function() {
-      this.trigger('notification', { type: 'disconnected' });
+      this.events.addEvent({
+        type: 'disconnected'
+      });
     },
     getUrl: function() {
       return window.location.protocol
@@ -246,13 +226,9 @@ define([
 
       model.set({status: expect});
 
-      this.trigger('notification', {
-        type    : expect,
-        time    : data.time,
-        user_id : model.get('user_id'),
-        avatar  : model.get('avatar'),
-        color   : model.get('color'),
-        username: model.get('username')
+      this.events.addEvent({
+        type: expect,
+        data: data
       });
     },
     onUserOnline: function(data) {

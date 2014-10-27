@@ -5,8 +5,8 @@ define([
   'models/current-user',
   'models/room',
   'models/user',
-  'models/message'
-], function (_, Backbone, client, currentUser, RoomModel, UserModel, MessageModel) {
+  'models/event'
+], function (_, Backbone, client, currentUser, RoomModel, UserModel, EventModel) {
   var RoomsCollection = Backbone.Collection.extend({
 
     comparator: function(model1, model2) {
@@ -88,28 +88,27 @@ define([
         model.addUser(element);
       });
 
-      // Add history
-      // @todo : deduplicate in case of reconnection (empty list?)
-//      if (room.history && room.history.length > 0) {
-//        _.each(room.history, function(event) {
-//          if (event.type == 'room:message') {
-//            model.messages.add(new MessageModel(event));
-//          } else if (event.type == 'room:in') {
-//            event.type = 'in';
-//            model.trigger('notification', event);
-//          } else if (event.type == 'room:out') {
-//            event.type = 'out';
-//            model.trigger('notification', event);
-//          } else if (event.type = 'room:topic') {
-//            event.type = 'topic';
-//            model.trigger('notification', event);
-//          }
-//        });
-//        model.trigger('separator', 'Previous messages');
-//      }
       if (isNew) {
-        this.add(model); // now the view exists (created by mainView)
-        model.trigger('notification', {type: 'hello', name: model.get('name')});
+        // now the view exists (created by mainView)
+        this.add(model);
+
+        // hello notification
+        model.events.addEvent({
+          type: 'hello',
+          data: {
+            id: 'hello',
+            name: model.get('name')
+          }
+        });
+
+        // Add history
+        if (room.history && room.history.length > 0) {
+          room.history.reverse();
+          _.each(room.history, function(event) {
+            // @todo : TEMP TEMP TEMP
+//            model.events.addEvent(event);
+          });
+        }
       }
     },
     // Server asks to this client to leave this room
@@ -149,19 +148,11 @@ define([
       room.users.remove(user);
 
       // trigger notification
-      room.trigger('notification', {
-        type: 'kick',
-        user_id: data.user_id,
-        username: data.username,
-        avatar: data.avatar,
-        color: data.color,
-        by_user_id: data.by_user_id,
-        by_username: data.by_username,
-        by_avatar: data.by_avatar,
-        by_color: data.by_color,
-        reason: (data.reason) ? data.reason : false
+      room.events.addEvent({
+        type: 'room:kick',
+        data: data
       });
-    },
+    }
 
   });
 

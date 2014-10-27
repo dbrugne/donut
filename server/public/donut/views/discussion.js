@@ -2,9 +2,9 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'views/messages',
+  'views/events',
   'views/input'
-], function ($, _, Backbone, MessagesView, InputView) {
+], function ($, _, Backbone, EventsView, InputView) {
   var DiscussionPanelView = Backbone.View.extend({
 
     tagName: 'div',
@@ -25,10 +25,10 @@ define([
       this.render();
 
       // Subviews initialization and rendering
-      this.messagesView = new MessagesView({
+      this.eventsView = new EventsView({
         el: this.$el.find('.messages'),
         model: this.model,
-        collection: this.model.messages
+        collection: this.model.events
       });
       this.messageBoxView = new InputView({
         el: this.$el.find('.input'),
@@ -75,7 +75,7 @@ define([
     updateFocus: function() {
       if (this.model.get('focused')) {
         this.$el.show();
-        this.messagesView.scrollDown();
+        this.eventsView.scrollDown();
         this.$el.find('.input-message').focus();
         this._focus();
       } else {
@@ -87,7 +87,7 @@ define([
     removeView: function(model) {
       if (model === this.model) {
         this._remove();
-        this.messagesView.remove();
+        this.eventsView.remove();
         this.messageBoxView.remove();
         this.remove();
       }

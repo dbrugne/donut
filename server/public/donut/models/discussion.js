@@ -1,9 +1,9 @@
 define([
   'underscore',
   'backbone',
-  'collections/messages',
-  'models/message'
-], function (_, Backbone, MessagesCollection, MessageModel) {
+  'collections/events',
+  'models/event'
+], function (_, Backbone, EventsCollection, EventModel) {
   var DiscussionModel = Backbone.Model.extend({
 
     defaults: function() {
@@ -14,7 +14,7 @@ define([
     },
 
     initialize: function(options) {
-      this.messages = new MessagesCollection();
+      this.events = new EventsCollection();
       this._initialize(options);
     },
 
@@ -22,13 +22,28 @@ define([
     _initialize: function(options) {
     },
 
-    message: function(message) {
-      this.messages.add(new MessageModel(message));
+    onEvent: function(type, data) {
+      this.events.addEvent({
+        type: type,
+        data: data
+      });
 
-      if (!this.get('focused')) {
-        var unread = this.get('unread');
-        this.set('unread', unread + 1);
+      // Unread message indication
+      if (type == 'room:message' || type == 'user:message') {
+        // discussion tab indication
+        if (!this.get('focused')) {
+          this.set({
+            unread: this.get('unread') + 1
+          });
+        }
+
+        // window title indication
+        this.trigger('newMessage');
       }
+    },
+
+    message: function(message) {
+      this.events.add(new EventModel(message));
     }
 
   });
