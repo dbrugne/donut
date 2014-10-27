@@ -2,30 +2,74 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'models/client',
   'moment',
   'text!templates/events.html'
-], function ($, _, Backbone, moment, eventsTemplate) {
+], function ($, _, Backbone, client, moment, eventsTemplate) {
   var EventsView = Backbone.View.extend({
 
     template: _.template(eventsTemplate),
 
+    historyLoading: false,
+
     initialize: function(options) {
       this.listenTo(this.collection, 'add', this.onEvent);
+      this.listenTo(this.model, 'history:loaded', this.onHistoryLoaded);
       this.listenTo(this.model, 'change:focused', this.updateMoment);
 
       this.render();
 
-      // Regularly update moment times
       var that = this;
+
+      // Watch for scroll to the top
+      /**
+       * @todo : after room:history add confirmation message
+       * @todo : add spacer at .events top to be able to scroll even if on top
+       * @todo : text on load
+       * @todo : => remove auto spinner and add a button to load more (50, 100, 1000)
+       * @todo : handle no more history
+       * @todo : animate on display
+       */
+
+      this.$scroller.scroll(function() {
+        if (this.scrollTop == 0 && !that.historyLoading) {
+          that.historyLoading = true;
+
+          $('<div class="block spinner">Patientez, on est partis aux archives regarder<i class="fa fa-spinner fa-spin fa-2x"></i></div>').prependTo(that.$scroller);
+          setTimeout(function() {
+            // since, only one hello could be present in DOM, so with 2 elements
+            //  we must have at least one real event
+            var since;
+            var lasts = that.collection.first(2);
+            if (lasts[0] && lasts[0].get('id') != 'hello')
+              since = lasts[0].get('id');
+            else if (lasts[1] && lasts[1].get('id') != 'hello')
+              since = lasts[1].get('id');
+            else
+              since = 0;
+
+            client.roomHistory(that.model.get('name'), since, 5);
+
+          }, 2000);
+        };
+      });
+
+      // Regularly update moment times
       setInterval(function() { that.updateMoment(); }, 45*1000); // every 45s
     },
     render: function() {
-      this.$el.scroller();
+      this.$el.scroller({
+        duration: 500
+      });
 
       // Scroller will automatically move content in div.scroller-content
       this.$scroller = this.$el.find('.scroller-content');
 
       return this;
+    },
+    onHistoryLoaded: function() {
+      this.historyLoading = false;
+      this.$scroller.find('.block.spinner').remove();
     },
     updateMoment: function() {
       if (!this.model.get('focused')) return;
@@ -36,7 +80,7 @@ define([
     scrollDown: function() {
       this.$el
         .scroller('reset')
-        .scroller('scroll', this.$scroller.prop('scrollHeight'));
+        .scroller('scroll', this.$scroller.prop('scrollHeight'), 500);
     },
 
     onEvent: function(model, collection, options) {
@@ -105,11 +149,13 @@ define([
       } else if (previousElement) {
         // after previous, with block
         var html = this._renderEvent(model, true);
-        element = $(html).insertAfter($(previousElement).closest('.block'));
+        var block = $(html).insertAfter($(previousElement).closest('.block'));
+        element = block.find('.event').first();
       } else if (nextElement) {
         // before next, with block
         var html = this._renderEvent(model, true);
-        element = $(html).insertBefore($(nextElement).closest('.block'));
+        var block = $(html).insertBefore($(nextElement).closest('.block'));
+        element = block.find('.event').first();
       } else {
         // just append to scroller, with block
         var html = this._renderEvent(model, true);
@@ -129,7 +175,16 @@ define([
       ); // links
       element.colorify(); // color (after linkify)
 
-      this.scrollDown();
+      // display
+      var that = this;
+      element.animate({
+        opacity: 1
+      }, {
+
+      });
+
+      if (!nextElement)
+        this.scrollDown(); // auto-scroll down
     },
     _renderEvent: function(model, withBlock) {
       var data = model.toJSON();
@@ -147,7 +202,7 @@ define([
         console.log(e);
         return false;
       }
-    },
+    }
   });
 
   return EventsView;

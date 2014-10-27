@@ -218,6 +218,8 @@
         }
         .event {
           position: relative;
+          opacity: 0; // @todo TEMP TEMP
+//          height: 0; // @todo TEMP TEMP
           .text {
             white-space: pre-wrap !important;
             padding-top: 5px;
@@ -276,6 +278,17 @@
         .username { font-weight: bold; }
         .detail { font-weight: normal; }
         i { color: @cl-success; }
+      }
+
+      .block.spinner {
+        text-align: center;
+        color: @cl-title;
+        font-size: 12px;
+        background-color: @cl-subtext0;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+        padding: 11px;
       }
     }
     .input {

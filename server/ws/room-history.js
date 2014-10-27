@@ -1,27 +1,55 @@
+var async = require('async');
 var helper = require('./helper');
+var retriever = require('../app/models/historyroom').retrieve();
+var Room = require('../app/models/room');
 
 module.exports = function(io, socket, data) {
 
-//  var since = data.since || 60; // 1 hour
-//
-//  // Find, create and return room model
-//  helper.findCreateRoom(data.name, socket, handleHistory, helper.handleError);
-//
-//  // Retrieve room history for this user
-//  function handleHistory(room) {
-//    helper.roomHistory(io, socket, room.name, since, function(history) {
-//      handleSuccess(room, history);
-//    });
-//  }
-//
-//  function handleSuccess(room, history) {
-//    var historyEvent = {
-//      name: room.name,
-//      history: history
-//    };
-//    socket.emit('room:history', historyEvent);
-//
-//    helper.record('room:history', socket, data);
-//  }
+  async.waterfall([
+
+    function check(callback) {
+      if (!data.name)
+        return callback('name parameter is mandatory for room history');
+
+      return callback(null);
+    },
+
+    function retrieveRoom(callback) {
+
+      Room.retrieveRoom(data.name)
+        .exec(function(err, room) {
+          if (err)
+            return callback('Error while retrieving room in room:history '+data.name+': '+err);
+
+          return callback(null, room);
+        });
+
+    },
+
+    function history(room, callback) {
+      var number = data.number || 50;
+      var since = data.since || false;
+      var history = [];
+      retriever(room.name, socket.getUserId(), since, number, function(err, history) {
+        if (err)
+          return callback(err);
+
+        return callback(null, room, history);
+      });
+    },
+
+    function send(room, history, callback) {
+      socket.emit('room:history', {
+        name: room.name,
+        history: history
+      }, function(err) {
+        return callback(err);
+      });
+    }
+
+  ], function(err) {
+    if (err)
+      return helper.handleError(err);
+  });
 
 };

@@ -99,6 +99,8 @@ chat
   - [ ] /me commande to describe current action
   - [ ] Add an option to avoid exit popin on chat interface
   - [ ] Improve backlog experience when refocus a room with lot of unread messages (button to jump on last viewed message and display highligth on unread messages)
+  - [ ] Sound on new message
+  - [ ] Animation on new message adding in .events
 
 **Content**
 - [ ] Animated 'rollers' for alternative texts on landing

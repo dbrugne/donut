@@ -64,15 +64,18 @@ historySchema.statics.record = function() {
 historySchema.statics.retrieve = function() {
   var that = this;
   return function(name, userId, since, limit, fn) {
-    limit = limit || 15; // 15 last events
+    limit = limit || 50; // 50 last events
 
-    // @todo : implement 'since'
-
-    var q = that.find({
+    var criteria = {
       name: name,
       users: { $in: [userId] },
       event: { $nin: ['user:online', 'user:offline'] }
-    })
+    };
+
+    if (since)
+      criteria._id = { $lte: since };
+
+    var q = that.find(criteria)
       .sort({time: 'desc'})
       .limit(limit);
 

@@ -34,6 +34,7 @@ define([
       this.listenTo(client, 'room:op', this.onOp);
       this.listenTo(client, 'room:deop', this.onDeop);
       this.listenTo(client, 'room:updated', this.onUpdated);
+      this.listenTo(client, 'room:history', this.onHistory);
 
       this.listenTo(client, 'user:online', this.onUserOnline);
       this.listenTo(client, 'user:offline', this.onUserOffline);
@@ -236,6 +237,20 @@ define([
     },
     onUserOffline: function(data) {
       this._onStatus('offline', data);
+    },
+
+    onHistory: function(data) {
+      if (data.name != this.get('name'))
+        return;
+
+      if (data.history && data.history.length > 0) {
+        var that = this;
+        _.each(data.history, function(event) {
+          that.events.addEvent(event);
+        });
+      }
+
+      this.trigger('history:loaded');
     }
 
   });
