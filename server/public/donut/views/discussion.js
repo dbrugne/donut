@@ -26,7 +26,7 @@ define([
 
       // Subviews initialization and rendering
       this.eventsView = new EventsView({
-        el: this.$el.find('.messages'),
+        el: this.$el.find('.events'),
         model: this.model,
         collection: this.model.events
       });

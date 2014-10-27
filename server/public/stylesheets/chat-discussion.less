@@ -168,73 +168,100 @@
         }
       }
     }
-    .messages {
-      margin-top: 20px;
+    .events {
       height: -webkit-calc(~'100%' - 250px);
       height: -o-calc(~'100%' - 250px);
       height: calc(~'100%' - 250px);
-      font-size: 1.1em;
-      hr {
-        margin-left: 0;
-        margin-right: 0;
+      margin-top: 20px;
+      &.scroller {
+        .scroller-bar { background: none; border: 0; }
+        .scroller-track { background: none; }
+        .scroller-handle { right: 0; border: 0; width: 4px; background-color: @cl-subtext0; min-height: 20px; }
+        .scroller-content { padding: 0; padding-right: 15px; }
+      }
+      &.scroller-active {
+        .scroller-content { padding-right: 5px; }
       }
 
-      .block { // ex-.event
+      .block {
         position: relative;
-        margin-bottom: 0;
-        .avatar { width: 30px; height: 30px; }
-        .text { white-space: pre-wrap !important; }
-        .date {
-          position: absolute;
-          top: 0; right: 0;
-          color: @cl-subtext3;
-          font-size: 0.8em;
+        margin: 5px 0;
+        border: 0 solid @cl-subtext0;
+        border-top: 1px;
+        font-size: 1.1em;
+        .event {
+          .text {}
+          .date {
+            position: absolute;
+            top: 0; right: 0;
+            color: @cl-subtext3;
+            font-size: 0.8em;
+          }
         }
-        &.message {
-          padding-top: 10px;
-          padding-left: 40px;
-          .avatar {
-            position: absolute;
-            top: 0; left: 0;
-            border: none;
-          }
-          .username {
-            position: absolute;
-            top: 0; left: 40px;
-            .ft-opensans-bold;
-            font-size: 1em;
-          }
+      }
+
+      .block.message {
+        padding-top: 10px;
+        padding-left: 40px;
+        .avatar {
+          position: absolute;
+          top: 0; left: 0;
+          border: none;
+          width: 30px;
+          height: 30px;
+        }
+        .username {
+          position: absolute;
+          top: 0; left: 40px;
+          .ft-opensans-bold;
+          font-size: 1em;
+        }
+        .event {
+          position: relative;
           .text {
-            display: block;
+            white-space: pre-wrap !important;
             padding-top: 5px;
             a { font-weight: bold; }
           }
-        }
-        &.inout {
-          .date { display: none; }
-          .item {
-            display: inline-block;
-            margin: 0 4px 4px 0;
-            padding: 4px;
-            border: 2px solid transparent;
-            -webkit-border-radius: 10px;
-            -moz-border-radius: 10px;
-            border-radius: 10px;
-            .username { display: none; }
-            .avatar {
-              margin-right: 0px;
-            }
-            .icon {}
-            &.in:hover {
-              border-color: @cl-success;
-            }
-            &.out:hover {
-              border-color: @cl-error;
-            }
+          .date {
+
           }
         }
       }
-      .notification {
+
+      .block.inout {
+        .date { display: none; }
+        .event {
+          display: inline-block;
+          margin: 0 4px 4px 0;
+          padding: 4px;
+          border: 2px solid transparent;
+          -webkit-border-radius: 10px;
+          -moz-border-radius: 10px;
+          border-radius: 10px;
+          .username { display: none; }
+          .avatar {
+            margin-right: 0px;
+          }
+          .icon {}
+          &.in:hover {
+            border-color: @cl-success;
+          }
+          &.out:hover {
+            border-color: @cl-error;
+          }
+        }
+      }
+
+      .block.hello,
+      .block.disconnected,
+      .block.reconnected,
+      .block.oneOffline,
+      .block.topic,
+      .block.kick,
+      .block.ban,
+      .block.op,
+      .block.deop {
         font-style: italic;
         color: @cl-subtext2;
         img { height: 20px; }
@@ -250,21 +277,6 @@
         .detail { font-weight: normal; }
         i { color: @cl-success; }
       }
-      hr {
-        margin-top: 5px;
-        margin-bottom: 5px;
-        clear: both;
-        border-color: @cl-subtext0;
-      }
-    }
-    .messages.scroller {
-      .scroller-bar { background: none; border: 0; }
-      .scroller-track { background: none; }
-      .scroller-handle { right: 0; border: 0; width: 4px; background-color: @cl-subtext0; min-height: 20px; }
-      .scroller-content { padding: 0; padding-right: 15px; }
-    }
-    .messages.scroller-active {
-      .scroller-content { padding-right: 5px; }
     }
     .input {
       position: absolute;

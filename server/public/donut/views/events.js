@@ -95,33 +95,21 @@ define([
       var element;
 
       if (previousElement && model.sameBlockAsModel(previousModel)) {
-        // after before, no block
+        // after previous, no block
         var html = this._renderEvent(model, false);
         element = $(html).insertAfter(previousElement);
       } else if (nextElement && model.sameBlockAsModel(nextModel)) {
-        // before after, no block
+        // before next, no block
         var html = this._renderEvent(model, false);
         element = $(html).insertBefore(nextElement);
-
-
       } else if (previousElement) {
-        // after before, with block
+        // after previous, with block
         var html = this._renderEvent(model, true);
-        if (previousModel.getGenericType() != 'standard') {
-          element = $(html).insertAfter($(previousElement).closest('.block'));
-        } else {
-          element = $(html).insertAfter(previousElement);
-        }
+        element = $(html).insertAfter($(previousElement).closest('.block'));
       } else if (nextElement) {
-        // before after, with block
+        // before next, with block
         var html = this._renderEvent(model, true);
-        if (nextModel.getGenericType() != 'standard') {
-          element = $(html).insertBefore($(nextElement).closest('.block'));
-        } else {
-          element = $(html).insertBefore(nextElement);
-        }
-
-
+        element = $(html).insertBefore($(nextElement).closest('.block'));
       } else {
         // just append to scroller, with block
         var html = this._renderEvent(model, true);
