@@ -103,10 +103,8 @@ define([
 
         // Add history
         if (room.history && room.history.length > 0) {
-          room.history.reverse();
           _.each(room.history, function(event) {
-            // @todo : TEMP TEMP TEMP
-//            model.events.addEvent(event);
+            model.events.addEvent(event);
           });
         }
       }

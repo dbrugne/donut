@@ -70,7 +70,8 @@ historySchema.statics.retrieve = function() {
 
     var q = that.find({
       name: name,
-      users: { $in: [userId] }
+      users: { $in: [userId] },
+      event: { $nin: ['user:online', 'user:offline'] }
     })
       .sort({time: 'desc'})
       .limit(limit);

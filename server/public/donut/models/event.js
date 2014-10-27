@@ -22,7 +22,7 @@ define([
         'room:message',
         'user:message'
       ].indexOf(this.get('type')) !== -1)
-        return 'message';
+        return 'message'+this.get('data').username;
       else if ([
         'room:in',
         'room:out',
@@ -32,6 +32,23 @@ define([
         return 'inout';
       else
         return 'standard';
+    },
+
+    sameBlockAsModel: function(model) {
+      var type = this.getGenericType();
+      var modelType = model.getGenericType();
+
+      if (type == 'standard' || modelType == 'standard')
+        return false;
+
+      if (type != modelType)
+        return false;
+
+      if (type == 'message' && modelType == 'message'
+        && (this.get('data').username != model.get('data').username))
+        return false;
+
+      return true;
     }
 
   });

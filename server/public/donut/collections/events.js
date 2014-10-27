@@ -18,10 +18,6 @@ define([
      */
     addEvent: function(event) {
 
-      // @todo TEMP TEMP TEMP
-      if (event.type ==  'user:online' || event.type ==  'user:offline')
-        return;
-
       // create a new model
       var data = (event.data)
         ? event.data
@@ -41,6 +37,7 @@ define([
         time: time,
         data: data
       });
+      data.time = time; // hello special case
 
       // (auto-sorted by comparator)
       this.add(model);
