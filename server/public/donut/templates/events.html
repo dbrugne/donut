@@ -16,35 +16,35 @@
 --><% } %>
 <% if (type == 'hello') { %>
 <div class="block hello">
-    <div class="event notification" data-event-id="<%= data.id %>" data-time="<%= data.time %>">
+    <div class="event" data-event-id="<%= data.id %>" data-time="<%= data.time %>">
         <div class="text"><img src="/images/hello.svg"> <%= t('chat.notifications.hello') %> <strong><%= data.name %></strong></div>
         <div class="date"><span class="moment" data-time="<%= data.time %>"></span></div>
     </div>
 </div>
 <% } else if (type =='disconnected') { %>
 <div class="block disconnected">
-    <div class="event notification" data-event-id="<%= data.id %>" data-time="<%= data.time %>">
+    <div class="event" data-event-id="<%= data.id %>" data-time="<%= data.time %>">
         <div class="text"><img src="/images/disconnect.svg"> <%= t('chat.notifications.disconnected') %></div>
         <div class="date"><span class="moment" data-time="<%= data.time %>"></span></div>
     </div>
 </div>
 <% } else if (type =='reconnected') { %>
 <div class="block reconnected">
-    <div class="event notification" data-event-id="<%= data.id %>" data-time="<%= data.time %>">
+    <div class="event" data-event-id="<%= data.id %>" data-time="<%= data.time %>">
         <div class="text"><img src="/images/connect.svg"> <%= t('chat.notifications.reconnected') %></div>
         <div class="date"><span class="moment" data-time="<%= data.time %>"></span></div>
     </div>
 </div>
 <% } else if (type =='oneOffline') { %>
 <div class="block offline">
-    <div class="event notification" data-event-id="<%= data.id %>" data-time="<%= data.time %>">
+    <div class="event" data-event-id="<%= data.id %>" data-time="<%= data.time %>">
         <div class="text"><img src="/images/disconnect.svg"> <%= t('chat.notifications.offline') %></div>
         <div class="date"><span class="moment" data-time="<%= data.time %>"></span></div>
     </div>
 </div>
 <% } else if (type =='room:topic') { %>
 <div class="block topic">
-    <div class="event notification" data-event-id="<%= data.id %>" data-time="<%= data.time %>">
+    <div class="event" data-event-id="<%= data.id %>" data-time="<%= data.time %>">
         <div class="text">
             <img class="avatar" src="<%= data.avatar %>">
             <span class="username open-user-profile" data-username="<%= data.username %>"><%= data.username %></span>
@@ -55,7 +55,7 @@
 </div>
 <% } else if (type =='room:kick') { %>
 <div class="block kick">
-    <div class="event notification" data-event-id="<%= data.id %>" data-time="<%= data.time %>">
+    <div class="event" data-event-id="<%= data.id %>" data-time="<%= data.time %>">
         <div class="text">
             <img src="/images/kick.svg">
             <img class="avatar" src="<%= data.avatar %>">
@@ -70,7 +70,7 @@
 </div>
 <% } else if (type =='room:ban') { %>
 <div class="block ban">
-    <div class="event notification" data-event-id="<%= data.id %>" data-time="<%= data.time %>">
+    <div class="event" data-event-id="<%= data.id %>" data-time="<%= data.time %>">
         <div class="text">
             <img src="/images/ban.svg">
             <span class="username open-user-profile" data-username="<%= data.username %>"><%= data.username %></span>
@@ -83,7 +83,7 @@
 </div>
 <% } else if (type =='room:op') { %>
 <div class="block op">
-    <div class="event notification" data-event-id="<%= data.id %>" data-time="<%= data.time %>">
+    <div class="event" data-event-id="<%= data.id %>" data-time="<%= data.time %>">
         <div class="text">
             <img src="/images/op.svg">
             <img class="avatar" src="<%= data.avatar %>">
@@ -95,7 +95,7 @@
 </div>
 <% } else if (type =='room:deop') { %>
 <div class="block deop">
-    <div class="event notification" data-event-id="<%= data.id %>" data-time="<%= data.time %>">
+    <div class="event" data-event-id="<%= data.id %>" data-time="<%= data.time %>">
         <div class="text">
             <img src="/images/deop-w.svg">
             <img class="avatar" src="<%= data.avatar %>">
