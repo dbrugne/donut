@@ -14,7 +14,15 @@
         <div class="share-button <%= share %>" data-colorify-background="color" data-colorify-text="contrast"></div>
         <div class="topic"><!-- topic view --></div>
     </div>
-    <div class="events"><!-- messages view --></div>
+    <div class="events">
+        <!-- events view -->
+        <div class="history">
+            <div class="spinner">
+                <i class="fa fa-spinner fa-spin fa-2x"></i>
+            </div>
+            <i class="fa fa-clock-o"></i> Afficher l'historique depuis : <a class="load" data-days="1">Hier</a> &bull; <a class="load" data-days="7">7 jours</a> &bull; <a class="load" data-days="30">30 jours</a> &bull; <a class="load" data-days="90">3 mois</a> &bull; <a class="load" data-days="180">6 mois</a> &bull; <a class="load" data-days="365">1 an</a>
+        </div>
+    </div>
     <div class="input"><!-- input view --></div>
 </div><!-- /.content -->
 <div class="side" style="<% if (poster) { %>background-image: url(<%= poster %>);<% }; %>" data-colorify-background="color">

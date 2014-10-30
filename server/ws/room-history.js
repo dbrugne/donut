@@ -27,10 +27,7 @@ module.exports = function(io, socket, data) {
     },
 
     function history(room, callback) {
-      var number = data.number || 50;
-      var since = data.since || false;
-      var history = [];
-      retriever(room.name, socket.getUserId(), since, number, function(err, history) {
+      retriever(room.name, socket.getUserId(), data.since, data.until, function(err, history) {
         if (err)
           return callback(err);
 

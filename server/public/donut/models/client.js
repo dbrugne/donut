@@ -235,9 +235,8 @@ define([
       this.socket.emit('room:delete', data);
       this.debug(['io:out:room:delete', data]);
     },
-    roomHistory: function(name, since, number) {
-      number = number || 50;
-      var data = {name: name, since: since, number: number};
+    roomHistory: function(name, since, until) {
+      var data = {name: name, since: since, until: until};
       this.socket.emit('room:history', data);
       this.debug(['io:out:room:history', data]);
     },

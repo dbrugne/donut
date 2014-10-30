@@ -10,6 +10,10 @@ define([
 
     template: _.template(eventsTemplate),
 
+    events: {
+      "click .history a.load": "onHistory"
+    },
+
     historyLoading: false,
 
     initialize: function(options) {
@@ -21,39 +25,11 @@ define([
 
       var that = this;
 
-      // Watch for scroll to the top
-      /**
-       * @todo : after room:history add confirmation message
-       * @todo : add spacer at .events top to be able to scroll even if on top
-       * @todo : text on load
-       * @todo : => remove auto spinner and add a button to load more (50, 100, 1000)
-       * @todo : handle no more history
-       * @todo : animate on display
-       * @todo : aggregate by day (!!!)
-       */
-
-      this.$scroller.scroll(function() {
-        if (this.scrollTop == 0 && !that.historyLoading) {
-          that.historyLoading = true;
-
-          $('<div class="block spinner">Patientez, on est partis aux archives regarder<i class="fa fa-spinner fa-spin fa-2x"></i></div>').prependTo(that.$scroller);
-          setTimeout(function() {
-            // since, only one hello could be present in DOM, so with 2 elements
-            //  we must have at least one real event
-            var since;
-            var lasts = that.collection.first(2);
-            if (lasts[0] && lasts[0].get('id') != 'hello')
-              since = lasts[0].get('id');
-            else if (lasts[1] && lasts[1].get('id') != 'hello')
-              since = lasts[1].get('id');
-            else
-              since = 0;
-
-            client.roomHistory(that.model.get('name'), since, 5);
-
-          }, 2000);
-        };
-      });
+//      // Watch for scroll to the top
+//      this.$scroller.scroll(function() {
+//        if (this.scrollTop == 0)
+//          console.log('scroll is now on top');
+//      });
 
       // Regularly update moment times
       setInterval(function() { that.updateMoment(); }, 45*1000); // every 45s
@@ -67,10 +43,6 @@ define([
       this.$scroller = this.$el.find('.scroller-content');
 
       return this;
-    },
-    onHistoryLoaded: function() {
-      this.historyLoading = false;
-      this.$scroller.find('.block.spinner').remove();
     },
     updateMoment: function() {
       if (!this.model.get('focused')) return;
@@ -180,9 +152,7 @@ define([
       var that = this;
       element.animate({
         opacity: 1
-      }, {
-
-      });
+      }, 200);
 
       if (!nextElement)
         this.scrollDown(); // auto-scroll down
@@ -203,7 +173,61 @@ define([
         console.log(e);
         return false;
       }
+    },
+
+    onHistory: function(event) {
+      event.preventDefault();
+      event.stopPropagation();
+
+      // noise protection
+      if (this.historyLoading)
+        return;
+      else
+        this.historyLoading = true;
+
+      // spinner
+      this.$el.find('.history .spinner').show();
+
+      // until
+      var until = $(event.currentTarget).data('days');
+
+      // since, only one hello could be present in DOM, so with 2 elements
+      //  we must have at least one real event
+      var since;
+      var lasts = this.collection.first(2);
+      if (lasts[0] && lasts[0].get('id') != 'hello')
+        since = lasts[0].get('time');
+      else if (lasts[1] && lasts[1].get('id') != 'hello')
+        since = lasts[1].get('time');
+      else
+        since = Date.now();
+
+      client.roomHistory(this.model.get('name'), since, until);
+
+//      /**
+//       * @todo : aggregate by day (!!!)
+//       * @todo : after room:history add confirmation message
+//       * @todo : add spacer at .events top to be able to scroll even if on top
+//       * @todo : text on load
+//       * @todo : handle no more history
+//       */
+//      this.$scroller.scroll(function() {
+//        if (this.scrollTop == 0 && !that.historyLoading) {
+//          that.historyLoading = true;
+//
+//          $('<div class="block spinner">Patientez, on est partis regarder aux archives <i class="fa fa-spinner fa-spin fa-2x"></i></div>').prependTo(that.$scroller);
+//          setTimeout(function() {
+//          }, 2000);
+//        };
+//      });
+
+    },
+
+    onHistoryLoaded: function() {
+      this.historyLoading = false;
+      this.$scroller.find('.history .spinner').hide();
     }
+
   });
 
   return EventsView;

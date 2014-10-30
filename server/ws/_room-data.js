@@ -58,7 +58,8 @@ module.exports = function(io, socket, name, fn) {
     },
 
     function history(room, users, callback) {
-      retriever(room.name, socket.getUserId(), false, 50, function(err, history) {
+      // 1 day back history
+      retriever(room.name, socket.getUserId(), false, 1, function(err, history) {
         if (err)
           return callback(err);
 

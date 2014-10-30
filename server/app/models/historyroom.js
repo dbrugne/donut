@@ -63,21 +63,35 @@ historySchema.statics.record = function() {
 
 historySchema.statics.retrieve = function() {
   var that = this;
-  return function(name, userId, since, limit, fn) {
-    limit = limit || 50; // 50 last events
+  /**
+   * @param name
+   * @param userId
+   * @param since: the timestamp from when the retrieving will begin (= all events before 'since')
+   * @param until: the number of days to go back in past
+   * @param fn
+   */
+  return function(name, userId, since, until, fn) {
+    // Since
+    since = since || Date.now(); // from now
+    since = new Date(since);
+
+    // Until, floor to  day at 00:00
+    until = until || 1; // 1 day events
+    until = Date.now() - (1000*3600*24*until);
+    var u = new Date(until);
+    var until = new Date(u.getFullYear(), u.getMonth(), u.getDate());
 
     var criteria = {
       name: name,
+      time: { $lte: since, $gte: until },
       users: { $in: [userId] },
       event: { $nin: ['user:online', 'user:offline'] }
     };
-
-    if (since)
-      criteria._id = { $lte: since };
+    console.log('since '+since+' until '+until);
 
     var q = that.find(criteria)
       .sort({time: 'desc'})
-      .limit(limit);
+      .limit(10000); // arbitrary protection, maybe noy helpful
 
     q.exec(function(err, entries) {
       if (err)
