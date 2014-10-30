@@ -7,6 +7,9 @@ chat
 
 - History
 - [ ] View room history even when i was offline
+- @todo : aggregate by day (!!!)
+- @todo : after room:history add confirmation message (???)
+- @todo : handle no more history
 
 - Welcome message (donut default)
 - Welcome message (custom by owner)
