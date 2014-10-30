@@ -76,7 +76,6 @@ historySchema.statics.retrieve = function() {
     since = new Date(since);
 
     // Until, floor to  day at 00:00
-    until = until || 1; // 1 day events
     until = Date.now() - (1000*3600*24*until);
     var u = new Date(until);
     var until = new Date(u.getFullYear(), u.getMonth(), u.getDate());
@@ -87,7 +86,6 @@ historySchema.statics.retrieve = function() {
       users: { $in: [userId] },
       event: { $nin: ['user:online', 'user:offline'] }
     };
-    console.log('since '+since+' until '+until);
 
     var q = that.find(criteria)
       .sort({time: 'desc'})
