@@ -18,7 +18,7 @@ require.config({
     'jquery.scroller'             : '../vendor/Scroller/jquery.fs.scroller.min',
     'jquery.insertatcaret'        : '../javascripts/plugins/jquery.insertatcaret',
     'jquery.maxlength'            : '../javascripts/plugins/jquery.maxlength',
-    'jquery.linkify'              : '../javascripts/plugins/jquery.linkify.min',
+    'jquery.linkify'              : '../javascripts/plugins/jquery.linkify',
     'jquery.smilify'              : '../javascripts/plugins/jquery.smilify',
     'jquery.momentify'            : '../javascripts/plugins/jquery.momentify',
     'jquery.colorify'             : '../javascripts/plugins/jquery.colorify',
