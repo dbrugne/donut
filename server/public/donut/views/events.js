@@ -29,6 +29,7 @@ define([
        * @todo : => remove auto spinner and add a button to load more (50, 100, 1000)
        * @todo : handle no more history
        * @todo : animate on display
+       * @todo : aggregate by day (!!!)
        */
 
       this.$scroller.scroll(function() {
