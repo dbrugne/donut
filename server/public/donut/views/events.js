@@ -57,7 +57,7 @@ define([
     },
 
     onEvent: function(model, collection, options) {
-      console.log('new event '+model.get('id'));
+//      console.log('new event '+model.get('id'));
 
       var firstElement, lastElement, previousElement, nextElement;
 
@@ -135,6 +135,17 @@ define([
         element = $(html).appendTo(this.$scroller);
       }
 
+//      // day separator
+//      var dayHtml = this.template({
+//        type: 'date',
+//        day : moment(model.get('time')).format('LLLL')
+//      });
+//      if (!previousElement) {
+//        $(dayHtml).insertBefore($(element).closest('.block'));
+//      } else if (previousElement && !model.sameDayAsModel(previousModel)) {
+//        $(dayHtml).insertBefore($(element).closest('.block'));
+//      }
+
       // decorate
       element.find('.moment').momentify(); // time
       element.find('.text')
@@ -203,23 +214,6 @@ define([
         since = Date.now();
 
       client.roomHistory(this.model.get('name'), since, until);
-
-//      /**
-//       * @todo : aggregate by day (!!!)
-//       * @todo : after room:history add confirmation message
-//       * @todo : add spacer at .events top to be able to scroll even if on top
-//       * @todo : text on load
-//       * @todo : handle no more history
-//       */
-//      this.$scroller.scroll(function() {
-//        if (this.scrollTop == 0 && !that.historyLoading) {
-//          that.historyLoading = true;
-//
-//          $('<div class="block spinner">Patientez, on est partis regarder aux archives <i class="fa fa-spinner fa-spin fa-2x"></i></div>').prependTo(that.$scroller);
-//          setTimeout(function() {
-//          }, 2000);
-//        };
-//      });
 
     },
 

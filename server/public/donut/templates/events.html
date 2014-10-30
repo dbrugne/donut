@@ -1,20 +1,8 @@
-<% if (false) { %><!--
-
-- .events expect only div.block as child
-- each div.block should contains at least a div.event with data-event-id
-  and data-time micro-data
-- each div.event should contains a div.text div.date
-- block with multiple event should regroup them in a div.items
-
-    <div class="block">
-      <div class="event" data-event-id="" data-time="">
-        <div class="text"></div>
-        <div class="date"></div>
-      </div>
-    </div>
-
---><% } %>
-<% if (type == 'hello') { %>
+<% if (type == 'date') { %>
+<div class="date">
+    <i class="fa fa-calendar"></i> <%= day %>
+</div>
+<% } else if (type == 'hello') { %>
 <div class="block hello">
     <div class="event" data-event-id="<%= data.id %>" data-time="<%= data.time %>">
         <div class="text"><img src="/images/hello.svg"> <%= t('chat.notifications.hello') %> <strong><%= data.name %></strong></div>
@@ -123,7 +111,7 @@
 <% } else if (type == 'user:online' || type == 'user:offline' || type =='room:in' || type == 'room:out') { %>
     <% if (withBlock) { %>
         <div class="block inout">
-            <div class="items"></div>
+            <div class="items">
     <% } %>
     <% if (type == 'user:online') { %>
     <div class="event online" data-time="<%= data.time %>" title="<%= data.username %> <%= t('chat.notifications.online') %> <% print(moment().format('HH:mm:ss')) %>" data-event-id="<%= data.id %>" data-time="<%= data.time %>">
