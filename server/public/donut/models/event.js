@@ -57,9 +57,6 @@ define([
     sameDayAsModel: function(model) {
       var c1 = new Date(this.get('time'));
       var c2 = new Date(model.get('time'));
-      console.log(c1.getFullYear() , c2.getFullYear()
-        , c1.getMonth() , c2.getMonth()
-        , c1.getDate() , c2.getDate());
       if (c1.getFullYear() == c2.getFullYear()
         && c1.getMonth() == c2.getMonth()
         && c1.getDate() == c2.getDate() ) {
