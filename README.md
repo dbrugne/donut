@@ -11,6 +11,8 @@ chat
 - Welcome message (donut default)
 - Welcome message (custom by owner)
 
+- Put David as owner of #donut and #support
+
 - [ ] user highlight in .messages with @
 - [ ] add @ before every username
 - [ ] Add mentions in room (highlight room user in messages)
@@ -25,6 +27,13 @@ chat
 - [ ] Badge for websites
 
 [- [ ] Private room](??)
+
+## Big Ideas
+
+- Mode public/logué
+  => création de room on the fly / sans compte
+- Donut wall (with APIs bridges)
+- Room avec contenu "public"
 
 ## v1.1 : minimal features against competitors
 
