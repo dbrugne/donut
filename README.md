@@ -6,15 +6,17 @@ chat
 **Tasks**
 
 - History
-- [ ] View room history even when i was offline
-- @todo : aggregate by day (!!!)
-- @todo : after room:history add confirmation message (???)
-- @todo : handle no more history
+- Aggregate by day (!!!)
 
 - Welcome message (donut default)
-- Welcome message (custom by owner)
 
-- Put David as owner of #donut and #support
+- [ ] Refactoring one to one
+
+- Welcome message (custom by owner)
+  - Welcome massage en anglais: DONE https://irc.box.com/s/c6uqsvd2tbn1fanwu6fc
+  - Wording à l'entrée d'un donut: DONE https://irc.box.com/s/v8ote63x8z8ktc0qz66n
+
+- [x] Put David as owner of #donut and #support
 
 - [ ] user highlight in .messages with @
 - [ ] add @ before every username
@@ -24,8 +26,7 @@ chat
 
 - [ ] Add notification to owner/op when a user enter in room
 - [ ] Add email to notify us of user connection
-
-- [ ] Refactoring one to one
+  -> Draft notifications: DONE https://irc.box.com/s/wk9iq6wihj8vsnqc7tpj
 
 - [ ] Badge for websites
 
