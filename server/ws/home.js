@@ -62,12 +62,15 @@ module.exports = function (io, socket) {
       },
 
       function onlines(rooms, callback) {
-        var onlines = helper.connectedUsers(io, 200);
-        return callback(null, rooms, onlines);
+        helper.users(io, 200, function(err, onlines) {
+          if (err)
+            return callback(err);
+
+          return callback(null, rooms, onlines);
+        });
       },
 
       function send(rooms, onlines, callback) {
-
         var event = {
           rooms: rooms,
           users: onlines

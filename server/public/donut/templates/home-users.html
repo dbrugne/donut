@@ -5,15 +5,15 @@
     <% if (users.length < 1) { %>
         <div class="nothing"><%= t('chat.search.nouser') %></div>
     <% } %>
-    <% _.each(users, function(userOnline) { %>
+    <% _.each(users, function(u) { %>
         <% var bgColor = txtColor = ''; %>
-        <% if (userOnline.color) {
-        bgColor = "background-color: "+userOnline.color;
-        txtColor = "color: "+userOnline.color;
+        <% if (u.color) {
+        bgColor = "background-color: "+u.color;
+        txtColor = "color: "+u.color;
         }; %>
-        <div class="item open-user-profile" data-username="<%= userOnline.username %>">
-            <div class="username" style="<%= bgColor %>"><%= userOnline.username %></div>
-            <img class="avatar" src="<%= userOnline.avatar %>">
+        <div class="item open-user-profile <%= u.status %>" data-username="<%= u.username %>">
+            <div class="username" style="<%= bgColor %>"><%= u.username %></div>
+            <img class="avatar" src="<%= u.avatar %>">
         </div>
     <% }); %>
 </div>

@@ -246,34 +246,41 @@ module.exports = {
   },
 
   /**
-   * List connected users (and not sockets)
+   * List users
    * @param io
    * @param limit
-   * @return {Array}
    */
-  connectedUsers: function(io, limit) {
+  users: function(io, limit, fn) {
     limit = limit ? limit : 10;
+    var q = User.find({ username: {$ne:null} }, 'username avatar color')
+      .limit(limit);
 
-    var list = [];
-    var already = [];
-    var sockets = io.sockets.adapter.nsp.connected;
-    var until = (sockets.length < limit) ? sockets.length : limit;
-    var keys = Object.keys(sockets);
-    for (var i=0; i < until; i++) {
-      var u = sockets[keys[i]];
-      if (u) { // sometime socket has expired
-        if (!_.contains(already, u.getUserId())) {
-          already.push(u.getUserId());
-          list.push({
-            user_id: u.getUserId(),
-            username: u.getUsername(),
-            avatar: u.getAvatar(),
-            color: u.getColor()
-          });
-        }
-      }
-    }
-    return list;
+    q.exec(function(err, users) {
+      if (err)
+        return fn('Error while retrieving users list: '+err);
+
+      var list = [];
+      _.each(users, function(u) {
+        // determine if is online
+        var status = 'offline';
+        var ur = io.sockets.adapter.rooms['user:'+ u._id.toString()];
+        if (ur)
+          status = 'online';
+
+        list.push({
+          user_id: u._id.toString(),
+          username: u.username,
+          avatar: u.avatar,
+          color: u.color,
+          status: status
+        });
+      });
+
+      list = _.sortBy(list, 'status');
+      list.reverse();
+
+      return fn(null, list);
+    });
   },
 
   /**

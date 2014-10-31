@@ -186,7 +186,7 @@
     "help": "Help",
     "home": {
       "roomstitle": "Here are the existing donuts, you can also <a class='open-create-room'>create one</a>:",
-      "userstitle": "Online users"
+      "userstitle": "Users"
     },
     "search": {
       "placeholder": "Search donut or user here",

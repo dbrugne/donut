@@ -186,7 +186,7 @@
         "help": "Aide",
         "home": {
           "roomstitle": "Voici les donuts existants, vous pouvez également en <a class='open-create-room'>créer un</a> :",
-          "userstitle": "Utilisateurs en ligne"
+          "userstitle": "Utilisateurs"
         },
         "search": {
             "placeholder": "Recherchez un donut ou un utilisateur ici",

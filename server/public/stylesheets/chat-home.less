@@ -164,10 +164,15 @@
             z-index: 99999;
             white-space:nowrap;
           }
-        }
-        .item:hover {
-          .username {
-            display: block;
+          &:hover {
+            .username {
+              display: block;
+            }
+          }
+          &.offline {
+            .avatar {
+              opacity: .5;
+            }
           }
         }
       }
