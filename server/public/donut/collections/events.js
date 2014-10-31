@@ -23,21 +23,22 @@ define([
         ? event.data
         : {};
 
-      var id = (event.data.id)
-        ? event.data.id
+      var id = (data.id)
+        ? data.id
         : _.uniqueId('auto_');
 
-      var time = (event.data.time)
-        ? event.data.time
+      var time = (data.time)
+        ? data.time
         : Date.now();
 
+      data.id = id; // hello/disconnected/... special cases
+      data.time = time; // hello/disconnected/... special cases
       var model = new EventModel({
         id: id,
         type: event.type,
         time: time,
         data: data
       });
-      data.time = time; // hello special case
 
       // (auto-sorted by comparator)
       this.add(model);
