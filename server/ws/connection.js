@@ -134,6 +134,8 @@ module.exports = function(io, socket) {
         roomEmitter(io, roomsToInform, 'user:online', inEvent, function (err) {
           return callback(err, user);
         });
+      } else {
+        return callback(null, user);
       }
     },
 
