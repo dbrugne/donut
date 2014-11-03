@@ -31,7 +31,7 @@ module.exports = function(io, socket) {
         if (err)
           return callback('Unable to retrieve user\'s rooms: '+err);
 
-        if (user.rooms.length < 1)
+        if (!user.rooms || user.rooms.length < 1)
           return callback(null, event);
 
         var tasks = [];
