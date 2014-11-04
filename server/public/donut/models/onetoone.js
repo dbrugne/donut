@@ -23,7 +23,9 @@ define([
     },
     _initialize: function() {
       this.listenTo(client, 'user:profile', this.onProfile);
-      this.listenTo(client, 'user:status', this.onStatus);
+      this.listenTo(client, 'user:online', this.onUserOnline);
+      this.listenTo(client, 'user:offline', this.onUserOffline);
+//      this.listenTo(client, 'user:status', this.onStatus);
       this.listenTo(client, 'user:history', this.onHistory);
     },
     leave: function() {
@@ -32,9 +34,30 @@ define([
     onMessage: function(data) {
       this.onEvent('user:message', data);
     },
-    onStatus: function(data) {
-      if (data.username != this.get('username')) return;
-      this.set({status: data.status});
+//    onStatus: function(data) {
+//      if (data.username != this.get('username'))
+//        return;
+//      this.set({status: data.status});
+//    },
+    onUserOnline: function(data) {
+      this._onStatus('online', data);
+    },
+    onUserOffline: function(data) {
+      this._onStatus('offline', data);
+    },
+    _onStatus: function(expect, data) {
+      if (data.username != this.get('username'))
+        return;
+
+      if (this.get('status') == expect)
+        return;
+
+      this.set({status: expect});
+
+      this.events.addEvent({
+        type: expect,
+        data: data
+      });
     },
     onProfile: function (data) {
       if (!data.user || data.user.username != this.get('username'))

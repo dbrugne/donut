@@ -8,6 +8,7 @@ var conf = require('../config/index');
 var roomDataHelper = require('./_room-data.js');
 var oneDataHelper = require('./_one-data.js');
 var roomEmitter = require('./_room-emitter');
+var oneEmitter = require('./_one-emitter');
 
 module.exports = function(io, socket) {
 
@@ -38,8 +39,8 @@ module.exports = function(io, socket) {
     hello: hello()
   };
 
-  // room:in / user:online event
-  var inEvent = {
+  // :in / :online
+  var userEvent = {
     user_id: socket.getUserId(),
     username: socket.getUsername(),
     avatar: socket.getAvatar(),
@@ -77,8 +78,8 @@ module.exports = function(io, socket) {
             if (err)
               return callback('Unable to persist user on #donut: '+err);
 
-            // Inform other room users (user:online)
-            roomEmitter(io, conf.room.general, 'room:in', inEvent, function(err) {
+            // Inform other #donut users (user:online)
+            roomEmitter(io, conf.room.general, 'room:in', userEvent, function(err) {
               return callback(err, user);
             });
           });
@@ -142,30 +143,58 @@ module.exports = function(io, socket) {
       });
     },
 
-    function subscribeSocket(user, callback) {
+    function emitUserOnlineToRooms(user, callback) {
+      // user:online, only for first socket
+      if (helper.userSockets(io, socket.getUserId()).length > 1)
+        return callback(null, user);
+
       var roomsToInform = [];
       helper._.each(welcome.rooms, function(room) {
-        // Add socket to the room
-        socket.join(room.name);
-        debug('socket '+socket.id+' subscribed to room '+room.name);
+        if (!room || !room.name)
+          return;
 
-        // Add room to notification list
         roomsToInform.push(room.name);
       });
 
-      // Inform other room users (user:online, only for first socket)
-      if (helper.userSockets(io, socket.getUserId()).length == 1) {
-        roomEmitter(io, roomsToInform, 'user:online', inEvent, function (err) {
-          return callback(err, user);
-        });
-      } else {
+      if (roomsToInform.length < 1)
         return callback(null, user);
-      }
+
+      roomEmitter(io, roomsToInform, 'user:online', userEvent, function (err) {
+        if (err)
+          return callback(err);
+
+        return callback(null, user);
+      });
     },
 
-    /**
-     * @todo : dedicated steps to inform rooms and onetones users (with user:online)
-     */
+    function emitUserOnlineToOnes(user, callback) {
+      // user:online, only for first socket
+      if (helper.userSockets(io, socket.getUserId()).length > 1)
+        return callback(null, user);
+
+      User.find({onetoones: { $in: [socket.getUserId()] }}, 'username', function(err, ones) {
+        if (err)
+          return callback('Unable to find onetoones to inform on connection: '+err);
+
+        var onesToInform = [];
+        helper._.each(ones, function(one) {
+          if (!one || !one.username)
+            return;
+
+          onesToInform.push({from: socket.getUserId(), to: one._id.toString()});
+        });
+
+        if (onesToInform.length < 1)
+          return callback(null, user);
+
+        oneEmitter(io, onesToInform, 'user:online', userEvent, function (err) {
+          if (err)
+            return callback(err);
+
+          return callback(null, user);
+        });
+      });
+    },
 
     function emitWelcome(user, callback) {
       welcome.user = {
@@ -177,25 +206,21 @@ module.exports = function(io, socket) {
       socket.emit('welcome', welcome);
 
       return callback(null, user);
+    },
+
+    function subscribeSocket(user, callback) {
+      helper._.each(welcome.rooms, function(room) {
+        // Add socket to the room
+        socket.join(room.name);
+        debug('socket '+socket.id+' subscribed to room '+room.name);
+      });
+      return callback(null, user);
     }
 
   ], function (err, user) {
     if (err)
       return helper.handleError(err);
 
-    // push this user to other users (only for first socket)
-    if (helper.userSockets(io, socket.getUserId()).length == 1) {
-      // @todo : only populated rooms and onetoone users sockets
-      socket.broadcast.emit('user:online', {
-        user_id: socket.getUserId(),
-        time: Date.now(),
-        username: socket.getUsername(),
-        avatar: socket.getAvatar(),
-        color: socket.getColor()
-      });
-    }
-
-    // activity
     helper.record('connection', socket, {});
   });
 };

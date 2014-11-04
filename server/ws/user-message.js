@@ -57,27 +57,6 @@ module.exports = function(io, socket, data) {
       });
     },
 
-//    function checkStatus(user, callback) {
-//      // check if user is online
-//      if (!helper.isUserOnline(io, user._id.toString())) {
-//        // if not respond a message to sender (user:status + unable to transmit message)
-//        socket.emit('user:message', {
-//          error: 'Recipient is offline',
-//          from_user_id  : socket.getUserId(),
-//          from_username : socket.getUsername(),
-//          from_avatar   : socket.getAvatar(),
-//          from_color    : socket.getColor(),
-//          to_user_id    : user._id.toString(),
-//          to_username   : user.username,
-//          to_avatar     : user._avatar(),
-//          to_color      : user.color
-//        });
-//        return callback('user:message recepient is offline');
-//      }
-//
-//      return callback(null, user);
-//    },
-
     function prepare(from, to, callback) {
       // Input filtering
       var message = helper.inputFilter(data.message, 512);
@@ -99,7 +78,7 @@ module.exports = function(io, socket, data) {
     },
 
     function send(from, to, event, callback) {
-      oneEmitter(io, from, to, 'user:message', event, function(err) {
+      oneEmitter(io, {from: from._id, to: to._id}, 'user:message', event, function(err) {
         if (err)
           return callback('Error while emitting user:message: '+err);
 

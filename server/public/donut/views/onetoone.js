@@ -61,7 +61,7 @@ define([
       this.$el.find('.header .website').linkify();
     },
     onStatus: function() {
-      if (this.model.get('status')) {
+      if (this.model.get('status') == 'online') {
         this.$el.find('.header .status-block em').text($.t("global.online"));
         this.$el.find('.header .status')
           .removeClass('offline online')
@@ -73,7 +73,6 @@ define([
           .addClass('offline');
       }
     }
-
   });
 
   return OneToOnePanelView;

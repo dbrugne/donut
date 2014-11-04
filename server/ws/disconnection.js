@@ -2,6 +2,7 @@ var async = require('async');
 var helper = require('./helper');
 var User = require('../app/models/user');
 var roomEmitter = require('./_room-emitter');
+var oneEmitter = require('./_one-emitter');
 
 module.exports = function(io, socket) {
 
@@ -10,54 +11,76 @@ module.exports = function(io, socket) {
     ? false
     : true;
 
+  // :out / :offline
+  var userEvent = {
+    user_id   : socket.getUserId(),
+    username  : socket.getUsername(),
+    avatar    : socket.getAvatar(),
+    color     : socket.getColor()
+  };
+
   async.waterfall([
 
-    function prepareEvent(callback) {
-      var event = {
-        user_id   : socket.getUserId(),
-        username  : socket.getUsername(),
-        avatar    : socket.getAvatar(),
-        color     : socket.getColor()
-      };
-      return callback(null, event);
+    function retrieveUser(callback){
+      var q = User.findById(socket.getUserId());
+      q.populate('onetoones', 'username');
+      q.exec(function(err, user) {
+        if (err)
+          return callback('Unable to find user: '+err, null);
+
+        return callback(null, user);
+      });
     },
 
-    function informRooms(event, callback) {
+    function emitUserOnlineToRooms(user, callback) {
       if (!lastSocket)
-        return callback(null, event);
+        return callback(null, user);
 
-      // Inform room clients that this user leave the room
-      User.findById(socket.getUserId(), 'rooms', function(err, user) {
+      var roomsToInform = [];
+      helper._.each(user.rooms, function(name) {
+        if (!name)
+          return;
+
+        roomsToInform.push(name);
+      });
+
+      if (roomsToInform.length < 1)
+        return callback(null, user);
+
+      roomEmitter(io, roomsToInform, 'user:offline', userEvent, function (err) {
         if (err)
-          return callback('Unable to retrieve user\'s rooms: '+err);
+          return callback(err);
 
-        if (!user.rooms || user.rooms.length < 1)
-          return callback(null, event);
+        return callback(null, user);
+      });
+    },
 
-        var tasks = [];
-        helper._.each(user.rooms, function(name) {
-          tasks.push(function(callback) {
-            roomEmitter(io, name, 'user:offline', event, function(err) {
-              return callback(err);
-            });
-          });
+    function emitUserOnlineToOnes(user, callback) {
+      if (!lastSocket)
+        return callback(null, user);
+
+      User.find({onetoones: { $in: [socket.getUserId()] }}, 'username', function(err, ones) {
+        if (err)
+          return callback('Unable to find onetoones to inform on connection: '+err);
+
+        var onesToInform = [];
+        helper._.each(ones, function(one) {
+          if (!one || !one.username)
+            return;
+
+          onesToInform.push({from: socket.getUserId(), to: one._id.toString()});
         });
-        async.parallel(tasks, function(err, results) {
+
+        if (onesToInform.length < 1)
+          return callback(null, user);
+
+        oneEmitter(io, onesToInform, 'user:offline', userEvent, function (err) {
           if (err)
             return callback(err);
 
-          return callback(null, event);
+          return callback(null, user);
         });
       });
-
-    },
-
-    function informOnetoones(event, callback) {
-      if (!lastSocket)
-        return callback(null, event);
-
-      // @todo : same logic as for rooms but with persisted onetoones
-      return callback(null, event);
     }
 
   ], function(err, event) {
@@ -66,8 +89,6 @@ module.exports = function(io, socket) {
 
     // Activity
     helper.record('disconnect', socket);
-
-    // @todo : record 'event' in discussion log + receivers
   });
 
 };

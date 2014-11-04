@@ -8,45 +8,48 @@ var recorder = HistoryOne.record();
 /**
  * Store history in MongoDB, emit event in corresponding one to one and call callback
  *
- * @param from User
- * @param to User
+ * @param io
+ * @param onetoone {from: String, to: String}|[{from: String, to: String}]
  * @param eventName
  * @param eventData
  * @param callback
  */
-module.exports = function(io, from, to, eventName, eventData, callback) {
+module.exports = function(io, onetoone, eventName, eventData, callback) {
 
-  async.waterfall([
+  var onetoones = [];
+  if (Array.isArray(onetoone))
+    onetoones = onetoone;
+  else
+    onetoones.push(onetoone);
 
-    function persist(fn) {
-      eventData.from = eventData.from_user_id;
-      eventData.to = eventData.to_user_id;
+  var parallels = [];
+  _.each(onetoones, function(one) {
+    parallels.push(function(fn) {
+      eventData.from = one.from;
+      eventData.to = one.to;
       eventData.time = Date.now();
       recorder(eventName, eventData, function(err, history) {
         if (err)
-          return fn('Error while emitting one to one event '+eventName+' '+eventData.from+'=>'+eventData.to+': '+err);
+          return fn('Error while emitting user event '+eventName+' in '+room+': '+err);
 
         eventData.id = history._id.toString();
-        return fn(null, eventData);
+
+        // Broadcast message to all 'sender' devices (not needed for user status events
+        if (eventName != 'user:online' && eventName != 'user:offline')
+          io.to('user:'+one.from).emit(eventName, eventData);
+
+        // (if sender!=receiver) Broadcast message to all 'receiver' devices
+        if (one.from !==  one.to)
+          io.to('user:'+one.to).emit(eventName, eventData);
+
+        return fn(null);
       });
-    },
+    });
+  });
 
-    function send(event, fn) {
-      // Broadcast message to all 'sender' devices
-      io.to('user:'+event.from).emit('user:message', event);
-
-      // (if sender!=receiver) Broadcast message to all 'receiver' devices
-      if (event.from !==  event.to)
-        io.to('user:'+event.to).emit('user:message', event);
-
-      return fn(null);
-    }
-
-  ], function(err) {
-    if (err)
-      return callback(err);
-
-    return callback(null);
+  // run tasks
+  async.parallel(parallels, function(err, results) {
+    return callback(err);
   });
 
 };
