@@ -40,10 +40,6 @@ define([
         // window title indication
         this.trigger('newMessage');
       }
-    },
-
-    message: function(message) {
-      this.events.add(new EventModel(message));
     }
 
   });
