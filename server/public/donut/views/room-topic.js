@@ -37,14 +37,19 @@ define([
       var currentTopic = this.model.get('topic');
       if (currentTopic == undefined || currentTopic == '') {
         if (this.model.currentUserIsOp() || this.model.currentUserIsOwner()) {
-          this.$el.find('.txt').html(this.defaultText);
+          this.$el.find('.txt')
+            .html(this.defaultText)
+            .attr('title', this.defaultText);
           this.$el.find('.topic-current').css('display', 'inline-block');
         } else {
-          this.$el.find('.txt').html('');
+          this.$el.find('.txt')
+            .html('')
+            .attr('title', '');
         }
       } else {
         this.$el.find('.txt')
           .text(currentTopic)
+          .attr('title', currentTopic)
           .smilify()
           .linkify();
         this.$el.find('.topic-current').css('display', 'inline-block');

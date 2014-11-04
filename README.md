@@ -10,10 +10,7 @@ chat
   - [ ] File : https://irc.box.com/s/ma9tp483ojtbxnnsz20j
   - [ ] sanitize event on history recording (avatar, color) and re-add on hydration to avoid bad avatar in history
 
-- Refactoring one to one
-  - [ ] History
-
-- [ ] Room user list : add subtitle, increase opacity, change online circle everywhere: http://fontawesome.io/icon/circle/ or http://fontawesome.io/icon/dot-circle-o/
+- [x] Room user list : add subtitle, increase opacity, change online circle everywhere: http://fontawesome.io/icon/circle/ or http://fontawesome.io/icon/dot-circle-o/
 - [ ] Home : modify sort order to move down room without avatar
 
 - Welcome message (donut default)
@@ -77,6 +74,8 @@ chat
 
 **Hosting**
 - [ ] Add test instance on the same server (donut.me subdomain and new IP from OVH)
+- [ ] Add event to make IHM reload
+- [ ] Add "admin" tag on user that allow them to view all history and op all rooms
 
 **Other**
 - [ ] @todo review

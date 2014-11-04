@@ -25,7 +25,7 @@
       .name, .username {
         display: inline-block;
         margin-top: 2px;
-        margin-left: 105px;
+        margin-left: 110px;
         font-size: 2.2em;
       }
       .owner {
@@ -37,10 +37,10 @@
         display: inline-block;
         margin-left: 5px;
         font-size: 1.2em;
-        i { font-size: 0.8em; }
+        i { font-size: 0.9em; }
       }
       .location, .website {
-        margin-left: 105px;
+        margin-left: 110px;
         font-size: 1.2em;
       }
       .location {
@@ -51,17 +51,24 @@
         min-height: 32px;
         margin-top: 14px;
         margin-left: 100px;
-        font-size: 1.2em;
         padding: 5px 15px;
         .topic-current {
           .txt-bubble;
           padding: 0.6em 1.2em;
           display: inline-block;
+          white-space: nowrap;
           em {
             color: @cl-subtext2;
             &:hover {
               color: @cl-subtext5;
             }
+          }
+          label {
+            font-size: 13px;
+          }
+          .txt {
+            font-size: 13px;
+            white-space: nowrap;
           }
         }
         .topic-form {
@@ -107,6 +114,7 @@
         color: @cl-subtext3;
         margin-top: 4px;
         margin-left: 106px;
+        white-space: nowrap;
         i {
           color: @cl-subtext2;
           font-size: 0.9em;
@@ -150,12 +158,14 @@
         top: 30px;
         right: 25px;
         width: inherit;
-        height: 35px;
+        height: 33px;
         border-radius: 25px;
+        white-space: nowrap;
         label {
           color: inherit;
           background-color: transparent;
           padding: 5px 12px;
+          font-size: 14px;
           span {
             text-transform: none;
             .ft-opensans-bold;
@@ -429,10 +439,14 @@
           background-position: left top;
           position: relative;
           overflow: hidden;
+          .title {
+            margin-top: 15px;
+          }
           .item {
             position: relative;
             margin-top: 10px;
             font-size: 0.9em;
+            font-weight: bold;
             .username {
               position: relative;
               margin-left: 9px;
@@ -441,21 +455,19 @@
               display: inline-block;
               vertical-align: middle;
               &::after {
-                content: "\f10c";
+                content: "\f192";
                 font-family: FontAwesome;
                 font-style: normal;
                 font-weight: normal;
                 text-decoration: none;
-                position: absolute;
-                top: 2px; right: 0;
-                font-size: 10px;
+                margin-left: 5px;
+                font-size: 13px;
               }
             }
             .avatar {
               position: relative;
               img { width: 34px; height: 34px; }
             }
-            font-weight: bold;
             .actions {
               position: absolute;
               right: 0;
@@ -476,13 +488,19 @@
                 height: 17px;
               }
             }
-          }
-          .item.online {
-            .username::after { color: @cl-success; }
-          }
-          .item.offline {
-            opacity: 0.7;
-            .username::after { color: @cl-error; }
+            &.online {
+              .username::after { color: @cl-success; }
+            }
+            &.offline {
+              opacity: 0.4;
+              .username::after { color: @cl-error; }
+              .avatar { width: 30px; height: 30px; }
+            }
+            &:hover {
+              .actions {
+                background-color: rgba(67, 67, 67, 0.5);
+              }
+            }
           }
           .item.op, .item.owner {
             .avatar {
@@ -522,12 +540,6 @@
               top: -20px !important; left: 9px !important;
             }
           }
-          .item:hover {
-            .actions {
-//              display: inline-block;
-              background-color: rgba(67, 67, 67, 0.5);
-            }
-          }
         }
         .list.scroller {
           .scroller-bar { background: none; border: 0; top: 10px; width: 13px; padding-right: 3px; }
@@ -541,6 +553,31 @@
           }
         }
       }
+    }
+  }
+}
+
+/** for <=1400 screens resolutions **/
+@media screen and (max-width: 1400px) {
+  .discussion {
+    .content {
+      width: -webkit-calc(~'100%' - (@size-right/2));
+      width: -o-calc(~'100%' - (@size-right/2));
+      width: calc(~'100%' - (@size-right/2));
+    }
+    .side {
+      width: -webkit-calc(@size-right/2);
+      width: -o-calc(@size-right/2);
+      width: calc(@size-right/2);
+      background: none !important;
+    }
+    .content .header {
+      .share-button { max-width: 136px; }
+//      .topic-current {
+//        .txt {
+//          font-size: 13px;
+//        }
+//      }
     }
   }
 }
