@@ -55,7 +55,7 @@ define([
       this.set({status: expect});
 
       this.events.addEvent({
-        type: expect,
+        type: 'user:'+expect,
         data: data
       });
     },
