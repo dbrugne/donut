@@ -141,6 +141,14 @@ define([
       // USER EVENTS
       // ======================================================
 
+      this.socket.on('user:leave', function(data) {
+        that.debug(['io:in:user:leave', data]);
+        that.trigger('user:leave', data);
+      });
+      this.socket.on('user:welcome', function(data) {
+        that.debug(['io:in:user:welcome', data]);
+        that.trigger('user:welcome', data);
+      });
       this.socket.on('user:online', function(data) {
         that.debug(['io:in:user:online', data]);
         that.trigger('user:online', data);
@@ -261,6 +269,16 @@ define([
     // USER METHODS
     // ======================================================
 
+    userJoin: function(username) {
+      var data = {username: username};
+      this.socket.emit('user:join', data);
+      this.debug(['io:out:user:join', data]);
+    },
+    userLeave: function(username) {
+      var data = {username: username};
+      this.socket.emit('user:leave', data);
+      this.debug(['io:out:user:leave', data]);
+    },
     userMessage: function(username, message) {
       var data = {username: username, message: message};
       this.socket.emit('user:message', data);

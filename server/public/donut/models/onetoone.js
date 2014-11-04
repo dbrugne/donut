@@ -25,6 +25,12 @@ define([
       this.listenTo(client, 'user:status', this.onStatus);
       this.listenTo(client, 'user:profile', this.onProfile);
     },
+    leave: function() {
+      client.userLeave(this.get('username'));
+    },
+    onMessage: function(data) {
+      this.onEvent('user:message', data);
+    },
     onStatus: function(data) {
       if (data.username != this.get('username')) return;
       this.set({status: data.status});

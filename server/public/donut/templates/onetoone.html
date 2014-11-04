@@ -3,10 +3,25 @@
         <img class="avatar open-user-profile" data-username="<%= username %>" src="<%= avatar %>" alt="<%= username %> avatar">
         <div class="username open-user-profile" data-username="<%= username %>"><%= username %></div>
         <span class="status-block"><em></em> <i class="fa fa-circle-o status"></i></span>
-        <div class="location"></div>
-        <div class="website"></div>
+        <div class="location"><%= location %></div>
+        <div class="website"><%= website %></div>
     </div>
-    <div class="events"><!-- messages view --></div>
+    <div class="events">
+        <!-- messages view -->
+        <div class="history">
+            <i class="fa fa-clock-o"></i>
+            <%= t('chat.history.displayhistory') %>:
+            <a class="load" data-colorify-text="color" data-days="1"><%= t('chat.history.1day') %></a> &bull;
+            <a class="load" data-colorify-text="color" data-days="7"><%= t('chat.history.7days') %></a> &bull;
+            <a class="load" data-colorify-text="color" data-days="30"><%= t('chat.history.30days') %></a> &bull;
+            <a class="load" data-colorify-text="color" data-days="90"><%= t('chat.history.90days') %></a> &bull;
+            <a class="load" data-colorify-text="color" data-days="180"><%= t('chat.history.180days') %></a> &bull;
+            <a class="load" data-colorify-text="color" data-days="365"><%= t('chat.history.365days') %></a>
+            <div class="spinner">
+                <i class="fa fa-spinner fa-spin fa-2x"></i>
+            </div>
+        </div>
+    </div>
     <div class="input"><!-- input view --></div>
 </div><!-- /.content -->
 <div class="side" <% if (poster) { %>style="background-image: url(<%= poster %>);"<% }; %> data-colorify-background="color"></div>

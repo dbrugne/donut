@@ -12,87 +12,132 @@ define([
       return model1.get('username').toLowerCase()
         .localeCompare(model2.get('username').toLowerCase());
     },
+    iwhere : function(key, val){ // insencitive case search
+      var matches = this.filter(function(item){
+        return item.get(key).toLocaleLowerCase() === val.toLocaleLowerCase();
+      });
+
+      if (matches.length < 1)
+        return undefined;
+
+      return matches[0];
+    },
 
     initialize: function() {
-      this.listenTo(client, 'user:close', this.onClose);
       this.listenTo(client, 'user:message', this.onMessage);
+      this.listenTo(client, 'user:close', this.onClose);
+      this.listenTo(client, 'user:welcome', this.addModel);
+    },
+    // We ask to server to open this one to one
+    openPing: function(username) {
+      client.userJoin(username);
+    },
+    // Server confirm that we was joined to the one to one and give us some data on user
+    addModel: function(user) {
+      // prepare model data
+      var oneData = {
+        user_id: user.user_id,
+        username: user.username,
+        avatar: user.avatar,
+        poster: user.poster,
+        color: user.color,
+        location: user.location,
+        website: user.website
+      };
+
+      // update model
+      var isNew = (this.get(user.username) == undefined)
+        ? true
+        : false;
+      if (!isNew) {
+        // already exist in IHM (maybe reconnecting)
+        var model = this.get(user.username);
+        model.set(oneData);
+      } else {
+        // add in IHM
+        oneData.id = user.username;
+        oneData.key = this._key(oneData.user_id, currentUser.get('user_id'));
+        var model = new OneToOneModel(oneData);
+      }
+
+      if (isNew) {
+        // now the view exists (created by mainView)
+        this.add(model);
+
+        // Add history
+        if (user.history && user.history.length > 0) {
+          _.each(user.history, function(event) {
+            model.events.addEvent(event);
+          });
+        }
+      }
+
+      return model;
     },
     /**
      * Retrieve the current onetoone model OR create a new one
      * @param user
      * @return OnetooneModel
      */
-    getModel: function(user) {
-      if (!user.username)
-        return;
-
-      var model = this.get(user.username);
+    getModel: function(data) {
+      var model = this.findWhere({'key': data.key});
       if (model == undefined) {
-        // a new one
-        user.id = user.username;
-        model = new OneToOneModel(user);
-        this.add(model);
-
+        model = this.addModel(data);
         // async !!
-        client.userProfile(user.username);
-      } else {
-        // an existing one, update field if needed
-        _.each(['avatar', 'color'], function(key) {
-          if (!_.has(user, key))
-            return;
-
-          var current = model.get(key);
-          var fresh = user[key];
-
-          if (current != fresh)
-            model.set(key, fresh);
-        });
+        client.userProfile(data.username);
       }
 
       return model;
     },
-    onMessage: function(message) {
+    _key: function(c1, c2) {
+      return (c1 < c2)
+        ? c1+'-'+c2
+        : c2+'-'+c1;
+    },
+    onMessage: function(data) {
       var withUser;
-      if (currentUser.get('user_id') == message.from_user_id) {
+      if (currentUser.get('user_id') == data.from_user_id) {
         // i'm emitter
         withUser = {
-          username  : message.to_username,
-          user_id   : message.to_user_id,
-          avatar    : message.to_avatar,
-          color     : message.to_color
+          username  : data.to_username,
+          user_id   : data.to_user_id,
+          avatar    : data.to_avatar,
+          color     : data.to_color
         };
-      } else if (currentUser.get('user_id') == message.to_user_id) {
+      } else if (currentUser.get('user_id') == data.to_user_id) {
         // i'm recipient
         withUser = {
-          username  : message.from_username,
-          user_id   : message.from_user_id,
-          avatar    : message.from_avatar,
-          color     : message.from_color
+          username  : data.from_username,
+          user_id   : data.from_user_id,
+          avatar    : data.from_avatar,
+          color     : data.from_color
         };
       } else {
         return; // visibly something goes wrong
       }
 
       // Find or create the model
+      withUser.key = this._key(data.from_user_id, data.to_user_id);
       var model = this.getModel(withUser);
 
-      // Offline user error
-      if (message.error) {
-        model.events.addEvent({
-          type: 'oneOffline'
-        })
-        return;
-      }
+//      // Offline user error
+//      if (message.error) {
+//        model.events.addEvent({
+//          type: 'oneOffline'
+//        })
+//        return;
+//      }
 
       // Rework message object
-      model.message({
-        user_id: message.from_user_id,
-        username: message.from_username,
-        avatar: message.from_avatar,
-        time: message.time,
-        message: message.message
+      return model.onMessage({
+        id: data.id,
+        user_id: data.from_user_id,
+        username: data.from_username,
+        avatar: data.from_avatar,
+        color: data.from_color,
+        time: data.time,
+        message: data.message
       });
-      this.trigger('newMessage');
     },
     onClose: function(data) {
       var model = this.get(data.user_id);

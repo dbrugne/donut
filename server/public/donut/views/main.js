@@ -237,6 +237,7 @@ define([
 
       if (this.thisDiscussionShouldBeFocusedOnSuccess == model.get('name')) {
         this.focus(model);
+        this.thisDiscussionShouldBeFocusedOnSuccess = null;
       }
     },
 
@@ -247,6 +248,11 @@ define([
         mainView:   this
       });
       this.$discussionsPanelsContainer.append(view.$el);
+
+      if (this.thisDiscussionShouldBeFocusedOnSuccess == model.get('username')) {
+        this.focus(model);
+        this.thisDiscussionShouldBeFocusedOnSuccess = null;
+      }
     },
 
     onCloseDiscussion: function(event) {
@@ -273,7 +279,7 @@ define([
 
       var focused = model.get('focused');
 
-      // Remove entity (on remove: panel will autodestroy and model will client.leave)
+      // Remove entity (on remove window will autodestroy)
       model.leave();
       rooms.remove(model);
 
@@ -288,7 +294,8 @@ define([
 
       var focused = model.get('focused');
 
-      // Remove entity (on remove: panel will autodestroy and model will client.close)
+      // Remove entity (on remove: window will autodestroy)
+      model.leave();
       onetoones.remove(model);
 
       // Focus default
@@ -337,9 +344,15 @@ define([
 
     // called by router only
     focusOneToOneByUsername: function(username) {
-      // @todo : we can have additionnal data (avatar, user_id ...) depending of call context (user profile)
-      var model = onetoones.getModel({ username: username });
-      return this.focus(model);
+      var model = onetoones.iwhere('username', username);
+      if (model == undefined) {
+        // Not already open
+        this.thisDiscussionShouldBeFocusedOnSuccess = username;
+        onetoones.openPing(username);
+        return;
+      } else {
+        this.focus(model);
+      }
     },
 
     focus: function(model) {

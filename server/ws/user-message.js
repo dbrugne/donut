@@ -1,51 +1,84 @@
 var async = require('async');
 var helper = require('./helper');
 var User = require('../app/models/user');
+var oneEmitter = require('./_one-emitter');
 
 module.exports = function(io, socket, data) {
 
-  if (!data.username)
-    return helper.handleError('user:message require username param');
-
   async.waterfall([
 
-    function retrieve(callback) {
+    function check(callback) {
+      if (!data.username)
+        return callback('username is mandatory for user:message');
 
-      helper.retrieveUser(data.username, function (err, user) {
+      if (!User.validateUsername(data.username))
+        return callback('Invalid user username on user:message: '+data.username);
+
+      return callback(null);
+    },
+
+    function findFromUser(callback) {
+      var q = User.findByUsername(socket.getUsername());
+      q.exec(function(err, user) {
         if (err)
-          return callback('Error while retrieving user in user:message: '+err);
+          return callback('Error while retrieving "from" user in user:join: '+err);
 
         if (!user)
-          return callback('Unable to retrieve user in user:message: '+data.username);
+          return callback('Unable to find "from" user "'+socket.getUsername()+'" in user:join');
 
         return callback(null, user);
       });
-
     },
 
-    function checkStatus(user, callback) {
-      // check if user is online
-      if (!helper.isUserOnline(io, user._id.toString())) {
-        // if not respond a message to sender (user:status + unable to transmit message)
-        socket.emit('user:message', {
-          error: 'Recipient is offline',
-          from_user_id  : socket.getUserId(),
-          from_username : socket.getUsername(),
-          from_avatar   : socket.getAvatar(),
-          from_color    : socket.getColor(),
-          to_user_id    : user._id.toString(),
-          to_username   : user.username,
-          to_avatar     : user._avatar(),
-          to_color      : user.color
+    function findToUser(from, callback) {
+      var q = User.findByUsername(data.username);
+      q.exec(function(err, user) {
+        if (err)
+          return callback('Error while retrieving "to" user in user:join: '+err);
+
+        if (!user)
+          return callback('Unable to find "to" user "'+data.username+'" in user:join');
+
+        return callback(null, from, user);
+      });
+    },
+
+    function persist(from, to, callback) {
+      User.findOneAndUpdate({_id: from._id}, {$addToSet: { onetoones: to._id }}, function(err, userFrom) {
+        if (err)
+          return callback('Unable to persist ($addToSet) onetoones on "from" user: '+err);
+
+        User.findOneAndUpdate({_id: to._id}, {$addToSet: { onetoones: from._id }}, function(err, userTo) {
+          if (err)
+            return callback('Unable to persist ($addToSet) onetoones on "to" user: '+err);
+
+          return callback(null, from, to);
         });
-        return callback('user:message recepient is offline');
-      }
-
-      return callback(null, user);
+      });
     },
 
-    function prepare(user, callback) {
+//    function checkStatus(user, callback) {
+//      // check if user is online
+//      if (!helper.isUserOnline(io, user._id.toString())) {
+//        // if not respond a message to sender (user:status + unable to transmit message)
+//        socket.emit('user:message', {
+//          error: 'Recipient is offline',
+//          from_user_id  : socket.getUserId(),
+//          from_username : socket.getUsername(),
+//          from_avatar   : socket.getAvatar(),
+//          from_color    : socket.getColor(),
+//          to_user_id    : user._id.toString(),
+//          to_username   : user.username,
+//          to_avatar     : user._avatar(),
+//          to_color      : user.color
+//        });
+//        return callback('user:message recepient is offline');
+//      }
+//
+//      return callback(null, user);
+//    },
 
+    function prepare(from, to, callback) {
       // Input filtering
       var message = helper.inputFilter(data.message, 512);
       if (!message)
@@ -56,38 +89,27 @@ module.exports = function(io, socket, data) {
         from_username : socket.getUsername(),
         from_avatar   : socket.getAvatar(),
         from_color    : socket.getColor(),
-        to_user_id    : user._id.toString(),
-        to_username   : user.username,
-        to_avatar     : user._avatar(),
-        to_color      : user.color,
+        to_user_id    : to._id.toString(),
+        to_username   : to.username,
         time          : Date.now(),
         message       : message
       };
 
-      return callback(null, user, event);
-
+      return callback(null, from, to, event);
     },
 
-    function send(user, event, callback) {
+    function send(from, to, event, callback) {
+      oneEmitter(io, from, to, 'user:message', event, function(err) {
+        if (err)
+          return callback('Error while emitting user:message: '+err);
 
-      var from = socket.getUserId();
-      var to = user._id.toString();
-
-      // Broadcast message to all 'sender' devices
-      io.to('user:'+from).emit('user:message', event);
-
-      // (if sender!=receiver) Broadcast message to all 'receiver' devices
-      if (from !==  to)
-        io.to('user:'+to).emit('user:message', event);
-
+        return callback(null);
+      });
     }
 
-  ], function(err, user, event) {
+  ], function(err) {
     if (err)
       return helper.handleError(err);
-
-    // Activity
-    helper.record('user:message', socket, event);
   });
 
 };

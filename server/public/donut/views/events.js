@@ -220,6 +220,7 @@ define([
         since = Date.now();
 
       client.roomHistory(this.model.get('name'), since, until);
+      // @todo : one to one
 
     },
 

@@ -29,7 +29,7 @@ var userSchema = mongoose.Schema({
         name       : String
     },
     rooms         : [{ type: String, ref: 'Room' }],
-    onetoones     : [{ type: String, ref: 'User' }],
+    onetoones     : [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
     created_at    : { type: Date, default: Date.now },
     lastlogin_at  : { type: Date }
 
