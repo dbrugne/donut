@@ -23,13 +23,6 @@
         <div class="date"><span class="moment" data-time="<%= data.time %>"></span></div>
     </div>
 </div>
-<% } else if (type =='oneOffline') { %>
-<div class="block offline">
-    <div class="event" data-event-id="<%= data.id %>" data-time="<%= data.time %>">
-        <div class="text"><img src="/images/disconnect.svg"> <%= t('chat.notifications.offline') %></div>
-        <div class="date"><span class="moment" data-time="<%= data.time %>"></span></div>
-    </div>
-</div>
 <% } else if (type =='room:topic') { %>
 <div class="block topic">
     <div class="event" data-event-id="<%= data.id %>" data-time="<%= data.time %>">
