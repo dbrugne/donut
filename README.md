@@ -6,40 +6,45 @@ chat
 **Tasks**
 
 - History
-- Aggregate by day (!!!)
-- Bug: on ne peut plus être connecté simultanément avec le même compte sur deux machines
-- Ergo: La différence entre un user online/offline n'est pas suffisamment observable (la transparence marche pas bien sur un fond clair). Le petit rond ne suffit pas. J'ai deux propositions: Soit on met 2 sous-titres discrets (En ligne (X), Hors ligne (Y)), soit on augmente la transparence, on augmente l'interlignage entre le dernier en ligne et le premier hors ligne, et on épaissit le trait du petit rond pour qu'il ressemble à un vrai donut et qu'il soit plus visible. (Ma préférence, option 2) Dans quelques temps on y retravaillera.
-- Ergo: On affiche les entrées/sorties dans le fil. Mais vu qu'on ne quitte plus le donut, il y en aura moins. Tant mieux. Cependant on n'affiche pas les connexion/déconnexion donc on perd de l'info. Si le mec ne poste pas, on ne voit pas qu'il a rejoint. Un bon modérateur l'accueillerait, là il ne peut pas.
-- Ajouter la puce rose de messages non-lus à la reconnexion pour les messages qu'on n'a pas vus quand on était hors connexion.
-- Ergo: je suis dérangé de voir affiché le nombre de users du donuts (sur le bouton rejoindre, onglet du donut, liste des users) et non pas le nombre de users en ligne. Je trouve ça décevant d'aller dans un donut où je crois trouver 10 utilisateurs en ligne et en fait je suis tout seul. Serait-ce plus décevant de voir que je suis seul? Ca fait plateforme morte... Je propose de laisser comme c'est et d'attendre les réactions.
-- Ergo: au survol de chaque post il est mis en surbrillance. Etant donné qu'il n'y a aucune action possible, c'est dérangeant on dirait que c'est un bug. Est-ce un préparatif pour quand on pourra partager sur FB?
-- Ergo: Les options d'historique prennent trop de place. Je propose de retirer le fond gris et de remonter la ligne (et du coup le fil de conversation).
-- bugs https://irc.box.com/s/ma9tp483ojtbxnnsz20j
-- sanitize event on history recording (avatar, color) and re-add on hydration to avoid bad avatar in history
+  - [ ] Aggregate by day (!!!)
+  - [ ] File : https://irc.box.com/s/ma9tp483ojtbxnnsz20j
+  - [ ] sanitize event on history recording (avatar, color) and re-add on hydration to avoid bad avatar in history
+
+- Refactoring one to one
+  - [ ] History
+
+- [ ] Room user list : add subtitle, increase opacity, change online circle everywhere: http://fontawesome.io/icon/circle/ or http://fontawesome.io/icon/dot-circle-o/
+- [ ] Home : modify sort order to move down room without avatar
 
 - Welcome message (donut default)
-
-- [ ] Refactoring one to one
+  - Welcome massage en anglais: DONE https://irc.box.com/s/c6uqsvd2tbn1fanwu6fc
 
 - Welcome message (custom by owner)
-  - Welcome massage en anglais: DONE https://irc.box.com/s/c6uqsvd2tbn1fanwu6fc
   - Wording à l'entrée d'un donut: DONE https://irc.box.com/s/v8ote63x8z8ktc0qz66n
 
-- [x] Put David as owner of #donut and #support
+- [ ] Image in discussion
 
+- User mentions
 - [ ] user highlight in .messages with @
 - [ ] add @ before every username
 - [ ] Add mentions in room (highlight room user in messages)
-
-- [ ] Image in discussion
 
 - [ ] Add notification to owner/op when a user enter in room
 - [ ] Add email to notify us of user connection
   -> Draft notifications: DONE https://irc.box.com/s/wk9iq6wihj8vsnqc7tpj
 
+=> prod
+
+- User mentions
+- [ ] user highlight in .messages with @
+- [ ] add @ before every username
+- [ ] Add mentions in room (highlight room user in messages)
+
 - [ ] Badge for websites
 
 [- [ ] Private room](??)
+
+- Try to store instant status on user by connection/deconnection/restart persistence
 
 ## Big Ideas
 
