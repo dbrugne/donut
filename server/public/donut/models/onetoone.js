@@ -22,8 +22,9 @@ define([
       };
     },
     _initialize: function() {
-      this.listenTo(client, 'user:status', this.onStatus);
       this.listenTo(client, 'user:profile', this.onProfile);
+      this.listenTo(client, 'user:status', this.onStatus);
+      this.listenTo(client, 'user:history', this.onHistory);
     },
     leave: function() {
       client.userLeave(this.get('username'));
@@ -40,6 +41,23 @@ define([
         return;
 
       this.set(data.user);
+    },
+    onHistory: function(data) {
+      if (data.name != this.get('name'))
+        return;
+
+      if (data.history && data.history.length > 0) {
+        var that = this;
+        _.each(data.history, function(event) {
+          event.data.user_id = event.data.from_user_id;
+          event.data.username = event.data.from_username;
+          event.data.avatar = event.data.from_avatar;
+          event.data.color = event.data.from_color;
+          that.events.addEvent(event);
+        });
+      }
+
+      this.trigger('history:loaded');
     }
 
   });

@@ -219,9 +219,10 @@ define([
       else
         since = Date.now();
 
-      client.roomHistory(this.model.get('name'), since, until);
-      // @todo : one to one
-
+      if (this.model.get('type') == 'room')
+        client.roomHistory(this.model.get('name'), since, until);
+      else if (this.model.get('type') == 'onetoone')
+        client.userHistory(this.model.get('username'), since, until);
     },
 
     onHistoryLoaded: function() {

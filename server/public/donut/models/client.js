@@ -181,6 +181,10 @@ define([
         that.debug(['io:in:user:status', data]);
         that.trigger('user:status', data);
       });
+      this.socket.on('user:history', function(data) {
+        that.debug(['io:in:user:history', data]);
+        that.trigger('user:history', data);
+      });
     },
 
     disconnect: function() {
@@ -302,6 +306,11 @@ define([
       var data = {username: username};
       this.socket.emit('user:status', data);
       this.debug(['io:out:user:status', data]);
+    },
+    userHistory: function(username, since, until) {
+      var data = {username: username, since: since, until: until};
+      this.socket.emit('user:history', data);
+      this.debug(['io:out:user:history', data]);
     }
 
   });

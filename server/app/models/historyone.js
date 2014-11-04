@@ -51,8 +51,8 @@ historySchema.statics.record = function() {
 historySchema.statics.retrieve = function() {
   var that = this;
   /**
-   * @param user1
-   * @param user2
+   * @param user1 String
+   * @param user2 String
    * @param since: the timestamp from when the retrieving will begin (= all events before 'since')
    * @param until: the number of days to go back in past
    * @param fn

@@ -72,6 +72,7 @@ module.exports = function(server) {
     socket.on('user:read', function (data) { require('./ws/user-read')(io, socket, data); });
     socket.on('user:update', function (data) { require('./ws/user-update')(io, socket, data); });
     socket.on('user:status', function (data) { require('./ws/user-status')(io, socket, data); });
+    socket.on('user:history', function (data) { require('./ws/user-history')(io, socket, data); });
 
   });
 
