@@ -10,8 +10,7 @@ chat
   - [ ] File : https://irc.box.com/s/ma9tp483ojtbxnnsz20j
   - [ ] sanitize event on history recording (avatar, color) and re-add on hydration to avoid bad avatar in history
 
-- [x] Room user list : add subtitle, increase opacity, change online circle everywhere: http://fontawesome.io/icon/circle/ or http://fontawesome.io/icon/dot-circle-o/
-- [ ] Home : modify sort order to move down room without avatar
+- [x] Home : modify sort order to move down room without avatar
 
 - Welcome message (donut default)
   - Welcome massage en anglais: DONE https://irc.box.com/s/c6uqsvd2tbn1fanwu6fc

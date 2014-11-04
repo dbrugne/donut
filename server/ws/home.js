@@ -50,6 +50,13 @@ module.exports = function (io, socket) {
             if (a.users != b.users)
               return (b.users - a.users); // b - a == descending
 
+            if (a.avatar && !b.avatar)
+              return -1;
+            else if (!a.avatar && b.avatar)
+              return 1;
+            else
+              return 0;
+
             if (a.lastjoin_at != b.lastjoin_at)
               return (b.lastjoin_at - a.lastjoin_at); // b - a == descending
 
