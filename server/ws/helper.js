@@ -252,7 +252,7 @@ module.exports = {
    */
   users: function(io, limit, fn) {
     limit = limit ? limit : 10;
-    var q = User.find({ username: {$ne:null} }, 'username avatar color')
+    var q = User.find({ username: {$ne:null} }, 'username avatar color facebook')
       .limit(limit);
 
     q.exec(function(err, users) {
@@ -270,7 +270,7 @@ module.exports = {
         list.push({
           user_id: u._id.toString(),
           username: u.username,
-          avatar: u.avatar,
+          avatar: u._avatar(),
           color: u.color,
           status: status
         });
