@@ -26,7 +26,7 @@ define([
     initialize: function() {
       this.listenTo(client, 'welcome', this.onWelcome);
       this.listenTo(client, 'user:message', this.onMessage);
-      this.listenTo(client, 'user:close', this.onClose);
+      this.listenTo(client, 'user:leave', this.onLeave);
       this.listenTo(client, 'user:welcome', this.addModel);
     },
     // We ask to server to open this one to one
@@ -126,14 +126,6 @@ define([
       withUser.key = this._key(data.from_user_id, data.to_user_id);
       var model = this.getModel(withUser);
 
-//      // Offline user error
-//      if (message.error) {
-//        model.events.addEvent({
-//          type: 'oneOffline'
-//        })
-//        return;
-//      }
-
       // Rework message object
       return model.onMessage({
         id: data.id,
@@ -157,8 +149,8 @@ define([
       });
       this.trigger('redraw');
     },
-    onClose: function(data) {
-      var model = this.get(data.user_id);
+    onLeave: function(data) {
+      var model = this.get(data.username);
       if (model) {
         this.remove(model);
       }
