@@ -7,9 +7,9 @@ var oneEmitter = require('./_one-emitter');
 module.exports = function(io, socket) {
 
   // At least an other socket is live for this user or not
-  var lastSocket = (helper.userSockets(io, socket.getUserId()).length >= 2)
-    ? false
-    : true;
+  var lastSocket = (helper.userSockets(io, socket.getUserId()).length < 1)
+    ? true
+    : false;
 
   // :out / :offline
   var userEvent = {
