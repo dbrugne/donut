@@ -132,7 +132,8 @@ define([
       } else {
         // just append to scroller, with block
         var html = this._renderEvent(model, true);
-        element = $(html).appendTo(this.$scroller);
+        var block = $(html).appendTo(this.$scroller);
+        element = block.find('.event').first();
       }
 
 //      // day separator
@@ -148,15 +149,20 @@ define([
 
       // decorate
       element.find('.moment').momentify(); // time
-      element.find('.text')
-        .smilify()
-        .linkify({
-          linkAttributes: {
-            'data-colorify': this.model.get('color'),
-            'data-colorify-text': 'color'
-          }
+
+      var linkifyOptions = {
+        linkAttributes: {
+          'data-colorify-text': 'color'
         }
-      ); // links
+      };
+      if (this.model.get('color'))
+        linkifyOptions.linkAttributes['data-colorify'] = this.model.get('color');
+      else if (this.model.get('data') && this.model.get('data').color)
+        linkifyOptions.linkAttributes['data-colorify'] = this.model.get('data').color;
+
+      element.find('.text')
+        .smilify() // smileys
+        .linkify(linkifyOptions); // links
       element.colorify(); // color (after linkify)
 
       // display
