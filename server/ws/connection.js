@@ -6,6 +6,7 @@ var Room = require('../app/models/room');
 var hello = require('../app/hello-dolly');
 var conf = require('../config/index');
 var roomDataHelper = require('./_room-data.js');
+var oneDataHelper = require('./_one-data.js');
 var roomEmitter = require('./_room-emitter');
 
 module.exports = function(io, socket) {
@@ -48,7 +49,9 @@ module.exports = function(io, socket) {
   async.waterfall([
 
     function retrieveUser(callback){
-      User.findById(socket.getUserId(), function(err, user) {
+      var q = User.findById(socket.getUserId());
+      q.populate('onetoones', 'username');
+      q.exec(function(err, user) {
         if (err)
           return callback('Unable to find user: '+err, null);
 
@@ -63,7 +66,7 @@ module.exports = function(io, socket) {
       });
     },
 
-    function generalRoom(user, callback) {
+    function donutRoom(user, callback) {
       // special case of #donut room autojoin
       if (user.general == true && user.rooms.indexOf(conf.room.general) == -1) {
         User.findOneAndUpdate({_id: user._id}, {$addToSet: { rooms: conf.room.general }}, function(err, user) {
@@ -73,8 +76,6 @@ module.exports = function(io, socket) {
           Room.findOneAndUpdate({name: conf.room.general}, {$addToSet: {users: user._id}}, function(err) {
             if (err)
               return callback('Unable to persist user on #donut: '+err);
-
-//            user.newToGeneral = true;
 
             // Inform other room users (user:online)
             roomEmitter(io, conf.room.general, 'room:in', inEvent, function(err) {
@@ -88,8 +89,29 @@ module.exports = function(io, socket) {
     },
 
     function populateOnes(user, callback){
-      // @todo:  pass non received user:message for this user (messages send when user was offline)
-      return callback(null, user);
+      if (user.onetoones.length < 1)
+        return callback(null, user);
+
+      var parallels = [];
+      helper._.each(user.onetoones, function(one) {
+        parallels.push(function(fn) {
+          oneDataHelper(io, socket, one.username, function(err, one) {
+            if (err)
+              return fn(err);
+            else
+              return fn(null, one);
+          });
+        });
+      });
+      async.parallel(parallels, function(err, results) {
+        if (err)
+          return callback('Error while populating onetoones: '+err);
+
+        welcome.onetoones = helper._.filter(results, function(o) {
+          return o !== null;
+        });
+        return callback(null, user);
+      });
     },
 
     function populateRooms(user, callback) {
@@ -99,7 +121,7 @@ module.exports = function(io, socket) {
       var parallels = [];
       helper._.each(user.rooms, function(name) {
         parallels.push(function(fn) {
-          var roomData = roomDataHelper(io, socket, name, function(err, room) {
+          roomDataHelper(io, socket, name, function(err, room) {
             if (err)
               return fn(err);
             else
