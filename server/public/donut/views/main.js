@@ -375,9 +375,9 @@ define([
       // Unfocus every model
       this.unfocusAll();
 
-      // Onetoone particular case, we check for user status
-      if (model.get('type') == 'onetoone' && model.get('username') != undefined)
-        client.userStatus(model.get('username'));
+//      // Onetoone particular case, we check for user status
+//      if (model.get('type') == 'onetoone' && model.get('username') != undefined)
+//        client.userStatus(model.get('username'));
 
       // Focus the one we want
       model.set('focused', true);

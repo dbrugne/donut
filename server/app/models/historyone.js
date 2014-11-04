@@ -51,51 +51,53 @@ historySchema.statics.record = function() {
 historySchema.statics.retrieve = function() {
   var that = this;
   /**
-   * @param name
-   * @param userId
+   * @param user1
+   * @param user2
    * @param since: the timestamp from when the retrieving will begin (= all events before 'since')
    * @param until: the number of days to go back in past
    * @param fn
    */
-  return function(name, userId, since, until, fn) {
-//    // Since
-//    since = since || Date.now(); // from now
-//    since = new Date(since);
-//
-//    // Until, floor to  day at 00:00
-//    until = Date.now() - (1000*3600*24*until);
-//    var u = new Date(until);
-//    var until = new Date(u.getFullYear(), u.getMonth(), u.getDate());
-//
-//    var criteria = {
-//      name: name,
-//      time: { $lte: since, $gte: until },
-//      users: { $in: [userId] },
-//      event: { $nin: ['user:online', 'user:offline'] }
-//    };
-//
-//    var q = that.find(criteria)
-//      .sort({time: 'desc'})
-//      .limit(10000); // arbitrary protection, maybe noy helpful
-//
-//    q.exec(function(err, entries) {
-//      if (err)
-//        return fn('Error while retrieving room history: '+err);
-//
-//      var history = [];
-//      _.each(entries, function(entry) {
-//        entry.data.id = entry._id.toString();
-//        history.push({
-//          type: entry.event,
-//          data: entry.data
-//        });
-//      });
-//
-//      // return chronologic list
-//      history.reverse();
-//
-//      return fn(null, history);
-//    });
+  return function(user1, user2, since, until, fn) {
+    // Since
+    since = since || Date.now(); // from now
+    since = new Date(since);
+
+    // Until, floor to  day at 00:00
+    until = Date.now() - (1000*3600*24*until);
+    var u = new Date(until);
+    var until = new Date(u.getFullYear(), u.getMonth(), u.getDate());
+
+    var criteria = {
+      time: { $lte: since, $gte: until },
+      $or: [
+        {from: user1, to: user2},
+        {from: user2, to: user1}
+      ],
+      event: { $nin: ['user:online', 'user:offline'] }
+    };
+
+    var q = that.find(criteria)
+      .sort({time: 'desc'})
+      .limit(10000); // arbitrary protection, maybe noy helpful
+
+    q.exec(function(err, entries) {
+      if (err)
+        return fn('Error while retrieving room history: '+err);
+
+      var history = [];
+      _.each(entries, function(entry) {
+        entry.data.id = entry._id.toString();
+        history.push({
+          type: entry.event,
+          data: entry.data
+        });
+      });
+
+      // return chronologic list
+      history.reverse();
+
+      return fn(null, history);
+    });
   }
 }
 

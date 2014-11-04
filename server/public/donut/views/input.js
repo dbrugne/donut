@@ -18,11 +18,11 @@ define([
     },
 
     initialize: function(options) {
-      this.listenTo(this.model, 'change:status', this.onStatus);
+//      this.listenTo(this.model, 'change:status', this.onStatus);
       this.listenTo(currentUser, 'change:avatar', this.onAvatar);
 
       this.render();
-      this.onStatus();
+//      this.onStatus();
 
       // Smileys view
       this.smileysView = new SmileysView({onPick: this.pickSmiley});
@@ -40,15 +40,15 @@ define([
       this.$el.find('.avatar').prop('src', $.cd.userAvatar(value, 80, model.get('color')));
     },
 
-    onStatus: function() {
-      if (this.model.get('type') != 'onetoone') return;
-
-      if (this.model.get('status')) {
-        this.$el.find('textarea').attr('disabled', false);
-      } else {
-        this.$el.find('textarea').attr('disabled', true);
-      }
-    },
+//    onStatus: function() {
+//      if (this.model.get('type') != 'onetoone') return;
+//
+//      if (this.model.get('status')) {
+//        this.$el.find('textarea').attr('disabled', false);
+//      } else {
+//        this.$el.find('textarea').attr('disabled', true);
+//      }
+//    },
 
     toggleSmileys: function(event) {
       var $clicked = $(event.currentTarget);
@@ -68,9 +68,9 @@ define([
     },
 
     message: function(event) {
-      if (this.model.get('type') == 'onetoone'
-        &&!this.model.get('status'))
-        return console.log('user visibly offline, do nothing');
+//      if (this.model.get('type') == 'onetoone'
+//        &&!this.model.get('status'))
+//        return console.log('user visibly offline, do nothing');
 
       // Press-enter in field handling
       if (event.type == 'keypress') {

@@ -1,7 +1,7 @@
 var async = require('async');
 var helper = require('./helper');
 var User = require('../app/models/user');
-var retriever = require('../app/models/historyroom').retrieve();
+var retriever = require('../app/models/historyone').retrieve();
 
 /**
  * Helper to retrieve/prepare all the one to one data needed for 'welcome' and
@@ -31,15 +31,18 @@ module.exports = function(io, socket, username, fn) {
     function history(user, callback) {
       // current day history only
       var history = [];
-//      retriever(room.name, socket.getUserId(), 0, 0, function(err, history) {
-//        if (err)
-//          return callback(err);
+      retriever(user._id, socket.getUserId(), Date.now(), 1, function(err, history) {
+        if (err)
+          return callback(err);
 
         return callback(null, user, history);
-//      });
+      });
     },
 
     function prepare(user, history, callback) {
+      var status = (helper.isUserOnline(io, user._id.toString()))
+        ? 'online'
+        : 'offline';
       var oneData = {
         user_id: user._id.toString(),
         username: user.username,
@@ -48,6 +51,7 @@ module.exports = function(io, socket, username, fn) {
         color: user.color,
         location: user.location,
         website: user.website,
+        status: status,
         history: history
       };
 

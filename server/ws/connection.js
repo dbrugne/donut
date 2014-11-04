@@ -94,6 +94,8 @@ module.exports = function(io, socket) {
 
       var parallels = [];
       helper._.each(user.onetoones, function(one) {
+        if (!one.username)
+          return console.log('Empty username found in populateOnes for user: '+socket.getUserId());
         parallels.push(function(fn) {
           oneDataHelper(io, socket, one.username, function(err, one) {
             if (err)
