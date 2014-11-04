@@ -177,9 +177,9 @@ define([
     _renderEvent: function(model, withBlock) {
       var data = model.toJSON();
 
-      if (data.data.avatar)
+      if (data.data.avatar || data.data.color)
         data.data.avatar = $.cd.userAvatar(data.data.avatar, 30, data.data.color);
-      if (data.data.by_avatar)
+      if (data.data.by_avatar || data.data.by_avatar)
         data.data.by_avatar = $.cd.userAvatar(data.data.by_avatar, 30, data.data.by_color);
 
       data.withBlock = withBlock || false;
