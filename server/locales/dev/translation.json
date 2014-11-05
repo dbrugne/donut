@@ -247,6 +247,13 @@
       "inviteyourfriends": "Invite your friends on this donut!",
       "title": "Come to discuss with me in the donut __name__",
       "description": "DONUT is a thematic chat platform for passionate and nice peoples"
+    },
+    "welcome": {
+      "default": [
+        "Welcome in <strong>__name__</strong>. Only users that have joined this donut (listed on right) can see the conversation. Even if they are currently offline.",
+        "",
+        "Post a message to start the conversation."
+      ]
     }
   },
   "account": {

@@ -5,7 +5,7 @@
 <% } else if (type == 'hello') { %>
 <div class="block hello">
     <div class="event" data-event-id="<%= data.id %>" data-time="<%= data.time %>">
-        <div class="text"><img src="/images/hello.svg"> <%= t('chat.notifications.hello') %> <strong><%= data.name %></strong></div>
+        <div class="text"><img src="/images/hello.svg"> <%= t('chat.welcome.default', {name: data.name}) %></div>
         <div class="date"><span class="moment" data-time="<%= data.time %>"></span></div>
     </div>
 </div>
