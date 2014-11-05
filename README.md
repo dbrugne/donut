@@ -9,7 +9,7 @@ chat
   - [ ] Aggregate by day (!!!)
   - [ ] Sanitize event on history recording (avatar, color) and re-add on hydration to avoid bad avatar in history
   - [ ] Remove scroll
-  - [ ] Home broken on production
+  - [x] Home broken on production
   - [ ] Copier/coller
   - [ ] Stocker si un message est délivré (établir la liste des utilisateurs en ligne ou pas), trouver un moyen d'afficher les messages non lus par un utilisateur dans l'historique
 
