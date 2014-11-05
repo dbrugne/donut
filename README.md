@@ -6,12 +6,8 @@ chat
 **Tasks**
 
 - Discussion
-  - [ ] Aggregate by day (!!!)
-  - [ ] Sanitize event on history recording (avatar, color) and re-add on hydration to avoid bad avatar in history
-  - [ ] Remove scroll
-  - [x] Home broken on production
-  - [ ] Copier/coller
-  - [ ] Stocker si un message est délivré (établir la liste des utilisateurs en ligne ou pas), trouver un moyen d'afficher les messages non lus par un utilisateur dans l'historique
+
+  - [ ] Remove scroll (will fix copy/past)
 
 - [ ] Image in discussion
 
@@ -24,18 +20,15 @@ chat
 - [ ] Add email to notify us of user connection
   -> Draft notifications: DONE https://irc.box.com/s/wk9iq6wihj8vsnqc7tpj
 
-=> prod
-
-- User mentions
-- [ ] user highlight in .messages with @
-- [ ] add @ before every username
-- [ ] Add mentions in room (highlight room user in messages)
-
 - [ ] Badge for websites
 
 [- [ ] Private room](??)
 
 - Try to store instant status on user by connection/deconnection/restart persistence
+- [ ] Stocker si un message est délivré (établir la liste des utilisateurs en ligne ou pas), trouver un moyen d'afficher les messages non lus par un utilisateur dans l'historique
+ -> setInterval qui détecte le focus (window/discussion), les messages vus dans une discussion focus + de 2 secondes sont marqués comme lus côté serveur
+  - [ ] Aggregate by day (!!!)
+  - [ ] Sanitize event on history recording (avatar, color) and re-add on hydration to avoid bad avatar in history
 
 ## Big Ideas
 
