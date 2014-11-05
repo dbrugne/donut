@@ -15,8 +15,7 @@ chat
 
 - [x] Welcome message (donut default)
 
-- Welcome message (custom by owner)
-  - Wording à l'entrée d'un donut: DONE https://irc.box.com/s/v8ote63x8z8ktc0qz66n
+- [x] Welcome message (custom by owner) : https://irc.box.com/s/v8ote63x8z8ktc0qz66n
 
 - [ ] Image in discussion
 
