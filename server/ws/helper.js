@@ -264,7 +264,7 @@ module.exports = {
         // determine if is online
         var status = 'offline';
         var ur = io.sockets.adapter.rooms['user:'+ u._id.toString()];
-        if (ur)
+        if (ur != undefined && Object.keys(ur).length)
           status = 'online';
 
         list.push({
