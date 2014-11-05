@@ -8,6 +8,30 @@
   a:hover { color: @text-color; }
 }
 
+#welcome {
+  .modal-body {
+    font-size: 1.1em;
+  }
+  .modal-footer {
+    span.checkbox {
+      .pull-left;
+    }
+    .close-welcome {
+      .btn;
+      .btn-default;
+      font-size: 1em;
+      border-color: transparent;
+      color: @cl-background;
+      background-color: @cl-first;
+      &:hover {
+        border-color: @cl-first;
+        color: @cl-first;
+        background-color: @cl-background;
+      }
+    }
+  }
+}
+
 #chat {
   .container-fluid;
   height: 100%;

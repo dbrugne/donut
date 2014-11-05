@@ -197,11 +197,16 @@ module.exports = function(io, socket) {
     },
 
     function emitWelcome(user, callback) {
+      // welcome message is displayed until user hasn't check the box
+      var welcomeMessage = (user.welcome === true || user.welcome == undefined)
+        ? true
+        : false;
       welcome.user = {
         user_id: user._id.toString(),
         username: user.username,
         avatar: user._avatar(),
-        color: user.color
+        color: user.color,
+        welcome: welcomeMessage
       };
       socket.emit('welcome', welcome);
 

@@ -5,12 +5,15 @@ chat
 
 **Tasks**
 
-- History
+- Discussion
   - [ ] Aggregate by day (!!!)
-  - [ ] sanitize event on history recording (avatar, color) and re-add on hydration to avoid bad avatar in history
+  - [ ] Sanitize event on history recording (avatar, color) and re-add on hydration to avoid bad avatar in history
+  - [ ] Remove scroll
+  - [ ] Home broken on production
+  - [ ] Copier/coller
+  - [ ] Stocker si un message est délivré (établir la liste des utilisateurs en ligne ou pas), trouver un moyen d'afficher les messages non lus par un utilisateur dans l'historique
 
-- Welcome message (donut default)
-  - Welcome massage en anglais: DONE https://irc.box.com/s/c6uqsvd2tbn1fanwu6fc
+- [x] Welcome message (donut default)
 
 - Welcome message (custom by owner)
   - Wording à l'entrée d'un donut: DONE https://irc.box.com/s/v8ote63x8z8ktc0qz66n

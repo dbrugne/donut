@@ -467,5 +467,18 @@
                 "PS : Si vous n'êtes pas à l'origine de cette démarche, veuillez nous en avertir en faisant suivre cet e-mail sur <a href='mailto:__email__'>__email__</a> ou plus simplement en en répondant à cet e-mail.<br>"
             ]
         }
+    },
+    "welcome": {
+      "title": "Bienvenue",
+      "message": [
+        "Hello !<br>",
+        "<br>",
+        "DONUT est en phase de pré-lancement. On a encore deux-trois bricoles à ajuster mais vous pouvez déjà vous installer et faire comme chez vous. Faites venir les copains on s’occupe des donuts.<br>",
+        "<br>",
+        "On a cherché à faire les choses bien, vous savez sûrement comment les faire encore mieux alors n’hésitez pas à nous faire part de vos idées. En général on est sur <strong>#donut</strong> et on sera ravis de faire connaissance.<br>",
+        "<br>",
+        "L’équipe DONUT<br>"
+      ],
+      "donotshowagain": "Ne plus afficher ce message à l'avenir"
     }
 }

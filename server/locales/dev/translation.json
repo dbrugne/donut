@@ -461,5 +461,17 @@
       ]
     }
   },
-  "lang": "lang"
+  "welcome": {
+    "title": "Welcome",
+    "message": [
+      "Hello !<br>",
+      "<br>",
+      "Hello ! DONUT is in pre-launch phase. We still have a couple of things to fix but you can already come in a make yourself comfortable. Invite your friends over we are taking care of the donuts.<br>",
+      "<br>",
+      "We tried our best to offer you the friendliest experience but you probably have an idea how to make things even better. Drop us a line on <strong>#donut</strong>. We’ll be pleased to get to know you.<br>",
+      "<br>",
+      "The DONUT Team<br>"
+    ],
+    "donotshowagain": "Do not show this message again"
+  }
 }

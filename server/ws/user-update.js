@@ -96,6 +96,13 @@ module.exports = function(io, socket, data) {
           sanitized.general = general;
       }
 
+      // welcome
+      if (helper._.has(data.data, 'welcome')) {
+        var welcome = validator.toBoolean(data.data.welcome);
+        if (welcome != user.welcome)
+          sanitized.welcome = welcome;
+      }
+
       var errNum = Object.keys(errors).length;
       if (errNum > 0) {
         socket.emit('user:update', {

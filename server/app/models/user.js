@@ -16,6 +16,7 @@ var userSchema = mongoose.Schema({
     poster         : String,
     color          : String,
     general        : Boolean,
+    welcome        : Boolean,
     local            : {
         email         : String,
         password      : String,
@@ -44,6 +45,7 @@ userSchema.statics.getNewUser = function () {
   var color = _.sample(colors.list);
   model.color = color.hex;
   model.general = true;
+  model.welcome = true;
   return model;
 };
 

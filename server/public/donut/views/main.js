@@ -42,6 +42,8 @@ define([
 
     $discussionsPanelsContainer: $("#center"),
 
+    firstConnection: true,
+
     thisDiscussionShouldBeFocusedOnSuccess: '',
 
     defaultColor: '#fc2063', // @todo : put this value somewhere in DOM, modifiable by users
@@ -119,7 +121,19 @@ define([
      * @param data
      */
     onWelcome: function(data) {
-      // Hello
+      // Welcome message (only on first connection)
+      if (this.firstConnection && data.user.welcome !== false) { // show if true or if undefined
+        $('#welcome').on('hide.bs.modal', function (e) {
+          if (data.user.welcome == true
+            && $(e.currentTarget).find(".checkbox input[type='checkbox']").prop('checked') === true) {
+            client.userUpdate({welcome: false});
+          }
+        });
+        $('#welcome').modal({});
+        this.firstConnection = false;
+      }
+
+      // Hello message
       if (data.hello){
         this.currentUserView.hello = data.hello;
         this.currentUserView.render();
