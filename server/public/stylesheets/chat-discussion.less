@@ -287,7 +287,6 @@
       .block.hello,
       .block.disconnected,
       .block.reconnected,
-      .block.oneOffline,
       .block.topic,
       .block.kick,
       .block.ban,
@@ -307,6 +306,12 @@
         .username { font-weight: bold; }
         .detail { font-weight: normal; }
         i { color: @cl-success; }
+        .event {
+          .text {
+            padding-right: 50px;
+            img { margin-right: 3px; }
+          }
+        }
         &:hover {
           background-color: @cl-subtext0;
         }
