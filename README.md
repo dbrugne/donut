@@ -13,10 +13,6 @@ chat
   - [ ] Copier/coller
   - [ ] Stocker si un message est délivré (établir la liste des utilisateurs en ligne ou pas), trouver un moyen d'afficher les messages non lus par un utilisateur dans l'historique
 
-- [x] Welcome message (donut default)
-
-- [x] Welcome message (custom by owner) : https://irc.box.com/s/v8ote63x8z8ktc0qz66n
-
 - [ ] Image in discussion
 
 - User mentions
