@@ -19,6 +19,8 @@ chat
 
 - [ ] Badge for websites
 
+- Justiniscooking => Justine
+
 [- [ ] Private room](??)
 
 - Try to store instant status on user by connection/deconnection/restart persistence
