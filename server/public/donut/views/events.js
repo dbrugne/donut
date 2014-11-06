@@ -23,10 +23,10 @@ define([
 
       var that = this;
 
-      // scrollbar initialization (setTimeout for browser DOM bug)
+      // scrollbar initialization (setTimeout for browser bug)
       setTimeout(function() {
         that.render();
-      }, 100);
+      }, 1);
 
       // Regularly update moment times
       setInterval(function() { that.updateMoment(); }, 45*1000); // every 45s
@@ -59,11 +59,12 @@ define([
       var that = this;
       setTimeout(function() {
         that.$el.mCustomScrollbar('scrollTo', 'bottom');
-      }, 50);
+      }, 1);
     },
 
     onEvent: function(model, collection, options) {
-//      console.log('new event '+model.get('id'));
+//      console.log('new event '+model.get('id')+' of type '+model.get('type'));
+//      var _start = Date.now();
 
       var firstElement, lastElement, previousElement, nextElement;
 
@@ -176,6 +177,9 @@ define([
       element.animate({
         opacity: 1
       }, 200);
+
+//      var _duration = Date.now() - _start;
+//      console.log('new event '+model.get('id')+' rendered in '+_duration+'ms');
 
       if (!nextElement)
         this.scrollDown(); // auto-scroll down
