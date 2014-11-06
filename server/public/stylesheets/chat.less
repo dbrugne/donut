@@ -9,6 +9,9 @@
 }
 
 #welcome {
+  .modal-dialog {
+    z-index: 1041; // fix .modal-dialog behind .modal-backdrop for unknown reason
+  }
   .modal-body {
     font-size: 1.1em;
   }
