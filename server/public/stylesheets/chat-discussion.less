@@ -55,17 +55,25 @@
           padding: 0.6em 1.2em;
           display: inline-block;
           white-space: nowrap;
-          em {
+          max-width: 100%;
+          label {
+            font-size: 13px;
+            display: block;
+            width: 90px;
+            float: left;
+            margin: 0;
+          }
+          .txt {
+            display: block;
+            font-size: 13px;
+            margin-left: 90px;
+            overflow: hidden;
+          }
+          .default {
             color: @cl-subtext2;
             &:hover {
               color: @cl-subtext5;
             }
-          }
-          label {
-            font-size: 13px;
-          }
-          .txt {
-            font-size: 13px;
           }
         }
         .topic-form {

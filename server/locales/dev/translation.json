@@ -200,7 +200,7 @@
     "topic": {
       "label": "Currently",
       "placeholder": "Enter the conversation topic, the mood,...",
-      "default": "<em>No topic, click here to edit</em>"
+      "default": "<span class='default'>No topic, click here to edit</span>"
     },
     "owner": {
       "is": "This user is the creator of this donut."
