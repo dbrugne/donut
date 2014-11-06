@@ -6,8 +6,8 @@ chat
 **Tasks**
 
 - Discussion
-  - [x] Remove scroll (will fix copy/past)
   - [ ] Fix current topic width
+  - [ ] Remove other calc()
 
  - [ ] Image in discussion
 
