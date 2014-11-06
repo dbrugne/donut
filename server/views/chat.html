@@ -1,29 +1,6 @@
 {{> head}}
 <body class="body-chat">
     <div id="fb-root"></div>
-    <div id="welcome" class="modal fade" role="dialog" aria-labelledby="welcomeMessage" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{{#i}}global.close{{/i}}</span></button>
-                    <h4 class="modal-title">{{#i}}welcome.title{{/i}}</h4>
-                </div>
-                <div class="modal-body">
-                    <p>
-                        {{#i}}welcome.message{{/i}}
-                    </p>
-                </div>
-                <div class="modal-footer">
-                    <span class="checkbox">
-                        <label>
-                            <input type="checkbox"> {{#i}}welcome.donotshowagain{{/i}}
-                        </label>
-                    </span>
-                    <button type="button" class="close-welcome" data-dismiss="modal">{{#i}}global.close{{/i}}</button>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div>
     <div id="chat">
         <div id="alert" role="banner">
             <div class="alert">
@@ -74,6 +51,29 @@
             </div><!-- /#center -->
         </div><!-- /.row -->
     </div><!-- /#chat -->
+    <div id="welcome" class="modal fade" role="dialog" aria-labelledby="welcomeMessage" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{{#i}}global.close{{/i}}</span></button>
+                    <h4 class="modal-title">{{#i}}welcome.title{{/i}}</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        {{#i}}welcome.message{{/i}}
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <span class="checkbox">
+                        <label>
+                            <input type="checkbox"> {{#i}}welcome.donotshowagain{{/i}}
+                        </label>
+                    </span>
+                    <button type="button" class="close-welcome" data-dismiss="modal">{{#i}}global.close{{/i}}</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- #welcome -->
 <script>
     window.cloudinary_cloud_name = '{{cloudinary.cloud_name}}';
     window.cloudinary_api_key = '{{cloudinary.api_key}}';
