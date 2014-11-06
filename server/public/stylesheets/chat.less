@@ -40,9 +40,41 @@
 
   > .row {
     margin: 0; /* Cancel bootstrap negative .row margin */
-    height: -webkit-calc(~'100%' - @size-color);
-    height: -o-calc(~'100%' - @size-color);
-    height: calc(~'100%' - @size-color);
+    height: 100%;
+    width: 100%;
+  }
+
+  #color {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: @size-color;
+    z-index: 99;
+    background-color: @cl-first;
+  }
+
+  #left {
+    float: left;
+    width: @size-left;
+    height: 100%;
+    background-color: @cl-subtext1;
+    overflow: hidden;
+    z-index: 10;
+    position: relative;
+    padding-top: 20px;
+    padding-bottom: 20px;
+
+    @import "chat-left";
+  }
+
+  #center {
+    height: 100%;
+    padding-top: 20px;
+    z-index: 5;
+    margin-left: @size-left;
+
+    @import "chat-home";
+
+    @import "chat-discussion";
   }
 
   hr {
@@ -103,39 +135,6 @@
   .status.connecting { color: @cl-warning; }
   .status.offline { color: @cl-neutral; }
   .status.error { color: @cl-error; }
-
-  #color {
-    width: 100%;
-    height: @size-color;
-    background-color: @cl-first;
-  }
-
-  #left {
-    float: left;
-    width: @size-left;
-    height: 100%;
-    background-color: @cl-subtext1;
-    overflow: hidden;
-    z-index: 10;
-    position: relative;
-    padding-bottom: 20px;
-
-    @import "chat-left";
-  }
-
-  #center {
-    float: left;
-    width: -webkit-calc(~'100%' - @size-left);
-    width: -o-calc(~'100%' - @size-left);
-    width: calc(~'100%' - @size-left);
-
-    height: 100%;
-    z-index: 5;
-
-    @import "chat-home";
-
-    @import "chat-discussion";
-  }
 
   @import "chat-drawer";
 }

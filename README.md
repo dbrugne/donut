@@ -6,16 +6,17 @@ chat
 **Tasks**
 
 - Discussion
+  - [x] Remove scroll (will fix copy/past)
+  - [ ] Fix current topic width
 
-  - [ ] Remove scroll (will fix copy/past)
-
-- [ ] Image in discussion
+ - [ ] Image in discussion
 
 - User mentions
 - [ ] user highlight in .messages with @
 - [ ] add @ before every username
 - [ ] Add mentions in room (highlight room user in messages)
 
+- Notification
 - [ ] Add notification to owner/op when a user enter in room
 - [ ] Add email to notify us of user connection
   -> Draft notifications: DONE https://irc.box.com/s/wk9iq6wihj8vsnqc7tpj
@@ -40,7 +41,7 @@ chat
 ## v1.1 : minimal features against competitors
 
 - [ ] Multi-node support
-- [ ] Onetoone message delivering (even for offline users) + onetoone refactoring
+- [ ] Onetoone message delivering (even for offline users)
 - [ ] Kick reason form
 - [ ] Ban from room
 - [ ] Ban user list edit => appears in bottom on room users list

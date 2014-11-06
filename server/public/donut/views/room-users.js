@@ -24,9 +24,14 @@ define([
       this.$el.html(html);
       this.$count = this.$el.find('.count');
       this.$list = this.$el.find('.list');
-      this.$list.scroller();
-      this.$scrollContent = this.$list.find('.scroller-content');
-      return this.render();
+
+      // scrollbar initialization (setTimeout for browser DOM bug)
+      var that = this;
+      setTimeout(function() {
+        that.$list.mCustomScrollbar({});
+        that.$listContent = that.$list.find('.mCSB_container');
+        that.render();
+      }, 100);
     },
     render: function() {
       // update user count
@@ -50,8 +55,8 @@ define([
         isOwner: this.model.currentUserIsOwner(),
         isOp: this.model.currentUserIsOp()
       });
-      this.$scrollContent.html(html);
-      this.$list.scroller('reset');
+      this.$listContent.html(html);
+      this.$list.mCustomScrollbar('update');
       return this;
     },
     onAddRemove: function(model, collection, options) {

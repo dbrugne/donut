@@ -21,26 +21,31 @@ define([
       this.listenTo(this.model, 'history:loaded', this.onHistoryLoaded);
       this.listenTo(this.model, 'change:focused', this.updateMoment);
 
-      this.render();
-
       var that = this;
 
-//      // Watch for scroll to the top
-//      this.$scroller.scroll(function() {
-//        if (this.scrollTop == 0)
-//          console.log('scroll is now on top');
-//      });
+      // scrollbar initialization (setTimeout for browser DOM bug)
+      setTimeout(function() {
+        that.render();
+      }, 100);
 
       // Regularly update moment times
       setInterval(function() { that.updateMoment(); }, 45*1000); // every 45s
     },
     render: function() {
-      this.$el.scroller({
-        duration: 500
+      this.$el.mCustomScrollbar({
+        scrollInertia         : 0,
+        alwaysShowScrollbar   : 2,
+        theme                 : 'rounded-dots-dark',
+        mouseWheel            : { enable: true },
+        keyboard              : { scrollAmount: 30 },
+        scrollButtons         :{ enable: true },
+        advanced:{
+          updateOnContentResize: true
+        }
       });
 
-      // Scroller will automatically move content in div.scroller-content
-      this.$scroller = this.$el.find('.scroller-content');
+      // scroll library move content in child div
+      this.$timeline = this.$el.find('.mCSB_container');
 
       return this;
     },
@@ -51,9 +56,10 @@ define([
       this.$el.find('.moment').momentify();
     },
     scrollDown: function() {
-      this.$el
-        .scroller('reset')
-        .scroller('scroll', this.$scroller.prop('scrollHeight'), 500);
+      var that = this;
+      setTimeout(function() {
+        that.$el.mCustomScrollbar('scrollTo', 'bottom');
+      }, 50);
     },
 
     onEvent: function(model, collection, options) {
@@ -62,7 +68,7 @@ define([
       var firstElement, lastElement, previousElement, nextElement;
 
       // all .event list
-      var list = this.$scroller.find('.event').get();
+      var list = this.$timeline.find('.event').get();
 
       if (list.length > 0)
         firstElement = list[0];
@@ -130,9 +136,9 @@ define([
         var block = $(html).insertBefore($(nextElement).closest('.block'));
         element = block.find('.event').first();
       } else {
-        // just append to scroller, with block
+        // just append container, with block
         var html = this._renderEvent(model, true);
-        var block = $(html).appendTo(this.$scroller);
+        var block = $(html).appendTo(this.$timeline);
         element = block.find('.event').first();
       }
 
@@ -227,7 +233,7 @@ define([
 
     onHistoryLoaded: function() {
       this.historyLoading = false;
-      this.$scroller.find('.history .spinner').hide();
+      this.$timeline.find('.history .spinner').hide();
     }
 
   });

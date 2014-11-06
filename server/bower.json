@@ -11,6 +11,7 @@
       "cloudinary_js": "latest",
       "moment": "2.7.x",
       "i18next": "latest",
-      "Scroller": "latest"
+      "malihu-custom-scrollbar-plugin": "latest",
+      "jquery-mousewheel": "latest"
     }
 }

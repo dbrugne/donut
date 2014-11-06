@@ -15,7 +15,8 @@ require.config({
     'jquery.fileupload'           : '../vendor/blueimp-file-upload/js/jquery.fileupload',
     'jquery.cloudinary'           : '../vendor/cloudinary_js/js/jquery.cloudinary',
     'jquery.cloudinary-donut'     : '../javascripts/plugins/jquery.cloudinary-donut',
-    'jquery.scroller'             : '../vendor/Scroller/jquery.fs.scroller.min',
+    'jquery.mcs'                  : '../vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar',
+    'jquery.mousewheel'           : '../vendor/jquery-mousewheel/jquery.mousewheel',
     'jquery.insertatcaret'        : '../javascripts/plugins/jquery.insertatcaret',
     'jquery.maxlength'            : '../javascripts/plugins/jquery.maxlength',
     'jquery.linkify'              : '../javascripts/plugins/jquery.linkify',
@@ -33,7 +34,8 @@ require.config({
     'jquery.smilify'              : ['jquery'],
     'jquery.momentify'            : ['jquery'],
     'jquery.colorify'             : ['jquery'],
-    'jquery.scroller'             : ['jquery'],
+    'jquery.mcs'                  : ['jquery'],
+    'jquery.mousewheel'           : ['jquery'],
     'underscore.template-helpers' : ['underscore'],
     'bootstrap': {
       deps: ['jquery']
@@ -66,7 +68,8 @@ require([
   'jquery.smilify',
   'jquery.momentify',
   'jquery.colorify',
-  'jquery.scroller',
+  'jquery.mcs',
+  'jquery.mousewheel',
   'bootstrap',
   'moment-fr',
   'underscore.template-helpers'
