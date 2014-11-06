@@ -44,6 +44,12 @@ define([
         }
       });
 
+      // prevent browser go to # when clicking on button with not enough content
+      // to have scroll activated
+      this.$el.find('.mCSB_buttonUp, .mCSB_buttonDown').on('click', function(e) {
+        e.preventDefault();
+      });
+
       // scroll library move content in child div
       this.$timeline = this.$el.find('.mCSB_container');
 
