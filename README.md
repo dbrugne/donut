@@ -6,8 +6,8 @@ chat
 **Tasks**
 
 - Discussion
-  - [ ] Fix current topic width
-  - [ ] Remove other calc()
+  - [x] Fix current topic width
+  - [x] Remove other calc()
 
  - [ ] Image in discussion
 

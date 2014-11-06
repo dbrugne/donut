@@ -2,9 +2,7 @@
   display: none;
   position: absolute;
   width: 100%;
-  height: -webkit-calc(~'100%' - @size-color);
-  height: -o-calc(~'100%' - @size-color);
-  height: calc(~'100%' - @size-color);
+  height: 100%;
   z-index: 5;
 
   .scrollbar {
@@ -63,10 +61,6 @@
         background-color: @cl-background;
         > div {
           height: 100%;
-//          height: -webkit-calc(~'100%' - (@cont-pad + 5px));
-//          height: -o-calc(~'100%' - (@cont-pad + 5px));
-//          height: calc(~'100%' - (@cont-pad + 5px));
-//          overflow-x: auto; overflow-y: auto;
         }
         .spinner { width: 100%; height: 100%; text-align: center; color: @cl-subtext1; }
       }
