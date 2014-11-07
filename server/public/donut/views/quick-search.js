@@ -31,7 +31,7 @@ define([
     search: function() {
       var s = this.$search.val();
 
-      this.mainView.focusHome();
+      this.mainView.focusHome(true);
       this.mainView.homeView.searchView.$search
         .val(s)
         .focus();

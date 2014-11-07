@@ -331,9 +331,11 @@ define([
     },
 
     // called by router only
-    focusHome: function() {
+    focusHome: function(avoidReload) {
       // @todo : change pattern to render page with spinner and replace content on callback
-      client.home(); // render home by asking data to server
+      if (avoidReload !== true)
+        client.home();
+
       this.unfocusAll();
       this.$home.show();
       windowView.setTitle();
