@@ -3,14 +3,20 @@ chat
 
 ## v1.0 : opening platform to real people
 
-**Tasks**
+**Input box**
+- [ ] Contenteditable
+- [ ] Placeholder
+- [ ] Post on Enter, line return with shift+enter
+- [ ] Avoid bold, italic, other formatting
+- [ ] Image in discussion (drag&drop, button, copy&paste)
+- [ ] Store and load previous message with arrow up/down (localstorage)
+- [ ] Smileys popin
+- [ ] Images drag&drop in input box + direct upload to cloudinary and hyperlink addition in message
+- [ ] User mentions (with @ and auto-dropdown) + highlight in .events
+- [ ] Link detection and highlight
+- [ ] Filter output before sending: 512 car. max, without HTML, no specials expect image/smiley
 
- - [ ] Image in discussion
-
-- User mentions
-- [ ] user highlight in .messages with @
-- [ ] add @ before every username
-- [ ] Add mentions in room (highlight room user in messages)
+- [ ] Add @ before every username
 
 - Notification
 - [ ] Add notification to owner/op when a user enter in room
@@ -75,8 +81,6 @@ chat
 - [ ] Invite your friend on donut (Facebook)
 
 **History**
-- [ ] Store posted messages in localstorage
-- [ ] Message history on arrow up/down based on localstorage
 - [ ] Add a cleanup method that empty .messages periodically to avoid memory leak
 
 **Search**
@@ -92,22 +96,15 @@ chat
 **Chat**
 - [ ] Change the to server->client messages : room:join/leave and user:open/close (for something like ?)
 - [ ] Add a check on ws connection to verify is user have "username"
-- [ ] Bug : room user list scroll is not active when entering in room (but work once the first redraw)
 - [ ] WS: implement REDIS cache for user and room and read in REDIS cache only "even" for socket.getUsername-like function to have always last data
 - [ ] Bugfix: on room auto-deletion reactivation. Should handle in 'connection.populateRoom' the room recreation. Otherwise a room automatically removed cannot be re-join automatically by client cause room populate try to find room in DB before sending it to client in welcome
-- [ ] Scrollbars adding (left column, home content, user and room edit drawer) and improvments (room messages and users)
 - [ ] Activity logic and tracking : online, afk, offline (used on user profile, one to one, room users, ...)
-- [ ] For onetoone discussion (only), persist if a message was delivered or not and delivered it on welcome
 - Small and helpfull features:
-  - [ ] Auto fill room user name in input
-  - [ ] Hilight user name in messages
-  - [ ] Own messages history on up and down
-  - [ ] Ability to switch .messages display as compact (hide usernames, preserve date on right)
+  - [ ] Ability to switch .events display as compact (hide usernames, preserve date on right)
   - [ ] Ability to disabled auto-post on Enter (in this case enter will add break line in input box)
   - [ ] Commands handling: "/j|join room" "/l|leave room" "/msg user" "/info room|user" "/kick room user", "/whois user", "/quit", "/ping"
   - [ ] Hide notification (display only a colored line with number of notifications in bubble, on click show notifications)
   - [ ] Color this user messages by simply clicking on a user (stored in browser memory only)
-  - [ ] Smileys popin
   - [ ] /me commande to describe current action
   - [ ] Add an option to avoid exit popin on chat interface
   - [ ] Improve backlog experience when refocus a room with lot of unread messages (button to jump on last viewed message and display highligth on unread messages)
@@ -176,7 +173,6 @@ Chat:
 - [ ] Message improving
   - [ ] Code syntax indexing
 - [ ] Hyperlink analyse and open graph extraction with hover popin in rooms and discussions (specific template for YouTube content)
-- [ ] Images drag&drop in input box + direct upload to cloudinary and hyperlink addition in message
 
 Backend:
 - [ ] Traditional page secured zone
