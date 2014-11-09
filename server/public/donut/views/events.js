@@ -37,7 +37,7 @@ define([
       this.$el.mCustomScrollbar({
         scrollInertia         : 0,
         alwaysShowScrollbar   : 2,
-        theme                 : 'rounded-dots-dark',
+        theme                 : 'rounded-dark',
         mouseWheel            : { enable: true },
         keyboard              : { scrollAmount: 30 },
         scrollButtons         : { enable: true },
