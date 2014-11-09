@@ -88,28 +88,25 @@ define([
         model.addUser(element);
       });
 
+      // Add history
+      if (room.history && room.history.length > 0) {
+        _.each(room.history, function(event) {
+          model.events.addEvent(event);
+        });
+      }
+
       if (isNew) {
+        // hello notification
+        model.events.addEvent({
+          type: 'hello',
+          data: {
+            id: 'hello',
+            name: model.get('name')
+          }
+        });
+
         // now the view exists (created by mainView)
         this.add(model);
-
-        // Be sure that scrollbar is ready before creating events
-        setTimeout(function() {
-          // hello notification
-          model.events.addEvent({
-            type: 'hello',
-            data: {
-              id: 'hello',
-              name: model.get('name')
-            }
-          });
-
-          // Add history
-          if (room.history && room.history.length > 0) {
-            _.each(room.history, function(event) {
-              model.events.addEvent(event);
-            });
-          }
-        }, 100);
       }
     },
     // Server asks to this client to leave this room

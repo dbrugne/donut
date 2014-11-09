@@ -16,33 +16,37 @@ define([
 
     historyLoading: false,
 
+    scrollReady: false,
+
     initialize: function(options) {
-      this.listenTo(this.collection, 'add', this.onEvent);
+      window.test = this;
+      this.listenTo(this.collection, 'add', this.onAdd);
       this.listenTo(this.model, 'history:loaded', this.onHistoryLoaded);
       this.listenTo(this.model, 'change:focused', this.updateMoment);
 
       var that = this;
-
-      // scrollbar initialization (setTimeout for browser bug)
-      setTimeout(function() {
+      _.defer(function() { // => Uncaught TypeError: Cannot read property '0' of null
         that.render();
-      }, 1);
+      });
 
       // Regularly update moment times
       setInterval(function() { that.updateMoment(); }, 45*1000); // every 45s
     },
     render: function() {
+      var that = this;
       this.$el.mCustomScrollbar({
         scrollInertia         : 0,
         alwaysShowScrollbar   : 2,
         theme                 : 'rounded-dots-dark',
         mouseWheel            : { enable: true },
         keyboard              : { scrollAmount: 30 },
-        scrollButtons         :{ enable: true },
+        scrollButtons         : { enable: true },
         advanced:{
           updateOnContentResize: true
         }
       });
+
+      this.scrollReady = true;
 
       // prevent browser go to # when clicking on button with not enough content
       // to have scroll activated
@@ -53,7 +57,10 @@ define([
       // scroll library move content in child div
       this.$timeline = this.$el.find('.mCSB_container');
 
-      return this;
+      // render already in collection events
+      this.collection.each(function(model) {
+        that.onEvent(model);
+      });
     },
     updateMoment: function() {
       if (!this.model.get('focused')) return;
@@ -62,12 +69,18 @@ define([
       this.$el.find('.moment').momentify();
     },
     scrollDown: function() {
-      var that = this;
-      setTimeout(function() {
-        that.$el.mCustomScrollbar('scrollTo', 'bottom');
-      }, 1);
+      // too early scrollDown calls (router) will trigger scrollbar generation
+      // on scrollTo and make everything explode
+      if (this.scrollReady) {
+        var that = this;
+        _.defer(function() {
+          that.$el.mCustomScrollbar('scrollTo', 'bottom');
+        });
+      }
     },
-
+    addEvent: function(model, collection, options) {
+      return this.onEvent(model);
+    },
     onEvent: function(model, collection, options) {
 //      console.log('new event '+model.get('id')+' of type '+model.get('type'));
 //      var _start = Date.now();
@@ -75,7 +88,7 @@ define([
       var firstElement, lastElement, previousElement, nextElement;
 
       // all .event list
-      var list = this.$timeline.find('.event').get();
+      var list = this.$timeline.find('.event').get(); // @todo : test optimisation, save this.$timeline.find('.event') and test .length, do .get() only for reverse search
 
       if (list.length > 0)
         firstElement = list[0];
@@ -123,7 +136,6 @@ define([
         nextModel = this.collection.get($(nextElement).data('eventId'));
 
       var element;
-
       if (previousElement && model.sameBlockAsModel(previousModel)) {
         // after previous, no block
         var html = this._renderEvent(model, false);
@@ -235,6 +247,7 @@ define([
       else
         since = Date.now();
 
+      // @todo : cleanup this code, call on model for example
       if (this.model.get('type') == 'room')
         client.roomHistory(this.model.get('name'), since, until);
       else if (this.model.get('type') == 'onetoone')

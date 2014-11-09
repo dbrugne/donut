@@ -62,24 +62,20 @@ define([
         var model = new OneToOneModel(oneData);
       }
 
+      // Add history
+      if (user.history && user.history.length > 0) {
+        _.each(user.history, function(event) {
+          event.data.user_id = event.data.from_user_id;
+          event.data.username = event.data.from_username;
+          event.data.avatar = event.data.from_avatar;
+          event.data.color = event.data.from_color;
+          model.events.addEvent(event);
+        });
+      }
+
       if (isNew) {
         // now the view exists (created by mainView)
         this.add(model);
-
-        // Be sure that scrollbar is ready before creating events
-        setTimeout(function() {
-          // Add history
-          if (user.history && user.history.length > 0) {
-            _.each(user.history, function(event) {
-              event.data.user_id = event.data.from_user_id;
-              event.data.username = event.data.from_username;
-              event.data.avatar = event.data.from_avatar;
-              event.data.color = event.data.from_color;
-              model.events.addEvent(event);
-            });
-          }
-        }, 100);
-
       }
 
       return model;
