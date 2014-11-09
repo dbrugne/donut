@@ -19,7 +19,6 @@ define([
     scrollReady: false,
 
     initialize: function(options) {
-      window.test = this;
       this.listenTo(this.collection, 'add', this.onAdd);
       this.listenTo(this.model, 'history:loaded', this.onHistoryLoaded);
       this.listenTo(this.model, 'change:focused', this.updateMoment);
@@ -78,7 +77,7 @@ define([
         });
       }
     },
-    addEvent: function(model, collection, options) {
+    onAdd: function(model, collection, options) {
       return this.onEvent(model);
     },
     onEvent: function(model, collection, options) {
