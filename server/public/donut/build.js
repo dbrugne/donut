@@ -25,6 +25,7 @@
     'jquery.smilify'              : '../javascripts/plugins/jquery.smilify',
     'jquery.momentify'            : '../javascripts/plugins/jquery.momentify',
     'jquery.colorify'             : '../javascripts/plugins/jquery.colorify',
+    'jquery.mentionsinput'        : '../javascripts/plugins/jquery.mentionsInput',
     'underscore.template-helpers' : '../javascripts/plugins/underscore.template-helpers'
   },
   name: "index",
