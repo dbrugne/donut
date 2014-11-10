@@ -94,7 +94,7 @@
         <div class="items">
     <% } %>
             <div class="event" data-event-id="<%= data.id %>" data-time="<%= data.time %>">
-                <div class="text"><%- data.message %></div>
+                <div class="text"><%= data.message %></div>
                 <div class="date"><span class="moment" data-time="<%= data.time %>"></span></div>
             </div>
     <% if (withBlock) { %>

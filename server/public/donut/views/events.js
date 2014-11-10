@@ -72,9 +72,9 @@ define([
       // on scrollTo and make everything explode
       if (this.scrollReady) {
         var that = this;
-        _.defer(function() {
+        _.delay(function() {
           that.$el.mCustomScrollbar('scrollTo', 'bottom');
-        });
+        }, 100);
       }
     },
     onAdd: function(model, collection, options) {
@@ -172,9 +172,10 @@ define([
 //        $(dayHtml).insertBefore($(element).closest('.block'));
 //      }
 
-      // decorate
+      // time
       element.find('.moment').momentify(); // time
 
+      // links
       var linkifyOptions = {
         linkAttributes: {
           'data-colorify-text': 'color'
@@ -184,17 +185,19 @@ define([
         linkifyOptions.linkAttributes['data-colorify'] = this.model.get('color');
       else if (this.model.get('data') && this.model.get('data').color)
         linkifyOptions.linkAttributes['data-colorify'] = this.model.get('data').color;
+      element.find('.text').linkify(linkifyOptions);
 
-      element.find('.text')
-        .smilify() // smileys
-        .linkify(linkifyOptions); // links
-      element.colorify(); // color (after linkify)
+      // smileys
+      element.find('.text').smilify();
+
+      // colors
+      element.colorify(); // (after linkify)
 
       // display
       var that = this;
       element.animate({
         opacity: 1
-      }, 200);
+      }, 100);
 
 //      var _duration = Date.now() - _start;
 //      console.log('new event '+model.get('id')+' rendered in '+_duration+'ms');
@@ -205,10 +208,16 @@ define([
     _renderEvent: function(model, withBlock) {
       var data = model.toJSON();
 
+      // avatar
       if (data.data.avatar || data.data.color)
         data.data.avatar = $.cd.userAvatar(data.data.avatar, 30, data.data.color);
       if (data.data.by_avatar || data.data.by_avatar)
         data.data.by_avatar = $.cd.userAvatar(data.data.by_avatar, 30, data.data.by_color);
+
+      // escape HTML
+      if (data.data.message) {
+        data.data.message = _.escape(data.data.message);
+      }
 
       data.withBlock = withBlock || false;
       try {
