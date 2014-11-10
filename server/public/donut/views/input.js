@@ -4,30 +4,21 @@ define([
   'backbone',
   'models/client',
   'models/current-user',
-  'views/smileys',
   'text!templates/input.html'
-], function ($, _, Backbone, client, currentUser, SmileysView, InputTemplate) {
+], function ($, _, Backbone, client, currentUser, InputTemplate) {
   var DiscussionMessageBoxView = Backbone.View.extend({
 
     template: _.template(InputTemplate),
 
     events: {
       'keypress .input-message':  'message',
-      'click .send':              'message',
-      'click .smileys-message':   'toggleSmileys'
+      'click .send':              'message'
     },
 
     initialize: function(options) {
-//      this.listenTo(this.model, 'change:status', this.onStatus);
       this.listenTo(currentUser, 'change:avatar', this.onAvatar);
 
       this.render();
-//      this.onStatus();
-
-      // Smileys view
-      this.smileysView = new SmileysView({onPick: this.pickSmiley});
-      this.$el.find('.smileys-message').append(this.smileysView.$el);
-      this.listenTo(this.smileysView, 'pick', this.pickSmiley);
     },
 
     render: function() {
@@ -40,38 +31,7 @@ define([
       this.$el.find('.avatar').prop('src', $.cd.userAvatar(value, 80, model.get('color')));
     },
 
-//    onStatus: function() {
-//      if (this.model.get('type') != 'onetoone') return;
-//
-//      if (this.model.get('status')) {
-//        this.$el.find('textarea').attr('disabled', false);
-//      } else {
-//        this.$el.find('textarea').attr('disabled', true);
-//      }
-//    },
-
-    toggleSmileys: function(event) {
-      var $clicked = $(event.currentTarget);
-
-      // Recalculate position
-      var position = $clicked.position();
-      var newTop = position.top - this.smileysView.$el.outerHeight();
-      var newLeft = (position.left + ($clicked.outerWidth()/2)) - (this.smileysView.$el.outerWidth()/2);
-      this.smileysView.$el.css('top', newTop);
-      this.smileysView.$el.css('left', newLeft);
-      this.smileysView.$el.toggle();
-    },
-
-    pickSmiley: function(smiley) {
-      var symbol = $().smilify('symbol', smiley);
-      this.$el.find('.input-message').insertAtCaret(symbol);
-    },
-
     message: function(event) {
-//      if (this.model.get('type') == 'onetoone'
-//        &&!this.model.get('status'))
-//        return console.log('user visibly offline, do nothing');
-
       // Press-enter in field handling
       if (event.type == 'keypress') {
         var key;
