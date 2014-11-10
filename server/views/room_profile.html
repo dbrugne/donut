@@ -11,7 +11,7 @@
         </div>
         {{#room.owner}}
         <span class="owner">
-            {{#i}}global.by{{/i}} <a href="{{room.owner.url}}" {{#room.color}}style="color: {{room.color}};"{{/room.color}}>{{room.owner.username}}</a>
+            {{#i}}global.by{{/i}} <a href="{{room.owner.url}}" {{#room.color}}style="color: {{room.color}};"{{/room.color}}>@{{room.owner.username}}</a>
         </span>
         {{/room.owner}}
         {{#room.website}}

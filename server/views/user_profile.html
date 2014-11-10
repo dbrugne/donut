@@ -6,7 +6,7 @@
     </div>
     <div class="text user">
         <div class="username-content">
-            <a href="{{_user.url}}" class="username">{{_user.username}}</a>
+            <a href="{{_user.url}}" class="username">@{{_user.username}}</a>
             <div class="fb-like" data-href="{{_user.url}}" data-layout="button" data-action="like" data-show-faces="false" data-share="true" data-ref="profile-page"></div>
         </div>
         {{#_user.location}}
@@ -39,7 +39,7 @@
     <div class="disclaimer">
         <p>
             {{#i}}profile.user.disclaimer.before{{/i}}
-            <a href="{{_user.url}}">{{_user.username}}</a>
+            <a href="{{_user.url}}">@{{_user.username}}</a>
             {{#i}}profile.user.disclaimer.after{{/i}}
         </p>
         <a href="/"><img src="/images/logo-onecolor-gr.svg" alt="DONUT logo"></a>

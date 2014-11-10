@@ -16,7 +16,7 @@ chat
 - [ ] Link detection and highlight
 - [ ] Filter output before sending: 512 car. max, without HTML, no specials expect image/smiley
 
-- [ ] Add @ before every username
+- [x] Add @ before every username
 
 Admin
 - [ ] Add event to make IHM reload

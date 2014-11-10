@@ -12,7 +12,7 @@
         txtColor = "color: "+u.color;
         }; %>
         <div class="item open-user-profile <%= u.status %>" data-username="<%= u.username %>">
-            <div class="username" style="<%= bgColor %>"><%= u.username %></div>
+            <div class="username" style="<%= bgColor %>">@<%= u.username %></div>
             <img class="avatar" src="<%= u.avatar %>">
         </div>
     <% }); %>

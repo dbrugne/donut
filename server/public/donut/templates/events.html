@@ -28,7 +28,7 @@
     <div class="event" data-event-id="<%= data.id %>" data-time="<%= data.time %>">
         <div class="text">
             <img class="avatar" src="<%= data.avatar %>">
-            <span class="username open-user-profile" data-username="<%= data.username %>"><%= data.username %></span>
+            <span class="username open-user-profile" data-username="<%= data.username %>">@<%= data.username %></span>
             <%= t('chat.notifications.topic') %> "<%- data.topic %>"
         </div>
         <div class="date"><span class="moment" data-time="<%= data.time %>"></span></div>
@@ -40,10 +40,10 @@
         <div class="text">
             <img src="/images/kick.svg">
             <img class="avatar" src="<%= data.avatar %>">
-            <span class="username open-user-profile" data-username="<%= data.username %>"><%= data.username %></span>
+            <span class="username open-user-profile" data-username="<%= data.username %>">@<%= data.username %></span>
             <%= t('chat.notifications.kick') %>
             <img class="avatar" src="<%= data.by_avatar %>">
-            <span class="username open-user-profile" data-username="<%= data.by_username %>"><%= data.by_username %></span>
+            <span class="username open-user-profile" data-username="<%= data.by_username %>">@<%= data.by_username %></span>
             <% if (data.reason) { %> : '<%= data.reason %>'<% }; %>
         </div>
         <div class="date"><span class="moment" data-time="<%= data.time %>"></span></div>
@@ -54,10 +54,10 @@
     <div class="event" data-event-id="<%= data.id %>" data-time="<%= data.time %>">
         <div class="text">
             <img src="/images/ban.svg">
-            <span class="username open-user-profile" data-username="<%= data.username %>"><%= data.username %></span>
+            <span class="username open-user-profile" data-username="<%= data.username %>">@<%= data.username %></span>
             <%= t('chat.notifications.ban') %>
             <img class="avatar" src="<%= data.by_avatar %>">
-            <span class="username open-user-profile" data-username="<%= data.by_username %>"><%= data.by_username %></span> (<%= data.time %>) '<em><%= data.reason %></em>'
+            <span class="username open-user-profile" data-username="<%= data.by_username %>">@<%= data.by_username %></span> (<%= data.time %>) '<em><%= data.reason %></em>'
         </div>
         <div class="date"><span class="moment" data-time="<%= data.time %>"></span></div>
     </div>
@@ -68,8 +68,8 @@
         <div class="text">
             <img src="/images/op.svg">
             <img class="avatar" src="<%= data.avatar %>">
-            <span class="username open-user-profile" data-username="<%= data.username %>"><%= data.username %></span> <%= t('chat.notifications.op') %>
-            <img class="avatar" src="<%= data.by_avatar %>"><span class="username open-user-profile" data-username="<%= data.by_username %>"><%= data.by_username %></span>
+            <span class="username open-user-profile" data-username="<%= data.username %>">@<%= data.username %></span> <%= t('chat.notifications.op') %>
+            <img class="avatar" src="<%= data.by_avatar %>"><span class="username open-user-profile" data-username="<%= data.by_username %>">@<%= data.by_username %></span>
         </div>
         <div class="date"><span class="moment" data-time="<%= data.time %>"></span></div>
     </div>
@@ -80,8 +80,8 @@
         <div class="text">
             <img src="/images/deop-w.svg">
             <img class="avatar" src="<%= data.avatar %>">
-            <span class="username open-user-profile" data-username="<%= data.username %>"><%= data.username %></span> <%= t('chat.notifications.deop') %>
-            <img class="avatar" src="<%= data.by_avatar %>"><span class="username open-user-profile" data-username="<%= data.by_username %>"><%= data.by_username %></span>
+            <span class="username open-user-profile" data-username="<%= data.username %>">@<%= data.username %></span> <%= t('chat.notifications.deop') %>
+            <img class="avatar" src="<%= data.by_avatar %>"><span class="username open-user-profile" data-username="<%= data.by_username %>">@<%= data.by_username %></span>
         </div>
         <div class="date"><span class="moment" data-time="<%= data.time %>"></span></div>
     </div>
@@ -90,7 +90,7 @@
     <% if (withBlock) { %>
     <div class="block message">
         <img class="avatar open-user-profile" data-username="<%= data.username %>" src="<%= data.avatar %>" alt="<%= data.username %> avatar" />
-        <div class="username open-user-profile" data-username="<%= data.username %>"><%= data.username %></div>
+        <div class="username open-user-profile" data-username="<%= data.username %>">@<%= data.username %></div>
         <div class="items">
     <% } %>
             <div class="event" data-event-id="<%= data.id %>" data-time="<%= data.time %>">
@@ -111,7 +111,7 @@
         <div class="text">
             <img class="avatar open-user-profile" src="<%= data.avatar %>" data-username="<%= data.username %>">
             <img class="icon" src="/images/connect.svg">
-            <div class="username open-user-profile" data-username="<%= data.username %>"><%= data.username %></div>
+            <div class="username open-user-profile" data-username="<%= data.username %>">@<%= data.username %></div>
         </div>
         <div class="date"><span class="moment" data-time="<%= data.time %>"></span></div>
     </div>
@@ -120,7 +120,7 @@
         <div class="text">
             <img class="avatar open-user-profile" src="<%= data.avatar %>" data-username="<%= data.username %>">
             <img class="icon" src="/images/disconnect.svg">
-            <div class="username open-user-profile" data-username="<%= data.username %>"><%= data.username %></div>
+            <div class="username open-user-profile" data-username="<%= data.username %>">@<%= data.username %></div>
         </div>
         <div class="date"><span class="moment" data-time="<%= data.time %>"></span></div>
     </div>
@@ -129,7 +129,7 @@
         <div class="text">
             <img class="avatar open-user-profile" src="<%= data.avatar %>" data-username="<%= data.username %>">
             <img class="icon" src="/images/in.svg">
-            <div class="username open-user-profile" data-username="<%= data.username %>"><%= data.username %></div>
+            <div class="username open-user-profile" data-username="<%= data.username %>">@<%= data.username %></div>
         </div>
         <div class="date"><span class="moment" data-time="<%= data.time %>"></span></div>
     </div>
@@ -138,7 +138,7 @@
         <div class="text">
             <img class="avatar open-user-profile" src="<%= data.avatar %>" data-username="<%= data.username %>">
             <img class="icon" src="/images/out.svg">
-            <div class="username open-user-profile" data-username="<%= data.username %>"><%= data.username %></div>
+            <div class="username open-user-profile" data-username="<%= data.username %>">@<%= data.username %></div>
         </div>
         <div class="date"><span class="moment" data-time="<%= data.time %>"></span></div>
     </div>

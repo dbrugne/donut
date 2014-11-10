@@ -6,7 +6,7 @@
 <% previous = user.status; %>
 <div class="item <% if (user.is_op === true) { %>op<% }; %> <% if (user.is_owner === true) { %>owner<% }; %> <%= user.status %>">
     <span class="avatar" title="<% if (user.is_op === true) { %><%= t('chat.op.is') %><% } else if (user.is_owner === true) { %><%= t('chat.owner.is') %><% }; %>"><img class="open-user-profile" data-username="<%= user.username %>" src="<%= user.avatar %>" alt="<%= user.username %> avatar"></span>
-    <span class="username open-user-profile" data-username="<%= user.username %>" title="<%= t('global.'+user.status) %>"><%= user.username %></span>
+    <span class="username open-user-profile" data-username="<%= user.username %>" title="<%= t('global.'+user.status) %>">@<%= user.username %></span>
     <span class="actions">
         <% if (!user.is_owner && (isOp === true || isOwner === true)) { %>
             <% if (user.is_op === true) { %>

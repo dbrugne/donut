@@ -7,7 +7,7 @@
         <% if (one.unread > 0) { %>
         <span class="unread"><%= one.unread %></span>
         <% }; %>
-        <span class="name"><%= one.username %></span>
+        <span class="name">@<%= one.username %></span>
         <img src="/images/close.svg" class="close-onetoone" data-username="<%= one.username %>" alt="close" title="Close this discussion">
     </a>
     <% }); %>

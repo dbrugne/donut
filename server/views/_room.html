@@ -5,7 +5,7 @@
             <div class="name"><a href="{{url}}">{{name}}</a></div>
            {{#owner}}
            <p class="owner">
-               {{#i}}global.by{{/i}} <a href="{{owner.url}}" {{#color}}style="color: {{color}};"{{/color}}>{{owner.username}}</a>
+               {{#i}}global.by{{/i}} <a href="{{owner.url}}" {{#color}}style="color: {{color}};"{{/color}}>@{{owner.username}}</a>
            </p>
            {{/owner}}
        </div>
@@ -22,7 +22,7 @@
             <div class="name"><a href="{{url}}">{{name}}</a></div>
             {{#owner}}
             <p class="owner">
-                {{#i}}global.by{{/i}} <a href="{{owner.url}}">{{owner.username}}</a>
+                {{#i}}global.by{{/i}} <a href="{{owner.url}}">@{{owner.username}}</a>
             </p>
             {{/owner}}
             {{#description}}

@@ -1,7 +1,7 @@
 <div class="room" data-colorify="<%= room.color %>">
     <img class="avatar" src="<%= room.avatar %>" alt="<%= room.name %> avatar">
     <p class="name"><%= room.name %></p>
-    <p class="owner"><%= t('global.by') %> <a class="open-user-profile" data-username="<%= room.owner.username %>" data-colorify-text="#ffffff"><%= room.owner.username %></a></p>
+    <p class="owner"><%= t('global.by') %> <a class="open-user-profile" data-username="<%= room.owner.username %>" data-colorify-text="#ffffff">@<%= room.owner.username %></a></p>
     <% if (room.description) { %><p class="description"><%= room.description %></p><% }; %>
     <% if (room.website) { %><p class="website"><i class="fa fa-link"></i> <span><%= room.website %></span></p><% }; %>
     <% if (room.created) { %><p class="created"><i class="fa fa-clock-o"></i> <%= t('profile.room.createdat') %> <span data-time="<%= room.created %>"></span></p><% }; %>
@@ -12,7 +12,7 @@
     <% _.each(room.users_list, function(user) { %>
     <div class="user open-user-profile <% if (user.isOwner) { %>owner<% }; %> <% if (user.isOp) { %>op<% }; %>" data-username="<%= user.username %>" data-colorify="<%= user.color %>">
         <img class="avatar" src="<%= user.avatar %>" />
-        <span class="username"><%= user.username %></span>
+        <span class="username">@<%= user.username %></span>
     </div>
     <% }); %>
     <hr>

@@ -11,7 +11,7 @@
             <img class="avatar" src="<%= room.avatar %>">
             <p class="name"><%= room.name %></p>
             <% if (room.owner.username) { %>
-            <p class="owner"><%= t('global.by') %> <a data-colorify-text="#ffffff"><%= room.owner.username %></a></p>
+            <p class="owner"><%= t('global.by') %> <a data-colorify-text="#ffffff">@<%= room.owner.username %></a></p>
             <% } %>
             <!-- p class="topic"><%= room.topic %></p -->
             <p class="join">
@@ -27,7 +27,7 @@
                 <img class="avatar" src="<%= room.avatar %>" data-colorify-border="lighter">
                 <p class="name" data-colorify-text="contrast"><%= room.name %></p>
                 <% if (room.owner.username) { %>
-                <p class="owner"><%= t('global.by') %> <a class="open-user-profile" data-username="<%= room.owner.username %>" data-colorify-text="contrast"><%= room.owner.username %></a></p>
+                <p class="owner"><%= t('global.by') %> <a class="open-user-profile" data-username="<%= room.owner.username %>" data-colorify-text="contrast">@<%= room.owner.username %></a></p>
                 <% } %>
                 <p class="description"><%= room.description %></p>
             </div>

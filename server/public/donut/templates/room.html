@@ -8,7 +8,7 @@
         <img class="avatar open-room-profile" data-room-name="<%= name %>" src="<%= avatar %>" alt="<%= name %> avatar">
         <div class="name open-room-profile" data-room-name="<%= name %>"><%= name %></div>
         <% if (owner && owner.username) { %>
-            <div class="owner"><%= t('global.by') %> <a class="open-user-profile" data-username="<%= owner.username %>" data-colorify-text="color"><%= owner.username %></a></div>
+            <div class="owner"><%= t('global.by') %> <a class="open-user-profile" data-username="<%= owner.username %>" data-colorify-text="color">@<%= owner.username %></a></div>
         <% } %>
         <div class="actions">
             <span class="url"><i class="fa fa-link"></i> <a href="<%= url %>" target="_blank" title="<%= name %> <%= t('global.permalink') %>"><%= url.replace('http://', '') %></a></span>
