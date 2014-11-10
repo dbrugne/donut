@@ -7,7 +7,9 @@ chat
 - [ ] Contenteditable
 - [ ] Placeholder
 - [ ] Post on Enter, line return with shift+enter
-- [ ] Avoid bold, italic, other formatting
+- [x] Avoid bold, italic, other formatting
+- [x] Filter pasted content to remove HTML
+- [ ] on cleanup we should deal with escaped HTML &chars; bug that are unescaped after $().text()
 - [ ] Image in discussion (drag&drop, button, copy&paste)
 - [ ] Store and load previous message with arrow up/down (localstorage)
 - [ ] Smileys popin
