@@ -94,7 +94,7 @@
         "description": "Le nom d'utilisateur sera votre identité sur DONUT. Les autres utilisateurs le verront. Il n'est pas modifiable.",
         "help": [
           "Entre 3 et 15 caractères.<br>",
-          "Autorisés : lettres, chiffres et caractères spéciaux : <strong>-._|[]^</strong><br>",
+          "Autorisés : lettres, chiffres et caractères spéciaux : <strong>-._|^</strong><br>",
           "Interdits : espaces, accents et caractères spéciaux non listés ci-dessus.<br>"
         ],
         "usernameerror": "Ce nom d'utilisateur ne respecte pas les contraintes.",
@@ -177,7 +177,7 @@
           "label": "Créez votre donut",
           "help": [
             "Entre 3 et 24 caractères.<br>",
-            "Autorisés : lettres, chiffres et caractères spéciaux : <strong>-._|[]^</strong><br>",
+            "Autorisés : lettres, chiffres et caractères spéciaux : <strong>-._|^</strong><br>",
             "Interdits : espaces, accents et caractères spéciaux non listés ci-dessus.<br>"
           ],
           "placeholder": "Nom du donut",
@@ -280,9 +280,9 @@
         },
         "password": {
             "label": "Mot de passe",
-            "success": "Votre nouveau mot de passe a bien été enregistré",
+            "success": "Votre nouveau mot de passe a bien été enregistré.",
             "error": {
-                "confirm": "Les deux mots de passe ne sont pas identiques",
+                "confirm": "Les deux mots de passe ne sont pas identiques.",
                 "length": "Le mot de passe doit au moins faire 6 caractères de long."
             }
         },

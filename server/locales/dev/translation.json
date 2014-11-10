@@ -94,7 +94,7 @@
     "description": "This username will be your identity on DONUT and will be public. You cannot edit it later.",
     "help": [
       "Between 3 and 15 characters.<br>",
-      "Valid : letters, numbers and special characters: <strong>-._|[]^</strong><br>",
+      "Valid : letters, numbers and special characters: <strong>-._|^</strong><br>",
       "Invalid: spaces, accents and special characters not listed above.<br>"
     ],
     "usernameerror": "This username does not match constraints",
@@ -177,7 +177,7 @@
       "label": "Create your donut",
       "help": [
       "Between 3 and 15 characters.<br>",
-      "Valid : letters, numbers and special characters: <strong>-._|[]^</strong><br>",
+      "Valid : letters, numbers and special characters: <strong>-._|^</strong><br>",
       "Invalid: spaces, accents and special characters not listed above.<br>"
     ],
       "placeholder": "Donut name",
@@ -277,7 +277,10 @@
     "password": {
       "label": "Your password",
       "success": "Your new password has been saved.",
-      "error": []
+      "error": {
+        "confirm": "Pass two passwords are not the same.",
+        "length": "Password should have at least 6 characters length."
+      }
     },
     "facebook": {
       "label": "Facebook",
