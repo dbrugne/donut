@@ -115,104 +115,17 @@ Admin
   - [ ] /me commande to describe current action
   - [ ] Add an option to avoid exit popin on chat interface
   - [ ] Improve backlog experience when refocus a room with lot of unread messages (button to jump on last viewed message and display highligth on unread messages)
-  - [ ] Sound on new message
-  - [ ] Animation on new message adding in .events
 
-**Content**
-- [ ] Animated 'rollers' for alternative texts on landing
 
-**Help**
-- [ ] Help infobox on chat interface + help button
-- [ ] Help block with capture to explain the Facebook signup procedure (find best practices on internet)
-- [ ] First entrance 'tutorial' (5 slides) + button to replay
-
-**Features**
-- [ ] Add bookmark a room star in header with favorites rooms in home and account and profile
-
-**Room/user design**
-- [ ] Add "your rooms" on homepage
-- [ ] Add a bouncer feature when an unlogged user click on #!... URL (to room/user profile)
-
-**Tooling**
 - [ ] Backup
 - [ ] Monitoring
-- [ ] Minimum virtual traffic generation
-- [ ] Basic grunt sample data injection (users and rooms) with production and dev fixture sets
-
-**Search**
-- [ ] Quick search in left column (with 'light' param to get only username/name + avatar) and link for 'more results' that focus and fill the homepage search
-
-**SEO**
-- [ ] Create an IRC channel page with Google Adwords campaign
-
-## Release 4
-
-**Chat**
-- [ ] Implement async series/waterfall in socket code
-- [ ] Auto-mention user in room message ($.fn.mentionize())
-- [ ] Allow user to change room-user list sort order
-- [ ] Allow user to change room-user list display
-
-**Performance/security/maintenability**
-- [ ] Compress JS: https://github.com/JakeWharton/uglify-js-middleware
-- [ ] Strongify password constrains (signup, login and forgot, very long or complex)
-- [ ] Remove HOGAN and re-add EJS
-
-**Features**
-- [ ] Implement "remember me" mechanism on login form
-
-**Presence management**
-  - [ ] Each user received on client side (room user, owner, onetoone user, home users ... but not search engine users) are instanciated as a User Model
-  - [ ] This model is stored ALSO in a global knownUsers collection
-  - [ ] Each model "listen for a user presence" socket.io room
-  - [ ] View of this model (could have lot of different template) ... should listen for model modification : how to handle user list (room users) that are re-drawn totally? With the block listening for collection/model change?
-  - [ ] How to cleanup users that have totally leave our vision space (no longer in the room we are, no one to one open, not displayed on room)
-
-## Next releases
-
-Critical:
-- [ ] Room ban (time and permanent)
-- [ ] Fix bug that maintain user logged in chat on logout
-- [ ] Introduce guest mode (= no ?) and allow guest option
-
-Chat:
-- [ ] Replace user_id by username in user:profile request
-- [ ] Message improving
-  - [ ] Code syntax indexing
-- [ ] Hyperlink analyse and open graph extraction with hover popin in rooms and discussions (specific template for YouTube content)
-
-Backend:
-- [ ] Traditional page secured zone
-- [ ] Room crud
-- [ ] User crud
-- [ ] Instant online user list
--- [ ] real time activity monitor (multi connections)
-- [ ] Instant active room list
--- [ ] real time activity monitor
-- [ ] Server list and state
-- [ ] Aggregate some data to have count 
-
-Features:
-- [ ] Highlight messages of the same user of this message
-- [ ] Bookmark user
-- [ ] Add sound on events
-- [ ] Private room
-- [ ] User can black-list other users (invitation and onetoone)
-- [ ] Add form validation client-side: account/*, login, signup
-
-Mobile:
-- [ ] Make it work on tablet/phone (browser)
-- [ ] (mobile) Port a mobile version with Cordova
-- [ ] Identify and track devices for each socket/activity
-
-Ideas:
-- [ ] Room widget to paste on a website to incentive website visitor to join the room
-- [ ] Loyalty, advanced offline notification system (email, sms, frequency (instant, daily, weekly), filter (all activity, mentions, one to one, room where i am) with direct link to room/one to one allow fast anwser (even on mobile)
-- [ ] Public mod for a room (all the content is visible by anyone)
-- [ ] Pin a message
 
 
-## Project
 
-- [ ] Run OPQAST security checklist
-- [ ] Mocha/Chai + casperjs tests
+## Grunt tasks
+- Deploy
+  - git pull
+  - compile JS
+  - set chat.html require.js source
+- Cleanup cloudinary pictures with "discussion" and "notposted" tag
+- Inject sample data (for new deployment on dev): #donut, #support, fake users and rooms
