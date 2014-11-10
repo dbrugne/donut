@@ -4,7 +4,10 @@ var configuration = require('../config/index');
 var User = require('../app/models/user');
 var Room = require('../app/models/room');
 var Activity = require('../app/models/activity');
-var sanitize = require('sanitize-caja');
+var sanitize = {
+  'html': require('sanitize-html'),
+  'caja': require('sanitize-caja')
+};
 var expressValidator = require('../app/validator');
 
 module.exports = {
@@ -434,13 +437,18 @@ module.exports = {
    * @return '' or filtered String
    */
   inputFilter: function(value, maxLength) {
+    // @todo : broken with mentions, replace @()[] in evaluated string with captured username before counting
     maxLength = maxLength || 512;
     if (!expressValidator.validator.isLength(value, 1, 512))
       return '';
 
     var filtered;
     filtered = value.replace('<3', '#!#!#heart#!#!#').replace('</3', '#!#!#bheart#!#!#'); // very common but particular case
-    filtered = sanitize(filtered);
+    filtered = sanitize.html(filtered, {
+      allowedTags        : {},
+      allowedAttributes  : {}
+    });
+    filtered = sanitize.caja(filtered);
     filtered = value.replace('#!#!#heart#!#!#', '<3').replace('#!#!#bheart#!#!#', '</3');
     return filtered;
     /**

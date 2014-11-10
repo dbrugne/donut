@@ -31,6 +31,7 @@
     "underscore": "1.7.x",
     "cloudinary": "~1.0.9",
     "sanitize-caja": "0.x",
+    "sanitize-html": "1.x",
     "nodemailer": "1.2.x",
     "async": "0.9.x",
     "i18next": "1.7.x",
