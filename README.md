@@ -18,10 +18,20 @@ chat
 
 - [ ] Add @ before every username
 
+Admin
+- [ ] Add event to make IHM reload
+- [ ] Add event in all discussions to inform users of deployment
+
+- [ ] Add a cleanup method that empty .messages periodically to avoid memory leak
+
 - Notification
 - [ ] Add notification to owner/op when a user enter in room
 - [ ] Add email to notify us of user connection
   -> Draft notifications: DONE https://irc.box.com/s/wk9iq6wihj8vsnqc7tpj
+
+- History on connection/join
+  - Store delivered user list on each onetoone/room:message (+delivered)
+  - Take this on consideration when loading history on connection/join to select event to transmit
 
 - [ ] Badge for websites
 
@@ -79,9 +89,6 @@ chat
 - [ ] Invite users in room (Facebook)
 - [ ] Invite users in room (email)
 - [ ] Invite your friend on donut (Facebook)
-
-**History**
-- [ ] Add a cleanup method that empty .messages periodically to avoid memory leak
 
 **Search**
 - [ ] Add pagination with limit of results
