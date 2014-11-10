@@ -58,7 +58,7 @@ define([
 
       // render already in collection events
       this.collection.each(function(model) {
-        that.onEvent(model);
+        that.displayEvent(model);
       });
     },
     updateMoment: function() {
@@ -78,21 +78,21 @@ define([
       }
     },
     onAdd: function(model, collection, options) {
-      return this.onEvent(model);
+      return this.displayEvent(model);
     },
-    onEvent: function(model, collection, options) {
+    displayEvent: function(model, collection, options) {
 //      console.log('new event '+model.get('id')+' of type '+model.get('type'));
 //      var _start = Date.now();
 
       var firstElement, lastElement, previousElement, nextElement;
 
       // all .event list
-      var list = this.$timeline.find('.event').get(); // @todo : test optimisation, save this.$timeline.find('.event') and test .length, do .get() only for reverse search
+      var $list = this.$timeline.find('.event');
 
-      if (list.length > 0)
-        firstElement = list[0];
-      if (list.length > 1)
-        lastElement = list[(list.length-1)];
+      if ($list.length > 0)
+        firstElement = $list.first();
+      if ($list.length > 1)
+        lastElement = $list.last();
 
       if (firstElement && model.get('data').time < $(firstElement).data('time'))
         nextElement = firstElement;
@@ -100,7 +100,8 @@ define([
       else if (lastElement && model.get('data').time > $(lastElement).data('time'))
         previousElement = lastElement;
       // normal case (loop)
-      else if (list.length > 0) {
+      else if ($list.length > 0) {
+        var list = $list.get();
         // should we begin by end?
         if (firstElement && lastElement
           && (model.get('data').time - $(lastElement).data('time'))
