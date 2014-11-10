@@ -27,7 +27,7 @@ define([
 
       var tpl = new String('<span class="username open-user-profile" data-username="%username">%username</span>');
       tpl = tpl.replace(/%username/g, currentUser.get('username'))
-      data.hello = this.hello.replace('%u', tpl);
+      data.hello = this.hello.replace('%u', '@'+tpl);
 
       data.avatar = $.cd.userAvatar(data.avatar, 60, data.color);
 
