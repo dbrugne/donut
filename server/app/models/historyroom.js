@@ -82,7 +82,7 @@ historySchema.statics.retrieve = function() {
 
     var criteria = {
       name: name,
-      time: { $lte: since, $gte: until },
+      time: { $gte: until, $lte: since },
       users: { $in: [userId] },
       event: { $nin: ['user:online', 'user:offline'] }
     };
