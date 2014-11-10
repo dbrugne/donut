@@ -30,7 +30,8 @@
       autocompleteListItemAvatar : _.template('<img src="<%= avatar %>" />'),
       autocompleteListItemIcon   : _.template('<div class="icon <%= icon %>"></div>'),
       mentionsOverlay            : _.template('<div class="mentions"><div></div></div>'),
-      mentionItemSyntax          : _.template('@[<%= value %>](<%= type %>:<%= id %>)'),
+      //mentionItemSyntax          : _.template("@[<%= value %>](<%= type %>:<%= id %>)"),
+      mentionItemSyntax          : _.template("@[<%= value.replace(/^@/, '') %>](<%= type %>:<%= id %>)"), // modified for donut
       mentionItemHighlight       : _.template('<strong><span><%= value %></span></strong>')
     }
   };
@@ -218,7 +219,7 @@
 
 	//Takes the blur event on text area
     function onInputBoxBlur(e) {
-      hideAutoComplete();
+//      hideAutoComplete(); // changed for donut
     }
 
 	//Takes the input event when users write or delete something
@@ -340,7 +341,9 @@
       _.each(results, function (item, index) {
         var itemUid = _.uniqueId('mention_'); //Gets the item with unique id
 
-        autocompleteItemCollection[itemUid] = _.extend({}, item, {value: item.name}); //Inserts the new item to autocompleteItemCollection
+        //autocompleteItemCollection[itemUid] = _.extend({}, item, {value: item.name}); //Inserts the new item to autocompleteItemCollection
+        // modified for donut
+        autocompleteItemCollection[itemUid] = _.extend({}, item, {value: '@'+item.name}); //Inserts the new item to autocompleteItemCollection
 
         var elmListItem = $(settings.templates.autocompleteListItem({
           'id'      : utils.htmlEncode(item.id),

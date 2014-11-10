@@ -4,21 +4,15 @@ chat
 ## v1.0 : opening platform to real people
 
 **Input box**
-- [ ] Contenteditable
-- [ ] Placeholder
-- [ ] Post on Enter, line return with shift+enter
-- [x] Avoid bold, italic, other formatting
-- [x] Filter pasted content to remove HTML
-- [ ] on cleanup we should deal with escaped HTML &chars; bug that are unescaped after $().text()
+- [x] Post on Enter, line return with shift+enter
+- [x] User mentions
+  - [ ] Replace current dropdown search by ws request
+- [x] Link detection and highlight
+- [x] Filter output before sending: 512 car. max, without HTML, no specials expect image/smiley
+- [x] Add @ before every username everywhere
 - [ ] Image in discussion (drag&drop, button, copy&paste)
 - [ ] Store and load previous message with arrow up/down (localstorage)
 - [ ] Smileys popin
-- [ ] Images drag&drop in input box + direct upload to cloudinary and hyperlink addition in message
-- [ ] User mentions (with @ and auto-dropdown) + highlight in .events
-- [ ] Link detection and highlight
-- [ ] Filter output before sending: 512 car. max, without HTML, no specials expect image/smiley
-
-- [x] Add @ before every username
 
 Admin
 - [ ] Add event to make IHM reload

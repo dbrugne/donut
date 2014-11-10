@@ -219,6 +219,14 @@ define([
         data.data.message = _.escape(data.data.message);
       }
 
+      // mentions
+      if (this.model.get('type') == 'room' && data.data.message) {
+        data.data.message = data.data.message.replace(
+          /@\[([^\]]+)\]\(user:([^)]+)\)/g,
+          '<a class="mention open-user-profile" data-username="$1">@$1</a>'
+        );
+      }
+
       data.withBlock = withBlock || false;
       try {
         return this.template(data);

@@ -26,6 +26,16 @@ define([
 
       return string1.toLowerCase().localeCompare(string2.toLowerCase());
     },
+    iwhere : function(key, val){ // insencitive case search
+      var matches = this.filter(function(item){
+        return item.get(key).toLocaleLowerCase() === val.toLocaleLowerCase();
+      });
+
+      if (matches.length < 1)
+        return undefined;
+
+      return matches[0];
+    },
 
     initialize: function(options) {
       this.on("change:avatar", this.onChange);
