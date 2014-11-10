@@ -18,7 +18,6 @@ require.config({
     'jquery.mcs'                  : '../vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar',
     'jquery.mousewheel'           : '../vendor/jquery-mousewheel/jquery.mousewheel',
     'jquery.insertatcaret'        : '../javascripts/plugins/jquery.insertatcaret',
-    'jquery.textareacaretposition': '../javascripts/plugins/jquery.textareacaretposition',
     'jquery.maxlength'            : '../javascripts/plugins/jquery.maxlength',
     'jquery.linkify'              : '../javascripts/plugins/jquery.linkify',
     'jquery.smilify'              : '../javascripts/plugins/jquery.smilify',
@@ -31,7 +30,6 @@ require.config({
     'jquery.cloudinary'           : ['jquery'],
     'jquery.cloudinary-donut'     : ['jquery'],
     'jquery.insertatcaret'        : ['jquery'],
-    'jquery.textareacaretposition' : ['jquery'],
     'jquery.maxlength'            : ['jquery'],
     'jquery.linkify'              : ['jquery'],
     'jquery.smilify'              : ['jquery'],
@@ -65,7 +63,6 @@ require([
    * Load (once) and attach plugins to jQuery and underscore
    ************************************/
   'jquery.insertatcaret',
-  'jquery.textareacaretposition',
   'jquery.maxlength',
   'jquery.cloudinary',
   'jquery.cloudinary-donut',
