@@ -4,15 +4,13 @@ chat
 ## v1.0 : opening platform to real people
 
 **Input box**
-- [x] Post on Enter, line return with shift+enter
-- [x] User mentions
+- User mentions
   - [ ] Replace current dropdown search by ws request
-- [x] Link detection and highlight
-- [x] Filter output before sending: 512 car. max, without HTML, no specials expect image/smiley
-- [x] Add @ before every username everywhere
+- Room mentions
 - [ ] Image in discussion (drag&drop, button, copy&paste)
 - [ ] Store and load previous message with arrow up/down (localstorage)
 - [ ] Smileys popin
+- [ ] Sound on new message: if windows is not focus, or concerned discussion, different sound when i'm notified
 
 Admin
 - [ ] Add event to make IHM reload
