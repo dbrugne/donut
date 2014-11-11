@@ -8,26 +8,47 @@ module.exports = function (io, socket, data) {
   if (!data.search)
    return;
 
+  var searchInRooms = (data.rooms && data.rooms == true)
+    ? true
+    : false;
+
+  var searchInUsers = (data.users && data.users == true)
+    ? true
+    : false;
+
+  if (!searchInRooms && !searchInUsers)
+    return;
+
+  var lightSearch = (data.light && data.light == true)
+    ? true
+    : false;
+
   var pattern = data.search.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
   var regexp = new RegExp(pattern, "i");
 
   async.parallel([
 
       function roomSearch(callback) {
+        if (!searchInRooms)
+          return callback(null, false);
 
         var search = {
           name: regexp
-//          $or: [
-//            { name: regexp },
-//            { description: regexp }
-//          ]
         };
 
-        var q = Room
-          .find(search, 'name owner description topic avatar color users lastjoin_at')
-          .sort({'lastjoin_at': -1})
-          .limit(150)
-          .populate('owner', 'username');
+        var q;
+        if (!lightSearch) {
+          q = Room
+            .find(search, 'name owner description topic avatar color users lastjoin_at')
+            .sort({'lastjoin_at': -1})
+            .limit(150)
+            .populate('owner', 'username');
+        } else {
+          q = Room
+            .find(search, 'name avatar color lastjoin_at')
+            .sort({'lastjoin_at': -1})
+            .limit(150);
+        }
         q.exec(function(err, rooms) {
           if (err)
             return callback('Error while searching for rooms: '+err);
@@ -46,16 +67,21 @@ module.exports = function (io, socket, data) {
               ? room.users.length
               : 0;
 
-            results.push({
+            var r = {
               name: room.name,
-              owner: owner,
-              description: room.description,
-              topic: room.topic,
               avatar: room.avatar,
               color: room.color,
-              users: count,
               lastjoin_at: new Date(room.lastjoin_at).getTime()
-            });
+            };
+
+            if (!lightSearch) {
+              r.owner = owner;
+              r.description = room.description;
+              r.topic = room.topic;
+              r.users = count;
+            }
+
+            results.push(r);
           });
 
           // sort (users, lastjoin_at, name)
@@ -75,6 +101,8 @@ module.exports = function (io, socket, data) {
       },
 
       function userSearch(callback) {
+        if (!searchInUsers)
+          return callback(null, false);
 
         var search = {
           username: regexp
@@ -87,16 +115,19 @@ module.exports = function (io, socket, data) {
 
           var results = [];
           helper._.each(users, function(user) {
-            var status = (helper.userSockets(io, user._id.toString()).length)
-              ? true
-              : false;
-
-            results.push({
+            var r = {
               username: user.username,
               avatar: user._avatar(),
-              color: user.color,
-              status: status
-            });
+              color: user.color
+            };
+
+            if (!lightSearch) {
+              r.status = (helper.userSockets(io, user._id.toString()).length)
+                ? 'online'
+                : 'offline';
+            }
+
+            results.push(r);
           });
 
           return callback(null, results);
@@ -108,12 +139,15 @@ module.exports = function (io, socket, data) {
       if (err)
         return helper.handleError(err);
 
-      var searchEvent = {
-        rooms: results[0],
-        users: results[1]
-      };
+      var event = {};
+      if (results[0] !== false)
+        event.rooms = results[0];
+      if (results[1] !== false)
+        event.users = results[1];
+      if (data.key)
+        event.key = data.key;
 
-      socket.emit('search', searchEvent);
+      socket.emit('search', event);
 
       // @todo : add a record in a dedicated statistic activity log (as for *:update)
     }

@@ -29,7 +29,7 @@ define([
         return client.home();
 
       this.lastSearch = s;
-      client.search(s);
+      client.search(s, 'home', true, true);
     }
 
   });

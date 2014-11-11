@@ -30,13 +30,15 @@ define([
       return this;
     },
     onHome: function(data) {
-      if (data.rooms)
-        this.roomsView.render(data);
-
-      if (data.users)
-        this.usersView.render(data);
+      // render both views even if no data to empty results list if no results
+      // or empty result
+      this.roomsView.render(data);
+      this.usersView.render(data);
     },
     onSearch: function(data) {
+      if (!data.key || data.key != 'home')
+        return; // RPC emulation, not a response for this view
+
       data.search = true;
       this.onHome(data);
     }

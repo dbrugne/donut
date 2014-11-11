@@ -203,8 +203,20 @@ define([
       this.socket.emit('home', {});
       this.debug(['io:out:home', {}]);
     },
-    search: function(search) {
-      var data = {search: search};
+    search: function(search, searchKey, rooms, users, light) {
+      var data = {
+        search: search, // string to search for
+        key: searchKey, // string key that server will send in response (allow RPC-like request)
+        light: (light)  // if the search should return a light version of results or not
+          ? true
+          : false,
+        rooms: (rooms) // if we should search for rooms
+          ? true
+          : false,
+        users: (users) // if we should search for users
+          ? true
+          : false
+      };
       this.socket.emit('search', data);
       this.debug(['io:out:search', data]);
     },
