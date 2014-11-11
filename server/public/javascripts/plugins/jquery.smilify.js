@@ -110,12 +110,18 @@
       });
     }
 
-    // smilify
+    // smilify codes
     if (action == 'smilify') {
       this.each(function () {
         var el = $(this);
         el.html($.smilify(el.html()));
       });
+    }
+
+    // html
+    if (action == 'html') {
+      var code = arguments[1];
+      return $.smilify.settings.replacement.replace(/\{eId\}/g, code);
     }
 
     return this;
