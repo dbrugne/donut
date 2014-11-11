@@ -329,70 +329,7 @@
     .input {
       position: absolute;
       left: 40px; right: 25px; bottom: 20px;
-      border: 1px solid @cl-subtext1;
-      > div {
-        position: relative;
-        padding: 12px 95px 12px 85px;
-        background-color: @cl-background;
-        .avatar {
-          position: absolute;
-          left: 14px; top: 12px;
-          width: 60px;
-          height: 60px;
-        }
-        .mentions { padding: 0; font-size: 13px; }
-        .mentions-autocomplete-list {
-          z-index: 10001;
-          top: initial;
-          overflow: auto;
-          font-size: 13px;
-        }
-        .mentions-input-box .mentions>div>strong {}
-        textarea {
-          padding: 0;
-          display: block;
-          min-height: 65px;
-          border: none;
-          overflow: auto;
-          outline: none;
-          resize: none;
-          -webkit-box-shadow: none;
-          -moz-box-shadow: none;
-          box-shadow: none;
-          font-size: 13px;
-        }
-        .send {
-          position: absolute;
-          top:0; bottom: 0; right:0;
-          width: 65px;
-          margin: 0;
-          border: 0;
-          padding-top: 20px;
-          padding-left: 5px;
-          display: inline-block;
-          background-color: @cl-first;
-          color: @cl-background;
-          text-align: center;
-          img {
-            width: 35px;
-          }
-          &:after {
-            content: "";
-            position: absolute;
-            bottom: -13px;
-            left: 19px;
-            border-style: solid;
-            border-width: 15px 15px 0;
-            border-right-color: transparent;
-            border-left-color: transparent;
-            border-top-color: inherit;
-            border-bottom-color: inherit;
-            display: block;
-            width: 0;
-            z-index: 1;
-          }
-        }
-      }
+      @import './chat-input';
     }
   }
   .side {
