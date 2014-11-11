@@ -11,9 +11,9 @@ define([
     template: _.template(InputTemplate),
 
     events: {
-      'keypress .input-message' : 'message',
-      'click .send'             : 'message',
-      'input .input-message'    : 'onInput'
+      'input .editable'    : 'onInput',
+      'keypress .editable' : 'onKeyPress',
+      'click .send'        : 'sendMessage'
     },
 
     initialize: function(options) {
@@ -27,16 +27,9 @@ define([
         avatar: $.cd.userAvatar(currentUser.get('avatar'), 80, currentUser.get('color'))
       }));
 
-      this.$editable = this.$el.find('.input-message');
+      this.$editable = this.$el.find('.editable');
 
       var that = this;
-
-//      // realtime caret position
-//      this.$editable.textareaCaretPosition('init', {
-//        callback: function(coordinates) {
-//          console.log(coordinates);
-//        }
-//      });
 
       // mentions initialisation
       this.$editable.mentionsInput({
@@ -75,8 +68,8 @@ define([
       this.$el.find('.avatar').prop('src', $.cd.userAvatar(value, 80, model.get('color')));
     },
 
-    message: function(event) {
-      // Press-enter in field handling
+    onKeyPress: function(event) {
+      // Press enter in field handling
       if (event.type == 'keypress') {
         var key;
         var isShift;
@@ -87,16 +80,20 @@ define([
           key = event.which;
           isShift = event.shiftKey ? true : false;
         }
-        if(isShift || event.which != 13) {
-          return;
+        if(event.which == 13 && !isShift) {
+          return this.sendMessage();
         }
       }
+    },
 
+    sendMessage: function(event) {
       // Get the message
       var that = this;
       this.$editable.mentionsInput('val', function(message) {
-        if (message == '') return false;
-        if (message.length > 512) return false;
+        if (message == '')
+          return false;
+        if (message.length > 512) // @todo: before testing length replace all mention tag with username, report on server side
+          return false;
 
         // Mentions, try to find missed ones
         if (that.model.get('type') == 'room') {

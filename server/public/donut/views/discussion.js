@@ -76,7 +76,8 @@ define([
       if (this.model.get('focused')) {
         this.$el.show();
         this.eventsView.scrollDown();
-        this.$el.find('.input-message').focus();
+        if (this.$editable)
+          this.$editable.focus();
         this._focus();
       } else {
         this.$el.hide();
