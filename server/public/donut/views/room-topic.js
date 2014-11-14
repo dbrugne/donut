@@ -61,7 +61,8 @@ define([
       this.render();
     },
     showForm: function() {
-      if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner()) return false;
+      if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner())
+        return false;
 
       this.$el.find('.topic-current').hide();
       this.$el.find('.topic-form').css('display', 'block');
