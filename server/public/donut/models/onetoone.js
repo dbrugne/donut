@@ -25,7 +25,6 @@ define([
       this.listenTo(client, 'user:profile', this.onProfile);
       this.listenTo(client, 'user:online', this.onUserOnline);
       this.listenTo(client, 'user:offline', this.onUserOffline);
-//      this.listenTo(client, 'user:status', this.onStatus);
       this.listenTo(client, 'user:history', this.onHistory);
     },
     leave: function() {
@@ -34,11 +33,6 @@ define([
     onMessage: function(data) {
       this.onEvent('user:message', data);
     },
-//    onStatus: function(data) {
-//      if (data.username != this.get('username'))
-//        return;
-//      this.set({status: data.status});
-//    },
     onUserOnline: function(data) {
       this._onStatus('online', data);
     },
@@ -66,7 +60,7 @@ define([
       this.set(data.user);
     },
     onHistory: function(data) {
-      if (data.name != this.get('name'))
+      if (this.get('username') != data.username)
         return;
 
       if (data.history && data.history.length > 0) {
