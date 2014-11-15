@@ -266,7 +266,7 @@ define([
       if (this.model.get('type') == 'room' && data.data.message) {
         data.data.message = data.data.message.replace(
           /@\[([^\]]+)\]\(user:([^)]+)\)/g,
-          '<a class="mention open-user-profile" data-username="$1">@$1</a>'
+          '<a class="mention open-user-profile" data-username="$1" data-colorify-text="color" data-colorify="'+this.model.get('color')+'">@$1</a>'
         );
       }
 
