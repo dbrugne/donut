@@ -3,8 +3,13 @@ donut
 
 ## In progress
 
-- Historique => charger plus
-- Sound on new message: if windows is not focus, or concerned discussion, different sound when i'm notified
+Improve "unread" messages experience
+- In a centralized place detect if: window is focused or not, which discussion is focused, get current username
+- Make new room/user:message trigger event on this object
+- Change window title even if window is focused (display unread messages in other discussion)
+- Play a sound a message on new message in not focused discussion (or if window is not focused)
+- Play a different sound when i'm notified in not focused discussion (or if window is not focused)
+- http://stackoverflow.com/questions/9419263/playing-audio-with-javascript
 
 - [ ] Room mentions
 - [ ] Image in discussion (drag&drop, button, copy&paste)
