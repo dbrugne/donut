@@ -1,10 +1,8 @@
-chat
+donut
 ====
 
 ## In progress
 
-- https://github.com/dbrugne/chat/issues/33 : add a cleanup method that empty .messages periodically to avoid memory leak
-- https://github.com/dbrugne/chat/issues/21
 - Historique => charger plus
 - Sound on new message: if windows is not focus, or concerned discussion, different sound when i'm notified
 
