@@ -292,8 +292,8 @@ define([
       // spinner
       this.$el.find('.history .spinner').show();
 
-      // until
-      var until = $(event.currentTarget).data('days');
+//      // until
+//      var until = $(event.currentTarget).data('days');
 
       // since, only one hello could be present in DOM, so with 2 elements
       //  we must have at least one real event
@@ -308,9 +308,9 @@ define([
 
       // @todo : cleanup this code, call on model for example
       if (this.model.get('type') == 'room')
-        client.roomHistory(this.model.get('name'), since, until);
+        client.roomHistory(this.model.get('name'), since, '');
       else if (this.model.get('type') == 'onetoone')
-        client.userHistory(this.model.get('username'), since, until);
+        client.userHistory(this.model.get('username'), since, '');
     },
     onHistoryLoaded: function() {
       this.historyLoading = false;

@@ -231,13 +231,8 @@
       "offline": "is offline,"
     },
     "history": {
-      "displayhistory": "Display history since",
-      "1day"    : "Yesterday",
-      "7days"   : "7 days",
-      "30days"  : "30 days",
-      "90days"  : "3 months",
-      "180days" : "6 months",
-      "365days" : "1 year"
+      "label": "History",
+      "displayhistory": "display more..."
     },
     "shouldauthenticated": "You must be logged in to access chat (<a href='/signup'>signup</a> or <a href='/login'>login</a>)",
     "closemessage": "Are you sure you want to leave? Your conversation log will be lost.",

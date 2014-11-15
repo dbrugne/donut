@@ -58,17 +58,7 @@ historySchema.statics.retrieve = function() {
    * @param fn
    */
   return function(user1, user2, since, until, fn) {
-    // Since
-    since = since || Date.now(); // from now
-    since = new Date(since);
-
-    // Until, floor to  day at 00:00
-    until = Date.now() - (1000*3600*24*until);
-    var u = new Date(until);
-    var until = new Date(u.getFullYear(), u.getMonth(), u.getDate());
-
     var criteria = {
-      time: { $lte: since, $gte: until },
       $or: [
         {from: user1, to: user2},
         {from: user2, to: user1}
@@ -76,9 +66,33 @@ historySchema.statics.retrieve = function() {
       event: { $nin: ['user:online', 'user:offline'] }
     };
 
+    // Since
+    if (since) {
+      since = since || Date.now(); // from now
+      since = new Date(since);
+      criteria.time = {};
+      criteria.time.$lte = since;
+    }
+
+    // Until, floor to  day at 00:00
+    if (until) {
+      until = Date.now() - (1000*3600*24*until);
+      var u = new Date(until);
+      var until = new Date(u.getFullYear(), u.getMonth(), u.getDate());
+      if (!criteria.time)
+        criteria.time = {};
+      criteria.time.$gte = until;
+    }
+
+    // limit
+    var limit = (criteria.time && criteria.time.$lte && criteria.time.$gte)
+      ? 10000 // arbitrary
+      : 250;
+
+    //console.log(criteria, limit);
     var q = that.find(criteria)
       .sort({time: 'desc'})
-      .limit(10000); // arbitrary protection, maybe noy helpful
+      .limit(limit);
 
     q.exec(function(err, entries) {
       if (err)
