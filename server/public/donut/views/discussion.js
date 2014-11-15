@@ -88,7 +88,7 @@ define([
     removeView: function(model) {
       if (model === this.model) {
         this._remove();
-        this.eventsView.remove();
+        this.eventsView._remove();
         this.messageBoxView.remove();
         this.remove();
       }

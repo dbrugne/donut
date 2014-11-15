@@ -18,8 +18,13 @@ define([
 
     scrollReady: false,
 
+    scrollBottom: false,
+
+    interval: null,
+
     initialize: function(options) {
       this.listenTo(this.collection, 'add', this.onAdd);
+      this.listenTo(this.collection, 'remove', this.onRemove);
       this.listenTo(this.model, 'history:loaded', this.onHistoryLoaded);
       this.listenTo(this.model, 'change:focused', this.updateMoment);
 
@@ -28,8 +33,18 @@ define([
         that.render();
       });
 
-      // Regularly update moment times
-      setInterval(function() { that.updateMoment(); }, 45*1000); // every 45s
+      // recurent tasks
+      this.interval = setInterval(function() {
+        if (!that.model.get('focused')) // only on currently focused view
+          return;
+
+        // remove old messages (only if scroll is bottom)
+        if (that.scrollBottom)
+          that.collection.cleanup();
+
+        // update moment times
+        that.updateMoment();
+      }, 45*1000); // every 45s
     },
     render: function() {
       var that = this;
@@ -42,6 +57,16 @@ define([
         scrollButtons         : { enable: true },
         advanced:{
           updateOnContentResize: true
+        },
+        callbacks:{
+          onScroll: function() {
+            if (this.mcs.topPct == 100)
+              that.scrollBottom = true;
+            else
+              that.scrollBottom = false;
+//            console.log('scroll is :'+this.mcs.topPct+'%');
+//            console.log('scroll is bottomed '+that.scrollBottom);
+          }
         }
       });
 
@@ -61,9 +86,11 @@ define([
         that.displayEvent(model);
       });
     },
+    _remove: function() {
+      clearInterval(this.interval);
+      this.remove();
+    },
     updateMoment: function() {
-      if (!this.model.get('focused')) return;
-
       // Update all .moment of the discussion panel
       this.$el.find('.moment').momentify();
     },
@@ -79,6 +106,21 @@ define([
     },
     onAdd: function(model, collection, options) {
       return this.displayEvent(model);
+    },
+    onRemove: function(model, collection, options) {
+      var $event = this.$el.find("[data-event-id='"+model.get('id')+"']");
+      if (!$event)
+        return;
+
+      if (model.getGenericType() != 'standard')
+        var $block = $event.closest('.block');
+
+      $event.remove();
+
+      if (model.getGenericType() != 'standard' && $block.find('.event').length < 1) {
+        // handle empty block removing
+        $block.remove();
+      }
     },
     displayEvent: function(model, collection, options) {
 //      console.log('new event '+model.get('id')+' of type '+model.get('type'));
@@ -101,6 +143,7 @@ define([
         previousElement = lastElement;
       // normal case (loop)
       else if ($list.length > 0) {
+        console.log('events list loop: '+model.get('type'));
         var list = $list.get();
         // should we begin by end?
         if (firstElement && lastElement
@@ -236,7 +279,6 @@ define([
         return false;
       }
     },
-
     onHistory: function(event) {
       event.preventDefault();
       event.stopPropagation();
@@ -270,7 +312,6 @@ define([
       else if (this.model.get('type') == 'onetoone')
         client.userHistory(this.model.get('username'), since, until);
     },
-
     onHistoryLoaded: function() {
       this.historyLoading = false;
       this.$timeline.find('.history .spinner').hide();

@@ -8,7 +8,6 @@ define([
     comparator: 'time',
 
     initialize: function(options) {
-
     },
 
     /**
@@ -76,8 +75,29 @@ define([
       }
 
       return true;
-    }
+    },
 
+    /**
+     * Remove (first) events from collection to keep collection:
+     * - under n events
+     * - but never remove events from less than 1 hour
+     */
+    keepMaxEventsOnCleanup: 1000,
+    keepMaxHoursOnCleanup: 1,
+    cleanup: function() {
+      console.log('cleanup called');
+      var model;
+      var oneHourAgo = Date.now() - this.keepMaxHoursOnCleanup*3600*1000;
+      while(true) {
+        model = this.first();
+
+        if (model.get('time') >= oneHourAgo || this.length < this.keepMaxEventsOnCleanup)
+          break;
+
+//        console.log('remove model: '+model.get('id'));
+        this.remove(model);
+      }
+    }
   });
 
   return EventsCollection;
