@@ -236,12 +236,6 @@ define([
       // colors
       element.colorify(); // (after linkify)
 
-      // display
-      var that = this;
-      element.animate({
-        opacity: 1
-      }, 100);
-
 //      var _duration = Date.now() - _start;
 //      console.log('new event '+model.get('id')+' rendered in '+_duration+'ms');
 
