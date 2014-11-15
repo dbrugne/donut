@@ -52,7 +52,7 @@ define([
         scrollInertia         : 0,
         alwaysShowScrollbar   : 2,
         theme                 : 'rounded-dark',
-        mouseWheel            : { enable: true },
+        mouseWheel            : { enable: true, scrollAmount: 75 },
         keyboard              : { scrollAmount: 30 },
         scrollButtons         : { enable: true },
         advanced:{
