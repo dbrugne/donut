@@ -23,13 +23,17 @@ Admin
   - Store delivered user list on each onetoone/room:message (+delivered)
   - Take this on consideration when loading history on connection/join to select event to transmit
 
+- Report poster cloudinary helper configuration in ws class
+- Remove need of color for default avatar
+- Store history without username/avatar/color and re-apply on retrieving
+
 - Try to store instant status on user by connection/deconnection/restart persistence
 - [ ] Stocker si un message est délivré (établir la liste des utilisateurs en ligne ou pas), trouver un moyen d'afficher les messages non lus par un utilisateur dans l'historique
  -> setInterval qui détecte le focus (window/discussion), les messages vus dans une discussion focus + de 2 secondes sont marqués comme lus côté serveur
   - [ ] Aggregate by day (!!!)
   - [ ] Sanitize event on history recording (avatar, color) and re-add on hydration to avoid bad avatar in history
 
-- Add test instance on the same server (donut.me subdomain and new IP from OVH)
+- Add test instance
 
 ## Grunt tasks
 - Deploy
