@@ -1,6 +1,15 @@
 donut
 ====
 
+History on connection/join
+[x] Store delivered user list on each onetoone/room:message (+delivered)
+[ ] Report room recorder modifications to one to one
+[ ] Store history without name/time/username/avatar/color in data and re-apply on retrieving
+[ ] Take "received" list on consideration when loading history on connection/join to select only this events to transmit
+
+- Notification
+- https://irc.box.com/s/wk9iq6wihj8vsnqc7tpj
+
 Improve "unread" messages experience
 - In a centralized place detect if: window is focused or not, which discussion is focused, get current username
 - Make new room/user:message trigger event on this object
@@ -18,18 +27,8 @@ Admin
 - [ ] Add event to make IHM reload
 - [ ] Add event in all discussions to inform users of deployment
 
-- Notification
-- https://irc.box.com/s/wk9iq6wihj8vsnqc7tpj
-
-- History on connection/join
-  - Store delivered user list on each onetoone/room:message (+delivered)
-  - Take this on consideration when loading history on connection/join to select event to transmit
-
 - Report poster cloudinary helper configuration in ws class
 - Remove need of color for default avatar
-- Store history without username/avatar/color and re-apply on retrieving
-
-- Sanitize event on history recording (avatar, color) and re-add on hydration to avoid bad avatar in history
 
 - Add test instance
 
