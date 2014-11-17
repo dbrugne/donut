@@ -65,10 +65,6 @@ define([
 
       if (data.history && data.history.length > 0) {
         var that = this;
-
-        // optimize DOM updating by reversing history list order
-        data.history.reverse();
-
         _.each(data.history, function(event) {
           event.data.user_id = event.data.from_user_id;
           event.data.username = event.data.from_username;

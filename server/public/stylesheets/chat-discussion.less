@@ -223,7 +223,7 @@
       }
       .block.message {
         padding-top: 23px;
-        padding-left: 45px;
+        padding-left: 40px;
         .avatar {
           position: absolute;
           top: 5px;
@@ -240,6 +240,7 @@
         }
         .event {
           position: relative;
+          padding-left: 7px;
           .text {
             white-space: pre-wrap !important;
             padding-right: 50px;
@@ -249,6 +250,14 @@
           &:hover {
             .date { /*font-weight: bold; color: @cl-subtext2;*/ }
             background-color: @cl-subtext0;
+          }
+          &.new {
+            border-left: 3px solid #5C77B6;
+            padding-left: 4px;
+            &:hover {
+              .date { /*font-weight: bold; color: @cl-subtext2;*/ }
+              background-color: #7488B6;
+            }
           }
         }
       }

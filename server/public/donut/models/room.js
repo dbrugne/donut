@@ -245,10 +245,6 @@ define([
 
       if (data.history && data.history.length > 0) {
         var that = this;
-
-        // optimize DOM updating by reversing history list order
-        data.history.reverse();
-
         _.each(data.history, function(event) {
           that.events.addEvent(event);
         });

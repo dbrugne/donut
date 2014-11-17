@@ -264,6 +264,8 @@ define([
         );
       }
 
+      // rendering attributes
+      data.isNew = model.get('new');
       data.withBlock = withBlock || false;
       try {
         return this.template(data);

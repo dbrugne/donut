@@ -2,6 +2,7 @@ var debug = require('debug')('chat-server:room-emitter');
 var _ = require('underscore');
 var async = require('async');
 var HistoryRoom = require('../app/models/historyroom');
+var helper = require('./helper');
 
 var recorder = HistoryRoom.record();
 
@@ -27,7 +28,8 @@ module.exports = function(io, roomName, eventName, eventData, callback) {
       // always had room name and time to event
       eventData.name = room;
       eventData.time = Date.now();
-      recorder(eventName, eventData, function(err, history) {
+      var onlines = helper.roomUsersId(io, roomName);
+      recorder(eventName, eventData, onlines, function(err, history) {
         if (err)
           return fn('Error while emitting room event '+eventName+' in '+room+': '+err);
 

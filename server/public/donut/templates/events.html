@@ -93,7 +93,7 @@
         <div class="username open-user-profile" data-username="<%= data.username %>">@<%= data.username %></div>
         <div class="items">
     <% } %>
-            <div class="event" data-event-id="<%= data.id %>" data-time="<%= data.time %>">
+            <div class="event <% if (isNew) { print('new'); } %>" data-event-id="<%= data.id %>" data-time="<%= data.time %>">
                 <div class="text"><%= data.message %></div>
                 <div class="date"><span class="moment" data-time="<%= data.time %>"></span></div>
             </div>

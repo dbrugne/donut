@@ -30,12 +30,17 @@ define([
         ? data.time
         : Date.now();
 
+      var isNew = (event.new)
+        ? true
+        : false;
+
       data.id = id; // hello/disconnected/... special cases
       data.time = time; // hello/disconnected/... special cases
       var model = new EventModel({
         id: id,
         type: event.type,
         time: time,
+        new: isNew,
         data: data
       });
 
