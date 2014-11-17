@@ -4,11 +4,12 @@ donut
 History on connection/join
 [x] Store delivered user list on each onetoone/room:message (+delivered)
 [x] Report room recorder modifications to one to one
-[ ] Take "received" list on consideration when loading history on connection/join to select only this events to transmit
 [ ] Add index on history collections
 
+[ ] Take "received" list on consideration when loading history on connection/join to select only this events to transmit
+
 - Remove need of color for default avatar
-- Report poster cloudinary helper configuration in ws class
+[x] Report poster cloudinary helper configuration in ws class
 - Store history without name/time/username/avatar/color in data and re-apply on retrieving
 
 - Notification
