@@ -112,12 +112,11 @@ define([
       if (!$event)
         return;
 
-      if (model.getGenericType() != 'standard')
-        var $block = $event.closest('.block');
+      var $block = $event.closest('.block');
 
       $event.remove();
 
-      if (model.getGenericType() != 'standard' && $block.find('.event').length < 1) {
+      if (model.getGenericType() == 'standard' || $block.find('.event').length < 1) { // "or" condition can help to save some DOM selection
         // handle empty block removing
         $block.remove();
       }
