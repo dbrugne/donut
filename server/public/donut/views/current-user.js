@@ -23,13 +23,16 @@ define([
     },
 
     render: function() {
+      if (!currentUser.get('user_id'))
+        return this; // nothing to render if welcome isn't received
+
       var data = currentUser.toJSON();
 
       var tpl = new String('<span class="username open-user-profile" data-username="%username">%username</span>');
       tpl = tpl.replace(/%username/g, currentUser.get('username'))
       data.hello = this.hello.replace('%u', '@'+tpl);
 
-      data.avatar = $.cd.userAvatar(data.avatar, 60, data.color);
+      data.avatar = $.cd.userAvatar(currentUser.get('avatar'), 60);
 
       var html = this.template(data);
       this.$el.html(html);

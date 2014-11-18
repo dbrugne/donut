@@ -7,8 +7,6 @@ define([
   var CurrentUserModel = UserModel.extend({
 
     initialize: function(options) {
-      this.listenTo(client, 'welcome', this.onWelcome);
-
       var that = this;
       this.listenTo(client, 'connecting', function() { that.set('status', 'connecting'); });
       this.listenTo(client, 'connected',     function() { that.set('status', 'online'); });
@@ -17,14 +15,6 @@ define([
       this.listenTo(client, 'error',      function() { that.set('status', 'error'); });
 
       this._initialize(options);
-    },
-    /**
-     * Executed each time the connexion with server is re-up (can occurs multiple
-     * time in a same session)
-     * @param data
-     */
-    onWelcome: function(data) {
-      this.set(data.user);
     }
 
   });

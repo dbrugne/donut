@@ -135,9 +135,11 @@ define([
 
       // Hello message
       if (data.hello){
-        this.currentUserView.hello = data.hello;
-        this.currentUserView.render();
+        this.currentUserView.hello = data.hello; // will be rendered on currentUser data change
       }
+
+      // Current user data
+      currentUser.set(data.user);
 
       // Run routing only when everything in interface is ready
       this.trigger('ready');
