@@ -1,5 +1,6 @@
 var async = require('async');
 var helper = require('./helper');
+var logger = require('../app/models/log');
 var User = require('../app/models/user');
 
 module.exports = function(io, socket, data) {
@@ -53,6 +54,8 @@ module.exports = function(io, socket, data) {
   ], function(err) {
     if (err)
       return helper.handleError(err);
+
+    logger.log('user:leave', socket.getUsername(), data.username);
   });
 
 };

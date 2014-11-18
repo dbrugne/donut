@@ -1,4 +1,4 @@
-var debug = require('debug')('chat-server');
+var debug = require('debug')('chat-server:redirect');
 
 var bouncer = {};
 module.exports = bouncer;

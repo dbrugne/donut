@@ -1,5 +1,6 @@
 var async = require('async');
 var helper = require('./helper');
+var logger = require('../app/models/log');
 var User = require('../app/models/user');
 var validator = require('validator');
 var sanitize = require('sanitize-caja');
@@ -238,9 +239,7 @@ module.exports = function(io, socket, data) {
     if (err)
       return helper.handleError(err);
 
-    // activity
-    // helper.record('user:updated', socket, data);
-    // @todo : specific event log, no in room/message history
+    logger.log('user:profile', socket.getUsername());
   });
 
 };

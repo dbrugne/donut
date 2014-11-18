@@ -1,5 +1,6 @@
 var async = require('async');
 var helper = require('./helper');
+var logger = require('../app/models/log');
 var roomDataHelper = require('./_room-data.js');
 var Room = require('../app/models/room');
 var User = require('../app/models/user');
@@ -40,7 +41,7 @@ module.exports = function(io, socket, data) {
           if (err)
             return callback('Error while creating room: '+err);
 
-          helper.record('room:create', socket, {_id: room.get('_id'), name: room.get('name')});
+          logger.log('room:create', socket.getUsername(), data.name);
           return callback(null, room);
         });
       });
@@ -114,6 +115,8 @@ module.exports = function(io, socket, data) {
   ], function(err) {
     if (err)
       return helper.handleError(err);
+
+    logger.log('room:join', socket.getUsername(), data.name);
   });
 
 };

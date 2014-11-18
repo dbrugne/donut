@@ -1,5 +1,6 @@
 var async = require('async');
 var helper = require('./helper');
+var logger = require('../app/models/log');
 var retriever = require('../app/models/historyone').retrieve();
 var User = require('../app/models/user');
 
@@ -40,17 +41,19 @@ module.exports = function(io, socket, data) {
     },
 
     function send(user, history, callback) {
-          socket.emit('user:history', {
-            username: user.username,
-            history: history
-          }, function(err) {
-            return callback(err);
+      socket.emit('user:history', {
+        username: user.username,
+        history: history
       });
+
+      return callback(null);
     }
 
   ], function(err) {
     if (err)
       return helper.handleError(err);
+
+    logger.log('user:history', socket.getUsername(), data.username);
   });
 
 };

@@ -1,4 +1,5 @@
 var helper = require('./helper');
+var debug = require('debug')('chat-server');
 var User = require('../app/models/user');
 
 module.exports = {
@@ -6,7 +7,7 @@ module.exports = {
   success: function(data, accept) {
     // could add ACL check here if needed
     accept();
-    helper.record('authorization:success', '', data);
+    debug('authorization:success for '+data.user.username);
   },
 
   fail: function(data, message, error, accept) {
@@ -33,11 +34,7 @@ module.exports = {
 
     accept(new Error('notlogged')); // String tested on client side to fire browser redirect
 
-    helper.record('authorization:fail', '', {
-      data: data,
-      message: message,
-      error: error
-    });
+    debug('authorization:fail message:'+message+' error:'+error);
   }
 
 };

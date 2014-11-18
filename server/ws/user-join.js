@@ -1,5 +1,6 @@
 var async = require('async');
 var helper = require('./helper');
+var logger = require('../app/models/log');
 var oneDataHelper = require('./_one-data.js');
 var User = require('../app/models/user');
 
@@ -60,6 +61,8 @@ module.exports = function(io, socket, data) {
   ], function(err) {
     if (err)
       return helper.handleError(err);
+
+    logger.log('user:join', socket.getUsername(), data.username);
   });
 
 };

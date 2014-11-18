@@ -1,5 +1,6 @@
 var async = require('async');
 var helper = require('./helper');
+var logger = require('../app/models/log');
 var roomEmitter = require('./_room-emitter');
 
 module.exports = function(io, socket, data) {
@@ -80,6 +81,8 @@ module.exports = function(io, socket, data) {
   ], function(err) {
     if (err)
       helper.handleError(err);
+
+    logger.log('room:message', socket.getUsername(), data.name);
   });
 
 };

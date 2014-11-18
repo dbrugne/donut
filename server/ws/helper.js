@@ -3,7 +3,6 @@ var debug = require('debug')('chat-server');
 var configuration = require('../config/index');
 var User = require('../app/models/user');
 var Room = require('../app/models/room');
-var Activity = require('../app/models/activity');
 var sanitize = {
   'html': require('sanitize-html'),
   'caja': require('sanitize-caja')
@@ -20,37 +19,6 @@ module.exports = {
    */
   handleError: function(err) {
     debug('Error triggered: '+err);
-  },
-
-  /**
-   * Add a new record in the activity log in database
-   * @param type
-   * @param user_id
-   * @param data
-   * @param receivers
-   */
-  record: function(type, socket, data, receivers) {
-    if (data == undefined) {
-      data = {};
-    }
-    var user_id = (socket != '')
-     ? socket.getUserId()
-     : '';
-    var activity = new Activity({
-      type: type,
-      user_id: user_id,
-      data: data
-    });
-
-    if (receivers) activity.receivers = receivers;
-    activity.save();
-
-    var identity = (socket.getUsername)
-      ? socket.getUsername()
-      : ((socket.getUserId)
-        ? socket.getUserId()
-        : socket.id);
-    debug('[ws] socket "'+identity+'" has "'+type+'"');
   },
 
   /**
@@ -122,7 +90,6 @@ module.exports = {
         room.save(function (err, room, numberAffected) {
           if (err) return o.error('Unable to create room: '+err);
           populate(room, o.success, o.error);
-          that.record('room:create', o.socket, {_id: room.get('_id'), name: room.get('name')});
         });
       }
 
@@ -399,46 +366,6 @@ module.exports = {
     return (sockets.length > 0)
       ? true
       : false;
-  },
-
-  /**
-   * Return all user:message between userWith and socket.getUserId()
-   * (both direction)
-   * @param io
-   * @param socket
-   * @param withUserId
-   * @param since (number of minutes from now)
-   * @param success
-   */
-  userHistory: function(io, socket, withUserId, since, success) {
-    var sinceMs = since * 1000 * 60; // since is in minutes
-    var now = new Date();
-    var sinceDate = now - sinceMs;
-
-    var criteria = {
-      type: 'user:message',
-      $or: [
-        {$and: [{'data.user_id': socket.getUserId()}, {'data.to_user_id': withUserId}]},
-        {$and: [{'data.user_id': withUserId}, {'data.to_user_id': socket.getUserId()}]}
-      ],
-      time: {$gte: sinceDate}
-    };
-
-    var q = Activity.find(criteria).sort({time: -1}).limit(500);
-
-    var that = this;
-    var onResult = function(err, events) {
-      if (err) return that.handleError('Unable to retrieve user:message history: '+err);
-      var list = _.map(events, function(event) {
-        var output = event.toJSON();
-        output.data.type = output.type;
-        return output.data;
-      });
-      list.reverse();
-      return success(list);
-    };
-
-    q.exec(onResult);
   },
 
   /**

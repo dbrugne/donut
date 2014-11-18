@@ -1,5 +1,6 @@
 var async = require('async');
 var helper = require('./helper');
+var logger = require('../app/models/log');
 var cloudinary = require('../app/cloudinary');
 var i18next = require('../app/i18next');
 var User = require('../app/models/user');
@@ -132,9 +133,7 @@ module.exports = function(io, socket, data) {
     if (err)
       return helper.handleError(err);
 
-    // activity
-    // helper.record('room:delete', socket, event);
-    // @todo : specific event log, no in room/message history
+    logger.log('room:delete', socket.getUsername(), data.name);
   });
 
 };

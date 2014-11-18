@@ -44,10 +44,8 @@ module.exports = function(server) {
 
   io.on('connection', function (socket) {
 
-    debug('new ws connection');
-
-    require('./ws/connection')(io, socket);
-    socket.on('disconnect', function() { require('./ws/disconnection')(io, socket); });
+    require('./ws/connect')(io, socket);
+    socket.on('disconnect', function() { require('./ws/disconnect')(io, socket); });
 
     socket.on('home', function() { require('./ws/home')(io, socket); });
 

@@ -1,5 +1,6 @@
 var async = require('async');
 var helper = require('./helper');
+var logger = require('../app/models/log');
 var Room = require('../app/models/room');
 var User = require('../app/models/user');
 
@@ -149,7 +150,7 @@ module.exports = function (io, socket, data) {
 
       socket.emit('search', event);
 
-      // @todo : add a record in a dedicated statistic activity log (as for *:update)
+      logger.log('search', socket.getUsername(), data.search);
     }
   );
 

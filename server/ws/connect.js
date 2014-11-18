@@ -1,6 +1,7 @@
 var debug = require('debug')('chat-server:connection');
 var async = require('async');
 var helper = require('./helper');
+var logger = require('../app/models/log');
 var User = require('../app/models/user');
 var Room = require('../app/models/room');
 var hello = require('../app/hello-dolly');
@@ -217,7 +218,6 @@ module.exports = function(io, socket) {
       helper._.each(welcome.rooms, function(room) {
         // Add socket to the room
         socket.join(room.name);
-        debug('socket '+socket.id+' subscribed to room '+room.name);
       });
       return callback(null, user);
     }
@@ -226,6 +226,6 @@ module.exports = function(io, socket) {
     if (err)
       return helper.handleError(err);
 
-    helper.record('connection', socket, {});
+    logger.log('connect', socket.getUsername());
   });
 };

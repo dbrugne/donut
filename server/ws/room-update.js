@@ -1,5 +1,6 @@
 var async = require('async');
 var helper = require('./helper');
+var logger = require('../app/models/log');
 var validator = require('validator');
 var sanitize = require('sanitize-caja');
 var cloudinary = require('../app/cloudinary');
@@ -208,9 +209,7 @@ module.exports = function(io, socket, data) {
     if (err)
       return helper.handleError(err);
 
-    // activity
-    // helper.record('room:updated', socket, data);
-    // @todo : specific event log, no in room/message history
+    logger.log('room:history', socket.getUsername(), data.name);
   });
 
 };

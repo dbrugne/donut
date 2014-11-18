@@ -1,4 +1,5 @@
 var helper = require('./helper');
+var logger = require('../app/models/log');
 var User = require('../app/models/user');
 
 /**
@@ -39,9 +40,7 @@ module.exports = function(io, socket, data) {
 
     socket.emit('user:read', event);
 
-    // Activity
-    helper.record('user:read', socket, {username: event.username});
-
+    logger.log('user:read', socket.getUsername());
   });
 
 };

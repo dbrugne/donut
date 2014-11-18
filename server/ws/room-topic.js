@@ -1,4 +1,5 @@
 var helper = require('./helper');
+var logger = require('../app/models/log');
 var Room = require('../app/models/room');
 var roomEmitter = require('./_room-emitter');
 
@@ -39,6 +40,8 @@ module.exports = function(io, socket, data) {
       roomEmitter(io, data.name, 'room:topic', roomTopicEvent, function(err) {
         if (err)
           return helper.handleError(err);
+
+        logger.log('room:topic', socket.getUsername(), data.name);
       });
     });
   }

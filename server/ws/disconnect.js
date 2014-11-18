@@ -1,5 +1,6 @@
 var async = require('async');
 var helper = require('./helper');
+var logger = require('../app/models/log');
 var User = require('../app/models/user');
 var roomEmitter = require('./_room-emitter');
 var oneEmitter = require('./_one-emitter');
@@ -87,8 +88,7 @@ module.exports = function(io, socket) {
     if (err)
       return helper.handleError(err);
 
-    // Activity
-    helper.record('disconnect', socket);
+    logger.log('disconnect', socket.getUsername());
   });
 
 };

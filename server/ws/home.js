@@ -1,5 +1,6 @@
 var async = require('async');
 var helper = require('./helper');
+var logger = require('../app/models/log');
 var Room = require('../app/models/room');
 
 module.exports = function (io, socket) {
@@ -92,7 +93,7 @@ module.exports = function (io, socket) {
       if (err)
         return helper.handleError(err);
 
-      helper.record('home', socket, {});
+      logger.log('home', socket.getUsername());
     }
   );
 

@@ -1,5 +1,6 @@
 var async = require('async');
 var helper = require('./helper');
+var logger = require('../app/models/log');
 var User = require('../app/models/user');
 var oneEmitter = require('./_one-emitter');
 
@@ -89,6 +90,8 @@ module.exports = function(io, socket, data) {
   ], function(err) {
     if (err)
       return helper.handleError(err);
+
+    logger.log('user:message', socket.getUsername(), data.username);
   });
 
 };
