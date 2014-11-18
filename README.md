@@ -9,7 +9,6 @@ History on connection/join
 [ ] Take "received" list on consideration when loading history on connection/join to select only this events to transmit
 
 - Remove need of color for default avatar
-[x] Report poster cloudinary helper configuration in ws class
 - Store history without name/time/username/avatar/color in data and re-apply on retrieving
 
 - Notification
