@@ -1,44 +1,55 @@
 donut
 ====
 
-## In progress
+History on connection/join
+[x] Store delivered user list on each onetoone/room:message (+delivered)
+[x] Report room recorder modifications to one to one
+[ ] Add index on history collections
+
+[ ] Take "received" list on consideration when loading history on connection/join to select only this events to transmit
+
+- Remove need of color for default avatar
+[x] Report poster cloudinary helper configuration in ws class
+- Store history without name/time/username/avatar/color in data and re-apply on retrieving
+
+- Notification
+- https://irc.box.com/s/wk9iq6wihj8vsnqc7tpj
+
+- Image in discussion (drag&drop, button, copy&paste)
 
 Improve "unread" messages experience
 - In a centralized place detect if: window is focused or not, which discussion is focused, get current username
 - Make new room/user:message trigger event on this object
 - Change window title even if window is focused (display unread messages in other discussion)
-- Play a sound a message on new message in not focused discussion (or if window is not focused)
-- Play a different sound when i'm notified in not focused discussion (or if window is not focused)
+- Update discussion tab badge if not focused room (and if i'm not the sender)
+- Play a sound a message on new message in not focused discussion (or if window is not focused) (and if i'm not the sender)
+- Play a different sound when i'm notified in not focused discussion (or if window is not focused) (and if i'm not the sender)
+- Consider only room/user:message
+- Never "notify" my own room/user:message
 - http://stackoverflow.com/questions/9419263/playing-audio-with-javascript
 
-- [ ] Room mentions
-- [ ] Image in discussion (drag&drop, button, copy&paste)
+- Room mentions (on server side detect #word, search for correspondance and add mention on the fly)
 
 Admin
-- [ ] Add "admin" tag on user (allow them to view all history and op all rooms and send "reload" messages)
-- [ ] Add event to make IHM reload
-- [ ] Add event in all discussions to inform users of deployment
+[ ] Add "admin" tag on user (allow them to view all history and op all rooms and send "reload" messages)
+[ ] Add event to make IHM reload
+[ ] Add event in all discussions to inform users of deployment
+[ ] Add whole platform maintenance mode
 
-- Notification
-- [ ] Add notification to owner/op when a user enter in room
-- [ ] Add email to notify us of user connection
-  -> Draft notifications: DONE https://irc.box.com/s/wk9iq6wihj8vsnqc7tpj
-
-- History on connection/join
-  - Store delivered user list on each onetoone/room:message (+delivered)
-  - Take this on consideration when loading history on connection/join to select event to transmit
-
-- Report poster cloudinary helper configuration in ws class
-- Remove need of color for default avatar
-- Store history without username/avatar/color and re-apply on retrieving
-
-- Try to store instant status on user by connection/deconnection/restart persistence
-- [ ] Stocker si un message est délivré (établir la liste des utilisateurs en ligne ou pas), trouver un moyen d'afficher les messages non lus par un utilisateur dans l'historique
- -> setInterval qui détecte le focus (window/discussion), les messages vus dans une discussion focus + de 2 secondes sont marqués comme lus côté serveur
-  - [ ] Aggregate by day (!!!)
-  - [ ] Sanitize event on history recording (avatar, color) and re-add on hydration to avoid bad avatar in history
+- Diagnose client side slow perfomance
 
 - Add test instance
+
+- Add automatic deploy system (+compilation, chat.html)
+
+Add online/offline/afk management
+- On connection/deconnection[/stop/restart] set user in Redis (donut:onlines:user:_USER_ID_) as a HASH with sockets list (donut:onlines:sockets:_USER_ID_)
+- Handle process termination (SIGINT, SIGTERM, Uncaugth exception): http://stackoverflow.com/questions/26163800/node-js-pm2-on-exit
+
+Improve "unread" messages viewing detection
+ -> setInterval qui détecte le focus (window/discussion), les messages vus dans une discussion focus + de 2 secondes sont marqués comme lus côté serveur
+
+- Aggregate by day (!!!)
 
 ## Grunt tasks
 - Deploy

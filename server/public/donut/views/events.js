@@ -112,12 +112,11 @@ define([
       if (!$event)
         return;
 
-      if (model.getGenericType() != 'standard')
-        var $block = $event.closest('.block');
+      var $block = $event.closest('.block');
 
       $event.remove();
 
-      if (model.getGenericType() != 'standard' && $block.find('.event').length < 1) {
+      if (model.getGenericType() == 'standard' || $block.find('.event').length < 1) { // "or" condition can help to save some DOM selection
         // handle empty block removing
         $block.remove();
       }
@@ -236,12 +235,6 @@ define([
       // colors
       element.colorify(); // (after linkify)
 
-      // display
-      var that = this;
-      element.animate({
-        opacity: 1
-      }, 100);
-
 //      var _duration = Date.now() - _start;
 //      console.log('new event '+model.get('id')+' rendered in '+_duration+'ms');
 
@@ -270,6 +263,8 @@ define([
         );
       }
 
+      // rendering attributes
+      data.isNew = model.get('new');
       data.withBlock = withBlock || false;
       try {
         return this.template(data);

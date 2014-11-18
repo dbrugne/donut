@@ -9,7 +9,9 @@ var historySchema = mongoose.Schema({
   name          : String,
   time          : { type: Date, default: Date.now },
   data          : mongoose.Schema.Types.Mixed,
-  users         : [{ type: mongoose.Schema.ObjectId, ref: 'User' }]
+  users         : [{ type: mongoose.Schema.ObjectId, ref: 'User' }], // users in room at event time
+  received      : [{ type: mongoose.Schema.ObjectId, ref: 'User' }] // users online at event time
+//  viewed        : [{ type: mongoose.Schema.ObjectId, ref: 'User' }]  // users that have "viewed" the event in IHM
 
 });
 
@@ -30,18 +32,20 @@ historySchema.statics.record = function() {
   /**
    * @param event - event name as String
    * @param data - event data as Object
+   * @param onlines - user_id of currently online users for this room
    * @param fn - callback function
    * @return event with event_id set
    */
-  return function(event, data, fn) {
+  return function(event, data, onlines, fn) {
 
-    // @todo : purify model.data (remove time, name, avatar, color)
+    // @todo : purify model.data (remove time, name, username, avatar, color)
 
     var model = new that();
     model.event = event;
     model.name  = data.name;
     model.time  = data.time;
     model.data  = data;
+    model.received = onlines;
     Room.findOne({name: model.name}, 'users', function(err, room) {
       if (err)
         return fn('Unable to retrieve room users list '+model.event+' for '+model.name);
@@ -100,9 +104,16 @@ historySchema.statics.retrieve = function() {
       ? 10000 // arbitrary
       : 250;
 
+    /**
+     * @todo : add index
+     * - time (range, sort)
+     * - name (filter)
+     * - users (filter)
+     */
+
     //console.log(criteria, limit);
     var q = that.find(criteria)
-      .sort({time: 'desc'})
+      .sort({time: 'desc'}) // important for timeline logic but also optimize rendering on frontend
       .limit(limit);
 
     q.exec(function(err, entries) {
@@ -110,16 +121,28 @@ historySchema.statics.retrieve = function() {
         return fn('Error while retrieving room history: '+err);
 
       var history = [];
+      var toMarkAsReceived = [];
       _.each(entries, function(entry) {
         entry.data.id = entry._id.toString();
+
+        var isNew = (entry.received && entry.received.indexOf(userId) === -1)
+          ? true
+          : false;
+
+        if (isNew)
+          toMarkAsReceived.push(entry._id);
+
         history.push({
           type: entry.event,
-          data: entry.data
+          data: entry.data,
+          new: isNew
         });
       });
 
-      // return chronologic list
-      history.reverse();
+      that.update({_id: {$in: toMarkAsReceived}}, {$addToSet: {received: userId}}, {multi: true}, function(err) {
+        if (err)
+          return helper.handleError('Error while updating received in historyRoom: '+err);
+      });
 
       return fn(null, history);
     });

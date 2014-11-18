@@ -2,6 +2,7 @@ var debug = require('debug')('chat-server:room-emitter');
 var _ = require('underscore');
 var async = require('async');
 var HistoryOne = require('../app/models/historyone');
+var helper = require('./helper');
 
 var recorder = HistoryOne.record();
 
@@ -28,7 +29,8 @@ module.exports = function(io, onetoone, eventName, eventData, callback) {
       eventData.from = one.from;
       eventData.to = one.to;
       eventData.time = Date.now();
-      recorder(eventName, eventData, function(err, history) {
+      var toIsOnline = helper.isUserOnline(io, one.to);
+      recorder(eventName, eventData, toIsOnline, function(err, history) {
         if (err)
           return fn('Error while emitting user event '+eventName+' in '+room+': '+err);
 

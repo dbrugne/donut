@@ -30,12 +30,17 @@ define([
         ? data.time
         : Date.now();
 
+      var isNew = (event.new)
+        ? true
+        : false;
+
       data.id = id; // hello/disconnected/... special cases
       data.time = time; // hello/disconnected/... special cases
       var model = new EventModel({
         id: id,
         type: event.type,
         time: time,
+        new: isNew,
         data: data
       });
 
@@ -85,18 +90,26 @@ define([
     keepMaxEventsOnCleanup: 1000,
     keepMaxHoursOnCleanup: 1,
     cleanup: function() {
-      console.log('cleanup called');
       var model;
       var oneHourAgo = Date.now() - this.keepMaxHoursOnCleanup*3600*1000;
+      var removed = 0;
       while(true) {
         model = this.first();
 
         if (model.get('time') >= oneHourAgo || this.length < this.keepMaxEventsOnCleanup)
           break;
 
-//        console.log('remove model: '+model.get('id'));
         this.remove(model);
+        removed ++;
       }
+
+      var label = (model.get('data') && model.get('data').name)
+        ? model.get('data').name
+        : model.get('data').from_username+'=>'+model.get('data').to_username;
+      if (removed)
+        console.log('cleanup called for '+label+', removed '+removed);
+      else
+        console.log('cleanup called for '+label+', nothing removed');
     }
   });
 

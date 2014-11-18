@@ -267,7 +267,7 @@ module.exports = {
         // determine if is online
         var status = 'offline';
         var ur = io.sockets.adapter.rooms['user:'+ u._id.toString()];
-        if (ur != undefined && Object.keys(ur).length)
+        if (ur != undefined && Object.keys(ur).length) // socket.io socket list is an Array but stored as key/value (WTF?!)
           status = 'online';
 
         list.push({
@@ -296,7 +296,7 @@ module.exports = {
     var list = [];
 
     // On disconnection socket is no longer present in io.sockets.adapter.nsp.connected
-    // but still exist (socket)
+    // but still exist
     var rawList = [];
     if (io.sockets.adapter.nsp.connected[socket.id]) {
       rawList = io.sockets.adapter.nsp.connected[socket.id].rooms;
@@ -358,6 +358,18 @@ module.exports = {
       }
     }
     return res;
+  },
+  roomUsersId: function(io, name) {
+    var list = [];
+    var sockets = this.roomSockets(io, name);
+    _.each(sockets, function(s) {
+      if (!s)
+        return; // = socket has maybe expired
+      if (_.contains(list, s.getUserId()))
+        return;
+      list.push(s.getUserId());
+    });
+    return list;
   },
 
   /**

@@ -9,7 +9,9 @@ var historySchema = mongoose.Schema({
   from          : { type: mongoose.Schema.ObjectId, ref: 'User' },
   to            : { type: mongoose.Schema.ObjectId, ref: 'User' },
   time          : { type: Date, default: Date.now },
-  data          : mongoose.Schema.Types.Mixed
+  data          : mongoose.Schema.Types.Mixed,
+  received      : Boolean // to user was online at event time
+//  viewed     : Boolean  // to user have "viewed" the event in IHM
 
 });
 
@@ -24,19 +26,21 @@ historySchema.statics.record = function() {
   /**
    * @param event - event name as String
    * @param data - event data as Object
+   * @param toIsOnline - if the current status of the "to" user is online
    * @param fn - callback function
    * @return event with event_id set
    */
-  return function(event, data, fn) {
+  return function(event, data, toIsOnline, fn) {
 
-    // @todo : purify model.data (remove time, name, avatar, color)
+    // @todo : purify model.data (time, username, avatar, color)
 
     var model = new that();
-    model.event = event;
-    model.from  = data.from_user_id;
-    model.to  = data.to_user_id;
-    model.time  = data.time;
-    model.data  = data;
+    model.event       = event;
+    model.from        = data.from_user_id;
+    model.to          = data.to_user_id;
+    model.received    = toIsOnline;
+    model.time        = data.time;
+    model.data        = data;
 
     model.save(function(err) {
       if (err)
@@ -91,24 +95,43 @@ historySchema.statics.retrieve = function() {
 
     //console.log(criteria, limit);
     var q = that.find(criteria)
-      .sort({time: 'desc'})
+      .sort({time: 'desc'}) // important for timeline logic but also optimize rendering on frontend
       .limit(limit);
+
+    /**
+     * @todo : add index
+     * - time (range, sort)
+     * - from
+     * - to
+     */
 
     q.exec(function(err, entries) {
       if (err)
         return fn('Error while retrieving room history: '+err);
 
       var history = [];
+      var toMarkAsReceived = [];
       _.each(entries, function(entry) {
         entry.data.id = entry._id.toString();
+
+        var isNew = (entry.received === undefined || entry.received === true) // new : if field not exists or if field === false
+          ? false
+          : true;
+
+        if (isNew)
+          toMarkAsReceived.push(entry._id);
+
         history.push({
           type: entry.event,
-          data: entry.data
+          data: entry.data,
+          new: isNew
         });
       });
 
-      // return chronologic list
-      history.reverse();
+      that.update({_id: {$in: toMarkAsReceived}}, {$set: {received: true}}, {multi: true}, function(err) {
+        if (err)
+          return helper.handleError('Error while updating received in historyOne: '+err);
+      });
 
       return fn(null, history);
     });
