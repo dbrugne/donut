@@ -25,22 +25,9 @@ define([
     },
 
     initialize: function() {
-      this.listenTo(client, 'welcome', this.onWelcome);
       this.listenTo(client, 'room:leave', this.onLeave);
       this.listenTo(client, 'room:welcome', this.addModel);
       this.listenTo(client, 'room:kick', this.onKick);
-    },
-    /**
-     * Executed each time the connexion with server is re-up (can occurs multiple
-     * time in a same session)
-     * @param data
-     */
-    onWelcome: function(data) {
-      var that = this;
-      _.each(data.rooms, function(room) {
-        that.addModel(room);
-      });
-      this.trigger('redraw');
     },
     // We ask to server to join us in this room
     openPing: function(name) {

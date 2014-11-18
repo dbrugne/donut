@@ -24,7 +24,6 @@ define([
     },
 
     initialize: function() {
-      this.listenTo(client, 'welcome', this.onWelcome);
       this.listenTo(client, 'user:message', this.onMessage);
       this.listenTo(client, 'user:leave', this.onLeave);
       this.listenTo(client, 'user:welcome', this.addModel);
@@ -136,18 +135,6 @@ define([
         time: data.time,
         message: data.message
       });
-    },
-    /**
-     * Executed each time the connection with server is re-up (can occurs multiple
-     * time in a same session)
-     * @param data
-     */
-    onWelcome: function(data) {
-      var that = this;
-      _.each(data.onetoones, function(one) {
-        that.addModel(one);
-      });
-      this.trigger('redraw');
     },
     onLeave: function(data) {
       var model = this.get(data.username);

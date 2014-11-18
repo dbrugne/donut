@@ -138,8 +138,20 @@ define([
         this.currentUserView.hello = data.hello; // will be rendered on currentUser data change
       }
 
-      // Current user data
+      // Current user data (should be done before onetoone logic
       currentUser.set(data.user);
+
+      // Rooms
+      _.each(data.rooms, function(room) {
+        rooms.addModel(room);
+      });
+      rooms.trigger('redraw');
+
+      // One to ones
+      _.each(data.onetoones, function(one) {
+        onetoones.addModel(one);
+      });
+      onetoones.trigger('redraw');
 
       // Run routing only when everything in interface is ready
       this.trigger('ready');
