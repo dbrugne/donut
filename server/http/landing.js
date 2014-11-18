@@ -15,7 +15,7 @@ router.get('/', function(req, res) {
     description : i18next.t("meta.landing.description"),
     keywords    : i18next.t("meta.landing.keywords"),
     ogtitle     : i18next.t("meta.landing.title"),
-    image       : baseUrl+"images/donut.png",
+    image       : baseUrl+"images/donut.jpg",
     type        : 'website'
   };
 
