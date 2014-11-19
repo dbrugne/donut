@@ -8,17 +8,6 @@ History
 [ ] Remove need of color for default avatar
 [ ] Store history without name/time/username/avatar/color in data and re-apply on retrieving
 
-Refactor browser notifications on new messages
-[ ] In a centralized place detect if: window is focused or not, which discussion is focused, get current username
-[ ] Make new room/user:message trigger event on this object
-[ ] Change window title even if window is focused (display unread messages in other discussion) but only if discussion is unfocused
-[ ] Update discussion tab badge if not focused room (and if i'm not the sender)
-[ ] Play a sound a message on new message in not focused discussion (or if window is not focused) (and if i'm not the sender)
-[ ] Play a different sound when i'm notified in not focused discussion (or if window is not focused) (and if i'm not the sender)
-[ ] Consider only room/user:message
-[ ] Never "notify" my own room/user:message
-[ ] http://stackoverflow.com/questions/9419263/playing-audio-with-javascript
-
 Admin
 [ ] Add "admin" tag on user (allow them to view all history and op all rooms and send "reload" messages)
 [ ] Add event to make IHM reload
