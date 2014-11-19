@@ -31,6 +31,7 @@ define([
       return data;
     },
     _render: function() {
+      this.$el.find('.website').linkify();
     },
     _focus: function() {
     },
