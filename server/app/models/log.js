@@ -10,7 +10,11 @@ var logSchema = mongoose.Schema({
 
 });
 
-logSchema.statics.log = function(type, username, data) {
+logSchema.statics.start = function() {
+  return new Date().getTime();
+};
+
+logSchema.statics.log = function(type, username, data, start) {
   // prepare model
   var model = new this();
   model.type      = type;
@@ -22,6 +26,10 @@ logSchema.statics.log = function(type, username, data) {
   var log = "'"+model.username+"' has '"+model.type+"'";
   if (data)
     log += " on/with "+data;
+  if (start) {
+    var duration = (new Date().getTime() - start);
+    log += " (in "+duration+"ms)";
+  }
   debug(log);
 
   // persist

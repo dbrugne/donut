@@ -7,6 +7,8 @@ var oneEmitter = require('./_one-emitter');
 
 module.exports = function(io, socket) {
 
+  var start = logger.start();
+
   // At least an other socket is live for this user or not
   var lastSocket = (helper.userSockets(io, socket.getUserId()).length < 1)
     ? true
@@ -88,7 +90,7 @@ module.exports = function(io, socket) {
     if (err)
       return helper.handleError(err);
 
-    logger.log('disconnect', socket.getUsername());
+    logger.log('disconnect', socket.getUsername(), null, start);
   });
 
 };

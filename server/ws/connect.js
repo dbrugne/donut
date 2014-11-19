@@ -12,6 +12,8 @@ var oneEmitter = require('./_one-emitter');
 
 module.exports = function(io, socket) {
 
+  var start = logger.start();
+
   // Decorate socket (shortcut)
   socket.getUser = function() {
     return this.request.user;
@@ -31,8 +33,6 @@ module.exports = function(io, socket) {
   socket.getColor = function() {
     return this.request.user.color;
   };
-
-  socket.helper = require('./helper-socket')(io);
 
   // welcome event data
   var welcome = {
@@ -225,6 +225,6 @@ module.exports = function(io, socket) {
     if (err)
       return helper.handleError(err);
 
-    logger.log('connect', socket.getUsername());
+    logger.log('connect', socket.getUsername(), '', start);
   });
 };

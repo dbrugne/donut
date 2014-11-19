@@ -5,6 +5,9 @@ var User = require('../app/models/user');
 var Room = require('../app/models/room');
 
 module.exports = function(io, socket, data) {
+
+  var start = logger.start();
+
   if (!data.username)
     return helper.handleError('Param username is mandatory for user:profile');
 
@@ -125,7 +128,7 @@ module.exports = function(io, socket, data) {
       if (err)
         return helper.handleError(err);
 
-      logger.log('user:profile', socket.getUsername(), data.username);
+      logger.log('user:profile', socket.getUsername(), data.username, start);
     }
   );
 

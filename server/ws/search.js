@@ -6,6 +6,8 @@ var User = require('../app/models/user');
 
 module.exports = function (io, socket, data) {
 
+  var start = logger.start();
+
   if (!data.search)
    return;
 
@@ -150,7 +152,7 @@ module.exports = function (io, socket, data) {
 
       socket.emit('search', event);
 
-      logger.log('search', socket.getUsername(), data.search);
+      logger.log('search', socket.getUsername(), data.search, start);
     }
   );
 

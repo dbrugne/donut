@@ -8,6 +8,8 @@ var User = require('../app/models/user');
 
 module.exports = function(io, socket, data) {
 
+  var start = logger.start();
+
   User.findById(socket.getUserId(), 'username avatar poster bio location website color general local facebook', function(err, user) {
     if (err) return helper.handleError('Unable to retrieve user: '+err);
 
@@ -40,7 +42,7 @@ module.exports = function(io, socket, data) {
 
     socket.emit('user:read', event);
 
-    logger.log('user:read', socket.getUsername());
+    logger.log('user:read', socket.getUsername(), null, start);
   });
 
 };

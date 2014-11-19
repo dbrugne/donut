@@ -6,6 +6,8 @@ var User = require('../app/models/user');
 
 module.exports = function(io, socket, data) {
 
+  var start = logger.start();
+
   async.waterfall([
 
     function check(callback) {
@@ -62,7 +64,7 @@ module.exports = function(io, socket, data) {
     if (err)
       return helper.handleError(err);
 
-    logger.log('user:join', socket.getUsername(), data.username);
+    logger.log('user:join', socket.getUsername(), data.username, start);
   });
 
 };

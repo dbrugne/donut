@@ -6,6 +6,8 @@ var oneEmitter = require('./_one-emitter');
 
 module.exports = function(io, socket, data) {
 
+  var start = logger.start();
+
   async.waterfall([
 
     function check(callback) {
@@ -91,7 +93,7 @@ module.exports = function(io, socket, data) {
     if (err)
       return helper.handleError(err);
 
-    logger.log('user:message', socket.getUsername(), data.username);
+    logger.log('user:message', socket.getUsername(), data.username, start);
   });
 
 };

@@ -4,6 +4,8 @@ var roomEmitter = require('./_room-emitter');
 
 module.exports = function(io, socket, data) {
 
+  var start = logger.start();
+
   if (!data.name)
     return helper.handleError('room:op require room name param');
 
@@ -54,7 +56,7 @@ module.exports = function(io, socket, data) {
       if (err)
         return helper.handleError(err);
 
-      logger.log('room:op', socket.getUsername(), data.username+' on '+data.name);
+      logger.log('room:op', socket.getUsername(), data.username+' on '+data.name, start);
     });
   };
 };

@@ -5,6 +5,8 @@ var roomEmitter = require('./_room-emitter');
 
 module.exports = function(io, socket, data) {
 
+  var start = logger.start();
+
   async.waterfall([
 
     function check(callback) {
@@ -82,7 +84,7 @@ module.exports = function(io, socket, data) {
     if (err)
       helper.handleError(err);
 
-    logger.log('room:message', socket.getUsername(), data.name);
+    logger.log('room:message', socket.getUsername(), data.name, start);
   });
 
 };

@@ -5,6 +5,8 @@ var Room = require('../app/models/room');
 
 module.exports = function(io, socket, data) {
 
+  var start = logger.start();
+
   async.waterfall([
 
     function check(callback) {
@@ -91,7 +93,7 @@ module.exports = function(io, socket, data) {
     if (err)
       return helper.handleError(err);
 
-    logger.log('room:read', socket.getUsername(), data.name);
+    logger.log('room:read', socket.getUsername(), data.name, start);
   });
 
 };

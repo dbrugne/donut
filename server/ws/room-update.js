@@ -7,6 +7,8 @@ var cloudinary = require('../app/cloudinary');
 
 module.exports = function(io, socket, data) {
 
+  var start = logger.start();
+
   if (!data.name)
     return helper.handleError('room:update require room name param');
 
@@ -209,7 +211,7 @@ module.exports = function(io, socket, data) {
     if (err)
       return helper.handleError(err);
 
-    logger.log('room:history', socket.getUsername(), data.name);
+    logger.log('room:history', socket.getUsername(), data.name, start);
   });
 
 };

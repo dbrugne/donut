@@ -8,6 +8,8 @@ var cloudinary = require('../app/cloudinary');
 
 module.exports = function(io, socket, data) {
 
+  var start = logger.start();
+
   async.waterfall([
 
     function retrieveUser(callback) {
@@ -233,13 +235,13 @@ module.exports = function(io, socket, data) {
       }
 
       return callback(null, user, sanitized);
-    },
+    }
 
   ], function (err, user, sanitized) {
     if (err)
       return helper.handleError(err);
 
-    logger.log('user:profile', socket.getUsername());
+    logger.log('user:profile', socket.getUsername(), null, start);
   });
 
 };
