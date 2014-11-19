@@ -86,14 +86,6 @@ module.exports = function(io, socket, data) {
 
     },
 
-    function deleteRedis(room, callback) {
-
-      // @todo
-
-      return callback(null, room);
-
-    },
-
     function deleteMongoUsers(room, callback) {
 
       User.update({rooms: {$in: [room.name]}}, {$pull: {rooms: room.name}}, {multi: true}, function(err, updated) {
