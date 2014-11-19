@@ -16,6 +16,7 @@ define([
       this.listenTo(this.collection, 'add', this.onAddRemove);
       this.listenTo(this.collection, 'remove', this.onAddRemove);
       this.listenTo(this.collection, 'redraw', this.render);
+      this.listenTo(this.model, 'change:focused', this.onFocus);
 
       this.initialRender();
     },
@@ -69,6 +70,14 @@ define([
     },
     onAddRemove: function(model, collection, options) {
       this.render();
+    },
+    onFocus: function(model, value, options) {
+      if (value) {
+        this.$list.mCustomScrollbar('update');
+      } else {
+        // remove scrollbar listener on blur
+        this.$list.mCustomScrollbar('disable');
+      }
     },
     _remove: function() {
       this.$list.mCustomScrollbar('destroy');
