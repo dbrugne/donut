@@ -17,7 +17,10 @@ module.exports = function() {
     }
 
     // is the expected FQDN?
-    if (reqHost != conf.fqdn) {
+//    if (reqHost != conf.fqdn) {
+    // @todo TEMP TEMP TEMP TEMP
+    if (reqHost != conf.fqdn && reqHost != 'node01.donut.me') {
+    // @todo TEMP TEMP TEMP TEMP
       // note that #anchor is not supported
       var redirectTo = req.protocol + '://' + conf.fqdn + ((reqPort) ? ':'+reqPort : '') + req.originalUrl;
       debug('fqdn-middleware: request on '+reqHost+' now redirected to '+redirectTo);

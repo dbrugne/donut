@@ -1,6 +1,8 @@
 donut
 ====
 
+Remove fqdn.js node01.donut.me hot hack
+
 History
 Take "received" list on consideration when loading history on connection/join to select only this events to transmit
 - Remove need of color for default avatar
