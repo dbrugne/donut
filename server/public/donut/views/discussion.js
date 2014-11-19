@@ -30,7 +30,7 @@ define([
         model: this.model,
         collection: this.model.events
       });
-      this.messageBoxView = new InputView({
+      this.inputView = new InputView({
         el: this.$el.find('.input'),
         model: this.model
       });
@@ -75,7 +75,6 @@ define([
     updateFocus: function() {
       if (this.model.get('focused')) {
         this.$el.show();
-        this.eventsView.scrollDown();
         if (this.$editable)
           this.$editable.focus();
         this._focus();
@@ -89,7 +88,7 @@ define([
       if (model === this.model) {
         this._remove();
         this.eventsView._remove();
-        this.messageBoxView.remove();
+        this.inputView._remove();
         this.remove();
       }
     },

@@ -61,8 +61,9 @@ define([
       }, 0);
     },
     _remove: function(model) {
-      this.topicView.remove();
-      this.usersView.remove();
+      this.stopListening();
+      this.topicView._remove();
+      this.usersView._remove();
     },
     _renderData: function() {
       var data = this.model.toJSON();

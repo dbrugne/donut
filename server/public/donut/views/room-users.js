@@ -28,7 +28,15 @@ define([
       // scrollbar initialization (setTimeout for browser DOM bug)
       var that = this;
       setTimeout(function() {
-        that.$list.mCustomScrollbar({});
+        that.$list.mCustomScrollbar({
+          scrollInertia         : 0,
+          alwaysShowScrollbar   : 1,
+          theme                 : 'dark',
+          live                  : false,
+          advanced:{
+            updateOnContentResize: false // we update manually
+          }
+        });
         that.$listContent = that.$list.find('.mCSB_container');
         that.render();
       }, 100);
@@ -61,6 +69,10 @@ define([
     },
     onAddRemove: function(model, collection, options) {
       this.render();
+    },
+    _remove: function() {
+      this.$list.mCustomScrollbar('destroy');
+      this.remove();
     }
   });
 

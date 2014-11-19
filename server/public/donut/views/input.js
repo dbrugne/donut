@@ -6,7 +6,7 @@ define([
   'models/current-user',
   'text!templates/input.html'
 ], function ($, _, Backbone, client, currentUser, InputTemplate) {
-  var DiscussionMessageBoxView = Backbone.View.extend({
+  var DiscussionInputView = Backbone.View.extend({
 
     template: _.template(InputTemplate),
 
@@ -18,8 +18,12 @@ define([
 
     initialize: function(options) {
       this.listenTo(currentUser, 'change:avatar', this.onAvatar);
-
       this.render();
+    },
+
+    _remove: function() {
+      this.$editable.mentionsInput('reset');
+      this.remove();
     },
 
     render: function() {
@@ -127,5 +131,5 @@ define([
     }
   });
 
-  return DiscussionMessageBoxView;
+  return DiscussionInputView;
 });

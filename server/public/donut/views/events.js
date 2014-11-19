@@ -26,7 +26,7 @@ define([
       this.listenTo(this.collection, 'add', this.onAdd);
       this.listenTo(this.collection, 'remove', this.onRemove);
       this.listenTo(this.model, 'history:loaded', this.onHistoryLoaded);
-      this.listenTo(this.model, 'change:focused', this.updateMoment);
+      this.listenTo(this.model, 'change:focused', this.onFocus);
 
       var that = this;
       _.defer(function() { // => Uncaught TypeError: Cannot read property '0' of null
@@ -55,8 +55,9 @@ define([
         mouseWheel            : { enable: true, scrollAmount: 75 },
         keyboard              : { scrollAmount: 30 },
         scrollButtons         : { enable: true },
+        live                  : false,
         advanced:{
-          updateOnContentResize: true
+          updateOnContentResize: false // we update manually
         },
         callbacks:{
           onScroll: function() {
@@ -64,8 +65,6 @@ define([
               that.scrollBottom = true;
             else
               that.scrollBottom = false;
-//            console.log('scroll is :'+this.mcs.topPct+'%');
-//            console.log('scroll is bottomed '+that.scrollBottom);
           }
         }
       });
@@ -83,11 +82,15 @@ define([
 
       // render already in collection events
       this.collection.each(function(model) {
-        that.displayEvent(model);
+        that.displayEvent(model, false);
       });
+
+      // then scroll to bottom
+      this.scrollDown();
     },
     _remove: function() {
       clearInterval(this.interval);
+      this.$el.mCustomScrollbar('destroy');
       this.remove();
     },
     updateMoment: function() {
@@ -95,13 +98,23 @@ define([
       this.$el.find('.moment').momentify();
     },
     scrollDown: function() {
-      // too early scrollDown calls (router) will trigger scrollbar generation
+      // too early calls (router) will trigger scrollbar generation
       // on scrollTo and make everything explode
       if (this.scrollReady) {
         var that = this;
         _.delay(function() {
+          that.$el.mCustomScrollbar('update');
           that.$el.mCustomScrollbar('scrollTo', 'bottom');
+
+          // disable scroll until discussion is focused again
+          that.$el.mCustomScrollbar('disable');
         }, 100);
+      }
+    },
+    onFocus: function(model, value, options) {
+      if (value) {
+        this.scrollDown();
+        this.updateMoment();
       }
     },
     onAdd: function(model, collection, options) {
@@ -121,9 +134,12 @@ define([
         $block.remove();
       }
     },
-    displayEvent: function(model, collection, options) {
+    displayEvent: function(model, autoscroll) {
 //      console.log('new event '+model.get('id')+' of type '+model.get('type'));
 //      var _start = Date.now();
+      autoscroll = (autoscroll !== undefined && autoscroll === false)
+        ? false
+        : true;
 
       var firstElement, lastElement, previousElement, nextElement;
 
@@ -142,7 +158,7 @@ define([
         previousElement = lastElement;
       // normal case (loop)
       else if ($list.length > 0) {
-        console.log('events list loop: '+model.get('type'));
+//        console.log('events list loop: '+model.get('type'));
         var list = $list.get();
         // should we begin by end?
         if (firstElement && lastElement
@@ -238,8 +254,8 @@ define([
 //      var _duration = Date.now() - _start;
 //      console.log('new event '+model.get('id')+' rendered in '+_duration+'ms');
 
-      if (!nextElement)
-        this.scrollDown(); // auto-scroll down
+      if (autoscroll && !nextElement)
+        this.scrollDown();
     },
     _renderEvent: function(model, withBlock) {
       var data = model.toJSON();

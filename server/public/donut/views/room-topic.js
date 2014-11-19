@@ -82,6 +82,9 @@ define([
       // reset form state
       this.$el.find('.topic-input').val('');
       this.hideForm();
+    },
+    _remove: function() {
+      this.remove();
     }
 
   });
