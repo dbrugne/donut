@@ -261,10 +261,13 @@ define([
       var data = model.toJSON();
 
       // avatar
+      var size = (model.getGenericType() != 'inout')
+        ? 30
+        : 20;
       if (data.data.avatar || data.data.color)
-        data.data.avatar = $.cd.userAvatar(data.data.avatar, 30, data.data.color);
+        data.data.avatar = $.cd.userAvatar(data.data.avatar, size, data.data.color);
       if (data.data.by_avatar || data.data.by_avatar)
-        data.data.by_avatar = $.cd.userAvatar(data.data.by_avatar, 30, data.data.by_color);
+        data.data.by_avatar = $.cd.userAvatar(data.data.by_avatar, size, data.data.by_color);
 
       // escape HTML
       if (data.data.message) {
