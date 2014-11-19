@@ -1,4 +1,4 @@
-var debug = require('debug')('chat-server:history');
+var debug = require('debug')('donut:server:ws:history');
 var _ = require('underscore');
 var mongoose = require('../mongoose');
 var Room = require('./room');

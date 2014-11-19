@@ -1,4 +1,3 @@
-var debug = require('debug')('chat-server:connection');
 var async = require('async');
 var helper = require('./helper');
 var logger = require('../app/models/log');

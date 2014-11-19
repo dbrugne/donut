@@ -1,4 +1,4 @@
-var debug = require('debug')('chat-server');
+var debug = require('debug')('donut:server:ws');
 var conf = require('./config/index');
 var socketio = require('socket.io');
 var socketioRedis = require('socket.io-redis');

@@ -1,5 +1,5 @@
 var _ = require('underscore');
-var debug = require('debug')('chat-server');
+var debug = require('debug')('donut:server:ws');
 var configuration = require('../config/index');
 var User = require('../app/models/user');
 var Room = require('../app/models/room');

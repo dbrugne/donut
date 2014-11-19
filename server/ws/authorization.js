@@ -1,5 +1,5 @@
 var helper = require('./helper');
-var debug = require('debug')('chat-server');
+var debug = require('debug')('donut:server:ws:authorization');
 var User = require('../app/models/user');
 
 module.exports = {

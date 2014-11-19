@@ -1,4 +1,4 @@
-var debug = require('debug')('chat-server');
+var debug = require('debug')('donut:server:redis');
 var redis = require("redis");
 
 redis.debug_mode = false; // @debug

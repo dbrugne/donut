@@ -1,5 +1,5 @@
 var mongoose = require('../mongoose');
-var debug = require('debug')('chat-server');
+var debug = require('debug')('donut:server:ws');
 
 var logSchema = mongoose.Schema({
 

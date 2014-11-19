@@ -1,4 +1,4 @@
-var debug = require('debug')('chat-server');
+var debug = require('debug')('donut:server:mongoose');
 var mongoose = require('mongoose');
 var conf = require('../config/index');
 

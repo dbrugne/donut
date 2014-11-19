@@ -1,6 +1,5 @@
 var _ = require('underscore');
 var async = require('async');
-var debug = require('debug')('chat-server');
 var User = require('../app/models/user');
 var Room = require('../app/models/room');
 var redis = require('../app/redis');

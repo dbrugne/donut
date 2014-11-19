@@ -1,4 +1,4 @@
-var debug = require('debug')('chat-server:room-emitter');
+var debug = require('debug')('donut:server:ws:room-emitter');
 var _ = require('underscore');
 var async = require('async');
 var HistoryRoom = require('../app/models/historyroom');
