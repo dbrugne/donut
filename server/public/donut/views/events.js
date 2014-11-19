@@ -25,6 +25,7 @@ define([
     initialize: function(options) {
       this.listenTo(this.collection, 'add', this.onAdd);
       this.listenTo(this.collection, 'remove', this.onRemove);
+      this.listenTo(this.collection, 'cleanuped', this.onCleanup);
       this.listenTo(this.model, 'history:loaded', this.onHistoryLoaded);
       this.listenTo(this.model, 'change:focused', this.onFocus);
 
@@ -88,6 +89,9 @@ define([
       // then scroll to bottom
       this.scrollDown();
     },
+    onCleanup: function(event) {
+      this.scrollDown();
+    },
     _remove: function() {
       clearInterval(this.interval);
       this.$el.mCustomScrollbar('destroy');
@@ -95,26 +99,32 @@ define([
     },
     updateMoment: function() {
       // Update all .moment of the discussion panel
-      this.$el.find('.moment').momentify();
+      this.$el.find('.moment').slice(-100).momentify();
     },
     scrollDown: function() {
       // too early calls (router) will trigger scrollbar generation
       // on scrollTo and make everything explode
-      if (this.scrollReady) {
-        var that = this;
-        _.delay(function() {
-          that.$el.mCustomScrollbar('update');
-          that.$el.mCustomScrollbar('scrollTo', 'bottom');
+      if (!this.scrollReady)
+        return;
 
-          // disable scroll until discussion is focused again
-          that.$el.mCustomScrollbar('disable');
-        }, 100);
-      }
+      if (!this.model.get('focused'))
+        return;
+
+      var that = this;
+      _.delay(function() {
+        that.$el.mCustomScrollbar('update');
+        that.$el.mCustomScrollbar('scrollTo', 'bottom');
+      }, 100);
     },
     onFocus: function(model, value, options) {
       if (value) {
+        console.log('enable '+this.model.get('name'));
         this.scrollDown();
         this.updateMoment();
+      } else {
+        // remove scrollbar listener on blur
+        this.$el.mCustomScrollbar('disable');
+        console.log('disabled '+this.model.get('name'));
       }
     },
     onAdd: function(model, collection, options) {
