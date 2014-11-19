@@ -8,7 +8,7 @@
     <% _.each(rooms, function(room) { %>
     <div class="room" data-colorify="<%= room.color %>">
         <div class="cover">
-            <img class="avatar" src="<%= room.avatar %>">
+            <div class="avatar" style="background-image:url(<%= room.avatar %>)"></div>
             <p class="name"><%= room.name %></p>
             <% if (room.owner && room.owner.username) { %>
             <p class="owner"><%= t('global.by') %> <a data-colorify-text="#ffffff">@<%= room.owner.username %></a></p>
@@ -24,7 +24,7 @@
         </div>
         <div class="back" data-colorify-background="color" data-colorify-text="contrast">
             <div class="open-room-profile" data-room-name="<%= room.name %>">
-                <img class="avatar" src="<%= room.avatar %>" data-colorify-border="lighter">
+                <div class="avatar" style="background-image:url(<%= room.avatar %>)" data-colorify-border="lighter"></div>
                 <p class="name" data-colorify-text="contrast"><%= room.name %></p>
                 <% if (room.owner && room.owner.username) { %>
                 <p class="owner"><%= t('global.by') %> <a class="open-user-profile" data-username="<%= room.owner.username %>" data-colorify-text="contrast">@<%= room.owner.username %></a></p>

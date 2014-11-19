@@ -13,7 +13,7 @@ define([
     render: function(data) {
       var rooms = [];
       _.each(data.rooms, function(room) {
-        room.avatar = $.cd.roomAvatar(room.avatar, 145, room.color);
+        room.avatar = $.cd.roomAvatar(room.avatar, 135, room.color);
         rooms.push(room);
       });
 
