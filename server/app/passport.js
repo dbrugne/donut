@@ -173,7 +173,8 @@ passport.use(new FacebookStrategy({
             if (!user.facebook.token) {
               user.facebook.token = token;
               user.facebook.name = profile.name.givenName + ' ' + profile.name.familyName;
-              user.facebook.email = profile.emails[0].value;
+              if (profile.emails)
+                user.facebook.email = profile.emails[0].value;
             }
             user.save(function (err) {
               if (err)
@@ -189,7 +190,8 @@ passport.use(new FacebookStrategy({
             newUser.facebook.id = profile.id; // set the users facebook id
             newUser.facebook.token = token; // we will save the token that facebook provides to the user
             newUser.facebook.name = profile.name.givenName + ' ' + profile.name.familyName; // look at the passport user profile to see how names are returned
-            newUser.facebook.email = profile.emails[0].value; // facebook can return multiple emails so we'll take the first
+            if (profile.emails)
+              newUser.facebook.email = profile.emails[0].value; // facebook can return multiple emails so we'll take the first
 
             // prefill global data with Facebook profile (only on local profile creation)
             newUser.name = profile.displayName;
@@ -228,7 +230,8 @@ passport.use(new FacebookStrategy({
           user.facebook.id = profile.id;
           user.facebook.token = token;
           user.facebook.name = profile.name.givenName + ' ' + profile.name.familyName;
-          user.facebook.email = profile.emails[0].value;
+          if (profile.emails)
+            user.facebook.email = profile.emails[0].value;
 
           // save the user
           user.save(function (err) {
