@@ -87,7 +87,7 @@ define([
      * - under n events
      * - but never remove events from less than 1 hour
      */
-    keepMaxEventsOnCleanup: 1000,
+    keepMaxEventsOnCleanup: 250,
     keepMaxHoursOnCleanup: 1,
     cleanup: function() {
       var model;
