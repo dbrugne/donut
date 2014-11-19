@@ -98,13 +98,6 @@ historySchema.statics.retrieve = function() {
       .sort({time: 'desc'}) // important for timeline logic but also optimize rendering on frontend
       .limit(limit);
 
-    /**
-     * @todo : add index
-     * - time (range, sort)
-     * - from
-     * - to
-     */
-
     q.exec(function(err, entries) {
       if (err)
         return fn('Error while retrieving room history: '+err);

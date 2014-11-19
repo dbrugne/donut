@@ -104,13 +104,6 @@ historySchema.statics.retrieve = function() {
       ? 10000 // arbitrary
       : 250;
 
-    /**
-     * @todo : add index
-     * - time (range, sort)
-     * - name (filter)
-     * - users (filter)
-     */
-
     //console.log(criteria, limit);
     var q = that.find(criteria)
       .sort({time: 'desc'}) // important for timeline logic but also optimize rendering on frontend
