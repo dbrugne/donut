@@ -10,8 +10,8 @@ module.exports = function (io, socket) {
       function rooms(callback) {
 
         var q = Room.find({})
-          .sort({'lastjoin_at': -1})
-          .limit(25)
+          .sort({priority: -1, 'lastjoin_at': -1})
+          .limit(100)
           .populate('owner', 'username avatar');
 
         q.exec(function (err, rooms) {
@@ -40,14 +40,18 @@ module.exports = function (io, socket) {
               avatar     : room.avatar,
               owner      : _owner,
               users      : count,
-              lastjoin_at: new Date(room.lastjoin_at).getTime()
+              lastjoin_at: new Date(room.lastjoin_at).getTime(),
+              priority   : room.priority || 0
             };
 
             _rooms.push(_data);
           });
 
-          // sort (users, lastjoin_at, name)
+          // sort (priority, users, lastjoin_at, name)
           _rooms.sort(function(a, b) {
+            if (a.priority != b.priority)
+              return b.priority - a.priority;
+
             if (a.users != b.users)
               return (b.users - a.users); // b - a == descending
 

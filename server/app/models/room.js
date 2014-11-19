@@ -8,6 +8,7 @@ var roomSchema = mongoose.Schema({
   op              : [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
   users           : [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
   permanent       : Boolean,
+  priority        : Number,
   bans            : [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
   avatar          : String,
   poster          : String,
