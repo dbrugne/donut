@@ -4,27 +4,20 @@ donut
 Remove fqdn.js node01.donut.me hot hack
 
 History
-Take "received" list on consideration when loading history on connection/join to select only this events to transmit
-- Remove need of color for default avatar
-- Store history without name/time/username/avatar/color in data and re-apply on retrieving
-
-- Notification
-- https://irc.box.com/s/wk9iq6wihj8vsnqc7tpj
-
-- Image in discussion (drag&drop, button, copy&paste)
+[ ] Take "received" list on consideration when loading history on connection/join to select only this events to transmit
+[ ] Remove need of color for default avatar
+[ ] Store history without name/time/username/avatar/color in data and re-apply on retrieving
 
 Refactor browser notifications on new messages
-- In a centralized place detect if: window is focused or not, which discussion is focused, get current username
-- Make new room/user:message trigger event on this object
-- Change window title even if window is focused (display unread messages in other discussion) but only if discussion is unfocused
-- Update discussion tab badge if not focused room (and if i'm not the sender)
-- Play a sound a message on new message in not focused discussion (or if window is not focused) (and if i'm not the sender)
-- Play a different sound when i'm notified in not focused discussion (or if window is not focused) (and if i'm not the sender)
-- Consider only room/user:message
-- Never "notify" my own room/user:message
-- http://stackoverflow.com/questions/9419263/playing-audio-with-javascript
-
-- Room mentions (on server side detect #word, search for correspondance and add mention on the fly)
+[ ] In a centralized place detect if: window is focused or not, which discussion is focused, get current username
+[ ] Make new room/user:message trigger event on this object
+[ ] Change window title even if window is focused (display unread messages in other discussion) but only if discussion is unfocused
+[ ] Update discussion tab badge if not focused room (and if i'm not the sender)
+[ ] Play a sound a message on new message in not focused discussion (or if window is not focused) (and if i'm not the sender)
+[ ] Play a different sound when i'm notified in not focused discussion (or if window is not focused) (and if i'm not the sender)
+[ ] Consider only room/user:message
+[ ] Never "notify" my own room/user:message
+[ ] http://stackoverflow.com/questions/9419263/playing-audio-with-javascript
 
 Admin
 [ ] Add "admin" tag on user (allow them to view all history and op all rooms and send "reload" messages)
@@ -32,20 +25,20 @@ Admin
 [ ] Add event in all discussions to inform users of deployment
 [ ] Add whole platform maintenance mode
 
-- Diagnose client side slow perfomance : http://stackoverflow.com/questions/19502333/how-to-identify-a-memory-leak-with-backbone-js
+[ ] Diagnose client side slow perfomance : http://stackoverflow.com/questions/19502333/how-to-identify-a-memory-leak-with-backbone-js
 
-- Add test instance
+[ ] Add test instance
 
-- Add automatic deploy system (+compilation, chat.html)
+[ ] Add automatic deploy system (+compilation, chat.html)
+
+## To validate after pomelo
 
 Add online/offline/afk management
-- On connection/deconnection[/stop/restart] set user in Redis (donut:onlines:user:_USER_ID_) as a HASH with sockets list (donut:onlines:sockets:_USER_ID_)
-- Handle process termination (SIGINT, SIGTERM, Uncaugth exception): http://stackoverflow.com/questions/26163800/node-js-pm2-on-exit
+[ ] On connection/deconnection[/stop/restart] set user in Redis (donut:onlines:user:_USER_ID_) as a HASH with sockets list (donut:onlines:sockets:_USER_ID_)
+[ ] Handle process termination (SIGINT, SIGTERM, Uncaugth exception): http://stackoverflow.com/questions/26163800/node-js-pm2-on-exit
 
 Improve "unread" messages viewing detection
  -> setInterval qui détecte le focus (window/discussion), les messages vus dans une discussion focus + de 2 secondes sont marqués comme lus côté serveur
-
-- Aggregate by day (!!!)
 
 ## Grunt tasks
 - Deploy
