@@ -36,12 +36,12 @@ define([
 
       // recurent tasks
       this.interval = setInterval(function() {
-        if (!that.model.get('focused')) // only on currently focused view
-          return;
-
         // remove old messages (only if scroll is bottom)
         if (that.scrollBottom)
           that.collection.cleanup();
+
+        if (!that.model.get('focused')) // only on currently focused view
+          return;
 
         // update moment times
         that.updateMoment();

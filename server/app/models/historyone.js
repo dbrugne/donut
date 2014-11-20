@@ -89,9 +89,10 @@ historySchema.statics.retrieve = function() {
     }
 
     // limit
-    var limit = (criteria.time && criteria.time.$lte && criteria.time.$gte)
-      ? 10000 // arbitrary
-      : 250;
+    //var limit = (criteria.time && criteria.time.$lte && criteria.time.$gte)
+    //  ? 10000 // arbitrary
+    //  : 250;
+    var limit = 250;
 
     //console.log(criteria, limit);
     var q = that.find(criteria)
