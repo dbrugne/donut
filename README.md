@@ -1,7 +1,12 @@
 donut
 ====
 
-Remove fqdn.js node01.donut.me hot hack
+[ ] Performance
+* Connect only new events // reconnect render received events
+[ ] Improve browser notifications: in an centralized place, detect window is focused or not, which discussion is focused, scroll position, current user ; change window title, discussion tab badge, sound ; for user/room:message and mention of myself ; never for my own message and messages that i can see (window and discussion focused with scroll to bottom and not message from me)
+[ ] Configure test instance
+[ ] Add a push on ShopPaintball homepage and footer
+[ ] Last connected at (in user profile and one to one header)
 
 History
 [ ] Take "received" list on consideration when loading history on connection/join to select only this events to transmit
@@ -15,8 +20,6 @@ Admin
 [ ] Add whole platform maintenance mode
 
 [ ] Diagnose client side slow perfomance : http://stackoverflow.com/questions/19502333/how-to-identify-a-memory-leak-with-backbone-js
-
-[ ] Add test instance
 
 [ ] Add automatic deploy system (+compilation, chat.html)
 
@@ -33,6 +36,6 @@ Improve "unread" messages viewing detection
 - Deploy
   - git pull
   - compile JS
-  - set chat.html require.js source
+  - set chat.html  require.js source
 - Cleanup cloudinary pictures with "discussion" and "notposted" tag
 - Inject sample data (for new deployment on dev): #donut, #support, fake users and rooms
