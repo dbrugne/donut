@@ -1,150 +1,23 @@
-<% if (type == 'date') { %>
-<div class="date">
-    <i class="fa fa-calendar"></i> <%= day %>
-</div>
-<% } else if (type == 'hello') { %>
-<div class="block hello">
-    <div class="event" data-event-id="<%= data.id %>" data-time="<%= data.time %>">
-        <div class="text"><img src="/images/hello.svg"> <%= t('chat.welcome.default', {name: data.name}) %></div>
-        <div class="date"><span class="moment" data-time="<%= data.time %>"></span></div>
+<div class="history-loader">
+    <i class="fa fa-clock-o"></i>
+    <%= t('chat.history.label') %>:
+    <a class="load" data-colorify-text="color" data-days="1"><%= t('chat.history.displayhistory') %></a>
+    <div class="spinner">
+        <i class="fa fa-spinner fa-spin fa-2x"></i>
     </div>
 </div>
-<% } else if (type =='disconnected') { %>
-<div class="block disconnected">
-    <div class="event" data-event-id="<%= data.id %>" data-time="<%= data.time %>">
-        <div class="text"><img src="/images/disconnect.svg"> <%= t('chat.notifications.disconnected') %></div>
-        <div class="date"><span class="moment" data-time="<%= data.time %>"></span></div>
+<div class="history"><!--/history events--></div>
+<% if (model.type == 'room') { %>
+<div class="hello block">
+    <div class="event">
+        <div class="text"><img src="/images/hello.svg"> <%= t('chat.welcome.room', {name: model.name}) %></div>
     </div>
 </div>
-<% } else if (type =='reconnected') { %>
-<div class="block reconnected">
-    <div class="event" data-event-id="<%= data.id %>" data-time="<%= data.time %>">
-        <div class="text"><img src="/images/connect.svg"> <%= t('chat.notifications.reconnected') %></div>
-        <div class="date"><span class="moment" data-time="<%= data.time %>"></span></div>
+<% } else if (model.type == 'onetoone') { %>
+<div class="hello block">
+    <div class="event">
+        <div class="text"><img src="/images/hello.svg"> <%= t('chat.welcome.onetoone', {username: model.username}) %></div>
     </div>
 </div>
-<% } else if (type =='room:topic') { %>
-<div class="block topic">
-    <div class="event" data-event-id="<%= data.id %>" data-time="<%= data.time %>">
-        <div class="text">
-            <img class="avatar" src="<%= data.avatar %>">
-            <span class="username open-user-profile" data-username="<%= data.username %>">@<%= data.username %></span>
-            <%= t('chat.notifications.topic') %> "<%- data.topic %>"
-        </div>
-        <div class="date"><span class="moment" data-time="<%= data.time %>"></span></div>
-    </div>
-</div>
-<% } else if (type =='room:kick') { %>
-<div class="block kick">
-    <div class="event" data-event-id="<%= data.id %>" data-time="<%= data.time %>">
-        <div class="text">
-            <img src="/images/kick.svg">
-            <img class="avatar" src="<%= data.avatar %>">
-            <span class="username open-user-profile" data-username="<%= data.username %>">@<%= data.username %></span>
-            <%= t('chat.notifications.kick') %>
-            <img class="avatar" src="<%= data.by_avatar %>">
-            <span class="username open-user-profile" data-username="<%= data.by_username %>">@<%= data.by_username %></span>
-            <% if (data.reason) { %> : '<%= data.reason %>'<% }; %>
-        </div>
-        <div class="date"><span class="moment" data-time="<%= data.time %>"></span></div>
-    </div>
-</div>
-<% } else if (type =='room:ban') { %>
-<div class="block ban">
-    <div class="event" data-event-id="<%= data.id %>" data-time="<%= data.time %>">
-        <div class="text">
-            <img src="/images/ban.svg">
-            <span class="username open-user-profile" data-username="<%= data.username %>">@<%= data.username %></span>
-            <%= t('chat.notifications.ban') %>
-            <img class="avatar" src="<%= data.by_avatar %>">
-            <span class="username open-user-profile" data-username="<%= data.by_username %>">@<%= data.by_username %></span> (<%= data.time %>) '<em><%= data.reason %></em>'
-        </div>
-        <div class="date"><span class="moment" data-time="<%= data.time %>"></span></div>
-    </div>
-</div>
-<% } else if (type =='room:op') { %>
-<div class="block op">
-    <div class="event" data-event-id="<%= data.id %>" data-time="<%= data.time %>">
-        <div class="text">
-            <img src="/images/op.svg">
-            <img class="avatar" src="<%= data.avatar %>">
-            <span class="username open-user-profile" data-username="<%= data.username %>">@<%= data.username %></span> <%= t('chat.notifications.op') %>
-            <img class="avatar" src="<%= data.by_avatar %>"><span class="username open-user-profile" data-username="<%= data.by_username %>">@<%= data.by_username %></span>
-        </div>
-        <div class="date"><span class="moment" data-time="<%= data.time %>"></span></div>
-    </div>
-</div>
-<% } else if (type =='room:deop') { %>
-<div class="block deop">
-    <div class="event" data-event-id="<%= data.id %>" data-time="<%= data.time %>">
-        <div class="text">
-            <img src="/images/deop-w.svg">
-            <img class="avatar" src="<%= data.avatar %>">
-            <span class="username open-user-profile" data-username="<%= data.username %>">@<%= data.username %></span> <%= t('chat.notifications.deop') %>
-            <img class="avatar" src="<%= data.by_avatar %>"><span class="username open-user-profile" data-username="<%= data.by_username %>">@<%= data.by_username %></span>
-        </div>
-        <div class="date"><span class="moment" data-time="<%= data.time %>"></span></div>
-    </div>
-</div>
-<% } else if (type == 'room:message' || type == 'user:message') { %>
-    <% if (withBlock) { %>
-    <div class="block message">
-        <img class="avatar open-user-profile" data-username="<%= data.username %>" src="<%= data.avatar %>" alt="<%= data.username %> avatar" />
-        <div class="username open-user-profile" data-username="<%= data.username %>">@<%= data.username %></div>
-        <div class="items">
-    <% } %>
-            <div class="event <% if (isNew) { print('new'); } %>" data-event-id="<%= data.id %>" data-time="<%= data.time %>">
-                <div class="text"><%= data.message %></div>
-                <div class="date"><span class="moment" data-time="<%= data.time %>"></span></div>
-            </div>
-    <% if (withBlock) { %>
-        </div>
-    </div>
-    <% } %>
-<% } else if (type == 'user:online' || type == 'user:offline' || type =='room:in' || type == 'room:out') { %>
-    <% if (withBlock) { %>
-        <div class="block inout">
-            <div class="items">
-    <% } %>
-    <% if (type == 'user:online') { %>
-    <div class="event online" data-time="<%= data.time %>" title="<%= data.username %> <%= t('chat.notifications.online') %> <% print(moment().format('HH:mm:ss')) %>" data-event-id="<%= data.id %>" data-time="<%= data.time %>">
-        <div class="text">
-            <img class="avatar open-user-profile" src="<%= data.avatar %>" data-username="<%= data.username %>">
-            <img class="icon" src="/images/connect.svg">
-            <div class="username open-user-profile" data-username="<%= data.username %>">@<%= data.username %></div>
-        </div>
-        <div class="date"><span class="moment" data-time="<%= data.time %>"></span></div>
-    </div>
-    <% } else if (type == 'user:offline') { %>
-    <div class="event offline" data-time="<%= data.time %>" title="<%= data.username %> <%= t('chat.notifications.offline') %> <% print(moment().format('HH:mm:ss')) %>" data-event-id="<%= data.id %>" data-time="<%= data.time %>">
-        <div class="text">
-            <img class="avatar open-user-profile" src="<%= data.avatar %>" data-username="<%= data.username %>">
-            <img class="icon" src="/images/disconnect.svg">
-            <div class="username open-user-profile" data-username="<%= data.username %>">@<%= data.username %></div>
-        </div>
-        <div class="date"><span class="moment" data-time="<%= data.time %>"></span></div>
-    </div>
-    <% } else if (type =='room:in') { %>
-    <div class="event in" data-time="<%= data.time %>" title="<%= data.username %> <%= t('chat.notifications.in') %> <% print(moment().format('HH:mm:ss')) %>" data-event-id="<%= data.id %>" data-time="<%= data.time %>">
-        <div class="text">
-            <img class="avatar open-user-profile" src="<%= data.avatar %>" data-username="<%= data.username %>">
-            <img class="icon" src="/images/in.svg">
-            <div class="username open-user-profile" data-username="<%= data.username %>">@<%= data.username %></div>
-        </div>
-        <div class="date"><span class="moment" data-time="<%= data.time %>"></span></div>
-    </div>
-    <% } else if (type == 'room:out') { %>
-    <div class="event out" data-time="<%= data.time %>" title="<%= data.username %> <%= t('chat.notifications.out') %> <% print(moment().format('HH:mm:ss')) %> <% if (data.reason == 'disconnect') { %>(disconnected)<% } %>" data-event-id="<%= data.id %>" data-time="<%= data.time %>">
-        <div class="text">
-            <img class="avatar open-user-profile" src="<%= data.avatar %>" data-username="<%= data.username %>">
-            <img class="icon" src="/images/out.svg">
-            <div class="username open-user-profile" data-username="<%= data.username %>">@<%= data.username %></div>
-        </div>
-        <div class="date"><span class="moment" data-time="<%= data.time %>"></span></div>
-    </div>
-    <% } %>
-    <% if (withBlock) { %>
-            </div>
-        </div>
-    <% } %>
-<% } %>
+<% }; %>
+<div class="realtime"><!--/realtime events--></div>

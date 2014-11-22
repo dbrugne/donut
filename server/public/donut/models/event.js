@@ -8,13 +8,42 @@ define([
       return {
         // id
         type: '',
-        time: '',
-        data: ''
+        data: {}
       };
     },
 
+    /**
+     * Hydrate model from .data property
+     * @param options
+     */
     initialize: function(options) {
+      var data = this.get('data');
 
+      var id = (data.id)
+        ? data.id
+        : _.uniqueId('auto_'); // non-server events
+      this.set({id: id});
+      data.id = id; // non-server events
+
+      var time = (data.time)
+        ? data.time
+        : Date.now(); // non-server events
+      this.set({time: time});
+      data.time = time; // non-server events
+
+      var isNew = (this.get('new'))
+        ? true
+        : false;
+      this.set({new: isNew});
+
+      if (this.get('type') == 'user:message') {
+        data.user_id  = data.from_user_id;
+        data.username = data.from_username;
+        data.avatar   = data.from_avatar;
+        data.color    = data.from_color;
+      }
+
+      this.set({data: data});
     },
 
     getGenericType: function() {
@@ -22,7 +51,7 @@ define([
         'room:message',
         'user:message'
       ].indexOf(this.get('type')) !== -1)
-        return 'message'+this.get('data').username;
+        return 'message';
       else if ([
         'room:in',
         'room:out',
@@ -32,38 +61,6 @@ define([
         return 'inout';
       else
         return 'standard';
-    },
-
-    sameBlockAsModel: function(model) {
-      var type = this.getGenericType();
-      var modelType = model.getGenericType();
-
-      if (type == 'standard' || modelType == 'standard')
-        return false;
-
-      if (type != modelType)
-        return false;
-
-      if (!this.sameDayAsModel(model))
-        return false;
-
-      if (type == 'message' && modelType == 'message'
-        && (this.get('data').username != model.get('data').username))
-        return false;
-
-      return true;
-    },
-
-    sameDayAsModel: function(model) {
-      var c1 = new Date(this.get('time'));
-      var c2 = new Date(model.get('time'));
-      if (c1.getFullYear() == c2.getFullYear()
-        && c1.getMonth() == c2.getMonth()
-        && c1.getDate() == c2.getDate() ) {
-        return true;
-      }
-
-      return false;
     }
 
   });

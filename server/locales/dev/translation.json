@@ -244,9 +244,12 @@
       "description": "DONUT is a thematic chat platform for passionate and nice peoples"
     },
     "welcome": {
-      "default": [
+      "room": [
         "Welcome in <strong>__name__</strong>. Only users that have joined this donut (listed on right) can see the conversation. Even if they are currently offline.",
-        "",
+        "Post a message to start the conversation."
+      ],
+      "onetoone": [
+        "If <strong>__username__</strong> isn't online he will get your messages on his next connexion",
         "Post a message to start the conversation."
       ]
     }

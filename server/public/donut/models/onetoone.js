@@ -2,9 +2,9 @@ define([
   'underscore',
   'backbone',
   'models/client',
-  'models/discussion'
-], function (_, Backbone, client, DiscussionModel) {
-  var OneToOneModel = DiscussionModel.extend({
+  'models/event'
+], function (_, Backbone, client, EventModel) {
+  var OneToOneModel = Backbone.Model.extend({
 
     defaults: function() {
       return {
@@ -21,17 +21,17 @@ define([
         unread: 0
       };
     },
-    _initialize: function() {
-      this.listenTo(client, 'user:profile', this.onProfile);
-      this.listenTo(client, 'user:online', this.onUserOnline);
-      this.listenTo(client, 'user:offline', this.onUserOffline);
-      this.listenTo(client, 'user:history', this.onHistory);
+    initialize: function() {
     },
     leave: function() {
       client.userLeave(this.get('username'));
     },
     onMessage: function(data) {
-      this.onEvent('user:message', data);
+      var model = new EventModel({
+        type: 'user:message',
+        data: data
+      });
+      this.trigger('freshEvent', model);
     },
     onUserOnline: function(data) {
       this._onStatus('online', data);
@@ -40,41 +40,22 @@ define([
       this._onStatus('offline', data);
     },
     _onStatus: function(expect, data) {
-      if (data.username != this.get('username'))
-        return;
-
       if (this.get('status') == expect)
         return;
 
       this.set({status: expect});
 
-      this.events.addEvent({
+      var model = new EventModel({
         type: 'user:'+expect,
         data: data
       });
+      this.trigger('freshEvent', model);
     },
-    onProfile: function (data) {
-      if (!data.user || data.user.username != this.get('username'))
-        return;
-
-      this.set(data.user);
+    onUpdated: function (data) {
+      this.set(data.data);
     },
     onHistory: function(data) {
-      if (this.get('username') != data.username)
-        return;
-
-      if (data.history && data.history.length > 0) {
-        var that = this;
-        _.each(data.history, function(event) {
-          event.data.user_id = event.data.from_user_id;
-          event.data.username = event.data.from_username;
-          event.data.avatar = event.data.from_avatar;
-          event.data.color = event.data.from_color;
-          that.events.addEvent(event);
-        });
-      }
-
-      this.trigger('history:loaded');
+      this.trigger('batchEvents', data.history);
     }
 
   });

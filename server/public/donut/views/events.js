@@ -3,15 +3,18 @@ define([
   'underscore',
   'backbone',
   'models/client',
+  'models/event',
   'moment',
-  'text!templates/events.html'
-], function ($, _, Backbone, client, moment, eventsTemplate) {
+  'text!templates/events.html',
+  'text!templates/event.html'
+], function ($, _, Backbone, client, EventModel, moment, eventsTemplate, eventTemplate) {
   var EventsView = Backbone.View.extend({
 
     template: _.template(eventsTemplate),
+    eventTemplate: _.template(eventTemplate),
 
     events: {
-      "click .history a.load": "onHistory"
+      "click .history-loader a.load": "askHistory"
     },
 
     historyLoading: false,
@@ -22,11 +25,13 @@ define([
 
     interval: null,
 
+    intervalDuration: 5, // seconds
+
+    keepMaxEventsOnCleanup: 250,
+
     initialize: function(options) {
-      this.listenTo(this.collection, 'add', this.onAdd);
-      this.listenTo(this.collection, 'remove', this.onRemove);
-      this.listenTo(this.collection, 'cleanuped', this.onCleanup);
-      this.listenTo(this.model, 'history:loaded', this.onHistoryLoaded);
+      this.listenTo(this.model, 'freshEvent', this.addFreshEvent);
+      this.listenTo(this.model, 'batchEvents', this.addBatchEvents);
       this.listenTo(this.model, 'change:focused', this.onFocus);
 
       var that = this;
@@ -36,18 +41,48 @@ define([
 
       // recurent tasks
       this.interval = setInterval(function() {
-        // remove old messages (only if scroll is bottom)
-        if (that.scrollBottom || !that.model.get('focused'))
-          that.collection.cleanup();
+        // remove old messages
+        that.cleanup();
 
         if (!that.model.get('focused')) // only on currently focused view
           return;
 
         // update moment times
         that.updateMoment();
-      }, 45*1000); // every 45s
+      }, this.intervalDuration*1000); // every n seconds
+    },
+    _id: function() {
+      return (this.model.get('name'))
+        ? 'room "'+this.model.get('name')+'"'
+        : 'onetoone "'+this.model.get('username')+'"';
+    },
+    _start: function() {
+      this.start = Date.now();
+    },
+    _stop: function(num) {
+      var _duration = Date.now() - this.start;
+      console.log(num+' event(s) rendered in '+this._id()+' ('+_duration+'ms)');
+      this.start = 0;
+    },
+    _remove: function() {
+      clearInterval(this.interval);
+      this.$el.mCustomScrollbar('destroy');
+      this.remove();
     },
     render: function() {
+      // render view
+      var html = this.template({
+        model: this.model.toJSON(),
+        time: Date.now()
+      });
+      this.$el.append(html);
+
+      //// @todo test
+      //this.$truc = this.$el.closest('.content').find('.truc');
+      //this.$hello = this.$el.find('.block.hello');
+      //// @todo test
+
+      // scrollbar-it
       var that = this;
       this.$el.mCustomScrollbar({
         scrollInertia         : 0,
@@ -66,40 +101,63 @@ define([
               that.scrollBottom = true;
             else
               that.scrollBottom = false;
+
+            //// @todo test
+            //var viewHeight = that.$el.outerHeight() - (parseInt(that.$el.css('padding-top').replace('px', '')) + parseInt(that.$el.css('padding-bottom').replace('px', '')));
+            //var contentHeight = this.mcs.content.outerHeight();
+            //var pos = that.$hello.position();
+            ////that.$truc.css('top', pos.top);
+            //console.log('view is '+viewHeight+'px / content is '+contentHeight+'px and hello is at '+pos.top+'px');
+            //var top = viewHeight / (contentHeight / pos.top);
+            //top += 160; // coumpound block position
+            //that.$truc.css('top', top);
+            //// @todo test
           }
         }
       });
-
       this.scrollReady = true;
-
       // prevent browser go to # when clicking on button with not enough content
       // to have scroll activated
       this.$el.find('.mCSB_buttonUp, .mCSB_buttonDown').on('click', function(e) {
         e.preventDefault();
       });
-
       // scroll library move content in child div
-      this.$timeline = this.$el.find('.mCSB_container');
+      this.$scrollable = this.$el.find('.mCSB_container');
+      this.$history = this.$scrollable.find('.history');
+      this.$realtime = this.$scrollable.find('.realtime');
 
-      // render already in collection events
-      this.collection.each(function(model) {
-        that.displayEvent(model, false);
-      });
+      // render already 'connect' events
+      if (this.model.get('preloadHistory') && this.model.get('preloadHistory').length > 0) {
+        this.addBatchEvents(this.model.get('preloadHistory'), true);
+      }
 
       // then scroll to bottom
       this.scrollDown();
     },
-    onCleanup: function(event) {
-      this.scrollDown();
-    },
-    _remove: function() {
-      clearInterval(this.interval);
-      this.$el.mCustomScrollbar('destroy');
-      this.remove();
+    cleanup: function(event) {
+      if (!this.scrollBottom && this.model.get('focused'))
+        return; // no action when focused AND scroll not on bottom
+
+      // empty .history
+      // @todo : only when a certain amount of content OR when history is not visible on scroll position
+      this.$history.empty();
+
+      // cleanup .realtime
+      var length = this.$realtime.find('.block').length;
+      var remove = (length > this.keepMaxEventsOnCleanup)
+        ? (length - this.keepMaxEventsOnCleanup)
+        : 0;
+      if (remove > 0)
+        this.$realtime.find('.block').slice(0, remove).remove();
+
+      console.log('cleanup discussion "'+this._id()+'", with '+length+' length, '+remove+' removed');
+
+      if (this.model.get('focused'))
+        this.scrollDown();
     },
     updateMoment: function() {
       // Update all .moment of the discussion panel
-      this.$el.find('.moment').slice(-100).momentify();
+      //this.$el.find('.moment').slice(-100).momentify();
     },
     scrollDown: function() {
       // too early calls (router) will trigger scrollbar generation
@@ -114,196 +172,144 @@ define([
       _.delay(function() {
         that.$el.mCustomScrollbar('update');
         that.$el.mCustomScrollbar('scrollTo', 'bottom');
+        if (!that.model.get('focused'))
+          that.$el.mCustomScrollbar('disable');
       }, 100);
     },
     onFocus: function(model, value, options) {
       if (value) {
-        console.log('enable '+this.model.get('name'));
+        console.log('enable '+this._id());
         this.scrollDown();
         this.updateMoment();
       } else {
         // remove scrollbar listener on blur
         this.$el.mCustomScrollbar('disable');
-        console.log('disabled '+this.model.get('name'));
+        console.log('disabled '+this._id());
       }
     },
-    onAdd: function(model, collection, options) {
-      return this.displayEvent(model);
-    },
-    onRemove: function(model, collection, options) {
-      var $event = this.$el.find("[data-event-id='"+model.get('id')+"']");
-      if (!$event)
-        return;
-
-      var $block = $event.closest('.block');
-
-      $event.remove();
-
-      if (model.getGenericType() == 'standard' || $block.find('.event').length < 1) { // "or" condition can help to save some DOM selection
-        // handle empty block removing
-        $block.remove();
-      }
-    },
-    displayEvent: function(model, autoscroll) {
-//      console.log('new event '+model.get('id')+' of type '+model.get('type'));
-//      var _start = Date.now();
-      autoscroll = (autoscroll !== undefined && autoscroll === false)
-        ? false
-        : true;
-
-      var firstElement, lastElement, previousElement, nextElement;
-
-      // all .event list
-      var $list = this.$timeline.find('.event');
-
-      if ($list.length > 0)
-        firstElement = $list.first();
-      if ($list.length > 1)
-        lastElement = $list.last();
-
-      if (firstElement && model.get('data').time < $(firstElement).data('time'))
-        nextElement = firstElement;
-      // special case (after last)
-      else if (lastElement && model.get('data').time > $(lastElement).data('time'))
-        previousElement = lastElement;
-      // normal case (loop)
-      else if ($list.length > 0) {
-//        console.log('events list loop: '+model.get('type'));
-        var list = $list.get();
-        // should we begin by end?
-        if (firstElement && lastElement
-          && (model.get('data').time - $(lastElement).data('time'))
-          < ($(lastElement).data('time') - model.get('data').time)) {
-          list.reverse();
-        }
-
-        // loop and set previousElement and nextElement correctly
-        var targeted = model.get('data').time;
-        var that = this;
-        $(list).each(function(index, element) {
-          nextElement = this;
-          if ((previousElement && $(previousElement).data('time') <= targeted && targeted < $(nextElement).data('time'))
-            || (previousElement && $(previousElement).data('time') >= targeted && targeted > $(nextElement).data('time'))) {
-            return false; // breaks loop (nextElement and previousElement are set)
-          }
-          previousElement = nextElement;
-        });
-      }
-
-      // reverse search case
-      if ($(previousElement).data('time') > $(nextElement).data('time')) {
-        var tmp = previousElement;
-        previousElement = nextElement;
-        nextElement = tmp;
-      }
-
-      var previousModel, nextModel;
-      if (previousElement)
-        previousModel = this.collection.get($(previousElement).data('eventId'));
-      if (nextElement)
-        nextModel = this.collection.get($(nextElement).data('eventId'));
-
+    addFreshEvent: function(model) {
+      // render a 'fresh' event in realtime and scrolldown
+      this._start();
+      var previousElement = this.$realtime.find('.block:last').first();
+      var newBlock = this._newBlock(model, previousElement);
+      var html = this._renderEvent(model, newBlock);
       var element;
-      if (previousElement && model.sameBlockAsModel(previousModel)) {
-        // after previous, no block
-        var html = this._renderEvent(model, false);
-        element = $(html).insertAfter(previousElement);
-      } else if (nextElement && model.sameBlockAsModel(nextModel)) {
-        // before next, no block
-        var html = this._renderEvent(model, false);
-        element = $(html).insertBefore(nextElement);
-      } else if (previousElement) {
-        // after previous, with block
-        var html = this._renderEvent(model, true);
-        var block = $(html).insertAfter($(previousElement).closest('.block'));
-        element = block.find('.event').first();
-      } else if (nextElement) {
-        // before next, with block
-        var html = this._renderEvent(model, true);
-        var block = $(html).insertBefore($(nextElement).closest('.block'));
-        element = block.find('.event').first();
-      } else {
-        // just append container, with block
-        var html = this._renderEvent(model, true);
-        var block = $(html).appendTo(this.$timeline);
-        element = block.find('.event').first();
+      if (!newBlock)
+        element = $(html).appendTo(previousElement.find('.items')); // @bug : element is the .event in this case not the .block
+      else
+        element = $(html).appendTo(this.$realtime);
+      this.scrollDown();
+      this._stop(1);
+    },
+    addBatchEvents: function(events, realtime) {
+      if (events.length == 0 && !realtime) {
+        this.historyReceived(); // we can get history response without events in
+        return;
       }
 
-//      // day separator
-//      var dayHtml = this.template({
-//        type: 'date',
-//        day : moment(model.get('time')).format('LLLL')
-//      });
-//      if (!previousElement) {
-//        $(dayHtml).insertBefore($(element).closest('.block'));
-//      } else if (previousElement && !model.sameDayAsModel(previousModel)) {
-//        $(dayHtml).insertBefore($(element).closest('.block'));
-//      }
+      // render a batch of events (sorted in 'desc' order)
+      this._start();
+      var $html = $('<div/>');
+      var previousElement;
+      var that = this;
+      _.each(events, function(event) {
+        var model = new EventModel(event);
+        var newBlock = that._newBlock(model,  previousElement);
+        var h = that._renderEvent(model, newBlock);
+        if (!newBlock)
+          $(h).prependTo(previousElement.find('.items')); // not define previousElement, remain the same .block
+        else
+          previousElement = $(h).prependTo($html);
+      });
 
-      // time
-      element.find('.moment').momentify(); // time
-
-      // links
-      var linkifyOptions = {
-        linkAttributes: {
-          'data-colorify-text': 'color'
-        }
-      };
-      if (this.model.get('color'))
-        linkifyOptions.linkAttributes['data-colorify'] = this.model.get('color');
-      else if (this.model.get('data') && this.model.get('data').color)
-        linkifyOptions.linkAttributes['data-colorify'] = this.model.get('data').color;
-      element.find('.text').linkify(linkifyOptions);
-
-      // smileys
-      element.find('.text').smilify();
-
-      // colors
-      element.colorify(); // (after linkify)
-
-//      var _duration = Date.now() - _start;
-//      console.log('new event '+model.get('id')+' rendered in '+_duration+'ms');
-
-      if (autoscroll && !nextElement)
-        this.scrollDown();
+      if (!realtime) {
+        $html.prependTo(this.$history);
+        this.historyReceived();
+      } else {
+        $html.appendTo(this.$realtime);
+      }
+      this._stop(events.length);
     },
-    _renderEvent: function(model, withBlock) {
+    _newBlock: function(newModel, previousElement) {
+      var newBlock = false;
+      if (!previousElement || previousElement.length < 1) {
+        newBlock = true;
+      } else {
+        switch (newModel.getGenericType()) {
+          case 'standard':
+            newBlock = true;
+            break;
+          case 'inout':
+            if (!previousElement.hasClass('inout'))
+              newBlock = true;
+            break;
+          case 'message':
+            if (!previousElement.hasClass('message') || previousElement.data('username') != newModel.get('data').username)
+              newBlock = true;
+            break;
+        }
+      }
+      return newBlock;
+    },
+    _prepareEvent: function(model) {
       var data = model.toJSON();
+      var message = model.get('data').message;
 
       // avatar
       var size = (model.getGenericType() != 'inout')
         ? 30
         : 20;
-      if (data.data.avatar || data.data.color)
-        data.data.avatar = $.cd.userAvatar(data.data.avatar, size, data.data.color);
-      if (data.data.by_avatar || data.data.by_avatar)
-        data.data.by_avatar = $.cd.userAvatar(data.data.by_avatar, size, data.data.by_color);
+      if (model.get("data").avatar || model.get("data").color)
+        data.data.avatar = $.cd.userAvatar(model.get("data").avatar, size, model.get("data").color);
+      if (model.get("data").by_avatar || model.get("data").by_avatar)
+        data.data.by_avatar = $.cd.userAvatar(model.get("data").by_avatar, size, model.get("data").by_color);
 
-      // escape HTML
-      if (data.data.message) {
-        data.data.message = _.escape(data.data.message);
-      }
+      if (message) {
+        // escape HTML
+        message = _.escape(message);
 
-      // mentions
-      if (this.model.get('type') == 'room' && data.data.message) {
-        data.data.message = data.data.message.replace(
-          /@\[([^\]]+)\]\(user:([^)]+)\)/g,
-          '<a class="mention open-user-profile" data-username="$1" data-colorify-text="color" data-colorify="'+this.model.get('color')+'">@$1</a>'
-        );
+        // mentions
+        if (this.model.get('type') == 'room') {
+          message = message.replace(
+            /@\[([^\]]+)\]\(user:([^)]+)\)/g,
+            '<a class="mention open-user-profile" data-username="$1" data-colorify-text="color" data-colorify="'+this.model.get('color')+'">@$1</a>'
+          );
+        }
+
+        // moment
+        var dateObject = moment(model.get('time'));
+        data.data.fromnow = dateObject.fromNow();
+        data.data.full = dateObject.format("dddd Do MMMM YYYY à HH:mm:ss");
+
+        // linkify
+        var o = (this.model.get('color'))
+          ? { linkAttributes: { style: 'color: '+this.model.get('color')+';' } }
+          : {};
+        message = $.linkify(message, o);
+
+        // smileys
+        message = $.smilify(message);
+
+        data.data.message = message;
       }
 
       // rendering attributes
       data.isNew = model.get('new');
+
+      return data;
+    },
+    _renderEvent: function(model, withBlock) {
+      var data = this._prepareEvent(model);
       data.withBlock = withBlock || false;
       try {
-        return this.template(data);
+        return this.eventTemplate(data);
       } catch (e) {
         console.log('Render exception, see below');
         console.log(e);
         return false;
       }
     },
-    onHistory: function(event) {
+    askHistory: function(event) {
       event.preventDefault();
       event.stopPropagation();
 
@@ -314,21 +320,15 @@ define([
         this.historyLoading = true;
 
       // spinner
-      this.$el.find('.history .spinner').show();
+      this.$el.find('.history-loader .spinner').show();
 
-//      // until
-//      var until = $(event.currentTarget).data('days');
-
-      // since, only one hello could be present in DOM, so with 2 elements
-      //  we must have at least one real event
-      var since;
-      var lasts = this.collection.first(2);
-      if (lasts[0] && lasts[0].get('id') != 'hello')
-        since = lasts[0].get('time');
-      else if (lasts[1] && lasts[1].get('id') != 'hello')
-        since = lasts[1].get('time');
-      else
-        since = Date.now();
+      // since
+      var first = this.$history
+        .find('.block:first').first()
+        .find('.event').first();
+      var since = (!first || first.length < 1)
+        ? null
+        : first.data('time');
 
       // @todo : cleanup this code, call on model for example
       if (this.model.get('type') == 'room')
@@ -336,11 +336,10 @@ define([
       else if (this.model.get('type') == 'onetoone')
         client.userHistory(this.model.get('username'), since, '');
     },
-    onHistoryLoaded: function() {
+    historyReceived: function() {
       this.historyLoading = false;
-      this.$timeline.find('.history .spinner').hide();
+      this.$scrollable.find('.history-loader .spinner').hide();
     }
-
   });
 
   return EventsView;

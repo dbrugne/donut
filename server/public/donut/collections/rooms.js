@@ -25,24 +25,36 @@ define([
     },
 
     initialize: function() {
-      this.listenTo(client, 'room:leave', this.onLeave);
       this.listenTo(client, 'room:welcome', this.addModel);
+      this.listenTo(client, 'room:in', this.onIn);
+      this.listenTo(client, 'room:out', this.onOut);
+      this.listenTo(client, 'room:topic', this.onTopic);
+      this.listenTo(client, 'room:message', this.onMessage);
+      this.listenTo(client, 'room:op', this.onOp);
+      this.listenTo(client, 'room:deop', this.onDeop);
+      this.listenTo(client, 'room:updated', this.onUpdated);
+      this.listenTo(client, 'room:history', this.onHistory);
+      this.listenTo(client, 'user:online', this.onUserOnline);
+      this.listenTo(client, 'user:offline', this.onUserOffline);
+      this.listenTo(client, 'reconnected', this.onOnline);
+      this.listenTo(client, 'disconnected', this.onOffline);
       this.listenTo(client, 'room:kick', this.onKick);
+      this.listenTo(client, 'room:leave', this.onLeave);
     },
-    // We ask to server to join us in this room
     openPing: function(name) {
       client.join(name);
     },
-    // Server confirm that we was joined to the room and give us some data on room
     addModel: function(room) {
+      // server confirm that we was joined to the room and give us some data on room
+
       // prepare model data
       var owner = (room.owner.user_id)
         ? new UserModel({
-            id: room.owner.user_id,
-            user_id: room.owner.user_id,
-            username: room.owner.username,
-            avatar: room.owner.avatar
-          })
+        id: room.owner.user_id,
+        user_id: room.owner.user_id,
+        username: room.owner.username,
+        avatar: room.owner.avatar
+      })
         : new UserModel();
 
       var roomData = {
@@ -76,67 +88,136 @@ define([
       });
 
       // Add history
-      if (room.history && room.history.length > 0) {
-        _.each(room.history, function(event) {
-          model.events.addEvent(event);
-        });
-      }
+      model.set('preloadHistory', room.history);
 
       if (isNew) {
-        // hello notification
-        model.events.addEvent({
-          type: 'hello',
-          data: {
-            id: 'hello',
-            name: model.get('name')
-          }
-        });
-
-        // now the view exists (created by mainView)
         this.add(model);
+        // now the view exists (created by mainView)
       }
     },
-    // Server asks to this client to leave this room
-    onLeave: function(data) {
-      var room = this.get(data.name);
-      // Only if already joined
-      if (room) {
-        this.remove(room);
 
-        if (data.reason && data.reason == 'deleted')
-          this.trigger('deleted', {reason: $.t("chat.deletemessage", {name: data.name})});
-        else
-          this.trigger('deleted');
-      }
-    },
-    onKick: function(data) {
-      if (!data.name)
+    onIn: function(data) {
+      var model;
+      if (!data || !data.name || !(model = this.get(data.name)))
         return;
 
-      var room = this.get(data.name);
-      if (!room)
+      model.onIn(data);
+    },
+    onOut: function(data) {
+      var model;
+      if (!data || !data.name || !(model = this.get(data.name)))
+        return;
+
+      model.onOut(data);
+    },
+    onTopic: function(data) {
+      var model;
+      if (!data || !data.name || !(model = this.get(data.name)))
+        return;
+
+      model.onTopic(data);
+    },
+    onMessage: function(data) {
+      var model;
+      if (!data || !data.name || !(model = this.get(data.name)))
+        return;
+
+      model.onMessage(data);
+    },
+    onOp: function(data) {
+      var model;
+      if (!data || !data.name || !(model = this.get(data.name)))
+        return;
+
+      model.onOp(data);
+    },
+    onDeop: function(data) {
+      var model;
+      if (!data || !data.name || !(model = this.get(data.name)))
+        return;
+
+      model.onDeop(data);
+    },
+    onUpdated: function(data) {
+      var model;
+      if (!data || !data.name || !(model = this.get(data.name)))
+        return;
+
+      model.onUpdated(data);
+    },
+    onHistory: function(data) {
+      var model;
+      if (!data || !data.name || !(model = this.get(data.name)))
+        return;
+
+      model.onHistory(data);
+    },
+    onUserOnline: function(data) {
+      var model;
+      if (!data || !data.name || !(model = this.get(data.name)))
+        return;
+
+      model.onUserOnline(data);
+    },
+    onUserOffline: function(data) {
+      var model;
+      if (!data || !data.name || !(model = this.get(data.name)))
+        return;
+
+      model.onUserOffline(data);
+    },
+    onOnline: function(data) {
+      var model;
+      if (!data || !data.name || !(model = this.get(data.name)))
+        return;
+
+      model.onOnline(data);
+    },
+    onOffline: function(data) {
+      var model;
+      if (!data || !data.name || !(model = this.get(data.name)))
+        return;
+
+      model.onOffline(data);
+    },
+    onKick: function(data) {
+      var model;
+      if (!data || !data.name || !(model = this.get(data.name)))
         return;
 
       // if i'm the kicked user destroy the model/view
       if (currentUser.get('user_id') == data.user_id) {
-        this.remove(room);
+        this.remove(model);
         this.trigger('kicked', data); // focus + alert
         return;
       }
 
-      // check that target is in room.users
-      var user = room.users.get(data.user_id);
+      // check that target is in model.users
+      var user = model.users.get(data.user_id);
       if (!user)
         return;
 
       // remove from this.users
-      room.users.remove(user);
+      model.users.remove(user);
 
-      // trigger notification
-      room.events.addEvent({
+      // trigger event
+      model.trigger('freshEvent', new EventModel({
         type: 'room:kick',
         data: data
-      });
+      }));
+    },
+    onLeave: function(data) {
+      // server asks to this client to leave this room
+      var model;
+      if (!data || !data.name || !(model = this.get(data.name)))
+        return;
+
+      this.remove(model);
+
+      if (data.reason && data.reason == 'deleted')
+        this.trigger('deleted', {reason: $.t("chat.deletemessage", {name: data.name})});
+      else
+        this.trigger('deleted');
     }
 
   });

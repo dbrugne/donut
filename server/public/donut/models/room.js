@@ -3,12 +3,11 @@ define([
   'backbone',
   'models/client',
   'models/current-user',
-  'models/discussion',
   'models/user',
   'models/event',
   'collections/room-users'
-], function (_, Backbone, client, currentUser, DiscussionModel, UserModel, EventModel, RoomUsersCollection) {
-  var RoomModel = DiscussionModel.extend({
+], function (_, Backbone, client, currentUser, UserModel, EventModel, RoomUsersCollection) {
+  var RoomModel = Backbone.Model.extend({
 
     defaults: function() {
       return {
@@ -25,22 +24,8 @@ define([
       };
     },
 
-    _initialize: function() {
+    initialize: function() {
       this.users = new RoomUsersCollection();
-      this.listenTo(client, 'room:in', this.onIn);
-      this.listenTo(client, 'room:out', this.onOut);
-      this.listenTo(client, 'room:topic', this.onTopic);
-      this.listenTo(client, 'room:message', this.onMessage);
-      this.listenTo(client, 'room:op', this.onOp);
-      this.listenTo(client, 'room:deop', this.onDeop);
-      this.listenTo(client, 'room:updated', this.onUpdated);
-      this.listenTo(client, 'room:history', this.onHistory);
-
-      this.listenTo(client, 'user:online', this.onUserOnline);
-      this.listenTo(client, 'user:offline', this.onUserOffline);
-
-      this.listenTo(client, 'reconnected', this.onOnline);
-      this.listenTo(client, 'disconnected', this.onOffline);
     },
     addUser: function(data) {
       // already in?
@@ -78,6 +63,12 @@ define([
       this.users.add(model);
       return model;
     },
+    getUrl: function() {
+      return window.location.protocol
+        +'//'+window.location.host
+        +'/room/'
+        +this.get('name').replace('#', '').toLocaleLowerCase();
+    },
     leave: function() {
       client.leave(this.get('name'));
     },
@@ -97,56 +88,46 @@ define([
           ? true
           : false;
     },
-    onMessage: function(data) {
-      if (data.name != this.get('name'))
-        return;
-
-      this.onEvent('room:message', data);
-    },
     onIn: function(data) {
-      if (data.name != this.get('name')) {
-        return;
-      }
-
       data.status = 'online'; // only an online user can join a room
       var user = this.addUser(data);
-
-      this.events.addEvent({
+      var model = new EventModel({
         type: 'room:in',
         data: data
       });
+      this.trigger('freshEvent', model);
       this.trigger('inOut');
     },
     onOut: function(data) {
-      if (data.name != this.get('name')) {
-        return;
-      }
       var user = this.users.get(data.user_id);
 
-      if (!user) return; // if user has more that one socket we receive n room:out
+      if (!user)
+        return; // if user has more that one socket we receive n room:out
 
       this.users.remove(user);
-
-      this.events.addEvent({
+      var model = new EventModel({
         type: 'room:out',
         data: data
       });
+      this.trigger('freshEvent', model);
       this.trigger('inOut');
     },
     onTopic: function(data) {
-      if (data.name != this.get('name')) {
-        return;
-      }
       this.set('topic', data.topic);
-      this.events.addEvent({
+      var model = new EventModel({
         type: 'room:topic',
         data: data
       });
+      this.trigger('freshEvent', model);
+    },
+    onMessage: function(data) {
+      var model = new EventModel({
+        type: 'room:message',
+        data: data
+      });
+      this.trigger('freshEvent', model);
     },
     onOp: function(data) {
-      if (data.name != this.get('name'))
-        return;
-
       if (this.get('op').indexOf(data.user_id) !== -1)
         return;
 
@@ -162,15 +143,13 @@ define([
 
       this.users.trigger('redraw');
 
-      this.events.addEvent({
+      var model = new EventModel({
         type: 'room:op',
         data: data
       });
+      this.trigger('freshEvent', model);
     },
     onDeop: function(data) {
-      if (data.name != this.get('name'))
-        return;
-
       if (this.get('op').indexOf(data.user_id) === -1)
         return;
 
@@ -187,35 +166,29 @@ define([
 
       this.users.trigger('redraw');
 
-      this.events.addEvent({
+      var model = new EventModel({
         type: 'room:deop',
         data: data
       });
+      this.trigger('freshEvent', model);
     },
     onUpdated: function(data) {
-      if (data.name != this.get('name'))
-        return;
-
       var that = this;
       _.each(data.data, function(value, key, list) {
         that.set(key, value);
       });
     },
     onOnline: function() {
-      this.events.addEvent({
+      var model = new EventModel({
         type: 'reconnected'
       });
+      this.trigger('freshEvent', model);
     },
     onOffline: function() {
-      this.events.addEvent({
+      var model = new EventModel({
         type: 'disconnected'
       });
-    },
-    getUrl: function() {
-      return window.location.protocol
-        +'//'+window.location.host
-        +'/room/'
-        +this.get('name').replace('#', '').toLocaleLowerCase();
+      this.trigger('freshEvent', model);
     },
     _onStatus: function(expect, data) {
       var model = this.users.get(data.user_id);
@@ -227,10 +200,11 @@ define([
 
       model.set({status: expect});
 
-      this.events.addEvent({
+      var model = new EventModel({
         type: 'user:'+expect,
         data: data
       });
+      this.trigger('freshEvent', model);
     },
     onUserOnline: function(data) {
       this._onStatus('online', data);
@@ -238,19 +212,8 @@ define([
     onUserOffline: function(data) {
       this._onStatus('offline', data);
     },
-
     onHistory: function(data) {
-      if (data.name != this.get('name'))
-        return;
-
-      if (data.history && data.history.length > 0) {
-        var that = this;
-        _.each(data.history, function(event) {
-          that.events.addEvent(event);
-        });
-      }
-
-      this.trigger('history:loaded');
+      this.trigger('batchEvents', data.history);
     }
 
   });

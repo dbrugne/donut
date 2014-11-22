@@ -248,9 +248,12 @@
           }
         },
       "welcome": {
-        "default": [
+        "room": [
           "Bienvenue dans <strong>__name__</strong>. Seuls les utilisateurs qui ont rejoint ce donut (listés à droite) peuvent voir la conversation. Et ce même si ils sont hors ligne pour le moment.",
-          "",
+          "Postez un message pour amorcer la conversation."
+        ],
+        "onetoone": [
+          "Si <strong>__username__</strong> n'est pas en ligne les nouveaux messages lui seront remis à sa prochaine connection",
           "Postez un message pour amorcer la conversation."
         ]
       }
