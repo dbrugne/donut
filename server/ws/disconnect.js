@@ -35,7 +35,7 @@ module.exports = function(io, socket) {
       });
     },
 
-    function emitUserOnlineToRooms(user, callback) {
+    function emitUserOfflineToRooms(user, callback) {
       if (!lastSocket)
         return callback(null, user);
 
@@ -58,7 +58,7 @@ module.exports = function(io, socket) {
       });
     },
 
-    function emitUserOnlineToOnes(user, callback) {
+    function emitUserOfflineToOnes(user, callback) {
       if (!lastSocket)
         return callback(null, user);
 
