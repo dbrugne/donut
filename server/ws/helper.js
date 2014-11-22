@@ -23,7 +23,6 @@ module.exports = {
 
   /**
    * Search and return user model:
-   * [- search in memory cache] @todo
    * - search in Mongo
    * - callback
    * @param username
@@ -147,7 +146,6 @@ module.exports = {
   /**
    * Search, create and return a room model:
    * - search room
-   * - if not exist "create the room" in Mongo store [and memory cache] @todo
    * - callback
    * @param name
    * @param socket
@@ -167,7 +165,6 @@ module.exports = {
   /**
    * Search and return room model:
    * - validate room name format
-   * [- search for room in memory cache] @todo
    * - search for room in Mongo store (case-insensitive test)
    * - callback
    * @param name
