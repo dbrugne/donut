@@ -41,7 +41,7 @@ module.exports = function(io, onetoone, eventName, eventData, callback) {
           io.to('user:'+one.from).emit(eventName, eventData);
 
         // (if sender!=receiver) Broadcast message to all 'receiver' devices
-        if (one.from !==  one.to)
+        if (one.from.toString() !=  one.to.toString())
           io.to('user:'+one.to).emit(eventName, eventData);
 
         return fn(null);
