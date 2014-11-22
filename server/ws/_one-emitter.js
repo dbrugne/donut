@@ -17,6 +17,8 @@ var recorder = HistoryOne.record();
  */
 module.exports = function(io, onetoone, eventName, eventData, callback) {
 
+  var ed = _.clone(eventData);// avoid modification on the object reference
+
   var onetoones = [];
   if (Array.isArray(onetoone))
     onetoones = onetoone;
@@ -26,23 +28,23 @@ module.exports = function(io, onetoone, eventName, eventData, callback) {
   var parallels = [];
   _.each(onetoones, function(one) {
     parallels.push(function(fn) {
-      eventData.from = one.from;
-      eventData.to = one.to;
-      eventData.time = Date.now();
+      ed.from = one.from;
+      ed.to = one.to;
+      ed.time = Date.now();
       var toIsOnline = helper.isUserOnline(io, one.to);
-      recorder(eventName, eventData, toIsOnline, function(err, history) {
+      recorder(eventName, ed, toIsOnline, function(err, history) {
         if (err)
           return fn('Error while emitting user event '+eventName+' in '+room+': '+err);
 
-        eventData.id = history._id.toString();
+        ed.id = history._id.toString();
 
         // Broadcast message to all 'sender' devices (not needed for user status events
         if (eventName != 'user:online' && eventName != 'user:offline')
-          io.to('user:'+one.from).emit(eventName, eventData);
+          io.to('user:'+one.from).emit(eventName, ed);
 
         // (if sender!=receiver) Broadcast message to all 'receiver' devices
         if (one.from.toString() !=  one.to.toString())
-          io.to('user:'+one.to).emit(eventName, eventData);
+          io.to('user:'+one.to).emit(eventName, ed);
 
         return fn(null);
       });

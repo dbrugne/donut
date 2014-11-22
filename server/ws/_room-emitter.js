@@ -16,6 +16,8 @@ var recorder = HistoryRoom.record();
  */
 module.exports = function(io, roomName, eventName, eventData, callback) {
 
+  var ed = _.clone(eventData);// avoid modification on the object reference
+
   var rooms = [];
   if (Array.isArray(roomName))
     rooms = roomName;
@@ -26,16 +28,16 @@ module.exports = function(io, roomName, eventName, eventData, callback) {
   _.each(rooms, function(room) {
     parallels.push(function(fn) {
       // always had room name and time to event
-      eventData.name = room;
-      eventData.time = Date.now();
+      ed.name = room;
+      ed.time = Date.now();
       var onlines = helper.roomUsersId(io, roomName);
-      recorder(eventName, eventData, onlines, function(err, history) {
+      recorder(eventName, ed, onlines, function(err, history) {
         if (err)
           return fn('Error while emitting room event '+eventName+' in '+room+': '+err);
 
         // emit event to room sockets
-        eventData.id = history._id.toString();
-        io.to(room).emit(eventName, eventData);
+        ed.id = history._id.toString();
+        io.to(room).emit(eventName, ed);
 
         return fn(null);
       });
