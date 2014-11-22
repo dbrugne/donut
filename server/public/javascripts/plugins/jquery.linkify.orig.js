@@ -85,9 +85,4 @@
         var $link = $(this), url = $link.attr("href"), isEmail = /^mailto:/i.test(url), target = $link.attr("target");
         return isEmail ? window.location.href = url : window.open(url, target), !1;
     });
-    // ADDED FOR DONUT
-    $.linkify = function (text, options) {
-      return Linkified.linkify(text, options);
-    };
-    // ADDED FOR DONUT
 }(jQuery, window, document);
