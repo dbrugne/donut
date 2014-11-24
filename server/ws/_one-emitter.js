@@ -34,7 +34,7 @@ module.exports = function(io, onetoone, eventName, eventData, callback) {
       var toIsOnline = helper.isUserOnline(io, one.to);
       recorder(eventName, ed, toIsOnline, function(err, history) {
         if (err)
-          return fn('Error while emitting user event '+eventName+' in '+room+': '+err);
+          return fn('Error while emitting user onetoone event '+eventName+': '+err);
 
         ed.id = history._id.toString();
 
