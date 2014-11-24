@@ -25,6 +25,8 @@ define([
     },
 
     initialize: function() {
+      this.listenTo(client, 'disconnected', this.onDisconnect);
+      this.listenTo(client, 'reconnected', this.onReconnect);
       this.listenTo(client, 'room:welcome', this.addModel);
       this.listenTo(client, 'room:in', this.onIn);
       this.listenTo(client, 'room:out', this.onOut);
@@ -36,8 +38,6 @@ define([
       this.listenTo(client, 'room:history', this.onHistory);
       this.listenTo(client, 'user:online', this.onUserOnline);
       this.listenTo(client, 'user:offline', this.onUserOffline);
-      this.listenTo(client, 'reconnected', this.onOnline);
-      this.listenTo(client, 'disconnected', this.onOffline);
       this.listenTo(client, 'room:kick', this.onKick);
       this.listenTo(client, 'room:leave', this.onLeave);
     },
@@ -88,12 +88,22 @@ define([
       });
 
       // Add history
-      model.set('preloadHistory', room.history);
+      model.set('connectHistory', room.history);
 
       if (isNew) {
         this.add(model);
         // now the view exists (created by mainView)
       }
+    },
+    onDisconnect: function() {
+      this.each(function(model) {
+        model.onDisconnect();
+      });
+    },
+    onReconnect: function() {
+      this.each(function(model) {
+        model.onReconnect();
+      });
     },
 
     onIn: function(data) {
@@ -165,20 +175,6 @@ define([
         return;
 
       model.onUserOffline(data);
-    },
-    onOnline: function(data) {
-      var model;
-      if (!data || !data.name || !(model = this.get(data.name)))
-        return;
-
-      model.onOnline(data);
-    },
-    onOffline: function(data) {
-      var model;
-      if (!data || !data.name || !(model = this.get(data.name)))
-        return;
-
-      model.onOffline(data);
     },
     onKick: function(data) {
       var model;

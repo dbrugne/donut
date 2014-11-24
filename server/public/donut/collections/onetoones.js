@@ -24,6 +24,8 @@ define([
     },
 
     initialize: function() {
+      this.listenTo(client, 'disconnected', this.onDisconnect);
+      this.listenTo(client, 'reconnected', this.onReconnect);
       this.listenTo(client, 'user:welcome', this.addModel);
       this.listenTo(client, 'user:leave', this.onLeave);
       this.listenTo(client, 'user:message', this.onMessage);
@@ -66,7 +68,7 @@ define([
       }
 
       // Add history
-      model.set('preloadHistory', user.history);
+      model.set('connectHistory', user.history);
 
       if (isNew) {
         // now the view exists (created by mainView)
@@ -119,6 +121,17 @@ define([
       return (c1 < c2)
         ? c1+'-'+c2
         : c2+'-'+c1;
+    },
+
+    onDisconnect: function() {
+      this.each(function(model) {
+        model.onDisconnect();
+      });
+    },
+    onReconnect: function() {
+      this.each(function(model) {
+        model.onReconnect();
+      });
     },
 
     onLeave: function(data) {

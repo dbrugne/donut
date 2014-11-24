@@ -72,6 +72,7 @@ define([
     leave: function() {
       client.leave(this.get('name'));
     },
+
     currentUserIsOwner: function() {
       if (!this.get('owner'))
         return false;
@@ -88,6 +89,20 @@ define([
           ? true
           : false;
     },
+
+    onDisconnect: function() {
+      var model = new EventModel({
+        type: 'disconnected'
+      });
+      this.trigger('freshEvent', model);
+    },
+    onReconnect: function() {
+      var model = new EventModel({
+        type: 'reconnected'
+      });
+      this.trigger('freshEvent', model);
+    },
+
     onIn: function(data) {
       data.status = 'online'; // only an online user can join a room
       var user = this.addUser(data);
@@ -178,18 +193,6 @@ define([
         that.set(key, value);
       });
     },
-    onOnline: function() {
-      var model = new EventModel({
-        type: 'reconnected'
-      });
-      this.trigger('freshEvent', model);
-    },
-    onOffline: function() {
-      var model = new EventModel({
-        type: 'disconnected'
-      });
-      this.trigger('freshEvent', model);
-    },
     _onStatus: function(expect, data) {
       var model = this.users.get(data.user_id);
       if (!model)
@@ -213,7 +216,7 @@ define([
       this._onStatus('offline', data);
     },
     onHistory: function(data) {
-      this.trigger('batchEvents', data.history);
+      this.trigger('historyEvents', data.history);
     }
 
   });

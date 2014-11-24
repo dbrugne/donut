@@ -18,18 +18,20 @@ define([
      */
     initialize: function(options) {
       var data = this.get('data');
+      if (!data)
+        data = {};
 
       var id = (data.id)
         ? data.id
-        : _.uniqueId('auto_'); // non-server events
+        : _.uniqueId('auto_'); // non-server events (disconnected, reconnected)
       this.set({id: id});
       data.id = id; // non-server events
 
       var time = (data.time)
         ? data.time
-        : Date.now(); // non-server events
+        : Date.now(); // non-server events (disconnected, reconnected)
       this.set({time: time});
-      data.time = time; // non-server events
+      data.time = time; // non-server events (disconnected, reconnected)
 
       var isNew = (this.get('new'))
         ? true

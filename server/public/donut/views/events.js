@@ -31,7 +31,7 @@ define([
 
     initialize: function(options) {
       this.listenTo(this.model, 'freshEvent', this.addFreshEvent);
-      this.listenTo(this.model, 'batchEvents', this.addBatchEvents);
+      this.listenTo(this.model, 'historyEvents', this.onHistoryEvents);
       this.listenTo(this.model, 'change:focused', this.onFocus);
 
       var that = this;
@@ -43,9 +43,6 @@ define([
       this.interval = setInterval(function() {
         // remove old messages
         that.cleanup();
-
-        if (!that.model.get('focused')) // only on currently focused view
-          return;
 
         // update moment times
         that.updateMoment();
@@ -126,20 +123,28 @@ define([
       this.$history = this.$scrollable.find('.history');
       this.$realtime = this.$scrollable.find('.realtime');
 
-      // render already 'connect' events
-      if (this.model.get('preloadHistory') && this.model.get('preloadHistory').length > 0) {
-        this.addBatchEvents(this.model.get('preloadHistory'), true);
+      // render events received on 'connect' (in .history)
+      if (this.model.get('connectHistory') && this.model.get('connectHistory').length > 0) {
+        this.addBatchEvents(this.model.get('connectHistory'), 'connect');
+        this.model.set('connectHistory', null);
       }
 
       // then scroll to bottom
       this.scrollDown();
     },
     cleanup: function(event) {
-      if (!this.scrollBottom && this.model.get('focused'))
+      if (this.model.get('focused') && !this.scrollBottom)
         return; // no action when focused AND scroll not on bottom
 
-      // empty .history
+      var hl = this.$history.find('.block').length;
+      var rl = this.$realtime.find('.block').length;
+
+      if ((hl + rl) < 250) // not enough content, no need to cleanup
+        return console.log('cleanup '+this._id()+ ' not enough event to cleanup: '+(hl + rl));
+
       // @todo : only when a certain amount of content OR when history is not visible on scroll position
+
+      // cleanup .history
       this.$history.empty();
 
       // cleanup .realtime
@@ -156,6 +161,10 @@ define([
         this.scrollDown();
     },
     updateMoment: function() {
+      if (!this.model.get('focused')) // only on currently focused view
+        return;
+
+      // @todo : reactive update Moment
       // Update all .moment of the discussion panel
       //this.$el.find('.moment').slice(-100).momentify();
     },
@@ -205,9 +214,9 @@ define([
 
       this._stop(1);
     },
-    addBatchEvents: function(events, realtime) {
-      if (events.length == 0 && !realtime) {
-        this.historyReceived(); // we can get history response without events in
+    addBatchEvents: function(events, callType) {
+      callType = callType || 'history'; // connect/reconnect/history
+      if (events.length == 0) {
         return;
       }
 
@@ -226,9 +235,12 @@ define([
           previousElement = $(h).prependTo($html);
       });
 
-      if (!realtime) {
+      if (callType == 'history') {
+        $html.css('background-color', 'blue');
         $html.prependTo(this.$history);
-        this.historyReceived();
+      } else if (callType == 'connect') {
+        $html.css('background-color', 'red');
+        $html.appendTo(this.$history);
       } else {
         $html.appendTo(this.$realtime);
       }
@@ -280,11 +292,6 @@ define([
           );
         }
 
-        // moment
-        var dateObject = moment(model.get('time'));
-        data.data.fromnow = dateObject.fromNow();
-        data.data.full = dateObject.format("dddd Do MMMM YYYY à HH:mm:ss");
-
         // linkify
         var o = (this.model.get('color'))
           ? { linkAttributes: { style: 'color: '+this.model.get('color')+';' } }
@@ -296,6 +303,11 @@ define([
 
         data.data.message = message;
       }
+
+      // moment
+      var dateObject = moment(model.get('time'));
+      data.data.fromnow = dateObject.fromNow();
+      data.data.full = dateObject.format("dddd Do MMMM YYYY à HH:mm:ss");
 
       // rendering attributes
       data.isNew = model.get('new');
@@ -340,7 +352,8 @@ define([
       else if (this.model.get('type') == 'onetoone')
         client.userHistory(this.model.get('username'), since, '');
     },
-    historyReceived: function() {
+    onHistoryEvents: function(data) {
+      this.addBatchEvents(data, 'history');
       this.historyLoading = false;
       this.$scrollable.find('.history-loader .spinner').hide();
     }

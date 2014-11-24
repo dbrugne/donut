@@ -26,6 +26,18 @@ define([
     leave: function() {
       client.userLeave(this.get('username'));
     },
+    onDisconnect: function() {
+      var model = new EventModel({
+        type: 'disconnected'
+      });
+      this.trigger('freshEvent', model);
+    },
+    onReconnect: function() {
+      var model = new EventModel({
+        type: 'reconnected'
+      });
+      this.trigger('freshEvent', model);
+    },
     onMessage: function(data) {
       var model = new EventModel({
         type: 'user:message',
@@ -55,7 +67,7 @@ define([
       this.set(data.data);
     },
     onHistory: function(data) {
-      this.trigger('batchEvents', data.history);
+      this.trigger('historyEvents', data.history);
     }
 
   });
