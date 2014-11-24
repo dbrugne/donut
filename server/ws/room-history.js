@@ -30,7 +30,7 @@ module.exports = function(io, socket, data) {
     },
 
     function history(room, callback) {
-      retriever(room.name, socket.getUserId(), data.since, data.until, function(err, history) {
+      retriever(room.name, socket.getUserId(), {since: data.since}, function(err, history) {
         if (err)
           return callback(err);
 

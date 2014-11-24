@@ -34,7 +34,7 @@ module.exports = function(io, socket, data) {
     },
 
     function history(user, callback) {
-      retriever(user._id, socket.getUserId(), data.since, data.until, function(err, history) {
+      retriever(socket.getUserId(), user._id, {since: data.since}, function(err, history) {
         if (err)
           return callback(err);
 

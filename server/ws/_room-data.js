@@ -58,8 +58,8 @@ module.exports = function(io, socket, name, fn) {
     },
 
     function history(room, users, callback) {
-      // current day history only
-      retriever(room.name, socket.getUserId(), Date.now(), 1, function(err, history) {
+      // get last 250 events
+      retriever(room.name, socket.getUserId(), null, function(err, history) {
         if (err)
           return callback(err);
 

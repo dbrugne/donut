@@ -29,9 +29,8 @@ module.exports = function(io, socket, username, fn) {
     },
 
     function history(user, callback) {
-      // current day history only
-      var history = [];
-      retriever(user._id, socket.getUserId(), Date.now(), 1, function(err, history) {
+      // get last 250 events
+      retriever(socket.getUserId(), user._id.toString(), null, function(err, history) { // MongoDB .update({$addToSet}) seems to work only with String, toString() is important!
         if (err)
           return callback(err);
 

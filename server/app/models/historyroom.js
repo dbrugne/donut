@@ -70,42 +70,26 @@ historySchema.statics.retrieve = function() {
   /**
    * @param name
    * @param userId
-   * @param since: the timestamp from when the retrieving will begin (= all events before 'since')
-   * @param until: the number of days to go back in past
+   * @param what criteria Object: since (timestamp)
    * @param fn
    */
-  return function(name, userId, since, until, fn) {
+  return function(name, userId, what, fn) {
+    what = what || {};
     var criteria = {
       name: name,
       users: { $in: [userId] },
       event: { $nin: ['user:online', 'user:offline'] }
     };
 
-    // Since
-    if (since) {
-      since = since || Date.now(); // from now
-      since = new Date(since);
+    // Since (timestamp, from present to past direction)
+    if (what.since) {
       criteria.time = {};
-      criteria.time.$lte = since;
-    }
-
-    // Until, floor to  day at 00:00
-    if (until) {
-      until = Date.now() - (1000*3600*24*until);
-      var u = new Date(until);
-      var until = new Date(u.getFullYear(), u.getMonth(), u.getDate());
-      if (!criteria.time)
-        criteria.time = {};
-      criteria.time.$gte = until;
+      criteria.time.$lt = new Date(what.since);
     }
 
     // limit
-    //var limit = (criteria.time && criteria.time.$lte && criteria.time.$gte)
-    //  ? 10000 // arbitrary
-    //  : 250;
     var limit = 250;
 
-    //console.log(criteria, limit);
     var q = that.find(criteria)
       .sort({time: 'desc'}) // important for timeline logic but also optimize rendering on frontend
       .limit(limit);
@@ -119,12 +103,12 @@ historySchema.statics.retrieve = function() {
       _.each(entries, function(entry) {
         entry.data.id = entry._id.toString();
 
-        var isNew = (entry.received && entry.received.indexOf(userId) === -1)
-          ? true
-          : false;
-
-        if (isNew)
+        // new: received is set and NOT contains 'me'
+        var isNew = false;
+        if (entry.received !== undefined && entry.received.indexOf(userId) === -1) {
+          isNew = true;
           toMarkAsReceived.push(entry._id);
+        }
 
         history.push({
           type: entry.event,
@@ -135,7 +119,7 @@ historySchema.statics.retrieve = function() {
 
       that.update({_id: {$in: toMarkAsReceived}}, {$addToSet: {received: userId}}, {multi: true}, function(err) {
         if (err)
-          return helper.handleError('Error while updating received in historyRoom: '+err);
+          return console.log('Error while updating received in historyRoom: '+err);
       });
 
       return fn(null, history);
