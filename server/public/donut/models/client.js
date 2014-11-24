@@ -24,6 +24,15 @@ define([
       return _p8() + _p8(true) + _p8(true) + _p8();
     },
 
+    disconnect: function() {
+      this.socket.disconnect();
+    },
+
+    reconnect: function() {
+      this.disconnect();
+      this.connect();
+    },
+
     // connect should be done at the end of App initialization to allow interface binding to work
     connect: function() {
 
@@ -35,8 +44,9 @@ define([
         //reconnectionDelay: 1000,
         //reconnectionDelayMax: 5000,
         //timeout: 20000, // = between 2 heartbeat pings
-        //autoConnect: true
-        query: 'clientId='+this.clientId
+        //autoConnect: true,
+        forceNew    : true, // http://stackoverflow.com/questions/24566847/socket-io-client-connect-disconnect
+        query       : 'clientId='+this.clientId
       });
 
       // CONNECTION EVENTS
@@ -200,15 +210,6 @@ define([
         that.trigger('user:history', data);
       });
     },
-
-    //disconnect: function() {
-//      this.socket.destroy();
-//      this.socket.cleanup();
-//    },
-//
-//    reconnect: function() {
-//      this.socket.reconnect();
-//    },
 
     // GLOBAL METHODS
     // ======================================================
