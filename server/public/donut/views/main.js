@@ -130,7 +130,6 @@ define([
           }
         });
         $('#welcome').modal({});
-        this.firstConnection = false;
       }
 
       // Hello message
@@ -138,7 +137,7 @@ define([
         this.currentUserView.hello = data.hello; // will be rendered on currentUser data change
       }
 
-      // Current user data (should be done before onetoone logic
+      // Current user data (should be done before onetoone logic)
       currentUser.set(data.user);
 
       // Rooms
@@ -152,6 +151,10 @@ define([
         onetoones.addModel(one);
       });
       onetoones.trigger('redraw');
+
+      // first connection indicator
+      if (this.firstConnection)
+        this.firstConnection = false;
 
       // Run routing only when everything in interface is ready
       this.trigger('ready');
