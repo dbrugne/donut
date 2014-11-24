@@ -128,6 +128,7 @@ define([
         var connectHistory = this.model.get('connectHistory');
         if (connectHistory.history && connectHistory.history.length > 0) {
           this.addBatchEvents(connectHistory.history, connectHistory.more, 'connect');
+          this.toggleHistoryMore(connectHistory.more);
         }
         this.model.set('connectHistory', null);
       }
@@ -359,7 +360,15 @@ define([
       this.addBatchEvents(data.history, data.more, 'history');
       this.historyLoading = false;
       this.$scrollable.find('.history-loader .spinner').hide();
-      if (data.more == false) {
+      this.toggleHistoryMore(data.more);
+    },
+    toggleHistoryMore: function(w) {
+      if (w) {
+        // true: display 'more' link
+        this.$scrollable.find('.history-loader .more').show();
+        this.$scrollable.find('.history-loader .no-more').hide();
+      } else {
+        // else: display no more history indication
         this.$scrollable.find('.history-loader .more').hide();
         this.$scrollable.find('.history-loader .no-more').show();
       }
