@@ -25,7 +25,7 @@ define([
 
     interval: null,
 
-    intervalDuration: 5, // seconds
+    intervalDuration: 45, // seconds
 
     keepMaxEventsOnCleanup: 250,
 
@@ -190,6 +190,7 @@ define([
     addFreshEvent: function(model) {
       // render a 'fresh' event in realtime and scrolldown
       this._start();
+      var needToScrollDown = this.scrollBottom; // scrollDown only if already on bottom before DOM insertion
       var previousElement = this.$realtime.find('.block:last').first();
       var newBlock = this._newBlock(model, previousElement);
       var html = this._renderEvent(model, newBlock);
@@ -198,7 +199,10 @@ define([
         element = $(html).appendTo(previousElement.find('.items')); // @bug : element is the .event in this case not the .block
       else
         element = $(html).appendTo(this.$realtime);
-      this.scrollDown();
+
+      if (needToScrollDown)
+        this.scrollDown();
+
       this._stop(1);
     },
     addBatchEvents: function(events, realtime) {
