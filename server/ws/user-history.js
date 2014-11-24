@@ -44,8 +44,9 @@ module.exports = function(io, socket, data) {
 
     function send(user, history, callback) {
       socket.emit('user:history', {
-        username: user.username,
-        history: history
+        username  : user.username,
+        history   : history.history,
+        more      : history.more
       });
 
       return callback(null);

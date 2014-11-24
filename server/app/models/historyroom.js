@@ -67,6 +67,7 @@ historySchema.statics.record = function() {
 
 historySchema.statics.retrieve = function() {
   var that = this;
+  var howMany = 250;
   /**
    * @param name
    * @param userId
@@ -88,7 +89,7 @@ historySchema.statics.retrieve = function() {
     }
 
     // limit
-    var limit = 250;
+    var limit = howMany+1;
 
     var q = that.find(criteria)
       .sort({time: 'desc'}) // important for timeline logic but also optimize rendering on frontend
@@ -97,6 +98,12 @@ historySchema.statics.retrieve = function() {
     q.exec(function(err, entries) {
       if (err)
         return fn('Error while retrieving room history: '+err);
+
+      var more = (entries.length > howMany)
+        ? true
+        : false;
+      if (more)
+        entries.pop(); // remove last
 
       var history = [];
       var toMarkAsReceived = [];
@@ -122,7 +129,10 @@ historySchema.statics.retrieve = function() {
           return console.log('Error while updating received in historyRoom: '+err);
       });
 
-      return fn(null, history);
+      return fn(null, {
+        history: history,
+        more: more
+      });
     });
   }
 }

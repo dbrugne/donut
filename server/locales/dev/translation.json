@@ -232,7 +232,8 @@
     },
     "history": {
       "label": "History",
-      "displayhistory": "display more..."
+      "more": "display more...",
+      "nomore": "no more history"
     },
     "shouldauthenticated": "You must be logged in to access chat (<a href='/signup'>signup</a> or <a href='/login'>login</a>)",
     "closemessage": "Are you sure you want to leave? Your conversation log will be lost.",

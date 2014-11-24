@@ -216,7 +216,10 @@ define([
       this._onStatus('offline', data);
     },
     onHistory: function(data) {
-      this.trigger('historyEvents', data.history);
+      this.trigger('historyEvents', {
+        history: data.history,
+        more: data.more
+      });
     }
 
   });

@@ -14,7 +14,7 @@ define([
     eventTemplate: _.template(eventTemplate),
 
     events: {
-      "click .history-loader a.load": "askHistory"
+      "click .history-loader a.more": "askHistory"
     },
 
     historyLoading: false,
@@ -124,8 +124,11 @@ define([
       this.$realtime = this.$scrollable.find('.realtime');
 
       // render events received on 'connect' (in .history)
-      if (this.model.get('connectHistory') && this.model.get('connectHistory').length > 0) {
-        this.addBatchEvents(this.model.get('connectHistory'), 'connect');
+      if (this.model.get('connectHistory')) {
+        var connectHistory = this.model.get('connectHistory');
+        if (connectHistory.history && connectHistory.history.length > 0) {
+          this.addBatchEvents(connectHistory.history, connectHistory.more, 'connect');
+        }
         this.model.set('connectHistory', null);
       }
 
@@ -214,7 +217,7 @@ define([
 
       this._stop(1);
     },
-    addBatchEvents: function(events, callType) {
+    addBatchEvents: function(events, more, callType) {
       callType = callType || 'history'; // connect/reconnect/history
       if (events.length == 0) {
         return;
@@ -353,9 +356,13 @@ define([
         client.userHistory(this.model.get('username'), since, '');
     },
     onHistoryEvents: function(data) {
-      this.addBatchEvents(data, 'history');
+      this.addBatchEvents(data.history, data.more, 'history');
       this.historyLoading = false;
       this.$scrollable.find('.history-loader .spinner').hide();
+      if (data.more == false) {
+        this.$scrollable.find('.history-loader .more').hide();
+        this.$scrollable.find('.history-loader .no-more').show();
+      }
     }
   });
 

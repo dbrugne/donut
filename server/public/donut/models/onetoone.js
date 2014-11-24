@@ -67,7 +67,10 @@ define([
       this.set(data.data);
     },
     onHistory: function(data) {
-      this.trigger('historyEvents', data.history);
+      this.trigger('historyEvents', {
+        history: data.history,
+        more: data.more
+      });
     }
 
   });

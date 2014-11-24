@@ -40,8 +40,9 @@ module.exports = function(io, socket, data) {
 
     function send(room, history, callback) {
       socket.emit('room:history', {
-        name: room.name,
-        history: history
+        name      : room.name,
+        history   : history.history,
+        more      : history.more
       });
 
       return callback(null);
