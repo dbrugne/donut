@@ -5,6 +5,8 @@ define([
 ], function (_, Backbone, io) {
   var ClientModel = Backbone.Model.extend({
 
+    clientId: '', // an identifier given by server on first connection that uniquely identify this client/DOM
+
     initialize: function() {
       localStorage.debug = ''; // @debug ('*')
     },
@@ -13,8 +15,19 @@ define([
       console.log(message); // @debug
     },
 
+    // @source: http://slavik.meltser.info/the-efficient-way-to-create-guid-uuid-in-javascript-with-explanation/
+    guid: function() {
+      function _p8(s) {
+        var p = (Math.random().toString(16)+"000000000").substr(2,8);
+        return s ? "-" + p.substr(0,4) + "-" + p.substr(4,4) : p ;
+      }
+      return _p8() + _p8(true) + _p8(true) + _p8();
+    },
+
     // connect should be done at the end of App initialization to allow interface binding to work
     connect: function() {
+
+      this.clientId = this.guid();
 
       this.socket = io(window.location.hostname, {
         //multiplex: true,
@@ -23,6 +36,7 @@ define([
         //reconnectionDelayMax: 5000,
         //timeout: 20000, // = between 2 heartbeat pings
         //autoConnect: true
+        query: 'clientId='+this.clientId
       });
 
       // CONNECTION EVENTS
@@ -187,14 +201,14 @@ define([
       });
     },
 
-    disconnect: function() {
+    //disconnect: function() {
 //      this.socket.destroy();
 //      this.socket.cleanup();
-    },
-
-    reconnect: function() {
-      this.socket.reconnect();
-    },
+//    },
+//
+//    reconnect: function() {
+//      this.socket.reconnect();
+//    },
 
     // GLOBAL METHODS
     // ======================================================

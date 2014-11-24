@@ -39,6 +39,13 @@ module.exports = function(io, socket) {
     hello: hello()
   };
 
+  //// client unique ID
+  //if (socket.handshake.query && socket.handshake.query.clientId && socket.handshake.query.clientId != '') {
+  //  console.log('clientId: '+socket.handshake.query.clientId);
+  //} else {
+  //  console.log('clientId unknown (??)');
+  //}
+
   // :in / :online
   var userEvent = {
     user_id: socket.getUserId(),
