@@ -1,7 +1,7 @@
 donut
 ====
 
-Next deploy : db['history-one'].find({'received': {$exists: true}})
+Next deploy : db['history-one'].update({'received': {$exists: true}}, {$unset: {'received': ""}}, {multi: true})
 
 [ ] Reactivate update moment (could scope only visible events ?)
 [ ] Cleanup should be smarter : only if discussion has more than X event (history+realtime)
