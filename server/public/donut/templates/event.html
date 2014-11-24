@@ -4,14 +4,14 @@
 </div>
 <% } else if (type =='disconnected') { %>
 <div class="block disconnected">
-    <div class="event" id="<%= data.id %>" data-time="<%= data.time %>">
+    <div class="event" id="<%= data.id %>">
         <div class="text"><img src="/images/disconnect.svg"> <%= t('chat.notifications.disconnected') %></div>
         <div class="date"><span class="moment" data-time="<%= data.time %>" title="<%= data.full %>"><%= data.fromnow %></span></div>
     </div>
 </div>
 <% } else if (type =='reconnected') { %>
 <div class="block reconnected">
-    <div class="event" id="<%= data.id %>" data-time="<%= data.time %>">
+    <div class="event" id="<%= data.id %>">
         <div class="text"><img src="/images/connect.svg"> <%= t('chat.notifications.reconnected') %></div>
         <div class="date"><span class="moment" data-time="<%= data.time %>" title="<%= data.full %>"><%= data.fromnow %></span></div>
     </div>

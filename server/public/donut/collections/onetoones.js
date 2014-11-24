@@ -25,7 +25,6 @@ define([
 
     initialize: function() {
       this.listenTo(client, 'disconnected', this.onDisconnect);
-      this.listenTo(client, 'reconnected', this.onReconnect);
       this.listenTo(client, 'user:welcome', this.addModel);
       this.listenTo(client, 'user:leave', this.onLeave);
       this.listenTo(client, 'user:message', this.onMessage);
@@ -38,7 +37,7 @@ define([
       // we ask to server to open this one to one
       client.userJoin(username);
     },
-    addModel: function(user) {
+    addModel: function(user, reconnect) {
       // server confirm that we was joined to the one to one and give us some data on user
       // prepare model data
       var oneData = {
@@ -68,7 +67,12 @@ define([
       }
 
       // Add history
-      model.set('connectHistory', user.history);
+      if (!reconnect)
+        model.set('connectHistory', user.history); // connect/join
+      else {
+        model.set('reconnectHistory', user.history); // reconnect
+        model.onReconnect();
+      }
 
       if (isNew) {
         // now the view exists (created by mainView)
@@ -126,11 +130,6 @@ define([
     onDisconnect: function() {
       this.each(function(model) {
         model.onDisconnect();
-      });
-    },
-    onReconnect: function() {
-      this.each(function(model) {
-        model.onReconnect();
       });
     },
 

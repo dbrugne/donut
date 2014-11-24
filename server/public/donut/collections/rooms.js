@@ -26,7 +26,6 @@ define([
 
     initialize: function() {
       this.listenTo(client, 'disconnected', this.onDisconnect);
-      this.listenTo(client, 'reconnected', this.onReconnect);
       this.listenTo(client, 'room:welcome', this.addModel);
       this.listenTo(client, 'room:in', this.onIn);
       this.listenTo(client, 'room:out', this.onOut);
@@ -44,7 +43,7 @@ define([
     openPing: function(name) {
       client.join(name);
     },
-    addModel: function(room) {
+    addModel: function(room, reconnect) {
       // server confirm that we was joined to the room and give us some data on room
 
       // prepare model data
@@ -88,7 +87,12 @@ define([
       });
 
       // Add history
-      model.set('connectHistory', room.history);
+      if (!reconnect)
+        model.set('connectHistory', room.history); // connect/join
+      else {
+        model.set('reconnectHistory', room.history); // reconnect
+        model.onReconnect();
+      }
 
       if (isNew) {
         this.add(model);
@@ -98,11 +102,6 @@ define([
     onDisconnect: function() {
       this.each(function(model) {
         model.onDisconnect();
-      });
-    },
-    onReconnect: function() {
-      this.each(function(model) {
-        model.onReconnect();
       });
     },
 

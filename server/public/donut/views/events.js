@@ -32,6 +32,7 @@ define([
     initialize: function(options) {
       this.listenTo(this.model, 'freshEvent', this.addFreshEvent);
       this.listenTo(this.model, 'historyEvents', this.onHistoryEvents);
+      this.listenTo(this.model, 'reconnectEvents', this.onReconnectEvents);
       this.listenTo(this.model, 'change:focused', this.onFocus);
 
       var that = this;
@@ -58,13 +59,16 @@ define([
     },
     _stop: function(num) {
       var _duration = Date.now() - this.start;
-      console.log(num+' event(s) rendered in '+this._id()+' ('+_duration+'ms)');
+      this.debug(num+' event(s) rendered in '+this._id()+' ('+_duration+'ms)');
       this.start = 0;
     },
     _remove: function() {
       clearInterval(this.interval);
       this.$el.mCustomScrollbar('destroy');
       this.remove();
+    },
+    debug: function(message) {
+      return console.log('[events='+this._id()+'] '+message);
     },
     render: function() {
       // render view
@@ -104,7 +108,7 @@ define([
             //var contentHeight = this.mcs.content.outerHeight();
             //var pos = that.$hello.position();
             ////that.$truc.css('top', pos.top);
-            //console.log('view is '+viewHeight+'px / content is '+contentHeight+'px and hello is at '+pos.top+'px');
+            //this.debug('view is '+viewHeight+'px / content is '+contentHeight+'px and hello is at '+pos.top+'px');
             //var top = viewHeight / (contentHeight / pos.top);
             //top += 160; // coumpound block position
             //that.$truc.css('top', top);
@@ -144,7 +148,7 @@ define([
       var rl = this.$realtime.find('.block').length;
 
       if ((hl + rl) < 250) // not enough content, no need to cleanup
-        return console.log('cleanup '+this._id()+ ' not enough event to cleanup: '+(hl + rl));
+        return this.debug('cleanup '+this._id()+ ' not enough event to cleanup: '+(hl + rl));
 
       // @todo : only when a certain amount of content OR when history is not visible on scroll position
 
@@ -159,7 +163,7 @@ define([
       if (remove > 0)
         this.$realtime.find('.block').slice(0, remove).remove();
 
-      console.log('cleanup discussion "'+this._id()+'", with '+length+' length, '+remove+' removed');
+      this.debug('cleanup discussion "'+this._id()+'", with '+length+' length, '+remove+' removed');
 
       if (this.model.get('focused'))
         this.scrollDown();
@@ -191,13 +195,13 @@ define([
     },
     onFocus: function(model, value, options) {
       if (value) {
-        console.log('enable '+this._id());
+        this.debug('enable '+this._id());
         this.scrollDown();
         this.updateMoment();
       } else {
         // remove scrollbar listener on blur
         this.$el.mCustomScrollbar('disable');
-        console.log('disabled '+this._id());
+        this.debug('disabled '+this._id());
       }
     },
     addFreshEvent: function(model) {
@@ -240,11 +244,11 @@ define([
       });
 
       if (callType == 'history') {
-        $html.css('background-color', 'blue');
         $html.prependTo(this.$history);
       } else if (callType == 'connect') {
-        $html.css('background-color', 'red');
         $html.appendTo(this.$history);
+      } else if (callType == 'reconnect') {
+        $html.appendTo(this.$realtime);
       } else {
         $html.appendTo(this.$realtime);
       }
@@ -324,8 +328,8 @@ define([
       try {
         return this.eventTemplate(data);
       } catch (e) {
-        console.log('Render exception, see below');
-        console.log(e);
+        this.debug('Render exception, see below');
+        this.debug(e);
         return false;
       }
     },
@@ -372,7 +376,51 @@ define([
         this.$scrollable.find('.history-loader .more').hide();
         this.$scrollable.find('.history-loader .no-more').show();
       }
+    },
+    onReconnectEvents: function(history) {
+      // @todo : very optimistic approach, we base our logic on the 250 last events (what's happen for a reconnect after few hours of deconnection??)
+
+      // render events received on 'reconnect' (in .realtime)
+      var history = this.model.get('reconnectHistory');
+      if (!history || !history.history || history.history.length < 0)
+        return;
+
+      var lastElement = this.$realtime.find('.event[data-time]:last').first();
+      var lastEventTs;
+      if (lastElement.length < 1) // else try to find in .history (important!)
+        lastElement = this.$history.find('.event[data-time]:last').first();
+      var lastEventTs = (lastElement.length > 0)
+        ? lastElement.data('time')
+        : false;
+
+      var firstEvent = _.last(history.history); // history is given sorted 'desc'
+      var firstEventTs = firstEvent.data.time;
+
+      this.debug('last in dom: '+lastEventTs+' <?> '+firstEventTs+' first received ('+(lastEventTs<firstEventTs)+')');
+
+      // need to filter events (last element in DOM is more ancient that first element in history
+      var filtered;
+      this.debug('reconnect '+history.history.length);
+      // no need to filter
+      if (lastEventTs === false || lastEventTs < firstEventTs) {
+        this.debug('no need to filter');
+        filtered = history.history;
+      } else {
+        // only events greater than last element timestamp
+        this.debug('filter the list');
+        filtered = _.filter(history.history, function(event) {
+          if (event.data.time > lastEventTs)
+            return true;
+          else
+            return false;
+        });
+      }
+      this.debug('reconnect '+filtered.length);
+
+      this.addBatchEvents(filtered, history.more, 'reconnect');
+      this.model.set('reconnectHistory', null);
     }
+
   });
 
   return EventsView;

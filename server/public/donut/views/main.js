@@ -121,6 +121,8 @@ define([
      * @param data
      */
     onWelcome: function(data) {
+      var that = this;
+
       // Welcome message (only on first connection)
       if (this.firstConnection && data.user.welcome !== false) { // show if true or if undefined
         $('#welcome').on('hide.bs.modal', function (e) {
@@ -142,13 +144,13 @@ define([
 
       // Rooms
       _.each(data.rooms, function(room) {
-        rooms.addModel(room);
+        rooms.addModel(room, !that.firstConnection);
       });
       rooms.trigger('redraw');
 
       // One to ones
       _.each(data.onetoones, function(one) {
-        onetoones.addModel(one);
+        onetoones.addModel(one, !that.firstConnection);
       });
       onetoones.trigger('redraw');
 

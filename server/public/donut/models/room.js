@@ -97,6 +97,9 @@ define([
       this.trigger('freshEvent', model);
     },
     onReconnect: function() {
+      // manage reconnectHistory
+      this.trigger('reconnectEvents');
+
       var model = new EventModel({
         type: 'reconnected'
       });
