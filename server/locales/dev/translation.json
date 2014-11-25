@@ -169,7 +169,7 @@
       "permalink": "Permanent link to this profile",
       "editlink": "To edit this profile click here",
       "signuped": "Signed up on",
-      "onlined": "Last login: "
+      "onlined": "online __time__ ago"
     }
   },
   "chat": {

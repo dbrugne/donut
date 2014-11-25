@@ -92,7 +92,9 @@ module.exports = function(io, socket, data) {
         var status = (user.online)
           ? 'online'
           : 'offline';
-
+        var onlined = (user.online)
+          ? user.lastonline_at
+          : user.lastoffline_at;
         var userData = {
           user_id   : user._id.toString(),
           username  : user.username,
@@ -103,7 +105,7 @@ module.exports = function(io, socket, data) {
           location  : user.location,
           website   : user.website,
           registered: user.created_at,
-          onlined   : user.lastonline_at,
+          onlined   : onlined,
           status    : status
         };
 
