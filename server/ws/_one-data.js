@@ -39,19 +39,23 @@ module.exports = function(io, socket, username, fn) {
     },
 
     function prepare(user, history, callback) {
-      var status = (helper.isUserOnline(io, user._id.toString()))
+      var status = (user.online)
         ? 'online'
         : 'offline';
+      var onlined = (user.online)
+        ? user.lastonline_at
+        : user.lastoffline_at;
       var oneData = {
-        user_id: user._id.toString(),
-        username: user.username,
-        avatar: user._avatar(),
-        poster: user.poster,
-        color: user.color,
-        location: user.location,
-        website: user.website,
-        status: status,
-        history: history
+        user_id   : user._id.toString(),
+        username  : user.username,
+        avatar    : user._avatar(),
+        poster    : user.poster,
+        color     : user.color,
+        location  : user.location,
+        website   : user.website,
+        onlined   : onlined,
+        status    : status,
+        history   : history
       };
 
       return callback(null, oneData);

@@ -67,11 +67,14 @@ define([
         this.$el.find('.header .status')
           .removeClass('offline online')
           .addClass('online');
+        this.$el.find('.ago').hide();
       } else {
         this.$el.find('.header .status-block em').text($.t("global.offline"));
         this.$el.find('.header .status')
           .removeClass('offline online')
           .addClass('offline');
+        this.$el.find('.ago span').momentify('fromnow');
+        this.$el.find('.ago').show();
       }
     }
   });

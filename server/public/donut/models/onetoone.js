@@ -16,6 +16,7 @@ define([
         location: '',
         website: '',
         status: '',
+        onlined: '',
         type: 'onetoone',
         focused: false,
         unread: 0

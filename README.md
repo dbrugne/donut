@@ -4,7 +4,7 @@ donut
 Next deploy : db['history-one'].update({'received': {$exists: true}}, {$unset: {'received': ""}}, {multi: true})
 
 [x] Priorize online users in home user list
-[ ] Last connected at (in user profile and one to one header)
+[x] Last connected at (in user profile and one to one header)
 [ ] Reactivate update moment (could scope only visible events ?)
 [ ] Improve browser notifications: in an centralized place, detect window is focused or not, which discussion is focused, scroll position, current user ; change window title, discussion tab badge, sound ; for user/room:message and mention of myself ; never for my own message and messages that i can see (window and discussion focused with scroll to bottom and not message from me)
 [ ] Configure test instance

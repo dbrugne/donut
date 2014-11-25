@@ -48,6 +48,7 @@ define([
         color: user.color,
         location: user.location,
         website: user.website,
+        onlined: user.onlined,
         status: user.status
       };
 
