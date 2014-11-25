@@ -10,9 +10,7 @@ define([
 
     template: _.template(blockTemplate),
 
-    events: {
-      "click .close": "closeThis"
-    },
+    events: {},
 
     initialize: function(options) {
       this.listenTo(this.collection, 'add', this.onAddRemove);

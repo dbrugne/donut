@@ -10,9 +10,7 @@ define([
 
     template: _.template(blockTemplate),
 
-    events: {
-      "click .close": "closeThis"
-    },
+    events: {},
 
     initialize: function(options) {
       this.listenTo(this.collection, 'add', this.onAddRemove);
@@ -29,9 +27,7 @@ define([
     },
 
     render: function() {
-      var listJSON = [
-
-      ];
+      var listJSON = [];
       _.each(this.collection.models, function(o) {
         var json = o.toJSON();
         json.avatar = $.cd.userAvatar(json.avatar, 20, json.color);
