@@ -6,17 +6,17 @@ var i18next = require('../i18next');
 
 var userSchema = mongoose.Schema({
 
-    username       : String,
-    name           : String,
-    roles          : [String],
-    bio            : String,
-    location       : String,
-    website        : String,
-    avatar         : String,
-    poster         : String,
-    color          : String,
-    general        : Boolean,
-    welcome        : Boolean,
+    username        : String,
+    name            : String,
+    roles           : [String],
+    bio             : String,
+    location        : String,
+    website         : String,
+    avatar          : String,
+    poster          : String,
+    color           : String,
+    general         : Boolean,
+    welcome         : Boolean,
     local            : {
         email         : String,
         password      : String,
@@ -29,10 +29,13 @@ var userSchema = mongoose.Schema({
         email      : String,
         name       : String
     },
-    rooms         : [{ type: String, ref: 'Room' }],
-    onetoones     : [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
-    created_at    : { type: Date, default: Date.now },
-    lastlogin_at  : { type: Date }
+    rooms           : [{ type: String, ref: 'Room' }],
+    onetoones       : [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
+    created_at      : { type: Date, default: Date.now },
+    lastlogin_at    : { type: Date },
+    online          : Boolean,
+    lastonline_at   : { type: Date },
+    lastoffline_at  : { type: Date }
 
 });
 

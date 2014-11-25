@@ -84,7 +84,21 @@ module.exports = function(io, socket) {
           return callback(null, user);
         });
       });
-    }
+    },
+
+    function persistOffliness(user, callback) {
+      if (!lastSocket)
+        return callback(null, user);
+
+      user.set('lastoffline_at', Date.now());
+      user.set('online', false);
+      user.save(function(err) {
+        if (err)
+          return callback('Error while updating user offliness: '+err);
+
+        return callback(null, user)
+      });
+    },
 
   ], function(err, event) {
     if (err)

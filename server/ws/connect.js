@@ -150,6 +150,17 @@ module.exports = function(io, socket) {
       });
     },
 
+    function persistOnliness(user, callback) {
+      user.set('lastonline_at', Date.now());
+      user.set('online', true);
+      user.save(function(err) {
+        if (err)
+          return callback('Error while updating user onliness: '+err);
+
+        return callback(null, user)
+      });
+    },
+
     function emitUserOnlineToRooms(user, callback) {
       // user:online, only for first socket
       if (helper.userSockets(io, socket.getUserId()).length > 1)

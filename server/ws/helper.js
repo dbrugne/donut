@@ -219,7 +219,8 @@ module.exports = {
    */
   users: function(io, limit, fn) {
     limit = limit ? limit : 10;
-    var q = User.find({ username: {$ne:null} }, 'username avatar color facebook')
+    var q = User.find({ username: {$ne:null} }, 'username avatar color facebook online')
+      .sort({online: -1})
       .limit(limit);
 
     q.exec(function(err, users) {
@@ -228,11 +229,15 @@ module.exports = {
 
       var list = [];
       _.each(users, function(u) {
-        // determine if is online
-        var status = 'offline';
-        var ur = io.sockets.adapter.rooms['user:'+ u._id.toString()];
-        if (ur != undefined && Object.keys(ur).length) // socket.io socket list is an Array but stored as key/value (WTF?!)
-          status = 'online';
+        //// determine if is online
+        //var status = 'offline';
+        //var ur = io.sockets.adapter.rooms['user:'+ u._id.toString()];
+        //if (ur != undefined && Object.keys(ur).length) // socket.io socket list is an Array but stored as key/value (WTF?!)
+        //  status = 'online';
+
+        var status = (u.online == true)
+          ? 'online'
+          : 'offline';
 
         list.push({
           user_id: u._id.toString(),
@@ -243,8 +248,8 @@ module.exports = {
         });
       });
 
-      list = _.sortBy(list, 'status');
-      list.reverse();
+      //list = _.sortBy(list, 'status');
+      //list.reverse();
 
       return fn(null, list);
     });
