@@ -5,6 +5,7 @@
     <% if (user.location) { %><p class="location"><i class="fa fa-map-marker"></i> <%= user.location %></p><% }; %>
     <% if (user.website) { %><p class="website"><i class="fa fa-link"></i> <span><%= user.website %></span></p><% }; %>
     <% if (user.registered) { %><p class="created"><i class="fa fa-clock-o"></i> <%= t('profile.user.signuped') %> <span data-time="<%= user.registered %>"></span></p><% }; %>
+    <% if (user.status != 'online' && user.onlined) { %><p class="onlined"><i class="fa fa-clock-o"></i> <%= t('profile.user.onlined') %> <span data-time="<%= user.onlined %>"></span></p><% }; %>
     <% if (user.rooms_list.length > 0) { %>
     <div class="rooms">
         <p class="title"><i class="fa fa-empire"></i> <%= t('profile.user.hisrooms') %></p>

@@ -88,6 +88,11 @@ module.exports = function(io, socket, data) {
 
       function send(user, roomsList, callback) {
 
+        // status
+        var status = (user.online)
+          ? 'online'
+          : 'offline';
+
         var userData = {
           user_id   : user._id.toString(),
           username  : user.username,
@@ -97,13 +102,10 @@ module.exports = function(io, socket, data) {
           bio       : user.bio,
           location  : user.location,
           website   : user.website,
-          registered: user.created_at
+          registered: user.created_at,
+          onlined   : user.lastonline_at,
+          status    : status
         };
-
-        // status
-        userData.status = (helper.userSockets(io, user._id).length > 0)
-          ? 'online'
-          : 'offline';
 
         // rooms (mongoose => JSON)
         userData.rooms = {

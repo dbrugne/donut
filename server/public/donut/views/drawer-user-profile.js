@@ -52,6 +52,7 @@ define([
       this.$el.colorify();
       this.$el.find('.website span').linkify();
       this.$el.find('.created span').momentify('date');
+      this.$el.find('.onlined span').momentify('fromnow');
 
       // Facebook Like button
       facebook.XFBML.parse(this.$el.get(0));

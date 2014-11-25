@@ -168,7 +168,8 @@
       },
       "permalink": "Permanent link to this profile",
       "editlink": "To edit this profile click here",
-      "signuped": "Signed up on"
+      "signuped": "Signed up on",
+      "onlined": "Last login: "
     }
   },
   "chat": {
