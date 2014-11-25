@@ -292,19 +292,19 @@ define([
         // escape HTML
         message = _.escape(message);
 
-        // mentions
-        if (this.model.get('type') == 'room') {
-          message = message.replace(
-            /@\[([^\]]+)\]\(user:([^)]+)\)/g,
-            '<a class="mention open-user-profile" data-username="$1" data-colorify-text="color" data-colorify="'+this.model.get('color')+'">@$1</a>'
-          );
-        }
-
-        // linkify
+        // linkify (before other decoration, will escape HTML)
         var o = (this.model.get('color'))
           ? { linkAttributes: { style: 'color: '+this.model.get('color')+';' } }
           : {};
         message = $.linkify(message, o);
+
+        // mentions
+        if (this.model.get('type') == 'room') {
+          message = message.replace(
+            /@\[([^\]]+)\]\(user:([^)]+)\)/g,
+            '<a class="mention open-user-profile" data-username="$1" style="color: '+this.model.get('color')+'">@$1</a>'
+          );
+        }
 
         // smileys
         message = $.smilify(message);
