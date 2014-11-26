@@ -4,7 +4,6 @@ donut
 Next deploy : db['history-one'].update({'received': {$exists: true}}, {$unset: {'received': ""}}, {multi: true})
 
 [ ] Reactivate update moment (could scope only visible events ?)
-[ ] Improve browser notifications: in an centralized place, detect window is focused or not, which discussion is focused, scroll position, current user ; change window title, discussion tab badge, sound ; for user/room:message and mention of myself ; never for my own message and messages that i can see (window and discussion focused with scroll to bottom and not message from me)
 [ ] Add a push on ShopPaintball homepage and footer
 
 History
@@ -21,12 +20,11 @@ Admin
 
 ## To validate after pomelo
 
+[ ] Improve "unread" messages viewing detection, consider in each discussion if i'm scroll bottom for two seconds (and window focused and discussion focused) mark messages as read
+
 Add online/offline/afk management
 [ ] On connection/deconnection[/stop/restart] set user in Redis (donut:onlines:user:_USER_ID_) as a HASH with sockets list (donut:onlines:sockets:_USER_ID_)
 [ ] Handle process termination (SIGINT, SIGTERM, Uncaugth exception): http://stackoverflow.com/questions/26163800/node-js-pm2-on-exit
-
-Improve "unread" messages viewing detection
- -> setInterval qui détecte le focus (window/discussion), les messages vus dans une discussion focus + de 2 secondes sont marqués comme lus côté serveur
 
 ## Grunt tasks
 - Deploy
