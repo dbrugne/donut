@@ -5,16 +5,16 @@
 <% } %>
 <% previous = user.status; %>
 <div class="item <% if (user.is_op === true) { %>op<% }; %> <% if (user.is_owner === true) { %>owner<% }; %> <%= user.status %>">
-    <span class="avatar" title="<% if (user.is_op === true) { %><%= t('chat.op.is') %><% } else if (user.is_owner === true) { %><%= t('chat.owner.is') %><% }; %>"><img class="open-user-profile" data-username="<%= user.username %>" src="<%= user.avatar %>" alt="<%= user.username %> avatar"></span>
+    <div class="avatar open-user-profile" data-username="<%= user.username %>"  style="background-image: url(<%= user.avatar %>)" title="<% if (user.is_op === true) { %><%= t('chat.op.is') %><% } else if (user.is_owner === true) { %><%= t('chat.owner.is') %><% }; %>"></div>
     <span class="username open-user-profile" data-username="<%= user.username %>" title="<%= t('global.'+user.status) %>">@<%= user.username %></span>
     <span class="actions">
         <% if (!user.is_owner && (isOp === true || isOwner === true)) { %>
             <% if (user.is_op === true) { %>
-            <img src="images/deop.svg" class="deop-user" title="<%= t('chat.deop.infobox') %>" data-username="<%= user.username %>">
+            <div class="deop-user" title="<%= t('chat.deop.infobox') %>" data-username="<%= user.username %>"></div>
             <% } else { %>
-            <img src="images/op.svg" class="op-user" title="<%= t('chat.op.infobox') %>" data-username="<%= user.username %>">
+            <div class="op-user" title="<%= t('chat.op.infobox') %>" data-username="<%= user.username %>"></div>
             <% }; %>
-            <img src="images/kick-w.svg" height="17px" class="kick-user" title="<%= t('chat.kick.infobox') %>" data-username="<%= user.username %>">
+            <div class="kick-user" title="<%= t('chat.kick.infobox') %>" data-username="<%= user.username %>"></div>
         <% }; %>
     </span>
 </div>

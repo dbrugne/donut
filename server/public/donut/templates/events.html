@@ -11,13 +11,13 @@
 <% if (model.type == 'room') { %>
 <div class="hello block">
     <div class="event">
-        <div class="text"><img src="/images/hello.svg"> <%= t('chat.welcome.room', {name: model.name}) %></div>
+        <div class="text"><div class="picto hello"></div> <%= t('chat.welcome.room', {name: model.name}) %></div>
     </div>
 </div>
 <% } else if (model.type == 'onetoone') { %>
 <div class="hello block">
     <div class="event">
-        <div class="text"><img src="/images/hello.svg"> <%= t('chat.welcome.onetoone', {username: model.username}) %></div>
+        <div class="text"><div class="picto hello"></div> <%= t('chat.welcome.onetoone', {username: model.username}) %></div>
     </div>
 </div>
 <% }; %>
