@@ -394,7 +394,9 @@ define([
         : false;
 
       var firstEvent = _.last(history.history); // history is given sorted 'desc'
-      var firstEventTs = firstEvent.data.time;
+      var firstEventTs = (firstEvent && firstEvent.data && firstEvent.data.time)
+        ? firstEvent.data.time
+        : false;
 
       this.debug('last in dom: '+lastEventTs+' <?> '+firstEventTs+' first received ('+(lastEventTs<firstEventTs)+')');
 
@@ -402,7 +404,7 @@ define([
       var filtered;
       this.debug('reconnect '+history.history.length);
       // no need to filter
-      if (lastEventTs === false || lastEventTs < firstEventTs) {
+      if (firstEventTs === false || lastEventTs === false || lastEventTs < firstEventTs) {
         this.debug('no need to filter');
         filtered = history.history;
       } else {
