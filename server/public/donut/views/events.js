@@ -140,6 +140,7 @@ define([
 
       // cleanup .history
       this.$history.empty();
+      this.toggleHistoryMore(true);
 
       // cleanup .realtime
       var length = this.$realtime.find('.block').length;
