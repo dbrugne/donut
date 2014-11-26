@@ -22,7 +22,7 @@ define([
 
     scrollReady: false,
 
-    scrollBottom: false,
+    scrollPosition: '',
 
     interval: null,
 
@@ -79,11 +79,6 @@ define([
       });
       this.$el.append(html);
 
-      //// @todo test
-      //this.$truc = this.$el.closest('.content').find('.truc');
-      //this.$hello = this.$el.find('.block.hello');
-      //// @todo test
-
       // scrollbar-it
       var that = this;
       this.$el.mCustomScrollbar({
@@ -100,22 +95,11 @@ define([
           updateOnImageLoad: false
         },
         callbacks:{
-          onScroll: function() {
-            if (this.mcs.topPct == 100)
-              that.scrollBottom = true;
-            else
-              that.scrollBottom = false;
-
-            //// @todo test
-            //var viewHeight = that.$el.outerHeight() - (parseInt(that.$el.css('padding-top').replace('px', '')) + parseInt(that.$el.css('padding-bottom').replace('px', '')));
-            //var contentHeight = this.mcs.content.outerHeight();
-            //var pos = that.$hello.position();
-            ////that.$truc.css('top', pos.top);
-            //this.debug('view is '+viewHeight+'px / content is '+contentHeight+'px and hello is at '+pos.top+'px');
-            //var top = viewHeight / (contentHeight / pos.top);
-            //top += 160; // coumpound block position
-            //that.$truc.css('top', top);
-            //// @todo test
+          onTotalScroll: function() {
+            that.scrollPosition = 'bottom';
+          },
+          onTotalScrollBack: function() {
+            that.scrollPosition = 'top';
           }
         }
       });
@@ -143,7 +127,7 @@ define([
       this.scrollDown();
     },
     cleanup: function(event) {
-      if (this.model.get('focused') && !this.scrollBottom)
+      if (this.model.get('focused') && this.scrollPosition != 'bottom')
         return; // no action when focused AND scroll not on bottom
 
       var hl = this.$history.find('.block').length;
@@ -191,7 +175,6 @@ define([
       _.delay(function() {
         that.$el.mCustomScrollbar('update');
         that.$el.mCustomScrollbar('scrollTo', 'bottom');
-        //that.$el.mCustomScrollbar('disable');
       }, 100);
     },
     onFocus: function(model, value, options) {
@@ -199,10 +182,6 @@ define([
         this.debug('enable '+this._id());
         this.scrollDown();
         this.updateMoment();
-      } else {
-        //// remove scrollbar listener on blur
-        //this.$el.mCustomScrollbar('disable');
-        //this.debug('disabled '+this._id());
       }
     },
     addFreshEvent: function(model) {
@@ -214,7 +193,10 @@ define([
 
       // render a 'fresh' event in realtime and scrolldown
       this._start();
-      var needToScrollDown = this.scrollBottom; // scrollDown only if already on bottom before DOM insertion
+      // scrollDown only if already on bottom before DOM insertion
+      var needToScrollDown = (this.scrollPosition == '' || this.scrollPosition == 'bottom')
+        ? true
+        : false;
       var previousElement = this.$realtime.find('.block:last').first();
       var newBlock = this._newBlock(model, previousElement);
       var html = this._renderEvent(model, newBlock);
@@ -226,6 +208,8 @@ define([
 
       if (needToScrollDown)
         this.scrollDown();
+      else
+        this.$el.mCustomScrollbar('update'); // just update
 
       this._stop(1);
     },
