@@ -1,6 +1,7 @@
 var express = require('express');
 var errors = require('./app/middlewares/errors');
 var path = require('path');
+var compression = require('compression')
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var less = require('less-middleware');
@@ -23,6 +24,7 @@ var conf = require('./config/index');
 
 var app = express();
 
+app.use(compression());
 app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(less(__dirname+'/public', { force: conf.less.force }));
 app.use(express.static(path.join(__dirname, 'public')));

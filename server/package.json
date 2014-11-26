@@ -10,6 +10,7 @@
     "bcrypt-nodejs": "latest",
     "body-parser": "1.x",
     "cloudinary": "~1.0.9",
+    "compression": "^1.2.1",
     "connect-flash": "0.1.x",
     "connect-redis": "2.x",
     "cookie-parser": "1.x",
