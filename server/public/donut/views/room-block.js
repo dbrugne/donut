@@ -25,7 +25,7 @@ define([
     render: function() {
       var listJSON = [];
       _.each(this.collection.models, function(o) {
-        var userCount = o.users.length;
+        var userCount = o.users.where({status: 'online'}).length;
         var json = o.toJSON();
         json.avatar = $.cd.roomAvatar(json.avatar, 20, json.color);
         json.count = userCount; // users are not an "attribute", but an object properties
