@@ -70,7 +70,7 @@ historySchema.statics.record = function() {
 
 historySchema.statics.retrieve = function() {
   var that = this;
-  var howMany = 250;
+  var howMany = 100;
   /**
    * @param me String
    * @param other String
