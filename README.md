@@ -17,8 +17,6 @@ Admin
 [ ] Add event in all discussions to inform users of deployment
 [ ] Add whole platform maintenance mode
 
-[ ] Diagnose client side slow perfomance : http://stackoverflow.com/questions/19502333/how-to-identify-a-memory-leak-with-backbone-js
-
 [ ] Add automatic deploy system (+compilation, chat.html)
 
 ## To validate after pomelo

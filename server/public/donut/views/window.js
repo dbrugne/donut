@@ -3,19 +3,15 @@ define([
   'underscore',
   'backbone',
   'models/client',
+  'models/current-user',
   'collections/rooms',
   'collections/onetoones'
-], function ($, _, Backbone, client, rooms, onetoones) {
-  /**
-   * Represent the browser window
-   */
+], function ($, _, Backbone, client, currentUser, rooms, onetoones) {
   var WindowView = Backbone.View.extend({
 
     el: $(window),
 
     focused: true,
-
-    unread: 0,
 
     defaultTitle: '',
 
@@ -23,11 +19,31 @@ define([
 
     preventPopin: false,
 
+    beeps: {
+      'message': '',
+      'mention': ''
+    },
+    beepPlaying: false,
+    beepOn: false,
+
     initialize: function(options) {
       this.$window = this.$el;
       this.$document = $(document);
 
       this.defaultTitle = document.title; // save original title on page load
+
+      // Load audio elements
+      var that = this;
+      if (typeof Audio !== 'undefined') {
+        this.beepOn = true;
+        var cb = function() {
+          that.beepPlaying = false;
+        }
+        this.beeps.message = new Audio('/sounds/beep.mp3');
+        this.beeps.message.onended = cb;
+        this.beeps.mention = new Audio('/sounds/beepbeep.mp3');
+        this.beeps.mention.onended = cb;
+      }
 
       // Bind events to browser window
       var that = this;
@@ -43,15 +59,21 @@ define([
 
       // Bind events to model
       this.listenTo(client, 'notlogged', this.onNotLogged);
-      this.listenTo(rooms, 'newMessage', this.increment); // @todo : nasty event
-      this.listenTo(onetoones, 'newMessage', this.increment); // @todo : nasty event
     },
 
     renderTitle: function() {
       var title = '';
 
-      if (this.unread > 0)
-        title += '('+this.unread+') ';
+      var unread = 0;
+      unread = rooms.reduce(function(unread, model) {
+        return unread+model.get('unread');
+      }, unread);
+      unread = onetoones.reduce(function(unread, model) {
+        return unread+model.get('unread');
+      }, unread);
+
+      if (unread > 0)
+        title += '('+unread+') ';
 
       title += this.defaultTitle;
 
@@ -72,24 +94,26 @@ define([
 
     onFocus: function() {
       this.focused = true;
-      
-      if (this.unread == 0) {
-        return;
+
+      // mark current focused model as read
+      var model = this._getFocusedModel();
+      if (model) {
+        model.set('unread', 0);
+        if (model.get('type') == 'room')
+          rooms.trigger('redraw');
+        else
+          onetoones.trigger('redraw');
       }
 
-      this.unread = 0;
       this.renderTitle();
     },
+    _getFocusedModel: function() {
+      var model = rooms.findWhere({focused: true});
+      if (!model)
+        model = onetoones.findWhere({focused: true});
 
-    increment: function() {
-      if (this.focused) {
-        return;
-      }
-
-      this.unread += 1;
-      this.renderTitle();
+      return model; // could be 'undefined'
     },
-
     onClose: function() {
       // only if at least one room is open
       if (!this.preventPopin && (rooms && rooms.length > 0) || (onetoones && onetoones.length > 0)) {
@@ -98,11 +122,64 @@ define([
         return;
       }
     },
-
     onNotLogged: function() {
       this.preventPopin = true;
       window.location.assign('/');
+    },
+    triggerInout: function(event, model) {
+      // test if not from me (currentUser)
+      if (event.get('data').username == currentUser.get('username'))
+        return;
+
+      rooms.trigger('redraw');
+    },
+    triggerMessage: function(event, model) {
+      if (event.getGenericType() != 'message')
+        return;
+
+      // test if needed to notify something
+      if (this.focused && model.get('focused'))
+        return;
+
+      // test if not from me (currentUser)
+      if (event.get('data').username == currentUser.get('username'))
+        return;
+
+      // test if i mentioned
+      var pattern = new RegExp('@\\[([^\\]]+)\\]\\(user:'+currentUser.get('user_id')+'\\)');
+      var isMention = pattern.test(event.get('data').message);
+
+      // update tabs
+      model.set('unread', (model.get('unread', 0)+1));
+      if (model.get('type') == 'room')
+        rooms.trigger('redraw');
+      else
+        onetoones.trigger('redraw');
+
+      // update title
+      this.renderTitle();
+
+      // play sound
+      if (!isMention)
+        this.play('message');
+      else
+        this.play('mention');
+    },
+    play: function(what) {
+      // @source: // http://stackoverflow.com/questions/9419263/playing-audio-with-javascript
+      if (!this.beepOn)
+        return; // Audio not supported
+      if (this.beepPlaying)
+        return;
+
+      var beep = this.beeps[what];
+      if (!beep)
+        return;
+
+      this.beepPlaying = true;
+      beep.play();
     }
+
 
   });
 

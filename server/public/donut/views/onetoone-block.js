@@ -15,17 +15,14 @@ define([
     initialize: function(options) {
       this.listenTo(this.collection, 'add', this.onAddRemove);
       this.listenTo(this.collection, 'remove', this.onAddRemove);
-      this.listenTo(this.collection, 'newMessage', this.render); // @todo : nasty event
-      this.listenTo(this.collection, 'redraw', this.render);
       this.listenTo(this.collection, 'change:avatar', this.render);
+      this.listenTo(this.collection, 'redraw', this.render);
 
       this.render();
     },
-
     onAddRemove: function(model, collection, options) {
       this.render();
     },
-
     render: function() {
       var listJSON = [];
       _.each(this.collection.models, function(o) {

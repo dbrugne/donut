@@ -114,7 +114,6 @@ define([
         data: data
       });
       this.trigger('freshEvent', model);
-      this.trigger('inOut');
     },
     onOut: function(data) {
       var user = this.users.get(data.user_id);
@@ -128,7 +127,6 @@ define([
         data: data
       });
       this.trigger('freshEvent', model);
-      this.trigger('inOut');
     },
     onTopic: function(data) {
       this.set('topic', data.topic);

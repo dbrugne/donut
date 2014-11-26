@@ -5,9 +5,10 @@ define([
   'models/client',
   'models/event',
   'moment',
+  'views/window',
   'text!templates/events.html',
   'text!templates/event.html'
-], function ($, _, Backbone, client, EventModel, moment, eventsTemplate, eventTemplate) {
+], function ($, _, Backbone, client, EventModel, moment, windowView, eventsTemplate, eventTemplate) {
   var EventsView = Backbone.View.extend({
 
     template: _.template(eventsTemplate),
@@ -205,6 +206,12 @@ define([
       }
     },
     addFreshEvent: function(model) {
+      // browser notification
+      if (model.getGenericType() == 'message')
+        windowView.triggerMessage(model, this.model);
+      else if (this.model.get('type') == 'room' && model.getGenericType() == 'inout')
+        windowView.triggerInout(model, this.model);
+
       // render a 'fresh' event in realtime and scrolldown
       this._start();
       var needToScrollDown = this.scrollBottom; // scrollDown only if already on bottom before DOM insertion
@@ -277,7 +284,8 @@ define([
     },
     _prepareEvent: function(model) {
       var data = model.toJSON();
-      var message = model.get('data').message;
+      data.data = _.clone(model.get('data'));
+      var message = data.data.message;
 
       // avatar
       var size = (model.getGenericType() != 'inout')
