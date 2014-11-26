@@ -94,7 +94,9 @@ define([
         scrollButtons         : { enable: true },
         live                  : false,
         advanced:{
-          updateOnContentResize: false // we update manually
+          updateOnSelectorChange: false,
+          updateOnContentResize: false,
+          updateOnImageLoad: false
         },
         callbacks:{
           onScroll: function() {
@@ -138,7 +140,7 @@ define([
       }
 
       // then scroll to bottom
-      this.scrollDown();
+      this.$el.mCustomScrollbar('disable');
     },
     cleanup: function(event) {
       if (this.model.get('focused') && !this.scrollBottom)
@@ -189,8 +191,7 @@ define([
       _.delay(function() {
         that.$el.mCustomScrollbar('update');
         that.$el.mCustomScrollbar('scrollTo', 'bottom');
-        if (!that.model.get('focused'))
-          that.$el.mCustomScrollbar('disable');
+        that.$el.mCustomScrollbar('disable');
       }, 100);
     },
     onFocus: function(model, value, options) {

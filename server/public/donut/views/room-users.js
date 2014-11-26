@@ -35,7 +35,9 @@ define([
           theme                 : 'dark',
           live                  : false,
           advanced:{
-            updateOnContentResize: false // we update manually
+            updateOnSelectorChange: false,
+            updateOnContentResize: false,
+            updateOnImageLoad: false
           }
         });
         that.$listContent = that.$list.find('.mCSB_container');
