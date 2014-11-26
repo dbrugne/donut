@@ -139,8 +139,8 @@ define([
         this.model.set('connectHistory', null);
       }
 
-      // then scroll to bottom
-      this.$el.mCustomScrollbar('disable');
+      // disable scrollbar until focus
+      //this.$el.mCustomScrollbar('disable');
     },
     cleanup: function(event) {
       if (this.model.get('focused') && !this.scrollBottom)
@@ -191,7 +191,7 @@ define([
       _.delay(function() {
         that.$el.mCustomScrollbar('update');
         that.$el.mCustomScrollbar('scrollTo', 'bottom');
-        that.$el.mCustomScrollbar('disable');
+        //that.$el.mCustomScrollbar('disable');
       }, 100);
     },
     onFocus: function(model, value, options) {
@@ -200,9 +200,9 @@ define([
         this.scrollDown();
         this.updateMoment();
       } else {
-        // remove scrollbar listener on blur
-        this.$el.mCustomScrollbar('disable');
-        this.debug('disabled '+this._id());
+        //// remove scrollbar listener on blur
+        //this.$el.mCustomScrollbar('disable');
+        //this.debug('disabled '+this._id());
       }
     },
     addFreshEvent: function(model) {

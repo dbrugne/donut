@@ -77,8 +77,8 @@ define([
       if (value) {
         this.$list.mCustomScrollbar('update');
       } else {
-        // remove scrollbar listener on blur
-        this.$list.mCustomScrollbar('disable');
+        //// remove scrollbar listener on blur
+        //this.$list.mCustomScrollbar('disable');
       }
     },
     _remove: function() {
