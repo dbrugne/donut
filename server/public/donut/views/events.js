@@ -139,8 +139,7 @@ define([
         this.model.set('connectHistory', null);
       }
 
-      // disable scrollbar until focus
-      //this.$el.mCustomScrollbar('disable');
+      this.scrollDown();
     },
     cleanup: function(event) {
       if (this.model.get('focused') && !this.scrollBottom)
