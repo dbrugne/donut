@@ -17,6 +17,8 @@ define([
 
     title: '',
 
+    titleBlinker: '',
+
     preventPopin: false,
 
     beeps: {
@@ -81,17 +83,28 @@ define([
         title += ' | '+this.title;
 
       document.title = title;
-    },
 
+      if (unread < 1) {
+        clearInterval(this.titleBlinker);
+        return;
+      }
+
+      // now make it blink
+      var odd = title;
+      var even = this.defaultTitle;
+      clearInterval(this.titleBlinker);
+      this.titleBlinker = setInterval(function() {
+        document.title = (document.title == odd) ? even : odd;
+      }, 1000);
+
+    },
     setTitle: function(title) {
       this.title = title;
       this.renderTitle();
     },
-
     onBlur: function() {
       this.focused = false;
     },
-
     onFocus: function() {
       this.focused = true;
 
