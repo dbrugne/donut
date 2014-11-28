@@ -33,6 +33,9 @@ module.exports = function(io, socket) {
   socket.getColor = function() {
     return this.request.user.color;
   };
+  socket.isAdmin = function() {
+    return (this.request.user.admin === true);
+  };
 
   // welcome event data
   var welcome = {
