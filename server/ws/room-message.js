@@ -2,6 +2,7 @@ var async = require('async');
 var helper = require('./helper');
 var logger = require('../app/models/log');
 var roomEmitter = require('./_room-emitter');
+var admin = require('./_admin');
 
 module.exports = function(io, socket, data) {
 
@@ -14,6 +15,16 @@ module.exports = function(io, socket, data) {
         return callback('name is mandatory for room:message');
 
       return callback(null);
+    },
+
+    function adminCommands(callback) {
+      if (data.name != '#donut'
+        || !socket.isAdmin()
+        || !data.message
+        || data.message.substring(0, 1) != '/')
+        return callback(null);
+
+      admin(io, socket, data, callback);
     },
 
     function retrieveRoom(callback) {
@@ -81,6 +92,8 @@ module.exports = function(io, socket, data) {
     }
 
   ], function(err) {
+    if (err == 'admin')
+      return;
     if (err)
       helper.handleError(err);
 
