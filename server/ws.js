@@ -6,6 +6,7 @@ var socketioPassport = require('passport.socketio');
 var redisStore = require('./app/redissessions');
 var cookieParser = require('cookie-parser');
 var passport = require('./app/passport');
+var User = require('./app/models/user');
 
 /**
  * Websocket server configuration and launching
@@ -41,6 +42,19 @@ module.exports = function(server) {
     success       : require('./ws/authorization').success,
     fail          : require('./ws/authorization').fail
   }));
+
+  // Reset users onliness
+  User.update(
+    { online: true },
+    { $set: {
+      online        : false,
+      lastoffline_at: Date.now()
+    }}, { multi: true },
+    function(err) {
+      if (err)
+        return console.log('Error while setting online status of user to false: '+err);
+    }
+  );
 
   io.on('connection', function (socket) {
 
