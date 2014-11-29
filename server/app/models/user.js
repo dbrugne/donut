@@ -8,7 +8,7 @@ var userSchema = mongoose.Schema({
 
     username        : String,
     name            : String,
-    roles           : [String],
+    admin           : Boolean,
     bio             : String,
     location        : String,
     website         : String,
