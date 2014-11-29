@@ -156,12 +156,13 @@ define([
         this.scrollDown();
     },
     updateMoment: function() {
-      if (!this.model.get('focused')) // only on currently focused view
+      if (!this.model.get('focused') || !this.$realtime) // only on currently focused view
         return;
 
-      // @todo : reactive update Moment
       // Update all .moment of the discussion panel
-      //this.$el.find('.moment').slice(-100).momentify();
+      this.$realtime.find('.moment').slice(-100).momentify();
+      this.debug('moment updated');
+      // @todo : find a better logic than .slice() to scope elements
     },
     scrollDown: function() {
       // too early calls (router) will trigger scrollbar generation
