@@ -16,8 +16,6 @@ var recorder = HistoryRoom.record();
  */
 module.exports = function(io, roomName, eventName, eventData, callback) {
 
-  var ed = _.clone(eventData);// avoid modification on the object reference
-
   var rooms = [];
   if (Array.isArray(roomName))
     rooms = roomName;
@@ -27,6 +25,7 @@ module.exports = function(io, roomName, eventName, eventData, callback) {
   var parallels = [];
   _.each(rooms, function(room) {
     parallels.push(function(fn) {
+      var ed = _.clone(eventData);// avoid modification on the object reference
       // always had room name and time to event
       ed.name = room;
       ed.time = Date.now();

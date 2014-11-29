@@ -17,8 +17,6 @@ var recorder = HistoryOne.record();
  */
 module.exports = function(io, onetoone, eventName, eventData, callback) {
 
-  var ed = _.clone(eventData);// avoid modification on the object reference
-
   var onetoones = [];
   if (Array.isArray(onetoone))
     onetoones = onetoone;
@@ -28,6 +26,7 @@ module.exports = function(io, onetoone, eventName, eventData, callback) {
   var parallels = [];
   _.each(onetoones, function(one) {
     parallels.push(function(fn) {
+      var ed = _.clone(eventData);// avoid modification on the object reference
       ed.from = one.from;
       ed.to = one.to;
       ed.time = Date.now();
