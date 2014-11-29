@@ -3,7 +3,6 @@ donut
 
 Next deploy : db['history-one'].update({'received': {$exists: true}}, {$unset: {'received': ""}}, {multi: true})
 
-[ ] Reactivate update moment (could scope only visible events ?)
 [ ] Add a push on ShopPaintball homepage and footer
 
 History
