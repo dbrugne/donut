@@ -114,7 +114,7 @@ define([
           });
         }
 
-        // @todo: cleanup this code...
+        // @todo: cleanup this code by calling on model... and fix #50
         if (that.model.get('type') == 'room') {
           client.roomMessage(that.model.get('name'), message);
         } else if (that.model.get('type') == 'onetoone') {
