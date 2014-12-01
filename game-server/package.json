@@ -1,7 +1,9 @@
 {
-    "name":"donut",
+    "name":"donut-game",
     "version":"0.0.1",
-    "private":false,
+    "description": "Application (chat) server component of donut platform",
+    "repository": "https://github.com/dbrugne/donut",
+    "private":true,
     "dependencies":{
         "pomelo":"latest"
     }
