@@ -12,6 +12,7 @@
       "moment": "2.7.x",
       "i18next": "latest",
       "malihu-custom-scrollbar-plugin": "latest",
-      "jquery-mousewheel": "latest"
+      "jquery-mousewheel": "latest",
+      "pomelo-jsclient-socket.io": "latest"
     }
 }

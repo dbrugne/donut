@@ -31,7 +31,6 @@
     "sanitize-caja": "0.x",
     "sanitize-html": "1.x",
     "serve-favicon": "2.x",
-    "socket.io": "1.x",
     "underscore": "1.7.x",
     "validator": "3.x"
   }

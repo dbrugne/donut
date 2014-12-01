@@ -3,7 +3,8 @@ require.config({
     'jquery'                      : '../vendor/jquery/dist/jquery',
     'bootstrap'                   : '../vendor/bootstrap/dist/js/bootstrap',
     'text'                        : '../vendor/requirejs-text/text',
-    'socket.io'                   : '/socket.io/socket.io',
+    'socket.io'                   : '/vendor/socket.io-client/dist/socket.io',
+    'pomelo'                      : '/vendor/pomelo-jsclient-socket.io/lib/pomelo-client',
     'underscore'                  : '../vendor/underscore-amd/underscore',
     'backbone'                    : '../vendor/backbone-amd/backbone',
     'i18next'                     : '../vendor/i18next/i18next.amd.withJQuery',
@@ -44,6 +45,9 @@ require.config({
     },
     'facebook' : {
       exports: 'FB'
+    },
+    'pomelo' : {
+      exports: 'pomelo'
     }
   }
 });
@@ -137,12 +141,12 @@ require([
 
   // Facebook setup
   try {
-    facebook.init({
-      appId: window.facebook_app_id,
-      version: 'v2.1',
-      status: true,
-      xfbml: false
-    });
+    //facebook.init({
+    //  appId: window.facebook_app_id,
+    //  version: 'v2.1',
+    //  status: true,
+    //  xfbml: false
+    //});
   } catch (e) {
     console.log(e);
     return false;

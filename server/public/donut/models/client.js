@@ -1,8 +1,9 @@
 define([
   'underscore',
   'backbone',
-  'socket.io'
-], function (_, Backbone, io) {
+  'socket.io',
+  'pomelo'
+], function (_, Backbone, io, pomelo) {
   var ClientModel = Backbone.Model.extend({
 
     clientId: '', // an identifier given by server on first connection that uniquely identify this client/DOM
@@ -33,8 +34,61 @@ define([
       this.connect();
     },
 
-    // connect should be done at the end of App initialization to allow interface binding to work
+    /**
+     * Connection logic:
+     *
+     */
     connect: function() {
+      var that = this;
+      that.debug('pomelo connect tentative...');
+      pomelo.init({
+          host: window.location.hostname,
+          port: 3014, // @todo : remove port (should be naturally 80 on production)
+          log : true
+        },
+        function () {
+          that.debug('pomelo:init done');
+          that._askForConnector();
+        }
+      );
+    },
+    _askForConnector: function() {
+      var that = this;
+      pomelo.request('gate.gateHandler.queryEntry', {
+        uid: 'damien' // @todo
+      }, function (data) {
+        that.debug('pomelo:gate done');
+        that.debug('pomelo:gate dispatched to: ' + data.host + ':' + data.port);
+        pomelo.disconnect();
+        if (data.code === 500)
+          return console.log("There is no server to log in, please wait.");
+        that._helloConnector(data);
+      });
+    },
+    _helloConnector: function(data) {
+      var that = this;
+      pomelo.init({
+        host: data.host,
+        port: data.port,
+        log : true
+      }, function () {
+        console.log('reinit OK');
+        pomelo.request('connector.entryHandler.enter', {
+          username: 'damien',
+          rid     : '#donut'
+        }, function (data) {
+          if (data.error)
+            return console.log("Heu... error here");
+          console.log('pomelo:connected');
+          console.log(data);
+          // @todo : ready to roll
+          that.trigger('connected');
+        });
+      });
+    },
+
+    // connect should be done at the end of App initialization to allow interface binding to work
+    ____connect: function() {
 
       this.clientId = this.guid();
 
