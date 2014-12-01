@@ -1,7 +1,13 @@
 donut
 ====
 
-Next deploy : db['history-one'].update({'received': {$exists: true}}, {$unset: {'received': ""}}, {multi: true})
+## Pomelog migration
+* Authentication
+* Get user data on backend server (freshness)
+* Get online users
+* Get room online users
+* Broadcast to a particular room
+* Management of data in req/res, auto remove empty/null/undefined key in Object
 
 [ ] Add a push on ShopPaintball homepage and footer
 
