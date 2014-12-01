@@ -1,0 +1,9 @@
+{
+    "name":"donut",
+    "version":"0.0.1",
+    "private":false,
+    "dependencies":{
+        "pomelo":"latest"
+    }
+}
+
