@@ -5,7 +5,8 @@
     "repository": "https://github.com/dbrugne/donut",
     "private":true,
     "dependencies":{
-        "pomelo":"latest"
+        "pomelo": "latest",
+        "crc": "0.2.0"
     }
 }
 
