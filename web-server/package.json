@@ -1,8 +1,11 @@
 {
   "name": "donut",
   "version": "0.0.1",
+  "description": "Web server component of donut platform",
+  "repository": "https://github.com/dbrugne/donut",
   "private": false,
   "dependencies": {
-    "express": "4.x"
+    "express": "4.x",
+    "body-parser": "1.x"
   }
 }
