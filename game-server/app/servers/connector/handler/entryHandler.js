@@ -1,11 +1,12 @@
 var debug = require('debug')('donut:server:entryHandler');
 var async = require('async');
+
 module.exports = function(app) {
 	return new Handler(app);
 };
 
 var Handler = function(app) {
-		this.app = app;
+	this.app = app;
 };
 
 var handler = Handler.prototype;
@@ -24,51 +25,50 @@ handler.enter = function(msg, session, next) {
 	async.waterfall([
 
 		function determineUid(callback) {
-			var uid = false;
+			var userId = false;
 			if (session
 				&& session.__session__
 				&& session.__session__.__socket__
 				&& session.__session__.__socket__.socket)
-				uid = session.__session__.__socket__.socket.getUserId();
+				userId = session.__session__.__socket__.socket.getUserId();
 
-			if (!uid)
-			  return callback('Unable to determine session UID');
+			if (!userId)
+			  return callback('Unable to determine session userId');
 
-			if(!!that.app.get('sessionService').getByUid(uid))
-				return callback("User already logged in with UID (it's a problem??)");
+			//if(!!that.app.get('sessionService').getByUid(userId))
+			//	return callback("User already logged in with userId (it's a problem??)"); // @todo : probably useless
 
 			// @todo : probably some logic to add here regarding multi-devices
 
-			return callback(null, uid);
+			return callback(null, userId);
 		},
 
-		function sessionBinding(uid, callback) {
-			// uid
-			debug('Bound session to user '+uid);
-			session.bind(uid);
+		function sessionBinding(userId, callback) {
+			debug('bind session to user '+userId);
+			session.bind(userId);
 
 			// events
 			session.on('closed', onUserLeave.bind(null, that.app));
 
-			return callback(null);
+			//// persist data in session
+			//session.set('user_id', user._id.toString());
+			//session.set('username', user.username);
+			//session.set('color', user.color);
+			//session.pushAll(function(err) {
+			//	if (err)
+			//	  return callback(err);
+
+				return callback(null, userId);
+			//});
 		},
 
-		function welcome(callback) {
-			var socket = session.__session__.__socket__.socket;
-			var welcome = {
-				hello: 'salut %u',
-				user: {
-					user_id: socket.getUserId(),
-					username: socket.getUsername(),
-					avatar: socket.getAvatar(),
-					color: socket.getColor(),
-					welcome: true
-				},
-				rooms: [],
-				onetoones: []
-			};
-
-			return callback(null, welcome);
+		function welcome(userId, callback) {
+		  return that.app.rpc.chat.welcomeRemote.get(
+				session,
+				userId,
+				that.app.get('serverId'),
+				callback
+			);
 		}
 
 	], function(err, welcome) {
