@@ -30,6 +30,31 @@ var Socket = function(id, socket) {
   this.state = ST_INITED;
 
   // TODO: any other events?
+
+  /**
+   * Decorate socket (shortcut)
+   */
+  socket.getUser = function() {
+    return this.request.user;
+  };
+  socket.getUserId = function() {
+    return this.request.user._id.toString();
+  };
+  socket.getUsername = function() {
+    return this.request.user.username;
+  };
+  socket.getAvatar = function() {
+    return this.request.user._avatar();
+  };
+  socket.getPoster = function() {
+    return this.request.user.poster;
+  };
+  socket.getColor = function() {
+    return this.request.user.color;
+  };
+  socket.isAdmin = function() {
+    return (this.request.user.admin === true);
+  };
 };
 
 util.inherits(Socket, EventEmitter);
@@ -78,3 +103,4 @@ var encodeBatch = function(msgs){
   res += ']';
   return res;
 };
+

@@ -29,10 +29,6 @@ var Connector = function(port, host, opts) {
   this.port = port;
   this.host = host;
   this.opts = opts;
-  //this.heartbeats = opts.heartbeats || true;
-  //this.closeTimeout = opts.closeTimeout || 60;
-  //this.heartbeatTimeout = opts.heartbeatTimeout || 60;
-  //this.heartbeatInterval = opts.heartbeatInterval || 25;
 };
 
 util.inherits(Connector, EventEmitter);
@@ -66,31 +62,6 @@ Connector.prototype.start = function(cb) {
   this.wsocket.sockets.on('connection', function (socket) {
 
     debug('new socket.io connection: ', socket.id);
-
-    // Decorate socket (shortcut)
-    socket.getUser = function() {
-      return this.request.user;
-    };
-    socket.getUserId = function() {
-      return this.request.user._id.toString();
-    };
-    socket.getUsername = function() {
-      return this.request.user.username;
-    };
-    socket.getAvatar = function() {
-      return this.request.user._avatar();
-    };
-    socket.getPoster = function() {
-      return this.request.user.poster;
-    };
-    socket.getColor = function() {
-      return this.request.user.color;
-    };
-    socket.isAdmin = function() {
-      return (this.request.user.admin === true);
-    };
-
-    debug(socket.getUserId(), socket.getUsername(), socket.getColor());
 
     // Wrap the socket
     var siosocket = new socketioSocket(curId++, socket);
