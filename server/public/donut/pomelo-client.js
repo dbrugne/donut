@@ -323,7 +323,7 @@ var bt2Str = function(byteArray,start,end) {
   var id = 1;
   var callbacks = {};
 
-  pomelo.init = function(params, cb){
+  pomelo.init = function(params, callback){
     pomelo.params = params;
     params.debug = true;
     var host = params.host;
@@ -338,7 +338,7 @@ var bt2Str = function(byteArray,start,end) {
     //socket = io.connect(url, {'force new connection': true, reconnect: false});
     socket = io(url, {
       //multiplex: true,
-      reconnection: false,
+      reconnection: true,
       //reconnectionDelay: 1000,
       //reconnectionDelayMax: 5000,
       //timeout: 20000, // = between 2 heartbeat pings
@@ -347,17 +347,79 @@ var bt2Str = function(byteArray,start,end) {
       //query       : 'clientId='+this.clientId
     });
 
-    socket.on('connect', function(){
-      console.log('[pomeloclient.init] websocket connected!');
-      if (cb) {
-        cb(socket);
-      }
-    });
+    //socket.on('connect', function(){
+    //  console.log('[pomeloclient.init] websocket connected!');
+    //  if (callback) {
+    //    callback(socket);
+    //  }
+    //});
 
-    socket.on('reconnect', function() {
-      console.log('reconnect');
-    });
+    //socket.on('reconnect', function() {
+    //  console.log('reconnect');
+    //});
 
+    //socket.on('error', function(err) {
+    //  console.log(err);
+    //});
+
+    //socket.on('disconnect', function(reason) {
+    //  pomelo.emit('disconnect', reason);
+    //});
+
+    // SOCKET.IO EVENTS
+    // ======================================================
+    var that = this;
+    socket.on('connect', function () {
+      pomelo.emit('socketIoEvent', {
+        event: 'connected',
+        debug: 'socket connected'
+      });
+
+      if (callback)
+        return callback(socket);
+    });
+    socket.on('disconnect', function (reason) {
+      pomelo.emit('socketIoEvent', {
+        event: 'disconnected',
+        debug: 'socket.io-client disconnect ('+reason+')'
+      });
+    });
+    socket.on('reconnect', function (num) {
+      pomelo.emit('socketIoEvent', {
+        event: 'reconnected',
+        debug: 'socket.io-client successful reconnected at #'+num+' attempt'
+      });
+    });
+    socket.on('reconnect_attempt', function () {
+      pomelo.emit('socketIoEvent', {
+        event: 'connecting'
+      });
+    });
+    socket.on('reconnecting', function (num) {
+      pomelo.emit('socketIoEvent', {
+        event: 'connecting',
+        debug: 'socket.io-client try to reconnect, #'+num+' attempt'
+      });
+    });
+    socket.on('connect_timeout', function () { // fired on socket or only on manager? http://socket.io/docs/client-api/#socket
+      pomelo.emit('socketIoEvent', {
+        event: 'connecting',
+        debug: 'socket.io-client timeout'
+      });
+    });
+    var onError = function(err) {
+      pomelo.emit('socketIoEvent', {
+        event: 'connecting',
+        debug: 'socket.io-client error: '+err
+      });
+    };
+    socket.on('connect_error', onError); // fired on socket or only on manager? http://socket.io/docs/client-api/#socket
+    socket.on('reconnect_error', onError);
+    socket.on('reconnect_failed', onError);
+    socket.on('error', onError); // on socket
+
+    // POMELO EVENT
+    // ======================================================
     socket.on('message', function(data){
       if(typeof data === 'string') {
         data = JSON.parse(data);
@@ -367,14 +429,6 @@ var bt2Str = function(byteArray,start,end) {
       } else {
         processMessage(pomelo, data);
       }
-    });
-
-    socket.on('error', function(err) {
-      console.log(err);
-    });
-
-    socket.on('disconnect', function(reason) {
-      pomelo.emit('disconnect', reason);
     });
   };
 

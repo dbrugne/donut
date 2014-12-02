@@ -10,6 +10,28 @@ define([
 
     initialize: function() {
       localStorage.debug = ''; // @debug ('*')
+
+      var that = this;
+
+      //pomelo.on('onChat', function(data) {
+      //  console.log('message reçu:');
+      //  console.log(data);
+      //});
+
+      pomelo.on('socketIoEvent', function(data) {
+        if (!data)
+          return;
+        if (data.debug)
+          that.debug(data.debug);
+        if (data.event)
+          that.trigger(data.event);
+
+        // @todo : repair !!!!
+        //if (err == 'notlogged')
+        //  that.trigger('notlogged');
+        //else
+        //  that.trigger('error');
+      });
     },
 
     debug: function(message) {
@@ -26,7 +48,7 @@ define([
     },
 
     disconnect: function() {
-      this.socket.disconnect();
+      pomelo.disconnect();
     },
 
     reconnect: function() {
@@ -35,17 +57,18 @@ define([
     },
 
     /**
-     * Connection logic:
+     * .connect() should be done at the end of App initialization to allow
+     * interface binding to work
      *
+     * First init pomelo, it open a socket with "gate" server.
+     * Send a "gate.gateHandler.queryEntry" request to get "connector" to connect to.
+     * Disconnect socket.
+     * Reinit pomelo to be connect to given "connector" server.
+     * Receive welcome message on success.
      */
     connect: function() {
-      pomelo.on('onChat', function(data) {
-        console.log('message reçu:');
-        console.log(data);
-      });
-
-
       var that = this;
+
       pomelo.init({
           host: window.location.hostname,
           port: 3014, // @todo : remove port (should be naturally 80 on production)
@@ -79,7 +102,7 @@ define([
         pomelo.request('connector.entryHandler.enter', {
         }, function (data) {
           if (data.error)
-            return that.debug("connector.entryHandler.enter returns error", data);
+            return that.debug(["connector.entryHandler.enter returns error", data]);
           that.debug(['io:in:welcome', data]);
           that.trigger('welcome', data);
         });
@@ -98,59 +121,7 @@ define([
       });
     },
 
-    // connect should be done at the end of App initialization to allow interface binding to work
     ____connect: function() {
-
-      this.clientId = this.guid();
-
-      this.socket = io(window.location.hostname, {
-        //multiplex: true,
-        //reconnection: true,
-        //reconnectionDelay: 1000,
-        //reconnectionDelayMax: 5000,
-        //timeout: 20000, // = between 2 heartbeat pings
-        //autoConnect: true,
-        forceNew    : true, // http://stackoverflow.com/questions/24566847/socket-io-client-connect-disconnect
-        query       : 'clientId='+this.clientId
-      });
-
-      // CONNECTION EVENTS
-      // ======================================================
-      var that = this;
-      this.socket.on('connect', function () {
-        that.trigger('connected');
-      });
-      this.socket.on('disconnect', function () {
-        that.debug('socket.io-client disconnect');
-        that.trigger('disconnected');
-      });
-      this.socket.on('reconnect', function (num) {
-        that.debug('socket.io-client successful reconnected at #'+num+' attempt');
-        that.trigger('reconnected');
-      });
-      this.socket.on('reconnect_attempt', function () {
-        that.trigger('connecting');
-      });
-      this.socket.on('reconnecting', function (num) {
-        that.debug('socket.io-client try to reconnect, #'+num+' attempt');
-        that.trigger('connecting');
-      });
-      this.socket.on('connect_timeout', function () { // fired on socket or only on manager? http://socket.io/docs/client-api/#socket
-        that.debug('socket.io-client timeout');
-        that.trigger('connecting');
-      });
-      var onError = function(err) {
-        that.debug('socket.io-client error: '+err);
-
-        if (err == 'notlogged')
-          that.trigger('notlogged');
-        else
-          that.trigger('error');
-      };
-      this.socket.on('connect_error', onError); // fired on socket or only on manager? http://socket.io/docs/client-api/#socket
-      this.socket.on('reconnect_error', onError);
-      this.socket.on('reconnect_failed', onError);
-      this.socket.on('error', onError); // on socket
 
       // GLOBAL EVENTS
       // ======================================================
@@ -280,7 +251,7 @@ define([
     // ======================================================
 
     home: function() {
-      this.socket.emit('home', {});
+      //this.socket.emit('home', {});
       this.debug(['io:out:home', {}]);
     },
     search: function(search, searchKey, rooms, users, light) {
@@ -297,7 +268,7 @@ define([
           ? true
           : false
       };
-      this.socket.emit('search', data);
+      //this.socket.emit('search', data);
       this.debug(['io:out:search', data]);
     },
 
@@ -306,59 +277,59 @@ define([
 
     join: function(name) {
       var data = {name: name};
-      this.socket.emit('room:join', data);
+      //this.socket.emit('room:join', data);
       this.debug(['io:out:room:join', data]);
     },
     leave: function(name) {
       var data = {name: name};
-      this.socket.emit('room:leave', data);
+      //this.socket.emit('room:leave', data);
       this.debug(['io:out:room:leave', data]);
     },
     topic: function(name, topic) {
       var data = {name: name, topic: topic};
-      this.socket.emit('room:topic', data);
+      //this.socket.emit('room:topic', data);
       this.debug(['io:out:room:topic', data]);
     },
     roomMessage: function(name, message) {
       var data = {name: name, message: message};
-      this.socket.emit('room:message', data);
+      //this.socket.emit('room:message', data);
       this.debug(['io:out:room:message', data]);
     },
     roomRead: function(name) {
       var data = {name: name};
-      this.socket.emit('room:read', data);
+      //this.socket.emit('room:read', data);
       this.debug(['io:out:room:read', data]);
     },
     roomUpdate: function(name, fields) {
       var data = {name: name, data: fields};
-      this.socket.emit('room:update', data);
+      //this.socket.emit('room:update', data);
       this.debug(['io:out:room:update', data]);
     },
     roomDelete: function(name) {
       var data = {name: name};
-      this.socket.emit('room:delete', data);
+      //this.socket.emit('room:delete', data);
       this.debug(['io:out:room:delete', data]);
     },
     roomHistory: function(name, since, until) {
       var data = {name: name, since: since, until: until};
-      this.socket.emit('room:history', data);
+      //this.socket.emit('room:history', data);
       this.debug(['io:out:room:history', data]);
     },
     roomOp: function(name, username) {
       var data = {name: name, username: username};
-      this.socket.emit('room:op', data);
+      //this.socket.emit('room:op', data);
       this.debug(['io:out:room:op', data]);
     },
     roomDeop: function(name, username) {
       var data = {name: name, username: username};
-      this.socket.emit('room:deop', data);
+      //this.socket.emit('room:deop', data);
       this.debug(['io:out:room:deop', data]);
     },
     roomKick: function(name, username, reason) {
       var data = {name: name, username: username};
       if (reason)
         data.reason = reason;
-      this.socket.emit('room:kick', data);
+      //this.socket.emit('room:kick', data);
       this.debug(['io:out:room:kick', data]);
     },
 
@@ -367,41 +338,41 @@ define([
 
     userJoin: function(username) {
       var data = {username: username};
-      this.socket.emit('user:join', data);
+      //this.socket.emit('user:join', data);
       this.debug(['io:out:user:join', data]);
     },
     userLeave: function(username) {
       var data = {username: username};
-      this.socket.emit('user:leave', data);
+      //this.socket.emit('user:leave', data);
       this.debug(['io:out:user:leave', data]);
     },
     userMessage: function(username, message) {
       var data = {username: username, message: message};
-      this.socket.emit('user:message', data);
+      //this.socket.emit('user:message', data);
       this.debug(['io:out:user:message', data]);
     },
     userProfile: function(username) {
       var data = {username: username};
-      this.socket.emit('user:profile', data);
+      //this.socket.emit('user:profile', data);
       this.debug(['io:out:user:profile', data]);
     },
     userRead: function() {
-      this.socket.emit('user:read', {});
+      //this.socket.emit('user:read', {});
       this.debug(['io:out:user:read', {}]);
     },
     userUpdate: function(fields) {
       var data = {data: fields};
-      this.socket.emit('user:update', data);
+      //this.socket.emit('user:update', data);
       this.debug(['io:out:user:update', data]);
     },
     userStatus: function(username) {
       var data = {username: username};
-      this.socket.emit('user:status', data);
+      //this.socket.emit('user:status', data);
       this.debug(['io:out:user:status', data]);
     },
     userHistory: function(username, since, until) {
       var data = {username: username, since: since, until: until};
-      this.socket.emit('user:history', data);
+      //this.socket.emit('user:history', data);
       this.debug(['io:out:user:history', data]);
     }
 
