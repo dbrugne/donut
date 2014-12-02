@@ -32,6 +32,7 @@
     "sanitize-html": "1.x",
     "serve-favicon": "2.x",
     "underscore": "1.7.x",
-    "validator": "3.x"
+    "validator": "3.x",
+    "socket.io-client": "1.x"
   }
 }

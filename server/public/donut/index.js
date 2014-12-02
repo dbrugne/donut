@@ -3,8 +3,8 @@ require.config({
     'jquery'                      : '../vendor/jquery/dist/jquery',
     'bootstrap'                   : '../vendor/bootstrap/dist/js/bootstrap',
     'text'                        : '../vendor/requirejs-text/text',
-    'socket.io'                   : '/vendor/socket.io-client/dist/socket.io',
-    'pomelo'                      : '/vendor/pomelo-jsclient-socket.io/lib/pomelo-client',
+    'socket.io'                   : '/socket.io',
+    'pomelo'                      : './pomelo-client',
     'underscore'                  : '../vendor/underscore-amd/underscore',
     'backbone'                    : '../vendor/backbone-amd/backbone',
     'i18next'                     : '../vendor/i18next/i18next.amd.withJQuery',
@@ -63,6 +63,7 @@ require([
   'i18next',
   'facebook',
   'moment',
+  'socket.io',
   /************************************
    * Load (once) and attach plugins to jQuery and underscore
    ************************************/
@@ -80,7 +81,10 @@ require([
   'bootstrap',
   'moment-fr',
   'underscore.template-helpers'
-], function (app, $, _, Backbone, i18next, facebook, moment) {
+], function (app, $, _, Backbone, i18next, facebook, moment, io) {
+
+  // @todo : ouille!
+  window.io = io;
 
   // i18n setup
   window.i18next = i18next;

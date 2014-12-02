@@ -39,6 +39,12 @@ define([
      *
      */
     connect: function() {
+      pomelo.on('onChat', function(data) {
+        console.log('message reçu:');
+        console.log(data);
+      });
+
+
       var that = this;
       that.debug('pomelo connect tentative...');
       pomelo.init({
@@ -84,6 +90,18 @@ define([
           // @todo : ready to roll
           that.trigger('connected');
         });
+      });
+    },
+
+    pomMessage: function() {
+      pomelo.request("chat.chatHandler.send", {
+        rid: '#donut',
+        content: "Vas-y José, fait chauffer l'orchestre",
+        from: 'damien',
+        target: '*'
+      }, function(data) {
+        console.log('message envoyé');
+        console.log(data);
       });
     },
 

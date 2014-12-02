@@ -1,5 +1,6 @@
 var pomelo = require('pomelo');
 var dispatcher = require('./app/util/dispatcher');
+var connector = require('./app/connector/sioconnector');
 
 // route definition for chat server
 var chatRoute = function(session, msg, app, cb) {
@@ -21,34 +22,34 @@ var chatRoute = function(session, msg, app, cb) {
 var app = pomelo.createApp();
 app.set('name', 'donut');
 
+var socketIoOptions = {
+  // http://socket.io/docs/server-api/#server(opts:object)
+  //serveClient: false, // If true the attached server will serve the client files. Defaults to true.
+  //path: '/socket.io' // The path under which engine.io and the static files will be served. Defaults to /socket.io.
+  // https://github.com/Automattic/engine.io#methods-1
+  //pingTimeout: 60000, // (Number): how many ms without a pong packet to consider the connection closed (60000)
+  //pingInterval: 25000, // (Number): how many ms before sending a new ping packet (25000)
+  //maxHttpBufferSize: 10E7, // (Number): how many bytes or characters a message can be when polling, before closing the session (to avoid DoS). Default value is 10E7.
+  //allowRequest: function(handshake, fn) {}, // (Function): A function that receives a given handshake or upgrade request as its first parameter, and can decide whether to continue or not. The second argument is a function that needs to be called with the decided information: fn(err, success), where success is a boolean value where false means that the request is rejected, and err is an error code.
+  //transports: ['polling', 'websocket'], // (<Array> String): transports to allow connections to (['polling', 'websocket'])
+  //allowUpgrades: true, // (Boolean): whether to allow transport upgrades (true)
+  //cookie: 'io' // (String|Boolean): name of the HTTP cookie that contains the client sid to send as part of handshake response headers. Set to false to not send one. (io)
+}
+
 // app configuration
 app.configure('production|development', 'connector', function(){
   app.set('connectorConfig',
     {
-      //connector : pomelo.connectors.hybridconnector,
-      //heartbeat : 3
-      connector : pomelo.connectors.sioconnector,
-      //websocket, htmlfile, xhr-polling, jsonp-polling, flashsocket
-      transports : ['websocket'],
-      heartbeats : true,
-      closeTimeout : 60,
-      heartbeatTimeout : 60,
-      heartbeatInterval : 25
+      connector : connector,
+      options   : socketIoOptions
     });
 });
 
 app.configure('production|development', 'gate', function(){
   app.set('connectorConfig',
     {
-      //connector : pomelo.connectors.hybridconnector,
-      //heartbeat : 3
-      connector : pomelo.connectors.sioconnector,
-      //websocket, htmlfile, xhr-polling, jsonp-polling, flashsocket
-      transports : ['websocket','jsonp-polling'],
-      heartbeats : true,
-      closeTimeout : 60,
-      heartbeatTimeout : 60,
-      heartbeatInterval : 25
+      connector : connector,
+      options   : socketIoOptions
     });
 });
 
