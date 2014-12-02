@@ -1,5 +1,5 @@
 var debug = require('debug')('donut:server:entryHandler');
-
+var async = require('async');
 module.exports = function(app) {
 	return new Handler(app);
 };
@@ -19,61 +19,85 @@ var handler = Handler.prototype;
  * @return {Void}
  */
 handler.enter = function(msg, session, next) {
-	var self = this;
+	var that = this;
 
-	// determine uid
-	var uid = false;
-	if (session
-		&& session.__session__
-		&& session.__session__.__socket__
-		&& session.__session__.__socket__.socket)
-		uid = session.__session__.__socket__.socket.getUserId();
+	async.waterfall([
 
-	// duplicate log in
-	if(!uid)
-		return next(null, { code: 500, error: true });
+		function determineUid(callback) {
+			var uid = false;
+			if (session
+				&& session.__session__
+				&& session.__session__.__socket__
+				&& session.__session__.__socket__.socket)
+				uid = session.__session__.__socket__.socket.getUserId();
 
-	//var rid = msg.rid;
-	var sessionService = self.app.get('sessionService');
+			if (!uid)
+			  return callback('Unable to determine session UID');
 
-	// duplicate log in
-	if(!!sessionService.getByUid(uid))
-		return next(null, { code: 500, error: true });
+			if(!!that.app.get('sessionService').getByUid(uid))
+				return callback("User already logged in with UID (it's a problem??)");
 
-	debug('session bound to user: '+uid);
-	session.bind(uid);
+			// @todo : probably some logic to add here regarding multi-devices
+
+			return callback(null, uid);
+		},
+
+		function sessionBinding(uid, callback) {
+			// uid
+			debug('Bound session to user '+uid);
+			session.bind(uid);
+
+			// events
+			session.on('closed', onUserLeave.bind(null, that.app));
+
+			return callback(null);
+		},
+
+		function welcome(callback) {
+			var socket = session.__session__.__socket__.socket;
+			var welcome = {
+				hello: 'salut %u',
+				user: {
+					user_id: socket.getUserId(),
+					username: socket.getUsername(),
+					avatar: socket.getAvatar(),
+					color: socket.getColor(),
+					welcome: true
+				},
+				rooms: [],
+				onetoones: []
+			};
+
+			return callback(null, welcome);
+		}
+
+	], function(err, welcome) {
+		if (err) {
+			debug(err);
+			return next(null, { code: 500, error: true, msg: err });
+		}
+
+		return next(null, welcome);
+	});
+
+
+
 	//session.set('rid', rid);
 	//session.push('rid', function(err) {
 	//	if(err) {
 	//		console.error('set rid for session service failed! error is : %j', err.stack);
 	//	}
 	//});
-	session.on('closed', onUserLeave.bind(null, self.app));
-
 	// put user into channel
-	//self.app.rpc.chat.chatRemote.add(session, uid, self.app.get('serverId'), rid, true, function(users){
+	//that.app.rpc.chat.chatRemote.add(session, uid, that.app.get('serverId'), rid, true, function(users){
 	//	next(null, {
 	//		users:users
 	//	});
 	//});
-	var socket = session.__session__.__socket__.socket;
-	var welcome = {
-		hello: 'salut %u',
-		user: {
-			user_id: socket.getUserId(),
-			username: socket.getUsername(),
-			avatar: socket.getAvatar(),
-			color: socket.getColor(),
-			welcome: true
-		},
-		rooms: [],
-		onetoones: []
-	};
-	return next(null, welcome);
 };
 
 /**
- * User log out handler
+ * User logout handler
  *
  * @param {Object} app current application
  * @param {Object} session current session object
