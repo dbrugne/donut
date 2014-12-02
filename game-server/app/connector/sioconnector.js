@@ -1,7 +1,14 @@
+var debug = require('debug')('donut:server:connector');
+var conf = require('../../../server/config/index');
 var util = require('util');
 var EventEmitter = require('events').EventEmitter;
-var sio = require('socket.io');
-var SioSocket = require('./siosocket');
+var socketio = require('socket.io');
+var socketioSocket = require('./siosocket');
+var socketioRedis = require('socket.io-redis');
+var socketioPassport = require('passport.socketio');
+var redisStore = require('../../../server/app/redissessions');
+var cookieParser = require('cookie-parser');
+var passport = require('../../../server/app/passport');
 
 var PKG_ID_BYTES = 4;
 var PKG_ROUTE_LENGTH_BYTES = 1;
@@ -37,24 +44,60 @@ module.exports = Connector;
  */
 Connector.prototype.start = function(cb) {
   var self = this;
-  // issue https://github.com/NetEase/pomelo-cn/issues/174
-  if(!!this.opts.options) {
-    this.wsocket = sio(this.port, this.opts.options);
-    console.log('sio:port: '+this.port);
-    console.log(this.opts.options);
-  }
-  else {
-    this.wsocket = sio(this.port, {});
-  }
-  this.wsocket.on('connection', function (socket) {
-    console.log('sio:kikkooo');
-  });
+
+  // create socket.io server
+  this.wsocket = socketio(this.port, this.opts.options);
+  debug('socket.io server start with: ', this.port, this.opts.options);
+
+  // Redis storage
+  this.wsocket.adapter(socketioRedis({}));
+
+  // Authentication
+  this.wsocket.use(socketioPassport.authorize({
+    passport      : passport,
+    cookieParser  : cookieParser,
+    key           : conf.sessions.key,
+    secret        : conf.sessions.secret,
+    store         : redisStore
+    //success       : require('./ws/authorization').success,
+    //fail          : require('./ws/authorization').fail
+  }));
+
   this.wsocket.sockets.on('connection', function (socket) {
-    console.log('sio:connection');
-    var siosocket = new SioSocket(curId++, socket);
+
+    debug('new socket.io connection: ', socket.id);
+
+    // Decorate socket (shortcut)
+    socket.getUser = function() {
+      return this.request.user;
+    };
+    socket.getUserId = function() {
+      return this.request.user._id.toString();
+    };
+    socket.getUsername = function() {
+      return this.request.user.username;
+    };
+    socket.getAvatar = function() {
+      return this.request.user._avatar();
+    };
+    socket.getPoster = function() {
+      return this.request.user.poster;
+    };
+    socket.getColor = function() {
+      return this.request.user.color;
+    };
+    socket.isAdmin = function() {
+      return (this.request.user.admin === true);
+    };
+
+    debug(socket.getUserId(), socket.getUsername(), socket.getColor());
+
+    // Wrap the socket
+    var siosocket = new socketioSocket(curId++, socket);
+
     self.emit('connection', siosocket);
     siosocket.on('closing', function(reason) {
-      console.log('sio:close');
+      debug('socket.io socket closing: ', socket.id);
       siosocket.send({route: 'onKick', reason: reason});
     });
   });

@@ -1,3 +1,4 @@
+var debug = require('debug')('donut:server:connector');
 var util = require('util');
 var EventEmitter = require('events').EventEmitter;
 
@@ -11,8 +12,6 @@ var Socket = function(id, socket) {
   EventEmitter.call(this);
   this.id = id;
   this.socket = socket;
-  console.log(socket.handshake);
-  console.log(socket.request);
   this.remoteAddress = {
     ip: socket.handshake.address.address,
     port: socket.handshake.address.port
