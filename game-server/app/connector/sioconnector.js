@@ -49,14 +49,23 @@ Connector.prototype.start = function(cb) {
   this.wsocket.adapter(socketioRedis({}));
 
   // Authentication
+  /**
+   * @todo : passe ici deux fois ! Une fois connexion gate et une fois connexion connector
+   */
   this.wsocket.use(socketioPassport.authorize({
     passport      : passport,
     cookieParser  : cookieParser,
     key           : conf.sessions.key,
     secret        : conf.sessions.secret,
-    store         : redisStore
-    //success       : require('./ws/authorization').success,
-    //fail          : require('./ws/authorization').fail
+    store         : redisStore,
+    success       : function (data, accept){
+      debug('socketioPassport::success');
+      accept();
+    },
+    fail          : function (data, message, critical, accept) {
+      debug('socketioPassport::fail');
+      accept(new Error(message));
+    }
   }));
 
   this.wsocket.sockets.on('connection', function (socket) {
