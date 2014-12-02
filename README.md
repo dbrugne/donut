@@ -2,7 +2,7 @@ donut
 ====
 
 ## Pomelog migration
-* Authentication
+* Authentication, check that it's impossible to open a websocket if i'm not logged
 * Get user data on backend server (freshness)
 * Get online users
 * Get room online users
