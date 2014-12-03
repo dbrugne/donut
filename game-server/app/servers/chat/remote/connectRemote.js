@@ -1,44 +1,51 @@
-var debug = require('debug')('donut:server:welcomeRemote');
+var debug = require('debug')('donut:server:ConnectRemote');
 var _ = require('underscore');
 var async = require('async');
+var conf = require('../../../../../server/config/index');
 var User = require('../../../../../server/app/models/user');
 var Room = require('../../../../../server/app/models/room');
 var hello = require('../../../../../server/app/hello-dolly');
-var conf = require('../../../../../server/config/index');
 var oneDataHelper = require('../../../../../server/ws/_one-data');
 var roomDataHelper = require('../../../../../server/ws/_room-data');
 
+var GLOBAL_CHANNEL_NAME = 'global';
+
 module.exports = function(app) {
-	return new WelcomeRemote(app);
+	return new ConnectRemote(app);
 };
 
-var WelcomeRemote = function(app) {
+var ConnectRemote = function(app) {
 	this.app = app;
 };
 
 /**
- * Generate welcome message for a specific user
+ * Handle new "socket" connection logic:
+ * - handle default room (#donut) auto-join logic
+ * - set lastonline_at on user
+ * - register uid@frontendId in joined room "global channels"
+ * - register uid@frontendId in global "global channels"
+ * - generate and pass to callback welcome message
  *
  * @param {String} uid unique id for user
  * @param {String} frontendId server id
  *
  */
-WelcomeRemote.prototype.get = function(uid, frontendId, globalCallback) {
+ConnectRemote.prototype.connect = function(uid, frontendId, globalCallback) {
 
-	debug('WelcomeRemote call with '+uid+' - '+frontendId);
+	debug('connect '+uid+'@'+frontendId);
 
 	// welcome event data
 	var welcomeEvent = {
 		hello: hello()
 	};
 
-	// :in / :online
-	var userEvent = {
-		//user_id: socket.getUserId(),
-		//username: socket.getUsername(),
-		//avatar: socket.getAvatar(),
-		//color: socket.getColor()
-	};
+	//// :in / :online
+	//var userEvent = {
+	//	//user_id: socket.getUserId(),
+	//	//username: socket.getUsername(),
+	//	//avatar: socket.getAvatar(),
+	//	//color: socket.getColor()
+	//};
 
 	var that = this;
 
@@ -209,7 +216,7 @@ WelcomeRemote.prototype.get = function(uid, frontendId, globalCallback) {
 		//	});
 		//},
 
-		function subscribeSocket(user, callback) {
+		function subscribeUserInRoomChannels(user, callback) {
 			if (user.rooms.length < 1)
 				return callback(null, user);
 
@@ -218,7 +225,7 @@ WelcomeRemote.prototype.get = function(uid, frontendId, globalCallback) {
 				parallels.push(function(fn) {
 					that.app.globalChannelService.add(name, uid, frontendId, function(err) {
 						if (err)
-							return fn('Error while registering user in room global channel: '+err);
+							return fn('Error while registering user in room channel: '+err);
 
 						return fn(null, name);
 					});
@@ -226,7 +233,16 @@ WelcomeRemote.prototype.get = function(uid, frontendId, globalCallback) {
 			});
 			async.parallel(parallels, function(err, results) {
 				if (err)
-					return callback('Error while registering user in rooms global channels: '+err);
+					return callback('Error while registering user in rooms channels: '+err);
+
+				return callback(null, user);
+			});
+		},
+
+		function subscribeUserInGlobalChannel(user, callback) {
+			that.app.globalChannelService.add(GLOBAL_CHANNEL_NAME, uid, frontendId, function(err) {
+				if (err)
+					return callback('Error while registering user in global channel: '+err);
 
 				return callback(null, user);
 			});
@@ -239,6 +255,7 @@ WelcomeRemote.prototype.get = function(uid, frontendId, globalCallback) {
 		// @todo : reactivate logs
 		//logger.log('connect', socket.getUsername(), '', start);
 
+		debug('connected '+uid+'@'+frontendId);
 		return globalCallback(null, welcomeEvent);
 	});
 

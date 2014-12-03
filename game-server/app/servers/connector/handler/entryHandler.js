@@ -22,6 +22,8 @@ var handler = Handler.prototype;
 handler.enter = function(msg, session, next) {
 	var that = this;
 
+	debug('connect request for '+session.__session__.__socket__.socket.getUserId()+'@'+that.app.get('serverId'));
+
 	async.waterfall([
 
 		function determineUid(callback) {
@@ -53,8 +55,8 @@ handler.enter = function(msg, session, next) {
 			return callback(null, userId);
 		},
 
-		function welcome(userId, callback) {
-		  return that.app.rpc.chat.welcomeRemote.get(
+		function connect(userId, callback) {
+		  return that.app.rpc.chat.connectRemote.connect(
 				session,
 				userId,
 				that.app.get('serverId'),
@@ -70,21 +72,6 @@ handler.enter = function(msg, session, next) {
 
 		return next(null, welcome);
 	});
-
-
-
-	//session.set('rid', rid);
-	//session.push('rid', function(err) {
-	//	if(err) {
-	//		console.error('set rid for session service failed! error is : %j', err.stack);
-	//	}
-	//});
-	// put user into channel
-	//that.app.rpc.chat.chatRemote.add(session, uid, that.app.get('serverId'), rid, true, function(users){
-	//	next(null, {
-	//		users:users
-	//	});
-	//});
 };
 
 /**
@@ -96,13 +83,16 @@ handler.enter = function(msg, session, next) {
  */
 var onUserLeave = function(app, session) {
 	if(!session || !session.uid)
-		return;
+		return debug('WARNING: visibily disconnected called without session or session.uid');
 
-	//// @todo : move in backend remote
-	//app.globalChannelService.leave('user:'+session.uid, session.uid, app.get('serverId'), function(err) {
-	//	if (err)
-	//		debug('Error while unregistering user in user global channel: '+err);
-	//});
-
-	//app.rpc.chat.chatRemote.kick(session, session.uid, app.get('serverId'), session.get('rid'), null);
+	debug('disconnect request for '+session.uid+'@'+app.get('serverId'));
+	return app.rpc.chat.disconnectRemote.connect(
+		session,
+		session.uid,
+		app.get('serverId'),
+		function(err) {
+			if (err)
+			  debug('Error while disconnecting user: '+err);
+		}
+	);
 };
