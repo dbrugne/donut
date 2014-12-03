@@ -12,7 +12,10 @@ var Handler = function(app) {
 var handler = Handler.prototype;
 
 /**
- * Gate handler that dispatch user to connectors based on 'username'
+ * Gate handler that dispatch user to connectors based on user ID
+ * A user can have more than one socket (=devices), so if we use the user ID to
+ * dispatch connection on connector a same user will have all its sockets on the
+ * same frontend (connector) server.
  *
  * @param {Object} msg message from client
  * @param {Object} session
@@ -20,21 +23,18 @@ var handler = Handler.prototype;
  *
  */
 handler.queryEntry = function(msg, session, next) {
-	// determine username
-	var username = false;
+	// determine uid
+	var uid = false;
 	if (session
 		&& session.__session__
 		&& session.__session__.__socket__
-		&& session.__session__.__socket__.socket
-		&& session.__session__.__socket__.socket.request
-		&& session.__session__.__socket__.socket.request.user
-		&& session.__session__.__socket__.socket.request.user.username)
-		username = session.__session__.__socket__.socket.request.user.username;
+		&& session.__session__.__socket__.socket)
+		uid = session.__session__.__socket__.socket.getUserId();
 
-	if (!username)
+	if (!uid)
 		return next(null, {code: 500});
 
-	debug('dispatch this user: '+username);
+	debug('dispatch this user: '+uid);
 
 	// get all connectors
 	var connectors = this.app.getServersByType('connector');
@@ -42,7 +42,7 @@ handler.queryEntry = function(msg, session, next) {
 		return next(null, {code: 500});
 
 	// select connector, because more than one connector existed.
-	var res = dispatcher.dispatch(username, connectors);
+	var res = dispatcher.dispatch(uid, connectors);
 	next(null, {
 		code: 200,
 		host: res.host,
