@@ -13,10 +13,10 @@ define([
 
       var that = this;
 
-      //pomelo.on('onChat', function(data) {
-      //  console.log('message reçu:');
-      //  console.log(data);
-      //});
+      pomelo.on('room:message', function(data) {
+        console.log('message reçu:');
+        console.log(data);
+      });
 
       pomelo.on('socketIoEvent', function(data) {
         if (!data)
@@ -293,6 +293,11 @@ define([
     roomMessage: function(name, message) {
       var data = {name: name, message: message};
       //this.socket.emit('room:message', data);
+      pomelo.request(
+        'chat.roomMessageHandler.send',
+        data,
+        function(data) {  console.log('room:message:response', data); }
+      );
       this.debug(['io:out:room:message', data]);
     },
     roomRead: function(name) {
