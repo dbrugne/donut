@@ -1,8 +1,12 @@
 var debug = require('debug')('donut:server:welcomeRemote');
+var _ = require('underscore');
 var async = require('async');
 var User = require('../../../../../server/app/models/user');
 var Room = require('../../../../../server/app/models/room');
 var hello = require('../../../../../server/app/hello-dolly');
+var conf = require('../../../../../server/config/index');
+var oneDataHelper = require('../../../../../server/ws/_one-data');
+var roomDataHelper = require('../../../../../server/ws/_room-data');
 
 module.exports = function(app) {
 	return new WelcomeRemote(app);
@@ -24,7 +28,7 @@ WelcomeRemote.prototype.get = function(uid, frontendId, globalCallback) {
 	debug('WelcomeRemote call with '+uid+' - '+frontendId);
 
 	// welcome event data
-	var welcome = {
+	var welcomeEvent = {
 		hello: hello()
 	};
 
@@ -35,6 +39,8 @@ WelcomeRemote.prototype.get = function(uid, frontendId, globalCallback) {
 		//avatar: socket.getAvatar(),
 		//color: socket.getColor()
 	};
+
+	var that = this;
 
 	async.waterfall([
 
@@ -50,7 +56,7 @@ WelcomeRemote.prototype.get = function(uid, frontendId, globalCallback) {
 					? true
 					: false;
 
-				welcome.user = {
+				welcomeEvent.user = {
 					user_id: user._id.toString(),
 					username: user.username,
 					avatar: user._avatar(),
@@ -62,99 +68,93 @@ WelcomeRemote.prototype.get = function(uid, frontendId, globalCallback) {
 			});
 		},
 
-		//function addSocketToUserRoom(user, callback) {
-		//	// create a virtual room by user
-		//	socket.join('user:'+user._id.toString(), function() {
-		//		return callback(null, user);
-		//	});
-		//},
+		function donutRoom(user, callback) {
+			// special case of #donut room autojoin
+			if (user.general == true && user.rooms.indexOf(conf.room.general) == -1) {
+				User.findOneAndUpdate({_id: user._id}, {$addToSet: { rooms: conf.room.general }}, function(err, user) {
+					if (err)
+						return callback('Unable to persist #donut on user: '+err);
 
-		//function donutRoom(user, callback) {
-		//	// special case of #donut room autojoin
-		//	if (user.general == true && user.rooms.indexOf(conf.room.general) == -1) {
-		//		User.findOneAndUpdate({_id: user._id}, {$addToSet: { rooms: conf.room.general }}, function(err, user) {
-		//			if (err)
-		//				return callback('Unable to persist #donut on user: '+err);
-    //
-		//			Room.findOneAndUpdate({name: conf.room.general}, {$addToSet: {users: user._id}}, function(err) {
-		//				if (err)
-		//					return callback('Unable to persist user on #donut: '+err);
-    //
-		//				// Inform other #donut users (user:online)
-		//				roomEmitter(io, conf.room.general, 'room:in', userEvent, function(err) {
-		//					return callback(err, user);
-		//				});
-		//			});
-		//		});
-		//	} else {
-		//		return callback(null, user);
-		//	}
-		//},
+					Room.findOneAndUpdate({name: conf.room.general}, {$addToSet: {users: user._id}}, function(err) {
+						if (err)
+							return callback('Unable to persist user on #donut: '+err);
 
-		//function populateOnes(user, callback){
-		//	if (user.onetoones.length < 1)
-		//		return callback(null, user);
-    //
-		//	var parallels = [];
-		//	helper._.each(user.onetoones, function(one) {
-		//		if (!one.username)
-		//			return console.log('Empty username found in populateOnes for user: '+socket.getUserId());
-		//		parallels.push(function(fn) {
-		//			oneDataHelper(io, socket, one.username, function(err, one) {
-		//				if (err)
-		//					return fn(err);
-		//				else
-		//					return fn(null, one);
-		//			});
-		//		});
-		//	});
-		//	async.parallel(parallels, function(err, results) {
-		//		if (err)
-		//			return callback('Error while populating onetoones: '+err);
-    //
-		//		welcome.onetoones = helper._.filter(results, function(o) {
-		//			return o !== null;
-		//		});
-		//		return callback(null, user);
-		//	});
-		//},
+						// Inform other #donut users (user:online)
+						// @todo reactivate room:in messages
+						//roomEmitter(io, conf.room.general, 'room:in', userEvent, function(err) {
+							return callback(err, user);
+						//});
+					});
+				});
+			} else {
+				return callback(null, user);
+			}
+		},
 
-		//function populateRooms(user, callback) {
-		//	if (user.rooms.length < 1)
-		//		return callback(null, user);
-    //
-		//	var parallels = [];
-		//	helper._.each(user.rooms, function(name) {
-		//		parallels.push(function(fn) {
-		//			roomDataHelper(io, socket, name, function(err, room) {
-		//				if (err)
-		//					return fn(err);
-		//				else
-		//					return fn(null, room);
-		//			});
-		//		});
-		//	});
-		//	async.parallel(parallels, function(err, results) {
-		//		if (err)
-		//			return callback('Error while populating rooms: '+err);
-    //
-		//		welcome.rooms = helper._.filter(results, function(r) {
-		//			return r !== null;
-		//		});
-		//		return callback(null, user);
-		//	});
-		//},
+		function populateOnes(user, callback){
+			if (user.onetoones.length < 1)
+				return callback(null, user);
 
-		//function persistOnliness(user, callback) {
-		//	user.set('lastonline_at', Date.now());
-		//	user.set('online', true);
-		//	user.save(function(err) {
-		//		if (err)
-		//			return callback('Error while updating user onliness: '+err);
-    //
-		//		return callback(null, user)
-		//	});
-		//},
+			var parallels = [];
+			_.each(user.onetoones, function(one) {
+				if (!one.username)
+					return debug('Empty username found in populateOnes for user: '+uid);
+				parallels.push(function(fn) {
+					oneDataHelper(uid, one.username, function(err, one) {
+						if (err)
+							return fn(err);
+						else
+							return fn(null, one);
+					});
+				});
+			});
+			async.parallel(parallels, function(err, results) {
+				if (err)
+					return callback('Error while populating onetoones: '+err);
+
+				welcomeEvent.onetoones = _.filter(results, function(o) {
+					return o !== null;
+				});
+				return callback(null, user);
+			});
+		},
+
+		function populateRooms(user, callback) {
+			if (user.rooms.length < 1)
+				return callback(null, user);
+
+			var parallels = [];
+			_.each(user.rooms, function(name) {
+				parallels.push(function(fn) {
+					roomDataHelper(uid, name, function(err, room) {
+						if (err)
+							return fn(err);
+						else
+							return fn(null, room);
+					});
+				});
+			});
+			async.parallel(parallels, function(err, results) {
+				if (err)
+					return callback('Error while populating rooms: '+err);
+
+				welcomeEvent.rooms = _.filter(results, function(r) {
+					return r !== null;
+				});
+				return callback(null, user);
+			});
+		},
+
+		function persistOnliness(user, callback) {
+			user.set('lastonline_at', Date.now());
+			user.set('online', true);
+			user.save(function(err) {
+				if (err)
+					return callback('Error while updating user onliness: '+err);
+
+				return callback(null, user)
+			});
+		},
 
 		//function emitUserOnlineToRooms(user, callback) {
 		//	// user:online, only for first socket
@@ -162,7 +162,7 @@ WelcomeRemote.prototype.get = function(uid, frontendId, globalCallback) {
 		//		return callback(null, user);
     //
 		//	var roomsToInform = [];
-		//	helper._.each(welcome.rooms, function(room) {
+		//	helper._.each(welcomeEvent.rooms, function(room) {
 		//		if (!room || !room.name)
 		//			return;
     //
@@ -209,38 +209,37 @@ WelcomeRemote.prototype.get = function(uid, frontendId, globalCallback) {
 		//	});
 		//},
 
-		//function emitWelcome(user, callback) {
-		//	// welcome message is displayed until user hasn't check the box
-		//	var welcomeMessage = (user.welcome === true || user.welcome == undefined)
-		//		? true
-		//		: false;
-		//	welcome.user = {
-		//		user_id: user._id.toString(),
-		//		username: user.username,
-		//		avatar: user._avatar(),
-		//		color: user.color,
-		//		welcome: welcomeMessage
-		//	};
-		//	socket.emit('welcome', welcome);
-    //
-		//	return callback(null, user);
-		//},
+		function subscribeSocket(user, callback) {
+			if (user.rooms.length < 1)
+				return callback(null, user);
 
-		//function subscribeSocket(user, callback) {
-		//	helper._.each(welcome.rooms, function(room) {
-		//		// Add socket to the room
-		//		socket.join(room.name);
-		//	});
-		//	return callback(null, user);
-		//}
+			var parallels = [];
+			_.each(user.rooms, function(name) {
+				parallels.push(function(fn) {
+					that.app.globalChannelService.add(name, uid, frontendId, function(err) {
+						if (err)
+							return fn('Error while registering user in room global channel: '+err);
+
+						return fn(null, name);
+					});
+				});
+			});
+			async.parallel(parallels, function(err, results) {
+				if (err)
+					return callback('Error while registering user in rooms global channels: '+err);
+
+				return callback(null, user);
+			});
+		}
 
 	], function (err, user) {
 		if (err)
 			return globalCallback(err);
 
+		// @todo : reactivate logs
 		//logger.log('connect', socket.getUsername(), '', start);
 
-		return globalCallback(null, welcome);
+		return globalCallback(null, welcomeEvent);
 	});
 
 };

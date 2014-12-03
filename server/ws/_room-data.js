@@ -13,7 +13,7 @@ var retriever = require('../app/models/historyroom').retrieve();
  *   - users
  *   - history
  */
-module.exports = function(io, socket, name, fn) {
+module.exports = function(uid, name, fn) {
 
   async.waterfall([
 
@@ -43,7 +43,9 @@ module.exports = function(io, socket, name, fn) {
 
         var list = [];
         helper._.each(users, function(user) {
-          var status = helper.isUserOnline(io, user._id.toString());
+          // @todo : reactivate status
+          //var status = helper.isUserOnline(io, user._id.toString());
+          var status = false;
           list.push({
             user_id   : user._id.toString(),
             username  : user.username,
@@ -59,7 +61,7 @@ module.exports = function(io, socket, name, fn) {
 
     function history(room, users, callback) {
       // get last 250 events
-      retriever(room.name, socket.getUserId(), null, function(err, history) {
+      retriever(room.name, uid, null, function(err, history) {
         if (err)
           return callback(err);
 

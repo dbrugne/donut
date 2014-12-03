@@ -338,7 +338,7 @@ var bt2Str = function(byteArray,start,end) {
     //socket = io.connect(url, {'force new connection': true, reconnect: false});
     socket = io(url, {
       //multiplex: true,
-      reconnection: true,
+      reconnection: false, // @todo : should be done by myself, should recall the whole client.connect() process
       //reconnectionDelay: 1000,
       //reconnectionDelayMax: 5000,
       //timeout: 20000, // = between 2 heartbeat pings

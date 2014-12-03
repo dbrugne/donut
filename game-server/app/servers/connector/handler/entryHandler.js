@@ -50,16 +50,7 @@ handler.enter = function(msg, session, next) {
 			// events
 			session.on('closed', onUserLeave.bind(null, that.app));
 
-			//// persist data in session
-			//session.set('user_id', user._id.toString());
-			//session.set('username', user.username);
-			//session.set('color', user.color);
-			//session.pushAll(function(err) {
-			//	if (err)
-			//	  return callback(err);
-
-				return callback(null, userId);
-			//});
+			return callback(null, userId);
 		},
 
 		function welcome(userId, callback) {
@@ -104,8 +95,14 @@ handler.enter = function(msg, session, next) {
  *
  */
 var onUserLeave = function(app, session) {
-	if(!session || !session.uid) {
+	if(!session || !session.uid)
 		return;
-	}
+
+	//// @todo : move in backend remote
+	//app.globalChannelService.leave('user:'+session.uid, session.uid, app.get('serverId'), function(err) {
+	//	if (err)
+	//		debug('Error while unregistering user in user global channel: '+err);
+	//});
+
 	//app.rpc.chat.chatRemote.kick(session, session.uid, app.get('serverId'), session.get('rid'), null);
 };

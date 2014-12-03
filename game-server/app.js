@@ -1,20 +1,8 @@
+var debug = require('debug')('donut:server');
 var pomelo = require('pomelo');
 var dispatcher = require('./app/util/dispatcher');
 var connector = require('./app/connector/sioconnector');
-
-// route definition for chat server
-var chatRoute = function(session, msg, app, cb) {
-  var chatServers = app.getServersByType('chat');
-
-  if(!chatServers || chatServers.length === 0) {
-    cb(new Error('can not find chat servers.'));
-    return;
-  }
-
-  var res = dispatcher.dispatch(session.get('rid'), chatServers);
-
-  cb(null, res.id);
-};
+var globalChannel = require('pomelo-globalchannel-plugin');
 
 /**
  * Init app for client.
@@ -34,7 +22,16 @@ var socketIoOptions = {
   //transports: ['polling', 'websocket'], // (<Array> String): transports to allow connections to (['polling', 'websocket'])
   //allowUpgrades: true, // (Boolean): whether to allow transport upgrades (true)
   //cookie: 'io' // (String|Boolean): name of the HTTP cookie that contains the client sid to send as part of handshake response headers. Set to false to not send one. (io)
-}
+};
+
+app.use(globalChannel, {
+  globalChannel: {
+    host: '127.0.0.1',
+    port: 6379,
+    prefix: 'channel',
+    cleanOnStartUp: true
+  }
+});
 
 // app configuration
 app.configure('production|development', 'connector', function(){
@@ -53,7 +50,16 @@ app.configure('production|development', 'gate', function(){
     });
 });
 
-// app configure
+var chatRoute = function(session, msg, app, cb) {
+  var chatServers = app.getServersByType('chat');
+  if(!chatServers || chatServers.length === 0)
+    return cb(new Error('can not find chat servers.'));
+
+  debug('chatRoute call dispatch with '+session.uid);
+  var res = dispatcher.dispatch(session.uid, chatServers);
+
+  cb(null, res.id);
+};
 app.configure('production|development', function() {
   // route configures
   app.route('chat', chatRoute);

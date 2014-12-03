@@ -9,7 +9,7 @@ var retriever = require('../app/models/historyone').retrieve();
  *   [- user entity]
  *   - history
  */
-module.exports = function(io, socket, username, fn) {
+module.exports = function(uid, username, fn) {
 
   async.waterfall([
 
@@ -30,7 +30,7 @@ module.exports = function(io, socket, username, fn) {
 
     function history(user, callback) {
       // get last 250 events
-      retriever(socket.getUserId(), user._id.toString(), null, function(err, history) { // MongoDB .update({$addToSet}) seems to work only with String, toString() is important!
+      retriever(uid, user._id.toString(), null, function(err, history) { // MongoDB .update({$addToSet}) seems to work only with String, toString() is important!
         if (err)
           return callback(err);
 
