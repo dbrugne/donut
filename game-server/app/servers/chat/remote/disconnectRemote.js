@@ -16,12 +16,7 @@ var DisconnectRemote = function(app) {
 };
 
 /**
- * Handle new "socket" connection logic:
- * - handle default room (#donut) auto-join logic
- * - set lastonline_at on user
- * - register uid@frontendId in joined room "global channels"
- * - register uid@frontendId in global "global channels"
- * - generate and pass to callback welcome message
+ * Handle "socket" dicconnection logic
  *
  * @param {String} uid unique id for user
  * @param {String} frontendId server id
