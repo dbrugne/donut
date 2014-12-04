@@ -22,7 +22,7 @@ var handler = Handler.prototype;
 handler.enter = function(msg, session, next) {
 	var that = this;
 
-	debug('connect request for '+session.__session__.__socket__.socket.getUserId()+'@'+that.app.get('serverId'));
+	debug('connect request for '+session.__session__.__socket__.socket.getUserId()+'@'+that.app.get('serverId')+' sessionId: '+session.id);
 
 	async.waterfall([
 
@@ -37,25 +37,20 @@ handler.enter = function(msg, session, next) {
 			if (!userId)
 			  return callback('Unable to determine session userId');
 
-			//if(!!that.app.get('sessionService').getByUid(userId))
-			//	return callback("User already logged in with userId (it's a problem??)"); // @todo : probably useless
+			debug('bind session to user '+userId);
+			session.bind(userId);
+
+			// disconnect event
+			session.on('closed', onUserLeave.bind(null, that.app));
 
 			// @todo : probably some logic to add here regarding multi-devices
 
 			return callback(null, userId);
 		},
 
-		function sessionBinding(userId, callback) {
-			debug('bind session to user '+userId);
-			session.bind(userId);
-
-			// events
-			session.on('closed', onUserLeave.bind(null, that.app));
-
-			return callback(null, userId);
-		},
-
 		function connect(userId, callback) {
+			// delegate connect logic to 'chat' server and get welcome message in
+			// return
 		  return that.app.rpc.chat.connectRemote.connect(
 				session,
 				userId,
@@ -86,7 +81,7 @@ var onUserLeave = function(app, session) {
 		return debug('WARNING: visibily disconnected called without session or session.uid');
 
 	debug('disconnect request for '+session.uid+'@'+app.get('serverId'));
-	return app.rpc.chat.disconnectRemote.connect(
+	return app.rpc.chat.disconnectRemote.disconnect(
 		session,
 		session.uid,
 		app.get('serverId'),

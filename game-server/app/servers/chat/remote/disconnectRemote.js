@@ -27,7 +27,14 @@ var DisconnectRemote = function(app) {
  * @param {String} frontendId server id
  *
  */
-DisconnectRemote.prototype.connect = function(uid, frontendId, globalCallback) {
+DisconnectRemote.prototype.disconnect = function(uid, frontendId, globalCallback) {
+
+	this.app.statusService.getSidsByUid(uid, function(err, n) {
+		if (err)
+		  return debug('Error while retrieving user status: '+err);
+
+		return debug('user status', n);
+	});
 
 	debug('disconnect '+uid+'@'+frontendId);
 
@@ -44,7 +51,6 @@ DisconnectRemote.prototype.connect = function(uid, frontendId, globalCallback) {
 
 		function retrieveUser(callback){
 			var q = User.findById(uid);
-			q.populate('onetoones', 'username');
 			q.exec(function(err, user) {
 				if (err)
 					return callback('Unable to find user: '+err, null);
