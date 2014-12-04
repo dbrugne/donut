@@ -29,39 +29,37 @@ var DisconnectRemote = function(app) {
  */
 DisconnectRemote.prototype.disconnect = function(uid, frontendId, globalCallback) {
 
-	this.app.statusService.getSidsByUid(uid, function(err, n) {
-		if (err)
-		  return debug('Error while retrieving user status: '+err);
-
-		return debug('user status', n);
-	});
-
 	debug('disconnect '+uid+'@'+frontendId);
-
-	// @todo : important! Determine if this user is still connected elsewhere!!!
-	var lastSocket = true;
-	//// At least an other socket is live for this user or not
-	//var lastSocket = (helper.userSockets(io, socket.getUserId()).length < 1)
-	//	? true
-	//	: false;
 
 	var that = this;
 
 	async.waterfall([
 
-		function retrieveUser(callback){
+		function isLastSocket(callback) {
+			that.app.statusService.getStatusByUid(uid, function(err, status) {
+				if (err)
+					return debug('Error while retrieving user status: '+err);
+
+				// At least an other socket is live for this user or not
+				var lastSocket = !status;
+
+				return callback(null, lastSocket);
+			});
+		},
+
+		function retrieveUser(callback, lastSocket){
 			var q = User.findById(uid);
 			q.exec(function(err, user) {
 				if (err)
 					return callback('Unable to find user: '+err, null);
 
-				return callback(null, user);
+				return callback(null, user, lastSocket);
 			});
 		},
 
-		function persistOffliness(user, callback) {
+		function persistOffliness(user, lastSocket, callback) {
 			if (!lastSocket)
-				return callback(null, user);
+				return callback(null, user, lastSocket);
 
 			user.set('lastoffline_at', Date.now());
 			user.set('online', false);
@@ -69,7 +67,7 @@ DisconnectRemote.prototype.disconnect = function(uid, frontendId, globalCallback
 				if (err)
 					return callback('Error while updating user offliness: '+err);
 
-				return callback(null, user)
+				return callback(null, user, lastSocket)
 			});
 		},
 
