@@ -3,6 +3,7 @@ var pomelo = require('pomelo');
 var dispatcher = require('./app/util/dispatcher');
 var connector = require('./app/connector/sioconnector');
 var globalChannel = require('pomelo-globalchannel-plugin');
+var status = require('pomelo-status-plugin');
 
 /**
  * Init app for client.
@@ -32,6 +33,13 @@ app.use(globalChannel, {
     cleanOnStartUp: true
   }
 });
+
+app.use(status, {status: {
+  host: '127.0.0.1',
+  port: 6379,
+  prefix: 'status',
+  cleanOnStartUp: true
+}});
 
 // app configuration
 app.configure('production|development', 'connector', function(){
