@@ -69,7 +69,8 @@ define([
       this.remove();
     },
     debug: function(message) {
-      return console.log('[events='+this._id()+'] '+message);
+      // @todo TEMP TEMP TEMP
+      //return console.log('[events='+this._id()+'] '+message);
     },
     render: function() {
       // render view
