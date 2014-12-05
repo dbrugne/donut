@@ -6,6 +6,8 @@ define([
 ], function (_, Backbone, io, pomelo) {
   var ClientModel = Backbone.Model.extend({
 
+    connector: '', // the current connector URL on which this client is connected
+
     clientId: '', // an identifier given by server on first connection that uniquely identify this client/DOM
 
     initialize: function() {
@@ -25,6 +27,9 @@ define([
           that.debug(data.debug);
         if (data.event)
           that.trigger(data.event);
+
+        if (data.event == 'disconnected')
+          that.connector = '';
 
         // @todo : repair !!!!
         //if (err == 'notlogged')
@@ -92,32 +97,62 @@ define([
         that._helloConnector(data);
       });
     },
-    _helloConnector: function(data) {
+    _helloConnector: function(server) {
       var that = this;
       pomelo.init({
-        host: data.host,
-        port: data.port,
+        host: server.host,
+        port: server.port,
         log : true
       }, function () {
         pomelo.request('connector.entryHandler.enter', {
         }, function (data) {
           if (data.error)
             return that.debug(["connector.entryHandler.enter returns error", data]);
+
+          that.connector = 'ws://'+server.host+':'+server.port;
+          that.debug("connected to "+that.connector);
+
           that.debug(['io:in:welcome', data]);
           that.trigger('welcome', data);
         });
       });
     },
+    directConnect: function(port) {
+      this.disconnect();
+      return this._helloConnector({
+        host: window.location.hostname,
+        port: port
+      });
+    },
 
-    pomMessage: function() {
-      pomelo.request("chat.chatHandler.send", {
-        rid: '#donut',
-        content: "Vas-y José, fait chauffer l'orchestre",
-        from: 'damien',
-        target: '*'
+    //pomMessage: function() {
+    //  pomelo.request("chat.chatHandler.send", {
+    //    rid: '#donut',
+    //    content: "Vas-y José, fait chauffer l'orchestre",
+    //    from: 'damien',
+    //    target: '*'
+    //  }, function(data) {
+    //    console.log('message envoyé');
+    //    console.log(data);
+    //  });
+    //},
+    status: function(uid) {
+      pomelo.request('chat.statusHandler.status', {
+        uid: uid
       }, function(data) {
-        console.log('message envoyé');
-        console.log(data);
+        console.log('status: ', data);
+      });
+    },
+    statusMulti: function(uids) {
+      pomelo.request('chat.statusHandler.statusMulti', {
+        uids: uids
+      }, function(data) {
+        console.log('statusMulti: ', data);
+      });
+    },
+    sessions: function() {
+      pomelo.request('connector.sessionsHandler.list', {}, function(data) {
+        console.log('sessions: ', data);
       });
     },
 
