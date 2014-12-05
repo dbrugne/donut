@@ -1,6 +1,11 @@
 donut
 ====
 
+TODO:
+- Wiki installation projet
+- Recherche dev node/js
+- Factorisation/schéma (https://www.draw.io/) connect/disconnect/status
+
 ## Pomelog migration
 * Online/offline // connect/disconnect
 * Route/historize message to room
