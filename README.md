@@ -2,10 +2,11 @@ donut
 ====
 
 ## Pomelog migration
+* Online/offline // connect/disconnect
+* Route/historize message to room
+* Route/historize message to user
+
 * Authentication, check that it's impossible to open a websocket if i'm not logged
-* Get user data on backend server (freshness)
-* Get online users
-* Get room online users
 * Broadcast to a particular room
 * Management of data in req/res, auto remove empty/null/undefined key in Object
 
