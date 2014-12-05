@@ -48,6 +48,14 @@ handler.enter = function(msg, session, next) {
 			return callback(null, userId);
 		},
 
+		/**
+		 * @todo : remove connect call
+		 * @todo : determine if first socket
+		 * @todo : call welcome RPC
+		 * @todo : subscribe to global + welcome.rooms
+		 * @todo : call status
+		 */
+
 		function connect(userId, callback) {
 			// delegate connect logic to 'chat' server and get welcome message in
 			// return
@@ -80,6 +88,13 @@ var onUserLeave = function(app, session) {
 	if(!session || !session.uid)
 		return debug('WARNING: visibily disconnected called without session or session.uid');
 
+	/**
+	 * @todo : remove disconnect call
+	 * @todo : determine if last socket
+	 * @todo : unsubscribe from global + ??? rooms where he is in (/!\/!\/!\/!\) COMMENT TROUVER LES ROOMS DANS LESQUELS EST INSCRIT CET UTILISATEUR ??? MONGO???
+	 * @todo : call status
+	 */
+
 	debug('disconnect request for '+session.uid+'@'+app.get('serverId'));
 	return app.rpc.chat.disconnectRemote.disconnect(
 		session,
@@ -91,3 +106,9 @@ var onUserLeave = function(app, session) {
 		}
 	);
 };
+
+/**
+ * In status control tower change method:
+ * - goesOnline => newSocketForUser(uid, sid)
+ * - goesOffline => removeSocketForUser(uid, sid)
+ */

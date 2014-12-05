@@ -1,9 +1,6 @@
-var debug = require('debug')('donut:server:DisconnectRemote');
-var _ = require('underscore');
+var debug = require('debug')('donut:server:disconnectRemote');
 var async = require('async');
-var conf = require('../../../../../server/config/index');
 var User = require('../../../../../server/app/models/user');
-var Room = require('../../../../../server/app/models/room');
 
 var GLOBAL_CHANNEL_NAME = 'global';
 
@@ -38,11 +35,13 @@ DisconnectRemote.prototype.disconnect = function(uid, frontendId, globalCallback
 				// At least an other socket is live for this user or not
 				var lastSocket = !status;
 
+				debug('IMPORTANT !!! disconnect lastsocket: ', lastSocket);
+
 				return callback(null, lastSocket);
 			});
 		},
 
-		function retrieveUser(callback, lastSocket){
+		function retrieveUser(lastSocket, callback){
 			var q = User.findById(uid);
 			q.exec(function(err, user) {
 				if (err)
@@ -52,21 +51,60 @@ DisconnectRemote.prototype.disconnect = function(uid, frontendId, globalCallback
 			});
 		},
 
-		function persistOffliness(user, lastSocket, callback) {
-			if (!lastSocket)
+		// @todo
+		function unsubscribeUserInRoomChannels(user, lastSocket, callback) {
+			if (user.rooms.length < 1 && !lastSocket)
 				return callback(null, user, lastSocket);
 
-			user.set('lastoffline_at', Date.now());
-			user.set('online', false);
-			user.save(function(err) {
-				if (err)
-					return callback('Error while updating user offliness: '+err);
+			var parallels = [];
+			_.each(user.rooms, function(name) {
+				parallels.push(function(fn) {
+					that.app.globalChannelService.leave(name, uid, frontendId, function(err) {
+						if (err)
+							return fn('Error while unregistering user from room channel: '+err);
 
-				return callback(null, user, lastSocket)
+						return fn(null, name);
+					});
+				});
+			});
+			async.parallel(parallels, function(err, results) {
+				if (err)
+					return callback('Error while unregistering user from rooms channels: '+err);
+
+				return callback(null, user, lastSocket);
 			});
 		},
 
-	], function (err, user) {
+		function unsubscribeUserFromGlobalChannel(user, lastSocket, callback) {
+			if (!lastSocket)
+			  return callback(null, user, lastSocket);
+
+			that.app.globalChannelService.leave(GLOBAL_CHANNEL_NAME, uid, frontendId, function(err) {
+				if (err)
+					return callback('Error while registering user in global channel: '+err);
+
+				return callback(null, user, lastSocket);
+			});
+		},
+
+		function pushOffline(user, lastSocket, callback) {
+			if (!lastSocket)
+			  return callback(null, user, lastSocket);
+
+			// don't wait for response before continuing
+			that.app.rpc.chat.statusRemote.goesOffline(
+				{uid: uid}, // emulate session for app.js/chatRoute.dispatch
+				uid,
+				function(err) {
+					if (err)
+						debug('Error while disconnecting user: '+err);
+				}
+			);
+
+			return callback(null, user, lastSocket);
+		}
+
+	], function (err, user, lastSocket) {
 		if (err)
 			return globalCallback(err);
 

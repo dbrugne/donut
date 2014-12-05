@@ -1,4 +1,4 @@
-var debug = require('debug')('donut:server:ConnectRemote');
+var debug = require('debug')('donut:server:connectRemote');
 var _ = require('underscore');
 var async = require('async');
 var conf = require('../../../../../server/config/index');
@@ -39,17 +39,31 @@ ConnectRemote.prototype.connect = function(uid, frontendId, globalCallback) {
 		hello: hello()
 	};
 
-	//// :in / :online
-	//var userEvent = {
-	//	//user_id: socket.getUserId(),
-	//	//username: socket.getUsername(),
-	//	//avatar: socket.getAvatar(),
-	//	//color: socket.getColor()
-	//};
-
 	var that = this;
 
 	async.waterfall([
+
+		/**
+		 * @todo : determine if another socket already up:
+		 * - how much connector user is on (app.get('statusService').getSidsByUid(uid))
+		 * - then how many "session" on this connector for this uid (app.get('sessionService').getByUid(uid);)
+		 * - app.get('statusService').getIsFirstConnection(uid)
+		 * @todo : move this in statusRemote
+		 * @todo : call statusRemote
+		 * @todo : test
+		 */
+		//function isLastSocket(callback) {
+		//	that.app.statusService.getStatusByUid(uid, function(err, status) {
+		//		if (err)
+		//			return debug('Error while retrieving user status: '+err);
+    //
+		//		// At least an other socket is live for this user or not
+		//		var lastSocket = !status;
+		//		debug('IMPORTANT !!! connect lastsocket: ', lastSocket);
+    //
+		//		return callback(null); // @todo : last socket, should be able to count if at least "two" sessions exists (including this one)
+		//	});
+		//},
 
 		function retrieveUser(callback){
 			var q = User.findById(uid);
@@ -151,70 +165,6 @@ ConnectRemote.prototype.connect = function(uid, frontendId, globalCallback) {
 				return callback(null, user);
 			});
 		},
-
-		function persistOnliness(user, callback) {
-			user.set('lastonline_at', Date.now());
-			user.set('online', true);
-			user.save(function(err) {
-				if (err)
-					return callback('Error while updating user onliness: '+err);
-
-				return callback(null, user)
-			});
-		},
-
-		//function emitUserOnlineToRooms(user, callback) {
-		//	// user:online, only for first socket
-		//	if (helper.userSockets(io, socket.getUserId()).length > 1)
-		//		return callback(null, user);
-    //
-		//	var roomsToInform = [];
-		//	helper._.each(welcomeEvent.rooms, function(room) {
-		//		if (!room || !room.name)
-		//			return;
-    //
-		//		roomsToInform.push(room.name);
-		//	});
-    //
-		//	if (roomsToInform.length < 1)
-		//		return callback(null, user);
-    //
-		//	roomEmitter(io, roomsToInform, 'user:online', userEvent, function (err) {
-		//		if (err)
-		//			return callback(err);
-    //
-		//		return callback(null, user);
-		//	});
-		//},
-
-		//function emitUserOnlineToOnes(user, callback) {
-		//	// user:online, only for first socket
-		//	if (helper.userSockets(io, socket.getUserId()).length > 1)
-		//		return callback(null, user);
-    //
-		//	User.find({onetoones: { $in: [socket.getUserId()] }}, 'username', function(err, ones) {
-		//		if (err)
-		//			return callback('Unable to find onetoones to inform on connection: '+err);
-    //
-		//		var onesToInform = [];
-		//		helper._.each(ones, function(one) {
-		//			if (!one || !one.username)
-		//				return;
-    //
-		//			onesToInform.push({from: socket.getUserId(), to: one._id.toString()});
-		//		});
-    //
-		//		if (onesToInform.length < 1)
-		//			return callback(null, user);
-    //
-		//		oneEmitter(io, onesToInform, 'user:online', userEvent, function (err) {
-		//			if (err)
-		//				return callback(err);
-    //
-		//			return callback(null, user);
-		//		});
-		//	});
-		//},
 
 		function subscribeUserInRoomChannels(user, callback) {
 			if (user.rooms.length < 1)
