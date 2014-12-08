@@ -38,14 +38,6 @@ define([
 
       // GLOBAL EVENTS
       // ======================================================
-      pomelo.on('welcome', function (data) {
-        that.debug(['io:in:welcome', data]);
-        that.trigger('welcome', data);
-      });
-      pomelo.on('home', function (data) {
-        that.debug(['io:in:home', data]);
-        that.trigger('home', data);
-      });
       pomelo.on('search', function(data) {
         that.debug(['io:in:search', data]);
         that.trigger('search', data);
@@ -273,8 +265,17 @@ define([
     // ======================================================
 
     home: function() {
-      //this.socket.emit('home', {});
+      var that = this;
       this.debug(['io:out:home', {}]);
+      pomelo.request(
+        'chat.homeHandler.home',
+        {},
+        function(data) {
+            that.debug(['io:in:home', data]);
+            if (!data.err)
+              that.trigger('home', data);
+          }
+      );
     },
     search: function(search, searchKey, rooms, users, light) {
       var data = {
