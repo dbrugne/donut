@@ -25,6 +25,11 @@ DisconnectRemote.prototype.disconnect = function(uid, frontendId, globalCallback
 
 	var that = this;
 
+	/**
+	 * @todo Determine if i'm the last session for this server (gc.leave(uid, sid))
+	 *
+	 */
+
 	async.waterfall([
 
 		function isLastSocket(callback) {
@@ -56,23 +61,23 @@ DisconnectRemote.prototype.disconnect = function(uid, frontendId, globalCallback
 			if (user.rooms.length < 1 && !lastSocket)
 				return callback(null, user, lastSocket);
 
-			var parallels = [];
-			_.each(user.rooms, function(name) {
-				parallels.push(function(fn) {
-					that.app.globalChannelService.leave(name, uid, frontendId, function(err) {
-						if (err)
-							return fn('Error while unregistering user from room channel: '+err);
-
-						return fn(null, name);
-					});
-				});
-			});
-			async.parallel(parallels, function(err, results) {
-				if (err)
-					return callback('Error while unregistering user from rooms channels: '+err);
+			//var parallels = [];
+			//_.each(user.rooms, function(name) {
+			//	parallels.push(function(fn) {
+			//		that.app.globalChannelService.leave(name, uid, frontendId, function(err) {
+			//			if (err)
+			//				return fn('Error while unregistering user from room channel: '+err);
+      //
+			//			return fn(null, name);
+			//		});
+			//	});
+			//});
+			//async.parallel(parallels, function(err, results) {
+			//	if (err)
+			//		return callback('Error while unregistering user from rooms channels: '+err);
 
 				return callback(null, user, lastSocket);
-			});
+			//});
 		},
 
 		function unsubscribeUserFromGlobalChannel(user, lastSocket, callback) {

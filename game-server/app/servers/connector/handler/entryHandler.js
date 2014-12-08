@@ -1,5 +1,10 @@
 var debug = require('debug')('donut:server:entryHandler');
+var _ = require('underscore');
 var async = require('async');
+var conf = require('../../../../../server/config/index');
+
+var GLOBAL_CHANNEL_NAME = 'global';
+var USER_CHANNEL_PREFIX = 'user:';
 
 module.exports = function(app) {
 	return new Handler(app);
@@ -12,7 +17,7 @@ var Handler = function(app) {
 var handler = Handler.prototype;
 
 /**
- * New client entry chat server.
+ * New 'client' connection, we handle the logic here
  *
  * @param  {Object}   msg     request message
  * @param  {Object}   session current session object
@@ -22,49 +27,135 @@ var handler = Handler.prototype;
 handler.enter = function(msg, session, next) {
 	var that = this;
 
-	debug('connect request for '+session.__session__.__socket__.socket.getUserId()+'@'+that.app.get('serverId')+' sessionId: '+session.id);
+	debug('connect request for '+session.__session__.__socket__.socket.getUserId()+'@'+session.frontendId+' sessionId: '+session.id);
+
+	var uid = false;
+	var firstClient = true;
 
 	async.waterfall([
 
 		function determineUid(callback) {
-			var userId = false;
 			if (session
 				&& session.__session__
 				&& session.__session__.__socket__
 				&& session.__session__.__socket__.socket)
-				userId = session.__session__.__socket__.socket.getUserId();
+				uid = session.__session__.__socket__.socket.getUserId();
 
-			if (!userId)
-			  return callback('Unable to determine session userId');
+			if (!uid)
+			  return callback('Unable to determine session uid');
 
-			debug('bind session to user '+userId);
-			session.bind(userId);
+			debug('bind session to user '+uid);
+			session.bind(uid);
 
 			// disconnect event
 			session.on('closed', onUserLeave.bind(null, that.app));
 
-			// @todo : probably some logic to add here regarding multi-devices
-
-			return callback(null, userId);
+			return callback(null);
 		},
 
-		/**
-		 * @todo : remove connect call
-		 * @todo : determine if first socket
-		 * @todo : call welcome RPC
-		 * @todo : subscribe to global + welcome.rooms
-		 * @todo : call status
-		 */
+		function determineIfFirstClient(callback) {
+			// another session already exists on this frontend for this uid?
+			var currentUidSessions = that.app.get('sessionService').getByUid(uid);
+			if (currentUidSessions && currentUidSessions.length > 1) {
+				debug('at least another session exists for this user on this frontend: [%s] [%s] (firstClient=false)', session.uid, session.frontendId);
+				firstClient = false;
+				return callback(null);
+			}
 
-		function connect(userId, callback) {
+			// search for session on other frontends
+			that.app.statusService.getSidsByUid(uid, function(err, sids) {
+				if (err)
+					return callback('Error while retrieving user status: '+err);
+
+				if (sids && sids.length > 0) {
+				  _.each(sids, function(sid) {
+						if (sid != session.frontendId) {
+							firstClient = false;
+						}
+					});
+				}
+
+				return callback(null);
+			});
+		},
+
+		function welcomeMessage(callback) {
 			// delegate connect logic to 'chat' server and get welcome message in
 			// return
-		  return that.app.rpc.chat.connectRemote.connect(
+		  return that.app.rpc.chat.welcomeRemote.getMessage(
 				session,
-				userId,
-				that.app.get('serverId'),
+				uid,
+				session.frontendId,
 				callback
 			);
+		},
+
+		function subscribeRoomChannels(welcome, callback) {
+			if (welcome.rooms.length < 1)
+				return callback(null, welcome);
+
+			var parallels = [];
+			_.each(welcome.rooms, function(room) {
+				var name = room.name;
+				parallels.push(function(fn) {
+					that.app.globalChannelService.add(name, uid, session.frontendId, function(err) {
+						if (err)
+							return fn('Error while registering user in room channel: '+err);
+
+						return fn(null, name);
+					});
+				});
+			});
+			async.parallel(parallels, function(err, results) {
+				if (err)
+					return callback('Error while registering user in rooms channels: '+err);
+
+				return callback(null, welcome);
+			});
+		},
+
+		function subscribeUserChannel(welcome, callback) {
+			that.app.globalChannelService.add(USER_CHANNEL_PREFIX+uid, uid, session.frontendId, function(err) {
+				if (err)
+					return callback('Error while registering user in user channel: '+err);
+
+				return callback(null, welcome);
+			});
+		},
+
+		function subscribeGlobalChannel(welcome, callback) {
+			that.app.globalChannelService.add(GLOBAL_CHANNEL_NAME, uid, session.frontendId, function(err) {
+				if (err)
+					return callback('Error while registering user in global channel: '+err);
+
+				return callback(null, welcome);
+			});
+		},
+
+		function donutAutojoinIn(welcome, callback) {
+			if (!welcome.autojoined)
+			  return callback(null, welcome);
+
+			// @todo : emit room:in
+			return callback(null, welcome);
+		},
+
+		function sendUserOnline(welcome, callback) {
+			if (!firstClient)
+			  return callback(null, welcome);
+
+			that.app.rpc.chat.statusRemote.online(
+				session,
+				uid,
+				welcome,
+				function(err) {
+					if (err)
+						debug('Error while statusRemote.online: '+err);
+				}
+			);
+
+			// don't wait for response before continuing
+			return callback(null, welcome);
 		}
 
 	], function(err, welcome) {
@@ -84,31 +175,68 @@ handler.enter = function(msg, session, next) {
  * @param {Object} session current session object
  *
  */
-var onUserLeave = function(app, session) {
+var onUserLeave = function exit(app, session) {
 	if(!session || !session.uid)
-		return debug('WARNING: visibily disconnected called without session or session.uid');
-
-	/**
-	 * @todo : remove disconnect call
-	 * @todo : determine if last socket
-	 * @todo : unsubscribe from global + ??? rooms where he is in (/!\/!\/!\/!\) COMMENT TROUVER LES ROOMS DANS LESQUELS EST INSCRIT CET UTILISATEUR ??? MONGO???
-	 * @todo : call status
-	 */
+		return; // could happen if a uid wasn't binded before disconnect (crash, bug, debug session, ...)
 
 	debug('disconnect request for '+session.uid+'@'+app.get('serverId'));
-	return app.rpc.chat.disconnectRemote.disconnect(
-		session,
-		session.uid,
-		app.get('serverId'),
-		function(err) {
-			if (err)
-			  debug('Error while disconnecting user: '+err);
-		}
-	);
-};
 
-/**
- * In status control tower change method:
- * - goesOnline => newSocketForUser(uid, sid)
- * - goesOffline => removeSocketForUser(uid, sid)
- */
+	var that = this;
+	var lastClient = false;
+
+	async.waterfall([
+
+		function isLastClient(callback) {
+			app.statusService.getStatusByUid(session.uid, function(err, status) {
+				if (err)
+					return debug('Error while retrieving user status: '+err);
+
+				// At least an other socket is live for this user or not
+				lastClient = !status;
+				debug('IMPORTANT !!! disconnect is lastClient: ', lastClient);
+
+				return callback(null);
+			});
+		},
+
+		//function unsubscribeUserChannel(callback) {
+		//	app.globalChannelService.leave(USER_CHANNEL_PREFIX+session.uid, session.uid, session.frontendId, function(err) {
+		//		if (err)
+		//			return callback('Error while unregistering user from user channel: '+err);
+    //
+		//		return callback(null);
+		//	});
+		//},
+    //
+		//function unsubscribeGlobalChannel(callback) {
+		//	app.globalChannelService.leave(GLOBAL_CHANNEL_NAME, session.uid, session.frontendId, function(err) {
+		//		if (err)
+		//			return callback('Error while unregistering user from global channel: '+err);
+    //
+		//		return callback(null);
+		//	});
+		//},
+
+		function sendUserOffline(callback) {
+			if (!lastClient)
+				return callback(null);
+
+			app.rpc.chat.statusRemote.offline(
+				session,
+				session.uid,
+				function(err) {
+					if (err)
+						debug('Error while statusRemote.offline: '+err);
+				}
+			);
+
+			// don't wait for response before continuing
+			return callback(null);
+		}
+
+	], function(err) {
+		if (err)
+			debug('Error while disconnecting user: '+err);
+	});
+
+};

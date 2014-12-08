@@ -60,7 +60,7 @@ historySchema.statics.record = function() {
 
     model.save(function(err) {
       if (err)
-        return fn('Unable to save historyOne '+model.from+'=>'+model.to);
+        return fn('Unable to save historyOne '+model.from+'=>'+model.to+': '+err);
 
       return fn(null, model);
     });

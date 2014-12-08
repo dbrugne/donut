@@ -8,18 +8,16 @@ define([
 
     connector: '', // the current connector URL on which this client is connected
 
-    clientId: '', // an identifier given by server on first connection that uniquely identify this client/DOM
-
     initialize: function() {
       localStorage.debug = ''; // @debug ('*')
+      this._events();
+    },
 
+    _events: function() {
       var that = this;
 
-      pomelo.on('room:message', function(data) {
-        console.log('message reçu:');
-        console.log(data);
-      });
-
+      // SOCKET.IO EVENTS
+      // ======================================================
       pomelo.on('socketIoEvent', function(data) {
         if (!data)
           return;
@@ -37,6 +35,130 @@ define([
         //else
         //  that.trigger('error');
       });
+
+      // GLOBAL EVENTS
+      // ======================================================
+      pomelo.on('welcome', function (data) {
+        that.debug(['io:in:welcome', data]);
+        that.trigger('welcome', data);
+      });
+      pomelo.on('home', function (data) {
+        that.debug(['io:in:home', data]);
+        that.trigger('home', data);
+      });
+      pomelo.on('search', function(data) {
+        that.debug(['io:in:search', data]);
+        that.trigger('search', data);
+      });
+
+      // ROOM EVENTS
+      // ======================================================
+
+      pomelo.on('room:leave', function(data) {
+        that.debug(['io:in:room:leave', data]);
+        that.trigger('room:leave', data);
+      });
+      pomelo.on('room:welcome', function(data) {
+        that.debug(['io:in:room:welcome', data]);
+        that.trigger('room:welcome', data);
+      });
+      pomelo.on('room:topic', function(data) {
+        that.debug(['io:in:room:topic', data]);
+        that.trigger('room:topic', data);
+      });
+      pomelo.on('room:in', function(data) {
+        that.debug(['io:in:room:in', data]);
+        that.trigger('room:in', data);
+      });
+      pomelo.on('room:out', function(data) {
+        that.debug(['io:in:room:out', data]);
+        that.trigger('room:out', data);
+      });
+      pomelo.on('room:message', function(data) {
+        that.debug(['io:in:room:message', data]);
+        that.trigger('room:message', data);
+      });
+      pomelo.on('room:read', function(data) {
+        that.debug(['io:in:room:read', data]);
+        that.trigger('room:read', data);
+      });
+      pomelo.on('room:update', function(data) {
+        that.debug(['io:in:room:update', data]);
+        that.trigger('room:update', data);
+      });
+      pomelo.on('room:updated', function(data) {
+        that.debug(['io:in:room:updated', data]);
+        that.trigger('room:updated', data);
+      });
+      pomelo.on('room:delete', function(data) {
+        that.debug(['io:in:room:delete', data]);
+        that.trigger('room:delete', data);
+      });
+      pomelo.on('room:history', function(data) {
+        that.debug(['io:in:room:history', data]);
+        that.trigger('room:history', data);
+      });
+      pomelo.on('room:op', function(data) {
+        that.debug(['io:in:room:op', data]);
+        that.trigger('room:op', data);
+      });
+      pomelo.on('room:deop', function(data) {
+        that.debug(['io:in:room:deop', data]);
+        that.trigger('room:deop', data);
+      });
+      pomelo.on('room:kick', function(data) {
+        that.debug(['io:in:room:kick', data]);
+        that.trigger('room:kick', data);
+      });
+
+      // USER EVENTS
+      // ======================================================
+
+      pomelo.on('user:leave', function(data) {
+        that.debug(['io:in:user:leave', data]);
+        that.trigger('user:leave', data);
+      });
+      pomelo.on('user:welcome', function(data) {
+        that.debug(['io:in:user:welcome', data]);
+        that.trigger('user:welcome', data);
+      });
+      pomelo.on('user:online', function(data) {
+        that.debug(['io:in:user:online', data]);
+        that.trigger('user:online', data);
+      });
+      pomelo.on('user:offline', function(data) {
+        that.debug(['io:in:user:offline', data]);
+        that.trigger('user:offline', data);
+      });
+      pomelo.on('user:message', function(data) {
+        that.debug(['io:in:user:message', data]);
+        that.trigger('user:message', data);
+      });
+      pomelo.on('user:profile', function(data) {
+        that.debug(['io:in:user:profile', data]);
+        that.trigger('user:profile', data);
+      });
+      pomelo.on('user:read', function(data) {
+        that.debug(['io:in:user:read', data]);
+        that.trigger('user:read', data);
+      });
+      pomelo.on('user:update', function(data) {
+        that.debug(['io:in:user:update', data]);
+        that.trigger('user:update', data);
+      });
+      pomelo.on('user:updated', function(data) {
+        that.debug(['io:in:user:updated', data]);
+        that.trigger('user:updated', data);
+      });
+      pomelo.on('user:status', function(data) {
+        that.debug(['io:in:user:status', data]);
+        that.trigger('user:status', data);
+      });
+      pomelo.on('user:history', function(data) {
+        that.debug(['io:in:user:history', data]);
+        that.trigger('user:history', data);
+      });
+
     },
 
     debug: function(message) {
@@ -87,15 +209,17 @@ define([
     },
     _askForConnector: function() {
       var that = this;
-      pomelo.request('gate.gateHandler.queryEntry', {
-        },
+      pomelo.request(
+        'gate.gateHandler.queryEntry',
+        {},
         function (data) {
-        that.debug('pomelo:gate dispatched to: ' + data.host + ':' + data.port);
-        pomelo.disconnect();
-        if (data.code === 500)
-          return that.debug("There is no server to log in, please wait.");
-        that._helloConnector(data);
-      });
+          that.debug('pomelo:gate dispatched to: ' + data.host + ':' + data.port);
+          pomelo.disconnect();
+          if (data.code === 500)
+            return that.debug("There is no server to log in, please wait.");
+          that._helloConnector(data);
+        }
+      );
     },
     _helloConnector: function(server) {
       var that = this;
@@ -125,17 +249,6 @@ define([
       });
     },
 
-    //pomMessage: function() {
-    //  pomelo.request("chat.chatHandler.send", {
-    //    rid: '#donut',
-    //    content: "Vas-y José, fait chauffer l'orchestre",
-    //    from: 'damien',
-    //    target: '*'
-    //  }, function(data) {
-    //    console.log('message envoyé');
-    //    console.log(data);
-    //  });
-    //},
     status: function(uid) {
       pomelo.request('chat.statusHandler.status', {
         uid: uid
@@ -153,132 +266,6 @@ define([
     sessions: function() {
       pomelo.request('connector.sessionsHandler.list', {}, function(data) {
         console.log('sessions: ', data);
-      });
-    },
-
-    ____connect: function() {
-
-      // GLOBAL EVENTS
-      // ======================================================
-      this.socket.on('welcome', function (data) {
-        that.debug(['io:in:welcome', data]);
-        that.trigger('welcome', data);
-      });
-      this.socket.on('home', function (data) {
-        that.debug(['io:in:home', data]);
-        that.trigger('home', data);
-      });
-      this.socket.on('search', function(data) {
-        that.debug(['io:in:search', data]);
-        that.trigger('search', data);
-      });
-
-      // ROOM EVENTS
-      // ======================================================
-
-      this.socket.on('room:leave', function(data) {
-        that.debug(['io:in:room:leave', data]);
-        that.trigger('room:leave', data);
-      });
-      this.socket.on('room:welcome', function(data) {
-        that.debug(['io:in:room:welcome', data]);
-        that.trigger('room:welcome', data);
-      });
-      this.socket.on('room:topic', function(data) {
-        that.debug(['io:in:room:topic', data]);
-        that.trigger('room:topic', data);
-      });
-      this.socket.on('room:in', function(data) {
-        that.debug(['io:in:room:in', data]);
-        that.trigger('room:in', data);
-      });
-      this.socket.on('room:out', function(data) {
-        that.debug(['io:in:room:out', data]);
-        that.trigger('room:out', data);
-      });
-      this.socket.on('room:message', function(data) {
-        that.debug(['io:in:room:message', data]);
-        that.trigger('room:message', data);
-      });
-      this.socket.on('room:read', function(data) {
-        that.debug(['io:in:room:read', data]);
-        that.trigger('room:read', data);
-      });
-      this.socket.on('room:update', function(data) {
-        that.debug(['io:in:room:update', data]);
-        that.trigger('room:update', data);
-      });
-      this.socket.on('room:updated', function(data) {
-        that.debug(['io:in:room:updated', data]);
-        that.trigger('room:updated', data);
-      });
-      this.socket.on('room:delete', function(data) {
-        that.debug(['io:in:room:delete', data]);
-        that.trigger('room:delete', data);
-      });
-      this.socket.on('room:history', function(data) {
-        that.debug(['io:in:room:history', data]);
-        that.trigger('room:history', data);
-      });
-      this.socket.on('room:op', function(data) {
-        that.debug(['io:in:room:op', data]);
-        that.trigger('room:op', data);
-      });
-      this.socket.on('room:deop', function(data) {
-        that.debug(['io:in:room:deop', data]);
-        that.trigger('room:deop', data);
-      });
-      this.socket.on('room:kick', function(data) {
-        that.debug(['io:in:room:kick', data]);
-        that.trigger('room:kick', data);
-      });
-
-      // USER EVENTS
-      // ======================================================
-
-      this.socket.on('user:leave', function(data) {
-        that.debug(['io:in:user:leave', data]);
-        that.trigger('user:leave', data);
-      });
-      this.socket.on('user:welcome', function(data) {
-        that.debug(['io:in:user:welcome', data]);
-        that.trigger('user:welcome', data);
-      });
-      this.socket.on('user:online', function(data) {
-        that.debug(['io:in:user:online', data]);
-        that.trigger('user:online', data);
-      });
-      this.socket.on('user:offline', function(data) {
-        that.debug(['io:in:user:offline', data]);
-        that.trigger('user:offline', data);
-      });
-      this.socket.on('user:message', function(data) {
-        that.debug(['io:in:user:message', data]);
-        that.trigger('user:message', data);
-      });
-      this.socket.on('user:profile', function(data) {
-        that.debug(['io:in:user:profile', data]);
-        that.trigger('user:profile', data);
-      });
-      this.socket.on('user:read', function(data) {
-        that.debug(['io:in:user:read', data]);
-        that.trigger('user:read', data);
-      });
-      this.socket.on('user:update', function(data) {
-        that.debug(['io:in:user:update', data]);
-        that.trigger('user:update', data);
-      });
-      this.socket.on('user:updated', function(data) {
-        that.debug(['io:in:user:updated', data]);
-        that.trigger('user:updated', data);
-      });
-      this.socket.on('user:status', function(data) {
-        that.debug(['io:in:user:status', data]);
-        that.trigger('user:status', data);
-      });
-      this.socket.on('user:history', function(data) {
-        that.debug(['io:in:user:history', data]);
-        that.trigger('user:history', data);
       });
     },
 

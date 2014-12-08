@@ -14,7 +14,7 @@ var recorder = HistoryRoom.record();
  * @param eventData
  * @param callback
  */
-module.exports = function(io, roomName, eventName, eventData, callback) {
+module.exports = function(app, roomName, eventName, eventData, callback) {
 
   var rooms = [];
   if (Array.isArray(roomName))
@@ -29,16 +29,23 @@ module.exports = function(io, roomName, eventName, eventData, callback) {
       // always had room name and time to event
       ed.name = room;
       ed.time = Date.now();
-      var onlines = helper.roomUsersId(io, roomName);
-      recorder(eventName, ed, onlines, function(err, history) {
+      app.globalChannelService.getMembersByChannelName('connector', roomName, function(err, members) {
         if (err)
-          return fn('Error while emitting room event '+eventName+' in '+room+': '+err);
+          return fn(err);
 
-        // emit event to room sockets
-        ed.id = history._id.toString();
-        io.to(room).emit(eventName, ed);
+        recorder(eventName, ed, members, function(err, history) {
+          if (err)
+            return fn('Error while emitting room event '+eventName+' in '+room+': '+err);
 
-        return fn(null);
+          // emit event to room sockets
+          ed.id = history._id.toString();
+          app.globalChannelService.pushMessage('connector', eventName, ed, roomName, {}, function(err) {
+            if (err)
+              return console.log('Error while pushing message: '+err);
+
+            return fn(null);
+          });
+        });
       });
     });
   });
