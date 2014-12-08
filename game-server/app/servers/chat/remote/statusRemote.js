@@ -33,13 +33,14 @@ DisconnectRemote.prototype.online = function(uid, welcome, globalCallback) {
 	async.waterfall([
 
 		function persistOnUser(callback) {
-			User.update(uid, {
+			User.update({_id: uid}, {
 				'lastonline_at': Date.now(),
 				online: true
 			}, function(err) {
 				if (err)
 					return callback('Error while updating user online status: '+err);
 
+				debug('USER '+uid+' SET AS ONLINE');
 				return callback(null);
 			});
 		},
@@ -138,6 +139,7 @@ DisconnectRemote.prototype.offline = function(uid, globalCallback) {
 				if (err)
 					return callback('Error while updating user offliness: '+err);
 
+				debug('USER '+uid+' SET AS OFFLINE');
 				return callback(null, user);
 			});
 		},
