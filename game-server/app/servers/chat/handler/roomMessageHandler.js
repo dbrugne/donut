@@ -23,7 +23,7 @@ var handler = Handler.prototype;
  * @param  {Function} next stemp callback
  *
  */
-handler.message = function(data, session) {
+handler.message = function(data, session, next) {
 
 	var that = this;
 
@@ -116,6 +116,8 @@ handler.message = function(data, session) {
 
 		// @todo restore log
 		//logger.log('room:message', socket.getUsername(), data.name, start);
+
+		next(null); // even for .notify() calls
 	});
 
 };
