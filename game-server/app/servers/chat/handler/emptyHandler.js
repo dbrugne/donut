@@ -11,16 +11,16 @@ var handler = Handler.prototype;
 /**
  * Description
  *
- * @param {Object} msg message from client
+ * @param {Object} data message from client
  * @param {Object} session
  * @param  {Function} next stemp callback
  *
  */
-handler.METHOD = function(msg, session, next) {
-	if (!msg.uid)
+handler.METHOD = function(data, session, next) {
+	if (!data.uid)
 	  return;
 
-	console.log('METHOD for: '+msg.uid);
+	console.log('METHOD for: '+data.uid);
 
 	next(null, {});
 };
