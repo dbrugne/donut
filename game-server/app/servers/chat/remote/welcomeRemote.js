@@ -117,7 +117,7 @@ WelcomeRemote.prototype.getMessage = function(uid, frontendId, globalCallback) {
 			var parallels = [];
 			_.each(user.rooms, function(name) {
 				parallels.push(function(fn) {
-					roomDataHelper(uid, name, function(err, room) {
+					roomDataHelper(that.app, uid, name, function(err, room) {
 						if (err)
 							return fn(err);
 						else

@@ -1,4 +1,5 @@
 var async = require('async');
+var _ = require('underscore');
 var helper = require('./helper');
 var Room = require('../app/models/room');
 var User = require('../app/models/user');
@@ -13,7 +14,7 @@ var retriever = require('../app/models/historyroom').retrieve();
  *   - users
  *   - history
  */
-module.exports = function(uid, name, fn) {
+module.exports = function(app, uid, name, fn) {
 
   async.waterfall([
 
@@ -35,7 +36,6 @@ module.exports = function(uid, name, fn) {
     },
 
     function users(room, callback) {
-
       // http://docs.mongodb.org/manual/reference/operator/query/in/
       User.find({rooms: { $in: [room.name]}}, function(err, users) {
         if (err)
@@ -43,19 +43,31 @@ module.exports = function(uid, name, fn) {
 
         var list = [];
         helper._.each(users, function(user) {
-          // @todo : reactivate status
-          //var status = helper.isUserOnline(io, user._id.toString());
-          var status = false;
           list.push({
             user_id   : user._id.toString(),
             username  : user.username,
             avatar    : user._avatar(),
-            color     : user.color,
-            status    : (status) ? 'online' : 'offline'
+            color     : user.color
           });
         });
 
         return callback(null, room, list);
+      });
+    },
+
+    function status(room, users, callback) {
+      var uids = _.map(users, function(u) { return u.user_id; });
+      app.statusService.getStatusByUids(uids, function(err, results) {
+        if (err)
+          return callback('Error while retrieving user status: '+err);
+
+        _.each(users, function(element, index, list) {
+          list[index].status = (results[element.user_id])
+            ? 'online'
+            : 'offline';
+        });
+
+        return callback(null, room, users);
       });
     },
 
