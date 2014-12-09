@@ -157,24 +157,6 @@ define([
       console.log(message); // @debug
     },
 
-    // @source: http://slavik.meltser.info/the-efficient-way-to-create-guid-uuid-in-javascript-with-explanation/
-    guid: function() {
-      function _p8(s) {
-        var p = (Math.random().toString(16)+"000000000").substr(2,8);
-        return s ? "-" + p.substr(0,4) + "-" + p.substr(4,4) : p ;
-      }
-      return _p8() + _p8(true) + _p8(true) + _p8();
-    },
-
-    disconnect: function() {
-      pomelo.disconnect();
-    },
-
-    reconnect: function() {
-      this.disconnect();
-      this.connect();
-    },
-
     /**
      * .connect() should be done at the end of App initialization to allow
      * interface binding to work
@@ -185,8 +167,18 @@ define([
      * Reinit pomelo to be connect to given "connector" server.
      * Receive welcome message on success.
      */
-    connect: function() {
+    connect: function(port) {
       var that = this;
+
+      if (pomelo.isConnected())
+        this.disconnect();
+
+      if (port) {
+        return this._connect({
+          host: window.location.hostname,
+          port: port
+        });
+      }
 
       pomelo.init({
           host: window.location.hostname,
@@ -195,25 +187,21 @@ define([
         },
         function () {
           that.debug('pomelo:init done');
-          that._askForConnector();
+          pomelo.request(
+            'gate.gateHandler.queryEntry',
+            {},
+            function (data) {
+              that.debug('pomelo:gate dispatched to: ' + data.host + ':' + data.port);
+              pomelo.disconnect();
+              if (data.code === 500)
+                return that.debug("There is no server to log in, please wait.");
+              that._connect(data);
+            }
+          );
         }
       );
     },
-    _askForConnector: function() {
-      var that = this;
-      pomelo.request(
-        'gate.gateHandler.queryEntry',
-        {},
-        function (data) {
-          that.debug('pomelo:gate dispatched to: ' + data.host + ':' + data.port);
-          pomelo.disconnect();
-          if (data.code === 500)
-            return that.debug("There is no server to log in, please wait.");
-          that._helloConnector(data);
-        }
-      );
-    },
-    _helloConnector: function(server) {
+    _connect: function(server) {
       var that = this;
       pomelo.init({
         host: server.host,
@@ -233,12 +221,9 @@ define([
         });
       });
     },
-    directConnect: function(port) {
-      this.disconnect();
-      return this._helloConnector({
-        host: window.location.hostname,
-        port: port
-      });
+
+    disconnect: function() {
+      pomelo.disconnect();
     },
 
     status: function(uid) {

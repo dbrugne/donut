@@ -347,25 +347,6 @@ var bt2Str = function(byteArray,start,end) {
       //query       : 'clientId='+this.clientId
     });
 
-    //socket.on('connect', function(){
-    //  console.log('[pomeloclient.init] websocket connected!');
-    //  if (callback) {
-    //    callback(socket);
-    //  }
-    //});
-
-    //socket.on('reconnect', function() {
-    //  console.log('reconnect');
-    //});
-
-    //socket.on('error', function(err) {
-    //  console.log(err);
-    //});
-
-    //socket.on('disconnect', function(reason) {
-    //  pomelo.emit('disconnect', reason);
-    //});
-
     // SOCKET.IO EVENTS
     // ======================================================
     var that = this;
@@ -439,6 +420,13 @@ var bt2Str = function(byteArray,start,end) {
     }
   };
 
+  pomelo.isConnected = function() {
+    if (socket && socket.connected == true)
+      return true;
+    else
+      return false;
+  };
+
   pomelo.request = function(route) {
     if(!route) {
       return;
@@ -473,8 +461,10 @@ var bt2Str = function(byteArray,start,end) {
       var cb = callbacks[msg.id];
       
       delete callbacks[msg.id];
+
       if(typeof cb !== 'function') {
-        console.log('[pomeloclient.processMessage] cb is not a function for request ' + msg.id);
+        // could happen for a .notify() call
+        //console.log('[pomeloclient.processMessage] cb is not a function (probably notify call) for request ' + msg.id);
         return;
       }
 
