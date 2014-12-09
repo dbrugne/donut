@@ -15,6 +15,8 @@
     "pomelo-status-plugin": "dbrugne/pomelo-status-plugin",
     "socket.io": "1.x",
     "socket.io-redis": "0.1.x",
-    "underscore": "^1.7.0"
+    "underscore": "^1.7.0",
+    "sanitize-caja": "0.x",
+    "sanitize-html": "1.x"
   }
 }

@@ -315,12 +315,7 @@ define([
     },
     roomMessage: function(name, message) {
       var data = {name: name, message: message};
-      //this.socket.emit('room:message', data);
-      pomelo.request(
-        'chat.roomMessageHandler.send',
-        data,
-        function(data) {  console.log('room:message:response', data); }
-      );
+      pomelo.notify('chat.roomMessageHandler.message', data);
       this.debug(['io:out:room:message', data]);
     },
     roomRead: function(name) {

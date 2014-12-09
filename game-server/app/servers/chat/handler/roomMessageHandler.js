@@ -1,4 +1,9 @@
-//var chatRemote = require('../remote/chatRemote');
+var async = require('async');
+var roomEmitter = require('../../../../../server/ws/_room-emitter');
+var User = require('../../../../../server/app/models/user');
+var Room = require('../../../../../server/app/models/room');
+var inputUtil = require('../../../util/input');
+//var admin = require('./_admin');
 
 module.exports = function(app) {
 	return new Handler(app);
@@ -11,46 +16,106 @@ var Handler = function(app) {
 var handler = Handler.prototype;
 
 /**
- * Send messages to users
+ * Description
  *
- * @param {Object} msg message from client
+ * @param {Object} data message from client
  * @param {Object} session
- * @param  {Function} next next stemp callback
+ * @param  {Function} next stemp callback
  *
  */
-handler.send = function(msg, session, next) {
-	console.log('roomMessageHandler');
-	console.log(msg);
+handler.message = function(data, session) {
 
-	this.app.globalChannelService.pushMessage('connector', 'room:message', msg.message, msg.name, {}, function(err) {
+	var that = this;
+
+	async.waterfall([
+
+		function check(callback) {
+			if (!data.name)
+				return callback('name is mandatory for room:message');
+
+			return callback(null);
+		},
+
+		//function adminCommands(callback) {
+		//	if (data.name != '#donut'
+		//		|| !socket.isAdmin()
+		//		|| !data.message
+		//		|| data.message.substring(0, 1) != '/')
+		//		return callback(null);
+   //
+		//	admin(io, socket, data, callback);
+		//},
+
+		function retrieveRoom(callback) {
+			Room.findByName(data.name).exec(function (err, room) {
+				if (err)
+					return callback('Error while retrieving room in room:message: '+err);
+
+				if (!room)
+					return callback('Unable to retrieve room in room:message: '+data.name);
+
+				return callback(null, room);
+			});
+		},
+
+		function retrieveUser(room, callback) {
+			User.findByUid(session.uid).exec(function (err, user) {
+				if (err)
+					return callback('Error while retrieving user '+session.uid+' in room:message: '+err);
+
+				if (!user)
+					return callback('Unable to retrieve user in room:message: '+session.uid);
+
+				return callback(null, room, user);
+			});
+		},
+
+		function checkSession(room, user, callback) {
+			// Test if the current user is in room
+			if (user.rooms.indexOf(room.name) === -1)
+				return callback('room:message, this user '+session.uid+' is not currently in room '+room.name);
+
+			return callback(null, room, user);
+		},
+
+		function prepareEvent(room, user, callback) {
+
+			// Input filtering
+			data.message = inputUtil.filter(data.message, 512);
+
+			if (data.message == '')
+				return callback('Empty room:message');
+
+			var event = {
+				name: room.name,
+				time: Date.now(),
+				message: data.message,
+				user_id: user._id.toString(),
+				username: user.username,
+				avatar: user._avatar(),
+				color: user.color
+			};
+			return callback(null, room, event);
+
+		},
+
+		function historizeAndEmit(room, event, callback) {
+			roomEmitter(that.app, room.name, 'room:message', event, function(err) {
+				if (err)
+					return callback(err);
+
+				return callback(null);
+			});
+		}
+
+	], function(err) {
+		if (err == 'admin')
+			return;
 		if (err)
-		  return console.log('Error while pushing message: '+err);
+			debug(err);
+
+		// @todo restore log
+		//logger.log('room:message', socket.getUsername(), data.name, start);
 	});
 
-//var rid = session.get('rid');
-	//var username = session.uid.split('*')[0];
-	//var channelService = this.app.get('channelService');
-	//var param = {
-	//	msg: msg.content,
-	//	from: username,
-	//	target: msg.target
-	//};
-	//channel = channelService.getChannel(rid, false);
-  //
-	////the target is all users
-	//if(msg.target == '*') {
-	//	channel.pushMessage('onChat', param);
-	//}
-	////the target is specific user
-	//else {
-	//	var tuid = msg.target + '*' + rid;
-	//	var tsid = channel.getMember(tuid)['sid'];
-	//	channelService.pushMessageByUids('onChat', param, [{
-	//		uid: tuid,
-	//		sid: tsid
-	//	}]);
-	//}
-	next(null, {
-		result: 'ok josé'
-	});
 };

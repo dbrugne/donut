@@ -100,6 +100,15 @@ userSchema.statics.findByUsername = function (username) {
 };
 
 /**
+ * Return the first database user that correspond to username
+ * @param username
+ * @returns {*}
+ */
+userSchema.statics.findByUid = function (uid) {
+  return this.findOne({ _id: uid });
+};
+
+/**
  * Retrieve and return an hydrated user instance
  * @param name
  * @returns {Query}
