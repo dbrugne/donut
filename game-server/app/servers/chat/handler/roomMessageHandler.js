@@ -109,9 +109,7 @@ handler.message = function(data, session, next) {
 		}
 
 	], function(err) {
-		if (err == 'admin')
-			return;
-		if (err)
+		if (err && err != 'admin')
 			debug(err);
 
 		// @todo restore log
