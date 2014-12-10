@@ -1,3 +1,4 @@
+var logger = require('pomelo-logger').getLogger('donut', __filename);
 module.exports = function(app) {
 	return new Handler(app);
 };
@@ -20,7 +21,7 @@ handler.METHOD = function(data, session, next) {
 	if (!data.uid)
 	  return;
 
-	console.log('METHOD for: '+data.uid);
+	logger.info('METHOD for: '+data.uid);
 
 	next(null, {});
 };
