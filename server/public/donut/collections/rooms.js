@@ -41,13 +41,10 @@ define([
       this.listenTo(client, 'room:leave', this.onLeave);
     },
     join: function(name) {
-      var that = this;
-      client.roomJoin(name, function(data) {
-        return that.addModel(data, false);
-      });
+      client.roomJoin(name);
     },
     onJoin: function(data) {
-      // server ask to client to open this room in its IHM
+      // server ask to client to open this room in IHM
       this.addModel(data);
     },
     addModel: function(room, reconnect) {

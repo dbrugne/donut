@@ -26,9 +26,9 @@ define([
       this.$count = this.$el.find('.count');
       this.$list = this.$el.find('.list');
 
-      // scrollbar initialization (setTimeout for browser DOM bug)
+      // scrollbar initialization (defered for browser DOM bug)
       var that = this;
-      setTimeout(function() {
+      _.defer(function() {
         that.$list.mCustomScrollbar({
           scrollInertia         : 0,
           alwaysShowScrollbar   : 1,
@@ -40,9 +40,10 @@ define([
             updateOnImageLoad: false
           }
         });
-        that.$listContent = that.$list.find('.mCSB_container');
-        that.render();
-      }, 100);
+        _.defer(function() {
+          that.render();
+        });
+      });
     },
     render: function() {
       // update user count
@@ -66,7 +67,7 @@ define([
         isOwner: this.model.currentUserIsOwner(),
         isOp: this.model.currentUserIsOp()
       });
-      this.$listContent.html(html);
+      this.$list.find('.mCSB_container').html(html);
       this.$list.mCustomScrollbar('update');
       return this;
     },

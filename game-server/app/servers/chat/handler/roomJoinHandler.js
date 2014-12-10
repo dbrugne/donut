@@ -109,7 +109,7 @@ handler.join = function(data, session, next) {
 
 		function persistOnUser(user, room, callback) {
 			// persist on user
-			User.findOneAndUpdate({_id: user._id}, {$addToSet: { rooms: room.name }}, function(err, user) {
+			user.update({$addToSet: { rooms: room.name }}, function(err) {
 				if (err)
 					return callback('Unable to persist ($addToSet) rooms on user: '+err);
 
@@ -132,7 +132,7 @@ handler.join = function(data, session, next) {
 					parallels.push(function(fn) {
 						that.app.globalChannelService.add(room.name, session.uid, sid, function(err) {
 							if (err)
-								return fn('Error while subscribing user '+session.uid+'@'+sid+' in room '+room.name+': '+err);
+								return fn(sid+': '+err);
 
 							return fn(null);
 						});
@@ -181,7 +181,7 @@ handler.join = function(data, session, next) {
 
 		// @todo : restore logs
 
-		return next(null, roomData);
+		return next(null, {});
 	});
 
 };

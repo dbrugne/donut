@@ -283,23 +283,22 @@ define([
     // ROOM METHODS
     // ======================================================
 
-    roomJoin: function(name, fn) {
+    roomJoin: function(name) {
       var data = {name: name};
       this.debug(['io:out:room:join', data]);
       var that = this;
       pomelo.request(
         'chat.roomJoinHandler.join',
         data,
-        function(data) {
-          if (data.err)
-            that.debug(['io:out:room:join error: ', data]);
-          return fn(data);
+        function(response) {
+          if (response.err)
+            that.debug(['io:out:room:join error: ', response]);
         }
       );
     },
-    leave: function(name) {
+    roomLeave: function(name) {
       var data = {name: name};
-      //this.socket.emit('room:leave', data);
+      pomelo.notify('chat.roomLeaveHandler.leave', data);
       this.debug(['io:out:room:leave', data]);
     },
     topic: function(name, topic) {

@@ -70,7 +70,7 @@ define([
         +this.get('name').replace('#', '').toLocaleLowerCase();
     },
     leave: function() {
-      client.leave(this.get('name'));
+      client.roomLeave(this.get('name'));
     },
 
     currentUserIsOwner: function() {
