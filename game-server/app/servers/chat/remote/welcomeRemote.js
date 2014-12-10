@@ -4,9 +4,9 @@ var async = require('async');
 var conf = require('../../../../../server/config/index');
 var User = require('../../../../../server/app/models/user');
 var Room = require('../../../../../server/app/models/room');
+var roomDataHelper = require('../../../util/roomData');
+var oneDataHelper = require('../../../util/oneData');
 var hello = require('../../../../../server/app/hello-dolly');
-var oneDataHelper = require('../../../../../server/ws/_one-data');
-var roomDataHelper = require('../../../../../server/ws/_room-data');
 
 module.exports = function(app) {
 	return new WelcomeRemote(app);

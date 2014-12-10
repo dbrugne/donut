@@ -2,8 +2,8 @@ var debug = require('debug')('donut:server:statusRemote');
 var _ = require('underscore');
 var async = require('async');
 var User = require('../../../../../server/app/models/user');
-var roomEmitter = require('../../../../../server/ws/_room-emitter');
-var oneEmitter = require('../../../../../server/ws/_one-emitter');
+var roomEmitter = require('../../../util/roomEmitter');
+var oneEmitter = require('../../../util/oneEmitter');
 
 var GLOBAL_CHANNEL_NAME = 'global';
 

@@ -1,5 +1,5 @@
 var async = require('async');
-var roomEmitter = require('../../../../../server/ws/_room-emitter');
+var roomEmitter = require('../../../util/roomEmitter');
 var User = require('../../../../../server/app/models/user');
 var Room = require('../../../../../server/app/models/room');
 var inputUtil = require('../../../util/input');
@@ -117,7 +117,7 @@ handler.message = function(data, session, next) {
 		// @todo restore log
 		//logger.log('room:message', socket.getUsername(), data.name, start);
 
-		next(null); // even for .notify() calls
+		next(null); // even for .notify
 	});
 
 };

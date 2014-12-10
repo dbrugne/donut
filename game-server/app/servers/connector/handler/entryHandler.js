@@ -199,24 +199,6 @@ var onUserLeave = function exit(app, session) {
 			});
 		},
 
-		//function unsubscribeUserChannel(callback) {
-		//	app.globalChannelService.leave(USER_CHANNEL_PREFIX+session.uid, session.uid, session.frontendId, function(err) {
-		//		if (err)
-		//			return callback('Error while unregistering user from user channel: '+err);
-    //
-		//		return callback(null);
-		//	});
-		//},
-    //
-		//function unsubscribeGlobalChannel(callback) {
-		//	app.globalChannelService.leave(GLOBAL_CHANNEL_NAME, session.uid, session.frontendId, function(err) {
-		//		if (err)
-		//			return callback('Error while unregistering user from global channel: '+err);
-    //
-		//		return callback(null);
-		//	});
-		//},
-
 		function sendUserOffline(callback) {
 			if (!lastClient)
 				return callback(null);
