@@ -43,7 +43,6 @@ Connector.prototype.start = function(cb) {
 
   // create socket.io server
   this.wsocket = socketio(this.port, this.opts.options);
-  logger.debug('socket.io server start with: ', this.port, this.opts.options);
 
   // Redis storage
   this.wsocket.adapter(socketioRedis({}));
