@@ -1,3 +1,4 @@
+var debug = require('debug')('shared:models:room');
 var mongoose = require('../io/mongoose');
 
 var roomSchema = mongoose.Schema({
@@ -32,7 +33,7 @@ roomSchema.path('name').set(function (v) {
       .substring(1);
     var clean = (v || '').replace(/\s+/g, '').toLocaleLowerCase();
     this._id = 'room'+salt+'_'+ clean;
-    console.log('new room _id is: '+this._id+' ('+v+')');
+    debug('new room _id is: '+this._id+' ('+v+')');
   }
   return v;
 });

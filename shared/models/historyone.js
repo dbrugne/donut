@@ -1,4 +1,4 @@
-var debug = require('debug')('donut:server:ws:history');
+var debug = require('debug')('shared:models:historyOne');
 var _ = require('underscore');
 var mongoose = require('../io/mongoose');
 var User = require('./user');
@@ -132,7 +132,7 @@ historySchema.statics.retrieve = function() {
       // me should be a string and not a ObjectId()
       that.update({_id: {$in: toMarkAsReceived}}, {$addToSet: {received: me}}, {multi: true}, function(err) {
         if (err)
-          return console.log('Error while updating received in historyOne: '+err);
+          return debug('Error while updating received in historyOne: '+err);
       });
 
       return fn(null, {

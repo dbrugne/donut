@@ -1,3 +1,4 @@
+var debug = require('debug')('shared:passport');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
@@ -82,7 +83,7 @@ passport.use('local-signup', new LocalStrategy({
           // email will be send on next tick but done() is called immediatly
           emailer.welcome(newUser.local.email, req.get('host'), function(err) {
             if (err)
-              return console.log('Unable to sent welcome email: '+err);
+              return debug('Unable to sent welcome email: '+err);
           });
 
           return done(null, newUser);
@@ -130,7 +131,7 @@ passport.use('local-login', new LocalStrategy({
       user.lastlogin_at = Date.now();
       user.save(function(err) {
         if (err)
-          console.log(err); // not a problem
+          debug(err); // not a problem
 
         return done(null, user);
       });

@@ -1,4 +1,4 @@
-var debug = require('debug')('donut:server:ws:history');
+var debug = require('debug')('shared:models:historyRoom');
 var _ = require('underscore');
 var mongoose = require('../io/mongoose');
 var Room = require('./room');
@@ -126,7 +126,7 @@ historySchema.statics.retrieve = function() {
 
       that.update({_id: {$in: toMarkAsReceived}}, {$addToSet: {received: userId}}, {multi: true}, function(err) {
         if (err)
-          return console.log('Error while updating received in historyRoom: '+err);
+          return debug('Error while updating received in historyRoom: '+err);
       });
 
       return fn(null, {

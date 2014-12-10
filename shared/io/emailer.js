@@ -1,3 +1,4 @@
+var debug = require('debug')('shared:emailer');
 var nodemailer = require('nodemailer');
 var i18next = require('../util/i18next');
 var conf = require('../config/index');
@@ -34,10 +35,10 @@ function send(data, fn) {
   process.nextTick(function() {
     transporter.sendMail(options, function(err, info){
       if(err){
-        console.log('Error while sending email to "'+options.to+'": '+err);
+        debug('Error while sending email to "'+options.to+'": '+err);
         return fn(err);
       }else{
-        console.log('Message sent: '+info.response);
+        debug('Message sent: '+info.response);
         return fn();
       }
     });

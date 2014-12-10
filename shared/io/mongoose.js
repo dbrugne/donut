@@ -1,4 +1,4 @@
-var debug = require('debug')('donut:server:mongoose');
+var debug = require('debug')('shared:mongoose');
 var mongoose = require('mongoose');
 var conf = require('../config/index');
 
