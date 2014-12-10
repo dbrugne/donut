@@ -1,8 +1,8 @@
 var async = require('async');
 var helper = require('./helper');
 var logger = require('../app/models/log');
-var cloudinary = require('../app/cloudinary');
-var i18next = require('../app/i18next');
+var cloudinary = require('../../shared/io/cloudinary');
+var i18next = require('../../shared/util/i18next');
 var User = require('../app/models/user');
 
 module.exports = function(io, socket, data) {

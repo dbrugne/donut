@@ -3,9 +3,9 @@ var conf = require('./config/index');
 var socketio = require('socket.io');
 var socketioRedis = require('socket.io-redis');
 var socketioPassport = require('passport.socketio');
-var redisStore = require('./app/redissessions');
+var redisStore = require('./../shared/authentication/redisStore');
 var cookieParser = require('cookie-parser');
-var passport = require('./app/passport');
+var passport = require('./../shared/authentication/passport');
 var User = require('./app/models/user');
 
 /**

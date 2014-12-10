@@ -3,7 +3,7 @@ var helper = require('./helper');
 var logger = require('../app/models/log');
 var validator = require('validator');
 var sanitize = require('sanitize-caja');
-var cloudinary = require('../app/cloudinary');
+var cloudinary = require('../../shared/io/cloudinary');
 
 module.exports = function(io, socket, data) {
 

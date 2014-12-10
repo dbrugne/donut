@@ -7,7 +7,7 @@ var sanitize = {
   'html': require('sanitize-html'),
   'caja': require('sanitize-caja')
 };
-var expressValidator = require('../app/validator');
+var expressValidator = require('../../shared/util/validator');
 
 module.exports = {
 
