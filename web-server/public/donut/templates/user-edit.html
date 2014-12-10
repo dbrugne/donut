@@ -1,0 +1,44 @@
+<div class="user" data-colorify="<%= user.color %>">
+    <span class="username">@<%= user.username %></span>
+</div>
+<div class="errors"></div>
+<form class="user-form" role="form">
+    <div class="form-group">
+        <label for="userBio"><%= t('edit.bio.label') %></label>
+        <textarea name="bio" class="form-control" id="userBio" placeholder="<%= t('edit.bio.placeholder') %>" maxlength="200"><%= user.bio %></textarea>
+        <p class="help-block"><%= t('edit.bio.help') %><span class="counter"></span></p>
+    </div>
+    <div class="form-group">
+        <label for="userLocation"><%= t('edit.location.label') %></label>
+        <input name="location" type="text" class="form-control" id="userLocation" placeholder="<%= t('edit.location.placeholder') %>" value="<%= user.location %>">
+        <p class="help-block"><%= t('edit.location.help') %></p>
+    </div>
+    <div class="form-group">
+        <label for="userWebsite"><%= t('edit.website.label') %></label>
+        <input name="website" type="text" class="form-control" id="userWebsite" placeholder="<%= t('edit.website.placeholder') %>" value="<%= user.website %>">
+        <p class="help-block"><%= t('edit.website.help') %></p>
+    </div>
+    <div class="form-group">
+        <label><%= t('edit.avatar.label') %></label>
+        <div class="user-avatar"></div>
+    </div>
+    <div class="form-group">
+        <label><%= t('edit.poster.label') %></label>
+        <div class="user-poster"></div>
+        <p class="help-block"><%= t('edit.poster.help') %></p>
+    </div>
+    <div class="form-group">
+        <label><%= t('edit.color.label') %></label>
+        <div class="user-color"></div>
+    </div>
+    <label><%= t('edit.othersettings') %></label>
+    <div class="checkbox">
+        <label>
+            <input type="checkbox" class="autojoin" <% if (user.general) { %>checked<% } %>> <%= t('edit.autojoindonut.yes') %>
+        </label>
+    </div>
+    <div class="form-group buttons">
+        <a class="btn btn-default btn-sm cancel"><%= t('global.cancel') %></a>
+        <input type="submit" value="<%= t('global.save') %>">
+    </div>
+</form>

@@ -1,0 +1,89 @@
+{{> head}}
+<body class="body-chat">
+    <div id="fb-root"></div>
+    <div id="chat">
+        <div id="alert" role="banner">
+            <div class="alert">
+                <p class="message"></p>
+                <img class="close-btn" src="/images/close-r.svg" alt="close icon">
+            </div>
+        </div>
+        <div id="color"></div><!-- /#color -->
+        <div class="row">
+            <div id="left">
+                <h1 class="logo"><a href="/!#"><img src="/images/logo-onecolor.svg" alt="{{#i}}title.chat{{/i}}"></a></h1>
+                <div id="block-current-user"></div><!-- /#current-user-block -->
+                <hr>
+                <div>
+                <div id="block-search">
+                    <input type="text" placeholder="{{#i}}chat.search.placeholder{{/i}}">
+                    <i class="fa fa-search"></i>
+                </div>
+                <div id="block-create">
+                    <a href="#" id="create-room-link" class="open-create-room">
+                        <span class="logic">{{#i}}global.or{{/i}}</span>
+                        {{#i}}chat.create.label{{/i}}
+                    </a>
+                </div>
+                </div>
+                <hr>
+                <div class="scrollable">
+                    <div id="block-rooms"></div>
+                    <div id="block-onetoones"></div>
+                </div>
+                <div id="block-links">
+                    <span><a href="/faq" target="_blank">{{#i}}page.faq.title{{/i}}</a></span>
+                    <span><a href="/!#room/Support">{{#i}}chat.help{{/i}}</a></span>
+                    <span><a href="mailto:hello@donut.me" target="_blank">{{#i}}page.contact.title{{/i}}</a></span>
+                    <span><a href="/eutc" target="_blank">{{#i}}page.eutc.title{{/i}}</a></span>
+                </div>
+            </div><!-- /#left -->
+            <div id="center">
+                <div id="drawer">
+                    <div class="opacity">
+                        <div class="wrap">
+                            <div class="content"></div>
+                            <img src="/images/close.svg" class="close" alt="close">
+                        </div>
+                    </div>
+                </div>
+                <div id="home"><!--home content--></div>
+            </div><!-- /#center -->
+        </div><!-- /.row -->
+    </div><!-- /#chat -->
+    <div id="welcome" class="modal fade" role="dialog" aria-labelledby="welcomeMessage" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{{#i}}global.close{{/i}}</span></button>
+                    <h4 class="modal-title">{{#i}}welcome.title{{/i}}</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        {{#i}}welcome.message{{/i}}
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <span class="checkbox">
+                        <label>
+                            <input type="checkbox"> {{#i}}welcome.donotshowagain{{/i}}
+                        </label>
+                    </span>
+                    <button type="button" class="close-welcome" data-dismiss="modal">{{#i}}global.close{{/i}}</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- #welcome -->
+<script>
+    window.cloudinary_cloud_name = '{{cloudinary.cloud_name}}';
+    window.cloudinary_api_key = '{{cloudinary.api_key}}';
+    window.facebook_app_id = '{{facebook.clientID}}';
+    window.colors = {{&colors}};
+</script>
+<script src="/javascripts/old-browser-update.js"></script>
+<script src="/javascripts/share.js"></script>
+<script data-main="/donut/index.js" src="/vendor/requirejs/require.js"></script>
+{{{googleanalytics}}}
+</body>
+</html>
+<!-- made with ♥ -->

@@ -1,9 +1,9 @@
 var async = require('async');
 var _ = require('underscore');
 var roomDataHelper = require('../../../util/roomData');
-var User = require('../../../../../server/app/models/user');
-var Room = require('../../../../../server/app/models/room');
-var conf = require('../../../../../server/config/index');
+var User = require('../../../../../shared/models/user');
+var Room = require('../../../../../shared/models/room');
+var conf = require('../../../../../shared/config/index');
 var roomEmitter = require('../../../util/roomEmitter');
 
 module.exports = function(app) {

@@ -1,0 +1,18 @@
+{
+    "name": "donut-server",
+    "version": "0.0.1",
+    "dependencies": {
+      "requirejs": "latest",
+      "requirejs-text": "latest",
+      "jquery": "1.x",
+      "bootstrap": "latest",
+      "underscore-amd": "latest",
+      "backbone-amd": "latest",
+      "cloudinary_js": "latest",
+      "moment": "2.7.x",
+      "i18next": "latest",
+      "malihu-custom-scrollbar-plugin": "latest",
+      "jquery-mousewheel": "latest",
+      "pomelo-jsclient-socket.io": "latest"
+    }
+}

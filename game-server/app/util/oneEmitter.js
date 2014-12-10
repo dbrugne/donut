@@ -1,9 +1,7 @@
 var debug = require('debug')('donut:server:ws:room-emitter');
 var _ = require('underscore');
 var async = require('async');
-var HistoryOne = require('../../../server/app/models/historyone');
-
-var recorder = HistoryOne.record();
+var recorder = require('../../../shared/models/historyone').record();
 
 /**
  * Store history in MongoDB, emit event in corresponding one to one and call callback

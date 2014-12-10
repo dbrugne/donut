@@ -5,10 +5,10 @@
       {"id": "connector-server-2", "host": "chat.local", "port": 4051, "clientPort": 3051, "frontend": true, "token": "agarxhqb98rpajloaxn34ga8xrunpagkjwlaw3ruxnpaagl29w4rxn"}
     ],
     "chat": [
-      {"id": "chat-server-1", "host": "chat.local", "port": 6050, "token": "agarxhqb98rpajloaxn34ga8xrunpagkjwlaw3ruxnpaagl29w4rxn", "args": " --debug=32312 "}
+      {"id": "chat-server-1", "host": "chat.local", "port": 6050, "token": "agarxhqb98rpajloaxn34ga8xrunpagkjwlaw3ruxnpaagl29w4rxn"}
     ],
     "gate": [
-      {"id": "gate-server-1", "host": "chat.local", "clientPort": 3014, "frontend": true, "token": "agarxhqb98rpajloaxn34ga8xrunpagkjwlaw3ruxnpaagl29w4rxn"}
+      {"id": "gate-server-1", "host": "chat.local", "clientPort": 3014, "frontend": true, "token": "agarxhqb98rpajloaxn34ga8xrunpagkjwlaw3ruxnpaagl29w4rxn", "args": " --debug=32312 "}
     ]
   },
   "production": {

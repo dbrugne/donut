@@ -1,0 +1,39 @@
+<div class="room" data-colorify="<%= room.color %>">
+    <span class="name"><%= room.name %></span>
+    <span class="owner"><%= t('global.by') %> <a class="open-user-profile" data-username="<%= room.owner.username %>" data-colorify-text="#ffffff">@<%= room.owner.username %></a></span>
+</div>
+<div class="errors"></div>
+<form class="room-form" role="form">
+    <div class="form-group">
+        <label for="roomDescription"><%= t('edit.description.label') %></label>
+        <textarea name="description" class="form-control" id="roomDescription" placeholder="<%= t('edit.description.placeholder') %>" maxlength="200"><%= room.description %></textarea>
+        <p class="help-block"><%= t('edit.description.help') %> <span class="counter"></span></p>
+    </div>
+    <div class="form-group">
+        <label for="roomWebsite"><%= t('edit.website.label') %></label>
+        <input name="website" type="text" class="form-control" id="roomWebsite" placeholder="<%= t('edit.website.placeholder') %>" value="<%= room.website %>">
+        <p class="help-block"><%= t('edit.website.help') %></p>
+    </div>
+    <div class="form-group">
+        <label><%= t('edit.avatar.label') %></label>
+        <div class="room-avatar"></div>
+    </div>
+    <div class="form-group">
+        <label><%= t('edit.poster.label') %></label>
+        <div class="room-poster"></div>
+        <p class="help-block"><%= t('edit.poster.help') %></p>
+    </div>
+    <div class="form-group">
+        <label><%= t('edit.color.label') %></label>
+        <div class="room-color"></div>
+    </div>
+    <div class="form-group buttons">
+        <a class="btn btn-default btn-sm cancel"><%= t('global.cancel') %></a>
+        <input type="submit" value="<%= t('global.save') %>">
+    </div>
+</form>
+<div class="footer">
+    <p class="delete">
+        <i class="fa fa-trash"></i> <%= t('edit.room.delete.link', {name: room.name}) %>
+    </p>
+</div>

@@ -1,0 +1,36 @@
+<div class="room" data-colorify="<%= room.color %>">
+    <img class="avatar" src="<%= room.avatar %>" alt="<%= room.name %> avatar">
+    <p class="name"><%= room.name %></p>
+    <p class="owner"><%= t('global.by') %> <a class="open-user-profile" data-username="<%= room.owner.username %>" data-colorify-text="#ffffff">@<%= room.owner.username %></a></p>
+    <% if (room.description) { %><p class="description"><%= room.description %></p><% }; %>
+    <% if (room.website) { %><p class="website"><i class="fa fa-link"></i> <span><%= room.website %></span></p><% }; %>
+    <% if (room.created) { %><p class="created"><i class="fa fa-clock-o"></i> <%= t('profile.room.createdat') %> <span data-time="<%= room.created %>"></span></p><% }; %>
+</div>
+<% if (room.users_list.length > 0) { %>
+<div class="users">
+    <p class="title"><i class="fa fa-users"></i> <%= t('profile.room.ownerops') %></p>
+    <% _.each(room.users_list, function(user) { %>
+    <div class="user open-user-profile <% if (user.isOwner) { %>owner<% }; %> <% if (user.isOp) { %>op<% }; %>" data-username="<%= user.username %>" data-colorify="<%= user.color %>">
+        <img class="avatar" src="<%= user.avatar %>" />
+        <span class="username">@<%= user.username %></span>
+    </div>
+    <% }); %>
+    <hr>
+</div>
+<% } %>
+<div class="room" data-colorify="<%= room.color %>">
+    <p class="join">
+        <a href="#room/<%= room.name.replace('#', '') %>" data-colorify-background="color" data-colorify-text="contrast">
+            <%= t('actions.join') %>
+            <% if (room.users && room.users.length > 0) { %><%= room.users.length %><% } %>
+            <img src="/images/user.svg" alt="user icon">
+        </a>
+    </p>
+    <div class="fb-like" data-href="<%= room.url %>" data-ref="profile-drawer" data-layout="button" data-share="true" data-width="300" data-show-faces="true"></div>
+</div>
+<div class="footer">
+    <a href="<%= room.url %>" target="_blank"><i class="fa fa-external-link"></i> <%= t('profile.room.permalink') %></a>
+    <% if (room.isOwner) { %>
+    <a class="edit open-room-edit" data-room-name="<%= room.name %>"><i class="fa fa-pencil-square-o"></i> <%= t('profile.room.editlink') %></a>
+    <% }; %>
+</div>

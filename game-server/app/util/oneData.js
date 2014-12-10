@@ -1,6 +1,6 @@
 var async = require('async');
-var User = require('../../../server/app/models/user');
-var retriever = require('../../../server/app/models/historyone').retrieve();
+var User = require('../../../shared/models/user');
+var retriever = require('../../../shared/models/historyone').retrieve();
 
 /**
  * Helper to retrieve/prepare all the one to one data needed for 'welcome' and

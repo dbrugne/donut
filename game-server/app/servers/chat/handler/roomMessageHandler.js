@@ -1,7 +1,7 @@
 var async = require('async');
 var roomEmitter = require('../../../util/roomEmitter');
-var User = require('../../../../../server/app/models/user');
-var Room = require('../../../../../server/app/models/room');
+var User = require('../../../../../shared/models/user');
+var Room = require('../../../../../shared/models/room');
 var inputUtil = require('../../../util/input');
 //var admin = require('./_admin');
 

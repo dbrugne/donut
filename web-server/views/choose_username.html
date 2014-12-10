@@ -1,0 +1,30 @@
+<div id="choose-username">
+
+    <h2>{{#i}}choose-username.title{{/i}}</h2>
+
+    <form method="post" role="form">
+
+        <input type="hidden" name="_csrf" value="{{token}}">
+
+        {{#is_errors}}
+        <div class="errors">
+            {{#errors}}{{msg}}<br>{{/errors}}
+        </div>
+        {{/is_errors}}
+
+        <div class="form-group">
+            <strong>{{#i}}choose-username.description{{/i}}</strong>
+        </div>
+
+        <div class="form-group username">
+            <span class="arobase">@</span>
+            <input type="username" class="form-control" id="username-field" name="user[fields][username]" placeholder="{{#i}}login.username-placeholder{{/i}}" value="{{userFields.username}}" tabindex="1" maxlength="15">
+            <p class="help-block">{{#i}}choose-username.help{{/i}}</p>
+        </div>
+        <div class="form-group center">
+            <input type="submit" value="{{#i}}global.save{{/i}}" tabindex="2">
+        </div>
+
+    </form>
+
+</div>

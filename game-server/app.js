@@ -1,6 +1,6 @@
 require('newrelic');
-var debug = require('debug')('donut:server');
 var pomelo = require('pomelo');
+var logger = require('pomelo-logger').getLogger('donut', __filename);
 var dispatcher = require('./app/util/dispatcher');
 var connector = require('./app/connector/sioconnector');
 var globalChannel = require('pomelo-globalchannel-plugin');
@@ -55,7 +55,7 @@ var chatRoute = function(session, msg, app, cb) {
   if(!chatServers || chatServers.length === 0)
     return cb(new Error('can not find chat servers.'));
 
-  debug('chatRoute call dispatch with '+session.uid);
+  logger.debug('chatRoute call dispatch with '+session.uid);
   var res = dispatcher.dispatch(session.uid, chatServers);
 
   cb(null, res.id);

@@ -1,0 +1,22 @@
+{
+  "name": "donut-shared",
+  "version": "0.1.0",
+  "private": true,
+  "repository": "https://github.com/dbrugne/donut",
+  "dependencies": {
+    "underscore": "1.7.x",
+    "debug": "2.x",
+    "mongoose": "3.8.x",
+    "redis": "0.x",
+    "bcrypt-nodejs": "latest",
+    "express-session": "1.x",
+    "express-validator": "2.x",
+    "connect-redis": "2.x",
+    "cloudinary": "1.x",
+    "nodemailer": "1.2.x",
+    "i18next": "1.7.x",
+    "passport": "0.2.x",
+    "passport-facebook": "1.x",
+    "passport-local": "1.x"
+  }
+}
