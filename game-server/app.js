@@ -1,3 +1,4 @@
+require('newrelic');
 var debug = require('debug')('donut:server');
 var pomelo = require('pomelo');
 var dispatcher = require('./app/util/dispatcher');
