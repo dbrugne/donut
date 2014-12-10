@@ -370,7 +370,7 @@ define([
       if (model == undefined) {
         // Not already open
         this.thisDiscussionShouldBeFocusedOnSuccess = name;
-        rooms.openPing(name);
+        rooms.join(name);
         return;
       } else {
         this.focus(model);

@@ -26,7 +26,6 @@ define([
 
     initialize: function() {
       this.listenTo(client, 'disconnected', this.onDisconnect);
-      this.listenTo(client, 'room:welcome', this.addModel);
       this.listenTo(client, 'room:in', this.onIn);
       this.listenTo(client, 'room:out', this.onOut);
       this.listenTo(client, 'room:topic', this.onTopic);
@@ -38,10 +37,18 @@ define([
       this.listenTo(client, 'user:online', this.onUserOnline);
       this.listenTo(client, 'user:offline', this.onUserOffline);
       this.listenTo(client, 'room:kick', this.onKick);
+      this.listenTo(client, 'room:join', this.onJoin);
       this.listenTo(client, 'room:leave', this.onLeave);
     },
-    openPing: function(name) {
-      client.join(name);
+    join: function(name) {
+      var that = this;
+      client.roomJoin(name, function(data) {
+        return that.addModel(data, false);
+      });
+    },
+    onJoin: function(data) {
+      // server ask to client to open this room in its IHM
+      this.addModel(data);
     },
     addModel: function(room, reconnect) {
       // server confirm that we was joined to the room and give us some data on room

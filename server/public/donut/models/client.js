@@ -46,13 +46,13 @@ define([
       // ROOM EVENTS
       // ======================================================
 
+      pomelo.on('room:join', function(data) {
+        that.debug(['io:in:room:join', data]);
+        that.trigger('room:join', data);
+      });
       pomelo.on('room:leave', function(data) {
         that.debug(['io:in:room:leave', data]);
         that.trigger('room:leave', data);
-      });
-      pomelo.on('room:welcome', function(data) {
-        that.debug(['io:in:room:welcome', data]);
-        that.trigger('room:welcome', data);
       });
       pomelo.on('room:topic', function(data) {
         that.debug(['io:in:room:topic', data]);
@@ -283,10 +283,19 @@ define([
     // ROOM METHODS
     // ======================================================
 
-    join: function(name) {
+    roomJoin: function(name, fn) {
       var data = {name: name};
-      //this.socket.emit('room:join', data);
       this.debug(['io:out:room:join', data]);
+      var that = this;
+      pomelo.request(
+        'chat.roomJoinHandler.join',
+        data,
+        function(data) {
+          if (data.err)
+            that.debug(['io:out:room:join error: ', data]);
+          return fn(data);
+        }
+      );
     },
     leave: function(name) {
       var data = {name: name};
