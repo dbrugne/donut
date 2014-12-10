@@ -32,6 +32,14 @@ handler.status = function(msg, session, next) {
 	});
 };
 
+/**
+ * Retrieve current status for users
+ *
+ * @param {Object} msg message from client
+ * @param {Object} session
+ * @param  {Function} next next stemp callback
+ *
+ */
 handler.statusMulti = function(msg, session, next) {
 	if (!msg.uids || !Array.isArray(msg.uids))
 		return next(null, {error: 'statusMulti: uids should be an array', code: 500});

@@ -226,23 +226,21 @@ define([
       pomelo.disconnect();
     },
 
+    // DEBUG METHODS
+    // ======================================================
+
     status: function(uid) {
-      pomelo.request('chat.statusHandler.status', {
+      pomelo.request('chat.adminHandler.status', {
         uid: uid
       }, function(data) {
         console.log('status: ', data);
       });
     },
     statusMulti: function(uids) {
-      pomelo.request('chat.statusHandler.statusMulti', {
+      pomelo.request('chat.adminHandler.statusMulti', {
         uids: uids
       }, function(data) {
         console.log('statusMulti: ', data);
-      });
-    },
-    sessions: function() {
-      pomelo.request('connector.sessionsHandler.list', {}, function(data) {
-        console.log('sessions: ', data);
       });
     },
 
