@@ -1,4 +1,4 @@
-var debug = require('debug')('donut:server:gateHandler');
+var logger = require('pomelo-logger').getLogger('donut', __filename);
 var dispatcher = require('../../../util/dispatcher');
 
 module.exports = function(app) {
@@ -34,7 +34,7 @@ handler.queryEntry = function(msg, session, next) {
 	if (!uid)
 		return next(null, {code: 500});
 
-	debug('dispatch this user: '+uid);
+	logger.debug('dispatch this user: '+uid);
 
 	// get all connectors
 	var connectors = this.app.getServersByType('connector');
@@ -43,6 +43,7 @@ handler.queryEntry = function(msg, session, next) {
 
 	// select connector, because more than one connector existed.
 	var res = dispatcher.dispatch(uid, connectors);
+	logger.debug('dispatched user '+uid+' to: ');
 	next(null, {
 		code: 200,
 		host: res.host,

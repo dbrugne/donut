@@ -1,0 +1,143 @@
+.body-chat {
+  height: 100%;
+  overflow-y: hidden;
+  .ft-opensans;
+  font-size: 12px;
+
+  a { color: @text-color; }
+  a:hover { color: @text-color; }
+}
+
+#welcome {
+  .modal-dialog {
+    z-index: 1041; // fix .modal-dialog behind .modal-backdrop for unknown reason
+  }
+  .modal-body {
+    font-size: 1.1em;
+  }
+  .modal-footer {
+    span.checkbox {
+      .pull-left;
+    }
+    .close-welcome {
+      .btn;
+      .btn-default;
+      font-size: 1em;
+      border-color: transparent;
+      color: @cl-background;
+      background-color: @cl-first;
+      &:hover {
+        border-color: @cl-first;
+        color: @cl-first;
+        background-color: @cl-background;
+      }
+    }
+  }
+}
+
+#chat {
+  .container-fluid;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+
+  > .row {
+    margin: 0; /* Cancel bootstrap negative .row margin */
+    height: 100%;
+    width: 100%;
+  }
+
+  #color {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: @size-color;
+    z-index: 99;
+    background-color: @cl-first;
+  }
+
+  #left {
+    float: left;
+    width: @size-left;
+    height: 100%;
+    background-color: @cl-subtext1;
+    overflow: hidden;
+    z-index: 10;
+    position: relative;
+    padding-top: 20px;
+    padding-bottom: 20px;
+
+    @import "chat-left";
+  }
+
+  #center {
+    height: 100%;
+    padding-top: 20px;
+    z-index: 5;
+    margin-left: @size-left;
+
+    @import "chat-home";
+
+    @import "chat-discussion";
+  }
+
+  hr {
+    border-top-color: #dadada;
+    margin-top: 12px;
+    margin-bottom: 15px;
+    margin-left: 18px;
+    margin-right: 18px;
+  }
+
+  .big-link {
+    .ft-opensans-bold;
+    color: @cl-subtext5;
+    font-size: 1.1em;
+  }
+
+  .open-room-profile, .open-user-profile, .open-room-edit, .open-user-edit, .open-create-room {
+    cursor:pointer;
+  }
+
+  .ps-container .ps-scrollbar-y {
+    background-color: red;
+  }
+
+  #alert {
+    .alert {
+      display: none;
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      min-height: 45px;
+      z-index: 100;
+      padding: .4em .6em .4em;
+      background-color: @cl-neutral;
+      .ft-opensans-bold;
+      font-size: 1.5em;
+      color: @cl-background;
+      text-align: center;
+      white-space: nowrap;;
+      .message {
+      }
+      .close-btn {
+        position: absolute;
+        top: 8px; right: 12px;
+        cursor: pointer;
+        img {
+          width: 25px;
+          height: 25px;
+        }
+      }
+    }
+    .alert.info { background-color: @cl-success;}
+    .alert.warning { background-color: @cl-warning; }
+    .alert.error { background-color: @cl-error; }
+  }
+
+  .status { font-size: 10px; font-weight: bold; color: @cl-background; }
+  .status.online { color: @cl-success; }
+  .status.connecting { color: @cl-warning; }
+  .status.offline { color: @cl-neutral; }
+  .status.error { color: @cl-error; }
+
+  @import "chat-drawer";
+}

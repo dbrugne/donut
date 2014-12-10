@@ -3,7 +3,7 @@ var sanitize = {
 	'html': require('sanitize-html'),
 	'caja': require('sanitize-caja')
 };
-var expressValidator = require('../../../server/app/validator');
+var expressValidator = require('../../../shared/util/validator');
 
 /**
  * Check for maximal length, sanitize and escape input

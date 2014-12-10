@@ -1,23 +1,24 @@
+require('newrelic');
 var debug = require('debug')('donut:web');
 var express = require('express');
-var errors = require('../server/app/middlewares/errors');
+var errors = require('./app/middlewares/errors');
 var path = require('path');
 var compression = require('compression')
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var less = require('less-middleware');
-var fqdn = require('../server/app/middlewares/fqdn');
+var fqdn = require('./app/middlewares/fqdn');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var session = require('../server/app/middlewares/session');
-var passport = require('../server/app/passport');
+var session = require('./app/middlewares/session');
+var passport = require('../shared/authentication/passport');
 var csrf = require('csurf');
 var flash = require('connect-flash');
-var i18n = require('../server/app/middlewares/i18n');
-var prepareViews = require('../server/app/middlewares/prepareviews');
-var expressValidator = require('../server/app/validator');
-var googleAnalytics = require('../server/app/middlewares/googleanalytics');
-var conf = require('../server/config/index');
+var i18n = require('./app/middlewares/i18n');
+var prepareViews = require('./app/middlewares/prepareviews');
+var expressValidator = require('../shared/util/validator');
+var googleAnalytics = require('./app/middlewares/googleanalytics');
+var conf = require('../shared/config/index');
 
 /****************************************************************************
  * Order of middleware is VERY important to avoid useless computing/storage *
@@ -26,11 +27,10 @@ var conf = require('../server/config/index');
 var app = express();
 
 app.use(compression());
-app.use(favicon(__dirname + '/../server/public/favicon.ico'));
-app.use(less(__dirname+'/../server/public', { force: conf.less.force }));
-app.use(express.static(path.join(__dirname, 'node_modules/socket.io-client')));
+app.use(favicon(__dirname + '/public/favicon.ico'));
+app.use(less(__dirname+'/public', { force: conf.less.force }));
+app.use(express.static(path.join(__dirname, 'node_modules/socket.io-client'))); // => require('socket.io-client');
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.static(path.join(__dirname, '/../server/public')));
 app.use(logger('dev'));
 app.use(fqdn());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -47,23 +47,23 @@ app.use(prepareViews());
 app.use(googleAnalytics());
 
 app.engine('html', require('hogan-express'));
-app.set('views', path.join(__dirname, '/../server/views'));
+app.set('views', path.join(__dirname, '/views'));
 app.set('layout', false);
 app.set('view engine', 'html');
 
-app.use(require('../server/http/landing'));
-app.use(require('../server/http/account-signup'));
-app.use(require('../server/http/account-login'));
-app.use(require('../server/http/account-link'));
-app.use(require('../server/http/account-forgot'));
-app.use(require('../server/http/user-profile'));
-app.use(require('../server/http/room-profile'));
-app.use(require('../server/http/chat'));
-app.use(require('../server/http/choose-username'));
-app.use(require('../server/http/account-delete'));
-app.use(require('../server/http/account-edit-email'));
-app.use(require('../server/http/account-edit-password'));
-app.use(require('../server/http/static'));
+app.use(require('./app/routes/landing'));
+app.use(require('./app/routes/account-signup'));
+app.use(require('./app/routes/account-login'));
+app.use(require('./app/routes/account-link'));
+app.use(require('./app/routes/account-forgot'));
+app.use(require('./app/routes/user-profile'));
+app.use(require('./app/routes/room-profile'));
+app.use(require('./app/routes/chat'));
+app.use(require('./app/routes/choose-username'));
+app.use(require('./app/routes/account-delete'));
+app.use(require('./app/routes/account-edit-email'));
+app.use(require('./app/routes/account-edit-password'));
+app.use(require('./app/routes/static'));
 
 app.use(errors('404'));
 app.use(errors('500', app));

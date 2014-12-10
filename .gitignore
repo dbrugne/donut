@@ -1,6 +1,13 @@
+# IDE
 /.idea
+
+# Dependencies
 /game-server/logs
 /game-server/node_modules
 /web-server/node_modules
 /web-server/public/js/lib/build
-/web-server/public/js/lib/components
+/web-server/public/vendor
+/shared/node_modules
+
+# Compiled files
+/web-server/public/stylesheets/style.css

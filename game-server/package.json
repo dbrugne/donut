@@ -13,6 +13,7 @@
     "passport.socketio": "3.x",
     "pomelo": "latest",
     "pomelo-globalchannel-plugin": "dbrugne/pomelo-globalchannel-plugin",
+    "pomelo-logger": "^0.1.7",
     "pomelo-status-plugin": "dbrugne/pomelo-status-plugin",
     "sanitize-caja": "0.x",
     "sanitize-html": "1.x",

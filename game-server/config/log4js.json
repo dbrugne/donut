@@ -76,6 +76,16 @@
     },
     {
       "type": "file",
+      "filename": "${opts:base}/logs/donut-${opts:serverId}.log",
+      "maxLogSize": 1048576,
+      "layout": {
+        "type": "basic"
+      },
+      "backups": 5,
+      "category":"donut"
+    },
+    {
+      "type": "file",
       "filename": "${opts:base}/logs/pomelo-admin.log",
       "maxLogSize": 1048576,
       "layout": {
@@ -98,7 +108,8 @@
 
   "levels": {
     "rpc-log" : "ERROR",
-    "forward-log": "ERROR"
+    "forward-log": "ERROR",
+    "donut": "TRACE"
   },
 
   "replaceConsole": true,

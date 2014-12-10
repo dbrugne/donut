@@ -1,8 +1,8 @@
 var async = require('async');
 var _ = require('underscore');
-var Room = require('../../../server/app/models/room');
-var User = require('../../../server/app/models/user');
-var retriever = require('../../../server/app/models/historyroom').retrieve();
+var Room = require('../../../shared/models/room');
+var User = require('../../../shared/models/user');
+var retriever = require('../../../shared/models/historyroom').retrieve();
 
 /**
  * Helper to retrieve/prepare all the room data needed for 'welcome' and

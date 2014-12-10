@@ -1,12 +1,12 @@
 var debug = require('debug')('donut:server:WelcomeRemote');
 var _ = require('underscore');
 var async = require('async');
-var conf = require('../../../../../server/config/index');
-var User = require('../../../../../server/app/models/user');
-var Room = require('../../../../../server/app/models/room');
+var conf = require('../../../../../shared/config/index');
+var User = require('../../../../../shared/models/user');
+var Room = require('../../../../../shared/models/room');
 var roomDataHelper = require('../../../util/roomData');
 var oneDataHelper = require('../../../util/oneData');
-var hello = require('../../../../../server/app/hello-dolly');
+var hello = require('../../../util/helloDolly');
 
 module.exports = function(app) {
 	return new WelcomeRemote(app);

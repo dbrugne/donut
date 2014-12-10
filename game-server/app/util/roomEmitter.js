@@ -1,7 +1,7 @@
 var debug = require('debug')('donut:server:ws:room-emitter');
 var _ = require('underscore');
 var async = require('async');
-var HistoryRoom = require('../../../server/app/models/historyroom');
+var HistoryRoom = require('../../../shared/models/historyroom');
 
 var recorder = HistoryRoom.record();
 

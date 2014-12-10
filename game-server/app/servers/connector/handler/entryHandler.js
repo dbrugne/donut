@@ -1,7 +1,7 @@
 var debug = require('debug')('donut:server:entryHandler');
 var _ = require('underscore');
 var async = require('async');
-var conf = require('../../../../../server/config/index');
+var conf = require('../../../../../shared/config/index');
 
 var GLOBAL_CHANNEL_NAME = 'global';
 var USER_CHANNEL_PREFIX = 'user:';

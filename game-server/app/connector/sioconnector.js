@@ -1,14 +1,14 @@
-var debug = require('debug')('donut:server:connector');
-var conf = require('../../../server/config/index');
+var logger = require('pomelo-logger').getLogger('donut', __filename);
+var conf = require('../../../shared/config/index');
 var util = require('util');
 var EventEmitter = require('events').EventEmitter;
 var socketio = require('socket.io');
 var socketioSocket = require('./siosocket');
 var socketioRedis = require('socket.io-redis');
 var socketioPassport = require('passport.socketio');
-var redisStore = require('../../../server/app/redissessions');
+var redisStore = require('../../../shared/authentication/redisSessions');
 var cookieParser = require('cookie-parser');
-var passport = require('../../../server/app/passport');
+var passport = require('../../../shared/authentication/passport');
 
 var PKG_ID_BYTES = 4;
 var PKG_ROUTE_LENGTH_BYTES = 1;
@@ -43,7 +43,7 @@ Connector.prototype.start = function(cb) {
 
   // create socket.io server
   this.wsocket = socketio(this.port, this.opts.options);
-  debug('socket.io server start with: ', this.port, this.opts.options);
+  logger.debug('socket.io server start with: ', this.port, this.opts.options);
 
   // Redis storage
   this.wsocket.adapter(socketioRedis({}));
@@ -58,26 +58,26 @@ Connector.prototype.start = function(cb) {
     key           : conf.sessions.key,
     secret        : conf.sessions.secret,
     store         : redisStore,
-    success       : function (data, accept){
-      debug('socketioPassport::success');
+    success: function (data, accept){
+      logger.info('socketioPassport::success');
       accept();
     },
-    fail          : function (data, message, critical, accept) {
-      debug('socketioPassport::fail');
+    fail: function (data, message, critical, accept) {
+      logger.info('socketioPassport::fail');
       accept(new Error(message));
     }
   }));
 
   this.wsocket.sockets.on('connection', function (socket) {
 
-    debug('new socket.io connection: ', socket.id);
+    logger.debug('new socket.io connection: ', socket.id);
 
     // Wrap the socket
     var siosocket = new socketioSocket(curId++, socket);
 
     self.emit('connection', siosocket);
     siosocket.on('closing', function(reason) {
-      debug('socket.io socket closing: ', socket.id);
+      logger.debug('socket.io socket closing: ', socket.id);
       siosocket.send({route: 'onKick', reason: reason});
     });
   });

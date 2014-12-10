@@ -1,0 +1,19 @@
+{{> head}}
+<body>
+<div>wait you are redirecting :)</div>
+<script>
+    (function() {
+        var to = window.location.protocol
+                +'//'+ window.location.host;
+        if ( window.location.href.indexOf('!#room/') !== -1
+             || window.location.href.indexOf('!#user/') !== -1) {
+            to += '/'+ window.location.hash.replace('#', '');
+        } else {
+            to += '/';
+        }
+        console.log('now redirect to:'+to);
+        window.location.replace(to);
+    })();
+</script>
+</body>
+</html>

@@ -1,7 +1,7 @@
 var debug = require('debug')('donut:server:statusRemote');
 var _ = require('underscore');
 var async = require('async');
-var User = require('../../../../../server/app/models/user');
+var User = require('../../../../../shared/models/user');
 var roomEmitter = require('../../../util/roomEmitter');
 var oneEmitter = require('../../../util/oneEmitter');
 
