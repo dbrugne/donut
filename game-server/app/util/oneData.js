@@ -1,3 +1,4 @@
+var logger = require('pomelo-logger').getLogger('donut', __filename);
 var async = require('async');
 var User = require('../../../shared/models/user');
 var retriever = require('../../../shared/models/historyone').retrieve();
@@ -19,7 +20,7 @@ module.exports = function(uid, username, fn) {
           return callback('Error while retrieving user: '+err);
 
         if (!user) {
-          console.log('Unable to find this one to one user, we skip: '+username);
+          logger.info('Unable to find this one to one user, we skip: '+username);
           return fn(null, null);
         }
 

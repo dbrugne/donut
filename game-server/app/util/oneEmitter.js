@@ -1,3 +1,4 @@
+var logger = require('pomelo-logger').getLogger('donut', __filename);
 var debug = require('debug')('donut:server:ws:room-emitter');
 var _ = require('underscore');
 var async = require('async');
@@ -41,14 +42,14 @@ module.exports = function(app, onetoone, eventName, eventData, callback) {
           if (eventName != 'user:online' && eventName != 'user:offline')
             app.globalChannelService.pushMessage('connector', eventName, ed, 'user:'+one.from.toString(), {}, function(err) {
               if (err)
-                return console.log('Error while pushing message: '+err);
+                return logger.error('Error while pushing message: '+err);
             });
 
           // (if sender!=receiver) Broadcast message to all 'receiver' devices
           if (one.from.toString() !=  one.to.toString())
             app.globalChannelService.pushMessage('connector', eventName, ed, 'user:'+one.to.toString(), {}, function(err) {
               if (err)
-                return console.log('Error while pushing message: '+err);
+                return logger.error('Error while pushing message: '+err);
             });
 
           return fn(null);

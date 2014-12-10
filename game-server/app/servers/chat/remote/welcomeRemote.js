@@ -1,4 +1,4 @@
-var debug = require('debug')('donut:server:WelcomeRemote');
+var logger = require('pomelo-logger').getLogger('donut', __filename);
 var _ = require('underscore');
 var async = require('async');
 var conf = require('../../../../../shared/config/index');
@@ -26,7 +26,7 @@ var WelcomeRemote = function(app) {
  */
 WelcomeRemote.prototype.getMessage = function(uid, frontendId, globalCallback) {
 
-	debug('welcome message call for '+uid+'@'+frontendId);
+	logger.debug('welcome message call for '+uid+'@'+frontendId);
 
 	// welcome event data
 	var welcomeEvent = {
@@ -89,7 +89,7 @@ WelcomeRemote.prototype.getMessage = function(uid, frontendId, globalCallback) {
 			var parallels = [];
 			_.each(user.onetoones, function(one) {
 				if (!one.username)
-					return debug('Empty username found in populateOnes for user: '+uid);
+					return logger.info('Empty username found in populateOnes for user: '+uid);
 				parallels.push(function(fn) {
 					oneDataHelper(uid, one.username, function(err, one) {
 						if (err)
@@ -140,7 +140,7 @@ WelcomeRemote.prototype.getMessage = function(uid, frontendId, globalCallback) {
 		if (err)
 			return globalCallback(err);
 
-		debug('welcome message done for '+uid+'@'+frontendId);
+		logger.debug('welcome message done for '+uid+'@'+frontendId);
 		return globalCallback(null, welcomeEvent);
 	});
 

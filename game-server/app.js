@@ -55,9 +55,7 @@ var chatRoute = function(session, msg, app, cb) {
   if(!chatServers || chatServers.length === 0)
     return cb(new Error('can not find chat servers.'));
 
-  logger.debug('chatRoute call dispatch with '+session.uid);
   var res = dispatcher.dispatch(session.uid, chatServers);
-
   cb(null, res.id);
 };
 app.configure('production|development', function() {

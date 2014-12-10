@@ -1,3 +1,4 @@
+var logger = require('pomelo-logger').getLogger('donut', __filename);
 var async = require('async');
 var _ = require('underscore');
 var User = require('../../../../../shared/models/user');
@@ -139,7 +140,7 @@ handler.leave = function(data, session, next) {
 
 	], function(err, user, room) {
 		if (err)
-			debug(err);
+			logger.error(err);
 
 		// @todo : restore logs
 

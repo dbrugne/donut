@@ -1,3 +1,4 @@
+var logger = require('pomelo-logger').getLogger('donut', __filename);
 var async = require('async');
 var _ = require('underscore');
 var Room = require('../../../shared/models/room');
@@ -26,7 +27,7 @@ module.exports = function(app, uid, name, fn) {
           return callback('Error while retrieving room: '+err);
 
         if (!room) {
-          console.log('Unable to find this room, we skip: '+name);
+          logger.info('Unable to find this room, we skip: '+name);
           return fn(null, null);
         }
 

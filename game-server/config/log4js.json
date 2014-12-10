@@ -107,8 +107,7 @@
   ],
 
   "levels": {
-    "rpc-log" : "ERROR",
-    "forward-log": "ERROR",
+    "[all]": "DEBUG",
     "donut": "TRACE"
   },
 

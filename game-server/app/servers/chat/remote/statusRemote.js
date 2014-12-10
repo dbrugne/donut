@@ -1,4 +1,4 @@
-var debug = require('debug')('donut:server:statusRemote');
+var logger = require('pomelo-logger').getLogger('donut', __filename);
 var _ = require('underscore');
 var async = require('async');
 var User = require('../../../../../shared/models/user');
@@ -28,7 +28,7 @@ DisconnectRemote.prototype.online = function(uid, welcome, globalCallback) {
 
 	var that = this;
 
-	debug('online call for user '+uid);
+	logger.debug('online call for user '+uid);
 
 	async.waterfall([
 
@@ -40,7 +40,6 @@ DisconnectRemote.prototype.online = function(uid, welcome, globalCallback) {
 				if (err)
 					return callback('Error while updating user online status: '+err);
 
-				debug('USER '+uid+' SET AS ONLINE');
 				return callback(null);
 			});
 		},
@@ -66,8 +65,7 @@ DisconnectRemote.prototype.online = function(uid, welcome, globalCallback) {
 				if (err)
 					return callback(err);
 
-				debug('inform following rooms: ');
-				debug(roomsToInform);
+				logger.debug('inform following rooms: ', roomsToInform);
 				return callback(null, event);
 			});
 		},
@@ -101,7 +99,7 @@ DisconnectRemote.prototype.online = function(uid, welcome, globalCallback) {
 		}
 
 	], function(err, event) {
-		debug('online done for user '+uid);
+		logger.debug('online done for user '+uid);
 		return globalCallback(err);
 	});
 
@@ -139,7 +137,6 @@ DisconnectRemote.prototype.offline = function(uid, globalCallback) {
 				if (err)
 					return callback('Error while updating user offliness: '+err);
 
-				debug('USER '+uid+' SET AS OFFLINE');
 				return callback(null, user);
 			});
 		},
@@ -165,8 +162,7 @@ DisconnectRemote.prototype.offline = function(uid, globalCallback) {
 				if (err)
 					return callback(err);
 
-			  debug('inform following rooms: ');
-				debug(roomsToInform);
+			  logger.debug('inform following rooms: ', roomsToInform);
 				return callback(null, user, event);
 			});
 		},
@@ -200,7 +196,7 @@ DisconnectRemote.prototype.offline = function(uid, globalCallback) {
 		if (err)
 			return globalCallback(err);
 
-		debug(uid+' ('+user.username+') goes offline');
+		logger.debug(uid+' ('+user.username+') goes offline');
 		return globalCallback(null);
 	});
 

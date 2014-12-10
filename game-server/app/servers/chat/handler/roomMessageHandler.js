@@ -1,3 +1,4 @@
+var logger = require('pomelo-logger').getLogger('donut', __filename);
 var async = require('async');
 var roomEmitter = require('../../../util/roomEmitter');
 var User = require('../../../../../shared/models/user');
@@ -110,7 +111,7 @@ handler.message = function(data, session, next) {
 
 	], function(err) {
 		if (err && err != 'admin')
-			debug(err);
+			logger.error(err);
 
 		// @todo restore log
 		//logger.log('room:message', socket.getUsername(), data.name, start);

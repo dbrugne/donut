@@ -1,4 +1,4 @@
-var debug = require('debug')('donut:server:entryHandler');
+var logger = require('pomelo-logger').getLogger('donut', __filename);
 var _ = require('underscore');
 var async = require('async');
 var conf = require('../../../../../shared/config/index');
@@ -27,7 +27,7 @@ var handler = Handler.prototype;
 handler.enter = function(msg, session, next) {
 	var that = this;
 
-	debug('connect request for '+session.__session__.__socket__.socket.getUserId()+'@'+session.frontendId+' sessionId: '+session.id);
+	logger.debug('connect request for '+session.__session__.__socket__.socket.getUserId()+'@'+session.frontendId+' sessionId: '+session.id);
 
 	var uid = false;
 	var firstClient = true;
@@ -44,7 +44,7 @@ handler.enter = function(msg, session, next) {
 			if (!uid)
 			  return callback('Unable to determine session uid');
 
-			debug('bind session to user '+uid);
+			logger.debug('bind session to user '+uid);
 			session.bind(uid);
 
 			// disconnect event
@@ -57,7 +57,7 @@ handler.enter = function(msg, session, next) {
 			// another session already exists on this frontend for this uid?
 			var currentUidSessions = that.app.get('sessionService').getByUid(uid);
 			if (currentUidSessions && currentUidSessions.length > 1) {
-				debug('at least another session exists for this user on this frontend: [%s] [%s] (firstClient=false)', session.uid, session.frontendId);
+				logger.debug('at least another session exists for this user on this frontend: [%s] [%s] (firstClient=false)', session.uid, session.frontendId);
 				firstClient = false;
 				return callback(null);
 			}
@@ -150,7 +150,7 @@ handler.enter = function(msg, session, next) {
 				welcome,
 				function(err) {
 					if (err)
-						debug('Error while statusRemote.online: '+err);
+						logger.error('Error while statusRemote.online: '+err);
 				}
 			);
 
@@ -160,7 +160,7 @@ handler.enter = function(msg, session, next) {
 
 	], function(err, welcome) {
 		if (err) {
-			debug(err);
+			logger.error(err);
 			return next(null, { code: 500, error: true, msg: err });
 		}
 
@@ -179,7 +179,7 @@ var onUserLeave = function exit(app, session) {
 	if(!session || !session.uid)
 		return; // could happen if a uid wasn't binded before disconnect (crash, bug, debug session, ...)
 
-	debug('disconnect request for '+session.uid+'@'+app.get('serverId'));
+	logger.debug('disconnect request for '+session.uid+'@'+app.get('serverId'));
 
 	var that = this;
 	var lastClient = false;
@@ -189,11 +189,10 @@ var onUserLeave = function exit(app, session) {
 		function isLastClient(callback) {
 			app.statusService.getStatusByUid(session.uid, function(err, status) {
 				if (err)
-					return debug('Error while retrieving user status: '+err);
+					return logger.error('Error while retrieving user status: '+err);
 
 				// At least an other socket is live for this user or not
 				lastClient = !status;
-				debug('IMPORTANT !!! disconnect is lastClient: ', lastClient);
 
 				return callback(null);
 			});
@@ -208,7 +207,7 @@ var onUserLeave = function exit(app, session) {
 				session.uid,
 				function(err) {
 					if (err)
-						debug('Error while statusRemote.offline: '+err);
+						logger.error('Error while statusRemote.offline: '+err);
 				}
 			);
 
@@ -218,7 +217,7 @@ var onUserLeave = function exit(app, session) {
 
 	], function(err) {
 		if (err)
-			debug('Error while disconnecting user: '+err);
+			logger.error('Error while disconnecting user: '+err);
 	});
 
 };
