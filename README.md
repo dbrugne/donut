@@ -1,21 +1,13 @@
 donut
 ====
 
-TODO:
 - Wiki installation projet
-- Recherche dev node/js
-- Factorisation/schéma (https://www.draw.io/) connect/disconnect/status
 
 ## Pomelog migration
-* Online/offline // connect/disconnect
-* Route/historize message to room
-* Route/historize message to user
-
+* Repair auto-reconnect
+* Use only pomelo logger and see if it is possible to view it on backend in realtime
 * Authentication, check that it's impossible to open a websocket if i'm not logged
-* Broadcast to a particular room
 * Management of data in req/res, auto remove empty/null/undefined key in Object
-
-[ ] Add a push on ShopPaintball homepage and footer
 
 History
 [ ] Remove need of color for default avatar
