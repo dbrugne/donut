@@ -19,6 +19,7 @@ exports.config = {
      * issues with the agent, 'info' and higher will impose the least overhead on
      * production applications.
      */
-    level : 'info'
+    level : 'info',
+    filepath : require('path').join(__dirname, '/logs/newrelic_agent.log')
   }
 };
