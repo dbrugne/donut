@@ -1,6 +1,6 @@
 var conf = require('../../../shared/config/index');
 var session = require('express-session');
-var redisStore = require('../../../shared/authentication/redisSessions');
+var redisStore = require('../../../shared/authentication/redisStore');
 // @todo : allowing cookies for subdomains (adding domain to cookie{}) : http://stackoverflow.com/questions/11850977/sessions-across-subdomains-in-express
 
 module.exports = session({

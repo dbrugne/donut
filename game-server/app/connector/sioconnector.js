@@ -6,7 +6,7 @@ var socketio = require('socket.io');
 var socketioSocket = require('./siosocket');
 var socketioRedis = require('socket.io-redis');
 var socketioPassport = require('passport.socketio');
-var redisStore = require('../../../shared/authentication/redisSessions');
+var redisStore = require('../../../shared/authentication/redisStore');
 var cookieParser = require('cookie-parser');
 var passport = require('../../../shared/authentication/passport');
 
