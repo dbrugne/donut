@@ -142,12 +142,12 @@ handler.join = function(data, session, next) {
 					if (err)
 						return callback('Error while subscribing user '+session.uid+' in '+room.name+': '+err);
 
-					return callback(null, user, room, sids);
+					return callback(null, user, room);
 				});
 			});
 		},
 
-		function getWelcomeData(user, room, sids, callback) {
+		function getWelcomeData(user, room, callback) {
 			roomDataHelper(that.app, user._id.toString(), room.name, function(err, roomData) {
 				if (err)
 					return callback(err);
@@ -155,27 +155,20 @@ handler.join = function(data, session, next) {
 				if (roomData == null)
 					return callback('roomDataHelper was unable to return excepted room data: '+room.name);
 
-				return callback(null, user, room, sids, roomData);
+				return callback(null, user, room, roomData);
 			});
 		},
 
-		function sendToUserClients(user, room, sids, roomData, callback) {
-			var uids = [];
-			_.each(sids, function(sid) {
-				uids.push({
-					uid: session.uid,
-					sid: sid
-				});
-			});
-			that.app.channelService.pushMessageByUids('room:join', roomData, uids, {}, function(err) {
+		function sendToUserClients(user, room, roomData, callback) {
+			that.app.globalChannelService.pushMessage('connector', 'room:join', roomData, 'user:'+session.uid, {}, function(err) {
 				if (err)
-				  return callback('Error while forwarding room:join message to user clients: '+err);
+					return callback('Error while sending room:join message to user clients: '+err);
 
-				return callback(null, user, room, sids, roomData);
+				return callback(null, user, room, roomData);
 			});
 		}
 
-	], function(err, user, room, sids, roomData) {
+	], function(err, user, room, roomData) {
 		if (err)
 			return next(null, {code: 500, err: err});
 

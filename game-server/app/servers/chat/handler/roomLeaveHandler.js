@@ -101,24 +101,17 @@ handler.leave = function(data, session, next) {
 					if (err)
 						return callback('Error while unsubscribing user '+session.uid+' from '+room.name+': '+err);
 
-					return callback(null, user, room, sids);
+					return callback(null, user, room);
 				});
 			});
 		},
 
-		function sendToUserClients(user, room, sids, callback) {
-			var uids = [];
-			_.each(sids, function(sid) {
-				uids.push({
-					uid: session.uid,
-					sid: sid
-				});
-			});
-			that.app.channelService.pushMessageByUids('room:leave', {name: room.name}, uids, {}, function(err) {
+		function sendToUserClients(user, room, callback) {
+			that.app.globalChannelService.pushMessage('connector', 'room:leave', {name: room.name}, 'user:'+session.uid, {}, function(err) {
 				if (err)
-					return callback('Error while forwarding room:leave message to user clients: '+err);
+					return callback('Error while sending room:leave message to user clients: '+err);
 
-				return callback(null, user, room, sids);
+				return callback(null, user, room, roomData);
 			});
 		},
 
@@ -126,7 +119,7 @@ handler.leave = function(data, session, next) {
 		 * This step happen AFTER user/room persistence and room subscription
 		 * to avoid noisy notifications
 		 */
-		function sendToUsers(user, room, sids, callback) {
+		function sendToUsers(user, room, callback) {
 			var event = {
 				user_id: user._id.toString(),
 				username: user.username,
