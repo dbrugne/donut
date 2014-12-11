@@ -383,7 +383,7 @@ define([
       if (model == undefined) {
         // Not already open
         this.thisDiscussionShouldBeFocusedOnSuccess = username;
-        onetoones.openPing(username);
+        onetoones.join(username);
         return;
       } else {
         this.focus(model);

@@ -54,6 +54,10 @@ define([
         that.debug(['io:in:room:leave', data]);
         that.trigger('room:leave', data);
       });
+      pomelo.on('room:message', function(data) {
+        that.debug(['io:in:room:message', data]);
+        that.trigger('room:message', data);
+      });
       pomelo.on('room:topic', function(data) {
         that.debug(['io:in:room:topic', data]);
         that.trigger('room:topic', data);
@@ -65,10 +69,6 @@ define([
       pomelo.on('room:out', function(data) {
         that.debug(['io:in:room:out', data]);
         that.trigger('room:out', data);
-      });
-      pomelo.on('room:message', function(data) {
-        that.debug(['io:in:room:message', data]);
-        that.trigger('room:message', data);
       });
       pomelo.on('room:read', function(data) {
         that.debug(['io:in:room:read', data]);
@@ -106,13 +106,17 @@ define([
       // USER EVENTS
       // ======================================================
 
+      pomelo.on('user:join', function(data) {
+        that.debug(['io:in:user:join', data]);
+        that.trigger('user:join', data);
+      });
       pomelo.on('user:leave', function(data) {
         that.debug(['io:in:user:leave', data]);
         that.trigger('user:leave', data);
       });
-      pomelo.on('user:welcome', function(data) {
-        that.debug(['io:in:user:welcome', data]);
-        that.trigger('user:welcome', data);
+      pomelo.on('user:message', function(data) {
+        that.debug(['io:in:user:message', data]);
+        that.trigger('user:message', data);
       });
       pomelo.on('user:online', function(data) {
         that.debug(['io:in:user:online', data]);
@@ -121,10 +125,6 @@ define([
       pomelo.on('user:offline', function(data) {
         that.debug(['io:in:user:offline', data]);
         that.trigger('user:offline', data);
-      });
-      pomelo.on('user:message', function(data) {
-        that.debug(['io:in:user:message', data]);
-        that.trigger('user:message', data);
       });
       pomelo.on('user:profile', function(data) {
         that.debug(['io:in:user:profile', data]);
@@ -221,7 +221,6 @@ define([
         });
       });
     },
-
     disconnect: function() {
       pomelo.disconnect();
     },
@@ -299,15 +298,15 @@ define([
       pomelo.notify('chat.roomLeaveHandler.leave', data);
       this.debug(['io:out:room:leave', data]);
     },
-    topic: function(name, topic) {
-      var data = {name: name, topic: topic};
-      //this.socket.emit('room:topic', data);
-      this.debug(['io:out:room:topic', data]);
-    },
     roomMessage: function(name, message) {
       var data = {name: name, message: message};
       pomelo.notify('chat.roomMessageHandler.message', data);
       this.debug(['io:out:room:message', data]);
+    },
+    topic: function(name, topic) {
+      var data = {name: name, topic: topic};
+      //this.socket.emit('room:topic', data);
+      this.debug(['io:out:room:topic', data]);
     },
     roomRead: function(name) {
       var data = {name: name};
@@ -352,19 +351,28 @@ define([
 
     userJoin: function(username) {
       var data = {username: username};
-      //this.socket.emit('user:join', data);
       this.debug(['io:out:user:join', data]);
+      var that = this;
+      pomelo.request(
+        'chat.userJoinHandler.join',
+        data,
+        function(response) {
+          if (response.err)
+            that.debug(['io:out:user:join error: ', response]);
+        }
+      );
     },
     userLeave: function(username) {
       var data = {username: username};
-      //this.socket.emit('user:leave', data);
+      pomelo.notify('chat.userLeaveHandler.leave', data);
       this.debug(['io:out:user:leave', data]);
     },
     userMessage: function(username, message) {
       var data = {username: username, message: message};
-      //this.socket.emit('user:message', data);
+      pomelo.notify('chat.userMessageHandler.message', data);
       this.debug(['io:out:user:message', data]);
     },
+    
     userProfile: function(username) {
       var data = {username: username};
       //this.socket.emit('user:profile', data);

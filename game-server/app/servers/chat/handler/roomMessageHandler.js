@@ -17,7 +17,7 @@ var Handler = function(app) {
 var handler = Handler.prototype;
 
 /**
- * Description
+ * Handle room message logic
  *
  * @param {Object} data message from client
  * @param {Object} session
@@ -82,15 +82,15 @@ handler.message = function(data, session, next) {
 		function prepareEvent(room, user, callback) {
 
 			// Input filtering
-			data.message = inputUtil.filter(data.message, 512);
+			var message = inputUtil.filter(data.message, 512);
 
-			if (data.message == '')
+			if (message == '')
 				return callback('Empty room:message');
 
 			var event = {
 				name: room.name,
 				time: Date.now(),
-				message: data.message,
+				message: message,
 				user_id: user._id.toString(),
 				username: user.username,
 				avatar: user._avatar(),

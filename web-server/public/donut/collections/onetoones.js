@@ -25,17 +25,21 @@ define([
 
     initialize: function() {
       this.listenTo(client, 'disconnected', this.onDisconnect);
-      this.listenTo(client, 'user:welcome', this.addModel);
-      this.listenTo(client, 'user:leave', this.onLeave);
       this.listenTo(client, 'user:message', this.onMessage);
       this.listenTo(client, 'user:updated', this.onUpdated);
       this.listenTo(client, 'user:online', this.onUserOnline);
       this.listenTo(client, 'user:offline', this.onUserOffline);
       this.listenTo(client, 'user:history', this.onHistory);
+      this.listenTo(client, 'user:join', this.onJoin);
+      this.listenTo(client, 'user:leave', this.onLeave);
     },
-    openPing: function(username) {
+    join: function(username) {
       // we ask to server to open this one to one
       client.userJoin(username);
+    },
+    onJoin: function(data) {
+      // server ask to client to open this one to one in IHM
+      this.addModel(data);
     },
     addModel: function(user, reconnect) {
       // server confirm that we was joined to the one to one and give us some data on user
@@ -118,6 +122,8 @@ define([
 
         withUser.key = key;
         model = this.addModel(withUser);
+        // @todo : bug, in this case we haven't the userWith poster/website/status/...
+        // @todo : add RPC call userProfile
       }
 
       return model;

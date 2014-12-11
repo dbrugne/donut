@@ -108,7 +108,6 @@ define([
         model.onDisconnect();
       });
     },
-
     onIn: function(data) {
       var model;
       if (!data || !data.name || !(model = this.get(data.name)))

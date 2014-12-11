@@ -91,7 +91,7 @@ WelcomeRemote.prototype.getMessage = function(uid, frontendId, globalCallback) {
 				if (!one.username)
 					return logger.info('Empty username found in populateOnes for user: '+uid);
 				parallels.push(function(fn) {
-					oneDataHelper(uid, one.username, function(err, one) {
+					oneDataHelper(that.app, uid, one.username, function(err, one) {
 						if (err)
 							return fn(err);
 						else

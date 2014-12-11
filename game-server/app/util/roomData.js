@@ -72,7 +72,7 @@ module.exports = function(app, uid, name, fn) {
     },
 
     function history(room, users, callback) {
-      // get last 250 events
+      // get last n events
       retriever(room.name, uid, null, function(err, history) {
         if (err)
           return callback(err);

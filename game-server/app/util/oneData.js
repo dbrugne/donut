@@ -9,7 +9,7 @@ var retriever = require('../../../shared/models/historyone').retrieve();
  *   [- user entity]
  *   - history
  */
-module.exports = function(uid, username, fn) {
+module.exports = function(app, uid, username, fn) {
 
   async.waterfall([
 
@@ -28,21 +28,30 @@ module.exports = function(uid, username, fn) {
       });
     },
 
-    function history(user, callback) {
-      // get last 250 events
+    function status(user, callback) {
+      app.statusService.getStatusByUid(user._id.toString(), function(err, liveStatus) {
+        if (err)
+          return callback('Error while retrieving user '+user._id.toString()+' status: '+err);
+
+        return callback(null, user, liveStatus);
+      });
+    },
+
+    function history(user, liveStatus, callback) {
+      // get last n events
       retriever(uid, user._id.toString(), null, function(err, history) { // MongoDB .update({$addToSet}) seems to work only with String, toString() is important!
         if (err)
           return callback(err);
 
-        return callback(null, user, history);
+        return callback(null, user, liveStatus, history);
       });
     },
 
-    function prepare(user, history, callback) {
-      var status = (user.online)
+    function prepare(user, liveStatus, history, callback) {
+      var status = (liveStatus)
         ? 'online'
         : 'offline';
-      var onlined = (user.online)
+      var onlined = (liveStatus)
         ? user.lastonline_at
         : user.lastoffline_at;
       var oneData = {
