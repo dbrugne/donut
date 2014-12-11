@@ -85,9 +85,14 @@ define([
       if (!this.get('op'))
         return false;
 
-      return (this.get('op').indexOf(currentUser.get('user_id')) !== -1)
-          ? true
-          : false;
+      var isOp = false;
+      _.each(this.get('op'), function(op) {
+        if (op.user_id == currentUser.get('user_id')) {
+          isOp = true;
+        }
+      });
+
+      return isOp;
     },
 
     onDisconnect: function() {

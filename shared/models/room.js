@@ -47,7 +47,7 @@ roomSchema.statics.validateName = function (name) {
 }
 
 roomSchema.statics.validateTopic = function (topic) {
-  var pattern = /^.{0,200}$/i;
+  var pattern = /^.{0,512}$/i;
   if (pattern.test(topic)) {
     return true;
   }
@@ -87,6 +87,40 @@ roomSchema.methods.posterId = function() {
   if (!data[1]) return '';
   var id = data[1].substr(0, data[1].lastIndexOf('.'));
   return id;
+};
+
+roomSchema.methods.isOwner = function(user_id) {
+  if (!this.owner)
+    return false;
+
+  if (
+    (typeof this.owner.toString == 'function' && this.owner.toString() == user_id) // dry
+    || (this.owner._id && this.owner._id.toString() == user_id) // hydrated
+  ) return true;
+
+  return false;
+};
+
+roomSchema.methods.isOp = function(user_id) {
+  if (!this.op)
+    return false;
+
+  for (var i=0; i<this.op.length; i++) {
+    var u = this.op[i];
+    if (
+      (typeof u.toString == 'function' && u.toString() == user_id) // dry
+      || (u._id && u._id.toString() == user_id) // hydrated
+    ) return true;
+  }
+
+  return false;
+};
+
+roomSchema.methods.isOwnerOrOp = function(user_id) {
+  if (this.isOwner(user_id) || this.isOp(user_id))
+    return true;
+
+  return false;
 };
 
 module.exports = mongoose.model('Room', roomSchema);

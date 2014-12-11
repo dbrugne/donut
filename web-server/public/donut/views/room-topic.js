@@ -77,7 +77,7 @@ define([
 
       var newTopic = this.$el.find('.topic-input').val();
       // only if not too long
-      if (newTopic.length <= 130) client.topic(this.model.get('name'), newTopic);
+      if (newTopic.length <= 512) client.roomTopic(this.model.get('name'), newTopic);
 
       // reset form state
       this.$el.find('.topic-input').val('');

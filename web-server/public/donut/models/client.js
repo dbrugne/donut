@@ -303,10 +303,18 @@ define([
       pomelo.notify('chat.roomMessageHandler.message', data);
       this.debug(['io:out:room:message', data]);
     },
-    topic: function(name, topic) {
+    roomTopic: function(name, topic) {
       var data = {name: name, topic: topic};
-      //this.socket.emit('room:topic', data);
       this.debug(['io:out:room:topic', data]);
+      var that = this;
+      pomelo.request(
+        'chat.roomTopicHandler.topic',
+        data,
+        function(response) {
+          if (response.err)
+            that.debug(['io:out:room:topic error: ', response]);
+        }
+      );
     },
     roomRead: function(name) {
       var data = {name: name};
@@ -372,7 +380,6 @@ define([
       pomelo.notify('chat.userMessageHandler.message', data);
       this.debug(['io:out:user:message', data]);
     },
-    
     userProfile: function(username) {
       var data = {username: username};
       //this.socket.emit('user:profile', data);
