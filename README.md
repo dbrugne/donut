@@ -11,6 +11,7 @@ donut
 * Secure backend
 * Remove exit popin on frontend if connection is not established
 * Only display user with avatar/or Facebook/or online and room with avatar on homepage (but not for search)
+* Restore a var logger = require('../app/models/log'); and change console.log for pomelo logger
 
 History
 [ ] Remove need of color for default avatar
