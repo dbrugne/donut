@@ -9,6 +9,8 @@ donut
 * Authentication, check that it's impossible to open a websocket if i'm not logged
 * Management of data in req/res, auto remove empty/null/undefined key in Object
 * Secure backend
+* Remove exit popin on frontend if connection is not established
+* Only display user with avatar/or Facebook/or online and room with avatar on homepage (but not for search)
 
 History
 [ ] Remove need of color for default avatar
