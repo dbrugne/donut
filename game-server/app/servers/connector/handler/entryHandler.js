@@ -90,6 +90,25 @@ handler.enter = function(msg, session, next) {
 			);
 		},
 
+		function declareIdentity(welcome, callback) {
+			// add username in connection monitoring
+			that.app.components.__connection__.updateUserInfo(uid, {
+				username: welcome.user.username,
+				remote: session.__session__.__socket__.socket.handshake.address,
+				server: session.__session__.__socket__.socket.handshake.headers.host
+			});
+
+			// add username, avatar and color on session
+			session.set('username', welcome.user.username);
+			session.set('avatar', welcome.user.avatar);
+			session.set('color', welcome.user.color);
+			session.pushAll(function(err) {
+				if (err)
+				  return callback('Error while updating session infos: '+err);
+				return callback(null, welcome);
+			});
+		},
+
 		function subscribeRoomChannels(welcome, callback) {
 			if (welcome.rooms.length < 1)
 				return callback(null, welcome);
