@@ -8,6 +8,7 @@ donut
 * Use only pomelo logger and see if it is possible to view it on backend in realtime
 * Authentication, check that it's impossible to open a websocket if i'm not logged
 * Management of data in req/res, auto remove empty/null/undefined key in Object
+* Secure backend
 
 History
 [ ] Remove need of color for default avatar
