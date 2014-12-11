@@ -111,7 +111,7 @@ handler.leave = function(data, session, next) {
 				if (err)
 					return callback('Error while sending room:leave message to user clients: '+err);
 
-				return callback(null, user, room, roomData);
+				return callback(null, user, room);
 			});
 		},
 
