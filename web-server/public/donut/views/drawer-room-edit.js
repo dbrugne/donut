@@ -26,11 +26,11 @@ define([
       // show spinner as temp content
       this.render();
 
-      // ask for (editable) data
-      client.roomRead(this.roomName, true);
-
-      // on response show form
-      this.listenTo(client, 'room:read', this.onRead);
+      // ask for data
+      var that = this;
+      client.roomRead(this.roomName, function(data) {
+        that.onResponse(data);
+      });
 
       // on room:update callback
       this.listenTo(client, 'room:update', this.onUpdate);
@@ -40,8 +40,7 @@ define([
       this.$el.html(_.template(spinnerTemplate)());
       return this;
     },
-    onRead: function(room) {
-
+    onResponse: function(room) {
       this.roomName = room.name;
 
       // colorize drawer .opacity

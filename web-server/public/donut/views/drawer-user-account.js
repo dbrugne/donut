@@ -22,17 +22,17 @@ define([
       this.render();
 
       // ask for data
-      client.userRead();
-
-      // on response show form
-      this.listenTo(client, 'user:read', this.onRead);
+      var that = this;
+      client.userRead(currentUser.get('username'), function(data) {
+        that.onResponse(data);
+      });
     },
     render: function() {
       // render spinner only
       this.$el.html(_.template(spinnerTemplate)());
       return this;
     },
-    onRead: function(user) {
+    onResponse: function(user) {
       // colorize drawer .opacity
       if (user.color)
         this.trigger('color', user.color);

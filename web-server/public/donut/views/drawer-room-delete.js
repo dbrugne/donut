@@ -25,11 +25,11 @@ define([
       // show spinner as temp content
       this.render();
 
-      // ask for (editable) data
-      client.roomRead(this.roomName, true);
-
-      // on response show form
-      this.listenTo(client, 'room:read', this.onRead);
+      // ask for data
+      var that = this;
+      client.roomRead(this.roomName, function(data) {
+        that.onResponse(data);
+      });
 
       // on room:delete callback
       this.listenTo(client, 'room:delete', this.onDelete);
@@ -39,7 +39,7 @@ define([
       this.$el.html(_.template(spinnerTemplate)());
       return this;
     },
-    onRead: function(room) {
+    onResponse: function(room) {
       if (room.owner.user_id != currentUser.get('user_id'))
         return;
 

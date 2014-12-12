@@ -21,22 +21,20 @@ define([
       this.mainView = options.mainView;
       this.username = options.username;
 
-    // show spinner as temp content
-    this.render();
+      // show spinner as temp content
+      this.render();
 
-    // ask for data
-    client.userProfile(this.username);
-
-    // on response show profile
-    this.listenTo(client, 'user:profile', this.onProfile);
+      var that = this;
+      client.userRead(this.username, function(data) {
+        that.onResponse(data);
+      });
     },
     render: function () {
       // render spinner only
       this.$el.html(_.template(spinnerTemplate)());
       return this;
     },
-    onProfile: function (data) {
-      var user = data.user;
+    onResponse: function (user) {
       user.isCurrent = (user.user_id == currentUser.get('user_id'))
         ? true
         : false;

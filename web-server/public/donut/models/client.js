@@ -70,10 +70,6 @@ define([
         that.debug(['io:in:room:out', data]);
         that.trigger('room:out', data);
       });
-      pomelo.on('room:read', function(data) {
-        that.debug(['io:in:room:read', data]);
-        that.trigger('room:read', data);
-      });
       pomelo.on('room:update', function(data) {
         that.debug(['io:in:room:update', data]);
         that.trigger('room:update', data);
@@ -126,14 +122,6 @@ define([
         that.debug(['io:in:user:offline', data]);
         that.trigger('user:offline', data);
       });
-      pomelo.on('user:profile', function(data) {
-        that.debug(['io:in:user:profile', data]);
-        that.trigger('user:profile', data);
-      });
-      pomelo.on('user:read', function(data) {
-        that.debug(['io:in:user:read', data]);
-        that.trigger('user:read', data);
-      });
       pomelo.on('user:update', function(data) {
         that.debug(['io:in:user:update', data]);
         that.trigger('user:update', data);
@@ -170,7 +158,7 @@ define([
     connect: function(port) {
       var that = this;
 
-      if (pomelo.isConnected())
+      if (this.isConnected())
         this.disconnect();
 
       if (port) {
@@ -223,6 +211,9 @@ define([
     },
     disconnect: function() {
       pomelo.disconnect();
+    },
+    isConnected: function() {
+      return pomelo.isConnected();
     },
 
     // DEBUG METHODS
@@ -316,10 +307,20 @@ define([
         }
       );
     },
-    roomRead: function(name) {
+    roomRead: function(name, fn) {
       var data = {name: name};
-      //this.socket.emit('room:read', data);
       this.debug(['io:out:room:read', data]);
+      var that = this;
+      pomelo.request(
+        'chat.roomReadHandler.read',
+        data,
+        function(response) {
+          if (response.err)
+            return that.debug(['io:out:room:read error: ', response]);
+
+          return fn(response);
+        }
+      );
     },
     roomUpdate: function(name, fields) {
       var data = {name: name, data: fields};
@@ -380,14 +381,20 @@ define([
       pomelo.notify('chat.userMessageHandler.message', data);
       this.debug(['io:out:user:message', data]);
     },
-    userProfile: function(username) {
+    userRead: function(username, fn) {
       var data = {username: username};
-      //this.socket.emit('user:profile', data);
-      this.debug(['io:out:user:profile', data]);
-    },
-    userRead: function() {
-      //this.socket.emit('user:read', {});
-      this.debug(['io:out:user:read', {}]);
+      this.debug(['io:out:user:read', data]);
+      var that = this;
+      pomelo.request(
+        'chat.userReadHandler.read',
+        data,
+        function(response) {
+          if (response.err)
+            return that.debug(['io:out:user:read error: ', response]);
+
+          return fn(response);
+        }
+      );
     },
     userUpdate: function(fields) {
       var data = {data: fields};

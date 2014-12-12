@@ -24,18 +24,18 @@ define([
           // show spinner as temp content
           this.render();
 
-          // ask for data
-          client.roomRead(this.roomName);
-
-          // on response show profile
-          this.listenTo(client, 'room:read', this.onRead);
+        // ask for data
+        var that = this;
+        client.roomRead(this.roomName, function(data) {
+          that.onResponse(data);
+        });
       },
       render: function () {
           // render spinner only
           this.$el.html(_.template(spinnerTemplate)());
           return this;
       },
-      onRead: function (room) {
+      onResponse: function (room) {
         room.isOwner = (room.owner)
           ? (room.owner.user_id == currentUser.get('user_id'))
           ? true

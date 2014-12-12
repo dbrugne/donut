@@ -3,10 +3,10 @@
 </div>
 <div class="group">
     <div class="title"><%= t('account.emailandpassword.label') %></div>
-    <% if (user.email) { %>
+    <% if (user.account.email) { %>
     <p>
         <span class="labels"><%= t('account.email.label') %></span>
-        <span class="values"><%= user.email %> (<a href="/account/edit/email" target="_blank" id="email-modal-link"><%= t('global.change') %></a>)</span>
+        <span class="values"><%= user.account.email %> (<a href="/account/edit/email" target="_blank" id="email-modal-link"><%= t('global.change') %></a>)</span>
     </p>
     <p>
         <span class="labels"><%= t('account.password.label') %></span>
@@ -22,21 +22,21 @@
 
 <div class="group">
     <div class="title"><%= t('account.facebook.label') %></div>
-    <% if (user.facebook && user.facebook.token) { %>
+    <% if (user.account.facebook && user.account.facebook.token) { %>
     <p class="values"><%= t('account.facebook.help') %></p>
     <div class="facebook">
         <div class="infos">
-            <img class="avatar" src="https://graph.facebook.com/<%= user.facebook.id %>/picture"/>
+            <img class="avatar" src="https://graph.facebook.com/<%= user.account.facebook.id %>/picture"/>
             <p>
                 <span class="labels"><%= t('account.facebook.name') %></span>
-                <span class="values"><%= user.facebook.name %></span>
+                <span class="values"><%= user.account.facebook.name %></span>
             </p>
             <p>
                 <span class="labels"><%= t('account.facebook.email') %></span>
-                <span class="values"><%= user.facebook.email %></span>
+                <span class="values"><%= user.account.facebook.email %></span>
             </p>
         </div>
-        <% if (user.email) { %>
+        <% if (user.account.email) { %>
         <p class="unlink">
             <a href="/unlink/facebook" target="_blank" class="unlink"><%= t('account.facebook.unlink') %></a>
         </p>

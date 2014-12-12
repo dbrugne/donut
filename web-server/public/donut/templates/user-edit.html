@@ -34,7 +34,7 @@
     <label><%= t('edit.othersettings') %></label>
     <div class="checkbox">
         <label>
-            <input type="checkbox" class="autojoin" <% if (user.general) { %>checked<% } %>> <%= t('edit.autojoindonut.yes') %>
+            <input type="checkbox" class="autojoin" <% if (user.account.general) { %>checked<% } %>> <%= t('edit.autojoindonut.yes') %>
         </label>
     </div>
     <div class="form-group buttons">
