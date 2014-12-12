@@ -86,6 +86,10 @@
         identifier = defaultIdentifier;
       else
         identifier = defaultIdentifier.substr(0, defaultIdentifier.indexOf('.png'));
+
+      // remove blur (if set) for default images
+      if (options.effect)
+        delete options.effect;
     }
 
     return cloudinaryLibrary().url(identifier, options);
@@ -106,6 +110,6 @@
     if (!identifier)
       return '';
 
-    return _url(identifier, '', 430, 1100, 'center', 'blur:800');
+    return _url(identifier, posterDefault, 430, 1100, 'center', 'blur:800');
   };
 })((typeof jQuery != 'undefined')?jQuery:false);
