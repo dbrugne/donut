@@ -110,7 +110,7 @@ handler.enter = function(msg, session, next) {
 		},
 
 		function subscribeRoomChannels(welcome, callback) {
-			if (welcome.rooms.length < 1)
+			if (!welcome.rooms || welcome.rooms.length < 1)
 				return callback(null, welcome);
 
 			var parallels = [];
