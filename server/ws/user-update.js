@@ -4,7 +4,7 @@ var logger = require('../app/models/log');
 var User = require('../app/models/user');
 var validator = require('validator');
 var sanitize = require('sanitize-caja');
-var cloudinary = require('../../shared/io/cloudinary');
+var cloudinary = require('../../shared/cloudinary/cloudinary');
 
 module.exports = function(io, socket, data) {
 

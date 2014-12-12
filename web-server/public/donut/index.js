@@ -15,7 +15,7 @@ require.config({
     'jquery.iframe-transport'     : '../vendor/blueimp-file-upload/js/jquery.iframe-transport',
     'jquery.fileupload'           : '../vendor/blueimp-file-upload/js/jquery.fileupload',
     'jquery.cloudinary'           : '../vendor/cloudinary_js/js/jquery.cloudinary',
-    'jquery.cloudinary-donut'     : '../javascripts/plugins/jquery.cloudinary-donut',
+    'jquery.cloudinary-donut'     : '/cloudinary',
     'jquery.mcs'                  : '../vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar',
     'jquery.mousewheel'           : '../vendor/jquery-mousewheel/jquery.mousewheel',
     'jquery.insertatcaret'        : '../javascripts/plugins/jquery.insertatcaret',

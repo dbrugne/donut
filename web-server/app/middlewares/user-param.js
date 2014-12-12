@@ -2,7 +2,7 @@ var async = require('async');
 var _ = require('underscore');
 var User = require('../../../shared/models/user');
 var Room = require('../../../shared/models/room');
-var cloudinary = require('../../../shared/io/cloudinary');
+var cloudinary = require('../../../shared/cloudinary/cloudinary');
 
 module.exports = function(req, res, next, username) {
 
@@ -33,7 +33,7 @@ module.exports = function(req, res, next, username) {
 
       // avatar & poster
       user.avatar = cloudinary.userAvatar(user._avatar(), 160, user.color);
-      user.poster = cloudinary.poster(user.poster, user.color);
+      user.poster = cloudinary.poster(user._poster(), user.color);
 
       // url
       user.url = req.protocol + '://' + req.get('host') + '/user/' + user.username.toLocaleLowerCase();
@@ -64,7 +64,7 @@ module.exports = function(req, res, next, username) {
           if (room.owner)
             room.owner.url = req.protocol + '://' + req.get('host') + '/user/' + room.owner.username.toLocaleLowerCase();
 
-          room.avatar = cloudinary.roomAvatar(room.avatar, 80, room.color);
+          room.avatar = cloudinary.roomAvatar(dbroom._avatar(), 80, room.color);
           room.url = (room.name)
             ? req.protocol + '://' + req.get('host') + '/room/' + room.name.replace('#', '').toLocaleLowerCase()
             : '';

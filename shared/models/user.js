@@ -142,16 +142,35 @@ userSchema.methods.usernameAvailability = function (username, success, error) {
   });
 };
 
-// Method to get avatar identifier (including Facebook logic)
+/**
+ * Method to get the avatar/poster token used to generated the avatar URL on IHM
+ *
+ * cloudinary={CLOUDINARY_ID}#!#color={COLOR}[#!#facebook={FACEBOOK_TOKEN}]
+ */
 userSchema.methods._avatar = function() {
-  if (!this.avatar
-    && this.facebook
-    && this.facebook.token
-    && this.facebook.id) {
-    return 'facebook/'+this.facebook.id;
-  }
+  var token = [];
 
-  return this.avatar;
+  if (this.avatar)
+    token.push('cloudinary='+this.avatar);
+
+  if (this.color)
+    token.push('color='+this.color);
+
+  if (this.facebook && this.facebook.token && this.facebook.id)
+    token.push('facebook='+this.facebook.id);
+
+  return token.join('#!#');
+};
+userSchema.methods._poster = function() {
+  var token = [];
+
+  if (this.poster)
+    token.push('cloudinary='+this.poster);
+
+  if (this.color)
+    token.push('color='+this.color);
+
+  return token.join('#!#');
 };
 
 userSchema.methods.avatarId = function() {

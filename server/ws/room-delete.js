@@ -1,7 +1,7 @@
 var async = require('async');
 var helper = require('./helper');
 var logger = require('../app/models/log');
-var cloudinary = require('../../shared/io/cloudinary');
+var cloudinary = require('../../shared/cloudinary/cloudinary');
 var i18next = require('../../shared/util/i18next');
 var User = require('../app/models/user');
 

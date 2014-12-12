@@ -1,6 +1,6 @@
 var _ = require('underscore');
 var Room = require('../../../shared/models/room');
-var cloudinary = require('../../../shared/io/cloudinary');
+var cloudinary = require('../../../shared/cloudinary/cloudinary');
 
 module.exports = function(req, res, next, roomname) {
   if (roomname == undefined || roomname == '') {
@@ -21,8 +21,8 @@ module.exports = function(req, res, next, roomname) {
 
       if (room) {
         // avatar & poster
-        room.avatar = cloudinary.roomAvatar(room.avatar, 160, room.color);
-        room.poster = cloudinary.poster(room.poster, room.color);
+        room.avatar = cloudinary.roomAvatar(room._avatar(), 160, room.color);
+        room.poster = cloudinary.poster(room._poster(), room.color);
 
         // url
         room.url = req.protocol + '://' + req.get('host') + '/room/' + room.name.replace('#', '').toLocaleLowerCase();

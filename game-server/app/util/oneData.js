@@ -58,7 +58,7 @@ module.exports = function(app, uid, username, fn) {
         user_id   : user._id.toString(),
         username  : user.username,
         avatar    : user._avatar(),
-        poster    : user.poster,
+        poster    : user._poster(),
         color     : user.color,
         location  : user.location,
         website   : user.website,

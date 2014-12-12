@@ -57,7 +57,7 @@ handler.home = function(msg, session, next) {
 							topic      : room.topic,
 							description: room.description,
 							color      : room.color,
-							avatar     : room.avatar,
+							avatar     : room._avatar(),
 							owner      : _owner,
 							users      : count,
 							lastjoin_at: new Date(room.lastjoin_at).getTime(),

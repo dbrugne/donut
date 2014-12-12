@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var isLoggedIn = require('../middlewares/isloggedin');
-var cloudinary = require('../../../shared/io/cloudinary');
+var cloudinary = require('../../../shared/cloudinary/cloudinary');
 var i18next = require('../../../shared/util/i18next');
 
 router.get('/account/delete', isLoggedIn, function(req, res) {

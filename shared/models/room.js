@@ -73,6 +73,34 @@ roomSchema.statics.retrieveRoom = function (name) {
     .populate('op', 'username avatar color facebook');
 };
 
+/**
+ * Method to get the avatar/poster token used to generated the avatar URL on IHM
+ *
+ * cloudinary={CLOUDINARY_ID}#!#color={COLOR}[#!#facebook={FACEBOOK_TOKEN}]
+ */
+roomSchema.methods._avatar = function() {
+  var token = [];
+
+  if (this.avatar)
+    token.push('cloudinary='+this.avatar);
+
+  if (this.color)
+    token.push('color='+this.color);
+
+  return token.join('#!#');
+};
+roomSchema.methods._poster = function() {
+  var token = [];
+
+  if (this.poster)
+    token.push('cloudinary='+this.poster);
+
+  if (this.color)
+    token.push('color='+this.color);
+
+  return token.join('#!#');
+};
+
 roomSchema.methods.avatarId = function() {
   if (!this.avatar) return '';
   var data = this.avatar.split('/');
