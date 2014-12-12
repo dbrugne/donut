@@ -75,6 +75,15 @@ define([
         history: data.history,
         more: data.more
       });
+    },
+    history: function(since) {
+      var that = this;
+      client.userHistory(this.get('username'), since, function(data) {
+        that.trigger('historyEvents', {
+          history: data.history,
+          more: data.more
+        });
+      });
     }
 
   });

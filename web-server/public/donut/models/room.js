@@ -226,6 +226,15 @@ define([
         history: data.history,
         more: data.more
       });
+    },
+    history: function(since) {
+      var that = this;
+      client.roomHistory(this.get('name'), since, function(data) {
+        that.trigger('historyEvents', {
+          history: data.history,
+          more: data.more
+        });
+      });
     }
 
   });

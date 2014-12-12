@@ -2,13 +2,12 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'models/client',
   'models/event',
   'moment',
   'views/window',
   'text!templates/events.html',
   'text!templates/event.html'
-], function ($, _, Backbone, client, EventModel, moment, windowView, eventsTemplate, eventTemplate) {
+], function ($, _, Backbone, EventModel, moment, windowView, eventsTemplate, eventTemplate) {
   var EventsView = Backbone.View.extend({
 
     template: _.template(eventsTemplate),
@@ -349,11 +348,7 @@ define([
         ? null
         : first.data('time');
 
-      // @todo : cleanup this code, call on model for example
-      if (this.model.get('type') == 'room')
-        client.roomHistory(this.model.get('name'), since, '');
-      else if (this.model.get('type') == 'onetoone')
-        client.userHistory(this.model.get('username'), since, '');
+      this.model.history(since);
     },
     onHistoryEvents: function(data) {
       this.addBatchEvents(data.history, data.more, 'history');

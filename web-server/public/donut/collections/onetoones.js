@@ -29,7 +29,6 @@ define([
       this.listenTo(client, 'user:updated', this.onUpdated);
       this.listenTo(client, 'user:online', this.onUserOnline);
       this.listenTo(client, 'user:offline', this.onUserOffline);
-      this.listenTo(client, 'user:history', this.onHistory);
       this.listenTo(client, 'user:join', this.onJoin);
       this.listenTo(client, 'user:leave', this.onLeave);
     },
@@ -172,13 +171,6 @@ define([
         return;
 
       model.onUserOffline(data);
-    },
-    onHistory: function(data) {
-      var model = this.getModelFromEvent(data, false);
-      if (!model)
-        return;
-
-      model.onHistory(data);
     }
 
   });

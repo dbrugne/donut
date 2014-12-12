@@ -82,10 +82,6 @@ define([
         that.debug(['io:in:room:delete', data]);
         that.trigger('room:delete', data);
       });
-      pomelo.on('room:history', function(data) {
-        that.debug(['io:in:room:history', data]);
-        that.trigger('room:history', data);
-      });
       pomelo.on('room:op', function(data) {
         that.debug(['io:in:room:op', data]);
         that.trigger('room:op', data);
@@ -134,11 +130,6 @@ define([
         that.debug(['io:in:user:status', data]);
         that.trigger('user:status', data);
       });
-      pomelo.on('user:history', function(data) {
-        that.debug(['io:in:user:history', data]);
-        that.trigger('user:history', data);
-      });
-
     },
 
     debug: function(message) {
@@ -332,10 +323,20 @@ define([
       //this.socket.emit('room:delete', data);
       this.debug(['io:out:room:delete', data]);
     },
-    roomHistory: function(name, since, until) {
-      var data = {name: name, since: since, until: until};
-      //this.socket.emit('room:history', data);
+    roomHistory: function(name, since, fn) {
+      var data = {name: name, since: since};
       this.debug(['io:out:room:history', data]);
+      var that = this;
+      pomelo.request(
+        'chat.roomHistoryHandler.history',
+        data,
+        function(response) {
+          if (response.err)
+            return that.debug(['io:out:room:history error: ', response]);
+
+          return fn(response);
+        }
+      );
     },
     roomOp: function(name, username) {
       var data = {name: name, username: username};
@@ -406,10 +407,20 @@ define([
       //this.socket.emit('user:status', data);
       this.debug(['io:out:user:status', data]);
     },
-    userHistory: function(username, since, until) {
-      var data = {username: username, since: since, until: until};
-      //this.socket.emit('user:history', data);
+    userHistory: function(username, since, fn) {
+      var data = {username: username, since: since};
       this.debug(['io:out:user:history', data]);
+      var that = this;
+      pomelo.request(
+        'chat.userHistoryHandler.history',
+        data,
+        function(response) {
+          if (response.err)
+            return that.debug(['io:out:user:history error: ', response]);
+
+          return fn(response);
+        }
+      );
     }
 
   });

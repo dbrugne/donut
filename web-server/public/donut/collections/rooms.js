@@ -33,7 +33,6 @@ define([
       this.listenTo(client, 'room:op', this.onOp);
       this.listenTo(client, 'room:deop', this.onDeop);
       this.listenTo(client, 'room:updated', this.onUpdated);
-      this.listenTo(client, 'room:history', this.onHistory);
       this.listenTo(client, 'user:online', this.onUserOnline);
       this.listenTo(client, 'user:offline', this.onUserOffline);
       this.listenTo(client, 'room:kick', this.onKick);
@@ -156,13 +155,6 @@ define([
         return;
 
       model.onUpdated(data);
-    },
-    onHistory: function(data) {
-      var model;
-      if (!data || !data.name || !(model = this.get(data.name)))
-        return;
-
-      model.onHistory(data);
     },
     onUserOnline: function(data) {
       var model;
