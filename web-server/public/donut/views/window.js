@@ -128,12 +128,17 @@ define([
       return model; // could be 'undefined'
     },
     onClose: function() {
-      // only if at least one room is open
-      if (!this.preventPopin && (rooms && rooms.length > 0) || (onetoones && onetoones.length > 0)) {
-        return $.t("chat.closemessage");
-      } else {
+      // sometimes we prevent exit popin
+      if (this.preventPopin)
         return;
-      }
+      // only if at least one discussion is open
+      if ((!rooms || rooms.length < 1) && (!onetoones || onetoones.length < 1))
+        return;
+      // only if connected
+      if (!client.isConnected())
+        return;
+
+      return $.t("chat.closemessage");
     },
     onNotLogged: function() {
       this.preventPopin = true;
