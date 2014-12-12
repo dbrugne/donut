@@ -71,7 +71,7 @@ handler.message = function(data, session, next) {
 			});
 		},
 
-		function checkSession(room, user, callback) {
+		function checkHeIsIn(room, user, callback) {
 			// Test if the current user is in room
 			if (user.rooms.indexOf(room.name) === -1)
 				return callback('room:message, this user '+session.uid+' is not currently in room '+room.name);
