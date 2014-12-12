@@ -46,8 +46,7 @@ module.exports = function(app, uid, name, fn) {
           list.push({
             user_id   : user._id.toString(),
             username  : user.username,
-            avatar    : user._avatar(),
-            color     : user.color
+            avatar    : user._avatar()
           });
         });
 
@@ -104,8 +103,7 @@ module.exports = function(app, uid, name, fn) {
           roomData.op.push({
             user_id: opUser._id.toString(),
             username: opUser.username,
-            avatar: opUser._avatar(),
-            color: opUser.color
+            avatar: opUser._avatar()
           });
         });
       }

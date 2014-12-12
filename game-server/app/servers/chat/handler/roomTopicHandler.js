@@ -72,7 +72,6 @@ handler.topic = function(data, session, next) {
 				user_id : user._id.toString(),
 				username: user.username,
 				avatar  : user._avatar(),
-				color   : user.color,
 				topic   : topic
 			};
 			return callback(null, room, user, event);

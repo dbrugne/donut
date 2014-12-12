@@ -48,8 +48,7 @@ DisconnectRemote.prototype.online = function(uid, welcome, globalCallback) {
 			return callback(null, {
 				user_id		: welcome.user.user_id,
 				username	: welcome.user.username,
-				avatar		: welcome.user.avatar,
-				color			: welcome.user.color
+				avatar		: welcome.user.avatar
 			});
 		},
 
@@ -145,8 +144,7 @@ DisconnectRemote.prototype.offline = function(uid, globalCallback) {
 			return callback(null, user, {
 				user_id   : user._id.toString(),
 				username  : user.username,
-				avatar    : user._avatar(),
-				color     : user.color
+				avatar    : user._avatar()
 			});
 		},
 

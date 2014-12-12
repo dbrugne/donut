@@ -87,7 +87,6 @@ handler.message = function(data, session, next) {
 				from_user_id  : from._id.toString(),
 				from_username : from.username,
 				from_avatar   : from._avatar(),
-				from_color    : from.color,
 				to_user_id    : to._id.toString(),
 				to_username   : to.username,
 				time          : Date.now(),

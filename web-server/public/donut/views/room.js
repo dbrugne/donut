@@ -74,12 +74,12 @@ define([
       data.isOwner = this.model.currentUserIsOwner();
 
       // avatar
-      data.avatar = $.cd.roomAvatar(data.avatar, 100, data.color);
+      data.avatar = $.cd.roomAvatar(data.avatar, 100);
 
       // poster
       var posterPath = data.poster;
-      data.poster = $.cd.poster(posterPath, data.color);
-      data.posterblured = $.cd.posterBlured(posterPath, data.color);
+      data.poster = $.cd.poster(posterPath);
+      data.posterblured = $.cd.posterBlured(posterPath);
 
       // url
       data.url = this.model.getUrl();
@@ -132,13 +132,13 @@ define([
       this.onPoster(model, model.get('poster'), options);
     },
     onAvatar: function(model, value, options) {
-      var url = $.cd.roomAvatar(value, 100, model.get('color'));
+      var url = $.cd.roomAvatar(value, 100);
       this.$el.find('.header img.avatar').attr('src', url);
     },
     onPoster: function(model, value, options) {
-      var url = $.cd.poster(value, model.get('color'));
+      var url = $.cd.poster(value);
       this.$el.find('div.side').css('background-image', 'url('+url+')');
-      var urlb = $.cd.posterBlured(value, model.get('color'));
+      var urlb = $.cd.posterBlured(value);
       this.$el.find('div.blur').css('background-image', 'url('+urlb+')');
     }
 

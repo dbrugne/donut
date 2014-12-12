@@ -39,7 +39,7 @@ define([
         ? true
         : false;
 
-      user.avatar = $.cd.userAvatar(user.avatar, 90, user.color);
+      user.avatar = $.cd.userAvatar(user.avatar, 90);
 
       user.url = '/user/' + user.username.toLocaleLowerCase();
 
@@ -86,7 +86,7 @@ define([
         if (oped === true)
           room.oped = true;
 
-        room.avatar = $.cd.roomAvatar(room.avatar, 40, room.color);
+        room.avatar = $.cd.roomAvatar(room.avatar, 40);
 
         user.rooms_list.push(room);
       }

@@ -57,7 +57,7 @@ define([
         var u = o.toJSON();
 
         // avatar
-        u.avatar = $.cd.userAvatar(u.avatar, 34, u.color);
+        u.avatar = $.cd.userAvatar(u.avatar, 34);
 
         listJSON.push(u);
       });

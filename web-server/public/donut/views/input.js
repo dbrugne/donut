@@ -28,7 +28,7 @@ define([
 
     render: function() {
       this.$el.html(this.template({
-        avatar: $.cd.userAvatar(currentUser.get('avatar'), 80, currentUser.get('color'))
+        avatar: $.cd.userAvatar(currentUser.get('avatar'), 80)
       }));
 
       this.$editable = this.$el.find('.editable');
@@ -48,7 +48,7 @@ define([
           });
           // decorate user list
           data = _.map(data, function(model, key, list) {
-            var avatar = $.cd.userAvatar(model.get('avatar'), 10, model.get('color'));
+            var avatar = $.cd.userAvatar(model.get('avatar'), 10);
             return {
               id      : model.get('id'),
               name    : model.get('username'),
@@ -69,7 +69,7 @@ define([
     },
 
     onAvatar: function(model, value, options) {
-      this.$el.find('.avatar').prop('src', $.cd.userAvatar(value, 80, model.get('color')));
+      this.$el.find('.avatar').prop('src', $.cd.userAvatar(value, 80));
     },
 
     onKeyPress: function(event) {

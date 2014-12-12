@@ -123,8 +123,7 @@ handler.leave = function(data, session, next) {
 			var event = {
 				user_id: user._id.toString(),
 				username: user.username,
-				avatar: user._avatar(), // @todo : avatar could be outdated
-				color: user.color  // @todo : color could be outdated
+				avatar: user._avatar()
 			};
 			roomEmitter(that.app, room.name, 'room:out', event, function(err) {
 				return callback(err, user, room);

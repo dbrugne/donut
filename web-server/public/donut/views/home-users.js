@@ -13,7 +13,7 @@ define([
     render: function(data) {
       var users = [];
       _.each(data.users, function(user) {
-        user.avatar = $.cd.userAvatar(user.avatar, 30, user.color);
+        user.avatar = $.cd.userAvatar(user.avatar, 30);
         users.push(user);
       });
 

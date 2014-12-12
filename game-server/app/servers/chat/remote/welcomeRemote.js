@@ -54,7 +54,6 @@ WelcomeRemote.prototype.getMessage = function(uid, frontendId, globalCallback) {
 					user_id: user._id.toString(),
 					username: user.username,
 					avatar: user._avatar(),
-					color: user.color,
 					welcome: welcomeMessage
 				};
 

@@ -278,10 +278,10 @@ define([
       var size = (model.getGenericType() != 'inout')
         ? 30
         : 20;
-      if (model.get("data").avatar || model.get("data").color)
-        data.data.avatar = $.cd.userAvatar(model.get("data").avatar, size, model.get("data").color);
-      if (model.get("data").by_avatar || model.get("data").by_avatar)
-        data.data.by_avatar = $.cd.userAvatar(model.get("data").by_avatar, size, model.get("data").by_color);
+      if (model.get("data").avatar)
+        data.data.avatar = $.cd.userAvatar(model.get("data").avatar, size);
+      if (model.get("data").by_avatar)
+        data.data.by_avatar = $.cd.userAvatar(model.get("data").by_avatar, size);
 
       if (message) {
         // escape HTML

@@ -27,7 +27,7 @@ define([
       var listJSON = [];
       _.each(this.collection.models, function(o) {
         var json = o.toJSON();
-        json.avatar = $.cd.userAvatar(json.avatar, 20, json.color);
+        json.avatar = $.cd.userAvatar(json.avatar, 20);
         listJSON.push(json);
       });
 

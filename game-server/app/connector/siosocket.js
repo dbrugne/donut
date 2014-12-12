@@ -29,30 +29,28 @@ var Socket = function(id, socket) {
 
   this.state = ST_INITED;
 
-  // TODO: any other events?
-
   /**
    * Decorate socket (shortcut)
    */
-  socket.getUser = function() {
+  socket.getUser = function() { // @todo obsolete?
     return this.request.user;
   };
-  socket.getUserId = function() {
+  socket.getUserId = function() { // @todo obsolete?
     return this.request.user._id.toString();
   };
-  socket.getUsername = function() {
+  socket.getUsername = function() { // @todo obsolete?
     return this.request.user.username;
   };
-  socket.getAvatar = function() {
+  socket.getAvatar = function() { // @todo obsolete?
     return this.request.user._avatar();
   };
-  socket.getPoster = function() {
-    return this.request.user.poster;
+  socket.getPoster = function() { // @todo obsolete?
+    return this.request.user._poster();
   };
-  socket.getColor = function() {
+  socket.getColor = function() { // @todo obsolete?
     return this.request.user.color;
   };
-  socket.isAdmin = function() {
+  socket.isAdmin = function() { // @todo obsolete?
     return (this.request.user.admin === true);
   };
 };

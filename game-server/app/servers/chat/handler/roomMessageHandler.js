@@ -93,8 +93,7 @@ handler.message = function(data, session, next) {
 				message: message,
 				user_id: user._id.toString(),
 				username: user.username,
-				avatar: user._avatar(),
-				color: user.color
+				avatar: user._avatar()
 			};
 			return callback(null, room, event);
 
