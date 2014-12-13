@@ -27,7 +27,7 @@ define([
 
     intervalDuration: 45, // seconds
 
-    keepMaxEventsOnCleanup: 250,
+    keepMaxEventsOnCleanup: 500,
 
     initialize: function(options) {
       this.listenTo(this.model, 'freshEvent', this.addFreshEvent);
@@ -160,7 +160,7 @@ define([
         return;
 
       // Update all .moment of the discussion panel
-      this.$realtime.find('.moment').slice(-100).momentify();
+      this.$realtime.find('.moment').slice(this.keepMaxEventsOnCleanup*-1).momentify();
       this.debug('moment updated');
       // @todo : find a better logic than .slice() to scope elements
     },
