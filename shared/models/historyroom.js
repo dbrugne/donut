@@ -8,12 +8,25 @@ var historySchema = mongoose.Schema({
   event         : String,
   name          : String,
   time          : { type: Date, default: Date.now },
+  user          : { type: mongoose.Schema.ObjectId, ref: 'User' },
+  by_user       : { type: mongoose.Schema.ObjectId, ref: 'User' },
   data          : mongoose.Schema.Types.Mixed,
   users         : [{ type: mongoose.Schema.ObjectId, ref: 'User' }], // users in room at event time
   received      : [{ type: mongoose.Schema.ObjectId, ref: 'User' }] // users online at event time
 //  viewed        : [{ type: mongoose.Schema.ObjectId, ref: 'User' }]  // users that have "viewed" the event in IHM
 
 });
+
+var dryFields = [
+  'time',
+  'name',
+  'user_id',
+  'username',
+  'avatar',
+  'by_user_id',
+  'by_username',
+  'by_avatar'
+];
 
 /**
  * Archive following events:
@@ -37,15 +50,21 @@ historySchema.statics.record = function() {
    * @return event with event_id set
    */
   return function(event, data, onlines, fn) {
-
-    // @todo : purify model.data (remove time, name, username, avatar, color)
-
     var model = new that();
-    model.event = event;
-    model.name  = data.name;
-    model.time  = data.time;
-    model.data  = data;
-    model.received = onlines;
+    model.event      = event;
+    model.name       = data.name;
+    model.time       = data.time;
+    model.received   = onlines;
+
+    // persist 'user_id's to be able to hydrate data later
+    model.user = data.user_id;
+    if (data.by_user_id)
+      model.by_user = data.by_user_id;
+
+    // dry data
+    var wet = _.clone(data);
+    model.data = _.omit(wet, dryFields) ;
+
     Room.findOne({name: model.name}, 'users', function(err, room) {
       if (err)
         return fn('Unable to retrieve room users list '+model.event+' for '+model.name);
@@ -93,7 +112,9 @@ historySchema.statics.retrieve = function() {
 
     var q = that.find(criteria)
       .sort({time: 'desc'}) // important for timeline logic but also optimize rendering on frontend
-      .limit(limit);
+      .limit(limit)
+      .populate('user', 'username avatar color facebook')
+      .populate('by_user', 'username avatar color facebook');
 
     q.exec(function(err, entries) {
       if (err)
@@ -108,7 +129,22 @@ historySchema.statics.retrieve = function() {
       var history = [];
       var toMarkAsReceived = [];
       _.each(entries, function(entry) {
-        entry.data.id = entry._id.toString();
+        // re-hydrate data
+        var data = _.clone(entry.data);
+        data.id = entry._id.toString();
+        data.name = entry.name;
+        data.time = entry.time;
+        if (entry.user) {
+          data.user_id = entry.user._id.toString();
+          data.username = entry.user.username;
+          data.avatar = entry.user._avatar();
+        }
+        if (entry.by_user) {
+          data.by_user_id = entry.by_user._id.toString();
+          data.by_username = entry.by_user.username;
+          data.by_avatar = entry.by_user._avatar();
+        }
+        entry.data = data;
 
         // new: received is set and NOT contains 'me'
         var isNew = false;

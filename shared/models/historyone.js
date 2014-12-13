@@ -15,6 +15,17 @@ var historySchema = mongoose.Schema({
 
 });
 
+var dryFields = [
+  'time',
+  'to',
+  'from',
+  'from_username',
+  'from_user_id',
+  'from_avatar',
+  'to_user_id',
+  'to_username',
+]; // @todo : in user:online/offline event the fields are user_id, username, avatar
+
 /**
  * Archive following events:
  * - user:message
@@ -31,9 +42,6 @@ historySchema.statics.record = function() {
    * @return event with event_id set
    */
   return function(event, data, toIsOnline, fn) {
-
-    // @todo : purify model.data (time, username, avatar, color)
-
     // user:online/offline special case, @todo : to cleanup later
     var fromUserId, toUserId;
     if (data.from_user_id == undefined && data.from) {
@@ -56,7 +64,10 @@ historySchema.statics.record = function() {
     model.to          = toUserId;
     model.received    = received;
     model.time        = data.time;
-    model.data        = data;
+
+    // dry data
+    var wet = _.clone(data);
+    model.data = _.omit(wet, dryFields) ;
 
     model.save(function(err) {
       if (err)
@@ -98,7 +109,9 @@ historySchema.statics.retrieve = function() {
 
     var q = that.find(criteria)
       .sort({time: 'desc'}) // important for timeline logic but also optimize rendering on frontend
-      .limit(limit);
+      .limit(limit)
+      .populate('from', 'username avatar color facebook')
+      .populate('to', 'username avatar color facebook');
 
     q.exec(function(err, entries) {
       if (err)
@@ -113,7 +126,21 @@ historySchema.statics.retrieve = function() {
       var history = [];
       var toMarkAsReceived = [];
       _.each(entries, function(entry) {
-        entry.data.id = entry._id.toString();
+        // re-hydrate data
+        var data = _.clone(entry.data);
+        data.id = entry._id.toString();
+        data.time = entry.time;
+        if (entry.from) {
+          data.from_user_id = entry.from._id.toString();
+          data.from_username = entry.from.username;
+          data.from_avatar = entry.from._avatar();
+        }
+        if (entry.to) {
+          data.to_user_id = entry.to._id.toString();
+          data.to_username = entry.to.username;
+          data.to_avatar = entry.to._avatar();
+        }
+        entry.data = data;
 
         // new: received is set and NOT contains 'me'
         var isNew = false;
