@@ -274,8 +274,6 @@ define([
         function(response) {
           if (response.err)
             return that.debug(['io:in:room:join error: ', response]);
-
-          that.debug(['io:in:room:join', response]);
         }
       );
     },
@@ -377,8 +375,6 @@ define([
         function(response) {
           if (response.err)
             return that.debug(['io:in:user:join error: ', response]);
-
-          that.debug(['io:in:user:join', response]);
         }
       );
     },

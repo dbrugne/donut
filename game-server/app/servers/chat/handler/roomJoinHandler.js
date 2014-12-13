@@ -173,7 +173,7 @@ handler.join = function(data, session, next) {
 
 		// @todo : restore logs
 
-		return next(null, {});
+		return next(null);
 	});
 
 };
