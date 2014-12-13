@@ -11,6 +11,8 @@ define([
 
     className: 'discussion',
 
+    hasBeenFocused: false,
+
     events: {
     },
 
@@ -72,12 +74,22 @@ define([
     },
 
     updateFocus: function() {
+      // to focus
       if (this.model.get('focused')) {
         this.$el.show();
+
+        // focus input field
         if (this.$editable)
           this.$editable.focus();
+
+        // need to load history?
+        if (!this.hasBeenFocused)
+          this.model.history(null);
+        this.hasBeenFocused = true;
+
         this._focus();
       } else {
+        // to unfocus
         this.$el.hide();
         this._unfocus();
       }

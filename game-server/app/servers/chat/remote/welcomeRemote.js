@@ -90,7 +90,7 @@ WelcomeRemote.prototype.getMessage = function(uid, frontendId, globalCallback) {
 				if (!one.username)
 					return logger.info('Empty username found in populateOnes for user: '+uid);
 				parallels.push(function(fn) {
-					oneDataHelper(that.app, uid, one.username, function(err, one) {
+					oneDataHelper(that.app, uid, one.username, {history: false}, function(err, one) {
 						if (err)
 							return fn(err);
 						else
@@ -116,7 +116,7 @@ WelcomeRemote.prototype.getMessage = function(uid, frontendId, globalCallback) {
 			var parallels = [];
 			_.each(user.rooms, function(name) {
 				parallels.push(function(fn) {
-					roomDataHelper(that.app, uid, name, function(err, room) {
+					roomDataHelper(that.app, uid, name, {history: false}, function(err, room) {
 						if (err)
 							return fn(err);
 						else

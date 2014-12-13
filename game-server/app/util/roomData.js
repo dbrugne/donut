@@ -14,7 +14,10 @@ var retriever = require('../../../shared/models/historyroom').retrieve();
  *   - users
  *   - history
  */
-module.exports = function(app, uid, name, fn) {
+module.exports = function(app, uid, name, opts, fn) {
+  opts = _.extend({
+    history: true
+  }, opts);
 
   async.waterfall([
 
@@ -71,6 +74,9 @@ module.exports = function(app, uid, name, fn) {
     },
 
     function history(room, users, callback) {
+      if (!opts.history)
+        return callback(null, room, users, null);
+
       // get last n events
       retriever(room.name, uid, null, function(err, history) {
         if (err)

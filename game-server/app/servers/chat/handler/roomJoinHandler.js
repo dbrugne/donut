@@ -147,7 +147,7 @@ handler.join = function(data, session, next) {
 		},
 
 		function getWelcomeData(user, room, callback) {
-			roomDataHelper(that.app, user._id.toString(), room.name, function(err, roomData) {
+			roomDataHelper(that.app, user._id.toString(), room.name, {}, function(err, roomData) {
 				if (err)
 					return callback(err);
 

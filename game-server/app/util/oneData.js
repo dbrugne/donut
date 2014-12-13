@@ -1,5 +1,6 @@
 var logger = require('pomelo-logger').getLogger('donut', __filename);
 var async = require('async');
+var _ = require('underscore');
 var User = require('../../../shared/models/user');
 var retriever = require('../../../shared/models/historyone').retrieve();
 
@@ -9,7 +10,10 @@ var retriever = require('../../../shared/models/historyone').retrieve();
  *   [- user entity]
  *   - history
  */
-module.exports = function(app, uid, username, fn) {
+module.exports = function(app, uid, username, opts, fn) {
+  opts = _.extend({
+    history: true
+  }, opts);
 
   async.waterfall([
 
@@ -38,6 +42,9 @@ module.exports = function(app, uid, username, fn) {
     },
 
     function history(user, liveStatus, callback) {
+      if (!opts.history)
+        return callback(null, user, liveStatus, null);
+
       // get last n events
       retriever(uid, user._id.toString(), null, function(err, history) { // MongoDB .update({$addToSet}) seems to work only with String, toString() is important!
         if (err)

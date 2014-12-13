@@ -234,11 +234,13 @@ define([
       pomelo.request(
         'chat.homeHandler.home',
         {},
-        function(data) {
-            that.debug(['io:in:home', data]);
-            if (!data.err)
-              that.trigger('home', data);
-          }
+        function(response) {
+          if (response.err)
+            return that.debug(['io:in:home error: ', response]);
+
+          that.debug(['io:in:home', response]);
+          that.trigger('home', response);
+        }
       );
     },
     search: function(search, searchKey, rooms, users, light) {
@@ -271,7 +273,9 @@ define([
         data,
         function(response) {
           if (response.err)
-            that.debug(['io:out:room:join error: ', response]);
+            return that.debug(['io:in:room:join error: ', response]);
+
+          that.debug(['io:in:room:join', response]);
         }
       );
     },
@@ -294,7 +298,9 @@ define([
         data,
         function(response) {
           if (response.err)
-            that.debug(['io:out:room:topic error: ', response]);
+            return that.debug(['io:in:room:topic error: ', response]);
+
+          that.debug(['io:in:room:topic', response]);
         }
       );
     },
@@ -307,8 +313,9 @@ define([
         data,
         function(response) {
           if (response.err)
-            return that.debug(['io:out:room:read error: ', response]);
+            return that.debug(['io:in:room:read error: ', response]);
 
+          that.debug(['io:in:room:read', response]);
           return fn(response);
         }
       );
@@ -332,8 +339,9 @@ define([
         data,
         function(response) {
           if (response.err)
-            return that.debug(['io:out:room:history error: ', response]);
+            return that.debug(['io:in:room:history error: ', response]);
 
+          that.debug(['io:in:room:history', response]);
           return fn(response);
         }
       );
@@ -368,7 +376,9 @@ define([
         data,
         function(response) {
           if (response.err)
-            that.debug(['io:out:user:join error: ', response]);
+            return that.debug(['io:in:user:join error: ', response]);
+
+          that.debug(['io:in:user:join', response]);
         }
       );
     },
@@ -391,8 +401,9 @@ define([
         data,
         function(response) {
           if (response.err)
-            return that.debug(['io:out:user:read error: ', response]);
+            return that.debug(['io:in:user:read error: ', response]);
 
+          that.debug(['io:in:user:read', response]);
           return fn(response);
         }
       );
@@ -416,8 +427,9 @@ define([
         data,
         function(response) {
           if (response.err)
-            return that.debug(['io:out:user:history error: ', response]);
+            return that.debug(['io:in:user:history error: ', response]);
 
+          that.debug(['io:in:user:history', response]);
           return fn(response);
         }
       );

@@ -50,7 +50,7 @@ handler.join = function(data, session, next) {
 		},
 
 		function getWelcomeData(user, callback) {
-			oneDataHelper(that.app, session.uid, data.username, function(err, oneData) {
+			oneDataHelper(that.app, session.uid, data.username, {}, function(err, oneData) {
 				if (err)
 					return callback(err);
 
