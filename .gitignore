@@ -11,3 +11,8 @@
 
 # Compiled files
 /web-server/public/stylesheets/style.css
+/web-server/public/build
+/web-server/public/build
+
+# Var files
+/output
