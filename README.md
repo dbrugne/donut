@@ -8,14 +8,11 @@ donut
 * Authentication, check that it's impossible to open a websocket if i'm not logged
 * Management of data in req/res, auto remove empty/null/undefined key in Object
 * Secure backend
-* Remove exit popin on frontend if connection is not established
 * Only display user with avatar/or Facebook/or online and room with avatar on homepage (but not for search)
 * Restore a var logger = require('../app/models/log'); and change console.log for pomelo logger
 * Mute mode per room
 
-History
-[ ] Remove need of color for default avatar
-[ ] Store history without name/time/username/avatar/color in data and re-apply on retrieving
+- grunt data migration for next release (history)
 
 Admin
 [ ] Add "admin" tag on user (allow them to view all history and op all rooms and send "reload" messages)
@@ -36,6 +33,15 @@ Add online/offline/afk management
 [ ] A user mention me (immediate, email, deactivable globally)
 [ ] Global option to avoid all emails from donut
 
+## Possible methods
+sendToUid
+* Send to Uid globalChannel
+sendToRoom
+* Send to room globalChannel (with option to put in history or not)
+sendToAll
+* Send to every connected user
+informAllUserThatCanViewThisOne
+
 ## Grunt tasks
 - Deploy
   - create new folder, git clone
@@ -43,6 +49,7 @@ Add online/offline/afk management
   - bower install
   - compile JS
   - set chat.html require.js source
+  - switch configuration file
   - stop application + start application (!!)
   - send reload event to connected users (!!)
 - Cleanup cloudinary pictures with "discussion" and "notposted" tag
