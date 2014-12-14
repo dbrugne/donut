@@ -5,11 +5,7 @@
   "repository": "https://github.com/dbrugne/donut",
   "private": true,
   "dependencies": {
-    "async": "^0.9.0",
-    "cookie-parser": "1.x",
     "crc": "0.2.0",
-    "debug": "^2.1.0",
-    "newrelic": "^1.14.1",
     "passport.socketio": "3.x",
     "pomelo": "latest",
     "pomelo-globalchannel-plugin": "dbrugne/pomelo-globalchannel-plugin",
@@ -18,7 +14,6 @@
     "sanitize-caja": "0.x",
     "sanitize-html": "1.x",
     "socket.io": "1.x",
-    "socket.io-redis": "0.1.x",
-    "underscore": "^1.7.0"
+    "socket.io-redis": "0.1.x"
   }
 }

@@ -1,10 +1,12 @@
 {
-  "name": "donut-shared",
-  "version": "0.1.0",
+  "name": "donut",
+  "version": "0.2.0",
+  "description": "Donut is a social chatroom platform based on nodejs, pomelo, socket.io and backbone",
   "private": true,
   "repository": "https://github.com/dbrugne/donut",
   "dependencies": {
-    "underscore": "1.7.x",
+    "async": "^0.9.0",
+    "cookie-parser": "1.x",
     "debug": "2.x",
     "mongoose": "3.8.x",
     "redis": "0.x",
@@ -13,10 +15,12 @@
     "express-validator": "2.x",
     "connect-redis": "2.x",
     "cloudinary": "latest",
+    "newrelic": "^1.14.1",
     "nodemailer": "1.2.x",
     "i18next": "1.7.x",
     "passport": "0.2.x",
     "passport-facebook": "1.x",
-    "passport-local": "1.x"
+    "passport-local": "1.x",
+    "underscore": "1.7.x"
   }
 }
