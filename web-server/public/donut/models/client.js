@@ -297,8 +297,6 @@ define([
         function(response) {
           if (response.err)
             return that.debug(['io:in:room:topic error: ', response]);
-
-          that.debug(['io:in:room:topic', response]);
         }
       );
     },
@@ -346,13 +344,29 @@ define([
     },
     roomOp: function(name, username) {
       var data = {name: name, username: username};
-      //this.socket.emit('room:op', data);
       this.debug(['io:out:room:op', data]);
+      var that = this;
+      pomelo.request(
+        'chat.roomOpHandler.op',
+        data,
+        function(response) {
+          if (response.err)
+            return that.debug(['io:in:room:op error: ', response]);
+        }
+      );
     },
     roomDeop: function(name, username) {
       var data = {name: name, username: username};
-      //this.socket.emit('room:deop', data);
       this.debug(['io:out:room:deop', data]);
+      var that = this;
+      pomelo.request(
+        'chat.roomDeopHandler.deop',
+        data,
+        function(response) {
+          if (response.err)
+            return that.debug(['io:in:room:deop error: ', response]);
+        }
+      );
     },
     roomKick: function(name, username, reason) {
       var data = {name: name, username: username};
