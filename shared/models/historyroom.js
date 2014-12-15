@@ -130,7 +130,9 @@ historySchema.statics.retrieve = function() {
       var toMarkAsReceived = [];
       _.each(entries, function(entry) {
         // re-hydrate data
-        var data = _.clone(entry.data);
+        var data = (entry.data)
+          ? _.clone(entry.data)
+          : {};
         data.id = entry._id.toString();
         data.name = entry.name;
         data.time = entry.time;
