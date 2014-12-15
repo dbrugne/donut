@@ -71,10 +71,6 @@ define([
         that.debug(['io:in:room:updated', data]);
         that.trigger('room:updated', data);
       });
-      pomelo.on('room:delete', function(data) {
-        that.debug(['io:in:room:delete', data]);
-        that.trigger('room:delete', data);
-      });
       pomelo.on('room:op', function(data) {
         that.debug(['io:in:room:op', data]);
         that.trigger('room:op', data);
@@ -323,8 +319,16 @@ define([
     },
     roomDelete: function(name) {
       var data = {name: name};
-      //this.socket.emit('room:delete', data);
       this.debug(['io:out:room:delete', data]);
+      var that = this;
+      pomelo.request(
+        'chat.roomDeleteHandler.delete',
+        data,
+        function(response) {
+          if (response.err)
+            return that.debug(['io:in:room:delete error: ', response]);
+        }
+      );
     },
     roomHistory: function(name, since, fn) {
       var data = {name: name, since: since};
