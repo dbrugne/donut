@@ -16,7 +16,7 @@ module.exports = function(grunt) {
           },
           preserveLicenseComments: false,
           paths: {
-            'jquery'                      : '../vendor/jquery/dist/jquery',
+            'jquery'                      : '../vendor/jquery/jquery',
             'bootstrap'                   : '../vendor/bootstrap/dist/js/bootstrap',
             'text'                        : '../vendor/requirejs-text/text',
             'socket.io'                   : '../../node_modules/socket.io-client/socket.io',

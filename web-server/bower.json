@@ -13,6 +13,7 @@
       "i18next": "latest",
       "malihu-custom-scrollbar-plugin": "latest",
       "jquery-mousewheel": "latest",
-      "pomelo-jsclient-socket.io": "latest"
+      "pomelo-jsclient-socket.io": "latest",
+      "backgrid": "latest"
     }
 }
