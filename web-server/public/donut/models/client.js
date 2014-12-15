@@ -36,13 +36,6 @@ define([
         //  that.trigger('error');
       });
 
-      // GLOBAL EVENTS
-      // ======================================================
-      pomelo.on('search', function(data) {
-        that.debug(['io:in:search', data]);
-        that.trigger('search', data);
-      });
-
       // ROOM EVENTS
       // ======================================================
 
@@ -125,10 +118,6 @@ define([
       pomelo.on('user:updated', function(data) {
         that.debug(['io:in:user:updated', data]);
         that.trigger('user:updated', data);
-      });
-      pomelo.on('user:status', function(data) {
-        that.debug(['io:in:user:status', data]);
-        that.trigger('user:status', data);
       });
     },
 
@@ -244,6 +233,7 @@ define([
       );
     },
     search: function(search, searchKey, rooms, users, light) {
+      var that = this;
       var data = {
         search: search, // string to search for
         key: searchKey, // string key that server will send in response (allow RPC-like request)
@@ -257,8 +247,18 @@ define([
           ? true
           : false
       };
-      //this.socket.emit('search', data);
       this.debug(['io:out:search', data]);
+      pomelo.request(
+        'chat.searchHandler.search',
+        data,
+        function(response) {
+          if (response.err)
+            return that.debug(['io:in:search error: ', response]);
+
+          that.debug(['io:in:search', response]);
+          that.trigger('search', response);
+        }
+      );
     },
 
     // ROOM METHODS
@@ -408,11 +408,6 @@ define([
       var data = {data: fields};
       //this.socket.emit('user:update', data);
       this.debug(['io:out:user:update', data]);
-    },
-    userStatus: function(username) {
-      var data = {username: username};
-      //this.socket.emit('user:status', data);
-      this.debug(['io:out:user:status', data]);
     },
     userHistory: function(username, since, fn) {
       var data = {username: username, since: since};
