@@ -96,8 +96,10 @@ handler.topic = function(data, session, next) {
 		}
 
 	], function(err) {
-		if (err)
+		if (err) {
 			logger.error(err);
+			return next(null, {code: 500, err: err});
+		}
 
 		// @todo restore log
 
