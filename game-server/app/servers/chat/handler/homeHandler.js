@@ -16,12 +16,12 @@ var handler = Handler.prototype;
 /**
  * Description
  *
- * @param {Object} msg message from client
+ * @param {Object} data message from client
  * @param {Object} session
  * @param  {Function} next stemp callback
  *
  */
-handler.home = function(msg, session, next) {
+handler.home = function(data, session, next) {
 
 	var homeEvent = {};
 
