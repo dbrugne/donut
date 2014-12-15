@@ -149,17 +149,15 @@ define([
       this.trigger('freshEvent', model);
     },
     onOp: function(data) {
-      if (this.get('op').indexOf(data.user_id) !== -1)
-        return;
-
       // room.get('op')
-      this.get('op').push(data.user_id);
+      var ops = this.get('op');
+      ops.push(data.user_id);
+      this.set('op', ops);
 
       // user.get('is_op')
       var user = this.users.get(data.user_id);
-      if (!user)
-        return;
-      user.set({is_op: true});
+      if (user)
+        user.set({is_op: true});
       this.users.sort();
 
       this.users.trigger('redraw');
@@ -171,18 +169,18 @@ define([
       this.trigger('freshEvent', model);
     },
     onDeop: function(data) {
-      if (this.get('op').indexOf(data.user_id) === -1)
-        return;
-
       // room.get('op')
-      var ops = _.without(this.get('op'), data.user_id);
+      var ops = [];
+      _.each(this.get('op'), function(op) {
+        if (op.user_id != data.user_id)
+          ops.push(op);
+      });
       this.set('op', ops);
 
       // user.get('is_op')
       var user = this.users.get(data.user_id);
-      if (!user)
-        return;
-      user.set({is_op: false});
+      if (user)
+        user.set({is_op: false});
       this.users.sort();
 
       this.users.trigger('redraw');
