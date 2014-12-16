@@ -1,19 +1,26 @@
 {
-    "name": "donut-server",
-    "version": "0.0.1",
-    "dependencies": {
-      "requirejs": "latest",
-      "requirejs-text": "latest",
-      "jquery": "1.x",
-      "bootstrap": "latest",
-      "underscore-amd": "latest",
-      "backbone-amd": "latest",
-      "cloudinary_js": "latest",
-      "moment": "2.7.x",
-      "i18next": "latest",
-      "malihu-custom-scrollbar-plugin": "latest",
-      "jquery-mousewheel": "latest",
-      "pomelo-jsclient-socket.io": "latest",
-      "backgrid": "latest"
-    }
+  "name": "donut-server",
+  "version": "0.0.1",
+  "dependencies": {
+    "requirejs": "latest",
+    "requirejs-text": "latest",
+    "jquery": "1.x",
+    "bootstrap": "latest",
+    "underscore-amd": "latest",
+    "backbone-amd": "latest",
+    "cloudinary_js": "latest",
+    "moment": "2.7.x",
+    "i18next": "latest",
+    "malihu-custom-scrollbar-plugin": "latest",
+    "jquery-mousewheel": "latest",
+    "pomelo-jsclient-socket.io": "latest",
+    "backgrid": "latest",
+    "backbone.paginator": "latest",
+    "backgrid-paginator": "git://github.com/wyuenho/backgrid-paginator.git#03632df8ad238e3d043c0fd471a6c78494e1bdfc",
+    "backgrid-moment-cell": "latest",
+    "backgrid-filter": "latest"
+  },
+  "resolutions": {
+    "moment": "2.7.x"
+  }
 }
