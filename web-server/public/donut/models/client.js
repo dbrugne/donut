@@ -63,10 +63,6 @@ define([
         that.debug(['io:in:room:out', data]);
         that.trigger('room:out', data);
       });
-      pomelo.on('room:update', function(data) {
-        that.debug(['io:in:room:update', data]);
-        that.trigger('room:update', data);
-      });
       pomelo.on('room:updated', function(data) {
         that.debug(['io:in:room:updated', data]);
         that.trigger('room:updated', data);
@@ -312,10 +308,18 @@ define([
         }
       );
     },
-    roomUpdate: function(name, fields) {
+    roomUpdate: function(name, fields, fn) {
       var data = {name: name, data: fields};
-      //this.socket.emit('room:update', data);
       this.debug(['io:out:room:update', data]);
+      var that = this;
+      pomelo.request(
+        'chat.roomUpdateHandler.update',
+        data,
+        function(response) {
+          that.debug(['io:in:room:update', response]);
+          return fn(response);
+        }
+      );
     },
     roomDelete: function(name) {
       var data = {name: name};

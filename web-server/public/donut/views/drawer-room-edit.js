@@ -31,9 +31,6 @@ define([
       client.roomRead(this.roomName, function(data) {
         that.onResponse(data);
       });
-
-      // on room:update callback
-      this.listenTo(client, 'room:update', this.onUpdate);
     },
     render: function() {
       // render spinner only
@@ -113,25 +110,19 @@ define([
       if (this.posterUploader.data)
         updateData.poster = this.posterUploader.data;
 
-      client.roomUpdate(this.roomName, updateData);
-    },
-    onUpdate: function(data) {
-      if (!data.name
-        || data.name.toLocaleLowerCase() != this.roomName.toLocaleLowerCase())
-        return;
-
-      this.$el.find('.errors').hide();
-
-      if (!data.success) {
-        var message = '';
-        _.each(data.errors, function(error) {
-          message += error+'<br>';
-        });
-        this.$el.find('.errors').html(message).show();
-        return;
-      }
-
-      this.trigger('close');
+      var that = this;
+      client.roomUpdate(this.roomName, updateData, function(data) {
+        that.$el.find('.errors').hide();
+        if (data.err) {
+          var message = '';
+          _.each(data.errors, function(error) {
+            message += error+'<br>';
+          });
+          that.$el.find('.errors').html(message).show();
+          return;
+        }
+        that.trigger('close');
+      });
     }
 
   });
