@@ -15,8 +15,13 @@ define([
       this.render();
     },
     render: function() {
-      var html = this.template({});
-      this.$el.html(html);
+      var that = this;
+      $.ajax('/rest/home', {
+        success: function(data) {
+          var html = that.template({data: data});
+          that.$el.html(html);
+        }
+      });
       return this;
     }
   });
