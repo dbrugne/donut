@@ -2,7 +2,7 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'routeur',
+  'router',
   'models/client',
   'views/main'
 ], function ($, _, Backbone, router, client, mainView) {
