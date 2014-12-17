@@ -7,9 +7,11 @@ define([
 
     defaultSize: '280px',
 
-    defaultColor: '#000000',
+    defaultColor: '#ffffff',
 
     el: $('#drawer'),
+
+    shown: false,
 
     events: {
       'click .close': 'close',
@@ -77,11 +79,12 @@ define([
     },
     _show: function() {
       this.trigger('show');
+      this.shown = true;
 
       var size = this.currentSize || this.defaultSize;
       this.$wrap.css('width', size);
 
-      this.color(this.currentColor);
+      //this.color(this.currentColor);
 
       this.$el.show();
       var that = this;
@@ -98,6 +101,10 @@ define([
     },
     _hide: function() {
       this.trigger('hide');
+
+      var wasShown = this.shown;
+      this.shown = false;
+
       var that = this;
       var width = this.$wrap.width();
       this.$wrap.animate({
@@ -107,7 +114,8 @@ define([
         complete: function () {
           that.$wrap.css('left', '-10000px');
           that.$el.hide();
-          that.mainView.color('', false, true);
+          if (wasShown)
+            that.mainView.color('', false, true);
           that.trigger('hidden');
         }
       });

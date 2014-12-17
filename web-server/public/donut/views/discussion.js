@@ -107,7 +107,8 @@ define([
     colorify: function() {
       this.$el.attr('data-colorify', this.model.get('color'));
       this.$el.colorify();
-      this.mainView.color(this.model.get('color'));
+      if (this.model.get('focused'))
+        this.mainView.color(this.model.get('color'));
       // + change data-colorify for side and blur (=darker)
     }
 
