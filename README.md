@@ -6,32 +6,33 @@ donut
 ## Pomelog migration
 * Repair auto-reconnect
 * Authentication, check that it's impossible to open a websocket if i'm not logged
-* Management of data in req/res, auto remove empty/null/undefined key in Object
 * Only display user with avatar/or Facebook/or online and room with avatar on homepage (but not for search)
 * Restore a var logger = require('../app/models/log'); and change console.log for pomelo logger
-* Mute mode per room
+* Mute mode
 * On "first" history load in room scrollDown
 * [Finish kick form]
 * [Add ban]
 * [Add images]
 * Redirect to room after signup/signin => FB campaign glander au boulot
-
-- grunt data migration for next release (history + room normalized)
+* New donut header with logo, home, support, search
+* Diagnose why cloudinary widget url/cam crash on Chrome only
+* Grunt data migration for next release (history)
 
 Deploy
 [ ] Add "admin" tag on user (allow them to view all history and op all rooms and send "reload" messages)
 [ ] Add event in all discussions to inform users of deployment
 [ ] Add whole platform maintenance mode
+[ ] Implement grunt deploy
 
 ## Backend
 * Add user and room detail
 * Add pomelo connection
+* Refresh on home
 
 ## To validate after pomelo
 
 [ ] Add "is typing" notification
-Add online/offline/afk management
-[ ] On connection/deconnection[/stop/restart] set user in Redis (donut:onlines:user:_USER_ID_) as a HASH with sockets list (donut:onlines:sockets:_USER_ID_)
+[ ] Add online/offline/afk indication
 [ ] Handle process termination (SIGINT, SIGTERM, Uncaugth exception): http://stackoverflow.com/questions/26163800/node-js-pm2-on-exit
 
 ## Read/unread
@@ -40,9 +41,9 @@ Add online/offline/afk management
 [ ] Detect on a frontend, for each discussion, if focused and scolled to bottom for at least 2s, send markAsRead with last message ID
 
 ## Notifications
-[ ] A user post me a message in one to one and i'm offline (immediate, email)
+[ ] A user post me a message in one to one and i'm offline (immediate, email, 24h before next)
 [ ] A user join my room (immediate, email , deactivable)
-[ ] A user mention me (immediate, email, deactivable globally)
+[ ] A user mention me (immediate, email, deactivable globally, , 30mn before next)
 [ ] Global option to avoid all emails from donut
 
 ## Public mode
