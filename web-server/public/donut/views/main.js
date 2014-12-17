@@ -111,7 +111,6 @@ define([
     },
 
     color: function(color, temporary, reset) {
-      console.log('color call');
       if (reset)
         return this._color(this.currentColor);
 
