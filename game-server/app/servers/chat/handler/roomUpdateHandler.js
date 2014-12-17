@@ -189,7 +189,12 @@ handler.update = function(data, session, next) {
 			var fieldToNotify = ['avatar','poster','color'];
 			_.each(Object.keys(sanitized), function(key) {
 				if (fieldToNotify.indexOf(key) != -1) {
-					sanitizedToNotify[key] = sanitized[key];
+					if (key == 'avatar')
+						sanitizedToNotify[key] = room._avatar();
+					else if (key == 'poster')
+					  sanitizedToNotify[key] = room._poster();
+					else
+					  sanitizedToNotify[key] = sanitized[key];
 				}
 			});
 
