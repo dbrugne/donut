@@ -8,11 +8,20 @@
                 <img class="close-btn" src="/images/close-r.svg" alt="close icon">
             </div>
         </div>
-        <div id="color"></div><!-- /#color -->
+        <div id="color-default"></div>
+        <div id="color">
+            <h1 class="logo">
+                <a href="/!#"><img src="/images/logo-onecolor.svg" alt="{{#i}}title.chat{{/i}}"></a>
+            </h1>
+            <div class="beta">bêta</div>
+            <div class="actions">
+                <a href="/!#"><i class="fa fa-home"></i> Home</a>
+                <a href="/!#room/Support"><i class="fa fa-life-ring"></i> {{#i}}chat.help{{/i}}</a>
+            </div>
+        </div>
         <div class="row">
             <div id="left">
-                <h1 class="logo"><a href="/!#"><img src="/images/logo-onecolor.svg" alt="{{#i}}title.chat{{/i}}"></a></h1>
-                <div id="block-current-user"></div><!-- /#current-user-block -->
+                <div id="block-current-user"></div>
                 <hr>
                 <div>
                 <div id="block-search">
@@ -33,7 +42,6 @@
                 </div>
                 <div id="block-links">
                     <span><a href="/faq" target="_blank">{{#i}}page.faq.title{{/i}}</a></span>
-                    <span><a href="/!#room/Support">{{#i}}chat.help{{/i}}</a></span>
                     <span><a href="mailto:hello@donut.me" target="_blank">{{#i}}page.contact.title{{/i}}</a></span>
                     <span><a href="/eutc" target="_blank">{{#i}}page.eutc.title{{/i}}</a></span>
                 </div>
@@ -82,7 +90,7 @@
 </script>
 <script src="/javascripts/old-browser-update.js"></script>
 <script src="/javascripts/share.js"></script>
-<script data-main="/donut/index-built.js" src="/vendor/requirejs/require.js"></script>
+<script data-main="/donut/index.js" src="/vendor/requirejs/require.js"></script>
 {{{googleanalytics}}}
 </body>
 </html>
