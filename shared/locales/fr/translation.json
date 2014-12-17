@@ -38,7 +38,9 @@
         "forgot": "mot de passe oublié",
         "join": "rejoindre",
         "discuss": "discuter",
-        "account": "mon compte"
+        "account": "mon compte",
+        "mute": "Son actif",
+        "muted": "Son désactivé"
     },
     "global": {
         "or": "ou",

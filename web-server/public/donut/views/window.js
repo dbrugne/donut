@@ -178,10 +178,13 @@ define([
       this.renderTitle();
 
       // play sound
-      if (!isMention)
-        this.play('message');
-      else
-        this.play('mention');
+      if (!currentUser.mute) {
+        console.log(currentUser.mute);
+        if (!isMention)
+          this.play('message');
+        else
+          this.play('mention');
+      }
     },
     play: function(what) {
       // @source: // http://stackoverflow.com/questions/9419263/playing-audio-with-javascript

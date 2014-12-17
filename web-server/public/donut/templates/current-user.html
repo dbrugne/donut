@@ -13,5 +13,10 @@
     <div class="actions">
         <a class="open-user-account"><i class="fa fa-cog"></i> <%= t('actions.account') %></a>
         <a href="/logout"><i class="fa fa-power-off"></i> <%= t('actions.logout') %></a>
+        <% if (typeof mute != 'undefined' && mute) { %>
+        <a class="unmute"><i class="fa fa-bell-slash"></i> <%= t('actions.muted') %></a>
+        <% } else { %>
+        <a class="mute"><i class="fa fa-bell"></i> <%= t('actions.mute') %></a>
+        <% } %>
     </div>
 </div>

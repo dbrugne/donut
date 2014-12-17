@@ -15,13 +15,13 @@ define([
     hello: '',
 
     events: {
-
+      'click .mute': 'onMute',
+      'click .unmute': 'onUnmute'
     },
 
     initialize: function(options) {
       this.listenTo(this.model, 'change', this.render);
     },
-
     render: function() {
       if (!currentUser.get('user_id'))
         return this; // nothing to render if welcome isn't received
@@ -33,10 +33,19 @@ define([
       data.hello = this.hello.replace('%u', '@'+tpl);
 
       data.avatar = $.cd.userAvatar(currentUser.get('avatar'), 60);
+      data.mute = currentUser.mute;
 
       var html = this.template(data);
       this.$el.html(html);
       return this;
+    },
+    onMute: function(event) {
+      currentUser.setMute(true);
+      this.render();
+    },
+    onUnmute: function(event) {
+      currentUser.setMute(false);
+      this.render();
     }
 
   });

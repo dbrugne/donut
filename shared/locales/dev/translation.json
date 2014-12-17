@@ -38,7 +38,9 @@
     "forgot": "forgotten password",
     "join": "join",
     "discuss": "chat",
-    "account": "my account"
+    "account": "my account",
+    "mute": "Sound on",
+    "muted": "Sound off"
   },
   "global": {
     "or": "or",
