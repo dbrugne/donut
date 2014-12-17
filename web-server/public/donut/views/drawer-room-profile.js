@@ -57,7 +57,6 @@ define([
         // Facebook Like button
         facebook.XFBML.parse(this.$el.get(0));
 
-
         if (room.color)
           this.trigger('color', room.color);
       },
