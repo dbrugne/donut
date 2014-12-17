@@ -16,7 +16,7 @@
   }
 
   var roomAvatarDefault = 'room-avatar-default.png';
-  var userAvatarDefault = 'user-avatar-default.png';
+  var userAvatarDefault = 'user-avatar-default-v2.png';
   var posterDefault = 'poster-default.png';
 
   function parse(identifier) {

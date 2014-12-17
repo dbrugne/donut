@@ -11,11 +11,13 @@
     <a data-language="fr" class="switch">fr</a> -
     <a data-language="en" class="switch">en</a>
 </div>
-<div class="color" {{#color}}style="background-color: {{color}};"{{/color}}></div>
-<a href="/" class="logo">
-    <img src="/images/logo-onecolor-w.svg">
-    <span class="text">{{#i}}baseline{{/i}}</span>
-</a>
+<div class="color" {{#color}}style="background-color: {{color}};"{{/color}}>
+    <a href="/" class="logo">
+        <img src="/images/logo-onecolor-w.svg">
+    </a>
+    <div class="beta">bêta</div>
+    <div class="text">{{#i}}baseline{{/i}}</div>
+</div>
 {{{ yield }}}
 {{> foot}}
 </body>

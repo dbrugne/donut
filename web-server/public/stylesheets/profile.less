@@ -5,7 +5,7 @@
   background-repeat: no-repeat;
   background-position: 0 @size-color;
   #languages {
-    top: 27px;
+    top: 47px;
   }
   .upon {
     position: fixed;
@@ -18,28 +18,39 @@
     height: @size-color;
     background-color: @cl-first;
     z-index: 10;
-  }
-  a.logo {
-    position: absolute;
-    top: 40px; left: 39px;
-    opacity: 0.5;
-    color: @cl-background;
-    img {
-      width: 326px;
-      height: 79px;
-    }
-    span.text {
-      display: none;
-      .ft-raleway-medium;
-      font-size: 1.3em;
-      text-align: center;
-    }
-    &:hover {
-      opacity: 1;
-      text-decoration: none;
-      span.text {
+    a.logo {
+      color: @cl-background;
+      display: inline-block;
+      vertical-align: top;
+      margin: 4px 0 0 4px;
+      line-height: 1em;
+      img {
         display: block;
+        width: 130px;
+        height: 32px;
       }
+      &:hover {
+        text-decoration: none;
+      }
+    }
+    .beta {
+      display: inline-block;
+      vertical-align: top;
+      height: @size-color;
+      color: @cl-background;
+      .ft-raleway-medium;
+      font-size: 12px;
+      padding-left: 0px;
+      padding-top: 18px;
+    }
+    .text {
+      display: inline-block;
+      vertical-align: top;
+      .ft-raleway-medium;
+      color: @cl-background;
+      font-size: 1.3em;
+      padding-left: 10px;
+      padding-top: 10px;
     }
   }
   hr {
