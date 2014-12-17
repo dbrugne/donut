@@ -30,9 +30,6 @@ define([
       client.userRead(currentUser.get('username'), function(data) {
         that.onResponse(data);
       });
-
-      // on user:update callback
-      this.listenTo(client, 'user:update', this.onUpdate);
     },
     render: function() {
       // render spinner only
@@ -71,10 +68,9 @@ define([
         current: currentAvatar,
         tags: 'user,avatar',
         field_name: 'avatar',
-        stored_width: 800,
-        stored_height: 600,
         resized_width: 150,
-        resized_height: 150
+        resized_height: 150,
+        cropping_aspect_ratio: 1 // squared avatar
       });
 
       // poster
@@ -83,8 +79,6 @@ define([
         current: user.poster,
         tags: 'user,poster',
         field_name: 'poster',
-        stored_width: 430,
-        stored_height: 600,
         resized_width: 430,
         resized_height: 1200
       });
@@ -106,21 +100,19 @@ define([
       if (this.posterUploader.data)
         updateData.poster = this.posterUploader.data;
 
-      client.userUpdate(updateData);
-    },
-    onUpdate: function(data) {
-      this.$el.find('.errors').hide();
-
-      if (!data.success) {
-        var message = '';
-        _.each(data.errors, function(error) {
-          message += error+'<br>';
-        });
-        this.$el.find('.errors').html(message).show();
-        return;
-      }
-
-      this.trigger('close');
+      var that = this;
+      client.userUpdate(updateData, function(data) {
+        that.$el.find('.errors').hide();
+        if (data.err) {
+          var message = '';
+          _.each(data.errors, function(error) {
+            message += error+'<br>';
+          });
+          that.$el.find('.errors').html(message).show();
+          return;
+        }
+        that.trigger('close');
+      });
     }
 
   });

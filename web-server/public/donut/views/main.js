@@ -141,7 +141,7 @@ define([
         $('#welcome').on('hide.bs.modal', function (e) {
           if (data.user.welcome == true
             && $(e.currentTarget).find(".checkbox input[type='checkbox']").prop('checked') === true) {
-            client.userUpdate({welcome: false});
+            client.userUpdate({welcome: false}, function(data) { console.log('user preference saved: ', data); });
           }
         });
         $('#welcome').modal({});

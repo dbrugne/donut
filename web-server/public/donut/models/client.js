@@ -103,10 +103,6 @@ define([
         that.debug(['io:in:user:offline', data]);
         that.trigger('user:offline', data);
       });
-      pomelo.on('user:update', function(data) {
-        that.debug(['io:in:user:update', data]);
-        that.trigger('user:update', data);
-      });
       pomelo.on('user:updated', function(data) {
         that.debug(['io:in:user:updated', data]);
         that.trigger('user:updated', data);
@@ -426,10 +422,18 @@ define([
         }
       );
     },
-    userUpdate: function(fields) {
+    userUpdate: function(fields, fn) {
       var data = {data: fields};
-      //this.socket.emit('user:update', data);
       this.debug(['io:out:user:update', data]);
+      var that = this;
+      pomelo.request(
+        'chat.userUpdateHandler.update',
+        data,
+        function(response) {
+          that.debug(['io:in:user:update', response]);
+          return fn(response);
+        }
+      );
     },
     userHistory: function(username, since, fn) {
       var data = {username: username, since: since};
