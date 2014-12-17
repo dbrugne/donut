@@ -77,10 +77,9 @@ define([
         current: currentAvatar,
         tags: 'room,avatar',
         field_name: 'avatar',
-        stored_width: 800,
-        stored_height: 600,
-        resized_width: 150,
-        resized_height: 150
+        resized_width: 200,
+        resized_height: 200,
+        cropping_aspect_ratio: 1 // squared avatar
       });
 
       // poster
@@ -89,8 +88,6 @@ define([
         current: room.poster,
         tags: 'room,poster',
         field_name: 'poster',
-        stored_width: 430,
-        stored_height: 600,
         resized_width: 430,
         resized_height: 1200
       });

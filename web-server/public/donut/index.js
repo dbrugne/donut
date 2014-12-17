@@ -16,6 +16,7 @@ require.config({
     'jquery.fileupload'           : '../vendor/blueimp-file-upload/js/jquery.fileupload',
     'jquery.cloudinary'           : '../vendor/cloudinary_js/js/jquery.cloudinary',
     'jquery.cloudinary-donut'     : '/cloudinary',
+    'cloudinary.widget'           : '//widget.cloudinary.com/global/all',
     'jquery.mcs'                  : '../vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar',
     'jquery.mousewheel'           : '../vendor/jquery-mousewheel/jquery.mousewheel',
     'jquery.insertatcaret'        : '../javascripts/plugins/jquery.insertatcaret',
@@ -40,6 +41,9 @@ require.config({
     'jquery.mcs'                  : ['jquery'],
     'jquery.mousewheel'           : ['jquery'],
     'underscore.template-helpers' : ['underscore'],
+    'cloudinary.widget': {
+      deps: ['jquery']
+    },
     'bootstrap': {
       deps: ['jquery']
     },
@@ -71,6 +75,7 @@ require([
   'jquery.maxlength',
   'jquery.cloudinary',
   'jquery.cloudinary-donut',
+  'cloudinary.widget',
   'jquery.linkify',
   'jquery.smilify',
   'jquery.momentify',
@@ -83,8 +88,7 @@ require([
   'underscore.template-helpers'
 ], function (app, $, _, Backbone, i18next, facebook, moment, io) {
 
-  // @todo : ouille!
-  window.io = io;
+  window.io = io; // @todo : ouille!
 
   // i18n setup
   window.i18next = i18next;
@@ -103,6 +107,7 @@ require([
     cloud_name: window.cloudinary_cloud_name,
     api_key: window.cloudinary_api_key
   });
+  window.cloudinary.setCloudName(window.cloudinary_cloud_name); // @todo : ouille!
 
   // Moment language
   window.moment = moment;

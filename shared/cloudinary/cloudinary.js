@@ -43,6 +43,34 @@
     return data;
   }
 
+  function _urlNoDefault(token, width, height) {
+    if (!token) return;
+    var opts = {
+      width: width || 30,
+      height: height || 30,
+      crop: 'fill'
+    };
+
+    var identifier;
+    if (typeof token == 'object') {
+      opts.version = token.version;
+      identifier = token.id;
+    } else {
+      var data = parse(token);
+      identifier = data.cloudinary;
+
+      if (!identifier) {
+        if (data.facebook) {
+          return 'https://graph.facebook.com/'+facebook+'/picture?height='+height+'&width='+width;
+        }
+
+        return; // no valid identifier found
+      }
+    }
+
+    return cloudinaryLibrary().url(identifier, opts);
+  }
+
   function _url(token, defaultIdentifier, width, height, gravity, effect) {
     if (!token) return;
     var data = parse(token);
@@ -112,4 +140,8 @@
 
     return _url(identifier, posterDefault, 430, 1100, 'center', 'blur:800');
   };
+  exports.noDefault = function(identifier, width, height) {
+    return _urlNoDefault(identifier, width, height);
+  };
+
 })((typeof jQuery != 'undefined')?jQuery:false);
