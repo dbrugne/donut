@@ -1,15 +1,18 @@
 donut
 ====
 
-- Wiki installation projet
+Next release:
+- New pomelo platform
+- Backend
+- New avatar/poster uploader with cropping
+- Mute button
+- Bug fixed
 
 ## Pomelog migration
 * Repair auto-reconnect
 * Authentication, check that it's impossible to open a websocket if i'm not logged
 * Only display user with avatar/or Facebook/or online and room with avatar on homepage (but not for search)
 * Restore a var logger = require('../app/models/log'); and change console.log for pomelo logger
-* Mute mode
-* On "first" history load in room scrollDown
 * [Finish kick form]
 * [Add ban]
 * [Add images]
@@ -18,16 +21,16 @@ donut
 * Diagnose why cloudinary widget url/cam crash on Chrome only
 * Grunt data migration for next release (history)
 
+## Backend
+* Add user and room detail
+* Add pomelo connection
+* Refresh on home
+
 Deploy
 [ ] Add "admin" tag on user (allow them to view all history and op all rooms and send "reload" messages)
 [ ] Add event in all discussions to inform users of deployment
 [ ] Add whole platform maintenance mode
 [ ] Implement grunt deploy
-
-## Backend
-* Add user and room detail
-* Add pomelo connection
-* Refresh on home
 
 ## To validate after pomelo
 
@@ -52,6 +55,8 @@ Deploy
 [ ] Anonymous can just view everything but not post
 [ ] [Remove some interface element for anonymous]
 [ ] Authenticated is the same
+
+* Wiki installation projet
 
 ## Possible methods
 sendToUid
