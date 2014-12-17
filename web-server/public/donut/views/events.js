@@ -19,6 +19,8 @@ define([
 
     historyLoading: false,
 
+    firstHistoryLoaded: false,
+
     scrollReady: false,
 
     scrollPosition: '',
@@ -352,6 +354,15 @@ define([
     },
     onHistoryEvents: function(data) {
       this.addBatchEvents(data.history, data.more, 'history');
+
+      if (!this.firstHistoryLoaded) {
+        // history is load a first time on first discussion focus, could happen
+        // before view is totaly ready and should reposition the scrollbar on bottom
+        this.firstHistoryLoaded = true;
+        this.scrollDown();
+        return;
+      }
+
       this.historyLoading = false;
       this.$scrollable.find('.history-loader .spinner').hide();
       this.toggleHistoryMore(data.more);
