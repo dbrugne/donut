@@ -1,3 +1,7 @@
+<div class="hello">
+    <%= hello %>
+    <i class="fa fa-dot-circle-o status <%= status %>" title="<%= status %>"></i>
+</div>
 <div class="avatar">
     <img class="open-user-profile" data-username="<%= username %>" src="<%= avatar %>" alt="<%= username %> avatar">
     <div class="edit open-user-edit">
@@ -6,10 +10,6 @@
     </div>
 </div>
 <div class="content">
-    <p class="hello">
-        <%= hello %>
-        <i class="fa fa-dot-circle-o status <%= status %>" title="<%= status %>"></i>
-    </p>
     <div class="actions">
         <a class="open-user-account"><i class="fa fa-cog"></i> <%= t('actions.account') %></a>
         <a href="/logout"><i class="fa fa-power-off"></i> <%= t('actions.logout') %></a>

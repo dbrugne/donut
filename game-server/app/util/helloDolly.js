@@ -2,13 +2,11 @@ var _ = require('underscore');
 var i18next = require('./../../../shared/util/i18next');
 
 var quotesFr = [
-  "Ravi de vous revoir, %u",
-  "Sympa de vous revoir, %u",
-  "Quel plaisir de vous revoir %u",
+  "Ravi de vous revoir %u",
+  "Sympa de vous revoir %u",
   "Sympa d'être passé %u",
   "Un petit café %u ?",
   "Un p'tit donut %u ?",
-  "Belle journée %u, non ?",
   "Bien le bonjour %u",
   "Ouaish ouaish %u",
   "Salutations %u",
@@ -27,10 +25,7 @@ var quotesEn = [
   "Nice to see you, %u",
   "Good to see you, %u",
   "Pleased to see you, %u",
-  "Thanks for stopping by %u",
-  "Will you have a coffee %u?",
   "Want a donut %u?",
-  "It's gonna be a good day, %u",
   "Good day, %u",
   "Hey, %u",
   "Greetings, %u",
