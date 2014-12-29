@@ -143,5 +143,14 @@
   exports.noDefault = function(identifier, width, height) {
     return _urlNoDefault(identifier, width, height);
   };
+  exports.natural = function(identifier) {
+    if (!identifier) return;
+    var opts = {
+      width: 1500,
+      height: 1000,
+      crop: 'limit'
+    };
+    return cloudinaryLibrary().url(identifier, opts);
+  };
 
 })((typeof jQuery != 'undefined')?jQuery:false);

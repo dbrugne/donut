@@ -270,8 +270,8 @@ define([
       pomelo.notify('chat.roomLeaveHandler.leave', data);
       this.debug(['io:out:room:leave', data]);
     },
-    roomMessage: function(name, message) {
-      var data = {name: name, message: message};
+    roomMessage: function(name, message, images) {
+      var data = {name: name, message: message, images: images};
       pomelo.notify('chat.roomMessageHandler.message', data);
       this.debug(['io:out:room:message', data]);
     },
@@ -401,8 +401,8 @@ define([
       pomelo.notify('chat.userLeaveHandler.leave', data);
       this.debug(['io:out:user:leave', data]);
     },
-    userMessage: function(username, message) {
-      var data = {username: username, message: message};
+    userMessage: function(username, message, images) {
+      var data = {username: username, message: message, images: images};
       pomelo.notify('chat.userMessageHandler.message', data);
       this.debug(['io:out:user:message', data]);
     },

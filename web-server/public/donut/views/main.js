@@ -69,6 +69,19 @@ define([
       this.listenTo(onetoones, 'add', this.addOneView);
       this.listenTo(rooms, 'kicked', this.roomKicked); // @todo: nasty event
       this.listenTo(rooms, 'deleted', this.roomRoomDeleted); // @todo: nasty event
+
+      // view image popin
+      $.fn.ekkoLightbox.defaults.always_show_close = false;
+      $.fn.ekkoLightbox.defaults.onShown = function() {
+        var lightbox = this;
+        $(this.lightbox_container).click(function() {
+          lightbox.close();
+        });
+      };
+      $(document).delegate('*[data-toggle="lightbox"]', 'click', function(event) {
+        event.preventDefault();
+        $(this).ekkoLightbox();
+      });
     },
 
     run: function() {
@@ -188,7 +201,7 @@ define([
         message += ' (reason: '+data.reason+')';
       this.alert('warning', message);
     },
-    roomRoomDeleted: function(data) {
+     roomRoomDeleted: function(data) {
       this.focus();
       if (data && data.reason)
         this.alert('warning', data.reason);

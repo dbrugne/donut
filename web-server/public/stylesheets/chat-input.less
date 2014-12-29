@@ -1,4 +1,7 @@
-> div {
+.add-image {
+  cursor: pointer;
+}
+.text {
   position: relative;
   padding: 12px 95px 12px 85px;
   border: 1px solid @cl-subtext1;
@@ -11,11 +14,10 @@
   }
   .actions {
     position: absolute;
-    top: 15px; right: 74px;
+    top: 0; right: 74px;
     font-size: 17px;
     a {
       display: block;
-      cursor: pointer;
       color: @cl-subtext3;
     }
     .images { margin-top: 5px; }
@@ -71,6 +73,46 @@
       display: block;
       width: 0;
       z-index: 1;
+    }
+  }
+}
+.preview {
+  padding-top: 2px;
+  display: none;
+  .image {
+    .pull-left;
+    display: block;
+    position: relative;
+    width: 80px;
+    height: 80px;
+    margin: 2px;
+    .remove-image {
+      position: absolute;
+      right: 5px;
+      display: none;
+      color: @cl-error;
+      cursor: pointer;
+      font-size: 1.3em;
+    }
+    &:hover {
+      .remove-image {
+        display: inline;
+      }
+    }
+  }
+  .add-image {
+    .pull-left;
+    display: block;
+    border: 2px dashed @cl-subtext2;
+    border-radius: 2px;
+    width: 80px;
+    height: 80px;
+    margin: 2px;
+    padding-top: 28px;
+    text-align: center;
+    i {
+      font-size: 1.9em;
+      color: @cl-subtext2;
     }
   }
 }

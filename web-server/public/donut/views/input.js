@@ -11,9 +11,11 @@ define([
     template: _.template(InputTemplate),
 
     events: {
-      'input .editable'    : 'onInput',
-      'keypress .editable' : 'onKeyPress',
-      'click .send'        : 'sendMessage'
+      'input .editable'               : 'onInput',
+      'keypress .editable'            : 'onKeyPress',
+      'click .send'                   : 'sendMessage',
+      'click .add-image'              : 'onAddImage',
+      'click .remove-image'           : 'onRemoveImage'
     },
 
     initialize: function(options) {
@@ -32,6 +34,7 @@ define([
       }));
 
       this.$editable = this.$el.find('.editable');
+      this.$preview = this.$el.find('.preview');
 
       var that = this;
 
@@ -94,9 +97,8 @@ define([
       // Get the message
       var that = this;
       this.$editable.mentionsInput('val', function(message) {
-        if (message == '')
-          return false;
-        if (message.length > 512) // @todo: before testing length replace all mention tag with username, report on server side
+        var imagesCount = _.keys(that.images).length;
+        if (message == '' && imagesCount < 1) // empty message and no image
           return false;
 
         // Mentions, try to find missed ones
@@ -114,21 +116,98 @@ define([
           });
         }
 
+        var withoutMentions = message.replace(/@\[([^\]]+)\]\(user:[^\)]+\)/gi, '$1');
+        if (withoutMentions.length > 512) {
+          console.log('message is too long');
+          return false;
+        }
+
+        // add images
+        var images = [];
+        if (imagesCount > 0) {
+          _.each(that.images, function(i) {
+            images.push({
+              public_id: i.public_id,
+              version: i.version,
+              path: i.path
+            });
+          });
+        }
+
         // @todo: cleanup this code by calling on model... and fix #50
         if (that.model.get('type') == 'room') {
-          client.roomMessage(that.model.get('name'), message);
+          client.roomMessage(that.model.get('name'), message, images);
         } else if (that.model.get('type') == 'onetoone') {
-          client.userMessage(that.model.get('username'), message);
+          client.userMessage(that.model.get('username'), message, images);
         }
 
         // Empty field
         that.$editable.val('');
         that.$editable.mentionsInput('reset');
+
+        // reset images
+        that.images = {};
+        that.$preview.find('.image').remove();
+        that.$preview.hide();
+
       });
 
       // Avoid line break addition in field when submitting with "Enter"
       return false;
+    },
+
+    imageTemplate: _.template('<a class="image" data-toggle="lightbox" href="<%=data.url%>" data-cloudinary-id="<%=data.public_id%>" style="background-image: url(<%=data.thumbnail_url%>);"><i class="fa fa-times remove-image"></i></a>'),
+
+    images: {}, // @todo to cleanup on post message
+
+    onAddImage: function(event) {
+      event.preventDefault();
+
+      // @doc: http://cloudinary.com/documentation/upload_widget#setup
+      var options = {
+        upload_preset: 'discussion',
+        sources: ['local', 'url', 'camera'],
+        multiple: true,
+        client_allowed_formats: ["png","gif", "jpeg"],
+        max_file_size: 20000000, // 20Mo
+        max_files: 5,
+        thumbnail_transformation: { width: 80, height: 80, crop: 'fill' }
+      };
+
+      var that = this;
+      cloudinary.openUploadWidget(options, function(err, result) {
+          if (err) {
+            if (err.message && err.message == 'User closed widget')
+              return;
+            console.log('cloudinary error: ', err);
+          }
+          if (!result)
+            return console.log('cloudinary result is empty!');
+
+          _.each(result, function(uploaded) {
+            // render preview
+            that.$preview.find('.add-image').before(that.imageTemplate({data: uploaded}));
+            // add to collection
+            that.images[uploaded.public_id] = uploaded;
+            // show preview
+            that.$preview.show();
+          });
+        }
+      );
+    },
+    onRemoveImage: function(event) {
+      event.preventDefault();
+      var cid = $(event.currentTarget).closest('.image').data('cloudinaryId');
+      // remove from collection
+      if (this.images[cid])
+        delete this.images[cid];
+      // remove preview
+      this.$preview.find('.image[data-cloudinary-id="'+cid+'"]').remove();
+      // hide previews
+      if (_.keys(this.images).length < 1)
+        this.$preview.hide();
     }
+
   });
 
   return DiscussionInputView;

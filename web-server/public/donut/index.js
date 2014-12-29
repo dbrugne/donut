@@ -2,6 +2,7 @@ require.config({
   paths: {
     'jquery'                      : '../vendor/jquery/jquery',
     'bootstrap'                   : '../vendor/bootstrap/dist/js/bootstrap',
+    'lightbox'                    : '../vendor/lightbox/dist/ekko-lightbox',
     'text'                        : '../vendor/requirejs-text/text',
     'socket.io'                   : '/socket.io',
     'pomelo'                      : './pomelo-client',
@@ -29,6 +30,8 @@ require.config({
     'underscore.template-helpers' : '../javascripts/plugins/underscore.template-helpers'
   },
   shim: {
+    'bootstrap'                    : ['jquery'],
+    'lightbox'                    : ['jquery'],
     'jquery.cloudinary'           : ['jquery'],
     'jquery.cloudinary-donut'     : ['jquery'],
     'jquery.insertatcaret'        : ['jquery'],
@@ -40,13 +43,8 @@ require.config({
     'jquery.mentionsinput'        : ['jquery'],
     'jquery.mcs'                  : ['jquery'],
     'jquery.mousewheel'           : ['jquery'],
+    'cloudinary.widget'           : ['jquery'],
     'underscore.template-helpers' : ['underscore'],
-    'cloudinary.widget': {
-      deps: ['jquery']
-    },
-    'bootstrap': {
-      deps: ['jquery']
-    },
     'facebook' : {
       exports: 'FB'
     },
@@ -71,6 +69,7 @@ require([
   /************************************
    * Load (once) and attach plugins to jQuery and underscore
    ************************************/
+  'lightbox',
   'jquery.insertatcaret',
   'jquery.maxlength',
   'jquery.cloudinary',
