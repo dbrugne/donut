@@ -35,7 +35,6 @@ define([
       this.listenTo(this.model, 'freshEvent', this.addFreshEvent);
       this.listenTo(this.model, 'historyEvents', this.onHistoryEvents);
       this.listenTo(this.model, 'reconnectEvents', this.onReconnectEvents);
-      this.listenTo(this.model, 'change:focused', this.onFocus);
 
       var that = this;
       _.defer(function() { // => Uncaught TypeError: Cannot read property '0' of null
@@ -181,12 +180,12 @@ define([
         that.$el.mCustomScrollbar('scrollTo', 'bottom');
       }, 100);
     },
-    onFocus: function(model, value, options) {
-      if (value) {
-        this.debug('enable '+this._id());
-        this.scrollDown();
-        this.updateMoment();
-      }
+    _focus: function() {
+      this.updateMoment();
+    },
+    resize: function(heigth) {
+      this.$el.height(heigth);
+      this.scrollDown();
     },
     addFreshEvent: function(model) {
       // browser notification

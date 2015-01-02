@@ -58,6 +58,9 @@ define([
       this.$window.on('beforeunload', function() {
         return that.onClose();
       });
+      this.$window.resize(function() {
+        that.onResize();
+      });
 
       // Bind events to model
       this.listenTo(client, 'notlogged', this.onNotLogged);
@@ -119,6 +122,11 @@ define([
       }
 
       this.renderTitle();
+    },
+    onResize: function() {
+      var model = this._getFocusedModel();
+      if (model)
+        model.trigger('resize'); // transmit event only to the current focused model
     },
     _getFocusedModel: function() {
       var model = rooms.findWhere({focused: true});
@@ -200,7 +208,6 @@ define([
       this.beepPlaying = true;
       beep.play();
     }
-
 
   });
 

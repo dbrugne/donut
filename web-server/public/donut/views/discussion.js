@@ -22,6 +22,7 @@ define([
       // Events
       this.listenTo(this.collection, 'remove', this.removeView);
       this.listenTo(this.model, 'change:focused', this.updateFocus);
+      this.listenTo(this.model, 'resize', this.onResize);
 
       // Parent view rendering
       this.render();
@@ -35,7 +36,7 @@ define([
         el: this.$el.find('.input'),
         model: this.model
       });
-      // (later we will be able to re-render each subview individually without touching this view)
+      this.listenTo(this.inputView, 'resize', this.onResize);
 
       // Other subviews
       this._initialize(options);
@@ -87,6 +88,9 @@ define([
           this.model.history(null);
         this.hasBeenFocused = true;
 
+        // resize and scroll down
+        this.onResize();
+
         this._focus();
       } else {
         // to unfocus
@@ -110,6 +114,18 @@ define([
       if (this.model.get('focused'))
         this.mainView.color(this.model.get('color'));
       // + change data-colorify for side and blur (=darker)
+    },
+
+    onResize: function() {
+      var $content = this.$el.find('.content');
+      var totalHeight = $content.outerHeight();
+      var headerHeight = $content.find('.header').outerHeight();
+
+      var inputHeight = this.inputView.$el.outerHeight();
+      var eventsHeight = totalHeight - (headerHeight + inputHeight);
+
+      this.eventsView.resize(eventsHeight);
+      //console.log('resize call by window ('+totalHeight+', '+headerHeight+', '+inputHeight+', '+eventsHeight+')');
     }
 
   });

@@ -150,7 +150,7 @@ define([
         // reset images
         that.images = {};
         that.$preview.find('.image').remove();
-        that.$preview.hide();
+        that.hidePreview();
       });
 
       // Avoid line break addition in field when submitting with "Enter"
@@ -191,7 +191,7 @@ define([
             // add to collection
             that.images[uploaded.public_id] = uploaded;
             // show preview
-            that.$preview.show();
+            that.showPreview();
           });
         }
       );
@@ -206,7 +206,15 @@ define([
       this.$preview.find('.image[data-cloudinary-id="'+cid+'"]').remove();
       // hide previews
       if (_.keys(this.images).length < 1)
-        this.$preview.hide();
+        this.hidePreview();
+    },
+    showPreview: function() {
+      this.$preview.show();
+      this.trigger('resize');
+    },
+    hidePreview: function() {
+      this.$preview.hide();
+      this.trigger('resize');
     }
 
   });
