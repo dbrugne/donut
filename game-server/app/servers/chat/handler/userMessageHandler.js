@@ -3,6 +3,7 @@ var async = require('async');
 var User = require('../../../../../shared/models/user');
 var oneEmitter = require('../../../util/oneEmitter');
 var inputUtil = require('../../../util/input');
+var imagesUtil = require('../../../util/images');
 
 module.exports = function(app) {
 	return new Handler(app);
@@ -77,11 +78,14 @@ handler.message = function(data, session, next) {
 		},
 
 		function prepareEvent(from, to, callback) {
-			// input filtering
+			// text filtering
 			var message = inputUtil.filter(data.message, 512);
 
-			if (message == '')
-				return callback('Empty user:message');
+			// images filtering
+			var images = imagesUtil.filter(data.images);
+
+			if (!message && !images)
+				return callback('Empty message (no text, no image)');
 
 			var event = {
 				from_user_id  : from._id.toString(),
@@ -89,9 +93,13 @@ handler.message = function(data, session, next) {
 				from_avatar   : from._avatar(),
 				to_user_id    : to._id.toString(),
 				to_username   : to.username,
-				time          : Date.now(),
-				message       : message
+				time          : Date.now()
 			};
+
+			if (message)
+				event.message = message;
+			if (images && images.length)
+				event.images = images;
 
 			return callback(null, from, to, event);
 		},

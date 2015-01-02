@@ -10,13 +10,14 @@ var expressValidator = require('../../../shared/util/validator');
  * Return filtered string or empty string if too long or empty.
  * @param value
  * @param max
- * @return '' or filtered String
+ * @return false or filtered String
  */
 module.exports.filter = function(value, maxLength) {
-	// @todo : broken with mentions, replace @()[] in evaluated string with captured username before counting
+  // check length
 	maxLength = maxLength || 512;
-	if (!expressValidator.validator.isLength(value, 1, 512))
-		return '';
+	var withoutMentions = value.replace(/@\[([^\]]+)\]\(user:[^\)]+\)/gi, '$1');
+	if (!expressValidator.validator.isLength(withoutMentions, 1, maxLength))
+		return false;
 
 	var filtered;
 	filtered = value.replace('<3', '#!#!#heart#!#!#').replace('</3', '#!#!#bheart#!#!#'); // very common but particular case
@@ -26,6 +27,10 @@ module.exports.filter = function(value, maxLength) {
 	});
 	filtered = sanitize.caja(filtered);
 	filtered = value.replace('#!#!#heart#!#!#', '<3').replace('#!#!#bheart#!#!#', '</3');
+
+	if (filtered == '')
+	  return false;
+
 	return filtered;
 	/**
 	 * Test string :

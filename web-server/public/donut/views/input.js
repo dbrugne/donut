@@ -97,6 +97,7 @@ define([
       // Get the message
       var that = this;
       this.$editable.mentionsInput('val', function(message) {
+        // check length (min)
         var imagesCount = _.keys(that.images).length;
         if (message == '' && imagesCount < 1) // empty message and no image
           return false;
@@ -116,6 +117,7 @@ define([
           });
         }
 
+        // check length (max)
         var withoutMentions = message.replace(/@\[([^\]]+)\]\(user:[^\)]+\)/gi, '$1');
         if (withoutMentions.length > 512) {
           console.log('message is too long');
@@ -149,7 +151,6 @@ define([
         that.images = {};
         that.$preview.find('.image').remove();
         that.$preview.hide();
-
       });
 
       // Avoid line break addition in field when submitting with "Enter"

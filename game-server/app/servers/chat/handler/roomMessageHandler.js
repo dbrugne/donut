@@ -4,6 +4,7 @@ var roomEmitter = require('../../../util/roomEmitter');
 var User = require('../../../../../shared/models/user');
 var Room = require('../../../../../shared/models/room');
 var inputUtil = require('../../../util/input');
+var imagesUtil = require('../../../util/images');
 //var admin = require('./_admin');
 
 module.exports = function(app) {
@@ -80,23 +81,28 @@ handler.message = function(data, session, next) {
 		},
 
 		function prepareEvent(room, user, callback) {
-
-			// Input filtering
+			// text filtering
 			var message = inputUtil.filter(data.message, 512);
 
-			if (message == '')
-				return callback('Empty room:message');
+			// images filtering
+			var images = imagesUtil.filter(data.images);
+
+			if (!message && !images)
+				return callback('Empty message (no text, no image)');
 
 			var event = {
 				name: room.name,
 				time: Date.now(),
-				message: message,
 				user_id: user._id.toString(),
 				username: user.username,
 				avatar: user._avatar()
 			};
-			return callback(null, room, event);
+			if (message)
+			  event.message = message;
+			if (images && images.length)
+				event.images = images;
 
+			return callback(null, room, event);
 		},
 
 		function historizeAndEmit(room, event, callback) {
