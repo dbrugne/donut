@@ -76,7 +76,17 @@
         <div class="items">
     <% } %>
             <div class="event <% if (isNew) { print('new'); } %>" id="<%= data.id %>" data-time="<%= data.time %>">
-                <div class="text"><%= data.message %></div>
+                <% if (data.message) { %>
+                    <div class="text"><%= data.message %></div>
+                <% } %>
+                <% if (data.images) { %>
+                <div class="images">
+                    <% _.each(data.images, function(i) { %>
+                        <a class="image" data-toggle="lightbox" href="<%=i.url%>" data-cloudinary-id="<%=i.public_id%>" style="background-image: url(<%= i.thumbnail %>);"></a>
+                    <% }); %>
+                    <hr>
+                </div>
+                <% } %>
                 <div class="date"><span class="moment" data-time="<%= data.time %>" title="<%= data.full %>"><%= data.fromnow %></span></div>
             </div>
     <% if (withBlock) { %>

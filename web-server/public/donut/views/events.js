@@ -308,6 +308,19 @@ define([
         data.data.message = message;
       }
 
+      // images
+      if (data.data.images) {
+        var images = [];
+        _.each(data.data.images, function(i) {
+          i.url = $.cd.natural(i.public_id);
+          i.thumbnail = $.cd.natural(i.public_id, 50, 50);
+          images.push(i);
+        });
+
+        if (images && images.length > 0)
+          data.data.images = images;
+      }
+
       // moment
       var dateObject = moment(model.get('time'));
       data.data.fromnow = dateObject.fromNow();
