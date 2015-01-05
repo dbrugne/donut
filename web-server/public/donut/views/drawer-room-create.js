@@ -2,9 +2,8 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'models/client', // @todo call on rooms collection
   'text!templates/room-create.html'
-], function ($, _, Backbone, client, roomCreateTemplate) {
+], function ($, _, Backbone, roomCreateTemplate) {
   var DrawerRoomCreateView = Backbone.View.extend({
 
     template: _.template(roomCreateTemplate),
