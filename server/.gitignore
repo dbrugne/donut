@@ -1,6 +1,0 @@
-# Dependencies
-node_modules/
-public/vendor/
-
-# Compiled files
-public/stylesheets/style.css
