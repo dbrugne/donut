@@ -24,7 +24,7 @@ var dryFields = [
   'from_avatar',
   'to_user_id',
   'to_username',
-]; // @todo : in user:online/offline event the fields are user_id, username, avatar
+]; // in user:online/offline event the fields are user_id, username, avatar
 
 /**
  * Archive following events:
@@ -42,7 +42,7 @@ historySchema.statics.record = function() {
    * @return event with event_id set
    */
   return function(event, data, toIsOnline, fn) {
-    // user:online/offline special case, @todo : to cleanup later
+    // user:online/offline special case
     var fromUserId, toUserId;
     if (data.from_user_id == undefined && data.from) {
       fromUserId = data.from;
@@ -170,6 +170,6 @@ historySchema.statics.retrieve = function() {
       });
     });
   }
-}
+};
 
 module.exports = mongoose.model('HistoryOne', historySchema, 'history-one');
