@@ -114,6 +114,7 @@ define([
       this.$scrollable = this.$el.find('.mCSB_container');
       this.$history = this.$scrollable.find('.history');
       this.$realtime = this.$scrollable.find('.realtime');
+      this.$blank = this.$scrollable.find('.blank');
 
       // render events received on 'connect' (in .history)
       if (this.model.get('connectHistory')) {
@@ -185,6 +186,19 @@ define([
     },
     resize: function(heigth) {
       this.$el.height(heigth);
+      if (this.$blank) {
+        var blankHeight = 0;
+        var currentContentHeight = this.$scrollable.find('.hello.block').outerHeight()
+          + this.$history.outerHeight()
+          + this.$realtime.outerHeight();
+        if (currentContentHeight > heigth)
+          blankHeight = 0;
+        else
+          blankHeight = heigth - currentContentHeight;
+
+        this.$blank.height(blankHeight);
+        //console.log('blank', blankHeight);
+      }
       this.scrollDown();
     },
     addFreshEvent: function(model) {

@@ -89,7 +89,10 @@ define([
         this.hasBeenFocused = true;
 
         // resize and scroll down
-        this.onResize();
+        var that = this;
+        _.defer(function() {
+          that.onResize()
+        });
 
         this._focus();
       } else {
