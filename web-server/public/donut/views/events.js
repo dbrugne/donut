@@ -325,8 +325,8 @@ define([
       if (data.data.images) {
         var images = [];
         _.each(data.data.images, function(i) {
-          i.url = $.cd.natural(i.public_id);
-          i.thumbnail = $.cd.natural(i.public_id, 50, 50);
+          i.url = $.cd.natural(i.path);
+          i.thumbnail = $.cd.natural(i.path, 50, 50); // @important: use .path to obtain URL with file extension and avoid CORS errors
           images.push(i);
         });
 

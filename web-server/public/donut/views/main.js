@@ -70,7 +70,7 @@ define([
       this.listenTo(rooms, 'kicked', this.roomKicked); // @todo: nasty event
       this.listenTo(rooms, 'deleted', this.roomRoomDeleted); // @todo: nasty event
 
-      // view image popin
+      // image lightbox
       $.fn.ekkoLightbox.defaults.always_show_close = false;
       $.fn.ekkoLightbox.defaults.onShown = function() {
         var lightbox = this;
