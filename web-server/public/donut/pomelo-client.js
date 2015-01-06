@@ -247,8 +247,7 @@
   };
 
 /**
- *
- *pomele client encode
+ * pomelo client encode
  * id message id;
  * route message route
  * msg message body
@@ -273,9 +272,6 @@ Protocol.encode = function(id,route,msg){
     }
     return bt2Str(byteArray,0,byteArray.length);
 };
-
-
-
 
 /**
  *
@@ -316,12 +312,76 @@ var bt2Str = function(byteArray,start,end) {
     };
   }
 
+  var debug = function(message) {
+    console.log(message); // @debug
+  };
+
   var root = window;
   var pomelo = Object.create(EventEmitter.prototype); // object extend from object
   root.pomelo = pomelo;
   var socket = null;
   var id = 1;
   var callbacks = {};
+  pomelo.connector = ''; // store the current connector URL on which this client is connected
+
+  pomelo.connect = function(port) {
+    if (pomelo.isConnected())
+      pomelo.disconnect();
+
+    // @debug
+    if (port) {
+      return connectToConnector({
+        host: window.location.hostname,
+        port: port
+      });
+    }
+
+    // request gate for a connector
+    pomelo.connectToGate(function(err, server) {
+      if (err)
+        return debug(err);
+
+      debug('pomelo:gate dispatched to: ' + server.host + ':' + server.port);
+      pomelo.disconnect();
+      pomelo.connectToConnector(server);
+    });
+  };
+
+  pomelo.connectToGate = function(fn) {
+    pomelo.init({
+        host: window.location.hostname,
+        port: 3014, // @todo : handle host/port list in configuration in DOM (extract from game-server/conf/servers.json)
+        isForGate: true
+      },
+      function () {
+        pomelo.request('gate.gateHandler.queryEntry', {}, function (data) {
+            if (data.code === 500)
+              return fn("There is no connector server available, please wait.");
+
+            return fn(null, data);
+          }
+        );
+      }
+    );
+  };
+
+  pomelo.connectToConnector = function(server) {
+    pomelo.init({
+      host: server.host,
+      port: server.port
+    }, function () {
+      pomelo.request('connector.entryHandler.enter', {
+      }, function (data) {
+        if (data.error)
+          return debug(["connector.entryHandler.enter returns error", data]);
+
+        pomelo.connector = 'ws://'+server.host+':'+server.port;
+        debug("connected to "+pomelo.connector);
+
+        pomelo.emit('welcome', data);
+      });
+    });
+  };
 
   pomelo.init = function(params, callback){
     pomelo.params = params;
@@ -330,14 +390,13 @@ var bt2Str = function(byteArray,start,end) {
     var port = params.port;
 
     //var url = 'wss://' + host;
-    var url = 'ws://'+host;
+    var url = 'ws://'+host; // +'/slipdecombat'
     if(port) {
       url +=  ':' + port;
     }
 
     // @doc: https://github.com/Automattic/engine.io-client#methods
-    //socket = io.connect(url, {'force new connection': true, reconnect: false});
-    socket = io(url, {
+    var sioOptions = {
       //multiplex: true,
       reconnection: false, // @todo : should be done by myself, should recall the whole client.connect() process
       //reconnectionDelay: 1000,
@@ -346,51 +405,57 @@ var bt2Str = function(byteArray,start,end) {
       //autoConnect: true,
       forceNew    : true // http://stackoverflow.com/questions/24566847/socket-io-client-connect-disconnect
       //query       : 'foo=bar'
-    });
+    };
+
+    if (params.isForGate)
+      sioOptions.upgrade = false; // for gate we do not need websocket upgrade
+
+    socket = io(url, sioOptions);
 
     // SOCKET.IO EVENTS
     // ======================================================
     var that = this;
     socket.on('connect', function () {
-      pomelo.emit('socketIoEvent', {
-        event: 'connected',
-        debug: 'socket connected'
+      pomelo.emit('sioEvent', {
+        event: 'connected'
+        //debug: 'socket connected'
       });
 
       if (callback)
         return callback(socket);
     });
     socket.on('disconnect', function (reason) {
-      pomelo.emit('socketIoEvent', {
+      pomelo.connector = '';
+      pomelo.emit('sioEvent', {
         event: 'disconnected',
         debug: 'socket.io-client disconnect ('+reason+')'
       });
     });
     socket.on('reconnect', function (num) {
-      pomelo.emit('socketIoEvent', {
+      pomelo.emit('sioEvent', {
         event: 'reconnected',
         debug: 'socket.io-client successful reconnected at #'+num+' attempt'
       });
     });
     socket.on('reconnect_attempt', function () {
-      pomelo.emit('socketIoEvent', {
+      pomelo.emit('sioEvent', {
         event: 'connecting'
       });
     });
     socket.on('reconnecting', function (num) {
-      pomelo.emit('socketIoEvent', {
+      pomelo.emit('sioEvent', {
         event: 'connecting',
         debug: 'socket.io-client try to reconnect, #'+num+' attempt'
       });
     });
     socket.on('connect_timeout', function () { // fired on socket or only on manager? http://socket.io/docs/client-api/#socket
-      pomelo.emit('socketIoEvent', {
+      pomelo.emit('sioEvent', {
         event: 'connecting',
         debug: 'socket.io-client timeout'
       });
     });
     var onError = function(err) {
-      pomelo.emit('socketIoEvent', {
+      pomelo.emit('sioEvent', {
         event: 'connecting',
         debug: 'socket.io-client error: '+err
       });
@@ -465,7 +530,6 @@ var bt2Str = function(byteArray,start,end) {
 
       if(typeof cb !== 'function') {
         // could happen for a .notify() call
-        //console.log('[pomeloclient.processMessage] cb is not a function (probably notify call) for request ' + msg.id);
         return;
       }
 

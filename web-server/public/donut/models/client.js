@@ -6,19 +6,17 @@ define([
 ], function (_, Backbone, io, pomelo) {
   var ClientModel = Backbone.Model.extend({
 
-    connector: '', // the current connector URL on which this client is connected
-
-    initialize: function() {
-      localStorage.debug = ''; // @debug ('*')
-      this._events();
+    debug: function(message) {
+      console.log(message); // @debug
     },
 
-    _events: function() {
-      var that = this;
+    initialize: function() {
+      // @debug
+      localStorage.debug = ''; // ('*')
 
-      // SOCKET.IO EVENTS
-      // ======================================================
-      pomelo.on('socketIoEvent', function(data) {
+      // received events
+      var that = this;
+      pomelo.on('sioEvent', function(data) {
         if (!data)
           return;
         if (data.debug)
@@ -26,19 +24,16 @@ define([
         if (data.event)
           that.trigger(data.event);
 
-        if (data.event == 'disconnected')
-          that.connector = '';
-
         // @todo : repair !!!!
         //if (err == 'notlogged')
         //  that.trigger('notlogged');
         //else
         //  that.trigger('error');
       });
-
-      // ROOM EVENTS
-      // ======================================================
-
+      pomelo.on('welcome', function(data) {
+        that.debug(['io:in:welcome', data]);
+        that.trigger('welcome', data);
+      });
       pomelo.on('room:join', function(data) {
         that.debug(['io:in:room:join', data]);
         that.trigger('room:join', data);
@@ -79,10 +74,6 @@ define([
         that.debug(['io:in:room:kick', data]);
         that.trigger('room:kick', data);
       });
-
-      // USER EVENTS
-      // ======================================================
-
       pomelo.on('user:join', function(data) {
         that.debug(['io:in:user:join', data]);
         that.trigger('user:join', data);
@@ -109,73 +100,9 @@ define([
       });
     },
 
-    debug: function(message) {
-      console.log(message); // @debug
-    },
-
-    /**
-     * .connect() should be done at the end of App initialization to allow
-     * interface binding to work
-     *
-     * First init pomelo, it open a socket with "gate" server.
-     * Send a "gate.gateHandler.queryEntry" request to get "connector" to connect to.
-     * Disconnect socket.
-     * Reinit pomelo to be connect to given "connector" server.
-     * Receive welcome message on success.
-     */
     connect: function(port) {
-      var that = this;
-
-      if (this.isConnected())
-        this.disconnect();
-
-      if (port) {
-        return this._connect({
-          host: window.location.hostname,
-          port: port
-        });
-      }
-
-      pomelo.init({
-          host: window.location.hostname,
-          port: 3014, // @todo : remove port (should be naturally 80 on production)
-          log : true
-        },
-        function () {
-          that.debug('pomelo:init done');
-          pomelo.request(
-            'gate.gateHandler.queryEntry',
-            {},
-            function (data) {
-              that.debug('pomelo:gate dispatched to: ' + data.host + ':' + data.port);
-              pomelo.disconnect();
-              if (data.code === 500)
-                return that.debug("There is no server to log in, please wait.");
-              that._connect(data);
-            }
-          );
-        }
-      );
-    },
-    _connect: function(server) {
-      var that = this;
-      pomelo.init({
-        host: server.host,
-        port: server.port,
-        log : true
-      }, function () {
-        pomelo.request('connector.entryHandler.enter', {
-        }, function (data) {
-          if (data.error)
-            return that.debug(["connector.entryHandler.enter returns error", data]);
-
-          that.connector = 'ws://'+server.host+':'+server.port;
-          that.debug("connected to "+that.connector);
-
-          that.debug(['io:in:welcome', data]);
-          that.trigger('welcome', data);
-        });
-      });
+      // should be done at the end of App initialization to allow interface binding to work
+      pomelo.connect(port);
     },
     disconnect: function() {
       pomelo.disconnect();
