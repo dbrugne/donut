@@ -34,7 +34,7 @@ app.use(status, {status: {
 }});
 
 // app configuration
-app.configure('production|development', 'connector', function(){
+app.configure('production|test|development', 'connector', function(){
   app.set('connectorConfig',
     {
       connector : connector,
@@ -42,7 +42,7 @@ app.configure('production|development', 'connector', function(){
     });
 });
 
-app.configure('production|development', 'gate', function(){
+app.configure('production|test|development', 'gate', function(){
   app.set('connectorConfig',
     {
       connector : connector,
@@ -58,7 +58,7 @@ var chatRoute = function(session, msg, app, cb) {
   var res = dispatcher.dispatch(session.uid, chatServers);
   cb(null, res.id);
 };
-app.configure('production|development', function() {
+app.configure('production|test|development', function() {
   // route configures
   app.route('chat', chatRoute);
 
