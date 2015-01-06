@@ -46,7 +46,7 @@ handler.queryEntry = function(msg, session, next) {
 	logger.debug('dispatched user '+uid+' to: ');
 	next(null, {
 		code: 200,
-		host: res.host,
+		host: res.clientHost,
 		port: res.clientPort
 	});
 };

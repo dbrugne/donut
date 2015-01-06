@@ -335,6 +335,7 @@ var bt2Str = function(byteArray,start,end) {
       url +=  ':' + port;
     }
 
+    // @doc: https://github.com/Automattic/engine.io-client#methods
     //socket = io.connect(url, {'force new connection': true, reconnect: false});
     socket = io(url, {
       //multiplex: true,
@@ -344,7 +345,7 @@ var bt2Str = function(byteArray,start,end) {
       //timeout: 20000, // = between 2 heartbeat pings
       //autoConnect: true,
       forceNew    : true // http://stackoverflow.com/questions/24566847/socket-io-client-connect-disconnect
-      //query       : 'clientId='+this.clientId
+      //query       : 'foo=bar'
     });
 
     // SOCKET.IO EVENTS

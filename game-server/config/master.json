@@ -1,7 +1,7 @@
 {
   "development":{
     "id":"master-server-1",
-    "host":"chat.local",
+    "host":"127.0.0.1",
     "port":3005
   },
   "test":{
@@ -11,7 +11,7 @@
   },
   "production":{
     "id":"master-server-1",
-    "host":"127.0.0.1",
+    "host":"5.196.206.61",
     "port":3005
   }
 }
