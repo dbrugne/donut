@@ -1,4 +1,4 @@
-var logger = require('pomelo-logger').getLogger('donut', __filename);
+var logger = require('pomelo-logger').getLogger('pomelo', __filename);
 var async = require('async');
 var User = require('../../../../../shared/models/user');
 var oneEmitter = require('../../../util/oneEmitter');

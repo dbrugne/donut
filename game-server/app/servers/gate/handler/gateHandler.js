@@ -1,4 +1,4 @@
-var logger = require('pomelo-logger').getLogger('donut', __filename);
+var logger = require('pomelo-logger').getLogger('pomelo', __filename);
 var dispatcher = require('../../../util/dispatcher');
 
 module.exports = function(app) {

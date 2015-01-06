@@ -1,4 +1,4 @@
-var logger = require('pomelo-logger').getLogger('donut', __filename);
+var logger = require('pomelo-logger').getLogger('pomelo', __filename);
 var debug = require('debug')('donut:server:ws:room-emitter');
 var _ = require('underscore');
 var async = require('async');
