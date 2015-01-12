@@ -410,7 +410,6 @@ var bt2Str = function(byteArray,start,end) {
     if (params.isForGate)
       sioOptions.upgrade = false; // for gate we do not need websocket upgrade
 
-    console.log('try to connect');
     socket = io(url, sioOptions);
 
     // SOCKET.IO EVENTS
