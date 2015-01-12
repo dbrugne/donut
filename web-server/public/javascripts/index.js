@@ -1,6 +1,6 @@
 require.config({
   paths: {
-    'jquery'                      : '../vendor/jquery/dist/jquery',
+    'jquery'                      : '../vendor/jquery/jquery',
     'bootstrap'                   : '../vendor/bootstrap/dist/js/bootstrap',
     'facebook'                    : '//connect.facebook.net/fr_FR/all',
     'jquery.linkify'              : '../javascripts/plugins/jquery.linkify'
