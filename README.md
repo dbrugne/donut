@@ -11,7 +11,6 @@ donut
 - New Relic, Grunt
 
 ## Pomelog migration
-* Repair auto-reconnect
 * Authentication, check that it's impossible to open a websocket if i'm not logged
 * Restore a var logger = require('../app/models/log'); and change console.log for pomelo logger
 * Grunt data migration for next release (history)

@@ -322,7 +322,8 @@ var bt2Str = function(byteArray,start,end) {
   var socket = null;
   var id = 1;
   var callbacks = {};
-  pomelo.connector = ''; // store the current connector URL on which this client is connected
+
+  pomelo.currentConnector = ''; // store the current connector URL on which this client is connected
 
   pomelo.connect = function(port) {
     if (pomelo.isConnected())
@@ -375,8 +376,8 @@ var bt2Str = function(byteArray,start,end) {
         if (data.error)
           return debug(["connector.entryHandler.enter returns error", data]);
 
-        pomelo.connector = 'ws://'+server.host+':'+server.port;
-        debug("connected to "+pomelo.connector);
+        pomelo.currentConnector = 'ws://'+server.host+':'+server.port;
+        debug("connected to "+pomelo.currentConnector);
 
         pomelo.emit('welcome', data);
       });
@@ -385,7 +386,6 @@ var bt2Str = function(byteArray,start,end) {
 
   pomelo.init = function(params, callback){
     pomelo.params = params;
-    params.debug = true;
     var host = params.host;
     var port = params.port;
 
@@ -398,7 +398,7 @@ var bt2Str = function(byteArray,start,end) {
     // @doc: https://github.com/Automattic/engine.io-client#methods
     var sioOptions = {
       //multiplex: true,
-      reconnection: false, // @todo : should be done by myself, should recall the whole client.connect() process
+      reconnection: true,
       //reconnectionDelay: 1000,
       //reconnectionDelayMax: 5000,
       //timeout: 20000, // = between 2 heartbeat pings
@@ -410,6 +410,7 @@ var bt2Str = function(byteArray,start,end) {
     if (params.isForGate)
       sioOptions.upgrade = false; // for gate we do not need websocket upgrade
 
+    console.log('try to connect');
     socket = io(url, sioOptions);
 
     // SOCKET.IO EVENTS
@@ -425,7 +426,7 @@ var bt2Str = function(byteArray,start,end) {
         return callback(socket);
     });
     socket.on('disconnect', function (reason) {
-      pomelo.connector = '';
+      pomelo.currentConnector = '';
       pomelo.emit('sioEvent', {
         event: 'disconnected',
         debug: 'socket.io-client disconnect ('+reason+')'
