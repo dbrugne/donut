@@ -11,18 +11,16 @@ donut
 - New Relic, Grunt
 
 ## Pomelog migration
+* Add nginx, remove gate and add nginx to dependencies
 * Authentication, check that it's impossible to open a websocket if i'm not logged
 * Restore broadcast to user sockets on user logout
 * Restore a var logger = require('../app/models/log'); and change console.log for pomelo logger
+* Add user and room detail on backend
+* Add pomelo connection on backend
+* Add log tail -f on backend
+* Refresh button on backend home
 * Grunt data migration for next release (history)
 * Redirect to room after signup/signin => FB campaign glander au boulot
-* Popin smiley
-* Add nginx, remove gate and add nginx to dependencies
-
-## Backend
-* Add user and room detail
-* Add pomelo connection
-* Refresh on home
 
 Deploy
 [ ] Add event in all discussions to inform users of deployment
@@ -32,6 +30,7 @@ Deploy
 ## After pomelo
 * [Finish kick form]
 * [Add ban]
+* Popin smiley
 * Add "is typing" notification
 * Add online/offline/afk indication
 * Handle process termination (SIGINT, SIGTERM, Uncaugth exception): http://stackoverflow.com/questions/26163800/node-js-pm2-on-exit
