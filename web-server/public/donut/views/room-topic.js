@@ -10,8 +10,6 @@ define([
 
     template: _.template(topicTemplate),
 
-    defaultText: $.t("chat.topic.default"),
-
     events: {
       'click .topic-current': 'showForm',
       'click .edit'         : 'showForm',
@@ -38,8 +36,8 @@ define([
       if (currentTopic == undefined || currentTopic == '') {
         if (this.model.currentUserIsOp() || this.model.currentUserIsOwner()) {
           this.$el.find('.txt')
-            .html(this.defaultText)
-            .attr('title', this.defaultText);
+            .html($.t("chat.topic.default"))
+            .attr('title', $.t("chat.topic.default"));
           this.$el.find('.topic-current').css('display', 'inline-block');
         } else {
           this.$el.find('.txt')
