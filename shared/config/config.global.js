@@ -10,7 +10,9 @@ var conf = module.exports = {
    */
   fqdn: '',
 
-
+  debug: {
+    cookie: 'donut.debug'
+  },
   less: {
     force: false
   },
