@@ -325,45 +325,16 @@ var bt2Str = function(byteArray,start,end) {
 
   pomelo.currentConnector = ''; // store the current connector URL on which this client is connected
 
-  pomelo.connect = function(port) {
+  pomelo.connect = function(host, port) {
     if (pomelo.isConnected())
       pomelo.disconnect();
 
-    // @debug
-    if (port) {
-      return connectToConnector({
-        host: window.location.hostname,
-        port: port
-      });
-    }
-
-    // request gate for a connector
-    pomelo.connectToGate(function(err, server) {
-      if (err)
-        return debug(err);
-
-      debug('pomelo:gate dispatched to: ' + server.host + ':' + server.port);
-      pomelo.disconnect();
-      pomelo.connectToConnector(server);
-    });
-  };
-
-  pomelo.connectToGate = function(fn) {
-    pomelo.init({
-        host: window.location.hostname,
-        port: 3014, // @todo : handle host/port list in configuration in DOM (extract from game-server/conf/servers.json)
-        isForGate: true
-      },
-      function () {
-        pomelo.request('gate.gateHandler.queryEntry', {}, function (data) {
-            if (data.code === 500)
-              return fn("There is no connector server available, please wait.");
-
-            return fn(null, data);
-          }
-        );
-      }
-    );
+    // in console: client.connect('chat.local', 3050)
+    var server = {
+      host: host || 'ws.'+window.location.hostname,
+      port: port || 80
+    };
+    return pomelo.connectToConnector(server);
   };
 
   pomelo.connectToConnector = function(server) {

@@ -1,4 +1,16 @@
 var conf = module.exports = {
+
+  /**
+   * The root domain used by the instance. This FQDN serve the web content.
+   * Donut will automatically use the 'ws.'+fqdn subdomain for websocket connections.
+   *
+   * The value of this field is added as 'domain' for session cookie
+   *
+   * @string
+   */
+  fqdn: '',
+
+
   less: {
     force: false
   },

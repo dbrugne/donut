@@ -100,9 +100,14 @@ define([
       });
     },
 
-    connect: function(port) {
-      // should be done at the end of App initialization to allow interface binding to work
-      pomelo.connect(port);
+    /**
+     * Should be done at the end of App initialization to allow interface binding to work
+     *
+     * @param host could be use to force connection on given host
+     * @param port could be use to force connection on given port
+     */
+    connect: function(host, port) {
+      pomelo.connect(host, port);
     },
     disconnect: function() {
       pomelo.disconnect();

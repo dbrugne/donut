@@ -42,14 +42,6 @@ app.configure('production|test|development', 'connector', function(){
     });
 });
 
-app.configure('production|test|development', 'gate', function(){
-  app.set('connectorConfig',
-    {
-      connector : connector,
-      options   : socketIoOptions
-    });
-});
-
 var chatRoute = function(session, msg, app, cb) {
   var chatServers = app.getServersByType('chat');
   if(!chatServers || chatServers.length === 0)
