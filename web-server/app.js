@@ -19,6 +19,7 @@ var prepareViews = require('./app/middlewares/prepareviews');
 var expressValidator = require('../shared/util/validator');
 var googleAnalytics = require('./app/middlewares/googleanalytics');
 var conf = require('../shared/config/index');
+var debugMiddleware = require('./app/middlewares/debug');
 
 /****************************************************************************
  * Order of middleware is VERY important to avoid useless computing/storage *
@@ -42,6 +43,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(csrf());
 app.use(flash());
+app.use(debugMiddleware);
 app.use(i18n.middleware);
 app.use(i18n.router);
 app.use(prepareViews());
