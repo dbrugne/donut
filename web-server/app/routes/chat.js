@@ -31,11 +31,24 @@ router.get('/!', function(req, res) {
   bouncer.reset(req); // cleanup bouncer (not before cause other middleware can redirect
                       // browser before, e.g.: choose-username)
 
+  // donut build to load
+  var build = '/donut/index.js'; // default to source
+  if (!req.isDebug()) { // not in debug mode, try to find last build
+    try {
+      var last = require('../../public/build/last'); // @todo : reload on each call
+      if (last.build)
+        build = '/build/'+last.build;
+    } catch (e) {
+      console.log('Error while reading last.json file to determine build to load: '+e);
+    }
+  }
+
   return res.render('chat', {
     layout: false,
     partials: {head: '_head'},
     meta: {title: i18next.t("title.chat")},
-    colors: colors.toString()
+    colors: colors.toString(),
+    build: build
   });
 
 });

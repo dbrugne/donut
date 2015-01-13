@@ -15,12 +15,14 @@ module.exports = function(grunt) {
             grunt.log.write('Last build file was written with value: '+filename+' ').ok();
           },
           preserveLicenseComments: false,
+          //optimize: 'none', // could disabled uglyfication
           paths: {
             'jquery'                      : '../vendor/jquery/jquery',
             'bootstrap'                   : '../vendor/bootstrap/dist/js/bootstrap',
+            'lightbox'                    : '../vendor/lightbox/dist/ekko-lightbox',
             'text'                        : '../vendor/requirejs-text/text',
             'socket.io'                   : '../../node_modules/socket.io-client/socket.io',
-            'pomelo'                      : './pomelo-client',
+            'pomelo'                      : './pomelo',
             'underscore'                  : '../vendor/underscore-amd/underscore',
             'backbone'                    : '../vendor/backbone-amd/backbone',
             'i18next'                     : '../vendor/i18next/i18next.amd.withJQuery',
@@ -31,6 +33,7 @@ module.exports = function(grunt) {
             'jquery.iframe-transport'     : '../vendor/blueimp-file-upload/js/jquery.iframe-transport',
             'jquery.fileupload'           : '../vendor/blueimp-file-upload/js/jquery.fileupload',
             'jquery.cloudinary'           : '../vendor/cloudinary_js/js/jquery.cloudinary',
+            'cloudinary.widget'           : '//widget.cloudinary.com/global/all',
             'jquery.cloudinary-donut'     : '../../../shared/cloudinary/cloudinary',
             'jquery.mcs'                  : '../vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar',
             'jquery.mousewheel'           : '../vendor/jquery-mousewheel/jquery.mousewheel',

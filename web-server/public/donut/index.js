@@ -5,7 +5,7 @@ require.config({
     'lightbox'                    : '../vendor/lightbox/dist/ekko-lightbox',
     'text'                        : '../vendor/requirejs-text/text',
     'socket.io'                   : '/socket.io',
-    'pomelo'                      : './pomelo-client',
+    'pomelo'                      : './pomelo',
     'underscore'                  : '../vendor/underscore-amd/underscore',
     'backbone'                    : '../vendor/backbone-amd/backbone',
     'i18next'                     : '../vendor/i18next/i18next.amd.withJQuery',
@@ -16,8 +16,8 @@ require.config({
     'jquery.iframe-transport'     : '../vendor/blueimp-file-upload/js/jquery.iframe-transport',
     'jquery.fileupload'           : '../vendor/blueimp-file-upload/js/jquery.fileupload',
     'jquery.cloudinary'           : '../vendor/cloudinary_js/js/jquery.cloudinary',
-    'jquery.cloudinary-donut'     : '/cloudinary',
     'cloudinary.widget'           : '//widget.cloudinary.com/global/all',
+    'jquery.cloudinary-donut'     : '/cloudinary',
     'jquery.mcs'                  : '../vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar',
     'jquery.mousewheel'           : '../vendor/jquery-mousewheel/jquery.mousewheel',
     'jquery.insertatcaret'        : '../javascripts/plugins/jquery.insertatcaret',
@@ -47,9 +47,6 @@ require.config({
     'underscore.template-helpers' : ['underscore'],
     'facebook' : {
       exports: 'FB'
-    },
-    'pomelo' : {
-      exports: 'pomelo'
     }
   }
 });
@@ -87,7 +84,18 @@ require([
   'underscore.template-helpers'
 ], function (app, $, _, Backbone, i18next, facebook, moment, io) {
 
-  window.io = io; // @todo : ouille!
+  // @debug
+  window.debugOn = function() {
+    console.log('debug mode set to on');
+    var d = new Date();
+    d.setTime(d.getTime() + (365*24*60*60*1000));
+    var expires = "expires="+d.toUTCString();
+    document.cookie = "donut.debug=true; " + expires;
+  };
+  window.debugOff = function() {
+    console.log('debug mode set to off');
+    document.cookie = "donut.debug=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+  };
 
   // i18n setup
   window.i18next = i18next;
