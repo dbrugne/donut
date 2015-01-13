@@ -48,9 +48,6 @@ Connector.prototype.start = function(cb) {
   this.wsocket.adapter(socketioRedis({}));
 
   // Authentication
-  /**
-   * @todo : passe ici deux fois ! Une fois connexion gate et une fois connexion connector
-   */
   this.wsocket.use(socketioPassport.authorize({
     passport      : passport,
     cookieParser  : cookieParser,
