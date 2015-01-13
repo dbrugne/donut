@@ -1,3 +1,16 @@
+var appName = '';
+var loggingLevel = '';
+if (process.env.NODE_ENV == 'development') {
+  appName = ['DONUT-WEB-DEV'];
+  loggingLevel = 'debug';
+} else if (process.env.NODE_ENV == 'test') {
+  appName = ['DONUT-WEB-TEST'];
+  loggingLevel = 'debug';
+} else {
+  appName = ['DONUT-WEB'];
+  loggingLevel = 'info';
+}
+
 /**
  * New Relic agent configuration.
  *
@@ -8,7 +21,7 @@ exports.config = {
   /**
    * Array of application names.
    */
-  app_name : ['DONUT-WEB'],
+  app_name : appName,
   /**
    * Your New Relic license key.
    */
@@ -19,7 +32,7 @@ exports.config = {
      * issues with the agent, 'info' and higher will impose the least overhead on
      * production applications.
      */
-    level : 'info',
+    level : loggingLevel,
     filepath : 'stdout'
   }
 };

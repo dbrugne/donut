@@ -1,3 +1,16 @@
+var appName = '';
+var loggingLevel = '';
+if (process.env.NODE_ENV == 'development') {
+  appName = ['DONUT-WS-DEV'];
+  loggingLevel = 'debug';
+} else if (process.env.NODE_ENV == 'test') {
+  appName = ['DONUT-WS-TEST'];
+  loggingLevel = 'debug';
+} else {
+  appName = ['DONUT-WS'];
+  loggingLevel = 'info';
+}
+
 /**
  * New Relic agent configuration.
  *
@@ -8,7 +21,7 @@ exports.config = {
   /**
    * Array of application names.
    */
-  app_name : ['DONUT-SERVER'],
+  app_name : appName,
   /**
    * Your New Relic license key.
    */
@@ -19,7 +32,7 @@ exports.config = {
      * issues with the agent, 'info' and higher will impose the least overhead on
      * production applications.
      */
-    level : 'info',
+    level : loggingLevel,
     filepath : require('path').join(__dirname, '/logs/newrelic_agent.log')
   }
 };
