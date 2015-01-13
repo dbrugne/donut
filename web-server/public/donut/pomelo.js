@@ -339,7 +339,7 @@ define([
     var port = params.port;
 
     //var url = 'wss://' + host;
-    var url = 'ws://'+host; // +'/slipdecombat'
+    var url = 'ws://'+host;
     if(port) {
       url +=  ':' + port;
     }
@@ -355,9 +355,6 @@ define([
       forceNew    : true // http://stackoverflow.com/questions/24566847/socket-io-client-connect-disconnect
       //query       : 'foo=bar'
     };
-
-    if (params.isForGate)
-      sioOptions.upgrade = false; // for gate we do not need websocket upgrade
 
     socket = io(url, sioOptions);
 
