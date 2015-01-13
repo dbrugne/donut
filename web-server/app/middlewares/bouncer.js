@@ -1,4 +1,4 @@
-var debug = require('debug')('donut:server:bouncer');
+var debug = require('debug')('bouncer');
 
 var bouncer = {};
 module.exports = bouncer;
