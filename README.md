@@ -12,6 +12,7 @@ donut
 
 ## Pomelog migration
 * Authentication, check that it's impossible to open a websocket if i'm not logged
+* Restore broadcast to user sockets on user logout
 * Restore a var logger = require('../app/models/log'); and change console.log for pomelo logger
 * Grunt data migration for next release (history)
 * Redirect to room after signup/signin => FB campaign glander au boulot
@@ -64,8 +65,6 @@ Deploy
   - npm install: game-server, shared, web-server
   - bower install
   - compile JS
-  - set chat.html require.js source
-  - switch configuration file
   - stop application + start application (!!)
   - send reload event to connected users (!!)
 - Cleanup cloudinary pictures with "discussion" and "notposted" tag
