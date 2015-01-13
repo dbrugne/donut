@@ -2,13 +2,10 @@ var appName = '';
 var loggingLevel = '';
 if (process.env.NODE_ENV == 'development') {
   appName = ['DONUT-WS-DEV'];
-  loggingLevel = 'debug';
 } else if (process.env.NODE_ENV == 'test') {
   appName = ['DONUT-WS-TEST'];
-  loggingLevel = 'debug';
 } else {
   appName = ['DONUT-WS'];
-  loggingLevel = 'info';
 }
 
 /**
@@ -32,7 +29,7 @@ exports.config = {
      * issues with the agent, 'info' and higher will impose the least overhead on
      * production applications.
      */
-    level : loggingLevel,
+    level : 'info',
     filepath : require('path').join(__dirname, '/logs/newrelic_agent.log')
   }
 };

@@ -2,13 +2,10 @@ var appName = '';
 var loggingLevel = '';
 if (process.env.NODE_ENV == 'development') {
   appName = ['DONUT-WEB-DEV'];
-  loggingLevel = 'debug';
 } else if (process.env.NODE_ENV == 'test') {
   appName = ['DONUT-WEB-TEST'];
-  loggingLevel = 'debug';
 } else {
   appName = ['DONUT-WEB'];
-  loggingLevel = 'info';
 }
 
 /**
@@ -32,7 +29,7 @@ exports.config = {
      * issues with the agent, 'info' and higher will impose the least overhead on
      * production applications.
      */
-    level : loggingLevel,
+    level : 'info',
     filepath : 'stdout'
   }
 };
