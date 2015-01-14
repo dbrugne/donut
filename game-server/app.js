@@ -60,16 +60,24 @@ app.configure('production|test|development', function() {
   // enable the system monitor modules
   //app.enable('systemMonitor'); // should be activated even on Windows to activate other modules (game-server/node_modules/pomelo/lib/util/moduleUtil.js:69), doesn't work on Windows (iostat)
   //app.enable('systemInfo'); // need systemMonitor to work
-  app.enable('monitorLog');
-  app.enable('nodeInfo');
-  app.enable('profiler');
-  app.enable('scripts');
-  app.enable('watchServer');
+  //app.enable('monitorLog');
+  //app.enable('nodeInfo');
+  //app.enable('profiler');
+  //app.enable('scripts');
+  //app.enable('watchServer');
 
   // custom admin module
-  var onlineUser = require('./app/modules/onlineUser');
+  // load admin modules
+
   if(typeof app.registerAdmin === 'function'){
+    // custom modules
+    var onlineUser = require('./app/modules/onlineUser');
     app.registerAdmin(onlineUser, {app: app});
+
+    //// manually load due to pomelo/windows limitation (game-server/node_modules/pomelo/lib/util/moduleUtil.js:69)
+    //var admin = require('./node_modules/pomelo/node_modules/pomelo-admin');
+    //var pathUtil = require('./node_modules/pomelo/lib/util/pathUtil.js');
+    //app.registerAdmin(admin.modules.monitorLog, {path: pathUtil.getLogPath(app.getBase())});
   }
 });
 
