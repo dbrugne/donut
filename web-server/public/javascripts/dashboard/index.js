@@ -8,6 +8,7 @@ require.config({
     'backbone'                    : '../../vendor/backbone-amd/backbone',
     'moment'                      : '../../vendor/moment/moment',
     'moment-fr'                   : '../../vendor/moment/lang/fr',
+    'jquery.linkify'              : '../plugins/jquery.linkify',
     'jquery.cloudinary'           : '../../vendor/cloudinary_js/js/jquery.cloudinary',
     'jquery.cloudinary-donut'     : '/cloudinary',
     'jquery.ui.widget'            : '../../vendor/blueimp-file-upload/js/vendor/jquery.ui.widget',
@@ -51,6 +52,7 @@ require([
   'underscore',
   'backbone',
   'socket.io',
+  'moment',
   /************************************
    * Load (once) and attach plugins to jQuery and underscore
    ************************************/
@@ -62,11 +64,16 @@ require([
   'backgrid-filter',
   'jquery.cloudinary',
   'jquery.cloudinary-donut',
-  'backbone.bootstrap-modal'
-], function (Router, $, _, Backbone, io) {
+  'backbone.bootstrap-modal',
+  'jquery.linkify',
+  'moment-fr'
+], function (Router, $, _, Backbone, io, moment) {
 
   // @todo : ouille!
   window.io = io;
+
+  // moment
+  moment.lang('fr');
 
   // Cloudinary setup
   $.cloudinary.config({

@@ -9,7 +9,6 @@ define([
     defaults : {
       _id: null
     },
-
     initialize: function(options) {
     }
 

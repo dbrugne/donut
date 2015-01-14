@@ -80,6 +80,27 @@ router.get('/rest/rooms', isAdmin, function(req, res) {
   );
 });
 
+router.get('/rest/rooms/:id', isAdmin, function(req, res) {
+  if (!req.params.id) {
+    debug('No id given while retrieving room in /rest/rooms/:id: '+err);
+    return res.send({});
+  }
+
+  var id = req.params.id.replace('%23', '#');
+  var q = Room.findById(id);
+  q.populate('owner', 'username color facebook');
+  q.populate('op', 'username color facebook');
+  q.populate('users', 'username color facebook');
+  q.exec(function(err, result) {
+    if (err) {
+      debug('Error while retrieving room in /rest/rooms/:id: '+err);
+      return res.send({});
+    }
+
+    res.send(result);
+  });
+});
+
 router.get('/rest/users', isAdmin, function(req, res) {
   readCollection(
     User,
@@ -90,6 +111,24 @@ router.get('/rest/users', isAdmin, function(req, res) {
       res.send(result);
     }
   );
+});
+
+router.get('/rest/users/:id', isAdmin, function(req, res) {
+  if (!req.params.id) {
+    debug('No id given while retrieving user in /rest/users/:id: '+err);
+    return res.send({});
+  }
+
+  var id = req.params.id;
+  var q = User.findById(id);
+  q.exec(function(err, result) {
+    if (err) {
+      debug('Error while retrieving user in /rest/users/:id: '+err);
+      return res.send({});
+    }
+
+    res.send(result);
+  });
 });
 
 router.get('/rest/home', isAdmin, function(req, res) {

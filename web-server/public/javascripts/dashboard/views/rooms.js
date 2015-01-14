@@ -4,8 +4,10 @@ define([
   'backbone',
   'backgrid',
   'collections/rooms',
+  'views/room',
+  'views/modal',
   'text!templates/rooms.html'
-], function ($, _, Backbone, Backgrid, roomsCollection, htmlTemplate) {
+], function ($, _, Backbone, Backgrid, roomsCollection, roomView, modalView, htmlTemplate) {
 
   var RoomsView = Backbone.View.extend({
 
@@ -90,7 +92,26 @@ define([
         label: "Topic",
         editable: false,
         cell: "string"
-    }];
+      }, {
+        name: "actions",
+        label: "Actions",
+        editable: false,
+        sortable: false,
+        cell: Backgrid.Cell.extend({
+          template: _.template("<a href='#room/<%= id %>' class='view-action'>voir</a>"),
+          className: "action-cell",
+          events: {
+          },
+          render: function () {
+            this.$el.html(this.template({
+              id: this.model.get('_id').replace('#', '%23') // room _id contain #
+            }));
+            this.delegateEvents();
+            return this;
+          }
+        })
+      }
+      ];
 
       // grid
       this.grid = new Backgrid.Grid({

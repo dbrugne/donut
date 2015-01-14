@@ -46,11 +46,43 @@ h1 {
     }
    }
  }
+ .go-back {
+  .btn;
+  .btn-sm;
+  .btn-primary;
+  margin-left: 50px;
+  cursor: pointer;
+ }
+}
+
+
+
+ul.form-control-static {
+ list-style-type: lower-hexadecimal;
+ columns: auto 3;
+ max-height: 100px;
+ overflow-x: hidden;
+ overflow-y: scroll;
+ border: 1px solid @cl-subtext1;
+}
+
+.color {
+ width: 20px;
+ height: 20px;
+ display: inline-block;
+ border: 1px solid @cl-subtext1;
+ vertical-align: bottom;
 }
 
 .grid {
  .moment-cell {
   text-align: left;
+ }
+ .action-cell {
+  text-align: center;
+  .view-action {
+   cursor: pointer;
+  }
  }
 }
 

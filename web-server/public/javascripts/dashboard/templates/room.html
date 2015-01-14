@@ -1,0 +1,122 @@
+<h1>Room <small class="count"><span class="num"><%= room._id %></span></small> <a class="go-back" onclick="window.history.back()">retour</a></h1>
+<form class="form-horizontal">
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Name</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static"><strong><%= room.name %></strong></p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Owner</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static">
+                        <% if (room.owner && room.owner._id) { %>
+                        <a href="#user/<%= room.owner._id %>"><%= room.owner.username %></a>
+                        <% } %>
+                    </p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">OP</label>
+                <div class="col-sm-10">
+                    <ul class="form-control-static">
+                    <% if (room.op.length) { %>
+                        <% for (var i=0; i < room.op.length; i++) { %>
+                            <li><a href="#user/<%= room.op[i]._id %>"><%= room.op[i].username %></a></li>
+                        <% } %>
+                    <% } %>
+                    </ul>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Users</label>
+                <div class="col-sm-10">
+                    <ul class="form-control-static">
+                    <% if (room.users.length) { %>
+                        <% for (var i=0; i < room.users.length; i++) { %>
+                        <li><a href="#user/<%= room.users[i]._id %>"><%= room.users[i].username %></a></li>
+                        <% } %>
+                    <% } %>
+                    </ul>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Avatar</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static">
+                        <% if (room.avatar) { %>
+                        <img src="<%= room.imgAvatar %>" alt="<%= room.avatar %>">
+                        <% } %>
+                    </p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Poster</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static">
+                        <% if (room.poster) { %>
+                        <img src="<%= room.imgPoster %>" alt="<%= room.poster %>">
+                        <% } %>
+                    </p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Color</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static">
+                        <% if (room.color) { %>
+                        <span class="color" style="background-color: <%= room.color %>"></span>
+                        <%= room.color %>
+                        <% } %>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Topic</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static"><%= room.topic %></p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Description</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static"><%= room.description %></p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Website</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static website"><%= room.website %></p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Permanent</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static"><%= (room.permanent) ? 'yes' : 'no' %></p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Priority</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static"><%= room.priority %></p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Created at</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static"><%= room.created_at %></p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Last joined at</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static"><%= room.lastjoin_at %></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
