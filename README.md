@@ -32,6 +32,8 @@ donut
 * Wiki installation projet
 * Auto-tag/remove un/posted images
 * Only display user with avatar/or Facebook/or online and room with avatar on homepage (but not for search)
+* HTTPS
+* Disable user account
 
 ## Read/unread
 * Events are stored as unread
