@@ -19,6 +19,7 @@ donut
 * Refresh button on backend home
 * Grunt data migration for next release (history)
 * Redirect to room after signup/signin => FB campaign glander au boulot
+* Git merge
 
 ## After pomelo
 * [Finish kick form]
