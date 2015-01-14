@@ -31,7 +31,6 @@ define([
         var dateObject = moment(data.lastjoin_at);
         data.lastjoin_at = dateObject.format("dddd Do MMMM YYYY à HH:mm:ss");
       }
-      console.log(data);
       this.$el.html(this.template({
         room: data
       }));

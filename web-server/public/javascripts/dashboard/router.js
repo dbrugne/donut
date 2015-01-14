@@ -3,14 +3,16 @@ define([
   'backbone',
   'collections/users',
   'collections/rooms',
+  'models/user',
   'models/room',
   'views/main',
   'views/home',
   'views/users',
+  'views/user',
   'views/rooms',
   'views/room',
   'views/realtime'
-], function (_, Backbone, users, rooms, RoomModel, MainView, HomeView, UsersView, RoomsView, RoomView, RealtimeView) {
+], function (_, Backbone, users, rooms, UserModel, RoomModel, MainView, HomeView, UsersView, UserView, RoomsView, RoomView, RealtimeView) {
   var Router = Backbone.Router.extend({
 
     mainView     : null,
@@ -22,7 +24,7 @@ define([
     routes: {
       '':                 'root',
       'users':            'users',
-      'users/:id':        'user',
+      'user/:id':        'user',
       'rooms':            'rooms',
       'room/:id':         'room',
       'realtime':         'realtime',
@@ -75,6 +77,23 @@ define([
       this.mainView.currentView = this.usersView;
       this.mainView.render();
       this.mainView.setNavigationActive('users');
+    },
+
+    user: function(id) {
+      var model = new UserModel({_id: id});
+      var that = this;
+      model.fetch({
+        success: function(model) {
+          that.mainView.currentView = new UserView({
+            model: model
+          });
+          that.mainView.render();
+          that.mainView.setNavigationActive('users');
+        },
+        error: function(model, xhr, options) {
+          console.log('Fetch user error');
+        }
+      });
     },
 
     realtime: function() {

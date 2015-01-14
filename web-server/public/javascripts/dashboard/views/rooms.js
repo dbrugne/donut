@@ -110,8 +110,7 @@ define([
             return this;
           }
         })
-      }
-      ];
+      }];
 
       // grid
       this.grid = new Backgrid.Grid({

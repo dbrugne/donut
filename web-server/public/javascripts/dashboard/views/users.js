@@ -84,6 +84,56 @@ define([
           displayFormat: "DD/MM/YYYY à H:m:s",
           displayInUTC: false
         })
+      }, {
+        name: "lastlogin_at",
+        label: "Last login",
+        editable: false,
+        cell: Backgrid.Extension.MomentCell.extend({
+          modelInUTC: true,
+          displayFormat: "DD/MM/YYYY à H:m:s",
+          displayInUTC: false
+        })
+      }, {
+        name: "lastonline_at",
+        label: "Last time online",
+        editable: false,
+        cell: Backgrid.Extension.MomentCell.extend({
+          modelInUTC: true,
+          displayFormat: "DD/MM/YYYY à H:m:s",
+          displayInUTC: false
+        })
+      }, {
+        name: "lastoffline_at",
+        label: "Last time offline",
+        editable: false,
+        cell: Backgrid.Extension.MomentCell.extend({
+          modelInUTC: true,
+          displayFormat: "DD/MM/YYYY à H:m:s",
+          displayInUTC: false
+        })
+      }, {
+        name: "online",
+        label: "Is online?",
+        editable: false,
+        cell: "boolean"
+      }, {
+        name: "actions",
+        label: "Actions",
+        editable: false,
+        sortable: false,
+        cell: Backgrid.Cell.extend({
+          template: _.template("<a href='#user/<%= id %>' class='view-action'>voir</a>"),
+          className: "action-cell",
+          events: {
+          },
+          render: function () {
+            this.$el.html(this.template({
+              id: this.model.get('_id')
+            }));
+            this.delegateEvents();
+            return this;
+          }
+        })
       }];
 
       // grid

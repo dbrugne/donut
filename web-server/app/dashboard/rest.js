@@ -121,13 +121,31 @@ router.get('/rest/users/:id', isAdmin, function(req, res) {
 
   var id = req.params.id;
   var q = User.findById(id);
-  q.exec(function(err, result) {
+  q.populate('onetoones', 'username');
+  q.exec(function(err, user) {
     if (err) {
       debug('Error while retrieving user in /rest/users/:id: '+err);
       return res.send({});
     }
 
-    res.send(result);
+    if (!user.rooms || !user.rooms.length)
+      return res.send(user);
+
+    Room.find({name: { $in: user.rooms }}, 'name', function(err, rooms) {
+      if (err) {
+        debug('Error while retrieving rooms in /rest/users/:id: '+err);
+        return res.send({});
+      }
+
+      var data = user.toJSON();
+      data.rooms = _.map(rooms, function(r) {
+        return {
+          id: r._id.toString(),
+          name: r.name
+        };
+      });
+      res.send(data);
+    });
   });
 });
 
