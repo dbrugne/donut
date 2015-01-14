@@ -3,7 +3,7 @@ require.config({
     'jquery'                      : '../../vendor/jquery/jquery',
     'bootstrap'                   : '../../vendor/bootstrap/dist/js/bootstrap',
     'text'                        : '../../vendor/requirejs-text/text',
-    'socket.io'                   : '/socket.io',
+    'socket.io'                   : './socket.io-0.8.7',
     'underscore'                  : '../../vendor/underscore-amd/underscore',
     'backbone'                    : '../../vendor/backbone-amd/backbone',
     'moment'                      : '../../vendor/moment/moment',
@@ -17,7 +17,8 @@ require.config({
     'backbone.paginator'          : '../../vendor/backbone.paginator/lib/backbone.paginator',
     'backgrid.paginator'          : '../../vendor/backgrid-paginator/backgrid-paginator',
     'backgrid-moment-cell'        : '../../vendor/backgrid-moment-cell/backgrid-moment-cell',
-    'backgrid-filter'             : '../../vendor/backgrid-filter/backgrid-filter'
+    'backgrid-filter'             : '../../vendor/backgrid-filter/backgrid-filter',
+    'backbone.bootstrap-modal'    : '../plugins/backbone.bootstrap-modal'
   },
   shim: {
     'jquery.cloudinary'      : ['jquery'],
@@ -34,6 +35,9 @@ require.config({
     },
     'bootstrap': {
       deps: ['jquery']
+    },
+    'socket.io': {
+      exports: 'io'
     }
   }
 });
