@@ -60,7 +60,8 @@ require([
   'backgrid-moment-cell',
   'backgrid-filter',
   'jquery.cloudinary',
-  'jquery.cloudinary-donut'
+  'jquery.cloudinary-donut',
+  'backbone.bootstrap-modal'
 ], function (Router, $, _, Backbone, io) {
 
   // @todo : ouille!
