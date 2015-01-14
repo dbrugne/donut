@@ -337,8 +337,6 @@ define([
     pomelo.params = params;
     var host = params.host;
     var port = params.port;
-
-    //var url = 'wss://' + host;
     var url = 'ws://'+host;
     if(port) {
       url +=  ':' + port;
