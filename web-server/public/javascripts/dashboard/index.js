@@ -54,6 +54,7 @@ require([
   /************************************
    * Load (once) and attach plugins to jQuery and underscore
    ************************************/
+  'bootstrap',
   'backgrid',
   'backbone.paginator',
   'backgrid.paginator',
