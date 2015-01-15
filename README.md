@@ -11,10 +11,9 @@ donut
 - New Relic, Grunt
 
 ## Pomelog migration
-* Restore broadcast to user sockets on user logout
-* Refresh button on backend home
 * Grunt history migration for next release
 * Redirect to room after signup/signin => FB campaign glander au boulot
+* Restore broadcast to user sockets on user logout
 * Git merge
 
 ## After pomelo
