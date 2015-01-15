@@ -14,7 +14,6 @@ donut
 * Grunt history migration for next release
 * Redirect to room after signup/signin => FB campaign glander au boulot
 * Restore broadcast to user sockets on user logout
-* Git merge
 
 ## After pomelo
 * Profile page design: same as chat, with donut description on left, user list on right, profile content on center
