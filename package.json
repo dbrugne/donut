@@ -22,7 +22,6 @@
     "passport-local": "1.x",
     "pomelo-logger": "^0.1.7",
     "redis": "0.x",
-    "socket.io-emitter": "^0.2.0",
     "underscore": "1.7.x"
   },
   "devDependencies": {
