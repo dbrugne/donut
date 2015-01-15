@@ -13,15 +13,14 @@ donut
 ## Pomelog migration
 * Restore broadcast to user sockets on user logout
 * Restore a var logger = require('../app/models/log'); and change console.log for pomelo logger
-* Add user and room detail on backend
-* Add pomelo connection on backend
-* Add log tail -f on backend
 * Refresh button on backend home
-* Grunt data migration for next release (history)
+* Grunt history migration for next release
 * Redirect to room after signup/signin => FB campaign glander au boulot
 * Git merge
 
 ## After pomelo
+* Add pomelo connection on backend
+* Add log tail -f on backend
 * [Finish kick form]
 * [Add ban]
 * Popin smiley
