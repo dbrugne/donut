@@ -2,7 +2,6 @@ var async = require('async');
 var _ = require('underscore');
 var User = require('../shared/models/user');
 var fs = require('fs');
-var childProcess = require('child_process');
 
 module.exports = function(grunt) {
 
