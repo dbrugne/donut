@@ -39,6 +39,7 @@ define([
       if (!this.homeView)
         this.homeView = new HomeView();
 
+      this.homeView.render(); // refresh
       this.mainView.currentView = this.homeView;
       this.mainView.render();
     },

@@ -203,6 +203,7 @@ router.get('/rest/home', isAdmin, function(req, res) {
       throw err;
 
     res.send({
+      time: Date.now(),
       users: {
         total: result[0],
         trend: result[1]
