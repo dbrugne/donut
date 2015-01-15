@@ -30,28 +30,10 @@ var Socket = function(id, socket) {
   this.state = ST_INITED;
 
   /**
-   * Decorate socket (shortcut)
+   * Add shortcut to retrieve socket uid before pomelo session bind (used in entryHendler)
    */
-  socket.getUser = function() { // @todo obsolete?
-    return this.request.user;
-  };
-  socket.getUserId = function() { // @todo obsolete?
+  socket.getUserId = function() {
     return this.request.user._id.toString();
-  };
-  socket.getUsername = function() { // @todo obsolete?
-    return this.request.user.username;
-  };
-  socket.getAvatar = function() { // @todo obsolete?
-    return this.request.user._avatar();
-  };
-  socket.getPoster = function() { // @todo obsolete?
-    return this.request.user._poster();
-  };
-  socket.getColor = function() { // @todo obsolete?
-    return this.request.user.color;
-  };
-  socket.isAdmin = function() { // @todo obsolete?
-    return (this.request.user.admin === true);
   };
 };
 
