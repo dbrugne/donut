@@ -3,6 +3,8 @@
   background: url(/images/disconnected.gif) no-repeat -9999px -9999px;
   height: 100%;
   .content {
+    /* preload connected image */
+    background: url(/images/connected.gif) no-repeat -9999px -9999px;
     height: 100%;
     margin-right: @size-right;
     position: relative;
@@ -315,6 +317,7 @@
               margin: 2px;
               background-position: center center;
               background-repeat: no-repeat;
+              border: 1px solid @cl-subtext1;
             }
             hr {
               clear: both;

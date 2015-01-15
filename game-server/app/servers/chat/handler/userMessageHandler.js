@@ -1,4 +1,5 @@
 var logger = require('pomelo-logger').getLogger('pomelo', __filename);
+var log = require('../../../../../shared/models/log');
 var async = require('async');
 var User = require('../../../../../shared/models/user');
 var oneEmitter = require('../../../util/oneEmitter');
@@ -24,6 +25,8 @@ var handler = Handler.prototype;
  *
  */
 handler.message = function(data, session, next) {
+
+	var start = log.start();
 
 	var that = this;
 
@@ -117,7 +120,7 @@ handler.message = function(data, session, next) {
 		if (err)
 			logger.error(err);
 
-		// @todo restore log
+		log.activity('user:message', session.uid, data.username+': '+data.message, start);
 
 		next(null); // even for .notify
 	});

@@ -1,3 +1,5 @@
+var logger = require('pomelo-logger').getLogger('pomelo', __filename);
+var log = require('../../../../../shared/models/log');
 var async = require('async');
 var _ = require('underscore');
 var oneDataHelper = require('../../../util/oneData');
@@ -22,6 +24,8 @@ var handler = Handler.prototype;
  *
  */
 handler.join = function(data, session, next) {
+
+	var start = log.start();
 
 	var that = this;
 
@@ -85,7 +89,7 @@ handler.join = function(data, session, next) {
 		if (err)
 			return next(null, {code: 500, err: err});
 
-		// @todo : restore logs
+		log.activity('user:join', session.uid, data.username, start);
 
 		return next(null);
 	});

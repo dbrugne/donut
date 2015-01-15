@@ -1,4 +1,5 @@
 var logger = require('pomelo-logger').getLogger('pomelo', __filename);
+var log = require('../../../../../shared/models/log');
 var async = require('async');
 var cloudinary = require('../../../../../shared/cloudinary/cloudinary');
 var i18next = require('../../../../../shared/util/i18next');
@@ -25,6 +26,8 @@ var handler = Handler.prototype;
  *
  */
 handler.delete = function(data, session, next) {
+
+	var start = log.start();
 
 	var that = this;
 
@@ -129,7 +132,7 @@ handler.delete = function(data, session, next) {
 			return next(null, {code: 500, err: err});
 		}
 
-		// @todo restore log
+		log.activity('room:delete', session.uid, data.name, start);
 
 		next(null, {success: true});
 	});

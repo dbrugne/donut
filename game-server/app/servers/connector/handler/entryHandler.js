@@ -1,4 +1,5 @@
 var logger = require('pomelo-logger').getLogger('pomelo', __filename);
+var log = require('../../../../../shared/models/log');
 var _ = require('underscore');
 var async = require('async');
 var conf = require('../../../../../shared/config/index');
@@ -183,6 +184,7 @@ handler.enter = function(msg, session, next) {
 			return next(null, { code: 500, error: true, msg: err });
 		}
 
+		log.activity('user:online', uid, session.frontendId);
 		return next(null, welcome);
 	});
 };
@@ -198,7 +200,7 @@ var onUserLeave = function exit(app, session) {
 	if(!session || !session.uid)
 		return; // could happen if a uid wasn't binded before disconnect (crash, bug, debug session, ...)
 
-	logger.debug('disconnect request for '+session.uid+'@'+app.get('serverId'));
+	log.activity('user:offline', session.uid, app.get('serverId'));
 
 	var that = this;
 	var lastClient = false;

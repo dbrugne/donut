@@ -1,4 +1,5 @@
 var logger = require('pomelo-logger').getLogger('pomelo', __filename);
+var log = require('../../../../../shared/models/log');
 var async = require('async');
 var retriever = require('../../../../../shared/models/historyroom').retrieve();
 var Room = require('../../../../../shared/models/room');
@@ -22,6 +23,8 @@ var handler = Handler.prototype;
  *
  */
 handler.history = function(data, session, next) {
+
+	var start = log.start();
 
 	var that = this;
 
@@ -66,7 +69,7 @@ handler.history = function(data, session, next) {
 			return next(null, {code: 500, err: err});
 		}
 
-		// @todo restore log
+		log.activity('room:history', session.uid, data.name, start);
 
 		next(null, historyEvent);
 	});

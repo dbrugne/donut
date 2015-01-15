@@ -1,3 +1,5 @@
+var logger = require('pomelo-logger').getLogger('pomelo', __filename);
+var log = require('../../../../../shared/models/log');
 var async = require('async');
 var _ = require('underscore');
 var roomDataHelper = require('../../../util/roomData');
@@ -25,6 +27,8 @@ var handler = Handler.prototype;
  *
  */
 handler.join = function(data, session, next) {
+
+	var start = log.start();
 
 	var that = this;
 
@@ -72,8 +76,7 @@ handler.join = function(data, session, next) {
 					if (err)
 						return callback('Error while creating room: '+err);
 
-					// @todo : restore logs
-					//logger.log('room:create', user.username, data.name);
+					log.activity('room:create', session.uid, data.name);
 					return callback(null, user, room);
 				});
 			});
@@ -171,7 +174,7 @@ handler.join = function(data, session, next) {
 		if (err)
 			return next(null, {code: 500, err: err});
 
-		// @todo : restore logs
+		log.activity('room:join', session.uid, data.name, start);
 
 		return next(null);
 	});

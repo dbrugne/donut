@@ -12,13 +12,13 @@ donut
 
 ## Pomelog migration
 * Restore broadcast to user sockets on user logout
-* Restore a var logger = require('../app/models/log'); and change console.log for pomelo logger
 * Refresh button on backend home
 * Grunt history migration for next release
 * Redirect to room after signup/signin => FB campaign glander au boulot
 * Git merge
 
 ## After pomelo
+* Profile page design: same as chat, with donut description on left, user list on right, profile content on center
 * Add pomelo connection on backend
 * Add log tail -f on backend
 * [Finish kick form]
