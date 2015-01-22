@@ -2,7 +2,6 @@ donut
 ====
 
 ## Pomelog migration
-* Redirect to room after signup/signin => FB campaign glander au boulot
 * Restore broadcast to user sockets on user logout
 
 ## After pomelo

@@ -8,6 +8,7 @@
         if ( window.location.href.indexOf('!#room/') !== -1
              || window.location.href.indexOf('!#user/') !== -1) {
             to += '/'+ window.location.hash.replace('#', '');
+            to += '?redirect=true';
         } else {
             to += '/';
         }

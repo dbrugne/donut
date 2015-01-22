@@ -6,6 +6,9 @@ var bouncer = require('../middlewares/bouncer');
 router.param('user', require('../middlewares/user-param'));
 
 router.get('/user/:user', function(req, res) {
+  if (req.query.redirect && req.query.redirect == 'true')
+    bouncer.set(req, '/!#user/'+req.requestedUser.chat);
+
   var meta = {
     url         : req.requestedUser.url,
     title       : i18next.t("title.profile", {subtitle: req.requestedUser.username}),
