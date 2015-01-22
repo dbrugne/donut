@@ -2,9 +2,9 @@ donut
 ====
 
 ## Pomelog migration
-* Grunt history migration for next release
 * Redirect to room after signup/signin => FB campaign glander au boulot
 * Restore broadcast to user sockets on user logout
+* Reactivate Facebook
 
 ## After pomelo
 * Profile page design: same as chat, with donut description on left, user list on right, profile content on center
@@ -13,7 +13,6 @@ donut
 * [Add ban]
 * Diagnose why cloudinary widget url/cam crash on Chrome only
 * Auto-tag/remove un/posted images
-* Only display user with avatar/or Facebook/or online and room with avatar on homepage (but not for search)
 
 ## Notifications
 * A user post me a message in one to one and i'm offline (immediate, email, 24h before next)
