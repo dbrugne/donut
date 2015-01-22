@@ -2,7 +2,7 @@ donut
 ====
 
 ## Pomelog migration
-* Restore broadcast to user sockets on user logout
+* Push on test, reimport database and migrate data, email to David (migration, redirect, facebook)
 
 ## After pomelo
 * Profile page design: same as chat, with donut description on left, user list on right, profile content on center
