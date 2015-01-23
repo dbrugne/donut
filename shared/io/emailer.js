@@ -6,10 +6,14 @@ var conf = require('../config/index');
 var emailer = {};
 module.exports = emailer;
 
-// initiate a transporter, only one time for this process
-var transporter = nodemailer.createTransport({
+var options = {
   ignoreTLS: true // TLS not work on smtp4dev Windows 8
-});
+};
+if (conf.email.port && conf.email.port != '')
+  options.port = conf.email.port;
+
+// initiate a transporter, only one time for this process
+var transporter = nodemailer.createTransport(options);
 
 function send(data, fn) {
   var err = false;
@@ -45,38 +49,38 @@ function send(data, fn) {
   });
 }
 
-emailer.welcome = function(to, fqdn, callback) {
+emailer.welcome = function(to, callback) {
     send({
       to: to,
       subject: i18next.t("email.welcome.subject"),
-      text: i18next.t("email.welcome.text", {fqdn: fqdn, email: conf.email.from.email}),
-      html: i18next.t("email.welcome.html", {fqdn: fqdn, email: conf.email.from.email}),
+      text: i18next.t("email.welcome.text", {fqdn: conf.fqdn, email: conf.email.from.email}),
+      html: i18next.t("email.welcome.html", {fqdn: conf.fqdn, email: conf.email.from.email}),
     },callback);
   };
 
-emailer.forgot = function(to, fqdn, token, callback) {
+emailer.forgot = function(to, token, callback) {
   send({
     to: to,
     subject: i18next.t("email.forgot.subject"),
-    text: i18next.t("email.forgot.text", {fqdn: fqdn, email: conf.email.from.email, token: token}),
-    html: i18next.t("email.forgot.html", {fqdn: fqdn, email: conf.email.from.email, token: token})
+    text: i18next.t("email.forgot.text", {fqdn: conf.fqdn, email: conf.email.from.email, token: token}),
+    html: i18next.t("email.forgot.html", {fqdn: conf.fqdn, email: conf.email.from.email, token: token})
   },callback);
 };
 
-emailer.passwordChanged = function(to, fqdn, callback) {
+emailer.passwordChanged = function(to, callback) {
   send({
     to: to,
     subject: i18next.t("email.passwordchanged.subject"),
-    text: i18next.t("email.passwordchanged.text", {fqdn: fqdn, email: conf.email.from.email}),
-    html: i18next.t("email.passwordchanged.html", {fqdn: fqdn, email: conf.email.from.email})
+    text: i18next.t("email.passwordchanged.text", {fqdn: conf.fqdn, email: conf.email.from.email}),
+    html: i18next.t("email.passwordchanged.html", {fqdn: conf.fqdn, email: conf.email.from.email})
   },callback);
 };
 
-emailer.emailChanged = function(to, fqdn, callback) {
+emailer.emailChanged = function(to, callback) {
   send({
     to: to,
     subject: i18next.t("email.emailchanged.subject"),
-    text: i18next.t("email.emailchanged.text", {fqdn: fqdn, email: conf.email.from.email}),
-    html: i18next.t("email.emailchanged.html", {fqdn: fqdn, email: conf.email.from.email})
+    text: i18next.t("email.emailchanged.text", {fqdn: conf.fqdn, email: conf.email.from.email}),
+    html: i18next.t("email.emailchanged.html", {fqdn: conf.fqdn, email: conf.email.from.email})
   },callback);
 };

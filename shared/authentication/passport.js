@@ -81,7 +81,7 @@ passport.use('local-signup', new LocalStrategy({
             throw err;
 
           // email will be send on next tick but done() is called immediatly
-          emailer.welcome(newUser.local.email, req.get('host'), function(err) {
+          emailer.welcome(newUser.local.email, function(err) {
             if (err)
               return debug('Unable to sent welcome email: '+err);
           });

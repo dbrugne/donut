@@ -66,7 +66,7 @@ router.route('/account/edit/email')
                 req.flash('error', err)
                 return res.redirect('/');
             } else {
-              emailer.emailChanged(req.user.local.email, req.get('host'), function(err) {
+              emailer.emailChanged(req.user.local.email, function(err) {
                 if (err)
                   return console.log('Unable to sent email changed email: '+err);
               });

@@ -48,7 +48,7 @@ var forgot = function(req, res) {
       });
     },
     function(token, user, done) {
-      emailer.forgot(user.local.email, req.get('host'), token, function(err) {
+      emailer.forgot(user.local.email, token, function(err) {
         if (err)
           return done('Unable to sent forgot email: '+err);
 
@@ -94,7 +94,7 @@ var reset = function(req, res) {
       });
     },
     function(user, done) {
-      emailer.passwordChanged(user.local.email, req.get('host'), function(err) {
+      emailer.passwordChanged(user.local.email, function(err) {
         if (err)
           return done('Unable to sent password changed (forgot) email: '+err);
 

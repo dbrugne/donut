@@ -33,7 +33,8 @@ var conf = module.exports = {
     from: {
       name: "DONUT.me",
       email: "hello@donut.me"
-    }
+    },
+    port: ''
   },
   facebook: {
     'clientID' 		: '328600083963864', // your App ID

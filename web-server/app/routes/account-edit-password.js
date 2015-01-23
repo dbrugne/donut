@@ -33,7 +33,7 @@ router.route('/account/edit/password')
                 req.flash('error', err)
                 return res.redirect('/');
             } else {
-              emailer.passwordChanged(req.user.local.email, req.get('host'), function(err) {
+              emailer.passwordChanged(req.user.local.email, function(err) {
                 if (err)
                   return console.log('Unable to sent password changed email: '+err);
               });
