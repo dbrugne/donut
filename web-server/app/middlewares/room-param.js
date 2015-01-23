@@ -1,5 +1,6 @@
 var _ = require('underscore');
 var Room = require('../../../shared/models/room');
+var conf = require('../../../shared/config/index');
 var cloudinary = require('../../../shared/cloudinary/cloudinary');
 
 module.exports = function(req, res, next, roomname) {
@@ -25,15 +26,15 @@ module.exports = function(req, res, next, roomname) {
         room.poster = cloudinary.poster(room._poster(), room.color);
 
         // url
-        room.url = req.protocol + '://' + req.get('host') + '/room/' + room.name.replace('#', '').toLocaleLowerCase();
-        room.chat = req.protocol + '://' + req.get('host') + '/!#room/' + room.name.replace('#', '');
-        room.join = req.protocol + '://' + req.get('host') + '/room/join/' + room.name.replace('#', '');
+        room.url = req.protocol + '://' + conf.fqdn + '/room/' + room.name.replace('#', '').toLocaleLowerCase();
+        room.chat = req.protocol + '://' + conf.fqdn + '/!#room/' + room.name.replace('#', '');
+        room.join = req.protocol + '://' + conf.fqdn + '/room/join/' + room.name.replace('#', '');
 
         // owner
         if (room.owner && room.owner._id) {
           room.owner.avatar = cloudinary.userAvatar(room.owner._avatar(), 80, room.owner.color);
           room.owner.url = (room.owner.username)
-            ? req.protocol + '://' + req.get('host') + '/user/' + room.owner.username.toLocaleLowerCase()
+            ? req.protocol + '://' + conf.fqdn + '/user/' + room.owner.username.toLocaleLowerCase()
             : '';
           room.owner.isOwner = true;
         }
@@ -49,7 +50,7 @@ module.exports = function(req, res, next, roomname) {
 
             op.avatar = cloudinary.userAvatar(op._avatar(), 80, op.color);
             op.url = (op.username)
-              ? req.protocol + '://' + req.get('host') + '/user/' + op.username.toLocaleLowerCase()
+              ? req.protocol + '://' + conf.fqdn + '/user/' + op.username.toLocaleLowerCase()
               : '';
             op.isOp = true;
             opIds.push(op._id.toString());
@@ -69,7 +70,7 @@ module.exports = function(req, res, next, roomname) {
 
             u.avatar = cloudinary.userAvatar(u._avatar(), 80, u.color);
             u.url = (u.username)
-              ? req.protocol + '://' + req.get('host') + '/user/' + u.username.toLocaleLowerCase()
+              ? req.protocol + '://' + conf.fqdn + '/user/' + u.username.toLocaleLowerCase()
               : '';
             usersList.push(u);
           });

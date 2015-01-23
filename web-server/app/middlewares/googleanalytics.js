@@ -19,7 +19,7 @@ if (conf.google && conf.google.analytics && conf.google.analytics.uid) {
 module.exports = function() {
   return function(req, res, next) {
     res.locals.googleanalytics = tracker
-      .replace('{{FQDN}}', req.protocol + '://' + req.get('host'));
+      .replace('{{FQDN}}', req.protocol + '://' + conf.fqdn);
     next();
   };
 };

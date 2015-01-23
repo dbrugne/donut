@@ -2,13 +2,14 @@ var express = require('express');
 var router  = express.Router();
 var Room = require('../../../shared/models/room');
 var i18next = require('../../../shared/util/i18next');
+var conf = require('../../../shared/config/index');
 
 router.get('/', function(req, res) {
   var logged = (req.isAuthenticated())
     ? true
     : false;
 
-  var baseUrl = req.protocol + '://' + req.get('host') + '/';
+  var baseUrl = req.protocol + '://' + conf.fqdn + '/';
   var meta = {
     url         : baseUrl,
     title       : i18next.t("title.landing"),
