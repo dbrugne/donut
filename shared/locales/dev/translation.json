@@ -17,6 +17,9 @@
   "meta": {
     "lang": "en",
     "locale": "en_US",
+    "alternate": [
+      "fr_FR"
+    ],
     "sitename": "DONUT.me",
     "landing": {
       "title": "Thematic chatrooms for all tastes",
