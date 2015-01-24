@@ -11,8 +11,8 @@
     {{#meta.url}}<meta property="og:url" content="{{{meta.url}}}" />{{/meta.url}}
     {{#meta.ogtitle}}
         <meta property="og:title" content="{{{meta.ogtitle}}}" />
-        <meta property="og:locale" content="{{#i}}meta.locale{{/i}}" />
-        {{#meta.alternate}}<meta property="og:locale:alternate" content="{{{meta.alternate}}}" />{{/meta.alternate}}
+        {{#meta.oglocale}}<meta property="og:locale" content="{{meta.oglocale}}" />{{/meta.oglocale}}
+        {{#meta.ogalternate}}<meta property="og:locale:alternate" content="{{meta.ogalternate}}" />{{/meta.ogalternate}}
         <meta property="og:site_name" content="{{#i}}meta.sitename{{/i}}" />
     {{/meta.ogtitle}}
     {{#meta.description}}<meta property="og:description" content="{{{meta.ogdescription}}}" />{{/meta.description}}

@@ -15,7 +15,8 @@ router.get('/room/:room', function(req, res) {
     description   : req.room.description,
     ogtitle       : i18next.t("meta.profile.title", {subtitle: req.room.name}),
     ogdescription : i18next.t("meta.profile.description.room", {name: req.room.name}),
-    alternate     : i18next.t("meta.alternate"),
+    oglocale      : i18next.t("meta.locale"),
+    ogalternate   : i18next.t("meta.alternate"),
     image         : req.room.avatar,
     type          : 'object'
   };

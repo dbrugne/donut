@@ -15,7 +15,8 @@ router.get('/user/:user', function(req, res) {
     description   : req.requestedUser.bio,
     ogtitle       : i18next.t("meta.profile.title", {subtitle: req.requestedUser.username}),
     ogdescription : i18next.t("meta.profile.description.user", {username: req.requestedUser.username}),
-    alternate     : i18next.t("meta.alternate"),
+    oglocale      : i18next.t("meta.locale"),
+    ogalternate   : i18next.t("meta.alternate"),
     image         : req.requestedUser.avatar,
     type          : 'object'
   };
