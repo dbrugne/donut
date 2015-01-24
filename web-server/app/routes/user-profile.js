@@ -10,12 +10,13 @@ router.get('/user/:user', function(req, res) {
     bouncer.set(req, '/!#user/'+req.requestedUser.chat);
 
   var meta = {
-    url         : req.requestedUser.url,
-    title       : i18next.t("title.profile", {subtitle: req.requestedUser.username}),
-    description : req.requestedUser.bio,
-    ogtitle     : i18next.t("meta.profile.title", {subtitle: req.requestedUser.username}),
-    image       : req.requestedUser.avatar,
-    type        : 'object'
+    url           : req.requestedUser.url,
+    title         : i18next.t("title.profile", {subtitle: req.requestedUser.username}),
+    description   : req.requestedUser.bio,
+    ogtitle       : i18next.t("meta.profile.title", {subtitle: req.requestedUser.username}),
+    ogdescription : i18next.t("meta.profile.description.user", {username: req.requestedUser.username}),
+    image         : req.requestedUser.avatar,
+    type          : 'object'
   };
 
   res.render('user_profile', {

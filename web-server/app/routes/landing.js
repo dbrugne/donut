@@ -11,13 +11,14 @@ router.get('/', function(req, res) {
 
   var baseUrl = req.protocol + '://' + conf.fqdn + '/';
   var meta = {
-    url         : baseUrl,
-    title       : i18next.t("title.landing"),
-    description : i18next.t("meta.landing.description"),
-    keywords    : i18next.t("meta.landing.keywords"),
-    ogtitle     : i18next.t("meta.landing.title"),
-    image       : baseUrl+"images/donut.jpg",
-    type        : 'website'
+    url           : baseUrl,
+    title         : i18next.t("title.landing"),
+    description   : i18next.t("meta.landing.description"),
+    keywords      : i18next.t("meta.landing.keywords"),
+    ogtitle       : i18next.t("meta.landing.title"),
+    ogdescription : i18next.t("meta.landing.description"),
+    image         : baseUrl+"images/donut.jpg",
+    type          : 'website'
   };
 
   return res.render('landing', {

@@ -10,12 +10,13 @@ router.get('/room/:room', function(req, res) {
     bouncer.set(req, req.room.chat);
 
   var meta = {
-    url         : req.room.url,
-    title       : i18next.t("title.profile", {subtitle: req.room.name}),
-    description : req.room.description,
-    ogtitle     : i18next.t("meta.profile.title", {subtitle: req.room.name}),
-    image       : req.room.avatar,
-    type        : 'object'
+    url           : req.room.url,
+    title         : i18next.t("title.profile", {subtitle: req.room.name}),
+    description   : req.room.description,
+    ogtitle       : i18next.t("meta.profile.title", {subtitle: req.room.name}),
+    ogdescription : i18next.t("meta.profile.description.room", {name: req.room.name}),
+    image         : req.room.avatar,
+    type          : 'object'
   };
 
   res.render('room_profile', {
