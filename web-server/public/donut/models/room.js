@@ -151,7 +151,7 @@ define([
     onOp: function(data) {
       // room.get('op')
       var ops = this.get('op');
-      ops.push(data.user_id);
+      ops.push(data);
       this.set('op', ops);
 
       // user.get('is_op')
