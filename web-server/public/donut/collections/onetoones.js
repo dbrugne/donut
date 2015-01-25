@@ -114,15 +114,17 @@ define([
       }
 
       // retrieve the current onetoone model OR create a new one
-      var model = this.findWhere({'key': key});
-      if (model == undefined) {
+      var model = this.findWhere({'key': key}); // already opened
+      if (model == undefined) { // should be opened
         if (!autoCreate)
           return false;
 
         withUser.key = key;
         model = this.addModel(withUser);
-        // @todo : bug, in this case we haven't the userWith poster/website/status/...
-        // @todo : add RPC call userProfile
+        var that = this;
+        client.userRead(withUser.username, function(data) {
+          model.set(data);
+        });
       }
 
       return model;
