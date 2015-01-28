@@ -15,7 +15,7 @@ var Handler = function(app) {
 var handler = Handler.prototype;
 
 /**
- * Description
+ * Handle home logic
  *
  * @param {Object} data message from client
  * @param {Object} session
