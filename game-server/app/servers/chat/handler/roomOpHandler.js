@@ -33,10 +33,10 @@ handler.op = function(data, session, next) {
 
 		function check(callback) {
 			if (!data.name)
-				return helper.handleError('room:op require room name param');
+				return callback('room:op require room name param');
 
 			if (!data.username)
-				return helper.handleError('room:op require username param');
+				return callback('room:op require username param');
 
 			return callback(null);
 		},
