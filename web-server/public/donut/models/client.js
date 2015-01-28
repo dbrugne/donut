@@ -302,8 +302,16 @@ define([
       var data = {name: name, username: username};
       if (reason)
         data.reason = reason;
-      //this.socket.emit('room:kick', data);
       this.debug(['io:out:room:kick', data]);
+      var that = this;
+      pomelo.request(
+          'chat.roomKickHandler.kick',
+          data,
+          function(response) {
+            if (response.err)
+              return that.debug(['io:in:room:kick error: ', response]);
+          }
+      );
     },
 
     // USER METHODS
