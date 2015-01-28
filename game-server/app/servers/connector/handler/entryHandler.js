@@ -3,6 +3,7 @@ var log = require('../../../../../shared/models/log');
 var _ = require('underscore');
 var async = require('async');
 var conf = require('../../../../../shared/config/index');
+var roomEmitter = require('../../../util/roomEmitter');
 
 var GLOBAL_CHANNEL_NAME = 'global';
 var USER_CHANNEL_PREFIX = 'user:';
@@ -156,8 +157,15 @@ handler.enter = function(msg, session, next) {
 			if (!welcome.autojoined)
 			  return callback(null, welcome);
 
-			// @todo : emit room:in
-			return callback(null, welcome);
+			// emit room:in for #donut
+			var event = {
+				user_id: welcome.user.user_id,
+				username: welcome.user.username,
+				avatar: welcome.user.avatar
+			};
+			roomEmitter(that.app, conf.room.general, 'room:in', event, function(err) {
+				return callback(err, welcome);
+			});
 		},
 
 		function sendUserOnline(welcome, callback) {
