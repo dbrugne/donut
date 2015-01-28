@@ -88,8 +88,9 @@ define([
         current: room.poster,
         tags: 'room,poster',
         field_name: 'poster',
-        resized_width: 430,
-        resized_height: 1200
+        resized_width: 0,
+        resized_height: 0,
+        cropping_aspect_ratio: 0.36 // portrait
       });
     },
     onSubmit: function(event) {

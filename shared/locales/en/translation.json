@@ -318,7 +318,10 @@
       "nopicture": "No picture",
       "failed": "Upload failed",
       "done": "Upload successful, please wait during image rendering",
-      "help": "Image file (.jpeg, .jpg, .png or .gif). Will be automatically resized to __resized_width__x__resized_height__px."
+      "help": {
+        "format": "Image file (.jpeg, .jpg, .png or .gif).",
+        "size": "Will be automatically resized to __resized_width__x__resized_height__px."
+      }
     },
     "left": "<strong>%left</strong> to go",
     "othersettings": "Other settings",
