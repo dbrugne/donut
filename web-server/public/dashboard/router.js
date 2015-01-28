@@ -24,7 +24,7 @@ define([
     routes: {
       '':                 'root',
       'users':            'users',
-      'user/:id':        'user',
+      'user/:id':         'user',
       'rooms':            'rooms',
       'room/:id':         'room',
       'realtime':         'realtime',
@@ -47,6 +47,8 @@ define([
     rooms: function() {
       if (!this.roomsView)
         this.roomsView = new RoomsView();
+      else
+        this.roomsView.render();
 
       this.mainView.currentView = this.roomsView;
       this.mainView.render();
@@ -74,6 +76,8 @@ define([
     users: function() {
       if (!this.usersView)
         this.usersView = new UsersView();
+      else
+        this.usersView.render();
 
       this.mainView.currentView = this.usersView;
       this.mainView.render();
