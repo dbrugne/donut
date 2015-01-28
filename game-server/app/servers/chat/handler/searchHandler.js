@@ -27,6 +27,8 @@ handler.search = function(data, session, next) {
 
 	var start = log.start();
 
+	var that = this;
+
 	if (!data.search)
 		return;
 
@@ -130,29 +132,42 @@ handler.search = function(data, session, next) {
 					username: regexp
 				};
 
-				var q = User.find(search, 'username avatar color facebook status');
+				var q = User.find(search, 'username avatar color facebook');
+				q.sort({'lastonline_at': -1, 'lastoffline_at': -1})
+						.limit(200);
 				q.exec(function(err, users) {
 					if (err)
 						return callback('Error while searching for users: '+err);
 
-					var results = [];
+					var list = [];
 					_.each(users, function(user) {
 						var r = {
+							user_id: user._id.toString(),
 							username: user.username,
 							avatar: user._avatar(),
 							color: user.color
 						};
 
-						if (!lightSearch) {
-							r.status = (user.status)
-								? 'online'
-								: 'offline';
-						}
-
-						results.push(r);
+						list.push(r);
 					});
 
-					return callback(null, results);
+					if (lightSearch) {
+						return callback(null, list);
+					} else {
+						var uids = _.map(list, function(u) { return u.user_id; });
+						that.app.statusService.getStatusByUids(uids, function(err, results) {
+							if (err)
+								return callback('Error while retrieving user status: '+err);
+
+							_.each(list, function(element, index, _list) {
+								_list[index].status = (results[element.user_id])
+										? 'online'
+										: 'offline';
+							});
+
+							return callback(null, list);
+						});
+					}
 				});
 
 			}
