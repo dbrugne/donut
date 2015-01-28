@@ -163,10 +163,6 @@ define([
       if (event.getGenericType() != 'message')
         return;
 
-      // test if needed to notify something
-      if (this.focused && model.get('focused'))
-        return;
-
       // test if not from me (currentUser)
       if (event.get('data').username == currentUser.get('username'))
         return;
@@ -174,6 +170,18 @@ define([
       // test if i mentioned
       var pattern = new RegExp('@\\[([^\\]]+)\\]\\(user:'+currentUser.get('user_id')+'\\)');
       var isMention = pattern.test(event.get('data').message);
+
+      // play sound (could be played for current focused discussion, but not for my own messages)
+      if (!currentUser.mute) {
+        if (!isMention)
+          this.play('message');
+        else
+          this.play('mention');
+      }
+
+      // test if needed to notify something (title and badge)
+      if (this.focused && model.get('focused'))
+        return;
 
       // update tabs
       model.set('unread', (model.get('unread', 0)+1));
@@ -184,15 +192,6 @@ define([
 
       // update title
       this.renderTitle();
-
-      // play sound
-      if (!currentUser.mute) {
-        console.log(currentUser.mute);
-        if (!isMention)
-          this.play('message');
-        else
-          this.play('mention');
-      }
     },
     play: function(what) {
       // @source: // http://stackoverflow.com/questions/9419263/playing-audio-with-javascript
