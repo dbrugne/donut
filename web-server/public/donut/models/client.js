@@ -23,12 +23,6 @@ define([
           that.debug(data.debug);
         if (data.event)
           that.trigger(data.event);
-
-        // @todo : repair !!!!
-        //if (err == 'notlogged')
-        //  that.trigger('notlogged');
-        //else
-        //  that.trigger('error');
       });
       pomelo.on('welcome', function(data) {
         that.debug(['io:in:welcome', data]);
