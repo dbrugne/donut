@@ -48,7 +48,9 @@ module.exports = function(req, res, next, username) {
     function rooms(user, callback) {
 
       var q = Room.find({$or: [
-        {owner: user._id}
+        {owner: user._id},
+        {op: {$in: [user._id]}},
+        {users: {$in: [user._id]}}
       ]}, 'name owner op avatar color description')
         .populate('owner', 'username');
       q.exec(function(err, rooms) {
