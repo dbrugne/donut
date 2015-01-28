@@ -46,7 +46,7 @@ define([
 
     thisDiscussionShouldBeFocusedOnSuccess: '',
 
-    defaultColor: '#fc2063', // @todo : put this value somewhere in DOM, modifiable by users
+    defaultColor: '',
 
     currentColor: '',
 
@@ -64,6 +64,8 @@ define([
     },
 
     initialize: function() {
+      this.defaultColor = window.room_default_color;
+
       this.listenTo(client, 'welcome', this.onWelcome);
       this.listenTo(rooms, 'add', this.addRoomView);
       this.listenTo(onetoones, 'add', this.addOneView);

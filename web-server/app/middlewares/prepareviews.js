@@ -17,8 +17,10 @@ module.exports = function() {
     // pass CSRF token to all views
     res.locals.token = req.csrfToken();
 
+    // configuration
     res.locals.cloudinary = conf.cloudinary;
     res.locals.facebook = conf.facebook;
+    res.locals.room_default_color = conf.room.default.color;
 
     next();
   };
