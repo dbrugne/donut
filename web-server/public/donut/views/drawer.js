@@ -77,7 +77,15 @@ define([
       if(event.target.className != subject.attr('class') && !subject.has(event.target).length)
         this.close();
     },
+    _height: function() {
+      var newHeight = $('#center').innerHeight();
+      console.log (newHeight);
+      //this.$el.height(newHeight);
+      this.$content.height(newHeight - (55 + 40));
+    },
     _show: function() {
+      this._height();
+
       this.trigger('show');
       this.shown = true;
 
