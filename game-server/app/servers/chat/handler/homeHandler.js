@@ -110,16 +110,11 @@ handler.home = function(data, session, next) {
 
 					var list = [];
 					_.each(users, function(u) {
-						var status = (u.online == true)
-							? 'online'
-							: 'offline';
-
 						list.push({
 							user_id: u._id.toString(),
 							username: u.username,
 							avatar: u._avatar(),
-							color: u.color,
-							status: status
+							color: u.color
 						});
 					});
 

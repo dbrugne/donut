@@ -49,7 +49,6 @@ userSchema.statics.getNewUser = function () {
   model.color = color.hex;
   model.general = true;
   model.welcome = true;
-  model.online = false;
   return model;
 };
 
