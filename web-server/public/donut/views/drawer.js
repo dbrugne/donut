@@ -79,8 +79,6 @@ define([
     },
     _height: function() {
       var newHeight = $('#center').innerHeight();
-      console.log (newHeight);
-      //this.$el.height(newHeight);
       this.$content.height(newHeight - (55 + 40));
     },
     _show: function() {
