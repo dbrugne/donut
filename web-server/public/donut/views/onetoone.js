@@ -34,6 +34,7 @@ define([
       this.$el.find('.website').linkify();
     },
     _focus: function() {
+      this.$el.find('.ago span').momentify('fromnow'); // refocus an offline one after few times
     },
     _unfocus: function() {
     },
@@ -73,6 +74,11 @@ define([
         this.$el.find('.header .status')
           .removeClass('offline online')
           .addClass('offline');
+
+        // update offline time
+        var now = new Date();
+        this.$el.find('.ago span').attr('data-time', now.toISOString());
+
         this.$el.find('.ago span').momentify('fromnow');
         this.$el.find('.ago').show();
       }
