@@ -24,7 +24,7 @@ define([
     },
 
     onUpdated: function(data) {
-      if (data.user_id != this.get('user_id'))
+      if (data.username != this.get('username'))
         return;
 
       var that = this;
