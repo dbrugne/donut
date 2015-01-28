@@ -28,6 +28,8 @@ handler.home = function(data, session, next) {
 
 	var homeEvent = {};
 
+	var that = this;
+
 	async.waterfall([
 
 			function rooms(callback) {
@@ -99,7 +101,7 @@ handler.home = function(data, session, next) {
 
 			function onlines(callback) {
 				var q = User.find({ username: {$ne:null} }, 'username avatar color facebook online')
-					.sort({online: -1})
+				q.sort({'lastonline_at': -1, 'lastoffline_at': -1})
 					.limit(200);
 
 				q.exec(function(err, users) {
@@ -121,7 +123,23 @@ handler.home = function(data, session, next) {
 						});
 					});
 
-					homeEvent.users = list;
+					return callback(null, list);
+				});
+			},
+
+			function status(users, callback) {
+				var uids = _.map(users, function(u) { return u.user_id; });
+				that.app.statusService.getStatusByUids(uids, function(err, results) {
+					if (err)
+						return callback('Error while retrieving user status: '+err);
+
+					_.each(users, function(element, index, list) {
+						list[index].status = (results[element.user_id])
+								? 'online'
+								: 'offline';
+					});
+
+					homeEvent.users = users;
 					return callback(null);
 				});
 			}
