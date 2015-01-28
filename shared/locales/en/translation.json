@@ -46,8 +46,8 @@
     "join": "join",
     "discuss": "chat",
     "account": "my account",
-    "mute": "Sound on",
-    "muted": "Sound off"
+    "mute": "sound on",
+    "muted": "sound off"
   },
   "global": {
     "or": "or",

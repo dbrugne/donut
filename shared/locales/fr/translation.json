@@ -46,8 +46,8 @@
         "join": "rejoindre",
         "discuss": "discuter",
         "account": "mon compte",
-        "mute": "Son actif",
-        "muted": "Son désactivé"
+        "mute": "son actif",
+        "muted": "son désactivé"
     },
     "global": {
         "or": "ou",
