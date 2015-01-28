@@ -91,7 +91,7 @@ handler.search = function(data, session, next) {
 
 						var r = {
 							name: room.name,
-							avatar: room.avatar,
+							avatar: room._avatar(),
 							color: room.color,
 							lastjoin_at: new Date(room.lastjoin_at).getTime()
 						};
