@@ -103,12 +103,21 @@ handler.read = function(data, session, next) {
 			});
 		},
 
-		function prepareData(user, rooms, callback) {
+		function status(user, rooms, callback) {
+			that.app.statusService.getStatusByUid(user._id.toString(), function(err, status) {
+				if (err)
+					return callback('Error while retrieving user status: '+err);
+
+				return callback(null, user, rooms, status);
+			});
+		},
+
+		function prepareData(user, rooms, status, callback) {
 			// status
-			var status = (user.online)
+			var status = (status)
 				? 'online'
-				: 'offline'; // @todo : base it on statusService
-			var onlined = (user.online)
+				: 'offline';
+			var onlined = (status)
 				? user.lastonline_at
 				: user.lastoffline_at;
 			var userData = {
