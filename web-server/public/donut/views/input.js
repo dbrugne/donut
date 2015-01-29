@@ -2,10 +2,9 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'models/client',
   'models/current-user',
   'text!templates/input.html'
-], function ($, _, Backbone, client, currentUser, InputTemplate) {
+], function ($, _, Backbone, currentUser, InputTemplate) {
   var DiscussionInputView = Backbone.View.extend({
 
     template: _.template(InputTemplate),
@@ -136,12 +135,9 @@ define([
           });
         }
 
-        // @todo: cleanup this code by calling on model... and fix #50
-        if (that.model.get('type') == 'room') {
-          client.roomMessage(that.model.get('name'), message, images);
-        } else if (that.model.get('type') == 'onetoone') {
-          client.userMessage(that.model.get('username'), message, images);
-        }
+        // Send message to server
+        that.model.sendMessage(message, images);
+        that.trigger('send');
 
         // Empty field
         that.$editable.val('');
@@ -159,7 +155,7 @@ define([
 
     imageTemplate: _.template('<a class="image" data-toggle="lightbox" href="<%=data.url%>" data-cloudinary-id="<%=data.public_id%>" style="background-image: url(<%=data.thumbnail_url%>);"><i class="fa fa-times remove-image"></i></a>'),
 
-    images: {}, // @todo to cleanup on post message
+    images: {},
 
     onAddImage: function(event) {
       event.preventDefault();

@@ -87,6 +87,10 @@ define([
           more: data.more
         });
       });
+    },
+
+    sendMessage: function(message, images) {
+      client.userMessage(this.get('username'), message, images);
     }
 
   });

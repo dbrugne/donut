@@ -37,6 +37,7 @@ define([
         model: this.model
       });
       this.listenTo(this.inputView, 'resize', this.onResize);
+      this.listenTo(this.inputView, 'send', this.onSend);
 
       // Other subviews
       this._initialize(options);
@@ -129,6 +130,10 @@ define([
 
       this.eventsView.resize(eventsHeight);
       //console.log('resize call by window ('+totalHeight+', '+headerHeight+', '+inputHeight+', '+eventsHeight+')');
+    },
+
+    onSend: function() {
+      this.eventsView.scrollDown(); // scroll down automatically when I send a message
     }
 
   });

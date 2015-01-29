@@ -233,6 +233,10 @@ define([
           more: data.more
         });
       });
+    },
+
+    sendMessage: function(message, images) {
+      client.roomMessage(this.get('name'), message, images);
     }
 
   });
