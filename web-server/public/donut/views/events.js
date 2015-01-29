@@ -36,6 +36,8 @@ define([
       this.listenTo(this.model, 'historyEvents', this.onHistoryEvents);
       this.listenTo(this.model, 'reconnectEvents', this.onReconnectEvents);
 
+      window.events = this;
+
       var that = this;
       _.defer(function() { // => Uncaught TypeError: Cannot read property '0' of null
         that.render();
@@ -96,6 +98,9 @@ define([
           updateOnImageLoad: false
         },
         callbacks:{
+          onScroll: function() {
+            that.scrollPosition = this.mcs.top; // in pixel
+          },
           onTotalScroll: function() {
             that.scrollPosition = 'bottom';
           },
