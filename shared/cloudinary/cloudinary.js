@@ -61,7 +61,7 @@
 
       if (!identifier) {
         if (data.facebook) {
-          return 'https://graph.facebook.com/'+facebook+'/picture?height='+height+'&width='+width;
+          return 'https://graph.facebook.com/'+data.facebook+'/picture?height='+height+'&width='+width;
         }
 
         return; // no valid identifier found
