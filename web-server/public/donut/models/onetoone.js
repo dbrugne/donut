@@ -59,7 +59,10 @@ define([
       if (this.get('status') == expect)
         return;
 
-      this.set({status: expect});
+      this.set({
+        status: expect,
+        onlined: new Date().toISOString()
+      });
 
       var model = new EventModel({
         type: 'user:'+expect,

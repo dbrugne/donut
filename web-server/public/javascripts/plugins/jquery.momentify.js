@@ -7,7 +7,7 @@
     return this.each(function() {
       if (!window.moment) return this;
       var element = $(this);
-      var time = element.data('time');
+      var time = element.attr('data-time');
       if (!time) return this;
 
       var dateObject = moment(time);

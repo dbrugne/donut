@@ -75,11 +75,9 @@ define([
           .removeClass('offline online')
           .addClass('offline');
 
-        // update offline time
-        var now = new Date();
-        this.$el.find('.ago span').attr('data-time', now.toISOString());
-
-        this.$el.find('.ago span').momentify('fromnow');
+        var $ago = this.$el.find('.ago span');
+        $ago.attr('data-time', this.model.get('onlined'));
+        $ago.momentify('fromnow');
         this.$el.find('.ago').show();
       }
     }
