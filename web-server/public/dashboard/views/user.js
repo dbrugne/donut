@@ -15,7 +15,6 @@ define([
     },
 
     initialize: function (options) {
-      this.render();
     },
     render: function () {
       var data = this.model.toJSON();

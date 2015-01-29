@@ -18,7 +18,9 @@ define([
     mainView     : null,
     homeView     : null,
     usersView    : null,
+    userView    : null,
     roomsView    : null,
+    roomView    : null,
     realtimeView : null,
 
     routes: {
@@ -36,8 +38,10 @@ define([
     },
 
     root: function() {
-      if (!this.homeView)
+      if (!this.homeView) {
         this.homeView = new HomeView();
+        this.mainView.append(this.homeView);
+      }
 
       this.homeView.render(); // refresh
       this.mainView.currentView = this.homeView;
@@ -45,10 +49,10 @@ define([
     },
 
     rooms: function() {
-      if (!this.roomsView)
+      if (!this.roomsView) {
         this.roomsView = new RoomsView();
-      else
-        this.roomsView.render();
+        this.mainView.append(this.roomsView);
+      }
 
       this.mainView.currentView = this.roomsView;
       this.mainView.render();
@@ -56,14 +60,18 @@ define([
     },
 
     room: function(id) {
+      if (!this.roomView) {
+        this.roomView = new RoomView();
+        this.mainView.append(this.roomView);
+      }
+
       id = id.replace('%23', '#');
       var model = new RoomModel({_id: id});
       var that = this;
       model.fetch({
         success: function(model) {
-          that.mainView.currentView = new RoomView({
-            model: model
-          });
+          that.roomView.model = model;
+          that.mainView.currentView = that.roomView.render();
           that.mainView.render();
           that.mainView.setNavigationActive('rooms');
         },
@@ -74,10 +82,10 @@ define([
     },
 
     users: function() {
-      if (!this.usersView)
+      if (!this.usersView) {
         this.usersView = new UsersView();
-      else
-        this.usersView.render();
+        this.mainView.append(this.usersView);
+      }
 
       this.mainView.currentView = this.usersView;
       this.mainView.render();
@@ -85,13 +93,17 @@ define([
     },
 
     user: function(id) {
+      if (!this.userView) {
+        this.userView = new UserView();
+        this.mainView.append(this.userView);
+      }
+
       var model = new UserModel({_id: id});
       var that = this;
       model.fetch({
         success: function(model) {
-          that.mainView.currentView = new UserView({
-            model: model
-          });
+          that.userView.model = model;
+          that.mainView.currentView = that.userView.render();
           that.mainView.render();
           that.mainView.setNavigationActive('users');
         },
@@ -102,8 +114,10 @@ define([
     },
 
     realtime: function() {
-      if (!this.realtimeView)
+      if (!this.realtimeView) {
         this.realtimeView = new RealtimeView();
+        this.mainView.append(this.realtimeView);
+      }
 
       this.mainView.currentView = this.realtimeView;
       this.mainView.render();
@@ -111,7 +125,6 @@ define([
     },
 
     default: function() {
-//      console.log('router: default');
       Backbone.history.navigate('#', {trigger: true}); // redirect on home
     }
   });

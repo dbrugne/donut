@@ -24,8 +24,14 @@ define([
       this.alertView = new AlertView({mainView: this});
     },
     render: function() {
-      this.$content.html(this.currentView.$el);
+      this.$content.find('> div').hide();
+      this.currentView.$el.show();
       return this;
+    },
+    append: function(view) {
+      // appened new view to .content
+      view.$el.appendTo(this.$content);
+      view.$el.hide();
     },
     setNavigationActive: function(key) {
       this.$el.find('.nav.navbar-nav li').removeClass('active');
