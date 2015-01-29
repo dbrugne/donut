@@ -8,7 +8,7 @@ define([
     model: UserModel,
     url: '/rest/users',
     state: {
-      pageSize: 25,
+      pageSize: 100,
       sortKey: "username",
       order: -1
     },

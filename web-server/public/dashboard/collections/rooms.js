@@ -8,7 +8,7 @@ define([
     model: RoomModel,
     url: '/rest/rooms',
     state: {
-      pageSize: 25,
+      pageSize: 100,
       sortKey: "name",
       order: -1
     },

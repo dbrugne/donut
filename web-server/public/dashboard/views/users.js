@@ -144,7 +144,7 @@ define([
 
       // pagination
       this.paginator = new Backgrid.Extension.Paginator({
-        windowSize: 20, // Default is 10
+        windowSize: 10, // Default is 10
         slideScale: 0.25, // Default is 0.5
         goBackFirstOnSort: true, // Default is true
         collection: this.collection
