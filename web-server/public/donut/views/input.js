@@ -167,7 +167,7 @@ define([
       // @doc: http://cloudinary.com/documentation/upload_widget#setup
       var options = {
         upload_preset: 'discussion',
-        sources: ['local', 'url', 'camera'],
+        sources: ['local'], // ['local', 'url', 'camera']
         multiple: true,
         client_allowed_formats: ["png","gif", "jpeg"],
         max_file_size: 20000000, // 20Mo

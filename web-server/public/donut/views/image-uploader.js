@@ -23,7 +23,7 @@ define([
         field_name: 'image',
         tags: '',
         upload_preset: 'uxfd2ikf',
-        sources: ['local', 'url', 'camera'],
+        sources: ['local'], // ['local', 'url', 'camera']
         multiple: false,
         cropping: 'server',
         client_allowed_formats: ["png","gif", "jpeg"],
