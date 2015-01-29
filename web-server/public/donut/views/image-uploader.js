@@ -62,7 +62,6 @@ define([
       var that = this;
       // @doc: http://cloudinary.com/documentation/upload_widget#setup
       cloudinary.openUploadWidget(this.options, function(err, result) {
-          console.log(err, result); // @debug
           if (err) {
             if (err.message && err.message == 'User closed widget')
               return;
