@@ -157,12 +157,12 @@ require([
 
   // Facebook setup
   try {
-    //facebook.init({
-    //  appId: window.facebook_app_id,
-    //  version: 'v2.1',
-    //  status: true,
-    //  xfbml: false
-    //});
+    facebook.init({
+      appId: window.facebook_app_id,
+      version: 'v2.1',
+      status: true,
+      xfbml: false
+    });
   } catch (e) {
     console.log(e);
     return false;
