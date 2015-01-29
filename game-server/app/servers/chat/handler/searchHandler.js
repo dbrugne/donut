@@ -47,7 +47,9 @@ handler.search = function(data, session, next) {
 		? true
 		: false;
 
-	var pattern = data.search.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+	var pattern = data.search
+			.replace(/([@#])/g, '') // remove # and @
+			.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1"); // escape regex special chars
 	var regexp = new RegExp(pattern, "i");
 
 	async.parallel([
