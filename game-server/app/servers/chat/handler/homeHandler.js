@@ -100,7 +100,7 @@ handler.home = function(data, session, next) {
 			},
 
 			function onlines(callback) {
-				var q = User.find({ username: {$ne:null} }, 'username avatar color facebook online')
+				var q = User.find({ username: {$ne:null} }, 'username avatar color facebook')
 				q.sort({'lastonline_at': -1, 'lastoffline_at': -1})
 					.limit(200);
 
@@ -109,12 +109,13 @@ handler.home = function(data, session, next) {
 						return callback('Error while retrieving users list: '+err);
 
 					var list = [];
-					_.each(users, function(u) {
+					_.each(users, function(u, index) {
 						list.push({
 							user_id: u._id.toString(),
 							username: u.username,
 							avatar: u._avatar(),
-							color: u.color
+							color: u.color,
+							sort: index
 						});
 					});
 
@@ -132,7 +133,10 @@ handler.home = function(data, session, next) {
 						list[index].status = (results[element.user_id])
 								? 'online'
 								: 'offline';
+						list[index].sort = ((results[element.user_id]) ? 0 : 1) + '' + list[index].sort;
 					});
+
+					users = _.sortBy(users, 'sort');
 
 					homeEvent.users = users;
 					return callback(null);
