@@ -75,7 +75,16 @@ $ bower update
 
 ### Local running
 
-Be sure that shared/config/config.development.js is up to date, that donut.local and ws.donut.local resolve your localhost.
+Be sure that:
+- shared/config/config.development.js is up to date
+- DNS records and nginx are well configured and running
+- NODE_ENV is 'development'
+
+Run with:
+```
+node game-server/app.js
+node web-server/app.js
+```
 
 ### Hosted running (production, test)
 Run Donut app (as donut):
