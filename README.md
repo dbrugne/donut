@@ -1,6 +1,8 @@
 donut
 ====
 
+DONUT is a node.js/backbonejs based chatroom platform. Usage is inspired of IRC on a side and modern social platform on other hand.
+
 ## Pre-requisites
 **Server**
 * node.js
