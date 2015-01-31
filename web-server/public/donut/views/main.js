@@ -77,7 +77,7 @@ define([
 
     onEnterImage: function(event) {
       event.preventDefault();
-      $image = $(event.currentTarget);
+      var $image = $(event.currentTarget);
       var cloudinaryId = $image.attr('data-cloudinary-id');
       var url = $.cd.natural(cloudinaryId, 150, 150);
       $image.popover({
@@ -88,13 +88,16 @@ define([
         viewport: $image.closest('div.mCSB_container')
       });
 
-      //$image.on('shown.bs.popover', function () {
-      //  $('.popover-content img').bind('load', function() {
-      //  });
-      //});
-      //$image.on('hidden.bs.popover', function () {
-      //  $image.popover('destroy');
-      //});
+      $image.on('shown.bs.popover', function () {
+        var $i = $('.popover-content img');
+        $i.bind('load', function() {
+          if ($image.data('imgloaded'))
+            return;
+
+          $image.data('imgloaded', true);
+          $image.popover('show');
+        });
+      });
 
       $image.popover('show');
     },
