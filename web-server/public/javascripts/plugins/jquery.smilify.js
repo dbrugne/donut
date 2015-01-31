@@ -8,31 +8,71 @@
     return $.smilify.parse(text);
   };
 
+  $.smilifyHtmlList = function (text) {
+    var html = '<div class="smileys">';
+    var i = 0;
+    $.each($.smilify.settings.map, function(key, value) {
+      i++;
+      html += $.smilify.settings.replacement.replace(/\{eId\}/g, value);
+      if (i >= 6) {
+        html += '<br />';
+        i = 0;
+      }
+    });
+    html += '</div>';
+    return html;
+  };
+
+  $.smilifyGetSymbolFromCode = function(code) {
+    if (!code)
+      return '';
+
+    var symbol = '';
+    $.each($.smilify.settings.map, function(key, value) {
+      if (value == code) {
+        symbol = key;
+        return false;
+      }
+    });
+    return symbol;
+  };
+
   var $t = $.smilify;
 
   $.extend($.smilify, {
 
     settings: {
-      replacement: '<span class="smilify smilify-{eId}" data-smilify-code="{eId}"></span>',
+      replacement: '<span class="smilify smilify-{eId}" data-smilify-code="{eId}" title="{eId}"></span>',
       map: {
-        ":D": "grin",
-        ":')": "joy",
-        ";)": "wink",
-        ":P": "cheeky",
-        ":O": "surprised",
-        ":*": "kiss",
         ":(": "frown",
+        ":D": "grin",
+        "xD": "lol",
+        ";)": "wink",
+        "X(": "angry",
         ":'(": "tears",
-        ">B)": "cool",
-        ":@": "angry",
-        ":S": "confused",
-        "O:)": "angel",
+        ":o": "surprised",
+        "<:)": "party",
+        ":P": "cheeky",
+        ":$": "blush",
+        "I-)": "snore",
+        "8-)": "cool",
+        ":S?": "confused",
+        ":§": "puke",
+        "*rofl*": "rofl",
         "3:)": "devil",
-        "(8)": "music",
-        "(Y)": "thumbs-up",
-        "(N)": "thumbs-down",
+        "O:)": "angel",
+        "*up*": "up",
+        "*down*": "down",
+        "*clap*": "clap",
+        "*I5*": "highfive",
         "<3": "heart",
-        "</3": "broken-heart",
+        "</3": "brokenheart",
+        ":*": "kiss",
+        "<*>": "star",
+        "*$*": "dollar",
+        "@>--": "rose",
+        "*teddy*": "bear",
+        "(o)": "donut",
         ":)": "smile" // should be last to not collision with longer pattern like >:)
       }
     },
@@ -72,6 +112,7 @@
     encode: function (str) {
       return (str + '')
         .replace(/&/g, '&amp;')
+        .replace(/'/g, '&#x27;')
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;');
@@ -88,40 +129,12 @@
     else
       action = 'smilify';
 
-    // symbol
-    if (action == 'symbol') {
-      var symbol = '';
-      var search = arguments[1];
-      $.each($.smilify.settings.map, function(key, value) {
-        if (value == search) symbol = key;
-      });
-      return symbol;
-    }
-
-    // list
-    if (action == 'list') {
-      this.each(function () {
-        var el = $(this);
-        var text = '';
-        $.each($.smilify.settings.map, function(key, value) {
-          text += " "+key;
-        });
-        el.text(text);
-      });
-    }
-
     // smilify codes
     if (action == 'smilify') {
       this.each(function () {
         var el = $(this);
         el.html($.smilify(el.html()));
       });
-    }
-
-    // html
-    if (action == 'html') {
-      var code = arguments[1];
-      return $.smilify.settings.replacement.replace(/\{eId\}/g, code);
     }
 
     return this;

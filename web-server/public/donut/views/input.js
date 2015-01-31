@@ -14,7 +14,9 @@ define([
       'keypress .editable'            : 'onKeyPress',
       'click .send'                   : 'sendMessage',
       'click .add-image'              : 'onAddImage',
-      'click .remove-image'           : 'onRemoveImage'
+      'click .remove-image'           : 'onRemoveImage',
+      'click .add-smiley'             : 'onOpenSmiley',
+      'click .smileys .smilify'       : 'onPickSmiley'
     },
 
     initialize: function(options) {
@@ -211,6 +213,32 @@ define([
     hidePreview: function() {
       this.$preview.hide();
       this.trigger('resize');
+    },
+
+    onOpenSmiley: function(event) {
+      event.preventDefault();
+
+      if (!this.$smileyButton) {
+        this.$smileyButton = $(event.currentTarget);
+
+        this.$smileyButton.popover({
+          animation: false,
+          container: this.$el,
+          content: $.smilifyHtmlList(),
+          html: true,
+          placement: 'top'
+        });
+
+        this.$smileyButton.popover('show'); // show manually on first click, then popover has bound a click event on popover toggle action
+      }
+    },
+
+    onPickSmiley: function(event) {
+      event.preventDefault();
+
+      var symbol = $.smilifyGetSymbolFromCode($(event.currentTarget).data('smilifyCode'));
+      this.$editable.insertAtCaret(symbol);
+      this.$smileyButton.popover('hide');
     }
 
   });
