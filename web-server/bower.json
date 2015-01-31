@@ -18,8 +18,7 @@
     "backbone.paginator": "latest",
     "backgrid-paginator": "git://github.com/wyuenho/backgrid-paginator.git#03632df8ad238e3d043c0fd471a6c78494e1bdfc",
     "backgrid-moment-cell": "latest",
-    "backgrid-filter": "latest",
-    "lightbox": "https://github.com/ashleydw/lightbox.git"
+    "backgrid-filter": "latest"
   },
   "resolutions": {
     "moment": "2.7.x"

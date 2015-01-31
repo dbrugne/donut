@@ -153,7 +153,7 @@ define([
       return false;
     },
 
-    imageTemplate: _.template('<a class="image" data-toggle="lightbox" href="<%=data.url%>" data-cloudinary-id="<%=data.public_id%>" style="background-image: url(<%=data.thumbnail_url%>);"><i class="fa fa-times remove-image"></i></a>'),
+    imageTemplate: _.template('<a class="image" target="_blank" href="<%=data.url%>" data-cloudinary-id="<%=data.public_id%>" style="background-image: url(<%=data.thumbnail_url%>);"><i class="fa fa-times remove-image"></i></a>'),
 
     images: {},
 

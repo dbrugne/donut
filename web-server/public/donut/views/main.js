@@ -60,7 +60,9 @@ define([
       'click .open-room-edit':            'openRoomEdit',
       'click .open-room-delete':          'openRoomDelete',
       'click .close-room':                'onCloseDiscussion',
-      'click .close-onetoone':            'onCloseDiscussion'
+      'click .close-onetoone':            'onCloseDiscussion',
+      'mouseenter *[data-toggle="image-popover"]': 'onEnterImage',
+      'mouseleave *[data-toggle="image-popover"]': 'onLeaveImage'
     },
 
     initialize: function() {
@@ -71,19 +73,34 @@ define([
       this.listenTo(onetoones, 'add', this.addOneView);
       this.listenTo(rooms, 'kicked', this.roomKicked); // @todo: nasty event
       this.listenTo(rooms, 'deleted', this.roomRoomDeleted); // @todo: nasty event
+    },
 
-      // image lightbox
-      $.fn.ekkoLightbox.defaults.always_show_close = false;
-      $.fn.ekkoLightbox.defaults.onShown = function() {
-        var lightbox = this;
-        $(this.lightbox_container).click(function() {
-          lightbox.close();
-        });
-      };
-      $(document).delegate('*[data-toggle="lightbox"]', 'click', function(event) {
-        event.preventDefault();
-        $(this).ekkoLightbox();
+    onEnterImage: function(event) {
+      event.preventDefault();
+      $image = $(event.currentTarget);
+      var cloudinaryId = $image.attr('data-cloudinary-id');
+      var url = $.cd.natural(cloudinaryId, 150, 150);
+      $image.popover({
+        animation: false,
+        content: '<img src="'+url+'" alt="user contribution">',
+        html: true,
+        placement: 'auto left',
+        viewport: $image.closest('div.mCSB_container')
       });
+
+      //$image.on('shown.bs.popover', function () {
+      //  $('.popover-content img').bind('load', function() {
+      //  });
+      //});
+      //$image.on('hidden.bs.popover', function () {
+      //  $image.popover('destroy');
+      //});
+
+      $image.popover('show');
+    },
+    onLeaveImage: function(event) {
+      $image = $(event.currentTarget);
+      $image.popover('hide');
     },
 
     run: function() {

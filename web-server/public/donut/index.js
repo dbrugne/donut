@@ -2,7 +2,6 @@ require.config({
   paths: {
     'jquery'                      : '../vendor/jquery/jquery',
     'bootstrap'                   : '../vendor/bootstrap/dist/js/bootstrap',
-    'lightbox'                    : '../vendor/lightbox/dist/ekko-lightbox',
     'text'                        : '../vendor/requirejs-text/text',
     'socket.io'                   : '/socket.io',
     'pomelo'                      : './pomelo',
@@ -30,8 +29,7 @@ require.config({
     'underscore.template-helpers' : '../javascripts/plugins/underscore.template-helpers'
   },
   shim: {
-    'bootstrap'                    : ['jquery'],
-    'lightbox'                    : ['jquery'],
+    'bootstrap'                   : ['jquery'],
     'jquery.cloudinary'           : ['jquery'],
     'jquery.cloudinary-donut'     : ['jquery'],
     'jquery.insertatcaret'        : ['jquery'],
@@ -66,7 +64,6 @@ require([
   /************************************
    * Load (once) and attach plugins to jQuery and underscore
    ************************************/
-  'lightbox',
   'jquery.insertatcaret',
   'jquery.maxlength',
   'jquery.cloudinary',
