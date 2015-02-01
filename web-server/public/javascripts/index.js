@@ -3,16 +3,16 @@ require.config({
     'jquery'                      : '../vendor/jquery/jquery',
     'bootstrap'                   : '../vendor/bootstrap/dist/js/bootstrap',
     'facebook'                    : '//connect.facebook.net/fr_FR/all',
-    'jquery.linkify'              : '../javascripts/plugins/jquery.linkify'
+    'jquery.linkify'              : '../javascripts/plugins/jquery.linkify',
+    'jquery.talkative'            : '../vendor/talkative/jquery.talkative'
   },
   shim: {
-    'jquery.linkify'              : ['jquery'],
-    'bootstrap': {
-      deps: ['jquery']
-    },
+    'bootstrap'        : ['jquery'],
     'facebook' : {
       exports: 'FB'
-    }
+    },
+    'jquery.linkify'   : ['jquery'],
+    'jquery.talkative' : ['jquery']
   }
 });
 
@@ -20,8 +20,17 @@ require([
   'jquery',
   'facebook',
   'bootstrap',
-  'jquery.linkify'
+  'jquery.linkify',
+  'jquery.talkative'
 ], function ($, facebook) {
+
+  // Landing text rotation
+  if ($('#landing').length) {
+    $('[data-toggle="talkative"]').talkative({
+      start: 2000,
+      delay: 4000
+    });
+  }
 
   // User and room profiles
   if ($('#profile').length) {
