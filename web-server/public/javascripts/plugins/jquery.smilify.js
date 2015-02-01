@@ -44,6 +44,7 @@
     settings: {
       replacement: '<span class="smilify smilify-{eId}" data-smilify-code="{eId}" title="{eId}"></span>',
       map: {
+        ":)": "smile",
         ":(": "frown",
         ":D": "grin",
         "xD": "lol",
@@ -71,15 +72,13 @@
         "<*>": "star",
         "*$*": "dollar",
         "@>--": "rose",
-        "*teddy*": "bear",
-        "(o)": "donut",
-        ":)": "smile" // should be last to not collision with longer pattern like >:)
+        "*teddy*": "teddy",
+        "(o)": "donut"
       }
     },
     shortcode: function(eId){
-      var $s = $t.settings;
-      for (var pattern in $s.map) {
-        if($s.map[pattern] == eId)
+      for (var pattern in this.settings.map) {
+        if(this.settings.map[pattern] == eId)
           return pattern;
       }
 
@@ -89,23 +88,29 @@
 
       text = text || '';
 
-      var $s = $t.settings;
-
-      for (var pattern in $s.map) {
-
-        var encPattent = $t.encode(pattern);
-
-        if (text.indexOf(pattern) < 0 && text.indexOf(encPattent) < 0) {
+      for (var pattern in this.settings.map) {
+        if (pattern == ':)')
           continue;
-        }
+        text = this.analyse(pattern, text);
+      }
 
-        var rep = $s.replacement
-          .replace(/\{eId\}/g, $s.map[pattern]);
+      // :) should be last to not collision with longer pattern like >:)
+      text = this.analyse(':)', text);
 
-        text = text
+      return text;
+    },
+    analyse: function(pattern, text) {
+      var encPattent = $t.encode(pattern);
+
+      if (text.indexOf(pattern) < 0 && text.indexOf(encPattent) < 0)
+        return text;
+
+      var rep = this.settings.replacement
+          .replace(/\{eId\}/g, this.settings.map[pattern]);
+
+      text = text
           .replace(new RegExp($t.quote(pattern), "g"), rep)
           .replace(new RegExp($t.quote(encPattent), "g"), rep);
-      }
 
       return text;
     },
