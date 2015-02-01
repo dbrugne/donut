@@ -28,7 +28,8 @@ require([
   if ($('#landing').length) {
     $('[data-toggle="talkative"]').talkative({
       start: 2000,
-      delay: 4000
+      delay: 5000,
+      delay_animation: 900
     });
   }
 
