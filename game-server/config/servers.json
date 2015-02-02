@@ -21,8 +21,8 @@
   },
   "production": {
     "connector": [
-      {"id": "connector-server-1", "host": "5.196.206.61", "port": 4050, "frontend": true, "clientPort": 80, "token": "agarxhqb98rpajloaxn34ga8xrunpagkjwlaw3ruxnpaagl29w4rxn"},
-      {"id": "connector-server-2", "host": "5.196.206.61", "port": 4051, "frontend": true, "clientPort": 80, "token": "agarxhqb98rpajloaxn34ga8xrunpagkjwlaw3ruxnpaagl29w4rxn"}
+      {"id": "connector-server-1", "host": "5.196.206.61", "port": 4050, "frontend": true, "clientPort": 3050, "token": "agarxhqb98rpajloaxn34ga8xrunpagkjwlaw3ruxnpaagl29w4rxn"},
+      {"id": "connector-server-2", "host": "5.196.206.61", "port": 4051, "frontend": true, "clientPort": 3051, "token": "agarxhqb98rpajloaxn34ga8xrunpagkjwlaw3ruxnpaagl29w4rxn"}
     ],
     "chat": [
       {"id": "chat-server-1", "host": "5.196.206.61", "port": 6050, "token": "agarxhqb98rpajloaxn34ga8xrunpagkjwlaw3ruxnpaagl29w4rxn"},
