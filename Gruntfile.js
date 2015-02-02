@@ -19,10 +19,9 @@ module.exports = function(grunt) {
           paths: {
             'jquery'                      : '../vendor/jquery/jquery',
             'bootstrap'                   : '../vendor/bootstrap/dist/js/bootstrap',
-            'lightbox'                    : '../vendor/lightbox/dist/ekko-lightbox',
             'text'                        : '../vendor/requirejs-text/text',
             'socket.io'                   : '../../node_modules/socket.io-client/socket.io',
-            'pomelo'                      : './pomelo',
+            'pomelo'                      : './libs/pomelo',
             'underscore'                  : '../vendor/underscore-amd/underscore',
             'backbone'                    : '../vendor/backbone-amd/backbone',
             'i18next'                     : '../vendor/i18next/i18next.amd.withJQuery',
@@ -56,6 +55,5 @@ module.exports = function(grunt) {
 
   // Custom tasks
   grunt.loadTasks('tasks');
-
 
 };

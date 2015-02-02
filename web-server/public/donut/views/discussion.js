@@ -17,6 +17,7 @@ define([
     },
 
     initialize: function(options) {
+      var start = Date.now();
       this.mainView = options.mainView;
 
       // Events
@@ -41,6 +42,7 @@ define([
 
       // Other subviews
       this._initialize(options);
+      window.debug.log('Discussion '+((this.model.get('name'))?this.model.get('name'):this.model.get('username'))+' rendered in '+(Date.now()-start)+'ms');
     },
 
     // To override
@@ -129,7 +131,7 @@ define([
       var eventsHeight = totalHeight - (headerHeight + inputHeight);
 
       this.eventsView.resize(eventsHeight);
-      //console.log('resize call by window ('+totalHeight+', '+headerHeight+', '+inputHeight+', '+eventsHeight+')');
+      //window.debug.log('resize call by window ('+totalHeight+', '+headerHeight+', '+inputHeight+', '+eventsHeight+')');
     },
 
     onSend: function() {

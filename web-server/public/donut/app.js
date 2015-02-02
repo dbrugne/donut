@@ -2,17 +2,18 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'libs/debug',
   'router',
   'models/client',
   'views/main'
-], function ($, _, Backbone, router, client, mainView) {
+], function ($, _, Backbone, debug, router, client, mainView) {
   var App = {
     initialize: function() {
       // Render IHM
       mainView.run();
 
-      // Give some object to global scope to allow other context to use it
       // @debug
+      window.debug  = debug;
       window.router = router;
       window.client = client;
       window.main   = mainView;

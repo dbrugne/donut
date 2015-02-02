@@ -121,7 +121,7 @@ define([
         // check length (max)
         var withoutMentions = message.replace(/@\[([^\]]+)\]\(user:[^\)]+\)/gi, '$1');
         if (withoutMentions.length > 512) {
-          console.log('message is too long');
+          window.debug.log('message is too long');
           return false;
         }
 
@@ -178,10 +178,10 @@ define([
           if (err) {
             if (err.message && err.message == 'User closed widget')
               return;
-            console.log('cloudinary error: ', err);
+            window.debug.log('cloudinary error: ', err);
           }
           if (!result)
-            return console.log('cloudinary result is empty!');
+            return window.debug.log('cloudinary result is empty!');
 
           _.each(result, function(uploaded) {
             // render preview

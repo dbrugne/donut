@@ -169,6 +169,7 @@ define([
      * @param data
      */
     onWelcome: function(data) {
+      var start = Date.now();
       var that = this;
 
       // Welcome message (only on first connection)
@@ -176,31 +177,33 @@ define([
         $('#welcome').on('hide.bs.modal', function (e) {
           if (data.user.welcome == true
             && $(e.currentTarget).find(".checkbox input[type='checkbox']").prop('checked') === true) {
-            client.userUpdate({welcome: false}, function(data) { console.log('user preference saved: ', data); });
+            client.userUpdate({welcome: false}, function(data) { window.debug.log('user preference saved: ', data); });
           }
         });
         $('#welcome').modal({});
       }
 
       // Hello message
-      if (data.hello){
+      if (data.hello) {
         this.currentUserView.hello = data.hello; // will be rendered on currentUser data change
       }
 
       // Current user data (should be done before onetoone logic)
       currentUser.set(data.user);
 
+      var durationBefore = Date.now() - start;
+
       // Rooms
       _.each(data.rooms, function(room) {
         rooms.addModel(room, !that.firstConnection);
       });
-      rooms.trigger('redraw');
+      var durationRooms = Date.now() - start - durationBefore;
 
       // One to ones
       _.each(data.onetoones, function(one) {
         onetoones.addModel(one, !that.firstConnection);
       });
-      onetoones.trigger('redraw');
+      var durationOnes = Date.now() - start - durationRooms;
 
       // first connection indicator
       if (this.firstConnection)
@@ -208,6 +211,7 @@ define([
 
       // Run routing only when everything in interface is ready
       this.trigger('ready');
+      window.debug.log('welcome done in '+(Date.now()-start)+'ms ('+durationBefore+','+durationRooms+','+durationOnes+')');
     },
 
     /**

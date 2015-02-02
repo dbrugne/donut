@@ -32,6 +32,7 @@ define([
     keepMaxEventsOnCleanup: 500,
 
     initialize: function(options) {
+      var start = Date.now();
       this.listenTo(this.model, 'freshEvent', this.addFreshEvent);
       this.listenTo(this.model, 'historyEvents', this.onHistoryEvents);
       this.listenTo(this.model, 'reconnectEvents', this.onReconnectEvents);
@@ -41,6 +42,7 @@ define([
       var that = this;
       _.defer(function() { // => Uncaught TypeError: Cannot read property '0' of null
         that.render();
+        window.debug.log('Discussion events view '+((that.model.get('name'))?that.model.get('name'):that.model.get('username'))+' rendered in '+(Date.now()-start)+'ms');
       });
 
       // recurent tasks
@@ -62,17 +64,13 @@ define([
     },
     _stop: function(num) {
       var _duration = Date.now() - this.start;
-      this.debug(num+' event(s) rendered in '+this._id()+' ('+_duration+'ms)');
+      window.debug.log(num+' event(s) rendered in '+this._id()+' ('+_duration+'ms)');
       this.start = 0;
     },
     _remove: function() {
       clearInterval(this.interval);
       this.$el.mCustomScrollbar('destroy');
       this.remove();
-    },
-    debug: function(message) {
-      // @todo TEMP TEMP TEMP
-      //return console.log('[events='+this._id()+'] '+message);
     },
     render: function() {
       // render view
@@ -141,7 +139,7 @@ define([
       var rl = this.$realtime.find('.block').length;
 
       if ((hl + rl) < 250) // not enough content, no need to cleanup
-        return this.debug('cleanup '+this._id()+ ' not enough event to cleanup: '+(hl + rl));
+        return window.debug.log('cleanup '+this._id()+ ' not enough event to cleanup: '+(hl + rl));
 
       // @todo : only when a certain amount of content OR when history is not visible on scroll position
 
@@ -157,7 +155,8 @@ define([
       if (remove > 0)
         this.$realtime.find('.block').slice(0, remove).remove();
 
-      this.debug('cleanup discussion "'+this._id()+'", with '+length+' length, '+remove+' removed');
+      window.debug.log('cleanup discussion "'+this._id()+'", with '+length+' length, '+remove+' removed');
+      window.debug.log('cleanup discussion "'+this._id()+'", with '+length+' length, '+remove+' removed');
 
       if (this.model.get('focused'))
         this.scrollDown();
@@ -168,7 +167,7 @@ define([
 
       // Update all .moment of the discussion panel
       this.$realtime.find('.moment').slice(this.keepMaxEventsOnCleanup*-1).momentify();
-      this.debug('moment updated');
+      window.debug.log('moment updated');
       // @todo : find a better logic than .slice() to scope elements
     },
     scrollDown: function() {
@@ -202,7 +201,7 @@ define([
           blankHeight = heigth - currentContentHeight;
 
         this.$blank.height(blankHeight);
-        //console.log('blank', blankHeight);
+        //window.debug.log('blank', blankHeight);
       }
       this.scrollDown();
     },
@@ -355,8 +354,8 @@ define([
       try {
         return this.eventTemplate(data);
       } catch (e) {
-        this.debug('Render exception, see below');
-        this.debug(e);
+        window.debug.log('Render exception, see below');
+        window.debug.log(e);
         return false;
       }
     },
@@ -430,18 +429,18 @@ define([
         ? firstEvent.data.time
         : false;
 
-      this.debug('last in dom: '+lastEventTs+' <?> '+firstEventTs+' first received ('+(lastEventTs<firstEventTs)+')');
+      window.debug.log('last in dom: '+lastEventTs+' <?> '+firstEventTs+' first received ('+(lastEventTs<firstEventTs)+')');
 
       // need to filter events (last element in DOM is more ancient that first element in history
       var filtered;
-      this.debug('reconnect '+history.history.length);
+      window.debug.log('reconnect '+history.history.length);
       // no need to filter
       if (firstEventTs === false || lastEventTs === false || lastEventTs < firstEventTs) {
-        this.debug('no need to filter');
+        window.debug.log('no need to filter');
         filtered = history.history;
       } else {
         // only events greater than last element timestamp
-        this.debug('filter the list');
+        window.debug.log('filter the list');
         filtered = _.filter(history.history, function(event) {
           if (event.data.time > lastEventTs)
             return true;
@@ -449,7 +448,7 @@ define([
             return false;
         });
       }
-      this.debug('reconnect '+filtered.length);
+      window.debug.log('reconnect '+filtered.length);
 
       this.addBatchEvents(filtered, history.more, 'reconnect');
       this.model.set('reconnectHistory', null);

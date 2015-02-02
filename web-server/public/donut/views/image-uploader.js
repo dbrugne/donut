@@ -66,12 +66,12 @@ define([
             if (err.message && err.message == 'User closed widget')
               return;
 
-            console.log('cloudinary error: ', err);
+            window.debug.log('cloudinary error: ', err);
             that.options.error = err.message;
             return that.render();
           }
           if (!result || !result[0])
-            return console.log('cloudinary result is empty!!');
+            return window.debug.log('cloudinary result is empty!!');
 
           that.data = {
             public_id: result[0].public_id,

@@ -294,16 +294,15 @@ define([
       return new F();
     };
   }
-  var debug = function(message) {
-    console.log(message); // @debug
-  };
   var pomelo = Object.create(EventEmitter.prototype); // object extend from object
   var socket = null;
   var id = 1;
   var callbacks = {};
   pomelo.currentConnector = ''; // store the current connector URL on which this client is connected
+  var start;
 
   pomelo.connect = function(host, port) {
+    start = Date.now();
     if (pomelo.isConnected())
       pomelo.disconnect();
 
@@ -316,6 +315,8 @@ define([
   };
 
   pomelo.connectToConnector = function(server) {
+    var durationConnect = Date.now() - start;
+    start = Date.now();
     pomelo.init({
       host: server.host,
       port: server.port
@@ -323,10 +324,11 @@ define([
       pomelo.request('connector.entryHandler.enter', {
       }, function (data) {
         if (data.error)
-          return debug(["connector.entryHandler.enter returns error", data]);
+          return window.debug.log("connector.entryHandler.enter returns error", data);
 
         pomelo.currentConnector = 'ws://'+server.host+':'+server.port;
-        debug("connected to "+pomelo.currentConnector);
+        var durationEntry = Date.now() - start;
+        window.debug.log("connected to "+pomelo.currentConnector+" (connection "+durationConnect+"ms, entryHandler "+durationEntry+"ms)");
 
         pomelo.emit('welcome', data);
       });
@@ -362,7 +364,6 @@ define([
     socket.on('connect', function () {
       pomelo.emit('sioEvent', {
         event: 'connected'
-        //debug: 'socket connected'
       });
 
       if (callback)

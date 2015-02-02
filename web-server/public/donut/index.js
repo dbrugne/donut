@@ -4,7 +4,7 @@ require.config({
     'bootstrap'                   : '../vendor/bootstrap/dist/js/bootstrap',
     'text'                        : '../vendor/requirejs-text/text',
     'socket.io'                   : '/socket.io',
-    'pomelo'                      : './pomelo',
+    'pomelo'                      : './libs/pomelo',
     'underscore'                  : '../vendor/underscore-amd/underscore',
     'backbone'                    : '../vendor/backbone-amd/backbone',
     'i18next'                     : '../vendor/i18next/i18next.amd.withJQuery',
@@ -79,20 +79,7 @@ require([
   'bootstrap',
   'moment-fr',
   'underscore.template-helpers'
-], function (app, $, _, Backbone, i18next, facebook, moment, io) {
-
-  // @debug
-  window.debugOn = function() {
-    console.log('debug mode set to on');
-    var d = new Date();
-    d.setTime(d.getTime() + (365*24*60*60*1000));
-    var expires = "expires="+d.toUTCString();
-    document.cookie = "donut.debug=true; " + expires;
-  };
-  window.debugOff = function() {
-    console.log('debug mode set to off');
-    document.cookie = "donut.debug=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
-  };
+], function (app, $, _, Backbone, i18next, facebook, moment) {
 
   // i18n setup
   window.i18next = i18next;
@@ -154,12 +141,12 @@ require([
 
   // Facebook setup
   try {
-    facebook.init({
-      appId: window.facebook_app_id,
-      version: 'v2.1',
-      status: true,
-      xfbml: false
-    });
+    //facebook.init({
+    //  appId: window.facebook_app_id,
+    //  version: 'v2.1',
+    //  status: true,
+    //  xfbml: false
+    //});
   } catch (e) {
     console.log(e);
     return false;
