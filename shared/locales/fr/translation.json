@@ -282,6 +282,7 @@
     },
     "logged": {
         "title": "Déjà connecté",
+        "hello": "Bonjour",
         "text": "Vous êtes déjà connecté, cliquez ici pour accéder au ",
         "text2": "Vous pouvez également vous "
     },
