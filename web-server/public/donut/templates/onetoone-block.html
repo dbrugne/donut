@@ -1,5 +1,4 @@
 <% if (list.length > 0) { %>
-<hr>
 <div class="list">
     <% _.each(list, function(one) { %>
     <a href="#user/<%= one.username %>" class="item <% if (one.focused) { %>active<% }; %> <% if (one.unread > 0) {%>unread<%}; %>" data-username="<%= one.username %>">
@@ -7,8 +6,8 @@
         <% if (one.unread > 0) { %>
         <span class="unread"><%= one.unread %></span>
         <% }; %>
-        <span class="name">@<%= one.username %></span>
-        <img src="/images/close.svg" class="close-onetoone" data-username="<%= one.username %>" alt="close" title="Close this discussion">
+        <span class="name"><span>@</span><%= one.username %></span>
+        <i class="fa fa-times-circle-o close-onetoone" data-username="<%= one.username %>" title="Close this discussion"></i>
     </a>
     <% }); %>
 </div>

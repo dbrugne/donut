@@ -6,11 +6,8 @@
         <% if (room.unread > 0) { %>
         <span class="unread"><%= room.unread %></span>
         <% }; %>
-        <span class="name"><%= room.name %></span>
-        <span class="badge">
-            <span class="users-count"><span class="count"><%= room.count %></span> <img src="/images/user-g.svg" alt="user icon"></span>
-        </span>
-        <img src="/images/close.svg" class="close-room" data-name="<%= room.name %>" alt="close" title="Close this discussion">
+        <span class="name"><span>#</span><%= room.name.replace('#', '') %></span>
+        <i class="fa fa-times-circle-o close-room" data-name="<%= room.name %>" title="Close this discussion"></i>
     </a>
     <% }); %>
 </div>

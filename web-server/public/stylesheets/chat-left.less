@@ -58,6 +58,29 @@
   }
 }
 
+#block-actions {
+  // @todo : skin add and search link
+  // @todo : remove user count on tab
+  text-align: center;
+  color: @cl-subtext2;
+  i.fa-plus-circle {
+    margin-right: 5px;
+    font-size: 1.6em;
+   }
+  i.fa-search {
+    margin-left: 5px;
+    font-size: 1.6em;
+  }
+  a {
+    text-decoration: underline;
+    color: @cl-subtext3;
+    cursor: pointer;
+    &:hover {
+      text-decoration: none;
+    }
+  }
+}
+
 #block-search {
   position: relative;
   padding: 0 10px;
@@ -137,18 +160,15 @@
         overflow: hidden;
         width: 140px;
         display: inline-block;
-        margin-left: 24px;
-        padding-top: 3px;
-      }
-      .badge {
-        position: absolute;
-        top: 9px; right: 32px;
-        background-color: @cl-background;
-        padding: 7px 10px;
-        -webkit-border-radius: 20px;
-        -moz-border-radius: 20px;
-        border-radius: 20px;
-        color: @cl-subtext3;
+        margin-left: 27px;
+        font-size: 12px;
+        font-weight: 600;
+        color: @cl-subtext5;
+        > span {
+          font-weight: bold;
+          font-size: 14px;
+          padding-right: 1px;
+        }
       }
       .unread {
         position: absolute;
@@ -164,11 +184,20 @@
         -moz-border-radius: 10px;
         border-radius: 10px;
       }
-      img.close-room, img.close-onetoone {
+//      img.close-room, img.close-onetoone {
+//        position: absolute;
+//        top: 14px; right: 10px;
+//        width: 15px;
+//        height: 15px;
+//      }
+      .close-room, .close-onetoone {
+        font-size: 1.8em;
+        color: @cl-subtext2;
         position: absolute;
         top: 14px; right: 10px;
-        width: 15px;
-        height: 15px;
+        &:hover {
+          color: @cl-subtext2;
+        }
       }
     }
 
