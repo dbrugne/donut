@@ -35,7 +35,7 @@ define([
         //handle: 'h2', // restrict drag start to the specified element
         forcePlaceholderSize: true, // if true, forces the placeholder to have a height
         //connectWith: '.connected', // create connected lists
-        placeholder : '<div style="background-color: #00d6b2; text-align: center; font-size: 1.5em; font-style: italic; font-weight: bold;">&nbsp;ici</div>' // specify the markup of the placeholder
+        placeholder : '<div class="placeholder">'+ $.t('chat.placeholder')+'</div>'
       });
 
       var that = this;

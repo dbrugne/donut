@@ -27,15 +27,10 @@
         <div class="row">
             <div id="left">
                 <div id="block-current-user"></div>
-                <hr>
-                <div>
-                    <div id="block-actions">
-                        <p>
-                            You can <a class="go-to-search">search for something</a>
-                            <br>
-                            or <a class="open-create-room">create a new room</a>.
-                        </p>
-                    </div>
+                <div id="block-actions">
+                    <a class="go-to-search"><i class="fa fa-search"></i> {{#i}}global.search{{/i}}</a>
+                    &nbsp;
+                    <a class="open-create-room"><i class="fa fa-plus-circle"></i> {{#i}}chat.createadonut{{/i}}</a>
                 </div>
                 <hr>
                 <div id="block-discussions"><!--discussions content--></div>

@@ -63,6 +63,7 @@
     "online": "online",
     "offline": "offline",
     "permalink": "permalink",
+    "search": "search",
     "by": "by",
     "footer": {
       "before": "Would you like to",
@@ -303,6 +304,8 @@
       "submit": "Create"
     },
     "help": "Help",
+    "placeholder": "Place here",
+    "createadonut": "Create a donut",
     "home": {
       "roomstitle": "Here are the existing donuts, you can also <a class='open-create-room'>create one</a>:",
       "userstitle": "Users"

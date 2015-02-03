@@ -63,6 +63,7 @@
         "online": "en ligne",
         "offline": "hors ligne",
         "permalink": "permalien",
+        "search": "Recherche",
         "by": "par",
         "footer": {
             "before": "Vous souhaitez vous",
@@ -324,6 +325,8 @@
           "submit": "Créer le donut"
       },
       "help": "Aide",
+      "placeholder": "Déplacer ici",
+      "createadonut": "Nouveau",
       "home": {
         "roomstitle": "Voici les donuts existants, vous pouvez également en <a class='open-create-room'>créer un</a> :",
         "userstitle": "Utilisateurs"

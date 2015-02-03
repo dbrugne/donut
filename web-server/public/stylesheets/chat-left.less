@@ -1,4 +1,9 @@
+hr {
+  margin-bottom: 13px;
+}
+
 #block-current-user {
+  .clearfix;
   padding: 12px 8px 6px 18px;
   position: relative;
   min-height: 88px;
@@ -59,78 +64,23 @@
 }
 
 #block-actions {
-  // @todo : skin add and search link
-  // @todo : remove user count on tab
   text-align: center;
   color: @cl-subtext2;
-  i.fa-plus-circle {
-    margin-right: 5px;
-    font-size: 1.6em;
-   }
-  i.fa-search {
-    margin-left: 5px;
-    font-size: 1.6em;
-  }
+  margin-top: 5px;
   a {
-    text-decoration: underline;
+    .btn;
+    .btn-default;
+    .btn-xs;
+    background-color: transparent;
+    text-decoration: none;
     color: @cl-subtext3;
     cursor: pointer;
     &:hover {
       text-decoration: none;
     }
-  }
-}
-
-#block-search {
-  position: relative;
-  padding: 0 10px;
-  input[type=text] {
-    width: 100%;
-    border: 1px solid #ffffff;
-    -webkit-border-radius: 25px;
-    -moz-border-radius: 25px;
-    border-radius: 25px;
-    padding: 6px 30px 6px 15px;
-    .ft-opensans;
-    color: @cl-subtext3;
-    outline: none; /* avoid Google Chrome blue outline on focused input */
-  }
-  input[type=text]:focus {
-  }
-  i {
-    position: absolute;
-    top: 6px; right: 21px;
-    font-size: 17px;
-    color: @cl-subtext3;
-  }
-  &:hover {
-    i {
-      color: @cl-first;
+    i.fa-plus-circle {
     }
-  }
-}
-#block-create {
-  text-align: center;
-  margin-top: 10px;
-  padding: 0 10px;
-  a {
-    display: block;
-    color: @cl-subtext3;
-    font-size: 1.0em;
-    text-transform: uppercase;
-    font-weight: bold;
-    padding: 6px 7px;
-    -webkit-border-radius: 25px;
-    -moz-border-radius: 25px;
-    border-radius: 25px;
-    .logic {
-      text-transform: lowercase;
-      font-size: 0.9em;
-    }
-    &:hover {
-      text-decoration: none;
-      color: @cl-background;
-      background-color: @cl-first;
+    i.fa-search {
     }
   }
 }
@@ -142,7 +92,7 @@
   height: -o-calc(~'100%' - 162px);
   height: calc(~'100%' - 162px);
   .list {
-    a.item {
+    .item {
       display: block;
       position: relative;
       padding: 8px 18px 6px;//12px 18px 10px;
@@ -192,21 +142,25 @@
           color: @cl-subtext2;
         }
       }
-    }
-
-    .item:hover {
-      text-decoration: none;
-      span.name {
-        color: @cl-subtext5;
+      &:hover {
+        text-decoration: none;
+        span.name {
+          color: @cl-subtext5;
+        }
+      }
+      &.active,
+      &.active:hover,
+      &.active:focus {
+        background-color: @cl-background;
       }
     }
-    .item.active,
-    .item.active:hover,
-    .item.active:focus {
-      background-color: @cl-background;
-      .badge {
-        background-color: @cl-subtext1;
-      }
+    .placeholder {
+      .ft-opensans-bold-italic;
+      background-color: @cl-subtext2;
+      color: @cl-subtext5;
+      text-align: center;
+      font-size: 1.2em;
+      padding: 8px 8px 0;
     }
   }
 }
