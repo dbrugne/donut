@@ -43,7 +43,8 @@ module.exports = function(grunt) {
             'jquery.momentify'            : '../javascripts/plugins/jquery.momentify',
             'jquery.colorify'             : '../javascripts/plugins/jquery.colorify',
             'jquery.mentionsinput'        : '../javascripts/plugins/jquery.mentionsInput',
-            'underscore.template-helpers' : '../javascripts/plugins/underscore.template-helpers'
+            'underscore.template-helpers' : '../javascripts/plugins/underscore.template-helpers',
+            'html.sortable'               : '../vendor/html.sortable/dist/html.sortable'
           }
         }
       }
