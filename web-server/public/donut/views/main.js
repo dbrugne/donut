@@ -21,8 +21,7 @@ define([
   'views/drawer-user-account',
   'views/room',
   'views/onetoone',
-  'views/room-block',
-  'views/onetoone-block'
+  'views/discussions-block'
 ], function ($, _, Backbone, client, currentUser, rooms, onetoones, windowView,
              CurrentUserView, AlertView, HomeView, QuickSearchView,
              DrawerView,
@@ -30,7 +29,7 @@ define([
              DrawerRoomDeleteView,
              DrawerUserProfileView, DrawerUserEditView, DrawerUserAccountView,
              RoomView, OneToOneView,
-             RoomBlockView, OnetooneBlockView) {
+             DiscussionsBlockView) {
 
   var MainView = Backbone.View.extend({
 
@@ -109,15 +108,16 @@ define([
     run: function() {
       // generate and attach subviews
       this.currentUserView = new CurrentUserView({model: currentUser});
-      this.roomBlockView = new RoomBlockView({collection: rooms});
-      this.onetooneBlockView = new OnetooneBlockView({collection: onetoones});
+      this.discussionsBlock = new DiscussionsBlockView({mainView: this});
       this.drawerView = new DrawerView({mainView: this});
       this.alertView = new AlertView({mainView: this});
       this.homeView = new HomeView({});
-      this.quickSearchView = new QuickSearchView({
-        el: this.$el.find('#block-search'),
-        mainView: this
-      });
+
+      // @todo : reuse for top navbar
+//      this.quickSearchView = new QuickSearchView({
+//        el: this.$el.find('#block-search'),
+//        mainView: this
+//      });
 
       window.rooms = rooms; // @debug
       window.onetoones = onetoones; // @debug
@@ -204,6 +204,8 @@ define([
         onetoones.addModel(one, !that.firstConnection);
       });
       var durationOnes = Date.now() - start - durationRooms;
+
+      this.discussionsBlock.redraw();
 
       // first connection indicator
       if (this.firstConnection)
@@ -410,8 +412,7 @@ define([
       this.unfocusAll();
       this.$home.show();
       windowView.setTitle();
-      this.roomBlockView.render();
-      this.onetooneBlockView.render();
+      this.discussionsBlock.redraw();
       this.color(this.defaultColor);
       Backbone.history.navigate('#'); // just change URI, not run route action
     },
@@ -465,8 +466,7 @@ define([
       // Focus the one we want
       model.set('focused', true);
       model.set('unread', 0);
-      this.roomBlockView.render();
-      this.onetooneBlockView.render();
+      this.discussionsBlock.redraw();
 
       // Change interface color
       if (model.get('color'))
