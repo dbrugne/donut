@@ -35,7 +35,7 @@ router.get('/!', function(req, res) {
   var build = '/donut/index.js'; // default to source
   if (!req.isDebug()) { // not in debug mode, try to find last build
     try {
-      var last = require('../../public/build/last'); // @todo : reload on each call
+      var last = require('../../public/build/last'); // /!\ reloaded on server restart only
       if (last.build)
         build = '/build/'+last.build;
     } catch (e) {
