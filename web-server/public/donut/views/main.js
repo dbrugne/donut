@@ -129,20 +129,21 @@ define([
     },
 
     _color: function(color) {
-      var previous = this.$el.find('#color').css('background-color');
-      var that = this;
-      this.underAnimation = true;
-      that.$el.find('#color-default').css('background-color', previous);
-      this.$el.find('#color').animate({
-        opacity: '0'
-      }, 200, function() {
-        that.$el.find('#color').css('background-color', color);
-        that.$el.find('#color').animate({
-          opacity: '1'
-        }, 200, function() {
-          // done
-        });
-      });
+      this.$el.find('#color').css('background-color', color);
+      //var previous = this.$el.find('#color').css('background-color');
+      //var that = this;
+      //this.underAnimation = true;
+      //that.$el.find('#color-default').css('background-color', previous);
+      //this.$el.find('#color').animate({
+      //  opacity: '0'
+      //}, 200, function() {
+      //  that.$el.find('#color').css('background-color', color);
+      //  that.$el.find('#color').animate({
+      //    opacity: '1'
+      //  }, 200, function() {
+      //    // done
+      //  });
+      //});
     },
 
     color: function(color, temporary, reset) {
