@@ -1,24 +1,12 @@
-<div class="list">
-    <% _.each(list, function(item) { %>
-       <% if (item.type == 'room') { %>
-        <% var uriName = item.name.replace('#', ''); %>
-        <a href="#room/<%= uriName %>" class="item <% if (item.focused) { %>active<% }; %> <% if (item.unread > 0) {%>unread<%}; %>" data-name="<%= item.name %>">
-            <img src="<%= item.avatar %>" class="avatar" alt="<%= item.name %> avatar">
-            <% if (item.unread > 0) { %>
-            <span class="unread"><%= item.unread %></span>
-            <% }; %>
-            <span class="name"><span>#</span><%= item.name.replace('#', '') %></span>
-            <i class="fa fa-times-circle-o close-room" data-name="<%= item.name %>" title="Close this discussion"></i>
-        </a>
-      <% } else { %>
-        <a href="#user/<%= item.username %>" class="item <% if (item.focused) { %>active<% }; %> <% if (item.unread > 0) {%>unread<%}; %>" data-username="<%= item.username %>">
-            <img src="<%= item.avatar %>" class="avatar" alt="<%= item.username %> avatar">
-            <% if (item.unread > 0) { %>
-            <span class="unread"><%= item.unread %></span>
-            <% }; %>
-            <span class="name"><span>@</span><%= item.username %></span>
-            <i class="fa fa-times-circle-o close-onetoone" data-username="<%= item.username %>" title="Close this discussion"></i>
-        </a>
-      <% } %>
-    <% }); %>
-</div>
+<% _.each(list, function(item) { %>
+<a href="<%= item.uri %>" class="item <% if (item.focused) { %>active<% }; %> <% if (item.unread > 0) {%>unread<%}; %>" data-type="<%= item.type %>" data-identifier="<%= item.identifier %>">
+    <img src="<%= item.avatar %>" class="avatar" alt="<%= item.identifier %> avatar">
+    <% if (item.unread > 0) { %><span class="unread"><%= item.unread %></span><% }; %>
+    <% if (item.type == 'room') { %>
+    <span class="name"><span>#</span><%= item.name.replace('#', '') %></span>
+    <% } else { %>
+    <span class="name"><span>@</span><%= item.username %></span>
+    <% } %>
+    <i class="fa fa-times-circle-o close-discussion" title="Close this discussion"></i>
+</a>
+<% }); %>

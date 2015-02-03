@@ -37,8 +37,6 @@ define([
 
     $home: $('#home'),
 
-    $account: $('#account'),
-
     $discussionsPanelsContainer: $("#center"),
 
     firstConnection: true,
@@ -50,17 +48,16 @@ define([
     currentColor: '',
 
     events: {
-      'click .go-to-search':              'focusOnSearch',
-      'click .open-create-room':          'openCreateRoom',
-      'click .open-user-edit':            'openUserEdit',
-      'click .open-user-account':         'openUserAccount',
-      'click .open-user-profile':         'openUserProfile',
-      'dblclick .dbl-open-user-profile':  'openUserProfile',
-      'click .open-room-profile':         'openRoomProfile',
-      'click .open-room-edit':            'openRoomEdit',
-      'click .open-room-delete':          'openRoomDelete',
-      'click .close-room':                'onCloseDiscussion',
-      'click .close-onetoone':            'onCloseDiscussion',
+      'click .go-to-search'             : 'focusOnSearch',
+      'click .open-create-room'         : 'openCreateRoom',
+      'click .open-user-edit'           : 'openUserEdit',
+      'click .open-user-account'        : 'openUserAccount',
+      'click .open-user-profile'        : 'openUserProfile',
+      'dblclick .dbl-open-user-profile' : 'openUserProfile',
+      'click .open-room-profile'        : 'openRoomProfile',
+      'click .open-room-edit'           : 'openRoomEdit',
+      'click .open-room-delete'         : 'openRoomDelete',
+      'click .close-discussion'         : 'onCloseDiscussion',
       'mouseenter *[data-toggle="image-popover"]': 'onEnterImage',
       'mouseleave *[data-toggle="image-popover"]': 'onLeaveImage'
     },
@@ -120,8 +117,10 @@ define([
 //        mainView: this
 //      });
 
-      window.rooms = rooms; // @debug
-      window.onetoones = onetoones; // @debug
+      // @debug
+      window.current = currentUser;
+      window.rooms = rooms;
+      window.onetoones = onetoones;
     },
 
     alert: function(type, message) {
@@ -190,7 +189,8 @@ define([
       }
 
       // Current user data (should be done before onetoone logic)
-      currentUser.set(data.user);
+      currentUser.set(data.user, {silent: true});
+      this.currentUserView.render();
 
       var durationBefore = Date.now() - start;
 
@@ -346,17 +346,18 @@ define([
     onCloseDiscussion: function(event) {
       this._handleAction(event);
 
-      var $currentTarget = $(event.currentTarget);
+      var $target = $(event.currentTarget).closest('a.item').first();
+      if (!$target)
+        return;
 
-      if ($currentTarget.hasClass('close-room')) {
-        var name = $currentTarget.data('name');
-        if (!name) return false;
-        this.closeRoom(name);
-      } else if ($currentTarget.hasClass('close-onetoone')) {
-        var username = $currentTarget.data('username');
-        if (!username) return false;
-        this.closeOne(username);
+      if ($target.data('type') == 'room') {
+        this.closeRoom($target.data('identifier'));
+      } else {
+        this.closeOne($target.data('identifier'));
       }
+
+      this.discussionsBlock.redraw();
+      this.persistPositions(true);
 
       return false; // stop propagation
     },
@@ -389,6 +390,23 @@ define([
       // Focus default
       if (focused)
         this.focusHome();
+    },
+
+    persistPositions: function(silent) {
+      silent = silent | false;
+
+      var positions = [];
+      this.discussionsBlock.$list.find('a.item').each(function() {
+        var identifier = $(this).data('identifier');
+        if (identifier)
+          positions.push(identifier);
+      });
+
+      currentUser.set({positions: positions}, {silent: silent});
+      client.userUpdate({positions: positions}, function(data) {
+        if (data.err)
+          window.debug.log('error(s) on userUpdate call', data.errors);
+      });
     },
 
     // FOCUS TAB/PANEL MANAGEMENT

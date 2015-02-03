@@ -26,7 +26,8 @@ require.config({
     'jquery.momentify'            : '../javascripts/plugins/jquery.momentify',
     'jquery.colorify'             : '../javascripts/plugins/jquery.colorify',
     'jquery.mentionsinput'        : '../javascripts/plugins/jquery.mentionsInput',
-    'underscore.template-helpers' : '../javascripts/plugins/underscore.template-helpers'
+    'underscore.template-helpers' : '../javascripts/plugins/underscore.template-helpers',
+    'html.sortable'               : '../vendor/html.sortable/dist/html.sortable'
   },
   shim: {
     'bootstrap'                   : ['jquery'],
@@ -42,6 +43,7 @@ require.config({
     'jquery.mcs'                  : ['jquery'],
     'jquery.mousewheel'           : ['jquery'],
     'cloudinary.widget'           : ['jquery'],
+    'html.sortable'               : ['jquery'],
     'underscore.template-helpers' : ['underscore'],
     'facebook' : {
       exports: 'FB'
@@ -78,7 +80,8 @@ require([
   'jquery.mousewheel',
   'bootstrap',
   'moment-fr',
-  'underscore.template-helpers'
+  'underscore.template-helpers',
+  'html.sortable'
 ], function (app, $, _, Backbone, i18next, facebook, moment) {
 
   // i18n setup
@@ -141,12 +144,12 @@ require([
 
   // Facebook setup
   try {
-    //facebook.init({
-    //  appId: window.facebook_app_id,
-    //  version: 'v2.1',
-    //  status: true,
-    //  xfbml: false
-    //});
+    facebook.init({
+      appId: window.facebook_app_id,
+      version: 'v2.1',
+      status: true,
+      xfbml: false
+    });
   } catch (e) {
     console.log(e);
     return false;
