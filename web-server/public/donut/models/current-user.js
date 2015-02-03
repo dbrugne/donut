@@ -10,11 +10,11 @@ define([
 
     initialize: function(options) {
       var that = this;
-      this.listenTo(client, 'connecting', function() { that.set('status', 'connecting'); });
-      this.listenTo(client, 'connected',     function() { that.set('status', 'online'); });
-      this.listenTo(client, 'disconnected',    function() { that.set('status', 'offline'); });
-      this.listenTo(client, 'reconnected',     function() { that.set('status', 'online'); });
-      this.listenTo(client, 'error',      function() { that.set('status', 'error'); });
+      this.listenTo(client, 'connecting',     function() { that.set('status', 'connecting'); });
+      this.listenTo(client, 'connected',      function() { that.set('status', 'online'); });
+      this.listenTo(client, 'disconnected',   function() { that.set('status', 'offline'); });
+      this.listenTo(client, 'reconnected',    function() { that.set('status', 'online'); });
+      this.listenTo(client, 'error',          function() { that.set('status', 'error'); });
 
       if (this._getCookie('mute') == true)
         this.mute = true;
