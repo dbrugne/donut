@@ -74,12 +74,11 @@
       padding-left: 0px;
       padding-top: 18px;
     }
-    .actions {
+    .links {
       display: inline-block;
       vertical-align: top;
       height: @size-color;
       font-size: 1.1em;
-      margin-left: 25px;
       a {
         display: inline-block;
         vertical-align: top;
@@ -100,10 +99,17 @@
         &:active, &:focus, &:hover {
           text-decoration: none;
         }
+        .fa-life-ring {
+          font-size: 0.9em;
+        }
       }
-      .fa-life-ring {
-        font-size: 0.9em;
-      }
+    }
+    .links-primary {
+      margin-left: 25px;
+    }
+    .links-secondary {
+      position: absolute;
+      right: 10px;
     }
   }
 
@@ -148,10 +154,6 @@
 
   .open-room-profile, .open-user-profile, .open-room-edit, .open-user-edit, .open-create-room {
     cursor:pointer;
-  }
-
-  .ps-container .ps-scrollbar-y {
-    background-color: red;
   }
 
   #alert {

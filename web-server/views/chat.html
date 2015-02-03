@@ -14,9 +14,14 @@
                 <a href="/!#"><img src="/images/logo-onecolor.svg" alt="{{#i}}title.chat{{/i}}"></a>
             </h1>
             <div class="beta">bêta</div>
-            <div class="actions">
+            <div class="links links-primary">
                 <a href="/!#"><i class="fa fa-home"></i> Home</a>
                 <a href="/!#room/Support"><i class="fa fa-life-ring"></i> {{#i}}chat.help{{/i}}</a>
+            </div>
+            <div class="links links-secondary">
+                <a href="/faq" target="_blank"><i class="fa fa-question-circle"></i> {{#i}}page.faq.title{{/i}}</a>
+                <a href="mailto:hello@donut.me" target="_blank"><i class="fa fa-life-ring"></i> {{#i}}page.contact.title{{/i}}</a>
+                <a href="/eutc" target="_blank"><i class="fa fa-question-circle"></i> {{#i}}page.eutc.title{{/i}}</a>
             </div>
         </div>
         <div class="row">
@@ -26,21 +31,14 @@
                 <div>
                     <div id="block-actions">
                         <p>
-                            You can <a class="search">search for something</a>
+                            You can <a class="go-to-search">search for something</a>
                             <br>
-                            or <a class="open-create-room">add a new room</a>.
+                            or <a class="open-create-room">create a new room</a>.
                         </p>
                     </div>
                 </div>
                 <hr>
-                <div class="scrollable">
-                    <div id="block-discussions"></div>
-                </div>
-                <div id="block-links">
-                    <span><a href="/faq" target="_blank">{{#i}}page.faq.title{{/i}}</a></span>
-                    <span><a href="mailto:hello@donut.me" target="_blank">{{#i}}page.contact.title{{/i}}</a></span>
-                    <span><a href="/eutc" target="_blank">{{#i}}page.eutc.title{{/i}}</a></span>
-                </div>
+                <div id="block-discussions"><!--discussions content--></div>
             </div><!-- /#left -->
             <div id="center">
                 <div id="drawer">

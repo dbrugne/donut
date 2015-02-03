@@ -135,35 +135,35 @@
   }
 }
 
-.scrollable {
+#block-discussions {
   overflow: auto;
   padding-bottom: 10px;
-  height: -webkit-calc(~'100%' - 230px);
-  height: -o-calc(~'100%' - 230px);
-  height: calc(~'100%' - 230px);
-}
-
-#block-discussions {
+  height: -webkit-calc(~'100%' - 162px);
+  height: -o-calc(~'100%' - 162px);
+  height: calc(~'100%' - 162px);
   .list {
     a.item {
       display: block;
       position: relative;
-      padding: 12px 18px 10px;
+      padding: 8px 18px 6px;//12px 18px 10px;
       color: @cl-title;
       .avatar {
         position: absolute;
-        top: 12px; left: 16px;
+        top: 7px;//12px;
+        left: 16px;
         width: 22px;
         height: 22px;
       }
       .name, .username {
         overflow: hidden;
-        width: 140px;
+        white-space : nowrap;
+        width: 123px;
         display: inline-block;
         margin-left: 27px;
-        font-size: 12px;
-        font-weight: 600;
-        color: @cl-subtext5;
+        //font-size: 12px;
+        //font-weight: 600;
+        .ft-opensans-bold;
+        //color: @cl-subtext5;
         > span {
           font-weight: bold;
           font-size: 14px;
@@ -188,7 +188,8 @@
         font-size: 1.8em;
         color: @cl-subtext2;
         position: absolute;
-        top: 14px; right: 10px;
+        top: 8px;//14px;
+        right: 10px;
         &:hover {
           color: @cl-subtext2;
         }
@@ -208,30 +209,6 @@
       .badge {
         background-color: @cl-subtext1;
       }
-    }
-  }
-}
-
-#block-links {
-  position: absolute;
-  left: 0; right: 0; bottom: 0;
-  padding-bottom: 18px;
-  text-align: center;
-  color: @cl-subtext2;
-  span:before {
-    content: "• ";
-  }
-  span:first-child:before {
-    content: "";
-  }
-  span {
-    a {
-      color: @cl-subtext2;
-      text-transform: uppercase;
-      font-size: 0.9em;
-    }
-    a:hover {
-      color: @cl-subtext3;
     }
   }
 }

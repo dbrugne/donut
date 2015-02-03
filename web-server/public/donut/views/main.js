@@ -50,6 +50,7 @@ define([
     currentColor: '',
 
     events: {
+      'click .go-to-search':              'focusOnSearch',
       'click .open-create-room':          'openCreateRoom',
       'click .open-user-edit':            'openUserEdit',
       'click .open-user-account':         'openUserAccount',
@@ -392,6 +393,13 @@ define([
 
     // FOCUS TAB/PANEL MANAGEMENT
     // ======================================================================
+
+    focusOnSearch: function(event) {
+      this.focusHome(true);
+      this.homeView.searchView.$search
+          .focus();
+      this.drawerView.close();
+    },
 
     unfocusAll: function() {
       rooms.each(function(o, key, list) {
