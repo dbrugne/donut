@@ -128,6 +128,19 @@ handler.update = function(data, session, next) {
 					sanitized.welcome = welcome;
 			}
 
+			// positions
+			if (_.has(data.data, 'positions')) {
+				var welcome = validator.toBoolean(data.data.welcome);
+				if (welcome != user.welcome)
+					sanitized.welcome = welcome;
+
+				if (!_.isArray(data.data.positions)) {
+					errors.positions = 'Positions should be an array';
+				} else {
+					sanitized.positions = JSON.stringify(data.data.positions);
+				}
+			}
+
 			var errNum = Object.keys(errors).length;
 			if (errNum > 0)
 				return callback(errors); // object
@@ -202,7 +215,39 @@ handler.update = function(data, session, next) {
 			});
 		},
 
-		function broadcast(user, sanitized, callback) {
+		function broadcastUser(user, sanitized, callback) {
+			// notify only certain fields
+			var sanitizedToNotify = {};
+			var fieldToNotify = ['avatar','positions'];
+			_.each(Object.keys(sanitized), function(key) {
+				if (fieldToNotify.indexOf(key) != -1) {
+					if (key == 'avatar')
+						sanitizedToNotify[key] = user._avatar();
+					else if (key == 'positions')
+					  sanitizedToNotify[key] = JSON.parse(sanitized[key]);
+					else
+						sanitizedToNotify[key] = sanitized[key];
+				}
+			});
+
+			if (Object.keys(sanitizedToNotify).length < 1)
+				return callback(null, user, sanitized); // nothing to notify
+
+			var event = {
+				username: user.username,
+				data: sanitizedToNotify
+			};
+
+			// inform user
+			that.app.globalChannelService.pushMessage('connector', 'user:updated', event, 'user:'+user._id.toString(), {}, function(err) {
+				if (err)
+					logger.error('Error while pushing user:updated message to '+user._id.toString()+' on user:update: '+err);
+			});
+
+			return callback(null, user, sanitized);
+		},
+
+		function broadcastOthers(user, sanitized, callback) {
 			// notify only certain fields
 			var sanitizedToNotify = {};
 			var fieldToNotify = ['avatar','poster','color'];
@@ -218,7 +263,7 @@ handler.update = function(data, session, next) {
 			});
 
 			if (Object.keys(sanitizedToNotify).length < 1)
-				return callback(null, user, sanitized);
+				return callback(null, user, sanitized); // nothing to notify
 
 			var event = {
 				username: user.username,

@@ -57,6 +57,9 @@ WelcomeRemote.prototype.getMessage = function(uid, frontendId, globalCallback) {
 					welcome: welcomeMessage
 				};
 
+				if (user.positions)
+				  welcomeEvent.user.positions = JSON.parse(user.positions);
+
 				return callback(null, user);
 			});
 		},
