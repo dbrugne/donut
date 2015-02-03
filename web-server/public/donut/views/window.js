@@ -114,11 +114,14 @@ define([
       // mark current focused model as read
       var model = this._getFocusedModel();
       if (model) {
+        var unread = model.get('unread');
         model.set('unread', 0);
-        if (model.get('type') == 'room')
-          rooms.trigger('redraw');
-        else
-          onetoones.trigger('redraw');
+        if (unread > 0) { // avoid useless redraw on window refocus
+          if (model.get('type') == 'room')
+            rooms.trigger('redraw');
+          else
+            onetoones.trigger('redraw');
+        }
       }
 
       this.renderTitle();
@@ -156,8 +159,6 @@ define([
       // test if not from me (currentUser)
       if (event.get('data').username == currentUser.get('username'))
         return;
-
-      rooms.trigger('redraw');
     },
     triggerMessage: function(event, model) {
       if (event.getGenericType() != 'message')
