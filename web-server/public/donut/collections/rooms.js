@@ -9,10 +9,6 @@ define([
 ], function (_, Backbone, client, currentUser, RoomModel, UserModel, EventModel) {
   var RoomsCollection = Backbone.Collection.extend({
 
-    comparator: function(model1, model2) {
-      return model1.get('name').replace('#', '').toLowerCase()
-        .localeCompare(model2.get('name').replace('#', '').toLowerCase());
-    },
     iwhere : function(key, val){ // insencitive case search
       var matches = this.filter(function(item){
         return item.get(key).toLocaleLowerCase() === val.toLocaleLowerCase();

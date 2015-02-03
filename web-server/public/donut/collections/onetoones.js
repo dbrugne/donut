@@ -8,10 +8,6 @@ define([
 ], function (_, Backbone, client, currentUser, OneToOneModel, EventModel) {
   var OnetoonesCollection = Backbone.Collection.extend({
 
-    comparator: function(model1, model2) {
-      return model1.get('username').toLowerCase()
-        .localeCompare(model2.get('username').toLowerCase());
-    },
     iwhere : function(key, val){ // insencitive case search
       var matches = this.filter(function(item){
         return item.get(key).toLocaleLowerCase() === val.toLocaleLowerCase();
