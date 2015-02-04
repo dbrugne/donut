@@ -122,7 +122,6 @@
     z-index: 11;
     position: relative;
     padding-top: @size-color;
-    padding-bottom: 20px;
 
     @import "chat-left";
   }
@@ -132,6 +131,13 @@
     padding-top: @size-color;
     z-index: 5;
     margin-left: @size-left;
+
+    // default content (visible during connection process)
+    background-color: @cl-subtext0;
+    background-image: url('/images/logo-onecolor-gr.svg');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 60%;
 
     @import "chat-home";
 
