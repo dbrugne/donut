@@ -34,7 +34,7 @@ module.exports = function(req, res, next, roomname) {
         if (room.owner && room.owner._id) {
           room.owner.avatar = cloudinary.userAvatar(room.owner._avatar(), 80, room.owner.color);
           room.owner.url = (room.owner.username)
-            ? req.protocol + '://' + conf.fqdn + '/user/' + room.owner.username.toLocaleLowerCase()
+            ? req.protocol + '://' + conf.fqdn + '/user/' + (''+room.owner.username).toLocaleLowerCase()
             : '';
           room.owner.isOwner = true;
         }
@@ -50,7 +50,7 @@ module.exports = function(req, res, next, roomname) {
 
             op.avatar = cloudinary.userAvatar(op._avatar(), 80, op.color);
             op.url = (op.username)
-              ? req.protocol + '://' + conf.fqdn + '/user/' + op.username.toLocaleLowerCase()
+              ? req.protocol + '://' + conf.fqdn + '/user/' + (''+op.username).toLocaleLowerCase()
               : '';
             op.isOp = true;
             opIds.push(op._id.toString());
@@ -70,7 +70,7 @@ module.exports = function(req, res, next, roomname) {
 
             u.avatar = cloudinary.userAvatar(u._avatar(), 80, u.color);
             u.url = (u.username)
-              ? req.protocol + '://' + conf.fqdn + '/user/' + u.username.toLocaleLowerCase()
+              ? req.protocol + '://' + conf.fqdn + '/user/' + (''+u.username).toLocaleLowerCase()
               : '';
             usersList.push(u);
           });

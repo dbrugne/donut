@@ -95,6 +95,7 @@ userSchema.statics.validateUsername = function (username) {
  * @returns {*}
  */
 userSchema.statics.findByUsername = function (username) {
+  username = ''+username;
   var pattern = username.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
   var regexp = new RegExp('^'+pattern+'$','i');
   return this.findOne({ username: regexp });
@@ -115,6 +116,7 @@ userSchema.statics.findByUid = function (uid) {
  * @returns {Query}
  */
 userSchema.statics.retrieveUser = function (username) {
+  username = ''+username;
   var pattern = username.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
   var regexp = new RegExp('^'+pattern+'$','i');
   return this.findOne({ username: regexp })
@@ -128,6 +130,7 @@ userSchema.statics.retrieveUser = function (username) {
  * @param error
  */
 userSchema.methods.usernameAvailability = function (username, success, error) {
+  username = ''+username;
   var pattern = username.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
   var regexp = new RegExp('^'+pattern+'$','i');
   this.constructor.findOne({

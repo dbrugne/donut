@@ -37,9 +37,9 @@ module.exports = function(req, res, next, username) {
       user.poster = cloudinary.poster(user._poster(), user.color);
 
       // url
-      user.url = req.protocol + '://' + conf.fqdn + '/user/' + user.username.toLocaleLowerCase();
-      user.chat = req.protocol + '://' + conf.fqdn + '/!#user/' + user.username;
-      user.discuss = req.protocol + '://' + conf.fqdn + '/user/discuss/' + user.username;
+      user.url = req.protocol + '://' + conf.fqdn + '/user/' + (''+user.username).toLocaleLowerCase();
+      user.chat = req.protocol + '://' + conf.fqdn + '/!#user/' + (''+user.username);
+      user.discuss = req.protocol + '://' + conf.fqdn + '/user/discuss/' + (''+user.username);
 
       return callback(null, user);
 
@@ -65,7 +65,7 @@ module.exports = function(req, res, next, username) {
         _.each(rooms, function(dbroom) {
           var room = dbroom.toJSON();
           if (room.owner)
-            room.owner.url = req.protocol + '://' + conf.fqdn + '/user/' + room.owner.username.toLocaleLowerCase();
+            room.owner.url = req.protocol + '://' + conf.fqdn + '/user/' + (''+room.owner.username).toLocaleLowerCase();
 
           room.avatar = cloudinary.roomAvatar(dbroom._avatar(), 80, room.color);
           room.url = (room.name)

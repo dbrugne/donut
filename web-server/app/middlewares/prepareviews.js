@@ -11,7 +11,7 @@ module.exports = function() {
     if (req.user) {
       res.locals.user.avatar = cloudinary.userAvatar(req.user._avatar(), 80);
       if (req.user.username)
-        res.locals.user.url = req.protocol + '://' + conf.fqdn + '/user/' + req.user.username.toLocaleLowerCase();
+        res.locals.user.url = req.protocol + '://' + conf.fqdn + '/user/' + (''+req.user.username).toLocaleLowerCase();
     }
 
     // pass flash messages to all views
