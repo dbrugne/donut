@@ -263,7 +263,9 @@
   "logged": {
     "title": "Already logged in",
     "hello": "Hello",
-    "text": "You are already logged in, click below to chat, view your public profile or logout:"
+    "text": "You are already logged in, enter in DONUT :",
+    "chat": "Discuss",
+    "logout": "Logout"
   },
   "profile": {
     "room": {
@@ -565,7 +567,7 @@
       "html": [
         "You are receiving this e-mail as the final confirmation of your password change. Let's go back to DONUT.me and join tasty conversations!<br>",
         "<br>",
-        "<a href='http://__fqdn__'>Connectez-vous en cliquant ici</a><br>",
+        "<a href='http://__fqdn__'>Click here to connect</a><br>",
         "<br>",
         "The DONUT.me team<br>",
         "<br>",
@@ -586,7 +588,7 @@
       "html": [
 "You are receiving this e-mail because you requested to change the e-mail linked to yout DONUT.me account. It worked perfectly! You can use it to log in:",
         "<br>",
-        "<a href='http://__fqdn__'>Click her eto log in</a><br>",
+        "<a href='http://__fqdn__'>Click here to log in</a><br>",
         "<br>",
         "The DONUT.me team<br>",
         "<br>",

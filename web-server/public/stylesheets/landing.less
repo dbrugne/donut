@@ -130,32 +130,53 @@
       }
 
       .logged {
+        margin-top: 4em;
         padding: 45px 0;
         .ft-raleway;
         color: @cl-second;
         font-size: 1.2em;
         //text-transform: uppercase;
-        .avatar {
-          margin-bottom: 10px;
-          box-shadow: -1px 2px 5px 1px rgba(0, 0, 0, 0.7);
-        }
-        a {
-          .btn;
-          .btn-lg;
-          .ft-raleway;
-          font-size: 18px;
-          color: @cl-background;
-          border-radius: 50px;
-          &:hover, &:active , &:visited {
-            color: @cl-background;
-            text-decoration: underline;
+        .profile {
+          .avatar {
+            //box-shadow: -1px 2px 5px 1px rgba(0, 0, 0, 0.7);
+            border: 3px solid @cl-subtext0;
+            img {
+              width: 80px;
+              height: 80px;
+            }
+          }
+          p {
+            font-size: 24px;
+            font-weight: bolder;
           }
         }
-        .chat, .profile {
-          background-color: @cl-first;
-        }
-        .logout {
-          background-color: @cl-second;
+        .actions {
+          width: 220px;
+          margin: auto;
+          text-align: center;
+          .chat {
+            .ft-raleway;
+            background-color: @cl-first;
+            font-size: 16px;
+            color: @cl-background;
+            border-radius: 50px;
+            text-transform: uppercase;
+            padding: 10px 10px;
+            width: 100%;
+            text-align: center;
+            display: block;
+            &:hover, &:active , &:visited {
+              color: @cl-background;
+              text-decoration: none;
+            }
+          }
+          .logout {
+            margin-top: 5px;
+            text-align: right;
+            color: @cl-second;
+            display: block;
+            font-size: 13px;
+          }
         }
       }
 

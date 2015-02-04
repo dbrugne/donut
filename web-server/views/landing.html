@@ -30,13 +30,14 @@
             {{#logged}}
             <h2>{{#i}}logged.title{{/i}}</h2>
             <div class="logged">
-                <img class="avatar" src="{{{user.avatar}}}" alt="{{{user.username}}} avatar">
-                <p>{{#i}}logged.hello{{/i}} <strong>@{{{user.username}}}</strong>,</p>
+                <a class="profile" href="{{{user.url}}}" target="_blank">
+                    <img class="avatar" src="{{{user.avatar}}}" alt="{{{user.username}}} avatar">
+                    <p>@{{{user.username}}}</p>
+                </a>
                 <p>{{#i}}logged.text{{/i}}</p>
-                <p>
-                    <a class="chat" href="/!"><i class="fa fa-comments-o"></i> chat</a>
-                    <a class="profile" href="{{{user.url}}}" target="_blank"><i class="fa fa-user"></i> profil</a>
-                    <a class="logout" href="/logout"><i class="fa fa-sign-out"></i> {{#i}}actions.tologout{{/i}}</a>
+                <p class="actions">
+                    <a class="chat" href="/!">{{#i}}logged.chat{{/i}}</a>
+                    <a class="logout" href="/logout">{{#i}}logged.logout{{/i}}</a>
                 </p>
             </div>
             {{/logged}}

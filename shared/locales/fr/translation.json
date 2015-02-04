@@ -9,30 +9,30 @@
         "profile": "Profil de __subtitle__ - DONUT vous permet de discuter autour de vos centres d'intérêt et d'animer vos communautés !",
         "chat": "DONUT",
         "static": {
-          "faq": "Foire aux questions - DONUT",
-          "eutc": "Conditions Générales d'Utilisation - DONUT",
-          "legals": "Mentions légales - DONUT"
+            "faq": "Foire aux questions - DONUT",
+            "eutc": "Conditions Générales d'Utilisation - DONUT",
+            "legals": "Mentions légales - DONUT"
         }
     },
     "meta": {
-      "lang": "fr",
-      "locale": "fr_FR",
-      "alternate": [
-          "en_US"
-      ],
-      "sitename": "DONUT.me",
-      "landing": {
-        "title": "Chatrooms thématiques pour tout les goûts",
-        "description": "DONUT est une plateforme de chatrooms thématiques (un peu comme IRC, mais en plus simple)",
-        "keywords": "discussion,chat,chatroom,irc"
-      },
-      "profile": {
-        "title": "__subtitle__ | DONUT.me",
-        "description": {
-            "room": "Venez me rejoindre sur DONUT.me, le nouveau site de chat thématique haut en couleurs. J'y discute sur __name__ et ce serait sympa de vous y retrouver.",
-            "user": "Ceci est la page de mon profil sur DONUT.me, le nouveau site de chat thématique haut en couleurs. Ce serait sympa de vous y retrouver."
+        "lang": "fr",
+        "locale": "fr_FR",
+        "alternate": [
+            "en_US"
+        ],
+        "sitename": "DONUT.me",
+        "landing": {
+            "title": "Chatrooms thématiques pour tout les goûts",
+            "description": "DONUT est une plateforme de chatrooms thématiques (un peu comme IRC, mais en plus simple)",
+            "keywords": "discussion,chat,chatroom,irc"
+        },
+        "profile": {
+            "title": "__subtitle__ | DONUT.me",
+            "description": {
+                "room": "Venez me rejoindre sur DONUT.me, le nouveau site de chat thématique haut en couleurs. J'y discute sur __name__ et ce serait sympa de vous y retrouver.",
+                "user": "Ceci est la page de mon profil sur DONUT.me, le nouveau site de chat thématique haut en couleurs. Ce serait sympa de vous y retrouver."
+            }
         }
-      }
     },
     "baseline": "vous avez des choses à (vous) dire !",
     "actions": {
@@ -103,9 +103,9 @@
         "title": "Il est temps de choisir un nom d'utilisateur !",
         "description": "Le nom d'utilisateur sera votre identité sur DONUT. Les autres utilisateurs le verront. Il n'est pas modifiable.",
         "help": [
-          "Entre 3 et 15 caractères.<br>",
-          "Autorisés : lettres, chiffres et caractères spéciaux : <strong>-._|^</strong><br>",
-          "Interdits : espaces, accents et caractères spéciaux non listés ci-dessus.<br>"
+            "Entre 3 et 15 caractères.<br>",
+            "Autorisés : lettres, chiffres et caractères spéciaux : <strong>-._|^</strong><br>",
+            "Interdits : espaces, accents et caractères spéciaux non listés ci-dessus.<br>"
         ],
         "usernameerror": "Ce nom d'utilisateur ne respecte pas les contraintes.",
         "usernameexists": "Ce nom d'utilisateur est déjà pris par un autre utilisateur."
@@ -284,7 +284,10 @@
     "logged": {
         "title": "Déjà connecté",
         "hello": "Bonjour",
-        "text": "Vous êtes déjà connecté, cliquez ici pour discuter, voir votre profil public ou vous déconnecter :"
+        "text": "Vous êtes déjà connecté, accéder à DONUT :",
+        "chat": "Discuter",
+        "logout": "Déconnexion",
+        "tologout": "logged.tologout"
     },
     "profile": {
         "room": {
@@ -312,94 +315,93 @@
         }
     },
     "chat": {
-      "create": {
-          "info": "Attention le nom du donut ne sera plus modifiable !",
-          "label": "Créez votre donut",
-          "help": [
-            "Entre 3 et 24 caractères.<br>",
-            "Autorisés : lettres, chiffres et caractères spéciaux : <strong>-._|^</strong><br>",
-            "Interdits : espaces, accents et caractères spéciaux non listés ci-dessus.<br>"
-          ],
-          "placeholder": "Nom du donut",
-          "submit": "Créer le donut"
-      },
-      "help": "Aide",
-      "placeholder": "Déplacer ici",
-      "createadonut": "Nouveau",
-      "home": {
-        "roomstitle": "Voici les donuts existants, vous pouvez également en <a class='open-create-room'>créer un</a> :",
-        "userstitle": "Utilisateurs"
-      },
-      "search": {
-          "placeholder": "Recherchez un donut ou un utilisateur ici",
-          "noroom": "Aucun résultat de recherche",
-          "nouser": "Aucun résultat de recherche",
-          "roomstitle": "Voici les donuts correspondant à votre recherche, vous pouvez aussi en <a class='open-create-room'>créer un nouveau</a> :",
-          "userstitle": "Utilisateurs correspondants"
-      },
-      "userscount": "<strong>__count__</strong> utilisateur dans ce donut",
-      "userscount_plural": "<strong>__count__</strong> utilisateurs dans ce donut",
-      "topic": {
-          "label": "En ce moment",
-          "placeholder": "Entrez ici le sujet de la conversation, l'humeur, l'ambiance ...",
-          "default": "<span class='default'>Aucun sujet, cliquez ici pour modifier</span>"
-      },
-      "owner": {
-          "is": "Cet utilisateur est le propriétaire de ce donut"
-      },
-      "op": {
-          "is": "Cet utilisateur est modérateur de ce donut",
-          "infobox": "Faire de cet utilisateur un modérateur"
-      },
-      "deop": {
-          "infobox": "Retirer les droits de modérateur à cet utilisateur"
-      },
-      "kick": {
-          "infobox": "Expulser cet utilisateur de ce donut"
-      },
-      "notifications": {
-          "hello": "Vous entrez dans",
-          "disconnected": "Vous avez été deconnecté du serveur, veuillez patienter",
-          "reconnected": "Vous êtes reconnecté",
-          "offline": "Cet utilisateur est pour le moment hors ligne, le message ne peut donc pas être acheminé.",
-          "topic": "a changé le sujet pour",
-          "kick": "a été expulsé de ce donut par",
-          "ban": "a été banni de ce donut par",
-          "op": " a été promu modérateur par",
-          "deop": "n'est plus modérateur à la demande de",
-          "in": "est entré à",
-          "out": "est sorti à",
-          "online": "est en ligne,",
-          "offline": "n'est plus en ligne,"
-      },
-      "history": {
-          "label": "Historique ",
-          "more": "afficher plus ...",
-          "nomore": "rien de plus à afficher"
-      },
-      "shouldauthenticated": "Vous devez être identifié pour accéder aux discussions (<a href='/signup'>créer un compte</a> ou <a href='/login'>se connecter</a>)",
-      "closemessage": "Etes-vous sur de vouloir quitter, l’historique de vos conversations sera perdu ?",
-      "kickmessage": "Vous venez d'être expulsé de",
-      "deletemessage": "Le donut __name__ vient d'être supprimé pas son créateur",
-      "share": {
-          "inviteyourfriends": "Invitez vos amis à discuter sur ce donut !",
-          "title": "Venez discuter dans le donut __name__",
-          "description": "DONUT est une plateforme de chat thématique gourmande et craquante.",
-          "email": {
-            "subject": "Rejoins moi sur DONUT.me",
-            "message": "Viens discuter avec moi sur DONUT.me, je suis dans le donut __name__"
-          }
+        "create": {
+            "info": "Attention le nom du donut ne sera plus modifiable !",
+            "label": "Créez votre donut",
+            "help": [
+                "Entre 3 et 24 caractères.<br>",
+                "Autorisés : lettres, chiffres et caractères spéciaux : <strong>-._|^</strong><br>",
+                "Interdits : espaces, accents et caractères spéciaux non listés ci-dessus.<br>"
+            ],
+            "placeholder": "Nom du donut",
+            "submit": "Créer le donut"
         },
-      "welcome": {
-        "room": [
-          "Bienvenue dans <strong>__name__</strong>. Seuls les utilisateurs qui ont rejoint ce donut (listés à droite) peuvent voir la conversation. Et ce même si ils sont hors ligne pour le moment.",
-          "Postez un message pour amorcer la conversation."
-        ],
-        "onetoone": [
-          "Si <strong>__username__</strong> n'est pas en ligne les nouveaux messages lui seront remis à sa prochaine connection",
-          "Postez un message pour amorcer la conversation."
-        ]
-      }
+        "help": "Aide",
+        "placeholder": "Déplacer ici",
+        "createadonut": "Nouveau",
+        "home": {
+            "roomstitle": "Voici les donuts existants, vous pouvez également en <a class='open-create-room'>créer un</a> :",
+            "userstitle": "Utilisateurs"
+        },
+        "search": {
+            "placeholder": "Recherchez un donut ou un utilisateur ici",
+            "noroom": "Aucun résultat de recherche",
+            "nouser": "Aucun résultat de recherche",
+            "roomstitle": "Voici les donuts correspondant à votre recherche, vous pouvez aussi en <a class='open-create-room'>créer un nouveau</a> :",
+            "userstitle": "Utilisateurs correspondants"
+        },
+        "userscount": "<strong>__count__</strong> utilisateur dans ce donut",
+        "userscount_plural": "<strong>__count__</strong> utilisateurs dans ce donut",
+        "topic": {
+            "label": "En ce moment",
+            "placeholder": "Entrez ici le sujet de la conversation, l'humeur, l'ambiance ...",
+            "default": "<span class='default'>Aucun sujet, cliquez ici pour modifier</span>"
+        },
+        "owner": {
+            "is": "Cet utilisateur est le propriétaire de ce donut"
+        },
+        "op": {
+            "is": "Cet utilisateur est modérateur de ce donut",
+            "infobox": "Faire de cet utilisateur un modérateur"
+        },
+        "deop": {
+            "infobox": "Retirer les droits de modérateur à cet utilisateur"
+        },
+        "kick": {
+            "infobox": "Expulser cet utilisateur de ce donut"
+        },
+        "notifications": {
+            "hello": "Vous entrez dans",
+            "disconnected": "Vous avez été deconnecté du serveur, veuillez patienter",
+            "reconnected": "Vous êtes reconnecté",
+            "offline": "n'est plus en ligne,",
+            "topic": "a changé le sujet pour",
+            "kick": "a été expulsé de ce donut par",
+            "ban": "a été banni de ce donut par",
+            "op": " a été promu modérateur par",
+            "deop": "n'est plus modérateur à la demande de",
+            "in": "est entré à",
+            "out": "est sorti à",
+            "online": "est en ligne,"
+        },
+        "history": {
+            "label": "Historique ",
+            "more": "afficher plus ...",
+            "nomore": "rien de plus à afficher"
+        },
+        "shouldauthenticated": "Vous devez être identifié pour accéder aux discussions (<a href='/signup'>créer un compte</a> ou <a href='/login'>se connecter</a>)",
+        "closemessage": "Etes-vous sur de vouloir quitter, l’historique de vos conversations sera perdu ?",
+        "kickmessage": "Vous venez d'être expulsé de",
+        "deletemessage": "Le donut __name__ vient d'être supprimé pas son créateur",
+        "share": {
+            "inviteyourfriends": "Invitez vos amis à discuter sur ce donut !",
+            "title": "Venez discuter dans le donut __name__",
+            "description": "DONUT est une plateforme de chat thématique gourmande et craquante.",
+            "email": {
+                "subject": "Rejoins moi sur DONUT.me",
+                "message": "Viens discuter avec moi sur DONUT.me, je suis dans le donut __name__"
+            }
+        },
+        "welcome": {
+            "room": [
+                "Bienvenue dans <strong>__name__</strong>. Seuls les utilisateurs qui ont rejoint ce donut (listés à droite) peuvent voir la conversation. Et ce même si ils sont hors ligne pour le moment.",
+                "Postez un message pour amorcer la conversation."
+            ],
+            "onetoone": [
+                "Si <strong>__username__</strong> n'est pas en ligne les nouveaux messages lui seront remis à sa prochaine connection",
+                "Postez un message pour amorcer la conversation."
+            ]
+        }
     },
     "account": {
         "error": {
@@ -495,19 +497,19 @@
             "yes": "Rejoindre <strong>#donut</strong> quand vous vous connectez"
         },
         "room": {
-          "delete": {
-            "link": "Vous pouvez également supprimer ce donut <a class='open-room-delete' data-room-name=\"__name__\">en cliquant ici</a>.",
-            "title": "Supprimer",
-            "info": [
-              "Vous êtes sur le point de supprimer ce donut, cette opération est immédiate et irréversible.<br><br>",
-              "Veuillez confirmer la suppression en saissant le nom du donut (<strong>__name__</strong>) puis en cliquant sur supprimer :"
-            ],
-            "placeholder": "Saisir le nom du donut",
-            "success": "donut supprimé !",
-            "error": {
-              "permanent": "Il n'est pas possible de supprimer un donut 'permanent'"
+            "delete": {
+                "link": "Vous pouvez également supprimer ce donut <a class='open-room-delete' data-room-name=\"__name__\">en cliquant ici</a>.",
+                "title": "Supprimer",
+                "info": [
+                    "Vous êtes sur le point de supprimer ce donut, cette opération est immédiate et irréversible.<br><br>",
+                    "Veuillez confirmer la suppression en saissant le nom du donut (<strong>__name__</strong>) puis en cliquant sur supprimer :"
+                ],
+                "placeholder": "Saisir le nom du donut",
+                "success": "donut supprimé !",
+                "error": {
+                    "permanent": "Il n'est pas possible de supprimer un donut 'permanent'"
+                }
             }
-          }
         }
     },
     "page": {
@@ -620,16 +622,16 @@
         }
     },
     "welcome": {
-      "title": "Bienvenue",
-      "message": [
-        "Hello !<br>",
-        "<br>",
-        "DONUT est en phase de pré-lancement. On a encore deux-trois bricoles à ajuster mais vous pouvez déjà vous installer et faire comme chez vous. Faites venir les copains on s’occupe des donuts.<br>",
-        "<br>",
-        "On a cherché à faire les choses bien, vous savez sûrement comment les faire encore mieux alors n’hésitez pas à nous faire part de vos idées. En général on est sur <strong>#donut</strong> et on sera ravis de faire connaissance.<br>",
-        "<br>",
-        "L’équipe DONUT<br>"
-      ],
-      "donotshowagain": "Ne plus afficher ce message à l'avenir"
+        "title": "Bienvenue",
+        "message": [
+            "Hello !<br>",
+            "<br>",
+            "DONUT est en phase de pré-lancement. On a encore deux-trois bricoles à ajuster mais vous pouvez déjà vous installer et faire comme chez vous. Faites venir les copains on s’occupe des donuts.<br>",
+            "<br>",
+            "On a cherché à faire les choses bien, vous savez sûrement comment les faire encore mieux alors n’hésitez pas à nous faire part de vos idées. En général on est sur <strong>#donut</strong> et on sera ravis de faire connaissance.<br>",
+            "<br>",
+            "L’équipe DONUT<br>"
+        ],
+        "donotshowagain": "Ne plus afficher ce message à l'avenir"
     }
 }
