@@ -284,10 +284,9 @@
     "logged": {
         "title": "Déjà connecté",
         "hello": "Bonjour",
-        "text": "Vous êtes déjà connecté, accéder à DONUT :",
-        "chat": "Discuter",
-        "logout": "Déconnexion",
-        "tologout": "logged.tologout"
+        "text": "Vous êtes déjà connecté, accédez à DONUT :",
+        "chat": "Chat",
+        "logout": "Déconnexion"
     },
     "profile": {
         "room": {

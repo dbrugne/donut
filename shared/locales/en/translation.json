@@ -263,8 +263,8 @@
   "logged": {
     "title": "Already logged in",
     "hello": "Hello",
-    "text": "You are already logged in, enter in DONUT :",
-    "chat": "Discuss",
+    "text": "You are already logged in, enter DONUT:",
+    "chat": "Chat",
     "logout": "Logout"
   },
   "profile": {
