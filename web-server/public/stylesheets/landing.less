@@ -117,7 +117,6 @@
 
       background-color: rgb(255, 255, 255);
       background-color: rgba(255, 255, 255, 0.8);
-      /*background-image: url(@img-homepage-blur);*/
       background-repeat: no-repeat;
       background-position: right 100px;
 
@@ -131,12 +130,32 @@
       }
 
       .logged {
+        padding: 45px 0;
         .ft-raleway;
         color: @cl-second;
-        font-size: 1.5em;
-        text-transform:uppercase;
+        font-size: 1.2em;
+        //text-transform: uppercase;
+        .avatar {
+          margin-bottom: 10px;
+          box-shadow: -1px 2px 5px 1px rgba(0, 0, 0, 0.7);
+        }
         a {
-          .ft-raleway-heavy;
+          .btn;
+          .btn-lg;
+          .ft-raleway;
+          font-size: 18px;
+          color: @cl-background;
+          border-radius: 50px;
+          &:hover, &:active , &:visited {
+            color: @cl-background;
+            text-decoration: underline;
+          }
+        }
+        .chat, .profile {
+          background-color: @cl-first;
+        }
+        .logout {
+          background-color: @cl-second;
         }
       }
 

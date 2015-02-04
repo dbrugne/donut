@@ -263,8 +263,7 @@
   "logged": {
     "title": "Already logged in",
     "hello": "Hello",
-    "text": "You are already logged in, click here to ",
-    "text2": "You can as well "
+    "text": "You are already logged in, click below to chat, view your public profile or logout:"
   },
   "profile": {
     "room": {
