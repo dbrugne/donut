@@ -1,6 +1,8 @@
 // bootstrap
 @import "../vendor/bootstrap/less/bootstrap";
 
+.modal-backdrop { &.in { opacity: 0.5; } } // fix less .opacity() bug, web-server/public/vendor/bootstrap/less/modals.less:72
+
 // other libs
 @import "./fonts.less";
 @import "./smilify.less";
