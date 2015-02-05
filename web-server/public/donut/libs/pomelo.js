@@ -4,514 +4,247 @@ define([
   'socket.io'
 ], function (_, Backbone, io) {
 
-  /**
-   * Forked from https://github.com/gloomyzerg/pomelo-jsclient-socket.io-bower
-   */
+  // @source: https://github.com/gloomyzerg/pomelo-jsclient-socket.io-bower
 
-  /*****************************************************************************
-   * Eventemitter
-   ****************************************************************************/
-  var isArray = Array.isArray;
-  function EventEmitter() {
-  }
-  // By default EventEmitters will print a warning if more than
-  // 10 listeners are added to it. This is a useful default which
-  // helps finding memory leaks.
-  //
-  // Obviously not all Emitters should be limited to 10. This function allows
-  // that to be increased. Set to zero for unlimited.
-  var defaultMaxListeners = 10;
-  EventEmitter.prototype.setMaxListeners = function(n) {
-    if (!this._events) this._events = {};
-    this._maxListeners = n;
-  };
-  EventEmitter.prototype.emit = function() {
-    var type = arguments[0];
-    // If there is no 'error' event listener then throw.
-    if (type === 'error') {
-      if (!this._events || !this._events.error ||
-        (isArray(this._events.error) && !this._events.error.length))
-      {
-        if (this.domain) {
-          var er = arguments[1];
-          er.domain_emitter = this;
-          er.domain = this.domain;
-          er.domain_thrown = false;
-          this.domain.emit('error', er);
-          return false;
-        }
+  var pomelo = _.extend({
 
-        if (arguments[1] instanceof Error) {
-          throw arguments[1]; // Unhandled 'error' event
-        } else {
-          throw new Error("Uncaught, unspecified 'error' event.");
-        }
-        return false;
-      }
-    }
-    if (!this._events) return false;
-    var handler = this._events[type];
-    if (!handler) return false;
-    if (typeof handler == 'function') {
-      if (this.domain) {
-        this.domain.enter();
-      }
-      switch (arguments.length) {
-        // fast cases
-        case 1:
-          handler.call(this);
-          break;
-        case 2:
-          handler.call(this, arguments[1]);
-          break;
-        case 3:
-          handler.call(this, arguments[1], arguments[2]);
-          break;
-        // slower
-        default:
-          var l = arguments.length;
-          var args = new Array(l - 1);
-          for (var i = 1; i < l; i++) args[i - 1] = arguments[i];
-          handler.apply(this, args);
-      }
-      if (this.domain) {
-        this.domain.exit();
-      }
-      return true;
+    start: 0, // used for timing logging
 
-    } else if (isArray(handler)) {
-      if (this.domain) {
-        this.domain.enter();
-      }
-      var l = arguments.length;
-      var args = new Array(l - 1);
-      for (var i = 1; i < l; i++) args[i - 1] = arguments[i];
+    current: '', // store the current connector URL on which this client is connected
 
-      var listeners = handler.slice();
-      for (var i = 0, l = listeners.length; i < l; i++) {
-        listeners[i].apply(this, args);
-      }
-      if (this.domain) {
-        this.domain.exit();
-      }
-      return true;
+    socket: null, // current sio socket
 
-    } else {
-      return false;
-    }
-  };
-  EventEmitter.prototype.addListener = function(type, listener) {
-    if ('function' !== typeof listener) {
-      throw new Error('addListener only takes instances of Function');
-    }
+    callbacks: {}, // list of callbacks to run on responses
 
-    if (!this._events) this._events = {};
+    autoIncrement: 1,
 
-    // To avoid recursion in the case that type == "newListeners"! Before
-    // adding it to the listeners, first emit "newListeners".
-    this.emit('newListener', type, typeof listener.listener === 'function' ?
-      listener.listener : listener);
+    protocolHeaderLength: 5, // pomelo protocol message header size (https://github.com/NetEase/pomelo/wiki/Communication-Protocol)
 
-    if (!this._events[type]) {
-      // Optimize the case of one listener. Don't need the extra array object.
-      this._events[type] = listener;
-    } else if (isArray(this._events[type])) {
-
-      // If we've already got an array, just append.
-      this._events[type].push(listener);
-
-    } else {
-      // Adding the second element, need to change to array.
-      this._events[type] = [this._events[type], listener];
-
-    }
-
-    // Check for listener leak
-    if (isArray(this._events[type]) && !this._events[type].warned) {
-      var m;
-      if (this._maxListeners !== undefined) {
-        m = this._maxListeners;
-      } else {
-        m = defaultMaxListeners;
-      }
-
-      if (m && m > 0 && this._events[type].length > m) {
-        this._events[type].warned = true;
-        console.error('(node) warning: possible EventEmitter memory ' +
-          'leak detected. %d listeners added. ' +
-          'Use emitter.setMaxListeners() to increase limit.',
-          this._events[type].length);
-        console.trace();
-      }
-    }
-
-    return this;
-  };
-  EventEmitter.prototype.on = EventEmitter.prototype.addListener;
-  EventEmitter.prototype.once = function(type, listener) {
-    if ('function' !== typeof listener) {
-      throw new Error('.once only takes instances of Function');
-    }
-
-    var self = this;
-    function g() {
-      self.removeListener(type, g);
-      listener.apply(this, arguments);
-    };
-
-    g.listener = listener;
-    self.on(type, g);
-
-    return this;
-  };
-  EventEmitter.prototype.removeListener = function(type, listener) {
-    if ('function' !== typeof listener) {
-      throw new Error('removeListener only takes instances of Function');
-    }
-
-    // does not use listeners(), so no side effect of creating _events[type]
-    if (!this._events || !this._events[type]) return this;
-
-    var list = this._events[type];
-
-    if (isArray(list)) {
-      var position = -1;
-      for (var i = 0, length = list.length; i < length; i++) {
-        if (list[i] === listener ||
-          (list[i].listener && list[i].listener === listener))
-        {
-          position = i;
-          break;
-        }
-      }
-
-      if (position < 0) return this;
-      list.splice(position, 1);
-    } else if (list === listener ||
-      (list.listener && list.listener === listener))
-    {
-      delete this._events[type];
-    }
-
-    return this;
-  };
-  EventEmitter.prototype.removeAllListeners = function(type) {
-    if (arguments.length === 0) {
-      this._events = {};
-      return this;
-    }
-
-    var events = this._events && this._events[type];
-    if (!events) return this;
-
-    if (isArray(events)) {
-      events.splice(0);
-    } else {
-      this._events[type] = null;
-    }
-
-    return this;
-  };
-  EventEmitter.prototype.listeners = function(type) {
-    if (!this._events) this._events = {};
-    if (!this._events[type]) this._events[type] = [];
-    if (!isArray(this._events[type])) {
-      this._events[type] = [this._events[type]];
-    }
-    return this._events[type];
-  };
-
-  /*****************************************************************************
-   * Protocol
-   ****************************************************************************/
-  var Protocol = {};
-  var HEADER = 5;
-  var Message = function(id,route,body){
-    this.id = id;
-    this.route = route;
-    this.body = body;
-  };
-  /**
-   * pomelo client encode
-   * id message id;
-   * route message route
-   * msg message body
-   * socketio current support string
-   *
-   */
-  Protocol.encode = function(id,route,msg){
-    var msgStr = JSON.stringify(msg);
-    if (route.length>255) { throw new Error('route maxlength is overflow'); }
-    var byteArray = new Uint16Array(HEADER + route.length + msgStr.length);
-    var index = 0;
-    byteArray[index++] = (id>>24) & 0xFF;
-    byteArray[index++] = (id>>16) & 0xFF;
-    byteArray[index++] = (id>>8) & 0xFF;
-    byteArray[index++] = id & 0xFF;
-    byteArray[index++] = route.length & 0xFF;
-    for(var i = 0;i<route.length;i++){
-      byteArray[index++] = route.charCodeAt(i);
-    }
-    for (var i = 0; i < msgStr.length; i++) {
-      byteArray[index++] = msgStr.charCodeAt(i);
-    }
-    return bt2Str(byteArray,0,byteArray.length);
-  };
-  /**
-   * client decode
-   * msg String data
-   * return Message Object
-   */
-  Protocol.decode = function(msg){
-    var idx, len = msg.length, arr = new Array( len );
-    for ( idx = 0 ; idx < len ; ++idx ) {
-      arr[idx] = msg.charCodeAt(idx);
-    }
-    var index = 0;
-    var buf = new Uint16Array(arr);
-    var id = ((buf[index++] <<24) | (buf[index++])  << 16  |  (buf[index++]) << 8 | buf[index++]) >>>0;
-    var routeLen = buf[HEADER-1];
-    var route = bt2Str(buf,HEADER, routeLen+HEADER);
-    var body = bt2Str(buf,routeLen+HEADER,buf.length);
-    return new Message(id,route,body);
-  };
-  var bt2Str = function(byteArray,start,end) {
-    var result = "";
-    for(var i = start; i < byteArray.length && i<end; i++) {
-      result = result + String.fromCharCode(byteArray[i]);
-    };
-    return result;
-  }
-
-  /*****************************************************************************
-   * Pomelo
-   ****************************************************************************/
-
-  if (typeof Object.create !== 'function') {
-    Object.create = function (o) {
-      function F() {}
-      F.prototype = o;
-      return new F();
-    };
-  }
-  var pomelo = Object.create(EventEmitter.prototype); // object extend from object
-  var socket = null;
-  var id = 1;
-  var callbacks = {};
-  pomelo.currentConnector = ''; // store the current connector URL on which this client is connected
-  var start;
-
-  pomelo.connect = function(host, port) {
-    start = Date.now();
-    if (pomelo.isConnected())
-      pomelo.disconnect();
-
-    // in console: client.connect('chat.local', 3050)
-    var server = {
-      host: host || 'ws.'+window.location.hostname,
-      port: port || 80
-    };
-    return pomelo.connectToConnector(server);
-  };
-
-  pomelo.connectToConnector = function(server) {
-    var durationConnect = Date.now() - start;
-    start = Date.now();
-    pomelo.init({
-      host: server.host,
-      port: server.port
-    }, function () {
-      pomelo.request('connector.entryHandler.enter', {
-      }, function (data) {
-        if (data.error)
-          return window.debug.log("connector.entryHandler.enter returns error", data);
-
-        pomelo.currentConnector = 'ws://'+server.host+':'+server.port;
-        var durationEntry = Date.now() - start;
-        window.debug.log("connected to "+pomelo.currentConnector+" (connection "+durationConnect+"ms, entryHandler "+durationEntry+"ms)");
-
-        pomelo.emit('welcome', data);
+    initialize: function(options) {
+      this.settings = _.extend(options, {
+        //
       });
-    });
-  };
+    },
 
-  pomelo.init = function(params, callback){
-    pomelo.params = params;
-    var host = params.host;
-    var port = params.port;
-    var url = 'ws://'+host;
-    if(port) {
-      url +=  ':' + port;
-    }
+    /**
+     * Public API
+     */
+    connect: function(host, port) {
+      this.start = Date.now();
+      if (this.isConnected())
+        this.disconnect();
 
-    // @doc: https://github.com/Automattic/engine.io-client#methods
-    var sioOptions = {
-      //multiplex: true,
-      reconnection: true,
-      //reconnectionDelay: 1000,
-      //reconnectionDelayMax: 5000,
-      //timeout: 20000, // = between 2 heartbeat pings
-      //autoConnect: true,
-      forceNew    : true // http://stackoverflow.com/questions/24566847/socket-io-client-connect-disconnect allow me to connect() disconnect() from console
-      //query       : 'foo=bar'
-    };
-
-    socket = io(url, sioOptions);
-
-    // SOCKET.IO EVENTS
-    // ======================================================
-    var that = this;
-    socket.on('connect', function () {
-      pomelo.emit('sioEvent', {
-        event: 'connected'
-      });
-
-      if (callback)
-        return callback(socket);
-    });
-    socket.on('disconnect', function (reason) {
-      pomelo.currentConnector = '';
-      pomelo.emit('sioEvent', {
-        event: 'disconnected',
-        debug: 'socket.io-client disconnect ('+reason+')'
-      });
-    });
-    socket.on('reconnect', function (num) {
-      pomelo.emit('sioEvent', {
-        event: 'reconnected',
-        debug: 'socket.io-client successful reconnected at #'+num+' attempt'
-      });
-    });
-    socket.on('reconnect_attempt', function () {
-      pomelo.emit('sioEvent', {
-        event: 'connecting'
-      });
-    });
-    socket.on('reconnecting', function (num) {
-      pomelo.emit('sioEvent', {
-        event: 'connecting',
-        debug: 'socket.io-client try to reconnect, #'+num+' attempt'
-      });
-    });
-    socket.on('connect_timeout', function () { // fired on socket or only on manager? http://socket.io/docs/client-api/#socket
-      pomelo.emit('sioEvent', {
-        event: 'connecting',
-        debug: 'socket.io-client timeout'
-      });
-    });
-    var onError = function(err) {
-      pomelo.emit('sioEvent', {
-        event: 'error',
-        debug: 'socket.io-client error: '+err
-      });
-    };
-    socket.on('connect_error', onError); // fired on socket or only on manager? http://socket.io/docs/client-api/#socket
-    socket.on('reconnect_error', onError);
-    socket.on('reconnect_failed', onError);
-    socket.on('error', onError); // on socket
-
-    // POMELO EVENT
-    // ======================================================
-    socket.on('message', function(data){
-      if(typeof data === 'string') {
-        data = JSON.parse(data);
-      }
-      if(data instanceof Array) {
-        processMessageBatch(pomelo, data);
-      } else {
-        processMessage(pomelo, data);
-      }
-    });
-  };
-
-  pomelo.disconnect = function() {
-    if(socket) {
-      socket.disconnect();
-      socket = null;
-    }
-  };
-
-  pomelo.isConnected = function() {
-    if (socket && socket.connected == true)
-      return true;
-    else
-      return false;
-  };
-
-  pomelo.request = function(route) {
-    if(!route) {
-      return;
-    }
-    var msg = {};
-    var cb;
-    arguments = Array.prototype.slice.apply(arguments);
-    if(arguments.length === 2){
-      if(typeof arguments[1] === 'function'){
-        cb = arguments[1];
-      }else if(typeof arguments[1] === 'object'){
-        msg = arguments[1];
-      }
-    }else if(arguments.length === 3){
-      msg = arguments[1];
-      cb = arguments[2];
-    }
-    id++;
-    callbacks[id] = cb;
-    var sg = Protocol.encode(id,route,msg);
-    socket.send(sg);
-  };
-
-  pomelo.notify = function(route,msg) {
-    this.request(route, msg);
-  };
-
-  var processMessage = function(pomelo, msg) {
-    var route;
-    if(msg.id) {
-      //if have a id then find the callback function with the request
-      var cb = callbacks[msg.id];
-
-      delete callbacks[msg.id];
-
-      if(typeof cb !== 'function') {
-        // could happen for a .notify() call
+      // in console: client.connect('chat.local', 3050)
+      var server = {
+        host: host || 'ws.'+window.location.hostname,
+        port: port || 80
+      };
+      return this._connect(server);
+    },
+    disconnect: function() {
+      if (!this.socket)
         return;
+
+      this.socket.disconnect();
+      this.socket = null;
+    },
+    isConnected: function() {
+      return (this.socket && this.socket.connected === true);
+    },
+    request: function(route) {
+      if(!route)
+        return;
+
+      var msg = {};
+      var cb;
+
+      var arguments = Array.prototype.slice.apply(arguments);
+      if (arguments.length === 2) {
+        if (typeof arguments[1] === 'function') {
+          cb = arguments[1];
+        } else if (typeof arguments[1] === 'object') {
+          msg = arguments[1];
+        }
+      } else if (arguments.length === 3) {
+        msg = arguments[1];
+        cb = arguments[2];
       }
 
-      cb(msg.body);
-      return;
-    }
+      this.autoIncrement ++;
+      this.callbacks[this.autoIncrement] = cb;
+      var sg = this._encode(this.autoIncrement, route, msg);
 
-    // server push message or old format message
-    processCall(msg);
+      this.socket.send(sg);
+    },
+    notify: function(route, data) {
+      this.request(route, data);
+    },
 
-    //if no id then it should be a server push message
-    function processCall(msg) {
-      var route = msg.route;
+    /**
+     * Private API
+     */
+    _connect: function(server) {
+      var durationConnect = Date.now() - this.start;
+      this.start = Date.now();
+
+      var that = this;
+      this._sio(server, function () {
+        that.request('connector.entryHandler.enter', {
+        }, function (data) {
+          if (data.error)
+            return window.debug.log("connector.entryHandler.enter returns error", data);
+
+          var durationEntry = Date.now() - that.start;
+          window.debug.log("connected to "+that.current+" (connection "+durationConnect+"ms, entryHandler "+durationEntry+"ms)");
+
+          that.trigger('welcome', data);
+        });
+      });
+    },
+    _sio: function(server, callback) {
+
+      // @doc: https://github.com/Automattic/engine.io-client#methods
+      var options = {
+        //multiplex: true,
+        reconnection: true,
+        //reconnectionDelay: 1000,
+        //reconnectionDelayMax: 5000,
+        //timeout: 20000, // = between 2 heartbeat pings
+        //autoConnect: true,
+        forceNew    : true, // http://stackoverflow.com/questions/24566847/socket-io-client-connect-disconnect allow me to connect() disconnect() from console
+        query       : 'device=browser'
+      };
+
+      this.current = 'ws://'+server.host+':'+server.port;
+      this.socket = io(this.current, options);
+      var that = this;
+
+      this.socket.on('connect', function () { // connected
+        that.trigger('connected');
+        if (callback)
+          callback();
+      });
+      this.socket.on('disconnect',         function(reason) { that.trigger('disconnected', reason) }); // disconnected
+      this.socket.on('error',              function(err) { that.trigger('error', err) }); // connection error
+
+      // reconnect events
+      this.socket.on('reconnect',          function(num) { that.trigger('reconnect', num) }); // successful reconnection
+      this.socket.on('reconnect_attempt',  function() { that.trigger('reconnect_attempt') }); // will try a new reconnection
+      this.socket.on('reconnecting',       function(num) { that.trigger('reconnecting', num) }); // trying new reconnection
+      this.socket.on('reconnect_error',    function(err) { that.trigger('reconnect_error', err) }); // reconnection error
+      this.socket.on('reconnect_failed',   function() { that.trigger('reconnect_failed') }); // couldn’t reconnect within reconnectionAttempts
+
+      // pomelo server send exclusively 'message' events
+      this.socket.on('message', function(data) {
+        if (typeof data === 'string')
+          data = JSON.parse(data);
+        if(data instanceof Array)
+          that._messages(data);
+        else
+          that._message(data);
+      });
+    },
+    _message: function(data) {
+      // .request(), client call server and get a response
+      if (data.id) {
+        var callback = this.callbacks[data.id];
+
+        delete this.callbacks[data.id];
+
+        // .notify(), client call server and don't wait for a response
+        if (typeof callback !== 'function')
+          return;
+
+        return callback(data.body);
+      }
+
+      // .push(), server call client
+      var route = data.route;
       if(!!route) {
-        if (!!msg.body) {
-          var body = msg.body.body;
-          if (!body) {body = msg.body;}
-          pomelo.emit(route, body);
+        if (!!data.body) {
+          var body = data.body.body;
+          if (!body) {body = data.body;}
+          this.trigger(route, body);
         } else {
-          pomelo.emit(route,msg);
+          this.trigger(route, data);
         }
       } else {
-        pomelo.emit(msg.body.route,msg.body);
+        this.trigger(data.body.route, data.body);
       }
+    },
+    _messages: function(msgs) {
+      _.each(msgs, function(msg) {
+        this._message(msg);
+      }, this);
+    },
+
+    /**
+     * Encode a message for pomelo
+     *
+     * JSON object (donut) => byteArray (Pomelo) => String (socket.io)
+     *
+     * @param id
+     * @param route
+     * @param data
+     * @returns String
+     */
+    _encode: function(id, route, data) {
+      var msgStr = JSON.stringify(data);
+
+      if (route.length>255)
+        throw new Error('route maxlength is overflow');
+
+      var byteArray = new Uint16Array(this.protocolHeaderLength + route.length + msgStr.length); // need polyfill in lte IE9
+      var index = 0;
+      byteArray[index++] = (id>>24) & 0xFF;
+      byteArray[index++] = (id>>16) & 0xFF;
+      byteArray[index++] = (id>>8) & 0xFF;
+      byteArray[index++] = id & 0xFF;
+      byteArray[index++] = route.length & 0xFF;
+      for (var i = 0 ; i<route.length ; i++) {
+        byteArray[index++] = route.charCodeAt(i);
+      }
+      for (var i = 0 ; i < msgStr.length ; i++) {
+        byteArray[index++] = msgStr.charCodeAt(i);
+      }
+      return this._byteArrayToString(byteArray, 0, byteArray.length);
+    },
+
+    /**
+     * Decode a message from pomelo
+     *
+     * String (socket.io) => byteArray (Pomelo) => JSON object (donut)
+     *
+     * @param data
+     * @returns {{id: number, route: *, body: *}}
+     */
+    _decode: function (data) {
+      var idx;
+      var len = data.length;
+      var arr = new Array(len);
+      for (idx = 0 ; idx < len ; ++idx) {
+        arr[idx] = data.charCodeAt(idx);
+      }
+      var index = 0;
+      var buf = new Uint16Array(arr);
+      var id = ((buf[index++] <<24) | (buf[index++])  << 16  |  (buf[index++]) << 8 | buf[index++]) >>>0;
+      var routeLen = buf[this.protocolHeaderLength-1];
+      var route = this._byteArrayToString(buf, this.protocolHeaderLength, routeLen+this.protocolHeaderLength);
+      var body = this._byteArrayToString(buf, routeLen+this.protocolHeaderLength, buf.length);
+      return { id: id, route: route, body: body };
+    },
+
+    _byteArrayToString: function(byteArray, start, end) {
+      var result = "";
+      for (var i = start ; i < byteArray.length && i<end ; i++) {
+        result = result + String.fromCharCode(byteArray[i]);
+      }
+      return result;
     }
-  };
 
-  var processMessageBatch = function(pomelo, msgs) {
-    for(var i=0, l=msgs.length; i<l; i++) {
-      processMessage(pomelo, msgs[i]);
-    }
-  };
+  }, Backbone.Events);
 
-//  var Pomelo = Backbone.Model.extend({
-//    initialize: function(options) {
-//    },
-//  });
-
+  pomelo.initialize();
   return pomelo;
+
 });
