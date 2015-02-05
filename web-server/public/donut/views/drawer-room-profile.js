@@ -3,7 +3,7 @@ define([
   'underscore',
   'backbone',
   'facebook',
-  'models/client',
+  'client',
   'models/current-user',
   'text!templates/room-profile.html',
   'text!templates/spinner.html'

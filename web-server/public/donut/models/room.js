@@ -1,7 +1,7 @@
 define([
   'underscore',
   'backbone',
-  'models/client',
+  'client',
   'models/current-user',
   'models/user',
   'models/event',

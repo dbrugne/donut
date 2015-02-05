@@ -1,7 +1,7 @@
 define([
   'underscore',
   'backbone',
-  'models/client',
+  'client',
   'models/user'
 ], function (_, Backbone, client, UserModel) {
   var CurrentUserModel = UserModel.extend({

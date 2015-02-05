@@ -2,7 +2,7 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'models/client',
+  'client',
   'views/home-rooms',
   'views/home-users',
   'views/home-search',

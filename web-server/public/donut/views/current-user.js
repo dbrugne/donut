@@ -2,10 +2,9 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'models/client',
   'models/current-user',
   'text!templates/current-user.html'
-], function ($, _, Backbone, client, currentUser, currentUserTemplate) {
+], function ($, _, Backbone, currentUser, currentUserTemplate) {
   var CurrentUserView = Backbone.View.extend({
 
     template: _.template(currentUserTemplate),

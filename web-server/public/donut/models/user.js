@@ -2,7 +2,7 @@ define([
   'underscore',
   'backbone',
   'jquery',
-  'models/client'
+  'client'
 ], function (_, Backbone, $, client) {
   var UserModel = Backbone.Model.extend({
 
@@ -20,7 +20,7 @@ define([
     },
 
     _initialize: function(options) {
-      this.listenTo(client, 'user:updated', this.onUpdated);
+      this.listenTo(client, 'user:updated', this.onUpdated); // @todo : performance leak, should be handled by rooms and onetoones and currentUser
     },
 
     onUpdated: function(data) {

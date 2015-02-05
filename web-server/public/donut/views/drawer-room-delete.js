@@ -2,7 +2,7 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'models/client',
+  'client',
   'models/current-user',
   'text!templates/room-delete.html',
   'text!templates/spinner.html'

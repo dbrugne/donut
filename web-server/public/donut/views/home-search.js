@@ -2,7 +2,7 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'models/client'
+  'client'
 ], function ($, _, Backbone, client) {
   var SearchView = Backbone.View.extend({
 

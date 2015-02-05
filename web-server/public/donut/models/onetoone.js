@@ -1,7 +1,7 @@
 define([
   'underscore',
   'backbone',
-  'models/client',
+  'client',
   'models/event'
 ], function (_, Backbone, client, EventModel) {
   var OneToOneModel = Backbone.Model.extend({

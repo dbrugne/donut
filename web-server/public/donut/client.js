@@ -4,7 +4,8 @@ define([
   'socket.io',
   'pomelo'
 ], function (_, Backbone, io, pomelo) {
-  var ClientModel = Backbone.Model.extend({
+
+  var client = _.extend({
 
     initialize: function() {
       // received events
@@ -16,6 +17,21 @@ define([
           window.debug.log(data.debug);
         if (data.event)
           that.trigger(data.event);
+
+        if (data.event) {
+          if (data.event == 'connected')
+            console.log(data.event);
+          else if (data.event == 'connected')
+            console.log(data.event);
+          else if (data.event == 'disconnected')
+            console.log(data.event);
+          else if (data.event == 'reconnected')
+            console.log(data.event);
+          else if (data.event == 'sioEvent')
+            console.log(data.event);
+          else if (data.event == 'error')
+            console.log(data.event);
+        }
       });
       pomelo.on('welcome', function(data) {
         window.debug.log('io:in:welcome', data);
@@ -128,15 +144,15 @@ define([
       var that = this;
       window.debug.log('io:out:home', {});
       pomelo.request(
-        'chat.homeHandler.home',
-        {},
-        function(response) {
-          if (response.err)
-            return window.debug.log('io:in:home error: ', response);
+          'chat.homeHandler.home',
+          {},
+          function(response) {
+            if (response.err)
+              return window.debug.log('io:in:home error: ', response);
 
-          window.debug.log('io:in:home', response);
-          that.trigger('home', response);
-        }
+            window.debug.log('io:in:home', response);
+            that.trigger('home', response);
+          }
       );
     },
     search: function(search, searchKey, rooms, users, light) {
@@ -145,26 +161,26 @@ define([
         search: search, // string to search for
         key: searchKey, // string key that server will send in response (allow RPC-like request)
         light: (light)  // if the search should return a light version of results or not
-          ? true
-          : false,
+            ? true
+            : false,
         rooms: (rooms) // if we should search for rooms
-          ? true
-          : false,
+            ? true
+            : false,
         users: (users) // if we should search for users
-          ? true
-          : false
+            ? true
+            : false
       };
       window.debug.log('io:out:search', data);
       pomelo.request(
-        'chat.searchHandler.search',
-        data,
-        function(response) {
-          if (response.err)
-            return window.debug.log('io:in:search error: ', response);
+          'chat.searchHandler.search',
+          data,
+          function(response) {
+            if (response.err)
+              return window.debug.log('io:in:search error: ', response);
 
-          window.debug.log('io:in:search', response);
-          that.trigger('search', response);
-        }
+            window.debug.log('io:in:search', response);
+            that.trigger('search', response);
+          }
       );
     },
 
@@ -176,12 +192,12 @@ define([
       window.debug.log('io:out:room:join', data);
       var that = this;
       pomelo.request(
-        'chat.roomJoinHandler.join',
-        data,
-        function(response) {
-          if (response.err)
-            return window.debug.log('io:in:room:join error: ', response);
-        }
+          'chat.roomJoinHandler.join',
+          data,
+          function(response) {
+            if (response.err)
+              return window.debug.log('io:in:room:join error: ', response);
+          }
       );
     },
     roomLeave: function(name) {
@@ -199,12 +215,12 @@ define([
       window.debug.log('io:out:room:topic', data);
       var that = this;
       pomelo.request(
-        'chat.roomTopicHandler.topic',
-        data,
-        function(response) {
-          if (response.err)
-            return window.debug.log('io:in:room:topic error: ', response);
-        }
+          'chat.roomTopicHandler.topic',
+          data,
+          function(response) {
+            if (response.err)
+              return window.debug.log('io:in:room:topic error: ', response);
+          }
       );
     },
     roomRead: function(name, fn) {
@@ -212,15 +228,15 @@ define([
       window.debug.log('io:out:room:read', data);
       var that = this;
       pomelo.request(
-        'chat.roomReadHandler.read',
-        data,
-        function(response) {
-          if (response.err)
-            return window.debug.log('io:in:room:read error: ', response);
+          'chat.roomReadHandler.read',
+          data,
+          function(response) {
+            if (response.err)
+              return window.debug.log('io:in:room:read error: ', response);
 
-          window.debug.log('io:in:room:read', response);
-          return fn(response);
-        }
+            window.debug.log('io:in:room:read', response);
+            return fn(response);
+          }
       );
     },
     roomUpdate: function(name, fields, fn) {
@@ -228,12 +244,12 @@ define([
       window.debug.log('io:out:room:update', data);
       var that = this;
       pomelo.request(
-        'chat.roomUpdateHandler.update',
-        data,
-        function(response) {
-          window.debug.log('io:in:room:update', response);
-          return fn(response);
-        }
+          'chat.roomUpdateHandler.update',
+          data,
+          function(response) {
+            window.debug.log('io:in:room:update', response);
+            return fn(response);
+          }
       );
     },
     roomDelete: function(name) {
@@ -241,12 +257,12 @@ define([
       window.debug.log('io:out:room:delete', data);
       var that = this;
       pomelo.request(
-        'chat.roomDeleteHandler.delete',
-        data,
-        function(response) {
-          if (response.err)
-            return window.debug.log('io:in:room:delete error: ', response);
-        }
+          'chat.roomDeleteHandler.delete',
+          data,
+          function(response) {
+            if (response.err)
+              return window.debug.log('io:in:room:delete error: ', response);
+          }
       );
     },
     roomHistory: function(name, since, fn) {
@@ -254,15 +270,15 @@ define([
       window.debug.log('io:out:room:history', data);
       var that = this;
       pomelo.request(
-        'chat.roomHistoryHandler.history',
-        data,
-        function(response) {
-          if (response.err)
-            return window.debug.log('io:in:room:history error: ', response);
+          'chat.roomHistoryHandler.history',
+          data,
+          function(response) {
+            if (response.err)
+              return window.debug.log('io:in:room:history error: ', response);
 
-          window.debug.log('io:in:room:history', response);
-          return fn(response);
-        }
+            window.debug.log('io:in:room:history', response);
+            return fn(response);
+          }
       );
     },
     roomOp: function(name, username) {
@@ -270,12 +286,12 @@ define([
       window.debug.log('io:out:room:op', data);
       var that = this;
       pomelo.request(
-        'chat.roomOpHandler.op',
-        data,
-        function(response) {
-          if (response.err)
-            return window.debug.log('io:in:room:op error: ', response);
-        }
+          'chat.roomOpHandler.op',
+          data,
+          function(response) {
+            if (response.err)
+              return window.debug.log('io:in:room:op error: ', response);
+          }
       );
     },
     roomDeop: function(name, username) {
@@ -283,12 +299,12 @@ define([
       window.debug.log('io:out:room:deop', data);
       var that = this;
       pomelo.request(
-        'chat.roomDeopHandler.deop',
-        data,
-        function(response) {
-          if (response.err)
-            return window.debug.log('io:in:room:deop error: ', response);
-        }
+          'chat.roomDeopHandler.deop',
+          data,
+          function(response) {
+            if (response.err)
+              return window.debug.log('io:in:room:deop error: ', response);
+          }
       );
     },
     roomKick: function(name, username, reason) {
@@ -315,12 +331,12 @@ define([
       window.debug.log('io:out:user:join', data);
       var that = this;
       pomelo.request(
-        'chat.userJoinHandler.join',
-        data,
-        function(response) {
-          if (response.err)
-            return window.debug.log('io:in:user:join error: ', response);
-        }
+          'chat.userJoinHandler.join',
+          data,
+          function(response) {
+            if (response.err)
+              return window.debug.log('io:in:user:join error: ', response);
+          }
       );
     },
     userLeave: function(username) {
@@ -338,15 +354,15 @@ define([
       window.debug.log('io:out:user:read', data);
       var that = this;
       pomelo.request(
-        'chat.userReadHandler.read',
-        data,
-        function(response) {
-          if (response.err)
-            return window.debug.log('io:in:user:read error: ', response);
+          'chat.userReadHandler.read',
+          data,
+          function(response) {
+            if (response.err)
+              return window.debug.log('io:in:user:read error: ', response);
 
-          window.debug.log('io:in:user:read', response);
-          return fn(response);
-        }
+            window.debug.log('io:in:user:read', response);
+            return fn(response);
+          }
       );
     },
     userUpdate: function(fields, fn) {
@@ -354,12 +370,12 @@ define([
       window.debug.log('io:out:user:update', data);
       var that = this;
       pomelo.request(
-        'chat.userUpdateHandler.update',
-        data,
-        function(response) {
-          window.debug.log('io:in:user:update', response);
-          return fn(response);
-        }
+          'chat.userUpdateHandler.update',
+          data,
+          function(response) {
+            window.debug.log('io:in:user:update', response);
+            return fn(response);
+          }
       );
     },
     userHistory: function(username, since, fn) {
@@ -367,19 +383,20 @@ define([
       window.debug.log('io:out:user:history', data);
       var that = this;
       pomelo.request(
-        'chat.userHistoryHandler.history',
-        data,
-        function(response) {
-          if (response.err)
-            return window.debug.log('io:in:user:history error: ', response);
+          'chat.userHistoryHandler.history',
+          data,
+          function(response) {
+            if (response.err)
+              return window.debug.log('io:in:user:history error: ', response);
 
-          window.debug.log('io:in:user:history', response);
-          return fn(response);
-        }
+            window.debug.log('io:in:user:history', response);
+            return fn(response);
+          }
       );
     }
 
-  });
+  }, Backbone.Events);
 
-  return new ClientModel();
+  client.initialize();
+  return client;
 });

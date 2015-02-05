@@ -4,7 +4,7 @@ define([
   'backbone',
   'libs/debug',
   'router',
-  'models/client',
+  'client',
   'views/main'
 ], function ($, _, Backbone, debug, router, client, mainView) {
   var App = {
