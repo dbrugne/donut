@@ -26,7 +26,19 @@
         </div>
         <div class="row">
             <div id="left">
-                <div id="block-current-user"></div>
+                <div id="block-current-user">
+                    <div class="wait-connection">
+                        <div class="hello">
+                            Connecting <strong>@{{user.username}}</strong>
+                        </div>
+                        <div class="avatar"></div>
+                        <div class="content">
+                            <div class="actions">
+                                <a href="/logout"><i class="fa fa-power-off"></i> {{#i}}actions.logout{{/i}}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- /#block-current-user -->
                 <div id="block-actions">
                     <a class="go-to-search"><i class="fa fa-search"></i> {{#i}}global.search{{/i}}</a>
                     &nbsp;

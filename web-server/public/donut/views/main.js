@@ -109,7 +109,6 @@ define([
       this.discussionsBlock = new DiscussionsBlockView({mainView: this});
       this.drawerView = new DrawerView({mainView: this});
       this.alertView = new AlertView({mainView: this});
-      this.homeView = new HomeView({});
 
       // @todo : reuse for top navbar
 //      this.quickSearchView = new QuickSearchView({
@@ -184,12 +183,9 @@ define([
         $('#welcome').modal({});
       }
 
-      // Hello message
-      if (data.hello) {
-        this.currentUserView.hello = data.hello; // will be rendered on currentUser data change
-      }
-
       // Current user data (should be done before onetoone logic)
+      if (data.hello)
+        this.currentUserView.hello = data.hello;
       currentUser.set(data.user, {silent: true});
       this.currentUserView.render();
 
@@ -432,6 +428,10 @@ define([
 
     // called by router only
     focusHome: function(avoidReload) {
+      // init view
+      if (!this.homeView)
+        this.homeView = new HomeView({});
+
       // @todo : change pattern to render page with spinner and replace content on callback
       if (avoidReload !== true)
         client.home();

@@ -19,9 +19,9 @@ hr {
     }
   }
   .avatar {
+    .pull-left;
     position: relative;
     display: inline-block;
-    .pull-left;
     width: 60px;
     height: 60px;
     img {
@@ -52,20 +52,31 @@ hr {
     .actions {
       a {
         display: block;
-        color: @cl-subtext2;
+        color: @cl-subtext20;
         cursor: pointer;
       }
       a:hover {
-        color: @cl-subtext3;
+        color: @cl-subtext30;
         text-decoration: none;
       }
+    }
+  }
+  .wait-connection {
+    .avatar {
+      width: 60px;
+      height: 60px;
+      border: 3px solid @cl-subtext15;
+      border-radius: 2px;
+      background-image: url('/images/user-avatar-empty.png');
+      background-position: center center;
+      background-repeat: no-repeat;
     }
   }
 }
 
 #block-actions {
   text-align: center;
-  color: @cl-subtext2;
+  color: @cl-subtext20;
   margin-top: 5px;
   a {
     .btn;
@@ -73,7 +84,7 @@ hr {
     .btn-xs;
     background-color: transparent;
     text-decoration: none;
-    color: @cl-subtext3;
+    color: @cl-subtext30;
     cursor: pointer;
     &:hover {
       text-decoration: none;
@@ -139,18 +150,18 @@ hr {
       }
       .close-discussion {
         font-size: 1.8em;
-        color: @cl-subtext2;
+        color: @cl-subtext20;
         position: absolute;
         top: 8px;//14px;
         right: 10px;
         &:hover {
-          color: @cl-subtext2;
+          color: @cl-subtext20;
         }
       }
       &:hover {
         text-decoration: none;
         span.name {
-          color: @cl-subtext5;
+          color: @cl-subtext50;
         }
       }
       &.active,
@@ -161,8 +172,8 @@ hr {
     }
     .placeholder {
       .ft-opensans-bold-italic;
-      background-color: @cl-subtext2;
-      color: @cl-subtext5;
+      background-color: @cl-subtext20;
+      color: @cl-subtext50;
       text-align: center;
       font-size: 1.2em;
       padding: 8px 8px 0;
