@@ -401,7 +401,7 @@ define([
     });
     var onError = function(err) {
       pomelo.emit('sioEvent', {
-        event: 'connecting',
+        event: 'error',
         debug: 'socket.io-client error: '+err
       });
     };
