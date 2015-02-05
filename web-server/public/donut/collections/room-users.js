@@ -26,7 +26,7 @@ define([
 
       return string1.toLowerCase().localeCompare(string2.toLowerCase());
     },
-    iwhere : function(key, val){ // insencitive case search
+    iwhere : function(key, val){ // insensitive case search
       var matches = this.filter(function(item){
         return item.get(key).toLocaleLowerCase() === val.toLocaleLowerCase();
       });
@@ -41,7 +41,7 @@ define([
       this.on("change:avatar", this.onChange);
       this.on("change:poster", this.onChange);
       this.on("change:color", this.onChange);
-      this.on("change:status", this.onChange);
+      this.on("change:status", this.onChange); // @todo : same fix as model/users, reduce event propagation
     },
 
     /**

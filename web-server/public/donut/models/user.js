@@ -20,7 +20,7 @@ define([
     },
 
     _initialize: function(options) {
-      this.listenTo(client, 'user:updated', this.onUpdated); // @todo : performance leak, should be handled by rooms and onetoones and currentUser
+      //this.listenTo(client, 'user:updated', this.onUpdated); // @todo : performance leak, should be handled by rooms and onetoones and currentUser
     },
 
     onUpdated: function(data) {
