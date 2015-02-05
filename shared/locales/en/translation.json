@@ -376,6 +376,13 @@
         "If <strong>__username__</strong> isn't online he will get your messages on his next connexion",
         "Post a message to start the conversation."
       ]
+    },
+    "connection": {
+      "connected": "Connected, loading interface...",
+      "reconnected": "Reconnected on attempt #__num__, loading interface...",
+      "connecting": "Connecting to DONUT...",
+      "error": "Error while connecting, please wait...",
+      "disconnected": "Connection lost, please wait..."
     }
   },
   "account": {

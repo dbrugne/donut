@@ -83,6 +83,19 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- #welcome -->
+    <div id="connection" class="modal bs-example-modal-sm" role="dialog" aria-labelledby="welcomeMessage" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="loader">
+                        <img src="/images/loader.gif">
+                    </div>
+                    <div class="current"><!--connection message --></div>
+                    <div class="error"><!--connection error --></div>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 <script>
     window.cloudinary_cloud_name = '{{cloudinary.cloud_name}}';
     window.cloudinary_api_key = '{{cloudinary.api_key}}';

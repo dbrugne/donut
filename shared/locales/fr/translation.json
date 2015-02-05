@@ -400,6 +400,13 @@
                 "Si <strong>__username__</strong> n'est pas en ligne les nouveaux messages lui seront remis à sa prochaine connection",
                 "Postez un message pour amorcer la conversation."
             ]
+        },
+        "connection": {
+            "connected": "Connecté ! Chargement de l'interface ...",
+            "reconnected": "Reconnecté à la tentative #__num__ ! Chargement de l'interface ...",
+            "connecting": "Connexion à DONUT ...",
+            "error": "Erreur de connexion, patienter un instant ...",
+            "disconnected": "Connexion perdue, patienter un instant ..."
         }
     },
     "account": {

@@ -39,6 +39,8 @@ define([
 
     $discussionsPanelsContainer: $("#center"),
 
+    $connectionModal: $('#connection'),
+
     firstConnection: true,
 
     thisDiscussionShouldBeFocusedOnSuccess: '',
@@ -70,6 +72,57 @@ define([
       this.listenTo(onetoones, 'add', this.addOneView);
       this.listenTo(rooms, 'kicked', this.roomKicked); // @todo: nasty event
       this.listenTo(rooms, 'deleted', this.roomRoomDeleted); // @todo: nasty event
+
+      // pre-connection modal
+      this.listenTo(client, 'connecting',         function() { this.connectionModal('connecting'); }, this);
+      this.listenTo(client, 'connect',            function() { this.connectionModal('connect'); }, this);
+      this.listenTo(client, 'disconnect',         function(reason) { this.connectionModal('disconnect', reason); }, this);
+      this.listenTo(client, 'reconnect',          function(num) { this.connectionModal('reconnect', num); }, this);
+      this.listenTo(client, 'reconnect_attempt',  function() { this.connectionModal('reconnect_attempt'); }, this);
+      this.listenTo(client, 'reconnecting',       function(num) { this.connectionModal('reconnecting', num); }, this);
+      this.listenTo(client, 'reconnect_error',    function(err) { this.connectionModal('reconnect_error', err); }, this);
+      this.listenTo(client, 'reconnect_failed',   function() { this.connectionModal('reconnect_failed'); }, this);
+      this.listenTo(client, 'error',              function(err) { this.connectionModal('error', err); }, this);
+      this.$connectionModal.modal({
+        backdrop: 'static',
+        keyboard: false,
+        show: true
+      });
+    },
+
+    connectionModal: function(event, data) {
+      var $modal = this.$connectionModal;
+      var $current = this.$connectionModal.find('.current');
+      var $error = this.$connectionModal.find('.error');
+
+      // hide only by 'welcome' handler
+      switch (event) {
+        case  'connect':
+          $current.html($.t('chat.connection.connected'));
+          $error.html('').hide();
+          break;
+        case  'reconnect':
+          $current.html($.t('chat.connection.reconnected', {num: data}));
+          $error.html('').hide();
+          break;
+        case 'connecting':
+        case 'reconnecting':
+        case 'reconnect_error':
+        case 'reconnect_attempt':
+          $current.html($.t('chat.connection.connecting'));
+          $error.html(data).show();
+          break;
+        case 'error':
+        case 'reconnect_failed':
+          $current.html($.t('chat.connection.error'));
+          $error.html(data).show();
+          break;
+        case 'disconnect':
+          $current.html($.t('chat.connection.disconnected'));
+          $error.html(data).show();
+          $modal.modal('show');
+          break;
+      }
     },
 
     onEnterImage: function(event) {
@@ -160,7 +213,6 @@ define([
 
       // Only on first connection
       if (this.firstConnection) { // show if true or if undefined
-
         // Welcome message
         if (data.user.welcome !== false) {
           $('#welcome').on('hide.bs.modal', function (e) {
@@ -198,12 +250,14 @@ define([
 
       this.discussionsBlock.redraw();
 
-      // first connection indicator
-      if (this.firstConnection)
+      // only on first connection 'after' actions
+      if (this.firstConnection) {
         this.firstConnection = false;
+      }
 
       // Run routing only when everything in interface is ready
       this.trigger('ready');
+      this.$connectionModal.modal('hide');
       window.debug.log('welcome done in '+(Date.now()-start)+'ms ('+durationBefore+','+durationRooms+','+durationOnes+')');
     },
 

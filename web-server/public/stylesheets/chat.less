@@ -35,6 +35,39 @@
   }
 }
 
+#connection {
+  .modal-backdrop {
+    background-color: @cl-background;
+  }
+  .modal-dialog {
+    margin-top: 10em;
+    .modal-content {
+      .modal-body {
+        padding: 30px 10px;
+        .loader {
+          text-align: center;
+          margin-bottom: 18px;
+          img {
+            width: 25px;
+          }
+        }
+        .current {
+          text-align: center;
+          font-size: 1.3em;
+          font-style: italic;
+          color: @cl-subtext50;
+        }
+        .error {
+          display: none;
+          margin-top: 25px;
+          text-align: center;
+          color: @cl-error;
+        }
+      }
+    }
+  }
+}
+
 #chat {
   .container-fluid;
   height: 100%;
