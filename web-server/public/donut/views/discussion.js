@@ -21,7 +21,6 @@ define([
       this.mainView = options.mainView;
 
       // Events
-      this.listenTo(this.collection, 'remove', this.removeView);
       this.listenTo(this.model, 'change:focused', this.updateFocus);
       this.listenTo(this.model, 'resize', this.onResize);
 

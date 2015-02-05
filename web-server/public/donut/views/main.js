@@ -49,6 +49,8 @@ define([
 
     currentColor: '',
 
+    views: {},
+
     events: {
       'click .go-to-search'             : 'focusOnSearch',
       'click .open-create-room'         : 'openCreateRoom',
@@ -67,11 +69,11 @@ define([
     initialize: function() {
       this.defaultColor = window.room_default_color;
 
-      this.listenTo(client, 'welcome', this.onWelcome);
-      this.listenTo(rooms, 'add', this.addRoomView);
-      this.listenTo(onetoones, 'add', this.addOneView);
-      this.listenTo(rooms, 'kicked', this.roomKicked); // @todo: nasty event
-      this.listenTo(rooms, 'deleted', this.roomRoomDeleted); // @todo: nasty event
+      this.listenTo(client,     'welcome', this.onWelcome);
+      this.listenTo(rooms,      'add', this.addView);
+      this.listenTo(onetoones,  'add', this.addView);
+      this.listenTo(rooms,      'kicked', this.roomKicked);
+      this.listenTo(rooms,      'deleted', this.roomRoomDeleted);
 
       // pre-connection modal
       this.listenTo(client, 'connecting',         function() { this.connectionModal('connecting'); }, this);
@@ -359,32 +361,29 @@ define([
     // DISCUSSIONS MANAGEMENT
     // ======================================================================
 
-    addRoomView: function(model, collection, options) {
-      var view = new RoomView({
+    addView: function(model, collection, options) {
+      var constructor = (model.get('type') == 'room') ? RoomView : OneToOneView;
+
+      // create view
+      var view = new constructor({
         collection: collection,
         model:      model,
         mainView:   this
       });
+
+      // add to views list
+      this.views[model.get('id')] = view;
+
+      // append to DOM
       this.$discussionsPanelsContainer.append(view.$el);
 
-      if (this.thisDiscussionShouldBeFocusedOnSuccess == model.get('name')) {
+      var identifier = (model.get('type') == 'room') ? model.get('name') : model.get('username');
+      if (this.thisDiscussionShouldBeFocusedOnSuccess == identifier) {
         this.focus(model);
         this.thisDiscussionShouldBeFocusedOnSuccess = null;
       }
-    },
 
-    addOneView: function(model, collection, options) {
-      var view = new OneToOneView({
-        collection: collection,
-        model:      model,
-        mainView:   this
-      });
-      this.$discussionsPanelsContainer.append(view.$el);
-
-      if (this.thisDiscussionShouldBeFocusedOnSuccess == model.get('username')) {
-        this.focus(model);
-        this.thisDiscussionShouldBeFocusedOnSuccess = null;
-      }
+      this.discussionsBlock.redraw();
     },
 
     onCloseDiscussion: function(event) {
@@ -394,45 +393,38 @@ define([
       if (!$target)
         return;
 
-      if ($target.data('type') == 'room') {
-        this.closeRoom($target.data('identifier'));
-      } else {
-        this.closeOne($target.data('identifier'));
-      }
-
+      this._closeDiscussion($target.data('type'), $target.data('identifier'));
       this.discussionsBlock.redraw();
       this.persistPositions(true);
 
       return false; // stop propagation
     },
+    _closeDiscussion: function(type, identifier) {
+      var collection, model;
+      if (type == 'room') {
+        collection = rooms;
+        model = rooms.findWhere({ name: identifier });
+      } else {
+        collection = onetoones;
+        model = onetoones.findWhere({ username: identifier });
+      }
 
-    closeRoom: function(name) {
-      var model = rooms.findWhere({ name: name });
-      if (model == undefined) return;
+      if (model == undefined)
+        return window.debug.log('close discussion error: unable to find model');
 
-      var focused = model.get('focused');
+      var view = this.views[model.get('id')];
+      if (view === undefined)
+        return window.debug.log('close discussion error: unable to find view');
 
-      // Remove entity (on remove window will autodestroy)
+      var wasFocused = model.get('focused');
+
       model.leave();
-      rooms.remove(model);
+      view.removeView();
+      delete this.views[model.get('id')];
+      collection.remove(model);
 
       // Focus default
-      if (focused)
-        this.focusHome();
-    },
-
-    closeOne: function(username) {
-      var model = onetoones.findWhere({ username: username });
-      if (model == undefined) return;
-
-      var focused = model.get('focused');
-
-      // Remove entity (on remove: window will autodestroy)
-      model.leave();
-      onetoones.remove(model);
-
-      // Focus default
-      if (focused)
+      if (wasFocused)
         this.focusHome();
     },
 
