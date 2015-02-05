@@ -129,20 +129,6 @@ define([
 
     _color: function(color) {
       this.$el.find('#color').css('background-color', color);
-      //var previous = this.$el.find('#color').css('background-color');
-      //var that = this;
-      //this.underAnimation = true;
-      //that.$el.find('#color-default').css('background-color', previous);
-      //this.$el.find('#color').animate({
-      //  opacity: '0'
-      //}, 200, function() {
-      //  that.$el.find('#color').css('background-color', color);
-      //  that.$el.find('#color').animate({
-      //    opacity: '1'
-      //  }, 200, function() {
-      //    // done
-      //  });
-      //});
     },
 
     color: function(color, temporary, reset) {
@@ -172,15 +158,22 @@ define([
       var start = Date.now();
       var that = this;
 
-      // Welcome message (only on first connection)
-      if (this.firstConnection && data.user.welcome !== false) { // show if true or if undefined
-        $('#welcome').on('hide.bs.modal', function (e) {
-          if (data.user.welcome == true
-            && $(e.currentTarget).find(".checkbox input[type='checkbox']").prop('checked') === true) {
-            client.userUpdate({welcome: false}, function(data) { window.debug.log('user preference saved: ', data); });
-          }
-        });
-        $('#welcome').modal({});
+      // Only on first connection
+      if (this.firstConnection) { // show if true or if undefined
+
+        // Welcome message
+        if (data.user.welcome !== false) {
+          $('#welcome').on('hide.bs.modal', function (e) {
+            if (data.user.welcome == true
+                && $(e.currentTarget).find(".checkbox input[type='checkbox']").prop('checked') === true) {
+              client.userUpdate({welcome: false}, function(data) { window.debug.log('user preference saved: ', data); });
+            }
+          });
+          $('#welcome').modal({});
+        }
+
+        // Elements hidden until first 'welcome'
+        $('#block-discussions, #block-actions').show();
       }
 
       // Current user data (should be done before onetoone logic)
