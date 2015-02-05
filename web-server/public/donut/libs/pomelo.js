@@ -109,7 +109,7 @@ define([
         reconnection: true,
         //reconnectionDelay: 1000,
         //reconnectionDelayMax: 5000,
-        //timeout: 20000, // = between 2 heartbeat pings
+        timeout: 8000, // = between 2 heartbeat pings
         //autoConnect: true,
         forceNew    : true, // http://stackoverflow.com/questions/24566847/socket-io-client-connect-disconnect allow me to connect() disconnect() from console
         query       : 'device=browser'
