@@ -72,7 +72,7 @@ define([
       _.each(rooms.models, prepareItems);
       _.each(onetoones.models, prepareItems);
 
-      window.debug.log('render block', positions, _.map(data, function(d) { return d.identifier+' - '+ d.position; }));
+      window.debug.log('render block', positions);
 
       // sort discussions
       data = _.sortBy(data, 'position');
