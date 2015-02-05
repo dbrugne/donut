@@ -21,7 +21,7 @@ define([
     },
 
     initialize: function() {
-      this.listenTo(client, 'disconnected', this.onDisconnect);
+      this.listenTo(client, 'disconnect', this.onDisconnect);
       this.listenTo(client, 'room:in', this.onIn);
       this.listenTo(client, 'room:out', this.onOut);
       this.listenTo(client, 'room:topic', this.onTopic);

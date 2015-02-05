@@ -20,7 +20,7 @@ define([
     },
 
     initialize: function() {
-      this.listenTo(client, 'disconnected', this.onDisconnect);
+      this.listenTo(client, 'disconnect', this.onDisconnect);
       this.listenTo(client, 'user:message', this.onMessage);
       this.listenTo(client, 'user:updated', this.onUpdated);
       this.listenTo(client, 'user:online', this.onUserOnline);

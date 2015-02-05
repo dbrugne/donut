@@ -120,19 +120,19 @@ define([
       var that = this;
 
       this.socket.on('connect', function () { // connected
-        that.trigger('connected');
+        that.trigger('connect');
         if (callback)
           callback();
       });
-      this.socket.on('disconnect',         function(reason) { that.trigger('disconnected', reason) }); // disconnected
-      this.socket.on('error',              function(err) { that.trigger('error', err) }); // connection error
+      this.socket.on('disconnect',         function(reason) { that.trigger('disconnect', reason); }); // disconnected
+      this.socket.on('error',              function(err) { that.trigger('error', err); }); // connection error
 
       // reconnect events
-      this.socket.on('reconnect',          function(num) { that.trigger('reconnect', num) }); // successful reconnection
-      this.socket.on('reconnect_attempt',  function() { that.trigger('reconnect_attempt') }); // will try a new reconnection
-      this.socket.on('reconnecting',       function(num) { that.trigger('reconnecting', num) }); // trying new reconnection
-      this.socket.on('reconnect_error',    function(err) { that.trigger('reconnect_error', err) }); // reconnection error
-      this.socket.on('reconnect_failed',   function() { that.trigger('reconnect_failed') }); // couldn’t reconnect within reconnectionAttempts
+      this.socket.on('reconnect',          function(num) { that.trigger('reconnect', num); }); // successful reconnection
+      this.socket.on('reconnect_attempt',  function() { that.trigger('reconnect_attempt'); }); // will try a new reconnection
+      this.socket.on('reconnecting',       function(num) { that.trigger('reconnecting', num); }); // trying new reconnection
+      this.socket.on('reconnect_error',    function(err) { that.trigger('reconnect_error', err); }); // reconnection error
+      this.socket.on('reconnect_failed',   function() { that.trigger('reconnect_failed'); }); // couldn’t reconnect within reconnectionAttempts
 
       // pomelo server send exclusively 'message' events
       this.socket.on('message', function(data) {

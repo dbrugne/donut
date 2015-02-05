@@ -10,11 +10,15 @@ define([
 
     initialize: function(options) {
       var that = this;
-      this.listenTo(client, 'connecting',     function() { that.set('status', 'connecting'); });
-      this.listenTo(client, 'connected',      function() { that.set('status', 'online'); });
-      this.listenTo(client, 'disconnected',   function() { that.set('status', 'offline'); });
-      this.listenTo(client, 'reconnected',    function() { that.set('status', 'online'); });
-      this.listenTo(client, 'error',          function() { that.set('status', 'error'); });
+      this.listenTo(client, 'connecting',         function() { that.set('status', 'connecting'); });
+      this.listenTo(client, 'connect',            function() { that.set('status', 'online'); });
+      this.listenTo(client, 'disconnect',         function() { that.set('status', 'offline'); });
+      this.listenTo(client, 'reconnect',          function() { that.set('status', 'online'); });
+      this.listenTo(client, 'reconnect_attempt',  function() { that.set('status', 'connecting'); });
+      this.listenTo(client, 'reconnecting',       function() { that.set('status', 'connecting'); });
+      this.listenTo(client, 'reconnect_error',    function() { that.set('status', 'connecting'); });
+      this.listenTo(client, 'reconnect_failed',   function() { that.set('status', 'error'); });
+      this.listenTo(client, 'error',              function() { that.set('status', 'error'); });
 
       if (this._getCookie('mute') == true)
         this.mute = true;

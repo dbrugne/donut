@@ -8,99 +8,87 @@ define([
   var client = _.extend({
 
     initialize: function() {
-      // received events
-      var that = this;
-      pomelo.on('sioEvent', function(data) {
-        if (!data)
-          return;
-        if (data.debug)
-          window.debug.log(data.debug);
-        if (data.event)
-          that.trigger(data.event);
 
-        if (data.event) {
-          if (data.event == 'connected')
-            console.log(data.event);
-          else if (data.event == 'connected')
-            console.log(data.event);
-          else if (data.event == 'disconnected')
-            console.log(data.event);
-          else if (data.event == 'reconnected')
-            console.log(data.event);
-          else if (data.event == 'sioEvent')
-            console.log(data.event);
-          else if (data.event == 'error')
-            console.log(data.event);
-        }
-      });
+      // connection events
+      pomelo.on('connect',            function() { window.debug.log('connect'); this.trigger('connect'); }, this);
+      pomelo.on('disconnect',         function(reason) { window.debug.log('disconnect', reason); this.trigger('disconnect', reason); }, this);
+      pomelo.on('error',              function(err) { window.debug.log('error', err); this.trigger('error', err); }, this);
+
+      // reconnection events
+      pomelo.on('reconnect',          function(num) { window.debug.log('reconnect', num); this.trigger('reconnect', num); }, this)
+      pomelo.on('reconnect_attempt',  function() { window.debug.log('reconnect_attempt'); this.trigger('reconnect_attempt'); }, this);
+      pomelo.on('reconnecting',       function(num) { window.debug.log('reconnecting', num); this.trigger('reconnecting', num); }, this);
+      pomelo.on('reconnect_error',    function(err) { window.debug.log('reconnect_error', err); this.trigger('reconnect_error', err); }, this);
+      pomelo.on('reconnect_failed',   function() { window.debug.log('reconnect_failed'); this.trigger('reconnect_failed'); }, this);
+
       pomelo.on('welcome', function(data) {
         window.debug.log('io:in:welcome', data);
-        that.trigger('welcome', data);
-      });
+        this.trigger('welcome', data);
+      }, this);
       pomelo.on('room:join', function(data) {
         window.debug.log('io:in:room:join', data);
-        that.trigger('room:join', data);
-      });
+        this.trigger('room:join', data);
+      }, this);
       pomelo.on('room:leave', function(data) {
         window.debug.log('io:in:room:leave', data);
-        that.trigger('room:leave', data);
-      });
+        this.trigger('room:leave', data);
+      }, this);
       pomelo.on('room:message', function(data) {
         window.debug.log('io:in:room:message', data);
-        that.trigger('room:message', data);
-      });
+        this.trigger('room:message', data);
+      }, this);
       pomelo.on('room:topic', function(data) {
         window.debug.log('io:in:room:topic', data);
-        that.trigger('room:topic', data);
-      });
+        this.trigger('room:topic', data);
+      }, this);
       pomelo.on('room:in', function(data) {
         window.debug.log('io:in:room:in', data);
-        that.trigger('room:in', data);
-      });
+        this.trigger('room:in', data);
+      }, this);
       pomelo.on('room:out', function(data) {
         window.debug.log('io:in:room:out', data);
-        that.trigger('room:out', data);
-      });
+        this.trigger('room:out', data);
+      }, this);
       pomelo.on('room:updated', function(data) {
         window.debug.log('io:in:room:updated', data);
-        that.trigger('room:updated', data);
-      });
+        this.trigger('room:updated', data);
+      }, this);
       pomelo.on('room:op', function(data) {
         window.debug.log('io:in:room:op', data);
-        that.trigger('room:op', data);
-      });
+        this.trigger('room:op', data);
+      }, this);
       pomelo.on('room:deop', function(data) {
         window.debug.log('io:in:room:deop', data);
-        that.trigger('room:deop', data);
-      });
+        this.trigger('room:deop', data);
+      }, this);
       pomelo.on('room:kick', function(data) {
         window.debug.log('io:in:room:kick', data);
-        that.trigger('room:kick', data);
-      });
+        this.trigger('room:kick', data);
+      }, this);
       pomelo.on('user:join', function(data) {
         window.debug.log('io:in:user:join', data);
-        that.trigger('user:join', data);
-      });
+        this.trigger('user:join', data);
+      }, this);
       pomelo.on('user:leave', function(data) {
         window.debug.log('io:in:user:leave', data);
-        that.trigger('user:leave', data);
-      });
+        this.trigger('user:leave', data);
+      }, this);
       pomelo.on('user:message', function(data) {
         window.debug.log('io:in:user:message', data);
-        that.trigger('user:message', data);
-      });
+        this.trigger('user:message', data);
+      }, this);
       pomelo.on('user:online', function(data) {
         window.debug.log('io:in:user:online', data);
-        that.trigger('user:online', data);
-      });
+        this.trigger('user:online', data);
+      }, this);
       pomelo.on('user:offline', function(data) {
         window.debug.log('io:in:user:offline', data);
-        that.trigger('user:offline', data);
-      });
+        this.trigger('user:offline', data);
+      }, this);
       pomelo.on('user:updated', function(data) {
         window.debug.log('io:in:user:updated', data);
-        that.trigger('user:updated', data);
-      });
+        this.trigger('user:updated', data);
+      }, this);
     },
 
     /**
@@ -110,6 +98,7 @@ define([
      * @param port could be use to force connection on given port
      */
     connect: function(host, port) {
+      this.trigger('connecting');
       pomelo.connect(host, port);
     },
     disconnect: function() {
