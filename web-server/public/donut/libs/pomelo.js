@@ -58,16 +58,16 @@ define([
       var msg = {};
       var cb;
 
-      var arguments = Array.prototype.slice.apply(arguments);
-      if (arguments.length === 2) {
-        if (typeof arguments[1] === 'function') {
-          cb = arguments[1];
-        } else if (typeof arguments[1] === 'object') {
-          msg = arguments[1];
+      var arg = _.toArray(arguments);
+      if (arg.length === 2) {
+        if (typeof arg[1] === 'function') {
+          cb = arg[1];
+        } else if (typeof arg[1] === 'object') {
+          msg = arg[1];
         }
-      } else if (arguments.length === 3) {
-        msg = arguments[1];
-        cb = arguments[2];
+      } else if (arg.length === 3) {
+        msg = arg[1];
+        cb = arg[2];
       }
 
       this.autoIncrement ++;
