@@ -81,6 +81,10 @@ define([
       return this;
     },
 
+    update: function() {
+      this.eventsView.update();
+    },
+
     updateFocus: function() {
       // to focus
       if (this.model.get('focused')) {

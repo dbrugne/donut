@@ -21,13 +21,9 @@ define([
 
     firstHistoryLoaded: false,
 
-    scrollReady: false,
+    //scrollReady: false,
 
     scrollPosition: '',
-
-    interval: null,
-
-    intervalDuration: 45, // seconds
 
     keepMaxEventsOnCleanup: 500,
 
@@ -40,19 +36,10 @@ define([
       window.events = this;
 
       var that = this;
-      _.defer(function() { // => Uncaught TypeError: Cannot read property '0' of null
+      //_.defer(function() { // => Uncaught TypeError: Cannot read property '0' of null
         that.render();
         window.debug.end('discussion-events'+((that.model.get('name'))?that.model.get('name'):that.model.get('username')));
-      });
-
-      // recurent tasks
-      this.interval = setInterval(function() {
-        // remove old messages
-        that.cleanup();
-
-        // update moment times
-        that.updateMoment();
-      }, this.intervalDuration*1000); // every n seconds
+      //});
     },
     _id: function() {
       return (this.model.get('name'))
@@ -64,10 +51,12 @@ define([
     },
     _stop: function(num) {
       window.debug.end('discussion-events-messages-'+((this.model.get('name'))?this.model.get('name'):this.model.get('username')));
+      window.debug.log('rendered '+num+' events');
     },
     _remove: function() {
       clearInterval(this.interval);
-      this.$el.mCustomScrollbar('destroy');
+      // @todo : remove event listening on scrollbar
+      //this.$el.mCustomScrollbar('destroy');
       this.remove();
     },
     render: function() {
@@ -80,42 +69,42 @@ define([
 
       // scrollbar-it
       var that = this;
-      this.$el.mCustomScrollbar({
-        scrollInertia         : 0,
-        alwaysShowScrollbar   : 2,
-        theme                 : 'rounded-dark',
-        mouseWheel            : { enable: true, scrollAmount: 75 },
-        keyboard              : { scrollAmount: 30 },
-        scrollButtons         : { enable: true },
-        live                  : false,
-        advanced:{
-          updateOnSelectorChange: false,
-          updateOnContentResize: false,
-          updateOnImageLoad: false
-        },
-        callbacks:{
-          onScroll: function() {
-            that.scrollPosition = this.mcs.top; // in pixel
-          },
-          onTotalScroll: function() {
-            that.scrollPosition = 'bottom';
-          },
-          onTotalScrollBack: function() {
-            that.scrollPosition = 'top';
-          }
-        }
-      });
-      this.scrollReady = true;
-      // prevent browser go to # when clicking on button with not enough content
-      // to have scroll activated
-      this.$el.find('.mCSB_buttonUp, .mCSB_buttonDown').on('click', function(e) {
-        e.preventDefault();
-      });
+      //this.$el.mCustomScrollbar({
+      //  scrollInertia         : 0,
+      //  alwaysShowScrollbar   : 2,
+      //  theme                 : 'rounded-dark',
+      //  mouseWheel            : { enable: true, scrollAmount: 75 },
+      //  keyboard              : { scrollAmount: 30 },
+      //  scrollButtons         : { enable: true },
+      //  live                  : false,
+      //  advanced:{
+      //    updateOnSelectorChange: false,
+      //    updateOnContentResize: false,
+      //    updateOnImageLoad: false
+      //  },
+      //  callbacks:{
+      //    onScroll: function() {
+      //      that.scrollPosition = this.mcs.top; // in pixel
+      //    },
+      //    onTotalScroll: function() {
+      //      that.scrollPosition = 'bottom';
+      //    },
+      //    onTotalScrollBack: function() {
+      //      that.scrollPosition = 'top';
+      //    }
+      //  }
+      //});
+      //this.scrollReady = true;
+      //// prevent browser go to # when clicking on button with not enough content
+      //// to have scroll activated
+      //this.$el.find('.mCSB_buttonUp, .mCSB_buttonDown').on('click', function(e) {
+      //  e.preventDefault();
+      //});
       // scroll library move content in child div
-      this.$scrollable = this.$el.find('.mCSB_container');
-      this.$history = this.$scrollable.find('.history');
-      this.$realtime = this.$scrollable.find('.realtime');
-      this.$blank = this.$scrollable.find('.blank');
+      //this.$scrollable = this.$el.find('.mCSB_container');
+      this.$history = this.$el.find('.history');
+      this.$realtime = this.$el.find('.realtime');
+      this.$blank = this.$el.find('.blank');
 
       // render events received on 'connect' (in .history)
       if (this.model.get('connectHistory')) {
@@ -128,6 +117,10 @@ define([
       }
 
       this.scrollDown();
+    },
+    update: function() {
+      this.cleanup();
+      this.updateMoment();
     },
     cleanup: function(event) {
       if (this.model.get('focused') && this.scrollPosition != 'bottom')
@@ -154,7 +147,6 @@ define([
         this.$realtime.find('.block').slice(0, remove).remove();
 
       window.debug.log('cleanup discussion "'+this._id()+'", with '+length+' length, '+remove+' removed');
-      window.debug.log('cleanup discussion "'+this._id()+'", with '+length+' length, '+remove+' removed');
 
       if (this.model.get('focused'))
         this.scrollDown();
@@ -169,19 +161,20 @@ define([
       // @todo : find a better logic than .slice() to scope elements
     },
     scrollDown: function() {
-      // too early calls (router) will trigger scrollbar generation
-      // on scrollTo and make everything explode
-      if (!this.scrollReady)
-        return;
+      //// too early calls (router) will trigger scrollbar generation
+      //// on scrollTo and make everything explode
+      //if (!this.scrollReady)
+      //  return;
 
       if (!this.model.get('focused'))
         return;
 
       var that = this;
-      _.delay(function() {
-        that.$el.mCustomScrollbar('update');
-        that.$el.mCustomScrollbar('scrollTo', 'bottom');
-      }, 100);
+      // @todo clean scroll down logic
+      //_.delay(function() {
+      //  that.$el.mCustomScrollbar('update');
+      //  that.$el.mCustomScrollbar('scrollTo', 'bottom');
+      //}, 100);
     },
     _focus: function() {
       this.updateMoment();
@@ -190,7 +183,7 @@ define([
       this.$el.height(heigth);
       if (this.$blank) {
         var blankHeight = 0;
-        var currentContentHeight = this.$scrollable.find('.hello.block').outerHeight()
+        var currentContentHeight = this.$el.find('.hello.block').outerHeight()
           + this.$history.outerHeight()
           + this.$realtime.outerHeight();
         if (currentContentHeight > heigth)
@@ -227,8 +220,8 @@ define([
 
       if (needToScrollDown)
         this.scrollDown();
-      else
-        this.$el.mCustomScrollbar('update'); // just update
+      //else
+      //  this.$el.mCustomScrollbar('update'); // just update
 
       this._stop(1);
     },
@@ -392,18 +385,18 @@ define([
       }
 
       this.historyLoading = false;
-      this.$scrollable.find('.history-loader .spinner').hide();
+      this.$el.find('.history-loader .spinner').hide();
       this.toggleHistoryMore(data.more);
     },
     toggleHistoryMore: function(w) {
       if (w) {
         // true: display 'more' link
-        this.$scrollable.find('.history-loader .more').show();
-        this.$scrollable.find('.history-loader .no-more').hide();
+        this.$el.find('.history-loader .more').show();
+        this.$el.find('.history-loader .no-more').hide();
       } else {
         // else: display no more history indication
-        this.$scrollable.find('.history-loader .more').hide();
-        this.$scrollable.find('.history-loader .no-more').show();
+        this.$el.find('.history-loader .more').hide();
+        this.$el.find('.history-loader .no-more').show();
       }
     },
     onReconnectEvents: function(history) {

@@ -51,6 +51,10 @@ define([
 
     views: {},
 
+    interval: null,
+
+    intervalDuration: 45000, // ms
+
     events: {
       'click .go-to-search'             : 'focusOnSearch',
       'click .open-create-room'         : 'openCreateRoom',
@@ -80,7 +84,7 @@ define([
       // pre-connection modal
       this.listenTo(client, 'connecting',         function() { this.connectionModal('connecting'); }, this);
       this.listenTo(client, 'connect',            function() { this.connectionModal('connect'); }, this);
-      this.listenTo(client, 'disconnect',         function(reason) { this.connectionModal('disconnect', reason); }, this);
+      this.listenTo(client, 'disconnect',         function(reason) { this.connectionModal('disconnect', reason); clearInterval(this.interval); }, this);
       this.listenTo(client, 'reconnect',          function(num) { this.connectionModal('reconnect', num); }, this);
       this.listenTo(client, 'reconnect_attempt',  function() { this.connectionModal('reconnect_attempt'); }, this);
       this.listenTo(client, 'reconnecting',       function(num) { this.connectionModal('reconnecting', num); }, this);
@@ -259,9 +263,13 @@ define([
       this.discussionsBlock.redraw();
 
       // only on first connection 'after' actions
-      if (this.firstConnection) {
+      if (this.firstConnection)
         this.firstConnection = false;
-      }
+
+      // set intervaller (set on 'connection')
+      this.interval = setTimeout(function() {
+        that.updateViews();
+      }, this.intervalDuration);
 
       // Run routing only when everything in interface is ready
       this.trigger('ready');
@@ -451,6 +459,20 @@ define([
         if (data.err)
           window.debug.log('error(s) on userUpdate call', data.errors);
       });
+    },
+
+    updateViews: function() {
+      // call update() method on each view
+      _.each(this.views, function(view) {
+        window.debug.log('update on '+view.model.get('id'));
+        view.update();
+      });
+
+      // set next tick
+      var that = this;
+      this.interval = setTimeout(function() {
+        that.updateViews();
+      }, this.intervalDuration);
     },
 
     // FOCUS TAB/PANEL MANAGEMENT
