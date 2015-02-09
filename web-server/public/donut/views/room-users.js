@@ -13,14 +13,12 @@ define([
     listTemplate: _.template(listTemplate),
 
     initialize: function() {
-      this.listenTo(this.collection, 'add', this.onAddRemove);
-      this.listenTo(this.collection, 'remove', this.onAddRemove);
-      this.listenTo(this.collection, 'redraw', this.render);
-      this.listenTo(this.model, 'change:focused', this.onFocus);
+      this.listenTo(this.collection, 'users-redraw', this.render);
 
       this.initialRender();
     },
     initialRender: function() {
+      window.debug.start('room-users'+this.model.get('name'));
       var html = this.template({});
       this.$el.html(html);
       this.$count = this.$el.find('.count');
@@ -28,24 +26,12 @@ define([
 
       // scrollbar initialization (defered for browser DOM bug)
       var that = this;
-      _.defer(function() {
-        that.$list.mCustomScrollbar({
-          scrollInertia         : 0,
-          alwaysShowScrollbar   : 1,
-          theme                 : 'dark',
-          live                  : false,
-          advanced:{
-            updateOnSelectorChange: false,
-            updateOnContentResize: false,
-            updateOnImageLoad: false
-          }
-        });
-        _.defer(function() {
-          that.render();
-        });
-      });
+
+      that.render();
+      window.debug.end('room-users'+that.model.get('name'));
     },
     render: function() {
+      console.log('render me (user block)'); // @todo TEMP TEMP TEMP
       // update user count
       var countHtml = $.t("chat.userscount", {count: this.collection.models.length});
       this.$count.html(countHtml);
@@ -67,23 +53,10 @@ define([
         isOwner: this.model.currentUserIsOwner(),
         isOp: this.model.currentUserIsOp()
       });
-      this.$list.find('.mCSB_container').html(html);
-      this.$list.mCustomScrollbar('update');
+      this.$list.html(html);
       return this;
     },
-    onAddRemove: function(model, collection, options) {
-      this.render();
-    },
-    onFocus: function(model, value, options) {
-      if (value) {
-        this.$list.mCustomScrollbar('update');
-      } else {
-        //// remove scrollbar listener on blur
-        //this.$list.mCustomScrollbar('disable');
-      }
-    },
     _remove: function() {
-      this.$list.mCustomScrollbar('destroy');
       this.remove();
     }
   });
