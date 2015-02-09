@@ -8,10 +8,6 @@ define([
     model: UserModel,
 
     comparator: function(model1, model2) {
-      var stringCompare = function(str1, str2) {
-        return str1.toLowerCase().localeCompare(str2.toLowerCase())
-      };
-
       // create strings (sortable as string: aabfoobar)
       var string1 = '';
       string1 += (model1.get('status') == 'online') ? 'a' : 'b';
