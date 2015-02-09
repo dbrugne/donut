@@ -27,7 +27,9 @@ define([
     initialize: function() {
       this.users = new RoomUsersCollection();
     },
-    addUser: function(data) {
+    addUser: function(data, sort) {
+      sort = (sort === false) ? false : true;
+
       // already in?
       var model = this.users.get(data.user_id);
       if (model) {
@@ -60,7 +62,7 @@ define([
         is_op: is_op,
         status: data.status
       });
-      this.users.add(model);
+      this.users.add(model, {sort: sort});
       return model;
     },
     getUrl: function() {

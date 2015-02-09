@@ -82,8 +82,9 @@ define([
       // Add users
       model.users.reset();
       _.each(room.users, function(element, key, list) {
-        model.addUser(element);
+        model.addUser(element, false);
       });
+      model.users.sort(); // sort after batch addition to collection to avoid performance issue
 
       // Add history
       if (!reconnect)
