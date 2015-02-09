@@ -9,6 +9,10 @@ define([
 
     template: _.template(InputTemplate),
 
+    imageTemplate: _.template('<a class="image" target="_blank" href="<%=data.url%>" data-cloudinary-id="<%=data.public_id%>" style="background-image: url(<%=data.thumbnail_url%>);"><i class="fa fa-times remove-image"></i></a>'),
+
+    images: '',
+
     events: {
       'input .editable'               : 'onInput',
       'keypress .editable'            : 'onKeyPress',
@@ -21,6 +25,9 @@ define([
 
     initialize: function(options) {
       this.listenTo(currentUser, 'change:avatar', this.onAvatar);
+
+      this.images = {}; // should be initialized with {} on .initialize(), else all the view instances will share the same object (#110)
+
       this.render();
     },
 
@@ -154,10 +161,6 @@ define([
       // Avoid line break addition in field when submitting with "Enter"
       return false;
     },
-
-    imageTemplate: _.template('<a class="image" target="_blank" href="<%=data.url%>" data-cloudinary-id="<%=data.public_id%>" style="background-image: url(<%=data.thumbnail_url%>);"><i class="fa fa-times remove-image"></i></a>'),
-
-    images: {},
 
     onAddImage: function(event) {
       event.preventDefault();
