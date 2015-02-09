@@ -120,7 +120,6 @@ define([
     },
     update: function() {
       this.cleanup();
-      this.updateMoment();
     },
     cleanup: function(event) {
       if (this.model.get('focused') && this.scrollPosition != 'bottom')
@@ -151,15 +150,6 @@ define([
       if (this.model.get('focused'))
         this.scrollDown();
     },
-    updateMoment: function() {
-      if (!this.model.get('focused') || !this.$realtime) // only on currently focused view
-        return;
-
-      // Update all .moment of the discussion panel
-      this.$realtime.find('.moment').slice(this.keepMaxEventsOnCleanup*-1).momentify();
-      window.debug.log('moment updated');
-      // @todo : find a better logic than .slice() to scope elements
-    },
     scrollDown: function() {
       //// too early calls (router) will trigger scrollbar generation
       //// on scrollTo and make everything explode
@@ -175,9 +165,6 @@ define([
       //  that.$el.mCustomScrollbar('update');
       //  that.$el.mCustomScrollbar('scrollTo', 'bottom');
       //}, 100);
-    },
-    _focus: function() {
-      this.updateMoment();
     },
     resize: function(heigth) {
       this.$el.height(heigth);
@@ -329,10 +316,20 @@ define([
           data.data.images = images;
       }
 
-      // moment
+      // date
       var dateObject = moment(model.get('time'));
-      data.data.fromnow = dateObject.fromNow();
-      data.data.full = dateObject.format("dddd Do MMMM YYYY à HH:mm:ss");
+      var diff = (Date.now() - dateObject.valueOf())/1000;
+      var format;
+      if (diff <= 86400) // 24h
+        format = 'HH:mm';
+      else if (diff <= 604800) // 7 days
+        format = 'dddd';
+      else if (2592000) // 1 month
+        format = 'DD/MM';
+      else // more than 1 year
+        format = 'MM/YYYY';
+      data.data.dateshort = dateObject.format(format);
+      data.data.datefull = dateObject.format("dddd Do MMMM YYYY à HH:mm:ss");
 
       // rendering attributes
       data.isNew = model.get('new');

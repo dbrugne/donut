@@ -6,14 +6,14 @@
 <div class="block disconnected">
     <div class="event" id="<%= data.id %>">
         <div class="text"><div class="picto disconnected"></div> <%= t('chat.notifications.disconnected') %></div>
-        <div class="date"><span class="moment" data-time="<%= data.time %>" title="<%= data.full %>"><%= data.fromnow %></span></div>
+        <div class="date"><span class="moment" data-time="<%= data.time %>" title="<%= data.datefull %>"><%= data.dateshort %></span></div>
     </div>
 </div>
 <% } else if (type =='reconnected') { %>
 <div class="block reconnected">
     <div class="event" id="<%= data.id %>">
         <div class="text"><div class="picto connected"></div> <%= t('chat.notifications.reconnected') %></div>
-        <div class="date"><span class="moment" data-time="<%= data.time %>" title="<%= data.full %>"><%= data.fromnow %></span></div>
+        <div class="date"><span class="moment" data-time="<%= data.time %>" title="<%= data.datefull %>"><%= data.dateshort %></span></div>
     </div>
 </div>
 <% } else if (type =='room:topic') { %>
@@ -24,7 +24,7 @@
             <span class="username open-user-profile" data-username="<%= data.username %>">@<%= data.username %></span>
             <%= t('chat.notifications.topic') %> "<%- data.topic %>"
         </div>
-        <div class="date"><span class="moment" data-time="<%= data.time %>" title="<%= data.full %>"><%= data.fromnow %></span></div>
+        <div class="date"><span class="moment" data-time="<%= data.time %>" title="<%= data.datefull %>"><%= data.dateshort %></span></div>
     </div>
 </div>
 <% } else if (type =='room:kick') { %>
@@ -39,7 +39,7 @@
             <span class="username open-user-profile" data-username="<%= data.by_username %>">@<%= data.by_username %></span>
             <% if (data.reason) { %> : '<%= data.reason %>'<% }; %>
         </div>
-        <div class="date"><span class="moment" data-time="<%= data.time %>" title="<%= data.full %>"><%= data.fromnow %></span></div>
+        <div class="date"><span class="moment" data-time="<%= data.time %>" title="<%= data.datefull %>"><%= data.dateshort %></span></div>
     </div>
 </div>
 <% } else if (type =='room:op') { %>
@@ -52,7 +52,7 @@
             <div class="avatar open-user-profile" data-username="<%= data.by_username %>" style="background-image: url(<%= data.by_avatar %>)"></div>
             <span class="username open-user-profile" data-username="<%= data.by_username %>">@<%= data.by_username %></span>
         </div>
-        <div class="date"><span class="moment" data-time="<%= data.time %>" title="<%= data.full %>"><%= data.fromnow %></span></div>
+        <div class="date"><span class="moment" data-time="<%= data.time %>" title="<%= data.datefull %>"><%= data.dateshort %></span></div>
     </div>
 </div>
 <% } else if (type =='room:deop') { %>
@@ -65,7 +65,7 @@
             <div class="avatar open-user-profile" data-username="<%= data.by_username %>" style="background-image: url(<%= data.by_avatar %>)"></div>
             <span class="username open-user-profile" data-username="<%= data.by_username %>">@<%= data.by_username %></span>
         </div>
-        <div class="date"><span class="moment" data-time="<%= data.time %>" title="<%= data.full %>"><%= data.fromnow %></span></div>
+        <div class="date"><span class="moment" data-time="<%= data.time %>" title="<%= data.datefull %>"><%= data.dateshort %></span></div>
     </div>
 </div>
 <% } else if (type == 'room:message' || type == 'user:message') { %>
@@ -87,7 +87,7 @@
                     <hr>
                 </div>
                 <% } %>
-                <div class="date"><span class="moment" data-time="<%= data.time %>" title="<%= data.full %>"><%= data.fromnow %></span></div>
+                <div class="date"><span class="moment" data-time="<%= data.time %>" title="<%= data.datefull %>"><%= data.dateshort %></span></div>
             </div>
     <% if (withBlock) { %>
         </div>
@@ -105,7 +105,7 @@
             <div class="picto connected"></div>
             <div class="username open-user-profile" data-username="<%= data.username %>">@<%= data.username %></div>
         </div>
-        <div class="date"><span class="moment" data-time="<%= data.time %>" title="<%= data.full %>"><%= data.fromnow %></span></div>
+        <div class="date"><span class="moment" data-time="<%= data.time %>" title="<%= data.datefull %>"><%= data.dateshort %></span></div>
     </div>
     <% } else if (type == 'user:offline') { %>
     <div class="event offline" data-time="<%= data.time %>" title="<%= data.username %> <%= t('chat.notifications.offline') %> <% print(moment(data.time).format('HH:mm:ss')) %>" id="<%= data.id %>" data-time="<%= data.time %>">
@@ -114,7 +114,7 @@
             <div class="picto disconnected"></div>
             <div class="username open-user-profile" data-username="<%= data.username %>">@<%= data.username %></div>
         </div>
-        <div class="date"><span class="moment" data-time="<%= data.time %>" title="<%= data.full %>"><%= data.fromnow %></span></div>
+        <div class="date"><span class="moment" data-time="<%= data.time %>" title="<%= data.datefull %>"><%= data.dateshort %></span></div>
     </div>
     <% } else if (type =='room:in') { %>
     <div class="event in" data-time="<%= data.time %>" title="<%= data.username %> <%= t('chat.notifications.in') %> <% print(moment(data.time).format('HH:mm:ss')) %>" id="<%= data.id %>" data-time="<%= data.time %>">
@@ -123,7 +123,7 @@
             <div class="picto in"></div>
             <div class="username open-user-profile" data-username="<%= data.username %>">@<%= data.username %></div>
         </div>
-        <div class="date"><span class="moment" data-time="<%= data.time %>" title="<%= data.full %>"><%= data.fromnow %></span></div>
+        <div class="date"><span class="moment" data-time="<%= data.time %>" title="<%= data.datefull %>"><%= data.dateshort %></span></div>
     </div>
     <% } else if (type == 'room:out') { %>
     <div class="event out" data-time="<%= data.time %>" title="<%= data.username %> <%= t('chat.notifications.out') %> <% print(moment(data.time).format('HH:mm:ss')) %> <% if (data.reason == 'disconnect') { %>(disconnected)<% } %>" id="<%= data.id %>" data-time="<%= data.time %>">
@@ -132,7 +132,7 @@
             <div class="picto out"></div>
             <div class="username open-user-profile" data-username="<%= data.username %>">@<%= data.username %></div>
         </div>
-        <div class="date"><span class="moment" data-time="<%= data.time %>" title="<%= data.full %>"><%= data.fromnow %></span></div>
+        <div class="date"><span class="moment" data-time="<%= data.time %>" title="<%= data.datefull %>"><%= data.dateshort %></span></div>
     </div>
     <% } %>
     <% if (withBlock) { %>
