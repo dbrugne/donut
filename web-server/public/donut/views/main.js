@@ -71,7 +71,9 @@ define([
 
       this.listenTo(client,     'welcome', this.onWelcome);
       this.listenTo(rooms,      'add', this.addView);
+      this.listenTo(rooms,      'remove', this.onRemoveDiscussion);
       this.listenTo(onetoones,  'add', this.addView);
+      this.listenTo(onetoones,  'remove', this.onRemoveDiscussion);
       this.listenTo(rooms,      'kicked', this.roomKicked);
       this.listenTo(rooms,      'deleted', this.roomRoomDeleted);
 
@@ -396,13 +398,8 @@ define([
       if (!$target)
         return;
 
-      this._closeDiscussion($target.data('type'), $target.data('identifier'));
-      this.discussionsBlock.redraw();
-      this.persistPositions(true);
-
-      return false; // stop propagation
-    },
-    _closeDiscussion: function(type, identifier) {
+      var type = $target.data('type');
+      var identifier = $target.data('identifier');
       var collection, model;
       if (type == 'room') {
         collection = rooms;
@@ -415,20 +412,28 @@ define([
       if (model == undefined)
         return window.debug.log('close discussion error: unable to find model');
 
+
+      model.leave(); // trigger a server back and forth, *:leave will remove view from interface
+
+      return false; // stop propagation
+    },
+    onRemoveDiscussion: function(model, collection, options) {
       var view = this.views[model.get('id')];
       if (view === undefined)
         return window.debug.log('close discussion error: unable to find view');
 
       var wasFocused = model.get('focused');
 
-      model.leave();
       view.removeView();
       delete this.views[model.get('id')];
-      collection.remove(model);
+
+      // this.persistPositions(true);
 
       // Focus default
       if (wasFocused)
         this.focusHome();
+      else
+        this.discussionsBlock.redraw();
     },
 
     persistPositions: function(silent) {
