@@ -2,17 +2,13 @@ var logger = require('pomelo-logger').getLogger('pomelo', __filename);
 var async = require('async');
 var _ = require('underscore');
 var User = require('../../../shared/models/user');
-var retriever = require('../../../shared/models/historyone').retrieve();
 
 /**
- * Helper to retrieve/prepare all the one to one data needed for 'welcome' and
- * 'user:welcome' events:
- *   [- user entity]
- *   - history
+ * Helper to retrieve/prepare all the ones data needed for 'welcome' and
+ * 'user:welcome'
  */
 module.exports = function(app, uid, username, opts, fn) {
   opts = _.extend({
-    history: true
   }, opts);
 
   async.waterfall([
@@ -41,20 +37,7 @@ module.exports = function(app, uid, username, opts, fn) {
       });
     },
 
-    function history(user, liveStatus, callback) {
-      if (!opts.history)
-        return callback(null, user, liveStatus, null);
-
-      // get last n events
-      retriever(uid, user._id.toString(), null, function(err, history) { // MongoDB .update({$addToSet}) seems to work only with String, toString() is important!
-        if (err)
-          return callback(err);
-
-        return callback(null, user, liveStatus, history);
-      });
-    },
-
-    function prepare(user, liveStatus, history, callback) {
+    function prepare(user, liveStatus, callback) {
       var status = (liveStatus)
         ? 'online'
         : 'offline';
@@ -70,8 +53,7 @@ module.exports = function(app, uid, username, opts, fn) {
         location  : user.location,
         website   : user.website,
         onlined   : onlined,
-        status    : status,
-        history   : history
+        status    : status
       };
 
       return callback(null, oneData);

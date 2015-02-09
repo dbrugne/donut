@@ -3,7 +3,6 @@ var async = require('async');
 var _ = require('underscore');
 var Room = require('../../../shared/models/room');
 var User = require('../../../shared/models/user');
-var retriever = require('../../../shared/models/historyroom').retrieve();
 
 /**
  * Helper to retrieve/prepare all the room data needed for 'welcome' and
@@ -11,12 +10,9 @@ var retriever = require('../../../shared/models/historyroom').retrieve();
  *   - room entity
  *   - owner
  *   - ops
- *   - users
- *   - history
  */
 module.exports = function(app, uid, name, opts, fn) {
   opts = _.extend({
-    history: true
   }, opts);
 
   async.waterfall([
@@ -73,20 +69,7 @@ module.exports = function(app, uid, name, opts, fn) {
       });
     },
 
-    function history(room, users, callback) {
-      if (!opts.history)
-        return callback(null, room, users, null);
-
-      // get last n events
-      retriever(room.name, uid, null, function(err, history) {
-        if (err)
-          return callback(err);
-
-        return callback(null, room, users, history);
-      });
-    },
-
-    function prepare(room, users, history, callback) {
+    function prepare(room, users, callback) {
       var roomData = {
         name: room.name,
         owner: {},
@@ -95,8 +78,7 @@ module.exports = function(app, uid, name, opts, fn) {
         poster: room._poster(),
         color: room.color,
         topic: room.topic,
-        users: users,
-        history: history
+        users: users
       };
       if (room.owner) {
         roomData.owner = {
