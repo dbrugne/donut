@@ -32,7 +32,7 @@ define([
     keepMaxEventsOnCleanup: 500,
 
     initialize: function(options) {
-      var start = Date.now();
+      window.debug.start('discussion-events'+((this.model.get('name'))?this.model.get('name'):this.model.get('username')));
       this.listenTo(this.model, 'freshEvent', this.addFreshEvent);
       this.listenTo(this.model, 'historyEvents', this.onHistoryEvents);
       this.listenTo(this.model, 'reconnectEvents', this.onReconnectEvents);
@@ -42,7 +42,7 @@ define([
       var that = this;
       _.defer(function() { // => Uncaught TypeError: Cannot read property '0' of null
         that.render();
-        window.debug.log('Discussion events view '+((that.model.get('name'))?that.model.get('name'):that.model.get('username'))+' rendered in '+(Date.now()-start)+'ms');
+        window.debug.end('discussion-events'+((that.model.get('name'))?that.model.get('name'):that.model.get('username')));
       });
 
       // recurent tasks
@@ -60,12 +60,10 @@ define([
         : 'onetoone "'+this.model.get('username')+'"';
     },
     _start: function() {
-      this.start = Date.now();
+      window.debug.start('discussion-events-messages-'+((this.model.get('name'))?this.model.get('name'):this.model.get('username')));
     },
     _stop: function(num) {
-      var _duration = Date.now() - this.start;
-      window.debug.log(num+' event(s) rendered in '+this._id()+' ('+_duration+'ms)');
-      this.start = 0;
+      window.debug.end('discussion-events-messages-'+((this.model.get('name'))?this.model.get('name'):this.model.get('username')));
     },
     _remove: function() {
       clearInterval(this.interval);

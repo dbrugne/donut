@@ -46,9 +46,34 @@ define([
     this.isOn = false;
   };
 
+  /**
+   * LOGGING
+   */
   Debug.prototype.log = function() {
     if (this.isOn === true)
       console.log.apply(console, arguments);
+  };
+
+  /**
+   * PROFILING
+   */
+  var times = {};
+  Debug.prototype.start = function(name) {
+    if (this.isOn === true)
+     times[name] = Date.now();
+  };
+
+  Debug.prototype.end = function(name) {
+    if (this.isOn !== true)
+      return;
+
+    if (!_.has(times, name))
+      return;
+
+    var end = Date.now();
+    var start = times[name];
+    this.log("[profiling] Duration of '"+name+"': "+(end - start)+"ms");
+    delete times[name];
   };
 
   return new Debug();

@@ -210,7 +210,7 @@ define([
      * @param data
      */
     onWelcome: function(data) {
-      var start = Date.now();
+      window.debug.start('welcome-before');
       var that = this;
 
       // Only on first connection
@@ -236,19 +236,23 @@ define([
       currentUser.set(data.user, {silent: true});
       this.currentUserView.render();
 
-      var durationBefore = Date.now() - start;
+      window.debug.end('welcome-before');
 
       // Rooms
+      window.debug.start('welcome-rooms');
       _.each(data.rooms, function(room) {
+        window.debug.start('welcome-'+room.name);
         rooms.addModel(room, !that.firstConnection);
+        window.debug.end('welcome-'+room.name);
       });
-      var durationRooms = Date.now() - start - durationBefore;
+      window.debug.end('welcome-rooms');
 
       // One to ones
+      window.debug.start('welcome-ones');
       _.each(data.onetoones, function(one) {
         onetoones.addModel(one, !that.firstConnection);
       });
-      var durationOnes = Date.now() - start - durationRooms;
+      window.debug.end('welcome-ones');
 
       this.discussionsBlock.redraw();
 
@@ -260,7 +264,6 @@ define([
       // Run routing only when everything in interface is ready
       this.trigger('ready');
       this.$connectionModal.modal('hide');
-      window.debug.log('welcome done in '+(Date.now()-start)+'ms ('+durationBefore+','+durationRooms+','+durationOnes+')');
     },
 
     /**

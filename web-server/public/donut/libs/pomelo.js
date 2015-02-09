@@ -8,8 +8,6 @@ define([
 
   var pomelo = _.extend({
 
-    start: 0, // used for timing logging
-
     current: '', // store the current connector URL on which this client is connected
 
     socket: null, // current sio socket
@@ -30,7 +28,7 @@ define([
      * Public API
      */
     connect: function(host, port) {
-      this.start = Date.now();
+      window.debug.start('sio_connect');
       if (this.isConnected())
         this.disconnect();
 
@@ -84,8 +82,8 @@ define([
      * Private API
      */
     _connect: function(server) {
-      var durationConnect = Date.now() - this.start;
-      this.start = Date.now();
+      window.debug.end('sio_connect');
+      window.debug.start('sio_entryHandler');
 
       var that = this;
       this._sio(server, function () {
@@ -94,8 +92,8 @@ define([
           if (data.error)
             return window.debug.log("connector.entryHandler.enter returns error", data);
 
-          var durationEntry = Date.now() - that.start;
-          window.debug.log("connected to "+that.current+" (connection "+durationConnect+"ms, entryHandler "+durationEntry+"ms)");
+          window.debug.log("connected to "+that.current);
+          window.debug.end('sio_entryHandler');
 
           that.trigger('welcome', data);
         });

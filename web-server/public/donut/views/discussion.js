@@ -17,6 +17,7 @@ define([
     },
 
     initialize: function(options) {
+      window.debug.start('discussion-'+((this.model.get('name'))?this.model.get('name'):this.model.get('username')));
       var start = Date.now();
       this.mainView = options.mainView;
 
@@ -41,7 +42,7 @@ define([
 
       // Other subviews
       this._initialize(options);
-      window.debug.log('Discussion '+((this.model.get('name'))?this.model.get('name'):this.model.get('username'))+' rendered in '+(Date.now()-start)+'ms');
+      window.debug.end('discussion-'+((this.model.get('name'))?this.model.get('name'):this.model.get('username')));
     },
 
     // To override
