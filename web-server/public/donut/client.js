@@ -228,6 +228,22 @@ define([
           }
       );
     },
+    roomUsers: function(name, fn) {
+      var data = {name: name};
+      window.debug.log('io:out:room:users', data);
+      var that = this;
+      pomelo.request(
+          'chat.roomUsersHandler.users',
+          data,
+          function(response) {
+            if (response.err)
+              return window.debug.log('io:in:room:users error: ', response);
+
+            window.debug.log('io:in:room:users', response);
+            return fn(response);
+          }
+      );
+    },
     roomUpdate: function(name, fields, fn) {
       var data = {name: name, data: fields};
       window.debug.log('io:out:room:update', data);

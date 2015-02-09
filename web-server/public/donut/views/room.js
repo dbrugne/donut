@@ -101,6 +101,9 @@ define([
     },
     _unfocus: function() {
     },
+    _firstFocus: function() {
+      this.model.fetchUsers();
+    },
 
     /**
      * User actions methods

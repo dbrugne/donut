@@ -41,7 +41,7 @@ define([
     },
 
     /**
-     * With the following method the UserCollection trigger a 'redraw' event
+     * With the following method the UserCollection trigger a 'users-redraw' event
      * any time a model has changed an attribute.
      * Usefull for 'redraw-pattern' views.
      *
@@ -52,7 +52,7 @@ define([
      */
     onChange: function(model, value, options) {
       this.sort(); // for 'status' attribute
-      this.trigger('redraw');
+      this.trigger('users-redraw');
     }
 
   });

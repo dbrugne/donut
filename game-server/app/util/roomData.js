@@ -34,42 +34,7 @@ module.exports = function(app, uid, name, opts, fn) {
       });
     },
 
-    function users(room, callback) {
-      // http://docs.mongodb.org/manual/reference/operator/query/in/
-      User.find({rooms: { $in: [room.name]}}, function(err, users) {
-        if (err)
-          return callback('Error while listing room users: '+err);
-
-        var list = [];
-        _.each(users, function(user) {
-          list.push({
-            user_id   : user._id.toString(),
-            username  : user.username,
-            avatar    : user._avatar()
-          });
-        });
-
-        return callback(null, room, list);
-      });
-    },
-
-    function status(room, users, callback) {
-      var uids = _.map(users, function(u) { return u.user_id; });
-      app.statusService.getStatusByUids(uids, function(err, results) {
-        if (err)
-          return callback('Error while retrieving user status: '+err);
-
-        _.each(users, function(element, index, list) {
-          list[index].status = (results[element.user_id])
-            ? 'online'
-            : 'offline';
-        });
-
-        return callback(null, room, users);
-      });
-    },
-
-    function prepare(room, users, callback) {
+    function prepare(room, callback) {
       var roomData = {
         name: room.name,
         owner: {},
@@ -77,8 +42,7 @@ module.exports = function(app, uid, name, opts, fn) {
         avatar: room._avatar(),
         poster: room._poster(),
         color: room.color,
-        topic: room.topic,
-        users: users
+        topic: room.topic
       };
       if (room.owner) {
         roomData.owner = {

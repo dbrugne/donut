@@ -69,6 +69,10 @@ define([
     _unfocus: function() {
     },
 
+    // To override
+    _firstFocus: function() {
+    },
+
     render: function() {
       var html = this.template(this._renderData());
       this.$el.html(html);
@@ -88,7 +92,7 @@ define([
 
         // need to load history?
         if (!this.hasBeenFocused)
-          this.model.history(null);
+          this.firstFocus();
         this.hasBeenFocused = true;
 
         // resize and scroll down
@@ -103,6 +107,11 @@ define([
         this.$el.hide();
         this._unfocus();
       }
+    },
+
+    firstFocus: function() {
+      this.model.history(null);
+      this._firstFocus();
     },
 
     removeView: function(model) {

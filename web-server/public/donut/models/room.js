@@ -115,7 +115,10 @@ define([
 
     onIn: function(data) {
       data.status = 'online'; // only an online user can join a room
-      var user = this.addUser(data);
+
+      this.addUser(data);
+      this.users.trigger('users-redraw');
+
       var model = new EventModel({
         type: 'room:in',
         data: data
@@ -129,6 +132,8 @@ define([
         return; // if user has more that one socket we receive n room:out
 
       this.users.remove(user);
+      this.users.trigger('users-redraw');
+
       var model = new EventModel({
         type: 'room:out',
         data: data
@@ -162,7 +167,7 @@ define([
         user.set({is_op: true});
       this.users.sort();
 
-      this.users.trigger('redraw');
+      this.users.trigger('users-redraw');
 
       var model = new EventModel({
         type: 'room:op',
@@ -185,7 +190,7 @@ define([
         user.set({is_op: false});
       this.users.sort();
 
-      this.users.trigger('redraw');
+      this.users.trigger('users-redraw');
 
       var model = new EventModel({
         type: 'room:deop',
@@ -234,6 +239,18 @@ define([
           history: data.history,
           more: data.more
         });
+      });
+    },
+    fetchUsers: function() {
+      // @todo : implement spinner
+      var that = this;
+      client.roomUsers(this.get('name'), function(data) {
+        that.users.reset();
+        _.each(data.users, function(element, key, list) {
+          that.addUser(element, false); // false: avoid automatic sorting on each model .add()
+        });
+        that.users.sort(); // sort after batch addition to collection to avoid performance issue
+        that.users.trigger('users-redraw');
       });
     },
 

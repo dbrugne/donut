@@ -79,20 +79,13 @@ define([
         var model = new RoomModel(roomData);
       }
 
-      // Add users
-      model.users.reset();
-      _.each(room.users, function(element, key, list) {
-        model.addUser(element, false);
-      });
-      model.users.sort(); // sort after batch addition to collection to avoid performance issue
-
       // Add history
       if (!reconnect)
         model.set('connectHistory', room.history); // connect/join
       else {
         model.set('reconnectHistory', room.history); // reconnect
         model.onReconnect();
-      }
+      } // @todo: replace this logic with a flag (history loaded(=first focus), disconnect set the flag to false, reconnect + first focus reload history)
 
       if (isNew) {
         this.add(model);
