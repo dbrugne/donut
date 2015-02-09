@@ -18,8 +18,8 @@ define([
     initialize: function(options) {
       this.mainView = options.mainView;
 
-      this.listenTo(rooms, 'redraw', this.render);
-      this.listenTo(onetoones, 'redraw', this.render);
+      this.listenTo(rooms, 'redraw-block', this.render);
+      this.listenTo(onetoones, 'redraw-block', this.render);
       this.listenTo(onetoones, 'change:avatar', this.render);
       this.listenTo(currentUser, 'change:positions', this.onPositionsChange)
 

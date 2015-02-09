@@ -118,9 +118,9 @@ define([
         model.set('unread', 0);
         if (unread > 0) { // avoid useless redraw on window refocus
           if (model.get('type') == 'room')
-            rooms.trigger('redraw');
+            rooms.trigger('redraw-block');
           else
-            onetoones.trigger('redraw');
+            onetoones.trigger('redraw-block');
         }
       }
 
@@ -190,9 +190,9 @@ define([
         // update tabs
         model.set('unread', (model.get('unread', 0)+1));
         if (model.get('type') == 'room')
-          rooms.trigger('redraw');
+          rooms.trigger('redraw-block');
         else
-          onetoones.trigger('redraw');
+          onetoones.trigger('redraw-block');
 
         // update title
         this.renderTitle();
