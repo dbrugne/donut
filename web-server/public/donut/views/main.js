@@ -19,8 +19,8 @@ define([
   'views/drawer-user-profile',
   'views/drawer-user-edit',
   'views/drawer-user-account',
-  'views/room',
-  'views/onetoone',
+  'views/discussion-room',
+  'views/discussion-onetoone',
   'views/discussions-block'
 ], function ($, _, Backbone, client, currentUser, rooms, onetoones, windowView,
              CurrentUserView, AlertView, HomeView, QuickSearchView,
@@ -84,7 +84,7 @@ define([
       // pre-connection modal
       this.listenTo(client, 'connecting',         function() { this.connectionModal('connecting'); }, this);
       this.listenTo(client, 'connect',            function() { this.connectionModal('connect'); }, this);
-      this.listenTo(client, 'disconnect',         function(reason) { this.connectionModal('disconnect', reason); clearInterval(this.interval); }, this);
+      this.listenTo(client, 'disconnect',         function(reason) { this.connectionModal('disconnect', reason); clearInterval(this.interval); }, this); // @todo : reset all discussion "hasBeenFocused" flag
       this.listenTo(client, 'reconnect',          function(num) { this.connectionModal('reconnect', num); }, this);
       this.listenTo(client, 'reconnect_attempt',  function() { this.connectionModal('reconnect_attempt'); }, this);
       this.listenTo(client, 'reconnecting',       function(num) { this.connectionModal('reconnecting', num); }, this);
@@ -249,7 +249,7 @@ define([
       window.debug.start('welcome-rooms');
       _.each(data.rooms, function(room) {
         window.debug.start('welcome-'+room.name);
-        rooms.addModel(room, !that.firstConnection);
+        rooms.addModel(room);
         window.debug.end('welcome-'+room.name);
       });
       window.debug.end('welcome-rooms');
@@ -257,15 +257,13 @@ define([
       // One to ones
       window.debug.start('welcome-ones');
       _.each(data.onetoones, function(one) {
-        onetoones.addModel(one, !that.firstConnection);
+        onetoones.addModel(one);
       });
       window.debug.end('welcome-ones');
 
       this.discussionsBlock.redraw();
 
-      // only on first connection 'after' actions
-      if (this.firstConnection)
-        this.firstConnection = false;
+      this.firstConnection = false;
 
       // set intervaller (set on 'connection')
       this.interval = setTimeout(function() {

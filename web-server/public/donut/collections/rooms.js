@@ -42,7 +42,7 @@ define([
       // server ask to client to open this room in IHM
       this.addModel(data);
     },
-    addModel: function(room, reconnect) {
+    addModel: function(room) {
       // server confirm that we was joined to the room and give us some data on room
 
       // prepare model data
@@ -78,14 +78,6 @@ define([
         roomData.id = room.name;
         var model = new RoomModel(roomData);
       }
-
-      // Add history
-      if (!reconnect)
-        model.set('connectHistory', room.history); // connect/join
-      else {
-        model.set('reconnectHistory', room.history); // reconnect
-        model.onReconnect();
-      } // @todo: replace this logic with a flag (history loaded(=first focus), disconnect set the flag to false, reconnect + first focus reload history)
 
       if (isNew) {
         this.add(model);

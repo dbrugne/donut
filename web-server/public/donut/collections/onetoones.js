@@ -36,7 +36,7 @@ define([
       // server ask to client to open this one to one in IHM
       this.addModel(data);
     },
-    addModel: function(user, reconnect) {
+    addModel: function(user) {
       // server confirm that we was joined to the one to one and give us some data on user
       // prepare model data
       var oneData = {
@@ -64,14 +64,6 @@ define([
         oneData.id = user.username;
         oneData.key = this._key(oneData.username, currentUser.get('username'));
         var model = new OneToOneModel(oneData);
-      }
-
-      // Add history
-      if (!reconnect)
-        model.set('connectHistory', user.history); // connect/join
-      else {
-        model.set('reconnectHistory', user.history); // reconnect
-        model.onReconnect();
       }
 
       if (isNew) {
