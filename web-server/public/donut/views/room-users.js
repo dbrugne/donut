@@ -18,20 +18,13 @@ define([
       this.initialRender();
     },
     initialRender: function() {
-      window.debug.start('room-users'+this.model.get('name'));
       var html = this.template({});
       this.$el.html(html);
       this.$count = this.$el.find('.count');
       this.$list = this.$el.find('.list');
-
-      // scrollbar initialization (defered for browser DOM bug)
-      var that = this;
-
-      that.render();
-      window.debug.end('room-users'+that.model.get('name'));
     },
     render: function() {
-      console.log('render me (user block)'); // @todo TEMP TEMP TEMP
+      window.debug.start('room-users'+this.model.get('name'));
       // update user count
       var countHtml = $.t("chat.userscount", {count: this.collection.models.length});
       this.$count.html(countHtml);
@@ -54,6 +47,7 @@ define([
         isOp: this.model.currentUserIsOp()
       });
       this.$list.html(html);
+      window.debug.end('room-users'+that.model.get('name'));
       return this;
     },
     _remove: function() {
