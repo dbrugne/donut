@@ -24,6 +24,9 @@ define([
     },
     initialize: function() {
     },
+    getIdentifier: function() {
+      return this.get('username');
+    },
     leave: function() {
       client.userLeave(this.get('username'));
     },

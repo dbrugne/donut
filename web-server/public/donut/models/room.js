@@ -27,6 +27,9 @@ define([
     initialize: function() {
       this.users = new RoomUsersCollection();
     },
+    getIdentifier: function() {
+      return this.get('name');
+    },
     addUser: function(data, sort) {
       sort = (sort === false) ? false : true;
 
