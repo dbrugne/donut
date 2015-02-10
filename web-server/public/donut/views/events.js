@@ -14,14 +14,15 @@ define([
     eventTemplate: _.template(eventTemplate),
 
     events: {
-      "click .history-loader a.more": "askHistory"
+      "scroll": "onScroll",
+      "click .history-loader a.more": "onViewMore"
     },
 
     historyLoading: false,
 
     firstHistoryLoaded: false,
 
-    scrollPosition: '',
+    topListener: false,
 
     keepMaxEventsOnCleanup: 500,
 
@@ -31,15 +32,12 @@ define([
       this.listenTo(this.model, 'historyEvents', this.onHistoryEvents);
       this.listenTo(this.model, 'reconnectEvents', this.onReconnectEvents);
 
-      window.events = this; // @todo : debug TEMP
-
       this.render();
       window.debug.end('discussion-events'+this.model.getIdentifier());
     },
     _remove: function() {
-      clearInterval(this.interval);
-      // @todo : remove event listening on scrollbar
-      //this.$el.mCustomScrollbar('destroy');
+      if (this.topListener)
+        clearInterval(this.topListener);
       this.remove();
     },
     render: function() {
@@ -60,18 +58,46 @@ define([
         var connectHistory = this.model.get('connectHistory');
         if (connectHistory.history && connectHistory.history.length > 0) {
           this.addBatchEvents(connectHistory.history, connectHistory.more, 'connect');
-          this.toggleHistoryMore(connectHistory.more);
+          this.toggleHistoryLoader(connectHistory.more);
         }
         this.model.set('connectHistory', null);
       }
 
       this.scrollDown();
     },
+    onScroll: function(event) {
+      // everywhere but the top
+      if (this.$el.scrollTop() > 0) {
+        if (this.topListener) {
+          clearInterval(this.topListener);
+          this.topListener = false;
+        }
+        return;
+      }
+
+      // already listening
+      if (this.topListener)
+        return;
+
+      // hit the top
+      this.toggleHistoryLoader('loading');
+      var that = this;
+      this.topListener = setTimeout(function() {
+        if (that.$el.scrollTop() <= 0)
+          that.requestHistory();
+      }, 1500);
+    },
+    isScrollOnBottom: function() {
+      var contentHeight = this.$scrollable.outerHeight(true);
+      var viewportHeight = this.$el.height();
+      var difference = (contentHeight - viewportHeight) - 10; // add a 10px margin
+      return (this.$el.scrollTop() >= difference); // if gte current position, we are on bottom
+    },
     update: function() {
       this.cleanup();
     },
     cleanup: function(event) {
-      if (this.model.get('focused') && this.scrollPosition != 'bottom')
+      if (this.model.get('focused') && this.isScrollOnBottom())
         return; // no action when focused AND scroll not on bottom
 
       var hl = this.$history.find('.block').length;
@@ -84,7 +110,7 @@ define([
 
       // cleanup .history
       this.$history.empty();
-      this.toggleHistoryMore(true);
+      this.toggleHistoryLoader(true);
 
       // cleanup .realtime
       var length = this.$realtime.find('.block').length;
@@ -108,21 +134,34 @@ define([
       var difference = contentHeight - viewportHeight;
       this.$el.scrollTop(difference);
     },
-    resize: function(heigth) {
-      this.$el.height(heigth);
-      if (this.$blank) {
-        var blankHeight = 0;
-        var currentContentHeight = this.$el.find('.hello.block').outerHeight()
-          + this.$history.outerHeight()
-          + this.$realtime.outerHeight();
-        if (currentContentHeight > heigth)
-          blankHeight = 0;
-        else
-          blankHeight = heigth - currentContentHeight;
+    scrollTop: function() {
+      if (!this.model.get('focused'))
+        return;
 
-        this.$blank.height(blankHeight);
-        //window.debug.log('blank', blankHeight);
-      }
+      var targetTop = this.$el.find('.history-loader').position().top;
+      this.$el.scrollTop(targetTop);
+    },
+    resize: function(heigth) {
+      // called by views/discussion (on page resize)
+      if (typeof heigth != "undefined")
+        this.$el.height(heigth); // resize full events view
+      else // called by view itself to adapt .blank height
+        heigth = this.$el.height();
+
+      // blank heigth
+      var blankHeight = 0;
+      var currentContentHeight = this.$el.find('.hello.block').outerHeight()
+        + this.$history.outerHeight()
+        + this.$realtime.outerHeight();
+      if (currentContentHeight > heigth)
+        blankHeight = 0;
+      else
+        blankHeight = heigth - currentContentHeight;
+      if (blankHeight < 20)
+        blankHeight = 20; // keep always a 20px height to allow scrolling upper that content to trigger history
+      this.$blank.height(blankHeight);
+      window.debug.log('blank', blankHeight);
+
       this.scrollDown();
     },
     addFreshEvent: function(model) {
@@ -135,9 +174,7 @@ define([
       // render a 'fresh' event in realtime and scrolldown
       window.debug.start('discussion-events-fresh-'+this.model.getIdentifier());
       // scrollDown only if already on bottom before DOM insertion
-      var needToScrollDown = (this.scrollPosition == '' || this.scrollPosition == 'bottom')
-        ? true
-        : false;
+      var needToScrollDown = this.isScrollOnBottom();
       var previousElement = this.$realtime.find('.block:last').first();
       var newBlock = this._newBlock(model, previousElement);
       var html = this._renderEvent(model, newBlock);
@@ -147,10 +184,11 @@ define([
       else
         element = $(html).appendTo(this.$realtime);
 
+      // resize .blank
+      this.resize();
+
       if (needToScrollDown)
         this.scrollDown();
-      //else
-      //  this.$el.mCustomScrollbar('update'); // just update
 
       window.debug.end('discussion-events-fresh-'+this.model.getIdentifier());
     },
@@ -185,6 +223,9 @@ define([
         $html.appendTo(this.$realtime);
       }
       window.debug.end('discussion-events-batch-'+this.model.getIdentifier());
+
+      // resize .blank
+      this.resize();
     },
     _newBlock: function(newModel, previousElement) {
       var newBlock = false;
@@ -289,18 +330,14 @@ define([
         return false;
       }
     },
-    askHistory: function(event) {
-      event.preventDefault();
-      event.stopPropagation();
-
-      // noise protection
+    requestHistory: function() {
       if (this.historyLoading)
         return;
-      else
-        this.historyLoading = true;
 
-      // spinner
-      this.$el.find('.history-loader .spinner').show();
+      this.historyLoading = true;
+      this.scrollTopAfterHistory = true;
+
+      this.toggleHistoryLoader('loading');
 
       // since
       var first = this.$history
@@ -312,29 +349,34 @@ define([
 
       this.model.history(since);
     },
+    onViewMore: function(event) {
+      event.preventDefault();
+      event.stopPropagation();
+      this.requestHistory();
+    },
     onHistoryEvents: function(data) {
       this.addBatchEvents(data.history, data.more, 'history');
 
-      if (!this.firstHistoryLoaded) {
-        // history is load a first time on first discussion focus, could happen
-        // before view is totaly ready and should reposition the scrollbar on bottom
-        this.firstHistoryLoaded = true;
+      if (this.scrollTopAfterHistory) // on manual request
+        this.scrollTop();
+      if (!this.firstHistoryLoaded) // on first focus history load
         this.scrollDown();
-        return;
-      }
 
       this.historyLoading = false;
-      this.$el.find('.history-loader .spinner').hide();
-      this.toggleHistoryMore(data.more);
+      this.scrollTopAfterHistory = false;
+      this.firstHistoryLoaded = true;
+      this.toggleHistoryLoader(data.more);
     },
-    toggleHistoryMore: function(w) {
-      if (w) {
-        // true: display 'more' link
-        this.$el.find('.history-loader .more').show();
-        this.$el.find('.history-loader .no-more').hide();
+    toggleHistoryLoader: function(more) {
+      this.$el.find('.history-loader').find('.help, .loading, .no-more').hide();
+      if (more === 'loading') {
+          // 'loading'
+        this.$el.find('.history-loader .loading').show();
+      } else if (more) {
+        // 'scroll to display more'
+        this.$el.find('.history-loader .help').show();
       } else {
-        // else: display no more history indication
-        this.$el.find('.history-loader .more').hide();
+        // no more history indication
         this.$el.find('.history-loader .no-more').show();
       }
     },

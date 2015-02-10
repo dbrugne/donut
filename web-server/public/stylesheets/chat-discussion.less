@@ -220,19 +220,30 @@
         text-align: left;
         padding: 10px;
         background-color: @cl-subtext0;
-        color: @cl-subtext30;
         border-top: 1px solid @cl-subtext0;
-        margin-bottom: -5px;
-        .spinner {
+        color: @cl-subtext30;
+        margin-bottom: -7px;
+        text-align: center;
+        font-size: 1.1em;
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+        .arrow {
+          font-size: 1.4em;
+          color: @cl-subtext30;
+          padding-left: 50px;
+          padding-right: 50px;
+        }
+        .help {
+        }
+        .loading {
           display: none;
-          .pull-right;
-          font-size: 8px;
+          .spinner {
+            font-size: 1.3em;
+          }
         }
-        a.more {
-          cursor: pointer;
-          color: @cl-first;
+        .no-more {
+          display: none;
         }
-        .no-more { display: none; }
       }
       .history {
         margin-top: 6px;
@@ -495,8 +506,8 @@
           margin-top: -o-calc(@header-height + 10px);
           margin-top: calc(@header-height + 10px);
           margin-bottom: 0;
-          margin-left: 12px;
-          padding: 0 0 10px 0;
+          margin-left: 5px;
+          padding: 0 0 10px 10px;
           background-repeat: no-repeat;
           background-position: left top;
           position: relative;

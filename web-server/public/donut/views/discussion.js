@@ -100,10 +100,7 @@ define([
         this.hasBeenFocused = true;
 
         // resize and scroll down
-        var that = this;
-        _.defer(function() {
-          that.onResize()
-        });
+        this.onResize();
 
         this._focus();
       } else {
@@ -144,7 +141,7 @@ define([
       var eventsHeight = totalHeight - (headerHeight + inputHeight);
 
       this.eventsView.resize(eventsHeight);
-      //window.debug.log('resize call by window ('+totalHeight+', '+headerHeight+', '+inputHeight+', '+eventsHeight+')');
+      window.debug.log('resize call by window ('+totalHeight+', '+headerHeight+', '+inputHeight+', '+eventsHeight+')');
     },
 
     onSend: function() {

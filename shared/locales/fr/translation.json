@@ -374,9 +374,9 @@
             "online": "est en ligne,"
         },
         "history": {
-            "label": "Historique ",
-            "more": "afficher plus ...",
-            "nomore": "rien de plus à afficher"
+            "help": "Remonter pour en voir plus",
+            "loading": "Chargement de l'historique ...",
+            "nomore": "Rien de plus à afficher"
         },
         "shouldauthenticated": "Vous devez être identifié pour accéder aux discussions (<a href='/signup'>créer un compte</a> ou <a href='/login'>se connecter</a>)",
         "closemessage": "Etes-vous sur de vouloir quitter, l’historique de vos conversations sera perdu ?",

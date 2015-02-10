@@ -1,13 +1,11 @@
 <div class="scrollable">
     <div class="blank"></div>
     <div class="history-loader">
-        <i class="fa fa-clock-o"></i>
-        <%= t('chat.history.label') %>:
-        <a class="more" data-colorify-text="color"><%= t('chat.history.more') %></a>
+        <i class="fa fa-arrow-circle-o-up arrow"></i>
+        <span class="help"><%= t('chat.history.help') %></span>
+        <span class="loading"><%= t('chat.history.loading') %> <i class="fa fa-spinner fa-spin"></i></span>
         <span class="no-more"><%= t('chat.history.nomore') %></span>
-        <div class="spinner">
-            <i class="fa fa-spinner fa-spin fa-2x"></i>
-        </div>
+        <i class="fa fa-arrow-circle-o-up arrow"></i>
     </div>
     <div class="history"><!--/history events--></div>
     <% if (model.type == 'room') { %>
