@@ -216,6 +216,7 @@ define([
      * @param data
      */
     onWelcome: function(data) {
+      window.debug.start('welcome');
       window.debug.start('welcome-before');
       var that = this;
 
@@ -274,6 +275,7 @@ define([
       // Run routing only when everything in interface is ready
       this.trigger('ready');
       this.$connectionModal.modal('hide');
+      window.debug.end('welcome');
     },
 
     /**
