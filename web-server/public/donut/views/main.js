@@ -53,7 +53,7 @@ define([
 
     interval: null,
 
-    intervalDuration: 45000, // ms
+    intervalDuration: 240000, // ms
 
     events: {
       'click .go-to-search'             : 'focusOnSearch',
