@@ -21,37 +21,20 @@ define([
 
     firstHistoryLoaded: false,
 
-    //scrollReady: false,
-
     scrollPosition: '',
 
     keepMaxEventsOnCleanup: 500,
 
     initialize: function(options) {
-      window.debug.start('discussion-events'+((this.model.get('name'))?this.model.get('name'):this.model.get('username')));
+      window.debug.start('discussion-events'+this.model.getIdentifier());
       this.listenTo(this.model, 'freshEvent', this.addFreshEvent);
       this.listenTo(this.model, 'historyEvents', this.onHistoryEvents);
       this.listenTo(this.model, 'reconnectEvents', this.onReconnectEvents);
 
-      window.events = this;
+      window.events = this; // @todo : debug TEMP
 
-      var that = this;
-      //_.defer(function() { // => Uncaught TypeError: Cannot read property '0' of null
-        that.render();
-        window.debug.end('discussion-events'+((that.model.get('name'))?that.model.get('name'):that.model.get('username')));
-      //});
-    },
-    _id: function() {
-      return (this.model.get('name'))
-        ? 'room "'+this.model.get('name')+'"'
-        : 'onetoone "'+this.model.get('username')+'"';
-    },
-    _start: function() {
-      window.debug.start('discussion-events-messages-'+((this.model.get('name'))?this.model.get('name'):this.model.get('username')));
-    },
-    _stop: function(num) {
-      window.debug.end('discussion-events-messages-'+((this.model.get('name'))?this.model.get('name'):this.model.get('username')));
-      window.debug.log('rendered '+num+' events');
+      this.render();
+      window.debug.end('discussion-events'+this.model.getIdentifier());
     },
     _remove: function() {
       clearInterval(this.interval);
@@ -67,41 +50,7 @@ define([
       });
       this.$el.append(html);
 
-      // scrollbar-it
-      var that = this;
-      //this.$el.mCustomScrollbar({
-      //  scrollInertia         : 0,
-      //  alwaysShowScrollbar   : 2,
-      //  theme                 : 'rounded-dark',
-      //  mouseWheel            : { enable: true, scrollAmount: 75 },
-      //  keyboard              : { scrollAmount: 30 },
-      //  scrollButtons         : { enable: true },
-      //  live                  : false,
-      //  advanced:{
-      //    updateOnSelectorChange: false,
-      //    updateOnContentResize: false,
-      //    updateOnImageLoad: false
-      //  },
-      //  callbacks:{
-      //    onScroll: function() {
-      //      that.scrollPosition = this.mcs.top; // in pixel
-      //    },
-      //    onTotalScroll: function() {
-      //      that.scrollPosition = 'bottom';
-      //    },
-      //    onTotalScrollBack: function() {
-      //      that.scrollPosition = 'top';
-      //    }
-      //  }
-      //});
-      //this.scrollReady = true;
-      //// prevent browser go to # when clicking on button with not enough content
-      //// to have scroll activated
-      //this.$el.find('.mCSB_buttonUp, .mCSB_buttonDown').on('click', function(e) {
-      //  e.preventDefault();
-      //});
-      // scroll library move content in child div
-      //this.$scrollable = this.$el.find('.mCSB_container');
+      this.$scrollable = this.$el.find('.scrollable');
       this.$history = this.$el.find('.history');
       this.$realtime = this.$el.find('.realtime');
       this.$blank = this.$el.find('.blank');
@@ -129,7 +78,7 @@ define([
       var rl = this.$realtime.find('.block').length;
 
       if ((hl + rl) < 250) // not enough content, no need to cleanup
-        return window.debug.log('cleanup '+this._id()+ ' not enough event to cleanup: '+(hl + rl));
+        return window.debug.log('cleanup '+this.model.getIdentifier()+ ' not enough event to cleanup: '+(hl + rl));
 
       // @todo : only when a certain amount of content OR when history is not visible on scroll position
 
@@ -145,26 +94,19 @@ define([
       if (remove > 0)
         this.$realtime.find('.block').slice(0, remove).remove();
 
-      window.debug.log('cleanup discussion "'+this._id()+'", with '+length+' length, '+remove+' removed');
+      window.debug.log('cleanup discussion "'+this.model.getIdentifier()+'", with '+length+' length, '+remove+' removed');
 
       if (this.model.get('focused'))
         this.scrollDown();
     },
     scrollDown: function() {
-      //// too early calls (router) will trigger scrollbar generation
-      //// on scrollTo and make everything explode
-      //if (!this.scrollReady)
-      //  return;
-
       if (!this.model.get('focused'))
         return;
 
-      var that = this;
-      // @todo clean scroll down logic
-      //_.delay(function() {
-      //  that.$el.mCustomScrollbar('update');
-      //  that.$el.mCustomScrollbar('scrollTo', 'bottom');
-      //}, 100);
+      var contentHeight = this.$scrollable.outerHeight(true);
+      var viewportHeight = this.$el.height();
+      var difference = contentHeight - viewportHeight;
+      this.$el.scrollTop(difference);
     },
     resize: function(heigth) {
       this.$el.height(heigth);
@@ -191,7 +133,7 @@ define([
         windowView.triggerInout(model, this.model);
 
       // render a 'fresh' event in realtime and scrolldown
-      this._start();
+      window.debug.start('discussion-events-fresh-'+this.model.getIdentifier());
       // scrollDown only if already on bottom before DOM insertion
       var needToScrollDown = (this.scrollPosition == '' || this.scrollPosition == 'bottom')
         ? true
@@ -210,7 +152,7 @@ define([
       //else
       //  this.$el.mCustomScrollbar('update'); // just update
 
-      this._stop(1);
+      window.debug.end('discussion-events-fresh-'+this.model.getIdentifier());
     },
     addBatchEvents: function(events, more, callType) {
       callType = callType || 'history'; // connect/reconnect/history
@@ -219,7 +161,7 @@ define([
       }
 
       // render a batch of events (sorted in 'desc' order)
-      this._start();
+      window.debug.start('discussion-events-batch-'+this.model.getIdentifier());
       var $html = $('<div/>');
       var previousElement;
       var that = this;
@@ -242,7 +184,7 @@ define([
       } else {
         $html.appendTo(this.$realtime);
       }
-      this._stop(events.length);
+      window.debug.end('discussion-events-batch-'+this.model.getIdentifier());
     },
     _newBlock: function(newModel, previousElement) {
       var newBlock = false;

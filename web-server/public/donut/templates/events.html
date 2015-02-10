@@ -1,25 +1,27 @@
-<div class="blank"></div>
-<div class="history-loader">
-    <i class="fa fa-clock-o"></i>
-    <%= t('chat.history.label') %>:
-    <a class="more" data-colorify-text="color"><%= t('chat.history.more') %></a>
-    <span class="no-more"><%= t('chat.history.nomore') %></span>
-    <div class="spinner">
-        <i class="fa fa-spinner fa-spin fa-2x"></i>
+<div class="scrollable">
+    <div class="blank"></div>
+    <div class="history-loader">
+        <i class="fa fa-clock-o"></i>
+        <%= t('chat.history.label') %>:
+        <a class="more" data-colorify-text="color"><%= t('chat.history.more') %></a>
+        <span class="no-more"><%= t('chat.history.nomore') %></span>
+        <div class="spinner">
+            <i class="fa fa-spinner fa-spin fa-2x"></i>
+        </div>
     </div>
-</div>
-<div class="history"><!--/history events--></div>
-<% if (model.type == 'room') { %>
-<div class="hello block">
-    <div class="event">
-        <div class="text"><div class="picto hello"></div> <%= t('chat.welcome.room', {name: model.name}) %></div>
+    <div class="history"><!--/history events--></div>
+    <% if (model.type == 'room') { %>
+    <div class="hello block">
+        <div class="event">
+            <div class="text"><div class="picto hello"></div> <%= t('chat.welcome.room', {name: model.name}) %></div>
+        </div>
     </div>
-</div>
-<% } else if (model.type == 'onetoone') { %>
-<div class="hello block">
-    <div class="event">
-        <div class="text"><div class="picto hello"></div> <%= t('chat.welcome.onetoone', {username: model.username}) %></div>
+    <% } else if (model.type == 'onetoone') { %>
+    <div class="hello block">
+        <div class="event">
+            <div class="text"><div class="picto hello"></div> <%= t('chat.welcome.onetoone', {username: model.username}) %></div>
+        </div>
     </div>
+    <% }; %>
+    <div class="realtime"><!--/realtime events--></div>
 </div>
-<% }; %>
-<div class="realtime"><!--/realtime events--></div>
