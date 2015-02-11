@@ -34,8 +34,6 @@ module.exports = function(grunt) {
             'jquery.cloudinary'           : '../vendor/cloudinary_js/js/jquery.cloudinary',
             'cloudinary.widget'           : '//widget.cloudinary.com/global/all',
             'jquery.cloudinary-donut'     : '../../../shared/cloudinary/cloudinary',
-            'jquery.mcs'                  : '../vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar',
-            'jquery.mousewheel'           : '../vendor/jquery-mousewheel/jquery.mousewheel',
             'jquery.insertatcaret'        : '../javascripts/plugins/jquery.insertatcaret',
             'jquery.maxlength'            : '../javascripts/plugins/jquery.maxlength',
             'jquery.linkify'              : '../javascripts/plugins/jquery.linkify',
