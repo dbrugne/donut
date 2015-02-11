@@ -9,8 +9,8 @@
         <div class="avatar open-user-profile" data-username="<%= user.username %>"  style="background-image: url(<%= user.avatar %>)" title="<% if (user.is_op === true) { %><%= t('chat.op.is') %><% } else if (user.is_owner === true) { %><%= t('chat.owner.is') %><% }; %>"></div>
         <div class="username open-user-profile" data-username="<%= user.username %>" title="<%= t('global.'+user.status) %>">@<%= user.username %></div>
     </div>
+    <% if (!user.is_owner && (isOp === true || isOwner === true)) { %>
     <div class="actions">
-        <% if (!user.is_owner && (isOp === true || isOwner === true)) { %>
             <% if (user.is_op === true) { %>
             <div class="deop-user" title="<%= t('chat.deop.infobox') %>" data-username="<%= user.username %>">
                 <img src="/images/deop.png"> Dé-op
@@ -23,7 +23,7 @@
             <div class="kick-user" title="<%= t('chat.kick.infobox') %>" data-username="<%= user.username %>">
                 <img src="/images/kick-w.png"> Expulser
             </div>
-        <% }; %>
     </div>
+    <% }; %>
 </div>
 <% }); %>
