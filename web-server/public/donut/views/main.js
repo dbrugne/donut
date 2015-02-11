@@ -82,16 +82,6 @@ define([
       this.listenTo(onetoones,  'remove', this.onRemoveDiscussion);
       this.listenTo(rooms,      'kicked', this.roomKicked);
       this.listenTo(rooms,      'deleted', this.roomRoomDeleted);
-
-      /**
-       * Todo
-       * x move connectionModal code in separate view
-       * x listen disconnect code in main (clear interval + loop on discussions to set flag to false and trigger:
-       * - merge event view sublocks in a unique block
-       * - separate event.html in sub-stemplates
-       * - re-fetch history (cleanup events?) on 'reconnect'
-       */
-
     },
     run: function() {
       // generate and attach subviews
