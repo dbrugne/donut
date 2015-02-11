@@ -165,6 +165,7 @@ define([
 
       // remove from this.users
       model.users.remove(user);
+      model.users.trigger('users-redraw');
 
       // trigger event
       model.trigger('freshEvent', new EventModel({
