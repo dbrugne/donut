@@ -111,17 +111,15 @@ define([
     },
 
     firstFocus: function() {
-      this.model.history(null);
+      this.model.history(null); // @todo : on reconnect (only), remove all events in view before requesting history // seems to work like that, wait and see if bugs happen ...
       this._firstFocus();
     },
 
     removeView: function(model) {
-      if (model === this.model) {
-        this._remove();
-        this.eventsView._remove();
-        this.inputView._remove();
-        this.remove();
-      }
+      this._remove();
+      this.eventsView._remove();
+      this.inputView._remove();
+      this.remove();
     },
 
     colorify: function() {
