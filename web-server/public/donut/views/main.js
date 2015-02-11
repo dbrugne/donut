@@ -407,7 +407,7 @@ define([
       view.removeView();
       delete this.views[model.get('id')];
 
-      // this.persistPositions(true);
+      this.persistPositions(true); // warning, this call (will trigger broadcast to all user sockets) could generate weird behavior on discussion block on multi-devices
 
       // Focus default
       if (wasFocused)
