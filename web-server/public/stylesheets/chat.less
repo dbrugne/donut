@@ -41,6 +41,7 @@
   }
   .modal-dialog {
     margin-top: 10em;
+    width: 320px;
     .modal-content {
       .modal-body {
         padding: 30px 10px;
@@ -56,8 +57,14 @@
           font-size: 1.3em;
           font-style: italic;
           color: @cl-subtext50;
+          >span {
+            display: none;
+          }
+          >span.connecting {
+            display: inline;
+          }
         }
-        .error {
+        .error-message {
           display: none;
           margin-top: 25px;
           text-align: center;

@@ -90,8 +90,15 @@
                     <div class="loader">
                         <img src="/images/loader.gif">
                     </div>
-                    <div class="current"><!--connection message --></div>
-                    <div class="error"><!--connection error --></div>
+                    <div class="current">
+                        <!-- must be already in DOM -->
+                        <span class="connected">{{#i}}chat.connection.connected{{/i}}</span>
+                        <span class="reconnected">{{#i}}chat.connection.reconnected{{/i}}</span>
+                        <span class="connecting">{{#i}}chat.connection.connecting{{/i}}</span>
+                        <span class="error">{{#i}}chat.connection.error{{/i}}</span>
+                        <span class="disconnected">{{#i}}chat.connection.disconnected{{/i}}</span>
+                    </div>
+                    <div class="error-message"><!--connection error --></div>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->

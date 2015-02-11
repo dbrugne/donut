@@ -4,9 +4,11 @@ define([
   'backbone',
   'client',
   'models/current-user',
+  'models/event',
   'collections/rooms',
   'collections/onetoones',
   'views/window',
+  'views/connection',
   'views/current-user',
   'views/alert',
   'views/home',
@@ -22,8 +24,8 @@ define([
   'views/discussion-room',
   'views/discussion-onetoone',
   'views/discussions-block'
-], function ($, _, Backbone, client, currentUser, rooms, onetoones, windowView,
-             CurrentUserView, AlertView, HomeView, QuickSearchView,
+], function ($, _, Backbone, client, currentUser, EventModel, rooms, onetoones, windowView,
+             ConnectionModalView, CurrentUserView, AlertView, HomeView, QuickSearchView,
              DrawerView,
              DrawerRoomCreateView, DrawerRoomProfileView, DrawerRoomEditView,
              DrawerRoomDeleteView,
@@ -38,8 +40,6 @@ define([
     $home: $('#home'),
 
     $discussionsPanelsContainer: $("#center"),
-
-    $connectionModal: $('#connection'),
 
     firstConnection: true,
 
@@ -74,6 +74,8 @@ define([
       this.defaultColor = window.room_default_color;
 
       this.listenTo(client,     'welcome', this.onWelcome);
+      this.listenTo(client,     'disconnect', this.onDisconnect);
+      this.listenTo(client,     'reconnect', this.onReconnect);
       this.listenTo(rooms,      'add', this.addView);
       this.listenTo(rooms,      'remove', this.onRemoveDiscussion);
       this.listenTo(onetoones,  'add', this.addView);
@@ -81,95 +83,23 @@ define([
       this.listenTo(rooms,      'kicked', this.roomKicked);
       this.listenTo(rooms,      'deleted', this.roomRoomDeleted);
 
-      // pre-connection modal
-      this.listenTo(client, 'connecting',         function() { this.connectionModal('connecting'); }, this);
-      this.listenTo(client, 'connect',            function() { this.connectionModal('connect'); }, this);
-      this.listenTo(client, 'disconnect',         function(reason) { this.connectionModal('disconnect', reason); clearInterval(this.interval); }, this); // @todo : reset all discussion "hasBeenFocused" flag
-      this.listenTo(client, 'reconnect',          function(num) { this.connectionModal('reconnect', num); }, this);
-      this.listenTo(client, 'reconnect_attempt',  function() { this.connectionModal('reconnect_attempt'); }, this);
-      this.listenTo(client, 'reconnecting',       function(num) { this.connectionModal('reconnecting', num); }, this);
-      this.listenTo(client, 'reconnect_error',    function(err) { this.connectionModal('reconnect_error', err); }, this);
-      this.listenTo(client, 'reconnect_failed',   function() { this.connectionModal('reconnect_failed'); }, this);
-      this.listenTo(client, 'error',              function(err) { this.connectionModal('error', err); }, this);
-      this.$connectionModal.modal({
-        backdrop: 'static',
-        keyboard: false,
-        show: true
-      });
+      /**
+       * Todo
+       * x move connectionModal code in separate view
+       * x listen disconnect code in main (clear interval + loop on discussions to set flag to false and trigger:
+       * - merge event view sublocks in a unique block
+       * - separate event.html in sub-stemplates
+       * - re-fetch history (cleanup events?) on 'reconnect'
+       */
+
     },
-
-    connectionModal: function(event, data) {
-      var $modal = this.$connectionModal;
-      var $current = this.$connectionModal.find('.current');
-      var $error = this.$connectionModal.find('.error');
-
-      // hide only by 'welcome' handler
-      switch (event) {
-        case  'connect':
-          $current.html($.t('chat.connection.connected'));
-          $error.html('').hide();
-          break;
-        case  'reconnect':
-          $current.html($.t('chat.connection.reconnected', {num: data}));
-          $error.html('').hide();
-          break;
-        case 'connecting':
-        case 'reconnecting':
-        case 'reconnect_error':
-        case 'reconnect_attempt':
-          $current.html($.t('chat.connection.connecting'));
-          $error.html(data).show();
-          break;
-        case 'error':
-        case 'reconnect_failed':
-          $current.html($.t('chat.connection.error'));
-          $error.html(data).show();
-          break;
-        case 'disconnect':
-          $current.html($.t('chat.connection.disconnected'));
-          $error.html(data).show();
-          $modal.modal('show');
-          break;
-      }
-    },
-
-    onEnterImage: function(event) {
-      event.preventDefault();
-      var $image = $(event.currentTarget);
-      var cloudinaryId = $image.attr('data-cloudinary-id');
-      var url = $.cd.natural(cloudinaryId, 150, 150);
-      $image.popover({
-        animation: false,
-        content: '<img src="'+url+'" alt="user contribution">',
-        html: true,
-        placement: 'auto left',
-        viewport: $image.closest('div.mCSB_container')
-      });
-
-      $image.on('shown.bs.popover', function () {
-        var $i = $('.popover-content img');
-        $i.bind('load', function() {
-          if ($image.data('imgloaded'))
-            return;
-
-          $image.data('imgloaded', true);
-          $image.popover('show');
-        });
-      });
-
-      $image.popover('show');
-    },
-    onLeaveImage: function(event) {
-      $image = $(event.currentTarget);
-      $image.popover('hide');
-    },
-
     run: function() {
       // generate and attach subviews
       this.currentUserView = new CurrentUserView({model: currentUser});
       this.discussionsBlock = new DiscussionsBlockView({mainView: this});
       this.drawerView = new DrawerView({mainView: this});
       this.alertView = new AlertView({mainView: this});
+      this.connectionView = new ConnectionModalView({mainView: this});
 
       // @todo : reuse for top navbar
 //      this.quickSearchView = new QuickSearchView({
@@ -181,33 +111,6 @@ define([
       window.current = currentUser;
       window.rooms = rooms;
       window.onetoones = onetoones;
-    },
-
-    alert: function(type, message) {
-      type = type || 'info';
-      this.alertView.show(type, message);
-    },
-
-    _color: function(color) {
-      this.$el.find('#color').css('background-color', color);
-    },
-
-    color: function(color, temporary, reset) {
-      if (reset)
-        return this._color(this.currentColor);
-
-      color = color || this.defaultColor;
-
-      if (!temporary)
-        this.currentColor = color;
-
-      return this._color(color);
-    },
-
-    _handleAction: function(event) {
-      if (!event) return false;
-      event.preventDefault();
-      event.stopPropagation();
     },
 
     /**
@@ -272,8 +175,87 @@ define([
 
       // Run routing only when everything in interface is ready
       this.trigger('ready');
-      this.$connectionModal.modal('hide');
+      this.connectionView.hide();
       window.debug.end('welcome');
+    },
+    onDisconnect: function() {
+      // disable interval
+      clearInterval(this.interval);
+
+      // add disconnected event in each discussion
+      var e = new EventModel({
+        type: ''
+      });
+      _.each(this.views, function(view) {
+        view.eventsView.addFreshEvent(e);
+        view.hasBeenFocused = false; // will force re-fetch data on next focus
+      });
+    },
+    onReconnect: function() {
+      // add reconnected event in each discussion
+      var e = new EventModel({
+        type: 'reconnected'
+      });
+      _.each(this.views, function(view) {
+        view.eventsView.addFreshEvent(e);
+      });
+    },
+    onEnterImage: function(event) {
+      event.preventDefault();
+      var $image = $(event.currentTarget);
+      var cloudinaryId = $image.attr('data-cloudinary-id');
+      var url = $.cd.natural(cloudinaryId, 150, 150);
+      $image.popover({
+        animation: false,
+        content: '<img src="'+url+'" alt="user contribution">',
+        html: true,
+        placement: 'auto left',
+        viewport: $image.closest('div.mCSB_container')
+      });
+
+      $image.on('shown.bs.popover', function () {
+        var $i = $('.popover-content img');
+        $i.bind('load', function() {
+          if ($image.data('imgloaded'))
+            return;
+
+          $image.data('imgloaded', true);
+          $image.popover('show');
+        });
+      });
+
+      $image.popover('show');
+    },
+    onLeaveImage: function(event) {
+      $image = $(event.currentTarget);
+      $image.popover('hide');
+    },
+
+    alert: function(type, message) {
+      type = type || 'info';
+      this.alertView.show(type, message);
+    },
+
+    _color: function(color) {
+      this.$el.find('#color').css('background-color', color);
+    },
+
+    color: function(color, temporary, reset) {
+      if (reset)
+        return this._color(this.currentColor);
+
+      color = color || this.defaultColor;
+
+      if (!temporary)
+        this.currentColor = color;
+
+      return this._color(color);
+    },
+
+    _handleAction: function(event) {
+      if (!event) return false;
+      event.preventDefault();
+      event.stopPropagation();
     },
 
     /**
