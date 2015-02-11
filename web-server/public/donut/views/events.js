@@ -6,12 +6,21 @@ define([
   'moment',
   'views/window',
   'text!templates/events.html',
-  'text!templates/event.html'
-], function ($, _, Backbone, EventModel, moment, windowView, eventsTemplate, eventTemplate) {
+  'text!templates/event/disconnected.html',
+  'text!templates/event/in-out-on-off.html',
+  'text!templates/event/message.html',
+  'text!templates/event/reconnected.html',
+  'text!templates/event/room-deop.html',
+  'text!templates/event/room-kick.html',
+  'text!templates/event/room-op.html',
+  'text!templates/event/room-topic.html'
+], function ($, _, Backbone, EventModel, moment, windowView, eventsTemplate,
+             disconnectedTemplate, inOutOnOffTemplate, messageTemplate, reconnectedTemplate,
+             deopTemplate, kickTemplate, opTemplate, topicTemplate) {
   var EventsView = Backbone.View.extend({
 
     template: _.template(eventsTemplate),
-    eventTemplate: _.template(eventTemplate),
+    eventTemplates: '',
 
     events: {
       "scroll": "onScroll",
@@ -30,6 +39,17 @@ define([
       window.debug.start('discussion-events'+this.model.getIdentifier());
       this.listenTo(this.model, 'freshEvent', this.addFreshEvent);
       this.listenTo(this.model, 'historyEvents', this.onHistoryEvents);
+
+      this.eventTemplates = {
+        disconnected    : _.template(disconnectedTemplate),
+        inoutonoff      : _.template(inOutOnOffTemplate),
+        message         : _.template(messageTemplate),
+        reconnected     : _.template(reconnectedTemplate),
+        deop            : _.template(deopTemplate),
+        kick            : _.template(kickTemplate),
+        op              : _.template(opTemplate),
+        topic           : _.template(topicTemplate)
+      };
 
       this.render();
       window.debug.end('discussion-events'+this.model.getIdentifier());
@@ -322,7 +342,32 @@ define([
       var data = this._prepareEvent(model);
       data.withBlock = withBlock || false;
       try {
-        return this.eventTemplate(data);
+        var template;
+        switch (data.type) {
+          case 'disconnected':
+            template = this.eventTemplates['disconnected']; break;
+          case 'user:online':
+          case 'user:offline':
+          case 'room:in':
+          case 'room:out':
+            template = this.eventTemplates['inoutonoff']; break;
+          case 'room:message':
+          case 'user:message':
+            template = this.eventTemplates['message']; break;
+          case 'reconnected':
+            template = this.eventTemplates['reconnected']; break;
+          case 'room:deop':
+            template = this.eventTemplates['deop']; break;
+          case 'room:kick':
+            template = this.eventTemplates['kick']; break;
+          case 'room:':
+            template = this.eventTemplates['op']; break;
+          case 'room:topic':
+            template = this.eventTemplates['topic']; break;
+          default:
+            return;
+        }
+        return template(data);
       } catch (e) {
         window.debug.log('Render exception, see below');
         window.debug.log(e);

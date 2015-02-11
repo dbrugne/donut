@@ -1,0 +1,12 @@
+<div class="block deop">
+    <div class="event" id="<%= data.id %>" data-time="<%= data.time %>">
+        <div class="text">
+            <div class="picto deop"></div>
+            <div class="avatar open-user-profile" data-username="<%= data.username %>" style="background-image: url(<%= data.avatar %>)"></div>
+            <span class="username open-user-profile" data-username="<%= data.username %>">@<%= data.username %></span> <%= t('chat.notifications.deop') %>
+            <div class="avatar open-user-profile" data-username="<%= data.by_username %>" style="background-image: url(<%= data.by_avatar %>)"></div>
+            <span class="username open-user-profile" data-username="<%= data.by_username %>">@<%= data.by_username %></span>
+        </div>
+        <div class="date"><span class="moment" data-time="<%= data.time %>" title="<%= data.datefull %>"><%= data.dateshort %></span></div>
+    </div>
+</div>
