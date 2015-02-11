@@ -3,8 +3,8 @@
         <div class="text">
             <div class="avatar open-user-profile" data-username="<%= data.username %>" style="background-image: url(<%= data.avatar %>)"></div>
             <span class="username open-user-profile" data-username="<%= data.username %>">@<%= data.username %></span>
-            <%= t('chat.notifications.topic') %> "<%- data.topic %>"
+            <%= t('chat.notifications.topic') %> <% if (data.topic != '') { %>"<%- data.topic %>"<% } else { %><em><%= t('chat.notifications.topicempty') %></em><% } %>
         </div>
-        <div class="date"><span class="moment" data-time="<%= data.time %>" title="<%= data.datefull %>"><%= data.dateshort %></span></div>
+        <div class="date"><span class="moment" data-time="<%= data.time %>" title="<%= data.datefull %>"><strong><%= data.dateshort %></span></div>
     </div>
 </div>

@@ -344,6 +344,7 @@
       "reconnected": "You have been reconnected",
       "offline": "This user is currently offline, the message cannot be sent.",
       "topic": "changed topic for",
+      "topicempty": "empty",
       "kick": "was kicked out of this donut by",
       "ban": "was banned from this donut by",
       "op": "was made moderator by",

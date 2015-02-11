@@ -365,6 +365,7 @@
             "reconnected": "Vous êtes reconnecté",
             "offline": "n'est plus en ligne,",
             "topic": "a changé le sujet pour",
+            "topicempty": "vide",
             "kick": "a été expulsé de ce donut par",
             "ban": "a été banni de ce donut par",
             "op": " a été promu modérateur par",

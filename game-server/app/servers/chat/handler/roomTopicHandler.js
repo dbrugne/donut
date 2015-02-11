@@ -71,6 +71,10 @@ handler.topic = function(data, session, next) {
 
 		function prepareEvent(room, user, callback) {
 			var topic = inputUtil.filter(data.topic, 512);
+
+			if (topic === false)
+			  topic = '';
+
 			var event = {
 				user_id : user._id.toString(),
 				username: user.username,
