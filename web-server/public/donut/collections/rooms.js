@@ -21,7 +21,6 @@ define([
     },
 
     initialize: function() {
-      this.listenTo(client, 'disconnect', this.onDisconnect);
       this.listenTo(client, 'room:in', this.onIn);
       this.listenTo(client, 'room:out', this.onOut);
       this.listenTo(client, 'room:topic', this.onTopic);
@@ -83,11 +82,6 @@ define([
         this.add(model);
         // now the view exists (created by mainView)
       }
-    },
-    onDisconnect: function() {
-      this.each(function(model) {
-        model.onDisconnect();
-      });
     },
     onIn: function(data) {
       var model;

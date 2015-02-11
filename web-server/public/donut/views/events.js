@@ -30,7 +30,6 @@ define([
       window.debug.start('discussion-events'+this.model.getIdentifier());
       this.listenTo(this.model, 'freshEvent', this.addFreshEvent);
       this.listenTo(this.model, 'historyEvents', this.onHistoryEvents);
-      this.listenTo(this.model, 'reconnectEvents', this.onReconnectEvents);
 
       this.render();
       window.debug.end('discussion-events'+this.model.getIdentifier());
@@ -379,52 +378,52 @@ define([
         // no more history indication
         this.$el.find('.history-loader .no-more').show();
       }
-    },
-    onReconnectEvents: function(history) {
-      // @todo : very optimistic approach, we base our logic on the 250 last events (what's happen for a reconnect after few hours of deconnection??)
-
-      // render events received on 'reconnect' (in .realtime)
-      var history = this.model.get('reconnectHistory');
-      if (!history || !history.history || history.history.length < 0)
-        return;
-
-      var lastElement = this.$realtime.find('.event[data-time]:last').first();
-      var lastEventTs;
-      if (lastElement.length < 1) // else try to find in .history (important!)
-        lastElement = this.$history.find('.event[data-time]:last').first();
-      var lastEventTs = (lastElement.length > 0)
-        ? lastElement.data('time')
-        : false;
-
-      var firstEvent = _.last(history.history); // history is given sorted 'desc'
-      var firstEventTs = (firstEvent && firstEvent.data && firstEvent.data.time)
-        ? firstEvent.data.time
-        : false;
-
-      window.debug.log('last in dom: '+lastEventTs+' <?> '+firstEventTs+' first received ('+(lastEventTs<firstEventTs)+')');
-
-      // need to filter events (last element in DOM is more ancient that first element in history
-      var filtered;
-      window.debug.log('reconnect '+history.history.length);
-      // no need to filter
-      if (firstEventTs === false || lastEventTs === false || lastEventTs < firstEventTs) {
-        window.debug.log('no need to filter');
-        filtered = history.history;
-      } else {
-        // only events greater than last element timestamp
-        window.debug.log('filter the list');
-        filtered = _.filter(history.history, function(event) {
-          if (event.data.time > lastEventTs)
-            return true;
-          else
-            return false;
-        });
-      }
-      window.debug.log('reconnect '+filtered.length);
-
-      this.addBatchEvents(filtered, history.more, 'reconnect');
-      this.model.set('reconnectHistory', null);
     }
+    //onReconnectEvents: function(history) {
+    //  // /!\ too optimistic approach, we base our logic on the 250 last events (what's happen for a reconnect after few hours of deconnection??)
+    //
+    //  // render events received on 'reconnect' (in .realtime)
+    //  var history = this.model.get('reconnectHistory');
+    //  if (!history || !history.history || history.history.length < 0)
+    //    return;
+    //
+    //  var lastElement = this.$realtime.find('.event[data-time]:last').first();
+    //  var lastEventTs;
+    //  if (lastElement.length < 1) // else try to find in .history (important!)
+    //    lastElement = this.$history.find('.event[data-time]:last').first();
+    //  var lastEventTs = (lastElement.length > 0)
+    //    ? lastElement.data('time')
+    //    : false;
+    //
+    //  var firstEvent = _.last(history.history); // history is given sorted 'desc'
+    //  var firstEventTs = (firstEvent && firstEvent.data && firstEvent.data.time)
+    //    ? firstEvent.data.time
+    //    : false;
+    //
+    //  window.debug.log('last in dom: '+lastEventTs+' <?> '+firstEventTs+' first received ('+(lastEventTs<firstEventTs)+')');
+    //
+    //  // need to filter events (last element in DOM is more ancient that first element in history
+    //  var filtered;
+    //  window.debug.log('reconnect '+history.history.length);
+    //  // no need to filter
+    //  if (firstEventTs === false || lastEventTs === false || lastEventTs < firstEventTs) {
+    //    window.debug.log('no need to filter');
+    //    filtered = history.history;
+    //  } else {
+    //    // only events greater than last element timestamp
+    //    window.debug.log('filter the list');
+    //    filtered = _.filter(history.history, function(event) {
+    //      if (event.data.time > lastEventTs)
+    //        return true;
+    //      else
+    //        return false;
+    //    });
+    //  }
+    //  window.debug.log('reconnect '+filtered.length);
+    //
+    //  this.addBatchEvents(filtered, history.more, 'reconnect');
+    //  this.model.set('reconnectHistory', null);
+    //}
 
   });
 

@@ -99,23 +99,6 @@ define([
 
       return isOp;
     },
-
-    onDisconnect: function() {
-      var model = new EventModel({
-        type: 'disconnected'
-      });
-      this.trigger('freshEvent', model);
-    },
-    onReconnect: function() {
-      // manage reconnectHistory
-      this.trigger('reconnectEvents');
-
-      var model = new EventModel({
-        type: 'reconnected'
-      });
-      this.trigger('freshEvent', model);
-    },
-
     onIn: function(data) {
       data.status = 'online'; // only an online user can join a room
 
@@ -228,12 +211,6 @@ define([
     },
     onUserOffline: function(data) {
       this._onStatus('offline', data);
-    },
-    onHistory: function(data) {
-      this.trigger('historyEvents', {
-        history: data.history,
-        more: data.more
-      });
     },
     history: function(since) {
       var that = this;

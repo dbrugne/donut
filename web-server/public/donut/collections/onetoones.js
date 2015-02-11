@@ -20,7 +20,6 @@ define([
     },
 
     initialize: function() {
-      this.listenTo(client, 'disconnect', this.onDisconnect);
       this.listenTo(client, 'user:message', this.onMessage);
       this.listenTo(client, 'user:updated', this.onUpdated);
       this.listenTo(client, 'user:online', this.onUserOnline);
@@ -121,12 +120,6 @@ define([
       return (c1 < c2)
         ? c1+'-'+c2
         : c2+'-'+c1;
-    },
-
-    onDisconnect: function() {
-      this.each(function(model) {
-        model.onDisconnect();
-      });
     },
 
     onLeave: function(data) {

@@ -30,21 +30,6 @@ define([
     leave: function() {
       client.userLeave(this.get('username'));
     },
-    onDisconnect: function() {
-      var model = new EventModel({
-        type: 'disconnected'
-      });
-      this.trigger('freshEvent', model);
-    },
-    onReconnect: function() {
-      // manage reconnectHistory
-      this.trigger('reconnectEvents');
-
-      var model = new EventModel({
-        type: 'reconnected'
-      });
-      this.trigger('freshEvent', model);
-    },
     onMessage: function(data) {
       var model = new EventModel({
         type: 'user:message',
@@ -75,12 +60,6 @@ define([
     },
     onUpdated: function (data) {
       this.set(data.data);
-    },
-    onHistory: function(data) {
-      this.trigger('historyEvents', {
-        history: data.history,
-        more: data.more
-      });
     },
     history: function(since) {
       var that = this;
