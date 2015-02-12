@@ -1,5 +1,4 @@
 var logger = require('pomelo-logger').getLogger('pomelo', __filename);
-var log = require('../../../../../shared/models/log');
 var async = require('async');
 var _ = require('underscore');
 var User = require('../../../../../shared/models/user');
@@ -26,8 +25,6 @@ var handler = Handler.prototype;
  *
  */
 handler.update = function(data, session, next) {
-
-	var start = log.start();
 
 	var that = this;
 
@@ -298,8 +295,6 @@ handler.update = function(data, session, next) {
 			logger.error(err);
 			return next(null, {code: 500, err: err});
 		}
-
-		log.activity('user:update', session.uid, null, start);
 
 		next(null, {});
 	});

@@ -1,5 +1,4 @@
 var logger = require('pomelo-logger').getLogger('pomelo', __filename);
-var log = require('../../../../../shared/models/log');
 var async = require('async');
 var _ = require('underscore');
 var User = require('../../../../../shared/models/user');
@@ -23,8 +22,6 @@ var handler = Handler.prototype;
  *
  */
 handler.leave = function(data, session, next) {
-
-	var start = log.start();
 
 	var that = this;
 
@@ -85,8 +82,6 @@ handler.leave = function(data, session, next) {
 	], function(err, user, userWith) {
 		if (err)
 			logger.error(err);
-
-		log.activity('user:leave', session.uid, data.username, start);
 
 		return next(null);
 	});

@@ -1,11 +1,9 @@
 var logger = require('pomelo-logger').getLogger('pomelo', __filename);
-var log = require('../../../../../shared/models/log');
 var async = require('async');
 var cloudinary = require('../../../../../shared/cloudinary/cloudinary');
 var i18next = require('../../../../../shared/util/i18next');
 var Room = require('../../../../../shared/models/room');
 var User = require('../../../../../shared/models/user');
-var roomEmitter = require('../../../util/roomEmitter');
 
 module.exports = function(app) {
 	return new Handler(app);
@@ -26,8 +24,6 @@ var handler = Handler.prototype;
  *
  */
 handler.delete = function(data, session, next) {
-
-	var start = log.start();
 
 	var that = this;
 
@@ -131,8 +127,6 @@ handler.delete = function(data, session, next) {
 			logger.error(err);
 			return next(null, {code: 500, err: err});
 		}
-
-		log.activity('room:delete', session.uid, data.name, start);
 
 		next(null, {success: true});
 	});

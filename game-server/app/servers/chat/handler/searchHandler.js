@@ -1,5 +1,4 @@
 var logger = require('pomelo-logger').getLogger('pomelo', __filename);
-var log = require('../../../../../shared/models/log');
 var async = require('async');
 var _ = require('underscore');
 var User = require('../../../../../shared/models/user');
@@ -24,8 +23,6 @@ var handler = Handler.prototype;
  *
  */
 handler.search = function(data, session, next) {
-
-	var start = log.start();
 
 	var that = this;
 
@@ -185,8 +182,6 @@ handler.search = function(data, session, next) {
 				event.users = results[1];
 			if (data.key)
 				event.key = data.key;
-
-			log.activity('room:search', session.uid, data.search, start);
 
 			return next(null, event);
 		}

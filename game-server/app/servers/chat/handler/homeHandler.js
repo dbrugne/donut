@@ -1,6 +1,5 @@
 var async = require('async');
 var _ = require('underscore');
-var log = require('../../../../../shared/models/log');
 var User = require('../../../../../shared/models/user');
 var Room = require('../../../../../shared/models/room');
 
@@ -23,8 +22,6 @@ var handler = Handler.prototype;
  *
  */
 handler.home = function(data, session, next) {
-
-	var start = log.start();
 
 	var homeEvent = {};
 
@@ -146,8 +143,6 @@ handler.home = function(data, session, next) {
 		], function(err) {
 			if (err)
 				return next(null, {code: 500, err: err});
-
-			log.activity('home', session.uid, null, start);
 
 			return next(null, homeEvent);
 		}

@@ -1,5 +1,4 @@
 var logger = require('pomelo-logger').getLogger('pomelo', __filename);
-var log = require('../../../../../shared/models/log');
 var async = require('async');
 var _ = require('underscore');
 var Room = require('../../../../../shared/models/room');
@@ -24,8 +23,6 @@ var handler = Handler.prototype;
  *
  */
 handler.read = function(data, session, next) {
-
-	var start = log.start();
 
 	var that = this;
 
@@ -111,8 +108,6 @@ handler.read = function(data, session, next) {
 	], function(err, user, roomData) {
 		if (err)
 			return next(null, {code: 500, err: err});
-
-		log.activity('room:read', session.uid, data.name, start);
 
 		return next(null, roomData);
 	});

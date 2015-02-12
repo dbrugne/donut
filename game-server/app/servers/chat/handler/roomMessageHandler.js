@@ -1,6 +1,5 @@
 var logger = require('pomelo-logger').getLogger('pomelo', __filename);
 var async = require('async');
-var log = require('../../../../../shared/models/log');
 var roomEmitter = require('../../../util/roomEmitter');
 var User = require('../../../../../shared/models/user');
 var Room = require('../../../../../shared/models/room');
@@ -27,8 +26,6 @@ var handler = Handler.prototype;
  *
  */
 handler.message = function(data, session, next) {
-
-	var start = log.start();
 
 	var that = this;
 
@@ -120,8 +117,6 @@ handler.message = function(data, session, next) {
 	], function(err) {
 		if (err && err != 'admin')
 			logger.error(err);
-
-		log.activity('room:message', session.uid, data.name+': '+data.message, start);
 
 		next(null); // even for .notify
 	});
