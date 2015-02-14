@@ -1,4 +1,4 @@
-var logger = require('pomelo-logger').getLogger('pomelo', __filename);
+var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
 var async = require('async');
 var retriever = require('../../../../../shared/models/historyroom').retrieve();
 var Room = require('../../../../../shared/models/room');

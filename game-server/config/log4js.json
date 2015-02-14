@@ -4,94 +4,63 @@
       "type": "console"
     },
     {
-      "type": "file",
-      "filename": "${opts:base}/logs/con-log-${opts:serverId}.log",
-      "pattern": "connector",
-      "maxLogSize": 1048576,
-      "layout": {
-        "type": "basic"
-      },
-      "backups": 5,
+      "type": "log4js-node-mongodb",
+      "connectionString": "localhost:27017/donut",
+      "collectionName": "logs",
       "category": "con-log"
     },
     {
-      "type": "file",
-      "filename": "${opts:base}/logs/rpc-log-${opts:serverId}.log",
-      "maxLogSize": 1048576,
-      "layout": {
-        "type": "basic"
-      },
-      "backups": 5,
+      "type": "log4js-node-mongodb",
+      "connectionString": "localhost:27017/donut",
+      "collectionName": "logs",
       "category": "rpc-log"
     },
     {
-      "type": "file",
-      "filename": "${opts:base}/logs/forward-log-${opts:serverId}.log",
-      "maxLogSize": 1048576,
-      "layout": {
-        "type": "basic"
-      },
-      "backups": 5,
+      "type": "log4js-node-mongodb",
+      "connectionString": "localhost:27017/donut",
+      "collectionName": "logs",
       "category": "forward-log"
     },
     {
-     "type": "file",
-     "filename": "${opts:base}/logs/rpc-debug-${opts:serverId}.log",
-     "maxLogSize": 1048576,
-     "layout": {
-      "type": "basic"
-     },
-     "backups": 5,
+      "type": "log4js-node-mongodb",
+      "connectionString": "localhost:27017/donut",
+      "collectionName": "logs",
      "category": "rpc-debug"
     },
     {
-      "type": "file",
-      "filename": "${opts:base}/logs/crash.log",
-      "maxLogSize": 1048576,
-      "layout": {
-        "type": "basic"
-      },
-      "backups": 5,
+      "type": "log4js-node-mongodb",
+      "connectionString": "localhost:27017/donut",
+      "collectionName": "logs",
       "category":"crash-log"
     },
     {
-      "type": "file",
-      "filename": "${opts:base}/logs/admin.log",
-      "maxLogSize": 1048576,
-      "layout": {
-          "type": "basic"
-        }
-      ,"backups": 5,
+      "type": "log4js-node-mongodb",
+      "connectionString": "localhost:27017/donut",
+      "collectionName": "logs",
       "category":"admin-log"
     },
     {
-      "type": "file",
-      "filename": "${opts:base}/logs/pomelo-${opts:serverId}.log",
-      "maxLogSize": 1048576,
-      "layout": {
-          "type": "basic"
-        }
-      ,"backups": 5,
+      "type": "log4js-node-mongodb",
+      "connectionString": "localhost:27017/donut",
+      "collectionName": "logs",
       "category":"pomelo"
     },
     {
-      "type": "file",
-      "filename": "${opts:base}/logs/pomelo-admin.log",
-      "maxLogSize": 1048576,
-      "layout": {
-          "type": "basic"
-        }
-      ,"backups": 5,
+      "type": "log4js-node-mongodb",
+      "connectionString": "localhost:27017/donut",
+      "collectionName": "logs",
+      "category":"donut"
+    },
+    {
+      "type": "log4js-node-mongodb",
+      "connectionString": "localhost:27017/donut",
+      "collectionName": "logs",
       "category":"pomelo-admin"
     },
     {
-      "type": "file",
-      "filename": "${opts:base}/logs/pomelo-rpc.log",
-      "maxLogSize": 1048576,
-      "layout": {
-          "type": "basic"
-        }
-      ,"backups": 5,
+      "type": "log4js-node-mongodb",
+      "connectionString": "localhost:27017/donut",
+      "collectionName": "logs",
       "category":"pomelo-rpc"
     }
   ],

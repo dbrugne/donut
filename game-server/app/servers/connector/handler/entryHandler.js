@@ -1,5 +1,4 @@
-var logger = require('pomelo-logger').getLogger('pomelo', __filename);
-//var log = require('../../../../../shared/models/log'); // @todo check filter logger
+var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
 var _ = require('underscore');
 var async = require('async');
 var conf = require('../../../../../shared/config/index');

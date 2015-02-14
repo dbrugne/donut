@@ -1,10 +1,12 @@
 require('newrelic');
 var pomelo = require('pomelo');
-var logger = require('pomelo-logger').getLogger('donut', __filename);
+var logger = require('./pomelo-logger').getLogger('donut', __filename);
 var dispatcher = require('./app/util/dispatcher');
 var connector = require('./app/connector/sioconnector');
 var globalChannel = require('pomelo-globalchannel-plugin');
 var status = require('pomelo-status-plugin');
+var chatLoggerFilter = require('./app/servers/chat/filter/logger');
+var connectorLoggerFilter = require('./app/servers/connector/filter/logger');
 
 /**
  * Init app for client.
@@ -34,7 +36,8 @@ app.use(status, {status: {
 }});
 
 // app configuration
-app.configure('production|test|development', 'connector', function(){
+app.configure('production|test|development', 'connector', function() {
+  app.filter(connectorLoggerFilter());
   app.set('connectorConfig',
     {
       connector : connector,
@@ -56,6 +59,7 @@ app.configure('production|test|development', function() {
 
   // filter configures
   app.filter(pomelo.timeout());
+  app.filter(chatLoggerFilter());
 
   // enable the system monitor modules
   //app.enable('systemMonitor'); // should be activated even on Windows to activate other modules (game-server/node_modules/pomelo/lib/util/moduleUtil.js:69), doesn't work on Windows (iostat)
@@ -73,11 +77,6 @@ app.configure('production|test|development', function() {
     // custom modules
     var onlineUser = require('./app/modules/onlineUser');
     app.registerAdmin(onlineUser, {app: app});
-
-    //// manually load due to pomelo/windows limitation (game-server/node_modules/pomelo/lib/util/moduleUtil.js:69)
-    //var admin = require('./node_modules/pomelo/node_modules/pomelo-admin');
-    //var pathUtil = require('./node_modules/pomelo/lib/util/pathUtil.js');
-    //app.registerAdmin(admin.modules.monitorLog, {path: pathUtil.getLogPath(app.getBase())});
   }
 });
 

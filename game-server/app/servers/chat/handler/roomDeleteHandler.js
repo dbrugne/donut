@@ -1,4 +1,4 @@
-var logger = require('pomelo-logger').getLogger('pomelo', __filename);
+var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
 var async = require('async');
 var cloudinary = require('../../../../../shared/cloudinary/cloudinary');
 var i18next = require('../../../../../shared/util/i18next');

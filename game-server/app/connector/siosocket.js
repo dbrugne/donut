@@ -1,4 +1,3 @@
-var debug = require('debug')('donut:server:connector');
 var util = require('util');
 var EventEmitter = require('events').EventEmitter;
 

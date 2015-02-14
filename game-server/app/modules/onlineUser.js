@@ -3,7 +3,7 @@
  * Copyright(c) 2012 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
-var logger = require('pomelo-logger').getLogger('pomelo', __filename);
+var logger = require('../../pomelo-logger').getLogger('donut', __filename);
 var utils = require('../util/utils');
 
 module.exports = function(opts) {
