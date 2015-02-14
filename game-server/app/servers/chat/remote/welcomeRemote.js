@@ -26,7 +26,7 @@ var WelcomeRemote = function(app) {
  */
 WelcomeRemote.prototype.getMessage = function(uid, frontendId, globalCallback) {
 
-	logger.debug('welcome message call for '+uid+'@'+frontendId);
+	var start = Date.now();
 
 	// welcome event data
 	var welcomeEvent = {
@@ -139,11 +139,26 @@ WelcomeRemote.prototype.getMessage = function(uid, frontendId, globalCallback) {
 		}
 
 	], function (err, user) {
-		if (err)
-			return globalCallback(err);
+		if (err) {
+			logger.error(JSON.stringify({
+				route: 'welcomeRemote.welcome',
+				result: 'fail',
+				uid: uid,
+				frontendId: frontendId,
+				time: new Date(start)
+			}));
+		} else {
+			logger.debug(JSON.stringify({
+				route: 'welcomeRemote.welcome',
+				result: 'success',
+				username: user.username,
+				frontendId: frontendId,
+				time: new Date(start),
+				timeUsed: (Date.now() - start)
+			}));
+		}
 
-		logger.debug('welcome message done for '+uid+'@'+frontendId);
-		return globalCallback(null, welcomeEvent);
+		return globalCallback(err, welcomeEvent);
 	});
 
 };
