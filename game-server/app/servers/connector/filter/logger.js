@@ -30,7 +30,6 @@ Filter.prototype.after = function(err, msg, session, resp, next) {
     if (session.settings.username)
       log.username = session.settings.username;
 
-    console.log('pouet');
     logger.info(JSON.stringify(log)); // need to stringify, otherwise pomelo-logger will transform in [object Object],
                                       // will be parse to object by log4js-node-mongodb
   }
