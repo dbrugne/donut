@@ -55,7 +55,6 @@ Connector.prototype.start = function(cb) {
     secret        : conf.sessions.secret,
     store         : redisStore,
     success: function (data, accept){
-      console.log(data);
       var log = {
         type: 'socketioPassport',
         result: 'success',
