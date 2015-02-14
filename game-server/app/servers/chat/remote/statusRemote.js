@@ -26,9 +26,9 @@ var DisconnectRemote = function(app) {
  */
 DisconnectRemote.prototype.online = function(uid, welcome, globalCallback) {
 
-	var that = this;
+	var start = Date.now();
 
-	logger.debug('online call for user '+uid);
+	var that = this;
 
 	async.waterfall([
 
@@ -98,7 +98,23 @@ DisconnectRemote.prototype.online = function(uid, welcome, globalCallback) {
 		}
 
 	], function(err, event) {
-		logger.debug('online done for user '+uid);
+		if (err) {
+			logger.error(JSON.stringify({
+				route: 'statusRemote.online',
+				result: 'fail',
+				username: welcome.user.username,
+				time: new Date(start)
+			}));
+		} else {
+			logger.debug(JSON.stringify({
+				route: 'statusRemote.online',
+				result: 'success',
+				username: welcome.user.username,
+				time: new Date(start),
+				timeUsed: (Date.now() - start)
+			}));
+		}
+
 		return globalCallback(err);
 	});
 
@@ -114,6 +130,8 @@ DisconnectRemote.prototype.online = function(uid, welcome, globalCallback) {
  *
  */
 DisconnectRemote.prototype.offline = function(uid, globalCallback) {
+
+	var start = Date.now();
 
 	var that = this;
 
@@ -191,11 +209,24 @@ DisconnectRemote.prototype.offline = function(uid, globalCallback) {
 		},
 
 	], function (err, user, event) {
-		if (err)
-			return globalCallback(err);
+		if (err) {
+			logger.error(JSON.stringify({
+				route: 'statusRemote.offline',
+				result: 'fail',
+				username: user.username,
+				time: new Date(start)
+			}));
+		} else {
+			logger.debug(JSON.stringify({
+				route: 'statusRemote.offline',
+				result: 'success',
+				username: user.username,
+				time: new Date(start),
+				timeUsed: (Date.now() - start)
+			}));
+		}
 
-		logger.debug(uid+' ('+user.username+') goes offline');
-		return globalCallback(null);
+		return globalCallback(err);
 	});
 
 };
