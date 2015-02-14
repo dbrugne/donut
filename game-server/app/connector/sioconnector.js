@@ -55,11 +55,23 @@ Connector.prototype.start = function(cb) {
     secret        : conf.sessions.secret,
     store         : redisStore,
     success: function (data, accept){
-      logger.info('socketioPassport::success');
+      console.log(data);
+      var log = {
+        type: 'socketioPassport',
+        result: 'success',
+        username: data.user.username,
+        'remote_ip': (data.headers['x-forwarded-for']) ? data.headers['x-forwarded-for'] : data.connection.remoteAddress
+      }
+      logger.info(JSON.stringify(log));
       accept();
     },
     fail: function (data, message, critical, accept) {
-      logger.info('socketioPassport::fail');
+      var log = {
+        type: 'socketioPassport',
+        result: 'fail',
+        'remote_ip': (data.headers['x-forwarded-for']) ? data.headers['x-forwarded-for'] : data.connection.remoteAddress
+      }
+      logger.info(JSON.stringify(log));
       accept(new Error(message));
     }
   }));
