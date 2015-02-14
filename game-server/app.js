@@ -53,7 +53,7 @@ var chatRoute = function(session, msg, app, cb) {
   var res = dispatcher.dispatch(session.uid, chatServers);
   cb(null, res.id);
 };
-app.configure('production|test|development', function() {
+app.configure('production|test|development', 'chat', function() {
   // route configures
   app.route('chat', chatRoute);
 
