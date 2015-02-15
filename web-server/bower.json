@@ -18,7 +18,8 @@
     "backgrid-moment-cell": "latest",
     "backgrid-filter": "latest",
     "talkative": "https://github.com/dbrugne/talkative.git",
-    "html.sortable": "latest"
+    "html.sortable": "latest",
+    "jquery-jsonview": "~1.2.2"
   },
   "resolutions": {
     "moment": "2.7.x"

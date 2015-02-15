@@ -19,24 +19,23 @@ require.config({
     'backgrid.paginator'          : '../vendor/backgrid-paginator/backgrid-paginator',
     'backgrid-moment-cell'        : '../vendor/backgrid-moment-cell/backgrid-moment-cell',
     'backgrid-filter'             : '../vendor/backgrid-filter/backgrid-filter',
-    'backbone.bootstrap-modal'    : '../javascripts/plugins/backbone.bootstrap-modal'
+    'backbone.bootstrap-modal'    : '../javascripts/plugins/backbone.bootstrap-modal',
+    'jquery-jsonview'             : '../vendor/jquery-jsonview/dist/jquery.jsonview'
   },
   shim: {
-    'jquery.cloudinary'      : ['jquery'],
-    'jquery.cloudinary-donut': ['jquery'],
+    'bootstrap'               : ['jquery'],
+    'jquery.cloudinary'       : ['jquery'],
+    'jquery.cloudinary-donut' : ['jquery'],
+    'jquery-jsonview'         : ['jquery'],
+    'jquery.linkify'          : ['jquery'],
+    'backbone.bootstrap-modal': ['jquery'],
+
     'backgrid': {
       deps: ['jquery'],
       exports: 'Backgrid'
     },
-    'backgrid-moment-cell': {
-      deps: ['backgrid', 'moment']
-    },
-    'backgrid-filter': {
-      deps: ['backgrid']
-    },
-    'bootstrap': {
-      deps: ['jquery']
-    },
+    'backgrid-moment-cell'  : ['backgrid', 'moment'],
+    'backgrid-filter'       : ['backgrid'],
     'socket.io': {
       exports: 'io'
     }
@@ -66,7 +65,8 @@ require([
   'jquery.cloudinary-donut',
   'backbone.bootstrap-modal',
   'jquery.linkify',
-  'moment-fr'
+  'moment-fr',
+  'jquery-jsonview'
 ], function (Router, $, _, Backbone, io, moment) {
 
   // @todo : ouille!
