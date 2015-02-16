@@ -17,7 +17,7 @@ define([
 
     events: {
       'click .refresh': 'onRefresh',
-      'click .filter label': 'onRefresh'
+      'click .filter label': 'onFilter'
     },
 
     initialize: function (options) {
@@ -78,8 +78,12 @@ define([
       return filters;
     },
     onRefresh: function(event) {
+      this.fetch();
+    },
+    onFilter: function(event) {
       var that = this;
       _.defer(function() { // defered due to the button group bootstrap animation
+        that.$logs.empty();
         that.fetch();
       });
     }

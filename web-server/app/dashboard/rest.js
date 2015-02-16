@@ -234,7 +234,7 @@ router.get('/rest/logs', isAdmin, function(req, res) {
   }
 
   // category:filter
-  if (params.filter) {
+  if (params.category) {
     var categories = (_.isArray(params.category)) ? params.category : [params.category];
     filter['category'] = {'$in': categories};
   }
