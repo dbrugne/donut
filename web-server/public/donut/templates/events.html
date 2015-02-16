@@ -1,32 +1,40 @@
 <div class="scrollable">
-    <div class="pad"><i class="fa fa-spinner fa-spin"></i></div>
-    <div class="loader">
-        <span class="help">
-            <i class="fa fa-arrow-circle-o-up arrow"></i>
-            <%= t('chat.history.help') %>
-            <i class="fa fa-arrow-circle-o-up arrow"></i>
-        </span>
-        <span class="loading">
-            <%= t('chat.history.loading') %>
-        </span>
-        <span class="no-more">
-            <%= t('chat.history.nomore') %>
-        </span>
-    </div>
-    <div class="blank"></div>
-    <div class="realtime">
-        <% if (model.type == 'room') { %>
-        <div class="hello block">
-            <div class="event">
-                <div class="text"><div class="picto hello"></div> <%= t('chat.welcome.room', {name: model.name}) %></div>
-            </div>
+    <div class="scrollable-content">
+        <div class="pad"><i class="fa fa-spinner fa-spin"></i></div>
+        <div class="loader">
+            <span class="help">
+                <i class="fa fa-arrow-circle-o-up arrow"></i>
+                <%= t('chat.history.help') %>
+                <i class="fa fa-arrow-circle-o-up arrow"></i>
+            </span>
+            <span class="loading">
+                <%= t('chat.history.loading') %>
+            </span>
+            <span class="no-more">
+                <%= t('chat.history.nomore') %>
+            </span>
         </div>
-        <% } else if (model.type == 'onetoone') { %>
-        <div class="hello block">
-            <div class="event">
-                <div class="text"><div class="picto hello"></div> <%= t('chat.welcome.onetoone', {username: model.username}) %></div>
+        <div class="blank"></div>
+        <div class="realtime">
+            <% if (model.type == 'room') { %>
+            <div class="hello block">
+                <div class="event">
+                    <div class="text"><div class="picto hello"></div> <%= t('chat.welcome.room', {name: model.name}) %></div>
+                </div>
             </div>
+            <% } else if (model.type == 'onetoone') { %>
+            <div class="hello block">
+                <div class="event">
+                    <div class="text"><div class="picto hello"></div> <%= t('chat.welcome.onetoone', {username: model.username}) %></div>
+                </div>
+            </div>
+            <% }; %>
         </div>
-        <% }; %>
     </div>
+</div>
+<div class="go-to-top">
+    <a><i class="fa fa-arrow-circle-o-up"></i> monter tout en haut</a>
+</div>
+<div class="go-to-bottom">
+    <a><i class="fa fa-arrow-circle-o-down"></i> descendre tout en bas</a>
 </div>

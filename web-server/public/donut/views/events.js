@@ -24,7 +24,8 @@ define([
     eventTemplates: '',
 
     events: {
-      "scroll": "onScroll"
+      "click .go-to-top a"    : "scrollTop",
+      "click .go-to-bottom a" : "scrollDown"
     },
 
     historyLoading: false,
@@ -63,11 +64,20 @@ define([
       });
       this.$el.append(html);
 
-      this.$scrollable  = this.$el.find('.scrollable');
-      this.$pad     = this.$scrollable.find('.pad');
-      this.$loader      = this.$scrollable.find('.loader');
-      this.$blank       = this.$scrollable.find('.blank');
-      this.$realtime    = this.$scrollable.find('.realtime');
+      this.$scrollable         = this.$el.find('.scrollable');
+      this.$scrollableContent  = this.$scrollable.find('.scrollable-content');
+      this.$pad                = this.$scrollableContent.find('.pad');
+      this.$loader             = this.$scrollableContent.find('.loader');
+      this.$blank              = this.$scrollableContent.find('.blank');
+      this.$realtime           = this.$scrollableContent.find('.realtime');
+
+      this.$goToTop = this.$el.find('.go-to-top');
+      this.$goToBottom = this.$el.find('.go-to-bottom');
+
+      var that = this;
+      this.$scrollable.on('scroll', function() {
+        that.onScroll();
+      });
 
       this.scrollDown();
     },
@@ -83,8 +93,27 @@ define([
      *
      *****************************************************************************************************************/
     onScroll: function(event) {
+      var scrollTop = this.$scrollable.scrollTop();
+      var bottom = this._scrollBottomPosition();
+
+      // go to top and bottom links
+      if (bottom > 100) { // content should be longer than 100px of viewport to avoid link display for few pixels
+        if (scrollTop < 30)
+          this.$goToTop.hide();
+        else
+          this.$goToTop.show();
+        if (scrollTop >= (bottom - 10)) // possible performance issue
+          this.$goToBottom.hide();
+        else
+          this.$goToBottom.show();
+      } else {
+        // nothing to scroll, hide links
+        this.$goToBottom.hide();
+        this.$goToTop.hide();
+      }
+
       // everywhere but the top
-      if (this.$el.scrollTop() > 0) {
+      if (scrollTop > 0) {
         if (this.topListener) {
           clearInterval(this.topListener);
           this.topListener = false;
@@ -106,27 +135,25 @@ define([
         }, 1500);
       }
     },
+    _scrollBottomPosition: function() {
+      var contentHeight = this.$scrollableContent.outerHeight(true);
+      var viewportHeight = this.$scrollable.height();
+      return contentHeight - viewportHeight;
+    },
     isScrollOnBottom: function() {
-      var contentHeight = this.$scrollable.outerHeight(true);
-      var viewportHeight = this.$el.height();
-      var difference = (contentHeight - viewportHeight) - 10; // add a 10px margin
-      return (this.$el.scrollTop() >= difference); // if gte current position, we are on bottom
+      var bottom = this._scrollBottomPosition() - 10; // add a 10px margin
+      return (this.$scrollable.scrollTop() >= bottom); // if gte current position, we are on bottom
     },
     scrollDown: function() {
-      if (!this.model.get('focused'))
-        return;
-
-      var contentHeight = this.$scrollable.outerHeight(true);
-      var viewportHeight = this.$el.height();
-      var difference = contentHeight - viewportHeight;
-      this.$el.scrollTop(difference);
+      var bottom = this._scrollBottomPosition();
+      this.$scrollable.scrollTop(bottom);
     },
     scrollTop: function() {
       if (!this.model.get('focused'))
         return;
 
       var targetTop = this.$loader.position().top;
-      this.$el.scrollTop(targetTop - 8);
+      this.$scrollable.scrollTop(targetTop - 8); // add a 8px margin
     },
 
     /*****************************************************************************************************************
@@ -167,9 +194,9 @@ define([
       var needToScrollDown = this.isScrollOnBottom();
 
       if (typeof heigth != "undefined") // was called on page resize by views/discussion, set the .events height
-        this.$el.height(heigth);
+        this.$scrollable.height(heigth);
       else // was called by view itself to adapt .blank height, get the current .events height
-        heigth = this.$el.height();
+        heigth = this.$scrollable.height();
 
       // blank heigth
       var blankHeight = 0;
