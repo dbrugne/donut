@@ -103,6 +103,7 @@ handler.enter = function(msg, session, next) {
 			session.set('username', welcome.user.username);
 			session.set('avatar', welcome.user.avatar);
 			session.set('color', welcome.user.color);
+			session.set('started', Date.now());
 			session.pushAll(function(err) {
 				if (err)
 				  return callback('Error while updating session infos: '+err);
@@ -206,10 +207,12 @@ var onUserLeave = function exit(app, session) {
 	if(!session || !session.uid)
 		return; // could happen if a uid wasn't binded before disconnect (crash, bug, debug session, ...)
 
+	var duration = Math.ceil((Date.now() - session.settings.started)/1000); // seconds
 	var log = {
 		event: 'onUserLeave',
 		frontendId: session.frontendId,
-		time : new Date()
+		time : new Date(),
+		session_duration: duration
 	};
 	if (session.settings.username)
 		log.username = session.settings.username;
