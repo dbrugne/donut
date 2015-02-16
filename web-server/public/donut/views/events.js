@@ -149,9 +149,6 @@ define([
       this.$scrollable.scrollTop(bottom);
     },
     scrollTop: function() {
-      if (!this.model.get('focused'))
-        return;
-
       var targetTop = this.$loader.position().top;
       this.$scrollable.scrollTop(targetTop - 8); // add a 8px margin
     },
@@ -413,6 +410,10 @@ define([
 
       this.toggleHistoryLoader('loading');
 
+      // save the current first element identifier
+      if (scrollTo == 'top')
+        var $nextTopElement = $('<div class="nextTopPosition"></div>').prependTo(this.$realtime);
+
       // since
       var first = this.$realtime
         .find('.block:first').first()
@@ -425,8 +426,12 @@ define([
       this.model.history(since, function(data) {
         that.addBatchEvents(data.history, data.more);
 
-        if (scrollTo == 'top') // on manual request
-          that.scrollTop();
+        if (scrollTo == 'top') { // on manual request
+          var targetTop = $nextTopElement.position().top;
+          that.$scrollable.scrollTop(targetTop - 8); // add a 8px margin
+          $nextTopElement.remove();
+        }
+
         if (scrollTo == 'bottom') // on first focus history load
           that.scrollDown();
 
