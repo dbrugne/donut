@@ -212,13 +212,9 @@ define([
     onUserOffline: function(data) {
       this._onStatus('offline', data);
     },
-    history: function(since) {
-      var that = this;
+    history: function(since, callback) {
       client.roomHistory(this.get('name'), since, function(data) {
-        that.trigger('historyEvents', {
-          history: data.history,
-          more: data.more
-        });
+        return callback(data);
       });
     },
     fetchUsers: function() {

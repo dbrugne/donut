@@ -20,26 +20,25 @@ define([
   var EventsView = Backbone.View.extend({
 
     template: _.template(eventsTemplate),
+
     eventTemplates: '',
 
     events: {
-      "scroll": "onScroll",
-      "click .history-loader a.more": "onViewMore"
+      "scroll": "onScroll"
     },
 
     historyLoading: false,
 
-    firstHistoryLoaded: false,
+    historyNoMore: false,
 
     topListener: false,
 
     keepMaxEventsOnCleanup: 500,
 
     initialize: function(options) {
-      window.debug.start('discussion-events'+this.model.getIdentifier());
       this.listenTo(this.model, 'freshEvent', this.addFreshEvent);
-      this.listenTo(this.model, 'historyEvents', this.onHistoryEvents);
 
+      // @todo : move _.template() in a centralized object (actually it's done for each discussion)
       this.eventTemplates = {
         disconnected    : _.template(disconnectedTemplate),
         inoutonoff      : _.template(inOutOnOffTemplate),
@@ -51,13 +50,10 @@ define([
         topic           : _.template(topicTemplate)
       };
 
+      window.debug.start('discussion-events'+this.model.getIdentifier());
+
       this.render();
       window.debug.end('discussion-events'+this.model.getIdentifier());
-    },
-    _remove: function() {
-      if (this.topListener)
-        clearInterval(this.topListener);
-      this.remove();
     },
     render: function() {
       // render view
@@ -69,11 +65,21 @@ define([
 
       this.$scrollable  = this.$el.find('.scrollable');
       this.$blank       = this.$scrollable.find('.blank');
-      this.$history     = this.$scrollable.find('.history');
       this.$realtime    = this.$scrollable.find('.realtime');
 
       this.scrollDown();
     },
+    _remove: function() {
+      if (this.topListener)
+        clearInterval(this.topListener);
+      this.remove();
+    },
+
+    /*****************************************************************************************************************
+     *
+     * Scroll methods
+     *
+     *****************************************************************************************************************/
     onScroll: function(event) {
       // everywhere but the top
       if (this.$el.scrollTop() > 0) {
@@ -89,12 +95,14 @@ define([
         return;
 
       // hit the top
-      this.toggleHistoryLoader('loading');
-      var that = this;
-      this.topListener = setTimeout(function() {
-        if (that.$el.scrollTop() <= 0)
-          that.requestHistory();
-      }, 1500);
+      if (!this.historyNoMore) {
+        this.toggleHistoryLoader('loading');
+        var that = this;
+        this.topListener = setTimeout(function() {
+          if (that.$el.scrollTop() <= 0)
+            that.requestHistory('top');
+        }, 1500);
+      }
     },
     isScrollOnBottom: function() {
       var contentHeight = this.$scrollable.outerHeight(true);
@@ -102,6 +110,24 @@ define([
       var difference = (contentHeight - viewportHeight) - 10; // add a 10px margin
       return (this.$el.scrollTop() >= difference); // if gte current position, we are on bottom
     },
+    scrollDown: function() {
+      if (!this.model.get('focused'))
+        return;
+
+      var contentHeight = this.$scrollable.outerHeight(true);
+      var viewportHeight = this.$el.height();
+      var difference = contentHeight - viewportHeight;
+      this.$el.scrollTop(difference);
+    },
+    scrollTop: function() {
+      if (!this.model.get('focused'))
+        return;
+
+      var targetTop = this.$el.find('.loader').position().top;
+      this.$el.scrollTop(targetTop);
+    },
+
+
     update: function() {
       this.cleanup();
     },
@@ -109,16 +135,13 @@ define([
       if (this.model.get('focused') && this.isScrollOnBottom())
         return; // no action when focused AND scroll not on bottom
 
-      var hl = this.$history.find('.block').length;
-      var rl = this.$realtime.find('.block').length;
-
-      if ((hl + rl) < 250) // not enough content, no need to cleanup
-        return window.debug.log('cleanup '+this.model.getIdentifier()+ ' not enough event to cleanup: '+(hl + rl));
+      var realtimeLength = this.$realtime.find('.block').length;
+      if (realtimeLength < 250) // not enough content, no need to cleanup
+        return window.debug.log('cleanup '+this.model.getIdentifier()+ ' not enough event to cleanup: '+realtimeLength);
 
       // @todo : only when a certain amount of content OR when history is not visible on scroll position
 
-      // cleanup .history
-      this.$history.empty();
+      // reset history loader
       this.toggleHistoryLoader(true);
 
       // cleanup .realtime
@@ -134,45 +157,33 @@ define([
       if (this.model.get('focused'))
         this.scrollDown();
     },
-    scrollDown: function() {
-      if (!this.model.get('focused'))
-        return;
-
-      var contentHeight = this.$scrollable.outerHeight(true);
-      var viewportHeight = this.$el.height();
-      var difference = contentHeight - viewportHeight;
-      this.$el.scrollTop(difference);
-    },
-    scrollTop: function() {
-      if (!this.model.get('focused'))
-        return;
-
-      var targetTop = this.$el.find('.history-loader').position().top;
-      this.$el.scrollTop(targetTop);
-    },
     resize: function(heigth) {
-      // called by views/discussion (on page resize)
-      if (typeof heigth != "undefined")
-        this.$el.height(heigth); // resize full events view
-      else // called by view itself to adapt .blank height
+      var needToScrollDown = this.isScrollOnBottom();
+
+      if (typeof heigth != "undefined") // was called on page resize by views/discussion, set the .events height
+        this.$el.height(heigth);
+      else // was called by view itself to adapt .blank height, get the current .events height
         heigth = this.$el.height();
 
       // blank heigth
       var blankHeight = 0;
-      var currentContentHeight = this.$el.find('.hello.block').outerHeight()
-        + this.$history.outerHeight()
-        + this.$realtime.outerHeight();
+      var currentContentHeight = this.$el.find('.hello.block').outerHeight() + this.$realtime.outerHeight();
       if (currentContentHeight > heigth)
         blankHeight = 0;
       else
         blankHeight = heigth - currentContentHeight;
-      if (blankHeight < 20)
-        blankHeight = 20; // keep always a 20px height to allow scrolling upper that content to trigger history
       this.$blank.height(blankHeight);
       window.debug.log('blank', blankHeight);
 
-      this.scrollDown();
+      if (needToScrollDown)
+        this.scrollDown();
     },
+
+    /*****************************************************************************************************************
+     *
+     * Events rendering
+     *
+     *****************************************************************************************************************/
     addFreshEvent: function(model) {
       // browser notification
       if (model.getGenericType() == 'message')
@@ -201,8 +212,7 @@ define([
 
       window.debug.end('discussion-events-fresh-'+this.model.getIdentifier());
     },
-    addBatchEvents: function(events, more, callType) {
-      callType = callType || 'history'; // connect/reconnect/history
+    addBatchEvents: function(events, more) {
       if (events.length == 0) {
         return;
       }
@@ -222,40 +232,11 @@ define([
           previousElement = $(h).prependTo($html);
       });
 
-      if (callType == 'history') {
-        $html.prependTo(this.$history);
-      } else if (callType == 'connect') {
-        $html.appendTo(this.$history);
-      } else if (callType == 'reconnect') {
-        $html.appendTo(this.$realtime);
-      } else {
-        $html.appendTo(this.$realtime);
-      }
+      $html.prependTo(this.$realtime);
       window.debug.end('discussion-events-batch-'+this.model.getIdentifier());
 
       // resize .blank
       this.resize();
-    },
-    _newBlock: function(newModel, previousElement) {
-      var newBlock = false;
-      if (!previousElement || previousElement.length < 1) {
-        newBlock = true;
-      } else {
-        switch (newModel.getGenericType()) {
-          case 'standard':
-            newBlock = true;
-            break;
-          case 'inout':
-            if (!previousElement.hasClass('inout'))
-              newBlock = true;
-            break;
-          case 'message':
-            if (!previousElement.hasClass('message') || previousElement.data('username') != newModel.get('data').username)
-              newBlock = true;
-            break;
-        }
-      }
-      return newBlock;
     },
     _prepareEvent: function(model) {
       var data = model.toJSON();
@@ -264,8 +245,8 @@ define([
 
       // avatar
       var size = (model.getGenericType() != 'inout')
-        ? 30
-        : 20;
+          ? 30
+          : 20;
       if (model.get("data").avatar)
         data.data.avatar = $.cd.userAvatar(model.get("data").avatar, size);
       if (model.get("data").by_avatar)
@@ -277,15 +258,15 @@ define([
 
         // linkify (before other decoration, will escape HTML)
         var o = (this.model.get('color'))
-          ? { linkAttributes: { style: 'color: '+this.model.get('color')+';' } }
-          : {};
+            ? { linkAttributes: { style: 'color: '+this.model.get('color')+';' } }
+            : {};
         message = $.linkify(message, o);
 
         // mentions
         if (this.model.get('type') == 'room') {
           message = message.replace(
-            /@\[([^\]]+)\]\(user:([^)]+)\)/g,
-            '<a class="mention open-user-profile" data-username="$1" style="color: '+this.model.get('color')+'">@$1</a>'
+              /@\[([^\]]+)\]\(user:([^)]+)\)/g,
+              '<a class="mention open-user-profile" data-username="$1" style="color: '+this.model.get('color')+'">@$1</a>'
           );
         }
 
@@ -328,6 +309,27 @@ define([
 
       return data;
     },
+    _newBlock: function(newModel, previousElement) {
+      var newBlock = false;
+      if (!previousElement || previousElement.length < 1) {
+        newBlock = true;
+      } else {
+        switch (newModel.getGenericType()) {
+          case 'standard':
+            newBlock = true;
+            break;
+          case 'inout':
+            if (!previousElement.hasClass('inout'))
+              newBlock = true;
+            break;
+          case 'message':
+            if (!previousElement.hasClass('message') || previousElement.data('username') != newModel.get('data').username)
+              newBlock = true;
+            break;
+        }
+      }
+      return newBlock;
+    },
     _renderEvent: function(model, withBlock) {
       var data = this._prepareEvent(model);
       data.withBlock = withBlock || false;
@@ -350,7 +352,7 @@ define([
             template = this.eventTemplates['deop']; break;
           case 'room:kick':
             template = this.eventTemplates['kick']; break;
-          case 'room:op':
+          case 'room:':
             template = this.eventTemplates['op']; break;
           case 'room:topic':
             template = this.eventTemplates['topic']; break;
@@ -364,54 +366,57 @@ define([
         return false;
       }
     },
-    requestHistory: function() {
+
+    /*****************************************************************************************************************
+     *
+     * History management
+     *
+     *****************************************************************************************************************/
+    requestHistory: function(scrollTo) {
       if (this.historyLoading)
         return;
 
       this.historyLoading = true;
-      this.scrollTopAfterHistory = true;
 
       this.toggleHistoryLoader('loading');
 
       // since
-      var first = this.$history
+      var first = this.$realtime
         .find('.block:first').first()
         .find('.event').first();
       var since = (!first || first.length < 1)
         ? null
         : first.data('time');
 
-      this.model.history(since);
-    },
-    onViewMore: function(event) {
-      event.preventDefault();
-      event.stopPropagation();
-      this.requestHistory();
-    },
-    onHistoryEvents: function(data) {
-      this.addBatchEvents(data.history, data.more, 'history');
+      var that = this;
+      this.model.history(since, function(data) {
+        that.addBatchEvents(data.history, data.more);
 
-      if (this.scrollTopAfterHistory) // on manual request
-        this.scrollTop();
-      if (!this.firstHistoryLoaded) // on first focus history load
-        this.scrollDown();
+        if (scrollTo == 'top') // on manual request
+          that.scrollTop();
+        if (scrollTo == 'bottom') // on first focus history load
+          that.scrollDown();
 
-      this.historyLoading = false;
-      this.scrollTopAfterHistory = false;
-      this.firstHistoryLoaded = true;
-      this.toggleHistoryLoader(data.more);
+        that.historyLoading = false;
+
+        if (data.more === true)
+          that.historyNoMore = false;
+        else
+          that.historyNoMore = true;
+        that.toggleHistoryLoader(data.more);
+      });
     },
     toggleHistoryLoader: function(more) {
-      this.$el.find('.history-loader').find('.help, .loading, .no-more').hide();
+      this.$el.find('.loader').find('.help, .loading, .no-more').hide();
       if (more === 'loading') {
           // 'loading'
-        this.$el.find('.history-loader .loading').show();
+        this.$el.find('.loader .loading').show();
       } else if (more) {
         // 'scroll to display more'
-        this.$el.find('.history-loader .help').show();
+        this.$el.find('.loader .help').show();
       } else {
         // no more history indication
-        this.$el.find('.history-loader .no-more').show();
+        this.$el.find('.loader .no-more').show();
       }
     }
 

@@ -1,13 +1,12 @@
 <div class="scrollable">
-    <div class="blank"></div>
-    <div class="history-loader">
+    <div class="pad"></div>
+    <div class="loader">
         <i class="fa fa-arrow-circle-o-up arrow"></i>
         <span class="help"><%= t('chat.history.help') %></span>
         <span class="loading"><%= t('chat.history.loading') %> <i class="fa fa-spinner fa-spin"></i></span>
         <span class="no-more"><%= t('chat.history.nomore') %></span>
         <i class="fa fa-arrow-circle-o-up arrow"></i>
     </div>
-    <div class="history"><!--/history events--></div>
     <% if (model.type == 'room') { %>
     <div class="hello block">
         <div class="event">
@@ -21,5 +20,6 @@
         </div>
     </div>
     <% }; %>
+    <div class="blank"></div>
     <div class="realtime"><!--/realtime events--></div>
 </div>

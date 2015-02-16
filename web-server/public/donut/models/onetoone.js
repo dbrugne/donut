@@ -61,13 +61,9 @@ define([
     onUpdated: function (data) {
       this.set(data.data);
     },
-    history: function(since) {
-      var that = this;
+    history: function(since, callback) {
       client.userHistory(this.get('username'), since, function(data) {
-        that.trigger('historyEvents', {
-          history: data.history,
-          more: data.more
-        });
+        return callback(data);
       });
     },
 

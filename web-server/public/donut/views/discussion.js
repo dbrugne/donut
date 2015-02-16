@@ -111,7 +111,7 @@ define([
     },
 
     firstFocus: function() {
-      this.model.history(null); // @todo : on reconnect (only), remove all events in view before requesting history // seems to work like that, wait and see if bugs happen ...
+      this.eventsView.requestHistory('bottom'); // @todo : on reconnect (only), remove all events in view before requesting history // seems to work like that, wait and see if bugs happen ...
       this._firstFocus();
     },
 
