@@ -377,7 +377,9 @@
         "history": {
             "help": "Remonter pour en voir plus",
             "loading": "Chargement de l'historique ...",
-            "nomore": "Rien de plus à afficher"
+            "nomore": "Historique de conversation chargé intégralement",
+            "top": "aller tout en haut",
+            "bottom": "aller tout en bas"
         },
         "shouldauthenticated": "Vous devez être identifié pour accéder aux discussions (<a href='/signup'>créer un compte</a> ou <a href='/login'>se connecter</a>)",
         "closemessage": "Etes-vous sur de vouloir quitter, l’historique de vos conversations sera perdu ?",

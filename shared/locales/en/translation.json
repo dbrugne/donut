@@ -357,7 +357,9 @@
     "history": {
       "help": "Scroll up to see more",
       "loading": "Loading more...",
-      "nomore": "No more history to show"
+      "nomore": "Conversation history fully displayed",
+      "top": "go to top",
+      "bottom": "go to bottom"
     },
     "shouldauthenticated": "You must be logged in to access chat (<a href='/signup'>signup</a> or <a href='/login'>login</a>)",
     "closemessage": "Are you sure you want to leave? Your conversation log will be lost.",
