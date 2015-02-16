@@ -11,8 +11,9 @@ define([
   'views/user',
   'views/rooms',
   'views/room',
-  'views/realtime'
-], function (_, Backbone, users, rooms, UserModel, RoomModel, MainView, HomeView, UsersView, UserView, RoomsView, RoomView, RealtimeView) {
+  'views/realtime',
+  'views/logs'
+], function (_, Backbone, users, rooms, UserModel, RoomModel, MainView, HomeView, UsersView, UserView, RoomsView, RoomView, RealtimeView, LogsView) {
   var Router = Backbone.Router.extend({
 
     mainView     : null,
@@ -30,6 +31,7 @@ define([
       'rooms':            'rooms',
       'room/:id':         'room',
       'realtime':         'realtime',
+      'logs':             'logs',
       '*default':         'default'
     },
 
@@ -122,6 +124,17 @@ define([
       this.mainView.currentView = this.realtimeView;
       this.mainView.render();
       this.mainView.setNavigationActive('realtime');
+    },
+
+    logs: function() {
+      if (!this.logsView) {
+        this.logsView = new LogsView();
+        this.mainView.append(this.logsView);
+      }
+
+      this.mainView.currentView = this.logsView;
+      this.mainView.render();
+      this.mainView.setNavigationActive('logs');
     },
 
     default: function() {

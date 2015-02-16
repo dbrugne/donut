@@ -1,0 +1,45 @@
+<h1>Logs</h1>
+<div class="filter">
+    <div class="others">
+        <a class="btn btn-link btn-sm refresh">refresh</a>
+    </div>
+    <div class="category">
+        <div class="btn-group" data-toggle="buttons">
+            <label class="btn btn-success btn-sm active">
+                <input type="radio" name="category" value="all" autocomplete="off" checked> category:all
+            </label>
+            <label class="btn btn-success btn-sm">
+                <input type="radio" name="category" value="donut" autocomplete="off"> category:donut
+            </label>
+        </div>
+    </div>
+    <div class="level">
+        <div class="btn-group" data-toggle="buttons">
+            <label class="btn btn-danger btn-sm">
+                <input type="radio" name="level" value="30000"  autocomplete="off" checked> level:error
+            </label>
+            <label class="btn btn-danger btn-sm active">
+                <input type="radio" name="level" value="20000" autocomplete="off"> level:info
+            </label>
+            <label class="btn btn-danger btn-sm">
+                <input type="radio" name="level" value="all" autocomplete="off"> level:debug
+            </label>
+        </div>
+    </div>
+</div>
+<div class="grid">
+    <table class="backgrid">
+        <thead>
+        <tr>
+            <th class="sortable renderable _id">#</th>
+            <th class="sortable renderable timestamp">Timestamp</th>
+            <th class="sortable renderable category">Category</th>
+            <th class="sortable renderable level">Level</th>
+            <th class="sortable renderable data">Data</th>
+        </tr>
+        </thead>
+        <tbody>
+            <!--logs-->
+        </tbody>
+    </table>
+</div>

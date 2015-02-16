@@ -7,6 +7,7 @@ var Room = require('../../../shared/models/room');
 var User = require('../../../shared/models/user');
 var HistoryRoom = require('../../../shared/models/historyroom');
 var HistoryOne = require('../../../shared/models/historyone');
+var Logs = require('../../../shared/models/log');
 
 var isAdmin = function(req, res, next) {
   if (!req.isAuthenticated() || req.user.admin !== true) {
@@ -220,6 +221,48 @@ router.get('/rest/home', isAdmin, function(req, res) {
         otherRoom: result[8]
       }
     });
+  });
+});
+
+router.get('/rest/logs', isAdmin, function(req, res) {
+  var params = req.query;
+  var filter = {};
+
+  // start
+  if (params.start) {
+    filter['_id'] = {'$gt': params.start};
+  }
+
+  // category:filter
+  if (params.filter) {
+    var categories = (_.isArray(params.category)) ? params.category : [params.category];
+    filter['category'] = {'$in': categories};
+  }
+
+  // category:level
+  // ALL    : 0
+  // TRACE  : 5000
+  // DEBUG  : 10000
+  // INFO   : 20000
+  // WARN   : 30000
+  // ERROR  : 40000
+  // FATAL  : 50000
+  // OFF    : 0
+  if (params.level) {
+    filter['level.level'] = {'$gte': parseInt(params.level)};
+  }
+
+  // direction
+  var sort = (params.sort && params.sort == 'asc') ? {timestamp: 'asc'} : {timestamp: 'desc'};
+
+  console.log(filter);
+  var query = Logs.find(filter).sort(sort).limit(100);
+  query.exec(function(err, result) {
+    if (err)
+      res.send({error: err});
+
+    result.reverse();
+    res.send(result);
   });
 });
 
