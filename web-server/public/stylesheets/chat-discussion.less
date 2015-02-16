@@ -13,7 +13,7 @@
     .header {
       padding-top: 18px;
       padding-right: 10px;
-      min-height: 128px;
+      min-height: 135px;
       .avatar {
         position: absolute;
         width: 100px;
@@ -183,6 +183,7 @@
     .events {
       overflow-y: scroll;  /* Important */
       margin-right: 5px; // scrollbar spacing
+      border-top: 1px solid @cl-subtext5;
       /**
       ::-webkit-scrollbar
       ::-webkit-scrollbar-button
@@ -210,21 +211,32 @@
       &::-webkit-scrollbar-track{
         background-color: transparent;
       }
+      hr {
+        border-color: @cl-subtext5;
+      }
       .scrollable {
         position: relative; /* Important */
         padding-right: 10px; // scrollbar spacing
         .pad {
-          height: 30px;
-        }
-        .blank {
+          min-height: 30px;
+          text-align: center;
+          font-size: 2em;
+          i {
+            display: none;
+          }
+          &.loading {
+            i {
+              display: inline;
+            }
+          }
         }
         .loader {
           padding: 10px;
-          background-color: @cl-subtext15;
-          border-top: 1px solid @cl-subtext0;
+          background-color: @cl-subtext10;
           color: @cl-subtext30;
           text-align: center;
           font-size: 1.1em;
+          border-radius: 2px;
           .arrow {
             font-size: 1.4em;
             color: @cl-subtext30;
@@ -240,6 +252,8 @@
           .no-more {
             display: none;
           }
+        }
+        .blank {
         }
         .realtime {
         }

@@ -64,6 +64,8 @@ define([
       this.$el.append(html);
 
       this.$scrollable  = this.$el.find('.scrollable');
+      this.$pad     = this.$scrollable.find('.pad');
+      this.$loader      = this.$scrollable.find('.loader');
       this.$blank       = this.$scrollable.find('.blank');
       this.$realtime    = this.$scrollable.find('.realtime');
 
@@ -123,11 +125,15 @@ define([
       if (!this.model.get('focused'))
         return;
 
-      var targetTop = this.$el.find('.loader').position().top;
-      this.$el.scrollTop(targetTop);
+      var targetTop = this.$loader.position().top;
+      this.$el.scrollTop(targetTop - 8);
     },
 
-
+    /*****************************************************************************************************************
+     *
+     * Size & cleanup
+     *
+     *****************************************************************************************************************/
     update: function() {
       this.cleanup();
     },
@@ -167,7 +173,7 @@ define([
 
       // blank heigth
       var blankHeight = 0;
-      var currentContentHeight = this.$el.find('.hello.block').outerHeight() + this.$realtime.outerHeight();
+      var currentContentHeight = this.$loader.outerHeight() + this.$realtime.outerHeight();
       if (currentContentHeight > heigth)
         blankHeight = 0;
       else
@@ -407,16 +413,18 @@ define([
       });
     },
     toggleHistoryLoader: function(more) {
-      this.$el.find('.loader').find('.help, .loading, .no-more').hide();
+      this.$loader.find('.help, .loading, .no-more').hide();
+      this.$pad.removeClass('loading');
       if (more === 'loading') {
-          // 'loading'
-        this.$el.find('.loader .loading').show();
+        // 'loading'
+        this.$loader.find('.loading').show();
+        this.$pad.addClass('loading');
       } else if (more) {
         // 'scroll to display more'
-        this.$el.find('.loader .help').show();
+        this.$loader.find('.help').show();
       } else {
         // no more history indication
-        this.$el.find('.loader .no-more').show();
+        this.$loader.find('.no-more').show();
       }
     }
 
