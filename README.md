@@ -64,13 +64,15 @@ $ sudo su - donut
 $ mkdir /home/donut/app
 $ cd /home/donut/app
 $ git clone git@github.com:dbrugne/donut.git ./
-$ npm update
+$ npm install
 $ cd game-server
 $ mkdir logs
-$ npm update
+$ npm install
 $ cd ../web-server
-$ npm update
-$ bower update
+$ npm install
+$ bower install
+$ grunt jst
+$ grunt requirejs
 ```
 
 ### Local running

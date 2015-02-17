@@ -1,6 +1,6 @@
 require.config({
   paths: {
-    '_templates'                  : './templates',
+    '_templates'                  : ['../build/templates', './templates'],
     'jquery'                      : '../vendor/jquery/jquery',
     'bootstrap'                   : '../vendor/bootstrap/dist/js/bootstrap',
     'text'                        : '../vendor/requirejs-text/text',
@@ -25,7 +25,6 @@ require.config({
     'jquery.momentify'            : '../javascripts/plugins/jquery.momentify',
     'jquery.colorify'             : '../javascripts/plugins/jquery.colorify',
     'jquery.mentionsinput'        : '../javascripts/plugins/jquery.mentionsInput',
-    'underscore.template-helpers' : '../javascripts/plugins/underscore.template-helpers',
     'html.sortable'               : '../vendor/html.sortable/dist/html.sortable'
   },
   shim: {
@@ -41,7 +40,6 @@ require.config({
     'jquery.mentionsinput'        : ['jquery'],
     'cloudinary.widget'           : ['jquery'],
     'html.sortable'               : ['jquery'],
-    'underscore.template-helpers' : ['underscore'],
     'facebook' : {
       exports: 'FB'
     }
@@ -75,7 +73,6 @@ require([
   'jquery.mentionsinput',
   'bootstrap',
   'moment-fr',
-  'underscore.template-helpers',
   'html.sortable'
 ], function (app, $, _, Backbone, i18next, facebook, moment) {
 
@@ -89,14 +86,14 @@ require([
     debug: false // @debug
   });
   // make i18next available from all underscore templates views (<%= t('key') %>)
-  _.addTemplateHelpers({t: i18next.t});
+  window.t = i18next.t; // @global
 
   // Cloudinary setup
   $.cloudinary.config({
     cloud_name: window.cloudinary_cloud_name,
     api_key: window.cloudinary_api_key
   });
-  window.cloudinary.setCloudName(window.cloudinary_cloud_name); // @todo : ouille!
+  window.cloudinary.setCloudName(window.cloudinary_cloud_name); // @global
 
   // Moment language
   window.moment = moment;

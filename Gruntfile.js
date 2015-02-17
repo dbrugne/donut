@@ -17,6 +17,7 @@ module.exports = function(grunt) {
           preserveLicenseComments: false,
           //optimize: 'none', // could disabled uglyfication
           paths: {
+            '_templates'                  : '../build/templates',
             'jquery'                      : '../vendor/jquery/jquery',
             'bootstrap'                   : '../vendor/bootstrap/dist/js/bootstrap',
             'text'                        : '../vendor/requirejs-text/text',
@@ -47,49 +48,27 @@ module.exports = function(grunt) {
         }
       }
     },
-    underscore_compile: {
-      options: {
-        // Task-specific options go here.
-      },
-      './web-server/public/build/templates.js': [
-        './web-server/public/donut/templates/color-picker.html',
-        './web-server/public/donut/templates/current-user.html',
-        './web-server/public/donut/templates/discussions-block.html',
-        './web-server/public/donut/templates/event/disconnected.html',
-        './web-server/public/donut/templates/event/in-out-on-off.html',
-        './web-server/public/donut/templates/event/message.html',
-        './web-server/public/donut/templates/event/reconnected.html',
-        './web-server/public/donut/templates/event/room-deop.html',
-        './web-server/public/donut/templates/event/room-kick.html',
-        './web-server/public/donut/templates/event/room-op.html',
-        './web-server/public/donut/templates/event/room-topic.html',
-        './web-server/public/donut/templates/events.html',
-        './web-server/public/donut/templates/home-rooms.html',
-        './web-server/public/donut/templates/home-users.html',
-        './web-server/public/donut/templates/home.html',
-        './web-server/public/donut/templates/image-uploader.html',
-        './web-server/public/donut/templates/input.html',
-        './web-server/public/donut/templates/onetoone.html',
-        './web-server/public/donut/templates/room-create.html',
-        './web-server/public/donut/templates/room-delete.html',
-        './web-server/public/donut/templates/room-edit.html',
-        './web-server/public/donut/templates/room-profile.html',
-        './web-server/public/donut/templates/room-topic.html',
-        './web-server/public/donut/templates/room-users-confirmation.html',
-        './web-server/public/donut/templates/room-users-list.html',
-        './web-server/public/donut/templates/room-users.html',
-        './web-server/public/donut/templates/room.html',
-        './web-server/public/donut/templates/spinner.html',
-        './web-server/public/donut/templates/user-account.html',
-        './web-server/public/donut/templates/user-edit.html',
-        './web-server/public/donut/templates/user-profile.html'
-      ]
+    jst: {
+      compile: {
+        options: {
+          amd: true,
+          processName: function(filename) {
+            return filename.replace('web-server/public/donut/templates/', '');
+          }
+        },
+        files: {
+          'web-server/public/build/templates.js': [
+            'web-server/public/donut/templates/*.html',
+            'web-server/public/donut/templates/event/*.html'
+          ]
+        }
+      }
     }
   });
 
   // Load the plugin
   grunt.loadNpmTasks('grunt-contrib-requirejs');
-  grunt.loadNpmTasks('grunt-underscore-compile');
+  grunt.loadNpmTasks('grunt-contrib-jst');
 
   // Custom tasks
   grunt.loadTasks('tasks');
