@@ -3,13 +3,13 @@ define([
   'underscore',
   'backbone',
   'models/current-user',
-  'text!templates/current-user.html'
-], function ($, _, Backbone, currentUser, currentUserTemplate) {
+  '_templates'
+], function ($, _, Backbone, currentUser, templates) {
   var CurrentUserView = Backbone.View.extend({
 
-    template: _.template(currentUserTemplate),
-
     el: $('#block-current-user'),
+
+    template: templates['current-user.html'],
 
     hello: '',
 

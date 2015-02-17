@@ -3,17 +3,15 @@ define([
   'underscore',
   'backbone',
   'models/current-user',
-  'text!templates/room-users.html',
-  'text!templates/room-users-list.html',
-  'text!templates/room-users-confirmation.html'
-], function ($, _, Backbone, currentUser, roomUsersTemplate, listTemplate, confirmationTemplate) {
+  '_templates'
+], function ($, _, Backbone, currentUser, templates) {
   var RoomUsersView = Backbone.View.extend({
 
-    template: _.template(roomUsersTemplate),
+    template: templates['room-users.html'],
 
-    listTemplate: _.template(listTemplate),
+    listTemplate: templates['room-users-list.html'],
 
-    confirmationTemplate: _.template(confirmationTemplate),
+    confirmationTemplate: templates['room-users-confirmation.html'],
 
     events: {
       "click [data-toggle='confirmation']": "onConfirmation",

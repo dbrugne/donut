@@ -4,11 +4,11 @@ define([
   'backbone',
   'client',
   'models/current-user',
-  'text!templates/room-topic.html'
-], function ($, _, Backbone, client, currentUser, topicTemplate) {
+  '_templates'
+], function ($, _, Backbone, client, currentUser, templates) {
   var RoomTopicView = Backbone.View.extend({
 
-    template: _.template(topicTemplate),
+    template: templates['room-topic.html'],
 
     events: {
       'click .topic-current': 'showForm',

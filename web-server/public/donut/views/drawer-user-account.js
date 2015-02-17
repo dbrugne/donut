@@ -4,12 +4,11 @@ define([
   'backbone',
   'client',
   'models/current-user',
-  'text!templates/user-account.html',
-  'text!templates/spinner.html'
-], function ($, _, Backbone, client, currentUser, userAccountTemplate, spinnerTemplate) {
+  '_templates'
+], function ($, _, Backbone, client, currentUser, templates) {
   var DrawerUserEditView = Backbone.View.extend({
 
-    template: _.template(userAccountTemplate),
+    template: templates['user-account.html'],
 
     id: 'user-account',
 
@@ -29,7 +28,7 @@ define([
     },
     render: function() {
       // render spinner only
-      this.$el.html(_.template(spinnerTemplate)());
+      this.$el.html(templates['spinner.html']);
       return this;
     },
     onResponse: function(user) {

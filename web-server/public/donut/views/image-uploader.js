@@ -2,11 +2,11 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'text!templates/image-uploader.html'
-], function ($, _, Backbone, ImageUploaderTemplate) {
+  '_templates'
+], function ($, _, Backbone, templates) {
   var ImageUploaderView = Backbone.View.extend({
 
-    template: _.template(ImageUploaderTemplate),
+    template: templates['image-uploader.html'],
 
     data: {}, // will be filled here and read in form view
 

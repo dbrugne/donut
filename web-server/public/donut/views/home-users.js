@@ -2,11 +2,11 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'text!templates/home-users.html'
-], function ($, _, Backbone,  usersTemplate) {
+  '_templates'
+], function ($, _, Backbone,  templates) {
   var UsersView = Backbone.View.extend({
 
-    template: _.template(usersTemplate),
+    template: templates['home-users.html'],
 
     initialize: function(options) {
     },

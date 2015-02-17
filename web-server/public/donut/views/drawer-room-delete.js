@@ -4,12 +4,11 @@ define([
   'backbone',
   'client',
   'models/current-user',
-  'text!templates/room-delete.html',
-  'text!templates/spinner.html'
-], function ($, _, Backbone, client, currentUser, roomDeleteTemplate, spinnerTemplate) {
+  '_templates'
+], function ($, _, Backbone, client, currentUser, templates) {
   var DrawerRoomDeleteView = Backbone.View.extend({
 
-    template: _.template(roomDeleteTemplate),
+    template: templates['room-delete.html'],
 
     id: 'room-delete',
 
@@ -36,7 +35,7 @@ define([
     },
     render: function() {
       // render spinner only
-      this.$el.html(_.template(spinnerTemplate)());
+      this.$el.html(templates['spinner.html']);
       return this;
     },
     onResponse: function(room) {

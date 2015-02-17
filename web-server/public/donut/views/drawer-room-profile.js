@@ -4,12 +4,11 @@ define([
   'backbone',
   'client',
   'models/current-user',
-  'text!templates/room-profile.html',
-  'text!templates/spinner.html'
-], function ($, _, Backbone, client, currentUser, roomProfileTemplate, spinnerTemplate) {
+  '_templates'
+], function ($, _, Backbone, client, currentUser, templates) {
   var DrawerRoomProfileView = Backbone.View.extend({
 
-      template: _.template(roomProfileTemplate),
+      template: templates['room-profile.html'],
 
       id: 'room-profile',
 
@@ -31,7 +30,7 @@ define([
       },
       render: function () {
           // render spinner only
-          this.$el.html(_.template(spinnerTemplate)());
+          this.$el.html(templates['spinner.html']);
           return this;
       },
       onResponse: function (room) {

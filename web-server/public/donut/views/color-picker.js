@@ -2,11 +2,11 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'text!templates/color-picker.html'
-], function ($, _, Backbone, colorPickerTemplate) {
+  '_templates'
+], function ($, _, Backbone, templates) {
   var ColorPickerView = Backbone.View.extend({
 
-    template: _.template(colorPickerTemplate),
+    template: templates['color-picker.html'],
 
     colors: window.colors,
 

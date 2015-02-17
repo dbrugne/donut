@@ -5,23 +5,11 @@ define([
   'models/event',
   'moment',
   'views/window',
-  'text!templates/events.html',
-  'text!templates/event/disconnected.html',
-  'text!templates/event/in-out-on-off.html',
-  'text!templates/event/message.html',
-  'text!templates/event/reconnected.html',
-  'text!templates/event/room-deop.html',
-  'text!templates/event/room-kick.html',
-  'text!templates/event/room-op.html',
-  'text!templates/event/room-topic.html'
-], function ($, _, Backbone, EventModel, moment, windowView, eventsTemplate,
-             disconnectedTemplate, inOutOnOffTemplate, messageTemplate, reconnectedTemplate,
-             deopTemplate, kickTemplate, opTemplate, topicTemplate) {
+  '_templates'
+], function ($, _, Backbone, EventModel, moment, windowView, templates) {
   var EventsView = Backbone.View.extend({
 
-    template: _.template(eventsTemplate),
-
-    eventTemplates: '',
+    template: templates['events.html'],
 
     events: {
       "click .go-to-top a"    : "scrollTop",
@@ -38,18 +26,6 @@ define([
 
     initialize: function(options) {
       this.listenTo(this.model, 'freshEvent', this.addFreshEvent);
-
-      // @todo : move _.template() in a centralized object (actually it's done for each discussion)
-      this.eventTemplates = {
-        disconnected    : _.template(disconnectedTemplate),
-        inoutonoff      : _.template(inOutOnOffTemplate),
-        message         : _.template(messageTemplate),
-        reconnected     : _.template(reconnectedTemplate),
-        deop            : _.template(deopTemplate),
-        kick            : _.template(kickTemplate),
-        op              : _.template(opTemplate),
-        topic           : _.template(topicTemplate)
-      };
 
       window.debug.start('discussion-events'+this.model.getIdentifier());
 
@@ -367,25 +343,25 @@ define([
         var template;
         switch (data.type) {
           case 'disconnected':
-            template = this.eventTemplates['disconnected']; break;
+            template = templates['event/disconnected.html']; break;
           case 'user:online':
           case 'user:offline':
           case 'room:in':
           case 'room:out':
-            template = this.eventTemplates['inoutonoff']; break;
+            template = templates['event/in-out-on-off.html']; break;
           case 'room:message':
           case 'user:message':
-            template = this.eventTemplates['message']; break;
+            template = templates['event/message.html']; break;
           case 'reconnected':
-            template = this.eventTemplates['reconnected']; break;
+            template = templates['event/reconnected.html']; break;
           case 'room:deop':
-            template = this.eventTemplates['deop']; break;
+            template = templates['event/room-deop.html']; break;
           case 'room:kick':
-            template = this.eventTemplates['kick']; break;
+            template = templates['event/room-kick.html']; break;
           case 'room:op':
-            template = this.eventTemplates['op']; break;
+            template = templates['event/room-op.html']; break;
           case 'room:topic':
-            template = this.eventTemplates['topic']; break;
+            template = templates['event/room-topic.html']; break;
           default:
             return;
         }

@@ -7,6 +7,7 @@ define([
   'models/event',
   'collections/rooms',
   'collections/onetoones',
+  '_templates',
   'views/window',
   'views/connection',
   'views/current-user',
@@ -24,7 +25,7 @@ define([
   'views/discussion-room',
   'views/discussion-onetoone',
   'views/discussions-block'
-], function ($, _, Backbone, client, currentUser, EventModel, rooms, onetoones, windowView,
+], function ($, _, Backbone, client, currentUser, EventModel, rooms, onetoones, templates, windowView,
              ConnectionModalView, CurrentUserView, AlertView, HomeView, QuickSearchView,
              DrawerView,
              DrawerRoomCreateView, DrawerRoomProfileView, DrawerRoomEditView,

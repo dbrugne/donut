@@ -6,12 +6,11 @@ define([
   'models/current-user',
   'views/image-uploader',
   'views/color-picker',
-  'text!templates/user-edit.html',
-  'text!templates/spinner.html'
-], function ($, _, Backbone, client, currentUser, ImageUploader, ColorPicker, userEditTemplate, spinnerTemplate) {
+  '_templates'
+], function ($, _, Backbone, client, currentUser, ImageUploader, ColorPicker, templates) {
   var DrawerUserEditView = Backbone.View.extend({
 
-    template: _.template(userEditTemplate),
+    template: templates['user-edit.html'],
 
     id: 'user-edit',
 
@@ -33,7 +32,7 @@ define([
     },
     render: function() {
       // render spinner only
-      this.$el.html(_.template(spinnerTemplate)());
+      this.$el.html(templates['spinner.html']);
       return this;
     },
     onResponse: function(user) {

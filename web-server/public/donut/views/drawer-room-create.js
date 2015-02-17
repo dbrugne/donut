@@ -2,11 +2,11 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'text!templates/room-create.html'
-], function ($, _, Backbone, roomCreateTemplate) {
+  '_templates'
+], function ($, _, Backbone, _templates) {
   var DrawerRoomCreateView = Backbone.View.extend({
 
-    template: _.template(roomCreateTemplate),
+    template: _templates['room-create.html'],
 
     id: 'room-create',
 

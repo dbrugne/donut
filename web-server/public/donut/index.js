@@ -1,5 +1,6 @@
 require.config({
   paths: {
+    '_templates'                  : './templates',
     'jquery'                      : '../vendor/jquery/jquery',
     'bootstrap'                   : '../vendor/bootstrap/dist/js/bootstrap',
     'text'                        : '../vendor/requirejs-text/text',

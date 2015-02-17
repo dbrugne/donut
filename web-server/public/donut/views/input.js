@@ -3,13 +3,13 @@ define([
   'underscore',
   'backbone',
   'models/current-user',
-  'text!templates/input.html'
-], function ($, _, Backbone, currentUser, InputTemplate) {
+  '_templates'
+], function ($, _, Backbone, currentUser, templates) {
   var DiscussionInputView = Backbone.View.extend({
 
-    template: _.template(InputTemplate),
+    template: templates['input.html'],
 
-    imageTemplate: _.template('<a class="image" target="_blank" href="<%=data.url%>" data-cloudinary-id="<%=data.public_id%>" style="background-image: url(<%=data.thumbnail_url%>);"><i class="fa fa-times remove-image"></i></a>'),
+    imageTemplate: templates['input-image.html'],
 
     images: '',
 

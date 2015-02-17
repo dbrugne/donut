@@ -4,12 +4,11 @@ define([
   'backbone',
   'client',
   'models/current-user',
-  'text!templates/user-profile.html',
-  'text!templates/spinner.html'
-], function ($, _, Backbone, client, currentUser, userProfileTemplate, spinnerTemplate) {
+  '_templates'
+], function ($, _, Backbone, client, currentUser, templates) {
   var DrawerUserProfileView = Backbone.View.extend({
 
-    template: _.template(userProfileTemplate),
+    template: templates['user-profile.html'],
 
     id: 'user-profile',
 
@@ -30,7 +29,7 @@ define([
     },
     render: function () {
       // render spinner only
-      this.$el.html(_.template(spinnerTemplate)());
+      this.$el.html(templates['spinner.html']);
       return this;
     },
     onResponse: function (user) {

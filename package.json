@@ -13,6 +13,7 @@
     "debug": "2.x",
     "express-session": "1.x",
     "express-validator": "2.x",
+    "grunt-underscore-compile": "^0.1.4",
     "i18next": "1.7.x",
     "mongoose": "3.8.x",
     "newrelic": "^1.14.1",

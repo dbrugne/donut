@@ -6,13 +6,13 @@ define([
   'views/home-rooms',
   'views/home-users',
   'views/home-search',
-  'text!templates/home.html'
-], function ($, _, Backbone, client, RoomsView, UsersView, SearchView, homeTemplate) {
+  '_templates'
+], function ($, _, Backbone, client, RoomsView, UsersView, SearchView, templates) {
   var HomeView = Backbone.View.extend({
 
     el: $('#home'),
 
-    template: _.template(homeTemplate),
+    template: templates['home.html'],
 
     initialize: function(options) {
       this.listenTo(client, 'home', this.onHome);

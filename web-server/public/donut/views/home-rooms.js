@@ -2,11 +2,11 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'text!templates/home-rooms.html'
-], function ($, _, Backbone, roomsTemplate) {
+  '_templates'
+], function ($, _, Backbone, templates) {
   var RoomsView = Backbone.View.extend({
 
-    template: _.template(roomsTemplate),
+    template: templates['home-rooms.html'],
 
     initialize: function(options) {
     },

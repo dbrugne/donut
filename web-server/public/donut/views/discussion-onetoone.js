@@ -3,11 +3,11 @@ define([
   'underscore',
   'backbone',
   'views/discussion',
-  'text!templates/onetoone.html'
-], function ($, _, Backbone, DiscussionView, oneToOnePanelTemplate) {
+  '_templates'
+], function ($, _, Backbone, DiscussionView, _templates) {
   var OneToOnePanelView = DiscussionView.extend({
 
-    template: _.template(oneToOnePanelTemplate),
+    template: _templates['onetoone.html'],
 
     _initialize: function() {
       this.listenTo(this.model, 'change:color', this.onColor);

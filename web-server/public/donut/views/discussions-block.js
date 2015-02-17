@@ -5,13 +5,13 @@ define([
   'collections/rooms',
   'collections/onetoones',
   'models/current-user',
-  'text!templates/discussions-block.html'
-], function ($, _, Backbone, rooms, onetoones, currentUser, blockTemplate) {
+  '_templates'
+], function ($, _, Backbone, rooms, onetoones, currentUser, templates) {
   var DiscussionsBlockView = Backbone.View.extend({
 
     el: $("#block-discussions"),
 
-    template: _.template(blockTemplate),
+    template: templates['discussions-block.html'],
 
     events: {},
 
@@ -26,7 +26,7 @@ define([
       this.initialRender();
     },
     initialRender: function() {
-      var html = _.template('<div class="list"></div>')();
+      var html = templates['div']({ 'css': 'list' });
       this.$list = $(html).appendTo(this.$el);
 
       // @doc: https://github.com/voidberg/html5sortable

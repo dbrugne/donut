@@ -7,11 +7,11 @@ define([
   'views/discussion',
   'views/room-topic',
   'views/room-users',
-  'text!templates/room.html'
-], function ($, _, Backbone, client, currentUser, DiscussionView, TopicView, UsersView, roomTemplate) {
+  '_templates'
+], function ($, _, Backbone, client, currentUser, DiscussionView, TopicView, UsersView, templates) {
   var RoomView = DiscussionView.extend({
 
-    template: _.template(roomTemplate),
+    template: templates['room.html'],
 
     events: {
       'click .op-user': 'opUser',
