@@ -39,7 +39,7 @@ define([
       return this;
     },
     onResponse: function(room) {
-      if (room.owner.user_id != currentUser.get('user_id'))
+      if (room.owner.user_id != currentUser.get('user_id') && !currentUser.isAdmin())
         return;
 
       this.roomName = room.name;
