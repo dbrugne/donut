@@ -382,7 +382,7 @@ define([
             template = this.eventTemplates['deop']; break;
           case 'room:kick':
             template = this.eventTemplates['kick']; break;
-          case 'room:':
+          case 'room:op':
             template = this.eventTemplates['op']; break;
           case 'room:topic':
             template = this.eventTemplates['topic']; break;
