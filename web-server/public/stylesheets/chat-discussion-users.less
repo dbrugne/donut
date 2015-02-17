@@ -1,0 +1,212 @@
+color: @cl-background;
+a { color: @cl-background; }
+hr { margin-left: 0; margin-right: 0; }
+font-size: 1.1em;
+
+.users {
+  background-color: rgba(0, 0, 0, 0.2);
+  height: 100%;
+  padding: 10px 0 10px 0;
+  @header-height: 35px;
+  .header {
+    position: absolute;
+    top: 14px; left: 16px; right: 10px;
+    .count { .pull-left; }
+    .between {
+      font-size: 1.2em;
+      line-height: 1;
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+    .actions { .pull-right; }
+  }
+  > hr {
+    position: absolute;
+    left: 14px; right: 14px; top: @header-height;
+  }
+  @size-user-item: 195px;
+  .list {
+    width: 208px;
+    height: -webkit-calc(~'100%' - @header-height + 5px);
+    height: -o-calc(~'100%' - @header-height + 5px);
+    height: calc(~'100%' - @header-height + 5px);
+    margin-top: -webkit-calc(@header-height + 10px);
+    margin-top: -o-calc(@header-height + 10px);
+    margin-top: calc(@header-height + 10px);
+    margin-bottom: 0;
+    margin-left: 5px;
+    padding: 0 0 10px 0;
+    background-repeat: no-repeat;
+    background-position: left top;
+    position: relative;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    /**
+      ::-webkit-scrollbar
+      ::-webkit-scrollbar-button
+      ::-webkit-scrollbar-track
+      ::-webkit-scrollbar-track-piece
+      ::-webkit-scrollbar-thumb
+      ::-webkit-scrollbar-corner
+      ::-webkit-resizer
+      */
+    &::-webkit-scrollbar{
+      width: 5px;
+      background-color: transparent;
+    }
+    &::-webkit-scrollbar-thumb{
+      background-color: @cl-background;
+      border-radius:10px;
+      min-height: 30px;
+    }
+    &::-webkit-scrollbar-thumb:hover{
+      background-color: @cl-background;
+    }
+    &::-webkit-scrollbar-thumb:active{
+      background-color: @cl-background;
+    }
+    &::-webkit-scrollbar-track{
+      background-color: transparent;
+    }
+    .title {
+      margin-top: 15px;
+      padding-left: 10px;
+    }
+    .item {
+      position: relative;
+      width: @size-user-item;
+      padding-top: 10px;
+      padding-left: 10px;
+      font-size: 0.9em;
+      font-weight: bold;
+      white-space: nowrap;
+      .infos {
+        width: @size-user-item;
+        display: inline-block;
+        .avatar {
+          position: relative;
+          display: inline-block;
+          width: 34px;
+          height: 34px;
+          background-position: center center;
+          background-size: 34px 34px;
+          vertical-align: middle;
+        }
+        .username {
+          position: relative;
+          margin-left: 9px;
+          padding-right: 12px;
+          overflow: hidden;
+          display: inline-block;
+          vertical-align: middle;
+          max-width: 110px; // should take scrollbar width in consideration
+          white-space: nowrap;
+          &::after {
+            content: "\f192";
+            font-family: FontAwesome;
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: none;
+            margin-left: 5px;
+            font-size: 13px;
+          }
+        }
+      }
+      .actions {
+        position: absolute;
+        top: 5px; right: @size-user-item;
+        height: 40px;
+        -webkit-transition: left 1s;
+        -moz-transition: left 1s;
+        transition: left 1s;
+        padding: 5px 10px 2px;
+        display: inline-block;
+        background-color: @cl-background;
+        z-index: 6;
+        .deop-user, .op-user, .kick-user, .open-user-profile {
+          cursor: pointer;
+          display: inline-block;
+          vertical-align: middle;
+        }
+        .open-user-profile {
+          font-size: 22px;
+        }
+        .kick-user {
+          img {
+            width: 22px;
+            height: 22px;
+          }
+        }
+        .op-user {
+          img {
+            width: 18px;
+            height: 22px;
+          }
+        }
+        .deop-user {
+          img {
+            width: 18px;
+            height: 22px;
+          }
+        }
+      }
+      &:hover {
+        .actions {
+          background-color: rgba(67, 67, 67, 0.7);
+          right: 0px;
+        }
+      }
+      &.online {
+        .username::after { color: @cl-success; }
+      }
+      &.offline {
+        .username {
+          opacity: 0.4;
+          &::after {
+            color: @cl-error;
+          }
+        }
+        .avatar {
+          opacity: 0.4;
+          width: 30px;
+          height: 30px;
+          background-size: 30px 30px;
+        }
+      }
+      &.op {
+        .avatar {
+          border-style: solid;
+          border-width: 2px;
+          border-radius: 5px;
+          border-color: @cl-success !important; // override .op if needed;
+        }
+        .avatar::before {
+          z-index: 5;
+          position: absolute;
+          content: " ";
+          top: -10px; left: -7px;
+          width: 12px;
+          height: 16px;
+          background-image: url("/images/op.png");
+          background-size: 12px 16px;
+        }
+      }
+      &.owner {
+        .avatar {
+          border-style: solid;
+          border-width: 2px;
+          border-radius: 5px;
+          border-color: #fbec4d !important; // override .op if needed;
+        }
+        .avatar::before {
+          z-index: 5;
+          position: absolute;
+          content: url("/images/owner.png") !important; // override .op if needed
+          top: -15px !important; left: 7px !important;
+        }
+      }
+    }
+  }
+}
+
