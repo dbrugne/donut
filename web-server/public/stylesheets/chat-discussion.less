@@ -157,13 +157,14 @@
       }
       .share-button {
         position: absolute;
+        display: block;
         top: 10px;
         right: 10px;
-        width: inherit;
         height: 33px;
         border-radius: 25px;
-        white-space: nowrap;
+        padding-right: 15px;
         label {
+          display: block;
           color: inherit;
           background-color: transparent;
           padding: 5px 12px;
@@ -209,9 +210,6 @@
   .discussion {
     .content {
       margin-right: @size-right-mid;
-      .header {
-        .share-button { max-width: 136px; }
-      }
     }
     .side {
       width: @size-right-mid;
