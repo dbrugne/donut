@@ -121,13 +121,13 @@ font-size: 1.1em;
         -moz-transition: right 1s;
         transition: right 1s;
         background-color: rgba(67, 67, 67, 0.7);
-        padding: 5px 20px 2px 20px;
+        padding: 5px 20px;
         display: inline-block;
         z-index: 6;
         .separator {
           margin: 0 5px;
         }
-        .deop-user, .op-user, .kick-user, .open-user-profile {
+        .deop, .op, .kick, .open-user-profile {
           cursor: pointer;
           display: inline-block;
           vertical-align: middle;
@@ -135,19 +135,19 @@ font-size: 1.1em;
         .open-user-profile {
           font-size: 22px;
         }
-        .kick-user {
+        .kick {
           img {
             width: 22px;
             height: 22px;
           }
         }
-        .op-user {
+        .op {
           img {
             width: 18px;
             height: 22px;
           }
         }
-        .deop-user {
+        .deop {
           img {
             width: 18px;
             height: 22px;
@@ -168,6 +168,34 @@ font-size: 1.1em;
       &:hover {
         .actions {
           right: -13px;
+        }
+      }
+      .confirmation {
+        z-index: 6;
+        background-color: rgb(0, 0, 0);
+        background-color: rgba(0, 0, 0, 0.9);
+        position: absolute;
+        left: 0; right: -8px; top: 2px; bottom: -3px;
+        padding: 5px 8px 5px 6px;
+        label {
+          font-weight: normal;
+          padding-top: 5px;
+        }
+        .buttons {
+          position: absolute;
+          right: 12px;
+          top: 6px;
+          .cancel {
+            .btn;
+            .btn-sm;
+            .btn-danger;
+            margin-left: 8px;
+          }
+          .confirm {
+            .btn;
+            .btn-sm;
+            .btn-success;
+          }
         }
       }
       &.online {

@@ -111,6 +111,7 @@ define([
      */
 
     opUser: function(event) {
+      event.preventDefault();
       if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin())
         return false;
 
@@ -119,6 +120,7 @@ define([
         client.roomOp(this.model.get('name'), username);
     },
     deopUser: function(event) {
+      event.preventDefault();
       if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin())
         return false;
 
@@ -127,6 +129,7 @@ define([
         client.roomDeop(this.model.get('name'), username);
     },
     kickUser: function(event) {
+      event.preventDefault();
       if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin())
         return false;
 

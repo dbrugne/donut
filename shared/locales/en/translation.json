@@ -341,6 +341,11 @@
     "profile": {
       "infobox": "View the user profile"
     },
+    "confirmation": {
+      "sure": "Sure?",
+      "cancel": "No",
+      "confirm": "Yes"
+    },
     "notifications": {
       "hello": "You enter",
       "disconnected": "You have been disconnected from the server, please wait",
