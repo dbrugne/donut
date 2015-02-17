@@ -39,6 +39,18 @@ home_users, home, image_uploader, input, input_image, onetoone, room_create, roo
 room_topic, room_users_confirmation, room_users_list, room_users, room, spinner, user_account, user_edit, user_profile
 ) {
 
+  /**
+   * Stub class to load compiled templates dynamically (in development for example)
+   *
+   * Compiled templates could be found in:
+   *
+   *   ../build/templates.js
+   *
+   * Grunt task to build:
+   *
+   *   >$ grunt jst
+   */
+
   var JST={};
   JST['color-picker.html']="COMPILE IT";
   JST['color-picker.html']            = _.template(color_picker);
@@ -73,8 +85,6 @@ room_topic, room_users_confirmation, room_users_list, room_users, room, spinner,
   JST['user-account.html']            = _.template(user_account);
   JST['user-edit.html']               = _.template(user_edit);
   JST['user-profile.html']            = _.template(user_profile);
-
-  JST['div'] = _.template('<div class="<%= css %>"></div>');
 
   return JST;
 });

@@ -26,8 +26,7 @@ define([
       this.initialRender();
     },
     initialRender: function() {
-      var html = templates['div']({ 'css': 'list' });
-      this.$list = $(html).appendTo(this.$el);
+      this.$list = this.$el.find('.list');
 
       // @doc: https://github.com/voidberg/html5sortable
       this.$list.sortable({
