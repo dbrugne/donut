@@ -1,12 +1,12 @@
 <% _.each(list, function(item) { %>
 <a href="<%= item.uri %>" class="item <% if (item.focused) { %>active<% }; %> <% if (item.unread > 0) {%>unread<%}; %>" data-type="<%= item.type %>" data-identifier="<%= item.identifier %>">
     <img src="<%= item.avatar %>" class="avatar" alt="<%= item.identifier %> avatar">
-    <% if (item.unread > 0) { %><span class="unread"><%= item.unread %></span><% }; %>
     <% if (item.type == 'room') { %>
     <span class="name"><span>#</span><%= item.name.replace('#', '') %></span>
     <% } else { %>
     <span class="name"><span>@</span><%= item.username %></span>
     <% } %>
+    <span class="unread">new</span>
     <i class="fa fa-times-circle-o close-discussion" title="Close this discussion"></i>
 </a>
 <% }); %>

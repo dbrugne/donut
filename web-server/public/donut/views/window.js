@@ -78,7 +78,7 @@ define([
       }, unread);
 
       if (unread > 0)
-        title += '('+unread+') ';
+        title += '(new) ';
 
       title += this.defaultTitle;
 
