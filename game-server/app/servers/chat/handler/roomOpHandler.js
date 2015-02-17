@@ -46,7 +46,7 @@ handler.op = function(data, session, next) {
 				if (!room)
 					return callback('Unable to retrieve room in room:op: '+data.name);
 
-				if (!room.isOwnerOrOp(session.uid))
+				if (!room.isOwnerOrOp(session.uid) && session.settings.admin !== true)
 					return callback('This user '+session.uid+' isn\'t able to op another user in this room: '+data.name);
 
 				return callback(null, room);

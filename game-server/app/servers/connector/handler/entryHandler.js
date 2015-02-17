@@ -99,11 +99,14 @@ handler.enter = function(msg, session, next) {
 				server: session.__session__.__socket__.socket.handshake.headers.host
 			});
 
-			// add username, avatar and color on session
+			// add username, avatar, color and admin flag on session
 			session.set('username', welcome.user.username);
 			session.set('avatar', welcome.user.avatar);
 			session.set('color', welcome.user.color);
 			session.set('started', Date.now());
+			if (welcome.user.admin === true)
+			  session.set('admin', true);
+
 			session.pushAll(function(err) {
 				if (err)
 				  return callback('Error while updating session infos: '+err);

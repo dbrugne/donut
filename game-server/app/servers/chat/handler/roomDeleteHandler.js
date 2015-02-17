@@ -44,15 +44,12 @@ handler.delete = function(data, session, next) {
 				if (!room)
 					return callback('Unable to retrieve room in room:delete: '+data.name);
 
-				if (!room.isOwnerOrOp(session.uid))
-					return callback('This user '+session.uid+' isn\'t able to op another user in this room: '+data.name);
-
 				return callback(null, room);
 			});
 		},
 
 		function permissions(room, callback) {
-			if (!room.isOwner(session.uid))
+			if (!room.isOwner(session.uid) && session.settings.admin !== true)
 				return callback('Current user "'+session.uid+'" is not allowed'
 				+' to delete this room "'+data.name);
 

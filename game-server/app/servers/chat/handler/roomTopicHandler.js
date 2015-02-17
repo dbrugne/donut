@@ -47,7 +47,7 @@ handler.topic = function(data, session, next) {
 				if (!room)
 					return callback('Unable to retrieve room in room:topic: '+data.name);
 
-				if (!room.isOwnerOrOp(session.uid))
+				if (!room.isOwnerOrOp(session.uid) && session.settings.admin !== true)
 					return callback('This user '+session.uid+' isn\'t able to change topic of '+data.name);
 
 				return callback(null, room);

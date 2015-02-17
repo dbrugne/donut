@@ -45,7 +45,7 @@ handler.update = function(data, session, next) {
 				if (!room)
 					return callback('Unable to retrieve room in room:update: '+data.name);
 
-				if (!room.isOwner(session.uid))
+				if (!room.isOwner(session.uid) && session.settings.admin !== true)
 					return callback('This user '+session.uid+' isn\'t able to update data of '+data.name);
 
 				return callback(null, room);
