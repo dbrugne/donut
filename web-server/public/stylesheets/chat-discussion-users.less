@@ -115,14 +115,14 @@ font-size: 1.1em;
       }
       .actions {
         position: absolute;
-        top: 5px; right: @size-user-item;
-        height: 40px;
-        -webkit-transition: left 1s;
-        -moz-transition: left 1s;
-        transition: left 1s;
-        padding: 5px 10px 2px;
+        top: 5px; right: -118px;
+        height: 38px;
+        -webkit-transition: right 1s;
+        -moz-transition: right 1s;
+        transition: right 1s;
+        background-color: rgba(67, 67, 67, 0.7);
+        padding: 5px 20px 2px 20px;
         display: inline-block;
-        background-color: @cl-background;
         z-index: 6;
         .deop-user, .op-user, .kick-user, .open-user-profile {
           cursor: pointer;
@@ -150,11 +150,21 @@ font-size: 1.1em;
             height: 22px;
           }
         }
+        &::before {
+          content: "\f0d9";
+          font-family: FontAwesome;
+          font-style: normal;
+          font-weight: normal;
+          text-decoration: none;
+          margin-left: 5px;
+          font-size: 13px;
+          position: absolute;
+          left: -2px; top: 10px;
+        }
       }
       &:hover {
         .actions {
-          background-color: rgba(67, 67, 67, 0.7);
-          right: 0px;
+          right: -13px;
         }
       }
       &.online {
