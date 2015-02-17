@@ -108,8 +108,7 @@ $ vi /home/donut/web.json
   "exec_mode"  : "fork_mode",
     "env": {
         "NODE_ENV": "test",
-        "DEBUG": "donut:*",
-        "RAW_MESSAGE": true
+        "DEBUG": "donut:*"
     }
 }
 ```
