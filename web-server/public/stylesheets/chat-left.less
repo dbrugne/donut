@@ -136,19 +136,25 @@ hr {
         }
       }
       .unread {
-        position: absolute;
-        top: 10px;
-        left: 167px;
-        padding: 2px;
-        font-size: 9px;
-        text-align: center;
-        min-height: 15px;
-        min-width: 15px;
-        background-color: @cl-first;
-        color: @cl-background;
-        -webkit-border-radius: 10px;
-        -moz-border-radius: 10px;
-        border-radius: 10px;
+        display: none;
+      }
+      &.unread {
+        .unread {
+          display: block;
+          position: absolute;
+          top: 10px;
+          left: 155px;
+          padding: 1px 4px;
+          font-size: 9px;
+          text-align: center;
+          min-height: 15px;
+          min-width: 15px;
+          background-color: @cl-first;
+          color: @cl-background;
+          -webkit-border-radius: 10px;
+          -moz-border-radius: 10px;
+          border-radius: 10px;
+        }
       }
       .close-discussion {
         font-size: 1.8em;
@@ -164,6 +170,12 @@ hr {
         text-decoration: none;
         span.name {
           color: @cl-subtext50;
+        }
+        &::before {
+          content: url('/images/svg/draggable.svg');
+          position: absolute;
+          left: 4px;
+          top: 8px;
         }
       }
       &.active,
