@@ -359,6 +359,9 @@
         "kick": {
             "infobox": "Expulser cet utilisateur de ce donut"
         },
+        "profile": {
+            "infobox": "Voir le profil de cet utilisateur"
+        },
         "notifications": {
             "hello": "Vous entrez dans",
             "disconnected": "Vous avez été deconnecté du serveur, veuillez patienter",

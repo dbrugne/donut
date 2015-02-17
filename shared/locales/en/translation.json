@@ -338,6 +338,9 @@
     "kick": {
       "infobox": "Kick this user out of this donut"
     },
+    "profile": {
+      "infobox": "View the user profile"
+    },
     "notifications": {
       "hello": "You enter",
       "disconnected": "You have been disconnected from the server, please wait",
