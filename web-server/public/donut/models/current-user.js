@@ -57,6 +57,10 @@ define([
         }
       }
       return "";
+    },
+
+    isAdmin: function() {
+      return (this.get('admin') === true) ? true : false;
     }
 
   });

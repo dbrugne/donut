@@ -28,13 +28,14 @@ define([
     render: function() {
       this.$el.html(this.template({
         isOwner: this.model.currentUserIsOwner(),
-        isOp: this.model.currentUserIsOp()
+        isOp: this.model.currentUserIsOp(),
+        isAdmin: this.model.currentUserIsAdmin()
       }));
 
       this.$el.find('.topic-current, .topic-form').hide();
       var currentTopic = this.model.get('topic');
       if (currentTopic == undefined || currentTopic == '') {
-        if (this.model.currentUserIsOp() || this.model.currentUserIsOwner()) {
+        if (this.model.currentUserIsOp() || this.model.currentUserIsOwner() || this.model.currentUserIsAdmin()) {
           this.$el.find('.txt')
             .html($.t("chat.topic.default"))
             .attr('title', $.t("chat.topic.default"));
@@ -59,7 +60,7 @@ define([
       this.render();
     },
     showForm: function() {
-      if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner())
+      if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin())
         return false;
 
       this.$el.find('.topic-current').hide();
@@ -71,7 +72,7 @@ define([
       this.$el.find('.topic-current').css('display', 'inline-block');
     },
     sendNewTopic: function(event) {
-      if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner()) return false;
+      if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin()) return false;
 
       var newTopic = this.$el.find('.topic-input').val();
       // only if not too long

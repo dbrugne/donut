@@ -41,6 +41,8 @@ define([
           : false
           : false;
 
+        room.isAdmin = currentUser.isAdmin();
+
         room.avatar = $.cd.roomAvatar(room.avatar, 90);
 
         room.url = '/room/' + room.name.replace('#', '').toLocaleLowerCase();

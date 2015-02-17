@@ -44,7 +44,8 @@ define([
       var html = this.listTemplate({
         list: listJSON,
         isOwner: this.model.currentUserIsOwner(),
-        isOp: this.model.currentUserIsOp()
+        isOp: this.model.currentUserIsOp(),
+        isAdmin: this.model.currentUserIsAdmin()
       });
       this.$list.html(html);
       window.debug.end('room-users'+that.model.get('name'));

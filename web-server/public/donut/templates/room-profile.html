@@ -19,7 +19,7 @@
 </div>
 <div class="footer">
 
-    <% if (room.isOwner) { %>
+    <% if (room.isOwner || room.isAdmin) { %>
     <a class="edit open-room-edit" data-room-name="<%= room.name %>"><i class="fa fa-pencil-square-o"></i> <%= t('profile.room.editlink') %></a>
     <% }; %>
 </div>

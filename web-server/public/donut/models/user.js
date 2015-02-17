@@ -11,7 +11,8 @@ define([
         user_id: '',
         username: '',
         avatar: '',
-        status: ''
+        status: '',
+        admin: ''
       };
     },
 

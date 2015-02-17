@@ -99,6 +99,9 @@ define([
 
       return isOp;
     },
+    currentUserIsAdmin: function() {
+      return currentUser.isAdmin();
+    },
     onIn: function(data) {
       data.status = 'online'; // only an online user can join a room
 

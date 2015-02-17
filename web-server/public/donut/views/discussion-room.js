@@ -72,6 +72,7 @@ define([
       var owner = this.model.get('owner').toJSON();
       data.owner = owner;
       data.isOwner = this.model.currentUserIsOwner();
+      data.isAdmin = this.model.currentUserIsAdmin();
 
       // avatar
       data.avatar = $.cd.roomAvatar(data.avatar, 100);
@@ -110,16 +111,25 @@ define([
      */
 
     opUser: function(event) {
+      if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin())
+        return false;
+
       var username = $(event.currentTarget).data('username');
       if (username)
         client.roomOp(this.model.get('name'), username);
     },
     deopUser: function(event) {
+      if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin())
+        return false;
+
       var username = $(event.currentTarget).data('username');
       if (username)
         client.roomDeop(this.model.get('name'), username);
     },
     kickUser: function(event) {
+      if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin())
+        return false;
+
       var username = $(event.currentTarget).data('username');
       if (username)
         client.roomKick(this.model.get('name'), username);
