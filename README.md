@@ -4,9 +4,9 @@ donut
 DONUT is a node.js/backbonejs based chatroom platform. Usage is inspired of IRC on a side and modern social platform on other hand.
 
 Next deploy:
-- process.env.RAW_MESSAGE set to false
 - remove logs collection
 - npm cleanup
+- RAW_MESSAGE == true
 
 ## Pre-requisites
 **Server**
@@ -109,6 +109,7 @@ $ vi /home/donut/web.json
     "env": {
         "NODE_ENV": "test",
         "DEBUG": "donut:*",
+        "RAW_MESSAGE": true
     }
 }
 ```
@@ -124,6 +125,7 @@ $ vi /home/donut/ws.json
     "env": {
         "NODE_ENV": "test",
         "DEBUG": "donut:*",
+        "RAW_MESSAGE": true
     }
 }
 ```
