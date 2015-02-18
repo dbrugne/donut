@@ -65,6 +65,14 @@ define([
         window.debug.log('io:in:room:kick', data);
         this.trigger('room:kick', data);
       }, this);
+      pomelo.on('room:ban', function(data) {
+        window.debug.log('io:in:room:ban', data);
+        this.trigger('room:ban', data);
+      }, this);
+      pomelo.on('room:deban', function(data) {
+        window.debug.log('io:in:room:deban', data);
+        this.trigger('room:deban', data);
+      }, this);
       pomelo.on('user:join', function(data) {
         window.debug.log('io:in:user:join', data);
         this.trigger('user:join', data);
@@ -324,6 +332,34 @@ define([
           function(response) {
             if (response.err)
               return window.debug.log('io:in:room:kick error: ', response);
+          }
+      );
+    },
+    roomBan: function(name, username, reason) {
+      var data = {name: name, username: username};
+      if (reason)
+        data.reason = reason;
+      window.debug.log('io:out:room:ban', data);
+      var that = this;
+      pomelo.request(
+          'chat.roomBanHandler.ban',
+          data,
+          function(response) {
+            if (response.err)
+              return window.debug.log('io:in:room:ban error: ', response);
+          }
+      );
+    },
+    roomDeban: function(name, username) {
+      var data = {name: name, username: username};
+      window.debug.log('io:out:room:deban', data);
+      var that = this;
+      pomelo.request(
+          'chat.roomDebanHandler.deban',
+          data,
+          function(response) {
+            if (response.err)
+              return window.debug.log('io:in:room:deban error: ', response);
           }
       );
     },

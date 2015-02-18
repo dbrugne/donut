@@ -81,7 +81,7 @@ define([
       this.listenTo(rooms,      'remove', this.onRemoveDiscussion);
       this.listenTo(onetoones,  'add', this.addView);
       this.listenTo(onetoones,  'remove', this.onRemoveDiscussion);
-      this.listenTo(rooms,      'kicked', this.roomKicked);
+      this.listenTo(rooms,      'kickedOrBanned', this.roomKickedOrBanned);
       this.listenTo(rooms,      'deleted', this.roomRoomDeleted);
     },
     run: function() {
@@ -250,14 +250,17 @@ define([
     },
 
     /**
-     * Trigger when currentUser is kicked from a room to handle focus and
+     * Trigger when currentUser is kicked or banned from a room to handle focus and
      * notification
      * @param event
      * @returns {boolean}
      */
-     roomKicked: function(data) {
+    roomKickedOrBanned: function(event) {
+      var what = event.what;
+      var data = event.data;
       this.focus();
-      var message = $.t("chat.kickmessage")+data.name;
+      var message = (what == 'kick') ? $.t("chat.kickmessage") : $.t("chat.banmessage");
+      message += data.name;
       if (data.reason)
         message += ' (reason: '+data.reason+')';
       this.alert('warning', message);

@@ -358,6 +358,10 @@ define([
             template = templates['event/room-deop.html']; break;
           case 'room:kick':
             template = templates['event/room-kick.html']; break;
+          case 'room:ban':
+            template = templates['event/room-ban.html']; break;
+          case 'room:deban':
+            template = templates['event/room-deban.html']; break;
           case 'room:op':
             template = templates['event/room-op.html']; break;
           case 'room:topic':

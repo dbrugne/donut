@@ -338,6 +338,9 @@
     "kick": {
       "infobox": "Kick this user out of this donut"
     },
+    "ban": {
+      "infobox": "Kick and ban this user out of this donut"
+    },
     "profile": {
       "infobox": "View the user profile"
     },
@@ -355,6 +358,7 @@
       "topicempty": "empty",
       "kick": "was kicked out of this donut by",
       "ban": "was banned from this donut by",
+      "deban": "was unbanned from this donut by",
       "op": "was made moderator by",
       "deop": "was removed from moderators by",
       "in": "entered at",
@@ -372,6 +376,7 @@
     "shouldauthenticated": "You must be logged in to access chat (<a href='/signup'>signup</a> or <a href='/login'>login</a>)",
     "closemessage": "Are you sure you want to leave? Your conversation log will be lost.",
     "kickmessage": "You have been kicked out of",
+    "banmessage": "You have been banned out of",
     "deletemessage": "Th donut __name__ has been deleted by its creator",
     "share": {
       "inviteyourfriends": "Share",

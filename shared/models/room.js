@@ -5,12 +5,16 @@ var roomSchema = mongoose.Schema({
 
   _id             : String,
   name            : String,
+  permanent       : Boolean,
+  priority        : Number,
   owner           : { type: mongoose.Schema.ObjectId, ref: 'User' },
   op              : [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
   users           : [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
-  permanent       : Boolean,
-  priority        : Number,
-  bans            : [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
+  ban             : [{
+    user_id: { type: mongoose.Schema.ObjectId, ref: 'User' },
+    reason: String,
+    banned_at: { type: Date, default: Date.now }
+  }],
   avatar          : String,
   poster          : String,
   color           : String,

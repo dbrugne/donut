@@ -31,6 +31,12 @@
         <div class="kick" data-toggle="confirmation" data-action="kick-user" title="<%= t('chat.kick.infobox') %>" data-username="<%= user.username %>">
             <img src="/images/kick-w.png">
         </div>
+        <% if (!user.is_owner || isAdmin === true) { %>
+            <span class="separator">|</span>
+            <div class="ban" data-toggle="confirmation" data-action="ban-user" title="<%= t('chat.ban.infobox') %>" data-username="<%= user.username %>">
+                <img src="/images/svg/ban.svg">
+            </div>
+        <% }; %>
     </div>
     <% }; %>
 </div>

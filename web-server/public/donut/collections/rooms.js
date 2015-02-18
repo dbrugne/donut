@@ -31,6 +31,8 @@ define([
       this.listenTo(client, 'user:online', this.onUserOnline);
       this.listenTo(client, 'user:offline', this.onUserOffline);
       this.listenTo(client, 'room:kick', this.onKick);
+      this.listenTo(client, 'room:ban', this.onBan);
+      this.listenTo(client, 'room:deban', this.onDeban);
       this.listenTo(client, 'room:join', this.onJoin);
       this.listenTo(client, 'room:leave', this.onLeave);
     },
@@ -147,14 +149,23 @@ define([
       model.onUserOffline(data);
     },
     onKick: function(data) {
+      this._kickBan('kick', data);
+    },
+    onBan: function(data) {
+      this._kickBan('ban', data);
+    },
+    _kickBan: function(what, data) {
       var model;
       if (!data || !data.name || !(model = this.get(data.name)))
         return;
 
-      // if i'm the kicked user destroy the model/view
+      // if i'm the "targeted user" destroy the model/view
       if (currentUser.get('user_id') == data.user_id) {
         this.remove(model);
-        this.trigger('kicked', data); // focus + alert
+        this.trigger('kickedOrBanned', {
+          what: what,
+          data: data
+        }); // focus + alert
         return;
       }
 
@@ -169,9 +180,16 @@ define([
 
       // trigger event
       model.trigger('freshEvent', new EventModel({
-        type: 'room:kick',
+        type: 'room:'+what,
         data: data
       }));
+    },
+    onDeban: function(data) {
+      var model;
+      if (!data || !data.name || !(model = this.get(data.name)))
+        return;
+
+      model.onDeban(data);
     },
     onLeave: function(data) {
       // server asks to this client to leave this room

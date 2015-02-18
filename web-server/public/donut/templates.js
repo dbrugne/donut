@@ -9,6 +9,8 @@ define([
   'text!./templates/event/reconnected.html',
   'text!./templates/event/room-deop.html',
   'text!./templates/event/room-kick.html',
+  'text!./templates/event/room-ban.html',
+  'text!./templates/event/room-deban.html',
   'text!./templates/event/room-op.html',
   'text!./templates/event/room-topic.html',
   'text!./templates/events.html',
@@ -34,9 +36,10 @@ define([
   'text!./templates/user-profile.html'
 ], function (_,
 color_picker, current_user, discussions_block, event_disconnected, event_in_out_on_off, event_message,
-event_reconnected, event_room_deop, event_room_kick, event_room_op, event_room_topic, events, home_rooms,
-home_users, home, image_uploader, input, input_image, onetoone, room_create, room_delete, room_edit, room_profile,
-room_topic, room_users_confirmation, room_users_list, room_users, room, spinner, user_account, user_edit, user_profile
+event_reconnected, event_room_deop, event_room_kick, event_room_ban, event_room_deban, event_room_op, event_room_topic,
+events, home_rooms, home_users, home, image_uploader, input, input_image, onetoone, room_create, room_delete, room_edit,
+room_profile, room_topic, room_users_confirmation, room_users_list, room_users, room, spinner, user_account, user_edit,
+user_profile
 ) {
 
   /**
@@ -62,6 +65,8 @@ room_topic, room_users_confirmation, room_users_list, room_users, room, spinner,
   JST['event/reconnected.html']       = _.template(event_reconnected);
   JST['event/room-deop.html']         = _.template(event_room_deop);
   JST['event/room-kick.html']         = _.template(event_room_kick);
+  JST['event/room-ban.html']          = _.template(event_room_ban);
+  JST['event/room-deban.html']        = _.template(event_room_deban);
   JST['event/room-op.html']           = _.template(event_room_op);
   JST['event/room-topic.html']        = _.template(event_room_topic);
   JST['events.html']                  = _.template(events);

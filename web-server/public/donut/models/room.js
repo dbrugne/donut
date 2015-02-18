@@ -187,6 +187,13 @@ define([
       });
       this.trigger('freshEvent', model);
     },
+    onDeban: function(data) {
+      var model = new EventModel({
+        type: 'room:deban',
+        data: data
+      });
+      this.trigger('freshEvent', model);
+    },
     onUpdated: function(data) {
       var that = this;
       _.each(data.data, function(value, key, list) {

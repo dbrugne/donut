@@ -16,7 +16,8 @@ define([
     events: {
       'click .op-user': 'opUser',
       'click .deop-user': 'deopUser',
-      'click .kick-user': 'kickUser'
+      'click .kick-user': 'kickUser',
+      'click .ban-user': 'banUser'
     },
     _initialize: function() {
       this.listenTo(this.model, 'change:color', this.onColor);
@@ -136,6 +137,15 @@ define([
       var username = $(event.currentTarget).data('username');
       if (username)
         client.roomKick(this.model.get('name'), username);
+    },
+    banUser: function(event) {
+      event.preventDefault();
+      if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin())
+        return false;
+
+      var username = $(event.currentTarget).data('username');
+      if (username)
+        client.roomBan(this.model.get('name'), username);
     },
 
     /**
