@@ -10,7 +10,7 @@ define([
 ], function ($, _, Backbone, client, currentUser, ImageUploader, ColorPicker, templates) {
   var DrawerUserEditView = Backbone.View.extend({
 
-    template: templates['user-edit.html'],
+    template: templates['drawer-user-edit.html'],
 
     id: 'user-edit',
 

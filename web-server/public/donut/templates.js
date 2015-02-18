@@ -3,6 +3,14 @@ define([
   'text!./templates/color-picker.html',
   'text!./templates/current-user.html',
   'text!./templates/discussions-block.html',
+  'text!./templates/drawer-room-create.html',
+  'text!./templates/drawer-room-delete.html',
+  'text!./templates/drawer-room-edit.html',
+  'text!./templates/drawer-room-users.html',
+  'text!./templates/drawer-room-profile.html',
+  'text!./templates/drawer-user-account.html',
+  'text!./templates/drawer-user-edit.html',
+  'text!./templates/drawer-user-profile.html',
   'text!./templates/event/disconnected.html',
   'text!./templates/event/in-out-on-off.html',
   'text!./templates/event/message.html',
@@ -21,25 +29,18 @@ define([
   'text!./templates/input.html',
   'text!./templates/input-image.html',
   'text!./templates/onetoone.html',
-  'text!./templates/room-create.html',
-  'text!./templates/room-delete.html',
-  'text!./templates/room-edit.html',
-  'text!./templates/room-profile.html',
   'text!./templates/room-topic.html',
   'text!./templates/room-users-confirmation.html',
   'text!./templates/room-users-list.html',
   'text!./templates/room-users.html',
   'text!./templates/room.html',
-  'text!./templates/spinner.html',
-  'text!./templates/user-account.html',
-  'text!./templates/user-edit.html',
-  'text!./templates/user-profile.html'
+  'text!./templates/spinner.html'
 ], function (_,
-color_picker, current_user, discussions_block, event_disconnected, event_in_out_on_off, event_message,
-event_reconnected, event_room_deop, event_room_kick, event_room_ban, event_room_deban, event_room_op, event_room_topic,
-events, home_rooms, home_users, home, image_uploader, input, input_image, onetoone, room_create, room_delete, room_edit,
-room_profile, room_topic, room_users_confirmation, room_users_list, room_users, room, spinner, user_account, user_edit,
-user_profile
+color_picker, current_user, discussions_block, drawer_room_create, drawer_room_delete, drawer_room_edit,
+drawer_room_users, drawer_room_profile, drawer_user_account, drawer_user_edit, drawer_user_profile, event_disconnected,
+event_in_out_on_off, event_message, event_reconnected, event_room_deop, event_room_kick, event_room_ban,
+event_room_deban, event_room_op, event_room_topic, events, home_rooms, home_users, home, image_uploader, input,
+input_image, onetoone,  room_topic, room_users_confirmation, room_users_list, room_users, room, spinner
 ) {
 
   /**
@@ -55,10 +56,18 @@ user_profile
    */
 
   var JST={};
-  JST['color-picker.html']="COMPILE IT";
+
   JST['color-picker.html']            = _.template(color_picker);
   JST['current-user.html']            = _.template(current_user);
   JST['discussions-block.html']       = _.template(discussions_block);
+  JST['drawer-room-create.html']      = _.template(drawer_room_create);
+  JST['drawer-room-delete.html']      = _.template(drawer_room_delete);
+  JST['drawer-room-edit.html']        = _.template(drawer_room_edit);
+  JST['drawer-room-users.html']       = _.template(drawer_room_users);
+  JST['drawer-room-profile.html']     = _.template(drawer_room_profile);
+  JST['drawer-user-account.html']     = _.template(drawer_user_account);
+  JST['drawer-user-edit.html']        = _.template(drawer_user_edit);
+  JST['drawer-user-profile.html']     = _.template(drawer_user_profile);
   JST['event/disconnected.html']      = _.template(event_disconnected);
   JST['event/in-out-on-off.html']     = _.template(event_in_out_on_off);
   JST['event/message.html']           = _.template(event_message);
@@ -77,19 +86,12 @@ user_profile
   JST['input.html']                   = _.template(input);
   JST['input-image.html']             = _.template(input_image);
   JST['onetoone.html']                = _.template(onetoone);
-  JST['room-create.html']             = _.template(room_create);
-  JST['room-delete.html']             = _.template(room_delete);
-  JST['room-edit.html']               = _.template(room_edit);
-  JST['room-profile.html']            = _.template(room_profile);
   JST['room-topic.html']              = _.template(room_topic);
   JST['room-users-confirmation.html'] = _.template(room_users_confirmation);
   JST['room-users-list.html']         = _.template(room_users_list);
   JST['room-users.html']              = _.template(room_users);
   JST['room.html']                    = _.template(room);
   JST['spinner.html']                 = _.template(spinner);
-  JST['user-account.html']            = _.template(user_account);
-  JST['user-edit.html']               = _.template(user_edit);
-  JST['user-profile.html']            = _.template(user_profile);
 
   return JST;
 });

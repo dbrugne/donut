@@ -6,7 +6,7 @@ define([
 ], function ($, _, Backbone, _templates) {
   var DrawerRoomCreateView = Backbone.View.extend({
 
-    template: _templates['room-create.html'],
+    template: _templates['drawer-room-create.html'],
 
     id: 'room-create',
 

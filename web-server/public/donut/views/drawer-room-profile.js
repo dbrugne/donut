@@ -8,7 +8,7 @@ define([
 ], function ($, _, Backbone, client, currentUser, templates) {
   var DrawerRoomProfileView = Backbone.View.extend({
 
-      template: templates['room-profile.html'],
+      template: templates['drawer-room-profile.html'],
 
       id: 'room-profile',
 

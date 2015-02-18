@@ -8,7 +8,7 @@ define([
 ], function ($, _, Backbone, client, currentUser, templates) {
   var DrawerUserProfileView = Backbone.View.extend({
 
-    template: templates['user-profile.html'],
+    template: templates['drawer-user-profile.html'],
 
     id: 'user-profile',
 

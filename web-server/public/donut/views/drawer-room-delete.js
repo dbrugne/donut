@@ -8,7 +8,7 @@ define([
 ], function ($, _, Backbone, client, currentUser, templates) {
   var DrawerRoomDeleteView = Backbone.View.extend({
 
-    template: templates['room-delete.html'],
+    template: templates['drawer-room-delete.html'],
 
     id: 'room-delete',
 

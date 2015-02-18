@@ -10,7 +10,7 @@ define([
 ], function ($, _, Backbone, client, currentUser, ImageUploader, ColorPicker, templates) {
   var DrawerRoomEditView = Backbone.View.extend({
 
-    template: templates['room-edit.html'],
+    template: templates['drawer-room-edit.html'],
 
     id: 'room-edit',
 

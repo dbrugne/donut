@@ -8,7 +8,7 @@ define([
 ], function ($, _, Backbone, client, currentUser, templates) {
   var DrawerUserEditView = Backbone.View.extend({
 
-    template: templates['user-account.html'],
+    template: templates['drawer-user-account.html'],
 
     id: 'user-account',
 
