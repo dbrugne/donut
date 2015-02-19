@@ -235,7 +235,7 @@
           height: 20px;
         }
         &.owner::after {
-          content: url("/images/owner-g.svg");
+          content: url("/images/svg/owner-g.svg");
           margin-left: 5px;
         }
       }
@@ -326,13 +326,13 @@
           height: 20px;
         }
         &.owner::after {
-          content: url("/images/owner-g.svg");
+          content: url("/images/svg/owner-g.svg");
           margin-left: 5px;
         }
       }
     }
   }
-  #room-edit, #user-edit {
+  #room-edit, #user-edit, #room-users {
     .scrollbar;
     font-size: 1.1em;
     padding: 0 15px;
@@ -367,8 +367,6 @@
       > p {
         display: inline-block;
         vertical-align: middle;
-      }
-      .name, .owner {
       }
     }
   }
@@ -437,6 +435,62 @@
       color: #ffffff;
       i { color: #ffffff; }
       span { color: #ffffff; text-decoration: underline; }
+    }
+  }
+  #room-users {
+    .room {
+      margin-bottom: 15px;
+      > p {
+        display: inline-block;
+        vertical-align: middle;
+      }
+    }
+    .owner, .ops, .bans, .users {
+      table {
+        width: 100%;
+        td.avatar { width: 20px; padding: 2px 0; img { width: 20px; height: 20px; }}
+        td.username {
+          padding-left: 5px;
+          width: 150px;
+          .ft-opensans-bold;
+        }
+        td.actions {
+          text-align: right;
+          > div {
+            display: inline-block;
+            cursor: pointer;
+            margin-left: 5px;
+          }
+        }
+      }
+    }
+    .owner {
+      label {
+        img { height: 12px; }
+      }
+    }
+    .ops {
+      label {
+        img { height: 18px; }
+      }
+    }
+    .bans {
+      label {
+        img { height: 15px; }
+      }
+    }
+    .users {
+      td.actions {
+        .op {
+          img { height: 18px; }
+        }
+        .kick {
+          img { height: 18px; }
+        }
+        .ban {
+          img { height: 18px; }
+        }
+      }
     }
   }
 }
