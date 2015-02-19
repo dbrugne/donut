@@ -10,8 +10,8 @@ var roomSchema = mongoose.Schema({
   owner           : { type: mongoose.Schema.ObjectId, ref: 'User' },
   op              : [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
   users           : [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
-  ban             : [{
-    user_id: { type: mongoose.Schema.ObjectId, ref: 'User' },
+  bans            : [{
+    user: { type: mongoose.Schema.ObjectId, ref: 'User' },
     reason: String,
     banned_at: { type: Date, default: Date.now }
   }],
