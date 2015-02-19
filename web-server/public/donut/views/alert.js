@@ -35,7 +35,7 @@ define([
         .removeClass('info warning error')
         .addClass(typeOfAlert)
         .slideDown('fast')
-        .delay(1000*30)
+        .delay(1000*10)
         .slideUp('fast')
       ;
 
