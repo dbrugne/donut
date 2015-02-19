@@ -4,7 +4,7 @@
 </div>
 <div class="form-group owner">
     <% if (room.owner) { %>
-    <label>Propriétaire <i class="icon icon-owner"></i></label>
+    <label><i class="icon icon-owner"></i> Propriétaire</label>
     <table>
         <tbody>
             <tr>
@@ -19,7 +19,7 @@
 </div>
 <div class="form-group ops">
     <% if (room.op && room.op.length) { %>
-    <label>Modérateurs <i class="icon icon-op"></i></label>
+    <label><i class="icon icon-op"></i> Modérateurs</label>
     <table>
         <tbody>
             <% _.each(room.op, function(op) { %>
@@ -28,10 +28,7 @@
                 <td class="username">@<%=op.username%></td>
                 <td class="actions">
                     <div class="deop" data-toggle="confirmation" data-action="deop-user" title="<%= t('chat.deop.infobox') %>" data-username="<%= op.username %>">
-                        <span class="icon-stack icon-lg">
-                          <i class="icon icon-op icon-stack-1x"></i>
-                          <i class="icon icon-ban icon-stack-2x text-danger"></i>
-                        </span>
+                        Retirer modérateur <i class="icon icon-op"></i>
                     </div>
                 </td>
             </tr>
@@ -43,7 +40,7 @@
 </div>
 <div class="form-group bans">
     <% if (room.bans && room.bans.length) { %>
-    <label>Utilisateurs bannis</label>
+    <label><i class="icon icon-ban"></i> Utilisateurs bannis</label>
     <table>
         <tbody>
         <% _.each(room.bans, function(ban) { %>
@@ -52,7 +49,7 @@
             <td class="username">@<%=ban.username%></td>
             <td class="actions">
                 <div class="deban" data-toggle="confirmation" data-action="deban-user" title="<%= t('chat.deban.infobox') %>" data-username="<%= ban.username %>">
-                    <i class="icon icon-ban"></i>
+                    Retirer le banissement <i class="icon icon-ban"></i>
                 </div>
             </td>
         </tr>
@@ -73,13 +70,13 @@
             <td class="username">@<%=user.username%></td>
             <td class="actions">
                 <div class="op" data-toggle="confirmation" data-action="op-user" title="<%= t('chat.op.infobox') %>" data-username="<%= user.username %>">
-                    <i class="icon icon-op"></i>
+                    Faire modérateur <i class="icon icon-op"></i>
                 </div>
                 <div class="kick" data-toggle="confirmation" data-action="kick-user" title="<%= t('chat.kick.infobox') %>" data-username="<%= user.username %>">
-                    <i class="icon icon-kick"></i>
+                    Expulser <i class="icon icon-kick"></i>
                 </div>
                 <div class="ban" data-toggle="confirmation" data-action="ban-user" title="<%= t('chat.ban.infobox') %>" data-username="<%= user.username %>">
-                    <i class="icon icon-ban"></i>
+                    Bannir <i class="icon icon-ban"></i>
                 </div>
             </td>
         </tr>
