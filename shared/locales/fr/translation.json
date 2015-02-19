@@ -398,6 +398,9 @@
         "kickmessage": "Vous venez d'être expulsé de",
         "banmessage": "Vous venez d'être banni de",
         "deletemessage": "Le donut __name__ vient d'être supprimé pas son créateur",
+        "users": {
+            "link": "utilisateurs"
+        },
         "share": {
             "inviteyourfriends": "Partager",
             "title": "Venez discuter dans le donut __name__",

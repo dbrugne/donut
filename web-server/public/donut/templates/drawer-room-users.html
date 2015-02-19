@@ -2,26 +2,90 @@
     <span class="name"><%= room.name %></span>
     <span class="owner"><%= t('global.by') %> <a class="open-user-profile" data-username="<%= room.owner.username %>" data-colorify-text="#ffffff">@<%= room.owner.username %></a></span>
 </div>
-<div class="form-group">
-    <label>Modérateurs</label>
+<div class="form-group owner">
+    <% if (room.owner) { %>
+    <label>Propriétaire <i class="icon icon-owner"></i></label>
     <table>
-        <thead>
-            <tr>
-                <td>Username</td>
-                <td>Op</td>
-            </tr>
-        </thead>
         <tbody>
             <tr>
-                <td>yangs</td>
-                <td>op</td>
-            </tr>
-            <tr>
-                <td>David</td>
-                <td>op</td>
+                <td class="avatar"><img src="<%=$.cd.userAvatar(room.owner.avatar, 20)%>"></td>
+                <td class="username">@<%=room.owner.username%></td>
+                <td class="actions">&nbsp;</td>
             </tr>
         </tbody>
     </table>
-    <p class="help-block">Ceci est la liste des utilisateurs ayant le droit de ...</p>
+    <p class="help-block">Ceci est le propriétaire de la room ayant tous les droits.</p>
+    <% } %>
 </div>
-<div class="">Hello!!! Christiane, l'ésthéticienne!</div>
+<div class="form-group ops">
+    <% if (room.op && room.op.length) { %>
+    <label>Modérateurs <i class="icon icon-op"></i></label>
+    <table>
+        <tbody>
+            <% _.each(room.op, function(op) { %>
+            <tr>
+                <td class="avatar"><img src="<%=$.cd.userAvatar(op.avatar, 20)%>"></td>
+                <td class="username">@<%=op.username%></td>
+                <td class="actions">
+                    <div class="deop" data-toggle="confirmation" data-action="deop-user" title="<%= t('chat.deop.infobox') %>" data-username="<%= op.username %>">
+                        <span class="icon-stack icon-lg">
+                          <i class="icon icon-op icon-stack-1x"></i>
+                          <i class="icon icon-ban icon-stack-2x text-danger"></i>
+                        </span>
+                    </div>
+                </td>
+            </tr>
+            <% }); %>
+        </tbody>
+    </table>
+    <p class="help-block">Ceci est la liste des utilisateurs ayant le droit de ...</p>
+    <% } %>
+</div>
+<div class="form-group bans">
+    <% if (room.bans && room.bans.length) { %>
+    <label>Utilisateurs bannis</label>
+    <table>
+        <tbody>
+        <% _.each(room.bans, function(ban) { %>
+        <tr>
+            <td class="avatar"><img src="<%=$.cd.userAvatar(ban.avatar, 20)%>"></td>
+            <td class="username">@<%=ban.username%></td>
+            <td class="actions">
+                <div class="deban" data-toggle="confirmation" data-action="deban-user" title="<%= t('chat.deban.infobox') %>" data-username="<%= ban.username %>">
+                    <i class="icon icon-ban"></i>
+                </div>
+            </td>
+        </tr>
+        <% }); %>
+        </tbody>
+    </table>
+    <p class="help-block">Ceci est la liste banni de cette room.</p>
+    <% } %>
+</div>
+<div class="form-group users">
+    <% if (room.users && room.users.length) { %>
+    <label>Utilisateurs</label>
+    <table>
+        <tbody>
+        <% _.each(room.users, function(user) { %>
+        <tr>
+            <td class="avatar"><img src="<%=$.cd.userAvatar(user.avatar, 20)%>"></td>
+            <td class="username">@<%=user.username%></td>
+            <td class="actions">
+                <div class="op" data-toggle="confirmation" data-action="op-user" title="<%= t('chat.op.infobox') %>" data-username="<%= user.username %>">
+                    <i class="icon icon-op"></i>
+                </div>
+                <div class="kick" data-toggle="confirmation" data-action="kick-user" title="<%= t('chat.kick.infobox') %>" data-username="<%= user.username %>">
+                    <i class="icon icon-kick"></i>
+                </div>
+                <div class="ban" data-toggle="confirmation" data-action="ban-user" title="<%= t('chat.ban.infobox') %>" data-username="<%= user.username %>">
+                    <i class="icon icon-ban"></i>
+                </div>
+            </td>
+        </tr>
+        <% }); %>
+        </tbody>
+    </table>
+    <p class="help-block">Ceci est la liste des utilisateurs ayant joint cette room.</p>
+    <% } %>
+</div>

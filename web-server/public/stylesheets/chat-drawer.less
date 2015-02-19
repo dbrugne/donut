@@ -461,36 +461,51 @@
             cursor: pointer;
             margin-left: 5px;
           }
+          .op {
+            color: @cl-success;
+            font-size: 1.5em;
+          }
+          .deop {
+            font-size: 0.7em;
+            color: @cl-success;
+            .icon-ban {
+              color: @cl-error;
+            }
+          }
+          .kick {
+            color: @cl-error;
+            font-size: 1.4em;
+          }
+          .ban {
+            color: @cl-error;
+            font-size: 1.4em;
+          }
+          .deban {
+            color: @cl-subtext30;
+            font-size: 1.5em;
+          }
         }
       }
     }
     .owner {
       label {
-        img { height: 12px; }
+        i {
+          color: @cl-warning;
+          font-size: 1.2em;
+        }
       }
     }
     .ops {
       label {
-        img { height: 18px; }
+        i {
+          color: @cl-success;
+          font-size: 1.3em;
+        }
       }
     }
     .bans {
-      label {
-        img { height: 15px; }
-      }
     }
     .users {
-      td.actions {
-        .op {
-          img { height: 18px; }
-        }
-        .kick {
-          img { height: 18px; }
-        }
-        .ban {
-          img { height: 18px; }
-        }
-      }
     }
   }
 }

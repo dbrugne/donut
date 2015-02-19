@@ -378,6 +378,9 @@
     "kickmessage": "You have been kicked out of",
     "banmessage": "You have been banned out of",
     "deletemessage": "Th donut __name__ has been deleted by its creator",
+    "users": {
+      "link": "users"
+    },
     "share": {
       "inviteyourfriends": "Share",
       "title": "Come to discuss with me in the donut __name__",

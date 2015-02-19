@@ -16,6 +16,9 @@
             <% if (isOwner === true || isAdmin === true) { %>
             <span class="edit"><i class="fa fa-cog"></i> <a class="open-room-edit" data-room-name="<%= name %>"><%= t('global.edit') %></a></span>
             <% }; %>
+            <% if (isOwner === true || isOp === true || isAdmin === true) { %>
+            <span class="users"><i class="fa fa-users"></i> <a class="open-room-users" data-room-name="<%= name %>"><%= t('chat.users.link') %></a></span>
+            <% }; %>
             <span class="profile"><i class="fa fa-eye"></i> <a class="open-room-profile" data-room-name="<%= name %>"><%= t('global.viewprofile') %></a></span>
         </div>
         <div class="share-button <%= share %>" data-colorify-background="color" data-colorify-text="contrast"></div>

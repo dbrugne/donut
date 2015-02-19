@@ -18,6 +18,7 @@ define([
   'views/drawer-room-create',
   'views/drawer-room-profile',
   'views/drawer-room-edit',
+  'views/drawer-room-users',
   'views/drawer-room-delete',
   'views/drawer-user-profile',
   'views/drawer-user-edit',
@@ -28,7 +29,7 @@ define([
 ], function ($, _, Backbone, client, currentUser, EventModel, rooms, onetoones, templates, windowView,
              ConnectionModalView, CurrentUserView, AlertView, HomeView, QuickSearchView,
              DrawerView,
-             DrawerRoomCreateView, DrawerRoomProfileView, DrawerRoomEditView,
+             DrawerRoomCreateView, DrawerRoomProfileView, DrawerRoomEditView, DrawerRoomUsersView,
              DrawerRoomDeleteView,
              DrawerUserProfileView, DrawerUserEditView, DrawerUserAccountView,
              RoomView, OneToOneView,
@@ -65,6 +66,7 @@ define([
       'dblclick .dbl-open-user-profile' : 'openUserProfile',
       'click .open-room-profile'        : 'openRoomProfile',
       'click .open-room-edit'           : 'openRoomEdit',
+      'click .open-room-users'           : 'openRoomUsers',
       'click .open-room-delete'         : 'openRoomDelete',
       'click .close-discussion'         : 'onCloseDiscussion',
       'mouseenter *[data-toggle="image-popover"]': 'onEnterImage',
@@ -322,6 +324,18 @@ define([
         return;
 
       var view = new DrawerRoomEditView({ mainView: this, name: name });
+      this.drawerView.setSize('450px').setView(view).open();
+
+      return false; // stop propagation
+    },
+    openRoomUsers: function(event) {
+      this._handleAction(event);
+
+      var name = $(event.currentTarget).data('roomName');
+      if (!name)
+        return;
+
+      var view = new DrawerRoomUsersView({ mainView: this, name: name });
       this.drawerView.setSize('450px').setView(view).open();
 
       return false; // stop propagation
