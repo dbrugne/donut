@@ -19,13 +19,13 @@
             <% if (model.type == 'room') { %>
             <div class="hello block">
                 <div class="event">
-                    <div class="text"><div class="picto hello"></div> <%= t('chat.welcome.room', {name: model.name}) %></div>
+                    <div class="text"><i class="icon icon-hello"></i> <%= t('chat.welcome.room', {name: model.name}) %></div>
                 </div>
             </div>
             <% } else if (model.type == 'onetoone') { %>
             <div class="hello block">
                 <div class="event">
-                    <div class="text"><div class="picto hello"></div> <%= t('chat.welcome.onetoone', {username: model.username}) %></div>
+                    <div class="text"><i class="icon icon-hello"></i> <%= t('chat.welcome.onetoone', {username: model.username}) %></div>
                 </div>
             </div>
             <% }; %>
@@ -33,8 +33,8 @@
     </div>
 </div>
 <div class="go-to-top">
-    <a><i class="fa fa-arrow-circle-o-up"></i> <%= t('chat.history.top') %></a>
+    <a><i class="icon icon-arrow-circle-o-up"></i> <%= t('chat.history.top') %></a>
 </div>
 <div class="go-to-bottom">
-    <a><i class="fa fa-arrow-circle-o-down"></i> <%= t('chat.history.bottom') %></a>
+    <a><i class="fa icon-arrow-circle-o-down"></i> <%= t('chat.history.bottom') %></a>
 </div>

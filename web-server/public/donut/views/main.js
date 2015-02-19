@@ -177,7 +177,7 @@ define([
 
       // add disconnected event in each discussion
       var e = new EventModel({
-        type: ''
+        type: 'disconnected'
       });
       _.each(this.views, function(view) {
         view.eventsView.addFreshEvent(e);

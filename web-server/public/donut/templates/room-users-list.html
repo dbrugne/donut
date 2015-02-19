@@ -11,30 +11,34 @@
     </div>
     <% if (isAdmin === true || (!user.is_owner && (isOp === true || isOwner === true))) { %>
     <div class="actions">
+        <i class="icon icon-caret-left"></i>
         <div class="open-user-profile" title="<%= t('chat.profile.infobox') %>" data-username="<%= user.username %>">
-            <i class="fa fa-user"></i>
+            <i class="icon icon-user"></i>
         </div>
         <% if (!user.is_owner || isAdmin === true) { %>
             <% if (!user.is_owner && user.is_op === true) { %>
             <span class="separator">|</span>
             <div class="deop" data-toggle="confirmation" data-action="deop-user" title="<%= t('chat.deop.infobox') %>" data-username="<%= user.username %>">
-                <img src="/images/svg/deop.svg">
+                <span class="icon-stack icon-lg">
+                    <i class="icon icon-op icon-stack-1x"></i>
+                    <i class="icon icon-ban icon-stack-2x text-danger"></i>
+                </span>
             </div>
             <% } else if (!user.is_owner) { %>
             <span class="separator">|</span>
             <div class="op" data-toggle="confirmation" data-action="op-user" title="<%= t('chat.op.infobox') %>" data-username="<%= user.username %>">
-                <img src="/images/op.png">
+                <i class="icon icon-op"></i>
             </div>
             <% }; %>
         <% }; %>
         <span class="separator">|</span>
         <div class="kick" data-toggle="confirmation" data-action="kick-user" title="<%= t('chat.kick.infobox') %>" data-username="<%= user.username %>">
-            <img src="/images/kick-w.png">
+            <i class="icon icon-kick"></i>
         </div>
         <% if (!user.is_owner || isAdmin === true) { %>
             <span class="separator">|</span>
             <div class="ban" data-toggle="confirmation" data-action="ban-user" title="<%= t('chat.ban.infobox') %>" data-username="<%= user.username %>">
-                <img src="/images/svg/ban.svg">
+                <i class="icon icon-ban"></i>
             </div>
         <% }; %>
     </div>

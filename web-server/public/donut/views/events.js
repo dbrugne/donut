@@ -164,7 +164,7 @@ define([
         this.scrollDown();
     },
     resize: function(heigth) {
-      var needToScrollDown = this.isScrollOnBottom();
+      //var needToScrollDown = this.isScrollOnBottom();
 
       if (typeof heigth != "undefined") // was called on page resize by views/discussion, set the .events height
         this.$scrollable.height(heigth);
@@ -181,7 +181,7 @@ define([
       this.$blank.height(blankHeight);
       window.debug.log('blank', blankHeight);
 
-      if (needToScrollDown)
+      //if (needToScrollDown)
         this.scrollDown();
     },
 

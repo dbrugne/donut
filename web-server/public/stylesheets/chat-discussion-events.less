@@ -10,12 +10,12 @@ border-top: 1px solid @cl-subtext10;
   border-top-color: @cl-background;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
-  font-weight: bold;
   a {
-    color: @cl-subtext15;
+    color: @cl-subtext30;
     cursor: pointer;
     i {
       font-size: 1.4em;
+      vertical-align: middle;
     }
     &:hover {
       text-decoration: none;
@@ -32,12 +32,12 @@ border-top: 1px solid @cl-subtext10;
   border-bottom-color: @cl-background;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
-  font-weight: bold;
   a {
-    color: @cl-subtext15;
+    color: @cl-subtext30;
     cursor: pointer;
     i {
       font-size: 1.4em;
+      vertical-align: middle;
     }
     &:hover {
       text-decoration: none;
@@ -131,71 +131,95 @@ border-top: 1px solid @cl-subtext10;
         margin: 0;
         border-top: 1px solid @cl-subtext0;
         font-size: 1.1em;
-        .event {
-          .text {
-            .picto {
-              display: inline-block;
-              width: 20px;
-              height: 20px;
-              background-position: center center;
-              vertical-align: middle;
-              &.hello {
-                background-image: url(/images/hello.gif);
-                width: 21px;
-                height: 21px;
-              }
-              &.hello {
-                background-image: url(/images/hello.gif);
-                width: 21px;
-                height: 21px;
-              }
-              &.disconnected {
-                background-image: url(/images/disconnected.gif);
-                width: 27px;
-                height: 21px;
-              }
-              &.connected {
-                background-image: url(/images/connected.gif);
-                width: 27px;
-                height: 20px;
-              }
-              &.kick {
-                background-image: url(/images/kick.gif);
-                width: 21px;
-                height: 21px;
-              }
-              &.ban {
-                background-image: url(/images/svg/ban.svg);
-                width: 21px;
-                height: 21px;
-              }
-              &.deban {
-                background-image: url(/images/kick.gif);
-                width: 21px;
-                height: 21px;
-              }
-              &.op {
-                background-image: url(/images/op.png);
-                width: 16px;
-                height: 22px;
-              }
-              &.deop {
-                background-image: url(/images/deop-w.gif);
-                width: 17px;
-                height: 22px;
-              }
-              &.in {
-                background-image: url(/images/in.gif);
-                width: 31px;
-                height: 21px;
-              }
-              &.out {
-                background-image: url(/images/out.gif);
-                width: 32px;
-                height: 21px;
-              }
-            }
+        &.hello {
+          i {
+            font-size: 1.5em;
+            color: @cl-success;
+            vertical-align: bottom;
+            line-height: normal;
           }
+        }
+        &.disconnected {
+          i {
+            font-size: 1.8em;
+            color: @cl-error;
+            vertical-align: middle;
+          }
+        }
+        &.reconnected {
+          i {
+            font-size: 1.8em;
+            color: @cl-success;
+            vertical-align: middle;
+          }
+        }
+        &.op {
+          i {
+            font-size: 1.5em;
+            color: @cl-success;
+            vertical-align: middle;
+            line-height: normal;
+          }
+        }
+        &.deop {
+          i {
+            font-size: 1.5em;
+            color: @cl-subtext30;
+            vertical-align: middle;
+            line-height: normal;
+          }
+        }
+        &.kick {
+          i {
+            font-size: 1.5em;
+            color: @cl-error;
+            vertical-align: middle;
+            line-height: normal;
+          }
+        }
+        &.ban {
+          i {
+            font-size: 1.4em;
+            color: @cl-error;
+            vertical-align: middle;
+          }
+        }
+        &.deban {
+          i {
+            font-size: 1.4em;
+            color: @cl-subtext30;
+            vertical-align: middle;
+          }
+        }
+        &.out {
+          i {
+            font-size: 1.8em;
+            color: @cl-error;
+            vertical-align: middle;
+          }
+        }
+        &.in {
+          i {
+            font-size: 1.8em;
+            color: @cl-success;
+            vertical-align: middle;
+          }
+        }
+        &.online {
+          i {
+            font-size: 1.8em;
+            color: @cl-success;
+            vertical-align: middle;
+          }
+        }
+        &.offline {
+          i {
+            font-size: 1.8em;
+            color: @cl-error;
+            vertical-align: middle;
+          }
+        }
+        .event {
           .date {
             position: absolute;
             top: 3px; right: 0;
@@ -314,7 +338,6 @@ border-top: 1px solid @cl-subtext10;
         }
         .username { font-weight: bold; }
         .detail { font-weight: normal; }
-        i { color: @cl-success; }
         .event {
           .text {
             font-style: italic;
