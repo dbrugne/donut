@@ -142,8 +142,8 @@ define([
         return;
 
       var that = this;
-      confirmationView.open({ input: true }, function(reason) {
-        client.roomBan(that.model.get('name'), username, reason);
+      confirmationView.open({}, function() {
+        client.roomDeban(that.model.get('name'), username);
         that.render();
       });
     }
