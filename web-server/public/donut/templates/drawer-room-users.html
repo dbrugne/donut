@@ -4,7 +4,8 @@
 </div>
 <div class="form-group owner">
     <% if (room.owner) { %>
-    <label><i class="icon icon-owner"></i> Propriétaire</label>
+    <label><i class="icon icon-owner"></i> <%= t('chat.users.owner.label') %></label>
+    <p class="help-block"><%= t('chat.users.owner.help') %></p>
     <table>
         <tbody>
             <tr>
@@ -14,12 +15,12 @@
             </tr>
         </tbody>
     </table>
-    <p class="help-block">Ceci est le propriétaire de la room ayant tous les droits.</p>
     <% } %>
 </div>
 <div class="form-group ops">
     <% if (room.op && room.op.length) { %>
-    <label><i class="icon icon-op"></i> Modérateurs</label>
+    <label><i class="icon icon-op"></i> <%= t('chat.users.ops.label') %></label>
+    <p class="help-block"><%= t('chat.users.ops.help') %></p>
     <table>
         <tbody>
             <% _.each(room.op, function(op) { %>
@@ -28,19 +29,19 @@
                 <td class="username">@<%=op.username%></td>
                 <td class="actions">
                     <div class="deop" data-toggle="confirmation" data-action="deop-user" title="<%= t('chat.deop.infobox') %>" data-username="<%= op.username %>">
-                        Retirer modérateur <i class="icon icon-op"></i>
+                        <i class="icon icon-op"></i>
                     </div>
                 </td>
             </tr>
             <% }); %>
         </tbody>
     </table>
-    <p class="help-block">Ceci est la liste des utilisateurs ayant le droit de ...</p>
     <% } %>
 </div>
 <div class="form-group bans">
     <% if (room.bans && room.bans.length) { %>
-    <label><i class="icon icon-ban"></i> Utilisateurs bannis</label>
+    <label><i class="icon icon-ban"></i> <%= t('chat.users.bans.label') %></label>
+    <p class="help-block"><%= t('chat.users.bans.help') %></p>
     <table>
         <tbody>
         <% _.each(room.bans, function(ban) { %>
@@ -49,19 +50,19 @@
             <td class="username">@<%=ban.username%></td>
             <td class="actions">
                 <div class="deban" data-toggle="confirmation" data-action="deban-user" title="<%= t('chat.deban.infobox') %>" data-username="<%= ban.username %>">
-                    Retirer le banissement <i class="icon icon-ban"></i>
+                    <i class="icon icon-ban"></i>
                 </div>
             </td>
         </tr>
         <% }); %>
         </tbody>
     </table>
-    <p class="help-block">Ceci est la liste banni de cette room.</p>
     <% } %>
 </div>
 <div class="form-group users">
     <% if (room.users && room.users.length) { %>
-    <label>Utilisateurs</label>
+    <label><%= t('chat.users.users.label') %></label>
+    <p class="help-block"><%= t('chat.users.users.help') %></p>
     <table>
         <tbody>
         <% _.each(room.users, function(user) { %>
@@ -70,19 +71,18 @@
             <td class="username">@<%=user.username%></td>
             <td class="actions">
                 <div class="op" data-toggle="confirmation" data-action="op-user" title="<%= t('chat.op.infobox') %>" data-username="<%= user.username %>">
-                    Faire modérateur <i class="icon icon-op"></i>
+                    <i class="icon icon-op"></i>
                 </div>
                 <div class="kick" data-toggle="confirmation" data-action="kick-user" title="<%= t('chat.kick.infobox') %>" data-username="<%= user.username %>">
-                    Expulser <i class="icon icon-kick"></i>
+                    <i class="icon icon-kick"></i>
                 </div>
                 <div class="ban" data-toggle="confirmation" data-action="ban-user" title="<%= t('chat.ban.infobox') %>" data-username="<%= user.username %>">
-                    Bannir <i class="icon icon-ban"></i>
+                    <i class="icon icon-ban"></i>
                 </div>
             </td>
         </tr>
         <% }); %>
         </tbody>
     </table>
-    <p class="help-block">Ceci est la liste des utilisateurs ayant joint cette room.</p>
     <% } %>
 </div>

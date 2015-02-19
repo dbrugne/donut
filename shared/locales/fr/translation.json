@@ -400,7 +400,23 @@
         "banmessage": "Vous venez d'être banni de",
         "deletemessage": "Le donut __name__ vient d'être supprimé pas son créateur",
         "users": {
-            "link": "utilisateurs"
+            "link": "utilisateurs",
+            "owner": {
+                "label": "Owner",
+                "help": "The donut owner has all privileges on room configuration and users."
+            },
+            "ops": {
+                "label": "Moderators",
+                "help": "Moderators can change the donut topic, kick or ban users and make other users moderators or not."
+            },
+            "bans": {
+                "label": "Banned",
+                "help": "Banned users that can no longer join this donut."
+            },
+            "users": {
+                "label": "Users",
+                "help": "Users of the donut can only view and post messages."
+            }
         },
         "share": {
             "inviteyourfriends": "Partager",
