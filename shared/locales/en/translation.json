@@ -345,9 +345,10 @@
       "infobox": "View the user profile"
     },
     "confirmation": {
-      "sure": "Sure?",
-      "cancel": "No",
-      "confirm": "Yes"
+      "sure": "Do you confirm this action?",
+      "placeholder": "Add a reason (optionnal)",
+      "cancel": "No, cancel",
+      "confirm": "Yes, confirm"
     },
     "notifications": {
       "hello": "You enter",

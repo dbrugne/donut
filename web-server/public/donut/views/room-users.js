@@ -11,13 +11,6 @@ define([
 
     listTemplate: templates['room-users-list.html'],
 
-    confirmationTemplate: templates['room-users-confirmation.html'],
-
-    events: {
-      "click [data-toggle='confirmation']": "onConfirmation",
-      "click .confirmation .cancel": "onCancel"
-    },
-
     initialize: function() {
       this.listenTo(this.collection, 'users-redraw', this.render);
 
@@ -59,26 +52,6 @@ define([
     },
     _remove: function() {
       this.remove();
-    },
-    onConfirmation: function(event) {
-      event.preventDefault();
-
-      var action = $(event.currentTarget).data('action');
-      var username = $(event.currentTarget).data('username');
-      if (!action || !username)
-        return false;
-
-      var html = this.confirmationTemplate({
-        action: action,
-        username: username
-      });
-
-      $(event.currentTarget).closest('.item').append(html);
-      // click on confirm will redraw the whole view == no need to remove .confirmation
-    },
-    onCancel: function(event) {
-      event.preventDefault();
-      $(event.currentTarget).closest('.confirmation').remove();
     }
 
   });

@@ -4,11 +4,12 @@ define([
   'backbone',
   'client',
   'models/current-user',
+  'views/modal-confirmation',
   'views/discussion',
   'views/room-topic',
   'views/room-users',
   '_templates'
-], function ($, _, Backbone, client, currentUser, DiscussionView, TopicView, UsersView, templates) {
+], function ($, _, Backbone, client, currentUser, confirmationView, DiscussionView, TopicView, UsersView, templates) {
   var RoomView = DiscussionView.extend({
 
     template: templates['room.html'],
@@ -118,8 +119,13 @@ define([
         return false;
 
       var username = $(event.currentTarget).data('username');
-      if (username)
-        client.roomOp(this.model.get('name'), username);
+      if (!username)
+        return;
+
+      var that = this;
+      confirmationView.open({}, function() {
+        client.roomOp(that.model.get('name'), username);
+      });
     },
     deopUser: function(event) {
       event.preventDefault();
@@ -127,8 +133,13 @@ define([
         return false;
 
       var username = $(event.currentTarget).data('username');
-      if (username)
-        client.roomDeop(this.model.get('name'), username);
+      if (!username)
+        return;
+
+      var that = this;
+      confirmationView.open({}, function() {
+        client.roomDeop(that.model.get('name'), username);
+      });
     },
     kickUser: function(event) {
       event.preventDefault();
@@ -136,8 +147,13 @@ define([
         return false;
 
       var username = $(event.currentTarget).data('username');
-      if (username)
-        client.roomKick(this.model.get('name'), username);
+      if (!username)
+        return;
+
+      var that = this;
+      confirmationView.open({ input: true }, function(reason) {
+        client.roomKick(that.model.get('name'), username, reason);
+      });
     },
     banUser: function(event) {
       event.preventDefault();
@@ -145,8 +161,13 @@ define([
         return false;
 
       var username = $(event.currentTarget).data('username');
-      if (username)
-        client.roomBan(this.model.get('name'), username);
+      if (!username)
+        return;
+
+      var that = this;
+      confirmationView.open({ input: true }, function(reason) {
+        client.roomBan(that.model.get('name'), username, reason);
+      });
     },
 
     /**

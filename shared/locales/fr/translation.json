@@ -366,9 +366,10 @@
             "infobox": "Voir le profil de cet utilisateur"
         },
         "confirmation": {
-            "sure": "Sûr ?",
-            "cancel": "Non",
-            "confirm": "Oui"
+            "sure": "Vous confirmez que vous voulez faire cela ?",
+            "placeholder": "Ajouter une raison (optionnel)",
+            "cancel": "Non, j'annule",
+            "confirm": "Oui, je confirme"
         },
         "notifications": {
             "hello": "Vous entrez dans",

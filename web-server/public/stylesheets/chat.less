@@ -75,6 +75,37 @@
   }
 }
 
+#confirmation {
+  .modal-backdrop {
+    background-color: @cl-background;
+  }
+  .modal-dialog {
+    margin-top: 10em;
+    width: 400px;
+    .modal-content {
+      .modal-body {
+        text-align: center;
+        .question {
+          margin-bottom: 15px;
+        }
+        .input {
+          margin-bottom: 15px;
+        }
+        .buttons {
+          .cancel {
+            .btn;
+            .btn-danger;
+          }
+          .confirm {
+            .btn;
+            .btn-success;
+          }
+        }
+      }
+    }
+  }
+}
+
 #chat {
   .container-fluid;
   height: 100%;

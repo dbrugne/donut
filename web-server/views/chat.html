@@ -103,7 +103,23 @@
                         <span class="disconnected">{{#i}}chat.connection.disconnected{{/i}}</span>
                     </div>
                     <div class="error-message"><!--connection error --></div>
-                </div>
+                </div><!-- /.modal-body -->
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    <div id="confirmation" class="modal bs-example-modal-sm" role="dialog" aria-labelledby="confirmation" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="question">{{#i}}chat.confirmation.sure{{/i}}</div>
+                    <div class="input">
+                        <input type="text" class="form-control" placeholder="{{#i}}chat.confirmation.placeholder{{/i}}">
+                    </div>
+                    <div class="buttons">
+                        <button type="button" class="cancel" data-dismiss="modal"><i class="fa fa-times"></i> {{#i}}chat.confirmation.cancel{{/i}}</button>
+                        <button type="button" class="confirm"><i class="fa fa-check"></i> {{#i}}chat.confirmation.confirm{{/i}}</button>
+                    </div>
+                </div><!-- /.modal-body -->
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
