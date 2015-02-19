@@ -25,18 +25,18 @@ define([
       this.mainView = options.mainView;
       this.model = options.model;
 
-      // show spinner as temp content
       this.render();
+    },
+    render: function() {
+      // render spinner only
+      this.$el.html(templates['spinner.html']);
 
       // ask for data
       var that = this;
       client.roomRead(this.model.get('name'), function(data) {
         that.onResponse(data);
       });
-    },
-    render: function() {
-      // render spinner only
-      this.$el.html(templates['spinner.html']);
+
       return this;
     },
     onResponse: function(room) {
@@ -84,6 +84,7 @@ define([
       var that = this;
       confirmationView.open({}, function() {
         client.roomOp(that.model.get('name'), username);
+        that.render();
       });
     },
     deopUser: function(event) {
@@ -98,6 +99,7 @@ define([
       var that = this;
       confirmationView.open({}, function() {
         client.roomDeop(that.model.get('name'), username);
+        that.render();
       });
     },
     kickUser: function(event) {
@@ -112,6 +114,7 @@ define([
       var that = this;
       confirmationView.open({ input: true }, function(reason) {
         client.roomKick(that.model.get('name'), username, reason);
+        that.render();
       });
     },
     banUser: function(event) {
@@ -126,6 +129,7 @@ define([
       var that = this;
       confirmationView.open({ input: true }, function(reason) {
         client.roomBan(that.model.get('name'), username, reason);
+        that.render();
       });
     },
     debanUser: function(event) {
@@ -140,6 +144,7 @@ define([
       var that = this;
       confirmationView.open({ input: true }, function(reason) {
         client.roomBan(that.model.get('name'), username, reason);
+        that.render();
       });
     }
 
