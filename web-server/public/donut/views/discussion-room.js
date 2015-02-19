@@ -15,10 +15,11 @@ define([
     template: templates['room.html'],
 
     events: {
-      'click .op-user': 'opUser',
-      'click .deop-user': 'deopUser',
-      'click .kick-user': 'kickUser',
-      'click .ban-user': 'banUser'
+      'click .op-user'            : 'opUser',
+      'click .deop-user'          : 'deopUser',
+      'click .kick-user'          : 'kickUser',
+      'click .ban-user'           : 'banUser',
+      'click .open-room-users'    : 'openRoomUsers'
     },
     _initialize: function() {
       this.listenTo(this.model, 'change:color', this.onColor);
@@ -168,6 +169,10 @@ define([
       confirmationView.open({ input: true }, function(reason) {
         client.roomBan(that.model.get('name'), username, reason);
       });
+    },
+    openRoomUsers: function(event) {
+      event.preventDefault();
+      this.mainView.openRoomUsers(this.model);
     },
 
     /**

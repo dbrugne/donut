@@ -4,10 +4,9 @@ define([
   'backbone',
   'client',
   'models/current-user',
-  'views/image-uploader',
-  'views/color-picker',
+  'views/modal-confirmation',
   '_templates'
-], function ($, _, Backbone, client, currentUser, ImageUploader, ColorPicker, templates) {
+], function ($, _, Backbone, client, currentUser, confirmationView, templates) {
   var DrawerRoomUsersView = Backbone.View.extend({
 
     template: templates['drawer-room-users.html'],
@@ -15,19 +14,23 @@ define([
     id: 'room-users',
 
     events  : {
-      'submit form.room-form': 'onSubmit'
+      'click .op'    : 'opUser',
+      'click .deop'  : 'deopUser',
+      'click .kick'  : 'kickUser',
+      'click .ban'   : 'banUser',
+      'click .deban' : 'debanUser'
     },
 
     initialize: function(options) {
       this.mainView = options.mainView;
-      this.roomName = options.name;
+      this.model = options.model;
 
       // show spinner as temp content
       this.render();
 
       // ask for data
       var that = this;
-      client.roomRead(this.roomName, function(data) {
+      client.roomRead(this.model.get('name'), function(data) {
         that.onResponse(data);
       });
     },
@@ -37,8 +40,6 @@ define([
       return this;
     },
     onResponse: function(room) {
-      this.roomName = room.name;
-
       // colorize drawer .opacity
       if (room.color)
         this.trigger('color', room.color);
@@ -65,6 +66,81 @@ define([
 
       // color form
       this.$el.find('.room').colorify();
+    },
+
+    /**
+     * User actions methods
+     */
+
+    opUser: function(event) {
+      event.preventDefault();
+      if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin())
+        return false;
+
+      var username = $(event.currentTarget).data('username');
+      if (!username)
+        return;
+
+      var that = this;
+      confirmationView.open({}, function() {
+        client.roomOp(that.model.get('name'), username);
+      });
+    },
+    deopUser: function(event) {
+      event.preventDefault();
+      if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin())
+        return false;
+
+      var username = $(event.currentTarget).data('username');
+      if (!username)
+        return;
+
+      var that = this;
+      confirmationView.open({}, function() {
+        client.roomDeop(that.model.get('name'), username);
+      });
+    },
+    kickUser: function(event) {
+      event.preventDefault();
+      if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin())
+        return false;
+
+      var username = $(event.currentTarget).data('username');
+      if (!username)
+        return;
+
+      var that = this;
+      confirmationView.open({ input: true }, function(reason) {
+        client.roomKick(that.model.get('name'), username, reason);
+      });
+    },
+    banUser: function(event) {
+      event.preventDefault();
+      if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin())
+        return false;
+
+      var username = $(event.currentTarget).data('username');
+      if (!username)
+        return;
+
+      var that = this;
+      confirmationView.open({ input: true }, function(reason) {
+        client.roomBan(that.model.get('name'), username, reason);
+      });
+    },
+    debanUser: function(event) {
+      event.preventDefault();
+      if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin())
+        return false;
+
+      var username = $(event.currentTarget).data('username');
+      if (!username)
+        return;
+
+      var that = this;
+      confirmationView.open({ input: true }, function(reason) {
+        client.roomBan(that.model.get('name'), username, reason);
+      });
     }
 
   });
