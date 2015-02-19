@@ -25,7 +25,7 @@ define([
       this.listenTo(this.model, 'change:poster', this.onPoster);
 
       this.topicView = new TopicView({el: this.$el.find('.topic'), model: this.model});
-      this.usersView = new UsersView({el: this.$el.find('.users'), model: this.model, collection: this.model.users});
+      this.usersView = new UsersView({el: this.$el.find('.side .users'), model: this.model, collection: this.model.users});
 
       // color
       this.colorify();
@@ -73,6 +73,7 @@ define([
       var owner = this.model.get('owner').toJSON();
       data.owner = owner;
       data.isOwner = this.model.currentUserIsOwner();
+      data.isOp    = this.model.currentUserIsOp();
       data.isAdmin = this.model.currentUserIsAdmin();
 
       // avatar
