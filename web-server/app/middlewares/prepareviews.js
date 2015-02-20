@@ -7,8 +7,8 @@ var cloudinary = require('../../../shared/cloudinary/cloudinary');
 module.exports = function() {
   return function (req, res, next) {
     // pass current session user to all views
-    res.locals.user = req.user;
     if (req.user) {
+      res.locals.user = req.user.toObject(); // .toObject() avoid modification on original req.user object (like avatar)
       res.locals.user.avatar = cloudinary.userAvatar(req.user._avatar(), 80);
       if (req.user.username)
         res.locals.user.url = req.protocol + '://' + conf.fqdn + '/user/' + (''+req.user.username).toLocaleLowerCase();
