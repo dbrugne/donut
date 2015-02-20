@@ -443,7 +443,8 @@
             "reconnected": "Reconnecté à la tentative #__num__ ! Chargement de l'interface ...",
             "connecting": "Connexion à DONUT ...",
             "error": "Erreur de connexion, patienter un instant ...",
-            "disconnected": "Connexion perdue, patienter un instant ..."
+            "disconnected": "Connexion perdue, patienter un instant ...",
+            "contactus": "Problèmes pour vous connecter ? Contactez-nous."
         }
     },
     "account": {

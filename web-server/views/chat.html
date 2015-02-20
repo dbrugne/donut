@@ -20,7 +20,7 @@
             <div class="links links-secondary">
                 <a href="/!#room/Support"><i class="fa fa-life-ring"></i> {{#i}}chat.help{{/i}}</a>
                 <a href="/faq" target="_blank"><i class="fa fa-question-circle"></i> {{#i}}page.faq.title{{/i}}</a>
-                <a href="mailto:hello@donut.me" target="_blank"><i class="fa fa-life-ring"></i> {{#i}}page.contact.title{{/i}}</a>
+                <a rel="contactus" target="_blank"><i class="icon icon-envelope"></i> {{#i}}page.contact.title{{/i}}</a>
                 <a href="/eutc" target="_blank"><i class="fa fa-question-circle"></i> {{#i}}page.eutc.title{{/i}}</a>
             </div>
         </div>
@@ -86,13 +86,13 @@
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
-    </div><!-- #welcome -->
+    </div><!-- /#welcome -->
     <div id="connection" class="modal bs-example-modal-sm" role="dialog" aria-labelledby="welcomeMessage" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-body">
                     <div class="loader">
-                        <img src="/images/loader.gif">
+                        <i class="icon icon-spinner icon-spin icon-2x"></i>
                     </div>
                     <div class="current">
                         <!-- must be already in DOM -->
@@ -103,6 +103,9 @@
                         <span class="disconnected">{{#i}}chat.connection.disconnected{{/i}}</span>
                     </div>
                     <div class="error-message"><!--connection error --></div>
+                    <div class="contactus">
+                        <a rel="contactus" target="_blank"><i class="icon icon-envelope"></i> {{#i}}chat.connection.contactus{{/i}}</a>
+                    </div>
                 </div><!-- /.modal-body -->
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->

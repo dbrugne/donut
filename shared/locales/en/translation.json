@@ -419,7 +419,8 @@
       "reconnected": "Reconnected on attempt #__num__, loading interface...",
       "connecting": "Connecting to DONUT...",
       "error": "Error while connecting, please wait...",
-      "disconnected": "Connection lost, please wait..."
+      "disconnected": "Connection lost, please wait...",
+      "contactus": "Often problems to connect to us?"
     }
   },
   "account": {
