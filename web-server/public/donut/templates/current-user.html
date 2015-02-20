@@ -1,22 +1,22 @@
 <div class="hello">
     <%= hello %>
-    <i class="fa fa-dot-circle-o status <%= status %>" title="<%= status %>"></i>
+    <i class="icon icon-dot-circle-o status <%= status %>" title="<%= status %>"></i>
 </div>
 <div class="avatar">
     <img class="open-user-profile" data-username="<%= username %>" src="<%= avatar %>" alt="<%= username %> avatar">
     <div class="edit open-user-edit">
         <%= t('global.edit') %>
-        <i class="fa fa-pencil-square-o"></i>
+        <i class="icon icon-pencil-square-o"></i>
     </div>
 </div>
 <div class="content">
     <div class="actions">
-        <a class="open-user-account"><i class="fa fa-cog"></i> <%= t('actions.account') %></a>
-        <a href="/logout"><i class="fa fa-power-off"></i> <%= t('actions.logout') %></a>
+        <a class="open-user-account"><i class="icon icon-cog"></i> <%= t('actions.account') %></a>
+        <a href="/logout"><i class="icon icon-power-off"></i> <%= t('actions.logout') %></a>
         <% if (typeof mute != 'undefined' && mute) { %>
-        <a class="unmute"><i class="fa fa-bell-slash"></i> <%= t('actions.muted') %></a>
+        <a class="unmute"><i class="icon icon-bell-slash"></i> <%= t('actions.muted') %></a>
         <% } else { %>
-        <a class="mute"><i class="fa fa-bell"></i> <%= t('actions.mute') %></a>
+        <a class="mute"><i class="icon icon-bell"></i> <%= t('actions.mute') %></a>
         <% } %>
     </div>
 </div>
