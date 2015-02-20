@@ -3,7 +3,7 @@
     <span class="name"><%= room.name %></span>
 </div>
 <div class="form-group">
-    <p class="help-block"><%= t('edit.room.delete.info', {name: room.name}) %></p>
+    <p class="help-block"><%= t('edit.room.delete.info', {name: room.name.replace('#', '')}) %></p>
 </div>
 <div class="errors"></div>
 <div class="form-group">
