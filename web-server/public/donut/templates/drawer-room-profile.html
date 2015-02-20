@@ -6,6 +6,7 @@
     <% if (room.website) { %><p class="website"><i class="fa fa-link"></i> <span><%= room.website %></span></p><% }; %>
     <% if (room.created) { %><p class="created"><i class="fa fa-clock-o"></i> <%= t('profile.room.createdat') %> <span data-time="<%= room.created %>"></span></p><% }; %>
     <p class="permalink"><i class="fa fa-external-link"></i> <a href="<%= room.url %>" target="_blank"><%= t('profile.room.permalink') %></a></p>
+    <% if (room.isOwner || room.isAdmin) { %><p class="edit"><i class="fa fa-pencil-square-o"></i> <a class="open-room-edit" data-room-name="<%= room.name %>"> <%= t('profile.room.editlink') %></a><p><% }; %>
 </div>
 
 <div class="room" data-colorify="<%= room.color %>">
@@ -16,12 +17,6 @@
             <img src="/images/svg/user.svg" alt="user icon">
         </a>
     </p>
-</div>
-<div class="footer">
-
-    <% if (room.isOwner || room.isAdmin) { %>
-    <a class="edit open-room-edit" data-room-name="<%= room.name %>"><i class="fa fa-pencil-square-o"></i> <%= t('profile.room.editlink') %></a>
-    <% }; %>
 </div>
 <% if (room.users_list.length > 0) { %>
 <div class="users">

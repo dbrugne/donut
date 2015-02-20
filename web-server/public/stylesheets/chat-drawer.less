@@ -18,31 +18,6 @@
     font-size: 1.1em;
   }
 
-  .footer {
-    text-align: left;
-    font-size: 1.1em;
-    a {
-      display: block;
-      margin-top: 5px;
-      color: @cl-subtext50;
-      i {}
-    }
-    .edit {}
-    .edit:hover {
-      text-decoration: none;
-      cursor: pointer;
-    }
-    .delete {
-      font-size: 0.9em;
-      a {
-        color: @cl-error;
-        font-weight: bold;
-        display: inline-block;
-        cursor: pointer;
-      }
-    }
-  }
-
   .opacity {
     width: 100%;
     height: 100%;
@@ -177,7 +152,7 @@
         text-align: justify;
         padding-left: 10px;
       }
-      .website, .permalink {
+      .website, .permalink, .edit {
         margin-top: 5px;
         text-align: left;
         font-size: 1.2em;
@@ -186,7 +161,6 @@
         i { color: @cl-subtext30; }
         a:hover { text-decoration: underline; }
       }
-
       .created {
         margin-top: 5px;
         text-align: left;
@@ -260,7 +234,7 @@
       padding-left: 10px;
       i { color: @cl-subtext30; }
     }
-    .website, .permalink {
+    .website, .permalink, .edit {
       margin-top: 5px;
       text-align: left;
       font-size: 1.2em;

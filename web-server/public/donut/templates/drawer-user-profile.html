@@ -7,16 +7,12 @@
     <% if (user.registered) { %><p class="created"><i class="fa fa-clock-o"></i> <%= t('profile.user.signuped') %> <span data-time="<%= user.registered %>"></span></p><% }; %>
     <% if (user.status != 'online' && user.onlined) { %><p class="onlined"><i class="fa fa-clock-o"></i> <%= t('profile.user.onlined', {time: '<span data-time="'+user.onlined+'"></span>'}) %></p><% }; %>
     <p class="permalink"><i class="fa fa-external-link"></i> <a href="<%= user.url %>" target="_blank"><%= t('profile.user.permalink') %></a></p>
+    <% if (user.isCurrent) { %><p class="edit"><a class="open-user-edit" data-username="<%= user.username %>"><i class="fa fa-pencil-square-o"></i> <%= t('profile.user.editlink') %></a></p><% }; %>
     <% if (user.status == 'online') { %>
     <p class="discuss"><a href="#user/<%= user.username %>" data-colorify-background="color" data-colorify-text="contrast"><%= t('actions.discuss') %></a></p>
     <% } else { %>
     <p class="offline"><a href="#user/<%= user.username %>"><%= t('global.offline') %></a></p>
     <% }; %>
-    <div class="footer">
-        <% if (user.isCurrent) { %>
-        <a class="edit open-user-edit" data-username="<%= user.username %>"><i class="fa fa-pencil-square-o"></i> <%= t('profile.user.editlink') %></a>
-        <% }; %>
-    </div>
     <% if (user.rooms_list.length > 0) { %>
     <div class="rooms">
         <p class="title"><i class="fa fa-empire"></i> <%= t('profile.user.hisrooms') %></p>
