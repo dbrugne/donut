@@ -163,19 +163,19 @@ define([
       if (this.model.get('focused'))
         this.scrollDown();
     },
-    resize: function(heigth) {
-      if (typeof heigth != "undefined") // was called on page resize by views/discussion, set the .events height
-        this.$scrollable.height(heigth);
+    resize: function(viewportHeight) {
+      if (typeof viewportHeight != "undefined") // was called on page resize by views/discussion, set the .events height
+        this.$scrollable.height(viewportHeight);
       else // was called by view itself to adapt .blank height, get the current .events height
-        heigth = this.$scrollable.height();
+        viewportHeight = this.$scrollable.height();
 
       // blank heigth
       var blankHeight = 0;
-      var currentContentHeight = this.$loader.outerHeight() + this.$realtime.outerHeight();
-      if (currentContentHeight > heigth)
+      var currentContentHeight = this.$realtime.outerHeight();
+      if (currentContentHeight > viewportHeight)
         blankHeight = 0;
       else
-        blankHeight = heigth - currentContentHeight;
+        blankHeight = viewportHeight - currentContentHeight;
       this.$blank.height(blankHeight);
       window.debug.log('blank', blankHeight);
 
