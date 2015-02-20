@@ -122,7 +122,7 @@ WelcomeRemote.prototype.getMessage = function(uid, frontendId, globalCallback) {
 			var parallels = [];
 			_.each(user.rooms, function(name) {
 				parallels.push(function(fn) {
-					roomDataHelper(that.app, uid, name, {history: false}, function(err, room) {
+					roomDataHelper(that.app, uid, name, function(err, room) {
 						if (err)
 							return fn(err);
 						else
@@ -134,6 +134,8 @@ WelcomeRemote.prototype.getMessage = function(uid, frontendId, globalCallback) {
 				if (err)
 					return callback('Error while populating rooms: '+err);
 
+				// remove 'null' records (could happen for room that no longer exist but is still registered on user of for
+				// room where user is banned from)
 				welcomeEvent.rooms = _.filter(results, function(r) {
 					return r !== null;
 				});

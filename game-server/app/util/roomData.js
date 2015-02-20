@@ -11,16 +11,12 @@ var User = require('../../../shared/models/user');
  *   - owner
  *   - ops
  */
-module.exports = function(app, uid, name, opts, fn) {
-  opts = _.extend({
-  }, opts);
-
+module.exports = function(app, uid, name, fn) {
   async.waterfall([
 
     function findRoom(callback) {
       var q = Room.findByName(name)
         .populate('owner', 'username avatar color facebook')
-        .populate('op', 'username avatar color facebook')
         .exec(function(err, room) {
         if (err)
           return callback('Error while retrieving room: '+err);
@@ -34,7 +30,28 @@ module.exports = function(app, uid, name, opts, fn) {
       });
     },
 
+    function userIsBanned(room, callback) {
+      if (!room.bans || !room.bans.length)
+        return callback(null, room);
+
+      var subDocument = _.find(room.bans, function(ban) {
+        if (ban.user.toString() == uid)
+          return true;
+      });
+
+      // not banned
+      if (typeof subDocument == 'undefined')
+        return callback(null, room);
+
+      // banned
+      logger.warn('User '+uid+' seems to be banned from '+name+' but room name is still present in user.rooms array');
+      return callback(null, null); // null will be removed from room list in welcomeRemote
+    },
+
     function prepare(room, callback) {
+      if (room === null)
+        return callback(null, null);
+
       var roomData = {
         name: room.name,
         owner: {},
@@ -49,15 +66,6 @@ module.exports = function(app, uid, name, opts, fn) {
           user_id: room.owner._id,
           username: room.owner.username
         };
-      }
-      if (room.op) {
-        _.each(room.op, function(opUser) {
-          roomData.op.push({
-            user_id: opUser._id.toString(),
-            username: opUser.username,
-            avatar: opUser._avatar()
-          });
-        });
       }
 
       return callback(null, roomData);
