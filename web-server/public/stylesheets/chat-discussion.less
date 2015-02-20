@@ -149,10 +149,28 @@
           margin-right: 5px;
         }
         .profile {
-
+        }
+        .share {
+          padding-top: 2px;
+          i {
+            font-size: 16px;
+            color: @text-color;
+            margin-left: 3px;
+            vertical-align: middle;
+            cursor: pointer;
+            &.facebook {
+              color: #3b5998;
+            }
+            &.twitter {
+              color: #4099FF;
+            }
+            &.googleplus {
+              color: #dd4b39;
+            }
+          }
         }
       }
-      .share-button {
+      /*.share-button {
         position: absolute;
         display: block;
         top: 10px;
@@ -176,7 +194,7 @@
           z-index: 10;
           position: relative;
         }
-      }
+      }*/
     }
     .events {
       @import "./chat-discussion-events";

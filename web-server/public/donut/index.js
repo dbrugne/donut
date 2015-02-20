@@ -24,6 +24,7 @@ require.config({
     'jquery.smilify'              : '../javascripts/plugins/jquery.smilify',
     'jquery.momentify'            : '../javascripts/plugins/jquery.momentify',
     'jquery.colorify'             : '../javascripts/plugins/jquery.colorify',
+    'jquery.socialify'            : '../javascripts/plugins/jquery.socialify',
     'jquery.mentionsinput'        : '../javascripts/plugins/jquery.mentionsInput',
     'html.sortable'               : '../vendor/html.sortable/dist/html.sortable'
   },
@@ -37,6 +38,7 @@ require.config({
     'jquery.smilify'              : ['jquery'],
     'jquery.momentify'            : ['jquery'],
     'jquery.colorify'             : ['jquery'],
+    'jquery.socialify'            : ['jquery'],
     'jquery.mentionsinput'        : ['jquery'],
     'cloudinary.widget'           : ['jquery'],
     'html.sortable'               : ['jquery'],
@@ -70,6 +72,7 @@ require([
   'jquery.smilify',
   'jquery.momentify',
   'jquery.colorify',
+  'jquery.socialify',
   'jquery.mentionsinput',
   'bootstrap',
   'moment-fr',

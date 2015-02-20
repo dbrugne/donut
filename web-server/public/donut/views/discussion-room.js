@@ -19,7 +19,10 @@ define([
       'click .deop-user'          : 'deopUser',
       'click .kick-user'          : 'kickUser',
       'click .ban-user'           : 'banUser',
-      'click .open-room-users'    : 'openRoomUsers'
+      'click .open-room-users'    : 'openRoomUsers',
+      'click .share .facebook'    : 'shareFacebook',
+      'click .share .twitter'     : 'shareTwitter',
+      'click .share .googleplus'  : 'shareGoogle'
     },
     _initialize: function() {
       this.listenTo(this.model, 'change:color', this.onColor);
@@ -31,37 +34,6 @@ define([
 
       // color
       this.colorify();
-
-      // run only when the DOM is ready (0ms timeout)
-      var that = this;
-      setTimeout(function() {
-        // share button
-        new Share(that.share.selector, {
-          url: that.model.getUrl(),
-          ui: {
-            flyout: 'bottom right',
-            button_text: $.t('chat.share.inviteyourfriends')
-          },
-          networks: {
-            facebook: {
-              app_id: window.facebook_app_id,
-              load_sdk: false
-            },
-            twitter: {
-              title: $.t('chat.share.title', {name: that.model.get('name')}),
-              description: $.t('chat.share.description', {name: that.model.get('name')})
-            },
-            email: {
-              title: $.t('chat.share.email.subject', {name: that.model.get('name')}),
-              description: $.t('chat.share.email.message', {name: that.model.get('name')})
-            },
-            pinterest: {
-              enabled: false
-            }
-          }
-        });
-
-      }, 0);
     },
     _remove: function(model) {
       this.stopListening();
@@ -193,6 +165,29 @@ define([
       this.$el.find('div.side').css('background-image', 'url('+url+')');
       var urlb = $.cd.posterBlured(value);
       this.$el.find('div.blur').css('background-image', 'url('+urlb+')');
+    },
+
+    /**
+     * Social sharing
+     */
+    shareFacebook: function() {
+      $.socialify.facebook({
+        url         : this.model.getUrl(),
+        name        : $.t('chat.share.title', { name: this.model.get('name') }),
+        picture     : $.cd.roomAvatar(this.model.get('avatar'), 350),
+        description : $.t('chat.share.description', { name: this.model.get('name') })
+      });
+    },
+    shareTwitter: function() {
+      $.socialify.twitter({
+        url  :  this.model.getUrl(),
+        text : $.t('chat.share.description', { name: this.model.get('name') })
+      });
+    },
+    shareGoogle: function() {
+      $.socialify.google({
+        url: this.model.getUrl()
+      });
     }
 
   });

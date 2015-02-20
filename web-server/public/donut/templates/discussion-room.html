@@ -20,8 +20,14 @@
             <span class="users"><i class="icon icon-users"></i> <a class="open-room-users" data-room-name="<%= name %>"><%= t('chat.users.link') %></a></span>
             <% }; %>
             <span class="profile"><i class="icon icon-eye"></i> <a class="open-room-profile" data-room-name="<%= name %>"><%= t('global.viewprofile') %></a></span>
+            <span class="separation">|</span>
+            <span class="share">
+                partager :
+                <i class="facebook fa fa-facebook-square"></i>
+                <i class="twitter fa fa-twitter-square"></i>
+                <i class="googleplus fa fa-google-plus-square"></i>
+            </span>
         </div>
-        <div class="share-button <%= share %>" data-colorify-background="color" data-colorify-text="contrast"></div>
         <div class="topic"><!-- topic view --></div>
     </div>
     <div class="events"><!--/events view--></div>
