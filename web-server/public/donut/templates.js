@@ -2,7 +2,9 @@ define([
   'underscore',
   'text!./templates/color-picker.html',
   'text!./templates/current-user.html',
-  'text!./templates/discussions-block.html',
+  'text!./templates/discussion-block.html',
+  'text!./templates/discussion-onetoone.html',
+  'text!./templates/discussion-room.html',
   'text!./templates/drawer-room-create.html',
   'text!./templates/drawer-room-delete.html',
   'text!./templates/drawer-room-edit.html',
@@ -28,18 +30,16 @@ define([
   'text!./templates/image-uploader.html',
   'text!./templates/input.html',
   'text!./templates/input-image.html',
-  'text!./templates/onetoone.html',
   'text!./templates/room-topic.html',
   'text!./templates/room-users-list.html',
   'text!./templates/room-users.html',
-  'text!./templates/room.html',
   'text!./templates/spinner.html'
 ], function (_,
-color_picker, current_user, discussions_block, drawer_room_create, drawer_room_delete, drawer_room_edit,
-drawer_room_users, drawer_room_profile, drawer_user_account, drawer_user_edit, drawer_user_profile, event_disconnected,
-event_in_out_on_off, event_message, event_reconnected, event_room_deop, event_room_kick, event_room_ban,
-event_room_deban, event_room_op, event_room_topic, events, home_rooms, home_users, home, image_uploader, input,
-input_image, onetoone,  room_topic, room_users_list, room_users, room, spinner
+color_picker, current_user, discussion_block, discussion_onetoone, discussion_room, drawer_room_create,
+drawer_room_delete, drawer_room_edit, drawer_room_users, drawer_room_profile, drawer_user_account, drawer_user_edit,
+drawer_user_profile, event_disconnected, event_in_out_on_off, event_message, event_reconnected, event_room_deop,
+event_room_kick, event_room_ban, event_room_deban, event_room_op, event_room_topic, events, home_rooms, home_users,
+home, image_uploader, input, input_image, room_topic, room_users_list, room_users, spinner
 ) {
 
   /**
@@ -58,7 +58,9 @@ input_image, onetoone,  room_topic, room_users_list, room_users, room, spinner
 
   JST['color-picker.html']            = _.template(color_picker);
   JST['current-user.html']            = _.template(current_user);
-  JST['discussions-block.html']       = _.template(discussions_block);
+  JST['discussion-block.html']        = _.template(discussion_block);
+  JST['discussion-onetoone.html']     = _.template(discussion_onetoone);
+  JST['discussion-room.html']         = _.template(discussion_room);
   JST['drawer-room-create.html']      = _.template(drawer_room_create);
   JST['drawer-room-delete.html']      = _.template(drawer_room_delete);
   JST['drawer-room-edit.html']        = _.template(drawer_room_edit);
@@ -84,11 +86,9 @@ input_image, onetoone,  room_topic, room_users_list, room_users, room, spinner
   JST['image-uploader.html']          = _.template(image_uploader);
   JST['input.html']                   = _.template(input);
   JST['input-image.html']             = _.template(input_image);
-  JST['onetoone.html']                = _.template(onetoone);
   JST['room-topic.html']              = _.template(room_topic);
   JST['room-users-list.html']         = _.template(room_users_list);
   JST['room-users.html']              = _.template(room_users);
-  JST['room.html']                    = _.template(room);
   JST['spinner.html']                 = _.template(spinner);
 
   return JST;
