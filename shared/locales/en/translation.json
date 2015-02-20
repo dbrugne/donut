@@ -402,7 +402,7 @@
     "share": {
       "label": "share:",
       "title": "Come to discuss with me in the donut __name__",
-      "description": "Join me on DONUT.me, the new colorful thematic chat platform. I discuss on __name__ and it would be nice if you join us."
+      "description": "Join me on DONUT.me, the new chat platform. I discuss on __name__."
     },
     "welcome": {
       "room": [

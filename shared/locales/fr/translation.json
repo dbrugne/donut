@@ -422,7 +422,7 @@
         "share": {
             "label": "partager :",
             "title": "Rejoignez-moi dans le donut __name__",
-            "description": "Venez me rejoindre sur DONUT.me, le nouveau site de chat thématique haut en couleurs. J'y discute sur __name__ et ce serait sympa de vous y retrouver."
+            "description": "Venez me rejoindre sur DONUT.me le nouveau site de chat. J'y discute sur __name__."
         },
         "welcome": {
             "room": [
