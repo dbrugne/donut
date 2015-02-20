@@ -400,9 +400,9 @@
       }
     },
     "share": {
-      "inviteyourfriends": "Share",
+      "label": "share:",
       "title": "Come to discuss with me in the donut __name__",
-      "description": "DONUT is a thematic chat platform for passionate and nice peoples"
+      "description": "Join me on DONUT.me, the new colorful thematic chat platform. I discuss on __name__ and it would be nice if you join us."
     },
     "welcome": {
       "room": [

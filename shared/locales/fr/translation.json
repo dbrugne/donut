@@ -420,13 +420,9 @@
             }
         },
         "share": {
-            "inviteyourfriends": "Partager",
-            "title": "Venez discuter dans le donut __name__",
-            "description": "DONUT est une plateforme de chat thématique gourmande et craquante.",
-            "email": {
-                "subject": "Rejoins moi sur DONUT.me",
-                "message": "Viens discuter avec moi sur DONUT.me, je suis dans le donut __name__"
-            }
+            "label": "partager :",
+            "title": "Rejoignez-moi dans le donut __name__",
+            "description": "Venez me rejoindre sur DONUT.me, le nouveau site de chat thématique haut en couleurs. J'y discute sur __name__ et ce serait sympa de vous y retrouver."
         },
         "welcome": {
             "room": [

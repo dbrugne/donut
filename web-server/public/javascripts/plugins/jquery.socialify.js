@@ -23,7 +23,7 @@
 
   $.socialify.twitter = function(config) {
     return this.popup('https://twitter.com/intent/tweet', {
-      text: config.description,
+      text: config.text,
       url: config.url
     });
   };
