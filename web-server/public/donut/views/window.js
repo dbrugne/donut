@@ -105,6 +105,7 @@ define([
       this.title = title;
       this.renderTitle();
     },
+
     onBlur: function() {
       this.focused = false;
     },
@@ -131,13 +132,6 @@ define([
       if (model)
         model.trigger('resize'); // transmit event only to the current focused model
     },
-    _getFocusedModel: function() {
-      var model = rooms.findWhere({focused: true});
-      if (!model)
-        model = onetoones.findWhere({focused: true});
-
-      return model; // could be 'undefined'
-    },
     onClose: function() {
       // sometimes we prevent exit popin
       if (this.preventPopin)
@@ -151,10 +145,25 @@ define([
 
       return $.t("chat.closemessage");
     },
+
+    _getFocusedModel: function() {
+      var model = rooms.findWhere({focused: true});
+      if (!model)
+        model = onetoones.findWhere({focused: true});
+
+      return model; // could be 'undefined'
+    },
+
     onNotLogged: function() {
       this.preventPopin = true;
       window.location.assign('/');
     },
+
+
+    /***************************************************
+     * Notifications
+     ***************************************************/
+
     triggerInout: function(event, model) {
       // test if not from me (currentUser)
       if (event.get('data').username == currentUser.get('username'))
