@@ -398,7 +398,7 @@
         "closemessage": "Etes-vous sur de vouloir quitter, l’historique de vos conversations sera perdu ?",
         "kickmessage": "Vous venez d'être expulsé de",
         "banmessage": "Vous venez d'être banni de",
-        "deletemessage": "Le donut __name__ vient d'être supprimé par son créateur",
+        "deletemessage": "Le donut __name__ vient d'être supprimé",
         "users": {
             "link": "utilisateurs",
             "owner": {
