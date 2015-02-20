@@ -102,14 +102,9 @@ font-size: 1.1em;
           vertical-align: middle;
           max-width: 110px; // should take scrollbar width in consideration
           white-space: nowrap;
-          &::after {
-            content: "\f192";
-            font-family: FontAwesome;
-            font-style: normal;
-            font-weight: normal;
-            text-decoration: none;
-            margin-left: 5px;
-            font-size: 13px;
+          .icon-dot-circle-o {
+            &.online { color: @cl-success; }
+            &.offline { color: @cl-error; }
           }
         }
       }
@@ -175,15 +170,9 @@ font-size: 1.1em;
           }
         }
       }
-      &.online {
-        .username::after { color: @cl-success; }
-      }
       &.offline {
         .username {
           opacity: 0.4;
-          &::after {
-            color: @cl-error;
-          }
         }
         .avatar {
           opacity: 0.4;

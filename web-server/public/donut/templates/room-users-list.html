@@ -7,7 +7,7 @@
 <div class="item <% if (user.is_op === true) { %>op<% }; %> <% if (user.is_owner === true) { %>owner<% }; %> <%= user.status %>">
     <div class="infos">
         <div class="avatar open-user-profile" data-username="<%= user.username %>"  style="background-image: url(<%= user.avatar %>)" title="<% if (user.is_op === true) { %><%= t('chat.op.is') %><% } else if (user.is_owner === true) { %><%= t('chat.owner.is') %><% }; %>"></div>
-        <div class="username open-user-profile" data-username="<%= user.username %>" title="<%= t('global.'+user.status) %>">@<%= user.username %></div>
+        <div class="username open-user-profile" data-username="<%= user.username %>" title="<%= t('global.'+user.status) %>">@<%= user.username %> <i class="icon icon-dot-circle-o <%= user.status %>" title="online"></i></div>
     </div>
     <% if (isAdmin === true || (!user.is_owner && (isOp === true || isOwner === true))) { %>
     <div class="actions">
