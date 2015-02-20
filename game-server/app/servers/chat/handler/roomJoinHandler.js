@@ -78,6 +78,21 @@ handler.join = function(data, session, next) {
 			});
 		},
 
+		function checkIfBanned(user, room, callback) {
+			if (!room.bans || !room.bans.length)
+				return callback(null, user, room);
+
+			var subDocument = _.find(room.bans, function(ban) {
+				if (ban.user.toString() == user._id.toString())
+					return true;
+			});
+
+			if (typeof subDocument != 'undefined')
+				return callback('banned', user, room);
+
+			return callback(null, user, room);
+		},
+
 		/**
 		 * This step happen BEFORE user/room persistence and room subscription
 		 * to avoid noisy notifications
@@ -167,6 +182,8 @@ handler.join = function(data, session, next) {
 		}
 
 	], function(err, user, room, roomData) {
+		if (err === 'banned')
+			return next(null, {code: 403, err: 'This user '+user.username+' is banned from '+room.name});
 		if (err)
 			return next(null, {code: 500, err: err});
 

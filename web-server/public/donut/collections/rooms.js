@@ -36,9 +36,6 @@ define([
       this.listenTo(client, 'room:join', this.onJoin);
       this.listenTo(client, 'room:leave', this.onLeave);
     },
-    join: function(name) {
-      client.roomJoin(name);
-    },
     onJoin: function(data) {
       // server ask to client to open this room in IHM
       this.addModel(data);

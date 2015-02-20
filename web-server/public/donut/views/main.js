@@ -504,8 +504,13 @@ define([
       if (model == undefined) {
         // Not already open
         this.thisDiscussionShouldBeFocusedOnSuccess = name;
-        rooms.join(name);
-        return;
+        var that = this;
+        client.roomJoin(name, function(err) {
+          if (err) {
+            that.alert('error', $.t('chat.bannedfromroom', {name: name}));
+            that.focus();
+          }
+        });
       } else {
         this.focus(model);
       }

@@ -398,6 +398,7 @@
         "closemessage": "Etes-vous sur de vouloir quitter, l’historique de vos conversations sera perdu ?",
         "kickmessage": "Vous venez d'être expulsé de",
         "banmessage": "Vous venez d'être banni de",
+        "bannedfromroom": "Vous nous pouvez pas rejoindre __name__, vous avez été banni",
         "deletemessage": "Le donut __name__ vient d'être supprimé",
         "users": {
             "link": "utilisateurs",

@@ -184,16 +184,19 @@ define([
     // ROOM METHODS
     // ======================================================
 
-    roomJoin: function(name) {
+    roomJoin: function(name, callback) {
       var data = {name: name};
       window.debug.log('io:out:room:join', data);
-      var that = this;
       pomelo.request(
           'chat.roomJoinHandler.join',
           data,
           function(response) {
-            if (response.err)
-              return window.debug.log('io:in:room:join error: ', response);
+            if (response.err) {
+              window.debug.log('io:in:room:join error: ', response);
+            }
+
+            if (_.isFunction(callback))
+              return callback(response.err);
           }
       );
     },
