@@ -378,7 +378,7 @@
     "closemessage": "Are you sure you want to leave? Your conversation log will be lost.",
     "kickmessage": "You have been kicked out of",
     "banmessage": "You have been banned out of",
-    "deletemessage": "Th donut __name__ has been deleted by its creator",
+    "deletemessage": "Th donut __name__ has been deleted",
     "users": {
       "link": "users",
       "owner": {
