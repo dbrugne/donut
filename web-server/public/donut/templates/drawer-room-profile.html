@@ -3,10 +3,10 @@
     <p class="name"><%= room.name %></p>
     <p class="owner"><%= t('global.by') %> <a class="open-user-profile" data-username="<%= room.owner.username %>" data-colorify-text="#ffffff">@<%= room.owner.username %></a></p>
     <% if (room.description) { %><p class="description"><%= room.description %></p><% }; %>
-    <% if (room.website) { %><p class="website"><i class="fa fa-link"></i> <span><%= room.website %></span></p><% }; %>
-    <% if (room.created) { %><p class="created"><i class="fa fa-clock-o"></i> <%= t('profile.room.createdat') %> <span data-time="<%= room.created %>"></span></p><% }; %>
-    <p class="permalink"><i class="fa fa-external-link"></i> <a href="<%= room.url %>" target="_blank"><%= t('profile.room.permalink') %></a></p>
-    <% if (room.isOwner || room.isAdmin) { %><p class="edit"><i class="fa fa-pencil-square-o"></i> <a class="open-room-edit" data-room-name="<%= room.name %>"> <%= t('profile.room.editlink') %></a><p><% }; %>
+    <% if (room.website) { %><p class="website"><i class="icon icon-link"></i> <span><%= room.website %></span></p><% }; %>
+    <% if (room.created) { %><p class="created"><i class="icon icon-clock-o"></i> <%= t('profile.room.createdat') %> <span data-time="<%= room.created %>"></span></p><% }; %>
+    <p class="permalink"><i class="icon icon-external-link"></i> <a href="<%= room.url %>" target="_blank"><%= t('profile.room.permalink') %></a></p>
+    <% if (room.isOwner || room.isAdmin) { %><p class="edit"><i class="icon icon-pencil-square-o"></i> <a class="open-room-edit" data-room-name="<%= room.name %>"> <%= t('profile.room.editlink') %></a><p><% }; %>
 </div>
 
 <div class="room" data-colorify="<%= room.color %>">
@@ -20,7 +20,7 @@
 </div>
 <% if (room.users_list.length > 0) { %>
 <div class="users">
-    <p class="title"><i class="fa fa-users"></i> <%= t('profile.room.ownerops') %></p>
+    <p class="title"><i class="icon icon-users"></i> <%= t('profile.room.ownerops') %></p>
     <% _.each(room.users_list, function(user) { %>
     <div class="user open-user-profile <% if (user.isOwner) { %>owner<% }; %> <% if (user.isOp) { %>op<% }; %>" data-username="<%= user.username %>" data-colorify="<%= user.color %>">
         <img class="avatar" src="<%= user.avatar %>" />
