@@ -10,7 +10,7 @@ define([
 
     events: {
       'keyup input[type=text]': 'onKeyup',
-      'click i.fa-search': 'onKeyup'
+      'click i.icon-search': 'onKeyup'
     },
 
     initialize: function(options) {
