@@ -12,7 +12,7 @@ define([
 ], function ($, _, Backbone, client, currentUser, confirmationView, DiscussionView, TopicView, UsersView, templates) {
   var RoomView = DiscussionView.extend({
 
-    template: templates['room.html'],
+    template: templates['discussion-room.html'],
 
     events: {
       'click .op-user'            : 'opUser',

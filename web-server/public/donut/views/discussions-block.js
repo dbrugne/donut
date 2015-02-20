@@ -7,11 +7,11 @@ define([
   'models/current-user',
   '_templates'
 ], function ($, _, Backbone, rooms, onetoones, currentUser, templates) {
-  var DiscussionsBlockView = Backbone.View.extend({
+  var DiscussionBlockView = Backbone.View.extend({
 
     el: $("#block-discussions"),
 
-    template: templates['discussions-block.html'],
+    template: templates['discussion-block.html'],
 
     events: {},
 
@@ -90,5 +90,5 @@ define([
 
   });
 
-  return DiscussionsBlockView;
+  return DiscussionBlockView;
 });

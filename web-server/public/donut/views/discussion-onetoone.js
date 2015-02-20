@@ -7,7 +7,7 @@ define([
 ], function ($, _, Backbone, DiscussionView, _templates) {
   var OneToOnePanelView = DiscussionView.extend({
 
-    template: _templates['onetoone.html'],
+    template: _templates['discussion-onetoone.html'],
 
     _initialize: function() {
       this.listenTo(this.model, 'change:color', this.onColor);
