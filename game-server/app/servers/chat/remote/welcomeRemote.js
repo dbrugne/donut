@@ -30,8 +30,7 @@ WelcomeRemote.prototype.getMessage = function(uid, frontendId, globalCallback) {
 
 	// welcome event data
 	var welcomeEvent = {
-		hello: hello(),
-		autojoined: false // was this user added to #donut during the autojoin logic?
+		hello: hello()
 	};
 
 	var that = this;
@@ -65,26 +64,6 @@ WelcomeRemote.prototype.getMessage = function(uid, frontendId, globalCallback) {
 
 				return callback(null, user);
 			});
-		},
-
-		function donutAutojoin(user, callback) {
-			// special case of #donut room autojoin
-			if (user.general == true && user.rooms.indexOf(conf.room.general) == -1) {
-				User.findOneAndUpdate({_id: user._id}, {$addToSet: { rooms: conf.room.general }}, function(err, user) {
-					if (err)
-						return callback('Unable to persist #donut on user: '+err);
-
-					Room.findOneAndUpdate({name: conf.room.general}, {$addToSet: {users: user._id}}, function(err) {
-						if (err)
-							return callback('Unable to persist user on #donut: '+err);
-
-						welcomeEvent.autojoined = true;
-						return callback(null, user);
-					});
-				});
-			} else {
-				return callback(null, user);
-			}
 		},
 
 		function populateOnes(user, callback){

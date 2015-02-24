@@ -513,9 +513,6 @@
     "color": {
       "label": "Color"
     },
-    "autojoindonut": {
-      "yes": "Join <strong>#donut</strong> when you log in"
-    },
     "room": {
       "delete": {
         "link": "To delete this donut <a class='open-room-delete' data-room-name=\"__name__\"> click here</a>.",

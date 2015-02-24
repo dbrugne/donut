@@ -111,13 +111,6 @@ handler.update = function(data, session, next) {
 				}
 			}
 
-			// general
-			if (_.has(data.data, 'general')) {
-				var general = validator.toBoolean(data.data.general);
-				if (general != user.general)
-					sanitized.general = general;
-			}
-
 			// welcome
 			if (_.has(data.data, 'welcome')) {
 				var welcome = validator.toBoolean(data.data.welcome);

@@ -17,7 +17,6 @@ var conf = module.exports = {
     force: false
   },
   room: {
-    general: '#donut',
     default: {
       color: '#fc2063'
     }

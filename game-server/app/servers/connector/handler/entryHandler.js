@@ -156,21 +156,6 @@ handler.enter = function(msg, session, next) {
 			});
 		},
 
-		function donutAutojoinIn(welcome, callback) {
-			if (!welcome.autojoined)
-			  return callback(null, welcome);
-
-			// emit room:in for #donut
-			var event = {
-				user_id: welcome.user.user_id,
-				username: welcome.user.username,
-				avatar: welcome.user.avatar
-			};
-			roomEmitter(that.app, conf.room.general, 'room:in', event, function(err) {
-				return callback(err, welcome);
-			});
-		},
-
 		function sendUserOnline(welcome, callback) {
 			if (!firstClient)
 			  return callback(null, welcome);

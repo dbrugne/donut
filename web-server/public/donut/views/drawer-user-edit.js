@@ -90,8 +90,7 @@ define([
         bio: this.$el.find('textarea[name=bio]').val(),
         location: this.$el.find('input[name=location]').val(),
         website: this.$el.find('input[name=website]').val(),
-        color: this.$el.find('input[name=color]').val(),
-        general: this.$el.find('input[type=checkbox].autojoin').prop('checked')
+        color: this.$el.find('input[name=color]').val()
       };
 
       if (this.avatarUploader.data)

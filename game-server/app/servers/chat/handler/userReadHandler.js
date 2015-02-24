@@ -154,9 +154,6 @@ handler.read = function(data, session, next) {
 
 			var account = {};
 
-			// autojoin #donut option
-			account.general = user.general;
-
 			// email
 			if (user.local && user.local.email)
 				account.email = user.local.email;

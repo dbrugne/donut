@@ -31,12 +31,7 @@
         <label><%= t('edit.color.label') %></label>
         <div class="user-color"></div>
     </div>
-    <label><%= t('edit.othersettings') %></label>
-    <div class="checkbox">
-        <label>
-            <input type="checkbox" class="autojoin" <% if (user.account.general) { %>checked<% } %>> <%= t('edit.autojoindonut.yes') %>
-        </label>
-    </div>
+    <!-- label><%= t('edit.othersettings') %></label -->
     <div class="form-group buttons">
         <a class="btn btn-default btn-sm cancel"><%= t('global.cancel') %></a>
         <input type="submit" value="<%= t('global.save') %>">
