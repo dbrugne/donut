@@ -33,13 +33,14 @@ define([
   'text!./templates/room-topic.html',
   'text!./templates/room-users-list.html',
   'text!./templates/room-users.html',
-  'text!./templates/spinner.html'
+  'text!./templates/spinner.html',
+  'text!./templates/welcome.html'
 ], function (_,
 color_picker, current_user, discussion_block, discussion_onetoone, discussion_room, drawer_room_create,
 drawer_room_delete, drawer_room_edit, drawer_room_users, drawer_room_profile, drawer_user_account, drawer_user_edit,
 drawer_user_profile, event_disconnected, event_in_out_on_off, event_message, event_reconnected, event_room_deop,
 event_room_kick, event_room_ban, event_room_deban, event_room_op, event_room_topic, events, home_rooms, home_users,
-home, image_uploader, input, input_image, room_topic, room_users_list, room_users, spinner
+home, image_uploader, input, input_image, room_topic, room_users_list, room_users, spinner, welcome
 ) {
 
   /**
@@ -90,6 +91,7 @@ home, image_uploader, input, input_image, room_topic, room_users_list, room_user
   JST['room-users-list.html']         = _.template(room_users_list);
   JST['room-users.html']              = _.template(room_users);
   JST['spinner.html']                 = _.template(spinner);
+  JST['welcome.html']                 = _.template(welcome);
 
   return JST;
 });

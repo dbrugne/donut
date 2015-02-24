@@ -8,29 +8,22 @@
   a:hover { color: @text-color; }
 }
 
+@import "chat-room-cards";
+
 #welcome {
   .modal-dialog {
     z-index: 1041; // fix .modal-dialog behind .modal-backdrop for unknown reason
   }
   .modal-body {
     font-size: 1.1em;
+    .room {
+      font-size: 0.9em;
+    }
   }
   .modal-footer {
     span.checkbox {
       .pull-left;
-    }
-    .close-welcome {
-      .btn;
-      .btn-default;
-      font-size: 1em;
-      border-color: transparent;
-      color: @cl-background;
-      background-color: @cl-first;
-      &:hover {
-        border-color: @cl-first;
-        color: @cl-first;
-        background-color: @cl-background;
-      }
+      margin: 0;
     }
   }
 }

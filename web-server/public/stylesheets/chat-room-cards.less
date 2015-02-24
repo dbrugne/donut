@@ -1,0 +1,75 @@
+.rooms {
+  .list {
+    .clearfix;
+  }
+  .room {
+    .pull-left;
+    position: relative;
+    width: 217px;//228px;
+    height: 326px;
+    margin-top: 10px;
+    text-align: center;
+    .avatar {
+      display: inline-block;
+      margin: auto;
+      width: 135px;
+      height: 135px;
+      background-position: center center;
+    }
+    .name {
+      margin-top: 17px;
+      font-size: 1.8em;
+    }
+    .owner {
+    }
+    .join {
+      position: absolute;
+      left: 10px; right: 10px; bottom: 30px;
+      a {
+        padding: 13px 20px;
+        font-size: 1.2em;
+      }
+    }
+
+    .back {
+      display: none;
+      width: 100%;
+      height: 100%;
+      background-color: @cl-subtext10; /** customizable color **/
+      -webkit-border-radius: 25px;
+      -moz-border-radius: 25px;
+      border-radius: 25px;
+      .name {  }
+      .avatar {
+        margin-top: 30px;
+        margin-left: auto;
+        margin-right: auto;
+        width: 80px;
+        height: 80px;
+        background-size: 80px 80px;
+      }
+      .owner {
+        a:hover {
+          opacity: 0.5;
+          text-decoration: none;
+        }
+      }
+      .description {
+        margin-top: 7px;
+        max-height: 75px;
+        overflow: hidden;
+        text-align: justify;
+        font-size: 13px;
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+      .join a {
+        color: @cl-first; /** customizable color **/
+      }
+    }
+  }
+  .room:hover {
+    .cover { display: none; }
+    .back { display: block; }
+  }
+}

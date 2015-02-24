@@ -659,16 +659,12 @@
         }
     },
     "welcome": {
-        "title": "Bienvenue",
         "message": [
-            "Hello !<br>",
-            "<br>",
-            "DONUT est en phase de pré-lancement. On a encore deux-trois bricoles à ajuster mais vous pouvez déjà vous installer et faire comme chez vous. Faites venir les copains on s’occupe des donuts.<br>",
-            "<br>",
-            "On a cherché à faire les choses bien, vous savez sûrement comment les faire encore mieux alors n’hésitez pas à nous faire part de vos idées. En général on est sur <strong>#donut</strong> et on sera ravis de faire connaissance.<br>",
-            "<br>",
-            "L’équipe DONUT<br>"
+            "<p>Hello !</p>",
+            "<p>DONUT est en phase de pré-lancement. On a cherché à faire les choses bien, vous savez sûrement comment les faire encore mieux alors n’hésitez pas à nous faire part de vos idées sur <strong>#donut</strong>.</p>",
+            "<p>Vous allez maintenant pouvoir discuter avec des gens sympas qui partagent vos centres d'intérêt. Choisissez le donut que vous aimez :</p>"
         ],
-        "donotshowagain": "Ne plus afficher ce message à l'avenir"
+        "donotshowagain": "Ne plus afficher ce message à l'avenir",
+        "nothing": "Aucun de ceux-là n'est à mon goût, aller sur <strong>#donut</strong>"
     }
 }

@@ -10,6 +10,7 @@ define([
   '_templates',
   'views/window',
   'views/modal-connection',
+  'views/modal-welcome',
   'views/modal-confirmation',
   'views/current-user',
   'views/alert',
@@ -28,7 +29,7 @@ define([
   'views/discussion-onetoone',
   'views/discussions-block'
 ], function ($, _, Backbone, client, currentUser, EventModel, rooms, onetoones, templates, windowView,
-             ConnectionModalView, confirmationModalView,
+             ConnectionModalView, welcomeModalView, confirmationModalView,
              CurrentUserView, AlertView, HomeView, QuickSearchView,
              DrawerView,
              DrawerRoomCreateView, DrawerRoomProfileView, DrawerRoomEditView, DrawerRoomUsersView,
@@ -121,13 +122,8 @@ define([
       if (this.firstConnection) { // show if true or if undefined
         // Welcome message
         if (data.user.welcome !== false) {
-          $('#welcome').on('hide.bs.modal', function (e) {
-            if (data.user.welcome == true
-                && $(e.currentTarget).find(".checkbox input[type='checkbox']").prop('checked') === true) {
-              client.userUpdate({welcome: false}, function(data) { window.debug.log('user preference saved: ', data); });
-            }
-          });
-          $('#welcome').modal({});
+          welcomeModalView.render(data.welcome);
+          welcomeModalView.show();
         }
 
         // Elements hidden until first 'welcome'
