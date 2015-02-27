@@ -346,7 +346,7 @@
     },
     "confirmation": {
       "sure": "Do you confirm this action?",
-      "placeholder": "Add a reason (optionnal)",
+      "placeholder": "Explain why, visible in this donut (optional)",
       "cancel": "No, cancel",
       "confirm": "Yes, confirm"
     },
