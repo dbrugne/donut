@@ -21,8 +21,7 @@ define([
 
       // Configure modal
       this.$el.modal({
-        backdrop: 'static',
-        keyboard: false,
+        keyboard: true,
         show: false
       });
 
@@ -40,15 +39,27 @@ define([
       this.$input.val('');
       this.callback = null;
       this.options = null;
+
+      // unbind 'enter'
+      $(document).off('keypress');
     },
     open: function(options, callback) {
       this.options = options || {};
       this.callback = callback;
 
+      // input field
       if (this.options.input)
         this.$inputBlock.show();
       else
         this.$inputBlock.hide();
+
+      // bind 'enter' only when showing popin
+      var that = this;
+      $(document).keypress(function(e) {
+        if(e.which == 13) {
+          that.onConfirm(e);
+        }
+      });
 
       this.$el.modal('show');
     },
