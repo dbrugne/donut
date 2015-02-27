@@ -14,7 +14,7 @@
         <a href="#room/<%= room.name.replace('#', '') %>" data-colorify-background="color" data-colorify-text="contrast">
             <%= t('actions.join') %>
             <% if (room.users && room.users.length > 0) { %><%= room.users.length %><% } %>
-            <img src="/images/svg/user.svg" alt="user icon">
+            <i class="icon icon-user-custom"></i>
         </a>
     </p>
 </div>

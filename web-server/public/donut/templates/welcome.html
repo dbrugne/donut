@@ -15,7 +15,7 @@
                 <a href="#room/<%= room.name.replace('#', '') %>" data-colorify-background="color" data-colorify-text="contrast">
                     <%= t('actions.join') %>
                     <% if (room.users > 0) { %><%= room.users %><% } %>
-                    <img src="/images/svg/user.svg" alt="user icon">
+                    <i class="icon icon-user-custom"></i>
                 </a>
             </p>
         </div>
@@ -32,7 +32,7 @@
                 <a href="#room/<%= room.name.replace('#', '') %>" data-colorify-background="<%= room.color %>" data-colorify-text="contrast">
                     <%= t('actions.join') %>
                     <% if (room.users > 0) { %><%= room.users %><% } %>
-                    <img src="/images/svg/user.svg" alt="user icon">
+                    <i class="icon icon-user-custom"></i>
                 </a>
             </p>
         </div>
