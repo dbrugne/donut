@@ -411,7 +411,7 @@
                 "help": "Le créateur du donut dispose de tous les droits d'édition et de modération"
             },
             "ops": {
-                "label": "Moderators",
+                "label": "Modérateurs",
                 "help": "Les modérateurs peuvent changer le sujet du donut, expulser ou bannir des utilisateurs et ajouter/retirer des modérateurs"
             },
             "bans": {
