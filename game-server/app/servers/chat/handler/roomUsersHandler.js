@@ -59,6 +59,17 @@ handler.users = function(data, session, next) {
 			});
 		},
 
+		function checkHeIsIn(room, users, callback) {
+			// Test if the current user is in room
+			var userIds = _.map(room.users, function(u) {
+				return u._id.toString();
+			});
+			if (userIds.indexOf(session.uid) === -1)
+				return callback('room:users, this user '+session.uid+' is not currently in room '+room.name);
+
+			return callback(null, room, users);
+		},
+
 		function status(room, users, callback) {
 			var uids = _.map(users, function(u) { return u.user_id; });
 			that.app.statusService.getStatusByUids(uids, function(err, results) {
