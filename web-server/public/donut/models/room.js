@@ -47,13 +47,8 @@ define([
        : false;
 
       var is_op = false;
-      if (this.get('op')) {
-        _.each(this.get('op'), function(opUser) {
-          if (opUser.user_id == data.user_id) {
-            is_op = true;
-          }
-        });
-      }
+      if (this.get('op') && this.get('op').indexOf(data.user_id) !== -1)
+        is_op = true;
 
       model = new UserModel({
         id: data.user_id,
@@ -87,17 +82,7 @@ define([
         : false;
     },
     currentUserIsOp: function() {
-      if (!this.get('op'))
-        return false;
-
-      var isOp = false;
-      _.each(this.get('op'), function(op) {
-        if (op.user_id == currentUser.get('user_id')) {
-          isOp = true;
-        }
-      });
-
-      return isOp;
+      return (this.get('op') && this.get('op').indexOf(currentUser.get('user_id')) !== -1);
     },
     currentUserIsAdmin: function() {
       return currentUser.isAdmin();
@@ -147,7 +132,7 @@ define([
     onOp: function(data) {
       // room.get('op')
       var ops = this.get('op');
-      ops.push(data);
+      ops.push(data.user_id);
       this.set('op', ops);
 
       // user.get('is_op')
@@ -166,10 +151,8 @@ define([
     },
     onDeop: function(data) {
       // room.get('op')
-      var ops = [];
-      _.each(this.get('op'), function(op) {
-        if (op.user_id != data.user_id)
-          ops.push(op);
+      var ops = _.reject(this.get('op'), function(opUserId) {
+        return (opUserId == data.user_id);
       });
       this.set('op', ops);
 

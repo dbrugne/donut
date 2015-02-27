@@ -55,7 +55,7 @@ module.exports = function(app, uid, name, fn) {
       var roomData = {
         name: room.name,
         owner: {},
-        op: [],
+        op: room.op, // [ObjectId]
         avatar: room._avatar(),
         poster: room._poster(),
         color: room.color,
