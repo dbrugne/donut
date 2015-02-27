@@ -2,8 +2,8 @@
     <span class="name"><%= room.name %></span>
     <span class="owner"><%= t('global.by') %> <a class="open-user-profile" data-username="<%= room.owner.username %>" data-colorify-text="#ffffff">@<%= room.owner.username %></a></span>
 </div>
+<% if (room.owner) { %>
 <div class="form-group owner">
-    <% if (room.owner) { %>
     <label><i class="icon icon-owner"></i> <%= t('chat.users.owner.label') %></label>
     <p class="help-block"><%= t('chat.users.owner.help') %></p>
     <table>
@@ -15,8 +15,8 @@
             </tr>
         </tbody>
     </table>
-    <% } %>
 </div>
+<% } %>
 <% if (room.op && room.op.length) { %>
 <div class="form-group ops">
     <label><i class="icon icon-op"></i> <%= t('chat.users.ops.label') %></label>
