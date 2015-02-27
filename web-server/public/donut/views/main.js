@@ -258,10 +258,9 @@ define([
       var what = event.what;
       var data = event.data;
       this.focus();
-      var message = (what == 'kick') ? $.t("chat.kickmessage") : $.t("chat.banmessage");
-      message += data.name;
+      var message = (what == 'kick') ? $.t("chat.kickmessage", {name: data.name}) : $.t("chat.banmessage", {name: data.name});
       if (data.reason)
-        message += ' (reason: '+data.reason+')';
+        message += ' ' + $.t("chat.reason", {reason: data.reason});
       this.alert('warning', message);
     },
      roomRoomDeleted: function(data) {

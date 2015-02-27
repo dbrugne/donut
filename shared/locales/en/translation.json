@@ -376,9 +376,10 @@
     },
     "shouldauthenticated": "You must be logged in to access chat (<a href='/signup'>signup</a> or <a href='/login'>login</a>)",
     "closemessage": "Are you sure you want to leave? Your conversation log will be lost.",
-    "kickmessage": "You have been kicked out of",
-    "banmessage": "You have been banned out of",
+    "kickmessage": "You have been kicked out of __name__",
+    "banmessage": "You have been banned from __name__",
     "bannedfromroom": "Unable to join __name__, you were banned",
+    "reason": "(reason: \"__reason__\")",
     "deletemessage": "The donut __name__ has been deleted",
     "users": {
       "link": "users",
