@@ -5,8 +5,9 @@ define([
   'collections/rooms',
   'collections/onetoones',
   'models/current-user',
+  'views/window',
   '_templates'
-], function ($, _, Backbone, rooms, onetoones, currentUser, templates) {
+], function ($, _, Backbone, rooms, onetoones, currentUser, windowView, templates) {
   var DiscussionBlockView = Backbone.View.extend({
 
     el: $("#block-discussions"),
@@ -18,8 +19,7 @@ define([
     initialize: function(options) {
       this.mainView = options.mainView;
 
-      this.listenTo(rooms, 'redraw-block', this.render);
-      this.listenTo(onetoones, 'redraw-block', this.render);
+      this.listenTo(windowView, 'redraw-block', this.render);
       this.listenTo(onetoones, 'change:avatar', this.render);
       this.listenTo(currentUser, 'change:positions', this.onPositionsChange)
 

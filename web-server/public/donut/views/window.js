@@ -21,10 +21,7 @@ define([
 
     preventPopin: false,
 
-    beeps: {
-      'message': '',
-      'mention': ''
-    },
+    beep: '',
     beepPlaying: false,
     beepOn: false,
 
@@ -41,10 +38,8 @@ define([
         var cb = function() {
           that.beepPlaying = false;
         }
-        this.beeps.message = new Audio('/sounds/beep.mp3');
-        this.beeps.message.onended = cb;
-        this.beeps.mention = new Audio('/sounds/beepbeep.mp3');
-        this.beeps.mention.onended = cb;
+        this.beep = new Audio('/sounds/beep.mp3');
+        this.beep.onended = cb;
       }
 
       // Bind events to browser window
@@ -69,16 +64,18 @@ define([
     renderTitle: function() {
       var title = '';
 
-      var unread = 0;
-      unread = rooms.reduce(function(unread, model) {
-        return unread+model.get('unread');
-      }, unread);
-      unread = onetoones.reduce(function(unread, model) {
-        return unread+model.get('unread');
-      }, unread);
+      // determine if something 'new'
+      var thereIsNew = false;
+      thereIsNew = rooms.some(function(d) { // first looks in rooms
+        return d.isThereNew();
+      });
+      if (!thereIsNew)
+        thereIsNew = onetoones.some(function(d) { // then looks in onetoones
+          return d.isThereNew();
+        });
 
-      if (unread > 0)
-        title += '(new) ';
+      if (thereIsNew)
+        title += $.t('chat.unread.title') + ' ';
 
       title += this.defaultTitle;
 
@@ -87,7 +84,7 @@ define([
 
       document.title = title;
 
-      if (unread < 1) {
+      if (!thereIsNew) {
         clearInterval(this.titleBlinker);
         return;
       }
@@ -115,14 +112,10 @@ define([
       // mark current focused model as read
       var model = this._getFocusedModel();
       if (model) {
-        var unread = model.get('unread');
-        model.set('unread', 0);
-        if (unread > 0) { // avoid useless redraw on window refocus
-          if (model.get('type') == 'room')
-            rooms.trigger('redraw-block');
-          else
-            onetoones.trigger('redraw-block');
-        }
+        var thereIsNew = model.isThereNew();
+        model.resetNew();
+        if (thereIsNew)
+          this.trigger('redraw-block'); // avoid useless redraw on window refocus
       }
 
       this.renderTitle();
@@ -165,9 +158,35 @@ define([
      ***************************************************/
 
     triggerInout: function(event, model) {
+      if (event.get('type') != 'room:in')
+        return;
+
       // test if not from me (currentUser)
       if (event.get('data').username == currentUser.get('username'))
         return;
+
+      // test if i'm owner or op
+      if (!model.currentUserIsOwner() && !model.currentUserIsOp())
+        return;
+
+      // play sound (even if discussion/window is focused or not)
+      this.play();
+
+      // test if current discussion is focused
+      var isFocused = (this.focused && model.get('focused'))
+          ? true
+          : false;
+
+      // badge and title only if discussion is not focused
+      if (!isFocused) {
+        model.set('newuser', true); // will trigger tab badge and title when rendering
+
+        // update tabs
+        this.trigger('redraw-block');
+
+        // update title
+        this.renderTitle();
+      }
     },
     triggerMessage: function(event, model) {
       if (event.getGenericType() != 'message')
@@ -181,40 +200,42 @@ define([
       var pattern = new RegExp('@\\[([^\\]]+)\\]\\(user:'+currentUser.get('user_id')+'\\)');
       var isMention = pattern.test(event.get('data').message);
 
-      // test if current discussion of focus
+      // test if current discussion is focused
       var isFocused = (this.focused && model.get('focused'))
         ? true
         : false;
 
       // play sound (could be played for current focused discussion, but not for my own messages)
-      if (!currentUser.mute) {
-        if (isMention)
-          this.play('mention'); // even if discussion is focused
-        else if (!isFocused)
-          this.play('message'); // only if not focused
-      }
+      if (isMention)
+        this.play(); // even if discussion is focused
+      else if (!isFocused)
+        this.play(); // only if not focused
 
       // badge and title only if discussion is not focused
       if (!isFocused) {
-        // update tabs
-        model.set('unread', (model.get('unread', 0)+1));
-        if (model.get('type') == 'room')
-          rooms.trigger('redraw-block');
+        if (!isMention)
+          model.set('newmessage', true); // will trigger tab badge and title when rendering
         else
-          onetoones.trigger('redraw-block');
+          model.set('newmention', true);
+
+        // update tabs
+        this.trigger('redraw-block');
 
         // update title
         this.renderTitle();
       }
     },
-    play: function(what) {
+    play: function() {
+      if (currentUser.mute)
+        return;
+
       // @source: // http://stackoverflow.com/questions/9419263/playing-audio-with-javascript
       if (!this.beepOn)
         return; // Audio not supported
       if (this.beepPlaying)
         return;
 
-      var beep = this.beeps[what];
+      var beep = this.beep;
       if (!beep)
         return;
 

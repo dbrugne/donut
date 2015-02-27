@@ -370,6 +370,9 @@
       "online": "is online,",
       "offline": "is offline,"
     },
+    "unread": {
+      "title": "(new)"
+    },
     "history": {
       "help": "Scroll up to see more",
       "loading": "Loading more...",

@@ -11,16 +11,19 @@ define([
 
     defaults: function() {
       return {
-        name: '',
-        op: [],
-        topic: '',
-        avatar: '',
-        poster: '',
-        posterblured: '',
-        color: '',
-        type: 'room',
-        focused: false,
-        unread: 0
+        name          : '',
+        op            : [],
+        topic         : '',
+        avatar        : '',
+        poster        : '',
+        posterblured  : '',
+        color         : '',
+        type          : 'room',
+        focused       : false,
+        unread        : 0, // probably not needed in future
+        newmessage    : false,
+        newmention    : false,
+        newuser       : false
       };
     },
 
@@ -225,6 +228,16 @@ define([
 
     sendMessage: function(message, images) {
       client.roomMessage(this.get('name'), message, images);
+    },
+
+    resetNew: function() {
+      this.set('unread', 0);
+      this.set('newmessage', false);
+      this.set('newmention', false);
+      this.set('newuser', false);
+    },
+    isThereNew: function() {
+      return !!(this.get('newmessage') || this.get('newmention') || this.get('newuser'));
     }
 
   });

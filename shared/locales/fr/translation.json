@@ -390,6 +390,9 @@
             "out": "est sorti à",
             "online": "est en ligne,"
         },
+        "unread": {
+            "title": "(nouveau)"
+        },
         "history": {
             "help": "Remonter pour en voir plus",
             "loading": "Chargement de l'historique ...",

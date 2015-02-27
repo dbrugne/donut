@@ -8,18 +8,21 @@ define([
 
     defaults: function() {
       return {
-        username: '',
-        user_id: '',
-        avatar: '',
-        poster: '',
-        color: '',
-        location: '',
-        website: '',
-        status: '',
-        onlined: '',
-        type: 'onetoone',
-        focused: false,
-        unread: 0
+        username    : '',
+        user_id     : '',
+        avatar      : '',
+        poster      : '',
+        color       : '',
+        location    : '',
+        website     : '',
+        status      : '',
+        onlined     : '',
+        type        : 'onetoone',
+        focused     : false,
+        unread      : 0, // probably not needed in future
+        newmessage  : false,
+        newmention  : false,
+        newuser     : false // not used by onetone, for compatibility
       };
     },
     initialize: function() {
@@ -69,6 +72,15 @@ define([
 
     sendMessage: function(message, images) {
       client.userMessage(this.get('username'), message, images);
+    },
+
+    resetNew: function() {
+      this.set('unread', 0);
+      this.set('newmessage', false);
+      this.set('newmention', false);
+    },
+    isThereNew: function() {
+      return !!(this.get('newmessage') || this.get('newmention'));
     }
 
   });

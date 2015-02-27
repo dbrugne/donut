@@ -546,7 +546,7 @@ define([
 
       // Focus the one we want
       model.set('focused', true);
-      model.set('unread', 0);
+      model.resetNew();
       this.discussionsBlock.redraw();
 
       // Change interface color

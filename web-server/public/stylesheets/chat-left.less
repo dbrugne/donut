@@ -132,24 +132,35 @@ hr {
         }
       }
       .unread {
-        display: none;
-      }
-      &.unread {
-        .unread {
-          display: block;
-          position: absolute;
-          top: 10px;
-          right: 35px;
-          padding: 1px 4px;
-          font-size: 9px;
-          text-align: center;
-          min-height: 15px;
-          min-width: 15px;
-          background-color: @cl-first;
-          color: @cl-background;
-          -webkit-border-radius: 10px;
-          -moz-border-radius: 10px;
-          border-radius: 10px;
+        display: inline-block;
+        position: absolute;
+        top: 10px;
+        right: 35px;
+        padding: 1px 6px;
+        font-size: 11px;
+        min-width: 30px;
+        text-align: center;
+        background-color: @cl-first;
+        color: @cl-background;
+        -webkit-border-radius: 10px;
+        -moz-border-radius: 10px;
+        border-radius: 10px;
+        i {
+          line-height: 1.5;
+          margin-left: 2px;
+          &:last-child {
+            margin-left: 0;
+          }
+        }
+        i.icon-user-custom {
+          font-size: 12px;
+        }
+        i.icon-atxx {
+          font-size: 12px;
+          margin-left: 0;
+        }
+        i.icon-envelope {
+          font-size: 11px;
         }
       }
       .close-discussion {
