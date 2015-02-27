@@ -17,8 +17,8 @@
     </table>
     <% } %>
 </div>
+<% if (room.op && room.op.length) { %>
 <div class="form-group ops">
-    <% if (room.op && room.op.length) { %>
     <label><i class="icon icon-op"></i> <%= t('chat.users.ops.label') %></label>
     <p class="help-block"><%= t('chat.users.ops.help') %></p>
     <table>
@@ -36,10 +36,10 @@
             <% }); %>
         </tbody>
     </table>
-    <% } %>
 </div>
+<% } %>
+<% if (room.bans && room.bans.length) { %>
 <div class="form-group bans">
-    <% if (room.bans && room.bans.length) { %>
     <label><i class="icon icon-ban"></i> <%= t('chat.users.bans.label') %></label>
     <p class="help-block"><%= t('chat.users.bans.help') %></p>
     <table>
@@ -57,10 +57,10 @@
         <% }); %>
         </tbody>
     </table>
-    <% } %>
 </div>
+<% } %>
+<% if (room.users && room.users.length) { %>
 <div class="form-group users">
-    <% if (room.users && room.users.length) { %>
     <label><%= t('chat.users.users.label') %></label>
     <p class="help-block"><%= t('chat.users.users.help') %></p>
     <table>
@@ -84,5 +84,5 @@
         <% }); %>
         </tbody>
     </table>
-    <% } %>
 </div>
+<% } %>
