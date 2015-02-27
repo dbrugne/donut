@@ -90,16 +90,19 @@ historySchema.statics.retrieve = function() {
   /**
    * @param name
    * @param userId
-   * @param what criteria Object: since (timestamp)
+   * @param what criteria Object: since (timestamp), isAdmin (boolean)
    * @param fn
    */
   return function(name, userId, what, fn) {
     what = what || {};
     var criteria = {
       name: name,
-      users: { $in: [userId] },
       event: { $nin: ['user:online', 'user:offline'] }
     };
+
+    if (what.isAdmin !== true) {
+      criteria.users = { $in: [userId] };
+    }
 
     // Since (timestamp, from present to past direction)
     if (what.since) {
@@ -148,11 +151,13 @@ historySchema.statics.retrieve = function() {
         }
         entry.data = data;
 
-        // new: received is set and NOT contains 'me'
-        var isNew = false;
-        if (entry.received !== undefined && entry.received.indexOf(userId) === -1) {
-          isNew = true;
-          toMarkAsReceived.push(entry._id);
+        if (what.isAdmin !== true) {
+          // new: received is set and NOT contains 'me'
+          var isNew = false;
+          if (entry.received !== undefined && entry.received.indexOf(userId) === -1) {
+            isNew = true;
+            toMarkAsReceived.push(entry._id);
+          }
         }
 
         history.push({
@@ -162,10 +167,12 @@ historySchema.statics.retrieve = function() {
         });
       });
 
-      that.update({_id: {$in: toMarkAsReceived}}, {$addToSet: {received: userId}}, {multi: true}, function(err) {
-        if (err)
-          return debug('Error while updating received in historyRoom: '+err);
-      });
+      if (what.isAdmin !== true) {
+        that.update({_id: {$in: toMarkAsReceived}}, {$addToSet: {received: userId}}, {multi: true}, function(err) {
+          if (err)
+            return debug('Error while updating received in historyRoom: '+err);
+        });
+      }
 
       return fn(null, {
         history: history,
