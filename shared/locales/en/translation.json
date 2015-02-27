@@ -379,7 +379,7 @@
     "kickmessage": "You have been kicked out of",
     "banmessage": "You have been banned out of",
     "bannedfromroom": "Unable to join __name__, you were banned",
-    "deletemessage": "Th donut __name__ has been deleted",
+    "deletemessage": "The donut __name__ has been deleted",
     "users": {
       "link": "users",
       "owner": {
