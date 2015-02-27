@@ -341,6 +341,9 @@
     "ban": {
       "infobox": "Kick and ban this user out of this donut"
     },
+    "deban": {
+      "infobox": "Unban user"
+    },
     "profile": {
       "infobox": "View the user profile"
     },
@@ -384,20 +387,20 @@
     "users": {
       "link": "users",
       "owner": {
-        "label": "Owner",
-        "help": "The donut owner has all privileges on room configuration and users."
+        "label": "Creator",
+        "help": "The donut creator has all priviledges"
       },
       "ops": {
         "label": "Moderators",
-        "help": "Moderators can change the donut topic, kick or ban users and make other users moderators or not."
+        "help": "Moderators can change the donut topic, kick or ban users and make/remove moderators"
       },
       "bans": {
         "label": "Banned",
-        "help": "Banned users that can no longer join this donut."
+        "help": "Banned users cannot join this donut any longer"
       },
       "users": {
         "label": "Users",
-        "help": "Users of the donut can only view and post messages."
+        "help": "Users of the donut can only view and post messages"
       }
     },
     "share": {
