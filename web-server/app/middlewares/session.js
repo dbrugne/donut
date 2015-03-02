@@ -10,6 +10,6 @@ module.exports = session({
   saveUninitialized : true,
   cookie: {
     domain          : conf.fqdn, // work for root domain and subdomains (e.g.: ws.)
-    maxAge          : 7*24*3600*1000 // 1 week
+    maxAge          : conf.sessions.ttl * 1000 // 1 week
   }
 });

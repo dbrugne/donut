@@ -26,7 +26,8 @@ var conf = module.exports = {
   },
   sessions: {
     key: 'donut.sid',
-    secret: 'q4qsd65df45s4d5f45ds5fsf4s'
+    secret: 'q4qsd65df45s4d5f45ds5fsf4s',
+    ttl: 7*24*3600 // 1 week, in seconds
   },
   email: {
     from: {
