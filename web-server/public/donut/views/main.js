@@ -122,7 +122,7 @@ define([
       if (this.firstConnection) { // show if true or if undefined
         // Welcome message
         if (data.user.welcome !== false) {
-          welcomeModalView.render(data.welcome);
+          welcomeModalView.render(data);
           welcomeModalView.show();
         }
 

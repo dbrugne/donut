@@ -23,14 +23,22 @@ define([
         show: false
       });
     },
-    render: function(rooms) {
-      if (!rooms || !rooms.length) {
+    render: function(welcome) {
+      if (!welcome || !welcome.featured || !welcome.featured.length) {
         this.$el.find('.modal-body .rooms').empty();
         return;
       }
 
-      var html = this.template({rooms: rooms});
-      this.$el.find('.modal-body .rooms').html(html);
+      var rooms = [];
+      _.each(welcome.featured, function(room) {
+        room.avatar = $.cd.roomAvatar(room.avatar, 135);
+        rooms.push(room);
+      });
+
+      var html = this.template({rooms: welcome.featured});
+      this.$el.find('.modal-body .rooms')
+          .html(html)
+          .colorify();
       return this;
     },
     show: function() {
