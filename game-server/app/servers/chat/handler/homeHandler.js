@@ -2,6 +2,7 @@ var async = require('async');
 var _ = require('underscore');
 var User = require('../../../../../shared/models/user');
 var Room = require('../../../../../shared/models/room');
+var featuredRooms = require('../../../util/featuredRooms');
 
 module.exports = function(app) {
 	return new Handler(app);
@@ -136,6 +137,25 @@ handler.home = function(data, session, next) {
 					users = _.sortBy(users, 'sort');
 
 					homeEvent.users = users;
+					return callback(null);
+				});
+			},
+
+			function featured(callback) {
+				featuredRooms(that.app, function(err, featured) {
+					if (err)
+						logger.error('Error while retrieving featured rooms: '+err);
+
+					// union lists
+					var alreadyInNames = _.map(featured, function(r) {
+						return r.name;
+					});
+					_.each(homeEvent.rooms, function(room) {
+						if (alreadyInNames.indexOf(room.name) === -1)
+						  featured.push(room);
+					});
+					homeEvent.rooms = featured;
+
 					return callback(null);
 				});
 			}
