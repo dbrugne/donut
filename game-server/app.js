@@ -1,6 +1,7 @@
 require('newrelic');
 var pomelo = require('pomelo');
 var logger = require('./pomelo-logger').getLogger('donut', __filename);
+var scheduler = require('./app/components/scheduler')
 var dispatcher = require('./app/util/dispatcher');
 var connector = require('./app/connector/sioconnector');
 var globalChannel = require('pomelo-globalchannel-plugin');
@@ -78,6 +79,10 @@ app.configure('production|test|development', 'chat', function() {
     var onlineUser = require('./app/modules/onlineUser');
     app.registerAdmin(onlineUser, {app: app});
   }
+});
+
+app.configure('production|test|development', 'master', function() {
+  app.load(scheduler, {});
 });
 
 // start app

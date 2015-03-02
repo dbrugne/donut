@@ -30,7 +30,7 @@ var retriever = function(app, fn) {
     try {
       var roomsData = JSON.parse(result);
       if (_.isArray(roomsData) && roomsData.length > 0) {
-        logger.info('Get featured from cache');
+        logger.debug('Get featured from cache');
         return fn(null, roomsData);
       } else {
         retrieve();
@@ -180,7 +180,7 @@ var retriever = function(app, fn) {
           if (err)
             logger.error('Error while storing featured in cache: '+err);
 
-          logger.info('Stored featured in cache');
+          logger.debug('Stored featured in cache');
           return callback(null, roomsData);
         });
       }
