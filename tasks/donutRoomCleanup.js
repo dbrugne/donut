@@ -1,7 +1,7 @@
 var async = require('async');
 var _ = require('underscore');
 var Room = require('../shared/models/room');
-var User = require('../shared/models/User');
+var User = require('../shared/models/user');
 var HistoryRoom = require('../shared/models/historyroom');
 
 module.exports = function(grunt) {
