@@ -7,6 +7,7 @@ var Room = require('../../../../../shared/models/room');
 var roomDataHelper = require('../../../util/roomData');
 var oneDataHelper = require('../../../util/oneData');
 var hello = require('../../../util/helloDolly');
+var featuredRooms = require('../../../util/featuredRooms');
 
 module.exports = function(app) {
 	return new WelcomeRemote(app);
@@ -118,6 +119,17 @@ WelcomeRemote.prototype.getMessage = function(uid, frontendId, globalCallback) {
 				welcomeEvent.rooms = _.filter(results, function(r) {
 					return r !== null;
 				});
+				return callback(null, user);
+			});
+		},
+
+		function featured(user, callback) {
+			featuredRooms(that.app, 4, function(err, featured) {
+				if (err)
+				  logger.error('Error while retrieving featured rooms: '+err);
+
+				welcomeEvent.featured = featured;
+
 				return callback(null, user);
 			});
 		}

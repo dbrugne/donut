@@ -13,7 +13,7 @@ var Room = require('../../../shared/models/room');
  * - store in cache
  * - return
  */
-var retriever = function(number, fn) {
+var retriever = function(app, number, fn) {
 
   var number = number || 10;
 
@@ -46,11 +46,8 @@ var retriever = function(number, fn) {
             var name = key.replace('pomelo:globalchannel:channel:', '').replace(/:connector-server-[0-9]+/, '');
             roomsCount.push({name: name, count: value.length});
           });
-          roomsCount = _.sortBy(roomsCount, 'count')
-              .reverse();
-          roomsCount = _.map(roomsCount, function(value, index, list) {
-            return value.name;
-          });
+          roomsCount = _.sortBy(roomsCount, 'count').reverse(); // desc
+          roomsCount = _.first(roomsCount, number);
           return callback(null, roomsCount);
         }
       });
@@ -58,7 +55,7 @@ var retriever = function(number, fn) {
 
     function fromMongo(rooms, callback) {
       if (rooms.length >= number)
-        return callback(rooms, callback);
+        return callback(null, rooms);
 
       var left = number - rooms.length;
 
@@ -73,7 +70,7 @@ var retriever = function(number, fn) {
               if (rooms.indexOf(r.name) !== -1)
                 return;
 
-              rooms.push(r.name);
+              rooms.push({name: r.name, count: -1});
               if (rooms.length >= number)
                 return false;
             });
@@ -83,7 +80,11 @@ var retriever = function(number, fn) {
     },
 
     function hydrate(rooms, callback) {
-      Room.find({ name: {$in: rooms} })
+      var names = _.map(rooms, function(r) {
+        return r.name;
+      });
+      logger.warn('Found rooms: ', names);
+      Room.find({ name: {$in: names} })
         .populate('owner', 'username')
         .exec(function(err, result) {
             if (err)
@@ -100,12 +101,13 @@ var retriever = function(number, fn) {
       var roomsData = [];
       _.each(rooms, function(room) {
         var data = {
-          name: room.name,
-          owner: {},
-          avatar: room._avatar(),
-          poster: room._poster(),
-          color: room.color,
-          topic: room.topic
+          name          : room.name,
+          owner         : {},
+          avatar        : room._avatar(),
+          poster        : room._poster(),
+          color         : room.color,
+          description   : room.description,
+          users         : 0
         };
         if (room.owner) {
           data.owner = {
@@ -116,9 +118,36 @@ var retriever = function(number, fn) {
         roomsData.push(data);
       });
 
-      // @todo : resort
-      // @todo : add online users count
+      return callback(null, roomsData);
+    },
 
+    function users(roomsData, callback) {
+      var parallels = [];
+      _.each(roomsData, function(room) {
+        parallels.push(function(then) {
+          app.globalChannelService.getMembersByChannelName('connector', room.name, function(err, members) {
+            if (err)
+              return then(err);
+
+            return then(null, members.length);
+          });
+        });
+      });
+      async.parallel(parallels, function(err, result) {
+        if (err)
+          return callback('Error while retrieving room users length: '+err);
+
+        _.each(roomsData, function(value, index) {
+          roomsData[index].users = result[index];
+        });
+
+        return callback(null, roomsData);
+      });
+    },
+
+    function sortList(roomsData, callback) {
+      roomsData = _.sortBy(roomsData, 'users')
+          .reverse(); // desc
       return callback(null, roomsData);
     }
 
