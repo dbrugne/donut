@@ -81,8 +81,10 @@ handler.enter = function(msg, session, next) {
 		},
 
 		function welcomeMessage(callback) {
-			// delegate connect logic to 'chat' server and get welcome message in
-			// return
+			if (!that.app.rpc.chat)
+				return callback('app.rpc.chat not already exists, server is not ready');
+
+			// delegate connect logic to 'chat' server and get welcome message in return
 		  return that.app.rpc.chat.welcomeRemote.getMessage(
 				session,
 				uid,
