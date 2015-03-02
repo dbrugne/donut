@@ -124,11 +124,14 @@ WelcomeRemote.prototype.getMessage = function(uid, frontendId, globalCallback) {
 		},
 
 		function featured(user, callback) {
-			featuredRooms(that.app, 4, function(err, featured) {
+			if (!welcomeEvent.user.welcome)
+			  return callback(null, user);
+
+			featuredRooms(that.app, function(err, featured) {
 				if (err)
 				  logger.error('Error while retrieving featured rooms: '+err);
 
-				welcomeEvent.featured = featured;
+				welcomeEvent.featured = _.first(featured, 4); // keep only n firsts
 
 				return callback(null, user);
 			});
