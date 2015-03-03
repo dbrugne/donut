@@ -2,7 +2,7 @@ var logger = require('../../pomelo-logger').getLogger('donut', __filename);
 var featuredRooms = require('../util/featuredRooms');
 
 module.exports = function(data) {
-  logger.info('[schedule:featuredRooms] starting');
+  logger.debug('[schedule:featuredRooms] starting');
 
   featuredRooms(data.app, function(err, roomsData) {
     if (err)

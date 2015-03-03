@@ -2,7 +2,7 @@ var logger = require('../../pomelo-logger').getLogger('donut', __filename);
 var Log = require('../../../shared/models/log');
 
 module.exports = function(data) {
-  logger.info('[schedule:cleanupLogs] starting');
+  logger.debug('[schedule:cleanupLogs] starting');
 
   var OneMonth = new Date(); OneMonth.setMonth(new Date().getMonth() - 1); // older than 1 month
   var SevenDays = new Date(); SevenDays.setDate(new Date().getDate() - 7); // older than 7 days
@@ -15,6 +15,6 @@ module.exports = function(data) {
     if (err)
       return logger.error('[schedule:cleanupLogs] error: '+err);
 
-    logger.info('[schedule:cleanupLogs] done');
+    logger.debug('[schedule:cleanupLogs] done');
   });
 };
