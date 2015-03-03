@@ -1,6 +1,10 @@
 var logger = require('../../pomelo-logger').getLogger('donut', __filename);
 var schedule = require('pomelo-scheduler');
-var featuredRooms = require('../util/featuredRooms');
+
+
+// tasks
+var featuredRooms = require('./featuredRooms');
+var cleanupLogs = require('./cleanupLogs');
 
 module.exports = function(app, opts) {
   return new DonutScheduler(app, opts);
@@ -21,24 +25,22 @@ DonutScheduler.prototype.start = function(cb) {
 DonutScheduler.prototype.afterStart = function(cb) {
 
   // featured rooms list
-  var frequency = 60000; // 60s
+  var frequency = 60000; // every 60s, start in 60s
   this.featuredRoomsId = schedule.scheduleJob(
       { start: Date.now() + frequency, period: frequency },
-      function(data) {
-        featuredRooms(data.app, function(err, roomsData) {
-          if (err)
-            return logger.error('Schedule featuredRoomsId: '+err);
-          logger.debug('Schedule featuredRoomsId ('+roomsData.length+')');
-        });
-      },
+      featuredRooms,
       { app: this.app }
   );
+
+  // cleanup logs
+  this.cleanupLogsId = schedule.scheduleJob("0 0 0/6 * * *", cleanupLogs, {}); // every 6 hours
 
   process.nextTick(cb);
 }
 
 DonutScheduler.prototype.stop = function(force, cb) {
   schedule.cancel(this.featuredRoomsId);
+  schedule.cancel(this.cleanupLogsId);
 
   process.nextTick(cb);
 }
