@@ -193,9 +193,9 @@ handler.enter = function(msg, session, next) {
  * @param {Object} session current session object
  *
  */
-var onUserLeave = function exit(app, session) {
+var onUserLeave = function(app, session, reason) {
 	if(!session || !session.uid)
-		return; // could happen if a uid wasn't binded before disconnect (crash, bug, debug session, ...)
+		return; // could happen if a uid was not already bound before disconnect (crash, bug, debug session, ...)
 
 	var duration = Math.ceil((Date.now() - session.settings.started)/1000); // seconds
 	var log = {
@@ -206,44 +206,17 @@ var onUserLeave = function exit(app, session) {
 	};
 	if (session.settings.username)
 		log.username = session.settings.username;
+	if (reason)
+		log.reason = reason;
 	logger.info(JSON.stringify(log));
 
-	var lastClient = false;
-
-	async.waterfall([
-
-		function isLastClient(callback) {
-			app.statusService.getStatusByUid(session.uid, function(err, status) {
+	app.rpc.chat.statusRemote.socketGoesOffline(
+			session,
+			session.uid,
+			function(err) {
 				if (err)
-					return logger.error('Error while retrieving user status: '+err);
-
-				// At least an other socket is live for this user or not
-				lastClient = !status;
-
-				return callback(null);
-			});
-		},
-
-		function sendUserOffline(callback) {
-			if (!lastClient)
-				return callback(null);
-
-			app.rpc.chat.statusRemote.offline(
-				session,
-				session.uid,
-				function(err) {
-					if (err)
-						logger.error('Error while statusRemote.offline: '+err);
-				}
-			);
-
-			// don't wait for response before continuing
-			return callback(null);
-		}
-
-	], function(err) {
-		if (err)
-			logger.error('Error while disconnecting user: '+err);
-	});
+					logger.error('Error while statusRemote.socketGoesOffline: '+err);
+			}
+	);
 
 };

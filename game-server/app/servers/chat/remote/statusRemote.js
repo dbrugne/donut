@@ -7,6 +7,8 @@ var oneEmitter = require('../../../util/oneEmitter');
 
 var GLOBAL_CHANNEL_NAME = 'global';
 
+var TIMEOUT_BEFORE_OFFLINE = 2000; // 2s
+
 module.exports = function(app) {
 	return new DisconnectRemote(app);
 };
@@ -121,6 +123,58 @@ DisconnectRemote.prototype.online = function(uid, welcome, globalCallback) {
 };
 
 /**
+ * Determine if user is really disconnected: socket.io connexion in browser could suffer micro-disconnection.
+ * The purpose of this proxy method is too wait 2s before declaring the user "offline".
+ *
+ * Logic:
+ * - test if last socket and if yes launch a timeout of 2 seconds
+ * - after timeout test if user is really offline or not, if still offline call .offline()
+ */
+DisconnectRemote.prototype.socketGoesOffline = function(uid, globalCallback) {
+
+	var that = this;
+
+	// test if last socket for this user
+	async.waterfall([
+
+		function isLastClient(callback) {
+			that.app.statusService.getStatusByUid(uid, function(err, status) {
+				return callback(err, !status); // at least an other socket is live for this user or not
+			});
+		},
+
+		function sendUserOffline(itIsLastClient, callback) {
+			if (!itIsLastClient)
+				return callback(null); // no-op
+
+			setTimeout(function() {
+				// re-test if user is still offline after timeout (!= micro-disconnection)
+				that.app.statusService.getStatusByUid(uid, function(err, status) {
+					if (err)
+						return logger.error('Error while retrieving user status: '+err);
+
+					if (status) {
+						logger.debug('socketGoesOffline for '+uid+': finally now he is online (micro-disconnection)');
+						return; // no-op
+					}
+
+					logger.debug('socketGoesOffline for '+uid+': finally he is really offline');
+					that.offline(uid);
+				});
+
+			}, TIMEOUT_BEFORE_OFFLINE);
+
+			// don't wait for response before re-giving hand to entryHandler
+			return callback(null);
+		}
+
+	], function(err) {
+		return globalCallback(err);
+	});
+
+};
+
+/**
  * Handle "this user goes offline logic":
  * - update lastoffline_at
  * - broadcast user:offline message to all rooms he is in
@@ -129,7 +183,7 @@ DisconnectRemote.prototype.online = function(uid, welcome, globalCallback) {
  * @param {String} uid unique id for user
  *
  */
-DisconnectRemote.prototype.offline = function(uid, globalCallback) {
+DisconnectRemote.prototype.offline = function(uid) {
 
 	var start = Date.now();
 
@@ -156,6 +210,11 @@ DisconnectRemote.prototype.offline = function(uid, globalCallback) {
 
 				return callback(null, user);
 			});
+		},
+
+		function determineIfGracefullShutdown(user, callback) {
+			// @todo : no-op after user lastoffline_at persistence if gracefull shutdown
+			return callback(null, user);
 		},
 
 		function prepareEvent(user, callback) {
@@ -203,12 +262,12 @@ DisconnectRemote.prototype.offline = function(uid, globalCallback) {
 					if (err)
 						return callback(err);
 
-					return callback(null, user, event);
+					return callback(null, user);
 				});
 			});
 		},
 
-	], function (err, user, event) {
+	], function (err, user) {
 		if (err) {
 			logger.error(JSON.stringify({
 				route: 'statusRemote.offline',
@@ -225,8 +284,6 @@ DisconnectRemote.prototype.offline = function(uid, globalCallback) {
 				timeUsed: (Date.now() - start)
 			}));
 		}
-
-		return globalCallback(err);
 	});
 
 };
