@@ -128,7 +128,8 @@ var retriever = function(app, fn) {
             poster        : room._poster(),
             color         : room.color,
             description   : room.description,
-            users         : 0
+            users         : (room.users) ? room.users.length : 0,
+            onlines       : 0
           };
           if (room.owner) {
             data.owner = {
@@ -142,7 +143,7 @@ var retriever = function(app, fn) {
         return callback(null, roomsData);
       },
 
-      function users(roomsData, callback) {
+      function onlines(roomsData, callback) {
         var parallels = [];
         _.each(roomsData, function(room) {
           parallels.push(function(then) {
@@ -156,10 +157,10 @@ var retriever = function(app, fn) {
         });
         async.parallel(parallels, function(err, result) {
           if (err)
-            return callback('Error while retrieving room users length: '+err);
+            return callback('Error while retrieving room online users length: '+err);
 
           _.each(roomsData, function(value, index) {
-            roomsData[index].users = result[index];
+            roomsData[index].onlines = result[index];
           });
 
           return callback(null, roomsData);
@@ -167,7 +168,7 @@ var retriever = function(app, fn) {
       },
 
       function sortList(roomsData, callback) {
-        roomsData = _.sortBy(roomsData, 'users')
+        roomsData = _.sortBy(roomsData, 'onlines')
             .reverse(); // desc
         return callback(null, roomsData);
       },
