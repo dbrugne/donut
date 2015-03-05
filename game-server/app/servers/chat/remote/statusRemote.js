@@ -7,7 +7,7 @@ var oneEmitter = require('../../../util/oneEmitter');
 
 var GLOBAL_CHANNEL_NAME = 'global';
 
-var TIMEOUT_BEFORE_OFFLINE = 2000; // 2s
+var TIMEOUT_BEFORE_OFFLINE = 4000; // 4s
 
 module.exports = function(app) {
 	return new DisconnectRemote(app);
