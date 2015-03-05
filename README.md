@@ -66,7 +66,6 @@ $ cd /home/donut/app
 $ git clone git@github.com:dbrugne/donut.git ./
 $ npm install
 $ cd game-server
-$ mkdir logs
 $ npm install
 $ cd ../web-server
 $ npm install
