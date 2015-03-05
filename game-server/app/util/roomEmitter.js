@@ -9,7 +9,7 @@ var recorder = HistoryRoom.record();
 /**
  * Store history in MongoDB, emit event in corresponding room and call callback
  *
- * @param roomName String|[String]
+ * @param roomName
  * @param eventName
  * @param eventData
  * @param callback
@@ -29,22 +29,17 @@ module.exports = function(app, roomName, eventName, eventData, callback) {
       // always had room name and time to event
       ed.name = room;
       ed.time = Date.now();
-      app.globalChannelService.getMembersByChannelName('connector', room, function(err, members) {
+      recorder(eventName, ed, function(err, history) {
         if (err)
-          return fn(err);
+          return fn('Error while emitting room event '+eventName+' in '+room+': '+err);
 
-        recorder(eventName, ed, members, function(err, history) {
+        // emit event to room users
+        ed.id = history._id.toString();
+        app.globalChannelService.pushMessage('connector', eventName, ed, room, {}, function(err) {
           if (err)
-            return fn('Error while emitting room event '+eventName+' in '+room+': '+err);
+            return logger.error('Error while pushing message: '+err);
 
-          // emit event to room users
-          ed.id = history._id.toString();
-          app.globalChannelService.pushMessage('connector', eventName, ed, room, {}, function(err) {
-            if (err)
-              return logger.error('Error while pushing message: '+err);
-
-            return fn(null);
-          });
+          return fn(null);
         });
       });
     });

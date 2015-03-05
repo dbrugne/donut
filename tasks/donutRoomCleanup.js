@@ -65,7 +65,7 @@ module.exports = function(grunt) {
             function cleanupHistory(usersToRemove, callback) {
                 HistoryRoom.update(
                   { name: '#donut', users: { $in: usersToRemove } }, // get all history for removed users
-                  { $pull: { users: { $in: usersToRemove }, received: { $in: usersToRemove } } }, // remove them from history
+                  { $pull: { users: { $in: usersToRemove } } }, // remove them from history
                   { multi: true },
                   function(err, result) {
                       if (err)

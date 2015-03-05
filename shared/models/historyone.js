@@ -9,9 +9,7 @@ var historySchema = mongoose.Schema({
   from          : { type: mongoose.Schema.ObjectId, ref: 'User' },
   to            : { type: mongoose.Schema.ObjectId, ref: 'User' },
   time          : { type: Date, default: Date.now },
-  data          : mongoose.Schema.Types.Mixed,
-  received      : [{ type: mongoose.Schema.ObjectId, ref: 'User' }] // to user was online at event time
-//  viewed     : Boolean  // to user have "viewed" the event in IHM
+  data          : mongoose.Schema.Types.Mixed
 
 });
 
@@ -37,11 +35,10 @@ historySchema.statics.record = function() {
   /**
    * @param event - event name as String
    * @param data - event data as Object
-   * @param toIsOnline - if the current status of the "to" user is online
    * @param fn - callback function
    * @return event with event_id set
    */
-  return function(event, data, toIsOnline, fn) {
+  return function(event, data, fn) {
     // user:online/offline special case
     var fromUserId, toUserId;
     if (data.from_user_id == undefined && data.from) {
@@ -52,17 +49,10 @@ historySchema.statics.record = function() {
       toUserId = data.to_user_id;
     }
 
-    var received = [
-      fromUserId
-    ];
-    if (toIsOnline)
-      received.push(toUserId);
-
     var model = new that();
     model.event       = event;
     model.from        = fromUserId;
     model.to          = toUserId;
-    model.received    = received;
     model.time        = data.time;
 
     // dry data
@@ -124,7 +114,6 @@ historySchema.statics.retrieve = function() {
         entries.pop(); // remove last
 
       var history = [];
-      var toMarkAsReceived = [];
       _.each(entries, function(entry) {
         // re-hydrate data
         var data = (entry.data)
@@ -144,24 +133,10 @@ historySchema.statics.retrieve = function() {
         }
         entry.data = data;
 
-        // new: received is set and NOT contains 'me'
-        var isNew = false;
-        if (entry.received !== undefined && entry.received.indexOf(me) === -1) {
-          isNew = true;
-          toMarkAsReceived.push(entry._id);
-        }
-
         history.push({
           type: entry.event,
-          data: entry.data,
-          new: isNew
+          data: entry.data
         });
-      });
-
-      // me should be a string and not a ObjectId()
-      that.update({_id: {$in: toMarkAsReceived}}, {$addToSet: {received: me}}, {multi: true}, function(err) {
-        if (err)
-          return debug('Error while updating received in historyOne: '+err);
       });
 
       return fn(null, {

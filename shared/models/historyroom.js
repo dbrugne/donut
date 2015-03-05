@@ -11,9 +11,7 @@ var historySchema = mongoose.Schema({
   user          : { type: mongoose.Schema.ObjectId, ref: 'User' },
   by_user       : { type: mongoose.Schema.ObjectId, ref: 'User' },
   data          : mongoose.Schema.Types.Mixed,
-  users         : [{ type: mongoose.Schema.ObjectId, ref: 'User' }], // users in room at event time
-  received      : [{ type: mongoose.Schema.ObjectId, ref: 'User' }] // users online at event time
-//  viewed        : [{ type: mongoose.Schema.ObjectId, ref: 'User' }]  // users that have "viewed" the event in IHM
+  users         : [{ type: mongoose.Schema.ObjectId, ref: 'User' }] // users in room at event time
 
 });
 
@@ -45,16 +43,14 @@ historySchema.statics.record = function() {
   /**
    * @param event - event name as String
    * @param data - event data as Object
-   * @param onlines - user_id of currently online users for this room
    * @param fn - callback function
    * @return event with event_id set
    */
-  return function(event, data, onlines, fn) {
+  return function(event, data, fn) {
     var model = new that();
     model.event      = event;
     model.name       = data.name;
     model.time       = data.time;
-    model.received   = onlines;
 
     // persist 'user_id's to be able to hydrate data later
     model.user = data.user_id;
@@ -130,7 +126,6 @@ historySchema.statics.retrieve = function() {
         entries.pop(); // remove last
 
       var history = [];
-      var toMarkAsReceived = [];
       _.each(entries, function(entry) {
         // re-hydrate data
         var data = (entry.data)
@@ -151,28 +146,11 @@ historySchema.statics.retrieve = function() {
         }
         entry.data = data;
 
-        if (what.isAdmin !== true) {
-          // new: received is set and NOT contains 'me'
-          var isNew = false;
-          if (entry.received !== undefined && entry.received.indexOf(userId) === -1) {
-            isNew = true;
-            toMarkAsReceived.push(entry._id);
-          }
-        }
-
         history.push({
           type: entry.event,
-          data: entry.data,
-          new: isNew
+          data: entry.data
         });
       });
-
-      if (what.isAdmin !== true) {
-        that.update({_id: {$in: toMarkAsReceived}}, {$addToSet: {received: userId}}, {multi: true}, function(err) {
-          if (err)
-            return debug('Error while updating received in historyRoom: '+err);
-        });
-      }
 
       return fn(null, {
         history: history,

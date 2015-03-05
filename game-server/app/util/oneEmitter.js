@@ -8,7 +8,7 @@ var recorder = require('../../../shared/models/historyone').record();
  * Store history in MongoDB, emit event in corresponding one to one and call callback
  *
  * @param app
- * @param onetoone {from: String, to: String}|[{from: String, to: String}]
+ * @param onetoone // {from: String, to: String}
  * @param eventName
  * @param eventData
  * @param callback
@@ -28,34 +28,28 @@ module.exports = function(app, onetoone, eventName, eventData, callback) {
       ed.from = one.from;
       ed.to = one.to;
       ed.time = Date.now();
-      app.statusService.getStatusByUid(ed.to, function(err, toIsOnline) {
+      recorder(eventName, ed, function(err, history) {
         if (err)
-          return fn(err);
+          return fn('Error while emitting user onetoone event '+eventName+': '+err);
 
-        recorder(eventName, ed, toIsOnline, function(err, history) {
-          if (err)
-            return fn('Error while emitting user onetoone event '+eventName+': '+err);
+        ed.id = history._id.toString();
 
-          ed.id = history._id.toString();
+        // Broadcast message to all 'sender' devices (not needed for user status events)
+        if (eventName != 'user:online' && eventName != 'user:offline')
+          app.globalChannelService.pushMessage('connector', eventName, ed, 'user:'+one.from.toString(), {}, function(err) {
+            if (err)
+              return logger.error('Error while pushing message: '+err);
+          });
 
-          // Broadcast message to all 'sender' devices (not needed for user status events)
-          if (eventName != 'user:online' && eventName != 'user:offline')
-            app.globalChannelService.pushMessage('connector', eventName, ed, 'user:'+one.from.toString(), {}, function(err) {
-              if (err)
-                return logger.error('Error while pushing message: '+err);
-            });
+        // (if sender!=receiver) Broadcast message to all 'receiver' devices
+        if (one.from.toString() !=  one.to.toString())
+          app.globalChannelService.pushMessage('connector', eventName, ed, 'user:'+one.to.toString(), {}, function(err) {
+            if (err)
+              return logger.error('Error while pushing message: '+err);
+          });
 
-          // (if sender!=receiver) Broadcast message to all 'receiver' devices
-          if (one.from.toString() !=  one.to.toString())
-            app.globalChannelService.pushMessage('connector', eventName, ed, 'user:'+one.to.toString(), {}, function(err) {
-              if (err)
-                return logger.error('Error while pushing message: '+err);
-            });
-
-          return fn(null);
-        });
+        return fn(null);
       });
-
     });
   });
 

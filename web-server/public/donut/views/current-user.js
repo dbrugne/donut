@@ -23,7 +23,7 @@ define([
     },
     render: function() {
       if (!currentUser.get('user_id'))
-        return this; // nothing to render if welcome isn't received
+        return this; // nothing to render if welcome wasn't received
 
       var data = currentUser.toJSON();
 
