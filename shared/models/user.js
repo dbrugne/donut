@@ -28,8 +28,18 @@ var userSchema = mongoose.Schema({
         email      : String,
         name       : String
     },
-    rooms           : [{ type: String, ref: 'Room' }],
-    onetoones       : [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
+    rooms         : [{ type: String, ref: 'Room' }],
+    rooms_viewed  : [{
+      room      : { type: String, ref: 'Room' },
+      event     : { type: mongoose.Schema.ObjectId, ref: 'HistoryRoom' },
+      time      : { type: Date, default: Date.now }
+    }],
+    onetoones         : [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
+    onetoones_viewed  : [{
+      user      : { type: mongoose.Schema.ObjectId, ref: 'User' },
+      event     : { type: mongoose.Schema.ObjectId, ref: 'HistoryOne' },
+      time      : { type: Date, default: Date.now }
+    }],
     positions       : { type: String },
     created_at      : { type: Date, default: Date.now },
     lastlogin_at    : { type: Date },

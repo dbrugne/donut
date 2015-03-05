@@ -73,6 +73,10 @@ define([
         window.debug.log('io:in:room:deban', data);
         this.trigger('room:deban', data);
       }, this);
+      pomelo.on('room:viewed', function(data) {
+        window.debug.log('io:in:room:viewed', data);
+        this.trigger('room:viewed', data);
+      }, this);
       pomelo.on('user:join', function(data) {
         window.debug.log('io:in:user:join', data);
         this.trigger('user:join', data);
@@ -96,6 +100,10 @@ define([
       pomelo.on('user:updated', function(data) {
         window.debug.log('io:in:user:updated', data);
         this.trigger('user:updated', data);
+      }, this);
+      pomelo.on('user:viewed', function(data) {
+        window.debug.log('io:in:user:viewed', data);
+        this.trigger('user:viewed', data);
       }, this);
     },
 
@@ -366,6 +374,11 @@ define([
           }
       );
     },
+    roomViewed: function(name, event) {
+      var data = {name: name, event: event};
+      pomelo.notify('chat.roomViewedHandler.viewed', data);
+      window.debug.log('io:out:room:viewed', data);
+    },
 
     // USER METHODS
     // ======================================================
@@ -437,6 +450,11 @@ define([
             return fn(response);
           }
       );
+    },
+    userViewed: function(username, event) {
+      var data = {username: username, event: event};
+      pomelo.notify('chat.userViewedHandler.viewed', data);
+      window.debug.log('io:out:user:viewed', data);
     }
 
   }, Backbone.Events);
