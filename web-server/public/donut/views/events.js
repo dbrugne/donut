@@ -232,7 +232,7 @@ define([
         if (!newBlock)
           $(h).prependTo(previousElement.find('.items')); // not define previousElement, remain the same .block
         else
-          previousElement = $(h).prependTo($html);
+          previousElement = $(h).prependTo($html.find('>.block'));
       });
 
       $html.prependTo(this.$realtime);
