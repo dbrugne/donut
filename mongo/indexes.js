@@ -18,7 +18,7 @@ db['history-one'].ensureIndex({
   "time" : -1
 });
 // logs
-db['history-one'].ensureIndex({
+db['logs'].ensureIndex({
   "timestamp" : 1,
   "level" : 1
 });
