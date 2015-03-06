@@ -27,6 +27,7 @@ var facebookLocale = require('./app/middlewares/facebooklocale')
  ****************************************************************************/
 
 var app = express();
+app.enable('trust proxy'); // nginx
 
 app.use(compression());
 app.use(favicon(__dirname + '/public/favicon.ico'));

@@ -1,4 +1,4 @@
-var debug = require('debug')('fqdn');
+var debug = require('debug')('donut:fqdn');
 var conf = require('../../../shared/config/index');
 
 module.exports = function() {
