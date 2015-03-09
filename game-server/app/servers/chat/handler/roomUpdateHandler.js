@@ -110,7 +110,7 @@ handler.update = function(data, session, next) {
 
 			var errNum = Object.keys(errors).length;
 			if (errNum > 0)
-				return callback(errors); // object
+				return callback(JSON.stringify(errors)); // object
 
 			return callback(null, room, sanitized);
 		},
