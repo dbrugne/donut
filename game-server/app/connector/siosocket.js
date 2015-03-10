@@ -1,8 +1,15 @@
+var logger = require('../../pomelo-logger').getLogger('donut', __filename);
+var _ = require('underscore');
 var util = require('util');
 var EventEmitter = require('events').EventEmitter;
 
 var ST_INITED = 0;
 var ST_CLOSED = 1;
+
+// message/socket limiter
+var LIMITER_MAX      = 10;
+var LIMITER_PERIOD   = 3000;
+var LIMITER_BLOCKFOR = 10000; // @todo : use
 
 /**
  * Socket class that wraps socket.io socket to provide unified interface for up level.
@@ -22,7 +29,27 @@ var Socket = function(id, socket) {
 
   socket.on('error', this.emit.bind(this, 'error'));
 
+  this.__limiter__ = [];
+  this.__limiter_blocked__ = false;
   socket.on('message', function(msg) {
+    self.limiterCleanup();
+    self.limiterAdd();
+
+    // already blocked socket
+    if (self.__limiter_blocked__ !== false) {
+      if (self.__limiter__.length > LIMITER_MAX) {
+        self.__limiter_blocked__ = (Date.now() + LIMITER_BLOCKFOR);
+        return logger.warn('[limiter] Socket blocked but message per time rate is still over limit, blocking prolongation '+LIMITER_BLOCKFOR+'ms');
+      }
+      return logger.warn('[limiter] Socket is blocked');
+    }
+
+    // socket is now over the limit
+    if (self.__limiter__.length > LIMITER_MAX) {
+      self.__limiter_blocked__ = (Date.now() + LIMITER_BLOCKFOR);
+      return logger.warn('[limiter] Max message per time, socket blocked for '+LIMITER_BLOCKFOR+'ms');
+    }
+
     self.emit('message', msg);
   });
 
@@ -81,5 +108,28 @@ var encodeBatch = function(msgs){
   }
   res += ']';
   return res;
+};
+
+/**
+ * MESSAGE PER SOCKET LIMITER
+ */
+Socket.prototype.limiterAdd = function() {
+  this.__limiter__.push(Date.now())
+};
+Socket.prototype.limiterCleanup = function() {
+  // cleanup blocked status
+  if (this.__limiter_blocked__ !== false && this.__limiter_blocked__ < Date.now()) {
+    this.__limiter_blocked__ = false;
+  }
+
+  // cleanup expired messages
+  var period = (Date.now()) - LIMITER_PERIOD;
+  this.__limiter__ = _.reject(this.__limiter__, function(m) {
+    if (m <= period) {
+      return true;
+    }
+  });
+  this.__limiter__ = _.last(this.__limiter__, LIMITER_MAX * 2); // avoid memory leak
+  console.log(this.__limiter__.length, period);
 };
 
