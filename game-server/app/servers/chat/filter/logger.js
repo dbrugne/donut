@@ -1,5 +1,4 @@
 /**
- * Filter for statistics.
  * Record connector->chat requests with time used for each request.
  */
 var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
