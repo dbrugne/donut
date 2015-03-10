@@ -33,8 +33,16 @@ define([
         this.disconnect();
 
       // in console: client.connect('chat.local', 3050)
+      if (!host) {
+        if ((window.location.hostname.match(/\./g) || []).length >= 2) {
+          host = 'ws-'+window.location.hostname; // test.donut.me (already a subdomain, for SSL certificate)
+        } else {
+          host = 'ws.'+window.location.hostname; // donut.me
+        }
+      }
+      console.log(host);
       var server = {
-        host: host || 'ws.'+window.location.hostname,
+        host: host,
         port: port || 80
       };
       return this._connect(server);
