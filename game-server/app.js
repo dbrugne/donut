@@ -38,7 +38,11 @@ app.use(status, {status: {
 
 // app configuration
 app.configure('production|test|development', 'connector', function() {
+
+  // filters
+  app.before(pomelo.toobusy());
   app.filter(connectorLoggerFilter());
+
   app.set('connectorConfig',
     {
       connector : connector,
@@ -58,7 +62,8 @@ app.configure('production|test|development', 'chat', function() {
   // route configures
   app.route('chat', chatRoute);
 
-  // filter configures
+  // filters
+  app.before(pomelo.toobusy());
   app.filter(pomelo.timeout());
   app.filter(chatLoggerFilter());
 
