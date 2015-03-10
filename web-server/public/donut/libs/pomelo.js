@@ -43,7 +43,7 @@ define([
       console.log(host);
       var server = {
         host: host,
-        port: port || 80
+        port: port || null
       };
       return this._connect(server);
     },
@@ -121,7 +121,9 @@ define([
         query       : 'device=browser'
       };
 
-      this.current = '//'+server.host+':'+server.port;
+      this.current = '//'+server.host;
+      if (server.port)
+        this.current += ':'+server.port;
       this.socket = io(this.current, options);
       var that = this;
 
