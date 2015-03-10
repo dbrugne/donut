@@ -121,7 +121,7 @@ define([
         query       : 'device=browser'
       };
 
-      this.current = 'ws://'+server.host+':'+server.port;
+      this.current = '//'+server.host+':'+server.port;
       this.socket = io(this.current, options);
       var that = this;
 
