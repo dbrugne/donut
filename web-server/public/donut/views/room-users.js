@@ -37,8 +37,6 @@ define([
         // avatar
         u.avatar = $.cd.userAvatar(u.avatar, 34);
 
-        // op?
-
         listJSON.push(u);
       });
 
