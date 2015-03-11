@@ -40,7 +40,7 @@ define([
           host = 'ws.'+window.location.hostname; // donut.me
         }
       }
-      console.log(host);
+
       var server = {
         host: host,
         port: port || null
