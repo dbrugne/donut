@@ -36,17 +36,15 @@ define([
         return;
       }
 
-      if (!this._valid()) {
+      var valid = this._valid();
+      if (!valid)
         this.$el.addClass('has-error').removeClass('has-success');
-      } else {
+      else
         this.$el.addClass('has-success').removeClass('has-error');
-      }
 
       // Enter in field handling
-      if (event.type == 'keyup') {
-        if(event.which == 13) {
-          return;
-        }
+      if (valid && event.type == 'keyup' && event.which == 13) {
+        this.submit();
       }
     },
     _valid: function() {
