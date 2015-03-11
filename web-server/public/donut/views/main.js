@@ -406,12 +406,11 @@ define([
         model = rooms.findWhere({ name: identifier });
       } else {
         collection = onetoones;
-        model = onetoones.findWhere({ username: identifier });
+        model = onetoones.findWhere({ username: ''+identifier }); // force string to handle fully numeric username
       }
 
       if (model == undefined)
         return window.debug.log('close discussion error: unable to find model');
-
 
       model.leave(); // trigger a server back and forth, *:leave will remove view from interface
 
@@ -441,7 +440,7 @@ define([
 
       var positions = [];
       this.discussionsBlock.$list.find('a.item').each(function() {
-        var identifier = $(this).data('identifier');
+        var identifier = ''+$(this).data('identifier'); // force string to handle fully numeric username
         if (identifier)
           positions.push(identifier);
       });
