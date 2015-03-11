@@ -90,7 +90,11 @@ define([
       var size = this.currentSize || this.defaultSize;
       this.$wrap.css('width', size);
 
-      //this.color(this.currentColor);
+      // escape key
+      $(document).on('keydown', $.proxy(function (e) {
+        if (e.which == 27)
+            this.close();
+      }, this));
 
       this.$el.show();
       var that = this;
@@ -110,6 +114,9 @@ define([
 
       var wasShown = this.shown;
       this.shown = false;
+
+      // escape key
+      $(document).off('keydown');
 
       var that = this;
       var width = this.$wrap.width();
