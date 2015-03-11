@@ -15,7 +15,12 @@ define([
 
     options: null,
 
+    isRendered: false,
+
     initialize: function(options) {
+
+    },
+    render: function() {
       this.$inputBlock = this.$el.find('.input');
       this.$input = this.$inputBlock.find('input[type="text"]');
 
@@ -30,8 +35,8 @@ define([
       this.$el.on('hidden.bs.modal', function (e) {
         that._reset();
       });
-    },
-    render: function() {
+
+      this.isRendered = true; // avoid to early rendering on page load (cause bootstrap is not already loaded)
       return this;
     },
     _reset: function() {
@@ -44,6 +49,10 @@ define([
       $(document).off('keypress');
     },
     open: function(options, callback) {
+      if (!this.isRendered) {
+        this.render();
+      }
+
       this.options = options || {};
       this.callback = callback;
 

@@ -11,7 +11,6 @@ define([
   'views/window',
   'views/modal-connection',
   'views/modal-welcome',
-  'views/modal-confirmation',
   'views/current-user',
   'views/alert',
   'views/home',
@@ -29,7 +28,7 @@ define([
   'views/discussion-onetoone',
   'views/discussions-block'
 ], function ($, _, Backbone, client, currentUser, EventModel, rooms, onetoones, templates, windowView,
-             ConnectionModalView, welcomeModalView, confirmationModalView,
+             ConnectionModalView, WelcomeModalView,
              CurrentUserView, AlertView, HomeView, QuickSearchView,
              DrawerView,
              DrawerRoomCreateView, DrawerRoomProfileView, DrawerRoomEditView, DrawerRoomUsersView,
@@ -95,6 +94,7 @@ define([
       this.drawerView = new DrawerView({mainView: this});
       this.alertView = new AlertView({mainView: this});
       this.connectionView = new ConnectionModalView({mainView: this});
+      this.welcomeView = new WelcomeModalView({mainView: this});
 
       // @todo : reuse for top navbar
 //      this.quickSearchView = new QuickSearchView({
@@ -122,8 +122,8 @@ define([
       if (this.firstConnection) { // show if true or if undefined
         // Welcome message
         if (data.user.welcome !== false) {
-          welcomeModalView.render(data);
-          welcomeModalView.show();
+          this.welcomeView.render(data);
+          this.welcomeView.show();
         }
 
         // Elements hidden until first 'welcome'
