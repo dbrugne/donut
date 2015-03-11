@@ -9,7 +9,7 @@ var ST_CLOSED = 1;
 // message/socket limiter
 var LIMITER_MAX      = 10;
 var LIMITER_PERIOD   = 3000;
-var LIMITER_BLOCKFOR = 10000; // @todo : use
+var LIMITER_BLOCKFOR = 10000;
 
 /**
  * Socket class that wraps socket.io socket to provide unified interface for up level.
