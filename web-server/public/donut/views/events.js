@@ -79,12 +79,12 @@ define([
         else
           this.$goToTop.show();
         if (scrollTop >= (bottom - 10)) // possible performance issue
-          this.$goToBottom.hide();
+          this.$goToBottom.hide().removeClass('unread');
         else
           this.$goToBottom.show();
       } else {
         // nothing to scroll, hide links
-        this.$goToBottom.hide();
+        this.$goToBottom.hide().removeClass('unread');
         this.$goToTop.hide();
       }
 
@@ -178,8 +178,6 @@ define([
         blankHeight = viewportHeight - currentContentHeight;
       this.$blank.height(blankHeight);
       window.debug.log('blank', blankHeight);
-
-      this.scrollDown();
     },
 
     /*****************************************************************************************************************
@@ -198,6 +196,7 @@ define([
       window.debug.start('discussion-events-fresh-'+this.model.getIdentifier());
       // scrollDown only if already on bottom before DOM insertion
       var needToScrollDown = this.isScrollOnBottom();
+      console.log('ntsd:', needToScrollDown);
       var previousElement = this.$realtime.find('.block:last').first();
       var newBlock = this._newBlock(model, previousElement);
       var html = this._renderEvent(model, newBlock);
@@ -210,8 +209,12 @@ define([
       // resize .blank
       this.resize();
 
-      if (needToScrollDown)
+      if (needToScrollDown) {
         this.scrollDown();
+        console.log('scroll down');
+      }
+      else
+        this.$goToBottom.show().addClass('unread');
 
       window.debug.end('discussion-events-fresh-'+this.model.getIdentifier());
     },

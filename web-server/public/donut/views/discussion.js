@@ -140,6 +140,8 @@ define([
 
       this.eventsView.resize(eventsHeight);
       window.debug.log('resize call by window ('+totalHeight+', '+headerHeight+', '+inputHeight+', '+eventsHeight+')');
+
+      this.eventsView.scrollDown();
     },
 
     onSend: function() {

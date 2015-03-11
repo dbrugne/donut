@@ -42,6 +42,18 @@ border-top: 1px solid @cl-subtext10;
     &:hover {
       text-decoration: none;
     }
+    .unread {
+      display: none;
+    }
+  }
+  &.unread {
+    background-color: @cl-first;
+    a {
+      color: @cl-background;
+      .unread {
+        display: inline;
+      }
+    }
   }
 }
 .scrollable {
