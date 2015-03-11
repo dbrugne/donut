@@ -50,6 +50,7 @@ define([
       this.$editable.mentionsInput({
         minChars: 1,
         elastic: false,
+        allowRepeat: true,
         onDataRequest: function (mode, query, callback) {
           if (that.model.get('type') != 'room')
             return [];
