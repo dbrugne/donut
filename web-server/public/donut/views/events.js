@@ -22,6 +22,8 @@ define([
 
     topListener: false,
 
+    scrollWasOnBottom: true, // ... before unfocus (scroll position is not available when discussion is hidden (default: true, for first focus)
+
     keepMaxEventsOnCleanup: 500,
 
     initialize: function(options) {
@@ -195,8 +197,7 @@ define([
       // render a 'fresh' event in realtime and scrolldown
       window.debug.start('discussion-events-fresh-'+this.model.getIdentifier());
       // scrollDown only if already on bottom before DOM insertion
-      var needToScrollDown = this.isScrollOnBottom();
-      console.log('ntsd:', needToScrollDown);
+      var needToScrollDown = ((this.model.get('focused') == true && this.isScrollOnBottom()) || (this.model.get('focused') == false && this.scrollWasOnBottom));
       var previousElement = this.$realtime.find('.block:last').first();
       var newBlock = this._newBlock(model, previousElement);
       var html = this._renderEvent(model, newBlock);
@@ -209,10 +210,8 @@ define([
       // resize .blank
       this.resize();
 
-      if (needToScrollDown) {
+      if (needToScrollDown)
         this.scrollDown();
-        console.log('scroll down');
-      }
       else
         this.$goToBottom.show().addClass('unread');
 

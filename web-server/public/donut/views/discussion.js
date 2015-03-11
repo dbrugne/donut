@@ -86,8 +86,8 @@ define([
     },
 
     updateFocus: function() {
-      // to focus
       if (this.model.get('focused')) {
+        // to focus
         this.$el.show();
 
         // focus input field
@@ -101,10 +101,14 @@ define([
 
         // resize and scroll down
         this.onResize();
+        if (this.eventsView.scrollWasOnBottom)
+          this.eventsView.scrollDown();
+        this.eventsView.scrollWasOnBottom = false;
 
         this._focus();
       } else {
         // to unfocus
+        this.eventsView.scrollWasOnBottom = this.eventsView.isScrollOnBottom(); // persist scroll position before hiding
         this.$el.hide();
         this._unfocus();
       }
@@ -112,6 +116,7 @@ define([
 
     firstFocus: function() {
       this.eventsView.requestHistory('bottom'); // @todo : on reconnect (only), remove all events in view before requesting history // seems to work like that, wait and see if bugs happen ...
+      this.eventsView.scrollDown();
       this._firstFocus();
     },
 
@@ -140,8 +145,6 @@ define([
 
       this.eventsView.resize(eventsHeight);
       window.debug.log('resize call by window ('+totalHeight+', '+headerHeight+', '+inputHeight+', '+eventsHeight+')');
-
-      this.eventsView.scrollDown();
     },
 
     onSend: function() {
