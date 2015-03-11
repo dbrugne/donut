@@ -3,6 +3,7 @@ var async = require('async');
 var _ = require('underscore');
 var User = require('../../../../../shared/models/user');
 var Room = require('../../../../../shared/models/room');
+var diacritic2ascii = require('../../../../../shared/util/diacritic2ascii.js');
 
 module.exports = function(app) {
 	return new Handler(app);
@@ -44,7 +45,8 @@ handler.search = function(data, session, next) {
 		? true
 		: false;
 
-	var pattern = data.search
+	var pattern = diacritic2ascii(data.search);
+	pattern
 			.replace(/([@#])/g, '') // remove # and @
 			.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1"); // escape regex special chars
 	var regexp = new RegExp(pattern, "i");
