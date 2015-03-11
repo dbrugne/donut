@@ -216,9 +216,8 @@ define([
       window.debug.end('discussion-events-fresh-'+this.model.getIdentifier());
     },
     addBatchEvents: function(events, more) {
-      if (events.length == 0) {
+      if (events.length == 0)
         return;
-      }
 
       // render a batch of events (sorted in 'desc' order)
       window.debug.start('discussion-events-batch-'+this.model.getIdentifier());
@@ -232,10 +231,10 @@ define([
         if (!newBlock)
           $(h).prependTo(previousElement.find('.items')); // not define previousElement, remain the same .block
         else
-          previousElement = $(h).prependTo($html.find('>.block'));
+          previousElement = $(h).prependTo($html);
       });
 
-      $html.prependTo(this.$realtime);
+      $html.find('>.block').prependTo(this.$realtime);
       window.debug.end('discussion-events-batch-'+this.model.getIdentifier());
 
       // resize .blank
