@@ -19,7 +19,6 @@ define([
       'click .deop-user'          : 'deopUser',
       'click .kick-user'          : 'kickUser',
       'click .ban-user'           : 'banUser',
-      'click .open-room-users'    : 'openRoomUsers',
       'click .share .facebook'    : 'shareFacebook',
       'click .share .twitter'     : 'shareTwitter',
       'click .share .googleplus'  : 'shareGoogle'
@@ -141,10 +140,6 @@ define([
       confirmationView.open({ input: true }, function(reason) {
         client.roomBan(that.model.get('name'), username, reason);
       });
-    },
-    openRoomUsers: function(event) {
-      event.preventDefault();
-      this.mainView.openRoomUsers(this.model);
     },
 
     /**

@@ -68,6 +68,7 @@ define([
       'dblclick .dbl-open-user-profile' : 'openUserProfile',
       'click .open-room-profile'        : 'openRoomProfile',
       'click .open-room-edit'           : 'openRoomEdit',
+      'click .open-room-users'          : 'openRoomUsers',
       'click .open-room-delete'         : 'openRoomDelete',
       'click .close-discussion'         : 'onCloseDiscussion',
       'mouseenter *[data-toggle="image-popover"]': 'onEnterImage',
@@ -324,7 +325,18 @@ define([
 
       return false; // stop propagation
     },
-    openRoomUsers: function(model) {
+    openRoomUsers: function(event) {
+      this._handleAction(event);
+
+      var name = $(event.currentTarget).data('roomName');
+      if (!name)
+        return;
+
+      //this.mainView.openRoomUsers(this.model);
+      var model = rooms.get(name);
+      if (!model)
+        return;
+
       var view = new DrawerRoomUsersView({ mainView: this, model: model });
       this.drawerView.setSize('450px').setView(view).open();
 
