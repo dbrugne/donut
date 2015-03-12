@@ -7,8 +7,8 @@ var ST_INITED = 0;
 var ST_CLOSED = 1;
 
 // message/socket limiter
-var LIMITER_MAX      = 10;
-var LIMITER_PERIOD   = 3000;
+var LIMITER_MAX      = 15;
+var LIMITER_PERIOD   = 5000;
 var LIMITER_BLOCKFOR = 10000;
 
 /**
@@ -130,6 +130,5 @@ Socket.prototype.limiterCleanup = function() {
     }
   });
   this.__limiter__ = _.last(this.__limiter__, LIMITER_MAX * 2); // avoid memory leak
-  console.log(this.__limiter__.length, period);
 };
 
