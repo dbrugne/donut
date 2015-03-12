@@ -34,11 +34,7 @@ define([
 
       // in console: client.connect('chat.local', 3050)
       if (!host) {
-        if ((window.location.hostname.match(/\./g) || []).length >= 2) {
-          host = 'ws-'+window.location.hostname; // test.donut.me (already a subdomain, for SSL certificate)
-        } else {
-          host = 'ws.'+window.location.hostname; // donut.me
-        }
+        host = 'ws.'+window.location.hostname; // host should be a subdomain of current hostname to be able to receive cookies
       }
 
       var server = {
