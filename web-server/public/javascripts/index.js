@@ -7,12 +7,10 @@ require.config({
     'jquery.talkative'            : '../vendor/talkative/jquery.talkative'
   },
   shim: {
-    'bootstrap'        : ['jquery'],
-    'facebook' : {
-      exports: 'FB'
-    },
-    'jquery.linkify'   : ['jquery'],
-    'jquery.talkative' : ['jquery']
+    'bootstrap'          : ['jquery'],
+    'facebook'           : { exports: 'FB' },
+    'jquery.linkify'     : ['jquery'],
+    'jquery.talkative'   : ['jquery']
   }
 });
 
