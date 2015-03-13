@@ -26,6 +26,7 @@ define([
       this.listenTo(client, 'user:offline', this.onUserOffline);
       this.listenTo(client, 'user:join', this.onJoin);
       this.listenTo(client, 'user:leave', this.onLeave);
+      this.listenTo(client, 'user:viewed', this.onViewed);
     },
     join: function(username) {
       // we ask to server to open this one to one
@@ -154,6 +155,10 @@ define([
         return;
 
       model.onUserOffline(data);
+    },
+    onViewed: function(data) {
+      var model = this.getModelFromEvent(data, false);
+      model.onViewed(data);
     }
 
   });

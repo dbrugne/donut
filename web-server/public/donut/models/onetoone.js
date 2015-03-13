@@ -2,8 +2,9 @@ define([
   'underscore',
   'backbone',
   'client',
+  'models/current-user',
   'models/event'
-], function (_, Backbone, client, EventModel) {
+], function (_, Backbone, client, currentUser, EventModel) {
   var OneToOneModel = Backbone.Model.extend({
 
     defaults: function() {
@@ -38,6 +39,10 @@ define([
         type: 'user:message',
         data: data
       });
+
+      if (currentUser.get('user_id') != model.get('data').from_user_id)
+        model.set('unviewed', true);
+
       this.trigger('freshEvent', model);
     },
     onUserOnline: function(data) {
@@ -69,7 +74,12 @@ define([
         return callback(data);
       });
     },
-
+    viewedElements: function(elements) {
+      client.userViewed(this.get('username'), elements);
+    },
+    onViewed: function (data) {
+      this.trigger('viewed', data);
+    },
     sendMessage: function(message, images) {
       client.userMessage(this.get('username'), message, images);
     },

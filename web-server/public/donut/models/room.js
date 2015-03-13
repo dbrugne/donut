@@ -130,6 +130,10 @@ define([
         type: 'room:message',
         data: data
       });
+
+      if (currentUser.get('user_id') != model.get('data').user_id)
+        model.set('unviewed', true);
+
       this.trigger('freshEvent', model);
     },
     onOp: function(data) {
@@ -212,6 +216,12 @@ define([
       client.roomHistory(this.get('name'), since, function(data) {
         return callback(data);
       });
+    },
+    viewedElements: function(elements) {
+      client.roomViewed(this.get('name'), elements);
+    },
+    onViewed: function (data) {
+      this.trigger('viewed', data);
     },
     fetchUsers: function() {
       // @todo : implement spinner

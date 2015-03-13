@@ -116,6 +116,8 @@ define([
         model.resetNew();
         if (thereIsNew)
           this.trigger('redraw-block'); // avoid useless redraw on window refocus
+
+        model.trigger('windowRefocused'); // mark visible as read for focused discussion when window recover its focus
       }
 
       this.renderTitle();

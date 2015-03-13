@@ -4,7 +4,7 @@
     <div class="username open-user-profile" data-username="<%= data.username %>">@<%= data.username %></div>
     <div class="items">
         <% } %>
-        <div class="event <% if (isNew) { print('new'); } %>" id="<%= data.id %>" data-time="<%= data.time %>">
+        <div class="event <% if (unviewed) { print('unviewed'); } %>" id="<%= data.id %>" data-time="<%= data.time %>">
             <% if (data.message) { %>
             <div class="text"><%= data.message %></div>
             <% } %>

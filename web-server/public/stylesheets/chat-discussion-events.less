@@ -211,6 +211,18 @@ border-top: 1px solid @cl-subtext10;
             color: @cl-subtext30;
             font-size: 0.8em;
           }
+          &.unviewed {
+            &::before {
+              content: "\f054";
+              font-family: FontAwesome;
+              font-size: 10px;
+              color: darkorange;
+              position: absolute;
+              top: 4px;
+              left: -1px;
+              line-height: 1;
+            }
+          }
           &.out {
             i {
               font-size: 1.8em;
@@ -239,6 +251,29 @@ border-top: 1px solid @cl-subtext10;
               vertical-align: middle;
             }
           }
+          /*&.visible {
+            background-color: pink;
+            &.topElement {
+              background-color: green;
+            }
+            &.bottomElement {
+              background-color: blue;
+            }
+            &.first {
+              background-color: deeppink;
+            }
+            &.big {
+              background-color: lightcoral;
+            }
+            &.bottom {
+              background-color: red;
+              height: 5px;
+              position: absolute;
+              top: -100px;
+              left: 0;
+              right: 0;
+            }
+          }*/ // debug
         }
       }
       .block.message {
@@ -262,7 +297,7 @@ border-top: 1px solid @cl-subtext10;
         }
         .event {
           position: relative;
-          padding-left: 7px;
+          padding-left: 9px;
           .text {
             white-space: pre-wrap !important;
             padding-right: 50px;

@@ -35,6 +35,7 @@ define([
       this.listenTo(client, 'room:deban', this.onDeban);
       this.listenTo(client, 'room:join', this.onJoin);
       this.listenTo(client, 'room:leave', this.onLeave);
+      this.listenTo(client, 'room:viewed', this.onViewed);
     },
     onJoin: function(data) {
       // server ask to client to open this room in IHM
@@ -200,6 +201,13 @@ define([
         this.trigger('deleted', {reason: $.t("chat.deletemessage", {name: data.name})});
       else
         this.trigger('deleted');
+    },
+    onViewed: function(data) {
+      var model;
+      if (!data || !data.name || !(model = this.get(data.name)))
+        return;
+
+      model.onViewed(data);
     }
 
   });

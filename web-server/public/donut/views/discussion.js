@@ -102,7 +102,10 @@ define([
         // resize and scroll down
         this.onResize();
         if (this.eventsView.scrollWasOnBottom)
-          this.eventsView.scrollDown();
+          this.eventsView.scrollDown(); // will trigger markVisibleAsViewed() implicitly
+        else
+          this.eventsView.onScroll(); // trigger markVisibleAsViewed()
+
         this.eventsView.scrollWasOnBottom = false;
 
         this._focus();
