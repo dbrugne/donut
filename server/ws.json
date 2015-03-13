@@ -1,0 +1,11 @@
+{
+  "name" : "ws",
+  "script" : "./app.js",
+  "cwd" : "/home/donut/app/game-server",
+  "exec_mode"  : "fork_mode",
+  "env": {
+    "NODE_ENV": "production",
+    "DEBUG": "donut:*",
+    "RAW_MESSAGE": true
+  }
+}
