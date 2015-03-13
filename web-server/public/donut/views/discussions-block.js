@@ -71,8 +71,6 @@ define([
       _.each(rooms.models, prepareItems);
       _.each(onetoones.models, prepareItems);
 
-      window.debug.log('render block', positions);
-
       // sort discussions
       data = _.sortBy(data, 'position');
 

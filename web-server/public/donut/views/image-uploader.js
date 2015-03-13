@@ -2,8 +2,12 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'libs/donut-debug',
   '_templates'
-], function ($, _, Backbone, templates) {
+], function ($, _, Backbone, donutDebug, templates) {
+
+  var debug = donutDebug('donut:image-uploader');
+
   var ImageUploaderView = Backbone.View.extend({
 
     template: templates['image-uploader.html'],
@@ -66,12 +70,12 @@ define([
             if (err.message && err.message == 'User closed widget')
               return;
 
-            window.debug.log('cloudinary error: ', err);
+            debug('cloudinary error: ', err);
             that.options.error = err.message;
             return that.render();
           }
           if (!result || !result[0])
-            return window.debug.log('cloudinary result is empty!!');
+            return debug('cloudinary result is empty!!');
 
           that.data = {
             public_id: result[0].public_id,

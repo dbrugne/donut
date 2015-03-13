@@ -2,9 +2,13 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'libs/donut-debug',
   'views/events',
   'views/input'
-], function ($, _, Backbone, EventsView, InputView) {
+], function ($, _, Backbone, donutDebug, EventsView, InputView) {
+
+  var debug = donutDebug('donut:discussion');
+
   var DiscussionPanelView = Backbone.View.extend({
 
     tagName: 'div',
@@ -17,7 +21,7 @@ define([
     },
 
     initialize: function(options) {
-      window.debug.start('discussion-'+((this.model.get('name'))?this.model.get('name'):this.model.get('username')));
+      debug.start('discussion-'+((this.model.get('name'))?this.model.get('name'):this.model.get('username')));
       var start = Date.now();
       this.mainView = options.mainView;
 
@@ -42,7 +46,7 @@ define([
 
       // Other subviews
       this._initialize(options);
-      window.debug.end('discussion-'+((this.model.get('name'))?this.model.get('name'):this.model.get('username')));
+      debug.end('discussion-'+((this.model.get('name'))?this.model.get('name'):this.model.get('username')));
     },
 
     // To override
@@ -147,7 +151,7 @@ define([
       var eventsHeight = totalHeight - (headerHeight + inputHeight);
 
       this.eventsView.resize(eventsHeight);
-      window.debug.log('resize call by window ('+totalHeight+', '+headerHeight+', '+inputHeight+', '+eventsHeight+')');
+      debug('resize call by window ('+totalHeight+', '+headerHeight+', '+inputHeight+', '+eventsHeight+')');
     },
 
     onSend: function() {

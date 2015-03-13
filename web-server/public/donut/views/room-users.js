@@ -2,9 +2,13 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'libs/donut-debug',
   'models/current-user',
   '_templates'
-], function ($, _, Backbone, currentUser, templates) {
+], function ($, _, Backbone, donutDebug, currentUser, templates) {
+
+  var debug = donutDebug('donut:room-users');
+
   var RoomUsersView = Backbone.View.extend({
 
     template: templates['room-users.html'],
@@ -23,7 +27,7 @@ define([
       this.$list = this.$el.find('.list');
     },
     render: function() {
-      window.debug.start('room-users'+this.model.get('name'));
+      debug.start('room-users'+this.model.get('name'));
       // update user count
       var countHtml = $.t("chat.userscount", {count: this.collection.models.length});
       this.$count.html(countHtml);
@@ -47,7 +51,7 @@ define([
         isAdmin: this.model.currentUserIsAdmin()
       });
       this.$list.html(html);
-      window.debug.end('room-users'+that.model.get('name'));
+      debug.end('room-users'+that.model.get('name'));
       return this;
     },
     _remove: function() {

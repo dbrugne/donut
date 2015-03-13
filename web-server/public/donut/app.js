@@ -2,18 +2,16 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'libs/debug',
   'router',
   'client',
   'views/main'
-], function ($, _, Backbone, debug, router, client, mainView) {
+], function ($, _, Backbone, router, client, mainView) {
   var App = {
     initialize: function() {
       // Render IHM
       mainView.run();
 
       // @debug
-      window.debug  = debug;
       window.router = router;
       window.client = client;
       window.main   = mainView;

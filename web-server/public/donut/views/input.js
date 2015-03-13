@@ -2,9 +2,13 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'libs/donut-debug',
   'models/current-user',
   '_templates'
-], function ($, _, Backbone, currentUser, templates) {
+], function ($, _, Backbone, donutDebug, currentUser, templates) {
+
+  var debug = donutDebug('donut:input');
+
   var DiscussionInputView = Backbone.View.extend({
 
     template: templates['input.html'],
@@ -129,7 +133,7 @@ define([
         // check length (max)
         var withoutMentions = message.replace(/@\[([^\]]+)\]\(user:[^\)]+\)/gi, '$1');
         if (withoutMentions.length > 512) {
-          window.debug.log('message is too long');
+          debug('message is too long');
           return false;
         }
 
@@ -182,10 +186,10 @@ define([
           if (err) {
             if (err.message && err.message == 'User closed widget')
               return;
-            window.debug.log('cloudinary error: ', err);
+            debug('cloudinary error: ', err);
           }
           if (!result)
-            return window.debug.log('cloudinary result is empty!');
+            return debug('cloudinary result is empty!');
 
           _.each(result, function(uploaded) {
             // render preview

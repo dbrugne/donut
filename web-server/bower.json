@@ -19,7 +19,8 @@
     "backgrid-filter": "latest",
     "talkative": "https://github.com/dbrugne/talkative.git",
     "html.sortable": "latest",
-    "jquery-jsonview": "~1.2.2"
+    "jquery-jsonview": "~1.2.2",
+    "visionmedia-debug": "~2.1.2"
   },
   "resolutions": {
     "moment": "2.7.x"

@@ -18,6 +18,7 @@ module.exports = function(grunt) {
           //optimize: 'none', // could disabled uglyfication
           paths: {
             '_templates'                  : '../build/templates',
+            'debug'                       : '../vendor/visionmedia-debug/dist/debug',
             'jquery'                      : '../vendor/jquery/jquery',
             'bootstrap'                   : '../vendor/bootstrap/dist/js/bootstrap',
             'text'                        : '../vendor/requirejs-text/text',

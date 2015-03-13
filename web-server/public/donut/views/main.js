@@ -2,6 +2,7 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'libs/donut-debug',
   'client',
   'models/current-user',
   'models/event',
@@ -27,7 +28,7 @@ define([
   'views/discussion-room',
   'views/discussion-onetoone',
   'views/discussions-block'
-], function ($, _, Backbone, client, currentUser, EventModel, rooms, onetoones, templates, windowView,
+], function ($, _, Backbone, donutDebug, client, currentUser, EventModel, rooms, onetoones, templates, windowView,
              ConnectionModalView, WelcomeModalView,
              CurrentUserView, AlertView, HomeView, QuickSearchView,
              DrawerView,
@@ -36,6 +37,8 @@ define([
              DrawerUserProfileView, DrawerUserEditView, DrawerUserAccountView,
              RoomView, OneToOneView,
              DiscussionsBlockView) {
+
+  var debug = donutDebug('donut:main');
 
   var MainView = Backbone.View.extend({
 
@@ -115,8 +118,8 @@ define([
      * @param data
      */
     onWelcome: function(data) {
-      window.debug.start('welcome');
-      window.debug.start('welcome-before');
+      debug.start('welcome');
+      debug.start('welcome-before');
       var that = this;
 
       // Only on first connection
@@ -137,23 +140,23 @@ define([
       currentUser.set(data.user, {silent: true});
       this.currentUserView.render();
 
-      window.debug.end('welcome-before');
+      debug.end('welcome-before');
 
       // Rooms
-      window.debug.start('welcome-rooms');
+      debug.start('welcome-rooms');
       _.each(data.rooms, function(room) {
-        window.debug.start('welcome-'+room.name);
+        debug.start('welcome-'+room.name);
         rooms.addModel(room);
-        window.debug.end('welcome-'+room.name);
+        debug.end('welcome-'+room.name);
       });
-      window.debug.end('welcome-rooms');
+      debug.end('welcome-rooms');
 
       // One to ones
-      window.debug.start('welcome-ones');
+      debug.start('welcome-ones');
       _.each(data.onetoones, function(one) {
         onetoones.addModel(one);
       });
-      window.debug.end('welcome-ones');
+      debug.end('welcome-ones');
 
       this.discussionsBlock.redraw();
 
@@ -167,7 +170,7 @@ define([
       // Run routing only when everything in interface is ready
       this.trigger('ready');
       this.connectionView.hide();
-      window.debug.end('welcome');
+      debug.end('welcome');
     },
     onDisconnect: function() {
       // disable interval
@@ -410,7 +413,7 @@ define([
       }
 
       if (model == undefined)
-        return window.debug.log('close discussion error: unable to find model');
+        return debug('close discussion error: unable to find model');
 
       model.leave(); // trigger a server back and forth, *:leave will remove view from interface
 
@@ -419,7 +422,7 @@ define([
     onRemoveDiscussion: function(model, collection, options) {
       var view = this.views[model.get('id')];
       if (view === undefined)
-        return window.debug.log('close discussion error: unable to find view');
+        return debug('close discussion error: unable to find view');
 
       var wasFocused = model.get('focused');
 
@@ -448,14 +451,14 @@ define([
       currentUser.set({positions: positions}, {silent: silent});
       client.userUpdate({positions: positions}, function(data) {
         if (data.err)
-          window.debug.log('error(s) on userUpdate call', data.errors);
+          debug('error(s) on userUpdate call', data.errors);
       });
     },
 
     updateViews: function() {
       // call update() method on each view
       _.each(this.views, function(view) {
-        window.debug.log('update on '+view.model.get('id'));
+        debug('update on '+view.model.get('id'));
         view.update();
       });
 

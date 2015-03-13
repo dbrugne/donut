@@ -2,11 +2,15 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'libs/donut-debug',
   'models/event',
   'moment',
   'views/window',
   '_templates'
-], function ($, _, Backbone, EventModel, moment, windowView, templates) {
+], function ($, _, Backbone, donutDebug, EventModel, moment, windowView, templates) {
+
+  var debug = donutDebug('donut:events');
+
   var EventsView = Backbone.View.extend({
 
     template: templates['events.html'],
@@ -32,9 +36,9 @@ define([
       this.listenTo(this.model, 'freshEvent', this.addFreshEvent);
       this.listenTo(this.model, 'viewed', this.onViewed);
 
-      window.debug.start('discussion-events'+this.model.getIdentifier());
+      debug.start('discussion-events'+this.model.getIdentifier());
       this.render();
-      window.debug.end('discussion-events'+this.model.getIdentifier());
+      debug.end('discussion-events'+this.model.getIdentifier());
     },
     render: function() {
       // render view
@@ -154,7 +158,7 @@ define([
 
       var $items = this.$scrollableContent.find('.block.message .event.unviewed');
       if (!$items.length)
-        return window.debug.log('Not enough .event.unviewed to compute visible elements');
+        return debug('Not enough .event.unviewed to compute visible elements');
       $items.removeClass('visible topElement bottomElement first big'); // @debug
 
       // find the first visible element
@@ -162,19 +166,19 @@ define([
       var candidateIndex = Math.floor(topLimit * $items.length / contentHeight); // optimistic way to find -in theory- the closest
       var $candidateElement = $items.eq(candidateIndex);
       var visibility = this._isElementFullyVisibleInViewport(topLimit, bottomLimit, $candidateElement);
-      window.debug.log($candidateElement.attr('id')+' vib:', visibility);
+      debug($candidateElement.attr('id')+' vib:', visibility);
       if (visibility == 'ok') {
 
         $firstVisibleElement = $candidateElement;
         firstVisibleIndex = candidateIndex;
-        window.debug.log('we have visible element on first try');
+        debug('we have visible element on first try');
 
       } else if (visibility == 'big') {
 
         // mark $candidateElement as top and stop
         $firstVisibleElement = $candidateElement;
         firstVisibleIndex = candidateIndex;
-        window.debug.log('first is big');
+        debug('first is big');
 
       } else if (visibility == 'next') {
 
@@ -185,7 +189,7 @@ define([
           if (_visibility == 'ok' || _visibility == 'big') {
             $firstVisibleElement = $nextElement;
             firstVisibleIndex = nextIndex;
-            window.debug.log('$topCandidate found in next loop', $firstVisibleElement);
+            debug('$topCandidate found in next loop', $firstVisibleElement);
             break;
           } else {
             $candidateElement = $nextElement;
@@ -211,12 +215,12 @@ define([
 
       } else {
         // heu??
-        window.debug.log(_visibility, 'heu');
+        debug(_visibility, 'heu');
       }
 
       // no element is fully visible
       if (!$firstVisibleElement) {
-        window.debug.log('no element fully visible found');
+        debug('no element fully visible found');
         return callback([]);
       }
 
@@ -232,7 +236,7 @@ define([
       });
 
       var duration = Date.now() - start;
-      window.debug.log('Current scroll position is ' + (topLimit - 5) + '/' + (contentHeight - this.$scrollable.height()) + ' ... (in ' + duration + 'ms)');
+      debug('Current scroll position is ' + (topLimit - 5) + '/' + (contentHeight - this.$scrollable.height()) + ' ... (in ' + duration + 'ms)');
 
       return callback(visibleElementIds);
     },
@@ -311,7 +315,7 @@ define([
 
       var realtimeLength = this.$realtime.find('.block').length;
       if (realtimeLength < 250) // not enough content, no need to cleanup
-        return window.debug.log('cleanup '+this.model.getIdentifier()+ ' not enough event to cleanup: '+realtimeLength);
+        return debug('cleanup '+this.model.getIdentifier()+ ' not enough event to cleanup: '+realtimeLength);
 
       // reset history loader
       this.toggleHistoryLoader(true);
@@ -324,7 +328,7 @@ define([
       if (remove > 0)
         this.$realtime.find('.block').slice(0, remove).remove();
 
-      window.debug.log('cleanup discussion "'+this.model.getIdentifier()+'", with '+length+' length, '+remove+' removed');
+      debug('cleanup discussion "'+this.model.getIdentifier()+'", with '+length+' length, '+remove+' removed');
 
       if (this.isVisible())
         this.scrollDown();
@@ -358,7 +362,7 @@ define([
         windowView.triggerInout(model, this.model);
 
       // render a 'fresh' event in realtime and scrolldown
-      window.debug.start('discussion-events-fresh-'+this.model.getIdentifier());
+      debug.start('discussion-events-fresh-'+this.model.getIdentifier());
       // scrollDown only if already on bottom before DOM insertion
       var needToScrollDown = ((this.model.get('focused') == true && this.isScrollOnBottom()) || (this.model.get('focused') == false && this.scrollWasOnBottom));
       var previousElement = this.$realtime.find('.block:last').first();
@@ -378,14 +382,14 @@ define([
       else
         this.$goToBottom.show().addClass('unread');
 
-      window.debug.end('discussion-events-fresh-'+this.model.getIdentifier());
+      debug.end('discussion-events-fresh-'+this.model.getIdentifier());
     },
     addBatchEvents: function(events, more) {
       if (events.length == 0)
         return;
 
       // render a batch of events (sorted in 'desc' order)
-      window.debug.start('discussion-events-batch-'+this.model.getIdentifier());
+      debug.start('discussion-events-batch-'+this.model.getIdentifier());
       var $html = $('<div/>');
       var previousElement;
       var that = this;
@@ -400,7 +404,7 @@ define([
       });
 
       $html.find('>.block').prependTo(this.$realtime);
-      window.debug.end('discussion-events-batch-'+this.model.getIdentifier());
+      debug.end('discussion-events-batch-'+this.model.getIdentifier());
 
       // resize .blank
       this.resize();
@@ -532,8 +536,8 @@ define([
         }
         return template(data);
       } catch (e) {
-        window.debug.log('Render exception, see below');
-        window.debug.log(e);
+        debug('Render exception, see below');
+        debug(e);
         return false;
       }
     },
@@ -545,7 +549,7 @@ define([
      *****************************************************************************************************************/
     markVisibleAsViewed: function() {
       if (!this.isVisible())
-        return window.debug.log('markVisibleAsViewed: discussion/window not focused, do nothing'); // scroll could be triggered by freshevent event when window is not focused
+        return debug('markVisibleAsViewed: discussion/window not focused, do nothing'); // scroll could be triggered by freshevent event when window is not focused
 
       var that = this;
       this.computeVisibleElements(function(elements) {

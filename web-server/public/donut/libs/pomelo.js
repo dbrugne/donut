@@ -1,8 +1,11 @@
 define([
   'underscore',
   'backbone',
+  'libs/donut-debug',
   'socket.io'
-], function (_, Backbone, io) {
+], function (_, Backbone, donutDebug, io) {
+
+  var debug = donutDebug('donut:pomelo');
 
   // @source: https://github.com/gloomyzerg/pomelo-jsclient-socket.io-bower
 
@@ -28,7 +31,7 @@ define([
      * Public API
      */
     connect: function(host, port) {
-      window.debug.start('sio_connect');
+      debug.start('sio_connect');
       if (this.isConnected())
         this.disconnect();
 
@@ -86,18 +89,18 @@ define([
      * Private API
      */
     _connect: function(server) {
-      window.debug.end('sio_connect');
-      window.debug.start('sio_entryHandler');
+      debug.end('sio_connect');
+      debug.start('sio_entryHandler');
 
       var that = this;
       this._sio(server, function () {
         that.request('connector.entryHandler.enter', {
         }, function (data) {
           if (data.error)
-            return window.debug.log("connector.entryHandler.enter returns error", data);
+            return debug("connector.entryHandler.enter returns error", data);
 
-          window.debug.log("connected to "+that.current);
-          window.debug.end('sio_entryHandler');
+          debug("connected to "+that.current);
+          debug.end('sio_entryHandler');
 
           that.trigger('welcome', data);
         });
