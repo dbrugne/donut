@@ -11,7 +11,8 @@ var historySchema = mongoose.Schema({
   user          : { type: mongoose.Schema.ObjectId, ref: 'User' },
   by_user       : { type: mongoose.Schema.ObjectId, ref: 'User' },
   data          : mongoose.Schema.Types.Mixed,
-  users         : [{ type: mongoose.Schema.ObjectId, ref: 'User' }] // users in room at event time
+  users         : [{ type: mongoose.Schema.ObjectId, ref: 'User' }], // users in room at event time
+  viewed        : [{ type: mongoose.Schema.ObjectId, ref: 'User' }]  // users that have read this event
 
 });
 
@@ -127,6 +128,11 @@ historySchema.statics.retrieve = function() {
 
       var history = [];
       _.each(entries, function(entry) {
+        // record
+        var e = {
+          type: entry.event
+        };
+
         // re-hydrate data
         var data = (entry.data)
           ? _.clone(entry.data)
@@ -144,12 +150,17 @@ historySchema.statics.retrieve = function() {
           data.by_username = entry.by_user.username;
           data.by_avatar = entry.by_user._avatar();
         }
-        entry.data = data;
+        e.data = data;
 
-        history.push({
-          type: entry.event,
-          data: entry.data
-        });
+        // unread status (true if message and if i'm not in .viewed)
+        if (entry.event == 'room:message' && data.user_id != userId && (
+            !entry.viewed
+            || (_.isArray(entry.viewed) && entry.viewed.indexOf(userId) === -1)
+        )) {
+          e.unviewed = true;
+        }
+
+        history.push(e);
       });
 
       return fn(null, {

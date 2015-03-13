@@ -3,6 +3,8 @@ var async = require('async');
 var _ = require('underscore');
 var User = require('../../../../../shared/models/user');
 var Room = require('../../../../../shared/models/room');
+var HistoryRoom = require('../../../../../shared/models/historyroom');
+var pattern = new RegExp("^[0-9a-fA-F]{24}$");
 
 module.exports = function(app) {
 	return new Handler(app);
@@ -32,8 +34,15 @@ handler.viewed = function(data, session, next) {
 			if (!data.name)
 				return callback('name parameter is mandatory for room:viewed');
 
-			if (!data.event)
-				return callback('event parameter is mandatory for room:viewed');
+			if (!data.events || !_.isArray(data.events))
+				return callback('events parameter is mandatory for room:viewed');
+
+			data.events = _.filter(data.events, function(id) {
+			  // http://stackoverflow.com/questions/11985228/mongodb-node-check-if-objectid-is-valid
+				return pattern.test(id);
+			});
+			if (!data.events.length)
+				return callback('events parameter should contains at least one valid event ID in room:viewed');
 
 			return callback(null);
 		},
@@ -63,33 +72,14 @@ handler.viewed = function(data, session, next) {
 		},
 
 		function persist(room, user, callback) {
-			var subDocument = null;
-
-			// find an existing sub document
-			if (user.rooms_viewed) {
-				subDocument = _.find(user.rooms_viewed, function(sub) {
-					if (sub.room != room.name)
-					  return false;
-
-					sub.event = data.event;
-					sub.time = Date.now();
-					return true;
-				});
-			}
-
-			// create a new subdocument
-			if (!subDocument) {
-			  subDocument = {
-					room: room.name,
-					event: data.event
-				};
-				user.rooms_viewed.push(subDocument);
-			}
-
-			user.save(function(err) {
-				if (err)
-				  return callback(err);
-
+			HistoryRoom.update({
+				_id: {$in: data.events},
+				event: 'room:message'
+			}, {
+				$addToSet: {viewed: user._id}
+			}, {
+				multi:true
+			}, function(err) {
 				return callback(err, room, user);
 			});
 		},
@@ -97,17 +87,14 @@ handler.viewed = function(data, session, next) {
 		function sendToUserSockets(room, user, callback) {
 			var viewedEvent = {
 				name: room.name,
-				event: data.event
+				events: data.events
 			};
-			that.app.globalChannelService.pushMessage('connector', 'room:viewed', viewedEvent, 'user:'+session.uid, {}, function(err) {
-				if (err)
-					return callback('Error while sending room:viewed message to user clients: '+err);
-
-				return callback(null, user, room);
+			that.app.globalChannelService.pushMessage('connector', 'room:viewed', viewedEvent, 'user:'+user._id.toString(), {}, function(err) {
+				return callback(err, user, room);
 			});
 		}
 
-	], function(err, room, user) {
+	], function(err) {
 		if (err)
 			logger.error(err);
 

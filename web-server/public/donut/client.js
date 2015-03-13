@@ -374,8 +374,8 @@ define([
           }
       );
     },
-    roomViewed: function(name, event) {
-      var data = {name: name, event: event};
+    roomViewed: function(name, events) {
+      var data = {name: name, events: events};
       pomelo.notify('chat.roomViewedHandler.viewed', data);
       window.debug.log('io:out:room:viewed', data);
     },
@@ -451,8 +451,8 @@ define([
           }
       );
     },
-    userViewed: function(username, event) {
-      var data = {username: username, event: event};
+    userViewed: function(username, events) {
+      var data = {username: username, events: events};
       pomelo.notify('chat.userViewedHandler.viewed', data);
       window.debug.log('io:out:user:viewed', data);
     }

@@ -6,16 +6,16 @@ var i18next = require('../util/i18next');
 
 var userSchema = mongoose.Schema({
 
-    username        : String,
-    name            : String,
-    admin           : Boolean,
-    bio             : String,
-    location        : String,
-    website         : String,
-    avatar          : String,
-    poster          : String,
-    color           : String,
-    welcome         : Boolean,
+    username       : String,
+    name           : String,
+    admin          : Boolean,
+    bio            : String,
+    location       : String,
+    website        : String,
+    avatar         : String,
+    poster         : String,
+    color          : String,
+    welcome        : Boolean,
     local            : {
         email         : String,
         password      : String,
@@ -28,24 +28,14 @@ var userSchema = mongoose.Schema({
         email      : String,
         name       : String
     },
-    rooms         : [{ type: String, ref: 'Room' }],
-    rooms_viewed  : [{
-      room      : { type: String, ref: 'Room' },
-      event     : { type: mongoose.Schema.ObjectId, ref: 'HistoryRoom' },
-      time      : { type: Date, default: Date.now }
-    }],
-    onetoones         : [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
-    onetoones_viewed  : [{
-      user      : { type: mongoose.Schema.ObjectId, ref: 'User' },
-      event     : { type: mongoose.Schema.ObjectId, ref: 'HistoryOne' },
-      time      : { type: Date, default: Date.now }
-    }],
-    positions       : { type: String },
-    created_at      : { type: Date, default: Date.now },
-    lastlogin_at    : { type: Date },
-    online          : Boolean,
-    lastonline_at   : { type: Date },
-    lastoffline_at  : { type: Date }
+    rooms          : [{ type: String, ref: 'Room' }],
+    onetoones      : [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
+    positions      : { type: String },
+    created_at     : { type: Date, default: Date.now },
+    lastlogin_at   : { type: Date },
+    online         : Boolean,
+    lastonline_at  : { type: Date },
+    lastoffline_at : { type: Date }
 
 });
 

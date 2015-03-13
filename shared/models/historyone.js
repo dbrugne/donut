@@ -9,7 +9,8 @@ var historySchema = mongoose.Schema({
   from          : { type: mongoose.Schema.ObjectId, ref: 'User' },
   to            : { type: mongoose.Schema.ObjectId, ref: 'User' },
   time          : { type: Date, default: Date.now },
-  data          : mongoose.Schema.Types.Mixed
+  data          : mongoose.Schema.Types.Mixed,
+  viewed        : { type: Boolean, default: false }  // true if to user has read this event
 
 });
 
@@ -115,6 +116,11 @@ historySchema.statics.retrieve = function() {
 
       var history = [];
       _.each(entries, function(entry) {
+        // record
+        var e = {
+          type: entry.event
+        };
+
         // re-hydrate data
         var data = (entry.data)
           ? _.clone(entry.data)
@@ -131,12 +137,14 @@ historySchema.statics.retrieve = function() {
           data.to_username = entry.to.username;
           data.to_avatar = entry.to._avatar();
         }
-        entry.data = data;
+        e.data = data;
 
-        history.push({
-          type: entry.event,
-          data: entry.data
-        });
+        // unread status (true if message, i'm the receiver and current value is false)
+        if (entry.event == 'user:message' && data.to_user_id == me && !entry.viewed) {
+          e.unviewed = true;
+        }
+
+        history.push(e);
       });
 
       return fn(null, {
