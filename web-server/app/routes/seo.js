@@ -7,6 +7,27 @@ var sm = require('sitemap');
 var Room = require('../../../shared/models/room');
 var User = require('../../../shared/models/room');
 
+router.get('/robots.txt', function(req, res) {
+
+  var robots = '';
+
+  if (process.env.NODE_ENV === 'production') {
+    robots += "User-agent: *\n";
+    robots += "Disallow: /account/\n";
+    robots += "Disallow: /logout\n";
+    robots += "Disallow: /forgot\n";
+    robots += "Disallow: /signup\n";
+    robots += "Disallow: /login\n";
+  } else {
+    robots += "User-agent: *\n";
+    robots += "Disallow: /\n";
+  }
+
+  res.header('Content-Type', 'text/plain');
+  res.send(robots);
+
+});
+
 router.get('/sitemap.xml', function(req, res) {
 
   async.waterfall([

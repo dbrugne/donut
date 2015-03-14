@@ -58,7 +58,7 @@ app.set('layout', false);
 app.set('view engine', 'html');
 
 // public routes
-app.use(require('./app/routes/sitemap'));
+app.use(require('./app/routes/seo'));
 app.use(require('./app/routes/landing'));
 app.use(require('./app/routes/account-signup'));
 app.use(require('./app/routes/account-login'));
