@@ -14,6 +14,7 @@
     "less-middleware": "1.x",
     "morgan": "1.x",
     "serve-favicon": "2.x",
+    "sitemap": "^0.7.4",
     "socket.io-client": "1.x"
   }
 }

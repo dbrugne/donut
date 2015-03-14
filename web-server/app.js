@@ -20,7 +20,7 @@ var expressValidator = require('../shared/util/validator');
 var googleAnalytics = require('./app/middlewares/googleanalytics');
 var conf = require('../shared/config/index');
 var debugMiddleware = require('./app/middlewares/debug');
-var facebookLocale = require('./app/middlewares/facebooklocale')
+var facebookLocale = require('./app/middlewares/facebooklocale');
 
 /****************************************************************************
  * Order of middleware is VERY important to avoid useless computing/storage *
@@ -58,6 +58,7 @@ app.set('layout', false);
 app.set('view engine', 'html');
 
 // public routes
+app.use(require('./app/routes/sitemap'));
 app.use(require('./app/routes/landing'));
 app.use(require('./app/routes/account-signup'));
 app.use(require('./app/routes/account-login'));
