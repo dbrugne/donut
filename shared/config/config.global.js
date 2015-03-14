@@ -8,6 +8,7 @@ var conf = module.exports = {
    *
    * @string
    */
+  url: '',
   fqdn: '',
 
   debug: {

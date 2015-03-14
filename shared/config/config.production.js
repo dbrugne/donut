@@ -1,5 +1,6 @@
 var conf = require('./config.global');
 
+conf.url = 'https://donut.me';
 conf.fqdn = 'donut.me';
 conf.mongo.url = 'mongodb://localhost:27017/donut';
 conf.facebook.clientID = '328569463966926';

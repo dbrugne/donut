@@ -1,5 +1,6 @@
 var conf = require('./config.global');
 
+conf.url = 'https://test.donut.me';
 conf.fqdn = 'test.donut.me';
 conf.less.force = true;
 conf.mongo.url = 'mongodb://localhost:27017/donut';
