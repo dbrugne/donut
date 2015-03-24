@@ -85,4 +85,11 @@ emailer.emailChanged = function(to, callback) {
   },callback);
 };
 
-
+emailer.contactForm = function(data, callback) {
+  send({
+    to: conf.email.from.email,
+    subject: i18next.t("email.contact.subject"),
+    text: i18next.t("email.contact.text", data),
+    html: i18next.t("email.contact.html", data)
+  },callback);
+};

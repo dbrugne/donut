@@ -54,6 +54,7 @@
       this.$message = this.$contactform.find('[name="message"]');
       this.$sent = this.$contactform.find('.sent');
       this.$error = this.$contactform.find('.error');
+      this.$fail = this.$contactform.find('.fail');
       this.$contactform.find('.send').on('click', function(event) {
         event.preventDefault();
         if (that.validate())
@@ -98,21 +99,48 @@
     },
 
     send: function() {
-      this.reset();
-      this.toggleSent();
+      var data = {
+        name: this.$name.val(),
+        email: this.$email.val(),
+        message: this.$message.val()
+      };
+      $.ajax({
+        url: "/contact-form",
+        type: 'POST',
+        context: this,
+        data: data
+      })
+        .fail(function(jqXHR, textStatus, errorThrown) {
+          this.toggleFail();
+        })
+        .done(function(data, textStatus, jqXHR) {
+          if (!data || !data.sent)
+            return this.toggleFail();
+
+          this.reset();
+          this.toggleSent();
+        });
     },
 
     toggleError: function() {
       this.$sent.hide();
+      this.$fail.hide();
       this.$error.show();
+    },
+    toggleFail: function() {
+      this.$error.hide();
+      this.$sent.hide();
+      this.$fail.show();
     },
     toggleSent: function() {
       this.$error.hide();
+      this.$fail.hide();
       this.$sent.show();
     },
     reset: function() {
       this.$error.hide();
       this.$sent.hide();
+      this.$fail.hide();
       this.$name.val('');
       this.$email.val('');
       this.$message.val('');

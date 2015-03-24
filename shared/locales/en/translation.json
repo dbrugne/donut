@@ -644,6 +644,27 @@
         "<br>",
         "PS : If you did not initiate this action, please report by forwarding this e-mail to <a href='mailto:__email__'>__email__</a> or replying this e-mail.<br>"
       ]
+    },
+    "contact": {
+      "subject": "[DONUT] New contact form",
+      "text": [
+        "Name: __name__",
+        "Email: __email__",
+        "User: __user__",
+        "",
+        "__message__",
+        "",
+        "From __ip__ on __fqdn__"
+      ],
+      "html": [
+        "Name: __name__<br>",
+        "Email: __email__<br>",
+        "User: __user__<br>",
+        "<br>",
+        "__message__<br>",
+        "<br>",
+        "<small>From __ip__ on __fqdn__</small>"
+      ]
     }
   },
   "welcome": {
@@ -665,6 +686,7 @@
     "message-placeholder": "Please enter your message here...",
     "send": "send",
     "sent": "Success! Message sent, we'll reply as soon as possible.",
-    "error": "Error! Please check the inputs."
+    "error": "Error! Please check the inputs.",
+    "fail": "Unable to send email, retry later."
   }
 }

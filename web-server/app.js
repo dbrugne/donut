@@ -66,6 +66,7 @@ app.use(require('./app/routes/choose-username'));
 app.use(require('./app/routes/account-delete'));
 app.use(require('./app/routes/account-edit-email'));
 app.use(require('./app/routes/account-edit-password'));
+app.use(require('./app/routes/contact-form'));
 app.use(require('./app/routes/static'));
 
 // admin routes

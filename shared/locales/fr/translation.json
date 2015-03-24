@@ -664,6 +664,28 @@
                 "<br>",
                 "PS : Si vous n'êtes pas à l'origine de cette démarche, veuillez nous en avertir en faisant suivre cet e-mail sur <a href='mailto:__email__'>__email__</a> ou plus simplement en en répondant à cet e-mail.<br>"
             ]
+        },
+        "contact": {
+            "subject": "[DONUT] Nouveau formulaire de contact",
+            "text": [
+                "Nom : __name__",
+                "Email : __email__",
+                "Utilisateur : __user__",
+                "IP : __ip__",
+                "",
+                "__message__",
+                "",
+                "<small>Depuis __ip__ sur __fqdn__</small>"
+            ],
+            "html": [
+                "Nom : __name__<br>",
+                "Email : __email__<br>",
+                "Utilisateur : __user__<br>",
+                "<br>",
+                "__message__<br>",
+                "<br>",
+                "<small>Depuis __ip__ sur __fqdn__</small>"
+            ]
         }
     },
     "welcome": {
@@ -684,7 +706,8 @@
         "message": "Votre message",
         "message-placeholder": "Veuillez saisir votre message ...",
         "send": "envoyer",
-        "sent": "Le message a bien été envoyé, nous vous répondrons rapidement",
-        "error": "Le formulaire contient de erreurs, merci vérifier votre saisie"
+        "sent": "Le message a bien été envoyé, nous vous répondrons rapidement.",
+        "error": "Le formulaire contient de erreurs, merci vérifier votre saisie.",
+        "fail": "Impossible d'envoyer le message, veuillez réessayer plus tard."
     }
 }
