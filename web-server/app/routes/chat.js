@@ -45,7 +45,7 @@ router.get('/!', function(req, res) {
 
   return res.render('chat', {
     layout: false,
-    partials: {head: '_head'},
+    partials: {head: '_head', contactform: '_contact'},
     meta: {title: i18next.t("title.chat")},
     colors: colors.toString(),
     build: build

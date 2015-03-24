@@ -654,5 +654,17 @@
     ],
     "donotshowagain": "Do not show this message again",
     "nothing": "Not interested, take me to <strong>#donut</strong>."
+  },
+  "contactform": {
+    "title": "Contact us",
+    "name": "Your name",
+    "name-placeholder": "Your name",
+    "email": "E-mail",
+    "email-placeholder": "Your e-mail",
+    "message": "Your message",
+    "message-placeholder": "Please enter your message here...",
+    "send": "send",
+    "sent": "Success! Message sent, we'll reply as soon as possible.",
+    "error": "Error! Please check the inputs."
   }
 }

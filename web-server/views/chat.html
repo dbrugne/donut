@@ -20,7 +20,7 @@
             <div class="links links-secondary">
                 <a href="/!#room/Support"><i class="fa fa-life-ring"></i> {{#i}}chat.help{{/i}}</a>
                 <a href="/faq" target="_blank"><i class="fa fa-question-circle"></i> {{#i}}page.faq.title{{/i}}</a>
-                <a rel="contactus" target="_blank"><i class="icon icon-envelope"></i> {{#i}}page.contact.title{{/i}}</a>
+                <a data-toggle="contactform"><i class="icon icon-envelope"></i> {{#i}}page.contact.title{{/i}}</a>
                 <a href="/eutc" target="_blank"><i class="fa fa-question-circle"></i> {{#i}}page.eutc.title{{/i}}</a>
             </div>
         </div>
@@ -99,7 +99,7 @@
                     </div>
                     <div class="error-message"><!--connection error --></div>
                     <div class="contactus">
-                        <a rel="contactus" target="_blank"><i class="icon icon-envelope"></i> {{#i}}chat.connection.contactus{{/i}}</a>
+                        <a data-toggle="contactform"><i class="icon icon-envelope"></i> {{#i}}chat.connection.contactus{{/i}}</a>
                     </div>
                 </div><!-- /.modal-body -->
             </div><!-- /.modal-content -->
@@ -121,6 +121,7 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
+    {{> contactform}}
 <script>
     window.cloudinary_cloud_name = '{{cloudinary.cloud_name}}';
     window.cloudinary_api_key = '{{cloudinary.api_key}}';

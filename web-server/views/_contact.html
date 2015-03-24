@@ -1,0 +1,45 @@
+<div id="contactform" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">{{#i}}contactform.title{{/i}}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="above">
+                    <div class="alert alert-success" style="display: none;"><strong>{{#i}}contactform.sent{{/i}}</strong></div>
+                    <div class="alert alert-danger" style="display: none;"><strong>{{#i}}contactform.error{{/i}}</strong></div>
+                </div>
+                <div class="form-horizontal">
+                    <fieldset>
+                        <!-- Name input-->
+                        <div class="form-group">
+                            <label class="col-md-3 control-label" for="name">{{#i}}contactform.name{{/i}}</label>
+                            <div class="col-md-9">
+                                <input id="name" name="name" type="text" placeholder="{{#i}}contactform.name-placeholder{{/i}}" class="form-control">
+                            </div>
+                        </div>
+                        <!-- Email input-->
+                        <div class="form-group">
+                            <label class="col-md-3 control-label" for="email">{{#i}}contactform.email{{/i}}</label>
+                            <div class="col-md-9">
+                                <input id="email" name="email" type="text" placeholder="{{#i}}contactform.email-placeholder{{/i}}" class="form-control">
+                            </div>
+                        </div>
+                        <!-- Message body -->
+                        <div class="form-group">
+                            <label class="col-md-3 control-label" for="message">{{#i}}contactform.message{{/i}}</label>
+                            <div class="col-md-9">
+                                <textarea class="form-control" id="message" name="message" placeholder="{{#i}}contactform.message-placeholder{{/i}}" rows="5"></textarea>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div><!-- /.modal-body -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">{{#i}}global.cancel{{/i}}</button>
+                <button type="button" class="btn btn-primary">{{#i}}contactform.send{{/i}}</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

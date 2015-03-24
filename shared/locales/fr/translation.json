@@ -674,5 +674,17 @@
         ],
         "donotshowagain": "Ne plus afficher ce message à l'avenir",
         "nothing": "Aucun de ceux-là n'est à mon goût, aller sur <strong>#donut</strong>"
+    },
+    "contactform": {
+        "title": "Contactez-nous",
+        "name": "Votre nom",
+        "name-placeholder": "Votre nom",
+        "email": "E-mail",
+        "email-placeholder": "Votre e-mail",
+        "message": "Votre message",
+        "message-placeholder": "Veuillez saisir votre message ...",
+        "send": "envoyer",
+        "sent": "Le message a bien été envoyé, nous vous répondrons rapidement",
+        "error": "Le formulaire contient de erreurs, merci vérifier votre saisie"
     }
 }

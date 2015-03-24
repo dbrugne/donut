@@ -27,6 +27,7 @@ require.config({
     'jquery.colorify'             : '../javascripts/plugins/jquery.colorify',
     'jquery.socialify'            : '../javascripts/plugins/jquery.socialify',
     'jquery.mentionsinput'        : '../javascripts/plugins/jquery.mentionsInput',
+    'jquery.contactform'          : '../javascripts/plugins/jquery.contactform',
     'html.sortable'               : '../vendor/html.sortable/dist/html.sortable'
   },
   shim: {
@@ -41,6 +42,7 @@ require.config({
     'jquery.colorify'             : ['jquery'],
     'jquery.socialify'            : ['jquery'],
     'jquery.mentionsinput'        : ['jquery'],
+    'jquery.contactform'          : ['jquery'],
     'cloudinary.widget'           : ['jquery'],
     'html.sortable'               : ['jquery'],
     'facebook' : {
@@ -75,6 +77,7 @@ require([
   'jquery.colorify',
   'jquery.socialify',
   'jquery.mentionsinput',
+  'jquery.contactform',
   'bootstrap',
   'moment-fr',
   'html.sortable'
@@ -137,6 +140,9 @@ require([
     }
   };
   moment.lang(i18next.lng(), momentFormat);
+
+  // Contact form
+  $('[data-toggle="contactform"]').contactform({});
 
   // Facebook setup
   try {

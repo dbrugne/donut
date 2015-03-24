@@ -4,13 +4,15 @@ require.config({
     'bootstrap'                   : '../vendor/bootstrap/dist/js/bootstrap',
     'facebook'                    : '//connect.facebook.net/fr_FR/all',
     'jquery.linkify'              : '../javascripts/plugins/jquery.linkify',
-    'jquery.talkative'            : '../vendor/talkative/jquery.talkative'
+    'jquery.talkative'            : '../vendor/talkative/jquery.talkative',
+    'jquery.contactform'          : '../javascripts/plugins/jquery.contactform'
   },
   shim: {
     'bootstrap'          : ['jquery'],
     'facebook'           : { exports: 'FB' },
     'jquery.linkify'     : ['jquery'],
-    'jquery.talkative'   : ['jquery']
+    'jquery.talkative'   : ['jquery'],
+    'jquery.contactform' : ['jquery']
   }
 });
 
@@ -19,7 +21,8 @@ require([
   'facebook',
   'bootstrap',
   'jquery.linkify',
-  'jquery.talkative'
+  'jquery.talkative',
+  'jquery.contactform'
 ], function ($, facebook) {
 
   // Landing text rotation
@@ -61,14 +64,17 @@ require([
     location.reload();
   });
 
+  // Contact form
+  $('[data-toggle="contactform"]').contactform({});
+
   // Facebook setup
   try {
-    facebook.init({
-      appId: window.facebook_app_id,
-      version: 'v2.1',
-      status: true,
-      xfbml: true
-    });
+    //facebook.init({
+    //  appId: window.facebook_app_id,
+    //  version: 'v2.1',
+    //  status: true,
+    //  xfbml: true
+    //});
   } catch (e) {
     console.log(e);
     return false;

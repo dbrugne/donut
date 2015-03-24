@@ -23,7 +23,7 @@ router.get('/', function(req, res) {
 
   return res.render('landing', {
     layout: false,
-    partials: {head: '_head', foot: '_foot'},
+    partials: {head: '_head', contactform: '_contact', foot: '_foot'},
     meta: meta,
     logged: logged
   });
