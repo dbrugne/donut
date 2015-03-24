@@ -45,7 +45,8 @@ module.exports = function(grunt) {
             'jquery.socialify'            : '../javascripts/plugins/jquery.socialify',
             'jquery.mentionsinput'        : '../javascripts/plugins/jquery.mentionsInput',
             'underscore.template-helpers' : '../javascripts/plugins/underscore.template-helpers',
-            'html.sortable'               : '../vendor/html.sortable/dist/html.sortable'
+            'html.sortable'               : '../vendor/html.sortable/dist/html.sortable',
+            'jquery.contactform'          : '../javascripts/plugins/jquery.contactform'
           }
         }
       }

@@ -69,12 +69,12 @@ require([
 
   // Facebook setup
   try {
-    //facebook.init({
-    //  appId: window.facebook_app_id,
-    //  version: 'v2.1',
-    //  status: true,
-    //  xfbml: true
-    //});
+    facebook.init({
+      appId: window.facebook_app_id,
+      version: 'v2.1',
+      status: true,
+      xfbml: true
+    });
   } catch (e) {
     console.log(e);
     return false;
