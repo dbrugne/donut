@@ -40,6 +40,9 @@
         that.isShown = true;
       });
       this.$contactform.on('shown.bs.modal', function (event) {
+        window.grecaptcha.render('contact-form-recaptcha', {
+          sitekey: window.recaptcha_site_key
+        });
       });
       this.$contactform.on('hide.bs.modal', function (event) {
         that.isShown = false;
@@ -90,6 +93,9 @@
       if (this.$message.val() == '')
         error = true;
 
+      if (!window.grecaptcha.getResponse())
+        error = true;
+
       if (error) {
         this.toggleError();
         return false;
@@ -100,9 +106,10 @@
 
     send: function() {
       var data = {
-        name: this.$name.val(),
-        email: this.$email.val(),
-        message: this.$message.val()
+        name      : this.$name.val(),
+        email     : this.$email.val(),
+        message   : this.$message.val(),
+        recaptcha : window.grecaptcha.getResponse()
       };
       $.ajax({
         url: "/contact-form",
@@ -144,6 +151,7 @@
       this.$name.val('');
       this.$email.val('');
       this.$message.val('');
+      window.grecaptcha.reset();
     },
 
     validateEmail: function (email) {
@@ -212,7 +220,6 @@
             return; // unable to find modal content
 
           modal.init($this, $contactform, options);
-          console.log('initialized');
         }
 
         modal.show();

@@ -43,6 +43,10 @@ var conf = module.exports = {
   google: {
     analytics: {
       uid: ''
+    },
+    recaptcha: {
+      sitekey: '6LehPgMTAAAAAHWCuSkywS44bqrAaOW8qCJqol8q',
+      secret: '6LehPgMTAAAAAF2-Q7uJSC-4w_CasRTzUYPgLSuQ'
     }
   },
   i18n: {

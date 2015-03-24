@@ -23,6 +23,7 @@ module.exports = function() {
     // configuration
     res.locals.cloudinary = conf.cloudinary;
     res.locals.facebook = conf.facebook;
+    res.locals.recaptcha = conf.google.recaptcha;
     res.locals.room_default_color = conf.room.default.color;
 
     next();
