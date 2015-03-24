@@ -434,7 +434,7 @@
         },
         "welcome": {
             "room": [
-                "Bienvenue dans <strong>__name__</strong>. Seuls les utilisateurs qui ont rejoint ce donut (listés à droite) peuvent voir la conversation. Et ce même si ils sont hors ligne pour le moment.",
+                "Bienvenue dans <strong>__name__</strong>. Seuls les utilisateurs qui ont rejoint ce donut (listés à droite) peuvent voir la conversation. Et ce même s'ils sont hors ligne pour le moment.",
                 "Postez un message pour amorcer la conversation."
             ],
             "onetoone": [
