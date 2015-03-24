@@ -7,7 +7,6 @@ var compression = require('compression')
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var less = require('less-middleware');
-var fqdn = require('./app/middlewares/fqdn');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('./app/middlewares/session');
@@ -35,7 +34,6 @@ app.use(express.static(path.join(__dirname, 'node_modules/socket.io-client'))); 
 app.use(express.static(path.join(__dirname, '../shared/cloudinary'))); // cloudinary common logic
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(logger('dev'));
-app.use(fqdn());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(expressValidator()); // must be immediately after bodyParser()
 app.use(cookieParser());
