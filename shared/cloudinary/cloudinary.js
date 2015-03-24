@@ -91,6 +91,7 @@
     gravity = gravity || 'face';
 
     var options = {
+      secure: true,
       fetch_format: 'jpg',
       crop: 'fill',
       gravity: gravity,
