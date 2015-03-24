@@ -1,19 +1,19 @@
-var debug = require('debug')('shared:emailer');
+var debug = require('debug')('donut:emailer');
 var nodemailer = require('nodemailer');
 var i18next = require('../util/i18next');
 var conf = require('../config/index');
+var mailgunTransport = require('nodemailer-mailgun-transport');
 
 var emailer = {};
 module.exports = emailer;
 
-var options = {
-  ignoreTLS: true // TLS not work on smtp4dev Windows 8
-};
-if (conf.email.port && conf.email.port != '')
-  options.port = conf.email.port;
-
 // initiate a transporter, only one time for this process
-var transporter = nodemailer.createTransport(options);
+var transporter = nodemailer.createTransport(mailgunTransport({
+  auth: {
+    api_key: conf.email.mailgun.api_key,
+    domain: conf.email.mailgun.domain
+  }
+}));
 
 function send(data, fn) {
   var err = false;
@@ -37,12 +37,12 @@ function send(data, fn) {
 
   // send
   process.nextTick(function() {
-    transporter.sendMail(options, function(err, info){
-      if(err){
+    transporter.sendMail(options, function(err, info) {
+      if (err) {
         debug('Error while sending email to "'+options.to+'": '+err);
         return fn(err);
-      }else{
-        debug('Message sent: '+info.response);
+      } else {
+        debug('Message sent', info);
         return fn();
       }
     });
@@ -84,3 +84,5 @@ emailer.emailChanged = function(to, callback) {
     html: i18next.t("email.emailchanged.html", {fqdn: conf.fqdn, email: conf.email.from.email})
   },callback);
 };
+
+

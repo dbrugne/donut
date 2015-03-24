@@ -1,16 +1,6 @@
 var conf = module.exports = {
-
-  /**
-   * The root domain used by the instance. This FQDN serve the web content.
-   * Donut will automatically use the 'ws.'+fqdn subdomain for websocket connections.
-   *
-   * The value of this field is added as 'domain' for session cookie
-   *
-   * @string
-   */
   url: '',
   fqdn: '',
-
   debug: {
     cookie: 'donut.debug'
   },
@@ -35,7 +25,10 @@ var conf = module.exports = {
       name: "DONUT.me",
       email: "hello@donut.me"
     },
-    port: ''
+    mailgun: {
+      api_key: 'key-a302f604e9b1e7f1bca75beda26fd0c7',
+      domain: 'donut.me'
+    }
   },
   facebook: {
     'clientID' 		: '328600083963864', // your App ID

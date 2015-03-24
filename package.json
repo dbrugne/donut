@@ -19,6 +19,7 @@
     "mongoose": "3.8.x",
     "newrelic": "^1.14.1",
     "nodemailer": "1.2.x",
+    "nodemailer-mailgun-transport": "^1.0.0",
     "passport": "0.2.x",
     "passport-facebook": "1.x",
     "passport-local": "1.x",
