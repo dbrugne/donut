@@ -3,7 +3,6 @@ var async = require('async');
 var _ = require('underscore');
 var User = require('../../../../../shared/models/user');
 var validator = require('validator');
-var sanitize = require('sanitize-caja');
 var cloudinary = require('../../../../../shared/cloudinary/cloudinary');
 
 module.exports = function(app) {
@@ -62,7 +61,6 @@ handler.update = function(data, session, next) {
 				} else {
 					var bio = data.data.bio;
 					bio = validator.stripLow(bio, true);
-					bio = sanitize(bio);
 					bio = validator.escape(bio);
 					if (bio != user.bio)
 						sanitized.bio = bio;

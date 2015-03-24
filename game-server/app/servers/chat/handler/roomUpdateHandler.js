@@ -3,7 +3,6 @@ var async = require('async');
 var _ = require('underscore');
 var Room = require('../../../../../shared/models/room');
 var validator = require('validator');
-var sanitize = require('sanitize-caja');
 var cloudinary = require('../../../../../shared/cloudinary/cloudinary');
 
 module.exports = function(app) {
@@ -72,7 +71,6 @@ handler.update = function(data, session, next) {
 				} else {
 					var description = data.data.description;
 					description = validator.stripLow(description, true);
-					description = sanitize(description);
 					description = validator.escape(description);
 					if (description != room.description)
 						sanitized.description = description;
