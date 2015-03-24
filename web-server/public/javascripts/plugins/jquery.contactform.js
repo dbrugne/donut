@@ -28,22 +28,36 @@
     isShown: false,
 
     init: function($element, $contactform, options) {
-      this.options = options;
-
-      this.$element = $element;
-      this.$contactform = $contactform;
-      this.$contactform.modal(options);
 
       var that = this;
-      this.$contactform.on('show.bs.modal', function (e) {
+      this.options = options;
+      this.$element = $element;
+
+      // modal
+      this.$contactform = $contactform;
+      this.$contactform.modal(options);
+      this.$contactform.on('show.bs.modal', function (event) {
         that.isShown = true;
       });
-      this.$contactform.on('shown.bs.modal', function (e) {
+      this.$contactform.on('shown.bs.modal', function (event) {
       });
-      this.$contactform.on('hide.bs.modal', function (e) {
+      this.$contactform.on('hide.bs.modal', function (event) {
         that.isShown = false;
       });
-      this.$contactform.on('hidden.bs.modal', function (e) {
+      this.$contactform.on('hidden.bs.modal', function (event) {
+        that.reset();
+      });
+
+      // form
+      this.$name = this.$contactform.find('[name="name"]');
+      this.$email = this.$contactform.find('[name="email"]');
+      this.$message = this.$contactform.find('[name="message"]');
+      this.$sent = this.$contactform.find('.sent');
+      this.$error = this.$contactform.find('.error');
+      this.$contactform.find('.send').on('click', function(event) {
+        event.preventDefault();
+        if (that.validate())
+          that.send();
       });
 
       this.initialized = true;
@@ -61,6 +75,87 @@
         return;
 
       this.$contactform.modal('hide');
+    },
+
+    validate: function() {
+      var error = false;
+
+      if (this.$name.val() == '')
+        error = true;
+
+      if (this.$email.val() == '' || !this.validateEmail(this.$email.val()))
+        error = true;
+
+      if (this.$message.val() == '')
+        error = true;
+
+      if (error) {
+        this.toggleError();
+        return false;
+      }
+
+      return true;
+    },
+
+    send: function() {
+      this.reset();
+      this.toggleSent();
+    },
+
+    toggleError: function() {
+      this.$sent.hide();
+      this.$error.show();
+    },
+    toggleSent: function() {
+      this.$error.hide();
+      this.$sent.show();
+    },
+    reset: function() {
+      this.$error.hide();
+      this.$sent.hide();
+      this.$name.val('');
+      this.$email.val('');
+      this.$message.val('');
+    },
+
+    validateEmail: function (email) {
+      var at = email.lastIndexOf("@");
+
+      // Make sure the at (@) sybmol exists and
+      // it is not the first or last character
+      if (at < 1 || (at + 1) === email.length)
+        return false;
+
+      // Make sure there aren't multiple periods together
+      if (/(\.{2,})/.test(email))
+        return false;
+
+      // Break up the local and domain portions
+      var local = email.substring(0, at);
+      var domain = email.substring(at + 1);
+
+      // Check lengths
+      if (local.length < 1 || local.length > 64 || domain.length < 4 || domain.length > 255)
+        return false;
+
+      // Make sure local and domain don't start with or end with a period
+      if (/(^\.|\.$)/.test(local) || /(^\.|\.$)/.test(domain))
+        return false;
+
+      // Check for quoted-string addresses
+      // Since almost anything is allowed in a quoted-string address,
+      // we're just going to let them go through
+      if (!/^"(.+)"$/.test(local)) {
+        // It's a dot-string address...check for valid characters
+        if (!/^[-a-zA-Z0-9!#$%*\/?|^{}`~&'+=_\.]*$/.test(local))
+          return false;
+      }
+
+      // Make sure domain contains only valid characters and at least one period
+      if (!/^[-a-zA-Z0-9\.]*$/.test(domain) || domain.indexOf(".") === -1)
+        return false;
+
+      return true;
     }
 
   };
