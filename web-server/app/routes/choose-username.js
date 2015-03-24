@@ -14,7 +14,8 @@ var validateInput = function (req, res, next) {
       meta: {title: i18next.t("title.default")},
       userFields: req.body.user.fields,
       is_errors : true,
-      errors    : req.validationErrors()
+      errors    : req.validationErrors(),
+      token: req.csrfToken()
     });
   }
   next();
@@ -27,7 +28,8 @@ var validateAvailability = function (req, res, next) {
       partials: {head: '_head', foot: '_foot'},
       meta: {title: i18next.t("title.default")},
       userFields: req.body.user.fields,
-      error: err
+      error: err,
+      token: req.csrfToken()
     });
   };
   req.user.usernameAvailability(
@@ -45,14 +47,15 @@ var hasNotUsername = function(req, res, next) {
 }
 
 router.route('/choose-username')
-  .get(isLoggedIn, hasNotUsername, function (req, res) {
+  .get([require('csurf')(), isLoggedIn, hasNotUsername], function (req, res) {
     res.render('choose_username', {
       layout: 'layout-form',
       partials: {head: '_head', foot: '_foot'},
-      meta: {title: i18next.t("title.default")}
+      meta: {title: i18next.t("title.default")},
+      token: req.csrfToken()
     });
   })
-  .post([isLoggedIn, hasNotUsername, validateInput, validateAvailability], function (req, res) {
+  .post([require('csurf')(), isLoggedIn, hasNotUsername, validateInput, validateAvailability], function (req, res) {
     req.user.username = req.body.user.fields.username;
     req.user.save(function (err) {
       if (err) {

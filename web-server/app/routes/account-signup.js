@@ -14,7 +14,8 @@ var validateInput = function(req, res, next) {
       meta: {title: i18next.t("title.default")},
       userFields: {email: req.body.email},
       is_errors: true,
-      errors: req.validationErrors()
+      errors: req.validationErrors(),
+      token: req.csrfToken()
     });
   }
 
@@ -22,14 +23,15 @@ var validateInput = function(req, res, next) {
 };
 
 router.route('/signup')
-    .get(function(req, res) {
+    .get([require('csurf')()], function(req, res) {
         res.render('signup', {
           layout: 'layout-form',
           partials: {head: '_head', foot: '_foot'},
-          meta: {title: i18next.t("title.default")}
+          meta: {title: i18next.t("title.default")},
+          token: req.csrfToken()
         });
     })
-    .post([validateInput, passport.authenticate('local-signup', {
+    .post([require('csurf')(), validateInput, passport.authenticate('local-signup', {
         failureRedirect : '/signup',
         failureFlash : true
     })], bouncer.redirect);

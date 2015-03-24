@@ -14,7 +14,8 @@ var validateInput = function(req, res, next) {
       meta: {title: i18next.t("title.default")},
       userFields: req.body.user.fields,
       is_errors: true,
-      errors: req.validationErrors()
+      errors: req.validationErrors(),
+      token: req.csrfToken()
     });
   }
 
@@ -46,16 +47,18 @@ var validateInput = function(req, res, next) {
 };
 
 router.route('/account/edit/email')
-    .get(isLoggedIn, function(req, res) {
+    .get([require('csurf')(), isLoggedIn], function(req, res) {
         var userFields = {email: req.user.local.email}
         res.render('account_edit_email', {
           layout: 'layout-form',
           partials: {head: '_head', foot: '_foot'},
           meta: {title: i18next.t("title.default")},
-          userFields: userFields
+          userFields: userFields,
+          token: req.csrfToken()
         });
     })
     .post([
+        require('csurf')(),
         isLoggedIn,
         validateInput
     ], function(req, res) {

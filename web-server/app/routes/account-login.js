@@ -14,7 +14,8 @@ var validateInput = function(req, res, next) {
       meta: {title: i18next.t("title.default")},
       userFields: {email: req.body.email},
       is_errors: true,
-      errors: req.validationErrors()
+      errors: req.validationErrors(),
+      token: req.csrfToken()
     });
   }
 
@@ -22,15 +23,16 @@ var validateInput = function(req, res, next) {
 };
 
 router.route('/login')
-    .get(function(req, res) {
+    .get([require('csurf')()], function(req, res) {
         res.render('login', {
           layout: 'layout-form',
           partials: {head: '_head', foot: '_foot'},
           meta: {title: i18next.t("title.default")},
-          userFields: {email: req.flash('email')}
+          userFields: {email: req.flash('email')},
+          token: req.csrfToken()
         });
     })
-    .post([validateInput, passport.authenticate('local-login', {
+    .post([require('csurf')(), validateInput, passport.authenticate('local-login', {
         failureRedirect : '/login',
         failureFlash : true
     })], bouncer.redirect);

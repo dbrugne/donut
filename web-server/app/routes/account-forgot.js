@@ -18,7 +18,8 @@ var validateInput = function (req, res, next) {
       meta: {title: i18next.t("title.default")},
       email: req.body.email,
       is_errors : true,
-      errors    : req.validationErrors()
+      errors    : req.validationErrors(),
+      token: req.csrfToken()
     });
   }
   next();
@@ -108,17 +109,18 @@ var reset = function(req, res) {
 }
 
 router.route('/forgot')
-  .get(function (req, res) {
+  .get(require('csurf')(), function (req, res) {
     res.render('account_forgot', {
       layout: 'layout-form',
       partials: {head: '_head', foot: '_foot'},
-      meta: {title: i18next.t("title.default")}
+      meta: {title: i18next.t("title.default")},
+      token: req.csrfToken()
     });
   })
-  .post(validateInput, forgot);
+  .post(require('csurf')(), validateInput, forgot);
 
 router.route('/reset/:token')
-  .get(function(req, res) {
+  .get(require('csurf')(), function(req, res) {
     User.findOne({
       'local.resetToken': req.params.token,
       'local.resetExpires': { $gt: Date.now() }
@@ -131,7 +133,8 @@ router.route('/reset/:token')
         layout: 'layout-form',
         partials: {head: '_head', foot: '_foot'},
         meta: {title: i18next.t("title.default")},
-        user: req.user
+        user: req.user,
+        token: req.csrfToken()
       });
     });
   })

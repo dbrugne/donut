@@ -5,14 +5,15 @@ var i18next = require('../../../shared/util/i18next');
 var emailer = require('../../../shared/io/emailer');
 
 router.route('/account/edit/password')
-    .get(isLoggedIn, function(req, res) {
+    .get([require('csurf')(), isLoggedIn], function(req, res) {
         res.render('account_edit_password', {
           layout: 'layout-form',
           partials: {head: '_head', foot: '_foot'},
-          meta: {title: i18next.t("title.default")}
+          meta: {title: i18next.t("title.default")},
+          token: req.csrfToken()
         });
     })
-    .post([isLoggedIn, function(req, res, next) {
+    .post([require('csurf')(), isLoggedIn, function(req, res, next) {
         req.checkBody(['user','fields','password'], i18next.t("account.password.error.confirm")).equals(req.body.user.fields.confirm);
         req.checkBody(['user','fields','password'], i18next.t("account.password.error.length")).isLength(6, 50);
         if (req.validationErrors()) {
@@ -22,7 +23,8 @@ router.route('/account/edit/password')
               meta: {title: i18next.t("title.default")},
               userFields: req.body.user.fields,
               is_errors: true,
-              errors: req.validationErrors()
+              errors: req.validationErrors(),
+              token: req.csrfToken()
             });
         }
         return next();

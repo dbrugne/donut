@@ -4,7 +4,7 @@ var Room = require('../../../shared/models/room');
 var i18next = require('../../../shared/util/i18next');
 var conf = require('../../../shared/config/index');
 
-router.get('/', function(req, res) {
+router.get('/', [require('csurf')()], function(req, res) {
   var logged = (req.isAuthenticated())
     ? true
     : false;
@@ -24,6 +24,7 @@ router.get('/', function(req, res) {
   return res.render('landing', {
     layout: false,
     partials: {head: '_head', contactform: '_contact', foot: '_foot'},
+    token: req.csrfToken(),
     meta: meta,
     logged: logged
   });

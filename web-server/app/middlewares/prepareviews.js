@@ -20,9 +20,6 @@ module.exports = function() {
     res.locals.warning = req.flash('warning');
     res.locals.error = req.flash('error');
 
-    // pass CSRF token to all views
-    res.locals.token = req.csrfToken();
-
     // configuration
     res.locals.cloudinary = conf.cloudinary;
     res.locals.facebook = conf.facebook;
