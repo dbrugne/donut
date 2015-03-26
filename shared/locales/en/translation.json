@@ -556,7 +556,7 @@
         "",
         "Now you can join us and chat around a tasty donut by clicking right here:",
         "",
-        "http://__fqdn__",
+        "https://__fqdn__",
         "",
         "We are craving for it!",
         "",
@@ -569,7 +569,7 @@
         "<br>",
         "Now you can join us and chat around a tasty donut by clicking right here:<br>",
         "<br>",
-        "<a href='http://__fqdn__'>Se connecter</a><br>",
+        "<a href='https://__fqdn__'>Se connecter</a><br>",
         "<br>",
         "We ara craving for it!<br>",
         "<br>",
@@ -583,7 +583,7 @@
       "text": [
         "You are receiving this e-mail because you have requested a password reset. Please click on the following link to complete the process",
         "",
-        "http://__fqdn__/reset/__token__",
+        "https://__fqdn__/reset/__token__",
         "",
         "If you ignore this e-mail your password will remain unchanged.",
         "",
@@ -594,7 +594,7 @@
       "html": [
         "You are receiving this e-mail because you have requested a password reset. Please click on the following link to complete the process:<br>",
         "<br>",
-        "<a href='http://__fqdn__/reset/__token__'>Reset your password</a><br>",
+        "<a href='https://__fqdn__/reset/__token__'>Reset your password</a><br>",
         "<br>",
         "If you ignore this e-mail your password will remain unchanged.<br>",
         "<br>",
@@ -608,7 +608,7 @@
       "text": [
         "You are receiving this e-mail as the final confirmation of your password change. Let's go back to DONUT.me and join tasty conversations!",
         "",
-        "http://__fqdn__",
+        "https://__fqdn__",
         "",
         "The DONUT.me team",
         "",
@@ -617,7 +617,7 @@
       "html": [
         "You are receiving this e-mail as the final confirmation of your password change. Let's go back to DONUT.me and join tasty conversations!<br>",
         "<br>",
-        "<a href='http://__fqdn__'>Click here to connect</a><br>",
+        "<a href='https://__fqdn__'>Click here to connect</a><br>",
         "<br>",
         "The DONUT.me team<br>",
         "<br>",
@@ -629,7 +629,7 @@
       "text": [
         "You are receiving this e-mail because you requested to change the e-mail linked to yout DONUT.me account. It worked perfectly! You can use it to log in:",
         "",
-        "http://__fqdn__",
+        "https://__fqdn__",
         "",
         "The DONUT.me team",
         "",
@@ -638,7 +638,7 @@
       "html": [
 "You are receiving this e-mail because you requested to change the e-mail linked to yout DONUT.me account. It worked perfectly! You can use it to log in:",
         "<br>",
-        "<a href='http://__fqdn__'>Click here to log in</a><br>",
+        "<a href='https://__fqdn__'>Click here to log in</a><br>",
         "<br>",
         "The DONUT.me team<br>",
         "<br>",

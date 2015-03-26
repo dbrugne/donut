@@ -576,7 +576,7 @@
                 "",
                 "Vous pouvez désormais nous rejoindre et discuter autour d'un bon donut en utilisant l'adresse ci-dessous :",
                 "",
-                "http://__fqdn__",
+                "https://__fqdn__",
                 "",
                 "On s'en délecte d'avance !",
                 "",
@@ -589,7 +589,7 @@
                 "<br>",
                 "Vous pouvez désormais nous rejoindre et discuter autour d'un bon donut en utilisant l'adresse ci-dessous :<br>",
                 "<br>",
-                "<a href='http://__fqdn__'>Se connecter</a><br>",
+                "<a href='https://__fqdn__'>Se connecter</a><br>",
                 "<br>",
                 "On s'en délecte d'avance !<br>",
                 "<br>",
@@ -603,7 +603,7 @@
             "text": [
                 "Vous avez demandé à changer de mot de passe. Cliquez sur le lien suivant pour définir un nouveau mot de passe :",
                 "",
-                "http://__fqdn__/reset/__token__",
+                "https://__fqdn__/reset/__token__",
                 "",
                 "Si vous ne faîtes rien, votre mot de passe restera inchangé.",
                 "",
@@ -614,7 +614,7 @@
             "html": [
                 "Vous avez demandé à changer de mot de passe. Cliquez sur le lien suivant pour définir un nouveau mot de passe :<br>",
                 "<br>",
-                "<a href='http://__fqdn__/reset/__token__'>Réinitialiser votre mot de passe</a><br>",
+                "<a href='https://__fqdn__/reset/__token__'>Réinitialiser votre mot de passe</a><br>",
                 "<br>",
                 "Si vous ne faîtes rien, votre mot de passe restera inchangé.<br>",
                 "<br>",
@@ -628,7 +628,7 @@
             "text": [
                 "Vous avez procédé à un changement de mot de passe. Votre nouveau mot de passe est désormais actif. Il est grand temps d’en profiter !",
                 "",
-                "http://__fqdn__",
+                "https://__fqdn__",
                 "",
                 "L'équipe DONUT.me",
                 "",
@@ -637,7 +637,7 @@
             "html": [
                 "Vous avez procédé à un changement de mot de passe. Votre nouveau mot de passe est désormais actif. Il est grand temps d’en profiter !<br>",
                 "<br>",
-                "<a href='http://__fqdn__'>Connectez-vous en cliquant ici</a><br>",
+                "<a href='https://__fqdn__'>Connectez-vous en cliquant ici</a><br>",
                 "<br>",
                 "L'équipe DONUT.me<br>",
                 "<br>",
@@ -649,7 +649,7 @@
             "text": [
                 "Vous avez procédé à un changement d'adresse email. Pour vous connecter veuillez vous rendre à cette adresse :",
                 "",
-                "http://__fqdn__",
+                "https://__fqdn__",
                 "",
                 "L'équipe DONUT.me",
                 "",
@@ -658,7 +658,7 @@
             "html": [
                 "Vous avez procédé à un changement d'adresse email. Pour vous connecter veuillez vous rendre à cette adresse :<br>",
                 "<br>",
-                "<a href='http://__fqdn__'>Connectez-vous en cliquant ici</a><br>",
+                "<a href='https://__fqdn__'>Connectez-vous en cliquant ici</a><br>",
                 "<br>",
                 "L'équipe DONUT.me<br>",
                 "<br>",
