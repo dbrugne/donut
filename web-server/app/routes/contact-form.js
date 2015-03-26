@@ -58,7 +58,7 @@ router.route('/contact-form')
         email     : req.body.email,
         message   : req.body.message,
         ip        : req.ip,
-        fqdn      : req.protocol + '://' + req.hostname
+        fqdn      : conf.url
       };
 
       if (req.user) {
