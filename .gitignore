@@ -1,6 +1,7 @@
 # IDE
 /.idea
 .DS_Store
+.env
 
 # Dependencies
 /game-server/logs
