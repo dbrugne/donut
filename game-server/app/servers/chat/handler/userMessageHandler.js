@@ -4,6 +4,7 @@ var User = require('../../../../../shared/models/user');
 var oneEmitter = require('../../../util/oneEmitter');
 var inputUtil = require('../../../util/input');
 var imagesUtil = require('../../../util/images');
+var keenio = require('../../../../../shared/io/keenio');
 
 module.exports = function(app) {
 	return new Handler(app);
@@ -108,6 +109,35 @@ handler.message = function(data, session, next) {
 			oneEmitter(that.app, {from: from._id, to: to._id}, 'user:message', event, function(err) {
 				if (err)
 					return callback(err);
+
+				return callback(null, from, to, event);
+			});
+		},
+
+		function tracking(from, to, event, callback) {
+			var messageEvent = {
+				session: {
+					id: session.settings.uuid,
+					connector: session.frontendId
+				},
+				user: {
+					id: session.uid,
+					username: session.settings.username,
+					admin: (session.settings.admin === true)
+				},
+				to: {
+					id: to._id.toString(),
+					username: to.username,
+					admin: (to.admin === true)
+				},
+				message: {
+					length: event.message.length,
+					images: (event.images && event.images.length) ? event.images.length : 0
+				}
+			};
+			keenio.addEvent("onetoone_message", messageEvent, function(err, res){
+				if (err)
+					logger.error('Error while tracking onetoone_message in keen.io for '+uid+': '+err);
 
 				return callback(null);
 			});

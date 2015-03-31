@@ -5,7 +5,7 @@ var User = require('../../../../../shared/models/user');
 var Room = require('../../../../../shared/models/room');
 var inputUtil = require('../../../util/input');
 var imagesUtil = require('../../../util/images');
-//var admin = require('./_admin');
+var keenio = require('../../../../../shared/io/keenio');
 
 module.exports = function(app) {
 	return new Handler(app);
@@ -109,6 +109,33 @@ handler.message = function(data, session, next) {
 			roomEmitter(that.app, room.name, 'room:message', event, function(err) {
 				if (err)
 					return callback(err);
+
+				return callback(null, room, event);
+			});
+		},
+
+		function tracking(room, event, callback) {
+			var messageEvent = {
+				session: {
+					id: session.settings.uuid,
+					connector: session.frontendId
+				},
+				user: {
+					id: session.uid,
+					username: session.settings.username,
+					admin: (session.settings.admin === true)
+				},
+				room: {
+					name: room.name
+				},
+				message: {
+					length: event.message.length,
+					images: (event.images && event.images.length) ? event.images.length : 0
+				}
+			};
+			keenio.addEvent("room_message", messageEvent, function(err, res){
+				if (err)
+					logger.error('Error while tracking room_message in keen.io for '+uid+': '+err);
 
 				return callback(null);
 			});

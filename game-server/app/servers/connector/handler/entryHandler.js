@@ -3,6 +3,8 @@ var _ = require('underscore');
 var async = require('async');
 var conf = require('../../../../../shared/config/index');
 var roomEmitter = require('../../../util/roomEmitter');
+var uuid = require('node-uuid');
+var keenio = require('../../../../../shared/io/keenio');
 
 var GLOBAL_CHANNEL_NAME = 'global';
 var USER_CHANNEL_PREFIX = 'user:';
@@ -101,6 +103,9 @@ handler.enter = function(msg, session, next) {
 				server: session.__session__.__socket__.socket.handshake.headers.host
 			});
 
+			// add session unique ID (tracking)
+			session.set('uuid', uuid.v1());
+
 			// add username, avatar, color and admin flag on session
 			session.set('username', welcome.user.username);
 			session.set('avatar', welcome.user.avatar);
@@ -158,6 +163,31 @@ handler.enter = function(msg, session, next) {
 			});
 		},
 
+		function tracking(welcome, callback) {
+			var _socket = session.__session__.__socket__.socket;
+			var sessionEvent = {
+				session: {
+					id: session.settings.uuid,
+					connector: session.frontendId
+				},
+				user: {
+					id: uid,
+					username: session.settings.username,
+					admin: (session.settings.admin === true)
+				},
+				device: {
+					type: _socket.handshake.query.device || 'unknown',
+					ip: _socket.handshake.headers['x-forwarded-for'] || _socket.handshake.address
+				}
+			};
+			keenio.addEvent("session_start", sessionEvent, function(err, res){
+				if (err)
+				  logger.error('Error while tracking session_start in keen.io for '+uid+': '+err);
+
+				return callback(null, welcome);
+			});
+		},
+
 		function sendUserOnline(welcome, callback) {
 			if (!firstClient)
 			  return callback(null, welcome);
@@ -198,25 +228,51 @@ var onUserLeave = function(app, session, reason) {
 		return; // could happen if a uid was not already bound before disconnect (crash, bug, debug session, ...)
 
 	var duration = Math.ceil((Date.now() - session.settings.started)/1000); // seconds
-	var log = {
-		event: 'onUserLeave',
-		frontendId: session.frontendId,
-		time : new Date(),
-		session_duration: duration
-	};
-	if (session.settings.username)
-		log.username = session.settings.username;
-	if (reason)
-		log.reason = reason;
-	logger.info(JSON.stringify(log));
 
-	app.rpc.chat.statusRemote.socketGoesOffline(
-			session,
-			session.uid,
-			function(err) {
-				if (err)
-					logger.error('Error while statusRemote.socketGoesOffline: '+err);
-			}
-	);
+	// Keen.io tracking
+	var _socket = session.__session__.__socket__.socket;
+	var sessionEvent = {
+		session: {
+			id: session.settings.uuid,
+			connector: session.frontendId,
+			duration: duration
+		},
+		user: {
+			id: session.uid,
+			username: session.settings.username,
+			admin: (session.settings.admin === true)
+		},
+		device: {
+			type: _socket.handshake.query.device || 'unknown',
+			ip: _socket.handshake.headers['x-forwarded-for'] || _socket.handshake.address
+		}
+	};
+	keenio.addEvent("session_end", sessionEvent, function(err, res){
+		if (err)
+			logger.error('Error while tracking session_end in keen.io for '+uid+': '+err);
+
+		// logger
+		var log = {
+			event: 'onUserLeave',
+			frontendId: session.frontendId,
+			time : new Date(),
+			session_duration: duration
+		};
+		if (session.settings.username)
+			log.username = session.settings.username;
+		if (reason)
+			log.reason = reason;
+		logger.info(JSON.stringify(log));
+
+		// user:offline
+		app.rpc.chat.statusRemote.socketGoesOffline(
+				session,
+				session.uid,
+				function(err) {
+					if (err)
+						logger.error('Error while statusRemote.socketGoesOffline: '+err);
+				}
+		);
+	});
 
 };

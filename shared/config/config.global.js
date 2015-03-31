@@ -49,6 +49,11 @@ var conf = module.exports = {
       secret: '6LehPgMTAAAAAF2-Q7uJSC-4w_CasRTzUYPgLSuQ'
     }
   },
+  keenio: {
+    projectId: '5519149e672e6c67853dfa0c',
+    readKey: '5e0e70de4103b4df5ec43e599768ca6cefcf811c37d8591b7eeaf056bc8bf3597896ae0f808b0a3bb823b8ecc2d378ec7e410e66609ceb6932087cc668dda98f27afe9ff0978bb31fa9da0093f0950c941848c6faa52443ad49094ab1a3d70c6dfcee61f6d3a997d7294030ca65976b1',
+    writeKey: '9a00f6651fe7567aa89adbfe2998119d69f783fcf50440ade384e52e269fbad754641d337c25943aa281ae80256d01a3a03a5276fd97f9ffacb228b7cd8c3ae3461b2fba13ac47b75aaa19924ddddee36a4c381bbe30cd98a75f42b75fbb2247b3fd7856f568d073f3d47cd85d01a92a'
+  },
   i18n: {
     cookie: 'donut.lng'
   }
