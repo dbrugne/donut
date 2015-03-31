@@ -3,6 +3,7 @@
 .DS_Store
 
 # Dependencies
+/game-server/logs
 /game-server/node_modules
 /web-server/node_modules
 /web-server/public/js/lib/build
