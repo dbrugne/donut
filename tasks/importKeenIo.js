@@ -128,6 +128,28 @@ module.exports = function(grunt) {
         }, callback);
       },
 
+      function userSignup(callback) {
+        var stream = User
+            .find()
+            .sort({created_at: 'asc'})
+            .stream();
+        process('user_signup', stream, function(h) {
+          var e = {
+            keen: {
+              timestamp: h.created_at.toISOString()
+            },
+            method: (h.facebook && h.facebook.token && h.facebook.token != '') ? 'facebook' : 'email',
+            session: {
+              device: 'browser'
+            },
+            user: {
+              id: h._id.toString()
+            }
+          };
+          return e;
+        }, callback);
+      },
+
       function userCache(callback) {
         User.find({username: {$exists: true, $ne: ''}}, 'username admin', function(err, users) {
           if (err)
@@ -160,15 +182,13 @@ module.exports = function(grunt) {
               timestamp: h.timestamp.toISOString()
             },
             session: {
+              device: 'browser',
               connector: h.data.frontendId
             },
             user: {
               id: u._id,
               username: u.username,
               admin: u.admin
-            },
-            device: {
-              type: 'browser'
             }
           };
           return e;
@@ -187,6 +207,7 @@ module.exports = function(grunt) {
               timestamp: h.timestamp.toISOString()
             },
             session: {
+              device: 'browser',
               connector: h.data.frontendId,
               duration: h.data.session_duration
             },
@@ -194,9 +215,6 @@ module.exports = function(grunt) {
               id: u._id,
               username: u.username,
               admin: u.admin
-            },
-            device: {
-              type: 'browser'
             }
           };
           return e;

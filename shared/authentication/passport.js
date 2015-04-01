@@ -6,6 +6,26 @@ var conf = require('../config/index');
 var User = require('../models/user');
 var emailer = require('../io/emailer');
 var i18next = require('../util/i18next');
+var keenio = require('../io/keenio');
+
+// =========================================================================
+// keen.io tracking ========================================================
+// =========================================================================
+var keenIoTracking = function(user, type) {
+  var keenEvent = {
+    method: type || 'unknown',
+    session: {
+      device: 'browser'
+    },
+    user: {
+      id: user._id.toString()
+    }
+  };
+  keenio.addEvent('user_signup', keenEvent, function(err, res){
+    if (err)
+      debug('Error while tracking user_signup in keen.io for '+user._id.toString()+': '+err);
+  });
+};
 
 // =========================================================================
 // passport session setup ==================================================
@@ -79,6 +99,9 @@ passport.use('local-signup', new LocalStrategy({
         newUser.save(function (err) {
           if (err)
             throw err;
+
+          // tracking
+          keenIoTracking(newUser, 'email');
 
           // email will be send on next tick but done() is called immediatly
           emailer.welcome(newUser.local.email, function(err) {
@@ -205,6 +228,9 @@ passport.use(new FacebookStrategy({
             newUser.save(function (err) {
               if (err)
                 throw err;
+
+              // tracking
+              keenIoTracking(newUser, 'facebook');
 
               // if successful, return the new user
               return done(null, newUser);
