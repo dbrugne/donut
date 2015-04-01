@@ -6,6 +6,7 @@ var User = require('../../../../../shared/models/user');
 var Room = require('../../../../../shared/models/room');
 var conf = require('../../../../../shared/config/index');
 var roomEmitter = require('../../../util/roomEmitter');
+var keenio = require('../../../../../shared/io/keenio');
 
 module.exports = function(app) {
 	return new Handler(app);
@@ -73,7 +74,27 @@ handler.join = function(data, session, next) {
 					if (err)
 						return callback('Error while creating room: '+err);
 
-					return callback(null, user, room);
+					// tracking
+					var keenEvent = {
+						session: {
+							id: session.settings.uuid,
+							connector: session.frontendId
+						},
+						user: {
+							id: session.uid,
+							username: session.settings.username,
+							admin: (session.settings.admin === true)
+						},
+						room: {
+							name: room.name
+						}
+					};
+					keenio.addEvent("room_creation", keenEvent, function(err, res){
+						if (err)
+							logger.error('Error while tracking room_creation in keen.io for '+uid+': '+err);
+
+						return callback(null, user, room);
+					});
 				});
 			});
 		},

@@ -4,6 +4,7 @@ var HistoryRoom = require('../shared/models/historyroom');
 var HistoryOne = require('../shared/models/historyone');
 var Log = require('../shared/models/log');
 var User = require('../shared/models/user');
+var Room = require('../shared/models/room');
 var fs = require('fs');
 
 // @doc: https://github.com/keen/keen-cli
@@ -67,7 +68,6 @@ module.exports = function(grunt) {
     async.waterfall([
 
       function rooms(callback) {
-        return callback();
         // HISTORYROOM
         var stream = HistoryRoom
             .find({event: 'room:message'})
@@ -97,7 +97,6 @@ module.exports = function(grunt) {
       },
 
       function ones(callback) {
-        return callback();
         // HISTORYONE
         var stream = HistoryOne
             .find({event: 'user:message'})
@@ -107,6 +106,9 @@ module.exports = function(grunt) {
             .stream();
         process('onetoone_message', stream, function(h) {
           var e = {
+            keen: {
+              timestamp: h.time.toISOString()
+            },
             user: {
               id: h.from._id.toString(),
               username: h.from.username,
@@ -195,6 +197,30 @@ module.exports = function(grunt) {
             },
             device: {
               type: 'browser'
+            }
+          };
+          return e;
+        }, callback);
+      },
+
+      function roomCreate(callback) {
+        var stream = Room
+            .find()
+            .sort({created_at: 'asc'})
+            .populate('owner', 'username admin')
+            .stream();
+        process('room_creation', stream, function(h) {
+          var e = {
+            keen: {
+              timestamp: h.created_at.toISOString()
+            },
+            user: {
+              id: h.owner._id.toString(),
+              username: h.owner.username,
+              admin: (h.owner.admin === true)
+            },
+            room: {
+              name: h.name
             }
           };
           return e;
