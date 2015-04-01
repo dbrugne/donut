@@ -91,7 +91,7 @@ handler.join = function(data, session, next) {
 					};
 					keenio.addEvent("room_creation", keenEvent, function(err, res){
 						if (err)
-							logger.error('Error while tracking room_creation in keen.io for '+uid+': '+err);
+							logger.error('Error while tracking room_creation in keen.io for '+user._id.toString()+': '+err);
 
 						return callback(null, user, room);
 					});
