@@ -43,9 +43,9 @@ define([
       if (!this.homeView) {
         this.homeView = new HomeView();
         this.mainView.append(this.homeView);
+        this.homeView.render();
       }
 
-      this.homeView.render(); // refresh
       this.mainView.currentView = this.homeView;
       this.mainView.render();
     },
