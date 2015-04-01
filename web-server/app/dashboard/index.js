@@ -4,6 +4,7 @@ var router = express.Router();
 var async = require('async');
 var _ = require('underscore');
 var User = require('../../../shared/models/user');
+var conf = require('../../../shared/config/index');
 
 var isAdmin = function(req, res, next) {
   if (!req.isAuthenticated() || req.user.admin !== true) {
@@ -16,7 +17,11 @@ var isAdmin = function(req, res, next) {
 router.get('/dashboard', isAdmin, function(req, res) {
     return res.render('dashboard', {
     layout: false,
-    meta: "DONUT dashboard"
+    meta: "DONUT dashboard",
+    keenio: {
+      projectId: conf.keenio.projectId,
+      readKey: conf.keenio.readKey
+    }
   });
 });
 

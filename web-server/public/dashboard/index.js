@@ -20,7 +20,8 @@ require.config({
     'backgrid-moment-cell'        : '../vendor/backgrid-moment-cell/backgrid-moment-cell',
     'backgrid-filter'             : '../vendor/backgrid-filter/backgrid-filter',
     'backbone.bootstrap-modal'    : '../javascripts/plugins/backbone.bootstrap-modal',
-    'jquery-jsonview'             : '../vendor/jquery-jsonview/dist/jquery.jsonview'
+    'jquery-jsonview'             : '../vendor/jquery-jsonview/dist/jquery.jsonview',
+    'keen-js'                     : '../vendor/keen-js/dist/keen'
   },
   shim: {
     'bootstrap'               : ['jquery'],
@@ -36,9 +37,8 @@ require.config({
     },
     'backgrid-moment-cell'  : ['backgrid', 'moment'],
     'backgrid-filter'       : ['backgrid'],
-    'socket.io': {
-      exports: 'io'
-    }
+    'socket.io': { exports: 'io' },
+    'keen-js': { exports: 'Keen' }
   }
 });
 

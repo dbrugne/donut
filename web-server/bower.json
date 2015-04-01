@@ -20,7 +20,8 @@
     "talkative": "https://github.com/dbrugne/talkative.git",
     "html.sortable": "latest",
     "jquery-jsonview": "~1.2.2",
-    "visionmedia-debug": "~2.1.2"
+    "visionmedia-debug": "~2.1.2",
+    "keen-js": "~3.2.4"
   },
   "resolutions": {
     "moment": "2.7.x"
