@@ -168,16 +168,14 @@ handler.enter = function(msg, session, next) {
 			var sessionEvent = {
 				session: {
 					id: session.settings.uuid,
-					connector: session.frontendId
+					connector: session.frontendId,
+					device: _socket.handshake.query.device || 'unknown',
+					ip: _socket.handshake.headers['x-forwarded-for'] || _socket.handshake.address
 				},
 				user: {
 					id: uid,
 					username: session.settings.username,
 					admin: (session.settings.admin === true)
-				},
-				device: {
-					type: _socket.handshake.query.device || 'unknown',
-					ip: _socket.handshake.headers['x-forwarded-for'] || _socket.handshake.address
 				}
 			};
 			keenio.addEvent("session_start", sessionEvent, function(err, res){
@@ -235,16 +233,14 @@ var onUserLeave = function(app, session, reason) {
 		session: {
 			id: session.settings.uuid,
 			connector: session.frontendId,
+			device: _socket.handshake.query.device || 'unknown',
+			ip: _socket.handshake.headers['x-forwarded-for'] || _socket.handshake.address,
 			duration: duration
 		},
 		user: {
 			id: session.uid,
 			username: session.settings.username,
 			admin: (session.settings.admin === true)
-		},
-		device: {
-			type: _socket.handshake.query.device || 'unknown',
-			ip: _socket.handshake.headers['x-forwarded-for'] || _socket.handshake.address
 		}
 	};
 	keenio.addEvent("session_end", sessionEvent, function(err, res){
