@@ -1,5 +1,5 @@
 var Keen = require('keen-js');
-var conf = require('../config/index');
+var conf = require('../../config/index');
 
 var client = new Keen({
   projectId: conf.keenio.projectId,

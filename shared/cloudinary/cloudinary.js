@@ -2,7 +2,7 @@
   var exports, cloudinaryLibrary;
   if (typeof module !== 'undefined' && module.exports) {
     module.exports = exports = require('cloudinary');
-    exports.config(require('../config/index').cloudinary);
+    exports.config(require('../../config/index').cloudinary);
     cloudinaryLibrary = function () {
       return exports;
     }

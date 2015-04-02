@@ -15,7 +15,7 @@ var i18n = require('./app/middlewares/i18n');
 var prepareViews = require('./app/middlewares/prepareviews');
 var expressValidator = require('../shared/util/validator');
 var googleAnalytics = require('./app/middlewares/googleanalytics');
-var conf = require('../shared/config/index');
+var conf = require('../config/index');
 var debugMiddleware = require('./app/middlewares/debug');
 var facebookLocale = require('./app/middlewares/facebooklocale');
 

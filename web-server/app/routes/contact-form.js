@@ -1,7 +1,7 @@
 var debug = require('debug')('donut:contact-form');
 var express = require('express');
 var router = express.Router();
-var conf = require('../../../shared/config/index');
+var conf = require('../../../config/index');
 var emailer = require('../../../shared/io/emailer');
 var https = require('https');
 

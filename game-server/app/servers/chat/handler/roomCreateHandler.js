@@ -3,7 +3,7 @@ var async = require('async');
 var _ = require('underscore');
 var User = require('../../../../../shared/models/user');
 var Room = require('../../../../../shared/models/room');
-var conf = require('../../../../../shared/config/index');
+var conf = require('../../../../../config/index');
 var keenio = require('../../../../../shared/io/keenio');
 
 module.exports = function(app) {

@@ -1,5 +1,5 @@
 var logger = require('../../pomelo-logger').getLogger('donut', __filename);
-var conf = require('../../../shared/config/index');
+var conf = require('../../../config/index');
 var util = require('util');
 var EventEmitter = require('events').EventEmitter;
 var socketio = require('socket.io');

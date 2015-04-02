@@ -1,6 +1,6 @@
 var _ = require('underscore');
 var Room = require('../../../shared/models/room');
-var conf = require('../../../shared/config/index');
+var conf = require('../../../config/index');
 var cloudinary = require('../../../shared/cloudinary/cloudinary');
 
 module.exports = function(req, res, next, roomname) {

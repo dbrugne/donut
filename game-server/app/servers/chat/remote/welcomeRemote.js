@@ -1,7 +1,7 @@
 var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
 var _ = require('underscore');
 var async = require('async');
-var conf = require('../../../../../shared/config/index');
+var conf = require('../../../../../config/index');
 var User = require('../../../../../shared/models/user');
 var Room = require('../../../../../shared/models/room');
 var roomDataHelper = require('../../../util/roomData');

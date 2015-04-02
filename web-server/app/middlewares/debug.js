@@ -1,5 +1,5 @@
 var debug = require('debug')('donut:debug-middleware');
-var conf = require('../../../shared/config/index');
+var conf = require('../../../config/index');
 
 module.exports = function(req, res, next) {
   // is enabled?

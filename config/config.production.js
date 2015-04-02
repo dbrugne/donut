@@ -1,4 +1,4 @@
-var conf = require('./config.global');
+var conf = require('./config.global.js');
 
 conf.url = 'https://donut.me';
 conf.fqdn = 'donut.me';

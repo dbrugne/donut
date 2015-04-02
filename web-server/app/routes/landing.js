@@ -2,7 +2,7 @@ var express = require('express');
 var router  = express.Router();
 var Room = require('../../../shared/models/room');
 var i18next = require('../../../shared/util/i18next');
-var conf = require('../../../shared/config/index');
+var conf = require('../../../config/index');
 
 router.get('/', [require('csurf')()], function(req, res) {
   var logged = (req.isAuthenticated())

@@ -1,6 +1,6 @@
 var debug = require('debug')('shared:mongoose');
 var mongoose = require('mongoose');
-var conf = require('../config/index');
+var conf = require('../../config/index');
 
 mongoose.connect(conf.mongo.url);
 

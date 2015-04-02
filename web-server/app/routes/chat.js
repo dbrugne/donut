@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var i18next = require('../../../shared/util/i18next');
 var bouncer = require('../middlewares/bouncer');
-var colors = require('../../../shared/config/colors');
+var colors = require('../../../config/colors');
 
 router.get('/!', function(req, res) {
 

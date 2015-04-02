@@ -4,7 +4,7 @@ var _ = require('underscore');
 var roomDataHelper = require('../../../util/roomData');
 var User = require('../../../../../shared/models/user');
 var Room = require('../../../../../shared/models/room');
-var conf = require('../../../../../shared/config/index');
+var conf = require('../../../../../config/index');
 var roomEmitter = require('../../../util/roomEmitter');
 
 module.exports = function(app) {

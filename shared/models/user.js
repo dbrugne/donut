@@ -1,7 +1,7 @@
 var _ = require('underscore');
 var mongoose = require('../io/mongoose');
 var bcrypt   = require('bcrypt-nodejs');
-var colors = require('../config/colors');
+var colors = require('../../config/colors');
 var i18next = require('../util/i18next');
 
 var userSchema = mongoose.Schema({

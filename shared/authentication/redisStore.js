@@ -1,4 +1,4 @@
-var conf = require('../config/index');
+var conf = require('../../config/index');
 var Session = require('express-session');
 var RedisStore = require('connect-redis')(Session);
 var client = require('../io/redis');

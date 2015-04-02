@@ -1,7 +1,7 @@
 var debug = require('debug')('donut:emailer');
 var nodemailer = require('nodemailer');
 var i18next = require('../util/i18next');
-var conf = require('../config/index');
+var conf = require('../../config/index');
 var mailgunTransport = require('nodemailer-mailgun-transport');
 
 var emailer = {};
