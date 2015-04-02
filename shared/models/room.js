@@ -6,6 +6,7 @@ var roomSchema = mongoose.Schema({
   _id             : String,
   name            : String,
   permanent       : Boolean,
+  visibility      : { type: Boolean, default: false },
   priority        : Number,
   owner           : { type: mongoose.Schema.ObjectId, ref: 'User' },
   op              : [{ type: mongoose.Schema.ObjectId, ref: 'User' }],

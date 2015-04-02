@@ -49,6 +49,10 @@ define([
           : false
           : false;
 
+      room.isAdmin = (currentUser.get('admin') === true)
+        ? true
+        : false;
+
       var currentAvatar = room.avatar;
 
       var html = this.template({room: room});
@@ -100,6 +104,13 @@ define([
         website: this.$el.find('input[name=website]').val(),
         color: this.$el.find('input[name=color]').val()
       };
+
+      if (currentUser.get('admin') === true) {
+        updateData.visibility = (this.$el.find('input[name=visibility]:checked').val() == 'true')
+          ? true
+          : false;
+        updateData.priority = this.$el.find('input[name=priority]').val();
+      }
 
       if (this.avatarUploader.data)
         updateData.avatar = this.avatarUploader.data;

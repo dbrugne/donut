@@ -80,7 +80,7 @@ var retriever = function(app, fn) {
 
         var left = CACHE_NUMBER - rooms.length;
 
-        var q = Room.find({ priority: {$exists: true, $gt: 0} }, 'name')
+        var q = Room.find({ priority: {$exists: true, $gt: 0}, visibility: true }, 'name')
             .sort({priority: 'desc'})
             .limit(CACHE_NUMBER*2) // lot of prioritized rooms could be already in Redis list
             .exec(function(err, result) {
@@ -121,6 +121,9 @@ var retriever = function(app, fn) {
 
         var roomsData = [];
         _.each(rooms, function(room) {
+          if (room.visibility !== true)
+            return;
+
           var data = {
             name          : room.name,
             owner         : {},

@@ -66,7 +66,9 @@ handler.create = function(data, session, next) {
         room = new Room({
           name: data.name,
           owner: user._id.toString(),
-          color: conf.room.default.color
+          color: conf.room.default.color,
+          visibility: false, // not visible on home until admin change this value
+          priority: 0
         });
         room.save(function (err, room) {
           if (err)

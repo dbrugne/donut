@@ -27,6 +27,28 @@
         <label><%= t('edit.color.label') %></label>
         <div class="room-color"></div>
     </div>
+    <% if (room.isAdmin) { %>
+    <div class="form-group">
+        <label><%= t('edit.visibility.label') %></label>
+        <div class="radio">
+            <label>
+                <input type="radio" name="visibility" id="roomVisibilityTrue" value="true" <%= (room.visibility === true) ? 'checked' : '' %>>
+                <%= t('edit.visibility.true') %>
+            </label>
+        </div>
+        <div class="radio">
+            <label>
+                <input type="radio" name="visibility" id="roomVisibilityFalse" value="false" <%= (room.visibility !== true) ? 'checked' : '' %>>
+                <%= t('edit.visibility.false') %>
+            </label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="roomPriority"><%= t('edit.priority.label') %></label>
+        <input type="number" name="priority" class="form-control" id="roomPriority" placeholder="<%= t('edit.priority.placeholder') %>" value="<%= room.priority %>">
+        <p class="help-block"><%= t('edit.priority.help') %></p>
+    </div>
+    <% } %>
     <div class="form-group buttons">
         <a class="btn btn-default btn-sm cancel"><%= t('global.cancel') %></a>
         <input type="submit" value="<%= t('global.save') %>">

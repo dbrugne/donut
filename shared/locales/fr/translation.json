@@ -545,6 +545,16 @@
         "color": {
             "label": "Couleur"
         },
+        "visibility": {
+            "label": "Visibilité (administrateur)",
+            "true": "Le donut est visible sur la homepage",
+            "false": "Le donut <strong>n'est pas</strong> visible sur la homepage"
+        },
+        "priority": {
+            "label": "Priorité (administrateur)",
+            "placeholder": "",
+            "help": "Nombre, plus est grand, plus est prioritaire"
+        },
         "room": {
             "delete": {
                 "link": "Vous pouvez également supprimer ce donut <a class='open-room-delete' data-room-name=\"__name__\">en cliquant ici</a>.",

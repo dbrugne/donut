@@ -118,8 +118,13 @@ handler.read = function(data, session, next) {
 				created: room.created_at
 			};
 
+			if (session.settings.admin === true) {
+				roomData.visibility = room.visibility || false;
+				roomData.priority = room.priority || 0;
+			}
+
 			return callback(null, room, roomData);
-		},
+		}
 
 	], function(err, user, roomData) {
 		if (err)

@@ -525,6 +525,16 @@
     "color": {
       "label": "Color"
     },
+    "visibility": {
+      "label": "Visibility (admin only)",
+      "true": "This donut is displayed on homepage",
+      "false": "This donut <strong>is not</strong> displayed on homepage"
+    },
+    "priority": {
+      "label": "Priority (admin only)",
+      "placeholder": "",
+      "help": "Number, more is more prioritary"
+    },
     "room": {
       "delete": {
         "link": "To delete this donut <a class='open-room-delete' data-room-name=\"__name__\"> click here</a>.",

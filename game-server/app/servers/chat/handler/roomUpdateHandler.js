@@ -106,6 +106,26 @@ handler.update = function(data, session, next) {
 				}
 			}
 
+			if (session.settings.admin === true) {
+				// visibility
+				if (_.has(data.data, 'visibility')) {
+					var visibility = !!data.data.visibility;
+					if (room.visibility != visibility)
+						sanitized.visibility = !!data.data.visibility;
+				}
+
+				// priority
+				if (_.has(data.data, 'priority')) {
+					if (data.data.priority != '' && !validator.isNumeric(data.data.priority)) {
+						errors.color = 'Priority should be explained has number (integer).';
+					} else {
+						var priority = data.data.priority;
+						if (priority != room.priority)
+							sanitized.priority = priority;
+					}
+				}
+			}
+
 			var errNum = Object.keys(errors).length;
 			if (errNum > 0)
 				return callback(JSON.stringify(errors)); // object
