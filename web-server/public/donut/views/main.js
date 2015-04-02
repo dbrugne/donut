@@ -279,7 +279,9 @@ define([
     openCreateRoom: function(event) {
       this._handleAction(event);
 
-      var view = new DrawerRoomCreateView({ mainView: this });
+      var name = $(event.currentTarget).data('name') || '';
+
+      var view = new DrawerRoomCreateView({ mainView: this, name: name });
       this.drawerView.setSize('450px').setView(view).open();
 
       return false; // stop propagation
@@ -514,9 +516,15 @@ define([
         // Not already open
         this.thisDiscussionShouldBeFocusedOnSuccess = name;
         var that = this;
-        client.roomJoin(name, function(err) {
-          if (err) {
+        client.roomJoin(name, function(response) {
+          if (response.err == 'banned') {
             that.alert('error', $.t('chat.bannedfromroom', {name: name}));
+            that.focus();
+          } else if (response.err == 'notexists') {
+            that.alert('error', $.t('chat.roomnotexists', {name: name}));
+            that.focus();
+          } else if (response.err) {
+            that.alert('error', $.t('global.unknownerror'));
             that.focus();
           }
         });

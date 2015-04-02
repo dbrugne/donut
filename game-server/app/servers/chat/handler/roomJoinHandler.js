@@ -6,7 +6,6 @@ var User = require('../../../../../shared/models/user');
 var Room = require('../../../../../shared/models/room');
 var conf = require('../../../../../shared/config/index');
 var roomEmitter = require('../../../util/roomEmitter');
-var keenio = require('../../../../../shared/io/keenio');
 
 module.exports = function(app) {
 	return new Handler(app);
@@ -54,48 +53,17 @@ handler.join = function(data, session, next) {
 			});
 		},
 
-		function findOrCreateRoom(user, callback) {
+		function retrieveRoom(user, callback) {
 			var q = Room.findByName(data.name);
 			q.exec(function(err, room) {
 				if (err)
 					return callback('Error while retrieving room in room:join: '+err);
 
-				// Found an existing one
-				if (room)
-					return callback(null, user, room);
+				// Room not found
+				if (!room)
+					return callback('notexists');
 
-				// Create a new one
-				room = new Room({
-					name: data.name,
-					owner: user._id.toString(),
-					color: conf.room.default.color
-				});
-				room.save(function (err, room) {
-					if (err)
-						return callback('Error while creating room: '+err);
-
-					// tracking
-					var keenEvent = {
-						session: {
-							id: session.settings.uuid,
-							connector: session.frontendId
-						},
-						user: {
-							id: session.uid,
-							username: session.settings.username,
-							admin: (session.settings.admin === true)
-						},
-						room: {
-							name: room.name
-						}
-					};
-					keenio.addEvent("room_creation", keenEvent, function(err, res){
-						if (err)
-							logger.error('Error while tracking room_creation in keen.io for '+user._id.toString()+': '+err);
-
-						return callback(null, user, room);
-					});
-				});
+				return callback(null, user, room);
 			});
 		},
 
@@ -203,8 +171,10 @@ handler.join = function(data, session, next) {
 		}
 
 	], function(err, user, room, roomData) {
+		if (err === 'notexists')
+			return next(null, {code: 404, err: err});
 		if (err === 'banned')
-			return next(null, {code: 403, err: 'This user '+user.username+' is banned from '+room.name});
+			return next(null, {code: 403, err: err});
 		if (err)
 			return next(null, {code: 500, err: err});
 

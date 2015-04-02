@@ -69,7 +69,8 @@
       "before": "Would you like to",
       "after": "?"
     },
-    "switchlanguage": "Language:"
+    "switchlanguage": "Language:",
+    "unknownerror": "Unknown error, please retry later"
   },
   "login": {
     "title": "Login",
@@ -386,6 +387,9 @@
     "kickmessage": "You have been kicked out of __name__",
     "banmessage": "You have been banned from __name__",
     "bannedfromroom": "Unable to join __name__, you were banned",
+    "roomnotexists": "Donut __name__ not already exists, <a class='open-create-room' data-name='__name__'>would you like to create it</a>?",
+    "alreadyexists": "Donut __name__ already exists, <a href='#__uri__'>would you like to join it</a>?",
+    "successfullycreated": "Donut __name__ successfully created",
     "reason": "(reason: \"__reason__\")",
     "deletemessage": "The donut __name__ has been deleted",
     "users": {

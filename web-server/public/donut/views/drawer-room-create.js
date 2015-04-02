@@ -2,8 +2,9 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'client',
   '_templates'
-], function ($, _, Backbone, _templates) {
+], function ($, _, Backbone, client, _templates) {
   var DrawerRoomCreateView = Backbone.View.extend({
 
     template: _templates['drawer-room-create.html'],
@@ -18,17 +19,20 @@ define([
     initialize: function(options) {
       this.mainView = options.mainView;
 
-      this.render();
+      this.render(options.name);
 
       this.$input = this.$el.find('.input');
     },
     /**
      * Only set this.$el content
      */
-    render: function() {
-      var html = this.template();
+    render: function(name) {
+      var html = this.template({name: name.replace('#', '')});
       this.$el.html(html);
       return this;
+    },
+    reset: function() {
+      this.$el.removeClass('has-error').removeClass('has-success').val('');
     },
     valid: function(event) {
       if (this.$input.val() == '') {
@@ -57,15 +61,31 @@ define([
       }
     },
     submit: function() {
-      if (!this._valid()) return false;
+      if (!this._valid())
+        return false;
 
       var name = '#'+this.$input.val();
-
       var uri = 'room/'+name.replace('#', '');
-      window.router.navigate(uri, {trigger: true});
 
-      this.$el.removeClass('has-error').removeClass('has-success').val('');
-      this.trigger('close');
+      var that = this;
+      client.roomCreate(name, function(response) {
+        if (response.err == 'alreadyexists') {
+          that.mainView.alert('error', $.t('chat.alreadyexists', {name: name, uri: uri}));
+          that.reset();
+          that.trigger('close');
+          return;
+        } else if (response.err) {
+          that.mainView.alert('error', $.t('global.unknownerror'));
+          that.reset();
+          that.trigger('close');
+          return;
+        }
+
+        window.router.navigate(uri, {trigger: true});
+        that.mainView.alert('info', $.t('chat.successfullycreated', {name: name}));
+        that.reset();
+        that.trigger('close');
+      });
     }
 
   });

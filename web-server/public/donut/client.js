@@ -18,7 +18,7 @@ define([
       pomelo.on('error',              function(err) { debug('error', err); this.trigger('error', err); }, this);
 
       // reconnection events
-      pomelo.on('reconnect',          function(num) { debug('reconnect', num); this.trigger('reconnect', num); }, this)
+      pomelo.on('reconnect',          function(num) { debug('reconnect', num); this.trigger('reconnect', num); }, this);
       pomelo.on('reconnect_attempt',  function() { debug('reconnect_attempt'); this.trigger('reconnect_attempt'); }, this);
       pomelo.on('reconnecting',       function(num) { debug('reconnecting', num); this.trigger('reconnecting', num); }, this);
       pomelo.on('reconnect_error',    function(err) { debug('reconnect_error', err); this.trigger('reconnect_error', err); }, this);
@@ -202,12 +202,9 @@ define([
           'chat.roomJoinHandler.join',
           data,
           function(response) {
-            if (response.err) {
-              debug('io:in:room:join error: ', response);
-            }
-
+            debug('io:in:room:join', response);
             if (_.isFunction(callback))
-              return callback(response.err);
+              return callback(response);
           }
       );
     },
@@ -276,6 +273,19 @@ define([
           function(response) {
             debug('io:in:room:update', response);
             return fn(response);
+          }
+      );
+    },
+    roomCreate: function(name, callback) {
+      var data = {name: name};
+      debug('io:out:room:create', data);
+      pomelo.request(
+          'chat.roomCreateHandler.create',
+          data,
+          function(response) {
+            debug('io:in:room:create', response);
+            if (_.isFunction(callback))
+              return callback(response);
           }
       );
     },
