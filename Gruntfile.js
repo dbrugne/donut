@@ -22,7 +22,7 @@ module.exports = function(grunt) {
             'jquery'                      : '../vendor/jquery/jquery',
             'bootstrap'                   : '../vendor/bootstrap/dist/js/bootstrap',
             'text'                        : '../vendor/requirejs-text/text',
-            'socket.io'                   : '../../node_modules/socket.io-client/socket.io',
+            'socket.io'                   : '../../../node_modules/socket.io-client/socket.io',
             'pomelo'                      : './libs/pomelo',
             'underscore'                  : '../vendor/underscore-amd/underscore',
             'backbone'                    : '../vendor/backbone-amd/backbone',
