@@ -3,8 +3,8 @@ var conf = require('../config/index');
 
 // http://i18next.com/pages/doc_init.html
 i18next.init({
-  resGetPath: require('path').resolve(__dirname, '..', 'locales/__lng__/__ns__.json'),
-  resSetPath: require('path').resolve(__dirname, '..', 'locales/__lng__/__ns__.json'),
+  resGetPath: require('path').resolve(__dirname, '../..', 'locales/__lng__/__ns__.json'),
+  resSetPath: require('path').resolve(__dirname, '../..', 'locales/__lng__/__ns__.json'),
   cookieName: conf.i18n.cookie,
   saveMissing: true,
   detectLngQS: 'force_locale', // set by facebooklocale.js middleware,
