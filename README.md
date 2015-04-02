@@ -118,10 +118,6 @@ $ mkdir /home/donut/app
 $ cd /home/donut/app
 $ git clone git@github.com:dbrugne/donut.git ./
 $ npm install
-$ cd game-server
-$ npm install
-$ cd ../web-server
-$ npm install
 $ bower install
 $ grunt jst
 $ grunt requirejs

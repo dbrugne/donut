@@ -3,7 +3,6 @@ var debug = require('debug')('donut:web');
 var express = require('express');
 var errors = require('./app/middlewares/errors');
 var path = require('path');
-var compression = require('compression')
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var less = require('less-middleware');
@@ -29,7 +28,7 @@ app.enable('trust proxy'); // nginx
 
 app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(less(__dirname+'/public', { force: conf.less.force }));
-app.use(express.static(path.join(__dirname, 'node_modules/socket.io-client'))); // => require('socket.io-client');
+app.use(express.static(path.join(__dirname, '../node_modules/socket.io-client'))); // => require('socket.io-client');
 app.use(express.static(path.join(__dirname, '../shared/cloudinary'))); // cloudinary common logic
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(logger('dev'));
