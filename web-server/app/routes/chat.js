@@ -50,6 +50,7 @@ router.get('/!', function(req, res) {
     meta: {title: i18next.t("title.chat")},
     colors: colors.toString(),
     hello: hello().replace('%u', '<strong>@'+req.user.username+'</strong>'),
+    avoidFa: true,
     build: build
   });
 
