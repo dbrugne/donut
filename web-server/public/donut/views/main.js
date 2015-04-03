@@ -24,6 +24,7 @@ define([
   'views/drawer-room-delete',
   'views/drawer-user-profile',
   'views/drawer-user-edit',
+  'views/drawer-user-preferences',
   'views/drawer-user-account',
   'views/discussion-room',
   'views/discussion-onetoone',
@@ -34,7 +35,7 @@ define([
              DrawerView,
              DrawerRoomCreateView, DrawerRoomProfileView, DrawerRoomEditView, DrawerRoomUsersView,
              DrawerRoomDeleteView,
-             DrawerUserProfileView, DrawerUserEditView, DrawerUserAccountView,
+             DrawerUserProfileView, DrawerUserEditView, DrawerUserPreferencesView, DrawerUserAccountView,
              RoomView, OneToOneView,
              DiscussionsBlockView) {
 
@@ -66,6 +67,7 @@ define([
       'click .go-to-search'             : 'focusOnSearch',
       'click .open-create-room'         : 'openCreateRoom',
       'click .open-user-edit'           : 'openUserEdit',
+      'click .open-user-preferences'    : 'openUserPreferences',
       'click .open-user-account'        : 'openUserAccount',
       'click .open-user-profile'        : 'openUserProfile',
       'dblclick .dbl-open-user-profile' : 'openUserProfile',
@@ -341,6 +343,11 @@ define([
     openUserEdit: function(event) {
       event.preventDefault();
       var view = new DrawerUserEditView({ mainView: this });
+      this.drawerView.setSize('450px').setView(view).open();
+    },
+    openUserPreferences: function(event) {
+      event.preventDefault();
+      var view = new DrawerUserPreferencesView({ mainView: this });
       this.drawerView.setSize('450px').setView(view).open();
     },
 
