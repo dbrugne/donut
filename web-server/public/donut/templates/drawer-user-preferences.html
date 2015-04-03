@@ -1,0 +1,48 @@
+<div class="user" data-colorify="<%= user.color %>">
+    <span class="username">@<%= user.username %></span>
+</div>
+<div class="errors"></div>
+<form class="user-form" role="form">
+    <div class="form-group">
+        <label>Sons</label>
+        <div class="radio">
+            <label>
+                <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+                Jouer un son quand un nouveau message arrive (<a href="">test</a>)
+            </label>
+        </div>
+        <div class="radio">
+            <label>
+                <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+                Ne jamais jouer de son
+            </label>
+        </div>
+    </div>
+
+    <label>Notifications</label>
+    <p class="help-block">Indiquer quand vous souhaitez être notifier pour les événements suivants</p>
+    <p class="help-block">Les notifications par email et sur mobile ne sont envoyés que si vous n'êtes pas en ligne et un même type de notification n'est jamais
+    envoyé plus d'une fois toutes les 12 heures hormis si vous vous reconnecter entre temps.</p>
+    <div class="form-group">
+        <label>
+            Quoi ?
+        </label>
+        <label class="checkbox-inline">
+            <input type="checkbox" id="inlineCheckbox1" value="option1"> Donut
+        </label>
+        <label class="checkbox-inline">
+            <input type="checkbox" id="inlineCheckbox2" value="option2"> Email
+        </label>
+        <label class="checkbox-inline">
+            <input type="checkbox" id="inlineCheckbox3" value="option3"> Mobile
+        </label>
+        <label class="checkbox-inline">
+            <input type="checkbox" id="inlineCheckbox4" value="option3"> Desktop
+        </label>
+    </div>
+
+    <div class="form-group buttons">
+        <a class="btn btn-default btn-sm cancel"><%= t('global.cancel') %></a>
+        <input type="submit" value="<%= t('global.save') %>">
+    </div>
+</form>
