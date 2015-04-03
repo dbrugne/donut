@@ -316,6 +316,7 @@
         }
     },
     "chat": {
+        "loading": "Chargement ",
         "actions": {
             "search": "Chercher",
             "create": "créer",

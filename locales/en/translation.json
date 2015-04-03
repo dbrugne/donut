@@ -295,6 +295,7 @@
     }
   },
   "chat": {
+    "loading": "Loading",
     "actions": {
       "search": "Search",
       "create": "create",
