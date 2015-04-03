@@ -9,113 +9,132 @@
     .header {
       padding-top: 18px;
       padding-right: 10px;
-      min-height: 135px;
-      .avatar {
-        position: absolute;
-        width: 100px;
-        height: 100px;
-      }
-      .name, .username {
-        display: inline-block;
-        margin-top: 2px;
-        margin-left: 110px;
-        font-size: 2.2em;
-      }
-      .owner {
-        display: inline-block;
-        font-size: 1.2em;
-      }
-      .status-block {
-        display: inline-block;
-        margin-left: 5px;
-        font-size: 1.2em;
-        i { font-size: 0.9em; }
-        .ago {
-          display: none;
-          font-size: 0.9em;
-          font-style: italic;
+      &.room {
+        min-height: 135px;
+        .avatar {
+          position: absolute;
+          width: 100px;
+          height: 100px;
         }
-      }
-      .location, .website {
-        margin-left: 110px;
-        font-size: 1.2em;
-      }
-      .location {
-        margin-top: 5px;
-        font-weight: bold;
-      }
-      .topic {
-        min-height: 32px;
-        margin-top: 4px;
-        padding: 5px 15px 5px 115px;
-        .topic-current {
-          .txt-bubble;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          padding: 0.6em 1.2em;
-          display: inline-block;
-          white-space: nowrap;
-          max-width: 100%;
-          label {
-            font-size: 13px;
-            display: block;
-            width: 90px;
-            float: left;
-            margin: 0;
-            color: @cl-subtext40;
+        .info {
+          .name {
+            display: inline-block;
+            margin-top: 2px;
+            margin-left: 110px;
+            font-size: 2.2em;
           }
-          .txt {
-            display: block;
-            font-size: 13px;
-            margin-left: 90px;
-            overflow: hidden;
+          .owner {
+            display: inline-block;
+            font-size: 1.2em;
           }
-          .default {
-            color: @cl-subtext20;
-            &:hover {
-              color: @cl-subtext50;
+          .dropdown {
+            display: inline-block;
+            position: relative;
+            .dropdown-toggle {
+
+            }
+            button {
+              font-size: 24px;
+              border: none;
+              background-color: transparent;
+              color: @cl-subtext20;
+              &:hover {
+                color: @cl-subtext50;
+              }
+            }
+          }
+          .share {
+            display: inline-block;
+            margin-left: 6px;
+            i {
+              font-size: 16px;
+              color: @text-color;
+              margin-left: 3px;
+              vertical-align: middle;
+              cursor: pointer;
+              &.facebook {
+                color: #3b5998;
+              }
+              &.twitter {
+                color: #4099FF;
+              }
+              &.googleplus {
+                color: #dd4b39;
+              }
             }
           }
         }
-        .topic-form {
-          display: none;
-          input[type=text] {
-            min-width: 500px;
+        .topic {
+          min-height: 32px;
+          margin-top: 4px;
+          padding: 5px 15px 5px 115px;
+          .topic-current {
+            .txt-bubble;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding: 0.6em 1.2em;
+            display: inline-block;
+            white-space: nowrap;
+            max-width: 100%;
+            label {
+              font-size: 13px;
+              display: block;
+              width: 90px;
+              float: left;
+              margin: 0;
+              color: @cl-subtext40;
+            }
+            .txt {
+              display: block;
+              font-size: 13px;
+              margin-left: 90px;
+              overflow: hidden;
+            }
+            .default {
+              color: @cl-subtext20;
+              &:hover {
+                color: @cl-subtext50;
+              }
+            }
+          }
+          .topic-form {
+            display: none;
+            input[type=text] {
+              min-width: 500px;
+            }
           }
         }
       }
-      .dropdown {
-        display: inline-block;
-        position: relative;
-        .dropdown-toggle {
-
+      &.user {
+        min-height: 105px;
+        .avatar {
+          position: absolute;
+          width: 80px;
+          height: 80px;
         }
-        button {
-          font-size: 24px;
-          border: none;
-          background-color: transparent;
-          color: @cl-subtext20;
-          &:hover {
-            color: @cl-subtext50;
+        .info {
+          margin-left: 86px;
+          font-size: 1.2em;
+          .username {
+            display: inline-block;
+            margin-top: 12px;
+            margin-right: 4px;
+            font-size: 2em;
+          }
+          .location, .website {
+          }
+          a {
+            text-decoration: underline;
           }
         }
-      }
-      .share {
-        padding-left: 110px;
-        i {
-          font-size: 16px;
-          color: @text-color;
-          margin-left: 3px;
-          vertical-align: middle;
-          cursor: pointer;
-          &.facebook {
-            color: #3b5998;
-          }
-          &.twitter {
-            color: #4099FF;
-          }
-          &.googleplus {
-            color: #dd4b39;
+        .status-block {
+          font-size: 1.2em;
+          margin-left: 86px;
+          i { font-size: 0.9em; }
+          .ago {
+            display: none;
+            font-size: 0.9em;
+            font-style: italic;
           }
         }
       }

@@ -2,14 +2,15 @@
 <div class="content">
     <div class="header user">
         <img class="avatar open-user-profile" data-username="<%= username %>" src="<%= avatar %>" alt="<%= username %> avatar">
-        <div class="username open-user-profile" data-username="<%= username %>">@<%= username %></div>
+        <div class="info">
+            <span class="username open-user-profile" data-username="<%= username %>">@<%= username %></span>
+            <span class="location"><%= location %></span><% if (location && website) { print(', '); } %><span class="website"><%= website %></span>
+        </div>
         <div class="status-block">
+            <i class="icon icon-circle status contrast"></i>
             <em></em>
             <span class="ago">(<%= t('profile.user.onlined', {time: '<span data-time="'+onlined+'"></span>'}) %>)</span>
-            <i class="icon icon-circle status contrast"></i>
         </div>
-        <div class="location"><%= location %></div>
-        <div class="website"><%= website %></div>
     </div>
     <div class="events"><!--/events view--></div>
     <div class="input"><!-- input view --></div>
