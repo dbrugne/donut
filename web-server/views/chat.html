@@ -27,22 +27,26 @@
         <div class="row">
             <div id="left">
                 <div id="block-current-user">
-                    <div class="wait-connection">
-                        <div class="hello">
-                            Connecting <strong>@{{user.username}}</strong>
+                    <div class="avatar">
+                        <img class="open-user-profile" data-username="{{user.username}}" src="{{user.avatar}}" alt="@{{user.username}} avatar">
+                    </div>
+                    <div class="content">
+                        <div class="username">
+                            @{{user.username}}
                         </div>
-                        <div class="avatar"></div>
-                        <div class="content">
-                            <div class="actions">
-                                <a href="/logout"><i class="icon icon-power-off"></i> {{#i}}actions.logout{{/i}}</a>
-                            </div>
+                        <div class="connection">
+                            <i class="fa fa-circle status offline" title="offline"></i> offline
+                        </div>
+                        <div class="dropdown">
+                            <button class="dropdown-toggle">
+                                <i class="fa fa-chevron-down"></i>
+                            </button>
                         </div>
                     </div>
                 </div><!-- /#block-current-user -->
+                <hr>
                 <div id="block-actions">
-                    <a class="go-to-search"><i class="icon icon-search"></i> {{#i}}global.search{{/i}}</a>
-                    &nbsp;
-                    <a class="open-create-room"><i class="fa fa-plus-circle"></i> {{#i}}chat.createadonut{{/i}}</a>
+                    <a class="go-to-search">{{#i}}chat.actions.search{{/i}}</a> {{#i}}global.or{{/i}} <a class="open-create-room">{{#i}}chat.actions.create{{/i}}</a> {{#i}}chat.actions.adonut{{/i}}
                 </div>
                 <hr>
                 <div id="block-discussions">
@@ -87,15 +91,10 @@
             <div class="modal-content">
                 <div class="modal-body">
                     <div class="loader">
-                        <i class="icon icon-spinner icon-spin icon-2x"></i>
+                        Loading<span class="one">.</span><span class="two">.</span><span class="three">.</span>​
                     </div>
-                    <div class="current">
-                        <!-- must be already in DOM -->
-                        <span class="connected">{{#i}}chat.connection.connected{{/i}}</span>
-                        <span class="reconnected">{{#i}}chat.connection.reconnected{{/i}}</span>
-                        <span class="connecting">{{#i}}chat.connection.connecting{{/i}}</span>
-                        <span class="error">{{#i}}chat.connection.error{{/i}}</span>
-                        <span class="disconnected">{{#i}}chat.connection.disconnected{{/i}}</span>
+                    <div class="hello">
+                        {{&hello}}
                     </div>
                     <div class="error-message"><!--connection error --></div>
                     <div class="contactus">

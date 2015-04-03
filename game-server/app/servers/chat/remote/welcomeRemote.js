@@ -6,7 +6,6 @@ var User = require('../../../../../shared/models/user');
 var Room = require('../../../../../shared/models/room');
 var roomDataHelper = require('../../../util/roomData');
 var oneDataHelper = require('../../../util/oneData');
-var hello = require('../../../util/helloDolly');
 var featuredRooms = require('../../../util/featuredRooms');
 
 module.exports = function(app) {
@@ -31,7 +30,6 @@ WelcomeRemote.prototype.getMessage = function(uid, frontendId, globalCallback) {
 
 	// welcome event data
 	var welcomeEvent = {
-		hello: hello()
 	};
 
 	var that = this;

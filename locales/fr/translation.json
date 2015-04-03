@@ -316,6 +316,14 @@
         }
     },
     "chat": {
+        "actions": {
+            "search": "Chercher",
+            "create": "créer",
+            "adonut": "un donut",
+            "account": "mon compte",
+            "edit": "mon profil",
+            "preferences": "préférences"
+        },
         "create": {
             "info": "Attention le nom du donut ne sera plus modifiable !",
             "label": "Créez votre donut",

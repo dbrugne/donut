@@ -295,6 +295,14 @@
     }
   },
   "chat": {
+    "actions": {
+      "search": "Search",
+      "create": "create",
+      "adonut": "a donut",
+      "account": "my account",
+      "edit": "my profile",
+      "preferences": "préférences"
+    },
     "create": {
       "info": "Attention, the donut name will not be editable later.",
       "label": "Create your donut",

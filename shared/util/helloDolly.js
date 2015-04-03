@@ -1,5 +1,5 @@
 var _ = require('underscore');
-var i18next = require('./../../../shared/util/i18next');
+var i18next = require('./i18next');
 
 var quotesFr = [
   "Ravi de vous revoir %u",

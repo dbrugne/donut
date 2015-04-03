@@ -29,11 +29,7 @@ define([
         show: true
       });
 
-      this.$connected = this.$el.find('.current .connected').first();
-      this.$reconnected = this.$el.find('.current .reconnected').first();
-      this.$connecting = this.$el.find('.current .connecting').first();
       this.$error = this.$el.find('.current .error').first();
-      this.$disconnected = this.$el.find('.current .disconnected').first();
       this.$all = this.$el.find('.current > span');
       this.$errorMessage = this.$el.find('.error-message').first();
 
@@ -52,18 +48,15 @@ define([
       this.$all.hide();
       switch (event) {
         case  'connect':
-          this.$connected.css('display', 'inline');
           this.$errorMessage.html('').hide();
           break;
         case  'reconnect':
-          this.$reconnected.css('display', 'inline');
           this.$errorMessage.html('').hide();
           break;
         case 'connecting':
         case 'reconnecting':
         case 'reconnect_error':
         case 'reconnect_attempt':
-          this.$connecting.css('display', 'inline');
           this.$errorMessage.html(data).show();
           break;
         case 'error':
@@ -72,7 +65,6 @@ define([
           this.$errorMessage.html(data).show();
           break;
         case 'disconnect':
-          this.$disconnected.css('display', 'inline');
           this.$errorMessage.html(data).show();
           this.show();
           break;

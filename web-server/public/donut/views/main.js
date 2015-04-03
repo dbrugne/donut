@@ -131,12 +131,10 @@ define([
         }
 
         // Elements hidden until first 'welcome'
-        $('#block-discussions, #block-actions').show();
+        $('#block-discussions').show();
       }
 
       // Current user data (should be done before onetoone logic)
-      if (data.hello)
-        this.currentUserView.hello = data.hello;
       currentUser.set(data.user, {silent: true});
       this.currentUserView.render();
 
@@ -302,7 +300,7 @@ define([
         return;
 
       var view = new DrawerUserProfileView({ mainView: this, username: username });
-      this.drawerView.setSize('320px').setView(view).open();
+      this.drawerView.setSize('380px').setView(view).open();
 
       return false; // stop propagation
     },
@@ -314,7 +312,7 @@ define([
         return;
 
       var view = new DrawerRoomProfileView({ mainView: this, name: name });
-      this.drawerView.setSize('320px').setView(view).open();
+      this.drawerView.setSize('380px').setView(view).open();
 
       return false; // stop propagation
     },

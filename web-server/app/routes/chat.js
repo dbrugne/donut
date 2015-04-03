@@ -3,6 +3,7 @@ var router = express.Router();
 var i18next = require('../../../shared/util/i18next');
 var bouncer = require('../middlewares/bouncer');
 var colors = require('../../../config/colors');
+var hello = require('../../../shared/util/helloDolly');
 
 router.get('/!', function(req, res) {
 
@@ -48,6 +49,7 @@ router.get('/!', function(req, res) {
     partials: {head: '_head', contactform: '_contact'},
     meta: {title: i18next.t("title.chat")},
     colors: colors.toString(),
+    hello: hello().replace('%u', '<strong>@'+req.user.username+'</strong>'),
     build: build
   });
 
