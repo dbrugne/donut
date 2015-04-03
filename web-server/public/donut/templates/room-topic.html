@@ -2,9 +2,10 @@
     <label><%= t('chat.topic.label') %></label>
     <span class="txt" title=""></span>
 </p>
-<p class="topic-form">
-    <label><%= t('chat.topic.label') %></label>
-    <input type="text" class="topic-input" placeholder="<%= t('chat.topic.placeholder') %>" value="" maxlength="512">
-    <button class="submit"><%= t('global.change') %></button>
-    <button class="cancel"><%= t('global.cancel') %></button>
-</p>
+<div class="form-inline topic-form">
+    <div class="form-group">
+        <input type="text" class="form-control topic-input" placeholder="<%= t('chat.topic.placeholder') %>" value="" maxlength="512">
+    </div>
+    <button type="submit" class="btn btn-default cancel"><%= t('global.cancel') %></button>
+    <button type="submit" class="btn submit" data-colorify-text="contrast" data-colorify-background="color"><%= t('global.change') %></button>
+</div>

@@ -75,8 +75,16 @@ define([
       if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin()) return false;
 
       var newTopic = this.$el.find('.topic-input').val();
+
+      // only if different
+      if (newTopic == this.model.get('topic')) {
+        this.hideForm();
+        return;
+      }
+
       // only if not too long
-      if (newTopic.length <= 512) client.roomTopic(this.model.get('name'), newTopic);
+      if (newTopic.length <= 512)
+        client.roomTopic(this.model.get('name'), newTopic);
 
       // reset form state
       this.$el.find('.topic-input').val('');

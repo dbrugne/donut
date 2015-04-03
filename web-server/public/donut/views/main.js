@@ -275,25 +275,18 @@ define([
     // ======================================================================
 
     openCreateRoom: function(event) {
-      this._handleAction(event);
-
+      event.preventDefault();
       var name = $(event.currentTarget).data('name') || '';
-
       var view = new DrawerRoomCreateView({ mainView: this, name: name });
       this.drawerView.setSize('450px').setView(view).open();
-
-      return false; // stop propagation
     },
     openUserAccount: function(event) {
-      this._handleAction(event);
-
+      event.preventDefault();
       var view = new DrawerUserAccountView({ mainView: this });
       this.drawerView.setSize('320px').setView(view).open();
-
-      return false; // stop propagation
     },
     openUserProfile: function(event) {
-      this._handleAction(event);
+      event.preventDefault();
 
       var username = $(event.currentTarget).data('username');
       if (!username)
@@ -301,11 +294,9 @@ define([
 
       var view = new DrawerUserProfileView({ mainView: this, username: username });
       this.drawerView.setSize('380px').setView(view).open();
-
-      return false; // stop propagation
     },
     openRoomProfile: function(event) {
-      this._handleAction(event);
+      event.preventDefault();
 
       var name = $(event.currentTarget).data('roomName');
       if (!name)
@@ -313,11 +304,9 @@ define([
 
       var view = new DrawerRoomProfileView({ mainView: this, name: name });
       this.drawerView.setSize('380px').setView(view).open();
-
-      return false; // stop propagation
     },
     openRoomEdit: function(event) {
-      this._handleAction(event);
+      event.preventDefault();
 
       var name = $(event.currentTarget).data('roomName');
       if (!name)
@@ -325,45 +314,34 @@ define([
 
       var view = new DrawerRoomEditView({ mainView: this, name: name });
       this.drawerView.setSize('450px').setView(view).open();
-
-      return false; // stop propagation
     },
     openRoomUsers: function(event) {
-      this._handleAction(event);
+      event.preventDefault();
 
       var name = $(event.currentTarget).data('roomName');
       if (!name)
         return;
 
-      //this.mainView.openRoomUsers(this.model);
       var model = rooms.get(name);
       if (!model)
         return;
 
       var view = new DrawerRoomUsersView({ mainView: this, model: model });
       this.drawerView.setSize('450px').setView(view).open();
-
-      return false; // stop propagation
     },
     openRoomDelete: function(event) {
-      this._handleAction(event);
-
+      event.preventDefault();
       var name = $(event.currentTarget).data('roomName');
       if (!name)
         return;
 
       var view = new DrawerRoomDeleteView({ mainView: this, name: name });
       this.drawerView.setSize('450px').setView(view).open();
-
-      return false; // stop propagation
     },
     openUserEdit: function(event) {
-      this._handleAction(event);
-
+      event.preventDefault();
       var view = new DrawerUserEditView({ mainView: this });
       this.drawerView.setSize('450px').setView(view).open();
-
-      return false; // stop propagation
     },
 
     // DISCUSSIONS MANAGEMENT

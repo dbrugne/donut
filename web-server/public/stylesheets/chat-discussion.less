@@ -23,7 +23,6 @@
       }
       .owner {
         display: inline-block;
-        margin-left: 5px;
         font-size: 1.2em;
       }
       .status-block {
@@ -47,10 +46,12 @@
       }
       .topic {
         min-height: 32px;
-        margin-top: 14px;
+        margin-top: 4px;
         padding: 5px 15px 5px 115px;
         .topic-current {
           .txt-bubble;
+          overflow: hidden;
+          text-overflow: ellipsis;
           padding: 0.6em 1.2em;
           display: inline-block;
           white-space: nowrap;
@@ -77,96 +78,44 @@
           }
         }
         .topic-form {
-          .txt-bubble;
-          width: 100%;
-          z-index: 1; // if .topic-form is too long .events appear over
+          display: none;
           input[type=text] {
-            .form-control;
-            display: inline-block;
-            width: 100%;
-            min-width: 300px;
-            -webkit-border-radius: 25px;
-            -moz-border-radius: 25px;
-            border-radius: 25px;
-            padding: 6px 30px 6px 15px;
-          }
-          .submit, .cancel {
-            .big-button;
-            background-color: @cl-background;
-            color: @cl-subtext40;
-            border-color: @cl-subtext40;
-            font-size: 0.8em;
-            padding: 6px 9px;
-            border-width: 3px;
-            font-style: normal;
-            display: inline-block;
-            margin-left: 5px;
-          }
-          .cancel {
-            margin-right: 5px;
-          }
-          .submit {
-            font-weight: bold;
+            min-width: 500px;
           }
         }
       }
-      .actions {
-        color: @cl-subtext30;
-        margin-top: 4px;
-        margin-left: 106px;
-        white-space: nowrap;
-        i {
+      .dropdown {
+        display: inline-block;
+        position: relative;
+        .dropdown-toggle {
+
+        }
+        button {
+          font-size: 24px;
+          border: none;
+          background-color: transparent;
           color: @cl-subtext20;
-          font-size: 0.9em;
-        }
-        a {
-          font-size: 1em;
-          text-decoration: none;
-          border-bottom: 1px solid @cl-subtext10;
-          color: @cl-subtext30;
           &:hover {
-            text-decoration: none;
-            border-bottom: 1px solid @cl-subtext30;
-            color: @cl-title;
+            color: @cl-subtext50;
           }
         }
-        .separation {
-          margin-left: 5px;
-          margin-right: 3px;
-        }
-        .url {
-          margin-top: 2px;
-          font-size: 1em;
-          i {
-            color: @cl-subtext30;
-            font-size: 0.9em;
+      }
+      .share {
+        padding-left: 110px;
+        i {
+          font-size: 16px;
+          color: @text-color;
+          margin-left: 3px;
+          vertical-align: middle;
+          cursor: pointer;
+          &.facebook {
+            color: #3b5998;
           }
-          a {
-            text-decoration: none;
+          &.twitter {
+            color: #4099FF;
           }
-        }
-        .edit {
-          margin-right: 5px;
-        }
-        .profile {
-        }
-        .share {
-          padding-top: 2px;
-          i {
-            font-size: 16px;
-            color: @text-color;
-            margin-left: 3px;
-            vertical-align: middle;
-            cursor: pointer;
-            &.facebook {
-              color: #3b5998;
-            }
-            &.twitter {
-              color: #4099FF;
-            }
-            &.googleplus {
-              color: #dd4b39;
-            }
+          &.googleplus {
+            color: #dd4b39;
           }
         }
       }
