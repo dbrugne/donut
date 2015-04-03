@@ -12,6 +12,7 @@ define([
   'text!./templates/drawer-room-profile.html',
   'text!./templates/drawer-user-account.html',
   'text!./templates/drawer-user-edit.html',
+  'text!./templates/drawer-user-preferences.html',
   'text!./templates/drawer-user-profile.html',
   'text!./templates/event/disconnected.html',
   'text!./templates/event/in-out-on-off.html',
@@ -38,9 +39,9 @@ define([
 ], function (_,
 color_picker, current_user, discussion_block, discussion_onetoone, discussion_room, drawer_room_create,
 drawer_room_delete, drawer_room_edit, drawer_room_users, drawer_room_profile, drawer_user_account, drawer_user_edit,
-drawer_user_profile, event_disconnected, event_in_out_on_off, event_message, event_reconnected, event_room_deop,
-event_room_kick, event_room_ban, event_room_deban, event_room_op, event_room_topic, events, home_rooms, home_users,
-home, image_uploader, input, input_image, room_topic, room_users_list, room_users, spinner, welcome
+drawer_user_preferences, drawer_user_profile, event_disconnected, event_in_out_on_off, event_message, event_reconnected,
+event_room_deop, event_room_kick, event_room_ban, event_room_deban, event_room_op, event_room_topic, events, home_rooms,
+home_users, home, image_uploader, input, input_image, room_topic, room_users_list, room_users, spinner, welcome
 ) {
 
   /**
@@ -69,6 +70,7 @@ home, image_uploader, input, input_image, room_topic, room_users_list, room_user
   JST['drawer-room-profile.html']     = _.template(drawer_room_profile);
   JST['drawer-user-account.html']     = _.template(drawer_user_account);
   JST['drawer-user-edit.html']        = _.template(drawer_user_edit);
+  JST['drawer-user-preferences.html'] = _.template(drawer_user_preferences);
   JST['drawer-user-profile.html']     = _.template(drawer_user_profile);
   JST['event/disconnected.html']      = _.template(event_disconnected);
   JST['event/in-out-on-off.html']     = _.template(event_in_out_on_off);
