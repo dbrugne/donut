@@ -351,6 +351,7 @@
         },
         "userscount": "<strong>__count__</strong> utilisateur dans ce donut",
         "userscount_plural": "<strong>__count__</strong> utilisateurs dans ce donut",
+        "usersoffline": "Utilisateurs hors ligne",
         "topic": {
             "label": "En ce moment",
             "placeholder": "Entrez ici le sujet de la conversation, l'humeur, l'ambiance ...",
@@ -361,16 +362,16 @@
         },
         "op": {
             "is": "Cet utilisateur est modérateur de ce donut",
-            "infobox": "Faire de cet utilisateur un modérateur"
+            "infobox": "Faire modérateur"
         },
         "deop": {
-            "infobox": "Retirer les droits de modérateur à cet utilisateur"
+            "infobox": "Retirer des modérateurs"
         },
         "kick": {
-            "infobox": "Expulser cet utilisateur de ce donut"
+            "infobox": "Expulser"
         },
         "ban": {
-            "infobox": "Expulser et bannir cet utilisateur de ce donut"
+            "infobox": "Expulser et bannir"
         },
         "deban": {
             "infobox": "Autoriser à nouveau l'utilisateur à rejoindre le donut"

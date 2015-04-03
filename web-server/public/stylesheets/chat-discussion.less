@@ -170,31 +170,6 @@
           }
         }
       }
-      /*.share-button {
-        position: absolute;
-        display: block;
-        top: 10px;
-        right: 10px;
-        height: 33px;
-        border-radius: 25px;
-        padding-right: 15px;
-        label {
-          display: block;
-          color: inherit;
-          background-color: transparent;
-          padding: 5px 12px;
-          font-size: 14px;
-          span {
-            text-transform: none;
-            .ft-opensans-bold;
-          }
-        }
-        .social.networks-4 {
-          width: inherit;
-          z-index: 10;
-          position: relative;
-        }
-      }*/
     }
     .events {
       @import "./chat-discussion-events";
@@ -214,7 +189,10 @@
       width: calc(@size-right-mid);
       position: relative;
       height: 100%;
-
+      color: @cl-background;
+      a { color: @cl-background; }
+      hr { margin-left: 0; margin-right: 0; }
+      font-size: 1.1em;
       @import "./chat-discussion-users";
     }
   }

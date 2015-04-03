@@ -330,6 +330,7 @@
     },
     "userscount": "<strong>__count__</strong> user in this donut",
     "userscount_plural": "<strong>__count__</strong> users in this donut",
+    "usersoffline": "Offline users",
     "topic": {
       "label": "Currently",
       "placeholder": "Enter the conversation topic, the mood,...",
@@ -340,16 +341,16 @@
     },
     "op": {
       "is": "This user is the moderator of this donut.",
-      "infobox": "Make this user moderator"
+      "infobox": "Make moderator"
     },
     "deop": {
-      "infobox": "Remove this user from moderators"
+      "infobox": "Remove from moderators"
     },
     "kick": {
-      "infobox": "Kick this user out of this donut"
+      "infobox": "Kick out"
     },
     "ban": {
-      "infobox": "Kick and ban this user out of this donut"
+      "infobox": "Kick and ban"
     },
     "deban": {
       "infobox": "Unban user"

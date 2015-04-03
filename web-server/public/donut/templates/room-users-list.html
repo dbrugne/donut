@@ -1,47 +1,57 @@
 <% var previous; %>
 <% _.each(list, function(user) { %>
 <% if (previous && previous != user.status) { %>
-<div class="title">Utilisateurs hors ligne</div>
+<div class="title"><%= t('chat.usersoffline') %></div>
 <% } %>
 <% previous = user.status; %>
 <div class="item <% if (user.is_op === true) { %>op<% }; %> <% if (user.is_owner === true) { %>owner<% }; %> <%= user.status %>">
     <div class="infos">
         <div class="avatar open-user-profile" data-username="<%= user.username %>"  style="background-image: url(<%= user.avatar %>)" title="<% if (user.is_op === true) { %><%= t('chat.op.is') %><% } else if (user.is_owner === true) { %><%= t('chat.owner.is') %><% }; %>"></div>
         <div class="username open-user-profile" data-username="<%= user.username %>" title="<%= t('global.'+user.status) %>">@<%= user.username %> <i class="icon icon-dot-circle-o <%= user.status %>" title="online"></i></div>
-    </div>
-    <% if (isAdmin === true || (!user.is_owner && (isOp === true || isOwner === true))) { %>
-    <div class="actions">
-        <i class="icon icon-caret-left"></i>
-        <div class="open-user-profile" title="<%= t('chat.profile.infobox') %>" data-username="<%= user.username %>">
-            <i class="icon icon-user"></i>
+
+        <% if (isAdmin === true || (!user.is_owner && (isOp === true || isOwner === true))) { %>
+        <div class="dropdown">
+            <button class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                <i class="fa fa-chevron-down"></i>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li role="presentation">
+                    <a role="menuitem" tabindex="-1" class="open-user-profile" data-username="<%= user.username %>"><i class="icon icon-user"></i> Voir le profil</a>
+                </li>
+                <% if (!user.is_owner || isAdmin === true) { %>
+                    <% if (!user.is_owner && user.is_op === true) { %>
+                    <li role="presentation">
+                        <a role="menuitem" tabindex="-1" class="deop deop-user" data-username="<%= user.username %>">
+                            <span class="icon-stack">
+                                <i class="icon icon-op icon-stack-1x"></i>
+                                <i class="icon icon-ban icon-stack-2x text-danger"></i>
+                            </span>
+                            <%= t('chat.deop.infobox') %>
+                        </a>
+                    </li>
+                    <% } else if (!user.is_owner) { %>
+                    <li role="presentation">
+                        <a role="menuitem" tabindex="-1" class="op op-user" data-username="<%= user.username %>">
+                            <i class="icon icon-op"></i> <%= t('chat.op.infobox') %>
+                        </a>
+                    </li>
+                    <% }; %>
+                <% }; %>
+                <% if (!user.is_owner) { %>
+                <li role="presentation">
+                    <a role="menuitem" tabindex="-1" class="kick kick-user" data-username="<%= user.username %>">
+                        <i class="icon icon-kick"></i> <%= t('chat.kick.infobox') %>
+                    </a>
+                </li>
+                <li role="presentation">
+                    <a role="menuitem" tabindex="-1" class="ban ban-user" data-username="<%= user.username %>">
+                        <i class="icon icon-ban"></i> <%= t('chat.ban.infobox') %>
+                    </a>
+                </li>
+                <% }; %>
+            </ul>
         </div>
-        <% if (!user.is_owner || isAdmin === true) { %>
-            <% if (!user.is_owner && user.is_op === true) { %>
-            <span class="separator">|</span>
-            <div class="deop deop-user" title="<%= t('chat.deop.infobox') %>" data-username="<%= user.username %>">
-                <span class="icon-stack icon-lg">
-                    <i class="icon icon-op icon-stack-1x"></i>
-                    <i class="icon icon-ban icon-stack-2x text-danger"></i>
-                </span>
-            </div>
-            <% } else if (!user.is_owner) { %>
-            <span class="separator">|</span>
-            <div class="op op-user" title="<%= t('chat.op.infobox') %>" data-username="<%= user.username %>">
-                <i class="icon icon-op"></i>
-            </div>
-            <% }; %>
-        <% }; %>
-        <span class="separator">|</span>
-        <div class="kick kick-user" title="<%= t('chat.kick.infobox') %>" data-username="<%= user.username %>">
-            <i class="icon icon-kick"></i>
-        </div>
-        <% if (!user.is_owner) { %>
-            <span class="separator">|</span>
-            <div class="ban ban-user" title="<%= t('chat.ban.infobox') %>" data-username="<%= user.username %>">
-                <i class="icon icon-ban"></i>
-            </div>
         <% }; %>
     </div>
-    <% }; %>
 </div>
 <% }); %>
