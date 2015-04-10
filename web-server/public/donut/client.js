@@ -104,6 +104,10 @@ define([
         debug('io:in:user:updated', data);
         this.trigger('user:updated', data);
       }, this);
+      pomelo.on('user:preferences', function(data) {
+        debug('io:in:user:preferences', data);
+        this.trigger('user:preferences', data);
+      }, this);
       pomelo.on('user:viewed', function(data) {
         debug('io:in:user:viewed', data);
         this.trigger('user:viewed', data);
@@ -444,6 +448,19 @@ define([
           data,
           function(response) {
             debug('io:in:user:update', response);
+            return fn(response);
+          }
+      );
+    },
+    userPreferencesUpdate: function(fields, fn) {
+      var data = {data: fields};
+      debug('io:out:user:preferences:update', data);
+      var that = this;
+      pomelo.request(
+          'chat.userPreferencesHandler.update',
+          data,
+          function(response) {
+            debug('io:in:user:preferences:update', response);
             return fn(response);
           }
       );

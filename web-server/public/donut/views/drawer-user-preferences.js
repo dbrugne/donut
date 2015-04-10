@@ -15,7 +15,7 @@ define([
 
     events  : {
       'click .play-sound-test': 'onPlaySound',
-      'submit form.user-form': 'onSubmit'
+      'change .savable': 'onChangeValue'
     },
 
     initialize: function(options) {
@@ -48,34 +48,29 @@ define([
       event.preventDefault();
       windowView._play();
     },
-    onSubmit: function(event) {
-      event.preventDefault();
+    onChangeValue: function(event) {
+      var $target = $(event.currentTarget);
+      var key = $target.attr('value');
+      var value = $target.is(":checked");
 
-      var updateData = {
-        bio: this.$el.find('textarea[name=bio]').val(),
-        location: this.$el.find('input[name=location]').val(),
-        website: this.$el.find('input[name=website]').val(),
-        color: this.$el.find('input[name=color]').val()
-      };
+      // Radio button particular handling
+      if ($target.attr('type') == 'radio') {
+        value = (key.substr(key.lastIndexOf(':')+1) == 'true');
+        key = key.substr(0, key.lastIndexOf(':'));
+      }
 
-      if (this.avatarUploader.data)
-        updateData.avatar = this.avatarUploader.data;
+      var update = {};
+      update[key] = value;
 
-      if (this.posterUploader.data)
-        updateData.poster = this.posterUploader.data;
+      console.log(update);
 
       var that = this;
-      client.userUpdate(updateData, function(data) {
+      client.userPreferencesUpdate(update, function(data) {
         that.$el.find('.errors').hide();
         if (data.err) {
-          var message = '';
-          _.each(data.errors, function(error) {
-            message += error+'<br>';
-          });
-          that.$el.find('.errors').html(message).show();
+          that.$el.find('.errors').html($.t('global.unknownerror')).show();
           return;
         }
-        that.trigger('close');
       });
     }
 
