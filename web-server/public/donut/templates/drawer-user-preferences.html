@@ -8,7 +8,7 @@
         <div class="radio">
             <label>
                 <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
-                Jouer un son quand un nouveau message arrive (<a href="">test</a>)
+                Jouer un son quand un nouveau message arrive (<a class="play-sound-test"><i class="icon icon-bell"></i> test</a>)
             </label>
         </div>
         <div class="radio">
@@ -20,29 +20,56 @@
     </div>
 
     <label>Notifications</label>
-    <p class="help-block">Indiquer quand vous souhaitez être notifier pour les événements suivants</p>
-    <p class="help-block">Les notifications par email et sur mobile ne sont envoyés que si vous n'êtes pas en ligne et un même type de notification n'est jamais
-    envoyé plus d'une fois toutes les 12 heures hormis si vous vous reconnecter entre temps.</p>
+    <p class="help-block">
+        Indiquer quand vous souhaitez être notifié pour les événements suivants.
+        Les notifications par email et sur mobile ne sont envoyés que si vous n'êtes pas en ligne et un même type de notification n'est jamais envoyé plus d'une fois toutes les 12 heures hormis si vous vous reconnecter entre temps.
+    </p>
     <div class="form-group">
-        <label>
-            Quoi ?
-        </label>
-        <label class="checkbox-inline">
-            <input type="checkbox" id="inlineCheckbox1" value="option1"> Donut
-        </label>
-        <label class="checkbox-inline">
-            <input type="checkbox" id="inlineCheckbox2" value="option2"> Email
-        </label>
-        <label class="checkbox-inline">
-            <input type="checkbox" id="inlineCheckbox3" value="option3"> Mobile
-        </label>
-        <label class="checkbox-inline">
-            <input type="checkbox" id="inlineCheckbox4" value="option3"> Desktop
-        </label>
-    </div>
-
-    <div class="form-group buttons">
-        <a class="btn btn-default btn-sm cancel"><%= t('global.cancel') %></a>
-        <input type="submit" value="<%= t('global.save') %>">
+        <%
+        var what = [
+            {
+                key: 'room-message',
+                label: "Notify me when a message is sent to an room I'm in",
+                help:  ""
+            },
+            {
+                key: 'room-mention',
+                label: "Notify me when I'm mentioned in a room I'm in",
+                help:  ""
+            },
+            {
+                key: 'room-promote',
+                label: "Notify me when I'm promoted, kicked, banned in a room",
+                help: ""
+            },
+            {
+                key: 'user-message',
+                label: "Notify me when I receive a private message",
+                help: ""
+            }
+        ];
+        %>
+        <% _.each(what, function(n) { %>
+            <div class="notification">
+                <label style="display: block;">
+                    <%= n.label %>
+                </label>
+                <div style="">
+                    <label class="checkbox-inline">
+                        <input type="checkbox" value="<%= n.key %>:browser"> Donut
+                    </label>
+                    <label class="checkbox-inline">
+                        <input type="checkbox" value="<%= n.key %>:desktop"> Desktop
+                    </label>
+                    <label class="checkbox-inline">
+                        <input type="checkbox" value="<%= n.key %>:email"> Email
+                    </label>
+                    <label class="checkbox-inline">
+                        <input type="checkbox" value="<%= n.key %>:mobile"> Mobile
+                    </label>
+                </div>
+                <p class="help-block"><%= n.help %></p>
+            </div>
+        <% }); %>
     </div>
 </form>

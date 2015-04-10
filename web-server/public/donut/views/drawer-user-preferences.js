@@ -4,10 +4,9 @@ define([
   'backbone',
   'client',
   'models/current-user',
-  'views/image-uploader',
-  'views/color-picker',
+  'views/window',
   '_templates'
-], function ($, _, Backbone, client, currentUser, ImageUploader, ColorPicker, templates) {
+], function ($, _, Backbone, client, currentUser, windowView, templates) {
   var DrawerUserEditView = Backbone.View.extend({
 
     template: templates['drawer-user-preferences.html'],
@@ -15,6 +14,7 @@ define([
     id: 'user-preferences',
 
     events  : {
+      'click .play-sound-test': 'onPlaySound',
       'submit form.user-form': 'onSubmit'
     },
 
@@ -43,6 +43,10 @@ define([
       var html = this.template({user: user});
       this.$el.html(html);
       return;
+    },
+    onPlaySound: function(event) {
+      event.preventDefault();
+      windowView._play();
     },
     onSubmit: function(event) {
       event.preventDefault();

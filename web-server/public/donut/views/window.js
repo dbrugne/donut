@@ -237,11 +237,13 @@ define([
       if (this.beepPlaying)
         return;
 
+      this.beepPlaying = true;
+      this._play();
+    },
+    _play: function() {
       var beep = this.beep;
       if (!beep)
         return;
-
-      this.beepPlaying = true;
       beep.play();
     }
 
