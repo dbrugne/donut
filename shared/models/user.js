@@ -28,6 +28,7 @@ var userSchema = mongoose.Schema({
         email      : String,
         name       : String
     },
+    preferences    : mongoose.Schema.Types.Mixed,
     rooms          : [{ type: String, ref: 'Room' }],
     onetoones      : [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
     positions      : { type: String },
