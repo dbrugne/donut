@@ -18,7 +18,6 @@
             </label>
         </div>
     </div>
-
     <label><%= t('preferences.notifications.title') %></label>
     <p class="help-block"><%= t('preferences.notifications.help') %></p>
     <div class="form-group">
@@ -43,5 +42,20 @@
                 <p class="help-block"><%= t('preferences.'+key.replace(':', '.')+'.help') %></p>
             </div>
         <% }); %>
+    </div>
+    <div class="form-group">
+        <label><%= t('preferences.welcome.title') %></label>
+        <div class="radio">
+            <label>
+                <input type="radio" class="savable" name="browser:welcome" value="browser:welcome:true" <% if (preferences['browser:welcome']) { print('checked'); } %>>
+                <%= t('preferences.welcome.label-true') %>
+            </label>
+        </div>
+        <div class="radio">
+            <label>
+                <input type="radio" class="savable" name="browser:welcome" value="browser:welcome:false" <% if (!preferences['browser:welcome']) { print('checked'); } %>>
+                <%= t('preferences.welcome.label-false') %>
+            </label>
+        </div>
     </div>
 </form>

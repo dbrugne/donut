@@ -747,6 +747,11 @@
         "label": "Notify me when I receive a private message",
         "help": ""
       }
+    },
+    "welcome": {
+      "title": "Fenêtre de bienvenue",
+      "label-true": "Afficher la fenêtre de bienvenue à la connexion",
+      "label-false": "Ne jamais afficher la fenêtre de bienvenue"
     }
   }
 }

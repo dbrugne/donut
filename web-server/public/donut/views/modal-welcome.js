@@ -17,7 +17,7 @@ define([
 
     events: {
       "hidden.bs.modal"                     : "onHide",
-      "click .nothing, .list .room .join" : "onClose"
+      "click .nothing, .list .room .join"   : "onClose"
     },
 
     callback: null,
@@ -39,7 +39,9 @@ define([
         rooms.push(room);
       });
 
-      var html = this.template({rooms: welcome.featured});
+      var html = this.template({
+        rooms: welcome.featured
+      });
       this.$el.find('.modal-body .rooms')
           .html(html)
           .colorify();
@@ -53,8 +55,8 @@ define([
     },
     onHide: function() {
       // set welcome as false on user if checkbox is checked
-      if (this.$el.find(".checkbox input[type='checkbox']").prop('checked') === true) {
-        client.userUpdate({welcome: false}, function(data) { debug('user preference saved: ', data); });
+      if (this.$el.find("input[type='checkbox'].avoid").prop('checked') === true) {
+        client.userPreferencesUpdate({'browser:welcome': false}, function(data) { debug('user preference saved: ', data); });
       }
     },
     onClose: function(event) {

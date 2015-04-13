@@ -43,16 +43,10 @@ WelcomeRemote.prototype.getMessage = function(uid, frontendId, globalCallback) {
 				if (err)
 					return callback('Unable to find user: '+err, null);
 
-				// welcome message is displayed until user hasn't check the box
-				var welcomeMessage = (user.welcome === true || user.welcome == undefined)
-					? true
-					: false;
-
 				welcomeEvent.user = {
 					user_id: user._id.toString(),
 					username: user.username,
-					avatar: user._avatar(),
-					welcome: welcomeMessage
+					avatar: user._avatar()
 				};
 
 				if (user.positions)
@@ -62,6 +56,7 @@ WelcomeRemote.prototype.getMessage = function(uid, frontendId, globalCallback) {
 					welcomeEvent.user.admin = true;
 
 				welcomeEvent.preferences = {};
+				welcomeEvent.preferences['browser:welcome'] = (user.preferences && user.preferences['browser:welcome'] === true);
 				welcomeEvent.preferences['browser:sounds'] = (user.preferences && user.preferences['browser:sounds'] === true);
 
 				return callback(null, user);
@@ -125,7 +120,7 @@ WelcomeRemote.prototype.getMessage = function(uid, frontendId, globalCallback) {
 		},
 
 		function featured(user, callback) {
-			if (!welcomeEvent.user.welcome)
+			if (!(user.preferences && user.preferences['browser:welcome'] === true))
 			  return callback(null, user);
 
 			featuredRooms(that.app, function(err, featured) {

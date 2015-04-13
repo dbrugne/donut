@@ -23,7 +23,9 @@ define([
       this._initialize(options);
     },
 
-    setPreference: function(data) {
+    setPreference: function(data, options) {
+      options = options || {};
+
       var keys = Object.keys(data);
       if (!keys || !keys.length)
         return;
@@ -34,9 +36,11 @@ define([
 
       var preferences = this.get('preferences') || {};
       preferences[key] = data[key];
-      this.set('preferences', preferences);
+      this.set('preferences', preferences, options);
     },
-    setPreferences: function(preferences) {
+    setPreferences: function(preferences, options) {
+      options = options || {};
+
       if (!preferences)
         return;
 
@@ -45,9 +49,19 @@ define([
         newPreferences[key] = value;
       });
 
-      this.set('preferences', newPreferences);
+      this.set('preferences', newPreferences, options);
     },
 
+    shouldDisplayWelcome: function() {
+      var preferences = this.get('preferences');
+
+      console.log(preferences['browser:welcome']);
+      // if no preference set OR browser:welcome equal to true, we show
+      if (!preferences || typeof preferences['browser:welcome'] == 'undefined' || preferences['browser:welcome'] === true)
+        return true;
+
+      return false;
+    },
     shouldPlaySound: function() {
       var preferences = this.get('preferences');
 

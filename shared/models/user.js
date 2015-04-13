@@ -15,7 +15,6 @@ var userSchema = mongoose.Schema({
     avatar         : String,
     poster         : String,
     color          : String,
-    welcome        : Boolean,
     local            : {
         email         : String,
         password      : String,
@@ -48,7 +47,6 @@ userSchema.statics.getNewUser = function () {
   var model = new this();
   var color = _.sample(colors.list);
   model.color = color.hex;
-  model.welcome = true;
   return model;
 };
 
@@ -128,6 +126,7 @@ userSchema.statics.retrieveUser = function (username) {
  */
 userSchema.statics.preferencesAllowedKeys = function () {
   return [
+    'browser:welcome',
     'browser:sounds',
     'notifications:roommessage:donut',
     'notifications:roommessage:desktop',

@@ -124,10 +124,15 @@ define([
       debug.start('welcome-before');
       var that = this;
 
+      // Current user data (should be done before onetoone logic)
+      currentUser.set(data.user, {silent: true});
+      currentUser.setPreferences(data.preferences, {silent: true});
+      this.currentUserView.render();
+
       // Only on first connection
       if (this.firstConnection) { // show if true or if undefined
         // Welcome message
-        if (data.user.welcome !== false) {
+        if (currentUser.shouldDisplayWelcome()) {
           this.welcomeView.render(data);
           this.welcomeView.show();
         }
@@ -135,11 +140,6 @@ define([
         // Elements hidden until first 'welcome'
         $('#block-discussions').show();
       }
-
-      // Current user data (should be done before onetoone logic)
-      currentUser.set(data.user, {silent: true});
-      currentUser.setPreferences(data.preferences, {silent: true});
-      this.currentUserView.render();
 
       debug.end('welcome-before');
 
