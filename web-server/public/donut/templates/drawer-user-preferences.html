@@ -27,7 +27,7 @@
                 <label><%= t('preferences.'+key.replace(':', '.')+'.label') %></label>
                 <div>
                     <label class="checkbox-inline">
-                        <input class="savable" type="checkbox" value="<%= key %>:browser" <% if (preferences[key+':browser']) { print('checked'); } %>> <%= t('preferences.notifications.donut') %>
+                        <input class="savable" type="checkbox" value="<%= key %>:browser" <% if (preferences[key+':browser']) { print('checked'); } %>> <%= t('preferences.notifications.browser') %>
                     </label>
                     <label class="checkbox-inline">
                         <input class="savable" type="checkbox" value="<%= key %>:desktop" <% if (preferences[key+':desktop']) { print('checked'); } %>> <%= t('preferences.notifications.desktop') %>

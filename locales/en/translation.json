@@ -726,7 +726,7 @@
     },
     "notifications": {
       "title": "Notifications",
-      "donut": "DONUT",
+      "browser": "DONUT",
       "desktop": "Desktop",
       "email": "Email",
       "mobile": "Mobile",

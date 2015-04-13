@@ -47,6 +47,26 @@ userSchema.statics.getNewUser = function () {
   var model = new this();
   var color = _.sample(colors.list);
   model.color = color.hex;
+
+  model.preferences = {
+    'browser:welcome': true,
+    'browser:sounds': true,
+    'notifications:roommessage:browser': true,
+    'notifications:roommessage:desktop': true,
+    'notifications:roommention:browser': true,
+    'notifications:roommention:desktop': true,
+    'notifications:roommention:email': true,
+    'notifications:roommention:mobile': true,
+    'notifications:roompromote:browser': true,
+    'notifications:roompromote:desktop': true,
+    'notifications:roompromote:email': true,
+    'notifications:roompromote:mobile': true,
+    'notifications:usermessage:browser': true,
+    'notifications:usermessage:desktop': true,
+    'notifications:usermessage:email': true,
+    'notifications:usermessage:mobile': true
+  };
+
   return model;
 };
 
@@ -128,19 +148,19 @@ userSchema.statics.preferencesAllowedKeys = function () {
   return [
     'browser:welcome',
     'browser:sounds',
-    'notifications:roommessage:donut',
+    'notifications:roommessage:browser',
     'notifications:roommessage:desktop',
     'notifications:roommessage:email',
     'notifications:roommessage:mobile',
-    'notifications:roommention:donut',
+    'notifications:roommention:browser',
     'notifications:roommention:desktop',
     'notifications:roommention:email',
     'notifications:roommention:mobile',
-    'notifications:roompromote:donut',
+    'notifications:roompromote:browser',
     'notifications:roompromote:desktop',
     'notifications:roompromote:email',
     'notifications:roompromote:mobile',
-    'notifications:usermessage:donut',
+    'notifications:usermessage:browser',
     'notifications:usermessage:desktop',
     'notifications:usermessage:email',
     'notifications:usermessage:mobile'
