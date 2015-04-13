@@ -16,13 +16,6 @@
             <li role="presentation"><a role="menuitem" tabindex="-1" class="open-user-account"><i class="icon icon-pencil"></i> <%= t('chat.actions.account') %></a></li>
             <li role="presentation"><a role="menuitem" tabindex="-1" class="open-user-edit"><i class="icon icon-pencil"></i> <%= t('chat.actions.edit') %></a></li>
             <li role="presentation"><a role="menuitem" tabindex="-1" class="open-user-preferences"><i class="icon icon-cog"></i> <%= t('chat.actions.preferences') %></a></li>
-            <li role="presentation">
-                <% if (typeof mute != 'undefined' && mute) { %>
-                <a role="menuitem" tabindex="-1" class="unmute"><i class="icon icon-bell-slash"></i> <%= t('actions.muted') %></a>
-                <% } else { %>
-                <a role="menuitem" tabindex="-1" class="mute"><i class="icon icon-bell"></i> <%= t('actions.mute') %></a>
-                <% } %>
-            </li>
             <li role="presentation" class="divider"></li>
             <li role="presentation"><a role="menuitem" tabindex="-1" href="/logout"><i class="icon icon-power-off"></i> <%= t('actions.logout') %></a></li>
         </ul>

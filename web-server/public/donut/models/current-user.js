@@ -6,9 +6,9 @@ define([
 ], function (_, Backbone, client, UserModel) {
   var CurrentUserModel = UserModel.extend({
 
-    mute: false,
-
     initialize: function(options) {
+      this.listenTo(client, 'user:preferences',   this.setPreference);
+
       var that = this;
       this.listenTo(client, 'connecting',         function() { that.set('status', 'connecting'); });
       this.listenTo(client, 'connect',            function() { that.set('status', 'online'); });
@@ -20,15 +20,42 @@ define([
       this.listenTo(client, 'reconnect_failed',   function() { that.set('status', 'error'); });
       this.listenTo(client, 'error',              function() { that.set('status', 'error'); });
 
-      if (this._getCookie('mute') == true)
-        this.mute = true;
-
       this._initialize(options);
     },
 
-    setMute: function(boolean) {
-      this.mute = boolean;
-      this._setCookie('mute', this.mute);
+    setPreference: function(data) {
+      var keys = Object.keys(data);
+      if (!keys || !keys.length)
+        return;
+
+      var key = keys[0];
+      if (!key)
+        return;
+
+      var preferences = this.get('preferences') || {};
+      preferences[key] = data[key];
+      this.set('preferences', preferences);
+    },
+    setPreferences: function(preferences) {
+      if (!preferences)
+        return;
+
+      var newPreferences = {}; // reset all previous keys
+      _.each(preferences, function(value, key, list) {
+        newPreferences[key] = value;
+      });
+
+      this.set('preferences', newPreferences);
+    },
+
+    shouldPlaySound: function() {
+      var preferences = this.get('preferences');
+
+      // if no preference set OR browser:sound equal to true, we play
+      if (!preferences || typeof preferences['browser:sounds'] == 'undefined' || preferences['browser:sounds'] === true)
+        return true;
+
+      return false;
     },
 
     _setCookie: function(name, value, exdays) {

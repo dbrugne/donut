@@ -228,7 +228,7 @@ define([
       }
     },
     play: function() {
-      if (currentUser.mute)
+      if (!currentUser.shouldPlaySound())
         return;
 
       // @source: // http://stackoverflow.com/questions/9419263/playing-audio-with-javascript

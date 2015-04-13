@@ -138,6 +138,7 @@ define([
 
       // Current user data (should be done before onetoone logic)
       currentUser.set(data.user, {silent: true});
+      currentUser.setPreferences(data.preferences, {silent: true});
       this.currentUserView.render();
 
       debug.end('welcome-before');

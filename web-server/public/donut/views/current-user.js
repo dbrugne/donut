@@ -11,13 +11,6 @@ define([
 
     template: templates['current-user.html'],
 
-    hello: '',
-
-    events: {
-      'click .mute': 'onMute',
-      'click .unmute': 'onUnmute'
-    },
-
     initialize: function(options) {
       this.listenTo(this.model, 'change', this.render);
     },
@@ -28,23 +21,13 @@ define([
       var data = currentUser.toJSON();
 
       var tpl = new String('<span class="username open-user-profile" data-username="%username">%username</span>');
-      tpl = tpl.replace(/%username/g, currentUser.get('username'))
-      data.hello = this.hello.replace('%u', '@'+tpl);
+      tpl = tpl.replace(/%username/g, currentUser.get('username'));
 
       data.avatar = $.cd.userAvatar(currentUser.get('avatar'), 60);
-      data.mute = currentUser.mute;
 
       var html = this.template(data);
       this.$el.html(html);
       return this;
-    },
-    onMute: function(event) {
-      currentUser.setMute(true);
-      this.render();
-    },
-    onUnmute: function(event) {
-      currentUser.setMute(false);
-      this.render();
     }
 
   });
