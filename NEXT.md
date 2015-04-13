@@ -8,10 +8,36 @@ db.users.update(
     { $unset : { "welcome" : 1 } },
     { multi: true}
   );
-db.users.find({ "welcome" : { $exists : true } }).count()
+db.users.find({ "welcome" : { $exists : true } }).count();
 ```
 
-- set preferences to default value set on new user creation
-- apply to existing users on next deploy (take care of welcome)
+* Set new users.preferences:
+
+```javascript
+db.users.update(
+  {},
+  { $set: { preferences: {
+
+    'browser:welcome': true,
+    'browser:sounds': true,
+    'notifications:roommessage:browser': true,
+    'notifications:roommessage:desktop': true,
+    'notifications:roommention:browser': true,
+    'notifications:roommention:desktop': true,
+    'notifications:roommention:email': true,
+    'notifications:roommention:mobile': true,
+    'notifications:roompromote:browser': true,
+    'notifications:roompromote:desktop': true,
+    'notifications:roompromote:email': true,
+    'notifications:roompromote:mobile': true,
+    'notifications:usermessage:browser': true,
+    'notifications:usermessage:desktop': true,
+    'notifications:usermessage:email': true,
+    'notifications:usermessage:mobile': true
+
+  } } },
+  { multi: true }
+);
+```
 
 - add per-room drawer with preferences
