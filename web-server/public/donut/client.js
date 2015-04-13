@@ -460,9 +460,9 @@ define([
           {},
           function(response) {
             if (response.err)
-              return debug('io:out:user:preferences:read error: ', response);
+              return debug('io:in:user:preferences:read error: ', response);
 
-            debug('io:out:user:preferences:read', response);
+            debug('io:in:user:preferences:read', response);
             return fn(response);
           }
       );
