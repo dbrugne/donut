@@ -116,7 +116,7 @@ handler.update = function(data, session, next) {
 		},
 
 		function update(user, key, value, callback) {
-			user.set('preferences.'+key, value);
+			user.set('preferences.'+key, value); // we can also remove the key when value === false ('$unset: {key: 1}') to save database space
 			user.save(function(err) {
 				if (err)
 					return callback('Error when saving user preference "'+key+"' on '"+user.username+'": '+err);
