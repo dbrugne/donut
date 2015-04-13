@@ -62,7 +62,7 @@ WelcomeRemote.prototype.getMessage = function(uid, frontendId, globalCallback) {
 					welcomeEvent.user.admin = true;
 
 				welcomeEvent.preferences = {};
-				welcomeEvent.preferences['browser:sound'] = (user.preferences && user.preferences['browser:sound'] === true);
+				welcomeEvent.preferences['browser:sounds'] = (user.preferences && user.preferences['browser:sounds'] === true);
 
 				return callback(null, user);
 			});

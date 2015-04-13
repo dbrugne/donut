@@ -127,7 +127,7 @@ handler.update = function(data, session, next) {
 
 		function broadcastUser(user, key, value, callback) {
 			// notify only certain fields
-			var fieldToNotify = ['browser:sound'];
+			var fieldToNotify = ['browser:sounds'];
 			if (fieldToNotify.indexOf(key) === -1)
 			  return callback(null);
 
