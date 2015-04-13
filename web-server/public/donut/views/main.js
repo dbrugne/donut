@@ -388,12 +388,10 @@ define([
 
       var type = $target.data('type');
       var identifier = $target.data('identifier');
-      var collection, model;
+      var model;
       if (type == 'room') {
-        collection = rooms;
         model = rooms.findWhere({ name: identifier });
       } else {
-        collection = onetoones;
         model = onetoones.findWhere({ username: ''+identifier }); // force string to handle fully numeric username
       }
 
