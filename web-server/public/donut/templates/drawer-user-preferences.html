@@ -4,71 +4,43 @@
 <div class="errors"></div>
 <form class="user-form" role="form">
     <div class="form-group">
-        <label>Sons</label>
+        <label><%= t('preferences.sounds.title') %></label>
         <div class="radio">
             <label>
-                <input type="radio" class="savable" name="browser:sound" value="browser:sound:true" <% if (preferences['browser:sound']) { print('checked'); } %>>
-                Jouer un son quand un nouveau message arrive (<a class="play-sound-test"><i class="icon icon-bell"></i> test</a>)
+                <input type="radio" class="savable" name="browser:sounds" value="browser:sounds:true" <% if (preferences['browser:sounds']) { print('checked'); } %>>
+                <%= t('preferences.browser.sounds.label-true') %> (<a class="play-sound-test"><i class="icon icon-bell"></i> <%= t('preferences.sounds.test') %></a>)
             </label>
         </div>
         <div class="radio">
             <label>
-                <input type="radio" class="savable" name="browser:sound" value="browser:sound:false" <% if (!preferences['browser:sound']) { print('checked'); } %>>
-                Ne jamais jouer de son
+                <input type="radio" class="savable" name="browser:sounds" value="browser:sounds:false" <% if (!preferences['browser:sounds']) { print('checked'); } %>>
+                <%= t('preferences.browser.sounds.label-false') %>
             </label>
         </div>
     </div>
 
-    <label>Notifications</label>
-    <p class="help-block">
-        Indiquer ci-dessous quand vous souhaitez être notifié.
-        Les notifications par email et sur mobile ne sont envoyés que si vous êtes hors ligne et une seule fois toutes les 12 heures pour un même type de notification.
-    </p>
+    <label><%= t('preferences.notifications.title') %></label>
+    <p class="help-block"><%= t('preferences.notifications.help') %></p>
     <div class="form-group">
-        <%
-        var what = [
-            {
-                key: 'notification:room-message',
-                label: "Notify me when a message is sent to an room I'm in",
-                help:  ""
-            },
-            {
-                key: 'notification:room-mention',
-                label: "Notify me when I'm mentioned in a room I'm in",
-                help:  ""
-            },
-            {
-                key: 'notification:room-promote',
-                label: "Notify me when I'm promoted, kicked, banned in a room",
-                help: ""
-            },
-            {
-                key: 'notification:user-message',
-                label: "Notify me when I receive a private message",
-                help: ""
-            }
-        ];
-        %>
-        <% _.each(what, function(n) { %>
+        <% var notifications = ['notifications:roommessage', 'notifications:roommention', 'notifications:roompromote', 'notifications:usermessage']; %>
+        <% _.each(notifications, function(key) { %>
             <div class="notification">
-                <label>
-                    <%= n.label %>
-                </label>
+                <label><%= t('preferences.'+key.replace(':', '.')+'.label') %></label>
                 <div>
                     <label class="checkbox-inline">
-                        <input class="savable" type="checkbox" value="<%= n.key %>:browser" <% if (preferences[n.key+':browser']) { print('checked'); } %>> Donut
+                        <input class="savable" type="checkbox" value="<%= key %>:browser" <% if (preferences[key+':browser']) { print('checked'); } %>> <%= t('preferences.notifications.donut') %>
                     </label>
                     <label class="checkbox-inline">
-                        <input class="savable" type="checkbox" value="<%= n.key %>:desktop" <% if (preferences[n.key+':desktop']) { print('checked'); } %>> Desktop
+                        <input class="savable" type="checkbox" value="<%= key %>:desktop" <% if (preferences[key+':desktop']) { print('checked'); } %>> <%= t('preferences.notifications.desktop') %>
                     </label>
                     <label class="checkbox-inline">
-                        <input class="savable" type="checkbox" value="<%= n.key %>:email" <% if (preferences[n.key+':email']) { print('checked'); } %>> Email
+                        <input class="savable" type="checkbox" value="<%= key %>:email" <% if (preferences[key+':email']) { print('checked'); } %>> <%= t('preferences.notifications.email') %>
                     </label>
                     <label class="checkbox-inline">
-                        <input class="savable" type="checkbox" value="<%= n.key %>:mobile" <% if (preferences[n.key+':mobile']) { print('checked'); } %>> Mobile
+                        <input class="savable" type="checkbox" value="<%= key %>:mobile" <% if (preferences[key+':mobile']) { print('checked'); } %>> <%= t('preferences.notifications.mobile') %>
                     </label>
                 </div>
-                <p class="help-block"><%= n.help %></p>
+                <p class="help-block"><%= t('preferences.'+key.replace(':', '.')+'.help') %></p>
             </div>
         <% }); %>
     </div>

@@ -712,5 +712,41 @@
     "sent": "Success! Message sent, we'll reply as soon as possible.",
     "error": "Error! Please check the inputs.",
     "fail": "Unable to send email, retry later."
+  },
+  "preferences": {
+    "sounds": {
+      "title": "Sons",
+      "test": "test"
+    },
+    "browser": {
+      "sounds": {
+        "label-true": "Jouer un son quand un nouveau message arrive",
+        "label-false": "Ne jamais jouer de son"
+      }
+    },
+    "notifications": {
+      "title": "Notifications",
+      "donut": "DONUT",
+      "desktop": "Desktop",
+      "email": "Email",
+      "mobile": "Mobile",
+      "help": "Indiquer ci-dessous quand vous souhaitez être notifié.<br>Les notifications par email et sur mobile ne sont envoyés que si vous êtes hors ligne et une seule fois toutes les 12 heures pour un même type de notification.",
+      "roommessage": {
+        "label": "Notify me when a message is sent to an room I'm in",
+        "help": ""
+      },
+      "roommention": {
+        "label": "Notify me when I'm mentioned in a room I'm in",
+        "help": ""
+      },
+      "roompromote": {
+        "label": "Notify me when I'm promoted, kicked, banned in a room",
+        "help": ""
+      },
+      "usermessage": {
+        "label": "Notify me when I receive a private message",
+        "help": ""
+      }
+    }
   }
 }

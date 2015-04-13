@@ -123,6 +123,42 @@ userSchema.statics.retrieveUser = function (username) {
 };
 
 /**
+ * List the allowed preferences key
+ * @returns Array
+ */
+userSchema.statics.preferencesAllowedKeys = function () {
+  return [
+    'browser:sounds',
+    'notifications:roommessage:donut',
+    'notifications:roommessage:desktop',
+    'notifications:roommessage:email',
+    'notifications:roommessage:mobile',
+    'notifications:roommention:donut',
+    'notifications:roommention:desktop',
+    'notifications:roommention:email',
+    'notifications:roommention:mobile',
+    'notifications:roompromote:donut',
+    'notifications:roompromote:desktop',
+    'notifications:roompromote:email',
+    'notifications:roompromote:mobile',
+    'notifications:usermessage:donut',
+    'notifications:usermessage:desktop',
+    'notifications:usermessage:email',
+    'notifications:usermessage:mobile'
+  ];
+};
+
+/**
+ * Check if the key is allowed in preferences
+ * @param name
+ * @returns Boolean
+ */
+userSchema.statics.preferencesIsKeyAllowed = function (name) {
+  var allowed = this.preferencesAllowedKeys() || [];
+  return !(allowed.indexOf(name) === -1);
+};
+
+/**
  * Check for username availability (call success)
  * @param username
  * @param success

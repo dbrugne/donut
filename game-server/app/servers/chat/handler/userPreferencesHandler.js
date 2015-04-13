@@ -44,7 +44,8 @@ handler.read = function(data, session, next) {
 		function prepare(user, callback) {
 			var event = {};
 			_.each(user.preferences, function(value, key, list) {
-				event[key] = value;
+				if (User.preferencesIsKeyAllowed(key)) // only if whitelisted
+				  event[key] = value;
 			});
 
 			return callback(null, event);
@@ -100,8 +101,11 @@ handler.update = function(data, session, next) {
 			// key
 			var keys = Object.keys(data.data);
 			var key = keys[0];
-			if (!(/^[a-z0-9]+[-a-z0-9:]+[a-z0-9]+$/i).test(key))
+			if (!key || !(/^[a-z0-9]+[a-z0-9:]+[a-z0-9]+$/i).test(key))
 				return callback('invalidkey');
+
+			if (!User.preferencesIsKeyAllowed(key)) // only if whitelisted
+				return callback('notallowedkey');
 
 			// value
 			var value = validator.toBoolean(data.data[key]);

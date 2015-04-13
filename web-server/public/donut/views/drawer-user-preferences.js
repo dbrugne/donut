@@ -76,7 +76,7 @@ define([
           that.$el.find('.errors').html($.t('global.unknownerror')).show();
           return;
         }
-      });
+      })
     }
 
   });
