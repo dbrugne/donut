@@ -26,7 +26,7 @@ define([
 
       // ask for data
       var that = this;
-      client.userRead(currentUser.get('username'), function(data) {
+      client.userPreferencesRead(function(data) {
         that.onResponse(data);
       });
     },
@@ -35,12 +35,17 @@ define([
       this.$el.html(templates['spinner.html']);
       return this;
     },
-    onResponse: function(user) {
+    onResponse: function(preferences) {
+      var color = currentUser.get('color');
       // colorize drawer .opacity
-      if (user.color)
-        this.trigger('color', user.color);
+      if (color)
+        this.trigger('color', color);
 
-      var html = this.template({user: user});
+      var html = this.template({
+        username: currentUser.get('username'),
+        color: color,
+        preferences: preferences
+      });
       this.$el.html(html);
       return;
     },

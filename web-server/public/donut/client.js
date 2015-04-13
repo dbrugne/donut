@@ -452,6 +452,21 @@ define([
           }
       );
     },
+    userPreferencesRead: function(fn) {
+      debug('io:out:user:preferences:read');
+      var that = this;
+      pomelo.request(
+          'chat.userPreferencesHandler.read',
+          {},
+          function(response) {
+            if (response.err)
+              return debug('io:out:user:preferences:read error: ', response);
+
+            debug('io:out:user:preferences:read', response);
+            return fn(response);
+          }
+      );
+    },
     userPreferencesUpdate: function(fields, fn) {
       var data = {data: fields};
       debug('io:out:user:preferences:update', data);

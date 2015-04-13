@@ -1,5 +1,5 @@
-<div class="user" data-colorify="<%= user.color %>">
-    <span class="username">@<%= user.username %></span>
+<div class="user" data-colorify="<%= color %>">
+    <span class="username">@<%= username %></span>
 </div>
 <div class="errors"></div>
 <form class="user-form" role="form">
@@ -7,13 +7,13 @@
         <label>Sons</label>
         <div class="radio">
             <label>
-                <input type="radio" class="savable" name="browser:sound" value="browser:sound:true">
+                <input type="radio" class="savable" name="browser:sound" value="browser:sound:true" <% if (preferences['browser:sound']) { print('checked'); } %>>
                 Jouer un son quand un nouveau message arrive (<a class="play-sound-test"><i class="icon icon-bell"></i> test</a>)
             </label>
         </div>
         <div class="radio">
             <label>
-                <input type="radio" class="savable" name="browser:sound" value="browser:sound:false">
+                <input type="radio" class="savable" name="browser:sound" value="browser:sound:false" <% if (!preferences['browser:sound']) { print('checked'); } %>>
                 Ne jamais jouer de son
             </label>
         </div>
@@ -56,16 +56,16 @@
                 </label>
                 <div>
                     <label class="checkbox-inline">
-                        <input class="savable" type="checkbox" value="<%= n.key %>:browser"> Donut
+                        <input class="savable" type="checkbox" value="<%= n.key %>:browser" <% if (preferences[n.key+':browser']) { print('checked'); } %>> Donut
                     </label>
                     <label class="checkbox-inline">
-                        <input class="savable" type="checkbox" value="<%= n.key %>:desktop"> Desktop
+                        <input class="savable" type="checkbox" value="<%= n.key %>:desktop" <% if (preferences[n.key+':desktop']) { print('checked'); } %>> Desktop
                     </label>
                     <label class="checkbox-inline">
-                        <input class="savable" type="checkbox" value="<%= n.key %>:email"> Email
+                        <input class="savable" type="checkbox" value="<%= n.key %>:email" <% if (preferences[n.key+':email']) { print('checked'); } %>> Email
                     </label>
                     <label class="checkbox-inline">
-                        <input class="savable" type="checkbox" value="<%= n.key %>:mobile"> Mobile
+                        <input class="savable" type="checkbox" value="<%= n.key %>:mobile" <% if (preferences[n.key+':mobile']) { print('checked'); } %>> Mobile
                     </label>
                 </div>
                 <p class="help-block"><%= n.help %></p>

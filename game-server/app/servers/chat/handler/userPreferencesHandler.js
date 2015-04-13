@@ -16,6 +16,52 @@ var Handler = function(app) {
 var handler = Handler.prototype;
 
 /**
+ * Handler user read preferences logic
+ *
+ * @param {Object} data message from client
+ * @param {Object} session
+ * @param  {Function} next stemp callback
+ *
+ */
+handler.read = function(data, session, next) {
+
+	var that = this;
+
+	async.waterfall([
+
+		function retrieveUser(callback) {
+			User.findByUid(session.uid).exec(function (err, user) {
+				if (err)
+					return callback('Error while retrieving user '+session.uid+' in user:preferences:read: '+err);
+
+				if (!user)
+					return callback('Unable to retrieve user in user:preferences:read: '+session.uid);
+
+				return callback(null, user);
+			});
+		},
+
+		function prepare(user, callback) {
+			var event = {};
+			_.each(user.preferences, function(value, key, list) {
+				event[key] = value;
+			});
+
+			return callback(null, event);
+		}
+
+	], function(err, event) {
+		if (err) {
+			logger.error(err);
+			return next(null, {code: 500, err: err});
+		}
+
+		next(null, event);
+	});
+
+}
+
+/**
  * Handler user update preferences logic
  *
  * @param {Object} data message from client
@@ -32,10 +78,10 @@ handler.update = function(data, session, next) {
 		function retrieveUser(callback) {
 			User.findByUid(session.uid).exec(function (err, user) {
 				if (err)
-					return callback('Error while retrieving user '+session.uid+' in user:update: '+err);
+					return callback('Error while retrieving user '+session.uid+' in user:preferences:update: '+err);
 
 				if (!user)
-					return callback('Unable to retrieve user in user:update: '+session.uid);
+					return callback('Unable to retrieve user in user:preferences:update: '+session.uid);
 
 				return callback(null, user);
 			});

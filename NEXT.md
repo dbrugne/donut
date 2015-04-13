@@ -1,6 +1,6 @@
 # Things to do on next deploy
 
-- Replace preferences drawer room-read per room-preferences request
+- Centralize allowed preferences key in model (and check on update)
 - Now window should watch currentUser preferences to play sound or not (remove cookie logic)
 - Set currentUser preferences on welcome
 - Implement user:preferences:update listener and set currentUser
