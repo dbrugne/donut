@@ -67,8 +67,6 @@ define([
       var update = {};
       update[key] = value;
 
-      console.log(update);
-
       var that = this;
       client.userPreferencesUpdate(update, function(data) {
         that.$el.find('.errors').hide();
