@@ -40,4 +40,6 @@ db.users.update(
 );
 ```
 
-- add per-room drawer with preferences
+- add per-room drawer with preferences: mention, new message, someone enter (to true by default for owner or op), promoted
+- add "to notify" detection on handlers and create database entities
+- implement consumers
