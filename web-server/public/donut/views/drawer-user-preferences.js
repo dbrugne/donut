@@ -7,7 +7,7 @@ define([
   'views/window',
   '_templates'
 ], function ($, _, Backbone, client, currentUser, windowView, templates) {
-  var DrawerUserEditView = Backbone.View.extend({
+  var DrawerUserPreferencesView = Backbone.View.extend({
 
     template: templates['drawer-user-preferences.html'],
 
@@ -81,5 +81,5 @@ define([
 
   });
 
-  return DrawerUserEditView;
+  return DrawerUserPreferencesView;
 });
