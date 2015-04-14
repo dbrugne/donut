@@ -3,7 +3,7 @@ var mongoose = require('../io/mongoose');
 
 var roomSchema = mongoose.Schema({
 
-  _id             : String,
+  _id             : String, // @todo : remove
   name            : String,
   permanent       : Boolean,
   visibility      : { type: Boolean, default: false },
@@ -31,6 +31,7 @@ var roomSchema = mongoose.Schema({
  * Custom setter to set '_id' on 'name' set
  * @source: Custom String _id doc: https://gist.github.com/aheckmann/3658511
  */
+// @todo : remove and update existing documents (http://stackoverflow.com/questions/11763384/duplicate-a-document-in-mongodb-using-a-new-id#24034189)
 roomSchema.path('name').set(function (v) {
   if (this.isNew) {
     var salt = Math.floor((1 + Math.random()) * 0x10000)
