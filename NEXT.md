@@ -30,6 +30,10 @@ db.users.update(
     'notifications:roompromote:desktop': true,
     'notifications:roompromote:email': true,
     'notifications:roompromote:mobile': true,
+    'notifications:roomptopic:browser': true,
+    'notifications:roomptopic:desktop': true,
+    'notifications:roomptopic:email': true,
+    'notifications:roomptopic:mobile': true,
     'notifications:usermessage:browser': true,
     'notifications:usermessage:desktop': true,
     'notifications:usermessage:email': true,
@@ -41,5 +45,7 @@ db.users.update(
 ```
 
 - add per-room drawer with preferences: mention, new message, someone enter (to true by default for owner or op), promoted
+  * Add topic and user enter in global preferences (where I choose channels of notifications)
+  * On per room preferences set only: Avoid notifications for this room
 - add "to notify" detection on handlers and create database entities
 - implement consumers

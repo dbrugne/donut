@@ -21,7 +21,7 @@
     <label><%= t('preferences.notifications.title') %></label>
     <p class="help-block"><%= t('preferences.notifications.help') %></p>
     <div class="form-group">
-        <% var notifications = ['notifications:roommessage', 'notifications:roommention', 'notifications:roompromote', 'notifications:usermessage']; %>
+        <% var notifications = ['notifications:roommessage', 'notifications:roommention', 'notifications:roompromote', 'notifications:roomtopic', 'notifications:roomjoin', 'notifications:usermessage']; %>
         <% _.each(notifications, function(key) { %>
             <div class="notification">
                 <label><%= t('preferences.'+key.replace(':', '.')+'.label') %></label>

@@ -743,6 +743,14 @@
         "label": "Notify me when I'm promoted, kicked, banned in a room",
         "help": ""
       },
+      "roomtopic": {
+        "label": "Notify me when someone change topic in a room I'm in",
+        "help": ""
+      },
+      "roomjoin": {
+        "label": "Notify me when someone enter in a room I'm in",
+        "help": ""
+      },
       "usermessage": {
         "label": "Notify me when I receive a private message",
         "help": ""
