@@ -7,7 +7,7 @@ define([
 
     defaultSize: '280px',
 
-    defaultColor: '#ffffff',
+    defaultColor: '#000000',
 
     el: $('#drawer'),
 
