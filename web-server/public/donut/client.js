@@ -452,12 +452,13 @@ define([
           }
       );
     },
-    userPreferencesRead: function(fn) {
-      debug('io:out:user:preferences:read');
+    userPreferencesRead: function(name, fn) {
+      var data = (name) ? {name: name} : {};
+      debug('io:out:user:preferences:read', data);
       var that = this;
       pomelo.request(
           'chat.userPreferencesHandler.read',
-          {},
+          data,
           function(response) {
             if (response.err)
               return debug('io:in:user:preferences:read error: ', response);

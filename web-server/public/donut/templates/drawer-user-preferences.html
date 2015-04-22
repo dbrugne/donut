@@ -1,8 +1,23 @@
 <div class="user" data-colorify="<%= color %>">
-    <span class="username">@<%= username %></span>
+    <span class="username"><%= t('preferences.title') %></span>
 </div>
 <div class="errors"></div>
 <form class="user-form" role="form">
+    <div class="form-group">
+        <label><%= t('preferences.welcome.title') %></label>
+        <div class="radio">
+            <label>
+                <input type="radio" class="savable" name="browser:welcome" value="browser:welcome:true" <% if (preferences['browser:welcome']) { print('checked'); } %>>
+                <%= t('preferences.welcome.label-true') %>
+            </label>
+        </div>
+        <div class="radio">
+            <label>
+                <input type="radio" class="savable" name="browser:welcome" value="browser:welcome:false" <% if (!preferences['browser:welcome']) { print('checked'); } %>>
+                <%= t('preferences.welcome.label-false') %>
+            </label>
+        </div>
+    </div>
     <div class="form-group">
         <label><%= t('preferences.sounds.title') %></label>
         <div class="radio">
@@ -18,44 +33,42 @@
             </label>
         </div>
     </div>
-    <label><%= t('preferences.notifications.title') %></label>
-    <p class="help-block"><%= t('preferences.notifications.help') %></p>
+    <label><%= t('preferences.notif.title') %></label>
+    <p class="help-block"><%= t('preferences.notif.help.user') %></p>
     <div class="form-group">
-        <% var notifications = ['notifications:roommessage', 'notifications:roommention', 'notifications:roompromote', 'notifications:roomtopic', 'notifications:roomjoin', 'notifications:usermessage']; %>
-        <% _.each(notifications, function(key) { %>
-            <div class="notification">
-                <label><%= t('preferences.'+key.replace(':', '.')+'.label') %></label>
-                <div>
-                    <label class="checkbox-inline">
-                        <input class="savable" type="checkbox" value="<%= key %>:browser" <% if (preferences[key+':browser']) { print('checked'); } %>> <%= t('preferences.notifications.browser') %>
-                    </label>
-                    <label class="checkbox-inline">
-                        <input class="savable" type="checkbox" value="<%= key %>:desktop" <% if (preferences[key+':desktop']) { print('checked'); } %>> <%= t('preferences.notifications.desktop') %>
-                    </label>
-                    <label class="checkbox-inline">
-                        <input class="savable" type="checkbox" value="<%= key %>:email" <% if (preferences[key+':email']) { print('checked'); } %>> <%= t('preferences.notifications.email') %>
-                    </label>
-                    <label class="checkbox-inline">
-                        <input class="savable" type="checkbox" value="<%= key %>:mobile" <% if (preferences[key+':mobile']) { print('checked'); } %>> <%= t('preferences.notifications.mobile') %>
-                    </label>
-                </div>
-                <p class="help-block"><%= t('preferences.'+key.replace(':', '.')+'.help') %></p>
+        <div class="notification">
+            <label class="level-2"><%= t('preferences.notif.channels.title') %></label>
+            <div class="checkbox">
+                <label>
+                    <input class="savable" type="checkbox" value="notif:channels:desktop" <% if (preferences['notif:channels:desktop']) { print('checked'); } %>> <%= t('preferences.notif.channels.desktop') %> (<a class="desktop-notification-test"><%= t('preferences.notif.channels.desktop-test') %></a>)
+                </label>
             </div>
-        <% }); %>
+            <div class="checkbox">
+                <label>
+                    <input class="savable" type="checkbox" value="notif:channels:email" <% if (preferences['notif:channels:email']) { print('checked'); } %>> <%= t('preferences.notif.channels.email') %>
+                </label>
+            </div>
+            <div class="checkbox">
+                <label>
+                    <input class="savable" type="checkbox" value="notif:channels:mobile" <% if (preferences['notif:channels:mobile']) { print('checked'); } %>> <%= t('preferences.notif.channels.mobile') %>
+                </label>
+            </div>
+            <p class="help-block"><%= t('preferences.notif.channels.help') %></p>
+        </div>
     </div>
+
     <div class="form-group">
-        <label><%= t('preferences.welcome.title') %></label>
-        <div class="radio">
-            <label>
-                <input type="radio" class="savable" name="browser:welcome" value="browser:welcome:true" <% if (preferences['browser:welcome']) { print('checked'); } %>>
-                <%= t('preferences.welcome.label-true') %>
-            </label>
+        <p class="help-block"><%= t('preferences.notif.events.title') %></p>
+        <% var notifications = ['notif:usermessage', 'notif:roominvite']; %>
+        <% _.each(notifications, function(key) { %>
+        <div class="notification">
+            <div class="checkbox">
+                <label>
+                    <input class="savable" type="checkbox" value="<%= key %>" <% if (preferences[key]) { print('checked'); } %>> <%= t('preferences.notif.events.'+key.replace('notif:', '').replace(':', '.')+'.label') %>
+                </label>
+            </div>
+            <p class="help-block"><%= t('preferences.notif.events.'+key.replace('notif:', '').replace(':', '.')+'.help') %></p>
         </div>
-        <div class="radio">
-            <label>
-                <input type="radio" class="savable" name="browser:welcome" value="browser:welcome:false" <% if (!preferences['browser:welcome']) { print('checked'); } %>>
-                <%= t('preferences.welcome.label-false') %>
-            </label>
-        </div>
+        <% }); %>
     </div>
 </form>

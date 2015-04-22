@@ -48,24 +48,15 @@ userSchema.statics.getNewUser = function () {
   var color = _.sample(colors.list);
   model.color = color.hex;
 
-  model.preferences = {
-    'browser:welcome': true,
-    'browser:sounds': true,
-    'notifications:roommessage:browser': true,
-    'notifications:roommessage:desktop': true,
-    'notifications:roommention:browser': true,
-    'notifications:roommention:desktop': true,
-    'notifications:roommention:email': true,
-    'notifications:roommention:mobile': true,
-    'notifications:roompromote:browser': true,
-    'notifications:roompromote:desktop': true,
-    'notifications:roompromote:email': true,
-    'notifications:roompromote:mobile': true,
-    'notifications:usermessage:browser': true,
-    'notifications:usermessage:desktop': true,
-    'notifications:usermessage:email': true,
-    'notifications:usermessage:mobile': true
-  };
+  var preferencesConfig = this.preferencesKeys();
+  var preferences = {};
+  _.each(preferencesConfig, function(value, key) {
+    if (key.indexOf('room:') === 0) // room specific preferences exclusion
+      return;
+    if (value && value.default === true)
+      preferences[key] = true;
+  });
+  model.preferences = preferences;
 
   return model;
 };
@@ -141,30 +132,27 @@ userSchema.statics.retrieveUser = function (username) {
 };
 
 /**
- * List the allowed preferences key
- * @returns Array
+ * List the allowed preferences keys and configurations
+ * @returns Object
  */
-userSchema.statics.preferencesAllowedKeys = function () {
-  return [
-    'browser:welcome',
-    'browser:sounds',
-    'notifications:roommessage:browser',
-    'notifications:roommessage:desktop',
-    'notifications:roommessage:email',
-    'notifications:roommessage:mobile',
-    'notifications:roommention:browser',
-    'notifications:roommention:desktop',
-    'notifications:roommention:email',
-    'notifications:roommention:mobile',
-    'notifications:roompromote:browser',
-    'notifications:roompromote:desktop',
-    'notifications:roompromote:email',
-    'notifications:roompromote:mobile',
-    'notifications:usermessage:browser',
-    'notifications:usermessage:desktop',
-    'notifications:usermessage:email',
-    'notifications:usermessage:mobile'
-  ];
+userSchema.statics.preferencesKeys = function () {
+  return {
+    'browser:welcome': { default: true },
+    'browser:sounds': { default: true },
+    'notif:channels:desktop': { default: false },
+    'notif:channels:email': { default: true },
+    'notif:channels:mobile': { default: true },
+
+    'notif:usermessage': { default: true },
+    'notif:roominvite': { default: true },
+
+    'room:notif:nothing:__what__': { default: false },
+    'room:notif:roommessage:__what__': { default: false },
+    'room:notif:roommention:__what__': { default: true },
+    'room:notif:roompromote:__what__': { default: true },
+    'room:notif:roomtopic:__what__': { default: true },
+    'room:notif:roomjoin:__what__': { default: false } // set to true for owner on room creation
+  };
 };
 
 /**
@@ -173,8 +161,23 @@ userSchema.statics.preferencesAllowedKeys = function () {
  * @returns Boolean
  */
 userSchema.statics.preferencesIsKeyAllowed = function (name) {
-  var allowed = this.preferencesAllowedKeys() || [];
-  return !(allowed.indexOf(name) === -1);
+  var allowed = this.preferencesKeys() || {};
+  var keys = Object.keys(allowed);
+
+  // short test (plain keys)
+  if (keys.indexOf(name) !== -1)
+    return true;
+
+  // loop test
+  var found = _.find(keys, function(key) {
+    if (key.indexOf('room:') !== 0)
+      return false; // plain key
+
+    var pattern = new RegExp('^'+key.replace('__what__', ''));
+    return pattern.test(name);
+  });
+
+  return !!found;
 };
 
 /**

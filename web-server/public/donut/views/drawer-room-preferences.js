@@ -4,18 +4,17 @@ define([
   'backbone',
   'client',
   'models/current-user',
-  'views/window',
   '_templates'
-], function ($, _, Backbone, client, currentUser, windowView, templates) {
-  var DrawerUserPreferencesView = Backbone.View.extend({
+], function ($, _, Backbone, client, currentUser, templates) {
+  var DrawerUserRoomPreferencesView = Backbone.View.extend({
 
-    template: templates['drawer-user-preferences.html'],
+    template: templates['drawer-room-preferences.html'],
 
-    id: 'user-preferences',
+    id: 'room-preferences',
 
     events  : {
-      'click .play-sound-test': 'onPlaySound',
-      'change .savable': 'onChangeValue'
+      'change .savable': 'onChangeValue',
+      'change .disable-others': 'onNothing'
     },
 
     initialize: function(options) {
@@ -26,7 +25,7 @@ define([
 
       // ask for data
       var that = this;
-      client.userPreferencesRead(null, function(data) {
+      client.userPreferencesRead(this.model.get('name'), function(data) {
         that.onResponse(data);
       });
     },
@@ -36,22 +35,24 @@ define([
       return this;
     },
     onResponse: function(preferences) {
-      var color = currentUser.get('color');
+      var color = this.model.get('color');
       // colorize drawer .opacity
       if (color)
         this.trigger('color', color);
 
       var html = this.template({
         username: currentUser.get('username'),
+        name: this.model.get('name'),
         color: color,
         preferences: preferences
       });
       this.$el.html(html);
       return;
     },
-    onPlaySound: function(event) {
-      event.preventDefault();
-      windowView._play();
+    onNothing: function(event) {
+      var $target = $(event.currentTarget);
+      var value = $target.is(":checked");
+      this.$el.find('.disableable').prop("disabled", value);
     },
     onChangeValue: function(event) {
       var $target = $(event.currentTarget);
@@ -63,6 +64,9 @@ define([
         value = (key.substr(key.lastIndexOf(':')+1) == 'true');
         key = key.substr(0, key.lastIndexOf(':'));
       }
+
+      // room name (if applicable)
+      key = key.replace('__what__', this.model.get('name'));
 
       var update = {};
       update[key] = value;
@@ -79,5 +83,5 @@ define([
 
   });
 
-  return DrawerUserPreferencesView;
+  return DrawerUserRoomPreferencesView;
 });

@@ -27,6 +27,8 @@ handler.read = function(data, session, next) {
 
 	var that = this;
 
+	var name = data.name || null;
+
 	async.waterfall([
 
 		function retrieveUser(callback) {
@@ -43,9 +45,25 @@ handler.read = function(data, session, next) {
 
 		function prepare(user, callback) {
 			var event = {};
-			_.each(user.preferences, function(value, key, list) {
-				if (User.preferencesIsKeyAllowed(key)) // only if whitelisted
-				  event[key] = value;
+			_.each(User.preferencesKeys(), function(config, key) {
+				// skip non-needed key for this request
+				if ( (name && key.indexOf('room:') !== 0) || (!name && key.indexOf('room:') === 0) )
+					return;
+
+				// key to lookup
+				var _key = (name) ? key.replace('__what__', name) : key;
+
+				// check if set on user or if default is true
+				var _value = false;
+				if (_.has(user.preferences, _key)) {
+					// set on user
+					_value = user.preferences[_key];
+				} else {
+					// default configuration value
+					_value = config.default;
+				}
+
+				event[_key] = _value;
 			});
 
 			return callback(null, event);
@@ -101,7 +119,7 @@ handler.update = function(data, session, next) {
 			// key
 			var keys = Object.keys(data.data);
 			var key = keys[0];
-			if (!key || !(/^[a-z0-9]+[a-z0-9:]+[a-z0-9]+$/i).test(key))
+			if (!key || (!(/^[a-z0-9]+[a-z0-9:]+[a-z0-9]+$/i).test(key) && !(/^[a-z0-9]+[a-z0-9:]+:#[-a-z0-9\._|[\]^]{3,24}$/i).test(key))) // plain and contextual keys
 				return callback('invalidkey');
 
 			if (!User.preferencesIsKeyAllowed(key)) // only if whitelisted

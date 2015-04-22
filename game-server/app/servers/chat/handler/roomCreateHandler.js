@@ -97,6 +97,13 @@ handler.create = function(data, session, next) {
           });
         });
       });
+    },
+
+    function setPreferencesOnOwner(user, room, callback) {
+      user.set('preferences.room:notif:roomjoin:'+room.name, true);
+      user.save(function(err) {
+        return callback(err, user, room);
+      });
     }
 
   ], function(err, user, room) {
