@@ -3,8 +3,8 @@ var schedule = require('pomelo-scheduler');
 
 
 // tasks
-var featuredRooms = require('./featuredRooms');
-var cleanupLogs = require('./cleanupLogs');
+var featuredRooms = require('./scheduler/featuredRooms');
+var cleanupLogs = require('./scheduler/cleanupLogs');
 
 module.exports = function(app, opts) {
   return new DonutScheduler(app, opts);

@@ -1,5 +1,5 @@
-var logger = require('../../pomelo-logger').getLogger('donut', __filename);
-var featuredRooms = require('../util/featuredRooms');
+var logger = require('../../../pomelo-logger').getLogger('donut', __filename);
+var featuredRooms = require('../../util/featuredRooms');
 
 module.exports = function(data) {
   logger.debug('[schedule:featuredRooms] starting');
