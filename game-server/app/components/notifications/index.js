@@ -1,9 +1,9 @@
-var logger = require('../../pomelo-logger').getLogger('donut', __filename);
+var logger = require('../../../pomelo-logger').getLogger('donut', __filename);
 var _ = require('underscore');
 
 // notifications logic
-var userMessage = require('./notifications/userMessage');
-var roomPromote = require('./notifications/roomPromote');
+var userMessage = require('./userMessageType');
+var roomPromote = require('./roomPromoteType');
 
 module.exports = function(app) {
   return new Facade(app);
@@ -27,7 +27,6 @@ Facade.prototype.uidStatus = function(uid, fn) {
     return fn(!!status);
   });
 };
-
 
 Facade.prototype.create = function(type, user, data, fn) {
   logger.info('Notification component called: '+type+' for '+user.username);

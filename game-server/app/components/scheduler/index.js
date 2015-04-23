@@ -1,10 +1,9 @@
-var logger = require('../../pomelo-logger').getLogger('donut', __filename);
+var logger = require('../../../pomelo-logger').getLogger('donut', __filename);
 var schedule = require('pomelo-scheduler');
 
-
 // tasks
-var featuredRooms = require('./scheduler/featuredRooms');
-var cleanupLogs = require('./scheduler/cleanupLogs');
+var featuredRooms = require('./featuredRoomsTask');
+var cleanupLogs = require('./cleanupLogsTask');
 
 module.exports = function(app, opts) {
   return new DonutScheduler(app, opts);
