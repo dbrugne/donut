@@ -1,3 +1,4 @@
+var debug = require('debug')('shared:models:user');
 var _ = require('underscore');
 var mongoose = require('../io/mongoose');
 var bcrypt   = require('bcrypt-nodejs');
@@ -178,6 +179,37 @@ userSchema.statics.preferencesIsKeyAllowed = function (name) {
   });
 
   return !!found;
+};
+
+/**
+ * Return the preferences key value for the current user
+ *
+ * @param key
+ * @returns Mixed
+ */
+userSchema.methods.preferencesValue = function (key) {
+  // preference is set on current user
+  if (_.has(this.preferences, key))
+    return this.preferences[key];
+
+  // not set on user, determine default value
+  var _key;
+  if (key.indexOf('room:') === 0) {
+    // if per-room preferences
+    _key = key.substr(0, key.lastIndexOf(':'))+':__what__';
+  } else {
+    _key = key;
+  }
+
+  var preferencesConfig = this.constructor.preferencesKeys();
+
+  // error in code/configuration
+  if (!preferencesConfig || !_.has(preferencesConfig, _key) || !_.has(preferencesConfig[_key], 'default')) {
+    debug('Unable to find this preference configuration: '+_key);
+    return false;
+  }
+
+  return preferencesConfig[_key]['default'];
 };
 
 /**

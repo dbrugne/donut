@@ -53,15 +53,8 @@ handler.read = function(data, session, next) {
 				// key to lookup
 				var _key = (name) ? key.replace('__what__', name) : key;
 
-				// check if set on user or if default is true
-				var _value = false;
-				if (_.has(user.preferences, _key)) {
-					// set on user
-					_value = user.preferences[_key];
-				} else {
-					// default configuration value
-					_value = config.default;
-				}
+				// current (or default) value
+				var _value = user.preferencesValue(_key);
 
 				event[_key] = _value;
 			});
