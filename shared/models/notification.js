@@ -9,6 +9,8 @@ var notificationSchema = mongoose.Schema({
   data         : mongoose.Schema.Types.Mixed,
   time         : { type: Date, default: Date.now },
 
+  done         : { type: Boolean, default: false }, // avoid totally sending of this notification
+
   to_browser         : { type: Boolean, default: false },
   sent_to_browser    : { type: Boolean, default: false },
   sent_to_browser_at : { type: Date },

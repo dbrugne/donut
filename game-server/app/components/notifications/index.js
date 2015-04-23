@@ -1,5 +1,6 @@
 var logger = require('../../../pomelo-logger').getLogger('donut', __filename);
 var _ = require('underscore');
+var NotificationModel = require('../../../../shared/models/notification');
 
 // notifications logic
 var userMessage = require('./userMessageType');
@@ -55,4 +56,16 @@ Facade.prototype.create = function(type, user, data, fn) {
   // always return immediately
   if (_.isFunction(fn))
     return fn();
+};
+
+Facade.prototype.retrievePendingNotifications = function() {
+  NotificationModel.find({
+    done: false,
+    to_email: true,
+    sent_to_email: false,
+    to_mobile: true,
+    sent_to_mobile: false
+  }, function(err, results) {
+    console.log(err, results);
+  });
 };
