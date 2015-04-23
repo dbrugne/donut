@@ -2,6 +2,7 @@ var logger = require('../../../../pomelo-logger').getLogger('donut', __filename)
 var async = require('async');
 var Room = require('../../../../../shared/models/room');
 var User = require('../../../../../shared/models/user');
+var Notifications = require('../../../components/notifications');
 var roomEmitter = require('../../../util/roomEmitter');
 
 module.exports = function(app) {
@@ -100,14 +101,20 @@ handler.deop = function(data, session, next) {
 				avatar: deopedUser._avatar()
 			};
 
-			return callback(null, room, event);
+			return callback(null, room, user, deopedUser, event);
 		},
 
-		function historizeAndEmit(room, event, callback) {
+		function historizeAndEmit(room, user, deopedUser, event, callback) {
 			roomEmitter(that.app, room.name, 'room:deop', event, function(err) {
 				if (err)
 					return callback('Error while emitting room:deop in '+room.name+': '+err);
 
+				return callback(null, room, user, deopedUser, event);
+			});
+		},
+
+		function notification(room, user, deopedUser, event, callback) {
+			Notifications(that.app).create('roomdeop', deopedUser, {room: room, event: event}, function() {
 				return callback(null);
 			});
 		}

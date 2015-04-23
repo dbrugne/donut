@@ -1,6 +1,7 @@
 var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
 var async = require('async');
 var User = require('../../../../../shared/models/user');
+var Notifications = require('../../../components/notifications');
 var oneEmitter = require('../../../util/oneEmitter');
 var inputUtil = require('../../../util/input');
 var imagesUtil = require('../../../util/images');
@@ -21,7 +22,7 @@ var handler = Handler.prototype;
  *
  * @param {Object} data message from client
  * @param {Object} session
- * @param  {Function} next stemp callback
+ * @param {Function} next stemp callback
  *
  */
 handler.message = function(data, session, next) {
@@ -110,6 +111,12 @@ handler.message = function(data, session, next) {
 				if (err)
 					return callback(err);
 
+				return callback(null, from, to, event);
+			});
+		},
+
+		function notification(from, to, event, callback) {
+			Notifications(that.app).create('usermessage', to, event, function() {
 				return callback(null, from, to, event);
 			});
 		},

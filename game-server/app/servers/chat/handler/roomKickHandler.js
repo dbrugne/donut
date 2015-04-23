@@ -3,6 +3,7 @@ var async = require('async');
 var _ = require('underscore');
 var Room = require('../../../../../shared/models/room');
 var User = require('../../../../../shared/models/user');
+var Notifications = require('../../../components/notifications');
 var roomEmitter = require('../../../util/roomEmitter');
 
 module.exports = function(app) {
@@ -125,21 +126,21 @@ handler.kick = function(data, session, next) {
 				if (err)
 					return callback('Error while emitting room:kick in '+room.name+': '+err);
 
-				return callback(null, room, user, kickedUser);
+				return callback(null, room, user, kickedUser, event);
 			});
 		},
 
 		/**
 		 * /!\ .unsubscribeClients come after .historizeAndEmit to allow kicked user to receive message
 		 */
-		function unsubscribeClients(room, user, kickedUser, callback) {
+		function unsubscribeClients(room, user, kickedUser, event, callback) {
 			// search for all the user sessions (any frontends)
 			that.app.statusService.getSidsByUid(kickedUser._id.toString(), function(err, sids) {
 				if (err)
 					return callback('Error while retrieving user status: '+err);
 
 				if (!sids || sids.length < 1) {
-					return callback(null); // the targeted user could be offline at this time
+					return callback(null, room, user, kickedUser, event); // the targeted user could be offline at this time
 				}
 
 				var parallels = [];
@@ -157,12 +158,18 @@ handler.kick = function(data, session, next) {
 					if (err)
 						return callback('Error while unsubscribing user '+kickedUser._id.toString()+' from '+room.name+': '+err);
 
-					return callback(null, kickedUser);
+					return callback(null, room, user, kickedUser, event);
 				});
 			});
 		},
 
-	], function(err, kickedUser) {
+		function notification(room, user, kickedUser, event, callback) {
+			Notifications(that.app).create('roomkick', kickedUser, {room: room, event: event}, function() {
+				return callback(null);
+			});
+		}
+
+	], function(err) {
 		if (err) {
 			logger.error(err);
 			return next(null, {code: 500, err: err});

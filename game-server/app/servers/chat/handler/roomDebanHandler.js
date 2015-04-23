@@ -3,6 +3,7 @@ var async = require('async');
 var _ = require('underscore');
 var Room = require('../../../../../shared/models/room');
 var User = require('../../../../../shared/models/user');
+var Notifications = require('../../../components/notifications');
 var roomEmitter = require('../../../util/roomEmitter');
 
 module.exports = function(app) {
@@ -109,14 +110,20 @@ handler.deban = function(data, session, next) {
 				avatar: unbannedUser._avatar()
 			};
 
-			return callback(null, room, event);
+			return callback(null, room, user, unbannedUser, event);
 		},
 
-		function historizeAndEmit(room, event, callback) {
+		function historizeAndEmit(room, user, unbannedUser, event, callback) {
 			roomEmitter(that.app, room.name, 'room:deban', event, function(err) {
 				if (err)
 					return callback('Error while emitting room:deban in '+room.name+': '+err);
 
+				return callback(null, room, user, unbannedUser, event);
+			});
+		},
+
+		function notification(room, user, unbannedUser, event, callback) {
+			Notifications(that.app).create('roomdeban', unbannedUser, {room: room, event: event}, function() {
 				return callback(null);
 			});
 		}
