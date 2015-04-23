@@ -148,10 +148,10 @@ userSchema.statics.preferencesKeys = function () {
     'notif:roominvite': { default: true },
 
     'room:notif:nothing:__what__': { default: false },
-    'room:notif:roommessage:__what__': { default: false },
     'room:notif:roommention:__what__': { default: true },
     'room:notif:roompromote:__what__': { default: true },
-    'room:notif:roomtopic:__what__': { default: true },
+    'room:notif:roommessage:__what__': { default: false },
+    'room:notif:roomtopic:__what__': { default: false }, // set to true for owner on room creation
     'room:notif:roomjoin:__what__': { default: false } // set to true for owner on room creation
   };
 };
