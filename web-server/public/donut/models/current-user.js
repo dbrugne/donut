@@ -54,8 +54,7 @@ define([
 
     shouldDisplayWelcome: function() {
       var preferences = this.get('preferences');
-
-      console.log(preferences['browser:welcome']);
+      
       // if no preference set OR browser:welcome equal to true, we show
       if (!preferences || typeof preferences['browser:welcome'] == 'undefined' || preferences['browser:welcome'] === true)
         return true;
