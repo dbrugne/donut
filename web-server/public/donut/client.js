@@ -112,6 +112,14 @@ define([
         debug('io:in:user:viewed', data);
         this.trigger('user:viewed', data);
       }, this);
+      pomelo.on('notification:new', function(data) {
+        debug('io:in:notification:new', data);
+        this.trigger('notification:new', data);
+      }, this);
+      pomelo.on('notification:read', function(data) {
+        debug('io:in:notification:read', data);
+        this.trigger('notification:read', data);
+      }, this);
     },
 
     /**

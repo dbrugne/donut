@@ -1,7 +1,10 @@
 var logger = require('../../../pomelo-logger').getLogger('donut', __filename);
 var _ = require('underscore');
 var async = require('async');
+var User = require('../../../../shared/models/user');
 var NotificationModel = require('../../../../shared/models/notification');
+
+var FREQUENCY_LIMITER = 15; // 15mn
 
 module.exports = function(facade) {
   return new Notification(facade);
@@ -42,7 +45,7 @@ Notification.prototype.shouldBeCreated = function(user, data) {
       },
 
       function checkRepetive(callback) {
-        var delay = Date.now() - 1000*60*15; // 15mn
+        var delay = Date.now() - 1000*60*FREQUENCY_LIMITER; // 15mn
         NotificationModel.find({
           type: that.type,
           user: user,
@@ -90,8 +93,8 @@ Notification.prototype.create = function(user, data) {
   });
 };
 
-Notification.prototype.sendBrowser = function() {
-  // @todo : tag for desktop notification (or send a different signal)
+Notification.prototype.sendToBrowser = function(model) {
+  // never delivered to browser (targeted user should be offline)
 };
 
 Notification.prototype.sendEmail = function() {

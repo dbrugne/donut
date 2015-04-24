@@ -1,7 +1,11 @@
 var logger = require('../../../pomelo-logger').getLogger('donut', __filename);
 var _ = require('underscore');
 var async = require('async');
+var User = require('../../../../shared/models/user');
+var Room = require('../../../../shared/models/room');
 var NotificationModel = require('../../../../shared/models/notification');
+
+var FREQUENCY_LIMITER = 1; // 1mn
 
 module.exports = function(facade) {
   return new Notification(facade);
@@ -35,7 +39,7 @@ Notification.prototype.shouldBeCreated = function(type, user, data) {
     },
 
     function checkRepetive(callback) {
-      var delay = Date.now() - 1000*60*1; // 1mn
+      var delay = Date.now() - 1000*60*FREQUENCY_LIMITER; // 1mn
       NotificationModel.find({
         type: type,
         user: user,
@@ -57,7 +61,6 @@ Notification.prototype.shouldBeCreated = function(type, user, data) {
       return logger.error(err+': '+type+' for '+user.username);
 
     that.create(type, user, data);
-    // @todo : send to browser immediatly
   });
 };
 
@@ -73,22 +76,49 @@ Notification.prototype.create = function(type, user, data) {
   ]);
 
   var model = NotificationModel.getNewModel(type, user, dry);
+  var that = this;
   model.save(function(err) {
     if (err)
       logger.error(err);
     else
       logger.info('notification created: '+type+' for '+user.username);
+
+    if (model.to_browser && !model.sent_to_browser)
+      that.sendToBrowser(model);
   });
 };
 
-Notification.prototype.sendBrowser = function() {
-  // @todo : tag for desktop notification (or send a different signal)
-  var event = {
+Notification.prototype.sendToBrowser = function(model) {
+  var userId = (model.user._id) ? model.user._id.toString() : model.user;
+  var channel = 'user:'+userId;
 
-  };
-  this.app.globalChannelService.pushMessage('connector', 'notification:new', event, 'user:'+session.uid, {}, function(err) {
-    if (err)
-      logger.error('Error while sending notification:new message to user clients: '+err);
+  var that = this;
+  Room.findByName(model.data.name).exec(function(err, room) {
+    if (err) return logger(err);
+
+    User.findByUid(userId).exec(function(err, user) {
+      if (err) return logger(err);
+
+      User.findByUid(model.data.by_user_id).exec(function(err, by_user) {
+        if (err) return logger(err);
+
+        var event = {
+          type: model.type,
+          to_desktop: user.preferencesValue('notif:channels:desktop'), // trigger desktop notification
+          data: model.data
+        };
+        event.data.by_username = by_user.username;
+        event.data.by_avatar = by_user._avatar();
+        event.data.avatar = room._avatar();
+
+        that.facade.app.globalChannelService.pushMessage('connector', 'notification:new', event, channel, {}, function(err) {
+          if (err)
+            logger.error('Error while sending notification:new message to user clients: '+err);
+
+          logger.debug('notification sent: '+model.type+' for '+model.user);
+        });
+      });
+    });
   });
 };
 
