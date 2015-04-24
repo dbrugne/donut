@@ -72,6 +72,8 @@ Notification.prototype.create = function(user, data) {
   var wet = _.clone(data);
   var dry = _.omit(wet, [
     'time',
+    'to',
+    'from',
     'from_username',
     'from_avatar',
     'to_username'

@@ -142,11 +142,11 @@ handler.ban = function(data, session, next) {
 		},
 
 		function historizeAndEmit(room, user, bannedUser, event, callback) {
-			roomEmitter(that.app, room.name, 'room:ban', event, function(err) {
+			roomEmitter(that.app, room.name, 'room:ban', event, function(err, sentEvent) {
 				if (err)
 					return callback('Error while emitting room:ban in '+room.name+': '+err);
 
-				return callback(null, room, user, bannedUser, event);
+				return callback(null, room, user, bannedUser, sentEvent);
 			});
 		},
 

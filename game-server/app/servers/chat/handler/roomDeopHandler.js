@@ -105,11 +105,11 @@ handler.deop = function(data, session, next) {
 		},
 
 		function historizeAndEmit(room, user, deopedUser, event, callback) {
-			roomEmitter(that.app, room.name, 'room:deop', event, function(err) {
+			roomEmitter(that.app, room.name, 'room:deop', event, function(err, sentEvent) {
 				if (err)
 					return callback('Error while emitting room:deop in '+room.name+': '+err);
 
-				return callback(null, room, user, deopedUser, event);
+				return callback(null, room, user, deopedUser, sentEvent);
 			});
 		},
 

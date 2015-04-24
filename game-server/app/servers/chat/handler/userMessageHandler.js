@@ -107,11 +107,11 @@ handler.message = function(data, session, next) {
 		},
 
 		function historizeAndEmit(from, to, event, callback) {
-			oneEmitter(that.app, {from: from._id, to: to._id}, 'user:message', event, function(err) {
+			oneEmitter(that.app, {from: from._id, to: to._id}, 'user:message', event, function(err, sentEvent) {
 				if (err)
 					return callback(err);
 
-				return callback(null, from, to, event);
+				return callback(null, from, to, sentEvent);
 			});
 		},
 

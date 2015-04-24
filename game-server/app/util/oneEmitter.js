@@ -17,21 +17,20 @@ var recorder = require('../../../shared/models/historyone').record();
  */
 module.exports = function(app, onetoone, eventName, eventData, callback) {
 
-  var ed = _.clone(eventData);// avoid modification on the object reference
-  ed.from = onetoone.from;
-  ed.to = onetoone.to;
-  ed.time = Date.now();
-  recorder(eventName, ed, function(err, history) {
+  eventData.from = onetoone.from;
+  eventData.to = onetoone.to;
+  eventData.time = Date.now();
+  recorder(eventName, eventData, function(err, history) {
     if (err)
       return fn('Error while saving event while emitting in onetoone '+eventName+': '+err);
 
-    ed.id = history._id.toString();
+    eventData.id = history._id.toString();
 
     async.parallel([
 
         function sendToSender(fn) {
           // Broadcast message to all 'sender' devices
-          app.globalChannelService.pushMessage('connector', eventName, ed, 'user:'+onetoone.from.toString(), {}, function(err) {
+          app.globalChannelService.pushMessage('connector', eventName, eventData, 'user:'+onetoone.from.toString(), {}, function(err) {
             if (err)
               return fn('Error while pushing message to sender: '+err);
             else
@@ -44,7 +43,7 @@ module.exports = function(app, onetoone, eventName, eventData, callback) {
           if (onetoone.from.toString() ==  onetoone.to.toString())
             return fn(null);
 
-          app.globalChannelService.pushMessage('connector', eventName, ed, 'user:'+onetoone.to.toString(), {}, function(err) {
+          app.globalChannelService.pushMessage('connector', eventName, eventData, 'user:'+onetoone.to.toString(), {}, function(err) {
             if (err)
               return fn('Error while pushing message to receiver: '+err);
             else
@@ -53,7 +52,7 @@ module.exports = function(app, onetoone, eventName, eventData, callback) {
         }
 
     ], function(err, results) {
-      return callback(err, ed);
+      return callback(err, eventData);
     });
 
   });

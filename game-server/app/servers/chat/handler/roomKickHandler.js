@@ -122,11 +122,11 @@ handler.kick = function(data, session, next) {
 		},
 
 		function historizeAndEmit(room, user, kickedUser, event, callback) {
-			roomEmitter(that.app, room.name, 'room:kick', event, function(err) {
+			roomEmitter(that.app, room.name, 'room:kick', event, function(err, sentEvent) {
 				if (err)
 					return callback('Error while emitting room:kick in '+room.name+': '+err);
 
-				return callback(null, room, user, kickedUser, event);
+				return callback(null, room, user, kickedUser, event, sentEvent);
 			});
 		},
 

@@ -105,11 +105,11 @@ handler.op = function(data, session, next) {
 		},
 
 		function historizeAndEmit(room, user, opedUser, event, callback) {
-			roomEmitter(that.app, room.name, 'room:op', event, function(err) {
+			roomEmitter(that.app, room.name, 'room:op', event, function(err, sentEvent) {
 				if (err)
 					return callback('Error while emitting room:op in '+room.name+': '+err);
 
-				return callback(null, room, user, opedUser, event);
+				return callback(null, room, user, opedUser, sentEvent);
 			});
 		},
 

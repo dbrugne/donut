@@ -18,21 +18,20 @@ var recorder = HistoryRoom.record();
  */
 module.exports = function(app, roomName, eventName, eventData, callback) {
 
-  var ed = _.clone(eventData);// avoid modification on the object reference
   // always had room name and time to event
-  ed.name = roomName;
-  ed.time = Date.now();
-  recorder(eventName, ed, function(err, history) {
+  eventData.name = roomName;
+  eventData.time = Date.now();
+  recorder(eventName, eventData, function(err, history) {
     if (err)
       return fn('Error while emitting room event '+eventName+' in '+roomName+': '+err);
 
     // emit event to room users
-    ed.id = history._id.toString();
-    app.globalChannelService.pushMessage('connector', eventName, ed, roomName, {}, function(err) {
+    eventData.id = history._id.toString();
+    app.globalChannelService.pushMessage('connector', eventName, eventData, roomName, {}, function(err) {
       if (err)
         return callback('Error while pushing message: '+err);
 
-      return callback(null, ed);
+      return callback(null, eventData);
     });
   });
 
