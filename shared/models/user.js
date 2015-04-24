@@ -111,8 +111,8 @@ userSchema.statics.findByUsername = function (username) {
 };
 
 /**
- * Return the first database user that correspond to username
- * @param username
+ * Return user from database _id
+ * @param uid
  * @returns {*}
  */
 userSchema.statics.findByUid = function (uid) {
