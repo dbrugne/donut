@@ -2,8 +2,17 @@ var logger = require('../../../../pomelo-logger').getLogger('donut', __filename)
 var _ = require('underscore');
 var async = require('async');
 var User = require('../../../../../shared/models/user');
-var roomEmitter = require('../../../util/roomEmitter');
-var oneEmitter = require('../../../util/oneEmitter');
+var roomMultiEmitter = require('../../../util/roomMultiEmitter');
+var oneMultiEmitter = require('../../../util/oneMultiEmitter');
+
+/**
+ * @todo : replace logic and roomMultiEmitter + roomMultiEmitter
+ *  - on status change detection retrieve user rooms and onetoones,
+ *  - extract full online user list from redis
+ *  - deduplicate list
+ *  - push message
+ *  - on client side handle user:online/offline globally and update discussion accordingly
+ */
 
 var GLOBAL_CHANNEL_NAME = 'global';
 
@@ -62,7 +71,7 @@ DisconnectRemote.prototype.online = function(uid, welcome, globalCallback) {
 				return room.name;
 			});
 
-			roomEmitter(that.app, roomsToInform, 'user:online', event, function (err) {
+			roomMultiEmitter(that.app, roomsToInform, 'user:online', event, function (err) {
 				if (err)
 					return callback(err);
 
@@ -90,7 +99,7 @@ DisconnectRemote.prototype.online = function(uid, welcome, globalCallback) {
 				if (onesToInform.length < 1)
 					return callback(null, event);
 
-				oneEmitter(that.app, onesToInform, 'user:online', event, function (err) {
+				oneMultiEmitter(that.app, onesToInform, 'user:online', event, function (err) {
 					if (err)
 						return callback(err);
 
@@ -233,7 +242,7 @@ DisconnectRemote.prototype.offline = function(uid) {
 			if (roomsToInform.length < 1)
 				return callback(null, user, event);
 
-			roomEmitter(that.app, roomsToInform, 'user:offline', event, function (err) {
+			roomMultiEmitter(that.app, roomsToInform, 'user:offline', event, function (err) {
 				if (err)
 					return callback(err);
 
@@ -258,7 +267,7 @@ DisconnectRemote.prototype.offline = function(uid) {
 				if (onesToInform.length < 1)
 					return callback(null, user, event);
 
-				oneEmitter(that.app, onesToInform, 'user:offline', event, function (err) {
+				oneMultiEmitter(that.app, onesToInform, 'user:offline', event, function (err) {
 					if (err)
 						return callback(err);
 
