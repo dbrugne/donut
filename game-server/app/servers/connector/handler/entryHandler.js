@@ -2,7 +2,6 @@ var logger = require('../../../../pomelo-logger').getLogger('donut', __filename)
 var _ = require('underscore');
 var async = require('async');
 var conf = require('../../../../../config/index');
-var roomEmitter = require('../../../util/roomEmitter');
 var uuid = require('node-uuid');
 var keenio = require('../../../../../shared/io/keenio');
 
