@@ -54,9 +54,10 @@ Notification.prototype.shouldBeCreated = function(type, user, data) {
 
   ], function(err) {
     if (err)
-      logger.error(err+': '+type+' for '+user.username);
-    else
-      that.create(type, user, data);
+      return logger.error(err+': '+type+' for '+user.username);
+
+    that.create(type, user, data);
+    // @todo : send to browser immediatly
   });
 };
 
@@ -64,15 +65,14 @@ Notification.prototype.create = function(type, user, data) {
   // cleanup data
   var wet = _.clone(data.event);
   var dry = _.omit(wet, [
+    'time',
     'avatar',
     'username',
     'by_avatar',
     'by_username'
   ]);
-  dry.name = data.room.name;
 
   var model = NotificationModel.getNewModel(type, user, dry);
-  var that = this;
   model.save(function(err) {
     if (err)
       logger.error(err);
@@ -83,6 +83,13 @@ Notification.prototype.create = function(type, user, data) {
 
 Notification.prototype.sendBrowser = function() {
   // @todo : tag for desktop notification (or send a different signal)
+  var event = {
+
+  };
+  this.app.globalChannelService.pushMessage('connector', 'notification:new', event, 'user:'+session.uid, {}, function(err) {
+    if (err)
+      logger.error('Error while sending notification:new message to user clients: '+err);
+  });
 };
 
 Notification.prototype.sendEmail = function() {
