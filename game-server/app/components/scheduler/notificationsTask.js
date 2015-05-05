@@ -5,5 +5,5 @@ module.exports = function(data) {
   logger.debug('[schedule:notifications] starting');
 
   var facade = notifications(data.app);
-  facade.retrievePendingNotifications();
+  //facade.retrievePendingNotifications();
 };
