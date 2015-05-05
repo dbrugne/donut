@@ -78,8 +78,24 @@
         display: inline-block;
         vertical-align: top;
         margin-top: 0;
-        min-width: 300px;
-        min-height: 80px;
+        position: relative;
+        img {
+          min-width: 300px;
+          min-height: 80px;
+          max-width: 370px;
+          max-height: 85px;
+        }
+        a {
+          &::before {
+            content: "alpha";
+            color: white;
+            position: absolute;
+            bottom: 13px; right: 12px;
+            font-weight: 900;
+            font-size: 18px;
+            font-family: 'Raleway',sans-serif;
+          }
+        }
       }
       .fb-like {
         margin-left: 20px;
