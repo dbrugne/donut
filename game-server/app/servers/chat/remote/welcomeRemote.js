@@ -7,6 +7,7 @@ var Room = require('../../../../../shared/models/room');
 var roomDataHelper = require('../../../util/roomData');
 var oneDataHelper = require('../../../util/oneData');
 var featuredRooms = require('../../../util/featuredRooms');
+var Notifications = require('../../../components/notifications');
 
 module.exports = function(app) {
 	return new WelcomeRemote(app);
@@ -129,6 +130,16 @@ WelcomeRemote.prototype.getMessage = function(uid, frontendId, globalCallback) {
 
 				welcomeEvent.featured = _.first(featured, 4); // keep only n firsts
 
+				return callback(null, user);
+			});
+		},
+
+		function notifications(user, callback) {
+			Notifications(that.app).retrieveUserNotificationsUnreadCount(user._id.toString(), function(err, count) {
+				if (err)
+				  logger.error('Error while retrieving notifications: '+err);
+
+				welcomeEvent.notifications = count || 0;
 				return callback(null, user);
 			});
 		}

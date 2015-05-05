@@ -58,6 +58,25 @@ Facade.prototype.create = function(type, user, data, fn) {
     return fn();
 };
 
+Facade.prototype.retrieveUserNotifications = function(uid, callback) {
+  NotificationModel.find({
+    user: uid,
+    done: false
+  }, function(err, results) {
+    callback(err, results);
+  });
+};
+
+Facade.prototype.retrieveUserNotificationsUnreadCount = function(uid, callback) {
+  NotificationModel.find({
+    user: uid,
+    done: false,
+    viewed: false
+  }).count().exec(function(err, count) {
+    callback(err, count);
+  });
+};
+
 Facade.prototype.retrievePendingNotifications = function() {
   NotificationModel.find({
     done: false,
