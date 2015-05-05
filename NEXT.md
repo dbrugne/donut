@@ -30,5 +30,7 @@ db.users.update(
 
 * Create
   - add "to notify" detection on handlers and create database entities
+  - receive and render notifications on frontend
+  - add read handling on frontend notifications
 * Do
   - implement consumers
