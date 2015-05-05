@@ -29,7 +29,8 @@ define([
   'views/drawer-user-account',
   'views/discussion-room',
   'views/discussion-onetoone',
-  'views/discussions-block'
+  'views/discussions-block',
+  'views/notifications'
 ], function ($, _, Backbone, donutDebug, client, currentUser, EventModel, rooms, onetoones, templates, windowView,
              ConnectionModalView, WelcomeModalView,
              CurrentUserView, AlertView, HomeView, QuickSearchView,
@@ -38,7 +39,7 @@ define([
              DrawerRoomDeleteView,
              DrawerUserProfileView, DrawerUserEditView, DrawerUserPreferencesView, DrawerUserAccountView,
              RoomView, OneToOneView,
-             DiscussionsBlockView) {
+             DiscussionsBlockView, NotificationsView) {
 
   var debug = donutDebug('donut:main');
 
@@ -103,12 +104,7 @@ define([
       this.alertView = new AlertView({mainView: this});
       this.connectionView = new ConnectionModalView({mainView: this});
       this.welcomeView = new WelcomeModalView({mainView: this});
-
-      // @todo : reuse for top navbar
-//      this.quickSearchView = new QuickSearchView({
-//        el: this.$el.find('#block-search'),
-//        mainView: this
-//      });
+      this.notificationsView = new NotificationsView({mainView: this});
 
       // @debug
       window.current = currentUser;
@@ -162,6 +158,10 @@ define([
       debug.end('welcome-ones');
 
       this.discussionsBlock.redraw();
+
+      // Notifications
+      if (data.notifications)
+        this.notificationsView.setUnreadCount(data.notifications);
 
       this.firstConnection = false;
 

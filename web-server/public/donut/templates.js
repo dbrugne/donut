@@ -36,7 +36,8 @@ define([
   'text!./templates/room-users-list.html',
   'text!./templates/room-users.html',
   'text!./templates/spinner.html',
-  'text!./templates/welcome.html'
+  'text!./templates/welcome.html',
+  'text!./templates/notifications.html'
 ], function (_,
   color_picker,
   current_user,
@@ -74,7 +75,8 @@ define([
   room_users_list,
   room_users,
   spinner,
-  welcome
+  welcome,
+  notifications
 ) {
 
   /**
@@ -128,6 +130,7 @@ define([
   JST['room-users.html']                    = _.template(room_users);
   JST['spinner.html']                       = _.template(spinner);
   JST['welcome.html']                       = _.template(welcome);
+  JST['notifications.html']                 = _.template(notifications);
 
   return JST;
 });
