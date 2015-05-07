@@ -157,6 +157,16 @@ define([
       this.socket.on("unauthorized", function(error) {
         debug.end('sio_connect');
         debug("authentication rejected", error);
+
+        // special case, reconnection with an expired token
+        if (error.message == 'jwt expired')
+          that._requestToken(true, function(err, token) {
+            if (err)
+              return that.trigger('error', err);
+
+            that._sio(server);
+          });
+
         that.trigger('error', error.message);
       });
 
