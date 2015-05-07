@@ -51,6 +51,9 @@ app.set('views', path.join(__dirname, '/views'));
 app.set('layout', false);
 app.set('view engine', 'html');
 
+// oauth (mobile) routes
+app.use(require('./app/oauth/token'));
+
 // public routes
 app.use(require('./app/routes/seo'));
 app.use(require('./app/routes/landing'));

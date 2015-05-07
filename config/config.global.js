@@ -20,6 +20,10 @@ var conf = module.exports = {
     secret: 'q4qsd65df45s4d5f45ds5fsf4s',
     ttl: 7*24*3600 // 1 week, in seconds
   },
+  oauth: {
+    secret: 'QmFzZTY0DQoNCkJhc2U2NCBpcyBhIGdlbmVyaWMgdGVybSBmb3IgYSBudW1iZ',
+    expire: 5*60 // 5 hours, in minutes
+  },
   email: {
     from: {
       name: "DONUT.me",
