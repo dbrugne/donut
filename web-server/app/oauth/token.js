@@ -15,11 +15,11 @@ var conf = require('../../../config/');
 router.route('/oauth/session')
     .get(function(req, res) {
       if (!req.user)
-        return res.json({token: 'error: no valid cookie or session'});
+        return res.json({err: 'no valid cookie or session'});
 
       var allowed = req.user.isAllowedToConnect();
       if (!allowed.allowed)
-        return res.json({token: 'error: user not allowed to connect'});
+        return res.json({err: 'user not allowed to connect'});
 
       // filter exported data
       var profile = {
@@ -44,17 +44,17 @@ router.route('/oauth/session')
 router.route('/oauth/login')
     .post(function(req, res) {
       if (!req.body.email || !req.body.password)
-        return res.json({token: 'error: no email or password'});
+        return res.json({err: 'no email or password'});
 
       User.findOne({'local.email': req.body.email}, function(err, user) {
         if (err)
-          return res.json({token: 'error: '+err});
+          return res.json({err: 'internal error: '+err});
         if (!user)
-          return res.json({token: 'error: unable to find user'});
+          return res.json({err: 'unable to find user'});
 
         var allowed = user.isAllowedToConnect();
         if (!allowed.allowed)
-          return res.json({token: 'error: user not allowed to connect'});
+          return res.json({err: 'user not allowed to connect'});
 
         // filter exported data
         var profile = {
