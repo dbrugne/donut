@@ -1,5 +1,5 @@
 {
-  "name": "donut-server",
+  "name": "donut",
   "version": "0.0.1",
   "dependencies": {
     "requirejs": "latest",
@@ -11,7 +11,6 @@
     "cloudinary_js": "latest",
     "moment": "2.7.x",
     "i18next": "latest",
-    "pomelo-jsclient-socket.io": "latest",
     "backgrid": "latest",
     "backbone.paginator": "latest",
     "backgrid-paginator": "git://github.com/wyuenho/backgrid-paginator.git#03632df8ad238e3d043c0fd471a6c78494e1bdfc",
