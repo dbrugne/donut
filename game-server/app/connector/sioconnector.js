@@ -3,13 +3,10 @@ var conf = require('../../../config/index');
 var util = require('util');
 var EventEmitter = require('events').EventEmitter;
 var socketio = require('socket.io');
-var socketioSocket = require('./siosocket');
+var socketioPomeloSocket = require('./sioPomeloSocket');
 var socketioRedis = require('socket.io-redis');
-var socketioPassport = require('passport.socketio');
-var redisStore = require('../../../shared/authentication/redisStore');
-var cookieParser = require('cookie-parser');
-var passport = require('../../../shared/authentication/passport');
-
+var socketioJwt = require('socketio-jwt');
+var User = require('../../../shared/models/user');
 var PKG_ID_BYTES = 4;
 var PKG_ROUTE_LENGTH_BYTES = 1;
 var PKG_HEAD_BYTES = PKG_ID_BYTES + PKG_ROUTE_LENGTH_BYTES;
@@ -39,54 +36,71 @@ module.exports = Connector;
  * Start connector to listen the specified port
  */
 Connector.prototype.start = function(cb) {
-  var self = this;
+  var that = this;
 
   // create socket.io server
-  this.wsocket = socketio(this.port, this.opts.options);
+  this.sio = socketio(this.port, this.opts.options);
 
   // Redis storage
-  this.wsocket.adapter(socketioRedis({}));
+  this.sio.adapter(socketioRedis({}));
 
   // Authentication
-  this.wsocket.use(socketioPassport.authorize({
-    passport      : passport,
-    cookieParser  : cookieParser,
-    key           : conf.sessions.key,
-    secret        : conf.sessions.secret,
-    store         : redisStore,
-    success: function (data, accept){
-      var log = {
-        type: 'socketioPassport',
-        result: 'success',
-        username: data.user.username,
-        'remote_ip': (data.headers['x-forwarded-for']) ? data.headers['x-forwarded-for'] : data.connection.remoteAddress
-      }
-      logger.info(JSON.stringify(log));
-      accept();
-    },
-    fail: function (data, message, critical, accept) {
-      var log = {
-        type: 'socketioPassport',
-        result: 'fail',
-        'remote_ip': (data.headers['x-forwarded-for']) ? data.headers['x-forwarded-for'] : data.connection.remoteAddress
-      }
-      logger.info(JSON.stringify(log));
-      accept(new Error(message));
-    }
-  }));
+  // step 1 - on connection run socketioJwt logic (it will wait 15s for an 'authenticate' event with token from client)
+  this.sio.sockets.on('connection', socketioJwt.authorize({
+        secret: conf.oauth.secret,
+        timeout: 15000,
+        additional: function(decoded, onSuccess, onError) {
+          User.findByUid(decoded.id).exec(function(err, user) {
+            if (err) {
+              logger.error(err);
+              return onError('Error while retrieving authenticating user', 'internal_error');
+            }
 
-  this.wsocket.sockets.on('connection', function (socket) {
+            var userError = null;
+            if (!user)
+              userError = 'Unable to find authenticating user account: '+decoded.id;
+            else if (user.deleted)
+              userError = 'This user account was deleted: '+decoded.id;
+            else if (user.suspended)
+              userError = 'This user account is suspended: '+decoded.id;
+            else if (!user.username)
+              userError = 'This user account has no username set: '+decoded.id;
+            if (userError) {
+              logger.error(userError);
+              return onError(userError, 'invalid_user');
+            }
 
-    logger.debug('new socket.io connection: ', socket.id);
+            // finally user is valid
+            return onSuccess();
+          });
+        }
+      }));
 
-    // Wrap the socket
-    var siosocket = new socketioSocket(curId++, socket);
+  // step 2 - once token is validated the socket is considered authenticated
+  this.sio.sockets.on('authenticated', function(socket) {
+    // log who is authenticated
+    var log = {
+      type: 'ws:authenticated',
+      result: 'success',
+      username: socket.decoded_token.username,
+      'remote_ip': (socket.handshake.headers['x-forwarded-for']) ? socket.handshake.headers['x-forwarded-for'] : socket.conn.remoteAddress
+    };
+    logger.info(JSON.stringify(log));
 
-    self.emit('connection', siosocket);
-    siosocket.on('closing', function(reason) {
-      logger.debug('socket.io socket closing: ', socket.id);
-      siosocket.send({route: 'onKick', reason: reason});
+    // add test event
+    socket.on('ping', function(data) {
+      socket.emit('pong', {});
     });
+
+    // wrap the socket
+    var pomeloSocket = new socketioPomeloSocket(curId++, socket);
+    that.emit('connection', pomeloSocket);
+
+    pomeloSocket.on('closing', function(reason) {
+      logger.debug('socket.io socket closing: ', socket.id);
+      pomeloSocket.send({route: 'onKick', reason: reason});
+    });
+
   });
 
   process.nextTick(cb);
@@ -96,7 +110,7 @@ Connector.prototype.start = function(cb) {
  * Stop connector
  */
 Connector.prototype.stop = function(force, cb) {
-  this.wsocket.server.close();
+  this.sio.server.close();
   process.nextTick(cb);
 };
 
