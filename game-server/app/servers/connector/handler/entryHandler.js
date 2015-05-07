@@ -19,7 +19,7 @@ var Handler = function(app) {
 var handler = Handler.prototype;
 
 /**
- * New 'client' connection, we handle the logic here
+ * New 'client' connection handler
  *
  * @param  {Object}   msg     request message
  * @param  {Object}   session current session object
@@ -29,24 +29,24 @@ var handler = Handler.prototype;
 handler.enter = function(msg, session, next) {
 	var that = this;
 
-	logger.debug('connect request for '+session.__session__.__socket__.socket.getUserId()+'@'+session.frontendId+' sessionId: '+session.id);
+	if (!session
+			|| !session.__session__
+			|| !session.__session__.__socket__
+			|| !session.__session__.__socket__.socket
+			|| !session.__session__.__socket__.socket.decoded_token) {
+		return callback('No user data provided by connector');
+	}
 
-	var uid = false;
+	var uid = session.__session__.__socket__.socket.decoded_token.id;
+
+	logger.debug('entry request for '+uid+'@'+session.frontendId+' sessionId: '+session.id);
+
 	var firstClient = true;
 
 	async.waterfall([
 
-		function determineUid(callback) {
-			if (session
-				&& session.__session__
-				&& session.__session__.__socket__
-				&& session.__session__.__socket__.socket)
-				uid = session.__session__.__socket__.socket.getUserId();
-
-			if (!uid)
-			  return callback('Unable to determine session uid');
-
-			logger.debug('bind session to user '+uid);
+		function bindSession(callback) {
+			logger.debug('bind session '+session.id+' to user '+uid);
 			session.bind(uid);
 
 			// disconnect event

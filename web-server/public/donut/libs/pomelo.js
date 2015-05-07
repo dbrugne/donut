@@ -1,9 +1,10 @@
 define([
+  'jquery',
   'underscore',
   'backbone',
   'libs/donut-debug',
   'socket.io'
-], function (_, Backbone, donutDebug, io) {
+], function ($, _, Backbone, donutDebug, io) {
 
   var debug = donutDebug('donut:pomelo');
 
@@ -12,6 +13,8 @@ define([
   var pomelo = _.extend({
 
     current: '', // store the current connector URL on which this client is connected
+
+    token: null, // current JWT token used for WS authentication
 
     socket: null, // current sio socket
 
@@ -90,24 +93,41 @@ define([
      */
     _connect: function(server) {
       debug.end('sio_connect');
-      debug.start('sio_entryHandler');
 
       var that = this;
-      this._sio(server, function () {
-        that.request('connector.entryHandler.enter', {
-        }, function (data) {
-          if (data.error)
-            return debug("connector.entryHandler.enter returns error", data);
+      this._requestToken(false, function(err, token) {
+        if (err)
+          return that.trigger('error', err);
 
-          debug("connected to "+that.current);
-          debug.end('sio_entryHandler');
-
-          that.trigger('welcome', data);
-        });
+        that._sio(server);
       });
     },
-    _sio: function(server, callback) {
+    _requestToken: function(force, fn) {
+      if (this.token && !force)
+        return fn(null, this.token);
 
+      debug.start('sio_token');
+      var that = this;
+      $.ajax({
+        url: '/oauth/session',
+        type: 'GET',
+        dataType : 'json',
+        success: function( json ) {
+          if (json.err)
+            return fn(json.err);
+
+          that.token = json.token;
+          debug.end('sio_token');
+          return fn(null, json.token);
+        },
+        error: function( xhr, status, errorThrown ) {
+          debug.end('sio_token');
+          return fn(errorThrown);
+        }
+      });
+    },
+    _sio: function(server) {
+      debug.start('sio_connect');
       // @doc: https://github.com/Automattic/engine.io-client#methods
       var options = {
         //multiplex: true,
@@ -124,13 +144,22 @@ define([
       if (server.port)
         this.current += ':'+server.port;
       this.socket = io(this.current, options);
+
       var that = this;
 
-      this.socket.on('connect', function () { // connected
+      // triggered when server has confirmed user authentication
+      this.socket.on('authenticated', function () {
+        debug("authentication accepted");
+        debug.end('sio_connect');
         that.trigger('connect');
-        if (callback)
-          callback();
+        that._requestWelcome();
       });
+      this.socket.on("unauthorized", function(error) {
+        debug.end('sio_connect');
+        debug("authentication rejected", error);
+        that.trigger('error', error.message);
+      });
+
       this.socket.on('disconnect',         function(reason) { that.trigger('disconnect', reason); }); // disconnected
       this.socket.on('error',              function(err) { that.trigger('error', err); }); // connection error
 
@@ -149,6 +178,25 @@ define([
           that._messages(data);
         else
           that._message(data);
+      });
+
+      // socket listener are set, go connect, then authenticate
+      this.socket.on('connect', function () {
+        debug("connected to "+that.current);
+        that.socket.emit('authenticate', { token: that.token });
+      });
+    },
+    _requestWelcome: function() {
+      var that = this;
+      debug.start('sio_entryHandler');
+      this.request('connector.entryHandler.enter', {}, function (data) {
+        if (data.error)
+          return debug("connector.entryHandler.enter returns error", data);
+
+        debug("welcome received");
+        debug.end('sio_entryHandler');
+
+        that.trigger('welcome', data);
       });
     },
     _message: function(data) {

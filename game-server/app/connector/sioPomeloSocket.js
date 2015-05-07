@@ -54,13 +54,6 @@ var Socket = function(id, socket) {
   });
 
   this.state = ST_INITED;
-
-  /**
-   * Add shortcut to retrieve socket uid before pomelo session bind (used in entryHendler)
-   */
-  socket.getUserId = function() {
-    return this.request.user._id.toString();
-  };
 };
 
 util.inherits(Socket, EventEmitter);
