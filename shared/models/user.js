@@ -9,7 +9,9 @@ var userSchema = mongoose.Schema({
 
     username       : String,
     name           : String,
-    admin          : Boolean,
+    admin          : { type: Boolean, default: false },
+    deleted        : { type: Boolean, default: false },
+    suspended      : { type: Boolean, default: false },
     bio            : String,
     location       : String,
     website        : String,

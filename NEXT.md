@@ -1,5 +1,16 @@
 # Things to do on next deploy
 
+* Set new user status fields:
+
+``javascript
+db.users.update(
+    {},
+    { $set : { "deleted" : false, "suspended" : false } },
+    { multi: true}
+  );
+db.users.find({ "deleted" : { $exists : false } }).count();
+```
+
 * Remove users.welcome:
 
 ``javascript
