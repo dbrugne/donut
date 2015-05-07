@@ -56,18 +56,17 @@ Connector.prototype.start = function(cb) {
               return onError('Error while retrieving authenticating user', 'internal_error');
             }
 
-            var userError = null;
-            if (!user)
-              userError = 'Unable to find authenticating user account: '+decoded.id;
-            else if (user.deleted)
-              userError = 'This user account was deleted: '+decoded.id;
-            else if (user.suspended)
-              userError = 'This user account is suspended: '+decoded.id;
-            else if (!user.username)
-              userError = 'This user account has no username set: '+decoded.id;
-            if (userError) {
-              logger.error(userError);
-              return onError(userError, 'invalid_user');
+            // is user exists
+            if (!user) {
+              logger.error('Unable to find authenticating user account: '+decoded.id);
+              return onError('Unable to find authenticating user account: '+decoded.id, 'unknown_user');
+            }
+
+            // is user account valid
+            var allowed = user.isAllowedToConnect();
+            if (!allowed.allowed) {
+              logger.error(allowed.err);
+              return onError(allowed.err, 'invalid_user');
             }
 
             // finally user is valid

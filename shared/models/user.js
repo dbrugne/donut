@@ -83,6 +83,40 @@ userSchema.methods.validPassword = function (password) {
 };
 
 /**
+ * Check that user account is allowed to login
+ *
+ * @returns {allowed: Boolean, err: String}
+ */
+userSchema.methods.isAllowedToLogin = function() {
+  var err = null;
+  if (!this.id)
+    err = 'Unable to find authenticating user account: '+this.id;
+  else if (this.deleted === true)
+    err = 'This user account was deleted: '+this.id;
+
+  return { allowed: (!err), err: err };
+};
+
+/**
+ * Check that user account is allowed connect to WS
+ *
+ * @returns {allowed: Boolean, err: String}
+ */
+userSchema.methods.isAllowedToConnect = function () {
+  var connect = this.isAllowedToLogin();
+  if (!connect.allowed)
+    return connect;
+
+  var err = null;
+  if (this.suspended === true)
+    err = 'This user account is suspended: '+this.id;
+  else if (!this.username)
+    err = 'This user account has no username set: '+this.id;
+
+  return { allowed: (!err), err: err };
+};
+
+/**
  * Return true if username format is valid or false otherwise
  * @param username
  * @returns {boolean}
