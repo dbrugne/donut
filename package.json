@@ -12,6 +12,7 @@
     "connect-flash": "0.1.x",
     "connect-redis": "2.x",
     "cookie-parser": "1.x",
+    "cors": "^2.6.0",
     "crc": "0.2.0",
     "csurf": "1.x",
     "debug": "2.x",
