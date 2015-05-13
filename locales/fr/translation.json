@@ -417,7 +417,7 @@
         "kickmessage": "Vous venez d'être expulsé de __name__",
         "banmessage": "Vous venez d'être banni de __name__",
         "bannedfromroom": "Vous nous pouvez pas rejoindre __name__, vous avez été banni",
-        "roomnotexists": "Le donut __name__ n'existe pas encore, <a class='open-create-room' data-name='__name__'>voulez vous le créer</a> ?",
+        "roomnotexists": "Le donut __name__ n'existe pas, <a class='open-create-room' data-name='__name__'>souhaitez-vous le créer </a> ?",
         "alreadyexists": "Le donut __name__ existe déjà, <a href='#__uri__'>voulez-vous le rejoindre</a> ?",
         "successfullycreated": "Le donut __name__ a bien été créé",
         "reason": "(motif : \"__reason__\")",
