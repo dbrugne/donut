@@ -9,7 +9,6 @@ define([
       '':                 'root',
       'room/:name':       'focusRoom',
       'user/:user':       'focusOneToOne',
-      'account':          'focusAccount',
       '*default':         'default'
     },
 
