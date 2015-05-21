@@ -207,6 +207,20 @@
             margin: 20px;
             font-size: 1.5em;
           }
+          .messages-list-ctn {
+            .messages-list { overflow: hidden; width: auto; min-height: 250px; font-size: 13px;
+              .message { padding: 10px 12px; position: relative;   border-bottom-color: #F1F1F1; border-style: solid; border-width: 0 0 1px 0;
+                img { width: 32px; height: 32px; position: absolute; top: 50%; margin-top: -16px;  }
+                .message-subject { display: block; line-height: 17px; margin-bottom: 2px; overflow-x: hidden; overflow-y: hidden; padding: 0 0 0 42px; text-overflow: ellipsis; white-space: nowrap; width: 272px; }
+                .message-description { color: #AAA; font-size: 11px; line-height: 17px; padding-left: 42px;
+                  .username { color:#000; }
+                }
+              }
+            }
+            .messages-link { border-top-color: #F1F1F1; border-top-style: solid; border-top-width: 1px; color: #999; display: block; font-size: 10px; font-weight: 600; height: 35px; line-height: 18px; padding-top: 8px; text-align: center; text-decoration: none;
+              &:hover { background: #F1F1F1; }
+            }
+          }
         }
       }
       .navbar-nav>li>a {

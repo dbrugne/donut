@@ -1,5 +1,6 @@
 // bootstrap
 @import "../vendor/bootstrap/less/bootstrap";
+@import "./globals";
 
 .modal-backdrop { &.in { opacity: 0.5; } } // fix less .opacity() bug, web-server/public/vendor/bootstrap/less/modals.less:72
 
@@ -64,9 +65,7 @@ body {
   text-transform:uppercase;
   border: 5px solid @cl-second;
   color: @cl-second;
-  -webkit-border-radius: 90px;
-  -moz-border-radius: 90px;
-  border-radius: 90px;
+  .border-radius(90px);
 }
 .input-picto {
   color: @cl-first;
@@ -87,7 +86,7 @@ body {
   font-size: 16px;
   .preview {
     border: 1px solid #ccc;
-    border-radius: 4px;
+    .border-radius(4px);
     width: 30px;
     height: 30px;
     margin-right: 5px;
@@ -170,9 +169,7 @@ body {
   position: relative;
   background-color: @cl-subtext0;
   padding: 1.2em 1.3em;
-  -webkit-border-radius: 25px;
-  -moz-border-radius: 25px;
-  border-radius: 25px;
+  .border-radius(25px);
   &:before {
     content: url(/images/svg/tail.svg);
     position: absolute;
@@ -227,9 +224,7 @@ body {
       background-color: #ffffff; /** customizable color **/
       .ft-raleway-medium;
       color: #ffffff;
-      -webkit-border-radius: 100px;
-      -moz-border-radius: 100px;
-      border-radius: 100px;
+      .border-radius(100px);
       text-transform: uppercase;
       padding: 15px 20px;
       font-size: 17px;
@@ -266,9 +261,7 @@ body {
       background-color: #000000; /** customizable color **/
       color: #ffffff;
       .ft-raleway-medium;
-      -webkit-border-radius: 100px;
-      -moz-border-radius: 100px;
-      border-radius: 100px;
+      .border-radius(100px);
       text-transform: uppercase;
       padding: 15px 20px;
       font-size: 17px;
@@ -287,9 +280,7 @@ body {
       background-color: @cl-neutral;
       color: #ffffff;
       .ft-raleway-medium;
-      -webkit-border-radius: 100px;
-      -moz-border-radius: 100px;
-      border-radius: 100px;
+      .border-radius(100px);
       padding: 0.9em 1.2em;
       text-transform: uppercase;
     }
