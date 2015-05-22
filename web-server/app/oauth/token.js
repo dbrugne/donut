@@ -9,6 +9,8 @@ var conf = require('../../../config/');
 /**
  * Route handler - retrieve user and return token from an "existing session"
  *
+ * Used by Web client
+ *
  * @cookie a valid session cookie
  * @response {token: String}
  */
@@ -36,6 +38,8 @@ router.route('/oauth/session')
 
 /**
  * Route handler - retrieve user and return token from "email/password"
+ *
+ * Used by mobile client
  *
  * @post email
  * @post password

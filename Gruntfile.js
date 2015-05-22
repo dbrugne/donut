@@ -19,7 +19,7 @@ module.exports = function(grunt) {
           paths: {
             '_templates'                  : '../build/templates',
             'debug'                       : '../vendor/visionmedia-debug/dist/debug',
-            'jquery'                      : '../vendor/jquery/jquery',
+            'jquery'                      : '../vendor/jquery/dist/jquery',
             'bootstrap'                   : '../vendor/bootstrap/dist/js/bootstrap',
             'text'                        : '../vendor/requirejs-text/text',
             'socket.io'                   : '../../../node_modules/socket.io-client/socket.io',
