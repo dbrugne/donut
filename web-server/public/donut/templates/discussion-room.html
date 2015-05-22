@@ -23,11 +23,11 @@
                             <i class="icon icon-eye"></i> <%= t('global.viewprofile') %>
                         </a>
                     </li>
-                    <li role="presentation">
+                    <!-- li role="presentation">
                         <a role="menuitem" tabindex="-1" class="open-room-preferences" data-room-name="<%= name %>">
                             <i class="icon icon-cog"></i> <%= t('chat.actions.preferences') %>
                         </a>
-                    </li>
+                    </li -->
                     <% if (isOwner === true || isOp === true || isAdmin === true) { %>
                     <li role="presentation" class="divider"></li>
                     <% }; %>
