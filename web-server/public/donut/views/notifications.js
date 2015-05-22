@@ -38,12 +38,11 @@ define([
     },
     setUnreadCount: function(count) {
       this.unreadCount = count;
-      if (count) {
-        this.$badge.text(this.unreadCount);
-        this.$badge.show();
+      if (count > 0) {
+        this.$badge.text(this.unreadCount).removeClass('hidden');
       }
       else
-        this.$badge.hide();
+        this.$badge.addClass('hidden');
     },
     onShow: function(event) {
       console.log("show", event.relatedTarget);
