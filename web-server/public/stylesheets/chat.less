@@ -207,6 +207,20 @@
             margin: 20px;
             font-size: 1.5em;
           }
+          .messages-list-ctn {
+            .messages-list { overflow: hidden; width: auto; min-height: 250px; font-size: 13px;
+              .message { padding: 10px 12px; position: relative;   border-bottom-color: #F1F1F1; border-style: solid; border-width: 0 0 1px 0;
+                img { width: 32px; height: 32px; position: absolute; top: 50%; margin-top: -16px;  }
+                .message-subject { display: block; line-height: 17px; margin-bottom: 2px; overflow-x: hidden; overflow-y: hidden; padding: 0 0 0 42px; text-overflow: ellipsis; white-space: nowrap; width: 272px; }
+                .message-description { color: #AAA; font-size: 11px; line-height: 17px; padding-left: 42px;
+                  .username { color:#000; }
+                }
+              }
+            }
+            .messages-link { border-top-color: #F1F1F1; border-top-style: solid; border-top-width: 1px; color: #999; display: block; font-size: 10px; font-weight: 600; height: 35px; line-height: 18px; padding-top: 8px; text-align: center; text-decoration: none;
+              &:hover { background: #F1F1F1; }
+            }
+          }
         }
       }
       .navbar-nav>li>a {
@@ -281,29 +295,10 @@
   }
 
   #alert {
-    .alert {
-      display: none;
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      min-height: 45px;
-      z-index: 100;
-      padding: .4em .6em .4em;
-      background-color: @cl-neutral;
+    .alert { display: none; position: absolute; top: 0; left: 0; right: 0; min-height: 45px; z-index: 1031; padding: .4em .6em .4em; background-color: @cl-neutral; font-size: 1.5em; color: @cl-background; text-align: center; white-space: nowrap;
       .ft-opensans-bold;
-      font-size: 1.5em;
-      color: @cl-background;
-      text-align: center;
-      white-space: nowrap;;
-      .message {
-      }
-      .close-btn {
-        position: absolute;
-        top: 8px; right: 12px;
-        cursor: pointer;
-        img {
-          width: 25px;
-          height: 25px;
-        }
+      .close-btn { position: absolute; top: 8px; right: 12px; cursor: pointer;
+        img { width: 25px; height: 25px; }
       }
     }
     .alert.info { background-color: @cl-success;}

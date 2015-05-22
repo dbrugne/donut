@@ -73,15 +73,15 @@
     "unknownerror": "Unknown error, please retry later"
   },
   "login": {
-    "title": "Login",
+    "title": "The first test phase is over. Thanks for your help !",
     "withfacebook": "with Facebook",
     "withpassword": "with a password",
     "email-placeholder": "your e-mail",
     "password-placeholder": "your password",
     "confirm-placeholder": "confirm your password",
     "username-placeholder": "choose a username",
-    "createanaccount1": "sign up,",
-    "createanaccount2": "it's free!",
+    "createanaccount1": "Sign-up to be keep informed,",
+    "createanaccount2": "right here !",
     "emailerror": "Invalid e-mail",
     "passworderror": "Your forgot to enter a password"
   },
@@ -250,7 +250,7 @@
       "line3": "...and discover like-minded people, during true conversations!"
     },
     "signup": {
-      "title1": "Create your",
+      "title1": "Sign-up to be updated on our latest developments.<br> Your can already have a look ;).",
       "title2": "account here in 1 bite",
       "etvoila": "Here we go!"
     },
