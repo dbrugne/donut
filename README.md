@@ -123,6 +123,11 @@ $ grunt jst
 $ grunt requirejs
 ```
 
+To inject a fresh copy of the production database:
+```
+grunt grunt donut-pull-database
+```
+
 ### Local running
 
 Be sure that:
