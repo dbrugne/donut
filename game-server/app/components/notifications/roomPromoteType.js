@@ -75,6 +75,9 @@ Notification.prototype.create = function(type, user, data) {
     'by_username'
   ]);
 
+  dry.user = dry.user_id;
+  if (dry.by_user_id)
+    dry.by_user = dry.by_user_id;
   var model = NotificationModel.getNewModel(type, user, dry);
   var that = this;
   model.save(function(err) {

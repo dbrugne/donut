@@ -1,22 +1,90 @@
 <div class="messages-list-ctn">
-    <div class="messages-list" id="main-navbar-messages" style="overflow: hidden; width: auto; height: 250px;">
+    <div class="messages-list" id="main-navbar-messages" style="  overflow-y: auto; width: auto; height: 250px;">
+
+        <% _.each(notifications, function(notification){ %>
+            <div class="message">
+                <i class="icon icon-op color-text-success"></i>
+                <div class="avatar open-user-profile" data-username="michel" style="background-image: url(https://res.cloudinary.com/roomly/image/upload/b_rgb:e81e41,c_fill,d_user-avatar-default.png,f_jpg,g_face,h_30,w_30/user-avatar-default)"></div>
+                <div class="message-subject">
+                    <span class="username open-user-profile" data-username="michel">@michel</span>
+                    <a href="#">
+                        a &eacute;t&eacute; promu mod&eacute;rateur.
+                    </a>
+                </div>
+                <div class="message-description">
+                    par <span class="username open-user-profile" data-username="yann">@yann</span>
+                    &nbsp;&nbsp;-&nbsp;&nbsp;
+                    Il y &agrave; 2h
+                </div>
+            </div> <!-- / .message -->
+        <% }) %>
+
+        <!--Direct message from user-->
+        <div class="message">
+            <img src="https://res.cloudinary.com/roomly/image/upload/b_rgb:782235,c_fill,d_user-avatar-default.png,f_jpg,g_face,h_30,w_30/user-avatar-default" alt="" class="message-avatar">
+            <a href="#" class="message-subject">a chang&eacute; le sujet pour "bla"</a>
+            <div class="message-description">
+                par <span class="username open-user-profile" data-colorify-text="color" data-username="yann">@yann</span>
+                &nbsp;&nbsp;-&nbsp;&nbsp;
+                &agrave; l'instant
+            </div>
+        </div> <!-- / .message -->
+
+        <!--Topic changed-->
         <div class="message">
             <img src="https://res.cloudinary.com/roomly/image/upload/b_rgb:782235,c_fill,d_user-avatar-default.png,f_jpg,g_face,h_30,w_30/user-avatar-default" alt="" class="message-avatar">
             <a href="#" class="message-subject">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</a>
             <div class="message-description">
-                from <span class="username open-user-profile" data-username="michel">@michel</span>
+                par <span class="username open-user-profile" data-username="michel">@michel</span>
                 &nbsp;&nbsp;-&nbsp;&nbsp;
-                2h ago
+            Il y &agrave; 2h
             </div>
         </div> <!-- / .message -->
 
+        <!--Mention-->
         <div class="message">
             <img src="https://res.cloudinary.com/roomly/image/upload/b_rgb:782235,c_fill,d_user-avatar-default.png,f_jpg,g_face,h_30,w_30/user-avatar-default" alt="" class="message-avatar">
-            <a href="#" class="message-subject">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</a>
+            <a href="#" class="message-subject">
+                <span class="username open-user-profile" data-username="michel">@michel</span>
+            </a>
             <div class="message-description">
-                from <span class="username open-user-profile" data-username="michel">@michel</span>
+                par <span class="username open-user-profile" data-username="michel">@michel</span>
                 &nbsp;&nbsp;-&nbsp;&nbsp;
-                2h ago
+                Il y &agrave; 2h
+            </div>
+        </div> <!-- / .message -->
+
+        <!--Promote-->
+        <div class="message">
+            <i class="icon icon-op color-text-success"></i> <!--Carefull, classes are not the same-->
+            <div class="avatar open-user-profile" data-username="michel" style="background-image: url(https://res.cloudinary.com/roomly/image/upload/b_rgb:e81e41,c_fill,d_user-avatar-default.png,f_jpg,g_face,h_30,w_30/user-avatar-default)"></div>
+            <div class="message-subject">
+                <span class="username open-user-profile" data-username="michel">@michel</span>
+                <a href="#">
+                    a &eacute;t&eacute; promu mod&eacute;rateur.
+                </a>
+            </div>
+            <div class="message-description">
+                par <span class="username open-user-profile" data-username="yann">@yann</span>
+                &nbsp;&nbsp;-&nbsp;&nbsp;
+                Il y &agrave; 2h
+            </div>
+        </div> <!-- / .message -->
+
+        <!--Unpromote-->
+        <div class="message">
+            <i class="icon icon-op color-text-neutral"></i> <!--Carefull, classes are not the same-->
+            <div class="avatar open-user-profile" data-username="michel" style="background-image: url(https://res.cloudinary.com/roomly/image/upload/b_rgb:e81e41,c_fill,d_user-avatar-default.png,f_jpg,g_face,h_30,w_30/user-avatar-default)"></div>
+            <div class="message-subject">
+                <span class="username open-user-profile" data-username="michel">@michel</span>
+                <a href="#">
+                    n'est plus mod&eacute;rateur.
+                </a>
+            </div>
+            <div class="message-description">
+                par <span class="username open-user-profile" data-username="yann">@yann</span>
+                &nbsp;&nbsp;-&nbsp;&nbsp;
+                Il y &agrave; 2h
             </div>
         </div> <!-- / .message -->
     </div>

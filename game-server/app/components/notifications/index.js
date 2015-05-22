@@ -58,11 +58,16 @@ Facade.prototype.create = function(type, user, data, fn) {
     return fn();
 };
 
-Facade.prototype.retrieveUserNotifications = function(uid, callback) {
+Facade.prototype.retrieveUserNotifications = function(uid, number, callback) {
   NotificationModel.find({
     user: uid,
     done: false
-  }, function(err, results) {
+  })
+  .sort({time: -1})
+  .limit(number)
+  .populate( { path: 'data.user', model: 'User', select: 'username color facebook avatar' } )
+  .populate( { path: 'data.by_user', model: 'User', select: 'username color facebook avatar' } )
+  .exec(function(err, results) {
     callback(err, results);
   });
 };

@@ -2,12 +2,13 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'client',
   'collections/rooms',
   'collections/onetoones',
   'models/current-user',
   'views/window',
   '_templates'
-], function ($, _, Backbone, rooms, onetoones, currentUser, windowView, templates) {
+], function ($, _, Backbone, client, rooms, onetoones, currentUser, windowView, templates) {
   var NotificationsView = Backbone.View.extend({
 
     el: $("#notifications"),
@@ -37,19 +38,25 @@ define([
     },
     setUnreadCount: function(count) {
       this.unreadCount = count;
-      if (count)
+      if (count) {
         this.$badge.text(this.unreadCount);
+        this.$badge.show();
+      }
       else
-        this.$badge.text('');
+        this.$badge.hide();
     },
     onShow: function(event) {
       console.log("show", event.relatedTarget);
 
-      // render list
-      var html = this.template({
-        notifications: ['do', 're', 'mi', 'fa']
-      });
-      this.$menu.html(html);
+      // Ask server for notifications
+      client.userNotifications(10, _.bind(function(data){
+        var html = this.template({
+          notifications: data.notifications
+        });
+
+        this.$menu.html(html);
+      }, this));
+
     },
     onHide: function(event) {
       console.log("hide", event.relatedTarget);

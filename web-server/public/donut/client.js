@@ -488,6 +488,22 @@ define([
           }
       );
     },
+    userNotifications: function(number, fn) {
+      var data = {number: number};
+      debug('io:out:user:notifications', data);
+      var that = this;
+      pomelo.request(
+          'chat.userNotificationsHandler.read',
+          data,
+          function(response) {
+            if (response.err)
+              return debug('io:in:user:notifications error: ', response);
+
+            debug('io:in:user:notifications', response);
+            return fn(response);
+          }
+      );
+    },
     userHistory: function(username, since, fn) {
       var data = {username: username, since: since};
       debug('io:out:user:history', data);
