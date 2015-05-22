@@ -48,7 +48,7 @@ module.exports = function(grunt) {
           path: '/opt/mongodb/backups/',
           destBasePath: tmp,
           host: '5.196.206.60',
-          username: 'damien',
+          username: process.env.USER,
           privateKey: grunt.file.read(process.env.HOME+'/.ssh/id_rsa'),
           showProgress: true,
           mode: 'download'
