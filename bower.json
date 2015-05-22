@@ -23,6 +23,8 @@
     "keen-js": "~3.2.4"
   },
   "resolutions": {
+    "jquery": "1.x",
+    "underscore": ">=1.5.0",
     "moment": "2.7.x"
   }
 }
