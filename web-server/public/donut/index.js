@@ -2,7 +2,7 @@ require.config({
   paths: {
     '_templates'                  : ['../build/templates', './templates'],
     'debug'                       : '../vendor/visionmedia-debug/dist/debug',
-    'jquery'                      : '../vendor/jquery/jquery',
+    'jquery'                      : '../vendor/jquery/dist/jquery',
     'bootstrap'                   : '../vendor/bootstrap/dist/js/bootstrap',
     'text'                        : '../vendor/requirejs-text/text',
     'socket.io'                   : '/socket.io',
