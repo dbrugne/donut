@@ -712,6 +712,13 @@
             ]
         }
     },
+    "notifications": {
+      "op": " a été promu modérateur de ",
+      "deop": "n'est plus modérateur de ",
+      "kick": "a été expulsé de ",
+      "ban": "a été banni de ",
+      "deban": "n'est plus banni de "
+    },
     "welcome": {
         "message": [
             "<p>Hello !</p>",

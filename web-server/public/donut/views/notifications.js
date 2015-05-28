@@ -6,9 +6,10 @@ define([
   'collections/rooms',
   'collections/onetoones',
   'models/current-user',
+  'moment',
   'views/window',
   '_templates'
-], function ($, _, Backbone, client, rooms, onetoones, currentUser, windowView, templates) {
+], function ($, _, Backbone, client, rooms, onetoones, currentUser, moment, windowView, templates) {
   var NotificationsView = Backbone.View.extend({
 
     el: $("#notifications"),
@@ -44,23 +45,36 @@ define([
       else
         this.$badge.addClass('hidden');
     },
+    onNewEvent: function(notification) {
+      var template;
+      switch (notification.type)
+      {
+        case 'roomop':
+          template = templates['notifications/room-op.html']; break;
+        case 'roomdeop':
+          template = templates['notifications/room-deop.html']; break;
+        case 'roomkick':
+          template = templates['notifications/room-kick.html']; break;
+        case 'roomban':
+          template = templates['notifications/room-ban.html']; break;
+        case 'roomdeban':
+          template = templates['notifications/room-deban.html']; break;
+        default:
+        break;
+      }
+      return template({data:notification, from_now: moment(notification.data.time).fromNow()});
+    },
     onShow: function(event) {
       console.log("show", event.relatedTarget);
 
-      // Ask server for notifications
+      // Ask server for last 10 unread notifications
       client.userNotifications(10, _.bind(function(data){
 
         var html = '';
-        for (var notification in data.notifications)
+        for (var k in data.notifications)
         {
-          switch (notification.type)
-          {
-            //case ''
-          }
+          html += this.onNewEvent(data.notifications[k]);
         }
-        var html = this.template({
-          notifications: data.notifications
-        });
 
         this.$menu.html(html);
       }, this));

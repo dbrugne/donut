@@ -1,10 +1,10 @@
 <div class="message">
-    <i class="icon icon-op color-text-success"></i>
+    <i class="icon icon-kick color-text-error"></i>
     <div class="avatar open-user-profile" data-username="<%= data.data.user.username %>" style="background-image: url(<%= data.data.user.avatar %>)"></div>
     <div class="message-subject">
         <span class="username open-user-profile" data-username="<%= data.data.user.username %>">@<%= data.data.user.username %></span>
         <a href="#">
-            <%= t('notifications.op') %>
+            <%= t('notifications.kick') %>
         </a>
         <span class="name open-room-profile" data-room-name="<%= data.data.name %>"><%= data.data.name %></span>
     </div>

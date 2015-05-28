@@ -126,21 +126,21 @@ handler.kick = function(data, session, next) {
 				if (err)
 					return callback('Error while emitting room:kick in '+room.name+': '+err);
 
-				return callback(null, room, user, kickedUser, event, sentEvent);
+				return callback(null, room, user, kickedUser, sentEvent);
 			});
 		},
 
 		/**
 		 * /!\ .unsubscribeClients come after .historizeAndEmit to allow kicked user to receive message
 		 */
-		function unsubscribeClients(room, user, kickedUser, event, callback) {
+		function unsubscribeClients(room, user, kickedUser, sentEvent, callback) {
 			// search for all the user sessions (any frontends)
 			that.app.statusService.getSidsByUid(kickedUser._id.toString(), function(err, sids) {
 				if (err)
 					return callback('Error while retrieving user status: '+err);
 
 				if (!sids || sids.length < 1) {
-					return callback(null, room, user, kickedUser, event); // the targeted user could be offline at this time
+					return callback(null, room, user, kickedUser, sentEvent); // the targeted user could be offline at this time
 				}
 
 				var parallels = [];
@@ -158,13 +158,15 @@ handler.kick = function(data, session, next) {
 					if (err)
 						return callback('Error while unsubscribing user '+kickedUser._id.toString()+' from '+room.name+': '+err);
 
-					return callback(null, room, user, kickedUser, event);
+					return callback(null, room, user, kickedUser, sentEvent);
 				});
 			});
 		},
 
-		function notification(room, user, kickedUser, event, callback) {
-			Notifications(that.app).create('roomkick', kickedUser, {room: room, event: event}, function() {
+		function notification(room, user, kickedUser, sentEvent, callback) {
+			console.log('bien sale');
+			Notifications(that.app).create('roomkick', kickedUser, {room: room, event: sentEvent}, function() {
+				console.log('bien sale 2');
 				return callback(null);
 			});
 		}

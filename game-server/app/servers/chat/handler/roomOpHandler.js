@@ -113,8 +113,8 @@ handler.op = function(data, session, next) {
 			});
 		},
 
-		function notification(room, user, opedUser, event, callback) {
-			Notifications(that.app).create('roomop', opedUser, {room: room, event: event}, function() {
+		function notification(room, user, opedUser, sentEvent, callback) {
+			Notifications(that.app).create('roomop', opedUser, {room: room, event: sentEvent}, function() {
 				return callback(null);
 			});
 		}

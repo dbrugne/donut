@@ -37,7 +37,12 @@ define([
   'text!./templates/room-users.html',
   'text!./templates/spinner.html',
   'text!./templates/welcome.html',
-  'text!./templates/notifications.html'
+  'text!./templates/notifications.html',
+  'text!./templates/notifications/room-op.html',
+  'text!./templates/notifications/room-deop.html',
+  'text!./templates/notifications/room-kick.html',
+  'text!./templates/notifications/room-ban.html',
+  'text!./templates/notifications/room-deban.html'
 ], function (_,
   color_picker,
   current_user,
@@ -76,7 +81,12 @@ define([
   room_users,
   spinner,
   welcome,
-  notifications
+  notifications,
+  notification_room_op,
+  notification_room_deop,
+  notification_room_kick,
+  notification_room_ban,
+  notification_room_deban
 ) {
 
   /**
@@ -131,6 +141,11 @@ define([
   JST['spinner.html']                       = _.template(spinner);
   JST['welcome.html']                       = _.template(welcome);
   JST['notifications.html']                 = _.template(notifications);
+  JST['notifications/room-op.html']         = _.template(notification_room_op);
+  JST['notifications/room-deop.html']       = _.template(notification_room_deop);
+  JST['notifications/room-kick.html']       = _.template(notification_room_kick);
+  JST['notifications/room-ban.html']        = _.template(notification_room_ban);
+  JST['notifications/room-deban.html']      = _.template(notification_room_deban);
 
   return JST;
 });
