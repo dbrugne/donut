@@ -32,9 +32,6 @@ Facade.prototype.uidStatus = function(uid, fn) {
 Facade.prototype.create = function(type, user, data, fn) {
   logger.info('Notification component called: '+type+' for '+user.username);
 
-  // @todo : deploy on production, should not execute this code for the moment
-  return fn();
-
   var that = this;
   process.nextTick(function() {
     switch(type) {

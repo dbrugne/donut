@@ -30,7 +30,7 @@ define([
     render: function() {
       this.$dropdown = this.$el.find('.dropdown-toggle');
       this.$badge = this.$el.find('.badge').first();
-      this.$menu = this.$el.find('.dropdown-menu');
+      this.$menu = this.$el.find('.dropdown-menu #main-navbar-messages');
 
       this.$dropdown.dropdown();
 
@@ -49,6 +49,15 @@ define([
 
       // Ask server for notifications
       client.userNotifications(10, _.bind(function(data){
+
+        var html = '';
+        for (var notification in data.notifications)
+        {
+          switch (notification.type)
+          {
+            //case ''
+          }
+        }
         var html = this.template({
           notifications: data.notifications
         });
