@@ -55,6 +55,9 @@ router.route('/oauth/login')
           return res.json({err: 'internal error: '+err});
         if (!user)
           return res.json({err: 'unable to find user'});
+        if (!user.validPassword(req.body.password)) {
+          return res.json({err: 'invalid password'});
+        }
 
         var allowed = user.isAllowedToConnect();
         if (!allowed.allowed)
