@@ -19,16 +19,16 @@ var userSchema = mongoose.Schema({
     poster         : String,
     color          : String,
     local            : {
-        email         : String,
-        password      : String,
-        resetToken    : String,
-        resetExpires  : Date
+      email         : String,
+      password      : String,
+      resetToken    : String,
+      resetExpires  : Date
     },
     facebook         : {
-        id         : String,
-        token      : String,
-        email      : String,
-        name       : String
+      id         : String,
+      token      : String,
+      email      : String,
+      name       : String
     },
     preferences    : mongoose.Schema.Types.Mixed,
     rooms          : [{ type: String, ref: 'Room' }],
