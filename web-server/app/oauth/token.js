@@ -1,3 +1,4 @@
+var debug = require('debug')('donut:oauth');
 var express = require('express');
 var router = express.Router();
 var jwt = require('jsonwebtoken');
@@ -47,33 +48,51 @@ router.route('/oauth/session')
  */
 router.route('/oauth/login')
     .post(function(req, res) {
-      if (!req.body.email || !req.body.password)
-        return res.json({err: 'no email or password'});
+      if (!req.body.email || (!req.body.password && !req.body.code))
+        return res.json({err: 'no email or password provided'});
 
       User.findOne({'local.email': req.body.email}, function(err, user) {
         if (err)
           return res.json({err: 'internal error: '+err});
         if (!user)
           return res.json({err: 'unable to find user'});
-        if (!user.validPassword(req.body.password)) {
-          return res.json({err: 'invalid password'});
+
+        var response = {};
+
+        // check for password or secure code
+        if (req.body.password) {
+          if (!user.validPassword(req.body.password))
+            return res.json({err: 'invalid password provided'});
+
+          // return additionally a secure code for next login (avoid storing of password on device)
+          response.code = jwt.sign({id: user.id}, conf.oauth.secret, {});
+        } else {
+
+          try {
+            var payload = jwt.verify(req.body.code, conf.oauth.secret, {});
+            if (payload.id !== user.id) {
+              debug('Error within oauth by secure code: secure code not correspond to this user');
+              return res.json({err: 'invalid code provided'});
+            }
+          } catch (e) {
+            debug('Error within oauth by secure code: '+ e.message);
+            return res.json({err: 'invalid code provided'});
+          }
         }
 
         var allowed = user.isAllowedToConnect();
         if (!allowed.allowed)
           return res.json({err: 'user not allowed to connect'});
 
-        // filter exported data
+        // authentication token with user profile inside
         var profile = {
           id: user.id,
           username: user.username,
           email: user.local.email
         };
+        response.token = jwt.sign(profile, conf.oauth.secret, { expiresInMinutes: conf.oauth.expire });
 
-        // We are sending the profile inside the token
-        var token = jwt.sign(profile, conf.oauth.secret, { expiresInMinutes: conf.oauth.expire });
-
-        res.json({token: token});
+        res.json(response);
       });
     });
 
