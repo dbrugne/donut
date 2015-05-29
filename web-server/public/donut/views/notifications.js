@@ -47,6 +47,7 @@ define([
     },
     onNewEvent: function(notification) {
       var template;
+      var avatar = '';
       switch (notification.type)
       {
         case 'roomop':
@@ -62,7 +63,9 @@ define([
         default:
         break;
       }
-      return template({data:notification, from_now: moment(notification.data.time).fromNow()});
+      var dateObject = moment(notification.data.time);
+      notification.avatar = $.cd.roomAvatar(notification.data.by_user.avatar, 90); // @todo add room avatar instead of by_user avatar
+      return template({data: notification, from_now: dateObject.format("Do MMMM, HH:mm")});
     },
     onShow: function(event) {
       console.log("show", event.relatedTarget);
