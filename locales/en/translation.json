@@ -691,6 +691,13 @@
       ]
     }
   },
+  "notifications": {
+    "kick": "was kicked out of ",
+    "ban": "was banned of",
+    "deban": "was unbanned from ",
+    "op": "was made moderator of",
+    "deop": "was removed from moderators of"
+  },
   "welcome": {
     "message": [
       "<p>Hello!</p>",
