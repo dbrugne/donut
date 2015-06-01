@@ -1,3 +1,4 @@
+<!--
 <div id="signup">
 
     <h2>{{#i}}actions.signup{{/i}}</h2>
@@ -35,4 +36,49 @@
         </form>
     </div>
 
+</div>
+-->
+
+<div id="signup">
+    <div class="login">
+        <div class="content">
+            <form class="login-form" method="post" role="form">
+                <div class="method-facebook">
+                    <a href="/login/facebook" class="facebook-button" tabindex="1"><span class="icon icon-facebook"></span> {{#i}}actions.signup{{/i}} {{#i}}login.withfacebook{{/i}}</a>
+                </div>
+
+                <div class="form-actions"></div>
+
+                <h3 class="form-title">ou {{#i}}actions.signup{{/i}}</h3>
+
+                {{#is_errors}}
+                <div class="alert alert-danger display-hide">
+                    {{#errors}}{{msg}}<br>{{/errors}}
+                </div>
+                {{/is_errors}}
+
+                <div class="form-group">
+                    <div class="input-icon">
+                        <i class="fa fa-user"></i>
+                        <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Username" name="username"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-icon">
+                        <i class="fa fa-lock"></i>
+                        <input class="form-control placeholder-no-fix" type="password" autocomplete="off" placeholder="Password" name="password"/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="{{#i}}home.signup.etvoila{{/i}}" tabindex="4">
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="create-account text-center">
+                    {{#i}}signup.disclaimer{{/i}}
+                </div>
+            </form>
+        </div>
+    </div>
 </div>

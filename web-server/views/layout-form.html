@@ -1,7 +1,11 @@
 {{> head}}
 <body class="body-pages">
 <div class="wrapper">
-    <h1 class="logo"><a href="/"><img src="/images/logo-onecolor.svg" alt="{{#i}}title{{/i}} - {{#i}}baseline{{/i}}"></a></h1>
+    <h1 class="logo">
+        <a href="/">
+            <img src="/images/logo-onecolor-gr.svg" alt="{{#i}}title{{/i}} - {{#i}}baseline{{/i}}">
+        </a>
+    </h1>
     <div class="upon">
         {{#success}}<div class="alert alert-success">{{{success}}}</div>{{/success}}
         {{#info}}<div class="alert alert-info">{{{info}}}</div>{{/info}}
@@ -11,7 +15,7 @@
     <div class="content">
     {{{ yield }}}
     </div>
-    <div class="above">
+    <div class="above text-center">
         {{#user}}
         {{#i}}global.footer.before{{/i}} <a href="/logout">{{#i}}actions.tologout{{/i}}</a> {{#i}}global.or{{/i}} <a href="/!">{{#i}}actions.home{{/i}}</a>{{#i}}global.footer.after{{/i}}
         {{/user}}
