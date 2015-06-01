@@ -1,29 +1,29 @@
 {{> head}}
 <body class="body-pages">
-<div class="wrapper">
-    <h1 class="logo">
-        <a href="/">
-            <img src="/images/logo-onecolor-gr.svg" alt="{{#i}}title{{/i}} - {{#i}}baseline{{/i}}">
-        </a>
-    </h1>
-    <div class="upon">
-        {{#success}}<div class="alert alert-success">{{{success}}}</div>{{/success}}
-        {{#info}}<div class="alert alert-info">{{{info}}}</div>{{/info}}
-        {{#warning}}<div class="alert alert-warning">{{{warning}}}</div>{{/warning}}
-        {{#error}}<div class="alert alert-danger">{{{error}}}</div>{{/error}}
-    </div>
-    <div class="content">
-    {{{ yield }}}
-    </div>
-    <div class="above text-center">
-        {{#user}}
-        {{#i}}global.footer.before{{/i}} <a href="/logout">{{#i}}actions.tologout{{/i}}</a> {{#i}}global.or{{/i}} <a href="/!">{{#i}}actions.home{{/i}}</a>{{#i}}global.footer.after{{/i}}
-        {{/user}}
-        {{^user}}
-        {{#i}}global.footer.before{{/i}} <a href="/login">{{#i}}actions.tologin{{/i}}</a> {{#i}}global.or{{/i}} <a href="/signup">{{#i}}actions.signup{{/i}}</a>{{#i}}global.footer.after{{/i}}
-        {{/user}}
-    </div>
-</div><!-- /.wrapper -->
-{{> foot}}
+    <nav id="color" class="navbar navbar-default navbar-fixed-top">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/!#"><img class="logo" src="/images/logo-onecolor.svg" alt="{{#i}}title.chat{{/i}}"> <span class="beta">alpha</span></a>
+        </div>
+    </nav>
+    <div class="wrapper">
+        <div class="upon">
+            {{#success}}<div class="alert alert-success">{{{success}}}</div>{{/success}}
+            {{#info}}<div class="alert alert-info">{{{info}}}</div>{{/info}}
+            {{#warning}}<div class="alert alert-warning">{{{warning}}}</div>{{/warning}}
+            {{#error}}<div class="alert alert-danger">{{{error}}}</div>{{/error}}
+        </div>
+        <div class="content">
+        {{{ yield }}}
+        </div>
+        <div class="above text-center">
+            {{#user}}
+            {{#i}}global.footer.before{{/i}} <a href="/logout">{{#i}}actions.tologout{{/i}}</a> {{#i}}global.or{{/i}} <a href="/!">{{#i}}actions.home{{/i}}</a>{{#i}}global.footer.after{{/i}}
+            {{/user}}
+            {{^user}}
+            {{#i}}global.footer.before{{/i}} <a href="/login">{{#i}}actions.tologin{{/i}}</a> {{#i}}global.or{{/i}} <a href="/signup">{{#i}}actions.signup{{/i}}</a>{{#i}}global.footer.after{{/i}}
+            {{/user}}
+        </div>
+    </div><!-- /.wrapper -->
+    {{> foot}}
 </body>
 </html>

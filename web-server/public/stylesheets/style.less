@@ -287,6 +287,18 @@ body {
   }
 }
 
+.method-facebook {   background-color: rgb(70, 107, 166); color: #FFF; .border-radius(5px);
+  .fb-left .icon {  background-color: rgb(45, 77, 129); color: #FFF; padding: 15px; font-size: 20px; border-radius: 5px 0 0 5px; border-right: 1px solid #FFF;}
+  .fb-right { cursor:pointer; background-color: rgb(70, 107, 166); color: #FFF; border-radius: 0 10px 10px 0; padding-left: 15px;
+    a { color:#FFF; text-decoration:none; }
+  }
+}
+.method-facebook-or {   padding: 30px 0 0 0; text-align: center; border-bottom: 1px solid #e8e8e8; margin-bottom: 30px; position: relative;
+  .outer {   width: 50px; margin: 0 auto;
+    .inner { position: absolute; top: 20px; width: 50px; text-align: center; background-color: #FFF; display: block; }
+  }
+}
+
 @import "./landing.less"; /* = non authenticated homepage */
 @import "./static.less"; /* FAQ, eutc, legals */
 @import "./pages.less"; /* login, signup, forgot and choose-username pages */
