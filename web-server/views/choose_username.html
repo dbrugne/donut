@@ -1,30 +1,33 @@
-<div id="choose-username">
+<div id="signup">
+    <div class="login" id="choose-username">
+        <div class="content">
+            <form class="login-form" method="post" role="form">
+                <input type="hidden" name="_csrf" value="{{token}}">
 
-    <h2>{{#i}}choose-username.title{{/i}}</h2>
+                <h3 class="form-title">{{#i}}choose-username.title{{/i}}</h3>
 
-    <form method="post" role="form">
+                {{#is_errors}}
+                <div class="errors">
+                    {{#errors}}{{msg}}<br>{{/errors}}
+                </div>
+                {{/is_errors}}
 
-        <input type="hidden" name="_csrf" value="{{token}}">
+                <div class="form-group">
+                    <span>{{#i}}choose-username.description{{/i}}</span>
+                </div>
 
-        {{#is_errors}}
-        <div class="errors">
-            {{#errors}}{{msg}}<br>{{/errors}}
+                <div class="form-group username">
+                    <span class="arobase">@</span>
+                    <input type="username" class="form-control placeholder-no-fix" id="username-field" name="user[fields][username]" placeholder="{{#i}}login.username-placeholder{{/i}}" value="{{userFields.username}}" tabindex="1" maxlength="15">
+                    <p class="help-block">{{#i}}choose-username.help{{/i}}</p>
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="{{#i}}global.save{{/i}}" tabindex="4">
+                    <div class="clearfix"></div>
+                </div>
+
+            </form>
         </div>
-        {{/is_errors}}
-
-        <div class="form-group">
-            <strong>{{#i}}choose-username.description{{/i}}</strong>
-        </div>
-
-        <div class="form-group username">
-            <span class="arobase">@</span>
-            <input type="username" class="form-control" id="username-field" name="user[fields][username]" placeholder="{{#i}}login.username-placeholder{{/i}}" value="{{userFields.username}}" tabindex="1" maxlength="15">
-            <p class="help-block">{{#i}}choose-username.help{{/i}}</p>
-        </div>
-        <div class="form-group center">
-            <input type="submit" value="{{#i}}global.save{{/i}}" tabindex="2">
-        </div>
-
-    </form>
-
+    </div>
 </div>
