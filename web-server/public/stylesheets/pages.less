@@ -1,7 +1,7 @@
 .body-pages {
   height: 100%;
   .ft-opensans;
-  background-color: @cl-first;
+  background: #f9f9f9;
   color: @cl-background;
 
   input[type=text].form-control, input[type=password].form-control {
@@ -35,12 +35,15 @@
   transform: translateY(-50%);
 
   h1.logo {
+    img { width: 200px;
+      margin: 0 auto;
+      display: block; }
   }
   .upon {
 
   }
   .content {
-    background-color: @cl-background;
+    background-color: transparent;
     color: @cl-second;
     padding: 10px;
     h2 {
@@ -49,17 +52,16 @@
       .ft-raleway-heavy;
     }
   }
-  .above {
-    text-align: right;
+  .above { color: #9e9ea6;
     padding: 5px;
     a {
-      color: @cl-background;
+      color: #9e9ea6;
       font-weight: bold;
     }
   }
 }
 
-#login, #signup, #forgot, #choose-username, #email-edit, #password-edit, #connect-local {
+#login, #forgot, #signup, #choose-username, #email-edit, #password-edit, #connect-local {
   .errors {
     padding: 10px;
     border: 1px solid @cl-first;
@@ -80,15 +82,6 @@
   }
   .form-group.center {
     text-align: center;
-  }
-  .method-facebook {
-    text-align: center;
-    padding-top: 15px;
-    .facebook-button {
-      .btn;
-      .btn-primary;
-      .btn-lg;
-    }
   }
   .or {
     margin: 20px auto;
@@ -116,11 +109,32 @@
   }
 }
 
+/*
+  FQDN : /signup
+*/
 #signup {
-  .disclaimer {
-    font-size: 0.9em;
+  .method-facebook .facebook-button { width: 100%; font-size: 16px; }
+  .login .content { background-color: #fff; margin: 0 auto; padding: 20px 30px 15px; .border-radius(5px); .box-shadow(0 1px 0 rgba(0,0,0,.25)); border: 1px solid #e8e8e8;
+    h3 { color: #555459; }
+    .input-icon { border-left: 2px solid @cl-first; }
+    .form-title { font-weight: 300; margin-bottom: 25px; }
+    .form-actions { background-color: #fff; clear: both; border: 0; border-bottom: 1px solid #eee; padding: 0 30px 25px 30px;  }
+    .create-account { border-top: 1px dotted #eee; padding-top: 10px; margin-top: 15px; color:#555459; }
+  }
+  .input-icon > i { color: #ccc; display: block; position: absolute; margin: 11px 2px 4px 10px; z-index: 3; width: 16px; font-size: 16px; text-align: center; left: 0; height: initial; line-height: initial; }
+  .input-icon .form-control { padding-left: 33px !important; border-radius: 0 !important; }
+  input[type=submit] { padding: 7px 14px; font-size: 14px; .border-radius(5px); margin:0; float:right; background-color: @cl-first;
+    &:hover { background-color: darken(@cl-first, 10%); text-decoration:none;}
   }
 }
+
+.body-pages .navbar-default { background-color: @cl-first; min-height: 40px;
+  .navbar-brand { height: auto; padding: 5px 15px 0;
+    .logo { display: inline-block; width: 130px; height: 32px; }
+    .beta { vertical-align: bottom; height: @size-color; color: @cl-background; .ft-raleway-medium; font-size: 12px; padding-left: 0px; padding-top: 18px; }
+  }
+}
+
 #forgot {
   h2 {
     margin-top: 20px;
@@ -129,24 +143,13 @@
   }
 }
 #choose-username {
-  h2 {
-    font-size: 1.3em;
-  }
+  .content { color:#737373; }
   .form-group.username {
     text-align: center;
-    .help-block {
-      text-align: left;
+    .help-block { margin: 15px 0;   font-style: italic; font-size: 12px; text-align: left;
+      strong { color:#e60348;   font-size: 16px; }
     }
   }
-  .arobase {
-    margin-right: 2px;
-    vertical-align: sub;
-    .ft-raleway-heavy;
-    font-size: 2.5em;
-    color: @cl-second;
-  }
-  #username-field {
-    display: inline-block;
-    width: 362px;
-  }
+  .arobase { margin-right: 2px; vertical-align: sub; .ft-raleway-heavy; font-size: 2.5em; color: @cl-second; }
+  #username-field { display: inline-block; width: 312px; }
 }
