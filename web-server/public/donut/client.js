@@ -524,6 +524,24 @@ define([
       var data = {username: username, events: events};
       pomelo.notify('chat.userViewedHandler.viewed', data);
       debug('io:out:user:viewed', data);
+    },
+
+    // Called to set Notifications as viewed for current user
+    userNotificationsViewed: function(ids, fn) {
+      var data = {ids: ids};
+      debug('io:out:user:notificationsViewed', data);
+      var that = this;
+      pomelo.request(
+          'chat.userNotificationsHandler.viewed',
+          data,
+          function(response) {
+            if (response.err)
+              return debug('io:in:user:notifications error: ', response);
+
+            debug('io:in:user:notificationsViewed', response);
+            return fn(response);
+          }
+      );
     }
 
   }, Backbone.Events);

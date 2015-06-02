@@ -22,6 +22,7 @@ define([
     },
 
     unreadCount: 0,
+    markHasRead : null,
 
     initialize: function(options) {
       this.mainView = options.mainView;
@@ -83,12 +84,35 @@ define([
         }
 
         this.$menu.html(html);
+        this.$unreadNotifications = this.$el.find('.dropdown-menu #main-navbar-messages .message.unread');
       }, this));
 
+      var that = this;
+      this.markHasRead = setTimeout(function(){ that.clearNotifications(); }, 2000); // Clear notifications after 2 seconds
     },
     onHide: function(event) {
       console.log("hide", event.relatedTarget);
-      // nothing
+      clearTimeout(this.markHasRead);
+    },
+    clearNotifications: function()
+    {
+      var ids = [];
+      _.each(this.$unreadNotifications, function(elt){
+        ids.push(elt.dataset.id);
+      });
+
+      // Only call Client if at least something to tag as viewed
+      if (ids.length == 0)
+        return;
+
+      // Ask server to set notifications as viewed, and wait for response to set them likewise
+      client.userNotificationsViewed(ids, _.bind(function(data){
+        // For each notification in the list, tag them as read
+        _.each(this.$unreadNotifications, function(notification){
+          notification.classList.remove('unread');
+        });
+
+      }, this));
     },
     redraw: function() {
       return this.render();

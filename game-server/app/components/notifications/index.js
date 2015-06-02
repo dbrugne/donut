@@ -93,3 +93,16 @@ Facade.prototype.retrievePendingNotifications = function() {
     console.log(err, results);
   });
 };
+
+Facade.prototype.markNotificationsAsRead = function(uid, ids, callback) {
+  NotificationModel.update({
+    _id: {$in: ids},
+    user: uid
+  }, {
+    $set: {viewed: true}
+  }, {
+    multi:true
+  }, function(err, results) {
+    return callback(err, results);
+  });
+};
