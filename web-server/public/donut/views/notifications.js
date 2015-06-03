@@ -14,9 +14,8 @@ define([
 
     el: $("#notifications"),
 
-    template: templates['notifications.html'],
-
     events: {
+      "click .dropdown-menu .actions" : 'readMore',
       'show.bs.dropdown': 'onShow',
       'hide.bs.dropdown': 'onHide'
     },
@@ -32,14 +31,18 @@ define([
     render: function() {
       this.$dropdown = this.$el.find('.dropdown-toggle');
       this.$badge = this.$el.find('.badge').first();
+      this.$count = this.$el.find('.unread-count .nb').first();
       this.$menu = this.$el.find('.dropdown-menu #main-navbar-messages');
 
       this.$dropdown.dropdown();
+      this.$readMore = this.$el.find('.read-more');
+      this.$loader = this.$el.find('.loading');
 
       return this;
     },
     setUnreadCount: function(count) {
       this.unreadCount = count;
+      this.$count.html(this.unreadCount);
       if (count > 0) {
         this.$badge.text(this.unreadCount).removeClass('hidden');
       }
@@ -74,8 +77,8 @@ define([
     onShow: function(event) {
       console.log("show", event.relatedTarget);
 
-      // Ask server for last 10 unread notifications
-      client.userNotifications(10, _.bind(function(data){
+      // Ask server for last 10 unread notifications // @todo yls put that in parameters
+      client.userNotifications(10, _.bind(function(data) {
 
         var html = '';
         for (var k in data.notifications)
@@ -84,7 +87,6 @@ define([
         }
 
         this.$menu.html(html);
-        this.$unreadNotifications = this.$el.find('.dropdown-menu #main-navbar-messages .message.unread');
       }, this));
 
       var that = this;
@@ -94,11 +96,12 @@ define([
       console.log("hide", event.relatedTarget);
       clearTimeout(this.markHasRead);
     },
-    clearNotifications: function()
-    {
+    clearNotifications: function() {
+      var unreadNotifications = this.$menu.find('.message.unread');
+
       var ids = [];
-      _.each(this.$unreadNotifications, function(elt){
-        ids.push(elt.dataset.id);
+      _.each(unreadNotifications, function(elt){
+        ids.push(elt.dataset.notificationId);
       });
 
       // Only call Client if at least something to tag as viewed
@@ -108,14 +111,40 @@ define([
       // Ask server to set notifications as viewed, and wait for response to set them likewise
       client.userNotificationsViewed(ids, _.bind(function(data){
         // For each notification in the list, tag them as read
-        _.each(this.$unreadNotifications, function(notification){
+        _.each(unreadNotifications, function(notification){
           notification.classList.remove('unread');
         });
 
+        // Update Badge & Count
+        this.setUnreadCount(data.unviewed);
       }, this));
     },
+
     redraw: function() {
       return this.render();
+    },
+
+    // When user clicks on the read more link in the notification dropdown
+    readMore: function(event) {
+      event.stopPropagation();
+      this.$readMore.addClass('hidden');
+      this.$loader.removeClass('hidden');
+
+      client.userNotifications(10, _.bind(function(data) {
+        var previousContent = this.$menu.html();
+        var html = '';
+        for (var k in data.notifications)
+        {
+          html += this.onNewEvent(data.notifications[k]);
+        }
+
+        this.$menu.html(previousContent+html);
+        this.$readMore.removeClass('hidden');
+        this.$loader.addClass('hidden');
+      }, this));
+
+      var that = this;
+      this.markHasRead = setTimeout(function(){ that.clearNotifications(); }, 2000); // Clear notifications after 2 seconds
     }
 
   });

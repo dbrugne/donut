@@ -37,7 +37,6 @@ define([
   'text!./templates/room-users.html',
   'text!./templates/spinner.html',
   'text!./templates/welcome.html',
-  'text!./templates/notifications.html',
   'text!./templates/notifications/room-op.html',
   'text!./templates/notifications/room-deop.html',
   'text!./templates/notifications/room-kick.html',
@@ -81,7 +80,6 @@ define([
   room_users,
   spinner,
   welcome,
-  notifications,
   notification_room_op,
   notification_room_deop,
   notification_room_kick,
@@ -140,7 +138,6 @@ define([
   JST['room-users.html']                    = _.template(room_users);
   JST['spinner.html']                       = _.template(spinner);
   JST['welcome.html']                       = _.template(welcome);
-  JST['notifications.html']                 = _.template(notifications);
   JST['notifications/room-op.html']         = _.template(notification_room_op);
   JST['notifications/room-deop.html']       = _.template(notification_room_deop);
   JST['notifications/room-kick.html']       = _.template(notification_room_kick);

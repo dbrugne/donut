@@ -42,7 +42,8 @@ handler.read = function(data, session, next) {
 		},
 
 		function retrieveNotifications(user, callback) {
-			Notifications(that.app).retrieveUserNotifications(user._id.toString(), data.number, function(err, notifications) {
+            // Get only unviewed notifications, data.number max
+			Notifications(that.app).retrieveUserNotifications(user._id.toString(), false, data.number, function(err, notifications) {
 				if (err)
 					return callback('Error while retrieving notifications for '+session.uid+': '+err);
 
@@ -82,8 +83,20 @@ handler.read = function(data, session, next) {
 				event.notifications.push(d);
 			});
 
-			return callback(null, event);
-		}
+			return callback(null, user, event);
+		},
+
+        function retrieveUnread(user, event, callback) {
+            Notifications(that.app).retrieveUserNotificationsUnreadCount(user._id.toString(), function(err, count) {
+                if (err)
+                    return callback('Error while retrieving notifications for '+session.uid+': '+err);
+
+                event.unviewed = count || 0;
+
+                return callback(null, event);
+            });
+        }
+
 
 	], function(err, event) {
 		if (err) {
@@ -111,24 +124,24 @@ handler.viewed = function(data, session, next) {
 	async.waterfall([
 
 		function check(callback) {
-			var notificationsIds = [];
+			var notifications = [];
 			if (!data.ids || !_.isArray(data.ids))
 				return callback('ids parameter is mandatory for notifications:viewed');
 
 			// filter array to preserve only valid
 			_.each(data.ids, function(elt){
 				if (ObjectId.isValid(elt))
-					notificationsIds.push(elt);
+                    notifications.push(elt);
 			});
 
 			// test if at least one entry remain
-			if (notificationsIds.length == 0)
+			if (notifications.length == 0)
 				return callback('No notification to set as Read remaining');
 
-			return callback(null, notificationsIds);
+			return callback(null, notifications);
 		},
 
-		function retrieveUser(notificationsIds, callback) {
+		function retrieveUser(notifications, callback) {
 			User.findByUid(session.uid).exec(function (err, user) {
 				if (err)
 					return callback('Error while retrieving user '+session.uid+' in user:preferences:read: '+err);
@@ -136,18 +149,34 @@ handler.viewed = function(data, session, next) {
 				if (!user)
 					return callback('Unable to retrieve user in user:preferences:read: '+session.uid);
 
-				return callback(null, notificationsIds, user);
+				return callback(null, notifications, user);
 			});
 		},
 
-		function markAsViewed(notificationsIds, user, callback) {
-			Notifications(that.app).markNotificationsAsRead(user._id.toString(), notificationsIds, function(err, notifications) {
+        function markAsViewed(notifications, user, callback) {
+			Notifications(that.app).markNotificationsAsRead(user._id.toString(), notifications, function(err, countUpdated) {
 				if (err)
 					return callback('Error while setting notifications as read for '+session.uid+': '+err);
 
-				return callback(null, notificationsIds, user);
+				return callback(null, notifications, user);
 			});
-		}
+		},
+
+        function prepare(notifications, user, callback) {
+            var event = {
+                notifications: notifications
+            };
+
+            // Count remaining unviewed notifications
+            Notifications(that.app).retrieveUserNotificationsUnreadCount(user._id.toString(), function(err, count) {
+                if (err)
+                    logger.error('Error while retrieving notifications: '+err);
+
+                event.unviewed = count || 0;
+
+                return callback(null, event);
+            });
+        }
 
 	], function(err, event) {
 		if (err) {

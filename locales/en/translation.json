@@ -380,7 +380,8 @@
       "in": "entered at",
       "out": "left at",
       "online": "is online,",
-      "offline": "is offline,"
+      "offline": "is offline,",
+      "read-more": "Read more"
     },
     "unread": {
       "title": "(new)"

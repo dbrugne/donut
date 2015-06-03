@@ -400,7 +400,8 @@
             "deop": "n'est plus modérateur à la demande de",
             "in": "est entré à",
             "out": "est sorti à",
-            "online": "est en ligne,"
+            "online": "est en ligne,",
+            "read-more": "Voir plus"
         },
         "unread": {
             "title": "(nouveau)"
@@ -713,11 +714,11 @@
         }
     },
     "notifications": {
-      "op": " a été promu modérateur de ",
-      "deop": "n'est plus modérateur de ",
-      "kick": "a été expulsé de ",
-      "ban": "a été banni de ",
-      "deban": "n'est plus banni de "
+        "op": " a été promu modérateur de ",
+        "deop": "n'est plus modérateur de ",
+        "kick": "a été expulsé de ",
+        "ban": "a été banni de ",
+        "deban": "n'est plus banni de "
     },
     "welcome": {
         "message": [

@@ -58,16 +58,29 @@ Facade.prototype.create = function(type, user, data, fn) {
     return fn();
 };
 
-Facade.prototype.retrieveUserNotifications = function(uid, number, callback) {
-  NotificationModel.find({
+Facade.prototype.retrieveUserNotifications = function(uid, viewed , number, callback) {
+  var q = NotificationModel.find({
     user: uid,
     done: false
-  })
-  .sort({time: -1})
-  .limit(number)
-  .populate( { path: 'data.user', model: 'User', select: 'username color facebook avatar' } )
-  .populate( { path: 'data.by_user', model: 'User', select: 'username color facebook avatar' } )
-  .exec(function(err, results) {
+  });
+
+  // Only not viewed messages required
+  if (viewed !== null) {
+    q = NotificationModel.find({
+      user: uid,
+      done: false,
+      viewed: false
+    });
+  }
+
+  // Only get "number" items
+  if (number > 0)
+    q.limit(number);
+
+  q.sort({time: -1});
+  q.populate( { path: 'data.user', model: 'User', select: 'username color facebook avatar' } );
+  q.populate( { path: 'data.by_user', model: 'User', select: 'username color facebook avatar' } );
+  q.exec(function(err, results) {
     callback(err, results);
   });
 };
