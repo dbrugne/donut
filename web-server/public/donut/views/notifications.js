@@ -21,6 +21,7 @@ define([
     },
 
     markHasRead : null,
+    displayedNotifications: 0,
 
     initialize: function(options) {
       this.mainView = options.mainView;
@@ -78,8 +79,8 @@ define([
     onShow: function(event) {
       console.log("show", event.relatedTarget);
 
-      // Ask server for last 10 unread notifications // @todo yls put that in parameters
-      client.userNotifications(10, _.bind(function(data) {
+      // Ask server for last 10 unread notifications
+      client.userNotifications(this.displayedNotifications, 10, _.bind(function(data) { // @todo yls put that in parameters
 
         var html = '';
         for (var k in data.notifications)
@@ -88,6 +89,7 @@ define([
         }
 
         this.$menu.html(html);
+        this.displayedNotifications = data.notifications.length;
       }, this));
 
       var that = this;
@@ -131,7 +133,7 @@ define([
       this.$readMore.addClass('hidden');
       this.$loader.removeClass('hidden');
 
-      client.userNotifications(10, _.bind(function(data) {
+      client.userNotifications(this.displayedNotifications, 10, _.bind(function(data) { // @todo yls put that in parameters
         var previousContent = this.$menu.html();
         var html = '';
         for (var k in data.notifications)
@@ -142,6 +144,7 @@ define([
         this.$menu.html(previousContent+html);
         this.$readMore.removeClass('hidden');
         this.$loader.addClass('hidden');
+        this.displayedNotifications += data.notifications.length;
       }, this));
 
       var that = this;

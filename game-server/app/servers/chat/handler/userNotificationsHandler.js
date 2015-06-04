@@ -43,7 +43,7 @@ handler.read = function(data, session, next) {
 
 		function retrieveNotifications(user, callback) {
             // Get only unviewed notifications, data.number max
-			Notifications(that.app).retrieveUserNotifications(user._id.toString(), false, data.number, function(err, notifications) {
+			Notifications(that.app).retrieveUserNotifications(user._id.toString(), null, data.start, data.number, function(err, notifications) {
 				if (err)
 					return callback('Error while retrieving notifications for '+session.uid+': '+err);
 

@@ -488,8 +488,8 @@ define([
           }
       );
     },
-    userNotifications: function(number, fn) {
-      var data = {number: number};
+    userNotifications: function(start, number, fn) {
+      var data = {start: start, number: number};
       debug('io:out:user:notifications', data);
       var that = this;
       pomelo.request(

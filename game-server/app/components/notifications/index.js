@@ -58,11 +58,11 @@ Facade.prototype.create = function(type, user, data, fn) {
     return fn();
 };
 
-Facade.prototype.retrieveUserNotifications = function(uid, viewed , number, callback) {
+Facade.prototype.retrieveUserNotifications = function(uid, viewed , start, number, callback) {
   var q = NotificationModel.find({
     user: uid,
     done: false
-  });
+  }).skip(start);
 
   // Only not viewed messages required
   if (viewed !== null) {
@@ -70,7 +70,7 @@ Facade.prototype.retrieveUserNotifications = function(uid, viewed , number, call
       user: uid,
       done: false,
       viewed: false
-    });
+    }).skip(start);
   }
 
   // Only get "number" items
