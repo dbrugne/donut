@@ -20,7 +20,6 @@ define([
       'hide.bs.dropdown': 'onHide'
     },
 
-    unreadCount: 0,
     markHasRead : null,
 
     initialize: function(options) {
@@ -33,21 +32,23 @@ define([
       this.$badge = this.$el.find('.badge').first();
       this.$count = this.$el.find('.unread-count .nb').first();
       this.$menu = this.$el.find('.dropdown-menu #main-navbar-messages');
-
-      this.$dropdown.dropdown();
       this.$readMore = this.$el.find('.read-more');
       this.$loader = this.$el.find('.loading');
+
+      this.$dropdown.dropdown();
 
       return this;
     },
     setUnreadCount: function(count) {
-      this.unreadCount = count;
-      this.$count.html(this.unreadCount);
       if (count > 0) {
-        this.$badge.text(this.unreadCount).removeClass('hidden');
+        this.$badge.text(count);
+        this.$count.html(count);
+        this.el.classList.remove('empty');
+        this.el.classList.add('full');
+      } else {
+        this.el.classList.add('empty');
+        this.el.classList.remove('full');
       }
-      else
-        this.$badge.addClass('hidden');
     },
     onNewEvent: function(notification) {
       var template;

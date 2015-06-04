@@ -191,25 +191,23 @@
         }
       }
       #notifications {
-        .badge {
-          display: block;
-          position: absolute;
-          right: 17px; top: 6px;
-          line-height: 10px;
-          font-size: 8px;
-          font-weight: normal;
-          background-color: @cl-error;
+        &.empty {
+          .hide-empty { display: none; }
+          .show-empty { display: initial; }
         }
-        .dropdown-menu {
-          min-width: 375px;
-          min-height: 80px;
+        &.full {
+          .hide-empty { display: initial; }
+          .show-empty { display: none; }
+        }
+        .badge { display: block; position: absolute; right: 17px; top: 6px; line-height: 10px; font-size: 8px; font-weight: normal; background-color: @cl-error; }
+        .dropdown-menu { min-width: 375px; min-height: 80px;
           .loading { padding: 20px 20px; font-size: 1.5em; position: relative;
             .icon { position: absolute; left: 166px; top: 10px; }
           }
           .read-more {  padding: 10px 20px; font-size: 1.2em; text-align: center; color: #555; background: #f1f1f1; border-color: #f1f1f1; .border-radius(0px 0px 3px 3px); cursor: pointer;
             &:hover { background: #FDFDFD; }
           }
-          .unread-count {   margin: 0; font-size: 13px; display: inline-block; width: 100%; color: #555; padding: 10px 20px; background-color: #f1f1f1;
+          .unread-count { margin: 0; font-size: 13px; display: inline-block; width: 100%; color: #555; padding: 10px 20px; background-color: #f1f1f1;
             a { text-decoration: none; }
           }
           .messages-list-ctn { overflow-y: auto; overflow-x: hidden; width: auto; height: 300px;

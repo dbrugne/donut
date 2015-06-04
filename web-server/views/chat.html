@@ -25,20 +25,25 @@
                         <li><a href="/!#">Home</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <li id="notifications" class="dropdown">
+                        <li id="notifications" class="dropdown empty">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                 <i class="icon icon-globe"></i>
-                                <span class="badge hidden"></span>
+                                <span class="badge hide-empty"></span>
                                 <span class="caret"></span>
                             </a>
                             <div class="dropdown-menu p0" role="menu">
                                 <div class="unread-count">
-                                    <span>Vous avez <strong class="nb"><!-- Loaded dynamically --></strong><strong> Nouvelles</strong> Notifications</span>
-                                    <a class="pull-right" href="javascript:;"><strong>Voir tout</strong></a>
+                                    <span class="show-empty text-center">
+                                        <span>Vous n'avez pas de Nouvelles Notifications</span>
+                                    </span>
+                                    <span class="hide-empty">
+                                        <span>Vous avez <strong class="nb"><!-- Loaded dynamically --></strong><strong> Nouvelles</strong> Notifications</span>
+                                        <a class="pull-right" href="javascript:;"><strong>Voir tout</strong></a>
+                                    </span>
                                 </div>
                                 <div class="messages-list-ctn">
                                     <div class="messages-list" id="main-navbar-messages"><!-- Loaded dynamically --></div>
-                                    <div class="actions">
+                                    <div class="actions hide-empty">
                                         <div class="read-more">{{#i}}chat.notifications.read-more{{/i}}</div>
                                         <div class="loading hidden"><i class="icon icon-spinner icon-spin"></i></div>
                                     </div>
