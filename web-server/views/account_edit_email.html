@@ -1,3 +1,41 @@
+<div id="signup">
+    <div class="login">
+        <div class="content">
+            <form class="login-form" method="post" role="form">
+                <input type="hidden" name="_csrf" value="{{token}}">
+
+                <h3 class="form-title">{{#i}}edit-email.title{{/i}}</h3>
+
+                {{#is_errors}}
+                <div class="alert alert-danger display-hide">
+                    {{#errors}}{{msg}}<br>{{/errors}}
+                </div>
+                {{/is_errors}}
+
+                <div class="form-group">
+                    <p>
+                        {{#i}}edit-email.info{{/i}}
+                    </p>
+                </div>
+
+                <div class="form-group">
+                    <div class="input-icon">
+                        <i class="fa fa-envelope-o"></i>
+                        <input type="email" class="form-control placeholder-no-fix" id="email-field" name="user[fields][email]" placeholder="{{#i}}login.email-placeholder{{/i}}" value="{{userFields.email}}">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="{{#i}}global.save{{/i}}" tabindex="4">
+                    <div class="clearfix"></div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!--
 <div id="email-edit">
 
     <h2>{{#i}}edit-email.title{{/i}}</h2>
@@ -26,4 +64,4 @@
 
     </form>
 
-</div>
+</div>-->
