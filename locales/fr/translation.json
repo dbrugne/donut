@@ -1,813 +1,813 @@
 {
-    "404": {
-        "title": "Page non trouvée",
-        "description": "Désolé, nous n'avons pas trouvé ce que vous cherchiez. Et si on repartait du bon pied ? Cliquez ici :"
-    },
-    "title": {
-        "default": "DONUT vous permet de discuter autour de vos centres d'intérêt et d'animer vos communautés !",
-        "landing": "DONUT - Discussions instantanées autour de vos centres d'intérêt",
-        "profile": "Profil de __subtitle__ - DONUT vous permet de discuter autour de vos centres d'intérêt et d'animer vos communautés !",
-        "chat": "DONUT",
-        "static": {
-            "faq": "Foire aux questions - DONUT",
-            "eutc": "Conditions Générales d'Utilisation - DONUT",
-            "legals": "Mentions légales - DONUT"
-        }
-    },
-    "meta": {
-        "lang": "fr",
-        "locale": "fr_FR",
-        "alternate": [
-            "en_US"
-        ],
-        "sitename": "DONUT.me",
-        "landing": {
-            "title": "Discutez de ce que vous aimez !",
-            "description": "Sur DONUT vous discutez avec des gens sympas qui partagent vos centres d'intérêt. C'est le grand retour de la chat room !",
-            "keywords": "discussion,chat,chatroom,irc"
-        },
-        "profile": {
-            "title": "__subtitle__ | DONUT.me",
-            "description": {
-                "room": "Venez me rejoindre sur DONUT.me, le nouveau site de chat thématique haut en couleurs. J'y discute sur __name__ et ce serait sympa de vous y retrouver.",
-                "user": "Ceci est la page de mon profil sur DONUT.me, le nouveau site de chat thématique haut en couleurs. Ce serait sympa de vous y retrouver."
-            }
-        }
-    },
-    "baseline": "vous avez des choses à (vous) dire !",
-    "actions": {
-        "login": "connexion",
-        "tologin": "connecter",
-        "logout": "déconnexion",
-        "tologout": "déconnecter",
-        "home": "retourner à l'accueil",
-        "signup": "créer un compte",
-        "forgot": "mot de passe oublié",
-        "join": "rejoindre",
-        "discuss": "discuter",
-        "account": "mon compte",
-        "mute": "son actif",
-        "muted": "son désactivé"
-    },
-    "global": {
-        "or": "ou",
-        "else": "sinon",
-        "close": "fermer",
-        "change": "modifier",
-        "edit": "éditer",
-        "delete": "supprimer",
-        "save": "enregistrer",
-        "cancel": "annuler",
-        "view": "voir",
-        "viewprofile": "voir le profil",
-        "online": "en ligne",
-        "offline": "hors ligne",
-        "permalink": "permalien",
-        "search": "Recherche",
-        "by": "par",
-        "footer": {
-            "before": "Vous souhaitez vous",
-            "after": " ?"
-        },
-        "switchlanguage": "Language :",
-        "unknownerror": "Erreur inconnue, veuillez réessayer"
-    },
-    "login": {
-        "title": "La première phase de test est terminée. Merci d'y avoir participé !",
-        "withfacebook": "avec Facebook",
-        "withpassword": "par mot de passe",
-        "email-placeholder": "votre email",
-        "password-placeholder": "votre mot de passe",
-        "confirm-placeholder": "confirmer le mot de passe",
-        "username-placeholder": "choisissez un nom d'utilisateur",
-        "createanaccount1": "Pour être tenu au courant,",
-        "createanaccount2": "c'est par ici !",
-        "emailerror": "Votre adresse e-mail n'est pas valide",
-        "passworderror": "Vous avez oublié de saisir votre mot de passe"
-    },
-    "forgot": {
-        "email-placeholder": "Veuillez saisir votre email",
-        "password-placeholder": "Veuillez saisir votre nouveau mot de passe",
-        "confirm-placeholder": "Veuillez confirmer votre mot de passe",
-        "save": "Réinitialiser",
-        "sent": "Un email a été envoyé à __email__ avec la suite des instructions.",
-        "success": "Le mot de passe a été réinitialisé avec succès",
-        "error": {
-            "notexists": "Désolé, ce compte n'existe pas",
-            "expired": "Le jeton de changement de mot de passe a déjà été utilisé ou a éxpiré, veuillez recommencer la procédure"
-        }
-    },
-    "signup": {
-        "disclaimer": "En cliquant sur \"Et voilà !\" j’accepte les conditions d'utilisation de DONUT"
-    },
-    "choose-username": {
-        "title": "Il est temps de choisir un nom d'utilisateur !",
-        "description": "Le nom d'utilisateur sera votre identité sur DONUT. Les autres utilisateurs le verront. Il n'est pas modifiable.",
-        "help": [
-            "Entre 3 et 15 caractères.<br>",
-            "Autorisés : lettres, chiffres et caractères spéciaux : <strong>-._|^</strong><br>",
-            "Interdits : espaces, accents et caractères spéciaux non listés ci-dessus.<br>"
-        ],
-        "usernameerror": "Ce nom d'utilisateur ne respecte pas les contraintes.",
-        "usernameexists": "Ce nom d'utilisateur est déjà pris par un autre utilisateur."
-    },
-    "connect-local": {
-        "title": "Créer un mot de passe",
-        "description": "Ajouter une adresse email et un mot de passe à votre compte "
-    },
-    "edit-email": {
-        "title": "Modifier votre email",
-        "info": "Veuillez saisir la nouvelle adresse email que vous utiliserez pour vous connecter à DONUT :"
-    },
-    "edit-password": {
-        "title": "Modifier votre mot de passe",
-        "info": "Veuillez saisir un nouveau mot de passe et le confirmer :"
-    },
-    "home": {
-        "cover": {
-            "line1": "DONUT vous permet",
-            "line2": [
-                "<span>de discuter</span>",
-                "<span>de bavarder</span>",
-                "<span>de débattre</span>",
-                "<span>de vous écharper</span>",
-                "<span>d'échanger</span>",
-                "<span>de vous rencontrer</span>",
-                "<span>de vous la raconter</span>",
-                "<span>d'apprendre</span>",
-                "<span>de vous divertir</span>",
-                "<span>d'exprimer vos avis</span>",
-                "<span>de bavarder</span>",
-                "<span>de demander conseil</span>",
-                "<span>de vous inspirer</span>",
-                "<span>de bavarder</span>",
-                "<span>de blaguer</span>",
-                "<span>d'argumenter</span>",
-                "<span>de déconner</span>",
-                "<span>de partager</span>",
-                "<span>de faire connaissance</span>",
-                "<span>de vous passionner</span>",
-                "<span>de vous retrouver</span>",
-                "<span>de converser</span>",
-                "<span>de dialoguer</span>",
-                "<span>de communiquer</span>",
-                "<span>d'épiloguer</span>",
-                "<span>de délirer</span>"
-            ],
-            "line3": "autour",
-            "line4": [
-                "<span>de vos centres d'intérêt</span>",
-                "<span>de vos passions</span>",
-                "<span>de vos humeurs</span>",
-                "<span>de l'actualité</span>",
-                "<span>d'un bon verre</span>",
-                "<span>du sport</span>",
-                "<span>du e-sport</span>",
-                "<span>de la politique</span>",
-                "<span>de d'un programme TV</span>",
-                "<span>d'une série TV</span>",
-                "<span>de tout et de rien</span>",
-                "<span>de rien et de tout</span>",
-                "<span>des voitures</span>",
-                "<span>de la pêche à la truite</span>",
-                "<span>des voyages</span>",
-                "<span>du temps qu'il fait</span>",
-                "<span>de temps qui passe</span>",
-                "<span>du tango</span>",
-                "<span>des mangas</span>",
-                "<span>de votre collection</span>",
-                "<span>de questions existentielles</span>",
-                "<span>de ce qui compte</span>",
-                "<span>de ceux qui comptent</span>",
-                "<span>de la mecanique</span>",
-                "<span>des jeux vidéos</span>",
-                "<span>du foot</span>",
-                "<span>des Moon Boots</span>",
-                "<span>de la patate</span>",
-                "<span>des chats</span>",
-                "<span>de vos 30 millions d'amis</span>",
-                "<span>des pompes à vélo</span>",
-                "<span>de la cuisine</span>",
-                "<span>de vos projets</span>",
-                "<span>de vos histoires</span>",
-                "<span>du cosplay</span>",
-                "<span>de l'electronique</span>",
-                "<span>des pandas</span>",
-                "<span>du poker</span>",
-                "<span>du Joker</span>",
-                "<span>du paintball</span>",
-                "<span>de l'art</span>",
-                "<span>du dollar</span>",
-                "<span>de la liberté</span>",
-                "<span>de l'égalité</span>",
-                "<span>de la fraternité</span>",
-                "<span>du droit</span>",
-                "<span>d'amour</span>",
-                "<span>de gloire</span>",
-                "<span>de beauté</span>",
-                "<span>de musique</span>",
-                "<span>des pokemons</span>",
-                "<span>de vos films favoris</span>",
-                "<span>du surf</span>",
-                "<span>du jazz</span>",
-                "<span>du buzz</span>",
-                "<span>du tarot</span>",
-                "<span>des échecs</span>",
-                "<span>des maths</span>",
-                "<span>de votre livre préféré</span>",
-                "<span>de n'importe quoi</span>",
-                "<span>du tissage</span>",
-                "<span>de l'économie</span>",
-                "<span>de la couture</span>",
-                "<span>de la culture</span>",
-                "<span>de l'apiculture</span>",
-                "<span>des camions</span>",
-                "<span>de l'eau minérale</span>",
-                "<span>de la physique quantique</span>",
-                "<span>de la philosophie</span>",
-                "<span>de la topologie</span>",
-                "<span>des sciences</span>",
-                "<span>de l'informatique</span>",
-                "<span>du metal</span>",
-                "<span>du métal</span>",
-                "<span>des cartes postales</span>",
-                "<span>de motos</span>",
-                "<span>de la météo</span>",
-                "<span>de l'enseignement</span>",
-                "<span>de la musique classique</span>"
-            ],
-            "line5": "et d'animer",
-            "line6": [
-                "<span>vos communautés !</span>",
-                "<span>vos amis !</span>",
-                "<span>vos familles !</span>",
-                "<span>vos associations !</span>",
-                "<span>vos potes !</span>",
-                "<span>des inconnus sympas !</span>",
-                "<span>vos nouvelles connaissances !</span>",
-                "<span>vos frêres et soeurs !</span>",
-                "<span>vos fans !</span>",
-                "<span>vos followers !</span>",
-                "<span>vos grand-parents !</span>",
-                "<span>les types qui passaient par là !</span>",
-                "<span>vos parents !</span>",
-                "<span>vos élèves !</span>",
-                "<span>vos enfants !</span>",
-                "<span>qui vous voulez !</span>",
-                "<span>vos collègues !</span>",
-                "<span>vos cousins et cousines !</span>",
-                "<span>vos semblables !</span>",
-                "<span>votre tribu !</span>",
-                "<span>vos voisins !</span>"
-            ],
-            "knowmore": "en savoir +"
-        },
-        "description": {
-            "title1": "tasty",
-            "title2": "chatrooms",
-            "definition": "Un donut est un espace convivial de discussion<br> instantanée, un salon de discussion,<br> une chat room en fait !",
-            "line1": "Vous pouvez créer votre donut personnalisé et retrouver votre communauté ...",
-            "line2": "... ou vous joindre aux discussions en cours autour de vos centres d'intérêt ...",
-            "line3": "... et découvrir des gens qui vous ressemblent, au cours de véritables conversations !"
-        },
-        "signup": {
-            "title1": "Enregistrez-vous pour être tenu informé de nos dernières avancées.<br> Vous pouvez déjà y jeter un oeil ;)",
-            "title2": "ici en 1 bouchée",
-            "etvoila": "et voilà !"
-        },
-        "footer": {
-            "faq": "FAQ",
-            "eutc": "Conditions d'utilisations",
-            "legals": "Mentions légales",
-            "contact": "Contact"
-        }
-    },
-    "logged": {
-        "title": "Déjà connecté",
-        "hello": "Bonjour",
-        "text": "Vous êtes déjà connecté, accédez à DONUT :",
-        "chat": "Discuter",
-        "logout": "Déconnexion"
+  "404": {
+    "title": "Page non trouvée",
+    "description": "Désolé, nous n'avons pas trouvé ce que vous cherchiez. Et si on repartait du bon pied ? Cliquez ici :"
+  },
+  "title": {
+    "default": "DONUT vous permet de discuter autour de vos centres d'intérêt et d'animer vos communautés !",
+    "landing": "DONUT - Discussions instantanées autour de vos centres d'intérêt",
+    "profile": "Profil de __subtitle__ - DONUT vous permet de discuter autour de vos centres d'intérêt et d'animer vos communautés !",
+    "chat": "DONUT",
+    "static": {
+      "faq": "Foire aux questions - DONUT",
+      "eutc": "Conditions Générales d'Utilisation - DONUT",
+      "legals": "Mentions légales - DONUT"
+    }
+  },
+  "meta": {
+    "lang": "fr",
+    "locale": "fr_FR",
+    "alternate": [
+      "en_US"
+    ],
+    "sitename": "DONUT.me",
+    "landing": {
+      "title": "Discutez de ce que vous aimez !",
+      "description": "Sur DONUT vous discutez avec des gens sympas qui partagent vos centres d'intérêt. C'est le grand retour de la chat room !",
+      "keywords": "discussion,chat,chatroom,irc"
     },
     "profile": {
-        "room": {
-            "ownerops": "Les habitués",
-            "now": "En ce moment",
-            "nouser": "Pas d'utilisateur dans le donut",
-            "disclaimer": {
-                "before": "Cette page est le profil du donut ",
-                "after": "sur la plateforme de chat <a href=\"/\">DONUT.me</a>. DONUT.me vous permet de rejoindre ou créer un salon de discussion thématique (donut) sur ce qui vous plait. Vous pouvez y discuter avec des gens qui partagent vos centres d'intérêt"
-            },
-            "permalink": "Lien permanent vers ce profil",
-            "editlink": "Pour éditer ce profil cliquez ici",
-            "editusers": "Edition des utilisateurs",
-            "createdat": "créé le"
-        },
-        "user": {
-            "hisrooms": "Ses donuts",
-            "disclaimer": {
-                "before": "Cette page est le profil de l'utilisateur",
-                "after": "sur la plateforme de chat <a href=\"/\">DONUT.me</a>. DONUT.me vous permet de rejoindre ou créer un salon de discussion thématique (donut) sur ce qui vous plait. Vous pouvez y discuter avec des gens qui partagent vos centres d'intérêt"
-            },
-            "permalink": "Lien permanent vers ce profil",
-            "editlink": "Pour éditer votre profil cliquez ici",
-            "signuped": "inscrit le",
-            "onlined": "connecté il y a __time__"
-        }
+      "title": "__subtitle__ | DONUT.me",
+      "description": {
+        "room": "Venez me rejoindre sur DONUT.me, le nouveau site de chat thématique haut en couleurs. J'y discute sur __name__ et ce serait sympa de vous y retrouver.",
+        "user": "Ceci est la page de mon profil sur DONUT.me, le nouveau site de chat thématique haut en couleurs. Ce serait sympa de vous y retrouver."
+      }
+    }
+  },
+  "baseline": "vous avez des choses à (vous) dire !",
+  "actions": {
+    "login": "connexion",
+    "tologin": "connecter",
+    "logout": "déconnexion",
+    "tologout": "déconnecter",
+    "home": "retourner à l'accueil",
+    "signup": "créer un compte",
+    "forgot": "mot de passe oublié",
+    "join": "rejoindre",
+    "discuss": "discuter",
+    "account": "mon compte",
+    "mute": "son actif",
+    "muted": "son désactivé"
+  },
+  "global": {
+    "or": "ou",
+    "else": "sinon",
+    "close": "fermer",
+    "change": "modifier",
+    "edit": "éditer",
+    "delete": "supprimer",
+    "save": "enregistrer",
+    "cancel": "annuler",
+    "view": "voir",
+    "viewprofile": "voir le profil",
+    "online": "en ligne",
+    "offline": "hors ligne",
+    "permalink": "permalien",
+    "search": "Recherche",
+    "by": "par",
+    "footer": {
+      "before": "Vous souhaitez vous",
+      "after": " ?"
     },
-    "chat": {
-        "loading": "Chargement ",
-        "actions": {
-            "search": "Chercher",
-            "create": "créer",
-            "adonut": "un donut",
-            "account": "mon compte",
-            "edit": "mon profil",
-            "preferences": "préférences"
-        },
-        "create": {
-            "info": "Attention le nom du donut ne sera plus modifiable !",
-            "label": "Créez votre donut",
-            "help": [
-                "Entre 3 et 24 caractères.<br>",
-                "Autorisés : lettres, chiffres et caractères spéciaux : <strong>-._|^</strong><br>",
-                "Interdits : espaces, accents et caractères spéciaux non listés ci-dessus.<br>"
-            ],
-            "placeholder": "Nom du donut",
-            "submit": "Créer le donut"
-        },
-        "help": "Aide",
-        "placeholder": "Déplacer ici",
-        "createadonut": "Nouveau",
-        "home": {
-            "roomstitle": "Voici les donuts existants, vous pouvez également en <a class='open-create-room'>créer un</a> :",
-            "userstitle": "Utilisateurs"
-        },
-        "search": {
-            "placeholder": "Recherchez un donut ou un utilisateur ici",
-            "noroom": "Aucun résultat de recherche",
-            "nouser": "Aucun résultat de recherche",
-            "roomstitle": "Voici les donuts correspondant à votre recherche, vous pouvez aussi en <a class='open-create-room'>créer un nouveau</a> :",
-            "userstitle": "Utilisateurs correspondants"
-        },
-        "userscount": "<strong>__count__</strong> utilisateur dans ce donut",
-        "userscount_plural": "<strong>__count__</strong> utilisateurs dans ce donut",
-        "usersoffline": "Utilisateurs hors ligne",
-        "topic": {
-            "label": "En ce moment",
-            "placeholder": "Entrez ici le sujet de la conversation, l'humeur, l'ambiance ...",
-            "default": "<span class='default'>Aucun sujet, cliquez ici pour modifier</span>"
-        },
-        "owner": {
-            "is": "Cet utilisateur est le propriétaire de ce donut"
-        },
-        "op": {
-            "is": "Cet utilisateur est modérateur de ce donut",
-            "infobox": "Faire modérateur"
-        },
-        "deop": {
-            "infobox": "Retirer des modérateurs"
-        },
-        "kick": {
-            "infobox": "Expulser"
-        },
-        "ban": {
-            "infobox": "Expulser et bannir"
-        },
-        "deban": {
-            "infobox": "Autoriser à nouveau l'utilisateur à rejoindre le donut"
-        },
-        "profile": {
-            "infobox": "Voir le profil de cet utilisateur"
-        },
-        "confirmation": {
-            "sure": "Vous confirmez que vous voulez faire cela ?",
-            "placeholder": "Expliquez pourquoi, visible dans le donut (optionnel)",
-            "cancel": "Non, j'annule",
-            "confirm": "Oui, je confirme"
-        },
-        "notifications": {
-            "hello": "Vous entrez dans",
-            "disconnected": "Vous avez été deconnecté du serveur, veuillez patienter",
-            "reconnected": "Vous êtes reconnecté",
-            "offline": "n'est plus en ligne,",
-            "topic": "a changé le sujet pour",
-            "topicempty": "vide",
-            "kick": "a été expulsé de ce donut par",
-            "ban": "a été banni de ce donut par",
-            "deban": "n'est plus banni de ce donut à la demande de",
-            "op": " a été promu modérateur par",
-            "deop": "n'est plus modérateur à la demande de",
-            "in": "est entré à",
-            "out": "est sorti à",
-            "online": "est en ligne,",
-            "read-more": "Voir plus"
-        },
-        "unread": {
-            "title": "(nouveau)"
-        },
-        "history": {
-            "help": "Remonter pour en voir plus",
-            "loading": "Chargement de l'historique ...",
-            "nomore": "Historique de conversation chargé intégralement",
-            "top": "aller tout en haut",
-            "bottom": "aller tout en bas"
-        },
-        "shouldauthenticated": "Vous devez être identifié pour accéder aux discussions (<a href='/signup'>créer un compte</a> ou <a href='/login'>se connecter</a>)",
-        "closemessage": "Etes-vous sur de vouloir quitter, l’historique de vos conversations sera perdu ?",
-        "kickmessage": "Vous venez d'être expulsé de __name__",
-        "banmessage": "Vous venez d'être banni de __name__",
-        "bannedfromroom": "Vous nous pouvez pas rejoindre __name__, vous avez été banni",
-        "roomnotexists": "Le donut __name__ n'existe pas, <a class='open-create-room' data-name='__name__'>souhaitez-vous le créer </a> ?",
-        "alreadyexists": "Le donut __name__ existe déjà, <a href='#__uri__'>voulez-vous le rejoindre</a> ?",
-        "successfullycreated": "Le donut __name__ a bien été créé",
-        "reason": "(motif : \"__reason__\")",
-        "deletemessage": "Le donut __name__ vient d'être supprimé",
-        "users": {
-            "link": "utilisateurs",
-            "owner": {
-                "label": "Créateur",
-                "help": "Le créateur du donut dispose de tous les droits d'édition et de modération"
-            },
-            "ops": {
-                "label": "Modérateurs",
-                "help": "Les modérateurs peuvent changer le sujet du donut, expulser ou bannir des utilisateurs et ajouter/retirer des modérateurs"
-            },
-            "bans": {
-                "label": "Bannis",
-                "help": "Les utilisateurs bannis ne peuvent plus rejoindre le donut"
-            },
-            "users": {
-                "label": "Utilisateurs",
-                "help": "Les utilisateurs du donut peuvent simplement voir et poster des messages"
-            }
-        },
-        "share": {
-            "label": "partager :",
-            "title": "Rejoignez-moi dans le donut __name__",
-            "description": "Venez me rejoindre sur DONUT.me le nouveau site de chat. J'y discute sur __name__."
-        },
-        "welcome": {
-            "room": [
-                "Bienvenue dans <strong>__name__</strong>. Seuls les utilisateurs qui ont rejoint ce donut (listés à droite) peuvent voir la conversation. Et ce même s'ils sont hors ligne pour le moment.",
-                "Postez un message pour amorcer la conversation."
-            ],
-            "onetoone": [
-                "Si <strong>__username__</strong> n'est pas en ligne les nouveaux messages lui seront remis à sa prochaine connection",
-                "Postez un message pour amorcer la conversation."
-            ]
-        },
-        "connection": {
-            "connected": "Connecté ! Chargement de l'interface ...",
-            "reconnected": "Reconnecté à la tentative #__num__ ! Chargement de l'interface ...",
-            "connecting": "Connexion à DONUT ...",
-            "error": "Erreur de connexion, patienter un instant ...",
-            "disconnected": "Connexion perdue, patienter un instant ...",
-            "contactus": "Problèmes pour vous connecter ? Contactez-nous."
-        }
+    "switchlanguage": "Language :",
+    "unknownerror": "Erreur inconnue, veuillez réessayer"
+  },
+  "login": {
+    "title": "La première phase de test est terminée. Merci d'y avoir participé !",
+    "withfacebook": "avec Facebook",
+    "withpassword": "par mot de passe",
+    "email-placeholder": "votre email",
+    "password-placeholder": "votre mot de passe",
+    "confirm-placeholder": "confirmer le mot de passe",
+    "username-placeholder": "choisissez un nom d'utilisateur",
+    "createanaccount1": "Pour être tenu au courant,",
+    "createanaccount2": "c'est par ici !",
+    "emailerror": "Votre adresse e-mail n'est pas valide",
+    "passworderror": "Vous avez oublié de saisir votre mot de passe"
+  },
+  "forgot": {
+    "email-placeholder": "Veuillez saisir votre email",
+    "password-placeholder": "Veuillez saisir votre nouveau mot de passe",
+    "confirm-placeholder": "Veuillez confirmer votre mot de passe",
+    "save": "Réinitialiser",
+    "sent": "Un email a été envoyé à __email__ avec la suite des instructions.",
+    "success": "Le mot de passe a été réinitialisé avec succès",
+    "error": {
+      "notexists": "Désolé, ce compte n'existe pas",
+      "expired": "Le jeton de changement de mot de passe a déjà été utilisé ou a éxpiré, veuillez recommencer la procédure"
+    }
+  },
+  "signup": {
+    "disclaimer": "En cliquant sur \"Et voilà !\" j’accepte les conditions d'utilisation de DONUT"
+  },
+  "choose-username": {
+    "title": "Il est temps de choisir un nom d'utilisateur !",
+    "description": "Le nom d'utilisateur sera votre identité sur DONUT. Les autres utilisateurs le verront. Il n'est pas modifiable.",
+    "help": [
+      "Entre 3 et 15 caractères.<br>",
+      "Autorisés : lettres, chiffres et caractères spéciaux : <strong>-._|^</strong><br>",
+      "Interdits : espaces, accents et caractères spéciaux non listés ci-dessus.<br>"
+    ],
+    "usernameerror": "Ce nom d'utilisateur ne respecte pas les contraintes.",
+    "usernameexists": "Ce nom d'utilisateur est déjà pris par un autre utilisateur."
+  },
+  "connect-local": {
+    "title": "Créer un mot de passe",
+    "description": "Ajouter une adresse email et un mot de passe à votre compte "
+  },
+  "edit-email": {
+    "title": "Modifier votre email",
+    "info": "Veuillez saisir la nouvelle adresse email que vous utiliserez pour vous connecter à DONUT :"
+  },
+  "edit-password": {
+    "title": "Modifier votre mot de passe",
+    "info": "Veuillez saisir un nouveau mot de passe et le confirmer :"
+  },
+  "home": {
+    "cover": {
+      "line1": "DONUT vous permet",
+      "line2": [
+        "<span>de discuter</span>",
+        "<span>de bavarder</span>",
+        "<span>de débattre</span>",
+        "<span>de vous écharper</span>",
+        "<span>d'échanger</span>",
+        "<span>de vous rencontrer</span>",
+        "<span>de vous la raconter</span>",
+        "<span>d'apprendre</span>",
+        "<span>de vous divertir</span>",
+        "<span>d'exprimer vos avis</span>",
+        "<span>de bavarder</span>",
+        "<span>de demander conseil</span>",
+        "<span>de vous inspirer</span>",
+        "<span>de bavarder</span>",
+        "<span>de blaguer</span>",
+        "<span>d'argumenter</span>",
+        "<span>de déconner</span>",
+        "<span>de partager</span>",
+        "<span>de faire connaissance</span>",
+        "<span>de vous passionner</span>",
+        "<span>de vous retrouver</span>",
+        "<span>de converser</span>",
+        "<span>de dialoguer</span>",
+        "<span>de communiquer</span>",
+        "<span>d'épiloguer</span>",
+        "<span>de délirer</span>"
+      ],
+      "line3": "autour",
+      "line4": [
+        "<span>de vos centres d'intérêt</span>",
+        "<span>de vos passions</span>",
+        "<span>de vos humeurs</span>",
+        "<span>de l'actualité</span>",
+        "<span>d'un bon verre</span>",
+        "<span>du sport</span>",
+        "<span>du e-sport</span>",
+        "<span>de la politique</span>",
+        "<span>de d'un programme TV</span>",
+        "<span>d'une série TV</span>",
+        "<span>de tout et de rien</span>",
+        "<span>de rien et de tout</span>",
+        "<span>des voitures</span>",
+        "<span>de la pêche à la truite</span>",
+        "<span>des voyages</span>",
+        "<span>du temps qu'il fait</span>",
+        "<span>de temps qui passe</span>",
+        "<span>du tango</span>",
+        "<span>des mangas</span>",
+        "<span>de votre collection</span>",
+        "<span>de questions existentielles</span>",
+        "<span>de ce qui compte</span>",
+        "<span>de ceux qui comptent</span>",
+        "<span>de la mecanique</span>",
+        "<span>des jeux vidéos</span>",
+        "<span>du foot</span>",
+        "<span>des Moon Boots</span>",
+        "<span>de la patate</span>",
+        "<span>des chats</span>",
+        "<span>de vos 30 millions d'amis</span>",
+        "<span>des pompes à vélo</span>",
+        "<span>de la cuisine</span>",
+        "<span>de vos projets</span>",
+        "<span>de vos histoires</span>",
+        "<span>du cosplay</span>",
+        "<span>de l'electronique</span>",
+        "<span>des pandas</span>",
+        "<span>du poker</span>",
+        "<span>du Joker</span>",
+        "<span>du paintball</span>",
+        "<span>de l'art</span>",
+        "<span>du dollar</span>",
+        "<span>de la liberté</span>",
+        "<span>de l'égalité</span>",
+        "<span>de la fraternité</span>",
+        "<span>du droit</span>",
+        "<span>d'amour</span>",
+        "<span>de gloire</span>",
+        "<span>de beauté</span>",
+        "<span>de musique</span>",
+        "<span>des pokemons</span>",
+        "<span>de vos films favoris</span>",
+        "<span>du surf</span>",
+        "<span>du jazz</span>",
+        "<span>du buzz</span>",
+        "<span>du tarot</span>",
+        "<span>des échecs</span>",
+        "<span>des maths</span>",
+        "<span>de votre livre préféré</span>",
+        "<span>de n'importe quoi</span>",
+        "<span>du tissage</span>",
+        "<span>de l'économie</span>",
+        "<span>de la couture</span>",
+        "<span>de la culture</span>",
+        "<span>de l'apiculture</span>",
+        "<span>des camions</span>",
+        "<span>de l'eau minérale</span>",
+        "<span>de la physique quantique</span>",
+        "<span>de la philosophie</span>",
+        "<span>de la topologie</span>",
+        "<span>des sciences</span>",
+        "<span>de l'informatique</span>",
+        "<span>du metal</span>",
+        "<span>du métal</span>",
+        "<span>des cartes postales</span>",
+        "<span>de motos</span>",
+        "<span>de la météo</span>",
+        "<span>de l'enseignement</span>",
+        "<span>de la musique classique</span>"
+      ],
+      "line5": "et d'animer",
+      "line6": [
+        "<span>vos communautés !</span>",
+        "<span>vos amis !</span>",
+        "<span>vos familles !</span>",
+        "<span>vos associations !</span>",
+        "<span>vos potes !</span>",
+        "<span>des inconnus sympas !</span>",
+        "<span>vos nouvelles connaissances !</span>",
+        "<span>vos frêres et soeurs !</span>",
+        "<span>vos fans !</span>",
+        "<span>vos followers !</span>",
+        "<span>vos grand-parents !</span>",
+        "<span>les types qui passaient par là !</span>",
+        "<span>vos parents !</span>",
+        "<span>vos élèves !</span>",
+        "<span>vos enfants !</span>",
+        "<span>qui vous voulez !</span>",
+        "<span>vos collègues !</span>",
+        "<span>vos cousins et cousines !</span>",
+        "<span>vos semblables !</span>",
+        "<span>votre tribu !</span>",
+        "<span>vos voisins !</span>"
+      ],
+      "knowmore": "en savoir +"
     },
-    "account": {
-        "error": {
-            "invalid": "Désolé, ce compte n'existe pas ou le mot de passe est invalide"
-        },
-        "emailandpassword": {
-            "label": "Email et mot de passe",
-            "help": "Vous n'avez pas renseigné d'e-mail et mot de passe. Pour vous connecter sans Facebook ou délier votre compte de Facebook :",
-            "add": "Ajouter e-mail et mot de passe"
-        },
-        "email": {
-            "label": "Email",
-            "success": "Votre nouvelle adresse email a bien été enregistrée",
-            "error": {
-                "format": "Cette adresse email n'est valide",
-                "alreadyexists": "Cette adresse email est déjà utilisée par un autre compte"
-            },
-            "format": "account.email.format"
-        },
-        "password": {
-            "label": "Mot de passe",
-            "success": "Votre nouveau mot de passe a bien été enregistré.",
-            "error": {
-                "confirm": "Les deux mots de passe ne sont pas identiques.",
-                "length": "Le mot de passe doit au moins faire 6 caractères de long."
-            }
-        },
-        "facebook": {
-            "label": "Facebook",
-            "help": "Votre compte est lié à ce compte Facebook :",
-            "name": "Nom",
-            "email": "Email",
-            "unlink": "Délier de ce compte Facebook",
-            "linkhelp": "Vous pouvez lier votre compte à un compte Facebook pour vous connecter plus facilement et profiter d'une expérience plus sociale :",
-            "connectwith": "Lier ce compte à ",
-            "error": {
-                "needemailpassword": "Il n'est possible de délier votre compte Facebook de ce compte donut. Vous devez d'abord définir <a href='/connect/local'>un email et un mot de passe associés à votre compte</a>",
-                "alreadylinked": "Ce compte Facebook est déjà lié à un autre compte"
-            }
-        },
-        "profile": {
-            "label": "Profil",
-            "help": "Vous pouvez éditer votre profil",
-            "link": "sur cette page"
-        },
-        "delete": {
-            "success": "Compte supprimé avec succés, à bientôt !"
-        }
+    "description": {
+      "title1": "tasty",
+      "title2": "chatrooms",
+      "definition": "Un donut est un espace convivial de discussion<br> instantanée, un salon de discussion,<br> une chat room en fait !",
+      "line1": "Vous pouvez créer votre donut personnalisé et retrouver votre communauté ...",
+      "line2": "... ou vous joindre aux discussions en cours autour de vos centres d'intérêt ...",
+      "line3": "... et découvrir des gens qui vous ressemblent, au cours de véritables conversations !"
     },
-    "edit": {
-        "upload": {
-            "nopicture": "Pas de photo",
-            "failed": "Téléchargement échoué",
-            "done": "Téléchargement terminé, attendez pour le traitement de l'image",
-            "help": {
-                "format": "Fichier image (.jpeg, .jpg, .png or .gif).",
-                "size": "Sera automatiquement redimenssionné au format __resized_width__x__resized_height__px."
-            }
-        },
-        "left": "<strong>%left</strong> restant",
-        "othersettings": "Autres paramètres",
-        "description": {
-            "label": "Description",
-            "placeholder": "Décrivez le donut en quelques mots",
-            "help": "Facultatif"
-        },
-        "bio": {
-            "label": "Bio",
-            "placeholder": "Décrivez-vous en quelques mots",
-            "help": "Facultatif"
-        },
-        "location": {
-            "label": "Lieu",
-            "placeholder": "Ville, pays où vous êtes",
-            "help": "Facultatif"
-        },
-        "website": {
-            "label": "Site web",
-            "placeholder": "L'adresse d'un site web lié à ce profil",
-            "help": "Facultatif"
-        },
-        "avatar": {
-            "label": "Photo de profil"
-        },
-        "poster": {
-            "label": "Poster",
-            "help": "Le poster est la grande image en pleine hauteur que vos interlocuteurs voient à droite de la conversation. Dimensions recommandées : largeur 430px, hauteur 1100px mini."
-        },
-        "color": {
-            "label": "Couleur"
-        },
-        "visibility": {
-            "label": "Visibilité (administrateur)",
-            "true": "Le donut est visible sur la homepage",
-            "false": "Le donut <strong>n'est pas</strong> visible sur la homepage"
-        },
-        "priority": {
-            "label": "Priorité (administrateur)",
-            "placeholder": "",
-            "help": "Nombre, plus est grand, plus est prioritaire"
-        },
-        "room": {
-            "delete": {
-                "link": "Vous pouvez également supprimer ce donut <a class='open-room-delete' data-room-name=\"__name__\">en cliquant ici</a>.",
-                "title": "Supprimer",
-                "info": [
-                    "Vous êtes sur le point de supprimer ce donut, cette opération est immédiate et irréversible.<br><br>",
-                    "Veuillez confirmer la suppression en saissant le nom du donut (<strong>__name__</strong>) puis en cliquant sur supprimer :"
-                ],
-                "placeholder": "Saisir le nom du donut",
-                "success": "donut supprimé !",
-                "error": {
-                    "permanent": "Il n'est pas possible de supprimer un donut 'permanent'"
-                }
-            }
-        }
+    "signup": {
+      "title1": "Enregistrez-vous pour être tenu informé de nos dernières avancées.<br> Vous pouvez déjà y jeter un oeil ;)",
+      "title2": "ici en 1 bouchée",
+      "etvoila": "et voilà !"
     },
-    "page": {
-        "faq": {
-            "title": "FAQ"
-        },
-        "contact": {
-            "title": "Contact"
-        },
-        "eutc": {
-            "title": "CGU"
-        }
+    "footer": {
+      "faq": "FAQ",
+      "eutc": "Conditions d'utilisations",
+      "legals": "Mentions légales",
+      "contact": "Contact"
+    }
+  },
+  "logged": {
+    "title": "Déjà connecté",
+    "hello": "Bonjour",
+    "text": "Vous êtes déjà connecté, accédez à DONUT :",
+    "chat": "Discuter",
+    "logout": "Déconnexion"
+  },
+  "profile": {
+    "room": {
+      "ownerops": "Les habitués",
+      "now": "En ce moment",
+      "nouser": "Pas d'utilisateur dans le donut",
+      "disclaimer": {
+        "before": "Cette page est le profil du donut ",
+        "after": "sur la plateforme de chat <a href=\"/\">DONUT.me</a>. DONUT.me vous permet de rejoindre ou créer un salon de discussion thématique (donut) sur ce qui vous plait. Vous pouvez y discuter avec des gens qui partagent vos centres d'intérêt"
+      },
+      "permalink": "Lien permanent vers ce profil",
+      "editlink": "Pour éditer ce profil cliquez ici",
+      "editusers": "Edition des utilisateurs",
+      "createdat": "créé le"
     },
-    "email": {
-        "welcome": {
-            "subject": "Bienvenue sur DONUT.me ! Votre compte a été créé avec succès",
-            "text": [
-                "Félicitations ! Votre compte utilisateur a bien été créé.",
-                "",
-                "Vous pouvez désormais nous rejoindre et discuter autour d'un bon donut en utilisant l'adresse ci-dessous :",
-                "",
-                "https://__fqdn__",
-                "",
-                "On s'en délecte d'avance !",
-                "",
-                "L'équipe DONUT.me",
-                "",
-                "PS : Si vous n'êtes pas à l'origine de cette démarche, veuillez nous en avertir en faisant suivre cet e-mail sur __email__ ou plus simplement en en répondant à cet e-mail."
-            ],
-            "html": [
-                "Félicitations ! Votre compte utilisateur a bien été créé.<br>",
-                "<br>",
-                "Vous pouvez désormais nous rejoindre et discuter autour d'un bon donut en utilisant l'adresse ci-dessous :<br>",
-                "<br>",
-                "<a href='https://__fqdn__'>Se connecter</a><br>",
-                "<br>",
-                "On s'en délecte d'avance !<br>",
-                "<br>",
-                "L'équipe DONUT.me<br>",
-                "<br>",
-                "PS : Si vous n'êtes pas à l'origine de cette démarche, veuillez nous en avertir en faisant suivre cet e-mail sur <a href='mailto:__email__'>__email__</a> ou plus simplement en en répondant à cet e-mail.<br>"
-            ]
-        },
-        "forgot": {
-            "subject": "Réinitialisation de votre mot de passe DONUT.me",
-            "text": [
-                "Vous avez demandé à changer de mot de passe. Cliquez sur le lien suivant pour définir un nouveau mot de passe :",
-                "",
-                "https://__fqdn__/reset/__token__",
-                "",
-                "Si vous ne faîtes rien, votre mot de passe restera inchangé.",
-                "",
-                "L'équipe DONUT.me",
-                "",
-                "PS : Si vous n'êtes pas à l'origine de cette démarche, veuillez nous en avertir en faisant suivre cet e-mail sur __email__ ou plus simplement en en répondant à cet e-mail."
-            ],
-            "html": [
-                "Vous avez demandé à changer de mot de passe. Cliquez sur le lien suivant pour définir un nouveau mot de passe :<br>",
-                "<br>",
-                "<a href='https://__fqdn__/reset/__token__'>Réinitialiser votre mot de passe</a><br>",
-                "<br>",
-                "Si vous ne faîtes rien, votre mot de passe restera inchangé.<br>",
-                "<br>",
-                "L'équipe DONUT.me<br>",
-                "<br>",
-                "PS : Si vous n'êtes pas à l'origine de cette démarche, veuillez nous en avertir en faisant suivre cet e-mail sur <a href='mailto:__email__'>__email__</a> ou plus simplement en en répondant à cet e-mail.<br>"
-            ]
-        },
-        "passwordchanged": {
-            "subject": "Succès ! Votre mot de passe DONUT.me a été changée avec succès",
-            "text": [
-                "Vous avez procédé à un changement de mot de passe. Votre nouveau mot de passe est désormais actif. Il est grand temps d’en profiter !",
-                "",
-                "https://__fqdn__",
-                "",
-                "L'équipe DONUT.me",
-                "",
-                "PS : Si vous n'êtes pas à l'origine de cette démarche, veuillez nous en avertir en faisant suivre cet e-mail sur __email__ ou plus simplement en en répondant à cet e-mail."
-            ],
-            "html": [
-                "Vous avez procédé à un changement de mot de passe. Votre nouveau mot de passe est désormais actif. Il est grand temps d’en profiter !<br>",
-                "<br>",
-                "<a href='https://__fqdn__'>Connectez-vous en cliquant ici</a><br>",
-                "<br>",
-                "L'équipe DONUT.me<br>",
-                "<br>",
-                "PS : Si vous n'êtes pas à l'origine de cette démarche, veuillez nous en avertir en faisant suivre cet e-mail sur <a href='mailto:__email__'>__email__</a> ou plus simplement en en répondant à cet e-mail.<br>"
-            ]
-        },
-        "emailchanged": {
-            "subject": "Succès ! L'adresse email de votre compte DONUT.me a été changé avec succès",
-            "text": [
-                "Vous avez procédé à un changement d'adresse email. Pour vous connecter veuillez vous rendre à cette adresse :",
-                "",
-                "https://__fqdn__",
-                "",
-                "L'équipe DONUT.me",
-                "",
-                "PS : Si vous n'êtes pas à l'origine de cette démarche, veuillez nous en avertir en faisant suivre cet e-mail sur __email__ ou plus simplement en en répondant à cet e-mail."
-            ],
-            "html": [
-                "Vous avez procédé à un changement d'adresse email. Pour vous connecter veuillez vous rendre à cette adresse :<br>",
-                "<br>",
-                "<a href='https://__fqdn__'>Connectez-vous en cliquant ici</a><br>",
-                "<br>",
-                "L'équipe DONUT.me<br>",
-                "<br>",
-                "PS : Si vous n'êtes pas à l'origine de cette démarche, veuillez nous en avertir en faisant suivre cet e-mail sur <a href='mailto:__email__'>__email__</a> ou plus simplement en en répondant à cet e-mail.<br>"
-            ]
-        },
-        "contact": {
-            "subject": "[DONUT] Nouveau formulaire de contact",
-            "text": [
-                "Nom : __name__",
-                "Email : __email__",
-                "Utilisateur : __user__",
-                "IP : __ip__",
-                "",
-                "__message__",
-                "",
-                "<small>Depuis __ip__ sur __fqdn__</small>"
-            ],
-            "html": [
-                "Nom : __name__<br>",
-                "Email : __email__<br>",
-                "Utilisateur : __user__<br>",
-                "<br>",
-                "__message__<br>",
-                "<br>",
-                "<small>Depuis __ip__ sur __fqdn__</small>"
-            ]
-        }
+    "user": {
+      "hisrooms": "Ses donuts",
+      "disclaimer": {
+        "before": "Cette page est le profil de l'utilisateur",
+        "after": "sur la plateforme de chat <a href=\"/\">DONUT.me</a>. DONUT.me vous permet de rejoindre ou créer un salon de discussion thématique (donut) sur ce qui vous plait. Vous pouvez y discuter avec des gens qui partagent vos centres d'intérêt"
+      },
+      "permalink": "Lien permanent vers ce profil",
+      "editlink": "Pour éditer votre profil cliquez ici",
+      "signuped": "inscrit le",
+      "onlined": "connecté il y a __time__"
+    }
+  },
+  "chat": {
+    "loading": "Chargement ",
+    "actions": {
+      "search": "Chercher",
+      "create": "créer",
+      "adonut": "un donut",
+      "account": "mon compte",
+      "edit": "mon profil",
+      "preferences": "préférences"
+    },
+    "create": {
+      "info": "Attention le nom du donut ne sera plus modifiable !",
+      "label": "Créez votre donut",
+      "help": [
+        "Entre 3 et 24 caractères.<br>",
+        "Autorisés : lettres, chiffres et caractères spéciaux : <strong>-._|^</strong><br>",
+        "Interdits : espaces, accents et caractères spéciaux non listés ci-dessus.<br>"
+      ],
+      "placeholder": "Nom du donut",
+      "submit": "Créer le donut"
+    },
+    "help": "Aide",
+    "placeholder": "Déplacer ici",
+    "createadonut": "Nouveau",
+    "home": {
+      "roomstitle": "Voici les donuts existants, vous pouvez également en <a class='open-create-room'>créer un</a> :",
+      "userstitle": "Utilisateurs"
+    },
+    "search": {
+      "placeholder": "Recherchez un donut ou un utilisateur ici",
+      "noroom": "Aucun résultat de recherche",
+      "nouser": "Aucun résultat de recherche",
+      "roomstitle": "Voici les donuts correspondant à votre recherche, vous pouvez aussi en <a class='open-create-room'>créer un nouveau</a> :",
+      "userstitle": "Utilisateurs correspondants"
+    },
+    "userscount": "<strong>__count__</strong> utilisateur dans ce donut",
+    "userscount_plural": "<strong>__count__</strong> utilisateurs dans ce donut",
+    "usersoffline": "Utilisateurs hors ligne",
+    "topic": {
+      "label": "En ce moment",
+      "placeholder": "Entrez ici le sujet de la conversation, l'humeur, l'ambiance ...",
+      "default": "<span class='default'>Aucun sujet, cliquez ici pour modifier</span>"
+    },
+    "owner": {
+      "is": "Cet utilisateur est le propriétaire de ce donut"
+    },
+    "op": {
+      "is": "Cet utilisateur est modérateur de ce donut",
+      "infobox": "Faire modérateur"
+    },
+    "deop": {
+      "infobox": "Retirer des modérateurs"
+    },
+    "kick": {
+      "infobox": "Expulser"
+    },
+    "ban": {
+      "infobox": "Expulser et bannir"
+    },
+    "deban": {
+      "infobox": "Autoriser à nouveau l'utilisateur à rejoindre le donut"
+    },
+    "profile": {
+      "infobox": "Voir le profil de cet utilisateur"
+    },
+    "confirmation": {
+      "sure": "Vous confirmez que vous voulez faire cela ?",
+      "placeholder": "Expliquez pourquoi, visible dans le donut (optionnel)",
+      "cancel": "Non, j'annule",
+      "confirm": "Oui, je confirme"
     },
     "notifications": {
-        "op": " a été promu modérateur de ",
-        "deop": "n'est plus modérateur de ",
-        "kick": "a été expulsé de ",
-        "ban": "a été banni de ",
-        "deban": "n'est plus banni de "
+      "hello": "Vous entrez dans",
+      "disconnected": "Vous avez été deconnecté du serveur, veuillez patienter",
+      "reconnected": "Vous êtes reconnecté",
+      "offline": "n'est plus en ligne,",
+      "topic": "a changé le sujet pour",
+      "topicempty": "vide",
+      "kick": "a été expulsé de ce donut par",
+      "ban": "a été banni de ce donut par",
+      "deban": "n'est plus banni de ce donut à la demande de",
+      "op": " a été promu modérateur par",
+      "deop": "n'est plus modérateur à la demande de",
+      "in": "est entré à",
+      "out": "est sorti à",
+      "online": "est en ligne,",
+      "read-more": "Voir plus"
+    },
+    "unread": {
+      "title": "(nouveau)"
+    },
+    "history": {
+      "help": "Remonter pour en voir plus",
+      "loading": "Chargement de l'historique ...",
+      "nomore": "Historique de conversation chargé intégralement",
+      "top": "aller tout en haut",
+      "bottom": "aller tout en bas"
+    },
+    "shouldauthenticated": "Vous devez être identifié pour accéder aux discussions (<a href='/signup'>créer un compte</a> ou <a href='/login'>se connecter</a>)",
+    "closemessage": "Etes-vous sur de vouloir quitter, l’historique de vos conversations sera perdu ?",
+    "kickmessage": "Vous venez d'être expulsé de __name__",
+    "banmessage": "Vous venez d'être banni de __name__",
+    "bannedfromroom": "Vous nous pouvez pas rejoindre __name__, vous avez été banni",
+    "roomnotexists": "Le donut __name__ n'existe pas, <a class='open-create-room' data-name='__name__'>souhaitez-vous le créer </a> ?",
+    "alreadyexists": "Le donut __name__ existe déjà, <a href='#__uri__'>voulez-vous le rejoindre</a> ?",
+    "successfullycreated": "Le donut __name__ a bien été créé",
+    "reason": "(motif : \"__reason__\")",
+    "deletemessage": "Le donut __name__ vient d'être supprimé",
+    "users": {
+      "link": "utilisateurs",
+      "owner": {
+        "label": "Créateur",
+        "help": "Le créateur du donut dispose de tous les droits d'édition et de modération"
+      },
+      "ops": {
+        "label": "Modérateurs",
+        "help": "Les modérateurs peuvent changer le sujet du donut, expulser ou bannir des utilisateurs et ajouter/retirer des modérateurs"
+      },
+      "bans": {
+        "label": "Bannis",
+        "help": "Les utilisateurs bannis ne peuvent plus rejoindre le donut"
+      },
+      "users": {
+        "label": "Utilisateurs",
+        "help": "Les utilisateurs du donut peuvent simplement voir et poster des messages"
+      }
+    },
+    "share": {
+      "label": "partager :",
+      "title": "Rejoignez-moi dans le donut __name__",
+      "description": "Venez me rejoindre sur DONUT.me le nouveau site de chat. J'y discute sur __name__."
     },
     "welcome": {
-        "message": [
-            "<p>Hello !</p>",
-            "<p>DONUT est en phase de pré-lancement. On a cherché à faire les choses bien, vous savez sûrement comment les faire encore mieux alors n’hésitez pas à nous faire part de vos idées sur <strong>#donut</strong>.</p>",
-            "<p>Vous allez maintenant pouvoir discuter avec des gens sympas qui partagent vos centres d'intérêt. Choisissez le donut que vous aimez :</p>"
-        ],
-        "donotshowagain": "Ne plus afficher ce message à l'avenir",
-        "nothing": "Aucun de ceux-là n'est à mon goût, aller sur <strong>#donut</strong>"
+      "room": [
+        "Bienvenue dans <strong>__name__</strong>. Seuls les utilisateurs qui ont rejoint ce donut (listés à droite) peuvent voir la conversation. Et ce même s'ils sont hors ligne pour le moment.",
+        "Postez un message pour amorcer la conversation."
+      ],
+      "onetoone": [
+        "Si <strong>__username__</strong> n'est pas en ligne les nouveaux messages lui seront remis à sa prochaine connection",
+        "Postez un message pour amorcer la conversation."
+      ]
     },
-    "contactform": {
-        "title": "Contactez-nous",
-        "name": "Votre nom",
-        "name-placeholder": "Votre nom",
-        "email": "E-mail",
-        "email-placeholder": "Votre e-mail",
-        "message": "Votre message",
-        "message-placeholder": "Veuillez saisir votre message ...",
-        "send": "envoyer",
-        "sent": "Le message a bien été envoyé, nous vous répondrons rapidement.",
-        "error": "Le formulaire contient de erreurs, merci vérifier votre saisie.",
-        "fail": "Impossible d'envoyer le message, veuillez réessayer plus tard."
-    },
-    "preferences": {
-        "title": "Vos préférences",
-        "sounds": {
-            "title": "Sons",
-            "test": "test"
-        },
-        "welcome": {
-            "title": "Fenêtre de bienvenue",
-            "label-true": "Afficher la fenêtre de bienvenue à la connexion",
-            "label-false": "Ne jamais afficher la fenêtre de bienvenue"
-        },
-        "browser": {
-            "sounds": {
-                "label-true": "Jouer un son quand un nouveau message arrive",
-                "label-false": "Ne jamais jouer de son"
-            }
-        },
-        "notif": {
-            "title": "Notifications",
-            "help": {
-                "user": "Indiquer ci-dessous par quels moyens vous souhaitez être notifié. Les notifications par email et sur mobile ne sont envoyés que si vous êtes hors ligne et une seule fois toutes les 12 heures pour un même type de notification.<br>Les notifications reçues pour chaque donut sont configurable dans le volet préférences de chaque donut.",
-                "room": "Choisissez ci-dessous pour quels types d'événements dans ce donut vous souhaitez être notifié.<br>Les choix ci-dessous s'applique uniquement à ce donut."
-            },
-            "nothing": {
-                "label": "Ne recevoir aucune notification pour ce donut",
-                "help": ""
-            },
-            "channels": {
-                "title": "Je souhaite être notifié sur :",
-                "help": "",
-                "desktop": "Bureau",
-                "desktop-test": "test",
-                "email": "Email",
-                "mobile": "Mobile"
-            },
-            "events": {
-                "title": "Je souhaite recevoir une notification quand :",
-                "usermessage": {
-                    "label": "Quand un utilisateur m'envoi un message privé",
-                    "help": ""
-                },
-                "roominvite": {
-                    "label": "Quand on m'invite à rejoindre un donut",
-                    "help": ""
-                },
-                "roommessage": {
-                    "label": "Quand un utilisateur poste un message dans ce donut",
-                    "help": ""
-                },
-                "roommention": {
-                    "label": "Quand un utilisateur me notifie dans ce donut",
-                    "help": ""
-                },
-                "roompromote": {
-                    "label": "Si je suis promus, expulsé ou banni ce donut",
-                    "help": ""
-                },
-                "roomtopic": {
-                    "label": "Quand quelqu'un change le sujet de ce donut",
-                    "help": ""
-                },
-                "roomjoin": {
-                    "label": "Quand quelqu'un rentre dans ce donut",
-                    "help": ""
-                }
-            }
-        }
+    "connection": {
+      "connected": "Connecté ! Chargement de l'interface ...",
+      "reconnected": "Reconnecté à la tentative #__num__ ! Chargement de l'interface ...",
+      "connecting": "Connexion à DONUT ...",
+      "error": "Erreur de connexion, patienter un instant ...",
+      "disconnected": "Connexion perdue, patienter un instant ...",
+      "contactus": "Problèmes pour vous connecter ? Contactez-nous."
     }
+  },
+  "account": {
+    "error": {
+      "invalid": "Désolé, ce compte n'existe pas ou le mot de passe est invalide"
+    },
+    "emailandpassword": {
+      "label": "Email et mot de passe",
+      "help": "Vous n'avez pas renseigné d'e-mail et mot de passe. Pour vous connecter sans Facebook ou délier votre compte de Facebook :",
+      "add": "Ajouter e-mail et mot de passe"
+    },
+    "email": {
+      "label": "Email",
+      "success": "Votre nouvelle adresse email a bien été enregistrée",
+      "error": {
+        "format": "Cette adresse email n'est valide",
+        "alreadyexists": "Cette adresse email est déjà utilisée par un autre compte"
+      },
+      "format": "account.email.format"
+    },
+    "password": {
+      "label": "Mot de passe",
+      "success": "Votre nouveau mot de passe a bien été enregistré.",
+      "error": {
+        "confirm": "Les deux mots de passe ne sont pas identiques.",
+        "length": "Le mot de passe doit au moins faire 6 caractères de long."
+      }
+    },
+    "facebook": {
+      "label": "Facebook",
+      "help": "Votre compte est lié à ce compte Facebook :",
+      "name": "Nom",
+      "email": "Email",
+      "unlink": "Délier de ce compte Facebook",
+      "linkhelp": "Vous pouvez lier votre compte à un compte Facebook pour vous connecter plus facilement et profiter d'une expérience plus sociale :",
+      "connectwith": "Lier ce compte à ",
+      "error": {
+        "needemailpassword": "Il n'est possible de délier votre compte Facebook de ce compte donut. Vous devez d'abord définir <a href='/connect/local'>un email et un mot de passe associés à votre compte</a>",
+        "alreadylinked": "Ce compte Facebook est déjà lié à un autre compte"
+      }
+    },
+    "profile": {
+      "label": "Profil",
+      "help": "Vous pouvez éditer votre profil",
+      "link": "sur cette page"
+    },
+    "delete": {
+      "success": "Compte supprimé avec succés, à bientôt !"
+    }
+  },
+  "edit": {
+    "upload": {
+      "nopicture": "Pas de photo",
+      "failed": "Téléchargement échoué",
+      "done": "Téléchargement terminé, attendez pour le traitement de l'image",
+      "help": {
+        "format": "Fichier image (.jpeg, .jpg, .png or .gif).",
+        "size": "Sera automatiquement redimenssionné au format __resized_width__x__resized_height__px."
+      }
+    },
+    "left": "<strong>%left</strong> restant",
+    "othersettings": "Autres paramètres",
+    "description": {
+      "label": "Description",
+      "placeholder": "Décrivez le donut en quelques mots",
+      "help": "Facultatif"
+    },
+    "bio": {
+      "label": "Bio",
+      "placeholder": "Décrivez-vous en quelques mots",
+      "help": "Facultatif"
+    },
+    "location": {
+      "label": "Lieu",
+      "placeholder": "Ville, pays où vous êtes",
+      "help": "Facultatif"
+    },
+    "website": {
+      "label": "Site web",
+      "placeholder": "L'adresse d'un site web lié à ce profil",
+      "help": "Facultatif"
+    },
+    "avatar": {
+      "label": "Photo de profil"
+    },
+    "poster": {
+      "label": "Poster",
+      "help": "Le poster est la grande image en pleine hauteur que vos interlocuteurs voient à droite de la conversation. Dimensions recommandées : largeur 430px, hauteur 1100px mini."
+    },
+    "color": {
+      "label": "Couleur"
+    },
+    "visibility": {
+      "label": "Visibilité (administrateur)",
+      "true": "Le donut est visible sur la homepage",
+      "false": "Le donut <strong>n'est pas</strong> visible sur la homepage"
+    },
+    "priority": {
+      "label": "Priorité (administrateur)",
+      "placeholder": "",
+      "help": "Nombre, plus est grand, plus est prioritaire"
+    },
+    "room": {
+      "delete": {
+        "link": "Vous pouvez également supprimer ce donut <a class='open-room-delete' data-room-name=\"__name__\">en cliquant ici</a>.",
+        "title": "Supprimer",
+        "info": [
+          "Vous êtes sur le point de supprimer ce donut, cette opération est immédiate et irréversible.<br><br>",
+          "Veuillez confirmer la suppression en saissant le nom du donut (<strong>__name__</strong>) puis en cliquant sur supprimer :"
+        ],
+        "placeholder": "Saisir le nom du donut",
+        "success": "donut supprimé !",
+        "error": {
+          "permanent": "Il n'est pas possible de supprimer un donut 'permanent'"
+        }
+      }
+    }
+  },
+  "page": {
+    "faq": {
+      "title": "FAQ"
+    },
+    "contact": {
+      "title": "Contact"
+    },
+    "eutc": {
+      "title": "CGU"
+    }
+  },
+  "email": {
+    "welcome": {
+      "subject": "Bienvenue sur DONUT.me ! Votre compte a été créé avec succès",
+      "text": [
+        "Félicitations ! Votre compte utilisateur a bien été créé.",
+        "",
+        "Vous pouvez désormais nous rejoindre et discuter autour d'un bon donut en utilisant l'adresse ci-dessous :",
+        "",
+        "https://__fqdn__",
+        "",
+        "On s'en délecte d'avance !",
+        "",
+        "L'équipe DONUT.me",
+        "",
+        "PS : Si vous n'êtes pas à l'origine de cette démarche, veuillez nous en avertir en faisant suivre cet e-mail sur __email__ ou plus simplement en en répondant à cet e-mail."
+      ],
+      "html": [
+        "Félicitations ! Votre compte utilisateur a bien été créé.<br>",
+        "<br>",
+        "Vous pouvez désormais nous rejoindre et discuter autour d'un bon donut en utilisant l'adresse ci-dessous :<br>",
+        "<br>",
+        "<a href='https://__fqdn__'>Se connecter</a><br>",
+        "<br>",
+        "On s'en délecte d'avance !<br>",
+        "<br>",
+        "L'équipe DONUT.me<br>",
+        "<br>",
+        "PS : Si vous n'êtes pas à l'origine de cette démarche, veuillez nous en avertir en faisant suivre cet e-mail sur <a href='mailto:__email__'>__email__</a> ou plus simplement en en répondant à cet e-mail.<br>"
+      ]
+    },
+    "forgot": {
+      "subject": "Réinitialisation de votre mot de passe DONUT.me",
+      "text": [
+        "Vous avez demandé à changer de mot de passe. Cliquez sur le lien suivant pour définir un nouveau mot de passe :",
+        "",
+        "https://__fqdn__/reset/__token__",
+        "",
+        "Si vous ne faîtes rien, votre mot de passe restera inchangé.",
+        "",
+        "L'équipe DONUT.me",
+        "",
+        "PS : Si vous n'êtes pas à l'origine de cette démarche, veuillez nous en avertir en faisant suivre cet e-mail sur __email__ ou plus simplement en en répondant à cet e-mail."
+      ],
+      "html": [
+        "Vous avez demandé à changer de mot de passe. Cliquez sur le lien suivant pour définir un nouveau mot de passe :<br>",
+        "<br>",
+        "<a href='https://__fqdn__/reset/__token__'>Réinitialiser votre mot de passe</a><br>",
+        "<br>",
+        "Si vous ne faîtes rien, votre mot de passe restera inchangé.<br>",
+        "<br>",
+        "L'équipe DONUT.me<br>",
+        "<br>",
+        "PS : Si vous n'êtes pas à l'origine de cette démarche, veuillez nous en avertir en faisant suivre cet e-mail sur <a href='mailto:__email__'>__email__</a> ou plus simplement en en répondant à cet e-mail.<br>"
+      ]
+    },
+    "passwordchanged": {
+      "subject": "Succès ! Votre mot de passe DONUT.me a été changée avec succès",
+      "text": [
+        "Vous avez procédé à un changement de mot de passe. Votre nouveau mot de passe est désormais actif. Il est grand temps d’en profiter !",
+        "",
+        "https://__fqdn__",
+        "",
+        "L'équipe DONUT.me",
+        "",
+        "PS : Si vous n'êtes pas à l'origine de cette démarche, veuillez nous en avertir en faisant suivre cet e-mail sur __email__ ou plus simplement en en répondant à cet e-mail."
+      ],
+      "html": [
+        "Vous avez procédé à un changement de mot de passe. Votre nouveau mot de passe est désormais actif. Il est grand temps d’en profiter !<br>",
+        "<br>",
+        "<a href='https://__fqdn__'>Connectez-vous en cliquant ici</a><br>",
+        "<br>",
+        "L'équipe DONUT.me<br>",
+        "<br>",
+        "PS : Si vous n'êtes pas à l'origine de cette démarche, veuillez nous en avertir en faisant suivre cet e-mail sur <a href='mailto:__email__'>__email__</a> ou plus simplement en en répondant à cet e-mail.<br>"
+      ]
+    },
+    "emailchanged": {
+      "subject": "Succès ! L'adresse email de votre compte DONUT.me a été changé avec succès",
+      "text": [
+        "Vous avez procédé à un changement d'adresse email. Pour vous connecter veuillez vous rendre à cette adresse :",
+        "",
+        "https://__fqdn__",
+        "",
+        "L'équipe DONUT.me",
+        "",
+        "PS : Si vous n'êtes pas à l'origine de cette démarche, veuillez nous en avertir en faisant suivre cet e-mail sur __email__ ou plus simplement en en répondant à cet e-mail."
+      ],
+      "html": [
+        "Vous avez procédé à un changement d'adresse email. Pour vous connecter veuillez vous rendre à cette adresse :<br>",
+        "<br>",
+        "<a href='https://__fqdn__'>Connectez-vous en cliquant ici</a><br>",
+        "<br>",
+        "L'équipe DONUT.me<br>",
+        "<br>",
+        "PS : Si vous n'êtes pas à l'origine de cette démarche, veuillez nous en avertir en faisant suivre cet e-mail sur <a href='mailto:__email__'>__email__</a> ou plus simplement en en répondant à cet e-mail.<br>"
+      ]
+    },
+    "contact": {
+      "subject": "[DONUT] Nouveau formulaire de contact",
+      "text": [
+        "Nom : __name__",
+        "Email : __email__",
+        "Utilisateur : __user__",
+        "IP : __ip__",
+        "",
+        "__message__",
+        "",
+        "<small>Depuis __ip__ sur __fqdn__</small>"
+      ],
+      "html": [
+        "Nom : __name__<br>",
+        "Email : __email__<br>",
+        "Utilisateur : __user__<br>",
+        "<br>",
+        "__message__<br>",
+        "<br>",
+        "<small>Depuis __ip__ sur __fqdn__</small>"
+      ]
+    }
+  },
+  "notifications": {
+    "op": " a été promu modérateur de ",
+    "deop": "n'est plus modérateur de ",
+    "kick": "a été expulsé de ",
+    "ban": "a été banni de ",
+    "deban": "n'est plus banni de "
+  },
+  "welcome": {
+    "message": [
+      "<p>Hello !</p>",
+      "<p>DONUT est en phase de pré-lancement. On a cherché à faire les choses bien, vous savez sûrement comment les faire encore mieux alors n’hésitez pas à nous faire part de vos idées sur <strong>#donut</strong>.</p>",
+      "<p>Vous allez maintenant pouvoir discuter avec des gens sympas qui partagent vos centres d'intérêt. Choisissez le donut que vous aimez :</p>"
+    ],
+    "donotshowagain": "Ne plus afficher ce message à l'avenir",
+    "nothing": "Aucun de ceux-là n'est à mon goût, aller sur <strong>#donut</strong>"
+  },
+  "contactform": {
+    "title": "Contactez-nous",
+    "name": "Votre nom",
+    "name-placeholder": "Votre nom",
+    "email": "E-mail",
+    "email-placeholder": "Votre e-mail",
+    "message": "Votre message",
+    "message-placeholder": "Veuillez saisir votre message ...",
+    "send": "envoyer",
+    "sent": "Le message a bien été envoyé, nous vous répondrons rapidement.",
+    "error": "Le formulaire contient de erreurs, merci vérifier votre saisie.",
+    "fail": "Impossible d'envoyer le message, veuillez réessayer plus tard."
+  },
+  "preferences": {
+    "title": "Vos préférences",
+    "sounds": {
+      "title": "Sons",
+      "test": "test"
+    },
+    "welcome": {
+      "title": "Fenêtre de bienvenue",
+      "label-true": "Afficher la fenêtre de bienvenue à la connexion",
+      "label-false": "Ne jamais afficher la fenêtre de bienvenue"
+    },
+    "browser": {
+      "sounds": {
+        "label-true": "Jouer un son quand un nouveau message arrive",
+        "label-false": "Ne jamais jouer de son"
+      }
+    },
+    "notif": {
+      "title": "Notifications",
+      "help": {
+        "user": "Indiquer ci-dessous par quels moyens vous souhaitez être notifié. Les notifications par email et sur mobile ne sont envoyés que si vous êtes hors ligne et une seule fois toutes les 12 heures pour un même type de notification.<br>Les notifications reçues pour chaque donut sont configurable dans le volet préférences de chaque donut.",
+        "room": "Choisissez ci-dessous pour quels types d'événements dans ce donut vous souhaitez être notifié.<br>Les choix ci-dessous s'applique uniquement à ce donut."
+      },
+      "nothing": {
+        "label": "Ne recevoir aucune notification pour ce donut",
+        "help": ""
+      },
+      "channels": {
+        "title": "Je souhaite être notifié sur :",
+        "help": "",
+        "desktop": "Bureau",
+        "desktop-test": "test",
+        "email": "Email",
+        "mobile": "Mobile"
+      },
+      "events": {
+        "title": "Je souhaite recevoir une notification quand :",
+        "usermessage": {
+          "label": "Quand un utilisateur m'envoi un message privé",
+          "help": ""
+        },
+        "roominvite": {
+          "label": "Quand on m'invite à rejoindre un donut",
+          "help": ""
+        },
+        "roommessage": {
+          "label": "Quand un utilisateur poste un message dans ce donut",
+          "help": ""
+        },
+        "roommention": {
+          "label": "Quand un utilisateur me notifie dans ce donut",
+          "help": ""
+        },
+        "roompromote": {
+          "label": "Si je suis promus, expulsé ou banni ce donut",
+          "help": ""
+        },
+        "roomtopic": {
+          "label": "Quand quelqu'un change le sujet de ce donut",
+          "help": ""
+        },
+        "roomjoin": {
+          "label": "Quand quelqu'un rentre dans ce donut",
+          "help": ""
+        }
+      }
+    }
+  }
 }
