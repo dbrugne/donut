@@ -43,7 +43,7 @@ handler.read = function(data, session, next) {
 
 		function retrieveNotifications(user, callback) {
             // Get only unviewed notifications, data.number max
-			Notifications(that.app).retrieveUserNotifications(user._id.toString(), null, data.start, data.number, function(err, notifications) {
+			Notifications(that.app).retrieveUserNotifications(user._id.toString(), data, function(err, notifications) {
 				if (err)
 					return callback('Error while retrieving notifications for '+session.uid+': '+err);
 
@@ -97,7 +97,6 @@ handler.read = function(data, session, next) {
             });
         }
 
-
 	], function(err, event) {
 		if (err) {
 			logger.error(err);
@@ -110,7 +109,8 @@ handler.read = function(data, session, next) {
 };
 
 /**
- * Handler user read notifications logic
+ * Handler user viewed notifications logic
+ * Used to tag selected notifications as "viewed"
  *
  * @param {Object} data message from client
  * @param {Object} session

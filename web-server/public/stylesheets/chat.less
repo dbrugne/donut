@@ -199,7 +199,18 @@
           .hide-empty { display: initial; }
           .show-empty { display: none; }
         }
-        .badge { display: block; position: absolute; right: 17px; top: 6px; line-height: 10px; font-size: 8px; font-weight: normal; background-color: @cl-error; }
+        .badge { display: block; position: absolute; right: 10px; top: 5px; line-height: 10px; font-size: 8px; font-weight: normal;   background-color: #FFF; color: @cl-first; border: 1px solid @cl-first;
+          &.bounce { animation: bounce 1s ease;
+            @keyframes bounce{
+              from {top: -5px;}
+              35%  {top: 10px;}
+              55%  {top: 0;}
+              75%  {top: 8px;}
+              90%  {top: 3px;}
+              to   {top: 5px;}
+            }
+          }
+        }
         .dropdown-menu { min-width: 375px; min-height: 80px;
           .loading { padding: 20px 20px; font-size: 1.5em; position: relative;
             .icon { position: absolute; left: 166px; top: 10px; }

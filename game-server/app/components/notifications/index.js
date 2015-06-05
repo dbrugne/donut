@@ -58,24 +58,27 @@ Facade.prototype.create = function(type, user, data, fn) {
     return fn();
 };
 
-Facade.prototype.retrieveUserNotifications = function(uid, viewed , start, number, callback) {
-  var q = NotificationModel.find({
+Facade.prototype.retrieveUserNotifications = function(uid, what, callback) {
+  what = what || {};
+  var criteria = {
     user: uid,
     done: false
-  }).skip(start);
+  };
 
-  // Only not viewed messages required
-  if (viewed !== null) {
-    q = NotificationModel.find({
-      user: uid,
-      done: false,
-      viewed: false
-    }).skip(start);
+  if (what.viewed === false) {
+    criteria.viewed = false;
   }
 
+  if (what.time !== null) {
+    criteria.time = {};
+    criteria.time.$lt = new Date(what.time);
+  }
+
+  var q = NotificationModel.find(criteria);
+
   // Only get "number" items
-  if (number > 0)
-    q.limit(number);
+  if (what.number > 0)
+    q.limit(what.number);
 
   q.sort({time: -1});
   q.populate( { path: 'data.user', model: 'User', select: 'username color facebook avatar' } );

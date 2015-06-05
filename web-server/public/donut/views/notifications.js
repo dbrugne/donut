@@ -15,16 +15,16 @@ define([
     el: $("#notifications"),
 
     events: {
-      "click .dropdown-menu .actions" : 'readMore',
+      "click .dropdown-menu .actions" : 'onReadMore',
       'show.bs.dropdown': 'onShow',
       'hide.bs.dropdown': 'onHide'
     },
 
     markHasRead : null,
-    displayedNotifications: 0,
 
     initialize: function(options) {
       this.mainView = options.mainView;
+      this.listenTo(client, 'notification:new', this.onNotificationPushed);
 
       this.render();
     },
@@ -35,6 +35,7 @@ define([
       this.$menu = this.$el.find('.dropdown-menu #main-navbar-messages');
       this.$readMore = this.$el.find('.read-more');
       this.$loader = this.$el.find('.loading');
+      this.$actions = this.$el.find('.dropdown-menu .messages-list-ctn .actions');
 
       this.$dropdown.dropdown();
 
@@ -51,7 +52,27 @@ define([
         this.el.classList.remove('full');
       }
     },
-    onNewEvent: function(notification) {
+    // A new Notification is pushed from server
+    onNotificationPushed: function(data) {
+      // Update Badge & Count
+      this.setUnreadCount(data.unviewed);
+
+      // Highlight Badge
+      this.$badge.addClass("bounce");
+      var that = this;
+      setTimeout(function(){ that.$badge.removeClass("bounce"); }, 1500); // Remove class after animation to trigger animation later if needed
+
+      // Dropdown is opened
+      if (this.el.classList.contains('open'))
+      {
+        // Insert new notification in dropdown
+        this.$menu.html(this.createNotificationFromTemplate(data)+this.$menu.html());
+
+        // Set Timeout to clear new notification
+        this.markHasRead = setTimeout(function(){ that.clearNotifications(); }, 2000); // Clear notifications after 2 seconds
+      }
+    },
+    createNotificationFromTemplate: function(notification) {
       var template;
 
       switch (notification.type)
@@ -69,32 +90,39 @@ define([
         default:
         break;
       }
-      var dateObject = moment(notification.data.time);
+      var dateObject = moment(notification.time);
 
       if (notification.data.by_user)
-        notification.avatar = $.cd.roomAvatar(notification.data.by_user.avatar, 90); // @todo add room avatar instead of by_user avatar
+        notification.avatar = $.cd.roomAvatar(notification.data.by_user.avatar, 90); // @todo yls add room avatar instead of by_user avatar
 
       return template({data: notification, from_now: dateObject.format("Do MMMM, HH:mm")});
     },
+    // User clicks on the notification icon in the header
     onShow: function(event) {
       console.log("show", event.relatedTarget);
 
-      // Ask server for last 10 unread notifications
-      client.userNotifications(this.displayedNotifications, 10, _.bind(function(data) { // @todo yls put that in parameters
+      var lastNotif = this.lastNotifDisplayedTime();
+      // Ask server for last 10 unread notifications, if none at already loaded
+      if (this.$menu.find('.message').length == 0) {
+        client.userNotifications(null, lastNotif, 10, _.bind(function(data) { // @todo yls put that in parameters
 
-        var html = '';
-        for (var k in data.notifications)
-        {
-          html += this.onNewEvent(data.notifications[k]);
-        }
+          var html = '';
+          for (var k in data.notifications)
+          {
+            html += this.createNotificationFromTemplate(data.notifications[k]);
+          }
 
-        this.$menu.html(html);
-        this.displayedNotifications = data.notifications.length;
-      }, this));
+          this.$menu.html(html);
+
+          if (data.notifications.length < 10) // @todo yls put that in parameters
+            this.$actions.addClass('hidden');
+        }, this));
+      }
 
       var that = this;
       this.markHasRead = setTimeout(function(){ that.clearNotifications(); }, 2000); // Clear notifications after 2 seconds
     },
+    // Notification dropwdown is hidden (Bootstrap event catched)
     onHide: function(event) {
       console.log("hide", event.relatedTarget);
       clearTimeout(this.markHasRead);
@@ -128,27 +156,36 @@ define([
     },
 
     // When user clicks on the read more link in the notification dropdown
-    readMore: function(event) {
-      event.stopPropagation();
+    onReadMore: function(event) {
+      event.stopPropagation(); // Cancel dropdown close behaviour
       this.$readMore.addClass('hidden');
       this.$loader.removeClass('hidden');
 
-      client.userNotifications(this.displayedNotifications, 10, _.bind(function(data) { // @todo yls put that in parameters
+      var lastNotif = this.lastNotifDisplayedTime();
+      client.userNotifications(null, lastNotif, 10, _.bind(function(data) { // @todo yls put that in parameters
         var previousContent = this.$menu.html();
         var html = '';
         for (var k in data.notifications)
         {
-          html += this.onNewEvent(data.notifications[k]);
+          html += this.createNotificationFromTemplate(data.notifications[k]);
         }
 
         this.$menu.html(previousContent+html);
         this.$readMore.removeClass('hidden');
         this.$loader.addClass('hidden');
-        this.displayedNotifications += data.notifications.length;
+
+        if (data.notifications.length < 10) // @todo yls put that in parameters
+          this.$actions.addClass('hidden');
       }, this));
 
       var that = this;
       this.markHasRead = setTimeout(function(){ that.clearNotifications(); }, 2000); // Clear notifications after 2 seconds
+    },
+
+    lastNotifDisplayedTime: function() {
+      var last = this.$menu.find('.message').last();
+      var time = (!last || last.length < 1) ? null : last.data('time');
+      return time;
     }
 
   });

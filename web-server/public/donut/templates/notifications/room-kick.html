@@ -1,4 +1,4 @@
-<div class="message <% if (data.viewed == false) { %>unread<% } %>" data-notification-id="<%= data.id %>">
+<div class="message <% if (data.viewed == false) { %>unread<% } %>" data-notification-id="<%= data.id %>" data-time="<%= data.time %>">
     <img src="<%= data.avatar %>" alt="<%= data.data.user.username %>" />
     <div class="avatar open-user-profile" data-username="<%= data.data.user.username %>" style="background-image: url(<%= data.data.user.avatar %>)"></div>
     <div class="message-subject">

@@ -93,9 +93,8 @@ Notification.prototype.create = function(type, user, data) {
 
 Notification.prototype.sendToBrowser = function(model) {
   var userId = (model.user._id) ? model.user._id.toString() : model.user;
-  var channel = 'user:'+userId;
-
   var that = this;
+
   Room.findByName(model.data.name).exec(function(err, room) {
     if (err) return logger(err);
 
@@ -105,20 +104,47 @@ Notification.prototype.sendToBrowser = function(model) {
       User.findByUid(model.data.by_user_id).exec(function(err, by_user) {
         if (err) return logger(err);
 
-        var event = {
+        var notification = {
+          id: model.id,
+          time: model.time,
           type: model.type,
+          viewed: false,
           to_desktop: user.preferencesValue('notif:channels:desktop'), // trigger desktop notification
-          data: model.data
+          name: room.name, // @todo yls refactor when fetch notifications from mongo will also retrieve room
+          data: {
+            by_user: {
+              color: by_user.color,
+              avatar: by_user._avatar(),
+              id: by_user.id,
+              username: by_user.username
+            },
+            user: {
+              color: user.color,
+              avatar: user._avatar(),
+              id: user.id,
+              username: user.username
+            },
+            room: {
+              name: room.name,
+              avatar: room._avatar()
+            }
+          }
         };
-        event.data.by_username = by_user.username;
-        event.data.by_avatar = by_user._avatar();
-        event.data.avatar = room._avatar();
 
-        that.facade.app.globalChannelService.pushMessage('connector', 'notification:new', event, channel, {}, function(err) {
-          if (err)
-            logger.error('Error while sending notification:new message to user clients: '+err);
+        // Retrieve unread notifications count
+        NotificationModel.find({
+          user: userId,
+          done: false,
+          viewed: false
+        }).count().exec(function(err, count) {
+          notification.unviewed = count || 0;
 
-          logger.debug('notification sent: '+model.type+' for '+model.user);
+          that.facade.app.globalChannelService.pushMessage('connector', 'notification:new', notification, 'user:'+userId, {}, function(err) {
+            if (err)
+              logger.error('Error while sending notification:new message to user clients: '+err);
+
+            logger.debug('notification sent: '+model.type+' for '+model.user);
+          });
         });
       });
     });
