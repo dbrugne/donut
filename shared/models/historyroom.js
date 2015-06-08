@@ -6,7 +6,7 @@ var Room = require('./room');
 var historySchema = mongoose.Schema({
 
   event         : String,
-  name          : String, // @todo dbr : store room._id instead of name, handle migration of current data
+  name          : String, // @todo : replace name with _id
   time          : { type: Date, default: Date.now },
   user          : { type: mongoose.Schema.ObjectId, ref: 'User' },
   by_user       : { type: mongoose.Schema.ObjectId, ref: 'User' },
@@ -62,7 +62,7 @@ historySchema.statics.record = function() {
     var wet = _.clone(data);
     model.data = _.omit(wet, dryFields) ;
 
-    Room.findOne({name: model.name}, 'users', function(err, room) { // @todo : find room by _id
+    Room.findOne({name: model.name}, 'users', function(err, room) { // @todo : replace name with _id
       if (err)
         return fn('Unable to retrieve room users list '+model.event+' for '+model.name);
 
