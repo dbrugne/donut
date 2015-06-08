@@ -34,7 +34,7 @@ module.exports = function(grunt) {
           newRoom.set(data);
           newRoom.save(function(err) {
             if (err)
-              return callback(err);
+              return fn(err);
 
             grunt.log.ok('+ '+room.name+' cloned ('+newRoom._id+', '+newRoom.to_delete+')');
             return fn();
