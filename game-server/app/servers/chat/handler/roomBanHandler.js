@@ -87,15 +87,8 @@ handler.ban = function(data, session, next) {
 		},
 
 		function checkIfAlreadyBanned(room, user, bannedUser, callback) {
-			if (!room.bans || !room.bans.length)
-			  return callback(null, room, user, bannedUser);
-
-			var alreadyIn = _.find(room.bans, function(ban) {
-        if (ban.user.toString() == bannedUser._id.toString())
-				  return true;
-			});
-			if (typeof alreadyIn != 'undefined')
-			  return callback('This user '+bannedUser.username+' is already banned from '+room.name);
+			if (room.isBanned(bannedUser.id))
+				return callback('This user '+bannedUser.username+' is already banned from '+room.name);
 
 			return callback(null, room, user, bannedUser);
 		},
@@ -111,15 +104,6 @@ handler.ban = function(data, session, next) {
 			room.update({$addToSet: { bans: ban }, $pull: { users: bannedUser._id, op: bannedUser._id }}, function(err) {
 				if (err)
 					return callback('Unable to persist ban of '+bannedUser.username+' on '+room.name);
-
-				return callback(null, room, user, bannedUser);
-			});
-		},
-
-		function persistOnUser(room, user, bannedUser, callback) {
-			bannedUser.update({$pull: { rooms: room.id }}, function(err) {
-				if (err)
-					return callback('Unable to persist name from '+room.name+' of '+bannedUser.username);
 
 				return callback(null, room, user, bannedUser);
 			});

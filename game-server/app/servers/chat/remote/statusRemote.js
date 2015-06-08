@@ -2,6 +2,7 @@ var logger = require('../../../../pomelo-logger').getLogger('donut', __filename)
 var _ = require('underscore');
 var async = require('async');
 var User = require('../../../../../shared/models/user');
+var Room = require('../../../../../shared/models/room');
 var roomMultiEmitter = require('../../../util/roomMultiEmitter');
 var oneMultiEmitter = require('../../../util/oneMultiEmitter');
 
@@ -202,7 +203,6 @@ DisconnectRemote.prototype.offline = function(uid) {
 
 		function retrieveUser(callback){
 			User.findById(uid)
-				.populate('rooms')
 			  .exec(function(err, user) {
 				if (err)
 					return callback('Unable to find user: '+err, null);
@@ -236,21 +236,25 @@ DisconnectRemote.prototype.offline = function(uid) {
 		},
 
 		function emitUserOfflineToRooms(user, event, callback) {
-			var exists = _.filter(user.rooms, function(room) {
-				return !!room.name;
-			});
-			var roomsToInform = _.map(exists, function(room) {
-				return room.name;
-			});
-
-			if (roomsToInform.length < 1)
-				return callback(null, user, event);
-
-			roomMultiEmitter(that.app, roomsToInform, 'user:offline', event, function (err) {
+			Room.findByUser(user.id, function(err, rooms) {
 				if (err)
 					return callback(err);
 
-			  logger.debug('inform following rooms: ', roomsToInform);
+				var roomsToInform = _.map(rooms, function(room) {
+					return room.name;
+				});
+
+				if (roomsToInform.length < 1)
+					return callback(null, user, event);
+
+				roomMultiEmitter(that.app, roomsToInform, 'user:offline', event, function (err) {
+					if (err)
+						return callback(err);
+
+					logger.debug('inform following rooms: ', roomsToInform);
+					return callback(null, user, event);
+				});
+
 				return callback(null, user, event);
 			});
 		},

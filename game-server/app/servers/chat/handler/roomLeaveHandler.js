@@ -67,15 +67,6 @@ handler.leave = function(data, session, next) {
 			});
 		},
 
-		function persistOnUser(user, room, callback) {
-			user.update({$pull: { rooms: room.id }}, function(err) {
-				if (err)
-					return callback('Unable to persist ($pull) rooms on user: '+err);
-
-				return callback(null, user, room);
-			});
-		},
-
 		function leaveClients(user, room, callback) {
 			// search for all the user sessions (any frontends)
 			that.app.statusService.getSidsByUid(session.uid, function(err, sids) {

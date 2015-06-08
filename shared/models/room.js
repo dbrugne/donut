@@ -50,6 +50,10 @@ roomSchema.statics.findByName = function (name) {
   return this.findOne({ name: regexp, deleted: {$ne: true} });
 };
 
+roomSchema.statics.findByUser = function (user_id) {
+  return this.find({ users: { $in: [user_id] }, deleted: {$ne: true} });
+};
+
 /**
  * Method to get the avatar/poster token used to generated the avatar URL on IHM
  *

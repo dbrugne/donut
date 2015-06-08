@@ -96,15 +96,6 @@ handler.kick = function(data, session, next) {
 			});
 		},
 
-		function persistOnUser(room, user, kickedUser, callback) {
-			kickedUser.update({$pull: { rooms: room.id }}, function(err) {
-				if (err)
-					return callback('Unable to persist kick from '+room.name+' of '+kickedUser._id.toString());
-
-				return callback(null, room, user, kickedUser);
-			});
-		},
-
 		function prepareEvent(room, user, kickedUser, callback) {
 			var event = {
 				by_user_id : user._id.toString(),

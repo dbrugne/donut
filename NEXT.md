@@ -8,5 +8,8 @@ grunt recreate-rooms
 ```
 db.rooms.update({}, {$set: {deleted: false}}, {multi: true})
 ```
-
+* Cleanup User.rooms
+```
+db.users.update({}, {$unset: {rooms: true}}, {multi: true})
+```
 

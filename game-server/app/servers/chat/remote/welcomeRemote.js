@@ -38,31 +38,30 @@ WelcomeRemote.prototype.getMessage = function(uid, frontendId, globalCallback) {
 	async.waterfall([
 
 		function retrieveUser(callback){
-			var q = User.findById(uid)
+			User.findById(uid)
 				.populate('onetoones', 'username')
-				.populate('rooms');
-			q.exec(function(err, user) {
-				if (err)
-					return callback('Unable to find user: '+err, null);
+				.exec(function(err, user) {
+					if (err)
+						return callback('Unable to find user: '+err, null);
 
-				welcomeEvent.user = {
-					user_id: user._id.toString(),
-					username: user.username,
-					avatar: user._avatar()
-				};
+					welcomeEvent.user = {
+						user_id: user._id.toString(),
+						username: user.username,
+						avatar: user._avatar()
+					};
 
-				if (user.positions)
-				  welcomeEvent.user.positions = JSON.parse(user.positions);
+					if (user.positions)
+						welcomeEvent.user.positions = JSON.parse(user.positions);
 
-				if (user.admin === true)
-					welcomeEvent.user.admin = true;
+					if (user.admin === true)
+						welcomeEvent.user.admin = true;
 
-				welcomeEvent.preferences = {};
-				welcomeEvent.preferences['browser:welcome'] = (user.preferences && user.preferences['browser:welcome'] === true);
-				welcomeEvent.preferences['browser:sounds'] = (user.preferences && user.preferences['browser:sounds'] === true);
+					welcomeEvent.preferences = {};
+					welcomeEvent.preferences['browser:welcome'] = (user.preferences && user.preferences['browser:welcome'] === true);
+					welcomeEvent.preferences['browser:sounds'] = (user.preferences && user.preferences['browser:sounds'] === true);
 
-				return callback(null, user);
-			});
+					return callback(null, user);
+				});
 		},
 
 		function populateOnes(user, callback){
@@ -94,33 +93,40 @@ WelcomeRemote.prototype.getMessage = function(uid, frontendId, globalCallback) {
 		},
 
 		function populateRooms(user, callback) {
-			if (user.rooms.length < 1)
-				return callback(null, user);
+			Room.findByUser(user.id)
+				.populate('owner', 'username avatar color facebook')
+				.exec(function(err, rooms) {
+					if (err)
+						return callback(err);
 
-			var parallels = [];
-			_.each(user.rooms, function(room) {
-				if (room.isBanned(user.id)) {
-					logger.warn('User '+uid+' seems to be banned from '+room.name+' but room name is still present in user.rooms array');
-					return;
-				}
+					if (!rooms || !rooms.length)
+						return callback(null, user);
 
-				parallels.push(function(fn) {
-					roomDataHelper(that.app, uid, room, function(err, r) {
-						fn(err, r);
+					var parallels = [];
+					_.each(rooms, function(room) {
+						if (room.isBanned(user.id)) {
+							logger.warn('User '+uid+' seems to be banned from '+room.name+' but room name is still present in user.rooms array');
+							return;
+						}
+
+						parallels.push(function(fn) {
+							roomDataHelper(that.app, uid, room, function(err, r) {
+								fn(err, r);
+							});
+						});
+					});
+
+					if (!parallels.length)
+						return callback(null, user);
+
+					async.parallel(parallels, function(err, results) {
+						if (err)
+							return callback('Error while populating rooms: '+err);
+
+						welcomeEvent.rooms = results;
+						return callback(null, user);
 					});
 				});
-			});
-
-			if (!parallels.length)
-				return callback(null, user);
-
-			async.parallel(parallels, function(err, results) {
-				if (err)
-					return callback('Error while populating rooms: '+err);
-
-				welcomeEvent.rooms = results;
-				return callback(null, user);
-			});
 		},
 
 		function featured(user, callback) {

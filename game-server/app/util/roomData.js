@@ -10,21 +10,14 @@ var User = require('../../../shared/models/user');
  *   - owner
  *   - ops
  */
-module.exports = function(app, uid, model, fn) {
+module.exports = function(app, uid, room, fn) {
 
-  if (!model)
+  if (!room)
     return fn('Need to received a valid Room model as parameter');
 
   async.waterfall([
 
-    function findRoom(callback) {
-      if (model.owner && model.owner.username)
-        return callback();
-
-      model.populate('owner', 'username avatar color facebook', callback);
-    },
-
-    function prepare(room, callback) {
+    function prepare(callback) {
       if (room === null)
         return callback(null, null);
 

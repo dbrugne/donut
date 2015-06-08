@@ -85,10 +85,7 @@ handler.read = function(data, session, next) {
 		},
 
 		function inRooms(user, rooms, callback) {
-			if (!user.rooms || user.rooms.length < 1)
-				return callback(null, user, rooms);
-
-			Room.find({ _id: { $in: user.rooms }, deleted: { $ne: true } }, roomFields).exec(function (err, results) {
+			Room.findByUser(user.id).exec(function (err, results) {
 				if (err)
 					return callback('Error while retrieving user rooms (3) in user:read: '+err);
 

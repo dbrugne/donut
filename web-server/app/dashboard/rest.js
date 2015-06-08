@@ -132,7 +132,7 @@ router.get('/rest/users/:id', isAdmin, function(req, res) {
     if (!user.rooms || !user.rooms.length)
       return res.send(user);
 
-    Room.find({_id: { $in: user.rooms }, deleted: {$ne: true}}, 'name', function(err, rooms) {
+    Room.findByUser(user.id, function(err, rooms) {
       if (err) {
         debug('Error while retrieving rooms in /rest/users/:id: '+err);
         return res.send({});
@@ -141,7 +141,7 @@ router.get('/rest/users/:id', isAdmin, function(req, res) {
       var data = user.toJSON();
       data.rooms = _.map(rooms, function(r) {
         return {
-          id: r._id.toString(),
+          id: r.id,
           name: r.name
         };
       });
