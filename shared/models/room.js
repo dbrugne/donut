@@ -1,4 +1,5 @@
 var debug = require('debug')('shared:models:room');
+var _ = require('underscore');
 var mongoose = require('../io/mongoose');
 
 var roomSchema = mongoose.Schema({
@@ -125,6 +126,18 @@ roomSchema.methods.isOwnerOrOp = function(user_id) {
     return true;
 
   return false;
+};
+
+roomSchema.methods.isBanned = function(user_id) {
+  if (!this.bans || !this.bans.length)
+    return false;
+
+  var subDocument = _.find(this.bans, function(ban) { // @warning: this shouldn't have .bans populated
+    if (ban.user.toString() == user_id)
+      return true;
+  });
+
+  return (typeof subDocument != 'undefined');
 };
 
 module.exports = mongoose.model('Room', roomSchema);

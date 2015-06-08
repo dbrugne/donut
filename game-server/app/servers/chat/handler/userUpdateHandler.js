@@ -30,7 +30,9 @@ handler.update = function(data, session, next) {
 	async.waterfall([
 
 		function retrieveUser(callback) {
-			User.findByUid(session.uid).exec(function (err, user) {
+			User.findByUid(session.uid)
+				.populate('rooms')
+				.exec(function (err, user) {
 				if (err)
 					return callback('Error while retrieving user '+session.uid+' in user:update: '+err);
 
@@ -259,11 +261,11 @@ handler.update = function(data, session, next) {
 			};
 
 			// inform rooms
-			if (user.rooms && user.rooms.length > 0) {
-				_.each(user.rooms, function(roomName) {
-					that.app.globalChannelService.pushMessage('connector', 'user:updated', event, roomName, {}, function(err) {
+			if (user.rooms) {
+				_.each(user.rooms, function(room) {
+					that.app.globalChannelService.pushMessage('connector', 'user:updated', event, room.name, {}, function(err) {
 						if (err)
-							logger.error('Error while pushing user:updated message to '+roomName+' on user:update: '+err);
+							logger.error('Error while pushing user:updated message to '+room.name+' on user:update: '+err);
 					});
 				});
 			}

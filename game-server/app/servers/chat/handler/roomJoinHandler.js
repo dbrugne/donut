@@ -68,15 +68,7 @@ handler.join = function(data, session, next) {
 		},
 
 		function checkIfBanned(user, room, callback) {
-			if (!room.bans || !room.bans.length)
-				return callback(null, user, room);
-
-			var subDocument = _.find(room.bans, function(ban) {
-				if (ban.user.toString() == user._id.toString())
-					return true;
-			});
-
-			if (typeof subDocument != 'undefined')
+			if (room.isBanned(user.id))
 				return callback('banned', user, room);
 
 			return callback(null, user, room);
@@ -111,7 +103,7 @@ handler.join = function(data, session, next) {
 
 		function persistOnUser(user, room, callback) {
 			// persist on user
-			user.update({$addToSet: { rooms: room.name }}, function(err) { // @todo : replace name with _id
+			user.update({$addToSet: { rooms: room.id }}, function(err) {
 				if (err)
 					return callback('Unable to persist ($addToSet) rooms on user: '+err);
 
@@ -150,7 +142,7 @@ handler.join = function(data, session, next) {
 		},
 
 		function getWelcomeData(user, room, callback) {
-			roomDataHelper(that.app, user._id.toString(), room.name, function(err, roomData) {
+			roomDataHelper(that.app, user._id.toString(), room, function(err, roomData) {
 				if (err)
 					return callback(err);
 

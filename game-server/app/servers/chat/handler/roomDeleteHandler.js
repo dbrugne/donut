@@ -82,7 +82,7 @@ handler.delete = function(data, session, next) {
 		},
 
 		function updateUsers(room, callback) {
-			User.update({rooms: {$in: [room.name]}}, {$pull: {rooms: room.name}}, {multi: true}, function(err) { // @todo : user.rooms == [_id]
+			User.update({rooms: {$in: [room.id]}}, {$pull: {rooms: room.id}}, {multi: true}, function(err) {
 				if (err)
 					return callback('Error while deleting room '+room.name+' on users in Mongo: '+err);
 

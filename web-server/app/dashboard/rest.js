@@ -132,7 +132,7 @@ router.get('/rest/users/:id', isAdmin, function(req, res) {
     if (!user.rooms || !user.rooms.length)
       return res.send(user);
 
-    Room.find({name: { $in: user.rooms }, deleted: {$ne: true}}, 'name', function(err, rooms) { // @todo : users.room is now [_id]
+    Room.find({_id: { $in: user.rooms }, deleted: {$ne: true}}, 'name', function(err, rooms) {
       if (err) {
         debug('Error while retrieving rooms in /rest/users/:id: '+err);
         return res.send({});

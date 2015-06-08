@@ -97,7 +97,7 @@ handler.kick = function(data, session, next) {
 		},
 
 		function persistOnUser(room, user, kickedUser, callback) {
-			kickedUser.update({$pull: { rooms: room.name }}, function(err) { // @todo : replace name with _id
+			kickedUser.update({$pull: { rooms: room.id }}, function(err) {
 				if (err)
 					return callback('Unable to persist kick from '+room.name+' of '+kickedUser._id.toString());
 
@@ -126,7 +126,7 @@ handler.kick = function(data, session, next) {
 				if (err)
 					return callback('Error while emitting room:kick in '+room.name+': '+err);
 
-				return callback(null, room, user, kickedUser, event, sentEvent);
+				return callback(null, room, user, kickedUser, sentEvent);
 			});
 		},
 

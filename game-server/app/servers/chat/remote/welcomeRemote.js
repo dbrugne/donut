@@ -38,8 +38,9 @@ WelcomeRemote.prototype.getMessage = function(uid, frontendId, globalCallback) {
 	async.waterfall([
 
 		function retrieveUser(callback){
-			var q = User.findById(uid);
-			q.populate('onetoones', 'username');
+			var q = User.findById(uid)
+				.populate('onetoones', 'username')
+				.populate('rooms');
 			q.exec(function(err, user) {
 				if (err)
 					return callback('Unable to find user: '+err, null);
@@ -97,25 +98,27 @@ WelcomeRemote.prototype.getMessage = function(uid, frontendId, globalCallback) {
 				return callback(null, user);
 
 			var parallels = [];
-			_.each(user.rooms, function(name) {
+			_.each(user.rooms, function(room) {
+				if (room.isBanned(user.id)) {
+					logger.warn('User '+uid+' seems to be banned from '+room.name+' but room name is still present in user.rooms array');
+					return;
+				}
+
 				parallels.push(function(fn) {
-					roomDataHelper(that.app, uid, name, function(err, room) {
-						if (err)
-							return fn(err);
-						else
-							return fn(null, room);
+					roomDataHelper(that.app, uid, room, function(err, r) {
+						fn(err, r);
 					});
 				});
 			});
+
+			if (!parallels.length)
+				return callback(null, user);
+
 			async.parallel(parallels, function(err, results) {
 				if (err)
 					return callback('Error while populating rooms: '+err);
 
-				// remove 'null' records (could happen for room that no longer exist but is still registered on user of for
-				// room where user is banned from)
-				welcomeEvent.rooms = _.filter(results, function(r) {
-					return r !== null;
-				});
+				welcomeEvent.rooms = results;
 				return callback(null, user);
 			});
 		},

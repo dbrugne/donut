@@ -68,7 +68,7 @@ handler.leave = function(data, session, next) {
 		},
 
 		function persistOnUser(user, room, callback) {
-			user.update({$pull: { rooms: room.name }}, function(err) { // @todo : replace name with _id
+			user.update({$pull: { rooms: room.id }}, function(err) {
 				if (err)
 					return callback('Unable to persist ($pull) rooms on user: '+err);
 

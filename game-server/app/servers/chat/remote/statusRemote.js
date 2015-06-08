@@ -201,8 +201,9 @@ DisconnectRemote.prototype.offline = function(uid) {
 	async.waterfall([
 
 		function retrieveUser(callback){
-			var q = User.findById(uid);
-			q.exec(function(err, user) {
+			User.findById(uid)
+				.populate('rooms')
+			  .exec(function(err, user) {
 				if (err)
 					return callback('Unable to find user: '+err, null);
 
@@ -235,8 +236,11 @@ DisconnectRemote.prototype.offline = function(uid) {
 		},
 
 		function emitUserOfflineToRooms(user, event, callback) {
-			var roomsToInform = _.filter(user.rooms, function(name) {
-				return !!name;
+			var exists = _.filter(user.rooms, function(room) {
+				return !!room.name;
+			});
+			var roomsToInform = _.map(exists, function(room) {
+				return room.name;
 			});
 
 			if (roomsToInform.length < 1)
