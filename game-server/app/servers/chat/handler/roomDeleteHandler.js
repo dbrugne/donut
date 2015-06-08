@@ -61,25 +61,6 @@ handler.delete = function(data, session, next) {
 			return callback(null, room);
 		},
 
-		function images(room, callback) {
-			// remove pictures from cloudinary
-			var images = [];
-
-			if (room.avatarId())
-				images.push(room.avatarId());
-
-			if (room.posterId())
-				images.push(room.posterId());
-
-			if (images.length > 0) {
-				cloudinary.api.delete_resources(images, function(result){
-					logger.info('room:delete pictures deletion: ', result.deleted);
-				});
-			}
-
-			return callback(null, room);
-		},
-
 		function kickThemAll(room, callback) {
 			// make them leave room
 			var event = {
@@ -101,7 +82,7 @@ handler.delete = function(data, session, next) {
 		},
 
 		function updateUsers(room, callback) {
-			User.update({rooms: {$in: [room.name]}}, {$pull: {rooms: room.name}}, {multi: true}, function(err) {
+			User.update({rooms: {$in: [room.name]}}, {$pull: {rooms: room.name}}, {multi: true}, function(err) { // @todo : user.rooms == [_id]
 				if (err)
 					return callback('Error while deleting room '+room.name+' on users in Mongo: '+err);
 
@@ -111,9 +92,10 @@ handler.delete = function(data, session, next) {
 
 		function deleteRoom(room, callback) {
 			var _room = { name: room.name };
-			room.remove(function(err) {
+			room.deleted = true;
+			room.save(function(err) {
 				if (err)
-					return callback('Error while delete room '+room.name+' in Mongo: '+err);
+					return callback('Error while mark room '+room.name+' as delete: '+err);
 
 				return callback(null, _room); // Javascript object instead Mongoose model
 			});

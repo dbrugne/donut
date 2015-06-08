@@ -58,7 +58,8 @@ handler.search = function(data, session, next) {
 					return callback(null, false);
 
 				var search = {
-					name: regexp
+					name: regexp,
+					deleted: { $ne: true }
 				};
 
 				var q;

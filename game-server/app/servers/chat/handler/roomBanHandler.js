@@ -117,7 +117,7 @@ handler.ban = function(data, session, next) {
 		},
 
 		function persistOnUser(room, user, bannedUser, callback) {
-			bannedUser.update({$pull: { rooms: room.name }}, function(err) {
+			bannedUser.update({$pull: { rooms: room.name }}, function(err) { // @todo : replace name with _id
 				if (err)
 					return callback('Unable to persist name from '+room.name+' of '+bannedUser.username);
 

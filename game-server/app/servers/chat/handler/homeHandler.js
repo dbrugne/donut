@@ -32,7 +32,10 @@ handler.home = function(data, session, next) {
 
 			function rooms(callback) {
 
-				var q = Room.find({ visibility: true })
+				var q = Room.find({
+					visibility: true,
+					deleted: { $ne: true }
+				})
 					.sort({priority: -1, 'lastjoin_at': -1})
 					.limit(100)
 					.populate('owner', 'username avatar');

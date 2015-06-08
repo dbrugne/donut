@@ -97,7 +97,7 @@ handler.kick = function(data, session, next) {
 		},
 
 		function persistOnUser(room, user, kickedUser, callback) {
-			kickedUser.update({$pull: { rooms: room.name }}, function(err) {
+			kickedUser.update({$pull: { rooms: room.name }}, function(err) { // @todo : replace name with _id
 				if (err)
 					return callback('Unable to persist kick from '+room.name+' of '+kickedUser._id.toString());
 

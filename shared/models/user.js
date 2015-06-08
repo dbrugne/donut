@@ -31,7 +31,7 @@ var userSchema = mongoose.Schema({
       name       : String
     },
     preferences    : mongoose.Schema.Types.Mixed,
-    rooms          : [{ type: String, ref: 'Room' }],
+    rooms          : [{ type: String, ref: 'Room' }], // @todo : store room._id instead of name
     onetoones      : [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
     positions      : { type: String },
     created_at     : { type: Date, default: Date.now },

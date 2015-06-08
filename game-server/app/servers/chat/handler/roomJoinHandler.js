@@ -111,7 +111,7 @@ handler.join = function(data, session, next) {
 
 		function persistOnUser(user, room, callback) {
 			// persist on user
-			user.update({$addToSet: { rooms: room.name }}, function(err) {
+			user.update({$addToSet: { rooms: room.name }}, function(err) { // @todo : replace name with _id
 				if (err)
 					return callback('Unable to persist ($addToSet) rooms on user: '+err);
 

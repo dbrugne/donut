@@ -5,6 +5,7 @@ var roomSchema = mongoose.Schema({
 
   name            : String,
   permanent       : Boolean,
+  deleted         : { type: Boolean, default: false },
   visibility      : { type: Boolean, default: false },
   priority        : Number,
   owner           : { type: mongoose.Schema.ObjectId, ref: 'User' },
@@ -45,20 +46,7 @@ roomSchema.statics.validateTopic = function (topic) {
 roomSchema.statics.findByName = function (name) {
   var pattern = name.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
   var regexp = new RegExp('^'+pattern+'$','i');
-  return this.findOne({ name: regexp });
-};
-
-/**
- * Retrieve and return an hydrated room instance
- * @param name
- * @returns {Query}
- */
-roomSchema.statics.retrieveRoom = function (name) {
-  var pattern = name.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
-  var regexp = new RegExp('^'+pattern+'$','i');
-  return this.findOne({ name: regexp })
-    .populate('owner', 'username avatar color facebook')
-    .populate('op', 'username avatar color facebook');
+  return this.findOne({ name: regexp, deleted: {$ne: true} });
 };
 
 /**
