@@ -129,23 +129,24 @@ router.get('/rest/users/:id', isAdmin, function(req, res) {
       return res.send({});
     }
 
-    if (!user.rooms || !user.rooms.length)
-      return res.send(user);
+    var data = user.toJSON();
+    Room.findByUser(user.id)
+      .exec(function(err, rooms) {
+        if (err) {
+          debug('Error while retrieving rooms in /rest/users/:id: '+err);
+          return res.send({});
+        }
 
-    Room.findByUser(user.id, function(err, rooms) {
-      if (err) {
-        debug('Error while retrieving rooms in /rest/users/:id: '+err);
-        return res.send({});
-      }
+        if (!rooms || !rooms.length)
+          return res.send(data);
 
-      var data = user.toJSON();
-      data.rooms = _.map(rooms, function(r) {
-        return {
-          id: r.id,
-          name: r.name
-        };
-      });
-      res.send(data);
+        data.rooms = _.map(rooms, function(r) {
+          return {
+            id: r.id,
+            name: r.name
+          };
+        });
+        res.send(data);
     });
   });
 });
