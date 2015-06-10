@@ -82,6 +82,7 @@ handler.message = function(data, session, next) {
 
 			var event = {
 				name: room.name,
+				id: room.id,
 				time: Date.now(),
 				user_id: user._id.toString(),
 				username: user.username,
@@ -96,7 +97,7 @@ handler.message = function(data, session, next) {
 		},
 
 		function historizeAndEmit(room, event, callback) {
-			roomEmitter(that.app, room.name, 'room:message', event, function(err) {
+			roomEmitter(that.app, 'room:message', event, function(err) {
 				if (err)
 					return callback(err);
 

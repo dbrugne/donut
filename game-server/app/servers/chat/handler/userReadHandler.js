@@ -136,9 +136,12 @@ handler.read = function(data, session, next) {
 			};
 			_.each(Object.keys(rooms), function(type) {
 				_.each(rooms[type], function(room) {
-					var json = room.toJSON();
-					json.avatar = room._avatar();
-					userData.rooms[type].push(json);
+					var roomData = {
+						name	: room.name,
+						id		: room.id,
+						avatar: room._avatar()
+					};
+					userData.rooms[type].push(roomData);
 				});
 			});
 

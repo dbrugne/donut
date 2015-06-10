@@ -105,6 +105,7 @@ handler.read = function(data, session, next) {
 
 			var roomData = {
 				name: room.name,
+				id: room.id,
 				owner: owner,
 				op: ops,
 				bans: bans,

@@ -87,6 +87,7 @@ handler.viewed = function(data, session, next) {
 		function sendToUserSockets(room, user, callback) {
 			var viewedEvent = {
 				name: room.name,
+				id: room.id,
 				events: data.events
 			};
 			that.app.globalChannelService.pushMessage('connector', 'room:viewed', viewedEvent, 'user:'+user._id.toString(), {}, function(err) {

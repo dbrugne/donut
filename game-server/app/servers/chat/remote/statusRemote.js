@@ -7,7 +7,7 @@ var roomMultiEmitter = require('../../../util/roomMultiEmitter');
 var oneMultiEmitter = require('../../../util/oneMultiEmitter');
 
 /**
- * @todo : replace logic and roomMultiEmitter + roomMultiEmitter
+ * @todo : replace actual logic for user:on/offline and remove roomMultiEmitter + oneMultiEmitter
  *  - on status change detection retrieve user rooms and onetoones,
  *  - extract full online user list from redis
  *  - deduplicate list
@@ -69,7 +69,10 @@ DisconnectRemote.prototype.online = function(uid, welcome, globalCallback) {
 				return callback(null, event);
 
 			var roomsToInform = _.map(welcome.rooms, function(room) {
-				return room.name;
+				return {
+					name: room.name,
+					id: room.id
+				};
 			});
 
 			roomMultiEmitter(that.app, roomsToInform, 'user:online', event, function (err) {
@@ -229,34 +232,36 @@ DisconnectRemote.prototype.offline = function(uid) {
 
 		function prepareEvent(user, callback) {
 			return callback(null, user, {
-				user_id   : user._id.toString(),
+				user_id   : user.id,
 				username  : user.username,
 				avatar    : user._avatar()
 			});
 		},
 
 		function emitUserOfflineToRooms(user, event, callback) {
-			Room.findByUser(user.id, function(err, rooms) {
-				if (err)
-					return callback(err);
-
-				var roomsToInform = _.map(rooms, function(room) {
-					return room.name;
-				});
-
-				if (roomsToInform.length < 1)
-					return callback(null, user, event);
-
-				roomMultiEmitter(that.app, roomsToInform, 'user:offline', event, function (err) {
+			Room.findByUser(user.id)
+				.exec(function(err, rooms) {
 					if (err)
 						return callback(err);
 
-					logger.debug('inform following rooms: ', roomsToInform);
-					return callback(null, user, event);
-				});
+					var roomsToInform = _.map(rooms, function(room) {
+						return {
+							name: room.name,
+							id: room.id
+						};
+					});
 
-				return callback(null, user, event);
-			});
+					if (roomsToInform.length < 1)
+						return callback(null, user, event);
+
+					roomMultiEmitter(that.app, roomsToInform, 'user:offline', event, function (err) {
+						if (err)
+							return callback(err);
+
+						logger.debug('Following rooms informed: '+roomsToInform.join(', '));
+						return callback(null, user, event);
+					});
+				});
 		},
 
 		function emitUserOfflineToOnes(user, event, callback) {

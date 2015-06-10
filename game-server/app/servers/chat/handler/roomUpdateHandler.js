@@ -221,6 +221,7 @@ handler.update = function(data, session, next) {
 
 			var event = {
 				name: room.name,
+				id: room.id,
 				data: sanitizedToNotify
 			};
 			that.app.globalChannelService.pushMessage('connector', 'room:updated', event, room.name, {}, function(err) {

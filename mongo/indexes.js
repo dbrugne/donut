@@ -8,7 +8,7 @@ db['rooms'].ensureIndex({
 });
 // room history
 db['history-room'].ensureIndex({
-  "name" : 1,
+  "room" : 1,
   "time" : -1
 });
 // onetoone history

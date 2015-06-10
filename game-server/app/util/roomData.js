@@ -22,13 +22,14 @@ module.exports = function(app, uid, room, fn) {
         return callback(null, null);
 
       var roomData = {
-        name: room.name,
-        owner: {},
-        op: room.op, // [ObjectId]
-        avatar: room._avatar(),
-        poster: room._poster(),
-        color: room.color,
-        topic: room.topic
+        name    : room.name,
+        id      : room.id,
+        owner   : {},
+        op      : room.op, // [ObjectId]
+        avatar  : room._avatar(),
+        poster  : room._poster(),
+        color   : room.color,
+        topic   : room.topic
       };
       if (room.owner) {
         roomData.owner = {

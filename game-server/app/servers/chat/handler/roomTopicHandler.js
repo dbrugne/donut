@@ -73,6 +73,8 @@ handler.topic = function(data, session, next) {
 			  topic = '';
 
 			var event = {
+				name		: room.name,
+				id			: room.id,
 				user_id : user._id.toString(),
 				username: user.username,
 				avatar  : user._avatar(),
@@ -91,7 +93,7 @@ handler.topic = function(data, session, next) {
 		},
 
 		function historizeAndEmit(room, user, event, callback) {
-			roomEmitter(that.app, room.name, 'room:topic', event, function(err) {
+			roomEmitter(that.app, 'room:topic', event, function(err) {
 				if (err)
 					return callback(err);
 

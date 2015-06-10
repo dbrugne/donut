@@ -82,11 +82,13 @@ handler.join = function(data, session, next) {
 		function sendToUsers(user, room, callback) {
 			// Inform room users
 			var event = {
-				user_id: user._id.toString(),
-				username: user.username,
-				avatar: user._avatar()
+				name			: room.name,
+				id				: room.id,
+				user_id		: user._id.toString(),
+				username  : user.username,
+				avatar    : user._avatar()
 			};
-			roomEmitter(that.app, room.name, 'room:in', event, function(err) {
+			roomEmitter(that.app, 'room:in', event, function(err) {
 				return callback(err, user, room);
 			});
 		},

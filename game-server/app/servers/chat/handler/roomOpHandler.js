@@ -93,6 +93,8 @@ handler.op = function(data, session, next) {
 
 		function prepareEvent(room, user, opedUser, callback) {
 			var event = {
+				name: room.name,
+				id: room.id,
 				by_user_id : user._id.toString(),
 				by_username: user.username,
 				by_avatar  : user._avatar(),
@@ -105,7 +107,7 @@ handler.op = function(data, session, next) {
 		},
 
 		function historizeAndEmit(room, user, opedUser, event, callback) {
-			roomEmitter(that.app, room.name, 'room:op', event, function(err, sentEvent) {
+			roomEmitter(that.app, 'room:op', event, function(err, sentEvent) {
 				if (err)
 					return callback('Error while emitting room:op in '+room.name+': '+err);
 

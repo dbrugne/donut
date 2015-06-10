@@ -65,6 +65,7 @@ handler.delete = function(data, session, next) {
 			// make them leave room
 			var event = {
 				name: room.name,
+				id: room.id,
 				reason: 'deleted'
 			};
 
@@ -82,7 +83,7 @@ handler.delete = function(data, session, next) {
 		},
 
 		function deleteRoom(room, callback) {
-			var _room = { name: room.name };
+			var _room = { name: room.name, id: room.id };
 			room.deleted = true;
 			room.save(function(err) {
 				if (err)

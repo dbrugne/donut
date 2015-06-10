@@ -98,6 +98,8 @@ handler.kick = function(data, session, next) {
 
 		function prepareEvent(room, user, kickedUser, callback) {
 			var event = {
+				name			 : room.name,
+				id				 : room.id,
 				by_user_id : user._id.toString(),
 				by_username: user.username,
 				by_avatar  : user._avatar(),
@@ -113,7 +115,7 @@ handler.kick = function(data, session, next) {
 		},
 
 		function historizeAndEmit(room, user, kickedUser, event, callback) {
-			roomEmitter(that.app, room.name, 'room:kick', event, function(err, sentEvent) {
+			roomEmitter(that.app, 'room:kick', event, function(err, sentEvent) {
 				if (err)
 					return callback('Error while emitting room:kick in '+room.name+': '+err);
 

@@ -11,23 +11,24 @@ var recorder = HistoryRoom.record();
  *
  *   callback(err, sentEvent)
  *
- * @param roomName
  * @param eventName
  * @param eventData
  * @param callback
  */
-module.exports = function(app, roomName, eventName, eventData, callback) {
+module.exports = function(app, eventName, eventData, callback) {
 
-  // always had room name and time to event
-  eventData.name = roomName;
+  if (!eventData.name || !eventData.id)
+    return callback("roomEmitter was called with an event without 'name' and/or 'id'");
+
+  // always had time to event
   eventData.time = Date.now();
   recorder(eventName, eventData, function(err, history) {
     if (err)
-      return fn('Error while emitting room event '+eventName+' in '+roomName+': '+err);
+      return fn('Error while emitting room event '+eventName+' in '+eventName.name+': '+err);
 
     // emit event to room users
     eventData.id = history._id.toString();
-    app.globalChannelService.pushMessage('connector', eventName, eventData, roomName, {}, function(err) {
+    app.globalChannelService.pushMessage('connector', eventName, eventData, eventData.name, {}, function(err) {
       if (err)
         return callback('Error while pushing message: '+err);
 

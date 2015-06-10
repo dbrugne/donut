@@ -98,7 +98,7 @@ handler.leave = function(data, session, next) {
 		},
 
 		function sendToUserClients(user, room, callback) {
-			that.app.globalChannelService.pushMessage('connector', 'room:leave', {name: room.name}, 'user:'+session.uid, {}, function(err) {
+			that.app.globalChannelService.pushMessage('connector', 'room:leave', {name: room.name, id: room.id}, 'user:'+session.uid, {}, function(err) {
 				if (err)
 					return callback('Error while sending room:leave message to user clients: '+err);
 
@@ -112,11 +112,13 @@ handler.leave = function(data, session, next) {
 		 */
 		function sendToUsers(user, room, callback) {
 			var event = {
-				user_id: user._id.toString(),
-				username: user.username,
-				avatar: user._avatar()
+				name			: room.name,
+				id				: room.id,
+				user_id		: user._id.toString(),
+				username	: user.username,
+				avatar		: user._avatar()
 			};
-			roomEmitter(that.app, room.name, 'room:out', event, function(err) {
+			roomEmitter(that.app, 'room:out', event, function(err) {
 				return callback(err, user, room);
 			});
 		}

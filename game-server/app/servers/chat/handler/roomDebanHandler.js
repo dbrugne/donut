@@ -97,6 +97,8 @@ handler.deban = function(data, session, next) {
 
 		function prepareEvent(room, user, unbannedUser, callback) {
 			var event = {
+				name			 : room.name,
+				id				 : room.id,
 				by_user_id : user._id.toString(),
 				by_username: user.username,
 				by_avatar  : user._avatar(),
@@ -109,7 +111,7 @@ handler.deban = function(data, session, next) {
 		},
 
 		function historizeAndEmit(room, user, unbannedUser, event, callback) {
-			roomEmitter(that.app, room.name, 'room:deban', event, function(err, sentEvent) {
+			roomEmitter(that.app, 'room:deban', event, function(err, sentEvent) {
 				if (err)
 					return callback('Error while emitting room:deban in '+room.name+': '+err);
 

@@ -111,6 +111,8 @@ handler.ban = function(data, session, next) {
 
 		function prepareEvent(room, user, bannedUser, callback) {
 			var event = {
+				name			 : room.name,
+				id				 : room.id,
 				by_user_id : user._id.toString(),
 				by_username: user.username,
 				by_avatar  : user._avatar(),
@@ -126,7 +128,7 @@ handler.ban = function(data, session, next) {
 		},
 
 		function historizeAndEmit(room, user, bannedUser, event, callback) {
-			roomEmitter(that.app, room.name, 'room:ban', event, function(err, sentEvent) {
+			roomEmitter(that.app, 'room:ban', event, function(err, sentEvent) {
 				if (err)
 					return callback('Error while emitting room:ban in '+room.name+': '+err);
 
