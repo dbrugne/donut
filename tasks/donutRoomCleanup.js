@@ -52,16 +52,6 @@ module.exports = function(grunt) {
                 });
             },
 
-            function updateUsers(usersToRemove, callback) {
-                User.update({ _id: { $in: usersToRemove } }, { $pull: { rooms: '#donut' } }, { multi: true }, function(err, result) {
-                    if (err)
-                        return callback(err);
-
-                    grunt.log.ok('Update users result:', result);
-                    return callback(null, usersToRemove);
-                });
-            },
-
             function cleanupHistory(usersToRemove, callback) {
                 HistoryRoom.update(
                   { name: '#donut', users: { $in: usersToRemove } }, // get all history for removed users

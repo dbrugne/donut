@@ -18,7 +18,7 @@
                 <label class="col-sm-2 control-label">Joined rooms</label>
                 <div class="col-sm-10">
                     <ul class="form-control-static">
-                    <% if (user.rooms.length) { %>
+                    <% if (user.rooms && user.rooms.length) { %>
                         <% for (var i=0; i < user.rooms.length; i++) { %>
                             <li><a href="#room/<%= user.rooms[i].id %>"><%= user.rooms[i].name %></a></li>
                         <% } %>

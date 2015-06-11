@@ -89,6 +89,7 @@ handler.users = function(data, session, next) {
 		function prepare(room, users, callback) {
 			var event = {
 				name: room.name,
+				id: room.id,
 				users: users
 			};
 			return callback(null, event);

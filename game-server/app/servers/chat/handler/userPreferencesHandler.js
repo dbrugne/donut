@@ -27,7 +27,7 @@ handler.read = function(data, session, next) {
 
 	var that = this;
 
-	var name = data.name || null;
+	var name = data.name || null; // @todo : should be replaced with Room._id??
 
 	async.waterfall([
 

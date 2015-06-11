@@ -87,15 +87,8 @@ handler.ban = function(data, session, next) {
 		},
 
 		function checkIfAlreadyBanned(room, user, bannedUser, callback) {
-			if (!room.bans || !room.bans.length)
-			  return callback(null, room, user, bannedUser);
-
-			var alreadyIn = _.find(room.bans, function(ban) {
-        if (ban.user.toString() == bannedUser._id.toString())
-				  return true;
-			});
-			if (typeof alreadyIn != 'undefined')
-			  return callback('This user '+bannedUser.username+' is already banned from '+room.name);
+			if (room.isBanned(bannedUser.id))
+				return callback('This user '+bannedUser.username+' is already banned from '+room.name);
 
 			return callback(null, room, user, bannedUser);
 		},
@@ -116,17 +109,10 @@ handler.ban = function(data, session, next) {
 			});
 		},
 
-		function persistOnUser(room, user, bannedUser, callback) {
-			bannedUser.update({$pull: { rooms: room.name }}, function(err) {
-				if (err)
-					return callback('Unable to persist name from '+room.name+' of '+bannedUser.username);
-
-				return callback(null, room, user, bannedUser);
-			});
-		},
-
 		function prepareEvent(room, user, bannedUser, callback) {
 			var event = {
+				name			 : room.name,
+				id				 : room.id,
 				by_user_id : user._id.toString(),
 				by_username: user.username,
 				by_avatar  : user._avatar(),
@@ -142,7 +128,7 @@ handler.ban = function(data, session, next) {
 		},
 
 		function historizeAndEmit(room, user, bannedUser, event, callback) {
-			roomEmitter(that.app, room.name, 'room:ban', event, function(err, sentEvent) {
+			roomEmitter(that.app, 'room:ban', event, function(err, sentEvent) {
 				if (err)
 					return callback('Error while emitting room:ban in '+room.name+': '+err);
 

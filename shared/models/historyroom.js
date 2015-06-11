@@ -6,7 +6,7 @@ var Room = require('./room');
 var historySchema = mongoose.Schema({
 
   event         : String,
-  name          : String,
+  room          : { type: mongoose.Schema.ObjectId, ref: 'Room' },
   time          : { type: Date, default: Date.now },
   user          : { type: mongoose.Schema.ObjectId, ref: 'User' },
   by_user       : { type: mongoose.Schema.ObjectId, ref: 'User' },
@@ -14,11 +14,12 @@ var historySchema = mongoose.Schema({
   users         : [{ type: mongoose.Schema.ObjectId, ref: 'User' }], // users in room at event time
   viewed        : [{ type: mongoose.Schema.ObjectId, ref: 'User' }]  // users that have read this event
 
-});
+}, {strict: false});
 
 var dryFields = [
   'time',
   'name',
+  'id',
   'user_id',
   'username',
   'avatar',
@@ -28,16 +29,7 @@ var dryFields = [
 ];
 
 /**
- * Archive following events:
- * - room:in
- * - room:out
- * - user:online
- * - user:offline
- * - room:message
- * - room:topic
- * - room:op
- * - room:deop
- * - room:kick
+ * Archive events
  */
 historySchema.statics.record = function() {
   var that = this;
@@ -50,7 +42,7 @@ historySchema.statics.record = function() {
   return function(event, data, fn) {
     var model = new that();
     model.event      = event;
-    model.name       = data.name;
+    model.room       = data.id;
     model.time       = data.time;
 
     // persist 'user_id's to be able to hydrate data later
@@ -62,12 +54,12 @@ historySchema.statics.record = function() {
     var wet = _.clone(data);
     model.data = _.omit(wet, dryFields) ;
 
-    Room.findOne({name: model.name}, 'users', function(err, room) {
+    Room.findById(data.id, 'users', function(err, room) {
       if (err)
-        return fn('Unable to retrieve room users list '+model.event+' for '+model.name);
+        return fn('Unable to retrieve room users list '+model.event+' for '+data.name);
 
       if (!room)
-        return fn('Room not found '+model.event+' for '+model.name);
+        return fn('Room not found '+model.event+' for '+data.name);
       else
         model.users = room.users;
 
@@ -85,15 +77,15 @@ historySchema.statics.retrieve = function() {
   var that = this;
   var howMany = 100;
   /**
-   * @param name
+   * @param roomId
    * @param userId
    * @param what criteria Object: since (timestamp), isAdmin (boolean)
    * @param fn
    */
-  return function(name, userId, what, fn) {
+  return function(roomId, userId, what, fn) {
     what = what || {};
     var criteria = {
-      name: name,
+      room: roomId,
       event: { $nin: ['user:online', 'user:offline'] }
     };
 
@@ -113,6 +105,7 @@ historySchema.statics.retrieve = function() {
     var q = that.find(criteria)
       .sort({time: 'desc'}) // important for timeline logic but also optimize rendering on frontend
       .limit(limit)
+      .populate('room', 'name')
       .populate('user', 'username avatar color facebook')
       .populate('by_user', 'username avatar color facebook');
 
@@ -128,6 +121,9 @@ historySchema.statics.retrieve = function() {
 
       var history = [];
       _.each(entries, function(entry) {
+        if (!entry.room)
+          entry.room = new Room(); // some rooms was removed (but not their history) before Room.deleted flag introduction
+
         // record
         var e = {
           type: entry.event
@@ -138,7 +134,8 @@ historySchema.statics.retrieve = function() {
           ? _.clone(entry.data)
           : {};
         data.id = entry._id.toString();
-        data.name = entry.name;
+        data.name = entry.room.name;
+        data.room_id = entry.room.id;
         data.time = entry.time;
         if (entry.user) {
           data.user_id = entry.user._id.toString();

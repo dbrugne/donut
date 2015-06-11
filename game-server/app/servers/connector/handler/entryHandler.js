@@ -126,13 +126,12 @@ handler.enter = function(msg, session, next) {
 
 			var parallels = [];
 			_.each(welcome.rooms, function(room) {
-				var name = room.name;
 				parallels.push(function(fn) {
-					that.app.globalChannelService.add(name, uid, session.frontendId, function(err) {
+					that.app.globalChannelService.add(room.name, uid, session.frontendId, function(err) {
 						if (err)
 							return fn('Error while registering user in room channel: '+err);
 
-						return fn(null, name);
+						return fn(null, room.name);
 					});
 				});
 			});

@@ -1,11 +1,12 @@
 var debug = require('debug')('shared:models:room');
+var _ = require('underscore');
 var mongoose = require('../io/mongoose');
 
 var roomSchema = mongoose.Schema({
 
-  _id             : String, // @todo : remove
   name            : String,
   permanent       : Boolean,
+  deleted         : { type: Boolean, default: false },
   visibility      : { type: Boolean, default: false },
   priority        : Number,
   owner           : { type: mongoose.Schema.ObjectId, ref: 'User' },
@@ -25,24 +26,7 @@ var roomSchema = mongoose.Schema({
   created_at      : { type: Date, default: Date.now },
   lastjoin_at     : { type: Date }
 
-});
-
-/**
- * Custom setter to set '_id' on 'name' set
- * @source: Custom String _id doc: https://gist.github.com/aheckmann/3658511
- */
-// @todo : remove and update existing documents (http://stackoverflow.com/questions/11763384/duplicate-a-document-in-mongodb-using-a-new-id#24034189)
-roomSchema.path('name').set(function (v) {
-  if (this.isNew) {
-    var salt = Math.floor((1 + Math.random()) * 0x10000)
-      .toString(16)
-      .substring(1);
-    var clean = (v || '').replace(/\s+/g, '').toLocaleLowerCase();
-    this._id = 'room'+salt+'_'+ clean;
-    debug('new room _id is: '+this._id+' ('+v+')');
-  }
-  return v;
-});
+}, { strict: false }); // @todo : remove strict flag after migration
 
 roomSchema.statics.validateName = function (name) {
   var pattern = /^#[-a-z0-9\._|[\]^]{3,24}$/i;
@@ -63,20 +47,11 @@ roomSchema.statics.validateTopic = function (topic) {
 roomSchema.statics.findByName = function (name) {
   var pattern = name.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
   var regexp = new RegExp('^'+pattern+'$','i');
-  return this.findOne({ name: regexp });
+  return this.findOne({ name: regexp, deleted: {$ne: true} });
 };
 
-/**
- * Retrieve and return an hydrated room instance
- * @param name
- * @returns {Query}
- */
-roomSchema.statics.retrieveRoom = function (name) {
-  var pattern = name.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
-  var regexp = new RegExp('^'+pattern+'$','i');
-  return this.findOne({ name: regexp })
-    .populate('owner', 'username avatar color facebook')
-    .populate('op', 'username avatar color facebook');
+roomSchema.statics.findByUser = function (user_id) {
+  return this.find({ users: { $in: [user_id] }, deleted: {$ne: true} });
 };
 
 /**
@@ -155,6 +130,18 @@ roomSchema.methods.isOwnerOrOp = function(user_id) {
     return true;
 
   return false;
+};
+
+roomSchema.methods.isBanned = function(user_id) {
+  if (!this.bans || !this.bans.length)
+    return false;
+
+  var subDocument = _.find(this.bans, function(ban) { // @warning: this shouldn't have .bans populated
+    if (ban.user.toString() == user_id)
+      return true;
+  });
+
+  return (typeof subDocument != 'undefined');
 };
 
 module.exports = mongoose.model('Room', roomSchema);

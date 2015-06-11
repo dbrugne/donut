@@ -54,29 +54,22 @@ handler.join = function(data, session, next) {
 		},
 
 		function retrieveRoom(user, callback) {
-			var q = Room.findByName(data.name);
-			q.exec(function(err, room) {
-				if (err)
-					return callback('Error while retrieving room in room:join: '+err);
+			Room.findByName(data.name)
+				.populate('owner', 'username avatar color facebook')
+				.exec(function(err, room) {
+					if (err)
+						return callback('Error while retrieving room in room:join: '+err);
 
-				// Room not found
-				if (!room)
-					return callback('notexists');
+					// Room not found
+					if (!room)
+						return callback('notexists');
 
-				return callback(null, user, room);
-			});
+					return callback(null, user, room);
+				});
 		},
 
 		function checkIfBanned(user, room, callback) {
-			if (!room.bans || !room.bans.length)
-				return callback(null, user, room);
-
-			var subDocument = _.find(room.bans, function(ban) {
-				if (ban.user.toString() == user._id.toString())
-					return true;
-			});
-
-			if (typeof subDocument != 'undefined')
+			if (room.isBanned(user.id))
 				return callback('banned', user, room);
 
 			return callback(null, user, room);
@@ -89,11 +82,13 @@ handler.join = function(data, session, next) {
 		function sendToUsers(user, room, callback) {
 			// Inform room users
 			var event = {
-				user_id: user._id.toString(),
-				username: user.username,
-				avatar: user._avatar()
+				name			: room.name,
+				id				: room.id,
+				user_id		: user._id.toString(),
+				username  : user.username,
+				avatar    : user._avatar()
 			};
-			roomEmitter(that.app, room.name, 'room:in', event, function(err) {
+			roomEmitter(that.app, 'room:in', event, function(err) {
 				return callback(err, user, room);
 			});
 		},
@@ -104,16 +99,6 @@ handler.join = function(data, session, next) {
 			room.save(function(err) {
 				if (err)
 					return callback('Error while updating room on room:join: '+err);
-
-				return callback(null, user, room);
-			});
-		},
-
-		function persistOnUser(user, room, callback) {
-			// persist on user
-			user.update({$addToSet: { rooms: room.name }}, function(err) {
-				if (err)
-					return callback('Unable to persist ($addToSet) rooms on user: '+err);
 
 				return callback(null, user, room);
 			});
@@ -150,7 +135,7 @@ handler.join = function(data, session, next) {
 		},
 
 		function getWelcomeData(user, room, callback) {
-			roomDataHelper(that.app, user._id.toString(), room.name, function(err, roomData) {
+			roomDataHelper(that.app, user._id.toString(), room, function(err, roomData) {
 				if (err)
 					return callback(err);
 

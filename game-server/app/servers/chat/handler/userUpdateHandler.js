@@ -2,6 +2,7 @@ var logger = require('../../../../pomelo-logger').getLogger('donut', __filename)
 var async = require('async');
 var _ = require('underscore');
 var User = require('../../../../../shared/models/user');
+var Room = require('../../../../../shared/models/room');
 var validator = require('validator');
 var cloudinary = require('../../../../../shared/cloudinary/cloudinary');
 
@@ -30,7 +31,8 @@ handler.update = function(data, session, next) {
 	async.waterfall([
 
 		function retrieveUser(callback) {
-			User.findByUid(session.uid).exec(function (err, user) {
+			User.findByUid(session.uid)
+				.exec(function (err, user) {
 				if (err)
 					return callback('Error while retrieving user '+session.uid+' in user:update: '+err);
 
@@ -235,7 +237,7 @@ handler.update = function(data, session, next) {
 			return callback(null, user, sanitized);
 		},
 
-		function broadcastOthers(user, sanitized, callback) {
+		function prepareEventForOthers(user, sanitized, callback) {
 			// notify only certain fields
 			var sanitizedToNotify = {};
 			var fieldToNotify = ['avatar','poster','color'];
@@ -244,29 +246,26 @@ handler.update = function(data, session, next) {
 					if (key == 'avatar')
 						sanitizedToNotify[key] = user._avatar();
 					else if (key == 'poster')
-					  sanitizedToNotify[key] = user._poster();
+						sanitizedToNotify[key] = user._poster();
 					else
-					  sanitizedToNotify[key] = sanitized[key];
+						sanitizedToNotify[key] = sanitized[key];
 				}
 			});
 
 			if (Object.keys(sanitizedToNotify).length < 1)
-				return callback(null, user, sanitized); // nothing to notify
+				return callback(null, user, null); // nothing to notify
 
 			var event = {
 				username: user.username,
 				data: sanitizedToNotify
 			};
 
-			// inform rooms
-			if (user.rooms && user.rooms.length > 0) {
-				_.each(user.rooms, function(roomName) {
-					that.app.globalChannelService.pushMessage('connector', 'user:updated', event, roomName, {}, function(err) {
-						if (err)
-							logger.error('Error while pushing user:updated message to '+roomName+' on user:update: '+err);
-					});
-				});
-			}
+			return callback(null, user, event);
+		},
+
+		function broadcastOneToOnes(user, event, callback) {
+			if (!event)
+				return callback(null, user, event);
 
 			// inform onetoones
 			if (user.onetoones && user.onetoones.length > 0) {
@@ -278,7 +277,29 @@ handler.update = function(data, session, next) {
 				});
 			}
 
-			return callback(null);
+			return callback(null, user, event);
+		},
+
+		function broadcastRooms(user, event, callback) {
+			if (!event)
+				return callback(null, user, event);
+
+			Room.findByUser(user.id, function(err, rooms) {
+				if (err)
+					return callback(err);
+
+				// inform rooms
+				if (rooms && rooms.length) {
+					_.each(rooms, function(room) {
+						that.app.globalChannelService.pushMessage('connector', 'user:updated', event, room.name, {}, function(err) {
+							if (err)
+								logger.error('Error while pushing user:updated message to '+room.name+' on user:update: '+err);
+						});
+					});
+				}
+
+				return callback(null);
+			});
 		}
 
 	], function(err) {

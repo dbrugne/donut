@@ -38,16 +38,6 @@ handler.message = function(data, session, next) {
 			return callback(null);
 		},
 
-		//function adminCommands(callback) {
-		//	if (data.name != '#donut'
-		//		|| !socket.isAdmin()
-		//		|| !data.message
-		//		|| data.message.substring(0, 1) != '/')
-		//		return callback(null);
-   //
-		//	admin(io, socket, data, callback);
-		//},
-
 		function retrieveRoom(callback) {
 			Room.findByName(data.name).exec(function (err, room) {
 				if (err)
@@ -74,7 +64,7 @@ handler.message = function(data, session, next) {
 
 		function checkHeIsIn(room, user, callback) {
 			// Test if the current user is in room
-			if (user.rooms.indexOf(room.name) === -1)
+			if (room.users.indexOf(user.id) === -1)
 				return callback('room:message, this user '+session.uid+' is not currently in room '+room.name);
 
 			return callback(null, room, user);
@@ -92,6 +82,7 @@ handler.message = function(data, session, next) {
 
 			var event = {
 				name: room.name,
+				id: room.id,
 				time: Date.now(),
 				user_id: user._id.toString(),
 				username: user.username,
@@ -106,7 +97,7 @@ handler.message = function(data, session, next) {
 		},
 
 		function historizeAndEmit(room, event, callback) {
-			roomEmitter(that.app, room.name, 'room:message', event, function(err) {
+			roomEmitter(that.app, 'room:message', event, function(err) {
 				if (err)
 					return callback(err);
 

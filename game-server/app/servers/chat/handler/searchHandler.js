@@ -58,7 +58,8 @@ handler.search = function(data, session, next) {
 					return callback(null, false);
 
 				var search = {
-					name: regexp
+					name: regexp,
+					deleted: { $ne: true }
 				};
 
 				var q;
@@ -94,6 +95,7 @@ handler.search = function(data, session, next) {
 
 						var r = {
 							name: room.name,
+							id: room.id,
 							avatar: room._avatar(),
 							color: room.color,
 							lastjoin_at: new Date(room.lastjoin_at).getTime()

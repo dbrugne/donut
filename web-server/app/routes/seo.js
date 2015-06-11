@@ -44,7 +44,7 @@ router.get('/sitemap.xml', function(req, res) {
     },
 
     function rooms(sitemap, callback) {
-      Room.find({}, 'name', function(err, rooms) {
+      Room.find({ deleted: { $ne: true } }, 'name', function(err, rooms) {
         if (err)
           return callback(err);
 

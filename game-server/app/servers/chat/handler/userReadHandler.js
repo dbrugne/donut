@@ -59,7 +59,7 @@ handler.read = function(data, session, next) {
 		},
 
 		function ownedRooms(user, rooms, callback) {
-			Room.find({ owner: user._id }, roomFields).exec(function (err, results) {
+			Room.find({ owner: user._id, deleted: { $ne: true } }, roomFields).exec(function (err, results) {
 				if (err)
 					return callback('Error while retrieving user rooms (1) in user:read: '+err);
 
@@ -72,7 +72,7 @@ handler.read = function(data, session, next) {
 		},
 
 		function oppedRooms(user, rooms, callback) {
-			Room.find({ op: { $in: [user._id] } }, roomFields).exec(function (err, results) {
+			Room.find({ op: { $in: [user._id] }, deleted: { $ne: true } }, roomFields).exec(function (err, results) {
 				if (err)
 					return callback('Error while retrieving user rooms (2) in user:read: '+err);
 
@@ -85,10 +85,7 @@ handler.read = function(data, session, next) {
 		},
 
 		function inRooms(user, rooms, callback) {
-			if (!user.rooms || user.rooms.length < 1)
-				return callback(null, user, rooms);
-
-			Room.find({ name: { $in: user.rooms } }, roomFields).exec(function (err, results) {
+			Room.findByUser(user.id).exec(function (err, results) {
 				if (err)
 					return callback('Error while retrieving user rooms (3) in user:read: '+err);
 
@@ -139,9 +136,12 @@ handler.read = function(data, session, next) {
 			};
 			_.each(Object.keys(rooms), function(type) {
 				_.each(rooms[type], function(room) {
-					var json = room.toJSON();
-					json.avatar = room._avatar();
-					userData.rooms[type].push(json);
+					var roomData = {
+						name	: room.name,
+						id		: room.id,
+						avatar: room._avatar()
+					};
+					userData.rooms[type].push(roomData);
 				});
 			});
 
