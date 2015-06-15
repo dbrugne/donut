@@ -11,11 +11,17 @@ db['history-room'].ensureIndex({
   "room" : 1,
   "time" : -1
 });
+db['history-room'].ensureIndex({
+  "event" : 1
+});
 // onetoone history
 db['history-one'].ensureIndex({
   "from" : 1,
   "to" : 1,
   "time" : -1
+});
+db['history-one'].ensureIndex({
+  "event" : 1
 });
 // logs
 db['logs'].ensureIndex({
