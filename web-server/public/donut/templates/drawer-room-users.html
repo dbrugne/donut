@@ -1,6 +1,7 @@
 <div class="room" data-colorify="<%= room.color %>">
     <span class="name"><%= room.name %></span>
     <span class="owner"><%= t('global.by') %> <a class="open-user-profile" data-username="<%= room.owner.username %>" data-colorify-text="#ffffff">@<%= room.owner.username %></a></span>
+    <span class="owner"><%= t('global.by') %> <a class="open-user-profile" data-username="<%= room.owner.username %>" data-colorify-text="#ffffff">@<%= room.owner.username %></a></span>
 </div>
 <% if (room.owner) { %>
 <div class="form-group owner">
