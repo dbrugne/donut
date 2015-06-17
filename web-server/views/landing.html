@@ -57,9 +57,15 @@
                     </div>
                     <div class="form-group">
                         <img src="/images/arrow.svg">
-                        <a href="/forgot" title="{{#i}}actions.forgot{{/i}}" tabindex="4"><img src="/images/forgot.svg" class="right"></a>
                         <input type="password" id="signin-password" class="form-control" name="password" placeholder="{{#i}}login.password-placeholder{{/i}}" tabindex="2">
                     </div>
+                    <div class="form-group pull-right relative">
+                        <a class="pull-left forgot-link" href="/forgot" title="{{#i}}actions.forgot{{/i}}" tabindex="5">
+                            <i class="fa fa-question pull-left"></i>
+                            {{#i}}actions.forgot{{/i}}
+                        </a>
+                    </div>
+                    <div class="clearfix"></div>
                     <div class="form-group">
                         <input type="submit" value="{{#i}}actions.login{{/i}}" tabindex="3">
                     </div>
