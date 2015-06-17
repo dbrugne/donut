@@ -302,7 +302,8 @@
       "adonut": "a donut",
       "account": "my account",
       "edit": "my profile",
-      "preferences": "préférences"
+      "preferences": "préférences",
+      "update": "Edit"
     },
     "create": {
       "info": "Attention, the donut name will not be editable later.",

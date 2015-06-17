@@ -323,7 +323,8 @@
             "adonut": "un donut",
             "account": "mon compte",
             "edit": "mon profil",
-            "preferences": "préférences"
+            "preferences": "préférences",
+            "update": "Editer"
         },
         "create": {
             "info": "Attention le nom du donut ne sera plus modifiable !",
