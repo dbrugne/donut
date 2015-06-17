@@ -303,7 +303,8 @@
       "account": "my account",
       "edit": "my profile",
       "preferences": "préférences",
-      "update": "Edit"
+      "update": "Edit",
+      "see": "See"
     },
     "create": {
       "info": "Attention, the donut name will not be editable later.",
