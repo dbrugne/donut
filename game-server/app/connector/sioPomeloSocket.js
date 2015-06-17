@@ -7,9 +7,9 @@ var ST_INITED = 0;
 var ST_CLOSED = 1;
 
 // message/socket limiter
-var LIMITER_MAX      = 15;
-var LIMITER_PERIOD   = 5000;
-var LIMITER_BLOCKFOR = 10000;
+var LIMITER_MAX      = 30; // number of messages ...
+var LIMITER_PERIOD   = 5000; // ... in seconds ...
+var LIMITER_BLOCKFOR = 10000; // ... is blocked for seconds
 
 /**
  * Socket class that wraps socket.io socket to provide unified interface for up level.
