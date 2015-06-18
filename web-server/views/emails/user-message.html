@@ -5,7 +5,7 @@
             <div style="line-height: 44px;">
                 <font face="Arial, Helvetica, sans-serif" size="5" color="#57697e" style="font-size: 34px;">
                     <span style="font-family: Arial, Helvetica, sans-serif; font-size: 34px; color: #57697e;">
-                        Mise à jour de votre email
+                        {{#i}}email.usermessage.content.title{{/i}}
                     </span>
                 </font>
             </div>
@@ -14,13 +14,23 @@
     </tr>
     <tr>
         <td align="center">
-            <div style="line-height: 30px;">
-                <font face="Arial, Helvetica, sans-serif" size="5" color="#4db3a4" style="font-size: 17px;">
-                    <span style="font-family: Arial, Helvetica, sans-serif; font-size: 17px; color: #4db3a4;">
-                        Vous avez procédé à un changement d'adresse email. Pour vous connecter veuillez vous rendre à cette adresse
-                    </span>
-                </font>
+            <div style="  padding-top: 23px; padding-left: 40px;  position: relative; margin: 0; font-size: 1.1em;">
+                <div style="  position: absolute; top: 5px; left: 5px; border: none; width: 30px; height: 30px; background-position: center center; background-size: 30px 30px; background-image: url('{{avatar}}')"></div>
+                <div style="position: absolute; top: 5px; left: 45px; font-family: 'Open Sans',sans-serif; font-weight: bold; font-size: 1em;">@{{username}}</div>
+                <div class="items" style=" text-align: left; font-size: 16px; ">
+
+                    {{#messages}}
+                        <div class="event " style="position: relative;   padding-left: 9px;  margin-top: 5px;">
+                            <div class="text" style="white-space: pre-wrap !important;   padding-right: 50px;  text-align: justify;">{{message}}</div>
+                            <div class="date" style="position: absolute;   top: 3px;   right: 0;   color: #777;   font-size: 0.8em;">
+                                <span class="moment" title="{{time_full}}">{{time_short}}</span>
+                            </div>
+                        </div>
+                    {{/messages}}
+
+                </div>
             </div>
+
             <div style="height: 35px; line-height: 35px; font-size: 10px;">&nbsp;</div>
         </td>
     </tr>
@@ -31,7 +41,7 @@
                 <table border="0" cellpadding="0" cellspacing="0" class="emailButton" style="-webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; background-color:#EE2763;">
                     <tr>
                         <td align="center" valign="middle" class="emailButtonContent" style="padding-top:10px; padding-right:30px; padding-bottom:10px; padding-left:30px;">
-                            <a href="{{fqdn}}" target="_blank" style="color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;">Connectez-vous en cliquant ici</a>
+                            <a href="https://{{fqdn}}" target="_blank" style="color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;" alt="{{#i}}email.usermessage.content.button{{/i}}">{{#i}}email.usermessage.content.button{{/i}}</a>
                         </td>
                     </tr>
                 </table>
@@ -48,11 +58,7 @@
                         <div style="line-height: 24px;">
                             <font face="Arial, Helvetica, sans-serif" size="4" color="#57697e" style="font-size: 16px;">
                                 <span style="font-family: Arial, Helvetica, sans-serif; font-size: 15px; color: #57697e;">
-                                    On s'en délecte d'avance !
-                                </span>
-                                <br/>
-                                <span style="font-family: Arial, Helvetica, sans-serif; font-size: 15px; color: #57697e;">
-                                    L'équipe DONUT.me
+                                    {{#i}}email.global.content.team{{/i}}
                                 </span>
                             </font>
                         </div>
@@ -74,7 +80,7 @@
                         <tr>
                             <td align="center" valign="middle" style="font-size: 10px; line-height:20px;">
                                 <font face="Tahoma, Arial, Helvetica, sans-serif" size="2" color="#282f37" style="font-size: 10px; font-style: italic;">
-                                    PS : Si vous n'êtes pas à l'origine de cette démarche, veuillez nous en avertir sur <a href='mailto:{{email}}'>{{email}}</a> ou plus simplement en en répondant à cet e-mail.
+                                    {{#i}}email.global.content.ps{{/i}}&nbsp;<a href='mailto:{{email}}'>{{email}}</a>&nbsp;{{#i}}email.global.content.ps2{{/i}}
                                 </font>
                             </td>
                         </tr>

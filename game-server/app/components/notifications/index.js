@@ -83,6 +83,7 @@ Facade.prototype.retrieveUserNotifications = function(uid, what, callback) {
   q.sort({time: -1});
   q.populate( { path: 'data.user', model: 'User', select: 'username color facebook avatar' } );
   q.populate( { path: 'data.by_user', model: 'User', select: 'username color facebook avatar' } );
+  q.populate( { path: 'data.room', model: 'Room', select: 'id name color avatar' } );
   q.exec(function(err, results) {
     callback(err, results);
   });

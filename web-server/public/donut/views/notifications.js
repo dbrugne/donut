@@ -92,8 +92,10 @@ define([
       }
       var dateObject = moment(notification.time);
 
-      if (notification.data.by_user)
-        notification.avatar = $.cd.roomAvatar(notification.data.by_user.avatar, 90); // @todo yls add room avatar instead of by_user avatar
+      if (notification.data.room)
+        notification.avatar = $.cd.roomAvatar(notification.data.room.avatar, 90);
+      else if (notification.data.by_user)
+        notification.avatar = $.cd.roomAvatar(notification.data.by_user.avatar, 90);
 
       return template({data: notification, from_now: dateObject.format("Do MMMM, HH:mm")});
     },

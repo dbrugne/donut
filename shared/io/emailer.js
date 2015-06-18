@@ -1,8 +1,45 @@
 var debug = require('debug')('donut:emailer');
+var _ = require('underscore');
 var nodemailer = require('nodemailer');
 var i18next = require('../util/i18next');
 var conf = require('../../config/index');
 var mailgunTransport = require('nodemailer-mailgun-transport');
+
+/**
+ * @hack the hogan-express module to avoid loading another rendering module just for email templating
+ * add .lookup() method and i18next template helper
+ */
+var hoganExpress = require('hogan-express');
+var _options = {
+  settings: {
+    layout: 'views/emails/layout.html',
+    "view engine": "html"
+  },
+  cache: false,
+  i: function() {
+    return function(text) {
+      return i18next.t(text);
+    };
+  }
+};
+var _defaultOptions = {
+  fqdn: conf.fqdn,
+  email: conf.email.from.email,
+  facebook_url: conf.facebook.url,
+  twitter_url: conf.twitter.url
+};
+var _render = _.bind(hoganExpress, {
+  lookup: function(name) {
+    return name;
+  },
+  i: function(text) {
+    return i18next.t(text);
+  }
+});
+var hoganRender = function(view, data, fn) {
+  var options = _.extend(_options, data);
+  _render(view, options, fn);
+};
 
 var emailer = {};
 module.exports = emailer;
@@ -49,40 +86,104 @@ function send(data, fn) {
   });
 }
 
+/**
+ * Sent to a User when he process to /forgot page to retrieve his password
+ *
+ * @param to
+ * @param token
+ * @param callback
+ */
+emailer.forgot = function(to, token, callback) {
+  hoganRender('views/emails/forgot.html', _.extend(_defaultOptions, {token: token}), function (err, text) {
+    // @todo yls log errors
+
+    send({
+      to: to,
+      subject: i18next.t("email.forgot.subject"),
+      html: text
+    },callback);
+
+  });
+};
+
+/**
+ * Sent to a user when et creates an account
+ *
+ * @param to
+ * @param callback
+ */
 emailer.welcome = function(to, callback) {
+  hoganRender('views/emails/signup.html', _defaultOptions, function (err, text) {
+    // @todo yls log errors
+
     send({
       to: to,
       subject: i18next.t("email.welcome.subject"),
-      text: i18next.t("email.welcome.text", {fqdn: conf.fqdn, email: conf.email.from.email}),
-      html: i18next.t("email.welcome.html", {fqdn: conf.fqdn, email: conf.email.from.email}),
+      html: text
     },callback);
-  };
 
-emailer.forgot = function(to, token, callback) {
-  send({
-    to: to,
-    subject: i18next.t("email.forgot.subject"),
-    text: i18next.t("email.forgot.text", {fqdn: conf.fqdn, email: conf.email.from.email, token: token}),
-    html: i18next.t("email.forgot.html", {fqdn: conf.fqdn, email: conf.email.from.email, token: token})
-  },callback);
+  });
+
 };
 
+/**
+ * Sent to a user when he renews his password
+ *
+ * @param to
+ * @param callback
+ */
 emailer.passwordChanged = function(to, callback) {
-  send({
-    to: to,
-    subject: i18next.t("email.passwordchanged.subject"),
-    text: i18next.t("email.passwordchanged.text", {fqdn: conf.fqdn, email: conf.email.from.email}),
-    html: i18next.t("email.passwordchanged.html", {fqdn: conf.fqdn, email: conf.email.from.email})
-  },callback);
+  hoganRender('views/emails/password-changed.html', _defaultOptions, function (err, text) {
+    // @todo yls log errors
+
+    send({
+      to: to,
+      subject: i18next.t("email.passwordchanged.subject"),
+      html: text
+    },callback);
+
+  });
 };
 
+/**
+ * Sent to a user when et renews his email
+ *
+ * @param to
+ * @param callback
+ */
 emailer.emailChanged = function(to, callback) {
-  send({
-    to: to,
-    subject: i18next.t("email.emailchanged.subject"),
-    text: i18next.t("email.emailchanged.text", {fqdn: conf.fqdn, email: conf.email.from.email}),
-    html: i18next.t("email.emailchanged.html", {fqdn: conf.fqdn, email: conf.email.from.email})
-  },callback);
+  hoganRender('views/emails/email-changed.html', _defaultOptions, function (err, text) {
+    // @todo yls log errors
+
+    send({
+      to: to,
+      subject: i18next.t("email.emailchanged.subject"),
+      html: text
+    },callback);
+
+  });
+
+};
+
+/**
+ * Sent to a User when he send some messages to another User
+ *
+ * @param to
+ * @param from
+ * @param messages
+ * @param callback
+ */
+emailer.userMessage = function(to, from, messages, callback) {
+  hoganRender('views/emails/user-message.html', _.extend(_defaultOptions, {username: from, messages: messages}), function (err, text) {
+    // @todo yls log errors
+
+    send({
+      to: to,
+      subject: i18next.t("email.usermessage.subject"),
+      html: text
+    },callback);
+
+  });
 };
 
 emailer.contactForm = function(data, callback) {

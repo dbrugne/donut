@@ -68,16 +68,21 @@ Notification.prototype.create = function(type, user, data) {
   // cleanup data
   var wet = _.clone(data.event);
   var dry = _.omit(wet, [
+    'name',
     'time',
+    'user_id',
     'avatar',
     'username',
+    'by_user_id',
     'by_avatar',
     'by_username'
   ]);
 
-  dry.user = dry.user_id;
-  if (dry.by_user_id)
-    dry.by_user = dry.by_user_id;
+  dry.user = wet.user_id;
+  if (wet.by_user_id)
+    dry.by_user = wet.by_user_id;
+  if (data.room)
+    dry.room = data.room.id;
   var model = NotificationModel.getNewModel(type, user, dry);
   var that = this;
   model.save(function(err) {
@@ -92,63 +97,99 @@ Notification.prototype.create = function(type, user, data) {
 };
 
 Notification.prototype.sendToBrowser = function(model) {
+
   var userId = (model.user._id) ? model.user._id.toString() : model.user;
+  var byUserId = (model.data.by_user._id ? model.data.by_user._id.toString() : model.data.by_user);
+  var roomId = (model.data.room._id ? model.data.room._id.toString() : model.data.room);
   var that = this;
 
-  Room.findByName(model.data.name).exec(function(err, room) {
-    if (err) return logger(err);
+  async.waterfall([
 
-    User.findByUid(userId).exec(function(err, user) {
-      if (err) return logger(err);
-
-      User.findByUid(model.data.by_user_id).exec(function(err, by_user) {
-        if (err) return logger(err);
-
-        var notification = {
-          id: model.id,
-          time: model.time,
-          type: model.type,
-          viewed: false,
-          to_desktop: user.preferencesValue('notif:channels:desktop'), // trigger desktop notification
-          name: room.name, // @todo yls refactor when fetch notifications from mongo will also retrieve room
-          data: {
-            by_user: {
-              color: by_user.color,
-              avatar: by_user._avatar(),
-              id: by_user.id,
-              username: by_user.username
-            },
-            user: {
-              color: user.color,
-              avatar: user._avatar(),
-              id: user.id,
-              username: user.username
-            },
-            room: {
-              name: room.name,
-              avatar: room._avatar()
-            }
-          }
-        };
-
-        // Retrieve unread notifications count
-        NotificationModel.find({
-          user: userId,
-          done: false,
-          viewed: false
-        }).count().exec(function(err, count) {
-          notification.unviewed = count || 0;
-
-          that.facade.app.globalChannelService.pushMessage('connector', 'notification:new', notification, 'user:'+userId, {}, function(err) {
-            if (err)
-              logger.error('Error while sending notification:new message to user clients: '+err);
-
-            logger.debug('notification sent: '+model.type+' for '+model.user);
-          });
-        });
+    function retrieveRoom(callback) {
+      Room.findByUid(roomId).exec(function(err, room) {
+        if (err)
+          return callback(err);
+        else
+          return callback(null, room);
       });
+    },
+
+    function retrieveUser(room, callback) {
+      User.findByUid(userId).exec(function(err, user) {
+        if (err)
+          return callback(err);
+        else
+          return callback(null, room, user);
+      });
+    },
+
+    function retrieveByUser(room, user, callback) {
+      User.findByUid(byUserId).exec(function(err, by_user) {
+        if (err)
+          return callback(err);
+        else
+          return callback(null, room, user, by_user);
+      });
+    },
+
+    function prepare(room, user, by_user, callback) {
+
+      var notification = {
+        id: model.id,
+        time: model.time,
+        type: model.type,
+        viewed: false,
+        to_desktop: user.preferencesValue('notif:channels:desktop'), // trigger desktop notification
+        data: {
+          by_user: {
+            avatar: by_user._avatar(),
+            id: by_user.id,
+            username: by_user.username
+          },
+          user: {
+            avatar: user._avatar(),
+            id: user.id,
+            username: user.username
+          },
+          room: {
+            id: room.id,
+            name: room.name,
+            avatar: room._avatar()
+          }
+        }
+      };
+
+      return callback(null, notification);
+    },
+
+    function retrieveNotificationCount(notification, callback) {
+      NotificationModel.find({
+        user: userId,
+        done: false,
+        viewed: false
+      }).count().exec(function(err, count) {
+        if (err)
+          return callback(err);
+
+        notification.unviewed = count || 0;
+
+        return callback(null, notification);
+
+      });
+    }
+
+  ], function(err, notification) {
+    if (err)
+      return logger.error(err+': in roomPropoteType');
+
+    that.facade.app.globalChannelService.pushMessage('connector', 'notification:new', notification, 'user:'+userId, {}, function(err) {
+      if (err)
+        logger.error('Error while sending notification:new message to user clients: '+err);
+
+      logger.debug('notification sent: '+notification);
     });
   });
+
 };
 
 Notification.prototype.sendEmail = function() {

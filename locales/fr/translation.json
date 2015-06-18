@@ -73,7 +73,7 @@
         "unknownerror": "Erreur inconnue, veuillez réessayer"
     },
     "login": {
-        "title": "La première phase de test est terminée. Merci d'y avoir participé !",
+        "title": "Otakus, découvrez en avant-première DONUT",
         "withfacebook": "avec Facebook",
         "withpassword": "par mot de passe",
         "email-placeholder": "votre email",
@@ -395,14 +395,15 @@
             "offline": "n'est plus en ligne,",
             "topic": "a changé le sujet pour",
             "topicempty": "vide",
-            "kick": "a été expulsé de ce donut par",
-            "ban": "a été banni de ce donut par",
-            "deban": "n'est plus banni de ce donut à la demande de",
-            "op": " a été promu modérateur par",
-            "deop": "n'est plus modérateur à la demande de",
+            "kick": "a été expulsé de ",
+            "ban": "a été banni de ",
+            "deban": "n'est plus banni de ",
+            "op": " a été promu modérateur de ",
+            "deop": "n'est plus modérateur de ",
             "in": "est entré à",
             "out": "est sorti à",
-            "online": "est en ligne,"
+            "online": "est en ligne,",
+            "read-more": "Voir plus"
         },
         "unread": {
             "title": "(nouveau)"
@@ -595,124 +596,77 @@
         }
     },
     "email": {
-        "welcome": {
-            "subject": "Bienvenue sur DONUT.me ! Votre compte a été créé avec succès",
-            "text": [
-                "Félicitations ! Votre compte utilisateur a bien été créé.",
-                "",
-                "Vous pouvez désormais nous rejoindre et discuter autour d'un bon donut en utilisant l'adresse ci-dessous :",
-                "",
-                "https://__fqdn__",
-                "",
-                "On s'en délecte d'avance !",
-                "",
-                "L'équipe DONUT.me",
-                "",
-                "PS : Si vous n'êtes pas à l'origine de cette démarche, veuillez nous en avertir en faisant suivre cet e-mail sur __email__ ou plus simplement en en répondant à cet e-mail."
-            ],
-            "html": [
-                "Félicitations ! Votre compte utilisateur a bien été créé.<br>",
-                "<br>",
-                "Vous pouvez désormais nous rejoindre et discuter autour d'un bon donut en utilisant l'adresse ci-dessous :<br>",
-                "<br>",
-                "<a href='https://__fqdn__'>Se connecter</a><br>",
-                "<br>",
-                "On s'en délecte d'avance !<br>",
-                "<br>",
-                "L'équipe DONUT.me<br>",
-                "<br>",
-                "PS : Si vous n'êtes pas à l'origine de cette démarche, veuillez nous en avertir en faisant suivre cet e-mail sur <a href='mailto:__email__'>__email__</a> ou plus simplement en en répondant à cet e-mail.<br>"
-            ]
-        },
-        "forgot": {
-            "subject": "Réinitialisation de votre mot de passe DONUT.me",
-            "text": [
-                "Vous avez demandé à changer de mot de passe. Cliquez sur le lien suivant pour définir un nouveau mot de passe :",
-                "",
-                "https://__fqdn__/reset/__token__",
-                "",
-                "Si vous ne faîtes rien, votre mot de passe restera inchangé.",
-                "",
-                "L'équipe DONUT.me",
-                "",
-                "PS : Si vous n'êtes pas à l'origine de cette démarche, veuillez nous en avertir en faisant suivre cet e-mail sur __email__ ou plus simplement en en répondant à cet e-mail."
-            ],
-            "html": [
-                "Vous avez demandé à changer de mot de passe. Cliquez sur le lien suivant pour définir un nouveau mot de passe :<br>",
-                "<br>",
-                "<a href='https://__fqdn__/reset/__token__'>Réinitialiser votre mot de passe</a><br>",
-                "<br>",
-                "Si vous ne faîtes rien, votre mot de passe restera inchangé.<br>",
-                "<br>",
-                "L'équipe DONUT.me<br>",
-                "<br>",
-                "PS : Si vous n'êtes pas à l'origine de cette démarche, veuillez nous en avertir en faisant suivre cet e-mail sur <a href='mailto:__email__'>__email__</a> ou plus simplement en en répondant à cet e-mail.<br>"
-            ]
-        },
-        "passwordchanged": {
-            "subject": "Succès ! Votre mot de passe DONUT.me a été changée avec succès",
-            "text": [
-                "Vous avez procédé à un changement de mot de passe. Votre nouveau mot de passe est désormais actif. Il est grand temps d’en profiter !",
-                "",
-                "https://__fqdn__",
-                "",
-                "L'équipe DONUT.me",
-                "",
-                "PS : Si vous n'êtes pas à l'origine de cette démarche, veuillez nous en avertir en faisant suivre cet e-mail sur __email__ ou plus simplement en en répondant à cet e-mail."
-            ],
-            "html": [
-                "Vous avez procédé à un changement de mot de passe. Votre nouveau mot de passe est désormais actif. Il est grand temps d’en profiter !<br>",
-                "<br>",
-                "<a href='https://__fqdn__'>Connectez-vous en cliquant ici</a><br>",
-                "<br>",
-                "L'équipe DONUT.me<br>",
-                "<br>",
-                "PS : Si vous n'êtes pas à l'origine de cette démarche, veuillez nous en avertir en faisant suivre cet e-mail sur <a href='mailto:__email__'>__email__</a> ou plus simplement en en répondant à cet e-mail.<br>"
-            ]
-        },
-        "emailchanged": {
-            "subject": "Succès ! L'adresse email de votre compte DONUT.me a été changé avec succès",
-            "text": [
-                "Vous avez procédé à un changement d'adresse email. Pour vous connecter veuillez vous rendre à cette adresse :",
-                "",
-                "https://__fqdn__",
-                "",
-                "L'équipe DONUT.me",
-                "",
-                "PS : Si vous n'êtes pas à l'origine de cette démarche, veuillez nous en avertir en faisant suivre cet e-mail sur __email__ ou plus simplement en en répondant à cet e-mail."
-            ],
-            "html": [
-                "Vous avez procédé à un changement d'adresse email. Pour vous connecter veuillez vous rendre à cette adresse :<br>",
-                "<br>",
-                "<a href='https://__fqdn__'>Connectez-vous en cliquant ici</a><br>",
-                "<br>",
-                "L'équipe DONUT.me<br>",
-                "<br>",
-                "PS : Si vous n'êtes pas à l'origine de cette démarche, veuillez nous en avertir en faisant suivre cet e-mail sur <a href='mailto:__email__'>__email__</a> ou plus simplement en en répondant à cet e-mail.<br>"
-            ]
-        },
-        "contact": {
-            "subject": "[DONUT] Nouveau formulaire de contact",
-            "text": [
-                "Nom : __name__",
-                "Email : __email__",
-                "Utilisateur : __user__",
-                "IP : __ip__",
-                "",
-                "__message__",
-                "",
-                "<small>Depuis __ip__ sur __fqdn__</small>"
-            ],
-            "html": [
-                "Nom : __name__<br>",
-                "Email : __email__<br>",
-                "Utilisateur : __user__<br>",
-                "<br>",
-                "__message__<br>",
-                "<br>",
-                "<small>Depuis __ip__ sur __fqdn__</small>"
-            ]
+      "global": {
+        "content": {
+          "team": "L'équipe DONUT.me",
+          "ps": "PS : Si vous n'êtes pas à l'origine de cette démarche, veuillez nous en avertir sur",
+          "ps2": "ou plus simplement en en répondant à cet e-mail."
         }
+      },
+      "welcome": {
+        "subject": "Bienvenue sur DONUT.me ! Votre compte a été créé avec succès",
+        "content": {
+          "title": "Bienvenue sur DONUT !",
+          "disclaimer": "Félicitations ! Votre compte utilisateur a bien été créé. Vous pouvez désormais nous rejoindre et discuter autour d'un bon donut en utilisant le bouton ci-dessous",
+          "button": "Se Connecter",
+          "info": "On s'en délecte d'avance !"
+        }
+      },
+      "forgot": {
+        "subject": "Réinitialisation de votre mot de passe DONUT.me",
+        "content": {
+          "title": "Modifier votre mot de passe",
+          "disclaimer": "Vous avez demandé à changer de mot de passe. Cliquez sur le lien suivant pour définir un nouveau mot de passe",
+          "button": "Réinitialiser votre mot de passe",
+          "info": "Si vous ne faîtes rien, votre mot de passe restera inchangé"
+        }
+      },
+      "passwordchanged": {
+        "subject": "Succès ! Votre mot de passe DONUT.me a été changée avec succès",
+        "content": {
+          "title": "Mise à jour du mot de passe",
+          "disclaimer": "Vous avez procédé à un changement de mot de passe. Votre nouveau mot de passe est désormais actif. Il est grand temps d’en profiter !",
+          "button": "Connectez-vous en cliquant ici",
+          "info": "On s'en délecte d'avance !"
+        }
+      },
+      "emailchanged": {
+        "subject": "Succès ! L'adresse email de votre compte DONUT.me a été changé avec succès",
+        "content": {
+          "title": "Mise à jour de votre email",
+          "disclaimer": "Vous avez procédé à un changement d'adresse email. Pour vous connecter veuillez vous rendre à cette adresse :",
+          "button": "Connectez-vous en cliquant ici"
+        }
+      },
+      "usermessage": {
+        "subject": "Vous avez reçu un message sur DONUT",
+        "content": {
+          "title": "Vous avez reçu un message",
+          "button": "Voir le message sur DONUT"
+        }
+      },
+      "contact": {
+        "subject": "[DONUT] Nouveau formulaire de contact",
+        "text": [
+          "Nom : __name__",
+          "Email : __email__",
+          "Utilisateur : __user__",
+          "IP : __ip__",
+          "",
+          "__message__",
+          "",
+          "<small>Depuis __ip__ sur __fqdn__</small>"
+        ],
+        "html": [
+          "Nom : __name__<br>",
+          "Email : __email__<br>",
+          "Utilisateur : __user__<br>",
+          "<br>",
+          "__message__<br>",
+          "<br>",
+          "<small>Depuis __ip__ sur __fqdn__</small>"
+        ]
+      }
     },
     "welcome": {
         "message": [

@@ -80,6 +80,13 @@ handler.read = function(data, session, next) {
                       avatar: d.data.by_user._avatar()
                     };
 
+                if (d.data.room)
+                    d.data.room = {
+                        id: d.data.room.id,
+                        name: d.data.room.name,
+                        avatar: d.data.room._avatar()
+                    };
+
 				event.notifications.push(d);
 			});
 

@@ -5,7 +5,7 @@
             <div style="line-height: 44px;">
                 <font face="Arial, Helvetica, sans-serif" size="5" color="#57697e" style="font-size: 34px;">
                     <span style="font-family: Arial, Helvetica, sans-serif; font-size: 34px; color: #57697e;">
-                        Mise à jour du mot de passe
+                        {{#i}}email.forgot.content.title{{/i}}
                     </span>
                 </font>
             </div>
@@ -17,7 +17,7 @@
             <div style="line-height: 30px;">
                 <font face="Arial, Helvetica, sans-serif" size="5" color="#4db3a4" style="font-size: 17px;">
                     <span style="font-family: Arial, Helvetica, sans-serif; font-size: 17px; color: #4db3a4;">
-                        Vous avez procédé à un changement de mot de passe. Votre nouveau mot de passe est désormais actif. Il est grand temps d’en profiter !
+                        {{#i}}email.forgot.content.disclaimer{{/i}}
                     </span>
                 </font>
             </div>
@@ -31,7 +31,7 @@
                 <table border="0" cellpadding="0" cellspacing="0" class="emailButton" style="-webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; background-color:#EE2763;">
                     <tr>
                         <td align="center" valign="middle" class="emailButtonContent" style="padding-top:10px; padding-right:30px; padding-bottom:10px; padding-left:30px;">
-                            <a href="{{fqdn}}" target="_blank" style="color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;">Connectez-vous en cliquant ici</a>
+                            <a href="https://{{fqdn}}" target="_blank" style="color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;" alt="{{#i}}email.forgot.content.button{{/i}}">{{#i}}email.forgot.content.button{{/i}}</a>
                         </td>
                     </tr>
                 </table>
@@ -48,11 +48,7 @@
                         <div style="line-height: 24px;">
                             <font face="Arial, Helvetica, sans-serif" size="4" color="#57697e" style="font-size: 16px;">
                                 <span style="font-family: Arial, Helvetica, sans-serif; font-size: 15px; color: #57697e;">
-                                    On s'en délecte d'avance !
-                                </span>
-                                <br/>
-                                <span style="font-family: Arial, Helvetica, sans-serif; font-size: 15px; color: #57697e;">
-                                    L'équipe DONUT.me
+                                    {{#i}}email.global.content.team{{/i}}
                                 </span>
                             </font>
                         </div>
@@ -74,7 +70,7 @@
                         <tr>
                             <td align="center" valign="middle" style="font-size: 10px; line-height:20px;">
                                 <font face="Tahoma, Arial, Helvetica, sans-serif" size="2" color="#282f37" style="font-size: 10px; font-style: italic;">
-                                    PS : Si vous n'êtes pas à l'origine de cette démarche, veuillez nous en avertir sur <a href='mailto:{{email}}'>{{email}}</a> ou plus simplement en en répondant à cet e-mail.
+                                    {{#i}}email.global.content.ps{{/i}}&nbsp;<a href='mailto:{{email}}'>{{email}}</a>&nbsp;{{#i}}email.global.content.ps2{{/i}}
                                 </font>
                             </td>
                         </tr>
