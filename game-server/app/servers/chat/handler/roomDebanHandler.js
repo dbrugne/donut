@@ -86,6 +86,10 @@ handler.deban = function(data, session, next) {
 			if (!room.isBanned(unbannedUser.id))
 				return callback('This user '+unbannedUser.username+' is not banned from '+room.name);
 
+			var subDocument = _.find(room.bans, function(ban) {
+				if (ban.user.toString() == unbannedUser._id.toString())
+					return true;
+			});
 			room.bans.id(subDocument._id).remove();
 			room.save(function(err) {
 				if (err)
