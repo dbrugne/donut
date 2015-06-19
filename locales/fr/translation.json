@@ -645,6 +645,48 @@
           "button": "Voir le message sur DONUT"
         }
       },
+      "roomop": {
+        "subject": "Vous avez été promu modérateur de la Room ",
+        "content": {
+          "title": "Vous avez été promu modérateur par ",
+          "disclaimer": "Beaucoup de choses se sont passées sur DONUT depuis votre dernier passage.",
+          "button": "retourner sur DONUT"
+        }
+      },
+      "roomdeop": {
+        "subject": "Vous avez été exclu des modérateurs de la Room ",
+        "content": {
+          "title": "Vous avez été promu modérateur par ",
+          "disclaimer": "Beaucoup de choses se sont passées sur DONUT depuis votre dernier passage.",
+          "button": "retourner sur DONUT"
+        }
+      },
+      "roomkick": {
+        "subject": "Vous avez été exclu de la Room ",
+        "content": {
+          "title": "Vous avez été exclu de la Room ",
+          "by": "par ",
+          "disclaimer": "Beaucoup de choses se sont passées sur DONUT depuis votre dernier passage.",
+          "button": "retourner sur DONUT"
+        }
+      },
+      "roomban": {
+        "subject": "Vous avez été banni de la Room ",
+        "content": {
+          "title": "Vous avez été banni de la Room ",
+          "disclaimer": "Beaucoup de choses se sont passées sur DONUT depuis votre dernier passage.",
+          "disclaimer2": "Vous pouvez contacter l'administrateur de la Room pour avoir plus de détails : ",
+          "button": "retourner sur DONUT"
+        }
+      },
+      "roomdeban": {
+        "subject": "Vous n'êtes plus banni de la Room ",
+        "content": {
+          "title": "Vous n'êtes plus banni de la Room ",
+          "disclaimer": "Beaucoup de choses se sont passées sur DONUT depuis votre dernier passage.",
+          "button": "retourner sur DONUT"
+        }
+      },
       "contact": {
         "subject": "[DONUT] Nouveau formulaire de contact",
         "text": [

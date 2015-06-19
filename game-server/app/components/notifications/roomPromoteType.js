@@ -4,6 +4,7 @@ var async = require('async');
 var User = require('../../../../shared/models/user');
 var Room = require('../../../../shared/models/room');
 var NotificationModel = require('../../../../shared/models/notification');
+var emailer = require('../../../../shared/io/emailer');
 
 var FREQUENCY_LIMITER = 1; // 1mn
 
@@ -180,7 +181,7 @@ Notification.prototype.sendToBrowser = function(model) {
 
   ], function(err, notification) {
     if (err)
-      return logger.error(err+': in roomPropoteType');
+      return logger.error(err+': in roomPromoteType');
 
     that.facade.app.globalChannelService.pushMessage('connector', 'notification:new', notification, 'user:'+userId, {}, function(err) {
       if (err)
@@ -192,7 +193,70 @@ Notification.prototype.sendToBrowser = function(model) {
 
 };
 
-Notification.prototype.sendEmail = function() {
+/**
+ * Will send a Notification by Email
+ *
+ * @param model Notification
+ */
+Notification.prototype.sendEmail = function(model) {
+
+  console.log('Notification.prototype.sendEmail');
+
+  if (model.sent_to_email === true)
+    return;
+
+  var to = model.data.user.local.email;
+  var from = model.data.by_user.username;
+  var room = model.data.room;
+
+  switch(model.type) {
+
+    case 'roomop':
+
+      emailer.roomOp(to, from, room, function(err) {
+        if (err)
+          logger.debug('Unable to sent roomOp email: '+err);
+      });
+      break;
+    case 'roomdeop':
+
+      emailer.roomDeop(to, from, room, function(err) {
+        if (err)
+          logger.debug('Unable to sent roomDeop email: '+err);
+      });
+      break;
+    case 'roomkick':
+
+      emailer.roomKick(to, from, room, function(err) {
+        if (err)
+          logger.debug('Unable to sent roomKick email: '+err);
+      });
+      break;
+    case 'roomban':
+
+      emailer.roomBan(to, from, room, function(err) {
+        if (err)
+          logger.debug('Unable to sent roomBan email: '+err);
+      });
+      break;
+    case 'roomdeban':
+
+      emailer.roomDeban(to, from, room, function(err) {
+        if (err)
+          logger.debug('Unable to sent roomDeban email: '+err);
+      });
+      break;
+
+    default:
+
+      logger.debug('roomPromoteType :: Unknown notification type: '+model.type);
+      return;
+      break;
+  }
+
+  model.sent_to_email = true;
+  model.sent_to_email_at = new Date();
+  model.save();
 
 };
 

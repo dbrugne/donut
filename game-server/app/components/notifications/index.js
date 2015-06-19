@@ -58,6 +58,34 @@ Facade.prototype.create = function(type, user, data, fn) {
     return fn();
 };
 
+/**
+ *
+ * @param type
+ * @returns {*}
+ */
+Facade.prototype.getType = function(type) {
+  var that = this;
+  switch(type) {
+
+    case 'usermessage':
+      return userMessage(that);
+      break;
+
+    case 'roomop':
+    case 'roomdeop':
+    case 'roomkick':
+    case 'roomban':
+    case 'roomdeban':
+      return roomPromote(that);
+      break;
+
+    default:
+      logger.info('Unknown notification type: '+type+' for '+user.username);
+
+    return null;
+  }
+};
+
 Facade.prototype.retrieveUserNotifications = function(uid, what, callback) {
   what = what || {};
   var criteria = {
@@ -99,15 +127,28 @@ Facade.prototype.retrieveUserNotificationsUnreadCount = function(uid, callback) 
   });
 };
 
-Facade.prototype.retrievePendingNotifications = function() {
-  NotificationModel.find({
+Facade.prototype.retrievePendingNotifications = function(callback) {
+  var time = new Date();
+  time.setMinutes(time.getMinutes() - 5);
+
+  var q = NotificationModel.find({
     done: false,
-    to_email: true,
-    sent_to_email: false,
-    to_mobile: true,
-    sent_to_mobile: false
-  }, function(err, results) {
-    console.log(err, results);
+    time: { $lt: time },
+    $or: [
+      { to_email: true, sent_to_email: false },
+      { to_mobile: true, sent_to_mobile: false }
+    ]
+  });
+
+  q.populate( { path: 'data.user', model: 'User', select: 'username local' } );
+  q.populate( { path: 'data.by_user', model: 'User', select: 'username' } );
+  q.populate( { path: 'data.room', model: 'Room', select: 'id name color avatar' } );
+
+  q.exec(function(err, results) {
+    if (err)
+      callback(err);
+
+    callback(null, results);
   });
 };
 

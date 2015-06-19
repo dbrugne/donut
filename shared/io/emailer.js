@@ -4,6 +4,7 @@ var nodemailer = require('nodemailer');
 var i18next = require('../util/i18next');
 var conf = require('../../config/index');
 var mailgunTransport = require('nodemailer-mailgun-transport');
+var path = require('path');
 
 /**
  * @hack the hogan-express module to avoid loading another rendering module just for email templating
@@ -12,7 +13,7 @@ var mailgunTransport = require('nodemailer-mailgun-transport');
 var hoganExpress = require('hogan-express');
 var _options = {
   settings: {
-    layout: 'views/emails/layout.html',
+    layout: path.join(__dirname, '/../../web-server/views/emails/layout.html'),
     "view engine": "html"
   },
   cache: false,
@@ -38,7 +39,7 @@ var _render = _.bind(hoganExpress, {
 });
 var hoganRender = function(view, data, fn) {
   var options = _.extend(_options, data);
-  _render(view, options, fn);
+  _render(path.join(__dirname, '/../../web-server/views/emails/', view), options, fn);
 };
 
 var emailer = {};
@@ -94,7 +95,7 @@ function send(data, fn) {
  * @param callback
  */
 emailer.forgot = function(to, token, callback) {
-  hoganRender('views/emails/forgot.html', _.extend(_defaultOptions, {token: token}), function (err, text) {
+  hoganRender('forgot.html', _.extend(_defaultOptions, {token: token}), function (err, text) {
     // @todo yls log errors
 
     send({
@@ -113,7 +114,7 @@ emailer.forgot = function(to, token, callback) {
  * @param callback
  */
 emailer.welcome = function(to, callback) {
-  hoganRender('views/emails/signup.html', _defaultOptions, function (err, text) {
+  hoganRender('signup.html', _defaultOptions, function (err, text) {
     // @todo yls log errors
 
     send({
@@ -133,7 +134,7 @@ emailer.welcome = function(to, callback) {
  * @param callback
  */
 emailer.passwordChanged = function(to, callback) {
-  hoganRender('views/emails/password-changed.html', _defaultOptions, function (err, text) {
+  hoganRender('password-changed.html', _defaultOptions, function (err, text) {
     // @todo yls log errors
 
     send({
@@ -152,7 +153,7 @@ emailer.passwordChanged = function(to, callback) {
  * @param callback
  */
 emailer.emailChanged = function(to, callback) {
-  hoganRender('views/emails/email-changed.html', _defaultOptions, function (err, text) {
+  hoganRender('email-changed.html', _defaultOptions, function (err, text) {
     // @todo yls log errors
 
     send({
@@ -170,16 +171,127 @@ emailer.emailChanged = function(to, callback) {
  *
  * @param to
  * @param from
+ * @param avatar
  * @param messages
  * @param callback
  */
-emailer.userMessage = function(to, from, messages, callback) {
-  hoganRender('views/emails/user-message.html', _.extend(_defaultOptions, {username: from, messages: messages}), function (err, text) {
+emailer.userMessage = function(to, from, avatar, messages, callback) {
+  hoganRender('user-message.html', _.extend(_defaultOptions, {username: from, avatar: avatar, messages: messages}), function (err, text) {
     // @todo yls log errors
 
     send({
       to: to,
       subject: i18next.t("email.usermessage.subject"),
+      html: text
+    },callback);
+
+  });
+};
+
+/**
+ * Sent to a User when he has been promoted moderator of a room
+ *
+ * @param to
+ * @param from
+ * @param room
+ * @param callback
+ */
+emailer.roomOp = function(to, from, room, callback) {
+  hoganRender('room-op.html', _.extend(_defaultOptions, { username: from, roomname: room.name }), function (err, text) {
+    // @todo yls log errors
+
+    send({
+      to: to,
+      subject: i18next.t("email.roomop.subject")+' '+room.name,
+      html: text
+    },callback);
+
+  });
+};
+
+/**
+ * Sent to a User when has been excluded from moderators of a room
+ *
+ * @param to
+ * @param from
+ * @param room
+ * @param callback
+ */
+emailer.roomDeop = function(to, from, room, callback) {
+  hoganRender('room-deop.html', _.extend(_defaultOptions, { username: from, roomname: room.name }), function (err, text) {
+    // @todo yls log errors
+
+    send({
+      to: to,
+      subject: i18next.t("email.roomdeop.subject")+' '+room.name,
+      html: text
+    },callback);
+
+  });
+};
+
+/**
+ * Sent to a User has been kicked from a room
+ *
+ * @param to
+ * @param from
+ * @param room
+ * @param callback
+ */
+emailer.roomKick = function(to, from, room, callback) {
+  hoganRender('room-kick.html', _.extend(_defaultOptions, { username: from, roomname: room.name }), function (err, text) {
+    // @todo yls log errors
+
+    send({
+      to: to,
+      subject: i18next.t("email.roomkick.subject")+' '+room.name,
+      html: text
+    },callback);
+
+  });
+};
+
+/**
+ * Sent to a User when he has been banned from a room
+ *
+ * @param to
+ * @param from
+ * @param room
+ * @param callback
+ */
+emailer.roomBan = function(to, from, room, callback) {
+  hoganRender('room-ban.html', _.extend(_defaultOptions, { username: from, roomname: room.name }), function (err, text) {
+    // @todo yls log errors
+
+    send({
+      to: to,
+      subject: i18next.t("email.roomban.subject")+' '+room.name,
+      html: text
+    },callback);
+
+  });
+};
+
+/**
+ * Sent to a User when he has been unbanned from a room
+ *
+ * @param to
+ * @param from
+ * @param room
+ * @param callback
+ */
+emailer.roomDeban = function(to, from, room, callback) {
+  var options = _.extend(_defaultOptions, {
+    username: from,
+    roomname: room.name
+  });
+
+  hoganRender('room-deban.html', options, function (err, text) {
+    // @todo yls log errors
+
+    send({
+      to: to,
+      subject: i18next.t("email.roomdeban.subject")+' '+room.name,
       html: text
     },callback);
 
