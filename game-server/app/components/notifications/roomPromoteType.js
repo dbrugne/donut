@@ -20,6 +20,28 @@ Notification.prototype.type = 'roompromote';
 
 Notification.prototype.shouldBeCreated = function(type, user, data) {
 
+  // Fetch user preferences
+  var preferences = {
+    to_desktop:   (user.preferencesValue("notif:channels:desktop") || false),
+    to_email:     (user.preferencesValue("notif:channels:email") || false),
+    to_mobile:    (user.preferencesValue("notif:channels:mobile") || false),
+
+    //user_message: (user.preferencesValue("notif:usermessage") || false),
+    //room_invite:  (user.preferencesValue("notif:roominvite") || false),
+
+    nothing:      (user.preferencesValue('room:notif:nothing:__what__'.replace('__what__', data.room.name)) || false),
+
+    //room_join:    (user.preferencesValue('room:notif:roomjoin:__what__'.replace('__what__', data.room.name)) || false),
+    //room_message: (user.preferencesValue('room:notif:roommessage:__what__'.replace('__what__', data.room.name)) || false),
+    //room_mention: (user.preferencesValue('room:notif:roommention:__what__'.replace('__what__', data.room.name)) || false),
+    //room_topic:   (user.preferencesValue('room:notif:roomtopic:__what__'.replace('__what__', data.room.name)) || false),
+    room_promote: (user.preferencesValue('room:notif:roompromote:__what__'.replace('__what__', data.room.name)) || false)
+  };
+
+  var sendToDesktop = false;
+  var sendToEmail = false;
+  var sendToMobile = false;
+
   var that = this;
   async.waterfall([
 
@@ -30,13 +52,27 @@ Notification.prototype.shouldBeCreated = function(type, user, data) {
         return callback(null);
     },
 
+    // Avoid sending notification if user does not need it
     function checkPreferences(callback) {
-      var prefNothingKey = 'room:notif:nothing:__what__'.replace('__what__', data.room.name);
-      var prefKey = 'room:notif:roompromote:__what__'.replace('__what__', data.room.name); // same preferences for op, deop, kick...
-      if (user.preferencesValue(prefNothingKey) || !user.preferencesValue(prefKey))
+      if (preferences.nothing || !preferences.room_promote)
         return callback('no notification due to user preferences');
       else
         return callback(null);
+    },
+
+    function checkStatus(callback) {
+      that.facade.uidStatus(user._id.toString(), function(status) {
+        sendToDesktop = preferences.to_desktop;
+
+        // User is Offline, check preferences before sending
+        if (!status) {
+          sendToEmail = preferences.to_email;
+          sendToMobile = preferences.to_mobile;
+        }
+
+        return callback(null);
+
+      });
     },
 
     function checkRepetive(callback) {
@@ -61,11 +97,11 @@ Notification.prototype.shouldBeCreated = function(type, user, data) {
     if (err)
       return logger.error(err+': '+type+' for '+user.username);
 
-    that.create(type, user, data);
+    that.create(type, user, data, sendToDesktop, sendToEmail, sendToMobile);
   });
 };
 
-Notification.prototype.create = function(type, user, data) {
+Notification.prototype.create = function(type, user, data, sendToDesktop, sendToEmail, sendToMobile) {
   // cleanup data
   var wet = _.clone(data.event);
   var dry = _.omit(wet, [
@@ -85,6 +121,11 @@ Notification.prototype.create = function(type, user, data) {
   if (data.room)
     dry.room = data.room.id;
   var model = NotificationModel.getNewModel(type, user, dry);
+
+  model.to_desktop = sendToDesktop;
+  model.to_email = sendToEmail;
+  model.to_mobile = sendToMobile;
+
   var that = this;
   model.save(function(err) {
     if (err)
@@ -202,8 +243,14 @@ Notification.prototype.sendEmail = function(model) {
 
   console.log('Notification.prototype.sendEmail');
 
+  // Only send it once to email (avoid multiple sending when to_mobile is not processed)
   if (model.sent_to_email === true)
     return;
+
+  // Check that user is not online before sending
+  // @todo yls
+
+  var to_user = model.data.user;
 
   var to = model.data.user.local.email;
   var from = model.data.by_user.username;
