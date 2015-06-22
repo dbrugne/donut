@@ -97,7 +97,7 @@ Facade.prototype.retrieveUserNotifications = function(uid, what, callback) {
     criteria.viewed = false;
   }
 
-  if (what.time !== null) {
+  if (what.time !== undefined) {
     criteria.time = {};
     criteria.time.$lt = new Date(what.time);
   }
@@ -133,8 +133,10 @@ Facade.prototype.retrievePendingNotifications = function(callback) {
 
   var q = NotificationModel.find({
     done: false,
+    viewed: false,
     time: { $lt: time },
     $or: [
+      { to_browser: true, sent_to_browser: false },
       { to_email: true, sent_to_email: false },
       { to_mobile: true, sent_to_mobile: false }
     ]
