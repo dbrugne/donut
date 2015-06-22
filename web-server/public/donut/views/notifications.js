@@ -62,15 +62,16 @@ define([
       var that = this;
       setTimeout(function(){ that.$badge.removeClass("bounce"); }, 1500); // Remove class after animation to trigger animation later if needed
 
-      // Dropdown is opened
-      if (this.el.classList.contains('open'))
-      {
-        // Insert new notification in dropdown
-        this.$menu.html(this.createNotificationFromTemplate(data)+this.$menu.html());
+      // Insert new notification in dropdown
+      this.$menu.html(this.createNotificationFromTemplate(data)+this.$menu.html());
 
+      // Dropdown is opened
+      if (this.el.classList.contains('open')) {
         // Set Timeout to clear new notification
         this.markHasRead = setTimeout(function(){ that.clearNotifications(); }, 2000); // Clear notifications after 2 seconds
       }
+
+      this.toggleReadMore();
     },
     createNotificationFromTemplate: function(notification) {
       var template;
@@ -101,9 +102,8 @@ define([
     },
     // User clicks on the notification icon in the header
     onShow: function(event) {
-      console.log("show", event.relatedTarget);
-
       var lastNotif = this.lastNotifDisplayedTime();
+
       // Ask server for last 10 unread notifications, if none at already loaded
       if (this.$menu.find('.message').length == 0) {
         client.userNotifications(null, lastNotif, 10, _.bind(function(data) { // @todo yls put that in parameters
@@ -116,8 +116,7 @@ define([
 
           this.$menu.html(html);
 
-          if (data.notifications.length < 10) // @todo yls put that in parameters
-            this.$actions.addClass('hidden');
+          this.toggleReadMore();
         }, this));
       }
 
@@ -188,6 +187,14 @@ define([
       var last = this.$menu.find('.message').last();
       var time = (!last || last.length < 1) ? null : last.data('time');
       return time;
+    },
+
+    toggleReadMore: function()
+    {
+      if ((this.$menu.find('.message').length || 0) >= 10) // @todo yls put that in parameters
+        this.$actions.addClass('hidden');
+      else
+        this.$actions.removeClass('hidden');
     }
 
   });
