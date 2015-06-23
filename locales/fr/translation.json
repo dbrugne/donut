@@ -395,15 +395,22 @@
             "offline": "n'est plus en ligne,",
             "topic": "a changé le sujet pour",
             "topicempty": "vide",
-            "kick": "a été expulsé de ",
-            "ban": "a été banni de ",
-            "deban": "n'est plus banni de ",
-            "op": " a été promu modérateur de ",
-            "deop": "n'est plus modérateur de ",
+            "kick": "a été expulsé par ",
+            "ban": "a été banni par ",
+            "deban": "n'est plus banni par ",
+            "op": " a été promu modérateur par ",
+            "deop": "n'est plus modérateur par ",
             "in": "est entré à",
             "out": "est sorti à",
             "online": "est en ligne,",
-            "read-more": "Voir plus"
+            "read-more": "Voir plus",
+            "dropdown": {
+              "kick": "a été expulsé de ",
+              "ban": "a été banni de ",
+              "deban": "n'est plus banni de ",
+              "op": " a été promu modérateur de ",
+              "deop": "n'est plus modérateur de "
+            }
         },
         "unread": {
             "title": "(nouveau)"
@@ -763,7 +770,10 @@
                 "title": "Je souhaite être notifié sur :",
                 "help": "",
                 "desktop": "Bureau",
+                "desktop-refused" : "Vous avez choisi de <strong>refuser</strong> les notifications sur le bureau. Pour modifier ce choix, vous devez modifiers les préférences de votre navigateur.",
+                "desktop-validated" : "Vous avez choisi d'<strong>accepter</strong> les notifications sur le bureau. Pour modifier ce choix, vous devez modifiers les préférences de votre navigateur.",
                 "desktop-test": "test",
+                "desktop-notify-test": "Notification de test",
                 "email": "Email",
                 "mobile": "Mobile"
             },

@@ -20,7 +20,8 @@
     "html.sortable": "latest",
     "jquery-jsonview": "~1.2.2",
     "visionmedia-debug": "~2.1.2",
-    "keen-js": "~3.2.4"
+    "keen-js": "~3.2.4",
+    "html5-desktop-notifications": "*"
   },
   "resolutions": {
     "jquery": ">=1.11.3 <2.0",

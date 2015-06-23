@@ -97,7 +97,7 @@ Facade.prototype.retrieveUserNotifications = function(uid, what, callback) {
     criteria.viewed = false;
   }
 
-  if (what.time !== undefined) {
+  if (what.time !== null) {
     criteria.time = {};
     criteria.time.$lt = new Date(what.time);
   }

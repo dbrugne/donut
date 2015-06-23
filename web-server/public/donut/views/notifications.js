@@ -72,6 +72,8 @@ define([
       }
 
       this.toggleReadMore();
+
+      windowView.desktopNotify($.t('preferences.notif.channels.desktop-notify-test'),'');
     },
     createNotificationFromTemplate: function(notification) {
       var template;
@@ -104,7 +106,7 @@ define([
     onShow: function(event) {
       var lastNotif = this.lastNotifDisplayedTime();
 
-      // Ask server for last 10 unread notifications, if none at already loaded
+      // Ask server for last 10 notifications
       if (this.$menu.find('.message').length == 0) {
         client.userNotifications(null, lastNotif, 10, _.bind(function(data) { // @todo yls put that in parameters
 
@@ -191,7 +193,7 @@ define([
 
     toggleReadMore: function()
     {
-      if ((this.$menu.find('.message').length || 0) >= 10) // @todo yls put that in parameters
+      if ((this.$menu.find('.message').length || 0) < 10) // @todo yls put that in parameters
         this.$actions.addClass('hidden');
       else
         this.$actions.removeClass('hidden');

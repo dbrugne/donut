@@ -21,22 +21,22 @@ Notification.prototype.type = 'roompromote';
 Notification.prototype.shouldBeCreated = function(type, user, data) {
 
   // Fetch user preferences
-  var preferences = {
-    to_desktop:   (user.preferencesValue("notif:channels:desktop") || false),
-    to_email:     (user.preferencesValue("notif:channels:email") || false),
-    to_mobile:    (user.preferencesValue("notif:channels:mobile") || false),
+  //var preferences = {
+    //to_desktop:   user.preferencesValue("notif:channels:desktop"),
+    //to_email:     user.preferencesValue("notif:channels:email"),
+    //to_mobile:    user.preferencesValue("notif:channels:mobile"),
 
-    //user_message: (user.preferencesValue("notif:usermessage") || false),
-    //room_invite:  (user.preferencesValue("notif:roominvite") || false),
+    //user_message: user.preferencesValue("notif:usermessage"),
+    //room_invite:  user.preferencesValue("notif:roominvite"),
 
-    nothing:      (user.preferencesValue('room:notif:nothing:__what__'.replace('__what__', data.room.name)) || false),
+    //nothing:      user.preferencesValue('room:notif:nothing:__what__'.replace('__what__', data.room.name),
 
-    //room_join:    (user.preferencesValue('room:notif:roomjoin:__what__'.replace('__what__', data.room.name)) || false),
-    //room_message: (user.preferencesValue('room:notif:roommessage:__what__'.replace('__what__', data.room.name)) || false),
-    //room_mention: (user.preferencesValue('room:notif:roommention:__what__'.replace('__what__', data.room.name)) || false),
-    //room_topic:   (user.preferencesValue('room:notif:roomtopic:__what__'.replace('__what__', data.room.name)) || false),
-    room_promote: (user.preferencesValue('room:notif:roompromote:__what__'.replace('__what__', data.room.name)) || false)
-  };
+    //room_join:    user.preferencesValue('room:notif:roomjoin:__what__'.replace('__what__', data.room.name),
+    //room_message: user.preferencesValue('room:notif:roommessage:__what__'.replace('__what__', data.room.name),
+    //room_mention: user.preferencesValue('room:notif:roommention:__what__'.replace('__what__', data.room.name),
+    //room_topic:   user.preferencesValue('room:notif:roomtopic:__what__'.replace('__what__', data.room.name),
+    //room_promote: user.preferencesValue('room:notif:roompromote:__what__'.replace('__what__', data.room.name)
+  //};
 
   var sendToDesktop = false;
   var sendToEmail = false;
@@ -54,7 +54,7 @@ Notification.prototype.shouldBeCreated = function(type, user, data) {
 
     // Avoid sending notification if user does not need it
     function checkPreferences(callback) {
-      if (preferences.nothing || !preferences.room_promote)
+      if (user.preferencesValue('room:notif:nothing:__what__'.replace('__what__', data.room.name)) || !user.preferencesValue('room:notif:roompromote:__what__'.replace('__what__', data.room.name)))
         return callback('no notification due to user preferences');
       else
         return callback(null);
@@ -62,12 +62,12 @@ Notification.prototype.shouldBeCreated = function(type, user, data) {
 
     function checkStatus(callback) {
       that.facade.uidStatus(user._id.toString(), function(status) {
-        sendToDesktop = preferences.to_desktop;
+        sendToDesktop = user.preferencesValue("notif:channels:desktop");
 
         // User is Offline, check preferences before sending
         if (!status) {
-          sendToEmail = preferences.to_email;
-          sendToMobile = preferences.to_mobile;
+          sendToEmail = user.preferencesValue("notif:channels:email");
+          sendToMobile = user.preferencesValue("notif:channels:mobile");
         }
 
         return callback(null);

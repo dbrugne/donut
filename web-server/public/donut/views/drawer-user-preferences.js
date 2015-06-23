@@ -15,6 +15,7 @@ define([
 
     events  : {
       'click .play-sound-test': 'onPlaySound',
+      'click .desktop-notification-test': 'onTestDesktopNotify',
       'change .savable': 'onChangeValue'
     },
 
@@ -52,6 +53,10 @@ define([
     onPlaySound: function(event) {
       event.preventDefault();
       windowView._play();
+    },
+    onTestDesktopNotify: function(event) {
+      event.preventDefault();
+      windowView._desktopNotify($.t('preferences.notif.channels.desktop-notify-test'),'');
     },
     onChangeValue: function(event) {
       var $target = $(event.currentTarget);

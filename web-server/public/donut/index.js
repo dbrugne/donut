@@ -13,6 +13,7 @@ require.config({
     'moment'                      : '../vendor/moment/moment',
     'moment-fr'                   : '../vendor/moment/lang/fr',
     'facebook'                    : '//connect.facebook.net/fr_FR/all',
+    'desktop-notify'              : '../vendor/html5-desktop-notifications/desktop-notify',
     'jquery.ui.widget'            : '../vendor/blueimp-file-upload/js/vendor/jquery.ui.widget',
     'jquery.iframe-transport'     : '../vendor/blueimp-file-upload/js/jquery.iframe-transport',
     'jquery.fileupload'           : '../vendor/blueimp-file-upload/js/jquery.fileupload',
@@ -47,6 +48,9 @@ require.config({
     'html.sortable'               : ['jquery'],
     'facebook' : {
       exports: 'FB'
+    },
+    'desktop-notify': {
+      exports: 'notify'
     }
   }
 });
@@ -62,6 +66,7 @@ require([
   'i18next',
   'facebook',
   'moment',
+  'desktop-notify',
   'socket.io',
   /************************************
    * Load (once) and attach plugins to jQuery and underscore
@@ -81,7 +86,7 @@ require([
   'bootstrap',
   'moment-fr',
   'html.sortable'
-], function (app, $, _, Backbone, i18next, facebook, moment) {
+], function (app, $, _, Backbone, i18next, facebook, moment, desktopNotify) {
 
   // i18n setup
   window.i18next = i18next;
@@ -156,6 +161,12 @@ require([
     console.log(e);
     return false;
   }
+
+  // Desktop notifications configuration
+  desktopNotify.config({
+        pageVisibility: false,
+        autoClose: 2000
+  });
 
   // run
   app.initialize();
