@@ -1,5 +1,8 @@
 <div class="avatar">
-    <img class="open-user-profile" data-username="<%= username %>" src="<%= avatar %>" alt="<%= username %> avatar">
+    <img src="<%= avatar %>" alt="<%= username %> avatar">
+    <div class="overlay"></div>
+    <span class="overlay-text"><%= t('chat.actions.see') %></span>
+    <div data-username="<%= username %>" class="open-user-profile"></div>
 </div>
 <div class="content">
     <div class="username open-user-profile" data-username="<%= username %>">
