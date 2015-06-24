@@ -19,9 +19,12 @@ hr {
     display: inline-block;
     width: 60px;
     height: 60px;
-    img {
-      width: 60px;
-      height: 60px;
+    img { width: 60px; height: 60px; }
+    .overlay { display:none; background-color: black; height: 100%; width: 100%; position: absolute; top: 0; cursor: pointer; .opacity(20); }
+    .overlay-text { display:none; color: white; position: absolute; top: 19px; width: 100%; text-align: center; cursor: pointer; }
+    .open-user-profile { height: 100%; width: 100%; position: absolute; top: 0; cursor: pointer; }
+    &:hover .overlay, &:hover .overlay-text {
+      display: block;
     }
   }
   .content {

@@ -15,6 +15,7 @@ define([
   'text!./templates/drawer-user-edit.html',
   'text!./templates/drawer-user-preferences.html',
   'text!./templates/drawer-user-profile.html',
+  'text!./templates/event/date.html',
   'text!./templates/event/disconnected.html',
   'text!./templates/event/in-out-on-off.html',
   'text!./templates/event/message.html',
@@ -54,6 +55,7 @@ define([
   drawer_user_edit,
   drawer_user_preferences,
   drawer_user_profile,
+  event_date,
   event_disconnected,
   event_in_out_on_off,
   event_message,
@@ -108,6 +110,7 @@ define([
   JST['drawer-user-edit.html']              = _.template(drawer_user_edit);
   JST['drawer-user-preferences.html']       = _.template(drawer_user_preferences);
   JST['drawer-user-profile.html']           = _.template(drawer_user_profile);
+  JST['event/date.html']                    = _.template(event_date);
   JST['event/disconnected.html']            = _.template(event_disconnected);
   JST['event/in-out-on-off.html']           = _.template(event_in_out_on_off);
   JST['event/message.html']                 = _.template(event_message);
