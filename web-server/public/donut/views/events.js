@@ -391,17 +391,34 @@ define([
       // render a batch of events (sorted in 'desc' order)
       debug.start('discussion-events-batch-'+this.model.getIdentifier());
       var $html = $('<div/>');
+      var previousModel;
       var previousElement;
-      var that = this;
-      _.each(events, function(event) {
+      _.each(events, _.bind(function(event) {
         var model = new EventModel(event);
-        var newBlock = that._newBlock(model,  previousElement);
-        var h = that._renderEvent(model, newBlock);
+        var newBlock = this._newBlock(model,  previousElement);
+
+        // inter-date block
+        if (previousModel) {
+          var newTime = moment(model.get('time'));
+          var previousTime = moment(previousModel.get('time'));
+          if (!newTime.isSame(previousTime, 'day')) {
+            var dateHtml = templates['event/date.html']({
+              time: previousModel.get('time'),
+              datefull: previousTime.format('dddd Do MMMM YYYY')
+            });
+            previousElement = $(dateHtml).prependTo($html);
+            newBlock = true;
+          }
+        }
+
+        // render and insert
+        var h = this._renderEvent(model, newBlock);
         if (!newBlock)
           $(h).prependTo(previousElement.find('.items')); // not define previousElement, remain the same .block
         else
           previousElement = $(h).prependTo($html);
-      });
+        previousModel = model;
+      }, this));
 
       $html.find('>.block').prependTo(this.$realtime);
       debug.end('discussion-events-batch-'+this.model.getIdentifier());
