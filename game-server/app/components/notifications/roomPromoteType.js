@@ -133,7 +133,7 @@ Notification.prototype.create = function(type, user, data, sendToDesktop, sendTo
     else
       logger.info('notification created: '+type+' for '+user.username);
 
-    if (model.to_browser && !model.sent_to_browser)
+    if (!model.sent_to_browser)
       that.sendToBrowser(model);
   });
 };
@@ -241,17 +241,6 @@ Notification.prototype.sendToBrowser = function(model) {
  */
 Notification.prototype.sendEmail = function(model) {
 
-  console.log('Notification.prototype.sendEmail');
-
-  // Only send it once to email (avoid multiple sending when to_mobile is not processed)
-  if (model.sent_to_email === true)
-    return;
-
-  // Check that user is not online before sending
-  // @todo yls
-
-  var to_user = model.data.user;
-
   var to = model.data.user.local.email;
   var from = model.data.by_user.username;
   var room = model.data.room;
@@ -304,7 +293,6 @@ Notification.prototype.sendEmail = function(model) {
   model.sent_to_email = true;
   model.sent_to_email_at = new Date();
   model.save();
-
 };
 
 Notification.prototype.sendMobile = function() {

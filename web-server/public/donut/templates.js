@@ -41,7 +41,8 @@ define([
   'text!./templates/notifications/room-deop.html',
   'text!./templates/notifications/room-kick.html',
   'text!./templates/notifications/room-ban.html',
-  'text!./templates/notifications/room-deban.html'
+  'text!./templates/notifications/room-deban.html',
+  'text!./templates/notifications/room-topic.html',
 ], function (_,
   color_picker,
   current_user,
@@ -84,7 +85,8 @@ define([
   notification_room_deop,
   notification_room_kick,
   notification_room_ban,
-  notification_room_deban
+  notification_room_deban,
+  notification_room_topic
 ) {
 
   /**
@@ -143,6 +145,7 @@ define([
   JST['notifications/room-kick.html']       = _.template(notification_room_kick);
   JST['notifications/room-ban.html']        = _.template(notification_room_ban);
   JST['notifications/room-deban.html']      = _.template(notification_room_deban);
+  JST['notifications/room-topic.html']      = _.template(notification_room_topic);
 
   return JST;
 });

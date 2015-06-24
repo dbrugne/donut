@@ -155,6 +155,42 @@ userSchema.statics.findByUid = function (uid) {
 };
 
 /**
+ * Look for users required to notify for a topic change. Select only :
+ *
+ * Users associated to current room
+ * AND
+ * Users for wich the preference "nothing" is not set AND who wants to be notified for topic change (preference room:notif:topic)
+ * OR Users for wich the preference "nothing" is set to false AND who wants to be notified for topic change (preference room:notif:topic)
+ * AND
+ * Not the User who changed the topic himself
+ *
+ * @param room
+ * @param userId
+ * @param callback
+ */
+userSchema.statics.findForTopic = function (room, userId, callback) {
+  var keyNothing = "preferences.room:notif:nothing:__what__".replace('__what__', room.name);
+  var keyTopic = "preferences.room:notif:roomtopic:__what__".replace('__what__', room.name);
+
+  var q = this.find({
+
+    _id: {$in: _.map(room.users, function(uid){ return uid.toString() })},
+
+    '$and': [
+      { $or: [
+        { "preferences.room:notif:nothing:#yann_et_mich": { '$exists': false }},
+        { 'preferences.room:notif:nothing:#yann_et_mich': false }
+      ]},
+      { 'preferences.room:notif:roomtopic:#yann_et_mich': true },
+      { _id: { '$ne' : userId } }
+    ]
+
+  });
+
+  q.exec(callback);
+};
+
+/**
  * Retrieve and return an hydrated user instance
  * @param name
  * @returns {Query}

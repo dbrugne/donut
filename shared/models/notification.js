@@ -31,23 +31,17 @@ var notificationSchema = mongoose.Schema({
 /**
  * Return new Notification instance with some attributes pre-filled with default values
  *
- * @param String
- * @param {User}
- * @param {Object}
+ * @param type
+ * @param user
+ * @param data
  * @returns {Notification}
  */
 notificationSchema.statics.getNewModel = function (type, user, data) {
   var model = new this();
+
   model.type  = type;
   model.user  = user;
   model.data  = data;
-
-  // should be send on email or mobile
-  model.to_browser = true;
-  if (user.preferencesValue('notif:channels:email'))
-    model.to_email = true;
-  if (user.preferencesValue('notif:channels:mobile'))
-    model.to_mobile = true;
 
   return model;
 };

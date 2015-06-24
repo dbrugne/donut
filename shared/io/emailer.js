@@ -306,3 +306,24 @@ emailer.contactForm = function(data, callback) {
     html: i18next.t("email.contact.html", data)
   },callback);
 };
+
+/**
+ * Sent to a User when The topic changed in a Room in which he wants to be warned
+ *
+ * @param to
+ * @param from
+ * @param room
+ * @param callback
+ */
+emailer.roomTopic = function(to, from, room, callback) {
+  hoganRender('room-topic.html', _.extend(_defaultOptions, { username: from, roomname: room.name }), function (err, text) {
+    // @todo yls log errors
+
+    send({
+      to: to,
+      subject: i18next.t("email.roomtopic.subject")+' '+room.name,
+      html: text
+    },callback);
+
+  });
+};

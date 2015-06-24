@@ -52,6 +52,7 @@ define([
         this.el.classList.remove('full');
       }
     },
+
     // A new Notification is pushed from server
     onNotificationPushed: function(data) {
       // Update Badge & Count
@@ -73,7 +74,7 @@ define([
 
       this.toggleReadMore();
 
-      windowView.desktopNotify($.t('preferences.notif.channels.desktop-notify-test'),'');
+      windowView.desktopNotify($.t('chat.notifications.desktop.'+data.type)+' '+data.data.room.name,'');
     },
     createNotificationFromTemplate: function(notification) {
       var template;
@@ -90,6 +91,8 @@ define([
           template = templates['notifications/room-ban.html']; break;
         case 'roomdeban':
           template = templates['notifications/room-deban.html']; break;
+        case 'roomtopic':
+          template = templates['notifications/room-topic.html']; break;
         default:
         break;
       }

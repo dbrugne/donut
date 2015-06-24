@@ -389,7 +389,16 @@
         "ban": "was banned from this donut of",
         "deban": "was unbanned from this donut of",
         "op": "was made moderator of",
-        "deop": "was removed from moderators of"
+        "deop": "was removed from moderators of",
+        "roomtopic": "Subject has changed in  "
+      },
+      "desktop": {
+        "roomkick": "You have been kicked form  ",
+        "roomban": "You have been banned from  ",
+        "roomdeban": "You have been unbanned from ",
+        "roomop": "You have been made moderator of ",
+        "roomdeop": "You have been removed from moderators of ",
+        "roomtopic": "The subject has changed in "
       }
     },
     "unread": {
@@ -637,6 +646,14 @@
         "subject": "You have been promoted moderator of the Room ",
         "content": {
           "title": "You have been promoted moderator by ",
+          "disclaimer": "A lot of things changed on DONUT since your last login.",
+          "button": "Back on DONUT"
+        }
+      },
+      "roomtopic": {
+        "subject": "The subject has changed in the Room ",
+        "content": {
+          "title": "The subject of the Room has been changed by ",
           "disclaimer": "A lot of things changed on DONUT since your last login.",
           "button": "Back on DONUT"
         }

@@ -2,6 +2,7 @@ var logger = require('../../../../pomelo-logger').getLogger('donut', __filename)
 var async = require('async');
 var Room = require('../../../../../shared/models/room');
 var User = require('../../../../../shared/models/user');
+var Notifications = require('../../../components/notifications');
 var roomEmitter = require('../../../util/roomEmitter');
 var inputUtil = require('../../../util/input');
 
@@ -93,10 +94,16 @@ handler.topic = function(data, session, next) {
 		},
 
 		function historizeAndEmit(room, user, event, callback) {
-			roomEmitter(that.app, 'room:topic', event, function(err) {
+			roomEmitter(that.app, 'room:topic', event, function(err, sentEvent) {
 				if (err)
-					return callback(err);
+                    return callback('Error while emitting room:topic in '+room.name+': '+err);
 
+				return callback(null, room, sentEvent);
+			});
+		},
+
+		function notification(room, sentEvent, callback) {
+			Notifications(that.app).create('roomtopic', room, {event: sentEvent}, function() {
 				return callback(null);
 			});
 		}

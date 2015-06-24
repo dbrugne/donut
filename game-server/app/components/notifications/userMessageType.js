@@ -16,7 +16,7 @@ var Notification = function(facade) {
 
 Notification.prototype.type = 'usermessage';
 
-Notification.prototype.shouldBeCreated = function(user, data) {
+Notification.prototype.shouldBeCreated = function(type, user, data) {
 
   var that = this;
   async.waterfall([

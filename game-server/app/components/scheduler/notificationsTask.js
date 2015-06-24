@@ -6,15 +6,22 @@ module.exports = function(data) {
   logger.debug('[schedule:notifications] starting');
 
   var facade = notifications(data.app);
-  facade.retrievePendingNotifications(function(err, notifications){
+  facade.retrievePendingNotifications(function(err, notifications){ // @todo yls add limiter
     if (err)
       return logger.error('[schedule:notifications] error: '+err);
 
     _.each(notifications, function (notification){
       var type = facade.getType(notification.type);
+      if (type == null)
+        return;
 
-      if (type != null)
+      // Send to email
+      if (notification.sent_to_email === false && notification.to_email === true)
         type.sendEmail(notification);
+
+      // Send to mobile
+      if (notification.sent_to_mobile === false && notification.to_mobile === true)
+        type.sendMobile(notification);
     });
   });
 };

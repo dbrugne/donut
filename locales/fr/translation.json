@@ -409,7 +409,16 @@
               "ban": "a été banni de ",
               "deban": "n'est plus banni de ",
               "op": " a été promu modérateur de ",
-              "deop": "n'est plus modérateur de "
+              "deop": "n'est plus modérateur de ",
+              "roomtopic": "Le sujet à changé dans "
+            },
+            "desktop": {
+              "roomkick": "Vous venez d'être expulsé de ",
+              "roomban": "Vous venez d'être banni de ",
+              "roomdeban": "Vous n'êtes plus banni de ",
+              "roomop": " Vous venez d'être promu modérateur de ",
+              "roomdeop": "Vous n'êtes plus modérateur de ",
+              "roomtopic": "Le sujet à changé dans "
             }
         },
         "unread": {
@@ -690,6 +699,14 @@
         "subject": "Vous n'êtes plus banni de la Room ",
         "content": {
           "title": "Vous n'êtes plus banni de la Room ",
+          "disclaimer": "Beaucoup de choses se sont passées sur DONUT depuis votre dernier passage.",
+          "button": "retourner sur DONUT"
+        }
+      },
+      "roomtopic": {
+        "subject": "Le sujet à changé dans la Room ",
+        "content": {
+          "title": "Le sujet de la Room a été changé par ",
           "disclaimer": "Beaucoup de choses se sont passées sur DONUT depuis votre dernier passage.",
           "button": "retourner sur DONUT"
         }
