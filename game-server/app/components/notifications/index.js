@@ -158,3 +158,16 @@ Facade.prototype.markNotificationsAsRead = function(uid, ids, callback) {
     return callback(err, results);
   });
 };
+
+Facade.prototype.avoidNotificationsSending = function(uid, ids, callback) {
+  NotificationModel.update({
+    _id: {$in: ids},
+    user: uid
+  }, {
+    $set: {to_email: false, to_mobile: false}
+  }, {
+    multi:true
+  }, function(err, results) {
+    return callback(err, results);
+  });
+};

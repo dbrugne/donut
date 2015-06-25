@@ -173,7 +173,7 @@ handler.enter = function(msg, session, next) {
                 });
 
                 if (uids.length > 0) {
-                    Notifications(that.app).markNotificationsAsRead(uid, uids, function(err, countUpdated) {
+                    Notifications(that.app).avoidNotificationsSending(uid, uids, function(err, countUpdated) {
                         if (err)
                             return callback('Error while setting notifications as read for '+session.uid+': '+err);
 
