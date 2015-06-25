@@ -201,7 +201,7 @@ historySchema.statics.retrieveEventWithContext = function(eventId, userId, limit
     users: { $in: [userId] }
   };
 
-  var model, criteria;
+  var model;
   var fullResults = [];
   var that = this;
   async.waterfall([
