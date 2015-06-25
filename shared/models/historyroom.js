@@ -1,5 +1,6 @@
 var debug = require('debug')('shared:models:historyRoom');
 var _ = require('underscore');
+var async = require('async');
 var mongoose = require('../io/mongoose');
 var Room = require('./room');
 
@@ -73,6 +74,48 @@ historySchema.statics.record = function() {
   }
 };
 
+historySchema.methods.toClientJSON = function(userViewed) {
+  userViewed = userViewed || false;
+
+  if (!this.room)
+    this.room = new Room(); // some rooms was removed (but not their history) before Room.deleted flag introduction
+
+  // record
+  var e = {
+    type: this.event
+  };
+
+  // re-hydrate data
+  var data = (this.data)
+    ? _.clone(this.data)
+    : {};
+  data.id = this.id;
+  data.name = this.room.name;
+  data.room_id = this.room.id;
+  data.time = this.time;
+  if (this.user) {
+    data.user_id = this.user.id;
+    data.username = this.user.username;
+    data.avatar = this.user._avatar();
+  }
+  if (this.by_user) {
+    data.by_user_id = this.by_user.id;
+    data.by_username = this.by_user.username;
+    data.by_avatar = this.by_user._avatar();
+  }
+  e.data = data;
+
+  // unread status (true if message and if i'm not in .viewed)
+  if (userViewed && this.event == 'room:message' && data.user_id != userViewed && (
+    !this.viewed
+    || (_.isArray(this.viewed) && this.viewed.indexOf(userViewed) === -1)
+    )) {
+    e.unviewed = true;
+  }
+
+  return e;
+};
+
 historySchema.statics.retrieve = function() {
   var that = this;
   var howMany = 100;
@@ -121,43 +164,7 @@ historySchema.statics.retrieve = function() {
 
       var history = [];
       _.each(entries, function(entry) {
-        if (!entry.room)
-          entry.room = new Room(); // some rooms was removed (but not their history) before Room.deleted flag introduction
-
-        // record
-        var e = {
-          type: entry.event
-        };
-
-        // re-hydrate data
-        var data = (entry.data)
-          ? _.clone(entry.data)
-          : {};
-        data.id = entry._id.toString();
-        data.name = entry.room.name;
-        data.room_id = entry.room.id;
-        data.time = entry.time;
-        if (entry.user) {
-          data.user_id = entry.user._id.toString();
-          data.username = entry.user.username;
-          data.avatar = entry.user._avatar();
-        }
-        if (entry.by_user) {
-          data.by_user_id = entry.by_user._id.toString();
-          data.by_username = entry.by_user.username;
-          data.by_avatar = entry.by_user._avatar();
-        }
-        e.data = data;
-
-        // unread status (true if message and if i'm not in .viewed)
-        if (entry.event == 'room:message' && data.user_id != userId && (
-            !entry.viewed
-            || (_.isArray(entry.viewed) && entry.viewed.indexOf(userId) === -1)
-        )) {
-          e.unviewed = true;
-        }
-
-        history.push(e);
+        history.push(entry.toClientJSON(userId));
       });
 
       return fn(null, {
@@ -166,6 +173,107 @@ historySchema.statics.retrieve = function() {
       });
     });
   }
-}
+};
+
+/**
+ * Retrieve an history event context and return a JSON representation
+ *
+ * @param eventId     Event ID to retrieve
+ * @param userId      User ID
+ * @param limit       Number of maximum event to return in both before and after direction
+ * @param timeLimit   Limit of time to retrieve event in both before and after direction
+ * @param before      Flag to retrieve (or not) the "before event events"
+ * @param fn
+ */
+historySchema.statics.retrieveEventWithContext = function(eventId, userId, limit, timeLimit, before, fn) {
+  if (!eventId)
+    return fn('retrieveEventWithContext expect event ID as first parameter');
+  if (!userId)
+    return fn('retrieveEventWithContext expect user ID as second parameter');
+
+  limit = limit || 5;
+  timeLimit = timeLimit || 5; // in mn
+  before = before || false;
+
+  var criteria = {
+    _id: { $ne: eventId },
+    event: { $nin: ['user:online', 'user:offline'] },
+    users: { $in: [userId] }
+  };
+
+  var model, criteria;
+  var fullResults = [];
+  var that = this;
+  async.waterfall([
+
+    function retrieveModel(callback) {
+      that.findOne({_id: eventId})
+        .populate('room', 'name')
+        .populate('user', 'username avatar color facebook')
+        .populate('by_user', 'username avatar color facebook')
+        .exec(function(err, event) {
+          model = event;
+          criteria.room = model.room.id;
+          fullResults.push(model);
+          return callback(err);
+        });
+    },
+    function retrieveAfterEvents(callback) {
+      var afterLimit = new Date(model.time);
+      afterLimit.setMinutes(afterLimit.getMinutes() + timeLimit);
+      var _criteria = _.clone(criteria);
+      _criteria.time = {$lte: afterLimit, $gte: model.time};
+      that.find(_criteria)
+        .sort({time: 'asc'})
+        .limit(limit)
+        .populate('room', 'name')
+        .populate('user', 'username avatar color facebook')
+        .populate('by_user', 'username avatar color facebook')
+        .exec(function(err, results) {
+          if (err)
+            return callback(err);
+
+          fullResults = fullResults.concat(results);
+          return callback(null);
+        });
+    },
+
+    function retrieveBeforeEvents(callback) {
+      if (!before)
+        return callback(null);
+
+      var beforeLimit = new Date(model.time);
+      beforeLimit.setMinutes(beforeLimit.getMinutes() - timeLimit);
+      var _criteria = _.clone(criteria);
+      _criteria.time = { $gte: beforeLimit, $lte: model.time };
+      that.find(_criteria)
+        .sort({time: 'desc'})
+        .limit(limit)
+        .populate('room', 'name')
+        .populate('user', 'username avatar color facebook')
+        .populate('by_user', 'username avatar color facebook')
+        .exec(function(err, results) {
+          if (err)
+            return callback(err);
+
+          results.reverse();
+          fullResults = results.concat(fullResults);
+          return callback(null);
+        });
+    },
+
+    function prepare(callback) {
+      var history = [];
+      _.each(fullResults, function(e) {
+        history.push(e.toClientJSON(userId));
+      });
+      return callback(null, history);
+    }
+
+  ], function(err, history) {
+    fn(err, history);
+  });
+
+};
 
 module.exports = mongoose.model('HistoryRoom', historySchema, 'history-room');
