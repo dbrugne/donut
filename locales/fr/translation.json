@@ -312,7 +312,8 @@
             "permalink": "Lien permanent vers ce profil",
             "editlink": "Pour éditer votre profil cliquez ici",
             "signuped": "inscrit le",
-            "onlined": "connecté il y a __time__"
+            "onlined": "connecté il y a __time__",
+            "edit": "Editer"
         }
     },
     "chat": {

@@ -291,7 +291,8 @@
       "permalink": "Permanent link to this profile",
       "editlink": "To edit this profile click here",
       "signuped": "Signed up on",
-      "onlined": "online __time__ ago"
+      "onlined": "online __time__ ago",
+      "edit": "Edit"
     }
   },
   "chat": {
