@@ -1,4 +1,5 @@
 var debug = require('debug')('donut:notifications');
+var _ = require('underscore');
 var mongoose = require('../io/mongoose');
 var User = require('./user');
 
@@ -36,7 +37,7 @@ var notificationSchema = mongoose.Schema({
  * @param data
  * @returns {Notification}
  */
-notificationSchema.statics.getNewModel = function (type, user, data) {
+notificationSchema.statics.getNewModel = function(type, user, data) {
   var model = new this();
 
   model.type  = type;
@@ -44,6 +45,29 @@ notificationSchema.statics.getNewModel = function (type, user, data) {
   model.data  = data;
 
   return model;
+};
+
+/**
+ * Bulk insert (in one operation) an array of models in collection
+ *
+ * @source: http://stackoverflow.com/questions/25285232/bulk-upsert-in-mongodb-using-mongoose
+ *
+ * @param models [{Notification}]
+ * @param fn
+ */
+notificationSchema.statics.bulkInsert = function(models, fn) {
+  if (!models || !models.length)
+    return fn(null);
+
+  var bulk = this.collection.initializeOrderedBulkOp();
+  if (!bulk)
+    return fn('bulkInsertModels: MongoDb connection is not yet established');
+
+  _.each(models, function(model) {
+    bulk.insert(model.toJSON());
+  });
+
+  bulk.execute(fn);
 };
 
 module.exports = mongoose.model('Notification', notificationSchema);
