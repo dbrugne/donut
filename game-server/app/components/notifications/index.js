@@ -6,6 +6,7 @@ var NotificationModel = require('../../../../shared/models/notification');
 var userMessage = require('./userMessageType');
 var roomPromote = require('./roomPromoteType');
 var roomTopic = require('./roomTopicType');
+var roomMessage = require('./roomMessageType');
 
 module.exports = function(app) {
   return new Facade(app);
@@ -69,6 +70,10 @@ Facade.prototype.getType = function(type) {
 
     case 'roomtopic':
       return roomTopic(that);
+      break;
+
+    case 'roommessage':
+      return roomMessage(that);
       break;
 
     default:

@@ -662,6 +662,13 @@
           "button": "Voir le message sur DONUT"
         }
       },
+      "roommessage": {
+          "subject": "Vous avez reçu un message sur DONUT",
+          "content": {
+            "title": "Vous avez reçu un message",
+            "button": "Voir le message sur DONUT"
+          }
+      },
       "roomop": {
         "subject": "Vous avez été promu modérateur de la Room ",
         "content": {

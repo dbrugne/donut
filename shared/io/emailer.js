@@ -66,7 +66,7 @@ function send(data, fn) {
   if (process.env != 'production' ) {
     var patt = new RegExp("([^@]+)"); // Everything before the first @ met
     var res = patt.exec(data.to);
-    to = conf.email.test_name + '+' + res[0] + conf.email.test_domain;
+    to = conf.email.test_name + '+' + res[0] + '@'+conf.email.test_domain;
   }
 
   // prepare

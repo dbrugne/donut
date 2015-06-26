@@ -111,7 +111,7 @@ define([
 
       // Ask server for last 10 notifications
       if (this.$menu.find('.message').length == 0) {
-        client.userNotifications(null, lastNotif, 10, _.bind(function(data) { // @todo yls put that in parameters
+        client.userNotifications(null, lastNotif, 10, _.bind(function(data) {
 
           var html = '';
           for (var k in data.notifications)
@@ -168,7 +168,7 @@ define([
       this.$loader.removeClass('hidden');
 
       var lastNotif = this.lastNotifDisplayedTime();
-      client.userNotifications(null, lastNotif, 10, _.bind(function(data) { // @todo yls put that in parameters
+      client.userNotifications(null, lastNotif, 10, _.bind(function(data) {
         var previousContent = this.$menu.html();
         var html = '';
         for (var k in data.notifications)
@@ -180,12 +180,12 @@ define([
         this.$readMore.removeClass('hidden');
         this.$loader.addClass('hidden');
 
-        if (data.notifications.length < 10) // @todo yls put that in parameters
+        if (data.notifications.length < 10)
           this.$actions.addClass('hidden');
       }, this));
 
       var that = this;
-      this.markHasRead = setTimeout(function(){ that.clearNotifications(); }, 2000); // Clear notifications after 2 seconds
+      this.markHasRead = setTimeout(function(){ that.clearNotifications(); }, 2000);
     },
 
     lastNotifDisplayedTime: function() {
@@ -196,7 +196,7 @@ define([
 
     toggleReadMore: function()
     {
-      if ((this.$menu.find('.message').length || 0) < 10) // @todo yls put that in parameters
+      if ((this.$menu.find('.message').length || 0) < 10)
         this.$actions.addClass('hidden');
       else
         this.$actions.removeClass('hidden');
