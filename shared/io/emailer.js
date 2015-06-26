@@ -62,10 +62,17 @@ function send(data, fn) {
   if (!data.subject) return fn('"subject" is mandatory');
   if (!data.text && !data.html) return fn('"text" or "html" are mandatory');
 
+  var to = data.to;
+  if (process.env != 'production' ) {
+    var patt = new RegExp("([^@]+)"); // Everything before the first @ met
+    var res = patt.exec(data.to);
+    to = conf.email.test_name + '+' + res[0] + conf.email.test_domain;
+  }
+
   // prepare
   var options = {
     from: conf.email.from.name+' <'+conf.email.from.email+'>',
-    to: data.to,
+    to: to,
     subject: data.subject
   };
   if (data.text)
@@ -96,7 +103,8 @@ function send(data, fn) {
  */
 emailer.forgot = function(to, token, callback) {
   hoganRender('forgot.html', _.extend(_defaultOptions, {token: token}), function (err, text) {
-    // @todo yls log errors
+    if (err)
+      return callback(err);
 
     send({
       to: to,
@@ -115,7 +123,8 @@ emailer.forgot = function(to, token, callback) {
  */
 emailer.welcome = function(to, callback) {
   hoganRender('signup.html', _defaultOptions, function (err, text) {
-    // @todo yls log errors
+    if (err)
+      return callback(err);
 
     send({
       to: to,
@@ -135,7 +144,8 @@ emailer.welcome = function(to, callback) {
  */
 emailer.passwordChanged = function(to, callback) {
   hoganRender('password-changed.html', _defaultOptions, function (err, text) {
-    // @todo yls log errors
+    if (err)
+      return callback(err);
 
     send({
       to: to,
@@ -154,7 +164,8 @@ emailer.passwordChanged = function(to, callback) {
  */
 emailer.emailChanged = function(to, callback) {
   hoganRender('email-changed.html', _defaultOptions, function (err, text) {
-    // @todo yls log errors
+    if (err)
+      return callback(err);
 
     send({
       to: to,
@@ -169,22 +180,43 @@ emailer.emailChanged = function(to, callback) {
 /**
  * Sent to a User when he send some messages to another User
  *
- * @param to
- * @param from
- * @param avatar
- * @param messages
+ * @param toEmail
+ * @param username
+ * @param events
  * @param callback
  */
-emailer.userMessage = function(to, from, avatar, messages, callback) {
-  hoganRender('user-message.html', _.extend(_defaultOptions, {username: from, avatar: avatar, messages: messages}), function (err, text) {
-    // @todo yls log errors
+emailer.userMessage = function(toEmail, username, events, callback) {
+  hoganRender('user-message.html', _.extend(_defaultOptions, {username: username, events: events}), function (err, html) { // @todo yls when templates valid with underscore, check repetitive avatar & username
+    if (err)
+      return callback(err);
 
     send({
-      to: to,
+      to: toEmail,
       subject: i18next.t("email.usermessage.subject"),
-      html: text
-    },callback);
+      html: html
+    }, callback);
+  });
+};
 
+/**
+ * Sent to a User when he send some messages to another User
+ *
+ * @param toEmail
+ * @param events
+ * @param roomName
+ * @param roomAvatar
+ * @param callback
+ */
+emailer.roomMessage = function(toEmail, events, roomName, roomAvatar, callback) {
+  hoganRender('room-message.html', _.extend(_defaultOptions, {events: events, room_name: roomName, room_avatar: roomAvatar}), function (err, html) {
+    if (err)
+      return callback(err);
+
+    send({
+      to: toEmail,
+      subject: i18next.t("email.roommessage.subject"),
+      html: html
+    }, callback);
   });
 };
 
@@ -198,7 +230,8 @@ emailer.userMessage = function(to, from, avatar, messages, callback) {
  */
 emailer.roomOp = function(to, from, room, callback) {
   hoganRender('room-op.html', _.extend(_defaultOptions, { username: from, roomname: room.name }), function (err, text) {
-    // @todo yls log errors
+    if (err)
+      return callback(err);
 
     send({
       to: to,
@@ -219,7 +252,8 @@ emailer.roomOp = function(to, from, room, callback) {
  */
 emailer.roomDeop = function(to, from, room, callback) {
   hoganRender('room-deop.html', _.extend(_defaultOptions, { username: from, roomname: room.name }), function (err, text) {
-    // @todo yls log errors
+    if (err)
+      return callback(err);
 
     send({
       to: to,
@@ -240,7 +274,8 @@ emailer.roomDeop = function(to, from, room, callback) {
  */
 emailer.roomKick = function(to, from, room, callback) {
   hoganRender('room-kick.html', _.extend(_defaultOptions, { username: from, roomname: room.name }), function (err, text) {
-    // @todo yls log errors
+    if (err)
+      return callback(err);
 
     send({
       to: to,
@@ -261,7 +296,8 @@ emailer.roomKick = function(to, from, room, callback) {
  */
 emailer.roomBan = function(to, from, room, callback) {
   hoganRender('room-ban.html', _.extend(_defaultOptions, { username: from, roomname: room.name }), function (err, text) {
-    // @todo yls log errors
+    if (err)
+      return callback(err);
 
     send({
       to: to,
@@ -287,7 +323,8 @@ emailer.roomDeban = function(to, from, room, callback) {
   });
 
   hoganRender('room-deban.html', options, function (err, text) {
-    // @todo yls log errors
+    if (err)
+      return callback(err);
 
     send({
       to: to,
@@ -317,7 +354,8 @@ emailer.contactForm = function(data, callback) {
  */
 emailer.roomTopic = function(to, from, room, callback) {
   hoganRender('room-topic.html', _.extend(_defaultOptions, { username: from, roomname: room.name }), function (err, text) {
-    // @todo yls log errors
+    if (err)
+      return callback(err);
 
     send({
       to: to,
