@@ -42,7 +42,7 @@ function send(data, fn) {
 
   // stub to email in non-production environment
   if (process.env.NODE_ENV !== 'production' ) {
-    to = 'donutmetest+__name__@gmail.com'.replace('__name__', to.substr(0, to.indexOf('@')));
+    to = conf.email.fake.replace('__name__', to.substr(0, to.indexOf('@')));
   }
 
   // prepare

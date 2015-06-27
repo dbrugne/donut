@@ -25,8 +25,7 @@ var conf = module.exports = {
     expire: 5*60 // 5 hours, in minutes
   },
   email: {
-    test_name: 'donutmetest',
-    test_domain: 'gmail.com',
+    fake: 'donutmetest+__name__@gmail.com',
     from: {
       name: "DONUT.me",
       email: "hello@donut.me"
