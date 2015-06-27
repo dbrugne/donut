@@ -1,4 +1,6 @@
-require('newrelic');
+if (process.env.NODE_ENV !== 'development')
+  require('newrelic');
+
 var pomelo = require('pomelo');
 var logger = require('./pomelo-logger').getLogger('donut', __filename);
 var scheduler = require('./app/components/scheduler')
