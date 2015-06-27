@@ -233,7 +233,6 @@ router.get('/rest/logs', isAdmin, function(req, res) {
   // direction
   var sort = (params.sort && params.sort == 'asc') ? {timestamp: 'asc'} : {timestamp: 'desc'};
 
-  console.log(filter);
   var query = Logs.find(filter).sort(sort).limit(100);
   query.exec(function(err, result) {
     if (err)
