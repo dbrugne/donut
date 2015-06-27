@@ -1,0 +1,11 @@
+<div id="fb-root"></div>
+<script>
+    window.cloudinary_cloud_name = '<%- cloudinary.cloud_name %>';
+    window.cloudinary_api_key = '<%- cloudinary.api_key %>';
+    window.facebook_app_id = '<%- facebook.clientID %>';
+    window.recaptcha_site_key = '<%- recaptcha.sitekey %>';
+</script>
+<script src="/javascripts/old-browser-update.js"></script>
+<script src='https://www.google.com/recaptcha/api.js' async defer></script>
+<script data-main="/javascripts/index.js" src="/vendor/requirejs/require.js"></script>
+<%= googleanalytics %>
