@@ -9,11 +9,8 @@ var validateInput = function(req, res, next) {
   req.checkBody(['user','fields','email'], i18next.t("account.email.error.format")).isEmail();
   if (req.validationErrors()) {
     return res.render('account_edit_email', {
-      layout: 'layout-form',
-      partials: {head: '_head', foot: '_foot'},
       meta: {title: i18next.t("title.default")},
       userFields: req.body.user.fields,
-      is_errors: true,
       errors: req.validationErrors(),
       token: req.csrfToken()
     });
@@ -34,8 +31,6 @@ var validateInput = function(req, res, next) {
 
     if (user) {
       return res.render('account_edit_email', {
-        layout: 'layout-form',
-        partials: {head: '_head', foot: '_foot'},
         meta: {title: i18next.t("title.default")},
         userFields: req.body.user.fields,
         error: i18next.t("account.email.error.alreadyexists")
@@ -50,8 +45,6 @@ router.route('/account/edit/email')
     .get([require('csurf')(), isLoggedIn], function(req, res) {
         var userFields = {email: req.user.local.email}
         res.render('account_edit_email', {
-          layout: 'layout-form',
-          partials: {head: '_head', foot: '_foot'},
           meta: {title: i18next.t("title.default")},
           userFields: userFields,
           token: req.csrfToken()

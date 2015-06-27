@@ -1,46 +1,22 @@
 var debug = require('debug')('donut:emailer');
 var _ = require('underscore');
 var nodemailer = require('nodemailer');
+var underscoreTemplate = require('../util/underscoreTemplate');
 var i18next = require('../util/i18next');
 var conf = require('../../config/index');
 var mailgunTransport = require('nodemailer-mailgun-transport');
 var path = require('path');
 
-/**
- * @hack the hogan-express module to avoid loading another rendering module just for email templating
- * add .lookup() method and i18next template helper
- */
-var hoganExpress = require('hogan-express');
-var _options = {
-  settings: {
-    layout: path.join(__dirname, '/../../web-server/views/emails/layout.html'),
-    "view engine": "html"
-  },
-  cache: false,
-  i: function() {
-    return function(text) {
-      return i18next.t(text);
-    };
-  }
-};
-var _defaultOptions = {
-  fqdn: conf.fqdn,
-  email: conf.email.from.email,
-  facebook_url: conf.facebook.url,
-  twitter_url: conf.twitter.url
-};
-var _render = _.bind(hoganExpress, {
-  lookup: function(name) {
-    return name;
-  },
-  i: function(text) {
-    return i18next.t(text);
+// template renderer
+var renderer = underscoreTemplate.standard({
+  defaultVariables: {
+    t: i18next.t,
+    fqdn: conf.fqdn,
+    email: conf.email.from.email,
+    facebook_url: conf.facebook.url,
+    twitter_url: conf.twitter.url
   }
 });
-var hoganRender = function(view, data, fn) {
-  var options = _.extend(_options, data);
-  _render(path.join(__dirname, '/../../web-server/views/emails/', view), options, fn);
-};
 
 var emailer = {};
 module.exports = emailer;
@@ -63,10 +39,10 @@ function send(data, fn) {
   if (!data.text && !data.html) return fn('"text" or "html" are mandatory');
 
   var to = data.to;
-  if (process.env != 'production' ) {
-    var patt = new RegExp("([^@]+)"); // Everything before the first @ met
-    var res = patt.exec(data.to);
-    to = conf.email.test_name + '+' + res[0] + conf.email.test_domain;
+
+  // stub to email in non-production environment
+  if (process.env.NODE_ENV !== 'production' ) {
+    to = 'donutmetest+__name__@gmail.com'.replace('__name__', to.substr(0, to.indexOf('@')));
   }
 
   // prepare
@@ -102,14 +78,14 @@ function send(data, fn) {
  * @param callback
  */
 emailer.forgot = function(to, token, callback) {
-  hoganRender('forgot.html', _.extend(_defaultOptions, {token: token}), function (err, text) {
+  renderer.render('emails/forgot.html', {token: token}, function (err, html) {
     if (err)
       return callback(err);
 
     send({
       to: to,
       subject: i18next.t("email.forgot.subject"),
-      html: text
+      html: html
     },callback);
 
   });
@@ -122,18 +98,17 @@ emailer.forgot = function(to, token, callback) {
  * @param callback
  */
 emailer.welcome = function(to, callback) {
-  hoganRender('signup.html', _defaultOptions, function (err, text) {
+  renderer.render('emails/signup.html', {}, function (err, html) {
     if (err)
       return callback(err);
 
     send({
       to: to,
       subject: i18next.t("email.welcome.subject"),
-      html: text
+      html: html
     },callback);
 
   });
-
 };
 
 /**
@@ -143,14 +118,14 @@ emailer.welcome = function(to, callback) {
  * @param callback
  */
 emailer.passwordChanged = function(to, callback) {
-  hoganRender('password-changed.html', _defaultOptions, function (err, text) {
+  renderer.render('emails/password-changed.html', {}, function (err, html) {
     if (err)
       return callback(err);
 
     send({
       to: to,
       subject: i18next.t("email.passwordchanged.subject"),
-      html: text
+      html: html
     },callback);
 
   });
@@ -163,14 +138,14 @@ emailer.passwordChanged = function(to, callback) {
  * @param callback
  */
 emailer.emailChanged = function(to, callback) {
-  hoganRender('email-changed.html', _defaultOptions, function (err, text) {
+  renderer.render('emails/email-changed.html', {}, function (err, html) {
     if (err)
       return callback(err);
 
     send({
       to: to,
       subject: i18next.t("email.emailchanged.subject"),
-      html: text
+      html: html
     },callback);
 
   });
@@ -186,7 +161,7 @@ emailer.emailChanged = function(to, callback) {
  * @param callback
  */
 emailer.userMessage = function(toEmail, username, events, callback) {
-  hoganRender('user-message.html', _.extend(_defaultOptions, {username: username, events: events}), function (err, html) { // @todo yls when templates valid with underscore, check repetitive avatar & username
+  renderer.render('emails/user-message.html', {username: username, events: events}, function (err, html) { // @todo yls when templates valid with underscore, check repetitive avatar & username
     if (err)
       return callback(err);
 
@@ -208,7 +183,7 @@ emailer.userMessage = function(toEmail, username, events, callback) {
  * @param callback
  */
 emailer.roomMessage = function(toEmail, events, roomName, roomAvatar, callback) {
-  hoganRender('room-message.html', _.extend(_defaultOptions, {events: events, room_name: roomName, room_avatar: roomAvatar}), function (err, html) {
+  renderer.render('emails/room-message.html', {events: events, room_name: roomName, room_avatar: roomAvatar}, function (err, html) {
     if (err)
       return callback(err);
 
@@ -229,14 +204,14 @@ emailer.roomMessage = function(toEmail, events, roomName, roomAvatar, callback) 
  * @param callback
  */
 emailer.roomOp = function(to, from, room, callback) {
-  hoganRender('room-op.html', _.extend(_defaultOptions, { username: from, roomname: room.name }), function (err, text) {
+  renderer.render('emails/room-op.html', { username: from, roomname: room.name }, function (err, html) {
     if (err)
       return callback(err);
 
     send({
       to: to,
       subject: i18next.t("email.roomop.subject")+' '+room.name,
-      html: text
+      html: html
     },callback);
 
   });
@@ -251,14 +226,14 @@ emailer.roomOp = function(to, from, room, callback) {
  * @param callback
  */
 emailer.roomDeop = function(to, from, room, callback) {
-  hoganRender('room-deop.html', _.extend(_defaultOptions, { username: from, roomname: room.name }), function (err, text) {
+  renderer.render('emails/room-deop.html', { username: from, roomname: room.name }, function (err, html) {
     if (err)
       return callback(err);
 
     send({
       to: to,
       subject: i18next.t("email.roomdeop.subject")+' '+room.name,
-      html: text
+      html: html
     },callback);
 
   });
@@ -273,14 +248,14 @@ emailer.roomDeop = function(to, from, room, callback) {
  * @param callback
  */
 emailer.roomKick = function(to, from, room, callback) {
-  hoganRender('room-kick.html', _.extend(_defaultOptions, { username: from, roomname: room.name }), function (err, text) {
+  renderer.render('emails/room-kick.html', { username: from, roomname: room.name }, function (err, html) {
     if (err)
       return callback(err);
 
     send({
       to: to,
       subject: i18next.t("email.roomkick.subject")+' '+room.name,
-      html: text
+      html: html
     },callback);
 
   });
@@ -295,14 +270,14 @@ emailer.roomKick = function(to, from, room, callback) {
  * @param callback
  */
 emailer.roomBan = function(to, from, room, callback) {
-  hoganRender('room-ban.html', _.extend(_defaultOptions, { username: from, roomname: room.name }), function (err, text) {
+  renderer.render('emails/room-ban.html', { username: from, roomname: room.name }, function (err, html) {
     if (err)
       return callback(err);
 
     send({
       to: to,
       subject: i18next.t("email.roomban.subject")+' '+room.name,
-      html: text
+      html: html
     },callback);
 
   });
@@ -317,19 +292,19 @@ emailer.roomBan = function(to, from, room, callback) {
  * @param callback
  */
 emailer.roomDeban = function(to, from, room, callback) {
-  var options = _.extend(_defaultOptions, {
+  var options = {
     username: from,
     roomname: room.name
-  });
+  };
 
-  hoganRender('room-deban.html', options, function (err, text) {
+  renderer.render('emails/room-deban.html', options, function (err, html) {
     if (err)
       return callback(err);
 
     send({
       to: to,
       subject: i18next.t("email.roomdeban.subject")+' '+room.name,
-      html: text
+      html: html
     },callback);
 
   });
@@ -353,14 +328,14 @@ emailer.contactForm = function(data, callback) {
  * @param callback
  */
 emailer.roomTopic = function(to, from, room, callback) {
-  hoganRender('room-topic.html', _.extend(_defaultOptions, { username: from, roomname: room.name }), function (err, text) {
+  renderer.render('emails/room-topic.html', { username: from, roomname: room.name }, function (err, html) {
     if (err)
       return callback(err);
 
     send({
       to: to,
       subject: i18next.t("email.roomtopic.subject")+' '+room.name,
-      html: text
+      html: html
     },callback);
 
   });

@@ -37,6 +37,7 @@ module.exports = function(req, res, next, roomname) {
             ? req.protocol + '://' + conf.fqdn + '/user/' + (''+room.owner.username).toLocaleLowerCase()
             : '';
           room.owner.isOwner = true;
+          room.owner.isOp = false; // could not be both
         }
 
         // op
@@ -44,15 +45,18 @@ module.exports = function(req, res, next, roomname) {
           var opList = [];
           var opIds = [];
           _.each(room.op, function(op) {
-            if (room.owner && room.owner._id && room.owner._id.toString() == op._id.toString()) {
+            if (room.owner && room.owner._id && room.owner.id == op.id) {
               return;
             }
+
+            op.prout = 'ahahaha';
 
             op.avatar = cloudinary.userAvatar(op._avatar(), 80, op.color);
             op.url = (op.username)
               ? req.protocol + '://' + conf.fqdn + '/user/' + (''+op.username).toLocaleLowerCase()
               : '';
             op.isOp = true;
+            op.isOwner = false;
             opIds.push(op._id.toString());
             opList.push(op);
           });
@@ -63,15 +67,19 @@ module.exports = function(req, res, next, roomname) {
         if (room.users && room.users.length) {
           var usersList = [];
           _.each(room.users, function(u) {
-//            if (room.owner && room.owner._id && room.owner._id.toString() == u._id.toString())
-//              return;
-//            if (room.op && opIds && opIds.indexOf(u._id.toString()) !== -1)
-//              return;
+            if (room.owner && room.owner._id && room.owner.id == u.id)
+              return;
+            if (room.op && opIds && opIds.indexOf(u._id.toString()) !== -1)
+              return;
+
+            u.prout = 'ahahaha';
 
             u.avatar = cloudinary.userAvatar(u._avatar(), 80, u.color);
             u.url = (u.username)
               ? req.protocol + '://' + conf.fqdn + '/user/' + (''+u.username).toLocaleLowerCase()
               : '';
+            u.isOp = false;
+            u.isOwner = false;
             usersList.push(u);
           });
           room.users = usersList;
@@ -82,7 +90,7 @@ module.exports = function(req, res, next, roomname) {
         next();
       } else {
         res.render('404', {}, function(err, html) {
-          res.send(404, html);
+          res.status(404).send(html);
         });
       }
 

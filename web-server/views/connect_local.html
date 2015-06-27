@@ -1,84 +1,44 @@
+<% layout('form') %>
 <div id="signup">
     <div class="login">
         <div class="content">
             <form class="login-form" method="post" role="form">
-                <input type="hidden" name="_csrf" value="{{token}}">
+                <input type="hidden" name="_csrf" value="<%= token %>">
 
-                <h3 class="form-title">{{#i}}connect-local.title{{/i}}</h3>
+                <h3 class="form-title"><%= t('connect-local.title') %></h3>
 
-                {{#is_errors}}
-                <div class="alert alert-danger display-hide">
-                    {{#errors}}{{msg}}<br>{{/errors}}
-                </div>
-                {{/is_errors}}
+                <%= partial('errors') %>
 
-                {{#message}}
-                    <div class="alert alert-danger">{{message}}</div>
-                {{/message}}
+                <% if (message) { %>
+                    <div class="alert alert-danger"><%- message %></div>
+                <% } %>
 
                 <div class="form-group">
                     <p>
-                        {{#i}}connect-local.description{{/i}}:
+                        <%= t('connect-local.description') %>:
                     </p>
                 </div>
 
                 <div class="form-group">
                     <div class="input-icon">
                         <i class="fa fa-envelope-o"></i>
-                        <input type="email" id="signin-email" class="form-control placeholder-no-fix" name="email" placeholder="{{#i}}login.email-placeholder{{/i}}" value="{{userFields.email}}" tabindex="2">
+                        <input type="email" id="signin-email" class="form-control placeholder-no-fix" name="email" placeholder="<%= t('login.email-placeholder') %>" value="<%- userFields.email %>" tabindex="2">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <div class="input-icon">
                         <i class="fa fa-lock"></i>
-                        <input type="password" id="signin-password" class="form-control placeholder-no-fix" name="password" placeholder="{{#i}}login.password-placeholder{{/i}}" tabindex="3">
+                        <input type="password" id="signin-password" class="form-control placeholder-no-fix" name="password" placeholder="<%= t('login.password-placeholder') %>" tabindex="3">
                     </div>
                 </div>
 
 
                 <div class="form-group">
-                    <input type="submit" value="{{#i}}global.save{{/i}}" tabindex="4">
+                    <input type="submit" value="<%= t('global.save') %>" tabindex="4">
                     <div class="clearfix"></div>
                 </div>
             </form>
         </div>
     </div>
 </div>
-
-
-<!--<div id="connect-local">-->
-
-    <!--<h2>{{#i}}connect-local.title{{/i}}</h2>-->
-
-    <!--<div class="method-password">-->
-        <!--<form method="post" role="form">-->
-
-            <!--<input type="hidden" name="_csrf" value="{{token}}">-->
-
-            <!--{{#is_errors}}-->
-            <!--<div class="errors">-->
-                <!--{{#errors}}{{msg}}<br>{{/errors}}-->
-            <!--</div>-->
-            <!--{{/is_errors}}-->
-            <!-- -->
-            <!--{{#message}}-->
-            <!--<div class="alert alert-danger">{{message}}</div>-->
-            <!--{{/message}}-->
-
-            <!--<div class="form-group">-->
-                <!--{{#i}}connect-local.description{{/i}}:-->
-            <!--</div>-->
-            <!--<div class="form-group">-->
-                <!--<input type="text" id="signin-email" class="form-control" name="email" placeholder="{{#i}}login.email-placeholder{{/i}}" value="{{userFields.email}}" tabindex="2">-->
-            <!--</div>-->
-            <!--<div class="form-group">-->
-                <!--<input type="password" id="signin-password" class="form-control" name="password" placeholder="{{#i}}login.password-placeholder{{/i}}" tabindex="3">-->
-            <!--</div>-->
-            <!--<div class="form-group">-->
-                <!--<input type="submit" value="{{#i}}global.save{{/i}}" tabindex="4">-->
-            <!--</div>-->
-        <!--</form>-->
-    <!--</div>-->
-
-<!--</div>-->

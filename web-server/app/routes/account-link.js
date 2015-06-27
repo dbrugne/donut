@@ -8,11 +8,8 @@ var validateEmail = function(req, res, next) {
   req.checkBody('email', i18next.t("account.email.error.format")).isEmail();
   if (req.validationErrors()) {
     return res.render('connect_local', {
-      layout: 'layout-form',
-      partials: {head: '_head', foot: '_foot'},
       meta: {title: i18next.t("title.default")},
       userFields: req.body,
-      is_errors: true,
       errors: req.validationErrors()
     });
   }
@@ -32,8 +29,6 @@ var validateEmail = function(req, res, next) {
 
     if (user) {
       return res.render('connect_local', {
-        layout: 'layout-form',
-        partials: {head: '_head', foot: '_foot'},
         meta: {title: i18next.t("title.default")},
         userFields: req.body,
         error: i18next.t("account.email.error.alreadyexists")
@@ -47,9 +42,8 @@ var validateEmail = function(req, res, next) {
 router.route('/connect/local')
     .get(function(req, res) {
         res.render('connect_local', {
-          layout: 'layout-form',
-          partials: {head: '_head', foot: '_foot'},
           meta: {title: i18next.t("title.default")},
+          userFields: {},
           message: req.flash('signupMessage')
         });
     })

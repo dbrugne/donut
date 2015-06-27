@@ -22,8 +22,6 @@ router.get('/', [require('csurf')()], function(req, res) {
   };
 
   return res.render('landing', {
-    layout: false,
-    partials: {head: '_head', contactform: '_contact', foot: '_foot'},
     token: req.csrfToken(),
     meta: meta,
     logged: logged

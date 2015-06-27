@@ -1,8 +1,8 @@
-<div id="signup">
+<% layout('form') %><div id="signup">
     <div class="login">
         <div class="content">
             <form class="login-form" method="post" role="form">
-                <input type="hidden" name="_csrf" value="{{token}}">
+                <input type="hidden" name="_csrf" value="<%= token %>">
 
                 <div class="method-facebook">
                     <span class="fb-left">
@@ -10,7 +10,7 @@
                     </span>
                     <span class="fb-right">
                         <a href="/login/facebook" class="facebook-button" tabindex="1">
-                            <span class="text">{{#i}}actions.signup{{/i}} {{#i}}login.withfacebook{{/i}}</span>
+                            <span class="text"><%= t('actions.signup') %> <%= t('login.withfacebook') %></span>
                         </a>
                     </span>
                 </div>
@@ -19,34 +19,30 @@
                     <div class="outer"><div class="inner">Ou</div></div>
                 </div>
 
-                <h3 class="form-title">{{#i}}actions.signup{{/i}}</h3>
+                <h3 class="form-title"><%= t('actions.signup') %></h3>
 
-                {{#is_errors}}
-                <div class="alert alert-danger display-hide">
-                    {{#errors}}{{msg}}<br>{{/errors}}
-                </div>
-                {{/is_errors}}
+                <%- partial('errors') %>
 
                 <div class="form-group">
                     <div class="input-icon">
                         <i class="fa fa-user"></i>
-                        <input type="text" id="signin-email" class="form-control placeholder-no-fix" name="email" placeholder="{{#i}}login.email-placeholder{{/i}}" value="{{userFields.email}}" tabindex="2">
+                        <input type="text" id="signin-email" class="form-control placeholder-no-fix" name="email" placeholder="<%= t('login.email-placeholder') %>" value="<%- userFields.email %>" tabindex="2">
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="input-icon">
                         <i class="fa fa-lock"></i>
-                        <input type="password" id="signin-password" class="form-control placeholder-no-fix" name="password" placeholder="{{#i}}login.password-placeholder{{/i}}" tabindex="3">
+                        <input type="password" id="signin-password" class="form-control placeholder-no-fix" name="password" placeholder="<%= t('login.password-placeholder') %>" tabindex="3">
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <input type="submit" value="{{#i}}home.signup.etvoila{{/i}}" tabindex="4">
+                    <input type="submit" value="<%= t('home.signup.etvoila') %>" tabindex="4">
                     <div class="clearfix"></div>
                 </div>
 
                 <div class="create-account text-center">
-                    {{#i}}signup.disclaimer{{/i}}
+                    <%= t('signup.disclaimer') %>
                 </div>
             </form>
         </div>

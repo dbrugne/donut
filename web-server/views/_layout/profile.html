@@ -1,0 +1,24 @@
+<%- partial('head') %>
+<body class="body-profile" style="<% if (color) { %>background-color: <%- color %>;<% } %> <% if (poster) { %>background-image: url(<%- poster %>);<% } %>">
+<div class="upon">
+    <% if (success) { %><div class="alert alert-success"><%= success %></div><% } %>
+    <% if (info) { %><div class="alert alert-info"><%= info %></div><% } %>
+    <% if (warning) { %><div class="alert alert-warning"><%= warning %></div><% } %>
+    <% if (error) { %><div class="alert alert-danger"><%= error %></div><% } %>
+</div>
+<div id="languages">
+    <span><%= t('global.switchlanguage') %></span>
+    <a data-language="fr" class="switch">fr</a> -
+    <a data-language="en" class="switch">en</a>
+</div>
+<div class="color" <% if (color) { %>style="background-color: <%- color %>;"<% } %>>
+    <a href="/" class="logo">
+        <img src="/images/logo-onecolor-w.svg">
+    </a>
+    <div class="beta">alpha</div>
+    <div class="text"><%= t('baseline') %></div>
+</div>
+<%= content() %>
+<%- partial('foot') %>
+</body>
+</html>

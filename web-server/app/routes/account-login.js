@@ -9,11 +9,8 @@ var validateInput = function(req, res, next) {
   req.checkBody('password', i18next.t("login.passworderror")).isLength(1);
   if (req.validationErrors()) {
     return res.render('login', {
-      layout: 'layout-form',
-      partials: {head: '_head', foot: '_foot'},
       meta: {title: i18next.t("title.default")},
       userFields: {email: req.body.email},
-      is_errors: true,
       errors: req.validationErrors(),
       token: req.csrfToken()
     });
@@ -25,8 +22,6 @@ var validateInput = function(req, res, next) {
 router.route('/login')
     .get([require('csurf')()], function(req, res) {
         res.render('login', {
-          layout: 'layout-form',
-          partials: {head: '_head', foot: '_foot'},
           meta: {title: i18next.t("title.default")},
           userFields: {email: req.flash('email')},
           token: req.csrfToken()

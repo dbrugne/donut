@@ -17,19 +17,7 @@ module.exports = i18n;
  * @param res
  * @param next
  */
-i18n.middleware = function(req, res, next) {
-  i18next.handle(req, res, decorateViewWithHelper);
-
-  function decorateViewWithHelper() {
-    res.locals.i = function() {
-      return function(text) {
-        return res.locals.t(text);
-      }
-    };
-    next();
-  }
-
-};
+i18n.middleware = i18next.handle;
 
 /**
  * Routes that server i18next javascript and dynamic resources to browser
@@ -40,8 +28,6 @@ i18n.middleware = function(req, res, next) {
 var options = {
   maxAge: 60 * 60 // 1h, default: 60 * 60 * 24 * 30
 };
-i18next
-  .serveDynamicResources(router, options)
-  .serveMissingKeyRoute(router, options);
+i18next.serveDynamicResources(router, options);
 
 i18n.router = router;

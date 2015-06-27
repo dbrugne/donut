@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
-    <title>{{title}}</title>
+    <title><%- title %></title>
     <style type="text/css">
         html { -webkit-text-size-adjust:none; -ms-text-size-adjust: none;}
         @media only screen and (max-device-width: 680px), only screen and (max-width: 680px) {
@@ -81,9 +81,9 @@
                                         <table width="115" border="0" cellspacing="0" cellpadding="0" >
                                             <tr>
                                                 <td align="left" valign="top" class="mob_center">
-                                                    <a href="https://{{fqdn}}" target="_blank" style="color: #596167; font-family: Arial, Helvetica, sans-serif; font-size: 13px;">
+                                                    <a href="https://<%- fqdn %>" target="_blank" style="color: #596167; font-family: Arial, Helvetica, sans-serif; font-size: 13px;">
                                                         <font face="Arial, Helvetica, sans-seri; font-size: 13px;" size="3" color="#596167">
-                                                            <img src="https://{{fqdn}}/images/email/logo_small.png" alt="DONUT" border="0" style="width:200px; display: block;" />
+                                                            <img src="https://<%- fqdn %>/images/email/logo_small.png" alt="DONUT" border="0" style="width:200px; display: block;" />
                                                         </font>
                                                     </a>
                                                 </td>
@@ -110,16 +110,16 @@
                                                 <table border="0" cellspacing="0" cellpadding="0">
                                                     <tr>
                                                         <td width="30" align="center" style="line-height: 19px;">
-                                                            <a href="{{facebook_url}}" target="_blank" style="color: #596167; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">
+                                                            <a href="<%- facebook_url %>" target="_blank" style="color: #596167; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">
                                                                 <font face="Arial, Helvetica, sans-serif" size="2" color="#596167">
-                                                                    <img src="https://{{fqdn}}/images/email/facebook.gif" width="10" height="19" alt="Facebook" border="0" style="display: block;" />
+                                                                    <img src="https://<%- fqdn %>/images/email/facebook.gif" width="10" height="19" alt="Facebook" border="0" style="display: block;" />
                                                                 </font>
                                                             </a>
                                                         </td>
                                                         <td width="39" align="center" style="line-height: 19px;">
-                                                            <a href="{{twitter_url}}" target="_blank" style="color: #596167; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">
+                                                            <a href="<%- twitter_url %>" target="_blank" style="color: #596167; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">
                                                                 <font face="Arial, Helvetica, sans-serif" size="2" color="#596167">
-                                                                    <img src="https://{{fqdn}}/images/email/twitter.gif" width="19" height="16" alt="Twitter" border="0" style="display: block;" />
+                                                                    <img src="https://<%- fqdn %>/images/email/twitter.gif" width="19" height="16" alt="Twitter" border="0" style="display: block;" />
                                                                 </font>
                                                             </a>
                                                         </td>
@@ -142,7 +142,7 @@
             <!--content 1 -->
             <tr>
                 <td align="center" bgcolor="#ffffff">
-                    {{{ yield }}}
+                    <%=  yield  %>
                 </td>
             </tr>
             <!--content 1 END-->

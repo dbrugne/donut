@@ -7,9 +7,8 @@ var emailer = require('../../../shared/io/emailer');
 router.route('/account/edit/password')
     .get([require('csurf')(), isLoggedIn], function(req, res) {
         res.render('account_edit_password', {
-          layout: 'layout-form',
-          partials: {head: '_head', foot: '_foot'},
           meta: {title: i18next.t("title.default")},
+          userFields: {},
           token: req.csrfToken()
         });
     })
@@ -18,11 +17,8 @@ router.route('/account/edit/password')
         req.checkBody(['user','fields','password'], i18next.t("account.password.error.length")).isLength(6, 50);
         if (req.validationErrors()) {
             return res.render('account_edit_password', {
-              layout: 'layout-form',
-              partials: {head: '_head', foot: '_foot'},
               meta: {title: i18next.t("title.default")},
               userFields: req.body.user.fields,
-              is_errors: true,
               errors: req.validationErrors(),
               token: req.csrfToken()
             });

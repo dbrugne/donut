@@ -13,11 +13,8 @@ var validateInput = function (req, res, next) {
   req.checkBody(['email'], i18next.t("account.email.format")).isEmail();
   if (req.validationErrors()) {
     return res.render('account_forgot', {
-      layout: 'layout-form',
-      partials: {head: '_head', foot: '_foot'},
       meta: {title: i18next.t("title.default")},
       email: req.body.email,
-      is_errors : true,
       errors    : req.validationErrors(),
       token: req.csrfToken()
     });
@@ -111,8 +108,7 @@ var reset = function(req, res) {
 router.route('/forgot')
   .get(require('csurf')(), function (req, res) {
     res.render('account_forgot', {
-      layout: 'layout-form',
-      partials: {head: '_head', foot: '_foot'},
+      email: '',
       meta: {title: i18next.t("title.default")},
       token: req.csrfToken()
     });
@@ -130,8 +126,7 @@ router.route('/reset/:token')
         return res.redirect('/forgot');
       }
       res.render('account_reset', {
-        layout: 'layout-form',
-        partials: {head: '_head', foot: '_foot'},
+        email: '',
         meta: {title: i18next.t("title.default")},
         user: req.user,
         token: req.csrfToken()
