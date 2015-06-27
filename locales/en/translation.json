@@ -643,6 +643,13 @@
           "button": "See the message on DONUT"
         }
       },
+      "roommessage": {
+        "subject": "You have received a message on DONUT.me",
+        "content": {
+          "title": "You have received a message",
+          "button": "See the message on DONUT"
+        }
+      },
       "roomop": {
         "subject": "You have been promoted moderator of the Room ",
         "content": {

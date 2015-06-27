@@ -92,6 +92,7 @@ historySchema.methods.toClientJSON = function(userViewed) {
   data.id = this.id;
   data.name = this.room.name;
   data.room_id = this.room.id;
+  data.room_avatar = this.room._avatar();
   data.time = this.time;
   if (this.user) {
     data.user_id = this.user.id;
@@ -208,7 +209,7 @@ historySchema.statics.retrieveEventWithContext = function(eventId, userId, limit
 
     function retrieveModel(callback) {
       that.findOne({_id: eventId})
-        .populate('room', 'name')
+        .populate('room', 'name avatar')
         .populate('user', 'username avatar color facebook')
         .populate('by_user', 'username avatar color facebook')
         .exec(function(err, event) {
@@ -226,7 +227,7 @@ historySchema.statics.retrieveEventWithContext = function(eventId, userId, limit
       that.find(_criteria)
         .sort({time: 'asc'})
         .limit(limit)
-        .populate('room', 'name')
+        .populate('room', 'name avatar')
         .populate('user', 'username avatar color facebook')
         .populate('by_user', 'username avatar color facebook')
         .exec(function(err, results) {
@@ -249,7 +250,7 @@ historySchema.statics.retrieveEventWithContext = function(eventId, userId, limit
       that.find(_criteria)
         .sort({time: 'desc'})
         .limit(limit)
-        .populate('room', 'name')
+        .populate('room', 'name avatar')
         .populate('user', 'username avatar color facebook')
         .populate('by_user', 'username avatar color facebook')
         .exec(function(err, results) {

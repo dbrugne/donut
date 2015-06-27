@@ -4,6 +4,7 @@ var async = require('async');
 var User = require('../../../../shared/models/user');
 var NotificationModel = require('../../../../shared/models/notification');
 var emailer = require('../../../../shared/io/emailer');
+var utils = require('./utils');
 
 var FREQUENCY_LIMITER = 1; // 1mn
 
@@ -19,37 +20,24 @@ Notification.prototype.type = 'roomtopic';
 
 Notification.prototype.shouldBeCreated = function(type, room, data) {
 
-  var sendToDesktop = false;
-  var sendToEmail = false;
-  var sendToMobile = false;
+  var firstUser = null;
 
   var that = this;
   async.waterfall([
 
     function retrieveUserList(callback) {
-      User.findForTopic(room, data.event.user_id, callback);
+      User.findRoomUsersHavingPreference(room, that.type, data.event.user_id, callback);
     },
 
-    function checkRepetive(users, callback) {
+    function getFirstUser(users, callback) {
       if (users.length == 0)
-        return;
+        return callback('No user found for this topic change');
 
-      var user = users[0]; // get first one
-      var delay = Date.now() - 1000*60*FREQUENCY_LIMITER; // 1mn
-      NotificationModel.find({
-        type: that.type,
-        user: user,
-        'data.from_user_id': data.from_user_id,
-        time: {$gte: new Date(delay) }
-      }).count(function(err, count) {
-        if (err)
-          return callback(err);
-        else if (count > 0)
-          return callback('no notification due to repetitive');
-        else
-          return callback(null, users);
-      });
+      firstUser = users[0]; // get first one
+      callback(null, users);
     },
+
+    utils.checkRepetitive(type, firstUser, { 'data.from_user_id': data.from_user_id }, FREQUENCY_LIMITER),
 
     function checkStatus(users, callback) {
       that.facade.app.statusService.getStatusByUids(_.map(users, 'id'), function(err, statuses) {
@@ -62,79 +50,57 @@ Notification.prototype.shouldBeCreated = function(type, room, data) {
 
     function prepare(users, statuses, callback) {
 
-      _.each(users, function(user){
-        user.status = statuses[user.id];
-        sendToDesktop = user.preferencesValue("notif:channels:desktop");
-        // User is Offline, check preferences before sending
-        if (!user.status) {
-          sendToEmail = user.preferencesValue("notif:channels:email");
-          sendToMobile = user.preferencesValue("notif:channels:mobile");
-        }
-      });
+      var topic = data.event.topic;
 
-      return callback(null, users);
+      // cleanup data
+      var wet = _.clone(data.event);
+      var dry = _.omit(wet, [
+        'time',
+        'topic',
+        'avatar',
+        'username',
+        'user_id',
+        'name'
+      ]);
+
+      dry.by_user = wet.user_id;
+      dry.room = room._id.toString() ;
+
+      _.each(users, function(user){
+        dry.user = user._id.toString() ;
+
+        var model = NotificationModel.getNewModel(that.type, user, dry);
+
+        model.to_browser = user.preferencesValue("notif:channels:desktop");
+        model.to_email = (statuses[user.id] ? false : user.preferencesValue("notif:channels:email"));
+        model.to_mobile = (statuses[user.id] ? false : user.preferencesValue("notif:channels:mobile"));
+
+        model.save(function(err) {
+          if (err)
+            logger.error(err);
+          else
+            logger.info('notification created: '+that.type+' for '+user.username);
+        });
+
+        if (!model.sent_to_browser)
+          that.sendToBrowser(model, user, room);
+
+      });
     }
   ], function(err, users) {
     if (err)
-      logger.error(err+': '+that.type+' in Room '+room.name);
-    else
-      _.each(users, function(user){
-        that.create(user, room, data, sendToDesktop, sendToEmail, sendToMobile);
-      });
+      return logger.error('Error happened in roomTopicType|shouldBeCreated : '+err);
   });
 
 };
 
-Notification.prototype.create = function(user, room, data, sendToDesktop, sendToEmail, sendToMobile) {
-  var topic = data.event.topic;
-
-  // cleanup data
-  var wet = _.clone(data.event);
-  var dry = _.omit(wet, [
-    'time',
-    'topic',
-    'avatar',
-    'username',
-    'user_id',
-    'name'
-  ]);
-
-  dry.by_user = wet.user_id;
-  dry.user = user._id.toString() ;
-  dry.room = room._id.toString() ;
-
-  var model = NotificationModel.getNewModel(this.type, user, dry);
-
-  model.to_desktop = sendToDesktop;
-  model.to_email = sendToEmail;
-  model.to_mobile = sendToMobile;
-
-  var that = this;
-  model.save(function(err) {
-    if (err)
-      logger.error(err);
-    else
-      logger.info('notification created: '+that.type+' for '+user.username);
-  });
-
-  if (!model.sent_to_browser)
-    that.sendToBrowser(model, user, room);
-};
-
-Notification.prototype.sendToBrowser = function(model, by_user, room) { // @toto yls clean params
+Notification.prototype.sendToBrowser = function(model, by_user, room) {
   var userId = (model.user._id) ? model.user._id.toString() : model.user;
   var that = this;
 
   async.waterfall([
 
-    function retrieveUser(callback) {
-      User.findByUid(userId).exec(function(err, user) {
-        if (err)
-          return callback(err);
-        else
-          return callback(null, user);
-      });
-    },
+    utils.retrieveUser(userId),
 
     function prepare(user, callback) {
 
@@ -143,7 +109,7 @@ Notification.prototype.sendToBrowser = function(model, by_user, room) { // @toto
         time: model.time,
         type: model.type,
         viewed: false,
-        to_desktop: user.preferencesValue('notif:channels:desktop'), // trigger desktop notification
+        to_browser: user.preferencesValue('notif:channels:desktop'),
         data: {
           by_user: {
             avatar: by_user._avatar(),
@@ -166,32 +132,22 @@ Notification.prototype.sendToBrowser = function(model, by_user, room) { // @toto
       return callback(null, notification);
     },
 
-    function retrieveNotificationCount(notification, callback) {
-      NotificationModel.find({
-        user: userId,
-        done: false,
-        viewed: false
-      }).count().exec(function(err, count) {
+    utils.retrieveUnreadNotificationsCount(userId),
+
+    function push(notification, count, callback) {
+      notification.unviewed = count || 0;
+
+      that.facade.app.globalChannelService.pushMessage('connector', 'notification:new', notification, 'user:'+userId, {}, function(err) {
         if (err)
-          return callback(err);
+          return callback('Error while sending notification:new message to user clients: '+err);
 
-        notification.unviewed = count || 0;
-
-        return callback(null, notification);
-
+        logger.debug('notification sent: '+notification);
       });
     }
 
-  ], function(err, notification) {
+  ], function(err) {
     if (err)
-      return logger.error(err+': in roomPromoteType');
-
-    that.facade.app.globalChannelService.pushMessage('connector', 'notification:new', notification, 'user:'+userId, {}, function(err) {
-      if (err)
-        logger.error('Error while sending notification:new message to user clients: '+err);
-
-      logger.debug('notification sent: '+notification);
-    });
+      return logger.error('Error happened in roomTopicType|sendToBrowser : '+err);
   });
 };
 
@@ -201,14 +157,22 @@ Notification.prototype.sendEmail = function(model) {
   var from = model.data.by_user.username;
   var room = model.data.room;
 
-  emailer.roomTopic(to, from, room, function(err) {
-    if (err)
-      logger.debug('Unable to sent roomTopic email: '+err);
-  });
+  async.waterfall([
 
-  model.sent_to_email = true;
-  model.sent_to_email_at = new Date();
-  model.save();
+    function send(callback) {
+      emailer.roomTopic(to, from, room, callback);
+    },
+
+    function saveOnUser(callback) {
+      model.sent_to_email = true;
+      model.sent_to_email_at = new Date();
+      model.save(callback);
+    }
+
+  ], function(err) {
+    if (err)
+      return logger.error('Error happened in roomTopicType|sendEmail : '+err);
+  });
 
 };
 
