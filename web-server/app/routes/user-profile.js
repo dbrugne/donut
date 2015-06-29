@@ -22,8 +22,6 @@ router.get('/user/:user', function(req, res) {
   };
 
   res.render('user_profile', {
-    layout: 'layout-profile',
-    partials: {head: '_head', foot: '_foot', room: '_room'},
     meta: meta,
     subtitle: req.requestedUser.username,
     _user: req.requestedUser,

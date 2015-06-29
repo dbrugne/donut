@@ -15,8 +15,6 @@ router.get('/!', function(req, res) {
 
     // render an HTML DOM that redirect browser on corresponding profile page
     return res.render('chat_track_anchor', {
-      layout: false,
-      partials: {head: '_head'},
       meta: {title: i18next.t("title.chat")},
       colors: colors.toString()
     });
@@ -45,8 +43,6 @@ router.get('/!', function(req, res) {
   }
 
   return res.render('chat', {
-    layout: false,
-    partials: {head: '_head', contactform: '_contact'},
     meta: {title: i18next.t("title.chat")},
     colors: colors.toString(),
     hello: hello().replace('%u', '<strong>@'+req.user.username+'</strong>'),

@@ -4,6 +4,7 @@ var async = require('async');
 var conf = require('../../../../../config/index');
 var uuid = require('node-uuid');
 var keenio = require('../../../../../shared/io/keenio');
+var Notifications = require('../../../components/notifications');
 
 var GLOBAL_CHANNEL_NAME = 'global';
 var USER_CHANNEL_PREFIX = 'user:';
@@ -159,6 +160,29 @@ handler.enter = function(msg, session, next) {
 
 				return callback(null, welcome);
 			});
+		},
+
+		function cleanupNotifications(welcome, callback) {
+            Notifications(that.app).retrieveUserNotifications(uid, {viewed: false}, function(err, notifications){
+                if (err)
+                    return callback('Error while retrieving pending notifications for uid: '+uid+' : '+err);
+
+                var uids = [];
+                _.each(notifications, function (notification){
+                    uids.push(notification.id);
+                });
+
+                if (uids.length > 0) {
+                    Notifications(that.app).avoidNotificationsSending(uid, uids, function(err, countUpdated) {
+                        if (err)
+                            return callback('Error while setting notifications as read for '+session.uid+': '+err);
+
+                        return callback(null, welcome);
+                    });
+                } else {
+                    return callback(null, welcome);
+                }
+            });
 		},
 
 		function tracking(welcome, callback) {

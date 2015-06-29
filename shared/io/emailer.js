@@ -1,8 +1,22 @@
 var debug = require('debug')('donut:emailer');
+var _ = require('underscore');
 var nodemailer = require('nodemailer');
+var underscoreTemplate = require('../util/underscoreTemplate');
 var i18next = require('../util/i18next');
 var conf = require('../../config/index');
 var mailgunTransport = require('nodemailer-mailgun-transport');
+var path = require('path');
+
+// template renderer
+var renderer = underscoreTemplate.standard({
+  defaultVariables: {
+    t: i18next.t,
+    fqdn: conf.fqdn,
+    email: conf.email.from.email,
+    facebook_url: conf.facebook.url,
+    twitter_url: conf.twitter.url
+  }
+});
 
 var emailer = {};
 module.exports = emailer;
@@ -24,10 +38,17 @@ function send(data, fn) {
   if (!data.subject) return fn('"subject" is mandatory');
   if (!data.text && !data.html) return fn('"text" or "html" are mandatory');
 
+  var to = data.to;
+
+  // stub to email in non-production environment
+  if (process.env.NODE_ENV !== 'production' ) {
+    to = conf.email.fake.replace('__name__', to.substr(0, to.indexOf('@')));
+  }
+
   // prepare
   var options = {
     from: conf.email.from.name+' <'+conf.email.from.email+'>',
-    to: data.to,
+    to: to,
     subject: data.subject
   };
   if (data.text)
@@ -49,40 +70,244 @@ function send(data, fn) {
   });
 }
 
+/**
+ * Sent to a User when he process to /forgot page to retrieve his password
+ *
+ * @param to
+ * @param token
+ * @param callback
+ */
+emailer.forgot = function(to, token, callback) {
+  renderer.render('emails/forgot.html', {token: token}, function (err, html) {
+    if (err)
+      return callback(err);
+
+    send({
+      to: to,
+      subject: i18next.t("email.forgot.subject"),
+      html: html
+    },callback);
+
+  });
+};
+
+/**
+ * Sent to a user when et creates an account
+ *
+ * @param to
+ * @param callback
+ */
 emailer.welcome = function(to, callback) {
+  renderer.render('emails/signup.html', {}, function (err, html) {
+    if (err)
+      return callback(err);
+
     send({
       to: to,
       subject: i18next.t("email.welcome.subject"),
-      text: i18next.t("email.welcome.text", {fqdn: conf.fqdn, email: conf.email.from.email}),
-      html: i18next.t("email.welcome.html", {fqdn: conf.fqdn, email: conf.email.from.email}),
+      html: html
     },callback);
+
+  });
+};
+
+/**
+ * Sent to a user when he renews his password
+ *
+ * @param to
+ * @param callback
+ */
+emailer.passwordChanged = function(to, callback) {
+  renderer.render('emails/password-changed.html', {}, function (err, html) {
+    if (err)
+      return callback(err);
+
+    send({
+      to: to,
+      subject: i18next.t("email.passwordchanged.subject"),
+      html: html
+    },callback);
+
+  });
+};
+
+/**
+ * Sent to a user when et renews his email
+ *
+ * @param to
+ * @param callback
+ */
+emailer.emailChanged = function(to, callback) {
+  renderer.render('emails/email-changed.html', {}, function (err, html) {
+    if (err)
+      return callback(err);
+
+    send({
+      to: to,
+      subject: i18next.t("email.emailchanged.subject"),
+      html: html
+    },callback);
+
+  });
+
+};
+
+/**
+ * Sent to a User when he send some messages to another User
+ *
+ * @param toEmail
+ * @param username
+ * @param events
+ * @param callback
+ */
+emailer.userMessage = function(toEmail, username, events, callback) {
+  renderer.render('emails/user-message.html', {username: username, events: events}, function (err, html) {
+    if (err)
+      return callback(err);
+
+    send({
+      to: toEmail,
+      subject: i18next.t("email.usermessage.subject"),
+      html: html
+    }, callback);
+  });
+};
+
+/**
+ * Sent to a User when he send some messages to another User
+ *
+ * @param toEmail
+ * @param events
+ * @param roomName
+ * @param roomAvatar
+ * @param callback
+ */
+emailer.roomMessage = function(toEmail, events, roomName, roomAvatar, callback) {
+  renderer.render('emails/room-message.html', {events: events, room_name: roomName, room_avatar: roomAvatar}, function (err, html) {
+    if (err)
+      return callback(err);
+
+    send({
+      to: toEmail,
+      subject: i18next.t("email.roommessage.subject"),
+      html: html
+    }, callback);
+  });
+};
+
+/**
+ * Sent to a User when he has been promoted moderator of a room
+ *
+ * @param to
+ * @param from
+ * @param room
+ * @param callback
+ */
+emailer.roomOp = function(to, from, room, callback) {
+  renderer.render('emails/room-op.html', { username: from, roomname: room.name }, function (err, html) {
+    if (err)
+      return callback(err);
+
+    send({
+      to: to,
+      subject: i18next.t("email.roomop.subject")+' '+room.name,
+      html: html
+    },callback);
+
+  });
+};
+
+/**
+ * Sent to a User when has been excluded from moderators of a room
+ *
+ * @param to
+ * @param from
+ * @param room
+ * @param callback
+ */
+emailer.roomDeop = function(to, from, room, callback) {
+  renderer.render('emails/room-deop.html', { username: from, roomname: room.name }, function (err, html) {
+    if (err)
+      return callback(err);
+
+    send({
+      to: to,
+      subject: i18next.t("email.roomdeop.subject")+' '+room.name,
+      html: html
+    },callback);
+
+  });
+};
+
+/**
+ * Sent to a User has been kicked from a room
+ *
+ * @param to
+ * @param from
+ * @param room
+ * @param callback
+ */
+emailer.roomKick = function(to, from, room, callback) {
+  renderer.render('emails/room-kick.html', { username: from, roomname: room.name }, function (err, html) {
+    if (err)
+      return callback(err);
+
+    send({
+      to: to,
+      subject: i18next.t("email.roomkick.subject")+' '+room.name,
+      html: html
+    },callback);
+
+  });
+};
+
+/**
+ * Sent to a User when he has been banned from a room
+ *
+ * @param to
+ * @param from
+ * @param room
+ * @param callback
+ */
+emailer.roomBan = function(to, from, room, callback) {
+  renderer.render('emails/room-ban.html', { username: from, roomname: room.name }, function (err, html) {
+    if (err)
+      return callback(err);
+
+    send({
+      to: to,
+      subject: i18next.t("email.roomban.subject")+' '+room.name,
+      html: html
+    },callback);
+
+  });
+};
+
+/**
+ * Sent to a User when he has been unbanned from a room
+ *
+ * @param to
+ * @param from
+ * @param room
+ * @param callback
+ */
+emailer.roomDeban = function(to, from, room, callback) {
+  var options = {
+    username: from,
+    roomname: room.name
   };
 
-emailer.forgot = function(to, token, callback) {
-  send({
-    to: to,
-    subject: i18next.t("email.forgot.subject"),
-    text: i18next.t("email.forgot.text", {fqdn: conf.fqdn, email: conf.email.from.email, token: token}),
-    html: i18next.t("email.forgot.html", {fqdn: conf.fqdn, email: conf.email.from.email, token: token})
-  },callback);
-};
+  renderer.render('emails/room-deban.html', options, function (err, html) {
+    if (err)
+      return callback(err);
 
-emailer.passwordChanged = function(to, callback) {
-  send({
-    to: to,
-    subject: i18next.t("email.passwordchanged.subject"),
-    text: i18next.t("email.passwordchanged.text", {fqdn: conf.fqdn, email: conf.email.from.email}),
-    html: i18next.t("email.passwordchanged.html", {fqdn: conf.fqdn, email: conf.email.from.email})
-  },callback);
-};
+    send({
+      to: to,
+      subject: i18next.t("email.roomdeban.subject")+' '+room.name,
+      html: html
+    },callback);
 
-emailer.emailChanged = function(to, callback) {
-  send({
-    to: to,
-    subject: i18next.t("email.emailchanged.subject"),
-    text: i18next.t("email.emailchanged.text", {fqdn: conf.fqdn, email: conf.email.from.email}),
-    html: i18next.t("email.emailchanged.html", {fqdn: conf.fqdn, email: conf.email.from.email})
-  },callback);
+  });
 };
 
 emailer.contactForm = function(data, callback) {
@@ -92,4 +317,48 @@ emailer.contactForm = function(data, callback) {
     text: i18next.t("email.contact.text", data),
     html: i18next.t("email.contact.html", data)
   },callback);
+};
+
+/**
+ * Sent to a User when The topic changed in a Room in which he wants to be warned
+ *
+ * @param to
+ * @param from
+ * @param room
+ * @param callback
+ */
+emailer.roomTopic = function(to, from, room, callback) {
+  renderer.render('emails/room-topic.html', { username: from, roomname: room.name }, function (err, html) {
+    if (err)
+      return callback(err);
+
+    send({
+      to: to,
+      subject: i18next.t("email.roomtopic.subject")+' '+room.name,
+      html: html
+    },callback);
+
+  });
+};
+
+/**
+ * Sent to a User when The topic changed in a Room in which he wants to be warned
+ *
+ * @param to
+ * @param from
+ * @param room
+ * @param callback
+ */
+emailer.roomJoin = function(to, from, room, callback) {
+  renderer.render('emails/room-join.html', { username: from, roomname: room.name }, function (err, html) {
+    if (err)
+      return callback(err);
+
+    send({
+      to: to,
+      subject: i18next.t("email.roomjoin.subject")+' '+room.name,
+      html: html
+    },callback);
+
+  });
 };

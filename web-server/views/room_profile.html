@@ -1,59 +1,60 @@
-<input type="hidden" name="id" value="{{room._id}}"><!-- petit curieux -->
+<% layout('profile') %>
+<input type="hidden" name="id" value="<%= room._id %>"><!-- petit curieux -->
 <div id="profile" class="room-profile">
     <div class="cover room">
-        <a href="{{room.url}}"><img class="avatar" src="{{room.avatar}}" alt="{{room.name}} avatar"></a>
-        <p class="join"><a href="{{^user}}{{room.join}}{{/user}}{{#user}}{{room.chat}}{{/user}}" {{#room.color}}style="background-color: {{room.color}};"{{/room.color}}>{{#i}}actions.join{{/i}} {{#room.usersCount}}{{room.usersCount}}{{/room.usersCount}} <i class="icon icon-user-custom"></i></a></p>
+        <a href="<%= room.url %>"><img class="avatar" src="<%= room.avatar %>" alt="<%= room.name %> avatar"></a>
+        <p class="join"><a href="<% if (!user) { %><%= room.join %><% } else { %><%= room.chat %><% } %>" <% if (room.color) { %>style="background-color: <%= room.color %>;"<% } %>><%= t('actions.join') %> <% if (room.usersCount) { %><%= room.usersCount %><% } %> <i class="icon icon-user-custom"></i></a></p>
     </div>
     <div class="text room">
         <div class="name-content">
-            <a href="{{room.url}}" class="name">{{room.name}}</a>
-            <div class="fb-like" data-href="{{room.url}}" data-layout="button" data-action="like" data-show-faces="false" data-share="true" data-ref="profile-page"></div>
+            <a href="<%= room.url %>" class="name"><%= room.name %></a>
+            <div class="fb-like" data-href="<%= room.url %>" data-layout="button" data-action="like" data-show-faces="false" data-share="true" data-ref="profile-page"></div>
         </div>
-        {{#room.owner}}
+        <% if (room.owner) { %>
         <span class="owner">
-            {{#i}}global.by{{/i}} <a href="{{room.owner.url}}" {{#room.color}}style="color: {{room.color}};"{{/room.color}}>@{{room.owner.username}}</a>
+            <%= t('global.by') %> <a href="<%= room.owner.url %>" <% if (room.color) { %>style="color: <%= room.color %>;"<% } %>>@<%= room.owner.username %></a>
         </span>
-        {{/room.owner}}
-        {{#room.website}}
-        {{#room.owner}}<span class="separation">|</span>{{/room.owner}}
-        <span class="website" {{#room.color}}style="color: {{room.color}};"{{/room.color}}>
-            {{room.website}}
+        <% } %>
+        <% if (room.website) { %>
+        <% if (room.owner) { %><span class="separation">|</span><% } %>
+        <span class="website" <% if (room.color) { %>style="color: <%= room.color %>;"<% } %>>
+            <%= room.website %>
         </span>
-        {{/room.website}}
-        {{#room.description}}
+        <% } %>
+        <% if (room.description) { %>
         <div class="description">
-            <p class="description-content">{{{room.description}}}</p>
+            <p class="description-content"><%= room.description %></p>
         </div>
-        {{/room.description}}
+        <% } %>
     </div>
     <hr class="clear">
     <hr>
-    <p class="title">{{#i}}profile.room.ownerops{{/i}}</p>
+    <p class="title"><%= t('profile.room.ownerops') %></p>
     <div class="users cards">
-        {{#room.owner}}{{> user}}{{/room.owner}}
-        {{#room.op}}{{> user}}{{/room.op}}
+        <% if (room.owner) { %><%= partial('user', {_user: room.owner}) %><% } %>
+        <% _.each(room.op, function(_op) { print(partial('user', {_user: _op}));  }); %>
     </div>
     <hr class="clear">
     <hr class="push-bottom">
-    {{#room.topic}}
+    <% if (room.topic) { %>
     <div class="room">
-        <p class="title">{{#i}}profile.room.now{{/i}}</p>
+        <p class="title"><%= t('profile.room.now') %></p>
         <div class="topic">
-            <div class="topic-content"><label>{{#i}}chat.topic.label{{/i}}</label> {{{room.topic}}}</div>
+            <div class="topic-content"><label><%= t('chat.topic.label') %></label> <%= room.topic %></div>
         </div>
     </div>
-    {{/room.topic}}
+    <% } %>
     <div class="users cards">
-        {{#room.users}}{{> user}}{{/room.users}}
-        {{^room.users}}<div class="no">{{#i}}profile.room.nouser{{/i}}</div>{{/room.users}}
+        <% _.each(room.users, function(u) { print(partial('user', {_user: u})); }); %>
+        <% if (!room.users) { %><div class="no"><%= t('profile.room.nouser') %></div><% } %>
     </div>
     <hr class="clear">
     <hr class="push-bottom">
     <div class="disclaimer">
         <p>
-            {{#i}}profile.room.disclaimer.before{{/i}}
-            <a href="{{room.url}}">{{room.name}}</a>
-            {{#i}}profile.room.disclaimer.after{{/i}}
+            <%= t('profile.room.disclaimer.before') %>
+            <a href="<%= room.url %>"><%= room.name %></a>
+            <%= t('profile.room.disclaimer.after') %>
         </p>
         <a href="/"><img src="/images/logo-onecolor-gr.svg" alt="DONUT logo"></a>
     </div>

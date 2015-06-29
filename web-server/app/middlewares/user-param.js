@@ -86,13 +86,12 @@ module.exports = function(req, res, next, username) {
 
     if (err == '404') {
       return res.render('404', {}, function(err, html) {
-        res.send(404, html);
+        res.status(404).send(html);
       });
     }
 
     if (err) {
       req.flash('error', err);
-      console.log(err);
       return res.redirect('/');
     }
 

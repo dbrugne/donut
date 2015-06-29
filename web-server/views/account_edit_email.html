@@ -1,67 +1,32 @@
+<% layout('form') %>
 <div id="signup">
     <div class="login">
         <div class="content">
             <form class="login-form" method="post" role="form">
-                <input type="hidden" name="_csrf" value="{{token}}">
+                <input type="hidden" name="_csrf" value="<%= token %>">
 
-                <h3 class="form-title">{{#i}}edit-email.title{{/i}}</h3>
+                <h3 class="form-title"><%= t('edit-email.title') %></h3>
 
-                {{#is_errors}}
-                <div class="alert alert-danger display-hide">
-                    {{#errors}}{{msg}}<br>{{/errors}}
-                </div>
-                {{/is_errors}}
+                <%= partial('errors') %>
 
                 <div class="form-group">
                     <p>
-                        {{#i}}edit-email.info{{/i}}
+                        <%= t('edit-email.info') %>
                     </p>
                 </div>
 
                 <div class="form-group">
                     <div class="input-icon">
                         <i class="fa fa-envelope-o"></i>
-                        <input type="email" class="form-control placeholder-no-fix" id="email-field" name="user[fields][email]" placeholder="{{#i}}login.email-placeholder{{/i}}" value="{{userFields.email}}">
+                        <input type="email" class="form-control placeholder-no-fix" id="email-field" name="user[fields][email]" placeholder="<%= t('login.email-placeholder') %>" value="<%- userFields.email %>">
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <input type="submit" value="{{#i}}global.save{{/i}}" tabindex="4">
+                    <input type="submit" value="<%= t('global.save') %>" tabindex="4">
                     <div class="clearfix"></div>
                 </div>
             </form>
         </div>
     </div>
 </div>
-
-
-<!--
-<div id="email-edit">
-
-    <h2>{{#i}}edit-email.title{{/i}}</h2>
-
-    <form method="post" role="form">
-
-        <input type="hidden" name="_csrf" value="{{token}}">
-
-        {{#is_errors}}
-        <div class="errors">
-            {{#errors}}{{msg}}<br>{{/errors}}
-        </div>
-        {{/is_errors}}
-
-        <div>
-            {{#i}}edit-email.info{{/i}}
-        </div>
-
-        <div class="form-group">
-            <input type="email" class="form-control" id="email-field" name="user[fields][email]" placeholder="{{#i}}login.email-placeholder{{/i}}" value="{{userFields.email}}">
-        </div>
-
-        <div class="form-group center">
-            <input type="submit" value="{{#i}}global.save{{/i}}" tabindex="3">
-        </div>
-
-    </form>
-
-</div>-->

@@ -245,8 +245,69 @@ define([
       if (!beep)
         return;
       beep.play();
-    }
+    },
+    desktopNotify: function(title, body) {
 
+      if (!currentUser.shouldDisplayDesktopNotif())
+        return;
+
+      this._desktopNotify(title, body);
+    },
+    _desktopNotify: function(title, body) {
+      // Not already accepted or denied notification permission, prompt popup
+      if (notify.permissionLevel() == notify.PERMISSION_DEFAULT)
+        return this._desktopNotifyRequestPermission(notify.permissionLevel(), notify.PERMISSION_GRANTED, this._desktopNotifyCreateNotification());
+
+      // User denied it
+      if (notify.permissionLevel() == notify.PERMISSION_DENIED)
+        return;
+
+      this._desktopNotifyCreateNotification(title, body);
+    },
+    _desktopNotifyCreateNotification: function(title, body) {
+      notify.createNotification( title, {
+        body: body,
+        icon: {
+          'x16': 'images/donut_16x16.ico',
+          'x32': 'images/donut_32x32.ico'
+        }
+      });
+    },
+    _desktopNotifyRequestPermission: function(permissionLevel, permissionsGranted) {
+      var statusClass = {};
+      statusClass[notify.PERMISSION_DEFAULT] = 'alert';
+      statusClass[notify.PERMISSION_GRANTED] = 'alert alert-success';
+      statusClass[notify.PERMISSION_DENIED] = 'alert alert-error';
+
+      var win = window;
+      var isIE = false;
+
+      try {
+        isIE = (win.external && win.external.msIsSiteMode() !== undefined);
+      } catch (e) {}
+
+      var messages = {
+        notPinned: 'Pin current page in the taskbar in order to receive notifications',
+        notSupported: '<strong>Desktop Notifications not supported!</strong> Check supported browsers table and project\'s GitHub page.'
+      };
+
+      messages[notify.PERMISSION_DEFAULT] = '<strong>Warning!</strong> Click to allow displaying desktop notifications.';
+      messages[notify.PERMISSION_GRANTED] = '<strong>Success!</strong>';
+      messages[notify.PERMISSION_DENIED] = '<strong>Denied!</strong>';
+
+      var isSupported = notify.isSupported;
+      var status = isSupported ? statusClass[permissionLevel] : statusClass[notify.PERMISSION_DENIED];
+      var message = isSupported ? (isIE ? messages.notPinned : messages[permissionLevel]) : messages.notSupported;
+
+      if (permissionLevel === notify.PERMISSION_DEFAULT) {
+        notify.requestPermission(function() {
+          permissionLevel = notify.permissionLevel();
+          permissionsGranted = (permissionLevel === notify.PERMISSION_GRANTED);
+          status = isSupported ? statusClass[permissionLevel] : statusClass[notify.PERMISSION_DENIED];
+          message = isSupported ? (isIE ? messages.notPinned : messages[permissionLevel]) : messages.notSupported;
+        });
+      }
+    }
   });
 
   return new WindowView();

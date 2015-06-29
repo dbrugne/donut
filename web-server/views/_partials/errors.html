@@ -1,0 +1,7 @@
+<% if (typeof errors !== 'undefined' && errors.length) { %>
+<div class="errors">
+    <% _.each(errors, function(e) { %>
+    <%- e.msg %><br>
+    <% }); %>
+</div>
+<% } %>

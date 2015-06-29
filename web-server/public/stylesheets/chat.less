@@ -191,29 +191,50 @@
         }
       }
       #notifications {
-        .badge {
-          display: block;
-          position: absolute;
-          right: 17px; top: 6px;
-          line-height: 10px;
-          font-size: 8px;
-          font-weight: normal;
-          background-color: @cl-error;
+        &.empty {
+          .hide-empty { display: none; }
+          .show-empty { display: initial; }
         }
-        .dropdown-menu {
-          min-width: 275px;
-          min-height: 80px;
-          .loading {
-            margin: 20px;
-            font-size: 1.5em;
+        &.full {
+          .hide-empty { display: initial; }
+          .show-empty { display: none; }
+        }
+        .badge { display: block; position: absolute; right: 10px; top: 5px; line-height: 10px; font-size: 8px; font-weight: normal;   background-color: #FFF; color: @cl-first; border: 1px solid @cl-first;
+          &.bounce { animation: bounce 1s ease;
+            @keyframes bounce{
+              from {top: -5px;}
+              35%  {top: 10px;}
+              55%  {top: 0;}
+              75%  {top: 8px;}
+              90%  {top: 3px;}
+              to   {top: 5px;}
+            }
           }
-          .messages-list-ctn {
-            .messages-list { overflow: hidden; width: auto; min-height: 250px; font-size: 13px;
+        }
+        .dropdown-menu { min-width: 375px; min-height: 80px;
+          .loading { padding: 20px 20px; font-size: 1.5em; position: relative;
+            .icon { position: absolute; left: 166px; top: 10px; }
+          }
+          .read-more {  padding: 10px 20px; font-size: 1.2em; text-align: center; color: #555; background: #f1f1f1; border-color: #f1f1f1; .border-radius(0px 0px 3px 3px); cursor: pointer;
+            &:hover { background: #FDFDFD; }
+          }
+          .unread-count { margin: 0; font-size: 13px; display: inline-block; width: 100%; color: #555; padding: 10px 20px; background-color: #f1f1f1;
+            a { text-decoration: none; }
+          }
+          .messages-list-ctn { overflow-y: auto; overflow-x: hidden; width: auto; height: 300px;
+            .messages-list { font-size: 13px;
               .message { padding: 10px 12px; position: relative;   border-bottom-color: #F1F1F1; border-style: solid; border-width: 0 0 1px 0;
-                img { width: 32px; height: 32px; position: absolute; top: 50%; margin-top: -16px;  }
-                .message-subject { display: block; line-height: 17px; margin-bottom: 2px; overflow-x: hidden; overflow-y: hidden; padding: 0 0 0 42px; text-overflow: ellipsis; white-space: nowrap; width: 272px; }
+                &.unread { background-color: #e9eaed; background: rgba(237,239,245,.98); border-color: #d8deea;
+                  &:hover {   background-color: #f6f7f8; border-color: #e9eaed; text-decoration: none; }
+                }
+                img     { width: 45px; height: 45px; position: absolute; top: 38%; margin-top: -16px; left: 7px; .border-radius(50%); border: 2px solid #fafafa; border: 2px solid rgba(167,167,167,0.1); }
+                i.icon  { width: 23px; height: 23px; position: absolute; top: 50%; margin-top: -16px; font-size: 22px; text-align: center; }
+                .message-subject { display: block; line-height: 17px; margin-bottom: 2px; overflow-x: hidden; overflow-y: hidden; padding: 0 0 0 42px; text-overflow: ellipsis; white-space: nowrap; width: 350px;
+                  .username, .name { color:#000; font-weight:bold; }
+                }
                 .message-description { color: #AAA; font-size: 11px; line-height: 17px; padding-left: 42px;
-                  .username { color:#000; }
+                  .username { color:#000; font-weight: bold; }
+                  .date { display:inline; float:right; }
                 }
               }
             }

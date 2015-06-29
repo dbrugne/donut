@@ -71,7 +71,7 @@ handler.read = function(data, session, next) {
 		next(null, event);
 	});
 
-}
+};
 
 /**
  * Handler user update preferences logic

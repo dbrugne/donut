@@ -1,0 +1,18 @@
+<a href="<%= _user.url %>" class="user card <% if (_user.isOwner) { %>owner<% } %> <% if (_user.isOp) { %>op<% } %>">
+    <div class="cover">
+        <img src="<%= _user.avatar %>" class="avatar" alt="<%= _user.username %> avatar">
+        <div class="text">
+            <div class="username" style="color: <%= _user.color %>;">@<%= _user.username %></div>
+            <% if (_user.location) { %><p class="location"><%= _user.location %></p><% } %>
+            <% if (_user.website) { %><p class="website"><%= _user.website %></p><% } %>
+        </div>
+    </div>
+    <div class="back" <% if (_user.color) { %>style="background-color: <%= _user.color %>;"<% } %>>
+        <img src="<%= _user.avatar %>" class="avatar" alt="<%= _user.username %> avatar">
+        <div class="text">
+            <div class="username">@<%= _user.username %></div>
+            <% if (_user.location) { %><p class="location"><%= _user.location %></p><% } %>
+            <% if (_user.website) { %><p class="website"><%= _user.website %></p><% } %>
+        </div>
+    </div>
+</a>

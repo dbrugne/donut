@@ -1,83 +1,79 @@
-{{> head}}
+<%- partial('head') %>
 <body>
 <div class="upon">
-    {{#success}}<div class="alert alert-success">{{{success}}}</div>{{/success}}
-    {{#info}}<div class="alert alert-info">{{{info}}}</div>{{/info}}
-    {{#warning}}<div class="alert alert-warning">{{{warning}}}</div>{{/warning}}
-    {{#error}}<div class="alert alert-danger">{{{error}}}</div>{{/error}}
+    <% if (success) { %><div class="alert alert-success"><%= success %></div><% } %>
+    <% if (info) { %><div class="alert alert-info"><%= info %></div><% } %>
+    <% if (warning) { %><div class="alert alert-warning"><%= warning %></div><% } %>
+    <% if (error) { %><div class="alert alert-danger"><%= error %></div><% } %>
 </div>
 <div id="languages">
-    <span>{{#i}}global.switchlanguage{{/i}}</span>
+    <span><%= t('global.switchlanguage') %></span>
     <a data-language="fr" class="switch">fr</a> -
     <a data-language="en" class="switch">en</a>
 </div>
 <div id="landing">
     <div class="header">
         <div class="cover">
-            <h1 class="logo"><a href="/"><img src="/images/logo.png" alt="{{#i}}title{{/i}} - {{#i}}baseline{{/i}}"></a></h1>
+            <h1 class="logo"><a href="/"><img src="/images/logo.png" alt="<%= t('title') %> - <%= t('baseline') %>"></a></h1>
             <div class="fb-like" data-href="https://www.facebook.com/donutdotme" data-layout="standard" data-action="like" data-show-faces="true" data-share="true" data-ref="landing"></div>
             <div class="text">
-                <p>{{#i}}home.cover.line1{{/i}}</p>
-                <p data-toggle="talkative">{{#i}}home.cover.line2{{/i}}</p>
-                <p>{{#i}}home.cover.line3{{/i}}</p>
-                <p data-toggle="talkative">{{#i}}home.cover.line4{{/i}}</p>
-                <p>{{#i}}home.cover.line5{{/i}}</p>
-                <p data-toggle="talkative">{{#i}}home.cover.line6{{/i}}</p>
+                <p><%= t('home.cover.line1') %></p>
+                <p data-toggle="talkative"><%= t('home.cover.line2') %></p>
+                <p><%= t('home.cover.line3') %></p>
+                <p data-toggle="talkative"><%= t('home.cover.line4') %></p>
+                <p><%= t('home.cover.line5') %></p>
+                <p data-toggle="talkative"><%= t('home.cover.line6') %></p>
             </div>
-            <a href="#knowmore" class="btn-knowmore">{{#i}}home.cover.knowmore{{/i}}</a>
+            <a href="#knowmore" class="btn-knowmore"><%= t('home.cover.knowmore') %></a>
         </div><!--/.cover-->
         <div class="login">
-            {{#logged}}
-            <h2>{{#i}}logged.title{{/i}}</h2>
+            <% if (logged) { %>
+            <h2><%= t('logged.title') %></h2>
             <div class="logged">
-                <a class="profile" href="{{{user.url}}}" target="_blank">
-                    <img class="avatar" src="{{{user.avatar}}}" alt="{{{user.username}}} avatar">
-                    <p>@{{{user.username}}}</p>
+                <a class="profile" href="<%= user.url %>" target="_blank">
+                    <img class="avatar" src="<%= user.avatar %>" alt="<%= user.username %> avatar">
+                    <p>@<%= user.username %></p>
                 </a>
-                <p>{{#i}}logged.text{{/i}}</p>
+                <p><%= t('logged.text') %></p>
                 <p class="actions">
-                    <a class="chat" href="/!">{{#i}}logged.chat{{/i}}</a>
-                    <a class="logout" href="/logout">{{#i}}logged.logout{{/i}}</a>
+                    <a class="chat" href="/!"><%= t('logged.chat') %></a>
+                    <a class="logout" href="/logout"><%= t('logged.logout') %></a>
                 </p>
             </div>
-            {{/logged}}
-            {{^logged}}
+            <% } else { %>
             <div>
-                <h2>{{#i}}login.title{{/i}}</h2>
-                <a href="/login/facebook" class="btn-facebook"><i class="icon icon-facebook"></i> | <span>{{#i}}login.withfacebook{{/i}}</span></a>
+                <h2><%= t('login.title') %></h2>
+                <a href="/login/facebook" class="btn-facebook"><i class="icon icon-facebook"></i> | <span><%= t('login.withfacebook') %></span></a>
 
-                <p class="logic"><span>{{#i}}global.or{{/i}}</span></p>
+                <p class="logic"><span><%= t('global.or') %></span></p>
                 <form id="login" action="/login" method="post" role="form" class="form">
-                    {{#message}}
-                    <div class="alert alert-danger">{{message}}</div>
-                    {{/message}}
-                    <input type="hidden" name="_csrf" value="{{token}}">
+                    <input type="hidden" name="_csrf" value="<%- token %>">
                     <div class="form-group">
-                        <input type="text" id="signin-email" class="form-control" name="email" placeholder="{{#i}}login.email-placeholder{{/i}}" tabindex="1">
+                        <input type="text" id="signin-email" class="form-control" name="email" placeholder="<%= t('login.email-placeholder') %>" tabindex="1">
                         <img src="/images/arrow.svg">
                     </div>
                     <div class="form-group">
                         <img src="/images/arrow.svg">
-                        <input type="password" id="signin-password" class="form-control" name="password" placeholder="{{#i}}login.password-placeholder{{/i}}" tabindex="2">
+                        <input type="password" id="signin-password" class="form-control" name="password" placeholder="<%= t('login.password-placeholder') %>" tabindex="2">
                     </div>
                     <div class="form-group pull-right relative">
-                        <a class="forgot-link" href="/forgot" title="{{#i}}actions.forgot{{/i}}" tabindex="5">
-                            {{#i}}actions.forgot{{/i}}
+                        <a class="forgot-link" href="/forgot" title="<%= t('actions.forgot') %>" tabindex="5">
+                            <%= t('actions.forgot') %>
                         </a>
                         <i class="fa fa-question"></i>
                     </div>
                     <div class="clearfix"></div>
                     <div class="form-group">
-                        <input type="submit" value="{{#i}}actions.login{{/i}}" tabindex="3">
+                        <input type="submit" value="<%= t('actions.login') %>" tabindex="3">
                     </div>
                 </form>
-                <p class="logic"><span>{{#i}}global.else{{/i}}</span></p>
+                <p class="logic"><span><%= t('global.else') %></span></p>
                 <a href="#signup" class="btn-signup">
-                    <p>{{#i}}login.createanaccount1{{/i}}</p>
-                    <p>{{#i}}login.createanaccount2{{/i}}</p>
+                    <p><%= t('login.createanaccount1') %></p>
+                    <p><%= t('login.createanaccount2') %></p>
                 </a>
             </div>
-            {{/logged}}
+            <% } %>
         </div><!--/.login-->
     </div><!--/.header-->
     <div class="description">
@@ -89,61 +85,61 @@
             </h2>
             <div class="definition">
                 <p class="asterisk">*</p>
-                <p>{{#i}}home.description.definition{{/i}}</p>
+                <p><%= t('home.description.definition') %></p>
             </div>
         </div>
         <div class="illustrations">
-            <div class="illus"><img src="/images/illustration-1.svg" alt="{{#i}}home.description.line1{{/i}}"><i></i><p>{{#i}}home.description.line1{{/i}}</p></div>
-            <div class="illus"><img src="/images/illustration-2.svg" alt="{{#i}}home.description.line2{{/i}}"><i></i><p>{{#i}}home.description.line2{{/i}}</p></div>
-            <div class="illus"><img src="/images/illustration-3.svg" alt="{{#i}}home.description.line3{{/i}}"><i></i><p>{{#i}}home.description.line3{{/i}}</p></div>
+            <div class="illus"><img src="/images/illustration-1.svg" alt="<%= t('home.description.line1') %>"><i></i><p><%= t('home.description.line1') %></p></div>
+            <div class="illus"><img src="/images/illustration-2.svg" alt="<%= t('home.description.line2') %>"><i></i><p><%= t('home.description.line2') %></p></div>
+            <div class="illus"><img src="/images/illustration-3.svg" alt="<%= t('home.description.line3') %>"><i></i><p><%= t('home.description.line3') %></p></div>
         </div>
     </div><!--/.description-->
     <div class="signup">
         <a name="signup"></a>
         <div>
             <div class="title">
-                <span>{{#i}}home.signup.title1{{/i}}</span>
-                <!--<img src="/images/signup-logo.jpg" alt="{{#i}}title{{/i}}">-->
-                <!--<span>{{#i}}home.signup.title2{{/i}}</span>-->
+                <span><%= t('home.signup.title1') %></span>
+                <!--<img src="/images/signup-logo.jpg" alt="<%= t('title') %>">-->
+                <!--<span><%= t('home.signup.title2') %></span>-->
             </div>
             <form id="signup" action="/signup" method="post" role="form" class="form">
-                <input type="hidden" name="_csrf" value="{{token}}">
+                <input type="hidden" name="_csrf" value="<%= token %>">
                 <div class="form-content">
                     <div class="fields">
                         <div class="form-group email-group">
-                            <input type="text" id="signup-email" class="form-control" name="email" placeholder="{{#i}}login.email-placeholder{{/i}}">
+                            <input type="text" id="signup-email" class="form-control" name="email" placeholder="<%= t('login.email-placeholder') %>">
                             <img src="/images/email.svg">
                         </div>
                         <div class="form-group password-group">
-                            <input type="password" id="signup-password" class="form-control" name="password" placeholder="{{#i}}login.password-placeholder{{/i}}">
+                            <input type="password" id="signup-password" class="form-control" name="password" placeholder="<%= t('login.password-placeholder') %>">
                             <img src="/images/password.svg">
                         </div>
                     </div>
                     <div class="form-group submit">
-                        <input type="submit" value="{{#i}}home.signup.etvoila{{/i}}" />
+                        <input type="submit" value="<%= t('home.signup.etvoila') %>" />
                     </div>
                     <div class="facebook">
-                        <p class="logic"><span>{{#i}}global.or{{/i}}</span></p>
-                        <a href="/login/facebook" class="btn-facebook"><i class="icon icon-facebook"></i> | <span>{{#i}}login.withfacebook{{/i}}</span></a>
+                        <p class="logic"><span><%= t('global.or') %></span></p>
+                        <a href="/login/facebook" class="btn-facebook"><i class="icon icon-facebook"></i> | <span><%= t('login.withfacebook') %></span></a>
                     </div>
                 </div>
             </form>
-            <div class="disclaimer">{{#i}}signup.disclaimer{{/i}}</div>
+            <div class="disclaimer"><%= t('signup.disclaimer') %></div>
         </div>
     </div><!--/.signup-->
     <div class="footer">
         <div>
             <ul>
-                <li><a href="/faq">{{#i}}home.footer.faq{{/i}}</a></li>
-                <li><a href="/eutc">{{#i}}home.footer.eutc{{/i}}</a></li>
-                <li><a href="/legals">{{#i}}home.footer.legals{{/i}}</a></li>
-                <li><a data-toggle="contactform">{{#i}}home.footer.contact{{/i}}</a></li>
+                <li><a href="/faq"><%= t('home.footer.faq') %></a></li>
+                <li><a href="/eutc"><%= t('home.footer.eutc') %></a></li>
+                <li><a href="/legals"><%= t('home.footer.legals') %></a></li>
+                <li><a data-toggle="contactform"><%= t('home.footer.contact') %></a></li>
                 <li>Copyright DONUT</li>
             </ul>
         </div>
     </div><!--/.footer-->
 </div><!--/#home-->
-{{> contactform}}
-{{> foot}}
+<%- partial('contact') %>
+<%- partial('foot') %>
 </body>
 </html>

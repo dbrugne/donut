@@ -303,7 +303,7 @@
       "adonut": "a donut",
       "account": "my account",
       "edit": "my profile",
-      "preferences": "préférences",
+      "preferences": "settings",
       "update": "Edit",
       "see": "See"
     },
@@ -383,7 +383,25 @@
       "in": "entered at",
       "out": "left at",
       "online": "is online,",
-      "offline": "is offline,"
+      "offline": "is offline,",
+      "read-more": "Read more",
+      "dropdown": {
+        "kick": "was kicked out of this donut of",
+        "ban": "was banned from this donut of",
+        "deban": "was unbanned from this donut of",
+        "op": "was made moderator of",
+        "deop": "was removed from moderators of",
+        "roomtopic": "Subject has changed in  ",
+        "roomjoin": "just joined the room"
+      },
+      "desktop": {
+        "roomkick": "You have been kicked form  ",
+        "roomban": "You have been banned from  ",
+        "roomdeban": "You have been unbanned from ",
+        "roomop": "You have been made moderator of ",
+        "roomdeop": "You have been removed from moderators of ",
+        "roomtopic": "The subject has changed in "
+      }
     },
     "unread": {
       "title": "(new)"
@@ -576,6 +594,145 @@
     }
   },
   "email": {
+    "email": {
+      "global": {
+        "content": {
+          "team": "The DONUT.me team",
+          "ps": "PS : If you did not initiate this action, please report by forwarding this e-mail to",
+          "ps2": "or replying this e-mail."
+        }
+      },
+      "welcome": {
+        "subject": "Welcome to DONUT.me! Your account was successfully created",
+        "content": {
+          "title": "Welcome to DONUT !",
+          "disclaimer": "Congratulations! Your user account was successfully created. Now you can join us and chat around a tasty donut by clicking right here",
+          "button": "Sign in",
+          "info": "We are craving for it!"
+        }
+      },
+      "forgot": {
+        "subject": "Password reset on DONUT.me",
+        "content": {
+          "title": "Password reset on DONUT.me",
+          "disclaimer": "You are receiving this e-mail because you have requested a password reset. Please click on the following link to complete the process",
+          "button": "Reset your password",
+          "info": "If you ignore this e-mail your password will remain unchanged"
+        }
+      },
+      "passwordchanged": {
+        "subject": "Success ! Your password has been successfully changed",
+        "content": {
+          "title": "Password update",
+          "disclaimer": "You are receiving this e-mail as the final confirmation of your password change. Let's go back to DONUT.me and join tasty conversations!",
+          "button": "Sign in",
+          "info": "We are craving for it!"
+        }
+      },
+      "emailchanged": {
+        "subject": "Success ! The e-mail linked to your DONUT.me account has been successfully changed",
+        "content": {
+          "title": "Email update",
+          "disclaimer": "You are receiving this e-mail because you requested to change the e-mail linked to yout DONUT.me account. It worked perfectly! You can use it to log in:",
+          "button": "Sign in"
+        }
+      },
+      "usermessage": {
+        "subject": "You have received a message on DONUT.me",
+        "content": {
+          "title": "You have received a message",
+          "button": "See the message on DONUT"
+        }
+      },
+      "roommessage": {
+        "subject": "You have received a message on DONUT.me",
+        "content": {
+          "title": "You have received a message",
+          "inroom": "In the room ",
+          "button": "See the message on DONUT"
+        }
+      },
+      "roomop": {
+        "subject": "You have been promoted moderator of the Room ",
+        "content": {
+          "title": "You have been promoted moderator by ",
+          "disclaimer": "A lot of things changed on DONUT since your last login.",
+          "button": "Back on DONUT"
+        }
+      },
+      "roomtopic": {
+        "subject": "The subject has changed in the Room ",
+        "content": {
+          "title": "The subject of the Room has been changed by ",
+          "disclaimer": "A lot of things changed on DONUT since your last login.",
+          "button": "Back on DONUT"
+        }
+      },
+      "roomjoin": {
+        "subject": "A user has entered the Room ",
+        "content": {
+          "title": "joined the Room ",
+          "disclaimer": "A lot of things changed on DONUT since your last login.",
+          "button": "Back on DONUT"
+        }
+      },
+      "roomdeop": {
+        "subject": "You have been excluded from moderators of the Room ",
+        "content": {
+          "title": "You have been excluded from moderators by ",
+          "disclaimer": "A lot of things changed on DONUT since your last login.",
+          "button": "Back on DONUT"
+        }
+      },
+      "roomkick": {
+        "subject": "You have been excluded from the Room ",
+        "content": {
+          "title": "You have been excluded from the Room ",
+          "by": "by ",
+          "disclaimer": "A lot of things changed on DONUT since your last login.",
+          "button": "Back on DONUT"
+        }
+      },
+      "roomban": {
+        "subject": "You have been banned from the Room ",
+        "content": {
+          "title": "You have been banned from the Room ",
+          "disclaimer": "A lot of things changed on DONUT since your last login.",
+          "disclaimer2": "You can contact the Room Operator for more details: ",
+          "button": "Back on DONUT"
+        }
+      },
+      "roomdeban": {
+        "subject": "You are no more banned from the Room ",
+        "content": {
+          "title": "You are no more banned from the Room ",
+          "disclaimer": "A lot of things changed on DONUT since your last login.",
+          "button": "Back on DONUT"
+        }
+      },
+      "contact": {
+        "subject": "[DONUT] Nouveau formulaire de contact",
+        "text": [
+          "Nom : __name__",
+          "Email : __email__",
+          "Utilisateur : __user__",
+          "IP : __ip__",
+          "",
+          "__message__",
+          "",
+          "<small>Depuis __ip__ sur __fqdn__</small>"
+        ],
+        "html": [
+          "Nom : __name__<br>",
+          "Email : __email__<br>",
+          "Utilisateur : __user__<br>",
+          "<br>",
+          "__message__<br>",
+          "<br>",
+          "<small>Depuis __ip__ sur __fqdn__</small>"
+        ]
+      }
+    },
     "welcome": {
       "subject": "Welcome to DONUT.me! Your account was successfully created.",
       "text": [
@@ -754,7 +911,10 @@
         "title": "Je souhaite être notifié sur :",
         "help": "",
         "desktop": "Bureau",
+        "desktop-refused" : "You have chosen to <strong>refuse</strong> notifications on the desktop. To modify this choice , you must modifiers preferences of your browser.",
+        "desktop-validated" : "You have chosen to <strong>accept</strong> notifications on the desktop. To modify this choice , you must modifiers preferences of your browser.",
         "desktop-test": "test",
+        
         "email": "Email",
         "mobile": "Mobile"
       },

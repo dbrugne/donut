@@ -1,0 +1,22 @@
+<%- partial('head') %>
+<body class="body-static">
+<div class="container">
+    <div class="logo">
+        <a href="/"><img src="/images/logo.png" alt="<%= t('title') %> - <%= t('baseline') %>"></a>
+    </div>
+    <div class="main">
+        <div class="content">
+            <%= content() %>
+        </div>
+    </div>
+    <div class="footer">
+        <% if (user) { %>
+        <%= t('global.footer.before') %> <a href="/logout"><%= t('actions.tologout') %></a> <%= t('global.or') %> <a href="/!"><%= t('actions.home') %></a><%= t('global.footer.after') %>
+        <% } else { %>
+        <%= t('global.footer.before') %> <a href="/login"><%= t('actions.tologin') %></a> <%= t('global.or') %> <a href="/signup"><%= t('actions.signup') %></a><%= t('global.footer.after') %>
+        <% } %>
+    </div>
+</div>
+<%- partial('foot') %>
+</body>
+</html>

@@ -1,10 +1,13 @@
-require('newrelic');
+if (process.env.NODE_ENV !== 'development')
+  require('newrelic');
+
 var debug = require('debug')('donut:web');
 var express = require('express');
 var errors = require('./app/middlewares/errors');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
+var underscoreTemplate = require('../shared/util/underscoreTemplate');
 var less = require('less-middleware');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
@@ -48,9 +51,8 @@ app.use(i18n.router);
 app.use(prepareViews());
 app.use(googleAnalytics());
 
-app.engine('html', require('hogan-express'));
-app.set('views', path.join(__dirname, '/views'));
-app.set('layout', false);
+// template engine
+app.engine('html', underscoreTemplate.express({}));
 app.set('view engine', 'html');
 
 // oauth (mobile) routes

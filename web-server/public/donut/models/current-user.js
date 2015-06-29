@@ -71,6 +71,16 @@ define([
       return false;
     },
 
+    shouldDisplayDesktopNotif: function() {
+      var preferences = this.get('preferences');
+
+      // if no preference set OR browser:sound equal to true, we play
+      if (!preferences || typeof preferences['notif:channels:desktop'] == 'undefined' || preferences['notif:channels:desktop'] === true)
+        return true;
+
+      return false;
+    },
+
     _setCookie: function(name, value, exdays) {
       exdays = exdays || 365; // 1 year by default
       var d = new Date();

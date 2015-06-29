@@ -1,4 +1,5 @@
 var debug = require('debug')('donut:notifications');
+var _ = require('underscore');
 var mongoose = require('../io/mongoose');
 var User = require('./user');
 
@@ -31,25 +32,51 @@ var notificationSchema = mongoose.Schema({
 /**
  * Return new Notification instance with some attributes pre-filled with default values
  *
- * @param String
- * @param {User}
- * @param {Object}
+ * @param type
+ * @param user
+ * @param data
  * @returns {Notification}
  */
-notificationSchema.statics.getNewModel = function (type, user, data) {
+notificationSchema.statics.getNewModel = function(type, user, data) {
   var model = new this();
+
   model.type  = type;
   model.user  = user;
   model.data  = data;
 
-  // should be send on email or mobile
-  model.to_browser = true;
-  if (user.preferencesValue('notif:channels:email'))
-    model.to_email = true;
-  if (user.preferencesValue('notif:channels:mobile'))
-    model.to_mobile = true;
-
   return model;
+};
+
+/**
+ * Bulk insert (in one operation) an array of models in collection
+ *
+ * @source: http://stackoverflow.com/questions/25285232/bulk-upsert-in-mongodb-using-mongoose
+ *
+ * @param models [{Notification}]
+ * @param fn(err, [{Notification}])
+ */
+notificationSchema.statics.bulkInsert = function(models, fn) {
+  if (!models || !models.length)
+    return fn(null);
+
+  var bulk = this.collection.initializeOrderedBulkOp();
+  if (!bulk)
+    return fn('bulkInsertModels: MongoDb connection is not yet established');
+
+  _.each(models, function(model) {
+    bulk.insert(model.toJSON());
+  });
+
+  bulk.execute(function(err, results) {
+    if (err)
+      return fn(err);
+
+    _.each(models, function(model, index, list) {
+      list[index].isNew = false;
+    });
+
+    fn(null, models);
+  });
 };
 
 module.exports = mongoose.model('Notification', notificationSchema);

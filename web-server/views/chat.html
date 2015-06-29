@@ -1,4 +1,4 @@
-{{> head}}
+<%- partial('head') %>
 <body class="body-chat">
     <div id="fb-root"></div>
     <div id="chat">
@@ -18,30 +18,44 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="/!#"><img class="logo" src="/images/logo-onecolor.svg" alt="{{#i}}title.chat{{/i}}"> <span class="beta">alpha</span></a>
+                    <a class="navbar-brand" href="/!#"><img class="logo" src="/images/logo-onecolor.svg" alt="<%= t('title.chat') %>"> <span class="beta">alpha</span></a>
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li><a href="/!#">Home</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <!-- li id="notifications" class="dropdown">
+                        <li id="notifications" class="dropdown empty">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                 <i class="icon icon-globe"></i>
-                                <span class="badge"></span>
+                                <span class="badge hide-empty"></span>
                                 <span class="caret"></span>
                             </a>
-                            <ul class="dropdown-menu p0" role="menu">
-                                <li><a class="loading"><i class="icon icon-spinner icon-spin"></i></a></li>
-                            </ul>
-                        </li -->
+                            <div class="dropdown-menu p0" role="menu">
+                                <div class="unread-count">
+                                    <span class="show-empty text-center">
+                                        <span>Vous n'avez pas de Nouvelles Notifications</span>
+                                    </span>
+                                    <span class="hide-empty">
+                                        <span>Vous avez <strong class="nb"><!-- Loaded dynamically --></strong><strong> Nouvelles</strong> Notifications</span>
+                                    </span>
+                                </div>
+                                <div class="messages-list-ctn">
+                                    <div class="messages-list" id="main-navbar-messages"><!-- Loaded dynamically --></div>
+                                    <div class="actions">
+                                        <div class="read-more"><%= t('chat.notifications.read-more') %></div>
+                                        <div class="loading hidden"><i class="icon icon-spinner icon-spin"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="icon icon-question-circle"></i> <span class="caret"></span></a>
                             <ul class="dropdown-menu" role="menu">
-                                <li><a href="/!#room/Support"><i class="icon icon-life-ring"></i> {{#i}}chat.help{{/i}}</a></li>
-                                <li><a href="/faq" target="_blank"><i class="icon icon-question-circle"></i> {{#i}}page.faq.title{{/i}}</a></li>
-                                <li><a data-toggle="contactform"><i class="icon icon-envelope"></i> {{#i}}page.contact.title{{/i}}</a></li>
-                                <li><a href="/eutc" target="_blank"><i class="icon icon-question-circle"></i> {{#i}}page.eutc.title{{/i}}</a></li>
+                                <li><a href="/!#room/Support"><i class="icon icon-life-ring"></i> <%= t('chat.help') %></a></li>
+                                <li><a href="/faq" target="_blank"><i class="icon icon-question-circle"></i> <%= t('page.faq.title') %></a></li>
+                                <li><a data-toggle="contactform"><i class="icon icon-envelope"></i> <%= t('page.contact.title') %></a></li>
+                                <li><a href="/eutc" target="_blank"><i class="icon icon-question-circle"></i> <%= t('page.eutc.title') %></a></li>
                             </ul>
                         </li>
 
@@ -53,11 +67,11 @@
             <div id="left">
                 <div id="block-current-user">
                     <div class="avatar">
-                        <img class="open-user-profile" data-username="{{user.username}}" src="{{user.avatar}}" alt="@{{user.username}} avatar">
+                        <img class="open-user-profile" data-username="<%- user.username %>" src="<%- user.avatar %>" alt="@<%- user.username %> avatar">
                     </div>
                     <div class="content">
                         <div class="username">
-                            @{{user.username}}
+                            @<%- user.username %>
                         </div>
                         <div class="connection">
                             <i class="icon icon-circle status offline" title="offline"></i> offline
@@ -71,7 +85,7 @@
                 </div><!-- /#block-current-user -->
                 <hr>
                 <div id="block-actions">
-                    <a class="go-to-search">{{#i}}chat.actions.search{{/i}}</a> {{#i}}global.or{{/i}} <a class="open-create-room">{{#i}}chat.actions.create{{/i}}</a> {{#i}}chat.actions.adonut{{/i}}
+                    <a class="go-to-search"><%= t('chat.actions.search') %></a> <%= t('global.or') %> <a class="open-create-room"><%= t('chat.actions.create') %></a> <%= t('chat.actions.adonut') %>
                 </div>
                 <hr>
                 <div id="block-discussions">
@@ -97,16 +111,16 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-body">
-                    {{#i}}welcome.message{{/i}}
+                    <%= t('welcome.message') %>
                     <div class="rooms cards"><!-- rooms --></div>
                 </div>
                 <div class="modal-footer">
                     <span class="checkbox">
                         <label>
-                            <input class="avoid" type="checkbox"> {{#i}}welcome.donotshowagain{{/i}}
+                            <input class="avoid" type="checkbox"> <%= t('welcome.donotshowagain') %>
                         </label>
                     </span>
-                    <a href="#room/donut" class="nothing" data-dismiss="modal">{{#i}}welcome.nothing{{/i}}</a>
+                    <a href="#room/donut" class="nothing" data-dismiss="modal"><%= t('welcome.nothing') %></a>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
@@ -116,14 +130,14 @@
             <div class="modal-content">
                 <div class="modal-body">
                     <div class="loader">
-                        {{#i}}chat.loading{{/i}}<span class="one">.</span><span class="two">.</span><span class="three">.</span>​
+                        <%= t('chat.loading') %><span class="one">.</span><span class="two">.</span><span class="three">.</span>​
                     </div>
                     <div class="hello">
-                        {{&hello}}
+                        <%= hello %>
                     </div>
                     <div class="error-message"><!--connection error --></div>
                     <div class="contactus">
-                        <a data-toggle="contactform"><i class="icon icon-envelope"></i> {{#i}}chat.connection.contactus{{/i}}</a>
+                        <a data-toggle="contactform"><i class="icon icon-envelope"></i> <%= t('chat.connection.contactus') %></a>
                     </div>
                 </div><!-- /.modal-body -->
             </div><!-- /.modal-content -->
@@ -133,31 +147,31 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-body">
-                    <div class="question">{{#i}}chat.confirmation.sure{{/i}}</div>
+                    <div class="question"><%= t('chat.confirmation.sure') %></div>
                     <div class="input">
-                        <input type="text" class="form-control" placeholder="{{#i}}chat.confirmation.placeholder{{/i}}">
+                        <input type="text" class="form-control" placeholder="<%= t('chat.confirmation.placeholder') %>">
                     </div>
                     <div class="buttons">
-                        <button type="button" class="cancel" data-dismiss="modal"><i class="icon icon-times"></i> {{#i}}chat.confirmation.cancel{{/i}}</button>
-                        <button type="button" class="confirm"><i class="icon icon-check"></i> {{#i}}chat.confirmation.confirm{{/i}}</button>
+                        <button type="button" class="cancel" data-dismiss="modal"><i class="icon icon-times"></i> <%= t('chat.confirmation.cancel') %></button>
+                        <button type="button" class="confirm"><i class="icon icon-check"></i> <%= t('chat.confirmation.confirm') %></button>
                     </div>
                 </div><!-- /.modal-body -->
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
-    {{> contactform}}
+    <%- partial('contact') %>
 <script>
-    window.cloudinary_cloud_name = '{{cloudinary.cloud_name}}';
-    window.cloudinary_api_key = '{{cloudinary.api_key}}';
-    window.facebook_app_id = '{{facebook.clientID}}';
-    window.recaptcha_site_key = '{{recaptcha.sitekey}}';
-    window.room_default_color = '{{room_default_color}}';
-    window.colors = {{&colors}};
+    window.cloudinary_cloud_name = '<%- cloudinary.cloud_name %>';
+    window.cloudinary_api_key = '<%- cloudinary.api_key %>';
+    window.facebook_app_id = '<%- facebook.clientID %>';
+    window.recaptcha_site_key = '<%- recaptcha.sitekey %>';
+    window.room_default_color = '<%- room_default_color %>';
+    window.colors = <%= colors %>;
 </script>
 <script src="/javascripts/old-browser-update.js"></script>
 <script src='https://www.google.com/recaptcha/api.js' async defer></script>
-<script data-main="{{build}}" src="/vendor/requirejs/require.js"></script>
-{{{googleanalytics}}}
+<script data-main="<%- build %>" src="/vendor/requirejs/require.js"></script>
+<%= googleanalytics %>
 </body>
 </html>
 <!-- made with ♥ -->

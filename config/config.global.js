@@ -25,6 +25,7 @@ var conf = module.exports = {
     expire: 5*60 // 5 hours, in minutes
   },
   email: {
+    fake: 'donutmetest+__name__@gmail.com',
     from: {
       name: "DONUT.me",
       email: "hello@donut.me"
@@ -37,7 +38,11 @@ var conf = module.exports = {
   facebook: {
     'clientID' 		: '328600083963864', // your App ID
     'clientSecret' 	: '89a61eab36ab0971e0400f9f3934addb', // your App Secret
-    'callbackURL' 	: ''
+    'callbackURL' 	: '',
+    url: 'https://www.facebook.com/donutdotme'
+  },
+  twitter: {
+    url: 'https://twitter.com/donut_fr'
   },
   cloudinary: {
     cloud_name: 'roomly',

@@ -155,8 +155,58 @@ userSchema.statics.findByUid = function (uid) {
 };
 
 /**
- * Retrieve and return an hydrated user instance
- * @param name
+ * Look for users required to notify for a topic change. Select only :
+ *
+ * Users associated to current room
+ * AND
+ * Users for wich the preference "nothing" is not set AND who wants to be notified, depending of "preference"
+ * OR Users for wich the preference "nothing" is set to false AND who wants to be notified, depending of "preference"
+ * AND
+ * Not the current User
+ *
+ * @param room
+ * @param preferenceName
+ * @param userId
+ * @param callback
+ */
+userSchema.statics.findRoomUsersHavingPreference = function (room, preferenceName, userId, callback) {
+  var keyNothing = "preferences.room:notif:nothing:__what__".replace('__what__', room.name);
+  var keyTopic = "preferences.room:notif:__preference__:__what__".replace('__preference__', preferenceName).replace('__what__', room.name);
+
+  var criteria = {
+    _id: {
+      $in: _.map(room.users, function(uid){ return uid.toString() })
+    },
+    $and: []
+  };
+
+  if (userId !== null)
+    criteria.$and.push({ _id: { '$ne' : userId } });
+
+  var topicCriterion = {};
+  topicCriterion[keyTopic] = true;
+  criteria.$and.push(topicCriterion);
+
+  var o1 = {};
+  var o2 = {};
+  o1[keyNothing] = { '$exists': false };
+  o2[keyNothing] = false ;
+
+  var nothingCriterion = { $or: [] };
+  nothingCriterion.$or.push(o1);
+  nothingCriterion.$or.push(o2);
+  criteria.$and.push(nothingCriterion);
+
+  var q = this.find(
+    criteria
+  );
+
+  q.exec(callback);
+};
+
+/**
+ * * Retrieve and return an hydrated user instance
+ * @param username
  * @returns {Query}
  */
 userSchema.statics.retrieveUser = function (username) {
