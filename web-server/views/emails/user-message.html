@@ -15,36 +15,44 @@
     <tr>
         <td align="center">
 
-            <table width="100%">
+            <table width="100%" style="  border-spacing: 0;">
                 <tbody>
-                <% if (events) { %>
-                <tr>
-                    <td style="width: 35px;">
-                        <img src="<%- from_avatar %>" style=" width: 30px; height: 30px; ">
-                    </td>
-                    <td colspan="2">
-                        <div style="margin-top: 5px;font-family: 'Open Sans',sans-serif; font-weight: bold; font-size: 1em;">
-                            <div style="font-family: 'Open Sans',sans-serif; font-weight: bold; font-size: 1em;">
-                                @<%- from_username %>
-                            </div>
-                        </div>
-                    </td>
+                <% var lastUsername = ''; %>
+                <% var lastTime = ''; %>
+                <% _.forEach(events, function(event){ %>
+                    <% if ( lastUsername !== event.from_username) { %>
+                        <% lastUsername = event.from_username; %>
+                        <tr>
+                            <td style="width: 35px;">
+                                <img src="<%- event.from_avatar %>" style=" width: 30px; height: 30px; ">
+                            </td>
+                            <td colspan="2">
+                                <div style="font-family: 'Open Sans',sans-serif; font-weight: bold; font-size: 1em;">
+                                    <div style="font-family: 'Open Sans',sans-serif; font-weight: bold; font-size: 1em;">
+                                        @<%- event.from_username %>
+                                    </div>
+                                </div>
+                            </td>
 
-                </tr>
-                <tr>
-                    <td><% if (events.current) { %>CURRENT<% } %></td>
-                    <td>
-                        <div class="event" style="">
-                            <div class="text" style="white-space: pre-wrap !important;  text-align: justify;  font-style: italic;"><%- message %></div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="date" style="  text-align: right; color: #777; font-size: 0.8em;">
-                            <span class="moment" title="<%- time_full %>"><%- time_short %></span>
-                        </div>
-                    </td>
-                </tr>
-                <% } %>
+                        </tr>
+                    <% } %>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <div class="event" style="">
+                                <div class="text" style="white-space: pre-wrap !important;  text-align: justify;  font-style: italic;"><%- event.message %></div>
+                            </div>
+                        </td>
+                        <td>
+                            <% if ( lastTime !== event.time_short) { %>
+                            <% lastTime = event.time_short; %>
+                            <div class="date" style="  text-align: right; color: #777; font-size: 0.8em;">
+                                <span class="moment" title="<%- event.time_full %>"><%- event.time_short %></span>
+                            </div>
+                            <% } %>
+                        </td>
+                    </tr>
+                <% }); %>
                 </tbody>
             </table>
 

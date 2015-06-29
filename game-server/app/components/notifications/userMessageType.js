@@ -7,6 +7,7 @@ var NotificationModel = require('../../../../shared/models/notification');
 var HistoryOneModel = require('../../../../shared/models/historyone');
 var emailer = require('../../../../shared/io/emailer');
 var utils = require('./utils');
+var moment = require('../../../../shared/util/moment');
 
 var FREQUENCY_LIMITER = 15; // 15mn
 
@@ -112,8 +113,8 @@ Notification.prototype.sendEmail = function(model) {
           message: event.data.message,
           to_avatar: to_avatar || (to_avatar = cloudinary.userAvatar(event.data.to_avatar, 90)),
           to_username: event.data.to_username,
-          time_short: event.data.time, // @todo yls format .format('Do MMMM, HH:mm'),
-          time_full: event.data.time // @todo yls format .format('dddd Do MMMM YYYY à HH:mm:ss')
+          time_short: moment(event.data.time).format('Do MMMM, HH:mm'),
+          time_full: moment(event.data.time).format('dddd Do MMMM YYYY à HH:mm:ss')
         });
       });
 

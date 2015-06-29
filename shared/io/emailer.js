@@ -161,7 +161,7 @@ emailer.emailChanged = function(to, callback) {
  * @param callback
  */
 emailer.userMessage = function(toEmail, username, events, callback) {
-  renderer.render('emails/user-message.html', {username: username, events: events}, function (err, html) { // @todo yls when templates valid with underscore, check repetitive avatar & username
+  renderer.render('emails/user-message.html', {username: username, events: events}, function (err, html) {
     if (err)
       return callback(err);
 
