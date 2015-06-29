@@ -53,7 +53,7 @@ notificationSchema.statics.getNewModel = function(type, user, data) {
  * @source: http://stackoverflow.com/questions/25285232/bulk-upsert-in-mongodb-using-mongoose
  *
  * @param models [{Notification}]
- * @param fn
+ * @param fn(err, [{Notification}])
  */
 notificationSchema.statics.bulkInsert = function(models, fn) {
   if (!models || !models.length)
@@ -67,7 +67,16 @@ notificationSchema.statics.bulkInsert = function(models, fn) {
     bulk.insert(model.toJSON());
   });
 
-  bulk.execute(fn);
+  bulk.execute(function(err, results) {
+    if (err)
+      return fn(err);
+
+    _.each(models, function(model, index, list) {
+      list[index].isNew = false;
+    });
+
+    fn(null, models);
+  });
 };
 
 module.exports = mongoose.model('Notification', notificationSchema);
