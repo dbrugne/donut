@@ -126,8 +126,8 @@ Notification.prototype.sendEmail = function(model) {
     },
 
     function saveOnUser(callback) {
-      model.sent_to_email = true; // @todo yls uncomment
-      model.sent_to_email_at = new Date(); // @todo yls uncomment
+      model.sent_to_email = true;
+      model.sent_to_email_at = new Date();
       model.save(callback);
     }
 

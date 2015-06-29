@@ -666,6 +666,7 @@
           "subject": "Vous avez reçu un message sur DONUT",
           "content": {
             "title": "Vous avez reçu un message",
+            "inroom": "Dans la room ",
             "button": "Voir le message sur DONUT"
           }
       },

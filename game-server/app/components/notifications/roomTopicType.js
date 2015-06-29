@@ -20,8 +20,6 @@ Notification.prototype.type = 'roomtopic';
 
 Notification.prototype.shouldBeCreated = function(type, room, data) {
 
-  var firstUser = null;
-
   var that = this;
   async.waterfall([
 
@@ -29,15 +27,7 @@ Notification.prototype.shouldBeCreated = function(type, room, data) {
       User.findRoomUsersHavingPreference(room, that.type, data.event.user_id, callback);
     },
 
-    function getFirstUser(users, callback) {
-      if (users.length == 0)
-        return callback('No user found for this topic change');
-
-      firstUser = users[0]; // get first one
-      callback(null, users);
-    },
-
-    utils.checkRepetitive(type, firstUser, { 'data.from_user_id': data.from_user_id }, FREQUENCY_LIMITER),
+    utils.checkRepetitive(type, null, { 'data.from_user_id': data.from_user_id }, FREQUENCY_LIMITER),
 
     function checkStatus(users, callback) {
       that.facade.app.statusService.getStatusByUids(_.map(users, 'id'), function(err, statuses) {

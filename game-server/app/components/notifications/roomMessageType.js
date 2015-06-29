@@ -7,6 +7,7 @@ var NotificationModel = require('../../../../shared/models/notification');
 var HistoryRoomModel = require('../../../../shared/models/historyroom');
 var emailer = require('../../../../shared/io/emailer');
 var utils = require('./utils');
+var moment = require('../../../../shared/util/moment');
 
 var FREQUENCY_LIMITER = 15; // 15mn
 
@@ -22,8 +23,6 @@ Notification.prototype.type = 'roommessage';
 
 Notification.prototype.shouldBeCreated = function(type, room, data) {
 
-  var firstUser = null;
-
   var that = this;
   async.waterfall([
 
@@ -31,15 +30,7 @@ Notification.prototype.shouldBeCreated = function(type, room, data) {
       User.findRoomUsersHavingPreference(room, that.type, data.event.user_id, callback);
     },
 
-    function getFirstUser(users, callback) {
-      if (users.length == 0)
-        return callback('No user found for this topic change');
-
-      firstUser = users[0]; // get first one
-      callback(null, users);
-    },
-
-    utils.checkRepetitive(type, firstUser, { 'data.from_user_id': data.from_user_id }, FREQUENCY_LIMITER),
+    utils.checkRepetitive(type, null, { 'data.from_user_id': data.from_user_id }, FREQUENCY_LIMITER),
 
     function checkStatus(users, callback) {
       that.facade.app.statusService.getStatusByUids(_.map(users, 'id'), function(err, statuses) {
@@ -116,12 +107,12 @@ Notification.prototype.sendEmail = function(model) {
           user_avatar: user_avatar || (user_avatar = cloudinary.userAvatar(event.data.avatar, 90)),
           username: event.data.username,
           message: event.data.message,
-          time_short: event.data.time, // @todo yls format .format('Do MMMM, HH:mm'),
-          time_full: event.data.time // @todo yls format .format('dddd Do MMMM YYYY à HH:mm:ss')
+          time_short: moment(event.data.time).format('Do MMMM, HH:mm'),
+          time_full: moment(event.data.time).format('dddd Do MMMM YYYY à HH:mm:ss')
         });
       });
 
-      return callback(null, messages, events[0]['data']['name'], events[0]['data']['room_avatar']);
+      return callback(null, messages, events[0]['data']['name'], cloudinary.roomAvatar(events[0]['data']['room_avatar'], 90));
     },
 
     function send(messages, roomName, roomAvatar, callback) {

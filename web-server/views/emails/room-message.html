@@ -5,7 +5,7 @@
             <div style="line-height: 44px;">
                 <font face="Arial, Helvetica, sans-serif" size="5" color="#57697e" style="font-size: 34px;">
                     <span style="font-family: Arial, Helvetica, sans-serif; font-size: 34px; color: #57697e;">
-                        {{#i}}email.roommessage.content.title{{/i}}
+                        <%= t('email.roommessage.content.title') %>
                     </span>
                 </font>
             </div>
@@ -13,11 +13,10 @@
         </td>
     </tr>
     <tr>
-        <td align="center">
-            <div style="height: 100px; line-height: 100px; font-size: 10px;">&nbsp;</div>
-            <div style="line-height: 44px;">
-                {{room_name}}
-                <img src="{{room_avatar}}" alt="{{room_name}}">
+        <td align="left">
+            <div style="">
+                <img src="<%- room_avatar %>" alt="<%- room_name %>" style="width:30px;">
+                <span style="  line-height: 30px; font-family: Arial,Helvetica,sans-serif; font-size: 25px; color: #4db3a4;"><%= t('email.roommessage.content.inroom') %> <%-room_name%></span>
             </div>
             <div style="height: 30px; line-height: 30px; font-size: 10px;">&nbsp;</div>
         </td>
@@ -25,36 +24,44 @@
     <tr>
         <td align="center">
 
-            <table width="100%">
+            <table width="100%" style="border-spacing: 0;">
                 <tbody>
-                {{#events}}
+                <% var lastUsername = ''; %>
+                <% var lastTime = ''; %>
+                <% _.forEach(events, function(event){ %>
+                <% if ( lastUsername !== event.username) { %>
+                <% lastUsername = event.username; %>
                 <tr>
-                    <td style="width: 35px;">
-                        <img src="{{user_avatar}}" style=" width: 30px; height: 30px; ">
+                    <td style="width: 35px; border-top: 1px solid #f2f2f2;" >
+                        <img src="<%- event.user_avatar %>" style=" width: 30px; height: 30px; ">
                     </td>
-                    <td colspan="2">
-                        <div style="margin-top: 5px;font-family: 'Open Sans',sans-serif; font-weight: bold; font-size: 1em;">
+                    <td colspan="2" style="border-top: 1px solid #f2f2f2;">
+                        <div style="font-family: 'Open Sans',sans-serif; font-weight: bold; font-size: 1em;">
                             <div style="font-family: 'Open Sans',sans-serif; font-weight: bold; font-size: 1em;">
-                                @{{username}}
+                                @<%- event.username %>
                             </div>
                         </div>
                     </td>
 
                 </tr>
+                <% } %>
                 <tr>
-                    <td>{{#events.current}}CURRENT{{/events.current}}</td>
+                    <td></td>
                     <td>
                         <div class="event" style="">
-                            <div class="text" style="white-space: pre-wrap !important;  text-align: justify;  font-style: italic;">{{message}}</div>
+                            <div class="text" style="white-space: pre-wrap !important;  text-align: justify;  font-style: italic;"><%- event.message %></div>
                         </div>
                     </td>
                     <td>
+                        <% if ( lastTime !== event.time_short) { %>
+                        <% lastTime = event.time_short; %>
                         <div class="date" style="  text-align: right; color: #777; font-size: 0.8em;">
-                            <span class="moment" title="{{time_full}}">{{time_short}}</span>
+                            <span class="moment" title="<%- event.time_full %>"><%- event.time_short %></span>
                         </div>
+                        <% } %>
                     </td>
                 </tr>
-                {{/events}}
+                <% }); %>
                 </tbody>
             </table>
 
@@ -68,7 +75,7 @@
                 <table border="0" cellpadding="0" cellspacing="0" class="emailButton" style="-webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; background-color:#EE2763;">
                     <tr>
                         <td align="center" valign="middle" class="emailButtonContent" style="padding-top:10px; padding-right:30px; padding-bottom:10px; padding-left:30px;">
-                            <a href="https://{{fqdn}}" target="_blank" style="color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;" alt="{{#i}}email.roommessage.content.button{{/i}}">{{#i}}email.roommessage.content.button{{/i}}</a>
+                            <a href="https://<%- fqdn %>" target="_blank" style="color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;" alt="<% t('email.roommessage.content.button') %>"><% t('email.roommessage.content.button') %></a>
                         </td>
                     </tr>
                 </table>
@@ -85,7 +92,7 @@
                         <div style="line-height: 24px;">
                             <font face="Arial, Helvetica, sans-serif" size="4" color="#57697e" style="font-size: 16px;">
                                 <span style="font-family: Arial, Helvetica, sans-serif; font-size: 15px; color: #57697e;">
-                                    {{#i}}email.global.content.team{{/i}}
+                                    <% t('email.global.content.team') %>
                                 </span>
                             </font>
                         </div>
@@ -107,7 +114,7 @@
                         <tr>
                             <td align="center" valign="middle" style="font-size: 10px; line-height:20px;">
                                 <font face="Tahoma, Arial, Helvetica, sans-serif" size="2" color="#282f37" style="font-size: 10px; font-style: italic;">
-                                    {{#i}}email.global.content.ps{{/i}}&nbsp;<a href='mailto:{{email}}'>{{email}}</a>&nbsp;{{#i}}email.global.content.ps2{{/i}}
+                                    <% t('email.global.content.ps') %>&nbsp;<a href='mailto:<%- email %>'><%- email %></a>&nbsp;<% t('email.global.content.ps2') %>
                                 </font>
                             </td>
                         </tr>

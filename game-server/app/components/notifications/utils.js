@@ -18,9 +18,12 @@ module.exports = {
 
             var criteria = {
                 type: type,
-                user: user,
                 time: {$gte: new Date(delay) }
             };
+
+            if (user !== null) {
+                criteria['user'] = user;
+            }
             _.each(what, function(val,key){
                 criteria[key] = val;
             });
