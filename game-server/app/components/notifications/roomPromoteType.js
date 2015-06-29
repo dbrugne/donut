@@ -114,7 +114,6 @@ Notification.prototype.sendToBrowser = function(model) {
         time: model.time,
         type: model.type,
         viewed: false,
-        to_desktop: user.preferencesValue('notif:channels:desktop'), // trigger desktop notification
         data: {
           by_user: {
             avatar: by_user._avatar(),

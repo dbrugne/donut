@@ -391,7 +391,8 @@
         "deban": "was unbanned from this donut of",
         "op": "was made moderator of",
         "deop": "was removed from moderators of",
-        "roomtopic": "Subject has changed in  "
+        "roomtopic": "Subject has changed in  ",
+        "roomjoin": "just joined the room"
       },
       "desktop": {
         "roomkick": "You have been kicked form  ",
@@ -647,6 +648,7 @@
         "subject": "You have received a message on DONUT.me",
         "content": {
           "title": "You have received a message",
+          "inroom": "In the room ",
           "button": "See the message on DONUT"
         }
       },
@@ -662,6 +664,14 @@
         "subject": "The subject has changed in the Room ",
         "content": {
           "title": "The subject of the Room has been changed by ",
+          "disclaimer": "A lot of things changed on DONUT since your last login.",
+          "button": "Back on DONUT"
+        }
+      },
+      "roomjoin": {
+        "subject": "A user has entered the Room ",
+        "content": {
+          "title": "joined the Room ",
           "disclaimer": "A lot of things changed on DONUT since your last login.",
           "button": "Back on DONUT"
         }

@@ -6,6 +6,7 @@ var User = require('../../../../../shared/models/user');
 var Room = require('../../../../../shared/models/room');
 var conf = require('../../../../../config/index');
 var roomEmitter = require('../../../util/roomEmitter');
+var Notifications = require('../../../components/notifications');
 
 module.exports = function(app) {
 	return new Handler(app);
@@ -153,9 +154,14 @@ handler.join = function(data, session, next) {
 
 				return callback(null, user, room, roomData);
 			});
+		},
+
+		function notification(user, room, roomData, callback) {
+			roomData['user_id'] = user.id;
+			Notifications(that.app).create('roomjoin', room, {event: roomData}, callback);
 		}
 
-	], function(err, user, room, roomData) {
+	], function(err) {
 		if (err === 'notexists')
 			return next(null, {code: 404, err: err});
 		if (err === 'banned')

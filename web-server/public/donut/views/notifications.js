@@ -93,6 +93,8 @@ define([
           template = templates['notifications/room-deban.html']; break;
         case 'roomtopic':
           template = templates['notifications/room-topic.html']; break;
+        case 'roomjoin':
+          template = templates['notifications/room-join.html']; break;
         default:
         break;
       }

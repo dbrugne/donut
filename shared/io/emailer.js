@@ -340,3 +340,25 @@ emailer.roomTopic = function(to, from, room, callback) {
 
   });
 };
+
+/**
+ * Sent to a User when The topic changed in a Room in which he wants to be warned
+ *
+ * @param to
+ * @param from
+ * @param room
+ * @param callback
+ */
+emailer.roomJoin = function(to, from, room, callback) {
+  renderer.render('emails/room-join.html', { username: from, roomname: room.name }, function (err, html) {
+    if (err)
+      return callback(err);
+
+    send({
+      to: to,
+      subject: i18next.t("email.roomjoin.subject")+' '+room.name,
+      html: html
+    },callback);
+
+  });
+};

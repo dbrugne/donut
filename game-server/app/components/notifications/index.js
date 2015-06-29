@@ -7,6 +7,7 @@ var userMessage = require('./userMessageType');
 var roomPromote = require('./roomPromoteType');
 var roomTopic = require('./roomTopicType');
 var roomMessage = require('./roomMessageType');
+var roomJoin = require('./roomJoinType');
 
 module.exports = function(app) {
   return new Facade(app);
@@ -74,6 +75,10 @@ Facade.prototype.getType = function(type) {
 
     case 'roommessage':
       return roomMessage(that);
+      break;
+
+    case 'roomjoin':
+      return roomJoin(that);
       break;
 
     default:
