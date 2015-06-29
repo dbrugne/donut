@@ -26,6 +26,7 @@
     "keen-js": "^3.2.4",
     "less-middleware": "1.x",
     "log4js-node-mongodb": "dbrugne/log4js-node-mongodb",
+    "moment": "^2.10.3",
     "mongoose": "3.8.x",
     "morgan": "1.x",
     "newrelic": "^1.14.1",
