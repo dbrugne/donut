@@ -495,7 +495,6 @@ define([
       if (!this.homeView)
         this.homeView = new HomeView({});
 
-      // @todo : change pattern to render page with spinner and replace content on callback
       if (avoidReload !== true)
         client.home();
 
