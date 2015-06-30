@@ -30,6 +30,7 @@ module.exports = function(grunt) {
             'moment'                      : '../vendor/moment/moment',
             'moment-fr'                   : '../vendor/moment/lang/fr',
             'facebook'                    : 'empty:',
+            'desktop-notify'              : '../vendor/html5-desktop-notifications/desktop-notify',
             'jquery.ui.widget'            : '../vendor/blueimp-file-upload/js/vendor/jquery.ui.widget',
             'jquery.iframe-transport'     : '../vendor/blueimp-file-upload/js/jquery.iframe-transport',
             'jquery.fileupload'           : '../vendor/blueimp-file-upload/js/jquery.fileupload',
