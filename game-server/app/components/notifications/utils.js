@@ -86,5 +86,21 @@ module.exports = {
                 callback.apply(undefined, args);
             });
         };
+    },
+
+    checkPreferences: function(user, roomName, type) {
+        return function() {
+            var args = _.toArray(arguments);
+            var callback = args.pop();
+            if (!_.isFunction(callback))
+                return logger.error('Wrong parameters count, missing callback');
+
+            var err = null;
+            if (user.preferencesValue('room:notif:nothing:__what__'.replace('__what__', roomName)) || !user.preferencesValue('room:notif:__type__:__what__'.replace('__type__', type).replace('__what__', roomName)))
+                err = 'no notification due to user preferences';
+
+            args.unshift(err);
+            callback.apply(undefined, args);
+        };
     }
 };

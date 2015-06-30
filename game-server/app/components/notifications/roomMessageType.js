@@ -8,6 +8,7 @@ var HistoryRoomModel = require('../../../../shared/models/historyroom');
 var emailer = require('../../../../shared/io/emailer');
 var utils = require('./utils');
 var moment = require('../../../../shared/util/moment');
+var conf = require('../../../../config');
 
 var FREQUENCY_LIMITER = 15; // 15mn
 
@@ -98,13 +99,25 @@ Notification.prototype.sendEmail = function(model) {
       HistoryRoomModel.retrieveEventWithContext(model.data.id, model.data.user.id, 5, 10, true, callback);
     },
 
+    function mentionize(events, callback) {
+      var reg = /@\[([^\]]+)\]\(user:[^)]+\)/g;
+
+      _.each(events, function(event, index, list) {
+        if (!event.data.message)
+          return;
+
+        list[index].data.message = list[index].data.message.replace(reg, "<strong><a style=\"color:"+conf.room.default.color+";\"href=\""+conf.url+"/user/$1\">@$1</a></strong>");
+      });
+
+      callback(null, events);
+    },
+
     function prepare(events, callback) {
       var messages = [];
-      var user_avatar = null;
       _.each (events, function(event){
         messages.push({
           current: (model.data.id === event.data.id),
-          user_avatar: user_avatar || (user_avatar = cloudinary.userAvatar(event.data.avatar, 90)),
+          user_avatar: cloudinary.userAvatar(event.data.avatar, 90),
           username: event.data.username,
           message: event.data.message,
           time_short: moment(event.data.time).format('Do MMMM, HH:mm'),

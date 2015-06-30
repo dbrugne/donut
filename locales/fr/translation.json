@@ -412,7 +412,9 @@
         "op": "a été promu modérateur de ",
         "deop": "n'est plus modérateur de ",
         "roomtopic": "Le sujet à changé dans ",
-        "roomjoin": "a rejoint la room "
+        "roomjoin": "a rejoint la room ",
+        "usermention": "on vous a notifié dans ",
+        "roommessage": "Nouveau message dans "
       },
       "desktop": {
         "roomkick": "Vous venez d'être expulsé de ",
@@ -729,6 +731,13 @@
         "button": "retourner sur DONUT"
       }
     },
+    "usermention": {
+      "subject": "Vous avez été notifié sur DONUT",
+      "content": {
+        "title": "Vous avez été notifié dans la Room __name__",
+        "button": "Voir la notification sur DONUT"
+      }
+    },
     "contact": {
       "subject": "[DONUT] Nouveau formulaire de contact",
       "text": [
@@ -826,7 +835,7 @@
           "label": "Quand un utilisateur poste un message dans ce donut",
           "help": ""
         },
-        "roommention": {
+        "usermention": {
           "label": "Quand un utilisateur me notifie dans ce donut",
           "help": ""
         },

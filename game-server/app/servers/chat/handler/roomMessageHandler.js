@@ -1,5 +1,6 @@
 var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
 var async = require('async');
+var _ = require('underscore');
 var roomEmitter = require('../../../util/roomEmitter');
 var User = require('../../../../../shared/models/user');
 var Room = require('../../../../../shared/models/room');
@@ -112,6 +113,32 @@ handler.message = function (data, session, next) {
             });
         },
 
+        function retrieveMentionedUsers(room, sentEvent, callback) {
+            var reg = /@\[[^\]]+\]\(user:([^)]+)\)/g;
+
+            var monTableau;
+            var usersIds = [];
+            while ((monTableau = reg.exec(sentEvent.message)) !== null) {
+                usersIds.push(monTableau[1]);
+            }
+
+            User.find({_id: {$in: _.uniq(usersIds)}}, function(err, users) {
+                if (err)
+                    return callback(err);
+                if (!users.length)
+                    return callback(null, room, sentEvent);
+
+                async.eachLimit(users, 4, function(u, fn) {
+                    Notifications(that.app).create('usermention', u, {room:room, event: sentEvent }, fn);
+                }, function(err) {
+                    if (err)
+                        return callback(err);
+
+                    callback(null, room, sentEvent);
+                });
+            });
+        },
+
         function tracking(room, event, callback) {
             var messageEvent = {
                 session: {
@@ -133,7 +160,7 @@ handler.message = function (data, session, next) {
             };
             keenio.addEvent("room_message", messageEvent, function (err, res) {
                 if (err)
-                    logger.error('Error while tracking room_message in keen.io for ' + uid + ': ' + err);
+                    logger.error('Error while tracking room_message in keen.io: ' + err);
 
                 return callback(null);
             });

@@ -362,3 +362,25 @@ emailer.roomJoin = function(to, from, room, callback) {
 
   });
 };
+
+/**
+ * Sent to a User when he send some messages to another User
+ *
+ * @param toEmail
+ * @param events
+ * @param roomName
+ * @param roomAvatar
+ * @param callback
+ */
+emailer.userMention = function(toEmail, events, roomName, roomAvatar, callback) {
+  renderer.render('emails/user-mention.html', {events: events, room_name: roomName, room_avatar: roomAvatar}, function (err, html) {
+    if (err)
+      return callback(err);
+
+    send({
+      to: toEmail,
+      subject: i18next.t("email.usermention.subject"),
+      html: html
+    }, callback);
+  });
+};

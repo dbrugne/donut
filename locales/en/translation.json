@@ -392,7 +392,9 @@
         "op": "was made moderator of",
         "deop": "was removed from moderators of",
         "roomtopic": "Subject has changed in  ",
-        "roomjoin": "just joined the room"
+        "roomjoin": "just joined the room",
+        "usermention": "You were notified in ",
+        "roommessage": "New message in "
       },
       "desktop": {
         "roomkick": "You have been kicked form  ",
@@ -932,7 +934,7 @@
           "label": "Quand un utilisateur poste un message dans ce donut",
           "help": ""
         },
-        "roommention": {
+        "usermention": {
           "label": "Quand un utilisateur me notifie dans ce donut",
           "help": ""
         },
