@@ -198,7 +198,8 @@ historySchema.statics.retrieveEventWithContext = function(eventId, userId, limit
 
   var criteria = {
     _id: { $ne: eventId },
-    event: { $nin: ['user:online', 'user:offline'] },
+    //event: { $nin: ['user:online', 'user:offline'] },
+    event: 'room:message',
     users: { $in: [userId] }
   };
 
