@@ -70,7 +70,7 @@ define([
       this.set(data.data);
     },
     history: function(since, callback) {
-      client.userHistory(this.get('username'), since, function(data) {
+      client.userHistory(this.get('username'), since, 100, function(data) {
         return callback(data);
       });
     },

@@ -50,7 +50,11 @@ handler.history = function(data, session, next) {
 		},
 
 		function history(user, callback) {
-			retriever(session.uid, user._id, {since: data.since}, function(err, history) {
+			var options = {
+				since: data.since,
+				limit: data.limit
+			};
+			retriever(session.uid, user._id, options, function(err, history) {
 				if (err)
 					return callback(err);
 

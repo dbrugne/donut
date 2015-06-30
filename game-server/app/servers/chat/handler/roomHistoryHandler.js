@@ -49,7 +49,8 @@ handler.history = function(data, session, next) {
 		function history(room, callback) {
 			var options = {
 				isAdmin: (session.settings.admin === true), // allow admin to see whole rooms history
-				since: data.since
+				since: data.since,
+				limit: data.limit
 			};
 			retriever(room.id, session.uid, options, function(err, history) {
 				if (err)
