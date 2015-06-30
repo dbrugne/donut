@@ -26,7 +26,7 @@ var roomSchema = mongoose.Schema({
     created_at: {type: Date, default: Date.now},
     lastjoin_at: {type: Date}
 
-}, {strict: false}); // @todo : remove strict flag after migration
+});
 
 roomSchema.statics.validateName = function (name) {
     var pattern = /^#[-a-z0-9\._|[\]^]{3,24}$/i;

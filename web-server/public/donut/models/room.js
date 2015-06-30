@@ -213,7 +213,7 @@ define([
       this._onStatus('offline', data);
     },
     history: function(since, callback) {
-      client.roomHistory(this.get('name'), since, function(data) {
+      client.roomHistory(this.get('name'), since, 100, function(data) {
         return callback(data);
       });
     },
@@ -224,7 +224,6 @@ define([
       this.trigger('viewed', data);
     },
     fetchUsers: function() {
-      // @todo : implement spinner
       var that = this;
       client.roomUsers(this.get('name'), function(data) {
         that.users.reset();

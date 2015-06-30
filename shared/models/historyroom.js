@@ -119,7 +119,6 @@ historySchema.methods.toClientJSON = function(userViewed) {
 
 historySchema.statics.retrieve = function() {
   var that = this;
-  var howMany = 100;
   /**
    * @param roomId
    * @param userId
@@ -144,7 +143,8 @@ historySchema.statics.retrieve = function() {
     }
 
     // limit
-    var limit = howMany+1;
+    var howMany = what.limit || 100;
+    var limit = howMany + 1;
 
     var q = that.find(criteria)
       .sort({time: 'desc'}) // important for timeline logic but also optimize rendering on frontend
