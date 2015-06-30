@@ -78,7 +78,10 @@ function send(data, fn) {
  * @param callback
  */
 emailer.forgot = function(to, token, callback) {
-  renderer.render('emails/forgot.html', {token: token}, function (err, html) {
+  renderer.render('emails/forgot.html', {
+      token: token,
+      title: i18next.t("email.forgot.title")
+  }, function (err, html) {
     if (err)
       return callback(err);
 
@@ -98,7 +101,9 @@ emailer.forgot = function(to, token, callback) {
  * @param callback
  */
 emailer.welcome = function(to, callback) {
-  renderer.render('emails/signup.html', {}, function (err, html) {
+  renderer.render('emails/signup.html', {
+      title: i18next.t("email.welcome.title")
+    }, function (err, html) {
     if (err)
       return callback(err);
 
@@ -118,7 +123,9 @@ emailer.welcome = function(to, callback) {
  * @param callback
  */
 emailer.passwordChanged = function(to, callback) {
-  renderer.render('emails/password-changed.html', {}, function (err, html) {
+  renderer.render('emails/password-changed.html', {
+      title: i18next.t("email.passwordchanged.title")
+}, function (err, html) {
     if (err)
       return callback(err);
 
@@ -138,7 +145,9 @@ emailer.passwordChanged = function(to, callback) {
  * @param callback
  */
 emailer.emailChanged = function(to, callback) {
-  renderer.render('emails/email-changed.html', {}, function (err, html) {
+  renderer.render('emails/email-changed.html', {
+      title: i18next.t("email.emailchanged.title")
+    }, function (err, html) {
     if (err)
       return callback(err);
 
@@ -161,7 +170,11 @@ emailer.emailChanged = function(to, callback) {
  * @param callback
  */
 emailer.userMessage = function(toEmail, username, events, callback) {
-  renderer.render('emails/user-message.html', {username: username, events: events}, function (err, html) {
+  renderer.render('emails/user-message.html', {
+      username: username,
+      events: events,
+      title: i18next.t("email.usermessage.title")
+  }, function (err, html) {
     if (err)
       return callback(err);
 
@@ -183,7 +196,12 @@ emailer.userMessage = function(toEmail, username, events, callback) {
  * @param callback
  */
 emailer.roomMessage = function(toEmail, events, roomName, roomAvatar, callback) {
-  renderer.render('emails/room-message.html', {events: events, room_name: roomName, room_avatar: roomAvatar}, function (err, html) {
+  renderer.render('emails/room-message.html', {
+      events: events,
+      room_name: roomName,
+      room_avatar: roomAvatar,
+      title: i18next.t("email.roommessage.title")
+  }, function (err, html) {
     if (err)
       return callback(err);
 
@@ -204,7 +222,11 @@ emailer.roomMessage = function(toEmail, events, roomName, roomAvatar, callback) 
  * @param callback
  */
 emailer.roomOp = function(to, from, room, callback) {
-  renderer.render('emails/room-op.html', { username: from, roomname: room.name }, function (err, html) {
+  renderer.render('emails/room-op.html', {
+      username: from,
+      roomname: room.name,
+      title: i18next.t("email.roomop.title")
+  }, function (err, html) {
     if (err)
       return callback(err);
 
@@ -226,7 +248,11 @@ emailer.roomOp = function(to, from, room, callback) {
  * @param callback
  */
 emailer.roomDeop = function(to, from, room, callback) {
-  renderer.render('emails/room-deop.html', { username: from, roomname: room.name }, function (err, html) {
+  renderer.render('emails/room-deop.html', {
+      username: from,
+      roomname: room.name,
+      title: i18next.t("email.roomdeop.title")
+  }, function (err, html) {
     if (err)
       return callback(err);
 
@@ -248,7 +274,11 @@ emailer.roomDeop = function(to, from, room, callback) {
  * @param callback
  */
 emailer.roomKick = function(to, from, room, callback) {
-  renderer.render('emails/room-kick.html', { username: from, roomname: room.name }, function (err, html) {
+  renderer.render('emails/room-kick.html', {
+      username: from,
+      roomname: room.name,
+      title: i18next.t("email.roomkick.title")
+  }, function (err, html) {
     if (err)
       return callback(err);
 
@@ -270,7 +300,11 @@ emailer.roomKick = function(to, from, room, callback) {
  * @param callback
  */
 emailer.roomBan = function(to, from, room, callback) {
-  renderer.render('emails/room-ban.html', { username: from, roomname: room.name }, function (err, html) {
+  renderer.render('emails/room-ban.html', {
+      username: from,
+      roomname: room.name,
+      title: i18next.t("email.roomban.title")
+  }, function (err, html) {
     if (err)
       return callback(err);
 
@@ -294,7 +328,8 @@ emailer.roomBan = function(to, from, room, callback) {
 emailer.roomDeban = function(to, from, room, callback) {
   var options = {
     username: from,
-    roomname: room.name
+    roomname: room.name,
+  title: i18next.t("email.roomdeban.title")
   };
 
   renderer.render('emails/room-deban.html', options, function (err, html) {
@@ -328,7 +363,11 @@ emailer.contactForm = function(data, callback) {
  * @param callback
  */
 emailer.roomTopic = function(to, from, room, callback) {
-  renderer.render('emails/room-topic.html', { username: from, roomname: room.name }, function (err, html) {
+  renderer.render('emails/room-topic.html', {
+      username: from,
+      roomname: room.name,
+      title: i18next.t("email.roomtopic.title")
+  }, function (err, html) {
     if (err)
       return callback(err);
 
@@ -350,7 +389,11 @@ emailer.roomTopic = function(to, from, room, callback) {
  * @param callback
  */
 emailer.roomJoin = function(to, from, room, callback) {
-  renderer.render('emails/room-join.html', { username: from, roomname: room.name }, function (err, html) {
+  renderer.render('emails/room-join.html', {
+      username: from,
+      roomname: room.name,
+      title: i18next.t("email.roomjoin.title")
+  }, function (err, html) {
     if (err)
       return callback(err);
 
@@ -373,7 +416,12 @@ emailer.roomJoin = function(to, from, room, callback) {
  * @param callback
  */
 emailer.userMention = function(toEmail, events, roomName, roomAvatar, callback) {
-  renderer.render('emails/user-mention.html', {events: events, room_name: roomName, room_avatar: roomAvatar}, function (err, html) {
+  renderer.render('emails/user-mention.html', {
+      events: events,
+      room_name: roomName,
+      room_avatar: roomAvatar,
+      title: i18next.t("email.usermention.title").replace('__name__', roomName)
+  }, function (err, html) {
     if (err)
       return callback(err);
 
