@@ -96,4 +96,31 @@ router.route('/oauth/login')
       });
     });
 
+/**
+ * Route handler - check token and associated session validity
+ *
+ * Used by mobile client to preflight stored token
+ *
+ * @post token
+ * @response {validity: Boolean}
+ */
+router.route('/oauth/check')
+  .post(function(req, res) {
+    if (!req.body.token)
+      return res.json({err: 'no token provided'});
+
+    jwt.verify(req.body.token, conf.oauth.secret, function(err, decoded) {
+      if (err) {
+        debug('Error while checking oauth token: '+err);
+        return res.json({validity: false});
+      }
+      if (!decoded.username) {
+        debug('oauth token is invalid', decoded);
+        return res.json({validity: false});
+      }
+
+      return res.json({validity: true});
+    });
+  });
+
 module.exports = router;
