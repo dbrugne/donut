@@ -21,7 +21,8 @@ define([
 
       this.listenTo(windowView, 'redraw-block', this.render);
       this.listenTo(onetoones, 'change:avatar', this.render);
-      this.listenTo(currentUser, 'change:positions', this.onPositionsChange)
+      this.listenTo(rooms, 'change:avatar', this.render);
+      this.listenTo(currentUser, 'change:positions', this.onPositionsChange);
 
       this.initialRender();
     },
