@@ -34,7 +34,7 @@ roomSchema.statics.validateName = function (name) {
         return true;
     }
     return false;
-}
+};
 
 roomSchema.statics.validateTopic = function (topic) {
     var pattern = /^.{0,512}$/i;

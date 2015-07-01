@@ -32,6 +32,11 @@ var userSchema = mongoose.Schema({
     },
     preferences    : mongoose.Schema.Types.Mixed,
     onetoones      : [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
+    bans: [{
+      user: {type: mongoose.Schema.ObjectId, ref: 'User'},
+      reason: String,
+      banned_at: {type: Date, default: Date.now}
+    }],
     positions      : { type: String },
     created_at     : { type: Date, default: Date.now },
     lastlogin_at   : { type: Date },
@@ -367,6 +372,18 @@ userSchema.methods.posterId = function() {
   if (!data[1]) return '';
   var id = data[1].substr(0, data[1].lastIndexOf('.'));
   return id;
+};
+
+userSchema.methods.isBanned = function (user_id) {
+  if (!this.bans || !this.bans.length)
+    return false;
+
+  var subDocument = _.find(this.bans, function (ban) { // @warning: this shouldn't have .bans populated
+    if (ban.user.toString() == user_id)
+      return true;
+  });
+
+  return (typeof subDocument != 'undefined');
 };
 
 module.exports = mongoose.model('User', userSchema);

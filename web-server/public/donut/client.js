@@ -339,6 +339,34 @@ define([
     // USER METHODS
     // ======================================================
 
+    userBan: function(uid, reason) {
+        var data = {uid: uid};
+        if (reason)
+            data.reason = reason;
+        debug('io:out:user:ban', data);
+        var that = this;
+        pomelo.request(
+            'chat.userBanHandler.ban',
+            data,
+            function(response) {
+                if (response.err)
+                    return debug('io:in:user:ban error: ', response);
+            }
+        );
+    },
+    userDeban: function(uid) {
+        var data = {uid: uid};
+        debug('io:out:user:deban', data);
+        var that = this;
+        pomelo.request(
+            'chat.userDebanHandler.ban',
+            data,
+            function(response) {
+                if (response.err)
+                    return debug('io:in:user:deban error: ', response);
+            }
+        );
+    },
     userJoin: function(username) {
       var data = {username: username};
       debug('io:out:user:join', data);
