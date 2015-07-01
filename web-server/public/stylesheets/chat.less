@@ -207,38 +207,16 @@
             display: none;
           }
         }
-        .badge {
-          display: block;
-          position: absolute;
-          right: 10px;
-          top: 5px;
-          line-height: 10px;
-          font-size: 8px;
-          font-weight: normal;
-          background-color: #FFF;
-          color: @cl-first;
-          border: 1px solid @cl-first;
+        .badge { position: absolute; right: 2px; top: 4px; line-height: 9px; font-size: 8px; font-weight: normal; background-color: #FFF; color: @cl-first-dark-15; border-radius: 50%; height: 18px; width: 18px; padding: 3px; border: 1px solid @cl-first-dark-15;
           &.bounce {
             animation: bounce 1s ease;
             @keyframes bounce {
-              from {
-                top: -5px;
-              }
-              35% {
-                top: 10px;
-              }
-              55% {
-                top: 0;
-              }
-              75% {
-                top: 8px;
-              }
-              90% {
-                top: 3px;
-              }
-              to {
-                top: 5px;
-              }
+              from { top: -5px; }
+              35% { top: 10px; }
+              55% { top: 0; }
+              75% { top: 8px; }
+              90% { top: 3px; }
+              to { top: 5px; }
             }
           }
         }
