@@ -14,8 +14,7 @@ module.exports = function(app, uid, username, opts, fn) {
   async.waterfall([
 
     function findUser(callback) {
-      var q = User.findByUsername(username)
-        .exec(function(err, user) {
+      var q = User.findByUsername(username).exec(function(err, user) {
         if (err)
           return callback('Error while retrieving user: '+err);
 

@@ -239,8 +239,7 @@ DisconnectRemote.prototype.offline = function(uid) {
 		},
 
 		function emitUserOfflineToRooms(user, event, callback) {
-			Room.findByUser(user.id)
-				.exec(function(err, rooms) {
+			Room.findByUser(user.id).exec(function(err, rooms) {
 					if (err)
 						return callback(err);
 
