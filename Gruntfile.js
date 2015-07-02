@@ -15,7 +15,7 @@ module.exports = function(grunt) {
             grunt.log.write('Last build file was written with value: '+filename+' ').ok();
           },
           preserveLicenseComments: false,
-          //optimize: 'none', // could disabled uglyfication
+          optimize: 'none', // could disabled uglyfication
           paths: {
             '_templates'                  : '../build/templates',
             'debug'                       : '../vendor/visionmedia-debug/dist/debug',
@@ -84,8 +84,7 @@ module.exports = function(grunt) {
         },
         files: {
           'web-server/public/build/templates.js': [
-            'web-server/public/donut/templates/*.html',
-            'web-server/public/donut/templates/event/*.html'
+            'web-server/public/donut/templates/**/*.html'
           ]
         }
       }
