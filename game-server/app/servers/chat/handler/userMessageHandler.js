@@ -65,6 +65,13 @@ handler.message = function(data, session, next) {
 			});
 		},
 
+    function filterNotificationsFromBannedUser(from, to, callback) {
+      if (to.isBanned(from.id))
+        return callback('No notification cause current user is banned by user to notify');
+
+      return callback(null, from, to);
+    },
+
 		function persistOnBoth(from, to, callback) {
 			from.update({$addToSet: { onetoones: to._id }}, function(err) {
 				if (err)
