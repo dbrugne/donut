@@ -60,8 +60,9 @@ roomSchema.statics.findByUser = function (userId) {
  * @returns {*}
  */
 roomSchema.statics.findById = function (uid) {
-    return this.findOne({_id: uid});
+  return this.findOne({_id: uid});
 };
+
 
 /**
  * Method to get the avatar/poster token used to generated the avatar URL on IHM

@@ -308,7 +308,8 @@
       "see": "See",
       "ban": "Ban",
       "deban": "Deban",
-      "banned": "You have banned this user"
+      "banned": "You have lock this user",
+      "unlock": "(Click here to unlock)"
     },
     "create": {
       "info": "Attention, the donut name will not be editable later.",

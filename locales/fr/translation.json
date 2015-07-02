@@ -329,7 +329,8 @@
       "see": "Voir",
       "ban": "Bannir",
       "deban": "Débannir",
-      "banned": "Vous avez banni cet utilisateur"
+      "banned": "Vous avez bloqué cet utilisateur",
+      "unlock": "(Cliquez ici pour le débloquer)"
     },
     "create": {
       "info": "Attention le nom du donut ne sera plus modifiable !",
