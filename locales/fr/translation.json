@@ -326,7 +326,9 @@
       "edit": "mon profil",
       "preferences": "préférences",
       "update": "Editer",
-      "see": "Voir"
+      "see": "Voir",
+      "ban": "Bannir",
+      "deban": "Débannir"
     },
     "create": {
       "info": "Attention le nom du donut ne sera plus modifiable !",

@@ -305,7 +305,9 @@
       "edit": "my profile",
       "preferences": "settings",
       "update": "Edit",
-      "see": "See"
+      "see": "See",
+      "ban": "Ban",
+      "deban": "Deban"
     },
     "create": {
       "info": "Attention, the donut name will not be editable later.",

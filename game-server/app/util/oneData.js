@@ -13,7 +13,17 @@ module.exports = function(app, uid, username, opts, fn) {
 
   async.waterfall([
 
-    function findUser(callback) {
+    function findCurrentUser(callback) {
+      var q = User.findByUid(uid)
+          .exec(function(err, currentUser) {
+            if (err)
+              return callback('Error while retrieving user: '+err);
+
+            return callback(null, currentUser);
+          });
+    },
+
+    function findUser(currentUser, callback) {
       var q = User.findByUsername(username)
         .exec(function(err, user) {
         if (err)
@@ -24,20 +34,20 @@ module.exports = function(app, uid, username, opts, fn) {
           return fn(null, null);
         }
 
-        return callback(null, user);
+        return callback(null, currentUser, user);
       });
     },
 
-    function status(user, callback) {
+    function status(currentUser, user, callback) {
       app.statusService.getStatusByUid(user._id.toString(), function(err, liveStatus) {
         if (err)
           return callback('Error while retrieving user '+user._id.toString()+' status: '+err);
 
-        return callback(null, user, liveStatus);
+        return callback(null, currentUser, user, liveStatus);
       });
     },
 
-    function prepare(user, liveStatus, callback) {
+    function prepare(currentUser, user, liveStatus, callback) {
       var status = (liveStatus)
         ? 'online'
         : 'offline';
@@ -45,15 +55,17 @@ module.exports = function(app, uid, username, opts, fn) {
         ? user.lastonline_at
         : user.lastoffline_at;
       var oneData = {
-        user_id   : user._id.toString(),
-        username  : user.username,
-        avatar    : user._avatar(),
-        poster    : user._poster(),
-        color     : user.color,
-        location  : user.location,
-        website   : user.website,
-        onlined   : onlined,
-        status    : status
+        user_id     : user._id.toString(),
+        username    : user.username,
+        avatar      : user._avatar(),
+        poster      : user._poster(),
+        color       : user.color,
+        location    : user.location,
+        website     : user.website,
+        status      : status,
+        onlined     : onlined,
+        banned      : currentUser.isBanned(user.id), // for ban/deban menu
+        i_am_banned : user.isBanned(uid) // for input enable/disable
       };
 
       return callback(null, oneData);

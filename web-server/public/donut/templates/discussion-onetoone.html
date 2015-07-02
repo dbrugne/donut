@@ -1,9 +1,35 @@
 <div class="side" <% if (poster) { %>style="background-image: url(<%= poster %>);"<% }; %> data-colorify-background="color"></div>
-<div class="content">
+<div class="content" id="onetoone">
     <div class="header user">
         <img class="avatar open-user-profile" data-username="<%= username %>" src="<%= avatar %>" alt="<%= username %> avatar">
         <div class="info">
             <span class="username open-user-profile" data-username="<%= username %>">@<%= username %></span>
+            <div class="dropdown">
+                <button class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                    <i class="icon icon-chevron-down"></i>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li role="presentation">
+                        <a role="menuitem" tabindex="-1" href="<%= url %>" target="_blank" title="<%= username %> <%= t('global.permalink') %>">
+                            <i class="icon icon-link"></i> <%= t('global.permalink') %>
+                        </a>
+                    </li>
+                    <li role="presentation">
+                        <a role="menuitem" tabindex="-1" class="open-user-profile" data-username="<%= username %>">
+                            <i class="icon icon-eye"></i> <%= t('global.viewprofile') %>
+                        </a>
+                    </li>
+                    <li role="presentation" class="divider"></li>
+                    <li role="presentation" class="ban-menu">
+                        <a role="menuitem" tabindex="-1" data-toggle="confirmation" class="deban-user <% if (banned === false) { %> hidden <% } %> " data-uid="<%= user_id %>">
+                            <i class="icon icon-ban"></i> <%= t('chat.actions.deban') %>
+                        </a>
+                        <a role="menuitem" tabindex="-1" data-toggle="confirmation" class="ban-user <% if (banned === true) { %> hidden <% } %>" data-uid="<%= user_id %>">
+                            <i class="icon icon-ban"></i> <%= t('chat.actions.ban') %>
+                        </a>
+                    </li>
+                </ul>
+            </div>
             <span class="location"><%= location %></span><% if (location && website) { print(', '); } %><span class="website"><%= website %></span>
         </div>
         <div class="status-block">

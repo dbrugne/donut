@@ -40,6 +40,7 @@ define([
       pomelo.on('room:deban',   function(data) { debug('io:in:room:deban',    data); this.trigger('room:deban',     data); }, this);
       pomelo.on('room:viewed',  function(data) { debug('io:in:room:viewed',   data); this.trigger('room:viewed',    data); }, this);
 
+      // user events
       pomelo.on('user:join',        function(data) { debug('io:in:user:join',         data); this.trigger('user:join',        data); }, this);
       pomelo.on('user:leave',       function(data) { debug('io:in:user:leave',        data); this.trigger('user:leave',       data); }, this);
       pomelo.on('user:message',     function(data) { debug('io:in:user:message',      data); this.trigger('user:message',     data); }, this);
@@ -47,6 +48,8 @@ define([
       pomelo.on('user:offline',     function(data) { debug('io:in:user:offline',      data); this.trigger('user:offline',     data); }, this);
       pomelo.on('user:updated',     function(data) { debug('io:in:user:updated',      data); this.trigger('user:updated',     data); }, this);
       pomelo.on('user:preferences', function(data) { debug('io:in:user:preferences',  data); this.trigger('user:preferences', data); }, this);
+      pomelo.on('user:ban',         function(data) { debug('io:in:user:ban',          data); this.trigger('user:ban',         data); }, this);
+      pomelo.on('user:deban',       function(data) { debug('io:in:user:deban',        data); this.trigger('user:deban',       data); }, this);
       pomelo.on('user:viewed',      function(data) { debug('io:in:user:viewed',       data); this.trigger('user:viewed',      data); }, this);
 
       pomelo.on('notification:new',   function(data) { debug('io:in:notification:new',  data); this.trigger('notification:new',   data); }, this);

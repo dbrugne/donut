@@ -123,8 +123,21 @@
           }
           .location, .website {
           }
-          a {
-            text-decoration: underline;
+          .dropdown {
+            display: inline-block;
+            position: relative;
+            .dropdown-toggle {
+
+            }
+            button {
+              font-size: 24px;
+              border: none;
+              background-color: transparent;
+              color: @cl-subtext20;
+              &:hover {
+                color: @cl-subtext50;
+              }
+            }
           }
         }
         .status-block {
