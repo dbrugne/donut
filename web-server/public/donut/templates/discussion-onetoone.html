@@ -1,7 +1,9 @@
 <div class="side" <% if (poster) { %>style="background-image: url(<%= poster %>);"<% }; %> data-colorify-background="color"></div>
 <div class="content" id="onetoone">
-    <div class="header user">
-        <img class="avatar open-user-profile" data-username="<%= username %>" src="<%= avatar %>" alt="<%= username %> avatar">
+    <div class="header user <% if (banned === true) { %> is-banned <% } %>">
+        <div class="avatar relative">
+            <img class="open-user-profile" data-username="<%= username %>" src="<%= avatar %>" alt="<%= username %> avatar">
+        </div>
         <div class="info">
             <span class="username open-user-profile" data-username="<%= username %>">@<%= username %></span>
             <div class="dropdown">
@@ -21,10 +23,10 @@
                     </li>
                     <li role="presentation" class="divider"></li>
                     <li role="presentation" class="ban-menu">
-                        <a role="menuitem" tabindex="-1" data-toggle="confirmation" class="deban-user <% if (banned === false) { %> hidden <% } %> " data-uid="<%= user_id %>">
+                        <a role="menuitem" tabindex="-1" data-toggle="confirmation" class="show-if-banned deban-user" data-uid="<%= user_id %>">
                             <i class="icon icon-ban"></i> <%= t('chat.actions.deban') %>
                         </a>
-                        <a role="menuitem" tabindex="-1" data-toggle="confirmation" class="ban-user <% if (banned === true) { %> hidden <% } %>" data-uid="<%= user_id %>">
+                        <a role="menuitem" tabindex="-1" data-toggle="confirmation" class="show-if-unbanned ban-user" data-uid="<%= user_id %>">
                             <i class="icon icon-ban"></i> <%= t('chat.actions.ban') %>
                         </a>
                     </li>
@@ -36,6 +38,11 @@
             <i class="icon icon-circle status contrast"></i>
             <em></em>
             <span class="ago">(<%= t('profile.user.onlined', {time: '<span data-time="'+onlined+'"></span>'}) %>)</span>
+            <span class="show-if-banned banned-status">
+                <% if (banned === true) { %>
+                    &nbsp;-&nbsp;<%= t('chat.actions.banned') %>
+                <% } %>
+            </span>
         </div>
     </div>
     <div class="events"><!--/events view--></div>

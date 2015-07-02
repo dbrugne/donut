@@ -307,7 +307,8 @@
       "update": "Edit",
       "see": "See",
       "ban": "Ban",
-      "deban": "Deban"
+      "deban": "Deban",
+      "banned": "You have banned this user"
     },
     "create": {
       "info": "Attention, the donut name will not be editable later.",

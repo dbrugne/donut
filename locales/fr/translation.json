@@ -328,7 +328,8 @@
       "update": "Editer",
       "see": "Voir",
       "ban": "Bannir",
-      "deban": "Débannir"
+      "deban": "Débannir",
+      "banned": "Vous avez banni cet utilisateur"
     },
     "create": {
       "info": "Attention le nom du donut ne sera plus modifiable !",

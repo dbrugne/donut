@@ -91,11 +91,9 @@ define([
     },
     onBannedChange: function(model, value, options) {
       if (value === true) {
-        $('#onetoone .ban-menu .ban-user').addClass('hidden');
-        $('#onetoone .ban-menu .deban-user').removeClass('hidden');
+        $('#onetoone .user').addClass('is-banned');
       } else {
-        $('#onetoone .ban-menu .ban-user').removeClass('hidden');
-        $('#onetoone .ban-menu .deban-user').addClass('hidden');
+        $('#onetoone .user').removeClass('is-banned');
       }
     },
     banUser: function (event) {
