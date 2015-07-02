@@ -284,21 +284,21 @@ handler.update = function(data, session, next) {
 			if (!event)
 				return callback(null, user, event);
 
-			Room.findByUser(user.id, function(err, rooms) {
-				if (err)
-					return callback(err);
+			Room.findByUser(user.id).exec(function(err, rooms) {
+					if (err)
+						return callback(err);
 
-				// inform rooms
-				if (rooms && rooms.length) {
-					_.each(rooms, function(room) {
-						that.app.globalChannelService.pushMessage('connector', 'user:updated', event, room.name, {}, function(err) {
-							if (err)
-								logger.error('Error while pushing user:updated message to '+room.name+' on user:update: '+err);
+					// inform rooms
+					if (rooms && rooms.length) {
+						_.each(rooms, function(room) {
+							that.app.globalChannelService.pushMessage('connector', 'user:updated', event, room.name, {}, function(err) {
+								if (err)
+									logger.error('Error while pushing user:updated message to '+room.name+' on user:update: '+err);
+							});
 						});
-					});
-				}
+					}
 
-				return callback(null);
+					return callback(null);
 			});
 		}
 
