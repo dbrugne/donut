@@ -15,7 +15,7 @@ module.exports = function(grunt) {
             grunt.log.write('Last build file was written with value: '+filename+' ').ok();
           },
           preserveLicenseComments: false,
-          optimize: 'none', // could disabled uglyfication
+          //optimize: 'none', // could disabled uglyfication
           paths: {
             '_templates'                  : '../build/templates',
             'debug'                       : '../vendor/visionmedia-debug/dist/debug',
