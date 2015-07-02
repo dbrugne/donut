@@ -59,12 +59,8 @@ roomSchema.statics.findByUser = function (userId) {
  * @param uid
  * @returns {*}
  */
-roomSchema.statics.findByUid = function (uid) {
+roomSchema.statics.findById = function (uid) {
     return this.findOne({_id: uid});
-};
-
-roomSchema.statics.findByUser = function (user_id) {
-    return this.find({users: {$in: [user_id]}, deleted: {$ne: true}});
 };
 
 /**
