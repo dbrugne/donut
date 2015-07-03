@@ -155,9 +155,9 @@ Facade.prototype.retrievePendingNotifications = function(callback) {
     ]
   });
 
-  q.populate( { path: 'data.user', model: 'User', select: 'username local' } );
-  q.populate( { path: 'data.by_user', model: 'User', select: 'username' } );
-  q.populate( { path: 'data.room', model: 'Room', select: 'id name color avatar' } );
+  q.populate( { path: 'data.user', model: 'User', select: 'username local avatar color' } );
+  q.populate( { path: 'data.by_user', model: 'User', select: 'username avatar color' } );
+  q.populate( { path: 'data.room', model: 'Room', select: 'id name avatar color' } );
 
   q.exec(function(err, results) {
     if (err)
