@@ -62,7 +62,7 @@ Notification.prototype.shouldBeCreated = function(type, room, data) {
         var model = NotificationModel.getNewModel(that.type, user, dry);
 
         model.to_browser = user.preferencesValue("notif:channels:desktop");
-        model.to_email = (statuses[user.id] ? false : user.preferencesValue("notif:channels:email"));
+        model.to_email =  ( !user.getEmail() ? false : ( statuses[user.id] ? false : user.preferencesValue("notif:channels:email"))) ;
         model.to_mobile = (statuses[user.id] ? false : user.preferencesValue("notif:channels:mobile"));
 
         model.save(function(err) {
@@ -143,7 +143,7 @@ Notification.prototype.sendToBrowser = function(model, by_user, room) {
 
 Notification.prototype.sendEmail = function(model) {
 
-  var to = model.data.user.local.email;
+  var to = model.data.user.getEmail();
   var from = model.data.by_user.username;
   var room = model.data.room;
 
