@@ -68,6 +68,16 @@ userSchema.statics.getNewUser = function () {
   return model;
 };
 
+userSchema.methods.getEmail = function () {
+  if (this.local && this.local.email)
+    return this.local.email;
+
+  if (this.facebook && this.facebook.email)
+    return this.facebook.email;
+
+  return;
+};
+
 /**
  * Generating a hash of given password
  * @param password

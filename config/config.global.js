@@ -66,6 +66,9 @@ var conf = module.exports = {
   i18n: {
     cookie: 'donut.lng'
   },
+  notifications: {
+    emailDelay: 5 // minutes
+  },
   regex: {
     'usermention': /@\[([^\]]+)\]\(user:([^)]+)\)/g // $1 -> username, $2 -> uid
   }

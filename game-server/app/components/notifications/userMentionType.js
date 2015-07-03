@@ -68,7 +68,7 @@ Notification.prototype.shouldBeCreated = function (type, user, data) {
             var model = NotificationModel.getNewModel(type, user, dry);
 
             model.to_browser = user.preferencesValue("notif:channels:desktop");
-            model.to_email = (status ? false : user.preferencesValue("notif:channels:email"));
+            model.to_email =  ( !user.getEmail() ? false : ( status ? false : user.preferencesValue("notif:channels:email"))) ;
             model.to_mobile = (status ? false : user.preferencesValue("notif:channels:mobile"));
 
             model.save(function(err) {
@@ -154,8 +154,7 @@ Notification.prototype.sendToBrowser = function (model) {
 
 Notification.prototype.sendEmail = function (model) {
 
-    var to = model.data.user.local.email;
-    var from = model.data.by_user.username;
+    var to = model.data.user.getEmail();
 
     async.waterfall([
 

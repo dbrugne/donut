@@ -71,6 +71,7 @@ Notification.prototype.shouldBeCreated = function(type, room, data) {
 
         model.to_browser = false;
         model.to_email = user.preferencesValue("notif:channels:email");
+        model.to_email =  ( !user.getEmail() ? false : user.preferencesValue("notif:channels:email")) ;
         model.to_mobile = user.preferencesValue("notif:channels:mobile");
 
         notificationsToCreate.push(model);
@@ -91,7 +92,7 @@ Notification.prototype.shouldBeCreated = function(type, room, data) {
 
 Notification.prototype.sendEmail = function(model) {
 
-  var to = model.data.user.local.email;
+  var to = model.data.user.getEmail();
 
   async.waterfall([
 
