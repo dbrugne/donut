@@ -65,5 +65,8 @@ var conf = module.exports = {
   },
   i18n: {
     cookie: 'donut.lng'
+  },
+  regex: {
+    'usermention': /@\[([^\]]+)\]\(user:([^)]+)\)/g // $1 -> username, $2 -> uid
   }
 };

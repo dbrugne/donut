@@ -164,7 +164,7 @@ Notification.prototype.sendEmail = function (model) {
         },
 
         function mentionize(events, callback) {
-            var reg = /@\[([^\]]+)\]\(user:[^)]+\)/g;
+            var reg = conf.regex.usermention;
 
             _.each(events, function(event, index, list) {
                 if (!event.data.message)
