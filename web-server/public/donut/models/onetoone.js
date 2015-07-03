@@ -71,6 +71,44 @@ define([
     onUpdated: function (data) {
       this.set(data.data);
     },
+    onBan: function (data) {
+      if (data.user_id === currentUser.get('user_id')) {
+        // i'm the banned user
+        this.set('i_am_banned', true);
+        this.trigger('inputActive');
+      } else {
+        // i banned the other user
+        this.set('banned', true);
+      }
+
+      // add event to discussion
+      var model = new EventModel({
+        type: 'user:ban',
+        data: data
+      });
+      //if (currentUser.get('user_id') != model.get('data').from_user_id)
+      //  model.set('unviewed', true);
+      this.trigger('freshEvent', model);
+    },
+    onDeban: function (data) {
+      if (data.user_id === currentUser.get('user_id')) {
+        // i'm the banned user
+        this.set('i_am_banned', false);
+        this.trigger('inputActive');
+      } else {
+        // i banned the other user
+        this.set('banned', false);
+      }
+
+      // add event to discussion
+      var model = new EventModel({
+        type: 'user:deban',
+        data: data
+      });
+      //if (currentUser.get('user_id') != model.get('data').from_user_id)
+      //  model.set('unviewed', true);
+      this.trigger('freshEvent', model);
+    },
     history: function (since, callback) {
       client.userHistory(this.get('username'), since, 100, function (data) {
         return callback(data);
@@ -93,6 +131,9 @@ define([
     },
     isThereNew: function () {
       return !!(this.get('newmessage') || this.get('newmention'));
+    },
+    isInputActive: function() {
+      return !(this.get('i_am_banned') === true);
     }
   });
 

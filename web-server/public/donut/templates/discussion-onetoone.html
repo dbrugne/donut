@@ -39,14 +39,12 @@
             <em></em>
             <span class="ago">(<%= t('profile.user.onlined', {time: '<span data-time="'+onlined+'"></span>'}) %>)</span>
             <span class="show-if-banned">
-                <% if (banned === true) { %>
                 <span class="banned-status">
                     &nbsp;-&nbsp;<%= t('chat.actions.banned') %>&nbsp;
                     <span class="deban-user" data-uid="<%= user_id %>" style="  text-decoration: underline;">
                         <%= t('chat.actions.unlock') %>
                     </span>
                 </span>
-                <% } %>
             </span>
         </div>
     </div>

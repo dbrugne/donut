@@ -330,6 +330,10 @@
       "ban": "Bannir",
       "deban": "Débannir",
       "banned": "Vous avez bloqué cet utilisateur",
+      "bannedMessage": {
+        "onetoone": "Vous avez été bloqué par cet utilisateur",
+        "room": "Vous avez été bloqué dans cette Room"
+      },
       "unlock": "(Cliquez ici pour le débloquer)"
     },
     "create": {
@@ -418,7 +422,9 @@
         "roomtopic": "Le sujet à changé dans ",
         "roomjoin": "a rejoint la room ",
         "usermention": "on vous a notifié dans ",
-        "roommessage": "Nouveau message dans "
+        "roommessage": "Nouveau message dans ",
+        "userban": " vous a bloqué",
+        "userdeban": " vous a débloqué"
       },
       "desktop": {
         "roomkick": "Vous venez d'être expulsé de ",

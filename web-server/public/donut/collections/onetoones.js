@@ -101,6 +101,10 @@ define([
         }
 
         var key = this._key(event.from_username, event.to_username);
+      } else if (event.by_username) {
+        var key = (event.username == currentUser.get('username'))
+          ? this._key(event.by_username, currentUser.get('username'))
+          : this._key(event.username, currentUser.get('username'));
       } else {
         var key = this._key(event.username, currentUser.get('username'));
       }
@@ -169,14 +173,14 @@ define([
       if (!model)
         return;
 
-      model.onUpdated({ data: { banned: true }});
+      model.onBan(data);
     },
     onDeban: function(data) {
       var model = this.getModelFromEvent(data, false);
       if (!model)
         return;
 
-      model.onUpdated({ data: { banned: false }});
+      model.onDeban(data);
     }
 
   });

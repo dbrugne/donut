@@ -26,6 +26,8 @@ define([
   'text!./templates/event/room-deban.html',
   'text!./templates/event/room-op.html',
   'text!./templates/event/room-topic.html',
+  'text!./templates/event/user-ban.html',
+  'text!./templates/event/user-deban.html',
   'text!./templates/events.html',
   'text!./templates/home-rooms.html',
   'text!./templates/home-users.html',
@@ -74,6 +76,8 @@ define([
   event_room_deban,
   event_room_op,
   event_room_topic,
+  event_user_ban,
+  event_user_deban,
   events,
   home_rooms,
   home_users,
@@ -137,6 +141,8 @@ define([
   JST['event/room-deban.html']              = _.template(event_room_deban);
   JST['event/room-op.html']                 = _.template(event_room_op);
   JST['event/room-topic.html']              = _.template(event_room_topic);
+  JST['event/user-ban.html']                = _.template(event_user_ban);
+  JST['event/user-deban.html']              = _.template(event_user_deban);
   JST['events.html']                        = _.template(events);
   JST['home-rooms.html']                    = _.template(home_rooms);
   JST['home-users.html']                    = _.template(home_users);

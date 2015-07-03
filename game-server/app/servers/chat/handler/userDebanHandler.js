@@ -89,19 +89,25 @@ handler.ban = function(data, session, next) {
 
 		function prepareEvent(user, unbannedUser, callback) {
 			var event = {
-				by_user_id : user._id.toString(),
+				by_user_id : user.id,
 				by_username: user.username,
 				by_avatar  : user._avatar(),
-				user_id: unbannedUser._id.toString(),
+				user_id: unbannedUser.id,
 				username: unbannedUser.username,
-				avatar: unbannedUser._avatar()
+				avatar: unbannedUser._avatar(),
+        // probably, could be cleaner
+        from_user_id  : user.id,
+        from_username : user.username,
+        from_avatar   : user._avatar(),
+        to_user_id    : unbannedUser.id,
+        to_username   : unbannedUser.username
 			};
 
 			return callback(null, user, unbannedUser, event);
 		},
 
 		function historizeAndEmit(user, unbannedUser, event, callback) {
-			oneEmitter(that.app, {from: user._id, to: unbannedUser._id}, 'user:deban', event, function(err, event) {
+			oneEmitter(that.app, {from: user.id, to: unbannedUser.id}, 'user:deban', event, function(err, event) {
 				if (err)
 					return callback(err);
 
