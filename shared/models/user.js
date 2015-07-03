@@ -89,9 +89,9 @@ userSchema.methods.validPassword = function (password) {
 userSchema.methods.isAllowedToLogin = function() {
   var err = null;
   if (!this.id)
-    err = 'Unable to find authenticating user account';
+    err = 'unknown';
   else if (this.deleted === true)
-    err = 'This user account was deleted';
+    err = 'deleted';
 
   return { allowed: (!err), err: err };
 };
@@ -108,9 +108,9 @@ userSchema.methods.isAllowedToConnect = function () {
 
   var err = null;
   if (this.suspended === true)
-    err = 'This user account is suspended';
+    err = 'suspended';
   else if (!this.username)
-    err = 'This user account has no username set';
+    err = 'no-username';
 
   return { allowed: (!err), err: err };
 };
