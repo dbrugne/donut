@@ -55,16 +55,6 @@ roomSchema.statics.findByUser = function (userId) {
 };
 
 /**
- * Return room from database _id
- * @param uid
- * @returns {*}
- */
-roomSchema.statics.findById = function (uid) {
-  return this.findOne({_id: uid});
-};
-
-
-/**
  * Method to get the avatar/poster token used to generated the avatar URL on IHM
  *
  * cloudinary={CLOUDINARY_ID}#!#color={COLOR}[#!#facebook={FACEBOOK_TOKEN}]
