@@ -66,7 +66,7 @@ Notification.prototype.shouldBeCreated = function(type, room, data) {
         var model = NotificationModel.getNewModel(that.type, user, dry);
 
         model.to_browser = user.preferencesValue("notif:channels:desktop");
-        model.to_email = (statuses[user.id] ? false : user.preferencesValue("notif:channels:email"));
+        model.to_email =  ( !user.getEmail() ? false : ( statuses[user.id] ? false : user.preferencesValue("notif:channels:email"))) ;
         model.to_mobile = (statuses[user.id] ? false : user.preferencesValue("notif:channels:mobile"));
 
         notificationsToCreate.push(model);
@@ -163,7 +163,7 @@ Notification.prototype.sendEmail = function(model) {
     utils.retrieveUser(toId),
 
     function send(user, callback) {
-      return emailer.roomJoin(user.local.email, from, room, callback);
+      return emailer.roomJoin(user.getEmail(), from, room, callback);
     },
 
     function saveOnUser(callback) {

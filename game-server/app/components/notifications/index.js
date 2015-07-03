@@ -1,6 +1,7 @@
 var logger = require('../../../pomelo-logger').getLogger('donut', __filename);
 var _ = require('underscore');
 var NotificationModel = require('../../../../shared/models/notification');
+var conf = require('../../../../config/config.global');
 
 // notifications logic
 var userMessage = require('./userMessageType');
@@ -136,7 +137,7 @@ Facade.prototype.retrieveUserNotificationsUnreadCount = function(uid, callback) 
 
 Facade.prototype.retrievePendingNotifications = function(callback) {
   var time = new Date();
-  time.setMinutes(time.getMinutes() - 5);
+  time.setMinutes(time.getMinutes() - conf.notifications.emailDelay);
 
   var q = NotificationModel.find({
     done: false,
@@ -149,9 +150,9 @@ Facade.prototype.retrievePendingNotifications = function(callback) {
     ]
   });
 
-  q.populate( { path: 'data.user', model: 'User', select: 'username local' } );
-  q.populate( { path: 'data.by_user', model: 'User', select: 'username' } );
-  q.populate( { path: 'data.room', model: 'Room', select: 'id name color avatar' } );
+  q.populate( { path: 'data.user', model: 'User', select: 'username local avatar color' } );
+  q.populate( { path: 'data.by_user', model: 'User', select: 'username avatar color' } );
+  q.populate( { path: 'data.room', model: 'Room', select: 'id name avatar color' } );
 
   q.exec(function(err, results) {
     if (err)

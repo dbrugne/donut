@@ -84,8 +84,7 @@ module.exports = function(grunt) {
         },
         files: {
           'web-server/public/build/templates.js': [
-            'web-server/public/donut/templates/*.html',
-            'web-server/public/donut/templates/event/*.html'
+            'web-server/public/donut/templates/**/*.html'
           ]
         }
       }

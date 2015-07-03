@@ -65,5 +65,8 @@ var conf = module.exports = {
   },
   i18n: {
     cookie: 'donut.lng'
+  },
+  notifications: {
+    emailDelay: 5 // minutes
   }
 };

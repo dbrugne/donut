@@ -61,10 +61,10 @@ module.exports = {
             if (!_.isFunction(callback))
                 return logger.error('Wrong parameters count, missing callback');
 
-            RoomModel.findByUid(roomId).exec(function(err, user) {
-                args.unshift(err);
-                args.push(user);
-                callback.apply(undefined, args);
+            RoomModel.findById(roomId, function(err, room) {
+              args.unshift(err);
+              args.push(room);
+              callback.apply(undefined, args);
             });
         };
     },

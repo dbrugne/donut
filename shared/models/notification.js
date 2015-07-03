@@ -57,7 +57,7 @@ notificationSchema.statics.getNewModel = function(type, user, data) {
  */
 notificationSchema.statics.bulkInsert = function(models, fn) {
   if (!models || !models.length)
-    return fn(null);
+    return fn(null, models);
 
   var bulk = this.collection.initializeOrderedBulkOp();
   if (!bulk)
