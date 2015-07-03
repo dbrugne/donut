@@ -117,9 +117,10 @@ Facade.prototype.retrieveUserNotifications = function(uid, what, callback) {
     q.limit(what.number);
 
   q.sort({time: -1});
+  q.populate( { path: 'user', model: 'User', select: 'local username color facebook avatar' } );
   q.populate( { path: 'data.user', model: 'User', select: 'username color facebook avatar' } );
   q.populate( { path: 'data.by_user', model: 'User', select: 'username color facebook avatar' } );
-  q.populate( { path: 'data.room', model: 'Room', select: 'id name color avatar' } );
+  q.populate( { path: 'data.room', model: 'Room', select: 'name color avatar' } );
   q.exec(function(err, results) {
     callback(err, results);
   });
@@ -150,9 +151,10 @@ Facade.prototype.retrievePendingNotifications = function(callback) {
     ]
   });
 
-  q.populate( { path: 'data.user', model: 'User', select: 'username local avatar color' } );
-  q.populate( { path: 'data.by_user', model: 'User', select: 'username avatar color' } );
-  q.populate( { path: 'data.room', model: 'Room', select: 'id name avatar color' } );
+  q.populate( { path: 'user', model: 'User', select: 'facebook username local avatar color' } );
+  q.populate( { path: 'data.user', model: 'User', select: 'facebook username local avatar color' } );
+  q.populate( { path: 'data.by_user', model: 'User', select: 'facebook username avatar color' } );
+  q.populate( { path: 'data.room', model: 'Room', select: 'name avatar color' } );
 
   q.exec(function(err, results) {
     if (err)

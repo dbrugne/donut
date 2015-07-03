@@ -143,7 +143,7 @@ Notification.prototype.sendToBrowser = function(model, by_user, room) {
 
 Notification.prototype.sendEmail = function(model) {
 
-  var to = model.data.user.getEmail();
+  var to = model.user.getEmail();
   var from = model.data.by_user.username;
   var room = model.data.room;
 

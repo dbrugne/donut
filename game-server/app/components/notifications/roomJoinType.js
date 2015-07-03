@@ -154,16 +154,14 @@ Notification.prototype.sendToBrowser = function(model) {
 
 Notification.prototype.sendEmail = function(model) {
 
-  var toId = model.user.toString();
-  var from = model.data.user.username;
+  var to = model.user.getEmail();
+  var from = model.user.username;
   var room = model.data.room;
 
   async.waterfall([
 
-    utils.retrieveUser(toId),
-
-    function send(user, callback) {
-      return emailer.roomJoin(user.getEmail(), from, room, callback);
+    function send(callback) {
+      return emailer.roomJoin(to, from, room, callback);
     },
 
     function saveOnUser(callback) {

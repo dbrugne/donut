@@ -92,7 +92,7 @@ Notification.prototype.shouldBeCreated = function(type, room, data) {
 
 Notification.prototype.sendEmail = function(model) {
 
-  var to = model.data.user.getEmail();
+  var to = model.user.getEmail();
 
   async.waterfall([
 
