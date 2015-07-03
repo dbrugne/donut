@@ -1,0 +1,13 @@
+<div class="message <% if (data.viewed == false) { %>unread<% } %>" data-notification-id="<%= data.id %>" data-time="<%= data.time %>">
+    <img src="<%= data.avatar %>" alt="<%= data.data.by_user.username %>" />
+    <div class="avatar open-user-profile" data-username="<%= data.data.by_user.username %>" ></div>
+    <div class="message-subject">
+        <span class="username open-user-profile" data-username="<%= data.data.by_user.username %>">@<%= data.data.by_user.username %></span>
+        <a href="#">
+            <%= t('chat.notifications.dropdown.userdeban') %>
+        </a>
+    </div>
+    <div class="message-description unviewed">
+        <div class="date"><span class="moment" data-time="<%= data.time %>" title="<%= data.time %>"><%= from_now %></span></div>
+    </div>
+</div> <!-- / .message -->

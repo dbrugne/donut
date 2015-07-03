@@ -860,6 +860,10 @@
         "roomjoin": {
           "label": "Quand quelqu'un rentre dans ce donut",
           "help": ""
+        },
+        "userpromote": {
+          "label": "Quand quelqu'un me bloque ou me débloque",
+          "help": ""
         }
       }
     }

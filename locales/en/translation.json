@@ -309,6 +309,10 @@
       "ban": "Ban",
       "deban": "Deban",
       "banned": "You have lock this user",
+      "bannedMessage": {
+        "onetoone": "You have been locked by this user",
+        "room": "You have been locked in this Room"
+      },
       "unlock": "(Click here to unlock)"
     },
     "create": {
@@ -398,7 +402,9 @@
         "roomtopic": "Subject has changed in  ",
         "roomjoin": "just joined the room",
         "usermention": "You were notified in ",
-        "roommessage": "New message in "
+        "roommessage": "New message in ",
+        "userban": " locked you",
+        "userdeban": " unlocked you"
       },
       "desktop": {
         "roomkick": "You have been kicked form  ",
@@ -952,6 +958,10 @@
         },
         "roomjoin": {
           "label": "Quand quelqu'un rentre dans ce donut",
+          "help": ""
+        },
+        "userPromote": {
+          "label": "When someone lock or unlock me",
           "help": ""
         }
       }

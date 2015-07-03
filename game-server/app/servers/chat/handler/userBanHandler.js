@@ -116,14 +116,13 @@ handler.ban = function(data, session, next) {
 
 				return callback(null, user, bannedUser, event);
 			});
+		},
+
+		function notification(user, bannedUser, event, callback) {
+			Notifications(that.app).create('userban', bannedUser, {event: event}, function() {
+				return callback(null);
+			});
 		}
-		//,
-        //
-		//function notification(user, bannedUser, event, callback) {
-		//	Notifications(that.app).create('userban', bannedUser, {event: event}, function() {
-		//		return callback(null);
-		//	});
-		//}
 
 	], function(err) {
 		if (err) {

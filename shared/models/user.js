@@ -228,21 +228,22 @@ userSchema.statics.retrieveUser = function (username) {
  */
 userSchema.statics.preferencesKeys = function () {
   return {
-    'browser:welcome': { default: true },
-    'browser:sounds': { default: true },
-    'notif:channels:desktop': { default: false },
-    'notif:channels:email': { default: true },
-    'notif:channels:mobile': { default: true },
+    'browser:welcome': {default: true},
+    'browser:sounds': {default: true},
+    'notif:channels:desktop': {default: false},
+    'notif:channels:email': {default: true},
+    'notif:channels:mobile': {default: true},
 
-    'notif:usermessage': { default: true },
-    'notif:roominvite': { default: true },
+    'notif:usermessage': {default: true},
+    'notif:roominvite': {default: true},
+    'notif:userpromote': {default: true},
 
-    'room:notif:nothing:__what__': { default: false },
-    'room:notif:usermention:__what__': { default: true },
-    'room:notif:roompromote:__what__': { default: true },
-    'room:notif:roommessage:__what__': { default: false },
-    'room:notif:roomtopic:__what__': { default: false }, // set to true for owner on room creation
-    'room:notif:roomjoin:__what__': { default: false } // set to true for owner on room creation
+    'room:notif:nothing:__what__': {default: false},
+    'room:notif:usermention:__what__': {default: true},
+    'room:notif:roompromote:__what__': {default: true},
+    'room:notif:roommessage:__what__': {default: false},
+    'room:notif:roomtopic:__what__': {default: false}, // set to true for owner on room creation
+    'room:notif:roomjoin:__what__': {default: false} // set to true for owner on room creation
   };
 };
 
