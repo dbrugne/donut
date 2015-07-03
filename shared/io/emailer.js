@@ -420,7 +420,7 @@ emailer.userMention = function(toEmail, events, roomName, roomAvatar, callback) 
       events: events,
       room_name: roomName,
       room_avatar: roomAvatar,
-      title: i18next.t("email.usermention.title").replace('__name__', roomName)
+      title: i18next.t("email.usermention.content.title").replace('__name__', roomName)
   }, function (err, html) {
     if (err)
       return callback(err);
@@ -430,5 +430,53 @@ emailer.userMention = function(toEmail, events, roomName, roomAvatar, callback) 
       subject: i18next.t("email.usermention.subject"),
       html: html
     }, callback);
+  });
+};
+
+/**
+ * Sent to a User when he has been banned by another user
+ *
+ * @param to
+ * @param from
+ * @param callback
+ */
+emailer.userBan = function(to, from, callback) {
+  renderer.render('emails/user-ban.html', {
+    username: from,
+    title: i18next.t("email.userban.content.title").replace('__username__', '@'+from)
+  }, function (err, html) {
+    if (err)
+      return callback(err);
+
+    send({
+      to: to,
+      subject: i18next.t("email.userban.subject").replace('__username__', from),
+      html: html
+    },callback);
+
+  });
+};
+
+/**
+ * Sent to a User when he has been unbanned by another user
+ *
+ * @param to
+ * @param from
+ * @param callback
+ */
+emailer.userDeban = function(to, from, callback) {
+  renderer.render('emails/user-deban.html', {
+    username: from,
+    title: i18next.t("email.userdeban.content.title").replace('__username__', '@'+from)
+  }, function (err, html) {
+    if (err)
+      return callback(err);
+
+    send({
+      to: to,
+      subject: i18next.t("email.userdeban.subject").replace('__username__', from),
+      html: html
+    },callback);
+
   });
 };

@@ -748,6 +748,22 @@
         "button": "Voir la notification sur DONUT"
       }
     },
+    "userban": {
+      "subject": "Vous avez été bloqué par __username__ sur DONUT",
+      "content": {
+        "title": "Vous avez été bloqué par __username__",
+        "disclaimer": "Vous ne pouvez plus lui envoyer de messages. Il pourra par contre continuer à vous en envoyer tant que vous ne l'aurez pas bloqué à votre tour.",
+        "button": "Retourner sur DONUT"
+      }
+    },
+    "userdeban": {
+      "subject": "Vous avez été débloqué par __username__ sur DONUT",
+      "content": {
+        "title": "Vous avez été débloqué par __username__",
+        "disclaimer": "Vous pouvez recommencer à discuter avec lui. Il ne pourra vous répondre que si vous ne l'avez pas bloqué.",
+        "button": "Retourner sur DONUT"
+      }
+    },
     "contact": {
       "subject": "[DONUT] Nouveau formulaire de contact",
       "text": [

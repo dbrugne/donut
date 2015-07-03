@@ -158,46 +158,36 @@ Notification.prototype.sendToBrowser = function(model) {
  */
 Notification.prototype.sendEmail = function(model) {
 
-  //var to = model.data.user.local.email;
-  //var from = model.data.by_user.username;
-  //var room = model.data.room;
-  //
-  //async.waterfall([
-  //
-  //  function send(callback) {
-  //    switch(model.type) {
-  //
-  //      case 'roomop':
-  //        return emailer.roomOp(to, from, room, callback);
-  //      break;
-  //      case 'roomdeop':
-  //        return emailer.roomDeop(to, from, room, callback);
-  //      break;
-  //      case 'roomkick':
-  //        return emailer.roomKick(to, from, room, callback);
-  //      break;
-  //      case 'roomban':
-  //        return emailer.roomBan(to, from, room, callback);
-  //      break;
-  //      case 'roomdeban':
-  //        return emailer.roomDeban(to, from, room, callback);
-  //      break;
-  //      default:
-  //        return callback('userPromoteType :: Unknown notification type: '+model.type);
-  //      break;
-  //    }
-  //  },
-  //
-  //  function saveOnUser(callback) {
-  //    model.sent_to_email = true;
-  //    model.sent_to_email_at = new Date();
-  //    model.save(callback);
-  //  }
-  //
-  //], function(err) {
-  //  if (err)
-  //    return logger.error('Error happened in roomTopicType|sendEmail : '+err);
-  //});
+  var to = model.data.user.local.email;
+  var from = model.data.by_user.username;
+
+  async.waterfall([
+
+    function send(callback) {
+      switch(model.type) {
+
+        case 'userban':
+          return emailer.userBan(to, from, callback);
+        break;
+        case 'userdeban':
+          return emailer.userDeban(to, from, callback);
+        break;
+        default:
+          return callback('userPromoteType :: Unknown notification type: '+model.type);
+        break;
+      }
+    },
+
+    function saveOnUser(callback) {
+      model.sent_to_email = true;
+      model.sent_to_email_at = new Date();
+      model.save(callback);
+    }
+
+  ], function(err) {
+    if (err)
+      return logger.error('Error happened in roomTopicType|sendEmail : '+err);
+  });
 };
 
 Notification.prototype.sendMobile = function() {
