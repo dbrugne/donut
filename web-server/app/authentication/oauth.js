@@ -184,8 +184,19 @@ router.route('/oauth/save-username')
         return res.json({err: 'internal'});
       }
 
-      console.log(decoded);
-      return res.json({err: 'todo'});
+      User.findOne({ '_id': decoded.id }, function (err, user) {
+        if (err) {
+          debug('Error while retrieving user: '+err);
+          return res.json({err: 'internal'});
+        }
+
+        user.usernameAvailability(req.body.username, function() {
+          return res.json({success: true}); // success
+        }, function(err) {
+          return res.json({err: err, success: false});
+        });
+
+      });
     });
   });
 
