@@ -162,5 +162,31 @@ router.route('/oauth/get-token-from-facebook')
   }
 );
 
+/**
+ * Route handler - save username on account designed by token
+ *
+ * Used by mobile client to save username (e.g.: after Facebook signup)
+ *
+ * @post token
+ * @post username
+ * @response {}
+ */
+router.route('/oauth/save-username')
+  .post(function(req, res) {
+    if (!req.body.token)
+      return res.json({err: 'no-token'});
+    if (!req.body.username)
+      return res.json({err: 'no-username'});
+
+    jwt.verify(req.body.token, conf.oauth.secret, function(err, decoded) {
+      if (err) {
+        debug('Error while saving username: '+err);
+        return res.json({err: 'internal'});
+      }
+
+      console.log(decoded);
+      return res.json({err: 'todo'});
+    });
+  });
 
 module.exports = router;
