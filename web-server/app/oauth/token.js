@@ -148,11 +148,11 @@ router.route('/oauth/facebook')
     var profile = {
       id: req.user.id,
       username: req.user.username,
-      email: req.user.local.email
+      facebook_id: req.user.facebook.id
     };
-    response.token = jwt.sign(profile, conf.oauth.secret, { expiresInMinutes: conf.oauth.expire });
+    var token = jwt.sign(profile, conf.oauth.secret, { expiresInMinutes: conf.oauth.expire });
 
-    res.json(response);
+    res.json({ token : token });
   }
 );
 
