@@ -27,9 +27,8 @@ var validateAvailability = function (req, res, next) {
       token: req.csrfToken()
     });
   };
-  req.user.usernameAvailability(
-    req.body.user.fields.username, next, handleError);
-}
+  req.user.usernameAvailability(req.body.user.fields.username, next, handleError);
+};
 
 var hasNotUsername = function(req, res, next) {
   if (req.user.username) {
