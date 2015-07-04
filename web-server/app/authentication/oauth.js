@@ -16,7 +16,7 @@ var conf = require('../../../config/');
  * @cookie a valid session cookie
  * @response {token: String}
  */
-router.route('/oauth/session')
+router.route('/oauth/get-token-from-session')
     .get(function(req, res) {
       if (!req.user)
         return res.json({err: 'no valid cookie or session'});
@@ -47,7 +47,7 @@ router.route('/oauth/session')
  * @post password
  * @response {token: String}
  */
-router.route('/oauth/login')
+router.route('/oauth/get-token-from-credentials')
     .post(function(req, res) {
       if (!req.body.email || (!req.body.password && !req.body.code))
         return res.json({err: 'no-email-or-password'});
@@ -84,7 +84,9 @@ router.route('/oauth/login')
         }
 
         var allowed = user.isAllowedToConnect();
-        if (!allowed.allowed)
+        if (!allowed.allowed && allowed.err === 'no-username')
+          response.err = allowed.err;
+        else if (!allowed.allowed)
           return res.json(allowed);
 
         // authentication token with user profile inside
@@ -107,7 +109,7 @@ router.route('/oauth/login')
  * @post token
  * @response {validity: Boolean}
  */
-router.route('/oauth/check')
+router.route('/oauth/check-token')
   .post(function(req, res) {
     if (!req.body.token)
       return res.json({err: 'no-token'});
@@ -134,14 +136,18 @@ router.route('/oauth/check')
  * @post access_token
  * @response {token: String}
  */
-router.route('/oauth/facebook')
+router.route('/oauth/get-token-from-facebook')
   .post(passport.authenticate('facebook-token'), // delegate Facebook token validation to passport-facebook-token
   function (req, res) {
     if (!req.user)
       return res.json({err: 'unable to retrieve this user'});
 
+    var response = {};
+
     var allowed = req.user.isAllowedToConnect();
-    if (!allowed.allowed)
+    if (!allowed.allowed && allowed.err === 'no-username')
+      response.err = allowed.err;
+    else if (!allowed.allowed)
       return res.json(allowed);
 
     // authentication token with user profile inside
@@ -150,9 +156,9 @@ router.route('/oauth/facebook')
       username: req.user.username,
       facebook_id: req.user.facebook.id
     };
-    var token = jwt.sign(profile, conf.oauth.secret, { expiresInMinutes: conf.oauth.expire });
+    response.token = jwt.sign(profile, conf.oauth.secret, { expiresInMinutes: conf.oauth.expire });
 
-    res.json({ token : token });
+    res.json(response);
   }
 );
 
