@@ -35,6 +35,7 @@
     "nodemailer-mailgun-transport": "^1.0.0",
     "passport": "0.2.x",
     "passport-facebook": "1.x",
+    "passport-facebook-token": "^2.1.0",
     "passport-local": "1.x",
     "pomelo": "latest",
     "pomelo-globalchannel-plugin": "dbrugne/pomelo-globalchannel-plugin",

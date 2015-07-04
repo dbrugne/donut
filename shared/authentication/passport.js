@@ -2,15 +2,14 @@ var debug = require('debug')('shared:passport');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
+var FacebookTokenStrategy = require('passport-facebook-token').Strategy;
 var conf = require('../../config/index');
 var User = require('../models/user');
 var emailer = require('../io/emailer');
 var i18next = require('../util/i18next');
 var keenio = require('../io/keenio');
 
-// =========================================================================
-// keen.io tracking ========================================================
-// =========================================================================
+// keen.io tracking
 var keenIoTracking = function(user, type) {
   var keenEvent = {
     method: type || 'unknown',
@@ -27,38 +26,25 @@ var keenIoTracking = function(user, type) {
   });
 };
 
-// =========================================================================
-// passport session setup ==================================================
-// =========================================================================
-// required for persistent login sessions
-// passport needs ability to serialize and unserialize users out of session
-
-// used to serialize the user for the session
+// serialize user for the session
 passport.serializeUser(function (user, done) {
   done(null, user.id);
 });
 
-// used to deserialize the user
+// deserialize user
 passport.deserializeUser(function (id, done) {
   User.findById(id, function (err, user) {
     done(err, user);
   });
 });
 
-// =========================================================================
-// LOCAL SIGNUP ============================================================
-// =========================================================================
-// we are using named strategies since we have one for login and one for signup
-// by default, if there was no name, it would just be called 'local'
+// email and password signup
 passport.use('local-signup', new LocalStrategy({
-    // by default, local strategy uses username and password, we will override with email
-    usernameField: 'email',
+    usernameField: 'email', // by default local strategy uses username
     passwordField: 'password',
-    passReqToCallback: true // allows us to pass back the entire request to the callback
+    passReqToCallback: true
   },
   function (req, email, password, done) {
-    // asynchronous
-    // User.findOne wont fire unless data is sent back
     process.nextTick(function () {
 
       if (req.user) {
@@ -116,19 +102,13 @@ passport.use('local-signup', new LocalStrategy({
 
   }));
 
-// =========================================================================
-// LOCAL LOGIN =============================================================
-// =========================================================================
-// we are using named strategies since we have one for login and one for signup
-// by default, if there was no name, it would just be called 'local'
-
+// email and password login
 passport.use('local-login', new LocalStrategy({
-    // by default, local strategy uses username and password, we will override with email
-    usernameField: 'email',
+    usernameField: 'email', // by default local strategy uses username
     passwordField: 'password',
-    passReqToCallback: true // allows us to pass back the entire request to the callback
+    passReqToCallback: true
   },
-  function (req, email, password, done) { // callback with email and password from our form
+  function (req, email, password, done) {
 
     // find a user whose email is the same as the forms email
     // we are checking to see if the user trying to login already exists
@@ -162,34 +142,22 @@ passport.use('local-login', new LocalStrategy({
 
   }));
 
-// =========================================================================
-// FACEBOOK ================================================================
-// =========================================================================
+// Facebook (Web browser, based on current Facebook session)
 passport.use(new FacebookStrategy({
     clientID: conf.facebook.clientID,
     clientSecret: conf.facebook.clientSecret,
     callbackURL: conf.facebook.callbackURL,
-    passReqToCallback: true // allows us to pass in the req from our route (lets us check if a user is logged in or not)
+    passReqToCallback: true
   },
-
-  // facebook will send back the token and profile
   function (req, token, refreshToken, profile, done) {
-
-    // asynchronous
     process.nextTick(function () {
 
-      // check if the user is already logged in
       if (!req.user) {
 
-        // find the user in the database based on their facebook id
         User.findOne({ 'facebook.id': profile.id }, function (err, user) {
-
-          // if there is an error, stop everything and return that
-          // ie an error connecting to the database
           if (err)
             return done(err);
 
-          // if the user is found, then log them in
           if (user) {
             user.lastlogin_at = Date.now();
             // if there is a user id already but no token (user was linked at one point and then removed)
@@ -207,24 +175,16 @@ passport.use(new FacebookStrategy({
               return done(null, user); // user found, return that user
             });
           } else {
-            // if there is no user found with that facebook id, create them
+            // create account (=signup)
             var newUser = User.getNewUser();
-
-            // set all of the facebook information in our user model
-            newUser.facebook.id = profile.id; // set the users facebook id
-            newUser.facebook.token = token; // we will save the token that facebook provides to the user
-            newUser.facebook.name = profile.name.givenName + ' ' + profile.name.familyName; // look at the passport user profile to see how names are returned
+            newUser.lastlogin_at = Date.now();
+            newUser.facebook.id = profile.id;
+            newUser.facebook.token = token;
+            newUser.facebook.name = profile.name.givenName + ' ' + profile.name.familyName;
+            newUser.name = profile.displayName;
             if (profile.emails)
               newUser.facebook.email = profile.emails[0].value; // facebook can return multiple emails so we'll take the first
 
-            // prefill global data with Facebook profile (only on local profile creation)
-            newUser.name = profile.displayName;
-            if (profile._json.location && profile._json.location.name)
-              newUser.location = profile._json.location.name;
-
-            newUser.lastlogin_at = Date.now();
-
-            // save our user to the database
             newUser.save(function (err) {
               if (err)
                 throw err;
@@ -272,5 +232,66 @@ passport.use(new FacebookStrategy({
     });
 
   }));
+
+// Facebook (mobile, based on token)
+passport.use(new FacebookTokenStrategy({
+    clientID: conf.facebook.clientID,
+    clientSecret: conf.facebook.clientSecret
+  }, function(accessToken, refreshToken, profile, done) {
+
+    console.log(accessToken);
+    console.log(profile);
+
+    var facebookId = profile.id;
+    User.findOne({ 'facebook.id': facebookId }, function (err, user) {
+      if (err)
+        return done(err);
+
+      if (user) {
+
+        user.lastlogin_at = Date.now();
+        // if there is a user id already but no token (user was linked at one point and then removed)
+        // just add our token and profile information
+        if (!user.facebook.token) {
+          user.facebook.token = accessToken;
+
+          user.facebook.name = profile.name.givenName + ' ' + profile.name.familyName;
+          if (profile.emails)
+            user.facebook.email = profile.emails[0].value;
+        }
+        user.save(function (err) {
+          if (err)
+            return done(err);
+
+          return done(null, user); // user found, return that user
+        });
+
+
+      } else {
+
+        // create account (=signup)
+        var newUser = User.getNewUser();
+        newUser.lastlogin_at = Date.now();
+        newUser.facebook.id = profile.id;
+        newUser.facebook.token = accessToken;
+        newUser.facebook.name = profile.name.givenName + ' ' + profile.name.familyName; // @todo :test
+        newUser.name = profile.displayName; // @todo :test
+        if (profile.emails)
+          newUser.facebook.email = profile.emails[0].value; // facebook can return multiple emails so we'll take the first
+        newUser.save(function (err) {
+          if (err)
+            return done(err);
+
+          // tracking
+          keenIoTracking(newUser, 'facebook');
+
+          // if successful, return the new user
+          return done(null, newUser);
+        });
+
+      }
+    });
+  }));
+
 
 module.exports = passport;

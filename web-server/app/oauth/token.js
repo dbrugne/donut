@@ -1,6 +1,7 @@
 var debug = require('debug')('donut:oauth');
 var express = require('express');
 var router = express.Router();
+var passport = require('../../../shared/authentication/passport');
 var jwt = require('jsonwebtoken');
 var User = require('../../../shared/models/user');
 var conf = require('../../../config/');
@@ -22,7 +23,7 @@ router.route('/oauth/session')
 
       var allowed = req.user.isAllowedToConnect();
       if (!allowed.allowed)
-        return res.json({err: 'user not allowed to connect'});
+        return res.json(allowed);
 
       // filter exported data
       var profile = {
@@ -49,20 +50,22 @@ router.route('/oauth/session')
 router.route('/oauth/login')
     .post(function(req, res) {
       if (!req.body.email || (!req.body.password && !req.body.code))
-        return res.json({err: 'no email or password provided'});
+        return res.json({err: 'no-email-or-password'});
 
       User.findOne({'local.email': req.body.email}, function(err, user) {
-        if (err)
-          return res.json({err: 'internal error: '+err});
+        if (err) {
+          debug('internal error: '+err);
+          return res.json({err: 'internal-error'});
+        }
         if (!user)
-          return res.json({err: 'unable to find user'});
+          return res.json({err: 'unknown'});
 
         var response = {};
 
         // check for password or secure code
         if (req.body.password) {
           if (!user.validPassword(req.body.password))
-            return res.json({err: 'invalid password provided'});
+            return res.json({err: 'wrong'});
 
           // return additionally a secure code for next login (avoid storing of password on device)
           response.code = jwt.sign({id: user.id}, conf.oauth.secret, {});
@@ -72,17 +75,17 @@ router.route('/oauth/login')
             var payload = jwt.verify(req.body.code, conf.oauth.secret, {});
             if (payload.id !== user.id) {
               debug('Error within oauth by secure code: secure code not correspond to this user');
-              return res.json({err: 'invalid code provided'});
+              return res.json({err: 'invalid'});
             }
           } catch (e) {
             debug('Error within oauth by secure code: '+ e.message);
-            return res.json({err: 'invalid code provided'});
+            return res.json({err: 'invalid'});
           }
         }
 
         var allowed = user.isAllowedToConnect();
         if (!allowed.allowed)
-          return res.json({err: 'user not allowed to connect'});
+          return res.json(allowed);
 
         // authentication token with user profile inside
         var profile = {
@@ -107,7 +110,7 @@ router.route('/oauth/login')
 router.route('/oauth/check')
   .post(function(req, res) {
     if (!req.body.token)
-      return res.json({err: 'no token provided'});
+      return res.json({err: 'no-token'});
 
     jwt.verify(req.body.token, conf.oauth.secret, function(err, decoded) {
       if (err) {
@@ -122,5 +125,36 @@ router.route('/oauth/check')
       return res.json({validity: true});
     });
   });
+
+/**
+ * Route handler - authenticate a user based on a Facebook access token
+ *
+ * Used by mobile client on Facebook login/signup process
+ *
+ * @post access_token
+ * @response {token: String}
+ */
+router.route('/oauth/facebook')
+  .post(passport.authenticate('facebook-token'), // delegate Facebook token validation to passport-facebook-token
+  function (req, res) {
+    if (!req.user)
+      return res.json({err: 'unable to retrieve this user'});
+
+    var allowed = req.user.isAllowedToConnect();
+    if (!allowed.allowed)
+      return res.json(allowed);
+
+    // authentication token with user profile inside
+    var profile = {
+      id: req.user.id,
+      username: req.user.username,
+      email: req.user.local.email
+    };
+    response.token = jwt.sign(profile, conf.oauth.secret, { expiresInMinutes: conf.oauth.expire });
+
+    res.json(response);
+  }
+);
+
 
 module.exports = router;
