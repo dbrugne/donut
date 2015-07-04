@@ -175,7 +175,8 @@ router.route('/oauth/save-username')
   .post(function(req, res) {
     if (!req.body.token)
       return res.json({err: 'no-token'});
-    if (!req.body.username)
+    var username = req.body.username;
+    if (!username)
       return res.json({err: 'no-username'});
 
     jwt.verify(req.body.token, conf.oauth.secret, function(err, decoded) {
@@ -184,16 +185,32 @@ router.route('/oauth/save-username')
         return res.json({err: 'internal'});
       }
 
-      User.findOne({ '_id': decoded.id }, function (err, user) {
+      if (!User.validateUsername(username))
+        return res.json({err: 'invalid'});
+
+      User.findOne({ _id: decoded.id }, function (err, user) {
         if (err) {
           debug('Error while retrieving user: '+err);
           return res.json({err: 'internal'});
         }
 
-        user.usernameAvailability(req.body.username, function() {
-          return res.json({success: true}); // success
-        }, function(err) {
-          return res.json({err: err, success: false});
+        user.usernameAvailability(username, function(err) {
+          if (err) {
+            if (err === 'not-available')
+              return res.json({err: 'not-available'});
+            else {
+              debug('Error while checking username availability: '+err);
+              return res.json({err: 'internal'});
+            }
+          }
+
+          user.update({$set: {username: username} }, function(err) {
+            if (err) {
+              debug('Error while saving username: '+err);
+              return res.json({err: 'internal'});
+            }
+            return res.json({ success: true }); // success
+          });
         });
 
       });

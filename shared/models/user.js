@@ -310,10 +310,9 @@ userSchema.methods.preferencesValue = function (key) {
 /**
  * Check for username availability (call success)
  * @param username
- * @param success
- * @param error
+ * @param callback
  */
-userSchema.methods.usernameAvailability = function (username, success, error) {
+userSchema.methods.usernameAvailability = function (username, callback) {
   username = ''+username;
   var pattern = username.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
   var regexp = new RegExp('^'+pattern+'$','i');
@@ -323,10 +322,12 @@ userSchema.methods.usernameAvailability = function (username, success, error) {
       {_id: { $ne: this._id }}
     ]
   }, function(err, user) {
-    if (err) return error('Error while searching existing username: ' + err);
-    if (user) return error(i18next.t("choose-username.usernameexists"));
+    if (err)
+      return callback(err);
+    if (user)
+      return callback('not-available');
 
-    success();
+    return callback();
   });
 };
 
