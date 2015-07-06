@@ -46,31 +46,14 @@ Notification.prototype.shouldBeCreated = function(type, room, data) {
 
       var notificationsToCreate = [];
 
-      // cleanup data
-      var wet = _.clone(data.event);
-      var dry = _.omit(wet, [
-        'time',
-        'avatar',
-        'username',
-        'user_id',
-        'name',
-        'message'
-      ]);
-
-      dry.by_user = wet.user_id;
-      dry.room = room._id.toString() ;
-
       _.each(users, function(user){
         // Do not create the notification id the user is online
         if (statuses[user.id])
           return;
 
-        dry.user = user._id.toString() ;
-
-        var model = NotificationModel.getNewModel(that.type, user, dry);
+        var model = NotificationModel.getNewModel(that.type, user, { id: data.event.id });
 
         model.to_browser = false;
-        model.to_email = user.preferencesValue("notif:channels:email");
         model.to_email =  ( !user.getEmail() ? false : user.preferencesValue("notif:channels:email")) ;
         model.to_mobile = user.preferencesValue("notif:channels:mobile");
 
@@ -90,18 +73,24 @@ Notification.prototype.shouldBeCreated = function(type, room, data) {
 
 };
 
+Notification.prototype.sendToBrowser = function(model) {
+  // nothing to do
+};
+
 Notification.prototype.sendEmail = function(model) {
 
   var to = model.user.getEmail();
 
   async.waterfall([
 
-    function retrieveEvents(callback) {
-      HistoryRoomModel.retrieveEventWithContext(model.data.id, model.data.user.id, 5, 10, true, callback);
+    utils.retrieveEvent( 'historyroom', model.data.id ),
+
+    function retrieveEventsWithContext(event, callback) {
+      HistoryRoomModel.retrieveEventWithContext(model.data.id, event.user.id, 5, 10, true, callback);
     },
 
     function mentionize(events, callback) {
-      var reg = /@\[([^\]]+)\]\(user:[^)]+\)/g;
+      var reg = /@\[([^\]]+)\]\(user:[^)]+\)/g; // @todo yls from config
 
       _.each(events, function(event, index, list) {
         if (!event.data.message)

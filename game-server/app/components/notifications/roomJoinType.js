@@ -45,25 +45,9 @@ Notification.prototype.shouldBeCreated = function(type, room, data) {
 
       var notificationsToCreate = [];
 
-      // cleanup data
-      var wet = _.clone(data.event);
-      var dry = _.omit(wet, [
-        'time',
-        'avatar',
-        'username',
-        'user_id',
-        'name',
-        'message',
-        'by_user'
-      ]);
-
-      dry.room = room._id.toString();
-
       _.each(users, function(user){
 
-        dry.user = data.event.user_id;
-
-        var model = NotificationModel.getNewModel(that.type, user, dry);
+        var model = NotificationModel.getNewModel(that.type, user, {id: data.event.id});
 
         model.to_browser = user.preferencesValue("notif:channels:desktop");
         model.to_email =  ( !user.getEmail() ? false : ( statuses[user.id] ? false : user.preferencesValue("notif:channels:email"))) ;
@@ -95,73 +79,74 @@ Notification.prototype.shouldBeCreated = function(type, room, data) {
 
 Notification.prototype.sendToBrowser = function(model) {
 
-  var userIdToNotify = model.user.toString();
-  var userIdWhoJoinedRoom = model.data.user.toString();
-  var roomId = model.data.room;
-  var that = this;
-
-  async.waterfall([
-
-    utils.retrieveRoom(roomId),
-
-    utils.retrieveUser(userIdToNotify),
-
-    utils.retrieveUser(userIdWhoJoinedRoom),
-
-    function prepare(room, userToNotify, userWhoJoinedRoom, callback) {
-
-      var notification = {
-        id: model.id,
-        time: model.time,
-        type: model.type,
-        viewed: false,
-        data: {
-          user: {
-            avatar: userWhoJoinedRoom._avatar(),
-            id: userWhoJoinedRoom.id,
-            username: userWhoJoinedRoom.username
-          },
-          room: {
-            id: room.id,
-            name: room.name,
-            avatar: room._avatar()
-          }
-        }
-      };
-
-      return callback(null, notification);
-    },
-
-    utils.retrieveUnreadNotificationsCount(userIdToNotify),
-
-    function push(notification, count, callback) {
-      notification.unviewed = count || 0;
-
-      that.facade.app.globalChannelService.pushMessage('connector', 'notification:new', notification, 'user:'+userIdToNotify, {}, function(err) {
-        if (err)
-          return callback('Error while sending notification:new message to user clients: '+err);
-
-        logger.debug('notification sent: '+notification);
-      });
-    }
-
-  ], function(err) {
-    if (err)
-      return logger.error('Error happened in roomJoinedType|sendToBrowser : '+err);
-  });
+  // @todo yls
+  //var userIdToNotify = model.user.toString();
+  //var userIdWhoJoinedRoom = model.data.user.toString();
+  //var roomId = model.data.room;
+  //var that = this;
+  //
+  //async.waterfall([
+  //
+  //  utils.retrieveRoom(roomId),
+  //
+  //  utils.retrieveUser(userIdToNotify),
+  //
+  //  utils.retrieveUser(userIdWhoJoinedRoom),
+  //
+  //  function prepare(room, userToNotify, userWhoJoinedRoom, callback) {
+  //
+  //    var notification = {
+  //      id: model.id,
+  //      time: model.time,
+  //      type: model.type,
+  //      viewed: false,
+  //      data: {
+  //        user: {
+  //          avatar: userWhoJoinedRoom._avatar(),
+  //          id: userWhoJoinedRoom.id,
+  //          username: userWhoJoinedRoom.username
+  //        },
+  //        room: {
+  //          id: room.id,
+  //          name: room.name,
+  //          avatar: room._avatar()
+  //        }
+  //      }
+  //    };
+  //
+  //    return callback(null, notification);
+  //  },
+  //
+  //  utils.retrieveUnreadNotificationsCount(userIdToNotify),
+  //
+  //  function push(notification, count, callback) {
+  //    notification.unviewed = count || 0;
+  //
+  //    that.facade.app.globalChannelService.pushMessage('connector', 'notification:new', notification, 'user:'+userIdToNotify, {}, function(err) {
+  //      if (err)
+  //        return callback('Error while sending notification:new message to user clients: '+err);
+  //
+  //      logger.debug('notification sent: '+notification);
+  //    });
+  //  }
+  //
+  //], function(err) {
+  //  if (err)
+  //    return logger.error('Error happened in roomJoinedType|sendToBrowser : '+err);
+  //});
 
 };
 
 Notification.prototype.sendEmail = function(model) {
 
   var to = model.user.getEmail();
-  var from = model.user.username;
-  var room = model.data.room;
 
   async.waterfall([
 
-    function send(callback) {
-      return emailer.roomJoin(to, from, room, callback);
+    utils.retrieveEvent( 'historyroom', model.data.id ),
+
+    function send(event, callback) {
+      return emailer.roomJoin(to, event.user.username, event.room, callback);
     },
 
     function saveOnUser(callback) {
