@@ -114,7 +114,7 @@ handler.message = function (data, session, next) {
         },
 
         function retrieveMentionedUsers(room, sentEvent, callback) {
-            var reg = /@\[[^\]]+\]\(user:([^)]+)\)/g;
+            var reg = /@\[[^\]]+\]\(user:([^)]+)\)/g; // @todo yls get from config
 
             var monTableau;
             var usersIds = [];

@@ -8,17 +8,17 @@ var utils = require('./utils');
 
 var FREQUENCY_LIMITER = 1; // 1mn
 
-module.exports = function(facade) {
+module.exports = function (facade) {
   return new Notification(facade);
 };
 
-var Notification = function(facade) {
+var Notification = function (facade) {
   this.facade = facade;
 };
 
 Notification.prototype.type = 'roomtopic';
 
-Notification.prototype.shouldBeCreated = function(type, room, data) {
+Notification.prototype.shouldBeCreated = function (type, room, data) {
 
   var that = this;
   async.waterfall([
@@ -27,112 +27,116 @@ Notification.prototype.shouldBeCreated = function(type, room, data) {
       User.findRoomUsersHavingPreference(room, that.type, data.event.user_id, callback);
     },
 
-    utils.checkRepetitive(type, null, { 'data.from_user_id': data.from_user_id }, FREQUENCY_LIMITER),
+    utils.checkRepetitive(type, null, {'data.from_user_id': data.from_user_id}, FREQUENCY_LIMITER),
 
     function checkStatus(users, callback) {
-      that.facade.app.statusService.getStatusByUids(_.map(users, 'id'), function(err, statuses) {
+      that.facade.app.statusService.getStatusByUids(_.map(users, 'id'), function (err, statuses) {
         if (err)
-          return callback('Error while retrieving users statuses: '+err);
+          return callback('Error while retrieving users statuses: ' + err);
 
         return callback(null, users, statuses);
       });
     },
 
     function prepare(users, statuses, callback) {
-      _.each(users, function(user){
-        var model = NotificationModel.getNewModel(that.type, user, { id: data.event.id });
+      _.each(users, function (user) {
+        var model = NotificationModel.getNewModel(that.type, user, {id: data.event.id});
 
         model.to_browser = user.preferencesValue("notif:channels:desktop");
-        model.to_email =  ( !user.getEmail() ? false : ( statuses[user.id] ? false : user.preferencesValue("notif:channels:email"))) ;
+        model.to_email = ( !user.getEmail() ? false : ( statuses[user.id] ? false : user.preferencesValue("notif:channels:email")));
         model.to_mobile = (statuses[user.id] ? false : user.preferencesValue("notif:channels:mobile"));
 
-        model.save(function(err) {
+        model.save(function (err) {
           if (err)
             logger.error(err);
           else
-            logger.info('notification created: '+that.type+' for '+user.username);
+            logger.info('notification created: ' + that.type + ' for ' + user.username);
         });
 
         if (!model.sent_to_browser)
-          that.sendToBrowser(model, user, room);
+          that.sendToBrowser(model);
 
       });
     }
-  ], function(err, users) {
+  ], function (err, users) {
     if (err)
-      return logger.error('Error happened in roomTopicType|shouldBeCreated : '+err);
+      return logger.error('Error happened in roomTopicType|shouldBeCreated : ' + err);
   });
 
 };
 
-Notification.prototype.sendToBrowser = function(model, by_user, room) {
+Notification.prototype.sendToBrowser = function (model) {
 
-  // @todo yls
-  //var userId = (model.user._id) ? model.user._id.toString() : model.user;
-  //var that = this;
-  //
-  //async.waterfall([
-  //
-  //  utils.retrieveUser(userId),
-  //
-  //  function prepare(user, callback) {
-  //
-  //    var notification = {
-  //      id: model.id,
-  //      time: model.time,
-  //      type: model.type,
-  //      viewed: false,
-  //      to_browser: user.preferencesValue('notif:channels:desktop'),
-  //      data: {
-  //        by_user: {
-  //          avatar: by_user._avatar(),
-  //          id: by_user.id,
-  //          username: by_user.username
-  //        },
-  //        user: {
-  //          avatar: user._avatar(),
-  //          id: user.id,
-  //          username: user.username
-  //        },
-  //        room: {
-  //          id: room.id,
-  //          name: room.name,
-  //          avatar: room._avatar()
-  //        }
-  //      }
-  //    };
-  //
-  //    return callback(null, notification);
-  //  },
-  //
-  //  utils.retrieveUnreadNotificationsCount(userId),
-  //
-  //  function push(notification, count, callback) {
-  //    notification.unviewed = count || 0;
-  //
-  //    that.facade.app.globalChannelService.pushMessage('connector', 'notification:new', notification, 'user:'+userId, {}, function(err) {
-  //      if (err)
-  //        return callback('Error while sending notification:new message to user clients: '+err);
-  //
-  //      logger.debug('notification sent: '+notification);
-  //    });
-  //  }
-  //
-  //], function(err) {
-  //  if (err)
-  //    return logger.error('Error happened in roomTopicType|sendToBrowser : '+err);
-  //});
+  var userId = model.user.toString();
+  var room, byUser = null;
+  var that = this;
+
+  async.waterfall([
+
+    utils.retrieveEvent('historyroom', model.data.id),
+
+    utils.retrieveUser(userId),
+
+    function prepare(event, user, callback) {
+      room = event.room;
+      byUser = event.user;
+
+      var notification = {
+        id: model.id,
+        time: model.time,
+        type: model.type,
+        viewed: false,
+        to_browser: user.preferencesValue('notif:channels:desktop'),
+        data: {
+          by_user: {
+            avatar: byUser._avatar(),
+            id: byUser.id,
+            username: byUser.username
+          },
+          user: {
+            avatar: user._avatar(),
+            id: user.id,
+            username: user.username
+          },
+          room: {
+            id: room.id,
+            name: room.name,
+            avatar: room._avatar()
+          }
+        }
+      };
+
+      return callback(null, notification);
+    },
+
+    utils.retrieveUnreadNotificationsCount(userId),
+
+    function push(notification, count, callback) {
+      notification.unviewed = count || 0;
+
+      that.facade.app.globalChannelService.pushMessage('connector', 'notification:new', notification, 'user:' + userId, {}, function (err) {
+        if (err)
+          return callback('Error while sending notification:new message to user clients: ' + err);
+
+        logger.debug('notification sent: ' + notification);
+      });
+    }
+
+  ], function (err) {
+    if (err)
+      return logger.error('Error happened in roomTopicType|sendToBrowser : ' + err);
+  });
 
 };
 
-Notification.prototype.sendEmail = function(model) {
+Notification.prototype.sendEmail = function (model) {
 
   var to = model.user.getEmail();
   var from, room = null;
 
   async.waterfall([
 
-    utils.retrieveEvent( 'historyroom', model.data.id ),
+    utils.retrieveEvent('historyroom', model.data.id),
 
     function send(event, callback) {
       from = event.user.username;
@@ -147,13 +151,13 @@ Notification.prototype.sendEmail = function(model) {
       model.save(callback);
     }
 
-  ], function(err) {
+  ], function (err) {
     if (err)
-      return logger.error('Error happened in roomTopicType|sendEmail : '+err);
+      return logger.error('Error happened in roomTopicType|sendEmail : ' + err);
   });
 
 };
 
-Notification.prototype.sendMobile = function() {
+Notification.prototype.sendMobile = function () {
 
 };

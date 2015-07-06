@@ -147,6 +147,7 @@ module.exports = {
           HistoryRoomModel
             .findById(id)
             .populate('user')
+            .populate('by_user')
             .populate('room')
             .exec(function (err, event) {
               args.unshift(err);
