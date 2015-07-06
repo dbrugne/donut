@@ -13,7 +13,9 @@ var historySchema = mongoose.Schema({
   by_user       : { type: mongoose.Schema.ObjectId, ref: 'User' },
   data          : mongoose.Schema.Types.Mixed,
   users         : [{ type: mongoose.Schema.ObjectId, ref: 'User' }], // users in room at event time
-  viewed        : [{ type: mongoose.Schema.ObjectId, ref: 'User' }]  // users that have read this event
+  viewed        : [{ type: mongoose.Schema.ObjectId, ref: 'User' }],  // users that have read this event
+  spammed       : { type: Boolean, default: false },
+  spammed_at    : { type: Date }
 
 }, {strict: false});
 
