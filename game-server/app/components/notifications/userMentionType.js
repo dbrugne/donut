@@ -9,6 +9,7 @@ var emailer = require('../../../../shared/io/emailer');
 var utils = require('./utils');
 var moment = require('../../../../shared/util/moment');
 var conf = require('../../../../config');
+var mongoose = require('../../../../shared/io/mongoose');
 
 var FREQUENCY_LIMITER = 0; // 0mn
 
@@ -50,7 +51,7 @@ Notification.prototype.shouldBeCreated = function (type, user, data) {
 
     function prepare(users, status, callback) {
 
-      var model = NotificationModel.getNewModel(type, user, {id: data.event.id});
+      var model = NotificationModel.getNewModel(type, user, {event: mongoose.Types.ObjectId(data.event.id)});
 
       model.to_browser = user.preferencesValue("notif:channels:desktop");
       model.to_email = ( !user.getEmail() ? false : ( status ? false : user.preferencesValue("notif:channels:email")));
@@ -83,7 +84,7 @@ Notification.prototype.sendToBrowser = function (model) {
 
   async.waterfall([
 
-    utils.retrieveEvent('historyroom', model.data.id),
+    utils.retrieveEvent('historyroom', model.data.event.toString()),
 
     utils.retrieveUser(userId),
 
@@ -144,10 +145,10 @@ Notification.prototype.sendEmail = function (model) {
 
   async.waterfall([
 
-    utils.retrieveEvent('historyone', model.data.id),
+    utils.retrieveEvent('historyone', model.data.event.toString()),
 
     function retrieveEvents(event, callback) {
-      HistoryRoomModel.retrieveEventWithContext(model.data.id, event.user.id, 5, 10, true, callback);
+      HistoryRoomModel.retrieveEventWithContext(model.data.event.toString(), event.user.id, 5, 10, true, callback);
     },
 
     function mentionize(events, callback) {
@@ -167,7 +168,7 @@ Notification.prototype.sendEmail = function (model) {
       var messages = [];
       _.each(events, function (event) {
         messages.push({
-          current: (model.data.id === event.data.id),
+          current: (model.data.event.toString() === event.data.id),
           user_avatar: cloudinary.userAvatar(event.data.avatar, 90),
           username: event.data.username,
           message: event.data.message,

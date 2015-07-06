@@ -8,6 +8,7 @@ var HistoryRoomModel = require('../../../../shared/models/historyroom');
 var emailer = require('../../../../shared/io/emailer');
 var utils = require('./utils');
 var moment = require('../../../../shared/util/moment');
+var mongoose = require('../../../../shared/io/mongoose');
 
 var FREQUENCY_LIMITER = 15; // 15mn
 
@@ -47,7 +48,7 @@ Notification.prototype.shouldBeCreated = function (type, room, data) {
 
       _.each(users, function (user) {
 
-        var model = NotificationModel.getNewModel(that.type, user, {id: data.event.id});
+        var model = NotificationModel.getNewModel(that.type, user, {event: mongoose.Types.ObjectId(data.event.id)});
 
         model.to_browser = user.preferencesValue("notif:channels:desktop");
         model.to_email = ( !user.getEmail() ? false : ( statuses[user.id] ? false : user.preferencesValue("notif:channels:email")));
@@ -85,7 +86,7 @@ Notification.prototype.sendToBrowser = function (model) {
 
   async.waterfall([
 
-    utils.retrieveEvent('historyroom', model.data.id),
+    utils.retrieveEvent('historyroom', model.data.event.toString()),
 
     function prepare(event, callback) {
       room = event.room;
@@ -139,7 +140,7 @@ Notification.prototype.sendEmail = function (model) {
 
   async.waterfall([
 
-    utils.retrieveEvent('historyroom', model.data.id),
+    utils.retrieveEvent('historyroom', model.data.event.toString()),
 
     function send(event, callback) {
       return emailer.roomJoin(to, event.user.username, event.room, callback);

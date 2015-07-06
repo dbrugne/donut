@@ -9,6 +9,7 @@ var emailer = require('../../../../shared/io/emailer');
 var utils = require('./utils');
 var moment = require('../../../../shared/util/moment');
 var conf = require('../../../../config');
+var mongoose = require('../../../../shared/io/mongoose');
 
 var FREQUENCY_LIMITER = 15; // 15mn
 
@@ -53,7 +54,7 @@ Notification.prototype.shouldBeCreated = function(type, user, data) {
       },
 
       function prepare(status, callback) {
-        var model = NotificationModel.getNewModel(type, user, {id: data.id});
+        var model = NotificationModel.getNewModel(type, user, {event: mongoose.Types.ObjectId(data.id)});
 
         model.to_browser = false;
         model.to_email =  ( !user.getEmail() ? false : ( status ? false : user.preferencesValue("notif:channels:email"))) ;
@@ -82,13 +83,13 @@ Notification.prototype.sendEmail = function(model) {
 
   async.waterfall([
 
-    utils.retrieveEvent( 'historyone', model.data.id ),
+    utils.retrieveEvent( 'historyone', model.data.event.toString() ),
 
     function retrieveEventsWithContext(event, callback) {
       to = event.to.getEmail();
       username = event.from.username;
 
-      HistoryOneModel.retrieveEventWithContext(model.data.id, 5, 10, true, callback);
+      HistoryOneModel.retrieveEventWithContext(model.data.event.toString(), 5, 10, true, callback);
     },
 
     function mentionize(events, callback) {
@@ -108,7 +109,7 @@ Notification.prototype.sendEmail = function(model) {
       var messages = [];
       _.each (events, function(event){
         messages.push({
-          current: (model.data.id === event.data.id),
+          current: (model.data.event.toString() === event.data.id),
           from_avatar: cloudinary.userAvatar(event.data.from_avatar, 90),
           from_username: event.data.from_username,
           message: event.data.message,
