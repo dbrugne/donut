@@ -308,7 +308,28 @@ userSchema.methods.preferencesValue = function (key) {
 };
 
 /**
- * Check for username availability (call success)
+ * Check for username availability (globally)
+ * @param username
+ * @param callback
+ */
+userSchema.statics.usernameAvailability = function (username, callback) {
+  username = ''+username;
+  var pattern = username.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+  var regexp = new RegExp('^'+pattern+'$','i');
+  this.findOne({
+    username: {$regex: regexp}
+  }, function(err, user) {
+    if (err)
+      return callback(err);
+    if (user)
+      return callback('not-available');
+
+    return callback();
+  });
+};
+
+/**
+ * Check for username availability (on current user)
  * @param username
  * @param callback
  */
@@ -318,8 +339,12 @@ userSchema.methods.usernameAvailability = function (username, callback) {
   var regexp = new RegExp('^'+pattern+'$','i');
   this.constructor.findOne({
     $and: [
-      {'username': {$regex: regexp}},
-      {_id: { $ne: this._id }}
+      {
+        username: {$regex: regexp}
+      },
+      {
+        _id: { $ne: this._id }
+      }
     ]
   }, function(err, user) {
     if (err)
