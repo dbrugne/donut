@@ -81,26 +81,16 @@ Notification.prototype.sendToBrowser = function (model) {
 Notification.prototype.sendEmail = function (model) {
 
   var to = model.user.getEmail();
-  var eventId;
+
+  if (!model.data || !model.data.event)
+    return logger.error('Wrong structure for notification model');
 
   async.waterfall([
 
-    function checkStructure(callback) {
-      var err = null;
-      if (!model.data || !model.data.event) {
-        model.done = true;
-        model.save();
-        return callback('Wrong structure for notification');
-      }
-
-      eventId = model.data.event.toString();
-      callback(null);
-    },
-
-    utils.retrieveEvent('historyroom', eventId),
+    utils.retrieveEvent('historyroom', model.data.event.toString()),
 
     function retrieveEventsWithContext(event, callback) {
-      HistoryRoomModel.retrieveEventWithContext(eventId, event.user.id, 5, 10, true, callback);
+      HistoryRoomModel.retrieveEventWithContext(model.data.event.toString(), event.user.id, 5, 10, true, callback);
     },
 
     function mentionize(events, callback) {
@@ -120,7 +110,7 @@ Notification.prototype.sendEmail = function (model) {
       var messages = [];
       _.each(events, function (event) {
         messages.push({
-          current: (eventId === event.data.id),
+          current: (model.data.event.toString() === event.data.id),
           user_avatar: cloudinary.userAvatar(event.data.avatar, 90),
           username: event.data.username,
           message: event.data.message,

@@ -81,24 +81,12 @@ Notification.prototype.shouldBeCreated = function (type, room, data) {
 Notification.prototype.sendToBrowser = function (model) {
 
   var userIdToNotify = model.user.toString();
-  var userWhoJoinedRoom, room, eventId;
+  var userWhoJoinedRoom, room;
   var that = this;
 
   async.waterfall([
 
-    function checkStructure(callback) {
-      var err = null;
-      if (!model.data || !model.data.event) {
-        model.done = true;
-        model.save();
-        return callback('Wrong structure for notification');
-      }
-
-      eventId = model.data.event.toString();
-      callback(null);
-    },
-
-    utils.retrieveEvent('historyroom', eventId),
+    utils.retrieveEvent('historyroom', model.data.event.toString()),
 
     function prepare(event, callback) {
       room = event.room;
@@ -149,23 +137,9 @@ Notification.prototype.sendToBrowser = function (model) {
 Notification.prototype.sendEmail = function (model) {
 
   var to = model.user.getEmail();
-  var eventId;
-
   async.waterfall([
 
-    function checkStructure(callback) {
-      var err = null;
-      if (!model.data || !model.data.event) {
-        model.done = true;
-        model.save();
-        return callback('Wrong structure for notification');
-      }
-
-      eventId = model.data.event.toString();
-      callback(null);
-    },
-
-    utils.retrieveEvent('historyroom', eventId),
+    utils.retrieveEvent('historyroom', model.data.event.toString()),
 
     function send(event, callback) {
       return emailer.roomJoin(to, event.user.username, event.room, callback);
