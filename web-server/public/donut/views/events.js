@@ -5,9 +5,10 @@ define([
   'libs/donut-debug',
   'models/event',
   'moment',
+  'client',
   'views/window',
   '_templates'
-], function ($, _, Backbone, donutDebug, EventModel, moment, windowView, templates) {
+], function ($, _, Backbone, donutDebug, EventModel, moment, client, windowView, templates) {
 
   var debug = donutDebug('donut:events');
 
@@ -17,7 +18,9 @@ define([
 
     events: {
       "click .go-to-top a"    : "scrollTop",
-      "click .go-to-bottom a" : "scrollDown"
+      "click .go-to-bottom a" : "scrollDown",
+      "click .dropdown-menu .spammed" : 'onSpam',
+      "click .dropdown-menu .unspam" : 'onUnspam',
     },
 
     historyLoading: false,
@@ -35,6 +38,8 @@ define([
       this.listenTo(this.model, 'windowRefocused', this.onScroll);
       this.listenTo(this.model, 'freshEvent', this.addFreshEvent);
       this.listenTo(this.model, 'viewed', this.onViewed);
+      this.listenTo(client, 'room:message:spam', this.onMarkedAsSpam);
+      this.listenTo(client, 'room:message:unspam', this.onMarkedAsUnspam);
 
       debug.start('discussion-events'+this.model.getIdentifier());
       this.render();
@@ -564,6 +569,37 @@ define([
      * Viewed management
      *
      *****************************************************************************************************************/
+    onSpam: function(event) {
+      event.preventDefault();
+      var parent = $(event.target).parents('.event');
+      var roomName = this.model.get('name');
+      var messageId = parent.attr('id');
+
+      client.roomMessageSpam(roomName, messageId, function() {
+        console.log('roomMessageSpam handler terminated');
+      });
+    },
+
+    onUnspam: function(event) {
+      event.preventDefault();
+      var parent = $(event.target).parents('.event');
+      var roomName = this.model.get('name');
+      var messageId = parent.attr('id');
+
+      client.roomMessageUnspam(roomName, messageId, function() {
+        console.log('roomMessageUnspam handler terminated');
+      });
+    },
+
+    onMarkedAsSpam: function(room) {
+      $('#'+room.event).addClass('spammed');
+    },
+
+    onMarkedAsUnspam: function(room) {
+      $('#'+room.event).removeClass('spammed');
+      //$('<div class="text-spammed">attention, contenu privé (<a href="#">voir</a>)</div>').insertBefore('.actions');
+    },
+
     markVisibleAsViewed: function() {
       if (!this.isVisible())
         return debug('markVisibleAsViewed: discussion/window not focused, do nothing'); // scroll could be triggered by freshevent event when window is not focused

@@ -40,6 +40,7 @@ define([
       pomelo.on('room:deban',         function(data) { debug('io:in:room:deban',          data); this.trigger('room:deban',       data); }, this);
       pomelo.on('room:viewed',        function(data) { debug('io:in:room:viewed',         data); this.trigger('room:viewed',      data); }, this);
       pomelo.on('room:message:spam',  function(data) { debug('io:in:room:message:spam',   data); this.trigger('room:message:spam',data); }, this);
+      pomelo.on('room:message:unspam',  function(data) { debug('io:in:room:message:unspam',   data); this.trigger('room:message:unspam',data); }, this);
 
       pomelo.on('user:join',        function(data) { debug('io:in:user:join',         data); this.trigger('user:join',        data); }, this);
       pomelo.on('user:leave',       function(data) { debug('io:in:user:leave',        data); this.trigger('user:leave',       data); }, this);
@@ -345,6 +346,18 @@ define([
         function(response) {
           if (response.err)
             return debug('io:in:room:message:spam: ', response);
+        }
+      );
+    },
+    roomMessageUnspam: function(name, messageId) {
+      var data = {name: name, event: messageId};
+      debug('io:out:room:message:unspam', data);
+      pomelo.request(
+        'chat.roomMessageUnspamHandler.unspam',
+        data,
+        function(response) {
+          if (response.err)
+            return debug('io:in:room:message:unspam: ', response);
         }
       );
     },

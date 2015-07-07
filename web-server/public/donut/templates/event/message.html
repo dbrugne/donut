@@ -4,7 +4,7 @@
     <div class="username open-user-profile" data-username="<%= data.username %>">@<%= data.username %></div>
     <div class="items">
         <% } %>
-        <div class="event <% if (unviewed) { print('unviewed'); } %>" id="<%= data.id %>" data-time="<%= data.time %>">
+        <div class="event <% if (unviewed) { print('unviewed'); } %>" id="<%= data.id %>" data-time="<%= data.time %>" data-spammed="<%= data.spammed %>" data-spammed-at="<%= data.spammed_at %>">
             <% if (data.message) { %>
             <div class="text"><%= data.message %></div>
             <% } %>
@@ -16,6 +16,7 @@
                 <hr>
             </div>
             <% } %>
+            <div class="text-spammed">attention, contenu privé (<a href="#">voir</a>)</div>
             <div class="date pull-right"><span class="moment" data-time="<%= data.time %>" title="<%= data.datefull %>"><%= data.dateshort %></span></div>
             <div class="actions">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -26,7 +27,8 @@
                     <ul class="a">
                         <li>
                             <i class="icon icon-cog"></i>
-                            Mark as spam
+                            <a href="#" class="spammed">Mark as spam</a>
+                            <a href="#" class="unspam">Unmark as spam</a>
                         </li>
                     </ul>
                 </div>
