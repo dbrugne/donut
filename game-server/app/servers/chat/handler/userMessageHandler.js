@@ -149,9 +149,9 @@ handler.message = function(data, session, next) {
 					images: (event.images && event.images.length) ? event.images.length : 0
 				}
 			};
-			keenio.addEvent("onetoone_message", messageEvent, function(err, res){
+			keenio.addEvent("onetoone_message", messageEvent, function(err){
 				if (err)
-					logger.error('Error while tracking onetoone_message in keen.io for '+uid+': '+err);
+					logger.error('Error while tracking onetoone_message in keen.io for '+session.uid+': '+err);
 
 				return callback(null);
 			});

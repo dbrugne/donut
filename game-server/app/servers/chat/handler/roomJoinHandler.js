@@ -89,23 +89,23 @@ handler.join = function(data, session, next) {
 				username  : user.username,
 				avatar    : user._avatar()
 			};
-			roomEmitter(that.app, 'room:in', event, function(err) {
-				return callback(err, user, room);
+			roomEmitter(that.app, 'room:in', event, function(err, eventData) {
+				return callback(err, user, room, eventData);
 			});
 		},
 
-		function persistOnRoom(user, room, callback) {
+		function persistOnRoom(user, room, eventData, callback) {
 			room.lastjoin_at = Date.now();
 			room.users.addToSet(session.uid);
 			room.save(function(err) {
 				if (err)
 					return callback('Error while updating room on room:join: '+err);
 
-				return callback(null, user, room);
+				return callback(null, user, room, eventData);
 			});
 		},
 
-		function joinClients(user, room, callback) {
+		function joinClients(user, room, eventData, callback) {
 			// search for all the user sessions (any frontends)
 			that.app.statusService.getSidsByUid(session.uid, function(err, sids) {
 				if (err)
@@ -130,12 +130,12 @@ handler.join = function(data, session, next) {
 					if (err)
 						return callback('Error while subscribing user '+session.uid+' in '+room.name+': '+err);
 
-					return callback(null, user, room);
+					return callback(null, user, room, eventData);
 				});
 			});
 		},
 
-		function getWelcomeData(user, room, callback) {
+		function getWelcomeData(user, room, eventData, callback) {
 			roomDataHelper(that.app, user._id.toString(), room, function(err, roomData) {
 				if (err)
 					return callback(err);
@@ -143,22 +143,22 @@ handler.join = function(data, session, next) {
 				if (roomData == null)
 					return callback('roomDataHelper was unable to return excepted room data: '+room.name);
 
-				return callback(null, user, room, roomData);
+				return callback(null, user, room, eventData, roomData);
 			});
 		},
 
-		function sendToUserClients(user, room, roomData, callback) {
+		function sendToUserClients(user, room, eventData, roomData, callback) {
 			that.app.globalChannelService.pushMessage('connector', 'room:join', roomData, 'user:'+session.uid, {}, function(err) {
 				if (err)
 					return callback('Error while sending room:join message to user clients: '+err);
 
-				return callback(null, user, room, roomData);
+				return callback(null, user, room, eventData, roomData);
 			});
 		},
 
-		function notification(user, room, roomData, callback) {
+		function notification(user, room, eventData, roomData, callback) {
 			roomData['user_id'] = user.id;
-			Notifications(that.app).create('roomjoin', room, {event: roomData}, callback);
+			Notifications(that.app).create('roomjoin', room, {event: eventData}, callback);
 		}
 
 	], function(err) {

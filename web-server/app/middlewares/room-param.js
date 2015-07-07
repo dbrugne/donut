@@ -49,8 +49,6 @@ module.exports = function(req, res, next, roomname) {
               return;
             }
 
-            op.prout = 'ahahaha';
-
             op.avatar = cloudinary.userAvatar(op._avatar(), 80, op.color);
             op.url = (op.username)
               ? req.protocol + '://' + conf.fqdn + '/user/' + (''+op.username).toLocaleLowerCase()
@@ -71,8 +69,6 @@ module.exports = function(req, res, next, roomname) {
               return;
             if (room.op && opIds && opIds.indexOf(u._id.toString()) !== -1)
               return;
-
-            u.prout = 'ahahaha';
 
             u.avatar = cloudinary.userAvatar(u._avatar(), 80, u.color);
             u.url = (u.username)

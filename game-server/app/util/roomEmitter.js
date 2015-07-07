@@ -11,6 +11,7 @@ var recorder = HistoryRoom.record();
  *
  *   callback(err, sentEvent)
  *
+ * @param app
  * @param eventName
  * @param eventData
  * @param callback

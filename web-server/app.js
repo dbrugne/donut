@@ -55,20 +55,20 @@ app.use(googleAnalytics());
 app.engine('html', underscoreTemplate.express({}));
 app.set('view engine', 'html');
 
-// oauth (mobile) routes
-app.use(require('./app/oauth/token'));
+// authentication routes
+app.use(require('./app/authentication/oauth'));
+app.use(require('./app/authentication/signup'));
+app.use(require('./app/authentication/login'));
+app.use(require('./app/authentication/link'));
+app.use(require('./app/authentication/forgot'));
+app.use(require('./app/authentication/username'));
 
 // public routes
 app.use(require('./app/routes/seo'));
 app.use(require('./app/routes/landing'));
-app.use(require('./app/routes/account-signup'));
-app.use(require('./app/routes/account-login'));
-app.use(require('./app/routes/account-link'));
-app.use(require('./app/routes/account-forgot'));
 app.use(require('./app/routes/user-profile'));
 app.use(require('./app/routes/room-profile'));
 app.use(require('./app/routes/chat'));
-app.use(require('./app/routes/choose-username'));
 app.use(require('./app/routes/account-delete'));
 app.use(require('./app/routes/account-edit-email'));
 app.use(require('./app/routes/account-edit-password'));

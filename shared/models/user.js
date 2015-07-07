@@ -104,9 +104,9 @@ userSchema.methods.validPassword = function (password) {
 userSchema.methods.isAllowedToLogin = function() {
   var err = null;
   if (!this.id)
-    err = 'Unable to find authenticating user account';
+    err = 'unknown';
   else if (this.deleted === true)
-    err = 'This user account was deleted';
+    err = 'deleted';
 
   return { allowed: (!err), err: err };
 };
@@ -123,9 +123,9 @@ userSchema.methods.isAllowedToConnect = function () {
 
   var err = null;
   if (this.suspended === true)
-    err = 'This user account is suspended';
+    err = 'suspended';
   else if (!this.username)
-    err = 'This user account has no username set';
+    err = 'no-username';
 
   return { allowed: (!err), err: err };
 };
@@ -316,10 +316,9 @@ userSchema.methods.preferencesValue = function (key) {
 /**
  * Check for username availability (call success)
  * @param username
- * @param success
- * @param error
+ * @param callback
  */
-userSchema.methods.usernameAvailability = function (username, success, error) {
+userSchema.methods.usernameAvailability = function (username, callback) {
   username = ''+username;
   var pattern = username.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
   var regexp = new RegExp('^'+pattern+'$','i');
@@ -329,10 +328,12 @@ userSchema.methods.usernameAvailability = function (username, success, error) {
       {_id: { $ne: this._id }}
     ]
   }, function(err, user) {
-    if (err) return error('Error while searching existing username: ' + err);
-    if (user) return error(i18next.t("choose-username.usernameexists"));
+    if (err)
+      return callback(err);
+    if (user)
+      return callback('not-available');
 
-    success();
+    return callback();
   });
 };
 

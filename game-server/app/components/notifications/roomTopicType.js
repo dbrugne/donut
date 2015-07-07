@@ -5,20 +5,21 @@ var User = require('../../../../shared/models/user');
 var NotificationModel = require('../../../../shared/models/notification');
 var emailer = require('../../../../shared/io/emailer');
 var utils = require('./utils');
+var mongoose = require('../../../../shared/io/mongoose');
 
 var FREQUENCY_LIMITER = 1; // 1mn
 
-module.exports = function(facade) {
+module.exports = function (facade) {
   return new Notification(facade);
 };
 
-var Notification = function(facade) {
+var Notification = function (facade) {
   this.facade = facade;
 };
 
 Notification.prototype.type = 'roomtopic';
 
-Notification.prototype.shouldBeCreated = function(type, room, data) {
+Notification.prototype.shouldBeCreated = function (type, room, data) {
 
   var that = this;
   async.waterfall([
@@ -27,72 +28,59 @@ Notification.prototype.shouldBeCreated = function(type, room, data) {
       User.findRoomUsersHavingPreference(room, that.type, data.event.user_id, callback);
     },
 
-    utils.checkRepetitive(type, null, { 'data.from_user_id': data.from_user_id }, FREQUENCY_LIMITER),
+    utils.checkRepetitive(type, null, {'data.from_user_id': data.from_user_id}, FREQUENCY_LIMITER),
 
     function checkStatus(users, callback) {
-      that.facade.app.statusService.getStatusByUids(_.map(users, 'id'), function(err, statuses) {
+      that.facade.app.statusService.getStatusByUids(_.map(users, 'id'), function (err, statuses) {
         if (err)
-          return callback('Error while retrieving users statuses: '+err);
+          return callback('Error while retrieving users statuses: ' + err);
 
         return callback(null, users, statuses);
       });
     },
 
     function prepare(users, statuses, callback) {
-
-      var topic = data.event.topic;
-
-      // cleanup data
-      var wet = _.clone(data.event);
-      var dry = _.omit(wet, [
-        'time',
-        'topic',
-        'avatar',
-        'username',
-        'user_id',
-        'name'
-      ]);
-
-      dry.by_user = wet.user_id;
-      dry.room = room._id.toString() ;
-
-      _.each(users, function(user){
-        dry.user = user._id.toString() ;
-
-        var model = NotificationModel.getNewModel(that.type, user, dry);
+      _.each(users, function (user) {
+        var model = NotificationModel.getNewModel(that.type, user, {event: mongoose.Types.ObjectId(data.event.id)});
 
         model.to_browser = user.preferencesValue("notif:channels:desktop");
-        model.to_email =  ( !user.getEmail() ? false : ( statuses[user.id] ? false : user.preferencesValue("notif:channels:email"))) ;
+        model.to_email = ( !user.getEmail() ? false : ( statuses[user.id] ? false : user.preferencesValue("notif:channels:email")));
         model.to_mobile = (statuses[user.id] ? false : user.preferencesValue("notif:channels:mobile"));
 
-        model.save(function(err) {
+        model.save(function (err) {
           if (err)
             logger.error(err);
           else
-            logger.info('notification created: '+that.type+' for '+user.username);
+            logger.info('notification created: ' + that.type + ' for ' + user.username);
         });
 
         if (!model.sent_to_browser)
-          that.sendToBrowser(model, user, room);
+          that.sendToBrowser(model);
 
       });
     }
-  ], function(err, users) {
+  ], function (err, users) {
     if (err)
-      return logger.error('Error happened in roomTopicType|shouldBeCreated : '+err);
+      return logger.error('Error happened in roomTopicType|shouldBeCreated : ' + err);
   });
 
 };
 
-Notification.prototype.sendToBrowser = function(model, by_user, room) {
-  var userId = (model.user._id) ? model.user._id.toString() : model.user;
+Notification.prototype.sendToBrowser = function (model) {
+
+  var userId = model.user.toString();
+  var room, byUser = null;
   var that = this;
 
   async.waterfall([
 
+    utils.retrieveEvent('historyroom', model.data.event.toString()),
+
     utils.retrieveUser(userId),
 
-    function prepare(user, callback) {
+    function prepare(event, user, callback) {
+      room = event.room;
+      byUser = event.user;
 
       var notification = {
         id: model.id,
@@ -102,9 +90,9 @@ Notification.prototype.sendToBrowser = function(model, by_user, room) {
         to_browser: user.preferencesValue('notif:channels:desktop'),
         data: {
           by_user: {
-            avatar: by_user._avatar(),
-            id: by_user.id,
-            username: by_user.username
+            avatar: byUser._avatar(),
+            id: byUser.id,
+            username: byUser.username
           },
           user: {
             avatar: user._avatar(),
@@ -127,29 +115,34 @@ Notification.prototype.sendToBrowser = function(model, by_user, room) {
     function push(notification, count, callback) {
       notification.unviewed = count || 0;
 
-      that.facade.app.globalChannelService.pushMessage('connector', 'notification:new', notification, 'user:'+userId, {}, function(err) {
+      that.facade.app.globalChannelService.pushMessage('connector', 'notification:new', notification, 'user:' + userId, {}, function (err) {
         if (err)
-          return callback('Error while sending notification:new message to user clients: '+err);
+          return callback('Error while sending notification:new message to user clients: ' + err);
 
-        logger.debug('notification sent: '+notification);
+        logger.debug('notification sent: ' + notification);
       });
     }
 
-  ], function(err) {
+  ], function (err) {
     if (err)
-      return logger.error('Error happened in roomTopicType|sendToBrowser : '+err);
+      return logger.error('Error happened in roomTopicType|sendToBrowser : ' + err);
   });
+
 };
 
-Notification.prototype.sendEmail = function(model) {
+Notification.prototype.sendEmail = function (model) {
 
-  var to = model.data.user.getEmail();
-  var from = model.data.by_user.username;
-  var room = model.data.room;
+  var to = model.user.getEmail();
+  var from, room = null;
 
   async.waterfall([
 
-    function send(callback) {
+    utils.retrieveEvent('historyroom', model.data.event.toString()),
+
+    function send(event, callback) {
+      from = event.user.username;
+      room = event.room;
+
       emailer.roomTopic(to, from, room, callback);
     },
 
@@ -159,13 +152,13 @@ Notification.prototype.sendEmail = function(model) {
       model.save(callback);
     }
 
-  ], function(err) {
+  ], function (err) {
     if (err)
-      return logger.error('Error happened in roomTopicType|sendEmail : '+err);
+      return logger.error('Error happened in roomTopicType|sendEmail : ' + err);
   });
 
 };
 
-Notification.prototype.sendMobile = function() {
+Notification.prototype.sendMobile = function () {
 
 };

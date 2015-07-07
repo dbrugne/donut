@@ -19,17 +19,24 @@ var validateInput = function (req, res, next) {
 }
 
 var validateAvailability = function (req, res, next) {
-  var handleError = function (err) {
-    return res.render('choose_username', {
-      meta: {title: i18next.t("title.default")},
-      userFields: req.body.user.fields,
-      error: err,
-      token: req.csrfToken()
-    });
-  };
-  req.user.usernameAvailability(
-    req.body.user.fields.username, next, handleError);
-}
+  req.user.usernameAvailability(req.body.user.fields.username, function (err) {
+    if (err) {
+      if (err === 'not-available')
+        err = i18next.t('choose-username.usernameexists');
+      else
+        err = 'Error while searching existing username: '+err;
+
+      return res.render('choose_username', {
+        meta: {title: i18next.t("title.default")},
+        userFields: req.body.user.fields,
+        error: err,
+        token: req.csrfToken()
+      });
+    }
+
+    return next();
+  });
+};
 
 var hasNotUsername = function(req, res, next) {
   if (req.user.username) {

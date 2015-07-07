@@ -109,7 +109,7 @@ define([
       debug.start('sio_token');
       var that = this;
       $.ajax({
-        url: '/oauth/session',
+        url: '/oauth/get-token-from-session',
         type: 'GET',
         dataType : 'json',
         success: function( json ) {
