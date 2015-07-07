@@ -101,7 +101,8 @@ Facade.prototype.retrieveUserNotifications = function (uid, what, callback) {
   what = what || {};
   var criteria = {
     user: uid,
-    done: false
+    done: false,
+    to_browser: true
   };
 
   if (what.time !== null) {
@@ -149,7 +150,7 @@ Facade.prototype.retrieveUserNotifications = function (uid, what, callback) {
           HistoryRoom
             .findOne({_id: n.data.event.toString()})
             .populate('user', 'username avatar color facebook')
-            .populate('room', 'avatar color')
+            .populate('room', 'avatar color name')
             .exec(function (err, event) {
               if (err)
                 return fn(err);
@@ -175,7 +176,8 @@ Facade.prototype.retrieveUserNotificationsUnreadCount = function (uid, callback)
   NotificationModel.find({
     user: uid,
     done: false,
-    viewed: false
+    viewed: false,
+    to_browser: true
   }).count().exec(function (err, count) {
     callback(err, count);
   });

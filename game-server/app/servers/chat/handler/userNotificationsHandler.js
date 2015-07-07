@@ -63,6 +63,16 @@ handler.read = function (data, session, next) {
           data: {}
         };
 
+        if (notification.data.event.from) {
+          d.data.by_user = notification.data.event.from;
+          d.data.by_user.avatar = notification.data.event.from._avatar();
+        }
+
+        if (notification.data.event.to) {
+          d.data.user = notification.data.event.to;
+          d.data.user.avatar = notification.data.event.to._avatar();
+        }
+
         if (notification.data.event.user) {
           d.data.user = notification.data.event.user;
           d.data.user.avatar = notification.data.event.user._avatar();

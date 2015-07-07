@@ -63,9 +63,9 @@ notificationSchema.methods.getEventType = function() {
     case 'roomtopic':
     case 'roommessage':
     case 'roomjoin':
+    case 'usermention':
       return 'historyroom';
       break;
-    case 'usermention':
     case 'userban':
     case 'userdeban':
     case 'usermessage':
