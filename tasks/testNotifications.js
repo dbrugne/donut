@@ -2,6 +2,7 @@ var async = require('async');
 var _ = require('underscore');
 var UserModel = require('../shared/models/user');
 var NotificationModel = require('../shared/models/notification');
+var HistoryOneModel = require('../shared/models/historyone');
 
 module.exports = function (grunt) {
 
@@ -60,14 +61,18 @@ module.exports = function (grunt) {
       },
 
       function create(userFrom, userTo, callback) {
-        var model = NotificationModel.getNewModel('usermessage', userTo, {
-          user: userFrom.id,
-          by_user: userTo.id
+        HistoryOneModel.find({event: 'user:message', to: userFrom}, function(err, event) {
+          if (err)
+            return callback(err);
+
+          var model = NotificationModel.getNewModel('usermessage', userTo, {
+            event: event._id
+          });
+          model.to_browser = false;
+          model.to_email = true;
+          model.to_mobile = true;
+          model.save(callback);
         });
-        model.to_browser = false;
-        model.to_email = true;
-        model.to_mobile = true;
-        model.save(callback);
       }
 
     ], function (err) {

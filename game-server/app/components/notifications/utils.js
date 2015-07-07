@@ -110,11 +110,12 @@ module.exports = {
    * Retrieve Event by id and populate required fields
    *
    * @param type      historyone || historyone
-   * @param id        id of event to retrieve
+   * @param id
    * @returns {Function}
    */
   retrieveEvent: function (type, id) {
     return function () {
+
       var args = _.toArray(arguments);
       var err = null;
       var callback = args.pop();

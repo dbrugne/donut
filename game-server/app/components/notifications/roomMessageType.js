@@ -82,6 +82,9 @@ Notification.prototype.sendEmail = function (model) {
 
   var to = model.user.getEmail();
 
+  if (!model.data || !model.data.event)
+    return logger.error('Wrong structure for notification model');
+
   async.waterfall([
 
     utils.retrieveEvent('historyroom', model.data.event.toString()),

@@ -81,7 +81,7 @@ Notification.prototype.shouldBeCreated = function (type, room, data) {
 Notification.prototype.sendToBrowser = function (model) {
 
   var userIdToNotify = model.user.toString();
-  var userWhoJoinedRoom, room = null;
+  var userWhoJoinedRoom, room;
   var that = this;
 
   async.waterfall([
@@ -137,7 +137,6 @@ Notification.prototype.sendToBrowser = function (model) {
 Notification.prototype.sendEmail = function (model) {
 
   var to = model.user.getEmail();
-
   async.waterfall([
 
     utils.retrieveEvent('historyroom', model.data.event.toString()),

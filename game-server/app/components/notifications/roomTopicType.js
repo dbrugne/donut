@@ -69,7 +69,7 @@ Notification.prototype.shouldBeCreated = function (type, room, data) {
 Notification.prototype.sendToBrowser = function (model) {
 
   var userId = model.user.toString();
-  var room, byUser = null;
+  var room, byUser;
   var that = this;
 
   async.waterfall([
@@ -133,7 +133,10 @@ Notification.prototype.sendToBrowser = function (model) {
 Notification.prototype.sendEmail = function (model) {
 
   var to = model.user.getEmail();
-  var from, room = null;
+  var from, room;
+
+  if (!model.data || !model.data.event)
+    return logger.error('Wrong structure for notification model');
 
   async.waterfall([
 

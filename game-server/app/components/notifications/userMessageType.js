@@ -78,12 +78,14 @@ Notification.prototype.sendToBrowser = function(model) {
 
 Notification.prototype.sendEmail = function(model) {
 
-  var to;
-  var username;
+  var to, username;
+
+  if (!model.data || !model.data.event)
+    return logger.error('Wrong structure for notification model');
 
   async.waterfall([
 
-    utils.retrieveEvent( 'historyone', model.data.event.toString() ),
+    utils.retrieveEvent('historyone', model.data.event.toString() ),
 
     function retrieveEventsWithContext(event, callback) {
       to = event.to.getEmail();

@@ -79,7 +79,7 @@ Notification.prototype.sendToBrowser = function (model) {
 
   var userId = model.user.toString();
 
-  var byUser, room = null;
+  var byUser, room;
   var that = this;
 
   async.waterfall([
@@ -143,9 +143,13 @@ Notification.prototype.sendEmail = function (model) {
 
   var to = model.user.getEmail();
 
+  if (!model.data || !model.data.event)
+    return logger.error('Wrong structure for notification model');
+
+
   async.waterfall([
 
-    utils.retrieveEvent('historyone', model.data.event.toString()),
+    utils.retrieveEvent('historyroom', model.data.event.toString()),
 
     function retrieveEvents(event, callback) {
       HistoryRoomModel.retrieveEventWithContext(model.data.event.toString(), event.user.id, 5, 10, true, callback);
