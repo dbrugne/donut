@@ -16,7 +16,21 @@
                 <hr>
             </div>
             <% } %>
-            <div class="date"><span class="moment" data-time="<%= data.time %>" title="<%= data.datefull %>"><%= data.dateshort %></span></div>
+            <div class="date pull-right"><span class="moment" data-time="<%= data.time %>" title="<%= data.datefull %>"><%= data.dateshort %></span></div>
+            <div class="actions">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                    <i class="icon icon-cog"></i>
+                </a>
+                <div class="dropdown-menu" role="menu">
+                    <div class="arrow-up"></div>
+                    <ul class="a">
+                        <li>
+                            <i class="icon icon-cog"></i>
+                            Mark as spam
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
         <% if (withBlock) { %>
     </div>

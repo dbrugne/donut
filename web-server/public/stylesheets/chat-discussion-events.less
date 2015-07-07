@@ -227,7 +227,7 @@
         .event {
           .date {
             position: absolute;
-            top: 3px; right: 0;
+            top: 3px; right: 20px;
             color: @cl-subtext30;
             font-size: 0.8em;
           }
@@ -299,28 +299,10 @@
       .block.message {
         padding-top: 23px;
         padding-left: 40px;
-        .avatar {
-          position: absolute;
-          top: 5px;
-          left: 5px;
-          border: none;
-          width: 30px;
-          height: 30px;
-          background-position: center center;
-          background-size: 30px 30px;
-        }
-        .username {
-          position: absolute;
-          top: 5px; left: 45px;
-          .ft-opensans-bold;
-          font-size: 1em;
-        }
-        .event {
-          position: relative;
-          padding-left: 9px;
-          .text {
-            white-space: pre-wrap !important;
-            padding-right: 50px;
+        .avatar { position: absolute; top: 5px; left: 5px; border: none; width: 30px; height: 30px; background-position: center center; background-size: 30px 30px; }
+        .username { position: absolute; top: 5px; left: 45px; .ft-opensans-bold; font-size: 1em; }
+        .event { position: relative; padding-left: 9px;
+          .text { white-space: pre-wrap !important; padding-right: 50px;
             a { font-weight: bold; }
           }
           .images {
@@ -348,11 +330,17 @@
               margin: 0;
             }
           }
-          .date {}
-          &.new {
-            border-left: 3px solid #5C77B6;
-            padding-left: 4px;
+          .actions { float: right; font-size: 14px; right: 0; position: absolute; top: 0; color: #777; display:none;
+            i { color:#777 }
+            .dropdown-menu {padding: 0; margin: 0; right:-2px; left: initial; top: 23px;
+              .arrow-up {  width: 0; height: 0; border-style: solid; border-width: 0 5px 5px 5px; border-color: transparent transparent #ccc transparent; position: absolute; top: -6px; right: 2px; display: block; padding: 0; }
+              ul.a {   padding: 10px; margin: 0;
+                li {  list-style: none; text-align: right;}
+              }
+            }
           }
+          &.new { border-left: 3px solid #5C77B6; padding-left: 4px; }
+          &:hover .actions, .actions.open { display:block; }
         }
       }
       .block.inout {
