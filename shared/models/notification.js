@@ -48,6 +48,35 @@ notificationSchema.statics.getNewModel = function(type, user, data) {
 };
 
 /**
+ * Return the Event type associated to current notification, depending of its type
+ *
+ * @returns historyroom || historyone || undefined
+ */
+notificationSchema.methods.getEventType = function() {
+  switch (this.type)
+  {
+    case 'roomop':
+    case 'roomdeop':
+    case 'roomkick':
+    case 'roomban':
+    case 'roomdeban':
+    case 'roomtopic':
+    case 'roommessage':
+    case 'roomjoin':
+    case 'usermention':
+      return 'historyroom';
+      break;
+    case 'userban':
+    case 'userdeban':
+    case 'usermessage':
+      return 'historyone';
+      break;
+  }
+
+  return undefined;
+};
+
+/**
  * Bulk insert (in one operation) an array of models in collection
  *
  * @source: http://stackoverflow.com/questions/25285232/bulk-upsert-in-mongodb-using-mongoose

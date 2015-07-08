@@ -6,11 +6,6 @@
  * @source: https://github.com/jerolimov/comprise
  */
 
-/**
- * @todo
- * - test emails
- */
-
 var debug = require('debug')('donut:templating');
 var _ = require('underscore');
 var async = require('async');

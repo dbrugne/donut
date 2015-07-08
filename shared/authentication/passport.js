@@ -17,12 +17,12 @@ var keenIoTracking = function(user, type) {
       device: 'browser'
     },
     user: {
-      id: user._id.toString()
+      id: user.id
     }
   };
   keenio.addEvent('user_signup', keenEvent, function(err, res){
     if (err)
-      debug('Error while tracking user_signup in keen.io for '+user._id.toString()+': '+err);
+      debug('Error while tracking user_signup in keen.io for '+user.id+': '+err);
   });
 };
 
@@ -47,8 +47,8 @@ passport.use('local-signup', new LocalStrategy({
   function (req, email, password, done) {
     process.nextTick(function () {
 
+      // happen if user is already authenticated with another method (e.g.: Facebook)
       if (req.user) {
-        // happen for a user already authenticated with another method (e.g.: Facebook)
         var user = req.user;
         user.local.email = email;
         user.local.password = user.generateHash(password);
@@ -59,29 +59,23 @@ passport.use('local-signup', new LocalStrategy({
 
           return done(null, user);
         });
-
         return;
       }
 
-      // find a user whose email is the same as the forms email
-      // we are checking to see if the user trying to login already exists
+      // find existing user with this email
       email = email.toLowerCase();
       User.findOne({ 'local.email': email }, function (err, user) {
-        // if there are any errors, return the error
         if (err)
           return done(err);
 
-        // check to see if theres already a user with that email
         if (user)
           return done(null, false, req.flash('error', i18next.t("account.email.error.alreadyexists")));
 
-        // if there is no user with that email create him
+        // create
         var newUser = User.getNewUser();
         newUser.local.email = email;
         newUser.local.password = newUser.generateHash(password);
         newUser.lastlogin_at = Date.now();
-
-        // save the user
         newUser.save(function (err) {
           if (err)
             throw err;

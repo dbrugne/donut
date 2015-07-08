@@ -1,9 +1,14 @@
 var debug = require('debug')('donut:oauth');
+var async = require('async');
+var _ = require('underscore');
 var express = require('express');
 var router = express.Router();
 var passport = require('../../../shared/authentication/passport');
+var emailer = require('../../../shared/io/emailer');
 var jwt = require('jsonwebtoken');
 var User = require('../../../shared/models/user');
+var expressValidator = require('express-validator');
+var keenio = require('../../../shared/io/keenio');
 var conf = require('../../../config/');
 
 // @source: https://github.com/auth0/socketio-jwt#example-usage
@@ -119,7 +124,7 @@ router.route('/oauth/check-token')
         debug('Error while checking oauth token: '+err);
         return res.json({validity: false});
       }
-      if (!decoded.username) {
+      if (!decoded.id) {
         debug('oauth token is invalid', decoded);
         return res.json({validity: false});
       }
@@ -137,7 +142,8 @@ router.route('/oauth/check-token')
  * @response {token: String}
  */
 router.route('/oauth/get-token-from-facebook')
-  .post(passport.authenticate('facebook-token'), // delegate Facebook token validation to passport-facebook-token
+  .post(
+  passport.authenticate('facebook-token'), // delegate Facebook token validation to passport-facebook-token
   function (req, res) {
     if (!req.user)
       return res.json({err: 'unable to retrieve this user'});
@@ -215,6 +221,129 @@ router.route('/oauth/save-username')
 
       });
     });
+  });
+
+/**
+ * Route handler - signup account with email, username and password
+ *
+ * Used by mobile client
+ *
+ * @post email
+ * @post password
+ * @post username
+ * @response {}
+ */
+router.route('/oauth/signup')
+  .post(function(req, res) {
+    var email = req.body.email;
+    var password = req.body.password;
+    var username = req.body.username;
+
+    async.waterfall([
+      
+      function checkData(callback) {
+        if (!email)
+          return callback('no-email');
+        if (!password)
+          return callback('no-password');
+        if (!username)
+          return callback('no-username');
+
+        if (!expressValidator.validator.isEmail(email))
+          return callback('invalid-email');
+        if (!expressValidator.validator.isLength(password, 6, 50))
+          return callback('invalid-password');
+        if (!expressValidator.validator.isUsername(username))
+          return callback('invalid-username');
+
+        // lowercase email
+        email = email.toLowerCase();
+        
+        return callback(null);
+      },
+
+      function checkExistingAccount(callback) {
+        User.findOne({ 'local.email': email }, function (err, user) {
+          if (err)
+            return callback({err: 'internal', detail: err});
+          if (user)
+            return callback('existing-user');
+
+          return callback(null);
+        });
+      },
+
+      function checkUsernameAvailability(callback) {
+        User.usernameAvailability(username, function (err) {
+          if (err === 'not-available')
+            return callback('not-available');
+          else if (err)
+            return callback({err: 'internal', detail: err});
+
+          return callback(null);
+        });
+      },
+
+      function create(callback) {
+        var user = User.getNewUser();
+        user.local.email      = email;
+        user.local.password   = user.generateHash(password);
+        user.username         = username;
+        user.lastlogin_at     = Date.now();
+        user.save(function(err) {
+          if (err)
+            return callback({err: 'internal', detail: err});
+          return callback(null, user);
+        });
+      },
+
+      function email(user, callback) {
+        emailer.welcome(user.local.email, function(err) {
+          if (err)
+            return debug('Unable to sent welcome email: '+err);
+        });
+        return callback(null, user);
+      },
+
+      function tracking(user, callback) {
+        var keenEvent = {
+          method: 'email',
+          session: {
+            device: 'mobile'
+          },
+          user: {
+            id: user.id
+          }
+        };
+        keenio.addEvent('user_signup', keenEvent, function(err){
+          if (err)
+            debug('Error while tracking user_signup in keen.io for '+user.id+': '+err);
+
+          return callback(null, user);
+        });
+      },
+
+      function generateToken(user, callback) {
+        var profile = {
+          id        : user.id,
+          username  : user.username,
+          email     : user.local.email
+        };
+        var token = jwt.sign(profile, conf.oauth.secret, { expiresInMinutes: conf.oauth.expire });
+        return callback(null, token);
+      }
+      
+    ], function(err, token) {
+      if (_.isObject(err)) {
+        debug('Error while signuping new mobile user: '+err.detail);
+        return res.json({err: err.err});
+      } else if (err) {
+        return res.json({err: err});
+      }
+
+      return res.json({success: true, token: token});
+    });
+
   });
 
 module.exports = router;
