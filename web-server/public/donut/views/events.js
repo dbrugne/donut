@@ -655,7 +655,7 @@ define([
      *
      *****************************************************************************************************************/
     onMessageMenuShow: function(event) {
-      console.log('show');
+      //var idMessage =  $(event.target).parents('.event');
       var html = templates['events-dropdown.html']({
         data: {
           is_op:    this.model.currentUserIsOwner(),
