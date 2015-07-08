@@ -9,7 +9,7 @@
             </div>
         </div>
         <div id="color-default"></div>
-        <nav id="color" class="navbar navbar-default navbar-fixed-top">
+        <nav id="color" class="navbar navbar-default navbar-fixed-top" data-colorify="<%- room_default_color %>" data-colorify-background="color">
             <div class="container">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -27,7 +27,7 @@
                     <ul class="nav navbar-nav navbar-right">
                         <li id="notifications" class="dropdown empty">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                <i class="icon icon-globe"></i>
+                                <i class="icon icon-globe" data-colorify-text="contrast"></i>
                                 <span class="badge hide-empty"></span>
                             </a>
                             <div class="dropdown-menu p0" role="menu">
@@ -49,8 +49,10 @@
                                 </div>
                             </div>
                         </li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="icon icon-question-circle"></i></span></a>
+                        <li class="help">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                <i class="icon icon-question-circle" data-colorify-text="contrast"></i>
+                            </a>
                             <ul class="dropdown-menu" role="menu">
                                 <li class="arrow-up"></li>
                                 <li><a href="/!#room/Support"><i class="icon icon-life-ring"></i> <%= t('chat.help') %></a></li>
