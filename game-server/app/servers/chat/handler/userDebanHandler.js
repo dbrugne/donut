@@ -89,18 +89,12 @@ handler.ban = function(data, session, next) {
 
 		function prepareEvent(user, unbannedUser, callback) {
 			var event = {
-				by_user_id : user.id,
-				by_username: user.username,
-				by_avatar  : user._avatar(),
-				user_id: unbannedUser.id,
-				username: unbannedUser.username,
-				avatar: unbannedUser._avatar(),
-        // probably, could be cleaner
-        from_user_id  : user.id,
-        from_username : user.username,
-        from_avatar   : user._avatar(),
-        to_user_id    : unbannedUser.id,
-        to_username   : unbannedUser.username
+        by_user_id  : user._id.toString(),
+        by_username : user.username,
+        by_avatar   : user._avatar(),
+        user_id     : unbannedUser._id.toString(),
+        username    : unbannedUser.username,
+        avatar      : unbannedUser._avatar()
 			};
 
 			return callback(null, user, unbannedUser, event);

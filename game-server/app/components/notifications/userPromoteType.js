@@ -6,6 +6,7 @@ var Room = require('../../../../shared/models/room');
 var NotificationModel = require('../../../../shared/models/notification');
 var emailer = require('../../../../shared/io/emailer');
 var utils = require('./utils');
+var mongoose = require('../../../../shared/io/mongoose');
 
 var FREQUENCY_LIMITER = 0; // 0mn
 
@@ -25,7 +26,7 @@ Notification.prototype.shouldBeCreated = function(type, user, data) {
   async.waterfall([
 
     function checkOwn(callback) {
-      if (data.event.by_user_id == user._id.toString())
+      if (data.from_user_id == user._id.toString())
         return callback('no notification due to my own message');
       else
         return callback(null);
@@ -51,28 +52,8 @@ Notification.prototype.shouldBeCreated = function(type, user, data) {
     },
 
     function prepare(status, callback) {
-      var wet = _.clone(data.event);
-      var dry = _.omit(wet, [
-        'avatar',
-        'by_avatar',
-        'by_username',
-        'by_user_id',
-        'from',
-        'from_avatar',
-        'from_username',
-        'from_user_id',
-        'time',
-        'to',
-        'to_username',
-        'to_user_id',
-        'username',
-        'user_id'
-      ]);
 
-      dry.user = wet.user_id;
-      dry.by_user = wet.by_user_id;
-
-      var model = NotificationModel.getNewModel(type, user, dry);
+      var model = NotificationModel.getNewModel(type, user, {event: mongoose.Types.ObjectId(data.event.id)});
 
       model.to_browser = user.preferencesValue("notif:channels:desktop");
       model.to_email = (status ? false : user.preferencesValue("notif:channels:email"));
@@ -97,17 +78,19 @@ Notification.prototype.shouldBeCreated = function(type, user, data) {
 
 Notification.prototype.sendToBrowser = function(model) {
 
-  var userId = model.data.user;
-  var byUserId = model.data.by_user;
+  var userId = model.user.toString();
+
   var that = this;
 
   async.waterfall([
 
+    utils.retrieveEvent('historyone', model.data.event.toString() ),
+
     utils.retrieveUser(userId),
 
-    utils.retrieveUser(byUserId),
+    function prepare(event, user, callback) {
 
-    function prepare(user, by_user, callback) {
+      var byUser = event.from;
 
       var notification = {
         id: model.id,
@@ -116,9 +99,9 @@ Notification.prototype.sendToBrowser = function(model) {
         viewed: false,
         data: {
           by_user: {
-            avatar: by_user._avatar(),
-            id: by_user.id,
-            username: by_user.username
+            avatar: byUser._avatar(),
+            id: byUser.id,
+            username: byUser.username
           },
           user: {
             avatar: user._avatar(),
@@ -158,19 +141,26 @@ Notification.prototype.sendToBrowser = function(model) {
  */
 Notification.prototype.sendEmail = function(model) {
 
-  var to = model.data.user.local.email;
-  var from = model.data.by_user.username;
+  var to, username;
+
+  if (!model.data || !model.data.event)
+    return logger.error('Wrong structure for notification model');
 
   async.waterfall([
 
-    function send(callback) {
+    utils.retrieveEvent('historyone', model.data.event.toString() ),
+
+    function send(event, callback) {
+      to = event.to.getEmail();
+      username = event.from.username;
+
       switch(model.type) {
 
         case 'userban':
-          return emailer.userBan(to, from, callback);
+          return emailer.userBan(to, username, callback);
         break;
         case 'userdeban':
-          return emailer.userDeban(to, from, callback);
+          return emailer.userDeban(to, username, callback);
         break;
         default:
           return callback('userPromoteType :: Unknown notification type: '+model.type);
