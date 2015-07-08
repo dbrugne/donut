@@ -422,7 +422,8 @@
         "roomdeban": "Vous n'êtes plus banni de ",
         "roomop": " Vous venez d'être promu modérateur de ",
         "roomdeop": "Vous n'êtes plus modérateur de ",
-        "roomtopic": "Le sujet à changé dans "
+        "roomtopic": "Le sujet à changé dans ",
+        "usermessage": "__username__ vous a écrit"
       }
     },
     "unread": {

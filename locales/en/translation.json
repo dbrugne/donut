@@ -402,7 +402,8 @@
         "roomdeban": "You have been unbanned from ",
         "roomop": "You have been made moderator of ",
         "roomdeop": "You have been removed from moderators of ",
-        "roomtopic": "The subject has changed in "
+        "roomtopic": "The subject has changed in ",
+        "usermessage": "__username__ sent a message to you"
       }
     },
     "unread": {

@@ -25,6 +25,8 @@ define([
     beepPlaying: false,
     beepOn: false,
 
+    desktopNotificationsLimiters: function() {},
+
     initialize: function(options) {
       this.$window = this.$el;
       this.$document = $(document);
@@ -119,6 +121,9 @@ define([
 
         model.trigger('windowRefocused'); // mark visible as read for focused discussion when window recover its focus
       }
+
+      // reset limiters
+      this.desktopNotificationsLimiters = {};
 
       this.renderTitle();
     },
@@ -223,6 +228,21 @@ define([
         // update tabs
         this.trigger('redraw-block');
 
+        // desktop notifications (one to one only)
+        if (model.get('type') == 'onetoone') {
+          var data = event.get('data');
+          if (data) {
+            var last = this.desktopNotificationsLimiters['usermessage'];
+            if (last && (Date.now() - last) <= 1*60*1000) // 1mn
+              return;
+
+            var title = $.t('chat.notifications.desktop.usermessage', { username: data.from_username });
+            var message = data.message || 'pas de message';
+            this.desktopNotify(title, message);
+            this.desktopNotificationsLimiters['usermessage'] = Date.now();
+          }
+        }
+
         // update title
         this.renderTitle();
       }
@@ -247,7 +267,6 @@ define([
       beep.play();
     },
     desktopNotify: function(title, body) {
-
       if (!currentUser.shouldDisplayDesktopNotif())
         return;
 
