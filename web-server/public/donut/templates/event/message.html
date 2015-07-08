@@ -1,40 +1,39 @@
 <% if (withBlock) { %>
 <div class="block message" data-username="<%= data.username %>">
-    <div class="avatar open-user-profile" data-username="<%= data.username %>" style="background-image: url(<%= data.avatar %>)"></div>
+    <div class="avatar open-user-profile" data-username="<%= data.username %>"
+         style="background-image: url(<%= data.avatar %>)"></div>
     <div class="username open-user-profile" data-username="<%= data.username %>">@<%= data.username %></div>
     <div class="items">
         <% } %>
-        <div class="event <% if (unviewed) { print('unviewed'); } %>" id="<%= data.id %>" data-time="<%= data.time %>" data-spammed="<%= data.spammed %>" data-spammed-at="<%= data.spammed_at %>">
+        <div class="event <% if (spammed === true) { %>spammed<% } %><% if (unviewed) { print('unviewed'); } %>"
+             id="<%= data.id %>" data-time="<%= data.time %>"
+        <% if (spammed === true) { %>data-spammed="true"<% } %>>
+        <div class="ctn">
             <% if (data.message) { %>
             <div class="text"><%= data.message %></div>
             <% } %>
             <% if (data.images) { %>
             <div class="images">
                 <% _.each(data.images, function(i) { %>
-                <a class="image" data-toggle="image-popover" target="_blank" href="<%=i.url%>" data-cloudinary-id="<%=i.public_id%>" style="background-image: url(<%= i.thumbnail %>);"></a>
+                <a class="image" data-toggle="image-popover" target="_blank" href="<%=i.url%>"
+                   data-cloudinary-id="<%=i.public_id%>" style="background-image: url(<%= i.thumbnail %>);"></a>
                 <% }); %>
                 <hr>
             </div>
             <% } %>
-            <div class="text-spammed">attention, contenu privé (<a href="#">voir</a>)</div>
-            <div class="date pull-right"><span class="moment" data-time="<%= data.time %>" title="<%= data.datefull %>"><%= data.dateshort %></span></div>
-            <div class="actions">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                    <i class="icon icon-cog"></i>
-                </a>
-                <div class="dropdown-menu" role="menu">
-                    <div class="arrow-up"></div>
-                    <ul class="a">
-                        <li>
-                            <i class="icon icon-cog"></i>
-                            <a href="#" class="spammed">Mark as spam</a>
-                            <a href="#" class="unspam">Unmark as spam</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+            <% if (spammed) { %>
+            <div class="text-spammed">attention, contenu privé (<a class="look-spam">voir</a>)</div>
+            <% } %>
         </div>
-        <% if (withBlock) { %>
+        <div class="date pull-right"><span class="moment" data-time="<%= data.time %>" title="<%= data.datefull %>"><%= data.dateshort %></span>
+        </div>
+        <div class="actions">
+            <a class="message-menu" data-toggle="dropdown" role="button" aria-expanded="false" id="messageMenu">
+                <i class="icon icon-cog"></i>
+            </a>
+            <div class="dropdown-menu" aria-labelledby="messageMenu"><!-- message dropdown menu content --></div>
+        </div>
     </div>
+    <% if (withBlock) { %>
 </div>
 <% } %>

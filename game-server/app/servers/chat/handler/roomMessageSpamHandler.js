@@ -95,8 +95,7 @@ handler.spam = function(data, session, next) {
     function broadcast(room, spammedEvent, event, callback) {
       that.app.globalChannelService.pushMessage('connector', 'room:message:spam', event, room.name, {}, function(err) {
         if (err)
-          logger.error(''); // not 'return', we delete even if error happen
-        // @todo : mettre le commentaire.
+          logger.error('Error while emitting room:message:spam in '+room.name+': '+err); // not 'return', we delete even if error happen
         return callback(null, room, spammedEvent, event);
       });
     }

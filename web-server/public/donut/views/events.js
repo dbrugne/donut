@@ -17,10 +17,14 @@ define([
     template: templates['events.html'],
 
     events: {
-      "click .go-to-top a"    : "scrollTop",
-      "click .go-to-bottom a" : "scrollDown",
-      "click .dropdown-menu .spammed" : 'onSpam',
-      "click .dropdown-menu .unspam" : 'onUnspam',
+      "click .go-to-top a"             : 'scrollTop',
+      "click .go-to-bottom a"          : 'scrollDown',
+
+      "shown.bs.dropdown .actions" : 'onMessageMenuShow',
+
+      "click .dropdown-menu .spammed"  : 'onSpam',
+      "click .dropdown-menu .unspam"   : 'onUnspam',
+      "click .text-spammed .look-spam" :  'lookSpam'
     },
 
     historyLoading: false,
@@ -436,6 +440,9 @@ define([
       data.data = _.clone(model.get('data'));
       var message = data.data.message;
 
+      if (model.getGenericType() === 'message')
+        data.spammed = (model.get('spammed') === true);
+
       // avatar
       var size = (model.getGenericType() != 'inout')
           ? 30
@@ -591,13 +598,22 @@ define([
       });
     },
 
+    lookSpam: function(event) {
+      event.preventDefault();
+      var parent = $(event.target).parents('.event');
+      var textSpammed = $(event.target).parents('.text-spammed');
+      parent.removeClass('spammed');
+      textSpammed.remove();
+    },
+
     onMarkedAsSpam: function(room) {
       $('#'+room.event).addClass('spammed');
+      $('#'+room.event + ' .ctn').first().append('<div class="text-spammed">attention, contenu privé (<a class="look-spam">voir</a>)</div>')
     },
 
     onMarkedAsUnspam: function(room) {
       $('#'+room.event).removeClass('spammed');
-      //$('<div class="text-spammed">attention, contenu privé (<a href="#">voir</a>)</div>').insertBefore('.actions');
+      $('#'+room.event + ' .ctn .text-spammed').remove();
     },
 
     markVisibleAsViewed: function() {
@@ -631,6 +647,23 @@ define([
         return false;
 
       return true;
+    },
+
+    /*****************************************************************************************************************
+     *
+     * Actions management
+     *
+     *****************************************************************************************************************/
+    onMessageMenuShow: function(event) {
+      console.log('show');
+      var html = templates['events-dropdown.html']({
+        data: {
+          is_op:    this.model.currentUserIsOwner(),
+          is_owner: this.model.currentUserIsOp(),
+          is_admin: this.model.currentUserIsAdmin()
+        }
+      });
+      $(event.currentTarget).find('.dropdown-menu').html(html);
     },
 
     /*****************************************************************************************************************

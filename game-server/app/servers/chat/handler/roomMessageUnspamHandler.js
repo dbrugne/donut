@@ -73,9 +73,7 @@ handler.unspam = function(data, session, next) {
     },
 
     function persist(room, unspammedEvent, callback) {
-      unspammedEvent.spammed = false;
-      unspammedEvent.spammed_at = new Date();
-      unspammedEvent.save(function(err) {
+      unspammedEvent.update({$unset: {spammed: true, spammed_at: true} }, function(err) {
         if (err)
           return callback('Unable to persist spammed of '+unspammedEvent.id+' on '+room.name);
 
@@ -95,8 +93,7 @@ handler.unspam = function(data, session, next) {
     function broadcast(room, unspammedEvent, event, callback) {
       that.app.globalChannelService.pushMessage('connector', 'room:message:unspam', event, room.name, {}, function(err) {
         if (err)
-          logger.error(''); // not 'return', we delete even if error happen
-        // @todo : mettre le commentaire.
+          logger.error('Error while emitting room:message:unspam in '+room.name+': '+err); // not 'return', we delete even if error happen
         return callback(null, room, unspammedEvent, event);
       });
     }
