@@ -237,14 +237,15 @@ define([
         if (model.get('type') == 'onetoone') {
           var data = event.get('data');
           if (data) {
-            var last = this.desktopNotificationsLimiters['usermessage'];
+            var key = 'usermessage:'+model.get('username');
+            var last = this.desktopNotificationsLimiters[key];
             if (last && (Date.now() - last) <= 1*60*1000) // 1mn
               return;
 
             var title = $.t('chat.notifications.desktop.usermessage', { username: data.from_username });
             var message = data.message || '';
             this.desktopNotify(title, message);
-            this.desktopNotificationsLimiters['usermessage'] = Date.now();
+            this.desktopNotificationsLimiters[key] = Date.now();
           }
         }
       }
