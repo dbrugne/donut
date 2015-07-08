@@ -228,7 +228,12 @@ define([
         // update tabs
         this.trigger('redraw-block');
 
-        // desktop notifications (one to one only)
+        // update title
+        this.renderTitle();
+      }
+
+      // desktop notification (only for one to one and if windows is not focused
+      if (!this.focused) {
         if (model.get('type') == 'onetoone') {
           var data = event.get('data');
           if (data) {
@@ -237,14 +242,11 @@ define([
               return;
 
             var title = $.t('chat.notifications.desktop.usermessage', { username: data.from_username });
-            var message = data.message || 'pas de message';
+            var message = data.message || '';
             this.desktopNotify(title, message);
             this.desktopNotificationsLimiters['usermessage'] = Date.now();
           }
         }
-
-        // update title
-        this.renderTitle();
       }
     },
     play: function() {
