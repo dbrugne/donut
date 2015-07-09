@@ -73,15 +73,15 @@
     "unknownerror": "Erreur inconnue, veuillez réessayer"
   },
   "login": {
-    "title": "Otakus, découvrez en avant-première DONUT",
+    "title": "se connecter",
     "withfacebook": "avec Facebook",
     "withpassword": "par mot de passe",
     "email-placeholder": "votre email",
     "password-placeholder": "votre mot de passe",
     "confirm-placeholder": "confirmer le mot de passe",
     "username-placeholder": "choisissez un nom d'utilisateur",
-    "createanaccount1": "Pour être tenu au courant,",
-    "createanaccount2": "c'est par ici !",
+    "createanaccount1": "Créer un compte,",
+    "createanaccount2": "c'est gratuit",
     "emailerror": "Votre adresse e-mail n'est pas valide",
     "passworderror": "Vous avez oublié de saisir votre mot de passe"
   },
@@ -271,8 +271,8 @@
       "line3": "... et découvrir des gens qui vous ressemblent, au cours de véritables conversations !"
     },
     "signup": {
-      "title1": "Enregistrez-vous pour être tenu informé de nos dernières avancées.<br> Vous pouvez déjà y jeter un oeil ;)",
-      "title2": "ici en 1 bouchée",
+      "title1": "Créez un compte",
+      "title2": "en 1 bouchée",
       "etvoila": "et voilà !"
     },
     "footer": {
@@ -417,12 +417,15 @@
         "roommessage": "Nouveau message dans "
       },
       "desktop": {
-        "roomkick": "Vous venez d'être expulsé de ",
-        "roomban": "Vous venez d'être banni de ",
-        "roomdeban": "Vous n'êtes plus banni de ",
-        "roomop": " Vous venez d'être promu modérateur de ",
-        "roomdeop": "Vous n'êtes plus modérateur de ",
-        "roomtopic": "Le sujet à changé dans "
+        "roomkick": "Vous venez d'être expulsé de __roomname__",
+        "roomban": "Vous venez d'être banni de __roomname__",
+        "roomdeban": "Vous n'êtes plus banni de __roomname__",
+        "roomop": " Vous venez d'être promu modérateur de __roomname__",
+        "roomdeop": "Vous n'êtes plus modérateur de __roomname__",
+        "roomtopic": "Le sujet à changé dans __roomname__",
+        "usermessage": "__username__ vous a écrit",
+        "userban": "Vous avez été bloqué par __username__",
+        "userdeban": "Vous avez été débloqué par __username__"
       }
     },
     "unread": {
