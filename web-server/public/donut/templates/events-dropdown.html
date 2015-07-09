@@ -1,0 +1,14 @@
+<div>
+    <div class="arrow-up"></div>
+    <ul class="a">
+        <li>
+            <i class="icon icon-cog"></i>
+            <% if ((data.is_op && !data.is_message_owner) || data.is_owner || data.is_admin) { %>
+                <a href="#" class="spammed"><%= t('chat.spam.dropdown.mark-spam') %></a>
+                <a href="#" class="unspam"><%= t('chat.spam.dropdown.unmark-spam') %></a>
+            <% } else { %>
+                <%= t('chat.spam.dropdown.nothing') %>
+            <% } %>
+        </li>
+    </ul>
+</div>

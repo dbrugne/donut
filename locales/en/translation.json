@@ -467,6 +467,14 @@
       "error": "Error while connecting, please wait...",
       "disconnected": "Connection lost, please wait...",
       "contactus": "Often problems to connect to us?"
+    },
+    "spam": {
+      "text-spammed": "Warning, private contents (<a class=\"look-spam\">show</a>)",
+      "dropdown": {
+        "mark-spam": "Mark as spam",
+        "unmark-spam": "Unmark as spam",
+        "nothing": "Nothing"
+      }
     }
   },
   "account": {

@@ -13,7 +13,9 @@ var historySchema = mongoose.Schema({
   by_user       : { type: mongoose.Schema.ObjectId, ref: 'User' },
   data          : mongoose.Schema.Types.Mixed,
   users         : [{ type: mongoose.Schema.ObjectId, ref: 'User' }], // users in room at event time
-  viewed        : [{ type: mongoose.Schema.ObjectId, ref: 'User' }]  // users that have read this event
+  viewed        : [{ type: mongoose.Schema.ObjectId, ref: 'User' }],  // users that have read this event
+  spammed       : { type: Boolean },
+  spammed_at    : { type: Date }
 
 }, {strict: false});
 
@@ -104,6 +106,9 @@ historySchema.methods.toClientJSON = function(userViewed) {
     data.by_username = this.by_user.username;
     data.by_avatar = this.by_user._avatar();
   }
+  if (this.spammed === true)
+    e.spammed = this.spammed;
+
   e.data = data;
 
   // unread status (true if message and if i'm not in .viewed)
@@ -164,8 +169,8 @@ historySchema.statics.retrieve = function() {
         entries.pop(); // remove last
 
       var history = [];
-      _.each(entries, function(entry) {
-        history.push(entry.toClientJSON(userId));
+      _.each(entries, function(model) {
+        history.push(model.toClientJSON(userId));
       });
 
       return fn(null, {

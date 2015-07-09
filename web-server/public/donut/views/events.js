@@ -5,9 +5,10 @@ define([
   'libs/donut-debug',
   'models/event',
   'moment',
+  'client',
   'views/window',
   '_templates'
-], function ($, _, Backbone, donutDebug, EventModel, moment, windowView, templates) {
+], function ($, _, Backbone, donutDebug, EventModel, moment, client, windowView, templates) {
 
   var debug = donutDebug('donut:events');
 
@@ -16,8 +17,14 @@ define([
     template: templates['events.html'],
 
     events: {
-      "click .go-to-top a"    : "scrollTop",
-      "click .go-to-bottom a" : "scrollDown"
+      "click .go-to-top a"             : 'scrollTop',
+      "click .go-to-bottom a"          : 'scrollDown',
+
+      "shown.bs.dropdown .actions" : 'onMessageMenuShow',
+
+      "click .dropdown-menu .spammed"  : 'onSpam',
+      "click .dropdown-menu .unspam"   : 'onUnspam',
+      "click .text-spammed .look-spam" :  'lookSpam'
     },
 
     historyLoading: false,
@@ -35,6 +42,8 @@ define([
       this.listenTo(this.model, 'windowRefocused', this.onScroll);
       this.listenTo(this.model, 'freshEvent', this.addFreshEvent);
       this.listenTo(this.model, 'viewed', this.onViewed);
+      this.listenTo(client, 'room:message:spam', this.onMarkedAsSpam);
+      this.listenTo(client, 'room:message:unspam', this.onMarkedAsUnspam);
 
       debug.start('discussion-events'+this.model.getIdentifier());
       this.render();
@@ -431,6 +440,9 @@ define([
       data.data = _.clone(model.get('data'));
       var message = data.data.message;
 
+      if (model.getGenericType() === 'message')
+        data.spammed = (model.get('spammed') === true);
+
       // avatar
       var size = (model.getGenericType() != 'inout')
           ? 30
@@ -564,6 +576,43 @@ define([
      * Viewed management
      *
      *****************************************************************************************************************/
+    onSpam: function(event) {
+      event.preventDefault();
+      var parent = $(event.target).parents('.event');
+      var roomName = this.model.get('name');
+      var messageId = parent.attr('id');
+
+      client.roomMessageSpam(roomName, messageId);
+    },
+
+    onUnspam: function(event) {
+      event.preventDefault();
+      var parent = $(event.target).parents('.event');
+      var roomName = this.model.get('name');
+      var messageId = parent.attr('id');
+      parent.removeClass('viewed');
+
+      client.roomMessageUnspam(roomName, messageId);
+    },
+
+    lookSpam: function(event) {
+      event.preventDefault();
+      var parent = $(event.target).parents('.event');
+      var textSpammed = $(event.target).parents('.text-spammed');
+      parent.removeClass('spammed').addClass('viewed');
+      textSpammed.remove();
+    },
+
+    onMarkedAsSpam: function(room) {
+      $('#'+room.event).addClass('spammed');
+      $('#'+room.event + ' .ctn').first().append('<div class="text-spammed">'+t('chat.spam.text-spammed')+'</div>')
+    },
+
+    onMarkedAsUnspam: function(room) {
+      $('#'+room.event).removeClass('spammed');
+      $('#'+room.event + ' .ctn .text-spammed').remove();
+    },
+
     markVisibleAsViewed: function() {
       if (!this.isVisible())
         return debug('markVisibleAsViewed: discussion/window not focused, do nothing'); // scroll could be triggered by freshevent event when window is not focused
@@ -595,6 +644,25 @@ define([
         return false;
 
       return true;
+    },
+
+    /*****************************************************************************************************************
+     *
+     * Actions management
+     *
+     *****************************************************************************************************************/
+    onMessageMenuShow: function(event) {
+      var ownerId = this.model.get('owner').get('username');
+      var eventId = $(event.target).closest('[data-username]').data("username");
+      var html = templates['events-dropdown.html']({
+        data: {
+          is_op:    this.model.currentUserIsOp(),
+          is_owner: this.model.currentUserIsOwner(),
+          is_admin: this.model.currentUserIsAdmin(),
+          is_message_owner : (ownerId === eventId)
+        }
+      });
+      $(event.currentTarget).find('.dropdown-menu').html(html);
     },
 
     /*****************************************************************************************************************
