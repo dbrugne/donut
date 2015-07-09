@@ -74,7 +74,10 @@ define([
 
       this.toggleReadMore();
 
-      windowView.desktopNotify($.t('chat.notifications.desktop.'+data.type)+' '+data.data.room.name,'');
+      windowView.desktopNotify($.t('chat.notifications.desktop.'+data.type)
+        .replace('__roomname__', ( data.data.room && data.data.room.name ? ' '+data.data.room.name : ''))
+        .replace('__username__', ( data.data.by_user && data.data.by_user.username ? ' '+data.data.by_user.username : ''))
+      ,'');
     },
     createNotificationFromTemplate: function(notification) {
       var template;

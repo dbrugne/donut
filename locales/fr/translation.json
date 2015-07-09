@@ -417,13 +417,15 @@
         "roommessage": "Nouveau message dans "
       },
       "desktop": {
-        "roomkick": "Vous venez d'être expulsé de ",
-        "roomban": "Vous venez d'être banni de ",
-        "roomdeban": "Vous n'êtes plus banni de ",
-        "roomop": " Vous venez d'être promu modérateur de ",
-        "roomdeop": "Vous n'êtes plus modérateur de ",
-        "roomtopic": "Le sujet à changé dans ",
+        "roomkick": "Vous venez d'être expulsé de __roomname__",
+        "roomban": "Vous venez d'être banni de __roomname__",
+        "roomdeban": "Vous n'êtes plus banni de __roomname__",
+        "roomop": " Vous venez d'être promu modérateur de __roomname__",
+        "roomdeop": "Vous n'êtes plus modérateur de __roomname__",
+        "roomtopic": "Le sujet à changé dans __roomname__",
         "usermessage": "__username__ vous a écrit"
+        "userban": "Vous avez été bloqué par __username__",
+        "userdeban": "Vous avez été débloqué par __username__"
       }
     },
     "unread": {
