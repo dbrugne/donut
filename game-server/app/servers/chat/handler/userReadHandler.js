@@ -40,7 +40,19 @@ handler.read = function(data, session, next) {
 			return callback(null);
 		},
 
-		function retrieveUser(callback) {
+		function retrieveCurrentUser(callback) {
+			User.findByUid(session.uid).exec(function (err, currentUser) {
+				if (err)
+					return callback('Error while retrieving user '+session.uid+' in user:read: '+err);
+
+				if (!currentUser)
+					return callback('Unable to retrieve user in user:read: '+session.uid);
+
+				return callback(null, currentUser);
+			});
+		},
+
+		function retrieveUser(currentUser, callback) {
 			User.findByUsername(data.username).exec(function (err, user) {
 				if (err)
 					return callback('Error while retrieving user '+data.username+' in user:read: '+err);
@@ -54,11 +66,11 @@ handler.read = function(data, session, next) {
 					joined: []
 				};
 
-				return callback(null, user, rooms);
+				return callback(null, currentUser, user, rooms);
 			});
 		},
 
-		function ownedRooms(user, rooms, callback) {
+		function ownedRooms(currentUser, user, rooms, callback) {
 			Room.find({ owner: user._id, deleted: { $ne: true } }, roomFields).exec(function (err, results) {
 				if (err)
 					return callback('Error while retrieving user rooms (1) in user:read: '+err);
@@ -67,11 +79,11 @@ handler.read = function(data, session, next) {
 					rooms.owned.push(room);
 				});
 
-				return callback(null, user, rooms);
+				return callback(null, currentUser, user, rooms);
 			});
 		},
 
-		function oppedRooms(user, rooms, callback) {
+		function oppedRooms(currentUser, user, rooms, callback) {
 			Room.find({ op: { $in: [user._id] }, deleted: { $ne: true } }, roomFields).exec(function (err, results) {
 				if (err)
 					return callback('Error while retrieving user rooms (2) in user:read: '+err);
@@ -80,11 +92,11 @@ handler.read = function(data, session, next) {
 					rooms.oped.push(room);
 				});
 
-				return callback(null, user, rooms);
+				return callback(null, currentUser, user, rooms);
 			});
 		},
 
-		function inRooms(user, rooms, callback) {
+		function inRooms(currentUser, user, rooms, callback) {
 			Room.findByUser(user.id).exec(function (err, results) {
 				if (err)
 					return callback('Error while retrieving user rooms (3) in user:read: '+err);
@@ -93,20 +105,20 @@ handler.read = function(data, session, next) {
 					rooms.joined.push(room);
 				});
 
-				return callback(null, user, rooms);
+				return callback(null, currentUser, user, rooms);
 			});
 		},
 
-		function status(user, rooms, callback) {
+		function status(currentUser, user, rooms, callback) {
 			that.app.statusService.getStatusByUid(user._id.toString(), function(err, status) {
 				if (err)
 					return callback('Error while retrieving user status: '+err);
 
-				return callback(null, user, rooms, status);
+				return callback(null, currentUser, user, rooms, status);
 			});
 		},
 
-		function prepareData(user, rooms, status, callback) {
+		function prepareData(currentUser, user, rooms, status, callback) {
 			// status
 			var status = (status)
 				? 'online'
@@ -115,17 +127,19 @@ handler.read = function(data, session, next) {
 				? user.lastonline_at
 				: user.lastoffline_at;
 			var userData = {
-				user_id   : user._id.toString(),
-				username  : user.username,
-				color     : user.color,
-				avatar    : user._avatar(),
-				poster    : user._poster(),
-				bio       : user.bio,
-				location  : user.location,
-				website   : user.website,
-				registered: user.created_at,
-				onlined   : onlined,
-				status    : status
+				user_id   	: user._id.toString(),
+				username  	: user.username,
+				color     	: user.color,
+				avatar    	: user._avatar(),
+				poster    	: user._poster(),
+				bio       	: user.bio,
+				location  	: user.location,
+				website   	: user.website,
+				registered	: user.created_at,
+				onlined   	: onlined,
+				status    	: status,
+				banned      : currentUser.isBanned(user.id), // for ban/deban menu
+				i_am_banned : user.isBanned(session.uid) // for input enable/disable
 			};
 
 			// rooms (mongoose => JSON)

@@ -548,6 +548,10 @@ define([
             template = templates['event/room-op.html']; break;
           case 'room:topic':
             template = templates['event/room-topic.html']; break;
+          case 'user:ban':
+            template = templates['event/user-ban.html']; break;
+          case 'user:deban':
+            template = templates['event/user-deban.html']; break;
           default:
             return;
         }

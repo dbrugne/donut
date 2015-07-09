@@ -44,7 +44,7 @@ handler.read = function(data, session, next) {
 		},
 
 		function prepare(user, callback) {
-			var event = {};
+			var preferences = {};
 			_.each(User.preferencesKeys(), function(config, key) {
 				// skip non-needed key for this request
 				if ( (name && key.indexOf('room:') !== 0) || (!name && key.indexOf('room:') === 0) )
@@ -56,11 +56,36 @@ handler.read = function(data, session, next) {
 				// current (or default) value
 				var _value = user.preferencesValue(_key);
 
-				event[_key] = _value;
+        preferences[_key] = _value;
 			});
 
-			return callback(null, event);
-		}
+			return callback(null, user, preferences);
+		},
+
+    function retrieveBannedUsers (user, preferences, callback) {
+      var bannedUsersId = _.map(user.bans, function(e){ return e.user.toString(); });
+      if (bannedUsersId.length > 0) {
+        User.find({
+          '_id': { $in: bannedUsersId }
+        }, function(err, bannedUsers){
+          if (err)
+            return callback(err);
+
+          var u = [];
+          _.each(bannedUsers, function(bannedUser){
+            u.push({
+              user_id: bannedUser.id,
+              avatar: bannedUser._avatar(),
+              username: bannedUser.username
+            });
+          });
+
+          return callback(null, { preferences: preferences, bannedUsers: u });
+        });
+      } else {
+        return callback(null, { preferences: preferences, bannedUsers: [] });
+      }
+    }
 
 	], function(err, event) {
 		if (err) {

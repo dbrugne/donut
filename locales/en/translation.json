@@ -304,8 +304,17 @@
       "account": "my account",
       "edit": "my profile",
       "preferences": "settings",
+      "bannedusers": "locked users",
       "update": "Edit",
-      "see": "See"
+      "see": "See",
+      "ban": "Ban",
+      "deban": "Deban",
+      "banned": "You have lock this user",
+      "bannedMessage": {
+        "onetoone": "You have been locked by this user",
+        "room": "You have been locked in this Room"
+      },
+      "unlock": "(Click here to unlock)"
     },
     "create": {
       "info": "Attention, the donut name will not be editable later.",
@@ -359,6 +368,13 @@
     "deban": {
       "infobox": "Unban user"
     },
+    "banuser": {
+      "infobox": "Lock this user",
+      "banned-too": "This user locked you"
+    },
+    "debanuser": {
+      "infobox": "Allow this user to talk to you again"
+    },
     "profile": {
       "infobox": "View the user profile"
     },
@@ -394,7 +410,9 @@
         "roomtopic": "Subject has changed in  ",
         "roomjoin": "just joined the room",
         "usermention": "You were notified in ",
-        "roommessage": "New message in "
+        "roommessage": "New message in ",
+        "userban": " locked you",
+        "userdeban": " unlocked you"
       },
       "desktop": {
         "roomkick": "You have been kicked form __roomname__",
@@ -403,7 +421,9 @@
         "roomop": "You have been made moderator of __roomname__",
         "roomdeop": "You have been removed from moderators of __roomname__",
         "roomtopic": "The subject has changed in __roomname__",
-        "usermessage": "__username__ sent a message to you"
+        "usermessage": "__username__ sent a message to you",
+        "userban": "You have been locked by __username__",
+        "userdeban": "You have been unlocked by __username__"
       }
     },
     "unread": {
@@ -713,6 +733,22 @@
           "button": "Back on DONUT"
         }
       },
+      "userban": {
+        "subject": "You have been locked by __username__ on DONUT",
+        "content": {
+          "title": "You have been locked by __username__",
+          "disclaimer": "You can no longuer send him direct messages. He still could send you direct messages, unless you lock him in return.",
+          "button": "Back on DONUT"
+        }
+      },
+      "userdeban": {
+        "subject": "You have been unlocked by __username__ on DONUT",
+        "content": {
+          "title": "You have been unlocked by __username__",
+          "disclaimer": "You can now start again sending him direct messages. He will be able to reply if you have not locked him.",
+          "button": "Back on DONUT"
+        }
+      },
       "contact": {
         "subject": "[DONUT] Nouveau formulaire de contact",
         "text": [
@@ -950,8 +986,13 @@
         "roomjoin": {
           "label": "Quand quelqu'un rentre dans ce donut",
           "help": ""
+        },
+        "userPromote": {
+          "label": "When someone lock or unlock me",
+          "help": ""
         }
-      }
+      },
+      "banned-users": "Users locked by you"
     }
   }
 }

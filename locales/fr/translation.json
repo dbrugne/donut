@@ -325,8 +325,17 @@
       "account": "mon compte",
       "edit": "mon profil",
       "preferences": "préférences",
+      "bannedusers": "utilisateurs bloqués",
       "update": "Editer",
-      "see": "Voir"
+      "see": "Voir",
+      "ban": "Bannir",
+      "deban": "Débannir",
+      "banned": "Vous avez bloqué cet utilisateur",
+      "bannedMessage": {
+        "onetoone": "Vous avez été bloqué par cet utilisateur",
+        "room": "Vous avez été bloqué dans cette Room"
+      },
+      "unlock": "(Cliquez ici pour le débloquer)"
     },
     "create": {
       "info": "Attention le nom du donut ne sera plus modifiable !",
@@ -380,6 +389,13 @@
     "deban": {
       "infobox": "Autoriser à nouveau l'utilisateur à rejoindre le donut"
     },
+    "banuser": {
+      "infobox": "Bloquer cet utilisateur",
+      "banned-too": "Cet utilisateur vous a bloqué"
+    },
+    "debanuser": {
+      "infobox": "Autoriser à nouveau l'utilisateur à vous parler"
+    },
     "profile": {
       "infobox": "Voir le profil de cet utilisateur"
     },
@@ -414,7 +430,9 @@
         "roomtopic": "Le sujet à changé dans ",
         "roomjoin": "a rejoint la room ",
         "usermention": "on vous a notifié dans ",
-        "roommessage": "Nouveau message dans "
+        "roommessage": "Nouveau message dans ",
+        "userban": " vous a bloqué",
+        "userdeban": " vous a débloqué"
       },
       "desktop": {
         "roomkick": "Vous venez d'être expulsé de __roomname__",
@@ -741,6 +759,22 @@
         "button": "Voir la notification sur DONUT"
       }
     },
+    "userban": {
+      "subject": "Vous avez été bloqué par __username__ sur DONUT",
+      "content": {
+        "title": "Vous avez été bloqué par __username__",
+        "disclaimer": "Vous ne pouvez plus lui envoyer de messages. Il pourra par contre continuer à vous en envoyer tant que vous ne l'aurez pas bloqué à votre tour.",
+        "button": "Retourner sur DONUT"
+      }
+    },
+    "userdeban": {
+      "subject": "Vous avez été débloqué par __username__ sur DONUT",
+      "content": {
+        "title": "Vous avez été débloqué par __username__",
+        "disclaimer": "Vous pouvez recommencer à discuter avec lui. Il ne pourra vous répondre que si vous ne l'avez pas bloqué.",
+        "button": "Retourner sur DONUT"
+      }
+    },
     "contact": {
       "subject": "[DONUT] Nouveau formulaire de contact",
       "text": [
@@ -853,8 +887,13 @@
         "roomjoin": {
           "label": "Quand quelqu'un rentre dans ce donut",
           "help": ""
+        },
+        "userpromote": {
+          "label": "Quand quelqu'un me bloque ou me débloque",
+          "help": ""
         }
-      }
+      },
+      "banned-users": "Utilisateurs que vous avez bloqué"
     }
   }
 }

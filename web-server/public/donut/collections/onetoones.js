@@ -27,6 +27,8 @@ define([
       this.listenTo(client, 'user:join', this.onJoin);
       this.listenTo(client, 'user:leave', this.onLeave);
       this.listenTo(client, 'user:viewed', this.onViewed);
+      this.listenTo(client, 'user:ban', this.onBan);
+      this.listenTo(client, 'user:deban', this.onDeban);
     },
     join: function(username) {
       // we ask to server to open this one to one
@@ -48,7 +50,9 @@ define([
         location: user.location,
         website: user.website,
         onlined: user.onlined,
-        status: user.status
+        status: user.status,
+        banned: user.banned,
+        i_am_banned: user.i_am_banned
       };
 
       // update model
@@ -97,6 +101,10 @@ define([
         }
 
         var key = this._key(event.from_username, event.to_username);
+      } else if (event.by_username) {
+        var key = (event.username == currentUser.get('username'))
+          ? this._key(event.by_username, currentUser.get('username'))
+          : this._key(event.username, currentUser.get('username'));
       } else {
         var key = this._key(event.username, currentUser.get('username'));
       }
@@ -159,6 +167,20 @@ define([
     onViewed: function(data) {
       var model = this.getModelFromEvent(data, false);
       model.onViewed(data);
+    },
+    onBan: function(data) {
+      var model = this.getModelFromEvent(data, false);
+      if (!model)
+        return;
+
+      model.onBan(data);
+    },
+    onDeban: function(data) {
+      var model = this.getModelFromEvent(data, false);
+      if (!model)
+        return;
+
+      model.onDeban(data);
     }
 
   });

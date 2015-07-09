@@ -105,6 +105,10 @@ define([
           template = templates['notifications/room-message.html']; break;
         case 'usermention':
           template = templates['notifications/user-mention.html']; break;
+        case 'userban':
+          template = templates['notifications/user-ban.html']; break;
+        case 'userdeban':
+          template = templates['notifications/user-deban.html']; break;
         default:
         break;
       }
@@ -113,7 +117,7 @@ define([
       if (notification.data.room)
         notification.avatar = $.cd.roomAvatar(notification.data.room.avatar, 90);
       else if (notification.data.by_user)
-        notification.avatar = $.cd.roomAvatar(notification.data.by_user.avatar, 90);
+        notification.avatar = $.cd.userAvatar(notification.data.by_user.avatar, 90);
 
       return template({data: notification, from_now: dateObject.format("Do MMMM, HH:mm")});
     },

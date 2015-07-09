@@ -9,6 +9,7 @@ var async = require('async');
 // notifications logic
 var userMessage = require('./userMessageType');
 var roomPromote = require('./roomPromoteType');
+var userPromote = require('./userPromoteType');
 var roomTopic = require('./roomTopicType');
 var roomMessage = require('./roomMessageType');
 var roomJoin = require('./roomJoinType');
@@ -88,6 +89,11 @@ Facade.prototype.getType = function (type) {
 
     case 'usermention':
       return userMention(that);
+      break;
+
+    case 'userban':
+    case 'userdeban':
+      return userPromote(that);
       break;
 
     default:
