@@ -3,7 +3,7 @@ var notifications = require('../notifications');
 var _ = require ('underscore');
 
 module.exports = function(data) {
-  logger.debug('[schedule:notifications] starting');
+  logger.trace('[schedule:notifications] starting');
 
   var facade = notifications(data.app);
   facade.retrievePendingNotifications(function(err, notifications){ // @todo yls add limiter
@@ -23,5 +23,7 @@ module.exports = function(data) {
       if (notification.sent_to_mobile === false && notification.to_mobile === true)
         type.sendMobile(notification);
     });
+
+    logger.trace('[schedule:notifications] done');
   });
 };

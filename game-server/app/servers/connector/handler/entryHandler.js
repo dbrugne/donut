@@ -40,14 +40,14 @@ handler.enter = function(msg, session, next) {
 
 	var uid = session.__session__.__socket__.socket.decoded_token.id;
 
-	logger.debug('entry request for '+uid+'@'+session.frontendId+' sessionId: '+session.id);
+	logger.trace('entry request for '+uid+'@'+session.frontendId+' sessionId: '+session.id);
 
 	var firstClient = true;
 
 	async.waterfall([
 
 		function bindSession(callback) {
-			logger.debug('bind session '+session.id+' to user '+uid);
+			logger.trace('bind session '+session.id+' to user '+uid);
 			session.bind(uid);
 
 			// disconnect event
@@ -60,7 +60,7 @@ handler.enter = function(msg, session, next) {
 			// another session already exists on this frontend for this uid?
 			var currentUidSessions = that.app.get('sessionService').getByUid(uid);
 			if (currentUidSessions && currentUidSessions.length > 1) {
-				logger.debug('at least another session exists for this user on this frontend: [%s] [%s] (firstClient=false)', session.uid, session.frontendId);
+				logger.trace('at least another session exists for this user on this frontend: [%s] [%s] (firstClient=false)', session.uid, session.frontendId);
 				firstClient = false;
 				return callback(null);
 			}
@@ -280,7 +280,7 @@ var onUserLeave = function(app, session, reason) {
 			log.username = session.settings.username;
 		if (reason)
 			log.reason = reason;
-		logger.info(JSON.stringify(log));
+		logger.trace(JSON.stringify(log));
 
 		// user:offline
 		app.rpc.chat.statusRemote.socketGoesOffline(
