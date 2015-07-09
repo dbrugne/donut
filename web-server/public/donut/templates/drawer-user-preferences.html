@@ -93,7 +93,7 @@
                 <td class="avatar open-user-profile" data-username="<%= u.username %>"><img src="<%= $.cd.userAvatar(u.avatar, 30) %>" alt="<%= u.username %>"></td>
                 <td class="username"><span class="open-user-profile" data-username="<%= u.username %>"><%= u.username %></span></td>
                 <td class="actions">
-                    <span class="deban-user" data-toggle="confirmation" title="<%= t('chat.debanuser.infobox') %>" data-uid="<%= u.user_id %>">
+                    <span class="action-user-deban" style="cursor:pointer;" data-uid="<%= u.user_id %>">
                         <i class="icon icon-ban"></i>
                     </span>
                 </td>

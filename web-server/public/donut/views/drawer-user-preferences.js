@@ -17,12 +17,13 @@ define([
     events: {
       'click .play-sound-test': 'onPlaySound',
       'click .desktop-notification-test': 'onTestDesktopNotify',
-      'change .savable': 'onChangeValue',
-      'click .deban-user': 'onDeban'
+      'change .savable': 'onChangeValue'
     },
 
     initialize: function (options) {
       this.mainView = options.mainView;
+
+      this.listenTo(this.mainView, 'userDeban', this.onDeban);
 
       // show spinner as temp content
       this.render();
@@ -82,25 +83,14 @@ define([
           return;
         }
       })
-    },
-    onBannedChange: function(model, value, options) {
-      console.log(model);
-      console.log(value);
-      console.log(options);
-    },
-    onDeban: function (event) {
-      event.preventDefault();
+    }
+    ,
+    onDeban: function (data) {
+      this.render();
 
-      var uid = $(event.currentTarget).data('uid');
-      if (!uid)
-        return;
-
-      confirmationView.open({}, function () {
-        client.userDeban(uid);
-        var group = $(event.currentTarget).parents('.users');
-        $(event.currentTarget).parents('tr').remove();
-        if (group.find('tr').length == 0)
-          group.remove();
+      var that = this;
+      client.userPreferencesRead(null, function (data) {
+        that.onResponse(data);
       });
     }
 

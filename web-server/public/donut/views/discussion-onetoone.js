@@ -95,30 +95,6 @@ define([
       } else {
         this.$('#onetoone .user').removeClass('is-banned');
       }
-    },
-    banUser: function (event) {
-      event.preventDefault();
-
-      var uid = $(event.currentTarget).data('uid');
-      if (!uid)
-        return;
-
-      var that = this;
-      confirmationView.open({input: true}, function (reason) {
-        client.userBan(uid, reason);
-      });4
-    },
-    debanUser: function (event) {
-      event.preventDefault();
-
-      var uid = $(event.currentTarget).data('uid');
-      if (!uid)
-        return;
-
-      var that = this;
-      confirmationView.open({}, function () {
-        client.userDeban(uid);
-      });
     }
   });
 

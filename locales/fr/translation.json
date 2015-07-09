@@ -389,6 +389,10 @@
     "deban": {
       "infobox": "Autoriser à nouveau l'utilisateur à rejoindre le donut"
     },
+    "banuser": {
+      "infobox": "Bloquer cet utilisateur",
+      "banned-too": "Cet utilisateur vous a bloqué"
+    },
     "debanuser": {
       "infobox": "Autoriser à nouveau l'utilisateur à vous parler"
     },

@@ -368,6 +368,10 @@
     "deban": {
       "infobox": "Unban user"
     },
+    "banuser": {
+      "infobox": "Lock this user",
+      "banned-too": "This user locked you"
+    },
     "debanuser": {
       "infobox": "Allow this user to talk to you again"
     },
