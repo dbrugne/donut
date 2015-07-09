@@ -22,7 +22,7 @@
             </div>
             <% } %>
             <% if (spammed) { %>
-            <div class="text-spammed">attention, contenu privé (<a class="look-spam">voir</a>)</div>
+            <div class="text-spammed"><%= t('chat.spam.text-spammed') %></div>
             <% } %>
         </div>
         <div class="date pull-right"><span class="moment" data-time="<%= data.time %>" title="<%= data.datefull %>"><%= data.dateshort %></span>

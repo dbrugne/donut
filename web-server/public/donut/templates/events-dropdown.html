@@ -3,13 +3,12 @@
     <ul class="a">
         <li>
             <i class="icon icon-cog"></i>
-            <% if (data.is_op || data.is_owner || data.is_admin) { %>
-                <a href="#" class="spammed">Mark as spam</a>
-                <a href="#" class="unspam">Unmark as spam</a>
+            <% if ((data.is_op && !data.is_message_owner) || data.is_owner || data.is_admin) { %>
+                <a href="#" class="spammed"><%= t('chat.spam.drowpdown.mark-spam') %></a>
+                <a href="#" class="unspam"><%= t('chat.spam.drowpdown.unmark-spam') %></a>
+            <% } else { %>
+                <%= t('chat.spam.drowpdown.nothing') %>
             <% } %>
         </li>
-        <% if (!data.is_op && !data.is_owner && !data.is_admin) { %>
-        rien désolé
-        <% } %>
     </ul>
 </div>

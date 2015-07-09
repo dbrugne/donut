@@ -608,7 +608,7 @@ define([
 
     onMarkedAsSpam: function(room) {
       $('#'+room.event).addClass('spammed');
-      $('#'+room.event + ' .ctn').first().append('<div class="text-spammed">attention, contenu privé (<a class="look-spam">voir</a>)</div>')
+      $('#'+room.event + ' .ctn').first().append('<div class="text-spammed">'+t('chat.spam.text-spammed')+'</div>')
     },
 
     onMarkedAsUnspam: function(room) {
@@ -655,12 +655,14 @@ define([
      *
      *****************************************************************************************************************/
     onMessageMenuShow: function(event) {
-      //var idMessage =  $(event.target).parents('.event');
+      var ownerId = this.model.get('owner').get('username');
+      var eventId = $(event.target).closest('[data-username]').data("username");
       var html = templates['events-dropdown.html']({
         data: {
-          is_op:    this.model.currentUserIsOwner(),
-          is_owner: this.model.currentUserIsOp(),
-          is_admin: this.model.currentUserIsAdmin()
+          is_op:    this.model.currentUserIsOp(),
+          is_owner: this.model.currentUserIsOwner(),
+          is_admin: this.model.currentUserIsAdmin(),
+          is_message_owner : (ownerId === eventId)
         }
       });
       $(event.currentTarget).find('.dropdown-menu').html(html);
