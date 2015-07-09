@@ -72,7 +72,7 @@ WelcomeRemote.prototype.getMessage = function(uid, frontendId, globalCallback) {
 			var parallels = [];
 			_.each(user.onetoones, function(one) {
 				if (!one.username)
-					return logger.info('Empty username found in populateOnes for user: '+uid);
+					return logger.warn('Empty username found in populateOnes for user: '+uid);
 				parallels.push(function(fn) {
 					oneDataHelper(that.app, uid, one.username, {history: false}, function(err, one) {
 						if (err)
