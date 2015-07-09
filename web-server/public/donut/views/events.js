@@ -582,9 +582,7 @@ define([
       var roomName = this.model.get('name');
       var messageId = parent.attr('id');
 
-      client.roomMessageSpam(roomName, messageId, function() {
-        console.log('roomMessageSpam handler terminated');
-      });
+      client.roomMessageSpam(roomName, messageId);
     },
 
     onUnspam: function(event) {
@@ -592,17 +590,16 @@ define([
       var parent = $(event.target).parents('.event');
       var roomName = this.model.get('name');
       var messageId = parent.attr('id');
+      parent.removeClass('viewed');
 
-      client.roomMessageUnspam(roomName, messageId, function() {
-        console.log('roomMessageUnspam handler terminated');
-      });
+      client.roomMessageUnspam(roomName, messageId);
     },
 
     lookSpam: function(event) {
       event.preventDefault();
       var parent = $(event.target).parents('.event');
       var textSpammed = $(event.target).parents('.text-spammed');
-      parent.removeClass('spammed');
+      parent.removeClass('spammed').addClass('viewed');
       textSpammed.remove();
     },
 

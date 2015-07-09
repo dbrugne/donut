@@ -470,7 +470,7 @@
     },
     "spam": {
       "text-spammed": "Warning, private contents (<a class=\"look-spam\">show</a>)",
-      "drowpdown": {
+      "dropdown": {
         "mark-spam": "Mark as spam",
         "unmark-spam": "Unmark as spam",
         "nothing": "Nothing"

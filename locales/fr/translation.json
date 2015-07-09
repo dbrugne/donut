@@ -492,7 +492,7 @@
     },
     "spam": {
       "text-spammed": "Attention, contenu privé (<a class=\"look-spam\">voir</a>)",
-      "drowpdown": {
+      "dropdown": {
         "mark-spam": "Activer spam",
         "unmark-spam": "Désactiver spam",
         "nothing": "Aucunes options"
