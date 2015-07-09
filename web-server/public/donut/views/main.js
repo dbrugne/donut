@@ -234,7 +234,9 @@ define([
     },
 
     _color: function(color) {
-      this.$el.find('#color').css('background-color', color);
+      this.$el.find('#color')
+        .attr('data-colorify', color)
+        .colorify();
     },
 
     color: function(color, temporary, reset) {

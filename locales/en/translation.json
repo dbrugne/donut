@@ -73,15 +73,15 @@
     "unknownerror": "Unknown error, please retry later"
   },
   "login": {
-    "title": "The first test phase is over. Thanks for your help !",
+    "title": "connect",
     "withfacebook": "with Facebook",
     "withpassword": "with a password",
     "email-placeholder": "your e-mail",
     "password-placeholder": "your password",
     "confirm-placeholder": "confirm your password",
     "username-placeholder": "choose a username",
-    "createanaccount1": "Sign-up to be kept informed,",
-    "createanaccount2": "right here!",
+    "createanaccount1": "Sign-up,",
+    "createanaccount2": "its free",
     "emailerror": "Invalid e-mail",
     "passworderror": "Your forgot to enter a password"
   },
@@ -250,7 +250,7 @@
       "line3": "...and discover like-minded people, during true conversations!"
     },
     "signup": {
-      "title1": "Sign-up to be updated on our latest developments.<br> Your can already have a look ;).",
+      "title1": "Create a",
       "title2": "account here in 1 bite",
       "etvoila": "Here we go!"
     },
@@ -413,7 +413,8 @@
         "roomdeban": "You have been unbanned from ",
         "roomop": "You have been made moderator of ",
         "roomdeop": "You have been removed from moderators of ",
-        "roomtopic": "The subject has changed in "
+        "roomtopic": "The subject has changed in ",
+        "usermessage": "__username__ sent a message to you"
       }
     },
     "unread": {

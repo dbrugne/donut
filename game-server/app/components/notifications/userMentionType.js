@@ -196,7 +196,7 @@ Notification.prototype.sendEmail = function (model) {
 
   ], function (err) {
     if (err)
-      return logger.error('Error happened in userMessageType|sendEmail : ' + err);
+      return logger.error('Error happened in userMentionType|sendEmail : ' + err);
   });
 
 };
