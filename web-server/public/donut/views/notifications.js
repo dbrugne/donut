@@ -74,7 +74,7 @@ define([
 
       this.toggleReadMore();
 
-      windowView.desktopNotify($.t('chat.notifications.desktop.'+data.type)+' '+data.data.room.name,'');
+      windowView.desktopNotify($.t('chat.notifications.desktop.'+data.type)+( data.data.room && data.data.room.name ? ' '+data.data.room.name : ''),'');
     },
     createNotificationFromTemplate: function(notification) {
       var template;

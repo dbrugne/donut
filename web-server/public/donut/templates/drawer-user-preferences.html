@@ -81,4 +81,27 @@
         </div>
         <% }); %>
     </div>
+
+    <% if(bannedUsers.length > 0) { %>
+
+    <div class="form-group users">
+        <label><%= t('preferences.notif.banned-users') %></label>
+        <table>
+            <tbody>
+            <% _.each(bannedUsers, function(u){ %>
+            <tr>
+                <td class="avatar open-user-profile" data-username="<%= u.username %>"><img src="<%= $.cd.userAvatar(u.avatar, 30) %>" alt="<%= u.username %>"></td>
+                <td class="username"><span class="open-user-profile" data-username="<%= u.username %>"><%= u.username %></span></td>
+                <td class="actions">
+                    <div class="deban-user" data-toggle="confirmation" title="<%= t('chat.ban.infobox') %>" data-uid="<%= u.user_id %>">
+                        <i class="icon icon-ban"></i>
+                    </div>
+                </td>
+            </tr>
+            <% }); %>
+            </tbody>
+        </table>
+    </div>
+
+    <% } %>
 </form>

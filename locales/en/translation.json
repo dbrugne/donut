@@ -982,6 +982,7 @@
           "help": ""
         }
       }
-    }
+    },
+    "banned_users": "Users locked by you"
   }
 }
