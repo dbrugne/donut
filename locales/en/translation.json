@@ -397,12 +397,12 @@
         "roommessage": "New message in "
       },
       "desktop": {
-        "roomkick": "You have been kicked form  ",
-        "roomban": "You have been banned from  ",
-        "roomdeban": "You have been unbanned from ",
-        "roomop": "You have been made moderator of ",
-        "roomdeop": "You have been removed from moderators of ",
-        "roomtopic": "The subject has changed in ",
+        "roomkick": "You have been kicked form __roomname__",
+        "roomban": "You have been banned from __roomname__",
+        "roomdeban": "You have been unbanned from __roomname__",
+        "roomop": "You have been made moderator of __roomname__",
+        "roomdeop": "You have been removed from moderators of __roomname__",
+        "roomtopic": "The subject has changed in __roomname__",
         "usermessage": "__username__ sent a message to you"
       }
     },
