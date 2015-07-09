@@ -424,6 +424,7 @@
         "roomdeop": "Vous n'êtes plus modérateur de __roomname__",
         "roomtopic": "Le sujet à changé dans __roomname__",
         "usermessage": "__username__ vous a écrit",
+        "usermention": "__username__ vous a mentionné dans cette Room",
         "userban": "Vous avez été bloqué par __username__",
         "userdeban": "Vous avez été débloqué par __username__"
       }
