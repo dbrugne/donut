@@ -99,7 +99,7 @@ define([
         client.userDeban(uid);
         var group = $(event.currentTarget).parents('.users');
         $(event.currentTarget).parents('tr').remove();
-        if (group.children('table tr').length == 0)
+        if (group.find('tr').length == 0)
           group.remove();
       });
     }

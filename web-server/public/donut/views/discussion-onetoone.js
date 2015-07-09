@@ -91,9 +91,9 @@ define([
     },
     onBannedChange: function(model, value, options) {
       if (value === true) {
-        $('#onetoone .user').addClass('is-banned');
+        this.$('#onetoone .user').addClass('is-banned');
       } else {
-        $('#onetoone .user').removeClass('is-banned');
+        this.$('#onetoone .user').removeClass('is-banned');
       }
     },
     banUser: function (event) {
@@ -106,7 +106,7 @@ define([
       var that = this;
       confirmationView.open({input: true}, function (reason) {
         client.userBan(uid, reason);
-      });
+      });4
     },
     debanUser: function (event) {
       event.preventDefault();

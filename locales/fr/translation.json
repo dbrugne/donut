@@ -389,6 +389,9 @@
     "deban": {
       "infobox": "Autoriser à nouveau l'utilisateur à rejoindre le donut"
     },
+    "debanuser": {
+      "infobox": "Autoriser à nouveau l'utilisateur à vous parler"
+    },
     "profile": {
       "infobox": "Voir le profil de cet utilisateur"
     },
@@ -434,7 +437,7 @@
         "roomop": " Vous venez d'être promu modérateur de __roomname__",
         "roomdeop": "Vous n'êtes plus modérateur de __roomname__",
         "roomtopic": "Le sujet à changé dans __roomname__",
-        "usermessage": "__username__ vous a écrit"
+        "usermessage": "__username__ vous a écrit",
         "userban": "Vous avez été bloqué par __username__",
         "userdeban": "Vous avez été débloqué par __username__"
       }
@@ -885,8 +888,8 @@
           "label": "Quand quelqu'un me bloque ou me débloque",
           "help": ""
         }
-      }
-    },
-    "banned_users": "Utilisateurs que vous avez bloqué"
+      },
+      "banned-users": "Utilisateurs que vous avez bloqué"
+    }
   }
 }
