@@ -20,9 +20,6 @@ define([
 
       var data = currentUser.toJSON();
 
-      var tpl = new String('<span class="username open-user-profile" data-username="%username">%username</span>');
-      tpl = tpl.replace(/%username/g, currentUser.get('username'));
-
       data.avatar = $.cd.userAvatar(currentUser.get('avatar'), 60);
 
       var html = this.template(data);

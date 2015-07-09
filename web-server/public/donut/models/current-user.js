@@ -75,10 +75,13 @@ define([
       var preferences = this.get('preferences');
 
       // if no preference set OR browser:sound equal to true, we play
-      if (!preferences || typeof preferences['notif:channels:desktop'] == 'undefined' || preferences['notif:channels:desktop'] === true)
-        return true;
+      if (!preferences || typeof preferences['notif:channels:desktop'] == 'undefined')
+        return false;
 
-      return false;
+      if (preferences['notif:channels:desktop'] === true)
+        return true;
+      else
+        return false;
     },
 
     _setCookie: function(name, value, exdays) {
