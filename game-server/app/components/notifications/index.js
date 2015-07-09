@@ -167,7 +167,7 @@ Facade.prototype.retrieveUserNotifications = function (uid, what, callback) {
           break;
       }
     }, function (err) {
-      callback(err, notifications);
+      callback(err, _.sortBy(notifications, function(n){ return -n.time; }));
     });
   });
 };
