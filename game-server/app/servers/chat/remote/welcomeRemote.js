@@ -31,6 +31,7 @@ WelcomeRemote.prototype.getMessage = function(uid, frontendId, globalCallback) {
 
 	// welcome event data
 	var welcomeEvent = {
+    notifications: {}
 	};
 
 	var that = this;
@@ -144,15 +145,25 @@ WelcomeRemote.prototype.getMessage = function(uid, frontendId, globalCallback) {
 			});
 		},
 
-		function notifications(user, callback) {
+		function notificationsUnread(user, callback) {
 			Notifications(that.app).retrieveUserNotificationsUnreadCount(user._id.toString(), function(err, count) {
 				if (err)
-				  logger.error('Error while retrieving notifications: '+err);
+				  logger.error('Error while retrieving unread notifications: '+err);
 
-				welcomeEvent.notifications = count || 0;
+				welcomeEvent.notifications.unread = count || 0;
 				return callback(null, user);
 			});
-		}
+		},
+
+    function notificationsUndone(user, callback) {
+      Notifications(that.app).retrieveUserNotificationsUndoneCount(user._id.toString(), function(err, count) {
+        if (err)
+          logger.error('Error while retrieving undone notifications: '+err);
+
+        welcomeEvent.notifications.undone = count || 0;
+        return callback(null, user);
+      });
+    }
 
 	], function (err, user) {
 		if (err) {

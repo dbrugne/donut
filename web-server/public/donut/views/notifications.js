@@ -24,10 +24,18 @@ define([
 
     initialize: function(options) {
       this.unread = 0;
+      this.undone = 0;
+      this.more = false;
       this.mainView = options.mainView;
       this.listenTo(client, 'notification:new', this.onNotificationPushed);
 
       this.render();
+    },
+    initializeNotificationState: function(data) {
+      if (data.unread)
+        this.setUnreadCount(data.unread);
+      if (data.undone)
+        this.undone = data.undone;
     },
     render: function() {
       this.$dropdown = this.$el.find('.dropdown-toggle');
@@ -208,7 +216,11 @@ define([
 
     toggleReadMore: function()
     {
-      if ((this.unread || 0) < 10)
+      // Only display if at least 10 messages displayed, and more messages to display on server
+      if (this.$menu.find('.message').length < 10)
+        return;
+
+      if ((this.undone || 0) < 10)
         this.$actions.addClass('hidden');
       else
         this.$actions.removeClass('hidden');

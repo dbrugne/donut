@@ -161,7 +161,7 @@ define([
 
       // Notifications
       if (data.notifications)
-        this.notificationsView.setUnreadCount(data.notifications);
+        this.notificationsView.initializeNotificationState(data.notifications);
 
       this.firstConnection = false;
 
