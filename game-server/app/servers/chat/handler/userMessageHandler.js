@@ -65,7 +65,7 @@ handler.message = function(data, session, next) {
 			});
 		},
 
-    function filterNotificationsFromBannedUser(from, to, callback) {
+    function filterBannedUser(from, to, callback) {
       if (to.isBanned(from.id))
         return callback('From user is banned by to user in user:message');
 
