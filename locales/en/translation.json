@@ -385,6 +385,8 @@
       "online": "is online,",
       "offline": "is offline,",
       "read-more": "Read more",
+      "count" : "<strong class=\"nb\"></strong><strong> New</strong> Notification(s)",
+      "tag-as-read" : "Tag as read",
       "empty": "You have no new notification",
       "dropdown": {
         "kick": "was kicked out of this donut of",

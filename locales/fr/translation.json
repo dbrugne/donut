@@ -405,6 +405,8 @@
       "out": "est sorti à",
       "online": "est en ligne,",
       "read-more": "Voir plus",
+      "count" : "<strong class=\"nb\"></strong><strong> Nouvelle(s)</strong> Notification(s)",
+      "tag-as-read" : "Marquer comme lue(s)",
       "empty": "Vous n'avez pas de nouvelles notifications",
       "dropdown": {
         "kick": "a été expulsé de ",
