@@ -132,21 +132,32 @@ handler.viewed = function (data, session, next) {
   async.waterfall([
 
     function check(callback) {
-      var notifications = [];
-      if (!data.ids || !_.isArray(data.ids))
-        return callback('ids parameter is mandatory for notifications:viewed');
 
-      // filter array to preserve only valid
-      _.each(data.ids, function (elt) {
-        if (ObjectId.isValid(elt))
-          notifications.push(elt);
-      });
+      // Mark all as read
+      if (data.all && data.all === true) {
+        Notifications(that.app).retrieveUserNotificationsUnviewed(session.uid, function (err, notifications) {
+          if (err)
+            return callback('Error while retrieving notifications for ' + session.uid + ': ' + err);
 
-      // test if at least one entry remain
-      if (notifications.length == 0)
-        return callback('No notification to set as Read remaining');
+          return callback(null, notifications);
+        });
+      } else {
+        var notifications = [];
+        if (!data.ids || !_.isArray(data.ids))
+          return callback('ids parameter is mandatory for notifications:viewed');
 
-      return callback(null, notifications);
+        // filter array to preserve only valid
+        _.each(data.ids, function (elt) {
+          if (ObjectId.isValid(elt))
+            notifications.push(elt);
+        });
+
+        // test if at least one entry remain
+        if (notifications.length == 0)
+          return callback('No notification to set as Read remaining');
+
+        return callback(null, notifications);
+      }
     },
 
     function retrieveUser(notifications, callback) {

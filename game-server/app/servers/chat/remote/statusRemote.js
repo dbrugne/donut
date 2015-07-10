@@ -79,7 +79,7 @@ DisconnectRemote.prototype.online = function(uid, welcome, globalCallback) {
 				if (err)
 					return callback(err);
 
-				logger.debug('inform following rooms: ', roomsToInform);
+				logger.trace('inform following rooms: ', roomsToInform);
 				return callback(null, event);
 			});
 		},
@@ -167,11 +167,11 @@ DisconnectRemote.prototype.socketGoesOffline = function(uid, globalCallback) {
 						return logger.error('Error while retrieving user status: '+err);
 
 					if (status) {
-						logger.debug('socketGoesOffline for '+uid+': finally now he is online (micro-disconnection)');
+						logger.trace('socketGoesOffline for '+uid+': finally now he is online (micro-disconnection)');
 						return; // no-op
 					}
 
-					logger.debug('socketGoesOffline for '+uid+': finally he is really offline');
+					logger.trace('socketGoesOffline for '+uid+': finally he is really offline');
 					that.offline(uid);
 				});
 
@@ -257,7 +257,7 @@ DisconnectRemote.prototype.offline = function(uid) {
 						if (err)
 							return callback(err);
 
-						logger.debug('Following rooms informed: '+roomsToInform.join(', '));
+						logger.trace('Following rooms informed: '+roomsToInform.join(', '));
 						return callback(null, user, event);
 					});
 				});

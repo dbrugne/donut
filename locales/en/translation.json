@@ -385,6 +385,8 @@
       "online": "is online,",
       "offline": "is offline,",
       "read-more": "Read more",
+      "count" : "<strong class=\"nb\"></strong><strong> New</strong> Notification(s)",
+      "tag-as-read" : "Tag as read",
       "dropdown": {
         "kick": "was kicked out of this donut of",
         "ban": "was banned from this donut of",
@@ -403,7 +405,10 @@
         "roomop": "You have been made moderator of __roomname__",
         "roomdeop": "You have been removed from moderators of __roomname__",
         "roomtopic": "The subject has changed in __roomname__",
-        "usermessage": "__username__ sent a message to you"
+        "usermessage": "__username__ sent a message to you",
+        "usermention": "__username__ Notified you in this Room",
+        "userban": "You have been locked by __username__",
+        "userdeban": "You have been unlocked by __username__"
       }
     },
     "unread": {

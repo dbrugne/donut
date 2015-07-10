@@ -15,20 +15,30 @@ define([
     el: $("#notifications"),
 
     events: {
-      "click .dropdown-menu .actions" : 'onReadMore',
+      "click .dropdown-menu .actions": 'onReadMore',
+      "click .action-tag-as-read": 'onTagAsRead',
       'show.bs.dropdown': 'onShow',
       'hide.bs.dropdown': 'onHide'
     },
 
-    markHasRead : null,
+    markHasRead: null,
 
-    initialize: function(options) {
+    initialize: function (options) {
+      this.unread = 0;
+      this.undone = 0;
+      this.more = false;
       this.mainView = options.mainView;
       this.listenTo(client, 'notification:new', this.onNotificationPushed);
 
       this.render();
     },
-    render: function() {
+    initializeNotificationState: function (data) {
+      if (data.unread)
+        this.setUnreadCount(data.unread);
+      if (data.undone)
+        this.undone = data.undone;
+    },
+    render: function () {
       this.$dropdown = this.$el.find('.dropdown-toggle');
       this.$badge = this.$el.find('.badge').first();
       this.$count = this.$el.find('.unread-count .nb').first();
@@ -41,7 +51,7 @@ define([
 
       return this;
     },
-    setUnreadCount: function(count) {
+    setUnreadCount: function (count) {
       if (count > 0) {
         this.$badge.text(count);
         this.$count.html(count);
@@ -51,59 +61,72 @@ define([
         this.el.classList.add('empty');
         this.el.classList.remove('full');
       }
+      this.unread = count;
     },
 
     // A new Notification is pushed from server
-    onNotificationPushed: function(data) {
+    onNotificationPushed: function (data) {
       // Update Badge & Count
-      this.setUnreadCount(data.unviewed);
+      this.setUnreadCount(this.unread + 1);
 
       // Highlight Badge
       this.$badge.addClass("bounce");
       var that = this;
-      setTimeout(function(){ that.$badge.removeClass("bounce"); }, 1500); // Remove class after animation to trigger animation later if needed
+      setTimeout(function () {
+        that.$badge.removeClass("bounce");
+      }, 1500); // Remove class after animation to trigger animation later if needed
 
       // Insert new notification in dropdown
-      this.$menu.html(this.createNotificationFromTemplate(data)+this.$menu.html());
+      this.$menu.html(this.createNotificationFromTemplate(data) + this.$menu.html());
 
       // Dropdown is opened
       if (this.el.classList.contains('open')) {
         // Set Timeout to clear new notification
-        this.markHasRead = setTimeout(function(){ that.clearNotifications(); }, 2000); // Clear notifications after 2 seconds
+        this.markHasRead = setTimeout(function () {
+          that.clearNotifications();
+        }, 2000); // Clear notifications after 2 seconds
       }
 
       this.toggleReadMore();
 
-      windowView.desktopNotify($.t('chat.notifications.desktop.'+data.type)
-        .replace('__roomname__', ( data.data.room && data.data.room.name ? ' '+data.data.room.name : ''))
-        .replace('__username__', ( data.data.by_user && data.data.by_user.username ? ' '+data.data.by_user.username : ''))
-      ,'');
+      windowView.desktopNotify($.t('chat.notifications.desktop.' + data.type)
+          .replace('__roomname__', ( data.data.room && data.data.room.name ? ' ' + data.data.room.name : ''))
+          .replace('__username__', ( data.data.by_user && data.data.by_user.username ? ' ' + data.data.by_user.username : ''))
+        , '');
     },
-    createNotificationFromTemplate: function(notification) {
+    createNotificationFromTemplate: function (notification) {
       var template;
 
-      switch (notification.type)
-      {
+      switch (notification.type) {
         case 'roomop':
-          template = templates['notifications/room-op.html']; break;
+          template = templates['notifications/room-op.html'];
+          break;
         case 'roomdeop':
-          template = templates['notifications/room-deop.html']; break;
+          template = templates['notifications/room-deop.html'];
+          break;
         case 'roomkick':
-          template = templates['notifications/room-kick.html']; break;
+          template = templates['notifications/room-kick.html'];
+          break;
         case 'roomban':
-          template = templates['notifications/room-ban.html']; break;
+          template = templates['notifications/room-ban.html'];
+          break;
         case 'roomdeban':
-          template = templates['notifications/room-deban.html']; break;
+          template = templates['notifications/room-deban.html'];
+          break;
         case 'roomtopic':
-          template = templates['notifications/room-topic.html']; break;
+          template = templates['notifications/room-topic.html'];
+          break;
         case 'roomjoin':
-          template = templates['notifications/room-join.html']; break;
+          template = templates['notifications/room-join.html'];
+          break;
         case 'roommessage':
-          template = templates['notifications/room-message.html']; break;
+          template = templates['notifications/room-message.html'];
+          break;
         case 'usermention':
-          template = templates['notifications/user-mention.html']; break;
+          template = templates['notifications/user-mention.html'];
+          break;
         default:
-        break;
+          break;
       }
       var dateObject = moment(notification.time);
 
@@ -115,16 +138,15 @@ define([
       return template({data: notification, from_now: dateObject.format("Do MMMM, HH:mm")});
     },
     // User clicks on the notification icon in the header
-    onShow: function(event) {
+    onShow: function (event) {
       var lastNotif = this.lastNotifDisplayedTime();
-
+      var that = this;
       // Ask server for last 10 notifications
       if (this.$menu.find('.message').length == 0) {
-        client.userNotifications(null, lastNotif, 10, _.bind(function(data) {
+        client.userNotifications(null, lastNotif, 10, _.bind(function (data) {
 
           var html = '';
-          for (var k in data.notifications)
-          {
+          for (var k in data.notifications) {
             html += this.createNotificationFromTemplate(data.notifications[k]);
           }
 
@@ -134,19 +156,21 @@ define([
         }, this));
       }
 
-      var that = this;
-      this.markHasRead = setTimeout(function(){ that.clearNotifications(); }, 2000); // Clear notifications after 2 seconds
+      this.markHasRead = setTimeout(function () {
+        that.clearNotifications();
+      }, 2000); // Clear notifications after 2 seconds
     },
-    // Notification dropwdown is hidden (Bootstrap event catched)
-    onHide: function(event) {
+
+    onHide: function (event) {
       console.log("hide", event.relatedTarget);
       clearTimeout(this.markHasRead);
     },
-    clearNotifications: function() {
-      var unreadNotifications = this.$menu.find('.message.unread');
 
+    clearNotifications: function () {
+      var unreadNotifications = this.$menu.find('.message.unread');
+      var that = this;
       var ids = [];
-      _.each(unreadNotifications, function(elt){
+      _.each(unreadNotifications, function (elt) {
         ids.push(elt.dataset.notificationId);
       });
 
@@ -155,37 +179,36 @@ define([
         return;
 
       // Ask server to set notifications as viewed, and wait for response to set them likewise
-      client.userNotificationsViewed(ids, _.bind(function(data){
+      client.userNotificationsViewed(ids, false, _.bind(function (data) {
         // For each notification in the list, tag them as read
-        _.each(unreadNotifications, function(notification){
+        _.each(unreadNotifications, function (notification) {
           notification.classList.remove('unread');
         });
 
         // Update Badge & Count
-        this.setUnreadCount(data.unviewed);
+        this.setUnreadCount(that.unread - ids.length);
       }, this));
     },
 
-    redraw: function() {
+    redraw: function () {
       return this.render();
     },
 
     // When user clicks on the read more link in the notification dropdown
-    onReadMore: function(event) {
+    onReadMore: function (event) {
       event.stopPropagation(); // Cancel dropdown close behaviour
       this.$readMore.addClass('hidden');
       this.$loader.removeClass('hidden');
 
       var lastNotif = this.lastNotifDisplayedTime();
-      client.userNotifications(null, lastNotif, 10, _.bind(function(data) {
+      client.userNotifications(null, lastNotif, 10, _.bind(function (data) {
         var previousContent = this.$menu.html();
         var html = '';
-        for (var k in data.notifications)
-        {
+        for (var k in data.notifications) {
           html += this.createNotificationFromTemplate(data.notifications[k]);
         }
 
-        this.$menu.html(previousContent+html);
+        this.$menu.html(previousContent + html);
         this.$readMore.removeClass('hidden');
         this.$loader.addClass('hidden');
 
@@ -194,23 +217,40 @@ define([
       }, this));
 
       var that = this;
-      this.markHasRead = setTimeout(function(){ that.clearNotifications(); }, 2000);
+      this.markHasRead = setTimeout(function () {
+        that.clearNotifications();
+      }, 2000);
     },
 
-    lastNotifDisplayedTime: function() {
+    lastNotifDisplayedTime: function () {
       var last = this.$menu.find('.message').last();
       var time = (!last || last.length < 1) ? null : last.data('time');
       return time;
     },
 
-    toggleReadMore: function()
-    {
-      if ((this.$menu.find('.message').length || 0) < 10)
+    toggleReadMore: function () {
+      // Only display if at least 10 messages displayed, and more messages to display on server
+      if (this.$menu.find('.message').length < 10)
+        return;
+
+      if ((this.undone || 0) < 10)
         this.$actions.addClass('hidden');
       else
         this.$actions.removeClass('hidden');
-    }
+    },
 
+    onTagAsRead: function (event) {
+      // Ask server to set notifications as viewed, and wait for response to set them likewise
+      client.userNotificationsViewed([], true, _.bind(function (data) {
+        // For each notification in the list, tag them as read
+        _.each(this.$menu.find('.message.unread'), function (notification) {
+          notification.classList.remove('unread');
+        });
+
+        // Update Badge & Count
+        this.setUnreadCount(0);
+      }, this));
+    }
   });
 
   return NotificationsView;
