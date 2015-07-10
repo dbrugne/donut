@@ -89,10 +89,34 @@ define([
 
       this.toggleReadMore();
 
-      windowView.desktopNotify($.t('chat.notifications.desktop.' + data.type)
-          .replace('__roomname__', ( data.data.room && data.data.room.name ? ' ' + data.data.room.name : ''))
-          .replace('__username__', ( data.data.by_user && data.data.by_user.username ? ' ' + data.data.by_user.username : ''))
-        , '');
+      this._createDesktopNotify(data);
+    },
+    _createDesktopNotify: function(data)
+    {
+      var desktopTitle, desktopBody;
+
+      switch (data.type)
+      {
+        case 'roomop':
+        case 'roomdeop':
+        case 'roomkick':
+        case 'roomban':
+        case 'roomdeban':
+        case 'roomtopic':
+        case 'roomjoin':
+        case 'roommessage':
+          desktopTitle = $.t('chat.notifications.desktop.'+data.type).replace('__roomname__', ( data.data.room && data.data.room.name ? ' '+data.data.room.name : ''));
+          desktopBody = ( data.data.by_user && data.data.by_user.username ? t('chat.notifications.desktop.by') + ' '+data.data.by_user.username : '');
+        break;
+        case 'usermention':
+          desktopTitle = $.t('chat.notifications.desktop.'+data.type).replace('__username__', ( data.data.by_user && data.data.by_user.username ? ' '+data.data.by_user.username : ''));
+          desktopBody = '';
+        break;
+        default:
+        break;
+      }
+
+      windowView.desktopNotify(desktopTitle, desktopBody);
     },
     createNotificationFromTemplate: function (notification) {
       var template;
