@@ -5,7 +5,7 @@
     <div class="username open-user-profile" data-username="<%= data.username %>">@<%= data.username %></div>
     <div class="items">
         <% } %>
-        <div class="event <% if (spammed === true) { %>spammed<% } %><% if (unviewed) { print('unviewed'); } %>"
+        <div class="event <% if (spammed) { %>spammed<% } %><% if (unviewed) { print('unviewed'); } %>"
              id="<%= data.id %>" data-time="<%= data.time %>"
         <% if (spammed === true) { %>data-spammed="true"<% } %>>
         <div class="ctn">
@@ -22,7 +22,7 @@
             </div>
             <% } %>
             <% if (spammed) { %>
-            <div class="text-spammed"><%= t('chat.spam.text-spammed') %></div>
+            <div class="text-spammed"><%= t('chat.message.text-spammed') %></div>
             <% } %>
         </div>
         <div class="date pull-right"><span class="moment" data-time="<%= data.time %>" title="<%= data.datefull %>"><%= data.dateshort %></span>

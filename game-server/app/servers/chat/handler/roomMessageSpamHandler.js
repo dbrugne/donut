@@ -2,28 +2,26 @@ var logger = require('../../../../pomelo-logger').getLogger('donut', __filename)
 var async = require('async');
 var Room = require('../../../../../shared/models/room');
 var HistoryRoom = require('../../../../../shared/models/historyroom');
-var Notifications = require('../../../components/notifications');
-var roomEmitter = require('../../../util/roomEmitter');
 
-module.exports = function(app) {
+module.exports = function (app) {
   return new Handler(app);
 };
 
-var Handler = function(app) {
+var Handler = function (app) {
   this.app = app;
 };
 
 var handler = Handler.prototype;
 
 /**
- * Handle room op logic
+ * Handle room message spam logic
  *
- * @param {Object} data message from client
+ * @param {Object} data name, messageId from client
  * @param {Object} session
  * @param  {Function} next stemp callback
  *
  */
-handler.spam = function(data, session, next) {
+handler.spam = function (data, session, next) {
 
   var that = this;
 
@@ -42,31 +40,31 @@ handler.spam = function(data, session, next) {
     function retrieveRoom(callback) {
       Room.findByName(data.name).exec(function (err, room) {
         if (err)
-          return callback('Error while retrieving room in room:message:spam: '+err);
+          return callback('Error while retrieving room in room:message:spam: ' + err);
 
         if (!room)
-          return callback('Unable to retrieve room in room:message:spam: '+data.name);
+          return callback('Unable to retrieve room in room:message:spam: ' + data.name);
 
         if (!room.isOwnerOrOp(session.uid) && session.settings.admin !== true)
-          return callback('This user '+session.uid+' isn\'t able to op another user in this room: '+data.name);
+          return callback('This user ' + session.uid + ' isn\'t able spammed a message in this room: ' + data.name);
 
         return callback(null, room);
       });
     },
 
     function retrieveEvent(room, callback) {
-      HistoryRoom.findOne({ _id: data.event }, function(err, spammedEvent) {
+      HistoryRoom.findOne({_id: data.event}, function (err, spammedEvent) {
         if (err)
-          return callback('Error while retrieving room in room:message:spam: '+err);
+          return callback('Error while retrieving event in room:message:spam: ' + err);
 
         if (!spammedEvent)
-          return callback('Unable to retrieve room in room:message:spam: '+data.event);
+          return callback('Unable to retrieve event in room:message:spam: ' + data.event);
 
         if (spammedEvent.room != room.id)
-          return callback('spammedEvent not correspond '+data.event);
+          return callback('spammedEvent not correspond ' + data.event);
 
         if (spammedEvent.event !== 'room:message')
-          return callback('spammedEvent should be room:message for: '+data.event);
+          return callback('spammedEvent should be room:message for: ' + data.event);
 
         return callback(null, room, spammedEvent);
       });
@@ -75,9 +73,9 @@ handler.spam = function(data, session, next) {
     function persist(room, spammedEvent, callback) {
       spammedEvent.spammed = true;
       spammedEvent.spammed_at = new Date();
-      spammedEvent.save(function(err) {
+      spammedEvent.save(function (err) {
         if (err)
-          return callback('Unable to persist spammed of '+spammedEvent.id+' on '+room.name);
+          return callback('Unable to persist spammed of ' + spammedEvent.id + ' on ' + room.name);
 
         return callback(null, room, spammedEvent);
       });
@@ -93,14 +91,14 @@ handler.spam = function(data, session, next) {
     },
 
     function broadcast(room, spammedEvent, event, callback) {
-      that.app.globalChannelService.pushMessage('connector', 'room:message:spam', event, room.name, {}, function(err) {
+      that.app.globalChannelService.pushMessage('connector', 'room:message:spam', event, room.name, {}, function (err) {
         if (err)
-          logger.error('Error while emitting room:message:spam in '+room.name+': '+err); // not 'return', we delete even if error happen
+          logger.error('Error while emitting room:message:spam in ' + room.name + ': ' + err); // not 'return', we delete even if error happen
         return callback(null, room, spammedEvent, event);
       });
     }
 
-  ], function(err) {
+  ], function (err) {
     if (err) {
       logger.error(err);
       return next(null, {code: 500, err: err});
