@@ -125,14 +125,12 @@ module.exports = {
       if (['historyroom', 'historyone'].indexOf(type) == -1)
         err = 'Wrong model type';
 
-      if (err != null)
-      {
+      if (err != null) {
         args.unshift(err);
         return callback.apply(undefined, args);
       }
 
-      switch (type)
-      {
+      switch (type) {
         case 'historyone':
           HistoryOneModel
             .findById(id)

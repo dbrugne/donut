@@ -26,15 +26,19 @@ Notification.prototype.shouldBeCreated = function(type, user, data) {
   async.waterfall([
 
     function checkOwn(callback) {
-      if (data.from_user_id == user._id.toString())
-        return callback('no notification due to my own message');
+      if (data.from_user_id == user._id.toString()) {
+        logger.debug('no notification due to my own message');
+        return utils.waterfallDone(null);
+      }
       else
         return callback(null);
     },
 
     function checkPreferences(callback) {
-      if (!user.preferencesValue('notif:userpromote'))
-        return callback('no notification due to user preferences');
+      if (!user.preferencesValue('notif:userpromote')) {
+        logger.debug('no notification due to user preferences');
+        return utils.waterfallDone(null);
+      }
       else
         return callback(null);
     },
@@ -45,7 +49,7 @@ Notification.prototype.shouldBeCreated = function(type, user, data) {
     function checkStatus(callback) {
       that.facade.app.statusService.getStatusByUid(user._id.toString(), function(err, status) {
         if (err)
-          return callback('Error while retrieving user status: '+err);
+          return utils.waterfallDone('Error while retrieving user status: '+err);
 
         return callback(null, status);
       });
@@ -61,7 +65,7 @@ Notification.prototype.shouldBeCreated = function(type, user, data) {
 
       model.save(function(err) {
         if (err)
-          return callback(err);
+          return utils.waterfallDone('Error while saving: '+err);
 
         logger.info('notification created: '+type+' for '+user.username);
 
@@ -72,10 +76,7 @@ Notification.prototype.shouldBeCreated = function(type, user, data) {
       });
     }
 
-  ], function(err) {
-    if (err)
-      return logger.error('Error happened in userPromoteType|shouldBeCreated : '+err);
-  });
+  ], utils.waterfallDone);
 };
 
 Notification.prototype.sendToBrowser = function(model) {
@@ -119,7 +120,7 @@ Notification.prototype.sendToBrowser = function(model) {
     function push(notification, callback) {
       that.facade.app.globalChannelService.pushMessage('connector', 'notification:new', notification, 'user:'+userId, {}, function(err) {
         if (err)
-          logger.error('Error while sending notification:new message to user clients: '+err);
+          return utils.waterfallDone('Error while sending notification:new message to user clients: '+err);
 
         logger.debug('notification sent: '+notification);
 
@@ -127,10 +128,7 @@ Notification.prototype.sendToBrowser = function(model) {
       });
     }
 
-  ], function(err) {
-    if (err)
-      return logger.error('Error happened in userPromoteType|sendToBrowser : '+err);
-  });
+  ], utils.waterfallDone);
 
 };
 
@@ -141,44 +139,41 @@ Notification.prototype.sendToBrowser = function(model) {
  */
 Notification.prototype.sendEmail = function(model) {
 
-  // Do not send email, finally
-  //var to, username;
-  //
-  //if (!model.data || !model.data.event)
-  //  return logger.error('Wrong structure for notification model');
-  //
-  //async.waterfall([
-  //
-  //  utils.retrieveEvent('historyone', model.data.event.toString() ),
-  //
-  //  function send(event, callback) {
-  //    to = event.to.getEmail();
-  //    username = event.from.username;
-  //
-  //    switch(model.type) {
-  //
-  //      case 'userban':
-  //        return emailer.userBan(to, username, callback);
-  //      break;
-  //      case 'userdeban':
-  //        return emailer.userDeban(to, username, callback);
-  //      break;
-  //      default:
-  //        return callback('userPromoteType :: Unknown notification type: '+model.type);
-  //      break;
-  //    }
-  //  },
-  //
-  //  function saveOnUser(callback) {
-  //    model.sent_to_email = true;
-  //    model.sent_to_email_at = new Date();
-  //    model.save(callback);
-  //  }
-  //
-  //], function(err) {
-  //  if (err)
-  //    return logger.error('Error happened in roomTopicType|sendEmail : '+err);
-  //});
+  var to, username;
+
+  if (!model.data || !model.data.event)
+    return logger.error('Wrong structure for notification model');
+
+  async.waterfall([
+
+    utils.retrieveEvent('historyone', model.data.event.toString() ),
+
+    function send(event, callback) {
+      to = event.to.getEmail();
+      username = event.from.username;
+
+      switch(model.type) {
+
+        case 'userban':
+          return emailer.userBan(to, username, callback);
+        break;
+        case 'userdeban':
+          return emailer.userDeban(to, username, callback);
+        break;
+        default:
+          return callback('userPromoteType :: Unknown notification type: '+model.type);
+        break;
+      }
+    },
+
+    function saveOnUser(callback) {
+      model.sent_to_email = true;
+      model.sent_to_email_at = new Date();
+      model.save(callback);
+    }
+
+  ], utils.waterfallDone);
+
 };
 
 Notification.prototype.sendMobile = function() {
