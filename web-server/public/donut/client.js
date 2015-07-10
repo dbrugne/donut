@@ -342,10 +342,8 @@ define([
     // USER METHODS
     // ======================================================
 
-    userBan: function(uid, reason) {
-        var data = {uid: uid};
-        if (reason)
-            data.reason = reason;
+    userBan: function(user_id) {
+        var data = {user_id: user_id};
         debug('io:out:user:ban', data);
         var that = this;
         pomelo.request(
@@ -357,8 +355,8 @@ define([
             }
         );
     },
-    userDeban: function(uid) {
-        var data = {uid: uid};
+    userDeban: function(user_id) {
+        var data = {user_id: user_id};
         debug('io:out:user:deban', data);
         var that = this;
         pomelo.request(

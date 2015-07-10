@@ -83,8 +83,7 @@ define([
           return;
         }
       })
-    }
-    ,
+    },
     onDeban: function (data) {
       this.render();
 

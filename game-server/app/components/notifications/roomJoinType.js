@@ -69,6 +69,8 @@ Notification.prototype.shouldBeCreated = function (type, room, data) {
         if (!notif.sent_to_browser)
           that.sendToBrowser(notif);
       });
+
+      callback(null);
     }
 
   ], function (err) {
@@ -114,16 +116,14 @@ Notification.prototype.sendToBrowser = function (model) {
       return callback(null, notification);
     },
 
-    utils.retrieveUnreadNotificationsCount(userIdToNotify),
-
     function push(notification, count, callback) {
-      notification.unviewed = count || 0;
-
       that.facade.app.globalChannelService.pushMessage('connector', 'notification:new', notification, 'user:' + userIdToNotify, {}, function (err) {
         if (err)
           return callback('Error while sending notification:new message to user clients: ' + err);
 
         logger.debug('notification sent: ' + notification);
+
+        callback(null);
       });
     }
 

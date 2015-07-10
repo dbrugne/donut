@@ -89,10 +89,7 @@ define([
 
       this.toggleReadMore();
 
-      windowView.desktopNotify($.t('chat.notifications.desktop.' + data.type)
-          .replace('__roomname__', ( data.data.room && data.data.room.name ? ' ' + data.data.room.name : ''))
-          .replace('__username__', ( data.data.by_user && data.data.by_user.username ? ' ' + data.data.by_user.username : ''))
-        , '');
+      this._createDesktopNotify(data);
     },
     createNotificationFromTemplate: function (notification) {
       var template;
@@ -126,9 +123,11 @@ define([
           template = templates['notifications/user-mention.html'];
           break;
         case 'userban':
-          template = templates['notifications/user-ban.html']; break;
+          template = templates['notifications/user-ban.html'];
+          break;
         case 'userdeban':
-          template = templates['notifications/user-deban.html']; break;
+          template = templates['notifications/user-deban.html'];
+          break;
         default:
           break;
       }
@@ -140,6 +139,36 @@ define([
         notification.avatar = $.cd.userAvatar(notification.data.by_user.avatar, 90);
 
       return template({data: notification, from_now: dateObject.format("Do MMMM, HH:mm")});
+    },
+    _createDesktopNotify: function (data) {
+      var desktopTitle, desktopBody;
+
+      switch (data.type) {
+        case 'roomop':
+        case 'roomdeop':
+        case 'roomkick':
+        case 'roomban':
+        case 'roomdeban':
+        case 'roomtopic':
+        case 'roomjoin':
+        case 'roommessage':
+          desktopTitle = $.t('chat.notifications.desktop.' + data.type).replace('__roomname__', ( data.data.room && data.data.room.name ? ' ' + data.data.room.name : ''));
+          desktopBody = ( data.data.by_user && data.data.by_user.username ? t('chat.notifications.desktop.by') + ' ' + data.data.by_user.username : '');
+          break;
+        case 'usermention':
+          desktopTitle = $.t('chat.notifications.desktop.' + data.type).replace('__username__', ( data.data.by_user && data.data.by_user.username ? ' ' + data.data.by_user.username : ''));
+          desktopBody = '';
+          break;
+        case 'userban':
+        case 'userdeban':
+          desktopTitle = '';
+          desktopBody = '';
+          break;
+        default:
+          break;
+      }
+      if (desktopTitle != '')
+        windowView.desktopNotify(desktopTitle, desktopBody);
     },
     // User clicks on the notification icon in the header
     onShow: function (event) {

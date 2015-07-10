@@ -56,7 +56,7 @@ Notification.prototype.shouldBeCreated = function(type, user, data) {
       var model = NotificationModel.getNewModel(type, user, {event: mongoose.Types.ObjectId(data.event.id)});
 
       model.to_browser = user.preferencesValue("notif:channels:desktop");
-      model.to_email = (status ? false : user.preferencesValue("notif:channels:email"));
+      model.to_email = false; // Do not send email, finally // (status ? false : user.preferencesValue("notif:channels:email"));
       model.to_mobile = (status ? false : user.preferencesValue("notif:channels:mobile"));
 
       model.save(function(err) {
@@ -67,6 +67,8 @@ Notification.prototype.shouldBeCreated = function(type, user, data) {
 
         if (!model.sent_to_browser)
           that.sendToBrowser(model);
+
+        callback(null);
       });
     }
 
@@ -114,16 +116,14 @@ Notification.prototype.sendToBrowser = function(model) {
       return callback(null, notification);
     },
 
-    utils.retrieveUnreadNotificationsCount(userId),
-
-    function push(notification, count, callback) {
-      notification.unviewed = count || 0;
-
+    function push(notification, callback) {
       that.facade.app.globalChannelService.pushMessage('connector', 'notification:new', notification, 'user:'+userId, {}, function(err) {
         if (err)
           logger.error('Error while sending notification:new message to user clients: '+err);
 
         logger.debug('notification sent: '+notification);
+
+        callback(null);
       });
     }
 
@@ -141,43 +141,44 @@ Notification.prototype.sendToBrowser = function(model) {
  */
 Notification.prototype.sendEmail = function(model) {
 
-  var to, username;
-
-  if (!model.data || !model.data.event)
-    return logger.error('Wrong structure for notification model');
-
-  async.waterfall([
-
-    utils.retrieveEvent('historyone', model.data.event.toString() ),
-
-    function send(event, callback) {
-      to = event.to.getEmail();
-      username = event.from.username;
-
-      switch(model.type) {
-
-        case 'userban':
-          return emailer.userBan(to, username, callback);
-        break;
-        case 'userdeban':
-          return emailer.userDeban(to, username, callback);
-        break;
-        default:
-          return callback('userPromoteType :: Unknown notification type: '+model.type);
-        break;
-      }
-    },
-
-    function saveOnUser(callback) {
-      model.sent_to_email = true;
-      model.sent_to_email_at = new Date();
-      model.save(callback);
-    }
-
-  ], function(err) {
-    if (err)
-      return logger.error('Error happened in roomTopicType|sendEmail : '+err);
-  });
+  // Do not send email, finally
+  //var to, username;
+  //
+  //if (!model.data || !model.data.event)
+  //  return logger.error('Wrong structure for notification model');
+  //
+  //async.waterfall([
+  //
+  //  utils.retrieveEvent('historyone', model.data.event.toString() ),
+  //
+  //  function send(event, callback) {
+  //    to = event.to.getEmail();
+  //    username = event.from.username;
+  //
+  //    switch(model.type) {
+  //
+  //      case 'userban':
+  //        return emailer.userBan(to, username, callback);
+  //      break;
+  //      case 'userdeban':
+  //        return emailer.userDeban(to, username, callback);
+  //      break;
+  //      default:
+  //        return callback('userPromoteType :: Unknown notification type: '+model.type);
+  //      break;
+  //    }
+  //  },
+  //
+  //  function saveOnUser(callback) {
+  //    model.sent_to_email = true;
+  //    model.sent_to_email_at = new Date();
+  //    model.save(callback);
+  //  }
+  //
+  //], function(err) {
+  //  if (err)
+  //    return logger.error('Error happened in roomTopicType|sendEmail : '+err);
+  //});
 };
 
 Notification.prototype.sendMobile = function() {

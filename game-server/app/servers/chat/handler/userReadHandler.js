@@ -139,7 +139,7 @@ handler.read = function(data, session, next) {
 				onlined   	: onlined,
 				status    	: status,
 				banned      : currentUser.isBanned(user.id), // for ban/deban menu
-				i_am_banned : user.isBanned(session.uid) // for input enable/disable
+				i_am_banned : user.isBanned(currentUser.id) // for input enable/disable
 			};
 
 			// rooms (mongoose => JSON)
@@ -159,11 +159,11 @@ handler.read = function(data, session, next) {
 				});
 			});
 
-			return callback(null, user, userData);
+			return callback(null, currentUser, user, userData);
 		},
 
-		function accountData(user, userData, callback) {
-			if (session.uid != user._id.toString())
+		function accountData(currentUser, user, userData, callback) {
+			if (currentUser.id != user._id.toString())
 			  return callback(null, user, userData);
 
 			var account = {};

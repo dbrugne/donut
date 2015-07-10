@@ -60,9 +60,7 @@ Notification.prototype.shouldBeCreated = function(type, user, data) {
         model.to_email =  ( !user.getEmail() ? false : ( status ? false : user.preferencesValue("notif:channels:email"))) ;
         model.to_mobile = (status ? false : user.preferencesValue("notif:channels:mobile"));
 
-        model.save(function(err) {
-            return callback (err);
-        });
+        model.save(callback);
       }
 
   ], function(err) {

@@ -29,12 +29,10 @@ handler.ban = function(data, session, next) {
 
 	var that = this;
 
-	var reason = (data.reason) ? inputUtil.filter(data.reason, 512) : false;
-
 	async.waterfall([
 
 		function check(callback) {
-			if (!data.uid)
+			if (!data.user_id)
 				return callback('user:deban require uid param');
 
 			return callback(null);
@@ -53,12 +51,12 @@ handler.ban = function(data, session, next) {
 		},
 
 		function retrieveUnbannedUser(user, callback) {
-			User.findByUid(data.uid).exec(function (err, unbannedUser) {
+			User.findByUid(data.user_id).exec(function (err, unbannedUser) {
 				if (err)
-					return callback('Error while retrieving unbannedUser '+data.uid+' in user:deban: '+err);
+					return callback('Error while retrieving unbannedUser '+data.user_id+' in user:deban: '+err);
 
 				if (!unbannedUser)
-					return callback('Unable to retrieve unbannedUser in user:deban: '+data.uid);
+					return callback('Unable to retrieve unbannedUser in user:deban: '+data.user_id);
 
 				return callback(null, user, unbannedUser);
 			});

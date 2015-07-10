@@ -29,12 +29,10 @@ handler.ban = function(data, session, next) {
 
 	var that = this;
 
-	var reason = (data.reason) ? inputUtil.filter(data.reason, 512) : false;
-
 	async.waterfall([
 
 		function check(callback) {
-			if (!data.uid)
+			if (!data.user_id)
 				return callback('user:ban require uid param');
 
 			return callback(null);
@@ -53,12 +51,12 @@ handler.ban = function(data, session, next) {
 		},
 
 		function retrieveBannedUser(user, callback) {
-			User.findByUid(data.uid).exec(function (err, bannedUser) {
+			User.findByUid(data.user_id).exec(function (err, bannedUser) {
 				if (err)
-					return callback('Error while retrieving bannedUser '+data.uid+' in user:ban: '+err);
+					return callback('Error while retrieving bannedUser '+data.user_id+' in user:ban: '+err);
 
 				if (!bannedUser)
-					return callback('Unable to retrieve bannedUser in user:ban: '+data.uid);
+					return callback('Unable to retrieve bannedUser in user:ban: '+data.user_id);
 
 				return callback(null, user, bannedUser);
 			});
@@ -76,8 +74,6 @@ handler.ban = function(data, session, next) {
 				user: bannedUser._id,
 				banned_at: new Date()
 			};
-			if (reason !== false)
-				ban.reason = reason;
 
 			user.update({$addToSet: { bans: ban }}, function(err) {
 				if (err)
@@ -96,9 +92,6 @@ handler.ban = function(data, session, next) {
         username    : bannedUser.username,
         avatar      : bannedUser._avatar()
       };
-
-			if (reason !== false)
-				event.reason = reason;
 
 			return callback(null, user, bannedUser, event);
 		},

@@ -65,6 +65,8 @@ Notification.prototype.shouldBeCreated = function (type, user, data) {
 
         if (!model.sent_to_browser)
           that.sendToBrowser(model);
+
+        callback(null);
       });
     }
 
@@ -120,20 +122,18 @@ Notification.prototype.sendToBrowser = function (model) {
       return callback(null, notification);
     },
 
-    utils.retrieveUnreadNotificationsCount(userId),
-
     function push(notification, count, callback) {
-      notification.unviewed = count || 0;
-
       that.facade.app.globalChannelService.pushMessage('connector', 'notification:new', notification, 'user:' + userId, {}, function (err) {
         if (err)
           logger.error('Error while sending notification:new message to user clients: ' + err);
 
         logger.debug('notification sent: ' + notification);
+
+        callback(null);
       });
     }
 
-  ], function (err, notification) {
+  ], function (err) {
     if (err)
       return logger.error('Error happened in userMentionType|sendToBrowser : ' + err);
   });

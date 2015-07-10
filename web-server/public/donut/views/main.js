@@ -598,28 +598,28 @@ define([
     userBan: function(event) {
       event.preventDefault();
 
-      var uid = $(event.currentTarget).data('uid');
-      if (!uid)
+      var userId = $(event.currentTarget).data('uid');
+      if (!userId)
         return;
 
       var that = this;
-      ConfirmationView.open({input: true}, function (reason) {
-        client.userBan(uid, reason);
-        that.trigger('userBan', {uid: uid});
+      ConfirmationView.open({}, function () {
+        client.userBan(userId);
+        that.trigger('userBan', {user_id: userId});
       });
     },
 
     userDeban: function (event) {
       event.preventDefault();
 
-      var uid = $(event.currentTarget).data('uid');
-      if (!uid)
+      var userId = $(event.currentTarget).data('uid');
+      if (!userId)
         return;
 
       var that = this;
       ConfirmationView.open({}, function() {
-        client.userDeban(uid);
-        that.trigger('userDeban', {uid: uid});
+        client.userDeban(userId);
+        that.trigger('userDeban', {user_id: userId});
       });
 
     }

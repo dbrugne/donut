@@ -34,7 +34,6 @@ var userSchema = mongoose.Schema({
     onetoones      : [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
     bans: [{
       user: {type: mongoose.Schema.ObjectId, ref: 'User'},
-      reason: String,
       banned_at: {type: Date, default: Date.now}
     }],
     positions      : { type: String },
