@@ -67,7 +67,7 @@ handler.message = function(data, session, next) {
 
     function filterNotificationsFromBannedUser(from, to, callback) {
       if (to.isBanned(from.id))
-        return callback('No notification cause current user is banned by user to notify');
+        return callback('From user is banned by to user in user:message');
 
       return callback(null, from, to);
     },
