@@ -23,10 +23,19 @@ define([
     markHasRead : null,
 
     initialize: function(options) {
+      this.unread = 0;
+      this.undone = 0;
+      this.more = false;
       this.mainView = options.mainView;
       this.listenTo(client, 'notification:new', this.onNotificationPushed);
 
       this.render();
+    },
+    initializeNotificationState: function(data) {
+      if (data.unread)
+        this.setUnreadCount(data.unread);
+      if (data.undone)
+        this.undone = data.undone;
     },
     render: function() {
       this.$dropdown = this.$el.find('.dropdown-toggle');
@@ -51,12 +60,14 @@ define([
         this.el.classList.add('empty');
         this.el.classList.remove('full');
       }
+      this.unread = count;
+      console.log('************'+this.unread+'********');
     },
 
     // A new Notification is pushed from server
     onNotificationPushed: function(data) {
       // Update Badge & Count
-      this.setUnreadCount(data.unviewed);
+      this.setUnreadCount(this.unread+1);
 
       // Highlight Badge
       this.$badge.addClass("bounce");
@@ -117,7 +128,7 @@ define([
     // User clicks on the notification icon in the header
     onShow: function(event) {
       var lastNotif = this.lastNotifDisplayedTime();
-
+      var that = this;
       // Ask server for last 10 notifications
       if (this.$menu.find('.message').length == 0) {
         client.userNotifications(null, lastNotif, 10, _.bind(function(data) {
@@ -134,17 +145,17 @@ define([
         }, this));
       }
 
-      var that = this;
       this.markHasRead = setTimeout(function(){ that.clearNotifications(); }, 2000); // Clear notifications after 2 seconds
     },
-    // Notification dropwdown is hidden (Bootstrap event catched)
+
     onHide: function(event) {
       console.log("hide", event.relatedTarget);
       clearTimeout(this.markHasRead);
     },
+
     clearNotifications: function() {
       var unreadNotifications = this.$menu.find('.message.unread');
-
+      var that = this;
       var ids = [];
       _.each(unreadNotifications, function(elt){
         ids.push(elt.dataset.notificationId);
@@ -162,7 +173,7 @@ define([
         });
 
         // Update Badge & Count
-        this.setUnreadCount(data.unviewed);
+        this.setUnreadCount(that.unread - ids.length);
       }, this));
     },
 
@@ -205,7 +216,11 @@ define([
 
     toggleReadMore: function()
     {
-      if ((this.$menu.find('.message').length || 0) < 10)
+      // Only display if at least 10 messages displayed, and more messages to display on server
+      if (this.$menu.find('.message').length < 10)
+        return;
+
+      if ((this.undone || 0) < 10)
         this.$actions.addClass('hidden');
       else
         this.$actions.removeClass('hidden');

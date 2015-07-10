@@ -31,6 +31,7 @@ WelcomeRemote.prototype.getMessage = function(uid, frontendId, globalCallback) {
 
 	// welcome event data
 	var welcomeEvent = {
+    notifications: {}
 	};
 
 	var that = this;
@@ -72,7 +73,7 @@ WelcomeRemote.prototype.getMessage = function(uid, frontendId, globalCallback) {
 			var parallels = [];
 			_.each(user.onetoones, function(one) {
 				if (!one.username)
-					return logger.info('Empty username found in populateOnes for user: '+uid);
+					return logger.warn('Empty username found in populateOnes for user: '+uid);
 				parallels.push(function(fn) {
 					oneDataHelper(that.app, uid, one.username, {history: false}, function(err, one) {
 						if (err)
@@ -144,15 +145,25 @@ WelcomeRemote.prototype.getMessage = function(uid, frontendId, globalCallback) {
 			});
 		},
 
-		function notifications(user, callback) {
+		function notificationsUnread(user, callback) {
 			Notifications(that.app).retrieveUserNotificationsUnreadCount(user._id.toString(), function(err, count) {
 				if (err)
-				  logger.error('Error while retrieving notifications: '+err);
+				  logger.error('Error while retrieving unread notifications: '+err);
 
-				welcomeEvent.notifications = count || 0;
+				welcomeEvent.notifications.unread = count || 0;
 				return callback(null, user);
 			});
-		}
+		},
+
+    function notificationsUndone(user, callback) {
+      Notifications(that.app).retrieveUserNotificationsUndoneCount(user._id.toString(), function(err, count) {
+        if (err)
+          logger.error('Error while retrieving undone notifications: '+err);
+
+        welcomeEvent.notifications.undone = count || 0;
+        return callback(null, user);
+      });
+    }
 
 	], function (err, user) {
 		if (err) {
