@@ -682,59 +682,65 @@
       }
     },
     "roomop": {
-      "subject": "Vous avez été promu modérateur de la Room ",
+      "subject": "Vous avez été promu modérateur de",
       "content": {
-        "title": "Vous avez été promu modérateur par ",
+        "title": "Vous avez été promu modérateur de",
         "disclaimer": "Beaucoup de choses se sont passées sur DONUT depuis votre dernier passage.",
+        "action": "Action effectuée par",
         "button": "retourner sur DONUT"
       }
     },
     "roomdeop": {
-      "subject": "Vous avez été exclu des modérateurs de la Room ",
+      "subject": "Vous n'êtes plus modérateur de",
       "content": {
-        "title": "Vous avez été promu modérateur par ",
+        "title": "Vous n'êtes plus modérateur de",
         "disclaimer": "Beaucoup de choses se sont passées sur DONUT depuis votre dernier passage.",
+        "action": "Action effectuée par",
         "button": "retourner sur DONUT"
       }
     },
     "roomkick": {
-      "subject": "Vous avez été exclu de la Room ",
+      "subject": "Vous avez été expulsé de",
       "content": {
-        "title": "Vous avez été exclu de la Room ",
+        "title": "Vous avez été expulsé de",
         "by": "par ",
         "disclaimer": "Beaucoup de choses se sont passées sur DONUT depuis votre dernier passage.",
+        "action": "Action effectuée par",
         "button": "retourner sur DONUT"
       }
     },
     "roomban": {
-      "subject": "Vous avez été banni de la Room ",
+      "subject": "Vous avez été banni de",
       "content": {
-        "title": "Vous avez été banni de la Room ",
+        "title": "Vous avez été banni de",
         "disclaimer": "Beaucoup de choses se sont passées sur DONUT depuis votre dernier passage.",
-        "disclaimer2": "Vous pouvez contacter l'administrateur de la Room pour avoir plus de détails : ",
+        "disclaimer2": "Pour plus de détails, vous pouvez contacter l'administrateur de ",
+        "action": "Action effectuée par",
         "button": "retourner sur DONUT"
       }
     },
     "roomdeban": {
-      "subject": "Vous n'êtes plus banni de la Room ",
+      "subject": "Vous n'êtes plus banni de",
       "content": {
-        "title": "Vous n'êtes plus banni de la Room ",
+        "title": "Vous n'êtes plus banni de",
         "disclaimer": "Beaucoup de choses se sont passées sur DONUT depuis votre dernier passage.",
+        "action": "Action effectuée par",
         "button": "retourner sur DONUT"
       }
     },
     "roomtopic": {
-      "subject": "Le sujet à changé dans la Room ",
+      "subject": "Le sujet à changé dans",
       "content": {
-        "title": "Le sujet de la Room a été changé par ",
+        "title": "Le sujet à changé dans",
         "disclaimer": "Beaucoup de choses se sont passées sur DONUT depuis votre dernier passage.",
+        "action": "Action effectuée par",
         "button": "retourner sur DONUT"
       }
     },
     "roomjoin": {
-      "subject": "Un utilisateur a rejoint la Room ",
+      "subject": "Un utilisateur a rejoint",
       "content": {
-        "title": "a rejoint la Room ",
+        "title": "a rejoint",
         "disclaimer": "Beaucoup de choses se sont passées sur DONUT depuis votre dernier passage.",
         "button": "retourner sur DONUT"
       }
@@ -837,7 +843,7 @@
           "help": ""
         },
         "roominvite": {
-          "label": "D'invitation : quand on m'invite à rejoindre un donut",
+          "label": "D'invitation : quand un utilisateur m'invite à rejoindre un donut",
           "help": ""
         },
         "roommessage": {

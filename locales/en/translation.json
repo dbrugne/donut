@@ -663,60 +663,66 @@
         }
       },
       "roomop": {
-        "subject": "You have been promoted moderator of the Room ",
+        "subject": "You have been promoted moderator of",
         "content": {
-          "title": "You have been promoted moderator by ",
+          "title": "You have been promoted moderator of",
           "disclaimer": "A lot of things changed on DONUT since your last login.",
+          "action": "Action made by",
           "button": "Back on DONUT"
         }
       },
       "roomtopic": {
-        "subject": "The subject has changed in the Room ",
+        "subject": "The subject has changed in",
         "content": {
-          "title": "The subject of the Room has been changed by ",
+          "title": "The subject has changed in",
           "disclaimer": "A lot of things changed on DONUT since your last login.",
+          "action": "Action made by",
           "button": "Back on DONUT"
         }
       },
       "roomjoin": {
-        "subject": "A user has entered the Room ",
+        "subject": "A user has entered ",
         "content": {
-          "title": "joined the Room ",
+          "title": "joined",
           "disclaimer": "A lot of things changed on DONUT since your last login.",
           "button": "Back on DONUT"
         }
       },
       "roomdeop": {
-        "subject": "You have been excluded from moderators of the Room ",
+        "subject": "You are no longer moderator of",
         "content": {
-          "title": "You have been excluded from moderators by ",
+          "title": "You are no longer moderator of",
           "disclaimer": "A lot of things changed on DONUT since your last login.",
+          "action": "Action made by",
           "button": "Back on DONUT"
         }
       },
       "roomkick": {
-        "subject": "You have been excluded from the Room ",
+        "subject": "You have been excluded of",
         "content": {
-          "title": "You have been excluded from the Room ",
+          "title": "You have been excluded of",
           "by": "by ",
           "disclaimer": "A lot of things changed on DONUT since your last login.",
+          "action": "Action made by",
           "button": "Back on DONUT"
         }
       },
       "roomban": {
-        "subject": "You have been banned from the Room ",
+        "subject": "You have been banned of",
         "content": {
-          "title": "You have been banned from the Room ",
+          "title": "You have been banned of",
           "disclaimer": "A lot of things changed on DONUT since your last login.",
           "disclaimer2": "You can contact the Room Operator for more details: ",
+          "action": "Action made by",
           "button": "Back on DONUT"
         }
       },
       "roomdeban": {
-        "subject": "You are no more banned from the Room ",
+        "subject": "You are no more banned of",
         "content": {
-          "title": "You are no more banned from the Room ",
+          "title": "You are no more banned of",
           "disclaimer": "A lot of things changed on DONUT since your last login.",
+          "action": "Action made by",
           "button": "Back on DONUT"
         }
       },
@@ -897,7 +903,7 @@
       "test": "try"
     },
     "welcome": {
-      "title": "Fenêtre de bienvenue",
+      "title": "Window of welcome",
       "label-true": "Display welcome pop-up i log in",
       "label-false": "Never display welcome pop-up"
     },

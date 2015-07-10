@@ -165,7 +165,7 @@ Notification.prototype.sendEmail = function (model) {
     utils.retrieveEvent('historyroom', model.data.event.toString()),
 
     function send(event, callback) {
-      from = event.user.username;
+      from = event.by_user.username;
       room = event.room;
 
       switch (model.type) {
