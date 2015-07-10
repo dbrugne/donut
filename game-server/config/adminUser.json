@@ -2,21 +2,7 @@
   {
     "id": "user-1",
     "username": "admin",
-    "password": "admin",
+    "password": "sf-dS_ss@5erz#sdfFE&fsfLIyuNDD=ez32dgFdvsd5sdf3S4rs5rsRS5rE6&",
     "level": 1
-  },
-  
-  {
-    "id": "user-2",
-    "username": "monitor",
-    "password": "monitor",
-    "level": 2
-  },
-
-  {
-    "id": "user-3",
-    "username": "test",
-    "password": "test",
-    "level": 2
   }
 ]

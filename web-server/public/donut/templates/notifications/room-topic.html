@@ -2,7 +2,7 @@
     <img src="<%= data.avatar %>" alt="<%= data.data.room.name %>" />
     <div class="avatar open-user-profile" data-username="<%= data.data.user.username %>" style="background-image: url(<%= data.data.user.avatar %>)"></div>
     <div class="message-subject">
-        <a href="#">
+        <a href="#room/<%= (data.data.room.name).replace('#','') %>">
             <%= t('chat.notifications.dropdown.roomtopic') %>
         </a>
         <span class="name open-room-profile" data-room-name="<%= data.data.room.name %>"><%= data.data.room.name %></span>

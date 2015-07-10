@@ -58,7 +58,7 @@ Notification.prototype.shouldBeCreated = function (type, user, data) {
 
       var model = NotificationModel.getNewModel(type, user, {event: mongoose.Types.ObjectId(data.event.id)});
 
-      model.to_browser = user.preferencesValue("notif:channels:desktop");
+      model.to_browser = true;
       model.to_email = ( !user.getEmail() ? false : ( status ? false : user.preferencesValue("notif:channels:email")));
       model.to_mobile = (status ? false : user.preferencesValue("notif:channels:mobile"));
 

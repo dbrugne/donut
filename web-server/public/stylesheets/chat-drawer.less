@@ -185,8 +185,7 @@
         margin-bottom: 10px;
         i { color: @cl-subtext30; }
       }
-      .user {
-        display: inline-block;
+      .user { display: inline-block;  position: relative;
         .avatar {
           width: 40px;
           height: 40px;
@@ -200,20 +199,8 @@
             color: @cl-subtext30;
           }
         }
-        &.op::after {
-          content: " ";
-          display: inline-block;
-          background-image: url("/images/svg/op.svg");
-          background-size: 10px 14px;
-          background-position: 0 5px;
-          background-repeat: no-repeat;
-          width: 20px;
-          height: 20px;
-        }
-        &.owner::after {
-          content: url("/images/svg/owner-g.svg");
-          margin-left: 5px;
-        }
+        &.op::after { content: '\f008'; font: normal normal normal 14px/1 'Donut'; position: absolute; left: -5px; z-index: 0; top: -5px; border-radius: 50%; padding: 5px; color: rgb(59, 236, 186); font-size: 16px; }
+        &.owner::after { content: '\f00a'; font: normal normal normal 14px/1 'Donut'; position: absolute; left: 7px; z-index: 0; top: -14px; border-radius: 50%; padding: 5px; color: #fbec4d; font-size: 16px; }
       }
     }
   }
@@ -281,7 +268,7 @@
         i { color: @cl-subtext30; }
       }
       .room {
-        display: inline-block;
+        display: inline-block; position:relative;
         .avatar {
           width: 40px;
           height: 40px;
@@ -295,20 +282,8 @@
             color: @cl-subtext30;
           }
         }
-        &.op::after {
-          content: " ";
-          display: inline-block;
-          background-image: url("/images/svg/op.svg");
-          background-size: 10px 14px;
-          background-position: 0 5px;
-          background-repeat: no-repeat;
-          width: 20px;
-          height: 20px;
-        }
-        &.owner::after {
-          content: url("/images/svg/owner-g.svg");
-          margin-left: 5px;
-        }
+        &.op::after { content: '\f008'; font: normal normal normal 14px/1 'Donut'; position: absolute; left: -5px; z-index: 0; top: -5px; border-radius: 50%; padding: 5px; color: rgb(59, 236, 186); font-size: 16px; }
+        &.owner::after { content: '\f00a'; font: normal normal normal 14px/1 'Donut'; position: absolute; left: 7px; z-index: 0; top: -14px; border-radius: 50%; padding: 5px; color: #fbec4d; font-size: 16px; }
       }
     }
   }
