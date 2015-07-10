@@ -167,7 +167,9 @@ Facade.prototype.retrieveUserNotifications = function (uid, what, callback) {
           break;
       }
     }, function (err) {
-      callback(err, _.sortBy(notifications, function(n){ return -n.time; }));
+      callback(err, _.sortBy(notifications, function (n) {
+        return -n.time;
+      }));
     });
   });
 };
@@ -179,6 +181,17 @@ Facade.prototype.retrieveUserNotificationsUndoneCount = function (uid, callback)
     to_browser: true
   }).count().exec(function (err, count) {
     callback(err, count);
+  });
+};
+
+Facade.prototype.retrieveUserNotificationsUnviewed = function (uid, callback) {
+  NotificationModel.find({
+    user: uid,
+    done: false,
+    viewed: false,
+    to_browser: true
+  }).exec(function (err, results) {
+    callback(err, results);
   });
 };
 

@@ -385,6 +385,8 @@
       "online": "is online,",
       "offline": "is offline,",
       "read-more": "Read more",
+      "count" : "<strong class=\"nb\"></strong><strong> New</strong> Notification(s)",
+      "tag-as-read" : "Tag as read",
       "dropdown": {
         "kick": "was kicked out of this donut of",
         "ban": "was banned from this donut of",
