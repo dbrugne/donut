@@ -52,6 +52,8 @@ define([
         this.trigger('welcome', data);
       }, this);
 
+      pomelo.on('hello', function(data) { debug('io:in:hello', data); this.trigger('hello', data); }, this);
+
       // room events
       pomelo.on('room:join', function (data) {
         debug('io:in:room:join', data);

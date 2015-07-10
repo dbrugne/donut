@@ -10,6 +10,7 @@ var globalChannel = require('pomelo-globalchannel-plugin');
 var status = require('pomelo-status-plugin');
 var chatLoggerFilter = require('./app/servers/chat/filter/logger');
 var connectorLoggerFilter = require('./app/servers/connector/filter/logger');
+var administrationChannelModule = require('./app/modules/administrationChannel')
 
 /**
  * Init app for client.
@@ -81,15 +82,22 @@ app.configure('production|test|development', 'chat', function() {
   // custom admin module
   // load admin modules
 
-  if(typeof app.registerAdmin === 'function'){
+  //if(typeof app.registerAdmin === 'function'){
     // custom modules
     var onlineUser = require('./app/modules/onlineUser');
     app.registerAdmin(onlineUser, {app: app});
-  }
+  //}
 });
 
 app.configure('production|test|development', 'master', function() {
   app.load(scheduler, {});
+});
+
+// admin module for all kinds of servers
+app.registerAdmin(administrationChannelModule, {
+  app: app,
+  host: '127.0.0.1',
+  port: 6379
 });
 
 // start app
