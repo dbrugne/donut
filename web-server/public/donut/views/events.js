@@ -605,7 +605,7 @@ define([
       client.roomMessageUnspam(roomName, messageId);
     },
 
-    lookSpam: function (event) {
+    viewSpammedMessage: function (event) {
       event.preventDefault();
       var parent = $(event.target).parents('.event');
       var textSpammed = $(event.target).parents('.text-spammed');
