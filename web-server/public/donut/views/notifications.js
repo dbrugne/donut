@@ -74,8 +74,9 @@ define([
       var that = this;
       setTimeout(function(){ that.$badge.removeClass("bounce"); }, 1500); // Remove class after animation to trigger animation later if needed
 
-      // Insert new notification in dropdown
-      this.$menu.html(this.createNotificationFromTemplate(data)+this.$menu.html());
+      // Retrieve notification template & desktop message
+      var dataNotification = this.createNotificationFromTemplate(data);
+      this.$menu.html(dataNotification.html+this.$menu.html());
 
       // Dropdown is opened
       if (this.el.classList.contains('open')) {
@@ -85,15 +86,15 @@ define([
 
       this.toggleReadMore();
 
-      windowView.desktopNotify($.t('chat.notifications.desktop.'+data.type)
-        .replace('__roomname__', ( data.data.room && data.data.room.name ? ' '+data.data.room.name : ''))
-        .replace('__username__', ( data.data.by_user && data.data.by_user.username ? ' '+data.data.by_user.username : ''))
-      ,'');
+      windowView.desktopNotify(dataNotification.desktop.title, dataNotification.desktop.body);
     },
-    createNotificationFromTemplate: function(notification) {
-      var template;
+    createNotificationFromTemplate: function(data) {
+      var template, desktopTitle, desktopBody;
 
-      switch (notification.type)
+      desktopTitle = $.t('chat.notifications.desktop.'+data.type).replace('__roomname__', ( data.data.room && data.data.room.name ? ' '+data.data.room.name : ''));
+      desktopBody = ( data.data.by_user && data.data.by_user.username ? t('chat.notifications.desktop.by') + ' '+data.data.by_user.username : '');
+
+      switch (data.type)
       {
         case 'roomop':
           template = templates['notifications/room-op.html']; break;
@@ -112,21 +113,31 @@ define([
         case 'roommessage':
           template = templates['notifications/room-message.html']; break;
         case 'usermention':
-          template = templates['notifications/user-mention.html']; break;
+          template = templates['notifications/user-mention.html'];
+          desktopTitle = $.t('chat.notifications.desktop.'+data.type).replace('__username__', ( data.data.by_user && data.data.by_user.username ? ' '+data.data.by_user.username : ''));
+          desktopBody = '';
+          break;
         default:
         break;
       }
-      var dateObject = moment(notification.time);
+      var dateObject = moment(data.time);
 
-      if (notification.data.room)
-        notification.avatar = $.cd.roomAvatar(notification.data.room.avatar, 90);
-      else if (notification.data.by_user)
-        notification.avatar = $.cd.roomAvatar(notification.data.by_user.avatar, 90);
+      if (data.data.room)
+        data.avatar = $.cd.roomAvatar(data.data.room.avatar, 90);
+      else if (data.data.by_user)
+        data.avatar = $.cd.roomAvatar(data.data.by_user.avatar, 90);
 
-      return template({data: notification, from_now: dateObject.format("Do MMMM, HH:mm")});
+      return {
+        html : template({data: data, from_now: dateObject.format("Do MMMM, HH:mm")}),
+        desktop: {
+          title: desktopTitle,
+          body: desktopBody
+        }
+      };
     },
     // User clicks on the notification icon in the header
     onShow: function(event) {
+      var dataNotification;
       var lastNotif = this.lastNotifDisplayedTime();
       var that = this;
       // Ask server for last 10 notifications
@@ -136,7 +147,8 @@ define([
           var html = '';
           for (var k in data.notifications)
           {
-            html += this.createNotificationFromTemplate(data.notifications[k]);
+            dataNotification = this.createNotificationFromTemplate(data.notifications[k]);
+            html += dataNotification.html;
           }
 
           this.$menu.html(html);
@@ -187,13 +199,15 @@ define([
       this.$readMore.addClass('hidden');
       this.$loader.removeClass('hidden');
 
+      var dataNotification;
       var lastNotif = this.lastNotifDisplayedTime();
       client.userNotifications(null, lastNotif, 10, _.bind(function(data) {
         var previousContent = this.$menu.html();
         var html = '';
         for (var k in data.notifications)
         {
-          html += this.createNotificationFromTemplate(data.notifications[k]);
+          dataNotification = this.createNotificationFromTemplate(data.notifications[k]);
+          html += dataNotification.html;
         }
 
         this.$menu.html(previousContent+html);

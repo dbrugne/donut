@@ -398,6 +398,7 @@
         "roommessage": "New message in "
       },
       "desktop": {
+        "by": "by",
         "roomkick": "You have been kicked form __roomname__",
         "roomban": "You have been banned from __roomname__",
         "roomdeban": "You have been unbanned from __roomname__",
@@ -405,9 +406,9 @@
         "roomdeop": "You have been removed from moderators of __roomname__",
         "roomtopic": "The subject has changed in __roomname__",
         "usermessage": "__username__ sent a message to you",
-        "usermention": "__username__ Notified you in this Room",
-        "userban": "You have been locked by __username__",
-        "userdeban": "You have been unlocked by __username__"
+        "usermention": "__username__ Notified you in this room",
+        "userban": "You have been locked",
+        "userdeban": "You have been unlocked"
       }
     },
     "unread": {
