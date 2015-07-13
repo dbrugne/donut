@@ -245,7 +245,6 @@ userSchema.statics.preferencesKeys = function () {
 
     'notif:usermessage': {default: true},
     'notif:roominvite': {default: true},
-    'notif:userpromote': {default: true},
 
     'room:notif:nothing:__what__': {default: false},
     'room:notif:usermention:__what__': {default: true},

@@ -3,7 +3,6 @@ var async = require('async');
 var _ = require('underscore');
 var Room = require('../../../../../shared/models/room');
 var User = require('../../../../../shared/models/user');
-var Notifications = require('../../../components/notifications');
 var oneEmitter = require('../../../util/oneEmitter');
 var inputUtil = require('../../../util/input');
 
@@ -104,12 +103,6 @@ handler.ban = function(data, session, next) {
 					return callback(err);
 
 				return callback(null, user, unbannedUser, event);
-			});
-		},
-
-		function notification(user, unbannedUser, event, callback) {
-			Notifications(that.app).create('userdeban', unbannedUser, {event: event}, function() {
-				return callback(null);
 			});
 		}
 

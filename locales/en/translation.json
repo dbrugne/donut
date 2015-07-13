@@ -994,10 +994,6 @@
         "roomjoin": {
           "label": "Quand quelqu'un rentre dans ce donut",
           "help": ""
-        },
-        "userPromote": {
-          "label": "When someone lock or unlock me",
-          "help": ""
         }
       },
       "banned-users": "Users locked by you"
