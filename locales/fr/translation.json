@@ -433,9 +433,7 @@
         "roomtopic": "Le sujet à changé dans ",
         "roomjoin": "a rejoint la room ",
         "usermention": "on vous a notifié dans ",
-        "roommessage": "Nouveau message dans ",
-        "userban": " vous a bloqué",
-        "userdeban": " vous a débloqué"
+        "roommessage": "Nouveau message dans "
       },
       "desktop": {
         "by": "par",
@@ -446,9 +444,7 @@
         "roomdeop": "Vous n'êtes plus modérateur de __roomname__",
         "roomtopic": "Le sujet à changé dans __roomname__",
         "usermessage": "__username__ vous a écrit",
-        "usermention": "__username__ vous a mentionné dans cette room",
-        "userban": "Vous avez été bloqué",
-        "userdeban": "Vous avez été débloqué"
+        "usermention": "__username__ vous a mentionné dans cette room"
       }
     },
     "unread": {
