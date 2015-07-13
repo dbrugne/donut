@@ -58,7 +58,7 @@ Notification.prototype.shouldBeCreated = function (type, user, data) {
       });
     },
 
-    function prepare(users, status, callback) {
+    function prepare(status, callback) {
 
       var model = NotificationModel.getNewModel(type, user, {event: mongoose.Types.ObjectId(data.event.id)});
 
@@ -128,7 +128,7 @@ Notification.prototype.sendToBrowser = function (model) {
       return callback(null, notification);
     },
 
-    function push(notification, count, callback) {
+    function push(notification, callback) {
       that.facade.app.globalChannelService.pushMessage('connector', 'notification:new', notification, 'user:' + userId, {}, function (err) {
         if (err)
           return utils.waterfallDone('Error while sending notification:new message to user clients: ' + err);
