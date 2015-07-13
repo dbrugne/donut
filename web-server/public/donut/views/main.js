@@ -81,9 +81,7 @@ define([
       'click .open-room-preferences'    : 'openRoomPreferences',
       'click .open-room-users'          : 'openRoomUsers',
       'click .open-room-delete'         : 'openRoomDelete',
-      'click .close-discussion'         : 'onCloseDiscussion',
-      'mouseenter *[data-toggle="image-popover"]': 'onEnterImage',
-      'mouseleave *[data-toggle="image-popover"]': 'onLeaveImage'
+      'click .close-discussion'         : 'onCloseDiscussion'
     },
 
     initialize: function() {
@@ -199,36 +197,6 @@ define([
       _.each(this.views, function(view) {
         view.eventsView.addFreshEvent(e);
       });
-    },
-    onEnterImage: function(event) {
-      event.preventDefault();
-      var $image = $(event.currentTarget);
-      var cloudinaryId = $image.attr('data-cloudinary-id');
-      var url = $.cd.natural(cloudinaryId, 150, 150);
-      $image.popover({
-        animation: false,
-        content: '<img src="'+url+'" alt="user contribution">',
-        html: true,
-        placement: 'auto left',
-        viewport: $image.closest('div.mCSB_container')
-      });
-
-      $image.on('shown.bs.popover', function () {
-        var $i = $('.popover-content img');
-        $i.bind('load', function() {
-          if ($image.data('imgloaded'))
-            return;
-
-          $image.data('imgloaded', true);
-          $image.popover('show');
-        });
-      });
-
-      $image.popover('show');
-    },
-    onLeaveImage: function(event) {
-      $image = $(event.currentTarget);
-      $image.popover('hide');
     },
 
     alert: function(type, message) {
