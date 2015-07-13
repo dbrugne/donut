@@ -17,14 +17,12 @@ define([
     template: templates['events.html'],
 
     events: {
-      "click .go-to-top a": 'scrollTop',
-      "click .go-to-bottom a": 'scrollDown',
-
-      "shown.bs.dropdown .actions": 'onMessageMenuShow',
-
-      "click .dropdown-menu .spammed": 'onSpam',
-      "click .dropdown-menu .unspam": 'onUnspam',
-      "click .text-spammed .view-spammed-message": 'viewSpammedMessage'
+      "click .go-to-top a"            : 'scrollTop',
+      "click .go-to-bottom a"         : 'scrollDown',
+      "shown.bs.dropdown .actions"    : 'onMessageMenuShow',
+      "click .dropdown-menu .spammed" : 'onMarkAsSpam',
+      "click .dropdown-menu .unspam"  : 'onMarkAsUnspam',
+      "click .view-spammed-message"   : 'viewSpammedMessage'
     },
 
     historyLoading: false,
@@ -42,8 +40,8 @@ define([
       this.listenTo(this.model, 'windowRefocused', this.onScroll);
       this.listenTo(this.model, 'freshEvent', this.addFreshEvent);
       this.listenTo(this.model, 'viewed', this.onViewed);
-      this.listenTo(client, 'room:message:spam', this.onMarkedAsSpam);
-      this.listenTo(client, 'room:message:unspam', this.onMarkedAsUnspam);
+      this.listenTo(this.model, 'messageSpam', this.onMarkedAsSpam);
+      this.listenTo(this.model, 'messageUnspam', this.onMarkedAsUnspam);
 
       debug.start('discussion-events' + this.model.getIdentifier());
       this.render();
@@ -586,43 +584,6 @@ define([
      * Viewed management
      *
      *****************************************************************************************************************/
-    onSpam: function (event) {
-      event.preventDefault();
-      var parent = $(event.target).parents('.event');
-      var roomName = this.model.get('name');
-      var messageId = parent.attr('id');
-
-      client.roomMessageSpam(roomName, messageId);
-    },
-
-    onUnspam: function (event) {
-      event.preventDefault();
-      var parent = $(event.target).parents('.event');
-      var roomName = this.model.get('name');
-      var messageId = parent.attr('id');
-      parent.removeClass('viewed');
-
-      client.roomMessageUnspam(roomName, messageId);
-    },
-
-    viewSpammedMessage: function (event) {
-      event.preventDefault();
-      var parent = $(event.target).parents('.event');
-      var textSpammed = $(event.target).parents('.text-spammed');
-      parent.removeClass('spammed').addClass('viewed');
-      textSpammed.remove();
-    },
-
-    onMarkedAsSpam: function (room) {
-      $('#' + room.event).addClass('spammed');
-      $('#' + room.event + ' .ctn').first().append('<div class="text-spammed">' + $.t('chat.message.text-spammed') + '</div>')
-    },
-
-    onMarkedAsUnspam: function (room) {
-      $('#' + room.event).removeClass('spammed');
-      $('#' + room.event + ' .ctn .text-spammed').remove();
-    },
-
     markVisibleAsViewed: function () {
       if (!this.isVisible())
         return debug('markVisibleAsViewed: discussion/window not focused, do nothing'); // scroll could be triggered by freshevent event when window is not focused
@@ -658,7 +619,7 @@ define([
 
     /*****************************************************************************************************************
      *
-     * Actions management
+     * Message actions menu
      *
      *****************************************************************************************************************/
     onMessageMenuShow: function (event) {
@@ -676,6 +637,43 @@ define([
         }
       });
       $(event.currentTarget).find('.dropdown-menu').html(html);
+    },
+    onMarkAsSpam: function (event) {
+      event.preventDefault();
+      var parent = $(event.target).parents('.event');
+      var roomName = this.model.get('name');
+      var messageId = parent.attr('id');
+
+      client.roomMessageSpam(roomName, messageId);
+    },
+    onMarkAsUnspam: function (event) {
+      event.preventDefault();
+      var parent = $(event.target).parents('.event');
+      var roomName = this.model.get('name');
+      var messageId = parent.attr('id');
+      parent.removeClass('viewed');
+
+      client.roomMessageUnspam(roomName, messageId);
+    },
+    onMarkedAsSpam: function (room) {
+      this.$('#' + room.event)
+        .addClass('spammed')
+        .find('.ctn')
+        .first()
+        .append('<div class="text-spammed">' + $.t('chat.message.text-spammed') + '</div>');
+    },
+    onMarkedAsUnspam: function (room) {
+      this.$('#' + room.event)
+        .removeClass('spammed')
+        .find('.ctn .text-spammed')
+        .remove();
+    },
+    viewSpammedMessage: function (event) {
+      event.preventDefault();
+      var parent = $(event.target).parents('.event');
+      var textSpammed = $(event.target).parents('.text-spammed');
+      parent.removeClass('spammed').addClass('viewed');
+      textSpammed.remove();
     },
 
     /*****************************************************************************************************************
