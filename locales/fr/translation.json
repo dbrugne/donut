@@ -405,18 +405,22 @@
       "out": "est sorti à",
       "online": "est en ligne,",
       "read-more": "Voir plus",
+      "count" : "<strong class=\"nb\"></strong><strong> Nouvelle(s)</strong> Notification(s)",
+      "tag-as-read" : "Marquer comme lue(s)",
+      "empty": "Vous n'avez pas de nouvelles notifications",
       "dropdown": {
-        "kick": "a été expulsé de ",
-        "ban": "a été banni de ",
-        "deban": "n'est plus banni de ",
-        "op": "a été promu modérateur de ",
-        "deop": "n'est plus modérateur de ",
+        "kick": "Vous avez été expulsé de ",
+        "ban": "Vous avez été banni de ",
+        "deban": "Vous n'êtes plus banni de ",
+        "op": "Vous avez été promu modérateur de ",
+        "deop": "Vous n'êtes plus modérateur de ",
         "roomtopic": "Le sujet à changé dans ",
         "roomjoin": "a rejoint la room ",
         "usermention": "on vous a notifié dans ",
         "roommessage": "Nouveau message dans "
       },
       "desktop": {
+        "by": "par",
         "roomkick": "Vous venez d'être expulsé de __roomname__",
         "roomban": "Vous venez d'être banni de __roomname__",
         "roomdeban": "Vous n'êtes plus banni de __roomname__",
@@ -424,8 +428,9 @@
         "roomdeop": "Vous n'êtes plus modérateur de __roomname__",
         "roomtopic": "Le sujet à changé dans __roomname__",
         "usermessage": "__username__ vous a écrit",
-        "userban": "Vous avez été bloqué par __username__",
-        "userdeban": "Vous avez été débloqué par __username__"
+        "usermention": "__username__ vous a mentionné dans cette room",
+        "userban": "Vous avez été bloqué",
+        "userdeban": "Vous avez été débloqué"
       }
     },
     "unread": {
@@ -687,59 +692,65 @@
       }
     },
     "roomop": {
-      "subject": "Vous avez été promu modérateur de la Room ",
+      "subject": "Vous avez été promu modérateur de",
       "content": {
-        "title": "Vous avez été promu modérateur par ",
+        "title": "Vous avez été promu modérateur de",
         "disclaimer": "Beaucoup de choses se sont passées sur DONUT depuis votre dernier passage.",
+        "action": "Action effectuée par",
         "button": "retourner sur DONUT"
       }
     },
     "roomdeop": {
-      "subject": "Vous avez été exclu des modérateurs de la Room ",
+      "subject": "Vous n'êtes plus modérateur de",
       "content": {
-        "title": "Vous avez été promu modérateur par ",
+        "title": "Vous n'êtes plus modérateur de",
         "disclaimer": "Beaucoup de choses se sont passées sur DONUT depuis votre dernier passage.",
+        "action": "Action effectuée par",
         "button": "retourner sur DONUT"
       }
     },
     "roomkick": {
-      "subject": "Vous avez été exclu de la Room ",
+      "subject": "Vous avez été expulsé de",
       "content": {
-        "title": "Vous avez été exclu de la Room ",
+        "title": "Vous avez été expulsé de",
         "by": "par ",
         "disclaimer": "Beaucoup de choses se sont passées sur DONUT depuis votre dernier passage.",
+        "action": "Action effectuée par",
         "button": "retourner sur DONUT"
       }
     },
     "roomban": {
-      "subject": "Vous avez été banni de la Room ",
+      "subject": "Vous avez été banni de",
       "content": {
-        "title": "Vous avez été banni de la Room ",
+        "title": "Vous avez été banni de",
         "disclaimer": "Beaucoup de choses se sont passées sur DONUT depuis votre dernier passage.",
-        "disclaimer2": "Vous pouvez contacter l'administrateur de la Room pour avoir plus de détails : ",
+        "disclaimer2": "Pour plus de détails, vous pouvez contacter l'administrateur de ",
+        "action": "Action effectuée par",
         "button": "retourner sur DONUT"
       }
     },
     "roomdeban": {
-      "subject": "Vous n'êtes plus banni de la Room ",
+      "subject": "Vous n'êtes plus banni de",
       "content": {
-        "title": "Vous n'êtes plus banni de la Room ",
+        "title": "Vous n'êtes plus banni de",
         "disclaimer": "Beaucoup de choses se sont passées sur DONUT depuis votre dernier passage.",
+        "action": "Action effectuée par",
         "button": "retourner sur DONUT"
       }
     },
     "roomtopic": {
-      "subject": "Le sujet à changé dans la Room ",
+      "subject": "Le sujet à changé dans",
       "content": {
-        "title": "Le sujet de la Room a été changé par ",
+        "title": "Le sujet à changé dans",
         "disclaimer": "Beaucoup de choses se sont passées sur DONUT depuis votre dernier passage.",
+        "action": "Action effectuée par",
         "button": "retourner sur DONUT"
       }
     },
     "roomjoin": {
-      "subject": "Un utilisateur a rejoint la Room ",
+      "subject": "Un utilisateur a rejoint",
       "content": {
-        "title": "a rejoint la Room ",
+        "title": "a rejoint",
         "disclaimer": "Beaucoup de choses se sont passées sur DONUT depuis votre dernier passage.",
         "button": "retourner sur DONUT"
       }
@@ -797,10 +808,10 @@
     "fail": "Impossible d'envoyer le message, veuillez réessayer plus tard."
   },
   "preferences": {
-    "title": "Vos préférences",
+    "title": "Mes préférences",
     "sounds": {
       "title": "Sons",
-      "test": "test"
+      "test": "tester"
     },
     "welcome": {
       "title": "Fenêtre de bienvenue",
@@ -816,7 +827,7 @@
     "notif": {
       "title": "Notifications",
       "help": {
-        "user": "Indiquer ci-dessous par quels moyens vous souhaitez être notifié. Les notifications par email et sur mobile ne sont envoyés que si vous êtes hors ligne et une seule fois toutes les 12 heures pour un même type de notification.<br>Les notifications reçues pour chaque donut sont configurable dans le volet préférences de chaque donut.",
+        "user": "Nous limitons le nombre de notifications grâce à notre moteur « smart notifications » (version bêta). Si vous trouvez que vous en recevez trop ou pas assez, n’hésitez pas à nous le dire ici",
         "room": "Choisissez ci-dessous pour quels types d'événements dans ce donut vous souhaitez être notifié.<br>Les choix ci-dessous s'applique uniquement à ce donut."
       },
       "nothing": {
@@ -827,41 +838,43 @@
         "title": "Je souhaite être notifié sur :",
         "help": "",
         "desktop": "Bureau",
+        "desktop-default": "Votre navigateur va vous demander d’autoriser DONUT à vous envoyer des notifications. Il faut accepter !",
         "desktop-refused": "Vous avez choisi de <strong>refuser</strong> les notifications sur le bureau. Pour modifier ce choix, vous devez modifiers les préférences de votre navigateur.",
         "desktop-validated": "Vous avez choisi d'<strong>accepter</strong> les notifications sur le bureau. Pour modifier ce choix, vous devez modifiers les préférences de votre navigateur.",
-        "desktop-test": "test",
+        "desktop-test": "tester",
         "desktop-notify-test": "Notification de test",
-        "email": "Email",
+        "email": "Email (si vous êtes hors-ligne)",
         "mobile": "Mobile"
       },
       "events": {
-        "title": "Je souhaite recevoir une notification quand :",
+        "title": "Je souhaite recevoir une notification:",
+        "infos": "Me notifier quand : (s'applique uniquement à ce donut)",
         "usermessage": {
-          "label": "Quand un utilisateur m'envoi un message privé",
+          "label": "De conversation privée : quand un utilisateur m'envoie un message privé",
           "help": ""
         },
         "roominvite": {
-          "label": "Quand on m'invite à rejoindre un donut",
+          "label": "D'invitation : quand un utilisateur m'invite à rejoindre un donut",
           "help": ""
         },
         "roommessage": {
-          "label": "Quand un utilisateur poste un message dans ce donut",
+          "label": "un utilisateur poste un message dans ce donut",
           "help": ""
         },
         "usermention": {
-          "label": "Quand un utilisateur me notifie dans ce donut",
+          "label": "un utilisateur me mentionne dans ce donut",
           "help": ""
         },
         "roompromote": {
-          "label": "Si je suis promus, expulsé ou banni ce donut",
+          "label": "je suis promus, expulsé ou banni ce donut",
           "help": ""
         },
         "roomtopic": {
-          "label": "Quand quelqu'un change le sujet de ce donut",
+          "label": "un utilisateur change le sujet de ce donut",
           "help": ""
         },
         "roomjoin": {
-          "label": "Quand quelqu'un rentre dans ce donut",
+          "label": "un utilisateur rejoint ce donut",
           "help": ""
         }
       }

@@ -48,7 +48,9 @@ define([
         preferences: preferences
       });
       this.$el.html(html);
-      return;
+
+      // Contact form
+      this.$('[data-toggle="contactform"]').contactform({});
     },
     onPlaySound: function(event) {
       event.preventDefault();

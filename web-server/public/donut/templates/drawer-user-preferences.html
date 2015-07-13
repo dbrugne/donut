@@ -34,7 +34,7 @@
         </div>
     </div>
     <label><%= t('preferences.notif.title') %></label>
-    <p class="help-block"><%= t('preferences.notif.help.user') %></p>
+    <p class="help-block"><%= t('preferences.notif.help.user') %> (<a data-toggle="contactform"><%= t('page.contact.title') %></a>)</p>
     <div class="form-group">
         <div class="notification">
             <label class="level-2"><%= t('preferences.notif.channels.title') %></label>
@@ -42,6 +42,11 @@
                 <label>
                     <input class="savable" type="checkbox" value="notif:channels:desktop" <% if (preferences['notif:channels:desktop']) { print('checked'); } %>> <%= t('preferences.notif.channels.desktop') %> (<a class="desktop-notification-test"><i class="icon icon-bolt"></i> <%= t('preferences.notif.channels.desktop-test') %></a>)
                 </label>
+                <% if (notify.permissionLevel() == notify.PERMISSION_DEFAULT) { %>
+                    <label style=" font-style: italic; display: block; ">
+                        <%= t('preferences.notif.channels.desktop-default') %>
+                    </label>
+                <% } %>
                 <% if (notify.permissionLevel() == notify.PERMISSION_DENIED) { %>
                 <label style=" font-style: italic; display: block; ">
                     <%= t('preferences.notif.channels.desktop-refused') %>
