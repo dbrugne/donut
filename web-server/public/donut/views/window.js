@@ -60,7 +60,8 @@ define([
       });
 
       // Bind events to model
-      this.listenTo(client, 'notlogged', this.onNotLogged);
+      this.listenTo(client, 'admin:exit', this.onAdminExit);
+      this.listenTo(client, 'admin:reload', this.onAdminReload);
     },
 
     renderTitle: function() {
@@ -154,11 +155,17 @@ define([
       return model; // could be 'undefined'
     },
 
-    onNotLogged: function() {
+    /***************************************************
+     * Admin events
+     ***************************************************/
+    onAdminExit: function() {
       this.preventPopin = true;
       window.location.assign('/');
     },
-
+    onAdminReload: function() {
+      this.preventPopin = true;
+      window.location.reload();
+    },
 
     /***************************************************
      * Notifications

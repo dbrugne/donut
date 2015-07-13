@@ -9,6 +9,7 @@
 var logger = require('../../../pomelo-logger').getLogger('donut', __filename);
 var _ = require('underscore');
 var dispatcher = require('../../util/dispatcher');
+var adminNotifyTask = require('./adminNotifyTask');
 
 module.exports = function(opts) {
   return new Module(opts);
@@ -37,6 +38,20 @@ Module.prototype.start = function(callback) {
   return callback(null);
 };
 
+Module.prototype.retrieveTask = function(route) {
+
+  // @todo : make it dynamically
+
+  if (route.indexOf('adminNotifyTask') !== -1) {
+    var adminNotify = adminNotifyTask(this.options);
+    var method = route.substr(route.indexOf('.')+1);
+    if (method && _.isFunction(adminNotify[method]))
+      return _.bind(adminNotify[method], adminNotify)
+  }
+
+  return false;
+};
+
 /**
  * Handle query to other servers (chat, connector...)
  *
@@ -51,14 +66,17 @@ Module.prototype.monitorHandler = function(agent, request, fn) {
     : function(err, result) {
     if (err)
       return logger.error(err);
-    return logger.debug(result);
+    if (result)
+      return logger.debug(result);
   };
 
   if (request.action == 'ping')
     return callback(null, 'pong');
 
-  // @todo : implement actions
-  //this.app.get('globalChannelService').pushMessage('connector', 'hello', request.type, 'global', {}, callback);
+  var task = this.retrieveTask(request.action);
+  if (task !== false) {
+    return task(request.data, callback);
+  }
 
   return callback('Unable to identify action to run on '+this.app.serverId);
 };
@@ -71,14 +89,15 @@ Module.prototype.monitorHandler = function(agent, request, fn) {
  * @param callback
  */
 Module.prototype.masterRequest = function(agent, request, callback) {
-
   if (request.action == 'ping')
     return callback(null, 'pong');
 
-  // @todo : implement actions
-  //this.app.get('globalChannelService').pushMessage('connector', 'hello', request.type, 'global', {}, callback);
+  var task = this.retrieveTask(request.action);
+  if (task !== false) {
+    return task(request.data, callback);
+  }
 
-  //return callback('Unable to identify action to run on '+this.app.serverId);
+  return callback('Unable to identify task to run on '+this.app.serverId);
 };
 
 /**
@@ -88,14 +107,18 @@ Module.prototype.masterRequest = function(agent, request, callback) {
  * @param request
  */
 Module.prototype.masterNotify = function(agent, request) {
-
   if (request.action == 'ping')
     return logger.info('pong');
 
-  // @todo : implement actions
-  //this.app.get('globalChannelService').pushMessage('connector', 'hello', request.type, 'global', {}, callback);
+  var task = this.retrieveTask(request.action);
+  if (task !== false) {
+    return task(request.data, function(err) {
+      if (err)
+        logger.error(err);
+    });
+  }
 
-  return logger.info('Unable to identify action to run on '+this.app.serverId);
+  return logger.info('Unable to identify task to run on '+this.app.serverId);
 };
 
 /**
@@ -155,4 +178,3 @@ Module.prototype.clientHandler = function(agent, query, fn) {
       return callback('Unable to find the server corresponding to target parameter: '+query.target);
   };
 };
-

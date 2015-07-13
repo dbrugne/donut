@@ -52,7 +52,10 @@ define([
         this.trigger('welcome', data);
       }, this);
 
-      pomelo.on('hello', function(data) { debug('io:in:hello', data); this.trigger('hello', data); }, this);
+      // admin events
+      pomelo.on('admin:reload',   function(data) { debug('io:in:admin:reload', data);  this.trigger('admin:reload', data); }, this);
+      pomelo.on('admin:exit',     function(data) { debug('io:in:admin:exit', data);    this.trigger('admin:exit', data); }, this);
+      pomelo.on('admin:message',  function(data) { debug('io:in:admin:message', data); this.trigger('admin:message', data); }, this);
 
       // room events
       pomelo.on('room:join',          function(data) { debug('io:in:room:join',           data); this.trigger('room:join',        data); }, this);

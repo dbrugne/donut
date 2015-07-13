@@ -42,6 +42,7 @@ define([
       this.listenTo(this.model, 'windowRefocused', this.onScroll);
       this.listenTo(this.model, 'freshEvent', this.addFreshEvent);
       this.listenTo(this.model, 'viewed', this.onViewed);
+      this.listenTo(client, 'admin:message', this.onAdminMessage);
       this.listenTo(client, 'room:message:spam', this.onMarkedAsSpam);
       this.listenTo(client, 'room:message:unspam', this.onMarkedAsUnspam);
 
@@ -363,6 +364,15 @@ define([
      * Events rendering
      *
      *****************************************************************************************************************/
+    onAdminMessage: function(data) {
+      // @todo : cleanup and design
+      data = { data: data };
+      data.data.avatar = 'cloudinary=v1409643461/rciev5ubaituvx5bclnz.png';
+      data.data.username = 'Administrateur DONUT';
+      data.type = 'room:message';
+      var model = new EventModel(data);
+      this.addFreshEvent(model);
+    },
     addFreshEvent: function (model) {
       // browser notification
       if (model.getGenericType() == 'message')
