@@ -8,6 +8,11 @@ var HistoryRoomModel = require('../../../../shared/models/historyroom');
 
 module.exports = {
 
+  waterfallDone: function (err, errorType) {
+    if (err)
+      logger.error(err);
+  },
+
   checkRepetitive: function (type, user, what, frequency) {
 
     return function () {

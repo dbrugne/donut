@@ -97,7 +97,7 @@ Facade.prototype.getType = function (type) {
       break;
 
     default:
-      logger.info('Unknown notification type: ' + type);
+      logger.warn('Unknown notification type: ' + type);
 
       return null;
   }
