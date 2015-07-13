@@ -3,18 +3,19 @@ var _ = require('underscore');
 var pomeloAdmin = require('../../../../node_modules/pomelo/node_modules/pomelo-admin/index');
 var adminClient = pomeloAdmin.adminClient;
 
+var moduleId = 'pomeloBridge';
+
 /**
- * Lib that allows external program to communicate with a Pomelo cluster thought PomeloJS administration framework
+ * Allows external programs to communicate with PomeloJS cluster thought PomeloJS administration framework
  *
  * @doc: https://github.com/NetEase/pomelo/wiki/Adding-an-Admin-Module
- * @source: pomelo-admin/lib/client/client.js
  */
 
 module.exports = function(options) {
-  return new PomeloClient(options);
+  return new Bridge(options);
 };
 
-var PomeloClient = function(options) {
+var Bridge = function(options) {
   this.options = options;
   this.username  = options.username || 'admin';
   this.password  = options.password || 'admin';
@@ -30,64 +31,88 @@ var PomeloClient = function(options) {
  *
  * @param callback
  */
-PomeloClient.prototype.getConnection = function(callback) {
+Bridge.prototype.getConnection = function(callback) {
   if (this.client)
     return callback(null, this.client);
 
-  this.connect(_.bind(function(err, client) {
+  this.connect(_.bind(function(err) {
     if (err)
       return callback(err);
 
-    this.client = client;
-    return callback(null, client);
+    return callback(null, this.client);
   }, this));
 };
 
 /**
  * Establish a connection to cluster master server
  *
+ * @source pomelo-admin/lib/client/client.js
  * @param callback
  */
-PomeloClient.prototype.connect = function(callback) {
-  var client = new adminClient({username: this.username, password: this.password, md5: true});
-  client.connect(this.masterId, this.host, this.port, _.bind(callback, this));
+Bridge.prototype.connect = function(callback) {
+  this.client = new adminClient({
+    username: this.username,
+    password: this.password,
+    md5: true
+  });
+  this.client.connect(this.masterId, this.host, this.port, _.bind(callback, this));
 };
 
 /**
  * Cleanly disconnect client from master
  */
-PomeloClient.prototype.disconnect = function() {
-  if (this.client && this.client.socket)
+Bridge.prototype.disconnect = function() {
+  if (this.client && this.client.socket && this.client.socket.connected === true)
     this.client.socket.disconnect();
+
+  this.client = null;
 };
 
 /**
- * Send a request to pomelo cluster master
+ * Send a request to pomelo cluster
  *
- * @param moduleId
+ * @param target server(s) to transmits the query
+ * @param action
  * @param data
  * @param callback
  */
-PomeloClient.prototype.request = function(moduleId, data, callback) {
+Bridge.prototype.request = function(target, action, data, callback) {
   this.getConnection(_.bind(function(err, client) {
     if (err)
       return callback(err);
 
-    client.request(moduleId, data, callback);
+    var query = {
+      type: 'request',
+      target: target,
+      action: action,
+      data: data
+    };
+    client.request(moduleId, query, callback);
   }, this));
 };
 
 /**
- * Send a notify to pomelo cluster master
+ * Send a notify to pomelo cluster
  *
- * @param moduleId
+ * @param target server(s) to transmits the query
+ * @param action
  * @param data
+ * @param callback
  */
-PomeloClient.prototype.notify = function(moduleId, data) {
+Bridge.prototype.notify = function(target, action, data, callback) {
   this.getConnection(_.bind(function(err, client) {
     if (err)
-      return logger.error(err);
+      return callback(err);
 
-    client.notify(moduleId, data);
+    var query = {
+      type: 'notify',
+      target: target,
+      action: action,
+      data: data
+    };
+
+    client.notify(moduleId, query);
+
+    callback(null); // allow sequential calls even if on a notify call not response are received
   }, this));
 };

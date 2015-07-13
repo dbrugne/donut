@@ -10,7 +10,7 @@ var globalChannel = require('pomelo-globalchannel-plugin');
 var status = require('pomelo-status-plugin');
 var chatLoggerFilter = require('./app/servers/chat/filter/logger');
 var connectorLoggerFilter = require('./app/servers/connector/filter/logger');
-var pomeloBridgeModule = require('./app/components/bridge').Module;
+var pomeloBridge = require('./app/components/bridge');
 
 /**
  * Init app for client.
@@ -92,7 +92,7 @@ app.configure('production|test|development', 'master', function() {
 });
 
 // admin modules for all kinds of servers
-app.registerAdmin(pomeloBridgeModule, {
+app.registerAdmin(pomeloBridge.Module, {
   app: app
 });
 

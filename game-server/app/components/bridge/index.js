@@ -1,4 +1,4 @@
 module.exports = {
-  Module: './module',
-  Bridge: './bridge'
+  Module: require('./module'),
+  Bridge: require('./bridge')
 };
