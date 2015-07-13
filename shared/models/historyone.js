@@ -11,7 +11,8 @@ var historySchema = mongoose.Schema({
   to            : { type: mongoose.Schema.ObjectId, ref: 'User' },
   time          : { type: Date, default: Date.now },
   data          : mongoose.Schema.Types.Mixed,
-  viewed        : { type: Boolean, default: false }  // true if to user has read this event
+  viewed        : { type: Boolean, default: false },  // true if to user has read this event
+  edited        : { type: Boolean, default: false }
 
 });
 

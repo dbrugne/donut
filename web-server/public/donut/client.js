@@ -81,6 +81,10 @@ define([
         debug('io:in:user:message', data);
         this.trigger('user:message', data);
       }, this);
+      pomelo.on('user:message:edit', function (data) {
+        debug('io:in:user:message:edit', data);
+        this.trigger('user:mesage:edit', data);
+      }, this);
       pomelo.on('user:online', function (data) {
         debug('io:in:user:online', data);
         this.trigger('user:online', data);
@@ -444,6 +448,11 @@ define([
       var data = {username: username, message: message, images: images};
       pomelo.notify('chat.userMessageHandler.message', data);
       debug('io:out:user:message', data);
+    },
+    userMessageEdit: function (messageId, message) {
+      var data = { event: messageId, message: message };
+      pomelo.notify('chat.userMessageEditHandler.edit', data);
+      debug('io:out:user:message:edit', data);
     },
     userRead: function (username, fn) {
       var data = {username: username};
