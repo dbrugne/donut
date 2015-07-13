@@ -27,12 +27,15 @@
         </div>
         <div class="date pull-right"><span class="moment" data-time="<%= data.time %>" title="<%= data.datefull %>"><%= data.dateshort %></span>
         </div>
+        <!--Only display for room messages-->
+        <% if (type === 'room:message') { %>
         <div class="actions">
             <a class="message-menu" data-toggle="dropdown" role="button" aria-expanded="false" id="messageMenu">
                 <i class="icon icon-cog"></i>
             </a>
             <div class="dropdown-menu" aria-labelledby="messageMenu"><!-- message dropdown menu content --></div>
         </div>
+        <% } %>
     </div>
     <% if (withBlock) { %>
 </div>

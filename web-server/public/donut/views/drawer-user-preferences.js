@@ -52,6 +52,9 @@ define([
         bannedUsers: data.bannedUsers
       });
       this.$el.html(html);
+
+      // Contact form
+      this.$('[data-toggle="contactform"]').contactform({});
     },
     onPlaySound: function (event) {
       event.preventDefault();
