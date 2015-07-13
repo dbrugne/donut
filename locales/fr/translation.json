@@ -497,6 +497,7 @@
     },
     "message": {
       "text-spammed": "Ce message a été marqué comme indésirable au modérateur, pour le voir quand même [<a class=\"view-spammed-message\">cliquer ici</a>].",
+      "text-remask": "Masquer à nouveau",
       "dropdown": {
         "spam": {
           "mark-spam": "Marquer comme message indésirable",

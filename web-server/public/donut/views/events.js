@@ -21,8 +21,9 @@ define([
       "click .go-to-bottom a"         : 'scrollDown',
       "shown.bs.dropdown .actions"    : 'onMessageMenuShow',
       "click .dropdown-menu .spammed" : 'onMarkAsSpam',
-      "click .dropdown-menu .unspam"  : 'onMarkAsUnspam',
-      "click .view-spammed-message"   : 'viewSpammedMessage'
+      "click .dropdown-menu .unspam"  : 'onUnmarkAsSpam',
+      "click .view-spammed-message"   : 'onViewSpammedMessage',
+      "click .remask-spammed-message" : 'onRemaskSpammedMessage'
     },
 
     historyLoading: false,
@@ -646,7 +647,7 @@ define([
 
       client.roomMessageSpam(roomName, messageId);
     },
-    onMarkAsUnspam: function (event) {
+    onUnmarkAsSpam: function (event) {
       event.preventDefault();
       var parent = $(event.target).parents('.event');
       var roomName = this.model.get('name');
@@ -674,13 +675,33 @@ define([
       if (bottom)
         this.scrollDown();
     },
-    viewSpammedMessage: function (event) {
+    onViewSpammedMessage: function (event) {
       var bottom = this.isScrollOnBottom();
       event.preventDefault();
       var parent = $(event.target).parents('.event');
       var textSpammed = $(event.target).parents('.text-spammed');
+      var ctn = parent.find('.text') || parent.find('.image');
       parent.removeClass('spammed').addClass('viewed');
       textSpammed.remove();
+
+      ctn.prepend('<a class="remask-spammed-message label label-danger">' + $.t('chat.message.text-remask') + '</a>');
+
+      if (bottom)
+        this.scrollDown();
+    },
+    onRemaskSpammedMessage: function (event) {
+      var bottom = this.isScrollOnBottom();
+      event.preventDefault();
+      var parent = $(event.target).parents('.event');
+      var ctn = parent.find('.text') || parent.find('.image');
+      parent.addClass('spammed').removeClass('viewed');
+      parent
+        .find('.ctn')
+        .first()
+        .append('<div class="text-spammed">' + $.t('chat.message.text-spammed') + '</div>');
+
+      ctn.find('.remask-spammed-message').remove();
+
       if (bottom)
         this.scrollDown();
     },

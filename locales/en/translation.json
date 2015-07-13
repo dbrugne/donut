@@ -477,6 +477,7 @@
     },
     "message": {
       "text-spammed": "This message has been marked as junk to the moderator, to see anyway [<a class=\"view-spammed-message\">click here</a>]",
+      "text-remask": "Hide again",
       "dropdown": {
         "spam": {
           "mark-spam": "Mark as spam",
