@@ -421,8 +421,6 @@
       "out": "est sorti à",
       "online": "est en ligne,",
       "read-more": "Voir plus",
-      "count" : "<strong class=\"nb\"></strong><strong> Nouvelle(s)</strong> Notification(s)",
-      "tag-as-read" : "Marquer comme lue(s)",
       "dropdown": {
         "kick": "a été expulsé de ",
         "ban": "a été banni de ",
@@ -444,7 +442,6 @@
         "roomdeop": "Vous n'êtes plus modérateur de __roomname__",
         "roomtopic": "Le sujet à changé dans __roomname__",
         "usermessage": "__username__ vous a écrit",
-        "usermention": "__username__ vous a mentionné dans cette Room",
         "userban": "Vous avez été bloqué par __username__",
         "userdeban": "Vous avez été débloqué par __username__"
       }
@@ -510,6 +507,16 @@
       "error": "Erreur de connexion, patienter un instant ...",
       "disconnected": "Connexion perdue, patienter un instant ...",
       "contactus": "Problèmes pour vous connecter ? Contactez-nous."
+    },
+    "message": {
+      "text-spammed": "Attention, contenu privé (<a class=\"view-spammed-message\">voir</a>)",
+      "dropdown": {
+        "spam": {
+          "mark-spam": "Marquer comme message indésirable",
+          "unmark-spam": "Ce message n'est pas indésirable"
+        },
+        "nothing": "Aucune action disponible"
+      }
     }
   },
   "account": {
@@ -786,7 +793,7 @@
       "title": "Notifications",
       "help": {
         "user": "Indiquer ci-dessous par quels moyens vous souhaitez être notifié. Les notifications par email et sur mobile ne sont envoyés que si vous êtes hors ligne et une seule fois toutes les 12 heures pour un même type de notification.<br>Les notifications reçues pour chaque donut sont configurable dans le volet préférences de chaque donut.",
-        "room": "Choisissez ci-dessous pour quels types d'événements dans ce donut vous souhaitez être notifié.<br>Les choix ci-dessous s'appliquent uniquement à ce donut."
+        "room": "Choisissez ci-dessous pour quels types d'événements dans ce donut vous souhaitez être notifié.<br>Les choix ci-dessous s'applique uniquement à ce donut."
       },
       "nothing": {
         "label": "Ne recevoir aucune notification pour ce donut",

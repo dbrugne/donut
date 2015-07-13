@@ -5,9 +5,10 @@ define([
   'libs/donut-debug',
   'models/event',
   'moment',
+  'client',
   'views/window',
   '_templates'
-], function ($, _, Backbone, donutDebug, EventModel, moment, windowView, templates) {
+], function ($, _, Backbone, donutDebug, EventModel, moment, client, windowView, templates) {
 
   var debug = donutDebug('donut:events');
 
@@ -16,8 +17,14 @@ define([
     template: templates['events.html'],
 
     events: {
-      "click .go-to-top a"    : "scrollTop",
-      "click .go-to-bottom a" : "scrollDown"
+      "click .go-to-top a": 'scrollTop',
+      "click .go-to-bottom a": 'scrollDown',
+
+      "shown.bs.dropdown .actions": 'onMessageMenuShow',
+
+      "click .dropdown-menu .spammed": 'onSpam',
+      "click .dropdown-menu .unspam": 'onUnspam',
+      "click .text-spammed .view-spammed-message": 'viewSpammedMessage'
     },
 
     historyLoading: false,
@@ -31,16 +38,18 @@ define([
 
     keepMaxEventsOnCleanup: 500,
 
-    initialize: function(options) {
+    initialize: function (options) {
       this.listenTo(this.model, 'windowRefocused', this.onScroll);
       this.listenTo(this.model, 'freshEvent', this.addFreshEvent);
       this.listenTo(this.model, 'viewed', this.onViewed);
+      this.listenTo(client, 'room:message:spam', this.onMarkedAsSpam);
+      this.listenTo(client, 'room:message:unspam', this.onMarkedAsUnspam);
 
-      debug.start('discussion-events'+this.model.getIdentifier());
+      debug.start('discussion-events' + this.model.getIdentifier());
       this.render();
-      debug.end('discussion-events'+this.model.getIdentifier());
+      debug.end('discussion-events' + this.model.getIdentifier());
     },
-    render: function() {
+    render: function () {
       // render view
       var html = this.template({
         model: this.model.toJSON(),
@@ -48,24 +57,24 @@ define([
       });
       this.$el.append(html);
 
-      this.$scrollable         = this.$el.find('.scrollable');
-      this.$scrollableContent  = this.$scrollable.find('.scrollable-content');
-      this.$pad                = this.$scrollableContent.find('.pad');
-      this.$loader             = this.$scrollableContent.find('.loader');
-      this.$blank              = this.$scrollableContent.find('.blank');
-      this.$realtime           = this.$scrollableContent.find('.realtime');
+      this.$scrollable = this.$el.find('.scrollable');
+      this.$scrollableContent = this.$scrollable.find('.scrollable-content');
+      this.$pad = this.$scrollableContent.find('.pad');
+      this.$loader = this.$scrollableContent.find('.loader');
+      this.$blank = this.$scrollableContent.find('.blank');
+      this.$realtime = this.$scrollableContent.find('.realtime');
 
       this.$goToTop = this.$el.find('.go-to-top');
       this.$goToBottom = this.$el.find('.go-to-bottom');
 
       var that = this;
-      this.$scrollable.on('scroll', $.proxy(function() {
+      this.$scrollable.on('scroll', $.proxy(function () {
         that.onScroll();
       }, this));
 
       this.scrollDown();
     },
-    _remove: function() {
+    _remove: function () {
       this._scrollTimeoutCleanup();
       this.remove();
     },
@@ -75,7 +84,7 @@ define([
      * Scroll methods
      *
      *****************************************************************************************************************/
-    onScroll: function(event) {
+    onScroll: function (event) {
       // cleanup scroll timeout
       this._scrollTimeoutCleanup();
 
@@ -103,20 +112,20 @@ define([
       // hit the top and history could be loaded, setTimeout
       if (currentScrollPosition <= 0 && !this.historyNoMore) {
         this.toggleHistoryLoader('loading');
-        this.scrollTopTimeout = setTimeout(function() {
+        this.scrollTopTimeout = setTimeout(function () {
           if (that.$scrollable.scrollTop() <= 0)
             that.requestHistory('top');
         }, 1500);
       }
 
       // everywhere
-      this.scrollVisibleTimeout = setTimeout(function() {
+      this.scrollVisibleTimeout = setTimeout(function () {
         if (that.$scrollable.scrollTop() == currentScrollPosition)
           that.markVisibleAsViewed(); // scroll haven't change during timeout
       }, 2000);
 
     },
-    _scrollTimeoutCleanup: function() {
+    _scrollTimeoutCleanup: function () {
       if (this.scrollTopTimeout) {
         clearInterval(this.scrollTopTimeout);
         this.scrollTopTimeout = false;
@@ -126,20 +135,20 @@ define([
         this.scrollVisibleTimeout = false;
       }
     },
-    _scrollBottomPosition: function() {
+    _scrollBottomPosition: function () {
       var contentHeight = this.$scrollableContent.outerHeight(true);
       var viewportHeight = this.$scrollable.height();
       return contentHeight - viewportHeight;
     },
-    isScrollOnBottom: function() {
+    isScrollOnBottom: function () {
       var bottom = this._scrollBottomPosition() - 10; // add a 10px margin
       return (this.$scrollable.scrollTop() >= bottom); // if gte current position, we are on bottom
     },
-    scrollDown: function() {
+    scrollDown: function () {
       var bottom = this._scrollBottomPosition();
       this.$scrollable.scrollTop(bottom);
     },
-    scrollTop: function() {
+    scrollTop: function () {
       var targetTop = this.$loader.position().top;
       this.$scrollable.scrollTop(targetTop - 8); // add a 8px margin
     },
@@ -149,7 +158,7 @@ define([
      * Visible elements detection
      *
      *****************************************************************************************************************/
-    computeVisibleElements: function(callback) {
+    computeVisibleElements: function (callback) {
       var start = Date.now();
 
       var contentHeight = this.$scrollableContent.height();
@@ -166,7 +175,7 @@ define([
       var candidateIndex = Math.floor(topLimit * $items.length / contentHeight); // optimistic way to find -in theory- the closest
       var $candidateElement = $items.eq(candidateIndex);
       var visibility = this._isElementFullyVisibleInViewport(topLimit, bottomLimit, $candidateElement);
-      debug($candidateElement.attr('id')+' vib:', visibility);
+      debug($candidateElement.attr('id') + ' vib:', visibility);
       if (visibility == 'ok') {
 
         $firstVisibleElement = $candidateElement;
@@ -228,9 +237,9 @@ define([
       $firstVisibleElement.addClass('first');
       var $elements = this._listFullyVisibleElementsInViewport(topLimit, bottomLimit, $items, $firstVisibleElement, firstVisibleIndex);
       $elements[0].addClass('topElement');
-      $elements[($elements.length-1)].addClass('bottomElement');
+      $elements[($elements.length - 1)].addClass('bottomElement');
       var visibleElementIds = [];
-      $.each($elements, function() {
+      $.each($elements, function () {
         $(this).addClass('visible');
         visibleElementIds.push($(this).attr('id'));
       });
@@ -240,7 +249,7 @@ define([
 
       return callback(visibleElementIds);
     },
-    _isElementFullyVisibleInViewport: function(topLimit, bottomLimit, $e) {
+    _isElementFullyVisibleInViewport: function (topLimit, bottomLimit, $e) {
       var elementTop = $e.offset().top;
       var elementBottom = elementTop + $e.outerHeight();
 
@@ -306,16 +315,16 @@ define([
      * Size & cleanup
      *
      *****************************************************************************************************************/
-    update: function() {
+    update: function () {
       this.cleanup();
     },
-    cleanup: function(event) {
+    cleanup: function (event) {
       if (this.isVisible() && !this.isScrollOnBottom())
         return; // no action when focused AND scroll not on bottom
 
       var realtimeLength = this.$realtime.find('.block').length;
       if (realtimeLength < 250) // not enough content, no need to cleanup
-        return debug('cleanup '+this.model.getIdentifier()+ ' not enough event to cleanup: '+realtimeLength);
+        return debug('cleanup ' + this.model.getIdentifier() + ' not enough event to cleanup: ' + realtimeLength);
 
       // reset history loader
       this.toggleHistoryLoader(true);
@@ -328,12 +337,12 @@ define([
       if (remove > 0)
         this.$realtime.find('.block').slice(0, remove).remove();
 
-      debug('cleanup discussion "'+this.model.getIdentifier()+'", with '+length+' length, '+remove+' removed');
+      debug('cleanup discussion "' + this.model.getIdentifier() + '", with ' + length + ' length, ' + remove + ' removed');
 
       if (this.isVisible())
         this.scrollDown();
     },
-    resize: function(viewportHeight) {
+    resize: function (viewportHeight) {
       if (typeof viewportHeight != "undefined") // was called on page resize by views/discussion, set the .events height
         this.$scrollable.height(viewportHeight);
       else // was called by view itself to adapt .blank height, get the current .events height
@@ -354,7 +363,7 @@ define([
      * Events rendering
      *
      *****************************************************************************************************************/
-    addFreshEvent: function(model) {
+    addFreshEvent: function (model) {
       // browser notification
       if (model.getGenericType() == 'message')
         windowView.triggerMessage(model, this.model);
@@ -362,7 +371,7 @@ define([
         windowView.triggerInout(model, this.model);
 
       // render a 'fresh' event in realtime and scrolldown
-      debug.start('discussion-events-fresh-'+this.model.getIdentifier());
+      debug.start('discussion-events-fresh-' + this.model.getIdentifier());
       // scrollDown only if already on bottom before DOM insertion
       var needToScrollDown = ((this.model.get('focused') == true && this.isScrollOnBottom()) || (this.model.get('focused') == false && this.scrollWasOnBottom));
       var previousElement = this.$realtime.find('.block:last').first();
@@ -382,20 +391,20 @@ define([
       else
         this.$goToBottom.show().addClass('unread');
 
-      debug.end('discussion-events-fresh-'+this.model.getIdentifier());
+      debug.end('discussion-events-fresh-' + this.model.getIdentifier());
     },
-    addBatchEvents: function(events, more) {
+    addBatchEvents: function (events, more) {
       if (events.length == 0)
         return;
 
       // render a batch of events (sorted in 'desc' order)
-      debug.start('discussion-events-batch-'+this.model.getIdentifier());
+      debug.start('discussion-events-batch-' + this.model.getIdentifier());
       var $html = $('<div/>');
       var previousModel;
       var previousElement;
-      _.each(events, _.bind(function(event) {
+      _.each(events, _.bind(function (event) {
         var model = new EventModel(event);
-        var newBlock = this._newBlock(model,  previousElement);
+        var newBlock = this._newBlock(model, previousElement);
 
         // inter-date block
         if (previousModel) {
@@ -421,20 +430,24 @@ define([
       }, this));
 
       $html.find('>.block').prependTo(this.$realtime);
-      debug.end('discussion-events-batch-'+this.model.getIdentifier());
+      debug.end('discussion-events-batch-' + this.model.getIdentifier());
 
       // resize .blank
       this.resize();
     },
-    _prepareEvent: function(model) {
+    _prepareEvent: function (model) {
       var data = model.toJSON();
       data.data = _.clone(model.get('data'));
       var message = data.data.message;
 
+      if (model.getGenericType() === 'message')
+        data.spammed = (model.get('spammed') === true);
+
       // avatar
       var size = (model.getGenericType() != 'inout')
-          ? 30
-          : 20;
+        ? 30
+        : 20;
+      
       if (model.get("data").avatar)
         data.data.avatar = $.cd.userAvatar(model.get("data").avatar, size);
       if (model.get("data").by_avatar)
@@ -446,15 +459,15 @@ define([
 
         // linkify (before other decoration, will escape HTML)
         var o = (this.model.get('color'))
-            ? { linkAttributes: { style: 'color: '+this.model.get('color')+';' } }
-            : {};
+          ? {linkAttributes: {style: 'color: ' + this.model.get('color') + ';'}}
+          : {};
         message = $.linkify(message, o);
 
         // mentions
         if (this.model.get('type') == 'room') {
           message = message.replace(
-              /@\[([^\]]+)\]\(user:([^)]+)\)/g,
-              '<a class="mention open-user-profile" data-username="$1" style="color: '+this.model.get('color')+'">@$1</a>'
+            /@\[([^\]]+)\]\(user:([^)]+)\)/g, // @todo put that in config
+            '<a class="mention open-user-profile" data-username="$1" style="color: ' + this.model.get('color') + '">@$1</a>'
           );
         }
 
@@ -467,7 +480,7 @@ define([
       // images
       if (data.data.images) {
         var images = [];
-        _.each(data.data.images, function(i) {
+        _.each(data.data.images, function (i) {
           i.url = $.cd.natural(i.path);
           i.thumbnail = $.cd.natural(i.path, 50, 50, 'fill'); // @important: use .path to obtain URL with file extension and avoid CORS errors
           images.push(i);
@@ -479,7 +492,7 @@ define([
 
       // date
       var dateObject = moment(model.get('time'));
-      var diff = (Date.now() - dateObject.valueOf())/1000;
+      var diff = (Date.now() - dateObject.valueOf()) / 1000;
       var format;
       if (diff <= 86400) // 24h
         format = 'HH:mm';
@@ -497,7 +510,7 @@ define([
 
       return data;
     },
-    _newBlock: function(newModel, previousElement) {
+    _newBlock: function (newModel, previousElement) {
       var newBlock = false;
       if (!previousElement || previousElement.length < 1) {
         newBlock = true;
@@ -518,40 +531,52 @@ define([
       }
       return newBlock;
     },
-    _renderEvent: function(model, withBlock) {
+    _renderEvent: function (model, withBlock) {
       var data = this._prepareEvent(model);
       data.withBlock = withBlock || false;
       try {
         var template;
         switch (data.type) {
           case 'disconnected':
-            template = templates['event/disconnected.html']; break;
+            template = templates['event/disconnected.html'];
+            break;
           case 'user:online':
           case 'user:offline':
           case 'room:in':
           case 'room:out':
-            template = templates['event/in-out-on-off.html']; break;
+            template = templates['event/in-out-on-off.html'];
+            break;
           case 'room:message':
           case 'user:message':
-            template = templates['event/message.html']; break;
+            template = templates['event/message.html'];
+            break;
           case 'reconnected':
-            template = templates['event/reconnected.html']; break;
+            template = templates['event/reconnected.html'];
+            break;
           case 'room:deop':
-            template = templates['event/room-deop.html']; break;
+            template = templates['event/room-deop.html'];
+            break;
           case 'room:kick':
-            template = templates['event/room-kick.html']; break;
+            template = templates['event/room-kick.html'];
+            break;
           case 'room:ban':
-            template = templates['event/room-ban.html']; break;
+            template = templates['event/room-ban.html'];
+            break;
           case 'room:deban':
-            template = templates['event/room-deban.html']; break;
+            template = templates['event/room-deban.html'];
+            break;
           case 'room:op':
-            template = templates['event/room-op.html']; break;
+            template = templates['event/room-op.html'];
+            break;
           case 'room:topic':
-            template = templates['event/room-topic.html']; break;
+            template = templates['event/room-topic.html']; 
+            break;
           case 'user:ban':
-            template = templates['event/user-ban.html']; break;
+            template = templates['event/user-ban.html']; 
+            break;
           case 'user:deban':
-            template = templates['event/user-deban.html']; break;
+            template = templates['event/user-deban.html']; 
+            break;
           default:
             return;
         }
@@ -568,33 +593,70 @@ define([
      * Viewed management
      *
      *****************************************************************************************************************/
-    markVisibleAsViewed: function() {
+    onSpam: function (event) {
+      event.preventDefault();
+      var parent = $(event.target).parents('.event');
+      var roomName = this.model.get('name');
+      var messageId = parent.attr('id');
+
+      client.roomMessageSpam(roomName, messageId);
+    },
+
+    onUnspam: function (event) {
+      event.preventDefault();
+      var parent = $(event.target).parents('.event');
+      var roomName = this.model.get('name');
+      var messageId = parent.attr('id');
+      parent.removeClass('viewed');
+
+      client.roomMessageUnspam(roomName, messageId);
+    },
+
+    viewSpammedMessage: function (event) {
+      event.preventDefault();
+      var parent = $(event.target).parents('.event');
+      var textSpammed = $(event.target).parents('.text-spammed');
+      parent.removeClass('spammed').addClass('viewed');
+      textSpammed.remove();
+    },
+
+    onMarkedAsSpam: function (room) {
+      $('#' + room.event).addClass('spammed');
+      $('#' + room.event + ' .ctn').first().append('<div class="text-spammed">' + $.t('chat.message.text-spammed') + '</div>')
+    },
+
+    onMarkedAsUnspam: function (room) {
+      $('#' + room.event).removeClass('spammed');
+      $('#' + room.event + ' .ctn .text-spammed').remove();
+    },
+
+    markVisibleAsViewed: function () {
       if (!this.isVisible())
         return debug('markVisibleAsViewed: discussion/window not focused, do nothing'); // scroll could be triggered by freshevent event when window is not focused
 
       var that = this;
-      this.computeVisibleElements(function(elements) {
+      this.computeVisibleElements(function (elements) {
         that.viewedElements(elements);
       });
     },
-    viewedElements: function(elements) {
+    viewedElements: function (elements) {
       if (elements.length)
         this.model.viewedElements(elements);
     },
-    onViewed: function(data) {
+    onViewed: function (data) {
       if (!data.events || !data.events.length)
         return;
 
       var selector = '';
-      _.each(data.events, function(id) {
+      _.each(data.events, function (id) {
         if (selector != '')
           selector += ', ';
-        selector += '#'+id;
+        selector += '#' + id;
       });
 
       $(selector).removeClass('unviewed');
     },
-    isVisible: function() {
+    isVisible: function () {
       if (!this.model.get('focused') || !windowView.focused)
         return false;
 
@@ -603,10 +665,32 @@ define([
 
     /*****************************************************************************************************************
      *
+     * Actions management
+     *
+     *****************************************************************************************************************/
+    onMessageMenuShow: function (event) {
+      var ownerUsername = '';
+      if (this.model.get('owner')) {
+        ownerUsername = this.model.get('owner').get('username');
+      }
+      var eventUsername = $(event.target).closest('[data-username]').data("username");
+      var html = templates['events-dropdown.html']({
+        data: {
+          isOp: this.model.currentUserIsOp(),
+          isOwner: this.model.currentUserIsOwner(),
+          isAdmin: this.model.currentUserIsAdmin(),
+          isMessageOwner: (ownerUsername === eventUsername)
+        }
+      });
+      $(event.currentTarget).find('.dropdown-menu').html(html);
+    },
+
+    /*****************************************************************************************************************
+     *
      * History management
      *
      *****************************************************************************************************************/
-    requestHistory: function(scrollTo) {
+    requestHistory: function (scrollTo) {
       if (this.historyLoading)
         return;
 
@@ -627,7 +711,7 @@ define([
         : first.data('time');
 
       var that = this;
-      this.model.history(since, function(data) {
+      this.model.history(since, function (data) {
         that.addBatchEvents(data.history, data.more);
 
         if (scrollTo == 'top') { // on manual request
@@ -648,7 +732,7 @@ define([
         that.toggleHistoryLoader(data.more);
       });
     },
-    toggleHistoryLoader: function(more) {
+    toggleHistoryLoader: function (more) {
       this.$loader.find('.help, .loading, .no-more').hide();
       this.$pad.removeClass('loading');
       if (more === 'loading') {

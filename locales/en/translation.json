@@ -320,10 +320,10 @@
       "info": "Attention, the donut name will not be editable later.",
       "label": "Create your donut",
       "help": [
-      "Between 3 and 15 characters.<br>",
-      "Valid : letters, numbers and special characters: <strong>-._|^</strong><br>",
-      "Invalid: spaces, accents and special characters not listed above.<br>"
-    ],
+        "Between 3 and 15 characters.<br>",
+        "Valid : letters, numbers and special characters: <strong>-._|^</strong><br>",
+        "Invalid: spaces, accents and special characters not listed above.<br>"
+      ],
       "placeholder": "Donut name",
       "submit": "Create"
     },
@@ -401,8 +401,6 @@
       "online": "is online,",
       "offline": "is offline,",
       "read-more": "Read more",
-      "count" : "<strong class=\"nb\"></strong><strong> New</strong> Notification(s)",
-      "tag-as-read" : "Tag as read",
       "dropdown": {
         "kick": "was kicked out of this donut of",
         "ban": "was banned from this donut of",
@@ -423,10 +421,7 @@
         "roomop": "You have been made moderator of __roomname__",
         "roomdeop": "You have been removed from moderators of __roomname__",
         "roomtopic": "The subject has changed in __roomname__",
-        "usermessage": "__username__ sent a message to you",
-        "usermention": "__username__ Notified you in this Room",
-        "userban": "You have been locked by __username__",
-        "userdeban": "You have been unlocked by __username__"
+        "usermessage": "__username__ sent a message to you"
       }
     },
     "unread": {
@@ -490,6 +485,16 @@
       "error": "Error while connecting, please wait...",
       "disconnected": "Connection lost, please wait...",
       "contactus": "Often problems to connect to us?"
+    },
+    "message": {
+      "text-spammed": "Warning, private contents (<a class=\"view-spammed-message\">show</a>)",
+      "dropdown": {
+        "spam": {
+          "mark-spam": "Mark as spam",
+          "unmark-spam": "Unmark as spam"
+        },
+        "nothing": "Nothing"
+      }
     }
   },
   "account": {
@@ -862,7 +867,7 @@
         "PS : If you did not initiate this action, please report by forwarding this e-mail to __email__ or replying this e-mail."
       ],
       "html": [
-"You are receiving this e-mail because you requested to change the e-mail linked to yout DONUT.me account. It worked perfectly! You can use it to log in:",
+        "You are receiving this e-mail because you requested to change the e-mail linked to yout DONUT.me account. It worked perfectly! You can use it to log in:",
         "<br>",
         "<a href='https://__fqdn__'>Click here to log in</a><br>",
         "<br>",
@@ -956,7 +961,7 @@
         "desktop-refused" : "You have chosen to <strong>refuse</strong> notifications on the desktop. To modify this choice , you must modifiers preferences of your browser.",
         "desktop-validated" : "You have chosen to <strong>accept</strong> notifications on the desktop. To modify this choice , you must modifiers preferences of your browser.",
         "desktop-test": "test",
-        
+
         "email": "Email",
         "mobile": "Mobile"
       },
