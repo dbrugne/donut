@@ -927,10 +927,10 @@
         "title": "Notify me on:",
         "help": "",
         "desktop": "Desktop",
+        "desktop-default": "Your browser will prompt for approval : approve !",
         "desktop-refused" : "You have chosen to <strong>refuse</strong> notifications on the desktop. To modify this choice , you must modifiers preferences of your browser.",
         "desktop-validated" : "You have chosen to <strong>accept</strong> notifications on the desktop. To modify this choice , you must modifiers preferences of your browser.",
         "desktop-test": "try",
-        
         "email": "Email(only if you are offline)",
         "mobile": "Mobile"
       },

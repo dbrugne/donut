@@ -828,6 +828,7 @@
         "title": "Je souhaite être notifié sur :",
         "help": "",
         "desktop": "Bureau",
+        "desktop-default": "Votre navigateur va vous demander d’autoriser DONUT à vous envoyer des notifications. Il faut accepter !",
         "desktop-refused": "Vous avez choisi de <strong>refuser</strong> les notifications sur le bureau. Pour modifier ce choix, vous devez modifiers les préférences de votre navigateur.",
         "desktop-validated": "Vous avez choisi d'<strong>accepter</strong> les notifications sur le bureau. Pour modifier ce choix, vous devez modifiers les préférences de votre navigateur.",
         "desktop-test": "tester",

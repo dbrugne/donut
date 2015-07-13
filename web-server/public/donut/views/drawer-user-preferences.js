@@ -42,8 +42,6 @@ define([
       if (color)
         this.trigger('color', color);
 
-      // @todo : add notifyWasAlready accepted
-
       var html = this.template({
         username: currentUser.get('username'),
         color: color,
