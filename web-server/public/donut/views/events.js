@@ -656,24 +656,33 @@ define([
       client.roomMessageUnspam(roomName, messageId);
     },
     onMarkedAsSpam: function (room) {
+      var bottom = this.isScrollOnBottom();
       this.$('#' + room.event)
         .addClass('spammed')
         .find('.ctn')
         .first()
         .append('<div class="text-spammed">' + $.t('chat.message.text-spammed') + '</div>');
+      if (bottom)
+        this.scrollDown();
     },
     onMarkedAsUnspam: function (room) {
+      var bottom = this.isScrollOnBottom();
       this.$('#' + room.event)
         .removeClass('spammed')
         .find('.ctn .text-spammed')
         .remove();
+      if (bottom)
+        this.scrollDown();
     },
     viewSpammedMessage: function (event) {
+      var bottom = this.isScrollOnBottom();
       event.preventDefault();
       var parent = $(event.target).parents('.event');
       var textSpammed = $(event.target).parents('.text-spammed');
       parent.removeClass('spammed').addClass('viewed');
       textSpammed.remove();
+      if (bottom)
+        this.scrollDown();
     },
 
     /*****************************************************************************************************************

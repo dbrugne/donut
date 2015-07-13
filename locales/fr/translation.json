@@ -491,7 +491,7 @@
       "contactus": "Problèmes pour vous connecter ? Contactez-nous."
     },
     "message": {
-      "text-spammed": "Attention, contenu privé (<a class=\"view-spammed-message\">voir</a>)",
+      "text-spammed": "Ce message a été marqué comme indésirable au modérateur, pour le voir quand même [<a class=\"view-spammed-message\">cliquer ici</a>].",
       "dropdown": {
         "spam": {
           "mark-spam": "Marquer comme message indésirable",

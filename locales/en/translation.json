@@ -469,7 +469,7 @@
       "contactus": "Often problems to connect to us?"
     },
     "message": {
-      "text-spammed": "Warning, private contents (<a class=\"view-spammed-message\">show</a>)",
+      "text-spammed": "This message has been marked as junk to the moderator, to see anyway [<a class=\"view-spammed-message\">click here</a>]",
       "dropdown": {
         "spam": {
           "mark-spam": "Mark as spam",
