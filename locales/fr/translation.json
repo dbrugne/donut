@@ -494,6 +494,16 @@
       "error": "Erreur de connexion, patienter un instant ...",
       "disconnected": "Connexion perdue, patienter un instant ...",
       "contactus": "Problèmes pour vous connecter ? Contactez-nous."
+    },
+    "message": {
+      "text-spammed": "Attention, contenu privé (<a class=\"view-spammed-message\">voir</a>)",
+      "dropdown": {
+        "spam": {
+          "mark-spam": "Marquer comme message indésirable",
+          "unmark-spam": "Ce message n'est pas indésirable"
+        },
+        "nothing": "Aucune action disponible"
+      }
     }
   },
   "account": {
