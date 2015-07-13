@@ -9,6 +9,7 @@ var async = require('async');
 // notifications logic
 var userMessage = require('./userMessageType');
 var roomPromote = require('./roomPromoteType');
+var userPromote = require('./userPromoteType');
 var roomTopic = require('./roomTopicType');
 var roomMessage = require('./roomMessageType');
 var roomJoin = require('./roomJoinType');
@@ -90,8 +91,13 @@ Facade.prototype.getType = function (type) {
       return userMention(that);
       break;
 
+    case 'userban':
+    case 'userdeban':
+      return userPromote(that);
+      break;
+
     default:
-      logger.info('Unknown notification type: ' + type);
+      logger.warn('Unknown notification type: ' + type);
 
       return null;
   }
@@ -150,6 +156,7 @@ Facade.prototype.retrieveUserNotifications = function (uid, what, callback) {
           HistoryRoom
             .findOne({_id: n.data.event.toString()})
             .populate('user', 'username avatar color facebook')
+            .populate('by_user', 'username avatar color facebook')
             .populate('room', 'avatar color name')
             .exec(function (err, event) {
               if (err)

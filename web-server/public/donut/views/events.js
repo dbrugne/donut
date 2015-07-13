@@ -445,6 +445,7 @@ define([
       var size = (model.getGenericType() != 'inout')
         ? 30
         : 20;
+      
       if (model.get("data").avatar)
         data.data.avatar = $.cd.userAvatar(model.get("data").avatar, size);
       if (model.get("data").by_avatar)
@@ -463,7 +464,7 @@ define([
         // mentions
         if (this.model.get('type') == 'room') {
           message = message.replace(
-            /@\[([^\]]+)\]\(user:([^)]+)\)/g,
+            /@\[([^\]]+)\]\(user:([^)]+)\)/g, // @todo put that in config
             '<a class="mention open-user-profile" data-username="$1" style="color: ' + this.model.get('color') + '">@$1</a>'
           );
         }
@@ -566,7 +567,13 @@ define([
             template = templates['event/room-op.html'];
             break;
           case 'room:topic':
-            template = templates['event/room-topic.html'];
+            template = templates['event/room-topic.html']; 
+            break;
+          case 'user:ban':
+            template = templates['event/user-ban.html']; 
+            break;
+          case 'user:deban':
+            template = templates['event/user-deban.html']; 
             break;
           default:
             return;

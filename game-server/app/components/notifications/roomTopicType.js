@@ -33,7 +33,7 @@ Notification.prototype.shouldBeCreated = function (type, room, data) {
     function checkStatus(users, callback) {
       that.facade.app.statusService.getStatusByUids(_.map(users, 'id'), function (err, statuses) {
         if (err)
-          return callback('Error while retrieving users statuses: ' + err);
+          return utils.waterfallDone('Error while retrieving user statuses: '+err);
 
         return callback(null, users, statuses);
       });
@@ -49,20 +49,18 @@ Notification.prototype.shouldBeCreated = function (type, room, data) {
 
         model.save(function (err) {
           if (err)
-            logger.error(err);
-          else
-            logger.info('notification created: ' + that.type + ' for ' + user.username);
+            return utils.waterfallDone(err);
+
+          logger.info('notification created: ' + that.type + ' for ' + user.username);
+
+          if (!model.sent_to_browser)
+            that.sendToBrowser(model);
+
+          callback(null);
         });
-
-        if (!model.sent_to_browser)
-          that.sendToBrowser(model);
-
       });
     }
-  ], function (err, users) {
-    if (err)
-      return logger.error('Error happened in roomTopicType|shouldBeCreated : ' + err);
-  });
+  ], utils.waterfallDone);
 
 };
 
@@ -110,23 +108,18 @@ Notification.prototype.sendToBrowser = function (model) {
       return callback(null, notification);
     },
 
-    utils.retrieveUnreadNotificationsCount(userId),
-
     function push(notification, count, callback) {
-      notification.unviewed = count || 0;
-
       that.facade.app.globalChannelService.pushMessage('connector', 'notification:new', notification, 'user:' + userId, {}, function (err) {
         if (err)
-          return callback('Error while sending notification:new message to user clients: ' + err);
+          return utils.waterfallDone('Error while sending notification:new message to user clients: ' + err);
 
         logger.debug('notification sent: ' + notification);
+
+        callback(null);
       });
     }
 
-  ], function (err) {
-    if (err)
-      return logger.error('Error happened in roomTopicType|sendToBrowser : ' + err);
-  });
+  ], utils.waterfallDone);
 
 };
 
@@ -155,10 +148,7 @@ Notification.prototype.sendEmail = function (model) {
       model.save(callback);
     }
 
-  ], function (err) {
-    if (err)
-      return logger.error('Error happened in roomTopicType|sendEmail : ' + err);
-  });
+  ], utils.waterfallDone);
 
 };
 

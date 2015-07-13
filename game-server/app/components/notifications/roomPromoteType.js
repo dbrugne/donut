@@ -26,16 +26,20 @@ Notification.prototype.shouldBeCreated = function (type, user, data) {
   async.waterfall([
 
     function checkOwn(callback) {
-      if (data.event.by_user_id == user._id.toString())
-        return callback('no notification due to my own message');
+      if (data.event.by_user_id == user._id.toString()) {
+        logger.debug('no notification due to my own message');
+        return utils.waterfallDone(null);
+      }
       else
         return callback(null);
     },
 
     // Avoid sending notification if user does not need it
     function checkPreferences(callback) {
-      if (user.preferencesValue('room:notif:nothing:__what__'.replace('__what__', data.room.name)) || !user.preferencesValue('room:notif:roompromote:__what__'.replace('__what__', data.room.name)))
-        return callback('no notification due to user preferences');
+      if (user.preferencesValue('room:notif:nothing:__what__'.replace('__what__', data.room.name)) || !user.preferencesValue('room:notif:roompromote:__what__'.replace('__what__', data.room.name))) {
+        logger.debug('no notification due to user preferences');
+        return utils.waterfallDone(null);
+      }
       else
         return callback(null);
     },
@@ -48,7 +52,7 @@ Notification.prototype.shouldBeCreated = function (type, user, data) {
     function checkStatus(callback) {
       that.facade.app.statusService.getStatusByUid(user._id.toString(), function (err, status) {
         if (err)
-          return callback('Error while retrieving user status: ' + err);
+          return utils.waterfallDone('Error while retrieving user status: '+err);
 
         return callback(null, status);
       });
@@ -64,19 +68,18 @@ Notification.prototype.shouldBeCreated = function (type, user, data) {
 
       model.save(function (err) {
         if (err)
-          return callback(err);
+          return utils.waterfallDone(err);
 
         logger.info('notification created: ' + type + ' for ' + user.username);
 
         if (!model.sent_to_browser)
           that.sendToBrowser(model);
+
+        callback(null);
       });
     }
 
-  ], function (err) {
-    if (err)
-      return logger.error('Error happened in roomPromoteType|shouldBeCreated : ' + err);
-  });
+  ], utils.waterfallDone);
 };
 
 Notification.prototype.sendToBrowser = function (model) {
@@ -127,23 +130,18 @@ Notification.prototype.sendToBrowser = function (model) {
       return callback(null, notification);
     },
 
-    utils.retrieveUnreadNotificationsCount(userId),
-
     function push(notification, count, callback) {
-      notification.unviewed = count || 0;
-
       that.facade.app.globalChannelService.pushMessage('connector', 'notification:new', notification, 'user:' + userId, {}, function (err) {
         if (err)
-          logger.error('Error while sending notification:new message to user clients: ' + err);
+          return utils.waterfallDone('Error while sending notification:new message to user clients: ' + err);
 
         logger.debug('notification sent: ' + notification);
+
+        callback(null);
       });
     }
 
-  ], function (err) {
-    if (err)
-      return logger.error('Error happened in roomPromoteType|sendToBrowser : ' + err);
-  });
+  ], utils.waterfallDone);
 
 };
 
@@ -197,10 +195,7 @@ Notification.prototype.sendEmail = function (model) {
       model.save(callback);
     }
 
-  ], function (err) {
-    if (err)
-      return logger.error('Error happened in roomTopicType|sendEmail : ' + err);
-  });
+  ], utils.waterfallDone);
 };
 
 Notification.prototype.sendMobile = function () {

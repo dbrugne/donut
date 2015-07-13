@@ -19,6 +19,9 @@ define([
       this.mainView = options.mainView;
       this.username = options.username;
 
+      this.listenTo(this.mainView, 'userDeban', this.onUserDeban);
+      this.listenTo(this.mainView, 'userBan',   this.onUserBan);
+
       // show spinner as temp content
       this.render();
 
@@ -103,6 +106,22 @@ define([
           pushNew(room, false, false);
         });
       }
+    },
+
+    onUserDeban: function(data) {
+      this.render();
+      var that = this;
+      client.userRead(this.username, function(data) {
+        that.onResponse(data);
+      });
+    },
+
+    onUserBan: function(data) {
+      this.render();
+      var that = this;
+      client.userRead(this.username, function(data) {
+        that.onResponse(data);
+      });
     }
 
   });

@@ -29,25 +29,31 @@ Notification.prototype.shouldBeCreated = function(type, user, data) {
   async.waterfall([
 
       function checkOwn(callback) {
-        if (data.from_user_id == user._id.toString())
-          return callback('no notification due to my own message');
+        if (data.from_user_id == user._id.toString()) {
+          logger.debug('no notification due to my own message');
+          return utils.waterfallDone(null);
+        }
         else
           return callback(null);
       },
 
       function checkPreferences(callback) {
-        if (!user.preferencesValue('notif:usermessage'))
-          return callback('no notification due to user preferences');
-        else
-          return callback(null);
+        if (!user.preferencesValue('notif:usermessage')) {
+          logger.debug('no notification due to user preferences');
+          return utils.waterfallDone(null);
+        }
+
+        return callback(null);
       },
 
       utils.checkRepetitive(type, user, { 'data.from_user_id': data.from_user_id }, FREQUENCY_LIMITER),
 
       function checkStatus(callback) {
         that.facade.uidStatus(user._id.toString(), function(status) {
-          if (status)
-            return callback('no notification due to user status'); // create only if user is offline
+          if (status) {
+            logger.debug('no notification due to user status');
+            return utils.waterfallDone(null);
+          }
 
           return callback(null, status);
         });
@@ -60,15 +66,10 @@ Notification.prototype.shouldBeCreated = function(type, user, data) {
         model.to_email =  ( !user.getEmail() ? false : ( status ? false : user.preferencesValue("notif:channels:email"))) ;
         model.to_mobile = (status ? false : user.preferencesValue("notif:channels:mobile"));
 
-        model.save(function(err) {
-            return callback (err);
-        });
+        model.save(callback);
       }
 
-  ], function(err) {
-    if (err)
-      return logger.error('Error happened in userMessageType|shouldBeCreated : '+err);
-  });
+  ], utils.waterfallDone);
 
 };
 
@@ -135,10 +136,7 @@ Notification.prototype.sendEmail = function(model) {
       model.save(callback);
     }
 
-  ], function(err) {
-    if (err)
-      return logger.error('Error happened in userMessageType|sendEmail : '+err);
-  });
+  ], utils.waterfallDone);
 
 };
 

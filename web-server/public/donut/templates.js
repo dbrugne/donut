@@ -27,6 +27,8 @@ define([
   'text!./templates/event/room-deban.html',
   'text!./templates/event/room-op.html',
   'text!./templates/event/room-topic.html',
+  'text!./templates/event/user-ban.html',
+  'text!./templates/event/user-deban.html',
   'text!./templates/events.html',
   'text!./templates/home-rooms.html',
   'text!./templates/home-users.html',
@@ -47,6 +49,8 @@ define([
   'text!./templates/notifications/room-topic.html',
   'text!./templates/notifications/room-join.html',
   'text!./templates/notifications/user-mention.html',
+  'text!./templates/notifications/user-ban.html',
+  'text!./templates/notifications/user-deban.html',
   'text!./templates/notifications/room-message.html'
 ], function (_,
   color_picker,
@@ -76,6 +80,8 @@ define([
   event_room_deban,
   event_room_op,
   event_room_topic,
+  event_user_ban,
+  event_user_deban,
   events,
   home_rooms,
   home_users,
@@ -96,8 +102,9 @@ define([
   notification_room_topic,
   notification_room_join,
   notification_user_mention,
-  notification_room_message
-) {
+  notification_user_ban,
+  notification_user_deban,
+  notification_room_message) {
 
   /**
    * Stub class to load compiled templates dynamically (in development for example)
@@ -128,7 +135,7 @@ define([
   JST['drawer-user-edit.html']              = _.template(drawer_user_edit);
   JST['drawer-user-preferences.html']       = _.template(drawer_user_preferences);
   JST['drawer-user-profile.html']           = _.template(drawer_user_profile);
-  JST['events-dropdown.html']                      = _.template(dropdown);
+  JST['events-dropdown.html']               = _.template(dropdown);
   JST['event/date.html']                    = _.template(event_date);
   JST['event/disconnected.html']            = _.template(event_disconnected);
   JST['event/in-out-on-off.html']           = _.template(event_in_out_on_off);
@@ -140,6 +147,8 @@ define([
   JST['event/room-deban.html']              = _.template(event_room_deban);
   JST['event/room-op.html']                 = _.template(event_room_op);
   JST['event/room-topic.html']              = _.template(event_room_topic);
+  JST['event/user-ban.html']                = _.template(event_user_ban);
+  JST['event/user-deban.html']              = _.template(event_user_deban);
   JST['events.html']                        = _.template(events);
   JST['home-rooms.html']                    = _.template(home_rooms);
   JST['home-users.html']                    = _.template(home_users);
@@ -160,6 +169,8 @@ define([
   JST['notifications/room-topic.html']      = _.template(notification_room_topic);
   JST['notifications/room-join.html']       = _.template(notification_room_join);
   JST['notifications/user-mention.html']    = _.template(notification_user_mention);
+  JST['notifications/user-ban.html']        = _.template(notification_user_ban);
+  JST['notifications/user-deban.html']      = _.template(notification_user_deban);
   JST['notifications/room-message.html']    = _.template(notification_room_message);
 
   return JST;

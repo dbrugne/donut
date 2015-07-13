@@ -247,6 +247,10 @@ define([
     },
     isThereNew: function() {
       return !!(this.get('newmessage') || this.get('newmention') || this.get('newuser'));
+    },
+    isInputActive: function() {
+      // @todo yls add devoice logic
+      return true;
     }
 
   });

@@ -420,7 +420,7 @@ emailer.userMention = function(toEmail, events, roomName, roomAvatar, callback) 
       events: events,
       room_name: roomName,
       room_avatar: roomAvatar,
-      title: i18next.t("email.usermention.title").replace('__name__', roomName)
+      title: i18next.t("email.usermention.content.title", {'name': roomName })
   }, function (err, html) {
     if (err)
       return callback(err);

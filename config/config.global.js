@@ -68,5 +68,8 @@ var conf = module.exports = {
   },
   notifications: {
     emailDelay: 5 // minutes
+  },
+  regex: {
+    'usermention': /@\[([^\]]+)\]\(user:([^)]+)\)/g // $1 -> username, $2 -> uid
   }
 };

@@ -325,8 +325,17 @@
       "account": "mon compte",
       "edit": "mon profil",
       "preferences": "préférences",
+      "bannedusers": "utilisateurs bloqués",
       "update": "Editer",
-      "see": "Voir"
+      "see": "Voir",
+      "ban": "Bloquer",
+      "deban": "Débloquer",
+      "banned": "Vous avez bloqué cet utilisateur",
+      "bannedMessage": {
+        "onetoone": "Vous avez été bloqué par cet utilisateur",
+        "room": "Vous avez été bloqué dans cette Room"
+      },
+      "unlock": "(Cliquez ici pour le débloquer)"
     },
     "create": {
       "info": "Attention le nom du donut ne sera plus modifiable !",
@@ -380,6 +389,13 @@
     "deban": {
       "infobox": "Autoriser à nouveau l'utilisateur à rejoindre le donut"
     },
+    "banuser": {
+      "infobox": "Bloquer cet utilisateur",
+      "banned-too": "Cet utilisateur vous a bloqué"
+    },
+    "debanuser": {
+      "infobox": "Autoriser à nouveau l'utilisateur à vous parler"
+    },
     "profile": {
       "infobox": "Voir le profil de cet utilisateur"
     },
@@ -397,8 +413,8 @@
       "topic": "a changé le sujet pour",
       "topicempty": "vide",
       "kick": "a été expulsé par ",
-      "ban": "a été banni par ",
-      "deban": "n'est plus banni par ",
+      "ban": "a été bloqué par ",
+      "deban": "n'est plus bloqué par ",
       "op": " a été promu modérateur par ",
       "deop": "n'est plus modérateur par ",
       "in": "est entré à",
@@ -414,7 +430,9 @@
         "roomtopic": "Le sujet à changé dans ",
         "roomjoin": "a rejoint la room ",
         "usermention": "on vous a notifié dans ",
-        "roommessage": "Nouveau message dans "
+        "roommessage": "Nouveau message dans ",
+        "userban": " vous a bloqué",
+        "userdeban": " vous a débloqué"
       },
       "desktop": {
         "roomkick": "Vous venez d'être expulsé de __roomname__",
@@ -686,48 +704,6 @@
         "button": "Voir le message sur DONUT"
       }
     },
-    "roomop": {
-      "subject": "Vous avez été promu modérateur de la Room ",
-      "content": {
-        "title": "Vous avez été promu modérateur par ",
-        "disclaimer": "Beaucoup de choses se sont passées sur DONUT depuis votre dernier passage.",
-        "button": "retourner sur DONUT"
-      }
-    },
-    "roomdeop": {
-      "subject": "Vous avez été exclu des modérateurs de la Room ",
-      "content": {
-        "title": "Vous avez été promu modérateur par ",
-        "disclaimer": "Beaucoup de choses se sont passées sur DONUT depuis votre dernier passage.",
-        "button": "retourner sur DONUT"
-      }
-    },
-    "roomkick": {
-      "subject": "Vous avez été exclu de la Room ",
-      "content": {
-        "title": "Vous avez été exclu de la Room ",
-        "by": "par ",
-        "disclaimer": "Beaucoup de choses se sont passées sur DONUT depuis votre dernier passage.",
-        "button": "retourner sur DONUT"
-      }
-    },
-    "roomban": {
-      "subject": "Vous avez été banni de la Room ",
-      "content": {
-        "title": "Vous avez été banni de la Room ",
-        "disclaimer": "Beaucoup de choses se sont passées sur DONUT depuis votre dernier passage.",
-        "disclaimer2": "Vous pouvez contacter l'administrateur de la Room pour avoir plus de détails : ",
-        "button": "retourner sur DONUT"
-      }
-    },
-    "roomdeban": {
-      "subject": "Vous n'êtes plus banni de la Room ",
-      "content": {
-        "title": "Vous n'êtes plus banni de la Room ",
-        "disclaimer": "Beaucoup de choses se sont passées sur DONUT depuis votre dernier passage.",
-        "button": "retourner sur DONUT"
-      }
-    },
     "roomtopic": {
       "subject": "Le sujet à changé dans la Room ",
       "content": {
@@ -863,8 +839,13 @@
         "roomjoin": {
           "label": "Quand quelqu'un rentre dans ce donut",
           "help": ""
+        },
+        "userpromote": {
+          "label": "Quand quelqu'un me bloque ou me débloque",
+          "help": ""
         }
-      }
+      },
+      "banned-users": "Utilisateurs que vous avez bloqué"
     }
   }
 }
