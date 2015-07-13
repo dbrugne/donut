@@ -245,14 +245,14 @@ define([
         this.$readMore.removeClass('hidden');
         this.$loader.addClass('hidden');
 
-        if (data.notifications.length < 10)
-          this.$actions.addClass('hidden');
-      }, this));
+        var that = this;
+        this.markHasRead = setTimeout(function () {
+          that.clearNotifications();
+        }, 2000);
 
-      var that = this;
-      this.markHasRead = setTimeout(function () {
-        that.clearNotifications();
-      }, 2000);
+        this.toggleReadMore();
+
+      }, this));
     },
 
     lastNotifDisplayedTime: function () {
@@ -263,10 +263,12 @@ define([
 
     toggleReadMore: function () {
       // Only display if at least 10 messages displayed, and more messages to display on server
-      if (this.$menu.find('.message').length < 10)
+      if (this.$menu.find('.message').length < 10) {
+        this.$actions.addClass('hidden');
         return;
+      }
 
-      if ((this.undone || 0) < 10)
+      if ((this.undone || 0) < 10 || this.undone <= this.$menu.find('.message').length)
         this.$actions.addClass('hidden');
       else
         this.$actions.removeClass('hidden');
