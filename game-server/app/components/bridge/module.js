@@ -1,10 +1,6 @@
 /**
  * Implement PomeloJS admin-module to listen and pass trough comment from client to cluster servers
  *
- * Could receive this kind of event:
- * - notify: send message without callback
- * - request: send message with callback
- *
  * To:
  * - all: broadcast message to all servers
  * - all:chat|connector: send message only to this kind of servers
@@ -17,7 +13,7 @@ module.exports = function(opts) {
   return new Module(opts);
 };
 
-var moduleId = "administrationChannel";
+var moduleId = "pomeloBridge";
 module.exports.moduleId = moduleId;
 
 var Module = function(options) {
@@ -62,11 +58,12 @@ Module.prototype.monitorHandler = function(agent, msg, cb) {
 };
 
 /**
- *
+ * ...
  * @param agent @doc: node_modules/pomelo/node_modules/pomelo-admin/lib/masterAgent.js
  * @param msg
+ * @param callback Functioptionnal
  */
-Module.prototype.masterHandler = function(agent, msg, cb) {
+Module.prototype.masterHandler = function(agent, msg, callback) {
   if(!msg) {
     agent.notifyAll(moduleId, 'NOTIFY FROM MASTER IN CASE OF NO MESSAGE');
     return;
@@ -81,8 +78,18 @@ Module.prototype.masterHandler = function(agent, msg, cb) {
   timeData[msg.serverId] = msg.time;
 };
 
+
+/**
+ * Bridge entry-point
+ *
+ * @param agent
+ * @param request
+ * @param callback (optionnal)
+ */
 Module.prototype.clientHandler = function(agent, request, callback) {
-  logger.debug('client request on '+this.app.getServerId()+': '+JSON.stringify(request));
+
+  logger.debug(moduleId+' client request on '+this.app.getServerId()+': '+JSON.stringify(request));
+
   if (!request || !_.isObject(request) || !request.event)
     return callback('second parameter should be an object: { event: String }');
 
@@ -92,7 +99,7 @@ Module.prototype.clientHandler = function(agent, request, callback) {
       break;
 
     case 'hello':
-      var dispatcher = require('../../../app/util/dispatcher');
+      var dispatcher = require('../../util/dispatcher');
       var res = dispatcher.dispatch(Math.floor(Math.random() * 10), agent.typeMap['chat']);
       agent.request(res.id, moduleId, {'name': 'josé'}, function(err, result) {
         console.log('!!'+err);

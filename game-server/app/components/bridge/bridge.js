@@ -1,6 +1,6 @@
 var debug = require('debug')('donut:pomelo-client');
 var _ = require('underscore');
-var pomeloAdmin = require('../../node_modules/pomelo/node_modules/pomelo-admin');
+var pomeloAdmin = require('../../../../node_modules/pomelo/node_modules/pomelo-admin/index');
 var adminClient = pomeloAdmin.adminClient;
 
 /**
@@ -26,22 +26,31 @@ var PomeloClient = function(options) {
 };
 
 /**
- * Connect to cluster master server and return client to callback
+ * Return a valid connection to cluster master server
  *
  * @param callback
  */
-PomeloClient.prototype.connect = function(callback) {
+PomeloClient.prototype.getConnection = function(callback) {
   if (this.client)
     return callback(null, this.client);
 
-  var client = new adminClient({username: this.username, password: this.password, md5: true});
-  client.connect(this.masterId, this.host, this.port, _.bind(function(err) {
+  this.connect(_.bind(function(err, client) {
     if (err)
       return callback(err);
 
     this.client = client;
     return callback(null, client);
   }, this));
+};
+
+/**
+ * Establish a connection to cluster master server
+ *
+ * @param callback
+ */
+PomeloClient.prototype.connect = function(callback) {
+  var client = new adminClient({username: this.username, password: this.password, md5: true});
+  client.connect(this.masterId, this.host, this.port, _.bind(callback, this));
 };
 
 /**
@@ -60,10 +69,25 @@ PomeloClient.prototype.disconnect = function() {
  * @param callback
  */
 PomeloClient.prototype.request = function(moduleId, data, callback) {
-  this.connect(_.bind(function(err, client) {
+  this.getConnection(_.bind(function(err, client) {
     if (err)
       return callback(err);
 
     client.request(moduleId, data, callback);
+  }, this));
+};
+
+/**
+ * Send a notify to pomelo cluster master
+ *
+ * @param moduleId
+ * @param data
+ */
+PomeloClient.prototype.notify = function(moduleId, data) {
+  this.getConnection(_.bind(function(err, client) {
+    if (err)
+      return logger.error(err);
+
+    client.notify(moduleId, data);
   }, this));
 };
