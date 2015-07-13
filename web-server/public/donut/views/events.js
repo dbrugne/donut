@@ -661,6 +661,9 @@ define([
       var messageId = parent.attr('id');
       parent.removeClass('viewed');
 
+      var ctn = parent.find('.text') || parent.find('.image');
+      ctn.find('.remask-spammed-message').remove();
+
       client.roomMessageUnspam(roomName, messageId);
     },
     onMarkedAsSpam: function (room) {
