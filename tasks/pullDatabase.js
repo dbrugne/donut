@@ -37,6 +37,10 @@ module.exports = function(grunt) {
   });
 
   grunt.loadNpmTasks('grunt-ssh');
+  var sshKey = (process.env.HOME)
+    ? process.env.HOME
+    : process.env.USERPROFILE;
+  sshKey += '/.ssh/id_rsa';
   grunt.extendConfig({
     sftp: {
       lastbackup: {
@@ -48,8 +52,8 @@ module.exports = function(grunt) {
           path: '/opt/mongodb/backups/',
           destBasePath: tmp,
           host: '5.196.206.60',
-          username: process.env.USER,
-          privateKey: grunt.file.read(process.env.HOME+'/.ssh/id_rsa'),
+          username: grunt.option('user') || process.env.USER,
+          privateKey: grunt.file.read(sshKey),
           showProgress: true,
           mode: 'download'
         }
