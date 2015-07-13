@@ -32,6 +32,10 @@ var userSchema = mongoose.Schema({
     },
     preferences    : mongoose.Schema.Types.Mixed,
     onetoones      : [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
+    bans: [{
+      user: {type: mongoose.Schema.ObjectId, ref: 'User'},
+      banned_at: {type: Date, default: Date.now}
+    }],
     positions      : { type: String },
     created_at     : { type: Date, default: Date.now },
     lastlogin_at   : { type: Date },
@@ -233,21 +237,21 @@ userSchema.statics.retrieveUser = function (username) {
  */
 userSchema.statics.preferencesKeys = function () {
   return {
-    'browser:welcome': { default: true },
-    'browser:sounds': { default: true },
-    'notif:channels:desktop': { default: false },
-    'notif:channels:email': { default: true },
-    'notif:channels:mobile': { default: true },
+    'browser:welcome': {default: true},
+    'browser:sounds': {default: true},
+    'notif:channels:desktop': {default: false},
+    'notif:channels:email': {default: true},
+    'notif:channels:mobile': {default: true},
 
-    'notif:usermessage': { default: true },
-    'notif:roominvite': { default: true },
+    'notif:usermessage': {default: true},
+    'notif:roominvite': {default: true},
 
-    'room:notif:nothing:__what__': { default: false },
-    'room:notif:usermention:__what__': { default: true },
-    'room:notif:roompromote:__what__': { default: true },
-    'room:notif:roommessage:__what__': { default: false },
-    'room:notif:roomtopic:__what__': { default: false }, // set to true for owner on room creation
-    'room:notif:roomjoin:__what__': { default: false } // set to true for owner on room creation
+    'room:notif:nothing:__what__': {default: false},
+    'room:notif:usermention:__what__': {default: true},
+    'room:notif:roompromote:__what__': {default: true},
+    'room:notif:roommessage:__what__': {default: false},
+    'room:notif:roomtopic:__what__': {default: false}, // set to true for owner on room creation
+    'room:notif:roomjoin:__what__': {default: false} // set to true for owner on room creation
   };
 };
 
@@ -403,6 +407,18 @@ userSchema.methods.posterId = function() {
   if (!data[1]) return '';
   var id = data[1].substr(0, data[1].lastIndexOf('.'));
   return id;
+};
+
+userSchema.methods.isBanned = function (user_id) {
+  if (!this.bans || !this.bans.length)
+    return false;
+
+  var subDocument = _.find(this.bans, function (ban) { // @warning: this shouldn't have .bans populated
+    if (ban.user.toString() == user_id)
+      return true;
+  });
+
+  return (typeof subDocument != 'undefined');
 };
 
 module.exports = mongoose.model('User', userSchema);

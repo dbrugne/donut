@@ -34,7 +34,7 @@ define([
       this.$el.html(templates['spinner.html']);
       return this;
     },
-    onResponse: function(preferences) {
+    onResponse: function(data) {
       var color = this.model.get('color');
       // colorize drawer .opacity
       if (color)
@@ -44,7 +44,7 @@ define([
         username: currentUser.get('username'),
         name: this.model.get('name'),
         color: color,
-        preferences: preferences
+        preferences: data.preferences
       });
       this.$el.html(html);
       return;

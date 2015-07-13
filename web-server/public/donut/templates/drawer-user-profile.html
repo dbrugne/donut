@@ -1,19 +1,37 @@
 <div class="user" data-colorify="<%= user.color %>">
-    <span class="avatar-ctn <% if (user.isCurrent) { %>open-user-edit <% } %>">
+    <span class="avatar-ctn <% if (user.isCurrent) { %>open-user-edit <% } %> <% if (user.banned) { %>is-banned <% } %>">
         <img class="avatar" src="<%= user.avatar %>" alt="<%= user.username %> avatar">
         <% if (user.isCurrent) { %>
         <span class="overlay"></span>
         <span class="overlay-text"><%= t('profile.user.edit') %></span>
         <% } %>
     </span>
-    <p class="username">@<%= user.username %></p>
+    <p class="action username">@<%= user.username %></p>
     <% if (user.bio) { %><p class="bio"><%= user.bio %></p><% }; %>
-    <% if (user.location) { %><p class="location"><i class="icon icon-map-marker"></i> <%= user.location %></p><% }; %>
-    <% if (user.website) { %><p class="website"><i class="icon icon-link"></i> <span><%= user.website %></span></p><% }; %>
-    <% if (user.registered) { %><p class="created"><i class="icon icon-clock-o"></i> <%= t('profile.user.signuped') %> <span data-time="<%= user.registered %>"></span></p><% }; %>
+    <% if (user.location) { %><p class="action location"><i class="icon icon-map-marker"></i> <%= user.location %></p><% }; %>
+    <% if (user.website) { %><p class="action website"><i class="icon icon-link"></i> <span><%= user.website %></span></p><% }; %>
+    <% if (user.registered) { %><p class="action created"><i class="icon icon-clock-o"></i> <%= t('profile.user.signuped') %> <span data-time="<%= user.registered %>"></span></p><% }; %>
     <% if (user.status != 'online' && user.onlined) { %><p class="onlined"><i class="icon icon-clock-o"></i> <%= t('profile.user.onlined', {time: '<span data-time="'+user.onlined+'"></span>'}) %></p><% }; %>
-    <p class="permalink"><i class="icon icon-external-link"></i> <a href="<%= user.url %>" target="_blank"><%= t('profile.user.permalink') %></a></p>
-    <% if (user.isCurrent) { %><p class="edit"><a class="open-user-edit" data-username="<%= user.username %>"><i class="icon icon-pencil-square-o"></i> <%= t('profile.user.editlink') %></a></p><% }; %>
+    <p class="action permalink"><i class="icon icon-external-link"></i> <a href="<%= user.url %>" target="_blank"><%= t('profile.user.permalink') %></a></p>
+    <% if (user.isCurrent) { %><p class="action edit"><a class="open-user-edit" data-username="<%= user.username %>"><i class="icon icon-pencil-square-o"></i> <%= t('profile.user.editlink') %></a></p><% }; %>
+
+    <% if (!user.isCurrent) { %>
+        <!--Check if I banned this user-->
+        <% if (user.banned) { %>
+        <p class="action action-user-deban" style="cursor:pointer" data-uid="<%= user.user_id %>"><i class="icon icon-ban"></i> <%= t('chat.debanuser.infobox') %></p>
+        <% } else { %>
+        <p class="action action-user-ban" style="cursor:pointer" data-uid="<%= user.user_id %>"><i class="icon icon-ban"></i> <%= t('chat.banuser.infobox') %></p>
+        <% }; %>
+
+        <!--Check if this user banned me-->
+        <% if (user.i_am_banned) { %>
+        <p class="action color-text-error">
+            <i class="icon icon-ban color-text-error"></i>
+            <%= t('chat.banuser.banned-too') %>
+        </p>
+        <% }; %>
+    <% }; %>
+
     <% if (user.status == 'online') { %>
     <p class="discuss"><a href="#user/<%= user.username %>" data-colorify-background="color" data-colorify-text="contrast"><%= t('actions.discuss') %></a></p>
     <% } else { %>

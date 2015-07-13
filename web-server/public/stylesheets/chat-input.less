@@ -5,8 +5,11 @@
   .add-image, .add-smiley {
     cursor: pointer;
   }
-  .text-container {
-    padding-bottom: 10px;
+  .text-container { padding-bottom: 10px; position:relative;
+    .overlay { display:none; background-color: black; height: 91px;   width: 100%;   position: absolute;   top: 0;   cursor: pointer; z-index: 2; .opacity(20);
+      .overlay-text { color: white;   position: absolute; top: 33px;   width: 100%;   text-align: center;   cursor: pointer; font-size: 20px;}
+      &::after { content: ""; position: absolute; bottom: -15px; right: 17px; border-style: solid; border-width: 15px 15px 0; border-right-color: transparent; border-left-color: transparent; border-top-color: black; border-bottom-color: black; display: block; width: 0; z-index: 1; }
+    }
     .text {
       position: relative;
       padding: 12px 95px 12px 85px;
@@ -83,6 +86,9 @@
         }
       }
     }
+  }
+  &.inactive .text-container {
+    .overlay, .overlay::after { display:block; }
   }
   .preview {
     padding-top: 2px;

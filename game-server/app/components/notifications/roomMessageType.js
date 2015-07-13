@@ -37,7 +37,7 @@ Notification.prototype.shouldBeCreated = function (type, room, data) {
     function checkStatus(users, callback) {
       that.facade.app.statusService.getStatusByUids(_.map(users, 'id'), function (err, statuses) {
         if (err)
-          return callback('Error while retrieving users statuses: ' + err);
+          return utils.waterfallDone('Error while retrieving user statuses: '+err);
 
         return callback(null, users, statuses);
       });
@@ -67,10 +67,8 @@ Notification.prototype.shouldBeCreated = function (type, room, data) {
     function createNotifications(notificationsToCreate, callback) {
       NotificationModel.bulkInsert(notificationsToCreate, callback);
     }
-  ], function (err) {
-    if (err)
-      return logger.error('Error happened in roomMessageType|shouldBeCreated : ' + err);
-  });
+
+  ], utils.waterfallDone);
 
 };
 
@@ -132,11 +130,7 @@ Notification.prototype.sendEmail = function (model) {
       model.save(callback);
     }
 
-  ], function (err) {
-    if (err)
-      return logger.error('Error happened in roomMessageType|sendEmail : ' + err);
-  });
-
+  ], utils.waterfallDone);
 };
 
 Notification.prototype.sendMobile = function () {

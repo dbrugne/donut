@@ -89,10 +89,34 @@ define([
 
       this.toggleReadMore();
 
-      windowView.desktopNotify($.t('chat.notifications.desktop.' + data.type)
-          .replace('__roomname__', ( data.data.room && data.data.room.name ? ' ' + data.data.room.name : ''))
-          .replace('__username__', ( data.data.by_user && data.data.by_user.username ? ' ' + data.data.by_user.username : ''))
-        , '');
+      this._createDesktopNotify(data);
+    },
+    _createDesktopNotify: function(data)
+    {
+      var desktopTitle, desktopBody;
+
+      switch (data.type)
+      {
+        case 'roomop':
+        case 'roomdeop':
+        case 'roomkick':
+        case 'roomban':
+        case 'roomdeban':
+        case 'roomtopic':
+        case 'roomjoin':
+        case 'roommessage':
+          desktopTitle = $.t('chat.notifications.desktop.'+data.type).replace('__roomname__', ( data.data.room && data.data.room.name ? ' '+data.data.room.name : ''));
+          desktopBody = ( data.data.by_user && data.data.by_user.username ? t('chat.notifications.desktop.by') + ' '+data.data.by_user.username : '');
+        break;
+        case 'usermention':
+          desktopTitle = $.t('chat.notifications.desktop.'+data.type).replace('__username__', ( data.data.by_user && data.data.by_user.username ? ' '+data.data.by_user.username : ''));
+          desktopBody = '';
+        break;
+        default:
+        break;
+      }
+
+      windowView.desktopNotify(desktopTitle, desktopBody);
     },
     createNotificationFromTemplate: function (notification) {
       var template;
@@ -133,7 +157,7 @@ define([
       if (notification.data.room)
         notification.avatar = $.cd.roomAvatar(notification.data.room.avatar, 90);
       else if (notification.data.by_user)
-        notification.avatar = $.cd.roomAvatar(notification.data.by_user.avatar, 90);
+        notification.avatar = $.cd.userAvatar(notification.data.by_user.avatar, 90);
 
       return template({data: notification, from_now: dateObject.format("Do MMMM, HH:mm")});
     },
@@ -212,14 +236,14 @@ define([
         this.$readMore.removeClass('hidden');
         this.$loader.addClass('hidden');
 
-        if (data.notifications.length < 10)
-          this.$actions.addClass('hidden');
-      }, this));
+        var that = this;
+        this.markHasRead = setTimeout(function () {
+          that.clearNotifications();
+        }, 2000);
 
-      var that = this;
-      this.markHasRead = setTimeout(function () {
-        that.clearNotifications();
-      }, 2000);
+        this.toggleReadMore();
+
+      }, this));
     },
 
     lastNotifDisplayedTime: function () {
@@ -230,10 +254,12 @@ define([
 
     toggleReadMore: function () {
       // Only display if at least 10 messages displayed, and more messages to display on server
-      if (this.$menu.find('.message').length < 10)
+      if (this.$menu.find('.message').length < 10) {
+        this.$actions.addClass('hidden');
         return;
+      }
 
-      if ((this.undone || 0) < 10)
+      if ((this.undone || 0) < 10 || this.undone <= this.$menu.find('.message').length)
         this.$actions.addClass('hidden');
       else
         this.$actions.removeClass('hidden');

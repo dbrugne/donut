@@ -30,7 +30,8 @@ define([
   'views/discussion-room',
   'views/discussion-onetoone',
   'views/discussions-block',
-  'views/notifications'
+  'views/notifications',
+  'views/modal-confirmation'
 ], function ($, _, Backbone, donutDebug, client, currentUser, EventModel, rooms, onetoones, templates, windowView,
              ConnectionModalView, WelcomeModalView,
              CurrentUserView, AlertView, HomeView, QuickSearchView,
@@ -39,7 +40,7 @@ define([
              DrawerRoomDeleteView,
              DrawerUserProfileView, DrawerUserEditView, DrawerUserPreferencesView, DrawerUserAccountView,
              RoomView, OneToOneView,
-             DiscussionsBlockView, NotificationsView) {
+             DiscussionsBlockView, NotificationsView, ConfirmationView) {
 
   var debug = donutDebug('donut:main');
 
@@ -72,15 +73,15 @@ define([
       'click .open-user-preferences'    : 'openUserPreferences',
       'click .open-user-account'        : 'openUserAccount',
       'click .open-user-profile'        : 'openUserProfile',
+      'click .action-user-ban'          : 'userBan',
+      'click .action-user-deban'        : 'userDeban',
       'dblclick .dbl-open-user-profile' : 'openUserProfile',
       'click .open-room-profile'        : 'openRoomProfile',
       'click .open-room-edit'           : 'openRoomEdit',
       'click .open-room-preferences'    : 'openRoomPreferences',
       'click .open-room-users'          : 'openRoomUsers',
       'click .open-room-delete'         : 'openRoomDelete',
-      'click .close-discussion'         : 'onCloseDiscussion',
-      'mouseenter *[data-toggle="image-popover"]': 'onEnterImage',
-      'mouseleave *[data-toggle="image-popover"]': 'onLeaveImage'
+      'click .close-discussion'         : 'onCloseDiscussion'
     },
 
     initialize: function() {
@@ -196,36 +197,6 @@ define([
       _.each(this.views, function(view) {
         view.eventsView.addFreshEvent(e);
       });
-    },
-    onEnterImage: function(event) {
-      event.preventDefault();
-      var $image = $(event.currentTarget);
-      var cloudinaryId = $image.attr('data-cloudinary-id');
-      var url = $.cd.natural(cloudinaryId, 150, 150);
-      $image.popover({
-        animation: false,
-        content: '<img src="'+url+'" alt="user contribution">',
-        html: true,
-        placement: 'auto left',
-        viewport: $image.closest('div.mCSB_container')
-      });
-
-      $image.on('shown.bs.popover', function () {
-        var $i = $('.popover-content img');
-        $i.bind('load', function() {
-          if ($image.data('imgloaded'))
-            return;
-
-          $image.data('imgloaded', true);
-          $image.popover('show');
-        });
-      });
-
-      $image.popover('show');
-    },
-    onLeaveImage: function(event) {
-      $image = $(event.currentTarget);
-      $image.popover('hide');
     },
 
     alert: function(type, message) {
@@ -590,8 +561,36 @@ define([
       Backbone.history.navigate(uri); // just change URI, not run route action
 
       this.drawerView.close();
-    }
+    },
 
+    userBan: function(event) {
+      event.preventDefault();
+
+      var userId = $(event.currentTarget).data('uid');
+      if (!userId)
+        return;
+
+      var that = this;
+      ConfirmationView.open({}, function () {
+        client.userBan(userId);
+        that.trigger('userBan', {user_id: userId});
+      });
+    },
+
+    userDeban: function (event) {
+      event.preventDefault();
+
+      var userId = $(event.currentTarget).data('uid');
+      if (!userId)
+        return;
+
+      var that = this;
+      ConfirmationView.open({}, function() {
+        client.userDeban(userId);
+        that.trigger('userDeban', {user_id: userId});
+      });
+
+    }
   });
 
   return new MainView();

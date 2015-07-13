@@ -1,4 +1,9 @@
 <div class="text-container">
+    <div class="overlay">
+        <span class="overlay-text">
+            <%= bannedMessage %>
+        </span>
+    </div>
     <div class="text">
         <textarea class="editable" maxlength="512"></textarea>
         <% if (avatar) { %><img class="avatar" src="<%= avatar %>"><% } %>
