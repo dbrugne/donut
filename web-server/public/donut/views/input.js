@@ -29,6 +29,7 @@ define([
 
     initialize: function(options) {
       this.listenTo(currentUser, 'change:avatar', this.onAvatar);
+      this.listenTo(this.model, 'inputActive', this.onActiveChange);
 
       this.images = {}; // should be initialized with {} on .initialize(), else all the view instances will share the same object (#110)
 
@@ -42,7 +43,8 @@ define([
 
     render: function() {
       this.$el.html(this.template({
-        avatar: $.cd.userAvatar(currentUser.get('avatar'), 80)
+        avatar: $.cd.userAvatar(currentUser.get('avatar'), 80),
+        bannedMessage: $.t('chat.actions.bannedMessage.__type__'.replace('__type__', this.model.get('type')))
       }));
 
       this.$editable = this.$el.find('.editable');
@@ -76,6 +78,20 @@ define([
           callback.call(this, data);
         }
       });
+
+      if (this.model.isInputActive() === false) { // deactivate input
+        this.$el.addClass('inactive');
+      } else {
+        this.$el.removeClass('inactive');
+      }
+    },
+
+    onActiveChange: function() {
+      if (this.model.isInputActive() === false) { // deactivate input
+        this.$el.addClass('inactive');
+      } else {
+        this.$el.removeClass('inactive');
+      }
     },
 
     onInput: function(event) {

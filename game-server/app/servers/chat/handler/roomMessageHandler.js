@@ -113,7 +113,9 @@ handler.message = function (data, session, next) {
       var monTableau;
       var usersIds = [];
       while ((monTableau = reg.exec(sentEvent.message)) !== null) {
-        usersIds.push(monTableau[1]);
+        // check if mentionned User is in current Room
+        if (room.users.indexOf(monTableau[1]) !== -1)
+          usersIds.push(monTableau[1]);
       }
 
       User.find({_id: {$in: _.uniq(usersIds)}}, function (err, users) {

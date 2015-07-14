@@ -37,7 +37,7 @@ define([
       this.on("change:avatar", this.onChange);
       this.on("change:poster", this.onChange);
       this.on("change:color", this.onChange);
-      this.on("change:status", this.onChange); // @todo : same fix as model/user, reduce event propagation
+      this.on("change:status", this.onChange); // @todo dbr same fix as model/user, reduce event propagation
     },
 
     /**

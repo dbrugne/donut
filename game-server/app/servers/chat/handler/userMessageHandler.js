@@ -65,6 +65,13 @@ handler.message = function(data, session, next) {
 			});
 		},
 
+    function filterBannedUser(from, to, callback) {
+      if (to.isBanned(from.id))
+        return callback('From user is banned by to user in user:message');
+
+      return callback(null, from, to);
+    },
+
 		function persistOnBoth(from, to, callback) {
 			from.update({$addToSet: { onetoones: to._id }}, function(err) {
 				if (err)

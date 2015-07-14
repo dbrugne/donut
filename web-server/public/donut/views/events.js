@@ -21,8 +21,9 @@ define([
       "click .go-to-bottom a"         : 'scrollDown',
       "shown.bs.dropdown .actions"    : 'onMessageMenuShow',
       "click .dropdown-menu .spammed" : 'onMarkAsSpam',
-      "click .dropdown-menu .unspam"  : 'onMarkAsUnspam',
-      "click .view-spammed-message"   : 'viewSpammedMessage'
+      "click .dropdown-menu .unspam"  : 'onUnmarkAsSpam',
+      "click .view-spammed-message"   : 'onViewSpammedMessage',
+      "click .remask-spammed-message" : 'onRemaskSpammedMessage'
     },
 
     historyLoading: false,
@@ -42,6 +43,7 @@ define([
       this.listenTo(this.model, 'viewed', this.onViewed);
       this.listenTo(this.model, 'messageSpam', this.onMarkedAsSpam);
       this.listenTo(this.model, 'messageUnspam', this.onMarkedAsUnspam);
+      this.listenTo(client, 'admin:message', this.onAdminMessage);
 
       debug.start('discussion-events' + this.model.getIdentifier());
       this.render();
@@ -361,6 +363,15 @@ define([
      * Events rendering
      *
      *****************************************************************************************************************/
+    onAdminMessage: function(data) {
+      // @todo : cleanup and design
+      data = { data: data };
+      data.data.avatar = 'cloudinary=v1409643461/rciev5ubaituvx5bclnz.png';
+      data.data.username = 'Administrateur DONUT';
+      data.type = 'room:message';
+      var model = new EventModel(data);
+      this.addFreshEvent(model);
+    },
     addFreshEvent: function (model) {
       // browser notification
       if (model.getGenericType() == 'message')
@@ -445,6 +456,7 @@ define([
       var size = (model.getGenericType() != 'inout')
         ? 30
         : 20;
+      
       if (model.get("data").avatar)
         data.data.avatar = $.cd.userAvatar(model.get("data").avatar, size);
       if (model.get("data").by_avatar)
@@ -463,7 +475,7 @@ define([
         // mentions
         if (this.model.get('type') == 'room') {
           message = message.replace(
-            /@\[([^\]]+)\]\(user:([^)]+)\)/g,
+            /@\[([^\]]+)\]\(user:([^)]+)\)/g, // @todo put that in config
             '<a class="mention open-user-profile" data-username="$1" style="color: ' + this.model.get('color') + '">@$1</a>'
           );
         }
@@ -566,7 +578,13 @@ define([
             template = templates['event/room-op.html'];
             break;
           case 'room:topic':
-            template = templates['event/room-topic.html'];
+            template = templates['event/room-topic.html']; 
+            break;
+          case 'user:ban':
+            template = templates['event/user-ban.html']; 
+            break;
+          case 'user:deban':
+            template = templates['event/user-deban.html']; 
             break;
           default:
             return;
@@ -646,12 +664,15 @@ define([
 
       client.roomMessageSpam(roomName, messageId);
     },
-    onMarkAsUnspam: function (event) {
+    onUnmarkAsSpam: function (event) {
       event.preventDefault();
       var parent = $(event.target).parents('.event');
       var roomName = this.model.get('name');
       var messageId = parent.attr('id');
       parent.removeClass('viewed');
+
+      var ctn = parent.find('.text') || parent.find('.image');
+      ctn.find('.remask-spammed-message').remove();
 
       client.roomMessageUnspam(roomName, messageId);
     },
@@ -674,13 +695,33 @@ define([
       if (bottom)
         this.scrollDown();
     },
-    viewSpammedMessage: function (event) {
+    onViewSpammedMessage: function (event) {
       var bottom = this.isScrollOnBottom();
       event.preventDefault();
       var parent = $(event.target).parents('.event');
       var textSpammed = $(event.target).parents('.text-spammed');
+      var ctn = parent.find('.text') || parent.find('.image');
       parent.removeClass('spammed').addClass('viewed');
       textSpammed.remove();
+
+      ctn.prepend('<a class="remask-spammed-message label label-danger">' + $.t('chat.message.text-remask') + '</a>');
+
+      if (bottom)
+        this.scrollDown();
+    },
+    onRemaskSpammedMessage: function (event) {
+      var bottom = this.isScrollOnBottom();
+      event.preventDefault();
+      var parent = $(event.target).parents('.event');
+      var ctn = parent.find('.text') || parent.find('.image');
+      parent.addClass('spammed').removeClass('viewed');
+      parent
+        .find('.ctn')
+        .first()
+        .append('<div class="text-spammed">' + $.t('chat.message.text-spammed') + '</div>');
+
+      ctn.find('.remask-spammed-message').remove();
+
       if (bottom)
         this.scrollDown();
     },

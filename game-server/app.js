@@ -10,6 +10,7 @@ var globalChannel = require('pomelo-globalchannel-plugin');
 var status = require('pomelo-status-plugin');
 var chatLoggerFilter = require('./app/servers/chat/filter/logger');
 var connectorLoggerFilter = require('./app/servers/connector/filter/logger');
+var pomeloBridge = require('./app/components/bridge');
 
 /**
  * Init app for client.
@@ -78,23 +79,33 @@ app.configure('production|test|development', 'chat', function() {
   //app.enable('scripts');
   //app.enable('watchServer');
 
-  // custom admin module
-  // load admin modules
-
-  if(typeof app.registerAdmin === 'function'){
+  //if(typeof app.registerAdmin === 'function'){
     // custom modules
     var onlineUser = require('./app/modules/onlineUser');
     app.registerAdmin(onlineUser, {app: app});
-  }
+  //}
 });
 
+// Scheduler
 app.configure('production|test|development', 'master', function() {
   app.load(scheduler, {});
+});
+
+// admin modules for all kinds of servers
+app.registerAdmin(pomeloBridge.Module, {
+  app: app
 });
 
 // start app
 app.start();
 
+/**
+ * uncaughtException handler
+ */
 process.on('uncaughtException', function(err) {
-  console.error(' Caught exception: ' + err.stack);
+  try {
+    logger.fatal('Uncaught exception: ', err.stack);
+  } catch (e) {
+    console.error('Uncaught exception: ', err.stack);
+  }
 });
