@@ -6,7 +6,7 @@
             <div style="line-height: 44px;">
                 <font face="Arial, Helvetica, sans-serif" size="5" color="#57697e" style="font-size: 34px;">
                     <span style="font-family: Arial, Helvetica, sans-serif; font-size: 34px; color: #57697e;">
-                        <%= t('email.roomdeban.content.title') %>&nbsp;<strong><%- roomname %></strong>
+                        <%= t('email.roomdeban.content.title') %>&nbsp;<strong><a href="https://<%- fqdn %>/room/<%= roomname.replace('#', '') %>" color="#253b6c" style="text-decoration:none;"><%- roomname %></a></strong>
                     </span>
                 </font>
             </div>
@@ -19,7 +19,7 @@
                 <font face="Arial, Helvetica, sans-serif" size="5" color="#4db3a4" style="font-size: 17px;">
                     <span style="font-family: Arial, Helvetica, sans-serif; font-size: 17px; color: #4db3a4;">
                         <%= t('email.roomdeban.content.disclaimer') %>
-                        <small style="font-size: 13px;"><%= t('email.roomdeban.content.action') %>&nbsp;<strong><a href="https://<%- fqdn %>/user/<%= username %>">@<%- username %></a></strong></small>
+                        <small style="font-size: 13px;"><%= t('email.roomdeban.content.action') %>&nbsp;<strong><a href="https://<%- fqdn %>/user/<%= username %>" color="#253b6c" style="text-decoration:none;">@<%- username %></a></strong></small>
                     </span>
                 </font>
             </div>
