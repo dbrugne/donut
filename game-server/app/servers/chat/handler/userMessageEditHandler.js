@@ -2,7 +2,6 @@ var logger = require('../../../../pomelo-logger').getLogger('donut', __filename)
 var async = require('async');
 var User = require('../../../../../shared/models/user');
 var Notifications = require('../../../components/notifications');
-var oneEmitter = require('../../../util/oneEmitter');
 var inputUtil = require('../../../util/input');
 var keenio = require('../../../../../shared/io/keenio');
 var HistoryOne = require('../../../../../shared/models/historyone');
@@ -19,9 +18,9 @@ var Handler = function(app) {
 var handler = Handler.prototype;
 
 /**
- * Handle onetoone edit message logic
+ * Handle user message edit logic
  *
- * @param {Object} data message, messageId from client
+ * @param {Object} data messageId, message from client
  * @param {Object} session
  * @param {Function} next stemp callback
  *
@@ -34,9 +33,9 @@ handler.edit = function(data, session, next) {
 
     function check(callback) {
       if (!data.event)
-        return callback('message:onetoone:edit require event param');
+        return callback('user:message:edit require event param');
       if (!data.message)
-        return callback('message:onetoone:edit require message param');
+        return callback('user:message:edit require message param');
 
       return callback(null);
     },
@@ -44,10 +43,10 @@ handler.edit = function(data, session, next) {
     function retrieveOneEvent(callback) {
       HistoryOne.findOne({_id: data.event}, function (err, editEvent) {
         if (err)
-          return callback('Error while retrieving event in message:onetoone:edit: ' + err);
+          return callback('Error while retrieving event in user:mesage:edit: ' + err);
 
         if (!editEvent)
-          return callback('Unable to retrieve event in message:onetone:edit: ' + data.event);
+          return callback('Unable to retrieve event in user:message:edit: ' + data.event);
 
         if (session.uid !== editEvent.from.toString())
           return callback(session.uid + 'should be :' + editEvent.from.toString());
@@ -70,7 +69,7 @@ handler.edit = function(data, session, next) {
     },
 
     function persist(editEvent, message, callback) {
-      editEvent.update({ edited:true, data: { message: message } }, function(err) {
+      editEvent.update({ edited : true, data: { message: message } }, function(err) {
         if (err)
           return callback('Unable to persist edited of ' + editEvent.id);
         return callback(null, editEvent, message);
