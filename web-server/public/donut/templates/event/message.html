@@ -5,7 +5,7 @@
     <div class="username open-user-profile" data-username="<%= data.username %>">@<%= data.username %></div>
     <div class="items">
         <% } %>
-        <div class="event <% if (spammed) { %>spammed<% } %><% if (unviewed) { print('unviewed'); } %>"
+        <div class="event <% if (spammed) { %>spammed<% } %> <% if (unviewed) { print('unviewed'); } %>"
              id="<%= data.id %>" data-time="<%= data.time %>"
         <% if (spammed === true) { %>data-spammed="true"<% } %>>
         <div class="ctn">
