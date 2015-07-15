@@ -6,9 +6,10 @@ define([
   'models/event',
   'moment',
   'client',
+  'models/current-user',
   'views/window',
   '_templates'
-], function ($, _, Backbone, donutDebug, EventModel, moment, client, windowView, templates) {
+], function ($, _, Backbone, donutDebug, EventModel, moment, client, currentUser, windowView, templates) {
 
   var debug = donutDebug('donut:events');
 
@@ -17,13 +18,15 @@ define([
     template: templates['events.html'],
 
     events: {
-      "click .go-to-top a"            : 'scrollTop',
-      "click .go-to-bottom a"         : 'scrollDown',
-      "shown.bs.dropdown .actions"    : 'onMessageMenuShow',
-      "click .dropdown-menu .spammed" : 'onMarkAsSpam',
-      "click .dropdown-menu .unspam"  : 'onUnmarkAsSpam',
-      "click .view-spammed-message"   : 'onViewSpammedMessage',
-      "click .remask-spammed-message" : 'onRemaskSpammedMessage'
+      "click .go-to-top a"             : 'scrollTop',
+      "click .go-to-bottom a"          : 'scrollDown',
+      "shown.bs.dropdown .actions"     : 'onMessageMenuShow',
+      "click .dropdown-menu .spammed"  : 'onMarkAsSpam',
+      "click .dropdown-menu .unspam"   : 'onUnmarkAsSpam',
+      "click .view-spammed-message"    : 'onViewSpammedMessage',
+      "click .remask-spammed-message"  : 'onRemaskSpammedMessage',
+      "click .dropdown-menu .edited"   : 'showFormEditMessage',
+      "dblclick .event "               : 'showFormEditMessage'
     },
 
     historyLoading: false,
@@ -648,11 +651,22 @@ define([
       var eventUsername = $(event.target).closest('[data-username]').data('username');
       var isMessageOwner = (ownerUsername === eventUsername);
 
+      // check isEditable
+      var isMessageCurrentUser = (currentUser.get('username') === eventUsername);
+      var timeTarget = new Date(
+        $(event.target)
+          .parents('.event')
+          .data('time')
+      );
+      var time = Date.now() - timeTarget;
+      var isEditable = (time < (3600 * 1000));
+
+
       var isOp = this.model.currentUserIsOp();
       var isOwner = this.model.currentUserIsOwner();
       var isAdmin = this.model.currentUserIsAdmin();
 
-      if (!isOwner && !isAdmin && !isOp || (isOp && isMessageOwner)) {
+      if (((!isOwner && !isAdmin && !isOp) || (isOp && isMessageOwner)) && (!isMessageCurrentUser || !isEditable )) {
         $(event.currentTarget).find('.dropdown-menu').dropdown('toggle');
         return;
       }
@@ -661,7 +675,9 @@ define([
           isOp: isOp,
           isOwner: isOwner,
           isAdmin: isAdmin,
-          isMessageOwner: isMessageOwner
+          isMessageOwner: isMessageOwner,
+          isMessageCurrentUser: isMessageCurrentUser,
+          isEditable: isEditable
         }
       });
       $(event.currentTarget).find('.dropdown-menu').html(html);
@@ -735,8 +751,15 @@ define([
       if (bottom)
         this.scrollDown();
     },
+    showFormEditMessage: function (event) {
+      event.preventDefault();
+      $(event.target).parents('.event').hide();
+    },
+    onEditedMessage: function (event) {
+      client.roomMessageEdit('#sebastien', '55a679e82dd2e9601177da24', 'sa marche!!!');
+    },
     onMessageEdit: function (event) {
-      console.log("sa marche");
+      console.log("sa marche : ", event);
     },
 
     /*****************************************************************************************************************

@@ -500,7 +500,8 @@
         "spam": {
           "mark-spam": "Mark as spam",
           "unmark-spam": "Unmark as spam"
-        }
+        },
+        "edited": "Edited my message"
       }
     }
   },
