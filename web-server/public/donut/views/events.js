@@ -364,10 +364,10 @@ define([
      *
      *****************************************************************************************************************/
     onAdminMessage: function(data) {
-      // @todo : cleanup and design
       data = { data: data };
       data.data.avatar = 'cloudinary=v1409643461/rciev5ubaituvx5bclnz.png';
       data.data.username = 'Administrateur DONUT';
+      data.data.is_admin = true;
       data.type = 'room:message';
       var model = new EventModel(data);
       this.addFreshEvent(model);
