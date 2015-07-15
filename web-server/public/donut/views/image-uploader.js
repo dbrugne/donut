@@ -60,6 +60,7 @@ define([
     onRemove: function(event) {
       this.options.current = '';
       this.data = {remove: true};
+      this.options.success(this.data);
       this.render();
     },
     onChange: function(event) {
