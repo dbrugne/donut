@@ -23,6 +23,7 @@ define([
     initialize: function(options) {
       delete options.el; // already saved by Backbone.View, now should be removed from cloudinary options
       this.options = _.extend({
+        success: _.noop,
         current: '',
         field_name: 'image',
         tags: '',
@@ -82,6 +83,8 @@ define([
             version: result[0].version,
             path: result[0].path
           };
+
+          that.options.success(that.data);
           that.render();
         }
       );

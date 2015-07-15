@@ -69,7 +69,8 @@ define([
         field_name: 'avatar',
         resized_width: 150,
         resized_height: 150,
-        cropping_aspect_ratio: 1 // squared avatar
+        cropping_aspect_ratio: 1, // squared avatar
+        success: _.bind(this.onUserAvatarUpdate, this)
       });
 
       // poster
@@ -80,7 +81,8 @@ define([
         field_name: 'poster',
         resized_width: 0,
         resized_height: 0,
-        cropping_aspect_ratio: 0.36 // portrait
+        cropping_aspect_ratio: 0.36, // portrait
+        success: _.bind(this.onUserPortraitUpdate, this)
       });
     },
     onSubmit: function(event) {
@@ -112,8 +114,39 @@ define([
         }
         that.trigger('close');
       });
+    },
+    onUserAvatarUpdate: function(data) {
+      var updateData = {
+        avatar: data
+      };
+      var that = this;
+      client.userUpdate(updateData, function(d) {
+        that.$el.find('.errors').hide();
+        if (d.err) {
+          var message = '';
+          _.each(d.errors, function(error) {
+            message += error+'<br>';
+          });
+          that.$el.find('.errors').html(message).show();
+        }
+      });
+    },
+    onUserPortraitUpdate: function(data) {
+      var updateData = {
+        poster: data
+      };
+      var that = this;
+      client.userUpdate(updateData, function(d) {
+        that.$el.find('.errors').hide();
+        if (d.err) {
+          var message = '';
+          _.each(d.errors, function(error) {
+            message += error+'<br>';
+          });
+          that.$el.find('.errors').html(message).show();
+        }
+      });
     }
-
   });
 
   return DrawerUserEditView;
