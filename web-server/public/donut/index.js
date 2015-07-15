@@ -165,7 +165,7 @@ require([
   // Desktop notifications configuration
   desktopNotify.config({
         pageVisibility: true, // Always display, even if application is in background
-        autoClose: 2000
+        autoClose: 5000
   });
 
   // run

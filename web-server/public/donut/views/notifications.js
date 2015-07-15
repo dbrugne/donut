@@ -104,6 +104,9 @@ define([
         case 'roomdeban':
         case 'roomtopic':
         case 'roomjoin':
+          desktopTitle = $.t('chat.notifications.desktop.'+data.type, { 'roomname': ( data.data.room && data.data.room.name ? data.data.room.name : ''), 'username': ( data.data.user && data.data.user.username ? data.data.user.username : '') });
+          desktopBody = '';
+        break;
         case 'roommessage':
           desktopTitle = $.t('chat.notifications.desktop.'+data.type).replace('__roomname__', ( data.data.room && data.data.room.name ? ' '+data.data.room.name : ''));
           desktopBody = ( data.data.by_user && data.data.by_user.username ? t('chat.notifications.desktop.by') + ' '+data.data.by_user.username : '');

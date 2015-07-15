@@ -500,8 +500,7 @@
         "spam": {
           "mark-spam": "Mark as spam",
           "unmark-spam": "Unmark as spam"
-        },
-        "nothing": "Nothing"
+        }
       }
     }
   },
