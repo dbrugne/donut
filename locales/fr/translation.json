@@ -443,6 +443,7 @@
         "roomop": " Vous venez d'être promu modérateur de __roomname__",
         "roomdeop": "Vous n'êtes plus modérateur de __roomname__",
         "roomtopic": "Le sujet à changé dans __roomname__",
+        "roomjoin": "__username__ a rejoint le Donut __roomname__",
         "usermessage": "__username__ vous a écrit",
         "usermention": "__username__ vous a mentionné"
       }
@@ -510,14 +511,13 @@
       "contactus": "Problèmes pour vous connecter ? Contactez-nous."
     },
     "message": {
-      "text-spammed": "Ce message a été marqué comme indésirable au modérateur, pour le voir quand même [<a class=\"view-spammed-message\">cliquer ici</a>].",
+      "text-spammed": "Message indésirable d'après le modérateur [<a class=\"view-spammed-message\">Afficher</a>].",
       "text-remask": "Masquer à nouveau",
       "dropdown": {
         "spam": {
           "mark-spam": "Marquer comme message indésirable",
           "unmark-spam": "Ce message n'est pas indésirable"
-        },
-        "nothing": "Aucune action disponible"
+        }
       }
     }
   },

@@ -267,34 +267,9 @@
               vertical-align: middle;
             }
           }
-          /*&.visible {
-            background-color: pink;
-            &.topElement {
-              background-color: green;
-            }
-            &.bottomElement {
-              background-color: blue;
-            }
-            &.first {
-              background-color: deeppink;
-            }
-            &.big {
-              background-color: lightcoral;
-            }
-            &.bottom {
-              background-color: red;
-              height: 5px;
-              position: absolute;
-              top: -100px;
-              left: 0;
-              right: 0;
-            }
-          }*/ // debug
         }
       }
-      .block.message {
-        padding-top: 23px;
-        padding-left: 40px;
+      .block.message { padding-top: 23px; padding-left: 40px;
         .avatar { position: absolute; top: 5px; left: 5px; border: none; width: 30px; height: 30px; background-position: center center; background-size: 30px 30px; }
         .username { position: absolute; top: 5px; left: 45px; .ft-opensans-bold; font-size: 1em; }
         .event { position: relative; padding-left: 9px;
@@ -349,17 +324,20 @@
             .text, .images { display: none; }
             .actions .dropdown-menu ul.a li .unspam { display:inline; }
             .actions .dropdown-menu ul.a li .spammed { display:none; }
-            .text-spammed { display: block; font-style: italic; background-color: @cl-subtext5; color: #333; padding-right:50px;
+            .text-spammed { display: block; font-style: italic; color: #333; padding-right:50px;
               a { cursor:pointer; }
             }
           }
           &.viewed {
             .actions .dropdown-menu ul.a li .unspam { display:inline; }
             .actions .dropdown-menu ul.a li .spammed { display:none; }
-            .text { background-color: lighten(#e74c3c, 30%);
-              .remask-spammed-message { margin: 2px 5px 0 0; float: left; color: @cl-clouds; font-weight: normal; font-size: 10px; }
+            .ctn { background-color: lighten(#e74c3c, 30%);
+              .remask-spammed-message { float: left; font-weight: normal; font-size: 10px; color: @cl-clouds; margin-left: 2px; margin: 7px 5px 0 2px; }
             }
           }
+        }
+        &.admin {   background-color: @cl-first; color: @cl-clouds;
+          .event .date { color: @cl-clouds; }
         }
       }
       .block.inout {

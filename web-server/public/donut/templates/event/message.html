@@ -1,8 +1,12 @@
 <% if (withBlock) { %>
-<div class="block message" data-username="<%= data.username %>">
+<div class="block message <%= (data.is_admin ? 'admin' : '') %>" data-username="<%= data.username %>">
     <div class="avatar open-user-profile" data-username="<%= data.username %>"
          style="background-image: url(<%= data.avatar %>)"></div>
+    <% if(data.is_admin) { %>
+    <div class="username">@<%= data.username %></div>
+    <% } else { %>
     <div class="username open-user-profile" data-username="<%= data.username %>">@<%= data.username %></div>
+    <% } %>
     <div class="items">
         <% } %>
         <div class="event <% if (spammed) { %>spammed<% } %> <% if (unviewed) { print('unviewed'); } %>"
@@ -31,14 +35,15 @@
         </div>
         <div class="date pull-right"><span class="moment" data-time="<%= data.time %>" title="<%= data.datefull %>"><%= data.dateshort %></span>
         </div>
-        <!--Only display for room messages-->
-        <% if (type === 'room:message') { %>
+        <% if(!data.is_admin) { %> <!--Only display for non admin messages-->
+        <% if (type === 'room:message') { %> <!--Only display for room messages-->
         <div class="actions">
             <a class="message-menu" data-toggle="dropdown" role="button" aria-expanded="false" id="messageMenu">
                 <i class="icon icon-cog"></i>
             </a>
             <div class="dropdown-menu" aria-labelledby="messageMenu"><!-- message dropdown menu content --></div>
         </div>
+        <% } %>
         <% } %>
     </div>
     <% if (withBlock) { %>
