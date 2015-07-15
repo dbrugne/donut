@@ -10,6 +10,7 @@ var logger = require('../../../pomelo-logger').getLogger('donut', __filename);
 var _ = require('underscore');
 var dispatcher = require('../../util/dispatcher');
 var adminNotifyTask = require('./adminNotifyTask');
+var createNotificationTask = require('./createNotificationTask');
 
 module.exports = function(opts) {
   return new Module(opts);
@@ -43,10 +44,17 @@ Module.prototype.retrieveTask = function(route) {
   // @todo : make it dynamically
 
   if (route.indexOf('adminNotifyTask') !== -1) {
-    var adminNotify = adminNotifyTask(this.options);
+    var tasks = adminNotifyTask(this.options);
     var method = route.substr(route.indexOf('.')+1);
-    if (method && _.isFunction(adminNotify[method]))
-      return _.bind(adminNotify[method], adminNotify)
+    if (method && _.isFunction(tasks[method]))
+      return _.bind(tasks[method], tasks)
+  }
+
+  if (route.indexOf('createNotificationTask') !== -1) {
+    var tasks = createNotificationTask(this.options);
+    var method = route.substr(route.indexOf('.')+1);
+    if (method && _.isFunction(tasks[method]))
+      return _.bind(tasks[method], tasks)
   }
 
   return false;
