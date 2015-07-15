@@ -43,6 +43,7 @@ define([
       this.listenTo(this.model, 'viewed', this.onViewed);
       this.listenTo(this.model, 'messageSpam', this.onMarkedAsSpam);
       this.listenTo(this.model, 'messageUnspam', this.onMarkedAsUnspam);
+      this.listenTo(this.model, 'messageEdit', this.onMessageEdit);
       this.listenTo(client, 'admin:message', this.onAdminMessage);
 
       debug.start('discussion-events' + this.model.getIdentifier());
@@ -724,6 +725,9 @@ define([
 
       if (bottom)
         this.scrollDown();
+    },
+    onMessageEdit: function (event) {
+      console.log("sa marche");
     },
 
     /*****************************************************************************************************************

@@ -1,7 +1,6 @@
 var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
 var async = require('async');
 var User = require('../../../../../shared/models/user');
-var Notifications = require('../../../components/notifications');
 var inputUtil = require('../../../util/input');
 var HistoryOne = require('../../../../../shared/models/historyone');
 
@@ -94,15 +93,20 @@ handler.edit = function(data, session, next) {
     function checkMessage(from, to, editEvent, callback) {
       // text filtering
       var message = inputUtil.filter(data.message, 512);
-
       if (!message)
         return callback('Empty message no text)');
+
+      var time = 3600 * 1000; // 1 hours.
+      var diff = Date.now() - editEvent.time;
+
+      if (diff > time)
+        return callback('Message too old : ' + (diff / 1000) + ' > ' + (time / 1000));
 
       return callback(null, from, to, editEvent, message);
     },
 
     function persist(from, to, editEvent, message, callback) {
-      editEvent.update({ edited : true, data: { message: message } }, function(err) {
+      editEvent.update({ edited : true, data: { message: message },  edited_at: new Date() }, function(err) {
         if (err)
           return callback('Unable to persist edited of ' + editEvent.id);
         return callback(null, from, to, editEvent);
