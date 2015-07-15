@@ -642,16 +642,25 @@ define([
      *****************************************************************************************************************/
     onMessageMenuShow: function (event) {
       var ownerUsername = '';
-      if (this.model.get('owner')) {
+      if (this.model.get('owner'))
         ownerUsername = this.model.get('owner').get('username');
+      var eventUsername = $(event.target).closest('[data-username]').data('username');
+      var isMessageOwner = (ownerUsername === eventUsername);
+
+      var isOp = this.model.currentUserIsOp();
+      var isOwner = this.model.currentUserIsOwner();
+      var isAdmin = this.model.currentUserIsAdmin();
+
+      if (!isOwner && !isAdmin && !isOp || (isOp && isMessageOwner)) {
+        $(event.currentTarget).find('.dropdown-menu').dropdown('toggle');
+        return;
       }
-      var eventUsername = $(event.target).closest('[data-username]').data("username");
       var html = templates['events-dropdown.html']({
         data: {
-          isOp: this.model.currentUserIsOp(),
-          isOwner: this.model.currentUserIsOwner(),
-          isAdmin: this.model.currentUserIsAdmin(),
-          isMessageOwner: (ownerUsername === eventUsername)
+          isOp: isOp,
+          isOwner: isOwner,
+          isAdmin: isAdmin,
+          isMessageOwner: isMessageOwner
         }
       });
       $(event.currentTarget).find('.dropdown-menu').html(html);

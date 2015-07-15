@@ -517,8 +517,7 @@
         "spam": {
           "mark-spam": "Marquer comme message indésirable",
           "unmark-spam": "Ce message n'est pas indésirable"
-        },
-        "nothing": "Aucune action disponible"
+        }
       }
     }
   },

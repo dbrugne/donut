@@ -4,10 +4,8 @@
         <li>
             <i class="icon icon-cog"></i>
             <% if ((data.isOp && !data.isMessageOwner) || data.isOwner || data.isAdmin) { %>
-            <a href="#" class="spammed"><%= t('chat.message.dropdown.spam.mark-spam') %></a>
-            <a href="#" class="unspam"><%= t('chat.message.dropdown.spam.unmark-spam') %></a>
-            <% } else { %>
-            <%= t('chat.message.dropdown.nothing') %>
+                <a href="#" class="spammed"><%= t('chat.message.dropdown.spam.mark-spam') %></a>
+                <a href="#" class="unspam"><%= t('chat.message.dropdown.spam.unmark-spam') %></a>
             <% } %>
         </li>
     </ul>
