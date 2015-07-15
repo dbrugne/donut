@@ -312,7 +312,7 @@
       "banned": "You have lock this user",
       "bannedMessage": {
         "onetoone": "You have been locked by this user",
-        "room": "You have been locked in this Room"
+        "room": "You have been locked in this Donut"
       },
       "unlock": "(Click here to unlock)"
     },
@@ -411,7 +411,7 @@
         "op": "You have been promoted moderateur of",
         "deop": "You have been removed from moderators of",
         "roomtopic": "Subject has changed in  ",
-        "roomjoin": "just joined the room",
+        "roomjoin": "just joined this Donut",
         "usermention": "You were notified in ",
         "roommessage": "New message in ",
         "userban": " locked you",
@@ -426,7 +426,7 @@
         "roomdeop": "You have been removed from moderators of __roomname__",
         "roomtopic": "The subject has changed in __roomname__",
         "usermessage": "__username__ sent a message to you",
-        "usermention": "__username__ Notified you in this room",
+        "usermention": "__username__ Notified you in this Donut",
         "userban": "You have been locked",
         "userdeban": "You have been unlocked"
       }
@@ -687,7 +687,7 @@
         "subject": "You have received a message on DONUT.me",
         "content": {
           "title": "You have received a message",
-          "inroom": "In the room ",
+          "inroom": "In the Donut ",
           "button": "See the message on DONUT"
         }
       },
@@ -741,7 +741,7 @@
         "content": {
           "title": "You have been banned of",
           "disclaimer": "A lot of things changed on DONUT since your last login.",
-          "disclaimer2": "You can contact the Room Operator for more details: ",
+          "disclaimer2": "You can contact the Donut Operator for more details: ",
           "action": "Action made by",
           "button": "Back on DONUT"
         }
@@ -755,20 +755,12 @@
           "button": "Back on DONUT"
         }
       },
-      "userban": {
-        "subject": "You have been locked by __username__ on DONUT",
+      "usermention": {
+        "subject": "You have been notified on DONUT",
         "content": {
-          "title": "You have been locked by __username__",
-          "disclaimer": "You can no longuer send him direct messages. He still could send you direct messages, unless you lock him in return.",
-          "button": "Back on DONUT"
-        }
-      },
-      "userdeban": {
-        "subject": "You have been unlocked by __username__ on DONUT",
-        "content": {
-          "title": "You have been unlocked by __username__",
-          "disclaimer": "You can now start again sending him direct messages. He will be able to reply if you have not locked him.",
-          "button": "Back on DONUT"
+          "title": "You have been notified in the Donut __name__",
+          "inroom": "In the Donut ",
+          "button": "See the notification on DONUT"
         }
       },
       "contact": {

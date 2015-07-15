@@ -200,7 +200,8 @@ emailer.roomMessage = function(toEmail, events, roomName, roomAvatar, callback) 
       events: events,
       room_name: roomName,
       room_avatar: roomAvatar,
-      title: i18next.t("email.roommessage.title")
+      title: i18next.t("email.roommessage.title"),
+      email_heading: i18next.t("email.roommessage.content.title")
   }, function (err, html) {
     if (err)
       return callback(err);
@@ -420,7 +421,8 @@ emailer.userMention = function(toEmail, events, roomName, roomAvatar, callback) 
       events: events,
       room_name: roomName,
       room_avatar: roomAvatar,
-      title: i18next.t("email.usermention.content.title", {'name': roomName })
+      title: i18next.t("email.usermention.title").replace('__name__', roomName),
+      email_heading: i18next.t("email.usermention.content.title", {'name': roomName})
   }, function (err, html) {
     if (err)
       return callback(err);

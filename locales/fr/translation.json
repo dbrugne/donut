@@ -333,7 +333,7 @@
       "banned": "Vous avez bloqué cet utilisateur",
       "bannedMessage": {
         "onetoone": "Vous avez été bloqué par cet utilisateur",
-        "room": "Vous avez été bloqué dans cette Room"
+        "room": "Vous avez été bloqué dans ce Donut"
       },
       "unlock": "(Cliquez ici pour le débloquer)"
     },
@@ -430,9 +430,9 @@
         "deban": "Vous n'êtes plus banni de ",
         "op": "Vous avez été promu modérateur de ",
         "deop": "Vous n'êtes plus modérateur de ",
-        "roomtopic": "Le sujet a changé dans ",
-        "roomjoin": "a rejoint ",
-        "usermention": "on vous a mentionné dans ",
+        "roomtopic": "Le sujet à changé dans ",
+        "roomjoin": "a rejoint la room ",
+        "usermention": "on vous a notifié dans ",
         "roommessage": "Nouveau message dans "
       },
       "desktop": {
@@ -702,6 +702,7 @@
       "subject": "Vous avez reçu un message sur DONUT",
       "content": {
         "title": "Vous avez reçu un message",
+        "inroom": "Dans le Donut ",
         "button": "Voir le message sur DONUT"
       }
     },
@@ -772,7 +773,8 @@
     "usermention": {
       "subject": "Vous avez été mentionné sur DONUT",
       "content": {
-        "title": "Vous avez été mentionné dans __name__",
+        "title": "Vous avez été notifié dans le Donut __name__",
+        "inroom": "Dans le Donut ",
         "button": "Voir la notification sur DONUT"
       }
     },
