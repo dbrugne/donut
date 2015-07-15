@@ -20,7 +20,7 @@ define([
       'click .remove': 'onRemove'
     },
 
-    initialize: function(options) {
+    initialize: function (options) {
       delete options.el; // already saved by Backbone.View, now should be removed from cloudinary options
       this.options = _.extend({
         success: _.noop,
@@ -31,7 +31,7 @@ define([
         sources: ['local'], // ['local', 'url', 'camera']
         multiple: false,
         cropping: 'server',
-        client_allowed_formats: ["png","gif", "jpeg"],
+        client_allowed_formats: ["png", "gif", "jpeg"],
         max_file_size: 20000000 // 20Mo
       }, options);
 
@@ -39,8 +39,8 @@ define([
 
       this.render();
     },
-    render: function() {
-      var options = _.extend({ }, this.options);
+    render: function () {
+      var options = _.extend({}, this.options);
 
       options.imgTag = '';
       if (options.current)
@@ -53,21 +53,21 @@ define([
       this.options.error = ''; // display error only once
       return this;
     },
-    onCancel: function(event) {
+    onCancel: function (event) {
       event.preventDefault();
       this.render();
     },
-    onRemove: function(event) {
+    onRemove: function (event) {
       this.options.current = '';
       this.data = {remove: true};
       this.options.success(this.data);
       this.render();
     },
-    onChange: function(event) {
+    onChange: function (event) {
       event.preventDefault();
       var that = this;
       // @doc: http://cloudinary.com/documentation/upload_widget#setup
-      cloudinary.openUploadWidget(this.options, function(err, result) {
+      cloudinary.openUploadWidget(this.options, function (err, result) {
           if (err) {
             if (err.message && err.message == 'User closed widget')
               return;
@@ -97,14 +97,14 @@ define([
      * @param version cloudinary version (optional)
      * @returns string
      */
-    _getImageTag: function(imageId, version){
+    _getImageTag: function (imageId, version) {
       var identifier = (version)
         ? {id: imageId, version: version}
         : imageId;
       var url = $.cd.noDefault(identifier, 30, 30);
       if (!url)
         return '';
-      return "<img src='"+url+"' alt='current image thumbnail'>";
+      return "<img src='" + url + "' alt='current image thumbnail'>";
     }
 
   });
