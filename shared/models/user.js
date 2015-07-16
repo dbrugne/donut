@@ -189,7 +189,7 @@ userSchema.statics.findRoomUsersHavingPreference = function (room, preferenceNam
 
   var criteria = {
     _id: {
-      $in: _.map(room.users, function(uid){ return uid.toString() })
+      $in: _.map(room.users, function(uid) { return uid.toString(); })
     },
     $and: []
   };
