@@ -107,36 +107,35 @@ handler.message = function (data, session, next) {
       });
     },
 
-    function retrieveMentionedUsers(room, sentEvent, callback) {
+    function mentionNotification(room, sentEvent, callback) {
       var reg = /@\[[^\]]+\]\(user:([^)]+)\)/g; // @todo yls get from config
-
-      var monTableau;
+      var found;
       var usersIds = [];
-      while ((monTableau = reg.exec(sentEvent.message)) !== null) {
-        // check if mentionned User is in current Room
-        if (room.users.indexOf(monTableau[1]) !== -1)
-          usersIds.push(monTableau[1]);
+      while ((found = reg.exec(sentEvent.message)) !== null) {
+        if (found[1] && room.users.indexOf(found[1]) !== -1) // mentionned user is in room?
+          usersIds.push(found[1]);
       }
 
-      User.find({_id: {$in: _.uniq(usersIds)}}, function (err, users) {
+      if (!usersIds.length)
+        return callback(null, room, sentEvent);
+
+      // max 5 mentionned are notified by message
+      usersIds = _.first(usersIds, 5);
+
+      async.each(usersIds, function (userId, fn) {
+        Notifications(that.app).getType('usermention').create(userId, room, sentEvent.id, fn);
+      }, function (err) {
         if (err)
-          return callback(err);
-        if (!users.length)
-          return callback(null, room, sentEvent);
-
-        async.eachLimit(users, 4, function (u, fn) {
-          Notifications(that.app).create('usermention', u, {room: room, event: sentEvent}, fn);
-        }, function (err) {
-          if (err)
-            return callback(err);
-
-          callback(null, room, sentEvent);
-        });
+          logger.error(err);
+        callback(null, room, sentEvent);
       });
     },
 
-    function notification(room, sentEvent, callback) {
-      Notifications(that.app).getType('roommessage').create(room, sentEvent.id, function () {
+    function messageNotification(room, sentEvent, callback) {
+      // @todo : change pattern for this event (particularly frequent) and tag historyRoomModel as "to_be_consumed" and implement a consumer to treat notifications asynchronously
+      Notifications(that.app).getType('roommessage').create(room, sentEvent.id, function (err) {
+        if (err)
+          logger.error(err);
         return callback(null, room, sentEvent);
       });
     },

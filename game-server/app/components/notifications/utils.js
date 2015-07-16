@@ -1,17 +1,11 @@
 var logger = require('../../../pomelo-logger').getLogger('donut', __filename);
 var _ = require('underscore');
-var NotificationModel = require('../../../../shared/models/notification');
 var UserModel = require('../../../../shared/models/user');
 var RoomModel = require('../../../../shared/models/room');
 var HistoryOneModel = require('../../../../shared/models/historyone');
 var HistoryRoomModel = require('../../../../shared/models/historyroom');
 
 module.exports = {
-
-  waterfallDone: function (err) {
-    if (err)
-      logger.error(err);
-  },
 
   retrieveUser: function (user) {
     return function () {
@@ -98,41 +92,6 @@ module.exports = {
     var that = this;
     return function () {
       that._retrieveHistory('historyone', history, arguments);
-    };
-  },
-
-  retrieveUnreadNotificationsCount: function (userId) {
-    return function () {
-      var args = _.toArray(arguments);
-      var callback = args.pop();
-      if (!_.isFunction(callback))
-        return logger.error('Wrong parameters count, missing callback');
-
-      NotificationModel.find({
-        user: userId,
-        done: false,
-        viewed: false
-      }).count().exec(function (err, count) {
-        args.unshift(err);
-        args.push(count);
-        callback.apply(undefined, args);
-      });
-    };
-  },
-
-  checkPreferences: function (user, roomName, type) {
-    return function () {
-      var args = _.toArray(arguments);
-      var callback = args.pop();
-      if (!_.isFunction(callback))
-        return logger.error('Wrong parameters count, missing callback');
-
-      var err = null;
-      if (user.preferencesValue('room:notif:nothing:__what__'.replace('__what__', roomName)) || !user.preferencesValue('room:notif:__type__:__what__'.replace('__type__', type).replace('__what__', roomName)))
-        err = 'no notification due to user preferences';
-
-      args.unshift(err);
-      callback.apply(undefined, args);
     };
   }
 

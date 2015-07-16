@@ -12,7 +12,7 @@ var roomPromote = require('./types/roomPromoteType');
 var roomTopic = require('./types/roomTopicType');
 var roomMessage = require('./types/roomMessageType');
 var roomJoin = require('./types/roomJoinType');
-var userMention = require('./userMentionType');
+var userMention = require('./types/userMentionType');
 
 module.exports = function (app) {
   return new Facade(app);
