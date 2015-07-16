@@ -21,6 +21,8 @@ define([
       'hide.bs.dropdown': 'onHide'
     },
 
+    timeToMarkAsRead: 1500, // mark notifications as read after n seconds
+
     markHasRead: null,
 
     initialize: function (options) {
@@ -89,7 +91,7 @@ define([
         // Set Timeout to clear new notification
         this.markHasRead = setTimeout(function () {
           that.clearNotifications();
-        }, 1500); // mark notifications as read after 2 seconds
+        }, this.timeToMarkAsRead);
       }
 
       this.toggleReadMore();
@@ -193,7 +195,7 @@ define([
 
       this.markHasRead = setTimeout(function () {
         that.clearNotifications();
-      }, 2000); // Clear notifications after 2 seconds
+      }, this.timeToMarkAsRead);
     },
 
     onHide: function (event) {
@@ -249,7 +251,7 @@ define([
         var that = this;
         this.markHasRead = setTimeout(function () {
           that.clearNotifications();
-        }, 2000);
+        }, this.timeToMarkAsRead);
 
         this.toggleReadMore();
 
