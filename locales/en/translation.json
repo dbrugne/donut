@@ -409,14 +409,15 @@
         "kick": "You have been kicked out of this donut of",
         "ban": "You have been banned from this donut of",
         "deban": "You have been unbanned from this donut of",
-        "op": "You have been promoted moderateur of",
+        "op": "You have been promoted moderator of",
         "deop": "You have been removed from moderators of",
         "roomtopic": "Subject has changed in  ",
         "roomjoin": "just joined the room",
         "usermention": "You were notified in ",
         "roommessage": "New message in ",
         "userban": " locked you",
-        "userdeban": " unlocked you"
+        "userdeban": " unlocked you",
+        "usermessage": " send a direct message to you"
       },
       "desktop": {
         "by": "by",

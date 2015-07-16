@@ -434,7 +434,8 @@
         "roomtopic": "Le sujet a changé dans ",
         "roomjoin": "a rejoint ",
         "usermention": "on vous a mentionné dans ",
-        "roommessage": "Nouveau message dans "
+        "roommessage": "Nouveau message dans ",
+        "usermessage": " vous a envoyé un message privé"
       },
       "desktop": {
         "by": "par",

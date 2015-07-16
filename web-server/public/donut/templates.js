@@ -41,15 +41,16 @@ define([
   'text!./templates/room-users.html',
   'text!./templates/spinner.html',
   'text!./templates/welcome.html',
-  'text!./templates/notifications/room-op.html',
-  'text!./templates/notifications/room-deop.html',
-  'text!./templates/notifications/room-kick.html',
-  'text!./templates/notifications/room-ban.html',
-  'text!./templates/notifications/room-deban.html',
-  'text!./templates/notifications/room-topic.html',
-  'text!./templates/notifications/room-join.html',
-  'text!./templates/notifications/user-mention.html',
-  'text!./templates/notifications/room-message.html'
+  'text!./templates/notification/room-op.html',
+  'text!./templates/notification/room-deop.html',
+  'text!./templates/notification/room-kick.html',
+  'text!./templates/notification/room-ban.html',
+  'text!./templates/notification/room-deban.html',
+  'text!./templates/notification/room-topic.html',
+  'text!./templates/notification/room-join.html',
+  'text!./templates/notification/user-mention.html',
+  'text!./templates/notification/room-message.html',
+  'text!./templates/notification/user-message.html'
 ], function (_,
   color_picker,
   current_user,
@@ -100,7 +101,8 @@ define([
   notification_room_topic,
   notification_room_join,
   notification_user_mention,
-  notification_room_message) {
+  notification_room_message,
+  notification_user_message) {
 
   /**
    * Stub class to load compiled templates dynamically (in development for example)
@@ -157,15 +159,16 @@ define([
   JST['room-users.html']                    = _.template(room_users);
   JST['spinner.html']                       = _.template(spinner);
   JST['welcome.html']                       = _.template(welcome);
-  JST['notifications/room-op.html']         = _.template(notification_room_op);
-  JST['notifications/room-deop.html']       = _.template(notification_room_deop);
-  JST['notifications/room-kick.html']       = _.template(notification_room_kick);
-  JST['notifications/room-ban.html']        = _.template(notification_room_ban);
-  JST['notifications/room-deban.html']      = _.template(notification_room_deban);
-  JST['notifications/room-topic.html']      = _.template(notification_room_topic);
-  JST['notifications/room-join.html']       = _.template(notification_room_join);
-  JST['notifications/user-mention.html']    = _.template(notification_user_mention);
-  JST['notifications/room-message.html']    = _.template(notification_room_message);
+  JST['notification/room-op.html']         = _.template(notification_room_op);
+  JST['notification/room-deop.html']       = _.template(notification_room_deop);
+  JST['notification/room-kick.html']       = _.template(notification_room_kick);
+  JST['notification/room-ban.html']        = _.template(notification_room_ban);
+  JST['notification/room-deban.html']      = _.template(notification_room_deban);
+  JST['notification/room-topic.html']      = _.template(notification_room_topic);
+  JST['notification/room-join.html']       = _.template(notification_room_join);
+  JST['notification/user-mention.html']    = _.template(notification_user_mention);
+  JST['notification/room-message.html']    = _.template(notification_room_message);
+  JST['notification/user-message.html']    = _.template(notification_user_message);
 
   return JST;
 });

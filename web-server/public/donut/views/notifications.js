@@ -125,32 +125,35 @@ define([
       var template;
 
       switch (notification.type) {
+        case 'usermessage':
+          template = templates['notification/user-message.html'];
+          break;
         case 'roomop':
-          template = templates['notifications/room-op.html'];
+          template = templates['notification/room-op.html'];
           break;
         case 'roomdeop':
-          template = templates['notifications/room-deop.html'];
+          template = templates['notification/room-deop.html'];
           break;
         case 'roomkick':
-          template = templates['notifications/room-kick.html'];
+          template = templates['notification/room-kick.html'];
           break;
         case 'roomban':
-          template = templates['notifications/room-ban.html'];
+          template = templates['notification/room-ban.html'];
           break;
         case 'roomdeban':
-          template = templates['notifications/room-deban.html'];
+          template = templates['notification/room-deban.html'];
           break;
         case 'roomtopic':
-          template = templates['notifications/room-topic.html'];
+          template = templates['notification/room-topic.html'];
           break;
         case 'roomjoin':
-          template = templates['notifications/room-join.html'];
+          template = templates['notification/room-join.html'];
           break;
         case 'roommessage':
-          template = templates['notifications/room-message.html'];
+          template = templates['notification/room-message.html'];
           break;
         case 'usermention':
-          template = templates['notifications/user-mention.html'];
+          template = templates['notification/user-mention.html'];
           break;
         default:
           break;
