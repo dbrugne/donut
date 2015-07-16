@@ -192,7 +192,6 @@ define([
     },
 
     onHide: function (event) {
-      console.log("hide", event.relatedTarget);
       clearTimeout(this.markHasRead);
     },
 
