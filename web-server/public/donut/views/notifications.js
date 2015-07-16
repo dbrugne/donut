@@ -33,6 +33,11 @@ define([
       this.render();
     },
     initializeNotificationState: function (data) {
+      // re-init
+      this.$menu.html('');
+      this.$dropdown.parent().removeClass('open');
+
+      // load welcome data
       if (data.unread)
         this.setUnreadCount(data.unread);
       if (data.undone)
