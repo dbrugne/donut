@@ -67,7 +67,16 @@ var conf = module.exports = {
     cookie: 'donut.lng'
   },
   notifications: {
-    emailDelay: 5 // minutes
+    scheduler: 10, // seconds
+    delay: 5*60, // seconds
+    types: {
+      usermessage: {
+        creation: 5*60 // 5mn
+      },
+      roommessage: {
+        creation: 5*60 // 5mn
+      }
+    }
   },
   regex: {
     'usermention': /@\[([^\]]+)\]\(user:([^)]+)\)/g // $1 -> username, $2 -> uid

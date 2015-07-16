@@ -215,16 +215,11 @@ emailer.roomMessage = function(toEmail, events, roomName, roomAvatar, callback) 
 
 /**
  * Sent to a User when he has been promoted moderator of a room
- *
- * @param to
- * @param from
- * @param room
- * @param callback
  */
 emailer.roomOp = function(to, from, room, callback) {
   renderer.render('emails/room-op.html', {
       username: from,
-      roomname: room.name,
+      roomname: room,
       title: i18next.t("email.roomop.title")
   }, function (err, html) {
     if (err)
@@ -232,7 +227,7 @@ emailer.roomOp = function(to, from, room, callback) {
 
     send({
       to: to,
-      subject: i18next.t("email.roomop.subject")+' '+room.name,
+      subject: i18next.t("email.roomop.subject")+' '+room,
       html: html
     },callback);
 
@@ -241,16 +236,11 @@ emailer.roomOp = function(to, from, room, callback) {
 
 /**
  * Sent to a User when has been excluded from moderators of a room
- *
- * @param to
- * @param from
- * @param room
- * @param callback
  */
 emailer.roomDeop = function(to, from, room, callback) {
   renderer.render('emails/room-deop.html', {
       username: from,
-      roomname: room.name,
+      roomname: room,
       title: i18next.t("email.roomdeop.title")
   }, function (err, html) {
     if (err)
@@ -258,7 +248,7 @@ emailer.roomDeop = function(to, from, room, callback) {
 
     send({
       to: to,
-      subject: i18next.t("email.roomdeop.subject")+' '+room.name,
+      subject: i18next.t("email.roomdeop.subject")+' '+room,
       html: html
     },callback);
 
@@ -267,16 +257,11 @@ emailer.roomDeop = function(to, from, room, callback) {
 
 /**
  * Sent to a User has been kicked from a room
- *
- * @param to
- * @param from
- * @param room
- * @param callback
  */
 emailer.roomKick = function(to, from, room, callback) {
   renderer.render('emails/room-kick.html', {
       username: from,
-      roomname: room.name,
+      roomname: room,
       title: i18next.t("email.roomkick.title")
   }, function (err, html) {
     if (err)
@@ -284,7 +269,7 @@ emailer.roomKick = function(to, from, room, callback) {
 
     send({
       to: to,
-      subject: i18next.t("email.roomkick.subject")+' '+room.name,
+      subject: i18next.t("email.roomkick.subject")+' '+room,
       html: html
     },callback);
 
@@ -293,16 +278,11 @@ emailer.roomKick = function(to, from, room, callback) {
 
 /**
  * Sent to a User when he has been banned from a room
- *
- * @param to
- * @param from
- * @param room
- * @param callback
  */
 emailer.roomBan = function(to, from, room, callback) {
   renderer.render('emails/room-ban.html', {
       username: from,
-      roomname: room.name,
+      roomname: room,
       title: i18next.t("email.roomban.title")
   }, function (err, html) {
     if (err)
@@ -310,7 +290,7 @@ emailer.roomBan = function(to, from, room, callback) {
 
     send({
       to: to,
-      subject: i18next.t("email.roomban.subject")+' '+room.name,
+      subject: i18next.t("email.roomban.subject")+' '+room,
       html: html
     },callback);
 
@@ -319,16 +299,11 @@ emailer.roomBan = function(to, from, room, callback) {
 
 /**
  * Sent to a User when he has been unbanned from a room
- *
- * @param to
- * @param from
- * @param room
- * @param callback
  */
 emailer.roomDeban = function(to, from, room, callback) {
   var options = {
     username: from,
-    roomname: room.name,
+    roomname: room,
   title: i18next.t("email.roomdeban.title")
   };
 
@@ -338,7 +313,7 @@ emailer.roomDeban = function(to, from, room, callback) {
 
     send({
       to: to,
-      subject: i18next.t("email.roomdeban.subject")+' '+room.name,
+      subject: i18next.t("email.roomdeban.subject")+' '+room,
       html: html
     },callback);
 

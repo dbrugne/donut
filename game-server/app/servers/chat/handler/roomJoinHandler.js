@@ -158,7 +158,7 @@ handler.join = function(data, session, next) {
 
 		function notification(user, room, eventData, roomData, callback) {
 			roomData['user_id'] = user.id;
-			Notifications(that.app).create('roomjoin', room, {event: eventData}, callback);
+			Notifications(that.app).getType('roomjoin').create(room, {event: eventData}, callback);
 		}
 
 	], function(err) {

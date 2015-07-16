@@ -7,8 +7,6 @@ var emailer = require('../../../../shared/io/emailer');
 var utils = require('./utils');
 var mongoose = require('../../../../shared/io/mongoose');
 
-var FREQUENCY_LIMITER = 1; // 1mn
-
 module.exports = function (facade) {
   return new Notification(facade);
 };
@@ -17,9 +15,8 @@ var Notification = function (facade) {
   this.facade = facade;
 };
 
-Notification.prototype.type = 'roomtopic';
-
-Notification.prototype.shouldBeCreated = function (type, room, data) {
+Notification.prototype.create = function (room, data, done) {
+  return done('null'); // @todo dbr
 
   var that = this;
   async.waterfall([
@@ -27,8 +24,6 @@ Notification.prototype.shouldBeCreated = function (type, room, data) {
     function retrieveUserList(callback) {
       User.findRoomUsersHavingPreference(room, that.type, data.event.user_id, callback);
     },
-
-    utils.checkRepetitive(type, null, {'data.from_user_id': data.from_user_id}, FREQUENCY_LIMITER),
 
     function checkStatus(users, callback) {
       that.facade.app.statusService.getStatusByUids(_.map(users, 'id'), function (err, statuses) {
@@ -60,11 +55,16 @@ Notification.prototype.shouldBeCreated = function (type, room, data) {
         });
       });
     }
-  ], utils.waterfallDone);
+  ], function(err) {
+    if (err && err !== true)
+      return done(err);
+
+    return done(null);
+  });
 
 };
 
-Notification.prototype.sendToBrowser = function (model) {
+Notification.prototype.sendToBrowser = function (model, done) {
 
   var userId = model.user.toString();
   var room, byUser;
@@ -119,11 +119,12 @@ Notification.prototype.sendToBrowser = function (model) {
       });
     }
 
-  ], utils.waterfallDone);
+  ], done);
 
 };
 
-Notification.prototype.sendEmail = function (model) {
+Notification.prototype.sendEmail = function (model, done) {
+  return done('null'); // @todo dbr
 
   var to = model.user.getEmail();
   var from, room;
@@ -148,10 +149,6 @@ Notification.prototype.sendEmail = function (model) {
       model.save(callback);
     }
 
-  ], utils.waterfallDone);
-
-};
-
-Notification.prototype.sendMobile = function () {
+  ], done);
 
 };

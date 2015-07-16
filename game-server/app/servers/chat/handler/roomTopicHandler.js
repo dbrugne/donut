@@ -103,7 +103,7 @@ handler.topic = function(data, session, next) {
 		},
 
 		function notification(room, sentEvent, callback) {
-			Notifications(that.app).create('roomtopic', room, {event: sentEvent}, function() {
+			Notifications(that.app).getType('roomtopic').create(room, {event: sentEvent}, function() {
 				return callback(null);
 			});
 		}

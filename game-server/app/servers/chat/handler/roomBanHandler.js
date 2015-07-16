@@ -170,9 +170,7 @@ handler.ban = function(data, session, next) {
 		},
 
 		function notification(room, user, bannedUser, event, callback) {
-			Notifications(that.app).create('roomban', bannedUser, {room: room, event: event}, function() {
-				return callback(null);
-			});
+			Notifications(that.app).getType('roomban').create(bannedUser, room,  event.id, callback);
 		}
 
 	], function(err, bannedUser) {

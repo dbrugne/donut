@@ -11,8 +11,6 @@ var moment = require('../../../../shared/util/moment');
 var conf = require('../../../../config');
 var mongoose = require('../../../../shared/io/mongoose');
 
-var FREQUENCY_LIMITER = 0; // 0mn
-
 module.exports = function (facade) {
   return new Notification(facade);
 };
@@ -21,9 +19,8 @@ var Notification = function (facade) {
   this.facade = facade;
 };
 
-Notification.prototype.type = 'usermention';
-
-Notification.prototype.shouldBeCreated = function (type, user, data) {
+Notification.prototype.create = function (user, data, done) {
+  return done('null'); // @todo dbr
 
   var that = this;
   async.waterfall([
@@ -38,16 +35,13 @@ Notification.prototype.shouldBeCreated = function (type, user, data) {
     },
 
     function checkPreferences(callback) {
-      if (user.preferencesValue('room:notif:nothing:__what__'.replace('__what__', data.room.name)) || !user.preferencesValue('room:notif:__type__:__what__'.replace('__type__', type).replace('__what__', data.room.name))) {
+      if (user.preferencesValue('room:notif:nothing:__what__'.replace('__what__', data.room.name)) || !user.preferencesValue('room:notif:__type__:__what__'.replace('__type__', that.type).replace('__what__', data.room.name))) {
         logger.debug('no notification due to user preferences');
         return utils.waterfallDone(null);
       }
       else
         return callback(null);
     },
-
-    // Do not check repetitive cause we always want to be notified of someone talking about us
-    //utils.checkRepetitive(type, user, { 'data.user': data.user }, FREQUENCY_LIMITER),
 
     function checkStatus(callback) {
       that.facade.app.statusService.getStatusByUid(user._id.toString(), function (err, status) {
@@ -60,7 +54,7 @@ Notification.prototype.shouldBeCreated = function (type, user, data) {
 
     function prepare(status, callback) {
 
-      var model = NotificationModel.getNewModel(type, user, {event: mongoose.Types.ObjectId(data.event.id)});
+      var model = NotificationModel.getNewModel(that.type, user, {event: mongoose.Types.ObjectId(data.event.id)});
 
       model.to_browser = true;
       model.to_email = ( !user.getEmail() ? false : ( status ? false : user.preferencesValue("notif:channels:email")));
@@ -70,7 +64,7 @@ Notification.prototype.shouldBeCreated = function (type, user, data) {
         if (err)
           return utils.waterfallDone(err);
 
-        logger.info('notification created: ' + type + ' for ' + user.username);
+        logger.info('notification created: ' + that.type + ' for ' + user.username);
 
         if (!model.sent_to_browser)
           that.sendToBrowser(model);
@@ -79,11 +73,16 @@ Notification.prototype.shouldBeCreated = function (type, user, data) {
       });
     }
 
-  ], utils.waterfallDone);
+  ], function(err) {
+    if (err && err !== true)
+      return done(err);
+
+    return done(null);
+  });
 
 };
 
-Notification.prototype.sendToBrowser = function (model) {
+Notification.prototype.sendToBrowser = function (model, done) {
 
   var userId = model.user.toString();
 
@@ -139,11 +138,12 @@ Notification.prototype.sendToBrowser = function (model) {
       });
     }
 
-  ], utils.waterfallDone);
+  ], done);
 
 };
 
-Notification.prototype.sendEmail = function (model) {
+Notification.prototype.sendEmail = function (model, done) {
+  return done('null'); // @todo dbr
 
   var to = model.user.getEmail();
 
@@ -198,10 +198,6 @@ Notification.prototype.sendEmail = function (model) {
       model.save(callback);
     }
 
-  ], utils.waterfallDone);
-
-};
-
-Notification.prototype.sendMobile = function () {
+  ], done);
 
 };

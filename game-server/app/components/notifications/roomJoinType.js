@@ -4,13 +4,10 @@ var _ = require('underscore');
 var async = require('async');
 var User = require('../../../../shared/models/user');
 var NotificationModel = require('../../../../shared/models/notification');
-var HistoryRoomModel = require('../../../../shared/models/historyroom');
 var emailer = require('../../../../shared/io/emailer');
 var utils = require('./utils');
 var moment = require('../../../../shared/util/moment');
 var mongoose = require('../../../../shared/io/mongoose');
-
-var FREQUENCY_LIMITER = 15; // 15mn
 
 module.exports = function (facade) {
   return new Notification(facade);
@@ -20,9 +17,8 @@ var Notification = function (facade) {
   this.facade = facade;
 };
 
-Notification.prototype.type = 'roomjoin';
-
-Notification.prototype.shouldBeCreated = function (type, room, data) {
+Notification.prototype.create = function (room, data, done) {
+  return done('null'); // @todo dbr
 
   var that = this;
   async.waterfall([
@@ -30,8 +26,6 @@ Notification.prototype.shouldBeCreated = function (type, room, data) {
     function retrieveUserList(callback) {
       User.findRoomUsersHavingPreference(room, that.type, data.event.user_id, callback);
     },
-
-    utils.checkRepetitive(type, null, {'data.from_user_id': data.from_user_id}, FREQUENCY_LIMITER),
 
     function checkStatus(users, callback) {
       that.facade.app.statusService.getStatusByUids(_.map(users, 'id'), function (err, statuses) {
@@ -73,11 +67,16 @@ Notification.prototype.shouldBeCreated = function (type, room, data) {
       callback(null);
     }
 
-  ], utils.waterfallDone);
+  ], function(err) {
+    if (err && err !== true)
+      return done(err);
+
+    return done(null);
+  });
 
 };
 
-Notification.prototype.sendToBrowser = function (model) {
+Notification.prototype.sendToBrowser = function (model, done) {
 
   var userIdToNotify = model.user.toString();
   var userWhoJoinedRoom, room;
@@ -124,19 +123,19 @@ Notification.prototype.sendToBrowser = function (model) {
       });
     }
 
-  ], utils.waterfallDone);
+  ], done);
 
 };
 
-Notification.prototype.sendEmail = function (model) {
+Notification.prototype.sendEmail = function (model, done) {
+  return done('null'); // @todo dbr
 
-  var to = model.user.getEmail();
   async.waterfall([
 
     utils.retrieveEvent('historyroom', model.data.event.toString()),
 
     function send(event, callback) {
-      return emailer.roomJoin(to, event.user.username, event.room, callback);
+      return emailer.roomJoin(model.user.getEmail(), event.user.username, event.room, callback);
     },
 
     function saveOnUser(callback) {
@@ -145,10 +144,6 @@ Notification.prototype.sendEmail = function (model) {
       model.save(callback);
     }
 
-  ], utils.waterfallDone);
-
-};
-
-Notification.prototype.sendMobile = function () {
+  ], done);
 
 };

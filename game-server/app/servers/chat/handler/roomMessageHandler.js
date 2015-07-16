@@ -136,7 +136,7 @@ handler.message = function (data, session, next) {
     },
 
     function notification(room, sentEvent, callback) {
-      Notifications(that.app).create('roommessage', room, {event: sentEvent}, function () {
+      Notifications(that.app).getType('roommessage').create(room, sentEvent.id, function () {
         return callback(null, room, sentEvent);
       });
     },
