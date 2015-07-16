@@ -89,7 +89,7 @@ define([
         // Set Timeout to clear new notification
         this.markHasRead = setTimeout(function () {
           that.clearNotifications();
-        }, 2000); // Clear notifications after 2 seconds
+        }, 1500); // mark notifications as read after 2 seconds
       }
 
       this.toggleReadMore();
