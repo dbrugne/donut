@@ -75,6 +75,9 @@ var conf = module.exports = {
       },
       roommessage: {
         creation: 5*60 // 5mn
+      },
+      roomjoin: {
+        creation: 5*60 // 5mn
       }
     }
   },

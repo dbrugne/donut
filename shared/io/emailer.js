@@ -331,16 +331,11 @@ emailer.contactForm = function(data, callback) {
 
 /**
  * Sent to a User when The topic changed in a Room in which he wants to be warned
- *
- * @param to
- * @param from
- * @param room
- * @param callback
  */
 emailer.roomTopic = function(to, from, room, callback) {
   renderer.render('emails/room-topic.html', {
       username: from,
-      roomname: room.name,
+      roomname: room,
       title: i18next.t("email.roomtopic.title")
   }, function (err, html) {
     if (err)
@@ -348,7 +343,7 @@ emailer.roomTopic = function(to, from, room, callback) {
 
     send({
       to: to,
-      subject: i18next.t("email.roomtopic.subject")+' '+room.name,
+      subject: i18next.t("email.roomtopic.subject")+' '+room,
       html: html
     },callback);
 
@@ -357,16 +352,11 @@ emailer.roomTopic = function(to, from, room, callback) {
 
 /**
  * Sent to a User when The topic changed in a Room in which he wants to be warned
- *
- * @param to
- * @param from
- * @param room
- * @param callback
  */
 emailer.roomJoin = function(to, from, room, callback) {
   renderer.render('emails/room-join.html', {
       username: from,
-      roomname: room.name,
+      roomname: room,
       title: i18next.t("email.roomjoin.title")
   }, function (err, html) {
     if (err)
@@ -374,7 +364,7 @@ emailer.roomJoin = function(to, from, room, callback) {
 
     send({
       to: to,
-      subject: i18next.t("email.roomjoin.subject")+' '+room.name,
+      subject: i18next.t("email.roomjoin.subject")+' '+room,
       html: html
     },callback);
 

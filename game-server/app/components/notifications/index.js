@@ -9,9 +9,9 @@ var async = require('async');
 // notifications logic
 var userMessage = require('./types/userMessageType');
 var roomPromote = require('./types/roomPromoteType');
-var roomTopic = require('./roomTopicType');
+var roomTopic = require('./types/roomTopicType');
 var roomMessage = require('./types/roomMessageType');
-var roomJoin = require('./roomJoinType');
+var roomJoin = require('./types/roomJoinType');
 var userMention = require('./userMentionType');
 
 module.exports = function (app) {

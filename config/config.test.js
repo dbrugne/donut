@@ -11,5 +11,6 @@ conf.google.analytics.uid = 'UA-51674523-1';
 conf.notifications.delay = 10; // in seconds
 conf.notifications.types.usermessage.creation = 30; // in seconds
 conf.notifications.types.roommessage.creation = 30; // in seconds
+conf.notifications.types.roomjoin.creation = 30; // in seconds
 
 module.exports = conf;
