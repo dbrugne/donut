@@ -1,5 +1,5 @@
-var logger = require('../../../pomelo-logger').getLogger('donut', __filename);
-var notifications = require('../notifications');
+var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
+var notifications = require('../../notifications/index');
 var _ = require ('underscore');
 
 module.exports = function(data) {
