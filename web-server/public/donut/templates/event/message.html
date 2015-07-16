@@ -9,43 +9,48 @@
     <% } %>
     <div class="items">
         <% } %>
-        <div class="event <% if (spammed) { %>spammed<% } %> <% if (unviewed) { print('unviewed'); } %>"
-             id="<%= data.id %>" data-time="<%= data.time %>"
-        <% if (spammed === true) { %>data-spammed="true"<% } %>>
-        <div class="ctn">
-            <% if (data.message) { %>
-            <div class="text"><%= data.message %></div>
-            <% } %>
-            <% if (data.images) { %>
-            <div class="images">
-                <% _.each(data.images, function(i) { %>
-                <a class="image"
-                   data-toggle="image-popover"
-                   data-placement="top"
-                   target="_blank"
-                   href="<%=i.url%>"
-                   style="background-image: url(<%= i.thumbnail %>);"></a>
-                <% }); %>
-                <hr>
+        <div class="event has-hover <% if (spammed) { %>spammed<% } %> <% if (unviewed) { print('unviewed'); } %>"
+             id="<%= data.id %>"
+             data-time="<%= data.time %>"
+             data-spammed="<%= (spammed === true ? 'true' : '')%>">
+            <div class="ctn">
+                <% if (data.message) { %>
+                <div class="text"><%= data.message %></div>
+                <% } %>
+                <% if (data.images) { %>
+                <div class="images">
+                    <% _.each(data.images, function(i) { %>
+                    <a class="image"
+                       data-toggle="image-popover"
+                       data-placement="top"
+                       target="_blank"
+                       href="<%=i.url%>"
+                       style="background-image: url(<%= i.thumbnail %>);"></a>
+                    <% }); %>
+                    <hr>
+                </div>
+                <% } %>
+                <% if (spammed) { %>
+                <div class="text-spammed"><%= t('chat.message.text-spammed') %></div>
+                <% } %>
+                <div class="message-form">
+                    <textarea class="form-control" rows="3"></textarea>
+                    <span class="echap">esc pour <a href="#" class="esc">annuler</a></span>
+                    <span class="enter">enter pour <a href="#" class="validate">valider</a></span>
+                </div>
+            </div>
+            <div class="date pull-right"><span class="moment" data-time="<%= data.time %>" title="<%= data.datefull %>"><%= data.dateshort %></span></div>
+            <% if(!data.is_admin) { %> <!--Only display for non admin messages-->
+            <% if (type === 'room:message') { %> <!--Only display for room messages-->
+            <div class="actions">
+                <a class="message-menu" data-toggle="dropdown" role="button" aria-expanded="false" id="messageMenu">
+                    <i class="icon icon-cog"></i>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="messageMenu"><!-- message dropdown menu content --></div>
             </div>
             <% } %>
-            <% if (spammed) { %>
-            <div class="text-spammed"><%= t('chat.message.text-spammed') %></div>
             <% } %>
         </div>
-        <div class="date pull-right"><span class="moment" data-time="<%= data.time %>" title="<%= data.datefull %>"><%= data.dateshort %></span>
-        </div>
-        <% if(!data.is_admin) { %> <!--Only display for non admin messages-->
-        <% if (type === 'room:message') { %> <!--Only display for room messages-->
-        <div class="actions">
-            <a class="message-menu" data-toggle="dropdown" role="button" aria-expanded="false" id="messageMenu">
-                <i class="icon icon-cog"></i>
-            </a>
-            <div class="dropdown-menu" aria-labelledby="messageMenu"><!-- message dropdown menu content --></div>
-        </div>
-        <% } %>
-        <% } %>
+        <% if (withBlock) { %>
     </div>
-    <% if (withBlock) { %>
-</div>
 <% } %>

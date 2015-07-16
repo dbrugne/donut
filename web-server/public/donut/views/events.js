@@ -25,8 +25,20 @@ define([
       "click .dropdown-menu .unspam"   : 'onUnmarkAsSpam',
       "click .view-spammed-message"    : 'onViewSpammedMessage',
       "click .remask-spammed-message"  : 'onRemaskSpammedMessage',
+      "click .message-form .enter"     : 'onEditMessage',
       "click .dropdown-menu .edited"   : 'showFormEditMessage',
-      "dblclick .event "               : 'showFormEditMessage'
+      "dblclick .event .ctn "          : 'showFormEditMessage',
+      "click .message-form .esc"       : 'hideFormEditMessage',
+      'keydown .form-control': function(event) {
+        if (event.which == 27) // escape
+          this.hideFormEditMessage(event);
+        if (event.which == 13) // enter
+          this.onEditMessage(event);
+        if (event.which == 38) // up arrow
+          this.openNextFormEdit(event);
+        if (event.which == 40) // down arrow
+          this.openPrevFormEdit(event);
+      }
     },
 
     historyLoading: false,
@@ -46,7 +58,7 @@ define([
       this.listenTo(this.model, 'viewed', this.onViewed);
       this.listenTo(this.model, 'messageSpam', this.onMarkedAsSpam);
       this.listenTo(this.model, 'messageUnspam', this.onMarkedAsUnspam);
-      this.listenTo(this.model, 'messageEdit', this.onMessageEdit);
+      this.listenTo(this.model, 'messageEdit', this.onMessageEdited);
       this.listenTo(client, 'admin:message', this.onAdminMessage);
 
       debug.start('discussion-events' + this.model.getIdentifier());
@@ -751,15 +763,64 @@ define([
       if (bottom)
         this.scrollDown();
     },
+    onEditMessage: function (event) {
+      event.preventDefault();
+      var parent = $(event.target).parents('.event');
+      var form = parent.find('.form-control');
+      var roomName = this.model.get('name');
+      var messageId = parent.attr('id');
+      var message = form.val();
+      client.roomMessageEdit(roomName, messageId, message);
+
+      this.hideFormEditMessage(event);
+
+    },
     showFormEditMessage: function (event) {
       event.preventDefault();
-      $(event.target).parents('.event').hide();
+      var bottom = this.isScrollOnBottom();
+
+      // check isEditable
+      var eventUsername = $(event.target).closest('[data-username]').data('username');
+      var isMessageCurrentUser = (currentUser.get('username') === eventUsername);
+      var timeTarget = new Date(
+        $(event.target)
+          .parents('.event')
+          .data('time')
+      );
+      var time = Date.now() - timeTarget;
+      var isEditable = (time < (3600 * 1000));
+
+      var form = $(event.target).parents('.event').find('.message-form');
+
+      if (isMessageCurrentUser && isEditable && !form.is(':visible')) {
+        var text = $(event.target).parents('.event').find('.text').text();
+        $(event.target).parents('.event').find('.text').hide();
+        $(event.target).parents('.event').removeClass('has-hover');
+        form.css('display', 'block');
+        form.find('.form-control').val(text).focus();
+        if (bottom)
+          this.scrollDown();
+      }
     },
-    onEditedMessage: function (event) {
-      client.roomMessageEdit('#sebastien', '55a679e82dd2e9601177da24', 'sa marche!!!');
+    hideFormEditMessage: function (event) {
+      event.preventDefault();
+      $(event.target).parents('.message-form').hide();
+      $(event.target).parents('.event').addClass('has-hover');
+      $(event.target).parents('.ctn').find('.text').css('display', 'block');
     },
-    onMessageEdit: function (event) {
-      console.log("sa marche : ", event);
+    onMessageEdited: function (event) {
+      $('#'+event.event).find('.text').html(event.message);
+    },
+    openNextFormEdit: function (event) {
+      var currentEventMessage = $(event.target).parents('.event');
+      var prevEventMessage = currentEventMessage.prev();
+      var dataTime = prevEventMessage.data('time');
+      var time = Date.now() - new Date(dataTime);
+
+      if ((time) < (3600 * 1000)) {
+        this.hideFormEditMessage(event);
+
+      }
     },
 
     /*****************************************************************************************************************

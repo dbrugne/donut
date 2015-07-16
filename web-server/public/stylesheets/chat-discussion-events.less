@@ -319,7 +319,7 @@
             }
           }
           &.new { border-left: 3px solid #5C77B6; padding-left: 4px; }
-          &:hover .actions, .actions.open { display:block; }
+          &.has-hover:hover .actions, .actions.open { display:block; }
           &.spammed {
             .text, .images { display: none; }
             .actions .dropdown-menu ul.a li .unspam { display:inline; }
@@ -334,6 +334,12 @@
             .text { background-color: lighten(#e74c3c, 30%);
               .remask-spammed-message { margin: 2px 5px 0 0; float: left; color: @cl-clouds; font-weight: normal; font-size: 10px; }
             }
+          }
+          .message-form { display:none; padding: 5px 50px 5px 5px; border-radius: 5px; background-color: #f8efc0;
+            textarea { resize:none; }
+            .enter { float:right;}
+            a { color: #2a80b9; text-decoration:none; }
+            a:hover { text-decoration:underline; }
           }
         }
         &.admin {   background-color: @cl-first; color: @cl-clouds;

@@ -16,7 +16,7 @@ var historySchema = mongoose.Schema({
   viewed        : [{ type: mongoose.Schema.ObjectId, ref: 'User' }],  // users that have read this event
   spammed       : { type: Boolean },
   spammed_at    : { type: Date },
-  edited        : { type: Boolean},
+  edited        : { type: Boolean },
   edited_at     : { type: Date }
 
 }, {strict: false});

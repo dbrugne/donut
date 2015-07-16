@@ -96,14 +96,15 @@ handler.edit = function(data, session, next) {
       editEvent.update({ edited : true, data: { message: message },  edited_at: new Date() }, function(err) {
         if (err)
           return callback('Unable to persist edited of ' + editEvent.id);
-        return callback(null, room, editEvent);
+        return callback(null, room, editEvent, message);
       });
     },
 
-    function prepareEvent(room, editEvent, callback) {
+    function prepareEvent(room, editEvent, message, callback) {
       var event = {
         name: room.name,
-        event: editEvent.id
+        event: editEvent.id,
+        message: message
       };
 
       return callback(null, room, event);
