@@ -2,14 +2,12 @@ var logger = require('../../../pomelo-logger').getLogger('donut', __filename);
 var cloudinary = require('../../../../shared/cloudinary/cloudinary');
 var _ = require('underscore');
 var async = require('async');
-var User = require('../../../../shared/models/user');
 var NotificationModel = require('../../../../shared/models/notification');
 var HistoryRoomModel = require('../../../../shared/models/historyroom');
 var emailer = require('../../../../shared/io/emailer');
 var utils = require('./utils');
 var moment = require('../../../../shared/util/moment');
 var conf = require('../../../../config');
-var mongoose = require('../../../../shared/io/mongoose');
 
 module.exports = function (facade) {
   return new Notification(facade);
