@@ -30,7 +30,7 @@ define([
       this.undone = 0;
       this.more = false;
       this.mainView = options.mainView;
-      this.listenTo(client, 'notification:new', this.onNotificationPushed);
+      this.listenTo(client, 'notification:new', this.onNewNotification);
 
       this.render();
     },
@@ -72,7 +72,7 @@ define([
     },
 
     // A new Notification is pushed from server
-    onNotificationPushed: function (data) {
+    onNewNotification: function (data) {
       // Update Badge & Count
       this.setUnreadCount(this.unread + 1);
 
