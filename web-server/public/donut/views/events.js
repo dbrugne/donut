@@ -730,6 +730,8 @@ define([
         .removeClass('spammed')
         .find('.ctn .text-spammed')
         .remove();
+
+      this.$('#' + room.event).find('.remask-spammed-message').remove();
       if (bottom)
         this.scrollDown();
     },
@@ -738,7 +740,7 @@ define([
       event.preventDefault();
       var parent = $(event.target).parents('.event');
       var textSpammed = $(event.target).parents('.text-spammed');
-      var ctn = parent.find('.text') || parent.find('.image');
+      var ctn = parent.children('.ctn');
       parent.removeClass('spammed').addClass('viewed');
       textSpammed.remove();
 
@@ -751,7 +753,7 @@ define([
       var bottom = this.isScrollOnBottom();
       event.preventDefault();
       var parent = $(event.target).parents('.event');
-      var ctn = parent.find('.text') || parent.find('.image');
+      var ctn = parent.children('.ctn');
       parent.addClass('spammed').removeClass('viewed');
       parent
         .find('.ctn')

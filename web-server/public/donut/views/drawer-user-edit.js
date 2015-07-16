@@ -14,11 +14,11 @@ define([
 
     id: 'user-edit',
 
-    events  : {
+    events: {
       'submit form.user-form': 'onSubmit'
     },
 
-    initialize: function(options) {
+    initialize: function (options) {
       this.mainView = options.mainView;
 
       // show spinner as temp content
@@ -26,16 +26,16 @@ define([
 
       // ask for data
       var that = this;
-      client.userRead(currentUser.get('username'), function(data) {
+      client.userRead(currentUser.get('username'), function (data) {
         that.onResponse(data);
       });
     },
-    render: function() {
+    render: function () {
       // render spinner only
       this.$el.html(templates['spinner.html']);
       return this;
     },
-    onResponse: function(user) {
+    onResponse: function (user) {
       // colorize drawer .opacity
       if (user.color)
         this.trigger('color', user.color);
@@ -69,7 +69,8 @@ define([
         field_name: 'avatar',
         resized_width: 150,
         resized_height: 150,
-        cropping_aspect_ratio: 1 // squared avatar
+        cropping_aspect_ratio: 1, // squared avatar
+        success: _.bind(this.onUserAvatarUpdate, this)
       });
 
       // poster
@@ -80,10 +81,11 @@ define([
         field_name: 'poster',
         resized_width: 0,
         resized_height: 0,
-        cropping_aspect_ratio: 0.36 // portrait
+        cropping_aspect_ratio: 0.36, // portrait
+        success: _.bind(this.onUserPortraitUpdate, this)
       });
     },
-    onSubmit: function(event) {
+    onSubmit: function (event) {
       event.preventDefault();
 
       var updateData = {
@@ -100,20 +102,51 @@ define([
         updateData.poster = this.posterUploader.data;
 
       var that = this;
-      client.userUpdate(updateData, function(data) {
+      client.userUpdate(updateData, function (data) {
         that.$el.find('.errors').hide();
         if (data.err) {
           var message = '';
-          _.each(data.errors, function(error) {
-            message += error+'<br>';
+          _.each(data.errors, function (error) {
+            message += error + '<br>';
           });
           that.$el.find('.errors').html(message).show();
           return;
         }
         that.trigger('close');
       });
+    },
+    onUserAvatarUpdate: function (data) {
+      var updateData = {
+        avatar: data
+      };
+      var that = this;
+      client.userUpdate(updateData, function (d) {
+        that.$el.find('.errors').hide();
+        if (d.err) {
+          var message = '';
+          _.each(d.errors, function (error) {
+            message += error + '<br>';
+          });
+          that.$el.find('.errors').html(message).show();
+        }
+      });
+    },
+    onUserPortraitUpdate: function (data) {
+      var updateData = {
+        poster: data
+      };
+      var that = this;
+      client.userUpdate(updateData, function (d) {
+        that.$el.find('.errors').hide();
+        if (d.err) {
+          var message = '';
+          _.each(d.errors, function (error) {
+            message += error + '<br>';
+          });
+          that.$el.find('.errors').html(message).show();
+        }
+      });
     }
-
   });
 
   return DrawerUserEditView;

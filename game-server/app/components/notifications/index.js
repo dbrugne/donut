@@ -147,7 +147,6 @@ Facade.prototype.retrieveUserNotifications = function (uid, what, callback) {
           if (!n.data || !n.data.event)
             return fn(null);
 
-          console.log(n.data.event.toString());
           HistoryRoom
             .findOne({_id: n.data.event.toString()})
             .populate('user', 'username avatar color facebook')
