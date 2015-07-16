@@ -62,7 +62,7 @@
     "viewprofile": "view profile",
     "online": "online",
     "offline": "offline",
-    "reconnect": "reconnection",
+    "connecting": "connection ...",
     "permalink": "permalink",
     "search": "search",
     "by": "by",
