@@ -52,7 +52,7 @@ Notification.prototype.create = function (room, history, done) {
         if (err)
           return callback(err);
         if (!users.length) {
-          logger.debug('roomMessageType.create no notification created: 0 users concerned')
+          logger.debug('roomMessageType.create no notification created: 0 user concerned')
           return callback(true);
         }
 
@@ -92,11 +92,11 @@ Notification.prototype.create = function (room, history, done) {
     },
 
     function create(notificationsToCreate, callback) {
-      NotificationModel.bulkInsert(notificationsToCreate, function(err) {
+      NotificationModel.bulkInsert(notificationsToCreate, function(err, createdNotifications) {
         if (err)
           return callback(err);
 
-        logger.debug('roomMessageType.create '+notificationsToCreate.length+' notifications created');
+        logger.debug('roomMessageType.create '+createdNotifications.length+' notifications created');
         return callback(null);
       });
     }

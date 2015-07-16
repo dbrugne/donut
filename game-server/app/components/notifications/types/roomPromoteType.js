@@ -86,8 +86,7 @@ Notification.prototype.create = function (user, room, history, done) {
 };
 
 Notification.prototype.sendToBrowser = function (model, user, room, history, done) {
-
-  var notification = {
+  var event = {
     id: model.id,
     time: model.time,
     type: model.type,
@@ -110,8 +109,7 @@ Notification.prototype.sendToBrowser = function (model, user, room, history, don
       }
     }
   };
-  this.facade.app.globalChannelService.pushMessage('connector', 'notification:new', notification, 'user:' + user.id, {}, done);
-
+  this.facade.app.globalChannelService.pushMessage('connector', 'notification:new', event, 'user:' + user.id, {}, done);
 };
 
 Notification.prototype.sendEmail = function (model, done) {
