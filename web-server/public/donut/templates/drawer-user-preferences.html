@@ -33,7 +33,6 @@
             </label>
         </div>
     </div>
-    <label><%= t('preferences.notif.title') %></label>
     <p class="help-block"><%= t('preferences.notif.help.user') %> (<a data-toggle="contactform"><%= t('page.contact.title') %></a>)</p>
     <div class="form-group">
         <div class="notification">
@@ -63,18 +62,19 @@
                     <input class="savable" type="checkbox" value="notif:channels:email" <% if (preferences['notif:channels:email']) { print('checked'); } %>> <%= t('preferences.notif.channels.email') %>
                 </label>
             </div>
-            <div class="checkbox">
-                <label>
-                    <input class="savable" type="checkbox" value="notif:channels:mobile" <% if (preferences['notif:channels:mobile']) { print('checked'); } %>> <%= t('preferences.notif.channels.mobile') %>
-                </label>
-            </div>
+            <!--<div class="checkbox">-->
+            <!--<label>-->
+            <!--<input class="savable" type="checkbox" value="notif:channels:mobile" <% if (preferences['notif:channels:mobile']) { print('checked'); } %>> <%= t('preferences.notif.channels.mobile') %>-->
+            <!--</label>-->
+            <!--</div>-->
             <p class="help-block"><%= t('preferences.notif.channels.help') %></p>
         </div>
     </div>
 
     <div class="form-group">
         <p class="help-block"><%= t('preferences.notif.events.title') %></p>
-        <% var notifications = ['notif:usermessage', 'notif:roominvite']; %>
+        <!--<% var notifications = ['notif:usermessage', 'notif:roominvite']; %>-->
+        <% var notifications = ['notif:usermessage']; %>
         <% _.each(notifications, function(key) { %>
         <div class="notification">
             <div class="checkbox">
