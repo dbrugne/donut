@@ -43,17 +43,19 @@ handler.read = function (data, session, next) {
     },
 
     function retrieveNotifications(user, callback) {
-      // Get only unviewed notifications, data.number max
-      Notifications(that.app).retrieveUserNotifications(user._id.toString(), data, function (err, notifications) {
+      Notifications(that.app).retrieveUserNotifications(user.id, data, function (err, notifications, more) {
         if (err)
-          return callback('Error while retrieving notifications for ' + session.uid + ': ' + err);
+          return callback('Error while retrieving notifications for ' + user.id + ': ' + err);
 
-        return callback(null, user, notifications);
+        return callback(null, user, notifications, more);
       });
     },
 
-    function prepare(user, notifications, callback) {
-      var event = {notifications: []};
+    function prepare(user, notifications, more, callback) {
+      var event = {
+        notifications: [],
+        more: more
+      };
 
       _.each(notifications, function (notification) {
         var d = {
@@ -95,13 +97,12 @@ handler.read = function (data, session, next) {
       return callback(null, user, event);
     },
 
-    function retrieveUnread(user, event, callback) {
-      Notifications(that.app).retrieveUserNotificationsUnviewedCount(user._id.toString(), function (err, count) {
+    function retrieveUnviewed(user, event, callback) {
+      Notifications(that.app).retrieveUserNotificationsUnviewedCount(user.id, function (err, count) {
         if (err)
-          return callback('Error while retrieving notifications for ' + session.uid + ': ' + err);
+          return callback('Error while retrieving notifications for ' + user.id + ': ' + err);
 
         event.unviewed = count || 0;
-
         return callback(null, event);
       });
     }

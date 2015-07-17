@@ -163,26 +163,12 @@ handler.enter = function(msg, session, next) {
 		},
 
 		function cleanupNotifications(welcome, callback) {
-            Notifications(that.app).retrieveUserNotifications(uid, {viewed: false}, function(err, notifications){
-                if (err)
-                    return callback('Error while retrieving pending notifications for uid: '+uid+' : '+err);
+			Notifications(that.app).avoidNotificationsSending(uid, function(err) {
+				if (err)
+					return callback('Error while setting notifications as read for '+session.uid+': '+err);
 
-                var uids = [];
-                _.each(notifications, function (notification){
-                    uids.push(notification.id);
-                });
-
-                if (uids.length > 0) {
-                    Notifications(that.app).avoidNotificationsSending(uid, uids, function(err, countUpdated) {
-                        if (err)
-                            return callback('Error while setting notifications as read for '+session.uid+': '+err);
-
-                        return callback(null, welcome);
-                    });
-                } else {
-                    return callback(null, welcome);
-                }
-            });
+				return callback(null, welcome);
+			});
 		},
 
 		function tracking(welcome, callback) {

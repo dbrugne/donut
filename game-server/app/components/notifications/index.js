@@ -103,14 +103,13 @@ Facade.prototype.retrieveUserNotifications = function (uid, what, callback) {
   var q = NotificationModel.find(criteria);
 
   // Only get "number" items
-  if (what.number > 0)
-    q.limit(what.number);
+  if (what.number)
+    q.limit(what.number + 1);
 
   q.sort({time: -1});
   q.populate({path: 'user', model: 'User', select: 'local username color facebook avatar'});
   q.exec(function (err, results) {
     var notifications = [];
-
     async.each(results, function (n, fn) {
       switch (n.getEventType()) {
         case 'historyone':
@@ -135,7 +134,6 @@ Facade.prototype.retrieveUserNotifications = function (uid, what, callback) {
         case 'historyroom':
           if (!n.data || !n.data.event)
             return fn(null);
-
           HistoryRoom
             .findOne({_id: n.data.event.toString()})
             .populate('user', 'username avatar color facebook')
@@ -157,9 +155,16 @@ Facade.prototype.retrieveUserNotifications = function (uid, what, callback) {
           break;
       }
     }, function (err) {
-      callback(err, _.sortBy(notifications, function (n) {
+      if (err)
+        return callback(err);
+
+      var more = !!(notifications.length > what.number);
+
+      notifications = _.sortBy(notifications, function (n) {
         return -n.time;
-      }));
+      });
+
+      callback(err, notifications, more);
     });
   });
 };
@@ -181,9 +186,7 @@ Facade.prototype.retrieveUserNotificationsUnviewedCount = function (uid, callbac
     done: false,
     viewed: false,
     to_browser: true
-  }).count().exec(function (err, count) {
-    callback(err, count);
-  });
+  }).count().exec(callback);
 };
 
 Facade.prototype.retrieveScheduledNotifications = function (callback) {
@@ -234,17 +237,15 @@ Facade.prototype.markNotificationsAsDone = function (uid, ids, callback) {
   });
 };
 
-Facade.prototype.avoidNotificationsSending = function (uid, ids, callback) {
+Facade.prototype.avoidNotificationsSending = function (userId, callback) {
   NotificationModel.update({
-    _id: {$in: ids},
-    user: uid
-  }, {
-    $set: {to_email: false, to_mobile: false}
-  }, {
-    multi: true
-  }, function (err, results) {
-    return callback(err, results);
-  });
+    user: userId,
+    done: false,
+    $or: [
+      { to_email: true },
+      { to_mobile: true }
+    ]
+  }, { $set: { to_email: false, to_mobile: false } }, { multi: true }, callback);
 };
 
 Facade.prototype.markOldNotificationsAsDone = function(callback) {
