@@ -952,8 +952,7 @@
     "notif": {
       "title": "Notifications",
       "help": {
-        "user": "Our smart notificationTM engine optimizes the number of notifications you receive. If you feel you receive too many of too few notifications, drop us a line !",
-        "room": "Choisissez ci-dessous pour quels types d'événements dans ce donut vous souhaitez être notifié.<br>Les choix ci-dessous s'applique uniquement à ce donut."
+        "user": "DONUT tries to limit smartly the amount of emails and mobile notifications. However if you find that we send too many notification feel free to send your feedback <a data-toggle='contactform'>by email</a> or on <a href='#room/Support'>#Support</a>"
       },
       "nothing": {
         "label": "Ne recevoir aucune notification pour ce donut",
@@ -974,11 +973,11 @@
         "title": "Notify me about:",
         "infos": "Notify me when (only applies to this donut) :",
         "usermessage": {
-          "label": "Private conversations: when a user sends me a private message",
+          "label": "when a user sends me a private message",
           "help": ""
         },
         "roominvite": {
-          "label": "Invitations: when a user invites me to join a donut",
+          "label": "when a user invites me to join a donut",
           "help": ""
         },
         "roommessage": {

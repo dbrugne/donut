@@ -844,7 +844,7 @@
     "notif": {
       "title": "Notifications",
       "help": {
-        "user": "Nous limitons le nombre de notifications grâce à notre moteur « smart notifications » (version bêta). Si vous trouvez que vous en recevez trop ou pas assez, n’hésitez pas à nous le dire ici"
+        "user": "DONUT cherche à limiter intelligemment le nombre de notifications que nous vous envoyons. Toutefois si vous trouvez que vous en recevez trop ou pas assez, n’hésitez pas à nous le dire <a data-toggle='contactform'>par email</a> ou sur le <a href='#room/Support'>#Support</a>"
       },
       "nothing": {
         "label": "Ne recevoir aucune notification pour ce donut",
@@ -863,14 +863,14 @@
         "mobile": "Mobile"
       },
       "events": {
-        "title": "Je souhaite recevoir une notification:",
+        "title": "Je souhaite recevoir une notification :",
         "infos": "Me notifier quand (s'applique uniquement à ce donut) :",
         "usermessage": {
-          "label": "De conversation privée : quand un utilisateur m'envoie un message privé",
+          "label": "quand un utilisateur m'envoie un message privé",
           "help": ""
         },
         "roominvite": {
-          "label": "D'invitation : quand un utilisateur m'invite à rejoindre un donut",
+          "label": "quand un utilisateur m'invite à rejoindre un donut",
           "help": ""
         },
         "roommessage": {
