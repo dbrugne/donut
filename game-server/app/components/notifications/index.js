@@ -265,3 +265,14 @@ Facade.prototype.avoidNotificationsSending = function (uid, ids, callback) {
     return callback(err, results);
   });
 };
+
+Facade.prototype.markOldNotificationsAsDone = function(callback) {
+  var timeLimit = new Date();
+  timeLimit.setMonth(timeLimit.getMonth() - conf.notifications.done);
+  NotificationModel.update({
+    done: false,
+    time: { $lt: timeLimit}
+  }, {
+    $set: { done: true }
+  }, {multi: true}).exec(callback);
+};

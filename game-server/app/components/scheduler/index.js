@@ -5,7 +5,7 @@ var conf = require('../../../../config');
 // tasks
 var featuredRooms = require('./tasks/featuredRoomsTask');
 var cleanupLogs = require('./tasks/cleanupLogsTask');
-var notifConsumer = require('./tasks/notificationsTask');
+var notificationTask = require('./tasks/notificationsTask');
 
 module.exports = function(app, opts) {
   return new DonutScheduler(app, opts);
@@ -36,13 +36,16 @@ DonutScheduler.prototype.afterStart = function(cb) {
   // cleanup logs
   this.cleanupLogsId = schedule.scheduleJob("0 0 0/6 * * *", cleanupLogs, {}); // every 6 hours
 
-  // notifications
+  // notifications by email/mobile
   var notificationFrequency = conf.notifications.scheduler * 1000;
-  this.notifId = schedule.scheduleJob(
+  this.notificationSending = schedule.scheduleJob(
       { start: Date.now() + notificationFrequency, period: notificationFrequency },
-      notifConsumer,
+      notificationTask.send,
       { app: this.app }
   );
+
+  // notifications done
+  this.notificationDone = schedule.scheduleJob("0 30 2 * * *", notificationTask.cleanup, { app: this.app }); // every days at 02:30
 
   process.nextTick(cb);
 }
@@ -50,7 +53,8 @@ DonutScheduler.prototype.afterStart = function(cb) {
 DonutScheduler.prototype.stop = function(force, cb) {
   schedule.cancel(this.featuredRoomsId);
   schedule.cancel(this.cleanupLogsId);
-  schedule.cancel(this.notifId);
+  schedule.cancel(this.notificationSending);
+  schedule.cancel(this.notificationDone);
 
   process.nextTick(cb);
 }
