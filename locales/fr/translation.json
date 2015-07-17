@@ -325,7 +325,8 @@
       "adonut": "un donut",
       "account": "mon compte",
       "edit": "mon profil",
-      "preferences": "préférences",
+      "notifications": "notifications",
+      "preferences": "préférences & notifications",
       "bannedusers": "utilisateurs bloqués",
       "update": "Editer",
       "see": "Voir",
@@ -654,8 +655,7 @@
     "global": {
       "content": {
         "team": "L'équipe DONUT.me",
-        "ps": "PS : Si vous n'êtes pas à l'origine de cette démarche, veuillez nous en avertir sur",
-        "ps2": "ou plus simplement en en répondant à cet e-mail."
+        "ps": "P.S.: pour ne plus recevoir ce type de notifications veuillez décocher les options de notifications dans les préférences de votre compte sur <a href=\"https://__fqdn__\">__fqdn__</a>, pour toute question nous sommes à votre écoute sur <a href=\"https://__fqdn__/!#room/Support\">#support</a>"
       }
     },
     "welcome": {
@@ -694,16 +694,17 @@
       }
     },
     "usermessage": {
-      "subject": "Vous avez reçu un message sur DONUT",
+      "subject": "Vous avez reçu un message privé de @__username__",
       "content": {
-        "title": "Vous avez reçu un message",
+        "title": "Vous avez reçu un message privé de @__username__",
+        "disclaimer": "le ",
         "button": "Voir le message sur DONUT"
       }
     },
     "roommessage": {
-      "subject": "Vous avez reçu un message sur DONUT",
+      "subject": "Vous avez reçu un message dans __roomname__ sur DONUT",
       "content": {
-        "title": "Vous avez reçu un message",
+        "title": "Vous avez reçu un message dans __roomname__ sur DONUT",
         "button": "Voir le message sur DONUT"
       }
     },
@@ -755,11 +756,11 @@
       }
     },
     "roomtopic": {
-      "subject": "Le sujet a changé dans ",
+      "subject": "Le sujet a changé dans __roomname__",
       "content": {
-        "title": "Le sujet a changé dans ",
-        "disclaimer": "Beaucoup de choses se sont passées sur DONUT depuis votre dernier passage.",
-        "action": "Action effectuée par",
+        "title": "Le sujet a changé dans <strong><a href=\"https://__fqdn__/room/__roomname__\" style=\"text-decoration:none; color: #EE2763;\">#__roomname__</a></strong>",
+        "new-topic": "Nouveau sujet: __topic__",
+        "action": "Action effectuée par <strong><a href=\"https://__fqdn__/user/__username__\" style=\"text-decoration:none; color: #EE2763;\">@__username__</a></strong>",
         "button": "retourner sur DONUT"
       }
     },
@@ -772,9 +773,9 @@
       }
     },
     "usermention": {
-      "subject": "Vous avez été mentionné sur DONUT",
+      "subject": "Vous avez été mentionné dans __roomname__",
       "content": {
-        "title": "Vous avez été mentionné dans __name__",
+        "title": "Vous avez été mentionné dans __roomname__",
         "button": "Voir la notification sur DONUT"
       }
     },
@@ -824,7 +825,7 @@
     "fail": "Impossible d'envoyer le message, veuillez réessayer plus tard."
   },
   "preferences": {
-    "title": "Mes préférences",
+    "title": "Mes notifications",
     "sounds": {
       "title": "Sons",
       "test": "tester"
@@ -863,7 +864,7 @@
       },
       "events": {
         "title": "Je souhaite recevoir une notification:",
-        "infos": "Me notifier quand : (s'applique uniquement à ce donut)",
+        "infos": "Me notifier quand (s'applique uniquement à ce donut) :",
         "usermessage": {
           "label": "De conversation privée : quand un utilisateur m'envoie un message privé",
           "help": ""
