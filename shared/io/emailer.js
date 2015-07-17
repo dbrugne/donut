@@ -173,7 +173,8 @@ emailer.userMessage = function(toEmail, username, events, callback) {
   renderer.render('emails/user-message.html', {
       username: username,
       events: events,
-      title: i18next.t("email.usermessage.title")
+    title: i18next.t("email.usermessage.title"),
+    email_heading: i18next.t("email.usermessage.content.title")
   }, function (err, html) {
     if (err)
       return callback(err);
