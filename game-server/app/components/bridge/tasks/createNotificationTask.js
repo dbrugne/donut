@@ -1,7 +1,7 @@
-var logger = require('../../../pomelo-logger').getLogger('donut', __filename);
+var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
 var _ = require('underscore');
-var Notifications = require('../notifications');
-var UserModel = require('../../../../shared/models/user');
+var Notifications = require('../../notifications/index');
+var UserModel = require('../../../../../shared/models/user');
 
 module.exports = function(opts) {
   return new Task(opts);
