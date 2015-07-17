@@ -815,13 +815,23 @@ define([
     },
     openNextFormEdit: function (event) {
       var currentEventMessage = $(event.target).parents('.event');
-      var prevEventMessage = currentEventMessage.prev();
-      var dataTime = prevEventMessage.data('time');
-      var time = Date.now() - new Date(dataTime);
+      var currentBlockMessage = $(event.target).parents('.block .message');
+      this.checkFormEdit('Next', currentEventMessage);
+
+
 
       if ((time) < (3600 * 1000)) {
         this.hideFormEditMessage(event);
 
+      }
+    },
+    checkFormEdit: function(direction, currentEventMessage, currentBlockMessage) {
+      if (direction === 'Next') {
+        var prevEventMessage = currentEventMessage.prev();
+
+        // Check time
+        var dataTime = prevEventMessage.data('time');
+        var time = Date.now() - new Date(dataTime);
       }
     },
 
