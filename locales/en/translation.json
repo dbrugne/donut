@@ -638,8 +638,7 @@
       "global": {
         "content": {
           "team": "The DONUT.me team",
-          "ps": "PS : If you did not initiate this action, please report by forwarding this e-mail to",
-          "ps2": "or replying this e-mail."
+          "ps": "P.S.: To avoid receiving these notification types, please uncheck it from your notification options in your account preferences on <a href=\"https://__fqdn__\“>__fqdn__</a>. For any question, we are available on <a href=\"https://__fqdn__/!#room/Support\">#support</a>"
         }
       },
       "welcome": {
@@ -678,9 +677,9 @@
         }
       },
       "usermessage": {
-        "subject": "You have received a message on DONUT.me",
+        "subject": "You have received a private message from @__username__",
         "content": {
-          "title": "You have received a message",
+          "title": "You have received a private message from @__username__",
           "button": "See the message on DONUT"
         }
       },
@@ -698,23 +697,6 @@
           "title": "You have been promoted moderator of",
           "disclaimer": "A lot of things changed on DONUT since your last login.",
           "action": "Action made by",
-          "button": "Back on DONUT"
-        }
-      },
-      "roomtopic": {
-        "subject": "The subject has changed in",
-        "content": {
-          "title": "The subject has changed in",
-          "disclaimer": "A lot of things changed on DONUT since your last login.",
-          "action": "Action made by",
-          "button": "Back on DONUT"
-        }
-      },
-      "roomjoin": {
-        "subject": "A user has entered ",
-        "content": {
-          "title": "joined",
-          "disclaimer": "A lot of things changed on DONUT since your last login.",
           "button": "Back on DONUT"
         }
       },
@@ -754,22 +736,30 @@
           "disclaimer": "A lot of things changed on DONUT since your last login.",
           "action": "Action made by",
           "button": "Back on DONUT"
-        }
-      },
-      "userban": {
-        "subject": "You have been locked by __username__ on DONUT",
-        "content": {
-          "title": "You have been locked by __username__",
-          "disclaimer": "You can no longuer send him direct messages. He still could send you direct messages, unless you lock him in return.",
-          "button": "Back on DONUT"
-        }
-      },
-      "userdeban": {
-        "subject": "You have been unlocked by __username__ on DONUT",
-        "content": {
-          "title": "You have been unlocked by __username__",
-          "disclaimer": "You can now start again sending him direct messages. He will be able to reply if you have not locked him.",
-          "button": "Back on DONUT"
+        },
+        "roomtopic": {
+          "subject": "The subject has changed in",
+          "content": {
+            "title": "The subject has changed in <strong><a href=\"https://__fqdn__/room/__roomname__\" style=\"text-decoration:none; color: #EE2763;\">#__roomname__</a></strong>",
+            "new-topic": "New subject: __topic__",
+            "action": "Action made by <strong><a href=\"https://__fqdn__/user/__username__\" style=\"text-decoration:none; color: #EE2763;\">@__username__</a></strong>",
+            "button": "Back on DONUT"
+          }
+        },
+        "roomjoin": {
+          "subject": "A user has entered ",
+          "content": {
+            "title": "joined",
+            "disclaimer": "A lot of things changed on DONUT since your last login.",
+            "button": "Back on DONUT"
+          }
+        },
+        "usermention": {
+          "subject": "You have been notified on __roomname__",
+          "content": {
+            "title": "You have been notified on __roomname__",
+            "button": "Voir la notification sur DONUT"
+          }
         }
       },
       "contact": {
