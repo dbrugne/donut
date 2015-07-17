@@ -219,7 +219,7 @@ Facade.prototype.retrieveScheduledNotifications = function (callback) {
   });
 };
 
-Facade.prototype.markNotificationsAsRead = function (uid, ids, callback) {
+Facade.prototype.markNotificationsAsViewed = function (uid, ids, callback) {
   NotificationModel.update({
     _id: {$in: ids},
     user: uid
