@@ -133,9 +133,8 @@ handler.viewed = function (data, session, next) {
   async.waterfall([
 
     function check(callback) {
-
       // Mark all as read
-      if (data.all && data.all === true) {
+      if (data.all) {
         Notifications(that.app).retrieveUserNotificationsUnviewed(session.uid, function (err, notifications) {
           if (err)
             return callback('Error while retrieving notifications for ' + session.uid + ': ' + err);
@@ -174,7 +173,7 @@ handler.viewed = function (data, session, next) {
     },
 
     function markAsViewed(notifications, user, callback) {
-      Notifications(that.app).markNotificationsAsRead(user._id.toString(), notifications, function (err, countUpdated) {
+      Notifications(that.app).markNotificationsAsViewed(user.id, notifications, function (err, countUpdated) {
         if (err)
           return callback('Error while setting notifications as read for ' + session.uid + ': ' + err);
 
