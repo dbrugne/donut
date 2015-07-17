@@ -1,5 +1,6 @@
 var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
 var _ = require('underscore');
+var async = require('async');
 var Notifications = require('../../notifications/index');
 var UserModel = require('../../../../../shared/models/user');
 
@@ -17,35 +18,26 @@ Task.prototype.createNotification = function(data, callback) {
     return callback('data should be a valid object');
   if (!data.type)
     return callback('data.type should be set on data');
-  if (!data.to)
-    return callback('data.to should be a valid user _id');
-  if (!data.event)
-    return callback('data.event should be set');
+  if (!data.history)
+    return callback('data.history should be set');
 
-  var that = this;
-  async.waterfall([
+  var notifier = Notifications(this.app).getType(data.type);
+  if (!notifier)
+    return callback('Unable to find corresponding type: '+data.type);
 
-    function(fn) {
-      UserModel.findOne({ _id: data.to }, fn);
-    },
+  // roommessage  : room, history
+  // roomtopic    : room, history
+  // roomjoin     : room, history
+  // room(promote): user, room, history
+  // usermention  : user, room, history
+  // usermessage  : user, history
+  var args = [];
+  if (data.user)
+    args.push(data.user);
+  if (data.room)
+    args.push(data.room);
+  args.push(data.history);
+  args.push(callback);
 
-    function(userTo, fn) {
-      Notifications.getType(data.type).shouldBeCreated(data.type, event, data);
-    },
-
-    function(fn) {
-      Notifications(that.app).create(data.type, toUser, data.event, fn);
-    }
-
-  ], callback);
-
-  UserModel.findOne({ _id: data.to }, _.bind(function(err, toUser) {
-    if (err)
-      return callback(err);
-
-    Notifications(this.app).create(data.type, toUser, data.event, function() {
-      logger.info('Notification '+data.type+' created');
-      return callback(null);
-    });
-  }, this));
+  notifier.create.apply(notifier, args);
 };

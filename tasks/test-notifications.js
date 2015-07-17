@@ -167,7 +167,8 @@ module.exports = function (grunt) {
             var data = {
               type: item.notification,
               user: userTo.id,
-              event: history.id
+              room: room.id,
+              history: history.id
             };
             bridge.notify('chat', 'createNotificationTask.createNotification', data, function (err) {
               if (err)
