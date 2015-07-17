@@ -96,7 +96,7 @@ handler.read = function (data, session, next) {
     },
 
     function retrieveUnread(user, event, callback) {
-      Notifications(that.app).retrieveUserNotificationsUnreadCount(user._id.toString(), function (err, count) {
+      Notifications(that.app).retrieveUserNotificationsUnviewedCount(user._id.toString(), function (err, count) {
         if (err)
           return callback('Error while retrieving notifications for ' + session.uid + ': ' + err);
 
@@ -187,7 +187,7 @@ handler.viewed = function (data, session, next) {
       };
 
       // Count remaining unviewed notifications
-      Notifications(that.app).retrieveUserNotificationsUnreadCount(user._id.toString(), function (err, count) {
+      Notifications(that.app).retrieveUserNotificationsUnviewedCount(user._id.toString(), function (err, count) {
         if (err)
           logger.error('Error while retrieving notifications: ' + err);
 

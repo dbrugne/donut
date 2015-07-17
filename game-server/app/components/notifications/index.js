@@ -164,16 +164,6 @@ Facade.prototype.retrieveUserNotifications = function (uid, what, callback) {
   });
 };
 
-Facade.prototype.retrieveUserNotificationsUndoneCount = function (uid, callback) {
-  NotificationModel.find({
-    user: uid,
-    done: false,
-    to_browser: true
-  }).count().exec(function (err, count) {
-    callback(err, count);
-  });
-};
-
 Facade.prototype.retrieveUserNotificationsUnviewed = function (uid, callback) {
   NotificationModel.find({
     user: uid,
@@ -185,7 +175,7 @@ Facade.prototype.retrieveUserNotificationsUnviewed = function (uid, callback) {
   });
 };
 
-Facade.prototype.retrieveUserNotificationsUnreadCount = function (uid, callback) {
+Facade.prototype.retrieveUserNotificationsUnviewedCount = function (uid, callback) {
   NotificationModel.find({
     user: uid,
     done: false,
@@ -199,7 +189,6 @@ Facade.prototype.retrieveUserNotificationsUnreadCount = function (uid, callback)
 Facade.prototype.retrieveScheduledNotifications = function (callback) {
   var time = new Date();
   time.setSeconds(time.getSeconds() - conf.notifications.delay);
-
   var q = NotificationModel.find({
     done: false,
     viewed: false,

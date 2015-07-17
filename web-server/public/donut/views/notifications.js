@@ -41,12 +41,10 @@ define([
       // re-init
       this.$menu.html('');
       this.$dropdown.parent().removeClass('open');
+      this.undone = 0;
 
-      // load welcome data
       if (data.unread)
         this.setUnreadCount(data.unread);
-      if (data.undone)
-        this.undone = data.undone;
     },
     render: function () {
       this.$dropdown = this.$el.find('.dropdown-toggle');
