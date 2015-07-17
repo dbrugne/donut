@@ -185,27 +185,6 @@ Facade.prototype.retrieveUserNotificationsUnviewed = function (uid, callback) {
   });
 };
 
-Facade.prototype.retrieveUserNotificationsUndoneCount = function (uid, callback) {
-  NotificationModel.find({
-    user: uid,
-    done: false,
-    to_browser: true
-  }).count().exec(function (err, count) {
-    callback(err, count);
-  });
-};
-
-Facade.prototype.retrieveUserNotificationsUnviewed = function (uid, callback) {
-  NotificationModel.find({
-    user: uid,
-    done: false,
-    viewed: false,
-    to_browser: true
-  }).exec(function (err, results) {
-    callback(err, results);
-  });
-};
-
 Facade.prototype.retrieveUserNotificationsUnreadCount = function (uid, callback) {
   NotificationModel.find({
     user: uid,
@@ -246,6 +225,19 @@ Facade.prototype.markNotificationsAsRead = function (uid, ids, callback) {
     user: uid
   }, {
     $set: {viewed: true}
+  }, {
+    multi: true
+  }, function (err, results) {
+    return callback(err, results);
+  });
+};
+
+Facade.prototype.markNotificationsAsDone = function (uid, ids, callback) {
+  NotificationModel.update({
+    _id: {$in: ids},
+    user: uid
+  }, {
+    $set: {done: true}
   }, {
     multi: true
   }, function (err, results) {
