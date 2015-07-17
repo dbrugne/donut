@@ -26,6 +26,7 @@ define([
       "click .view-spammed-message"    : 'onViewSpammedMessage',
       "click .remask-spammed-message"  : 'onRemaskSpammedMessage',
       "click .message-form .enter"     : 'onEditMessage',
+      'keyup .form-control'            : 'textAreaAdjust',
       "click .dropdown-menu .edited"   : 'showFormEditMessage',
       "dblclick .event .ctn "          : 'showFormEditMessage',
       "click .message-form .esc"       : 'hideFormEditMessage',
@@ -35,10 +36,10 @@ define([
         if (event.which == 13) // enter
           this.onEditMessage(event);
         if (event.which == 38) // up arrow
-          this.openNextFormEdit(event);
-        if (event.which == 40) // down arrow
           this.openPrevFormEdit(event);
-      }
+        if (event.which == 40) // down arrow
+          this.openNextFormEdit(event);
+      },
     },
 
     historyLoading: false,
@@ -658,27 +659,20 @@ define([
      *****************************************************************************************************************/
     onMessageMenuShow: function (event) {
       var ownerUsername = '';
+      var parent = $(event.target).parents('.event');
       if (this.model.get('owner'))
         ownerUsername = this.model.get('owner').get('username');
-      var eventUsername = $(event.target).closest('[data-username]').data('username');
-      var isMessageOwner = (ownerUsername === eventUsername);
+      var username = $(event.target).closest('[data-username]').data('username');
+      var isMessageOwner = (ownerUsername === username);
 
-      // check isEditable
-      var isMessageCurrentUser = (currentUser.get('username') === eventUsername);
-      var timeTarget = new Date(
-        $(event.target)
-          .parents('.event')
-          .data('time')
-      );
-      var time = Date.now() - timeTarget;
-      var isEditable = (time < (3600 * 1000));
-
+      var time = parent.data('time');
+      var isEdit = this.isEditMessage(time, username);
 
       var isOp = this.model.currentUserIsOp();
       var isOwner = this.model.currentUserIsOwner();
       var isAdmin = this.model.currentUserIsAdmin();
 
-      if (((!isOwner && !isAdmin && !isOp) || (isOp && isMessageOwner)) && (!isMessageCurrentUser || !isEditable )) {
+      if (((!isOwner && !isAdmin && !isOp) || (isOp && isMessageOwner)) && (!isEdit)) {
         $(event.currentTarget).find('.dropdown-menu').dropdown('toggle');
         return;
       }
@@ -688,8 +682,7 @@ define([
           isOwner: isOwner,
           isAdmin: isAdmin,
           isMessageOwner: isMessageOwner,
-          isMessageCurrentUser: isMessageCurrentUser,
-          isEditable: isEditable
+          isEdit: isEdit
         }
       });
       $(event.currentTarget).find('.dropdown-menu').html(html);
@@ -777,62 +770,127 @@ define([
       this.hideFormEditMessage(event);
 
     },
+    textAreaAdjust: function(event) {
+      $(event.target).css('height', '1px');
+      $(event.target).css('height', (2+$(event.target).prop('scrollHeight'))+'px');
+    },
     showFormEditMessage: function (event) {
       event.preventDefault();
-      var bottom = this.isScrollOnBottom();
 
-      // check isEditable
-      var eventUsername = $(event.target).closest('[data-username]').data('username');
-      var isMessageCurrentUser = (currentUser.get('username') === eventUsername);
-      var timeTarget = new Date(
-        $(event.target)
-          .parents('.event')
-          .data('time')
-      );
-      var time = Date.now() - timeTarget;
-      var isEditable = (time < (3600 * 1000));
+      var parent = $(event.target).parents('.event');
+      var username = parent.closest('[data-username]').data('username');
+      var time = parent.data('time');
+      var isEdit = this.isEditMessage(time, username);
 
-      var form = $(event.target).parents('.event').find('.message-form');
+      if (isEdit) {
+        parent.find('.text').hide();
+        parent.removeClass('has-hover');
 
-      if (isMessageCurrentUser && isEditable && !form.is(':visible')) {
-        var text = $(event.target).parents('.event').find('.text').text();
-        $(event.target).parents('.event').find('.text').hide();
-        $(event.target).parents('.event').removeClass('has-hover');
+        var form = parent.find('.message-form');
+        var text = parent.find('.text').text();
         form.css('display', 'block');
         form.find('.form-control').val(text).focus();
-        if (bottom)
-          this.scrollDown();
+
+        var that = this;
+        $('html').click(function(e) {
+          if (!$(e.target).hasClass('form-control') && !$(e.target).hasClass('edited')) {
+            that.closeFormEditMessage(parent);
+            $('html').off('click');
+          }
+        });
       }
     },
     hideFormEditMessage: function (event) {
       event.preventDefault();
-      $(event.target).parents('.message-form').hide();
-      $(event.target).parents('.event').addClass('has-hover');
+      $(event.target).parents('.event').find('.message-form').hide();
       $(event.target).parents('.ctn').find('.text').css('display', 'block');
+      $(event.target).parents('.event').addClass('has-hover');
     },
     onMessageEdited: function (event) {
       $('#'+event.event).find('.text').html(event.message);
     },
+    openPrevFormEdit: function (event) {
+      var currentEventMessage = $(event.target).parents('.event');
+      var currentBlockMessage = $(event.target).parents('.message');
+      this.checkAndOpenFormEdit(event, 'Prev', currentEventMessage, currentBlockMessage);
+    },
     openNextFormEdit: function (event) {
       var currentEventMessage = $(event.target).parents('.event');
-      var currentBlockMessage = $(event.target).parents('.block .message');
-      this.checkFormEdit('Next', currentEventMessage);
-
-
-
-      if ((time) < (3600 * 1000)) {
-        this.hideFormEditMessage(event);
-
-      }
+      var currentBlockMessage = $(event.target).parents('.message');
+      this.checkAndOpenFormEdit(event, 'Next', currentEventMessage, currentBlockMessage);
     },
-    checkFormEdit: function(direction, currentEventMessage, currentBlockMessage) {
-      if (direction === 'Next') {
+    checkAndOpenFormEdit: function(event, direction, currentEventMessage, currentBlockMessage) {
+      var username = currentBlockMessage.data('username');
+
+      if (direction === 'Prev') {
         var prevEventMessage = currentEventMessage.prev();
 
-        // Check time
-        var dataTime = prevEventMessage.data('time');
-        var time = Date.now() - new Date(dataTime);
+        if (!currentEventMessage.prev().length && currentBlockMessage.prev().length) {
+          var prevBlockMessage = currentBlockMessage.prev();
+          while((prevBlockMessage.data('username') !== username)) {
+            if (!prevBlockMessage.prev().length)
+              return;
+            prevBlockMessage = prevBlockMessage.prev();
+          }
+          var prevEventMessage = prevBlockMessage.find('.event').last();
+        }
+
+        var prevTime = prevEventMessage.data('time');
+        var isPrevEdit = this.isEditMessage(prevTime, username);
+        if (isPrevEdit) {
+          this.hideFormEditMessage(event);
+          this.openFormEditMessage(prevEventMessage);
+        }
       }
+
+      if (direction === 'Next') {
+        var nextEventMessage = currentEventMessage.next();
+
+        if (!currentEventMessage.next().length && currentBlockMessage.next().length) {
+          var nextBlockMessage = currentBlockMessage.next();
+          while((nextBlockMessage.data('username') !== username)) {
+            if (!nextBlockMessage.next().length)
+              return;
+            nextBlockMessage = nextBlockMessage.next();
+          }
+          var nextEventMessage = nextBlockMessage.find('.event').first();
+        }
+
+        var nextTime = nextEventMessage.data('time');
+        var isNextEdit = this.isEditMessage(nextTime, username);
+        if (isNextEdit) {
+          this.hideFormEditMessage(event);
+          this.openFormEditMessage(nextEventMessage);
+        }
+      }
+    },
+    openFormEditMessage: function (eventCurrent) {
+      var text = eventCurrent.find('.text').text();
+      var form = eventCurrent.find('.message-form');
+      eventCurrent.find('.text').hide();
+      eventCurrent.removeClass('has-hover');
+      form.css('display', 'block');
+      form.find('.form-control').val(text).focus();
+      var that = this;
+      $('html').click(function(e) {
+        if (!$(e.target).hasClass('form-control') && !$(e.target).hasClass('edited')) {
+          that.closeFormEditMessage(eventCurrent);
+          $('html').off('click');
+        }
+      });
+    },
+    closeFormEditMessage: function (eventMessage) {
+      eventMessage.find('.message-form').hide();
+      eventMessage.find('.text').css('display', 'block');
+      eventMessage.addClass('has-hover');
+    },
+    isEditMessage: function (time, username) {
+      var isMessageCurrentUser = (currentUser.get('username') === username);
+      var timeTarget = new Date(time);
+      var diff = Date.now() - timeTarget;
+      var isEdit = (diff < (3600 * 1000));
+
+      return ((isMessageCurrentUser && isEdit) ? true : false);
     },
 
     /*****************************************************************************************************************

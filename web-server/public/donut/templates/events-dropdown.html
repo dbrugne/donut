@@ -9,7 +9,7 @@
             </li>
         <% } %>
 
-        <% if (data.isMessageCurrentUser && data.isEditable) { %>
+        <% if (data.isEdit) { %>
             <li>
                 <i class="icon icon-pencil"></i>
                 <a href="#" class="edited"><%= t('chat.message.dropdown.edited') %></a>
