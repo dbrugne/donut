@@ -7,9 +7,10 @@ define([
   'moment',
   'client',
   'models/current-user',
+  'views/message-edit',
   'views/window',
   '_templates'
-], function ($, _, Backbone, donutDebug, EventModel, moment, client, currentUser, windowView, templates) {
+], function ($, _, Backbone, donutDebug, EventModel, moment, client, currentUser, MessageEditView, windowView, templates) {
 
   var debug = donutDebug('donut:events');
 
@@ -28,11 +29,11 @@ define([
       "click .message-form .enter"     : 'onEditMessage',
       'keyup .form-control'            : 'textAreaAdjust',
       "click .dropdown-menu .edited"   : 'showFormEditMessage',
-      "dblclick .event .ctn "          : 'showFormEditMessage',
-      "click .message-form .esc"       : 'hideFormEditMessage',
+      "dblclick .event .ctn"           : 'showFormEditMessage',
+      "click .message-form .esc"       : 'onEscEditMessage',
       'keydown .form-control': function(event) {
         if (event.which == 27) // escape
-          this.hideFormEditMessage(event);
+          this.onEscEditMessage(event);
         if (event.which == 13) // enter
           this.onEditMessage(event);
         if (event.which == 38) // up arrow
@@ -666,7 +667,7 @@ define([
       var isMessageOwner = (ownerUsername === username);
 
       var time = parent.data('time');
-      var isEdit = this.isEditMessage(time, username);
+      var isEdit = this.isEditableMessage(time, username);
 
       var isOp = this.model.currentUserIsOp();
       var isOwner = this.model.currentUserIsOwner();
@@ -760,15 +761,13 @@ define([
     },
     onEditMessage: function (event) {
       event.preventDefault();
-      var parent = $(event.target).parents('.event');
-      var form = parent.find('.form-control');
+      var $event = $(event.target).closest('.event');
       var roomName = this.model.get('name');
-      var messageId = parent.attr('id');
-      var message = form.val();
+      var messageId = $event.attr('id');
+      var message = $event.find('.form-control').val();
       client.roomMessageEdit(roomName, messageId, message);
 
       this.hideFormEditMessage(event);
-
     },
     textAreaAdjust: function(event) {
       $(event.target).css('height', '1px');
@@ -776,35 +775,20 @@ define([
     },
     showFormEditMessage: function (event) {
       event.preventDefault();
+      var $event = $(event.currentTarget).closest('.event');
 
-      var parent = $(event.target).parents('.event');
-      var username = parent.closest('[data-username]').data('username');
-      var time = parent.data('time');
-      var isEdit = this.isEditMessage(time, username);
+      if (!this.isEditableMessage($event))
+        return;
 
-      if (isEdit) {
-        parent.find('.text').hide();
-        parent.removeClass('has-hover');
+      this.editMessage($event);
+      //fin
 
-        var form = parent.find('.message-form');
-        var text = parent.find('.text').text();
-        form.css('display', 'block');
-        form.find('.form-control').val(text).focus();
-
-        var that = this;
-        $('html').click(function(e) {
-          if (!$(e.target).hasClass('form-control') && !$(e.target).hasClass('edited')) {
-            that.closeFormEditMessage(parent);
-            $('html').off('click');
-          }
-        });
-      }
+      this.messageUnderEdition = new MessageEditView();
     },
-    hideFormEditMessage: function (event) {
+    onEscEditMessage: function (event) {
       event.preventDefault();
-      $(event.target).parents('.event').find('.message-form').hide();
-      $(event.target).parents('.ctn').find('.text').css('display', 'block');
-      $(event.target).parents('.event').addClass('has-hover');
+      var $event = $(event.target).closest('.event');
+      this.closeFormEditMessage($event);
     },
     onMessageEdited: function (event) {
       $('#'+event.event).find('.text').html(event.message);
@@ -836,7 +820,7 @@ define([
         }
 
         var prevTime = prevEventMessage.data('time');
-        var isPrevEdit = this.isEditMessage(prevTime, username);
+        var isPrevEdit = this.isEditableMessage(prevTime, username);
         if (isPrevEdit) {
           this.hideFormEditMessage(event);
           this.openFormEditMessage(prevEventMessage);
@@ -857,40 +841,42 @@ define([
         }
 
         var nextTime = nextEventMessage.data('time');
-        var isNextEdit = this.isEditMessage(nextTime, username);
+        var isNextEdit = this.isEditableMessage(nextTime, username);
         if (isNextEdit) {
           this.hideFormEditMessage(event);
           this.openFormEditMessage(nextEventMessage);
         }
       }
     },
-    openFormEditMessage: function (eventCurrent) {
-      var text = eventCurrent.find('.text').text();
-      var form = eventCurrent.find('.message-form');
-      eventCurrent.find('.text').hide();
-      eventCurrent.removeClass('has-hover');
+    closeFormEditMessage: function ($event) {
+      $event.find('.message-form').hide();
+      $event.find('.text').css('display', 'block');
+      $event.addClass('has-hover');
+    },
+    isEditableMessage: function ($event) {
+      var username = $event.closest('[data-username]').data('username');
+      var time = $event.data('time');
+      var isMessageCurrentUser = (currentUser.get('username') === username);
+      var isEdit = ((Date.now() - new Date(time)) < (3600 * 1000)); // 1 hours
+
+      return ((isMessageCurrentUser && isEdit));
+    },
+    editMessage: function ($event) {
+      $event.find('.text').hide();
+      $event.removeClass('has-hover');
+
+      var form = $event.find('.message-form');
+      var text = $event.find('.text').text();
       form.css('display', 'block');
       form.find('.form-control').val(text).focus();
+
       var that = this;
       $('html').click(function(e) {
         if (!$(e.target).hasClass('form-control') && !$(e.target).hasClass('edited')) {
-          that.closeFormEditMessage(eventCurrent);
+          that.closeFormEditMessage($event);
           $('html').off('click');
         }
       });
-    },
-    closeFormEditMessage: function (eventMessage) {
-      eventMessage.find('.message-form').hide();
-      eventMessage.find('.text').css('display', 'block');
-      eventMessage.addClass('has-hover');
-    },
-    isEditMessage: function (time, username) {
-      var isMessageCurrentUser = (currentUser.get('username') === username);
-      var timeTarget = new Date(time);
-      var diff = Date.now() - timeTarget;
-      var isEdit = (diff < (3600 * 1000));
-
-      return ((isMessageCurrentUser && isEdit) ? true : false);
     },
 
     /*****************************************************************************************************************
