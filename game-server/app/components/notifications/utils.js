@@ -1,6 +1,5 @@
 var logger = require('../../../pomelo-logger').getLogger('donut', __filename);
 var _ = require('underscore');
-var NotificationModel = require('../../../../shared/models/notification');
 var UserModel = require('../../../../shared/models/user');
 var RoomModel = require('../../../../shared/models/room');
 var HistoryOneModel = require('../../../../shared/models/historyone');
@@ -8,158 +7,92 @@ var HistoryRoomModel = require('../../../../shared/models/historyroom');
 
 module.exports = {
 
-  waterfallDone: function (err, errorType) {
-    if (err)
-      logger.error(err);
-  },
-
-  checkRepetitive: function (type, user, what, frequency) {
-
+  retrieveUser: function (user) {
     return function () {
       var args = _.toArray(arguments);
       var callback = args.pop();
       if (!_.isFunction(callback))
-        return logger.error('Wrong parameters count, missing callback');
+        return logger.error('retrieveUser parameters error, missing callback');
 
-      var delay = Date.now() - 1000 * 60 * frequency;
-
-      var criteria = {
-        type: type,
-        time: {$gte: new Date(delay)}
-      };
-
-      if (user !== null) {
-        criteria['user'] = user;
-      }
-      _.each(what, function (val, key) {
-        criteria[key] = val;
-      });
-
-      NotificationModel.find(criteria).count(function (err, count) {
-        if (!err && count > 0)
-          err = 'no notification due to repetitive';
-
-        args.unshift(err);
-        callback.apply(undefined, args);
-      });
-    };
-
-  },
-
-  retrieveUser: function (userId) {
-    return function () {
-      var args = _.toArray(arguments);
-      var callback = args.pop();
-      if (!_.isFunction(callback))
-        return logger.error('Wrong parameters count, missing callback');
-
-      UserModel.findByUid(userId).exec(function (err, user) {
-        args.unshift(err);
+      if (_.isObject(user)) {
+        args.unshift(null);
         args.push(user);
-        callback.apply(undefined, args);
-      });
-    };
-  },
-
-  retrieveRoom: function (roomId) {
-    return function () {
-      var args = _.toArray(arguments);
-      var callback = args.pop();
-      if (!_.isFunction(callback))
-        return logger.error('Wrong parameters count, missing callback');
-
-      RoomModel.findById(roomId, function (err, room) {
-        args.unshift(err);
-        args.push(room);
-        callback.apply(undefined, args);
-      });
-    };
-  },
-
-  retrieveUnreadNotificationsCount: function (userId) {
-    return function () {
-      var args = _.toArray(arguments);
-      var callback = args.pop();
-      if (!_.isFunction(callback))
-        return logger.error('Wrong parameters count, missing callback');
-
-      NotificationModel.find({
-        user: userId,
-        done: false,
-        viewed: false
-      }).count().exec(function (err, count) {
-        args.unshift(err);
-        args.push(count);
-        callback.apply(undefined, args);
-      });
-    };
-  },
-
-  checkPreferences: function (user, roomName, type) {
-    return function () {
-      var args = _.toArray(arguments);
-      var callback = args.pop();
-      if (!_.isFunction(callback))
-        return logger.error('Wrong parameters count, missing callback');
-
-      var err = null;
-      if (user.preferencesValue('room:notif:nothing:__what__'.replace('__what__', roomName)) || !user.preferencesValue('room:notif:__type__:__what__'.replace('__type__', type).replace('__what__', roomName)))
-        err = 'no notification due to user preferences';
-
-      args.unshift(err);
-      callback.apply(undefined, args);
-    };
-  },
-
-  /**
-   * Retrieve Event by id and populate required fields
-   *
-   * @param type      historyone || historyone
-   * @param id
-   * @returns {Function}
-   */
-  retrieveEvent: function (type, id) {
-    return function () {
-
-      var args = _.toArray(arguments);
-      var err = null;
-      var callback = args.pop();
-
-      if (!_.isFunction(callback))
-        err = 'No notification due to user preferences';
-      if (['historyroom', 'historyone'].indexOf(type) == -1)
-        err = 'Wrong model type';
-
-      if (err != null) {
-        args.unshift(err);
         return callback.apply(undefined, args);
       }
 
-      switch (type) {
-        case 'historyone':
-          HistoryOneModel
-            .findById(id)
-            .populate('to')
-            .populate('from')
-            .exec(function (err, event) {
-              args.unshift(err);
-              args.push(event);
-              return callback.apply(undefined, args);
-            });
-          break;
-        case 'historyroom':
-          HistoryRoomModel
-            .findById(id)
-            .populate('user')
-            .populate('by_user')
-            .populate('room')
-            .exec(function (err, event) {
-              args.unshift(err);
-              args.push(event);
-              return callback.apply(undefined, args);
-            });
-          break;
+      UserModel.findByUid(user).exec(function (err, model) {
+        args.unshift(err);
+        args.push(model);
+        callback.apply(undefined, args);
+      });
+    };
+  },
+
+  retrieveRoom: function (room) {
+    return function () {
+      var args = _.toArray(arguments);
+      var callback = args.pop();
+      if (!_.isFunction(callback))
+        return logger.error('retrieveRoom parameters error, missing callback');
+
+      if (_.isObject(room)) {
+        args.unshift(null);
+        args.push(room);
+        return callback.apply(undefined, args);
       }
+
+      RoomModel.findById(room, function (err, model) {
+        args.unshift(err);
+        args.push(model);
+        callback.apply(undefined, args);
+      });
+    };
+  },
+
+  _retrieveHistory: function(type, history, previousArguments) {
+    var args = _.toArray(previousArguments);
+    var callback = args.pop();
+    if (!_.isFunction(callback))
+      return logger.error('_retrieveHistory parameters error, missing callback');
+
+    if (_.isObject(history)) {
+      args.unshift(null);
+      args.push(history);
+      return callback.apply(undefined, args);
+    }
+
+    var q;
+    if (type == 'historyroom')
+      q = HistoryRoomModel.findById(history)
+        .populate('user')
+        .populate('by_user')
+        .populate('room');
+    else if (type == 'historyone')
+      q = HistoryOneModel.findById(history)
+        .populate('to')
+        .populate('from');
+    else
+      return callback.apply(undefined, ['Unable to determine history event type to retrieve: '+type]);
+
+    q.exec(function (err, model) {
+      args.unshift(err);
+      args.push(model);
+      return callback.apply(undefined, args);
+    });
+  },
+
+  retrieveHistoryRoom: function(history) {
+    var that = this;
+    return function () {
+      that._retrieveHistory('historyroom', history, arguments);
+    };
+  },
+
+  retrieveHistoryOne: function(history) {
+    var that = this;
+    return function () {
+      that._retrieveHistory('historyone', history, arguments);
     };
   }
+
 };

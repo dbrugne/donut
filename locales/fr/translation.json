@@ -62,6 +62,7 @@
     "viewprofile": "voir le profil",
     "online": "en ligne",
     "offline": "hors ligne",
+    "connecting": "connexion ...",
     "permalink": "permalien",
     "search": "Recherche",
     "by": "par",
@@ -433,7 +434,8 @@
         "roomtopic": "Le sujet a changé dans ",
         "roomjoin": "a rejoint ",
         "usermention": "on vous a mentionné dans ",
-        "roommessage": "Nouveau message dans "
+        "roommessage": "Nouveau message dans ",
+        "usermessage": " vous a envoyé un message privé"
       },
       "desktop": {
         "by": "par",
@@ -511,7 +513,7 @@
       "contactus": "Problèmes pour vous connecter ? Contactez-nous."
     },
     "message": {
-      "text-spammed": "Ce message a été marqué comme indésirable au modérateur, pour le voir quand même [<a class=\"view-spammed-message\">cliquer ici</a>].",
+      "text-spammed": "Message indésirable d'après le modérateur [<a class=\"view-spammed-message\">Afficher</a>].",
       "text-remask": "Masquer à nouveau",
       "dropdown": {
         "spam": {

@@ -62,6 +62,7 @@
     "viewprofile": "view profile",
     "online": "online",
     "offline": "offline",
+    "connecting": "connection ...",
     "permalink": "permalink",
     "search": "search",
     "by": "by",
@@ -408,14 +409,15 @@
         "kick": "You have been kicked out of this donut of",
         "ban": "You have been banned from this donut of",
         "deban": "You have been unbanned from this donut of",
-        "op": "You have been promoted moderateur of",
+        "op": "You have been promoted moderator of",
         "deop": "You have been removed from moderators of",
         "roomtopic": "Subject has changed in  ",
         "roomjoin": "just joined the room",
         "usermention": "You were notified in ",
         "roommessage": "New message in ",
         "userban": " locked you",
-        "userdeban": " unlocked you"
+        "userdeban": " unlocked you",
+        "usermessage": " send a direct message to you"
       },
       "desktop": {
         "by": "by",
@@ -494,7 +496,7 @@
       "contactus": "Often problems to connect to us?"
     },
     "message": {
-      "text-spammed": "This message has been marked as junk to the moderator, to see anyway [<a class=\"view-spammed-message\">click here</a>]",
+      "text-spammed": "Message tagged as junk by moderator [<a class=\"view-spammed-message\">Show</a>]",
       "text-remask": "Hide again",
       "dropdown": {
         "spam": {

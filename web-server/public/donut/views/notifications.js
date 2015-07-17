@@ -21,6 +21,8 @@ define([
       'hide.bs.dropdown': 'onHide'
     },
 
+    timeToMarkAsRead: 1500, // mark notifications as read after n seconds
+
     markHasRead: null,
 
     initialize: function (options) {
@@ -28,11 +30,16 @@ define([
       this.undone = 0;
       this.more = false;
       this.mainView = options.mainView;
-      this.listenTo(client, 'notification:new', this.onNotificationPushed);
+      this.listenTo(client, 'notification:new', this.onNewNotification);
 
       this.render();
     },
     initializeNotificationState: function (data) {
+      // re-init
+      this.$menu.html('');
+      this.$dropdown.parent().removeClass('open');
+
+      // load welcome data
       if (data.unread)
         this.setUnreadCount(data.unread);
       if (data.undone)
@@ -65,7 +72,7 @@ define([
     },
 
     // A new Notification is pushed from server
-    onNotificationPushed: function (data) {
+    onNewNotification: function (data) {
       // Update Badge & Count
       this.setUnreadCount(this.unread + 1);
 
@@ -84,7 +91,7 @@ define([
         // Set Timeout to clear new notification
         this.markHasRead = setTimeout(function () {
           that.clearNotifications();
-        }, 2000); // Clear notifications after 2 seconds
+        }, this.timeToMarkAsRead);
       }
 
       this.toggleReadMore();
@@ -125,32 +132,35 @@ define([
       var template;
 
       switch (notification.type) {
+        case 'usermessage':
+          template = templates['notification/user-message.html'];
+          break;
         case 'roomop':
-          template = templates['notifications/room-op.html'];
+          template = templates['notification/room-op.html'];
           break;
         case 'roomdeop':
-          template = templates['notifications/room-deop.html'];
+          template = templates['notification/room-deop.html'];
           break;
         case 'roomkick':
-          template = templates['notifications/room-kick.html'];
+          template = templates['notification/room-kick.html'];
           break;
         case 'roomban':
-          template = templates['notifications/room-ban.html'];
+          template = templates['notification/room-ban.html'];
           break;
         case 'roomdeban':
-          template = templates['notifications/room-deban.html'];
+          template = templates['notification/room-deban.html'];
           break;
         case 'roomtopic':
-          template = templates['notifications/room-topic.html'];
+          template = templates['notification/room-topic.html'];
           break;
         case 'roomjoin':
-          template = templates['notifications/room-join.html'];
+          template = templates['notification/room-join.html'];
           break;
         case 'roommessage':
-          template = templates['notifications/room-message.html'];
+          template = templates['notification/room-message.html'];
           break;
         case 'usermention':
-          template = templates['notifications/user-mention.html'];
+          template = templates['notification/user-mention.html'];
           break;
         default:
           break;
@@ -185,11 +195,10 @@ define([
 
       this.markHasRead = setTimeout(function () {
         that.clearNotifications();
-      }, 2000); // Clear notifications after 2 seconds
+      }, this.timeToMarkAsRead);
     },
 
     onHide: function (event) {
-      console.log("hide", event.relatedTarget);
       clearTimeout(this.markHasRead);
     },
 
@@ -242,7 +251,7 @@ define([
         var that = this;
         this.markHasRead = setTimeout(function () {
           that.clearNotifications();
-        }, 2000);
+        }, this.timeToMarkAsRead);
 
         this.toggleReadMore();
 

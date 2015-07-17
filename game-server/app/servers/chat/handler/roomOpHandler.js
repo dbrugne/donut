@@ -116,9 +116,7 @@ handler.op = function(data, session, next) {
 		},
 
 		function notification(room, user, opedUser, sentEvent, callback) {
-			Notifications(that.app).create('roomop', opedUser, {room: room, event: sentEvent}, function() {
-				return callback(null);
-			});
+			Notifications(that.app).getType('roomop').create(opedUser, room, sentEvent.id, callback);
 		}
 
 	], function(err) {

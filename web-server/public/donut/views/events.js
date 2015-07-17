@@ -701,6 +701,8 @@ define([
         .removeClass('spammed')
         .find('.ctn .text-spammed')
         .remove();
+
+      this.$('#' + room.event).find('.remask-spammed-message').remove();
       if (bottom)
         this.scrollDown();
     },
