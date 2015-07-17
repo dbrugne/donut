@@ -1,0 +1,13 @@
+<div class="message <% if (data.viewed == false) { %>unread<% } %>" data-notification-id="<%= data.id %>" data-time="<%= data.time %>">
+    <img src="<%= data.avatar %>" alt="<%= data.data.by_user.username %>" />
+    <div class="message-subject">
+        <span class="name open-user-profile" data-username="<%= data.data.by_user.username %>">@<%= data.data.by_user.username %></span>
+        <a href="#user/<%= (data.data.by_user.username) %>">
+            <%= t('chat.notifications.dropdown.usermessage') %>
+        </a>
+    </div>
+    <div class="message-description unviewed">
+        <span class="username">&nbsp;</span>
+        <div class="date"><span class="moment" data-time="<%= data.time %>" title="<%= data.time %>"><%= from_now %></span></div>
+    </div>
+</div> <!-- / .message -->

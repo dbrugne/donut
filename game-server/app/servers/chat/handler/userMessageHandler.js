@@ -123,8 +123,8 @@ handler.message = function(data, session, next) {
 		},
 
 		function notification(from, to, event, callback) {
-			Notifications(that.app).create('usermessage', to, event, function() {
-				return callback(null, from, to, event);
+			Notifications(that.app).getType('usermessage').create(to, event.id, function(err) {
+				return callback(err, from, to, event);
 			});
 		},
 

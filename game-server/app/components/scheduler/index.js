@@ -1,10 +1,11 @@
 var logger = require('../../../pomelo-logger').getLogger('donut', __filename);
 var schedule = require('pomelo-scheduler');
+var conf = require('../../../../config');
 
 // tasks
-var featuredRooms = require('./featuredRoomsTask');
-var cleanupLogs = require('./cleanupLogsTask');
-var notifConsumer = require('./notificationsTask');
+var featuredRooms = require('./tasks/featuredRoomsTask');
+var cleanupLogs = require('./tasks/cleanupLogsTask');
+var notifConsumer = require('./tasks/notificationsTask');
 
 module.exports = function(app, opts) {
   return new DonutScheduler(app, opts);
@@ -36,9 +37,9 @@ DonutScheduler.prototype.afterStart = function(cb) {
   this.cleanupLogsId = schedule.scheduleJob("0 0 0/6 * * *", cleanupLogs, {}); // every 6 hours
 
   // notifications
-  var notifFrequency = 30000; // every 30s, start in 30s
+  var notificationFrequency = conf.notifications.scheduler * 1000;
   this.notifId = schedule.scheduleJob(
-      { start: Date.now() + notifFrequency, period: notifFrequency },
+      { start: Date.now() + notificationFrequency, period: notificationFrequency },
       notifConsumer,
       { app: this.app }
   );

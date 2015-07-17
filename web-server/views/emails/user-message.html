@@ -23,7 +23,7 @@
                 <% _.forEach(events, function(event){ %>
                     <% if ( lastUsername !== event.from_username) { %>
                         <% lastUsername = event.from_username; %>
-                        <tr>
+                        <tr <% if (event.current === true) { %>style="background-color: #000088;"<% } %>>
                             <td style="width: 35px;">
                                 <img src="<%- event.from_avatar %>" style=" width: 30px; height: 30px; ">
                             </td>
@@ -37,7 +37,7 @@
 
                         </tr>
                     <% } %>
-                    <tr>
+                    <tr <% if (event.current === true) { %>style="background-color: #000088;"<% } %>>
                         <td></td>
                         <td>
                             <div class="event" style="">

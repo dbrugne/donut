@@ -3,16 +3,16 @@ var _ = require('underscore');
 var NotificationModel = require('../../../../shared/models/notification');
 var HistoryOne = require('../../../../shared/models/historyone');
 var HistoryRoom = require('../../../../shared/models/historyroom');
-var conf = require('../../../../config/config.global');
+var conf = require('../../../../config');
 var async = require('async');
 
 // notifications logic
-var userMessage = require('./userMessageType');
-var roomPromote = require('./roomPromoteType');
-var roomTopic = require('./roomTopicType');
-var roomMessage = require('./roomMessageType');
-var roomJoin = require('./roomJoinType');
-var userMention = require('./userMentionType');
+var userMessage = require('./types/userMessageType');
+var roomPromote = require('./types/roomPromoteType');
+var roomTopic = require('./types/roomTopicType');
+var roomMessage = require('./types/roomMessageType');
+var roomJoin = require('./types/roomJoinType');
+var userMention = require('./types/userMentionType');
 
 module.exports = function (app) {
   return new Facade(app);
@@ -37,33 +37,17 @@ Facade.prototype.uidStatus = function (uid, fn) {
   });
 };
 
-
-Facade.prototype.create = function (type, subject, data, fn) {
-  logger.info('Notification component called: ' + type + ' for ' + (subject.name || subject.username));
-
-  var that = this;
-  process.nextTick(function () {
-    var t = that.getType(type);
-    if (t)
-      t.shouldBeCreated(type, subject, data);
-  });
-
-  // always return immediately
-  if (_.isFunction(fn))
-    return fn();
-};
-
 /**
  *
  * @param type
  * @returns {*}
  */
 Facade.prototype.getType = function (type) {
-  var that = this;
+  var typeConstructor;
   switch (type) {
 
     case 'usermessage':
-      return userMessage(that);
+      typeConstructor = userMessage;
       break;
 
     case 'roomop':
@@ -71,31 +55,33 @@ Facade.prototype.getType = function (type) {
     case 'roomkick':
     case 'roomban':
     case 'roomdeban':
-      return roomPromote(that);
+      typeConstructor = roomPromote;
       break;
 
     case 'roomtopic':
-      return roomTopic(that);
+      typeConstructor = roomTopic;
       break;
 
     case 'roommessage':
-      return roomMessage(that);
+      typeConstructor = roomMessage;
       break;
 
     case 'roomjoin':
-      return roomJoin(that);
+      typeConstructor = roomJoin;
       break;
 
     case 'usermention':
-      return userMention(that);
+      typeConstructor = userMention;
       break;
 
     default:
       logger.warn('Unknown notification type: ' + type);
-      break;
-
-    return null;
+      return null;
   }
+
+  var typeObject = typeConstructor(this);
+  typeObject.type = type; // allow same file/object for different type (e.g.: promote)
+  return typeObject;
 };
 
 Facade.prototype.retrieveUserNotifications = function (uid, what, callback) {
@@ -228,26 +214,21 @@ Facade.prototype.retrieveUserNotificationsUnreadCount = function (uid, callback)
   });
 };
 
-Facade.prototype.retrievePendingNotifications = function (callback) {
+Facade.prototype.retrieveScheduledNotifications = function (callback) {
   var time = new Date();
-  time.setMinutes(time.getMinutes() - conf.notifications.emailDelay);
+  time.setSeconds(time.getSeconds() - conf.notifications.delay);
 
   var q = NotificationModel.find({
     done: false,
     viewed: false,
-    time: {$lt: time},
+    time: { $lt: time }, // @todo : add delay before sending email/mobile for each notification type here
     $or: [
-      {to_browser: true, sent_to_browser: false},
-      {to_email: true, sent_to_email: false},
-      {to_mobile: true, sent_to_mobile: false}
+      { to_email: true, sent_to_email: false },
+      //{ to_mobile: true, sent_to_mobile: false }
     ]
   });
 
-  q.populate({path: 'user', model: 'User', select: 'facebook username local avatar color'});
-  q.populate({path: 'data.user', model: 'User', select: 'facebook username local avatar color'});
-  q.populate({path: 'data.by_user', model: 'User', select: 'facebook username avatar color'});
-  q.populate({path: 'data.room', model: 'Room', select: 'name avatar color'});
-
+  q.populate({ path: 'user', model: 'User', select: 'facebook username local avatar color' });
   q.exec(function (err, results) {
     if (err)
       callback(err);
