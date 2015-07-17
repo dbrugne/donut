@@ -17,6 +17,7 @@ define([
     events: {
       "click .dropdown-menu .actions": 'onReadMore',
       "click .action-tag-as-read": 'onTagAsRead',
+      "click .action-tag-as-done": 'onTagAsDone',
       'show.bs.dropdown': 'onShow',
       'hide.bs.dropdown': 'onHide'
     },
@@ -26,11 +27,13 @@ define([
     markHasRead: null,
 
     initialize: function (options) {
+      this.listenTo(client, 'notification:new', this.onNewNotification);
+      this.listenTo(client, 'notification:done', this.onDoneNotification);
+
       this.unread = 0;
       this.undone = 0;
       this.more = false;
       this.mainView = options.mainView;
-      this.listenTo(client, 'notification:new', this.onNewNotification);
 
       this.render();
     },
@@ -98,12 +101,10 @@ define([
 
       this._createDesktopNotify(data);
     },
-    _createDesktopNotify: function(data)
-    {
+    _createDesktopNotify: function (data) {
       var desktopTitle, desktopBody;
 
-      switch (data.type)
-      {
+      switch (data.type) {
         case 'roomop':
         case 'roomdeop':
         case 'roomkick':
@@ -111,19 +112,22 @@ define([
         case 'roomdeban':
         case 'roomtopic':
         case 'roomjoin':
-          desktopTitle = $.t('chat.notifications.desktop.'+data.type, { 'roomname': ( data.data.room && data.data.room.name ? data.data.room.name : ''), 'username': ( data.data.user && data.data.user.username ? data.data.user.username : '') });
+          desktopTitle = $.t('chat.notifications.desktop.' + data.type, {
+            'roomname': ( data.data.room && data.data.room.name ? data.data.room.name : ''),
+            'username': ( data.data.user && data.data.user.username ? data.data.user.username : '')
+          });
           desktopBody = '';
-        break;
+          break;
         case 'roommessage':
-          desktopTitle = $.t('chat.notifications.desktop.'+data.type).replace('__roomname__', ( data.data.room && data.data.room.name ? ' '+data.data.room.name : ''));
-          desktopBody = ( data.data.by_user && data.data.by_user.username ? t('chat.notifications.desktop.by') + ' '+data.data.by_user.username : '');
-        break;
+          desktopTitle = $.t('chat.notifications.desktop.' + data.type).replace('__roomname__', ( data.data.room && data.data.room.name ? ' ' + data.data.room.name : ''));
+          desktopBody = ( data.data.by_user && data.data.by_user.username ? t('chat.notifications.desktop.by') + ' ' + data.data.by_user.username : '');
+          break;
         case 'usermention':
-          desktopTitle = $.t('chat.notifications.desktop.'+data.type).replace('__username__', ( data.data.by_user && data.data.by_user.username ? ' '+data.data.by_user.username : ''));
+          desktopTitle = $.t('chat.notifications.desktop.' + data.type).replace('__username__', ( data.data.by_user && data.data.by_user.username ? ' ' + data.data.by_user.username : ''));
           desktopBody = '';
-        break;
+          break;
         default:
-        break;
+          break;
       }
 
       windowView.desktopNotify(desktopTitle, desktopBody);
@@ -223,6 +227,8 @@ define([
 
         // Update Badge & Count
         this.setUnreadCount(that.unread - ids.length);
+
+        that.markHasRead = null;
       }, this));
     },
 
@@ -288,6 +294,36 @@ define([
         // Update Badge & Count
         this.setUnreadCount(0);
       }, this));
+    },
+
+    onTagAsDone: function (event) {
+      event.preventDefault();
+      var message = $(event.currentTarget).parents('.message');
+      // Ask server to set notification as done, and wait for response to set them likewise
+      client.userNotificationsDone(message.data('notification-id'), true);
+      return false;
+    },
+
+    // A Notification is tagged as done on the server
+    onDoneNotification: function (data) {
+      clearTimeout(this.markHasRead);
+
+      var message = $('.message[data-notification-id=' + data.notification + ']');
+      this.undone--;
+
+      if (message.hasClass('unread'))
+        this.unread--;
+
+      message.fadeOut(750, function () {
+        $(this).remove();
+      });
+
+      var that = this;
+      this.markHasRead = setTimeout(function () {
+        that.clearNotifications();
+      }, this.timeToMarkAsRead);
+
+      this.toggleReadMore();
     }
   });
 

@@ -2,6 +2,7 @@ var logger = require('../../../../pomelo-logger').getLogger('donut', __filename)
 var async = require('async');
 var _ = require('underscore');
 var User = require('../../../../../shared/models/user');
+var NotificationModel = require('../../../../../shared/models/notification');
 var Notifications = require('../../../components/notifications');
 var ObjectId = require('mongoose').Types.ObjectId;
 
@@ -193,6 +194,76 @@ handler.viewed = function (data, session, next) {
 
         event.unviewed = count || 0;
 
+        return callback(null, event);
+      });
+    }
+
+  ], function (err, event) {
+    if (err) {
+      logger.error(err);
+      return next(null, {code: 500, err: err});
+    }
+
+    next(null, event);
+  });
+
+};
+
+/**
+ * Handler user done notifications logic
+ * Used to tag selected notifications as "done"
+ *
+ * @param {Object} data message from client
+ * @param {Object} session
+ * @param  {Function} next step callback
+ *
+ */
+handler.done = function (data, session, next) {
+
+  var that = this;
+
+  async.waterfall([
+
+    function check(callback) {
+
+      if (!data.id)
+        return callback('id parameter is mandatory for notifications:done');
+
+      NotificationModel.findOne({_id: data.id}, function (err, notification) {
+        if (err)
+          return callback('Error while retrieving notification: ' + err);
+
+        //if (notification.done === true)
+        //  return callback('This notification is already tagged as done');
+
+        if (notification.user.toString() !== session.uid)
+          return callback('This notification is not associated to this user');
+
+        return callback(null, notification);
+      });
+    },
+
+    function markAsDone(notification, callback) {
+      Notifications(that.app).markNotificationsAsDone(session.uid, [ notification.id ], function (err, countUpdated) {
+        if (err)
+          return callback('Error while setting notifications as read for ' + session.uid + ': ' + err);
+
+        return callback(null, notification);
+      });
+    },
+
+    function prepare(notification, callback) {
+      var event = {
+        notification: notification.id
+      };
+
+      return callback(null, event);
+    },
+
+    function broadcast(event, callback) {
+      that.app.globalChannelService.pushMessage('connector', 'notification:done', event, 'user:'+session.uid, {}, function (err) {
+        if (err)
+          logger.error('Error while emitting notification:done for uid: ' + session.uid + ': ' + err);
         return callback(null, event);
       });
     }
