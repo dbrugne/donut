@@ -157,9 +157,7 @@ handler.kick = function(data, session, next) {
 		},
 
 		function notification(room, user, kickedUser, sentEvent, callback) {
-			Notifications(that.app).create('roomkick', kickedUser, {room: room, event: sentEvent}, function() {
-				return callback(null);
-			});
+			Notifications(that.app).getType('roomkick').create(kickedUser, room, sentEvent.id, callback);
 		}
 
 	], function(err) {

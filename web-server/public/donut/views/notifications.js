@@ -21,6 +21,8 @@ define([
       'hide.bs.dropdown': 'onHide'
     },
 
+    timeToMarkAsRead: 1500, // mark notifications as read after n seconds
+
     markHasRead: null,
 
     initialize: function (options) {
@@ -28,11 +30,16 @@ define([
       this.undone = 0;
       this.more = false;
       this.mainView = options.mainView;
-      this.listenTo(client, 'notification:new', this.onNotificationPushed);
+      this.listenTo(client, 'notification:new', this.onNewNotification);
 
       this.render();
     },
     initializeNotificationState: function (data) {
+      // re-init
+      this.$menu.html('');
+      this.$dropdown.parent().removeClass('open');
+
+      // load welcome data
       if (data.unread)
         this.setUnreadCount(data.unread);
       if (data.undone)
@@ -65,7 +72,7 @@ define([
     },
 
     // A new Notification is pushed from server
-    onNotificationPushed: function (data) {
+    onNewNotification: function (data) {
       // Update Badge & Count
       this.setUnreadCount(this.unread + 1);
 
@@ -84,7 +91,7 @@ define([
         // Set Timeout to clear new notification
         this.markHasRead = setTimeout(function () {
           that.clearNotifications();
-        }, 2000); // Clear notifications after 2 seconds
+        }, this.timeToMarkAsRead);
       }
 
       this.toggleReadMore();
@@ -188,11 +195,10 @@ define([
 
       this.markHasRead = setTimeout(function () {
         that.clearNotifications();
-      }, 2000); // Clear notifications after 2 seconds
+      }, this.timeToMarkAsRead);
     },
 
     onHide: function (event) {
-      console.log("hide", event.relatedTarget);
       clearTimeout(this.markHasRead);
     },
 
@@ -245,7 +251,7 @@ define([
         var that = this;
         this.markHasRead = setTimeout(function () {
           that.clearNotifications();
-        }, 2000);
+        }, this.timeToMarkAsRead);
 
         this.toggleReadMore();
 

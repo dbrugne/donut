@@ -1,5 +1,5 @@
-var logger = require('../../../pomelo-logger').getLogger('donut', __filename);
-var Log = require('../../../../shared/models/log');
+var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
+var Log = require('../../../../../shared/models/log');
 
 module.exports = function(data) {
   logger.trace('[schedule:cleanupLogs] starting');

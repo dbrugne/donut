@@ -274,7 +274,10 @@
         .username { position: absolute; top: 5px; left: 45px; .ft-opensans-bold; font-size: 1em; }
         .event { position: relative; padding-left: 9px;
           .text-spammed { display:none; }
-          .text { white-space: pre-wrap !important; padding: 5px 50px 5px 5px; text-align: justify;
+          .text {
+            white-space: pre-wrap !important;
+            padding: 0 50px 0 0;
+            text-align: justify;
             a { font-weight: bold; }
           }
           .images {
@@ -332,7 +335,13 @@
             .actions .dropdown-menu ul.a li .unspam { display:inline; }
             .actions .dropdown-menu ul.a li .spammed { display:none; }
             .ctn { background-color: lighten(#e74c3c, 30%);
-              .remask-spammed-message { float: left; font-weight: normal; font-size: 10px; color: @cl-clouds; margin-left: 2px; margin: 7px 5px 0 2px; }
+              .remask-spammed-message {
+                float: left;
+                font-weight: normal;
+                font-size: 10px;
+                color: @cl-clouds;
+                margin: 2px 5px 0 2px;
+              }
             }
           }
           .message-form { display:none; padding: 5px 50px 5px 5px; border-radius: 5px; background-color: #f8efc0;

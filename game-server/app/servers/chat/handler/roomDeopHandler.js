@@ -116,9 +116,7 @@ handler.deop = function(data, session, next) {
 		},
 
 		function notification(room, user, deopedUser, event, callback) {
-			Notifications(that.app).create('roomdeop', deopedUser, {room: room, event: event}, function() {
-				return callback(null);
-			});
+			Notifications(that.app).getType('roomdeop').create(deopedUser, room, event.id, callback);
 		}
 
 	], function(err) {

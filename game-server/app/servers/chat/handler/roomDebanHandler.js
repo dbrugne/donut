@@ -124,9 +124,7 @@ handler.deban = function(data, session, next) {
 		},
 
 		function notification(room, user, unbannedUser, event, callback) {
-			Notifications(that.app).create('roomdeban', unbannedUser, {room: room, event: event}, function() {
-				return callback(null);
-			});
+			Notifications(that.app).getType('roomdeban').create(unbannedUser, room, event.id, callback);
 		}
 
 	], function(err) {
