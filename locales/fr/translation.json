@@ -325,7 +325,8 @@
       "adonut": "un donut",
       "account": "mon compte",
       "edit": "mon profil",
-      "preferences": "préférences",
+      "notifications": "notifications",
+      "preferences": "préférences & notifications",
       "bannedusers": "utilisateurs bloqués",
       "update": "Editer",
       "see": "Voir",
@@ -824,7 +825,7 @@
     "fail": "Impossible d'envoyer le message, veuillez réessayer plus tard."
   },
   "preferences": {
-    "title": "Mes préférences",
+    "title": "Mes notifications",
     "sounds": {
       "title": "Sons",
       "test": "tester"
@@ -863,7 +864,7 @@
       },
       "events": {
         "title": "Je souhaite recevoir une notification:",
-        "infos": "Me notifier quand : (s'applique uniquement à ce donut)",
+        "infos": "Me notifier quand (s'applique uniquement à ce donut) :",
         "usermessage": {
           "label": "De conversation privée : quand un utilisateur m'envoie un message privé",
           "help": ""

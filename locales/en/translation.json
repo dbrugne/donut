@@ -933,7 +933,7 @@
     "fail": "Unable to send email, retry later."
   },
   "preferences": {
-    "title": "My settings",
+    "title": "My notifications",
     "sounds": {
       "title": "Sounds",
       "test": "try"
@@ -972,7 +972,7 @@
       },
       "events": {
         "title": "Notify me about:",
-        "infos": "Notify me when : (only applies to this donut)",
+        "infos": "Notify me when (only applies to this donut) :",
         "usermessage": {
           "label": "Private conversations: when a user sends me a private message",
           "help": ""
