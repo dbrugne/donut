@@ -9,7 +9,7 @@
 var logger = require('../../../pomelo-logger').getLogger('donut', __filename);
 var _ = require('underscore');
 var dispatcher = require('../../util/dispatcher');
-var adminNotifyTask = require('./adminNotifyTask');
+var adminNotifyTask = require('./tasks/adminNotifyTask');
 
 module.exports = function(opts) {
   return new Module(opts);
