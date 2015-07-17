@@ -21,7 +21,7 @@ Task.prototype.createNotification = function(data, callback) {
   if (!data.history)
     return callback('data.history should be set');
 
-  var notifier = Notifications(this.app).getType(data.type);
+  var notifier = Notifications(this.app, {force: true}).getType(data.type);
   if (!notifier)
     return callback('Unable to find corresponding type: '+data.type);
 

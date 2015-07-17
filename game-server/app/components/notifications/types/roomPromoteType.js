@@ -60,11 +60,15 @@ Notification.prototype.create = function (user, room, history, done) {
     },
 
     function save(userModel, roomModel, historyModel, status, callback) {
-
       var model = NotificationModel.getNewModel(that.type, userModel, {event: historyModel._id});
       model.to_browser = true;
       model.to_email = ( !userModel.getEmail() ? false : ( status ? false : userModel.preferencesValue("notif:channels:email")));
       model.to_mobile = (status ? false : userModel.preferencesValue("notif:channels:mobile"));
+
+      if (that.facade.options.force === true) {
+        model.to_email = true;
+        model.to_mobile = true;
+      }
 
       model.save(function (err) {
         if (err)

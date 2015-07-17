@@ -14,11 +14,14 @@ var roomMessage = require('./types/roomMessageType');
 var roomJoin = require('./types/roomJoinType');
 var userMention = require('./types/userMentionType');
 
-module.exports = function (app) {
-  return new Facade(app);
+module.exports = function (app, options) {
+  return new Facade(app, options);
 };
 
-var Facade = function (app) {
+var Facade = function (app, options) {
+  this.options = _.extend({
+    force: false
+  }, options || {});
   this.app = app;
 };
 

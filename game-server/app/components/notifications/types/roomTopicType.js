@@ -57,6 +57,11 @@ Notification.prototype.create = function (room, history, done) {
         model.to_email = (!user.getEmail() ? false : ( statuses[user.id] ? false : user.preferencesValue("notif:channels:email")));
         model.to_mobile = (statuses[user.id] ? false : user.preferencesValue("notif:channels:mobile"));
 
+        if (that.facade.options.force === true) {
+          model.to_email = true;
+          model.to_mobile = true;
+        }
+
         notificationsToCreate.push(model);
       });
 
