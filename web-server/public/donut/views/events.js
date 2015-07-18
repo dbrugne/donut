@@ -767,7 +767,7 @@ define([
       var message = $event.find('.form-control').val();
       client.roomMessageEdit(roomName, messageId, message);
 
-      this.hideFormEditMessage(event);
+      this.closeFormEditMessage($event);
     },
     textAreaAdjust: function(event) {
       $(event.target).css('height', '1px');
@@ -781,9 +781,6 @@ define([
         return;
 
       this.editMessage($event);
-      //fin
-
-      this.messageUnderEdition = new MessageEditView();
     },
     onEscEditMessage: function (event) {
       event.preventDefault();
@@ -794,23 +791,23 @@ define([
       $('#'+event.event).find('.text').html(event.message);
     },
     openPrevFormEdit: function (event) {
-      var currentEventMessage = $(event.target).parents('.event');
-      var currentBlockMessage = $(event.target).parents('.message');
-      this.checkAndOpenFormEdit(event, 'Prev', currentEventMessage, currentBlockMessage);
+      var $currentEventMessage = $(event.target).parents('.event');
+      var $currentBlockMessage = $(event.target).parents('.message');
+      this.checkAndOpenFormEdit(event, 'Prev', $currentEventMessage, $currentBlockMessage);
     },
     openNextFormEdit: function (event) {
       var currentEventMessage = $(event.target).parents('.event');
       var currentBlockMessage = $(event.target).parents('.message');
       this.checkAndOpenFormEdit(event, 'Next', currentEventMessage, currentBlockMessage);
     },
-    checkAndOpenFormEdit: function(event, direction, currentEventMessage, currentBlockMessage) {
-      var username = currentBlockMessage.data('username');
+    checkAndOpenFormEdit: function(direction, $currentEventMessage, $currentBlockMessage) {
+      var username = $currentBlockMessage.data('username');
 
       if (direction === 'Prev') {
-        var prevEventMessage = currentEventMessage.prev();
+        var prevEventMessage = $currentEventMessage.prev();
 
-        if (!currentEventMessage.prev().length && currentBlockMessage.prev().length) {
-          var prevBlockMessage = currentBlockMessage.prev();
+        if (!$currentEventMessage.prev().length && $currentBlockMessage.prev().length) {
+          var prevBlockMessage = $currentBlockMessage.prev();
           while((prevBlockMessage.data('username') !== username)) {
             if (!prevBlockMessage.prev().length)
               return;
@@ -848,11 +845,6 @@ define([
         }
       }
     },
-    closeFormEditMessage: function ($event) {
-      $event.find('.message-form').hide();
-      $event.find('.text').css('display', 'block');
-      $event.addClass('has-hover');
-    },
     isEditableMessage: function ($event) {
       var username = $event.closest('[data-username]').data('username');
       var time = $event.data('time');
@@ -869,6 +861,8 @@ define([
       var text = $event.find('.text').text();
       form.css('display', 'block');
       form.find('.form-control').val(text).focus();
+
+      this.messageUnderEdition = new MessageEditView();
 
       var that = this;
       $('html').click(function(e) {

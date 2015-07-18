@@ -22,7 +22,13 @@ define([
 
     render: function() {
       return this;
-    }
+    },
+
+    closeFormEditMessage: function ($event) {
+      $event.find('.message-form').hide();
+      $event.find('.text').css('display', 'block');
+      $event.addClass('has-hover');
+    },
 
   });
 
