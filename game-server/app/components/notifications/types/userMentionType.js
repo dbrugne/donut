@@ -64,6 +64,12 @@ Notification.prototype.create = function (user, room, history, done) {
       model.to_browser = true;
       model.to_email = (!userModel.getEmail() ? false : (status ? false : userModel.preferencesValue("notif:channels:email")));
       model.to_mobile = (status ? false : userModel.preferencesValue("notif:channels:mobile"));
+
+      if (that.facade.options.force === true) {
+        model.to_email = true;
+        model.to_mobile = true;
+      }
+
       model.save(function (err) {
         if (err)
           return callback(err);
@@ -74,7 +80,7 @@ Notification.prototype.create = function (user, room, history, done) {
       });
     }
 
-  ], function(err) {
+  ], function (err) {
     if (err && err !== true)
       return done(err);
 
@@ -99,7 +105,8 @@ Notification.prototype.sendToBrowser = function (model, user, room, history, don
         id: room.id,
         name: room.name,
         avatar: room._avatar()
-      }
+      },
+      message: utils.mentionize(history.data.message, false) // @todo dbr bundle mentionnize, linkify... other messages transfomrmation in a common class loadable in npm and bower
     }
   };
   this.facade.app.globalChannelService.pushMessage('connector', 'notification:new', event, 'user:' + user.id, {}, done);
@@ -112,7 +119,7 @@ Notification.prototype.sendEmail = function (model, done) {
   async.waterfall([
 
     function retrieveEvents(callback) {
-      HistoryRoomModel.retrieveEventWithContext(model.data.event.toString(), model.user.id, 5, 10, true, function(err, events) {
+      HistoryRoomModel.retrieveEventWithContext(model.data.event.toString(), model.user.id, 5, 10, true, function (err, events) {
         if (err)
           return callback(err);
 

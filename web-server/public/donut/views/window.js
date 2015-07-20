@@ -25,9 +25,10 @@ define([
     beepPlaying: false,
     beepOn: false,
 
-    desktopNotificationsLimiters: function() {},
+    desktopNotificationsLimiters: function () {
+    },
 
-    initialize: function(options) {
+    initialize: function (options) {
       this.$window = this.$el;
       this.$document = $(document);
 
@@ -37,7 +38,7 @@ define([
       var that = this;
       if (typeof Audio !== 'undefined') {
         this.beepOn = true;
-        var cb = function() {
+        var cb = function () {
           that.beepPlaying = false;
         }
         this.beep = new Audio('/sounds/beep.mp3');
@@ -46,16 +47,16 @@ define([
 
       // Bind events to browser window
       var that = this;
-      this.$window.focus(function(event) {
+      this.$window.focus(function (event) {
         that.onFocus();
       });
-      this.$window.blur(function(event) {
+      this.$window.blur(function (event) {
         that.onBlur();
       });
-      this.$window.on('beforeunload', function() {
+      this.$window.on('beforeunload', function () {
         return that.onClose();
       });
-      this.$window.resize(function() {
+      this.$window.resize(function () {
         that.onResize();
       });
 
@@ -64,16 +65,16 @@ define([
       this.listenTo(client, 'admin:reload', this.onAdminReload);
     },
 
-    renderTitle: function() {
+    renderTitle: function () {
       var title = '';
 
       // determine if something 'new'
       var thereIsNew = false;
-      thereIsNew = rooms.some(function(d) { // first looks in rooms
+      thereIsNew = rooms.some(function (d) { // first looks in rooms
         return d.isThereNew();
       });
       if (!thereIsNew)
-        thereIsNew = onetoones.some(function(d) { // then looks in onetoones
+        thereIsNew = onetoones.some(function (d) { // then looks in onetoones
           return d.isThereNew();
         });
 
@@ -83,7 +84,7 @@ define([
       title += this.defaultTitle;
 
       if (this.title && this.title.length)
-        title += ' | '+this.title;
+        title += ' | ' + this.title;
 
       document.title = title;
 
@@ -96,20 +97,20 @@ define([
       var odd = title;
       var even = this.defaultTitle;
       clearInterval(this.titleBlinker);
-      this.titleBlinker = setInterval(function() {
+      this.titleBlinker = setInterval(function () {
         document.title = (document.title == odd) ? even : odd;
       }, 1000);
 
     },
-    setTitle: function(title) {
+    setTitle: function (title) {
       this.title = title;
       this.renderTitle();
     },
 
-    onBlur: function() {
+    onBlur: function () {
       this.focused = false;
     },
-    onFocus: function() {
+    onFocus: function () {
       this.focused = true;
 
       // mark current focused model as read
@@ -128,12 +129,12 @@ define([
 
       this.renderTitle();
     },
-    onResize: function() {
+    onResize: function () {
       var model = this._getFocusedModel();
       if (model)
         model.trigger('resize'); // transmit event only to the current focused model
     },
-    onClose: function() {
+    onClose: function () {
       // sometimes we prevent exit popin
       if (this.preventPopin)
         return;
@@ -147,7 +148,7 @@ define([
       return $.t("chat.closemessage");
     },
 
-    _getFocusedModel: function() {
+    _getFocusedModel: function () {
       var model = rooms.findWhere({focused: true});
       if (!model)
         model = onetoones.findWhere({focused: true});
@@ -158,11 +159,11 @@ define([
     /***************************************************
      * Admin events
      ***************************************************/
-    onAdminExit: function() {
+    onAdminExit: function () {
       this.preventPopin = true;
       window.location.assign('/');
     },
-    onAdminReload: function() {
+    onAdminReload: function () {
       this.preventPopin = true;
       window.location.reload();
     },
@@ -171,7 +172,7 @@ define([
      * Notifications
      ***************************************************/
 
-    triggerInout: function(event, model) {
+    triggerInout: function (event, model) {
       if (event.get('type') != 'room:in')
         return;
 
@@ -188,8 +189,8 @@ define([
 
       // test if current discussion is focused
       var isFocused = (this.focused && model.get('focused'))
-          ? true
-          : false;
+        ? true
+        : false;
 
       // badge and title only if discussion is not focused
       if (!isFocused) {
@@ -202,7 +203,7 @@ define([
         this.renderTitle();
       }
     },
-    triggerMessage: function(event, model) {
+    triggerMessage: function (event, model) {
       if (event.getGenericType() != 'message')
         return;
 
@@ -211,7 +212,7 @@ define([
         return;
 
       // test if i mentioned
-      var pattern = new RegExp('@\\[([^\\]]+)\\]\\(user:'+currentUser.get('user_id')+'\\)');
+      var pattern = new RegExp('@\\[([^\\]]+)\\]\\(user:' + currentUser.get('user_id') + '\\)');
       var isMention = pattern.test(event.get('data').message);
 
       // test if current discussion is focused
@@ -244,20 +245,20 @@ define([
         if (model.get('type') == 'onetoone') {
           var data = event.get('data');
           if (data) {
-            var key = 'usermessage:'+model.get('username');
+            var key = 'usermessage:' + model.get('username');
             var last = this.desktopNotificationsLimiters[key];
-            if (last && (Date.now() - last) <= 1*60*1000) // 1mn
+            if (last && (Date.now() - last) <= 1 * 60 * 1000) // 1mn
               return;
 
-            var title = $.t('chat.notifications.desktop.usermessage', { username: data.from_username });
             var message = data.message || '';
-            this.desktopNotify(title, message);
+            var title = $.t('chat.notifications.desktop.usermessage', {username: data.from_username, message: message});
+            this.desktopNotify(title, '');
             this.desktopNotificationsLimiters[key] = Date.now();
           }
         }
       }
     },
-    play: function() {
+    play: function () {
       if (!currentUser.shouldPlaySound())
         return;
 
@@ -270,19 +271,19 @@ define([
       this.beepPlaying = true;
       this._play();
     },
-    _play: function() {
+    _play: function () {
       var beep = this.beep;
       if (!beep)
         return;
       beep.play();
     },
-    desktopNotify: function(title, body) {
+    desktopNotify: function (title, body) {
       if (!currentUser.shouldDisplayDesktopNotif())
         return;
 
       this._desktopNotify(title, body);
     },
-    _desktopNotify: function(title, body) {
+    _desktopNotify: function (title, body) {
       // Not already accepted or denied notification permission, prompt popup
       if (notify.permissionLevel() == notify.PERMISSION_DEFAULT)
         return this._desktopNotifyRequestPermission(notify.permissionLevel(), notify.PERMISSION_GRANTED, this._desktopNotifyCreateNotification());
@@ -293,8 +294,8 @@ define([
 
       this._desktopNotifyCreateNotification(title, body);
     },
-    _desktopNotifyCreateNotification: function(title, body) {
-      notify.createNotification( title, {
+    _desktopNotifyCreateNotification: function (title, body) {
+      notify.createNotification(title, {
         body: body,
         icon: {
           'x16': 'images/donut_16x16.ico',
@@ -302,7 +303,7 @@ define([
         }
       });
     },
-    _desktopNotifyRequestPermission: function(permissionLevel, permissionsGranted) {
+    _desktopNotifyRequestPermission: function (permissionLevel, permissionsGranted) {
       var statusClass = {};
       statusClass[notify.PERMISSION_DEFAULT] = 'alert';
       statusClass[notify.PERMISSION_GRANTED] = 'alert alert-success';
@@ -313,7 +314,8 @@ define([
 
       try {
         isIE = (win.external && win.external.msIsSiteMode() !== undefined);
-      } catch (e) {}
+      } catch (e) {
+      }
 
       var messages = {
         notPinned: 'Pin current page in the taskbar in order to receive notifications',
@@ -329,7 +331,7 @@ define([
       var message = isSupported ? (isIE ? messages.notPinned : messages[permissionLevel]) : messages.notSupported;
 
       if (permissionLevel === notify.PERMISSION_DEFAULT) {
-        notify.requestPermission(function() {
+        notify.requestPermission(function () {
           permissionLevel = notify.permissionLevel();
           permissionsGranted = (permissionLevel === notify.PERMISSION_GRANTED);
           status = isSupported ? statusClass[permissionLevel] : statusClass[notify.PERMISSION_DENIED];

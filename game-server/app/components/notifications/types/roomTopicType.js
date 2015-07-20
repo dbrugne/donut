@@ -23,11 +23,11 @@ Notification.prototype.create = function (room, history, done) {
     utils.retrieveHistoryRoom(history),
 
     function retrieveUserList(roomModel, historyModel, callback) {
-      UserModel.findRoomUsersHavingPreference(roomModel, that.type, historyModel.user.id, function(err, users) {
+      UserModel.findRoomUsersHavingPreference(roomModel, that.type, historyModel.user.id, function (err, users) {
         if (err)
           return callback(err);
         if (!users.length) {
-          logger.debug('roomTopicType.create no notification created: 0 user concerned')
+          logger.debug('roomTopicType.create no notification created: 0 user concerned');
           return callback(true);
         }
 
@@ -38,7 +38,7 @@ Notification.prototype.create = function (room, history, done) {
     function checkStatus(roomModel, historyModel, users, callback) {
       that.facade.app.statusService.getStatusByUids(_.map(users, 'id'), function (err, statuses) {
         if (err)
-          return callback('roomTopicType.create error while retrieving user statuses: '+err);
+          return callback('roomTopicType.create error while retrieving user statuses: ' + err);
 
         return callback(null, roomModel, historyModel, users, statuses);
       });
@@ -57,6 +57,11 @@ Notification.prototype.create = function (room, history, done) {
         model.to_email = (!user.getEmail() ? false : ( statuses[user.id] ? false : user.preferencesValue("notif:channels:email")));
         model.to_mobile = (statuses[user.id] ? false : user.preferencesValue("notif:channels:mobile"));
 
+        if (that.facade.options.force === true) {
+          model.to_email = true;
+          model.to_mobile = true;
+        }
+
         notificationsToCreate.push(model);
       });
 
@@ -64,11 +69,11 @@ Notification.prototype.create = function (room, history, done) {
     },
 
     function create(historyModel, notificationsToCreate, callback) {
-      NotificationModel.bulkInsert(notificationsToCreate, function(err, createdNotifications) {
+      NotificationModel.bulkInsert(notificationsToCreate, function (err, createdNotifications) {
         if (err)
           return callback(err);
 
-        logger.debug('roomTopicType.create '+createdNotifications.length+' notifications created');
+        logger.debug('roomTopicType.create ' + createdNotifications.length + ' notifications created');
         return callback(null, historyModel, createdNotifications);
       });
     },
@@ -77,12 +82,12 @@ Notification.prototype.create = function (room, history, done) {
       if (!createdNotifications.length)
         return callback(null);
 
-      async.eachLimit(createdNotifications, 5, function(model, _callback) {
+      async.eachLimit(createdNotifications, 5, function (model, _callback) {
         that.sendToBrowser(model, historyModel, _callback);
       }, callback);
     }
 
-  ], function(err) {
+  ], function (err) {
     if (err && err !== true)
       return done(err);
 
@@ -107,7 +112,8 @@ Notification.prototype.sendToBrowser = function (model, history, done) {
         id: history.room.id,
         name: history.room.name,
         avatar: history.room._avatar()
-      }
+      },
+      topic: history.data.topic
     }
   };
   this.facade.app.globalChannelService.pushMessage('connector', 'notification:new', event, 'user:' + model.user.toString(), {}, done);
@@ -122,7 +128,7 @@ Notification.prototype.sendEmail = function (model, done) {
     utils.retrieveHistoryRoom(model.data.event.toString()),
 
     function send(history, callback) {
-      emailer.roomTopic(model.user.getEmail(), history.user.username, history.room.name, callback);
+      emailer.roomTopic(model.user.getEmail(), history.user.username, history.room.name, history.data.topic, callback);
     },
 
     function persist(callback) {

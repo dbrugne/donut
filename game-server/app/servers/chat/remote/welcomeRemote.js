@@ -146,24 +146,14 @@ WelcomeRemote.prototype.getMessage = function(uid, frontendId, globalCallback) {
 		},
 
 		function notificationsUnread(user, callback) {
-			Notifications(that.app).retrieveUserNotificationsUnreadCount(user._id.toString(), function(err, count) {
+			Notifications(that.app).retrieveUserNotificationsUnviewedCount(user._id.toString(), function(err, count) {
 				if (err)
 				  logger.error('Error while retrieving unread notifications: '+err);
 
 				welcomeEvent.notifications.unread = count || 0;
 				return callback(null, user);
 			});
-		},
-
-    function notificationsUndone(user, callback) {
-      Notifications(that.app).retrieveUserNotificationsUndoneCount(user._id.toString(), function(err, count) {
-        if (err)
-          logger.error('Error while retrieving undone notifications: '+err);
-
-        welcomeEvent.notifications.undone = count || 0;
-        return callback(null, user);
-      });
-    }
+		}
 
 	], function (err, user) {
 		if (err) {

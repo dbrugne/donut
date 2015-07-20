@@ -3,11 +3,11 @@
 </div>
 <div class="errors"></div>
 <form class="user-form" role="form">
-    <label><%= t('preferences.notif.title') %></label>
     <div class="form-group">
         <div class="checkbox">
             <label>
-                <input type="checkbox" class="savable disable-others" name="room:notif:nothing:__what__" value="room:notif:nothing:__what__" <% if (preferences['room:notif:nothing:'+name]) { print('checked'); } %>>
+                <input type="checkbox" class="savable disable-others" name="room:notif:nothing:__what__" value="room:notif:nothing:__what__"
+                <% if (preferences['room:notif:nothing:'+name]) { print('checked'); } %> >
                 <%= t('preferences.notif.nothing.label') %>
             </label>
             <p class="help-block"><%= t('preferences.notif.nothing.help') %></p>

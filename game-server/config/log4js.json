@@ -66,9 +66,9 @@
   ],
 
   "levels": {
-    "[all]": "INFO",
+    "[all]": "WARN",
     "forward-log": "ERROR",
-    "donut": "DEBUG"
+    "donut": "WARN"
   },
 
   "replaceConsole": true,

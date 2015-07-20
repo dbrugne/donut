@@ -4,6 +4,7 @@ var UserModel = require('../../../../shared/models/user');
 var RoomModel = require('../../../../shared/models/room');
 var HistoryOneModel = require('../../../../shared/models/historyone');
 var HistoryRoomModel = require('../../../../shared/models/historyroom');
+var conf = require('../../../../config/index');
 
 module.exports = {
 
@@ -49,7 +50,7 @@ module.exports = {
     };
   },
 
-  _retrieveHistory: function(type, history, previousArguments) {
+  _retrieveHistory: function (type, history, previousArguments) {
     var args = _.toArray(previousArguments);
     var callback = args.pop();
     if (!_.isFunction(callback))
@@ -72,7 +73,7 @@ module.exports = {
         .populate('to')
         .populate('from');
     else
-      return callback.apply(undefined, ['Unable to determine history event type to retrieve: '+type]);
+      return callback.apply(undefined, ['Unable to determine history event type to retrieve: ' + type]);
 
     q.exec(function (err, model) {
       args.unshift(err);
@@ -81,18 +82,27 @@ module.exports = {
     });
   },
 
-  retrieveHistoryRoom: function(history) {
+  retrieveHistoryRoom: function (history) {
     var that = this;
     return function () {
       that._retrieveHistory('historyroom', history, arguments);
     };
   },
 
-  retrieveHistoryOne: function(history) {
+  retrieveHistoryOne: function (history) {
     var that = this;
     return function () {
       that._retrieveHistory('historyone', history, arguments);
     };
+  },
+
+  mentionize: function (message, html) {
+    var reg = /@\[([^\]]+)\]\(user:[^)]+\)/g; // @todo dbr bundle mentionnize, linkify... other messages transfomrmation in a common class loadable in npm and bower
+    if (html)
+      return message.replace(reg, "<strong><a style=\"color:" + conf.room.default.color + ";\"href=\"" + conf.url + "/user/$1\">@$1</a></strong>")
+
+    return message.replace(reg, "@$1");
   }
+
 
 };

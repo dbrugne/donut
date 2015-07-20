@@ -28,3 +28,12 @@ db['logs'].ensureIndex({
   "timestamp" : 1,
   "level" : 1
 });
+// notifications
+db['notifications'].ensureIndex({
+  "done" : 1,
+  "user" : 1
+});
+db['notifications'].ensureIndex({
+  "done" : 1,
+  "time" : -1
+});

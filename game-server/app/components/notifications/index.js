@@ -14,11 +14,14 @@ var roomMessage = require('./types/roomMessageType');
 var roomJoin = require('./types/roomJoinType');
 var userMention = require('./types/userMentionType');
 
-module.exports = function (app) {
-  return new Facade(app);
+module.exports = function (app, options) {
+  return new Facade(app, options);
 };
 
-var Facade = function (app) {
+var Facade = function (app, options) {
+  this.options = _.extend({
+    force: false
+  }, options || {});
   this.app = app;
 };
 
@@ -100,14 +103,13 @@ Facade.prototype.retrieveUserNotifications = function (uid, what, callback) {
   var q = NotificationModel.find(criteria);
 
   // Only get "number" items
-  if (what.number > 0)
-    q.limit(what.number);
+  if (what.number)
+    q.limit(what.number + 1);
 
   q.sort({time: -1});
   q.populate({path: 'user', model: 'User', select: 'local username color facebook avatar'});
   q.exec(function (err, results) {
     var notifications = [];
-
     async.each(results, function (n, fn) {
       switch (n.getEventType()) {
         case 'historyone':
@@ -132,7 +134,6 @@ Facade.prototype.retrieveUserNotifications = function (uid, what, callback) {
         case 'historyroom':
           if (!n.data || !n.data.event)
             return fn(null);
-
           HistoryRoom
             .findOne({_id: n.data.event.toString()})
             .populate('user', 'username avatar color facebook')
@@ -154,23 +155,20 @@ Facade.prototype.retrieveUserNotifications = function (uid, what, callback) {
           break;
       }
     }, function (err) {
-      callback(err, _.sortBy(notifications, function (n) {
+      if (err)
+        return callback(err);
+
+      var more = !!(notifications.length > what.number);
+
+      notifications = _.sortBy(notifications, function (n) {
         return -n.time;
-      }));
+      });
+
+      callback(err, notifications, more);
     });
   });
 };
 
-Facade.prototype.retrieveUserNotificationsUndoneCount = function (uid, callback) {
-  NotificationModel.find({
-    user: uid,
-    done: false,
-    to_browser: true
-  }).count().exec(function (err, count) {
-    callback(err, count);
-  });
-};
-
 Facade.prototype.retrieveUserNotificationsUnviewed = function (uid, callback) {
   NotificationModel.find({
     user: uid,
@@ -182,42 +180,18 @@ Facade.prototype.retrieveUserNotificationsUnviewed = function (uid, callback) {
   });
 };
 
-Facade.prototype.retrieveUserNotificationsUndoneCount = function (uid, callback) {
-  NotificationModel.find({
-    user: uid,
-    done: false,
-    to_browser: true
-  }).count().exec(function (err, count) {
-    callback(err, count);
-  });
-};
-
-Facade.prototype.retrieveUserNotificationsUnviewed = function (uid, callback) {
+Facade.prototype.retrieveUserNotificationsUnviewedCount = function (uid, callback) {
   NotificationModel.find({
     user: uid,
     done: false,
     viewed: false,
     to_browser: true
-  }).exec(function (err, results) {
-    callback(err, results);
-  });
-};
-
-Facade.prototype.retrieveUserNotificationsUnreadCount = function (uid, callback) {
-  NotificationModel.find({
-    user: uid,
-    done: false,
-    viewed: false,
-    to_browser: true
-  }).count().exec(function (err, count) {
-    callback(err, count);
-  });
+  }).count().exec(callback);
 };
 
 Facade.prototype.retrieveScheduledNotifications = function (callback) {
   var time = new Date();
   time.setSeconds(time.getSeconds() - conf.notifications.delay);
-
   var q = NotificationModel.find({
     done: false,
     viewed: false,
@@ -237,7 +211,7 @@ Facade.prototype.retrieveScheduledNotifications = function (callback) {
   });
 };
 
-Facade.prototype.markNotificationsAsRead = function (uid, ids, callback) {
+Facade.prototype.markNotificationsAsViewed = function (uid, ids, callback) {
   NotificationModel.update({
     _id: {$in: ids},
     user: uid
@@ -250,15 +224,37 @@ Facade.prototype.markNotificationsAsRead = function (uid, ids, callback) {
   });
 };
 
-Facade.prototype.avoidNotificationsSending = function (uid, ids, callback) {
+Facade.prototype.markNotificationsAsDone = function (uid, ids, callback) {
   NotificationModel.update({
     _id: {$in: ids},
     user: uid
   }, {
-    $set: {to_email: false, to_mobile: false}
+    $set: {done: true}
   }, {
     multi: true
   }, function (err, results) {
     return callback(err, results);
   });
+};
+
+Facade.prototype.avoidNotificationsSending = function (userId, callback) {
+  NotificationModel.update({
+    user: userId,
+    done: false,
+    $or: [
+      { to_email: true },
+      { to_mobile: true }
+    ]
+  }, { $set: { to_email: false, to_mobile: false } }, { multi: true }, callback);
+};
+
+Facade.prototype.markOldNotificationsAsDone = function(callback) {
+  var timeLimit = new Date();
+  timeLimit.setMonth(timeLimit.getMonth() - conf.notifications.done);
+  NotificationModel.update({
+    done: false,
+    time: { $lt: timeLimit}
+  }, {
+    $set: { done: true }
+  }, {multi: true}).exec(callback);
 };

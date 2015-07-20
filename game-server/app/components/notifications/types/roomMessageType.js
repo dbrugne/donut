@@ -26,6 +26,9 @@ Notification.prototype.create = function (room, history, done) {
     utils.retrieveRoom(room),
 
     function avoidRepetitive(roomModel, callback) {
+      if (that.facade.options.force === true)
+        return callback(null, roomModel);
+
       var criteria = {
         type: that.type,
         time: {
@@ -73,7 +76,7 @@ Notification.prototype.create = function (room, history, done) {
       var notificationsToCreate = [];
       _.each(users, function (user) {
         // online user
-        if (statuses[user.id])
+        if (statuses[user.id] && that.facade.options.force !== true)
           return;
 
         var model = NotificationModel.getNewModel(that.type, user, {
@@ -84,6 +87,11 @@ Notification.prototype.create = function (room, history, done) {
         model.to_browser = true; // will be displayed in browser on next connection
         model.to_email = (!user.getEmail() ? false : user.preferencesValue("notif:channels:email"));
         model.to_mobile = user.preferencesValue("notif:channels:mobile");
+
+        if (that.facade.options.force === true) {
+          model.to_email = true;
+          model.to_mobile = true;
+        }
 
         notificationsToCreate.push(model);
       });

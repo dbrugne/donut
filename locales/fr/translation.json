@@ -325,7 +325,8 @@
       "adonut": "un donut",
       "account": "mon compte",
       "edit": "mon profil",
-      "preferences": "préférences",
+      "notifications": "notifications",
+      "preferences": "préférences & notifications",
       "bannedusers": "utilisateurs bloqués",
       "update": "Editer",
       "see": "Voir",
@@ -395,7 +396,7 @@
       "banned-too": "Cet utilisateur vous a bloqué"
     },
     "debanuser": {
-      "infobox": "Autoriser à nouveau l'utilisateur à vous parler"
+      "infobox": "Débloquer cet utilisateur"
     },
     "profile": {
       "infobox": "Voir le profil de cet utilisateur"
@@ -426,28 +427,29 @@
       "tag-as-read" : "Marquer comme lue(s)",
       "empty": "Vous n'avez pas de nouvelles notifications",
       "dropdown": {
-        "kick": "Vous avez été expulsé de ",
-        "ban": "Vous avez été banni de ",
-        "deban": "Vous n'êtes plus banni de ",
-        "op": "Vous avez été promu modérateur de ",
-        "deop": "Vous n'êtes plus modérateur de ",
-        "roomtopic": "Le sujet a changé dans ",
-        "roomjoin": "a rejoint ",
-        "usermention": "on vous a mentionné dans ",
-        "roommessage": "Nouveau message dans ",
-        "usermessage": " vous a envoyé un message privé"
+        "op": "<a href=\"#room/__roomname__\">Vous êtes maintenant modérateur de </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
+        "deop": "<a href=\"#room/__roomname__\">Vous n'êtes plus modérateur de </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
+        "kick": "<a href=\"#room/__roomname__\">Vous êtes expulsé de </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
+        "ban": "<a href=\"#room/__roomname__\">Vous êtes banni de </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
+        "deban": "<a href=\"#room/__roomname__\">Vous n'êtes plus banni de </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
+        "roomjoin": "<span class=\"name open-user-profile\" data-username=\"__username__\">@__username__</span><a href=\"#room/__roomname__\"> rejoint </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
+        "roomtopic": "<a href=\"#room/__roomname__\">Nouveau sujet dans </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
+        "roommessage": "<a href=\"#room/__roomname__\">Nouveau message dans </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
+        "usermention": "<a href=\"#room/__roomname__\">Vous êtes mentionné dans </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
+        "usermessage": "<span class=\"name open-user-profile\" data-username=\"__username__\">@__username__</span>: <a href=\"#user/__username__\">__message__</a>"
       },
       "desktop": {
-        "by": "par",
-        "roomkick": "Vous venez d'être expulsé de __roomname__",
-        "roomban": "Vous venez d'être banni de __roomname__",
-        "roomdeban": "Vous n'êtes plus banni de __roomname__",
-        "roomop": " Vous venez d'être promu modérateur de __roomname__",
+        "roomop": "Vous êtes modérateur de __roomname__",
         "roomdeop": "Vous n'êtes plus modérateur de __roomname__",
-        "roomtopic": "Le sujet à changé dans __roomname__",
-        "roomjoin": "__username__ a rejoint le Donut __roomname__",
-        "usermessage": "__username__ vous a écrit",
-        "usermention": "__username__ vous a mentionné"
+        "roomkick": "Vous êtes expulsé de __roomname__",
+        "roomban": "Vous êtes banni de __roomname__",
+        "roomdeban": "Vous n'êtes plus banni de __roomname__",
+        "usermessage": "@__username__: __message__",
+        "roommessage": "__roomname__: __message__",
+        "roomjoin": "@__username__ rejoint __roomname__",
+        "roomtopic": "Nouveau sujet dans __roomname__: __topic__",
+        "usermention": "Mention de @__username__ dans __roomname__: __message__",
+        "by": "par"
       }
     },
     "unread": {
@@ -654,8 +656,7 @@
     "global": {
       "content": {
         "team": "L'équipe DONUT.me",
-        "ps": "PS : Si vous n'êtes pas à l'origine de cette démarche, veuillez nous en avertir sur",
-        "ps2": "ou plus simplement en en répondant à cet e-mail."
+        "ps": "P.S.: pour ne plus recevoir ce type de notifications veuillez décocher les options de notifications dans les préférences de votre compte sur <a href=\"https://__fqdn__\">__fqdn__</a>, pour toute question nous sommes à votre écoute sur <a href=\"https://__fqdn__/!#room/Support\">#support</a>"
       }
     },
     "welcome": {
@@ -694,17 +695,17 @@
       }
     },
     "usermessage": {
-      "subject": "Vous avez reçu un message sur DONUT",
+      "subject": "Vous avez reçu un message privé de @__username__",
       "content": {
-        "title": "Vous avez reçu un message",
+        "title": "Vous avez reçu un message privé de @__username__",
+        "disclaimer": "le ",
         "button": "Voir le message sur DONUT"
       }
     },
     "roommessage": {
-      "subject": "Vous avez reçu un message sur DONUT",
+      "subject": "Vous avez reçu un message dans __roomname__ sur DONUT",
       "content": {
-        "title": "Vous avez reçu un message",
-        "inroom": "Dans le Donut ",
+        "title": "Vous avez reçu un message dans __roomname__ sur DONUT",
         "button": "Voir le message sur DONUT"
       }
     },
@@ -756,11 +757,11 @@
       }
     },
     "roomtopic": {
-      "subject": "Le sujet a changé dans ",
+      "subject": "Le sujet a changé dans __roomname__",
       "content": {
-        "title": "Le sujet a changé dans ",
-        "disclaimer": "Beaucoup de choses se sont passées sur DONUT depuis votre dernier passage.",
-        "action": "Action effectuée par",
+        "title": "Le sujet a changé dans <strong><a href=\"https://__fqdn__/room/__roomname__\" style=\"text-decoration:none; color: #EE2763;\">#__roomname__</a></strong>",
+        "new-topic": "Nouveau sujet: __topic__",
+        "action": "Action effectuée par <strong><a href=\"https://__fqdn__/user/__username__\" style=\"text-decoration:none; color: #EE2763;\">@__username__</a></strong>",
         "button": "retourner sur DONUT"
       }
     },
@@ -773,10 +774,9 @@
       }
     },
     "usermention": {
-      "subject": "Vous avez été mentionné sur DONUT",
+      "subject": "Vous avez été mentionné dans __roomname__",
       "content": {
-        "title": "Vous avez été notifié dans le Donut __name__",
-        "inroom": "Dans le Donut ",
+        "title": "Vous avez été mentionné dans __name__",
         "button": "Voir la notification sur DONUT"
       }
     },
@@ -826,7 +826,7 @@
     "fail": "Impossible d'envoyer le message, veuillez réessayer plus tard."
   },
   "preferences": {
-    "title": "Mes préférences",
+    "title": "Mes notifications",
     "sounds": {
       "title": "Sons",
       "test": "tester"
@@ -845,7 +845,7 @@
     "notif": {
       "title": "Notifications",
       "help": {
-        "user": "Nous limitons le nombre de notifications grâce à notre moteur « smart notifications » (version bêta). Si vous trouvez que vous en recevez trop ou pas assez, n’hésitez pas à nous le dire ici"
+        "user": "DONUT cherche à limiter intelligemment le nombre de notifications que nous vous envoyons. Toutefois si vous trouvez que vous en recevez trop ou pas assez, n’hésitez pas à nous le dire <a data-toggle='contactform'>par email</a> ou sur le <a href='#room/Support'>#Support</a>"
       },
       "nothing": {
         "label": "Ne recevoir aucune notification pour ce donut",
@@ -864,14 +864,14 @@
         "mobile": "Mobile"
       },
       "events": {
-        "title": "Je souhaite recevoir une notification:",
-        "infos": "Me notifier quand : (s'applique uniquement à ce donut)",
+        "title": "Je souhaite recevoir une notification :",
+        "infos": "Me notifier quand (s'applique uniquement à ce donut) :",
         "usermessage": {
-          "label": "De conversation privée : quand un utilisateur m'envoie un message privé",
+          "label": "quand un utilisateur m'envoie un message privé",
           "help": ""
         },
         "roominvite": {
-          "label": "D'invitation : quand un utilisateur m'invite à rejoindre un donut",
+          "label": "quand un utilisateur m'invite à rejoindre un donut",
           "help": ""
         },
         "roommessage": {
