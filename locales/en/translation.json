@@ -424,9 +424,10 @@
         "roomban": "You are banned of __roomname__",
         "roomdeban": "You are not banned of __roomname__",
         "usermessage": "@__username__: __message__",
+        "roommessage": "__roomname__: __message__",
         "roomjoin": "@__username__ join __roomname__",
         "roomtopic": "New subject in __roomname__: __topic__",
-        "usermention": "Notified by @__username__: in __roomname__: __message__",
+        "usermention": "Notified by @__username__ in __roomname__: __message__",
         "by": "by"
       }
     },
