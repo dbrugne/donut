@@ -127,9 +127,6 @@ define([
           : '')
       });
 
-      console.log("*****HERE****");
-      console.log(data.data);
-
       windowView.desktopNotify(desktopTitle, '');
     },
     createNotificationFromTemplate: function (notification) {
@@ -181,8 +178,12 @@ define([
     },
     // User clicks on the notification icon in the header
     onShow: function (event) {
-      if (this.$menu.find('.message').length)
+      if (this.$menu.find('.message').length) {
+        this.markHasRead = setTimeout(_.bind(function () {
+          this.clearNotifications();
+        }, this), this.timeToMarkAsRead);
         return;
+      }
 
       client.userNotifications(null, this.lastNotifDisplayedTime(), 10, _.bind(function (data) {
         this.isThereMoreNotifications = data.more;
