@@ -253,7 +253,7 @@ var onUserLeave = function(app, session, reason) {
 	};
 	keenio.addEvent("session_end", sessionEvent, function(err, res){
 		if (err)
-			logger.error('Error while tracking session_end in keen.io for '+uid+': '+err);
+			logger.error('Error while tracking session_end in keen.io for '+session.uid+': '+err);
 
 		// logger
 		var log = {
