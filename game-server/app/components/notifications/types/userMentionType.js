@@ -80,7 +80,7 @@ Notification.prototype.create = function (user, room, history, done) {
       });
     }
 
-  ], function(err) {
+  ], function (err) {
     if (err && err !== true)
       return done(err);
 
@@ -119,7 +119,7 @@ Notification.prototype.sendEmail = function (model, done) {
   async.waterfall([
 
     function retrieveEvents(callback) {
-      HistoryRoomModel.retrieveEventWithContext(model.data.event.toString(), model.user.id, 5, 10, true, function(err, events) {
+      HistoryRoomModel.retrieveEventWithContext(model.data.event.toString(), model.user.id, 5, 10, true, function (err, events) {
         if (err)
           return callback(err);
 

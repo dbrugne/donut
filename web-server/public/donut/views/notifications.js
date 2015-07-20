@@ -63,7 +63,7 @@ define([
 
       return this;
     },
-    scrollTop: function() {
+    scrollTop: function () {
       if (this.dropdownIsShown || this.shouldScrollTopOnNextShow)
         this.$scrollable.scrollTop(0);
       else
@@ -117,8 +117,8 @@ define([
         'username': ( data.data.by_user && data.data.by_user.username
           ? data.data.by_user.username
           : ( data.data.user && data.data.user.username
-            ? data.data.user.username
-            : '' )),
+          ? data.data.user.username
+          : '' )),
         'topic': ( data.data.topic
           ? data.data.topic
           : ''),
@@ -194,11 +194,11 @@ define([
         this.toggleReadMore();
       }, this));
 
-      this.markHasRead = setTimeout(_.bind(function() {
+      this.markHasRead = setTimeout(_.bind(function () {
         this.clearNotifications();
       }, this), this.timeToMarkAsRead);
     },
-    onShown: function(event) {
+    onShown: function (event) {
       this.dropdownIsShown = false;
       if (this.shouldScrollTopOnNextShow) {
         this.scrollTop();
