@@ -60,6 +60,7 @@ define([
 
       pomelo.on('notification:new',   function(data) { debug('io:in:notification:new',  data); this.trigger('notification:new',   data); }, this);
       pomelo.on('notification:read',  function(data) { debug('io:in:notification:read', data); this.trigger('notification:read',  data); }, this);
+      pomelo.on('notification:done',  function(data) { debug('io:in:notification:done', data); this.trigger('notification:done',  data); }, this);
     },
 
     /**
@@ -543,6 +544,13 @@ define([
           return fn(response);
         }
       );
+    },
+
+    // Called to set Notifications as viewed for current user
+    userNotificationsDone: function (id, fn) {
+      var data = {id: id};
+      pomelo.notify('chat.userNotificationsHandler.done', data);
+      debug('io:out:notification:done', data);
     }
 
   }, Backbone.Events);

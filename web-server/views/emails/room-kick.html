@@ -2,26 +2,14 @@
 <table width="90%" border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="center">
-            <div style="height: 100px; line-height: 100px; font-size: 10px;">&nbsp;</div>
-            <div style="line-height: 44px;">
-                <font face="Arial, Helvetica, sans-serif" size="5" color="#57697e" style="font-size: 34px;">
-                    <span style="font-family: Arial, Helvetica, sans-serif; font-size: 34px; color: #57697e;">
-                        <%= t('email.roomkick.content.title') %>&nbsp;<strong><a href="https://<%- fqdn %>/room/<%= roomname.replace('#', '') %>" color="#253b6c" style="text-decoration:none;"><%- roomname %></a></strong>
-                    </span>
-                </font>
-            </div>
-            <div style="height: 30px; line-height: 30px; font-size: 10px;">&nbsp;</div>
-        </td>
-    </tr>
-    <tr>
-        <td align="center">
             <div style="line-height: 30px;">
-                <font face="Arial, Helvetica, sans-serif" size="5" color="#4db3a4" style="font-size: 17px;">
-                    <span style="font-family: Arial, Helvetica, sans-serif; font-size: 17px; color: #4db3a4;">
-                        <%= t('email.roomkick.content.disclaimer') %>
-                        <small style="font-size: 13px;"><%= t('email.roomkick.content.action') %>&nbsp;<strong><a href="https://<%- fqdn %>/user/<%= username %>" color="#253b6c" style="text-decoration:none;">@<%- username %></a></strong></small>
-                    </span>
-                </font>
+                <span style="font-family: Arial, Helvetica, sans-serif; font-size: 17px; color: #34495e;">
+                    <%= t('email.roomkick.content.disclaimer', { roomname: roomname, fqdn: fqdn, username: username }) %><br/>
+                    <% if (typeof reason !== "undefined") { %>
+                    <%= t('email.roomkick.content.reason', { reason: reason }) %><br/>
+                    <% } %>
+                    <%= t('email.roomkick.content.disclaimer2') %><br/>
+                </span>
             </div>
             <div style="height: 35px; line-height: 35px; font-size: 10px;">&nbsp;</div>
         </td>
@@ -61,7 +49,7 @@
         </td>
     </tr>
 </table>
-<!--links -->
+<!-- START : PRE FOOTER -->
 <tr>
     <td align="center" bgcolor="#f9fafc">
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -72,7 +60,7 @@
                         <tr>
                             <td align="center" valign="middle" style="font-size: 10px; line-height:20px;">
                                 <font face="Tahoma, Arial, Helvetica, sans-serif" size="2" color="#282f37" style="font-size: 10px; font-style: italic;">
-                                    <%= t('email.global.content.ps') %>&nbsp;<a href='mailto:<%- email %>'><%- email %></a>&nbsp;<%= t('email.global.content.ps2') %>
+                                    <%= t('email.global.content.ps', { fqdn: fqdn }) %>
                                 </font>
                             </td>
                         </tr>
@@ -83,4 +71,4 @@
         </table>
     </td>
 </tr>
-<!--links END-->
+<!-- END : PRE FOOTER -->

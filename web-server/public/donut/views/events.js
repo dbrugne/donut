@@ -376,7 +376,7 @@ define([
     onAdminMessage: function(data) {
       data = { data: data };
       data.data.avatar = 'cloudinary=v1409643461/rciev5ubaituvx5bclnz.png';
-      data.data.username = 'Administrateur DONUT';
+      data.data.username = 'DONUT';
       data.data.is_admin = true;
       data.type = 'room:message';
       var model = new EventModel(data);

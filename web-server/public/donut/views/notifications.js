@@ -14,10 +14,18 @@ define([
 
     el: $("#notifications"),
 
+    dropdownIsShown: false,
+
+    shouldScrollTopOnNextShow: false,
+
+    isThereMoreNotifications: false,
+
     events: {
       "click .dropdown-menu .actions": 'onReadMore',
       "click .action-tag-as-read": 'onTagAsRead',
+      "click .action-tag-as-done": 'onTagAsDone',
       'show.bs.dropdown': 'onShow',
+      'shown.bs.dropdown': 'onShown',
       'hide.bs.dropdown': 'onHide'
     },
 
@@ -26,24 +34,20 @@ define([
     markHasRead: null,
 
     initialize: function (options) {
+      this.listenTo(client, 'notification:new', this.onNewNotification);
+      this.listenTo(client, 'notification:done', this.onDoneNotification);
+
       this.unread = 0;
-      this.undone = 0;
       this.more = false;
       this.mainView = options.mainView;
-      this.listenTo(client, 'notification:new', this.onNewNotification);
 
       this.render();
     },
     initializeNotificationState: function (data) {
-      // re-init
       this.$menu.html('');
       this.$dropdown.parent().removeClass('open');
-
-      // load welcome data
       if (data.unread)
         this.setUnreadCount(data.unread);
-      if (data.undone)
-        this.undone = data.undone;
     },
     render: function () {
       this.$dropdown = this.$el.find('.dropdown-toggle');
@@ -52,11 +56,18 @@ define([
       this.$menu = this.$el.find('.dropdown-menu #main-navbar-messages');
       this.$readMore = this.$el.find('.read-more');
       this.$loader = this.$el.find('.loading');
+      this.$scrollable = this.$el.find('.dropdown-menu .messages-list-ctn');
       this.$actions = this.$el.find('.dropdown-menu .messages-list-ctn .actions');
 
       this.$dropdown.dropdown();
 
       return this;
+    },
+    scrollTop: function () {
+      if (this.dropdownIsShown || this.shouldScrollTopOnNextShow)
+        this.$scrollable.scrollTop(0);
+      else
+        this.shouldScrollTopOnNextShow = true;
     },
     setUnreadCount: function (count) {
       if (count > 0) {
@@ -95,38 +106,28 @@ define([
       }
 
       this.toggleReadMore();
-
+      this.scrollTop();
       this._createDesktopNotify(data);
     },
-    _createDesktopNotify: function(data)
-    {
-      var desktopTitle, desktopBody;
+    _createDesktopNotify: function (data) {
+      var desktopTitle = $.t('chat.notifications.desktop.' + data.type, {
+        'roomname': ( data.data.room && data.data.room.name
+          ? data.data.room.name
+          : ''),
+        'username': ( data.data.by_user && data.data.by_user.username
+          ? data.data.by_user.username
+          : ( data.data.user && data.data.user.username
+          ? data.data.user.username
+          : '' )),
+        'topic': ( data.data.topic
+          ? data.data.topic
+          : ''),
+        'message': ( data.data.message
+          ? data.data.message
+          : '')
+      });
 
-      switch (data.type)
-      {
-        case 'roomop':
-        case 'roomdeop':
-        case 'roomkick':
-        case 'roomban':
-        case 'roomdeban':
-        case 'roomtopic':
-        case 'roomjoin':
-          desktopTitle = $.t('chat.notifications.desktop.'+data.type, { 'roomname': ( data.data.room && data.data.room.name ? data.data.room.name : ''), 'username': ( data.data.user && data.data.user.username ? data.data.user.username : '') });
-          desktopBody = '';
-        break;
-        case 'roommessage':
-          desktopTitle = $.t('chat.notifications.desktop.'+data.type).replace('__roomname__', ( data.data.room && data.data.room.name ? ' '+data.data.room.name : ''));
-          desktopBody = ( data.data.by_user && data.data.by_user.username ? t('chat.notifications.desktop.by') + ' '+data.data.by_user.username : '');
-        break;
-        case 'usermention':
-          desktopTitle = $.t('chat.notifications.desktop.'+data.type).replace('__username__', ( data.data.by_user && data.data.by_user.username ? ' '+data.data.by_user.username : ''));
-          desktopBody = '';
-        break;
-        default:
-        break;
-      }
-
-      windowView.desktopNotify(desktopTitle, desktopBody);
+      windowView.desktopNotify(desktopTitle, '');
     },
     createNotificationFromTemplate: function (notification) {
       var template;
@@ -163,6 +164,7 @@ define([
           template = templates['notification/user-mention.html'];
           break;
         default:
+          return '';
           break;
       }
       var dateObject = moment(notification.time);
@@ -176,29 +178,37 @@ define([
     },
     // User clicks on the notification icon in the header
     onShow: function (event) {
-      var lastNotif = this.lastNotifDisplayedTime();
-      var that = this;
-      // Ask server for last 10 notifications
-      if (this.$menu.find('.message').length == 0) {
-        client.userNotifications(null, lastNotif, 10, _.bind(function (data) {
-
-          var html = '';
-          for (var k in data.notifications) {
-            html += this.createNotificationFromTemplate(data.notifications[k]);
-          }
-
-          this.$menu.html(html);
-
-          this.toggleReadMore();
-        }, this));
+      if (this.$menu.find('.message').length) {
+        this.markHasRead = setTimeout(_.bind(function () {
+          this.clearNotifications();
+        }, this), this.timeToMarkAsRead);
+        return;
       }
 
-      this.markHasRead = setTimeout(function () {
-        that.clearNotifications();
-      }, this.timeToMarkAsRead);
+      client.userNotifications(null, this.lastNotifDisplayedTime(), 10, _.bind(function (data) {
+        this.isThereMoreNotifications = data.more;
+        var html = '';
+        for (var k in data.notifications) {
+          html += this.createNotificationFromTemplate(data.notifications[k]);
+        }
+        this.$menu.html(html);
+        this.toggleReadMore();
+      }, this));
+
+      this.markHasRead = setTimeout(_.bind(function () {
+        this.clearNotifications();
+      }, this), this.timeToMarkAsRead);
+    },
+    onShown: function (event) {
+      this.dropdownIsShown = false;
+      if (this.shouldScrollTopOnNextShow) {
+        this.scrollTop();
+        this.shouldScrollTopOnNextShow = false;
+      }
     },
 
     onHide: function (event) {
+      this.dropdownIsShown = false;
       clearTimeout(this.markHasRead);
     },
 
@@ -214,7 +224,6 @@ define([
       if (ids.length == 0)
         return;
 
-      // Ask server to set notifications as viewed, and wait for response to set them likewise
       client.userNotificationsViewed(ids, false, _.bind(function (data) {
         // For each notification in the list, tag them as read
         _.each(unreadNotifications, function (notification) {
@@ -223,6 +232,8 @@ define([
 
         // Update Badge & Count
         this.setUnreadCount(that.unread - ids.length);
+
+        that.markHasRead = null;
       }, this));
     },
 
@@ -236,8 +247,8 @@ define([
       this.$readMore.addClass('hidden');
       this.$loader.removeClass('hidden');
 
-      var lastNotif = this.lastNotifDisplayedTime();
-      client.userNotifications(null, lastNotif, 10, _.bind(function (data) {
+      client.userNotifications(null, this.lastNotifDisplayedTime(), 10, _.bind(function (data) {
+        this.isThereMoreNotifications = data.more;
         var previousContent = this.$menu.html();
         var html = '';
         for (var k in data.notifications) {
@@ -266,12 +277,10 @@ define([
 
     toggleReadMore: function () {
       // Only display if at least 10 messages displayed, and more messages to display on server
-      if (this.$menu.find('.message').length < 10) {
-        this.$actions.addClass('hidden');
-        return;
-      }
+      if (this.$menu.find('.message').length < 10)
+        return this.$actions.addClass('hidden');
 
-      if ((this.undone || 0) < 10 || this.undone <= this.$menu.find('.message').length)
+      if (!this.isThereMoreNotifications)
         this.$actions.addClass('hidden');
       else
         this.$actions.removeClass('hidden');
@@ -288,6 +297,35 @@ define([
         // Update Badge & Count
         this.setUnreadCount(0);
       }, this));
+    },
+
+    onTagAsDone: function (event) {
+      event.preventDefault();
+      var message = $(event.currentTarget).parents('.message');
+      // Ask server to set notification as done, and wait for response to set them likewise
+      client.userNotificationsDone(message.data('notification-id'), true);
+      return false;
+    },
+
+    // A Notification is tagged as done on the server
+    onDoneNotification: function (data) {
+      clearTimeout(this.markHasRead);
+
+      var message = $('.message[data-notification-id=' + data.notification + ']');
+
+      if (message.hasClass('unread'))
+        this.unread--;
+
+      message.fadeOut(500, function () {
+        $(this).remove();
+      });
+
+      var that = this;
+      this.markHasRead = setTimeout(function () {
+        that.clearNotifications();
+      }, this.timeToMarkAsRead);
+
+      this.toggleReadMore();
     }
   });
 

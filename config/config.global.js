@@ -69,6 +69,7 @@ var conf = module.exports = {
   notifications: {
     scheduler: 10, // seconds
     delay: 5*60, // seconds
+    done: 1, // months
     types: {
       usermessage: {
         creation: 5*60 // 5mn

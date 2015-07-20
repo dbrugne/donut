@@ -313,7 +313,7 @@
       "banned": "You have lock this user",
       "bannedMessage": {
         "onetoone": "You have been locked by this user",
-        "room": "You have been locked in this Room"
+        "room": "You have been locked in this Donut"
       },
       "unlock": "(Click here to unlock)"
     },
@@ -390,47 +390,45 @@
       "disconnected": "You have been disconnected from the server, please wait",
       "reconnected": "You have been reconnected",
       "offline": "This user is currently offline, the message cannot be sent.",
-      "topic": "changed topic for",
+      "topic": " as defined a new topic: ",
       "topicempty": "empty",
-      "kick": "was kicked out of this donut by",
-      "ban": "was banned from this donut by",
-      "deban": "was unbanned from this donut by",
-      "op": "was made moderator by",
-      "deop": "was removed from moderators by",
-      "in": "entered at",
-      "out": "left at",
-      "online": "is online,",
-      "offline": "is offline,",
+      "kick": " was kicked out of by ",
+      "ban": " was banned by",
+      "deban": " was unbanned by",
+      "op": " is made moderator by",
+      "deop": " is removed from moderators by",
+      "in": " entered at ",
+      "out": " left at ",
+      "online": " is online,",
+      "offline": " is offline,",
       "read-more": "Read more",
       "count" : "<strong class=\"nb\"></strong><strong> New</strong> Notification(s)",
       "tag-as-read" : "Tag as read",
       "empty": "You have no new notification",
       "dropdown": {
-        "kick": "You have been kicked out of this donut of",
-        "ban": "You have been banned from this donut of",
-        "deban": "You have been unbanned from this donut of",
-        "op": "You have been promoted moderator of",
-        "deop": "You have been removed from moderators of",
-        "roomtopic": "Subject has changed in  ",
-        "roomjoin": "just joined the room",
-        "usermention": "You were notified in ",
-        "roommessage": "New message in ",
-        "userban": " locked you",
-        "userdeban": " unlocked you",
-        "usermessage": " send a direct message to you"
+        "op": "<a href=\"#room/__roomname__\">You are now moderator of </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
+        "deop": "<a href=\"#room/__roomname__\">You are not moderator of </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
+        "kick": "<a href=\"#room/__roomname__\">You are kicked of </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
+        "ban": "<a href=\"#room/__roomname__\">You are banned of </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
+        "deban": "<a href=\"#room/__roomname__\">You are not banned of </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
+        "roomjoin": "<span class=\"name open-user-profile\" data-username=\"__username__\">@__username__</span><a href=\"#room/__roomname__\"> join </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
+        "roomtopic": "<a href=\"#room/__roomname__\">New subject in </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
+        "roommessage": "<a href=\"#room/__roomname__\">New message in </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
+        "usermention": "<a href=\"#room/__roomname__\">You are notified in </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
+        "usermessage": "<span class=\"name open-user-profile\" data-username=\"__username__\">@__username__</span>: <a href=\"#user/__username__\">__message__</a>"
       },
       "desktop": {
-        "by": "by",
-        "roomkick": "You have been kicked form __roomname__",
-        "roomban": "You have been banned from __roomname__",
-        "roomdeban": "You have been unbanned from __roomname__",
-        "roomop": "You have been made moderator of __roomname__",
-        "roomdeop": "You have been removed from moderators of __roomname__",
-        "roomtopic": "The subject has changed in __roomname__",
-        "usermessage": "__username__ sent a message to you",
-        "usermention": "__username__ Notified you in this room",
-        "userban": "You have been locked",
-        "userdeban": "You have been unlocked"
+        "roomop": "You are moderator of __roomname__",
+        "roomdeop": "You are not moderator of __roomname__",
+        "roomkick": "You are kicked of __roomname__",
+        "roomban": "You are banned of __roomname__",
+        "roomdeban": "You are not banned of __roomname__",
+        "usermessage": "@__username__: __message__",
+        "roommessage": "__roomname__: __message__",
+        "roomjoin": "@__username__ join __roomname__",
+        "roomtopic": "New subject in __roomname__: __topic__",
+        "usermention": "Notified by @__username__ in __roomname__: __message__",
+        "by": "by"
       }
     },
     "unread": {
@@ -639,8 +637,7 @@
       "global": {
         "content": {
           "team": "The DONUT.me team",
-          "ps": "PS : If you did not initiate this action, please report by forwarding this e-mail to",
-          "ps2": "or replying this e-mail."
+          "ps": "P.S.: To avoid receiving these notification types, please uncheck it from your notification options in your account preferences on <a href=\"https://__fqdn__\">__fqdn__</a>. For any question, we are available on <a href=\"https://__fqdn__/!#room/Support\">#support</a>"
         }
       },
       "welcome": {
@@ -679,100 +676,94 @@
         }
       },
       "usermessage": {
-        "subject": "You have received a message on DONUT.me",
+        "subject": "You have received a private message from @__username__",
         "content": {
-          "title": "You have received a message",
-          "button": "See the message on DONUT"
-        }
-      },
-      "roommessage": {
-        "subject": "You have received a message on DONUT.me",
-        "content": {
-          "title": "You have received a message",
-          "inroom": "In the room ",
+          "title": "You have received a private message from @__username__",
           "button": "See the message on DONUT"
         }
       },
       "roomop": {
-        "subject": "You have been promoted moderator of",
+        "subject": "You have been promoted moderator of #__roomname__",
         "content": {
-          "title": "You have been promoted moderator of",
-          "disclaimer": "A lot of things changed on DONUT since your last login.",
-          "action": "Action made by",
-          "button": "Back on DONUT"
-        }
-      },
-      "roomtopic": {
-        "subject": "The subject has changed in",
-        "content": {
-          "title": "The subject has changed in",
-          "disclaimer": "A lot of things changed on DONUT since your last login.",
-          "action": "Action made by",
-          "button": "Back on DONUT"
-        }
-      },
-      "roomjoin": {
-        "subject": "A user has entered ",
-        "content": {
-          "title": "joined",
-          "disclaimer": "A lot of things changed on DONUT since your last login.",
-          "button": "Back on DONUT"
+          "title": "You have been promoted moderator of #__roomname__",
+          "disclaimer": "Congratulations ! You are now moderator of <strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>",
+          "disclaimer2": "It's time to practice your new super powers.",
+          "action": "…all this thanks to <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#253b6c; text-decoration:none;\">@__username__</a></strong>",
+          "button": "Bak on DONUT"
         }
       },
       "roomdeop": {
-        "subject": "You are no longer moderator of",
+        "subject": "You are no longuer moderator of #__roomname__",
         "content": {
-          "title": "You are no longer moderator of",
-          "disclaimer": "A lot of things changed on DONUT since your last login.",
-          "action": "Action made by",
-          "button": "Back on DONUT"
+          "title": "You are no longuer moderator of #__roomname__",
+          "disclaimer": "Good news, you'll have more time to spend to your own Donut.",
+          "action": "…all this thanks to <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#253b6c; text-decoration:none;\">@__username__</a></strong>",
+          "button": "Bak on DONUT"
         }
       },
       "roomkick": {
-        "subject": "You have been excluded of",
+        "subject": "You have been excluded of #__roomname__",
         "content": {
-          "title": "You have been excluded of",
-          "by": "by ",
-          "disclaimer": "A lot of things changed on DONUT since your last login.",
-          "action": "Action made by",
-          "button": "Back on DONUT"
+          "title": "You have been excluded of #__roomname__",
+          "disclaimer": "You have been excluded of <strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong> by <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">__username__</a></strong>.",
+          "reason": "Reason: __reason__",
+          "disclaimer2": "It should not be so serious, do each other a big hug and forget it!",
+          "button": "Access the discussion"
         }
       },
       "roomban": {
-        "subject": "You have been banned of",
+        "subject": "You have been banned of #__roomname__",
         "content": {
-          "title": "You have been banned of",
-          "disclaimer": "A lot of things changed on DONUT since your last login.",
-          "disclaimer2": "You can contact the Room Operator for more details: ",
-          "action": "Action made by",
-          "button": "Back on DONUT"
+          "title": "You have been banned of #__roomname__",
+          "disclaimer": "You have been banned of <strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong> by <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">__username__</a></strong>.",
+          "reason": "Reason: __reason__",
+          "disclaimer2": "Looks like you were not mates for life. Well, you know what they say: \"there's plenty more Donuts in the sea !\".",
+          "button": "Bak on DONUT"
         }
       },
       "roomdeban": {
-        "subject": "You are no more banned of",
+        "subject": "You are not banned of #__roomname__",
         "content": {
-          "title": "You are no more banned of",
-          "disclaimer": "A lot of things changed on DONUT since your last login.",
-          "action": "Action made by",
-          "button": "Back on DONUT"
+          "title": "You are not banned of #__roomname__",
+          "disclaimer": "You are not banned of <strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>.",
+          "disclaimer2": "Oh, that seems to have cleared it !",
+          "action": "…all this thanks to <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#253b6c; text-decoration:none;\">@__username__</a></strong>",
+          "button": "Bak on DONUT"
         }
       },
-      "userban": {
-        "subject": "You have been locked by __username__ on DONUT",
+      "roommessage": {
+        "subject": "New messages in #__roomname__",
         "content": {
-          "title": "You have been locked by __username__",
-          "disclaimer": "You can no longuer send him direct messages. He still could send you direct messages, unless you lock him in return.",
-          "button": "Back on DONUT"
+          "title": "New messages in #__roomname__",
+          "inroom": "in the Donut: <strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>",
+          "button": "Access the discussion"
         }
       },
-      "userdeban": {
-        "subject": "You have been unlocked by __username__ on DONUT",
+      "roomjoin": {
+        "subject": "@__username__ join #__roomname__",
         "content": {
-          "title": "You have been unlocked by __username__",
-          "disclaimer": "You can now start again sending him direct messages. He will be able to reply if you have not locked him.",
-          "button": "Back on DONUT"
+          "title": "@__username__ join #__roomname__",
+          "disclaimer": "And one more! Come welcome him as it should be :).",
+          "button": "Access the discussion"
         }
       },
+      "roomtopic": {
+        "subject": "New subject in #__roomname__",
+        "content": {
+          "title": "@__username__ has defined a new subject in #__roomname__: __topic__",
+          "disclaimer": "You surely have many things to say on the topic !",
+          "button": "Access the discussion"
+        }
+      },
+      "usermention": {
+        "subject": "@__username__ mentionned you in #__roomname__",
+        "content": {
+          "title": "@__username__ mentionned you in #__roomname__",
+          "disclaimer": "It's always nice someone who thinks to you! Consider reply.",
+          "button": "Access the discussion"
+        }
+      },
+
       "contact": {
         "subject": "[DONUT] Nouveau formulaire de contact",
         "text": [
@@ -914,13 +905,6 @@
       ]
     }
   },
-  "notifications": {
-    "kick": "was kicked out of ",
-    "ban": "was banned of",
-    "deban": "was unbanned from ",
-    "op": "was made moderator of",
-    "deop": "was removed from moderators of"
-  },
   "welcome": {
     "message": [
       "<p>Hello!</p>",
@@ -944,7 +928,7 @@
     "fail": "Unable to send email, retry later."
   },
   "preferences": {
-    "title": "My settings",
+    "title": "My notifications",
     "sounds": {
       "title": "Sounds",
       "test": "try"
@@ -963,8 +947,7 @@
     "notif": {
       "title": "Notifications",
       "help": {
-        "user": "Our smart notificationTM engine optimizes the number of notifications you receive. If you feel you receive too many of too few notifications, drop us a line !",
-        "room": "Choisissez ci-dessous pour quels types d'événements dans ce donut vous souhaitez être notifié.<br>Les choix ci-dessous s'applique uniquement à ce donut."
+        "user": "DONUT tries to limit smartly the amount of emails and mobile notifications. However if you find that we send too many notification feel free to send your feedback <a data-toggle='contactform'>by email</a> or on <a href='#room/Support'>#Support</a>"
       },
       "nothing": {
         "label": "Ne recevoir aucune notification pour ce donut",
@@ -983,13 +966,13 @@
       },
       "events": {
         "title": "Notify me about:",
-        "infos": "Notify me when : (only applies to this donut)",
+        "infos": "Notify me when (only applies to this donut) :",
         "usermessage": {
-          "label": "Private conversations: when a user sends me a private message",
+          "label": "when a user sends me a private message",
           "help": ""
         },
         "roominvite": {
-          "label": "Invitations: when a user invites me to join a donut",
+          "label": "when a user invites me to join a donut",
           "help": ""
         },
         "roommessage": {

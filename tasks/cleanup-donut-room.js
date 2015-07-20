@@ -1,12 +1,11 @@
 var async = require('async');
 var _ = require('underscore');
 var Room = require('../shared/models/room');
-var User = require('../shared/models/user');
 var HistoryRoom = require('../shared/models/historyroom');
 
 module.exports = function(grunt) {
 
-    grunt.registerTask('donut-room-cleanup', function() {
+    grunt.registerTask('cleanup-donut-room', 'Retrieve non-active-on-platform-user-for-last-2-months and remove them from #donut room', function() {
         var done = this.async();
         grunt.log.ok('starting cleanup (can take a while)');
 
@@ -38,23 +37,23 @@ module.exports = function(grunt) {
                         count.removed ++;
                     });
 
-                    return callback(null, usersToRemove);
+                    return callback(null, room, usersToRemove);
                 });
             },
 
-            function updateRoom(usersToRemove, callback) {
-                Room.update({name: '#donut'}, { $pull: { users: { $in: usersToRemove } } }, { multi: true }, function(err, result) {
+            function updateRoom(room, usersToRemove, callback) {
+                Room.update({name: '#donut'}, { $pull: { users: { $in: usersToRemove } } }, function(err, result) {
                     if (err)
                         return callback(err);
 
                     grunt.log.ok('Update room result:', result);
-                    return callback(null, usersToRemove);
+                    return callback(null, room, usersToRemove);
                 });
             },
 
-            function cleanupHistory(usersToRemove, callback) {
+            function cleanupHistory(room, usersToRemove, callback) {
                 HistoryRoom.update(
-                  { name: '#donut', users: { $in: usersToRemove } }, // get all history for removed users
+                  { room: room._id, users: { $in: usersToRemove } }, // get all history for removed users
                   { $pull: { users: { $in: usersToRemove } } }, // remove them from history
                   { multi: true },
                   function(err, result) {

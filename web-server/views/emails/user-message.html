@@ -2,55 +2,51 @@
 <table width="90%" border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="center">
-            <div style="height: 100px; line-height: 100px; font-size: 10px;">&nbsp;</div>
-            <div style="line-height: 44px;">
-                <font face="Arial, Helvetica, sans-serif" size="5" color="#57697e" style="font-size: 34px;">
-                    <span style="font-family: Arial, Helvetica, sans-serif; font-size: 34px; color: #57697e;">
-                        <%= t('email.usermessage.content.title') %>
+            <div style="line-height: 30px;">
+                <font face="Arial, Helvetica, sans-serif" size="5" color="#4db3a4" style="font-size: 17px;">
+                    <span style="font-family: Arial, Helvetica, sans-serif; font-size: 17px; color: #4db3a4;">
+                        <%= events[0].time_full %>
                     </span>
                 </font>
             </div>
-            <div style="height: 30px; line-height: 30px; font-size: 10px;">&nbsp;</div>
+            <div style="height: 35px; line-height: 35px; font-size: 10px;">&nbsp;</div>
         </td>
     </tr>
     <tr>
         <td align="center">
 
-            <table width="100%" style="  border-spacing: 0;">
+            <table width="100%" style="  border-spacing: 0;   border: 1px solid #E4E4E4;">
                 <tbody>
                 <% var lastUsername = ''; %>
                 <% var lastTime = ''; %>
+                <% var className = 'odd'; %>
                 <% _.forEach(events, function(event){ %>
                     <% if ( lastUsername !== event.from_username) { %>
+                <% var className = ( className === 'even' ? 'odd' : 'even' ); %>
                         <% lastUsername = event.from_username; %>
-                        <tr <% if (event.current === true) { %>style="background-color: #000088;"<% } %>>
+                <tr
+                <% if (className === 'even') { %>style="background-color: #f9fafc;"<% } %> <% if (event.current ===
+                true) { %>style="background-color: #E6E8ED;"<% } %> >
                             <td style="width: 35px;">
                                 <img src="<%- event.from_avatar %>" style=" width: 30px; height: 30px; ">
                             </td>
-                            <td colspan="2">
+                            <td>
                                 <div style="font-family: 'Open Sans',sans-serif; font-weight: bold; font-size: 1em;">
                                     <div style="font-family: 'Open Sans',sans-serif; font-weight: bold; font-size: 1em;">
                                         @<%- event.from_username %>
                                     </div>
                                 </div>
                             </td>
-
                         </tr>
                     <% } %>
-                    <tr <% if (event.current === true) { %>style="background-color: #000088;"<% } %>>
+                <tr
+                <% if (className === 'even') { %>style="background-color: #f9fafc;"<% } %> <% if (event.current ===
+                true) { %>style="background-color: #E6E8ED;"<% } %>>
                         <td></td>
                         <td>
                             <div class="event" style="">
                                 <div class="text" style="white-space: pre-wrap !important;  text-align: justify;  font-style: italic;"><%= event.message %></div>
                             </div>
-                        </td>
-                        <td>
-                            <% if ( lastTime !== event.time_short) { %>
-                            <% lastTime = event.time_short; %>
-                            <div class="date" style="  text-align: right; color: #777; font-size: 0.8em;">
-                                <span class="moment" title="<%- event.time_full %>"><%- event.time_short %></span>
-                            </div>
-                            <% } %>
                         </td>
                     </tr>
                 <% }); %>
@@ -67,7 +63,7 @@
                 <table border="0" cellpadding="0" cellspacing="0" class="emailButton" style="-webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; background-color:#EE2763;">
                     <tr>
                         <td align="center" valign="middle" class="emailButtonContent" style="padding-top:10px; padding-right:30px; padding-bottom:10px; padding-left:30px;">
-                            <a href="https://<%- fqdn %>" target="_blank" style="color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;" alt="<%= t('email.usermessage.content.button') %>"><%= t('email.usermessage.content.button') %></a>
+                            <a href="https://<%- fqdn %>/user/<%= username %>" target="_blank" style="color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;" alt="<%= t('email.usermessage.content.button') %>"><%= t('email.usermessage.content.button') %></a>
                         </td>
                     </tr>
                 </table>
@@ -95,7 +91,8 @@
         </td>
     </tr>
 </table>
-<!--links -->
+
+<!-- START : PRE FOOTER -->
 <tr>
     <td align="center" bgcolor="#f9fafc">
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -106,7 +103,7 @@
                         <tr>
                             <td align="center" valign="middle" style="font-size: 10px; line-height:20px;">
                                 <font face="Tahoma, Arial, Helvetica, sans-serif" size="2" color="#282f37" style="font-size: 10px; font-style: italic;">
-                                    <%= t('email.global.content.ps') %>&nbsp;<a href='mailto:<%- email %>'><%- email %></a>&nbsp;<%= t('email.global.content.ps2') %>
+                                    <%= t('email.global.content.ps', { fqdn: fqdn }) %>
                                 </font>
                             </td>
                         </tr>
@@ -117,4 +114,4 @@
         </table>
     </td>
 </tr>
-<!--links END-->
+<!-- END : PRE FOOTER -->

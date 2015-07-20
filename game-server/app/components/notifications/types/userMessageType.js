@@ -44,6 +44,9 @@ Notification.prototype.create = function(user, history, done) {
     },
 
     function avoidRepetitive(userModel, historyModel, callback) {
+      if (that.facade.options.force === true)
+        return callback(null, userModel, historyModel);
+
       var criteria = {
         type: that.type,
         time: {
@@ -65,7 +68,7 @@ Notification.prototype.create = function(user, history, done) {
 
     function checkStatus(userModel, historyModel, callback) {
       that.facade.uidStatus(userModel.id, function(status) {
-        if (status) {
+        if (status && that.facade.options.force !== true) {
           logger.debug('userMessageType.create no notification due to user status');
           return callback(true);
         }
@@ -80,8 +83,14 @@ Notification.prototype.create = function(user, history, done) {
         from: historyModel.from // for repetitive
       });
       model.to_browser = true; // will be displayed in browser on next connection
-      model.to_email =  (!userModel.getEmail() ? false : ( status ? false : userModel.preferencesValue("notif:channels:email"))) ;
+      model.to_email =  (!userModel.getEmail() ? false : ( status ? false : userModel.preferencesValue("notif:channels:email")));
       model.to_mobile = (status ? false : userModel.preferencesValue("notif:channels:mobile"));
+
+      if (that.facade.options.force === true) {
+        model.to_email = true;
+        model.to_mobile = true;
+      }
+
       model.save(function(err) {
         if (err)
           return callback(err);
