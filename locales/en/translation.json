@@ -390,17 +390,17 @@
       "disconnected": "You have been disconnected from the server, please wait",
       "reconnected": "You have been reconnected",
       "offline": "This user is currently offline, the message cannot be sent.",
-      "topic": "changed topic for",
+      "topic": " as defined a new topic: ",
       "topicempty": "empty",
-      "kick": "was kicked out of this donut by",
-      "ban": "was banned from this donut by",
-      "deban": "was unbanned from this donut by",
-      "op": "was made moderator by",
-      "deop": "was removed from moderators by",
-      "in": "entered at",
-      "out": "left at",
-      "online": "is online,",
-      "offline": "is offline,",
+      "kick": " was kicked out of by ",
+      "ban": " was banned by",
+      "deban": " was unbanned by",
+      "op": " is made moderator by",
+      "deop": " is removed from moderators by",
+      "in": " entered at ",
+      "out": " left at ",
+      "online": " is online,",
+      "offline": " is offline,",
       "read-more": "Read more",
       "count" : "<strong class=\"nb\"></strong><strong> New</strong> Notification(s)",
       "tag-as-read" : "Tag as read",
@@ -681,85 +681,88 @@
           "button": "See the message on DONUT"
         }
       },
-      "roommessage": {
-        "subject": "You have received a message on DONUT.me",
-        "content": {
-          "title": "You have received a message",
-          "inroom": "In the Donut ",
-          "button": "See the message on DONUT"
-        }
-      },
       "roomop": {
-        "subject": "You have been promoted moderator of",
+        "subject": "You have been promoted moderator of #__roomname__",
         "content": {
-          "title": "You have been promoted moderator of",
-          "disclaimer": "A lot of things changed on DONUT since your last login.",
-          "action": "Action made by",
-          "button": "Back on DONUT"
+          "title": "You have been promoted moderator of #__roomname__",
+          "disclaimer": "Congratulations ! You are now moderator of <strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>",
+          "disclaimer2": "It's time to practice your new super powers.",
+          "action": "…all this thanks to <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#253b6c; text-decoration:none;\">@__username__</a></strong>",
+          "button": "Bak on DONUT"
         }
       },
       "roomdeop": {
-        "subject": "You are no longer moderator of",
+        "subject": "You are no longuer moderator of #__roomname__",
         "content": {
-          "title": "You are no longer moderator of",
-          "disclaimer": "A lot of things changed on DONUT since your last login.",
-          "action": "Action made by",
-          "button": "Back on DONUT"
+          "title": "You are no longuer moderator of #__roomname__",
+          "disclaimer": "Good news, you'll have more time to spend to your own Donut.",
+          "action": "…all this thanks to <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#253b6c; text-decoration:none;\">@__username__</a></strong>",
+          "button": "Bak on DONUT"
         }
       },
       "roomkick": {
-        "subject": "You have been excluded of",
+        "subject": "You have been excluded of #__roomname__",
         "content": {
-          "title": "You have been excluded of",
-          "by": "by ",
-          "disclaimer": "A lot of things changed on DONUT since your last login.",
-          "action": "Action made by",
-          "button": "Back on DONUT"
+          "title": "You have been excluded of #__roomname__",
+          "disclaimer": "You have been excluded of <strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong> by <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">__username__</a></strong>.",
+          "reason": "Reason: __reason__",
+          "disclaimer2": "It should not be so serious, do each other a big hug and forget it!",
+          "button": "Access the discussion"
         }
       },
       "roomban": {
-        "subject": "You have been banned of",
+        "subject": "You have been banned of #__roomname__",
         "content": {
-          "title": "You have been banned of",
-          "disclaimer": "A lot of things changed on DONUT since your last login.",
-          "disclaimer2": "You can contact the Donut Operator for more details: ",
-          "action": "Action made by",
-          "button": "Back on DONUT"
+          "title": "You have been banned of #__roomname__",
+          "disclaimer": "You have been banned of <strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong> by <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">__username__</a></strong>.",
+          "reason": "Reason: __reason__",
+          "disclaimer2": "Looks like you were not mates for life. Well, you know what they say: \"there's plenty more Donuts in the sea !\".",
+          "button": "Bak on DONUT"
         }
       },
       "roomdeban": {
-        "subject": "You are no more banned of",
+        "subject": "You are not banned of #__roomname__",
         "content": {
-          "title": "You are no more banned of",
-          "disclaimer": "A lot of things changed on DONUT since your last login.",
-          "action": "Action made by",
-          "button": "Back on DONUT"
-        },
-        "roomtopic": {
-          "subject": "The subject has changed in",
-          "content": {
-            "title": "The subject has changed in <strong><a href=\"https://__fqdn__/room/__roomname__\" style=\"text-decoration:none; color: #EE2763;\">#__roomname__</a></strong>",
-            "new-topic": "New subject: __topic__",
-            "action": "Action made by <strong><a href=\"https://__fqdn__/user/__username__\" style=\"text-decoration:none; color: #EE2763;\">@__username__</a></strong>",
-            "button": "Back on DONUT"
-          }
-        },
-        "roomjoin": {
-          "subject": "A user has entered ",
-          "content": {
-            "title": "joined",
-            "disclaimer": "A lot of things changed on DONUT since your last login.",
-            "button": "Back on DONUT"
-          }
-        },
-        "usermention": {
-          "subject": "You have been notified on __roomname__",
-          "content": {
-            "title": "You have been notified on __roomname__",
-            "button": "Voir la notification sur DONUT"
-          }
+          "title": "You are not banned of #__roomname__",
+          "disclaimer": "You are not banned of <strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>.",
+          "disclaimer2": "Oh, that seems to have cleared it !",
+          "action": "…all this thanks to <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#253b6c; text-decoration:none;\">@__username__</a></strong>",
+          "button": "Bak on DONUT"
         }
       },
+      "roommessage": {
+        "subject": "New messages in #__roomname__",
+        "content": {
+          "title": "New messages in #__roomname__",
+          "inroom": "in the Donut: <strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>",
+          "button": "Access the discussion"
+        }
+      },
+      "roomjoin": {
+        "subject": "@__username__ join #__roomname__",
+        "content": {
+          "title": "@__username__ join #__roomname__",
+          "disclaimer": "And one more! Come welcome him as it should be :).",
+          "button": "Access the discussion"
+        }
+      },
+      "roomtopic": {
+        "subject": "New subject in #__roomname__",
+        "content": {
+          "title": "@__username__ has defined a new subject in #__roomname__: __topic__",
+          "disclaimer": "You surely have many things to say on the topic !",
+          "button": "Access the discussion"
+        }
+      },
+      "usermention": {
+        "subject": "@__username__ mentionned you in #__roomname__",
+        "content": {
+          "title": "@__username__ mentionned you in #__roomname__",
+          "disclaimer": "It's always nice someone who thinks to you! Consider reply.",
+          "button": "Access the discussion"
+        }
+      },
+
       "contact": {
         "subject": "[DONUT] Nouveau formulaire de contact",
         "text": [
@@ -900,13 +903,6 @@
         "<small>From __ip__ on __fqdn__</small>"
       ]
     }
-  },
-  "notifications": {
-    "kick": "was kicked out of ",
-    "ban": "was banned of",
-    "deban": "was unbanned from ",
-    "op": "was made moderator of",
-    "deop": "was removed from moderators of"
   },
   "welcome": {
     "message": [

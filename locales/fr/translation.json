@@ -411,8 +411,7 @@
       "hello": "Vous entrez dans",
       "disconnected": "Vous avez été deconnecté du serveur, veuillez patienter",
       "reconnected": "Vous êtes reconnecté",
-      "offline": "n'est plus en ligne,",
-      "topic": " a défini un nouveau sujet:",
+      "topic": " a défini un nouveau sujet: ",
       "topicempty": "vide",
       "kick": " a été expulsé à la demande de ",
       "ban": " a été banni à la demande de ",
@@ -421,7 +420,8 @@
       "deop": " n'est plus modérateur à la demande de ",
       "in": " est entré à",
       "out": " est sorti à",
-      "online": "est en ligne,",
+      "online": " est en ligne,",
+      "offline": " n'est plus en ligne,",
       "read-more": "Voir plus",
       "count" : "<strong class=\"nb\"></strong><strong> Nouvelle(s)</strong> Notification(s)",
       "tag-as-read" : "Marquer comme lue(s)",
@@ -708,7 +708,7 @@
       "subject": "Vous n'êtes plus modérateur de #__roomname__",
       "content": {
         "title": "Vous n'êtes plus modérateur de #__roomname__",
-        "disclaimer": "Bonne nouvelle, vous allez avoir un peu plus de temps à consacrer à votre propre donut. :)",
+        "disclaimer": "Bonne nouvelle, vous allez avoir un peu plus de temps à consacrer à votre propre Donut. :)",
         "action": "…et tout ça grâce à <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#253b6c; text-decoration:none;\">@__username__</a></strong>",
         "button": "Retourner sur DONUT"
       }
@@ -782,8 +782,6 @@
         "button": "Voir la notification sur DONUT"
       }
     },
-
-
 
     "contact": {
       "subject": "[DONUT] Nouveau formulaire de contact",
