@@ -7,7 +7,7 @@ var template = "<script>"
   + "  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)"
   + "  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');"
   + ""
-  + "ga('create', '{{UID}}', '{{FQDN}}', {'cookieDomain': 'none'});"
+  + "ga('create', '{{UID}}', '{{URL}}', {'cookieDomain': 'none'});"
   + "ga('send', 'pageview');"
   + "</script>";
 
@@ -19,7 +19,7 @@ if (conf.google && conf.google.analytics && conf.google.analytics.uid) {
 module.exports = function() {
   return function(req, res, next) {
     res.locals.googleanalytics = tracker
-      .replace('{{FQDN}}', req.protocol + '://' + conf.fqdn);
+      .replace('{{URL}}', conf.url);
     next();
   };
 };
