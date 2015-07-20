@@ -26,16 +26,9 @@ define([
       "click .dropdown-menu .unspam"   : 'onUnmarkAsSpam',
       "click .view-spammed-message"    : 'onViewSpammedMessage',
       "click .remask-spammed-message"  : 'onRemaskSpammedMessage',
-      "click .message-form .enter"     : 'onEditMessage',
-      'keyup .form-control'            : 'textAreaAdjust',
       "click .dropdown-menu .edited"   : 'showFormEditMessage',
-      "dblclick .event .ctn"           : 'showFormEditMessage',
-      "click .message-form .esc"       : 'onEscEditMessage',
+      "dblclick .event .ctn"           : 'showFormEditMessage', // @todo add .editable class on event and scope on this for event listening and previous editable event finding
       'keydown .form-control': function(event) {
-        if (event.which == 27) // escape
-          this.onEscEditMessage(event);
-        if (event.which == 13) // enter
-          this.onEditMessage(event);
         if (event.which == 38) // up arrow
           this.openPrevFormEdit(event);
         if (event.which == 40) // down arrow
@@ -60,7 +53,6 @@ define([
       this.listenTo(this.model, 'viewed', this.onViewed);
       this.listenTo(this.model, 'messageSpam', this.onMarkedAsSpam);
       this.listenTo(this.model, 'messageUnspam', this.onMarkedAsUnspam);
-      this.listenTo(this.model, 'messageEdit', this.onMessageEdited);
       this.listenTo(client, 'admin:message', this.onAdminMessage);
 
       debug.start('discussion-events' + this.model.getIdentifier());
@@ -660,20 +652,19 @@ define([
      *****************************************************************************************************************/
     onMessageMenuShow: function (event) {
       var ownerUsername = '';
-      var parent = $(event.target).parents('.event');
+      var $event = $(event.target).parents('.event');
       if (this.model.get('owner'))
         ownerUsername = this.model.get('owner').get('username');
-      var username = $(event.target).closest('[data-username]').data('username');
+      var username = $event.closest('[data-username]').data('username');
       var isMessageOwner = (ownerUsername === username);
 
-      var time = parent.data('time');
-      var isEdit = this.isEditableMessage(time, username);
+      var isEditable = this.isEditableMessage($event);
 
       var isOp = this.model.currentUserIsOp();
       var isOwner = this.model.currentUserIsOwner();
       var isAdmin = this.model.currentUserIsAdmin();
 
-      if (((!isOwner && !isAdmin && !isOp) || (isOp && isMessageOwner)) && (!isEdit)) {
+      if (((!isOwner && !isAdmin && !isOp) || (isOp && isMessageOwner)) && (!isEditable)) {
         $(event.currentTarget).find('.dropdown-menu').dropdown('toggle');
         return;
       }
@@ -683,7 +674,7 @@ define([
           isOwner: isOwner,
           isAdmin: isAdmin,
           isMessageOwner: isMessageOwner,
-          isEdit: isEdit
+          isEditable: isEditable
         }
       });
       $(event.currentTarget).find('.dropdown-menu').html(html);
@@ -759,20 +750,7 @@ define([
       if (bottom)
         this.scrollDown();
     },
-    onEditMessage: function (event) {
-      event.preventDefault();
-      var $event = $(event.target).closest('.event');
-      var roomName = this.model.get('name');
-      var messageId = $event.attr('id');
-      var message = $event.find('.form-control').val();
-      client.roomMessageEdit(roomName, messageId, message);
 
-      this.closeFormEditMessage($event);
-    },
-    textAreaAdjust: function(event) {
-      $(event.target).css('height', '1px');
-      $(event.target).css('height', (2+$(event.target).prop('scrollHeight'))+'px');
-    },
     showFormEditMessage: function (event) {
       event.preventDefault();
       var $event = $(event.currentTarget).closest('.event');
@@ -782,68 +760,67 @@ define([
 
       this.editMessage($event);
     },
-    onEscEditMessage: function (event) {
-      event.preventDefault();
-      var $event = $(event.target).closest('.event');
-      this.closeFormEditMessage($event);
-    },
-    onMessageEdited: function (event) {
-      $('#'+event.event).find('.text').html(event.message);
-    },
     openPrevFormEdit: function (event) {
       var $currentEventMessage = $(event.target).parents('.event');
       var $currentBlockMessage = $(event.target).parents('.message');
-      this.checkAndOpenFormEdit(event, 'Prev', $currentEventMessage, $currentBlockMessage);
+      this.checkAndOpenFormEdit('Prev', $currentEventMessage, $currentBlockMessage);
     },
     openNextFormEdit: function (event) {
       var currentEventMessage = $(event.target).parents('.event');
       var currentBlockMessage = $(event.target).parents('.message');
-      this.checkAndOpenFormEdit(event, 'Next', currentEventMessage, currentBlockMessage);
+      this.checkAndOpenFormEdit('Next', currentEventMessage, currentBlockMessage);
     },
     checkAndOpenFormEdit: function(direction, $currentEventMessage, $currentBlockMessage) {
       var username = $currentBlockMessage.data('username');
 
       if (direction === 'Prev') {
-        var prevEventMessage = $currentEventMessage.prev();
+        var $prevEventMessage = $currentEventMessage.prev();
 
         if (!$currentEventMessage.prev().length && $currentBlockMessage.prev().length) {
-          var prevBlockMessage = $currentBlockMessage.prev();
-          while((prevBlockMessage.data('username') !== username)) {
-            if (!prevBlockMessage.prev().length)
+          var $prevBlockMessage = $currentBlockMessage.prev();
+          while(($prevBlockMessage.data('username') !== username)) {
+            if (!$prevBlockMessage.prev().length)
               return;
-            prevBlockMessage = prevBlockMessage.prev();
+            $prevBlockMessage = $prevBlockMessage.prev();
           }
-          var prevEventMessage = prevBlockMessage.find('.event').last();
+          var $prevEventMessage = $prevBlockMessage.find('.event').last();
         }
 
-        var prevTime = prevEventMessage.data('time');
-        var isPrevEdit = this.isEditableMessage(prevTime, username);
-        if (isPrevEdit) {
-          this.hideFormEditMessage(event);
-          this.openFormEditMessage(prevEventMessage);
+        if (this.isEditableMessage($prevEventMessage)) {
+
+          this.editMessage($prevEventMessage);
         }
       }
 
       if (direction === 'Next') {
-        var nextEventMessage = currentEventMessage.next();
+        var $nextEventMessage = $currentEventMessage.next();
 
-        if (!currentEventMessage.next().length && currentBlockMessage.next().length) {
-          var nextBlockMessage = currentBlockMessage.next();
-          while((nextBlockMessage.data('username') !== username)) {
-            if (!nextBlockMessage.next().length)
+        if (!$currentEventMessage.next().length && $currentBlockMessage.next().length) {
+          var $nextBlockMessage = $currentBlockMessage.next();
+          while(($nextBlockMessage.data('username') !== username)) {
+            if (!$nextBlockMessage.next().length)
               return;
-            nextBlockMessage = nextBlockMessage.next();
+            $nextBlockMessage = $nextBlockMessage.next();
           }
-          var nextEventMessage = nextBlockMessage.find('.event').first();
+          var $nextEventMessage = $nextBlockMessage.find('.event').first();
         }
 
-        var nextTime = nextEventMessage.data('time');
-        var isNextEdit = this.isEditableMessage(nextTime, username);
-        if (isNextEdit) {
-          this.hideFormEditMessage(event);
-          this.openFormEditMessage(nextEventMessage);
+        if (this.isEditableMessage($nextEventMessage)) {
+          this.editMessage($nextEventMessage);
         }
       }
+    },
+
+    editMessage: function ($event) {
+      if (this.messageUnderEdition) {
+        this.messageUnderEdition.closeFormEditMessage();
+        this.messageUnderEdition.unbind();
+      }
+
+      this.messageUnderEdition = new MessageEditView({
+        el: $event,
+        model: this.model
+      });
     },
     isEditableMessage: function ($event) {
       var username = $event.closest('[data-username]').data('username');
@@ -852,25 +829,6 @@ define([
       var isEdit = ((Date.now() - new Date(time)) < (3600 * 1000)); // 1 hours
 
       return ((isMessageCurrentUser && isEdit));
-    },
-    editMessage: function ($event) {
-      $event.find('.text').hide();
-      $event.removeClass('has-hover');
-
-      var form = $event.find('.message-form');
-      var text = $event.find('.text').text();
-      form.css('display', 'block');
-      form.find('.form-control').val(text).focus();
-
-      this.messageUnderEdition = new MessageEditView();
-
-      var that = this;
-      $('html').click(function(e) {
-        if (!$(e.target).hasClass('form-control') && !$(e.target).hasClass('edited')) {
-          that.closeFormEditMessage($event);
-          $('html').off('click');
-        }
-      });
     },
 
     /*****************************************************************************************************************
