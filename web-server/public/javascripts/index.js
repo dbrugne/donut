@@ -52,7 +52,7 @@ require([
   }
 
   // Language switcher
-  $('#languages .switch').on("click", function(event) {
+  $('#languages .switch').click(function(event) {
     var language = $(this).data('language');
     if (!language)
       return;
