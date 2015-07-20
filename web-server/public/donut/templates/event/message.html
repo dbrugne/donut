@@ -9,13 +9,14 @@
     <% } %>
     <div class="items">
         <% } %>
-        <div class="event has-hover <% if (spammed) { %>spammed<% } %> <% if (unviewed) { print('unviewed'); } %>"
+        <div class="event has-hover <% if (spammed) { %>spammed<% } %> <% if (edited) { %>edited<% } %>  <% if (unviewed) { print('unviewed'); } %>"
              id="<%= data.id %>"
              data-time="<%= data.time %>"
-             data-spammed="<%= (spammed === true ? 'true' : '')%>">
+             data-spammed="<%= (spammed === true ? 'true' : '')%>"
+             data-edited="<%= (edited === true ? 'true' : '')%>">
             <div class="ctn">
                 <% if (data.message) { %>
-                <div class="text"><%= data.message %></div>
+                <div class="text"><%= data.message %><% if (edited) { %><span class="is-edited"> (edited) </span><% } %></div>
                 <% } %>
                 <% if (data.images) { %>
                 <div class="images">

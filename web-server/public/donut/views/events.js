@@ -26,14 +26,9 @@ define([
       "click .dropdown-menu .unspam"   : 'onUnmarkAsSpam',
       "click .view-spammed-message"    : 'onViewSpammedMessage',
       "click .remask-spammed-message"  : 'onRemaskSpammedMessage',
-      "click .dropdown-menu .edited"   : 'showFormEditMessage',
-      "dblclick .event .ctn"           : 'showFormEditMessage', // @todo add .editable class on event and scope on this for event listening and previous editable event finding
-      'keydown .form-control': function(event) {
-        if (event.which == 38) // up arrow
-          this.openPrevFormEdit(event);
-        if (event.which == 40) // down arrow
-          this.openNextFormEdit(event);
-      },
+      "click .dropdown-menu .edited"   : 'onFormEditMessageShow',
+      "dblclick .event .ctn"           : 'onFormEditMessageShow', // @todo add .editable class on event and scope on this for event listening and previous editable event finding
+      'keydown .form-control'          : 'onPrevOrNextFormEdit'
     },
 
     historyLoading: false,
@@ -459,8 +454,10 @@ define([
       data.data = _.clone(model.get('data'));
       var message = data.data.message;
 
-      if (model.getGenericType() === 'message')
+      if (model.getGenericType() === 'message') {
         data.spammed = (model.get('spammed') === true);
+        data.edited = (model.get('edited') === true);
+      }
 
       // avatar
       var size = (model.getGenericType() != 'inout')
@@ -751,7 +748,12 @@ define([
         this.scrollDown();
     },
 
-    showFormEditMessage: function (event) {
+    /*****************************************************************************************************************
+     *
+     * Message edit
+     *
+     *****************************************************************************************************************/
+    onFormEditMessageShow: function (event) {
       event.preventDefault();
       var $event = $(event.currentTarget).closest('.event');
 
@@ -760,15 +762,14 @@ define([
 
       this.editMessage($event);
     },
-    openPrevFormEdit: function (event) {
+    onPrevOrNextFormEdit: function (event) {
       var $currentEventMessage = $(event.target).parents('.event');
       var $currentBlockMessage = $(event.target).parents('.message');
-      this.checkAndOpenFormEdit('Prev', $currentEventMessage, $currentBlockMessage);
-    },
-    openNextFormEdit: function (event) {
-      var currentEventMessage = $(event.target).parents('.event');
-      var currentBlockMessage = $(event.target).parents('.message');
-      this.checkAndOpenFormEdit('Next', currentEventMessage, currentBlockMessage);
+
+      if (event.which == 38)
+        this.checkAndOpenFormEdit('Prev', $currentEventMessage, $currentBlockMessage);
+      if (event.which == 40)
+        this.checkAndOpenFormEdit('Next', $currentEventMessage, $currentBlockMessage);
     },
     checkAndOpenFormEdit: function(direction, $currentEventMessage, $currentBlockMessage) {
       var username = $currentBlockMessage.data('username');
@@ -810,7 +811,6 @@ define([
         }
       }
     },
-
     editMessage: function ($event) {
       if (this.messageUnderEdition) {
         this.messageUnderEdition.closeFormEditMessage();

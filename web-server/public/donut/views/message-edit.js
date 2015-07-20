@@ -17,8 +17,8 @@ define([
     events: {
       'click .message-form .enter'     : 'onEditMessage',
       'click .message-form .esc'       : 'onEscEditMessage',
-      'keyup .form-control'            : 'keyup',
-      'keydown .form-control'          : 'keydown'
+      'keyup .form-control'            : 'onKeyup',
+      'keydown .form-control'          : 'onKeydown'
     },
 
     initialize: function(options) {
@@ -26,6 +26,7 @@ define([
       this.render();
     },
     render: function() {
+
       this.$el.find('.message-edit').html(this.template);
       this.$el.find('.text').hide();
       this.$el.removeClass('has-hover');
@@ -57,11 +58,13 @@ define([
       event.preventDefault();
       this.closeFormEditMessage();
     },
-    keyup: function (event) {
-      $(event.target).css('height', '1px');
-      $(event.target).css('height', (2+$(event.target).prop('scrollHeight'))+'px');
+    onKeyup: function (event) {
+      $(event.currentTarget).css('height', '1px');
+      $(event.currentTarget)
+        .css('height', (2+$(event.currentTarget)
+          .prop('scrollHeight'))+'px');
     },
-    keydown: function (event) {
+    onKeydown: function (event) {
       if (event.which == 27) // escape
         this.onEscEditMessage(event);
       if (event.which == 13) // enter
@@ -80,7 +83,6 @@ define([
 
       return ((isMessageCurrentUser && isEdit));
     },
-
     onMessageEdited: function (event) {
       $('#'+event.event).find('.text').html(event.message);
     },
