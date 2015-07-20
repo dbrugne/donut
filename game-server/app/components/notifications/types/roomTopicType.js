@@ -112,7 +112,8 @@ Notification.prototype.sendToBrowser = function (model, history, done) {
         id: history.room.id,
         name: history.room.name,
         avatar: history.room._avatar()
-      }
+      },
+      topic: history.data.topic
     }
   };
   this.facade.app.globalChannelService.pushMessage('connector', 'notification:new', event, 'user:' + model.user.toString(), {}, done);

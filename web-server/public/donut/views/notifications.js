@@ -111,11 +111,24 @@ define([
     },
     _createDesktopNotify: function (data) {
       var desktopTitle = $.t('chat.notifications.desktop.' + data.type, {
-        'roomname': ( data.data.room && data.data.room.name ? data.data.room.name : ''),
-        'username': ( data.data.by_user && data.data.by_user.username ? data.data.by_user.username : ''),
-        'topic': ( data.data.topic ? data.data.topic : ''),
-        'message': ( data.data.message ? data.data.message : '')
+        'roomname': ( data.data.room && data.data.room.name
+          ? data.data.room.name
+          : ''),
+        'username': ( data.data.by_user && data.data.by_user.username
+          ? data.data.by_user.username
+          : ( data.data.user && data.data.user.username
+            ? data.data.user.username
+            : '' )),
+        'topic': ( data.data.topic
+          ? data.data.topic
+          : ''),
+        'message': ( data.data.message
+          ? data.data.message
+          : '')
       });
+
+      console.log("*****HERE****");
+      console.log(data.data);
 
       windowView.desktopNotify(desktopTitle, '');
     },

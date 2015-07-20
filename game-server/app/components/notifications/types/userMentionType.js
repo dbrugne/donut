@@ -105,7 +105,8 @@ Notification.prototype.sendToBrowser = function (model, user, room, history, don
         id: room.id,
         name: room.name,
         avatar: room._avatar()
-      }
+      },
+      message: utils.mentionize(history.data.message, false) // @todo dbr bundle mentionnize, linkify... other messages transfomrmation in a common class loadable in npm and bower
     }
   };
   this.facade.app.globalChannelService.pushMessage('connector', 'notification:new', event, 'user:' + user.id, {}, done);

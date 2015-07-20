@@ -249,9 +249,9 @@ define([
             if (last && (Date.now() - last) <= 1*60*1000) // 1mn
               return;
 
-            var title = $.t('chat.notifications.desktop.usermessage', { username: data.from_username });
             var message = data.message || '';
-            this.desktopNotify(title, message);
+            var title = $.t('chat.notifications.desktop.usermessage', { username: data.from_username, message: message });
+            this.desktopNotify(title, '');
             this.desktopNotificationsLimiters[key] = Date.now();
           }
         }
