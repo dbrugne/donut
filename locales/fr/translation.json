@@ -694,92 +694,97 @@
         "button": "Connectez-vous en cliquant ici"
       }
     },
-    "usermessage": {
-      "subject": "Vous avez reçu un message privé de @__username__",
-      "content": {
-        "title": "Vous avez reçu un message privé de @__username__",
-        "disclaimer": "le ",
-        "button": "Voir le message sur DONUT"
-      }
-    },
-    "roommessage": {
-      "subject": "Vous avez reçu un message dans __roomname__ sur DONUT",
-      "content": {
-        "title": "Vous avez reçu un message dans __roomname__ sur DONUT",
-        "button": "Voir le message sur DONUT"
-      }
-    },
     "roomop": {
-      "subject": "Vous avez été promu modérateur de ",
+      "subject": "Vous avez été promu modérateur de #__roomname__",
       "content": {
-        "title": "Vous avez été promu modérateur de ",
-        "disclaimer": "Beaucoup de choses se sont passées sur DONUT depuis votre dernier passage.",
-        "action": "Action effectuée par",
-        "button": "retourner sur DONUT"
+        "title": "Vous avez été promu modérateur de #__roomname__",
+        "disclaimer": "Félicitations ! Vous êtes désormais modérateur de <strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>",
+        "disclaimer2": "Il est temps d'aller exercer vos nouveaux super pouvoirs",
+        "action": "…et tout ça grâce à <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#253b6c; text-decoration:none;\">@__username__</a></strong>",
+        "button": "Retourner sur DONUT"
       }
     },
     "roomdeop": {
-      "subject": "Vous n'êtes plus modérateur de ",
+      "subject": "Vous n'êtes plus modérateur de #__roomname__",
       "content": {
-        "title": "Vous n'êtes plus modérateur de ",
-        "disclaimer": "Beaucoup de choses se sont passées sur DONUT depuis votre dernier passage.",
-        "action": "Action effectuée par",
-        "button": "retourner sur DONUT"
+        "title": "Vous n'êtes plus modérateur de #__roomname__",
+        "disclaimer": "Bonne nouvelle, vous allez avoir un peu plus de temps à consacrer à votre propre donut. :)",
+        "action": "…et tout ça grâce à <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#253b6c; text-decoration:none;\">@__username__</a></strong>",
+        "button": "Retourner sur DONUT"
       }
     },
     "roomkick": {
-      "subject": "Vous avez été expulsé de ",
+      "subject": "Vous avez été expulsé de #__roomname__",
       "content": {
-        "title": "Vous avez été expulsé de ",
-        "by": "par ",
-        "disclaimer": "Beaucoup de choses se sont passées sur DONUT depuis votre dernier passage.",
-        "action": "Action effectuée par",
-        "button": "retourner sur DONUT"
+        "title": "Vous avez été expulsé de #__roomname__",
+        "disclaimer": "Vous avez été expulsé de <strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong> par <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">__username__</a></strong>.",
+        "reason": "Motif: __reason__",
+        "disclaimer2": "Ca ne doit pas être si grave, faites-vous un gros câlin et on oublie ça!",
+        "button": "Accéder à la discussion"
       }
     },
     "roomban": {
-      "subject": "Vous avez été banni de ",
+      "subject": "Vous avez été banni de #__roomname__",
       "content": {
-        "title": "Vous avez été banni de ",
-        "disclaimer": "Beaucoup de choses se sont passées sur DONUT depuis votre dernier passage.",
-        "disclaimer2": "Pour plus de détails, vous pouvez contacter l'administrateur de ",
-        "action": "Action effectuée par",
-        "button": "retourner sur DONUT"
+        "title": "Vous avez été banni de #__roomname__",
+        "disclaimer": "Vous avez été banni de <strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong> par <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">__username__</a></strong>.",
+        "reason": "Motif: __reason__",
+        "disclaimer2": "On dirait bien que vous n'étiez pas faits l'un pour l'autre. Vous savez ce qu'on dit : \"un Donut de perdu, dix de retrouvés !\".",
+        "button": "Retourner sur DONUT"
       }
     },
     "roomdeban": {
-      "subject": "Vous n'êtes plus banni de ",
+      "subject": "Vous n'êtes plus banni de #__roomname__",
       "content": {
-        "title": "Vous n'êtes plus banni de ",
-        "disclaimer": "Beaucoup de choses se sont passées sur DONUT depuis votre dernier passage.",
-        "action": "Action effectuée par",
-        "button": "retourner sur DONUT"
+        "title": "Vous n'êtes plus banni de #__roomname__",
+        "disclaimer": "Vous n'êtes plus banni de <strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>.",
+        "disclaimer2": "On dirait bien que tout s'est arrangé !",
+        "action": "…et tout ça grâce à <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#253b6c; text-decoration:none;\">@__username__</a></strong>",
+        "button": "Retourner sur DONUT"
       }
     },
-    "roomtopic": {
-      "subject": "Le sujet a changé dans __roomname__",
+    "usermessage": {
+      "subject": "Nouveau message privé de @__username__",
       "content": {
-        "title": "Le sujet a changé dans <strong><a href=\"https://__fqdn__/room/__roomname__\" style=\"text-decoration:none; color: #EE2763;\">#__roomname__</a></strong>",
-        "new-topic": "Nouveau sujet: __topic__",
-        "action": "Action effectuée par <strong><a href=\"https://__fqdn__/user/__username__\" style=\"text-decoration:none; color: #EE2763;\">@__username__</a></strong>",
-        "button": "retourner sur DONUT"
+        "title": "Nouveau message privé de @__username__",
+        "button": "Accéder à la discussion"
+      }
+    },
+    "roommessage": {
+      "subject": "Nouveaux messages dans #__roomname__",
+      "content": {
+        "title": "Nouveaux messages dans #__roomname__",
+        "inroom": "dans le Donut: <strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>",
+        "button": "Accéder à la discussion"
       }
     },
     "roomjoin": {
-      "subject": "Un utilisateur a rejoint ",
+      "subject": "@__username__ a rejoint #__roomname__",
       "content": {
-        "title": "a rejoint ",
-        "disclaimer": "Beaucoup de choses se sont passées sur DONUT depuis votre dernier passage.",
-        "button": "retourner sur DONUT"
+        "title": "@__username__ a rejoint #__roomname__",
+        "disclaimer": "Et un de plus ! Allons l'accueillir comme il se doit :).",
+        "button": "Accéder à la discussion"
+      }
+    },
+    "roomtopic": {
+      "subject": "Nouveau sujet dans #__roomname__",
+      "content": {
+        "title": "@__username__ a défini un nouveau sujet dans #__roomname__: __topic__",
+        "disclaimer": "Vous avez sûrement plein de choses choses à dire sur le sujet !",
+        "button": "Accéder à la discussion"
       }
     },
     "usermention": {
-      "subject": "Vous avez été mentionné dans __roomname__",
+      "subject": "@__username__ vous a mentionné dans #__roomname__",
       "content": {
-        "title": "Vous avez été mentionné dans __name__",
+        "title": "@__username__ vous a mentionné dans #__roomname__",
+        "disclaimer": "C'est toujours sympa quelqu'un qui pense à vous ! Pensez à lui répondre.",
         "button": "Voir la notification sur DONUT"
       }
     },
+
+
+
     "contact": {
       "subject": "[DONUT] Nouveau formulaire de contact",
       "text": [

@@ -125,29 +125,34 @@ Notification.prototype.sendEmail = function (model, done) {
     utils.retrieveHistoryRoom(model.data.event.toString()),
 
     function send(history, callback) {
-      var method;
+      var method, data;
       switch (model.type) {
         case 'roomop':
           method = emailer.roomOp;
+          data = { username: history.by_user.username, roomname: history.room.name };
           break;
         case 'roomdeop':
           method = emailer.roomDeop;
+          data = { username: history.by_user.username, roomname: history.room.name };
           break;
         case 'roomkick':
           method = emailer.roomKick;
+          data = { username: history.by_user.username, roomname: history.room.name, reason: (history.data && history.data.readon ? history.data.reason : undefined) };
           break;
         case 'roomban':
           method = emailer.roomBan;
+          data = { username: history.by_user.username, roomname: history.room.name };
           break;
         case 'roomdeban':
           method = emailer.roomDeban;
+          data = { username: history.by_user.username, roomname: history.room.name };
           break;
         default:
           return callback('roomPromoteType.sendEmail unknown notification type: ' + model.type);
           break;
       }
 
-      _.bind(method, emailer)(model.user.getEmail(), history.by_user.username, history.room.name, callback);
+      _.bind(method, emailer)(model.user.getEmail(), data, callback);
     },
 
     function persist(callback) {

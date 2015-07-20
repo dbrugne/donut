@@ -153,12 +153,16 @@
                 </table>
             </td></tr>
 
-
             <!--EMAIL HEADING-->
-            <tr style="height: 100px; background-color:#fc2063 ;text-align: center;"><td>
-                <span style="  font-family: Arial,Helvetica,sans-serif; font-size: 28px; color: #ecf0f1;">
+            <tr style="background-color:#fc2063 ;text-align: center;"><td>
+                <span style="font-family: Arial,Helvetica,sans-serif; font-size: 26px; color: #ecf0f1;  line-height: 100px;">
                     <%- email_heading %>
                 </span>
+                <% if (typeof email_heading_action !== "undefined" && email_heading_action.length > 0) { %>
+                <small style="font-size:13px;display: block;text-align: right;color: #ecf0f1;margin-right: 10px;">
+                    <%= email_heading_action %>
+                </small>
+                <% } %>
             </td></tr>
 
             <tr><td>

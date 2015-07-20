@@ -155,7 +155,7 @@ Notification.prototype.sendEmail = function (model, done) {
         });
       });
 
-      emailer.userMention(model.user.getEmail(), messages, events[0]['data']['name'], cloudinary.roomAvatar(events[0]['data']['room_avatar'], 90), callback);
+      emailer.userMention(model.user.getEmail(), messages, events[0]['data']['username'], events[0]['data']['name'], callback);
     },
 
     function persist(callback) {
