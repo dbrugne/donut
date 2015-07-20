@@ -110,35 +110,14 @@ define([
       this._createDesktopNotify(data);
     },
     _createDesktopNotify: function (data) {
-      var desktopTitle, desktopBody;
+      var desktopTitle = $.t('chat.notifications.desktop.' + data.type, {
+        'roomname': ( data.data.room && data.data.room.name ? data.data.room.name : ''),
+        'username': ( data.data.by_user && data.data.by_user.username ? data.data.by_user.username : ''),
+        'topic': ( data.data.topic ? data.data.topic : ''),
+        'message': ( data.data.message ? data.data.message : '')
+      });
 
-      switch (data.type) {
-        case 'roomop':
-        case 'roomdeop':
-        case 'roomkick':
-        case 'roomban':
-        case 'roomdeban':
-        case 'roomtopic':
-        case 'roomjoin':
-          desktopTitle = $.t('chat.notifications.desktop.' + data.type, {
-            'roomname': ( data.data.room && data.data.room.name ? data.data.room.name : ''),
-            'username': ( data.data.user && data.data.user.username ? data.data.user.username : '')
-          });
-          desktopBody = '';
-          break;
-        case 'roommessage':
-          desktopTitle = $.t('chat.notifications.desktop.' + data.type).replace('__roomname__', ( data.data.room && data.data.room.name ? ' ' + data.data.room.name : ''));
-          desktopBody = ( data.data.by_user && data.data.by_user.username ? t('chat.notifications.desktop.by') + ' ' + data.data.by_user.username : '');
-          break;
-        case 'usermention':
-          desktopTitle = $.t('chat.notifications.desktop.' + data.type).replace('__username__', ( data.data.by_user && data.data.by_user.username ? ' ' + data.data.by_user.username : ''));
-          desktopBody = '';
-          break;
-        default:
-          break;
-      }
-
-      windowView.desktopNotify(desktopTitle, desktopBody);
+      windowView.desktopNotify(desktopTitle, '');
     },
     createNotificationFromTemplate: function (notification) {
       var template;
@@ -175,6 +154,7 @@ define([
           template = templates['notification/user-mention.html'];
           break;
         default:
+          return '';
           break;
       }
       var dateObject = moment(notification.time);
@@ -322,7 +302,7 @@ define([
       if (message.hasClass('unread'))
         this.unread--;
 
-      message.fadeOut(750, function () {
+      message.fadeOut(500, function () {
         $(this).remove();
       });
 

@@ -406,31 +406,28 @@
       "tag-as-read" : "Tag as read",
       "empty": "You have no new notification",
       "dropdown": {
-        "kick": "You have been kicked out of this donut of",
-        "ban": "You have been banned from this donut of",
-        "deban": "You have been unbanned from this donut of",
-        "op": "You have been promoted moderator of",
-        "deop": "You have been removed from moderators of",
-        "roomtopic": "Subject has changed in  ",
-        "roomjoin": "just joined the room",
-        "usermention": "You were notified in ",
-        "roommessage": "New message in ",
-        "userban": " locked you",
-        "userdeban": " unlocked you",
-        "usermessage": " send a direct message to you"
+        "op": "<a href=\"#room/__roomname__\">You are now moderator of </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
+        "deop": "<a href=\"#room/__roomname__\">You are not moderator of </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
+        "kick": "<a href=\"#room/__roomname__\">You are kicked of </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
+        "ban": "<a href=\"#room/__roomname__\">You are banned of </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
+        "deban": "<a href=\"#room/__roomname__\">You are not banned of </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
+        "roomjoin": "<span class=\"name open-user-profile\" data-username=\"__username__\">@__username__</span><a href=\"#room/__roomname__\"> join </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
+        "roomtopic": "<a href=\"#room/__roomname__\">New subject in </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
+        "roommessage": "<a href=\"#room/__roomname__\">New message in </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
+        "usermention": "<a href=\"#room/__roomname__\">You are notified in </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
+        "usermessage": "<span class=\"name open-user-profile\" data-username=\"__username__\">@__username__</span>: <a href=\"#user/__username__\">__message__</a>"
       },
       "desktop": {
-        "by": "by",
-        "roomkick": "You have been kicked form __roomname__",
-        "roomban": "You have been banned from __roomname__",
-        "roomdeban": "You have been unbanned from __roomname__",
-        "roomop": "You have been made moderator of __roomname__",
-        "roomdeop": "You have been removed from moderators of __roomname__",
-        "roomtopic": "The subject has changed in __roomname__",
-        "usermessage": "__username__ sent a message to you",
-        "usermention": "__username__ Notified you in this room",
-        "userban": "You have been locked",
-        "userdeban": "You have been unlocked"
+        "roomop": "You are moderator of __roomname__",
+        "roomdeop": "You are not moderator of __roomname__",
+        "roomkick": "You are kicked of __roomname__",
+        "roomban": "You are banned of __roomname__",
+        "roomdeban": "You are not banned of __roomname__",
+        "usermessage": "@__username__: __message__",
+        "roomjoin": "@__username__ join __roomname__",
+        "roomtopic": "New subject in __roomname__: __topic__",
+        "usermention": "Notified by @__username__: in __roomname__: __message__",
+        "by": "by"
       }
     },
     "unread": {
@@ -638,7 +635,7 @@
       "global": {
         "content": {
           "team": "The DONUT.me team",
-          "ps": "P.S.: To avoid receiving these notification types, please uncheck it from your notification options in your account preferences on <a href=\"https://__fqdn__\“>__fqdn__</a>. For any question, we are available on <a href=\"https://__fqdn__/!#room/Support\">#support</a>"
+          "ps": "P.S.: To avoid receiving these notification types, please uncheck it from your notification options in your account preferences on <a href=\"https://__fqdn__\">__fqdn__</a>. For any question, we are available on <a href=\"https://__fqdn__/!#room/Support\">#support</a>"
         }
       },
       "welcome": {

@@ -91,6 +91,10 @@ handler.read = function (data, session, next) {
           d.data.room.avatar = notification.data.event.room._avatar();
         }
 
+        if (notification.data.event && notification.data.event.data && notification.data.event.data.message) {
+          d.data.message = notification.data.event.data.message;
+        }
+
         event.notifications.push(d);
       });
 
@@ -244,7 +248,7 @@ handler.done = function (data, session, next) {
     },
 
     function markAsDone(notification, callback) {
-      Notifications(that.app).markNotificationsAsDone(session.uid, [ notification.id ], function (err, countUpdated) {
+      Notifications(that.app).markNotificationsAsDone(session.uid, [notification.id], function (err, countUpdated) {
         if (err)
           return callback('Error while setting notifications as read for ' + session.uid + ': ' + err);
 
@@ -261,7 +265,7 @@ handler.done = function (data, session, next) {
     },
 
     function broadcast(event, callback) {
-      that.app.globalChannelService.pushMessage('connector', 'notification:done', event, 'user:'+session.uid, {}, function (err) {
+      that.app.globalChannelService.pushMessage('connector', 'notification:done', event, 'user:' + session.uid, {}, function (err) {
         if (err)
           logger.error('Error while emitting notification:done for uid: ' + session.uid + ': ' + err);
         return callback(null, event);

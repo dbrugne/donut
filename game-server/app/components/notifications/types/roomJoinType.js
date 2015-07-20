@@ -50,11 +50,11 @@ Notification.prototype.create = function (room, history, done) {
     },
 
     function retrieveUserList(roomModel, historyModel, callback) {
-      UserModel.findRoomUsersHavingPreference(roomModel, that.type, historyModel.user.id, function(err, users) {
+      UserModel.findRoomUsersHavingPreference(roomModel, that.type, historyModel.user.id, function (err, users) {
         if (err)
           return callback(err);
         if (!users.length) {
-          logger.debug('roomJoinType.create no notification created: 0 user concerned')
+          logger.debug('roomJoinType.create no notification created: 0 user concerned');
           return callback(true);
         }
 
@@ -65,7 +65,7 @@ Notification.prototype.create = function (room, history, done) {
     function checkStatus(roomModel, historyModel, users, callback) {
       that.facade.app.statusService.getStatusByUids(_.map(users, 'id'), function (err, statuses) {
         if (err)
-          return callback('roomJoinType.create error while retrieving user statuses: '+err);
+          return callback('roomJoinType.create error while retrieving user statuses: ' + err);
 
         return callback(null, roomModel, historyModel, users, statuses);
       });
@@ -96,11 +96,11 @@ Notification.prototype.create = function (room, history, done) {
     },
 
     function create(historyModel, notificationsToCreate, callback) {
-      NotificationModel.bulkInsert(notificationsToCreate, function(err, createdNotifications) {
+      NotificationModel.bulkInsert(notificationsToCreate, function (err, createdNotifications) {
         if (err)
           return callback(err);
 
-        logger.debug('roomJoinType.create '+createdNotifications.length+' notifications created');
+        logger.debug('roomJoinType.create ' + createdNotifications.length + ' notifications created');
         return callback(null, historyModel, createdNotifications);
       });
     },
@@ -109,12 +109,12 @@ Notification.prototype.create = function (room, history, done) {
       if (!createdNotifications.length)
         return callback(null);
 
-      async.eachLimit(createdNotifications, 5, function(model, _callback) {
+      async.eachLimit(createdNotifications, 5, function (model, _callback) {
         that.sendToBrowser(model, historyModel, _callback);
       }, callback);
     }
 
-  ], function(err) {
+  ], function (err) {
     if (err && err !== true)
       return done(err);
 
