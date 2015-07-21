@@ -101,24 +101,39 @@ Facade.prototype.retrieveUserNotifications = function (uid, what, callback) {
   }
 
   var q = NotificationModel.find(criteria);
+  q.sort({ time: -1 });
 
-  // Only get "number" items
   if (what.number)
     q.limit(what.number + 1);
 
-  q.sort({time: -1});
   q.populate({path: 'user', model: 'User', select: 'local username color facebook avatar'});
+
   q.exec(function (err, results) {
     var notifications = [];
-    async.each(results, function (n, fn) {
-      switch (n.getEventType()) {
-        case 'historyone':
-          if (!n.data || !n.data.event)
+    async.eachLimit(results, 1, function (n, fn) {
+      if (!n.data || !n.data.event)
+        return fn(null);
+
+      if (n.getEventType() === 'historyone') {
+        var q = HistoryOne.findOne({_id: n.data.event.toString()})
+          .populate('from', 'username avatar color facebook')
+          .populate('to', 'username avatar color facebook');
+        q.exec(function (err, event) {
+          if (err)
+            return fn(err);
+          if (!event)
             return fn(null);
-          var q = HistoryOne.findOne({_id: n.data.event.toString()})
-            .populate('from', 'username avatar color facebook')
-            .populate('to', 'username avatar color facebook');
-          q.exec(function (err, event) {
+
+          n.data.event = event;
+          notifications.push(n);
+          return fn(null);
+        });
+      } else {
+        HistoryRoom.findOne({_id: n.data.event.toString()})
+          .populate('user', 'username avatar color facebook')
+          .populate('by_user', 'username avatar color facebook')
+          .populate('room', 'avatar color name')
+          .exec(function (err, event) {
             if (err)
               return fn(err);
             if (!event)
@@ -126,43 +141,18 @@ Facade.prototype.retrieveUserNotifications = function (uid, what, callback) {
 
             n.data.event = event;
             notifications.push(n);
-
             return fn(null);
           });
-          break;
-
-        case 'historyroom':
-          if (!n.data || !n.data.event)
-            return fn(null);
-          HistoryRoom
-            .findOne({_id: n.data.event.toString()})
-            .populate('user', 'username avatar color facebook')
-            .populate('by_user', 'username avatar color facebook')
-            .populate('room', 'avatar color name')
-            .exec(function (err, event) {
-              if (err)
-                return fn(err);
-              if (!event)
-                return fn(null);
-
-              n.data.event = event;
-              notifications.push(n);
-
-              return fn(null);
-            });
-          break;
-        default:
-          break;
       }
     }, function (err) {
       if (err)
         return callback(err);
 
-      var more = !!(notifications.length > what.number);
-
-      notifications = _.sortBy(notifications, function (n) {
-        return -n.time;
-      });
+      var more = false;
+      //if (what.number && notifications.length > what.number) {
+      //  more = true;
+      //  notifications = _.first(notifications, what.number);
+      //}
 
       callback(err, notifications, more);
     });
