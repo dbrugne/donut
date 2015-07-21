@@ -131,7 +131,11 @@ Renderer.prototype.renderPartials = function(partials, html, callback) {
   async.each(partials, function(partial, fn) {
 
     var filename = that.resolve(that.partialDir, partial.template);
-    cons['underscore'](filename, partial.variables, function(err, _html) {
+
+    // avoid that the same Object reference is passed to consolidate that use it to store filename of each template rendering
+    // bug viewed only on very fast machine (production)
+    var variables = _.clone(partial.variables);
+    cons['underscore'](filename, variables, function(err, _html) {
       if (err)
         return fn(err);
 
