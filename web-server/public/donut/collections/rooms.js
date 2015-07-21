@@ -38,7 +38,7 @@ define([
       this.listenTo(client, 'room:viewed', this.onViewed);
       this.listenTo(client, 'room:message:spam', this.onMessageSpam);
       this.listenTo(client, 'room:message:unspam', this.onMessageUnspam);
-      this.listenTo(client, 'room:message:edit', this.onMessageEdit);
+      this.listenTo(client, 'room:message:edit', this.onMessageEdited);
     },
     onJoin: function(data) {
       // server ask to client to open this room in IHM
@@ -226,7 +226,7 @@ define([
 
       model.trigger('messageUnspam', data);
     },
-    onMessageEdit: function(data) {
+    onMessageEdited: function(data) {
       var model;
       if (!data || !data.name || !(model = this.get(data.name)))
         return;

@@ -22,7 +22,6 @@ define([
     },
 
     initialize: function(options) {
-      this.listenTo(this.model, 'messageEdit', this.onMessageEdited);
       this.render();
     },
     render: function() {
@@ -43,6 +42,9 @@ define([
         }
       });
       return this;
+    },
+    remove: function() {
+        this.$el.find('.message-form').remove();
     },
 
     onEditMessage: function (event) {
@@ -82,10 +84,7 @@ define([
       var isEdit = ((Date.now() - new Date(time)) < (3600 * 1000)); // 1 hours
 
       return ((isMessageCurrentUser && isEdit));
-    },
-    onMessageEdited: function (event) {
-      $('#'+event.event).find('.text').html(event.message);
-    },
+    }
 
   });
 

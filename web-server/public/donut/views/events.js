@@ -27,7 +27,7 @@ define([
       "click .view-spammed-message"    : 'onViewSpammedMessage',
       "click .remask-spammed-message"  : 'onRemaskSpammedMessage',
       "click .dropdown-menu .edited"   : 'onFormEditMessageShow',
-      "dblclick .event .ctn"           : 'onFormEditMessageShow', // @todo add .editable class on event and scope on this for event listening and previous editable event finding
+      "dblclick .event"                : 'onFormEditMessageShow',
       'keydown .form-control'          : 'onPrevOrNextFormEdit'
     },
 
@@ -48,6 +48,7 @@ define([
       this.listenTo(this.model, 'viewed', this.onViewed);
       this.listenTo(this.model, 'messageSpam', this.onMarkedAsSpam);
       this.listenTo(this.model, 'messageUnspam', this.onMarkedAsUnspam);
+      this.listenTo(this.model, 'messageEdit', this.onMessageEdited);
       this.listenTo(client, 'admin:message', this.onAdminMessage);
 
       debug.start('discussion-events' + this.model.getIdentifier());
@@ -57,7 +58,7 @@ define([
     render: function () {
       // render view
       var html = this.template({
-        model: this.model.toJSON(),
+        model: this.model,
         time: Date.now()
       });
       this.$el.append(html);
@@ -755,6 +756,7 @@ define([
      *****************************************************************************************************************/
     onFormEditMessageShow: function (event) {
       event.preventDefault();
+
       var $event = $(event.currentTarget).closest('.event');
 
       if (!this.isEditableMessage($event))
@@ -811,9 +813,19 @@ define([
         }
       }
     },
+    onMessageEdited: function (data) {
+      data = { data: data };
+      data.data.id = data.data.event;
+      data.edited = true;
+      data.type = 'room:message';
+      var model = new EventModel(data);
+      var html = this._renderEvent(model, false);
+      this.$('#'+data.data.event).replaceWith(html);
+    },
     editMessage: function ($event) {
       if (this.messageUnderEdition) {
         this.messageUnderEdition.closeFormEditMessage();
+        this.messageUnderEdition.remove();
         this.messageUnderEdition.unbind();
       }
 
@@ -827,8 +839,9 @@ define([
       var time = $event.data('time');
       var isMessageCurrentUser = (currentUser.get('username') === username);
       var isEdit = ((Date.now() - new Date(time)) < (3600 * 1000)); // 1 hours
+      var isSpammed = ($event.hasClass('spammed') || $event.hasClass('viewed'));
 
-      return ((isMessageCurrentUser && isEdit));
+      return ((isMessageCurrentUser && isEdit && !isSpammed));
     },
 
     /*****************************************************************************************************************

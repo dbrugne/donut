@@ -93,8 +93,12 @@ handler.edit = function(data, session, next) {
     function checkMessage(from, to, editEvent, callback) {
       // text filtering
       var message = inputUtil.filter(data.message, 512);
+
       if (!message)
         return callback('Empty message no text)');
+
+      if (editEvent.data.message === message)
+        return callback('The message has not changed');
 
       var time = 3600 * 1000; // 1 hours.
       var diff = Date.now() - editEvent.time;
