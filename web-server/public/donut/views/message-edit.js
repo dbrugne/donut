@@ -26,6 +26,9 @@ define([
     },
     render: function() {
 
+      this.$textEdited = this.$el.find('.text-edited');
+      if (this.$el.data('edited'))
+        this.$textEdited.remove();
       this.$el.find('.message-edit').html(this.template);
       this.$el.find('.text').hide();
       this.$el.removeClass('has-hover');
@@ -73,6 +76,8 @@ define([
         this.onEditMessage(event);
     },
     closeFormEditMessage: function () {
+      if (this.$el.data('edited'))
+        this.$el.find('.text').append(this.$textEdited);
       this.$el.find('.message-form').hide();
       this.$el.find('.text').css('display', 'block');
       this.$el.addClass('has-hover');
