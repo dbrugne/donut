@@ -789,10 +789,8 @@ define([
           var $prevEventMessage = $prevBlockMessage.find('.event').last();
         }
 
-        if (this.isEditableMessage($prevEventMessage)) {
-
+        if (this.isEditableMessage($prevEventMessage))
           this.editMessage($prevEventMessage);
-        }
       }
 
       if (direction === 'Next') {
@@ -800,7 +798,7 @@ define([
 
         if (!$currentEventMessage.next().length && $currentBlockMessage.next().length) {
           var $nextBlockMessage = $currentBlockMessage.next();
-          while(($nextBlockMessage.data('username') !== username)) {
+          while (($nextBlockMessage.data('username') !== username)) {
             if (!$nextBlockMessage.next().length)
               return;
             $nextBlockMessage = $nextBlockMessage.next();
@@ -808,21 +806,24 @@ define([
           var $nextEventMessage = $nextBlockMessage.find('.event').first();
         }
 
-        if (this.isEditableMessage($nextEventMessage)) {
+        if (this.isEditableMessage($nextEventMessage))
           this.editMessage($nextEventMessage);
-        }
       }
     },
     onMessageEdited: function (data) {
       data = { data: data };
       data.data.id = data.data.event;
       data.edited = true;
-      data.type = 'room:message';
+      if (this.model.get('username'))
+        data.type = 'user:message';
+      if (this.model.get('name'))
+        data.type = 'room:message';
       var model = new EventModel(data);
       var html = this._renderEvent(model, false);
       this.$('#'+data.data.event).replaceWith(html);
     },
     editMessage: function ($event) {
+
       if (this.messageUnderEdition) {
         this.messageUnderEdition.closeFormEditMessage();
         this.messageUnderEdition.remove();
@@ -833,6 +834,7 @@ define([
         el: $event,
         model: this.model
       });
+
     },
     isEditableMessage: function ($event) {
       var username = $event.closest('[data-username]').data('username');

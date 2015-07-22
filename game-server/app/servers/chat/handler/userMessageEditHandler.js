@@ -4,7 +4,6 @@ var User = require('../../../../../shared/models/user');
 var inputUtil = require('../../../util/input');
 var HistoryOne = require('../../../../../shared/models/historyone');
 
-
 module.exports = function(app) {
   return new Handler(app);
 };
@@ -113,22 +112,26 @@ handler.edit = function(data, session, next) {
       editEvent.update({ edited : true, data: { message: message },  edited_at: new Date() }, function(err) {
         if (err)
           return callback('Unable to persist edited of ' + editEvent.id);
-        return callback(null, from, to, editEvent);
+        return callback(null, from, to, editEvent, message);
       });
     },
 
-    function prepareEvent(from, to, editEvent, callback) {
+    function prepareEvent(from, to, editEvent, message, callback) {
       var event = {
-        name_from: from.username,
-        name_to: to.username,
-        event: editEvent.id
+        from_id: from._id,
+        from_username: from.username,
+        to_id: to._id,
+        to_username: to.username,
+        event: editEvent.id,
+        message: message
       };
 
       return callback(null, from, to, event);
     },
 
     function broadcastFrom(from, to, event, callback) {
-      that.app.globalChannelService.pushMessage('connector', 'user:message:edit', event, 'user:'+from.username, {}, function (err) {
+
+      that.app.globalChannelService.pushMessage('connector', 'user:message:edit', event, 'user:'+from._id.toString(), {}, function (err) {
         if (err)
           logger.error('Error while emitting user:message:edit in ' + 'user:'+from.username + ': ' + err); // not 'return', we delete even if error happen
         return callback(null, from, to, event);
@@ -138,7 +141,7 @@ handler.edit = function(data, session, next) {
     function broadcastTo(from, to, event, callback) {
       if (from.username === to.username)
         return callback(null, from, to, event);
-      that.app.globalChannelService.pushMessage('connector', 'user:message:edit', event, 'user:'+to.username, {}, function (err) {
+      that.app.globalChannelService.pushMessage('connector', 'user:message:edit', event, 'user:'+to._id.toString(), {}, function (err) {
         if (err)
           logger.error('Error while emitting user:message:edit in ' + 'user:'+to.username + ': ' + err); // not 'return', we delete even if error happen
         return callback(null, from, to, event);

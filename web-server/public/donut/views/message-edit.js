@@ -15,47 +15,33 @@ define([
     template: templates['message-edit.html'],
 
     events: {
-      'click .message-form .enter': 'onEditMessage',
-      'click .message-form .esc': 'onEscEditMessage',
-      'keyup .form-control': 'onKeyup',
-      'keydown .form-control': 'onKeydown'
+      'click .message-form .enter' : 'onEditMessage',
+      'click .message-form .esc'   : 'onEscEditMessage',
+      'keyup .form-control'        : 'onKeyup',
+      'keydown .form-control'      : 'onKeydown'
     },
 
     initialize: function (options) {
       this.render();
     },
-    htmlToText: function() {
-      var text = this.$el.find('.text');
-
-      // Replace Smileys
-      _.each(text.find('.smilify'), function(e){
-        $(e).replaceWith($.smilifyGetSymbolFromCode($(e).data('smilify-code')))
-      });
-
-      // @todo process images also
-
-      // @todo process user mentions
-
-      // @todo process room mentions --> Functionnality is not implemented at that time
-
-
-      return text.text();
-    },
     render: function () {
 
       this.$textEdited = this.$el.find('.text-edited');
+      this.$htmlContentText = this.$el.find('.text').html();
+
       if (this.$el.data('edited'))
         this.$textEdited.remove();
       this.$el.find('.message-edit').html(this.template);
       this.$el.find('.text').hide();
       this.$el.removeClass('has-hover');
-      var $form = this.$el.find('.message-form');
 
-      var text = this.htmlToText();
+      var text = this.htmlSmileyToText();
+      this.$el.find('.message-form')
+        .css('display', 'block')
+        .find('.form-control')
+        .val(text).focus();
 
-      $form.css('display', 'block');
-      $form.find('.form-control').val(text).focus();
-
+      // click off
       var that = this;
       $('html').click(function (e) {
         if (!$(e.target).hasClass('form-control') && !$(e.target).hasClass('edited')) {
@@ -74,10 +60,14 @@ define([
     onEditMessage: function (event) {
       event.preventDefault();
       var roomName = this.model.get('name');
+      var username = this.model.get('username');
       var messageId = this.$el.attr('id');
       var message = this.$el.find('.form-control').val();
-      client.roomMessageEdit(roomName, messageId, message);
-
+      message = this.checkMention(message);
+      if (roomName)
+        client.roomMessageEdit(roomName, messageId, message);
+      if (username)
+        client.userMessageEdit(username, messageId, message);
       this.closeFormEditMessage();
     },
     onEscEditMessage: function (event) {
@@ -97,8 +87,8 @@ define([
         this.onEditMessage(event);
     },
     closeFormEditMessage: function () {
-      if (this.$el.data('edited'))
-        this.$el.find('.text').append(this.$textEdited);
+
+      this.$el.find('.text').html(this.$htmlContentText);
       this.$el.find('.message-form').hide();
       this.$el.find('.text').css('display', 'block');
       this.$el.addClass('has-hover');
@@ -110,7 +100,34 @@ define([
       var isEdit = ((Date.now() - new Date(time)) < (3600 * 1000)); // 1 hours
 
       return ((isMessageCurrentUser && isEdit));
-    }
+    },
+    checkMention: function(text) {
+      var that = this;
+      if (this.model.get('type') == 'room') {
+        var potentialMentions = text.match(/@([-a-z0-9\._|^]{3,15})/ig);
+        _.each(potentialMentions, function(p) {
+          var u = p.replace(/^@/, '');
+          var m = that.model.users.iwhere('username', u);
+          if (m) {
+            text = text.replace(
+              new RegExp('@'+u, 'g'),
+              '@['+ m.get('username')+'](user:'+m.get('id')+')'
+            );
+          }
+        });
+      }
+      return text;
+    },
+    htmlSmileyToText: function() {
+      var text = this.$el.find('.text');
+
+      // Replace Smileys
+      _.each(text.find('.smilify'), function(e){
+        $(e).replaceWith($.smilifyGetSymbolFromCode($(e).data('smilify-code')));
+      });
+
+      return text.text();
+    },
 
   });
 
