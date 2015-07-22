@@ -15,16 +15,16 @@ define([
     template: templates['message-edit.html'],
 
     events: {
-      'click .message-form .enter'     : 'onEditMessage',
-      'click .message-form .esc'       : 'onEscEditMessage',
-      'keyup .form-control'            : 'onKeyup',
-      'keydown .form-control'          : 'onKeydown'
+      'click .message-form .enter': 'onEditMessage',
+      'click .message-form .esc': 'onEscEditMessage',
+      'keyup .form-control': 'onKeyup',
+      'keydown .form-control': 'onKeydown'
     },
 
-    initialize: function(options) {
+    initialize: function (options) {
       this.render();
     },
-    render: function() {
+    render: function () {
 
       this.$textEdited = this.$el.find('.text-edited');
       if (this.$el.data('edited'))
@@ -38,7 +38,7 @@ define([
       $form.find('.form-control').val(text).focus();
 
       var that = this;
-      $('html').click(function(e) {
+      $('html').click(function (e) {
         if (!$(e.target).hasClass('form-control') && !$(e.target).hasClass('edited')) {
           that.closeFormEditMessage(that);
           $('html').off('click');
@@ -46,8 +46,10 @@ define([
       });
       return this;
     },
-    remove: function() {
-        this.$el.find('.message-form').remove();
+    remove: function () {
+      this.undelegateEvents();
+      this.$el.removeData().unbind();
+      this.$el.find('.message-form').remove();
     },
 
     onEditMessage: function (event) {
@@ -66,8 +68,8 @@ define([
     onKeyup: function (event) {
       $(event.currentTarget).css('height', '1px');
       $(event.currentTarget)
-        .css('height', (2+$(event.currentTarget)
-          .prop('scrollHeight'))+'px');
+        .css('height', (2 + $(event.currentTarget)
+          .prop('scrollHeight')) + 'px');
     },
     onKeydown: function (event) {
       if (event.which == 27) // escape
