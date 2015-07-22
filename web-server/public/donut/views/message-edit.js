@@ -24,6 +24,23 @@ define([
     initialize: function (options) {
       this.render();
     },
+    htmlToText: function() {
+      var text = this.$el.find('.text');
+
+      // Replace Smileys
+      _.each(text.find('.smilify'), function(e){
+        $(e).replaceWith($.smilifyGetSymbolFromCode($(e).data('smilify-code')))
+      });
+
+      // @todo process images also
+
+      // @todo process user mentions
+
+      // @todo process room mentions --> Functionnality is not implemented at that time
+
+
+      return text.text();
+    },
     render: function () {
 
       this.$textEdited = this.$el.find('.text-edited');
@@ -33,7 +50,9 @@ define([
       this.$el.find('.text').hide();
       this.$el.removeClass('has-hover');
       var $form = this.$el.find('.message-form');
-      var text = this.$el.find('.text').text();
+
+      var text = this.htmlToText();
+
       $form.css('display', 'block');
       $form.find('.form-control').val(text).focus();
 
