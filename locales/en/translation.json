@@ -496,12 +496,17 @@
     "message": {
       "text-spammed": "Message tagged as junk by moderator [<a class=\"view-spammed-message\">Show</a>]",
       "text-remask": "Hide again",
+      "edition": {
+        "edited": "edited",
+        "cancel": "esc to <a href=\"#\" class=\"esc\">cancel</a>",
+        "validate": "enter to <a href=\"#\" class=\"validate\">save changes</a>"
+      },
       "dropdown": {
         "spam": {
           "mark-spam": "Mark as spam",
           "unmark-spam": "Unmark as spam"
         },
-        "edited": "Edited my message"
+        "edit": "Edited my message"
       }
     }
   },

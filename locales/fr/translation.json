@@ -517,12 +517,17 @@
     "message": {
       "text-spammed": "Message indésirable d'après le modérateur [<a class=\"view-spammed-message\">Afficher</a>].",
       "text-remask": "Masquer à nouveau",
+      "edition": {
+        "edited": "édité",
+        "cancel": "esc pour <a href=\"#\" class=\"esc\">annuler</a>",
+        "validate": "enter pour <a href=\"#\" class=\"validate\">valider</a>"
+      },
       "dropdown": {
         "spam": {
           "mark-spam": "Marquer comme message indésirable",
           "unmark-spam": "Ce message n'est pas indésirable"
         },
-        "edited": "Editer mon message"
+        "edit": "Editer mon message"
       }
     }
   },

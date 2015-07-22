@@ -658,9 +658,11 @@ define([
 
       var isEditable = this.isEditableMessage($event);
 
-      var isOp = this.model.currentUserIsOp();
-      var isOwner = this.model.currentUserIsOwner();
-      var isAdmin = this.model.currentUserIsAdmin();
+      if (this.model.get('type') === 'room') {
+        var isOp = this.model.currentUserIsOp();
+        var isOwner = this.model.currentUserIsOwner();
+        var isAdmin = this.model.currentUserIsAdmin();
+      }
 
       if (((!isOwner && !isAdmin && !isOp) || (isOp && isMessageOwner)) && (!isEditable)) {
         $(event.currentTarget).find('.dropdown-menu').dropdown('toggle');
