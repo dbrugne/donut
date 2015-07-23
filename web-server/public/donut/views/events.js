@@ -417,6 +417,8 @@ define([
       var $html = $('<div/>');
       var previousModel;
       var previousElement;
+      var now = moment();
+      now.second(0).minute(0).hour(0);
       _.each(events, _.bind(function (event) {
         var model = new EventModel(event);
         var newBlock = this._newBlock(model, previousElement);
@@ -426,9 +428,21 @@ define([
           var newTime = moment(model.get('time'));
           var previousTime = moment(previousModel.get('time'));
           if (!newTime.isSame(previousTime, 'day')) {
+            previousTime.second(0).minute(0).hour(0);
+            var dateFull = ( moment().diff(previousTime, 'days') == 0
+              ? i18next.t('chat.message.today')
+              : ( moment().diff(previousTime, 'days') == 1
+                ? i18next.t('chat.message.yesterday')
+                : ( moment().diff(previousTime, 'days') == 2
+                  ? i18next.t('chat.message.the-day-before')
+                  : moment(previousModel.get('time')).format('dddd Do MMMM YYYY')
+                )
+              )
+            );
+
             var dateHtml = templates['event/date.html']({
               time: previousModel.get('time'),
-              datefull: previousTime.format('dddd Do MMMM YYYY')
+              datefull: dateFull
             });
             previousElement = $(dateHtml).prependTo($html);
             newBlock = true;

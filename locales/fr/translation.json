@@ -526,6 +526,11 @@
         "spam": {
           "mark-spam": "Marquer comme message indésirable",
           "unmark-spam": "Ce message n'est pas indésirable"
+        }
+      },
+      "today" : "Aujourd'hui",
+      "yesterday" : "Hier",
+      "the-day-before" : "Avant hier"
         },
         "edit": "Editer mon message"
       }
