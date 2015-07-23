@@ -502,7 +502,10 @@
           "unmark-spam": "Unmark as spam"
         }
       }
-    }
+    },
+    "today" : "Today",
+    "yesterday" : "Yesterday",
+    "the-day-before" : "The day before"
   },
   "account": {
     "error": {
