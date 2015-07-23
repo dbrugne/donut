@@ -16,7 +16,7 @@
              data-edited="<%= (edited === true ? 'true' : '')%>">
             <div class="ctn">
                 <% if (data.message) { %>
-                <div class="text"><%= data.message %><% if (edited) { %><span class="text-edited"> (edited) </span><% } %></div>
+                <div class="text"><%= data.message %><% if (edited) { %><span class="text-edited">&nbsp;(<%= t('chat.message.edition.edited') %>)</span><% } %></div>
                 <% } %>
                 <% if (data.images) { %>
                 <div class="images">

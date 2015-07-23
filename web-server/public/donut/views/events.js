@@ -28,7 +28,7 @@ define([
       "click .remask-spammed-message"  : 'onRemaskSpammedMessage',
       "click .dropdown-menu .edited"   : 'onFormEditMessageShow',
       "dblclick .event"                : 'onFormEditMessageShow',
-      'keydown .form-control'          : 'onPrevOrNextFormEdit'
+      "keydown .form-control"          : 'onPrevOrNextFormEdit',
     },
 
     historyLoading: false,
@@ -825,7 +825,7 @@ define([
       this.$('#'+data.data.event).replaceWith(html);
     },
     editMessage: function ($event) {
-
+      var bottom = this.isScrollOnBottom();
       if (this.messageUnderEdition) {
         this.messageUnderEdition.closeFormEditMessage();
         this.messageUnderEdition.remove();
@@ -836,7 +836,8 @@ define([
         el: $event,
         model: this.model
       });
-
+      if (bottom)
+        this.scrollDown();
     },
     isEditableMessage: function ($event) {
       var username = $event.closest('[data-username]').data('username');

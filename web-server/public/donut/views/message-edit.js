@@ -17,7 +17,6 @@ define([
     events: {
       'click .message-form .enter' : 'onEditMessage',
       'click .message-form .esc'   : 'onEscEditMessage',
-      'keyup .form-control'        : 'onKeyup',
       'keydown .form-control'      : 'onKeydown'
     },
 
@@ -33,6 +32,7 @@ define([
         this.$textEdited.remove();
       this.$el.find('.message-edit').html(this.template);
       this.$el.find('.text').hide();
+      this.$el.find('.images').hide();
       this.$el.removeClass('has-hover');
 
       var text = this.htmlSmileyToText();
@@ -40,6 +40,8 @@ define([
         .css('display', 'block')
         .find('.form-control')
         .val(text).focus();
+
+      this.updateFormSize();
 
       // click off
       var that = this;
@@ -52,9 +54,9 @@ define([
       return this;
     },
     remove: function () {
+      this.$el.find('.message-form').remove();
       this.undelegateEvents();
       this.$el.removeData().unbind();
-      this.$el.find('.message-form').remove();
     },
 
     onEditMessage: function (event) {
@@ -74,23 +76,24 @@ define([
       event.preventDefault();
       this.closeFormEditMessage();
     },
-    onKeyup: function (event) {
-      $(event.currentTarget).css('height', '1px');
-      $(event.currentTarget)
-        .css('height', (2 + $(event.currentTarget)
-          .prop('scrollHeight')) + 'px');
-    },
     onKeydown: function (event) {
+      this.updateFormSize();
       if (event.which == 27) // escape
         this.onEscEditMessage(event);
       if (event.which == 13) // enter
         this.onEditMessage(event);
     },
+    updateFormSize: function () {
+      this.$el.find('.form-control').css('height', '1px');
+      this.$el.find('.form-control')
+        .css('height', (2 + this.$el.find('.form-control')
+          .prop('scrollHeight')) + 'px');
+    },
     closeFormEditMessage: function () {
-
       this.$el.find('.text').html(this.$htmlContentText);
       this.$el.find('.message-form').hide();
       this.$el.find('.text').css('display', 'block');
+      this.$el.find('.images').css('display', 'block');
       this.$el.addClass('has-hover');
     },
     isEditableMessage: function () {
@@ -128,7 +131,6 @@ define([
 
       return text.text();
     },
-
   });
 
   return MessageEditView;
