@@ -147,7 +147,12 @@ define([
       return contentHeight - viewportHeight;
     },
     isScrollOnBottom: function () {
-      var bottom = this._scrollBottomPosition() - 10; // add a 10px margin
+      var scrollMargin = 10;
+      if (this.messageUnderEdition) {
+        scrollMargin = this.messageUnderEdition.$el.height();
+      }
+
+      var bottom = this._scrollBottomPosition() - scrollMargin; // add a 10px margin
       return (this.$scrollable.scrollTop() >= bottom); // if gte current position, we are on bottom
     },
     scrollDown: function () {
@@ -783,11 +788,15 @@ define([
     onPrevOrNextFormEdit: function (event) {
       var $currentEventMessage = $(event.target).parents('.event');
       var $currentBlockMessage = $(event.target).parents('.message');
+      var bottom = this.isScrollOnBottom();
 
       if (event.which == 38)
         this.checkAndOpenFormEdit('Prev', $currentEventMessage, $currentBlockMessage);
       if (event.which == 40)
         this.checkAndOpenFormEdit('Next', $currentEventMessage, $currentBlockMessage);
+
+      if (bottom)
+        this.scrollDown();
     },
     checkAndOpenFormEdit: function(direction, $currentEventMessage, $currentBlockMessage) {
       var username = $currentBlockMessage.data('username');

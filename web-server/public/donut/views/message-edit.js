@@ -130,7 +130,7 @@ define([
       });
 
       return text.text();
-    },
+    }
   });
 
   return MessageEditView;
