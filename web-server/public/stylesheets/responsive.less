@@ -1,0 +1,72 @@
+/** for <=1200 screens resolutions **/
+@media screen and (max-width: @screen-lg-min) {
+
+  #chat #center .discussion {
+    .content { margin-right: @size-right-mid; }
+    .side { width: @size-right-mid; }
+  }
+
+  #landing .header { height: 995px;
+    .cover { background: none; }
+  }
+
+}
+
+/** for <=992 screens resolutions **/
+@media screen and (max-width: @screen-md-min) {
+
+  #chat #center .discussion {
+    .content { margin-right: 0; padding-left: 10px;
+      .input .text-container {   padding-bottom: 0;
+        .text { padding: 5px 70px 5px 5px;
+          .avatar { display: none; }
+          .mentions-input-box textarea {   min-height: 20px; }
+          .actions { top: 4px; right: 33px; font-size: 15px;
+            .images { margin: 0; display: inline; }
+          }
+          .send { width: 30px; padding: 0; margin: 0; height: 30px;
+            img { width: 20px; margin-top: 3px; height: initial; }
+            &:after { bottom: -7px; left: 7px; border-width: 7px 7px 0;}
+          }
+        }
+      }
+    }
+    .side { width: 0; }
+  }
+
+  #landing {
+    .header {
+      .cover { padding: 100px 30px 100px 75px; background: none; }
+      .text { margin-top: 65px; }
+      .btn-knowmore { margin-top: 75px; }
+    }
+    .login {
+      > div { padding: 90px 20px; }
+      .btn-facebook { margin-top: 64px; }
+      .logic {margin-top: 40px;}
+      .form { margin-top: 40px; margin-bottom: 80px; }
+      .form input[type=submit] { margin-top: 30px; }
+    }
+    .description { padding: 50px 50px 0 50px;
+      h2 p { font-size: 2.15em; }
+      .definition { font-size: 1.8em; padding-top: 25px; }
+      .illustrations { padding-bottom: 105px;
+        .illus p { margin: 25px auto; }
+      }
+    }
+    .signup { padding-top: 100px; padding-bottom: 32px;
+      .form { margin-top: 30px; }
+      .disclaimer { margin-top: 60px; }
+    }
+  }
+}
+
+/** for <=768 screens resolutions **/
+@media screen and (max-width: @screen-sm-min) {
+
+}
+
+/** for <=480 screens resolutions **/
+@media screen and (max-width: @screen-xs-min) {
+  #landing .header .cover { background-color: rgba(255, 255, 255, 0.8); }
+}
