@@ -1,232 +1,67 @@
-.body-profile {
-  height: 100%;
-  .ft-opensans;
-  background-color: @cl-background;
-  background-repeat: no-repeat;
-  background-position: 0 @size-color;
-  #languages {
-    top: 47px;
-  }
-  .upon {
-    position: fixed;
-    left: 0; right: 0; top: @size-color;
-    z-index: 1;
-  }
-  .color {
-    position: fixed;
-    left: 0; right: 0; top: 0;
-    height: @size-color;
-    background-color: @cl-first;
-    z-index: 10;
-    a.logo {
-      color: @cl-background;
-      display: inline-block;
-      vertical-align: top;
-      margin: 4px 0 0 4px;
-      line-height: 1em;
-      img {
-        display: block;
-        width: 130px;
-        height: 32px;
-      }
-      &:hover {
-        text-decoration: none;
-      }
+.body-profile { height: 100%; .ft-opensans; background-color: @cl-background; background-repeat: no-repeat; background-position: 0 @size-color;
+  #languages { top: 47px; }
+  .upon { position: fixed; left: 0; right: 0; top: @size-color; z-index: 1; }
+  .color { position: fixed; left: 0; right: 0; top: 0; height: @size-color; background-color: @cl-first; z-index: 10;
+    a.logo { color: @cl-background; display: inline-block; vertical-align: top; margin: 4px 0 0 4px; line-height: 1em;
+      img { display: block; width: 130px; height: 32px; }
+      &:hover { text-decoration: none; }
     }
-    .beta {
-      display: inline-block;
-      vertical-align: top;
-      height: @size-color;
-      color: @cl-background;
-      .ft-raleway-medium;
-      font-size: 12px;
-      padding-left: 0px;
-      padding-top: 18px;
-    }
-    .text {
-      display: inline-block;
-      vertical-align: top;
-      .ft-raleway-medium;
-      color: @cl-background;
-      font-size: 1.3em;
-      padding-left: 10px;
-      padding-top: 10px;
-    }
+    .beta { display: inline-block; vertical-align: top; height: @size-color; color: @cl-background; .ft-raleway-medium; font-size: 12px; padding-left: 0px; padding-top: 18px; }
+    .text { display: inline-block; vertical-align: top; .ft-raleway-medium; color: @cl-background; font-size: 1.3em; padding-left: 10px; padding-top: 10px; }
   }
-  hr {
-    border-top-color: #dadada;
-    margin-top: 18px;
-    margin-bottom: 18px;
-    margin-left: 0;
-    margin-right: 18px;
-  }
-  hr.clear {
-    border-top-color: transparent;
-    clear: both;
-    margin: 0;
-  }
-  hr.push-bottom {
-    margin-top: 30px;
-  }
+  hr { border-top-color: #dadada; margin-top: 18px; margin-bottom: 18px; margin-left: 0; margin-right: 18px; }
+  hr.clear { border-top-color: transparent; clear: both; margin: 0; }
+  hr.push-bottom { margin-top: 30px; }
 }
 
-#profile {
-  position: relative;
-  height: 100%;
-  background-color: @cl-background;
-  margin-left: @size-right;
-  padding-top: @size-color + 55px;
-  padding-left: 50px;
-  padding-bottom: @size-color;
-  overflow-x: hidden;
-  overflow-y: auto;
-  > .cover {
-    position: absolute;
-    top: @size-color + 55px; left: 50px;
-    min-height: 270px;
-    text-align: center;
-    .avatar {
-      width: 160px;
-      height: 160px;
+#profile { position: relative; height: 100%; background-color: @cl-background; margin-left: @size-right; padding-top: @size-color + 55px; padding-left: 50px; padding-bottom: @size-color; overflow-x: hidden; overflow-y: auto;
+  > .cover { position: absolute; top: @size-color + 55px; left: 50px; min-height: 270px; text-align: center;
+    .avatar { width: 160px; height: 160px; }
+    .join, .discuss { margin-top: 30px; }
+  }
+  > .text { min-height: 230px; margin-left: 160px; padding-left: 30px; padding-top: 20px;
+    .fb-like { display: inline-block; margin-left: 20px; }
+    .separation { color: @cl-title; font-size: 16px; font-weight: bold; }
+    .website { margin-top: 20px; font-size: 1.3em;
+      a { color: inherit; }
     }
-    .join, .discuss {
-      margin-top: 30px;
+    .description, .bio { margin-top: 20px; margin-bottom: 20px; max-width: 500px;
+      .description-content, .bio-content { font-size: 1.1em; display: inline-block; }
     }
   }
-  > .text {
-    min-height: 230px;
-    margin-left: 160px;
-    padding-left: 30px;
-    padding-top: 20px;
-    .fb-like {
-      display: inline-block;
-      margin-left: 20px;
-    }
-    .separation {
-      color: @cl-title;
-      font-size: 16px;
-      font-weight: bold;
-    }
-    .website {
-      margin-top: 20px;
-      font-size: 1.3em;
-      a {
-        color: inherit;
-      }
-    }
-    .description, .bio {
-      margin-top: 20px;
-      margin-bottom: 20px;
-      max-width: 500px;
-      .description-content, .bio-content {
-        font-size: 1.1em;
-        display: inline-block;
-      }
-    }
-  }
-  .title {
-    display: block;
-    .ft-raleway-heavy;
-    font-size: 2em;
-    margin-bottom: 10px;
-  }
+  .title { display: block; .ft-raleway-heavy; font-size: 2em; margin-bottom: 10px; }
   .disclaimer {
-    p {
-      font-size: 0.9em;
-      color: @cl-subtext30;
-      float: left;
-      width: 90%;
-    }
-    img {
-      width: 100px;
-      margin: 3px;
-      float: left;
-    }
+    p { font-size: 0.9em; color: @cl-subtext30; float: left; width: 90%; }
+    img { width: 100px; margin: 3px; float: left; }
   }
 }
 
 .room-profile {
-  > .cover {
-    .avatar {}
-  }
   > .text {
-    .name-content {
-      .name { font-size: 3.6em; vertical-align: sub; }
-    }
-    .owner {
-      font-size: 1.3em;
-    }
+    .name-content .name { font-size: 3.6em; vertical-align: sub; }
+    .owner { font-size: 1.3em; }
   }
-  .topic {
-    margin-top: 30px;
-    .topic-content {
-      .txt-bubble;
-      margin-right: 30px;
-      display: inline-block;
-      > img {
-        width: 30px;
-        margin-right: 7px;
-        vertical-align: middle;
-      }
+  .topic { margin-top: 30px;
+    .topic-content { .txt-bubble; margin-right: 30px; display: inline-block;
+      > img { width: 30px; margin-right: 7px; vertical-align: middle; }
     }
   }
 }
 .user-profile {
-  > .cover {
-    .avatar {
-    }
-  }
   > .text {
-    .username {
-      font-size: 3.6em;
-      vertical-align: sub;
-    }
-    .location {
-      font-size: 1.3em;
-      font-weight: bold;
-    }
+    .username { font-size: 3.6em; vertical-align: sub; }
+    .location { font-size: 1.3em; font-weight: bold; }
   }
 }
 
-.cards {
-  margin-bottom: 15px;
-  .no {
-    padding: 5px 0;
-    margin-top: 30px;
-    margin-bottom: 10px;
-    font-weight: bold;
-    font-style: italic;
-  }
-  .card {
-    position: relative;
-    display: block;
-    min-height: 170px;
-    width: 190px;
-    .pull-left;
-    margin-top: -7px;
-    text-align: center;
-    text-decoration: none;
-    color: @cl-title;
-    .cover, .back {
-      min-height: 140px;
-      width: 190px;
-      position: absolute;
-      top: 0; left: 0;
-      .text {
-        padding-bottom: 20px;
-      }
+.cards { margin-bottom: 15px;
+  .no { padding: 5px 0; margin-top: 30px; margin-bottom: 10px; font-weight: bold; font-style: italic; }
+  .card { position: relative; display: block; min-height: 170px; width: 190px; float: left; margin-top: -7px; text-align: center; text-decoration: none; color: @cl-title;
+    .cover, .back { min-height: 140px; width: 190px; position: absolute; top: 0; left: 0;
+      .text { padding-bottom: 20px; }
     }
-    .cover { }
-    .back {
-      display: none;
-      -webkit-border-radius: 12px;
-      -moz-border-radius: 12px;
-      border-radius: 12px;
-      color: @cl-background;
-      z-index: 1;
-      .avatar {
-        margin-top: 14px;
-      }
+    .back { display: none; .border-radius(12px); color: @cl-background; z-index: 1;
+      .avatar { margin-top: 14px; }
     }
     &:hover {
       .cover { display: none; }
@@ -237,141 +72,48 @@
 .rooms.cards {
   .card {
     .cover, .back {
-      .avatar {
-        margin: auto;
-        margin-top: 10px;
-        width: 90px;
-        height: 90px;
-        border: 5px solid transparent;
-      }
-      .name {
-        font-size: 1.2em;
-        max-width: 180px;
-        padding: 0 5px;
-        word-break: break-all;
-      }
-      .owner {
-        font-size: 0.8em;
-        line-height: 1;
-      }
-      .join {
-        position: absolute;
-        bottom: 21px;
-        text-align: center;
-        width: 100%;
-        a {
-          padding: 0.9em 1.1em;
-          font-size: 0.9em;
-          &:after {
-            top: 12px; right: 13px;
+      .avatar { margin: auto; margin-top: 10px; width: 90px; height: 90px; border: 5px solid transparent; }
+      .name { font-size: 1.2em; max-width: 180px; padding: 0 5px; word-break: break-all; }
+      .owner { font-size: 0.8em; line-height: 1; }
+      .join { position: absolute; bottom: 21px; text-align: center; width: 100%;
+        a { padding: 0.9em 1.1em; font-size: 0.9em;
+          &:after { top: 12px; right: 13px;
           }
         }
       }
     }
     .back {
-      .avatar {
-        margin-top: 15px;
-        width: 50px;
-        height: 50px;
-        border-color: rgba(167,167,167,0.2);
-      }
-      .name {
-        color: @cl-background;
+      .avatar { margin-top: 15px; width: 50px; height: 50px; border-color: rgba(167,167,167,0.2); }
+      .name { color: @cl-background;
         a { color: @cl-background; }
       }
-      .description {
-        font-size: 0.8em;
-        overflow: hidden;
-        padding: 5px 5px 0;
-        max-height: 100px;
-      }
+      .description { font-size: 0.8em; overflow: hidden; padding: 5px 5px 0; max-height: 100px; }
     }
-    &:hover {
-      .back {
-        .owner a {
-          color: @cl-background;
-        }
-      }
-    }
+    &:hover .back .owner a { color: @cl-background; }
   }
 }
-.users.cards {
-  margin-bottom: 20px;
+.users.cards { margin-bottom: 20px;
   .card {
     .cover, .back {
-      .avatar {
-        margin: auto;
-        margin-top: 24px;
-        width: 85px;
-        height: 85px;
-        border: 5px solid transparent;
-      }
+      .avatar { margin: auto; margin-top: 24px; width: 85px; height: 85px; border: 5px solid transparent; }
       .text {
-        .username {
-          font-weight: 700;
-          font-size: 1.3em;
-          line-height: 1.8;
-        }
-        .location {
-          font-size: 0.8em;
-          font-weight: bold;
-        }
-        .website {
-          font-size: 0.8em;
-          overflow: hidden;
-          white-space: pre;
-          max-width: 180px;
-          margin: auto;
-        }
+        .username { font-weight: 700; font-size: 1.3em; line-height: 1.8; }
+        .location { font-size: 0.8em; font-weight: bold; }
+        .website { font-size: 0.8em; overflow: hidden; white-space: pre; max-width: 180px; margin: auto; }
       }
     }
     .back {
-      .avatar {
-        -webkit-border-radius: 5px;
-        -moz-border-radius: 5px;
-        border-radius: 5px;
-        border-color: @cl-background;
-      }
+      .avatar { .border-radius(5px); border-color: @cl-background; }
       .username { color: @cl-background; }
       .website { a { color: @cl-background; } }
     }
     &.owner {
-      .cover:after {
-        content: " ";
-        position: absolute;
-        left: 86px;
-        top: 16px;
-        width: 20px;
-        height: 13px;
-        background-image: url('/images/svg/owner-g.svg');
-        background-size: 20px 13px;
-      }
-      .back:before {
-        content: " ";
-        position: absolute;
-        left: 86px;
-        top: 12px;
-        width: 20px;
-        height: 13px;
-        background-image: url('/images/svg/owner-w.svg');
-        background-size: 20px 13px;
-      }
+      .cover:after { content: " "; position: absolute; left: 86px; top: 16px; width: 20px; height: 13px; background-image: url('/images/svg/owner-g.svg'); background-size: 20px 13px; }
+      .back:before { content: " "; position: absolute; left: 86px; top: 12px; width: 20px; height: 13px; background-image: url('/images/svg/owner-w.svg'); background-size: 20px 13px; }
     }
     &.op {
-      .cover:before {
-        content: url('/images/svg/op.svg');
-        position: absolute;
-        left: 28px;
-        top: 18px;
-        width: 16px;
-        height: 26px;
-      }
-      .back:before {
-        content: url('/images/svg/op-w.svg');
-        position: absolute;
-        left: 28px;
-        top: 18px;
-        width: 16px;
+      .cover:before { content: url('/images/svg/op.svg'); position: absolute; left: 28px; top: 18px; width: 16px; height: 26px; }
+      .back:before { content: url('/images/svg/op-w.svg'); position: absolute; left: 28px; top: 18px; width: 16px;
         height: 26px;
       }
     }
