@@ -58,11 +58,11 @@ define([
       function prepareItems(o) {
         var json = o.toJSON();
         if (o.get('type') == 'room') {
-          json.avatar = $.cd.roomAvatar(json.avatar, 20);
+          json.avatar = $.cd.roomAvatar(json.avatar, 40);
           json.uri = '#room/'+o.get('name').replace('#', '');
           json.identifier = o.get('name');
         } else {
-          json.avatar = $.cd.userAvatar(json.avatar, 20);
+          json.avatar = $.cd.userAvatar(json.avatar, 40);
           json.uri = '#user/'+o.get('username');
           json.identifier = o.get('username');
         }

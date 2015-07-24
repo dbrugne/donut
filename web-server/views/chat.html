@@ -69,34 +69,61 @@
         </nav>
         <div class="row">
             <div id="left">
-                <div id="block-current-user">
-                    <div class="avatar">
-                        <img class="open-user-profile" data-username="<%- user.username %>" src="<%- user.avatar %>" alt="@<%- user.username %> avatar">
-                    </div>
-                    <div class="content">
-                        <div class="username">
-                            @<%- user.username %>
+
+                <ul class="page-sidebar-menu">
+                    <li class="home visible-sm">
+                        <a href="javascript:;">
+                            <i class="icon icon-cog"></i>
+                            <span class="title hidden-sm hidden-xs"><%= t('actions.menu') %></span>
+                        </a>
+
+                        <ul class="sub-menu">
+                            <li><a href="/!#"><i class="icon icon-home"></i><%= t('actions.home') %></a></li>
+                            <li><a class="go-to-search"><i class="icon icon-search"></i><%= t('actions.search') %></a></li>
+                            <li><a class="open-create-room"><i class="icon icon-pencil"></i><%= t('actions.create') %></a></li>
+                        </ul>
+                    </li>
+                    <li id="block-current-user">
+                        <a href="javascript:;" class="avatar open-user-profile" data-username="<%= user.username %>">
+                            <img class="open-user-profile" data-username="<%- user.username %>" src="<%- user.avatar %>" alt="@<%- user.username %> avatar">
+                            <span class="title hidden-sm hidden-xs">
+                                <span class="username">
+                                    @<%= user.username %>
+                                </span>
+                            </span>
+                            <span class="selected"></span>
+                            <span class="arrow"></span>
+                        </a>
+
+                        <ul class="sub-menu">
+                            <li>
+                                <div class="connection hidden-sm hidden-xs">
+                                    <i class="icon icon-circle status offline"></i><span class="user-status hidden-sm hidden-xs"><%= t('global.offline') %></span>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="dropdown dropdown-user-actions">
+                                    <button class="dropdown-toggle">
+                                        <i class="icon icon-chevron-down"></i>
+                                    </button>
+                                </div>
+                            </li>
+                        </ul>
+                    </li><!-- /#block-current-user -->
+
+                    <li id="block-actions">
+                        <hr>
+                        <a class="go-to-search"><%= t('chat.actions.search') %></a> <%= t('global.or') %> <a class="open-create-room"><%= t('chat.actions.create') %></a> <%= t('chat.actions.adonut') %>
+                        <hr>
+                    </li>
+
+                    <li id="block-discussions">
+                        <div class="list">
+                            <!--discussions content-->
                         </div>
-                        <div class="connection">
-                            <i class="icon icon-circle status offline"></i> <%= t('global.offline') %>
-                        </div>
-                        <div class="dropdown">
-                            <button class="dropdown-toggle">
-                                <i class="icon icon-chevron-down"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div><!-- /#block-current-user -->
-                <hr>
-                <div id="block-actions">
-                    <a class="go-to-search"><%= t('chat.actions.search') %></a> <%= t('global.or') %> <a class="open-create-room"><%= t('chat.actions.create') %></a> <%= t('chat.actions.adonut') %>
-                </div>
-                <hr>
-                <div id="block-discussions">
-                    <div class="list">
-                        <!--discussions content-->
-                    </div>
-                </div>
+                    </li>
+                </ul>
+
             </div><!-- /#left -->
             <div id="center">
                 <div id="drawer">
