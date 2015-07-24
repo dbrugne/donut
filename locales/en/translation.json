@@ -938,7 +938,11 @@
     "welcome": {
       "title": "Window of welcome",
       "label-true": "Display welcome pop-up i log in",
-      "label-false": "Never display welcome pop-up"
+      "label-false": "Never display welcome pop-up",
+      "exit-popin": {
+        "label-true": "Afficher une fenêtre de confirmation quand vous quittez l'interface",
+        "label-false": "Ne jamais afficher de fenêtre de confirmation"
+      }
     },
     "browser": {
       "sounds": {

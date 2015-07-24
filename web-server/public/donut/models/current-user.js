@@ -52,6 +52,15 @@ define([
       this.set('preferences', newPreferences, options);
     },
 
+    shouldDisplayExitPopin: function() {
+      var preferences = this.get('preferences');
+
+      // if no preference set OR browser:exitpopin equal to true, we show
+      if (!preferences || typeof preferences['browser:exitpopin'] == 'undefined' || preferences['browser:exitpopin'] === true)
+        return true;
+
+      return false;
+    },
     shouldDisplayWelcome: function() {
       var preferences = this.get('preferences');
       

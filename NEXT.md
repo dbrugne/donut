@@ -10,4 +10,9 @@ db['notifications'].ensureIndex({
   "done" : 1,
   "time" : -1
 });
+db['users'].ensureIndex({
+  "preferences" : {
+    "browser:exitpopin" : 1,
+  }
+});
 ```

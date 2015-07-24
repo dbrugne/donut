@@ -135,6 +135,10 @@ define([
         model.trigger('resize'); // transmit event only to the current focused model
     },
     onClose: function () {
+
+      // user preferences exit popin
+      if (!currentUser.shouldDisplayExitPopin())
+        return;
       // sometimes we prevent exit popin
       if (this.preventPopin)
         return;
