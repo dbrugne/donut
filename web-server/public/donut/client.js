@@ -40,6 +40,8 @@ define([
       pomelo.on('room:updated', function(data) { debug('io:in:room:updated',  data); this.trigger('room:updated',   data); }, this);
       pomelo.on('room:op',      function(data) { debug('io:in:room:op',       data); this.trigger('room:op',        data); }, this);
       pomelo.on('room:deop',    function(data) { debug('io:in:room:deop',     data); this.trigger('room:deop',      data); }, this);
+      pomelo.on('room:voice',   function(data) { debug('io:in:room:voice',    data); this.trigger('room:voice',     data); }, this);
+      pomelo.on('room:devoice', function(data) { debug('io:in:room:devoice',  data); this.trigger('room:devoice',   data); }, this);
       pomelo.on('room:kick',    function(data) { debug('io:in:room:kick',     data); this.trigger('room:kick',      data); }, this);
       pomelo.on('room:ban',     function(data) { debug('io:in:room:ban',      data); this.trigger('room:ban',       data); }, this);
       pomelo.on('room:deban',   function(data) { debug('io:in:room:deban',    data); this.trigger('room:deban',     data); }, this);
@@ -296,6 +298,32 @@ define([
         function (response) {
           if (response.err)
             return debug('io:in:room:deop error: ', response);
+        }
+      );
+    },
+    roomVoice: function (name, username) {
+      var data = {name: name, username: username};
+      debug('io:out:room:voice', data);
+      var that = this;
+      pomelo.request(
+        'chat.roomVoiceHandler.voice',
+        data,
+        function (response) {
+          if (response.err)
+            return debug('io:in:room:voice error: ', response);
+        }
+      );
+    },
+    roomDevoice: function (name, username) {
+      var data = {name: name, username: username};
+      debug('io:out:room:devoice', data);
+      var that = this;
+      pomelo.request(
+        'chat.roomDevoiceHandler.devoice',
+        data,
+        function (response) {
+          if (response.err)
+            return debug('io:in:room:devoice error: ', response);
         }
       );
     },
