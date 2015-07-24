@@ -767,7 +767,7 @@
       "content": {
         "title": "@__username__ a rejoint #__roomname__",
         "disclaimer": "Et un de plus ! Allons l'accueillir comme il se doit :).",
-        "button": "Accéder à la discussion"
+        "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Accéder à la discussion\">Accéder à la discussion</a>"
       }
     },
     "roomtopic": {
@@ -775,7 +775,7 @@
       "content": {
         "title": "@__username__ a défini un nouveau sujet dans #__roomname__: __topic__",
         "disclaimer": "Vous avez sûrement plein de choses choses à dire sur le sujet !",
-        "button": "Accéder à la discussion"
+        "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Accéder à la discussion\">Accéder à la discussion</a>"
       }
     },
     "usermention": {
@@ -783,7 +783,7 @@
       "content": {
         "title": "@__username__ vous a mentionné dans #__roomname__",
         "disclaimer": "C'est toujours sympa quelqu'un qui pense à vous ! Pensez à lui répondre.",
-        "button": "Voir la notification sur DONUT"
+        "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Accéder à la discussion\">Accéder à la discussion</a>"
       }
     },
 

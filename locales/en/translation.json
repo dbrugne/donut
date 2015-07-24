@@ -371,11 +371,11 @@
       "infobox": "Unban user"
     },
     "banuser": {
-      "infobox": "Lock this user",
+      "infobox": "Block this user",
       "banned-too": "This user locked you"
     },
     "debanuser": {
-      "infobox": "Unlocked this user"
+      "infobox": "Unblock this user"
     },
     "profile": {
       "infobox": "View the user profile"
@@ -391,13 +391,13 @@
       "disconnected": "You have been disconnected from the server, please wait",
       "reconnected": "You have been reconnected",
       "offline": "This user is currently offline, the message cannot be sent.",
-      "topic": " as defined a new topic: ",
+      "topic": " defined a new topic: ",
       "topicempty": "empty",
-      "kick": " was kicked out of by ",
+      "kick": "  was kicked out by ",
       "ban": " was banned by",
-      "deban": " was unbanned by",
-      "op": " is made moderator by",
-      "deop": " is removed from moderators by",
+      "deban": " is no longer banned as requested by",
+      "op": "  is now a moderator as requested by",
+      "deop": "  is no longer a moderator as requested by",
       "in": " entered at ",
       "out": " left at ",
       "online": " is online,",
@@ -407,28 +407,28 @@
       "tag-as-read" : "Tag as read",
       "empty": "You have no new notification",
       "dropdown": {
-        "op": "<a href=\"#room/__roomname__\">You are now moderator of </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
-        "deop": "<a href=\"#room/__roomname__\">You are not moderator of </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
-        "kick": "<a href=\"#room/__roomname__\">You are kicked of </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
-        "ban": "<a href=\"#room/__roomname__\">You are banned of </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
-        "deban": "<a href=\"#room/__roomname__\">You are not banned of </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
-        "roomjoin": "<span class=\"name open-user-profile\" data-username=\"__username__\">@__username__</span><a href=\"#room/__roomname__\"> join </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
-        "roomtopic": "<a href=\"#room/__roomname__\">New subject in </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
+        "op": "<a href=\"#room/__roomname__\">You are a moderator of </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
+        "deop": "<a href=\"#room/__roomname__\">You are no longer a moderator of </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
+        "kick": "<a href=\"#room/__roomname__\">You were kicked out of </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
+        "ban": "<a href=\"#room/__roomname__\">You were banned from </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
+        "deban": "<a href=\"#room/__roomname__\">You are no longer banned from </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
+        "roomjoin": "<span class=\"name open-user-profile\" data-username=\"__username__\">@__username__</span><a href=\"#room/__roomname__\"> joined </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
+        "roomtopic": "<a href=\"#room/__roomname__\">New topic in </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
         "roommessage": "<a href=\"#room/__roomname__\">New message in </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
-        "usermention": "<a href=\"#room/__roomname__\">You are notified in </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
+        "usermention": "<a href=\"#room/__roomname__\">You were mentionned in </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
         "usermessage": "<span class=\"name open-user-profile\" data-username=\"__username__\">@__username__</span>: <a href=\"#user/__username__\">__message__</a>"
       },
       "desktop": {
         "roomop": "You are moderator of __roomname__",
-        "roomdeop": "You are not moderator of __roomname__",
-        "roomkick": "You are kicked of __roomname__",
-        "roomban": "You are banned of __roomname__",
-        "roomdeban": "You are not banned of __roomname__",
+        "roomdeop": "You are no longer moderator of __roomname__",
+        "roomkick": "You were kicked out of __roomname__",
+        "roomban": "You were banned from __roomname__",
+        "roomdeban": "You are no longer banned from __roomname__",
         "usermessage": "@__username__: __message__",
         "roommessage": "__roomname__: __message__",
-        "roomjoin": "@__username__ join __roomname__",
-        "roomtopic": "New subject in __roomname__: __topic__",
-        "usermention": "Notified by @__username__ in __roomname__: __message__",
+        "roomjoin": "@__username__ joined __roomname__",
+        "roomtopic": "New topic in __roomname__: __topic__",
+        "usermention": "Mention by @__username__ in __roomname__: __message__",
         "by": "by"
       }
     },
@@ -751,27 +751,27 @@
         }
       },
       "roomjoin": {
-        "subject": "@__username__ join #__roomname__",
+        "subject": "@__username__ joined #__roomname__",
         "content": {
-          "title": "@__username__ join #__roomname__",
-          "disclaimer": "And one more! Come welcome him as it should be :).",
-          "button": "Access the discussion"
+          "title": "@__username__ joined #__roomname__",
+          "disclaimer": "This is one more! Let's go welcome this marvelous person the right way :).",
+          "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Go to chat\">Go to chat</a>"
         }
       },
       "roomtopic": {
-        "subject": "New subject in #__roomname__",
+        "subject": "New topic in #__roomname__",
         "content": {
-          "title": "@__username__ has defined a new subject in #__roomname__: __topic__",
-          "disclaimer": "You surely have many things to say on the topic !",
-          "button": "Access the discussion"
+          "title": "@__username__ has defined a new topic in #__roomname__: __topic__",
+          "disclaimer": "You must a thousand things to say about it!",
+          "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Go to chat\">Go to chat</a>"
         }
       },
       "usermention": {
-        "subject": "@__username__ mentionned you in #__roomname__",
+        "subject": "New mention: @__username__ mentionned you in #__roomname__",
         "content": {
           "title": "@__username__ mentionned you in #__roomname__",
-          "disclaimer": "It's always nice someone who thinks to you! Consider reply.",
-          "button": "Access the discussion"
+          "disclaimer": "It's always cool to have people thinking about you! Think about replying.",
+          "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Go to chat\">Go to chat</a>"
         }
       },
 
