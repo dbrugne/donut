@@ -152,7 +152,7 @@ roomSchema.methods.isDevoice = function (user_id) {
   if (!this.devoices || !this.devoices.length)
     return false;
 
-  var subDocument = _.find(this.devoices, function (devoice) { // @warning: this shouldn't have .bans populated
+  var subDocument = _.find(this.devoices, function (devoice) { // @warning: this shouldn't have .devoices populated
     if (devoice.user.toString() == user_id)
       return true;
   });

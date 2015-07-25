@@ -32,6 +32,7 @@ handler.devoice = function(data, session, next) {
       if (!data.name)
         return callback('room:devoice require room name param');
 
+
       if (!data.username)
         return callback('room:devoice require username param');
 

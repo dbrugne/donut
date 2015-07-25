@@ -60,6 +60,9 @@ handler.message = function (data, session, next) {
         if (!user)
           return callback('Unable to retrieve user in room:message: ' + session.uid);
 
+        if (room.isDevoice(user.id))
+          return callback('User is Devoice, he is not send message');
+
         return callback(null, room, user);
       });
     },
