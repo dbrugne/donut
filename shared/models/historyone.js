@@ -12,7 +12,7 @@ var historySchema = mongoose.Schema({
   time          : { type: Date, default: Date.now },
   data          : mongoose.Schema.Types.Mixed,
   viewed        : { type: Boolean, default: false },  // true if to user has read this event
-  edited        : { type: Boolean},
+  edited        : { type: Boolean },
   edited_at     : { type: Date }
 
 });
