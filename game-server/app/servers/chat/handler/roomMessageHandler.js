@@ -132,7 +132,8 @@ handler.message = function (data, session, next) {
     },
 
     function messageNotification(room, sentEvent, callback) {
-      // @todo : change pattern for this event (particularly frequent) and tag historyRoomModel as "to_be_consumed" and implement a consumer to treat notifications asynchronously
+      // @todo : change pattern for this event (particularly frequent) and tag historyRoomModel as "to_be_consumed" and
+      //         implement a consumer to treat notifications asynchronously
       Notifications(that.app).getType('roommessage').create(room, sentEvent.id, function (err) {
         if (err)
           logger.error(err);
