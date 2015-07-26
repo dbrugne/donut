@@ -35,6 +35,7 @@ module.exports = function() {
     res.locals.facebook = conf.facebook;
     res.locals.recaptcha = conf.google.recaptcha;
     res.locals.room_default_color = conf.room.default.color;
+    res.locals.message_maxedittime = conf.chat.message.maxedittime * 60 * 1000;
 
     // default
     res.locals.meta = false;
