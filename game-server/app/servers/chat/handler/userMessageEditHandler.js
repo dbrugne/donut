@@ -3,6 +3,7 @@ var async = require('async');
 var User = require('../../../../../shared/models/user');
 var inputUtil = require('../../../util/input');
 var HistoryOne = require('../../../../../shared/models/historyone');
+var conf = require('../../../../../config');
 
 module.exports = function(app) {
   return new Handler(app);
@@ -33,7 +34,7 @@ handler.edit = function(data, session, next) {
         return callback('username is mandatory for user:message:edit');
 
       if (!User.validateUsername(data.username))
-        return callback('Invalid user username on user:message:edit: '+data.username);
+        return callback('Invalid username in user:message:edit: '+data.username);
 
       if (!data.event)
         return callback('user:message:edit require event param');
@@ -68,61 +69,58 @@ handler.edit = function(data, session, next) {
       });
     },
 
-    function retrieveOneEvent(from, to, callback) {
-      HistoryOne.findOne({_id: data.event}, function (err, editEvent) {
+    function retrieveEvent(from, to, callback) {
+      HistoryOne.findOne({_id: data.event}, function (err, editedEvent) {
         if (err)
           return callback('Error while retrieving event in user:mesage:edit: ' + err);
 
-        if (!editEvent)
+        if (!editedEvent)
           return callback('Unable to retrieve event in user:message:edit: ' + data.event);
 
-        if (session.uid !== editEvent.from.toString())
-          return callback(session.uid + ' should be :' + editEvent.from.toString());
+        if (editedEvent.event !== 'user:message')
+          return callback('editedEvent should be user:message for: ' + data.event);
 
-        if (from.onetoones.toString() !== editEvent.to.toString())
-          return callback(from.onetoones.toString() + ' should be :' + editEvent.to.toString());
+        if (session.uid !== editedEvent.from.toString())
+          return callback('User ' + session.uid + ' tries to modify a message from another user: '
+            + data.event + ' (' + editedEvent.from.toString() + ')');
 
-        if (editEvent.event !== 'user:message')
-          return callback('editEvent should be user:message for: ' + data.event);
-
-        return callback(null, from, to, editEvent);
+        return callback(null, from, to, editedEvent);
       });
     },
 
-    function checkMessage(from, to, editEvent, callback) {
+    function checkMessage(from, to, editedEvent, callback) {
       // text filtering
       var message = inputUtil.filter(data.message, 512);
 
       if (!message)
-        return callback('Empty message no text)');
+        return callback('Empty message (no text)');
 
-      if (editEvent.data.message === message)
-        return callback('The message has not changed');
+      if (editedEvent.data.message === message)
+        return callback('Posted message has not been changed');
 
-      var time = 3600 * 1000; // 1 hours.
-      var diff = Date.now() - editEvent.time;
+      // Is younger than...
+      if ((Date.now() - editedEvent.time) > conf.chat.message.maxedittime * 60 * 1000)
+        return callback('User ' + session.uid + ' tries to edit an old message: ' + editedEvent.id);
 
-      if (diff > time)
-        return callback('Message too old : ' + (diff / 1000) + ' > ' + (time / 1000));
-
-      return callback(null, from, to, editEvent, message);
+      return callback(null, from, to, editedEvent, message);
     },
 
-    function persist(from, to, editEvent, message, callback) {
-      editEvent.update({ edited : true, data: { message: message },  edited_at: new Date() }, function(err) {
+    function persist(from, to, editedEvent, message, callback) {
+      editedEvent.update({ $set: { edited : true,  edited_at: new Date(), 'data.message': message } }, function(err) {
         if (err)
-          return callback('Unable to persist edited of ' + editEvent.id);
-        return callback(null, from, to, editEvent, message);
+          return callback('Unable to persist message edition of ' + editedEvent.id + ': ' + err);
+
+        return callback(null, from, to, editedEvent, message);
       });
     },
 
-    function prepareEvent(from, to, editEvent, message, callback) {
+    function prepareEvent(from, to, editedEvent, message, callback) {
       var event = {
         from_id: from._id,
         from_username: from.username,
         to_id: to._id,
         to_username: to.username,
-        event: editEvent.id,
+        event: editedEvent.id,
         message: message
       };
 
@@ -130,21 +128,23 @@ handler.edit = function(data, session, next) {
     },
 
     function broadcastFrom(from, to, event, callback) {
-
       that.app.globalChannelService.pushMessage('connector', 'user:message:edit', event, 'user:'+from._id.toString(), {}, function (err) {
         if (err)
-          logger.error('Error while emitting user:message:edit in ' + 'user:'+from.username + ': ' + err); // not 'return', we delete even if error happen
+          logger.error('Error while emitting user:message:edit in user:' + from.id + ': ' + err); // not 'return', we delete even if error happen
+
         return callback(null, from, to, event);
       });
     },
 
     function broadcastTo(from, to, event, callback) {
-      if (from.username === to.username)
-        return callback(null, from, to, event);
+      if (from.id === to.id)
+        return callback(null);
+
       that.app.globalChannelService.pushMessage('connector', 'user:message:edit', event, 'user:'+to._id.toString(), {}, function (err) {
         if (err)
-          logger.error('Error while emitting user:message:edit in ' + 'user:'+to.username + ': ' + err); // not 'return', we delete even if error happen
-        return callback(null, from, to, event);
+          logger.error('Error while emitting user:message:edit in user:' + to.id + ': ' + err); // not 'return', we delete even if error happen
+
+        return callback(null);
       });
     }
 
