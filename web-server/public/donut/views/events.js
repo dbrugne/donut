@@ -6,9 +6,11 @@ define([
   'models/event',
   'moment',
   'client',
+  'models/current-user',
+  'views/message-edit',
   'views/window',
   '_templates'
-], function ($, _, Backbone, donutDebug, EventModel, moment, client, windowView, templates) {
+], function ($, _, Backbone, donutDebug, EventModel, moment, client, currentUser, MessageEditView, windowView, templates) {
 
   var debug = donutDebug('donut:events');
 
@@ -17,13 +19,16 @@ define([
     template: templates['events.html'],
 
     events: {
-      "click .go-to-top a"            : 'scrollTop',
-      "click .go-to-bottom a"         : 'scrollDown',
-      "shown.bs.dropdown .actions"    : 'onMessageMenuShow',
-      "click .dropdown-menu .spammed" : 'onMarkAsSpam',
-      "click .dropdown-menu .unspam"  : 'onUnmarkAsSpam',
-      "click .view-spammed-message"   : 'onViewSpammedMessage',
-      "click .remask-spammed-message" : 'onRemaskSpammedMessage'
+      "click .go-to-top a"             : 'scrollTop',
+      "click .go-to-bottom a"          : 'scrollDown',
+      "shown.bs.dropdown .actions"     : 'onMessageMenuShow',
+      "click .dropdown-menu .spammed"  : 'onMarkAsSpam',
+      "click .dropdown-menu .unspam"   : 'onUnmarkAsSpam',
+      "click .view-spammed-message"    : 'onViewSpammedMessage',
+      "click .remask-spammed-message"  : 'onRemaskSpammedMessage',
+      "click .dropdown-menu .edited"   : 'onFormEditMessageShow',
+      "dblclick .event"                : 'onFormEditMessageShow',
+      "keydown .form-control"          : 'onPrevOrNextFormEdit',
     },
 
     historyLoading: false,
@@ -43,6 +48,7 @@ define([
       this.listenTo(this.model, 'viewed', this.onViewed);
       this.listenTo(this.model, 'messageSpam', this.onMarkedAsSpam);
       this.listenTo(this.model, 'messageUnspam', this.onMarkedAsUnspam);
+      this.listenTo(this.model, 'messageEdit', this.onMessageEdited);
       this.listenTo(client, 'admin:message', this.onAdminMessage);
 
       debug.start('discussion-events' + this.model.getIdentifier());
@@ -52,7 +58,7 @@ define([
     render: function () {
       // render view
       var html = this.template({
-        model: this.model.toJSON(),
+        model: this.model,
         time: Date.now()
       });
       this.$el.append(html);
@@ -141,7 +147,12 @@ define([
       return contentHeight - viewportHeight;
     },
     isScrollOnBottom: function () {
-      var bottom = this._scrollBottomPosition() - 10; // add a 10px margin
+      var scrollMargin = 10;
+      if (this.messageUnderEdition) {
+        scrollMargin = this.messageUnderEdition.$el.height();
+      }
+
+      var bottom = this._scrollBottomPosition() - scrollMargin; // add a 10px margin
       return (this.$scrollable.scrollTop() >= bottom); // if gte current position, we are on bottom
     },
     scrollDown: function () {
@@ -463,8 +474,10 @@ define([
       data.data = _.clone(model.get('data'));
       var message = data.data.message;
 
-      if (model.getGenericType() === 'message')
+      if (model.getGenericType() === 'message') {
         data.spammed = (model.get('spammed') === true);
+        data.edited = (model.get('edited') === true);
+      }
 
       // avatar
       var size = (model.getGenericType() != 'inout')
@@ -656,16 +669,21 @@ define([
      *****************************************************************************************************************/
     onMessageMenuShow: function (event) {
       var ownerUsername = '';
+      var $event = $(event.target).parents('.event');
       if (this.model.get('owner'))
         ownerUsername = this.model.get('owner').get('username');
-      var eventUsername = $(event.target).closest('[data-username]').data('username');
-      var isMessageOwner = (ownerUsername === eventUsername);
+      var username = $event.closest('[data-username]').data('username');
+      var isMessageOwner = (ownerUsername === username);
 
-      var isOp = this.model.currentUserIsOp();
-      var isOwner = this.model.currentUserIsOwner();
-      var isAdmin = this.model.currentUserIsAdmin();
+      var isEditable = this.isEditableMessage($event);
 
-      if (!isOwner && !isAdmin && !isOp || (isOp && isMessageOwner)) {
+      if (this.model.get('type') === 'room') {
+        var isOp = this.model.currentUserIsOp();
+        var isOwner = this.model.currentUserIsOwner();
+        var isAdmin = this.model.currentUserIsAdmin();
+      }
+
+      if (((!isOwner && !isAdmin && !isOp) || (isOp && isMessageOwner)) && (!isEditable)) {
         $(event.currentTarget).find('.dropdown-menu').dropdown('toggle');
         return;
       }
@@ -674,7 +692,8 @@ define([
           isOp: isOp,
           isOwner: isOwner,
           isAdmin: isAdmin,
-          isMessageOwner: isMessageOwner
+          isMessageOwner: isMessageOwner,
+          isEditable: isEditable
         }
       });
       $(event.currentTarget).find('.dropdown-menu').html(html);
@@ -749,6 +768,108 @@ define([
 
       if (bottom)
         this.scrollDown();
+    },
+
+    /*****************************************************************************************************************
+     *
+     * Message edit
+     *
+     *****************************************************************************************************************/
+    onFormEditMessageShow: function (event) {
+      event.preventDefault();
+
+      var $event = $(event.currentTarget).closest('.event');
+
+      if (!this.isEditableMessage($event))
+        return;
+
+      this.editMessage($event);
+    },
+    onPrevOrNextFormEdit: function (event) {
+      var $currentEventMessage = $(event.target).parents('.event');
+      var $currentBlockMessage = $(event.target).parents('.message');
+      var bottom = this.isScrollOnBottom();
+
+      if (event.which == 38)
+        this.checkAndOpenFormEdit('Prev', $currentEventMessage, $currentBlockMessage);
+      if (event.which == 40)
+        this.checkAndOpenFormEdit('Next', $currentEventMessage, $currentBlockMessage);
+
+      if (bottom)
+        this.scrollDown();
+    },
+    checkAndOpenFormEdit: function(direction, $currentEventMessage, $currentBlockMessage) {
+      var username = $currentBlockMessage.data('username');
+
+      if (direction === 'Prev') {
+        var $prevEventMessage = $currentEventMessage.prev();
+
+        if (!$currentEventMessage.prev().length && $currentBlockMessage.prev().length) {
+          var $prevBlockMessage = $currentBlockMessage.prev();
+          while(($prevBlockMessage.data('username') !== username)) {
+            if (!$prevBlockMessage.prev().length)
+              return;
+            $prevBlockMessage = $prevBlockMessage.prev();
+          }
+          var $prevEventMessage = $prevBlockMessage.find('.event').last();
+        }
+
+        if (this.isEditableMessage($prevEventMessage))
+          this.editMessage($prevEventMessage);
+      }
+
+      if (direction === 'Next') {
+        var $nextEventMessage = $currentEventMessage.next();
+
+        if (!$currentEventMessage.next().length && $currentBlockMessage.next().length) {
+          var $nextBlockMessage = $currentBlockMessage.next();
+          while (($nextBlockMessage.data('username') !== username)) {
+            if (!$nextBlockMessage.next().length)
+              return;
+            $nextBlockMessage = $nextBlockMessage.next();
+          }
+          var $nextEventMessage = $nextBlockMessage.find('.event').first();
+        }
+
+        if (this.isEditableMessage($nextEventMessage))
+          this.editMessage($nextEventMessage);
+      }
+    },
+    onMessageEdited: function (data) {
+      data = { data: data };
+      data.data.id = data.data.event;
+      data.edited = true;
+      if (this.model.get('username'))
+        data.type = 'user:message';
+      if (this.model.get('name'))
+        data.type = 'room:message';
+      var model = new EventModel(data);
+      var html = this._renderEvent(model, false);
+      this.$('#'+data.data.event).replaceWith(html);
+    },
+    editMessage: function ($event) {
+      var bottom = this.isScrollOnBottom();
+      if (this.messageUnderEdition) {
+        this.messageUnderEdition.closeFormEditMessage();
+        this.messageUnderEdition.remove();
+        this.messageUnderEdition.unbind();
+      }
+
+      this.messageUnderEdition = new MessageEditView({
+        el: $event,
+        model: this.model
+      });
+      if (bottom)
+        this.scrollDown();
+    },
+    isEditableMessage: function ($event) {
+      var username = $event.closest('[data-username]').data('username');
+      var time = $event.data('time');
+      var isMessageCurrentUser = (currentUser.get('username') === username);
+      var isEdit = ((Date.now() - new Date(time)) < (3600 * 1000)); // 1 hours
+      var isSpammed = ($event.hasClass('spammed') || $event.hasClass('viewed'));
+
+      return ((isMessageCurrentUser && isEdit && !isSpammed));
     },
 
     /*****************************************************************************************************************

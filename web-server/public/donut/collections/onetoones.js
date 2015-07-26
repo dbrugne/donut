@@ -29,6 +29,7 @@ define([
       this.listenTo(client, 'user:viewed', this.onViewed);
       this.listenTo(client, 'user:ban', this.onBan);
       this.listenTo(client, 'user:deban', this.onDeban);
+      this.listenTo(client, 'user:message:edit', this.onMessageEdited);
     },
     join: function(username) {
       // we ask to server to open this one to one
@@ -181,6 +182,12 @@ define([
         return;
 
       model.onDeban(data);
+    },
+    onMessageEdited: function(data) {
+      var model = this.getModelFromEvent(data, false);
+      if (!data)
+        return;
+      model.trigger('messageEdit', data);
     }
 
   });
