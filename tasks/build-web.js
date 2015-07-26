@@ -41,7 +41,7 @@ module.exports = function (grunt) {
             'jquery.iframe-transport'     : '../vendor/blueimp-file-upload/js/jquery.iframe-transport',
             'jquery.fileupload'           : '../vendor/blueimp-file-upload/js/jquery.fileupload',
             'jquery.cloudinary'           : '../vendor/cloudinary_js/js/jquery.cloudinary',
-            'cloudinary.widget'           : '//widget.cloudinary.com/global/all',
+            'cloudinary.widget'           : 'empty:',
             'jquery.cloudinary-donut'     : '../../../shared/cloudinary/cloudinary',
             'jquery.insertatcaret'        : '../javascripts/plugins/jquery.insertatcaret',
             'jquery.maxlength'            : '../javascripts/plugins/jquery.maxlength',
