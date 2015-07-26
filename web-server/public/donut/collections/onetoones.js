@@ -185,8 +185,9 @@ define([
     },
     onMessageEdited: function(data) {
       var model = this.getModelFromEvent(data, false);
-      if (!data)
+      if (!model)
         return;
+
       model.trigger('messageEdit', data);
     }
 
