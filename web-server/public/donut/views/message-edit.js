@@ -26,7 +26,7 @@ define([
     render: function () {
 
       this.$textEdited = this.$el.find('.text-edited');
-      this.$htmlContentText = this.$el.find('.text').html();
+      this.originalContent = this.$el.find('.text').html();
 
       if (this.$el.data('edited'))
         this.$textEdited.remove();
@@ -54,6 +54,8 @@ define([
       return this;
     },
     remove: function () {
+      this.messageUnderEdition.closeFormEditMessage();
+      this.messageUnderEdition.unbind();
       this.$el.find('.message-form').remove();
       this.undelegateEvents();
       this.$el.removeData().unbind();
@@ -61,15 +63,15 @@ define([
 
     onEditMessage: function (event) {
       event.preventDefault();
-      var roomName = this.model.get('name');
-      var username = this.model.get('username');
       var messageId = this.$el.attr('id');
       var message = this.$el.find('.form-control').val();
       message = this.checkMention(message);
-      if (roomName)
-        client.roomMessageEdit(roomName, messageId, message);
-      if (username)
-        client.userMessageEdit(username, messageId, message);
+      if (this.model.get('type') == 'room') {
+        client.roomMessageEdit(this.model.get('name'), messageId, message);
+      } else {
+        client.userMessageEdit(this.model.get('username'), messageId, message);
+      }
+
       this.closeFormEditMessage();
     },
     onEscEditMessage: function (event) {
@@ -80,29 +82,21 @@ define([
       this.updateFormSize();
       if (event.which == 27) // escape
         this.onEscEditMessage(event);
-      if (event.which == 13) // enter
+      else if (event.which == 13) // enter
         this.onEditMessage(event);
     },
     updateFormSize: function () {
       this.$el.find('.form-control').css('height', '1px');
       this.$el.find('.form-control')
-        .css('height', (2 + this.$el.find('.form-control')
-          .prop('scrollHeight')) + 'px');
+        .css('height',
+          (2 + this.$el.find('.form-control').prop('scrollHeight')) + 'px');
     },
     closeFormEditMessage: function () {
-      this.$el.find('.text').html(this.$htmlContentText);
+      this.$el.find('.text').html(this.originalContent);
       this.$el.find('.message-form').hide();
       this.$el.find('.text').css('display', 'block');
       this.$el.find('.images').css('display', 'block');
       this.$el.addClass('has-hover');
-    },
-    isEditableMessage: function () {
-      var username = this.$el.closest('[data-username]').data('username');
-      var time = this.$el.data('time');
-      var isMessageCurrentUser = (currentUser.get('username') === username);
-      var isEdit = ((Date.now() - new Date(time)) < (3600 * 1000)); // 1 hours
-
-      return ((isMessageCurrentUser && isEdit));
     },
     checkMention: function(text) {
       var that = this;

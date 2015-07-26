@@ -26,8 +26,8 @@ define([
       "click .dropdown-menu .unspam"   : 'onUnmarkAsSpam',
       "click .view-spammed-message"    : 'onViewSpammedMessage',
       "click .remask-spammed-message"  : 'onRemaskSpammedMessage',
-      "click .dropdown-menu .edited"   : 'onFormEditMessageShow',
-      "dblclick .event"                : 'onFormEditMessageShow',
+      "click .dropdown-menu .edited"   : 'onEditMessage',
+      "dblclick .event"                : 'onEditMessage',
       "keydown .form-control"          : 'onPrevOrNextFormEdit',
     },
 
@@ -775,7 +775,7 @@ define([
      * Message edit
      *
      *****************************************************************************************************************/
-    onFormEditMessageShow: function (event) {
+    onEditMessage: function (event) {
       event.preventDefault();
 
       var $event = $(event.currentTarget).closest('.event');
@@ -785,75 +785,58 @@ define([
 
       this.editMessage($event);
     },
+    isEditableMessage: function ($event) {
+      var username = $event.closest('[data-username]').data('username');
+      var time = $event.data('time');
+      var isMessageCurrentUser = (currentUser.get('username') === username);
+      var isNotTooOld = ((Date.now() - new Date(time)) < window.message_maxedittime);
+      var isSpammed = ($event.hasClass('spammed') || $event.hasClass('viewed'));
+
+      return (isMessageCurrentUser && isNotTooOld && !isSpammed);
+    },
     onPrevOrNextFormEdit: function (event) {
+      var direction;
+      if (event.which == 38)
+        direction = 'prev';
+      else if (event.which == 40)
+        direction = 'next';
+      else
+        return;
+
       var $currentEventMessage = $(event.target).parents('.event');
       var $currentBlockMessage = $(event.target).parents('.message');
       var bottom = this.isScrollOnBottom();
 
-      if (event.which == 38)
-        this.checkAndOpenFormEdit('Prev', $currentEventMessage, $currentBlockMessage);
-      if (event.which == 40)
-        this.checkAndOpenFormEdit('Next', $currentEventMessage, $currentBlockMessage);
+      var username = $currentBlockMessage.data('username');
+
+      // get sibling .event
+      var $candidate = $currentEventMessage[direction]();
+      var $candidateBlock = $currentBlockMessage[direction]();
+
+      // no sibling .event, try with sibling .block
+      if (!$candidate.length && $candidateBlock.length) {
+        var _lastBlock = $candidateBlock;
+        while((_lastBlock.data('username') !== username)) {
+          if (!_lastBlock[direction]().length)
+            return;
+          _lastBlock = _lastBlock[direction]();
+        }
+
+        $candidate = (direction == 'previous')
+          ? _lastBlock.find('.event').last()
+          : _lastBlock.find('.event').first();
+      }
+
+      if (this.isEditableMessage($candidate))
+        this.editMessage($candidate);
 
       if (bottom)
         this.scrollDown();
     },
-    checkAndOpenFormEdit: function(direction, $currentEventMessage, $currentBlockMessage) {
-      var username = $currentBlockMessage.data('username');
-
-      if (direction === 'Prev') {
-        var $prevEventMessage = $currentEventMessage.prev();
-
-        if (!$currentEventMessage.prev().length && $currentBlockMessage.prev().length) {
-          var $prevBlockMessage = $currentBlockMessage.prev();
-          while(($prevBlockMessage.data('username') !== username)) {
-            if (!$prevBlockMessage.prev().length)
-              return;
-            $prevBlockMessage = $prevBlockMessage.prev();
-          }
-          var $prevEventMessage = $prevBlockMessage.find('.event').last();
-        }
-
-        if (this.isEditableMessage($prevEventMessage))
-          this.editMessage($prevEventMessage);
-      }
-
-      if (direction === 'Next') {
-        var $nextEventMessage = $currentEventMessage.next();
-
-        if (!$currentEventMessage.next().length && $currentBlockMessage.next().length) {
-          var $nextBlockMessage = $currentBlockMessage.next();
-          while (($nextBlockMessage.data('username') !== username)) {
-            if (!$nextBlockMessage.next().length)
-              return;
-            $nextBlockMessage = $nextBlockMessage.next();
-          }
-          var $nextEventMessage = $nextBlockMessage.find('.event').first();
-        }
-
-        if (this.isEditableMessage($nextEventMessage))
-          this.editMessage($nextEventMessage);
-      }
-    },
-    onMessageEdited: function (data) {
-      data = { data: data };
-      data.data.id = data.data.event;
-      data.edited = true;
-      if (this.model.get('username'))
-        data.type = 'user:message';
-      if (this.model.get('name'))
-        data.type = 'room:message';
-      var model = new EventModel(data);
-      var html = this._renderEvent(model, false);
-      this.$('#'+data.data.event).replaceWith(html);
-    },
     editMessage: function ($event) {
       var bottom = this.isScrollOnBottom();
-      if (this.messageUnderEdition) {
-        this.messageUnderEdition.closeFormEditMessage();
+      if (this.messageUnderEdition)
         this.messageUnderEdition.remove();
-        this.messageUnderEdition.unbind();
-      }
 
       this.messageUnderEdition = new MessageEditView({
         el: $event,
@@ -862,14 +845,17 @@ define([
       if (bottom)
         this.scrollDown();
     },
-    isEditableMessage: function ($event) {
-      var username = $event.closest('[data-username]').data('username');
-      var time = $event.data('time');
-      var isMessageCurrentUser = (currentUser.get('username') === username);
-      var isEdit = ((Date.now() - new Date(time)) < (3600 * 1000)); // 1 hours
-      var isSpammed = ($event.hasClass('spammed') || $event.hasClass('viewed'));
-
-      return ((isMessageCurrentUser && isEdit && !isSpammed));
+    onMessageEdited: function (data) {
+      data = { data: data };
+      data.data.id = data.data.event;
+      data.edited = true;
+      if (this.model.get('type') == 'onetoone')
+        data.type = 'user:message';
+      if (this.model.get('type') == 'room')
+        data.type = 'room:message';
+      var model = new EventModel(data);
+      var html = this._renderEvent(model, false);
+      this.$('#'+data.data.event).replaceWith(html);
     },
 
     /*****************************************************************************************************************
