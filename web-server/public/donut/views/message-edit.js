@@ -17,7 +17,7 @@ define([
     events: {
       'click .message-form .enter' : 'onEditMessage',
       'click .message-form .esc'   : 'onEscEditMessage',
-      'keydown .form-control'      : 'onKeydown'
+      'keydown .form-message-edit' : 'onKeydown'
     },
 
     initialize: function (options) {
@@ -38,7 +38,7 @@ define([
       var text = this.htmlSmileyToText();
       this.$el.find('.message-form')
         .css('display', 'block')
-        .find('.form-control')
+        .find('.form-message-edit')
         .val(text).focus();
 
       this.updateFormSize();
@@ -46,25 +46,28 @@ define([
       // click off
       var that = this;
       $('html').click(function (e) {
-        if (!$(e.target).hasClass('form-control') && !$(e.target).hasClass('edited')) {
-          that.closeFormEditMessage(that);
+        if (!$(e.target).hasClass('.form-message-edit') && !$(e.target).hasClass('edited')) {
+          that.remove();
           $('html').off('click');
         }
       });
       return this;
     },
     remove: function () {
-      this.messageUnderEdition.closeFormEditMessage();
-      this.messageUnderEdition.unbind();
+      this.$el.find('.text')
+        .html(this.originalContent)
+        .css('display', 'block');
       this.$el.find('.message-form').remove();
+      this.$el.find('.images').css('display', 'block');
+      this.$el.addClass('has-hover');
+      this.unbind();
       this.undelegateEvents();
-      this.$el.removeData().unbind();
     },
 
     onEditMessage: function (event) {
       event.preventDefault();
       var messageId = this.$el.attr('id');
-      var message = this.$el.find('.form-control').val();
+      var message = this.$el.find('.form-message-edit').val();
       message = this.checkMention(message);
       if (this.model.get('type') == 'room') {
         client.roomMessageEdit(this.model.get('name'), messageId, message);
@@ -72,11 +75,11 @@ define([
         client.userMessageEdit(this.model.get('username'), messageId, message);
       }
 
-      this.closeFormEditMessage();
+      this.remove();
     },
     onEscEditMessage: function (event) {
       event.preventDefault();
-      this.closeFormEditMessage();
+      this.remove();
     },
     onKeydown: function (event) {
       this.updateFormSize();
@@ -86,17 +89,10 @@ define([
         this.onEditMessage(event);
     },
     updateFormSize: function () {
-      this.$el.find('.form-control').css('height', '1px');
-      this.$el.find('.form-control')
+      this.$el.find('.form-message-edit').css('height', '1px');
+      this.$el.find('.form-message-edit')
         .css('height',
-          (2 + this.$el.find('.form-control').prop('scrollHeight')) + 'px');
-    },
-    closeFormEditMessage: function () {
-      this.$el.find('.text').html(this.originalContent);
-      this.$el.find('.message-form').hide();
-      this.$el.find('.text').css('display', 'block');
-      this.$el.find('.images').css('display', 'block');
-      this.$el.addClass('has-hover');
+          (2 + this.$el.find('.form-message-edit').prop('scrollHeight')) + 'px');
     },
     checkMention: function(text) {
       var that = this;

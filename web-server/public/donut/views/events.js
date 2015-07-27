@@ -28,7 +28,7 @@ define([
       "click .remask-spammed-message"  : 'onRemaskSpammedMessage',
       "click .dropdown-menu .edited"   : 'onEditMessage',
       "dblclick .event"                : 'onEditMessage',
-      "keydown .form-control"          : 'onPrevOrNextFormEdit',
+      "keydown .form-message-edit"     : 'onPrevOrNextFormEdit',
     },
 
     historyLoading: false,
@@ -153,7 +153,7 @@ define([
       }
 
       var bottom = this._scrollBottomPosition() - scrollMargin; // add a 10px margin
-      return (this.$scrollable.scrollTop() >= bottom); // if gte current position, we are on bottom
+      return (this.$scrollable.scrollTop() >= bottom); // if get current position, we are on bottom
     },
     scrollDown: function () {
       var bottom = this._scrollBottomPosition();
@@ -669,7 +669,7 @@ define([
      *****************************************************************************************************************/
     onMessageMenuShow: function (event) {
       var ownerUsername = '';
-      var $event = $(event.target).parents('.event');
+      var $event = $(event.currentTarget).closest('.event');
       if (this.model.get('owner'))
         ownerUsername = this.model.get('owner').get('username');
       var username = $event.closest('[data-username]').data('username');
@@ -700,7 +700,7 @@ define([
     },
     onMarkAsSpam: function (event) {
       event.preventDefault();
-      var parent = $(event.target).parents('.event');
+      var parent = $(event.currentTarget).closest('.event');
       var roomName = this.model.get('name');
       var messageId = parent.attr('id');
 
@@ -708,7 +708,7 @@ define([
     },
     onUnmarkAsSpam: function (event) {
       event.preventDefault();
-      var parent = $(event.target).parents('.event');
+      var parent = $(event.currentTarget).closest('.event');
       var roomName = this.model.get('name');
       var messageId = parent.attr('id');
       parent.removeClass('viewed');
@@ -742,8 +742,8 @@ define([
     onViewSpammedMessage: function (event) {
       var bottom = this.isScrollOnBottom();
       event.preventDefault();
-      var parent = $(event.target).parents('.event');
-      var textSpammed = $(event.target).parents('.text-spammed');
+      var parent = $(event.currentTarget).closest('.event');
+      var textSpammed = $(event.currentTarget).closest('.text-spammed');
       var ctn = parent.children('.ctn');
       parent.removeClass('spammed').addClass('viewed');
       textSpammed.remove();
@@ -756,7 +756,7 @@ define([
     onRemaskSpammedMessage: function (event) {
       var bottom = this.isScrollOnBottom();
       event.preventDefault();
-      var parent = $(event.target).parents('.event');
+      var parent = $(event.currentTarget).closest('.event');
       var ctn = parent.children('.ctn');
       parent.addClass('spammed').removeClass('viewed');
       parent
@@ -803,8 +803,8 @@ define([
       else
         return;
 
-      var $currentEventMessage = $(event.target).parents('.event');
-      var $currentBlockMessage = $(event.target).parents('.message');
+      var $currentEventMessage = $(event.currentTarget).closest('.event');
+      var $currentBlockMessage = $(event.currentTarget).closest('.message');
       var bottom = this.isScrollOnBottom();
 
       var username = $currentBlockMessage.data('username');
