@@ -18,7 +18,7 @@ var handler = Handler.prototype;
 /**
  * Handle room voice logic
  *
- * @param {Object} data message from client
+ * @param {Object} data name, username from client
  * @param {Object} session
  * @param  {Function} next stemp callback
  *
@@ -75,7 +75,7 @@ handler.voice = function(data, session, next) {
           return callback('Unable to retrieve voiceUser in room:voice: '+session.uid);
 
         // Is the targeted user already VOICE of this room
-        if (room.devoices.indexOf(voiceUser._id) !== -1)
+        if (!room.isDevoice(voiceUser.id))
           return callback('User '+voiceUser.username+' is already VOICE of '+room.name);
 
         if (room.isOwner(voiceUser))

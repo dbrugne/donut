@@ -17,7 +17,7 @@ var handler = Handler.prototype;
 /**
  * Handle room devoice logic
  *
- * @param {Object} data message from client
+ * @param {Object} data name, username from client
  * @param {Object} session
  * @param  {Function} next stemp callback
  *
@@ -74,8 +74,8 @@ handler.devoice = function(data, session, next) {
         if (!devoiceUser)
           return callback('Unable to retrieve devoiceUser in room:devoice: '+devoiceUser.id);
 
-        if (room.isOwner(devoiceUser))
-          return callback(devoiceUser.username + 'is Owner and can not be DEVOICE of '+room.name);
+        if (room.isOwner(devoiceUser.id))
+          return callback(devoiceUser.username + ' is Owner and can not be DEVOICE of '+room.name);
 
         if (room.isDevoice(devoiceUser.id))
           return callback('This user '+devoiceUser.username+' is already devoice');
@@ -107,7 +107,7 @@ handler.devoice = function(data, session, next) {
         by_avatar  : user._avatar(),
         user_id: devoiceUser._id.toString(),
         username: devoiceUser.username,
-        avatar: devoiceUser._avatar()
+        avatar: devoiceUser._avatar(),
       };
 
       return callback(null, room, user, devoiceUser, event);

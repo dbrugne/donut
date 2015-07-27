@@ -19,6 +19,7 @@ define([
       'click .deop-user'          : 'deopUser',
       'click .kick-user'          : 'kickUser',
       'click .ban-user'           : 'banUser',
+      'click .voice-user'         : 'voiceUser',
       'click .devoice-user'       : 'devoiceUser',
       'click .share .facebook'    : 'shareFacebook',
       'click .share .twitter'     : 'shareTwitter',
@@ -141,6 +142,16 @@ define([
       confirmationView.open({ input: true }, function(reason) {
         client.roomBan(that.model.get('name'), username, reason);
       });
+    },
+    voiceUser: function(event) {
+      event.preventDefault();
+      if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() &&!this.model.currentUserIsAdmin())
+        return false;
+      var username = $(event.currentTarget).data('username');
+      if (!username)
+        return;
+
+      client.roomVoice(this.model.get('name'), username);
     },
     devoiceUser: function(event) {
       event.preventDefault();
