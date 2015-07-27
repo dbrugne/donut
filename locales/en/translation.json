@@ -278,9 +278,9 @@
         "before": "This page is the profile of the donut ",
         "after": "on the chat platform <a href=\"/\">DONUT.me</a>. On DONUT.me you can join or create a thematic chat room (a donut) about whatever you like. You can chat with people who share your interests."
       },
-      "permalink": "Permanent link to this profile",
-      "editlink": "To edit this profile click here",
-      "editusers": "Users edition",
+      "permalink": "Permalink of this profile",
+      "editlink": "Edit",
+      "editusers": "Manage users",
       "createdat": "Created on"
     },
     "user": {
@@ -289,8 +289,8 @@
         "before": "This page is the profile of the user ",
         "after": "on the chat platform <a href=\"/\">DONUT.me</a>. On DONUT.me you can join or create a thematic chat room (a donut) about whatever you like. You can chat with people who share your interests."
       },
-      "permalink": "Permanent link to this profile",
-      "editlink": "To edit this profile click here",
+      "permalink": "Permalink of this profile",
+      "editlink": "Edit",
       "signuped": "Signed up on",
       "onlined": "online __time__ ago",
       "edit": "Edit"
