@@ -299,9 +299,9 @@
         "before": "Cette page est le profil du donut ",
         "after": "sur la plateforme de chat <a href=\"/\">DONUT.me</a>. DONUT.me vous permet de rejoindre ou créer un salon de discussion thématique (donut) sur ce qui vous plait. Vous pouvez y discuter avec des gens qui partagent vos centres d'intérêt"
       },
-      "permalink": "Lien permanent vers ce profil",
-      "editlink": "Pour éditer ce profil cliquez ici",
-      "editusers": "Edition des utilisateurs",
+      "permalink": "Permalien de ce profil",
+      "editlink": "Editer",
+      "editusers": "Gérer les utilisateurs",
       "createdat": "créé le"
     },
     "user": {
@@ -310,8 +310,8 @@
         "before": "Cette page est le profil de l'utilisateur",
         "after": "sur la plateforme de chat <a href=\"/\">DONUT.me</a>. DONUT.me vous permet de rejoindre ou créer un salon de discussion thématique (donut) sur ce qui vous plait. Vous pouvez y discuter avec des gens qui partagent vos centres d'intérêt"
       },
-      "permalink": "Lien permanent vers ce profil",
-      "editlink": "Pour éditer votre profil cliquez ici",
+      "permalink": "Permalien de ce profil",
+      "editlink": "Editer",
       "signuped": "inscrit le",
       "onlined": "connecté il y a __time__",
       "edit": "Editer"
@@ -710,14 +710,14 @@
         "disclaimer": "Félicitations ! Vous êtes désormais modérateur de <strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>",
         "disclaimer2": "Il est temps d'aller exercer vos nouveaux super pouvoirs",
         "action": "…et tout ça grâce à <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#253b6c; text-decoration:none;\">@__username__</a></strong>",
-        "button": "Retourner sur DONUT"
+        "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Accéder à la discussion\">Accéder à la discussion</a>"
       }
     },
     "roomdeop": {
       "subject": "Vous n'êtes plus modérateur de #__roomname__",
       "content": {
         "title": "Vous n'êtes plus modérateur de #__roomname__",
-        "disclaimer": "Bonne nouvelle, vous allez avoir un peu plus de temps à consacrer à votre propre Donut. :)",
+        "disclaimer": "Aïe! La bonne nouvelle, vous allez avoir un peu plus de temps à consacrer à votre propre Donut:)",
         "action": "…et tout ça grâce à <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#253b6c; text-decoration:none;\">@__username__</a></strong>",
         "button": "Retourner sur DONUT"
       }
@@ -726,19 +726,19 @@
       "subject": "Vous avez été expulsé de #__roomname__",
       "content": {
         "title": "Vous avez été expulsé de #__roomname__",
-        "disclaimer": "Vous avez été expulsé de <strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong> par <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">__username__</a></strong>.",
+        "disclaimer": "Vous avez été expulsé de <strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong> par <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">@__username__</a></strong>.",
         "reason": "Motif: __reason__",
         "disclaimer2": "Ca ne doit pas être si grave, faites-vous un gros câlin et on oublie ça!",
-        "button": "Accéder à la discussion"
+        "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Accéder à la discussion\">Accéder à la discussion</a>"
       }
     },
     "roomban": {
       "subject": "Vous avez été banni de #__roomname__",
       "content": {
         "title": "Vous avez été banni de #__roomname__",
-        "disclaimer": "Vous avez été banni de <strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong> par <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">__username__</a></strong>.",
+        "disclaimer": "Vous avez été banni de <strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong> par <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">@__username__</a></strong>.",
         "reason": "Motif: __reason__",
-        "disclaimer2": "On dirait bien que vous n'étiez pas faits l'un pour l'autre. Vous savez ce qu'on dit : \"un Donut de perdu, dix de retrouvés !\".",
+        "disclaimer2": "On dirait bien que vous n'étiez pas faits l'un pour l'autre. Vous savez ce qu'on dit : \"un donut de perdu, dix de retrouvés !\".",
         "button": "Retourner sur DONUT"
       }
     },
@@ -749,13 +749,14 @@
         "disclaimer": "Vous n'êtes plus banni de <strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>.",
         "disclaimer2": "On dirait bien que tout s'est arrangé !",
         "action": "…et tout ça grâce à <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#253b6c; text-decoration:none;\">@__username__</a></strong>",
-        "button": "Retourner sur DONUT"
+        "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Accéder à la discussion\">Accéder à la discussion</a>"
       }
     },
     "usermessage": {
       "subject": "Nouveau message privé de @__username__",
       "content": {
         "title": "Nouveau message privé de @__username__",
+        "disclaimer": "Vous avez un nouveau message privé de la part de <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">@__username__</a></strong>",
         "button": "Accéder à la discussion"
       }
     },
@@ -763,8 +764,8 @@
       "subject": "Nouveaux messages dans #__roomname__",
       "content": {
         "title": "Nouveaux messages dans #__roomname__",
-        "inroom": "dans le Donut: <strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>",
-        "button": "Accéder à la discussion"
+        "inroom": "Vous avez un nouveaux messages dans <strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>",
+        "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Accéder à la discussion\">Accéder à la discussion</a>"
       }
     },
     "roomjoin": {
@@ -772,7 +773,7 @@
       "content": {
         "title": "@__username__ a rejoint #__roomname__",
         "disclaimer": "Et un de plus ! Allons l'accueillir comme il se doit :).",
-        "button": "Accéder à la discussion"
+        "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Accéder à la discussion\">Accéder à la discussion</a>"
       }
     },
     "roomtopic": {
@@ -780,7 +781,7 @@
       "content": {
         "title": "@__username__ a défini un nouveau sujet dans #__roomname__: __topic__",
         "disclaimer": "Vous avez sûrement plein de choses choses à dire sur le sujet !",
-        "button": "Accéder à la discussion"
+        "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Accéder à la discussion\">Accéder à la discussion</a>"
       }
     },
     "usermention": {
@@ -788,7 +789,7 @@
       "content": {
         "title": "@__username__ vous a mentionné dans #__roomname__",
         "disclaimer": "C'est toujours sympa quelqu'un qui pense à vous ! Pensez à lui répondre.",
-        "button": "Voir la notification sur DONUT"
+        "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Accéder à la discussion\">Accéder à la discussion</a>"
       }
     },
 
