@@ -158,7 +158,7 @@ handler.message = function (data, session, next) {
           name: room.name
         },
         message: {
-          length: event.message.length,
+          length: (event.message && event.message.length) ? event.message.length : 0,
           images: (event.images && event.images.length) ? event.images.length : 0
         }
       };
