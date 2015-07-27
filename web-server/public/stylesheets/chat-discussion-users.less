@@ -1,11 +1,6 @@
-.users {
-  background-color: rgba(0, 0, 0, 0.2);
-  height: 100%;
-  padding: 10px 0 10px 0;
+.users { position: relative; background-color: rgba(0, 0, 0, 0.2); height: 100%; padding: 10px 0 10px 0;
   @header-height: 35px;
-  .header {
-    position: absolute;
-    top: 14px; left: 16px; right: 10px;
+  .header { position: absolute;     white-space: nowrap; top: 14px; left: 16px; right: 10px;
     .count { .pull-left; }
     .between {
       font-size: 1.2em;
@@ -75,6 +70,7 @@
       font-size: 0.9em;
       font-weight: bold;
       white-space: nowrap;
+      display: block;
       .avatar {
         position: relative;
         display: inline-block;
@@ -99,8 +95,7 @@
           &.offline { color: @cl-error; }
         }
       }
-      .dropdown {
-        position: relative;
+      .dropdown { position: relative; display:block;
         button {
           color: @cl-background;
           position: absolute;

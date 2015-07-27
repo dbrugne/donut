@@ -15,28 +15,42 @@
 /** for <=992 screens resolutions **/
 @media screen and (max-width: @screen-md-min) {
 
-  #chat {
-    #left { width: 45px;
-      .page-sidebar-menu {
-        & > li { display: block; margin: 0; padding: 0; border: 0;
-          & > a { display: block; position: relative; margin: 0; padding: 10px 15px; text-decoration: none; font-weight: 300; }
-          .sub-menu { display:none; }
-          &.active > a { background: #E2E2E2; border-top-color: transparent; color: #f5f5f5; }
-          &:hover { width: 256px !important; position: relative !important; z-index: 10000; display: block !important; box-shadow: 5px 5px rgba(44,53,66,0.2); background: #E2E2E2;
-            > a {  background: #f5f5f5;
-              .title { display: inline !important; }
-              .selected { display: none; }
-            }
-            .sub-menu { padding: 10px 0 0; background: #E2E2E2; width: 210px; position: absolute; z-index: 2000; left: 46px; margin-top: 0; top: 100%; display: block !important; box-shadow: 5px 5px rgba(44,53,66,0.2);
-              li { list-style: none; margin: 0;
-                a { display: block; clear: both; font-weight: normal; line-height: 1.42857143; white-space: nowrap; color: #6f6f6f; padding: 5px 10px; cursor: pointer; text-decoration:none;
-                  &:hover { background-color: #f5f5f5; }
-                }
-              }
+  .page-sidebar-menu { margin: 0; padding: 0;
+    & > li { display: block; margin: 0; padding: 0; border: 0;
+      & > a { display: block; position: relative; margin: 0; padding: 10px 15px; text-decoration: none; font-weight: 300; }
+      .sub-menu { display:none; }
+      &.active > a { background: #E2E2E2; border-top-color: transparent; color: #f5f5f5; }
+      &:hover { width: 256px !important; position: relative !important; z-index: 10000; display: block !important; box-shadow: 0 6px 12px rgba(0,0,0,0.175); background: #E2E2E2;
+        > a {  background: #f5f5f5;
+          .title { display: inline !important; padding: 0 0 0 20px; }
+          .selected { display: none; }
+        }
+        .sub-menu { padding: 10px 0 0; background: #E2E2E2; width: 210px; position: absolute; z-index: 2000; left: 46px; margin-top: 0; top: 100%; display: block !important; box-shadow: 0 6px 12px rgba(0,0,0,0.175);
+          li { list-style: none; margin: 0;
+            a { display: block; clear: both; font-weight: normal; line-height: 1.42857143; white-space: nowrap; color: #6f6f6f; padding: 5px 10px; cursor: pointer; text-decoration:none;
+              &:hover { background-color: #f5f5f5; }
             }
           }
         }
+      }
+    }
+  }
 
+  .page-sidebar-menu.right {
+    & > li {
+      &:hover { right: 211px; box-shadow: 0 6px 12px rgba(0,0,0,0.175);
+        > a { text-align: right;
+          .title { padding: 0 20px 0 0; }
+        }
+        .sub-menu { left:initial; text-align: right; box-shadow: 0 6px 12px rgba(0,0,0,0.175); }
+      }
+    }
+  }
+
+
+  #chat {
+    #left { width: 45px;
+      .page-sidebar-menu {
         #block-current-user { padding: 0; min-height: initial;
           .avatar { padding: 5px; width: 45px; height: 45px; float: none; clear: both;
             img { width: 35px; height: 35px; }
@@ -47,7 +61,9 @@
               button { padding: 0; }
             }
           }
-          .title .username { left: 55px; top: 5px; font-size:12px; }
+          .title { padding:0;
+            .username { left: 55px; top: 5px; font-size:12px; }
+          }
           .sub-menu { display:none; }
           &:hover { background: #f5f5f5;
             & > a { background: #f5f5f5; }
@@ -58,7 +74,7 @@
               }
               .dropdown-user-actions { position: relative; right: initial; top: 0;
                 .dropdown-toggle { display:none; }
-                .dropdown-menu { display: block; margin: 0; padding: 0; background-color: #E2E2E2; border: 0; width: 210px; box-shadow: 5px 5px rgba(44,53,66,0.2); .border-radius(0);
+                .dropdown-menu { display: block; margin: 0; padding: 0; background-color: #E2E2E2; border: 0; width: 210px; box-shadow: 0 6px 12px rgba(0,0,0,0.175); .border-radius(0);
                   & > li { padding: 0;
                     > a { padding: 5px 10px; }
                       .divider { padding-top: 10px; background-color: transparent; border-top: 1px solid #e5e5e5; margin-top: 10px;
@@ -98,7 +114,7 @@
     }
     #center { margin-left: 45px;
       .discussion {
-        .content { margin-right: 0; padding-left: 10px;
+        .content { margin-right: 45px; padding-left: 10px;
           .input .text-container {   padding-bottom: 0;
             .text { padding: 5px 70px 5px 5px;
               .avatar { display: none; }
@@ -113,7 +129,41 @@
             }
           }
         }
-        .side { width: 0; }
+        .side { width: 45px; background-image: none !important; background-color: transparent !important;
+          .blur { background-image: none !important; background-color: transparent !important;
+            .users { padding: 0; background-color: @cl-subtext10 !important;
+              hr { display:none; }
+              .header { position: relative; top: 0; right: initial; left: 0;
+                > .count { display: none; float: left !important; text-overflow: ellipsis; white-space: nowrap; width: 175px; overflow: hidden; }
+                .page-sidebar-menu .sub-menu li { padding: 5px 10px; }
+              }
+              .list { border-top: 1px solid @cl-subtext0; margin: 10px 0 0 0;
+                li {
+                  &:first-child { padding-top: 10px; }
+                  .item, .item.offline { margin: 0; padding: 5px 7px 5px 12px; height: 35px; cursor:pointer; width: 256px;
+                    .avatar { width: 25px; height: 25px; background-size: 100%; }
+                  }
+                  &:hover { background: #f5f5f5; width: 256px !important; position: relative !important; z-index: 10000; display: block !important; box-shadow: 0 6px 12px rgba(0,0,0,0.175); right: 216px;
+                    .item {
+                      &.owner .avatar::before { left: 3px !important; }
+                      .infos {
+                        .avatar { float:right; }
+                        .username { line-height: 25px; text-overflow: ellipsis; padding: 0; float: right; margin-right: 15px; margin-left: 0; max-width: initial;
+                          span { width: 182px; float: right; text-overflow: ellipsis; white-space: nowrap; color: #333; }
+                          i { float: left; margin-top: 6px; margin-right: 3px; }
+                        }
+                        .dropdown {
+                          .dropdown-toggle { display:none; }
+                          .dropdown-menu { padding: 10px 0 0; background: @cl-subtext10; width: 210px; position: absolute; z-index: 2000; right: 31px; left: initial; margin-right: 10px; margin-top: 0; display: block !important; border: 0; border-radius: 0; top: 30px; }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     }
   }

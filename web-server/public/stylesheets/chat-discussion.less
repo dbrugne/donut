@@ -2,7 +2,11 @@
   .content { height: 100%; margin-right: @size-right; position: relative; padding-left: 35px;
     .header { padding-top: 18px; padding-right: 10px;
       &.room { min-height: 135px;
-        .avatar { position: absolute; width: 100px; height: 100px; }
+        .overlay-ctn {
+          .avatar { position: absolute; width: 100px; height: 100px; }
+          .overlay { height: 100px; width: 100px; top:0; }
+          .overlay-text { width: 100px; top: 40px; }
+        }
         .info {
           .name { display: inline-block; margin-top: 2px; margin-left: 110px; font-size: 2.2em; }
           .owner { display: inline-block; font-size: 1.2em; }

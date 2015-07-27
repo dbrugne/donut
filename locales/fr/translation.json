@@ -367,8 +367,8 @@
       "roomstitle": "Voici les donuts correspondant à votre recherche, vous pouvez aussi en <a class='open-create-room'>créer un nouveau</a> :",
       "userstitle": "Utilisateurs correspondants"
     },
-    "userscount": "<strong>__count__</strong> utilisateur dans ce donut",
-    "userscount_plural": "<strong>__count__</strong> utilisateurs dans ce donut",
+    "userscount": "<strong>__count__</strong> <span>utilisateur dans ce donut</span>",
+    "userscount_plural": "<strong>__count__</strong> <span>utilisateurs dans ce donut</span>",
     "usersoffline": "Utilisateurs hors ligne",
     "topic": {
       "label": "En ce moment",
