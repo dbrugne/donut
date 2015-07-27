@@ -135,8 +135,11 @@
   #room-profile {
     .scrollbar;
     text-align: center;
-    .room {
-      position: relative;
+    .room { position: relative;
+      .overlay-ctn { width: 100px; height: 100px; margin: 0 auto;
+        .overlay { top:0; }
+        .overlay-text { top: 40px; }
+      }
       .name {
         margin-top: 20px;
       }
@@ -145,7 +148,6 @@
         margin-top: 20px;
         margin-bottom: 20px;
         font-size: 1.2em;
-        text-align: justify;
         padding-left: 10px;
       }
       .website, .permalink, .edit, .users {
@@ -213,12 +215,7 @@
     .username {
       margin-top: 20px;
     }
-    .bio {
-      margin-top: 20px;
-      font-size: 1.2em;
-      text-align: justify;
-      padding-left: 10px;
-    }
+    .bio { margin-top: 20px; font-size: 1.2em; padding-left: 10px; }
     .location {
       margin-top: 20px;
       text-align: left;
