@@ -4,19 +4,20 @@
 <div class="errors"></div>
 <form class="user-form" role="form">
     <div class="form-group">
-        <label><%= t('preferences.welcome.title') %></label>
+        <label><%= t('preferences.exit.title') %></label>
         <div class="radio">
             <label>
                 <input type="radio" class="savable" name="browser:exitpopin" value="browser:exitpopin:true" <% if (preferences['browser:exitpopin']) { print('checked'); } %>>
-                <%= t('preferences.welcome.exit-popin.label-true') %>
+                <%= t('preferences.exit.label-true') %>
             </label>
         </div>
         <div class="radio">
             <label>
                 <input type="radio" class="savable" name="browser:exitpopin" value="browser:exitpopin:false" <% if (!preferences['browser:exitpopin']) { print('checked'); } %>>
-                <%= t('preferences.welcome.exit-popin.label-false') %>
+                <%= t('preferences.exit.label-false') %>
             </label>
         </div>
+        <label><%= t('preferences.welcome.title') %></label>
         <div class="radio">
             <label>
                 <input type="radio" class="savable" name="browser:welcome" value="browser:welcome:true" <% if (preferences['browser:welcome']) { print('checked'); } %>>
