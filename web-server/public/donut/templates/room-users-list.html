@@ -1,9 +1,11 @@
 <% var previous; %>
 <% _.each(list, function(user) { %>
-    <li>
-        <% if (previous && previous != user.status) { %>
+    <% if (previous && previous != user.status) { %>
+        <li class="hidden-xs hidden-sm">
             <div class="title"><%= t('chat.usersoffline') %></div>
-        <% } %>
+        </li>
+    <% } %>
+    <li>
         <% previous = user.status; %>
         <div class="item <% if (user.is_op === true) { %>op<% }; %> <% if (user.is_owner === true) { %>owner<% }; %> <%= user.status %>">
             <span class="infos">
