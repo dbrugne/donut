@@ -117,7 +117,8 @@
         .content { margin-right: 45px; padding-left: 0;
           .header.room { padding-top: 10px; background-color: #ffeb88; padding-left: 10px; position: relative;     min-height: 85px; margin-bottom: 11px;
             .overlay-ctn {
-              .avatar { width:30px; height:30px; }
+              .avatar { width:30px; height:30px; border:0; }
+              .overlay, .overlay-text { display:none; }
             }
             .info { line-height: 22px;
               .owner {     display: none; }
@@ -135,7 +136,7 @@
             }
           }
           .header.user { padding-top: 10px; background-color: #ffeb88; padding-left: 10px; position: relative;     min-height: 85px; margin-bottom: 11px;
-            .avatar { width:30px; height:30px; }
+            .avatar { width:30px; height:30px;border:0;  }
             .info { line-height: 22px; margin-left: 0;
               .username { margin: 0 0 0 0px; font-size: 16px; margin-top: 5px; }
               .dropdown { float: left; margin-left: 28px;
