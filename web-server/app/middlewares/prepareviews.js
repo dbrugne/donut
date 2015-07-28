@@ -1,4 +1,4 @@
-var conf = require('../../../config/index');
+var conf = require('../../../config');
 var cloudinary = require('../../../shared/cloudinary/cloudinary');
 
 /**

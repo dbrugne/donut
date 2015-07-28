@@ -111,7 +111,8 @@ handler.edit = function(data, session, next) {
       var event = {
         name: room.name,
         event: editedEvent.id,
-        message: message
+        message: message,
+        images: editedEvent.data.images ? editedEvent.data.images : null
       };
       that.app.globalChannelService.pushMessage('connector', 'room:message:edit', event, room.name, {}, function (err) {
         if (err)

@@ -35,7 +35,6 @@ define([
       this.$el.removeClass('has-hover');
 
       this.text = this.htmlSmileyToText();
-      console.log(this.images);
       this.$el.find('.message-form')
         .css('display', 'block')
         .find('.form-message-edit')
@@ -68,7 +67,7 @@ define([
       var messageId = this.$el.attr('id');
       var message = this.$el.find('.form-message-edit').val();
       if (this.text === message) {
-        this.remove()
+        this.remove();
         return;
       }
       message = this.checkMention(message);
