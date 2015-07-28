@@ -12,7 +12,6 @@ define([
     defaults: function() {
       return {
         name          : '',
-        devoice       : [],
         op            : [],
         topic         : '',
         avatar        : '',
@@ -54,10 +53,6 @@ define([
       if (this.get('op') && this.get('op').indexOf(data.user_id) !== -1)
         is_op = true;
 
-      var is_devoice = false;
-      if (this.get('devoice') && this.get('devoice').indexOf(data.user_id) !== -1)
-        is_devoice = true;
-
       model = new UserModel({
         id: data.user_id,
         user_id: data.user_id,
@@ -66,7 +61,7 @@ define([
         color: data.color,
         is_owner: is_owner,
         is_op: is_op,
-        is_devoice: is_devoice,
+        is_devoice: this.userIsDevoiced(data.user_id),
         status: data.status
       });
       this.users.add(model, {sort: sort});
@@ -81,7 +76,17 @@ define([
     leave: function() {
       client.roomLeave(this.get('name'));
     },
+    userIsDevoiced: function(userId) {
+        if (!this.get('devoices') || !this.get('devoices').length)
+          return false;
 
+        var subDocument = _.find(this.get('devoices'), function (devoice) {
+          if (devoice.user.toString() == userId)
+            return true;
+        });
+
+        return (typeof subDocument != 'undefined');
+    },
     currentUserIsOwner: function() {
       if (!this.get('owner'))
         return false;

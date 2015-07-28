@@ -124,7 +124,7 @@ handler.voice = function(data, session, next) {
 
         return callback(null, room, user, voiceUser, sentEvent);
       });
-    },
+    }
 
   ], function(err) {
     if (err) {

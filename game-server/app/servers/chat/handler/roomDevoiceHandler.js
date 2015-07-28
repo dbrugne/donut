@@ -107,7 +107,7 @@ handler.devoice = function(data, session, next) {
         by_avatar  : user._avatar(),
         user_id: devoiceUser._id.toString(),
         username: devoiceUser.username,
-        avatar: devoiceUser._avatar(),
+        avatar: devoiceUser._avatar()
       };
 
       return callback(null, room, user, devoiceUser, event);
@@ -120,7 +120,7 @@ handler.devoice = function(data, session, next) {
 
         return callback(null, room, user, devoiceUser, sentEvent);
       });
-    },
+    }
 
   ], function(err) {
     if (err) {

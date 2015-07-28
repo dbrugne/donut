@@ -153,6 +153,11 @@
           background-size: 12px 16px;
         }
       }
+      &.devoice {
+        .avatar { border-color: @cl-error !important;
+          &::after { content: '\f037'; display: inline-block; font: normal normal normal 14px/1 'Donut'; text-rendering: auto; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; transform: translate(0, 0); right: -9px; bottom: -10px; position: absolute; color: @cl-error; font-size: 19px; border-radius: 50%; }
+        }
+      }
       &.owner {
         .avatar {
           border-style: solid;

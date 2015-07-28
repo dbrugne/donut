@@ -62,6 +62,7 @@ define([
         name: room.name,
         owner: owner,
         op: room.op,
+        devoices: room.devoices,
         topic: room.topic,
         avatar: room.avatar,
         poster: room.poster,
