@@ -32,21 +32,21 @@ define([
         this.$textEdited.remove();
       this.$el.find('.message-edit').html(this.template);
       this.$el.find('.text').hide();
-      this.$el.find('.images').hide();
       this.$el.removeClass('has-hover');
 
-      var text = this.htmlSmileyToText();
+      this.text = this.htmlSmileyToText();
+      console.log(this.images);
       this.$el.find('.message-form')
         .css('display', 'block')
         .find('.form-message-edit')
-        .val(text).focus();
+        .val(this.text).focus();
 
       this.updateFormSize();
 
       // click off
       var that = this;
       $('html').click(function (e) {
-        if (!$(e.target).hasClass('.form-message-edit') && !$(e.target).hasClass('edited')) {
+        if (!$(e.target).hasClass('form-message-edit') && !$(e.target).hasClass('edited')) {
           that.remove();
           $('html').off('click');
         }
@@ -58,7 +58,6 @@ define([
         .html(this.originalContent)
         .css('display', 'block');
       this.$el.find('.message-form').remove();
-      this.$el.find('.images').css('display', 'block');
       this.$el.addClass('has-hover');
       this.unbind();
       this.undelegateEvents();
@@ -68,13 +67,16 @@ define([
       event.preventDefault();
       var messageId = this.$el.attr('id');
       var message = this.$el.find('.form-message-edit').val();
+      if (this.text === message) {
+        this.remove()
+        return;
+      }
       message = this.checkMention(message);
       if (this.model.get('type') == 'room') {
         client.roomMessageEdit(this.model.get('name'), messageId, message);
       } else {
         client.userMessageEdit(this.model.get('username'), messageId, message);
       }
-
       this.remove();
     },
     onEscEditMessage: function (event) {

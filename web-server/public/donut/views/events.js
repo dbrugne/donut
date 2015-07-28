@@ -28,7 +28,7 @@ define([
       "click .remask-spammed-message"  : 'onRemaskSpammedMessage',
       "click .dropdown-menu .edited"   : 'onEditMessage',
       "dblclick .event"                : 'onEditMessage',
-      "keydown .form-message-edit"     : 'onPrevOrNextFormEdit',
+      "keydown .form-message-edit"     : 'onPrevOrNextFormEdit'
     },
 
     historyLoading: false,
@@ -822,7 +822,7 @@ define([
           _lastBlock = _lastBlock[direction]();
         }
 
-        $candidate = (direction == 'previous')
+        $candidate = (direction == 'prev')
           ? _lastBlock.find('.event').last()
           : _lastBlock.find('.event').first();
       }
@@ -830,6 +830,20 @@ define([
       if (this.isEditableMessage($candidate))
         this.editMessage($candidate);
 
+      if (bottom)
+        this.scrollDown();
+    },
+    pushUpFromInput: function() {
+      var _lastBlock = this.$realtime.find('.block.message').last();
+      while(_lastBlock.data('username') !== currentUser.get('username')) {
+        if (!_lastBlock.prev().length)
+          return;
+        _lastBlock = _lastBlock.prev();
+      }
+      var $event = _lastBlock.find('.event').last();
+      var bottom = this.isScrollOnBottom();
+      if (this.isEditableMessage($event))
+        this.editMessage($event);
       if (bottom)
         this.scrollDown();
     },

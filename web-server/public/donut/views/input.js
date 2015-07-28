@@ -19,7 +19,7 @@ define([
 
     events: {
       'input .editable'               : 'onInput',
-      'keypress .editable'            : 'onKeyPress',
+      'keydown .editable'            : 'onKeyDown',
       'click .send'                   : 'sendMessage',
       'click .add-image'              : 'onAddImage',
       'click .remove-image'           : 'onRemoveImage',
@@ -104,9 +104,9 @@ define([
       this.$el.find('.avatar').prop('src', $.cd.userAvatar(value, 80));
     },
 
-    onKeyPress: function(event) {
+    onKeyDown: function(event) {
       // Press enter in field handling
-      if (event.type == 'keypress') {
+      if (event.type == 'keydown') {
         var key;
         var isShift;
         if (window.event) {
@@ -119,6 +119,8 @@ define([
         if(event.which == 13 && !isShift) {
           return this.sendMessage();
         }
+        if (event.which == 38 && ($(event.currentTarget).val() === ''))
+          this.trigger('editPreviousInput');
       }
     },
 
@@ -164,7 +166,6 @@ define([
             });
           });
         }
-
         // Send message to server
         that.model.sendMessage(message, images);
         that.trigger('send');
