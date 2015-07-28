@@ -169,23 +169,9 @@
     font-size: 13px;
     .container {
       width: 100%;
-      .navbar-brand {
-        height: auto;
-        padding: 5px 15px 0;
-        .logo {
-          display: inline-block;
-          width: 130px;
-          height: 32px;
-        }
-        .beta {
-          vertical-align: bottom;
-          height: @size-color;
-          color: @cl-background;
-          .ft-raleway-medium;
-          font-size: 12px;
-          padding-left: 0px;
-          padding-top: 18px;
-        }
+      .navbar-brand-a { height: auto; padding: 5px 15px 0; float:left;
+        .logo { display: inline-block; width: 130px; height: 32px; }
+        .beta { vertical-align: bottom; height: @size-color; color: @cl-background; .ft-raleway-medium; font-size: 12px; padding-left: 0px; padding-top: 18px; }
       }
       #notifications {
         &.empty {
@@ -372,9 +358,12 @@
           }
         }
       }
-      .navbar-nav {
-        &.navbar-right { margin-right:0; }
-        & > li {
+      .navbar-nav-ul { float:left; margin: 0;
+        &.navbar-right { float:right; margin: 0;
+          > li > a { background-color:transparent; }
+          .dropdown-menu { right:0; left: initial; }
+        }
+        & > li { float: left;
           & > a { padding-top: 9px; padding-bottom: 8px; color: @cl-background;
             .icon { font-size: 20px; color: @cl-first-dark-15;
               &:hover { color: @cl-first-dark-25; }
@@ -384,7 +373,7 @@
           .dropdown-menu > .arrow-up { width: 0; height: 0; border-style: solid; border-width: 0 10px 10px 10px; border-color: transparent transparent #FFF transparent; position: absolute; top: -10px; right: 13px; display: block; padding: 0; }
         }
       }
-      .navbar-nav>.open>a {
+      .navbar-nav-ul>.open>a {
         background-color: transparent;
       }
       .dropdown-menu {
