@@ -31,7 +31,7 @@ define([
       if (this.$el.data('edited'))
         this.$textEdited.remove();
       this.$el.find('.message-edit').html(this.template);
-      this.$el.find('.text').hide();
+      this.$el.find('.text').addClass('hidden');
       this.$el.removeClass('has-hover');
 
       this.text = this.htmlSmileyToText();
@@ -55,7 +55,7 @@ define([
     remove: function () {
       this.$el.find('.text')
         .html(this.originalContent)
-        .css('display', 'block');
+        .removeClass('hidden');
       this.$el.find('.message-form').remove();
       this.$el.addClass('has-hover');
       this.unbind();

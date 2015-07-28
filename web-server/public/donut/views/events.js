@@ -796,16 +796,19 @@ define([
     },
     onPrevOrNextFormEdit: function (event) {
       var direction;
+      var bottom = this.isScrollOnBottom();
       if (event.which == 38)
         direction = 'prev';
       else if (event.which == 40)
         direction = 'next';
-      else
+      else {
+        if (bottom)
+          this.scrollDown();
         return;
+      }
 
       var $currentEventMessage = $(event.currentTarget).closest('.event');
       var $currentBlockMessage = $(event.currentTarget).closest('.message');
-      var bottom = this.isScrollOnBottom();
 
       var username = $currentBlockMessage.data('username');
 
