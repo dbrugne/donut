@@ -18,7 +18,7 @@
                 <table border="0" cellpadding="0" cellspacing="0" class="emailButton" style="-webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; background-color:#EE2763;">
                     <tr>
                         <td align="center" valign="middle" class="emailButtonContent" style="padding-top:10px; padding-right:30px; padding-bottom:10px; padding-left:30px;">
-                            <a href="https://<%- fqdn %>" target="_blank" style="color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;" alt="<%= t('email.roomdeban.content.button') %>"><%= t('email.roomdeban.content.button') %></a>
+                            <%= t('email.roomdeban.content.button', { roomname: roomname, fqdn: fqdn }) %>
                         </td>
                     </tr>
                 </table>

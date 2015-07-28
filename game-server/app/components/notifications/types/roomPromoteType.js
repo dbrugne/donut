@@ -137,11 +137,11 @@ Notification.prototype.sendEmail = function (model, done) {
           break;
         case 'roomkick':
           method = emailer.roomKick;
-          data = { username: history.by_user.username, roomname: history.room.name, reason: (history.data && history.data.readon ? history.data.reason : undefined) };
+          data = { username: history.by_user.username, roomname: history.room.name, reason: (history.data && history.data.reason ? history.data.reason : undefined) };
           break;
         case 'roomban':
           method = emailer.roomBan;
-          data = { username: history.by_user.username, roomname: history.room.name };
+          data = { username: history.by_user.username, roomname: history.room.name, reason: (history.data && history.data.reason ? history.data.reason : undefined) };
           break;
         case 'roomdeban':
           method = emailer.roomDeban;
