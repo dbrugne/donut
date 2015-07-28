@@ -543,6 +543,23 @@ define([
       var data = {id: id};
       pomelo.notify('chat.userNotificationsHandler.done', data);
       debug('io:out:notification:done', data);
+    },
+
+    userRollUp: function (str, fn) {
+      var data = {str: str};
+      debug('io:out:user:rollup:read', data);
+      var that = this;
+      pomelo.request(
+        'chat.userRollupHandler.read',
+        data,
+        function (response) {
+          if (response.err)
+            return debug('io:in:user:rollup:read error: ', response);
+
+          debug('io:in:user:rollup:read', response);
+          return fn(response);
+        }
+      );
     }
 
   }, Backbone.Events);

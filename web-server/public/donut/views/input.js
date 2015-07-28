@@ -2,10 +2,11 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'client',
   'libs/donut-debug',
   'models/current-user',
   '_templates'
-], function ($, _, Backbone, donutDebug, currentUser, templates) {
+], function ($, _, Backbone, client, donutDebug, currentUser, templates) {
 
   var debug = donutDebug('donut:input');
 
@@ -15,11 +16,13 @@ define([
 
     imageTemplate: templates['input-image.html'],
 
+    rollupTemplate: templates['rollup.html'],
+
     images: '',
 
     events: {
       'input .editable'               : 'onInput',
-      'keypress .editable'            : 'onKeyPress',
+      'keyup .editable'             : 'onKeyPress',
       'click .send'                   : 'sendMessage',
       'click .add-image'              : 'onAddImage',
       'click .remove-image'           : 'onRemoveImage',
@@ -49,6 +52,7 @@ define([
 
       this.$editable = this.$el.find('.editable');
       this.$preview = this.$el.find('.preview');
+      this.$rollUpCtn = this.$el.find('.rollup-container');
 
       var that = this;
 
@@ -106,7 +110,7 @@ define([
 
     onKeyPress: function(event) {
       // Press enter in field handling
-      if (event.type == 'keypress') {
+      if (event.type == 'keyup') {
         var key;
         var isShift;
         if (window.event) {
@@ -118,6 +122,23 @@ define([
         }
         if(event.which == 13 && !isShift) {
           return this.sendMessage();
+        }
+
+        console.log(event.which);
+        // Cleaned the input
+        if (event.target.value.length == 0 || event.which == 27) // 27 == esc
+          return this.onRollUpClose();
+
+        // Detect here #, @, /
+        switch (event.target.value.substr(0,1)) {
+          case '#':
+          case '@':
+          case '/':
+            this.onRollUpCall(event.target.value);
+          break;
+          default:
+            this.onRollUpClose();
+          break;
         }
       }
     },
@@ -263,6 +284,21 @@ define([
       var symbol = $.smilifyGetSymbolFromCode($(event.currentTarget).data('smilifyCode'));
       this.$editable.insertAtCaret(symbol);
       this.$smileyButton.popover('hide');
+    },
+
+    /**
+     *
+     * @param str, cannot be null here
+     */
+    onRollUpCall: function(str) {
+      var that = this;
+      client.userRollUp(str, function (data) {
+        that.$rollUpCtn.html(that.rollupTemplate(data));
+      });
+    },
+
+    onRollUpClose: function() {
+      this.$rollUpCtn.html('');
     }
 
   });
