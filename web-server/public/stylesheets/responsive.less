@@ -41,6 +41,7 @@
       &:hover { right: 211px; box-shadow: 0 6px 12px rgba(0,0,0,0.175);
         > a { text-align: right;
           .title { padding: 0 20px 0 0; }
+          i { color:@cl-text !important; }
         }
         .sub-menu { left:initial; text-align: right; box-shadow: 0 6px 12px rgba(0,0,0,0.175); }
       }
@@ -133,6 +134,16 @@
               .topic-form { width:100%; }
             }
           }
+          .header.user { padding-top: 10px; background-color: #ffeb88; padding-left: 10px; position: relative;     min-height: 85px; margin-bottom: 11px;
+            .avatar { width:30px; height:30px; }
+            .info { line-height: 22px; margin-left: 0;
+              .username { margin: 0 0 0 0px; font-size: 16px; margin-top: 5px; }
+              .dropdown { float: left; margin-left: 28px;
+                .dropdown-toggle { font-size: 18px; }
+              }
+            }
+            .status-block { float: left; width: 100%; margin: 8px; }
+          }
           .events { padding-left: 10px; }
           .input { padding-left: 10px;
             .text-container {   padding-bottom: 0;
@@ -150,9 +161,9 @@
             }
           }
         }
-        .side { width: 45px; background-image: none !important; background-color: transparent !important;
-          .blur { background-image: none !important; background-color: transparent !important;
-            .users { padding: 0; background-color: @cl-subtext10 !important;
+        .side { width: 45px; background-image: none !important;
+          .blur { background-image: none !important;
+            .users { padding: 0;
               hr { display:none; }
               .header { position: relative; top: 0; right: initial; left: 0;
                 > .count { display: none; float: left !important; text-overflow: ellipsis; white-space: nowrap; width: 175px; overflow: hidden; }
