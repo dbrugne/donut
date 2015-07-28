@@ -944,6 +944,11 @@
       "title": "Sounds",
       "test": "try"
     },
+    "exit": {
+      "title": "Confirmation output",
+      "label-true": "Ask me a confirmation before exiting the application",
+      "label-false": "Not confirmation when I leave application"
+    },
     "welcome": {
       "title": "Pop-up window",
       "label-true": "Display welcome pop-up I log in",

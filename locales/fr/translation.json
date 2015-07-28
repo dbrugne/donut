@@ -839,9 +839,9 @@
       "test": "tester"
     },
     "exit": {
-      "title": "Fenêtre de sortie",
-      "label-true": "Afficher une fenêtre de confirmation quand vous quittez l'interface",
-      "label-false": "Ne jamais afficher de fenêtre de confirmation"
+      "title": "Confirmation de sortie",
+      "label-true": "Me demander une confirmation avant de quitter l'application",
+      "label-false": "Pas de confirmation quand je quitte l'application"
     },
     "welcome": {
       "title": "Fenêtre de bienvenue",
