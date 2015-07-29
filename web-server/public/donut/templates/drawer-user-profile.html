@@ -8,19 +8,19 @@
     </span>
     <p class="username">@<%= user.username %></p>
     <% if (user.bio) { %><p class="bio"><%= user.bio %></p><% }; %>
-    <% if (user.location) { %><p class="action location"><i class="icon icon-map-marker"></i> <%= user.location %></p><% }; %>
-    <% if (user.website) { %><p class="action website"><i class="icon icon-link"></i> <span><%= user.website %></span></p><% }; %>
-    <% if (user.registered) { %><p class="action created"><i class="icon icon-clock-o"></i> <%= t('profile.user.signuped') %> <span data-time="<%= user.registered %>"></span></p><% }; %>
-    <% if (user.status != 'online' && user.onlined) { %><p class="onlined"><i class="icon icon-clock-o"></i> <%= t('profile.user.onlined', {time: '<span data-time="'+user.onlined+'"></span>'}) %></p><% }; %>
-    <p class="action permalink"><i class="icon icon-external-link"></i> <a href="<%= user.url %>" target="_blank"><%= t('profile.user.permalink') %></a></p>
-    <% if (user.isCurrent) { %><p class="action edit"><a class="open-user-edit" data-username="<%= user.username %>"><i class="icon icon-pencil-square-o"></i> <%= t('profile.user.editlink') %></a></p><% }; %>
+    <% if (user.location) { %><p class="action location"><i class="icon icon-map-marker" data-colorify-text="color" data-colorify="<%= user.color %>"></i> <%= user.location %></p><% }; %>
+    <% if (user.website) { %><p class="action website"><i class="icon icon-link" data-colorify-text="color" data-colorify="<%= user.color %>"></i> <span><%= user.website %></span></p><% }; %>
+    <% if (user.registered) { %><p class="action created"><i class="icon icon-clock-o" data-colorify-text="color" data-colorify="<%= user.color %>"></i> <%= t('profile.user.signuped') %> <span data-time="<%= user.registered %>"></span></p><% }; %>
+    <% if (user.status != 'online' && user.onlined) { %><p class="onlined"><i class="icon icon-clock-o" data-colorify-text="color" data-colorify="<%= user.color %>"></i> <%= t('profile.user.onlined', {time: '<span data-time="'+user.onlined+'"></span>'}) %></p><% }; %>
+    <p class="action permalink"><i class="icon icon-link" data-colorify-text="color" data-colorify="<%= user.color %>"></i> <a href="<%= user.url %>" target="_blank" data-colorify-text="color" data-colorify="<%= user.color %>"><%= t('profile.user.permalink') %></a></p>
+    <% if (user.isCurrent) { %><p class="action edit"><a class="open-user-edit" data-username="<%= user.username %>" data-colorify-text="color" data-colorify="<%= user.color %>"><i class="icon icon-pencil"  data-colorify-text="color" data-colorify="<%= user.color %>"></i> <%= t('profile.user.editlink') %></a></p><% }; %>
 
     <% if (!user.isCurrent) { %>
         <!--Check if I banned this user-->
         <% if (user.banned) { %>
-        <p class="action action-user-deban" style="cursor:pointer" data-uid="<%= user.user_id %>"><i class="icon icon-ban"></i> <%= t('chat.debanuser.infobox') %></p>
+        <p class="action action-user-deban" style="cursor:pointer" data-uid="<%= user.user_id %>" data-colorify-text="color" data-colorify="<%= user.color %>"><i class="icon icon-ban" data-colorify-text="color" data-colorify="<%= user.color %>"></i> <%= t('chat.debanuser.infobox') %></p>
         <% } else { %>
-        <p class="action action-user-ban" style="cursor:pointer" data-uid="<%= user.user_id %>"><i class="icon icon-ban"></i> <%= t('chat.banuser.infobox') %></p>
+        <p class="action action-user-ban" style="cursor:pointer" data-uid="<%= user.user_id %>" data-colorify-text="color" data-colorify="<%= user.color %>"><i class="icon icon-ban color-text-error"></i> <%= t('chat.banuser.infobox') %></p>
         <% }; %>
 
         <!--Check if this user banned me-->
