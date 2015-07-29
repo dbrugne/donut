@@ -22,7 +22,7 @@ define([
 
     events: {
       'input .editable'               : 'onInput',
-      'keyup .editable'               : 'onKeyPress',
+      'keyup .editable'               : 'onKeyUp',
       'click .send'                   : 'sendMessage',
       'click .add-image'              : 'onAddImage',
       'click .remove-image'           : 'onRemoveImage',
@@ -108,7 +108,7 @@ define([
       this.$el.find('.avatar').prop('src', $.cd.userAvatar(value, 80));
     },
 
-    onKeyPress: function(event) {
+    onKeyUp: function(event) {
       // Press enter in field handling
       if (event.type == 'keyup') {
         var key;
@@ -120,11 +120,14 @@ define([
           key = event.which;
           isShift = event.shiftKey ? true : false;
         }
+        // 13 == enter
         if(event.which == 13 && !isShift) {
           return this.sendMessage();
         }
+        // 38 == up
+        if (event.which == 38 && ($(event.currentTarget).val() === ''))
+          this.trigger('editPreviousInput');
 
-        console.log(event.which);
         // Cleaned the input
         if (event.target.value.length == 0 || event.which == 27) // 27 == esc
           return this.onRollUpClose();
