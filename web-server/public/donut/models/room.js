@@ -79,7 +79,6 @@ define([
     userIsDevoiced: function(userId) {
         if (!this.get('devoices') || !this.get('devoices').length)
           return false;
-
         var subDocument = _.find(this.get('devoices'), function (devoice) {
           if (devoice.user.toString() == userId)
             return true;
@@ -197,11 +196,6 @@ define([
       this.trigger('freshEvent', model);
     },
     onVoice: function(data) {
-      // room.get('devoice')
-      var devoices = _.reject(this.get('devoice'), function(devoiceUserId) {
-        return (devoiceUserId == data.user_id);
-      });
-      this.set('devoice', devoices);
 
       // user.get('is_devoice')
       var user = this.users.get(data.user_id);
@@ -210,13 +204,9 @@ define([
       this.users.sort();
 
       this.users.trigger('users-redraw');
-      this.trigger('inputActive');
+      this.trigger('inputActive', data.user_id);
     },
     onDevoice: function(data) {
-      // room.get('devoice')
-      var devoices = this.get('devoice');
-      devoices.push(data.user_id);
-      this.set('devoice', devoices);
 
       // user.get('is_devoice')
       var user = this.users.get(data.user_id);
@@ -225,7 +215,7 @@ define([
       this.users.sort();
 
       this.users.trigger('users-redraw');
-      this.trigger('inputActive');
+      this.trigger('inputActive',  data.user_id);
     },
     onUpdated: function(data) {
       var that = this;
@@ -293,8 +283,8 @@ define([
     isThereNew: function() {
       return !!(this.get('newmessage') || this.get('newmention') || this.get('newuser'));
     },
-    isInputActive: function() {
-      if (this.get('devoice') && this.get('devoice').indexOf(currentUser.get('user_id')) !== -1)
+    isInputActive: function(userId) {
+      if (this.userIsDevoiced(userId))
         return false;
       return true;
     },

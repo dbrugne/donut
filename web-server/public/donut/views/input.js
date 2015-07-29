@@ -86,8 +86,8 @@ define([
       }
     },
 
-    onActiveChange: function() {
-      if (this.model.isInputActive() === false) { // deactivate input
+    onActiveChange: function(user_id) {
+      if (this.model.isInputActive(user_id) === false) { // deactivate input
         this.$el.addClass('inactive');
       } else {
         this.$el.removeClass('inactive');
