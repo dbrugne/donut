@@ -57,10 +57,10 @@ handler.read = function (data, session, next) {
           d = {
               type: 'commands',
               results: [
-                {name: 'me', description: 'Displays action text'},
-                {name: 'kick', description: 'Kick a user'},
-                {name: 'ban', description: 'Ban a user'},
-                {name: 'deban', description: 'Deban a user'}
+                {name: 'me',    arguments: 'message', description: 'Displays action text'},
+                {name: 'kick',  arguments: '@user [reason]', description: 'Kick a user'},
+                {name: 'ban',   arguments: '@user [reason]', description: 'Ban a user'},
+                {name: 'deban', arguments: '@user', description: 'Deban a user'}
                 // ...
                 ]
             };
@@ -81,10 +81,10 @@ handler.read = function (data, session, next) {
           d = {
             type: 'users',
             results: [
-              {name: 'yann', status: 'online', bio: 'some bio'      , avatar: 'https://res.cloudinary.com/roomly/image/upload/b_rgb:e70097,c_fill,d_user-avatar-default.png,f_jpg,g_face,h_34,w_34/user-avatar-default'},
-              {name: 'damien', status: 'online', bio: 'some bio'    , avatar: 'https://res.cloudinary.com/roomly/image/upload/b_rgb:e70097,c_fill,d_user-avatar-default.png,f_jpg,g_face,h_34,w_34/user-avatar-default'},
-              {name: 'david', status: 'online', bio: 'some bio'     , avatar: 'https://res.cloudinary.com/roomly/image/upload/b_rgb:e70097,c_fill,d_user-avatar-default.png,f_jpg,g_face,h_34,w_34/user-avatar-default'},
-              {name: 'sebastien', status: 'offline', bio: 'some bio', avatar: 'https://res.cloudinary.com/roomly/image/upload/b_rgb:e70097,c_fill,d_user-avatar-default.png,f_jpg,g_face,h_34,w_34/user-avatar-default'}
+              {name: 'yann', status: 'active', bio: 'some bio'      , avatar: 'https://res.cloudinary.com/roomly/image/upload/b_rgb:e70097,c_fill,d_user-avatar-default.png,f_jpg,g_face,h_34,w_34/user-avatar-default'},
+              {name: 'damien', status: 'active', bio: 'some bio'    , avatar: 'https://res.cloudinary.com/roomly/image/upload/b_rgb:e70097,c_fill,d_user-avatar-default.png,f_jpg,g_face,h_34,w_34/user-avatar-default'},
+              {name: 'david', status: 'active', bio: 'some bio'     , avatar: 'https://res.cloudinary.com/roomly/image/upload/b_rgb:e70097,c_fill,d_user-avatar-default.png,f_jpg,g_face,h_34,w_34/user-avatar-default'},
+              {name: 'sebastien', status: 'away', bio: 'some bio', avatar: 'https://res.cloudinary.com/roomly/image/upload/b_rgb:e70097,c_fill,d_user-avatar-default.png,f_jpg,g_face,h_34,w_34/user-avatar-default'}
               // ...
             ]
           };

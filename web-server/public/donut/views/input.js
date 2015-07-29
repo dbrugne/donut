@@ -23,11 +23,13 @@ define([
     events: {
       'input .editable'               : 'onInput',
       'keyup .editable'               : 'onKeyUp',
+      'keydown .editable'             : 'onKeyDown',
       'click .send'                   : 'sendMessage',
       'click .add-image'              : 'onAddImage',
       'click .remove-image'           : 'onRemoveImage',
       'click .add-smiley'             : 'onOpenSmiley',
-      'click .smileys .smilify'       : 'onPickSmiley'
+      'click .smileys .smilify'       : 'onPickSmiley',
+      'hover .rollup-container li'    : 'onRollupHover'
     },
 
     initialize: function(options) {
@@ -108,41 +110,99 @@ define([
       this.$el.find('.avatar').prop('src', $.cd.userAvatar(value, 80));
     },
 
-    onKeyUp: function(event) {
-      // Press enter in field handling
-      if (event.type == 'keyup') {
-        var key;
-        var isShift;
-        if (window.event) {
-          key = window.event.keyCode;
-          isShift = window.event.shiftKey ? true : false;
-        } else {
-          key = event.which;
-          isShift = event.shiftKey ? true : false;
-        }
-        // 13 == enter
-        if(event.which == 13 && !isShift) {
-          return this.sendMessage();
-        }
-        // 38 == up
-        if (event.which == 38 && ($(event.currentTarget).val() === ''))
-          this.trigger('editPreviousInput');
+    /**
+     * Only used to detect keydown on tab and then prevent default to avoid loosing focus
+     * on keypress & keyup, it's too late
+     *
+     * @param event
+     */
+    onKeyDown: function(event) {
+      var data = this._getKeyCode();
+      // 9 == tab
+      if (data.key == 9)
+        event.preventDefault();
+    },
 
-        // Cleaned the input
-        if (event.target.value.length == 0 || event.which == 27) // 27 == esc
+    onKeyUp: function(event) {
+      if (event.type != 'keyup')
+        return;
+
+      var data = this._getKeyCode();
+
+      // Rollup Closed
+      if (this.$rollUpCtn.html().length == 0) {
+        // 13 == enter
+        if(data.key == 13 && !data.isShift)
+          return this.sendMessage();
+        // 38 == up
+        if (data.key == 38 && ($(event.currentTarget).val() === ''))
+          return this.trigger('editPreviousInput');
+
+        if (!this._isRollupCallValid(event.target.value))
           return this.onRollUpClose();
 
-        // Detect here #, @, /
-        switch (event.target.value.substr(0,1)) {
-          case '#':
-          case '@':
-          case '/':
-            this.onRollUpCall(event.target.value);
-          break;
-          default:
-            this.onRollUpClose();
-          break;
-        }
+        return this.onRollUpCall(event.target.value);
+
+      // Rollup Open
+      } else {
+        // Cleaned the input
+        // On key up, if input is empty or push Esc
+        if (event.target.value.length == 0 || data.key == 27) // 27 == esc
+          return this.onRollUpClose();
+
+        if(data.key == 13 && !data.isShift) // 13 == enter
+          return this.onRollUpClose(event.target);
+
+        // 38 == up, 40 == down, 9 == tab
+        if (data.key == 38 || data.key == 40 || data.key == 9)
+          return this._rollupNavigate(data.key, event.target);
+
+        if (!this._isRollupCallValid(event.target.value))
+          return this.onRollUpClose();
+
+        return this.onRollUpCall(event.target.value);
+      }
+    },
+
+    _isRollupCallValid: function(val) {
+      if (_.indexOf(['#', '@', '/'], val.substr(0,1)) == -1)
+        return false;
+
+      return this.onRollUpCall(val);
+    },
+
+    _rollupNavigate: function(key, target) {
+      var currentLi = this.$rollUpCtn.find('li.active');
+      var li = '';
+      if (key == 38) { // 38 == up
+        li = currentLi.prev();
+        if (li.length == 0)
+          li = currentLi.parent().find('li').last();
+      }
+      else if (key == 40 || key == 9) { // 40 == down, 9 == tab
+        li = currentLi.next();
+        if (li.length == 0)
+          li = currentLi.parent().find('li').first();
+      }
+
+      if (li.length != 0) {
+        currentLi.removeClass('active');
+        li.addClass('active');
+        target.value = li.find('.cmdname').html()+' ';
+      }
+    },
+
+    _getKeyCode: function() {
+      if (window.event) {
+        return {
+          key: window.event.keyCode,
+          isShift: !!window.event.shiftKey
+        };
+      } else {
+        return {
+          key: event.which,
+          isShift: !!event.shiftKey
+        };
       }
     },
 
@@ -157,7 +217,7 @@ define([
 
         // Mentions, try to find missed ones
         if (that.model.get('type') == 'room') {
-          var potentialMentions = message.match(/@([-a-z0-9\._|^]{3,15})/ig);
+          var potentialMentions = message.match(/@([-a-z0-9\._|^]{3,15})/ig); // @todo from constant
           _.each(potentialMentions, function(p) {
             var u = p.replace(/^@/, '');
             var m = that.model.users.iwhere('username', u);
@@ -171,7 +231,7 @@ define([
         }
 
         // check length (max)
-        var withoutMentions = message.replace(/@\[([^\]]+)\]\(user:[^\)]+\)/gi, '$1');
+        var withoutMentions = message.replace(/@\[([^\]]+)\]\(user:[^\)]+\)/gi, '$1'); // @todo from constant
         if (withoutMentions.length > 512) {
           debug('message is too long');
           return false;
@@ -292,6 +352,7 @@ define([
     /**
      *
      * @param str, cannot be null here
+     * @todo store results in view, to avoid multiple call to client ?
      */
     onRollUpCall: function(str) {
       var that = this;
@@ -300,8 +361,15 @@ define([
       });
     },
 
-    onRollUpClose: function() {
+    onRollUpClose: function(target) {
+      if (target)
+        target.value =  this.$rollUpCtn.find('li.active .cmdname').html()+' ';
+
       this.$rollUpCtn.html('');
+    },
+
+    onRollupHover: function() {
+      console.log('hover');
     }
 
   });
