@@ -22,7 +22,7 @@ define([
 
     events: {
       'input .editable'               : 'onInput',
-      'keyup .editable'             : 'onKeyPress',
+      'keyup .editable'               : 'onKeyPress',
       'click .send'                   : 'sendMessage',
       'click .add-image'              : 'onAddImage',
       'click .remove-image'           : 'onRemoveImage',

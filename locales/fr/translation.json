@@ -318,6 +318,13 @@
     }
   },
   "chat": {
+    "rollup": {
+      "header": {
+        "commands": "Liste des commandes disponibles",
+        "donuts": "Liste des donuts disponibles",
+        "users": "Liste des utilisateurs"
+      }
+    },
     "loading": "Chargement ",
     "actions": {
       "search": "Chercher",

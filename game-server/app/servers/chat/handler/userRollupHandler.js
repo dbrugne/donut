@@ -55,7 +55,7 @@ handler.read = function (data, session, next) {
       switch (data.str.substr(0,1)) {
         case '/': // Look for a list of available commands
           d = {
-              header: 'List of available commands',
+              type: 'commands',
               results: [
                 {name: 'me', description: 'Displays action text'},
                 {name: 'kick', description: 'Kick a user'},
@@ -67,7 +67,7 @@ handler.read = function (data, session, next) {
           break;
         case '#': // Look for a list of available rooms
           d = {
-            header: 'List of available donuts',
+            type: 'donuts',
             results: [
               {name: 'donut', description: 'some description', users: 450   , avatar:'https://res.cloudinary.com/roomly/image/upload/b_rgb:46bb00,c_fill,d_room-avatar-default.png,f_jpg,g_face,h_100,w_100/room-avatar-default'},
               {name: 'test', description: 'some description', users: 4      , avatar:'https://res.cloudinary.com/roomly/image/upload/b_rgb:46bb00,c_fill,d_room-avatar-default.png,f_jpg,g_face,h_100,w_100/room-avatar-default'},
@@ -79,7 +79,7 @@ handler.read = function (data, session, next) {
           break;
         case '@': // Look for a list of available users
           d = {
-            header: 'List of users',
+            type: 'users',
             results: [
               {name: 'yann', status: 'online', bio: 'some bio'      , avatar: 'https://res.cloudinary.com/roomly/image/upload/b_rgb:e70097,c_fill,d_user-avatar-default.png,f_jpg,g_face,h_34,w_34/user-avatar-default'},
               {name: 'damien', status: 'online', bio: 'some bio'    , avatar: 'https://res.cloudinary.com/roomly/image/upload/b_rgb:e70097,c_fill,d_user-avatar-default.png,f_jpg,g_face,h_34,w_34/user-avatar-default'},
