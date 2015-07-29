@@ -707,20 +707,18 @@
       "roomkick": {
         "subject": "You were kicked out of #__roomname__",
         "content": {
-          "title": "You were kicked out of #__roomname__",
-          "disclaimer": "You were kicked out of <strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong> by <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">@__username__</a></strong>.",
-          "reason": "Reason: __reason__",
-          "disclaimer2": "That can't be a big deal. The two of you just give a big hug and everything will be fine again!",
+          "title": "You were kicked out of #__roomname__ par @__username__",
+          "reason": "<strong>Reason: \"__reason__\"</strong>",
+          "disclaimer": "That can't be a big deal. The two of you just give a big hug and everything will be fine again!",
           "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Back to DONUT\">Back to DONUT</a>"
         }
       },
       "roomban": {
         "subject": "You were banned from #__roomname__",
         "content": {
-          "title": "You were banned from #__roomname__",
-          "disclaimer": "You were banned from <strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong> by <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">@__username__</a></strong>.",
-          "reason": "Reason: __reason__",
-          "disclaimer2": "It looks like you were not meant to be together... But you'll be fine, one lost ten found. Just pick another donut!",
+          "title": "You were banned from #__roomname__ par @__username__",
+          "reason": "<strong>Reason: \"__reason__\"</strong>",
+          "disclaimer": "It looks like you were not meant to be together...<br/>But you'll be fine, one lost ten found. Just pick another donut!",
           "button": "Return to DONUT"
         }
       },
@@ -746,7 +744,7 @@
         "subject": "New messages in #__roomname__",
         "content": {
           "title": "New messages in #__roomname__",
-          "inroom": "You have new messages in <strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>",
+          "inroom": "<strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>",
           "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Go to chat\">Go to chat</a>"
         }
       },
@@ -761,7 +759,8 @@
       "roomtopic": {
         "subject": "New topic in #__roomname__",
         "content": {
-          "title": "@__username__ has defined a new topic in #__roomname__: __topic__",
+          "title": "@__username__ has defined a new topic in #__roomname__",
+          "topic": "<strong>New topic : \"__topic__\"</strong>",
           "disclaimer": "You must a thousand things to say about it!",
           "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Go to chat\">Go to chat</a>"
         }

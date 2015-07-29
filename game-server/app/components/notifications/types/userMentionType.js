@@ -101,6 +101,11 @@ Notification.prototype.sendToBrowser = function (model, user, room, history, don
         id: user.id,
         username: user.username
       },
+      by_user: {
+        avatar: history.user._avatar(),
+        id: history.user.id,
+        username: history.user.username
+      },
       room: {
         id: room.id,
         name: room.name,

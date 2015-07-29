@@ -271,8 +271,8 @@ emailer.roomKick = function (to, data, callback) {
     username: data.username,
     roomname: data.roomname.replace('#', ''),
     reason: data.reason,
-    title: i18next.t("email.roomkick.content.title", {roomname: data.roomname.replace('#', '')}),
-    email_heading: i18next.t("email.roomkick.content.title", {roomname: data.roomname.replace('#', '')}),
+    title: i18next.t("email.roomkick.content.title", {roomname: data.roomname.replace('#', ''), username: data.username}),
+    email_heading: i18next.t("email.roomkick.content.title", {roomname: data.roomname.replace('#', ''), username: data.username}),
     email_heading_action: ''
   }, function (err, html) {
     if (err)
@@ -295,8 +295,8 @@ emailer.roomBan = function (to, data, callback) {
     username: data.username,
     roomname: data.roomname.replace('#', ''),
     reason: data.reason,
-    title: i18next.t("email.roomban.content.title", {roomname: data.roomname.replace('#', '')}),
-    email_heading: i18next.t("email.roomban.content.title", {roomname: data.roomname.replace('#', '')}),
+    title: i18next.t("email.roomban.content.title", {roomname: data.roomname.replace('#', ''), username: data.username}),
+    email_heading: i18next.t("email.roomban.content.title", {roomname: data.roomname.replace('#', ''), username: data.username}),
     email_heading_action: ''
   }, function (err, html) {
     if (err)
@@ -355,7 +355,8 @@ emailer.roomTopic = function (to, from, room, topic, callback) {
     roomname: room.replace('#', ''),
     title: i18next.t('email.roomtopic.content.title', {topic: topic, username: from, fqdn: conf.fqdn, roomname: room.replace('#', '')}),
     email_heading: i18next.t('email.roomtopic.content.title', {topic: topic, username: from, fqdn: conf.fqdn, roomname: room.replace('#', '')}),
-    email_heading_action: ''
+    email_heading_action: '',
+    topic: topic
   }, function (err, html) {
     if (err)
       return callback(err);
