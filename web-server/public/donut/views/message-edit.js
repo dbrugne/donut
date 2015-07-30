@@ -14,6 +14,8 @@ define([
 
     template: templates['message-edit.html'],
 
+    KEY : { RETURN : 13, ESC : 27 },
+
     events: {
       'click .message-form .enter' : 'onEditMessage',
       'click .message-form .esc'   : 'onEscEditMessage',
@@ -84,9 +86,10 @@ define([
     },
     onKeydown: function (event) {
       this.updateFormSize();
-      if (event.which == 27) // escape
+      var data = this._getKeyCode();
+      if (event.which == this.KEY.ESC) // escape
         this.onEscEditMessage(event);
-      else if (event.which == 13) // enter
+      else if (event.which == this.KEY.RETURN && !data.isShift) // enter
         this.onEditMessage(event);
     },
     updateFormSize: function () {
@@ -121,7 +124,20 @@ define([
       });
 
       return text.text();
-    }
+    },
+    _getKeyCode: function() {
+      if (window.event) {
+        return {
+          key: window.event.keyCode,
+          isShift: !!window.event.shiftKey
+        };
+      } else {
+        return {
+          key: event.which,
+          isShift: !!event.shiftKey
+        };
+      }
+    },
   });
 
   return MessageEditView;
