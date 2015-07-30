@@ -837,6 +837,11 @@
       "title": "Sons",
       "test": "tester"
     },
+    "exit": {
+      "title": "Confirmation de sortie",
+      "label-true": "Me demander une confirmation avant de quitter l'application",
+      "label-false": "Pas de confirmation quand je quitte l'application"
+    },
     "welcome": {
       "title": "Fenêtre de bienvenue",
       "label-true": "Afficher la fenêtre de bienvenue à la connexion",
