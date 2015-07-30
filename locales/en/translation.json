@@ -947,7 +947,7 @@
     "exit": {
       "title": "Confirmation output",
       "label-true": "Ask me a confirmation before exiting the application",
-      "label-false": "Not confirmation when I leave application"
+      "label-false": "No confirmation when I leave application"
     },
     "welcome": {
       "title": "Pop-up window",
