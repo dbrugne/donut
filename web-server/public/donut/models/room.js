@@ -64,7 +64,6 @@ define([
         is_devoice: this.userIsDevoiced(data.user_id),
         status: data.status
       });
-      //model.trigger('onActiveChange', data.user_id);
       this.users.add(model, {sort: sort});
       return model;
     },

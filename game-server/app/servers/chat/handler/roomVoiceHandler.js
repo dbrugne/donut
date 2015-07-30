@@ -122,7 +122,7 @@ handler.voice = function(data, session, next) {
         if (err)
           return callback('Error while emitting room:voice in '+room.name+': '+err);
 
-        return callback(null, room, user, voiceUser, sentEvent);
+        return callback(null);
       });
     }
 

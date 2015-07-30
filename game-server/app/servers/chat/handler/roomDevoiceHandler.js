@@ -118,7 +118,7 @@ handler.devoice = function(data, session, next) {
         if (err)
           return callback('Error while emitting room:devoice in '+room.name+': '+err);
 
-        return callback(null, room, user, devoiceUser, sentEvent);
+        return callback(null);
       });
     }
 
