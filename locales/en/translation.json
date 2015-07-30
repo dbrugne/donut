@@ -707,7 +707,7 @@
       "roomkick": {
         "subject": "You were kicked out of #__roomname__",
         "content": {
-          "title": "You were kicked out of #__roomname__ par @__username__",
+          "title": "You were kicked out of #__roomname__ by @__username__",
           "reason": "<strong>Reason: \"__reason__\"</strong>",
           "disclaimer": "That can't be a big deal. The two of you just give a big hug and everything will be fine again!",
           "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Back to DONUT\">Back to DONUT</a>"
@@ -716,7 +716,7 @@
       "roomban": {
         "subject": "You were banned from #__roomname__",
         "content": {
-          "title": "You were banned from #__roomname__ par @__username__",
+          "title": "You were banned from #__roomname__ by @__username__",
           "reason": "<strong>Reason: \"__reason__\"</strong>",
           "disclaimer": "It looks like you were not meant to be together...<br/>But you'll be fine, one lost ten found. Just pick another donut!",
           "button": "Return to DONUT"
