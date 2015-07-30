@@ -12,6 +12,7 @@ define([
     defaults: function() {
       return {
         name          : '',
+        devoice       : [],
         op            : [],
         topic         : '',
         avatar        : '',
@@ -64,6 +65,7 @@ define([
         is_devoice: this.userIsDevoiced(data.user_id),
         status: data.status
       });
+      //model.trigger('onActiveChange', data.user_id);
       this.users.add(model, {sort: sort});
       return model;
     },
@@ -77,14 +79,16 @@ define([
       client.roomLeave(this.get('name'));
     },
     userIsDevoiced: function(userId) {
-        if (!this.get('devoices') || !this.get('devoices').length)
-          return false;
-        var subDocument = _.find(this.get('devoices'), function (devoice) {
-          if (devoice.user.toString() == userId)
-            return true;
-        });
+      var user = this.users.get(userId);
+      var that = this;
+      if (!user && !this.get('devoices') || !this.get('devoices').length)
+        return false;
+      var subDocument = _.find(this.get('devoices'), function (devoice) {
+        if (devoice.user.toString() == userId)
+          return true;
+      });
 
-        return (typeof subDocument != 'undefined');
+      return (typeof subDocument != 'undefined');
     },
     currentUserIsOwner: function() {
       if (!this.get('owner'))
@@ -197,6 +201,12 @@ define([
     },
     onVoice: function(data) {
 
+      //room.get('devoice')
+      var devoices = _.reject(this.get('devoice'), function(devoiceUserId) {
+        return (devoiceUserId == data.user_id);
+      });
+      this.set('devoice', devoices);
+
       // user.get('is_devoice')
       var user = this.users.get(data.user_id);
       if (user)
@@ -204,9 +214,14 @@ define([
       this.users.sort();
 
       this.users.trigger('users-redraw');
-      this.trigger('inputActive', data.user_id);
+      this.trigger('inputActive',  data.user_id);
     },
     onDevoice: function(data) {
+
+      // room.get('devoice')
+      var devoices = this.get('devoice');
+      devoices.push(data.user_id);
+      this.set('devoice', devoices);
 
       // user.get('is_devoice')
       var user = this.users.get(data.user_id);
@@ -284,7 +299,10 @@ define([
       return !!(this.get('newmessage') || this.get('newmention') || this.get('newuser'));
     },
     isInputActive: function(userId) {
-      if (this.userIsDevoiced(userId))
+      var user = this.users.get(currentUser.get('user_id'));
+      if (user && user.get('is_devoice') && currentUser.get('user_id') == userId)
+        return false;
+      if (currentUser.get('user_id') == userId && this.get('devoice') && this.get('devoice').indexOf(userId) !== -1)
         return false;
       return true;
     },

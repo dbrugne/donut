@@ -79,15 +79,15 @@ define([
         }
       });
 
-      if (this.model.isInputActive() === false) { // deactivate input
+      if (this.model.isInputActive(currentUser.get('user_id')) === false) { // desactivate input
         this.$el.addClass('inactive');
       } else {
         this.$el.removeClass('inactive');
       }
     },
 
-    onActiveChange: function(user_id) {
-      if (this.model.isInputActive(user_id) === false) { // deactivate input
+    onActiveChange: function(userId) {
+      if (this.model.isInputActive(userId) === false) { // desactivate input
         this.$el.addClass('inactive');
       } else {
         this.$el.removeClass('inactive');
