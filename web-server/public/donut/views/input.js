@@ -23,7 +23,7 @@ define([
     KEY : { BACKSPACE : 8, TAB : 9, RETURN : 13, ESC : 27, LEFT : 37, UP : 38, RIGHT : 39, DOWN : 40, COMMA : 188, SPACE : 32, HOME : 36, END : 35 },
 
     events: {
-      'input .editable'               : 'onInput',
+      //'input .editable'               : 'onInput',
       'keyup .editable'               : 'onKeyUp',
       'keydown .editable'             : 'onKeyDown',
       'click .send'                   : 'sendMessage',
@@ -44,7 +44,7 @@ define([
     },
 
     _remove: function() {
-      this.$editable.mentionsInput('reset');
+      //this.$editable.mentionsInput('reset');
       this.remove();
     },
 
@@ -60,32 +60,32 @@ define([
 
       var that = this;
 
-      // mentions initialisation
-      this.$editable.mentionsInput({
-        minChars: 1,
-        elastic: false,
-        allowRepeat: true,
-        onDataRequest: function (mode, query, callback) {
-          if (that.model.get('type') != 'room')
-            return [];
-          // filter user list
-          var data = that.model.users.filter(function(item) {
-            return item.get('username').toLowerCase().indexOf(query.toLowerCase()) > -1;
-          });
-          // decorate user list
-          data = _.map(data, function(model, key, list) {
-            var avatar = $.cd.userAvatar(model.get('avatar'), 10);
-            return {
-              id      : model.get('id'),
-              name    : model.get('username'),
-              avatar  : avatar,
-              type    : 'user'
-            };
-          });
-
-          callback.call(this, data);
-        }
-      });
+      //// mentions initialisation
+      //this.$editable.mentionsInput({
+      //  minChars: 1,
+      //  elastic: false,
+      //  allowRepeat: true,
+      //  onDataRequest: function (mode, query, callback) {
+      //    if (that.model.get('type') != 'room')
+      //      return [];
+      //    // filter user list
+      //    var data = that.model.users.filter(function(item) {
+      //      return item.get('username').toLowerCase().indexOf(query.toLowerCase()) > -1;
+      //    });
+      //    // decorate user list
+      //    data = _.map(data, function(model, key, list) {
+      //      var avatar = $.cd.userAvatar(model.get('avatar'), 10);
+      //      return {
+      //        id      : model.get('id'),
+      //        name    : model.get('username'),
+      //        avatar  : avatar,
+      //        type    : 'user'
+      //      };
+      //    });
+      //
+      //    callback.call(this, data);
+      //  }
+      //});
 
       if (this.model.isInputActive() === false) { // deactivate input
         this.$el.addClass('inactive');
@@ -101,12 +101,12 @@ define([
         this.$el.removeClass('inactive');
       }
     },
-
-    onInput: function(event) {
-      // set mention dropdown position
-      this.$editable.siblings('.mentions-autocomplete-list')
-        .css('bottom', this.$editable.height()+10+'px');
-    },
+    //
+    //onInput: function(event) {
+    //  // set mention dropdown position
+    //  this.$editable.siblings('.mentions-autocomplete-list')
+    //    .css('bottom', this.$editable.height()+10+'px');
+    //},
 
     onAvatar: function(model, value, options) {
       this.$el.find('.avatar').prop('src', $.cd.userAvatar(value, 80));
@@ -215,59 +215,58 @@ define([
     sendMessage: function(event) {
       // Get the message
       var that = this;
-      this.$editable.mentionsInput('val', function(message) {
-        // check length (min)
-        var imagesCount = _.keys(that.images).length;
-        if (message == '' && imagesCount < 1) // empty message and no image
-          return false;
+      var message = this.$editable.val().substr(0,this.$editable.val().length -1); // Remove last return caracter
 
-        // Mentions, try to find missed ones
-        if (that.model.get('type') == 'room') {
-          var potentialMentions = message.match(/@([-a-z0-9\._|^]{3,15})/ig); // @todo from constant
-          _.each(potentialMentions, function(p) {
-            var u = p.replace(/^@/, '');
-            var m = that.model.users.iwhere('username', u);
-            if (m) {
-              message = message.replace(
-                new RegExp('@'+u, 'g'),
-                  '@['+ m.get('username')+'](user:'+m.get('id')+')'
-              );
-            }
+      var imagesCount = _.keys(that.images).length;
+      if (message == '' && imagesCount < 1) // empty message and no image
+        return false;
+
+      // Mentions, try to find missed ones
+      if (that.model.get('type') == 'room') {
+        var potentialMentions = message.match(/@([-a-z0-9\._|^]{3,15})/ig); // @todo from constant
+        _.each(potentialMentions, function(p) {
+          var u = p.replace(/^@/, '');
+          var m = that.model.users.iwhere('username', u);
+          if (m) {
+            message = message.replace(
+              new RegExp('@'+u, 'g'),
+              '@['+ m.get('username')+'](user:'+m.get('id')+')'
+            );
+          }
+        });
+      }
+
+      // check length (max)
+      var withoutMentions = message.replace(/@\[([^\]]+)\]\(user:[^\)]+\)/gi, '$1'); // @todo from constant
+      if (withoutMentions.length > 512) {
+        debug('message is too long');
+        return false;
+      }
+
+      // add images
+      var images = [];
+      if (imagesCount > 0) {
+        _.each(that.images, function(i) {
+          images.push({
+            public_id: i.public_id,
+            version: i.version,
+            path: i.path
           });
-        }
+        });
+      }
 
-        // check length (max)
-        var withoutMentions = message.replace(/@\[([^\]]+)\]\(user:[^\)]+\)/gi, '$1'); // @todo from constant
-        if (withoutMentions.length > 512) {
-          debug('message is too long');
-          return false;
-        }
+      // Send message to server
+      that.model.sendMessage(message, images);
+      that.trigger('send');
 
-        // add images
-        var images = [];
-        if (imagesCount > 0) {
-          _.each(that.images, function(i) {
-            images.push({
-              public_id: i.public_id,
-              version: i.version,
-              path: i.path
-            });
-          });
-        }
+      // Empty field
+      that.$editable.val('');
+      that.$editable.mentionsInput('reset');
 
-        // Send message to server
-        that.model.sendMessage(message, images);
-        that.trigger('send');
-
-        // Empty field
-        that.$editable.val('');
-        that.$editable.mentionsInput('reset');
-
-        // reset images
-        that.images = {};
-        that.$preview.find('.image').remove();
-        that.hidePreview();
-      });
+      // reset images
+      that.images = {};
+      that.$preview.find('.image').remove();
+      that.hidePreview();
 
       // Avoid line break addition in field when submitting with "Enter"
       return false;
@@ -369,7 +368,7 @@ define([
 
     onRollUpClose: function(target) {
       if (target)
-        target.value =  this.$rollUpCtn.find('li.active .cmdname').html()+' ';
+        target.value =  this.$rollUpCtn.find('li.active .value').html()+' ';
 
       this.$rollUpCtn.html('');
     },

@@ -11,7 +11,7 @@
                     <% _.each(results, function(result) { %>
                     <li class="tab_complete_ui_item <%= nb == 0 ? 'active' : '' %>" data-index="<%= nb %>">
                         <img class="avatar" src="<%= result.avatar %>">
-                        <span class="username">@<%= result.name  %></span><span class="presence <%= result.status %>"></span>
+                        <span class="username value">@<%= result.name  %></span><span class="presence <%= result.status %>"></span>
                         <span class="realname"><%= result.bio  %></span>
                     </li>
                     <% nb++; %>
@@ -23,7 +23,7 @@
                     <% _.each(results, function(result) { %>
                         <li class="tab_complete_ui_item <%= nb == 0 ? 'active' : '' %>" data-index="<%= nb %>">
                             <img class="avatar" src="<%= result.avatar %>">
-                            <span class="channelname"><span class="hash">#</span><%= result.name %></span>
+                            <span class="channelname"><span class="hash">#</span><span class="value"><%= result.name %></span></span>
                         </li>
                     <% nb++; %>
                     <% }); %>
@@ -34,7 +34,7 @@
                     <% _.each(results, function(result) { %>
                     <li class="tab_complete_ui_item <%= nb == 0 ? 'active' : '' %>" data-index="<%= nb %>">
                         <div class="cmd-left-td">
-                            <span class="cmdname">/<%= result.name %></span>
+                            <span class="cmdname value">/<%= result.name %></span>
                             <span class="argname"><%= result.arguments %></span>
                         </div>
                         <div class="cmd-right-td"><span class="cmddesc"><span class="cmdtype"></span> <%= result.description %></span>
