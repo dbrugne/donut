@@ -87,10 +87,20 @@ define([
     },
 
     onActiveChange: function(userId) {
-      if (this.model.isInputActive(userId) === false) { // desactivate input
-        this.$el.addClass('inactive');
-      } else {
+      // If input active state change concerns the current user
+      if (currentUser.get('user_id') !== userId)
+        return;
+
+      // Input is not active -> User is devoiced
+      if (this.model.isInputActive(userId) === false) {
         this.$el.removeClass('inactive');
+        var devoices = _.reject( this.model.get('devoices'), function(devoiceUserId) {
+          return (devoiceUserId.user == userId);
+        });
+        this.model.set('devoices', devoices);
+      } else {
+        this.$el.addClass('inactive');
+        this.model.get('devoices').push({ user: userId, devoice_at: Date.now() });
       }
     },
 
