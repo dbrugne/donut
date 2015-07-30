@@ -20,6 +20,8 @@ define([
 
     images: '',
 
+    KEY : { BACKSPACE : 8, TAB : 9, RETURN : 13, ESC : 27, LEFT : 37, UP : 38, RIGHT : 39, DOWN : 40, COMMA : 188, SPACE : 32, HOME : 36, END : 35 },
+
     events: {
       'input .editable'               : 'onInput',
       'keyup .editable'               : 'onKeyUp',
@@ -118,8 +120,8 @@ define([
      */
     onKeyDown: function(event) {
       var data = this._getKeyCode();
-      // 9 == tab
-      if (data.key == 9)
+
+      if (data.key == this.KEY.TAB)
         event.preventDefault();
     },
 
@@ -131,11 +133,11 @@ define([
 
       // Rollup Closed
       if (this.$rollUpCtn.html().length == 0) {
-        // 13 == enter
-        if(data.key == 13 && !data.isShift)
+
+        if(data.key == this.KEY.RETURN && !data.isShift)
           return this.sendMessage();
-        // 38 == up
-        if (data.key == 38 && ($(event.currentTarget).val() === ''))
+
+        if (data.key == this.KEY.UP && ($(event.currentTarget).val() === ''))
           return this.trigger('editPreviousInput');
 
         if (!this._isRollupCallValid(event.target.value))
@@ -147,14 +149,13 @@ define([
       } else {
         // Cleaned the input
         // On key up, if input is empty or push Esc
-        if (event.target.value.length == 0 || data.key == 27) // 27 == esc
+        if (event.target.value.length == 0 || data.key == this.KEY.ESC)
           return this.onRollUpClose();
 
-        if(data.key == 13 && !data.isShift) // 13 == enter
+        if(data.key == this.KEY.RETURN && !data.isShift)
           return this.onRollUpClose(event.target);
 
-        // 38 == up, 40 == down, 9 == tab
-        if (data.key == 38 || data.key == 40 || data.key == 9)
+        if (data.key == this.KEY.UP || data.key == this.KEY.DOWN || data.key == this.KEY.TAB)
           return this._rollupNavigate(data.key, event.target);
 
         if (!this._isRollupCallValid(event.target.value))
@@ -165,21 +166,26 @@ define([
     },
 
     _isRollupCallValid: function(val) {
-      if (_.indexOf(['#', '@', '/'], val.substr(0,1)) == -1)
+      // get last typed parameter, separated by spaces
+      var last = _.last(val.split(' '));
+      if (last.length == 0)
         return false;
 
-      return this.onRollUpCall(val);
+      if (_.indexOf(['#', '@', '/'], last.substr(0,1)) == -1)
+        return false;
+
+      return this.onRollUpCall(last);
     },
 
     _rollupNavigate: function(key, target) {
       var currentLi = this.$rollUpCtn.find('li.active');
       var li = '';
-      if (key == 38) { // 38 == up
+      if (key == this.KEY.UP) {
         li = currentLi.prev();
         if (li.length == 0)
           li = currentLi.parent().find('li').last();
       }
-      else if (key == 40 || key == 9) { // 40 == down, 9 == tab
+      else if (key == this.KEY.DOWN || key == this.KEY.TAB) {
         li = currentLi.next();
         if (li.length == 0)
           li = currentLi.parent().find('li').first();
