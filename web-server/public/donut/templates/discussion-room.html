@@ -5,7 +5,11 @@
 </div><!-- /.side -->
 <div class="content">
     <div class="header room">
-        <img class="avatar open-room-profile" data-room-name="<%= name %>" src="<%= avatar %>" alt="<%= name %> avatar">
+        <div class="overlay-ctn">
+            <img class="avatar open-room-profile" data-room-name="<%= name %>" src="<%= avatar %>" alt="<%= name %> avatar">
+            <div class="overlay open-room-profile" data-room-name="<%= name %>" ></div>
+            <span class="overlay-text open-room-profile" data-room-name="<%= name %>" ><%= t('chat.actions.see') %></span>
+        </div>
         <div class="info">
             <div class="name open-room-profile" data-room-name="<%= name %>"><%= name %></div>
             <div class="dropdown">
