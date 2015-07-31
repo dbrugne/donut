@@ -237,6 +237,7 @@ userSchema.statics.retrieveUser = function (username) {
  */
 userSchema.statics.preferencesKeys = function () {
   return {
+    'browser:exitpopin': {default: true},
     'browser:welcome': {default: true},
     'browser:sounds': {default: true},
     'notif:channels:desktop': {default: false},

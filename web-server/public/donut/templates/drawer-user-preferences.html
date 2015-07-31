@@ -71,7 +71,6 @@
             <p class="help-block"><%= t('preferences.notif.channels.help') %></p>
         </div>
     </div>
-
     <div class="form-group">
         <p class="help-block"><%= t('preferences.notif.events.title') %></p>
         <!--<% var notifications = ['notif:usermessage', 'notif:roominvite']; %>-->
@@ -87,9 +86,22 @@
         </div>
         <% }); %>
     </div>
-
+    <div class="form-group">
+        <label><%= t('preferences.exit.title') %></label>
+        <div class="radio">
+            <label>
+                <input type="radio" class="savable" name="browser:exitpopin" value="browser:exitpopin:true" <% if (preferences['browser:exitpopin']) { print('checked'); } %>>
+                <%= t('preferences.exit.label-true') %>
+            </label>
+        </div>
+        <div class="radio">
+            <label>
+                <input type="radio" class="savable" name="browser:exitpopin" value="browser:exitpopin:false" <% if (!preferences['browser:exitpopin']) { print('checked'); } %>>
+                <%= t('preferences.exit.label-false') %>
+            </label>
+        </div>
+    </div>
     <% if(bannedUsers.length > 0) { %>
-
     <div class="form-group users">
         <label><%= t('preferences.notif.banned-users') %></label>
         <table>
@@ -108,6 +120,5 @@
             </tbody>
         </table>
     </div>
-
     <% } %>
 </form>
