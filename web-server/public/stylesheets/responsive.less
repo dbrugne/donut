@@ -9,7 +9,6 @@
   #landing .header { height: 995px;
     .cover { background: none; }
   }
-
 }
 
 /** for <=992 screens resolutions **/
@@ -35,7 +34,6 @@
       }
     }
   }
-
   .page-sidebar-menu.right {
     & > li {
       &:hover { right: 211px; box-shadow: 0 6px 12px rgba(0,0,0,0.175);
@@ -49,6 +47,7 @@
   }
 
   #chat {
+    #drawer .opacity .wrap { width: auto !important; margin-right: 90px; } // #chat #drawer .opacity .wrap
     #left { width: 45px;
       .page-sidebar-menu {
         #block-current-user { padding: 0; min-height: initial;
@@ -111,11 +110,11 @@
           }
         }
       }
-    }
+    } // #chat #left
     #center { margin-left: 45px;
       .discussion {
         .content { margin-right: 45px; padding-left: 0;
-          .header.room { padding-top: 10px; background-color: #ffeb88; padding-left: 10px; position: relative;     min-height: 85px; margin-bottom: 11px;
+          .header.room { padding-top: 10px; background-color: @cl-subtext15; padding-left: 10px; position: relative;     min-height: 85px; margin-bottom: 11px;
             .overlay-ctn {
               .avatar { width:30px; height:30px; border:0; }
               .overlay, .overlay-text { display:none; }
@@ -129,13 +128,15 @@
               }
             }
             .topic {    float: left; width: 100%; margin-top: 8px;     padding: 0;
-              .topic-current {     padding: 2px 10px; width: 100%;
+              .topic-current {     padding: 5px 10px; width: 100%;
                 &::before {content:"";}
               }
-              .topic-form { width:100%; }
+              .topic-form { width:100%;
+                .input-group .btn, .input-group .topic-input{ height: 28px; padding: 5px 10px; line-height: 16px; }
+              }
             }
-          }
-          .header.user { padding-top: 10px; background-color: #ffeb88; padding-left: 10px; position: relative;     min-height: 85px; margin-bottom: 11px;
+          } // #center .discussion .content .header.room
+          .header.user { padding-top: 10px; background-color: @cl-subtext15; padding-left: 10px; position: relative;     min-height: 85px; margin-bottom: 11px;
             .avatar { width:30px; height:30px;border:0;  }
             .info { line-height: 22px; margin-left: 0;
               .username { margin: 0 0 0 0px; font-size: 16px; margin-top: 5px; }
@@ -144,9 +145,22 @@
               }
             }
             .status-block { float: left; width: 100%; margin: 8px; }
-          }
-          .events { padding-left: 10px; }
-          .input { padding-left: 10px;
+          } // #center .discussion .content .header.user
+          .events { padding-left: 10px; border-top: none;
+            .go-to-top, .go-to-bottom { display:none !important; }
+            .scrollable .scrollable-content .realtime .block {
+              &.date { margin-top: 10px;
+                .moment { font-size:1em; }
+              } // #chat #center .discussion .content .events .scrollable .scrollable-content .realtime .block.date
+              &.message .event {
+                .text { padding: 0; }
+                .date { display:none; }
+                &:hover .actions { display:none; }
+              } // #chat #center .discussion .content .events .scrollable .scrollable-content .realtime .block.message .event
+              &.op, &.deop, &.ban, &.deban, &.kick, &.inout, &.topic { display:none; }
+            } // #chat #center .discussion .content .events .scrollable .scrollable-content .realtime .block
+          } // #chat #center .discussion .content .events
+          .input { padding-left: 10px; margin-bottom: 10px;
             .text-container {   padding-bottom: 0;
               .text { padding: 5px 70px 5px 5px;
                 .avatar { display: none; }
@@ -160,8 +174,8 @@
                 }
               }
             }
-          }
-        }
+          } // #chat #center .discussion .content .input
+        } // #chat #center .discussion .content
         .side { width: 45px; background-image: none !important;
           .blur { background-image: none !important;
             .users { padding: 0;
@@ -169,8 +183,8 @@
               .header { position: relative; top: 0; right: initial; left: 0;
                 > .count { display: none; float: left !important; text-overflow: ellipsis; white-space: nowrap; width: 175px; overflow: hidden; }
                 .page-sidebar-menu .sub-menu li { padding: 5px 10px; }
-              }
-              .list { border-top: 1px solid @cl-subtext0; margin: 10px 0 0 0;
+              } // #chat #center .discussion .side .blur .users .header
+              .list { margin: 0;
                 > li {
                   &:first-child { padding-top: 10px; }
                   .item, .item.offline { margin: 0; padding: 5px 8px 5px 12px; height: 35px; cursor:pointer; width: 256px;
@@ -186,19 +200,19 @@
                         }
                         .dropdown {
                           .dropdown-toggle { display:none; }
-                          .dropdown-menu { padding: 10px 0 0; background: @cl-subtext10; width: 210px; position: absolute; z-index: 2000; right: 31px; left: initial; margin-right: 10px; margin-top: 0; display: block !important; border: 0; border-radius: 0; top: 30px; }
+                          .dropdown-menu { padding: 10px 0 0; background: @cl-subtext10; width: 210px; position: absolute; z-index: 2000; right: 31px; left: initial; margin-right: 7px; margin-top: 0; display: block !important; border: 0; border-radius: 0; top: 30px; }
                         }
                       }
                     }
                   }
                 }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
+              } // #chat #center .discussion .side .blur .users .list
+            } // #chat #center .discussion .side .blur .users
+          } // #chat #center .discussion .side .blur
+        } // #chat #center .discussion .side
+      } // #chat #center .discussion
+    } // #chat #center
+  } // #chat
 
   #landing {
     .header {

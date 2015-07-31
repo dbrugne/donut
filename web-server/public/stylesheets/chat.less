@@ -172,6 +172,7 @@
       padding-left: 7px;
       padding-right: 0;
       .navbar-brand-a { height: auto; padding: 5px 15px 0 0; float:left;
+        &:hover { text-decoration: none; }
         .logo { display: inline-block; width: 130px; height: 32px; }
         .beta { vertical-align: bottom; height: @size-color; color: @cl-background; .ft-raleway-medium; font-size: 12px; padding-left: 0px; padding-top: 18px; }
       }
@@ -367,6 +368,7 @@
         }
         & > li { float: left;
           & > a { padding-top: 9px; padding-bottom: 8px; color: @cl-background;
+            &:active, &:visited, &:focus { background-color: transparent; }
             .icon { font-size: 20px; color: @cl-first-dark-15;
               &:hover { color: @cl-first-dark-25; }
             }
