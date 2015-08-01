@@ -59,10 +59,10 @@ define([
       return this;
     },
     remove: function () {
-      this.$text
-        .removeClass('hidden');
+      this.$text.removeClass('hidden');
       this.$messageForm.remove();
       this.$el.addClass('has-hover');
+
       this.unbind();
       this.undelegateEvents();
 
