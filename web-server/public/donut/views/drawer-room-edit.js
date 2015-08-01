@@ -95,7 +95,7 @@ define([
         resized_width: 0,
         resized_height: 0,
         cropping_aspect_ratio: 0.36, // portrait
-        success: _.bind(this.onRoomPortraitUpdate, this)
+        success: _.bind(this.onRoomPosterUpdate, this)
       });
     },
     onSubmit: function(event) {
@@ -152,7 +152,7 @@ define([
       });
     },
 
-    onRoomPortraitUpdate: function (data) {
+    onRoomPosterUpdate: function (data) {
       var updateData = {
         poster: data
       };
