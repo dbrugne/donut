@@ -18,17 +18,18 @@ define([
     images: '',
 
     events: {
-      'input .editable'               : 'onInput',
-      'keydown .editable'            : 'onKeyDown',
-      'click .send'                   : 'sendMessage',
-      'click .add-image'              : 'onAddImage',
-      'click .remove-image'           : 'onRemoveImage',
-      'click .add-smiley'             : 'onOpenSmiley',
-      'click .smileys .smilify'       : 'onPickSmiley'
+      'input .editable'         : 'onInput',
+      'keydown .editable'       : 'onKeyDown',
+      'click .send'             : 'sendMessage',
+      'click .add-image'        : 'onAddImage',
+      'click .remove-image'     : 'onRemoveImage',
+      'click .add-smiley'       : 'onOpenSmiley',
+      'click .smileys .smilify' : 'onPickSmiley'
     },
 
     initialize: function(options) {
       this.listenTo(currentUser, 'change:avatar', this.onAvatar);
+      this.listenTo(this.model, 'inputFocus', this.onFocus);
       this.listenTo(this.model, 'inputActive', this.onActiveChange);
 
       this.images = {}; // should be initialized with {} on .initialize(), else all the view instances will share the same object (#110)
@@ -92,6 +93,11 @@ define([
       } else {
         this.$el.removeClass('inactive');
       }
+    },
+
+    onFocus: function() {
+      if (this.$editable)
+        this.$editable.focus();
     },
 
     onInput: function(event) {
