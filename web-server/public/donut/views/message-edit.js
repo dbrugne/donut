@@ -15,8 +15,8 @@ define([
     template: templates['message-edit.html'],
 
     events: {
-      'click .message-form .enter' : 'onEditMessage',
-      'click .message-form .esc'   : 'onEscEditMessage',
+      'click .message-form .enter' : 'onSubmit',
+      'click .message-form .esc'   : 'onEscape',
       'keydown .form-message-edit' : 'onKeydown'
     },
 
@@ -24,21 +24,27 @@ define([
       this.render();
     },
     render: function () {
-
+      this.$text = this.$el.find('.text');
       this.$textEdited = this.$el.find('.text-edited');
-      this.originalContent = this.$el.find('.text').html();
+      this.$messageEdit = this.$el.find('.message-edit');
 
       if (this.$el.data('edited'))
         this.$textEdited.remove();
-      this.$el.find('.message-edit').html(this.template);
-      this.$el.find('.text').addClass('hidden');
+
+      this.$messageEdit.html(this.template);
+      this.$text.addClass('hidden');
       this.$el.removeClass('has-hover');
 
-      this.text = this.htmlSmileyToText();
-      this.$el.find('.message-form')
+      this.originalMessage = this.htmlSmileyToText(this.$text.html());
+
+      this.$messageForm = this.$el.find('.message-form');
+      this.$messageForm
         .css('display', 'block')
         .find('.form-message-edit')
-        .val(this.text).focus();
+        .val(this.originalMessage)
+        .focus();
+
+      this.$formMessageEdit = this.$el.find('.form-message-edit');
 
       this.updateFormSize();
 
@@ -53,48 +59,54 @@ define([
       return this;
     },
     remove: function () {
-      this.$el.find('.text')
-        .html(this.originalContent)
+      this.$text
         .removeClass('hidden');
-      this.$el.find('.message-form').remove();
+      this.$messageForm.remove();
       this.$el.addClass('has-hover');
       this.unbind();
       this.undelegateEvents();
+
+      this.stopListening();
     },
 
-    onEditMessage: function (event) {
+    onSubmit: function (event) {
       event.preventDefault();
       var messageId = this.$el.attr('id');
-      var message = this.$el.find('.form-message-edit').val();
-      if (this.text === message) {
-        this.remove();
-        return;
-      }
+      var message = this.$formMessageEdit.val();
+
+      if (this.originalMessage === message)
+        return this.remove();
+
       message = this.checkMention(message);
       if (this.model.get('type') == 'room') {
         client.roomMessageEdit(this.model.get('name'), messageId, message);
       } else {
         client.userMessageEdit(this.model.get('username'), messageId, message);
       }
+
+      this.model.trigger('inputFocus'); // refocus discussion input field
       this.remove();
     },
-    onEscEditMessage: function (event) {
+    onEscape: function (event) {
       event.preventDefault();
+      this.model.trigger('inputFocus'); // refocus discussion input field
       this.remove();
     },
     onKeydown: function (event) {
       this.updateFormSize();
       var data = this._getKeyCode();
       if (event.which == 27) // escape
-        this.onEscEditMessage(event);
+        this.onEscape(event);
       else if (event.which == 13 && !data.isShift) // enter
-        this.onEditMessage(event);
+        this.onSubmit(event);
     },
     updateFormSize: function () {
-      this.$el.find('.form-message-edit').css('height', '1px');
-      this.$el.find('.form-message-edit')
+      if (!this.$formMessageEdit)
+        return;
+      this.$formMessageEdit.css('height', '1px');
+      this.$formMessageEdit
         .css('height',
-          (2 + this.$el.find('.form-message-edit').prop('scrollHeight')) + 'px');
+          (2 + this.$formMessageEdit.prop('scrollHeight')) + 'px');
     },
     checkMention: function(text) {
       var that = this;
@@ -113,15 +125,12 @@ define([
       }
       return text;
     },
-    htmlSmileyToText: function() {
-      var text = this.$el.find('.text');
-
-      // Replace Smileys
-      _.each(text.find('.smilify'), function(e){
+    htmlSmileyToText: function(html) {
+      var $html = $('<div>'+html+'</div>');
+       _.each($html.find('.smilify'), function(e) {
         $(e).replaceWith($.smilifyGetSymbolFromCode($(e).data('smilify-code')));
       });
-
-      return text.text();
+      return $html.text();
     },
     _getKeyCode: function() {
       if (window.event) {
