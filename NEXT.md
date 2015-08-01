@@ -10,7 +10,4 @@ db['notifications'].ensureIndex({
   "done" : 1,
   "time" : -1
 });
-db['users'].update({}, { 
-    $set: { "preferences.browser:exitpopin" : true } 
-  },{multi: true});
 ```
