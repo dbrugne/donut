@@ -38,9 +38,8 @@ define([
       this.onSearch();
     },
     onClose: function(event) {
-      // @todo : .close and .open-user/room-profile doesn't works
       event.preventDefault();
-      this.$dropdown.dropdown('toggle');
+      this.$el.removeClass('open');
     },
     onSubmit: function(event) {
       event.preventDefault();
@@ -49,10 +48,10 @@ define([
     onSearch: function() {
       var s = this.$search.val();
       if (!s || s === '')
-        return console.log('@todo : close dropdown');
+        return this.$el.removeClass('open');
 
       if (s === this.lastSearch)
-        return;
+        return this.$el.addClass('open');;
 
       var that = this;
       client.search(s, true, true, 5, true, function(data) {
@@ -70,7 +69,7 @@ define([
           });
 
         that.render(data);
-        that.$dropdown.dropdown('toggle');
+        that.$el.addClass('open');
       });
     },
     focus: function() {
