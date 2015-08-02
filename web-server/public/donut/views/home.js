@@ -5,9 +5,8 @@ define([
   'client',
   'views/home-rooms',
   'views/home-users',
-  'views/home-search',
   '_templates'
-], function ($, _, Backbone, client, RoomsView, UsersView, SearchView, templates) {
+], function ($, _, Backbone, client, RoomsView, UsersView, templates) {
   var HomeView = Backbone.View.extend({
 
     el: $('#home'),
@@ -16,13 +15,11 @@ define([
 
     initialize: function(options) {
       this.listenTo(client, 'home', this.onHome);
-      this.listenTo(client, 'search', this.onSearch);
 
       this.render();
 
       this.roomsView = new RoomsView({el: this.$el.find('.rooms')});
       this.usersView = new UsersView({el: this.$el.find('.users')});
-      this.searchView = new SearchView({el: this.$el.find('.search')});
     },
     render: function() {
       var html = this.template({});
@@ -34,13 +31,6 @@ define([
       // or empty result
       this.roomsView.render(data);
       this.usersView.render(data);
-    },
-    onSearch: function(data) {
-      if (!data.key || data.key != 'home')
-        return; // RPC emulation, not a response for this view
-
-      data.search = true;
-      this.onHome(data);
     }
 
   });

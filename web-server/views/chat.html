@@ -24,6 +24,16 @@
                     <ul class="nav navbar-nav">
                         <li><a href="/!#">Home</a></li>
                     </ul>
+                    <li id="search" class="dropdown nav navbar-nav">
+                        <form class="navbar-form dropdown" role="search" aria-haspopup="true" aria-expanded="false">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="<%= t('chat.search.placeholder') %>">
+                            </div>
+                            <button type="submit" class="btn btn-default"><i class="icon icon-search" data-colorify-text="contrast"></i></button>
+                        </form>
+                        <ul id="search-results" class="dropdown-menu">
+                        </ul>
+                    </li>
                     <ul class="nav navbar-nav navbar-right">
                         <li id="notifications" class="dropdown empty">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">

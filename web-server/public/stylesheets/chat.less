@@ -186,8 +186,60 @@
           color: @cl-background;
           .ft-raleway-medium;
           font-size: 12px;
-          padding-left: 0px;
+          padding-left: 0;
           padding-top: 18px;
+        }
+      }
+      #search {
+        form {
+          margin-top: 0;
+          margin-bottom: 0;
+          padding: 4px 15px 0;
+          .form-control {
+            height: 28px;
+            border-color: @cl-background;
+            font-size: 13px;
+            padding: 6px 8px;
+          }
+          button[type="submit"] {
+            padding: 2px 3px;
+            border: 0;
+            font-size: 20px;
+            color: @cl-background;
+            background-color: transparent;
+          }
+        }
+      }
+      #search-results {
+        min-width: 375px;
+        min-height: 80px;
+        margin-top: 0;
+        .header {
+        }
+        .dropdown-header {
+          .ft-opensans-bold;
+          font-size: 1.2em;
+        }
+        .room, .user {
+          .avatar {
+            display: inline-block;
+          }
+        }
+        .room {
+          .name {
+            font-size: 1em;
+          }
+        }
+        .user {
+          .username {
+            font-size: 1em;
+          }
+        }
+        .more {
+          background-color: @cl-subtext0;
+          text-align: center;
+          color: @cl-subtext30;
+          font-weight: bold;
         }
       }
       #notifications {

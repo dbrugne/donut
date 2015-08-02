@@ -318,6 +318,12 @@ define([
       this.trigger('resize');
     },
 
+    /*****************************************************************************************************************
+     *
+     * Smileys
+     *
+     *****************************************************************************************************************/
+
     onOpenSmiley: function (event) {
       event.preventDefault();
 
@@ -335,7 +341,6 @@ define([
         this.$smileyButton.popover('show'); // show manually on first click, then popover has bound a click event on popover toggle action
       }
     },
-
     onPickSmiley: function (event) {
       event.preventDefault();
 
@@ -344,13 +349,25 @@ define([
       this.$smileyButton.popover('hide');
     },
 
-    /**
+    /*****************************************************************************************************************
      *
-     * @param str, cannot be null here
-     * @todo store results in view, to avoid multiple call to client ?
-     */
+     * Rollup (for user, room mentions and commands list)
+     *
+     *****************************************************************************************************************/
+
+    // @todo store results in view, to avoid multiple call to client ?
+    // @todo package in backbone subview to allow reuse in edit-message form
+
     onRollUpCall: function (str) {
       var that = this;
+      // @todo : yls personalise client.search() call depending search to do
+      client.search(str, rooms, users, limit, light, function(data) {
+        that.$rollUpCtn.html(that.rollupTemplate(data));
+      });
+
+      //client.search(str, rooms, users, limit, light, function(data) {
+      //  that.$rollUpCtn.html(that.rollupTemplate(data));
+      //});
 
       //if ('@' == str.substr(0,1))
 
@@ -368,19 +385,13 @@ define([
       //    type    : 'user'
       //  };
       //});
-
-      client.userRollUp(str, function (data) {
-        that.$rollUpCtn.html(that.rollupTemplate(data));
-      });
     },
-
     onRollUpClose: function (target) {
       if (target)
         target.value = this.$rollUpCtn.find('li.active .value').html() + ' ';
 
       this.$rollUpCtn.html('');
     },
-
     onRollupHover: function () {
       console.log('hover');
     }

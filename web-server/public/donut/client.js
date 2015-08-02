@@ -116,14 +116,18 @@ define([
           }
       );
     },
-    search: function(search, searchKey, rooms, users, light) {
-      var that = this;
+    search: function(search, rooms, users, limit, light, callback) {
       var data = {
         search: search, // string to search for
-        key: searchKey, // string key that server will send in response (allow RPC-like request)
+        limit: (limit)
+          ? limit
+          : 100,
         light: (light)  // if the search should return a light version of results or not
           ? true
           : false,
+        limit: (limit)
+          ? limit
+          : 5,
         rooms: (rooms) // if we should search for rooms
           ? true
           : false,
@@ -136,11 +140,9 @@ define([
         'chat.searchHandler.search',
         data,
         function (response) {
-          if (response.err)
-            return debug('io:in:search error: ', response);
-
           debug('io:in:search', response);
-          that.trigger('search', response);
+          if (_.isFunction(callback))
+            return callback(response);
         }
       );
     },
@@ -551,23 +553,6 @@ define([
       var data = {id: id};
       pomelo.notify('chat.userNotificationsHandler.done', data);
       debug('io:out:notification:done', data);
-    },
-
-    userRollUp: function (str, fn) {
-      var data = {str: str};
-      debug('io:out:user:rollup:read', data);
-      var that = this;
-      pomelo.request(
-        'chat.userRollupHandler.read',
-        data,
-        function (response) {
-          if (response.err)
-            return debug('io:in:user:rollup:read error: ', response);
-
-          debug('io:in:user:rollup:read', response);
-          return fn(response);
-        }
-      );
     }
 
   }, Backbone.Events);
