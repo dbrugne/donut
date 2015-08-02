@@ -4,9 +4,9 @@ var path = require('path');
 var fs = require('fs');
 
 module.exports = function (grunt) {
+  grunt.loadNpmTasks("grunt-extend-config");
   grunt.loadNpmTasks('grunt-contrib-requirejs');
   grunt.loadNpmTasks('grunt-contrib-jst');
-  grunt.loadNpmTasks("grunt-extend-config");
   grunt.extendConfig({
     requirejs: {
       compile: {
@@ -24,6 +24,7 @@ module.exports = function (grunt) {
           //optimize: 'none', // could disabled uglyfication
           paths: {
             '_templates'                  : '../build/templates',
+            '_translations'               : '../build/translations',
             'debug'                       : '../vendor/visionmedia-debug/dist/debug',
             'jquery'                      : '../vendor/jquery/dist/jquery',
             'bootstrap'                   : '../vendor/bootstrap/dist/js/bootstrap',
@@ -97,8 +98,27 @@ module.exports = function (grunt) {
     }
   });
 
+  grunt.registerTask('i18next', function() {
+    var translations = {};
+
+    var locales = './locales';
+    var languages = fs.readdirSync(locales);
+    _.each(languages, function(l) {
+      translations[l] = {};
+      var namespaces = fs.readdirSync(path.join(locales, l));
+      _.each(namespaces, function(ns) {
+        var json = JSON.parse(fs.readFileSync(path.join(locales, l, ns)));
+        translations[l][ns.replace('.json', '')] = json;
+      });
+    });
+
+    var content = 'define(function(){ return '+JSON.stringify(translations)+'; });';
+    fs.writeFileSync('./web-server/public/build/translations.js', content, { flag: 'w+' });
+  });
+
   grunt.registerTask('build-web', 'Build Web client templates and scripts',[
     'jst',
+    'i18next',
     'requirejs'
   ]);
 };
