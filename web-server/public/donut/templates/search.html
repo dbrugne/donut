@@ -29,3 +29,6 @@
     <li class="more"><a href="#">more results...</a></li>
     <% } %>
 <% } %>
+<% if ((!rooms || !rooms.list.length) && (!users || !users.list.length)) { %>
+    <li class="nothing"><a href="#">no result</a></li>
+<% } %>
