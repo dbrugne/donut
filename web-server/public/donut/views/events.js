@@ -879,10 +879,8 @@ define([
       var html = this._renderEvent(model, false);
       this.$('#'+data.data.event).replaceWith(html);
 
-      while (bottom) {
-        bottom = this.isScrollOnBottom();
+      if (bottom)
         this.scrollDown();
-      }
     },
 
     /*****************************************************************************************************************
