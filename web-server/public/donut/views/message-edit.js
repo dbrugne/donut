@@ -50,6 +50,7 @@ define([
 
       // click off
       var that = this;
+      // @todo sp unbind this event on view destroying
       $('html').click(function (e) {
         if (!$(e.target).hasClass('form-message-edit') && !$(e.target).hasClass('edited')) {
           that.remove();
