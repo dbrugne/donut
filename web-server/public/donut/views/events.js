@@ -6,9 +6,11 @@ define([
   'models/event',
   'moment',
   'client',
+  'models/current-user',
+  'views/message-edit',
   'views/window',
   '_templates'
-], function ($, _, Backbone, donutDebug, EventModel, moment, client, windowView, templates) {
+], function ($, _, Backbone, donutDebug, EventModel, moment, client, currentUser, MessageEditView, windowView, templates) {
 
   var debug = donutDebug('donut:events');
 
@@ -17,13 +19,16 @@ define([
     template: templates['events.html'],
 
     events: {
-      "click .go-to-top a"            : 'scrollTop',
-      "click .go-to-bottom a"         : 'scrollDown',
-      "shown.bs.dropdown .actions"    : 'onMessageMenuShow',
-      "click .dropdown-menu .spammed" : 'onMarkAsSpam',
-      "click .dropdown-menu .unspam"  : 'onUnmarkAsSpam',
-      "click .view-spammed-message"   : 'onViewSpammedMessage',
-      "click .remask-spammed-message" : 'onRemaskSpammedMessage'
+      "click .go-to-top a"             : 'scrollTop',
+      "click .go-to-bottom a"          : 'scrollDown',
+      "shown.bs.dropdown .actions"     : 'onMessageMenuShow',
+      "click .dropdown-menu .spammed"  : 'onMarkAsSpam',
+      "click .dropdown-menu .unspam"   : 'onUnmarkAsSpam',
+      "click .view-spammed-message"    : 'onViewSpammedMessage',
+      "click .remask-spammed-message"  : 'onRemaskSpammedMessage',
+      "click .dropdown-menu .edited"   : 'onEditMessage',
+      "dblclick .event"                : 'onEditMessage',
+      "keydown .form-message-edit"     : 'onPrevOrNextFormEdit'
     },
 
     historyLoading: false,
@@ -43,6 +48,8 @@ define([
       this.listenTo(this.model, 'viewed', this.onViewed);
       this.listenTo(this.model, 'messageSpam', this.onMarkedAsSpam);
       this.listenTo(this.model, 'messageUnspam', this.onMarkedAsUnspam);
+      this.listenTo(this.model, 'messageEdit', this.onMessageEdited);
+      this.listenTo(this.model, 'editMessageClose', this.onEditMessageClose);
       this.listenTo(client, 'admin:message', this.onAdminMessage);
 
       debug.start('discussion-events' + this.model.getIdentifier());
@@ -52,7 +59,7 @@ define([
     render: function () {
       // render view
       var html = this.template({
-        model: this.model.toJSON(),
+        model: this.model,
         time: Date.now()
       });
       this.$el.append(html);
@@ -141,8 +148,13 @@ define([
       return contentHeight - viewportHeight;
     },
     isScrollOnBottom: function () {
-      var bottom = this._scrollBottomPosition() - 10; // add a 10px margin
-      return (this.$scrollable.scrollTop() >= bottom); // if gte current position, we are on bottom
+      var scrollMargin = 10;
+      if (this.messageUnderEdition) {
+        scrollMargin = this.messageUnderEdition.$el.height(); // @todo yls this logic is really needed? Are you sure this is not needed only for "last" .event edition and not for all event edition?
+      }
+
+      var bottom = this._scrollBottomPosition() - scrollMargin; // add a 10px margin
+      return (this.$scrollable.scrollTop() >= bottom); // if get current position, we are on bottom
     },
     scrollDown: function () {
       var bottom = this._scrollBottomPosition();
@@ -395,7 +407,7 @@ define([
       // resize .blank
       this.resize();
 
-      if (needToScrollDown)
+      if (needToScrollDown && !this.messageUnderEdition)
         this.scrollDown();
       else
         this.$goToBottom.show().addClass('unread');
@@ -463,8 +475,10 @@ define([
       data.data = _.clone(model.get('data'));
       var message = data.data.message;
 
-      if (model.getGenericType() === 'message')
+      if (model.getGenericType() === 'message') {
         data.spammed = (model.get('spammed') === true);
+        data.edited = (model.get('edited') === true);
+      }
 
       // avatar
       var size = (model.getGenericType() != 'inout')
@@ -656,16 +670,21 @@ define([
      *****************************************************************************************************************/
     onMessageMenuShow: function (event) {
       var ownerUsername = '';
+      var $event = $(event.currentTarget).closest('.event');
       if (this.model.get('owner'))
         ownerUsername = this.model.get('owner').get('username');
-      var eventUsername = $(event.target).closest('[data-username]').data('username');
-      var isMessageOwner = (ownerUsername === eventUsername);
+      var username = $event.closest('[data-username]').data('username');
+      var isMessageOwner = (ownerUsername === username);
 
-      var isOp = this.model.currentUserIsOp();
-      var isOwner = this.model.currentUserIsOwner();
-      var isAdmin = this.model.currentUserIsAdmin();
+      var isEditable = this.isEditableMessage($event);
 
-      if (!isOwner && !isAdmin && !isOp || (isOp && isMessageOwner)) {
+      if (this.model.get('type') === 'room') {
+        var isOp = this.model.currentUserIsOp();
+        var isOwner = this.model.currentUserIsOwner();
+        var isAdmin = this.model.currentUserIsAdmin();
+      }
+
+      if (((!isOwner && !isAdmin && !isOp) || (isOp && isMessageOwner)) && (!isEditable)) {
         $(event.currentTarget).find('.dropdown-menu').dropdown('toggle');
         return;
       }
@@ -674,14 +693,15 @@ define([
           isOp: isOp,
           isOwner: isOwner,
           isAdmin: isAdmin,
-          isMessageOwner: isMessageOwner
+          isMessageOwner: isMessageOwner,
+          isEditable: isEditable
         }
       });
       $(event.currentTarget).find('.dropdown-menu').html(html);
     },
     onMarkAsSpam: function (event) {
       event.preventDefault();
-      var parent = $(event.target).parents('.event');
+      var parent = $(event.currentTarget).closest('.event');
       var roomName = this.model.get('name');
       var messageId = parent.attr('id');
 
@@ -689,7 +709,7 @@ define([
     },
     onUnmarkAsSpam: function (event) {
       event.preventDefault();
-      var parent = $(event.target).parents('.event');
+      var parent = $(event.currentTarget).closest('.event');
       var roomName = this.model.get('name');
       var messageId = parent.attr('id');
       parent.removeClass('viewed');
@@ -723,8 +743,8 @@ define([
     onViewSpammedMessage: function (event) {
       var bottom = this.isScrollOnBottom();
       event.preventDefault();
-      var parent = $(event.target).parents('.event');
-      var textSpammed = $(event.target).parents('.text-spammed');
+      var parent = $(event.currentTarget).closest('.event');
+      var textSpammed = $(event.currentTarget).closest('.text-spammed');
       var ctn = parent.children('.ctn');
       parent.removeClass('spammed').addClass('viewed');
       textSpammed.remove();
@@ -737,7 +757,7 @@ define([
     onRemaskSpammedMessage: function (event) {
       var bottom = this.isScrollOnBottom();
       event.preventDefault();
-      var parent = $(event.target).parents('.event');
+      var parent = $(event.currentTarget).closest('.event');
       var ctn = parent.children('.ctn');
       parent.addClass('spammed').removeClass('viewed');
       parent
@@ -749,6 +769,125 @@ define([
 
       if (bottom)
         this.scrollDown();
+    },
+
+    /*****************************************************************************************************************
+     *
+     * Message edit
+     *
+     *****************************************************************************************************************/
+    onEditMessage: function (event) {
+      event.preventDefault();
+
+      var $event = $(event.currentTarget).closest('.event');
+
+      if (!this.isEditableMessage($event))
+        return;
+
+      this.editMessage($event);
+    },
+    isEditableMessage: function ($event) {
+      var username = $event.closest('[data-username]').data('username');
+      var time = $event.data('time');
+      var isMessageCurrentUser = (currentUser.get('username') === username);
+      var isNotTooOld = ((Date.now() - new Date(time)) < window.message_maxedittime);
+      var isSpammed = $event.hasClass('spammed');
+
+      return (isMessageCurrentUser && isNotTooOld && !isSpammed);
+    },
+    onPrevOrNextFormEdit: function (event) {
+      var direction;
+      var bottom = this.isScrollOnBottom();
+      if (event.which == 38)
+        direction = 'prev';
+      else if (event.which == 40)
+        direction = 'next';
+      else {
+        if (bottom)
+          this.scrollDown();
+        return;
+      }
+
+      var $currentEventMessage = $(event.currentTarget).closest('.event');
+      var $currentBlockMessage = $(event.currentTarget).closest('.message');
+
+      var username = $currentBlockMessage.data('username');
+
+      // get sibling .event
+      var $candidate = $currentEventMessage[direction]();
+      var $candidateBlock = $currentBlockMessage[direction]();
+
+      // no sibling .event, try with sibling .block
+      if (!$candidate.length && $candidateBlock.length) {
+        var _lastBlock = $candidateBlock;
+        while((_lastBlock.data('username') !== username)) {
+          if (!_lastBlock[direction]().length)
+            return;
+          _lastBlock = _lastBlock[direction]();
+        }
+
+        $candidate = (direction == 'prev')
+          ? _lastBlock.find('.event').last()
+          : _lastBlock.find('.event').first();
+      }
+
+      if (this.isEditableMessage($candidate))
+        this.editMessage($candidate);
+
+      if (bottom)
+        this.scrollDown();
+    },
+    pushUpFromInput: function() {
+      var _lastBlock = this.$realtime.find('.block.message').last();
+      while(_lastBlock.data('username') !== currentUser.get('username')) {
+        if (!_lastBlock.prev().length)
+          return;
+        _lastBlock = _lastBlock.prev();
+      }
+      var $event = _lastBlock.find('.event').last();
+      var bottom = this.isScrollOnBottom();
+      if (this.isEditableMessage($event))
+        this.editMessage($event);
+      if (bottom)
+        this.scrollDown();
+    },
+    editMessage: function ($event) {
+      var bottom = this.isScrollOnBottom();
+      if (this.messageUnderEdition)
+        this.onEditMessageClose();
+
+      this.messageUnderEdition = new MessageEditView({
+        el: $event,
+        model: this.model
+      });
+      if (bottom)
+        this.scrollDown();
+    },
+    onMessageEdited: function (data) {
+      var bottom = this.isScrollOnBottom();
+
+      // prepare data
+      data = { data: data };
+      data.data.id = data.data.event;
+      data.edited = true;
+      if (this.model.get('type') == 'onetoone')
+        data.type = 'user:message';
+      if (this.model.get('type') == 'room')
+        data.type = 'room:message';
+      var model = new EventModel(data);
+
+      // render
+      var html = this._renderEvent(model, false);
+      this.$('#'+data.data.event).replaceWith(html);
+
+      if (bottom)
+        this.scrollDown();
+    },
+    onEditMessageClose: function () {
+      if (!this.messageUnderEdition)
+        return;
+      this.messageUnderEdition.remove();
+      this.messageUnderEdition = null;
     },
 
     /*****************************************************************************************************************
