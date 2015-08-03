@@ -434,7 +434,7 @@
         "deban": "<a href=\"#room/__roomname__\">Vous n'êtes plus banni de </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
         "roomjoin": "<span class=\"name open-user-profile\" data-username=\"__username__\">@__username__</span><a href=\"#room/__roomname__\"> rejoint </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
         "roomtopic": "<a href=\"#room/__roomname__\">Nouveau sujet dans </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
-        "roommessage": "<a href=\"#room/__roomname__\">Nouveau message dans </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
+        "roommessage": "<a href=\"#room/__roomname__\">Nouveaux messages dans </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
         "usermention": "<a href=\"#room/__roomname__\">Vous êtes mentionné dans </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
         "usermessage": "<span class=\"name open-user-profile\" data-username=\"__username__\">@__username__</span>: <a href=\"#user/__username__\">__message__</a>"
       },
@@ -717,7 +717,7 @@
       "subject": "Vous n'êtes plus modérateur de #__roomname__",
       "content": {
         "title": "Vous n'êtes plus modérateur de #__roomname__",
-        "disclaimer": "Aïe! La bonne nouvelle, vous allez avoir un peu plus de temps à consacrer à votre propre Donut:)",
+        "disclaimer": "Aïe! La bonne nouvelle, vous allez avoir un peu plus de temps à consacrer à votre propre donut:)",
         "action": "…et tout ça grâce à <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#253b6c; text-decoration:none;\">@__username__</a></strong>",
         "button": "Retourner sur DONUT"
       }
@@ -725,20 +725,18 @@
     "roomkick": {
       "subject": "Vous avez été expulsé de #__roomname__",
       "content": {
-        "title": "Vous avez été expulsé de #__roomname__",
-        "disclaimer": "Vous avez été expulsé de <strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong> par <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">@__username__</a></strong>.",
+        "title": "Vous avez été expulsé de #__roomname__ par @__username__",
         "reason": "Motif: __reason__",
-        "disclaimer2": "Ca ne doit pas être si grave, faites-vous un gros câlin et on oublie ça!",
+        "disclaimer": "Ca ne doit pas être si grave, faites-vous un gros câlin et on oublie ça!",
         "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Accéder à la discussion\">Accéder à la discussion</a>"
       }
     },
     "roomban": {
       "subject": "Vous avez été banni de #__roomname__",
       "content": {
-        "title": "Vous avez été banni de #__roomname__",
-        "disclaimer": "Vous avez été banni de <strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong> par <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">@__username__</a></strong>.",
-        "reason": "Motif: __reason__",
-        "disclaimer2": "On dirait bien que vous n'étiez pas faits l'un pour l'autre. Vous savez ce qu'on dit : \"un donut de perdu, dix de retrouvés !\".",
+        "title": "Vous avez été banni de #__roomname__ par @__username__",
+        "reason": "<strong>Motif: \"__reason__\"</strong>",
+        "disclaimer": "On dirait bien que vous n'étiez pas faits l'un pour l'autre.<br/>Vous savez ce qu'on dit : \"un donut de perdu, dix de retrouvés !\".",
         "button": "Retourner sur DONUT"
       }
     },
@@ -764,7 +762,7 @@
       "subject": "Nouveaux messages dans #__roomname__",
       "content": {
         "title": "Nouveaux messages dans #__roomname__",
-        "inroom": "Vous avez un nouveaux messages dans <strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>",
+        "inroom": "<strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>",
         "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Accéder à la discussion\">Accéder à la discussion</a>"
       }
     },
@@ -779,7 +777,8 @@
     "roomtopic": {
       "subject": "Nouveau sujet dans #__roomname__",
       "content": {
-        "title": "@__username__ a défini un nouveau sujet dans #__roomname__: __topic__",
+        "title": "@__username__ a défini un nouveau sujet dans #__roomname__",
+        "topic": "Nouveau sujet : \"__topic__\"",
         "disclaimer": "Vous avez sûrement plein de choses choses à dire sur le sujet !",
         "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Accéder à la discussion\">Accéder à la discussion</a>"
       }
@@ -843,6 +842,11 @@
     "sounds": {
       "title": "Sons",
       "test": "tester"
+    },
+    "exit": {
+      "title": "Confirmation de sortie",
+      "label-true": "Me demander une confirmation avant de quitter l'application",
+      "label-false": "Pas de confirmation quand je quitte l'application"
     },
     "welcome": {
       "title": "Fenêtre de bienvenue",

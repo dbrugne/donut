@@ -24,9 +24,9 @@ define([
       'click .share .googleplus'  : 'shareGoogle'
     },
     _initialize: function() {
-      this.listenTo(this.model, 'change:color', this.onColor);
       this.listenTo(this.model, 'change:avatar', this.onAvatar);
       this.listenTo(this.model, 'change:poster', this.onPoster);
+      this.listenTo(this.model, 'change:color', this.onColor);
 
       this.topicView = new TopicView({el: this.$el.find('.topic'), model: this.model});
       this.usersView = new UsersView({el: this.$el.find('.side .users'), model: this.model, collection: this.model.users});
@@ -147,9 +147,9 @@ define([
      */
 
     onColor: function(model, value, options) {
-      this.colorify();
       this.onAvatar(model, model.get('avatar'), options);
       this.onPoster(model, model.get('poster'), options);
+      this.colorify();
     },
     onAvatar: function(model, value, options) {
       var url = $.cd.roomAvatar(value, 100);
