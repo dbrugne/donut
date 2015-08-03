@@ -51,7 +51,7 @@ define([
       var that = this;
       $('html').one('click', function (e) {
         if (!$(e.target).hasClass('form-message-edit') && !$(e.target).hasClass('edited')) {
-          that.remove();
+          that.model.trigger('editMessageClose');
         }
       });
       return this;
@@ -71,8 +71,10 @@ define([
       var messageId = this.$el.attr('id');
       var message = this.$formMessageEdit.val();
 
-      if (this.originalMessage === message)
-        return this.remove();
+      if (this.originalMessage === message) {
+        this.model.trigger('editMessageClose');
+        return;
+      }
 
       message = this.checkMention(message);
       if (this.model.get('type') == 'room') {
@@ -82,12 +84,12 @@ define([
       }
 
       this.model.trigger('inputFocus'); // refocus discussion input field
-      this.remove();
+      this.model.trigger('editMessageClose');
     },
     onEscape: function (event) {
       event.preventDefault();
       this.model.trigger('inputFocus'); // refocus discussion input field
-      this.remove();
+      this.model.trigger('editMessageClose');
     },
     onKeydown: function (event) {
       this.updateFormSize();

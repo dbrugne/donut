@@ -49,6 +49,7 @@ define([
       this.listenTo(this.model, 'messageSpam', this.onMarkedAsSpam);
       this.listenTo(this.model, 'messageUnspam', this.onMarkedAsUnspam);
       this.listenTo(this.model, 'messageEdit', this.onMessageEdited);
+      this.listenTo(this.model, 'editMessageClose', this.onEditMessageClose);
       this.listenTo(client, 'admin:message', this.onAdminMessage);
 
       debug.start('discussion-events' + this.model.getIdentifier());
@@ -406,7 +407,7 @@ define([
       // resize .blank
       this.resize();
 
-      if (needToScrollDown)
+      if (needToScrollDown && !this.messageUnderEdition)
         this.scrollDown();
       else
         this.$goToBottom.show().addClass('unread');
@@ -853,7 +854,7 @@ define([
     editMessage: function ($event) {
       var bottom = this.isScrollOnBottom();
       if (this.messageUnderEdition)
-        this.messageUnderEdition.remove();
+        this.onEditMessageClose();
 
       this.messageUnderEdition = new MessageEditView({
         el: $event,
@@ -881,6 +882,12 @@ define([
 
       if (bottom)
         this.scrollDown();
+    },
+    onEditMessageClose: function () {
+      if (!this.messageUnderEdition)
+        return;
+      this.messageUnderEdition.remove();
+      this.messageUnderEdition = null;
     },
 
     /*****************************************************************************************************************
