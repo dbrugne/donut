@@ -106,11 +106,14 @@ module.exports = function (grunt) {
     _.each(languages, function(l) {
       translations[l] = {};
       var namespaces = fs.readdirSync(path.join(locales, l));
-      _.each(namespaces, function(ns) {
-        var json = JSON.parse(fs.readFileSync(path.join(locales, l, ns)));
-        translations[l][ns.replace('.json', '')] = json;
+      _.each(namespaces, function(_ns) {
+        var ns = _ns.replace('.json', '');
+        var json = JSON.parse(fs.readFileSync(path.join(locales, l, _ns)));
+        translations[l][ns] = json;
       });
     });
+
+    translations = _.omit(translations, ['404', 'title', 'meta', 'email']);
 
     var content = 'define(function(){ return '+JSON.stringify(translations)+'; });';
     fs.writeFileSync('./web-server/public/build/translations.js', content, { flag: 'w+' });
