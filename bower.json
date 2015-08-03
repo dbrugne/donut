@@ -11,17 +11,17 @@
     "cloudinary_js": "latest",
     "moment": "2.7.x",
     "i18next": "latest",
+    "talkative": "https://github.com/dbrugne/talkative.git",
+    "html.sortable": "latest",
+    "visionmedia-debug": "~2.1.2",
+    "html5-desktop-notifications": "*",
     "backgrid": "latest",
     "backbone.paginator": "latest",
     "backgrid-paginator": "git://github.com/wyuenho/backgrid-paginator.git#03632df8ad238e3d043c0fd471a6c78494e1bdfc",
     "backgrid-moment-cell": "latest",
     "backgrid-filter": "latest",
-    "talkative": "https://github.com/dbrugne/talkative.git",
-    "html.sortable": "latest",
     "jquery-jsonview": "~1.2.2",
-    "visionmedia-debug": "~2.1.2",
-    "keen-js": "~3.2.4",
-    "html5-desktop-notifications": "*"
+    "keen-js": "~3.2.4"
   },
   "resolutions": {
     "jquery": ">=1.11.3 <2.0",
