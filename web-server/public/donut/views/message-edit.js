@@ -48,17 +48,21 @@ define([
 
       this.updateFormSize();
 
+      // bind click outside listener
       var that = this;
-      $('html').one('click', function (e) {
-        if (!$(e.target).hasClass('form-message-edit') && !$(e.target).hasClass('edited')) {
-          that.model.trigger('editMessageClose');
-        }
-      });
+      this.onClickOutsideHandler = function (event) {
+        if ($(event.target).hasClass('form-message-edit') || $(event.target).hasClass('edited'))
+          return;
+
+        that.model.trigger('editMessageClose');
+      };
+      $('html').one('click', this.onClickOutsideHandler);
+
       return this;
     },
     remove: function () {
       this.model.trigger('inputFocus'); // refocus discussion input field
-      $('html').off('click');
+      $('html').off('click', this.onClickOutsideHandler);
       if (this.$el.data('edited'))
         this.$text.append(this.$textEdited);
       this.$text.removeClass('hidden');
