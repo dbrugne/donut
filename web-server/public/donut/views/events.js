@@ -78,6 +78,8 @@ define([
         that.onScroll();
       }, this));
 
+      if (this.messageUnderEdition)
+        return;
       this.scrollDown();
     },
     _remove: function () {
@@ -790,7 +792,7 @@ define([
       var time = $event.data('time');
       var isMessageCurrentUser = (currentUser.get('username') === username);
       var isNotTooOld = ((Date.now() - new Date(time)) < window.message_maxedittime);
-      var isSpammed = ($event.hasClass('spammed') || $event.hasClass('viewed'));
+      var isSpammed = $event.hasClass('spammed');
 
       return (isMessageCurrentUser && isNotTooOld && !isSpammed);
     },

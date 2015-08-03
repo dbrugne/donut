@@ -59,13 +59,11 @@ define([
       return this;
     },
     remove: function () {
+      if (this.$el.data('edited'))
+        this.$text.append(this.$textEdited);
       this.$text.removeClass('hidden');
       this.$messageForm.remove();
       this.$el.addClass('has-hover');
-
-      this.unbind();
-      this.undelegateEvents();
-
       this.stopListening();
     },
 
