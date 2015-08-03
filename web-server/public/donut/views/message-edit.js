@@ -57,6 +57,7 @@ define([
       return this;
     },
     remove: function () {
+      this.model.trigger('inputFocus'); // refocus discussion input field
       $('html').off('click');
       if (this.$el.data('edited'))
         this.$text.append(this.$textEdited);
@@ -83,12 +84,10 @@ define([
         client.userMessageEdit(this.model.get('username'), messageId, message);
       }
 
-      this.model.trigger('inputFocus'); // refocus discussion input field
       this.model.trigger('editMessageClose');
     },
     onEscape: function (event) {
       event.preventDefault();
-      this.model.trigger('inputFocus'); // refocus discussion input field
       this.model.trigger('editMessageClose');
     },
     onKeydown: function (event) {
