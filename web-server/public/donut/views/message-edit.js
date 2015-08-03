@@ -48,18 +48,16 @@ define([
 
       this.updateFormSize();
 
-      // click off
       var that = this;
-      // @todo sp unbind this event on view destroying
-      $('html').click(function (e) {
+      $('html').one('click', function (e) {
         if (!$(e.target).hasClass('form-message-edit') && !$(e.target).hasClass('edited')) {
           that.remove();
-          $('html').off('click');
         }
       });
       return this;
     },
     remove: function () {
+      $('html').off('click');
       if (this.$el.data('edited'))
         this.$text.append(this.$textEdited);
       this.$text.removeClass('hidden');
