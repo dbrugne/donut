@@ -78,8 +78,6 @@ define([
         that.onScroll();
       }, this));
 
-      if (this.messageUnderEdition)
-        return;
       this.scrollDown();
     },
     _remove: function () {
@@ -881,8 +879,10 @@ define([
       var html = this._renderEvent(model, false);
       this.$('#'+data.data.event).replaceWith(html);
 
-      if (bottom)
+      while (bottom) {
+        bottom = this.isScrollOnBottom();
         this.scrollDown();
+      }
     },
 
     /*****************************************************************************************************************
