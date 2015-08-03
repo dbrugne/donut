@@ -865,6 +865,9 @@ define([
         this.scrollDown();
     },
     onMessageEdited: function (data) {
+      var bottom = this.isScrollOnBottom();
+
+      // prepare data
       data = { data: data };
       data.data.id = data.data.event;
       data.edited = true;
@@ -873,8 +876,13 @@ define([
       if (this.model.get('type') == 'room')
         data.type = 'room:message';
       var model = new EventModel(data);
+
+      // render
       var html = this._renderEvent(model, false);
       this.$('#'+data.data.event).replaceWith(html);
+
+      if (bottom)
+        this.scrollDown();
     },
 
     /*****************************************************************************************************************
