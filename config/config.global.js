@@ -66,6 +66,11 @@ var conf = module.exports = {
   i18n: {
     cookie: 'donut.lng'
   },
+  chat: {
+    message: {
+      maxedittime: 5 // in minute
+    }
+  },
   notifications: {
     scheduler: 10, // seconds
     delay: 5*60, // seconds
