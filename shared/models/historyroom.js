@@ -15,7 +15,9 @@ var historySchema = mongoose.Schema({
   users         : [{ type: mongoose.Schema.ObjectId, ref: 'User' }], // users in room at event time
   viewed        : [{ type: mongoose.Schema.ObjectId, ref: 'User' }],  // users that have read this event
   spammed       : { type: Boolean },
-  spammed_at    : { type: Date }
+  spammed_at    : { type: Date },
+  edited        : { type: Boolean },
+  edited_at     : { type: Date }
 
 }, {strict: false});
 
@@ -108,6 +110,8 @@ historySchema.methods.toClientJSON = function(userViewed) {
   }
   if (this.spammed === true)
     e.spammed = this.spammed;
+  if (this.edited === true)
+    e.edited = this.edited;
 
   e.data = data;
 
