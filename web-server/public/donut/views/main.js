@@ -129,7 +129,7 @@ define([
       currentUser.setPreferences(data.preferences, {silent: true});
       this.currentUserView.render();
 
-      this.muteView = new MuteView();
+      this.muteView = new MuteView({mainView: this});
 
       // Only on first connection
       if (this.firstConnection) { // show if true or if undefined

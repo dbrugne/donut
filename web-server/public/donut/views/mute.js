@@ -20,6 +20,7 @@ define([
     initialize: function (options) {
       this.listenTo(client, 'user:preferences', this.updateIcon);
       this.$iconesound = this.$el.find('.icon');
+      this.mainView = options.mainView;
       this.render();
     },
 
@@ -49,6 +50,7 @@ define([
           }
         }
       );
+      this.mainView.drawerView.close();
     },
 
   });
