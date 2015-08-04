@@ -13,6 +13,7 @@ define([
       return {
         name          : '',
         op            : [],
+        devoices      : [],
         topic         : '',
         avatar        : '',
         poster        : '',
@@ -196,8 +197,6 @@ define([
       this.trigger('freshEvent', model);
     },
     onVoice: function(data) {
-
-      // user.get('is_devoice')
       var user = this.users.get(data.user_id);
       if (user)
         user.set({is_devoice: false});
@@ -214,8 +213,6 @@ define([
       this.trigger('freshEvent', model);
     },
     onDevoice: function(data) {
-
-      // user.get('is_devoice')
       var user = this.users.get(data.user_id);
       if (user)
         user.set({is_devoice: true});
@@ -291,9 +288,7 @@ define([
       return !!(this.get('newmessage') || this.get('newmention') || this.get('newuser'));
     },
     isInputActive: function(userId) {
-      if (this.userIsDevoiced(userId))
-        return false;
-      return true;
+      return !this.userIsDevoiced(userId);
     }
 
   });
