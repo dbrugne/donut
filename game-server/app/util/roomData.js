@@ -2,7 +2,6 @@ var logger = require('../../pomelo-logger').getLogger('donut', __filename);
 var async = require('async');
 var _ = require('underscore');
 var Room = require('../../../shared/models/room');
-var User = require('../../../shared/models/user');
 
 /**
  * Helper to retrieve/prepare all the room data needed for 'welcome' and 'room:welcome' events:
