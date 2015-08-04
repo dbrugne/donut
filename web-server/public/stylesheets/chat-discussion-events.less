@@ -278,7 +278,9 @@
             white-space: pre-wrap !important;
             padding: 0 50px 0 0;
             text-align: justify;
+            display : block;
             a { font-weight: bold; }
+            .text-edited { font-size: .9rem; color: #0480be; }
           }
           .images {
             .image {
@@ -313,8 +315,6 @@
                 border-color: #ccc transparent transparent transparent; position: absolute; bottom: -6px; right: 2px; display: block; padding: 0; }
               ul.a { padding: 0; margin: 0; white-space: nowrap;
                 li {  list-style: none; text-align: right; padding: 5px 10px 5px; cursor:pointer;
-                  &:last-child { padding-top: 10px; }
-                  &:last-child { padding-bottom: 10px; }
                   &:hover { background-color: @cl-subtext5; }
                   .unspam { display: none; }
                 }
@@ -322,7 +322,7 @@
             }
           }
           &.new { border-left: 3px solid #5C77B6; padding-left: 4px; }
-          &:hover .actions, .actions.open { display:block; }
+          &.has-hover:hover .actions, .actions.open { display:block; }
           &.spammed {
             .text, .images { display: none; }
             .actions .dropdown-menu ul.a li .unspam { display:inline; }
@@ -343,6 +343,12 @@
                 margin: 2px 5px 0 2px;
               }
             }
+          }
+          .message-form { display:none; padding: 5px 50px 5px 5px; border-radius: 5px; background-color: #f8efc0;
+            textarea { resize:none; }
+            .enter { float:right;}
+            a { color: #2a80b9; text-decoration:none; }
+            a:hover { text-decoration:underline; }
           }
         }
         &.admin {   background-color: @cl-first; color: @cl-clouds;
