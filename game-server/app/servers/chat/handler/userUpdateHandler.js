@@ -244,11 +244,17 @@ handler.update = function(data, session, next) {
 			_.each(Object.keys(sanitized), function(key) {
 				if (fieldToNotify.indexOf(key) != -1) {
 					if (key == 'avatar')
-						sanitizedToNotify[key] = user._avatar();
+						sanitizedToNotify['avatar'] = user._avatar();
 					else if (key == 'poster')
-						sanitizedToNotify[key] = user._poster();
-					else
-						sanitizedToNotify[key] = sanitized[key];
+						sanitizedToNotify['poster'] = user._poster();
+					else {
+						sanitizedToNotify['color'] = sanitized[key];
+						// Also update colors of poster & sidebar when no image defined (because generated from color by cloudinary)
+						if (user.avatar.length == 0)
+							sanitizedToNotify['avatar'] = user._avatar();
+						if (user.poster.length == 0)
+							sanitizedToNotify['poster'] = user._poster();
+					}
 				}
 			});
 

@@ -1,6 +1,7 @@
 require.config({
   paths: {
     '_templates': ['../build/templates', './templates'],
+    '_translations': ['../build/translations', './translations'],
     'debug': '../vendor/visionmedia-debug/dist/debug',
     'jquery': '../vendor/jquery/dist/jquery',
     'bootstrap': '../vendor/bootstrap/dist/js/bootstrap',
@@ -57,9 +58,7 @@ require.config({
 
 require([
   'app',
-/************************************
- * Load librairies
- ************************************/
+  '_translations',
   'jquery',
   'underscore',
   'backbone',
@@ -86,17 +85,23 @@ require([
   'bootstrap',
   'moment-fr',
   'html.sortable'
-], function (app, $, _, Backbone, i18next, facebook, moment, desktopNotify) {
+], function (app, translations, $, _, Backbone, i18next, facebook, moment, desktopNotify) {
 
   // i18n setup
-  window.i18next = i18next;
-  i18next.init({
-    resGetPath: '/locales/resources.json?lng=__lng__&ns=__ns__',
-    dynamicLoad: true,
-    saveMissing: true,
+  window.i18next = i18next; // @debug
+  var i18nextOptions = {
     cookieName: 'donut.lng',
     debug: false // @debug
-  });
+  };
+  // @doc: http://i18next.com/pages/doc_init.html#getresources
+  if (_.isString(translations))
+    i18nextOptions = _.extend({
+      resGetPath: translations,
+      dynamicLoad: true
+    }, i18nextOptions);
+  else
+    i18nextOptions.resStore = translations;
+  i18next.init(i18nextOptions);
   // make i18next available from all underscore templates views (<%= t('key') %>)
   window.t = i18next.t; // @global
 
