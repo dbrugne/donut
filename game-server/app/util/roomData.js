@@ -26,7 +26,7 @@ module.exports = function(app, uid, room, fn) {
         id        : room.id,
         owner     : {},
         op        : room.op, // [ObjectId]
-        devoices  : room.devoices,
+        devoices  : room.devoices, // [ObjectId]
         avatar    : room._avatar(),
         poster    : room._poster(),
         color     : room.color,
