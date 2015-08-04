@@ -377,6 +377,12 @@
     "debanuser": {
       "infobox": "Unblock this user"
     },
+    "voice": {
+      "infobox": "Voice this user"
+    },
+    "devoice": {
+      "infobox": "Devoice this user"
+    },
     "profile": {
       "infobox": "View the user profile"
     },

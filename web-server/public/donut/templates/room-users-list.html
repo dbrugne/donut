@@ -41,13 +41,13 @@
                 <% if (!user.is_devoice) { %>
                     <li role="presentation">
                         <a role="menuitem" tabindex="-1" class="devoice devoice-user" data-username="<%= user.username %>">
-                            <i class="icon icon-microphone-slash"></i> Devoice
+                            <i class="icon icon-microphone-slash"></i> <%= t('chat.devoice.infobox') %>
                         </a>
                     </li>
                 <% } else { %>
                 <li role="presentation">
                     <a role="menuitem" tabindex="-1" class="voice voice-user" data-username="<%= user.username %>">
-                        <i class="icon icon-microphone"></i> Voice
+                        <i class="icon icon-microphone"></i> <%= t('chat.voice.infobox') %>
                     </a>
                 </li>
                 <% } %>

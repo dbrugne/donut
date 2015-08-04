@@ -398,6 +398,12 @@
     "debanuser": {
       "infobox": "Débloquer cet utilisateur"
     },
+    "voice": {
+      "infobox": "Rendre la parole"
+    },
+    "devoice": {
+      "infobox": "Rendre muet"
+    },
     "profile": {
       "infobox": "Voir le profil de cet utilisateur"
     },
