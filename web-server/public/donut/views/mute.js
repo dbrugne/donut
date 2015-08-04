@@ -7,50 +7,41 @@ define([
   'models/current-user'
 ], function ($, _, Backbone, donutDebug, client, currentUser) {
 
-  var debug = donutDebug('donut:navbar');
+  var debug = donutDebug('donut:mute');
 
   var MuteView = Backbone.View.extend({
 
     el: $('#mute'),
 
     events: {
-      "click .sound" : 'onClickSound'
+      "click .toggle" : 'onToggle'
     },
 
     initialize: function (options) {
-      this.listenTo(client, 'user:preferences', this.updateIcon);
-      this.$iconesound = this.$el.find('.icon');
       this.mainView = options.mainView;
-      this.render();
+      this.listenTo(client, 'user:preferences', this.render);
+
+      this.$icon = this.$el.find('.icon');
     },
 
     render: function () {
-      this.updateIcon();
+      if (!currentUser.get('preferences')['browser:sounds']) {
+        this.$icon.removeClass('icon-volume-up');
+        this.$icon.addClass('icon-volume-off');
+      }
+      else {
+        this.$icon.removeClass('icon-volume-off');
+        this.$icon.addClass('icon-volume-up');
+      }
       return this;
     },
 
-    updateIcon: function () {
-      if (!currentUser.get('preferences')['browser:sounds']) {
-        this.$iconesound.removeClass('icon-volume-up');
-        this.$iconesound.addClass('icon-volume-off');
-      }
-      else {
-        this.$iconesound.removeClass('icon-volume-off');
-        this.$iconesound.addClass('icon-volume-up');
-      }
-    },
-
-    onClickSound: function (event) {
+    onToggle: function (event) {
       event.preventDefault();
-      var update = {};
-      update['browser:sounds'] = currentUser.shouldPlaySound() ? false : true;
-      client.userPreferencesUpdate(update, function (data) {
-          if (data.err) {
-            return;
-          }
-        }
-      );
       this.mainView.drawerView.close();
+      client.userPreferencesUpdate({
+        'browser:sounds': !currentUser.shouldPlaySound()
+      });
     },
 
   });

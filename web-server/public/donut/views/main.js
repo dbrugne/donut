@@ -107,6 +107,7 @@ define([
       this.connectionView = new ConnectionModalView({mainView: this});
       this.welcomeView = new WelcomeModalView({mainView: this});
       this.notificationsView = new NotificationsView({mainView: this});
+      this.muteView = new MuteView({mainView: this});
 
       // @debug
       window.current = currentUser;
@@ -128,8 +129,7 @@ define([
       currentUser.set(data.user, {silent: true});
       currentUser.setPreferences(data.preferences, {silent: true});
       this.currentUserView.render();
-
-      this.muteView = new MuteView({mainView: this});
+      this.muteView.render();
 
       // Only on first connection
       if (this.firstConnection) { // show if true or if undefined

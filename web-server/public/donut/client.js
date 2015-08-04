@@ -477,7 +477,7 @@ define([
         }
       );
     },
-    userPreferencesUpdate: function (fields, fn) {
+    userPreferencesUpdate: function (fields, callback) {
       var data = {data: fields};
       debug('io:out:user:preferences:update', data);
       var that = this;
@@ -486,7 +486,8 @@ define([
         data,
         function (response) {
           debug('io:in:user:preferences:update', response);
-          return fn(response);
+          if (_.isFunction(callback))
+            return callback(response);
         }
       );
     },
