@@ -1,7 +1,7 @@
 var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
 var async = require('async');
-var Room = require('../../../../../shared/models/room');
-var User = require('../../../../../shared/models/user');
+var RoomModel = require('../../../../../shared/models/room');
+var UserModel = require('../../../../../shared/models/user');
 var roomEmitter = require('../../../util/roomEmitter');
 
 module.exports = function(app) {
@@ -40,7 +40,7 @@ handler.devoice = function(data, session, next) {
     },
 
     function retrieveRoom(callback) {
-      Room.findByName(data.name).exec(function (err, room) {
+      RoomModel.findByName(data.name).exec(function (err, room) {
         if (err)
           return callback('Error while retrieving room in room:devoice: '+err);
 
@@ -55,7 +55,7 @@ handler.devoice = function(data, session, next) {
     },
 
     function retrieveUser(room, callback) {
-      User.findByUid(session.uid).exec(function (err, user) {
+      UserModel.findByUid(session.uid).exec(function (err, user) {
         if (err)
           return callback('Error while retrieving user '+session.uid+' in room:devoice: '+err);
 
@@ -66,54 +66,53 @@ handler.devoice = function(data, session, next) {
       });
     },
 
-    function retrieveDevoiceUser(room, user, callback) {
-      User.findByUsername(data.username).exec(function (err, devoiceUser) {
+    function retrieveDevoicedUser(room, user, callback) {
+      UserModel.findByUsername(data.username).exec(function (err, devoicedUser) {
         if (err)
-          return callback('Error while retrieving devoiceUser '+devoiceUser.id+' in room:devoice: '+err);
+          return callback('Error while retrieving devoicedUser '+devoicedUser.id+' in room:devoice: '+err);
 
-        if (!devoiceUser)
-          return callback('Unable to retrieve devoiceUser in room:devoice: '+devoiceUser.id);
+        if (!devoicedUser)
+          return callback('Unable to retrieve devoicedUser in room:devoice: '+devoicedUser.id);
 
-        if (room.isOwner(devoiceUser.id))
-          return callback(devoiceUser.username + ' is Owner and can not be DEVOICE of '+room.name);
+        if (room.isOwner(devoicedUser.id))
+          return callback(devoicedUser.username + ' is owner and can not be devoiced of '+room.name);
 
-        if (room.isDevoice(devoiceUser.id))
-          return callback('This user '+devoiceUser.username+' is already devoice');
+        if (room.isDevoice(devoicedUser.id))
+          return callback('This user '+devoicedUser.username+' is already devoiced');
 
-        return callback(null, room, user, devoiceUser);
+        return callback(null, room, user, devoicedUser);
       });
     },
 
-    function persist(room, user, devoiceUser, callback) {
-
+    function persist(room, user, devoicedUser, callback) {
       var devoice = {
-        user: devoiceUser._id,
-        devoice_at: new Date()
+        user: devoicedUser._id,
+        devoiced_at: new Date()
       };
       room.update({$addToSet: { devoices: devoice }}, function(err) {
         if (err)
-          return callback('Unable to persist devoice of '+devoiceUser._id.toString()+' on '+room.name);
+          return callback('Unable to persist devoice of '+devoicedUser.id+' on '+room.name);
 
-        return callback(null, room, user, devoiceUser);
+        return callback(null, room, user, devoicedUser);
       });
     },
 
-    function prepareEvent(room, user, devoiceUser, callback) {
+    function prepareEvent(room, user, devoicedUser, callback) {
       var event = {
         name			 : room.name,
         id				 : room.id,
-        by_user_id : user._id.toString(),
+        by_user_id : user.id,
         by_username: user.username,
         by_avatar  : user._avatar(),
-        user_id: devoiceUser._id.toString(),
-        username: devoiceUser.username,
-        avatar: devoiceUser._avatar()
+        user_id: devoicedUser.id,
+        username: devoicedUser.username,
+        avatar: devoicedUser._avatar()
       };
 
-      return callback(null, room, user, devoiceUser, event);
+      return callback(null, room, user, devoicedUser, event);
     },
 
-    function historizeAndEmit(room, user, devoiceUser, event, callback) {
+    function historizeAndEmit(room, user, devoicedUser, event, callback) {
       roomEmitter(that.app, 'room:devoice', event, function(err, sentEvent) {
         if (err)
           return callback('Error while emitting room:devoice in '+room.name+': '+err);
@@ -128,7 +127,7 @@ handler.devoice = function(data, session, next) {
       return next(null, {code: 500, err: err});
     }
 
-    next(null, {});
+    next(null, { success: true });
   });
 
 };

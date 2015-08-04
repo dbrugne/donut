@@ -1,8 +1,8 @@
 var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
 var async = require('async');
 var _ = require('underscore');
-var Room = require('../../../../../shared/models/room');
-var User = require('../../../../../shared/models/user');
+var RoomModel = require('../../../../../shared/models/room');
+var UserModel = require('../../../../../shared/models/user');
 var roomEmitter = require('../../../util/roomEmitter');
 
 module.exports = function(app) {
@@ -40,7 +40,7 @@ handler.voice = function(data, session, next) {
     },
 
     function retrieveRoom(callback) {
-      Room.findByName(data.name).exec(function (err, room) {
+      RoomModel.findByName(data.name).exec(function (err, room) {
         if (err)
           return callback('Error while retrieving room in room:voice: '+err);
 
@@ -55,7 +55,7 @@ handler.voice = function(data, session, next) {
     },
 
     function retrieveUser(room, callback) {
-      User.findByUid(session.uid).exec(function (err, user) {
+      UserModel.findByUid(session.uid).exec(function (err, user) {
         if (err)
           return callback('Error while retrieving user '+session.uid+' in room:voice: '+err);
 
@@ -66,58 +66,58 @@ handler.voice = function(data, session, next) {
       });
     },
 
-    function retrieveVoiceUser(room, user, callback) {
-      User.findByUsername(data.username).exec(function (err, voiceUser) {
+    function retrieveVoicedUser(room, user, callback) {
+      UserModel.findByUsername(data.username).exec(function (err, voicedUser) {
         if (err)
-          return callback('Error while retrieving voiceUser '+session.uid+' in room:voice: '+err);
+          return callback('Error while retrieving voicedUser '+session.uid+' in room:voice: '+err);
 
-        if (!voiceUser)
-          return callback('Unable to retrieve voiceUser in room:voice: '+session.uid);
+        if (!voicedUser)
+          return callback('Unable to retrieve voicedUser in room:voice: '+session.uid);
 
-        // Is the targeted user already VOICE of this room
-        if (!room.isDevoice(voiceUser.id))
-          return callback('User '+voiceUser.username+' is already VOICE of '+room.name);
+        // is the targeted user already voiced in this room
+        if (!room.isDevoice(voicedUser.id))
+          return callback('User '+voicedUser.username+' is already voiced in '+room.name);
 
-        if (room.isOwner(voiceUser))
-          return callback(voiceUser.username + 'is Owner and can not be VOICE of '+room.name);
+        if (room.isOwner(voicedUser))
+          return callback(voicedUser.username + ' is owner and can not be voiced in '+room.name);
 
-        return callback(null, room, user, voiceUser);
+        return callback(null, room, user, voicedUser);
       });
     },
 
-    function persist(room, user, voiceUser, callback) {
+    function persist(room, user, voicedUser, callback) {
       if (!room.devoices || !room.devoices.length)
-        return callback('There is no user devoice from this room');
+        return callback('There is no user to devoice in this room: '+room.name);
 
       var subDocument = _.find(room.devoices, function(devoice) {
-        if (devoice.user.toString() == voiceUser._id.toString())
+        if (devoice.user.toString() == voicedUser.id)
           return true;
       });
       room.devoices.id(subDocument._id).remove();
       room.save(function(err) {
         if (err)
-          return callback('Unable to persist voice of '+voiceUser.username+' on '+room.name);
+          return callback('Unable to persist voiced of '+voicedUser.username+' on '+room.name);
 
-        return callback(null, room, user, voiceUser);
+        return callback(null, room, user, voicedUser);
       });
     },
 
-    function prepareEvent(room, user, voiceUser, callback) {
+    function prepareEvent(room, user, voicedUser, callback) {
       var event = {
         name: room.name,
         id: room.id,
-        by_user_id : user._id.toString(),
+        by_user_id : user.id,
         by_username: user.username,
         by_avatar  : user._avatar(),
-        user_id: voiceUser._id.toString(),
-        username: voiceUser.username,
-        avatar: voiceUser._avatar()
+        user_id: voicedUser.id,
+        username: voicedUser.username,
+        avatar: voicedUser._avatar()
       };
 
-      return callback(null, room, user, voiceUser, event);
+      return callback(null, room, user, voicedUser, event);
     },
 
-    function historizeAndEmit(room, user, voiceUser, event, callback) {
+    function historizeAndEmit(room, user, voicedUser, event, callback) {
       roomEmitter(that.app, 'room:voice', event, function(err, sentEvent) {
         if (err)
           return callback('Error while emitting room:voice in '+room.name+': '+err);
@@ -132,7 +132,7 @@ handler.voice = function(data, session, next) {
       return next(null, {code: 500, err: err});
     }
 
-    next(null, {});
+    next(null, { success: true });
   });
 
 };

@@ -100,7 +100,7 @@ define([
         this.model.set('devoices', devoices);
       } else {
         this.$el.addClass('inactive');
-        this.model.get('devoices').push({ user: userId, devoice_at: Date.now() });
+        this.model.get('devoices').push({ user: userId, devoiced_at: Date.now() });
       }
     },
 
