@@ -2,8 +2,10 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'libs/donut-debug'
-], function ($, _, Backbone, donutDebug) {
+  'libs/donut-debug',
+  'client',
+  'models/current-user'
+], function ($, _, Backbone, donutDebug, client, currentUser) {
 
   var debug = donutDebug('donut:navbar');
 
@@ -16,15 +18,37 @@ define([
     },
 
     initialize: function (options) {
+      this.listenTo(client, 'user:preferences', this.updateIcon);
+      this.$iconesound = this.$el.find('.icon');
       this.render();
     },
 
     render: function () {
+      this.updateIcon();
       return this;
     },
 
+    updateIcon: function () {
+      if (!currentUser.get('preferences')['browser:sounds']) {
+        this.$iconesound.removeClass('icon-volume-up');
+        this.$iconesound.addClass('icon-volume-off');
+      }
+      else {
+        this.$iconesound.removeClass('icon-volume-off');
+        this.$iconesound.addClass('icon-volume-up');
+      }
+    },
+
     onClickSound: function (event) {
-      console.log('test');
+      event.preventDefault();
+      var update = {};
+      update['browser:sounds'] = currentUser.shouldPlaySound() ? false : true;
+      client.userPreferencesUpdate(update, function (data) {
+          if (data.err) {
+            return;
+          }
+        }
+      );
     },
 
   });
