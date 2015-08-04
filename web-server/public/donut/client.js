@@ -170,10 +170,19 @@ define([
       pomelo.notify('chat.roomLeaveHandler.leave', data);
       debug('io:out:room:leave', data);
     },
-    roomMessage: function (name, message, images) {
+    roomMessage: function (name, message, images, callback) {
       var data = {name: name, message: message, images: images};
-      pomelo.notify('chat.roomMessageHandler.message', data);
       debug('io:out:room:message', data);
+      var that = this;
+      pomelo.request(
+        'chat.roomMessageHandler.message',
+        data,
+        function (response) {
+          debug('io:in:room:message', response);
+          if (_.isFunction(callback))
+            return callback(response);
+        }
+      );
     },
     roomTopic: function (name, topic) {
       var data = {name: name, topic: topic};
@@ -447,10 +456,19 @@ define([
       pomelo.notify('chat.userLeaveHandler.leave', data);
       debug('io:out:user:leave', data);
     },
-    userMessage: function (username, message, images) {
+    userMessage: function (username, message, images, callback) {
       var data = {username: username, message: message, images: images};
-      pomelo.notify('chat.userMessageHandler.message', data);
       debug('io:out:user:message', data);
+      var that = this;
+      pomelo.request(
+        'chat.userMessageHandler.message',
+        data,
+        function (response) {
+          debug('io:in:user:message', response);
+          if (_.isFunction(callback))
+            return callback(response);
+        }
+      );
     },
     userRead: function (username, fn) {
       var data = {username: username};
