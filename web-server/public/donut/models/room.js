@@ -205,6 +205,13 @@ define([
 
       this.users.trigger('users-redraw');
       this.trigger('inputActive', data.user_id);
+
+      // message event room:voice
+      var model = new EventModel({
+        type: 'room:voice',
+        data: data
+      });
+      this.trigger('freshEvent', model);
     },
     onDevoice: function(data) {
 

@@ -34,6 +34,7 @@ define([
       pomelo.on('room:join',    function(data) { debug('io:in:room:join',     data); this.trigger('room:join',      data); }, this);
       pomelo.on('room:leave',   function(data) { debug('io:in:room:leave',    data); this.trigger('room:leave',     data); }, this);
       pomelo.on('room:message', function(data) { debug('io:in:room:message',  data); this.trigger('room:message',   data); }, this);
+      pomelo.on('room:message:edit',  function (data) { debug('io:in:room:message:edit',  data); this.trigger('room:message:edit',data); }, this);
       pomelo.on('room:topic',   function(data) { debug('io:in:room:topic',    data); this.trigger('room:topic',     data); }, this);
       pomelo.on('room:in',      function(data) { debug('io:in:room:in',       data); this.trigger('room:in',        data); }, this);
       pomelo.on('room:out',     function(data) { debug('io:in:room:out',      data); this.trigger('room:out',       data); }, this);
@@ -169,8 +170,6 @@ define([
     },
     roomMessage: function (name, message, images, callback) {
       var data = {name: name, message: message, images: images};
-      pomelo.notify('chat.roomMessageHandler.message', data);
-      debug('io:out:room:message', data);
       var that = this;
       pomelo.request(
         'chat.roomMessageHandler.message',
