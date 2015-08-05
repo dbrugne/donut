@@ -2,11 +2,12 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'common',
   'client',
   'models/current-user',
   'collections/rooms',
   'collections/onetoones'
-], function ($, _, Backbone, client, currentUser, rooms, onetoones) {
+], function ($, _, Backbone, common, client, currentUser, rooms, onetoones) {
   var WindowView = Backbone.View.extend({
 
     el: $(window),
@@ -216,8 +217,7 @@ define([
         return;
 
       // test if i mentioned
-      var pattern = new RegExp('@\\[([^\\]]+)\\]\\(user:' + currentUser.get('user_id') + '\\)');
-      var isMention = pattern.test(event.get('data').message);
+      var isMention = common.isUserMentionned(currentUser.get('user_id'), event.get('data').message);
 
       // test if current discussion is focused
       var isFocused = (this.focused && model.get('focused'))

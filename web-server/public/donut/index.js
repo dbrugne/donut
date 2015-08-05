@@ -29,7 +29,8 @@ require.config({
     'jquery.colorify': '../javascripts/plugins/jquery.colorify',
     'jquery.socialify': '../javascripts/plugins/jquery.socialify',
     'jquery.contactform': '../javascripts/plugins/jquery.contactform',
-    'html.sortable': '../vendor/html.sortable/dist/html.sortable'
+    'html.sortable': '../vendor/html.sortable/dist/html.sortable',
+    'common': '../vendor/donut-common/index'
   },
   shim: {
     'bootstrap': ['jquery'],
