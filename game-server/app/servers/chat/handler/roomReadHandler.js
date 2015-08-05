@@ -100,7 +100,8 @@ handler.read = function(data, session, next) {
 						user_id: devoice.user.id,
 						username: devoice.user.username,
 						avatar: devoice.user._avatar(),
-						devoiced_at: devoice.devoiced_at
+						devoiced_at: devoice.devoiced_at,
+						reason: devoice.reason
 					});
 				});
 			}
