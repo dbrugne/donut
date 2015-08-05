@@ -31,7 +31,8 @@ define([
   'views/discussion-onetoone',
   'views/discussions-block',
   'views/notifications',
-  'views/modal-confirmation'
+  'views/modal-confirmation',
+  'views/mute'
 ], function ($, _, Backbone, donutDebug, client, currentUser, EventModel, rooms, onetoones, templates, windowView,
              ConnectionModalView, WelcomeModalView,
              CurrentUserView, AlertView, HomeView, QuickSearchView,
@@ -40,7 +41,7 @@ define([
              DrawerRoomDeleteView,
              DrawerUserProfileView, DrawerUserEditView, DrawerUserPreferencesView, DrawerUserAccountView,
              RoomView, OneToOneView,
-             DiscussionsBlockView, NotificationsView, ConfirmationView) {
+             DiscussionsBlockView, NotificationsView, ConfirmationView, MuteView) {
 
   var debug = donutDebug('donut:main');
 
@@ -106,6 +107,7 @@ define([
       this.connectionView = new ConnectionModalView({mainView: this});
       this.welcomeView = new WelcomeModalView({mainView: this});
       this.notificationsView = new NotificationsView({mainView: this});
+      this.muteView = new MuteView({mainView: this});
 
       // @debug
       window.current = currentUser;
@@ -127,6 +129,7 @@ define([
       currentUser.set(data.user, {silent: true});
       currentUser.setPreferences(data.preferences, {silent: true});
       this.currentUserView.render();
+      this.muteView.render();
 
       // Only on first connection
       if (this.firstConnection) { // show if true or if undefined
