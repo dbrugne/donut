@@ -4,6 +4,7 @@ var mongoose = require('../io/mongoose');
 var bcrypt   = require('bcrypt-nodejs');
 var colors = require('../../config/colors');
 var i18next = require('../util/i18next');
+var regexp = require('../util/regexp');
 
 var userSchema = mongoose.Schema({
 
@@ -135,10 +136,9 @@ userSchema.methods.isAllowedToConnect = function () {
  * @returns {*}
  */
 userSchema.statics.findByUsername = function (username) {
-  username = ''+username;
-  var pattern = username.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
-  var regexp = new RegExp('^'+pattern+'$','i');
-  return this.findOne({ username: regexp });
+  return this.findOne({
+    username: regexp.buildFromString(username, 'i')
+  });
 };
 
 /**
@@ -206,11 +206,9 @@ userSchema.statics.findRoomUsersHavingPreference = function (room, preferenceNam
  * @returns {Query}
  */
 userSchema.statics.retrieveUser = function (username) {
-  username = ''+username;
-  var pattern = username.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
-  var regexp = new RegExp('^'+pattern+'$','i');
-  return this.findOne({ username: regexp })
-    .populate('room', 'name');
+  return this.findOne({
+    username: regexp.buildFromString(username, 'i')
+  }).populate('room', 'name');
 };
 
 /**
@@ -300,11 +298,8 @@ userSchema.methods.preferencesValue = function (key) {
  * @param callback
  */
 userSchema.statics.usernameAvailability = function (username, callback) {
-  username = ''+username;
-  var pattern = username.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
-  var regexp = new RegExp('^'+pattern+'$','i');
   this.findOne({
-    username: {$regex: regexp}
+    username: regexp.buildFromString(username, 'i')
   }, function(err, user) {
     if (err)
       return callback(err);
@@ -321,13 +316,10 @@ userSchema.statics.usernameAvailability = function (username, callback) {
  * @param callback
  */
 userSchema.methods.usernameAvailability = function (username, callback) {
-  username = ''+username;
-  var pattern = username.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
-  var regexp = new RegExp('^'+pattern+'$','i');
   this.constructor.findOne({
     $and: [
       {
-        username: {$regex: regexp}
+        username: regexp.buildFromString(username, 'i')
       },
       {
         _id: { $ne: this._id }

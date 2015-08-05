@@ -1,6 +1,7 @@
 var debug = require('debug')('shared:models:room');
 var _ = require('underscore');
 var mongoose = require('../io/mongoose');
+var regexp = require('../util/regexp');
 
 var roomSchema = mongoose.Schema({
 
@@ -29,9 +30,10 @@ var roomSchema = mongoose.Schema({
 });
 
 roomSchema.statics.findByName = function (name) {
-  var pattern = name.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
-  var regexp = new RegExp('^'+pattern+'$','i');
-  return this.findOne({ name: regexp, deleted: {$ne: true} });
+  return this.findOne({
+    name: regexp.buildFromString(name, 'i'),
+    deleted: { $ne: true }
+  });
 };
 
 roomSchema.statics.findByUser = function (userId) {
