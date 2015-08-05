@@ -97,7 +97,7 @@ module.exports.mentions = function(string, callback) {
           return;
 
         // replace with [#:ObjectId():NAME])
-        string = string.replace(m.match, '[#:'+ room.id+':'+ room.name+']');
+        string = common.markupMentions(string, m.match, room.id, room.name);
         m.name = room.name;
         m.room_id = room.id;
         mentionsList.rooms.push(m);
@@ -111,7 +111,7 @@ module.exports.mentions = function(string, callback) {
           return;
 
         // replace with [@:ObjectId():USERNAME]
-        string = string.replace(m.match, '[@:'+ user.id+':@'+ user.username+']');
+        string = common.markupMentions(string, m.match, user.id, user.username);
         m.username = user.username;
         m.user_id = user.id;
         mentionsList.users.push(m);
