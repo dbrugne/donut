@@ -68,12 +68,21 @@ handler.topic = function(data, session, next) {
 			});
 		},
 
-		function prepareEvent(room, user, callback) {
+		function prepareTopic(room, user, callback) {
 			var topic = inputUtil.filter(data.topic, 512);
-
 			if (topic === false)
-			  topic = '';
+				topic = '';
 
+			return callback(null, room, user, topic);
+		},
+
+		function mentions(room, user, topic, callback) {
+			inputUtil.mentions(topic, function(err, topic, mentions) {
+				return callback(err, room, user, topic, mentions);
+			});
+		},
+
+		function prepareEvent(room, user, topic, mentions, callback) {
 			var event = {
 				name		: room.name,
 				id			: room.id,
@@ -86,7 +95,7 @@ handler.topic = function(data, session, next) {
 		},
 
 		function persist(room, user, event, callback) {
-			room.update({$set: {topic: event.topic}}, function(err) {
+			room.update({$set: { topic: event.topic }}, function(err) {
 				if (err)
 					return callback('Error while updating room '+data.name+' topic:'+err);
 
