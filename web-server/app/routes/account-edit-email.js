@@ -19,7 +19,7 @@ var validateInput = function(req, res, next) {
 
   User.findOne({
     $and: [
-      {'local.email': regexp.buildFromString(req.body.user.fields.email)},
+      {'local.email': regexp.buildExclusive(req.body.user.fields.email)},
       {_id: { $ne: req.user._id }}
     ]
   }, function(err, user) {

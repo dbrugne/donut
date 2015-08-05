@@ -10,15 +10,27 @@ module.exports = {
   },
 
   /**
-   * Return a RegExp object that match the full string
+   * Return a RegExp object that match subject equals the full string
    * @param string
    * @param flag
    * @returns {RegExp}
    */
-  buildFromString: function(string, flag) {
+  buildExclusive: function(string, flag) {
     flag = flag || 'i';
     string = ''+string;
     return new RegExp('^' + this.escape(string) + '$', flag);
+  },
+
+  /**
+   * Return a RegExp object that match for string occurence in subject
+   * @param string
+   * @param flag
+   * @returns {RegExp}
+   */
+  buildContain: function(string, flag) {
+    flag = flag || 'i';
+    string = ''+string;
+    return new RegExp(this.escape(string), flag);
   }
 
 };

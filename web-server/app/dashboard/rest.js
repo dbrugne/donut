@@ -24,7 +24,7 @@ var readCollection = function (collection, query, searchable, populate, callback
   // filter
   var filter = {};
   if (query.q && searchable) {
-    var search = regexp.buildFromString(query.q)
+    var search = regexp.buildExclusive(query.q)
     var filters = [];
     _.each(searchable, function(s) {
       var f = {};

@@ -17,7 +17,7 @@ var validateEmail = function(req, res, next) {
 
   User.findOne({
     $and: [
-      {'local.email': regexp.buildFromString(req.body.email.replace)},
+      {'local.email': regexp.buildExclusive(req.body.email.replace)},
       {_id: { $ne: req.user._id }}
     ]
   }, function(err, user) {
