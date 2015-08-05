@@ -13,13 +13,15 @@ define([
       string1 += (model1.get('status') == 'online') ? 'a' : 'b';
       string1 += (model1.get('is_owner')) ? 'a' : 'b';
       string1 += (model1.get('is_op')) ? 'a' : 'b';
+      string1 += (model1.get('is_op') && model1.get('is_devoice')) ? 'a' : 'b';
       string1 += (model1.get('is_devoice')) ? 'a' : 'b';
       string1 += model1.get('username').toLowerCase();
       var string2 = '';
       string2 += (model2.get('status') == 'online') ? 'a' : 'b';
       string2 += (model2.get('is_owner')) ? 'a' : 'b';
       string2 += (model2.get('is_op')) ? 'a' : 'b';
-      string1 += (model2.get('is_devoice')) ? 'a' : 'b';
+      string2 += (model2.get('is_op') && model2.get('is_devoice')) ? 'a' : 'b';
+      string2 += (model2.get('is_devoice')) ? 'a' : 'b';
       string2 += model2.get('username').toLowerCase();
 
       return string1.toLowerCase().localeCompare(string2.toLowerCase());
