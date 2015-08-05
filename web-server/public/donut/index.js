@@ -28,7 +28,6 @@ require.config({
     'jquery.momentify': '../javascripts/plugins/jquery.momentify',
     'jquery.colorify': '../javascripts/plugins/jquery.colorify',
     'jquery.socialify': '../javascripts/plugins/jquery.socialify',
-    'jquery.mentionsinput': '../javascripts/plugins/jquery.mentionsInput',
     'jquery.contactform': '../javascripts/plugins/jquery.contactform',
     'html.sortable': '../vendor/html.sortable/dist/html.sortable'
   },
@@ -43,7 +42,6 @@ require.config({
     'jquery.momentify': ['jquery'],
     'jquery.colorify': ['jquery'],
     'jquery.socialify': ['jquery'],
-    'jquery.mentionsinput': ['jquery'],
     'jquery.contactform': ['jquery'],
     'cloudinary.widget': ['jquery'],
     'html.sortable': ['jquery'],
@@ -80,7 +78,6 @@ require([
   'jquery.momentify',
   'jquery.colorify',
   'jquery.socialify',
-  'jquery.mentionsinput',
   'jquery.contactform',
   'bootstrap',
   'moment-fr',
