@@ -425,6 +425,7 @@
       "op": " est maintenant modérateur à la demande de ",
       "deop": " n'est plus modérateur à la demande de ",
       "voice": " rend la parole a ",
+      "devoice": " a rendu muet ",
       "in": " est entré à",
       "out": " est sorti à",
       "online": " est en ligne,",
@@ -492,6 +493,10 @@
       "bans": {
         "label": "Bannis",
         "help": "Les utilisateurs bannis ne peuvent plus rejoindre le donut"
+      },
+      "devoices": {
+        "label": "Muet",
+        "help": "les utilisateurs muets ne peuvent plus envoyer de message"
       },
       "users": {
         "label": "Utilisateurs",

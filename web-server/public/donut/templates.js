@@ -28,6 +28,7 @@ define([
   'text!./templates/event/room-op.html',
   'text!./templates/event/room-topic.html',
   'text!./templates/event/room-voice.html',
+  'text!./templates/event/room-devoice.html',
   'text!./templates/event/user-ban.html',
   'text!./templates/event/user-deban.html',
   'text!./templates/events.html',
@@ -82,6 +83,7 @@ define([
   event_room_op,
   event_room_topic,
   event_room_voice,
+  event_room_devoice,
   event_user_ban,
   event_user_deban,
   events,
@@ -150,6 +152,7 @@ define([
   JST['event/room-op.html']                 = _.template(event_room_op);
   JST['event/room-topic.html']              = _.template(event_room_topic);
   JST['event/room-voice.html']              = _.template(event_room_voice);
+  JST['event/room-devoice.html']            = _.template(event_room_devoice);
   JST['event/user-ban.html']                = _.template(event_user_ban);
   JST['event/user-deban.html']              = _.template(event_user_deban);
   JST['events.html']                        = _.template(events);
