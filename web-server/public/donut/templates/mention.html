@@ -1,0 +1,1 @@
+<% if (mention.type === 'room') { %><a class="mention open-room-profile" data-room-name="<%= mention.title %>" style="<%= options.style %>"><%= mention.title %></a><% } else if (mention.type === 'user') { %><a class="mention open-user-profile" data-username="<%= mention.title.replace('@', '') %>" style="<%= options.style %>"><%= mention.title %></a><% } %>

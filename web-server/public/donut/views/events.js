@@ -3,6 +3,7 @@ define([
   'underscore',
   'backbone',
   'libs/donut-debug',
+  'common',
   'models/event',
   'moment',
   'client',
@@ -10,7 +11,7 @@ define([
   'views/message-edit',
   'views/window',
   '_templates'
-], function ($, _, Backbone, donutDebug, EventModel, moment, client, currentUser, MessageEditView, windowView, templates) {
+], function ($, _, Backbone, donutDebug, common, EventModel, moment, client, currentUser, MessageEditView, windowView, templates) {
 
   var debug = donutDebug('donut:events');
 
@@ -473,8 +474,8 @@ define([
     _prepareEvent: function (model) {
       var data = model.toJSON();
       data.data = _.clone(model.get('data'));
-      var message = data.data.message;
 
+      // spammed & edited
       if (model.getGenericType() === 'message') {
         data.spammed = (model.get('spammed') === true);
         data.edited = (model.get('edited') === true);
@@ -484,12 +485,12 @@ define([
       var size = (model.getGenericType() != 'inout')
         ? 30
         : 20;
-      
       if (model.get("data").avatar)
         data.data.avatar = $.cd.userAvatar(model.get("data").avatar, size);
       if (model.get("data").by_avatar)
         data.data.by_avatar = $.cd.userAvatar(model.get("data").by_avatar, size);
 
+      var message = data.data.message;
       if (message) {
         // escape HTML
         message = _.escape(message);
@@ -501,17 +502,36 @@ define([
         message = $.linkify(message, o);
 
         // mentions
-        if (this.model.get('type') == 'room') {
-          message = message.replace(
-            /@\[([^\]]+)\]\(user:([^)]+)\)/g, // @todo put that in config
-            '<a class="mention open-user-profile" data-username="$1" style="color: ' + this.model.get('color') + '">@$1</a>'
-          );
-        }
+        message = common.htmlMentions(message, templates['mention.html'], {
+          style: 'color: ' + this.model.get('color')
+        });
 
         // smileys
         message = $.smilify(message);
 
         data.data.message = message;
+      }
+
+      var topic = data.data.topic;
+      if (topic) {
+        // escape HTML
+        topic = _.escape(topic);
+
+        // linkify (before other decoration, will escape HTML)
+        var o = (this.model.get('color'))
+          ? {linkAttributes: {style: 'color: ' + this.model.get('color') + ';'}}
+          : {};
+        topic = $.linkify(topic, o);
+
+        // mentions
+        topic = common.htmlMentions(topic, templates['mention.html'], {
+          style: 'color: ' + this.model.get('color')
+        });
+
+        // smileys
+        topic = $.smilify(topic);
+
+        data.data.topic = topic;
       }
 
       // images
