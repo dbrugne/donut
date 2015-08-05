@@ -106,32 +106,35 @@ handler.message = function (data, session, next) {
       if (images && images.length)
         event.images = images;
 
-      return callback(null, room, event);
+      return callback(null, room, event, mentions);
     },
 
-    function historizeAndEmit(room, event, callback) {
+    function historizeAndEmit(room, event, mentions, callback) {
       roomEmitter(that.app, 'room:message', event, function (err, sentEvent) {
         if (err)
           return callback(err);
 
-        return callback(null, room, sentEvent);
+        return callback(null, room, sentEvent, mentions);
       });
     },
 
-    function mentionNotification(room, sentEvent, callback) {
-      var reg = /@\[[^\]]+\]\(user:([^)]+)\)/g; // @todo yls get from config
-      var found;
+    function mentionNotification(room, sentEvent, mentions, callback) {
+      var mentions = common.findMarkupedMentions(sentEvent.message);
+      if (!mentions.length)
+        return callback(null, room, sentEvent);
+
       var usersIds = [];
-      while ((found = reg.exec(sentEvent.message)) !== null) {
-        if (found[1] && room.users.indexOf(found[1]) !== -1) // mentionned user is in room?
-          usersIds.push(found[1]);
-      }
+      _.each(mentions, function(m) {
+        if (m.type !== 'user')
+          return;
+        usersIds.push(m.id);
+      });
 
       if (!usersIds.length)
         return callback(null, room, sentEvent);
 
-      // max 5 mentionned are notified by message
-      usersIds = _.first(usersIds, 5);
+      // limit
+      usersIds = _.first(usersIds, 10);
 
       async.each(usersIds, function (userId, fn) {
         Notifications(that.app).getType('usermention').create(userId, room, sentEvent.id, fn);
