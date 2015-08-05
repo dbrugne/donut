@@ -18,7 +18,6 @@ define([
     images: '',
 
     events: {
-      'input .editable'         : 'onInput',
       'keydown .editable'       : 'onKeyDown',
       'click .send'             : 'onSubmitMessage',
       'click .add-image'        : 'onAddImage',
@@ -74,12 +73,6 @@ define([
       this.$el.find('.avatar').prop('src', $.cd.userAvatar(value, 80));
     },
 
-    onInput: function(event) {
-      // set mention dropdown position
-      this.$editable.siblings('.mentions-autocomplete-list')
-        .css('bottom', this.$editable.height()+10+'px');
-    },
-
     onKeyDown: function(event) {
       // Press enter in field handling
       if (event.type == 'keydown') {
@@ -87,10 +80,14 @@ define([
         var isShift;
         if (window.event) {
           key = window.event.keyCode;
-          isShift = window.event.shiftKey ? true : false;
+          isShift = window.event.shiftKey
+            ? true
+            : false;
         } else {
           key = event.which;
-          isShift = event.shiftKey ? true : false;
+          isShift = event.shiftKey
+            ? true
+            : false;
         }
         if(event.which == 13 && !isShift) {
           return this.sendMessage();
@@ -114,8 +111,9 @@ define([
         return false;
 
       // check length (max)
-      var withoutMentions = message.replace(/@\[([^\]]+)\]\(user:[^\)]+\)/gi, '$1');
-      if (withoutMentions.length > 512) {
+      // @todo: replace with a "withoutSmileysCodes" logic
+      //var withoutMentions = message.replace(/@\[([^\]]+)\]\(user:[^\)]+\)/gi, '$1');
+      if (message.length > 512) {
         debug('message is too long');
         return false;
       }

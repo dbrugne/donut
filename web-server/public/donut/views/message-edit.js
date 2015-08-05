@@ -82,7 +82,6 @@ define([
         return;
       }
 
-      message = this.checkMention(message);
       if (this.model.get('type') == 'room') {
         client.roomMessageEdit(this.model.get('name'), messageId, message);
       } else {
@@ -110,23 +109,6 @@ define([
       this.$formMessageEdit
         .css('height',
           (2 + this.$formMessageEdit.prop('scrollHeight')) + 'px');
-    },
-    checkMention: function(text) {
-      var that = this;
-      if (this.model.get('type') == 'room') {
-        var potentialMentions = text.match(/@([-a-z0-9\._|^]{3,15})/ig);
-        _.each(potentialMentions, function(p) {
-          var u = p.replace(/^@/, '');
-          var m = that.model.users.iwhere('username', u);
-          if (m) {
-            text = text.replace(
-              new RegExp('@'+u, 'g'),
-              '@['+ m.get('username')+'](user:'+m.get('id')+')'
-            );
-          }
-        });
-      }
-      return text;
     },
     htmlSmileyToText: function(html) {
       var $html = $('<div>'+html+'</div>');
