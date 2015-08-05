@@ -325,8 +325,10 @@ define([
         }
       );
     },
-    roomDevoice: function (name, username) {
+    roomDevoice: function (name, username, reason) {
       var data = {name: name, username: username};
+      if (reason)
+        data.reason = reason;
       debug('io:out:room:devoice', data);
       var that = this;
       pomelo.request(

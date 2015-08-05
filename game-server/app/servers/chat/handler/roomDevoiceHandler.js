@@ -3,6 +3,7 @@ var async = require('async');
 var RoomModel = require('../../../../../shared/models/room');
 var UserModel = require('../../../../../shared/models/user');
 var roomEmitter = require('../../../util/roomEmitter');
+var inputUtil = require('../../../util/input');
 
 module.exports = function(app) {
   return new Handler(app);
@@ -17,7 +18,7 @@ var handler = Handler.prototype;
 /**
  * Handle room devoice logic
  *
- * @param {Object} data name, username from client
+ * @param {Object} data name, username, reason from client
  * @param {Object} session
  * @param  {Function} next stemp callback
  *
@@ -25,6 +26,8 @@ var handler = Handler.prototype;
 handler.devoice = function(data, session, next) {
 
   var that = this;
+
+  var reason = (data.reason) ? inputUtil.filter(data.reason, 512) : false;
 
   async.waterfall([
 
@@ -89,6 +92,9 @@ handler.devoice = function(data, session, next) {
         user: devoicedUser._id,
         devoiced_at: new Date()
       };
+      if (reason !== false)
+        devoice.reason = reason;
+
       room.update({$addToSet: { devoices: devoice }}, function(err) {
         if (err)
           return callback('Unable to persist devoice of '+devoicedUser.id+' on '+room.name);
@@ -108,6 +114,9 @@ handler.devoice = function(data, session, next) {
         username: devoicedUser.username,
         avatar: devoicedUser._avatar()
       };
+
+      if (reason !== false)
+        event.reason = reason;
 
       return callback(null, room, user, devoicedUser, event);
     },

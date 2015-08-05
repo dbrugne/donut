@@ -162,7 +162,10 @@ define([
       if (!username)
         return;
 
-      client.roomDevoice(this.model.get('name'), username);
+      var that = this;
+      confirmationView.open({ input: true }, function(reason) {
+        client.roomDevoice(that.model.get('name'), username, reason);
+      });
     },
 
     /**

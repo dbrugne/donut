@@ -19,6 +19,7 @@ var roomSchema = mongoose.Schema({
   }],
   devoices        : [{
     user: { type: mongoose.Schema.ObjectId, ref: 'User' },
+    reason: String,
     devoiced_at: { type: Date, default: Date.now }
   }],
   avatar          : String,
