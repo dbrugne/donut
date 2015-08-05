@@ -8,6 +8,7 @@ var inputUtil = require('../../../util/input');
 var imagesUtil = require('../../../util/images');
 var keenio = require('../../../../../shared/io/keenio');
 var Notifications = require('../../../components/notifications');
+var common = require('donut-common');
 
 module.exports = function (app) {
   return new Handler(app);
@@ -72,7 +73,7 @@ handler.message = function (data, session, next) {
       return callback(null, room, user);
     },
 
-    function prepareEvent(room, user, callback) {
+    function prepareMessage(room, user, callback) {
       // text filtering
       var message = inputUtil.filter(data.message, 512);
 
@@ -82,6 +83,16 @@ handler.message = function (data, session, next) {
       if (!message && !images)
         return callback('Empty message (no text, no image)');
 
+      return callback(null, room, user, message, images);
+    },
+
+    function mentions(room, user, message, images, callback) {
+      inputUtil.mentions(message, function(err, message, mentions) {
+        return callback(err, room, user, message, images, mentions);
+      });
+    },
+
+    function prepareEvent(room, user, message, images, mentions, callback) {
       var event = {
         name: room.name,
         id: room.id,

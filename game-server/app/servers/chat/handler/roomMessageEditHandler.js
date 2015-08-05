@@ -47,7 +47,6 @@ handler.edit = function(data, session, next) {
       return callback(null);
     },
 
-
     function retrieveRoom(callback) {
       Room.findByName(data.name).exec(function (err, room) {
         if (err)
@@ -98,7 +97,13 @@ handler.edit = function(data, session, next) {
       return callback(null, room, editedEvent, message);
     },
 
-    function persist(room, editedEvent, message, callback) {
+    function mentions(room, editedEvent, message, callback) {
+      inputUtil.mentions(message, function(err, message, mentions) {
+        return callback(err, room, editedEvent, message, mentions);
+      });
+    },
+
+    function persist(room, editedEvent, message, mentions, callback) {
       editedEvent.update({ $set: { edited : true,  edited_at: new Date(), 'data.message': message } }, function(err) {
         if (err)
           return callback('Unable to persist message edition of ' + editedEvent.id + ': ' + err);

@@ -31,9 +31,19 @@ var roomSchema = mongoose.Schema({
 
 roomSchema.statics.findByName = function (name) {
   return this.findOne({
-    name: regexp.buildFromString(name, 'i'),
+    name: regexp.buildExclusive(name, 'i'),
     deleted: { $ne: true }
   });
+};
+
+roomSchema.statics.listByName = function (names) {
+  var criteria = {
+    $or: []
+  };
+  _.each(names, function(n) {
+    criteria['$or'].push({ name: regexp.buildExclusive(n) });
+  });
+  return this.find(criteria, '_id name');
 };
 
 roomSchema.statics.findByUser = function (userId) {

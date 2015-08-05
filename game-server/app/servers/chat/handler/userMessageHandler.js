@@ -1,5 +1,6 @@
 var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
 var async = require('async');
+var _ = require('underscore');
 var User = require('../../../../../shared/models/user');
 var Notifications = require('../../../components/notifications');
 var oneEmitter = require('../../../util/oneEmitter');
@@ -87,7 +88,7 @@ handler.message = function(data, session, next) {
 			});
 		},
 
-		function prepareEvent(from, to, callback) {
+		function prepareMessage(from, to, callback) {
 			// text filtering
 			var message = inputUtil.filter(data.message, 512);
 
@@ -97,6 +98,16 @@ handler.message = function(data, session, next) {
 			if (!message && !images)
 				return callback('Empty message (no text, no image)');
 
+			return callback(null, from, to, message, images);
+		},
+
+		function mentions(from, to, message, images, callback) {
+			inputUtil.mentions(message, function(err, message, mentions) {
+				return callback(err, from, to, message, images, mentions);
+			});
+		},
+
+		function prepareEvent(from, to, message, images, mentions, callback) {
 			var event = {
 				from_user_id  : from._id.toString(),
 				from_username : from.username,

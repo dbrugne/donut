@@ -68,6 +68,27 @@ userSchema.statics.getNewUser = function () {
   return model;
 };
 
+/**
+ * Return the first database user that correspond to username
+ * @param username
+ * @returns {*}
+ */
+userSchema.statics.findByUsername = function (username) {
+  return this.findOne({
+    username: regexp.buildExclusive(username, 'i')
+  });
+};
+
+userSchema.statics.listByUsername = function (usernames) {
+  var criteria = {
+    $or: []
+  };
+  _.each(usernames, function(u) {
+    criteria['$or'].push({ username: regexp.buildExclusive(u) });
+  });
+  return this.find(criteria, '_id username');
+};
+
 userSchema.methods.getEmail = function () {
   if (this.local && this.local.email)
     return this.local.email;
@@ -128,17 +149,6 @@ userSchema.methods.isAllowedToConnect = function () {
     err = 'no-username';
 
   return { allowed: (!err), err: err };
-};
-
-/**
- * Return the first database user that correspond to username
- * @param username
- * @returns {*}
- */
-userSchema.statics.findByUsername = function (username) {
-  return this.findOne({
-    username: regexp.buildFromString(username, 'i')
-  });
 };
 
 /**
@@ -207,7 +217,7 @@ userSchema.statics.findRoomUsersHavingPreference = function (room, preferenceNam
  */
 userSchema.statics.retrieveUser = function (username) {
   return this.findOne({
-    username: regexp.buildFromString(username, 'i')
+    username: regexp.buildExclusive(username, 'i')
   }).populate('room', 'name');
 };
 
@@ -299,7 +309,7 @@ userSchema.methods.preferencesValue = function (key) {
  */
 userSchema.statics.usernameAvailability = function (username, callback) {
   this.findOne({
-    username: regexp.buildFromString(username, 'i')
+    username: regexp.buildExclusive(username, 'i')
   }, function(err, user) {
     if (err)
       return callback(err);
@@ -319,7 +329,7 @@ userSchema.methods.usernameAvailability = function (username, callback) {
   this.constructor.findOne({
     $and: [
       {
-        username: regexp.buildFromString(username, 'i')
+        username: regexp.buildExclusive(username, 'i')
       },
       {
         _id: { $ne: this._id }

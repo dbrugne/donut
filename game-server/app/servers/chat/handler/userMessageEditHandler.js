@@ -95,7 +95,6 @@ handler.edit = function(data, session, next) {
     function checkMessage(from, to, editedEvent, callback) {
       // text filtering
       var message = inputUtil.filter(data.message, 512);
-
       if (!message)
         return callback('Empty message (no text)');
 
@@ -105,7 +104,13 @@ handler.edit = function(data, session, next) {
       return callback(null, from, to, editedEvent, message);
     },
 
-    function persist(from, to, editedEvent, message, callback) {
+    function mentions(from, to, editedEvent, message, callback) {
+      inputUtil.mentions(message, function(err, message, mentions) {
+        return callback(err, from, to, editedEvent, message, mentions);
+      });
+    },
+
+    function persist(from, to, editedEvent, message, mentions, callback) {
       editedEvent.update({ $set: { edited : true,  edited_at: new Date(), 'data.message': message } }, function(err) {
         if (err)
           return callback('Unable to persist message edition of ' + editedEvent.id + ': ' + err);
