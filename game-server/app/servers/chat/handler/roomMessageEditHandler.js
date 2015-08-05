@@ -78,6 +78,9 @@ handler.edit = function(data, session, next) {
           return callback('User ' + session.uid + ' tries to modify a message from another user: '
             + data.event + ' (' + editedEvent.user.toString() + ')');
 
+        if ((Date.now() - editedEvent.time) > conf.chat.message.maxedittime * 60 * 1000)
+          return callback('User ' + session.uid + ' tries to edit an old message: ' + editedEvent.id);
+
         return callback(null, room, editedEvent);
       });
     },
@@ -91,10 +94,6 @@ handler.edit = function(data, session, next) {
 
       if (message === editedEvent.data.message)
         return callback('Posted message has not been changed');
-
-      // Is younger than...
-      if ((Date.now() - editedEvent.time) > conf.chat.message.maxedittime * 60 * 1000)
-        return callback('User ' + session.uid + ' tries to edit an old message: ' + editedEvent.id);
 
       return callback(null, room, editedEvent, message);
     },
