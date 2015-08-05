@@ -6,6 +6,7 @@ var oneEmitter = require('../../../util/oneEmitter');
 var inputUtil = require('../../../util/input');
 var imagesUtil = require('../../../util/images');
 var keenio = require('../../../../../shared/io/keenio');
+var common = require('donut-common');
 
 module.exports = function(app) {
 	return new Handler(app);
@@ -35,7 +36,7 @@ handler.message = function(data, session, next) {
 			if (!data.username)
 				return callback('username is mandatory for user:message');
 
-			if (!User.validateUsername(data.username))
+			if (!common.validateUsername(data.username))
 				return callback('Invalid user username on user:message: '+data.username);
 
 			return callback(null);

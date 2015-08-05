@@ -2,6 +2,7 @@ var logger = require('../../../../pomelo-logger').getLogger('donut', __filename)
 var async = require('async');
 var retriever = require('../../../../../shared/models/historyone').retrieve();
 var User = require('../../../../../shared/models/user');
+var common = require('donut-common');
 
 module.exports = function(app) {
 	return new Handler(app);
@@ -31,7 +32,7 @@ handler.history = function(data, session, next) {
 			if (!data.username)
 				return callback('username is mandatory for user:history');
 
-			if (!User.validateUsername(data.username))
+			if (!common.validateUsername(data.username))
 				return callback('Invalid user username on user:history: '+data.username);
 
 			return callback(null);

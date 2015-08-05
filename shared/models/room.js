@@ -28,22 +28,6 @@ var roomSchema = mongoose.Schema({
 
 });
 
-roomSchema.statics.validateName = function (name) {
-  var pattern = /^#[-a-z0-9\._|[\]^]{3,24}$/i;
-  if (pattern.test(name)) {
-    return true;
-  }
-  return false;
-}
-
-roomSchema.statics.validateTopic = function (topic) {
-  var pattern = /^.{0,512}$/i;
-  if (pattern.test(topic)) {
-    return true;
-  }
-  return false;
-};
-
 roomSchema.statics.findByName = function (name) {
   var pattern = name.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
   var regexp = new RegExp('^'+pattern+'$','i');

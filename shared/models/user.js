@@ -130,24 +130,6 @@ userSchema.methods.isAllowedToConnect = function () {
 };
 
 /**
- * Return true if username format is valid or false otherwise
- * @param username
- * @returns {boolean}
- */
-userSchema.statics.validateUsername = function (username) {
-  // Good length, only allowed chars.
-  var pattern = /^[-a-z0-9\._|^]{3,15}$/i;
-  if (pattern.test(username)) {
-    // Must contains at least one letter or number
-    var pattern2 = /[a-z0-9]+/i;
-    if (pattern2.test(username)) {
-      return true;
-    }
-  }
-  return false;
-};
-
-/**
  * Return the first database user that correspond to username
  * @param username
  * @returns {*}

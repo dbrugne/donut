@@ -4,6 +4,7 @@ var User = require('../../../../../shared/models/user');
 var inputUtil = require('../../../util/input');
 var HistoryOne = require('../../../../../shared/models/historyone');
 var conf = require('../../../../../config');
+var common = require('donut-common');
 
 module.exports = function(app) {
   return new Handler(app);
@@ -33,7 +34,7 @@ handler.edit = function(data, session, next) {
       if (!data.username)
         return callback('username is mandatory for user:message:edit');
 
-      if (!User.validateUsername(data.username))
+      if (!common.validateUsername(data.username))
         return callback('Invalid username in user:message:edit: '+data.username);
 
       if (!data.event)

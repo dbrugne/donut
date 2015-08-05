@@ -5,6 +5,7 @@ var inputUtil = require('../../../util/input');
 var Room = require('../../../../../shared/models/room');
 var HistoryRoom = require('../../../../../shared/models/historyroom');
 var conf = require('../../../../../config');
+var common = require('donut-common');
 
 module.exports = function(app) {
   return new Handler(app);
@@ -34,7 +35,7 @@ handler.edit = function(data, session, next) {
       if (!data.name)
         return callback('room:message:edit require name param');
 
-      if (!Room.validateName(data.name))
+      if (!common.validateName(data.name))
         return callback('Invalid name in room:message:edit: '+data.name);
 
       if (!data.event)

@@ -5,6 +5,7 @@ var User = require('../../../../../shared/models/user');
 var Notifications = require('../../../components/notifications');
 var roomEmitter = require('../../../util/roomEmitter');
 var inputUtil = require('../../../util/input');
+var common = require('donut-common');
 
 module.exports = function(app) {
 	return new Handler(app);
@@ -34,7 +35,7 @@ handler.topic = function(data, session, next) {
 			if (!data.name)
 				return callback('name is mandatory for room:topic');
 
-			if (!Room.validateTopic(data.topic))
+			if (!common.validateTopic(data.topic))
 				return callback('Invalid topic for '+data.name+': '+data.topic);
 
 			return callback(null);

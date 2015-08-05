@@ -5,6 +5,7 @@ var User = require('../../../../../shared/models/user');
 var Room = require('../../../../../shared/models/room');
 var conf = require('../../../../../config/index');
 var keenio = require('../../../../../shared/io/keenio');
+var common = require('donut-common');
 
 module.exports = function(app) {
   return new Handler(app);
@@ -34,7 +35,7 @@ handler.create = function(data, session, next) {
       if (!data.name)
         return callback('name is mandatory for room:create');
 
-      if (!Room.validateName(data.name))
+      if (!common.validateName(data.name))
         return callback('Invalid room name on room:create: '+data.name);
 
       return callback(null);

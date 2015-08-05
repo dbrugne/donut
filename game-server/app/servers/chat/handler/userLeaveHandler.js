@@ -2,6 +2,7 @@ var logger = require('../../../../pomelo-logger').getLogger('donut', __filename)
 var async = require('async');
 var _ = require('underscore');
 var User = require('../../../../../shared/models/user');
+var common = require('donut-common');
 
 module.exports = function(app) {
 	return new Handler(app);
@@ -31,7 +32,7 @@ handler.leave = function(data, session, next) {
 			if (!data.username)
 				return callback('username is mandatory for user:leave');
 
-			if (!User.validateUsername(data.username))
+			if (!common.validateUsername(data.username))
 				return callback('Invalid user username on user:leave: '+data.username);
 
 			return callback(null);

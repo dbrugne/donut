@@ -3,6 +3,7 @@ var async = require('async');
 var _ = require('underscore');
 var User = require('../../../../../shared/models/user');
 var Room = require('../../../../../shared/models/room');
+var common = require('donut-common');
 
 module.exports = function(app) {
 	return new Handler(app);
@@ -34,7 +35,7 @@ handler.read = function(data, session, next) {
 			if (!data.username)
 				return callback('Param username is mandatory for user:read');
 
-			if (!User.validateUsername(data.username))
+			if (!common.validateUsername(data.username))
 				return callback('user:read Invalid username: '+data.username);
 
 			return callback(null);
