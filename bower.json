@@ -22,7 +22,7 @@
     "backgrid-filter": "latest",
     "jquery-jsonview": "~1.2.2",
     "keen-js": "~3.2.4",
-    "donut-common": "https://github.com/dbrugne/donut-common.git"
+    "donut-common": "git+ssh://git@github.com/dbrugne/donut-common.git"
   },
   "resolutions": {
     "jquery": ">=1.11.3 <2.0",
