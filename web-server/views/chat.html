@@ -79,18 +79,11 @@
                 <ul class="page-sidebar-menu">
 
                     <li id="block-current-user">
-                        <a href="javascript:;" class="avatar open-user-profile" data-username="<%= user.username %>">
-                            <img class="open-user-profile" data-username="<%- user.username %>" src="<%- user.avatar %>" alt="@<%- user.username %> avatar">
-                            <span class="title hidden-sm hidden-xs">
-                                <span class="username">
-                                    @<%= user.username %>
-                                </span>
-                            </span>
-                            <span class="selected"></span>
-                            <span class="arrow"></span>
+                        <a href="#" class="avatar dropdown-toggle visible-xs visible-sm" data-toggle="dropdown" aria-expanded="false" role="button">
+                            <img src="<%- user.avatar %>" alt="@<%- user.username %> avatar">
                         </a>
 
-                        <ul class="sub-menu">
+                        <ul class="sub-menu dropdown-menu">
                             <li>
                                 <div class="connection hidden-sm hidden-xs">
                                     <i class="icon icon-circle status offline"></i><span class="user-status hidden-sm hidden-xs"><%= t('global.offline') %></span>
