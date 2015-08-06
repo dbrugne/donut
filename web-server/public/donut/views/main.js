@@ -372,7 +372,7 @@ define([
     onCloseDiscussion: function(event) {
       this._handleAction(event);
 
-      var $target = $(event.currentTarget).closest('a.item').first();
+      var $target = $(event.currentTarget).closest('.item').first();
       if (!$target)
         return;
 
