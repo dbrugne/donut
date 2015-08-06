@@ -4,6 +4,7 @@ var User = require('../../../../../shared/models/user');
 var inputUtil = require('../../../util/input');
 var HistoryOne = require('../../../../../shared/models/historyone');
 var conf = require('../../../../../config');
+var common = require('donut-common');
 
 module.exports = function(app) {
   return new Handler(app);
@@ -33,7 +34,7 @@ handler.edit = function(data, session, next) {
       if (!data.username)
         return callback('username is mandatory for user:message:edit');
 
-      if (!User.validateUsername(data.username))
+      if (!common.validateUsername(data.username))
         return callback('Invalid username in user:message:edit: '+data.username);
 
       if (!data.event)
@@ -84,6 +85,9 @@ handler.edit = function(data, session, next) {
           return callback('User ' + session.uid + ' tries to modify a message from another user: '
             + data.event + ' (' + editedEvent.from.toString() + ')');
 
+        if ((Date.now() - editedEvent.time) > conf.chat.message.maxedittime * 60 * 1000)
+          return callback('User ' + session.uid + ' tries to edit an old message: ' + editedEvent.id);
+
         return callback(null, from, to, editedEvent);
       });
     },
@@ -91,21 +95,22 @@ handler.edit = function(data, session, next) {
     function checkMessage(from, to, editedEvent, callback) {
       // text filtering
       var message = inputUtil.filter(data.message, 512);
-
       if (!message)
         return callback('Empty message (no text)');
 
       if (editedEvent.data.message === message)
         return callback('Posted message has not been changed');
 
-      // Is younger than...
-      if ((Date.now() - editedEvent.time) > conf.chat.message.maxedittime * 60 * 1000)
-        return callback('User ' + session.uid + ' tries to edit an old message: ' + editedEvent.id);
-
       return callback(null, from, to, editedEvent, message);
     },
 
-    function persist(from, to, editedEvent, message, callback) {
+    function mentions(from, to, editedEvent, message, callback) {
+      inputUtil.mentions(message, function(err, message, mentions) {
+        return callback(err, from, to, editedEvent, message, mentions);
+      });
+    },
+
+    function persist(from, to, editedEvent, message, mentions, callback) {
       editedEvent.update({ $set: { edited : true,  edited_at: new Date(), 'data.message': message } }, function(err) {
         if (err)
           return callback('Unable to persist message edition of ' + editedEvent.id + ': ' + err);

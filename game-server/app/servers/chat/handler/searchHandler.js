@@ -3,7 +3,8 @@ var async = require('async');
 var _ = require('underscore');
 var User = require('../../../../../shared/models/user');
 var Room = require('../../../../../shared/models/room');
-var diacritic2ascii = require('../../../../../shared/util/diacritic2ascii.js');
+var diacritic2ascii = require('../../../../../shared/util/diacritic2ascii');
+var regexp = require('../../../../../shared/util/regexp');
 
 module.exports = function(app) {
 	return new Handler(app);
@@ -45,12 +46,8 @@ handler.search = function(data, session, next) {
 		? true
 		: false;
 
-	var pattern = diacritic2ascii(data.search);
-	pattern
-			.replace(/([@#])/g, '') // remove # and @
-			.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1"); // escape regex special chars
-	var regexp = new RegExp(pattern, "i");
-
+	var search = diacritic2ascii(data.search).replace(/([@#])/g, ''); // remove @ and #
+	var _regexp = regexp.buildContain(search);
 	async.parallel([
 
 			function roomSearch(callback) {
@@ -58,7 +55,7 @@ handler.search = function(data, session, next) {
 					return callback(null, false);
 
 				var search = {
-					name: regexp,
+					name: _regexp,
 					deleted: { $ne: true }
 				};
 
@@ -132,7 +129,7 @@ handler.search = function(data, session, next) {
 					return callback(null, false);
 
 				var search = {
-					username: regexp
+					username: _regexp
 				};
 
 				var q = User.find(search, 'username avatar color facebook');

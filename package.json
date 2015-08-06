@@ -51,7 +51,8 @@
     "socket.io-redis": "0.1.x",
     "socketio-jwt": "dbrugne/socketio-jwt",
     "underscore": "1.7.x",
-    "validator": "3.x"
+    "validator": "3.x",
+    "donut-common": "https://github.com/dbrugne/donut-common.git"
   },
   "devDependencies": {
     "grunt": "^0.4.5",

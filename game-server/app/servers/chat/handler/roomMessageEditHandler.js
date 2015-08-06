@@ -5,6 +5,7 @@ var inputUtil = require('../../../util/input');
 var Room = require('../../../../../shared/models/room');
 var HistoryRoom = require('../../../../../shared/models/historyroom');
 var conf = require('../../../../../config');
+var common = require('donut-common');
 
 module.exports = function(app) {
   return new Handler(app);
@@ -34,7 +35,7 @@ handler.edit = function(data, session, next) {
       if (!data.name)
         return callback('room:message:edit require name param');
 
-      if (!Room.validateName(data.name))
+      if (!common.validateName(data.name))
         return callback('Invalid name in room:message:edit: '+data.name);
 
       if (!data.event)
@@ -45,7 +46,6 @@ handler.edit = function(data, session, next) {
 
       return callback(null);
     },
-
 
     function retrieveRoom(callback) {
       Room.findByName(data.name).exec(function (err, room) {
@@ -77,6 +77,9 @@ handler.edit = function(data, session, next) {
           return callback('User ' + session.uid + ' tries to modify a message from another user: '
             + data.event + ' (' + editedEvent.user.toString() + ')');
 
+        if ((Date.now() - editedEvent.time) > conf.chat.message.maxedittime * 60 * 1000)
+          return callback('User ' + session.uid + ' tries to edit an old message: ' + editedEvent.id);
+
         return callback(null, room, editedEvent);
       });
     },
@@ -91,14 +94,16 @@ handler.edit = function(data, session, next) {
       if (message === editedEvent.data.message)
         return callback('Posted message has not been changed');
 
-      // Is younger than...
-      if ((Date.now() - editedEvent.time) > conf.chat.message.maxedittime * 60 * 1000)
-        return callback('User ' + session.uid + ' tries to edit an old message: ' + editedEvent.id);
-
       return callback(null, room, editedEvent, message);
     },
 
-    function persist(room, editedEvent, message, callback) {
+    function mentions(room, editedEvent, message, callback) {
+      inputUtil.mentions(message, function(err, message, mentions) {
+        return callback(err, room, editedEvent, message, mentions);
+      });
+    },
+
+    function persist(room, editedEvent, message, mentions, callback) {
       editedEvent.update({ $set: { edited : true,  edited_at: new Date(), 'data.message': message } }, function(err) {
         if (err)
           return callback('Unable to persist message edition of ' + editedEvent.id + ': ' + err);

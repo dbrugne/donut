@@ -7,6 +7,7 @@ var Room = require('../../../../../shared/models/room');
 var conf = require('../../../../../config/index');
 var roomEmitter = require('../../../util/roomEmitter');
 var Notifications = require('../../../components/notifications');
+var common = require('donut-common');
 
 module.exports = function(app) {
 	return new Handler(app);
@@ -36,7 +37,7 @@ handler.join = function(data, session, next) {
 			if (!data.name)
 				return callback('name is mandatory for room:join');
 
-			if (!Room.validateName(data.name))
+			if (!common.validateName(data.name))
 				return callback('Invalid room name on room:join: '+data.name);
 
 			return callback(null);

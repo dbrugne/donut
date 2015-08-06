@@ -3,6 +3,7 @@ var async = require('async');
 var _ = require('underscore');
 var oneDataHelper = require('../../../util/oneData');
 var User = require('../../../../../shared/models/user');
+var common = require('donut-common');
 
 module.exports = function(app) {
 	return new Handler(app);
@@ -32,7 +33,7 @@ handler.join = function(data, session, next) {
 			if (!data.username)
 				return callback('username is mandatory for user:join');
 
-			if (!User.validateUsername(data.username))
+			if (!common.validateUsername(data.username))
 				return callback('Invalid user username on user:join: '+data.username);
 
 			return callback(null);

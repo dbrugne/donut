@@ -53,7 +53,8 @@ define([
   'text!./templates/notification/room-join.html',
   'text!./templates/notification/user-mention.html',
   'text!./templates/notification/room-message.html',
-  'text!./templates/notification/user-message.html'
+  'text!./templates/notification/user-message.html',
+  'text!./templates/mention.html'
 ], function (_,
   color_picker,
   current_user,
@@ -108,7 +109,8 @@ define([
   notification_room_join,
   notification_user_mention,
   notification_room_message,
-  notification_user_message) {
+  notification_user_message,
+  mention) {
 
   /**
    * Stub class to load compiled templates dynamically (in development for example)
@@ -178,6 +180,7 @@ define([
   JST['notification/user-mention.html']    = _.template(notification_user_mention);
   JST['notification/room-message.html']    = _.template(notification_room_message);
   JST['notification/user-message.html']    = _.template(notification_user_message);
+  JST['mention.html']    = _.template(mention);
 
   return JST;
 });

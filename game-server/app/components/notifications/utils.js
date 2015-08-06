@@ -5,6 +5,7 @@ var RoomModel = require('../../../../shared/models/room');
 var HistoryOneModel = require('../../../../shared/models/historyone');
 var HistoryRoomModel = require('../../../../shared/models/historyroom');
 var conf = require('../../../../config/index');
+var common = require('donut-common');
 
 module.exports = {
 
@@ -96,13 +97,10 @@ module.exports = {
     };
   },
 
-  mentionize: function (message, html) {
-    var reg = /@\[([^\]]+)\]\(user:[^)]+\)/g; // @todo dbr bundle mentionnize, linkify... other messages transfomrmation in a common class loadable in npm and bower
-    if (html)
-      return message.replace(reg, "<strong><a style=\"color:" + conf.room.default.color + ";\"href=\"" + conf.url + "/user/$1\">@$1</a></strong>")
+  mentionTemplate: _.template('<strong><% if (mention.type === \'room\') { %><a href="'+conf.url+'/room/<%= mention.title.replace(\'#\', \'\') %>" style="<%= options.style %>"><%= mention.title %></a><% } else if (mention.type === \'user\') { %><a href="'+conf.url+'/user/<%= mention.title %>" style="<%= options.style %>"><%= mention.title %></a><% } %></strong>'),
 
-    return message.replace(reg, "@$1");
+  mentionize: function(string, options) {
+    return common.htmlMentions(string, this.mentionTemplate, options);
   }
-
 
 };

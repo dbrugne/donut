@@ -1,0 +1,7 @@
+Name: <%= form.name %><br>
+Email: <%= form.email %><br>
+User: <%= form.user %><br>
+<br>
+<%= form.message.replace(new RegExp("\n", 'g'), '<br>') %><br>
+<br>
+<small>From <%= form.ip %> on <%= form.fqdn %></small>

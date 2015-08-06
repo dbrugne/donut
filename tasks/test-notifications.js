@@ -48,21 +48,19 @@ module.exports = function (grunt) {
             config: 'notifMessage',
             type: 'input',
             message: 'Type a message',
-            default: 'Salut, ça va gérard ? (message par défaut de test)'
+            default: 'Salut, ça va [@:53e69205962c67de3e4e9550:damien] et [@:53e69205962c67de3e4e9550:damien] ...'
           }]
         }
       }
     }
   });
 
-  // @todo send browser notification
-
   grunt.registerTask('donut-create-test-notifications', function () {
 
     var usernameFrom = grunt.config('notifUsernameFrom') || 'david';
     var usernameTo = grunt.config('notifUsernameTo') || 'yangs';
     var roomName = grunt.config('notifRoomName') || '#donut';
-    var message = grunt.config('notifMessage') || 'Salut, ça va gérard ? (message par défaut de test)';
+    var message = grunt.config('notifMessage') || '';
 
     var userFrom = null;
     var userTo = null;
@@ -274,7 +272,7 @@ module.exports = function (grunt) {
           user_id       : userFrom.id,
           username      : userFrom.username,
           avatar        : userFrom._avatar(),
-          message       : message+' @['+userTo.username+'](user:'+userTo.id+') suite du message',
+          message       : message+' [@:'+userTo.id+':'+userTo.username+'] suite du message',
           time          : new Date()
         };
         HistoryRoomModel.record()('room:message', event, function(err, history) {

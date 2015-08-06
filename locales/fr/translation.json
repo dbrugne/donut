@@ -471,6 +471,7 @@
       "bottom": "aller tout en bas"
     },
     "shouldauthenticated": "Vous devez être identifié pour accéder aux discussions (<a href='/signup'>créer un compte</a> ou <a href='/login'>se connecter</a>)",
+    "closeapp": "Etes-vous sur de vouloir quitter ?",
     "closemessage": "Etes-vous sur de vouloir quitter, l’historique de vos conversations sera perdu ?",
     "kickmessage": "Vous venez d'être expulsé de __name__",
     "banmessage": "Vous venez d'être banni de __name__",
@@ -803,28 +804,8 @@
         "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Accéder à la discussion\">Accéder à la discussion</a>"
       }
     },
-
     "contact": {
-      "subject": "[DONUT] Nouveau formulaire de contact",
-      "text": [
-        "Nom : __name__",
-        "Email : __email__",
-        "Utilisateur : __user__",
-        "IP : __ip__",
-        "",
-        "__message__",
-        "",
-        "<small>Depuis __ip__ sur __fqdn__</small>"
-      ],
-      "html": [
-        "Nom : __name__<br>",
-        "Email : __email__<br>",
-        "Utilisateur : __user__<br>",
-        "<br>",
-        "__message__<br>",
-        "<br>",
-        "<small>Depuis __ip__ sur __fqdn__</small>"
-      ]
+      "subject": "[DONUT] Nouveau formulaire de contact"
     }
   },
   "welcome": {

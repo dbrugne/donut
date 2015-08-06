@@ -2,7 +2,7 @@ var logger = require('../../../../pomelo-logger').getLogger('donut', __filename)
 var async = require('async');
 var _ = require('underscore');
 var Room = require('../../../../../shared/models/room');
-
+var common = require('donut-common');
 
 module.exports = function(app) {
 	return new Handler(app);
@@ -31,7 +31,7 @@ handler.read = function(data, session, next) {
 		function check(callback) {
 			if (!data.name)
 				return callback("room:read 'name' is mandatory");
-			if (!Room.validateName(data.name))
+			if (!common.validateName(data.name))
 				return callback('room:read Invalid room name: '+data.name);
 
 			return callback(null);

@@ -10,6 +10,7 @@ var User = require('../../../shared/models/user');
 var expressValidator = require('express-validator');
 var keenio = require('../../../shared/io/keenio');
 var conf = require('../../../config/');
+var common = require('donut-common');
 
 // @source: https://github.com/auth0/socketio-jwt#example-usage
 
@@ -191,7 +192,7 @@ router.route('/oauth/save-username')
         return res.json({err: 'internal'});
       }
 
-      if (!User.validateUsername(username))
+      if (!common.validateUsername(username))
         return res.json({err: 'invalid'});
 
       User.findOne({ _id: decoded.id }, function (err, user) {

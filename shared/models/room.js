@@ -1,6 +1,7 @@
 var debug = require('debug')('shared:models:room');
 var _ = require('underscore');
 var mongoose = require('../io/mongoose');
+var regexp = require('../util/regexp');
 
 var roomSchema = mongoose.Schema({
 
@@ -33,26 +34,21 @@ var roomSchema = mongoose.Schema({
 
 });
 
-roomSchema.statics.validateName = function (name) {
-  var pattern = /^#[-a-z0-9\._|[\]^]{3,24}$/i;
-  if (pattern.test(name)) {
-    return true;
-  }
-  return false;
-}
-
-roomSchema.statics.validateTopic = function (topic) {
-  var pattern = /^.{0,512}$/i;
-  if (pattern.test(topic)) {
-    return true;
-  }
-  return false;
+roomSchema.statics.findByName = function (name) {
+  return this.findOne({
+    name: regexp.buildExclusive(name, 'i'),
+    deleted: { $ne: true }
+  });
 };
 
-roomSchema.statics.findByName = function (name) {
-  var pattern = name.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
-  var regexp = new RegExp('^'+pattern+'$','i');
-  return this.findOne({ name: regexp, deleted: {$ne: true} });
+roomSchema.statics.listByName = function (names) {
+  var criteria = {
+    $or: []
+  };
+  _.each(names, function(n) {
+    criteria['$or'].push({ name: regexp.buildExclusive(n) });
+  });
+  return this.find(criteria, '_id name');
 };
 
 roomSchema.statics.findByUser = function (userId) {

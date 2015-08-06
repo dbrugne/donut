@@ -111,7 +111,7 @@ Notification.prototype.sendToBrowser = function (model, user, room, history, don
         name: room.name,
         avatar: room._avatar()
       },
-      message: utils.mentionize(history.data.message, false) // @todo dbr bundle mentionnize, linkify... other messages transfomrmation in a common class loadable in npm and bower
+      message: history.data.message
     }
   };
   this.facade.app.globalChannelService.pushMessage('connector', 'notification:new', event, 'user:' + user.id, {}, done);
@@ -132,13 +132,14 @@ Notification.prototype.sendEmail = function (model, done) {
       });
     },
 
-    function mentionize(events, callback) {
-      var reg = /@\[([^\]]+)\]\(user:[^)]+\)/g; // @todo dbr bundle mentionnize, linkify... other messages transfomrmation in a common class loadable in npm and bower
-      _.each(events, function (event, index, list) {
+    function mentions(events, callback) {
+      _.each(events, function(event, index, list) {
         if (!event.data.message)
           return;
 
-        list[index].data.message = list[index].data.message.replace(reg, "<strong><a style=\"color:" + conf.room.default.color + ";\"href=\"" + conf.url + "/user/$1\">@$1</a></strong>");
+        list[index].data.message = utils.mentionize(event.data.message, {
+          style: 'color: '+conf.room.default.color+';'
+        });
       });
 
       callback(null, events);

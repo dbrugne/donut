@@ -4,6 +4,7 @@ var mongoose = require('../io/mongoose');
 var bcrypt   = require('bcrypt-nodejs');
 var colors = require('../../config/colors');
 var i18next = require('../util/i18next');
+var regexp = require('../util/regexp');
 
 var userSchema = mongoose.Schema({
 
@@ -67,6 +68,27 @@ userSchema.statics.getNewUser = function () {
   return model;
 };
 
+/**
+ * Return the first database user that correspond to username
+ * @param username
+ * @returns {*}
+ */
+userSchema.statics.findByUsername = function (username) {
+  return this.findOne({
+    username: regexp.buildExclusive(username, 'i')
+  });
+};
+
+userSchema.statics.listByUsername = function (usernames) {
+  var criteria = {
+    $or: []
+  };
+  _.each(usernames, function(u) {
+    criteria['$or'].push({ username: regexp.buildExclusive(u) });
+  });
+  return this.find(criteria, '_id username');
+};
+
 userSchema.methods.getEmail = function () {
   if (this.local && this.local.email)
     return this.local.email;
@@ -127,36 +149,6 @@ userSchema.methods.isAllowedToConnect = function () {
     err = 'no-username';
 
   return { allowed: (!err), err: err };
-};
-
-/**
- * Return true if username format is valid or false otherwise
- * @param username
- * @returns {boolean}
- */
-userSchema.statics.validateUsername = function (username) {
-  // Good length, only allowed chars.
-  var pattern = /^[-a-z0-9\._|^]{3,15}$/i;
-  if (pattern.test(username)) {
-    // Must contains at least one letter or number
-    var pattern2 = /[a-z0-9]+/i;
-    if (pattern2.test(username)) {
-      return true;
-    }
-  }
-  return false;
-};
-
-/**
- * Return the first database user that correspond to username
- * @param username
- * @returns {*}
- */
-userSchema.statics.findByUsername = function (username) {
-  username = ''+username;
-  var pattern = username.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
-  var regexp = new RegExp('^'+pattern+'$','i');
-  return this.findOne({ username: regexp });
 };
 
 /**
@@ -224,11 +216,9 @@ userSchema.statics.findRoomUsersHavingPreference = function (room, preferenceNam
  * @returns {Query}
  */
 userSchema.statics.retrieveUser = function (username) {
-  username = ''+username;
-  var pattern = username.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
-  var regexp = new RegExp('^'+pattern+'$','i');
-  return this.findOne({ username: regexp })
-    .populate('room', 'name');
+  return this.findOne({
+    username: regexp.buildExclusive(username, 'i')
+  }).populate('room', 'name');
 };
 
 /**
@@ -318,11 +308,8 @@ userSchema.methods.preferencesValue = function (key) {
  * @param callback
  */
 userSchema.statics.usernameAvailability = function (username, callback) {
-  username = ''+username;
-  var pattern = username.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
-  var regexp = new RegExp('^'+pattern+'$','i');
   this.findOne({
-    username: {$regex: regexp}
+    username: regexp.buildExclusive(username, 'i')
   }, function(err, user) {
     if (err)
       return callback(err);
@@ -339,13 +326,10 @@ userSchema.statics.usernameAvailability = function (username, callback) {
  * @param callback
  */
 userSchema.methods.usernameAvailability = function (username, callback) {
-  username = ''+username;
-  var pattern = username.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
-  var regexp = new RegExp('^'+pattern+'$','i');
   this.constructor.findOne({
     $and: [
       {
-        username: {$regex: regexp}
+        username: regexp.buildExclusive(username, 'i')
       },
       {
         _id: { $ne: this._id }

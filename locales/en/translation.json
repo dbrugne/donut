@@ -451,6 +451,7 @@
       "bottom": "go to bottom"
     },
     "shouldauthenticated": "You must be logged in to access chat (<a href='/signup'>signup</a> or <a href='/login'>login</a>)",
+    "closeapp": "Are you sure you want to leave ?",
     "closemessage": "Are you sure you want to leave? Your conversation log will be lost.",
     "kickmessage": "You have been kicked out of __name__",
     "banmessage": "You have been banned from __name__",
@@ -912,25 +913,7 @@
       ]
     },
     "contact": {
-      "subject": "[DONUT] New contact form",
-      "text": [
-        "Name: __name__",
-        "Email: __email__",
-        "User: __user__",
-        "",
-        "__message__",
-        "",
-        "From __ip__ on __fqdn__"
-      ],
-      "html": [
-        "Name: __name__<br>",
-        "Email: __email__<br>",
-        "User: __user__<br>",
-        "<br>",
-        "__message__<br>",
-        "<br>",
-        "<small>From __ip__ on __fqdn__</small>"
-      ]
+      "subject": "[DONUT] New contact form"
     }
   },
   "welcome": {
