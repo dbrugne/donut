@@ -137,20 +137,20 @@ define([
     },
     onClose: function () {
 
-      // user preferences exit popin
-      if (!currentUser.shouldDisplayExitPopin())
-        return;
       // sometimes we prevent exit popin
       if (this.preventPopin)
         return;
-      // only if at least one discussion is open
-      if ((!rooms || rooms.length < 1) && (!onetoones || onetoones.length < 1))
-        return;
+
       // only if connected
       if (!client.isConnected())
         return;
 
-      return $.t("chat.closemessage");
+      // only if at least one discussion is open and preferences checked
+      if ((!rooms || rooms.length < 1) && (!onetoones || onetoones.length < 1) && currentUser.shouldDisplayExitPopin())
+        return $.t("chat.closeapp");
+
+      if (currentUser.shouldDisplayExitPopin())
+        return $.t("chat.closemessage");
     },
 
     _getFocusedModel: function () {
