@@ -51,12 +51,28 @@
                         </a>
                     </li>
                     <% }; %>
+                    <li role="presentation" class="divider hidden-md hidden-lg"></li>
+                    <li role="presentation" class="share hidden-md hidden-lg">
+                        <a role="menuitem" class="facebook" tabindex="-1">
+                            <i class="icon icon-facebook-square"></i> Facebook
+                        </a>
+                    </li>
+                    <li role="presentation" class="share hidden-md hidden-lg">
+                        <a role="menuitem" class="twitter" tabindex="-1">
+                            <i class="icon icon-twitter-square"></i> Twitter
+                        </a>
+                    </li>
+                    <li role="presentation" class="share hidden-md hidden-lg">
+                        <a role="menuitem" class="googleplus" tabindex="-1">
+                            <i class="icon icon-google-plus-square"></i> Google
+                        </a>
+                    </li>
                 </ul>
             </div>
             <% if (owner && owner.username) { %>
             <div class="owner"><%= t('global.by') %> <a class="open-user-profile" data-username="<%= owner.username %>" data-colorify-text="color">@<%= owner.username %></a></div>
             <% } %>
-            <div class="share">
+            <div class="share hidden-xs hidden-sm">
                 <%= t('chat.share.label') %>
                 <i class="facebook icon icon-facebook-square"></i>
                 <i class="twitter icon icon-twitter-square"></i>
