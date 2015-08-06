@@ -80,28 +80,25 @@ define([
         }
       });
 
-      if (this.model.isInputActive(currentUser.get('user_id')) === false) { // desactivate input
+      if (this.model.isInputActive() === false) { // desactivate input
         this.$el.addClass('inactive');
       } else {
         this.$el.removeClass('inactive');
       }
     },
 
-    onActiveChange: function(userId) {
-      // If input active state change concerns the current user
-      if (currentUser.get('user_id') !== userId)
-        return;
+    onActiveChange: function() {
 
       // Input is not active -> User is devoiced
-      if (this.model.isInputActive(userId) === false) {
+      if (this.model.isInputActive() === false) {
         this.$el.removeClass('inactive');
         var devoices = _.reject( this.model.get('devoices'), function(devoiceUserId) {
-          return (devoiceUserId.user == userId);
+          return (devoiceUserId.user == currentUser.get('user_id'));
         });
         this.model.set('devoices', devoices);
       } else {
         this.$el.addClass('inactive');
-        this.model.get('devoices').push({ user: userId, devoiced_at: Date.now() });
+        this.model.get('devoices').push({ user: currentUser.get('user_id'), devoiced_at: Date.now() });
       }
     },
 

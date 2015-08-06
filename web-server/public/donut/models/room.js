@@ -197,13 +197,13 @@ define([
       this.trigger('freshEvent', model);
     },
     onVoice: function(data) {
+
       var user = this.users.get(data.user_id);
       if (user)
         user.set({is_devoice: false});
-      this.users.sort();
 
+      this.users.sort();
       this.users.trigger('users-redraw');
-      this.trigger('inputActive', data.user_id);
 
       // message event room:voice
       var model = new EventModel({
@@ -211,15 +211,18 @@ define([
         data: data
       });
       this.trigger('freshEvent', model);
+
+      if (currentUser.get('user_id') === data.user_id)
+        this.trigger('inputActive');
     },
     onDevoice: function(data) {
+
       var user = this.users.get(data.user_id);
       if (user)
         user.set({is_devoice: true});
-      this.users.sort();
 
+      this.users.sort();
       this.users.trigger('users-redraw');
-      this.trigger('inputActive',  data.user_id);
 
       // message event room:devoice
       var model = new EventModel({
@@ -227,6 +230,9 @@ define([
         data: data
       });
       this.trigger('freshEvent', model);
+
+      if (currentUser.get('user_id') === data.user_id)
+        this.trigger('inputActive');
     },
     onUpdated: function(data) {
       var that = this;
@@ -294,8 +300,8 @@ define([
     isThereNew: function() {
       return !!(this.get('newmessage') || this.get('newmention') || this.get('newuser'));
     },
-    isInputActive: function(userId) {
-      return !this.userIsDevoiced(userId);
+    isInputActive: function() {
+      return !this.userIsDevoiced(currentUser.get('user_id'));
     }
 
   });
