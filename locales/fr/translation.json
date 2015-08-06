@@ -463,6 +463,7 @@
       "bottom": "aller tout en bas"
     },
     "shouldauthenticated": "Vous devez être identifié pour accéder aux discussions (<a href='/signup'>créer un compte</a> ou <a href='/login'>se connecter</a>)",
+    "closeapp": "Etes-vous sur de vouloir quitter ?",
     "closemessage": "Etes-vous sur de vouloir quitter, l’historique de vos conversations sera perdu ?",
     "kickmessage": "Vous venez d'être expulsé de __name__",
     "banmessage": "Vous venez d'être banni de __name__",
