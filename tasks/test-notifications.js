@@ -272,7 +272,7 @@ module.exports = function (grunt) {
           user_id       : userFrom.id,
           username      : userFrom.username,
           avatar        : userFrom._avatar(),
-          message       : message+' [@:'+userTo.id+':'+userTo.username+'] suite du message',
+          message       : message+' [@:'+userTo.id+':@'+userTo.username+'] suite du message',
           time          : new Date()
         };
         HistoryRoomModel.record()('room:message', event, function(err, history) {
