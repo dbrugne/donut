@@ -622,6 +622,12 @@ define([
           case 'room:deban':
             template = templates['event/room-deban.html'];
             break;
+          case 'room:voice':
+            template = templates['event/room-voice.html'];
+            break;
+          case 'room:devoice':
+            template = templates['event/room-devoice.html'];
+            break;
           case 'room:op':
             template = templates['event/room-op.html'];
             break;

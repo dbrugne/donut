@@ -18,6 +18,11 @@ var roomSchema = mongoose.Schema({
     reason: String,
     banned_at: { type: Date, default: Date.now }
   }],
+  devoices        : [{
+    user: { type: mongoose.Schema.ObjectId, ref: 'User' },
+    reason: String,
+    devoiced_at: { type: Date, default: Date.now }
+  }],
   avatar          : String,
   poster          : String,
   color           : String,
@@ -134,6 +139,18 @@ roomSchema.methods.isBanned = function(user_id) {
 
   var subDocument = _.find(this.bans, function(ban) { // @warning: this shouldn't have .bans populated
     if (ban.user.toString() == user_id)
+      return true;
+  });
+
+  return (typeof subDocument != 'undefined');
+};
+
+roomSchema.methods.isDevoice = function (user_id) {
+  if (!this.devoices || !this.devoices.length)
+    return false;
+
+  var subDocument = _.find(this.devoices, function (devoice) { // @warning: this shouldn't have .devoices populated
+    if (devoice.user.toString() == user_id)
       return true;
   });
 

@@ -61,6 +61,9 @@ handler.message = function (data, session, next) {
         if (!user)
           return callback('Unable to retrieve user in room:message: ' + session.uid);
 
+        if (room.isDevoice(user.id))
+          return callback('User is devoiced, he is not send message');
+
         return callback(null, room, user);
       });
     },
@@ -178,15 +181,15 @@ handler.message = function (data, session, next) {
         if (err)
           logger.error('Error while tracking room_message in keen.io: ' + err);
 
-        return callback(null);
+        return callback(null, event);
       });
     }
 
-  ], function (err) {
-    if (err && err != 'admin')
-      logger.error(err);
+  ], function (err, event) {
+    if (err)
+      return next(null, {code: 500, err: err});
 
-    next(null); // even for .notify
+    return next(null, {success: true});
   });
 
 };

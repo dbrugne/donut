@@ -57,10 +57,15 @@ define([
     },
 
     onActiveChange: function() {
-      if (this.model.isInputActive() === false) { // deactivate input
-        this.$el.addClass('inactive');
-      } else {
+      if (this.model.isInputActive() === false) {
         this.$el.removeClass('inactive');
+        var devoices = _.reject( this.model.get('devoices'), function(devoiceUserId) {
+          return (devoiceUserId.user == currentUser.get('user_id'));
+        });
+        this.model.set('devoices', devoices);
+      } else {
+        this.$el.addClass('inactive');
+        this.model.get('devoices').push({ user: currentUser.get('user_id'), devoiced_at: Date.now() });
       }
     },
 
@@ -101,7 +106,7 @@ define([
       event.preventDefault();
       this.sendMessage();
     },
-
+    
     sendMessage: function() {
       var message = this.$editable.val();
 

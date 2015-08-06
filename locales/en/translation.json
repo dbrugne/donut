@@ -377,6 +377,12 @@
     "debanuser": {
       "infobox": "Unblock this user"
     },
+    "voice": {
+      "infobox": "Voice this user"
+    },
+    "devoice": {
+      "infobox": "Devoice this user"
+    },
     "profile": {
       "infobox": "View the user profile"
     },
@@ -398,6 +404,8 @@
       "deban": " is no longer banned as requested by",
       "op": "  is now a moderator as requested by",
       "deop": "  is no longer a moderator as requested by",
+      "voice": " makes speech of ",
+      "devoice": " mutes ",
       "in": " entered at ",
       "out": " left at ",
       "online": " is online,",
@@ -466,6 +474,10 @@
       "bans": {
         "label": "Banned",
         "help": "Banned users cannot join this donut any longer"
+      },
+      "devoices": {
+        "label": "Mutes",
+        "help": "The dumb users can not send messages"
       },
       "users": {
         "label": "Users",
