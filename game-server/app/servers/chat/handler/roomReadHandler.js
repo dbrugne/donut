@@ -43,6 +43,7 @@ handler.read = function(data, session, next) {
 				.populate('op', 'username avatar color facebook')
 				.populate('users', 'username avatar color facebook')
 				.populate('bans.user', 'username avatar color facebook')
+				.populate('devoices.user', 'username avatar color facebook')
 				.exec(function (err, room) {
 				if (err)
 					return callback('Error while retrieving room in room:read: '+err);
@@ -91,6 +92,20 @@ handler.read = function(data, session, next) {
 				});
 			}
 
+			// devoices
+			var devoices = [];
+			if (room.devoices && room.devoices.length) {
+				_.each(room.devoices, function(devoice) {
+					devoices.push({
+						user_id: devoice.user.id,
+						username: devoice.user.username,
+						avatar: devoice.user._avatar(),
+						devoiced_at: devoice.devoiced_at,
+						reason: devoice.reason
+					});
+				});
+			}
+
 			// users
 			var users = [];
 			if (room.users && room.users.length > 0) {
@@ -109,6 +124,7 @@ handler.read = function(data, session, next) {
 				owner: owner,
 				op: ops,
 				bans: bans,
+				devoices: devoices,
 				users: users,
 				avatar: room._avatar(),
 				poster: room._poster(),

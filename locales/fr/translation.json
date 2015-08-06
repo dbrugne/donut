@@ -398,6 +398,12 @@
     "debanuser": {
       "infobox": "Débloquer cet utilisateur"
     },
+    "voice": {
+      "infobox": "Rendre la parole"
+    },
+    "devoice": {
+      "infobox": "Rendre muet"
+    },
     "profile": {
       "infobox": "Voir le profil de cet utilisateur"
     },
@@ -418,6 +424,8 @@
       "deban": "n'est plus banni à la demande de",
       "op": " est maintenant modérateur à la demande de ",
       "deop": " n'est plus modérateur à la demande de ",
+      "voice": " rend la parole à ",
+      "devoice": " a rendu muet ",
       "in": " est entré à",
       "out": " est sorti à",
       "online": " est en ligne,",
@@ -485,6 +493,10 @@
       "bans": {
         "label": "Bannis",
         "help": "Les utilisateurs bannis ne peuvent plus rejoindre le donut"
+      },
+      "devoices": {
+        "label": "Muet",
+        "help": "les utilisateurs muets ne peuvent plus envoyer de message"
       },
       "users": {
         "label": "Utilisateurs",

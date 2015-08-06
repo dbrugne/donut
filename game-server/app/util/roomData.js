@@ -2,7 +2,6 @@ var logger = require('../../pomelo-logger').getLogger('donut', __filename);
 var async = require('async');
 var _ = require('underscore');
 var Room = require('../../../shared/models/room');
-var User = require('../../../shared/models/user');
 
 /**
  * Helper to retrieve/prepare all the room data needed for 'welcome' and 'room:welcome' events:
@@ -22,14 +21,15 @@ module.exports = function(app, uid, room, fn) {
         return callback(null, null);
 
       var roomData = {
-        name    : room.name,
-        id      : room.id,
-        owner   : {},
-        op      : room.op, // [ObjectId]
-        avatar  : room._avatar(),
-        poster  : room._poster(),
-        color   : room.color,
-        topic   : room.topic
+        name      : room.name,
+        id        : room.id,
+        owner     : {},
+        op        : room.op, // [ObjectId]
+        devoices  : room.devoices, // [ObjectId]
+        avatar    : room._avatar(),
+        poster    : room._poster(),
+        color     : room.color,
+        topic     : room.topic
       };
       if (room.owner) {
         roomData.owner = {

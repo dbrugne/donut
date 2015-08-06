@@ -220,6 +220,20 @@
             vertical-align: middle;
           }
         }
+        &.voice {
+          i {
+            font-size: 1.4em;
+            color: @cl-success;
+            vertical-align: middle;
+          }
+        }
+        &devoice {
+          i {
+            font-size: 1.4em;
+            color: @cl-error;
+            vertical-align: middle;
+          }
+        }
         .event {
           .date {
             position: absolute;
@@ -392,7 +406,9 @@
       .block.ban,
       .block.deban,
       .block.op,
-      .block.deop {
+      .block.deop,
+      .block.voice,
+      .block.devoice {
         padding: 5px;
         img { height: 20px; }
         .avatar {

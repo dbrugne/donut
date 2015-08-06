@@ -13,6 +13,7 @@ define([
       return {
         name          : '',
         op            : [],
+        devoices      : [],
         topic         : '',
         avatar        : '',
         poster        : '',
@@ -61,6 +62,7 @@ define([
         color: data.color,
         is_owner: is_owner,
         is_op: is_op,
+        is_devoice: this.userIsDevoiced(data.user_id),
         status: data.status
       });
       this.users.add(model, {sort: sort});
@@ -75,7 +77,16 @@ define([
     leave: function() {
       client.roomLeave(this.get('name'));
     },
+    userIsDevoiced: function(userId) {
+      if (!this.get('devoices') || !this.get('devoices').length)
+        return false;
+      var subDocument = _.find(this.get('devoices'), function (devoice) {
+        if (devoice.user.toString() == userId)
+          return true;
+      });
 
+      return (typeof subDocument != 'undefined');
+    },
     currentUserIsOwner: function() {
       if (!this.get('owner'))
         return false;
@@ -100,6 +111,7 @@ define([
         type: 'room:in',
         data: data
       });
+      client.roomVoice(data.name, data.username);
       this.trigger('freshEvent', model);
     },
     onOut: function(data) {
@@ -184,6 +196,44 @@ define([
       });
       this.trigger('freshEvent', model);
     },
+    onVoice: function(data) {
+
+      var user = this.users.get(data.user_id);
+      if (user)
+        user.set({is_devoice: false});
+
+      this.users.sort();
+      this.users.trigger('users-redraw');
+
+      // message event room:voice
+      var model = new EventModel({
+        type: 'room:voice',
+        data: data
+      });
+      this.trigger('freshEvent', model);
+
+      if (currentUser.get('user_id') === data.user_id)
+        this.trigger('inputActive');
+    },
+    onDevoice: function(data) {
+
+      var user = this.users.get(data.user_id);
+      if (user)
+        user.set({is_devoice: true});
+
+      this.users.sort();
+      this.users.trigger('users-redraw');
+
+      // message event room:devoice
+      var model = new EventModel({
+        type: 'room:devoice',
+        data: data
+      });
+      this.trigger('freshEvent', model);
+
+      if (currentUser.get('user_id') === data.user_id)
+        this.trigger('inputActive');
+    },
     onUpdated: function(data) {
       var that = this;
       _.each(data.data, function(value, key, list) {
@@ -192,6 +242,7 @@ define([
     },
     _onStatus: function(expect, data) {
       var model = this.users.get(data.user_id);
+
       if (!model)
         return;
 
@@ -227,6 +278,7 @@ define([
       var that = this;
       client.roomUsers(this.get('name'), function(data) {
         that.users.reset();
+
         _.each(data.users, function(element, key, list) {
           that.addUser(element, false); // false: avoid automatic sorting on each model .add()
         });
@@ -249,8 +301,7 @@ define([
       return !!(this.get('newmessage') || this.get('newmention') || this.get('newuser'));
     },
     isInputActive: function() {
-      // @todo yls add devoice logic
-      return true;
+      return !this.userIsDevoiced(currentUser.get('user_id'));
     }
 
   });

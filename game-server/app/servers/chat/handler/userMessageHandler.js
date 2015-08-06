@@ -153,15 +153,15 @@ handler.message = function(data, session, next) {
 				if (err)
 					logger.error('Error while tracking onetoone_message in keen.io for '+session.uid+': '+err);
 
-				return callback(null);
+				return callback(null, event);
 			});
 		}
 
-	], function(err) {
+	], function(err, event) {
 		if (err)
-			logger.error(err);
+			return next(null, {code: 500, err: err});
 
-		next(null); // even for .notify
+		return next(null, {success: true});
 	});
 
 };

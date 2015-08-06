@@ -18,7 +18,8 @@ define([
       'click .deop'  : 'deopUser',
       'click .kick'  : 'kickUser',
       'click .ban'   : 'banUser',
-      'click .deban' : 'debanUser'
+      'click .deban' : 'debanUser',
+      'click .voice' : 'voiceUser',
     },
 
     initialize: function(options) {
@@ -144,6 +145,21 @@ define([
       var that = this;
       confirmationView.open({}, function() {
         client.roomDeban(that.model.get('name'), username);
+        that.render();
+      });
+    },
+    voiceUser: function(event) {
+      event.preventDefault();
+      if (!this.model.currentUserIsOp() && ! this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin())
+        return false;
+
+      var username = $(event.currentTarget).data('username');
+      if (!username)
+        return;
+
+      var that = this;
+      confirmationView.open({}, function() {
+        client.roomVoice(that.model.get('name'), username);
         that.render();
       });
     }
