@@ -68,9 +68,10 @@ define([
       if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin())
         return false;
 
+      var topic = common.textMentions(this.model.get('topic'));
       this.$el.find('.topic-current').hide();
       this.$el.find('.topic-form').css('display', 'block');
-      this.$el.find('.topic-input').val(this.model.get('topic')).focus();
+      this.$el.find('.topic-input').val(topic).focus();
     },
     hideForm: function() {
       this.$el.find('.topic-form').hide();
