@@ -52,7 +52,7 @@
     "socketio-jwt": "dbrugne/socketio-jwt",
     "underscore": "1.7.x",
     "validator": "3.x",
-    "donut-common": "dbrugne/donut-common.git"
+    "donut-common": "git+ssh://git@github.com/dbrugne/donut-common.git"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
