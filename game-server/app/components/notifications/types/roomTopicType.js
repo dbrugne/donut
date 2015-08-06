@@ -5,6 +5,7 @@ var UserModel = require('../../../../../shared/models/user');
 var NotificationModel = require('../../../../../shared/models/notification');
 var emailer = require('../../../../../shared/io/emailer');
 var utils = require('./../utils');
+var conf = require('../../../../../config/index');
 
 module.exports = function (facade) {
   return new Notification(facade);
@@ -128,7 +129,10 @@ Notification.prototype.sendEmail = function (model, done) {
     utils.retrieveHistoryRoom(model.data.event.toString()),
 
     function send(history, callback) {
-      emailer.roomTopic(model.user.getEmail(), history.user.username, history.room.name, history.data.topic, callback);
+      var topic = utils.mentionize(history.data.topic, {
+        style: 'color: '+conf.room.default.color+';'
+      });
+      emailer.roomTopic(model.user.getEmail(), history.user.username, history.room.name, topic, callback);
     },
 
     function persist(callback) {

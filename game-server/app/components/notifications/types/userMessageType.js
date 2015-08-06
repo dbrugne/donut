@@ -126,13 +126,14 @@ Notification.prototype.sendEmail = function(model, done) {
       });
     },
 
-    function mentionize(history, events, callback) {
-      var reg = /@\[([^\]]+)\]\(user:[^)]+\)/g; // @todo dbr bundle mentionnize, linkify... other messages transfomrmation in a common class loadable in npm and bower
+    function mentions(history, events, callback) {
       _.each(events, function(event, index, list) {
         if (!event.data.message)
           return;
 
-        list[index].data.message = list[index].data.message.replace(reg, "<strong><a style=\"color:"+conf.room.default.color+";\"href=\""+conf.url+"/user/$1\">@$1</a></strong>");
+        list[index].data.message = utils.mentionize(event.data.message, {
+          style: 'color: '+conf.room.default.color+';'
+        });
       });
 
       callback(null, history, events);
