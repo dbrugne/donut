@@ -112,25 +112,6 @@ emailer.emailChanged = function (to, callback) {
   }, callback);
 };
 
-emailer.userMessage = function (to, username, events, callback) {
-  sendEmail(to, 'emails/user-message.html', {
-    username: username,
-    events: events,
-    title: i18next.t("email.usermessage.content.title", { username: username }),
-    subject: i18next.t("email.usermessage.subject", { username: username })
-  }, callback);
-};
-
-emailer.roomMessage = function (to, events, roomName, roomAvatar, callback) {
-  sendEmail(to, 'emails/room-message.html', {
-    events: events,
-    roomname: roomName.replace('#', ''),
-    roomavatar: roomAvatar,
-    title: i18next.t("email.roommessage.content.title", { roomname: roomName.replace('#', '') }),
-    subject: i18next.t("email.roommessage.subject", { roomname: roomName.replace('#', '') })
-  }, callback);
-};
-
 emailer.roomOp = function (to, data, callback) {
   sendEmail(to, 'emails/room-op.html', {
     username: data.username,
@@ -189,6 +170,15 @@ emailer.contactForm = function (data, callback) {
   }, callback);
 };
 
+emailer.roomJoin = function (to, from, room, callback) {
+  sendEmail(to, 'emails/room-join.html', {
+    username: from,
+    roomname: room.replace('#', ''),
+    title: i18next.t("email.roomjoin.content.title", {username: from, roomname: room.replace('#', '')}),
+    subject: i18next.t("email.roomjoin.subject", {username: from, roomname: room.replace('#', '')})
+  }, callback);
+};
+
 emailer.roomTopic = function (to, from, room, topic, callback) {
   sendEmail(to, 'emails/room-topic.html', {
     username: from,
@@ -199,15 +189,6 @@ emailer.roomTopic = function (to, from, room, topic, callback) {
   }, callback);
 };
 
-emailer.roomJoin = function (to, from, room, callback) {
-  sendEmail(to, 'emails/room-join.html', {
-    username: from,
-    roomname: room.replace('#', ''),
-    title: i18next.t("email.roomjoin.content.title", {username: from, roomname: room.replace('#', '')}),
-    subject: i18next.t("email.roomjoin.subject", {username: from, roomname: room.replace('#', '')})
-  }, callback);
-};
-
 emailer.userMention = function (to, events, from, room, callback) {
   sendEmail(to, 'emails/user-mention.html', {
     events: events,
@@ -215,5 +196,24 @@ emailer.userMention = function (to, events, from, room, callback) {
     roomname: room.replace('#', ''),
     title: i18next.t("email.usermention.content.title", {username: from, roomname: room.replace('#', '')}),
     subject: i18next.t("email.usermention.subject", {username: from, roomname: room.replace('#', '')})
+  }, callback);
+};
+
+emailer.userMessage = function (to, username, events, callback) {
+  sendEmail(to, 'emails/user-message.html', {
+    events: events,
+    username: username,
+    title: i18next.t("email.usermessage.content.title", { username: username }),
+    subject: i18next.t("email.usermessage.subject", { username: username })
+  }, callback);
+};
+
+emailer.roomMessage = function (to, events, roomName, roomAvatar, callback) {
+  sendEmail(to, 'emails/room-message.html', {
+    events: events,
+    roomname: roomName.replace('#', ''),
+    roomavatar: roomAvatar,
+    title: i18next.t("email.roommessage.content.title", { roomname: roomName.replace('#', '') }),
+    subject: i18next.t("email.roommessage.subject", { roomname: roomName.replace('#', '') })
   }, callback);
 };
