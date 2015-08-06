@@ -3,10 +3,11 @@ define([
   'underscore',
   'backbone',
   'libs/donut-debug',
+  'common',
   'client',
   'models/current-user',
   '_templates'
-], function ($, _, Backbone, donutDebug, client, currentUser, templates) {
+], function ($, _, Backbone, donutDebug, common, client, currentUser, templates) {
 
   var debug = donutDebug('donut:message-edit');
 
@@ -35,7 +36,9 @@ define([
       this.$text.addClass('hidden');
       this.$el.removeClass('has-hover');
 
-      this.originalMessage = this.htmlSmileyToText(this.$text.html());
+      this.originalMessage = this.$text.html();
+      this.originalMessage = common.textMentions(this.originalMessage);
+      this.originalMessage = this.htmlSmileyToText(this.originalMessage);
 
       this.$messageForm = this.$el.find('.message-form');
       this.$messageForm
