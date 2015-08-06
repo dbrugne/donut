@@ -18,6 +18,19 @@
                         <li><a href="/!#">Home</a></li>
                     </ul>
                     <ul class="nav navbar-nav-ul navbar-right">
+
+                        <li class="home visible-sm visible-xs">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                <i class="icon icon-cog" data-colorify-text="contrast"></i>
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li class="arrow-up"></li>
+                                <li><a href="/!#"><i class="icon icon-home"></i> <%= t('actions.home') %></a></li>
+                                <li><a class="go-to-search"><i class="icon icon-search"></i> <%= t('actions.search') %></a></li>
+                                <li><a class="open-create-room"><i class="icon icon-pencil"></i> <%= t('actions.create') %></a></li>
+                            </ul>
+                        </li>
+
                         <li id="notifications" class="dropdown empty">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                 <i class="icon icon-globe" data-colorify-text="contrast"></i>
@@ -64,18 +77,7 @@
             <div id="left">
 
                 <ul class="page-sidebar-menu">
-                    <li class="home visible-sm visible-xs">
-                        <a href="javascript:;">
-                            <i class="icon icon-cog"></i>
-                            <span class="title hidden-sm hidden-xs"><%= t('actions.menu') %></span>
-                        </a>
 
-                        <ul class="sub-menu">
-                            <li><a href="/!#"><i class="icon icon-home"></i><%= t('actions.home') %></a></li>
-                            <li><a class="go-to-search"><i class="icon icon-search"></i><%= t('actions.search') %></a></li>
-                            <li><a class="open-create-room"><i class="icon icon-pencil"></i><%= t('actions.create') %></a></li>
-                        </ul>
-                    </li>
                     <li id="block-current-user">
                         <a href="javascript:;" class="avatar open-user-profile" data-username="<%= user.username %>">
                             <img class="open-user-profile" data-username="<%- user.username %>" src="<%- user.avatar %>" alt="@<%- user.username %> avatar">
