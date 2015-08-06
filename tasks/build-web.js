@@ -51,10 +51,10 @@ module.exports = function (grunt) {
             'jquery.momentify'            : '../javascripts/plugins/jquery.momentify',
             'jquery.colorify'             : '../javascripts/plugins/jquery.colorify',
             'jquery.socialify'            : '../javascripts/plugins/jquery.socialify',
-            'jquery.mentionsinput'        : '../javascripts/plugins/jquery.mentionsInput',
             'underscore.template-helpers' : '../javascripts/plugins/underscore.template-helpers',
             'html.sortable'               : '../vendor/html.sortable/dist/html.sortable',
-            'jquery.contactform'          : '../javascripts/plugins/jquery.contactform'
+            'jquery.contactform'          : '../javascripts/plugins/jquery.contactform',
+            'common'                      : '../vendor/donut-common/index'
           },
           shim: {
             'bootstrap'                   : ['jquery'],
