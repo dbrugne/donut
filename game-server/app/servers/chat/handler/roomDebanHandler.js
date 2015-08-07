@@ -26,110 +26,87 @@ var handler = Handler.prototype;
  */
 handler.deban = function(data, session, next) {
 
+	var user = session.__currentUser__;
+	var bannedUser = session.__user__;
+	var room = session.__room__;
+	
 	var that = this;
 
 	async.waterfall([
 
 		function check(callback) {
 			if (!data.name)
-				return callback('room:deban require room name param');
+				return callback('require room name param');
 
 			if (!data.username)
-				return callback('room:deban require username param');
+				return callback('require username param');
+
+			if (!room)
+				return callback('unable to retrieve room: '+data.name);
+
+			if (!user)
+				return callback('unable to retrieve user: ' + session.uid);
+
+			if (!room.isOwnerOrOp(user.id) && session.settings.admin !== true)
+				return callback('this user ' + user.id + ' isn\'t able to deban another user in this room: ' + data.name);
+
+			if (!bannedUser)
+				return callback('unable to retrieve bannedUser: ' + data.username);
 
 			return callback(null);
 		},
 
-		function retrieveRoom(callback) {
-			Room.findByName(data.name).exec(function (err, room) {
-				if (err)
-					return callback('Error while retrieving room in room:deban: '+err);
-
-				if (!room)
-					return callback('Unable to retrieve room in room:deban: '+data.name);
-
-				if (!room.isOwnerOrOp(session.uid) && session.settings.admin !== true)
-					return callback('This user '+session.uid+' isn\'t able to deban another user in this room: '+data.name);
-
-				return callback(null, room);
-			});
-		},
-
-		function retrieveUser(room, callback) {
-			User.findByUid(session.uid).exec(function (err, user) {
-				if (err)
-					return callback('Error while retrieving user '+session.uid+' in room:deban: '+err);
-
-				if (!user)
-					return callback('Unable to retrieve user in room:deban: '+session.uid);
-
-				return callback(null, room, user);
-			});
-		},
-
-		function retrieveunbannedUser(room, user, callback) {
-			User.findByUsername(data.username).exec(function (err, unbannedUser) {
-				if (err)
-					return callback('Error while retrieving unbannedUser '+session.uid+' in room:deban: '+err);
-
-				if (!unbannedUser)
-					return callback('Unable to retrieve unbannedUser in room:deban: '+session.uid);
-
-				return callback(null, room, user, unbannedUser);
-			});
-		},
-
-		function persist(room, user, unbannedUser, callback) {
+		function persist(callback) {
 			if (!room.bans || !room.bans.length)
-				return callback('There is no user banned from this room');
+				return callback('there is no user banned from this room');
 
-			if (!room.isBanned(unbannedUser.id))
-				return callback('This user '+unbannedUser.username+' is not banned from '+room.name);
+			if (!room.isBanned(bannedUser.id))
+				return callback('this user '+bannedUser.username+' is not banned from '+room.name);
 
 			var subDocument = _.find(room.bans, function(ban) {
-				if (ban.user.toString() == unbannedUser._id.toString())
+				if (ban.user.toString() == bannedUser.id)
 					return true;
 			});
 			room.bans.id(subDocument._id).remove();
 			room.save(function(err) {
 				if (err)
-					return callback('Unable to persist deban of '+unbannedUser.username+' on '+room.name);
+					return callback('unable to persist deban of '+bannedUser.username+' on '+room.name);
 
-				return callback(null, room, user, unbannedUser);
+				return callback(null);
 			});
 		},
 
-		function prepareEvent(room, user, unbannedUser, callback) {
+		function prepareEvent(callback) {
 			var event = {
 				name			 : room.name,
 				id				 : room.id,
-				by_user_id : user._id.toString(),
+				by_user_id : user.id,
 				by_username: user.username,
 				by_avatar  : user._avatar(),
-				user_id: unbannedUser._id.toString(),
-				username: unbannedUser.username,
-				avatar: unbannedUser._avatar()
+				user_id: bannedUser.id,
+				username: bannedUser.username,
+				avatar: bannedUser._avatar()
 			};
 
-			return callback(null, room, user, unbannedUser, event);
+			return callback(null, event);
 		},
 
-		function historizeAndEmit(room, user, unbannedUser, event, callback) {
+		function historizeAndEmit(event, callback) {
 			roomEmitter(that.app, 'room:deban', event, function(err, sentEvent) {
 				if (err)
-					return callback('Error while emitting room:deban in '+room.name+': '+err);
+					return callback('error while emitting room:deban in '+room.name+': '+err);
 
-				return callback(null, room, user, unbannedUser, sentEvent);
+				return callback(null, sentEvent);
 			});
 		},
 
-		function notification(room, user, unbannedUser, event, callback) {
-			Notifications(that.app).getType('roomdeban').create(unbannedUser, room, event.id, callback);
+		function notification(event, callback) {
+			Notifications(that.app).getType('roomdeban').create(bannedUser, room, event.id, callback);
 		}
 
 	], function(err) {
 		if (err) {
-			logger.error(err);
+			logger.error('[room:deban] ' + err);
 			return next(null, {code: 500, err: err});
 		}
 

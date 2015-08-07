@@ -42,10 +42,10 @@ Filter.prototype.before = function(data, session, next) {
     },
 
     user: function (callback) {
-      if (!data.user)
+      if (!data.username)
         return callback(null);
 
-      UserModel.findByUsername(data.user).exec(callback);
+      UserModel.findByUsername(data.username).exec(callback);
     },
 
     event: function (callback) {

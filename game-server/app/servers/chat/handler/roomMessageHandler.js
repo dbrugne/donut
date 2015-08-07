@@ -2,8 +2,6 @@ var logger = require('../../../../pomelo-logger').getLogger('donut', __filename)
 var async = require('async');
 var _ = require('underscore');
 var roomEmitter = require('../../../util/roomEmitter');
-var User = require('../../../../../shared/models/user');
-var Room = require('../../../../../shared/models/room');
 var inputUtil = require('../../../util/input');
 var imagesUtil = require('../../../util/images');
 var keenio = require('../../../../../shared/io/keenio');
@@ -26,7 +24,6 @@ var handler = Handler.prototype;
  * @param {Object} data message from client
  * @param {Object} session
  * @param  {Function} next stemp callback
- *
  */
 handler.message = function (data, session, next) {
 
@@ -80,7 +77,7 @@ handler.message = function (data, session, next) {
         name: room.name,
         id: room.id,
         time: Date.now(),
-        user_id: user._id.toString(),
+        user_id: user.id,
         username: user.username,
         avatar: user._avatar()
       };
