@@ -1,8 +1,6 @@
 var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
 var async = require('async');
 var _ = require('underscore');
-var Room = require('../../../../../shared/models/room');
-var User = require('../../../../../shared/models/user');
 var Notifications = require('../../../components/notifications');
 var roomEmitter = require('../../../util/roomEmitter');
 
@@ -41,17 +39,17 @@ handler.kick = function(data, session, next) {
 			if (!data.username)
 				return callback('require username param');
 
+      if (!user)
+        return callback('unable to retrieve user: ' + session.uid);
+
 			if (!room)
 				return callback('unable to retrieve room: '+data.name);
 
 			if (!room.isOwnerOrOp(session.uid) && session.settings.admin !== true)
 				return callback('this user '+session.uid+' isn\'t able to kick another user in this room: '+data.name);
 
-			if (!user)
-				return callback('unable to retrieve user: '+session.uid);
-
       if (!kickedUser)
-        return callback('unable to retrieve kickedUser: '+session.uid);
+        return callback('unable to retrieve kickedUser: ' + data.username);
 
       if (room.owner.toString() == kickedUser.id)
         return callback('user '+kickedUser.username+' is owner of '+room.name);
@@ -62,12 +60,9 @@ handler.kick = function(data, session, next) {
 			return callback(null);
 		},
 
-		function persistOnRoom(callback) {
+		function persist(callback) {
 			room.update({$pull: { users: kickedUser._id }}, function(err) {
-				if (err)
-					return callback('unable to persist kick of ' + kickedUser.id + ' on '+room.name);
-
-				return callback(null);
+        return callback(err);
 			});
 		},
 
@@ -90,12 +85,7 @@ handler.kick = function(data, session, next) {
 		},
 
 		function historizeAndEmit(event, callback) {
-			roomEmitter(that.app, 'room:kick', event, function(err, sentEvent) {
-				if (err)
-					return callback('error while emitting in ' + room.name + ': '+err);
-
-				return callback(null, sentEvent);
-			});
+			roomEmitter(that.app, 'room:kick', event, callback);
 		},
 
 		/**

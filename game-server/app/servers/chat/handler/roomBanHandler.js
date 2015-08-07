@@ -1,8 +1,6 @@
 var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
 var async = require('async');
 var _ = require('underscore');
-var Room = require('../../../../../shared/models/room');
-var User = require('../../../../../shared/models/user');
 var Notifications = require('../../../components/notifications');
 var roomEmitter = require('../../../util/roomEmitter');
 var inputUtil = require('../../../util/input');
@@ -44,11 +42,11 @@ handler.ban = function(data, session, next) {
 			if (!data.username)
 				return callback('require username param');
 
+      if (!user)
+        return callback('unable to retrieve user: ' + session.uid);
+
 			if (!room)
 				return callback('unable to retrieve room: ' + data.name);
-
-			if (!user)
-				return callback('unable to retrieve user: '+session.uid);
 
 			if (!room.isOwnerOrOp(user.id) && session.settings.admin !== true)
 				return callback('this user ' + user.id + ' isn\'t able to ban another user in this room: ' + data.name);
@@ -65,7 +63,7 @@ handler.ban = function(data, session, next) {
 			return callback(null);
 		},
 
-		function persistOnRoom(callback) {
+		function persist(callback) {
 			var ban = {
 				user: bannedUser._id,
 				banned_at: new Date()
@@ -74,10 +72,7 @@ handler.ban = function(data, session, next) {
 				ban.reason = reason;
 
 			room.update({$addToSet: { bans: ban }, $pull: { users: bannedUser._id, op: bannedUser._id }}, function(err) {
-				if (err)
-					return callback('unable to persist ban of '+bannedUser.username+' on '+room.name);
-
-				return callback(null);
+        return callback(err);
 			});
 		},
 
@@ -100,12 +95,7 @@ handler.ban = function(data, session, next) {
 		},
 
 		function historizeAndEmit(event, callback) {
-			roomEmitter(that.app, 'room:ban', event, function(err, sentEvent) {
-				if (err)
-					return callback('error while emitting room:ban in '+room.name+': '+err);
-
-				return callback(null, sentEvent);
-			});
+			roomEmitter(that.app, 'room:ban', event, callback);
 		},
 
 		/**

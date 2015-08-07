@@ -1,8 +1,6 @@
 var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
 var async = require('async');
 var _ = require('underscore');
-var Room = require('../../../../../shared/models/room');
-var User = require('../../../../../shared/models/user');
 var Notifications = require('../../../components/notifications');
 var roomEmitter = require('../../../util/roomEmitter');
 
@@ -41,11 +39,11 @@ handler.deban = function(data, session, next) {
 			if (!data.username)
 				return callback('require username param');
 
-			if (!room)
-				return callback('unable to retrieve room: '+data.name);
+      if (!user)
+        return callback('unable to retrieve user: ' + session.uid);
 
-			if (!user)
-				return callback('unable to retrieve user: ' + session.uid);
+			if (!room)
+				return callback('unable to retrieve room: ' + data.name);
 
 			if (!room.isOwnerOrOp(user.id) && session.settings.admin !== true)
 				return callback('this user ' + user.id + ' isn\'t able to deban another user in this room: ' + data.name);
@@ -69,10 +67,7 @@ handler.deban = function(data, session, next) {
 			});
 			room.bans.id(subDocument._id).remove();
 			room.save(function(err) {
-				if (err)
-					return callback('unable to persist deban of '+bannedUser.username+' on '+room.name);
-
-				return callback(null);
+        return callback(err);
 			});
 		},
 
@@ -92,12 +87,7 @@ handler.deban = function(data, session, next) {
 		},
 
 		function historizeAndEmit(event, callback) {
-			roomEmitter(that.app, 'room:deban', event, function(err, sentEvent) {
-				if (err)
-					return callback('error while emitting room:deban in '+room.name+': '+err);
-
-				return callback(null, sentEvent);
-			});
+			roomEmitter(that.app, 'room:deban', event, callback);
 		},
 
 		function notification(event, callback) {

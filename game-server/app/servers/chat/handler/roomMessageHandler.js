@@ -38,14 +38,14 @@ handler.message = function (data, session, next) {
       if (!data.name)
         return callback('name is mandatory');
 
-      if (!room)
-        return callback('unable to retrieve room from ' + data.name);
-
       if (!user)
         return callback('unable to retrieve user: ' + session.uid);
 
+      if (!room)
+        return callback('unable to retrieve room from ' + data.name);
+
       if (room.users.indexOf(user.id) === -1)
-        return callback('this user ' + session.uid + ' is not currently in room ' + room.name);
+        return callback('this user ' + user.id + ' is not currently in room ' + room.name);
 
       if (room.isDevoice(user.id))
         return callback('user is devoiced, he can\'t send message in room');
