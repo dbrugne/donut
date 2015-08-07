@@ -63,10 +63,7 @@ handler.message = function (data, session, next) {
       if (!message && !images)
         return callback('Empty message (no text, no image)');
 
-      return callback(null, message, images);
-    },
-
-    function mentions(message, images, callback) {
+      // mentions
       inputUtil.mentions(message, function(err, message, mentions) {
         return callback(err, message, images, mentions);
       });
@@ -163,10 +160,12 @@ handler.message = function (data, session, next) {
     }
 
   ], function (err) {
-    if (err)
-      return next(null, {code: 500, err: err});
+    if (err) {
+      logger.error('[room:message] ' + err);
+      return next(null, { code: 500, err: err });
+    }
 
-    return next(null, {success: true});
+    return next(null, { success: true });
   });
 
 };

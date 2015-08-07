@@ -1,13 +1,11 @@
 var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
 var async = require('async');
 var _ = require('underscore');
-var User = require('../../../../../shared/models/user');
 var Notifications = require('../../../components/notifications');
 var oneEmitter = require('../../../util/oneEmitter');
 var inputUtil = require('../../../util/input');
 var imagesUtil = require('../../../util/images');
 var keenio = require('../../../../../shared/io/keenio');
-var common = require('donut-common');
 
 module.exports = function(app) {
 	return new Handler(app);
@@ -25,9 +23,11 @@ var handler = Handler.prototype;
  * @param {Object} data message from client
  * @param {Object} session
  * @param {Function} next stemp callback
- *
  */
 handler.message = function(data, session, next) {
+
+	var user = session.__currentUser__;
+	var withUser = session.__user__;
 
 	var that = this;
 
@@ -35,60 +35,31 @@ handler.message = function(data, session, next) {
 
 		function check(callback) {
 			if (!data.username)
-				return callback('username is mandatory for user:message');
+				return callback('username is mandatory');
 
-			if (!common.validateUsername(data.username))
-				return callback('Invalid user username on user:message: '+data.username);
+      if (!user)
+        return callback('unable to retrieve current user: ' + session.uid);
+
+      if (!withUser)
+        return callback('unable to retrieve user: ' + data.username);
+
+      if (withUser.isBanned(user.id))
+        return callback('user is banned by withUser');
 
 			return callback(null);
 		},
 
-		function retrieveFromUser(callback) {
-			User.findByUid(session.uid).exec(function (err, from) {
+		function persistOnBoth(callback) {
+			user.update({$addToSet: { onetoones: withUser._id }}, function(err) {
 				if (err)
-					return callback('Error while retrieving user '+session.uid+' in user:message: '+err);
-
-				if (!from)
-					return callback('Unable to retrieve user in user:message: '+session.uid);
-
-				return callback(null, from);
-			});
-		},
-
-		function retrieveToUser(from, callback) {
-			User.findByUsername(data.username).exec(function (err, to) {
-				if (err)
-					return callback('Error while retrieving user '+data.username+' in user:message: '+err);
-
-				if (!to)
-					return callback('Unable to retrieve user in user:message: '+data.username);
-
-				return callback(null, from, to);
-			});
-		},
-
-    function filterBannedUser(from, to, callback) {
-      if (to.isBanned(from.id))
-        return callback('From user is banned by to user in user:message');
-
-      return callback(null, from, to);
-    },
-
-		function persistOnBoth(from, to, callback) {
-			from.update({$addToSet: { onetoones: to._id }}, function(err) {
-				if (err)
-					return callback('Unable to persist ($addToSet) onetoones on "from" user: '+err);
-
-				to.update({$addToSet: { onetoones: from._id }}, function(err) {
-					if (err)
-						return callback('Unable to persist ($addToSet) onetoones on "to" user: '+err);
-
-					return callback(null, from, to);
+					return callback(err);
+        withUser.update({$addToSet: { onetoones: user._id }}, function(err) {
+          return callback(err);
 				});
 			});
 		},
 
-		function prepareMessage(from, to, callback) {
+		function prepareMessage(callback) {
 			// text filtering
 			var message = inputUtil.filter(data.message, 512);
 
@@ -96,24 +67,21 @@ handler.message = function(data, session, next) {
 			var images = imagesUtil.filter(data.images);
 
 			if (!message && !images)
-				return callback('Empty message (no text, no image)');
+				return callback('empty message (no text, no image)');
 
-			return callback(null, from, to, message, images);
+      // mentions
+      inputUtil.mentions(message, function(err, message, mentions) {
+        return callback(err, message, images, mentions);
+      });
 		},
 
-		function mentions(from, to, message, images, callback) {
-			inputUtil.mentions(message, function(err, message, mentions) {
-				return callback(err, from, to, message, images, mentions);
-			});
-		},
-
-		function prepareEvent(from, to, message, images, mentions, callback) {
+		function prepareEvent(message, images, mentions, callback) {
 			var event = {
-				from_user_id  : from._id.toString(),
-				from_username : from.username,
-				from_avatar   : from._avatar(),
-				to_user_id    : to._id.toString(),
-				to_username   : to.username,
+				from_user_id  : user.id,
+				from_username : user.username,
+				from_avatar   : user._avatar(),
+				to_user_id    : withUser.id,
+				to_username   : withUser.username,
 				time          : Date.now()
 			};
 
@@ -122,25 +90,20 @@ handler.message = function(data, session, next) {
 			if (images && images.length)
 				event.images = images;
 
-			return callback(null, from, to, event);
+			return callback(null, event);
 		},
 
-		function historizeAndEmit(from, to, event, callback) {
-			oneEmitter(that.app, {from: from._id, to: to._id}, 'user:message', event, function(err, sentEvent) {
-				if (err)
-					return callback(err);
+		function historizeAndEmit(event, callback) {
+			oneEmitter(that.app, { from: user._id, to: withUser._id} , 'user:message', event, callback);
+		},
 
-				return callback(null, from, to, sentEvent);
+		function notification(event, callback) {
+			Notifications(that.app).getType('usermessage').create(withUser, event.id, function(err) {
+				return callback(err, event);
 			});
 		},
 
-		function notification(from, to, event, callback) {
-			Notifications(that.app).getType('usermessage').create(to, event.id, function(err) {
-				return callback(err, from, to, event);
-			});
-		},
-
-		function tracking(from, to, event, callback) {
+		function tracking(event, callback) {
 			var messageEvent = {
 				session: {
 					id: session.settings.uuid,
@@ -152,28 +115,30 @@ handler.message = function(data, session, next) {
 					admin: (session.settings.admin === true)
 				},
 				to: {
-					id: to._id.toString(),
-					username: to.username,
-					admin: (to.admin === true)
+					id: withUser.id,
+					username: withUser.username,
+					admin: (withUser.admin === true)
 				},
 				message: {
-					length: event.message.length,
-					images: (event.images && event.images.length) ? event.images.length : 0
+          length: (event.message && event.message.length) ? event.message.length : 0,
+          images: (event.images && event.images.length) ? event.images.length : 0
 				}
 			};
 			keenio.addEvent("onetoone_message", messageEvent, function(err){
 				if (err)
-					logger.error('Error while tracking onetoone_message in keen.io for '+session.uid+': '+err);
+					logger.error('Error while tracking onetoone_message in keen.io for ' + user.id + ': '+err);
 
-				return callback(null, event);
+				return callback(null);
 			});
 		}
 
-	], function(err, event) {
-		if (err)
-			return next(null, {code: 500, err: err});
+	], function(err) {
+		if (err) {
+      logger.error('[user:message] ' + err);
+      return next(null, { code: 500, err: err });
+    }
 
-		return next(null, {success: true});
+		return next(null, { success: true });
 	});
 
 };

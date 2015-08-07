@@ -22,9 +22,12 @@ var handler = Handler.prototype;
  * @param {Object} data username, messageId, message from client
  * @param {Object} session
  * @param {Function} next stemp callback
- *
  */
 handler.edit = function(data, session, next) {
+
+  var user = session.__currentUser__;
+  var withUser = session.__user__;
+  var event = session.__event__;
 
   var that = this;
 
@@ -32,122 +35,85 @@ handler.edit = function(data, session, next) {
 
     function check(callback) {
       if (!data.username)
-        return callback('username is mandatory for user:message:edit');
-
-      if (!common.validateUsername(data.username))
-        return callback('Invalid username in user:message:edit: '+data.username);
+        return callback('username is mandatory');
 
       if (!data.event)
-        return callback('user:message:edit require event param');
+        return callback('require event param');
 
       if (!data.message)
-        return callback('user:message:edit require message param');
+        return callback('require message param');
 
-      return callback(null);
-    },
+      if (!user)
+        return callback('Unable to retrieve current user: ' + session.uid);
 
-    function retrieveFromUser(callback) {
-      User.findByUid(session.uid).exec(function (err, from) {
-        if (err)
-          return callback('Error while retrieving user '+session.uid+' in user:message:edit: '+err);
+      if (!withUser)
+        return callback('Unable to retrieve user: ' + data.username);
 
-        if (!from)
-          return callback('Unable to retrieve user in user:message:edit: '+session.uid);
+      if (!event)
+        return callback('Unable to retrieve event: ' + data.event);
 
-        return callback(null, from);
-      });
-    },
+      if (event.event !== 'user:message')
+        return callback('event should be a user:message: ' + data.event);
 
-    function retrieveToUser(from, callback) {
-      User.findByUsername(data.username).exec(function (err, to) {
-        if (err)
-          return callback('Error while retrieving user '+data.username+' in user:message:edit: '+err);
+      if (user.id !== event.from.toString())
+        return callback(user.username + ' tries to modify a message ' + data.event + ' from ' + event.from.toString());
 
-        if (!to)
-          return callback('Unable to retrieve user in user:message:edit: '+data.username);
+      if ((Date.now() - event.time) > conf.chat.message.maxedittime * 60 * 1000)
+        return callback('User ' + user.id + ' tries to edit an old message: ' + event.id);
 
-        return callback(null, from, to);
-      });
-    },
-
-    function retrieveEvent(from, to, callback) {
-      HistoryOne.findOne({_id: data.event}, function (err, editedEvent) {
-        if (err)
-          return callback('Error while retrieving event in user:mesage:edit: ' + err);
-
-        if (!editedEvent)
-          return callback('Unable to retrieve event in user:message:edit: ' + data.event);
-
-        if (editedEvent.event !== 'user:message')
-          return callback('editedEvent should be user:message for: ' + data.event);
-
-        if (session.uid !== editedEvent.from.toString())
-          return callback('User ' + session.uid + ' tries to modify a message from another user: '
-            + data.event + ' (' + editedEvent.from.toString() + ')');
-
-        if ((Date.now() - editedEvent.time) > conf.chat.message.maxedittime * 60 * 1000)
-          return callback('User ' + session.uid + ' tries to edit an old message: ' + editedEvent.id);
-
-        return callback(null, from, to, editedEvent);
-      });
-    },
-
-    function checkMessage(from, to, editedEvent, callback) {
-      // text filtering
       var message = inputUtil.filter(data.message, 512);
       if (!message)
         return callback('Empty message (no text)');
 
-      if (editedEvent.data.message === message)
-        return callback('Posted message has not been changed');
+      if (event.data.message === message)
+        return callback('posted message is the same as original');
 
-      return callback(null, from, to, editedEvent, message);
-    },
-
-    function mentions(from, to, editedEvent, message, callback) {
+      // mentions
       inputUtil.mentions(message, function(err, message, mentions) {
-        return callback(err, from, to, editedEvent, message, mentions);
+        return callback(err, message);
       });
     },
 
-    function persist(from, to, editedEvent, message, mentions, callback) {
-      editedEvent.update({ $set: { edited : true,  edited_at: new Date(), 'data.message': message } }, function(err) {
-        if (err)
-          return callback('Unable to persist message edition of ' + editedEvent.id + ': ' + err);
-
-        return callback(null, from, to, editedEvent, message);
+    function persist(message, callback) {
+      event.update({
+        $set: { edited : true, edited_at: new Date(), 'data.message': message }
+      }, function(err) {
+        return callback(err, message);
       });
     },
 
-    function prepareEvent(from, to, editedEvent, message, callback) {
-      var event = {
-        from_id: from._id,
-        from_username: from.username,
-        to_id: to._id,
-        to_username: to.username,
-        event: editedEvent.id,
-        message: message
+    function prepareEvent(message, callback) {
+      var eventToSend = {
+        from_id: user._id,
+        from_username: user.username,
+        to_id: withUser._id,
+        to_username: withUser.username,
+        event: event.id,
+        message: message,
+        images: (event.data.images)
+          ? event.data.images
+          : null
       };
 
-      return callback(null, from, to, event);
+      return callback(null, eventToSend);
     },
 
-    function broadcastFrom(from, to, event, callback) {
-      that.app.globalChannelService.pushMessage('connector', 'user:message:edit', event, 'user:'+from._id.toString(), {}, function (err) {
+    function broadcastFrom(eventToSend, callback) {
+      that.app.globalChannelService.pushMessage('connector', 'user:message:edit', eventToSend, 'user:' + user.id, {}, function (err) {
         if (err)
-          logger.error('Error while emitting user:message:edit in user:' + from.id + ': ' + err); // not 'return', we delete even if error happen
+          logger.error(err); // not 'return', we delete even if error happen
 
-        return callback(null, from, to, event);
+        return callback(null, eventToSend);
       });
     },
 
-    function broadcastTo(from, to, event, callback) {
-      if (from.id === to.id)
+    function broadcastTo(eventToSend, callback) {
+      if (user.id === withUser.id)
         return callback(null);
 
-      that.app.globalChannelService.pushMessage('connector', 'user:message:edit', event, 'user:'+to._id.toString(), {}, function (err) {
+      that.app.globalChannelService.pushMessage('connector', 'user:message:edit', eventToSend, 'user:' + withUser.id, {}, function (err) {
         if (err)
-          logger.error('Error while emitting user:message:edit in user:' + to.id + ': ' + err); // not 'return', we delete even if error happen
+          logger.error(err); // not 'return', we delete even if error happen
 
         return callback(null);
       });
@@ -155,7 +121,7 @@ handler.edit = function(data, session, next) {
 
   ], function(err) {
     if (err)
-      logger.error(err);
+      logger.error('[user:message:edit] ' + err);
 
     next(null); // even for .notify
   });

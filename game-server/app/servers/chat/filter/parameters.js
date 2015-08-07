@@ -57,7 +57,7 @@ Filter.prototype.before = function(data, session, next) {
           HistoryOneModel.findOne({_id: data.event}).exec(callback);
           break;
 
-        case 'chat.room.MessageEditHandler.edit':
+        case 'chat.roomMessageEditHandler.edit':
         case 'chat.roomMessageSpamHandler.spam':
         case 'chat.roomMessageUnspamHandler.unspam':
           HistoryRoomModel.findOne({_id: data.event}).exec(callback);
@@ -87,5 +87,5 @@ Filter.prototype.before = function(data, session, next) {
 };
 
 Filter.prototype.after = function (err, msg, session, resp, next) {
-  next (err);
+  next(err);
 }

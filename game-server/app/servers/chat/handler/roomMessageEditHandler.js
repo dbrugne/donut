@@ -23,9 +23,12 @@ var handler = Handler.prototype;
  * @param {Object} data name, messageId, message from client
  * @param {Object} session
  * @param {Function} next stemp callback
- *
  */
 handler.edit = function(data, session, next) {
+
+  var user = session.__currentUser__;
+  var room = session.__room__;
+  var event = session.__event__;
 
   var that = this;
 
@@ -33,103 +36,71 @@ handler.edit = function(data, session, next) {
 
     function check(callback) {
       if (!data.name)
-        return callback('room:message:edit require name param');
-
-      if (!common.validateName(data.name))
-        return callback('Invalid name in room:message:edit: '+data.name);
+        return callback('require name param');
 
       if (!data.event)
-        return callback('room:message:edit require event param');
+        return callback('require event param');
 
       if (!data.message)
-        return callback('room:message:edit require message param');
+        return callback('require message param');
+      
+      if (!user)
+        return callback('unable to retrieve current user: ' + session.uid);
 
-      return callback(null);
-    },
+      if (!room)
+        return callback('unable to retrieve room: ' + data.name);
 
-    function retrieveRoom(callback) {
-      Room.findByName(data.name).exec(function (err, room) {
-        if (err)
-          return callback('Error while retrieving room in room:message:edit: ' + err);
+      if (!event)
+        return callback('unable to retrieve event: ' + data.event);
 
-        if (!room)
-          return callback('Unable to retrieve room in room:message:edit ' + data.name);
+      if (event.event !== 'room:message')
+        return callback('event should be room:message: ' + data.event);
 
-        return callback(null, room);
-      });
-    },
+      if (event.room != room.id)
+        return callback('event ' + data.event + ' not correspond to given room ' + room.name);
 
-    function retrieveEvent(room, callback) {
-      HistoryRoom.findOne({_id: data.event}, function (err, editedEvent) {
-        if (err)
-          return callback('Error while retrieving event in room:mesage:edit: ' + err);
+      if (user.id !== event.user.toString())
+        return callback(user.id + ' tries to modify message ' + data.event + ' from ' + event.user.toString());
 
-        if (!editedEvent)
-          return callback('Unable to retrieve event in room:message:edit: ' + data.event);
+      if ((Date.now() - event.time) > conf.chat.message.maxedittime * 60 * 1000)
+        return callback(user.id + ' tries to edit an old message: ' + event.id);
 
-        if (editedEvent.event !== 'room:message')
-          return callback('editedEvent should be room:message for: ' + data.event);
-
-        if (editedEvent.room != room.id)
-          return callback('editedEvent ' + data.event + ' not correspond to given room ' + room.name);
-
-        if (session.uid !== editedEvent.user.toString())
-          return callback('User ' + session.uid + ' tries to modify a message from another user: '
-            + data.event + ' (' + editedEvent.user.toString() + ')');
-
-        if ((Date.now() - editedEvent.time) > conf.chat.message.maxedittime * 60 * 1000)
-          return callback('User ' + session.uid + ' tries to edit an old message: ' + editedEvent.id);
-
-        return callback(null, room, editedEvent);
-      });
-    },
-
-    function checkMessage(room, editedEvent, callback) {
-      // text filtering
       var message = inputUtil.filter(data.message, 512);
 
       if (!message)
-        return callback('Empty message (no text)');
+        return callback('empty message (no text)');
 
-      if (message === editedEvent.data.message)
-        return callback('Posted message has not been changed');
+      if (message === event.data.message)
+        return callback('posted message is the same as original');
 
-      return callback(null, room, editedEvent, message);
-    },
-
-    function mentions(room, editedEvent, message, callback) {
       inputUtil.mentions(message, function(err, message, mentions) {
-        return callback(err, room, editedEvent, message, mentions);
+        return callback(err, message);
       });
     },
 
-    function persist(room, editedEvent, message, mentions, callback) {
-      editedEvent.update({ $set: { edited : true,  edited_at: new Date(), 'data.message': message } }, function(err) {
-        if (err)
-          return callback('Unable to persist message edition of ' + editedEvent.id + ': ' + err);
-
-        return callback(null, room, editedEvent, message);
+    function persist(message, callback) {
+      event.update({
+        $set: { edited : true,  edited_at: new Date(), 'data.message': message }
+      }, function(err) {
+        return callback(err, message);
       });
     },
 
-    function prepareEvent(room, editedEvent, message, callback) {
-      var event = {
+    function prepareEvent(message, callback) {
+      var eventToSend = {
         name: room.name,
-        event: editedEvent.id,
+        event: event.id,
         message: message,
-        images: editedEvent.data.images ? editedEvent.data.images : null
+        images: (event.data.images)
+          ? event.data.images
+          : null
       };
-      that.app.globalChannelService.pushMessage('connector', 'room:message:edit', event, room.name, {}, function (err) {
-        if (err)
-          return callback('Error while emitting room:message:edit in ' + room.name + ': ' + err);
-
-        return callback(null);
-      });
+      that.app.globalChannelService.pushMessage('connector', 'room:message:edit', eventToSend, room.name, {}, callback);
     }
 
   ], function (err) {
     if (err)
-      logger.error(err);
+      logger.error('[room:message:edit] ' + err);
 
     next(null); // even for .notify
   });
