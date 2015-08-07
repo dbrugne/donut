@@ -9,6 +9,7 @@ var connector = require('./app/connector/sioconnector');
 var globalChannel = require('pomelo-globalchannel-plugin');
 var status = require('pomelo-status-plugin');
 var chatLoggerFilter = require('./app/servers/chat/filter/logger');
+var chatParametersFilter = require('./app/servers/chat/filter/parameters');
 var connectorLoggerFilter = require('./app/servers/connector/filter/logger');
 var pomeloBridge = require('./app/components/bridge');
 
@@ -69,6 +70,7 @@ app.configure('production|test|development', 'chat', function() {
   app.before(pomelo.toobusy());
   app.filter(pomelo.timeout());
   app.filter(chatLoggerFilter());
+  app.filter(chatParametersFilter());
 
   // enable the system monitor modules
   //app.enable('systemMonitor'); // should be activated even on Windows to activate other modules (game-server/node_modules/pomelo/lib/util/moduleUtil.js:69), doesn't work on Windows (iostat)

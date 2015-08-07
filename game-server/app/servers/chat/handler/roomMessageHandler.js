@@ -30,53 +30,33 @@ var handler = Handler.prototype;
  */
 handler.message = function (data, session, next) {
 
+  var user = session.__currentUser__;
+  var room = session.__room__;
+
   var that = this;
 
   async.waterfall([
 
     function check(callback) {
       if (!data.name)
-        return callback('name is mandatory for room:message');
+        return callback('name is mandatory');
+
+      if (!room)
+        return callback('unable to retrieve room from ' + data.name);
+
+      if (!user)
+        return callback('unable to retrieve user: ' + session.uid);
+
+      if (room.users.indexOf(user.id) === -1)
+        return callback('this user ' + session.uid + ' is not currently in room ' + room.name);
+
+      if (room.isDevoice(user.id))
+        return callback('user is devoiced, he can\'t send message in room');
 
       return callback(null);
     },
 
-    function retrieveRoom(callback) {
-      Room.findByName(data.name).exec(function (err, room) {
-        if (err)
-          return callback('Error while retrieving room in room:message: ' + err);
-
-        if (!room)
-          return callback('Unable to retrieve room in room:message: ' + data.name);
-
-        return callback(null, room);
-      });
-    },
-
-    function retrieveUser(room, callback) {
-      User.findByUid(session.uid).exec(function (err, user) {
-        if (err)
-          return callback('Error while retrieving user ' + session.uid + ' in room:message: ' + err);
-
-        if (!user)
-          return callback('Unable to retrieve user in room:message: ' + session.uid);
-
-        if (room.isDevoice(user.id))
-          return callback('User is devoiced, he is not send message');
-
-        return callback(null, room, user);
-      });
-    },
-
-    function checkHeIsIn(room, user, callback) {
-      // Test if the current user is in room
-      if (room.users.indexOf(user.id) === -1)
-        return callback('room:message, this user ' + session.uid + ' is not currently in room ' + room.name);
-
-      return callback(null, room, user);
-    },
-
-    function prepareMessage(room, user, callback) {
+    function prepareMessage(callback) {
       // text filtering
       var message = inputUtil.filter(data.message, 512);
 
@@ -86,16 +66,16 @@ handler.message = function (data, session, next) {
       if (!message && !images)
         return callback('Empty message (no text, no image)');
 
-      return callback(null, room, user, message, images);
+      return callback(null, message, images);
     },
 
-    function mentions(room, user, message, images, callback) {
+    function mentions(message, images, callback) {
       inputUtil.mentions(message, function(err, message, mentions) {
-        return callback(err, room, user, message, images, mentions);
+        return callback(err, message, images, mentions);
       });
     },
 
-    function prepareEvent(room, user, message, images, mentions, callback) {
+    function prepareEvent(message, images, mentions, callback) {
       var event = {
         name: room.name,
         id: room.id,
@@ -109,22 +89,22 @@ handler.message = function (data, session, next) {
       if (images && images.length)
         event.images = images;
 
-      return callback(null, room, event, mentions);
+      return callback(null, event, mentions);
     },
 
-    function historizeAndEmit(room, event, mentions, callback) {
+    function historizeAndEmit(event, mentions, callback) {
       roomEmitter(that.app, 'room:message', event, function (err, sentEvent) {
         if (err)
           return callback(err);
 
-        return callback(null, room, sentEvent, mentions);
+        return callback(null, sentEvent, mentions);
       });
     },
 
-    function mentionNotification(room, sentEvent, mentions, callback) {
+    function mentionNotification(sentEvent, mentions, callback) {
       var mentions = common.findMarkupedMentions(sentEvent.message);
       if (!mentions.length)
-        return callback(null, room, sentEvent);
+        return callback(null, sentEvent);
 
       var usersIds = [];
       _.each(mentions, function(m) {
@@ -134,7 +114,7 @@ handler.message = function (data, session, next) {
       });
 
       if (!usersIds.length)
-        return callback(null, room, sentEvent);
+        return callback(null, sentEvent);
 
       // limit
       usersIds = _.first(usersIds, 10);
@@ -144,21 +124,21 @@ handler.message = function (data, session, next) {
       }, function (err) {
         if (err)
           logger.error(err);
-        callback(null, room, sentEvent);
+        callback(null, sentEvent);
       });
     },
 
-    function messageNotification(room, sentEvent, callback) {
+    function messageNotification(sentEvent, callback) {
       // @todo : change pattern for this event (particularly frequent) and tag historyRoomModel as "to_be_consumed" and
       //         implement a consumer to treat notifications asynchronously
       Notifications(that.app).getType('roommessage').create(room, sentEvent.id, function (err) {
         if (err)
           logger.error(err);
-        return callback(null, room, sentEvent);
+        return callback(null, sentEvent);
       });
     },
 
-    function tracking(room, event, callback) {
+    function tracking(event, callback) {
       var messageEvent = {
         session: {
           id: session.settings.uuid,
@@ -181,11 +161,11 @@ handler.message = function (data, session, next) {
         if (err)
           logger.error('Error while tracking room_message in keen.io: ' + err);
 
-        return callback(null, event);
+        return callback(null);
       });
     }
 
-  ], function (err, event) {
+  ], function (err) {
     if (err)
       return next(null, {code: 500, err: err});
 
