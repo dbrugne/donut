@@ -21,9 +21,12 @@ var handler = Handler.prototype;
  * @param {Object} data message from client
  * @param {Object} session
  * @param  {Function} next stemp callback
- *
  */
 handler.op = function(data, session, next) {
+
+	var user = session.__currentUser__;
+	var opedUser = session.__user__;
+	var room = session.__room__;
 
 	var that = this;
 
@@ -31,97 +34,61 @@ handler.op = function(data, session, next) {
 
 		function check(callback) {
 			if (!data.name)
-				return callback('room:op require room name param');
+				return callback('require room name param');
 
 			if (!data.username)
-				return callback('room:op require username param');
+				return callback('require username param');
+
+      if (!user)
+        return callback('unable to retrieve user: ' + session.uid);
+
+      if (!room)
+        return callback('unable to retrieve room: ' + data.name);
+
+      if (!room.isOwnerOrOp(user.id) && session.settings.admin !== true)
+        return callback('this user ' + user.id + ' isn\'t able to op another user in this room: ' + data.name);
+
+      if (!opedUser)
+        return callback('unable to retrieve opedUser in room:op: ' + data.username);
+
+      if (room.op.indexOf(opedUser._id) !== -1)
+        return callback('user '+opedUser.username+' is already OP of ' + room.name);
 
 			return callback(null);
 		},
 
-		function retrieveRoom(callback) {
-			Room.findByName(data.name).exec(function (err, room) {
-				if (err)
-					return callback('Error while retrieving room in room:op: '+err);
-
-				if (!room)
-					return callback('Unable to retrieve room in room:op: '+data.name);
-
-				if (!room.isOwnerOrOp(session.uid) && session.settings.admin !== true)
-					return callback('This user '+session.uid+' isn\'t able to op another user in this room: '+data.name);
-
-				return callback(null, room);
-			});
-		},
-
-		function retrieveUser(room, callback) {
-			User.findByUid(session.uid).exec(function (err, user) {
-				if (err)
-					return callback('Error while retrieving user '+session.uid+' in room:op: '+err);
-
-				if (!user)
-					return callback('Unable to retrieve user in room:op: '+session.uid);
-
-				return callback(null, room, user);
-			});
-		},
-
-		function retrieveOpedUser(room, user, callback) {
-			User.findByUsername(data.username).exec(function (err, opedUser) {
-				if (err)
-					return callback('Error while retrieving opedUser '+session.uid+' in room:op: '+err);
-
-				if (!opedUser)
-					return callback('Unable to retrieve opedUser in room:op: '+session.uid);
-
-				// Is the targeted user already OP of this room
-				if (room.op.indexOf(opedUser._id) !== -1)
-					return callback('User '+opedUser.username+' is already OP of '+room.name);
-
-				return callback(null, room, user, opedUser);
-			});
-		},
-
-		function persist(room, user, opedUser, callback) {
+		function persist(callback) {
 			room.update({$addToSet: { op: opedUser._id }}, function(err) {
-				if (err)
-					return callback('Unable to persist op of '+opedUser._id.toString()+' on '+room.name);
-
-				return callback(null, room, user, opedUser);
-			});
+        return callback(err);
+      });
 		},
 
-		function prepareEvent(room, user, opedUser, callback) {
+		function prepareEvent(callback) {
 			var event = {
 				name: room.name,
 				id: room.id,
-				by_user_id : user._id.toString(),
+				by_user_id : user.id,
 				by_username: user.username,
 				by_avatar  : user._avatar(),
-				user_id: opedUser._id.toString(),
+				user_id: opedUser.id,
 				username: opedUser.username,
 				avatar: opedUser._avatar()
 			};
 
-			return callback(null, room, user, opedUser, event);
+			return callback(null, event);
 		},
 
-		function historizeAndEmit(room, user, opedUser, event, callback) {
-			roomEmitter(that.app, 'room:op', event, function(err, sentEvent) {
-				if (err)
-					return callback('Error while emitting room:op in '+room.name+': '+err);
-
-				return callback(null, room, user, opedUser, sentEvent);
-			});
+		function historizeAndEmit(event, callback) {
+			roomEmitter(that.app, 'room:op', event, callback);
 		},
 
-		function notification(room, user, opedUser, sentEvent, callback) {
+		function notification(sentEvent, callback) {
 			Notifications(that.app).getType('roomop').create(opedUser, room, sentEvent.id, callback);
 		}
 
 	], function(err) {
 		if (err) {
-			logger.error(err);
+			logger.error('[room:op] ' + err);
 			return next(null, {code: 500, err: err});
 		}
 
