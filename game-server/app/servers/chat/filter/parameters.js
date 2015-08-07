@@ -35,7 +35,7 @@ Filter.prototype.before = function(data, session, next) {
     },
 
     room: function (callback) {
-      if (!data.name)
+      if (!data.name || data.__route__ === 'chat.roomCreateHandler.create')
         return callback(null);
 
       RoomModel.findByName(data.name).exec(callback);
