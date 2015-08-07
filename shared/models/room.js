@@ -43,6 +43,7 @@ roomSchema.statics.findByName = function (name) {
 
 roomSchema.statics.listByName = function (names) {
   var criteria = {
+    deleted: false,
     $or: []
   };
   _.each(names, function(n) {
