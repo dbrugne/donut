@@ -32,7 +32,7 @@ module.exports = function(app, onetoone, eventName, eventData, callback) {
         if (err)
           return fn('Error while emitting user onetoone event '+eventName+': '+err);
 
-        ed.id = history._id.toString();
+        ed.id = history.id;
 
         // Broadcast message to all 'sender' devices (not needed for user status events)
         if (eventName != 'user:online' && eventName != 'user:offline')

@@ -35,7 +35,7 @@ module.exports = function(app, rooms, eventName, eventData, callback) {
           return fn('Error while emitting room event '+eventName+' in '+room.name+': '+err);
 
         // emit event to room users
-        ed.id = history._id.toString();
+        ed.id = history.id;
         app.globalChannelService.pushMessage('connector', eventName, ed, room.name, {}, function(err) {
           if (err)
             return logger.error('Error while pushing message: '+err);

@@ -24,7 +24,7 @@ module.exports = function(app, onetoone, eventName, eventData, callback) {
     if (err)
       return fn('Error while saving event while emitting in onetoone '+eventName+': '+err);
 
-    eventData.id = history._id.toString();
+    eventData.id = history.id;
 
     async.parallel([
 
@@ -51,7 +51,7 @@ module.exports = function(app, onetoone, eventName, eventData, callback) {
           });
         }
 
-    ], function(err, results) {
+    ], function(err) {
       return callback(err, eventData);
     });
 
