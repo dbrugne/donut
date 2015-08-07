@@ -1,8 +1,6 @@
 var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
 var async = require('async');
-var User = require('../../../../../shared/models/user');
 var inputUtil = require('../../../util/input');
-var HistoryOne = require('../../../../../shared/models/historyone');
 var conf = require('../../../../../config');
 var common = require('donut-common');
 
@@ -59,11 +57,11 @@ handler.edit = function(data, session, next) {
         return callback(user.username + ' tries to modify a message ' + data.event + ' from ' + event.from.toString());
 
       if ((Date.now() - event.time) > conf.chat.message.maxedittime * 60 * 1000)
-        return callback('User ' + user.id + ' tries to edit an old message: ' + event.id);
+        return callback('user ' + user.id + ' tries to edit an old message: ' + event.id);
 
       var message = inputUtil.filter(data.message, 512);
       if (!message)
-        return callback('Empty message (no text)');
+        return callback('empty message (no text)');
 
       if (event.data.message === message)
         return callback('posted message is the same as original');
