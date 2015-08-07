@@ -569,28 +569,28 @@ define([
     userBan: function(event) {
       event.preventDefault();
 
-      var userId = $(event.currentTarget).data('uid');
-      if (!userId)
+      var username = $(event.currentTarget).data('username');
+      if (!username)
         return;
 
       var that = this;
       ConfirmationView.open({}, function () {
-        client.userBan(userId);
-        that.trigger('userBan', {user_id: userId});
+        client.userBan(username);
+        that.trigger('userBan');
       });
     },
 
     userDeban: function (event) {
       event.preventDefault();
 
-      var userId = $(event.currentTarget).data('uid');
-      if (!userId)
+      var username = $(event.currentTarget).data('username');
+      if (!username)
         return;
 
       var that = this;
       ConfirmationView.open({}, function() {
-        client.userDeban(userId);
-        that.trigger('userDeban', {user_id: userId});
+        client.userDeban(username);
+        that.trigger('userDeban');
       });
 
     }

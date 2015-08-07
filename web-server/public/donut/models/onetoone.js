@@ -86,13 +86,11 @@ define([
         type: 'user:ban',
         data: data
       });
-      //if (currentUser.get('user_id') != model.get('data').from_user_id)
-      //  model.set('unviewed', true);
       this.trigger('freshEvent', model);
     },
     onDeban: function (data) {
       if (data.user_id === currentUser.get('user_id')) {
-        // i'm the banned user
+        // i'm the debanned user
         this.set('i_am_banned', false);
         this.trigger('inputActive');
       } else {
@@ -105,8 +103,6 @@ define([
         type: 'user:deban',
         data: data
       });
-      //if (currentUser.get('user_id') != model.get('data').from_user_id)
-      //  model.set('unviewed', true);
       this.trigger('freshEvent', model);
     },
     history: function (since, callback) {

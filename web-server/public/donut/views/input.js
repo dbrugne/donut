@@ -29,7 +29,7 @@ define([
     initialize: function(options) {
       this.listenTo(currentUser, 'change:avatar', this.onAvatar);
       this.listenTo(this.model, 'inputFocus', this.onFocus);
-      this.listenTo(this.model, 'inputActive', this.onActiveChange);
+      this.listenTo(this.model, 'inputActive', this.onInputActiveChange);
 
       this.images = {}; // should be initialized with {} on .initialize(), else all the view instances will share the same object (#110)
 
@@ -49,24 +49,17 @@ define([
       this.$editable = this.$el.find('.editable');
       this.$preview = this.$el.find('.preview');
 
-      if (this.model.isInputActive() === false) { // deactivate input
+      if (!this.model.isInputActive())
         this.$el.addClass('inactive');
-      } else {
+      else
         this.$el.removeClass('inactive');
-      }
     },
 
-    onActiveChange: function() {
-      if (this.model.isInputActive() === false) {
-        this.$el.removeClass('inactive');
-        var devoices = _.reject( this.model.get('devoices'), function(devoiceUserId) {
-          return (devoiceUserId.user == currentUser.get('user_id'));
-        });
-        this.model.set('devoices', devoices);
-      } else {
+    onInputActiveChange: function() {
+      if (!this.model.isInputActive())
         this.$el.addClass('inactive');
-        this.model.get('devoices').push({ user: currentUser.get('user_id'), devoiced_at: Date.now() });
-      }
+      else
+        this.$el.removeClass('inactive');
     },
 
     onFocus: function() {

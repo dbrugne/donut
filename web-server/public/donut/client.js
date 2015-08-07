@@ -59,6 +59,8 @@ define([
       pomelo.on('user:updated',       function (data) { debug('io:in:user:updated',       data); this.trigger('user:updated',     data); }, this);
       pomelo.on('user:preferences',   function (data) { debug('io:in:user:preferences',   data); this.trigger('user:preferences', data); }, this);
       pomelo.on('user:viewed',        function (data) { debug('io:in:user:viewed',        data); this.trigger('user:viewed',      data); }, this);
+      pomelo.on('user:ban',           function(data) { debug('io:in:user:ban',            data); this.trigger('user:ban',         data); }, this);
+      pomelo.on('user:deban',         function(data) { debug('io:in:user:deban',          data); this.trigger('user:deban',       data); }, this);
 
       pomelo.on('notification:new',   function(data) { debug('io:in:notification:new',  data); this.trigger('notification:new',   data); }, this);
       pomelo.on('notification:read',  function(data) { debug('io:in:notification:read', data); this.trigger('notification:read',  data); }, this);
@@ -416,31 +418,31 @@ define([
     // USER METHODS
     // ======================================================
 
-    userBan: function(user_id) {
-        var data = {user_id: user_id};
-        debug('io:out:user:ban', data);
-        var that = this;
-        pomelo.request(
-            'chat.userBanHandler.ban',
-            data,
-            function(response) {
-                if (response.err)
-                    return debug('io:in:user:ban error: ', response);
-            }
-        );
+    userBan: function(username) {
+      var data = { username: username };
+      debug('io:out:user:ban', data);
+      var that = this;
+      pomelo.request(
+        'chat.userBanHandler.ban',
+        data,
+        function(response) {
+          if (response.err)
+            return debug('io:in:user:ban error: ', response);
+        }
+      );
     },
-    userDeban: function(user_id) {
-        var data = {user_id: user_id};
-        debug('io:out:user:deban', data);
-        var that = this;
-        pomelo.request(
-            'chat.userDebanHandler.ban',
-            data,
-            function(response) {
-                if (response.err)
-                    return debug('io:in:user:deban error: ', response);
-            }
-        );
+    userDeban: function(username) {
+      var data = { username: username };
+      debug('io:out:user:deban', data);
+      var that = this;
+      pomelo.request(
+        'chat.userDebanHandler.ban',
+        data,
+        function(response) {
+          if (response.err)
+              return debug('io:in:user:deban error: ', response);
+        }
+      );
     },
     userJoin: function (username) {
       var data = {username: username};
@@ -462,7 +464,6 @@ define([
     },
     userMessage: function (username, message, images, callback) {
       var data = {username: username, message: message, images: images};
-      pomelo.notify('chat.userMessageHandler.message', data);
       debug('io:out:user:message', data);
       var that = this;
       pomelo.request(

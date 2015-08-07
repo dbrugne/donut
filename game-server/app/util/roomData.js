@@ -20,12 +20,16 @@ module.exports = function(app, uid, room, fn) {
       if (room === null)
         return callback(null, null);
 
+      var devoices = _.map(room.devoices, function(element) {
+        return element.user.toString();
+      });
+
       var roomData = {
         name      : room.name,
         id        : room.id,
         owner     : {},
         op        : room.op, // [ObjectId]
-        devoices  : room.devoices, // [ObjectId]
+        devoices  : devoices, // [ObjectId]
         avatar    : room._avatar(),
         poster    : room._poster(),
         color     : room.color,
