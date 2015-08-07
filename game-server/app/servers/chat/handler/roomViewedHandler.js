@@ -26,78 +26,61 @@ var handler = Handler.prototype;
  */
 handler.viewed = function(data, session, next) {
 
+	var user = session.__currentUser__;
+	var room = session.__room__;
+
 	var that = this;
 
 	async.waterfall([
 
 		function check(callback) {
 			if (!data.name)
-				return callback('name parameter is mandatory for room:viewed');
+				return callback('name parameter is mandatory');
 
 			if (!data.events || !_.isArray(data.events))
-				return callback('events parameter is mandatory for room:viewed');
+				return callback('events parameter is mandatory');
+
+			if (!user)
+				return callback('unable to retrieve user: ' + session.uid);
+
+      if (!room)
+        return callback('unable to retrieve room: ' + data.name);
 
 			data.events = _.filter(data.events, function(id) {
 			  // http://stackoverflow.com/questions/11985228/mongodb-node-check-if-objectid-is-valid
 				return pattern.test(id);
 			});
 			if (!data.events.length)
-				return callback('events parameter should contains at least one valid event ID in room:viewed');
+				return callback('events parameter should contains at least one valid event _id');
 
 			return callback(null);
 		},
 
-		function retrieveRoom(callback) {
-			Room.findByName(data.name).exec(function (err, room) {
-				if (err)
-					return callback('Error while retrieving room in room:viewed: '+err);
-
-				if (!room)
-					return callback('Unable to retrieve room in room:viewed: '+data.name);
-
-				return callback(null, room);
-			});
-		},
-
-		function retrieveUser(room, callback) {
-			User.findByUid(session.uid).exec(function (err, user) {
-				if (err)
-					return callback('Error while retrieving user '+session.uid+' in room:viewed: '+err);
-
-				if (!user)
-					return callback('Unable to retrieve user in room:viewed: '+session.uid);
-
-				return callback(null, room, user);
-			});
-		},
-
-		function persist(room, user, callback) {
+		function persist(callback) {
 			HistoryRoom.update({
-				_id: {$in: data.events},
+				_id: { $in: data.events },
 				event: 'room:message'
 			}, {
-				$addToSet: {viewed: user._id}
+				$addToSet: { viewed: user._id }
 			}, {
-				multi:true
+				multi: true
 			}, function(err) {
-				return callback(err, room, user);
+				return callback(err);
 			});
 		},
 
-		function sendToUserSockets(room, user, callback) {
+		function sendToUserSockets(callback) {
 			var viewedEvent = {
 				name: room.name,
 				id: room.id,
 				events: data.events
 			};
-			that.app.globalChannelService.pushMessage('connector', 'room:viewed', viewedEvent, 'user:'+user._id.toString(), {}, function(err) {
-				return callback(err, user, room);
-			});
+			that.app.globalChannelService.pushMessage('connector', 'room:viewed', viewedEvent, 'user:' + user.id, {}, callback);
 		}
 
 	], function(err) {
 		if (err)
-			logger.error(err);
+			logger.error('[room:viewed] ' + err);
 
 		next(err);
 	});

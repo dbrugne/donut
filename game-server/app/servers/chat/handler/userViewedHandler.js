@@ -25,78 +25,61 @@ var handler = Handler.prototype;
  */
 handler.viewed = function(data, session, next) {
 
+	var user = session.__currentUser__;
+	var withUser = session.__user__;
+
 	var that = this;
 
 	async.waterfall([
 
 		function check(callback) {
 			if (!data.username)
-				return callback('username parameter is mandatory for user:viewed');
+				return callback('username parameter is mandatory');
 
 			if (!data.events || !_.isArray(data.events))
-				return callback('events parameter is mandatory for user:viewed');
+				return callback('events parameter is mandatory');
+
+			if (!user)
+				return callback('unable to retrieve current user: ' + session.uid);
+
+			if (!withUser)
+				return callback('unable to retrieve user: ' + data.username);
 
 			data.events = _.filter(data.events, function(id) {
 				// http://stackoverflow.com/questions/11985228/mongodb-node-check-if-objectid-is-valid
 				return pattern.test(id);
 			});
 			if (!data.events.length)
-				return callback('events parameter should contains at least one valid event ID in user:viewed');
+				return callback('events parameter should contains at least one valid event _id');
 
 			return callback(null);
 		},
 
-		function retrieveUser(callback) {
-			User.findByUid(session.uid).exec(function (err, user) {
-				if (err)
-					return callback('Error while retrieving user '+session.uid+' in user:viewed: '+err);
-
-				if (!user)
-					return callback('Unable to retrieve user in user:viewed: '+session.uid);
-
-				return callback(null, user);
-			});
-		},
-
-		function retrieveWithUser(user, callback) {
-			User.findByUsername(data.username).exec(function (err, withUser) {
-				if (err)
-					return callback('Error while retrieving user '+data.username+' in user:viewed: '+err);
-
-				if (!withUser)
-					return callback('Unable to retrieve user in user:viewed: '+data.username);
-
-				return callback(null, user, withUser);
-			});
-		},
-
-		function persist(user, withUser, callback) {
+		function persist(callback) {
 			HistoryOne.update({
-				_id: {$in: data.events},
+				_id: { $in: data.events },
 				event: 'user:message',
 				to: user._id
 			}, {
-				$set: {viewed: true}
+				$set: { viewed: true }
 			}, {
 				multi: true
 			}, function(err) {
-				return callback(err, user, withUser);
+				return callback(err);
 			});
 		},
 
-		function sendToUserSockets(user, withUser, callback) {
+		function sendToUserSockets(callback) {
 			var viewedEvent = {
 				username: withUser.username,
 				events: data.events
 			};
-			that.app.globalChannelService.pushMessage('connector', 'user:viewed', viewedEvent, 'user:'+session.uid, {}, function(err) {
-				return callback(err, user, withUser);
-			});
+			that.app.globalChannelService.pushMessage('connector', 'user:viewed', viewedEvent, 'user:' + user.id, {}, callback);
 		}
 
 	], function(err) {
 		if (err)
-			logger.error(err);
+			logger.error('[user:viewed] ' + err);
 
 		next(err);
 	});
