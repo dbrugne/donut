@@ -60,6 +60,8 @@ notificationSchema.methods.getEventType = function() {
     case 'roomkick':
     case 'roomban':
     case 'roomdeban':
+    case 'roomvoice':
+    case 'roomdevoice':
     case 'roomtopic':
     case 'roommessage':
     case 'roomjoin':

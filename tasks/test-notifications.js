@@ -145,6 +145,8 @@ module.exports = function (grunt) {
           {event: 'room:deop', notification: 'roomdeop'},
           {event: 'room:ban', notification: 'roomban'},
           {event: 'room:deban', notification: 'roomdeban'},
+          {event: 'room:voice', notification: 'roomvoice'},
+          {event: 'room:devoice', notification: 'roomdevoice'},
           {event: 'room:kick', notification: 'roomkick'}
         ], function(item, fn) {
           var event = {

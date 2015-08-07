@@ -440,6 +440,8 @@
         "kick": "<a href=\"#room/__roomname__\">Vous êtes expulsé de </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
         "ban": "<a href=\"#room/__roomname__\">Vous êtes banni de </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
         "deban": "<a href=\"#room/__roomname__\">Vous n'êtes plus banni de </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
+        "voice": "<a href=\"#room/__roomname__\">Vous avez retrouvé la parole dans </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
+        "devoice": "<a href=\"#room/__roomname__\">Vous êtes muet dans </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
         "roomjoin": "<span class=\"name open-user-profile\" data-username=\"__username__\">@__username__</span><a href=\"#room/__roomname__\"> rejoint </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
         "roomtopic": "<a href=\"#room/__roomname__\">Nouveau sujet dans </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
         "roommessage": "<a href=\"#room/__roomname__\">Nouveaux messages dans </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
@@ -763,6 +765,24 @@
         "disclaimer2": "On dirait bien que tout s'est arrangé !",
         "action": "…et tout ça grâce à <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#253b6c; text-decoration:none;\">@__username__</a></strong>",
         "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Accéder à la discussion\">Accéder à la discussion</a>"
+      }
+    },
+    "roomvoice": {
+      "subject": "Vous avez retrouvé la parole dans #__roomname__",
+      "content": {
+        "title": "Vous avez retrouvé la parole dans #__roomname__",
+        "disclaimer": "On dirait bien que tout s'est arrangé !",
+        "action": "…et tout ça grâce à <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#253b6c; text-decoration:none;\">@__username__</a></strong>",
+        "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Accéder à la discussion\">Accéder à la discussion</a>"
+      }
+    },
+    "roomdevoice": {
+      "subject": "Vous êtes muet dans #__roomname__",
+      "content": {
+        "title": "Vous êtes muet dans #__roomname__",
+        "reason": "<strong>Motif: \"__reason__\"</strong>",
+        "disclaimer": "Aie vous êtes muet dans #__roomname__",
+        "button": "Retourner sur DONUT"
       }
     },
     "usermessage": {
