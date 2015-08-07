@@ -452,6 +452,8 @@
         "roomkick": "Vous êtes expulsé de __roomname__",
         "roomban": "Vous êtes banni de __roomname__",
         "roomdeban": "Vous n'êtes plus banni de __roomname__",
+        "roomvoice": "Vous avez retrouvé la parole dans __roomname__",
+        "roomdevoice": "Vous êtes muet dans __roomname__",
         "usermessage": "@__username__: __message__",
         "roommessage": "__roomname__: __message__",
         "roomjoin": "@__username__ rejoint __roomname__",

@@ -432,6 +432,8 @@
         "roomkick": "You were kicked out of __roomname__",
         "roomban": "You were banned from __roomname__",
         "roomdeban": "You are no longer banned from __roomname__",
+        "roomvoice": "You have retrieve the speech in __roomname__",
+        "roomdevoice": "You are mute in __roomname__",
         "usermessage": "@__username__: __message__",
         "roommessage": "__roomname__: __message__",
         "roomjoin": "@__username__ joined __roomname__",

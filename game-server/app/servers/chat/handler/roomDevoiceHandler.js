@@ -4,6 +4,7 @@ var RoomModel = require('../../../../../shared/models/room');
 var UserModel = require('../../../../../shared/models/user');
 var roomEmitter = require('../../../util/roomEmitter');
 var inputUtil = require('../../../util/input');
+var Notifications = require('../../../components/notifications');
 
 module.exports = function(app) {
   return new Handler(app);
@@ -126,8 +127,12 @@ handler.devoice = function(data, session, next) {
         if (err)
           return callback('Error while emitting room:devoice in '+room.name+': '+err);
 
-        return callback(null);
+        return callback(null, room, user, devoicedUser, sentEvent);
       });
+    },
+
+    function notification(room, user, devoicedUser, sentEvent, callback) {
+      Notifications(that.app).getType('roomdevoice').create(devoicedUser, room, sentEvent.id, callback);
     }
 
   ], function(err) {
