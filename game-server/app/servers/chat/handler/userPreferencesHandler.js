@@ -172,9 +172,9 @@ handler.update = function (data, session, next) {
       event[key] = value;
 
       // inform user
-      that.app.globalChannelService.pushMessage('connector', 'user:preferences', event, 'user:' + user._id.toString(), {}, function (err) {
+      that.app.globalChannelService.pushMessage('connector', 'user:preferences', event, 'user:' + user.id, {}, function (err) {
         if (err)
-          logger.error('Error while pushing user:preferences message to ' + user._id.toString() + ' on user:preferences:update: ' + err);
+          logger.error('Error while pushing user:preferences message to ' + user.id + ' on user:preferences:update: ' + err);
       });
 
       return callback(null);

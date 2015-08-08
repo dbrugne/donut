@@ -229,9 +229,9 @@ handler.update = function(data, session, next) {
 			};
 
 			// inform user
-			that.app.globalChannelService.pushMessage('connector', 'user:updated', event, 'user:'+user._id.toString(), {}, function(err) {
+			that.app.globalChannelService.pushMessage('connector', 'user:updated', event, 'user:'+user.id, {}, function(err) {
 				if (err)
-					logger.error('Error while pushing user:updated message to '+user._id.toString()+' on user:update: '+err);
+					logger.error('Error while pushing user:updated message to '+user.id+' on user:update: '+err);
 			});
 
 			return callback(null, user, sanitized);

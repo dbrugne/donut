@@ -192,7 +192,7 @@ handler.viewed = function (data, session, next) {
       };
 
       // Count remaining unviewed notifications
-      Notifications(that.app).retrieveUserNotificationsUnviewedCount(user._id.toString(), function (err, count) {
+      Notifications(that.app).retrieveUserNotificationsUnviewedCount(user.id, function (err, count) {
         if (err)
           logger.error('Error while retrieving notifications: ' + err);
 

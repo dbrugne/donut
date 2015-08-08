@@ -111,7 +111,7 @@ handler.read = function(data, session, next) {
 		},
 
 		function status(currentUser, user, rooms, callback) {
-			that.app.statusService.getStatusByUid(user._id.toString(), function(err, status) {
+			that.app.statusService.getStatusByUid(user.id, function(err, status) {
 				if (err)
 					return callback('Error while retrieving user status: '+err);
 
@@ -128,7 +128,7 @@ handler.read = function(data, session, next) {
 				? user.lastonline_at
 				: user.lastoffline_at;
 			var userData = {
-				user_id   	: user._id.toString(),
+				user_id   	: user.id,
 				username  	: user.username,
 				color     	: user.color,
 				avatar    	: user._avatar(),
@@ -164,7 +164,7 @@ handler.read = function(data, session, next) {
 		},
 
 		function accountData(currentUser, user, userData, callback) {
-			if (currentUser.id != user._id.toString())
+			if (currentUser.id != user.id)
 			  return callback(null, user, userData);
 
 			var account = {};

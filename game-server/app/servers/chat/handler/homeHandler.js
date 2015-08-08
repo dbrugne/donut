@@ -49,7 +49,7 @@ handler.home = function(data, session, next) {
 						var _owner = {};
 						if (room.owner != undefined) {
 							_owner = {
-								user_id : room.owner._id.toString(),
+								user_id : room.owner.id,
 								username: room.owner.username
 							};
 						}
@@ -113,7 +113,7 @@ handler.home = function(data, session, next) {
 					var list = [];
 					_.each(users, function(u, index) {
 						list.push({
-							user_id: u._id.toString(),
+							user_id: u.id,
 							username: u.username,
 							avatar: u._avatar(),
 							color: u.color,

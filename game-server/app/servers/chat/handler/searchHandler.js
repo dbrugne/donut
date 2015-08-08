@@ -81,7 +81,7 @@ handler.search = function(data, session, next) {
 						var owner = {};
 						if (room.owner != undefined) {
 							owner = {
-								user_id: room.owner._id.toString(),
+								user_id: room.owner.id,
 								username: room.owner.username
 							};
 						}
@@ -142,7 +142,7 @@ handler.search = function(data, session, next) {
 					var list = [];
 					_.each(users, function(user) {
 						var r = {
-							user_id: user._id.toString(),
+							user_id: user.id,
 							username: user.username,
 							avatar: user._avatar(),
 							color: user.color
