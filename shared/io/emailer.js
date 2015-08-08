@@ -179,6 +179,7 @@ emailer.roomDevoice = function (to, data, callback) {
     roomname: data.roomname.replace('#', ''),
     reason: data.reason,
     title: i18next.t("email.roomdevoice.content.title", {roomname: data.roomname.replace('#', '')}),
+    email_heading_action: i18next.t("email.roomdevoice.content.action", {fqdn: conf.fqdn, username: data.username}),
     subject: i18next.t("email.roomdevoice.subject", {roomname: data.roomname.replace('#', '')})
   }, callback);
 };

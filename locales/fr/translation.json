@@ -454,8 +454,8 @@
         "roomkick": "Vous êtes expulsé de __roomname__",
         "roomban": "Vous êtes banni de __roomname__",
         "roomdeban": "Vous n'êtes plus banni de __roomname__",
-        "roomvoice": "Vous avez retrouvé la parole dans __roomname__",
-        "roomdevoice": "Vous êtes muet dans __roomname__",
+        "roomvoice": "On vous a rendu la parole dans __roomname__",
+        "roomdevoice": "Vous avez été rendu muet dans __roomname__",
         "usermessage": "@__username__: __message__",
         "roommessage": "__roomname__: __message__",
         "roomjoin": "@__username__ rejoint __roomname__",
@@ -772,16 +772,17 @@
       "content": {
         "title": "Vous avez retrouvé la parole dans #__roomname__",
         "disclaimer": "On dirait bien que tout s'est arrangé !",
-        "action": "…et tout ça grâce à <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#253b6c; text-decoration:none;\">@__username__</a></strong>",
+        "action": "... et tout ça grâce à <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#253b6c; text-decoration:none;\">@__username__</a></strong>",
         "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Accéder à la discussion\">Accéder à la discussion</a>"
       }
     },
     "roomdevoice": {
-      "subject": "Vous êtes muet dans #__roomname__",
+      "subject": "On vous a rendu muet dans #__roomname__",
       "content": {
-        "title": "Vous êtes muet dans #__roomname__",
+        "title": "On vous a rendu muet dans #__roomname__",
         "reason": "<strong>Motif: \"__reason__\"</strong>",
-        "disclaimer": "Aie vous êtes muet dans #__roomname__",
+        "disclaimer": "Aïe, on vous a rendu muet muet dans #__roomname__",
+        "action": "... et tout ça à cause de <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#253b6c; text-decoration:none;\">@__username__</a></strong>",
         "button": "Retourner sur DONUT"
       }
     },
