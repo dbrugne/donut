@@ -38,7 +38,12 @@ Filter.prototype.before = function(data, session, next) {
       if (!data.name || data.__route__ === 'chat.roomCreateHandler.create')
         return callback(null);
 
-      RoomModel.findByName(data.name).exec(callback);
+      var q = RoomModel.findByName(data.name);
+
+      if (data.__route__ === 'chat.roomJoinHandler.join')
+        q.populate('owner', 'username avatar color facebook');
+
+      q.exec(callback);
     },
 
     user: function (callback) {

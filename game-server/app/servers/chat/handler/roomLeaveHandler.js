@@ -1,8 +1,6 @@
 var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
 var async = require('async');
 var _ = require('underscore');
-var User = require('../../../../../shared/models/user');
-var Room = require('../../../../../shared/models/room');
 var roomEmitter = require('../../../util/roomEmitter');
 
 module.exports = function(app) {
@@ -21,9 +19,11 @@ var handler = Handler.prototype;
  * @param {Object} data message from client
  * @param {Object} session
  * @param  {Function} next stemp callback
- *
  */
 handler.leave = function(data, session, next) {
+
+	var user = session.__currentUser__;
+	var room = session.__room__;
 
 	var that = this;
 
@@ -31,101 +31,73 @@ handler.leave = function(data, session, next) {
 
 		function check(callback) {
 			if (!data.name)
-				return callback('name is mandatory for room:leave');
+				return callback('name is mandatory');
+
+      if (!user)
+        return callback('unable to retrieve user: ' + session.uid);
+
+      if (!room)
+        return callback('unable to retrieve room: ' + data.name);
 
 			return callback(null);
 		},
 
-		function retrieveUser(callback) {
-			User.findByUid(session.uid).exec(function (err, user) {
-				if (err)
-					return callback('Error while retrieving user '+session.uid+' in room:leave: '+err);
-
-				if (!user)
-					return callback('Unable to retrieve user in room:leave: '+session.uid);
-
-				return callback(null, user);
+		function persist(callback) {
+			room.update({ $pull: { users: user.id }}, function(err) {
+        return callback(err);
 			});
 		},
 
-		function retrieveRoom(user, callback) {
-			var q = Room.findByName(data.name);
-			q.exec(function(err, room) {
-				if (err)
-					return callback('Error while retrieving room in room:leave: '+err);
-
-				return callback(null, user, room);
-			});
-		},
-
-		function persistOnRoom(user, room, callback) {
-			room.update({$pull: { users: session.uid }}, function(err) {
-				if (err)
-					return callback('Unable to persist ($pull) users on room: '+err);
-
-				return callback(null, user, room);
-			});
-		},
-
-		function leaveClients(user, room, callback) {
+		function leaveClients(callback) {
 			// search for all the user sessions (any frontends)
-			that.app.statusService.getSidsByUid(session.uid, function(err, sids) {
+			that.app.statusService.getSidsByUid(user.id, function(err, sids) {
 				if (err)
-					return callback('Error while retrieving user status: '+err);
+					return callback(err);
 
-				if (!sids || sids.length < 1) {
-					return callback('Error while retrieving user sessions frontends list: '+err);
-				}
+				if (!sids || sids.length < 1)
+          return callback('no connector sessions for current user (probably a problem somewhere)');
 
 				var parallels = [];
 				_.each(sids, function(sid) {
 					parallels.push(function(fn) {
-						that.app.globalChannelService.leave(room.name, session.uid, sid, function(err) {
+						that.app.globalChannelService.leave(room.name, user.id, sid, function(err) {
 							if (err)
-								return fn(sid+': '+err);
+								return fn(sid + ': ' + err);
 
 							return fn(null);
 						});
 					});
 				});
-				async.parallel(parallels, function(err, results) {
-					if (err)
-						return callback('Error while unsubscribing user '+session.uid+' from '+room.name+': '+err);
-
-					return callback(null, user, room);
+				async.parallel(parallels, function(err) {
+					return callback(err);
 				});
 			});
 		},
 
-		function sendToUserClients(user, room, callback) {
-			that.app.globalChannelService.pushMessage('connector', 'room:leave', {name: room.name, id: room.id}, 'user:'+session.uid, {}, function(err) {
-				if (err)
-					return callback('Error while sending room:leave message to user clients: '+err);
-
-				return callback(null, user, room);
-			});
+		function sendToUserClients(callback) {
+			that.app.globalChannelService.pushMessage('connector', 'room:leave', { name: room.name, id: room.id }, 'user:' + user.id, {}, function(err) {
+        return callback(err);
+      });
 		},
 
 		/**
 		 * This step happen AFTER user/room persistence and room subscription
 		 * to avoid noisy notifications
 		 */
-		function sendToUsers(user, room, callback) {
+		function sendToUsers(callback) {
 			var event = {
 				name			: room.name,
 				id				: room.id,
-				user_id		: user._id.toString(),
+				user_id		: user.id,
 				username	: user.username,
 				avatar		: user._avatar()
 			};
-			roomEmitter(that.app, 'room:out', event, function(err) {
-				return callback(err, user, room);
-			});
+			roomEmitter(that.app, 'room:out', event, callback);
 		}
 
-	], function(err, user, room) {
+	], function(err) {
 		if (err)
-			logger.error(err);
+			logger.error('[room:leave] ' + err);
 
 		return next(null);
 	});
