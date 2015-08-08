@@ -5,23 +5,16 @@ var roomDataHelper = require('../../../util/roomData');
 var roomEmitter = require('../../../util/roomEmitter');
 var Notifications = require('../../../components/notifications');
 
+var Handler = function(app) {
+  this.app = app;
+};
+
 module.exports = function(app) {
 	return new Handler(app);
 };
 
-var Handler = function(app) {
-	this.app = app;
-};
-
 var handler = Handler.prototype;
 
-/**
- * Handle the user "joins" a room action
- *
- * @param {Object} data message from client
- * @param {Object} session
- * @param  {Function} next stemp callback
- */
 handler.join = function(data, session, next) {
 
 	var user = session.__currentUser__;
@@ -34,9 +27,6 @@ handler.join = function(data, session, next) {
 		function check(callback) {
 			if (!data.name)
 				return callback('name is mandatory');
-
-      if (!user)
-        return callback('unable to retrieve user: '+session.uid);
 
       if (!room)
         return callback('notexists');

@@ -31,7 +31,14 @@ Filter.prototype.before = function(data, session, next) {
   async.parallel({
 
     currentUser: function (callback) {
-      UserModel.findOne({_id: session.uid}).exec(callback);
+      UserModel.findOne({ _id: session.uid }).exec(function(err, user) {
+        if (err)
+          return callback(err);
+        if (!user)
+          return callback('unable to retrieve current user: ' + session.uid);
+
+        return callback(null, user);
+      });
     },
 
     room: function (callback) {

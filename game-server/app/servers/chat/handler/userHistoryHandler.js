@@ -3,24 +3,16 @@ var async = require('async');
 var retriever = require('../../../../../shared/models/historyone').retrieve();
 var common = require('donut-common');
 
-module.exports = function(app) {
-	return new Handler(app);
-};
-
 var Handler = function(app) {
 	this.app = app;
 };
 
+module.exports = function(app) {
+	return new Handler(app);
+};
+
 var handler = Handler.prototype;
 
-/**
- * Handle user history logic
- *
- * @param {Object} data message from client
- * @param {Object} session
- * @param  {Function} next stemp callback
- *
- */
 handler.history = function(data, session, next) {
 
 	var user = session.__currentUser__;
@@ -33,9 +25,6 @@ handler.history = function(data, session, next) {
 		function check(callback) {
 			if (!data.username)
 				return callback('username is mandatory');
-
-			if (!user)
-				return callback('unable to retrieve current user: ' + session.uid);
 
 			if (!withUser)
 				return callback('unable to retrieve withUser: ' + data.username);

@@ -5,24 +5,16 @@ var RoomModel = require('../../../../../shared/models/room');
 var UserModel = require('../../../../../shared/models/user');
 var roomEmitter = require('../../../util/roomEmitter');
 
-module.exports = function(app) {
-  return new Handler(app);
-};
-
 var Handler = function(app) {
   this.app = app;
 };
 
+module.exports = function(app) {
+  return new Handler(app);
+};
+
 var handler = Handler.prototype;
 
-/**
- * Handle room voice logic
- *
- * @param {Object} data name, username from client
- * @param {Object} session
- * @param  {Function} next stemp callback
- *
- */
 handler.voice = function(data, session, next) {
 
   var that = this;

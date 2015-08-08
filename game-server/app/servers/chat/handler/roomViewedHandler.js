@@ -6,24 +6,16 @@ var Room = require('../../../../../shared/models/room');
 var HistoryRoom = require('../../../../../shared/models/historyroom');
 var pattern = new RegExp("^[0-9a-fA-F]{24}$");
 
-module.exports = function(app) {
-	return new Handler(app);
-};
-
 var Handler = function(app) {
 	this.app = app;
 };
 
+module.exports = function(app) {
+	return new Handler(app);
+};
+
 var handler = Handler.prototype;
 
-/**
- * Handle room history viewing logic
- *
- * @param {Object} data message from client
- * @param {Object} session
- * @param  {Function} next stemp callback
- *
- */
 handler.viewed = function(data, session, next) {
 
 	var user = session.__currentUser__;
@@ -39,9 +31,6 @@ handler.viewed = function(data, session, next) {
 
 			if (!data.events || !_.isArray(data.events))
 				return callback('events parameter is mandatory');
-
-			if (!user)
-				return callback('unable to retrieve user: ' + session.uid);
 
       if (!room)
         return callback('unable to retrieve room: ' + data.name);

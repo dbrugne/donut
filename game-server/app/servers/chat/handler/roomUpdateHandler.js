@@ -5,23 +5,16 @@ var Room = require('../../../../../shared/models/room');
 var validator = require('validator');
 var cloudinary = require('../../../../../shared/cloudinary/cloudinary');
 
+var Handler = function(app) {
+  this.app = app;
+};
+
 module.exports = function(app) {
 	return new Handler(app);
 };
 
-var Handler = function(app) {
-	this.app = app;
-};
-
 var handler = Handler.prototype;
 
-/**
- * Handle room update logic
- *
- * @param {Object} data message from client
- * @param {Object} session
- * @param  {Function} next stemp callback
- */
 handler.update = function(data, session, next) {
 
 	var user = session.__currentUser__;

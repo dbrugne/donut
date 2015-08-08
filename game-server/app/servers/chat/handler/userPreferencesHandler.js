@@ -5,24 +5,16 @@ var User = require('../../../../../shared/models/user');
 var validator = require('validator');
 var cloudinary = require('../../../../../shared/cloudinary/cloudinary');
 
-module.exports = function (app) {
-  return new Handler(app);
-};
-
 var Handler = function (app) {
   this.app = app;
 };
 
+module.exports = function (app) {
+  return new Handler(app);
+};
+
 var handler = Handler.prototype;
 
-/**
- * Handler user read preferences logic
- *
- * @param {Object} data message from client
- * @param {Object} session
- * @param  {Function} next stemp callback
- *
- */
 handler.read = function (data, session, next) {
 
   var that = this;
@@ -99,14 +91,6 @@ handler.read = function (data, session, next) {
 
 };
 
-/**
- * Handler user update preferences logic
- *
- * @param {Object} data message from client
- * @param {Object} session
- * @param  {Function} next stemp callback
- *
- */
 handler.update = function (data, session, next) {
 
   var that = this;

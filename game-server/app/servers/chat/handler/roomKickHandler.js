@@ -4,24 +4,16 @@ var _ = require('underscore');
 var Notifications = require('../../../components/notifications');
 var roomEmitter = require('../../../util/roomEmitter');
 
+var Handler = function(app) {
+  this.app = app;
+};
+
 module.exports = function(app) {
 	return new Handler(app);
 };
 
-var Handler = function(app) {
-	this.app = app;
-};
-
 var handler = Handler.prototype;
 
-/**
- * Handle room kick logic
- *
- * @param {Object} data message from client
- * @param {Object} session
- * @param  {Function} next stemp callback
- *
- */
 handler.kick = function(data, session, next) {
 
 	var user = session.__currentUser__;
@@ -39,14 +31,11 @@ handler.kick = function(data, session, next) {
 			if (!data.username)
 				return callback('require username param');
 
-      if (!user)
-        return callback('unable to retrieve user: ' + session.uid);
-
 			if (!room)
 				return callback('unable to retrieve room: '+data.name);
 
-			if (!room.isOwnerOrOp(session.uid) && session.settings.admin !== true)
-				return callback('this user '+session.uid+' isn\'t able to kick another user in this room: '+data.name);
+			if (!room.isOwnerOrOp(user.id) && session.settings.admin !== true)
+				return callback('this user ' + user.id + ' isn\'t able to kick another user in this room: ' + data.name);
 
       if (!kickedUser)
         return callback('unable to retrieve kickedUser: ' + data.username);

@@ -1,28 +1,19 @@
 var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
 var async = require('async');
 var _ = require('underscore');
-var User = require('../../../../../shared/models/user');
 var HistoryOne = require('../../../../../shared/models/historyone');
 var pattern = new RegExp("^[0-9a-fA-F]{24}$");
-
-module.exports = function(app) {
-	return new Handler(app);
-};
 
 var Handler = function(app) {
 	this.app = app;
 };
 
+module.exports = function(app) {
+	return new Handler(app);
+};
+
 var handler = Handler.prototype;
 
-/**
- * Handle ones history viewing logic
- *
- * @param {Object} data message from client
- * @param {Object} session
- * @param  {Function} next stemp callback
- *
- */
 handler.viewed = function(data, session, next) {
 
 	var user = session.__currentUser__;
@@ -38,9 +29,6 @@ handler.viewed = function(data, session, next) {
 
 			if (!data.events || !_.isArray(data.events))
 				return callback('events parameter is mandatory');
-
-			if (!user)
-				return callback('unable to retrieve current user: ' + session.uid);
 
 			if (!withUser)
 				return callback('unable to retrieve user: ' + data.username);

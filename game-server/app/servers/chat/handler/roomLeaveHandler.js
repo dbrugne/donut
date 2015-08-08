@@ -3,23 +3,16 @@ var async = require('async');
 var _ = require('underscore');
 var roomEmitter = require('../../../util/roomEmitter');
 
+var Handler = function(app) {
+  this.app = app;
+};
+
 module.exports = function(app) {
 	return new Handler(app);
 };
 
-var Handler = function(app) {
-	this.app = app;
-};
-
 var handler = Handler.prototype;
 
-/**
- * Handle the user "leaves" a room action
- *
- * @param {Object} data message from client
- * @param {Object} session
- * @param  {Function} next stemp callback
- */
 handler.leave = function(data, session, next) {
 
 	var user = session.__currentUser__;
@@ -32,9 +25,6 @@ handler.leave = function(data, session, next) {
 		function check(callback) {
 			if (!data.name)
 				return callback('name is mandatory');
-
-      if (!user)
-        return callback('unable to retrieve user: ' + session.uid);
 
       if (!room)
         return callback('unable to retrieve room: ' + data.name);

@@ -4,24 +4,16 @@ var User = require('../../../../../shared/models/user');
 var Room = require('../../../../../shared/models/room');
 var featuredRooms = require('../../../util/featuredRooms');
 
-module.exports = function(app) {
-	return new Handler(app);
-};
-
 var Handler = function(app) {
 	this.app = app;
 };
 
+module.exports = function(app) {
+	return new Handler(app);
+};
+
 var handler = Handler.prototype;
 
-/**
- * Handle home logic
- *
- * @param {Object} data message from client
- * @param {Object} session
- * @param  {Function} next stemp callback
- *
- */
 handler.home = function(data, session, next) {
 
 	var homeEvent = {};

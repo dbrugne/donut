@@ -6,23 +6,16 @@ var conf = require('../../../../../config/index');
 var keenio = require('../../../../../shared/io/keenio');
 var common = require('donut-common');
 
-module.exports = function(app) {
-  return new Handler(app);
-};
-
 var Handler = function(app) {
   this.app = app;
 };
 
+module.exports = function(app) {
+  return new Handler(app);
+};
+
 var handler = Handler.prototype;
 
-/**
- * Handle the creation of a room
- *
- * @param {Object} data message from client
- * @param {Object} session
- * @param  {Function} next stemp callback
- */
 handler.create = function(data, session, next) {
 
   var user = session.__currentUser__;
@@ -37,9 +30,6 @@ handler.create = function(data, session, next) {
 
       if (!common.validateName(data.name))
         return callback('Invalid room name: '+data.name);
-
-      if (!user)
-        return callback('Unable to retrieve current user: '+session.uid);
 
       return callback(null);
     },
@@ -81,8 +71,8 @@ handler.create = function(data, session, next) {
           connector: session.frontendId
         },
         user: {
-          id: session.uid,
-          username: session.settings.username,
+          id: user.id,
+          username: user.username,
           admin: (session.settings.admin === true)
         },
         room: {

@@ -2,23 +2,16 @@ var logger = require('../../../../pomelo-logger').getLogger('donut', __filename)
 var async = require('async');
 var _ = require('underscore');
 
+var Handler = function(app) {
+  this.app = app;
+};
+
 module.exports = function(app) {
 	return new Handler(app);
 };
 
-var Handler = function(app) {
-	this.app = app;
-};
-
 var handler = Handler.prototype;
 
-/**
- * Handle room users logic. Return a qualified list of users in the given room.
- *
- * @param {Object} data message from client
- * @param {Object} session
- * @param  {Function} next stemp callback
- */
 handler.users = function(data, session, next) {
 
 	var user = session.__currentUser__;

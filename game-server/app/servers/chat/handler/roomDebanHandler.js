@@ -4,24 +4,16 @@ var _ = require('underscore');
 var Notifications = require('../../../components/notifications');
 var roomEmitter = require('../../../util/roomEmitter');
 
-module.exports = function(app) {
-	return new Handler(app);
-};
-
 var Handler = function(app) {
 	this.app = app;
 };
 
+module.exports = function(app) {
+	return new Handler(app);
+};
+
 var handler = Handler.prototype;
 
-/**
- * Handle room deban logic
- *
- * @param {Object} data message from client
- * @param {Object} session
- * @param  {Function} next stemp callback
- *
- */
 handler.deban = function(data, session, next) {
 
 	var user = session.__currentUser__;
@@ -38,9 +30,6 @@ handler.deban = function(data, session, next) {
 
 			if (!data.username)
 				return callback('require username param');
-
-      if (!user)
-        return callback('unable to retrieve user: ' + session.uid);
 
 			if (!room)
 				return callback('unable to retrieve room: ' + data.name);

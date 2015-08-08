@@ -6,24 +6,16 @@ var Room = require('../../../../../shared/models/room');
 var diacritic2ascii = require('../../../../../shared/util/diacritic2ascii');
 var regexp = require('../../../../../shared/util/regexp');
 
-module.exports = function(app) {
-	return new Handler(app);
-};
-
 var Handler = function(app) {
 	this.app = app;
 };
 
+module.exports = function(app) {
+	return new Handler(app);
+};
+
 var handler = Handler.prototype;
 
-/**
- * Handle search logic
- *
- * @param {Object} msg message from client
- * @param {Object} session
- * @param  {Function} next stemp callback
- *
- */
 handler.search = function(data, session, next) {
 
 	var that = this;

@@ -8,23 +8,16 @@ var keenio = require('../../../../../shared/io/keenio');
 var Notifications = require('../../../components/notifications');
 var common = require('donut-common');
 
-module.exports = function (app) {
-  return new Handler(app);
-};
-
 var Handler = function (app) {
   this.app = app;
 };
 
+module.exports = function (app) {
+  return new Handler(app);
+};
+
 var handler = Handler.prototype;
 
-/**
- * Handle room message logic
- *
- * @param {Object} data message from client
- * @param {Object} session
- * @param  {Function} next stemp callback
- */
 handler.message = function (data, session, next) {
 
   var user = session.__currentUser__;
@@ -37,9 +30,6 @@ handler.message = function (data, session, next) {
     function check(callback) {
       if (!data.name)
         return callback('name is mandatory');
-
-      if (!user)
-        return callback('unable to retrieve user: ' + session.uid);
 
       if (!room)
         return callback('unable to retrieve room from ' + data.name);
@@ -139,8 +129,8 @@ handler.message = function (data, session, next) {
           connector: session.frontendId
         },
         user: {
-          id: session.uid,
-          username: session.settings.username,
+          id: user.id,
+          username: user.username,
           admin: (session.settings.admin === true)
         },
         room: {

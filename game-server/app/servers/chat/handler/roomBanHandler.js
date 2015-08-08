@@ -5,24 +5,16 @@ var Notifications = require('../../../components/notifications');
 var roomEmitter = require('../../../util/roomEmitter');
 var inputUtil = require('../../../util/input');
 
-module.exports = function(app) {
-	return new Handler(app);
-};
-
 var Handler = function(app) {
 	this.app = app;
 };
 
+module.exports = function(app) {
+	return new Handler(app);
+};
+
 var handler = Handler.prototype;
 
-/**
- * Handle room ban logic
- *
- * @param {Object} data message from client
- * @param {Object} session
- * @param  {Function} next stemp callback
- *
- */
 handler.ban = function(data, session, next) {
 
 	var user = session.__currentUser__;
@@ -41,9 +33,6 @@ handler.ban = function(data, session, next) {
 
 			if (!data.username)
 				return callback('require username param');
-
-      if (!user)
-        return callback('unable to retrieve user: ' + session.uid);
 
 			if (!room)
 				return callback('unable to retrieve room: ' + data.name);

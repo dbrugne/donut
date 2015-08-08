@@ -1,23 +1,16 @@
 var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
 var async = require('async');
 
-module.exports = function (app) {
-  return new Handler(app);
-};
-
 var Handler = function (app) {
   this.app = app;
 };
 
+module.exports = function (app) {
+  return new Handler(app);
+};
+
 var handler = Handler.prototype;
 
-/**
- * Handle room message unspam logic
- *
- * @param {Object} data name, messageId from client
- * @param {Object} session
- * @param  {Function} next stemp callback
- */
 handler.unspam = function (data, session, next) {
 
   var user = session.__currentUser__;
@@ -34,9 +27,6 @@ handler.unspam = function (data, session, next) {
 
       if (!data.event)
         return callback('require event param');
-
-      if (!user)
-        return callback('unable to retrieve current user: ' + session.uid);
 
       if (!room)
         return callback('unable to retrieve room: ' + data.name);

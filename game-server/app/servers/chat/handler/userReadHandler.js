@@ -5,24 +5,16 @@ var User = require('../../../../../shared/models/user');
 var Room = require('../../../../../shared/models/room');
 var common = require('donut-common');
 
-module.exports = function(app) {
-	return new Handler(app);
-};
-
 var Handler = function(app) {
 	this.app = app;
 };
 
+module.exports = function(app) {
+	return new Handler(app);
+};
+
 var handler = Handler.prototype;
 
-/**
- * Hander user read logic
- *
- * @param {Object} data message from client
- * @param {Object} session
- * @param  {Function} next stemp callback
- *
- */
 handler.read = function(data, session, next) {
 
 	var that = this;
@@ -34,9 +26,6 @@ handler.read = function(data, session, next) {
 		function check(callback) {
 			if (!data.username)
 				return callback('Param username is mandatory for user:read');
-
-			if (!common.validateUsername(data.username))
-				return callback('user:read Invalid username: '+data.username);
 
 			return callback(null);
 		},

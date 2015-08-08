@@ -4,12 +4,12 @@ var inputUtil = require('../../../util/input');
 var conf = require('../../../../../config');
 var common = require('donut-common');
 
-module.exports = function(app) {
-  return new Handler(app);
-};
-
 var Handler = function(app) {
   this.app = app;
+};
+
+module.exports = function(app) {
+  return new Handler(app);
 };
 
 var handler = Handler.prototype;
@@ -40,9 +40,6 @@ handler.edit = function(data, session, next) {
 
       if (!data.message)
         return callback('require message param');
-      
-      if (!user)
-        return callback('unable to retrieve current user: ' + session.uid);
 
       if (!room)
         return callback('unable to retrieve room: ' + data.name);

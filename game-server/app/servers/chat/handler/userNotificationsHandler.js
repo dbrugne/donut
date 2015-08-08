@@ -6,24 +6,16 @@ var NotificationModel = require('../../../../../shared/models/notification');
 var Notifications = require('../../../components/notifications');
 var ObjectId = require('mongoose').Types.ObjectId;
 
-module.exports = function (app) {
-  return new Handler(app);
-};
-
 var Handler = function (app) {
   this.app = app;
 };
 
+module.exports = function (app) {
+  return new Handler(app);
+};
+
 var handler = Handler.prototype;
 
-/**
- * Handler user read notifications logic
- *
- * @param {Object} data message from client
- * @param {Object} session
- * @param  {Function} next step callback
- *
- */
 handler.read = function (data, session, next) {
 
   var that = this;
@@ -122,15 +114,6 @@ handler.read = function (data, session, next) {
 
 };
 
-/**
- * Handler user viewed notifications logic
- * Used to tag selected notifications as "viewed"
- *
- * @param {Object} data message from client
- * @param {Object} session
- * @param  {Function} next step callback
- *
- */
 handler.viewed = function (data, session, next) {
 
   var that = this;
@@ -213,15 +196,6 @@ handler.viewed = function (data, session, next) {
 
 };
 
-/**
- * Handler user done notifications logic
- * Used to tag selected notifications as "done"
- *
- * @param {Object} data message from client
- * @param {Object} session
- * @param  {Function} next step callback
- *
- */
 handler.done = function (data, session, next) {
 
   var that = this;

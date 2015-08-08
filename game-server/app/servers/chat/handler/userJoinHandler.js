@@ -3,26 +3,17 @@ var async = require('async');
 var _ = require('underscore');
 var oneDataHelper = require('../../../util/oneData');
 var User = require('../../../../../shared/models/user');
-var common = require('donut-common');
-
-module.exports = function(app) {
-	return new Handler(app);
-};
 
 var Handler = function(app) {
 	this.app = app;
 };
 
+module.exports = function(app) {
+	return new Handler(app);
+};
+
 var handler = Handler.prototype;
 
-/**
- * Handle the user "joins" a onetoone action
- *
- * @param {Object} data message from client
- * @param {Object} session
- * @param  {Function} next stemp callback
- *
- */
 handler.join = function(data, session, next) {
 
 	var that = this;
@@ -32,9 +23,6 @@ handler.join = function(data, session, next) {
 		function check(callback) {
 			if (!data.username)
 				return callback('username is mandatory for user:join');
-
-			if (!common.validateUsername(data.username))
-				return callback('Invalid user username on user:join: '+data.username);
 
 			return callback(null);
 		},

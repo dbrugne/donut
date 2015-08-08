@@ -7,23 +7,16 @@ var inputUtil = require('../../../util/input');
 var imagesUtil = require('../../../util/images');
 var keenio = require('../../../../../shared/io/keenio');
 
+var Handler = function(app) {
+  this.app = app;
+};
+
 module.exports = function(app) {
 	return new Handler(app);
 };
 
-var Handler = function(app) {
-	this.app = app;
-};
-
 var handler = Handler.prototype;
 
-/**
- * Handle onetoone message logic
- *
- * @param {Object} data message from client
- * @param {Object} session
- * @param {Function} next stemp callback
- */
 handler.message = function(data, session, next) {
 
 	var user = session.__currentUser__;
@@ -36,9 +29,6 @@ handler.message = function(data, session, next) {
 		function check(callback) {
 			if (!data.username)
 				return callback('username is mandatory');
-
-      if (!user)
-        return callback('unable to retrieve current user: ' + session.uid);
 
       if (!withUser)
         return callback('unable to retrieve user: ' + data.username);
@@ -110,8 +100,8 @@ handler.message = function(data, session, next) {
 					connector: session.frontendId
 				},
 				user: {
-					id: session.uid,
-					username: session.settings.username,
+					id: user.id,
+					username: user.username,
 					admin: (session.settings.admin === true)
 				},
 				to: {

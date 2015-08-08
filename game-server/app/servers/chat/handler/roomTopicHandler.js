@@ -5,24 +5,16 @@ var roomEmitter = require('../../../util/roomEmitter');
 var inputUtil = require('../../../util/input');
 var common = require('donut-common');
 
+var Handler = function(app) {
+  this.app = app;
+};
+
 module.exports = function(app) {
 	return new Handler(app);
 };
 
-var Handler = function(app) {
-	this.app = app;
-};
-
 var handler = Handler.prototype;
 
-/**
- * Handle room topic logic
- *
- * @param {Object} data message from client
- * @param {Object} session
- * @param  {Function} next stemp callback
- *
- */
 handler.topic = function(data, session, next) {
 
 	var user = session.__currentUser__;
@@ -35,9 +27,6 @@ handler.topic = function(data, session, next) {
 		function check(callback) {
 			if (!data.name)
 				return callback('name is mandatory');
-
-      if (!user)
-        return callback('unable to retrieve user: ' + session.uid);
 
       if (!room)
         return callback('unable to retrieve room: '+data.name);
