@@ -432,6 +432,8 @@
         "roomkick": "You were kicked out of __roomname__",
         "roomban": "You were banned from __roomname__",
         "roomdeban": "You are no longer banned from __roomname__",
+        "roomvoice": "You were unmuted in __roomname__",
+        "roomdevoice": "You were muted in __roomname__",
         "usermessage": "@__username__: __message__",
         "roommessage": "__roomname__: __message__",
         "roomjoin": "@__username__ joined __roomname__",
@@ -757,6 +759,25 @@
           "title": "New private message from @__username__",
           "disclaimer": "You have a new private message from <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">@__username__</a></strong>",
           "button": "Go to chat"
+        }
+      },
+      "roomvoice": {
+        "subject": "You were unmuted in #__roomname__",
+        "content": {
+          "title": "You were unmuted in #__roomname__",
+          "disclaimer": "It looks like all is well that ends well!",
+          "action": "... and all of that thanks to <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#253b6c; text-decoration:none;\">@__username__</a></strong>",
+          "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Go to chat\">Go to chat</a>"
+        }
+      },
+      "roomdevoice": {
+        "subject": "You were muted in #__roomname__",
+        "content": {
+          "title": "You were muted in #__roomname__",
+          "reason": "<strong>Reason: \"__reason__\"</strong>",
+          "disclaimer": "This is sad news... You are mute in #__roomname__",
+          "action": "... and all of that thanks to <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#253b6c; text-decoration:none;\">@__username__</a></strong>",
+          "button": "Return to DONUT"
         }
       },
       "roommessage": {

@@ -163,6 +163,27 @@ emailer.roomDeban = function (to, data, callback) {
   }, callback);
 };
 
+emailer.roomVoice = function (to, data, callback) {
+  sendEmail(to, 'emails/room-voice.html', {
+    username: data.username,
+    roomname: data.roomname.replace('#', ''),
+    title: i18next.t("email.roomvoice.content.title", {roomname: data.roomname.replace('#', '')}),
+    email_heading_action: i18next.t("email.roomvoice.content.action", {fqdn: conf.fqdn, username: data.username}),
+    subject: i18next.t("email.roomvoice.subject", {roomname: data.roomname.replace('#', '')})
+  }, callback);
+};
+
+emailer.roomDevoice = function (to, data, callback) {
+  sendEmail(to, 'emails/room-devoice.html', {
+    username: data.username,
+    roomname: data.roomname.replace('#', ''),
+    reason: data.reason,
+    title: i18next.t("email.roomdevoice.content.title", {roomname: data.roomname.replace('#', '')}),
+    email_heading_action: i18next.t("email.roomdevoice.content.action", {fqdn: conf.fqdn, username: data.username}),
+    subject: i18next.t("email.roomdevoice.subject", {roomname: data.roomname.replace('#', '')})
+  }, callback);
+};
+
 emailer.contactForm = function (data, callback) {
   sendEmail(conf.email.from.email, 'emails/contact.html', {
     subject: i18next.t("email.contact.subject"),
