@@ -21,9 +21,11 @@ var handler = Handler.prototype;
  * @param {Object} data message from client
  * @param {Object} session
  * @param  {Function} next stemp callback
- *
  */
 handler.update = function(data, session, next) {
+
+	var user = session.__currentUser__;
+	var room = session.__room__;
 
 	var that = this;
 
@@ -31,35 +33,23 @@ handler.update = function(data, session, next) {
 
 		function check(callback) {
 			if (!data.name)
-				return callback('name is mandatory for room:update');
+				return callback('name is mandatory');
+
+      if (!room)
+        return callback('unable to retrieve room: ' + data.name);
+
+      if (!room.isOwner(user.id) && session.settings.admin !== true)
+        return callback('this user ' + user.id + ' isn\'t able to update data of ' + data.name);
 
 			return callback(null);
 		},
 
-		function retrieveRoom(callback) {
-			Room.findByName(data.name).exec(function (err, room) {
-				if (err)
-					return callback('Error while retrieving room in room:update: '+err);
-
-				if (!room)
-					return callback('Unable to retrieve room in room:update: '+data.name);
-
-				if (!room.isOwner(session.uid) && session.settings.admin !== true)
-					return callback('This user '+session.uid+' isn\'t able to update data of '+data.name);
-
-				return callback(null, room);
-			});
-		},
-
-		/**
-		 * validate, sanitized and identify field to be update
-		 */
-		function validate(room, callback) {
+		function validate(callback) {
 
 			// @doc: https://www.npmjs.org/package/validator
 
 			if (!data.data || data.data.length < 1)
-				return callback('No data to update');
+				return callback('no data to update');
 
 			var errors = {};
 			var sanitized = {};
@@ -130,7 +120,7 @@ handler.update = function(data, session, next) {
 			if (errNum > 0)
 				return callback(JSON.stringify(errors)); // object
 
-			return callback(null, room, sanitized);
+			return callback(null, sanitized);
 		},
 
 		/**
@@ -148,7 +138,7 @@ handler.update = function(data, session, next) {
 		 *   $.cloudinary.url("v1407505236/jfs0fbpit5ozwnvx4uem.jpg")
 		 *   -> "http://res.cloudinary.com/roomly/image/upload/v1407505236/jfs0fbpit5ozwnvx4uem.jpg"
 		 */
-		function images(room, sanitized, callback) {
+		function images(sanitized, callback) {
 			if (_.has(data.data, 'avatar')) {
 				var avatar = data.data.avatar;
 
@@ -185,23 +175,19 @@ handler.update = function(data, session, next) {
 				}
 			}
 
-			return callback(null, room, sanitized);
+			return callback(null, sanitized);
 		},
 
-		function update(room, sanitized, callback) {
+		function update(sanitized, callback) {
 			for (var field in sanitized) {
 				room.set(field, sanitized[field]);
 			}
 			room.save(function(err) {
-				if (err)
-					return callback('Error when saving room "'+room.name+'": '+err);
-
-				return callback(null, room, sanitized);
+				return callback(err, sanitized);
 			});
-
 		},
 
-		function broadcast(room, sanitized, callback) {
+		function broadcast(sanitized, callback) {
 			// notify only certain fields
 			var sanitizedToNotify = {};
 			var fieldToNotify = ['avatar','poster','color'];
@@ -223,26 +209,21 @@ handler.update = function(data, session, next) {
 			});
 
 			if (Object.keys(sanitizedToNotify).length < 1)
-				return callback(null, room, sanitized);
+				return callback(null);
 
 			var event = {
 				name: room.name,
 				id: room.id,
 				data: sanitizedToNotify
 			};
-			that.app.globalChannelService.pushMessage('connector', 'room:updated', event, room.name, {}, function(err) {
-				if (err)
-					logger.error('Error while pushing room:updated message to '+room.name+' on room:update: '+err); // not 'return', we delete even if error happen
-
-				return callback(null);
-			});
+			that.app.globalChannelService.pushMessage('connector', 'room:updated', event, room.name, {}, callback);
 		}
 
 	], function(err) {
-		if (err) {
-			logger.error(err);
-			return next(null, {code: 500, err: err});
-		}
+    if (err) {
+      logger.error('[room:update] ' + err);
+      return next(null, {code: 500, err: err});
+    }
 
 		next(null, {});
 	});

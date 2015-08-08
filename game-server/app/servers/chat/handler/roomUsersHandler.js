@@ -1,8 +1,6 @@
 var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
 var async = require('async');
 var _ = require('underscore');
-var Room = require('../../../../../shared/models/room');
-var common = require('donut-common');
 
 module.exports = function(app) {
 	return new Handler(app);
@@ -20,9 +18,11 @@ var handler = Handler.prototype;
  * @param {Object} data message from client
  * @param {Object} session
  * @param  {Function} next stemp callback
- *
  */
 handler.users = function(data, session, next) {
+
+	var user = session.__currentUser__;
+	var room = session.__room__;
 
 	var that = this;
 
@@ -30,77 +30,53 @@ handler.users = function(data, session, next) {
 
 		function check(callback) {
 			if (!data.name)
-				return callback("room:users 'name' is mandatory");
-			if (!common.validateName(data.name))
-				return callback('room:users Invalid room name: '+data.name);
+				return callback('name is mandatory');
+
+			if (!room)
+				return callback('unable to retrieve room: ' + data.name);
+
+      var roomUser = _.findIndex(room.users, function(u) {
+        return (u.id === user.id);
+      });
+      if (roomUser === -1)
+        return callback('this user ' + user.id + ' is not currently in ' + room.name);
 
 			return callback(null);
 		},
 
-		function retrieveRoom(callback) {
-			Room.findByName(data.name, 'name')
-				.populate('users', 'username avatar color facebook')
-				.exec(function (err, room) {
-				if (err)
-					return callback('Error while retrieving room in room:users: '+err);
+    function listAndStatus(callback) {
+      var usersIds = [];
+      var users = _.map(room.users, function(u) {
+        usersIds.push(u.id);
+        return {
+          user_id  : u.id,
+          username : u.username,
+          avatar   : u._avatar()
+        };
+      });
+      that.app.statusService.getStatusByUids(usersIds, function(err, results) {
+        if (err)
+          return callback(err);
+        _.each(users, function(element, index, list) {
+          list[index].status = (results[element.user_id])
+            ? 'online'
+            : 'offline';
+        });
+        return callback(null, users);
+      });
+    }
 
-				if (!room)
-					return callback('Unable to retrieve room in room:users: '+data.name);
+	], function(err, users) {
+    if (err) {
+      logger.error('[room:users] ' + err);
+      return next(null, {code: 500, err: err});
+    }
 
-				var users = [];
-				_.each(room.users, function(user) {
-					users.push({
-						user_id   : user._id.toString(),
-						username  : user.username,
-						avatar    : user._avatar()
-					});
-				});
-
-				return callback(null, room, users);
-			});
-		},
-
-		function checkHeIsIn(room, users, callback) {
-			// Test if the current user is in room
-			var userIds = _.map(room.users, function(u) {
-				return u._id.toString();
-			});
-			if (userIds.indexOf(session.uid) === -1)
-				return callback('room:users, this user '+session.uid+' is not currently in room '+room.name);
-
-			return callback(null, room, users);
-		},
-
-		function status(room, users, callback) {
-			var uids = _.map(users, function(u) { return u.user_id; });
-			that.app.statusService.getStatusByUids(uids, function(err, results) {
-				if (err)
-					return callback('Error while retrieving user status: '+err);
-
-				_.each(users, function(element, index, list) {
-					list[index].status = (results[element.user_id])
-							? 'online'
-							: 'offline';
-				});
-
-				return callback(null, room, users);
-			});
-		},
-
-		function prepare(room, users, callback) {
-			var event = {
-				name: room.name,
-				id: room.id,
-				users: users
-			};
-			return callback(null, event);
-		}
-
-	], function(err, event) {
-		if (err)
-			return next(null, {code: 500, err: err});
-
-		return next(null, event);
+		return next(null, {
+      name: room.name,
+      id: room.id,
+      users: users
+    });
 	});
 
 };

@@ -43,6 +43,16 @@ Filter.prototype.before = function(data, session, next) {
       if (data.__route__ === 'chat.roomJoinHandler.join')
         q.populate('owner', 'username avatar color facebook');
 
+      if (data.__route__ === 'chat.roomReadHandler.read')
+        q.populate('owner', 'username avatar color facebook')
+         .populate('op', 'username avatar color facebook')
+         .populate('users', 'username avatar color facebook')
+         .populate('bans.user', 'username avatar color facebook')
+         .populate('devoices.user', 'username avatar color facebook');
+
+      if (data.__route__ === 'chat.roomUsersHandler.users')
+        q.populate('users', 'username avatar color facebook');
+
       q.exec(callback);
     },
 
