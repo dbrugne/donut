@@ -151,6 +151,12 @@ define([
         case 'roomdeban':
           template = templates['notification/room-deban.html'];
           break;
+        case 'roomvoice':
+          template = templates['notification/room-voice.html'];
+          break;
+        case 'roomdevoice':
+          template = templates['notification/room-devoice.html'];
+          break;
         case 'roomtopic':
           template = templates['notification/room-topic.html'];
           break;
