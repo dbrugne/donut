@@ -1,10 +1,9 @@
 var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
 var async = require('async');
 var _ = require('underscore');
-var User = require('../../../../../shared/models/user');
 var NotificationModel = require('../../../../../shared/models/notification');
 var Notifications = require('../../../components/notifications');
-var ObjectId = require('mongoose').Types.ObjectId;
+var common = require('donut-common');
 
 var Handler = function (app) {
   this.app = app;
@@ -18,37 +17,21 @@ var handler = Handler.prototype;
 
 handler.read = function (data, session, next) {
 
+  var user = session.__currentUser__;
+
   var that = this;
 
   async.waterfall([
 
-    function retrieveUser(callback) {
-      User.findByUid(session.uid).exec(function (err, user) {
-        if (err)
-          return callback('Error while retrieving user ' + session.uid + ' in user:preferences:read: ' + err);
-
-        if (!user)
-          return callback('Unable to retrieve user in user:preferences:read: ' + session.uid);
-
-        return callback(null, user);
-      });
+    function retrieve(callback) {
+      Notifications(that.app).retrieveUserNotifications(user.id, data, callback);
     },
 
-    function retrieveNotifications(user, callback) {
-      Notifications(that.app).retrieveUserNotifications(user.id, data, function (err, notifications, more) {
-        if (err)
-          return callback('Error while retrieving notifications for ' + user.id + ': ' + err);
-
-        return callback(null, user, notifications, more);
-      });
-    },
-
-    function prepare(user, notifications, more, callback) {
+    function prepare(notifications, more, callback) {
       var event = {
         notifications: [],
         more: more
       };
-
       _.each(notifications, function (notification) {
         var d = {
           id: notification.id,
@@ -90,13 +73,13 @@ handler.read = function (data, session, next) {
         event.notifications.push(d);
       });
 
-      return callback(null, user, event);
+      return callback(null, event);
     },
 
-    function retrieveUnviewed(user, event, callback) {
+    function unviewed(event, callback) {
       Notifications(that.app).retrieveUserNotificationsUnviewedCount(user.id, function (err, count) {
         if (err)
-          return callback('Error while retrieving notifications for ' + user.id + ': ' + err);
+          return callback(err);
 
         event.unviewed = count || 0;
         return callback(null, event);
@@ -105,7 +88,7 @@ handler.read = function (data, session, next) {
 
   ], function (err, event) {
     if (err) {
-      logger.error(err);
+      logger.error('[user:notifications:read] ' + err);
       return next(null, {code: 500, err: err});
     }
 
@@ -116,6 +99,8 @@ handler.read = function (data, session, next) {
 
 handler.viewed = function (data, session, next) {
 
+  var user = session.__currentUser__;
+
   var that = this;
 
   async.waterfall([
@@ -123,9 +108,9 @@ handler.viewed = function (data, session, next) {
     function check(callback) {
       // Mark all as read
       if (data.all) {
-        Notifications(that.app).retrieveUserNotificationsUnviewed(session.uid, function (err, notifications) {
+        Notifications(that.app).retrieveUserNotificationsUnviewed(user.id, function (err, notifications) {
           if (err)
-            return callback('Error while retrieving notifications for ' + session.uid + ': ' + err);
+            return callback(err);
 
           return callback(null, notifications);
         });
@@ -136,7 +121,7 @@ handler.viewed = function (data, session, next) {
 
         // filter array to preserve only valid
         _.each(data.ids, function (elt) {
-          if (ObjectId.isValid(elt))
+          if (common.objectIdPattern.test(elt))
             notifications.push(elt);
         });
 
@@ -148,46 +133,28 @@ handler.viewed = function (data, session, next) {
       }
     },
 
-    function retrieveUser(notifications, callback) {
-      User.findByUid(session.uid).exec(function (err, user) {
-        if (err)
-          return callback('Error while retrieving user ' + session.uid + ' in user:preferences:read: ' + err);
-
-        if (!user)
-          return callback('Unable to retrieve user in user:preferences:read: ' + session.uid);
-
-        return callback(null, notifications, user);
+    function persist(notifications, callback) {
+      Notifications(that.app).markNotificationsAsViewed(user.id, notifications, function (err) {
+        return callback(err, notifications);
       });
     },
 
-    function markAsViewed(notifications, user, callback) {
-      Notifications(that.app).markNotificationsAsViewed(user.id, notifications, function (err, countUpdated) {
-        if (err)
-          return callback('Error while setting notifications as read for ' + session.uid + ': ' + err);
-
-        return callback(null, notifications, user);
-      });
-    },
-
-    function prepare(notifications, user, callback) {
-      var event = {
-        notifications: notifications
-      };
-
-      // Count remaining unviewed notifications
+    function prepare(notifications, callback) {
+      // count remaining unviewed notifications
       Notifications(that.app).retrieveUserNotificationsUnviewedCount(user.id, function (err, count) {
         if (err)
-          logger.error('Error while retrieving notifications: ' + err);
+          return callback(err);
 
-        event.unviewed = count || 0;
-
-        return callback(null, event);
+        return callback(null, {
+          notifications: notifications,
+          unviewed: count || 0
+        });
       });
     }
 
   ], function (err, event) {
     if (err) {
-      logger.error(err);
+      logger.error('[user:notifications:viewed] ' + err);
       return next(null, {code: 500, err: err});
     }
 
@@ -197,6 +164,8 @@ handler.viewed = function (data, session, next) {
 };
 
 handler.done = function (data, session, next) {
+
+  var user = session.__currentUser__;
 
   var that = this;
 
@@ -211,10 +180,7 @@ handler.done = function (data, session, next) {
         if (err)
           return callback('Error while retrieving notification: ' + err);
 
-        //if (notification.done === true)
-        //  return callback('This notification is already tagged as done');
-
-        if (notification.user.toString() !== session.uid)
+        if (notification.user.toString() !== user.id)
           return callback('This notification is not associated to this user');
 
         return callback(null, notification);
@@ -222,33 +188,23 @@ handler.done = function (data, session, next) {
     },
 
     function markAsDone(notification, callback) {
-      Notifications(that.app).markNotificationsAsDone(session.uid, [notification.id], function (err, countUpdated) {
-        if (err)
-          return callback('Error while setting notifications as read for ' + session.uid + ': ' + err);
-
-        return callback(null, notification);
+      Notifications(that.app).markNotificationsAsDone(user.id, [notification.id], function (err) {
+        return callback(err, notification);
       });
     },
 
-    function prepare(notification, callback) {
+    function broadcast(notification, callback) {
       var event = {
         notification: notification.id
       };
-
-      return callback(null, event);
-    },
-
-    function broadcast(event, callback) {
-      that.app.globalChannelService.pushMessage('connector', 'notification:done', event, 'user:' + session.uid, {}, function (err) {
-        if (err)
-          logger.error('Error while emitting notification:done for uid: ' + session.uid + ': ' + err);
-        return callback(null, event);
+      that.app.globalChannelService.pushMessage('connector', 'notification:done', event, 'user:' + user.id, {}, function (err) {
+        return callback(err, event);
       });
     }
 
   ], function (err, event) {
     if (err) {
-      logger.error(err);
+      logger.error('[user:notifications:done] ' + err);
       return next(null, {code: 500, err: err});
     }
 
