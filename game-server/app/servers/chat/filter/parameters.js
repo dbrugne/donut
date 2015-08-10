@@ -5,6 +5,7 @@ var RoomModel = require('../../../../../shared/models/room');
 var UserModel = require('../../../../../shared/models/user');
 var HistoryRoomModel = require('../../../../../shared/models/historyroom');
 var HistoryOneModel = require('../../../../../shared/models/historyone');
+var common = require('donut-common');
 
 var Filter = function() {
 };
@@ -50,6 +51,9 @@ Filter.prototype.before = function(data, session, next) {
       if (!data.name || data.__route__ === 'chat.roomCreateHandler.create')
         return callback(null);
 
+      if (!common.validateName(data.name))
+        return callback('invalid room name parameter: ' + data.name);
+
       var q = RoomModel.findByName(data.name);
 
       if (data.__route__ === 'chat.roomJoinHandler.join')
@@ -72,12 +76,18 @@ Filter.prototype.before = function(data, session, next) {
       if (!data.username)
         return callback(null);
 
+      if (!common.validateUsername(data.username))
+        return callback('invalid username parameter: ' + data.username);
+
       UserModel.findByUsername(data.username).exec(callback);
     },
 
     event: function (callback) {
       if (!data.event)
         return callback(null);
+
+      if (!common.objectIdPattern.test(data.event))
+        return callback('invalid event ID parameter: ' + data.event);
 
       switch (data.__route__) {
         case 'chat.userMessageEditHandler.edit':
@@ -96,8 +106,10 @@ Filter.prototype.before = function(data, session, next) {
     }
 
   }, function(err, results) {
-    if (err)
+    if (err) {
+      logger.error('[' + data.__route__.replace('chat.', '') + '] '+err);
       return next(err);
+    }
 
     if (results.currentUser)
       session.__currentUser__ = results.currentUser;
@@ -115,4 +127,4 @@ Filter.prototype.before = function(data, session, next) {
 
 Filter.prototype.after = function (err, msg, session, resp, next) {
   next(err);
-}
+};
