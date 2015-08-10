@@ -3,7 +3,6 @@ var async = require('async');
 var _ = require('underscore');
 var User = require('../../../../../shared/models/user');
 var validator = require('validator');
-var cloudinary = require('../../../../../shared/cloudinary/cloudinary');
 
 var Handler = function (app) {
   this.app = app;
@@ -17,25 +16,17 @@ var handler = Handler.prototype;
 
 handler.read = function (data, session, next) {
 
+  var user = session.__currentUser__;
+
   var that = this;
 
   var name = data.name || null; // @todo : should be replaced with Room._id??
 
+  var event = {};
+
   async.waterfall([
 
-    function retrieveUser(callback) {
-      User.findByUid(session.uid).exec(function (err, user) {
-        if (err)
-          return callback('Error while retrieving user ' + session.uid + ' in user:preferences:read: ' + err);
-
-        if (!user)
-          return callback('Unable to retrieve user in user:preferences:read: ' + session.uid);
-
-        return callback(null, user);
-      });
-    },
-
-    function prepare(user, callback) {
+    function prepare(callback) {
       var preferences = {};
       _.each(User.preferencesKeys(), function (config, key) {
         // skip non-needed key for this request
@@ -51,38 +42,24 @@ handler.read = function (data, session, next) {
         preferences[_key] = _value;
       });
 
-      return callback(null, user, preferences);
+      event.preferences = preferences;
+      return callback(null);
     },
 
-    function retrieveBannedUsers(user, preferences, callback) {
-      var bannedUsersId = _.map(user.bans, function (e) {
-        return e.user.toString();
+    function bannedUsers(callback) {
+      event.bannedUsers = _.map(user.bans, function (u) {
+        return {
+          user_id: u.id,
+          avatar: u._avatar(),
+          username: u.username
+        };
       });
-      if (!bannedUsersId.length)
-        return callback(null, {preferences: preferences, bannedUsers: []});
-
-      User.find({
-        '_id': {$in: bannedUsersId}
-      }, function (err, bannedUsers) {
-        if (err)
-          return callback(err);
-
-        var u = [];
-        _.each(bannedUsers, function (bannedUser) {
-          u.push({
-            user_id: bannedUser.id,
-            avatar: bannedUser._avatar(),
-            username: bannedUser.username
-          });
-        });
-
-        return callback(null, {preferences: preferences, bannedUsers: u});
-      });
+      return callback(null);
     }
 
-  ], function (err, event) {
+  ], function (err) {
     if (err) {
-      logger.error(err);
+      logger.error('[user:preferences:read] ' + err);
       return next(null, {code: 500, err: err});
     }
 
@@ -93,23 +70,13 @@ handler.read = function (data, session, next) {
 
 handler.update = function (data, session, next) {
 
+  var user = session.__currentUser__;
+
   var that = this;
 
   async.waterfall([
 
-    function retrieveUser(callback) {
-      User.findByUid(session.uid).exec(function (err, user) {
-        if (err)
-          return callback('Error while retrieving user ' + session.uid + ' in user:preferences:update: ' + err);
-
-        if (!user)
-          return callback('Unable to retrieve user in user:preferences:update: ' + session.uid);
-
-        return callback(null, user);
-      });
-    },
-
-    function validate(user, callback) {
+    function validate(callback) {
 
       // @doc: https://www.npmjs.org/package/validator
 
@@ -133,20 +100,17 @@ handler.update = function (data, session, next) {
       if (user.preferences && user.preferences[key] == value)
         return callback('samevalue');
 
-      return callback(null, user, key, value);
+      return callback(null, key, value);
     },
 
-    function update(user, key, value, callback) {
+    function update(key, value, callback) {
       user.set('preferences.' + key, value); // we can also remove the key when value === false ('$unset: {key: 1}') to save database space
       user.save(function (err) {
-        if (err)
-          return callback('Error when saving user preference "' + key + "' on '" + user.username + '": ' + err);
-
-        return callback(null, user, key, value);
+        return callback(err, key, value);
       });
     },
 
-    function broadcastUser(user, key, value, callback) {
+    function broadcastUser(key, value, callback) {
       // notify only certain fields
       var fieldToNotify = ['browser:exitpopin', 'browser:welcome', 'browser:sounds', 'notif:channels:desktop'];
       if (fieldToNotify.indexOf(key) === -1)
@@ -155,18 +119,12 @@ handler.update = function (data, session, next) {
       var event = {};
       event[key] = value;
 
-      // inform user
-      that.app.globalChannelService.pushMessage('connector', 'user:preferences', event, 'user:' + user.id, {}, function (err) {
-        if (err)
-          logger.error('Error while pushing user:preferences message to ' + user.id + ' on user:preferences:update: ' + err);
-      });
-
-      return callback(null);
+      that.app.globalChannelService.pushMessage('connector', 'user:preferences', event, 'user:' + user.id, {}, callback);
     }
 
   ], function (err) {
     if (err) {
-      logger.error(err);
+      logger.error('[user:preferences:update] ' + err);
       return next(null, {code: 500, err: err});
     }
 
