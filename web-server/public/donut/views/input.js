@@ -110,6 +110,41 @@ define([
     sendMessage: function() {
       var message = this.$editable.val();
 
+      // check command
+      var regexpCommand = /^\/([a-z]+)/i;
+      if (regexpCommand.test(message)) {
+        var command = regexpCommand.exec(message.toLowerCase());
+
+        // roomname #.. @..
+        if (command[0] !== '/help' && command[0] !== '/ping') {
+          var regexpRoomname = /(\s+)([#@])([\w-.|^]+)/;
+          var roomname = regexpRoomname.exec(message);
+          if (roomname)
+            roomname[0] = roomname[0].replace(/^[\s]+/, '');
+        }
+
+        // username
+        if (command && roomname) {
+          var regexpUsername = /(\s+)([@])([\w-.|^]+)/;
+          var username = regexpUsername.exec(message);
+          if (username) {
+            username[0] = username[0].replace(/^[\s]+[@]/, '');
+          }
+        }
+
+        // message, topic, reason ...
+        if (command && roomname || username) {
+          var other = message.replace(regexpCommand, '');
+          other = other.replace(regexpRoomname, '');
+          other = other.replace(/^[\s]+/, '');
+        }
+
+        if (this.executeCommand(command, roomname, username, other)) {
+          this.$editable.val('');
+          return false;
+        }
+      }
+
       // check length (min)
       var imagesCount = _.keys(this.images).length;
       if (message == '' && imagesCount < 1) // empty message and no image
@@ -230,6 +265,36 @@ define([
       var symbol = $.smilifyGetSymbolFromCode($(event.currentTarget).data('smilifyCode'));
       this.$editable.insertAtCaret(symbol);
       this.$smileyButton.popover('hide');
+    },
+
+    executeCommand: function(command, roomname, username, other) {
+
+      switch (command[0]) {
+        case '/join':
+          if (roomname)
+            client.roomJoin(roomname[0]);
+          break;
+        case '/leave':
+          if (roomname)
+            client.roomLeave(roomname[0]);
+          break;
+        case '/topic':
+          if (roomname)
+            client.roomTopic(roomname[0], other);
+          break;
+        case '/op':
+          if (roomname && username)
+            client.roomOp(roomname[0], username[0]);
+          break;
+        case '/deop':
+          if (roomname && username)
+            client.roomDeop(roomname[0], username[0]);
+          break;
+        default:
+          return false;
+      }
+
+      return true;
     }
 
   });
