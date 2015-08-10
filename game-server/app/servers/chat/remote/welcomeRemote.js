@@ -40,7 +40,7 @@ WelcomeRemote.prototype.getMessage = function(uid, frontendId, globalCallback) {
 
 		function retrieveUser(callback){
 			User.findById(uid)
-				.populate('onetoones', 'username')
+				.populate('onetoones')
 				.exec(function(err, user) {
 					if (err)
 						return callback('Unable to find user: '+err, null);
@@ -71,28 +71,13 @@ WelcomeRemote.prototype.getMessage = function(uid, frontendId, globalCallback) {
 			if (user.onetoones.length < 1)
 				return callback(null, user);
 
-			var parallels = [];
-			_.each(user.onetoones, function(one) {
-				if (!one.username)
-					return logger.warn('Empty username found in populateOnes for user: '+uid);
-				parallels.push(function(fn) {
-					oneDataHelper(that.app, uid, one.username, {history: false}, function(err, one) {
-						if (err)
-							return fn(err);
-						else
-							return fn(null, one);
-					});
-				});
-			});
-			async.parallel(parallels, function(err, results) {
-				if (err)
-					return callback('Error while populating onetoones: '+err);
+			oneDataHelper(that.app, user, user.onetoones, function(err, ones) {
+        if (err)
+          return callback(err, user);
 
-				welcomeEvent.onetoones = _.filter(results, function(o) {
-					return o !== null;
-				});
-				return callback(null, user);
-			});
+        welcomeEvent.onetoones = ones;
+        return callback(null, user);
+      });
 		},
 
 		function populateRooms(user, callback) {
@@ -147,7 +132,7 @@ WelcomeRemote.prototype.getMessage = function(uid, frontendId, globalCallback) {
 		},
 
 		function notificationsUnread(user, callback) {
-			Notifications(that.app).retrieveUserNotificationsUnviewedCount(user._id.toString(), function(err, count) {
+			Notifications(that.app).retrieveUserNotificationsUnviewedCount(user.id, function(err, count) {
 				if (err)
 				  logger.error('Error while retrieving unread notifications: '+err);
 

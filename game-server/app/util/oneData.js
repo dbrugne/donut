@@ -1,81 +1,64 @@
 var logger = require('../../pomelo-logger').getLogger('donut', __filename);
 var async = require('async');
 var _ = require('underscore');
-var User = require('../../../shared/models/user');
 
 /**
- * Helper to retrieve/prepare all the ones data needed for 'welcome' and
- * 'user:welcome'
+ * Generate onetoone welcome object
+ * @param app
+ * @param user {UserModel}
+ * @param users [{UserModel}]
+ * @param fn
  */
-module.exports = function(app, uid, username, opts, fn) {
-  opts = _.extend({
-  }, opts);
+module.exports = function(app, user, users, fn) {
+  var single = false;
+  if (!_.isArray(users)) {
+    users = [users];
+    single = true;
+  }
 
   async.waterfall([
 
-    function findCurrentUser(callback) {
-      var q = User.findByUid(uid)
-          .exec(function(err, currentUser) {
-            if (err)
-              return callback('Error while retrieving user: '+err);
-
-            return callback(null, currentUser);
-          });
+    function status(callback) {
+      app.statusService.getStatusByUids(_.map(users, 'id'), callback);
     },
 
-    function findUser(currentUser, callback) {
-      var q = User.findByUsername(username)
-        .exec(function(err, user) {
-        if (err)
-          return callback('Error while retrieving user: '+err);
+    function prepare(statuses, callback) {
+      var data = [];
+      _.each(users, function(u, index, list) {
+        if (!u.username)
+          return;
+        var one = {
+          user_id     : u.id,
+          username    : u.username,
+          avatar      : u._avatar(),
+          poster      : u._poster(),
+          color       : u.color,
+          location    : u.location,
+          website     : u.website,
+          banned      : user.isBanned(u.id), // for ban/deban menu
+          i_am_banned : u.isBanned(user.id) // for input enable/disable
+        };
 
-        if (!user) {
-          logger.info('Unable to find this one to one user, we skip: '+username);
-          return fn(null, null);
+        if (statuses[index]) {
+          one.status = 'online';
+          one.onlined = user.lastonline_at;
+        } else {
+          one.status = 'offline';
+          one.onlined = user.lastoffline_at;
         }
-
-        return callback(null, currentUser, user);
+        data.push(one);
       });
-    },
 
-    function status(currentUser, user, callback) {
-      app.statusService.getStatusByUid(user._id.toString(), function(err, liveStatus) {
-        if (err)
-          return callback('Error while retrieving user '+user._id.toString()+' status: '+err);
+      // user.onetoones is empty or contains only removed users ids
+      if (!data.length)
+        return callback(null, null);
 
-        return callback(null, currentUser, user, liveStatus);
-      });
-    },
-
-    function prepare(currentUser, user, liveStatus, callback) {
-      var status = (liveStatus)
-        ? 'online'
-        : 'offline';
-      var onlined = (liveStatus)
-        ? user.lastonline_at
-        : user.lastoffline_at;
-      var oneData = {
-        user_id     : user._id.toString(),
-        username    : user.username,
-        avatar      : user._avatar(),
-        poster      : user._poster(),
-        color       : user.color,
-        location    : user.location,
-        website     : user.website,
-        status      : status,
-        onlined     : onlined,
-        banned      : currentUser.isBanned(user.id), // for ban/deban menu
-        i_am_banned : user.isBanned(uid) // for input enable/disable
-      };
-
-      return callback(null, oneData);
+      if (single)
+        return callback(null, data[0]);
+      else
+        return callback(null, data);
     }
 
-  ], function(err, oneData) {
-    if (err)
-      return fn(err);
-
-    return fn(null, oneData);
-  });
+  ], fn);
 
 };
