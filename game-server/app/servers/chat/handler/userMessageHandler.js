@@ -31,7 +31,7 @@ handler.message = function(data, session, next) {
 				return callback('username is mandatory');
 
       if (!withUser)
-        return callback('unable to retrieve user: ' + data.username);
+        return callback('unable to retrieve withUser: ' + data.username);
 
       if (withUser.isBanned(user.id))
         return callback('user is banned by withUser');

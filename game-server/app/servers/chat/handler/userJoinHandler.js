@@ -24,7 +24,7 @@ handler.join = function(data, session, next) {
 
 		function check(callback) {
 			if (!data.username)
-				return callback('username is mandatory for user:join');
+				return callback('username is mandatory');
 
       if (!withUser)
         return callback('unable to retrieve withUser: ' + data.username);
@@ -50,7 +50,7 @@ handler.join = function(data, session, next) {
 	], function(err) {
 		if (err) {
       logger.error('[user:join] ' + err);
-      return next(null, {code: 500, err: err});
+      return next(null, { code: 500, err: err });
     }
 
 		return next(null);
