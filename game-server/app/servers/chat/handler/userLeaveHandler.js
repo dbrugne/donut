@@ -16,62 +16,38 @@ var handler = Handler.prototype;
 
 handler.leave = function(data, session, next) {
 
+	var user = session.__currentUser__;
+	var withUser = session.__user__;
+
 	var that = this;
 
 	async.waterfall([
 
 		function check(callback) {
-			if (!data.username)
-				return callback('username is mandatory for user:leave');
+      if (!data.username)
+        return callback('username is mandatory');
+
+      if (!withUser)
+        return callback('unable to retrieve withUser: ' + data.username);
 
 			return callback(null);
 		},
 
-		function retrieveUser(callback) {
-			User.findByUid(session.uid).exec(function (err, user) {
-				if (err)
-					return callback('Error while retrieving user '+session.uid+' in user:leave: '+err);
-
-				if (!user)
-					return callback('Unable to retrieve user in user:leave: '+session.uid);
-
-				return callback(null, user);
+		function persist(callback) {
+			user.update({ $pull: { onetoones: withUser._id }}, function(err) {
+				return callback(err);
 			});
 		},
 
-		function retrieveUserWith(user, callback) {
-			User.findByUsername(data.username).exec(function (err, userWith) {
-				if (err)
-					return callback('Error while retrieving user '+data.username+' in user:leave: '+err);
-
-				if (!user)
-					return callback('Unable to retrieve user in user:leave: '+data.username);
-
-				return callback(null, user, userWith);
-			});
-		},
-
-		function persistOnUser(user, userWith, callback) {
-			user.update({$pull: { onetoones: userWith._id }}, function(err) {
-				if (err)
-					return callback('Unable to persist ($pull) onetoone on user: '+err);
-
-				return callback(null, user, userWith);
-			});
-		},
-
-		function sendToUserClients(user, userWith, callback) {
-			that.app.globalChannelService.pushMessage('connector', 'user:leave', {username: userWith.username}, 'user:'+session.uid, {}, function(err) {
-				if (err)
-					return callback('Error while sending user:leave message to user clients: '+err);
-
-				return callback(null, user, userWith);
-			});
+		function sendToUserClients(callback) {
+			that.app.globalChannelService.pushMessage('connector', 'user:leave', { username: withUser.username }, 'user:' + user.id, {}, callback);
 		}
 
-	], function(err, user, userWith) {
-		if (err)
-			logger.error(err);
+	], function(err) {
+    if (err) {
+      logger.error('[user:join] ' + err);
+      return next(null, { code: 500, err: err });
+    }
 
 		return next(null);
 	});
