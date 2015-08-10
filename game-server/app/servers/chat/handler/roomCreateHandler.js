@@ -29,7 +29,7 @@ handler.create = function(data, session, next) {
         return callback('name is mandatory');
 
       if (!common.validateName(data.name))
-        return callback('Invalid room name: '+data.name);
+        return callback('invalid room name: ' + data.name);
 
       return callback(null);
     },
