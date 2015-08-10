@@ -18,27 +18,16 @@ var handler = Handler.prototype;
 
 handler.update = function(data, session, next) {
 
+	var user = session.__currentUser__;
+
 	var that = this;
 
 	async.waterfall([
 
-		function retrieveUser(callback) {
-			User.findByUid(session.uid)
-				.exec(function (err, user) {
-				if (err)
-					return callback('Error while retrieving user '+session.uid+' in user:update: '+err);
-
-				if (!user)
-					return callback('Unable to retrieve user in user:update: '+session.uid);
-
-				return callback(null, user);
-			});
-		},
-
 		/**
 		 * validate, sanitized and identify field to be update
 		 */
-		function validate(user, callback) {
+		function validate(callback) {
 
 			// @doc: https://www.npmjs.org/package/validator
 
@@ -127,7 +116,7 @@ handler.update = function(data, session, next) {
 			if (errNum > 0)
 				return callback(JSON.stringify(errors)); // object
 
-			return callback(null, user, sanitized);
+			return callback(null, sanitized);
 		},
 
 		/**
@@ -145,7 +134,7 @@ handler.update = function(data, session, next) {
 		 *   $.cloudinary.url("v1407505236/jfs0fbpit5ozwnvx4uem.jpg")
 		 *   -> "http://res.cloudinary.com/roomly/image/upload/v1407505236/jfs0fbpit5ozwnvx4uem.jpg"
 		 */
-		function images(user, sanitized, callback) {
+		function images(sanitized, callback) {
 			if (_.has(data.data, 'avatar')) {
 				var avatar = data.data.avatar;
 
@@ -182,22 +171,19 @@ handler.update = function(data, session, next) {
 				}
 			}
 
-			return callback(null, user, sanitized);
+			return callback(null, sanitized);
 		},
 
-		function update(user, sanitized, callback) {
+		function update(sanitized, callback) {
 			for (var field in sanitized) {
 				user.set(field, sanitized[field]);
 			}
 			user.save(function(err) {
-				if (err)
-					return callback('Error when saving user "'+user.username+'": '+err);
-
-				return callback(null, user, sanitized);
+				return callback(err, sanitized);
 			});
 		},
 
-		function broadcastUser(user, sanitized, callback) {
+		function broadcast(sanitized, callback) {
 			// notify only certain fields
 			var sanitizedToNotify = {};
 			var fieldToNotify = ['avatar','positions'];
@@ -213,23 +199,21 @@ handler.update = function(data, session, next) {
 			});
 
 			if (Object.keys(sanitizedToNotify).length < 1)
-				return callback(null, user, sanitized); // nothing to notify
+				return callback(null, sanitized); // nothing to notify
 
 			var event = {
 				username: user.username,
 				data: sanitizedToNotify
 			};
-
-			// inform user
-			that.app.globalChannelService.pushMessage('connector', 'user:updated', event, 'user:'+user.id, {}, function(err) {
+			that.app.globalChannelService.pushMessage('connector', 'user:updated', event, 'user:' + user.id, {}, function(err) {
 				if (err)
-					logger.error('Error while pushing user:updated message to '+user.id+' on user:update: '+err);
-			});
+					logger.error(err);
 
-			return callback(null, user, sanitized);
+        return callback(null, sanitized);
+			});
 		},
 
-		function prepareEventForOthers(user, sanitized, callback) {
+		function prepareEventForOthers(sanitized, callback) {
 			// notify only certain fields
 			var sanitizedToNotify = {};
 			var fieldToNotify = ['avatar','poster','color'];
@@ -251,36 +235,36 @@ handler.update = function(data, session, next) {
 			});
 
 			if (Object.keys(sanitizedToNotify).length < 1)
-				return callback(null, user, null); // nothing to notify
+				return callback(null, null); // nothing to notify
 
 			var event = {
 				username: user.username,
 				data: sanitizedToNotify
 			};
 
-			return callback(null, user, event);
+			return callback(null, event);
 		},
 
-		function broadcastOneToOnes(user, event, callback) {
+		function broadcastOneToOnes(event, callback) {
 			if (!event)
-				return callback(null, user, event);
+				return callback(null, event);
 
 			// inform onetoones
 			if (user.onetoones && user.onetoones.length > 0) {
 				_.each(user.onetoones, function(userId) {
-					that.app.globalChannelService.pushMessage('connector', 'user:updated', event, 'user:'+userId, {}, function(err) {
+					that.app.globalChannelService.pushMessage('connector', 'user:updated', event, 'user:' + userId, {}, function(err) {
 						if (err)
 							logger.error('Error while pushing user:updated message to '+userId+' on user:update: '+err);
 					});
 				});
 			}
 
-			return callback(null, user, event);
+			return callback(null, event);
 		},
 
-		function broadcastRooms(user, event, callback) {
+		function broadcastRooms(event, callback) {
 			if (!event)
-				return callback(null, user, event);
+				return callback(null, event);
 
 			Room.findByUser(user.id).exec(function(err, rooms) {
 					if (err)
@@ -302,7 +286,7 @@ handler.update = function(data, session, next) {
 
 	], function(err) {
 		if (err) {
-			logger.error(err);
+			logger.error('[user:update] ' + err);
 			return next(null, {code: 500, err: err});
 		}
 
