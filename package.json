@@ -1,6 +1,6 @@
 {
   "name": "donut",
-  "version": "1.0",
+  "version": "0.0.1",
   "description": "DONUT is a social chatroom platform based on nodejs, pomelojs, socket.io and backbone",
   "private": true,
   "repository": "https://github.com/dbrugne/donut",
