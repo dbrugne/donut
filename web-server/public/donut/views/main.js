@@ -15,7 +15,6 @@ define([
   'views/current-user',
   'views/alert',
   'views/home',
-  'views/quick-search',
   'views/drawer',
   'views/drawer-room-create',
   'views/drawer-room-profile',
@@ -35,7 +34,7 @@ define([
   'views/mute'
 ], function ($, _, Backbone, donutDebug, client, currentUser, EventModel, rooms, onetoones, templates, windowView,
              ConnectionModalView, WelcomeModalView,
-             CurrentUserView, AlertView, HomeView, QuickSearchView,
+             CurrentUserView, AlertView, HomeView,
              DrawerView,
              DrawerRoomCreateView, DrawerRoomProfileView, DrawerRoomEditView, DrawerRoomUsersView, DrawerRoomPreferencesView,
              DrawerRoomDeleteView,
