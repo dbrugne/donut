@@ -29,7 +29,9 @@ define([
         return client.home();
 
       this.lastSearch = s;
-      client.search(s, 'home', true, true);
+      client.search(s, true, true, 100, false, _.bind(function(data) {
+        this.trigger('searchResults', data);
+      }, this));
     }
 
   });

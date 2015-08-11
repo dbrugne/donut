@@ -84,24 +84,6 @@ define([
       return pomelo.isConnected();
     },
 
-    // DEBUG METHODS
-    // ======================================================
-
-    status: function(uid) {
-      pomelo.request('chat.adminHandler.status', {
-        uid: uid
-      }, function(data) {
-        debug('status: ', data);
-      });
-    },
-    statusMulti: function(uids) {
-      pomelo.request('chat.adminHandler.statusMulti', {
-        uids: uids
-      }, function(data) {
-        debug('statusMulti: ', data);
-      });
-    },
-
     // GLOBAL METHODS
     // ======================================================
 
@@ -120,14 +102,18 @@ define([
           }
       );
     },
-    search: function(search, searchKey, rooms, users, light) {
-      var that = this;
+    search: function(search, rooms, users, limit, light, callback) {
       var data = {
         search: search, // string to search for
-        key: searchKey, // string key that server will send in response (allow RPC-like request)
+        limit: (limit)
+          ? limit
+          : 100,
         light: (light)  // if the search should return a light version of results or not
           ? true
           : false,
+        limit: (limit)
+          ? limit
+          : 5,
         rooms: (rooms) // if we should search for rooms
           ? true
           : false,
@@ -140,11 +126,9 @@ define([
         'chat.searchHandler.search',
         data,
         function (response) {
-          if (response.err)
-            return debug('io:in:search error: ', response);
-
           debug('io:in:search', response);
-          that.trigger('search', response);
+          if (_.isFunction(callback))
+            return callback(response);
         }
       );
     },

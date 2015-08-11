@@ -38,8 +38,13 @@ handler.search = function(data, session, next) {
 		? true
 		: false;
 
+	var limit = (data.limit)
+		? data.limit
+		: 150;
+
 	var search = diacritic2ascii(data.search).replace(/([@#])/g, ''); // remove @ and #
 	var _regexp = regexp.buildContain(search);
+
 	async.parallel([
 
 			function roomSearch(callback) {
@@ -56,13 +61,13 @@ handler.search = function(data, session, next) {
 					q = Room
 						.find(search, 'name owner description topic avatar color users lastjoin_at')
 						.sort({'lastjoin_at': -1})
-						.limit(150)
+						.limit(limit + 1)
 						.populate('owner', 'username');
 				} else {
 					q = Room
 						.find(search, 'name avatar color lastjoin_at')
 						.sort({'lastjoin_at': -1})
-						.limit(150);
+						.limit(limit + 1);
 				}
 				q.exec(function(err, rooms) {
 					if (err)
@@ -126,7 +131,7 @@ handler.search = function(data, session, next) {
 
 				var q = User.find(search, 'username avatar color facebook');
 				q.sort({'lastonline_at': -1, 'lastoffline_at': -1})
-						.limit(200);
+					.limit(limit + 1);
 				q.exec(function(err, users) {
 					if (err)
 						return callback('Error while searching for users: '+err);
@@ -153,8 +158,8 @@ handler.search = function(data, session, next) {
 
 							_.each(list, function(element, index, _list) {
 								_list[index].status = (results[element.user_id])
-										? 'online'
-										: 'offline';
+									? 'online'
+									: 'offline';
 							});
 
 							return callback(null, list);
@@ -165,16 +170,40 @@ handler.search = function(data, session, next) {
 			}
 
 		], function(err, results) {
-			if (err)
-				return next(null, {code: 500, err: err});
+			if (err) {
+        logger('[search] ' + err);
+				return next(null, { code: 500, err: err });
+			}
 
 			var event = {};
-			if (results[0] !== false)
-				event.rooms = results[0];
-			if (results[1] !== false)
-				event.users = results[1];
-			if (data.key)
-				event.key = data.key;
+			if (results[0] !== false) {
+				if (results[0].length > limit) {
+					results[0].pop()
+					event.rooms = {
+						list: results[0],
+						more: true
+					};
+				} else {
+					event.rooms = {
+						list: results[0],
+						more: false
+					};
+				}
+			}
+			if (results[1] !== false) {
+				if (results[1].length > limit) {
+					results[1].pop();
+					event.users = {
+						list: results[1],
+						more: true
+					};
+				} else {
+					event.users = {
+						list: results[1],
+						more: false
+					};
+				}
+			}
 
 			return next(null, event);
 		}

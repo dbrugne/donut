@@ -17,19 +17,21 @@ var handler = Handler.prototype;
 handler.home = function(data, session, next) {
 
 	var homeEvent = {};
+	var roomLimit = 100;
+	var userLimit = 200;
 
 	var that = this;
 
 	async.waterfall([
 
-			function rooms(callback) {
+			function roomsList(callback) {
 
 				var q = Room.find({
 					visibility: true,
 					deleted: { $ne: true }
 				})
 					.sort({priority: -1, 'lastjoin_at': -1})
-					.limit(100)
+					.limit(roomLimit + 1)
 					.populate('owner', 'username avatar');
 
 				q.exec(function (err, rooms) {
@@ -87,16 +89,24 @@ handler.home = function(data, session, next) {
 						return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
 					});
 
-					homeEvent.rooms = _rooms;
+					homeEvent.rooms = {};
+					if (_rooms.length > roomLimit) {
+						_rooms.pop();
+						homeEvent.rooms.more = true;
+					} else {
+						homeEvent.rooms.more = false;
+					}
+					homeEvent.rooms.list = _rooms;
+
 					return callback(null);
 				});
 
 			},
 
-			function onlines(callback) {
+			function usersList(callback) {
 				var q = User.find({ username: {$ne:null} }, 'username avatar color facebook')
 				q.sort({'lastonline_at': -1, 'lastoffline_at': -1})
-					.limit(200);
+					.limit(userLimit + 1);
 
 				q.exec(function(err, users) {
 					if (err)
@@ -132,7 +142,14 @@ handler.home = function(data, session, next) {
 
 					users = _.sortBy(users, 'sort');
 
-					homeEvent.users = users;
+					homeEvent.users = {};
+					if (users.length > userLimit) {
+						users.pop();
+						homeEvent.users.more = true;
+					} else {
+						homeEvent.users.more = false;
+					}
+					homeEvent.users.list = users;
 					return callback(null);
 				});
 			},
@@ -146,11 +163,11 @@ handler.home = function(data, session, next) {
 					var alreadyInNames = _.map(featured, function(r) {
 						return r.name;
 					});
-					_.each(homeEvent.rooms, function(room) {
+					_.each(homeEvent.rooms.list, function(room) {
 						if (alreadyInNames.indexOf(room.name) === -1)
 						  featured.push(room);
 					});
-					homeEvent.rooms = featured;
+					homeEvent.rooms.list = featured;
 
 					return callback(null);
 				});
