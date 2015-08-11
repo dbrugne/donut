@@ -290,6 +290,18 @@ define([
           if (roomname && username)
             client.roomDeop(roomname[0], username[0]);
           break;
+        case '/kick':
+          if (roomname && username)
+            client.roomKick(roomname[0], username[0]);
+          break;
+        case '/ban':
+          if (roomname && username)
+            client.roomBan(roomname[0], username[0], other);
+          break;
+        case '/deban':
+          if (roomname && username)
+            client.roomDeban(roomname[0], username[0]);
+          break;
         default:
           return false;
       }
