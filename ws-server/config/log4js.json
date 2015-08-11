@@ -66,12 +66,12 @@
   ],
 
   "levels": {
-    "[all]": "WARN",
-    "forward-log": "ERROR",
-    "donut": "WARN"
+    "[all]": "INFO",
+    "forward-log": "WARN",
+    "donut": "DEBUG"
   },
 
-  "replaceConsole": true,
+  "replaceConsole": false,
 
   "lineDebug": false
 }

@@ -23,7 +23,7 @@ Be sure you have correct DNS address, e.g.:
 127.0.0.1		ws.donut.local
 ```
 Root FQDN should be configured in **shared/config/config.{NODE_ENV}.js**
-Check game-server/config/servers.json config file for nodes an port list.
+Check ws-server/config/servers.json config file for nodes an port list.
 
 Be sure you have an auto-signed SSL locally (https://gist.github.com/jessedearing/2351836) that is fully accepted by your
 browser (on MacOSX: http://www.robpeck.com/2010/10/google-chrome-mac-os-x-and-self-signed-ssl-certificates/#.VRBtepOG869).
@@ -137,7 +137,7 @@ Be sure that:
 
 Run with:
 ```
-node game-server/app.js
+node ws-server/app.js
 node web-server/app.js
 ```
 
@@ -167,7 +167,7 @@ $ vi /home/donut/ws.json
 {
   "name" : "ws",
   "script" : "./app.js",
-  "cwd" : "/home/donut/app/game-server",
+  "cwd" : "/home/donut/app/ws-server",
   "exec_mode"  : "fork_mode",
     "env": {
         "NODE_ENV": "test",

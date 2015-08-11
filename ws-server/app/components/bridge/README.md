@@ -3,7 +3,7 @@
 **Example:**
 
 ```
-var Bridge = require('./game-server/app/components/bridge').Bridge;
+var Bridge = require('./ws-server/app/components/bridge').Bridge;
 var bridge = Bridge({
   masterId  : serverId,
   host      : host,

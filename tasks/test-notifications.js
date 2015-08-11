@@ -4,7 +4,7 @@ var UserModel = require('../shared/models/user');
 var RoomModel = require('../shared/models/room');
 var HistoryOneModel = require('../shared/models/historyone');
 var HistoryRoomModel = require('../shared/models/historyroom');
-var PomeloBridge = require('../game-server/app/components/bridge').Bridge;
+var PomeloBridge = require('../ws-server/app/components/bridge').Bridge;
 
 module.exports = function (grunt) {
 
