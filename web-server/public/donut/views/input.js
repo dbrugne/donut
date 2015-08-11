@@ -302,6 +302,14 @@ define([
           if (roomname && username)
             client.roomDeban(roomname[0], username[0]);
           break;
+        case '/voice':
+          if (roomname && username)
+            client.roomVoice(roomname[0], username[0]);
+          break;
+        case '/devoice':
+          if (roomname && username)
+            client.roomDevoice(roomname[0], username[0]);
+          break;
         default:
           return false;
       }
