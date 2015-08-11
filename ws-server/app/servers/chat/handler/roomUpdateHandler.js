@@ -193,9 +193,9 @@ handler.update = function(data, session, next) {
 					else {
 					  sanitizedToNotify['color'] = sanitized[key];
 						// Also update colors of poster & sidebar when no image defined (because generated from color by cloudinary)
-						if (room.avatar.length == 0)
+						if (room.avatar && room.avatar.length == 0)
 							sanitizedToNotify['avatar'] = room._avatar();
-						if (room.poster.length == 0)
+						if (room.poster && room.poster.length == 0)
 							sanitizedToNotify['poster'] = room._poster();
 					}
 				}
