@@ -1,7 +1,7 @@
 var async = require('async');
 var _ = require('underscore');
 var UserModel = require('../shared/models/user');
-var PomeloBridge = require('../game-server/app/components/bridge').Bridge;
+var PomeloBridge = require('../ws-server/app/components/bridge').Bridge;
 
 module.exports = function (grunt) {
 

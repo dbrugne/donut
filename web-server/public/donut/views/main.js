@@ -15,7 +15,6 @@ define([
   'views/current-user',
   'views/alert',
   'views/home',
-  'views/quick-search',
   'views/drawer',
   'views/drawer-room-create',
   'views/drawer-room-profile',
@@ -35,7 +34,7 @@ define([
   'views/mute'
 ], function ($, _, Backbone, donutDebug, client, currentUser, EventModel, rooms, onetoones, templates, windowView,
              ConnectionModalView, WelcomeModalView,
-             CurrentUserView, AlertView, HomeView, QuickSearchView,
+             CurrentUserView, AlertView, HomeView,
              DrawerView,
              DrawerRoomCreateView, DrawerRoomProfileView, DrawerRoomEditView, DrawerRoomUsersView, DrawerRoomPreferencesView,
              DrawerRoomDeleteView,
@@ -569,28 +568,28 @@ define([
     userBan: function(event) {
       event.preventDefault();
 
-      var userId = $(event.currentTarget).data('uid');
-      if (!userId)
+      var username = $(event.currentTarget).data('username');
+      if (!username)
         return;
 
       var that = this;
       ConfirmationView.open({}, function () {
-        client.userBan(userId);
-        that.trigger('userBan', {user_id: userId});
+        client.userBan(username);
+        that.trigger('userBan');
       });
     },
 
     userDeban: function (event) {
       event.preventDefault();
 
-      var userId = $(event.currentTarget).data('uid');
-      if (!userId)
+      var username = $(event.currentTarget).data('username');
+      if (!username)
         return;
 
       var that = this;
       ConfirmationView.open({}, function() {
-        client.userDeban(userId);
-        that.trigger('userDeban', {user_id: userId});
+        client.userDeban(username);
+        that.trigger('userDeban');
       });
 
     }
