@@ -1,32 +1,23 @@
 {
   "name": "donut",
-  "version": "0.0.1",
+  "version": "1.0",
   "dependencies": {
     "requirejs": "latest",
     "requirejs-text": "latest",
-    "jquery": ">=1.11.3 <2.0",
+    "jquery": "1.x",
     "bootstrap": "latest",
     "underscore-amd": "latest",
     "backbone-amd": "latest",
     "cloudinary_js": "latest",
-    "moment": "2.7.x",
+    "moment": "latest",
     "i18next": "latest",
     "talkative": "https://github.com/dbrugne/talkative.git",
     "html.sortable": "latest",
-    "visionmedia-debug": "~2.1.2",
-    "html5-desktop-notifications": "*",
-    "backgrid": "latest",
-    "backbone.paginator": "latest",
-    "backgrid-paginator": "git://github.com/wyuenho/backgrid-paginator.git#03632df8ad238e3d043c0fd471a6c78494e1bdfc",
-    "backgrid-moment-cell": "latest",
-    "backgrid-filter": "latest",
-    "jquery-jsonview": "~1.2.2",
-    "keen-js": "~3.2.4",
+    "visionmedia-debug": "latest",
+    "html5-desktop-notifications": "latest",
     "donut-common": "git+ssh://git@github.com/dbrugne/donut-common.git"
   },
   "resolutions": {
-    "jquery": ">=1.11.3 <2.0",
-    "underscore": ">=1.5.0",
-    "moment": "2.7.x"
+    "jquery": "1.x"
   }
 }

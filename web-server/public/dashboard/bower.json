@@ -1,0 +1,18 @@
+{
+  "name": "donut-dashboard",
+  "version": "1.0.0",
+  "dependencies": {
+    "backgrid": "latest",
+    "backbone.paginator": "latest",
+    "backgrid-paginator": "git://github.com/wyuenho/backgrid-paginator.git#03632df8ad238e3d043c0fd471a6c78494e1bdfc",
+    "backgrid-moment-cell": "latest",
+    "backgrid-filter": "latest",
+    "jquery-jsonview": "~1.2.2",
+    "keen-js": "~3.2.4"
+  },
+  "resolutions": {
+    "jquery": ">=1.11.3 <2.0",
+    "underscore": ">=1.5.0",
+    "moment": "2.7.x"
+  }
+}

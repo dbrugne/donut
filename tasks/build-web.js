@@ -35,7 +35,7 @@ module.exports = function (grunt) {
             'backbone'                    : '../vendor/backbone-amd/backbone',
             'i18next'                     : '../vendor/i18next/i18next.amd.withJQuery',
             'moment'                      : '../vendor/moment/moment',
-            'moment-fr'                   : '../vendor/moment/lang/fr',
+            'moment-fr'                   : '../vendor/moment/locale/fr',
             'facebook'                    : 'empty:',
             'desktop-notify'              : '../vendor/html5-desktop-notifications/desktop-notify',
             'jquery.ui.widget'            : '../vendor/blueimp-file-upload/js/vendor/jquery.ui.widget',
@@ -51,7 +51,6 @@ module.exports = function (grunt) {
             'jquery.momentify'            : '../javascripts/plugins/jquery.momentify',
             'jquery.colorify'             : '../javascripts/plugins/jquery.colorify',
             'jquery.socialify'            : '../javascripts/plugins/jquery.socialify',
-            'underscore.template-helpers' : '../javascripts/plugins/underscore.template-helpers',
             'html.sortable'               : '../vendor/html.sortable/dist/html.sortable',
             'jquery.contactform'          : '../javascripts/plugins/jquery.contactform',
             'common'                      : '../vendor/donut-common/index'
