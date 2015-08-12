@@ -111,39 +111,8 @@ define([
       var message = this.$editable.val();
 
       // check command
-      var regexpCommand = /^\/([a-z]+)/i;
-      if (regexpCommand.test(message)) {
-        var command = regexpCommand.exec(message.toLowerCase());
-
-        // roomname/username #.. @..
-        if (command[0] !== '/help' && command[0] !== '/ping') {
-          var regexpRoomname = /(\s+)([#@])([\w-.|^]+)/;
-          var roomname = regexpRoomname.exec(message);
-          if (roomname)
-            roomname[0] = roomname[0].replace(/^[\s]+/, '');
-        }
-
-        // username if roomname
-        if (command && roomname) {
-          var regexpUsername = /(\s+)([@])([\w-.|^]+)/;
-          var username = regexpUsername.exec(message);
-          if (username) {
-            username[0] = username[0].replace(/^[\s]+[@]/, '');
-          }
-        }
-
-        // message, topic, reason ...
-        if (command && roomname || username) {
-          var other = message.replace(regexpCommand, '');
-          other = other.replace(regexpRoomname, '');
-          other = other.replace(/^[\s]+/, '');
-        }
-
-        if (this.executeCommand(command, roomname, username, other)) {
-          this.$editable.val('');
-          return false;
-        }
-      }
+      if (this.checkCommand(message))
+        return false;
 
       // check length (min)
       var imagesCount = _.keys(this.images).length;
@@ -265,6 +234,42 @@ define([
       var symbol = $.smilifyGetSymbolFromCode($(event.currentTarget).data('smilifyCode'));
       this.$editable.insertAtCaret(symbol);
       this.$smileyButton.popover('hide');
+    },
+
+    checkCommand: function(message) {
+      var regexpCommand = /^\/([a-z]+)/i;
+      if (regexpCommand.test(message)) {
+        var command = regexpCommand.exec(message.toLowerCase());
+
+        // roomname/username #.. @..
+        if (command[0] !== '/help' && command[0] !== '/ping') {
+          var regexpRoomname = /(\s+)([#@])([\w-.|^]+)/;
+          var roomname = regexpRoomname.exec(message);
+          if (roomname)
+            roomname[0] = roomname[0].replace(/^[\s]+/, '');
+        }
+
+        // username if roomname
+        if (command && roomname) {
+          var regexpUsername = /(\s+)([@])([\w-.|^]+)/;
+          var username = regexpUsername.exec(message);
+          if (username)
+            username[0] = username[0].replace(/^[\s]+[@]/, '');
+        }
+
+        // message, topic, reason ...
+        if (command && roomname || username) {
+          var other = message.replace(regexpCommand, '');
+          other = other.replace(regexpRoomname, '');
+          other = other.replace(/^[\s]+/, '');
+        }
+
+        if (this.executeCommand(command, roomname, username, other)) {
+          this.$editable.val('');
+          return true;
+        }
+      }
+      return false;
     },
 
     executeCommand: function(command, roomname, username, other) {
