@@ -232,32 +232,24 @@ define([
     checkCommand: function(message) {
       var regexpCommand = /^\/([a-z]+)/i;
       if (regexpCommand.test(message)) {
-        var command = regexpCommand.exec(message.toLowerCase());
+        var param = {
+          command : regexpCommand.exec(message.toLowerCase())[0]
+        };
 
-        // roomname/username #.. @..
-        if (command[0] !== '/help' && command[0] !== '/ping') {
-          var regexpRoomname = /(\s+)([#@])([\w-.|^]+)/;
-          var roomname = regexpRoomname.exec(message);
-          if (roomname)
-            roomname[0] = roomname[0].replace(/^[\s]+/, '');
-        }
-
-        // username if roomname
-        if (command && roomname) {
-          var regexpUsername = /(\s+)([@])([\w-.|^]+)/;
-          var username = regexpUsername.exec(message);
-          if (username)
-            username[0] = username[0].replace(/^[\s]+[@]/, '');
-        }
+        // roomname
+        var regexpName = /(\s+)([@#])([\w-.|^]+)/;
+        if (regexpName.test(message))
+          param.name = regexpName.exec(message)[0].replace(/[\s@]+/, '');
 
         // message, topic, reason ...
-        if (command && roomname || username) {
-          var other = message.replace(regexpCommand, '');
-          other = other.replace(regexpRoomname, '');
-          other = other.replace(/^[\s]+/, '');
+        if (param.command) {
+          param.other = message.replace(regexpCommand, '');
+          if (param.name)
+            param.other = param.other.replace(regexpName, '');
+          param.other = param.other.replace(/^[\s]+/, '');
         }
 
-        if (this.executeCommand(command, roomname, username, other)) {
+        if (this.executeCommand(param)) {
           this.$editable.val('');
           return true;
         }
@@ -265,54 +257,47 @@ define([
       return false;
     },
 
-    executeCommand: function(command, roomname, username, other) {
+    executeCommand: function(param) {
 
-      switch (command[0]) {
+      switch (param.command) {
         case '/join':
-          if (roomname)
-            client.roomJoin(roomname[0]);
+          if (param.name)
+            client.roomJoin(param.name);
           break;
         case '/leave':
-          if (roomname)
-            client.roomLeave(roomname[0]);
+          if (param.name)
+            client.roomLeave(param.name);
           break;
         case '/topic':
-          if (roomname)
-            client.roomTopic(roomname[0], other);
+          client.roomTopic(this.model.get('name'), param.other);
           break;
         case '/op':
-          if (roomname && username)
-            client.roomOp(roomname[0], username[0]);
+          client.roomOp(this.model.get('name'), param.name);
           break;
         case '/deop':
-          if (roomname && username)
-            client.roomDeop(roomname[0], username[0]);
+          client.roomDeop(this.model.get('name'), param.name);
           break;
         case '/kick':
-          if (roomname && username)
-            client.roomKick(roomname[0], username[0]);
+          client.roomKick(this.model.get('name'), param.name, param.other);
           break;
         case '/ban':
-          if (roomname && username)
-            client.roomBan(roomname[0], username[0], other);
+          client.roomBan(this.model.get('name'), param.name, param.other);
           break;
         case '/deban':
-          if (roomname && username)
-            client.roomDeban(roomname[0], username[0]);
+          client.roomDeban(this.model.get('name'), param.name);
           break;
         case '/voice':
-          if (roomname && username)
-            client.roomVoice(roomname[0], username[0]);
+          client.roomVoice(this.model.get('name'), param.name);
           break;
         case '/devoice':
-          if (roomname && username)
-            client.roomDevoice(roomname[0], username[0]);
+          client.roomDevoice(this.model.get('name'), param.name, param.other);
           break;
         case '/msg':
-          if (roomname[0].match(/^[#]/))
-            client.roomMessage(roomname[0], other, null);
-          if (roomname[0].match(/^[@]/))
-            client.userMessage(roomname[3], other, null); // roomanme[3] => username
+          if ((/^[#]/).test(param.name))
+            client.roomMessage(param.name, param.other, null);
+          else {
+            client.userMessage(param.name, param.other, null);
+          }
           break;
         default:
           return false;
