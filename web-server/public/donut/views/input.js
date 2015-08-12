@@ -115,7 +115,7 @@ define([
       if (regexpCommand.test(message)) {
         var command = regexpCommand.exec(message.toLowerCase());
 
-        // roomname #.. @..
+        // roomname/username #.. @..
         if (command[0] !== '/help' && command[0] !== '/ping') {
           var regexpRoomname = /(\s+)([#@])([\w-.|^]+)/;
           var roomname = regexpRoomname.exec(message);
@@ -123,7 +123,7 @@ define([
             roomname[0] = roomname[0].replace(/^[\s]+/, '');
         }
 
-        // username
+        // username if roomname
         if (command && roomname) {
           var regexpUsername = /(\s+)([@])([\w-.|^]+)/;
           var username = regexpUsername.exec(message);
@@ -309,6 +309,12 @@ define([
         case '/devoice':
           if (roomname && username)
             client.roomDevoice(roomname[0], username[0]);
+          break;
+        case '/msg':
+          if (roomname[0].match(/^[#]/))
+            client.roomMessage(roomname[0], other, null);
+          if (roomname[0].match(/^[@]/))
+            client.userMessage(roomname[3], other, null); // roomanme[3] => username
           break;
         default:
           return false;
