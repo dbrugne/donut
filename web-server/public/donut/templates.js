@@ -49,6 +49,8 @@ define([
   'text!./templates/notification/room-kick.html',
   'text!./templates/notification/room-ban.html',
   'text!./templates/notification/room-deban.html',
+  'text!./templates/notification/room-voice.html',
+  'text!./templates/notification/room-devoice.html',
   'text!./templates/notification/room-topic.html',
   'text!./templates/notification/room-join.html',
   'text!./templates/notification/user-mention.html',
@@ -105,6 +107,8 @@ define([
   notification_room_kick,
   notification_room_ban,
   notification_room_deban,
+  notification_room_voice,
+  notification_room_devoice,
   notification_room_topic,
   notification_room_join,
   notification_user_mention,
@@ -175,6 +179,8 @@ define([
   JST['notification/room-kick.html']       = _.template(notification_room_kick);
   JST['notification/room-ban.html']        = _.template(notification_room_ban);
   JST['notification/room-deban.html']      = _.template(notification_room_deban);
+  JST['notification/room-voice.html']      = _.template(notification_room_voice);
+  JST['notification/room-devoice.html']    = _.template(notification_room_devoice);
   JST['notification/room-topic.html']      = _.template(notification_room_topic);
   JST['notification/room-join.html']       = _.template(notification_room_join);
   JST['notification/user-mention.html']    = _.template(notification_user_mention);

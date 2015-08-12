@@ -14,14 +14,14 @@ require.config({
     'jquery.ui.widget'            : '../vendor/blueimp-file-upload/js/vendor/jquery.ui.widget',
     'jquery.iframe-transport'     : '../vendor/blueimp-file-upload/js/jquery.iframe-transport',
     'jquery.fileupload'           : '../vendor/blueimp-file-upload/js/jquery.fileupload',
-    'backgrid'                    : '../vendor/backgrid/lib/backgrid',
-    'backbone.paginator'          : '../vendor/backbone.paginator/lib/backbone.paginator',
-    'backgrid.paginator'          : '../vendor/backgrid-paginator/backgrid-paginator',
-    'backgrid-moment-cell'        : '../vendor/backgrid-moment-cell/backgrid-moment-cell',
-    'backgrid-filter'             : '../vendor/backgrid-filter/backgrid-filter',
+    'backgrid'                    : './bower_components/backgrid/lib/backgrid',
+    'backbone.paginator'          : './bower_components/backbone.paginator/lib/backbone.paginator',
+    'backgrid.paginator'          : './bower_components/backgrid-paginator/backgrid-paginator',
+    'backgrid-moment-cell'        : './bower_components/backgrid-moment-cell/backgrid-moment-cell',
+    'backgrid-filter'             : './bower_components/backgrid-filter/backgrid-filter',
     'backbone.bootstrap-modal'    : '../javascripts/plugins/backbone.bootstrap-modal',
-    'jquery-jsonview'             : '../vendor/jquery-jsonview/dist/jquery.jsonview',
-    'keen-js'                     : '../vendor/keen-js/dist/keen'
+    'jquery-jsonview'             : './bower_components/jquery-jsonview/dist/jquery.jsonview',
+    'keen-js'                     : './bower_components/keen-js/dist/keen'
   },
   shim: {
     'bootstrap'               : ['jquery'],

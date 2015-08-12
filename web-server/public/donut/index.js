@@ -12,7 +12,7 @@ require.config({
     'backbone': '../vendor/backbone-amd/backbone',
     'i18next': '../vendor/i18next/i18next.amd.withJQuery',
     'moment': '../vendor/moment/moment',
-    'moment-fr': '../vendor/moment/lang/fr',
+    'moment-fr': '../vendor/moment/locale/fr',
     'facebook': '//connect.facebook.net/fr_FR/all',
     'desktop-notify': '../vendor/html5-desktop-notifications/desktop-notify',
     'jquery.ui.widget': '../vendor/blueimp-file-upload/js/vendor/jquery.ui.widget',
@@ -147,7 +147,7 @@ require([
       yy: "%d years"
     }
   };
-  moment.lang(i18next.lng(), momentFormat);
+  moment.locale(i18next.lng(), momentFormat);
 
   // Contact form
   $('[data-toggle="contactform"]').contactform({});

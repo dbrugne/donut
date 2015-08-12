@@ -1,0 +1,77 @@
+{
+  "appenders": [
+    {
+      "type": "console"
+    },
+    {
+      "type": "log4js-node-mongodb",
+      "connectionString": "localhost:27017/donut",
+      "collectionName": "logs",
+      "category": "con-log"
+    },
+    {
+      "type": "log4js-node-mongodb",
+      "connectionString": "localhost:27017/donut",
+      "collectionName": "logs",
+      "category": "rpc-log"
+    },
+    {
+      "type": "log4js-node-mongodb",
+      "connectionString": "localhost:27017/donut",
+      "collectionName": "logs",
+      "category": "forward-log"
+    },
+    {
+      "type": "log4js-node-mongodb",
+      "connectionString": "localhost:27017/donut",
+      "collectionName": "logs",
+     "category": "rpc-debug"
+    },
+    {
+      "type": "log4js-node-mongodb",
+      "connectionString": "localhost:27017/donut",
+      "collectionName": "logs",
+      "category":"crash-log"
+    },
+    {
+      "type": "log4js-node-mongodb",
+      "connectionString": "localhost:27017/donut",
+      "collectionName": "logs",
+      "category":"admin-log"
+    },
+    {
+      "type": "log4js-node-mongodb",
+      "connectionString": "localhost:27017/donut",
+      "collectionName": "logs",
+      "category":"pomelo"
+    },
+    {
+      "type": "log4js-node-mongodb",
+      "connectionString": "localhost:27017/donut",
+      "collectionName": "logs",
+      "category":"donut"
+    },
+    {
+      "type": "log4js-node-mongodb",
+      "connectionString": "localhost:27017/donut",
+      "collectionName": "logs",
+      "category":"pomelo-admin"
+    },
+    {
+      "type": "log4js-node-mongodb",
+      "connectionString": "localhost:27017/donut",
+      "collectionName": "logs",
+      "category":"pomelo-rpc"
+    }
+  ],
+
+  "levels": {
+    "[all]": "INFO",
+    "forward-log": "WARN",
+    "donut": "DEBUG"
+  },
+
+  "replaceConsole": false,
+
+  "lineDebug": false
+}

@@ -12,12 +12,16 @@ define([
     },
     render: function(data) {
       var rooms = [];
-      _.each(data.rooms, function(room) {
+      _.each(data.rooms.list, function(room) {
         room.avatar = $.cd.roomAvatar(room.avatar, 135);
         rooms.push(room);
       });
 
-      var html = this.template({rooms: rooms, search: data.search});
+      var html = this.template({
+        rooms: rooms,
+        more: data.rooms.more,
+        search: data.search
+      });
       this.$el.html(html);
       this.$el.colorify();
       return this;

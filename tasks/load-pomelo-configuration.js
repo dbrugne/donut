@@ -8,7 +8,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('load-pomelo-configuration', function() {
     var env = process.env.NODE_ENV || 'development';
-    var basePath = path.join(__dirname, '..', 'game-server/config');
+    var basePath = path.join(__dirname, '..', 'ws-server/config');
     var configuration = {};
 
     // master config

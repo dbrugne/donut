@@ -4,7 +4,7 @@ var UserModel = require('../shared/models/user');
 var RoomModel = require('../shared/models/room');
 var HistoryOneModel = require('../shared/models/historyone');
 var HistoryRoomModel = require('../shared/models/historyroom');
-var PomeloBridge = require('../game-server/app/components/bridge').Bridge;
+var PomeloBridge = require('../ws-server/app/components/bridge').Bridge;
 
 module.exports = function (grunt) {
 
@@ -145,6 +145,8 @@ module.exports = function (grunt) {
           {event: 'room:deop', notification: 'roomdeop'},
           {event: 'room:ban', notification: 'roomban'},
           {event: 'room:deban', notification: 'roomdeban'},
+          {event: 'room:voice', notification: 'roomvoice'},
+          {event: 'room:devoice', notification: 'roomdevoice'},
           {event: 'room:kick', notification: 'roomkick'}
         ], function(item, fn) {
           var event = {
