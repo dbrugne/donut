@@ -34,6 +34,7 @@ define([
       pomelo.on('room:join',    function(data) { debug('io:in:room:join',     data); this.trigger('room:join',      data); }, this);
       pomelo.on('room:leave',   function(data) { debug('io:in:room:leave',    data); this.trigger('room:leave',     data); }, this);
       pomelo.on('room:message', function(data) { debug('io:in:room:message',  data); this.trigger('room:message',   data); }, this);
+      pomelo.on('room:me', function(data) { debug('io:in:room:me',  data); this.trigger('room:me',   data); }, this);
       pomelo.on('room:message:edit',  function (data) { debug('io:in:room:message:edit',  data); this.trigger('room:message:edit',data); }, this);
       pomelo.on('room:topic',   function(data) { debug('io:in:room:topic',    data); this.trigger('room:topic',     data); }, this);
       pomelo.on('room:in',      function(data) { debug('io:in:room:in',       data); this.trigger('room:in',        data); }, this);
@@ -162,6 +163,18 @@ define([
         data,
         function (response) {
           debug('io:in:room:message', response);
+          if (_.isFunction(callback))
+            return callback(response);
+        }
+      );
+    },
+    roomMe: function (name, message, callback) {
+      var data = {name: name, message: message};
+      pomelo.request(
+        'chat.roomMeHandler.me',
+        data,
+        function (response) {
+          debug('io:in:room:me', response);
           if (_.isFunction(callback))
             return callback(response);
         }
