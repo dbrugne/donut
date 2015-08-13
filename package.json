@@ -17,6 +17,7 @@
     "crc": "3.x",
     "csurf": "1.x",
     "debug": "2.x",
+    "donut-common": "git+ssh://git@github.com/dbrugne/donut-common.git",
     "express": "4.x",
     "express-session": "1.x",
     "express-validator": "2.x",
@@ -51,8 +52,7 @@
     "socket.io-redis": "0.1.x",
     "socketio-jwt": "dbrugne/socketio-jwt",
     "underscore": "1.8.x",
-    "validator": "4.x",
-    "donut-common": "git+ssh://git@github.com/dbrugne/donut-common.git"
+    "validator": "4.x"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
