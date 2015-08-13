@@ -387,7 +387,7 @@ define([
     },
     addFreshEvent: function (model) {
       // browser notification
-      if (model.getGenericType() == 'message')
+      if (model.getGenericType() == 'message' || model.getGenericType() == 'me')
         windowView.triggerMessage(model, this.model);
       else if (this.model.get('type') == 'room' && model.getGenericType() == 'inout')
         windowView.triggerInout(model, this.model);
@@ -476,7 +476,7 @@ define([
       data.data = _.clone(model.get('data'));
 
       // spammed & edited
-      if (model.getGenericType() === 'message') {
+      if (model.getGenericType() === 'message' || model.getGenericType() === 'me') {
         data.spammed = (model.get('spammed') === true);
         data.edited = (model.get('edited') === true);
       }
@@ -574,6 +574,7 @@ define([
       } else {
         switch (newModel.getGenericType()) {
           case 'standard':
+          case 'me':
             newBlock = true;
             break;
           case 'inout':
@@ -606,6 +607,9 @@ define([
           case 'room:message':
           case 'user:message':
             template = templates['event/message.html'];
+            break;
+          case 'room:me':
+            template = templates['event/me.html'];
             break;
           case 'reconnected':
             template = templates['event/reconnected.html'];

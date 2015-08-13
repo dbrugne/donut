@@ -292,6 +292,9 @@ define([
         case '/devoice':
           client.roomDevoice(this.model.get('name'), param.name, param.other);
           break;
+        case '/me':
+          client.roomMe(this.model.get('name'), param.other);
+          break;
         case '/msg':
           if ((/^[#]/).test(param.name))
             client.roomMessage(param.name, param.other, null);

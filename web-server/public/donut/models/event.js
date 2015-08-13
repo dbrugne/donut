@@ -55,6 +55,10 @@ define([
       ].indexOf(this.get('type')) !== -1)
         return 'message';
       else if ([
+          'room:me'
+      ].indexOf(this.get('type')) !== -1)
+        return 'me';
+      else if ([
         'room:in',
         'room:out',
         'user:online',

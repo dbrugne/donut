@@ -1,0 +1,38 @@
+<% if (withBlock) { %>
+<div class="block message <%= (data.is_admin ? 'admin' : '') %>" data-username="<%= data.username %>">
+    <div class="avatar open-user-profile" data-username="<%= data.username %>"
+         style="background-image: url(<%= data.avatar %>)"></div>
+    <% if(data.is_admin) { %>
+    <div class="username">@<%= data.username %></div>
+    <% } else { %>
+    <div class="username open-user-profile" data-username="<%= data.username %>">@<%= data.username %></div>
+    <% } %>
+    <div class="items">
+        <% } %>
+        <div class="event has-hover <% if (spammed) { %>spammed<% } %> <% if (edited) { %>edited<% } %>  <% if (unviewed) { print('unviewed'); } %>"
+             id="<%= data.id %>"
+             data-time="<%= data.time %>"
+             data-spammed="<%= (spammed === true ? 'true' : '')%>"
+             data-edited="<%= (edited === true ? 'true' : '')%>">
+            <div class="ctn">
+                <% if (data.message) { %>
+                <div class="text action-me"><%= data.message %><% if (edited) { %><span class="text-edited">&nbsp;(<%= t('chat.message.edition.edited') %>)</span><% } %></div>
+                <% } %>
+                <% if (spammed) { %>
+                <div class="text-spammed"><%= t('chat.message.text-spammed') %></div>
+                <% } %>
+                <div class="message-edit"><!-- message-edit view --></div>
+            </div>
+            <div class="date pull-right"><span class="moment" data-time="<%= data.time %>" title="<%= data.datefull %>"><%= data.dateshort %></span></div>
+            <% if(!data.is_admin) { %> <!--Only display for non admin messages-->
+            <div class="actions">
+                <a class="message-menu" data-toggle="dropdown" role="button" aria-expanded="false" id="messageMenu">
+                    <i class="icon icon-cog"></i>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="messageMenu"><!-- message dropdown menu content --></div>
+            </div>
+            <% } %>
+        </div>
+        <% if (withBlock) { %>
+    </div>
+<% } %>

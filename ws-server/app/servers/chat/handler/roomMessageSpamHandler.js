@@ -40,8 +40,8 @@ handler.spam = function (data, session, next) {
       if (event.room != room.id)
         return callback('event and room parameters not correspond ' + data.event);
 
-      if (event.event !== 'room:message')
-        return callback('event ' + data.event + ' should be a room:message');
+      if (event.event !== 'room:message' && event.event !== 'room:me')
+        return callback('event ' + data.event + ' should be a room:message and room:me');
 
       return callback(null);
     },

@@ -37,7 +37,7 @@ handler.me = function (data, session, next) {
         return callback('this user ' + user.id + ' is not currently in room ' + room.name);
 
       if (room.isDevoice(user.id))
-        return callback('user is devoiced, he can\'t send message in room');
+        return callback('user is devoiced, he can\'t send message "/me" in room');
 
       return callback(null);
     },
@@ -48,7 +48,7 @@ handler.me = function (data, session, next) {
 
 
       if (!message)
-        return callback('Empty message no text');
+        return callback('Empty message "/me" no text');
 
       // mentions
       inputUtil.mentions(message, function(err, message, mentions) {

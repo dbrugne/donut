@@ -20,6 +20,7 @@ define([
   'text!./templates/event/disconnected.html',
   'text!./templates/event/in-out-on-off.html',
   'text!./templates/event/message.html',
+  'text!./templates/event/me.html',
   'text!./templates/event/reconnected.html',
   'text!./templates/event/room-deop.html',
   'text!./templates/event/room-kick.html',
@@ -78,6 +79,7 @@ define([
   event_disconnected,
   event_in_out_on_off,
   event_message,
+  event_me,
   event_reconnected,
   event_room_deop,
   event_room_kick,
@@ -150,6 +152,7 @@ define([
   JST['event/disconnected.html']            = _.template(event_disconnected);
   JST['event/in-out-on-off.html']           = _.template(event_in_out_on_off);
   JST['event/message.html']                 = _.template(event_message);
+  JST['event/me.html']                      = _.template(event_me);
   JST['event/reconnected.html']             = _.template(event_reconnected);
   JST['event/room-deop.html']               = _.template(event_room_deop);
   JST['event/room-kick.html']               = _.template(event_room_kick);
