@@ -9,6 +9,8 @@ define([
 
   var debug = donutDebug('donut:input');
 
+  var canPrintTypingEvent = true;
+
   var DiscussionInputView = Backbone.View.extend({
 
     template: templates['input.html'],
@@ -23,7 +25,8 @@ define([
       'click .add-image'        : 'onAddImage',
       'click .remove-image'     : 'onRemoveImage',
       'click .add-smiley'       : 'onOpenSmiley',
-      'click .smileys .smilify' : 'onPickSmiley'
+      'click .smileys .smilify' : 'onPickSmiley',
+      'input .editable'         : 'onTypingMessage'
     },
 
     initialize: function(options) {
@@ -223,6 +226,19 @@ define([
       var symbol = $.smilifyGetSymbolFromCode($(event.currentTarget).data('smilifyCode'));
       this.$editable.insertAtCaret(symbol);
       this.$smileyButton.popover('hide');
+    },
+
+    onTypingMessage: function(event) {
+      if (canPrintTypingEvent) {
+        if (this.mode.get("type") === "room")
+          client.roomTypingMessage(this.model.get("name"));
+        else
+          client.userTypingMessage(currentUser);
+        canPrintTypingEvent = false;
+        window.setTimeout( function() {
+          canPrintTypingEvent = true;
+        }, 2000);
+      }
     }
 
   });
