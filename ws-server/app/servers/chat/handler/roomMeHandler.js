@@ -22,7 +22,10 @@ handler.me = function (data, session, next) {
   var user = session.__currentUser__;
   var room = session.__room__;
 
+  var that = this;
+
   async.waterfall([
+
     function check(callback) {
       if (!data.name)
         return callback('name is mandatory');
@@ -43,13 +46,17 @@ handler.me = function (data, session, next) {
       // text filtering
       var message = inputUtil.filter(data.message, 512);
 
-      if (!message)
-        return callback('Empty message (no text)');
 
-      return callback(message);
+      if (!message)
+        return callback('Empty message no text');
+
+      // mentions
+      inputUtil.mentions(message, function(err, message, mentions) {
+        return callback(err, message, mentions);
+      });
     },
 
-    function prepareEvent(message, callback) {
+    function prepareEvent(message, mentions, callback) {
       var event = {
         name: room.name,
         id: room.id,
@@ -61,23 +68,86 @@ handler.me = function (data, session, next) {
       if (message)
         event.message = message;
 
-      return callback(null, event);
+      return callback(null, event, mentions);
     },
 
-    function historizeAndEmit(event, callback) {
+    function historizeAndEmit(event, mentions, callback) {
       roomEmitter(that.app, 'room:me', event, function (err, sentEvent) {
         if (err)
           return callback(err);
 
-        return callback(null);
+        return callback(null, sentEvent, mentions);
       });
     },
-  ],  function (err) {
-    if (err) {
-      logger.error('[room:me] ' + err);
-      return next(null, {code: 500, err: err});
+
+    function mentionNotification(sentEvent, mentions, callback) {
+      var mentions = common.findMarkupedMentions(sentEvent.message);
+      if (!mentions.length)
+        return callback(null, sentEvent);
+
+      var usersIds = [];
+      _.each(mentions, function(m) {
+        if (m.type !== 'user')
+          return;
+        usersIds.push(m.id);
+      });
+
+      if (!usersIds.length)
+        return callback(null, sentEvent);
+
+      // limit
+      usersIds = _.first(usersIds, 10);
+
+      async.each(usersIds, function (userId, fn) {
+        Notifications(that.app).getType('usermention').create(userId, room, sentEvent.id, fn);
+      }, function (err) {
+        if (err)
+          logger.error(err);
+        callback(null, sentEvent);
+      });
+    },
+
+    function messageNotification(sentEvent, callback) {
+      Notifications(that.app).getType('roommessage').create(room, sentEvent.id, function (err) {
+        if (err)
+          logger.error(err);
+        return callback(null, sentEvent);
+      });
+    },
+
+    function tracking(event, callback) {
+      var messageEvent = {
+        session: {
+          id: session.settings.uuid,
+          connector: session.frontendId
+        },
+        user: {
+          id: user.id,
+          username: user.username,
+          admin: (session.settings.admin === true)
+        },
+        room: {
+          name: room.name
+        },
+        message: {
+          length: (event.message && event.message.length) ? event.message.length : 0
+        }
+      };
+      keenio.addEvent("room_me", messageEvent, function (err, res) {
+        if (err)
+          logger.error('Error while tracking room_me in keen.io: ' + err);
+
+        return callback(null);
+      });
     }
 
-    return next(null, {success: true});
+  ], function (err) {
+    if (err) {
+      logger.error('[room:me] ' + err);
+      return next(null, { code: 500, err: err });
+    }
+
+    return next(null, { success: true });
   });
+
 };
