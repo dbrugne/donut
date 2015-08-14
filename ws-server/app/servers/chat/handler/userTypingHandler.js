@@ -2,7 +2,6 @@ var logger = require('../../../../pomelo-logger').getLogger('donut', __filename)
 var async = require('async');
 var _ = require('underscore');
 var User = require('../../../../../shared/models/user');
-var Room = require('../../../../../shared/models/room');
 
 var Handler = function(app) {
   this.app = app;
@@ -17,35 +16,36 @@ var handler = Handler.prototype;
 handler.typing = function(data, session, next) {
 
   var user = session.__currentUser__;
-  var room = session.__room__;
+  var withUser = session.__user__;
 
   var that = this;
 
   async.waterfall([
 
     function check(callback) {
-      if (!data.name)
-        return callback('name is mandatory');
+      if (!data.username)
+        return callback('username is mandatory');
 
-      if (!room)
-        return callback('unable to retrieve room from ' + data.name);
+      if (!withUser)
+        return callback('unable to retrieve withUser: ' + data.username);
 
-      if (room.users.indexOf(user.id) === -1)
-        return callback('this user ' + user.id + ' is not currently in room ' + room.name);
-
-      if (room.isDevoice(user.id))
-        return callback('user is devoiced, he can\'t send message in room');
+      if (withUser.isBanned(user.id))
+        return callback('user is banned by withUser');
 
       return callback(null);
     },
 
     function sendToUserSockets(callback) {
-      var viewedEvent = {
-        name: room.name,
-        id: room.id,
-        events: data.events
+      var typingEvent = {
+        from_user_id  : user.id,
+        from_username : user.username,
+        from_avatar   : user._avatar(),
+        to_user_id    : withUser.id,
+        to_username   : withUser.username,
+        time          : Date.now(),
+        username          : user.username
       };
-      that.app.globalChannelService.pushMessage('connector', 'user:typing', viewedEvent, 'user:' + user.id, {}, callback);
+      that.app.globalChannelService.pushMessage('connector', 'user:typing', typingEvent, 'user:' + withUser.id, {}, callback);
     }
 
   ], function(err) {

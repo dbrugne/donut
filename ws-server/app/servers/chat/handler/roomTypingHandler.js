@@ -40,12 +40,13 @@ handler.typing = function(data, session, next) {
     },
 
     function sendToUserSockets(callback) {
-      var viewedEvent = {
+      var typingEvent = {
         name: room.name,
         id: room.id,
+        username: user.username,
         events: data.events
       };
-      that.app.globalChannelService.pushMessage('connector', 'room:typing', viewedEvent, 'user:' + user.id, {}, callback);
+      that.app.globalChannelService.pushMessage('connector', 'room:typing', typingEvent, room.name, {}, callback);
     }
 
   ], function(err) {

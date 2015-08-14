@@ -403,15 +403,7 @@ define([
     roomTypingMessage: function (name) {
       var data = {name: name};
       debug('io:out:room:typing', data);
-      var that = this;
-      pomelo.request(
-        'chat.roomTypingHandler.typing',
-        data,
-        function (response) {
-          if (response.err)
-            return debug('io:in:room:typing error: ', response);
-        }
-      );
+      pomelo.notify('chat.roomTypingHandler.typing', data);
     },
 
     // USER METHODS
@@ -605,14 +597,7 @@ define([
     userTypingMessage: function(username) {
       var data = { username: username };
       debug('io:out:user:typing', data);
-      pomelo.request(
-        'chat.userTypingHandler.typing',
-        data,
-        function(response) {
-          if (response.err)
-            return debug('io:in:user:typing error: ', response);
-        }
-      );
+      pomelo.notify('chat.userTypingHandler.typing', data);
     },
 
   }, Backbone.Events);
