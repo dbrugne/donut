@@ -45,7 +45,7 @@ module.exports = function(grunt) {
         }, 'data').stream();
 
         var oldMarkupRegExp = /@\[([^\]]+)\]\(user:([^)]+)\)/g;
-        var newMarkupReplacement = '[@:$2:$1]';
+        var newMarkupReplacement = '[@¦$2¦$1]';
         var updates = [];
         stream.on('data', function (event) {
           var oldMessage = event.data.message;
