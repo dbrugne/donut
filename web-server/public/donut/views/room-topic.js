@@ -55,8 +55,7 @@ define([
         this.$el.find('.txt')
           .html(htmlTopic)
           .attr('title', common.markupToText(currentTopic))
-          .smilify()
-          .linkify();
+          .smilify();
         this.$el.find('.topic-current').css('display', 'inline-block');
       }
 

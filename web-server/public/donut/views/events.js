@@ -512,12 +512,6 @@ define([
         // escape HTML
         topic = _.escape(topic);
 
-        // linkify (before other decoration, will escape HTML)
-        var o = (this.model.get('color'))
-          ? {linkAttributes: {style: 'color: ' + this.model.get('color') + ';'}}
-          : {};
-        topic = $.linkify(topic, o);
-
         // mentions
         topic = common.markupToHtml(topic, {
           template: templates['mention.html'],
