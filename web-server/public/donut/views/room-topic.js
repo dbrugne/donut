@@ -48,12 +48,13 @@ define([
         }
       } else {
         // mentions
-        var htmlTopic = common.htmlMentions(_.escape(currentTopic), templates['mention.html'], {
-            style: 'color: ' + this.model.get('color')
+        var htmlTopic = common.markupToHtml(_.escape(currentTopic), {
+          template: templates['mention.html'],
+          style: 'color: ' + this.model.get('color')
         });
         this.$el.find('.txt')
           .html(htmlTopic)
-          .attr('title', common.textMentions(currentTopic))
+          .attr('title', common.markupToText(currentTopic))
           .smilify()
           .linkify();
         this.$el.find('.topic-current').css('display', 'inline-block');
@@ -68,7 +69,7 @@ define([
       if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin())
         return false;
 
-      var topic = common.textMentions(this.model.get('topic'));
+      var topic = common.markupToText(this.model.get('topic'));
       this.$el.find('.topic-current').hide();
       this.$el.find('.topic-form').css('display', 'block');
       this.$el.find('.topic-input').val(topic).focus();

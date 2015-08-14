@@ -37,7 +37,7 @@ define([
       this.$el.removeClass('has-hover');
 
       this.originalMessage = this.$text.html();
-      this.originalMessage = common.textMentions(this.originalMessage);
+      this.originalMessage = common.markupToText(this.originalMessage);
       this.originalMessage = this.htmlSmileyToText(this.originalMessage);
 
       this.$messageForm = this.$el.find('.message-form');
