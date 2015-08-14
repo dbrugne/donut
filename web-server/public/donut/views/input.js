@@ -4,8 +4,10 @@ define([
   'backbone',
   'libs/donut-debug',
   'models/current-user',
+  'models/event',
+  'views/commands',
   '_templates'
-], function ($, _, Backbone, donutDebug, currentUser, templates) {
+], function ($, _, Backbone, donutDebug, currentUser, EventModel, CommandsView, templates) {
 
   var debug = donutDebug('donut:input');
 
@@ -229,32 +231,33 @@ define([
       this.$smileyButton.popover('hide');
     },
 
+    /**********************************************************
+     * Commands
+     **********************************************************/
+
     checkCommand: function(message) {
       var regexpCommand = /^\/([a-z]+)/i;
-      if (regexpCommand.test(message)) {
-        var param = {
-          command : regexpCommand.exec(message.toLowerCase())[0]
-        };
+      if (!regexpCommand.test(message))
+        return false;
 
-        // roomname
-        var regexpName = /(\s+)([@#])([\w-.|^]+)/;
-        if (regexpName.test(message))
-          param.name = regexpName.exec(message)[0].replace(/[\s@]+/, '');
+      var command = regexpCommand.exec(message.toLowerCase())[1];
+      var commandsView = new CommandsView();
+      if (!commandsView.commands[command])
+        return false;
 
-        // message, topic, reason ...
-        if (param.command) {
-          param.other = message.replace(regexpCommand, '');
-          if (param.name)
-            param.other = param.other.replace(regexpName, '');
-          param.other = param.other.replace(/^[\s]+/, '');
-        }
+      command = commandsView.commands[command];
 
-        if (this.executeCommand(param)) {
-          this.$editable.val('');
-          return true;
-        }
-      }
+      var paramsString = message.replace(regexpCommand, '');
+      paramsString = paramsString.replace(/^[\s]+/, '');
+
+      var parameters = paramsString.match(commandsView.parameters[command.parameters]);
+
+      console.log(parameters);
       return false;
+      if (this.executeCommand(param)) {
+        this.$editable.val('');
+        return true;
+      }
     },
 
     executeCommand: function(param) {
@@ -294,6 +297,21 @@ define([
           break;
         case '/me':
           client.roomMe(this.model.get('name'), param.other);
+          break;
+        case '/ping':
+          var that = this;
+          client.ping(function (duration){
+            var data = {
+              avatar : currentUser.get('avatar'),
+              username : currentUser.get('username'),
+              ping : 'ping : ' + duration + 'ms'
+            };
+            var model = new EventModel({
+                type: 'ping',
+                data: data
+            });
+            that.model.trigger('freshEvent', model);
+          });
           break;
         case '/msg':
           if ((/^[#]/).test(param.name))

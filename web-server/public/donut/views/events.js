@@ -604,6 +604,9 @@ define([
           case 'room:out':
             template = templates['event/in-out-on-off.html'];
             break;
+          case 'ping':
+            template = templates['event/ping.html'];
+            break;
           case 'room:message':
           case 'user:message':
             template = templates['event/message.html'];

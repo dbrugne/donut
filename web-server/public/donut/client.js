@@ -66,6 +66,8 @@ define([
       pomelo.on('notification:new',   function(data) { debug('io:in:notification:new',  data); this.trigger('notification:new',   data); }, this);
       pomelo.on('notification:read',  function(data) { debug('io:in:notification:read', data); this.trigger('notification:read',  data); }, this);
       pomelo.on('notification:done',  function(data) { debug('io:in:notification:done', data); this.trigger('notification:done',  data); }, this);
+
+      pomelo.on('ping', function() { debug('io:in:ping'); this.trigger('ping'); }, this);
     },
 
     /**
@@ -598,6 +600,19 @@ define([
       var data = {id: id};
       pomelo.notify('chat.userNotificationsHandler.done', data);
       debug('io:out:notification:done', data);
+    },
+
+    ping: function(fn) {
+      var start = Date.now();
+      pomelo.request(
+        'chat.pingHandler.ping',
+        {},
+        function () {
+          var duration = Date.now() - start;
+          debug('io:in:ping');
+          return fn(duration);
+        }
+      );
     }
 
   }, Backbone.Events);
