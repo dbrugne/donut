@@ -87,6 +87,10 @@ define([
       this.$el.find('.avatar').prop('src', $.cd.userAvatar(value, 80));
     },
 
+    onFocus: function() {
+      this.$editable.focus();
+    },
+
     /**
      * Only used to detect keydown on tab and then prevent default to avoid loosing focus
      * on keypress & keyup, it's too late
@@ -361,21 +365,6 @@ define([
         client.search(search, false, true, 15, false, function(data) {
           that.$rollUpCtn.html(that.rollupTemplate({ type: 'users', results: data.users.list }));
         });
-
-      //// filter user list
-      //  var data = that.model.users.filter(function(item) {
-      //    return item.get('username').toLowerCase().indexOf(query.toLowerCase()) > -1;
-      //  });
-      //// decorate user list
-      //data = _.map(data, function(model, key, list) {
-      //  var avatar = $.cd.userAvatar(model.get('avatar'), 10);
-      //  return {
-      //    id      : model.get('id'),
-      //    name    : model.get('username'),
-      //    avatar  : avatar,
-      //    type    : 'user'
-      //  };
-      //});
     },
     onRollUpClose: function (target) {
       if (target)
