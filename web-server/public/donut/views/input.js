@@ -108,10 +108,10 @@ define([
       if (data.key == this.KEY.TAB)
         event.preventDefault();
 
-      // Avoid adding new line on enter if message is empty
-      if (data.key == this.KEY.RETURN && message === '')
+      // Avoid adding new line on enter press (=submit message)
+      if (data.key == this.KEY.RETURN && !data.isShift)
         event.preventDefault();
-      
+
       // Navigate between editable messages
       if (event.which == this.KEY.UP && message === '')
         this.trigger('editPreviousInput');
