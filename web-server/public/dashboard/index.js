@@ -8,27 +8,25 @@ require.config({
     'backbone'                    : '../vendor/backbone-amd/backbone',
     'moment'                      : '../vendor/moment/moment',
     'moment-fr'                   : '../vendor/moment/lang/fr',
-    'jquery.linkify'              : '../javascripts/plugins/jquery.linkify',
     'jquery.cloudinary'           : '../vendor/cloudinary_js/js/jquery.cloudinary',
     'jquery.cloudinary-donut'     : '/cloudinary',
     'jquery.ui.widget'            : '../vendor/blueimp-file-upload/js/vendor/jquery.ui.widget',
     'jquery.iframe-transport'     : '../vendor/blueimp-file-upload/js/jquery.iframe-transport',
     'jquery.fileupload'           : '../vendor/blueimp-file-upload/js/jquery.fileupload',
-    'backgrid'                    : '../vendor/backgrid/lib/backgrid',
-    'backbone.paginator'          : '../vendor/backbone.paginator/lib/backbone.paginator',
-    'backgrid.paginator'          : '../vendor/backgrid-paginator/backgrid-paginator',
-    'backgrid-moment-cell'        : '../vendor/backgrid-moment-cell/backgrid-moment-cell',
-    'backgrid-filter'             : '../vendor/backgrid-filter/backgrid-filter',
+    'backgrid'                    : './bower_components/backgrid/lib/backgrid',
+    'backbone.paginator'          : './bower_components/backbone.paginator/lib/backbone.paginator',
+    'backgrid.paginator'          : './bower_components/backgrid-paginator/backgrid-paginator',
+    'backgrid-moment-cell'        : './bower_components/backgrid-moment-cell/backgrid-moment-cell',
+    'backgrid-filter'             : './bower_components/backgrid-filter/backgrid-filter',
     'backbone.bootstrap-modal'    : '../javascripts/plugins/backbone.bootstrap-modal',
-    'jquery-jsonview'             : '../vendor/jquery-jsonview/dist/jquery.jsonview',
-    'keen-js'                     : '../vendor/keen-js/dist/keen'
+    'jquery-jsonview'             : './bower_components/jquery-jsonview/dist/jquery.jsonview',
+    'keen-js'                     : './bower_components/keen-js/dist/keen'
   },
   shim: {
     'bootstrap'               : ['jquery'],
     'jquery.cloudinary'       : ['jquery'],
     'jquery.cloudinary-donut' : ['jquery'],
     'jquery-jsonview'         : ['jquery'],
-    'jquery.linkify'          : ['jquery'],
     'backbone.bootstrap-modal': ['jquery'],
 
     'backgrid': {
@@ -64,7 +62,6 @@ require([
   'jquery.cloudinary',
   'jquery.cloudinary-donut',
   'backbone.bootstrap-modal',
-  'jquery.linkify',
   'moment-fr',
   'jquery-jsonview'
 ], function (Router, $, _, Backbone, io, moment) {

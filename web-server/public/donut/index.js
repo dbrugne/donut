@@ -1,6 +1,7 @@
 require.config({
   paths: {
     '_templates': ['../build/templates', './templates'],
+    '_translations': ['../build/translations', './translations'],
     'debug': '../vendor/visionmedia-debug/dist/debug',
     'jquery': '../vendor/jquery/dist/jquery',
     'bootstrap': '../vendor/bootstrap/dist/js/bootstrap',
@@ -11,7 +12,7 @@ require.config({
     'backbone': '../vendor/backbone-amd/backbone',
     'i18next': '../vendor/i18next/i18next.amd.withJQuery',
     'moment': '../vendor/moment/moment',
-    'moment-fr': '../vendor/moment/lang/fr',
+    'moment-fr': '../vendor/moment/locale/fr',
     'facebook': '//connect.facebook.net/fr_FR/all',
     'desktop-notify': '../vendor/html5-desktop-notifications/desktop-notify',
     'jquery.ui.widget': '../vendor/blueimp-file-upload/js/vendor/jquery.ui.widget',
@@ -22,14 +23,13 @@ require.config({
     'jquery.cloudinary-donut': '/cloudinary',
     'jquery.insertatcaret': '../javascripts/plugins/jquery.insertatcaret',
     'jquery.maxlength': '../javascripts/plugins/jquery.maxlength',
-    'jquery.linkify': '../javascripts/plugins/jquery.linkify',
     'jquery.smilify': '../javascripts/plugins/jquery.smilify',
     'jquery.momentify': '../javascripts/plugins/jquery.momentify',
     'jquery.colorify': '../javascripts/plugins/jquery.colorify',
     'jquery.socialify': '../javascripts/plugins/jquery.socialify',
-    'jquery.mentionsinput': '../javascripts/plugins/jquery.mentionsInput',
     'jquery.contactform': '../javascripts/plugins/jquery.contactform',
-    'html.sortable': '../vendor/html.sortable/dist/html.sortable'
+    'html.sortable': '../vendor/html.sortable/dist/html.sortable',
+    'common': '../vendor/donut-common/index'
   },
   shim: {
     'bootstrap': ['jquery'],
@@ -37,12 +37,10 @@ require.config({
     'jquery.cloudinary-donut': ['jquery'],
     'jquery.insertatcaret': ['jquery'],
     'jquery.maxlength': ['jquery'],
-    'jquery.linkify': ['jquery'],
     'jquery.smilify': ['jquery'],
     'jquery.momentify': ['jquery'],
     'jquery.colorify': ['jquery'],
     'jquery.socialify': ['jquery'],
-    'jquery.mentionsinput': ['jquery'],
     'jquery.contactform': ['jquery'],
     'cloudinary.widget': ['jquery'],
     'html.sortable': ['jquery'],
@@ -57,9 +55,7 @@ require.config({
 
 require([
   'app',
-/************************************
- * Load librairies
- ************************************/
+  '_translations',
   'jquery',
   'underscore',
   'backbone',
@@ -76,27 +72,31 @@ require([
   'jquery.cloudinary',
   'jquery.cloudinary-donut',
   'cloudinary.widget',
-  'jquery.linkify',
   'jquery.smilify',
   'jquery.momentify',
   'jquery.colorify',
   'jquery.socialify',
-  'jquery.mentionsinput',
   'jquery.contactform',
   'bootstrap',
   'moment-fr',
   'html.sortable'
-], function (app, $, _, Backbone, i18next, facebook, moment, desktopNotify) {
+], function (app, translations, $, _, Backbone, i18next, facebook, moment, desktopNotify) {
 
   // i18n setup
-  window.i18next = i18next;
-  i18next.init({
-    resGetPath: '/locales/resources.json?lng=__lng__&ns=__ns__',
-    dynamicLoad: true,
-    saveMissing: true,
+  window.i18next = i18next; // @debug
+  var i18nextOptions = {
     cookieName: 'donut.lng',
     debug: false // @debug
-  });
+  };
+  // @doc: http://i18next.com/pages/doc_init.html#getresources
+  if (_.isString(translations))
+    i18nextOptions = _.extend({
+      resGetPath: translations,
+      dynamicLoad: true
+    }, i18nextOptions);
+  else
+    i18nextOptions.resStore = translations;
+  i18next.init(i18nextOptions);
   // make i18next available from all underscore templates views (<%= t('key') %>)
   window.t = i18next.t; // @global
 
@@ -144,7 +144,7 @@ require([
       yy: "%d years"
     }
   };
-  moment.lang(i18next.lng(), momentFormat);
+  moment.locale(i18next.lng(), momentFormat);
 
   // Contact form
   $('[data-toggle="contactform"]').contactform({});

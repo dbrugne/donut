@@ -4,9 +4,9 @@ var path = require('path');
 var fs = require('fs');
 
 module.exports = function (grunt) {
+  grunt.loadNpmTasks("grunt-extend-config");
   grunt.loadNpmTasks('grunt-contrib-requirejs');
   grunt.loadNpmTasks('grunt-contrib-jst');
-  grunt.loadNpmTasks("grunt-extend-config");
   grunt.extendConfig({
     requirejs: {
       compile: {
@@ -24,6 +24,7 @@ module.exports = function (grunt) {
           //optimize: 'none', // could disabled uglyfication
           paths: {
             '_templates'                  : '../build/templates',
+            '_translations'               : '../build/translations',
             'debug'                       : '../vendor/visionmedia-debug/dist/debug',
             'jquery'                      : '../vendor/jquery/dist/jquery',
             'bootstrap'                   : '../vendor/bootstrap/dist/js/bootstrap',
@@ -34,7 +35,7 @@ module.exports = function (grunt) {
             'backbone'                    : '../vendor/backbone-amd/backbone',
             'i18next'                     : '../vendor/i18next/i18next.amd.withJQuery',
             'moment'                      : '../vendor/moment/moment',
-            'moment-fr'                   : '../vendor/moment/lang/fr',
+            'moment-fr'                   : '../vendor/moment/locale/fr',
             'facebook'                    : 'empty:',
             'desktop-notify'              : '../vendor/html5-desktop-notifications/desktop-notify',
             'jquery.ui.widget'            : '../vendor/blueimp-file-upload/js/vendor/jquery.ui.widget',
@@ -50,10 +51,9 @@ module.exports = function (grunt) {
             'jquery.momentify'            : '../javascripts/plugins/jquery.momentify',
             'jquery.colorify'             : '../javascripts/plugins/jquery.colorify',
             'jquery.socialify'            : '../javascripts/plugins/jquery.socialify',
-            'jquery.mentionsinput'        : '../javascripts/plugins/jquery.mentionsInput',
-            'underscore.template-helpers' : '../javascripts/plugins/underscore.template-helpers',
             'html.sortable'               : '../vendor/html.sortable/dist/html.sortable',
-            'jquery.contactform'          : '../javascripts/plugins/jquery.contactform'
+            'jquery.contactform'          : '../javascripts/plugins/jquery.contactform',
+            'common'                      : '../vendor/donut-common/index'
           },
           shim: {
             'bootstrap'                   : ['jquery'],
@@ -97,8 +97,30 @@ module.exports = function (grunt) {
     }
   });
 
+  grunt.registerTask('i18next', function() {
+    var translations = {};
+
+    var locales = './locales';
+    var languages = fs.readdirSync(locales);
+    _.each(languages, function(l) {
+      translations[l] = {};
+      var namespaces = fs.readdirSync(path.join(locales, l));
+      _.each(namespaces, function(_ns) {
+        var ns = _ns.replace('.json', '');
+        var json = JSON.parse(fs.readFileSync(path.join(locales, l, _ns)));
+        translations[l][ns] = json;
+      });
+    });
+
+    translations = _.omit(translations, ['404', 'title', 'meta', 'email']);
+
+    var content = 'define(function(){ return '+JSON.stringify(translations)+'; });';
+    fs.writeFileSync('./web-server/public/build/translations.js', content, { flag: 'w+' });
+  });
+
   grunt.registerTask('build-web', 'Build Web client templates and scripts',[
     'jst',
+    'i18next',
     'requirejs'
   ]);
 };

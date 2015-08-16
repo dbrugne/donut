@@ -99,14 +99,14 @@
     }
   },
   "signup": {
-    "disclaimer": "by clicking the \"Here we go!\" button I accepte the user terms and conditions of DONUT."
+    "disclaimer": "by clicking the \"Here we go!\" button I accept the user terms and conditions of DONUT."
   },
   "choose-username": {
     "title": "It's time to choose a username!",
     "description": "This username will be your identity on DONUT and will be public. You cannot edit it later.",
     "help": [
       "Between 3 and 15 characters.<br>",
-      "Valid : letters, numbers and special characters: <strong>-._|^</strong><br>",
+      "Valid : letters, numbers and special characters: <strong>-._</strong><br>",
       "Invalid: spaces, accents and special characters not listed above.<br>"
     ],
     "usernameerror": "This username does not match constraints",
@@ -323,7 +323,7 @@
       "label": "Create your donut",
       "help": [
         "Between 3 and 15 characters.<br>",
-        "Valid : letters, numbers and special characters: <strong>-._|^</strong><br>",
+        "Valid : letters, numbers and special characters: <strong>-_^</strong><br>",
         "Invalid: spaces, accents and special characters not listed above.<br>"
       ],
       "placeholder": "Donut name",
@@ -377,6 +377,12 @@
     "debanuser": {
       "infobox": "Unblock this user"
     },
+    "voice": {
+      "infobox": "Voice this user"
+    },
+    "devoice": {
+      "infobox": "Devoice this user"
+    },
     "profile": {
       "infobox": "View the user profile"
     },
@@ -398,6 +404,8 @@
       "deban": " is no longer banned as requested by",
       "op": "  is now a moderator as requested by",
       "deop": "  is no longer a moderator as requested by",
+      "voice": " makes speech of ",
+      "devoice": " mutes ",
       "in": " entered at ",
       "out": " left at ",
       "online": " is online,",
@@ -424,6 +432,8 @@
         "roomkick": "You were kicked out of __roomname__",
         "roomban": "You were banned from __roomname__",
         "roomdeban": "You are no longer banned from __roomname__",
+        "roomvoice": "You were unmuted in __roomname__",
+        "roomdevoice": "You were muted in __roomname__",
         "usermessage": "@__username__: __message__",
         "roommessage": "__roomname__: __message__",
         "roomjoin": "@__username__ joined __roomname__",
@@ -443,6 +453,7 @@
       "bottom": "go to bottom"
     },
     "shouldauthenticated": "You must be logged in to access chat (<a href='/signup'>signup</a> or <a href='/login'>login</a>)",
+    "closeapp": "Are you sure you want to leave ?",
     "closemessage": "Are you sure you want to leave? Your conversation log will be lost.",
     "kickmessage": "You have been kicked out of __name__",
     "banmessage": "You have been banned from __name__",
@@ -465,6 +476,10 @@
       "bans": {
         "label": "Banned",
         "help": "Banned users cannot join this donut any longer"
+      },
+      "devoices": {
+        "label": "Mutes",
+        "help": "The dumb users can not send messages"
       },
       "users": {
         "label": "Users",
@@ -497,11 +512,17 @@
     "message": {
       "text-spammed": "Message tagged as junk by moderator [<a class=\"view-spammed-message\">Show</a>]",
       "text-remask": "Hide again",
+      "edition": {
+        "edited": "edited",
+        "cancel": "esc to <a href=\"#\" class=\"esc\">cancel</a>",
+        "validate": "enter to <a href=\"#\" class=\"validate\">save changes</a>"
+      },
       "dropdown": {
         "spam": {
           "mark-spam": "Mark as spam",
           "unmark-spam": "Unmark as spam"
-        }
+        },
+        "edit": "Edit my message"
       }
     },
     "today" : "Today",
@@ -740,6 +761,25 @@
           "button": "Go to chat"
         }
       },
+      "roomvoice": {
+        "subject": "You were unmuted in #__roomname__",
+        "content": {
+          "title": "You were unmuted in #__roomname__",
+          "disclaimer": "It looks like all is well that ends well!",
+          "action": "... and all of that thanks to <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#253b6c; text-decoration:none;\">@__username__</a></strong>",
+          "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Go to chat\">Go to chat</a>"
+        }
+      },
+      "roomdevoice": {
+        "subject": "You were muted in #__roomname__",
+        "content": {
+          "title": "You were muted in #__roomname__",
+          "reason": "<strong>Reason: \"__reason__\"</strong>",
+          "disclaimer": "This is sad news... You are mute in #__roomname__",
+          "action": "... and all of that thanks to <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#253b6c; text-decoration:none;\">@__username__</a></strong>",
+          "button": "Return to DONUT"
+        }
+      },
       "roommessage": {
         "subject": "New messages in #__roomname__",
         "content": {
@@ -894,25 +934,7 @@
       ]
     },
     "contact": {
-      "subject": "[DONUT] New contact form",
-      "text": [
-        "Name: __name__",
-        "Email: __email__",
-        "User: __user__",
-        "",
-        "__message__",
-        "",
-        "From __ip__ on __fqdn__"
-      ],
-      "html": [
-        "Name: __name__<br>",
-        "Email: __email__<br>",
-        "User: __user__<br>",
-        "<br>",
-        "__message__<br>",
-        "<br>",
-        "<small>From __ip__ on __fqdn__</small>"
-      ]
+      "subject": "[DONUT] New contact form"
     }
   },
   "welcome": {

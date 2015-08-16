@@ -27,6 +27,8 @@ define([
   'text!./templates/event/room-deban.html',
   'text!./templates/event/room-op.html',
   'text!./templates/event/room-topic.html',
+  'text!./templates/event/room-voice.html',
+  'text!./templates/event/room-devoice.html',
   'text!./templates/event/user-ban.html',
   'text!./templates/event/user-deban.html',
   'text!./templates/events.html',
@@ -41,16 +43,20 @@ define([
   'text!./templates/room-users.html',
   'text!./templates/spinner.html',
   'text!./templates/welcome.html',
+  'text!./templates/message-edit.html',
   'text!./templates/notification/room-op.html',
   'text!./templates/notification/room-deop.html',
   'text!./templates/notification/room-kick.html',
   'text!./templates/notification/room-ban.html',
   'text!./templates/notification/room-deban.html',
+  'text!./templates/notification/room-voice.html',
+  'text!./templates/notification/room-devoice.html',
   'text!./templates/notification/room-topic.html',
   'text!./templates/notification/room-join.html',
   'text!./templates/notification/user-mention.html',
   'text!./templates/notification/room-message.html',
-  'text!./templates/notification/user-message.html'
+  'text!./templates/notification/user-message.html',
+  'text!./templates/mention.html'
 ], function (_,
   color_picker,
   current_user,
@@ -79,6 +85,8 @@ define([
   event_room_deban,
   event_room_op,
   event_room_topic,
+  event_room_voice,
+  event_room_devoice,
   event_user_ban,
   event_user_deban,
   events,
@@ -93,16 +101,20 @@ define([
   room_users,
   spinner,
   welcome,
+  message_edit,
   notification_room_op,
   notification_room_deop,
   notification_room_kick,
   notification_room_ban,
   notification_room_deban,
+  notification_room_voice,
+  notification_room_devoice,
   notification_room_topic,
   notification_room_join,
   notification_user_mention,
   notification_room_message,
-  notification_user_message) {
+  notification_user_message,
+  mention) {
 
   /**
    * Stub class to load compiled templates dynamically (in development for example)
@@ -145,6 +157,8 @@ define([
   JST['event/room-deban.html']              = _.template(event_room_deban);
   JST['event/room-op.html']                 = _.template(event_room_op);
   JST['event/room-topic.html']              = _.template(event_room_topic);
+  JST['event/room-voice.html']              = _.template(event_room_voice);
+  JST['event/room-devoice.html']            = _.template(event_room_devoice);
   JST['event/user-ban.html']                = _.template(event_user_ban);
   JST['event/user-deban.html']              = _.template(event_user_deban);
   JST['events.html']                        = _.template(events);
@@ -159,16 +173,20 @@ define([
   JST['room-users.html']                    = _.template(room_users);
   JST['spinner.html']                       = _.template(spinner);
   JST['welcome.html']                       = _.template(welcome);
+  JST['message-edit.html']                  = _.template(message_edit);
   JST['notification/room-op.html']         = _.template(notification_room_op);
   JST['notification/room-deop.html']       = _.template(notification_room_deop);
   JST['notification/room-kick.html']       = _.template(notification_room_kick);
   JST['notification/room-ban.html']        = _.template(notification_room_ban);
   JST['notification/room-deban.html']      = _.template(notification_room_deban);
+  JST['notification/room-voice.html']      = _.template(notification_room_voice);
+  JST['notification/room-devoice.html']    = _.template(notification_room_devoice);
   JST['notification/room-topic.html']      = _.template(notification_room_topic);
   JST['notification/room-join.html']       = _.template(notification_room_join);
   JST['notification/user-mention.html']    = _.template(notification_user_mention);
   JST['notification/room-message.html']    = _.template(notification_room_message);
   JST['notification/user-message.html']    = _.template(notification_user_message);
+  JST['mention.html']    = _.template(mention);
 
   return JST;
 });

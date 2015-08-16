@@ -23,10 +23,10 @@
                     </li>
                     <li role="presentation" class="divider"></li>
                     <li role="presentation" class="ban-menu">
-                        <a role="menuitem" tabindex="-1" data-toggle="confirmation" style="cursor: pointer;" class="show-if-banned action-user-deban" data-uid="<%= user_id %>">
+                        <a role="menuitem" tabindex="-1" data-toggle="confirmation" style="cursor: pointer;" class="show-if-banned action-user-deban" data-username="<%= username %>">
                             <i class="icon icon-ban"></i> <%= t('chat.actions.deban') %>
                         </a>
-                        <a role="menuitem" tabindex="-1" data-toggle="confirmation" style="cursor: pointer;" class="show-if-unbanned action-user-ban" data-uid="<%= user_id %>">
+                        <a role="menuitem" tabindex="-1" data-toggle="confirmation" style="cursor: pointer;" class="show-if-unbanned action-user-ban" data-username="<%= username %>">
                             <i class="icon icon-ban"></i> <%= t('chat.actions.ban') %>
                         </a>
                     </li>
@@ -41,7 +41,7 @@
             <span class="show-if-banned">
                 <span class="banned-status">
                     &nbsp;-&nbsp;<%= t('chat.actions.banned') %>&nbsp;
-                    <span class="action-user-deban" data-uid="<%= user_id %>" style="cursor: pointer; text-decoration: underline;">
+                    <span class="action-user-deban" data-username="<%= username %>" style="cursor: pointer; text-decoration: underline;">
                         <%= t('chat.actions.unlock') %>
                     </span>
                 </span>

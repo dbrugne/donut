@@ -2,11 +2,12 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'common',
   'client',
   'models/current-user',
   'collections/rooms',
   'collections/onetoones'
-], function ($, _, Backbone, client, currentUser, rooms, onetoones) {
+], function ($, _, Backbone, common, client, currentUser, rooms, onetoones) {
   var WindowView = Backbone.View.extend({
 
     el: $(window),
@@ -136,20 +137,20 @@ define([
     },
     onClose: function () {
 
-      // user preferences exit popin
-      if (!currentUser.shouldDisplayExitPopin())
-        return;
       // sometimes we prevent exit popin
       if (this.preventPopin)
         return;
-      // only if at least one discussion is open
-      if ((!rooms || rooms.length < 1) && (!onetoones || onetoones.length < 1))
-        return;
+
       // only if connected
       if (!client.isConnected())
         return;
 
-      return $.t("chat.closemessage");
+      // only if at least one discussion is open and preferences checked
+      if ((!rooms || rooms.length < 1) && (!onetoones || onetoones.length < 1) && currentUser.shouldDisplayExitPopin())
+        return $.t("chat.closeapp");
+
+      if (currentUser.shouldDisplayExitPopin())
+        return $.t("chat.closemessage");
     },
 
     _getFocusedModel: function () {
@@ -216,8 +217,7 @@ define([
         return;
 
       // test if i mentioned
-      var pattern = new RegExp('@\\[([^\\]]+)\\]\\(user:' + currentUser.get('user_id') + '\\)');
-      var isMention = pattern.test(event.get('data').message);
+      var isMention = common.isUserMentionned(currentUser.get('user_id'), event.get('data').message);
 
       // test if current discussion is focused
       var isFocused = (this.focused && model.get('focused'))

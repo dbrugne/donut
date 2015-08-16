@@ -82,7 +82,8 @@ define([
         field_name: 'avatar',
         resized_width: 200,
         resized_height: 200,
-        cropping_aspect_ratio: 1 // squared avatar
+        cropping_aspect_ratio: 1, // squared avatar
+        success: _.bind(this.onRoomAvatarUpdate, this)
       });
 
       // poster
@@ -93,7 +94,8 @@ define([
         field_name: 'poster',
         resized_width: 0,
         resized_height: 0,
-        cropping_aspect_ratio: 0.36 // portrait
+        cropping_aspect_ratio: 0.36, // portrait
+        success: _.bind(this.onRoomPosterUpdate, this)
       });
     },
     onSubmit: function(event) {
@@ -130,6 +132,40 @@ define([
           return;
         }
         that.trigger('close');
+      });
+    },
+
+    onRoomAvatarUpdate: function (data) {
+      var updateData = {
+        avatar: data
+      };
+      var that = this;
+      client.roomUpdate(this.roomName, updateData, function (d) {
+        that.$el.find('.errors').hide();
+        if (d.err) {
+          var message = '';
+          _.each(d.errors, function (error) {
+            message += error + '<br>';
+          });
+          that.$el.find('.errors').html(message).show();
+        }
+      });
+    },
+
+    onRoomPosterUpdate: function (data) {
+      var updateData = {
+        poster: data
+      };
+      var that = this;
+      client.roomUpdate(this.roomName, updateData, function (d) {
+        that.$el.find('.errors').hide();
+        if (d.err) {
+          var message = '';
+          _.each(d.errors, function (error) {
+            message += error + '<br>';
+          });
+          that.$el.find('.errors').html(message).show();
+        }
       });
     }
 

@@ -19,14 +19,16 @@ define([
       'click .deop-user'          : 'deopUser',
       'click .kick-user'          : 'kickUser',
       'click .ban-user'           : 'banUser',
+      'click .voice-user'         : 'voiceUser',
+      'click .devoice-user'       : 'devoiceUser',
       'click .share .facebook'    : 'shareFacebook',
       'click .share .twitter'     : 'shareTwitter',
       'click .share .googleplus'  : 'shareGoogle'
     },
     _initialize: function() {
-      this.listenTo(this.model, 'change:color', this.onColor);
       this.listenTo(this.model, 'change:avatar', this.onAvatar);
       this.listenTo(this.model, 'change:poster', this.onPoster);
+      this.listenTo(this.model, 'change:color', this.onColor);
 
       this.topicView = new TopicView({el: this.$el.find('.topic'), model: this.model});
       this.usersView = new UsersView({el: this.$el.find('.side .users'), model: this.model, collection: this.model.users});
@@ -141,15 +143,39 @@ define([
         client.roomBan(that.model.get('name'), username, reason);
       });
     },
+    voiceUser: function(event) {
+      event.preventDefault();
+      if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() &&!this.model.currentUserIsAdmin())
+        return false;
+      var username = $(event.currentTarget).data('username');
+      if (!username)
+        return;
+
+      client.roomVoice(this.model.get('name'), username);
+    },
+    devoiceUser: function(event) {
+      event.preventDefault();
+      if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin())
+        return false;
+
+      var username = $(event.currentTarget).data('username');
+      if (!username)
+        return;
+
+      var that = this;
+      confirmationView.open({ input: true }, function(reason) {
+        client.roomDevoice(that.model.get('name'), username, reason);
+      });
+    },
 
     /**
      * Update room details methods
      */
 
     onColor: function(model, value, options) {
-      this.colorify();
       this.onAvatar(model, model.get('avatar'), options);
       this.onPoster(model, model.get('poster'), options);
+      this.colorify();
     },
     onAvatar: function(model, value, options) {
       var url = $.cd.roomAvatar(value, 100);

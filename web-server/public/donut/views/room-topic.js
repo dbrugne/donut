@@ -2,10 +2,11 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'common',
   'client',
   'models/current-user',
   '_templates'
-], function ($, _, Backbone, client, currentUser, templates) {
+], function ($, _, Backbone, common, client, currentUser, templates) {
   var RoomTopicView = Backbone.View.extend({
 
     template: templates['room-topic.html'],
@@ -34,7 +35,7 @@ define([
 
       this.$el.find('.topic-current, .topic-form').hide();
       var currentTopic = this.model.get('topic');
-      if (currentTopic == undefined || currentTopic == '') {
+      if (!currentTopic || currentTopic === '') {
         if (this.model.currentUserIsOp() || this.model.currentUserIsOwner() || this.model.currentUserIsAdmin()) {
           this.$el.find('.txt')
             .html($.t("chat.topic.default"))
@@ -46,11 +47,15 @@ define([
             .attr('title', '');
         }
       } else {
+        // mentions
+        var htmlTopic = common.markupToHtml(_.escape(currentTopic), {
+          template: templates['mention.html'],
+          style: 'color: ' + this.model.get('color')
+        });
         this.$el.find('.txt')
-          .text(currentTopic)
-          .attr('title', currentTopic)
-          .smilify()
-          .linkify();
+          .html(htmlTopic)
+          .attr('title', common.markupToText(currentTopic))
+          .smilify();
         this.$el.find('.topic-current').css('display', 'inline-block');
       }
 
@@ -63,9 +68,10 @@ define([
       if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin())
         return false;
 
+      var topic = common.markupToText(this.model.get('topic'));
       this.$el.find('.topic-current').hide();
       this.$el.find('.topic-form').css('display', 'block');
-      this.$el.find('.topic-input').val(this.model.get('topic')).focus();
+      this.$el.find('.topic-input').val(topic).focus();
     },
     hideForm: function() {
       this.$el.find('.topic-form').hide();

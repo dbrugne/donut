@@ -53,13 +53,14 @@ notificationSchema.statics.getNewModel = function(type, user, data) {
  * @returns historyroom || historyone || undefined
  */
 notificationSchema.methods.getEventType = function() {
-  switch (this.type)
-  {
+  switch (this.type) {
     case 'roomop':
     case 'roomdeop':
     case 'roomkick':
     case 'roomban':
     case 'roomdeban':
+    case 'roomvoice':
+    case 'roomdevoice':
     case 'roomtopic':
     case 'roommessage':
     case 'roomjoin':

@@ -3,6 +3,7 @@ var router = express.Router();
 var passport = require('../../../shared/authentication/passport');
 var User = require('../../../shared/models/user');
 var i18next = require('../../../shared/util/i18next');
+var common = require('donut-common');
 
 var validateEmail = function(req, res, next) {
   req.checkBody('email', i18next.t("account.email.error.format")).isEmail();
@@ -14,11 +15,9 @@ var validateEmail = function(req, res, next) {
     });
   }
 
-  var pattern = req.body.email.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
-  var r = new RegExp('^'+pattern+'$', 'i');
   User.findOne({
     $and: [
-      {'local.email': {$regex: r}},
+      {'local.email': common.regExpBuildExact(req.body.email.replace)},
       {_id: { $ne: req.user._id }}
     ]
   }, function(err, user) {

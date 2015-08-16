@@ -43,6 +43,7 @@ define([
       });
       this.listenTo(this.inputView, 'resize', this.onResize);
       this.listenTo(this.inputView, 'send', this.onSend);
+      this.listenTo(this.inputView, 'editPreviousInput', this.onEditPreviousInput);
 
       // Other subviews
       this._initialize(options);
@@ -95,8 +96,7 @@ define([
         this.$el.show();
 
         // focus input field
-        if (this.$editable)
-          this.$editable.focus();
+        this.model.trigger('inputFocus');
 
         // need to load history?
         if (!this.hasBeenFocused)
@@ -156,6 +156,10 @@ define([
 
     onSend: function() {
       this.eventsView.scrollDown(); // scroll down automatically when I send a message
+    },
+
+    onEditPreviousInput: function() {
+      this.eventsView.pushUpFromInput();
     }
 
   });

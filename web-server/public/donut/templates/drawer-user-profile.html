@@ -18,9 +18,9 @@
     <% if (!user.isCurrent) { %>
         <!--Check if I banned this user-->
         <% if (user.banned) { %>
-        <p class="action action-user-deban" style="cursor:pointer" data-uid="<%= user.user_id %>" data-colorify-text="color" data-colorify="<%= user.color %>"><i class="icon icon-ban" data-colorify-text="color" data-colorify="<%= user.color %>"></i> <%= t('chat.debanuser.infobox') %></p>
+        <p class="action action-user-deban" style="cursor:pointer" data-username="<%= user.username %>" data-colorify-text="color" data-colorify="<%= user.color %>"><i class="icon icon-ban" data-colorify-text="color" data-colorify="<%= user.color %>"></i> <%= t('chat.debanuser.infobox') %></p>
         <% } else { %>
-        <p class="action action-user-ban" style="cursor:pointer" data-uid="<%= user.user_id %>" data-colorify-text="color" data-colorify="<%= user.color %>"><i class="icon icon-ban color-text-error"></i> <%= t('chat.banuser.infobox') %></p>
+        <p class="action action-user-ban" style="cursor:pointer" data-username="<%= user.username %>" data-colorify-text="color" data-colorify="<%= user.color %>"><i class="icon icon-ban color-text-error"></i> <%= t('chat.banuser.infobox') %></p>
         <% }; %>
 
         <!--Check if this user banned me-->

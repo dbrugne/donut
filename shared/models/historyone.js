@@ -11,7 +11,9 @@ var historySchema = mongoose.Schema({
   to            : { type: mongoose.Schema.ObjectId, ref: 'User' },
   time          : { type: Date, default: Date.now },
   data          : mongoose.Schema.Types.Mixed,
-  viewed        : { type: Boolean, default: false }  // true if to user has read this event
+  viewed        : { type: Boolean, default: false },  // true if to user has read this event
+  edited        : { type: Boolean },
+  edited_at     : { type: Date }
 
 });
 
@@ -95,6 +97,9 @@ historySchema.methods.toClientJSON = function(userViewed) {
     data.to_username = this.to.username;
     data.to_avatar = this.to._avatar();
   }
+  if (this.edited === true)
+    e.edited = this.edited;
+
   e.data = data;
 
   // unread status (true if message, i'm the receiver and current value is false)

@@ -19,8 +19,8 @@ define([
       this.mainView = options.mainView;
       this.username = options.username;
 
-      this.listenTo(this.mainView, 'userDeban', this.onUserDeban);
-      this.listenTo(this.mainView, 'userBan',   this.onUserBan);
+      this.listenTo(this.mainView, 'userDeban', this.onUserBanChange);
+      this.listenTo(this.mainView, 'userBan',   this.onUserBanChange);
 
       // show spinner as temp content
       this.render();
@@ -48,14 +48,6 @@ define([
 
       var html = this.template({user: user});
       this.$el.html(html);
-
-      this.$el.find('.website span').linkify({
-          linkAttributes: {
-            'data-colorify-text': 'color',
-            'data-colorify': user.color || null
-          }
-      });
-
       this.$el.colorify();
       this.$el.find('.created span').momentify('date');
       this.$el.find('.onlined span').momentify('fromnow');
@@ -115,20 +107,11 @@ define([
       }
     },
 
-    onUserDeban: function(data) {
+    onUserBanChange: function() {
       this.render();
-      var that = this;
-      client.userRead(this.username, function(data) {
-        that.onResponse(data);
-      });
-    },
-
-    onUserBan: function(data) {
-      this.render();
-      var that = this;
-      client.userRead(this.username, function(data) {
-        that.onResponse(data);
-      });
+      client.userRead(this.username, _.bind(function(data) {
+        this.onResponse(data);
+      }, this));
     }
 
   });

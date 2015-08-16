@@ -33,11 +33,14 @@ define([
       this.listenTo(client, 'room:kick', this.onKick);
       this.listenTo(client, 'room:ban', this.onBan);
       this.listenTo(client, 'room:deban', this.onDeban);
+      this.listenTo(client, 'room:voice', this.onVoice);
+      this.listenTo(client, 'room:devoice', this.onDevoice);
       this.listenTo(client, 'room:join', this.onJoin);
       this.listenTo(client, 'room:leave', this.onLeave);
       this.listenTo(client, 'room:viewed', this.onViewed);
       this.listenTo(client, 'room:message:spam', this.onMessageSpam);
       this.listenTo(client, 'room:message:unspam', this.onMessageUnspam);
+      this.listenTo(client, 'room:message:edit', this.onMessageEdited);
     },
     onJoin: function(data) {
       // server ask to client to open this room in IHM
@@ -60,6 +63,7 @@ define([
         name: room.name,
         owner: owner,
         op: room.op,
+        devoices: room.devoices,
         topic: room.topic,
         avatar: room.avatar,
         poster: room.poster,
@@ -191,6 +195,20 @@ define([
 
       model.onDeban(data);
     },
+    onVoice: function(data) {
+      var model;
+      if (!data || !data.name || !(model = this.get(data.name)))
+        return;
+
+      model.onVoice(data);
+    },
+    onDevoice: function(data) {
+      var model;
+      if (!data || !data.name || !(model = this.get(data.name)))
+        return;
+
+      model.onDevoice(data);
+    },
     onLeave: function(data) {
       // server asks to this client to leave this room
       var model;
@@ -224,6 +242,13 @@ define([
         return;
 
       model.trigger('messageUnspam', data);
+    },
+    onMessageEdited: function(data) {
+      var model;
+      if (!data || !data.name || !(model = this.get(data.name)))
+        return;
+
+      model.trigger('messageEdit', data);
     }
 
   });

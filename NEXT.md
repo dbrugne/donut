@@ -1,13 +1,6 @@
 # Things to do on next deploy
 
+* Replace old user mentions in history:
 ```
-// notifications
-db['notifications'].ensureIndex({
-  "done" : 1,
-  "user" : 1
-});
-db['notifications'].ensureIndex({
-  "done" : 1,
-  "time" : -1
-});
+grunt mentions-migration
 ```

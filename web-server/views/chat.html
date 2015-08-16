@@ -17,8 +17,7 @@
                     <ul class="nav navbar-nav-ul">
                         <li><a href="/!#">Home</a></li>
                     </ul>
-                    <ul class="nav navbar-nav-ul navbar-right">
-
+                    <ul class="nav navbar-nav navbar-right">
                         <li class="home visible-sm visible-xs">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                 <i class="icon icon-cog" data-colorify-text="contrast"></i>
@@ -30,7 +29,11 @@
                                 <li><a class="open-create-room"><i class="icon icon-pencil"></i> <%= t('actions.create') %></a></li>
                             </ul>
                         </li>
-
+                        <li id="mute">
+                            <a href="#" class="toggle">
+                                <i class="icon icon-volume-up" data-colorify-text="contrast"></i>
+                            </a>
+                        </li>
                         <li id="notifications" class="dropdown empty">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                 <i class="icon icon-globe" data-colorify-text="contrast"></i>
@@ -68,7 +71,6 @@
                                 <li><a href="/eutc" target="_blank"><i class="icon icon-question-circle"></i> <%= t('page.eutc.title') %></a></li>
                             </ul>
                         </li>
-
                     </ul>
                 </div><!--/.nav-collapse -->
             </div>
@@ -185,6 +187,7 @@
     window.facebook_app_id = '<%- facebook.clientID %>';
     window.recaptcha_site_key = '<%- recaptcha.sitekey %>';
     window.room_default_color = '<%- room_default_color %>';
+    window.message_maxedittime = <%= message_maxedittime %>;
     window.colors = <%= colors %>;
 </script>
 <script src="/javascripts/old-browser-update.js"></script>

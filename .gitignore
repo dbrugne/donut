@@ -1,13 +1,9 @@
 # IDE
 /.idea
 .DS_Store
-.env
 
 # Dependencies
-/game-server/logs
-/game-server/node_modules
-/web-server/node_modules
-/web-server/public/js/lib/build
+/ws-server/logs
 /web-server/public/vendor
 /node_modules
 
@@ -15,6 +11,3 @@
 /web-server/public/stylesheets/style.css
 /web-server/public/stylesheets/dashboard.css
 /web-server/public/build
-
-# Outputed files
-/output

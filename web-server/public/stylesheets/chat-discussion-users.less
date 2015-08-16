@@ -131,12 +131,7 @@
         }
       }
       &.op {
-        .avatar {
-          border-style: solid;
-          border-width: 2px;
-          border-radius: 5px;
-          border-color: @cl-success !important; // override .op if needed;
-        }
+        .avatar { .border-radius(5px); border: 2px solid @cl-success !important; }
         .avatar::before {
           z-index: 5;
           position: absolute;
@@ -148,13 +143,13 @@
           background-size: 12px 16px;
         }
       }
-      &.owner {
-        .avatar {
-          border-style: solid;
-          border-width: 2px;
-          border-radius: 5px;
-          border-color: #fbec4d !important; // override .op if needed;
+      &.devoice {
+        .avatar { .border-radius(5px); border: 2px solid @cl-error !important;
+          &::after { content: '\f037'; display: inline-block; font: normal normal normal 14px/1 'Donut'; text-rendering: auto; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; transform: translate(0, 0); right: -9px; bottom: -10px; position: absolute; color: @cl-error; font-size: 19px; border-radius: 50%; }
         }
+      }
+      &.owner {
+        .avatar { .border-radius(5px); border: 2px solid #fbec4d !important; }
         .avatar::before {
           z-index: 5;
           position: absolute;

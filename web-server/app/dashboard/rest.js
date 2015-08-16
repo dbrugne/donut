@@ -8,6 +8,7 @@ var User = require('../../../shared/models/user');
 var HistoryRoom = require('../../../shared/models/historyroom');
 var HistoryOne = require('../../../shared/models/historyone');
 var Logs = require('../../../shared/models/log');
+var common = require('donut-common');
 
 var isAdmin = function(req, res, next) {
   if (!req.isAuthenticated() || req.user.admin !== true) {
@@ -23,12 +24,11 @@ var readCollection = function (collection, query, searchable, populate, callback
   // filter
   var filter = {};
   if (query.q && searchable) {
-    var pattern = query.q.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
-    var regexp = new RegExp(pattern,'i');
+    var search = common.regExpBuildExact(query.q);
     var filters = [];
     _.each(searchable, function(s) {
       var f = {};
-      f[s] = regexp;
+      f[s] = search;
       filters.push(f);
     });
     filter['$or'] = filters;

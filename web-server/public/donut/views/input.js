@@ -18,18 +18,18 @@ define([
     images: '',
 
     events: {
-      'input .editable'               : 'onInput',
-      'keypress .editable'            : 'onKeyPress',
-      'click .send'                   : 'sendMessage',
-      'click .add-image'              : 'onAddImage',
-      'click .remove-image'           : 'onRemoveImage',
-      'click .add-smiley'             : 'onOpenSmiley',
-      'click .smileys .smilify'       : 'onPickSmiley'
+      'keydown .editable'       : 'onKeyDown',
+      'click .send'             : 'onSubmitMessage',
+      'click .add-image'        : 'onAddImage',
+      'click .remove-image'     : 'onRemoveImage',
+      'click .add-smiley'       : 'onOpenSmiley',
+      'click .smileys .smilify' : 'onPickSmiley'
     },
 
     initialize: function(options) {
       this.listenTo(currentUser, 'change:avatar', this.onAvatar);
-      this.listenTo(this.model, 'inputActive', this.onActiveChange);
+      this.listenTo(this.model, 'inputFocus', this.onFocus);
+      this.listenTo(this.model, 'inputActive', this.onInputActiveChange);
 
       this.images = {}; // should be initialized with {} on .initialize(), else all the view instances will share the same object (#110)
 
@@ -37,7 +37,6 @@ define([
     },
 
     _remove: function() {
-      this.$editable.mentionsInput('reset');
       this.remove();
     },
 
@@ -50,134 +49,95 @@ define([
       this.$editable = this.$el.find('.editable');
       this.$preview = this.$el.find('.preview');
 
-      var that = this;
-
-      // mentions initialisation
-      this.$editable.mentionsInput({
-        minChars: 1,
-        elastic: false,
-        allowRepeat: true,
-        onDataRequest: function (mode, query, callback) {
-          if (that.model.get('type') != 'room')
-            return [];
-          // filter user list
-          var data = that.model.users.filter(function(item) {
-            return item.get('username').toLowerCase().indexOf(query.toLowerCase()) > -1;
-          });
-          // decorate user list
-          data = _.map(data, function(model, key, list) {
-            var avatar = $.cd.userAvatar(model.get('avatar'), 10);
-            return {
-              id      : model.get('id'),
-              name    : model.get('username'),
-              avatar  : avatar,
-              type    : 'user'
-            };
-          });
-
-          callback.call(this, data);
-        }
-      });
-
-      if (this.model.isInputActive() === false) { // deactivate input
+      if (!this.model.isInputActive())
         this.$el.addClass('inactive');
-      } else {
+      else
         this.$el.removeClass('inactive');
-      }
     },
 
-    onActiveChange: function() {
-      if (this.model.isInputActive() === false) { // deactivate input
+    onInputActiveChange: function() {
+      if (!this.model.isInputActive())
         this.$el.addClass('inactive');
-      } else {
+      else
         this.$el.removeClass('inactive');
-      }
     },
 
-    onInput: function(event) {
-      // set mention dropdown position
-      this.$editable.siblings('.mentions-autocomplete-list')
-        .css('bottom', this.$editable.height()+10+'px');
+    onFocus: function() {
+      if (this.$editable)
+        this.$editable.focus();
     },
 
     onAvatar: function(model, value, options) {
       this.$el.find('.avatar').prop('src', $.cd.userAvatar(value, 80));
     },
 
-    onKeyPress: function(event) {
+    onKeyDown: function(event) {
       // Press enter in field handling
-      if (event.type == 'keypress') {
+      if (event.type == 'keydown') {
         var key;
         var isShift;
         if (window.event) {
           key = window.event.keyCode;
-          isShift = window.event.shiftKey ? true : false;
+          isShift = window.event.shiftKey
+            ? true
+            : false;
         } else {
           key = event.which;
-          isShift = event.shiftKey ? true : false;
+          isShift = event.shiftKey
+            ? true
+            : false;
         }
         if(event.which == 13 && !isShift) {
           return this.sendMessage();
         }
+        if (event.which == 38 && ($(event.currentTarget).val() === ''))
+          this.trigger('editPreviousInput');
       }
     },
 
-    sendMessage: function(event) {
-      // Get the message
-      var that = this;
-      this.$editable.mentionsInput('val', function(message) {
-        // check length (min)
-        var imagesCount = _.keys(that.images).length;
-        if (message == '' && imagesCount < 1) // empty message and no image
-          return false;
+    onSubmitMessage: function(event) {
+      event.preventDefault();
+      this.sendMessage();
+    },
+    
+    sendMessage: function() {
+      var message = this.$editable.val();
 
-        // Mentions, try to find missed ones
-        if (that.model.get('type') == 'room') {
-          var potentialMentions = message.match(/@([-a-z0-9\._|^]{3,15})/ig);
-          _.each(potentialMentions, function(p) {
-            var u = p.replace(/^@/, '');
-            var m = that.model.users.iwhere('username', u);
-            if (m) {
-              message = message.replace(
-                new RegExp('@'+u, 'g'),
-                  '@['+ m.get('username')+'](user:'+m.get('id')+')'
-              );
-            }
+      // check length (min)
+      var imagesCount = _.keys(this.images).length;
+      if (message == '' && imagesCount < 1) // empty message and no image
+        return false;
+
+      // check length (max)
+      // @todo: replace with a "withoutSmileysCodes" logic
+      //var withoutMentions = message.replace(/@\[([^\]]+)\]\(user:[^\)]+\)/gi, '$1');
+      if (message.length > 512) {
+        debug('message is too long');
+        return false;
+      }
+
+      // add images
+      var images = [];
+      if (imagesCount > 0) {
+        _.each(this.images, function(i) {
+          images.push({
+            public_id: i.public_id,
+            version: i.version,
+            path: i.path
           });
-        }
+        });
+      }
+      // Send message to server
+      this.model.sendMessage(message, images);
+      this.trigger('send');
 
-        // check length (max)
-        var withoutMentions = message.replace(/@\[([^\]]+)\]\(user:[^\)]+\)/gi, '$1');
-        if (withoutMentions.length > 512) {
-          debug('message is too long');
-          return false;
-        }
+      // Empty field
+      this.$editable.val('');
 
-        // add images
-        var images = [];
-        if (imagesCount > 0) {
-          _.each(that.images, function(i) {
-            images.push({
-              public_id: i.public_id,
-              version: i.version,
-              path: i.path
-            });
-          });
-        }
-
-        // Send message to server
-        that.model.sendMessage(message, images);
-        that.trigger('send');
-
-        // Empty field
-        that.$editable.val('');
-        that.$editable.mentionsInput('reset');
-
-        // reset images
-        that.images = {};
-        that.$preview.find('.image').remove();
-        that.hidePreview();
-      });
+      // reset images
+      this.images = {};
+      this.$preview.find('.image').remove();
+      this.hidePreview();
 
       // Avoid line break addition in field when submitting with "Enter"
       return false;
