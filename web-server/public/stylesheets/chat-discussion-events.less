@@ -142,7 +142,7 @@
           border-top: transparent;
         }
         &.date {
-          margin-top: 20px;
+          margin-top: 16px;
           margin-bottom: 10px;
           .event {
             height: 2px;
@@ -154,7 +154,7 @@
             top: -0.7em;
             background-color: @cl-background;
             text-align: center;
-            font-size: 1.4em;
+            font-size: 1.2em;
             font-weight: bold;
             color: @cl-subtext30;
             padding: 0 10px;
@@ -217,6 +217,20 @@
           i {
             font-size: 1.4em;
             color: @cl-subtext30;
+            vertical-align: middle;
+          }
+        }
+        &.voice {
+          i {
+            font-size: 1.4em;
+            color: @cl-success;
+            vertical-align: middle;
+          }
+        }
+        &.devoice {
+          i {
+            font-size: 1.4em;
+            color: @cl-error;
             vertical-align: middle;
           }
         }
@@ -392,7 +406,9 @@
       .block.ban,
       .block.deban,
       .block.op,
-      .block.deop {
+      .block.deop,
+      .block.voice,
+      .block.devoice {
         padding: 5px;
         img { height: 20px; }
         .avatar {

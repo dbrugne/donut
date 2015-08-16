@@ -12,12 +12,16 @@ define([
     },
     render: function(data) {
       var users = [];
-      _.each(data.users, function(user) {
+      _.each(data.users.list, function(user) {
         user.avatar = $.cd.userAvatar(user.avatar, 30);
         users.push(user);
       });
 
-      var html = this.template({users: users, search: data.search});
+      var html = this.template({
+        users: users,
+        more: data.users.more,
+        search: data.search
+      });
       this.$el.html(html);
       return this;
     }

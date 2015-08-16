@@ -1,6 +1,7 @@
 var debug = require('debug')('shared:models:room');
 var _ = require('underscore');
 var mongoose = require('../io/mongoose');
+var regexp = require('../util/regexp');
 
 var roomSchema = mongoose.Schema({
 
@@ -17,6 +18,11 @@ var roomSchema = mongoose.Schema({
     reason: String,
     banned_at: { type: Date, default: Date.now }
   }],
+  devoices        : [{
+    user: { type: mongoose.Schema.ObjectId, ref: 'User' },
+    reason: String,
+    devoiced_at: { type: Date, default: Date.now }
+  }],
   avatar          : String,
   poster          : String,
   color           : String,
@@ -28,26 +34,22 @@ var roomSchema = mongoose.Schema({
 
 });
 
-roomSchema.statics.validateName = function (name) {
-  var pattern = /^#[-a-z0-9\._|[\]^]{3,24}$/i;
-  if (pattern.test(name)) {
-    return true;
-  }
-  return false;
-}
-
-roomSchema.statics.validateTopic = function (topic) {
-  var pattern = /^.{0,512}$/i;
-  if (pattern.test(topic)) {
-    return true;
-  }
-  return false;
+roomSchema.statics.findByName = function (name) {
+  return this.findOne({
+    name: regexp.buildExclusive(name, 'i'),
+    deleted: { $ne: true }
+  });
 };
 
-roomSchema.statics.findByName = function (name) {
-  var pattern = name.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
-  var regexp = new RegExp('^'+pattern+'$','i');
-  return this.findOne({ name: regexp, deleted: {$ne: true} });
+roomSchema.statics.listByName = function (names) {
+  var criteria = {
+    deleted: false,
+    $or: []
+  };
+  _.each(names, function(n) {
+    criteria['$or'].push({ name: regexp.buildExclusive(n) });
+  });
+  return this.find(criteria, '_id name');
 };
 
 roomSchema.statics.findByUser = function (userId) {
@@ -138,6 +140,18 @@ roomSchema.methods.isBanned = function(user_id) {
 
   var subDocument = _.find(this.bans, function(ban) { // @warning: this shouldn't have .bans populated
     if (ban.user.toString() == user_id)
+      return true;
+  });
+
+  return (typeof subDocument != 'undefined');
+};
+
+roomSchema.methods.isDevoice = function (user_id) {
+  if (!this.devoices || !this.devoices.length)
+    return false;
+
+  var subDocument = _.find(this.devoices, function (devoice) { // @warning: this shouldn't have .devoices populated
+    if (devoice.user.toString() == user_id)
       return true;
   });
 

@@ -86,8 +86,5 @@ var conf = module.exports = {
         creation: 5*60 // 5mn
       }
     }
-  },
-  regex: {
-    'usermention': /@\[([^\]]+)\]\(user:([^)]+)\)/g // $1 -> username, $2 -> uid
   }
 };

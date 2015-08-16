@@ -36,7 +36,6 @@ define([
     },
 
     events: {
-      //'input .editable'               : 'onInput',
       'keyup .editable': 'onKeyUp',
       'keydown .editable': 'onKeyDown',
       'click .send': 'sendMessage',
@@ -49,7 +48,8 @@ define([
 
     initialize: function (options) {
       this.listenTo(currentUser, 'change:avatar', this.onAvatar);
-      this.listenTo(this.model, 'inputActive', this.onActiveChange);
+      this.listenTo(this.model, 'inputFocus', this.onFocus);
+      this.listenTo(this.model, 'inputActive', this.onInputActiveChange);
 
       this.images = {}; // should be initialized with {} on .initialize(), else all the view instances will share the same object (#110)
 
@@ -70,28 +70,20 @@ define([
       this.$preview = this.$el.find('.preview');
       this.$rollUpCtn = this.$el.find('.rollup-container');
 
-      if (this.model.isInputActive() === false) { // deactivate input
+      if (!this.model.isInputActive())
         this.$el.addClass('inactive');
-      } else {
+      else
         this.$el.removeClass('inactive');
-      }
     },
 
-    onActiveChange: function () {
-      if (this.model.isInputActive() === false) { // deactivate input
+    onInputActiveChange: function() {
+      if (!this.model.isInputActive())
         this.$el.addClass('inactive');
-      } else {
+      else
         this.$el.removeClass('inactive');
-      }
     },
-    //
-    //onInput: function(event) {
-    //  // set mention dropdown position
-    //  this.$editable.siblings('.mentions-autocomplete-list')
-    //    .css('bottom', this.$editable.height()+10+'px');
-    //},
 
-    onAvatar: function (model, value, options) {
+    onAvatar: function(model, value, options) {
       this.$el.find('.avatar').prop('src', $.cd.userAvatar(value, 80));
     },
 
@@ -101,19 +93,20 @@ define([
      *
      * @param event
      */
-    onKeyDown: function (event) {
+    onKeyDown: function(event) {
+      if (event.type != 'keydown')
+        return;
+      
       var data = this._getKeyCode();
       var message = this.$editable.val();
 
       // Avoid loosing focus when tab is pushed
       if (data.key == this.KEY.TAB)
         event.preventDefault();
-
-      // Avoid sending empty messages
-      if (data.key == this.KEY.RETURN && !data.isShift && message.length == 0) {
-        event.preventDefault();
-        return this.$editable.val('');
-      }
+      
+      // Navigate between editable messages
+      if (event.which == 38 && message === '')
+        this.trigger('editPreviousInput');
     },
 
     onKeyUp: function (event) {
@@ -203,33 +196,22 @@ define([
       }
     },
 
-    sendMessage: function (event) {
-      // Get the message
-      var that = this;
+    onSubmitMessage: function(event) {
+      event.preventDefault();
+      this.sendMessage();
+    },
+
+    sendMessage: function(event) {
       var message = this.$editable.val().substr(0, this.$editable.val().length - 1); // Remove last return caracter
 
       var imagesCount = _.keys(that.images).length;
       if (message == '' && imagesCount < 1) // empty message and no image
         return false;
 
-      // Mentions, try to find missed ones
-      if (that.model.get('type') == 'room') {
-        var potentialMentions = message.match(/@([-a-z0-9\._|^]{3,15})/ig); // @todo from constant
-        _.each(potentialMentions, function (p) {
-          var u = p.replace(/^@/, '');
-          var m = that.model.users.iwhere('username', u);
-          if (m) {
-            message = message.replace(
-              new RegExp('@' + u, 'g'),
-              '@[' + m.get('username') + '](user:' + m.get('id') + ')'
-            );
-          }
-        });
-      }
-
       // check length (max)
-      var withoutMentions = message.replace(/@\[([^\]]+)\]\(user:[^\)]+\)/gi, '$1'); // @todo from constant
-      if (withoutMentions.length > 512) {
+      // @todo: replace with a "withoutSmileysCodes" logic
+      //var withoutMentions = message.replace(/@\[([^\]]+)\]\(user:[^\)]+\)/gi, '$1');
+      if (message.length > 512) {
         debug('message is too long');
         return false;
       }
@@ -237,7 +219,7 @@ define([
       // add images
       var images = [];
       if (imagesCount > 0) {
-        _.each(that.images, function (i) {
+        _.each(this.images, function(i) {
           images.push({
             public_id: i.public_id,
             version: i.version,
@@ -245,18 +227,17 @@ define([
           });
         });
       }
-
       // Send message to server
-      that.model.sendMessage(message, images);
-      that.trigger('send');
+      this.model.sendMessage(message, images);
+      this.trigger('send');
 
       // Empty field
-      that.$editable.val('');
+      this.$editable.val('');
 
       // reset images
-      that.images = {};
-      that.$preview.find('.image').remove();
-      that.hidePreview();
+      this.images = {};
+      this.$preview.find('.image').remove();
+      this.hidePreview();
 
       // Avoid line break addition in field when submitting with "Enter"
       return false;

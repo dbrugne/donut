@@ -31,7 +31,8 @@ define([
   'views/discussion-onetoone',
   'views/discussions-block',
   'views/notifications',
-  'views/modal-confirmation'
+  'views/modal-confirmation',
+  'views/mute'
 ], function ($, _, Backbone, donutDebug, client, currentUser, EventModel, rooms, onetoones, templates, windowView,
              ConnectionModalView, WelcomeModalView,
              CurrentUserView, AlertView, HomeView, SearchView,
@@ -40,7 +41,7 @@ define([
              DrawerRoomDeleteView,
              DrawerUserProfileView, DrawerUserEditView, DrawerUserPreferencesView, DrawerUserAccountView,
              RoomView, OneToOneView,
-             DiscussionsBlockView, NotificationsView, ConfirmationView) {
+             DiscussionsBlockView, NotificationsView, ConfirmationView, MuteView) {
 
   var debug = donutDebug('donut:main');
 
@@ -107,6 +108,7 @@ define([
       this.welcomeView = new WelcomeModalView({mainView: this});
       this.searchView = new SearchView({mainView: this});
       this.notificationsView = new NotificationsView({mainView: this});
+      this.muteView = new MuteView({mainView: this});
 
       // @debug
       window.current = currentUser;
@@ -128,6 +130,7 @@ define([
       currentUser.set(data.user, {silent: true});
       currentUser.setPreferences(data.preferences, {silent: true});
       this.currentUserView.render();
+      this.muteView.render();
 
       // Only on first connection
       if (this.firstConnection) { // show if true or if undefined
@@ -565,28 +568,28 @@ define([
     userBan: function(event) {
       event.preventDefault();
 
-      var userId = $(event.currentTarget).data('uid');
-      if (!userId)
+      var username = $(event.currentTarget).data('username');
+      if (!username)
         return;
 
       var that = this;
       ConfirmationView.open({}, function () {
-        client.userBan(userId);
-        that.trigger('userBan', {user_id: userId});
+        client.userBan(username);
+        that.trigger('userBan');
       });
     },
 
     userDeban: function (event) {
       event.preventDefault();
 
-      var userId = $(event.currentTarget).data('uid');
-      if (!userId)
+      var username = $(event.currentTarget).data('username');
+      if (!username)
         return;
 
       var that = this;
       ConfirmationView.open({}, function() {
-        client.userDeban(userId);
-        that.trigger('userDeban', {user_id: userId});
+        client.userDeban(username);
+        that.trigger('userDeban');
       });
 
     }

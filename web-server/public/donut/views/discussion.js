@@ -96,8 +96,7 @@ define([
         this.$el.show();
 
         // focus input field
-        if (this.$editable)
-          this.$editable.focus();
+        this.model.trigger('inputFocus');
 
         // need to load history?
         if (!this.hasBeenFocused)

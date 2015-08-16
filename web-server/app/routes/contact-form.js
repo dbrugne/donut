@@ -34,6 +34,10 @@ var validateInput = function (req, res, next) {
     return res.send({sent: false});
 
   // recaptcha
+  if (process.env.NODE_ENV === 'development') {
+    debug("Ignore recaptcha in development");
+    return next();
+  }
   if (!req.body.recaptcha) {
     debug("Recaptcha field isn't present");
     return res.send({sent: false});

@@ -4,6 +4,7 @@ var User = require('../../../shared/models/user');
 var isLoggedIn = require('../middlewares/isloggedin');
 var i18next = require('../../../shared/util/i18next');
 var emailer = require('../../../shared/io/emailer');
+var regexp = require('../../../shared/util/regexp');
 
 var validateInput = function(req, res, next) {
   req.checkBody(['user','fields','email'], i18next.t("account.email.error.format")).isEmail();
@@ -16,11 +17,9 @@ var validateInput = function(req, res, next) {
     });
   }
 
-  var pattern = req.body.user.fields.email.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
-  var r = new RegExp('^'+pattern+'$', 'i');
   User.findOne({
     $and: [
-      {'local.email': {$regex: r}},
+      {'local.email': regexp.buildExclusive(req.body.user.fields.email)},
       {_id: { $ne: req.user._id }}
     ]
   }, function(err, user) {

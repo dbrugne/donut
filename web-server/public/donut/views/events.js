@@ -3,6 +3,7 @@ define([
   'underscore',
   'backbone',
   'libs/donut-debug',
+  'common',
   'models/event',
   'moment',
   'client',
@@ -10,7 +11,7 @@ define([
   'views/message-edit',
   'views/window',
   '_templates'
-], function ($, _, Backbone, donutDebug, EventModel, moment, client, currentUser, MessageEditView, windowView, templates) {
+], function ($, _, Backbone, donutDebug, common, EventModel, moment, client, currentUser, MessageEditView, windowView, templates) {
 
   var debug = donutDebug('donut:events');
 
@@ -49,6 +50,7 @@ define([
       this.listenTo(this.model, 'messageSpam', this.onMarkedAsSpam);
       this.listenTo(this.model, 'messageUnspam', this.onMarkedAsUnspam);
       this.listenTo(this.model, 'messageEdit', this.onMessageEdited);
+      this.listenTo(this.model, 'editMessageClose', this.onEditMessageClose);
       this.listenTo(client, 'admin:message', this.onAdminMessage);
 
       debug.start('discussion-events' + this.model.getIdentifier());
@@ -149,7 +151,7 @@ define([
     isScrollOnBottom: function () {
       var scrollMargin = 10;
       if (this.messageUnderEdition) {
-        scrollMargin = this.messageUnderEdition.$el.height();
+        scrollMargin = this.messageUnderEdition.$el.height(); // @todo yls this logic is really needed? Are you sure this is not needed only for "last" .event edition and not for all event edition?
       }
 
       var bottom = this._scrollBottomPosition() - scrollMargin; // add a 10px margin
@@ -406,7 +408,7 @@ define([
       // resize .blank
       this.resize();
 
-      if (needToScrollDown)
+      if (needToScrollDown && !this.messageUnderEdition)
         this.scrollDown();
       else
         this.$goToBottom.show().addClass('unread');
@@ -472,8 +474,8 @@ define([
     _prepareEvent: function (model) {
       var data = model.toJSON();
       data.data = _.clone(model.get('data'));
-      var message = data.data.message;
 
+      // spammed & edited
       if (model.getGenericType() === 'message') {
         data.spammed = (model.get('spammed') === true);
         data.edited = (model.get('edited') === true);
@@ -483,12 +485,12 @@ define([
       var size = (model.getGenericType() != 'inout')
         ? 30
         : 20;
-      
       if (model.get("data").avatar)
         data.data.avatar = $.cd.userAvatar(model.get("data").avatar, size);
       if (model.get("data").by_avatar)
         data.data.by_avatar = $.cd.userAvatar(model.get("data").by_avatar, size);
 
+      var message = data.data.message;
       if (message) {
         // escape HTML
         message = _.escape(message);
@@ -500,17 +502,36 @@ define([
         message = $.linkify(message, o);
 
         // mentions
-        if (this.model.get('type') == 'room') {
-          message = message.replace(
-            /@\[([^\]]+)\]\(user:([^)]+)\)/g, // @todo put that in config
-            '<a class="mention open-user-profile" data-username="$1" style="color: ' + this.model.get('color') + '">@$1</a>'
-          );
-        }
+        message = common.htmlMentions(message, templates['mention.html'], {
+          style: 'color: ' + this.model.get('color')
+        });
 
         // smileys
         message = $.smilify(message);
 
         data.data.message = message;
+      }
+
+      var topic = data.data.topic;
+      if (topic) {
+        // escape HTML
+        topic = _.escape(topic);
+
+        // linkify (before other decoration, will escape HTML)
+        var o = (this.model.get('color'))
+          ? {linkAttributes: {style: 'color: ' + this.model.get('color') + ';'}}
+          : {};
+        topic = $.linkify(topic, o);
+
+        // mentions
+        topic = common.htmlMentions(topic, templates['mention.html'], {
+          style: 'color: ' + this.model.get('color')
+        });
+
+        // smileys
+        topic = $.smilify(topic);
+
+        data.data.topic = topic;
       }
 
       // images
@@ -600,6 +621,12 @@ define([
             break;
           case 'room:deban':
             template = templates['event/room-deban.html'];
+            break;
+          case 'room:voice':
+            template = templates['event/room-voice.html'];
+            break;
+          case 'room:devoice':
+            template = templates['event/room-devoice.html'];
             break;
           case 'room:op':
             template = templates['event/room-op.html'];
@@ -790,7 +817,7 @@ define([
       var time = $event.data('time');
       var isMessageCurrentUser = (currentUser.get('username') === username);
       var isNotTooOld = ((Date.now() - new Date(time)) < window.message_maxedittime);
-      var isSpammed = ($event.hasClass('spammed') || $event.hasClass('viewed'));
+      var isSpammed = $event.hasClass('spammed');
 
       return (isMessageCurrentUser && isNotTooOld && !isSpammed);
     },
@@ -853,7 +880,7 @@ define([
     editMessage: function ($event) {
       var bottom = this.isScrollOnBottom();
       if (this.messageUnderEdition)
-        this.messageUnderEdition.remove();
+        this.onEditMessageClose();
 
       this.messageUnderEdition = new MessageEditView({
         el: $event,
@@ -863,6 +890,9 @@ define([
         this.scrollDown();
     },
     onMessageEdited: function (data) {
+      var bottom = this.isScrollOnBottom();
+
+      // prepare data
       data = { data: data };
       data.data.id = data.data.event;
       data.edited = true;
@@ -871,8 +901,19 @@ define([
       if (this.model.get('type') == 'room')
         data.type = 'room:message';
       var model = new EventModel(data);
+
+      // render
       var html = this._renderEvent(model, false);
       this.$('#'+data.data.event).replaceWith(html);
+
+      if (bottom)
+        this.scrollDown();
+    },
+    onEditMessageClose: function () {
+      if (!this.messageUnderEdition)
+        return;
+      this.messageUnderEdition.remove();
+      this.messageUnderEdition = null;
     },
 
     /*****************************************************************************************************************
