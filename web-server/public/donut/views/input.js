@@ -103,9 +103,13 @@ define([
       // Avoid loosing focus when tab is pushed
       if (data.key == this.KEY.TAB)
         event.preventDefault();
+
+      // Avoid adding new line on enter if message is empty
+      if (data.key == this.KEY.RETURN && message === '')
+        event.preventDefault();
       
       // Navigate between editable messages
-      if (event.which == 38 && message === '')
+      if (event.which == this.KEY.UP && message === '')
         this.trigger('editPreviousInput');
     },
 
@@ -202,9 +206,9 @@ define([
     },
 
     sendMessage: function(event) {
-      var message = this.$editable.val().substr(0, this.$editable.val().length - 1); // Remove last return caracter
+      var message = this.$editable.val();
 
-      var imagesCount = _.keys(that.images).length;
+      var imagesCount = _.keys(this.images).length;
       if (message == '' && imagesCount < 1) // empty message and no image
         return false;
 
@@ -339,18 +343,24 @@ define([
     // @todo store results in view, to avoid multiple call to client ?
     // @todo package in backbone subview to allow reuse in edit-message form
 
-    onRollUpCall: function (str) {
+    onRollUpCall: function (input) {
       var that = this;
-      // @todo : yls personalise client.search() call depending search to do
-      client.search(str, rooms, users, limit, light, function(data) {
-        that.$rollUpCtn.html(that.rollupTemplate(data));
-      });
 
-      //client.search(str, rooms, users, limit, light, function(data) {
-      //  that.$rollUpCtn.html(that.rollupTemplate(data));
-      //});
+      if (input.length < 2)
+        return;
 
-      //if ('@' == str.substr(0,1))
+      var prefix = input.substr(0, 1);
+      var search = input.substr(1);
+
+      if (prefix === '#')
+        client.search(search, true, false, 15, false, function(data) {
+          that.$rollUpCtn.html(that.rollupTemplate({ type: 'rooms', results: data.rooms.list }));
+        });
+
+      if (prefix === '@')
+        client.search(search, false, true, 15, false, function(data) {
+          that.$rollUpCtn.html(that.rollupTemplate({ type: 'users', results: data.users.list }));
+        });
 
       //// filter user list
       //  var data = that.model.users.filter(function(item) {

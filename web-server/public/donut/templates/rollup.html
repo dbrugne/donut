@@ -6,30 +6,30 @@
         <div class="monkey_scroll_hider " style="width: 100%;">
             <div id="chat_input_tab_ui_scroller" class="tab_complete_ui_scroller monkey_scroller">
                 <% var nb = 0; %>
-                <% if (type == 'users') { %>
+                <% if (type === 'users') { %>
                 <ul class="type_members">
                     <% _.each(results, function(result) { %>
                     <li class="tab_complete_ui_item <%= nb == 0 ? 'active' : '' %>" data-index="<%= nb %>">
-                        <img class="avatar" src="<%= result.avatar %>">
-                        <span class="username value">@<%= result.name  %></span><span class="presence <%= result.status %>"></span>
+                        <img class="avatar" src="<%= result.avatarUrl %>">
+                        <span class="username value">@<%= result.username  %></span><span class="presence <%= result.status %>"></span>
                         <span class="realname"><%= result.bio  %></span>
                     </li>
                     <% nb++; %>
                     <% }); %>
                 </ul>
                 <% } %>
-                <% if (type == 'donuts') { %>
+                <% if (type === 'rooms') { %>
                 <ul class="type_channels">
                     <% _.each(results, function(result) { %>
                         <li class="tab_complete_ui_item <%= nb == 0 ? 'active' : '' %>" data-index="<%= nb %>">
-                            <img class="avatar" src="<%= result.avatar %>">
-                            <span class="channelname"><span class="hash">#</span><span class="value"><%= result.name %></span></span>
+                            <img class="avatar" src="<%= result.avatarUrl %>">
+                            <span class="channelname"><%= result.name %></span>
                         </li>
                     <% nb++; %>
                     <% }); %>
                 </ul>
                 <% } %>
-                <% if (type == 'commands') { %>
+                <% if (type === 'commands') { %>
                 <ul class="type_cmds">
                     <% _.each(results, function(result) { %>
                     <li class="tab_complete_ui_item <%= nb == 0 ? 'active' : '' %>" data-index="<%= nb %>">
