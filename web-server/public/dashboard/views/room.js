@@ -33,7 +33,6 @@ define([
       this.$el.html(this.template({
         room: data
       }));
-      this.$el.find('.website').linkify();
       return this;
     }
   });

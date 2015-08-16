@@ -50,12 +50,6 @@ define([
 
         var html = this.template({room: room});
         this.$el.html(html);
-        this.$el.find('.website span').linkify({
-          linkAttributes: {
-            'data-colorify-text': 'color',
-            'data-colorify': room.color || null
-          }
-        });
         this.$el.colorify();
         this.$el.find('.created span').momentify('date');
 

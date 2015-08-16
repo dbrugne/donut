@@ -4,7 +4,7 @@ var mongoose = require('../io/mongoose');
 var bcrypt   = require('bcrypt-nodejs');
 var colors = require('../../config/colors');
 var i18next = require('../util/i18next');
-var regexp = require('../util/regexp');
+var common = require('donut-common');
 
 var userSchema = mongoose.Schema({
 
@@ -75,7 +75,7 @@ userSchema.statics.getNewUser = function () {
  */
 userSchema.statics.findByUsername = function (username) {
   return this.findOne({
-    username: regexp.buildExclusive(username, 'i')
+    username: common.regExpBuildExact(username, 'i')
   });
 };
 
@@ -84,7 +84,7 @@ userSchema.statics.listByUsername = function (usernames) {
     $or: []
   };
   _.each(usernames, function(u) {
-    criteria['$or'].push({ username: regexp.buildExclusive(u) });
+    criteria['$or'].push({ username: common.regExpBuildExact(u) });
   });
   return this.find(criteria, '_id username');
 };
@@ -217,7 +217,7 @@ userSchema.statics.findRoomUsersHavingPreference = function (room, preferenceNam
  */
 userSchema.statics.retrieveUser = function (username) {
   return this.findOne({
-    username: regexp.buildExclusive(username, 'i')
+    username: common.regExpBuildExact(username, 'i')
   }).populate('room', 'name');
 };
 
@@ -309,7 +309,7 @@ userSchema.methods.preferencesValue = function (key) {
  */
 userSchema.statics.usernameAvailability = function (username, callback) {
   this.findOne({
-    username: regexp.buildExclusive(username, 'i')
+    username: common.regExpBuildExact(username, 'i')
   }, function(err, user) {
     if (err)
       return callback(err);
@@ -329,7 +329,7 @@ userSchema.methods.usernameAvailability = function (username, callback) {
   this.constructor.findOne({
     $and: [
       {
-        username: regexp.buildExclusive(username, 'i')
+        username: common.regExpBuildExact(username, 'i')
       },
       {
         _id: { $ne: this._id }

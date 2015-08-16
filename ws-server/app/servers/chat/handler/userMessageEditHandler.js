@@ -57,7 +57,7 @@ handler.edit = function(data, session, next) {
         return callback('posted message is the same as original');
 
       // mentions
-      inputUtil.mentions(message, function(err, message, mentions) {
+      inputUtil.mentions(message, function(err, message) {
         return callback(err, message);
       });
     },

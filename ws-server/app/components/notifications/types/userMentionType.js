@@ -48,6 +48,23 @@ Notification.prototype.create = function (user, room, history, done) {
       return callback(null, userModel, roomModel, historyModel);
     },
 
+    function avoidRepetitive(userModel, roomModel, historyModel, callback) {
+      if (that.facade.options.force === true)
+        return callback(null, userModel, roomModel, historyModel);
+
+      // only check the case when a message is edited (room:message:edit)
+      NotificationModel.findOne({ 'data.event': historyModel._id }).count(function (err, count) {
+        if (err)
+          return callback(err);
+        if (count) {
+          logger.debug('userMessageType.create no notification creation due to repetitive');
+          return callback(true);
+        }
+
+        return callback(null, userModel, roomModel, historyModel);
+      });
+    },
+
     function checkStatus(userModel, roomModel, historyModel, callback) {
       that.facade.app.statusService.getStatusByUid(userModel.id, function (err, status) {
         if (err)

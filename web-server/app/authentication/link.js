@@ -3,7 +3,7 @@ var router = express.Router();
 var passport = require('../../../shared/authentication/passport');
 var User = require('../../../shared/models/user');
 var i18next = require('../../../shared/util/i18next');
-var regexp = require('../../../shared/util/regexp');
+var common = require('donut-common');
 
 var validateEmail = function(req, res, next) {
   req.checkBody('email', i18next.t("account.email.error.format")).isEmail();
@@ -17,7 +17,7 @@ var validateEmail = function(req, res, next) {
 
   User.findOne({
     $and: [
-      {'local.email': regexp.buildExclusive(req.body.email.replace)},
+      {'local.email': common.regExpBuildExact(req.body.email.replace)},
       {_id: { $ne: req.user._id }}
     ]
   }, function(err, user) {

@@ -3,14 +3,12 @@ require.config({
     'jquery'                      : '../vendor/jquery/dist/jquery',
     'bootstrap'                   : '../vendor/bootstrap/dist/js/bootstrap',
     'facebook'                    : '//connect.facebook.net/fr_FR/all',
-    'jquery.linkify'              : '../javascripts/plugins/jquery.linkify',
     'jquery.talkative'            : '../vendor/talkative/jquery.talkative',
     'jquery.contactform'          : '../javascripts/plugins/jquery.contactform'
   },
   shim: {
     'bootstrap'          : ['jquery'],
     'facebook'           : { exports: 'FB' },
-    'jquery.linkify'     : ['jquery'],
     'jquery.talkative'   : ['jquery'],
     'jquery.contactform' : ['jquery']
   }
@@ -20,7 +18,6 @@ require([
   'jquery',
   'facebook',
   'bootstrap',
-  'jquery.linkify',
   'jquery.talkative',
   'jquery.contactform'
 ], function ($, facebook) {
@@ -36,19 +33,6 @@ require([
 
   // User and room profiles
   if ($('#profile').length) {
-    $('.website').linkify();
-    $('.users .website .linkified').each(function() {
-      var text = this.innerText;
-      if (text.indexOf('://') === -1)
-        return;
-
-      text = text.replace(/.*?:\/\//g, "");
-
-      if (text.length > 30)
-        text = text.substr(0, 27) + '...';
-
-      this.innerText = text;
-    });
   }
 
   // Language switcher
