@@ -100,7 +100,8 @@ module.exports = {
   mentionTemplate: _.template('<strong><% if (mention.type === \'room\') { %><a href="'+conf.url+'/room/<%= mention.title.replace(\'#\', \'\') %>" style="<%= options.style %>"><%= mention.title %></a><% } else if (mention.type === \'user\') { %><a href="'+conf.url+'/user/<%= mention.title.replace(\'@\', \'\') %>" style="<%= options.style %>"><%= mention.title %></a><% } %></strong>'),
 
   mentionize: function(string, options) {
-    return common.htmlMentions(string, this.mentionTemplate, options);
+    options.template = this.mentionTemplate;
+    return common.markupToHtml(string, options);
   }
 
 };

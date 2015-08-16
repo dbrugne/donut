@@ -4,7 +4,7 @@ var User = require('../../../shared/models/user');
 var isLoggedIn = require('../middlewares/isloggedin');
 var i18next = require('../../../shared/util/i18next');
 var emailer = require('../../../shared/io/emailer');
-var regexp = require('../../../shared/util/regexp');
+var common = require('donut-common');
 
 var validateInput = function(req, res, next) {
   req.checkBody(['user','fields','email'], i18next.t("account.email.error.format")).isEmail();
@@ -19,7 +19,7 @@ var validateInput = function(req, res, next) {
 
   User.findOne({
     $and: [
-      {'local.email': regexp.buildExclusive(req.body.user.fields.email)},
+      {'local.email': common.regExpBuildExact(req.body.user.fields.email)},
       {_id: { $ne: req.user._id }}
     ]
   }, function(err, user) {

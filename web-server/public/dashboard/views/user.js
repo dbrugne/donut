@@ -41,7 +41,6 @@ define([
       this.$el.html(this.template({
         user: data
       }));
-      this.$el.find('.website').linkify();
       return this;
     }
   });

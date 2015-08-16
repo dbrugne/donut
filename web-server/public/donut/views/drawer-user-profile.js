@@ -48,14 +48,6 @@ define([
 
       var html = this.template({user: user});
       this.$el.html(html);
-
-      this.$el.find('.website span').linkify({
-          linkAttributes: {
-            'data-colorify-text': 'color',
-            'data-colorify': user.color || null
-          }
-      });
-
       this.$el.colorify();
       this.$el.find('.created span').momentify('date');
       this.$el.find('.onlined span').momentify('fromnow');

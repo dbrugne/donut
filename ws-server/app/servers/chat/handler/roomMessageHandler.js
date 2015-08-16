@@ -54,8 +54,8 @@ handler.message = function (data, session, next) {
         return callback('Empty message (no text, no image)');
 
       // mentions
-      inputUtil.mentions(message, function(err, message, mentions) {
-        return callback(err, message, images, mentions);
+      inputUtil.mentions(message, function(err, message, markups) {
+        return callback(err, message, images, markups.users);
       });
     },
 
@@ -86,23 +86,10 @@ handler.message = function (data, session, next) {
     },
 
     function mentionNotification(sentEvent, mentions, callback) {
-      var mentions = common.findMarkupedMentions(sentEvent.message);
       if (!mentions.length)
         return callback(null, sentEvent);
 
-      var usersIds = [];
-      _.each(mentions, function(m) {
-        if (m.type !== 'user')
-          return;
-        usersIds.push(m.id);
-      });
-
-      if (!usersIds.length)
-        return callback(null, sentEvent);
-
-      // limit
-      usersIds = _.first(usersIds, 10);
-
+      var usersIds = _.first(_.map(mentions, 'id'), 10);
       async.each(usersIds, function (userId, fn) {
         Notifications(that.app).getType('usermention').create(userId, room, sentEvent.id, fn);
       }, function (err) {

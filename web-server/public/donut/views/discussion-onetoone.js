@@ -39,7 +39,6 @@ define([
       return data;
     },
     _render: function () {
-      this.$el.find('.website').linkify();
     },
     _focus: function () {
       this.$el.find('.ago span').momentify('fromnow'); // refocus an offline one after few times
@@ -68,7 +67,6 @@ define([
     },
     onWebsite: function (model, value, options) {
       this.$el.find('.header .website').text(value);
-      this.$el.find('.header .website').linkify();
     },
     onStatus: function () {
       if (this.model.get('status') == 'online') {
