@@ -273,9 +273,12 @@ define([
     },
 
     renderTyping: function() {
-      var html = "";
-
       this.$typing.empty();
+
+      if(_.keys(this.usersTyping).length == 0)
+        return;
+
+      var html = "";
       $.each(this.usersTyping, function(index, value) {
         html += "<span id=" + index + ">\<b>" + index + " <\/b><\/span>";
       });
@@ -284,8 +287,7 @@ define([
         html += "\<span id=\"msg-typing\">est en train de taper<\/span>";
       else if (_.keys(this.usersTyping).length > 1)
         html += "\<span id=\"msg-typing\">sont en train de taper<\/span>";
-      if (html !== "")
-        this.$typing.append(html);
+      this.$typing.append(html);
     }
   });
 
