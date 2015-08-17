@@ -254,6 +254,7 @@ define([
     },
     onRollupClose: function() {
       this._closeRollup();
+      this.$editable.setCursorPosition(this.$editable.val().length, this.$editable.val().length);
     }
 
   });
