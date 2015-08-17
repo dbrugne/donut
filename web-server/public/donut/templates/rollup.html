@@ -23,7 +23,7 @@
                     <% _.each(results, function(result) { %>
                         <li class="tab_complete_ui_item <%= nb == 0 ? 'active' : '' %>" data-index="<%= nb %>">
                             <img class="avatar" src="<%= result.avatarUrl %>">
-                            <span class="channelname"><%= result.name %></span>
+                            <span class="channelname value"><%= result.name %></span>
                         </li>
                     <% nb++; %>
                     <% }); %>

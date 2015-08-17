@@ -186,7 +186,7 @@ define([
       if (li.length != 0) {
         currentLi.removeClass('active');
         li.addClass('active');
-        target.value = li.find('.cmdname').html() + ' ';
+        target.value = li.find('.value').html() + ' ';
       }
     },
 
