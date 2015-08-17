@@ -2,7 +2,7 @@ define([
   'underscore',
   'backbone',
   'client',
-  'views/main' // will load all needed subviews
+  'views/main'
 ], function (_, Backbone, client, mainView) {
   var DonutRouter = Backbone.Router.extend({
     routes: {
