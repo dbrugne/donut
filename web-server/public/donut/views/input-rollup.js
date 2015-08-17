@@ -29,6 +29,8 @@ define([
       END: 35
     },
 
+    cursorPosition: null,
+
     events: {
       'keyup .editable': 'onKeyUp',
       'keydown .editable': 'onKeyDown',
@@ -80,8 +82,9 @@ define([
         event.preventDefault();
 
       // Avoid setting cursor at end of tab input
+      this.cursorPosition = null;
       if (data.key == this.KEY.DOWN || data.key == this.KEY.UP)
-        event.preventDefault();
+        this.cursorPosition = this.$editable.getCursorPosition();
 
       // Navigate between editable messages
       if (event.which == this.KEY.UP && message === '')
@@ -134,7 +137,7 @@ define([
     },
 
     _parseInput: function() {
-      var pos = this.$editable.getCursorPosition(); // Get current cursor position in textarea
+      var pos = this._getCursorPosition(); // Get current cursor position in textarea
 
       // If space of nothing found after getCursorPosition, we continue, else return null
       if (this.$editable.val().length > pos && this.$editable.val().substr(pos, 1) !== ' ')
@@ -176,6 +179,9 @@ define([
         li.addClass('active');
         this._computeNewValue(li.find('.value').html() + ' ');
       }
+    },
+    _getCursorPosition: function() {
+      return this.cursorPosition === null ? this.$editable.getCursorPosition() : this.cursorPosition;
     },
     _getKeyCode: function () {
       if (window.event) {
@@ -222,7 +228,7 @@ define([
     _computeNewValue: function(replaceValue) { // @michel
       var oldValue = this.$editable.val(); // #LeagueofLegend @mich #donut
       var currentInput = this._parseInput(); // @mich
-      var cursorPosition = this.$editable.getCursorPosition();
+      var cursorPosition = this._getCursorPosition();
       var newCursorPosition = (oldValue.substr(0,(cursorPosition - currentInput.length)) + replaceValue).length - 1; // Remove last space
       var newValue = oldValue.substr(0,(cursorPosition - currentInput.length)) + replaceValue + oldValue.substr(cursorPosition, oldValue.length).trim();
 
