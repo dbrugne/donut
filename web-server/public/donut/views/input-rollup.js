@@ -79,6 +79,10 @@ define([
       if (data.key == this.KEY.RETURN && !data.isShift)
         event.preventDefault();
 
+      // Avoid setting cursor at end of tab input
+      if (data.key == this.KEY.DOWN || data.key == this.KEY.UP)
+        event.preventDefault();
+
       // Navigate between editable messages
       if (event.which == this.KEY.UP && message === '')
         this.model.trigger('editPreviousInput');
@@ -165,10 +169,9 @@ define([
       if (li.length != 0) {
         currentLi.removeClass('active');
         li.addClass('active');
-        target.value = li.find('.value').html() + ' ';
+        this._computeNewValue(li.find('.value').html() + ' ');
       }
     },
-
     _getKeyCode: function () {
       if (window.event) {
         return {
@@ -182,9 +185,7 @@ define([
         };
       }
     },
-
     // @todo store results in view, to avoid multiple call to client ?
-
     _displayRollup: function () {
       var input = this._parseInput();
       var that = this;
@@ -213,15 +214,19 @@ define([
 
       // @todo spd implement command
     },
-    _closeRollup: function (target) {
-      if (target) {
-        var fullValue = target.value; // #LeagueofLegend @mich #donut
-        var currentInput = this._parseInput(); // @mich
-        var replaceValue = this.$rollUpCtn.find('li.active .value').html() + ' '; // @michel
-        var cursorPosition = this.$editable.getCursorPosition();
+    _computeNewValue: function(replaceValue) { // @michel
+      var oldValue = this.$editable.val(); // #LeagueofLegend @mich #donut
+      var currentInput = this._parseInput(); // @mich
+      var cursorPosition = this.$editable.getCursorPosition();
+      var newCursorPosition = (oldValue.substr(0,(cursorPosition - currentInput.length)) + replaceValue).length - 1; // Remove last space
+      var newValue = oldValue.substr(0,(cursorPosition - currentInput.length)) + replaceValue + oldValue.substr(cursorPosition, oldValue.length).trim();
 
-        target.value = fullValue.substr(0,(cursorPosition - currentInput.length)) + replaceValue + fullValue.substr(cursorPosition, fullValue.length).trim();
-      }
+      this.$editable.val(newValue);
+      this.$editable.setCursorPosition(newCursorPosition, newCursorPosition);
+    },
+    _closeRollup: function (target) {
+      if (target)
+        this._computeNewValue(this.$rollUpCtn.find('li.active .value').html() + ' ');
 
       this.$rollUpCtn.html('');
     },

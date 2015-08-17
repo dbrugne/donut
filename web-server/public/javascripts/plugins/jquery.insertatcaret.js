@@ -39,5 +39,21 @@ jQuery.fn.extend({
       sel.moveStart('character', -input.value.length);
       return sel.text.length - selLen;
     }
+  },
+
+  setCursorPosition: function (selectionStart, selectionEnd) {
+    var input = this.get(0);
+    if (!input) return; // No (input) element found
+    if (input.setSelectionRange) {
+      input.focus();
+      input.setSelectionRange(selectionStart, selectionEnd);
+    }
+    else if (input.createTextRange) {
+      var range = input.createTextRange();
+      range.collapse(true);
+      range.moveEnd('character', selectionEnd);
+      range.moveStart('character', selectionStart);
+      range.select();
+    }
   }
 });
