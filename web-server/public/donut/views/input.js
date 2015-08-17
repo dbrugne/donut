@@ -358,11 +358,17 @@ define([
 
       if (prefix === '#')
         client.search(search, true, false, 15, false, function(data) {
+          _.each(data.rooms.list, function(d){
+            d.avatarUrl = $.cd.roomAvatar(d.avatar);
+          });
           that.$rollUpCtn.html(that.rollupTemplate({ type: 'rooms', results: data.rooms.list }));
         });
 
       if (prefix === '@')
         client.search(search, false, true, 15, false, function(data) {
+          _.each(data.users.list, function(d){
+            d.avatarUrl = $.cd.userAvatar(d.avatar);
+          });
           that.$rollUpCtn.html(that.rollupTemplate({ type: 'users', results: data.users.list }));
         });
     },
