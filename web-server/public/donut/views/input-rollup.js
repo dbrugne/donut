@@ -32,13 +32,12 @@ define([
     cursorPosition: null,
 
     events: {
-      'keyup .editable': 'onKeyUp',
-      'keydown .editable': 'onKeyDown',
       'mouseover .rollup-container li': 'onRollupHover',
       'click .rollup-container li': 'onRollupClose'
     },
 
     initialize: function (options) {
+      this.listenTo(this.model, 'onkeyup', this.onKeyUp);
       this.render();
     },
 
@@ -61,37 +60,6 @@ define([
       //  this.$el.removeClass('inactive');
     },
 
-    /**
-     * Only used to detect keydown on tab and then prevent default to avoid loosing focus
-     * on keypress & keyup, it's too late
-     *
-     * @param event
-     */
-    onKeyDown: function(event) {
-      if (event.type != 'keydown')
-        return;
-      
-      var data = this._getKeyCode();
-      var message = this.$editable.val();
-
-      // Avoid loosing focus when tab is pushed
-      if (data.key == this.KEY.TAB)
-        event.preventDefault();
-
-      // Avoid adding new line on enter press (=submit message)
-      if (data.key == this.KEY.RETURN && !data.isShift)
-        event.preventDefault();
-
-      // Avoid setting cursor at end of tab input
-      this.cursorPosition = null;
-      if (data.key == this.KEY.DOWN || data.key == this.KEY.UP)
-        this.cursorPosition = this.$editable.getCursorPosition();
-
-      // Navigate between editable messages
-      if (event.which == this.KEY.UP && message === '')
-        this.model.trigger('editPreviousInput');
-    },
-
     onKeyUp: function (event) {
       if (event.type != 'keyup')
         return;
@@ -101,14 +69,6 @@ define([
 
       // Rollup Closed
       if (this.$rollUpCtn.html().length == 0) {
-
-        // Send message on Enter, not shift + Enter, only if there is something to send
-        if (data.key == this.KEY.RETURN && !data.isShift && message.length != 0)
-          return this.model.trigger('sendMessage');
-
-        // Edit previous message on key Up
-        if (data.key == this.KEY.UP && ($(event.currentTarget).val() === ''))
-          return this.model.trigger('editPreviousInput');
 
         // If different from @, #, /, close rollup & do nothing more
         if (!this._isRollupCallValid(message))

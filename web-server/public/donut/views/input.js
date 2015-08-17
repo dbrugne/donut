@@ -37,6 +37,8 @@ define([
     },
 
     events: {
+      'keyup .editable': 'onKeyUp',
+      'keydown .editable': 'onKeyDown',
       'click .send': 'sendMessage',
       'click .add-image': 'onAddImage',
       'click .remove-image': 'onRemoveImage',
@@ -57,9 +59,6 @@ define([
         el: this.$el,
         model: this.model
       });
-
-      this.listenTo(this.model, 'sendMessage', this.sendMessage);
-      this.listenTo(this.model, 'editPreviousInput', this.editPreviousInput);
     },
 
     _remove: function () {
@@ -183,8 +182,76 @@ define([
       this.$smileyButton.popover('hide');
     },
 
-    editPreviousInput: function() {
-      this.trigger('editPreviousInput');
+    /*****************************************************************************************************************
+     *
+     * Events
+     *
+     *****************************************************************************************************************/
+
+    _getKeyCode: function () {
+      if (window.event) {
+        return {
+          key: window.event.keyCode,
+          isShift: !!window.event.shiftKey
+        };
+      } else {
+        return {
+          key: event.which,
+          isShift: !!event.shiftKey
+        };
+      }
+    },
+
+    /**
+     * Only used to detect keydown on tab and then prevent default to avoid loosing focus
+     * on keypress & keyup, it's too late
+     *
+     * @param event
+     */
+    onKeyDown: function(event) {
+      if (event.type != 'keydown')
+        return;
+
+      var data = this._getKeyCode();
+      var message = this.$editable.val();
+
+      // Avoid loosing focus when tab is pushed
+      if (data.key == this.KEY.TAB)
+        event.preventDefault();
+
+      // Avoid adding new line on enter press (=submit message)
+      if (data.key == this.KEY.RETURN && !data.isShift)
+        event.preventDefault();
+
+      // Avoid setting cursor at end of tab input
+      this.rollupView.cursorPosition = null;
+      if (data.key == this.KEY.DOWN || data.key == this.KEY.UP)
+        this.rollupView.cursorPosition = this.$editable.getCursorPosition();
+
+      // Navigate between editable messages
+      if (event.which == this.KEY.UP && message === '')
+        this.trigger('editPreviousInput');
+    },
+
+    onKeyUp: function (event) {
+      if (event.type != 'keyup')
+        return;
+
+      var data = this._getKeyCode();
+      var message = this.$editable.val();
+
+      // Rollup Closed
+      if (this.$rollUpCtn.html().length == 0) {
+        // Send message on Enter, not shift + Enter, only if there is something to send
+        if (data.key == this.KEY.RETURN && !data.isShift && message.length != 0)
+          return this.sendMessage();
+
+        // Edit previous message on key Up
+        if (data.key == this.KEY.UP && ($(event.currentTarget).val() === ''))
+          return this.trigger('editPreviousInput');
+      }
+
+      this.model.trigger('onkeyup', event);
     },
 
     sendMessage: function(event) {
