@@ -34,7 +34,8 @@ define([
     events: {
       'keyup .editable': 'onKeyUp',
       'keydown .editable': 'onKeyDown',
-      'hover .rollup-container li': 'onRollupHover'
+      'mouseover .rollup-container li': 'onRollupHover',
+      'click .rollup-container li': 'onRollupClose'
     },
 
     initialize: function (options) {
@@ -242,8 +243,17 @@ define([
       this.$rollUpCtn.html('');
     },
 
-    onRollupHover: function () {
-      console.log('hover');
+    onRollupHover: function (event) {
+      var currentLi = this.$rollUpCtn.find('li.active');
+      var li = '';
+
+      li = $(event.currentTarget);
+      currentLi.removeClass('active');
+      li.addClass('active');
+      this._computeNewValue(li.find('.value').html() + ' ');
+    },
+    onRollupClose: function() {
+      this._closeRollup();
     }
 
   });
