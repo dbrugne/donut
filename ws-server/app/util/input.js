@@ -45,80 +45,60 @@ module.exports.filter = function(value, maxLength) {
 };
 
 module.exports.mentions = function(string, callback) {
-	var mentions = common.findRawMentions(string);
+  common.markupString(string, function(markups, fn) {
+    if (!markups.rooms.length && !markups.users.length)
+      return fn(null, markups);
 
-  if (!mentions.length)
-    return callback(null, string);
+    async.parallel([
 
-  var rooms = [];
-  var users = [];
-  _.each(mentions, function(m) {
-    if (m.match.substr(0, 1) === '#')
-      rooms.push(m.match);
-    else if (m.match.substr(0, 1) === '@')
-      users.push(m.match.replace('@', ''));
-  });
+      function(cb) {
+        if (!markups.rooms.length)
+          return cb(null);
 
-  if (!rooms.length && !users.length)
-    return callback(null, string);
+        var _rooms = _.uniq(_.map(markups.rooms, function(r) {
+          return '#' + r.name;
+        }));
+        RoomModel.listByName(_rooms).exec(cb);
+      },
 
-  rooms = _.uniq(rooms);
-  users = _.uniq(users);
+      function(cb) {
+        if (!markups.users.length)
+          return cb(null);
 
-  async.parallel([
-
-    function(callback) {
-      if (!rooms.length)
-        return callback(null);
-      RoomModel.listByName(rooms).exec(callback);
-    },
-
-    function(callback) {
-      if (!users.length)
-        return callback(null);
-      UserModel.listByUsername(users).exec(callback);
-    }
-
-  ], function(err, results) {
-    if (err)
-      return callback(err);
-
-    var mentionsList = {
-      rooms: [],
-      users: []
-    };
-    _.each(mentions, function(m) {
-      if (m.match.substr(0, 1) === '#') {
-
-        var room = _.find(results[0], function(s) {
-          return (s.name.toLocaleLowerCase() === m.match.toLocaleLowerCase());
-        });
-        if (!room)
-          return;
-
-        // replace with [#:ObjectId():NAME])
-        string = common.markupMentions(string, m.match, room.id, room.name);
-        m.name = room.name;
-        m.room_id = room.id;
-        mentionsList.rooms.push(m);
-
-      } else if (m.match.substr(0, 1) === '@') {
-
-        var user = _.find(results[1], function(s) {
-          return ('@'+s.username.toLocaleLowerCase() === m.match.toLocaleLowerCase());
-        });
-        if (!user)
-          return;
-
-        // replace with [@:ObjectId():USERNAME]
-        string = common.markupMentions(string, m.match, user.id, user.username);
-        m.username = user.username;
-        m.user_id = user.id;
-        mentionsList.users.push(m);
-
+        var _users = _.uniq(_.map(markups.users, function(u) {
+          return u.username;
+        }));
+        UserModel.listByUsername(_users).exec(cb);
       }
-    });
 
-    return callback(null, string, mentionsList);
-  });
+    ], function(err, results) {
+      if (err)
+        return fn(err);
+
+      var rooms = [];
+      _.each(markups.rooms, function(markup) {
+        var model = _.find(results[0], function(m) {
+          return ('#' + markup.name.toLocaleLowerCase() === m.name.toLocaleLowerCase());
+        });
+        if (!model)
+          return;
+        markup.id = model.id;
+        rooms.push(markup);
+      });
+      var users = [];
+      _.each(markups.users, function(markup) {
+        var model = _.find(results[1], function(m) {
+          return (markup.username.toLocaleLowerCase() === m.username.toLocaleLowerCase());
+        });
+        if (!model)
+          return;
+        markup.id = model.id;
+        users.push(markup);
+      });
+
+      markups.rooms = rooms;
+      markups.users = users;
+      return fn(null, markups);
+    });
+  }, callback);
 };

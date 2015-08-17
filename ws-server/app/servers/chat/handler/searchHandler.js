@@ -4,7 +4,7 @@ var _ = require('underscore');
 var User = require('../../../../../shared/models/user');
 var Room = require('../../../../../shared/models/room');
 var diacritic2ascii = require('../../../../../shared/util/diacritic2ascii');
-var regexp = require('../../../../../shared/util/regexp');
+var common = require('donut-common');
 
 var Handler = function(app) {
 	this.app = app;
@@ -43,7 +43,7 @@ handler.search = function(data, session, next) {
 		: 150;
 
 	var search = diacritic2ascii(data.search).replace(/([@#])/g, ''); // remove @ and #
-	var _regexp = regexp.buildContain(search);
+	var _regexp = common.regExpBuildContains(search);
 
 	async.parallel([
 

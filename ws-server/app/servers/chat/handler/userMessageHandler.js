@@ -60,12 +60,12 @@ handler.message = function(data, session, next) {
 				return callback('empty message (no text, no image)');
 
       // mentions
-      inputUtil.mentions(message, function(err, message, mentions) {
-        return callback(err, message, images, mentions);
+      inputUtil.mentions(message, function(err, message) {
+        return callback(err, message, images);
       });
 		},
 
-		function prepareEvent(message, images, mentions, callback) {
+		function prepareEvent(message, images, callback) {
 			var event = {
 				from_user_id  : user.id,
 				from_username : user.username,
