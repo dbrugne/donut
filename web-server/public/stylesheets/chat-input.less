@@ -1,4 +1,5 @@
 .input {
+  position: relative;
   padding-top: 5px;
   padding-right: 25px;
   padding-bottom: 10px;
@@ -90,6 +91,11 @@
   }
   &.inactive .text-container {
     .overlay, .overlay::after { display:block; }
+  }
+  .typing-notify {
+    position: absolute;
+    display: block;
+    bottom: 1px;
   }
   .preview {
     padding-top: 2px;
