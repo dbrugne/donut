@@ -8,7 +8,7 @@ var sanitize = {
 };
 var RoomModel = require('../../../shared/models/room');
 var UserModel = require('../../../shared/models/user');
-var common = require('donut-common');
+var common = require('@dbrugne/donut-common');
 
 /**
  * Check for maximal length, sanitize and escape input

@@ -6,7 +6,7 @@ var inputUtil = require('../../../util/input');
 var imagesUtil = require('../../../util/images');
 var keenio = require('../../../../../shared/io/keenio');
 var Notifications = require('../../../components/notifications');
-var common = require('donut-common');
+var common = require('@dbrugne/donut-common');
 
 var Handler = function (app) {
   this.app = app;

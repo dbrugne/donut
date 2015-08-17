@@ -10,7 +10,7 @@ var User = require('../../../shared/models/user');
 var expressValidator = require('express-validator');
 var keenio = require('../../../shared/io/keenio');
 var conf = require('../../../config/');
-var common = require('donut-common');
+var common = require('@dbrugne/donut-common');
 
 // @source: https://github.com/auth0/socketio-jwt#example-usage
 
