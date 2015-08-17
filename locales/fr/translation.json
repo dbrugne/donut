@@ -549,6 +549,10 @@
       "today" : "Aujourd'hui",
       "yesterday" : "Hier",
       "the-day-before" : "Avant hier"
+    },
+    "input": {
+      "typing": "est en train de taper",
+      "typing_plural": "sont en train de taper"
     }
   },
   "account": {

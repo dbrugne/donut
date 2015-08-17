@@ -1,0 +1,6 @@
+<% _.each(_.keys(users), function(user) { %>
+<span>
+    <strong><%= user %></strong>
+</span>
+<% }); %>
+<span><%= t('chat.input.typing', {count: _.keys(users).length}) %></span>

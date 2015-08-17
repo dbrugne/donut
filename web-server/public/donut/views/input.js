@@ -4,8 +4,9 @@ define([
   'backbone',
   'libs/donut-debug',
   'models/current-user',
+  'views/input-typing',
   '_templates'
-], function ($, _, Backbone, donutDebug, currentUser, templates) {
+], function ($, _, Backbone, donutDebug, currentUser, ViewTyping, templates) {
 
   var debug = donutDebug('donut:input');
 
@@ -21,10 +22,6 @@ define([
 
     timeToSendAnotherTypingEvent: 2000,
 
-    timeToMarkTypingFinished: 3000,
-
-    usersTyping: {},
-
     events: {
       'keydown .editable'       : 'onKeyDown',
       'click .send'             : 'onSubmitMessage',
@@ -39,11 +36,15 @@ define([
       this.listenTo(currentUser, 'change:avatar', this.onAvatar);
       this.listenTo(this.model, 'inputFocus', this.onFocus);
       this.listenTo(this.model, 'inputActive', this.onInputActiveChange);
-      this.listenTo(this.model, 'typing', this.onSomeoneTyping);
 
       this.images = {}; // should be initialized with {} on .initialize(), else all the view instances will share the same object (#110)
 
       this.render();
+
+      this.typingView = new ViewTyping({
+        el: this.$('.typing-notify'),
+        model: this.model
+      });
     },
 
     _remove: function() {
@@ -58,7 +59,6 @@ define([
 
       this.$editable = this.$('.editable');
       this.$preview = this.$('.preview');
-      this.$typing = this.$('.typing-notify');
 
       if (!this.model.isInputActive())
         this.$el.addClass('inactive');
@@ -238,57 +238,22 @@ define([
       this.$smileyButton.popover('hide');
     },
 
-    onTypingMessage: function(event) {
-      if (this.canPrintTypingEvent) {
-        if (this.model.get("type") === "room")
-          client.roomTypingMessage(this.model.get("name"));
-        else
-          client.userTypingMessage(this.model.get("id"));
-        this.canPrintTypingEvent = false;
-        var that = this;
-        window.setTimeout( function() {
-          that.canPrintTypingEvent = true;
-        }, this.timeToSendAnotherTypingEvent);
-      }
-    },
-
-    onSomeoneTyping: function(data) {
-      if (data.username === currentUser.get("username"))
+    onTypingMessage: function() {
+      if (!this.canPrintTypingEvent)
         return;
 
+      if (this.model.get("type") === "room")
+        client.roomTypingMessage(this.model.get("name"));
+      else
+        client.userTypingMessage(this.model.get("id"));
+
+      this.canPrintTypingEvent = false;
       var that = this;
-      if (!_.has(this.usersTyping, data.username)) {
-        this.usersTyping[data.username] = window.setTimeout(function () {
-          that.usersTyping = _.omit(that.usersTyping, data.username);
-          that.renderTyping();
-        }, this.timeToMarkTypingFinished);
-        this.renderTyping();
-      } else {
-        clearTimeout(this.usersTyping[data.username]);
-        this.usersTyping[data.username] = window.setTimeout(function () {
-          that.usersTyping = _.omit(that.usersTyping, data.username);
-          that.renderTyping();
-        }, this.timeToMarkTypingFinished);
-      }
-    },
-
-    renderTyping: function() {
-      this.$typing.empty();
-
-      if(_.keys(this.usersTyping).length == 0)
-        return;
-
-      var html = "";
-      $.each(this.usersTyping, function(index, value) {
-        html += "<span id=" + index + ">\<b>" + index + " <\/b><\/span>";
-      });
-
-      if (_.keys(this.usersTyping).length == 1)
-        html += "\<span id=\"msg-typing\">est en train de taper<\/span>";
-      else if (_.keys(this.usersTyping).length > 1)
-        html += "\<span id=\"msg-typing\">sont en train de taper<\/span>";
-      this.$typing.append(html);
+      setTimeout( function() {
+        that.canPrintTypingEvent = true;
+      }, this.timeToSendAnotherTypingEvent);
     }
+
   });
 
   return DiscussionInputView;

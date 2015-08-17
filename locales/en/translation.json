@@ -523,11 +523,15 @@
           "unmark-spam": "Unmark as spam"
         },
         "edit": "Edit my message"
-      }
+      },
+      "today": "Today",
+      "yesterday": "Yesterday",
+      "the-day-before": "The day before"
     },
-    "today" : "Today",
-    "yesterday" : "Yesterday",
-    "the-day-before" : "The day before"
+    "input": {
+      "typing": "is typing",
+      "typing_plural": "are typing"
+    }
   },
   "account": {
     "error": {
