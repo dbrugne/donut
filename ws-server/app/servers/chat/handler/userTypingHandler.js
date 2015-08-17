@@ -16,21 +16,14 @@ var handler = Handler.prototype;
 handler.typing = function(data, session, next) {
 
   var user = session.__currentUser__;
-  var withUser = session.__user__;
 
   var that = this;
 
   async.waterfall([
 
     function check(callback) {
-      if (!data.username)
-        return callback('username is mandatory');
-
-      if (!withUser)
-        return callback('unable to retrieve withUser: ' + data.username);
-
-      if (withUser.isBanned(user.id))
-        return callback('user is banned by withUser');
+      if (!data.user_id)
+        return callback('id parameter is mandatory for user:typing');
 
       return callback(null);
     },
@@ -38,14 +31,12 @@ handler.typing = function(data, session, next) {
     function sendToUserSockets(callback) {
       var typingEvent = {
         from_user_id  : user.id,
-        from_username : user.username,
-        from_avatar   : user._avatar(),
-        to_user_id    : withUser.id,
-        to_username   : withUser.username,
+        to_user_id    : data.user_id,
+        user_id       : user.id,
         time          : Date.now(),
-        username          : user.username
+        username      : user.username
       };
-      that.app.globalChannelService.pushMessage('connector', 'user:typing', typingEvent, 'user:' + withUser.id, {}, callback);
+      that.app.globalChannelService.pushMessage('connector', 'user:typing', typingEvent, 'user:' + data.user_id, {}, callback);
     }
 
   ], function(err) {

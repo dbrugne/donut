@@ -33,7 +33,7 @@ define([
     },
 
     onSomeoneTyping: function(data) {
-      if (data.username === currentUser.get("username"))
+      if (data.user_id === currentUser.get("user_id"))
         return;
 
       var that = this;

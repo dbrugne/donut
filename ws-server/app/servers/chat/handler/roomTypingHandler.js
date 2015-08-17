@@ -27,9 +27,6 @@ handler.typing = function(data, session, next) {
       if (!data.name)
         return callback('name is mandatory');
 
-      if (!room)
-        return callback('unable to retrieve room from ' + data.name);
-
       if (room.users.indexOf(user.id) === -1)
         return callback('this user ' + user.id + ' is not currently in room ' + room.name);
 
@@ -42,9 +39,9 @@ handler.typing = function(data, session, next) {
     function sendToUserSockets(callback) {
       var typingEvent = {
         name: room.name,
-        id: room.id,
-        username: user.username,
-        events: data.events
+        id: data.room_id,
+        user_id: user.id,
+        username: user.username
       };
       that.app.globalChannelService.pushMessage('connector', 'room:typing', typingEvent, room.name, {}, callback);
     }

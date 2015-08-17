@@ -594,8 +594,8 @@ define([
       debug('io:out:notification:done', data);
     },
 
-    userTypingMessage: function(username) {
-      var data = { username: username };
+    userTypingMessage: function(id) {
+      var data = {user_id: id};
       debug('io:out:user:typing', data);
       pomelo.notify('chat.userTypingHandler.typing', data);
     },

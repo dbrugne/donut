@@ -245,7 +245,7 @@ define([
       if (this.model.get("type") === "room")
         client.roomTypingMessage(this.model.get("name"));
       else
-        client.userTypingMessage(this.model.get("id"));
+        client.userTypingMessage(currentUser.get("user_id"));
 
       this.canPrintTypingEvent = false;
       var that = this;
