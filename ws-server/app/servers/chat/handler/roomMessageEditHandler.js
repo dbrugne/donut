@@ -1,8 +1,10 @@
 var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
 var async = require('async');
+var _ = require('underscore');
 var inputUtil = require('../../../util/input');
 var conf = require('../../../../../config');
 var common = require('donut-common');
+var Notifications = require('../../../components/notifications');
 
 var Handler = function(app) {
   this.app = app;
@@ -67,20 +69,20 @@ handler.edit = function(data, session, next) {
       if (message === event.data.message)
         return callback('posted message is the same as original');
 
-      inputUtil.mentions(message, function(err, message, mentions) {
-        return callback(err, message);
+      inputUtil.mentions(message, function(err, message, markups) {
+        return callback(err, message, markups.users);
       });
     },
 
-    function persist(message, callback) {
+    function persist(message, mentions, callback) {
       event.update({
         $set: { edited : true,  edited_at: new Date(), 'data.message': message }
       }, function(err) {
-        return callback(err, message);
+        return callback(err, message, mentions);
       });
     },
 
-    function prepareEvent(message, callback) {
+    function broadcast(message, mentions, callback) {
       var eventToSend = {
         name: room.name,
         event: event.id,
@@ -89,7 +91,23 @@ handler.edit = function(data, session, next) {
           ? event.data.images
           : null
       };
-      that.app.globalChannelService.pushMessage('connector', 'room:message:edit', eventToSend, room.name, {}, callback);
+      that.app.globalChannelService.pushMessage('connector', 'room:message:edit', eventToSend, room.name, {}, function(err) {
+        return callback(err, mentions);
+      });
+    },
+
+    function mentionNotification(mentions, callback) {
+      if (!mentions.length)
+        return callback(null);
+
+      var usersIds = _.first(_.map(mentions, 'id'), 10);
+      async.each(usersIds, function (userId, fn) {
+        Notifications(that.app).getType('usermention').create(userId, room, event, fn);
+      }, function (err) {
+        if (err)
+          logger.error(err);
+        callback(null);
+      });
     }
 
   ], function (err) {

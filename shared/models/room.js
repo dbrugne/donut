@@ -1,7 +1,7 @@
 var debug = require('debug')('shared:models:room');
 var _ = require('underscore');
 var mongoose = require('../io/mongoose');
-var regexp = require('../util/regexp');
+var common = require('donut-common');
 
 var roomSchema = mongoose.Schema({
 
@@ -36,7 +36,7 @@ var roomSchema = mongoose.Schema({
 
 roomSchema.statics.findByName = function (name) {
   return this.findOne({
-    name: regexp.buildExclusive(name, 'i'),
+    name: common.regExpBuildExact(name, 'i'),
     deleted: { $ne: true }
   });
 };
@@ -47,7 +47,7 @@ roomSchema.statics.listByName = function (names) {
     $or: []
   };
   _.each(names, function(n) {
-    criteria['$or'].push({ name: regexp.buildExclusive(n) });
+    criteria['$or'].push({ name: common.regExpBuildExact(n) });
   });
   return this.find(criteria, '_id name');
 };

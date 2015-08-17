@@ -8,7 +8,6 @@ require.config({
     'backbone'                    : '../vendor/backbone-amd/backbone',
     'moment'                      : '../vendor/moment/moment',
     'moment-fr'                   : '../vendor/moment/lang/fr',
-    'jquery.linkify'              : '../javascripts/plugins/jquery.linkify',
     'jquery.cloudinary'           : '../vendor/cloudinary_js/js/jquery.cloudinary',
     'jquery.cloudinary-donut'     : '/cloudinary',
     'jquery.ui.widget'            : '../vendor/blueimp-file-upload/js/vendor/jquery.ui.widget',
@@ -28,7 +27,6 @@ require.config({
     'jquery.cloudinary'       : ['jquery'],
     'jquery.cloudinary-donut' : ['jquery'],
     'jquery-jsonview'         : ['jquery'],
-    'jquery.linkify'          : ['jquery'],
     'backbone.bootstrap-modal': ['jquery'],
 
     'backgrid': {
@@ -64,7 +62,6 @@ require([
   'jquery.cloudinary',
   'jquery.cloudinary-donut',
   'backbone.bootstrap-modal',
-  'jquery.linkify',
   'moment-fr',
   'jquery-jsonview'
 ], function (Router, $, _, Backbone, io, moment) {
