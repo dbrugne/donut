@@ -135,6 +135,11 @@ define([
 
     _parseInput: function() {
       var pos = this.$editable.getCursorPosition(); // Get current cursor position in textarea
+
+      // If space of nothing found after getCursorPosition, we continue, else return null
+      if (this.$editable.val().length > pos && this.$editable.val().substr(pos, 1) !== ' ')
+        return '';
+
       var message = this.$editable.val().substr(0,pos); // Only keep text from start to current cursor position
       return _.last(message.split(' ')); // only keep the last typed command / mention
     },
