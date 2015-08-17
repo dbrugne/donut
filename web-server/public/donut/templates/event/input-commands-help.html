@@ -1,0 +1,15 @@
+<div class="block help">
+    <div class="event" id="<%= data.id %>"">
+    <div class="text">
+        <div class="help-title"><%= data.title %></div>
+        <div class="help-content">
+            <% _.each(data.help, function(cmd, key){ %>
+                <div class="help-cmd">
+                    <span class="name-cmd">/<%= key %></span>
+                    <span class="params-cmd"><%= cmd.help %></span>
+                    <span class="desc-cmd"><%= cmd.description %></span>
+                </div>
+            <% }); %>
+        </div>
+    </div>
+</div>

@@ -209,11 +209,11 @@ define([
       }
     },
     triggerMessage: function (event, model) {
-      if (event.getGenericType() != 'message' && event.getGenericType() != 'me')
+      if (event.getGenericType() != 'message')
         return;
 
       // test if not from me (currentUser)
-      if (event.getGenericType() != 'me' && event.get('data').username == currentUser.get('username'))
+      if (event.get('data').username == currentUser.get('username'))
         return;
 
       // test if i mentioned

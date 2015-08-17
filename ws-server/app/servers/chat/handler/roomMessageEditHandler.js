@@ -49,8 +49,8 @@ handler.edit = function(data, session, next) {
       if (!event)
         return callback('unable to retrieve event: ' + data.event);
 
-      if (event.event !== 'room:message' && event.event !== 'room:me')
-        return callback('event should be room:message and room:me: ' + data.event);
+      if (event.event !== 'room:message')
+        return callback('event should be room:message: ' + data.event);
 
       if (event.room != room.id)
         return callback('event ' + data.event + ' not correspond to given room ' + room.name);

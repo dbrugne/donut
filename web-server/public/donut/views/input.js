@@ -5,9 +5,9 @@ define([
   'libs/donut-debug',
   'models/current-user',
   'models/event',
-  'views/commands',
+  'views/input-commands',
   '_templates'
-], function ($, _, Backbone, donutDebug, currentUser, EventModel, CommandsView, templates) {
+], function ($, _, Backbone, donutDebug, currentUser, EventModel, InputCommandsView, templates) {
 
   var debug = donutDebug('donut:input');
 
@@ -32,6 +32,8 @@ define([
       this.listenTo(currentUser, 'change:avatar', this.onAvatar);
       this.listenTo(this.model, 'inputFocus', this.onFocus);
       this.listenTo(this.model, 'inputActive', this.onInputActiveChange);
+
+      this.inputCommandsView = new InputCommandsView({ model: this.model });
 
       this.images = {}; // should be initialized with {} on .initialize(), else all the view instances will share the same object (#110)
 
@@ -106,8 +108,10 @@ define([
       var message = this.$editable.val();
 
       // check command
-      if (this.checkCommand(message))
+      if (this.checkCommand(message)) {
+        this.$editable.val('');
         return false;
+      }
 
       // check length (min)
       var imagesCount = _.keys(this.images).length;
@@ -241,91 +245,20 @@ define([
         return false;
 
       var command = regexpCommand.exec(message.toLowerCase())[1];
-      var commandsView = new CommandsView();
-      if (!commandsView.commands[command])
+      if (!this.inputCommandsView.commands[command])
         return false;
 
-      command = commandsView.commands[command];
+      var commandObj = this.inputCommandsView.commands[command];
 
       var paramsString = message.replace(regexpCommand, '');
       paramsString = paramsString.replace(/^[\s]+/, '');
 
-      var parameters = paramsString.match(commandsView.parameters[command.parameters]);
+      var parameters = paramsString.match(this.inputCommandsView.parameters[commandObj.parameters]);
 
-      console.log(parameters);
-      return false;
-      if (this.executeCommand(param)) {
-        this.$editable.val('');
-        return true;
-      }
+      this.inputCommandsView[command](parameters);
+      return true;
     },
 
-    executeCommand: function(param) {
-
-      switch (param.command) {
-        case '/join':
-          if (param.name)
-            client.roomJoin(param.name);
-          break;
-        case '/leave':
-          if (param.name)
-            client.roomLeave(param.name);
-          break;
-        case '/topic':
-          client.roomTopic(this.model.get('name'), param.other);
-          break;
-        case '/op':
-          client.roomOp(this.model.get('name'), param.name);
-          break;
-        case '/deop':
-          client.roomDeop(this.model.get('name'), param.name);
-          break;
-        case '/kick':
-          client.roomKick(this.model.get('name'), param.name, param.other);
-          break;
-        case '/ban':
-          client.roomBan(this.model.get('name'), param.name, param.other);
-          break;
-        case '/deban':
-          client.roomDeban(this.model.get('name'), param.name);
-          break;
-        case '/voice':
-          client.roomVoice(this.model.get('name'), param.name);
-          break;
-        case '/devoice':
-          client.roomDevoice(this.model.get('name'), param.name, param.other);
-          break;
-        case '/me':
-          client.roomMe(this.model.get('name'), param.other);
-          break;
-        case '/ping':
-          var that = this;
-          client.ping(function (duration){
-            var data = {
-              avatar : currentUser.get('avatar'),
-              username : currentUser.get('username'),
-              ping : 'ping : ' + duration + 'ms'
-            };
-            var model = new EventModel({
-                type: 'ping',
-                data: data
-            });
-            that.model.trigger('freshEvent', model);
-          });
-          break;
-        case '/msg':
-          if ((/^[#]/).test(param.name))
-            client.roomMessage(param.name, param.other, null);
-          else {
-            client.userMessage(param.name, param.other, null);
-          }
-          break;
-        default:
-          return false;
-      }
-
-      return true;
-    }
 
   });
 

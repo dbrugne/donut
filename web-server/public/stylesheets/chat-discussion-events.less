@@ -296,10 +296,6 @@
             a { font-weight: bold; }
             .text-edited { font-size: .9rem; color: #0480be; }
           }
-          .action-me {
-            color: darkgreen;
-            font-weight: bold;
-          }
           .images {
             .image {
               .pull-left;
@@ -412,7 +408,9 @@
       .block.op,
       .block.deop,
       .block.voice,
-      .block.devoice {
+      .block.devoice,
+      .block.me,
+      .block.ping {
         padding: 5px;
         img { height: 20px; }
         .avatar {
@@ -430,7 +428,18 @@
             font-style: italic;
             padding-right: 50px;
             img { margin-right: 3px; }
+            .action-me { font-weight: bold; color: darkgreen; }
           }
+        }
+      }
+      .block.help {
+        padding: 5px;
+        .help-title { font-weight: bold; text-align: center; }
+        .help-cmd {
+          margin: 5px;
+          .name-cmd { font-weight: bold; }
+          .params-cmd { color: #8699a4; }
+          .desc-cmd { font-style: italic; }
         }
       }
       .block.spinner {

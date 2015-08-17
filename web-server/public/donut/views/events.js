@@ -387,7 +387,7 @@ define([
     },
     addFreshEvent: function (model) {
       // browser notification
-      if (model.getGenericType() == 'message' || model.getGenericType() == 'me')
+      if (model.getGenericType() == 'message')
         windowView.triggerMessage(model, this.model);
       else if (this.model.get('type') == 'room' && model.getGenericType() == 'inout')
         windowView.triggerInout(model, this.model);
@@ -476,7 +476,7 @@ define([
       data.data = _.clone(model.get('data'));
 
       // spammed & edited
-      if (model.getGenericType() === 'message' || model.getGenericType() === 'me') {
+      if (model.getGenericType() === 'message') {
         data.spammed = (model.get('spammed') === true);
         data.edited = (model.get('edited') === true);
       }
@@ -636,6 +636,9 @@ define([
             break;
           case 'user:deban':
             template = templates['event/user-deban.html']; 
+            break;
+          case 'help':
+            template = templates['event/input-commands-help.html'];
             break;
           default:
             return;

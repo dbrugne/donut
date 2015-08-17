@@ -30,6 +30,11 @@ define([
         show: false
       });
 
+      var that = this;
+      this.$el.on('shown.bs.modal', function(e){
+        that.$input.focus();
+      });
+
       // On dismiss reset confirmation modal state
       var that = this;
       this.$el.on('hidden.bs.modal', function (e) {
