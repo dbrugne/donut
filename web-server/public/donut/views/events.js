@@ -564,7 +564,6 @@ define([
       } else {
         switch (newModel.getGenericType()) {
           case 'standard':
-          case 'me':
             newBlock = true;
             break;
           case 'inout':
@@ -602,6 +601,7 @@ define([
             template = templates['event/message.html'];
             break;
           case 'room:me':
+          case 'user:me':
             template = templates['event/me.html'];
             break;
           case 'reconnected':

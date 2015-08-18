@@ -5,7 +5,6 @@ var roomEmitter = require('../../../util/roomEmitter');
 var inputUtil = require('../../../util/input');
 var keenio = require('../../../../../shared/io/keenio');
 var Notifications = require('../../../components/notifications');
-var common = require('donut-common');
 
 var Handler = function (app) {
   this.app = app;

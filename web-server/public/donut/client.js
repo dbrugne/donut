@@ -34,7 +34,7 @@ define([
       pomelo.on('room:join',    function(data) { debug('io:in:room:join',     data); this.trigger('room:join',      data); }, this);
       pomelo.on('room:leave',   function(data) { debug('io:in:room:leave',    data); this.trigger('room:leave',     data); }, this);
       pomelo.on('room:message', function(data) { debug('io:in:room:message',  data); this.trigger('room:message',   data); }, this);
-      pomelo.on('room:me', function(data) { debug('io:in:room:me',  data); this.trigger('room:me',   data); }, this);
+      pomelo.on('room:me',      function(data) { debug('io:in:room:me',       data); this.trigger('room:me',        data); }, this);
       pomelo.on('room:message:edit',  function (data) { debug('io:in:room:message:edit',  data); this.trigger('room:message:edit',data); }, this);
       pomelo.on('room:topic',   function(data) { debug('io:in:room:topic',    data); this.trigger('room:topic',     data); }, this);
       pomelo.on('room:in',      function(data) { debug('io:in:room:in',       data); this.trigger('room:in',        data); }, this);
@@ -54,6 +54,7 @@ define([
       pomelo.on('user:join',          function (data) { debug('io:in:user:join',          data); this.trigger('user:join',        data); }, this);
       pomelo.on('user:leave',         function (data) { debug('io:in:user:leave',         data); this.trigger('user:leave',       data); }, this);
       pomelo.on('user:message',       function (data) { debug('io:in:user:message',       data); this.trigger('user:message',     data); }, this);
+      pomelo.on('user:me',            function(data)  { debug('io:in:user:me',            data); this.trigger('user:me',          data); }, this);
       pomelo.on('user:message:edit',  function (data) { debug('io:in:user:message:edit',  data); this.trigger('user:message:edit',data); }, this);
       pomelo.on('user:online',        function (data) { debug('io:in:user:online',        data); this.trigger('user:online',      data); }, this);
       pomelo.on('user:offline',       function (data) { debug('io:in:user:offline',       data); this.trigger('user:offline',     data); }, this);
@@ -470,6 +471,20 @@ define([
         data,
         function (response) {
           debug('io:in:user:message', response);
+          if (_.isFunction(callback))
+            return callback(response);
+        }
+      );
+    },
+    userMe: function (username, message, callback) {
+      var data = {username: username, message: message};
+      debug('io:out:user:me', data);
+      var that = this;
+      pomelo.request(
+        'chat.userMeHandler.me',
+        data,
+        function (response) {
+          debug('io:in:user:me', response);
           if (_.isFunction(callback))
             return callback(response);
         }

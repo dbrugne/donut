@@ -121,7 +121,7 @@ define([
 
     op: function(parameters) {
 
-      if (!parameters)
+      if (!parameters || this.model.get('type') !== 'room')
         return;
 
       var that = this;
@@ -132,7 +132,7 @@ define([
 
     deop: function(parameters) {
 
-      if (!parameters)
+      if (!parameters || this.model.get('type') !== 'room')
         return;
 
       var that = this;
@@ -143,7 +143,7 @@ define([
 
     kick: function(parameters) {
 
-      if (!parameters)
+      if (!parameters || this.model.get('type') !== 'room')
         return;
 
       var that = this;
@@ -154,7 +154,7 @@ define([
 
     ban: function(parameters) {
 
-      if (!parameters)
+      if (!parameters || this.model.get('type') !== 'room')
         return;
 
       var that = this;
@@ -165,7 +165,7 @@ define([
 
     deban: function(parameters) {
 
-      if (!parameters)
+      if (!parameters || this.model.get('type') !== 'room')
         return;
 
       client.roomDeban(this.model.get('name'), parameters[1]);
@@ -173,7 +173,7 @@ define([
 
     voice: function(parameters) {
 
-      if (!parameters)
+      if (!parameters || this.model.get('type') !== 'room')
         return;
 
       client.roomVoice(this.model.get('name'), parameters[1]);
@@ -181,7 +181,7 @@ define([
 
     devoice: function(parameters) {
 
-      if (!parameters)
+      if (!parameters || this.model.get('type') !== 'room')
         return;
 
       var that = this;
@@ -208,7 +208,10 @@ define([
       if (!parameters)
         return;
 
-      client.roomMe(this.model.get('name'), parameters[1]);
+      if (this.model.get('type') === 'room')
+        client.roomMe(this.model.get('name'), parameters[1]);
+      else
+        client.userMe(this.model.get('id'), parameters[1]);
     },
 
     ping: function(parameters) {

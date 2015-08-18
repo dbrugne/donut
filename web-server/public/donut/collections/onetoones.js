@@ -21,6 +21,7 @@ define([
 
     initialize: function() {
       this.listenTo(client, 'user:message', this.onMessage);
+      this.listenTo(client, 'user:me', this.onMe);
       this.listenTo(client, 'user:updated', this.onUpdated);
       this.listenTo(client, 'user:online', this.onUserOnline);
       this.listenTo(client, 'user:offline', this.onUserOffline);
@@ -142,6 +143,12 @@ define([
       var model = this.getModelFromEvent(data, true);
       _.defer(function() { // cause view will be really added only on next tick
         model.onMessage(data);
+      });
+    },
+    onMe: function(data) {
+      var model = this.getModelFromEvent(data, true);
+      _.defer(function() { // cause view will be really added only on next tick
+        model.onMe(data);
       });
     },
     onUpdated: function(data) {

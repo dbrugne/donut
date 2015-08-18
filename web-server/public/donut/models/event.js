@@ -38,7 +38,7 @@ define([
         : false;
       this.set({new: isNew});
 
-      if (this.get('type') == 'user:message') {
+      if (this.get('type') == 'user:message' || this.get('type') == 'user:me') {
         data.user_id  = data.from_user_id;
         data.username = data.from_username;
         data.avatar   = data.from_avatar;
