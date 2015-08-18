@@ -12,24 +12,13 @@
         <nav id="color" class="navbar navbar-default navbar-fixed-top" data-colorify="<%- room_default_color %>" data-colorify-background="color">
             <div class="container">
                 <div id="navbar">
-                    <a class="navbar-brand-a" href="/!#"><img class="logo" src="/images/logo-onecolor.svg" alt="<%= t('title.chat') %>"> <span class="beta">alpha</span></a>
+                    <a class="navbar-brand-a hidden-xs hidden-sm" href="/!#"><img class="logo" src="/images/logo-onecolor.svg" alt="<%= t('title.chat') %>"> <span class="beta">alpha</span></a>
 
-                    <ul class="nav navbar-nav-ul">
+                    <ul class="nav navbar-nav-ul hidden-xs hidden-sm">
                         <li><a href="/!#">Home</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <li class="home visible-sm visible-xs">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                <i class="icon icon-cog" data-colorify-text="contrast"></i>
-                            </a>
-                            <ul class="dropdown-menu" role="menu">
-                                <li class="arrow-up"></li>
-                                <li><a href="/!#"><i class="icon icon-home"></i> <%= t('actions.home') %></a></li>
-                                <li><a class="go-to-search"><i class="icon icon-search"></i> <%= t('actions.search') %></a></li>
-                                <li><a class="open-create-room"><i class="icon icon-pencil"></i> <%= t('actions.create') %></a></li>
-                            </ul>
-                        </li>
-                        <li id="mute">
+                        <li id="mute" class="hidden-xs hidden-sm">
                             <a href="#" class="toggle">
                                 <i class="icon icon-volume-up" data-colorify-text="contrast"></i>
                             </a>

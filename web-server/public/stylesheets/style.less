@@ -40,57 +40,19 @@ body { .ft-opensans; font-size: 14px; overflow-x: hidden;
   top: 0;
   left: 10px;
   position: absolute;
-  z-index: 2;
   display: block;
   width: 34px;
   height: 34px;
   line-height: 34px;
   text-align: center;
 }
-.color-picker {
-  position: relative;
-  color: #555;
-  font-size: 16px;
-  .preview {
-    border: 1px solid #ccc;
-    .border-radius(4px);
-    width: 30px;
-    height: 30px;
-    margin-right: 5px;
-    float:left;
-  }
-  .hexadecimal {
-    width:90px;
-    margin-left: 3px;
-    padding: 3px 6px;
-    font-weight: bold;
-    line-height: 1.9;
-  }
-  .picker {
-    display: none;
-    position: absolute;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    left: 125px; top: -100px;
-    z-index: 99;
-    width: 288px;
-    padding: 34px 10px 10px 10px;
+.color-picker { position: relative; color: #555; font-size: 16px;
+  .preview { border: 1px solid #ccc; .border-radius(4px); width: 30px; height: 30px; margin-right: 5px; float:left; }
+  .hexadecimal { width:90px; margin-left: 3px; padding: 3px 6px; font-weight: bold; line-height: 1.9; }
+  .picker { display: none; position: absolute; background-color: #fff; border: 1px solid #ccc; left: 125px; top: -100px; width: 288px; padding: 34px 10px 10px 10px;
     .color { cursor: pointer; }
-    a.close-picker {
-      position: absolute;
-      top: 6px;
-      right: 7px;
-      font-size: 1.1em;
-      line-height: 1;
-      color: #000;
-      text-shadow: 0 1px 0 #fff;
-      opacity: .2;
-      cursor: pointer;
-    }
-    a.close-picker:hover {
-      text-decoration: none;
-      opacity: 1;
-    }
+    a.close-picker { position: absolute; top: 6px; right: 7px; font-size: 1.1em; line-height: 1; color: #000; text-shadow: 0 1px 0 #fff; .opacity(0.2); cursor: pointer; }
+    a.close-picker:hover { text-decoration: none; .opacity(1); }
   }
 }
 .help-block {
@@ -115,20 +77,9 @@ body { .ft-opensans; font-size: 14px; overflow-x: hidden;
   }
 }
 
-#languages {
-  position: absolute;
-  right: 20px; top: 15px;
-  display: inline-block;
-  color: @cl-subtext20;
-  font-size: 12px;
-  z-index: 5;
-  a {
-    padding: 3px 5px;
-    color: @cl-subtext50;
-    cursor: pointer;
-    &:hover {
-      background-color: @cl-subtext0;
-    }
+#languages { position: absolute; right: 20px; top: 15px; display: inline-block; color: @cl-subtext20; font-size: 12px;
+  a { padding: 3px 5px; color: @cl-subtext50; cursor: pointer;
+    &:hover { background-color: @cl-subtext0; }
   }
 }
 
@@ -268,5 +219,7 @@ body { .ft-opensans; font-size: 14px; overflow-x: hidden;
 @import "./pages.less"; /* login, signup, forgot and choose-username pages */
 @import "./profile.less"; /* room and user */
 @import "./account.less";
+@import "chat-room-cards"; // used for welcome popin and home rooms list
 @import "./chat.less";
 @import "./responsive.less";
+@import "./z-indexes.less";

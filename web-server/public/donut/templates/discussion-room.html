@@ -13,10 +13,12 @@
             <span class="overlay-text open-room-profile" data-room-name="<%= name %>" ><%= t('chat.actions.see') %></span>
         </div>
         <div class="info">
-            <div class="name open-room-profile" data-room-name="<%= name %>"><%= name %></div>
+            <div class="name open-room-profile hidden-xs hidden-sm" data-room-name="<%= name %>"><%= name %></div>
+            <div class="name open-room-profile visible-xs visible-sm" data-room-name="<%= name %>" data-colorify-text="contrast"><%= name %></div>
             <div class="dropdown">
                 <button class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-                    <i class="icon icon-chevron-down"></i>
+                    <i class="icon icon-chevron-down hidden-xs hidden-sm"></i>
+                    <i class="icon icon-chevron-down visible-xs visible-sm" data-colorify-text="contrast"></i>
                 </button>
                 <ul class="dropdown-menu" role="menu">
                     <li role="presentation">
