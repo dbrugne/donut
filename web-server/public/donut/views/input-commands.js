@@ -75,15 +75,15 @@ define([
         description: 'chat.commands.ping'
       },
       help: {
-        parameters: 'notMandatory',
-        help: '',
+        parameters: 'helpCommand',
+        help: '[command]',
         description: 'chat.commands.help'
       }
     },
 
     parameters: {
       message: /(.+)/,
-      notMandatory: /(.*)/,
+      helpCommand: /^\/([a-zA-Z]+)/,
       name : /(^[#][\w-.|^]+)/,
       username : /^[@]([\w-.|^]+)/,
       usernameNameMsg: /^([@#][\w-.|^]+)\s+(.+)/
@@ -233,12 +233,14 @@ define([
 
     help: function(parameters) {
 
-      if (parameters && this.commands[parameters[1]])
+      if (parameters && this.commands[parameters[1]]) {
         var commandHelp = this.commands[parameters[1]];
+        commandHelp.name = parameters[1];
+      }
 
       var data = {
         title: 'Help',
-        help: (commandHelp) ? commandHelp : this.commands
+        help: (commandHelp) ? { cmd: commandHelp } : this.commands
       };
       var model = new EventModel({
         type: 'help',

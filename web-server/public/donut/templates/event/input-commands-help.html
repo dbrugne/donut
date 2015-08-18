@@ -5,7 +5,7 @@
         <div class="help-content">
             <% _.each(data.help, function(cmd, key){ %>
                 <div class="help-cmd">
-                    <span class="name-cmd">/<%= key %></span>
+                    <span class="name-cmd"><% if (cmd.name) { %>/<%= cmd.name %><% } else { %>/<%= key %><% } %></span>
                     <span class="params-cmd"><%= cmd.help %></span>
                     <span class="desc-cmd"><%= t(cmd.description) %></span>
                 </div>
