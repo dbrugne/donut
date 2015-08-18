@@ -265,3 +265,67 @@
     transform: translate3d(49px,0,0);
   }
 }
+
+.bounce-right-delayed {
+  animation-name: bounce-right-delayed;
+  animation-duration: 4s;
+  animation-iteration-count: infinite;
+  -webkit-animation-duration: 4s;
+  -webkit-animation-iteration-count: infinite; /* Chrome, Safari, Opera */
+  -webkit-animation-name: bounce-right-delayed;
+}
+@-webkit-keyframes bounce-right-delayed {
+  0%, 5%, 13%, 20%, 25%, 100% {
+    -webkit-animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+    animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+    -webkit-transform: translate3d(-45px,0,0);
+    transform: translate3d(-45px,0,0);
+  }
+
+  10%, 11% {
+    -webkit-animation-timing-function: cubic-bezier(0.755, 0.050, 0.855, 0.060);
+    animation-timing-function: cubic-bezier(0.755, 0.050, 0.855, 0.060);
+    -webkit-transform: translate3d(-75px, 0, 0);
+    transform: translate3d(-75px, 0, 0);
+  }
+
+  17% {
+    -webkit-animation-timing-function: cubic-bezier(0.755, 0.050, 0.855, 0.060);
+    animation-timing-function: cubic-bezier(0.755, 0.050, 0.855, 0.060);
+    -webkit-transform: translate3d(-60px, 0, 0);
+    transform: translate3d(-60px, 0, 0);
+  }
+
+  22% {
+    -webkit-transform: translate3d(-49px,0,0);
+    transform: translate3d(-49px,0,0);
+  }
+}
+
+@keyframes bounce-right-delayed {
+  0%, 5%, 13%, 20%, 25%, 100% {
+    -webkit-animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+    animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+    -webkit-transform: translate3d(-45px,0,0);
+    transform: translate3d(-45px,0,0);
+  }
+
+  10%, 11% {
+    -webkit-animation-timing-function: cubic-bezier(0.755, 0.050, 0.855, 0.060);
+    animation-timing-function: cubic-bezier(0.755, 0.050, 0.855, 0.060);
+    -webkit-transform: translate3d(-75px, 0, 0);
+    transform: translate3d(-75px, 0, 0);
+  }
+
+  17% {
+    -webkit-animation-timing-function: cubic-bezier(0.755, 0.050, 0.855, 0.060);
+    animation-timing-function: cubic-bezier(0.755, 0.050, 0.855, 0.060);
+    -webkit-transform: translate3d(-60px, 0, 0);
+    transform: translate3d(-60px, 0, 0);
+  }
+
+  22% {
+    -webkit-transform: translate3d(-49px,0,0);
+    transform: translate3d(-49px,0,0);
+  }
+}

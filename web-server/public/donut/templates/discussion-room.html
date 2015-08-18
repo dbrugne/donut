@@ -36,6 +36,12 @@
                             <i class="icon icon-bell"></i> <%= t('chat.actions.notifications') %>
                         </a>
                     </li>
+                    <li role="presentation" class="divider"></li>
+                    <li role="presentation">
+                        <a role="menuitem" tabindex="-1" class="close-discussion" data-identifier="<%= name %>" data-type="room">
+                            <i class="icon icon-times-circle-o"></i> <%= t('chat.actions.close') %>
+                        </a>
+                    </li>
                     <% if (isOwner === true || isOp === true || isAdmin === true) { %>
                     <li role="presentation" class="divider"></li>
                     <% }; %>

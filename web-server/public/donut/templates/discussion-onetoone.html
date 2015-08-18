@@ -5,10 +5,12 @@
             <img src="<%= avatar %>" alt="<%= username %> avatar">
         </div>
         <div class="info">
-            <span class="username open-user-profile" data-username="<%= username %>">@<%= username %></span>
+            <span class="username open-user-profile hidden-xs hidden-sm" data-username="<%= username %>">@<%= username %></span>
+            <span class="username open-user-profile visible-xs visible-sm" data-username="<%= username %>" data-colorify-text="contrast">@<%= username %></span>
             <div class="dropdown">
                 <button class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-                    <i class="icon icon-chevron-down"></i>
+                    <i class="icon icon-chevron-down hidden-xs hidden-sm"></i>
+                    <i class="icon icon-chevron-down visible-xs visible-sm" data-colorify-text="contrast"></i>
                 </button>
                 <ul class="dropdown-menu" role="menu">
                     <li role="presentation">
@@ -30,9 +32,17 @@
                             <i class="icon icon-ban"></i> <%= t('chat.actions.ban') %>
                         </a>
                     </li>
+                    <li role="presentation" class="divider"></li>
+                    <li role="presentation">
+                        <a role="menuitem" tabindex="-1" class="close-discussion" data-identifier="<%= username %>" data-type="user">
+                            <i class="icon icon-times-circle-o"></i> <%= t('chat.actions.close') %>
+                        </a>
+                    </li>
                 </ul>
             </div>
-            <span class="location"><%= location %></span><% if (location && website) { print(', '); } %><span class="website"><%= website %></span>
+            <span class="hidden-xs hidden-sm">
+                <span class="location"><%= location %></span><% if (location && website) { print(', '); } %><span class="website"><%= website %></span>
+            </span>
         </div>
         <div class="status-block">
             <i class="icon icon-circle status contrast"></i>

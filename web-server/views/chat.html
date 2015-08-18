@@ -15,7 +15,7 @@
                     <a class="navbar-brand-a hidden-xs hidden-sm" href="/!#"><img class="logo" src="/images/logo-onecolor.svg" alt="<%= t('title.chat') %>"> <span class="beta">alpha</span></a>
 
                     <ul class="nav navbar-nav-ul hidden-xs hidden-sm">
-                        <li><a href="/!#">Home</a></li>
+                        <li><a href="/!#" data-colorify-text="contrast">Home</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li id="mute" class="hidden-xs hidden-sm">
@@ -74,20 +74,20 @@
                             <img src="<%- user.avatar %>" alt="@<%- user.username %> avatar">
                         </a>
 
-                        <ul class="sub-menu dropdown-menu">
-                            <li>
-                                <div class="connection hidden-sm hidden-xs">
-                                    <i class="icon icon-circle status offline"></i><span class="user-status hidden-sm hidden-xs"><%= t('global.offline') %></span>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="dropdown dropdown-user-actions">
-                                    <button class="dropdown-toggle">
-                                        <i class="icon icon-chevron-down"></i>
-                                    </button>
-                                </div>
-                            </li>
-                        </ul>
+                        <!--<ul class="sub-menu dropdown-menu">-->
+                            <!--<li>-->
+                                <!--<div class="connection hidden-sm hidden-xs">-->
+                                    <!--<i class="icon icon-circle status offline"></i><span class="user-status hidden-sm hidden-xs"><%= t('global.offline') %></span>-->
+                                <!--</div>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--<div class="dropdown dropdown-user-actions">-->
+                                    <!--<button class="dropdown-toggle">-->
+                                        <!--<i class="icon icon-chevron-down"></i>-->
+                                    <!--</button>-->
+                                <!--</div>-->
+                            <!--</li>-->
+                        <!--</ul>-->
                     </li><!-- /#block-current-user -->
 
                     <li id="block-actions">
