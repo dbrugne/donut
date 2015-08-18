@@ -374,7 +374,8 @@
     "topic": {
       "label": "En ce moment",
       "placeholder": "Entrez ici le sujet de la conversation, l'humeur, l'ambiance ...",
-      "default": "<span class='default'>Aucun sujet, cliquez ici pour modifier</span>"
+      "default": "<span class='default'>Aucun sujet, cliquez ici pour modifier</span>",
+      "users": "Liste des utilisateurs de ce donut"
     },
     "owner": {
       "is": "Cet utilisateur est le propriétaire de ce donut"

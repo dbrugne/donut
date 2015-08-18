@@ -5,8 +5,9 @@ define([
   'common',
   'client',
   'models/current-user',
+  'views/modal-room-users',
   '_templates'
-], function ($, _, Backbone, common, client, currentUser, templates) {
+], function ($, _, Backbone, common, client, currentUser, RoomUsersModalView, templates) {
   var RoomTopicView = Backbone.View.extend({
 
     template: templates['room-topic.html'],
@@ -16,6 +17,7 @@ define([
       'click .edit'         : 'showForm',
       'click .cancel'       : 'hideForm',
       'click .submit'       : 'sendNewTopic',
+      'click .drawer-users' : 'loadUserModal',
       'keypress .topic-input': function(event) {
         if (event.which == 13) {
           this.sendNewTopic(event);
@@ -59,6 +61,11 @@ define([
         this.$el.find('.topic-current').css('display', 'inline-block');
       }
 
+      this.roomUsersModalView = new RoomUsersModalView({
+        el: this.$el.find('#user-modal'),
+        model: this.model
+      });
+
       return this;
     },
     updateTopic: function(room, topic, options) {
@@ -98,6 +105,17 @@ define([
     },
     _remove: function() {
       this.remove();
+    },
+
+    loadUserModal: function(event) {
+      event.preventDefault();
+      this.roomUsersModalView.show();
+      client.roomUsers(this.model.get('name'), _.bind(function(data) {
+        if (!data || !data.users)
+          return this.roomUsersModalView.hide();
+
+        this.roomUsersModalView.render(data);
+      }, this));
     }
 
   });

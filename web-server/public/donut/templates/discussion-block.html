@@ -18,28 +18,6 @@
             <span class="selected"></span>
         </a>
 
-        <!--<div class="visible-xs visible-sm item <% if (item.focused) { %>active<% }; %> visible-xs visible-sm" >-->
-            <!--<a href="#" class="" data-toggle="dropdown" role="button" aria-expanded="false"><img src="<%= item.avatar %>" class="avatar" alt="<%= item.identifier %> avatar"></a>-->
-            <!--<span class="selected"></span>-->
-            <!--<ul class="<% if (item.focused) { %>active<% }; %> ctn dropdown-menu item"  data-type="<%= item.type %>" data-identifier="<%= item.identifier %>">-->
-                <!--<li>-->
-                    <!--<a class="aname" href="<%= item.uri %>" data-type="<%= item.type %>" data-identifier="<%= item.identifier %>">-->
-                        <!--<% if (item.type == 'room') { %>-->
-                        <!--<span class="name"><span>#</span><%= item.name.replace('#', '') %></span>-->
-                        <!--<% } else { %>-->
-                        <!--<span class="name"><span>@</span><%= item.username %></span>-->
-                        <!--<% } %>-->
-                    <!--</a>-->
-                <!--</li>-->
-                <!--<li>-->
-                    <!--<a href="<%= item.uri %>"><i class="icon icon-eye" title="View this discussion"></i> Voir la discussion</a>-->
-                <!--</li>-->
-                <!--<li>-->
-                    <!--<a href="#" class="close-discussion"><i class="icon icon-times-circle-o" title="Close this discussion"></i> Close this discussion</a>-->
-                <!--</li>-->
-            <!--</ul>-->
-        <!--</div>-->
-
         <% if (item.newuser == true || item.newmention == true || item.newmessage == true) { %>
             <span class="unread">
                 <% if (item.newuser == true) { %><i class="icon icon-user-custom"></i><% } %>
