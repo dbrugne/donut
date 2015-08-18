@@ -413,6 +413,22 @@
       "cancel": "Non, j'annule",
       "confirm": "Oui, je confirme"
     },
+    "commands": {
+      "join": "Rejoindre un donut",
+      "leave": "Partir d'un donut",
+      "topic": "Changer le sujet du donut",
+      "op": "Faire modérateur un utilisateur",
+      "deop": "Retirer un utilisateur des modérateurs",
+      "kick": "Expulser un utilisateur",
+      "ban": "Expulser et bannir un utilisateur",
+      "deban": "Ne plus bannir un utilisateur",
+      "voice": "Rend la parole à un utilisateur",
+      "devoice": "Rend muet un utilisateur",
+      "msg": "Envoie un message dans un donut ou à un utilisateur",
+      "me": "Envoie un message d'action",
+      "ping": "ping",
+      "help": "Manuel des commandes"
+    },
     "notifications": {
       "hello": "Vous entrez dans",
       "disconnected": "Vous avez été deconnecté du serveur, veuillez patienter",

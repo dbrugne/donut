@@ -11,73 +11,73 @@ define([
     commands : {
       join: {
         parameters: 'name',
-        help: '#roomname',
-        description: $.t('chat.input.commands.join')
+        help: '#donut',
+        description: 'chat.commands.join'
       },
       leave: {
         parameters: 'name',
-        help: '#roomname',
-        description:  $.t('chat.input.commands.leave')
+        help: '#donut',
+        description: 'chat.commands.leave'
       },
       topic: {
         parameters: 'notMandatory',
         help: '[topic]',
-        description:  $.t('chat.input.commands.topic')
+        description: 'chat.commands.topic'
       },
       op: {
         parameters: 'username',
         help: '@username',
-        description:  $.t('chat.input.commands.op')
+        description: 'chat.commands.op'
       },
       deop: {
         parameters: 'username',
         help: '@username',
-        description:  $.t('chat.input.commands.deop')
+        description: 'chat.commands.deop'
       },
       kick: {
         parameters: 'username',
         help: '@username',
-        description:  $.t('chat.input.commands.kick')
+        description: 'chat.commands.kick'
       },
       ban: {
         parameters: 'username',
         help: '@username',
-        description:  $.t('chat.input.commands.ban')//'ban and expulse user from room'
+        description: 'chat.commands.ban' //ban and expulse user from room'
       },
       deban: {
         parameters: 'username',
         help: '@username',
-        description: $.t('chat.input.commands.deban')
+        description: 'chat.commands.deban'
       },
       voice: {
         parameters: 'username',
         help: '@username',
-        description: ''
+        description: 'chat.commands.voice'
       },
       devoice: {
         parameters: 'username',
         help: '@username',
-        description: $.t('chat.input.commands.devoice')
+        description: 'chat.commands.devoice'
       },
       msg: {
         parameters: 'usernameNameMsg',
-        help: '@username/#roomname message',
-        description: $.t('chat.input.commands.msg')
+        help: '@username/#donut message',
+        description: 'chat.commands.msg'
       },
       me: {
         parameters: 'message',
         help: 'message',
-        description: $.t('chat.input.commands.me')
+        description: 'chat.commands.me'
       },
       ping: {
         parameters: 'nothing',
         help: '',
-        description: $.t('chat.input.commands.ping')
+        description: 'chat.commands.ping'
       },
       help: {
         parameters: 'notMandatory',
         help: '',
-        description: $.t('chat.input.commands.help')
+        description: 'chat.commands.help'
       }
     },
 
