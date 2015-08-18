@@ -97,7 +97,7 @@ handler.edit = function(data, session, next) {
     },
 
     function mentionNotification(mentions, callback) {
-      if (!mentions.length)
+      if (!mentions || !mentions.length)
         return callback(null);
 
       var usersIds = _.first(_.map(mentions, 'id'), 10);

@@ -36,7 +36,7 @@ define([
       this.$text.addClass('hidden');
       this.$el.removeClass('has-hover');
 
-      this.originalMessage = this.$text.html();
+      this.originalMessage = (this.$text.html() !== undefined) ? this.$text.html() : '';
       this.originalMessage = common.markupToText(this.originalMessage);
       this.originalMessage = this.htmlSmileyToText(this.originalMessage);
 

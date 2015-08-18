@@ -86,7 +86,7 @@ handler.message = function (data, session, next) {
     },
 
     function mentionNotification(sentEvent, mentions, callback) {
-      if (!mentions.length)
+      if (!mentions || !mentions.length)
         return callback(null, sentEvent);
 
       var usersIds = _.first(_.map(mentions, 'id'), 10);
