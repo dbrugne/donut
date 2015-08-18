@@ -103,14 +103,14 @@ define([
 
     join: function(parameters) {
 
-      if (!parameters && !parameters[1])
+      if (!parameters)
         return;
       client.roomJoin(parameters[1]);
     },
 
     leave: function(parameters) {
 
-      if (!parameters && !parameters[1])
+      if (!parameters)
         return;
         client.roomLeave(parameters[1]);
     },
