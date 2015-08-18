@@ -357,10 +357,14 @@
           }
         }
       }
-      .navbar-nav-ul { float:left; margin: 0;
-        &.navbar-right { float:right; margin: 0;
+      .navbar-nav { float:left; margin: 0;
+        &.navbar-right { float:right; margin: 0; position: absolute; top: 0; right: 0;
           > li > a { background-color:transparent; }
           .dropdown-menu { right:0; left: initial; }
+          .open .dropdown-menu { position: absolute;
+            background-color: #FFF;
+            border: 1px solid rgba(0,0,0,0.15);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.175); }
         }
         & > li { float: left;
           & > a { padding-top: 9px; padding-bottom: 8px; color: @cl-background;
@@ -433,95 +437,34 @@
         li { list-style: none; padding:0; margin:0;position: relative; }
       }
       .list {
-        .item {
-          display: block;
-          position: relative;
-          padding: 8px 18px 6px;//12px 18px 10px;
-          color: @cl-title;
-          .avatar {
-            position: absolute;
-            top: 7px;//12px;
-            left: 16px;
-            width: 22px;
-            height: 22px;
-          }
+        .item { display: block; position: relative; padding: 8px 18px 6px; color: @cl-title;
+          .avatar { position: absolute; top: 7px; left: 16px; width: 22px; height: 22px; }
           &[data-type="room"] {
-            .avatar {
-              .img-circle;
-            }
+            .avatar { .img-circle; }
           }
-          .name, .username {
-            overflow: hidden;
-            white-space : nowrap;
-            width: 132px;
-            display: inline-block;
-            margin-left: 27px;
-            font-family: "Open Sans";
-            font-size: 14px;
-            > span {
-              font-size: 13px;
-              padding-right: 1px;
-            }
+          .name, .username { overflow: hidden; white-space : nowrap; width: 132px; display: inline-block; margin-left: 27px; font-family: "Open Sans"; font-size: 14px;
+            > span { font-size: 13px; padding-right: 1px; }
           }
-          .unread {
-            display: inline-block;
-            position: absolute;
-            top: 10px;
-            right: 35px;
-            padding: 1px 6px;
-            font-size: 11px;
-            min-width: 30px;
-            text-align: center;
-            background-color: @cl-first;
-            color: @cl-background;
-            -webkit-border-radius: 10px;
-            -moz-border-radius: 10px;
-            border-radius: 10px;
-            i {
-              line-height: 1.5;
-              margin-left: 2px;
-              &:last-child {
-                margin-left: 0;
-              }
-            }
-            i.icon-user-custom {
-              font-size: 12px;
-            }
-            i.icon-atxx {
-              font-size: 12px;
-              margin-left: 0;
-            }
-            i.icon-envelope {
-              font-size: 11px;
-            }
+          .close-discussion { font-size: 1.8em; color: @cl-subtext20; position: absolute; top: 8px; right: 10px;
+            &:hover { color: @cl-subtext20; }
           }
-          .close-discussion {
-            font-size: 1.8em;
-            color: @cl-subtext20;
-            position: absolute;
-            top: 8px;//14px;
-            right: 10px;
-            &:hover {
-              color: @cl-subtext20;
-            }
-          }
-          &:hover {
-            text-decoration: none;
-            span.name {
-              color: @cl-subtext50;
-            }
-            &::before {
-              content: url('/images/svg/draggable.svg');
-              position: absolute;
-              left: 4px;
-              top: 8px;
-            }
+          &:hover { text-decoration: none;
+            span.name { color: @cl-subtext50; }
+            &::before { content: url('/images/svg/draggable.svg'); position: absolute; left: 4px; top: 8px; }
           }
           &.active,
           &.active:hover,
           &.active:focus {
             background-color: @cl-background;
           }
+        }
+        .unread { display: inline-block; position: absolute; top: 10px; right: 35px; padding: 1px 6px; font-size: 11px; min-width: 30px; text-align: center; background-color: @cl-first; color: @cl-background; -webkit-border-radius: 10px; -moz-border-radius: 10px; border-radius: 10px;
+          i { line-height: 1.5; margin-left: 2px;
+            &:last-child { margin-left: 0; }
+          }
+          i.icon-user-custom { font-size: 12px; }
+          i.icon-atxx { font-size: 12px; margin-left: 0; }
+          i.icon-envelope { font-size: 11px; }
         }
         .placeholder {
           .ft-opensans-bold-italic;
@@ -599,13 +542,7 @@
           }
         }
       }
-      .right {
-        .make-xs-column(0);
-        .make-sm-column(2);
-        .make-lg-column(3);
-        height: 100%;
-        padding: 20px 8px 0 18px;
-        background-color: @cl-subtext10;
+      .right { .make-xs-column(0); .make-sm-column(2); .make-lg-column(3); height: 100%; padding: 20px 14px 50px 14px; background-color: @cl-subtext10; overflow-y: scroll;
 
         .users {
           .list {
@@ -674,7 +611,7 @@
         }
 
       }
-    }
+    } // #chat #center #home
     .discussion { background-color: @cl-background; height: 100%;
       .content { height: 100%; margin-right: @size-right; position: relative; padding-left: 35px;
         .header { padding-top: 18px; padding-right: 10px;
@@ -1321,7 +1258,7 @@
         }
       }
       .side { float: right; width: @size-right; height: 100%; background-repeat: no-repeat; background-position: left top; margin: 0; padding: 0;
-        .blur { width: calc(@size-right-mid); position: relative; height: 100%; color: @cl-background; a { color: @cl-background; } hr { margin-left: 0; margin-right: 0; } font-size: 1.1em;
+        .blur { width: calc(@size-right-mid); position: relative; height: 100%; color: @cl-background; a { color: @cl-background; } hr { margin-left: 0; margin-right: 0; } font-size: 1.1em; overflow:auto;
           .users { position: relative; background-color: rgba(0, 0, 0, 0.2); height: 100%; padding: 10px 0 10px 0;
             @header-height: 35px;
             .header { position: absolute;     white-space: nowrap; top: 14px; left: 16px; right: 10px;

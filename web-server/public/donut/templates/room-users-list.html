@@ -1,7 +1,7 @@
 <% var previous; %>
 <% _.each(list, function(user) { %>
     <% if (previous && previous != user.status) { %>
-    <li class="hidden-xs hidden-sm">
+    <li>
         <div class="title"><%= t('chat.usersoffline') %></div>
     </li>
     <% } %>
@@ -11,7 +11,7 @@
             <span class="infos">
                 <span class="avatar open-user-profile" data-username="<%= user.username %>"  style="background-image: url(<%= user.avatar %>)" title="<% if (user.is_op === true) { %><%= t('chat.op.is') %><% } else if (user.is_owner === true) { %><%= t('chat.owner.is') %><% }; %>"></span>
                 <span class="username open-user-profile" data-username="<%= user.username %>" title="<%= t('global.'+user.status) %>">@<%= user.username %> <i class="icon icon-dot-circle-o <%= user.status %>" title="online"></i></span>
-        
+
                 <% if (isAdmin === true || (!user.is_owner && (isOp === true || isOwner === true))) { %>
                 <span class="dropdown">
                     <button class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
@@ -57,5 +57,5 @@
                 <% }; %>
             </span>
         </div>
-    <li>
+    </li>
 <% }); %>

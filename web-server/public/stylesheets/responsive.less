@@ -92,22 +92,22 @@
       #block-actions { display: none; }
       #block-discussions { border-top: 1px solid @cl-subtext0; margin-top:10px; padding-top:10px; overflow: visible; display: block;
         .list {
-          > ul > li {
+          > ul > li { overflow:hidden;
             .item { padding: 5px 10px; height: 35px; display: none;
               a.aname { display:none; }
               .avatar { width: 25px; height: 25px; left: 0; position: relative; float: left; clear: both; top: 0; }
               .ctn {
                 .name { margin-left: 20px; display: none; padding-top: 5px; }
                 .close-discussion { display:none; }
-                .unread { top: 7px; height: 20px; .bounce-left-delayed; display: inline; right:initial; left: -15px; }
               }
               &:hover::before { content:""; }
-              &.active { background-color:#E2E2E2; }
               &.active .selected { display: block; float: right; position: absolute; right: 0 !important; top: 10px; background: none; width: 0; height: 0; border-top: 8px solid transparent; border-bottom: 8px solid transparent; border-right: 8px solid #fff; }
-              &:hover, &.active:hover { background-color: #f5f5f5; }
-            }
-            &.open {
-              .item { width: 256px; background: #f5f5f5;
+              &.active, &.active:hover li { background-color: #e2e2e2; }
+              &.active li:hover { background-color: #f5f5f5; }
+            } // #chat #left #block-discussions .list>ul>li .item
+            .unread { top: 7px; height: 20px; .bounce-left-delayed; display: inline; right:initial; left: -15px; }
+            &.open { overflow: visible;
+              .item { width: 256px; background: #f5f5f5; padding: 5px 35px 5px 10px;
                 a.aname { display:inline; }
                 ul {      padding: 0;
                   li a {     padding: 5px 10px; }
@@ -117,17 +117,17 @@
               .ctn { border: 0; background-color: #E2E2E2;    width: 210px; left: 46px;.border-radius(0); margin: 0; height: initial; position: absolute; display: block;
                 .name { display: inline-block; }
                 .close-discussion { display: block;; font-size: 14px; color: #000; position: initial; top: initial; right: initial; }
-                .unread { top: 10px; right: 35px; left: initial; animation: initial; }
               }
+              .unread { right: initial; left: 223px; top: 7px; animation: initial; }
             }
-          }
-        }
-      }
+          } // #chat #left #block-discussions .list ul li
+        } // #chat #left #block-discussions .list
+      } // #chat #left #block-discussions
     } // #chat #left
     #center { margin-left: 45px;
       .discussion {
         .content { padding-left: 0; margin-right: 0; position: initial;
-          .header.room { padding-top: 10px; background-color: @cl-subtext15; padding-left: 10px; min-height: 85px; margin-bottom: 11px;
+          .header.room { padding: 6px 5px 0 5px; min-height: 40px; margin-bottom: 5px;
             .overlay-ctn { position: initial;
               .avatar { width:30px; height:30px; border:0; top: 5px; left: 7px; z-index: 1031; cursor:pointer; } // #chat #center .discussion .content .header .overlay-ctn .avatar
               .overlay, .overlay-text { display:none; }
@@ -143,8 +143,8 @@
                 }
               } // #chat #center .discussion .content .header.room .info .dropdown
             } // #chat #center .discussion .content .header.room .info
-            .topic {    float: left; width: 100%; margin-top: 8px;     padding: 0;
-              .topic-current {     padding: 5px 10px; width: 100%;
+            .topic {float: left; width: 100%; padding: 0; margin-top:0;
+              .topic-current { padding: 5px 10px; width: 100%;
                 &::before {content:"";}
               }
               .topic-form { width:100%;
@@ -178,7 +178,8 @@
           } // #chat #center .discussion .content .events
           .input { padding-left: 10px; margin-bottom: 10px;
             .text-container {   padding-bottom: 0;
-              .text { padding: 5px 70px 5px 5px;
+              .text { padding: 5px 70px 5px 5px; height: 32px;
+                .editable { height: 20px; min-height: 20px; }
                 .avatar { display: none; }
                 .mentions-input-box textarea {   min-height: 20px; }
                 .actions { top: 4px; right: 33px; font-size: 15px;
