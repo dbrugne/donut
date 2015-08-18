@@ -45,6 +45,10 @@ module.exports.filter = function(value, maxLength) {
 };
 
 module.exports.mentions = function(string, callback) {
+
+  if (!string || string === '')
+    return callback(null, string, {});
+
   common.markupString(string, function(markups, fn) {
     if (!markups.rooms.length && !markups.users.length)
       return fn(null, markups);
