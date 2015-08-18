@@ -6,11 +6,14 @@
     <% if (user.account.email) { %>
     <p>
         <span class="labels"><%= t('account.email.label') %></span>
-        <span class="values"><%= user.account.email %> (<a href="/account/edit/email" target="_blank" id="email-modal-link"><%= t('global.change') %></a>)</span>
+        <span class="values"><%= user.account.email %></span>
+        <a href="#" id="email-modal-link"><%= t('global.change') %></a>
+        <div class="mail-form-container"></div>
     </p>
     <p>
         <span class="labels"><%= t('account.password.label') %></span>
-        <span class="values"><a href="/account/edit/password" target="_blank" id="password-modal-link"><%= t('global.change') %></a></span>
+        <a href="#" id="password-modal-link"><%= t('global.change') %></a>
+        <div class="password-form-container"></div>
     </p>
     <% } else { %>
     <p class="values">

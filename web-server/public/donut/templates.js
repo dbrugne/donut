@@ -12,6 +12,9 @@ define([
   'text!./templates/drawer-room-profile.html',
   'text!./templates/drawer-room-preferences.html',
   'text!./templates/drawer-user-account.html',
+  'text!./templates/drawer-user-account-error.html',
+  'text!./templates/drawer-user-account-password.html',
+  'text!./templates/drawer-user-account-mail.html',
   'text!./templates/drawer-user-edit.html',
   'text!./templates/drawer-user-preferences.html',
   'text!./templates/drawer-user-profile.html',
@@ -70,6 +73,9 @@ define([
   drawer_room_profile,
   drawer_room_preferences,
   drawer_user_account,
+  drawer_user_account_error,
+  drawer_user_account_password,
+  drawer_user_account_mail,
   drawer_user_edit,
   drawer_user_preferences,
   drawer_user_profile,
@@ -142,6 +148,9 @@ define([
   JST['drawer-room-profile.html']           = _.template(drawer_room_profile);
   JST['drawer-room-preferences.html']       = _.template(drawer_room_preferences);
   JST['drawer-user-account.html']           = _.template(drawer_user_account);
+  JST['drawer-user-account-error.html']     = _.template(drawer_user_account_error);
+  JST['drawer-user-account-password.html']      = _.template(drawer_user_account_password);
+  JST['drawer-user-account-mail.html']  = _.template(drawer_user_account_mail);
   JST['drawer-user-edit.html']              = _.template(drawer_user_edit);
   JST['drawer-user-preferences.html']       = _.template(drawer_user_preferences);
   JST['drawer-user-profile.html']           = _.template(drawer_user_profile);

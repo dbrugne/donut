@@ -1,0 +1,9 @@
+<span class="alert-danger glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+<span class="alert-danger password-error">
+    <% if (error == 'match') %>
+    <%= t('account.password.error.confirm') %>
+    <% else if (error == 'length') %>
+    <%= t('account.password.error.length') %>
+    <% else if (error == 'empty') %>
+    <%= t('account.email.error.empty') %>
+</span>

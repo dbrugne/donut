@@ -543,13 +543,19 @@
       "success": "Your new e-mail has been saved",
       "error": {
         "format": "Invalid e-mail",
-        "alreadyexists": "This e-mail is already used by another account"
+        "alreadyexists": "This e-mail is already used by another account",
+        "empty": "The champ is empty"
       },
-      "format": "Invalid format"
+      "format": "Invalid format",
+      "new": "New E-mail",
+      "save": "Save e-mail"
     },
     "password": {
       "label": "Your password",
       "success": "Your new password has been saved.",
+      "new": "New password",
+      "confirm": "Confirm",
+      "save": "Save password",
       "error": {
         "confirm": "Pass two passwords are not the same.",
         "length": "Password should have at least 6 characters length."

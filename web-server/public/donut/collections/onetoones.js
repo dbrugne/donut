@@ -30,6 +30,8 @@ define([
       this.listenTo(client, 'user:ban', this.onBan);
       this.listenTo(client, 'user:deban', this.onDeban);
       this.listenTo(client, 'user:message:edit', this.onMessageEdited);
+      this.listenTo(client, 'user:email:edit', this.onMailEdited);
+      this.listenTo(client, 'user:password:edit', this.onPasswordEdited);
     },
     join: function(username) {
       // we ask to server to open this one to one
@@ -189,6 +191,20 @@ define([
         return;
 
       model.trigger('messageEdit', data);
+    },
+    onMailEdited: function(data) {
+      var model = this.getModelFromEvent(data, false);
+      if (!model)
+        return;
+
+      model.trigger('mailEdit', data);
+    },
+    onPasswordEdited: function(data) {
+      var model = this.getModelFromEvent(data, false);
+      if (!model)
+        return;
+
+      model.trigger('passwordEdit', data);
     }
 
   });

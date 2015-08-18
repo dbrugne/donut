@@ -58,6 +58,8 @@ define([
       pomelo.on('user:offline',       function (data) { debug('io:in:user:offline',       data); this.trigger('user:offline',     data); }, this);
       pomelo.on('user:updated',       function (data) { debug('io:in:user:updated',       data); this.trigger('user:updated',     data); }, this);
       pomelo.on('user:preferences',   function (data) { debug('io:in:user:preferences',   data); this.trigger('user:preferences', data); }, this);
+      pomelo.on('user:email:edit',    function (data) { debug('io:in:user:email:edit',    data); this.trigger('user:email:edit',  data); }, this);
+      pomelo.on('user:password:edit', function (data) { debug('io:in:user:password:edit', data); this.trigger('user:password:edit',data); }, this);
       pomelo.on('user:viewed',        function (data) { debug('io:in:user:viewed',        data); this.trigger('user:viewed',      data); }, this);
       pomelo.on('user:ban',           function(data) { debug('io:in:user:ban',            data); this.trigger('user:ban',         data); }, this);
       pomelo.on('user:deban',         function(data) { debug('io:in:user:deban',          data); this.trigger('user:deban',       data); }, this);
@@ -555,6 +557,32 @@ define([
           return fn(response);
         }
       );
+    },
+    userChangeMail: function (user_id, mail, fn) {
+      var data = {user_id: user_id, user_new_mail: mail};
+      pomelo.request(
+        'chat.userAccountHandler.mail',
+        data,
+      function (response) {
+        if (response.err)
+          return debug('io:in:user:email:edit error: ', response);
+
+        debug('io:in:user:email:edit', response);
+        return fn(response);
+      });
+    },
+    userChangePassword: function (user_id, password, fn) {
+      var data = {user_id: user_id, user_password: password};
+      pomelo.request(
+        'chat.userAccountHandler.password',
+        data,
+        function (response) {
+          if (response.err)
+            return debug('io:in:user:password:edit error: ', response);
+
+          debug('io:in:user:password:edit', response);
+          return fn(response);
+        });
     },
     userViewed: function (username, events) {
       var data = {username: username, events: events};
