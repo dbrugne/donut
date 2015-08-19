@@ -10,31 +10,23 @@
                 <% if (type === 'users') { %>
                     <% _.each(results, function(result) { %>
                     <li class="tab_complete_ui_item <%= nb == 0 ? 'active' : '' %>" data-index="<%= nb %>">
+                        <% if (type === 'users') { %>
                         <img class="avatar" src="<%= result.avatarUrl %>">
                         <span class="username value">@<%= result.username  %></span><span class="presence <%= result.status %>"></span>
                         <span class="realname"><%= result.bio  %></span>
-                    </li>
-                    <% nb++; %>
-                    <% }); %>
-                <% } %>
-                <% if (type === 'rooms') { %>
-                    <% _.each(results, function(result) { %>
-                        <li class="tab_complete_ui_item <%= nb == 0 ? 'active' : '' %>" data-index="<%= nb %>">
-                            <img class="avatar" src="<%= result.avatarUrl %>">
-                            <span class="name value"><%= result.name %></span>
-                        </li>
-                    <% nb++; %>
-                    <% }); %>
-                <% } %>
-                <% if (type === 'commands') { %>
-                    <% _.each(results, function(result) { %>
-                    <li class="tab_complete_ui_item <%= nb == 0 ? 'active' : '' %>" data-index="<%= nb %>">
+                        <% }); %>
+                        <% if (type === 'rooms') { %>
+                        <img class="avatar" src="<%= result.avatarUrl %>">
+                        <span class="name value"><%= result.name %></span>
+                        <% }); %>
+                        <% if (type === 'commands') { %>
                         <div class="cmd-left-td">
                             <span class="name value">/<%= result.name %></span>
                             <span class="args"><%= result.arguments %></span>
                         </div>
                         <div class="cmd-right-td"><span class="cmddesc"><span class="cmdtype"></span> <%= result.description %></span>
                         </div>
+                        <% }); %>
                     </li>
                     <% nb++; %>
                     <% }); %>
