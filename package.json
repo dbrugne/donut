@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "description": "DONUT is a social chatroom platform based on nodejs, pomelojs, socket.io and backbone",
   "private": true,
+  "scripts": {
+    "test": "mocha"
+  },
   "repository": "https://github.com/dbrugne/donut",
   "dependencies": {
     "async": "1.x",
@@ -60,6 +63,7 @@
     "grunt-mongo-backup": "0.0.2",
     "grunt-prompt": "^1.3.0",
     "grunt-ssh": "^0.12.3",
-    "grunt-untar": "0.0.1"
+    "grunt-untar": "0.0.1",
+    "chai": "latest"
   }
 }
