@@ -29,7 +29,7 @@ handler.read = function(data, session, next) {
 				return callback('require username is mandatory');
 
       if (!readUser)
-        return callback('unable to retrieve user: ' + data.username);
+        return callback('not retrieve');
 
 			return callback(null);
 		},

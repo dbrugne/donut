@@ -209,7 +209,9 @@ define([
         'chat.roomReadHandler.read',
         data,
         function (response) {
-          if (response.err)
+          if (response.err && response.err === 'not retrieve')
+            debug('io:in:room:read error: ', response);
+          else if (response.err)
             return debug('io:in:room:read error: ', response);
 
           debug('io:in:room:read', response);
@@ -503,7 +505,9 @@ define([
         'chat.userReadHandler.read',
         data,
         function (response) {
-          if (response.err)
+          if (response.err && response.err === 'not retrieve')
+            debug('io:in:user:read error: ', response);
+          else if (response.err)
             return debug('io:in:user:read error: ', response);
 
           debug('io:in:user:read', response);

@@ -350,6 +350,10 @@
       "placeholder": "Nom du donut",
       "submit": "Créer le donut"
     },
+    "alert": {
+      "roomprofile": "Attention, le donut __roomname__ n'existe pas!",
+      "userprofile": "Attention, l'utilisateur @__username__ n'existe pas!"
+    },
     "help": "Aide",
     "placeholder": "Déplacer ici",
     "createadonut": "Nouveau",
@@ -425,8 +429,9 @@
       "voice": "Rend la parole à un utilisateur",
       "devoice": "Rend muet un utilisateur",
       "msg": "Envoie un message dans un donut ou à un utilisateur",
+      "profile": "Affiche le profil du donut ou de l'utilisateur",
       "me": "Envoie un message d'action",
-      "ping": "ping",
+      "ping": "Temps de réponse client/serveur en milliseconds",
       "help": "Manuel des commandes"
     },
     "notifications": {

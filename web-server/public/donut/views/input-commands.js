@@ -64,6 +64,11 @@ define([
         help: '@username/#donut message',
         description: 'chat.commands.msg'
       },
+      profile: {
+        parameters: 'usernameName',
+        help: '@username/#donut',
+        description: 'chat.commands.profile'
+      },
       me: {
         parameters: 'message',
         help: 'message',
@@ -86,14 +91,14 @@ define([
       helpCommand: /^\/([a-zA-Z]+)/,
       name : /(^[#][\w-.|^]+)/,
       username : /^[@]([\w-.|^]+)/,
+      usernameName : /^([@#][\w-.|^]+)/,
       usernameNameMsg: /^([@#][\w-.|^]+)\s+(.+)/
     },
 
     initialize: function(options) {
-
+      this.render();
     },
     render: function() {
-
       return this;
     },
 
@@ -200,6 +205,19 @@ define([
       else {
         parameters[1] = parameters[1].replace(/^@/, '');
         client.userMessage(parameters[1], parameters[2], null);
+      }
+    },
+
+    profile: function(parameters) {
+
+      if (!parameters)
+        return;
+
+      if ((/^#/.test(parameters[1])))
+        currentUser.trigger('roomProfileCommand', parameters[1]);
+      else {
+        parameters[1] = parameters[1].replace(/^@/, '');
+        currentUser.trigger('userProfileCommand', parameters[1]);
       }
     },
 

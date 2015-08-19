@@ -329,6 +329,10 @@
       "placeholder": "Donut name",
       "submit": "Create"
     },
+    "alert": {
+      "roomprofile": "Warning, the donut __roomname__ doesn't exist!",
+      "userprofile": "Warning, the user @__username__ doesn't exist!"
+    },
     "help": "Help",
     "placeholder": "Place here",
     "createadonut": "Create a donut",
@@ -404,8 +408,9 @@
       "voice": "Makes speech to user",
       "devoice": "Mutes an user",
       "msg": "Send a message in a donut or to an user",
+      "profile": "Shows the profile of the donut or user",
       "me": "Send a action message",
-      "ping": "ping",
+      "ping": "Response client/server time in milliseconds",
       "help": "Manual of commands"
     },
     "notifications": {

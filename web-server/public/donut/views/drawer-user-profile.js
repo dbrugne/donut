@@ -27,6 +27,12 @@ define([
 
       var that = this;
       client.userRead(this.username, function(data) {
+        if (data.err === 'not retrieve') {
+          that.mainView.alert('warning', $.t('chat.alert.userprofile', {username: that.username}));
+          that.mainView.drawerView._hide();
+          return;
+        }
+
         that.onResponse(data);
       });
     },

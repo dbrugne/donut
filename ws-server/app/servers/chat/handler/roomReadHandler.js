@@ -25,7 +25,7 @@ handler.read = function(data, session, next) {
 				return callback('name is mandatory');
 
 			if (!room)
-				return callback('unable to retrieve room: ' + data.name);
+				return callback('not retrieve');
 
 			return callback(null);
 		},
@@ -119,8 +119,10 @@ handler.read = function(data, session, next) {
 		}
 
 	], function(err, roomData) {
-		if (err)
+		if (err) {
+			logger.error('[room:read] ' + err);
 			return next(null, {code: 500, err: err});
+		}
 
 		return next(null, roomData);
 	});

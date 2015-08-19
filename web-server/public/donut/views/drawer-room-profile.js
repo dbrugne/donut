@@ -25,6 +25,11 @@ define([
         // ask for data
         var that = this;
         client.roomRead(this.roomName, function(data) {
+          if (data.err === 'not retrieve') {
+            that.mainView.alert('warning', $.t('chat.alert.roomprofile', {roomname: that.roomName}));
+            that.mainView.drawerView._hide();
+            return;
+          }
           that.onResponse(data);
         });
       },
