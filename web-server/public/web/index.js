@@ -13,7 +13,7 @@ require('./web-plugins');
 var i18next = require('i18next-client');
 var moment = require('moment');
 var cloudinary = require('cloudinary_js');
-require('../../../shared/cloudinary/jquery.cloudinary'); // work as a jQuery plugin
+require('../../../shared/cloudinary/cloudinary');
 
 var app = require('./app');
 
