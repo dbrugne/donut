@@ -14,16 +14,9 @@ define([
 
     id: 'user-account',
 
-    mailView: '',
-
-    passwordView: '',
-
     user: '',
 
-    events: {
-      'click #email-modal-link'     : 'onShowFormEmail',
-      'click #password-modal-link'  : 'onShowFormPassword',
-    },
+    events: {},
 
     initialize: function(options) {
       this.mainView = options.mainView;
@@ -57,24 +50,14 @@ define([
       this.$el.find('.user').colorify();
 
       this.mailView = new ViewMail ({
-        el : this.$(".mail-form-container"),
+        el : this.$(".mail-form"),
         model: this.model
       });
 
       this.passwordView = new ViewPassword ({
-        el : this.$(".password-form-container"),
+        el : this.$(".password-form"),
         model: this.model
       });
-    },
-
-    onShowFormPassword: function() {
-      this.$('#password-modal-link').hide();
-      this.passwordView.render();
-    },
-
-    onShowFormEmail: function() {
-      this.$('#email-modal-link').hide();
-      this.mailView.render();
     }
 
   });

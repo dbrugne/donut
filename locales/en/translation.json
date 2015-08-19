@@ -544,6 +544,7 @@
       "error": {
         "format": "Invalid e-mail",
         "alreadyexists": "This e-mail is already used by another account",
+        "alreadyyours": "You already use this e-mail",
         "empty": "The champ is empty"
       },
       "format": "Invalid format",

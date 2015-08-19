@@ -4,15 +4,15 @@ define([
   'backbone',
   'client',
   'models/current-user',
-  'views/drawer-user-account-error',
   '_templates'
-], function ($, _, Backbone, client ,currentUser, ViewError, templates) {
+], function ($, _, Backbone, client ,currentUser, templates) {
   var DrawerUserEditPasswordView = Backbone.View.extend({
 
     template: templates['drawer-user-account-password.html'],
 
     events: {
-      'submit .form-password'  : 'onSubmitPassword'
+      'submit .form-password'       : 'onSubmitPassword',
+      'click #password-modal-link'  : 'onShowFormPassword'
     },
 
     initialize: function(options) {
@@ -22,10 +22,6 @@ define([
     render: function() {
       this.$el.html(this.template());
 
-      this.errorView = new ViewError ({
-        el : this.$('.error-password'),
-        model: this.model
-      });
 
       return this;
     },
@@ -39,10 +35,10 @@ define([
       }
       else if (this.$('.input-password').val().length >= 6) {
         this.$('.form-password').addClass('has-error');
-        this.errorView.render('match');
+        //this.errorView.render('match');
       } else {
         this.$('.form-password').addClass('has-error');
-        this.errorView.render('length');
+        //this.errorView.render('length');
       }
     }
 

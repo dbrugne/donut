@@ -2,6 +2,7 @@ var logger = require('../../../../pomelo-logger').getLogger('donut', __filename)
 var async = require('async');
 var _ = require('underscore');
 var User = require('../../../../../shared/models/user');
+var emailer = require('../../../../../shared/io/emailer');
 var validator = require('validator');
 
 var Handler = function (app) {
@@ -20,8 +21,6 @@ handler.email = function (data, session, next) {
 
   var that = this;
 
-  var error = '';
-
   async.waterfall([
 
     function check(callback) {
@@ -29,27 +28,33 @@ handler.email = function (data, session, next) {
         return callback('id is mandatory');
 
       if (!validator.isEmail(data.user_new_mail))
-        error += data.user_mail + ' isn\'t a mail ';
+        return callback('wrong-format');
+
+      if (data.user_new_mail === user.local.email)
+        return callback('same-mail');
+
+      return callback(null);
     },
 
-    function sendToUserSockets(callback) {
-      var emailEvent = {
-        from_user_id  : user.id,
-        from_username : user.username,
-        from_avatar   : user._avatar(),
-        to_user_id    : user.id,
-        to_username   : user.username,
-        time          : Date.now()
-      };
-      that.app.globalChannelService.pushMessage('connector', 'user:email:edit', emailEvent, 'user:' + user.id, {}, callback);
+    function mail(callback) {
+      var email = data.user_new_mail;
+      user.local.email = email.toLowerCase();
+      user.save(function() {
+        emailer.emailChanged(user.local.email, function(err) {
+          if (err)
+            return console.log('Unable to sent email changed email: '+err);
+        });
+      });
+      return callback(null);
     }
 
-  ], function (err) {
+  ], function(err) {
     if (err) {
-      logger.error('[user:email] ' + err);
+      logger.error('[user:email:edit] ' + err);
+      return next(null, { code: 500, err: err });
     }
 
-    next(err);
+    return next(null, {});
   });
 };
 
@@ -71,11 +76,12 @@ handler.password = function (data, session, next) {
       that.app.globalChannelService.pushMessage('connector', 'user:password:edit', emailEvent, 'user:' + user.id, {}, callback);
     }
 
-  ], function (err) {
+  ], function(err) {
     if (err) {
-      logger.error('[user:password] ' + err);
+      logger.error('[user:password:edit] ' + err);
+      return next(null, { code: 500, err: err });
     }
 
-    next(err);
+    return next(null, read);
   });
 };

@@ -561,13 +561,13 @@ define([
     userChangeMail: function (user_id, mail, fn) {
       var data = {user_id: user_id, user_new_mail: mail};
       pomelo.request(
-        'chat.userAccountHandler.mail',
+        'chat.userAccountHandler.email',
         data,
       function (response) {
         if (response.err)
-          return debug('io:in:user:email:edit error: ', response);
-
-        debug('io:in:user:email:edit', response);
+          debug('io:in:user:email:edit error: ', response);
+        else
+          debug('io:in:user:email:edit', response);
         return fn(response);
       });
     },

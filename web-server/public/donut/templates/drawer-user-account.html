@@ -4,17 +4,17 @@
 <div class="group">
     <div class="title"><%= t('account.emailandpassword.label') %></div>
     <% if (user.account.email) { %>
-    <p>
+    <div class="mail-form">
         <span class="labels"><%= t('account.email.label') %></span>
-        <span class="values"><%= user.account.email %></span>
+        <span class="values email-user"><%= user.account.email %></span>
         <a href="#" id="email-modal-link"><%= t('global.change') %></a>
         <div class="mail-form-container"></div>
-    </p>
-    <p>
+    </div>
+    <div class="password-form">
         <span class="labels"><%= t('account.password.label') %></span>
         <a href="#" id="password-modal-link"><%= t('global.change') %></a>
         <div class="password-form-container"></div>
-    </p>
+    </div>
     <% } else { %>
     <p class="values">
         <%= t('account.emailandpassword.help') %>
