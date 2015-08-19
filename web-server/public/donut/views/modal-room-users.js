@@ -14,8 +14,7 @@ define([
     template: templates['room-users-list.html'],
 
     events: {
-      //"hidden.bs.modal"                     : "onHide"//,
-      //"click .nothing, .list .room .join"   : "onClose"
+      "click .open-user-profile"   : "hide"
     },
 
     callback: null,
@@ -26,11 +25,15 @@ define([
       });
     },
 
-    render: function(data) {
+    render: function() {
+      if (!this.collection || !this.collection.models || this.collection.models.length == 0)
+        return this;
+
       var users = [];
-      _.each(data.users, function(user) {
-        user.avatar = $.cd.userAvatar(user.avatar, 30);
-        users.push(user);
+      _.each(this.collection.models, function(o) {
+        var u = o.toJSON();
+        u.avatar = $.cd.userAvatar(u.avatar, 34);
+        users.push(u);
       });
 
       var html = this.template({

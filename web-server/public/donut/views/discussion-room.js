@@ -87,6 +87,12 @@ define([
      * User actions methods
      */
 
+    _showUserListModal: function() {
+      if (this.topicView.isUserModelRequired()) {
+        this.topicView.loadUserModal();
+      }
+    },
+
     opUser: function(event) {
       event.preventDefault();
       if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin())
@@ -99,7 +105,7 @@ define([
       var that = this;
       confirmationView.open({}, function() {
         client.roomOp(that.model.get('name'), username);
-      });
+      }, function () { that._showUserListModal()});
     },
     deopUser: function(event) {
       event.preventDefault();
@@ -113,7 +119,7 @@ define([
       var that = this;
       confirmationView.open({}, function() {
         client.roomDeop(that.model.get('name'), username);
-      });
+      }, function () { that._showUserListModal()});
     },
     kickUser: function(event) {
       event.preventDefault();
@@ -127,7 +133,7 @@ define([
       var that = this;
       confirmationView.open({ input: true }, function(reason) {
         client.roomKick(that.model.get('name'), username, reason);
-      });
+      }, function () { that._showUserListModal()});
     },
     banUser: function(event) {
       event.preventDefault();
@@ -141,7 +147,7 @@ define([
       var that = this;
       confirmationView.open({ input: true }, function(reason) {
         client.roomBan(that.model.get('name'), username, reason);
-      });
+      }, function () { that._showUserListModal()});
     },
     voiceUser: function(event) {
       event.preventDefault();
@@ -152,6 +158,7 @@ define([
         return;
 
       client.roomVoice(this.model.get('name'), username);
+      this._showUserListModal();
     },
     devoiceUser: function(event) {
       event.preventDefault();
@@ -165,7 +172,7 @@ define([
       var that = this;
       confirmationView.open({ input: true }, function(reason) {
         client.roomDevoice(that.model.get('name'), username, reason);
-      });
+      }, function () { that._showUserListModal()});
     },
 
     /**

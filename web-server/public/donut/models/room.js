@@ -275,7 +275,7 @@ define([
     onViewed: function (data) {
       this.trigger('viewed', data);
     },
-    fetchUsers: function() {
+    fetchUsers: function(callback) {
       var that = this;
       client.roomUsers(this.get('name'), function(data) {
         that.users.reset();
@@ -285,6 +285,9 @@ define([
         });
         that.users.sort(); // sort after batch addition to collection to avoid performance issue
         that.users.trigger('users-redraw');
+
+        if (callback)
+          return callback();
       });
     },
 

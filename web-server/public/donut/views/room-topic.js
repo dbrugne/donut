@@ -24,15 +24,17 @@ define([
         }
       }
     },
-    initialize: function() {
+    initialize: function () {
       this.listenTo(this.model, 'change:topic', this.updateTopic);
       this.render();
+      this.$drawerUsers = this.$el.find('.drawer-users');
     },
-    render: function() {
+    render: function () {
       this.$el.html(this.template({
         isOwner: this.model.currentUserIsOwner(),
         isOp: this.model.currentUserIsOp(),
-        isAdmin: this.model.currentUserIsAdmin()
+        isAdmin: this.model.currentUserIsAdmin(),
+        roomName: this.model.get('name')
       }));
 
       this.$el.find('.topic-current, .topic-form').hide();
@@ -63,15 +65,16 @@ define([
 
       this.roomUsersModalView = new RoomUsersModalView({
         el: this.$el.find('#user-modal'),
-        model: this.model
+        model: this.model,
+        collection: this.model.users
       });
 
       return this;
     },
-    updateTopic: function(room, topic, options) {
+    updateTopic: function (room, topic, options) {
       this.render();
     },
-    showForm: function() {
+    showForm: function () {
       if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin())
         return false;
 
@@ -80,11 +83,11 @@ define([
       this.$el.find('.topic-form').css('display', 'block');
       this.$el.find('.topic-input').val(topic).focus();
     },
-    hideForm: function() {
+    hideForm: function () {
       this.$el.find('.topic-form').hide();
       this.$el.find('.topic-current').css('display', 'inline-block');
     },
-    sendNewTopic: function(event) {
+    sendNewTopic: function (event) {
       if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin()) return false;
 
       var newTopic = this.$el.find('.topic-input').val();
@@ -103,19 +106,22 @@ define([
       this.$el.find('.topic-input').val('');
       this.hideForm();
     },
-    _remove: function() {
+    _remove: function () {
       this.remove();
     },
 
-    loadUserModal: function(event) {
-      event.preventDefault();
-      this.roomUsersModalView.show();
-      client.roomUsers(this.model.get('name'), _.bind(function(data) {
-        if (!data || !data.users)
-          return this.roomUsersModalView.hide();
+    loadUserModal: function (event) {
+      if (event)
+        event.preventDefault();
 
-        this.roomUsersModalView.render(data);
+      this.roomUsersModalView.show();
+      this.model.fetchUsers(_.bind(function () {
+        this.roomUsersModalView.render();
       }, this));
+    },
+
+    isUserModelRequired: function () {
+      return this.$drawerUsers.is(':visible');
     }
 
   });

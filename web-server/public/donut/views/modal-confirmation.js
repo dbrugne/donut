@@ -8,10 +8,12 @@ define([
     el: $('#confirmation'),
 
     events: {
-      "click .buttons .confirm": "onConfirm"
+      "click .buttons .confirm": "onConfirm",
+      "click .buttons .cancel": "onCancel"
     },
 
     callback: null,
+    cancelCallback: null,
 
     options: null,
 
@@ -43,18 +45,22 @@ define([
       this.$inputBlock.show();
       this.$input.val('');
       this.callback = null;
+      this.cancelCallback = null;
       this.options = null;
 
       // unbind 'enter'
       $(document).off('keypress');
     },
-    open: function(options, callback) {
+    open: function(options, callback, cancelCallback) {
+      $('.modal').modal('hide');
+
       if (!this.isRendered) {
         this.render();
       }
 
       this.options = options || {};
       this.callback = callback;
+      this.cancelCallback = cancelCallback;
 
       // input field
       if (this.options.input)
@@ -79,8 +85,14 @@ define([
       this.callback(input);
       this.$el.modal('hide');
       this._reset();
-    }
+    },
+    onCancel: function() {
+      var callback = this.cancelCallback; // Required here because .modal('hide') also reset
+      this.$el.modal('hide');
 
+      if (callback)
+        return callback();
+    }
   });
 
   return new ConfirmationModalView();

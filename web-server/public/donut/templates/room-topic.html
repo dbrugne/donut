@@ -13,7 +13,7 @@
         </span>
     </div>
 </div>
-<a href="#" class="drawer-users visible-xs visible-sm" data-colorify-text="contrast" data-colorify-background="color">
+<a href="#" class="drawer-users visible-xs visible-sm" data-colorify-text="contrast" data-colorify-background="color" data-room-name="<%= roomName %>">
     <i class="icon icon-users"></i>
 </a>
 <div id="user-modal" class="modal fade" role="dialog" aria-labelledby="userModal" aria-hidden="true">
@@ -24,8 +24,13 @@
             </div>
             <div class="modal-body">
                 <ul class="list">
-                    <li><i class="icon icon-spinner icon-spin center-block" style=" font-size: 24px; "></i></li>
+                    <li class="loader">
+                        <div style=" margin: 0 auto; display: block; width: 24px; ">
+                            <i class="icon icon-spinner icon-spin center-block" style=" font-size: 24px; "></i>
+                        </div>
+                    </li>
                 </ul>
+                <div class="clearfix"></div>
             </div>
             <!--<div class="modal-footer">-->
                     <!--<span class="checkbox">-->
