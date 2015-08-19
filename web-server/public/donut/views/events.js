@@ -898,7 +898,6 @@ define([
         return;
       this.messageUnderEdition.remove();
       this.messageUnderEdition = null;
-      this.model.trigger('inputFocus');
     },
 
     /*****************************************************************************************************************
