@@ -22,6 +22,7 @@ var conf = require('../config/index');
 var debugMiddleware = require('./app/middlewares/debug');
 var facebookLocale = require('./app/middlewares/facebooklocale');
 var cors = require('cors');
+var browserifyMiddleware = require('browserify-middleware');
 
 /****************************************************************************
  * Order of middleware is VERY important to avoid useless computing/storage *
@@ -37,6 +38,34 @@ app.use(express.static(path.join(__dirname, '../node_modules/socket.io-client'))
 app.use(express.static(path.join(__dirname, '../shared/cloudinary'))); // cloudinary common logic
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(logger('dev'));
+
+// donut web client @todo dbr move in dedicated route, only for dev
+var router = express.Router();
+//router.get('/web.js', browserifyMiddleware(__dirname + '/public/web/index.js', {
+//  transform: ['jstify'],
+//  debug: false, // middleware
+//  minify: false, // middleware
+//  noMinify: true, // jstify, important: avoid crash with html minification and <div <%= foo %>> construction
+//  cache: 'nocache', // middleware
+//  precompile: false, // middleware
+//  detectGlobals: false, // middleware
+//  basedir: '/www/donut', // middleware
+//  noParse: ['jquery'] // middleware
+//}));
+//router.get('/tpl.js', browserifyMiddleware(__dirname + '/public/web/templates.js', {
+//  transform: ['jstify'],
+//  debug: false, // middleware
+//  minify: false, // middleware
+//  noMinify: true, // jstify, important: avoid crash with html minification and <div <%= foo %>> construction
+//  cache: false, // middleware
+//  precompile: false, // middleware
+//  detectGlobals: false, // middleware
+//  //basedir: '/www/donut', // middleware
+//  noParse: ['jquery'] // middleware
+//}));
+//app.use(router);
+
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(expressValidator()); // must be immediately after bodyParser()
 app.use(cookieParser());
