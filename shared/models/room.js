@@ -1,7 +1,7 @@
 var debug = require('debug')('shared:models:room');
 var _ = require('underscore');
 var mongoose = require('../io/mongoose');
-var common = require('donut-common');
+var common = require('@dbrugne/donut-common');
 
 var roomSchema = mongoose.Schema({
 

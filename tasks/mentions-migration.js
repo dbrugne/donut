@@ -3,7 +3,7 @@ var _ = require('underscore');
 //var RoomModel = require('../shared/models/room');
 //var UserModel = require('../shared/models/user');
 var HistoryRoomModel = require('../shared/models/historyroom');
-var common = require('donut-common');
+var common = require('@dbrugne/donut-common');
 
 module.exports = function(grunt) {
 
