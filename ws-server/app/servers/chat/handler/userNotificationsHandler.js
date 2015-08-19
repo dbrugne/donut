@@ -3,7 +3,7 @@ var async = require('async');
 var _ = require('underscore');
 var NotificationModel = require('../../../../../shared/models/notification');
 var Notifications = require('../../../components/notifications');
-var common = require('donut-common');
+var common = require('@dbrugne/donut-common');
 
 var Handler = function (app) {
   this.app = app;

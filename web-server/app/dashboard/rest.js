@@ -8,7 +8,7 @@ var User = require('../../../shared/models/user');
 var HistoryRoom = require('../../../shared/models/historyroom');
 var HistoryOne = require('../../../shared/models/historyone');
 var Logs = require('../../../shared/models/log');
-var common = require('donut-common');
+var common = require('@dbrugne/donut-common');
 
 var isAdmin = function(req, res, next) {
   if (!req.isAuthenticated() || req.user.admin !== true) {

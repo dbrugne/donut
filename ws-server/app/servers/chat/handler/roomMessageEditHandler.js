@@ -3,7 +3,7 @@ var async = require('async');
 var _ = require('underscore');
 var inputUtil = require('../../../util/input');
 var conf = require('../../../../../config');
-var common = require('donut-common');
+var common = require('@dbrugne/donut-common');
 var Notifications = require('../../../components/notifications');
 
 var Handler = function(app) {
