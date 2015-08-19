@@ -5,7 +5,7 @@ var RoomModel = require('../../../../../shared/models/room');
 var UserModel = require('../../../../../shared/models/user');
 var HistoryRoomModel = require('../../../../../shared/models/historyroom');
 var HistoryOneModel = require('../../../../../shared/models/historyone');
-var common = require('donut-common');
+var common = require('@dbrugne/donut-common');
 
 var Filter = function() {
 };

@@ -4,7 +4,7 @@ var User = require('../../../shared/models/user');
 var isLoggedIn = require('../middlewares/isloggedin');
 var i18next = require('../../../shared/util/i18next');
 var emailer = require('../../../shared/io/emailer');
-var common = require('donut-common');
+var common = require('@dbrugne/donut-common');
 
 var validateInput = function(req, res, next) {
   req.checkBody(['user','fields','email'], i18next.t("account.email.error.format")).isEmail();

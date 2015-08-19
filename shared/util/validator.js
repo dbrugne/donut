@@ -1,6 +1,6 @@
 var expressValidator = require('express-validator');
 var User = require('../models/user');
-var common = require('donut-common');
+var common = require('@dbrugne/donut-common');
 
 /**
  * Custom validators and sanitizers
