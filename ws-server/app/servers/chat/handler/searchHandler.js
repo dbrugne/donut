@@ -4,7 +4,7 @@ var _ = require('underscore');
 var User = require('../../../../../shared/models/user');
 var Room = require('../../../../../shared/models/room');
 var diacritic2ascii = require('../../../../../shared/util/diacritic2ascii');
-var common = require('donut-common');
+var common = require('@dbrugne/donut-common');
 
 var Handler = function(app) {
 	this.app = app;

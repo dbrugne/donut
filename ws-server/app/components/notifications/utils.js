@@ -5,7 +5,7 @@ var RoomModel = require('../../../../shared/models/room');
 var HistoryOneModel = require('../../../../shared/models/historyone');
 var HistoryRoomModel = require('../../../../shared/models/historyroom');
 var conf = require('../../../../config/index');
-var common = require('donut-common');
+var common = require('@dbrugne/donut-common');
 
 module.exports = {
 
@@ -97,7 +97,7 @@ module.exports = {
     };
   },
 
-  mentionTemplate: _.template('<strong><% if (mention.type === \'room\') { %><a href="'+conf.url+'/room/<%= mention.title.replace(\'#\', \'\') %>" style="<%= options.style %>"><%= mention.title %></a><% } else if (mention.type === \'user\') { %><a href="'+conf.url+'/user/<%= mention.title.replace(\'@\', \'\') %>" style="<%= options.style %>"><%= mention.title %></a><% } %></strong>'),
+  mentionTemplate: _.template('<strong><% if (markup.type === \'room\') { %><a href="'+conf.url+'/room/<%= markup.title.replace(\'#\', \'\') %>" style="<%= options.style %>"><%= markup.title %></a><% } else if (markup.type === \'user\') { %><a href="'+conf.url+'/user/<%= markup.title.replace(\'@\', \'\') %>" style="<%= options.style %>"><%= markup.title %></a><% } %></strong>'),
 
   mentionize: function(string, options) {
     options.template = this.mentionTemplate;

@@ -39,7 +39,7 @@ define([
     events: {
       'keyup .editable': 'onKeyUp',
       'keydown .editable': 'onKeyDown',
-      'click .send': 'sendMessage',
+      ''click .send': 'onSubmitMessage',
       'click .add-image': 'onAddImage',
       'click .remove-image': 'onRemoveImage',
       'click .add-smiley': 'onOpenSmiley',
@@ -88,14 +88,22 @@ define([
         this.$el.removeClass('inactive');
     },
 
+    onFocus: function() {
+      if (this.$editable)
+        this.$editable.focus();
+    },
+
     onAvatar: function(model, value, options) {
       this.$el.find('.avatar').prop('src', $.cd.userAvatar(value, 80));
     },
+    
 
-    onFocus: function() {
-      this.$editable.focus();
+    onSubmitMessage: function(event) {
+      event.preventDefault();
+      this.sendMessage();
     },
-    onAddImage: function (event) {
+
+    onAddImage: function(event) {
       event.preventDefault();
 
       // @doc: http://cloudinary.com/documentation/upload_widget#setup
@@ -256,14 +264,14 @@ define([
 
     sendMessage: function(event) {
       var message = this.$editable.val();
-
+      
+      var trimmedMessage = message.trim(); // only white character message detection
       var imagesCount = _.keys(this.images).length;
-      if (message == '' && imagesCount < 1) // empty message and no image
+      if (trimmedMessage === '' && imagesCount < 1) // empty message and no image
         return false;
 
       // check length (max)
       // @todo: replace with a "withoutSmileysCodes" logic
-      //var withoutMentions = message.replace(/@\[([^\]]+)\]\(user:[^\)]+\)/gi, '$1');
       if (message.length > 512) {
         debug('message is too long');
         return false;
@@ -271,7 +279,7 @@ define([
 
       // add images
       var images = [];
-      if (imagesCount > 0) {
+      if (imagesCount > 0)
         _.each(this.images, function(i) {
           images.push({
             public_id: i.public_id,
@@ -279,7 +287,7 @@ define([
             path: i.path
           });
         });
-      }
+      
       // Send message to server
       this.model.sendMessage(message, images);
       this.trigger('send');
