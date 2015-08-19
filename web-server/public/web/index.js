@@ -96,7 +96,6 @@ $('[data-toggle="contactform"]').contactform({});
 //  autoClose: 3000
 //});
 
-// @todo : mount mainview, $, _ on windows only on debug mode
 // make i18next available from all underscore templates views (<%= t('key') %>)window.t = i18next.t; // @global
 $.t = global.t = i18next.t; // @global
 window.$ = window.jQuery = $;
