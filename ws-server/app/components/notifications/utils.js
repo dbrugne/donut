@@ -5,7 +5,7 @@ var RoomModel = require('../../../../shared/models/room');
 var HistoryOneModel = require('../../../../shared/models/historyone');
 var HistoryRoomModel = require('../../../../shared/models/historyroom');
 var conf = require('../../../../config/index');
-var common = require('donut-common');
+var common = require('@dbrugne/donut-common');
 
 module.exports = {
 

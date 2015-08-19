@@ -3,7 +3,7 @@ var router = express.Router();
 var passport = require('../../../shared/authentication/passport');
 var User = require('../../../shared/models/user');
 var i18next = require('../../../shared/util/i18next');
-var common = require('donut-common');
+var common = require('@dbrugne/donut-common');
 
 var validateEmail = function(req, res, next) {
   req.checkBody('email', i18next.t("account.email.error.format")).isEmail();
