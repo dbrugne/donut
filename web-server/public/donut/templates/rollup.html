@@ -6,8 +6,8 @@
         <div class="monkey_scroll_hider " style="width: 100%;">
             <div id="chat_input_tab_ui_scroller" class="tab_complete_ui_scroller monkey_scroller">
                 <% var nb = 0; %>
+                <ul class="type_<%= type %>">
                 <% if (type === 'users') { %>
-                <ul class="type_members">
                     <% _.each(results, function(result) { %>
                     <li class="tab_complete_ui_item <%= nb == 0 ? 'active' : '' %>" data-index="<%= nb %>">
                         <img class="avatar" src="<%= result.avatarUrl %>">
@@ -16,34 +16,30 @@
                     </li>
                     <% nb++; %>
                     <% }); %>
-                </ul>
                 <% } %>
                 <% if (type === 'rooms') { %>
-                <ul class="type_channels">
                     <% _.each(results, function(result) { %>
                         <li class="tab_complete_ui_item <%= nb == 0 ? 'active' : '' %>" data-index="<%= nb %>">
                             <img class="avatar" src="<%= result.avatarUrl %>">
-                            <span class="channelname value"><%= result.name %></span>
+                            <span class="name value"><%= result.name %></span>
                         </li>
                     <% nb++; %>
                     <% }); %>
-                </ul>
                 <% } %>
                 <% if (type === 'commands') { %>
-                <ul class="type_cmds">
                     <% _.each(results, function(result) { %>
                     <li class="tab_complete_ui_item <%= nb == 0 ? 'active' : '' %>" data-index="<%= nb %>">
                         <div class="cmd-left-td">
-                            <span class="cmdname value">/<%= result.name %></span>
-                            <span class="argname"><%= result.arguments %></span>
+                            <span class="name value">/<%= result.name %></span>
+                            <span class="args"><%= result.arguments %></span>
                         </div>
                         <div class="cmd-right-td"><span class="cmddesc"><span class="cmdtype"></span> <%= result.description %></span>
                         </div>
                     </li>
                     <% nb++; %>
                     <% }); %>
-                </ul>
                 <% } %>
+                </ul>
             </div>
         </div>
     </div>
