@@ -43,8 +43,6 @@
     "pomelo-status-plugin": "dbrugne/pomelo-status-plugin",
     "redis": "0.x",
     "redisscan": "^1.1.0",
-    "sanitize-caja": "0.x",
-    "sanitize-html": "1.x",
     "serve-favicon": "2.x",
     "sitemap": "1.x",
     "socket.io": "1.x",
