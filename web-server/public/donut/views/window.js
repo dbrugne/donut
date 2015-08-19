@@ -10,8 +10,6 @@ define([
 ], function ($, _, Backbone, common, client, currentUser, rooms, onetoones) {
   var WindowView = Backbone.View.extend({
 
-    el: $(window),
-
     focused: true,
 
     defaultTitle: '',
@@ -30,6 +28,7 @@ define([
     },
 
     initialize: function (options) {
+      this.$el = $(window); // cannot use' window' on loading step due to browserify
       this.$window = this.$el;
       this.$document = $(document);
 

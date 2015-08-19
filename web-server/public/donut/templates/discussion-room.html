@@ -1,5 +1,5 @@
 <div class="side" style="<% if (poster) { %>background-image: url(<%= poster %>);<% }; %>" data-colorify-background="color">
-    <div class="blur" style="<% if (posterblured) { %>background-image: url(<%= posterblured %>);<% }; %>" data-colorify-background="darker">
+    <div class="blur" style="<% if (posterblured) { print('background-image: url(' + posterblured + ');'); } %>" data-colorify-background="darker">
         <div class="users"><!-- users view --></div>
     </div>
 </div><!-- /.side -->
