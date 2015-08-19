@@ -23,15 +23,6 @@ require('./libs/facebook')(function(FB) {
   facebook = FB;
 });
 
-/**
- * @todo :
- * - templates
- * - translations
- * - moment fr ?
- * desktop-notify
- * - Facebook SDK test
- * - cat 'web-server/public/javascripts/plugins/cloudinary.widget.js' ???
- */
 var desktopNotify = require('html5-desktop-notifications');
 
 // i18n setup
