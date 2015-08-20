@@ -3,10 +3,12 @@ define([
   'underscore',
   'backbone',
   'libs/donut-debug',
+  'libs/keyboard',
   'models/current-user',
+  'views/input-rollup',
   'views/input-typing',
   '_templates'
-], function ($, _, Backbone, donutDebug, currentUser, ViewTyping, templates) {
+], function ($, _, Backbone, donutDebug, keyboard, currentUser, RollupView, ViewTyping, templates) {
 
   var debug = donutDebug('donut:input');
 
@@ -23,6 +25,7 @@ define([
     timeToSendAnotherTypingEvent: 2000,
 
     events: {
+      'keyup .editable'         : 'onKeyUp',
       'keydown .editable'       : 'onKeyDown',
       'click .send'             : 'onSubmitMessage',
       'click .add-image'        : 'onAddImage',
@@ -32,7 +35,7 @@ define([
       'input .editable'         : 'onTyping'
     },
 
-    initialize: function(options) {
+    initialize: function (options) {
       this.listenTo(currentUser, 'change:avatar', this.onAvatar);
       this.listenTo(this.model, 'inputFocus', this.onFocus);
       this.listenTo(this.model, 'inputActive', this.onInputActiveChange);
@@ -41,17 +44,21 @@ define([
 
       this.render();
 
+      this.rollupView = new RollupView({
+        el: this.$el,
+        model: this.model
+      });
       this.typingView = new ViewTyping({
         el: this.$('.typing'),
         model: this.model
       });
     },
 
-    _remove: function() {
+    _remove: function () {
       this.remove();
     },
 
-    render: function() {
+    render: function () {
       this.$el.html(this.template({
         avatar: $.cd.userAvatar(currentUser.get('avatar'), 80),
         bannedMessage: $.t('chat.actions.bannedMessage.__type__'.replace('__type__', this.model.get('type')))
@@ -59,6 +66,7 @@ define([
 
       this.$editable = this.$('.editable');
       this.$preview = this.$('.preview');
+      this.$rollup = this.$('.rollup-container');
 
       if (!this.model.isInputActive())
         this.$el.addClass('inactive');
@@ -80,30 +88,6 @@ define([
 
     onAvatar: function(model, value, options) {
       this.$el.find('.avatar').prop('src', $.cd.userAvatar(value, 80));
-    },
-
-    onKeyDown: function(event) {
-      // Press enter in field handling
-      if (event.type == 'keydown') {
-        var key;
-        var isShift;
-        if (window.event) {
-          key = window.event.keyCode;
-          isShift = window.event.shiftKey
-            ? true
-            : false;
-        } else {
-          key = event.which;
-          isShift = event.shiftKey
-            ? true
-            : false;
-        }
-        if(event.which == 13 && !isShift) {
-          return this.sendMessage();
-        }
-        if (event.which == 38 && ($(event.currentTarget).val() === ''))
-          this.trigger('editPreviousInput');
-      }
     },
 
     onSubmitMessage: function(event) {
@@ -155,8 +139,6 @@ define([
       this.$preview.find('.image').remove();
       this.hidePreview();
 
-      this.canPrintTypingEvent = true;
-
       // Avoid line break addition in field when submitting with "Enter"
       return false;
     },
@@ -169,7 +151,7 @@ define([
         upload_preset: 'discussion',
         sources: ['local'], // ['local', 'url', 'camera']
         multiple: true,
-        client_allowed_formats: ["png","gif", "jpeg"],
+        client_allowed_formats: ["png", "gif", "jpeg"],
         max_file_size: 20000000, // 20Mo
         max_files: 5,
         thumbnail_transformation: { width: 80, height: 80, crop: 'fill' }
@@ -196,28 +178,34 @@ define([
         }
       );
     },
-    onRemoveImage: function(event) {
+    onRemoveImage: function (event) {
       event.preventDefault();
       var cid = $(event.currentTarget).closest('.image').data('cloudinaryId');
       // remove from collection
       if (this.images[cid])
         delete this.images[cid];
       // remove preview
-      this.$preview.find('.image[data-cloudinary-id="'+cid+'"]').remove();
+      this.$preview.find('.image[data-cloudinary-id="' + cid + '"]').remove();
       // hide previews
       if (_.keys(this.images).length < 1)
         this.hidePreview();
     },
-    showPreview: function() {
+    showPreview: function () {
       this.$preview.show();
       this.trigger('resize');
     },
-    hidePreview: function() {
+    hidePreview: function () {
       this.$preview.hide();
       this.trigger('resize');
     },
 
-    onOpenSmiley: function(event) {
+    /*****************************************************************************************************************
+     *
+     * Smileys
+     *
+     *****************************************************************************************************************/
+
+    onOpenSmiley: function (event) {
       event.preventDefault();
 
       if (!this.$smileyButton) {
@@ -234,8 +222,7 @@ define([
         this.$smileyButton.popover('show'); // show manually on first click, then popover has bound a click event on popover toggle action
       }
     },
-
-    onPickSmiley: function(event) {
+    onPickSmiley: function (event) {
       event.preventDefault();
 
       var symbol = $.smilifyGetSymbolFromCode($(event.currentTarget).data('smilifyCode'));
@@ -257,6 +244,108 @@ define([
       setTimeout( function() {
         that.canPrintTypingEvent = true;
       }, this.timeToSendAnotherTypingEvent);
+    },
+
+    /*****************************************************************************************************************
+     *
+     * Listener
+     *
+     *****************************************************************************************************************/
+
+    /**
+     * Only used to detect keydown on tab and then prevent default to avoid loosing focus
+     * on keypress & keyup, it's too late
+     *
+     * @param event
+     */
+    onKeyDown: function(event) {
+      if (event.type != 'keydown')
+        return;
+
+      var data = keyboard._getLastKeyCode();
+      var message = this.$editable.val();
+
+      // Avoid loosing focus when tab is pushed
+      if (data.key === keyboard.TAB)
+        event.preventDefault();
+
+      // Avoid adding new line on enter press (=submit message)
+      if (data.key === keyboard.RETURN && !data.isShift)
+        event.preventDefault();
+
+      // Avoid setting cursor at end of tab input
+      this.rollupView.cursorPosition = null;
+      if (data.key === keyboard.DOWN || data.key === keyboard.UP)
+        this.rollupView.cursorPosition = this.$editable.getCursorPosition();
+
+      // Navigate between editable messages
+      if (event.which == keyboard.UP && message === '')
+        this.trigger('editPreviousInput');
+    },
+
+    onKeyUp: function (event) {
+      if (event.type != 'keyup')
+        return;
+
+      var data = keyboard._getLastKeyCode();
+      var message = this.$editable.val();
+
+      // Rollup Closed
+      if (this.$rollup.html().length == 0) {
+        // Send message on Enter, not shift + Enter, only if there is something to send
+        if (data.key == keyboard.RETURN && !data.isShift && message.length != 0)
+          return this.sendMessage();
+
+        // Edit previous message on key Up
+        if (data.key == keyboard.UP && ($(event.currentTarget).val() === ''))
+          return this.trigger('editPreviousInput');
+      }
+
+      this.model.trigger('inputKeyUp', event);
+    },
+
+    sendMessage: function() {
+      var message = this.$editable.val();
+      
+      var trimmedMessage = message.trim(); // only white character message detection
+      var imagesCount = _.keys(this.images).length;
+      if (trimmedMessage === '' && imagesCount < 1) // empty message and no image
+        return false;
+
+      // check length (max)
+      // @todo: replace with a "withoutSmileysCodes" logic
+      if (message.length > 512) {
+        debug('message is too long');
+        return false;
+      }
+
+      // add images
+      var images = [];
+      if (imagesCount > 0)
+        _.each(this.images, function(i) {
+          images.push({
+            public_id: i.public_id,
+            version: i.version,
+            path: i.path
+          });
+        });
+      
+      // Send message to server
+      this.model.sendMessage(message, images);
+      this.trigger('send');
+
+      // Empty field
+      this.$editable.val('');
+
+      // reset images
+      this.images = {};
+      this.$preview.find('.image').remove();
+      this.hidePreview();
+
+      this.canPrintTypingEvent = true;
+
+      // Avoid line break addition in field when submitting with "Enter"
+      return false;
     }
 
   });
