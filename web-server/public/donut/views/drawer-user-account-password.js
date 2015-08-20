@@ -20,25 +20,56 @@ define([
     },
 
     render: function() {
-      this.$el.html(this.template());
+      this.$('.password-form-container').html(this.template());
 
-
+      this.$('.spinner').html(templates['spinner.html']);
+      this.$('.spinner').hide();
+      this.$('.error').hide();
+      this.$('.success').hide();
       return this;
+    },
+
+    onShowFormPassword: function (event) {
+      event.preventDefault();
+
+      this.$('#password-modal-link').hide();
+      this.render();
     },
 
     onSubmitPassword: function(event) {
       event.preventDefault();
 
+      var that = this;
+
       if (this.$('.input-password').val() === this.$('.input-password-confirm').val() && this.$('.input-password').val().length >= 6) {
-        client.userChangePassword(currentUser.get("user_id"), this.$('.input-password').val());
-        this.$('.form-password').html(templates['spinner.html']);
+        this.$('.error').hide();
+        this.$('.spinner').show();
+        this.$('.form-password').removeClass('has-error');
+
+        client.userChangePassword(currentUser.get("user_id"), this.$('.input-password').val(), function (data) {
+          that.$('.spinner').hide();
+          if (data.err) {
+            that.$('.form-mail').addClass('has-error');
+            that.$('.error').show();
+
+            if (data.err === 'length')
+              that.$('.password-error').text($.t('account.password.error.length'));
+
+          } else {
+            that.$('input').hide();
+            that.$('.success').show();
+          }
+        });
+
       }
       else if (this.$('.input-password').val().length >= 6) {
         this.$('.form-password').addClass('has-error');
-        //this.errorView.render('match');
+        this.$('.error').show();
+        this.$('.password-error').text($.t('account.password.error.confirm'));
       } else {
         this.$('.form-password').addClass('has-error');
-        //this.errorView.render('length');
+        this.$('.error').show();
+        this.$('.password-error').text($.t('account.password.error.length'));
       }
     }
 

@@ -578,9 +578,9 @@ define([
         data,
         function (response) {
           if (response.err)
-            return debug('io:in:user:password:edit error: ', response);
-
-          debug('io:in:user:password:edit', response);
+            debug('io:in:user:password:edit error: ', response);
+          else
+            debug('io:in:user:password:edit', response);
           return fn(response);
         });
     },

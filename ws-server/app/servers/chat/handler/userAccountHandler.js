@@ -4,6 +4,7 @@ var _ = require('underscore');
 var User = require('../../../../../shared/models/user');
 var emailer = require('../../../../../shared/io/emailer');
 var validator = require('validator');
+var common = require('@dbrugne/donut-common');
 
 var Handler = function (app) {
   this.app = app;
@@ -36,7 +37,21 @@ handler.email = function (data, session, next) {
       return callback(null);
     },
 
-    function mail(callback) {
+    function mailExist(callback) {
+      User.findOne({'local.email': data.user_new_mail.toLowerCase()}, function(err, user) {
+        if (err) {
+          return callback('Error while searching existing email: ' + err);
+        }
+
+        if (user) {
+          return callback('exist');
+        }
+
+        return callback(null);
+      });
+    },
+
+    function saveNewMail(callback) {
       var email = data.user_new_mail;
       user.local.email = email.toLowerCase();
       user.save(function() {
@@ -69,11 +84,25 @@ handler.password = function (data, session, next) {
       return callback(null);
     },
 
-    function sendToUserSockets(callback) {
-      var emailEvent = {
-        user_id: user.id
-      };
-      that.app.globalChannelService.pushMessage('connector', 'user:password:edit', emailEvent, 'user:' + user.id, {}, callback);
+    function check(callback) {
+      if (!data.user_id)
+        return callback('id is mandatory');
+
+      if(data.user_password.length < 6 || data.user_password.length > 50)
+        return callback('length');
+
+      return callback(null);
+    },
+
+    function savePassword(callback) {
+      user.local.password = user.generateHash(data.user_password);
+      user.save(function () {
+        emailer.passwordChanged(user.local.email, function (err) {
+          if (err)
+            return console.log('Unable to sent password changed email: ' + err);
+        });
+      });
+      return callback(null);
     }
 
   ], function(err) {
@@ -82,6 +111,6 @@ handler.password = function (data, session, next) {
       return next(null, { code: 500, err: err });
     }
 
-    return next(null, read);
+    return next(null, {});
   });
 };

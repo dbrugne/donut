@@ -582,7 +582,7 @@
       "save": "Enregister le mot de passe",
       "error": {
         "confirm": "Les deux mots de passe ne sont pas identiques.",
-        "length": "Le mot de passe doit au moins faire 6 caractères de long."
+        "length": "Le mot de passe doit faire entre 6 et 50 caractères de long."
       }
     },
     "facebook": {

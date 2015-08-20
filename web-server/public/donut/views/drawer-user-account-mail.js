@@ -44,10 +44,10 @@ define([
 
       if (this.$('.email-sub').val().length < 1) {
         this.$('.form-mail').addClass('has-error');
-        that.$('.error').show();
-        that.$('.mail-error').text($.t('account.email.error.empty'));
+        this.$('.error').show();
+        this.$('.mail-error').text($.t('account.email.error.empty'));
       } else {
-        that.$('.error').hide();
+        this.$('.error').hide();
         this.$('.spinner').show();
         this.$('.form-mail').removeClass('has-error');
 
@@ -61,9 +61,10 @@ define([
               that.$('.mail-error').text($.t('account.email.error.format'));
             else if (data.err === 'same-mail')
               that.$('.mail-error').text($.t('account.email.error.alreadyyours'));
+            else if (data.err === 'exist')
+              that.$('.mail-error').text($.t('account.email.error.alreadyexists'));
 
           } else {
-            that.$('.form-mail').addClass('has-success');
             that.$('.email-user').text(that.$('.email-sub').val());
             that.$('input').hide();
             that.$('.success').show();
