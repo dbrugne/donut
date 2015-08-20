@@ -34,8 +34,9 @@ define([
 
       // ask for data
       var that = this;
-      client.roomRead(this.model.get('name'), function(data) {
-        that.onResponse(data);
+      client.roomRead(this.model.get('name'), function(err, data) {
+        if (!err)
+          that.onResponse(data);
       });
 
       return this;

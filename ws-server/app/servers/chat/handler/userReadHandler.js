@@ -26,10 +26,10 @@ handler.read = function(data, session, next) {
 
 		function check(callback) {
 			if (!data.username)
-				return callback('require username is mandatory');
+				return callback('invalid-username');
 
       if (!readUser)
-        return callback('not retrieve');
+        return callback('unknown');
 
 			return callback(null);
 		},
@@ -126,6 +126,10 @@ handler.read = function(data, session, next) {
 	], function(err) {
     if (err) {
       logger.error('[user:read] ' + err);
+
+      err = (['invalid-username', 'unknown'].indexOf(err) !== -1)
+        ? err
+        : 'internal';
       return next(null, { code: 500, err: err });
     }
 

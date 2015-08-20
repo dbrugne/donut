@@ -209,13 +209,12 @@ define([
         'chat.roomReadHandler.read',
         data,
         function (response) {
-          if (response.err && response.err === 'not retrieve')
+          if (response.err)
             debug('io:in:room:read error: ', response);
-          else if (response.err)
-            return debug('io:in:room:read error: ', response);
+          else
+            debug('io:in:room:read', response);
 
-          debug('io:in:room:read', response);
-          return fn(response);
+          return fn(response.err, response);
         }
       );
     },
@@ -505,13 +504,12 @@ define([
         'chat.userReadHandler.read',
         data,
         function (response) {
-          if (response.err && response.err === 'not retrieve')
+          if (response.err)
             debug('io:in:user:read error: ', response);
-          else if (response.err)
-            return debug('io:in:user:read error: ', response);
+          else
+            debug('io:in:user:read', response);
 
-          debug('io:in:user:read', response);
-          return fn(response);
+          return fn(response.err, response);
         }
       );
     },

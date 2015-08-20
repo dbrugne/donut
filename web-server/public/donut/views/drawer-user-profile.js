@@ -26,14 +26,14 @@ define([
       this.render();
 
       var that = this;
-      client.userRead(this.username, function(data) {
-        if (data.err === 'not retrieve') {
-          that.mainView.alert('warning', $.t('chat.alert.userprofile', {username: that.username}));
+      client.userRead(this.username, function(err, data) {
+        if (err === 'unknown') {
+          that.mainView.alert('warning', $.t('chat.alert.userprofile', { username: that.username }));
           that.mainView.drawerView._hide();
           return;
         }
-
-        that.onResponse(data);
+        if (!err)
+          that.onResponse(data);
       });
     },
     render: function () {
@@ -115,8 +115,9 @@ define([
 
     onUserBanChange: function() {
       this.render();
-      client.userRead(this.username, _.bind(function(data) {
-        this.onResponse(data);
+      client.userRead(this.username, _.bind(function(err, data) {
+        if (!err)
+          this.onResponse(data);
       }, this));
     }
 

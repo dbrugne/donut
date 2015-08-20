@@ -120,8 +120,9 @@ define([
         withUser.key = key;
         model = this.addModel(withUser);
         var that = this;
-        client.userRead(withUser.username, function(data) {
-          model.set(data);
+        client.userRead(withUser.username, function(err, data) {
+          if (!err)
+            model.set(data);
         });
       }
 

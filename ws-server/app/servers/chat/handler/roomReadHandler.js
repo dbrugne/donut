@@ -16,16 +16,18 @@ handler.read = function(data, session, next) {
 
   var room = session.__room__;
 
+  var read = {};
+
 	var that = this;
 
 	async.waterfall([
 
 		function check(callback) {
 			if (!data.name)
-				return callback('name is mandatory');
+				return callback('invalid-name');
 
 			if (!room)
-				return callback('not retrieve');
+				return callback('unknown');
 
 			return callback(null);
 		},
@@ -93,7 +95,7 @@ handler.read = function(data, session, next) {
 				});
 			}
 
-			var roomData = {
+			read = {
 				name: room.name,
 				id: room.id,
 				owner: owner,
@@ -111,20 +113,24 @@ handler.read = function(data, session, next) {
 			};
 
 			if (session.settings.admin === true) {
-				roomData.visibility = room.visibility || false;
-				roomData.priority = room.priority || 0;
+				read.visibility = room.visibility || false;
+				read.priority = room.priority || 0;
 			}
 
-			return callback(null, roomData);
+			return callback(null);
 		}
 
-	], function(err, roomData) {
+	], function(err) {
 		if (err) {
 			logger.error('[room:read] ' + err);
-			return next(null, {code: 500, err: err});
+
+			err = (['invalid-name', 'unknown'].indexOf(err) !== -1)
+				? err
+				: 'internal';
+			return next(null, { code: 500, err: err });
 		}
 
-		return next(null, roomData);
+		return next(null, read);
 	});
 
 };
