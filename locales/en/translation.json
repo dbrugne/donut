@@ -297,6 +297,16 @@
     }
   },
   "chat": {
+    "rollup": {
+      "header": {
+        "commands": "Liste des commandes disponibles",
+        "rooms": "Liste des donuts disponibles",
+        "users": "Liste des utilisateurs",
+        "tonavigate": "to navigate",
+        "toselect": "to select",
+        "todismiss": "to dismiss"
+      }
+    },
     "loading": "Loading",
     "actions": {
       "search": "Search",

@@ -38,6 +38,7 @@ define([
   'text!./templates/image-uploader.html',
   'text!./templates/input.html',
   'text!./templates/input-image.html',
+  'text!./templates/rollup.html',
   'text!./templates/room-topic.html',
   'text!./templates/room-users-list.html',
   'text!./templates/room-users.html',
@@ -96,6 +97,7 @@ define([
   image_uploader,
   input,
   input_image,
+  rollup,
   room_topic,
   room_users_list,
   room_users,
@@ -168,25 +170,26 @@ define([
   JST['image-uploader.html']                = _.template(image_uploader);
   JST['input.html']                         = _.template(input);
   JST['input-image.html']                   = _.template(input_image);
+  JST['rollup.html']                        = _.template(rollup);
   JST['room-topic.html']                    = _.template(room_topic);
   JST['room-users-list.html']               = _.template(room_users_list);
   JST['room-users.html']                    = _.template(room_users);
   JST['spinner.html']                       = _.template(spinner);
   JST['welcome.html']                       = _.template(welcome);
   JST['message-edit.html']                  = _.template(message_edit);
-  JST['notification/room-op.html']         = _.template(notification_room_op);
-  JST['notification/room-deop.html']       = _.template(notification_room_deop);
-  JST['notification/room-kick.html']       = _.template(notification_room_kick);
-  JST['notification/room-ban.html']        = _.template(notification_room_ban);
-  JST['notification/room-deban.html']      = _.template(notification_room_deban);
-  JST['notification/room-voice.html']      = _.template(notification_room_voice);
-  JST['notification/room-devoice.html']    = _.template(notification_room_devoice);
-  JST['notification/room-topic.html']      = _.template(notification_room_topic);
-  JST['notification/room-join.html']       = _.template(notification_room_join);
-  JST['notification/user-mention.html']    = _.template(notification_user_mention);
-  JST['notification/room-message.html']    = _.template(notification_room_message);
-  JST['notification/user-message.html']    = _.template(notification_user_message);
-  JST['markup.html']                       = _.template(markup);
+  JST['notification/room-op.html']          = _.template(notification_room_op);
+  JST['notification/room-deop.html']        = _.template(notification_room_deop);
+  JST['notification/room-kick.html']        = _.template(notification_room_kick);
+  JST['notification/room-ban.html']         = _.template(notification_room_ban);
+  JST['notification/room-deban.html']       = _.template(notification_room_deban);
+  JST['notification/room-voice.html']       = _.template(notification_room_voice);
+  JST['notification/room-devoice.html']     = _.template(notification_room_devoice);
+  JST['notification/room-topic.html']       = _.template(notification_room_topic);
+  JST['notification/room-join.html']        = _.template(notification_room_join);
+  JST['notification/user-mention.html']     = _.template(notification_user_mention);
+  JST['notification/room-message.html']     = _.template(notification_room_message);
+  JST['notification/user-message.html']     = _.template(notification_user_message);
+  JST['markup.html']                        = _.template(markup);
 
   return JST;
 });
