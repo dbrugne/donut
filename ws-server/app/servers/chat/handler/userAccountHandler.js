@@ -1,10 +1,8 @@
 var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
 var async = require('async');
-var _ = require('underscore');
 var User = require('../../../../../shared/models/user');
 var emailer = require('../../../../../shared/io/emailer');
 var validator = require('validator');
-var common = require('@dbrugne/donut-common');
 
 var Handler = function (app) {
   this.app = app;
@@ -37,27 +35,25 @@ handler.email = function (data, session, next) {
       return callback(null);
     },
 
-    function mailExist(callback) {
+    function exist(callback) {
       User.findOne({'local.email': data.user_new_mail.toLowerCase()}, function(err, user) {
         if (err) {
           return callback('Error while searching existing email: ' + err);
         }
-
         if (user) {
           return callback('exist');
         }
-
         return callback(null);
       });
     },
 
-    function saveNewMail(callback) {
+    function save(callback) {
       var email = data.user_new_mail;
       user.local.email = email.toLowerCase();
       user.save(function() {
         emailer.emailChanged(user.local.email, function(err) {
           if (err)
-            return console.log('Unable to sent email changed email: '+err);
+            return callback('Unable to sent email changed email: '+err);
         });
       });
       return callback(null);
@@ -65,8 +61,13 @@ handler.email = function (data, session, next) {
 
   ], function(err) {
     if (err) {
-      logger.error('[user:email:edit] ' + err);
-      return next(null, { code: 500, err: err });
+      if (err == 'wrong-format' || err == 'same-mail' || err == 'exist')
+        return next(null, {code: 500, err: err});
+      else
+      {
+        logger.error('[user:email:edit] ' + err);
+        return next(null, {code: 520, err: err});
+      }
     }
 
     return next(null, {});
@@ -94,7 +95,7 @@ handler.password = function (data, session, next) {
       return callback(null);
     },
 
-    function savePassword(callback) {
+    function save(callback) {
       user.local.password = user.generateHash(data.user_password);
       user.save(function () {
         emailer.passwordChanged(user.local.email, function (err) {
@@ -107,8 +108,13 @@ handler.password = function (data, session, next) {
 
   ], function(err) {
     if (err) {
-      logger.error('[user:password:edit] ' + err);
-      return next(null, { code: 500, err: err });
+      if (err == 'length')
+        return next(null, {code: 500, err: err});
+      else
+      {
+        logger.error('[user:password:edit] ' + err);
+        return next(null, {code: 520, err: err});
+      }
     }
 
     return next(null, {});

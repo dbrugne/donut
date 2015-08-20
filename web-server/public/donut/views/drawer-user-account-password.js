@@ -11,8 +11,8 @@ define([
     template: templates['drawer-user-account-password.html'],
 
     events: {
-      'submit .form-password'       : 'onSubmitPassword',
-      'click #password-modal-link'  : 'onShowFormPassword'
+      'submit .form-password'       : 'onSubmit',
+      'click #password-modal-link'  : 'onShowForm'
     },
 
     initialize: function(options) {
@@ -29,14 +29,14 @@ define([
       return this;
     },
 
-    onShowFormPassword: function (event) {
+    onShowForm: function (event) {
       event.preventDefault();
 
       this.$('#password-modal-link').hide();
       this.render();
     },
 
-    onSubmitPassword: function(event) {
+    onSubmit: function(event) {
       event.preventDefault();
 
       var that = this;
@@ -53,7 +53,9 @@ define([
             that.$('.error').show();
 
             if (data.err === 'length')
-              that.$('.password-error').text($.t('account.password.error.length'));
+              that.$('.error-label').text($.t('account.password.error.length'));
+            else
+              that.$('.error-label').text($.t('global.unknownerror'));
 
           } else {
             that.$('input').hide();
@@ -65,11 +67,11 @@ define([
       else if (this.$('.input-password').val().length >= 6 && this.$('.input-password').val().length <= 50) {
         this.$('.form-password').addClass('has-error');
         this.$('.error').show();
-        this.$('.password-error').text($.t('account.password.error.confirm'));
+        this.$('.error-label').text($.t('account.password.error.confirm'));
       } else {
         this.$('.form-password').addClass('has-error');
         this.$('.error').show();
-        this.$('.password-error').text($.t('account.password.error.length'));
+        this.$('.error-label').text($.t('account.password.error.length'));
       }
     }
 

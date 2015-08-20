@@ -558,8 +558,8 @@ define([
         }
       );
     },
-    userChangeMail: function (user_id, mail, fn) {
-      var data = {user_id: user_id, user_new_mail: mail};
+    userChangeMail: function (user_id, user_new_mail, fn) {
+      var data = {user_id: user_id, user_new_mail: user_new_mail};
       pomelo.request(
         'chat.userAccountHandler.email',
         data,
@@ -571,8 +571,8 @@ define([
         return fn(response);
       });
     },
-    userChangePassword: function (user_id, password, fn) {
-      var data = {user_id: user_id, user_password: password};
+    userChangePassword: function (user_id, user_password, fn) {
+      var data = {user_id: user_id, user_password: user_password};
       pomelo.request(
         'chat.userAccountHandler.password',
         data,

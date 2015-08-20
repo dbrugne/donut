@@ -11,8 +11,8 @@ define([
     template: templates['drawer-user-account-mail.html'],
 
     events: {
-      'click #email-modal-link' : 'onShowFormEmail',
-      'submit .form-mail'       : 'onSubmitMail'
+      'click #email-modal-link' : 'onShowForm',
+      'submit .form-mail'       : 'onSubmit'
     },
 
     initialize: function(options) {
@@ -30,14 +30,14 @@ define([
       return this;
     },
 
-    onShowFormEmail: function(event) {
+    onShowForm: function(event) {
       event.preventDefault();
 
       this.$('#email-modal-link').hide();
       this.render();
     },
 
-    onSubmitMail: function(event) {
+    onSubmit: function(event) {
       event.preventDefault();
 
       var that = this;
@@ -45,7 +45,7 @@ define([
       if (this.$('.email-sub').val().length < 1) {
         this.$('.form-mail').addClass('has-error');
         this.$('.error').show();
-        this.$('.mail-error').text($.t('account.email.error.empty'));
+        this.$('.error-label').text($.t('account.email.error.empty'));
       } else {
         this.$('.error').hide();
         this.$('.spinner').show();
@@ -58,14 +58,16 @@ define([
             that.$('.error').show();
 
             if (data.err === 'wrong-format')
-              that.$('.mail-error').text($.t('account.email.error.format'));
+              that.$('.error-label').text($.t('account.email.error.format'));
             else if (data.err === 'same-mail')
-              that.$('.mail-error').text($.t('account.email.error.alreadyyours'));
+              that.$('.error-label').text($.t('account.email.error.alreadyyours'));
             else if (data.err === 'exist')
-              that.$('.mail-error').text($.t('account.email.error.alreadyexists'));
+              that.$('.error-label').text($.t('account.email.error.alreadyexists'));
+            else
+              that.$('.error-label').text($.t('global.unknownerror'));
 
           } else {
-            that.$('.email-user').text(that.$('.email-sub').val());
+            that.$('.error-label').text(that.$('.email-sub').val());
             that.$('input').hide();
             that.$('.success').show();
           }
