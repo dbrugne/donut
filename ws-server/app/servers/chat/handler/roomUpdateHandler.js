@@ -4,6 +4,7 @@ var _ = require('underscore');
 var Room = require('../../../../../shared/models/room');
 var validator = require('validator');
 var cloudinary = require('../../../../../shared/cloudinary/cloudinary');
+var common = require('@dbrugne/donut-common');
 
 var Handler = function(app) {
   this.app = app;
@@ -61,21 +62,13 @@ handler.update = function(data, session, next) {
 			}
 
 			// website
-			if (_.has(data.data, 'website')) {
-				var opts = {
-					require_protocol: false,
-					require_tld: true,
-					allow_underscores: true
-				};
-				if (data.data.website != '' && !validator.isURL(data.data.website, opts)) {
-					errors.website = 'Website should be a valid site URL';
-				} else {
+			if (_.has(data.data, 'website') && data.data.website != '') {
 					var website = data.data.website;
-					website = validator.trim(website);
-					website = validator.escape(website);
-					if (website != room.website)
-						sanitized.website = website;
-				}
+					var link = common.getLinkify().find(website);
+					if (website.length < 5 && website.length > 255)
+						errors.website = 'Website should be 5 characters min and 255 characters max.';
+					if (!link || !link[0] || !link[0].type || !link[0].value || !link[0].href)
+						errors.website = 'Website should be a valid site URL';
 			}
 
 			// color
@@ -111,7 +104,7 @@ handler.update = function(data, session, next) {
 
 			var errNum = Object.keys(errors).length;
 			if (errNum > 0)
-				return callback(JSON.stringify(errors)); // object
+				return callback(errors); // object
 
 			return callback(null, sanitized);
 		},

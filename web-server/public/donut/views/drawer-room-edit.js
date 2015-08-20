@@ -14,6 +14,8 @@ define([
 
     id: 'room-edit',
 
+    error: '',
+
     events  : {
       'submit form.room-form': 'onSubmit'
     },
@@ -67,6 +69,9 @@ define([
         text: $.t("edit.left")
       });
 
+      // website
+      this.$website = this.$el.find('input[name=website]');
+
       // color
       var colorPicker = new ColorPicker({
         color: room.color,
@@ -101,9 +106,14 @@ define([
     onSubmit: function(event) {
       event.preventDefault();
 
+      if (!this.checkWebsite()) {
+        this.$el.find('.errors').html(this.error).show();
+        return;
+      }
+
       var updateData = {
         description: this.$el.find('textarea[name=description]').val(),
-        website: this.$el.find('input[name=website]').val(),
+        website: this.$website.val(),
         color: this.$el.find('input[name=color]').val()
       };
 
@@ -125,7 +135,7 @@ define([
         that.$el.find('.errors').hide();
         if (data.err) {
           var message = '';
-          _.each(data.errors, function(error) {
+          _.each(data.err, function(error) {
             message += error+'<br>';
           });
           that.$el.find('.errors').html(message).show();
@@ -167,6 +177,25 @@ define([
           that.$el.find('.errors').html(message).show();
         }
       });
+    },
+
+    checkWebsite: function() {
+      var website = this.$website.val();
+
+      if (!website)
+        return true;
+
+      if (website.length < 5 || website.length > 255) {
+        this.error = 'Website should be 5 characters min and 255 characters max.';
+        return false;
+      }
+
+      if (!/^[^\s]+\.[^\s]+$/.test(website)) {
+        this.error = 'Website should be a valid site URL.';
+        return false;
+      }
+
+      return true;
     }
 
   });
