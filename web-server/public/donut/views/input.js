@@ -29,7 +29,7 @@ define([
       'click .remove-image'     : 'onRemoveImage',
       'click .add-smiley'       : 'onOpenSmiley',
       'click .smileys .smilify' : 'onPickSmiley',
-      'input .editable'         : 'onTypingMessage'
+      'input .editable'         : 'onTyping'
     },
 
     initialize: function(options) {
@@ -42,7 +42,7 @@ define([
       this.render();
 
       this.typingView = new ViewTyping({
-        el: this.$('.typing-notify'),
+        el: this.$('.typing'),
         model: this.model
       });
     },
@@ -243,14 +243,14 @@ define([
       this.$smileyButton.popover('hide');
     },
 
-    onTypingMessage: function() {
+    onTyping: function() {
       if (!this.canPrintTypingEvent)
         return;
 
-      if (this.model.get("type") === "room")
-        client.roomTypingMessage(this.model.get("name"));
+      if (this.model.get('type') === 'room')
+        client.roomTyping(this.model.get('name'));
       else
-        client.userTypingMessage(currentUser.get("user_id"));
+        client.userTyping(this.model.get('user_id'));
 
       this.canPrintTypingEvent = false;
       var that = this;
