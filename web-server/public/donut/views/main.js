@@ -15,7 +15,6 @@ define([
   'views/current-user',
   'views/alert',
   'views/home',
-  'views/search',
   'views/drawer',
   'views/drawer-room-create',
   'views/drawer-room-profile',
@@ -35,7 +34,7 @@ define([
   'views/mute'
 ], function ($, _, Backbone, donutDebug, client, currentUser, EventModel, rooms, onetoones, templates, windowView,
              ConnectionModalView, WelcomeModalView,
-             CurrentUserView, AlertView, HomeView, SearchView,
+             CurrentUserView, AlertView, HomeView,
              DrawerView,
              DrawerRoomCreateView, DrawerRoomProfileView, DrawerRoomEditView, DrawerRoomUsersView, DrawerRoomPreferencesView,
              DrawerRoomDeleteView,
@@ -106,7 +105,6 @@ define([
       this.alertView = new AlertView({mainView: this});
       this.connectionView = new ConnectionModalView({mainView: this});
       this.welcomeView = new WelcomeModalView({mainView: this});
-      this.searchView = new SearchView({mainView: this});
       this.notificationsView = new NotificationsView({mainView: this});
       this.muteView = new MuteView({mainView: this});
 
@@ -450,7 +448,9 @@ define([
     // ======================================================================
 
     focusOnSearch: function(event) {
-      this.searchView.focus();
+      this.focusHome(true);
+      this.homeView.searchView.$search
+          .focus();
       this.drawerView.close();
     },
 
