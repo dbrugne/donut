@@ -4,10 +4,11 @@ define([
   'backbone',
   'client',
   'libs/donut-debug',
+  'libs/keyboard',
   'models/current-user',
   'views/input-rollup',
   '_templates'
-], function ($, _, Backbone, client, donutDebug, currentUser, RollupView, templates) {
+], function ($, _, Backbone, client, donutDebug, keyboard, currentUser, RollupView, templates) {
 
   var debug = donutDebug('donut:input');
 
@@ -20,21 +21,6 @@ define([
     rollupTemplate: templates['rollup.html'],
 
     images: '',
-
-    KEY: {
-      BACKSPACE: 8,
-      TAB: 9,
-      RETURN: 13,
-      ESC: 27,
-      LEFT: 37,
-      UP: 38,
-      RIGHT: 39,
-      DOWN: 40,
-      COMMA: 188,
-      SPACE: 32,
-      HOME: 36,
-      END: 35
-    },
 
     events: {
       'keyup .editable': 'onKeyUp',
@@ -73,7 +59,7 @@ define([
 
       this.$editable = this.$el.find('.editable');
       this.$preview = this.$el.find('.preview');
-      this.$rollUpCtn = this.$el.find('.rollup-container');
+      this.$rollup = this.$el.find('.rollup-container');
 
       if (!this.model.isInputActive())
         this.$el.addClass('inactive');
@@ -192,23 +178,9 @@ define([
 
     /*****************************************************************************************************************
      *
-     * Events
+     * Listener
      *
      *****************************************************************************************************************/
-
-    _getKeyCode: function () {
-      if (window.event) {
-        return {
-          key: window.event.keyCode,
-          isShift: !!window.event.shiftKey
-        };
-      } else {
-        return {
-          key: event.which,
-          isShift: !!event.shiftKey
-        };
-      }
-    },
 
     /**
      * Only used to detect keydown on tab and then prevent default to avoid loosing focus
@@ -220,24 +192,24 @@ define([
       if (event.type != 'keydown')
         return;
 
-      var data = this._getKeyCode();
+      var data = keyboard._getLastKeyCode();
       var message = this.$editable.val();
 
       // Avoid loosing focus when tab is pushed
-      if (data.key == this.KEY.TAB)
+      if (data.key === keyboard.TAB)
         event.preventDefault();
 
       // Avoid adding new line on enter press (=submit message)
-      if (data.key == this.KEY.RETURN && !data.isShift)
+      if (data.key === keyboard.RETURN && !data.isShift)
         event.preventDefault();
 
       // Avoid setting cursor at end of tab input
       this.rollupView.cursorPosition = null;
-      if (data.key == this.KEY.DOWN || data.key == this.KEY.UP)
+      if (data.key === keyboard.DOWN || data.key === keyboard.UP)
         this.rollupView.cursorPosition = this.$editable.getCursorPosition();
 
       // Navigate between editable messages
-      if (event.which == this.KEY.UP && message === '')
+      if (event.which == keyboard.UP && message === '')
         this.trigger('editPreviousInput');
     },
 
@@ -245,21 +217,21 @@ define([
       if (event.type != 'keyup')
         return;
 
-      var data = this._getKeyCode();
+      var data = keyboard._getLastKeyCode();
       var message = this.$editable.val();
 
       // Rollup Closed
-      if (this.$rollUpCtn.html().length == 0) {
+      if (this.$rollup.html().length == 0) {
         // Send message on Enter, not shift + Enter, only if there is something to send
-        if (data.key == this.KEY.RETURN && !data.isShift && message.length != 0)
+        if (data.key == keyboard.RETURN && !data.isShift && message.length != 0)
           return this.sendMessage();
 
         // Edit previous message on key Up
-        if (data.key == this.KEY.UP && ($(event.currentTarget).val() === ''))
+        if (data.key == keyboard.UP && ($(event.currentTarget).val() === ''))
           return this.trigger('editPreviousInput');
       }
 
-      this.model.trigger('onkeyup', event);
+      this.model.trigger('inputKeyUp', event);
     },
 
     sendMessage: function(event) {

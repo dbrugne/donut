@@ -4,30 +4,16 @@ define([
   'backbone',
   'client',
   'libs/donut-debug',
+  'libs/keyboard',
   'models/current-user',
   '_templates'
-], function ($, _, Backbone, client, donutDebug, currentUser, templates) {
+], function ($, _, Backbone, client, donutDebug, keyboard, currentUser, templates) {
 
-  var debug = donutDebug('donut:rollup');
+  var debug = donutDebug('donut:input');
 
   var RollupView = Backbone.View.extend({
 
     template: templates['rollup.html'],
-
-    KEY: {
-      BACKSPACE: 8,
-      TAB: 9,
-      RETURN: 13,
-      ESC: 27,
-      LEFT: 37,
-      UP: 38,
-      RIGHT: 39,
-      DOWN: 40,
-      COMMA: 188,
-      SPACE: 32,
-      HOME: 36,
-      END: 35
-    },
 
     cursorPosition: null,
 
@@ -37,37 +23,23 @@ define([
     },
 
     initialize: function (options) {
-      this.listenTo(this.model, 'onkeyup', this.onKeyUp);
+      this.listenTo(this.model, 'inputKeyUp', this.onKeyUp);
       this.render();
     },
 
     render: function () {
       this.$editable = this.$el.find('.editable');
       this.$rollUpCtn = this.$el.find('.rollup-container');
-
-      //this.$el.html(this.template({
-      //  avatar: $.cd.userAvatar(currentUser.get('avatar'), 80),
-      //  bannedMessage: $.t('chat.actions.bannedMessage.__type__'.replace('__type__', this.model.get('type')))
-      //}));
-      //
-      //this.$editable = this.$el.find('.editable');
-      //this.$preview = this.$el.find('.preview');
-      //this.$rollUpCtn = this.$el.find('.rollup-container');
-      //
-      //if (!this.model.isInputActive())
-      //  this.$el.addClass('inactive');
-      //else
-      //  this.$el.removeClass('inactive');
     },
 
     onKeyUp: function (event) {
       if (event.type != 'keyup')
         return;
 
-      var data = this._getKeyCode();
+      var data = keyboard._getLastKeyCode();
       var message = this.$editable.val();
 
-      // Rollup Closed
+      // closed
       if (this.$rollUpCtn.html().length == 0) {
 
         // If different from @, #, /, close rollup & do nothing more
@@ -76,18 +48,18 @@ define([
 
         return this._displayRollup();
 
-        // Rollup Open
+        // opened
       } else {
         // Cleaned the input
         // On key up, if input is empty or push Esc, close rollup
-        if (message.length == 0 || data.key == this.KEY.ESC)
+        if (message.length == 0 || data.key == keyboard.ESC)
           return this._closeRollup();
 
         // On Return && not Shift && something to select
-        if (data.key == this.KEY.RETURN && !data.isShift && message.length != 0)
+        if (data.key == keyboard.RETURN && !data.isShift && message.length != 0)
           return this._closeRollup(event.target);
 
-        if (data.key == this.KEY.UP || data.key == this.KEY.DOWN || data.key == this.KEY.TAB)
+        if (data.key == keyboard.UP || data.key == keyboard.DOWN || data.key == keyboard.TAB)
           return this._rollupNavigate(data.key, event.target);
 
         if (!this._isRollupCallValid(message))
@@ -108,11 +80,6 @@ define([
       return _.last(message.split(' ')); // only keep the last typed command / mention
     },
 
-    /**
-     * @param val
-     * @returns {boolean}
-     * @private
-     */
     _isRollupCallValid: function (val) {
       var message = this._parseInput();
       if (message.length == 0)
@@ -124,12 +91,12 @@ define([
     _rollupNavigate: function (key, target) {
       var currentLi = this.$rollUpCtn.find('li.active');
       var li = '';
-      if (key == this.KEY.UP) {
+      if (key == keyboard.UP) {
         li = currentLi.prev();
         if (li.length == 0)
           li = currentLi.parent().find('li').last();
       }
-      else if (key == this.KEY.DOWN || key == this.KEY.TAB) {
+      else if (key == keyboard.DOWN || key == keyboard.TAB) {
         li = currentLi.next();
         if (li.length == 0)
           li = currentLi.parent().find('li').first();
@@ -144,20 +111,7 @@ define([
     _getCursorPosition: function() {
       return this.cursorPosition === null ? this.$editable.getCursorPosition() : this.cursorPosition;
     },
-    _getKeyCode: function () {
-      if (window.event) {
-        return {
-          key: window.event.keyCode,
-          isShift: !!window.event.shiftKey
-        };
-      } else {
-        return {
-          key: event.which,
-          isShift: !!event.shiftKey
-        };
-      }
-    },
-    // @todo store results in view, to avoid multiple call to client ?
+
     _displayRollup: function () {
       var input = this._parseInput();
       var that = this;
@@ -167,6 +121,8 @@ define([
 
       var prefix = input.substr(0, 1);
       var search = input.substr(1);
+
+      // @todo store results in view, to avoid multiple call to client ?
 
       if (prefix === '#')
         client.search(search, true, false, 15, false, function(data) {
@@ -205,9 +161,7 @@ define([
 
     onRollupHover: function (event) {
       var currentLi = this.$rollUpCtn.find('li.active');
-      var li = '';
-
-      li = $(event.currentTarget);
+      var li = $(event.currentTarget);
       currentLi.removeClass('active');
       li.addClass('active');
       this._computeNewValue(li.find('.value').html() + ' ');
