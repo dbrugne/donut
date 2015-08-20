@@ -2,13 +2,12 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'client',
   'libs/donut-debug',
   'libs/keyboard',
   'models/current-user',
   'views/input-rollup',
   '_templates'
-], function ($, _, Backbone, client, donutDebug, keyboard, currentUser, RollupView, templates) {
+], function ($, _, Backbone, donutDebug, keyboard, currentUser, RollupView, templates) {
 
   var debug = donutDebug('donut:input');
 
