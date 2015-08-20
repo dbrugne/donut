@@ -25,12 +25,15 @@ define([
     initialize: function (options) {
       this.listenTo(this.model, 'inputKeyUp', this.onKeyUp);
       this.listenTo(this.model, 'inputKeyDown', this.onKeyDown);
-      this.render();
+
+      this.commands = options.commands;
+
+      this.$editable = this.$el.find('.editable');
+      this.$rollup = this.$el.find('.rollup-container');
     },
 
     render: function () {
-      this.$editable = this.$el.find('.editable');
-      this.$rollup = this.$el.find('.rollup-container');
+      return this;
     },
 
     onKeyDown: function(event) {
@@ -99,7 +102,7 @@ define([
       if (message.length == 0)
         return false;
 
-      return ! (_.indexOf(['#', '@', '/'], message.substr(0, 1)) == -1)
+      return !(_.indexOf(['#', '@', '/'], message.substr(0, 1)) == -1);
     },
 
     _rollupNavigate: function (key, target) {
@@ -128,15 +131,23 @@ define([
 
     _displayRollup: function () {
       var input = this._parseInput();
-      var that = this;
-
       if (input.length < 2)
         return this._closeRollup();
 
       var prefix = input.substr(0, 1);
       var search = input.substr(1);
 
-      // @todo store results in view, to avoid multiple call to client ?
+      var that = this;
+
+      // @todo : add control to check if current input is the beginning of the input field value
+      // @todo : trigger rollup for command on first /
+      if (prefix === '/') {
+        this.$rollup.html(this.template({
+          type: 'commands',
+          results: this.commands
+        }));
+        return;
+      }
 
       if (prefix === '#')
         client.search(search, true, false, 15, false, function(data) {

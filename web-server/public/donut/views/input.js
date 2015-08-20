@@ -41,12 +41,13 @@ define([
 
       this.render();
 
-      this.rollupView = new RollupView({
-        el: this.$el,
-        model: this.model
-      });
       this.commandsView = new CommandsView({
         model: this.model 
+      });
+      this.rollupView = new RollupView({
+        el: this.$el,
+        model: this.model,
+        commands: this.commandsView.commands
       });
       this.typingView = new TypingView({
         el: this.$('.typing-container'),
