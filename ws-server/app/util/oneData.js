@@ -39,7 +39,7 @@ module.exports = function(app, user, users, fn) {
           i_am_banned : u.isBanned(user.id) // for input enable/disable
         };
 
-        if (statuses[index]) {
+        if (statuses[u.id] === true) {
           one.status = 'online';
           one.onlined = user.lastonline_at;
         } else {

@@ -747,7 +747,6 @@
       "subject": "Vous avez été expulsé de #__roomname__",
       "content": {
         "title": "Vous avez été expulsé de #__roomname__ par @__username__",
-        "reason": "Motif: __reason__",
         "disclaimer": "Ca ne doit pas être si grave, faites-vous un gros câlin et on oublie ça!",
         "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Accéder à la discussion\">Accéder à la discussion</a>"
       }
@@ -756,7 +755,6 @@
       "subject": "Vous avez été banni de #__roomname__",
       "content": {
         "title": "Vous avez été banni de #__roomname__ par @__username__",
-        "reason": "<strong>Motif: \"__reason__\"</strong>",
         "disclaimer": "On dirait bien que vous n'étiez pas faits l'un pour l'autre.<br/>Vous savez ce qu'on dit : \"un donut de perdu, dix de retrouvés !\".",
         "button": "Retourner sur DONUT"
       }
@@ -784,7 +782,6 @@
       "subject": "On vous a rendu muet dans #__roomname__",
       "content": {
         "title": "On vous a rendu muet dans #__roomname__",
-        "reason": "<strong>Motif: \"__reason__\"</strong>",
         "disclaimer": "Aïe, on vous a rendu muet muet dans #__roomname__",
         "action": "... et tout ça à cause de <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#253b6c; text-decoration:none;\">@__username__</a></strong>",
         "button": "Retourner sur DONUT"

@@ -6,7 +6,7 @@ var inputUtil = require('../../../util/input');
 var imagesUtil = require('../../../util/images');
 var keenio = require('../../../../../shared/io/keenio');
 var Notifications = require('../../../components/notifications');
-var common = require('donut-common');
+var common = require('@dbrugne/donut-common');
 
 var Handler = function (app) {
   this.app = app;
@@ -86,7 +86,7 @@ handler.message = function (data, session, next) {
     },
 
     function mentionNotification(sentEvent, mentions, callback) {
-      if (!mentions.length)
+      if (!mentions || !mentions.length)
         return callback(null, sentEvent);
 
       var usersIds = _.first(_.map(mentions, 'id'), 10);

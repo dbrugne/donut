@@ -114,10 +114,15 @@ define([
     sendMessage: function() {
       var message = this.$editable.val();
 
+      // Delete the whitespace character before and after message
+      message = message.trim();
+
       // check length (min)
       var imagesCount = _.keys(this.images).length;
-      if (message == '' && imagesCount < 1) // empty message and no image
+      if (message == '' && imagesCount < 1) { // empty message and no image
+        this.$editable.val('');
         return false;
+      }
 
       // check length (max)
       // @todo: replace with a "withoutSmileysCodes" logic

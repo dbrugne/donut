@@ -2,7 +2,7 @@ var logger = require('../../../../pomelo-logger').getLogger('donut', __filename)
 var async = require('async');
 var inputUtil = require('../../../util/input');
 var conf = require('../../../../../config');
-var common = require('donut-common');
+var common = require('@dbrugne/donut-common');
 
 var Handler = function(app) {
   this.app = app;
