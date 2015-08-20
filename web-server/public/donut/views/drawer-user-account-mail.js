@@ -67,7 +67,7 @@ define([
               that.$('.error-label').text($.t('global.unknownerror'));
 
           } else {
-            that.$('.error-label').text(that.$('.email-sub').val());
+            that.$('.email-user').text(that.$('.email-sub').val());
             that.$('input').hide();
             that.$('.success').show();
           }

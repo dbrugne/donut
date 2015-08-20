@@ -61,15 +61,13 @@ handler.email = function (data, session, next) {
 
   ], function(err) {
     if (err) {
-      if (err == 'wrong-format' || err == 'same-mail' || err == 'exist')
-        return next(null, {code: 500, err: err});
-      else
-      {
-        logger.error('[user:email:edit] ' + err);
-        return next(null, {code: 520, err: err});
-      }
-    }
+      logger.error('[user:email:edit] ' + err);
 
+      err = (['wrong-format', 'same-mail', 'exist'].indexOf(err) !== -1)
+        ? err
+        : 'internal';
+      return next(null, {code: 500, err: err});
+    }
     return next(null, {});
   });
 };
@@ -100,7 +98,7 @@ handler.password = function (data, session, next) {
       user.save(function () {
         emailer.passwordChanged(user.local.email, function (err) {
           if (err)
-            return console.log('Unable to sent password changed email: ' + err);
+            return callback('Unable to sent password changed email: ' + err);
         });
       });
       return callback(null);
@@ -108,15 +106,13 @@ handler.password = function (data, session, next) {
 
   ], function(err) {
     if (err) {
-      if (err == 'length')
-        return next(null, {code: 500, err: err});
-      else
-      {
-        logger.error('[user:password:edit] ' + err);
-        return next(null, {code: 520, err: err});
-      }
-    }
+      logger.error('[user:password:edit] ' + err);
 
+      err = (['length'].indexOf(err) !== -1)
+        ? err
+        : 'internal';
+      return next(null, {code: 500, err: err});
+    }
     return next(null, {});
   });
 };
