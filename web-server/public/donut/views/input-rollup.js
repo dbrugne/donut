@@ -11,7 +11,7 @@ define([
 
   var debug = donutDebug('donut:input');
 
-  var RollupView = Backbone.View.extend({
+  var InputRollupView = Backbone.View.extend({
 
     template: templates['rollup.html'],
 
@@ -24,12 +24,22 @@ define([
 
     initialize: function (options) {
       this.listenTo(this.model, 'inputKeyUp', this.onKeyUp);
+      this.listenTo(this.model, 'inputKeyDown', this.onKeyDown);
       this.render();
     },
 
     render: function () {
       this.$editable = this.$el.find('.editable');
-      this.$rollUpCtn = this.$el.find('.rollup-container');
+      this.$rollup = this.$el.find('.rollup-container');
+    },
+
+    onKeyDown: function(event) {
+      var data = keyboard._getLastKeyCode();
+
+      // Avoid setting cursor at end of tab input
+      this.cursorPosition = null;
+      if (data.key === keyboard.DOWN || data.key === keyboard.UP)
+        this.cursorPosition = this.$editable.getCursorPosition();
     },
 
     onKeyUp: function (event) {
@@ -40,7 +50,7 @@ define([
       var message = this.$editable.val();
 
       // closed
-      if (this.$rollUpCtn.html().length == 0) {
+      if (this.$rollup.html().length == 0) {
 
         // If different from @, #, /, close rollup & do nothing more
         if (!this._isRollupCallValid(message))
@@ -69,6 +79,10 @@ define([
       }
     },
 
+    isClosed: function() {
+      return (this.$rollup.html().length === 0);
+    },
+
     _parseInput: function() {
       var pos = this._getCursorPosition(); // Get current cursor position in textarea
 
@@ -89,7 +103,7 @@ define([
     },
 
     _rollupNavigate: function (key, target) {
-      var currentLi = this.$rollUpCtn.find('li.active');
+      var currentLi = this.$rollup.find('li.active');
       var li = '';
       if (key == keyboard.UP) {
         li = currentLi.prev();
@@ -129,7 +143,7 @@ define([
           _.each(data.rooms.list, function(d){
             d.avatarUrl = $.cd.roomAvatar(d.avatar);
           });
-          that.$rollUpCtn.html(that.template({ type: 'rooms', results: data.rooms.list }));
+          that.$rollup.html(that.template({ type: 'rooms', results: data.rooms.list }));
         });
 
       if (prefix === '@')
@@ -137,10 +151,8 @@ define([
           _.each(data.users.list, function(d){
             d.avatarUrl = $.cd.userAvatar(d.avatar);
           });
-          that.$rollUpCtn.html(that.template({ type: 'users', results: data.users.list }));
+          that.$rollup.html(that.template({ type: 'users', results: data.users.list }));
         });
-
-      // @todo spd implement command
     },
     _computeNewValue: function(replaceValue) { // @michel
       var oldValue = this.$editable.val(); // #LeagueofLegend @mich #donut
@@ -154,13 +166,13 @@ define([
     },
     _closeRollup: function (target) {
       if (target)
-        this._computeNewValue(this.$rollUpCtn.find('li.active .value').html() + ' ');
+        this._computeNewValue(this.$rollup.find('li.active .value').html() + ' ');
 
-      this.$rollUpCtn.html('');
+      this.$rollup.html('');
     },
 
     onRollupHover: function (event) {
-      var currentLi = this.$rollUpCtn.find('li.active');
+      var currentLi = this.$rollup.find('li.active');
       var li = $(event.currentTarget);
       currentLi.removeClass('active');
       li.addClass('active');
@@ -173,5 +185,5 @@ define([
 
   });
 
-  return RollupView;
+  return InputRollupView;
 });

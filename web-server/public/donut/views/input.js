@@ -9,7 +9,7 @@ define([
   'views/input-commands',
   'views/input-typing',
   '_templates'
-], function ($, _, Backbone, donutDebug, keyboard, currentUser, RollupView, InputCommandsView, ViewTyping, templates) {
+], function ($, _, Backbone, donutDebug, keyboard, currentUser, RollupView, CommandsView, TypingView, templates) {
 
   var debug = donutDebug('donut:input');
 
@@ -45,10 +45,10 @@ define([
         el: this.$el,
         model: this.model
       });
-      this.inputCommandsView = new InputCommandsView({ 
+      this.commandsView = new CommandsView({
         model: this.model 
       });
-      this.typingView = new ViewTyping({
+      this.typingView = new TypingView({
         el: this.$('.typing-container'),
         model: this.model
       });
@@ -66,7 +66,6 @@ define([
 
       this.$editable = this.$('.editable');
       this.$preview = this.$('.preview');
-      this.$rollup = this.$('.rollup-container');
 
       if (!this.model.isInputActive())
         this.$el.addClass('inactive');
@@ -248,17 +247,17 @@ define([
         return false;
 
       var command = regexpCommand.exec(message.toLowerCase())[1];
-      if (!this.inputCommandsView.commands[command])
+      if (!this.commandsView.commands[command])
         return false;
 
-      var commandObj = this.inputCommandsView.commands[command];
+      var commandObj = this.commandsView.commands[command];
 
       var paramsString = message.replace(regexpCommand, '');
       paramsString = paramsString.replace(/^[\s]+/, '');
 
-      var parameters = paramsString.match(this.inputCommandsView.parameters[commandObj.parameters]);
+      var parameters = paramsString.match(this.commandsView.parameters[commandObj.parameters]);
 
-      this.inputCommandsView[command](parameters);
+      this.commandsView[command](parameters);
       return true;
     },
 
@@ -289,14 +288,11 @@ define([
       if (data.key === keyboard.RETURN && !data.isShift)
         event.preventDefault();
 
-      // Avoid setting cursor at end of tab input
-      this.rollupView.cursorPosition = null;
-      if (data.key === keyboard.DOWN || data.key === keyboard.UP)
-        this.rollupView.cursorPosition = this.$editable.getCursorPosition();
-
       // Navigate between editable messages
       if (event.which == keyboard.UP && message === '')
         this.trigger('editPreviousInput');
+
+      this.model.trigger('inputKeyDown', event);
     },
 
     onKeyUp: function (event) {
@@ -306,8 +302,7 @@ define([
       var data = keyboard._getLastKeyCode();
       var message = this.$editable.val();
 
-      // Rollup Closed
-      if (this.$rollup.html().length == 0) {
+      if (this.rollupView.isClosed()) {
         // Send message on Enter, not shift + Enter, only if there is something to send
         if (data.key == keyboard.RETURN && !data.isShift && message.length != 0)
           return this.sendMessage();
