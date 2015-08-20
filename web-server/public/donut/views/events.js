@@ -492,12 +492,9 @@ define([
 
       var message = data.data.message;
       if (message) {
-        // escape HTML
-        message = _.escape(message);
-
-        // mentions
+        // prepare
         message = common.markupToHtml(message, {
-          template: templates['mention.html'],
+          template: templates['markup.html'],
           style: 'color: ' + this.model.get('color')
         });
 
@@ -509,12 +506,9 @@ define([
 
       var topic = data.data.topic;
       if (topic) {
-        // escape HTML
-        topic = _.escape(topic);
-
-        // mentions
+        // prepare
         topic = common.markupToHtml(topic, {
-          template: templates['mention.html'],
+          template: templates['markup.html'],
           style: 'color: ' + this.model.get('color')
         });
 

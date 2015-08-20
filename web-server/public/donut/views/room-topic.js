@@ -48,8 +48,8 @@ define([
         }
       } else {
         // mentions
-        var htmlTopic = common.markupToHtml(_.escape(currentTopic), {
-          template: templates['mention.html'],
+        var htmlTopic = common.markupToHtml(currentTopic, {
+          template: templates['markup.html'],
           style: 'color: ' + this.model.get('color')
         });
         this.$el.find('.txt')
