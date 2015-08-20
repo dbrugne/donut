@@ -37,6 +37,7 @@ define([
   'text!./templates/home.html',
   'text!./templates/image-uploader.html',
   'text!./templates/input.html',
+  'text!./templates/input-typing.html',
   'text!./templates/input-image.html',
   'text!./templates/rollup.html',
   'text!./templates/room-topic.html',
@@ -96,6 +97,7 @@ define([
   home,
   image_uploader,
   input,
+  input_typing,
   input_image,
   rollup,
   room_topic,
@@ -169,6 +171,7 @@ define([
   JST['home.html']                          = _.template(home);
   JST['image-uploader.html']                = _.template(image_uploader);
   JST['input.html']                         = _.template(input);
+  JST['input-typing.html']                  = _.template(input_typing);
   JST['input-image.html']                   = _.template(input_image);
   JST['rollup.html']                        = _.template(rollup);
   JST['room-topic.html']                    = _.template(room_topic);

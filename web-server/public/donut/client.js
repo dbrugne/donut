@@ -49,6 +49,7 @@ define([
       pomelo.on('room:viewed',  function(data) { debug('io:in:room:viewed',   data); this.trigger('room:viewed',    data); }, this);
       pomelo.on('room:message:spam',  function(data) { debug('io:in:room:message:spam',   data); this.trigger('room:message:spam',data); }, this);
       pomelo.on('room:message:unspam',  function(data) { debug('io:in:room:message:unspam',   data); this.trigger('room:message:unspam',data); }, this);
+      pomelo.on('room:typing',  function(data) { debug('io:in:room:typing',   data); this.trigger('room:typing'     ,data); }, this);
 
       pomelo.on('user:join',          function (data) { debug('io:in:user:join',          data); this.trigger('user:join',        data); }, this);
       pomelo.on('user:leave',         function (data) { debug('io:in:user:leave',         data); this.trigger('user:leave',       data); }, this);
@@ -61,6 +62,7 @@ define([
       pomelo.on('user:viewed',        function (data) { debug('io:in:user:viewed',        data); this.trigger('user:viewed',      data); }, this);
       pomelo.on('user:ban',           function(data) { debug('io:in:user:ban',            data); this.trigger('user:ban',         data); }, this);
       pomelo.on('user:deban',         function(data) { debug('io:in:user:deban',          data); this.trigger('user:deban',       data); }, this);
+      pomelo.on('user:typing',        function(data) { debug('io:in:user:typing',         data); this.trigger('user:typing',      data); }, this);
 
       pomelo.on('notification:new',   function(data) { debug('io:in:notification:new',  data); this.trigger('notification:new',   data); }, this);
       pomelo.on('notification:read',  function(data) { debug('io:in:notification:read', data); this.trigger('notification:read',  data); }, this);
@@ -398,6 +400,11 @@ define([
         }
       );
     },
+    roomTyping: function (name) {
+      var data = { name: name };
+      debug('io:out:room:typing', data);
+      pomelo.notify('chat.roomTypingHandler.typing', data);
+    },
 
     // USER METHODS
     // ======================================================
@@ -585,7 +592,13 @@ define([
       var data = {id: id};
       pomelo.notify('chat.userNotificationsHandler.done', data);
       debug('io:out:notification:done', data);
-    }
+    },
+
+    userTyping: function(userId) {
+      var data = { user_id: userId };
+      debug('io:out:user:typing', data);
+      pomelo.notify('chat.userTypingHandler.typing', data);
+    },
 
   }, Backbone.Events);
 
