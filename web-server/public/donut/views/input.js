@@ -39,7 +39,7 @@ define([
     events: {
       'keyup .editable': 'onKeyUp',
       'keydown .editable': 'onKeyDown',
-      ''click .send': 'onSubmitMessage',
+      'click .send': 'onSubmitMessage',
       'click .add-image': 'onAddImage',
       'click .remove-image': 'onRemoveImage',
       'click .add-smiley': 'onOpenSmiley',
