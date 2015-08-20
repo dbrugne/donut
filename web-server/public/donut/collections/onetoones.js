@@ -31,6 +31,7 @@ define([
       this.listenTo(client, 'user:ban', this.onBan);
       this.listenTo(client, 'user:deban', this.onDeban);
       this.listenTo(client, 'user:message:edit', this.onMessageEdited);
+      this.listenTo(client, 'user:typing', this.onTyping);
     },
     join: function(username) {
       // we ask to server to open this one to one
@@ -197,6 +198,13 @@ define([
         return;
 
       model.trigger('messageEdit', data);
+     },
+    onTyping: function(data) {
+      var model = this.getModelFromEvent(data, false);
+      if (!model)
+        return;
+
+      model.trigger('typing', data);
     }
 
   });

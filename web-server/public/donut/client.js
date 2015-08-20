@@ -50,6 +50,7 @@ define([
       pomelo.on('room:viewed',  function(data) { debug('io:in:room:viewed',   data); this.trigger('room:viewed',    data); }, this);
       pomelo.on('room:message:spam',  function(data) { debug('io:in:room:message:spam',   data); this.trigger('room:message:spam',data); }, this);
       pomelo.on('room:message:unspam',  function(data) { debug('io:in:room:message:unspam',   data); this.trigger('room:message:unspam',data); }, this);
+      pomelo.on('room:typing',  function(data) { debug('io:in:room:typing',   data); this.trigger('room:typing'     ,data); }, this);
 
       pomelo.on('user:join',          function (data) { debug('io:in:user:join',          data); this.trigger('user:join',        data); }, this);
       pomelo.on('user:leave',         function (data) { debug('io:in:user:leave',         data); this.trigger('user:leave',       data); }, this);
@@ -63,6 +64,7 @@ define([
       pomelo.on('user:viewed',        function (data) { debug('io:in:user:viewed',        data); this.trigger('user:viewed',      data); }, this);
       pomelo.on('user:ban',           function(data) { debug('io:in:user:ban',            data); this.trigger('user:ban',         data); }, this);
       pomelo.on('user:deban',         function(data) { debug('io:in:user:deban',          data); this.trigger('user:deban',       data); }, this);
+      pomelo.on('user:typing',        function(data) { debug('io:in:user:typing',         data); this.trigger('user:typing',      data); }, this);
 
       pomelo.on('notification:new',   function(data) { debug('io:in:notification:new',  data); this.trigger('notification:new',   data); }, this);
       pomelo.on('notification:read',  function(data) { debug('io:in:notification:read', data); this.trigger('notification:read',  data); }, this);
@@ -133,6 +135,18 @@ define([
           debug('io:in:search', response);
           if (_.isFunction(callback))
             return callback(response);
+        }
+      );
+    },
+    ping: function(fn) {
+      var start = Date.now();
+      pomelo.request(
+        'chat.pingHandler.ping',
+        {},
+        function () {
+          var duration = Date.now() - start;
+          debug('io:in:ping');
+          return fn(duration);
         }
       );
     },
@@ -415,6 +429,11 @@ define([
         }
       );
     },
+    roomTyping: function (name) {
+      var data = { name: name };
+      debug('io:out:room:typing', data);
+      pomelo.notify('chat.roomTypingHandler.typing', data);
+    },
 
     // USER METHODS
     // ======================================================
@@ -556,22 +575,6 @@ define([
         }
       );
     },
-    userNotifications: function (viewed, time, number, fn) {
-      var data = {viewed: viewed, time: time, number: number};
-      debug('io:out:user:notifications', data);
-      var that = this;
-      pomelo.request(
-        'chat.userNotificationsHandler.read',
-        data,
-        function (response) {
-          if (response.err)
-            return debug('io:in:user:notifications error: ', response);
-
-          debug('io:in:user:notifications', response);
-          return fn(response);
-        }
-      );
-    },
     userHistory: function (username, since, limit, fn) {
       var data = {username: username, since: since, limit: limit};
       debug('io:out:user:history', data);
@@ -593,8 +596,31 @@ define([
       pomelo.notify('chat.userViewedHandler.viewed', data);
       debug('io:out:user:viewed', data);
     },
+    userTyping: function(userId) {
+      var data = { user_id: userId };
+      debug('io:out:user:typing', data);
+      pomelo.notify('chat.userTypingHandler.typing', data);
+    }
 
-    // Called to set Notifications as viewed for current user
+    // NOTIFICATIONS
+    // ======================================================
+
+    userNotifications: function (viewed, time, number, fn) {
+      var data = {viewed: viewed, time: time, number: number};
+      debug('io:out:user:notifications', data);
+      var that = this;
+      pomelo.request(
+        'chat.userNotificationsHandler.read',
+        data,
+        function (response) {
+          if (response.err)
+            return debug('io:in:user:notifications error: ', response);
+
+          debug('io:in:user:notifications', response);
+          return fn(response);
+        }
+      );
+    },
     userNotificationsViewed: function (ids, all, fn) {
       var data = {ids: ids, all: all};
       debug('io:out:user:notificationsViewed', data);
@@ -611,26 +637,11 @@ define([
         }
       );
     },
-
-    // Called to set Notifications as viewed for current user
     userNotificationsDone: function (id, fn) {
       var data = {id: id};
       pomelo.notify('chat.userNotificationsHandler.done', data);
       debug('io:out:notification:done', data);
     },
-
-    ping: function(fn) {
-      var start = Date.now();
-      pomelo.request(
-        'chat.pingHandler.ping',
-        {},
-        function () {
-          var duration = Date.now() - start;
-          debug('io:in:ping');
-          return fn(duration);
-        }
-      );
-    }
 
   }, Backbone.Events);
 
