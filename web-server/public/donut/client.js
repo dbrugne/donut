@@ -400,8 +400,8 @@ define([
         }
       );
     },
-    roomTypingMessage: function (name) {
-      var data = {name: name};
+    roomTyping: function (name) {
+      var data = { name: name };
       debug('io:out:room:typing', data);
       pomelo.notify('chat.roomTypingHandler.typing', data);
     },
@@ -594,8 +594,8 @@ define([
       debug('io:out:notification:done', data);
     },
 
-    userTypingMessage: function(id) {
-      var data = {user_id: id};
+    userTyping: function(userId) {
+      var data = { user_id: userId };
       debug('io:out:user:typing', data);
       pomelo.notify('chat.userTypingHandler.typing', data);
     },

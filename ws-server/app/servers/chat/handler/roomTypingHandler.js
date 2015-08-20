@@ -1,8 +1,6 @@
 var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
 var async = require('async');
 var _ = require('underscore');
-var User = require('../../../../../shared/models/user');
-var Room = require('../../../../../shared/models/room');
 
 var Handler = function(app) {
   this.app = app;
@@ -31,12 +29,12 @@ handler.typing = function(data, session, next) {
         return callback('this user ' + user.id + ' is not currently in room ' + room.name);
 
       if (room.isDevoice(user.id))
-        return callback('user is devoiced, he can\'t send message in room');
+        return callback('user is devoiced, he can\'t type/send message in room');
 
       return callback(null);
     },
 
-    function sendToUserSockets(callback) {
+    function broadcast(callback) {
       var typingEvent = {
         name: room.name,
         id: data.room_id,
