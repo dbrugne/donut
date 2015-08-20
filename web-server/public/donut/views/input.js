@@ -234,7 +234,7 @@ define([
       var symbol = $.smilifyGetSymbolFromCode($(event.currentTarget).data('smilifyCode'));
       this.$editable.insertAtCaret(symbol);
       this.$smileyButton.popover('hide');
-    }
+    },
 
     /**********************************************************
      * 

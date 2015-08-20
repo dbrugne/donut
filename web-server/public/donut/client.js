@@ -562,7 +562,7 @@ define([
       );
     },
     userPreferencesUpdate: function (fields, callback) {
-      var data = {data: fields};
+      var data = { data: fields };
       debug('io:out:user:preferences:update', data);
       var that = this;
       pomelo.request(
@@ -576,7 +576,7 @@ define([
       );
     },
     userHistory: function (username, since, limit, fn) {
-      var data = {username: username, since: since, limit: limit};
+      var data = { username: username, since: since, limit: limit };
       debug('io:out:user:history', data);
       var that = this;
       pomelo.request(
@@ -592,7 +592,7 @@ define([
       );
     },
     userViewed: function (username, events) {
-      var data = {username: username, events: events};
+      var data = { username: username, events: events };
       pomelo.notify('chat.userViewedHandler.viewed', data);
       debug('io:out:user:viewed', data);
     },
@@ -600,13 +600,13 @@ define([
       var data = { user_id: userId };
       debug('io:out:user:typing', data);
       pomelo.notify('chat.userTypingHandler.typing', data);
-    }
+    },
 
     // NOTIFICATIONS
     // ======================================================
 
     userNotifications: function (viewed, time, number, fn) {
-      var data = {viewed: viewed, time: time, number: number};
+      var data = { viewed: viewed, time: time, number: number };
       debug('io:out:user:notifications', data);
       var that = this;
       pomelo.request(
@@ -622,7 +622,7 @@ define([
       );
     },
     userNotificationsViewed: function (ids, all, fn) {
-      var data = {ids: ids, all: all};
+      var data = { ids: ids, all: all };
       debug('io:out:user:notificationsViewed', data);
       var that = this;
       pomelo.request(
@@ -638,10 +638,10 @@ define([
       );
     },
     userNotificationsDone: function (id, fn) {
-      var data = {id: id};
+      var data = { id: id };
       pomelo.notify('chat.userNotificationsHandler.done', data);
       debug('io:out:notification:done', data);
-    },
+    }
 
   }, Backbone.Events);
 
