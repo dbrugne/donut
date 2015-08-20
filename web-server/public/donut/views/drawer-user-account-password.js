@@ -41,7 +41,7 @@ define([
 
       var that = this;
 
-      if (this.$('.input-password').val() === this.$('.input-password-confirm').val() && this.$('.input-password').val().length >= 6) {
+      if (this.$('.input-password').val() === this.$('.input-password-confirm').val() && this.$('.input-password').val().length >= 6 && this.$('.input-password').val().length <= 50) {
         this.$('.error').hide();
         this.$('.spinner').show();
         this.$('.form-password').removeClass('has-error');
@@ -62,7 +62,7 @@ define([
         });
 
       }
-      else if (this.$('.input-password').val().length >= 6) {
+      else if (this.$('.input-password').val().length >= 6 && this.$('.input-password').val().length <= 50) {
         this.$('.form-password').addClass('has-error');
         this.$('.error').show();
         this.$('.password-error').text($.t('account.password.error.confirm'));
