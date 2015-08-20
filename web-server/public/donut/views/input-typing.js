@@ -13,12 +13,15 @@ define([
 
     template: templates['input-typing.html'],
 
-    timeToMarkTypingFinished: 3000,
+    timeToMarkTypingFinished: 4000,
 
-    events: {},
+    timeToSendAnotherTypingEvent: 3000,
+
+    canSendTypingEvent: true,
 
     initialize: function(options) {
       this.listenTo(this.model, 'typing', this.onSomeoneTyping);
+      this.listenTo(this.model, 'inputKeyUp', this.onCurrentUserTyping);
 
       this.usersTyping = {};
     },
@@ -50,7 +53,23 @@ define([
           that.render();
         }, this.timeToMarkTypingFinished);
       }
+    },
+
+    onCurrentUserTyping: function(data) {
+      if (!this.canSendTypingEvent)
+        return;
+
+      if (this.model.get('type') === 'room')
+        client.roomTyping(this.model.get('name'));
+      else
+        client.userTyping(this.model.get('user_id'));
+
+      this.canSendTypingEvent = false;
+      setTimeout(_.bind(function() {
+        this.canSendTypingEvent = true;
+      }, this), this.timeToSendAnotherTypingEvent);
     }
+
   });
 
   return InputTypingView;

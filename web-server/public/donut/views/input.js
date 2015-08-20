@@ -20,19 +20,15 @@ define([
 
     images: '',
 
-    canPrintTypingEvent: true,
-
-    timeToSendAnotherTypingEvent: 2000,
-
     events: {
       'keyup .editable'         : 'onKeyUp',
       'keydown .editable'       : 'onKeyDown',
+      'input .editable'         : 'onInput',
       'click .send'             : 'onSubmitMessage',
       'click .add-image'        : 'onAddImage',
       'click .remove-image'     : 'onRemoveImage',
       'click .add-smiley'       : 'onOpenSmiley',
-      'click .smileys .smilify' : 'onPickSmiley',
-      'input .editable'         : 'onTyping'
+      'click .smileys .smilify' : 'onPickSmiley'
     },
 
     initialize: function (options) {
@@ -49,7 +45,7 @@ define([
         model: this.model
       });
       this.typingView = new ViewTyping({
-        el: this.$('.typing'),
+        el: this.$('.typing-container'),
         model: this.model
       });
     },
@@ -230,22 +226,6 @@ define([
       this.$smileyButton.popover('hide');
     },
 
-    onTyping: function() {
-      if (!this.canPrintTypingEvent)
-        return;
-
-      if (this.model.get('type') === 'room')
-        client.roomTyping(this.model.get('name'));
-      else
-        client.userTyping(this.model.get('user_id'));
-
-      this.canPrintTypingEvent = false;
-      var that = this;
-      setTimeout( function() {
-        that.canPrintTypingEvent = true;
-      }, this.timeToSendAnotherTypingEvent);
-    },
-
     /*****************************************************************************************************************
      *
      * Listener
@@ -304,6 +284,10 @@ define([
       this.model.trigger('inputKeyUp', event);
     },
 
+    onInput: function() {
+      this.model.trigger('inputInput', event);
+    },
+
     sendMessage: function() {
       var message = this.$editable.val();
       
@@ -342,7 +326,7 @@ define([
       this.$preview.find('.image').remove();
       this.hidePreview();
 
-      this.canPrintTypingEvent = true;
+      this.typingView.canPrintTypingEvent = true;
 
       // Avoid line break addition in field when submitting with "Enter"
       return false;
