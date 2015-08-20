@@ -2,6 +2,7 @@ var logger = require('../../pomelo-logger').getLogger('donut', __filename);
 var async = require('async');
 var _ = require('underscore');
 var Room = require('../../../shared/models/room');
+var HistoryRoom = require('../../../shared/models/historyroom');
 
 /**
  * Helper to retrieve/prepare all the room data needed for 'welcome' and 'room:welcome' events:
@@ -33,7 +34,8 @@ module.exports = function(app, uid, room, fn) {
         avatar    : room._avatar(),
         poster    : room._poster(),
         color     : room.color,
-        topic     : room.topic
+        topic     : room.topic,
+        unread    : 'unread'
       };
       if (room.owner) {
         roomData.owner = {
