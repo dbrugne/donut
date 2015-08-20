@@ -130,7 +130,7 @@ handler.message = function (data, session, next) {
       };
       keenio.addEvent("room_message", messageEvent, function (err, res) {
         if (err)
-          logger.error('Error while tracking room_message in keen.io: ' + err);
+          logger.error(err);
 
         return callback(null);
       });
