@@ -93,60 +93,6 @@ define([
       event.preventDefault();
       this.sendMessage();
     },
-    
-    sendMessage: function() {
-      var message = this.$editable.val();
-
-      // Delete the whitespace character before and after message
-      message = message.trim();
-
-      // check command
-      if (this.checkCommand(message)) {
-        this.$editable.val('');
-        return false;
-      }
-
-      // check length (min)
-      var imagesCount = _.keys(this.images).length;
-      if (message == '' && imagesCount < 1) { // empty message and no image
-        this.$editable.val('');
-        return false;
-      }
-      
-      // check length (max)
-      // @todo: replace with a "withoutSmileysCodes" logic
-      //var withoutMentions = message.replace(/@\[([^\]]+)\]\(user:[^\)]+\)/gi, '$1');
-      if (message.length > 512) {
-        debug('message is too long');
-        return false;
-      }
-
-      // add images
-      var images = [];
-      if (imagesCount > 0) {
-        _.each(this.images, function(i) {
-          images.push({
-            public_id: i.public_id,
-            version: i.version,
-            path: i.path
-          });
-        });
-      }
-      // Send message to server
-      this.model.sendMessage(message, images);
-      this.trigger('send');
-
-      // Empty field
-      this.$editable.val('');
-
-      // reset images
-      this.images = {};
-      this.$preview.find('.image').remove();
-      this.hidePreview();
-
-      // Avoid line break addition in field when submitting with "Enter"
-      return false;
-    },
 
     onAddImage: function(event) {
       event.preventDefault();
@@ -235,32 +181,6 @@ define([
       this.$smileyButton.popover('hide');
     },
 
-    /**********************************************************
-     * 
-     * Commands
-     * 
-     **********************************************************/
-
-    checkCommand: function(message) {
-      var regexpCommand = /^\/([a-z]+)/i;
-      if (!regexpCommand.test(message))
-        return false;
-
-      var command = regexpCommand.exec(message.toLowerCase())[1];
-      if (!this.commandsView.commands[command])
-        return false;
-
-      var commandObj = this.commandsView.commands[command];
-
-      var paramsString = message.replace(regexpCommand, '');
-      paramsString = paramsString.replace(/^[\s]+/, '');
-
-      var parameters = paramsString.match(this.commandsView.parameters[commandObj.parameters]);
-
-      this.commandsView[command](parameters);
-      return true;
-    },
-
     /*****************************************************************************************************************
      *
      * Listener
@@ -322,8 +242,8 @@ define([
     sendMessage: function() {
       var message = this.$editable.val();
 
-      // check command
-      if (this.checkCommand(message)) {
+      // check if input is a command
+      if (this.commandsView.checkInput(message)) {
         this.$editable.val('');
         return false;
       }

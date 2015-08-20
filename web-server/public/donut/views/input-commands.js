@@ -8,6 +8,47 @@ define([
 ], function ($, _, Backbone, confirmationView, EventModel, currentUser) {
   var InputCommandsView = Backbone.View.extend({
 
+    commandRegexp: /^\/([-a-z0-9]+)/i,
+
+    initialize: function(options) {
+    },
+
+    render: function() {
+      return this;
+    },
+
+    checkInput: function(input) {
+      if (!this.commandRegexp.test(input))
+        return false;
+
+      // find command
+      var match = this.commandRegexp.exec(input.toLowerCase());
+      if (!match[1])
+        return false;
+      var commandName = match[1];
+      if (!this.commands[commandName])
+        return false;
+
+      // find parameters
+      var parametersPattern = this.parameters[this.commands[commandName].parameters];
+      var parameters;
+      if (parametersPattern) {
+        var paramsString = input.replace(this.commandRegexp, '').replace(/^[\s]+/, '');
+        var parameters = paramsString.match(parametersPattern);
+      }
+
+      // run
+      this[commandName](parameters);
+
+      return true;
+    },
+
+    /**********************************************************
+     *
+     * Commands
+     *
+     **********************************************************/
+
     commands : {
       join: {
         parameters: 'name',
@@ -20,7 +61,7 @@ define([
         description: 'chat.commands.leave'
       },
       topic: {
-        parameters: 'notMandatory',
+        parameters: 'messageNotMandatory',
         help: '[topic]',
         description: 'chat.commands.topic'
       },
@@ -42,7 +83,7 @@ define([
       ban: {
         parameters: 'username',
         help: '@username',
-        description: 'chat.commands.ban' //ban and expulse user from room'
+        description: 'chat.commands.ban'
       },
       deban: {
         parameters: 'username',
@@ -88,44 +129,28 @@ define([
 
     parameters: {
       message: /(.+)/,
-      helpCommand: /^\/([a-zA-Z]+)/,
-      name : /(^[#][\w-.|^]+)/,
-      username : /^[@]([\w-.|^]+)/,
-      usernameName : /^([@#][\w-.|^]+)/,
-      usernameNameMsg: /^([@#][\w-.|^]+)\s+(.+)/
+      messageNotMandatory: /(.*)/,
+      helpCommand: /^\/([a-z]+)/i,
+      name: /(^[#][a-z-.|^]+)/i,
+      username: /^[@]([a-z-.|^]+)/i,
+      usernameName: /^([@#][a-z-.|^]+)/i,
+      usernameNameMsg: /^([@#][a-z-.|^]+)\s+(.+)/i
     },
-
-    initialize: function(options) {
-      this.render();
-    },
-    render: function() {
-      return this;
-    },
-
-    /**********************************************************
-     * Commands functions
-     **********************************************************/
 
     join: function(parameters) {
-
       if (!parameters)
         return;
       client.roomJoin(parameters[1]);
     },
-
     leave: function(parameters) {
-
       if (!parameters)
         return;
-        client.roomLeave(parameters[1]);
+      client.roomLeave(parameters[1]);
     },
-
     topic: function(parameters) {
       client.roomTopic(this.model.get('name'), parameters[1]);
     },
-
     op: function(parameters) {
-
       if (!parameters || this.model.get('type') !== 'room')
         return;
 
@@ -134,9 +159,7 @@ define([
         client.roomOp(that.model.get('name'), parameters[1]);
       });
     },
-
     deop: function(parameters) {
-
       if (!parameters || this.model.get('type') !== 'room')
         return;
 
@@ -145,9 +168,7 @@ define([
         client.roomDeop(that.model.get('name'), parameters[1]);
       });
     },
-
     kick: function(parameters) {
-
       if (!parameters || this.model.get('type') !== 'room')
         return;
 
@@ -156,9 +177,7 @@ define([
         client.roomKick(that.model.get('name'), parameters[1], reason);
       });
     },
-
     ban: function(parameters) {
-
       if (!parameters || this.model.get('type') !== 'room')
         return;
 
@@ -167,25 +186,19 @@ define([
         client.roomBan(that.model.get('name'), parameters[1], reason);
       });
     },
-
     deban: function(parameters) {
-
       if (!parameters || this.model.get('type') !== 'room')
         return;
 
       client.roomDeban(this.model.get('name'), parameters[1]);
     },
-
     voice: function(parameters) {
-
       if (!parameters || this.model.get('type') !== 'room')
         return;
 
       client.roomVoice(this.model.get('name'), parameters[1]);
     },
-
     devoice: function(parameters) {
-
       if (!parameters || this.model.get('type') !== 'room')
         return;
 
@@ -194,35 +207,29 @@ define([
         client.roomDevoice(that.model.get('name'), parameters[1], reason);
       });
     },
-
     msg: function(parameters) {
-
       if (!parameters)
         return;
 
-      if (/^#/.test(parameters[1]))
+      if (/^#/.test(parameters[1])) {
         client.roomMessage(parameters[1], parameters[2], null);
-      else {
+      } else {
         parameters[1] = parameters[1].replace(/^@/, '');
         client.userMessage(parameters[1], parameters[2], null);
       }
     },
-
     profile: function(parameters) {
-
       if (!parameters)
         return;
 
-      if ((/^#/.test(parameters[1])))
+      if ((/^#/.test(parameters[1]))) {
         currentUser.trigger('roomProfileCommand', parameters[1]);
-      else {
+      } else {
         parameters[1] = parameters[1].replace(/^@/, '');
         currentUser.trigger('userProfileCommand', parameters[1]);
       }
     },
-
     me: function(parameters) {
-
       if (!parameters)
         return;
 
@@ -231,9 +238,7 @@ define([
       else
         client.userMe(this.model.get('id'), parameters[1]);
     },
-
     ping: function(parameters) {
-
       var that = this;
       client.ping(function (duration){
         var data = {
@@ -248,9 +253,7 @@ define([
         that.model.trigger('freshEvent', model);
       });
     },
-
     help: function(parameters) {
-
       if (parameters && this.commands[parameters[1]]) {
         var commandHelp = this.commands[parameters[1]];
         commandHelp.name = parameters[1];
@@ -265,7 +268,7 @@ define([
         data: data
       });
       this.model.trigger('freshEvent', model);
-    },
+    }
 
   });
 
