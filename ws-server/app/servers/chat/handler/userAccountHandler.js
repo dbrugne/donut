@@ -18,8 +18,6 @@ handler.email = function (data, session, next) {
 
   var user = session.__currentUser__;
 
-  var that = this;
-
   async.waterfall([
 
     function check(callback) {
@@ -75,8 +73,6 @@ handler.email = function (data, session, next) {
 handler.password = function (data, session, next) {
 
   var user = session.__currentUser__;
-
-  var that = this;
 
   async.waterfall([
     function check(callback) {
