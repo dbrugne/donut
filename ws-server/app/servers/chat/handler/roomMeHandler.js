@@ -45,32 +45,24 @@ handler.me = function (data, session, next) {
       // text filtering
       var message = inputUtil.filter(data.message, 512);
 
-
       if (!message)
-        return callback('Empty message "/me" no text');
+        return callback('empty message (no text)');
 
       // mentions
-      inputUtil.mentions(message, function(err, message, mentions) {
-        return callback(err, message, mentions);
+      inputUtil.mentions(message, function(err, message, markups) {
+        return callback(err, message, markups.users);
       });
     },
 
-    function prepareEvent(message, mentions, callback) {
+    function historizeAndEmit(message, mentions, callback) {
       var event = {
         name: room.name,
         id: room.id,
-        time: Date.now(),
         user_id: user.id,
         username: user.username,
-        avatar: user._avatar()
+        avatar: user._avatar(),
+        message: message
       };
-      if (message)
-        event.message = message;
-
-      return callback(null, event, mentions);
-    },
-
-    function historizeAndEmit(event, mentions, callback) {
       roomEmitter(that.app, 'room:me', event, function (err, sentEvent) {
         if (err)
           return callback(err);
@@ -121,7 +113,7 @@ handler.me = function (data, session, next) {
       };
       keenio.addEvent("room_me", messageEvent, function (err, res) {
         if (err)
-          logger.error('Error while tracking room_me in keen.io: ' + err);
+          logger.error(err);
 
         return callback(null);
       });

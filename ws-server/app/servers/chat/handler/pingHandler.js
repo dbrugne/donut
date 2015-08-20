@@ -9,5 +9,5 @@ module.exports = function(app) {
 var handler = Handler.prototype;
 
 handler.ping = function(data, session, next) {
-  return next (null, {});
+  return next (null);
 };

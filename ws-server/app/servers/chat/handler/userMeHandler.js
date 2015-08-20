@@ -61,24 +61,16 @@ handler.me = function(data, session, next) {
       });
     },
 
-    function prepareEvent(message, callback) {
+    function historizeAndEmit(message, callback) {
       var event = {
         from_user_id  : user.id,
         from_username : user.username,
         from_avatar   : user._avatar(),
         to_user_id    : withUser.id,
         to_username   : withUser.username,
-        time          : Date.now()
+        message: message
       };
-
-      if (message)
-        event.message = message;
-
-      return callback(null, event);
-    },
-
-    function historizeAndEmit(event, callback) {
-      oneEmitter(that.app, { from: user._id, to: withUser._id} , 'user:me', event, callback);
+      oneEmitter(that.app, { from: user._id, to: withUser._id } , 'user:me', event, callback);
     },
 
     function notification(event, callback) {
@@ -109,7 +101,7 @@ handler.me = function(data, session, next) {
       };
       keenio.addEvent("onetoone_me", messageEvent, function(err){
         if (err)
-          logger.error('Error while tracking onetoone_me in keen.io for ' + user.id + ': '+err);
+          logger.error(err);
 
         return callback(null);
       });
