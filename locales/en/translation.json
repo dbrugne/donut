@@ -303,7 +303,8 @@
         "rooms": "Liste des donuts disponibles",
         "users": "Liste des utilisateurs",
         "tonavigate": "to navigate",
-        "toselect": "to select"
+        "toselect": "to select",
+        "todismiss": "to dismiss"
       }
     },
     "loading": "Loading",
