@@ -51,7 +51,6 @@ define([
 
     commands : {
       join: {
-        parameters: 'name',
         help: '#donut',
         description: 'chat.commands.join'
       },
