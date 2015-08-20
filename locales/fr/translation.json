@@ -321,8 +321,11 @@
     "rollup": {
       "header": {
         "commands": "Liste des commandes disponibles",
-        "donuts": "Liste des donuts disponibles",
-        "users": "Liste des utilisateurs"
+        "rooms": "Liste des donuts disponibles",
+        "users": "Liste des utilisateurs",
+        "tonavigate": "pour naviguer",
+        "toselect": "pour séléctionner",
+        "todismiss": "pour fermer"
       }
     },
     "loading": "Chargement ",
