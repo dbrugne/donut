@@ -50,12 +50,15 @@ define([
         commands: this.commandsView.commands
       });
       this.typingView = new TypingView({
-        el: this.$('.typing-container'),
+        el: this.$el,
         model: this.model
       });
     },
 
     _remove: function () {
+      this.commandsView.remove();
+      this.rollupView.remove();
+      this.typingView.remove();
       this.remove();
     },
 
@@ -249,6 +252,7 @@ define([
         return false;
       }
       
+      // check length (min)
       var trimmedMessage = message.trim(); // only white character message detection
       var imagesCount = _.keys(this.images).length;
       if (trimmedMessage === '' && imagesCount < 1) // empty message and no image
