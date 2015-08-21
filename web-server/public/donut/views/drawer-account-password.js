@@ -8,7 +8,7 @@ define([
 ], function ($, _, Backbone, client ,currentUser, templates) {
   var DrawerAccountPasswordView = Backbone.View.extend({
 
-    template: templates['drawer-user-account-password.html'],
+    template: templates['drawer-account-password.html'],
 
     events: {
       'submit .form-password'       : 'onSubmit',

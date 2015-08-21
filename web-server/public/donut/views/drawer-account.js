@@ -4,13 +4,13 @@ define([
   'backbone',
   'client',
   'models/current-user',
-  'views/drawer-user-account-email',
-  'views/drawer-user-account-password',
+  'views/drawer-account-email',
+  'views/drawer-account-password',
   '_templates'
 ], function ($, _, Backbone, client, currentUser, EmailView, PasswordView,templates) {
   var DrawerUserEditView = Backbone.View.extend({
 
-    template: templates['drawer-user-account.html'],
+    template: templates['drawer-account.html'],
 
     id: 'user-account',
 
