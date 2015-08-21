@@ -406,9 +406,27 @@ define([
       pomelo.notify('chat.roomTypingHandler.typing', data);
     },
 
-    // USER
+    // ONETOONE
     // ======================================================
 
+    userJoin: function (username) {
+      var data = {username: username};
+      debug('io:out:user:join', data);
+      var that = this;
+      pomelo.request(
+        'chat.userJoinHandler.join',
+        data,
+        function (response) {
+          if (response.err)
+            return debug('io:in:user:join error: ', response);
+        }
+      );
+    },
+    userLeave: function (username) {
+      var data = {username: username};
+      pomelo.notify('chat.userLeaveHandler.leave', data);
+      debug('io:out:user:leave', data);
+    },
     userBan: function(username) {
       var data = { username: username };
       debug('io:out:user:ban', data);
@@ -435,24 +453,6 @@ define([
         }
       );
     },
-    userJoin: function (username) {
-      var data = {username: username};
-      debug('io:out:user:join', data);
-      var that = this;
-      pomelo.request(
-        'chat.userJoinHandler.join',
-        data,
-        function (response) {
-          if (response.err)
-            return debug('io:in:user:join error: ', response);
-        }
-      );
-    },
-    userLeave: function (username) {
-      var data = {username: username};
-      pomelo.notify('chat.userLeaveHandler.leave', data);
-      debug('io:out:user:leave', data);
-    },
     userMessage: function (username, message, images, callback) {
       var data = {username: username, message: message, images: images};
       debug('io:out:user:message', data);
@@ -472,6 +472,36 @@ define([
       pomelo.notify('chat.userMessageEditHandler.edit', data);
       debug('io:out:user:message:edit', data);
     },
+    userHistory: function (username, since, limit, fn) {
+      var data = {username: username, since: since, limit: limit};
+      debug('io:out:user:history', data);
+      var that = this;
+      pomelo.request(
+        'chat.userHistoryHandler.history',
+        data,
+        function (response) {
+          if (response.err)
+            return debug('io:in:user:history error: ', response);
+
+          debug('io:in:user:history', response);
+          return fn(response);
+        }
+      );
+    },
+    userViewed: function (username, events) {
+      var data = {username: username, events: events};
+      pomelo.notify('chat.userViewedHandler.viewed', data);
+      debug('io:out:user:viewed', data);
+    },
+    userTyping: function(userId) {
+      var data = { user_id: userId };
+      debug('io:out:user:typing', data);
+      pomelo.notify('chat.userTypingHandler.typing', data);
+    },
+
+    // USER
+    // ======================================================
+
     userRead: function (username, fn) {
       var data = {username: username};
       debug('io:out:user:read', data);
@@ -531,37 +561,11 @@ define([
         }
       );
     },
-    userHistory: function (username, since, limit, fn) {
-      var data = {username: username, since: since, limit: limit};
-      debug('io:out:user:history', data);
-      var that = this;
-      pomelo.request(
-        'chat.userHistoryHandler.history',
-        data,
-        function (response) {
-          if (response.err)
-            return debug('io:in:user:history error: ', response);
-
-          debug('io:in:user:history', response);
-          return fn(response);
-        }
-      );
-    },
-    userViewed: function (username, events) {
-      var data = {username: username, events: events};
-      pomelo.notify('chat.userViewedHandler.viewed', data);
-      debug('io:out:user:viewed', data);
-    },
-    userTyping: function(userId) {
-      var data = { user_id: userId };
-      debug('io:out:user:typing', data);
-      pomelo.notify('chat.userTypingHandler.typing', data);
-    },
 
     // NOTIFICATION
     // ======================================================
 
-    userNotifications: function (viewed, time, number, fn) {
+    notificationRead: function (viewed, time, number, fn) {
       var data = {viewed: viewed, time: time, number: number};
       debug('io:out:notification:read', data);
       pomelo.request(
@@ -576,7 +580,7 @@ define([
         }
       );
     },
-    userNotificationsViewed: function (ids, all, fn) {
+    notificationViewed: function (ids, all, fn) {
       var data = {ids: ids, all: all};
       debug('io:out:notification:viewed', data);
       pomelo.request(
@@ -591,7 +595,7 @@ define([
         }
       );
     },
-    userNotificationsDone: function (id) {
+    notificationDone: function (id) {
       var data = {id: id};
       pomelo.notify('chat.notificationDoneHandler.done', data);
       debug('io:out:notification:done', data);
