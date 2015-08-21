@@ -20,7 +20,6 @@ define([
 
     render: function() {
       this.$('.mail-form-container').html(this.template);
-
       this.$('.spinner').html(templates['spinner.html']);
       this.$('.spinner').hide();
       this.$('.error').hide();
