@@ -56,8 +56,6 @@ define([
         'user:ban',
         'user:deban',
         'user:typing',
-        'user:email:edit',
-        'user:password:edit',
         'preferences:update',
         'notification:new',
         'notification:read',
