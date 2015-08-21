@@ -15,10 +15,7 @@ var userSchema = mongoose.Schema({
     suspended      : { type: Boolean, default: false },
     bio            : String,
     location       : String,
-    website        : {
-      href         : String,
-      title        : String
-    },
+    website        : mongoose.Schema.Types.Mixed,
     avatar         : String,
     poster         : String,
     color          : String,
