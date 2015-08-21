@@ -32,6 +32,7 @@ module.exports = function(app, user, users, fn) {
           username    : u.username,
           avatar      : u._avatar(),
           poster      : u._poster(),
+          poster_blured : u._poster(true),
           color       : u.color,
           location    : u.location,
           website     : u.website,

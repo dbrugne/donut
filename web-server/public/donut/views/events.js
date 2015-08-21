@@ -378,7 +378,7 @@ define([
      *****************************************************************************************************************/
     onAdminMessage: function(data) {
       data = { data: data };
-      data.data.avatar = 'cloudinary=v1409643461/rciev5ubaituvx5bclnz.png';
+      data.data.avatar = 'cloudinary=v1409643461/rciev5ubaituvx5bclnz.png'; // @todo : fix at the end of cloudinary
       data.data.username = 'DONUT';
       data.data.is_admin = true;
       data.type = 'room:message';
@@ -486,9 +486,9 @@ define([
         ? 30
         : 20;
       if (model.get("data").avatar)
-        data.data.avatar = $.cd.userAvatar(model.get("data").avatar, size);
+        data.data.avatar = common.cloudinarySize(model.get("data").avatar, size);
       if (model.get("data").by_avatar)
-        data.data.by_avatar = $.cd.userAvatar(model.get("data").by_avatar, size);
+        data.data.by_avatar = common.cloudinarySize(model.get("data").by_avatar, size);
 
       var message = data.data.message;
       if (message) {

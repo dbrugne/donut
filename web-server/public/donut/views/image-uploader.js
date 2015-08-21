@@ -23,6 +23,7 @@ define([
     initialize: function (options) {
       delete options.el; // already saved by Backbone.View, now should be removed from cloudinary options
       this.options = _.extend({
+        theme: 'white',
         success: _.noop,
         current: '',
         field_name: 'image',

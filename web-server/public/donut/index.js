@@ -67,7 +67,7 @@ require([
   // cloudinary temporary hack
   $.cloudinarySize = common.cloudinarySize;
   $.cd = {};
-  $.cd.poster = $.cd.posterBlured = $.cloudinarySize;
+  $.cd.posterBlured = $.cloudinarySize;
 
   // i18n setup
   window.i18next = i18next; // @debug

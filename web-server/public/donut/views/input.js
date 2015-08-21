@@ -2,13 +2,14 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'common',
   'libs/donut-debug',
   'libs/keyboard',
   'models/current-user',
   'views/input-rollup',
   'views/input-typing',
   '_templates'
-], function ($, _, Backbone, donutDebug, keyboard, currentUser, RollupView, ViewTyping, templates) {
+], function ($, _, Backbone, common, donutDebug, keyboard, currentUser, RollupView, ViewTyping, templates) {
 
   var debug = donutDebug('donut:input');
 
@@ -56,7 +57,7 @@ define([
 
     render: function () {
       this.$el.html(this.template({
-        avatar: $.cd.userAvatar(currentUser.get('avatar'), 80),
+        avatar: common.cloudinarySize(currentUser.get('avatar'), 80),
         bannedMessage: $.t('chat.actions.bannedMessage.__type__'.replace('__type__', this.model.get('type')))
       }));
 
@@ -83,7 +84,7 @@ define([
     },
 
     onAvatar: function(model, value, options) {
-      this.$el.find('.avatar').prop('src', $.cd.userAvatar(value, 80));
+      this.$el.find('.avatar').prop('src', common.cloudinarySize(value, 80));
     },
 
     onSubmitMessage: function(event) {
@@ -144,6 +145,7 @@ define([
 
       // @doc: http://cloudinary.com/documentation/upload_widget#setup
       var options = {
+        theme: 'white',
         upload_preset: 'discussion',
         sources: ['local'], // ['local', 'url', 'camera']
         multiple: true,

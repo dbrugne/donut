@@ -68,6 +68,7 @@ define([
         topic: room.topic,
         avatar: room.avatar,
         poster: room.poster,
+        poster_blured: room.poster_blured,
         color: room.color
       };
 
