@@ -3,7 +3,7 @@ var async = require('async');
 var _ = require('underscore');
 var Room = require('../../../../../shared/models/room');
 var validator = require('validator');
-var cloudinary = require('../../../../../shared/cloudinary/cloudinary');
+var cloudinary = require('../../../../../shared/util/cloudinary').cloudinary;
 
 var Handler = function(app) {
   this.app = app;
@@ -120,16 +120,10 @@ handler.call = function(data, session, next) {
 		 * We receive following fields (e.g.: data.data.avatar):
 		 *
 		 *  {
-       *    public_id: 'jfs0fbpit5ozwnvx4uem',
-       *    version: 1407505236,
-       *    path: 'v1407505236/jfs0fbpit5ozwnvx4uem.jpg'
-       *  }
-		 *
-		 * As $.cloudinary can build URL based on 'path' (that contain both public_id
-		 * and version) we store only 'path' as model 'avatar' field value:
-		 *
-		 *   $.cloudinary.url("v1407505236/jfs0fbpit5ozwnvx4uem.jpg")
-		 *   -> "http://res.cloudinary.com/roomly/image/upload/v1407505236/jfs0fbpit5ozwnvx4uem.jpg"
+     *    public_id: 'jfs0fbpit5ozwnvx4uem',
+     *    version: 1407505236,
+     *    path: 'v1407505236/jfs0fbpit5ozwnvx4uem.jpg'
+     *  }
 		 */
 		function images(sanitized, callback) {
 			if (_.has(data.data, 'avatar')) {
@@ -143,7 +137,7 @@ handler.call = function(data, session, next) {
 				if (avatar.remove && avatar.remove == true && room.avatar) {
 					sanitized.avatar = '';
 
-					// remove previous picture from cloudinary?
+					// remove previous picture
 					cloudinary.api.delete_resources([room.avatarId()], function(result){
 						console.log(result.deleted);
 					});
@@ -161,7 +155,7 @@ handler.call = function(data, session, next) {
 				if (poster.remove && poster.remove == true && room.poster) {
 					sanitized.poster = '';
 
-					// remove previous picture from cloudinary?
+					// remove previous picture
 					cloudinary.api.delete_resources([room.posterId()], function(result){
 						console.log(result.deleted);
 					});
@@ -192,7 +186,7 @@ handler.call = function(data, session, next) {
 					  sanitizedToNotify['poster'] = room._poster();
 					else {
 					  sanitizedToNotify['color'] = sanitized[key];
-						// Also update colors of poster & sidebar when no image defined (because generated from color by cloudinary)
+						// Also update colors of poster & sidebar when no image defined
 						if (room.avatar && room.avatar.length == 0)
 							sanitizedToNotify['avatar'] = room._avatar();
 						if (room.poster && room.poster.length == 0)
