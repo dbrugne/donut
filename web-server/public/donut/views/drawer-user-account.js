@@ -4,17 +4,15 @@ define([
   'backbone',
   'client',
   'models/current-user',
-  'views/drawer-user-account-mail',
+  'views/drawer-user-account-email',
   'views/drawer-user-account-password',
   '_templates'
-], function ($, _, Backbone, client, currentUser, ViewMail, ViewPassword,templates) {
+], function ($, _, Backbone, client, currentUser, EmailView, PasswordView,templates) {
   var DrawerUserEditView = Backbone.View.extend({
 
     template: templates['drawer-user-account.html'],
 
     id: 'user-account',
-
-    user: '',
 
     events: {},
 
@@ -27,7 +25,6 @@ define([
       // ask for data
       var that = this;
       client.userRead(currentUser.get('username'), function(data) {
-        that.user = data;
         that.onResponse(data);
       });
     },
@@ -46,15 +43,11 @@ define([
       var html = this.template({user: user});
       this.$el.html(html);
 
-      // color form
-      this.$el.find('.user').colorify();
-
-      this.mailView = new ViewMail ({
+      this.emailView = new EmailView ({
         el : this.$(".mail-form"),
         model: this.model
       });
-
-      this.passwordView = new ViewPassword ({
+      this.passwordView = new PasswordView ({
         el : this.$(".password-form"),
         model: this.model
       });

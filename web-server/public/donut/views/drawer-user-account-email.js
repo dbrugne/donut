@@ -8,7 +8,7 @@ define([
 ], function ($, _, Backbone, client ,currentUser, templates) {
   var DrawerAccountEmailView = Backbone.View.extend({
 
-    template: templates['drawer-user-account-mail.html'],
+    template: templates['drawer-user-account-email.html'],
 
     events: {
       'click #email-modal-link' : 'onShowForm',
