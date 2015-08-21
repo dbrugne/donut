@@ -26,7 +26,12 @@ define([
       this.listenTo(this.model, 'inputKeyUp', this.onKeyUp);
       this.listenTo(this.model, 'inputKeyDown', this.onKeyDown);
 
-      this.commands = options.commands;
+      var commands = [];
+      _.each(options.commands, function(command, key){
+        command.name = key;
+        commands.push(command);
+      });
+      this.commands = commands;
 
       this.$editable = this.$el.find('.editable');
       this.$rollup = this.$el.find('.rollup-container');
@@ -105,6 +110,10 @@ define([
       return !(_.indexOf(['#', '@', '/'], message.substr(0, 1)) == -1);
     },
 
+    _isCommandCallable: function() {
+      return (this.$editable.val().trim().length === 1 && this.$editable.val().substr(0, 1) === "/")
+    },
+
     _rollupNavigate: function (key, target) {
       var currentLi = this.$rollup.find('li.active');
       var li = '';
@@ -130,6 +139,14 @@ define([
     },
 
     _displayRollup: function () {
+      if (this._isCommandCallable()) {
+        this.$rollup.html(this.template({
+          type: 'commands',
+          results: this.commands
+        }));
+        return;
+      }
+
       var input = this._parseInput();
       if (input.length < 2)
         return this._closeRollup();
@@ -138,16 +155,6 @@ define([
       var search = input.substr(1);
 
       var that = this;
-
-      // @todo : add control to check if current input is the beginning of the input field value
-      // @todo : trigger rollup for command on first /
-      if (prefix === '/') {
-        this.$rollup.html(this.template({
-          type: 'commands',
-          results: this.commands
-        }));
-        return;
-      }
 
       if (prefix === '#')
         client.search(search, true, false, 15, false, function(data) {
@@ -180,7 +187,7 @@ define([
         if (this.$rollup.find('li.active .value').length == 0)
           return;
 
-        this._computeNewValue(this.$rollUpCtn.find('li.active .value').html() + ' ');
+        this._computeNewValue(this.$rollup.find('li.active .value').html() + ' ');
       }
 
       this.$rollup.html('');
@@ -191,7 +198,7 @@ define([
       if (li.hasClass('empty')) // Avoid highlighting empty results on hover
         return;
 
-      var currentLi = this.$rollUpCtn.find('li.active');
+      var currentLi = this.$rollup.find('li.active');
       currentLi.removeClass('active');
       li.addClass('active');
       this._computeNewValue(li.find('.value').html() + ' ');

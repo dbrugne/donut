@@ -8,6 +8,6 @@ module.exports = function(app) {
 
 var handler = Handler.prototype;
 
-handler.ping = function(data, session, next) {
+handler.call = function(data, session, next) {
   return next (null);
 };
