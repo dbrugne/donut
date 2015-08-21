@@ -6,7 +6,7 @@ define([
   'models/current-user',
   '_templates'
 ], function ($, _, Backbone, client ,currentUser, templates) {
-  var DrawerAccountPassword = Backbone.View.extend({
+  var DrawerAccountPasswordView = Backbone.View.extend({
 
     template: templates['drawer-user-account-password.html'],
 
@@ -76,5 +76,5 @@ define([
 
   });
 
-  return DrawerAccountPassword;
+  return DrawerAccountPasswordView;
 });
