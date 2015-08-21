@@ -16,7 +16,7 @@ module.exports = function(app) {
 
 var handler = Handler.prototype;
 
-handler.create = function(data, session, next) {
+handler.call = function(data, session, next) {
 
   var user = session.__currentUser__;
 
