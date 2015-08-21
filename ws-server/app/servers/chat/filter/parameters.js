@@ -73,13 +73,21 @@ Filter.prototype.before = function(data, session, next) {
     },
 
     user: function (callback) {
-      if (!data.username)
+      if (!data.username && !data.user_id)
         return callback(null);
 
-      if (!common.validateUsername(data.username))
-        return callback('invalid username parameter: ' + data.username);
+      if (data.username) {
+        if (!common.validateUsername(data.username))
+          return callback('invalid username parameter: ' + data.username);
 
-      UserModel.findByUsername(data.username).exec(callback);
+        UserModel.findByUsername(data.username).exec(callback);
+      } else {
+        if (!common.validateObjectId(data.user_id))
+          return callback('invalid user_id parameter: ' + data.user_id);
+
+        UserModel.findByUid(data.user_id).exec(callback);
+      }
+
     },
 
     event: function (callback) {
