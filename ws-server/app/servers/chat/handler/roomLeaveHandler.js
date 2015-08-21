@@ -13,7 +13,7 @@ module.exports = function(app) {
 
 var handler = Handler.prototype;
 
-handler.leave = function(data, session, next) {
+handler.call = function(data, session, next) {
 
 	var user = session.__currentUser__;
 	var room = session.__room__;

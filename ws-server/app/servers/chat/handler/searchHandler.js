@@ -16,7 +16,7 @@ module.exports = function(app) {
 
 var handler = Handler.prototype;
 
-handler.search = function(data, session, next) {
+handler.call = function(data, session, next) {
 
 	var that = this;
 
