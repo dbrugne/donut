@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var i18next = require('../../../shared/util/i18next');
 var bouncer = require('../middlewares/bouncer');
+var conf = require('../../../config/index');
 
 router.param('room', require('../middlewares/room-param'));
 
@@ -26,7 +27,9 @@ router.get('/room/:room', function(req, res) {
     subtitle: req.room.name,
     room: req.room,
     poster: req.room.poster,
-    color: req.room.color
+    posterBlured: req.room.posterBlured, // @todo yls understand why posterBlured, rendered form middleware, is not blured !
+    color: req.room.color,
+    defaultAvatarUrl: conf.user.default.avatar
   });
 });
 

@@ -74,6 +74,7 @@ app.use(require('./app/routes/account-edit-email'));
 app.use(require('./app/routes/account-edit-password'));
 app.use(require('./app/routes/contact-form'));
 app.use(require('./app/routes/static'));
+app.use(require('./app/routes/create-a-room'));
 
 // admin routes
 app.use(require('./app/dashboard/index'));

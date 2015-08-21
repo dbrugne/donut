@@ -1315,7 +1315,25 @@
         }
       }
       .side { float: right; width: @size-right; height: 100%; background-repeat: no-repeat; background-position: left top; margin: 0; padding: 0;
-        .blur { width: calc(@size-right-mid); position: relative; height: 100%; color: @cl-background; a { color: @cl-background; } hr { margin-left: 0; margin-right: 0; } font-size: 1.1em; overflow:auto;
+        .blur { width: calc(@size-right-mid); position: relative; height: 100%; color: @cl-background; a { color: @cl-background; } hr { margin-left: 0; margin-right: 0; } font-size: 1.1em; overflow-y: auto; overflow-x: hidden;
+          &::-webkit-scrollbar{
+            width: 8px;
+            background-color: transparent;
+          }
+          &::-webkit-scrollbar-thumb{
+            background-color: @cl-subtext30;
+            border-radius:10px;
+            min-height: 30px;
+          }
+          &::-webkit-scrollbar-thumb:hover{
+            background-color: @cl-subtext30;
+          }
+          &::-webkit-scrollbar-thumb:active{
+            background-color: @cl-subtext30;
+          }
+          &::-webkit-scrollbar-track{
+            background-color: transparent;
+          }
           .users { position: relative; background-color: rgba(0, 0, 0, 0.2); padding: 10px 0 30px 0; min-height: 100%;
             .header { position: absolute;     white-space: nowrap; top: 14px; left: 16px; right: 10px;
               .count { .pull-left; }

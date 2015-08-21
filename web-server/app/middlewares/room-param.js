@@ -23,7 +23,9 @@ module.exports = function(req, res, next, roomname) {
       if (room) {
         // avatar & poster
         room.avatar = cloudinary.roomAvatar(room._avatar(), 160, room.color);
-        room.poster = cloudinary.poster(room._poster(), room.color);
+        var posterIdentifier = room._poster();
+        room.poster = cloudinary.poster(posterIdentifier, room.color);
+        room.posterBlured = cloudinary.posterBlured(posterIdentifier, room.color);
 
         // url
         room.url = req.protocol + '://' + conf.fqdn + '/room/' + room.name.replace('#', '').toLocaleLowerCase();

@@ -1,49 +1,50 @@
 <% layout('profile') %>
-<input type="hidden" name="id" value="<%= _user._id %>"><!-- petit curieux -->
-<div id="profile" class="user-profile">
-    <div class="cover user">
-        <a href="<%= _user.url %>"><img class="avatar" src="<%= _user.avatar %>" alt="<%= _user.username %> avatar"></a>
-        <p class="discuss"><a href="<% if (!user) { %><%= _user.discuss %><% } else { %><%= _user.chat %><% } %>" <% if (_user.color) { %>style="background-color: <%= _user.color %>;"<% } %>><%= t('actions.discuss') %></a></p>
+
+<div class="side" style="<% if (typeof poster !== "undefined") { %>background-image: url(<%= poster %>);<% }; %>" data-colorify-background="color">
+    <div class="blur" style="<% if (typeof poster !== "undefined") { %>background-image: url(<%= poster %>);<% }; %>" data-colorify-background="darker">
+
     </div>
-    <div class="text user">
-        <div class="username-content">
-            <a href="<%= _user.url %>" class="username">@<%= _user.username %></a>
+</div><!-- /.side -->
+<div class="content">
+    <div class="header user">
+        <div class="overlay-ctn">
+            <a href="<%= _user.url %>"><img class="avatar" src="<%= _user.avatar %>" alt="<%= _user.username %> avatar"></a>
+            <p class="discuss"><a href="<% if (!user) { %><%= _user.discuss %><% } else { %><%= _user.chat %><% } %>" <% if (_user.color) { %>style="background-color: <%= _user.color %>;"<% } %>><%= t('actions.discuss') %></a></p>
+        </div>
+        <div class="info">
+            <a href="<%= _user.url %>" class="username hidden-xs hidden-sm">@<%= _user.username %></a>
+            <a href="<%= _user.url %>" class="username visible-xs visible-sm" data-colorify-text="contrast">@<%= _user.username %></a>
+            <% if (_user.location) { %>
+            <span class="location">
+                <%= _user.location %>
+            </span>
+                <% } %>
+                <% if (_user.website) { %>
+                <% if (_user.location) { %><span class="separation">|</span><% } %>
+                <span class="website" <% if (_user.color) { %>style="color: <%= _user.color %>;"<% } %>>
+                <%= _user.website %>
+                </span>
+                <% } %>
+                <% if (_user.bio) { %>
+                <div class="bio">
+                    <p class="bio-content"><%= _user.bio %></p>
+                </div>
+            <% } %>
             <div class="fb-like" data-href="<%= _user.url %>" data-layout="button" data-action="like" data-show-faces="false" data-share="true" data-ref="profile-page"></div>
         </div>
-        <% if (_user.location) { %>
-        <span class="location">
-            <%= _user.location %>
-        </span>
-        <% } %>
-        <% if (_user.website) { %>
-        <% if (_user.location) { %><span class="separation">|</span><% } %>
-        <span class="website" <% if (_user.color) { %>style="color: <%= _user.color %>;"<% } %>>
-        <%= _user.website %>
-        </span>
-        <% } %>
-        <% if (_user.bio) { %>
-        <div class="bio">
-            <p class="bio-content"><%= _user.bio %></p>
+    </div>
+    <div class="events">
+        <div class="scrollable">
+            <input type="hidden" name="id" value="<%= _user._id %>"><!-- petit curieux -->
+
+            <% if (_user.hasRooms) { %>
+            <p class="title"><%= t('profile.user.hisrooms') %></p>
+            <div class="rooms cards">
+                <% _.each(_user.roomsList, function(room) { print(partial('room', {room: room})); }); %>
+            </div>
+            <hr class="clear">
+            <hr>
+            <% } %>
         </div>
-        <% } %>
     </div>
-    <hr class="clear">
-    <hr>
-    <% if (_user.hasRooms) { %>
-    <p class="title"><%= t('profile.user.hisrooms') %></p>
-    <div class="rooms cards">
-        <% _.each(_user.roomsList, function(room) { print(partial('room', {room: room})); }); %>
-    </div>
-    <hr class="clear">
-    <hr>
-    <% } %>
-    <div class="disclaimer">
-        <p>
-            <%= t('profile.user.disclaimer.before') %>
-            <a href="<%= _user.url %>">@<%= _user.username %></a>
-            <%= t('profile.user.disclaimer.after') %>
-        </p>
-        <a href="/"><img src="/images/logo-onecolor-gr.svg" alt="DONUT logo"></a>
-    </div>
-    <hr class="clear">
-</div>
+</div><!-- /.content -->

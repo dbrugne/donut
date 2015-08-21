@@ -1,5 +1,38 @@
+.body-chat.body-profile {
+  #languages { position: relative; right: initial; top: initial; display: inline-block; padding-top: 9px; padding-bottom: 8px; color: @cl-background;
+    a { display: inline; }
+  }
+  #block-current-user .title { margin-top: 9px; display: block;
+    .username { overflow: hidden; text-overflow: ellipsis; font-weight: bold; margin-left: 5px; }
+  }
+  #chat #center .discussion .content { overflow:auto;
+    .events { margin-top: 20px; padding-top: 20px; }
+    .title { display: block; font-family: 'Raleway',sans-serif; font-weight: 900; font-size: 2em; margin-bottom: 10px; }
+    .discuss {     position: absolute; top: 105px; margin: 0; float: left; text-align: center;
+      a { font-size: 12px; padding: 8px 15px;     width: 100px; display: block;
+        &:hover {     color: #fff; text-decoration: none; }
+      }
+    }
+    .join { position: absolute; top: 105px; margin: 0; float: left; text-align: center;
+       a { font-size: 12px; padding: 8px 15px;     width: 100px; display: block;
+         &:hover {     color: #fff; text-decoration: none; }
+       }
+     }
+    .header { min-height:200px; }
+    .header.room {
+      .topic { padding: 5px 15px 5px 106px;
+        .topic-current { width:100%; }
+      }
+    }
+    .header.user {
+      .avatar {     width: 100px; height: 100px; .border-radius(50%); }
+      .bio { margin-bottom:5px; }
+      .info { margin-left: 120px; }
+    }
+  }
+}
+
 .body-profile { height: 100%; .ft-opensans; background-color: @cl-background; background-repeat: no-repeat; background-position: 0 @size-color;
-  #languages { top: 47px; }
   .upon { position: fixed; left: 0; right: 0; top: @size-color; }
   .color { position: fixed; left: 0; right: 0; top: 0; height: @size-color; background-color: @cl-first;
     a.logo { color: @cl-background; display: inline-block; vertical-align: top; margin: 4px 0 0 4px; line-height: 1em;
@@ -14,38 +47,34 @@
   hr.push-bottom { margin-top: 30px; }
 }
 
-#profile { position: relative; height: 100%; background-color: @cl-background; margin-left: @size-right; padding-top: @size-color + 55px; padding-left: 50px; padding-bottom: @size-color; overflow-x: hidden; overflow-y: auto;
-  > .cover { position: absolute; top: @size-color + 55px; left: 50px; min-height: 270px; text-align: center;
-    .avatar { width: 160px; height: 160px; }
-    .join, .discuss { margin-top: 30px; }
-  }
-  > .text { min-height: 230px; margin-left: 160px; padding-left: 30px; padding-top: 20px;
-    .fb-like { display: inline-block; margin-left: 20px; }
-    .separation { color: @cl-title; font-size: 16px; font-weight: bold; }
-    .website { margin-top: 20px; font-size: 1.3em;
-      a { color: inherit; }
-    }
-    .description, .bio { margin-top: 20px; margin-bottom: 20px; max-width: 500px;
-      .description-content, .bio-content { font-size: 1.1em; display: inline-block; }
-    }
-  }
-  .title { display: block; .ft-raleway-heavy; font-size: 2em; margin-bottom: 10px; }
-  .disclaimer {
-    p { font-size: 0.9em; color: @cl-subtext30; float: left; width: 90%; }
-    img { width: 100px; margin: 3px; float: left; }
-  }
-}
+//#profile { position: relative; height: 100%; background-color: @cl-background; margin-left: @size-right; padding-top: @size-color + 55px; padding-left: 50px; padding-bottom: @size-color; overflow-x: hidden; overflow-y: auto;
+//  > .cover { position: absolute; top: @size-color + 55px; left: 50px; min-height: 270px; text-align: center;
+//    .avatar { width: 160px; height: 160px; }
+//    .join, .discuss { margin-top: 30px; }
+//  }
+//  > .text { min-height: 230px; margin-left: 160px; padding-left: 30px; padding-top: 20px;
+//    .fb-like { display: inline-block; margin-left: 20px; }
+//    .separation { color: @cl-title; font-size: 16px; font-weight: bold; }
+//    .website { margin-top: 20px; font-size: 1.3em;
+//      a { color: inherit; }
+//    }
+//    .description, .bio { margin-top: 20px; margin-bottom: 20px; max-width: 500px;
+//      .description-content, .bio-content { font-size: 1.1em; display: inline-block; }
+//    }
+//  }
+//  .title { display: block; .ft-raleway-heavy; font-size: 2em; margin-bottom: 10px; }
+//  .disclaimer {
+//    p { font-size: 0.9em; color: @cl-subtext30; float: left; width: 90%; }
+//    img { width: 100px; margin: 3px; float: left; }
+//  }
+//}
 
 .room-profile {
   > .text {
     .name-content .name { font-size: 3.6em; vertical-align: sub; }
     .owner { font-size: 1.3em; }
   }
-  .topic { margin-top: 30px;
-    .topic-content { .txt-bubble; margin-right: 30px; display: inline-block;
-      > img { width: 30px; margin-right: 7px; vertical-align: middle; }
-    }
-  }
+
 }
 .user-profile {
   > .text {
