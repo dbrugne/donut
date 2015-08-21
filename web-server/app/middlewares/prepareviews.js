@@ -1,5 +1,4 @@
 var conf = require('../../../config');
-var cloudinary = require('../../../shared/cloudinary/cloudinary');
 
 /**
  * Register systematically some variables in views
@@ -9,7 +8,7 @@ module.exports = function() {
     // pass current session user to all views
     if (req.user) {
       res.locals.user = req.user.toObject(); // .toObject() avoid modification on original req.user object (like avatar)
-      res.locals.user.avatar = cloudinary.userAvatar(req.user._avatar(), 80);
+      res.locals.user.avatar = req.user._avatar(80);
       if (req.user.username)
         res.locals.user.url = req.protocol + '://' + conf.fqdn + '/user/' + (''+req.user.username).toLocaleLowerCase();
     } else {
