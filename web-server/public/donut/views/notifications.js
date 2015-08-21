@@ -54,10 +54,10 @@ define([
       this.$badge = this.$el.find('.badge').first();
       this.$count = this.$el.find('.unread-count .nb').first();
       this.$menu = this.$el.find('.dropdown-menu #main-navbar-messages');
-      this.$readMore = this.$el.find('.read-more');
-      this.$loader = this.$el.find('.loading');
       this.$scrollable = this.$el.find('.dropdown-menu .messages-list-ctn');
       this.$actions = this.$el.find('.dropdown-menu .messages-list-ctn .actions');
+      this.$readMore = this.$actions.find('.read-more');
+      this.$loader = this.$actions.find('.loading');
 
       this.$dropdown.dropdown();
 
