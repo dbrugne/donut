@@ -1,6 +1,7 @@
 var logger = require('../../pomelo-logger').getLogger('donut', __filename);
 var async = require('async');
 var _ = require('underscore');
+var HistoryOne = require('../../../shared/models/historyone');
 
 /**
  * Generate onetoone welcome object
@@ -23,10 +24,21 @@ module.exports = function(app, user, users, fn) {
     },
 
     function prepare(statuses, callback) {
+
       var data = [];
       _.each(users, function(u, index, list) {
         if (!u.username)
           return;
+
+        var unread = HistoryOne.findUnread(u.id, function(err, doc) {
+          if (err)
+            return callback(err, null);
+
+          return (doc)
+            ? true
+            : false;
+        });
+
         var one = {
           user_id     : u.id,
           username    : u.username,
@@ -36,7 +48,8 @@ module.exports = function(app, user, users, fn) {
           location    : u.location,
           website     : u.website,
           banned      : user.isBanned(u.id), // for ban/deban menu
-          i_am_banned : u.isBanned(user.id) // for input enable/disable
+          i_am_banned : u.isBanned(user.id), // for input enable/disable
+          unread      : unread
         };
 
         if (statuses[u.id] === true) {

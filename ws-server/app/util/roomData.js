@@ -25,6 +25,15 @@ module.exports = function(app, uid, room, fn) {
         return element.user.toString();
       });
 
+      var unread = HistoryRoom.findUnread(uid, room.id, function(err, doc) {
+        if (err)
+          return callback(err, null);
+
+        return (doc)
+        ? true
+        : false;
+      });
+
       var roomData = {
         name      : room.name,
         id        : room.id,
@@ -35,7 +44,7 @@ module.exports = function(app, uid, room, fn) {
         poster    : room._poster(),
         color     : room.color,
         topic     : room.topic,
-        unread    : 'unread'
+        unread    : unread
       };
       if (room.owner) {
         roomData.owner = {
