@@ -581,29 +581,29 @@ define([
         }
       );
     },
-    userChangeMail: function (user_id, user_new_mail, fn) {
-      var data = {user_id: user_id, user_new_mail: user_new_mail};
+    accountEmail: function (email, fn) {
+      var data = { email: email };
       pomelo.request(
-        'chat.userAccountHandler.email',
+        'chat.accountEmailHandler.call',
         data,
         function (response) {
           if (response.err)
-            debug('io:in:user:email:edit error: ', response);
+            debug('io:in:account:email:edit error: ', response);
           else
-            debug('io:in:user:email:edit', response);
+            debug('io:in:account:email:edit', response);
           return fn(response);
         });
     },
-    userChangePassword: function (user_id, user_password, fn) {
-      var data = {user_id: user_id, user_password: user_password};
+    accountPassword: function (password, fn) {
+      var data = { password: password };
       pomelo.request(
-        'chat.userAccountHandler.password',
+        'chat.accountPasswordHandler.call',
         data,
         function (response) {
           if (response.err)
-            debug('io:in:user:password:edit error: ', response);
+            debug('io:in:account:password:edit error: ', response);
           else
-            debug('io:in:user:password:edit', response);
+            debug('io:in:account:password:edit', response);
           return fn(response);
         });
     },
