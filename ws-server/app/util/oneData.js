@@ -17,6 +17,8 @@ module.exports = function(app, user, users, fn) {
     single = true;
   }
 
+  var that = this;
+
   async.waterfall([
 
     function status(callback) {
@@ -30,13 +32,13 @@ module.exports = function(app, user, users, fn) {
         if (!u.username)
           return;
 
-        var unread = HistoryOne.findUnread(u.id, function(err, doc) {
+        HistoryOne.findUnread(u.id, function(err, doc) {
           if (err)
             return callback(err, null);
 
-          return (doc)
-            ? true
-            : false;
+          that.unread = (doc)
+          ? true
+          : false;
         });
 
         var one = {
@@ -49,7 +51,7 @@ module.exports = function(app, user, users, fn) {
           website     : u.website,
           banned      : user.isBanned(u.id), // for ban/deban menu
           i_am_banned : u.isBanned(user.id), // for input enable/disable
-          unread      : unread
+          unread      : that.unread
         };
 
         if (statuses[u.id] === true) {

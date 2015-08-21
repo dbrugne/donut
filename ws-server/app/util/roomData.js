@@ -15,7 +15,21 @@ module.exports = function(app, uid, room, fn) {
   if (!room)
     return fn('Need to received a valid Room model as parameter');
 
+  var that = this;
+
   async.waterfall([
+
+    function check(callback) {
+      HistoryRoom.findUnread(uid, room.id, function(err, doc) {
+        if (err)
+          return callback(err, null);
+
+        that.unread = (doc)
+          ? true
+          : false;
+        return callback(null);
+      });
+    },
 
     function prepare(callback) {
       if (room === null)
@@ -23,15 +37,6 @@ module.exports = function(app, uid, room, fn) {
 
       var devoices = _.map(room.devoices, function(element) {
         return element.user.toString();
-      });
-
-      var unread = HistoryRoom.findUnread(uid, room.id, function(err, doc) {
-        if (err)
-          return callback(err, null);
-
-        return (doc)
-        ? true
-        : false;
       });
 
       var roomData = {
@@ -44,8 +49,9 @@ module.exports = function(app, uid, room, fn) {
         poster    : room._poster(),
         color     : room.color,
         topic     : room.topic,
-        unread    : unread
+        unread    : that.unread
       };
+
       if (room.owner) {
         roomData.owner = {
           user_id: room.owner._id,
