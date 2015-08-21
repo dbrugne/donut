@@ -7,20 +7,12 @@ require.config({
     'bootstrap': '../vendor/bootstrap/dist/js/bootstrap',
     'text': '../vendor/requirejs-text/text',
     'socket.io': '/socket.io',
-    'pomelo': './libs/pomelo',
     'underscore': '../vendor/underscore-amd/underscore',
     'backbone': '../vendor/backbone-amd/backbone',
     'i18next': '../vendor/i18next/i18next.amd.withJQuery',
     'moment': '../vendor/moment/moment',
     'moment-fr': '../vendor/moment/locale/fr',
-    'facebook': '//connect.facebook.net/fr_FR/all',
     'desktop-notify': '../vendor/html5-desktop-notifications/desktop-notify',
-    'jquery.ui.widget': '../vendor/blueimp-file-upload/js/vendor/jquery.ui.widget',
-    'jquery.iframe-transport': '../vendor/blueimp-file-upload/js/jquery.iframe-transport',
-    'jquery.fileupload': '../vendor/blueimp-file-upload/js/jquery.fileupload',
-    'jquery.cloudinary': '../vendor/cloudinary_js/js/jquery.cloudinary',
-    'cloudinary.widget': '//widget.cloudinary.com/global/all',
-    'jquery.cloudinary-donut': '/cloudinary',
     'jquery.insertatcaret': '../javascripts/plugins/jquery.insertatcaret',
     'jquery.maxlength': '../javascripts/plugins/jquery.maxlength',
     'jquery.smilify': '../javascripts/plugins/jquery.smilify',
@@ -33,8 +25,6 @@ require.config({
   },
   shim: {
     'bootstrap': ['jquery'],
-    'jquery.cloudinary': ['jquery'],
-    'jquery.cloudinary-donut': ['jquery'],
     'jquery.insertatcaret': ['jquery'],
     'jquery.maxlength': ['jquery'],
     'jquery.smilify': ['jquery'],
@@ -42,11 +32,7 @@ require.config({
     'jquery.colorify': ['jquery'],
     'jquery.socialify': ['jquery'],
     'jquery.contactform': ['jquery'],
-    'cloudinary.widget': ['jquery'],
     'html.sortable': ['jquery'],
-    'facebook': {
-      exports: 'FB'
-    },
     'desktop-notify': {
       exports: 'notify'
     }
@@ -59,19 +45,15 @@ require([
   'jquery',
   'underscore',
   'backbone',
+  'common',
   'i18next',
-  'facebook',
   'moment',
   'desktop-notify',
-  'socket.io',
 /************************************
  * Load (once) and attach plugins to jQuery and underscore
  ************************************/
   'jquery.insertatcaret',
   'jquery.maxlength',
-  'jquery.cloudinary',
-  'jquery.cloudinary-donut',
-  'cloudinary.widget',
   'jquery.smilify',
   'jquery.momentify',
   'jquery.colorify',
@@ -80,7 +62,12 @@ require([
   'bootstrap',
   'moment-fr',
   'html.sortable'
-], function (app, translations, $, _, Backbone, i18next, facebook, moment, desktopNotify) {
+], function (app, translations, $, _, Backbone, common, i18next, moment, desktopNotify) {
+
+  // cloudinary temporary hack
+  $.cloudinarySize = common.cloudinarySize;
+  $.cd = {};
+  $.cd.poster = $.cd.posterBlured = $.cloudinarySize;
 
   // i18n setup
   window.i18next = i18next; // @debug
@@ -99,13 +86,6 @@ require([
   i18next.init(i18nextOptions);
   // make i18next available from all underscore templates views (<%= t('key') %>)
   window.t = i18next.t; // @global
-
-  // Cloudinary setup
-  $.cloudinary.config({
-    cloud_name: window.cloudinary_cloud_name,
-    api_key: window.cloudinary_api_key
-  });
-  window.cloudinary.setCloudName(window.cloudinary_cloud_name); // @global
 
   // Moment language
   window.moment = moment;
@@ -148,19 +128,6 @@ require([
 
   // Contact form
   $('[data-toggle="contactform"]').contactform({});
-
-  // Facebook setup
-  try {
-    facebook.init({
-      appId: window.facebook_app_id,
-      version: 'v2.1',
-      status: true,
-      xfbml: false
-    });
-  } catch (e) {
-    console.log(e);
-    return false;
-  }
 
   // Desktop notifications configuration
   desktopNotify.config({

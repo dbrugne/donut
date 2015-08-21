@@ -34,7 +34,6 @@ app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(cors()); // allow requests from mobile client (@todo: whitelist allowed origins URLs)
 app.use(less(__dirname+'/public', { force: conf.less.force }));
 app.use(express.static(path.join(__dirname, '../node_modules/socket.io-client'))); // => require('socket.io-client');
-app.use(express.static(path.join(__dirname, '../shared/cloudinary'))); // cloudinary common logic
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(logger('dev'));
 app.use(bodyParser.urlencoded({ extended: true }));

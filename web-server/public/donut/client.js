@@ -2,7 +2,7 @@ define([
   'underscore',
   'backbone',
   'libs/donut-debug',
-  'pomelo'
+  'libs/pomelo'
 ], function (_, Backbone, donutDebug, pomelo) {
 
   var debug = donutDebug('donut:client');

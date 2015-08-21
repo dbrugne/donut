@@ -40,6 +40,10 @@ module.exports = function() {
     res.locals.meta = false;
     res.locals.avoidFa = false;
 
+    // language
+    res.locals.locale = req.locale;
+    res.locals.locale_iso = (req.locale === 'fr') ? 'fr_FR' : 'en_US';
+
     next();
   };
 };
