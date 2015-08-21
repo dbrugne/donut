@@ -18,14 +18,16 @@
          &:hover {     color: #fff; text-decoration: none; }
        }
      }
-    .header { min-height:200px; }
+    .header { min-height:200px;
+      .info .name.visible-xs { color: #fff; }
+    }
     .header.room {
       .topic { padding: 5px 15px 5px 106px;
         .topic-current { width:100%; }
       }
     }
     .header.user {
-      .avatar {     width: 100px; height: 100px; .border-radius(50%); }
+      .avatar { width: 100px; height: 100px; .border-radius(50%); }
       .bio { margin-bottom:5px; }
       .info { margin-left: 120px; }
     }
@@ -46,29 +48,6 @@
   hr.clear { border-top-color: transparent; clear: both; margin: 0; }
   hr.push-bottom { margin-top: 30px; }
 }
-
-//#profile { position: relative; height: 100%; background-color: @cl-background; margin-left: @size-right; padding-top: @size-color + 55px; padding-left: 50px; padding-bottom: @size-color; overflow-x: hidden; overflow-y: auto;
-//  > .cover { position: absolute; top: @size-color + 55px; left: 50px; min-height: 270px; text-align: center;
-//    .avatar { width: 160px; height: 160px; }
-//    .join, .discuss { margin-top: 30px; }
-//  }
-//  > .text { min-height: 230px; margin-left: 160px; padding-left: 30px; padding-top: 20px;
-//    .fb-like { display: inline-block; margin-left: 20px; }
-//    .separation { color: @cl-title; font-size: 16px; font-weight: bold; }
-//    .website { margin-top: 20px; font-size: 1.3em;
-//      a { color: inherit; }
-//    }
-//    .description, .bio { margin-top: 20px; margin-bottom: 20px; max-width: 500px;
-//      .description-content, .bio-content { font-size: 1.1em; display: inline-block; }
-//    }
-//  }
-//  .title { display: block; .ft-raleway-heavy; font-size: 2em; margin-bottom: 10px; }
-//  .disclaimer {
-//    p { font-size: 0.9em; color: @cl-subtext30; float: left; width: 90%; }
-//    img { width: 100px; margin: 3px; float: left; }
-//  }
-//}
-
 .room-profile {
   > .text {
     .name-content .name { font-size: 3.6em; vertical-align: sub; }
@@ -82,7 +61,6 @@
     .location { font-size: 1.3em; font-weight: bold; }
   }
 }
-
 .cards { margin-bottom: 15px;
   .no { padding: 5px 0; margin-top: 30px; margin-bottom: 10px; font-weight: bold; font-style: italic; }
   .card { position: relative; display: block; min-height: 170px; width: 190px; float: left; margin-top: -7px; text-align: center; text-decoration: none; color: @cl-title;
@@ -102,8 +80,8 @@
   .card {
     .cover, .back {
       .avatar { margin: auto; margin-top: 10px; width: 90px; height: 90px; border: 5px solid transparent; }
-      .name { font-size: 1.2em; max-width: 180px; padding: 0 5px; word-break: break-all; }
-      .owner { font-size: 0.8em; line-height: 1; }
+      .name { font-size: 17px; max-width: 180px; padding: 0 5px; word-break: break-all; }
+      .owner { font-size: 12px;; line-height: 1; }
       .join { position: absolute; bottom: 21px; text-align: center; width: 100%;
         a { padding: 0.9em 1.1em; font-size: 0.9em;
           &:after { top: 12px; right: 13px;
@@ -116,7 +94,7 @@
       .name { color: @cl-background;
         a { color: @cl-background; }
       }
-      .description { font-size: 0.8em; overflow: hidden; padding: 5px 5px 0; max-height: 100px; }
+      .description { font-size: 0.8em; overflow: hidden; padding: 5px 5px 0; max-height: 100px; text-align: justify; font-style: italic; }
     }
     &:hover .back .owner a { color: @cl-background; }
   }
@@ -147,4 +125,14 @@
       }
     }
   }
+}
+
+@media screen and (max-width: @screen-md-min) {
+  .body-chat.body-profile #chat #center .discussion .content .header { min-height: 50px; }
+  .body-chat.body-profile #chat #center .discussion .content .header.room .topic { padding: 5px 15px 5px 15px; }
+  .body-chat.body-profile #chat #center .discussion .content .header.user .avatar { height:30px; width:30px; }
+  .body-chat.body-profile #chat #center .discussion .content .header.user .info { margin-left:0; }
+  .body-chat.body-profile #chat #center .discussion .content .header.user .info .username { color:#FFF; }
+  .body-chat.body-profile #chat #center .discussion .content .events { margin-top:0; padding-top:0; }
+  .body-chat.body-profile #chat #center .discussion .content .header.user { min-height:0; }
 }
