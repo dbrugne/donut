@@ -305,6 +305,17 @@
         "tonavigate": "to navigate",
         "toselect": "to select",
         "todismiss": "to dismiss"
+      },
+      "results": {
+        "users": {
+          "empty": "No user found"
+        },
+        "rooms": {
+          "empty": "No donut found"
+        },
+        "commands": {
+          "empty": "No command found"
+        }
       }
     },
     "loading": "Loading",

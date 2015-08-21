@@ -18,7 +18,7 @@ module.exports = function() {
  * Detect expected parameters in 'data', search corresponding models and put in 'session'.
  * Search for: data.name, data.username, data.event and session.uid
  *
- * Route is available in:  data.__route__ = 'chat.roomHistoryHandler.history'
+ * Route is available in:  data.__route__ = 'chat.roomHistoryHandler.call'
  *
  * @param data
  * @param session
@@ -34,7 +34,7 @@ Filter.prototype.before = function(data, session, next) {
     currentUser: function (callback) {
       var q = UserModel.findOne({ _id: session.uid });
 
-      if (data.__route__ === 'chat.userPreferencesHandler.read')
+      if (data.__route__ === 'chat.preferencesReadHandler.call')
         q.populate('bans', 'username avatar color facebook');
 
       q.exec(function(err, user) {
@@ -48,7 +48,7 @@ Filter.prototype.before = function(data, session, next) {
     },
 
     room: function (callback) {
-      if (!data.name || data.__route__ === 'chat.roomCreateHandler.create')
+      if (!data.name || data.__route__ === 'chat.roomCreateHandler.call')
         return callback(null);
 
       if (!common.validateName(data.name))
@@ -56,17 +56,17 @@ Filter.prototype.before = function(data, session, next) {
 
       var q = RoomModel.findByName(data.name);
 
-      if (data.__route__ === 'chat.roomJoinHandler.join')
+      if (data.__route__ === 'chat.roomJoinHandler.call')
         q.populate('owner', 'username avatar color facebook');
 
-      if (data.__route__ === 'chat.roomReadHandler.read')
+      if (data.__route__ === 'chat.roomReadHandler.call')
         q.populate('owner', 'username avatar color facebook')
          .populate('op', 'username avatar color facebook')
          .populate('users', 'username avatar color facebook')
          .populate('bans.user', 'username avatar color facebook')
          .populate('devoices.user', 'username avatar color facebook');
 
-      if (data.__route__ === 'chat.roomUsersHandler.users')
+      if (data.__route__ === 'chat.roomUsersHandler.call')
         q.populate('users', 'username avatar color facebook');
 
       q.exec(callback);
@@ -98,13 +98,13 @@ Filter.prototype.before = function(data, session, next) {
         return callback('invalid event ID parameter: ' + data.event);
 
       switch (data.__route__) {
-        case 'chat.userMessageEditHandler.edit':
+        case 'chat.userMessageEditHandler.call':
           HistoryOneModel.findOne({_id: data.event}).exec(callback);
           break;
 
-        case 'chat.roomMessageEditHandler.edit':
-        case 'chat.roomMessageSpamHandler.spam':
-        case 'chat.roomMessageUnspamHandler.unspam':
+        case 'chat.roomMessageEditHandler.call':
+        case 'chat.roomMessageSpamHandler.call':
+        case 'chat.roomMessageUnspamHandler.call':
           HistoryRoomModel.findOne({_id: data.event}).exec(callback);
           break;
 

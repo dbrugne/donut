@@ -12,7 +12,7 @@ module.exports = function(app) {
 
 var handler = Handler.prototype;
 
-handler.read = function(data, session, next) {
+handler.call = function(data, session, next) {
 
   var room = session.__room__;
 

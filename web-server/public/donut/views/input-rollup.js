@@ -176,15 +176,22 @@ define([
       this.$editable.setCursorPosition(newCursorPosition, newCursorPosition);
     },
     _closeRollup: function (target) {
-      if (target)
-        this._computeNewValue(this.$rollup.find('li.active .value').html() + ' ');
+      if (target) {
+        if (this.$rollup.find('li.active .value').length == 0)
+          return;
+
+        this._computeNewValue(this.$rollUpCtn.find('li.active .value').html() + ' ');
+      }
 
       this.$rollup.html('');
     },
 
     onRollupHover: function (event) {
-      var currentLi = this.$rollup.find('li.active');
       var li = $(event.currentTarget);
+      if (li.hasClass('empty')) // Avoid highlighting empty results on hover
+        return;
+
+      var currentLi = this.$rollUpCtn.find('li.active');
       currentLi.removeClass('active');
       li.addClass('active');
       this._computeNewValue(li.find('.value').html() + ' ');
