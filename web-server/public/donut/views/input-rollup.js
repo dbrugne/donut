@@ -111,7 +111,7 @@ define([
     },
 
     _isCommandCallable: function() {
-      return (this.$editable.val().trim().length === 1 && this.$editable.val().substr(0, 1) === "/")
+      return (this.$editable.val().trim().substr(0, 1) === "/")
     },
 
     _rollupNavigate: function (key, target) {
@@ -137,17 +137,31 @@ define([
     _getCursorPosition: function() {
       return this.cursorPosition === null ? this.$editable.getCursorPosition() : this.cursorPosition;
     },
+    _getCommandList: function() {
+      var input = this._parseInput();
+      var selectedCommands = [];
 
+      if (input.length === 1) // First call
+        selectedCommands = this.commands;
+      else { // next calls
+        _.each(this.commands, function(command){
+          if (command.name.indexOf(input.substr(1,input.length)) == 0)
+            selectedCommands.push(command);
+        });
+      }
+
+      return selectedCommands;
+    },
     _displayRollup: function () {
+      var input = this._parseInput();
       if (this._isCommandCallable()) {
         this.$rollup.html(this.template({
           type: 'commands',
-          results: this.commands
+          results: this._getCommandList()
         }));
         return;
       }
 
-      var input = this._parseInput();
       if (input.length < 2)
         return this._closeRollup();
 
