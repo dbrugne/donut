@@ -52,11 +52,11 @@ define([
         'user:online',
         'user:offline',
         'user:updated',
-        'user:preferences',
         'user:viewed',
         'user:ban',
         'user:deban',
         'user:typing',
+        'preferences:update',
         'notification:new',
         'notification:read',
         'notification:done'
@@ -533,29 +533,29 @@ define([
     },
     userPreferencesRead: function (name, fn) {
       var data = (name) ? {name: name} : {};
-      debug('io:out:user:preferences:read', data);
+      debug('io:out:preferences:read', data);
       var that = this;
       pomelo.request(
-        'chat.userPreferencesHandler.read',
+        'chat.preferencesReadHandler.read',
         data,
         function (response) {
           if (response.err)
-            return debug('io:in:user:preferences:read error: ', response);
+            return debug('io:in:preferences:read error: ', response);
 
-          debug('io:in:user:preferences:read', response);
+          debug('io:in:preferences:read', response);
           return fn(response);
         }
       );
     },
     userPreferencesUpdate: function (fields, callback) {
       var data = {data: fields};
-      debug('io:out:user:preferences:update', data);
+      debug('io:out:preferences:update', data);
       var that = this;
       pomelo.request(
-        'chat.userPreferencesHandler.update',
+        'chat.preferencesUpdateHandler.update',
         data,
         function (response) {
-          debug('io:in:user:preferences:update', response);
+          debug('io:in:preferences:update', response);
           if (_.isFunction(callback))
             return callback(response);
         }
