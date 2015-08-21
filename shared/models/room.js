@@ -28,7 +28,10 @@ var roomSchema = mongoose.Schema({
   color           : String,
   topic           : String,
   description     : String,
-  website         : String,
+  website         : {
+    href: String,
+    title: String
+  },
   created_at      : { type: Date, default: Date.now },
   lastjoin_at     : { type: Date }
 

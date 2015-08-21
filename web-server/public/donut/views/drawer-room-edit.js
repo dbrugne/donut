@@ -136,7 +136,8 @@ define([
         if (data.err) {
           var message = '';
           _.each(data.err, function(error) {
-            message += error+'<br>';
+            var editerror = t('edit.errors.' + error);
+            message += editerror+'<br>';
           });
           that.$el.find('.errors').html(message).show();
           return;
@@ -154,8 +155,9 @@ define([
         that.$el.find('.errors').hide();
         if (d.err) {
           var message = '';
-          _.each(d.errors, function (error) {
-            message += error + '<br>';
+          _.each(d.err, function (error) {
+            var editerror = t('edit.errors.' + error);
+            message += editerror+'<br>';
           });
           that.$el.find('.errors').html(message).show();
         }
@@ -171,8 +173,9 @@ define([
         that.$el.find('.errors').hide();
         if (d.err) {
           var message = '';
-          _.each(d.errors, function (error) {
-            message += error + '<br>';
+          _.each(d.err, function (error) {
+            var editerror = t('edit.errors.' + error);
+            message += editerror+'<br>';
           });
           that.$el.find('.errors').html(message).show();
         }
@@ -186,18 +189,17 @@ define([
         return true;
 
       if (website.length < 5 || website.length > 255) {
-        this.error = 'Website should be 5 characters min and 255 characters max.';
+        this.error = t('edit.errors.website-size');
         return false;
       }
 
       if (!/^[^\s]+\.[^\s]+$/.test(website)) {
-        this.error = 'Website should be a valid site URL.';
+        this.error = t('edit.errors.website-url');
         return false;
       }
 
       return true;
     }
-
   });
 
   return DrawerRoomEditView;

@@ -14,6 +14,8 @@ define([
 
     id: 'user-edit',
 
+    error: '',
+
     events: {
       'submit form.user-form': 'onSubmit'
     },
@@ -54,6 +56,9 @@ define([
         text: $.t("edit.left")
       });
 
+      // website
+      this.$website = this.$el.find('input[name=website]');
+
       // color
       var colorPicker = new ColorPicker({
         color: user.color,
@@ -88,6 +93,11 @@ define([
     onSubmit: function (event) {
       event.preventDefault();
 
+      if (!this.checkWebsite()) {
+        this.$el.find('.errors').html(this.error).show();
+        return;
+      }
+
       var updateData = {
         bio: this.$el.find('textarea[name=bio]').val(),
         location: this.$el.find('input[name=location]').val(),
@@ -106,8 +116,9 @@ define([
         that.$el.find('.errors').hide();
         if (data.err) {
           var message = '';
-          _.each(data.errors, function (error) {
-            message += error + '<br>';
+          _.each(data.err, function (error) {
+            var editerror = t('edit.errors.' + error);
+            message += editerror+'<br>';
           });
           that.$el.find('.errors').html(message).show();
           return;
@@ -124,8 +135,9 @@ define([
         that.$el.find('.errors').hide();
         if (d.err) {
           var message = '';
-          _.each(d.errors, function (error) {
-            message += error + '<br>';
+          _.each(d.err, function (error) {
+            var editerror = t('edit.errors.' + error);
+            message += editerror+'<br>';
           });
           that.$el.find('.errors').html(message).show();
         }
@@ -140,12 +152,32 @@ define([
         that.$el.find('.errors').hide();
         if (d.err) {
           var message = '';
-          _.each(d.errors, function (error) {
-            message += error + '<br>';
+          _.each(d.err, function (error) {
+            var editerror = t('edit.errors.' + error);
+            message += editerror+'<br>';
           });
           that.$el.find('.errors').html(message).show();
         }
       });
+    },
+
+    checkWebsite: function() {
+      var website = this.$website.val();
+
+      if (!website)
+        return true;
+
+      if (website.length < 5 || website.length > 255) {
+        this.error = t('edit.errors.website-size');
+        return false;
+      }
+
+      if (!/^[^\s]+\.[^\s]+$/.test(website)) {
+        this.error = t('edit.errors.website-url');
+        return false;
+      }
+
+      return true;
     }
   });
 

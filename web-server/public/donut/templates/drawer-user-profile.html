@@ -9,7 +9,7 @@
     <p class="username">@<%= user.username %></p>
     <% if (user.bio) { %><p class="bio"><%= user.bio %></p><% }; %>
     <% if (user.location) { %><p class="action location"><i class="icon icon-map-marker" data-colorify-text="color" data-colorify="<%= user.color %>"></i> <%= user.location %></p><% }; %>
-    <% if (user.website) { %><p class="action website"><i class="icon icon-link" data-colorify-text="color" data-colorify="<%= user.color %>"></i> <span><%= user.website %></span></p><% }; %>
+    <% if (user.website) { %><p class="action website"><i class="icon icon-link" data-colorify-text="color" data-colorify="<%= user.color %>"></i> <a href="<%= user.website.href %>" title="<%= user.website.title %>"><%= user.website.title %></a></p><% }; %>
     <% if (user.registered) { %><p class="action created"><i class="icon icon-clock-o" data-colorify-text="color" data-colorify="<%= user.color %>"></i> <%= t('profile.user.signuped') %> <span data-time="<%= user.registered %>"></span></p><% }; %>
     <% if (user.status != 'online' && user.onlined) { %><p class="onlined"><i class="icon icon-clock-o" data-colorify-text="color" data-colorify="<%= user.color %>"></i> <%= t('profile.user.onlined', {time: '<span data-time="'+user.onlined+'"></span>'}) %></p><% }; %>
     <p class="action permalink"><i class="icon icon-link" data-colorify-text="color" data-colorify="<%= user.color %>"></i> <a href="<%= user.url %>" target="_blank" data-colorify-text="color" data-colorify="<%= user.color %>"><%= t('profile.user.permalink') %></a></p>
