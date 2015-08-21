@@ -15,7 +15,7 @@ module.exports = function(app) {
 
 var handler = Handler.prototype;
 
-handler.ban = function(data, session, next) {
+handler.call = function(data, session, next) {
 
 	var user = session.__currentUser__;
 	var bannedUser = session.__user__;

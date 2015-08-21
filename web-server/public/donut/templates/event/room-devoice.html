@@ -7,8 +7,8 @@
             <span class="message"><%= t('chat.notifications.devoice') %></span>
             <div class="avatar open-user-profile" data-username="<%= data.username %>" style="background-image: url(<%= data.avatar %>)"></div>
             <span class="username open-user-profile" data-username="<%= data.username %>">@<%= data.username %></span>
-            <% if (data.reason) { %>
-            <span class="reason"><%= $.t("chat.reason", {reason: data.reason}) %></span>
+            <% if (data.reason && data.reason !== '') { %>
+            <span class="reason"><%- $.t("chat.reason", {reason: data.reason}) %></span>
             <% }; %>
         </div>
         <div class="date"><span class="moment" data-time="<%= data.time %>" title="<%= data.datefull %>"><%= data.dateshort %></span></div>

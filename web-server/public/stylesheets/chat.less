@@ -3,6 +3,10 @@
   a:hover { color: @text-color; }
 }
 
+.rooms.cards {
+  @import "chat-room-cards"; // used for welcome popin and home rooms list
+}
+
 #welcome {
   .modal-dialog {
     z-index: 1041; // fix .modal-dialog behind .modal-backdrop for unknown reason
