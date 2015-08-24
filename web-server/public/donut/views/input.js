@@ -247,7 +247,7 @@ define([
       var message = this.$editable.val();
 
       // check if input is a command
-      if (this.commandsView.checkInput(message)) {
+      if (this.commandsView.checkInput(message) !== false) {
         this.$editable.val('');
         return false;
       }

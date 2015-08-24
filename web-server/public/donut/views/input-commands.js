@@ -21,13 +21,19 @@ define([
       if (!this.commandRegexp.test(input))
         return false;
 
-      // find command
+      // find alias and command
       var match = this.commandRegexp.exec(input.toLowerCase());
       if (!match[1])
         return false;
       var commandName = match[1];
+
+      _.each(this.commands, function(cmd, key) {
+        if (cmd.alias && cmd.alias == commandName)
+          commandName = key;
+      });
+
       if (!this.commands[commandName])
-        return false;
+        return this.errorCommand(commandName, 'invalidatecommand');
 
       // find parameters
       var parametersPattern = this.parameters[this.commands[commandName].parameters];
@@ -38,7 +44,7 @@ define([
       }
 
       // run
-      this[commandName](parameters);
+      this[commandName](paramsString, parameters);
 
       return true;
     },
@@ -51,82 +57,101 @@ define([
 
     commands : {
       join: {
+        alias: 'j',
+        parameters: 'name',
+        access: 'everywhere',
         help: '#donut',
         description: 'chat.commands.join'
       },
       leave: {
+        alias: 'l',
         parameters: 'name',
+        access: 'everywhere',
         help: '#donut',
         description: 'chat.commands.leave'
       },
       topic: {
         parameters: 'messageNotMandatory',
+        access: 'room',
         help: '[topic]',
         description: 'chat.commands.topic'
       },
       op: {
         parameters: 'username',
+        access: 'room',
         help: '@username',
         description: 'chat.commands.op'
       },
       deop: {
         parameters: 'username',
+        access: 'room',
         help: '@username',
         description: 'chat.commands.deop'
       },
       kick: {
         parameters: 'username',
+        access: 'room',
         help: '@username',
         description: 'chat.commands.kick'
       },
       ban: {
         parameters: 'username',
+        access: 'everywhere',
         help: '@username',
         description: 'chat.commands.ban'
       },
       deban: {
         parameters: 'username',
+        access: 'everywhere',
         help: '@username',
         description: 'chat.commands.deban'
       },
       voice: {
         parameters: 'username',
+        access: 'room',
         help: '@username',
         description: 'chat.commands.voice'
       },
       devoice: {
         parameters: 'username',
+        access: 'room',
         help: '@username',
         description: 'chat.commands.devoice'
       },
       msg: {
         parameters: 'usernameNameMsg',
+        access: 'everywhere',
         help: '@username/#donut message',
         description: 'chat.commands.msg'
       },
       profile: {
         parameters: 'usernameName',
+        access: 'everywhere',
         help: '@username/#donut',
         description: 'chat.commands.profile'
       },
       me: {
         parameters: 'message',
+        access: 'everywhere',
         help: 'message',
         description: 'chat.commands.me'
       },
       ping: {
         parameters: 'nothing',
+        access: 'everywhere',
         help: '',
         description: 'chat.commands.ping'
       },
       help: {
         parameters: 'helpCommand',
+        access: 'everywhere',
         help: '[command]',
         description: 'chat.commands.help'
       }
     },
 
     parameters: {
+      nothing: /([^\.])/,
       message: /(.+)/,
       messageNotMandatory: /(.*)/,
       helpCommand: /^\/([a-z]+)/i,
@@ -136,90 +161,110 @@ define([
       usernameNameMsg: /^([@#][a-z-.|^]+)\s+(.+)/i
     },
 
-    join: function(parameters) {
+    join: function(paramString, parameters) {
       if (!parameters)
-        return;
+        return this.errorCommand('join', 'parameters');
       client.roomJoin(parameters[1]);
     },
-    leave: function(parameters) {
-      if (!parameters)
+    leave: function(paramString, parameters) {
+      if (!paramString) {
+        client.roomLeave(this.model.get('name'));
         return;
+      }
+      if (!parameters)
+        return this.errorCommand('leave', 'parameters');
       client.roomLeave(parameters[1]);
     },
-    topic: function(parameters) {
+    topic: function(paramString, parameters) {
+      if (this.model.get('type') !== 'room')
+        return this.errorCommand('topic', 'commandaccess');
       client.roomTopic(this.model.get('name'), parameters[1]);
     },
-    op: function(parameters) {
-      if (!parameters || this.model.get('type') !== 'room')
+    op: function(paramString, parameters) {
+      if (!parameters)
+        return this.errorCommand('op', 'parameters');
+      if (this.model.get('type') !== 'room')
         return;
-
       var that = this;
       confirmationView.open({}, function() {
         client.roomOp(that.model.get('name'), parameters[1]);
       });
     },
-    deop: function(parameters) {
-      if (!parameters || this.model.get('type') !== 'room')
-        return;
+    deop: function(paramString, parameters) {
+      if (!parameters)
+        return this.errorCommand('deop', 'parameters');
 
+      if (this.model.get('type') !== 'room')
+        return;
       var that = this;
       confirmationView.open({}, function() {
         client.roomDeop(that.model.get('name'), parameters[1]);
       });
     },
-    kick: function(parameters) {
-      if (!parameters || this.model.get('type') !== 'room')
-        return;
+    kick: function(paramString, parameters) {
+      if (!parameters)
+        return this.errorCommand('kick', 'parameters');
 
+      if (this.model.get('type') !== 'room')
+        return;
       var that = this;
       confirmationView.open({input: true}, function (reason) {
         client.roomKick(that.model.get('name'), parameters[1], reason);
       });
     },
-    ban: function(parameters) {
-      if (!parameters || this.model.get('type') !== 'room')
-        return;
+    ban: function(paramString, parameters) {
+      if (!parameters)
+        return this.errorCommand('ban', 'parameters');
 
+      if (this.model.get('type') !== 'room')
+        return;
       var that = this;
       confirmationView.open({input : true}, function (reason) {
         client.roomBan(that.model.get('name'), parameters[1], reason);
       });
     },
-    deban: function(parameters) {
-      if (!parameters || this.model.get('type') !== 'room')
-        return;
+    deban: function(paramString, parameters) {
+      if (!parameters)
+        return this.errorCommand('deban', 'parameters');
 
+      if (this.model.get('type') !== 'room')
+        return;
       client.roomDeban(this.model.get('name'), parameters[1]);
     },
-    voice: function(parameters) {
-      if (!parameters || this.model.get('type') !== 'room')
-        return;
+    voice: function(paramString, parameters) {
+      if (!parameters)
+        return this.errorCommand('voice', 'parameters');
 
+      if (this.model.get('type') !== 'room')
+        return;
       client.roomVoice(this.model.get('name'), parameters[1]);
     },
-    devoice: function(parameters) {
-      if (!parameters || this.model.get('type') !== 'room')
-        return;
+    devoice: function(paramString, parameters) {
+      if (!parameters)
+        return this.errorCommand('devoice', 'parameters');
 
+      if (this.model.get('type') !== 'room')
+        return;
       var that = this;
       confirmationView.open({input : true}, function (reason) {
         client.roomDevoice(that.model.get('name'), parameters[1], reason);
       });
     },
-    msg: function(parameters) {
-      if (!parameters)
-        return;
+    msg: function(paramString, parameters) {
 
-      if (/^#/.test(parameters[1])) {
-        client.roomMessage(parameters[1], parameters[2], null);
-      } else {
-        parameters[1] = parameters[1].replace(/^@/, '');
-        client.userMessage(parameters[1], parameters[2], null);
+      var oneParam = (!parameters) ? ((this.model.get('type') === 'room') ? this.model.get('name') : this.model.get('id')) : parameters[1];
+      var message = (!parameters) ? paramString : parameters[2];
+
+      if (/^#/.test(oneParam))
+        client.roomMessage(oneParam, message, null);
+      else {
+        oneParam = oneParam.replace(/^@/, '');
+        client.userMessage(oneParam, message, null);
       }
     },
-    profile: function(parameters) {
+    profile: function(paramString, parameters) {
       if (!parameters)
-        return;
+        return this.errorCommand('profile', 'parameters');
 
       if ((/^#/.test(parameters[1]))) {
         currentUser.trigger('roomProfileCommand', parameters[1]);
@@ -228,22 +273,25 @@ define([
         currentUser.trigger('userProfileCommand', parameters[1]);
       }
     },
-    me: function(parameters) {
+    me: function(paramString, parameters) {
       if (!parameters)
-        return;
+        return this.errorCommand('me', 'parameters');
 
       if (this.model.get('type') === 'room')
         client.roomMe(this.model.get('name'), parameters[1]);
       else
         client.userMe(this.model.get('id'), parameters[1]);
     },
-    ping: function(parameters) {
+    ping: function(paramString, parameters) {
+      if (paramString)
+        return this.errorCommand('ping', 'parameters');
+
       var that = this;
       client.ping(function (duration){
         var data = {
           avatar : currentUser.get('avatar'),
           username : currentUser.get('username'),
-          ping : 'ping : ' + duration + 'ms'
+          ping : 'responds in ' + duration + 'ms'
         };
         var model = new EventModel({
           type: 'ping',
@@ -252,7 +300,10 @@ define([
         that.model.trigger('freshEvent', model);
       });
     },
-    help: function(parameters) {
+    help: function(paramString, parameters) {
+      if (!parameters && paramString)
+        return this.errorCommand('help', 'parameters');
+
       if (parameters && this.commands[parameters[1]]) {
         var commandHelp = this.commands[parameters[1]];
         commandHelp.name = parameters[1];
@@ -263,7 +314,19 @@ define([
         help: (commandHelp) ? { cmd: commandHelp } : this.commands
       };
       var model = new EventModel({
-        type: 'help',
+        type: 'command:help',
+        data: data
+      });
+      this.model.trigger('freshEvent', model);
+    },
+    errorCommand: function(StringCommand, errorType) {
+      var data = {
+        command: StringCommand,
+        error: $.t('chat.commands.errors.' + errorType),
+        type: errorType
+      }
+      var model = new EventModel({
+        type: 'command:error',
         data: data
       });
       this.model.trigger('freshEvent', model);

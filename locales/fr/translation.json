@@ -453,7 +453,12 @@
       "profile": "Afficher le profil du donut ou de l'utilisateur",
       "me": "Qu'êtes vous en train de faire ?",
       "ping": "pong",
-      "help": "Aide"
+      "help": "Aide",
+      "errors": {
+        "parameters": "Paramètre(s) invalide(s).",
+        "invalidatecommand": "Cette commande n'existe pas.",
+        "commandaccess": "Vous ne pouvez pas utiliser cette commande ici."
+      }
     },
     "notifications": {
       "hello": "Vous entrez dans",
