@@ -19,7 +19,7 @@ define([
 
     initialize: function (options) {
       this.mainView = options.mainView;
-      this.listenTo(client, 'user:preferences', this.render);
+      this.listenTo(client, 'preferences:update', this.render);
 
       this.$icon = this.$el.find('.icon');
     },
