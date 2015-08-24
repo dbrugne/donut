@@ -182,9 +182,10 @@ handler.call = function(data, session, next) {
 				if (fieldToNotify.indexOf(key) != -1) {
 					if (key == 'avatar')
 						sanitizedToNotify['avatar'] = room._avatar();
-					else if (key == 'poster')
-					  sanitizedToNotify['poster'] = room._poster();
-					else {
+					else if (key == 'poster') {
+						sanitizedToNotify['poster'] = room._poster();
+						sanitizedToNotify['posterblured'] = room._poster(true);
+					} else {
 					  sanitizedToNotify['color'] = sanitized[key];
 						// Also update colors of poster & sidebar when no image defined
 						if (room.avatar && room.avatar.length == 0)

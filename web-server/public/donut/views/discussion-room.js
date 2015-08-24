@@ -29,6 +29,7 @@ define([
     _initialize: function() {
       this.listenTo(this.model, 'change:avatar', this.onAvatar);
       this.listenTo(this.model, 'change:poster', this.onPoster);
+      this.listenTo(this.model, 'change:posterblured', this.onPosterBlured);
       this.listenTo(this.model, 'change:color', this.onColor);
 
       this.topicView = new TopicView({el: this.$el.find('.topic'), model: this.model});
@@ -171,6 +172,7 @@ define([
     onColor: function(model, value, options) {
       this.onAvatar(model, model.get('avatar'), options);
       this.onPoster(model, model.get('poster'), options);
+      this.onPosterBlured(model, model.get('posterblured'), options);
       this.colorify();
     },
     onAvatar: function(model, value, options) {
@@ -179,7 +181,9 @@ define([
     },
     onPoster: function(model, url, options) {
       this.$el.find('div.side').css('background-image', 'url('+url+')');
-      this.$el.find('div.blur').css('background-image', 'url('+url+')'); // @todo !!!
+    },
+    onPosterBlured: function(model, url, options) {
+      this.$el.find('div.blur').css('background-image', 'url('+url+')');
     },
 
     /**
