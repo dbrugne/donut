@@ -25,6 +25,12 @@ handler.call = function (data, session, next) {
       Notifications(that.app).retrieveUserNotifications(user.id, data, callback);
     },
 
+    function retrieveMore(notifications, callback) {
+      Notifications(that.app).retrieveUserNotificationsUnviewedCount(user.id, function(err, count){
+        callback(err, notifications, (count > notifications.length));
+      });
+    },
+
     function prepare(notifications, more, callback) {
       var event = {
         notifications: [],
