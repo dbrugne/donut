@@ -1,6 +1,5 @@
 var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
 var async = require('async');
-var cloudinary = require('../../../../../shared/cloudinary/cloudinary');
 
 var Handler = function(app) {
   this.app = app;

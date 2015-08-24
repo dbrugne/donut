@@ -9,7 +9,7 @@
     <table>
         <tbody>
             <tr>
-                <td class="avatar"><img src="<%=$.cd.userAvatar(room.owner.avatar, 20)%>"></td>
+                <td class="avatar"><img src="<%= room.owner.avatarUrl %>"></td>
                 <td class="username">@<%=room.owner.username%></td>
                 <td class="actions">&nbsp;</td>
             </tr>
@@ -25,7 +25,7 @@
         <tbody>
             <% _.each(room.op, function(op) { %>
             <tr>
-                <td class="avatar"><img src="<%=$.cd.userAvatar(op.avatar, 20)%>"></td>
+                <td class="avatar"><img src="<%= op.avatarUrl %>"></td>
                 <td class="username">@<%=op.username%></td>
                 <td class="actions">
                     <div class="deop" data-toggle="confirmation" data-action="deop-user" title="<%= t('chat.deop.infobox') %>" data-username="<%= op.username %>">
@@ -46,7 +46,7 @@
         <tbody>
         <% _.each(room.devoices, function(devoice) { %>
         <tr>
-            <td class="avatar"><img src="<%=$.cd.userAvatar(devoice.avatar, 20)%>"></td>
+            <td class="avatar"><img src="<%= devoice.avatarUrl %>"></td>
             <td class="username">@<%=devoice.username%></td>
             <td class="actions">
                 <div class="voice" data-toggle="confirmation" data-action="devocice-user" title="<%= t('chat.voice.infobox') %>" data-username="<%= devoice.username %>">
@@ -67,7 +67,7 @@
         <tbody>
         <% _.each(room.bans, function(ban) { %>
         <tr>
-            <td class="avatar"><img src="<%=$.cd.userAvatar(ban.avatar, 20)%>"></td>
+            <td class="avatar"><img src="<%= ban.avatarUrl %>"></td>
             <td class="username">@<%=ban.username%></td>
             <td class="actions">
                 <div class="deban" data-toggle="confirmation" data-action="deban-user" title="<%= t('chat.deban.infobox') %>" data-username="<%= ban.username %>">
@@ -88,7 +88,7 @@
         <tbody>
         <% _.each(room.users, function(user) { %>
         <tr>
-            <td class="avatar"><img src="<%=$.cd.userAvatar(user.avatar, 20)%>"></td>
+            <td class="avatar"><img src="<%= user.avatarUrl %>"></td>
             <td class="username">@<%=user.username%></td>
             <td class="actions">
                 <div class="op" data-toggle="confirmation" data-action="op-user" title="<%= t('chat.op.infobox') %>" data-username="<%= user.username %>">

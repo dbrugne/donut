@@ -2,6 +2,7 @@ var debug = require('debug')('shared:models:room');
 var _ = require('underscore');
 var mongoose = require('../io/mongoose');
 var common = require('@dbrugne/donut-common');
+var cloudinary = require('../util/cloudinary');
 
 var roomSchema = mongoose.Schema({
 
@@ -56,32 +57,11 @@ roomSchema.statics.findByUser = function (userId) {
   return this.find({ users: { $in: [userId] }, deleted: {$ne: true} });
 };
 
-/**
- * Method to get the avatar/poster token used to generated the avatar URL on IHM
- *
- * cloudinary={CLOUDINARY_ID}#!#color={COLOR}[#!#facebook={FACEBOOK_TOKEN}]
- */
-roomSchema.methods._avatar = function() {
-  var token = [];
-
-  if (this.avatar)
-    token.push('cloudinary='+this.avatar);
-
-  if (this.color)
-    token.push('color='+this.color);
-
-  return token.join('#!#');
+roomSchema.methods._avatar = function(size) {
+  return cloudinary.roomAvatar(this.avatar, this.color, size);
 };
-roomSchema.methods._poster = function() {
-  var token = [];
-
-  if (this.poster)
-    token.push('cloudinary='+this.poster);
-
-  if (this.color)
-    token.push('color='+this.color);
-
-  return token.join('#!#');
+roomSchema.methods._poster = function(blur) {
+  return cloudinary.poster(this.poster, this.color, blur);
 };
 
 roomSchema.methods.avatarId = function() {

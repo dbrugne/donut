@@ -1,5 +1,4 @@
 var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
-var cloudinary = require('../../../../../shared/cloudinary/cloudinary');
 var _ = require('underscore');
 var async = require('async');
 var UserModel = require('../../../../../shared/models/user');
