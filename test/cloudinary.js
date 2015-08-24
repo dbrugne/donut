@@ -13,10 +13,10 @@ describe('shared/util/cloudinary', function () {
       cloudinary.roomAvatar.should.be.a('function');
     });
     it('without identifier', function () {
-      cloudinary.roomAvatar('').should.equal('https://res.cloudinary.com/roomly/image/upload/b_rgb:ffffff,c_fill,d_room-avatar-default.png,f_jpg,g_face,h___height__,w___width__/room-avatar-default');
+      cloudinary.roomAvatar('').should.equal('https://res.cloudinary.com/roomly/image/upload/b_rgb:ffffff,c_fill,f_jpg,g_face,h___height__,w___width__/room-avatar-default');
     });
     it('color', function () {
-      cloudinary.roomAvatar('', '#123456').should.equal('https://res.cloudinary.com/roomly/image/upload/b_rgb:123456,c_fill,d_room-avatar-default.png,f_jpg,g_face,h___height__,w___width__/room-avatar-default');
+      cloudinary.roomAvatar('', '#123456').should.equal('https://res.cloudinary.com/roomly/image/upload/b_rgb:123456,c_fill,f_jpg,g_face,h___height__,w___width__/room-avatar-default');
     });
     it('without size', function () {
       cloudinary.roomAvatar('v1409643461/rciev5ubaituvx5bclnz.jpg', '#FF0000').should.equal('https://res.cloudinary.com/roomly/image/upload/b_rgb:ff0000,c_fill,d_room-avatar-default.png,f_jpg,g_face,h___height__,w___width__/v1409643461/rciev5ubaituvx5bclnz.jpg');
@@ -31,10 +31,10 @@ describe('shared/util/cloudinary', function () {
       cloudinary.userAvatar.should.be.a('function');
     });
     it('without identifier', function () {
-      cloudinary.userAvatar('').should.equal('https://res.cloudinary.com/roomly/image/upload/b_rgb:ffffff,c_fill,d_user-avatar-default.png,f_jpg,g_face,h___height__,w___width__/user-avatar-default');
+      cloudinary.userAvatar('').should.equal('https://res.cloudinary.com/roomly/image/upload/b_rgb:ffffff,c_fill,f_jpg,g_face,h___height__,w___width__/user-avatar-default');
     });
     it('color', function () {
-      cloudinary.userAvatar('', '#123456').should.equal('https://res.cloudinary.com/roomly/image/upload/b_rgb:123456,c_fill,d_user-avatar-default.png,f_jpg,g_face,h___height__,w___width__/user-avatar-default');
+      cloudinary.userAvatar('', '#123456').should.equal('https://res.cloudinary.com/roomly/image/upload/b_rgb:123456,c_fill,f_jpg,g_face,h___height__,w___width__/user-avatar-default');
     });
     it('without size', function () {
       cloudinary.userAvatar('v1409643461/rciev5ubaituvx5bclnz.jpg', '#FF0000').should.equal('https://res.cloudinary.com/roomly/image/upload/b_rgb:ff0000,c_fill,d_user-avatar-default.png,f_jpg,g_face,h___height__,w___width__/v1409643461/rciev5ubaituvx5bclnz.jpg');

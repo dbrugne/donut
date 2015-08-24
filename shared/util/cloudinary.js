@@ -8,7 +8,6 @@ var userAvatarDefault = 'user-avatar-default.png';
 var posterDefault = 'poster-default.png';
 
 function _url(data, width, height, gravity, effect) {
-  var defaultIdentifier = data.default;
   var identifier = data.identifier;
   var background = data.color || '#ffffff';
   var facebook = data.facebook;
@@ -27,10 +26,11 @@ function _url(data, width, height, gravity, effect) {
     fetch_format: 'jpg',
     crop: 'fill',
     gravity: gravity,
-    default_image: defaultIdentifier,
     background: 'rgb:'+background.replace('#', '').toLocaleLowerCase()
   };
 
+  if (data.default)
+    options.default_image = data.default;
   if (width != 0)
     options.width = ''+width;
   if (height != 0)
@@ -38,15 +38,14 @@ function _url(data, width, height, gravity, effect) {
   if (effect)
     options.effect = effect;
 
-  if (!identifier && facebook) {
+  // Facebook profile image
+  if (!identifier && facebook)
     return 'https://graph.facebook.com/'+facebook+'/picture?height='+height+'&width='+width;
-  }
 
-  if (!identifier) {
-    if (defaultIdentifier.indexOf('.png') === -1)
-      identifier = defaultIdentifier;
-    else
-      identifier = defaultIdentifier.substr(0, defaultIdentifier.indexOf('.png'));
+  // Default image
+  if (!identifier && options.default_image) {
+    identifier = data.default.replace(/\.png$/i, '');
+    delete options.default_image;
 
     // remove blur (if set) for default images
     if (options.effect)
