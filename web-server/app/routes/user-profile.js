@@ -27,8 +27,7 @@ router.get('/user/:user', function(req, res) {
     subtitle: req.requestedUser.username,
     _user: req.requestedUser,
     poster: req.requestedUser.poster,
-    color: req.requestedUser.color,
-    defaultAvatarUrl: conf.user.default.avatar
+    color: req.requestedUser.color
   });
 });
 

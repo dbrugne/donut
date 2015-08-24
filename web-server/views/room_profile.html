@@ -1,7 +1,7 @@
 <% layout('profile') %>
 
 <div class="side" style="<% if (poster) { %>background-image: url(<%= poster %>);<% }; %>" data-colorify-background="color">
-    <div class="blur" style="<% if (posterBlured) { %>background-image: url(<%= posterBlured %>);<% }; %>" data-colorify-background="darker">
+    <div class="blur" style="<% if (posterBlured) { print("background-image: url(" + posterBlured + ")"); } %>" data-colorify-background="darker">
         <div class="users hidden-sm hidden-xs">
             <div class="header">
                 <p class="count">

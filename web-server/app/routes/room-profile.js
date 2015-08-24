@@ -27,9 +27,8 @@ router.get('/room/:room', function(req, res) {
     subtitle: req.room.name,
     room: req.room,
     poster: req.room.poster,
-    posterBlured: req.room.posterBlured, // @todo yls understand why posterBlured, rendered form middleware, is not blured !
-    color: req.room.color,
-    defaultAvatarUrl: conf.user.default.avatar
+    posterBlured: req.room.posterBlured,
+    color: req.room.color
   });
 });
 
