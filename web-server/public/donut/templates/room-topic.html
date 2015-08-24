@@ -9,12 +9,12 @@
         </span>
         <input type="text" class="form-control topic-input" placeholder="<%= t('chat.topic.placeholder') %>" value="" maxlength="512">
         <span class="input-group-btn">
-            <button class="btn submit" type="submit" data-colorify-text="contrast" data-colorify-background="color"><%= t('global.change') %></button>
+            <button class="btn submit dc-text-contrast dc-back" type="submit"><%= t('global.change') %></button>
         </span>
     </div>
 </div>
-<a href="#" class="drawer-users visible-xs visible-sm" data-colorify-text="contrast" data-colorify-background="color" data-room-name="<%= roomName %>">
-    <i class="icon icon-users"></i>
+<a href="#" class="drawer-users visible-xs visible-sm dc-back" data-room-name="<%= roomName %>">
+    <i class="icon icon-users dc-text-contrast"></i>
 </a>
 <div id="user-modal" class="modal fade" role="dialog" aria-labelledby="userModal" aria-hidden="true">
     <div class="modal-dialog modal-lg">

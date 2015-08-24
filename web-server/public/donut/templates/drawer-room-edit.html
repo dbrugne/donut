@@ -1,6 +1,6 @@
-<div class="room" data-colorify="<%= room.color %>">
-    <span class="name"><%= room.name %></span>
-    <span class="owner"><%= t('global.by') %> <a class="open-user-profile" data-username="<%= room.owner.username %>" data-colorify-text="#ffffff">@<%= room.owner.username %></a></span>
+<div class="room">
+    <span class="name dc-text"><%= room.name %></span>
+    <span class="owner"><%= t('global.by') %> <a class="open-user-profile dc-text" data-username="<%= room.owner.username %>">@<%= room.owner.username %></a></span>
 </div>
 <div class="errors"></div>
 <form class="room-form" role="form">

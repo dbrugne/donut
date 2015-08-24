@@ -1,5 +1,5 @@
-<div class="side" style="<% if (poster) { %>background-image: url(<%= poster %>);<% }; %>" data-colorify-background="color">
-    <div class="blur" style="<% if (posterblured) { %>background-image: url(<%= posterblured %>);<% }; %>" data-colorify-background="darker">
+<div class="side dc-back" style="<% if (typeof poster !== 'undefined') { %>background-image: url(<%= poster %>);<% }; %>">
+    <div class="blur dc-back-darker" style="<% if (typeof posterblured !== 'undefined') { %>background-image: url(<%= posterblured %>);<% }; %>">
         <div class="users hidden-sm hidden-xs">
             <div class="scrollable"></div>
         </div>
@@ -14,11 +14,11 @@
         </div>
         <div class="info">
             <div class="name open-room-profile hidden-xs hidden-sm" data-room-name="<%= name %>"><%= name %></div>
-            <div class="name open-room-profile visible-xs visible-sm" data-room-name="<%= name %>" data-colorify-text="contrast"><%= name %></div>
+            <div class="name open-room-profile visible-xs visible-sm dc-text-contrast" data-room-name="<%= name %>"><%= name %></div>
             <div class="dropdown">
                 <button class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
                     <i class="icon icon-chevron-down hidden-xs hidden-sm"></i>
-                    <i class="icon icon-chevron-down visible-xs visible-sm" data-colorify-text="contrast"></i>
+                    <i class="icon icon-chevron-down visible-xs visible-sm dc-text-contrast"></i>
                 </button>
                 <ul class="dropdown-menu" role="menu">
                     <li role="presentation">
@@ -78,7 +78,7 @@
                 </ul>
             </div>
             <% if (owner && owner.username) { %>
-            <div class="owner"><%= t('global.by') %> <a class="open-user-profile" data-username="<%= owner.username %>" data-colorify-text="color">@<%= owner.username %></a></div>
+            <div class="owner"><%= t('global.by') %> <a class="open-user-profile dc-text" data-username="<%= owner.username %>">@<%= owner.username %></a></div>
             <% } %>
             <div class="share hidden-xs hidden-sm">
                 <%= t('chat.share.label') %>

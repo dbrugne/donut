@@ -49,3 +49,131 @@
 @size-right-mid: 430px / 2;
 
 @img-homepage: '/images/sushi.png';
+
+/**
+
+  Color management
+
+*/
+
+@HKS_colors:   #FFE263, // @color_HKS_1:
+               #FFE300, // @color_HKS_2:
+               #FFDB00, // @color_HKS_3:
+               #FFC900, // @color_HKS_4:
+               #FFB800, // @color_HKS_5:
+               #FF8F00, // @color_HKS_6:
+               #FF7100, // @color_HKS_7:
+               #FF6400, // @color_HKS_8:
+               #FF4C02, // @color_HKS_10
+               #FF9B75, // @color_HKS_11
+               #F33B1D, // @color_HKS_12
+               #F73429, // @color_HKS_13
+               #E2382A, // @color_HKS_14
+               #CC1F2F, // @color_HKS_15
+               #A52F33, // @color_HKS_16
+               #A71F3C, // @color_HKS_17
+               #782235, // @color_HKS_18
+               #FF8997, // @color_HKS_21
+               #FE443A, // @color_HKS_22
+               #E81E41, // @color_HKS_23
+               #CA2F56, // @color_HKS_24
+               #D3225D, // @color_HKS_25
+               #C0106F, // @color_HKS_26
+               #E70097, // @color_HKS_27
+               #FC2063, // @color_donut_pink
+               #B22052, // @color_HKS_28
+               #9B348E, // @color_HKS_29
+               #CA0F86, // @color_HKS_31
+               #C60769, // @color_HKS_32
+               #B028B6, // @color_HKS_33
+               #6E3B90, // @color_HKS_34
+               #4F478E, // @color_HKS_35
+               #633E96, // @color_HKS_36
+               #543478, // @color_HKS_37
+               #233C4C, // @color_HKS_38
+               #117ACB, // @color_HKS_39
+               #009AB7, // @color_HKS_40
+               #284156, // @color_HKS_41
+               #253B6C, // @color_donut_blue
+               #2F53A7, // @color_HKS_42
+               #2C57D2, // @color_HKS_43
+               #0078B8, // @color_HKS_44
+               #5566A4, // @color_HKS_45
+               #2796B6, // @color_HKS_46
+               #00ACD3, // @color_HKS_47
+               #00AFC4, // @color_HKS_48
+               #0095B1, // @color_HKS_49
+               #00D2E2, // @color_HKS_50
+               #4FEDC0, // @color_donut_lime
+               #00AAA0, // @color_HKS_51
+               #00A8A3, // @color_HKS_52
+               #00CE9D, // @color_HKS_53
+               #009864, // @color_HKS_54
+               #007755, // @color_HKS_55
+               #006651, // @color_HKS_56
+               #008A4E, // @color_HKS_57
+               #396A37, // @color_HKS_58
+               #008A7D, // @color_HKS_59
+               #3A9C00, // @color_HKS_60
+               #2A5349, // @color_HKS_61
+               #696A19, // @color_HKS_62
+               #467A40, // @color_HKS_63
+               #00A513, // @color_HKS_64
+               #46BB00, // @color_HKS_65
+               #7FC600, // @color_HKS_66
+               #FCC700, // @color_HKS_68
+               #EAE000, // @color_HKS_69
+               #F0A930, // @color_HKS_71
+               #E29200, // @color_HKS_72
+               #BA832C, // @color_HKS_73
+               #926A24, // @color_HKS_74
+               #856D2A, // @color_HKS_75
+               #58462B, // @color_HKS_76
+               #644327, // @color_HKS_77
+               #7A4228, // @color_HKS_78
+               #CB5E24, // @color_HKS_81
+               #A5451F, // @color_HKS_82
+               #7E4531, // @color_HKS_83
+               #663C2E, // @color_HKS_84
+               #23221B, // @color_HKS_88
+               #B7AD8D, // @color_HKS_89
+               #3E352C, // @color_HKS_90
+               #ADB9A6, // @color_HKS_91
+               #7A8077, // @color_HKS_92
+               #505A59, // @color_HKS_93
+               #A0A397, // @color_HKS_95
+               #838678, // @color_HKS_96
+               #3A4136; // @color_HKS_97
+
+.color-loop (@index) when (@index > 0){
+  @e: extract(@HKS_colors, @index); // gets color Code with extra spaces
+  @e2: ~'@{e}'; // Convert color code to string
+  @code: replace(@e2, '[\s]*#', ''); // remove leading # & extra spaces to keep only color code
+  @color: color(replace(@e2, '[\s]*', '')); // remove extra spaces
+  // Generated classes
+  .dc-@{code} {
+    .dc-text { color: @color !important; }
+    .dc-back { background-color: @color !important; }
+    .dc-back-darker { background-color: darken(@color, 10%) !important; }
+    .dc-text-contrast { .color-text(@color); }
+    .dc-border { border-color: @color !important; }
+    .dc-border-lighter { border-color: lighten(@color, 10%) !important; }
+  }
+
+  .color-loop (@index - 1);
+}
+
+// Default colors
+.dc-default {
+  .dc-text { color: @cl-first !important; }
+  .dc-back { background-color: @cl-first !important; }
+  .dc-back-darker { background-color: darken(@cl-first, 10%) !important; }
+  .dc-text-contrast { .color-text(@cl-first); }
+  .dc-border { border-color: @cl-first !important; }
+  .dc-border-lighter { border-color: lighten(@cl-first, 10%) !important; }
+}
+
+.color-text (@a) when (lightness(@a) >= 40%) { color: @cl-text !important; }
+.color-text (@a) when (lightness(@a) < 60%)  { color: @cl-clouds !important; }
+
+.color-loop(length(@HKS_colors));

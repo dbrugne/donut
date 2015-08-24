@@ -1,4 +1,4 @@
-<div class="side" <% if (poster) { %>style="background-image: url(<%= poster %>);"<% }; %> data-colorify-background="color"></div>
+<div class="side dc-back" <% if (poster) { %>style="background-image: url(<%= poster %>);"<% }; %>></div>
 <div class="content" id="onetoone">
     <div class="header user <% if (banned === true) { %> is-banned <% } %>">
         <div class="avatar relative open-user-profile" data-username="<%= username %>">
@@ -6,11 +6,11 @@
         </div>
         <div class="info">
             <span class="username open-user-profile hidden-xs hidden-sm" data-username="<%= username %>">@<%= username %></span>
-            <span class="username open-user-profile visible-xs visible-sm" data-username="<%= username %>" data-colorify-text="contrast">@<%= username %></span>
+            <span class="username open-user-profile visible-xs visible-sm dc-text-contrast" data-username="<%= username %>">@<%= username %></span>
             <div class="dropdown">
                 <button class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
                     <i class="icon icon-chevron-down hidden-xs hidden-sm"></i>
-                    <i class="icon icon-chevron-down visible-xs visible-sm" data-colorify-text="contrast"></i>
+                    <i class="icon icon-chevron-down visible-xs visible-sm dc-text-contrast"></i>
                 </button>
                 <ul class="dropdown-menu" role="menu">
                     <li role="presentation">

@@ -1,7 +1,7 @@
 <% layout('profile') %>
 
-<div class="side" style="<% if (poster) { %>background-image: url(<%= poster %>);<% }; %>" data-colorify-background="color">
-    <div class="blur" style="<% if (posterBlured) { print("background-image: url(" + posterBlured + ")"); } %>" data-colorify-background="darker">
+<div class="side dc-back" style="<% if (poster) { %>background-image: url(<%= poster %>);<% }; %>">
+    <div class="blur dc-back-darker" style="<% if (posterBlured) { %>background-image: url(<%= posterBlured %>);<% }; %>">
         <div class="users hidden-sm hidden-xs">
             <div class="header">
                 <p class="count">
@@ -38,11 +38,11 @@
     <div class="header room">
         <div class="overlay-ctn">
             <img class="avatar open-room-profile" data-room-name="<%= room.name %>" src="<%= room.avatar %>" alt="<%= room.name %> avatar">
-            <p class="join hidden-sm hidden-xs"><a href="<% if (!user) { %><%= room.join %><% } else { %><%= room.chat %><% } %>" <% if (room.color) { %>style="background-color: <%= room.color %>;"<% } %>><%= t('actions.join') %> <% if (room.usersCount) { %><%= room.usersCount %><% } %> <i class="icon icon-user-custom"></i></a></p>
+            <p class="join hidden-sm hidden-xs"><a class="dc-back dc-text-contrast" href="<%= room.join %>"><%= t('actions.join') %> <% if (room.usersCount) { %><%= room.usersCount %><% } %> <i class="icon icon-user-custom"></i></a></p>
         </div>
         <div class="info">
             <div class="name open-room-profile hidden-xs hidden-sm" data-room-name="<%= room.name %>"><%= room.name %></div>
-            <div class="name open-room-profile visible-xs visible-sm" data-room-name="<%= room.name %>" data-colorify-text="contrast" ><%= room.name %></div>
+            <div class="name open-room-profile visible-xs visible-sm dc-text-contrast" data-room-name="<%= room.name %>"><%= room.name %></div>
             <% if (room.owner && room.owner.username) { %>
                 <div class="owner">
                     <%= t('global.by') %> <a href="<%= room.owner.url %>" <% if (room.color) { %>style="color: <%= room.color %>;"<% } %>>@<%= room.owner.username %></a>

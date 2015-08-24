@@ -137,7 +137,12 @@
 //  -ms-transform-origin:     @x @y;
 //  -o-transform-origin:      @x @y;
 //}
-
+.user-select(@value) {
+  -webkit-user-select: @value;
+  -moz-user-select: @value;
+  -ms-user-select: @value;
+  user-select: @value;
+}
 .bounce-left {
   animation-name: bounce-left;
   animation-duration: 1s;

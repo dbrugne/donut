@@ -207,9 +207,9 @@ define([
     },
 
     _color: function(color) {
-      this.$el.find('#color')
-        .attr('data-colorify', color)
-        .colorify();
+      $('body').removeClass (function (index, css) {
+        return (css.match (/(dc-\S+)+/g) || []).join(' ');
+      }).addClass('dc-'+color.replace('#', '').toLowerCase());
     },
 
     color: function(color, temporary, reset) {

@@ -1,7 +1,7 @@
 <% layout('profile') %>
 
-<div class="side" style="<% if (typeof poster !== "undefined") { %>background-image: url(<%= poster %>);<% }; %>" data-colorify-background="color">
-    <div class="blur" style="<% if (typeof poster !== "undefined") { %>background-image: url(<%= poster %>);<% }; %>" data-colorify-background="darker">
+<div class="side dc-back" style="<% if (typeof poster !== 'undefined') { %>background-image: url(<%= poster %>);<% }; %>">
+    <div class="blur dc-back-darker " style="<% if (typeof poster !== 'undefined') { %>background-image: url(<%= poster %>);<% }; %>">
 
     </div>
 </div><!-- /.side -->
@@ -13,7 +13,7 @@
         </div>
         <div class="info">
             <a href="<%= _user.url %>" class="username hidden-xs hidden-sm">@<%= _user.username %></a>
-            <a href="<%= _user.url %>" class="username visible-xs visible-sm" data-colorify-text="contrast">@<%= _user.username %></a>
+            <a href="<%= _user.url %>" class="username visible-xs visible-sm dc-text-contrast">@<%= _user.username %></a>
             <% if (_user.location) { %>
                 <span class="location hidden-xs hidden-sm">
                     <%= _user.location %>
