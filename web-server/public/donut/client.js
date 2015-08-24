@@ -453,6 +453,24 @@ define([
         }
       );
     },
+    userJoin: function (username) {
+      var data = {username: username};
+      debug('io:out:user:join', data);
+      var that = this;
+      pomelo.request(
+        'chat.userJoinHandler.join',
+        data,
+        function (response) {
+          if (response.err)
+            return debug('io:in:user:join error: ', response);
+        }
+      );
+    },
+    userLeave: function (username) {
+      var data = {username: username};
+      pomelo.notify('chat.userLeaveHandler.leave', data);
+      debug('io:out:user:leave', data);
+    },
     userMessage: function (username, message, images, callback) {
       var data = {username: username, message: message, images: images};
       debug('io:out:user:message', data);
@@ -472,36 +490,6 @@ define([
       pomelo.notify('chat.userMessageEditHandler.call', data);
       debug('io:out:user:message:edit', data);
     },
-    userHistory: function (username, since, limit, fn) {
-      var data = {username: username, since: since, limit: limit};
-      debug('io:out:user:history', data);
-      var that = this;
-      pomelo.request(
-        'chat.userHistoryHandler.call',
-        data,
-        function (response) {
-          if (response.err)
-            return debug('io:in:user:history error: ', response);
-
-          debug('io:in:user:history', response);
-          return fn(response);
-        }
-      );
-    },
-    userViewed: function (username, events) {
-      var data = {username: username, events: events};
-      pomelo.notify('chat.userViewedHandler.call', data);
-      debug('io:out:user:viewed', data);
-    },
-    userTyping: function(userId) {
-      var data = { user_id: userId };
-      debug('io:out:user:typing', data);
-      pomelo.notify('chat.userTypingHandler.call', data);
-    },
-
-    // USER
-    // ======================================================
-
     userRead: function (username, fn) {
       var data = {username: username};
       debug('io:out:user:read', data);
@@ -531,6 +519,36 @@ define([
         }
       );
     },
+    userHistory: function (username, since, limit, fn) {
+      var data = {username: username, since: since, limit: limit};
+      debug('io:out:user:history', data);
+      var that = this;
+      pomelo.request(
+        'chat.userHistoryHandler.call',
+        data,
+        function (response) {
+          if (response.err)
+            return debug('io:in:user:history error: ', response);
+
+          debug('io:in:user:history', response);
+          return fn(response);
+        }
+      );
+    },
+    userViewed: function (username, events) {
+      var data = {username: username, events: events};
+      pomelo.notify('chat.userViewedHandler.call', data);
+      debug('io:out:user:viewed', data);
+    },
+    userTyping: function(userId) {
+      var data = { user_id: userId };
+      debug('io:out:user:typing', data);
+      pomelo.notify('chat.userTypingHandler.call', data);
+    },
+
+    // PREFERENCES
+    // ======================================================
+
     userPreferencesRead: function (name, fn) {
       var data = (name) ? {name: name} : {};
       debug('io:out:preferences:read', data);
@@ -561,7 +579,33 @@ define([
         }
       );
     },
-
+    accountEmail: function (email, fn) {
+      var data = { email: email };
+      pomelo.request(
+        'chat.accountEmailHandler.call',
+        data,
+        function (response) {
+          if (response.err)
+            debug('io:in:account:email:edit error: ', response);
+          else
+            debug('io:in:account:email:edit', response);
+          return fn(response);
+        });
+    },
+    accountPassword: function (password, fn) {
+      var data = { password: password };
+      pomelo.request(
+        'chat.accountPasswordHandler.call',
+        data,
+        function (response) {
+          if (response.err)
+            debug('io:in:account:password:edit error: ', response);
+          else
+            debug('io:in:account:password:edit', response);
+          return fn(response);
+        });
+    },
+    
     // NOTIFICATION
     // ======================================================
 

@@ -6,9 +6,9 @@ define([
   'models/current-user',
   '_templates'
 ], function ($, _, Backbone, client ,currentUser, templates) {
-  var DrawerUserEditMailView = Backbone.View.extend({
+  var DrawerAccountEmailView = Backbone.View.extend({
 
-    template: templates['drawer-user-account-mail.html'],
+    template: templates['drawer-account-email.html'],
 
     events: {
       'click #email-modal-link' : 'onShowForm',
@@ -16,12 +16,10 @@ define([
     },
 
     initialize: function(options) {
-
     },
 
     render: function() {
       this.$('.mail-form-container').html(this.template);
-
       this.$('.spinner').html(templates['spinner.html']);
       this.$('.spinner').hide();
       this.$('.error').hide();
@@ -51,7 +49,7 @@ define([
         this.$('.spinner').show();
         this.$('.form-mail').removeClass('has-error');
 
-        client.userChangeMail(currentUser.get("user_id"), this.$('.email-sub').val(), function (data) {
+        client.accountEmail(this.$('.email-sub').val(), function (data) {
           that.$('.spinner').hide();
           if (data.err) {
             that.$('.form-mail').addClass('has-error');
@@ -77,5 +75,5 @@ define([
 
   });
 
-  return DrawerUserEditMailView;
+  return DrawerAccountEmailView;
 });

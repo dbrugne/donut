@@ -6,9 +6,9 @@ define([
   'models/current-user',
   '_templates'
 ], function ($, _, Backbone, client ,currentUser, templates) {
-  var DrawerUserEditPasswordView = Backbone.View.extend({
+  var DrawerAccountPasswordView = Backbone.View.extend({
 
-    template: templates['drawer-user-account-password.html'],
+    template: templates['drawer-account-password.html'],
 
     events: {
       'submit .form-password'       : 'onSubmit',
@@ -16,7 +16,6 @@ define([
     },
 
     initialize: function(options) {
-
     },
 
     render: function() {
@@ -46,7 +45,7 @@ define([
         this.$('.spinner').show();
         this.$('.form-password').removeClass('has-error');
 
-        client.userChangePassword(currentUser.get("user_id"), this.$('.input-password').val(), function (data) {
+        client.accountPassword(this.$('.input-password').val(), function (data) {
           that.$('.spinner').hide();
           if (data.err) {
             that.$('.form-mail').addClass('has-error');
@@ -77,5 +76,5 @@ define([
 
   });
 
-  return DrawerUserEditPasswordView;
+  return DrawerAccountPasswordView;
 });
