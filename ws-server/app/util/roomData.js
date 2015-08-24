@@ -32,6 +32,7 @@ module.exports = function(app, uid, room, fn) {
         devoices  : devoices, // [ObjectId]
         avatar    : room._avatar(),
         poster    : room._poster(),
+        posterblured : room._poster(true),
         color     : room.color,
         topic     : room.topic
       };

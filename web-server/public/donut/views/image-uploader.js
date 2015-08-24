@@ -2,9 +2,10 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'common',
   'libs/donut-debug',
   '_templates'
-], function ($, _, Backbone, donutDebug, templates) {
+], function ($, _, Backbone, common, donutDebug, templates) {
 
   var debug = donutDebug('donut:image-uploader');
 
@@ -23,12 +24,13 @@ define([
     initialize: function (options) {
       delete options.el; // already saved by Backbone.View, now should be removed from cloudinary options
       this.options = _.extend({
+        theme: 'white',
         success: _.noop,
         current: '',
         field_name: 'image',
         tags: '',
         upload_preset: 'uxfd2ikf',
-        sources: ['local'], // ['local', 'url', 'camera']
+        sources: ['local', 'url', 'camera'], // ['local', 'url', 'camera']
         multiple: false,
         cropping: 'server',
         client_allowed_formats: ["png", "gif", "jpeg"],
@@ -98,13 +100,23 @@ define([
      * @param version cloudinary version (optional)
      * @returns string
      */
-    _getImageTag: function (imageId, version) {
-      var identifier = (version)
-        ? {id: imageId, version: version}
-        : imageId;
-      var url = $.cd.noDefault(identifier, 30, 30);
-      if (!url)
+    _getImageTag: function (identifier, version) {
+      if (!identifier || identifier == '')
         return '';
+
+      // @hacks
+
+      var url;
+      if (version) {
+        url = 'https://res.cloudinary.com/roomly/image/upload/b_rgb:ffffff,c_fill,f_jpg,g_face,h_30,w_30/'
+          + 'v' + version + '/' + identifier + '.jpg';
+      } else {
+        if (identifier.indexOf('__width__') !== -1)
+          url = common.cloudinarySize(identifier, 30);
+        else
+          url = identifier.replace('h_1100,w_430', 'h_30,w_30');
+      }
+
       return "<img src='" + url + "' alt='current image thumbnail'>";
     }
 
