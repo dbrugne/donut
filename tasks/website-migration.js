@@ -23,7 +23,7 @@ module.exports = function(grunt) {
 
             if (_.isObject(m.website) && !m.website.href && !m.website.title) {
               grunt.log.error('room: name[' + m.name + '] website[empty object]');
-              m.update({website: m.website}, {$unset: {website: {}}}).exec(function(err){
+              m.update({$unset: {website: {}}}).exec(function(err){
                 if (err)
                   return callback(err);
                 grunt.log.ok('room: name[' + m.name + '] delete website empty object');
@@ -37,7 +37,7 @@ module.exports = function(grunt) {
             }
 
             if (m.website === '') {
-              m.update({website: m.website}, {$unset: {website:''}}).exec(function(err){
+              m.update({$unset: {website:''}}).exec(function(err){
                 if (err)
                   return callback(err);
                 grunt.log.ok('room: name[' + m.name + '] website empty unset');
@@ -69,16 +69,61 @@ module.exports = function(grunt) {
 
           });
         });
-        //return callback(null);
+        return callback(null);
       },
 
       function users(callback) {
-        UserModel.find({}, "website", function(err, userModels) {
+        UserModel.find({}, 'username website', function(err, userModels) {
           if (err)
             return callback(err);
           _.each(userModels, function(m) {
-            if (m.website)
-              grunt.log.ok('user:' + m.website);
+
+            if (_.isObject(m.website) && !m.website.href && !m.website.title) {
+              grunt.log.error('user: username[' + m.username + '] website[empty object]');
+              m.update({$unset: {website: {}}}).exec(function(err){
+                if (err)
+                  return callback(err);
+                grunt.log.ok('user: username[' + m.username + '] delete website empty object');
+              });
+              return;
+            }
+
+            if (m.website == undefined) {
+              grunt.log.ok('user: username[' + m.username + '] website[undefined]');
+              return;
+            }
+
+            if (m.website === '') {
+              m.update({$unset: {website:''}}).exec(function(err){
+                if (err)
+                  return callback(err);
+                grunt.log.ok('user: username[' + m.username + '] website empty unset');
+              });
+              return;
+            }
+
+            if (m.website && _.isObject(m.website)) {
+              grunt.log.ok('user: username[' + m.username + '] website[' + m.website.title + '] => already Linkify');
+              return;
+            }
+
+            var link = common.getLinkify().find(m.website);
+            if (!link || !link[0]){
+              grunt.log.error('Linkify error => user: username[' + m.username + '] website[' + m.website + '] error url');
+              return;
+            }
+
+            var website = {
+              href: link[0].href,
+              title: link[0].value
+            }
+
+            m.update({$set: {website: website}}).exec(function(err){
+              if (err)
+                return callback(err);
+              grunt.log.ok('Linkify ok => user: username[' + m.username + '] website[' + link[0].value + ']');
+            });
+
           });
         });
         return callback(null);
