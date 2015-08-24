@@ -63,11 +63,7 @@ require([
   'moment-fr',
   'html.sortable'
 ], function (app, translations, $, _, Backbone, common, i18next, moment, desktopNotify) {
-
-  // cloudinary temporary hack
-  $.cloudinarySize = common.cloudinarySize;
-
-  // i18n setup
+  // i18next setup
   window.i18next = i18next; // @debug
   var i18nextOptions = {
     cookieName: 'donut.lng',
