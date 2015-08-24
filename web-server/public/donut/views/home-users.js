@@ -2,8 +2,9 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'common',
   '_templates'
-], function ($, _, Backbone,  templates) {
+], function ($, _, Backbone, common, templates) {
   var UsersView = Backbone.View.extend({
 
     template: templates['home-users.html'],
@@ -13,7 +14,7 @@ define([
     render: function(data) {
       var users = [];
       _.each(data.users.list, function(user) {
-        user.avatar = $.cd.userAvatar(user.avatar, 30);
+        user.avatar = common.cloudinarySize(user.avatar, 30);
         users.push(user);
       });
 

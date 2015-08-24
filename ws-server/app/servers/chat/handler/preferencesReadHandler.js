@@ -46,11 +46,11 @@ handler.call = function (data, session, next) {
     },
 
     function bannedUsers(callback) {
-      event.bannedUsers = _.map(user.bans, function (u) {
+      event.bannedUsers = _.map(user.bans, function (b) {
         return {
-          user_id: u.id,
-          avatar: u._avatar(),
-          username: u.username
+          user_id: b.user.id,
+          avatar: b.user._avatar(),
+          username: b.user.username
         };
       });
       return callback(null);

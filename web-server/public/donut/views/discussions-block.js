@@ -2,12 +2,13 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'common',
   'collections/rooms',
   'collections/onetoones',
   'models/current-user',
   'views/window',
   '_templates'
-], function ($, _, Backbone, rooms, onetoones, currentUser, windowView, templates) {
+], function ($, _, Backbone, common, rooms, onetoones, currentUser, windowView, templates) {
   var DiscussionBlockView = Backbone.View.extend({
 
     el: $("#block-discussions"),
@@ -58,11 +59,11 @@ define([
       function prepareItems(o) {
         var json = o.toJSON();
         if (o.get('type') == 'room') {
-          json.avatar = $.cd.roomAvatar(json.avatar, 20);
+          json.avatar = common.cloudinarySize(json.avatar, 20);
           json.uri = '#room/'+o.get('name').replace('#', '');
           json.identifier = o.get('name');
         } else {
-          json.avatar = $.cd.userAvatar(json.avatar, 20);
+          json.avatar = common.cloudinarySize(json.avatar, 20);
           json.uri = '#user/'+o.get('username');
           json.identifier = o.get('username');
         }

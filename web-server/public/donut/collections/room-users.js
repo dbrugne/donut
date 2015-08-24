@@ -39,8 +39,6 @@ define([
 
     initialize: function(options) {
       this.on("change:avatar", this.onChange);
-      this.on("change:poster", this.onChange);
-      this.on("change:color", this.onChange);
       this.on("change:status", this.onChange); // @todo dbr same fix as model/user, reduce event propagation
     },
 
