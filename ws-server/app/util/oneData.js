@@ -17,12 +17,28 @@ module.exports = function(app, user, users, fn) {
     single = true;
   }
 
-  var that = this;
+  var newMessage = {};
 
   async.waterfall([
 
     function status(callback) {
       app.statusService.getStatusByUids(_.map(users, 'id'), callback);
+    },
+
+    function newmessage(statuses, callback) {
+      async.eachLimit(users, 5, function(u, fn) {
+           HistoryOne.findUnread(u.id, function(err, doc) {
+            if (err)
+              fn(err);
+
+             newMessage[u.id] = (doc)
+              ? true
+              : false;
+             fn(null);
+          });
+      }, function(err) {
+        callback(err, statuses);
+      });
     },
 
     function prepare(statuses, callback) {
@@ -31,15 +47,6 @@ module.exports = function(app, user, users, fn) {
       _.each(users, function(u, index, list) {
         if (!u.username)
           return;
-
-        HistoryOne.findUnread(u.id, function(err, doc) {
-          if (err)
-            return callback(err, null);
-
-          that.unread = (doc)
-          ? true
-          : false;
-        });
 
         var one = {
           user_id     : u.id,
@@ -51,7 +58,7 @@ module.exports = function(app, user, users, fn) {
           website     : u.website,
           banned      : user.isBanned(u.id), // for ban/deban menu
           i_am_banned : u.isBanned(user.id), // for input enable/disable
-          unread      : that.unread
+          new_message : newMessage[u.id]
         };
 
         if (statuses[u.id] === true) {

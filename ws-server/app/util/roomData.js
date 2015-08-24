@@ -19,12 +19,12 @@ module.exports = function(app, uid, room, fn) {
 
   async.waterfall([
 
-    function check(callback) {
+    function newmessage(callback) {
       HistoryRoom.findUnread(uid, room.id, function(err, doc) {
         if (err)
           return callback(err, null);
 
-        that.unread = (doc)
+        that.newMessage = (doc)
           ? true
           : false;
         return callback(null);
@@ -40,16 +40,16 @@ module.exports = function(app, uid, room, fn) {
       });
 
       var roomData = {
-        name      : room.name,
-        id        : room.id,
-        owner     : {},
-        op        : room.op, // [ObjectId]
-        devoices  : devoices, // [ObjectId]
-        avatar    : room._avatar(),
-        poster    : room._poster(),
-        color     : room.color,
-        topic     : room.topic,
-        unread    : that.unread
+        name        : room.name,
+        id          : room.id,
+        owner       : {},
+        op          : room.op, // [ObjectId]
+        devoices    : devoices, // [ObjectId]
+        avatar      : room._avatar(),
+        poster      : room._poster(),
+        color       : room.color,
+        topic       : room.topic,
+        new_message : that.newMessage
       };
 
       if (room.owner) {

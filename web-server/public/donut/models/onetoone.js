@@ -20,7 +20,6 @@ define([
         onlined: '',
         type: 'onetoone',
         focused: false,
-        unread: false, // probably not needed in future
         banned: false,
         i_am_banned: false,
         newmessage: false,
@@ -126,7 +125,7 @@ define([
       this.set('newmention', false);
     },
     isThereNew: function () {
-      return !!(this.get('newmessage') || this.get('newmention') || this.get('unread'));
+      return !!(this.get('newmessage') || this.get('newmention'));
     },
     isInputActive: function() {
       return !(this.get('i_am_banned') === true);

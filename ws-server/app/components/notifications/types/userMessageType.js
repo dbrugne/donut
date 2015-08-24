@@ -82,7 +82,7 @@ Notification.prototype.create = function(user, history, done) {
         event: historyModel._id,
         from: historyModel.from // for repetitive
       });
-      model.to_browser = true; // will be displayed in browser on next connection
+      model.to_browser = false; // will be not displayed in browser on next connection
       model.to_email =  (!userModel.getEmail() ? false : ( status ? false : userModel.preferencesValue("notif:channels:email")));
       model.to_mobile = (status ? false : userModel.preferencesValue("notif:channels:mobile"));
 

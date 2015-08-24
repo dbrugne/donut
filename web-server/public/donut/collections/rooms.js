@@ -68,7 +68,8 @@ define([
         topic: room.topic,
         avatar: room.avatar,
         poster: room.poster,
-        color: room.color
+        color: room.color,
+        newmessage: room.new_message
       };
 
       // update model

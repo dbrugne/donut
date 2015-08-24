@@ -267,7 +267,7 @@ historySchema.statics.retrieveEventWithContext = function(eventId, limit, timeLi
 historySchema.statics.findUnread = function(userId, fn) {
   this.findOne({
     viewed: false,
-    to: userId,
+    from: userId,
     event: { $in: ['user:message', 'user:me'] }
   }, fn);
 };
