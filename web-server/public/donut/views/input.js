@@ -9,8 +9,9 @@ define([
   'views/input-rollup',
   'views/input-typing',
   'views/input-images',
+  'views/input-smileys',
   '_templates'
-], function ($, _, Backbone, common, donutDebug, keyboard, currentUser, RollupView, ViewTyping, ImagesView, templates) {
+], function ($, _, Backbone, common, donutDebug, keyboard, currentUser, RollupView, TypingView, ImagesView, SmileysView, templates) {
 
   var debug = donutDebug('donut:input');
 
@@ -22,9 +23,7 @@ define([
       'keyup .editable'         : 'onKeyUp',
       'keydown .editable'       : 'onKeyDown',
       'input .editable'         : 'onInput',
-      'click .send'             : 'onSubmitMessage',
-      'click .add-smiley'       : 'onOpenSmiley',
-      'click .smileys .smilify' : 'onPickSmiley'
+      'click .send'             : 'onSubmitMessage'
     },
 
     initialize: function (options) {
@@ -38,7 +37,7 @@ define([
         el: this.$el,
         model: this.model
       });
-      this.typingView = new ViewTyping({
+      this.typingView = new TypingView({
         el: this.$('.typing-container'),
         model: this.model
       });
@@ -46,9 +45,15 @@ define([
         el: this.$el,
         model: this.model
       });
+      this.smileysView = new SmileysView({
+        el: this.$el,
+        model: this.model
+      });
     },
 
     _remove: function () {
+      this.imagesView.remove();
+      this.smileysView.remove();
       this.remove();
     },
 
@@ -86,37 +91,6 @@ define([
     onSubmitMessage: function(event) {
       event.preventDefault();
       this.sendMessage();
-    },
-
-    /*****************************************************************************************************************
-     *
-     * Smileys
-     *
-     *****************************************************************************************************************/
-
-    onOpenSmiley: function (event) {
-      event.preventDefault();
-
-      if (!this.$smileyButton) {
-        this.$smileyButton = $(event.currentTarget);
-
-        this.$smileyButton.popover({
-          animation: false,
-          container: this.$el,
-          content: $.smilifyHtmlList(),
-          html: true,
-          placement: 'top'
-        });
-
-        this.$smileyButton.popover('show'); // show manually on first click, then popover has bound a click event on popover toggle action
-      }
-    },
-    onPickSmiley: function (event) {
-      event.preventDefault();
-
-      var symbol = $.smilifyGetSymbolFromCode($(event.currentTarget).data('smilifyCode'));
-      this.$editable.insertAtCaret(symbol);
-      this.$smileyButton.popover('hide');
     },
 
     /*****************************************************************************************************************
