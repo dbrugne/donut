@@ -18,7 +18,7 @@ module.exports = function (app) {
 
 var handler = Handler.prototype;
 
-handler.message = function (data, session, next) {
+handler.call = function (data, session, next) {
 
   var user = session.__currentUser__;
   var room = session.__room__;
