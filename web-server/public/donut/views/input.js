@@ -147,7 +147,7 @@ define([
       var options = {
         theme: 'white',
         upload_preset: 'discussion',
-        sources: ['local'], // ['local', 'url', 'camera']
+        sources: ['local', 'url', 'camera'], // ['local', 'url', 'camera']
         multiple: true,
         client_allowed_formats: ["png", "gif", "jpeg"],
         max_file_size: 20000000, // 20Mo

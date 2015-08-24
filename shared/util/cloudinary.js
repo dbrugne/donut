@@ -7,7 +7,7 @@ var roomAvatarDefault = 'room-avatar-default.png';
 var userAvatarDefault = 'user-avatar-default.png';
 var posterDefault = 'poster-default.png';
 
-function _url(data, width, height, gravity, effect) {
+function _url(data, width, height) {
   var identifier = data.identifier;
   var background = data.color || '#ffffff';
   var facebook = data.facebook;
@@ -19,15 +19,13 @@ function _url(data, width, height, gravity, effect) {
     ? height
     : '__height__';
 
-  gravity = gravity || 'face';
-
   var options = {
     secure: true,
     fetch_format: 'jpg',
-    crop: 'fill',
-    gravity: gravity,
     background: 'rgb:'+background.replace('#', '').toLocaleLowerCase()
   };
+
+  options.crop = (data.crop) ? data.crop : 'fill';
 
   if (data.default)
     options.default_image = data.default;
@@ -35,8 +33,10 @@ function _url(data, width, height, gravity, effect) {
     options.width = ''+width;
   if (height != 0)
     options.height = ''+height;
-  if (effect)
-    options.effect = effect;
+  if (data.gravity)
+    options.gravity = data.gravity;
+  if (data.effect)
+    options.effect = data.effect;
 
   // Facebook profile image
   if (!identifier && facebook)
@@ -63,7 +63,8 @@ module.exports = {
     return _url({
       default: roomAvatarDefault,
       identifier: identifier,
-      color: color
+      color: color,
+      gravity: 'face'
     }, size, size);
   },
 
@@ -72,6 +73,7 @@ module.exports = {
       default: userAvatarDefault,
       identifier: identifier,
       color: color,
+      gravity: 'face',
       facebook: facebook
     }, size, size);
   },
@@ -79,14 +81,27 @@ module.exports = {
   poster: function(identifier, color, blur) {
     if (!identifier)
       return '';
-    var effect = (blur === true)
-      ? 'blur:800'
-      : null;
+
     return _url({
       default: posterDefault,
       identifier: identifier,
       color: color,
-    }, 430, 1100, 'center', effect);
+      gravity: 'center',
+      effect: (blur === true)
+        ? 'blur:800'
+        : null
+    }, 430, 1100);
+  },
+
+  messageImage: function(path, size) {
+    if (!path)
+      return '';
+
+    return _url({
+      identifier: path,
+      gravity: 'center',
+      crop: '__crop__'
+    }, size, size);
   }
 
 };

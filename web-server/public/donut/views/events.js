@@ -522,9 +522,10 @@ define([
       if (data.data.images) {
         var images = [];
         _.each(data.data.images, function (i) {
-          i.url = $.cd.natural(i.path);
-          i.thumbnail = $.cd.natural(i.path, 50, 50, 'fill'); // @important: use .path to obtain URL with file extension and avoid CORS errors
-          images.push(i);
+          images.push({
+            url: common.cloudinarySize(i, 1500, 'limit'),
+            thumbnail: common.cloudinarySize(i, 50, 'fill')
+          });
         });
 
         if (images && images.length > 0)

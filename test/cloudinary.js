@@ -65,6 +65,21 @@ describe('shared/util/cloudinary', function () {
     });
   });
 
+  describe('.messageImage()', function() {
+    it('is function', function () {
+      cloudinary.messageImage.should.be.a('function');
+    });
+    it('without identifier', function () {
+      cloudinary.messageImage('').should.equal('');
+    });
+    it('without size', function () {
+      cloudinary.messageImage('v1440415743/discussion/eolog13xgtatjhfqixbr.png').should.equal('https://res.cloudinary.com/roomly/image/upload/b_rgb:ffffff,c___crop__,f_jpg,g_center,h___height__,w___width__/v1440415743/discussion/eolog13xgtatjhfqixbr.png');
+    });
+    it('with size', function () {
+      cloudinary.messageImage('v1440415743/discussion/eolog13xgtatjhfqixbr.png', 120).should.equal('https://res.cloudinary.com/roomly/image/upload/b_rgb:ffffff,c___crop__,f_jpg,g_center,h_120,w_120/v1440415743/discussion/eolog13xgtatjhfqixbr.png');
+    });
+  });
+
 });
 
 describe('shared/models/room', function () {
