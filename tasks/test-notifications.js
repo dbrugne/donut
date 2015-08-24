@@ -48,7 +48,7 @@ module.exports = function (grunt) {
             config: 'notifMessage',
             type: 'input',
             message: 'Type a message',
-            default: 'Salut, ça va [@:53e69205962c67de3e4e9550:damien] et [@:53e69205962c67de3e4e9550:damien] ...'
+            default: 'Salut, ça va [@¦53e69205962c67de3e4e9550¦damien] et [@¦53e69205962c67de3e4e9550¦damien] ...'
           }]
         }
       }

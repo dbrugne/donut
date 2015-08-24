@@ -5,6 +5,7 @@ var bcrypt   = require('bcrypt-nodejs');
 var colors = require('../../config/colors');
 var i18next = require('../util/i18next');
 var common = require('@dbrugne/donut-common');
+var cloudinary = require('../util/cloudinary');
 
 var userSchema = mongoose.Schema({
 
@@ -345,35 +346,15 @@ userSchema.methods.usernameAvailability = function (username, callback) {
   });
 };
 
-/**
- * Method to get the avatar/poster token used to generated the avatar URL on IHM
- *
- * cloudinary={CLOUDINARY_ID}#!#color={COLOR}[#!#facebook={FACEBOOK_TOKEN}]
- */
-userSchema.methods._avatar = function() {
-  var token = [];
+userSchema.methods._avatar = function(size) {
+  var facebook = (this.facebook && this.facebook.token && this.facebook.id)
+    ? this.facebook.id
+    : null;
 
-  if (this.avatar)
-    token.push('cloudinary='+this.avatar);
-
-  if (this.color)
-    token.push('color='+this.color);
-
-  if (this.facebook && this.facebook.token && this.facebook.id)
-    token.push('facebook='+this.facebook.id);
-
-  return token.join('#!#');
+  return cloudinary.userAvatar(this.avatar, this.color, facebook, size);
 };
-userSchema.methods._poster = function() {
-  var token = [];
-
-  if (this.poster)
-    token.push('cloudinary='+this.poster);
-
-  if (this.color)
-    token.push('color='+this.color);
-
-  return token.join('#!#');
+userSchema.methods._poster = function(blur) {
+  return cloudinary.poster(this.poster, this.color, blur);
 };
 
 userSchema.methods.avatarId = function() {

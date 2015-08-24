@@ -2,9 +2,10 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'common',
   'models/current-user',
   '_templates'
-], function ($, _, Backbone, currentUser, templates) {
+], function ($, _, Backbone, common, currentUser, templates) {
   var CurrentUserView = Backbone.View.extend({
 
     el: $('#block-current-user'),
@@ -20,7 +21,7 @@ define([
 
       var data = currentUser.toJSON();
 
-      data.avatar = $.cd.userAvatar(currentUser.get('avatar'), 60);
+      data.avatar = common.cloudinarySize(currentUser.get('avatar'), 60);
 
       var html = this.template(data);
       this.$el.html(html);

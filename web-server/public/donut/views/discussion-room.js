@@ -2,6 +2,7 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'common',
   'client',
   'models/current-user',
   'views/modal-confirmation',
@@ -9,7 +10,7 @@ define([
   'views/room-topic',
   'views/room-users',
   '_templates'
-], function ($, _, Backbone, client, currentUser, confirmationView, DiscussionView, TopicView, UsersView, templates) {
+], function ($, _, Backbone, common, client, currentUser, confirmationView, DiscussionView, TopicView, UsersView, templates) {
   var RoomView = DiscussionView.extend({
 
     template: templates['discussion-room.html'],
@@ -28,6 +29,7 @@ define([
     _initialize: function() {
       this.listenTo(this.model, 'change:avatar', this.onAvatar);
       this.listenTo(this.model, 'change:poster', this.onPoster);
+      this.listenTo(this.model, 'change:posterblured', this.onPosterBlured);
       this.listenTo(this.model, 'change:color', this.onColor);
 
       this.topicView = new TopicView({el: this.$el.find('.topic'), model: this.model});
@@ -52,12 +54,7 @@ define([
       data.isAdmin = this.model.currentUserIsAdmin();
 
       // avatar
-      data.avatar = $.cd.roomAvatar(data.avatar, 100);
-
-      // poster
-      var posterPath = data.poster;
-      data.poster = $.cd.poster(posterPath);
-      data.posterblured = $.cd.posterBlured(posterPath);
+      data.avatar = common.cloudinarySize(data.avatar, 100);
 
       // url
       data.url = this.model.getUrl();
@@ -175,17 +172,18 @@ define([
     onColor: function(model, value, options) {
       this.onAvatar(model, model.get('avatar'), options);
       this.onPoster(model, model.get('poster'), options);
+      this.onPosterBlured(model, model.get('posterblured'), options);
       this.colorify();
     },
     onAvatar: function(model, value, options) {
-      var url = $.cd.roomAvatar(value, 100);
+      var url = common.cloudinarySize(value, 100);
       this.$el.find('.header img.avatar').attr('src', url);
     },
-    onPoster: function(model, value, options) {
-      var url = $.cd.poster(value);
+    onPoster: function(model, url, options) {
       this.$el.find('div.side').css('background-image', 'url('+url+')');
-      var urlb = $.cd.posterBlured(value);
-      this.$el.find('div.blur').css('background-image', 'url('+urlb+')');
+    },
+    onPosterBlured: function(model, url, options) {
+      this.$el.find('div.blur').css('background-image', 'url('+url+')');
     },
 
     /**
@@ -195,7 +193,7 @@ define([
       $.socialify.facebook({
         url         : this.model.getUrl(),
         name        : $.t('chat.share.title', { name: this.model.get('name') }),
-        picture     : $.cd.roomAvatar(this.model.get('avatar'), 350),
+        picture     : common.cloudinarySize(this.model.get('avatar'), 350),
         description : $.t('chat.share.description', { name: this.model.get('name') })
       });
     },
