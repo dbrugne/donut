@@ -19,8 +19,11 @@ handler.call = function (data, session, next) {
   async.waterfall([
 
     function check(callback) {
-      if(!data.password || data.password.length < 6 || data.password.length > 50)
+      if (!data.password || data.password.length < 6 || data.password.length > 50)
         return callback('length');
+
+      if (!user.validPassword(data.current_password))
+        return callback('wrong-Password');
 
       return callback(null);
     },
@@ -39,7 +42,7 @@ handler.call = function (data, session, next) {
     if (err) {
       logger.error('[account:password] ' + err);
 
-      err = (['length'].indexOf(err) !== -1)
+      err = (['length', 'wrong-Password'].indexOf(err) !== -1)
         ? err
         : 'internal';
       return next(null, { code: 500, err: err });

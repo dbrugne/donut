@@ -3,24 +3,8 @@
 </div>
 <div class="group">
     <div class="title"><%= t('account.emailandpassword.label') %></div>
-    <% if (user.account.email) { %>
-    <div class="mail-form">
-        <span class="labels"><%= t('account.email.label') %></span>
-        <span class="values email-user"><%= user.account.email %></span>
-        <a href="#" id="email-modal-link"><%= t('global.change') %></a>
-        <div class="mail-form-container"></div>
-    </div>
-    <div class="password-form">
-        <span class="labels"><%= t('account.password.label') %></span>
-        <a href="#" id="password-modal-link"><%= t('global.change') %></a>
-        <div class="password-form-container"></div>
-    </div>
-    <% } else { %>
-    <p class="values">
-        <%= t('account.emailandpassword.help') %>
-    </p>
-    <a href="/connect/local" target="_blank" class="btn btn-default"><%= t('account.emailandpassword.add') %></a>
-    <% } %>
+    <div class="mail-form"></div>
+    <div class="password-form"></div>
 </div>
 
 <div class="group">

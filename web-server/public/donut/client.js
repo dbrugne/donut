@@ -594,8 +594,8 @@ define([
           return fn(response);
         });
     },
-    accountPassword: function (password, fn) {
-      var data = { password: password };
+    accountPassword: function (newPassword, currentPassword, fn) {
+      var data = { password: newPassword, current_password: currentPassword };
       pomelo.request(
         'chat.accountPasswordHandler.call',
         data,

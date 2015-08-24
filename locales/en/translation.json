@@ -582,9 +582,11 @@
       "new": "New password",
       "confirm": "Confirm",
       "save": "Save password",
+      "current": "Current password",
       "error": {
         "confirm": "Pass two passwords are not the same.",
-        "length": "Password should have between 6 and 50 characters length."
+        "length": "Password should have between 6 and 50 characters length.",
+        "wrong": "Sorry, your old password don't match"
       }
     },
     "facebook": {

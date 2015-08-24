@@ -25,6 +25,7 @@ define([
       // ask for data
       var that = this;
       client.userRead(currentUser.get('username'), function(data) {
+        that.user = data;
         that.onResponse(data);
       });
     },
@@ -45,10 +46,12 @@ define([
 
       this.emailView = new EmailView ({
         el : this.$(".mail-form"),
+        user: this.user,
         model: this.model
       });
       this.passwordView = new PasswordView ({
         el : this.$(".password-form"),
+        user: this.user,
         model: this.model
       });
     }
