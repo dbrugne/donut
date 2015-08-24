@@ -2,12 +2,13 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'common',
   'client',
   'libs/donut-debug',
   'libs/keyboard',
   'models/current-user',
   '_templates'
-], function ($, _, Backbone, client, donutDebug, keyboard, currentUser, templates) {
+], function ($, _, Backbone, common, client, donutDebug, keyboard, currentUser, templates) {
 
   var debug = donutDebug('donut:input');
 
@@ -127,7 +128,7 @@ define([
       if (prefix === '#')
         client.search(search, true, false, 15, false, function(data) {
           _.each(data.rooms.list, function(d){
-            d.avatarUrl = $.cd.roomAvatar(d.avatar);
+            d.avatarUrl = common.cloudinarySize(d.avatar);
           });
           that.$rollUpCtn.html(that.template({ type: 'rooms', results: data.rooms.list }));
         });
@@ -135,7 +136,7 @@ define([
       if (prefix === '@')
         client.search(search, false, true, 15, false, function(data) {
           _.each(data.users.list, function(d){
-            d.avatarUrl = $.cd.userAvatar(d.avatar);
+            d.avatarUrl = common.cloudinarySize(d.avatar);
           });
           that.$rollUpCtn.html(that.template({ type: 'users', results: data.users.list }));
         });
@@ -153,15 +154,22 @@ define([
       this.$editable.setCursorPosition(newCursorPosition, newCursorPosition);
     },
     _closeRollup: function (target) {
-      if (target)
+      if (target) {
+        if (this.$rollUpCtn.find('li.active .value').length == 0)
+          return;
+
         this._computeNewValue(this.$rollUpCtn.find('li.active .value').html() + ' ');
+      }
 
       this.$rollUpCtn.html('');
     },
 
     onRollupHover: function (event) {
-      var currentLi = this.$rollUpCtn.find('li.active');
       var li = $(event.currentTarget);
+      if (li.hasClass('empty')) // Avoid highlighting empty results on hover
+        return;
+
+      var currentLi = this.$rollUpCtn.find('li.active');
       currentLi.removeClass('active');
       li.addClass('active');
       this._computeNewValue(li.find('.value').html() + ' ');

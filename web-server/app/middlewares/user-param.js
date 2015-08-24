@@ -3,7 +3,6 @@ var _ = require('underscore');
 var User = require('../../../shared/models/user');
 var Room = require('../../../shared/models/room');
 var conf = require('../../../config/index');
-var cloudinary = require('../../../shared/cloudinary/cloudinary');
 
 module.exports = function(req, res, next, username) {
 
@@ -33,8 +32,8 @@ module.exports = function(req, res, next, username) {
     function prepare(user, callback) {
 
       // avatar & poster
-      user.avatar = cloudinary.userAvatar(user._avatar(), 160, user.color);
-      user.poster = cloudinary.poster(user._poster(), user.color);
+      user.avatar = user._avatar(160);
+      user.poster = user._poster();
 
       // url
       user.url = req.protocol + '://' + conf.fqdn + '/user/' + (''+user.username).toLocaleLowerCase();
@@ -67,7 +66,7 @@ module.exports = function(req, res, next, username) {
           if (room.owner)
             room.owner.url = req.protocol + '://' + conf.fqdn + '/user/' + (''+room.owner.username).toLocaleLowerCase();
 
-          room.avatar = cloudinary.roomAvatar(dbroom._avatar(), 80, room.color);
+          room.avatar = dbroom._avatar(80);
           room.url = (room.name)
             ? req.protocol + '://' + conf.fqdn + '/room/' + room.name.replace('#', '').toLocaleLowerCase()
             : '';

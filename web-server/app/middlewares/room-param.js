@@ -1,7 +1,6 @@
 var _ = require('underscore');
 var Room = require('../../../shared/models/room');
 var conf = require('../../../config/index');
-var cloudinary = require('../../../shared/cloudinary/cloudinary');
 
 module.exports = function(req, res, next, roomname) {
   if (roomname == undefined || roomname == '') {
@@ -22,10 +21,9 @@ module.exports = function(req, res, next, roomname) {
 
       if (room) {
         // avatar & poster
-        room.avatar = cloudinary.roomAvatar(room._avatar(), 160, room.color);
-        var posterIdentifier = room._poster();
-        room.poster = cloudinary.poster(posterIdentifier, room.color);
-        room.posterBlured = cloudinary.posterBlured(posterIdentifier, room.color);
+        room.avatar = room._avatar(160);
+        room.poster = room._poster();
+        room.posterBlured = room._poster(true);
 
         // url
         room.url = req.protocol + '://' + conf.fqdn + '/room/' + room.name.replace('#', '').toLocaleLowerCase();
@@ -34,7 +32,7 @@ module.exports = function(req, res, next, roomname) {
 
         // owner
         if (room.owner && room.owner._id) {
-          room.owner.avatar = cloudinary.userAvatar(room.owner._avatar(), 80, room.owner.color);
+          room.owner.avatar = room.owner._avatar(80);
           room.owner.url = (room.owner.username)
             ? req.protocol + '://' + conf.fqdn + '/user/' + (''+room.owner.username).toLocaleLowerCase()
             : '';
@@ -51,7 +49,7 @@ module.exports = function(req, res, next, roomname) {
               return;
             }
 
-            op.avatar = cloudinary.userAvatar(op._avatar(), 80, op.color);
+            op.avatar = op._avatar(80);
             op.url = (op.username)
               ? req.protocol + '://' + conf.fqdn + '/user/' + (''+op.username).toLocaleLowerCase()
               : '';
@@ -72,7 +70,7 @@ module.exports = function(req, res, next, roomname) {
             if (room.op && opIds && opIds.indexOf(u._id.toString()) !== -1)
               return;
 
-            u.avatar = cloudinary.userAvatar(u._avatar(), 80, u.color);
+            u.avatar = u._avatar(80);
             u.url = (u.username)
               ? req.protocol + '://' + conf.fqdn + '/user/' + (''+u.username).toLocaleLowerCase()
               : '';

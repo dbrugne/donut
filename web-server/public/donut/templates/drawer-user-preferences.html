@@ -108,7 +108,7 @@
             <tbody>
             <% _.each(bannedUsers, function(u){ %>
             <tr>
-                <td class="avatar open-user-profile" data-username="<%= u.username %>"><img src="<%= $.cd.userAvatar(u.avatar, 30) %>" alt="<%= u.username %>"></td>
+                <td class="avatar open-user-profile" data-username="<%= u.username %>"><img src="<%= u.avatarUrl %>" alt="<%= u.username %>"></td>
                 <td class="username"><span class="open-user-profile" data-username="<%= u.username %>"><%= u.username %></span></td>
                 <td class="actions">
                     <span class="action-user-deban" style="cursor:pointer;" data-username="<%= u.username %>">
