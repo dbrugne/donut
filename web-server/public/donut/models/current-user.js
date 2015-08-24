@@ -7,7 +7,7 @@ define([
   var CurrentUserModel = UserModel.extend({
 
     initialize: function(options) {
-      this.listenTo(client, 'user:preferences',   this.setPreference);
+      this.listenTo(client, 'preferences:update',   this.setPreference);
 
       var that = this;
       this.listenTo(client, 'connecting',         function() { that.set('status', 'connecting'); });

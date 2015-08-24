@@ -106,7 +106,7 @@ Facade.prototype.retrieveUserNotifications = function (uid, what, callback) {
   q.sort({ time: -1 });
 
   if (what.number)
-    q.limit(what.number + 1);
+    q.limit(what.number);
 
   q.populate({path: 'user', model: 'User', select: 'local username color facebook avatar'});
 
@@ -150,13 +150,7 @@ Facade.prototype.retrieveUserNotifications = function (uid, what, callback) {
       if (err)
         return callback(err);
 
-      var more = false;
-      //if (what.number && notifications.length > what.number) {
-      //  more = true;
-      //  notifications = _.first(notifications, what.number);
-      //}
-
-      callback(err, notifications, more);
+      callback(err, notifications);
     });
   });
 };

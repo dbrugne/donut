@@ -54,10 +54,10 @@ define([
       this.$badge = this.$el.find('.badge').first();
       this.$count = this.$el.find('.unread-count .nb').first();
       this.$menu = this.$el.find('.dropdown-menu #main-navbar-messages');
-      this.$readMore = this.$el.find('.read-more');
-      this.$loader = this.$el.find('.loading');
       this.$scrollable = this.$el.find('.dropdown-menu .messages-list-ctn');
       this.$actions = this.$el.find('.dropdown-menu .messages-list-ctn .actions');
+      this.$readMore = this.$actions.find('.read-more');
+      this.$loader = this.$actions.find('.loading');
 
       this.$dropdown.dropdown();
 
@@ -191,7 +191,7 @@ define([
         return;
       }
 
-      client.userNotifications(null, this.lastNotifDisplayedTime(), 10, _.bind(function (data) {
+      client.notificationRead(null, this.lastNotifDisplayedTime(), 10, _.bind(function (data) {
         this.isThereMoreNotifications = data.more;
         var html = '';
         for (var k in data.notifications) {
@@ -230,7 +230,7 @@ define([
       if (ids.length == 0)
         return;
 
-      client.userNotificationsViewed(ids, false, _.bind(function (data) {
+      client.notificationViewed(ids, false, _.bind(function (data) {
         // For each notification in the list, tag them as read
         _.each(unreadNotifications, function (notification) {
           notification.classList.remove('unread');
@@ -253,7 +253,7 @@ define([
       this.$readMore.addClass('hidden');
       this.$loader.removeClass('hidden');
 
-      client.userNotifications(null, this.lastNotifDisplayedTime(), 10, _.bind(function (data) {
+      client.notificationRead(null, this.lastNotifDisplayedTime(), 10, _.bind(function (data) {
         this.isThereMoreNotifications = data.more;
         var previousContent = this.$menu.html();
         var html = '';
@@ -294,7 +294,7 @@ define([
 
     onTagAsRead: function (event) {
       // Ask server to set notifications as viewed, and wait for response to set them likewise
-      client.userNotificationsViewed([], true, _.bind(function (data) {
+      client.notificationViewed([], true, _.bind(function (data) {
         // For each notification in the list, tag them as read
         _.each(this.$menu.find('.message.unread'), function (notification) {
           notification.classList.remove('unread');
@@ -309,7 +309,7 @@ define([
       event.preventDefault();
       var message = $(event.currentTarget).parents('.message');
       // Ask server to set notification as done, and wait for response to set them likewise
-      client.userNotificationsDone(message.data('notification-id'), true);
+      client.notificationDone(message.data('notification-id'), true);
       return false;
     },
 

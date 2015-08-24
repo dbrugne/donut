@@ -3,11 +3,12 @@ define([
   'underscore',
   'backbone',
   'libs/donut-debug',
+  'libs/keyboard',
   'common',
   'client',
   'models/current-user',
   '_templates'
-], function ($, _, Backbone, donutDebug, common, client, currentUser, templates) {
+], function ($, _, Backbone, donutDebug, keyboard, common, client, currentUser, templates) {
 
   var debug = donutDebug('donut:message-edit');
 
@@ -99,10 +100,10 @@ define([
     },
     onKeydown: function (event) {
       this.updateFormSize();
-      var data = this._getKeyCode();
-      if (event.which == 27) // escape
+      var data = keyboard._getLastKeyCode();
+      if (data.key === keyboard.ESC)
         this.onEscape(event);
-      else if (event.which == 13 && !data.isShift) // enter
+      else if (data.key === keyboard.RETURN && !data.isShift)
         this.onSubmit(event);
     },
     updateFormSize: function () {
@@ -119,20 +120,7 @@ define([
         $(e).replaceWith($.smilifyGetSymbolFromCode($(e).data('smilify-code')));
       });
       return $html.text();
-    },
-    _getKeyCode: function() {
-      if (window.event) {
-        return {
-          key: window.event.keyCode,
-          isShift: !!window.event.shiftKey
-        };
-      } else {
-        return {
-          key: event.which,
-          isShift: !!event.shiftKey
-        };
-      }
-    },
+    }
   });
 
   return MessageEditView;

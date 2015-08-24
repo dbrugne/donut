@@ -16,7 +16,7 @@ module.exports = function(app) {
 
 var handler = Handler.prototype;
 
-handler.search = function(data, session, next) {
+handler.call = function(data, session, next) {
 
 	var that = this;
 
@@ -129,7 +129,7 @@ handler.search = function(data, session, next) {
 					username: _regexp
 				};
 
-				var q = User.find(search, 'username avatar color facebook');
+				var q = User.find(search, 'username avatar color facebook bio');
 				q.sort({'lastonline_at': -1, 'lastoffline_at': -1})
 					.limit(limit + 1);
 				q.exec(function(err, users) {
@@ -142,7 +142,8 @@ handler.search = function(data, session, next) {
 							user_id: user.id,
 							username: user.username,
 							avatar: user._avatar(),
-							color: user.color
+							color: user.color,
+              bio: user.bio
 						};
 
 						list.push(r);

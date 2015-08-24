@@ -14,7 +14,7 @@ module.exports = function(app) {
 
 var handler = Handler.prototype;
 
-handler.home = function(data, session, next) {
+handler.call = function(data, session, next) {
 
 	var homeEvent = {};
 	var roomLimit = 100;
