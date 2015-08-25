@@ -11,7 +11,8 @@ module.exports = function(grunt) {
     grunt.log.ok('starting');
 
     var start = Date.now();
-    var count = { found: 0, updated: 0 };
+    var countRoom = { found: 0, updated: 0 };
+    var countUser = { found: 0, updated: 0 };
 
     async.series([
 
@@ -19,114 +20,82 @@ module.exports = function(grunt) {
         RoomModel.find({}, 'name website', function(err, roomModels) {
           if (err)
             return callback(err);
-          _.each(roomModels, function(m) {
+          async.each(roomModels, function(m, fn) {
+            countRoom.found ++;
+            var update = '';
 
-            if (_.isObject(m.website) && !m.website.href && !m.website.title) {
-              grunt.log.error('room: name[' + m.name + '] website[empty object]');
-              m.update({$unset: {website: {}}}).exec(function(err){
-                if (err)
-                  return callback(err);
-                grunt.log.ok('room: name[' + m.name + '] delete website empty object');
-              });
-              return;
+            if (m.website == undefined || _.isObject(m.website) && m.website.href && m.website.title)
+              return grunt.log.ok('room: name[' + m.name + '] website[undefined] or already Linkify');
+
+            if ((_.isObject(m.website) && (!m.website.href || !m.website.title)) || m.website === '') {
+              grunt.log.error('room: name[' + m.name + '] website[empty object] or website[empty]');
+              update = {$unset: {website: true}};
+            } else {
+              var link = common.getLinkify().find(m.website);
+              if (!link || !link[0]) {
+                grunt.log.error('room: name[' + m.name + '] website[' + m.website + '] => error Linkify');
+                update = {$unset: {website: true}};
+              } else {
+                var website = {
+                  href: link[0].href,
+                  title: link[0].value
+                }
+                update = {$set: {website: website}};
+              }
             }
 
-            if (m.website == undefined) {
-              grunt.log.ok('room: name[' + m.name + '] website[undefined]');
-              return;
-            }
-
-            if (m.website === '') {
-              m.update({$unset: {website:''}}).exec(function(err){
-                if (err)
-                  return callback(err);
-                grunt.log.ok('room: name[' + m.name + '] website empty unset');
-              });
-              return;
-            }
-
-            if (m.website && _.isObject(m.website)) {
-              grunt.log.ok('room: name[' + m.name + '] website[' + m.website.title + '] => already Linkify');
-              return;
-            }
-
-            var link = common.getLinkify().find(m.website);
-            if (!link || !link[0]){
-              grunt.log.error('Linkify error => room: name[' + m.name + '] website[' + m.website + '] error url');
-              return;
-            }
-
-            var website = {
-              href: link[0].href,
-              title: link[0].value
-            }
-
-            m.update({$set: {website: website}}).exec(function(err){
+            m.update(update).exec(function(err) {
               if (err)
                 return callback(err);
-              grunt.log.ok('Linkify ok => room: name[' + m.name + '] website[' + link[0].value + ']');
             });
-
+            (website)
+              ? grunt.log.ok('room: name[' + m.name + '] href[' + website.href + '] title[' + website.title + '] => update Linkify ok')
+              : grunt.log.ok('room: name[' + m.name + '] website[' + m.website + '] => delete');
+            countRoom.updated ++;
           });
+          return callback(null);
         });
-        return callback(null);
       },
 
       function users(callback) {
         UserModel.find({}, 'username website', function(err, userModels) {
-          if (err)
-            return callback(err);
-          _.each(userModels, function(m) {
+         if (err)
+          return callback(err);
+         async.each(userModels, function(m, fn) {
+           countUser.found ++;
+           var update = '';
 
-            if (_.isObject(m.website) && !m.website.href && !m.website.title) {
-              grunt.log.error('user: username[' + m.username + '] website[empty object]');
-              m.update({$unset: {website: {}}}).exec(function(err){
-                if (err)
-                  return callback(err);
-                grunt.log.ok('user: username[' + m.username + '] delete website empty object');
-              });
-              return;
-            }
+           if (m.website == undefined || _.isObject(m.website) && m.website.href && m.website.title)
+            return grunt.log.ok('user: username[' + m.username + '] website[undefined] or already Linkify');
 
-            if (m.website == undefined) {
-              grunt.log.ok('user: username[' + m.username + '] website[undefined]');
-              return;
-            }
+           if ((_.isObject(m.website) && (!m.website.href || !m.website.title)) || m.website === '') {
+             grunt.log.error('user: username[' + m.username + '] website[empty object] or website[empty]');
+             update = {$unset: {website: true}};
+           } else {
+             var link = common.getLinkify().find(m.website);
+             if (!link || !link[0]) {
+               grunt.log.error('user: username[' + m.username + '] website[' + m.website + '] => error Linkify');
+               update = {$unset: {website: true}};
+             } else {
+               var website = {
+                 href: link[0].href,
+                 title: link[0].value
+               }
+               update = {$set: {website: website}};
+             }
+           }
 
-            if (m.website === '') {
-              m.update({$unset: {website:''}}).exec(function(err){
-                if (err)
-                  return callback(err);
-                grunt.log.ok('user: username[' + m.username + '] website empty unset');
-              });
-              return;
-            }
-
-            if (m.website && _.isObject(m.website)) {
-              grunt.log.ok('user: username[' + m.username + '] website[' + m.website.title + '] => already Linkify');
-              return;
-            }
-
-            var link = common.getLinkify().find(m.website);
-            if (!link || !link[0]){
-              grunt.log.error('Linkify error => user: username[' + m.username + '] website[' + m.website + '] error url');
-              return;
-            }
-
-            var website = {
-              href: link[0].href,
-              title: link[0].value
-            }
-
-            m.update({$set: {website: website}}).exec(function(err){
-              if (err)
-                return callback(err);
-              grunt.log.ok('Linkify ok => user: username[' + m.username + '] website[' + link[0].value + ']');
-            });
-
-          });
+           m.update(update).exec(function(err) {
+             if (err)
+              return callback(err);
+           });
+           (website)
+             ? grunt.log.ok('user: username[' + m.username + '] href[' + website.href + '] title[' + website.title + '] => update Linkify ok')
+             : grunt.log.ok('user: username[' + m.username + '] website[' + m.website + '] => delete');
+           countUser.updated ++;
+         });
+         return callback(null);
         });
-        return callback(null);
       }
 
     ], function(err) {
@@ -135,7 +104,7 @@ module.exports = function(grunt) {
         done();
       } else {
         var duration = Date.now() - start;
-        grunt.log.ok('Successfully done ('+count.found+' found and ' + count.updated + ' updated in '+duration+'ms)');
+        grunt.log.ok('Successfully done (Rooms('+countRoom.found+ ' found and ' + countRoom.updated +' updated) and Users('+countUser.found+ ' found and ' + countUser.updated +' updated) in '+duration+'ms)');
         done();
       }
     });
