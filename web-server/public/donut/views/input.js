@@ -40,7 +40,7 @@ define([
       this.rollupView = new RollupView({
         el: this.$el,
         model: this.model,
-        commands: this.commandsView.commands
+        commands: this.commandsView.getCommands(this.model.get('type'))
       });
       this.typingView = new TypingView({
         el: this.$('.typing-container'),

@@ -328,7 +328,7 @@ define([
 
       var data = {
         title: 'Help',
-        help: (commandHelp) ? { cmd: commandHelp } : this.commands
+        help: (commandHelp) ? { cmd: commandHelp } : this.getCommands(this.model.get('type'))
       };
       var model = new EventModel({
         type: 'command:help',
@@ -347,6 +347,14 @@ define([
         data: data
       });
       this.model.trigger('freshEvent', model);
+    },
+    getCommands: function(type) {
+      var commands = {};
+      _.each(this.commands, function(cmd, key) {
+        if (cmd.access === 'everywhere' || cmd.access === type)
+          commands[key] = cmd;
+      });
+      return commands;
     }
 
   });
