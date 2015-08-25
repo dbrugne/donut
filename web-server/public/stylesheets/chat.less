@@ -621,6 +621,13 @@
       @header-height: 35px; @size-user-item: 195px;
       .content { height: 100%; margin-right: @size-right; position: relative; padding-left: 35px;
         .header { padding-top: 18px; padding-right: 10px;
+          .info .share { display: inline-block; margin-left: 6px;
+            i { font-size: 16px; color: @text-color; margin-left: 3px; vertical-align: middle; cursor: pointer;
+              &.facebook { color: #3b5998; }
+              &.twitter { color: #4099FF; }
+              &.googleplus { color: #dd4b39; }
+            }
+          }
           &.room { min-height: 135px;
             .overlay-ctn {
               .avatar { position: absolute; width: 100px; height: 100px; }
@@ -634,13 +641,6 @@
                 .dropdown-menu>li>a { color: @cl-subtext40; }
                 button { font-size: 24px; border: none; background-color: transparent; color: @cl-subtext20;
                   &:hover { color: @cl-subtext50; }
-                }
-              }
-              .share { display: inline-block; margin-left: 6px;
-                i { font-size: 16px; color: @text-color; margin-left: 3px; vertical-align: middle; cursor: pointer;
-                  &.facebook { color: #3b5998; }
-                  &.twitter { color: #4099FF; }
-                  &.googleplus { color: #dd4b39; }
                 }
               }
             }

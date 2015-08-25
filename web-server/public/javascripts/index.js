@@ -2,25 +2,34 @@ require.config({
   paths: {
     'jquery'                      : '../vendor/jquery/dist/jquery',
     'bootstrap'                   : '../vendor/bootstrap/dist/js/bootstrap',
-    'facebook'                    : '//connect.facebook.net/fr_FR/all',
+    'underscore'                  : '../vendor/underscore-amd/underscore',
+    //'facebook'                    : '//connect.facebook.net/fr_FR/all',
     'jquery.talkative'            : '../vendor/talkative/jquery.talkative',
-    'jquery.contactform'          : '../javascripts/plugins/jquery.contactform'
+    'jquery.contactform'          : '../javascripts/plugins/jquery.contactform',
+    'jquery.socialify'            : '../javascripts/plugins/jquery.socialify',
+    'i18next'                     : '../vendor/i18next/i18next.amd.withJQuery',
+    'common'                      : '../vendor/donut-common/index'
   },
   shim: {
     'bootstrap'          : ['jquery'],
-    'facebook'           : { exports: 'FB' },
+    //'facebook'           : { exports: 'FB' },
     'jquery.talkative'   : ['jquery'],
-    'jquery.contactform' : ['jquery']
+    'jquery.contactform' : ['jquery'],
+    'jquery.socialify'   : ['jquery']
   }
 });
 
 require([
   'jquery',
-  'facebook',
+  'underscore',
+  'common',
+  //'facebook',
+  'i18next',
   'bootstrap',
   'jquery.talkative',
-  'jquery.contactform'
-], function ($, facebook) {
+  'jquery.contactform',
+  'jquery.socialify'
+], function ($, _, common, /*facebook, */i18next) {
 
   // Landing text rotation
   if ($('#landing').length) {
@@ -32,7 +41,26 @@ require([
   }
 
   // User and room profiles
-  if ($('#profile').length) {
+  if ($('.body-profile').length) {
+      $('.body-profile').find('.share .facebook').click(function(){
+        $.socialify.facebook({
+          url         : $(this).data('url'),
+          name        : i18next.t('chat.share.title', { name: $(this).data('name') }),
+          picture     : common.cloudinarySize($(this).data('avatar'), 350),
+          description : i18next.t('chat.share.description', { name: $(this).data('name') })
+        });
+      });
+      $('.body-profile').find('.share .twitter').click(function(){
+        $.socialify.twitter({
+          url  :  $(this).data('url'),
+          text : $.t('chat.share.description', { name: $(this).data('name') })
+        });
+      });
+      $('.body-profile').find('.share .googleplus').click(function(){
+        $.socialify.google({
+          url: $(this).data('url')
+        });
+      });
   }
 
   // Language switcher
@@ -50,18 +78,5 @@ require([
 
   // Contact form
   $('[data-toggle="contactform"]').contactform({});
-
-  // Facebook setup
-  try {
-    facebook.init({
-      appId: window.facebook_app_id,
-      version: 'v2.1',
-      status: true,
-      xfbml: true
-    });
-  } catch (e) {
-    console.log(e);
-    return false;
-  }
 
 });
