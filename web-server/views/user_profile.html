@@ -7,14 +7,19 @@
 </div><!-- /.side -->
 <div class="content">
     <div class="header user">
-        <div class="avatar">
+        <div class="avatar">Œ
             <img src="<%= _user.avatar %>" alt="<%= _user.username %> avatar">
             <p class="discuss hidden-xs hidden-sm"><a href="<% if (!user) { %><%= _user.discuss %><% } else { %><%= _user.chat %><% } %>" <% if (_user.color) { %>style="background-color: <%= _user.color %>;"<% } %>><%= t('actions.discuss') %></a></p>
         </div>
         <div class="info">
             <div class="username hidden-xs hidden-sm">@<%= _user.username %></div>
             <div class="username visible-xs visible-sm" data-colorify-text="contrast">@<%= _user.username %></div>
-            <div class="fb-like hidden-xs hidden-sm ml20" data-href="<%= _user.url %>" data-layout="button" data-action="like" data-show-faces="false" data-share="true" data-ref="profile-page"></div>
+            <div class="share hidden-xs hidden-sm">
+                <%= t('chat.share.label') %>
+                <i class="facebook icon icon-facebook-square"></i>
+                <i class="twitter icon icon-twitter-square"></i>
+                <i class="googleplus icon icon-google-plus-square"></i>
+            </div>
             <% if (_user.location) { %>
                 <br/>
                 <span class="location hidden-xs hidden-sm">
@@ -43,8 +48,6 @@
             <div class="rooms cards">
                 <% _.each(_user.roomsList, function(room) { print(partial('room', {room: room})); }); %>
             </div>
-            <hr class="clear">
-            <hr>
             <% } %>
         </div>
     </div>
