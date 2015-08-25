@@ -49,8 +49,8 @@ module.exports = function(app, uid, room, fn) {
         poster      : room._poster(),
         color       : room.color,
         topic       : room.topic,
-        new_message : that.newMessage
-        posterblured : room._poster(true),
+        new_message : that.newMessage,
+        posterblured : room._poster(true)
       };
 
       if (room.owner) {
