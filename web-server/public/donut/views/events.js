@@ -498,7 +498,6 @@ define([
           style: 'color: ' + this.model.get('color')
         });
 
-        // smileys
         message = $.smilify(message);
 
         data.data.message = message;
@@ -512,7 +511,6 @@ define([
           style: 'color: ' + this.model.get('color')
         });
 
-        // smileys
         topic = $.smilify(topic);
 
         data.data.topic = topic;

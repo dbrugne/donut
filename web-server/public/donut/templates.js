@@ -38,7 +38,7 @@ define([
   'text!./templates/image-uploader.html',
   'text!./templates/input.html',
   'text!./templates/input-typing.html',
-  'text!./templates/input-image.html',
+  'text!./templates/input-images.html',
   'text!./templates/rollup.html',
   'text!./templates/room-topic.html',
   'text!./templates/room-users-list.html',
@@ -98,7 +98,7 @@ define([
   image_uploader,
   input,
   input_typing,
-  input_image,
+  input_images,
   rollup,
   room_topic,
   room_users_list,
@@ -172,7 +172,7 @@ define([
   JST['image-uploader.html']                = _.template(image_uploader);
   JST['input.html']                         = _.template(input);
   JST['input-typing.html']                  = _.template(input_typing);
-  JST['input-image.html']                   = _.template(input_image);
+  JST['input-images.html']                  = _.template(input_images);
   JST['rollup.html']                        = _.template(rollup);
   JST['room-topic.html']                    = _.template(room_topic);
   JST['room-users-list.html']               = _.template(room_users_list);
