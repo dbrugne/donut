@@ -48,13 +48,17 @@ handler.call = function (data, session, next) {
       });
     },
 
-    function save(callback) {
-      user.local.email = email;
+    function mail(callback) {
       user.save(function(err) {
         if (err)
           return callback(err);
-        emailer.emailChanged(user.local.email, callback);
+        emailer.emailChanged(email, callback);
       });
+    },
+
+    function save(callback) {
+      user.local.email = email;
+      return callback(null);
     }
 
   ], function(err) {

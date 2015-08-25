@@ -25,7 +25,6 @@ define([
       this.$form = this.$('.form-mail');
       this.$spinner = this.$('.spinner');
       this.$spinner.html(templates['spinner.html']);
-      this.$error = this.$('.error');
       this.$errorLabel = this.$('.error-label');
       this.$success = this.$('.success');
       this.$input = this.$('.email-sub');
@@ -46,7 +45,6 @@ define([
 
       this.$form.show();
       this.$link.hide();
-      this.$error.show();
     },
 
     onCancel: function() {
@@ -54,7 +52,9 @@ define([
 
       this.$form.hide();
       this.$link.show();
-      this.$error.hide();
+      this.$errorLabel.text('');
+      this.$form.removeClass('has-error');
+      this.$input.val('');
     },
 
     onSubmit: function(event) {
@@ -71,7 +71,7 @@ define([
       this.$spinner.show();
       this.$form.removeClass('has-error');
 
-      client.accountEmail(this.$('.email-sub').val(), function (data) {
+      client.accountEmail(this.$input.val(), function (data) {
         that.$spinner.hide();
         if (data.err) {
           that.putError(data.err);
@@ -79,15 +79,12 @@ define([
           that.$mailUserLabel.text(that.$input.val());
           that.$form.hide();
           that.$success.show();
-          that.$errorLabel.text('');
-          that.$error.hide();
         }
       });
     },
 
     putError: function (error) {
       this.$form.addClass('has-error');
-      this.$error.show();
 
       if (error === 'wrong-format')
         this.$errorLabel.text($.t('account.email.error.format'));

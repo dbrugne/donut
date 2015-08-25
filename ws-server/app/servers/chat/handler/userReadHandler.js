@@ -35,17 +35,18 @@ handler.call = function(data, session, next) {
 		},
 
     function details(callback) {
-      read.user_id   	 = readUser.id;
-      read.username  	 = readUser.username;
-      read.color     	 = readUser.color;
-      read.avatar    	 = readUser._avatar();
-      read.poster    	 = readUser._poster();
-      read.bio       	 = readUser.bio;
-      read.location  	 = readUser.location;
-      read.website   	 = readUser.website;
-      read.registered	 = readUser.created_at;
-      read.banned      = user.isBanned(readUser.id); // for ban/deban menu
-      read.i_am_banned = readUser.isBanned(user.id); // for input enable/disable
+      read.user_id   	    = readUser.id;
+      read.username  	    = readUser.username;
+      read.color     	    = readUser.color;
+      read.avatar    	    = readUser._avatar();
+      read.poster    	    = readUser._poster();
+      read.bio       	    = readUser.bio;
+      read.location  	    = readUser.location;
+      read.website   	    = readUser.website;
+      read.registered	    = readUser.created_at;
+      read.banned         = user.isBanned(readUser.id); // for ban/deban menu
+      read.i_am_banned    = readUser.isBanned(user.id); // for input enable/disable
+      read.have_password  = (readUser.local.password) ? true : false;
       return callback(null);
     },
 

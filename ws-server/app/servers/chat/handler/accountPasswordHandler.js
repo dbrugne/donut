@@ -22,20 +22,23 @@ handler.call = function (data, session, next) {
       if (!data.password || data.password.length < 6 || data.password.length > 50)
         return callback('length');
 
-      if (!user.validPassword(data.current_password))
+      if (!user.validPassword(data.current_password) && user.local.password)
         return callback('wrong-Password');
 
       return callback(null);
     },
 
-    function save(callback) {
-      user.local.password = user.generateHash(data.password);
+    function mail(callback) {
       user.save(function (err) {
         if (err)
           return callback(err);
-
         emailer.passwordChanged(user.local.email, callback);
       });
+    },
+
+    function save(callback) {
+      user.local.password = user.generateHash(data.password);
+      return callback(null);
     }
 
   ], function(err) {

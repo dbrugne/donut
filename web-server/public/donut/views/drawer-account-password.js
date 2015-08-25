@@ -25,19 +25,20 @@ define([
       this.$form = this.$('.form-password');
       this.$spinner = this.$('.spinner');
       this.$spinner.html(templates['spinner.html']);
-      this.$error = this.$('.error');
       this.$errorLabel = this.$('.error-label');
       this.$success = this.$('.success');
       this.$inputNewPassword = this.$('.input-new-password');
+      this.$inputConfirmPassword = this.$('.input-password-confirm');
       this.$inputCurrentPassword = this.$('.input-current-password');
 
-      if (!this.user.account.email) {
+      this.$spinner.hide();
+      this.$success.hide();
+
+      if (!this.user.have_password) {
         this.$inputCurrentPassword.hide();
         this.$link.hide();
       } else {
         this.$form.hide();
-        this.$spinner.hide();
-        this.$success.hide();
       }
     },
 
@@ -51,17 +52,21 @@ define([
 
       this.$form.show();
       this.$link.hide();
-      this.$error.show();
     },
 
     onCancel: function (event) {
       event.preventDefault();
 
-      if (this.user.account.email) {
+      this.$errorLabel.text('');
+      this.$inputCurrentPassword.val('');
+      this.$inputConfirmPassword.val('');
+      this.$inputNewPassword.val('');
+      this.$form.removeClass('has-error');
+
+      if (this.user.have_password) {
         this.$form.hide();
         this.$link.show();
       }
-        this.$error.hide();
     },
 
     onSubmit: function(event) {
@@ -69,13 +74,13 @@ define([
 
       var that = this;
 
-      if (this.$inputNewPassword.val() !== this.$inputNewPassword.val()) {
-       this.putError('confirm');
-       return;
-      }
-
       if (this.$inputNewPassword.val().length < 6 || this.$inputNewPassword.val().length > 50) {
         this.putError('length');
+        return;
+      }
+
+      if (this.$inputNewPassword.val() !== this.$inputConfirmPassword.val()) {
+        this.putError('confirm');
         return;
       }
 
@@ -90,21 +95,18 @@ define([
         } else {
           that.$form.hide();
           that.$success.show();
-          that.$errorLabel.text('');
-          that.$error.hide();
         }
       });
     },
 
-    putError: function (error) {
+    putError: function (err) {
       this.$form.addClass('has-error');
-      this.$error.show();
 
-      if (error === 'length')
+      if (err === 'length')
         this.$errorLabel.text($.t('account.password.error.length'));
-      else if (error === 'confirm')
+      else if (err === 'confirm')
         this.$errorLabel.text($.t('account.password.error.confirm'));
-      else if (error === 'wrong-Password')
+      else if (err === 'wrong-Password')
         this.$errorLabel.text($.t('account.password.error.wrong'));
       else
         this.$errorLabel.text($.t('global.unknownerror'));
