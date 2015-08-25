@@ -3,6 +3,7 @@ var debug = require('debug')('donut:server:ws:room-emitter');
 var _ = require('underscore');
 var async = require('async');
 var recorder = require('../../../shared/models/historyone').record();
+var cloudinary = require('../../../shared/util/cloudinary');
 
 /**
  * Store history in MongoDB, emit event in corresponding onetoone and call:
@@ -25,6 +26,15 @@ module.exports = function(app, onetoone, eventName, eventData, callback) {
       return fn('Error while saving event while emitting in onetoone '+eventName+': '+err);
 
     eventData.id = history.id;
+
+    // @hack
+    // images
+    if (eventData.images && eventData.images.length > 0) {
+      eventData.images = _.map(eventData.images, function (element, key, value) {
+        // @important: use .path to obtain URL with file extension and avoid CORS errors
+        return cloudinary.messageImage(element.path);
+      });
+    }
 
     async.parallel([
 

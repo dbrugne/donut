@@ -2,10 +2,11 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'common',
   'libs/donut-debug',
   'models/current-user',
   '_templates'
-], function ($, _, Backbone, donutDebug, currentUser, templates) {
+], function ($, _, Backbone, common, donutDebug, currentUser, templates) {
 
   var debug = donutDebug('donut:room-users');
 
@@ -39,7 +40,7 @@ define([
         var u = o.toJSON();
 
         // avatar
-        u.avatar = $.cd.userAvatar(u.avatar, 34);
+        u.avatar = common.cloudinarySize(u.avatar, 34);
 
         listJSON.push(u);
       });

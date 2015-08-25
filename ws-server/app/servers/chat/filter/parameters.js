@@ -35,7 +35,7 @@ Filter.prototype.before = function(data, session, next) {
       var q = UserModel.findOne({ _id: session.uid });
 
       if (data.__route__ === 'chat.preferencesReadHandler.call')
-        q.populate('bans', 'username avatar color facebook');
+        q.populate('bans.user', 'username avatar color facebook');
 
       q.exec(function(err, user) {
         if (err)

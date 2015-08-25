@@ -2,7 +2,7 @@ define([
   'underscore',
   'backbone',
   'libs/donut-debug',
-  'pomelo'
+  'libs/pomelo'
 ], function (_, Backbone, donutDebug, pomelo) {
 
   var debug = donutDebug('donut:client');
@@ -177,7 +177,8 @@ define([
         'chat.roomMessageHandler.call',
         data,
         function (response) {
-          debug('io:in:room:message', response);
+          if (response.err)
+            debug('io:in:room:message error: ', response);
           if (_.isFunction(callback))
             return callback(response);
         }
@@ -488,7 +489,8 @@ define([
         'chat.userMessageHandler.call',
         data,
         function (response) {
-          debug('io:in:user:message', response);
+          if (response.err)
+            debug('io:in:user:message error: ', response);
           if (_.isFunction(callback))
             return callback(response);
         }

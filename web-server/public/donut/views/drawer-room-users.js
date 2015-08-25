@@ -2,11 +2,12 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'common',
   'client',
   'models/current-user',
   'views/modal-confirmation',
   '_templates'
-], function ($, _, Backbone, client, currentUser, confirmationView, templates) {
+], function ($, _, Backbone, common, client, currentUser, confirmationView, templates) {
   var DrawerRoomUsersView = Backbone.View.extend({
 
     template: templates['drawer-room-users.html'],
@@ -52,6 +53,8 @@ define([
           : false
           : false;
 
+      room.owner.avatarUrl = common.cloudinarySize(room.owner.avatar, 20);
+
       // owner and ops aren't displayed in users list
       var notDisplayed = _.map(room.op, function(op) {
         return op.user_id;
@@ -62,6 +65,20 @@ define([
         return (notDisplayed.indexOf(u.user_id) === -1);
       });
       room.users = users;
+
+      _.each(room.users, function(element, index, list) {
+        list[index].avatarUrl = common.cloudinarySize(element.avatar, 20);
+      });
+      _.each(room.op, function(element, index, list) {
+        list[index].avatarUrl = common.cloudinarySize(element.avatar, 20);
+      });
+      _.each(room.devoices, function(element, index, list) {
+        list[index].avatarUrl = common.cloudinarySize(element.avatar, 20);
+      });
+      _.each(room.bans, function(element, index, list) {
+        list[index].avatarUrl = common.cloudinarySize(element.avatar, 20);
+      });
+
 
       var html = this.template({room: room});
       this.$el.html(html);

@@ -49,8 +49,8 @@
                                 <div class="messages-list-ctn">
                                     <div class="messages-list" id="main-navbar-messages"><!-- Loaded dynamically --></div>
                                     <div class="actions">
-                                        <div class="read-more" style="display:none;"><%= t('chat.notifications.read-more') %></div>
-                                        <div class="loading"><i class="icon icon-spinner icon-spin"></i></div>
+                                        <div class="read-more"><%= t('chat.notifications.read-more') %></div>
+                                        <div class="loading hidden"><i class="icon icon-spinner icon-spin"></i></div>
                                     </div>
                                 </div>
                             </div>
@@ -168,17 +168,34 @@
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
     <%- partial('contact') %>
+<script src="/javascripts/old-browser-update.js"></script>
+<script src="//widget.cloudinary.com/global/all.js"></script>
+<script src='https://www.google.com/recaptcha/api.js' async defer></script>
 <script>
-    window.cloudinary_cloud_name = '<%- cloudinary.cloud_name %>';
-    window.cloudinary_api_key = '<%- cloudinary.api_key %>';
-    window.facebook_app_id = '<%- facebook.clientID %>';
     window.recaptcha_site_key = '<%- recaptcha.sitekey %>';
     window.room_default_color = '<%- room_default_color %>';
     window.message_maxedittime = <%= message_maxedittime %>;
     window.colors = <%= colors %>;
+
+    window.fbAsyncInit = function() {
+        FB.init({
+            appId      : '<%- facebook.clientID %>',
+            xfbml      : true,
+            version    : 'v2.4'
+        });
+    };
+    (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/<%- locale_iso %>/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+
+    (function() {
+        cloudinary.setCloudName('<%- cloudinary.cloud_name %>');
+    }());
 </script>
-<script src="/javascripts/old-browser-update.js"></script>
-<script src='https://www.google.com/recaptcha/api.js' async defer></script>
 <script data-main="<%- build %>" src="/vendor/requirejs/require.js"></script>
 <%= googleanalytics %>
 </body>

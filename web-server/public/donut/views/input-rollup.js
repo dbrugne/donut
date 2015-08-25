@@ -2,12 +2,13 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'common',
   'client',
   'libs/donut-debug',
   'libs/keyboard',
   'models/current-user',
   '_templates'
-], function ($, _, Backbone, client, donutDebug, keyboard, currentUser, templates) {
+], function ($, _, Backbone, common, client, donutDebug, keyboard, currentUser, templates) {
 
   var debug = donutDebug('donut:input');
 
@@ -173,7 +174,7 @@ define([
       if (prefix === '#')
         client.search(search, true, false, 15, false, function(data) {
           _.each(data.rooms.list, function(d){
-            d.avatarUrl = $.cd.roomAvatar(d.avatar);
+            d.avatarUrl = common.cloudinarySize(d.avatar);
           });
           that.$rollup.html(that.template({ type: 'rooms', results: data.rooms.list }));
         });
@@ -181,7 +182,7 @@ define([
       if (prefix === '@')
         client.search(search, false, true, 15, false, function(data) {
           _.each(data.users.list, function(d){
-            d.avatarUrl = $.cd.userAvatar(d.avatar);
+            d.avatarUrl = common.cloudinarySize(d.avatar);
           });
           that.$rollup.html(that.template({ type: 'users', results: data.users.list }));
         });
