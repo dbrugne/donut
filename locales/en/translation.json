@@ -673,7 +673,7 @@
       "bio": "Bio should be 200 characters max.",
       "location": "Location should be 70 characters max.",
       "description": "Description should be 200 characters max.",
-      "website-size": "Website should be 5 characters min and 255 characters max.",
+      "website-size": "Website should be 5 characters min. and 255 characters max.",
       "website-url": "Website should be a valid site URL.",
       "color-hexadecimal": "Color should be explained has hexadecimal (e.g.: #FF00AA).",
       "color-integer": "Priority should be explained has number (integer).",

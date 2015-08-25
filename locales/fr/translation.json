@@ -695,7 +695,7 @@
       "bio": "La bio devrait contenir 200 caractères max.",
       "location": "Le lieu devrait contenir 70 caractères max.",
       "description": "La description devrait contenir 200 caractères max.",
-      "website-size": "Le site web devrait contenir 200 caractères max.",
+      "website-size": "L'URL du site Web doit être comprise entre 5 et 200 caractères",
       "website-url": "Url du site web invalide.",
       "color-hexadecimal": "La couleur doit être dans un format hexadécimale (e.g.: #FF00AA).",
       "color-integer": "La priorité devrait être exprimer en nombre (entier).",
