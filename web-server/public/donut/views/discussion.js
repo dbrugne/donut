@@ -41,7 +41,6 @@ define([
         el: this.$el.find('.input'),
         model: this.model
       });
-      this.listenTo(this.inputView, 'resize', this.onResize);
       this.listenTo(this.inputView, 'send', this.onSend);
       this.listenTo(this.inputView, 'editPreviousInput', this.onEditPreviousInput);
 
