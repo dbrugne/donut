@@ -52,16 +52,17 @@ define([
 
       this.$form.show();
       this.$link.hide();
+      this.$success.hide();
     },
 
     onCancel: function (event) {
       event.preventDefault();
 
       this.$errorLabel.text('');
+      this.$form.removeClass('has-error');
       this.$inputCurrentPassword.val('');
       this.$inputConfirmPassword.val('');
       this.$inputNewPassword.val('');
-      this.$form.removeClass('has-error');
 
       if (this.user.have_password) {
         this.$form.hide();
@@ -90,12 +91,15 @@ define([
 
       client.accountPassword(this.$inputNewPassword.val(), this.$inputCurrentPassword.val(), function (data) {
         that.$spinner.hide();
-        if (data.err) {
-          that.putError(data.err);
-        } else {
-          that.$form.hide();
-          that.$success.show();
-        }
+        if (data.err)
+          return that.putError(data.err);
+
+        that.$inputCurrentPassword.val('');
+        that.$inputConfirmPassword.val('');
+        that.$inputNewPassword.val('');
+        that.$form.hide();
+        that.$success.show();
+        that.$link.show();
       });
     },
 
