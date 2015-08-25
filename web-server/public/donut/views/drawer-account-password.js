@@ -27,28 +27,30 @@ define([
       this.$spinner.html(templates['spinner.html']);
       this.$errorLabel = this.$('.error-label');
       this.$success = this.$('.success');
+      this.$inputCurrentPassword = this.$('.input-current-password');
       this.$inputNewPassword = this.$('.input-new-password');
       this.$inputConfirmPassword = this.$('.input-password-confirm');
-      this.$inputCurrentPassword = this.$('.input-current-password');
 
+      this.$form.hide();
       this.$spinner.hide();
       this.$success.hide();
 
-      if (!this.user.have_password) {
-        this.$inputCurrentPassword.hide();
-        this.$link.hide();
-      } else {
-        this.$form.hide();
-      }
+      if (this.user.account && this.user.account.have_password)
+        this.$link.text($.t('global.change'));
+      else
+        this.$link.text($.t('global.add'));
     },
 
     render: function() {
-      this.$el.html(this.template());
+      this.$el.html(this.template({user: this.user}));
       return this;
     },
 
     onShowForm: function (event) {
       event.preventDefault();
+
+      if (this.user.account.have_password !== true)
+        this.$inputCurrentPassword.hide();
 
       this.$form.show();
       this.$link.hide();
@@ -58,16 +60,13 @@ define([
     onCancel: function (event) {
       event.preventDefault();
 
+      this.$form.hide();
+      this.$link.show();
       this.$errorLabel.text('');
       this.$form.removeClass('has-error');
       this.$inputCurrentPassword.val('');
       this.$inputConfirmPassword.val('');
       this.$inputNewPassword.val('');
-
-      if (this.user.have_password) {
-        this.$form.hide();
-        this.$link.show();
-      }
     },
 
     onSubmit: function(event) {
@@ -100,6 +99,8 @@ define([
         that.$form.hide();
         that.$success.show();
         that.$link.show();
+        that.$link.text($.t('global.change'));
+        that.$inputCurrentPassword.show();
       });
     },
 

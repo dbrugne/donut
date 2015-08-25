@@ -33,6 +33,11 @@ define([
       this.$form.hide();
       this.$spinner.hide();
       this.$success.hide();
+
+      if (this.user.account && this.user.account.email)
+        this.$link.text($.t('global.change'));
+      else
+        this.$link.text($.t('global.add'));
     },
 
     render: function() {
@@ -81,6 +86,7 @@ define([
         that.$mailUserLabel.text(that.$input.val());
         that.$form.hide();
         that.$success.show();
+        that.$link.text($.t('global.change'));
       });
     },
 

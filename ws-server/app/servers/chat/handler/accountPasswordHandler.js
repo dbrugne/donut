@@ -22,8 +22,11 @@ handler.call = function (data, session, next) {
       if (!data.password || data.password.length < 6 || data.password.length > 50)
         return callback('length');
 
-      if (!user.validPassword(data.current_password) && user.local.password)
-        return callback('wrong-password');
+      // already have a password
+      if (user.local.password) {
+        if (!user.validPassword(data.current_password))
+          return callback('wrong-password');
+      }
 
       return callback(null);
     },
@@ -33,6 +36,9 @@ handler.call = function (data, session, next) {
       user.save(function (err) {
         if (err)
           return callback(err);
+
+        if (!user.local.email)
+          return callback(null);
 
         emailer.passwordChanged(user.local.email, callback);
       });

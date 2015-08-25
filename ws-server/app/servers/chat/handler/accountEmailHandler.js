@@ -31,7 +31,7 @@ handler.call = function (data, session, next) {
       if (!validator.isEmail(email))
         return callback('wrong-format');
 
-      if (email === user.local.email.toLocaleLowerCase())
+      if (user.local && user.local.email && email === user.local.email.toLocaleLowerCase())
         return callback('same-mail');
 
       return callback(null);
@@ -61,7 +61,7 @@ handler.call = function (data, session, next) {
           if (err)
             return callback(err);
 
-          if (oldEmail === email)
+          if (oldEmail === '' || oldEmail === email)
             return callback(null);
 
           // inform old email if different from new one

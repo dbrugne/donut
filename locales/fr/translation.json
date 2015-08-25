@@ -51,8 +51,11 @@
   },
   "global": {
     "or": "ou",
+    "yes": "oui",
+    "no": "non",
     "else": "sinon",
     "close": "fermer",
+    "add": "ajouter",
     "change": "modifier",
     "edit": "éditer",
     "delete": "supprimer",
@@ -581,9 +584,7 @@
       "invalid": "Désolé, ce compte n'existe pas ou le mot de passe est invalide"
     },
     "emailandpassword": {
-      "label": "Email et mot de passe",
-      "help": "Vous n'avez pas renseigné d'e-mail et mot de passe. Pour vous connecter sans Facebook ou délier votre compte de Facebook :",
-      "add": "Ajouter e-mail et mot de passe"
+      "label": "Email et mot de passe"
     },
     "email": {
       "label": "Email",

@@ -51,8 +51,11 @@
   },
   "global": {
     "or": "or",
+    "yes": "yes",
+    "no": "no",
     "else": "otherwise",
     "close": "close",
+    "add": "add",
     "change": "change",
     "edit": "edit",
     "delete": "delete",
@@ -559,9 +562,7 @@
       "invalid": "Sorry, this account does not exist or the password is not valid"
     },
     "emailandpassword": {
-      "label": "E-mail and password",
-      "help": "You have not set e-mail and password. To log in without Facebook or unlink your account from Facebook:",
-      "add": "Add e-mail and password"
+      "label": "E-mail and password"
     },
     "email": {
       "label": "E-mail",
