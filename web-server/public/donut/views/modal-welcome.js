@@ -2,10 +2,11 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'common',
   'libs/donut-debug',
   'client',
   '_templates'
-], function ($, _, Backbone, donutDebug, client, templates) {
+], function ($, _, Backbone, common, donutDebug, client, templates) {
 
   var debug = donutDebug('donut:modal-welcome');
 
@@ -35,7 +36,7 @@ define([
 
       var rooms = [];
       _.each(welcome.featured, function(room) {
-        room.avatar = $.cd.roomAvatar(room.avatar, 135);
+        room.avatar = common.cloudinarySize(room.avatar, 135);
         rooms.push(room);
       });
 

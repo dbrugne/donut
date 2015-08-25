@@ -1,5 +1,5 @@
 var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
-var cloudinary = require('../../../../../shared/cloudinary/cloudinary');
+var common = require('@dbrugne/donut-common');
 var _ = require('underscore');
 var async = require('async');
 var UserModel = require('../../../../../shared/models/user');
@@ -154,7 +154,7 @@ Notification.prototype.sendEmail = function (model, done) {
           : false;
         messages.push({
           current: isCurrentMessage,
-          user_avatar: cloudinary.userAvatar(event.data.avatar, 90),
+          user_avatar: common.cloudinarySize(event.data.avatar, 90),
           username: event.data.username,
           message: event.data.message,
           time_short: moment(event.data.time).format('Do MMMM, HH:mm'),
@@ -162,7 +162,7 @@ Notification.prototype.sendEmail = function (model, done) {
         });
       });
 
-      emailer.roomMessage(model.user.getEmail(), messages, events[0]['data']['name'], cloudinary.roomAvatar(events[0]['data']['room_avatar'], 90), callback);
+      emailer.roomMessage(model.user.getEmail(), messages, events[0]['data']['name'], common.cloudinarySize(events[0]['data']['room_avatar'], 90), callback);
     },
 
     function persist(callback) {

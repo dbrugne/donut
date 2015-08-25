@@ -3,6 +3,7 @@ var _ = require('underscore');
 var async = require('async');
 var mongoose = require('../io/mongoose');
 var User = require('./user');
+var cloudinary = require('../util/cloudinary');
 
 var historySchema = mongoose.Schema({
 
@@ -61,7 +62,7 @@ historySchema.statics.record = function() {
 
     // dry data
     var wet = _.clone(data);
-    model.data = _.omit(wet, dryFields) ;
+    model.data = _.omit(wet, dryFields);
 
     model.save(function(err) {
       if (err)
@@ -99,6 +100,14 @@ historySchema.methods.toClientJSON = function(userViewed) {
   }
   if (this.edited === true)
     e.edited = this.edited;
+
+  // images
+  if (data.images && data.images.length > 0) {
+    data.images = _.map(data.images, function(element, key, value) {
+      // @important: use .path to obtain URL with file extension and avoid CORS errors
+      return cloudinary.messageImage(element.path);
+    });
+  }
 
   e.data = data;
 
