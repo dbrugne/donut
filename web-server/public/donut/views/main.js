@@ -25,7 +25,7 @@ define([
   'views/drawer-user-profile',
   'views/drawer-user-edit',
   'views/drawer-user-preferences',
-  'views/drawer-user-account',
+  'views/drawer-account',
   'views/discussion-room',
   'views/discussion-onetoone',
   'views/discussions-block',
@@ -242,7 +242,7 @@ define([
       this.focus();
       var message = (what == 'kick') ? $.t("chat.kickmessage", {name: data.name}) : $.t("chat.banmessage", {name: data.name});
       if (data.reason)
-        message += ' ' + $.t("chat.reason", {reason: data.reason});
+        message += ' ' + $.t("chat.reason", {reason: _.escape(data.reason)});
       this.alert('warning', message);
     },
      roomRoomDeleted: function(data) {

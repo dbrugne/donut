@@ -2,10 +2,11 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'common',
   'client',
   'models/current-user',
   '_templates'
-], function ($, _, Backbone, client, currentUser, templates) {
+], function ($, _, Backbone, common, client, currentUser, templates) {
   var DrawerRoomProfileView = Backbone.View.extend({
 
       template: templates['drawer-room-profile.html'],
@@ -42,7 +43,7 @@ define([
 
         room.isAdmin = currentUser.isAdmin();
 
-        room.avatar = $.cd.roomAvatar(room.avatar, 90);
+        room.avatar = common.cloudinarySize(room.avatar, 90);
 
         room.url = '/room/' + room.name.replace('#', '').toLocaleLowerCase();
 
@@ -81,7 +82,7 @@ define([
           if (op === true)
             user.isOp = true;
 
-          user.avatar = $.cd.userAvatar(user.avatar, 34);
+          user.avatar = common.cloudinarySize(user.avatar, 34);
 
           list.push(user);
         }

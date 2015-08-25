@@ -2,7 +2,7 @@ define([
   'underscore',
   'backbone',
   'libs/donut-debug',
-  'pomelo'
+  'libs/pomelo'
 ], function (_, Backbone, donutDebug, pomelo) {
 
   var debug = donutDebug('donut:client');
@@ -10,61 +10,63 @@ define([
   var client = _.extend({
 
     initialize: function () {
-
-      // connection events
-      pomelo.on('connect',            function() { debug('connect'); this.trigger('connect'); }, this);
-      pomelo.on('disconnect',         function(reason) { debug('disconnect', reason); this.trigger('disconnect', reason); }, this);
-      pomelo.on('error',              function(err) { debug('error', err); this.trigger('error', err); }, this);
-
-      // reconnection events
-      pomelo.on('reconnect',          function(num) { debug('reconnect', num); this.trigger('reconnect', num); }, this);
-      pomelo.on('reconnect_attempt',  function() { debug('reconnect_attempt'); this.trigger('reconnect_attempt'); }, this);
-      pomelo.on('reconnecting',       function(num) { debug('reconnecting', num); this.trigger('reconnecting', num); }, this);
-      pomelo.on('reconnect_error',    function(err) { debug('reconnect_error', err); this.trigger('reconnect_error', err); }, this);
-      pomelo.on('reconnect_failed',   function() { debug('reconnect_failed'); this.trigger('reconnect_failed'); }, this);
-
-      pomelo.on('welcome', function(data) { debug('io:in:welcome', data); this.trigger('welcome', data); }, this);
-
-      // admin events
-      pomelo.on('admin:reload',   function(data) { debug('io:in:admin:reload', data);  this.trigger('admin:reload', data); }, this);
-      pomelo.on('admin:exit',     function(data) { debug('io:in:admin:exit', data);    this.trigger('admin:exit', data); }, this);
-      pomelo.on('admin:message',  function(data) { debug('io:in:admin:message', data); this.trigger('admin:message', data); }, this);
-
-      // room events
-      pomelo.on('room:join',    function(data) { debug('io:in:room:join',     data); this.trigger('room:join',      data); }, this);
-      pomelo.on('room:leave',   function(data) { debug('io:in:room:leave',    data); this.trigger('room:leave',     data); }, this);
-      pomelo.on('room:message', function(data) { debug('io:in:room:message',  data); this.trigger('room:message',   data); }, this);
-      pomelo.on('room:message:edit',  function (data) { debug('io:in:room:message:edit',  data); this.trigger('room:message:edit',data); }, this);
-      pomelo.on('room:topic',   function(data) { debug('io:in:room:topic',    data); this.trigger('room:topic',     data); }, this);
-      pomelo.on('room:in',      function(data) { debug('io:in:room:in',       data); this.trigger('room:in',        data); }, this);
-      pomelo.on('room:out',     function(data) { debug('io:in:room:out',      data); this.trigger('room:out',       data); }, this);
-      pomelo.on('room:updated', function(data) { debug('io:in:room:updated',  data); this.trigger('room:updated',   data); }, this);
-      pomelo.on('room:op',      function(data) { debug('io:in:room:op',       data); this.trigger('room:op',        data); }, this);
-      pomelo.on('room:deop',    function(data) { debug('io:in:room:deop',     data); this.trigger('room:deop',      data); }, this);
-      pomelo.on('room:voice',   function(data) { debug('io:in:room:voice',    data); this.trigger('room:voice',     data); }, this);
-      pomelo.on('room:devoice', function(data) { debug('io:in:room:devoice',  data); this.trigger('room:devoice',   data); }, this);
-      pomelo.on('room:kick',    function(data) { debug('io:in:room:kick',     data); this.trigger('room:kick',      data); }, this);
-      pomelo.on('room:ban',     function(data) { debug('io:in:room:ban',      data); this.trigger('room:ban',       data); }, this);
-      pomelo.on('room:deban',   function(data) { debug('io:in:room:deban',    data); this.trigger('room:deban',     data); }, this);
-      pomelo.on('room:viewed',  function(data) { debug('io:in:room:viewed',   data); this.trigger('room:viewed',    data); }, this);
-      pomelo.on('room:message:spam',  function(data) { debug('io:in:room:message:spam',   data); this.trigger('room:message:spam',data); }, this);
-      pomelo.on('room:message:unspam',  function(data) { debug('io:in:room:message:unspam',   data); this.trigger('room:message:unspam',data); }, this);
-
-      pomelo.on('user:join',          function (data) { debug('io:in:user:join',          data); this.trigger('user:join',        data); }, this);
-      pomelo.on('user:leave',         function (data) { debug('io:in:user:leave',         data); this.trigger('user:leave',       data); }, this);
-      pomelo.on('user:message',       function (data) { debug('io:in:user:message',       data); this.trigger('user:message',     data); }, this);
-      pomelo.on('user:message:edit',  function (data) { debug('io:in:user:message:edit',  data); this.trigger('user:message:edit',data); }, this);
-      pomelo.on('user:online',        function (data) { debug('io:in:user:online',        data); this.trigger('user:online',      data); }, this);
-      pomelo.on('user:offline',       function (data) { debug('io:in:user:offline',       data); this.trigger('user:offline',     data); }, this);
-      pomelo.on('user:updated',       function (data) { debug('io:in:user:updated',       data); this.trigger('user:updated',     data); }, this);
-      pomelo.on('user:preferences',   function (data) { debug('io:in:user:preferences',   data); this.trigger('user:preferences', data); }, this);
-      pomelo.on('user:viewed',        function (data) { debug('io:in:user:viewed',        data); this.trigger('user:viewed',      data); }, this);
-      pomelo.on('user:ban',           function(data) { debug('io:in:user:ban',            data); this.trigger('user:ban',         data); }, this);
-      pomelo.on('user:deban',         function(data) { debug('io:in:user:deban',          data); this.trigger('user:deban',       data); }, this);
-
-      pomelo.on('notification:new',   function(data) { debug('io:in:notification:new',  data); this.trigger('notification:new',   data); }, this);
-      pomelo.on('notification:read',  function(data) { debug('io:in:notification:read', data); this.trigger('notification:read',  data); }, this);
-      pomelo.on('notification:done',  function(data) { debug('io:in:notification:done', data); this.trigger('notification:done',  data); }, this);
+      var events = [
+        // connection/reconnection
+        'connect',
+        'disconnect',
+        'error',
+        'reconnect',
+        'reconnect_attempt',
+        'reconnecting',
+        'reconnect_error',
+        'reconnect_failed',
+        // admin
+        'admin:reload',
+        'admin:exit',
+        'admin:message',
+        // donut
+        'welcome',
+        'room:join',
+        'room:leave',
+        'room:message',
+        'room:message:edit',
+        'room:topic',
+        'room:in',
+        'room:out',
+        'room:updated',
+        'room:op',
+        'room:deop',
+        'room:voice',
+        'room:devoice',
+        'room:kick',
+        'room:ban',
+        'room:deban',
+        'room:viewed',
+        'room:message:spam',
+        'room:message:unspam',
+        'room:typing',
+        'user:join',
+        'user:leave',
+        'user:message',
+        'user:message:edit',
+        'user:online',
+        'user:offline',
+        'user:updated',
+        'user:viewed',
+        'user:ban',
+        'user:deban',
+        'user:typing',
+        'preferences:update',
+        'notification:new',
+        'notification:read',
+        'notification:done'
+      ];
+      _.each(events, _.bind(function(event) {
+        pomelo.on(event, function(data) {
+          debug('io:in:' + event, data);
+          this.trigger(event,  data);
+        }, this);
+      }, this));
     },
 
     /**
@@ -84,14 +86,14 @@ define([
       return pomelo.isConnected();
     },
 
-    // GLOBAL METHODS
+    // GLOBAL
     // ======================================================
 
     home: function() {
       var that = this;
       debug('io:out:home', {});
       pomelo.request(
-          'chat.homeHandler.home',
+          'chat.homeHandler.call',
           {},
           function(response) {
             if (response.err)
@@ -123,7 +125,7 @@ define([
       };
       debug('io:out:search', data);
       pomelo.request(
-        'chat.searchHandler.search',
+        'chat.searchHandler.call',
         data,
         function (response) {
           debug('io:in:search', response);
@@ -133,14 +135,14 @@ define([
       );
     },
 
-    // ROOM METHODS
+    // ROOM
     // ======================================================
 
     roomJoin: function (name, callback) {
       var data = {name: name};
       debug('io:out:room:join', data);
       pomelo.request(
-        'chat.roomJoinHandler.join',
+        'chat.roomJoinHandler.call',
         data,
         function (response) {
           debug('io:in:room:join', response);
@@ -151,17 +153,18 @@ define([
     },
     roomLeave: function (name) {
       var data = {name: name};
-      pomelo.notify('chat.roomLeaveHandler.leave', data);
+      pomelo.notify('chat.roomLeaveHandler.call', data);
       debug('io:out:room:leave', data);
     },
     roomMessage: function (name, message, images, callback) {
       var data = {name: name, message: message, images: images};
       var that = this;
       pomelo.request(
-        'chat.roomMessageHandler.message',
+        'chat.roomMessageHandler.call',
         data,
         function (response) {
-          debug('io:in:room:message', response);
+          if (response.err)
+            debug('io:in:room:message error: ', response);
           if (_.isFunction(callback))
             return callback(response);
         }
@@ -169,7 +172,7 @@ define([
     },
     roomMessageEdit: function (name, messageId, message) {
       var data = {name: name, event: messageId, message: message};
-      pomelo.notify('chat.roomMessageEditHandler.edit', data);
+      pomelo.notify('chat.roomMessageEditHandler.call', data);
       debug('io:out:room:message:edit', data);
     },
     roomTopic: function (name, topic) {
@@ -177,7 +180,7 @@ define([
       debug('io:out:room:topic', data);
       var that = this;
       pomelo.request(
-        'chat.roomTopicHandler.topic',
+        'chat.roomTopicHandler.call',
         data,
         function (response) {
           if (response.err)
@@ -190,7 +193,7 @@ define([
       debug('io:out:room:read', data);
       var that = this;
       pomelo.request(
-        'chat.roomReadHandler.read',
+        'chat.roomReadHandler.call',
         data,
         function (response) {
           if (response.err)
@@ -206,7 +209,7 @@ define([
       debug('io:out:room:users', data);
       var that = this;
       pomelo.request(
-        'chat.roomUsersHandler.users',
+        'chat.roomUsersHandler.call',
         data,
         function (response) {
           if (response.err)
@@ -222,7 +225,7 @@ define([
       debug('io:out:room:update', data);
       var that = this;
       pomelo.request(
-        'chat.roomUpdateHandler.update',
+        'chat.roomUpdateHandler.call',
         data,
         function (response) {
           debug('io:in:room:update', response);
@@ -234,7 +237,7 @@ define([
       var data = {name: name};
       debug('io:out:room:create', data);
       pomelo.request(
-        'chat.roomCreateHandler.create',
+        'chat.roomCreateHandler.call',
         data,
         function (response) {
           debug('io:in:room:create', response);
@@ -248,7 +251,7 @@ define([
       debug('io:out:room:delete', data);
       var that = this;
       pomelo.request(
-        'chat.roomDeleteHandler.delete',
+        'chat.roomDeleteHandler.call',
         data,
         function (response) {
           if (response.err)
@@ -261,7 +264,7 @@ define([
       debug('io:out:room:history', data);
       var that = this;
       pomelo.request(
-        'chat.roomHistoryHandler.history',
+        'chat.roomHistoryHandler.call',
         data,
         function (response) {
           if (response.err)
@@ -277,7 +280,7 @@ define([
       debug('io:out:room:op', data);
       var that = this;
       pomelo.request(
-        'chat.roomOpHandler.op',
+        'chat.roomOpHandler.call',
         data,
         function (response) {
           if (response.err)
@@ -290,7 +293,7 @@ define([
       debug('io:out:room:deop', data);
       var that = this;
       pomelo.request(
-        'chat.roomDeopHandler.deop',
+        'chat.roomDeopHandler.call',
         data,
         function (response) {
           if (response.err)
@@ -303,7 +306,7 @@ define([
       debug('io:out:room:voice', data);
       var that = this;
       pomelo.request(
-        'chat.roomVoiceHandler.voice',
+        'chat.roomVoiceHandler.call',
         data,
         function (response) {
           if (response.err)
@@ -318,7 +321,7 @@ define([
       debug('io:out:room:devoice', data);
       var that = this;
       pomelo.request(
-        'chat.roomDevoiceHandler.devoice',
+        'chat.roomDevoiceHandler.call',
         data,
         function (response) {
           if (response.err)
@@ -333,7 +336,7 @@ define([
       debug('io:out:room:kick', data);
       var that = this;
       pomelo.request(
-        'chat.roomKickHandler.kick',
+        'chat.roomKickHandler.call',
         data,
         function (response) {
           if (response.err)
@@ -348,7 +351,7 @@ define([
       debug('io:out:room:ban', data);
       var that = this;
       pomelo.request(
-        'chat.roomBanHandler.ban',
+        'chat.roomBanHandler.call',
         data,
         function (response) {
           if (response.err)
@@ -361,7 +364,7 @@ define([
       debug('io:out:room:deban', data);
       var that = this;
       pomelo.request(
-        'chat.roomDebanHandler.deban',
+        'chat.roomDebanHandler.call',
         data,
         function (response) {
           if (response.err)
@@ -371,14 +374,14 @@ define([
     },
     roomViewed: function (name, events) {
       var data = {name: name, events: events};
-      pomelo.notify('chat.roomViewedHandler.viewed', data);
+      pomelo.notify('chat.roomViewedHandler.call', data);
       debug('io:out:room:viewed', data);
     },
     roomMessageSpam: function(name, messageId) {
       var data = {name: name, event: messageId};
       debug('io:out:room:message:spam', data);
       pomelo.request(
-        'chat.roomMessageSpamHandler.spam',
+        'chat.roomMessageSpamHandler.call',
         data,
         function(response) {
           if (response.err)
@@ -390,7 +393,7 @@ define([
       var data = {name: name, event: messageId};
       debug('io:out:room:message:unspam', data);
       pomelo.request(
-        'chat.roomMessageUnspamHandler.unspam',
+        'chat.roomMessageUnspamHandler.call',
         data,
         function(response) {
           if (response.err)
@@ -398,16 +401,39 @@ define([
         }
       );
     },
+    roomTyping: function (name) {
+      var data = { name: name };
+      debug('io:out:room:typing', data);
+      pomelo.notify('chat.roomTypingHandler.call', data);
+    },
 
-    // USER METHODS
+    // ONETOONE
     // ======================================================
 
+    userJoin: function (username) {
+      var data = {username: username};
+      debug('io:out:user:join', data);
+      var that = this;
+      pomelo.request(
+        'chat.userJoinHandler.call',
+        data,
+        function (response) {
+          if (response.err)
+            return debug('io:in:user:join error: ', response);
+        }
+      );
+    },
+    userLeave: function (username) {
+      var data = {username: username};
+      pomelo.notify('chat.userLeaveHandler.call', data);
+      debug('io:out:user:leave', data);
+    },
     userBan: function(username) {
       var data = { username: username };
       debug('io:out:user:ban', data);
       var that = this;
       pomelo.request(
-        'chat.userBanHandler.ban',
+        'chat.userBanHandler.call',
         data,
         function(response) {
           if (response.err)
@@ -420,7 +446,7 @@ define([
       debug('io:out:user:deban', data);
       var that = this;
       pomelo.request(
-        'chat.userDebanHandler.ban',
+        'chat.userDebanHandler.call',
         data,
         function(response) {
           if (response.err)
@@ -428,33 +454,16 @@ define([
         }
       );
     },
-    userJoin: function (username) {
-      var data = {username: username};
-      debug('io:out:user:join', data);
-      var that = this;
-      pomelo.request(
-        'chat.userJoinHandler.join',
-        data,
-        function (response) {
-          if (response.err)
-            return debug('io:in:user:join error: ', response);
-        }
-      );
-    },
-    userLeave: function (username) {
-      var data = {username: username};
-      pomelo.notify('chat.userLeaveHandler.leave', data);
-      debug('io:out:user:leave', data);
-    },
     userMessage: function (username, message, images, callback) {
       var data = {username: username, message: message, images: images};
       debug('io:out:user:message', data);
       var that = this;
       pomelo.request(
-        'chat.userMessageHandler.message',
+        'chat.userMessageHandler.call',
         data,
         function (response) {
-          debug('io:in:user:message', response);
+          if (response.err)
+            debug('io:in:user:message error: ', response);
           if (_.isFunction(callback))
             return callback(response);
         }
@@ -462,7 +471,7 @@ define([
     },
     userMessageEdit: function (username, messageId, message) {
       var data = { username: username, event: messageId, message: message };
-      pomelo.notify('chat.userMessageEditHandler.edit', data);
+      pomelo.notify('chat.userMessageEditHandler.call', data);
       debug('io:out:user:message:edit', data);
     },
     userRead: function (username, fn) {
@@ -470,7 +479,7 @@ define([
       debug('io:out:user:read', data);
       var that = this;
       pomelo.request(
-        'chat.userReadHandler.read',
+        'chat.userReadHandler.call',
         data,
         function (response) {
           if (response.err)
@@ -486,56 +495,10 @@ define([
       debug('io:out:user:update', data);
       var that = this;
       pomelo.request(
-        'chat.userUpdateHandler.update',
+        'chat.userUpdateHandler.call',
         data,
         function (response) {
           debug('io:in:user:update', response);
-          return fn(response);
-        }
-      );
-    },
-    userPreferencesRead: function (name, fn) {
-      var data = (name) ? {name: name} : {};
-      debug('io:out:user:preferences:read', data);
-      var that = this;
-      pomelo.request(
-        'chat.userPreferencesHandler.read',
-        data,
-        function (response) {
-          if (response.err)
-            return debug('io:in:user:preferences:read error: ', response);
-
-          debug('io:in:user:preferences:read', response);
-          return fn(response);
-        }
-      );
-    },
-    userPreferencesUpdate: function (fields, callback) {
-      var data = {data: fields};
-      debug('io:out:user:preferences:update', data);
-      var that = this;
-      pomelo.request(
-        'chat.userPreferencesHandler.update',
-        data,
-        function (response) {
-          debug('io:in:user:preferences:update', response);
-          if (_.isFunction(callback))
-            return callback(response);
-        }
-      );
-    },
-    userNotifications: function (viewed, time, number, fn) {
-      var data = {viewed: viewed, time: time, number: number};
-      debug('io:out:user:notifications', data);
-      var that = this;
-      pomelo.request(
-        'chat.userNotificationsHandler.read',
-        data,
-        function (response) {
-          if (response.err)
-            return debug('io:in:user:notifications error: ', response);
-
-          debug('io:in:user:notifications', response);
           return fn(response);
         }
       );
@@ -545,7 +508,7 @@ define([
       debug('io:out:user:history', data);
       var that = this;
       pomelo.request(
-        'chat.userHistoryHandler.history',
+        'chat.userHistoryHandler.call',
         data,
         function (response) {
           if (response.err)
@@ -558,32 +521,111 @@ define([
     },
     userViewed: function (username, events) {
       var data = {username: username, events: events};
-      pomelo.notify('chat.userViewedHandler.viewed', data);
+      pomelo.notify('chat.userViewedHandler.call', data);
       debug('io:out:user:viewed', data);
     },
+    userTyping: function(userId) {
+      var data = { user_id: userId };
+      debug('io:out:user:typing', data);
+      pomelo.notify('chat.userTypingHandler.call', data);
+    },
 
-    // Called to set Notifications as viewed for current user
-    userNotificationsViewed: function (ids, all, fn) {
-      var data = {ids: ids, all: all};
-      debug('io:out:user:notificationsViewed', data);
+    // PREFERENCES
+    // ======================================================
+
+    userPreferencesRead: function (name, fn) {
+      var data = (name) ? {name: name} : {};
+      debug('io:out:preferences:read', data);
       var that = this;
       pomelo.request(
-        'chat.userNotificationsHandler.viewed',
+        'chat.preferencesReadHandler.call',
         data,
         function (response) {
           if (response.err)
-            return debug('io:in:user:notifications error: ', response);
+            return debug('io:in:preferences:read error: ', response);
 
-          debug('io:in:user:notificationsViewed', response);
+          debug('io:in:preferences:read', response);
           return fn(response);
         }
       );
     },
+    userPreferencesUpdate: function (fields, callback) {
+      var data = {data: fields};
+      debug('io:out:preferences:update', data);
+      var that = this;
+      pomelo.request(
+        'chat.preferencesUpdateHandler.call',
+        data,
+        function (response) {
+          debug('io:in:preferences:update', response);
+          if (_.isFunction(callback))
+            return callback(response);
+        }
+      );
+    },
+    accountEmail: function (email, fn) {
+      var data = { email: email };
+      pomelo.request(
+        'chat.accountEmailHandler.call',
+        data,
+        function (response) {
+          if (response.err)
+            debug('io:in:account:email:edit error: ', response);
+          else
+            debug('io:in:account:email:edit', response);
+          return fn(response);
+        });
+    },
+    accountPassword: function (newPassword, currentPassword, fn) {
+      var data = { password: newPassword, current_password: currentPassword };
+      pomelo.request(
+        'chat.accountPasswordHandler.call',
+        data,
+        function (response) {
+          if (response.err)
+            debug('io:in:account:password:edit error: ', response);
+          else
+            debug('io:in:account:password:edit', response);
+          return fn(response);
+        });
+    },
+    
+    // NOTIFICATION
+    // ======================================================
 
-    // Called to set Notifications as viewed for current user
-    userNotificationsDone: function (id, fn) {
+    notificationRead: function (viewed, time, number, fn) {
+      var data = {viewed: viewed, time: time, number: number};
+      debug('io:out:notification:read', data);
+      pomelo.request(
+        'chat.notificationReadHandler.call',
+        data,
+        function (response) {
+          if (response.err)
+            return debug('io:in:notification:read error: ', response);
+
+          debug('io:in:notification:read', response);
+          return fn(response);
+        }
+      );
+    },
+    notificationViewed: function (ids, all, fn) {
+      var data = {ids: ids, all: all};
+      debug('io:out:notification:viewed', data);
+      pomelo.request(
+        'chat.notificationViewedHandler.call',
+        data,
+        function (response) {
+          if (response.err)
+            return debug('io:in:notification:viewed error: ', response);
+
+          debug('io:in:notification:viewed', response);
+          return fn(response);
+        }
+      );
+    },
+    notificationDone: function (id) {
       var data = {id: id};
-      pomelo.notify('chat.userNotificationsHandler.done', data);
+      pomelo.notify('chat.notificationDoneHandler.call', data);
       debug('io:out:notification:done', data);
     }
 

@@ -1,6 +1,5 @@
 var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
 var async = require('async');
-var cloudinary = require('../../../../../shared/cloudinary/cloudinary');
 
 var Handler = function(app) {
   this.app = app;
@@ -12,7 +11,7 @@ module.exports = function(app) {
 
 var handler = Handler.prototype;
 
-handler.delete = function(data, session, next) {
+handler.call = function(data, session, next) {
 
 	var user = session.__currentUser__;
 	var room = session.__room__;

@@ -3,7 +3,8 @@ var async = require('async');
 var _ = require('underscore');
 var Room = require('../../../../../shared/models/room');
 var validator = require('validator');
-var cloudinary = require('../../../../../shared/cloudinary/cloudinary');
+var cloudinary = require('../../../../../shared/cloudinary/cloudinary').cloudinary;
+var common = require('@dbrugne/donut-common');
 
 var Handler = function(app) {
 	this.app = app;
@@ -15,7 +16,7 @@ module.exports = function(app) {
 
 var handler = Handler.prototype;
 
-handler.update = function(data, session, next) {
+handler.call = function(data, session, next) {
 
 	var user = session.__currentUser__;
 
@@ -39,7 +40,7 @@ handler.update = function(data, session, next) {
 			// bio
 			if (_.has(data.data, 'bio')) {
 				if (!validator.isLength(data.data.bio, 0, 200)) {
-					errors.bio = 'Bio should be 200 characters max.';
+					errors.bio = 'bio'; //Bio should be 200 characters max.
 				} else {
 					var bio = data.data.bio;
 					bio = validator.stripLow(bio, true);
@@ -52,7 +53,7 @@ handler.update = function(data, session, next) {
 			// location
 			if (_.has(data.data, 'location')) {
 				if (!validator.isLength(data.data.location, 0, 70)) {
-					errors.location = 'Location should be 70 characters max.';
+					errors.location = 'location'; //Location should be 70 characters max.
 				} else {
 					var location = data.data.location;
 					location = validator.trim(location);
@@ -63,27 +64,27 @@ handler.update = function(data, session, next) {
 			}
 
 			// website
-			if (_.has(data.data, 'website')) {
-				var opts = {
-					require_protocol: false,
-					require_tld: true,
-					allow_underscores: true
-				};
-				if (data.data.website != '' && !validator.isURL(data.data.website, opts)) {
-					errors.website = 'Website should be a valid site URL';
+			if (_.has(data.data, 'website') && data.data.website) {
+				if (data.data.website.length < 5 && data.data.website.length > 255) {
+					errors.website = 'website-size'; // website should be 5 characters min and 255 characters max.;
 				} else {
-					var website = data.data.website;
-					website = validator.trim(website);
-					website = validator.escape(website);
-					if (website != user.website)
-						sanitized.website = website;
+					var link = common.getLinkify().find(data.data.website);
+					if (!link || !link[0] || !link[0].type || !link[0].value || !link[0].href || link[0].type !== 'url')
+						errors.website = 'website-url'; // website should be a valid site URL
+					else {
+						var website = {
+							href: link[0].href,
+							title: link[0].value
+						};
+					}
 				}
 			}
+			sanitized.website = website;
 
 			// color
 			if (_.has(data.data, 'color')) {
 				if (data.data.color != '' && !validator.isHexColor(data.data.color)) {
-					errors.color = 'Color should be explained has hexadecimal (e.g.: #FF00AA).';
+					errors.color = 'color-hexadecimal'; //Color should be explained has hexadecimal (e.g.: #FF00AA).
 				} else {
 					var color = data.data.color.toLocaleUpperCase();
 					if (color != user.color)
@@ -105,7 +106,7 @@ handler.update = function(data, session, next) {
 					sanitized.welcome = welcome;
 
 				if (!_.isArray(data.data.positions)) {
-					errors.positions = 'Positions should be an array';
+					errors.positions = 'positions'; //Positions should be an array
 				} else {
 					sanitized.positions = JSON.stringify(data.data.positions);
 				}
@@ -113,7 +114,7 @@ handler.update = function(data, session, next) {
 
 			var errNum = Object.keys(errors).length;
 			if (errNum > 0)
-				return callback(JSON.stringify(errors)); // object
+				return callback(errors); // object
 
 			return callback(null, sanitized);
 		},
@@ -122,16 +123,10 @@ handler.update = function(data, session, next) {
 		 * We receive following fields (e.g.: data.data.avatar):
 		 *
 		 *  {
-       *    public_id: 'jfs0fbpit5ozwnvx4uem',
-       *    version: 1407505236,
-       *    path: 'v1407505236/jfs0fbpit5ozwnvx4uem.jpg'
-       *  }
-		 *
-		 * As $.cloudinary can build URL based on 'path' (that contain both public_id
-		 * and version) we store only 'path' as model 'avatar' field value:
-		 *
-		 *   $.cloudinary.url("v1407505236/jfs0fbpit5ozwnvx4uem.jpg")
-		 *   -> "http://res.cloudinary.com/roomly/image/upload/v1407505236/jfs0fbpit5ozwnvx4uem.jpg"
+     *    public_id: 'jfs0fbpit5ozwnvx4uem',
+     *    version: 1407505236,
+     *    path: 'v1407505236/jfs0fbpit5ozwnvx4uem.jpg'
+     *  }
 		 */
 		function images(sanitized, callback) {
 			if (_.has(data.data, 'avatar')) {
@@ -145,7 +140,7 @@ handler.update = function(data, session, next) {
 				if (avatar.remove && avatar.remove == true && user.avatar) {
 					sanitized.avatar = '';
 
-					// remove previous picture from cloudinary?
+					// remove previous picture
 					cloudinary.api.delete_resources([user.avatarId()], function(result){
 						console.log(result.deleted);
 					});
@@ -163,7 +158,7 @@ handler.update = function(data, session, next) {
 				if (poster.remove && poster.remove == true && user.poster) {
 					sanitized.poster = '';
 
-					// remove previous picture from cloudinary?
+					// remove previous picture
 					cloudinary.api.delete_resources([user.posterId()], function(result){
 						console.log(result.deleted);
 					});
@@ -224,7 +219,7 @@ handler.update = function(data, session, next) {
 						sanitizedToNotify['poster'] = user._poster();
 					else {
 						sanitizedToNotify['color'] = sanitized[key];
-						// Also update colors of poster & sidebar when no image defined (because generated from color by cloudinary)
+						// Also update colors of poster & sidebar when no image defined
 						if (user.avatar && user.avatar.length == 0)
 							sanitizedToNotify['avatar'] = user._avatar();
 						if (user.poster && user.poster.length == 0)

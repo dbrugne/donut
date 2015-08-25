@@ -66,7 +66,6 @@ module.exports = function (grunt) {
             'jquery.momentify'            : ['jquery'],
             'jquery.colorify'             : ['jquery'],
             'jquery.socialify'            : ['jquery'],
-            'jquery.mentionsinput'        : ['jquery'],
             'jquery.contactform'          : ['jquery'],
             'cloudinary.widget'           : ['jquery'],
             'html.sortable'               : ['jquery'],

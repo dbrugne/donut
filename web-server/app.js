@@ -35,7 +35,6 @@ app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(cors()); // allow requests from mobile client (@todo: whitelist allowed origins URLs)
 app.use(less(__dirname+'/public', { force: conf.less.force }));
 app.use(express.static(path.join(__dirname, '../node_modules/socket.io-client'))); // => require('socket.io-client');
-app.use(express.static(path.join(__dirname, '../shared/cloudinary'))); // cloudinary common logic
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(logger('dev'));
 
@@ -98,9 +97,6 @@ app.use(require('./app/routes/landing'));
 app.use(require('./app/routes/user-profile'));
 app.use(require('./app/routes/room-profile'));
 app.use(require('./app/routes/chat'));
-app.use(require('./app/routes/account-delete'));
-app.use(require('./app/routes/account-edit-email'));
-app.use(require('./app/routes/account-edit-password'));
 app.use(require('./app/routes/contact-form'));
 app.use(require('./app/routes/static'));
 

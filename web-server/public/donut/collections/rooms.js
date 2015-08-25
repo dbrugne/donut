@@ -41,6 +41,7 @@ define([
       this.listenTo(client, 'room:message:spam', this.onMessageSpam);
       this.listenTo(client, 'room:message:unspam', this.onMessageUnspam);
       this.listenTo(client, 'room:message:edit', this.onMessageEdited);
+      this.listenTo(client, 'room:typing', this.onTyping);
     },
     onJoin: function(data) {
       // server ask to client to open this room in IHM
@@ -67,6 +68,7 @@ define([
         topic: room.topic,
         avatar: room.avatar,
         poster: room.poster,
+        posterblured: room.posterblured,
         color: room.color
       };
 
@@ -249,6 +251,13 @@ define([
         return;
 
       model.trigger('messageEdit', data);
+    },
+    onTyping: function(data) {
+      var model;
+      if(!data || !data.name || !(model = this.get(data.name)))
+        return;
+
+      model.trigger('typing', data);
     }
 
   });

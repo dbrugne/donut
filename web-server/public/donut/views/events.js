@@ -378,7 +378,7 @@ define([
      *****************************************************************************************************************/
     onAdminMessage: function(data) {
       data = { data: data };
-      data.data.avatar = 'cloudinary=v1409643461/rciev5ubaituvx5bclnz.png';
+      data.data.avatar = 'cloudinary=v1409643461/rciev5ubaituvx5bclnz.png'; // @todo : fix at the end of cloudinary
       data.data.username = 'DONUT';
       data.data.is_admin = true;
       data.type = 'room:message';
@@ -486,22 +486,18 @@ define([
         ? 30
         : 20;
       if (model.get("data").avatar)
-        data.data.avatar = $.cd.userAvatar(model.get("data").avatar, size);
+        data.data.avatar = common.cloudinarySize(model.get("data").avatar, size);
       if (model.get("data").by_avatar)
-        data.data.by_avatar = $.cd.userAvatar(model.get("data").by_avatar, size);
+        data.data.by_avatar = common.cloudinarySize(model.get("data").by_avatar, size);
 
       var message = data.data.message;
       if (message) {
-        // escape HTML
-        message = _.escape(message);
-
-        // mentions
+        // prepare
         message = common.markupToHtml(message, {
-          template: templates['mention.html'],
+          template: templates['markup.html'],
           style: 'color: ' + this.model.get('color')
         });
 
-        // smileys
         message = $.smilify(message);
 
         data.data.message = message;
@@ -509,16 +505,12 @@ define([
 
       var topic = data.data.topic;
       if (topic) {
-        // escape HTML
-        topic = _.escape(topic);
-
-        // mentions
+        // prepare
         topic = common.markupToHtml(topic, {
-          template: templates['mention.html'],
+          template: templates['markup.html'],
           style: 'color: ' + this.model.get('color')
         });
 
-        // smileys
         topic = $.smilify(topic);
 
         data.data.topic = topic;
@@ -528,9 +520,10 @@ define([
       if (data.data.images) {
         var images = [];
         _.each(data.data.images, function (i) {
-          i.url = $.cd.natural(i.path);
-          i.thumbnail = $.cd.natural(i.path, 50, 50, 'fill'); // @important: use .path to obtain URL with file extension and avoid CORS errors
-          images.push(i);
+          images.push({
+            url: common.cloudinarySize(i, 1500, 'limit'),
+            thumbnail: common.cloudinarySize(i, 50, 'fill')
+          });
         });
 
         if (images && images.length > 0)

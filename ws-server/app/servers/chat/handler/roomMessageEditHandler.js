@@ -16,14 +16,7 @@ module.exports = function(app) {
 
 var handler = Handler.prototype;
 
-/**
- * Handle room message edit logic
- *
- * @param {Object} data name, messageId, message from client
- * @param {Object} session
- * @param {Function} next stemp callback
- */
-handler.edit = function(data, session, next) {
+handler.call = function(data, session, next) {
 
   var user = session.__currentUser__;
   var room = session.__room__;
@@ -97,7 +90,7 @@ handler.edit = function(data, session, next) {
     },
 
     function mentionNotification(mentions, callback) {
-      if (!mentions.length)
+      if (!mentions || !mentions.length)
         return callback(null);
 
       var usersIds = _.first(_.map(mentions, 'id'), 10);

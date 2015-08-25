@@ -11,7 +11,9 @@ define([
   'text!./templates/drawer-room-users.html',
   'text!./templates/drawer-room-profile.html',
   'text!./templates/drawer-room-preferences.html',
-  'text!./templates/drawer-user-account.html',
+  'text!./templates/drawer-account.html',
+  'text!./templates/drawer-account-password.html',
+  'text!./templates/drawer-account-email.html',
   'text!./templates/drawer-user-edit.html',
   'text!./templates/drawer-user-preferences.html',
   'text!./templates/drawer-user-profile.html',
@@ -37,7 +39,9 @@ define([
   'text!./templates/home.html',
   'text!./templates/image-uploader.html',
   'text!./templates/input.html',
-  'text!./templates/input-image.html',
+  'text!./templates/input-typing.html',
+  'text!./templates/input-images.html',
+  'text!./templates/rollup.html',
   'text!./templates/room-topic.html',
   'text!./templates/room-users-list.html',
   'text!./templates/room-users.html',
@@ -56,7 +60,7 @@ define([
   'text!./templates/notification/user-mention.html',
   'text!./templates/notification/room-message.html',
   'text!./templates/notification/user-message.html',
-  'text!./templates/mention.html'
+  'text!./templates/markup.html'
 ], function (_,
   color_picker,
   current_user,
@@ -69,7 +73,9 @@ define([
   drawer_room_users,
   drawer_room_profile,
   drawer_room_preferences,
-  drawer_user_account,
+  drawer_account,
+  drawer_user_account_password,
+  drawer_user_account_email,
   drawer_user_edit,
   drawer_user_preferences,
   drawer_user_profile,
@@ -95,7 +101,9 @@ define([
   home,
   image_uploader,
   input,
-  input_image,
+  input_typing,
+  input_images,
+  rollup,
   room_topic,
   room_users_list,
   room_users,
@@ -114,7 +122,7 @@ define([
   notification_user_mention,
   notification_room_message,
   notification_user_message,
-  mention) {
+  markup) {
 
   /**
    * Stub class to load compiled templates dynamically (in development for example)
@@ -141,7 +149,9 @@ define([
   JST['drawer-room-users.html']             = _.template(drawer_room_users);
   JST['drawer-room-profile.html']           = _.template(drawer_room_profile);
   JST['drawer-room-preferences.html']       = _.template(drawer_room_preferences);
-  JST['drawer-user-account.html']           = _.template(drawer_user_account);
+  JST['drawer-account.html']           = _.template(drawer_account);
+  JST['drawer-account-password.html']  = _.template(drawer_user_account_password);
+  JST['drawer-account-email.html']      = _.template(drawer_user_account_email);
   JST['drawer-user-edit.html']              = _.template(drawer_user_edit);
   JST['drawer-user-preferences.html']       = _.template(drawer_user_preferences);
   JST['drawer-user-profile.html']           = _.template(drawer_user_profile);
@@ -167,26 +177,28 @@ define([
   JST['home.html']                          = _.template(home);
   JST['image-uploader.html']                = _.template(image_uploader);
   JST['input.html']                         = _.template(input);
-  JST['input-image.html']                   = _.template(input_image);
+  JST['input-typing.html']                  = _.template(input_typing);
+  JST['input-images.html']                  = _.template(input_images);
+  JST['rollup.html']                        = _.template(rollup);
   JST['room-topic.html']                    = _.template(room_topic);
   JST['room-users-list.html']               = _.template(room_users_list);
   JST['room-users.html']                    = _.template(room_users);
   JST['spinner.html']                       = _.template(spinner);
   JST['welcome.html']                       = _.template(welcome);
   JST['message-edit.html']                  = _.template(message_edit);
-  JST['notification/room-op.html']         = _.template(notification_room_op);
-  JST['notification/room-deop.html']       = _.template(notification_room_deop);
-  JST['notification/room-kick.html']       = _.template(notification_room_kick);
-  JST['notification/room-ban.html']        = _.template(notification_room_ban);
-  JST['notification/room-deban.html']      = _.template(notification_room_deban);
-  JST['notification/room-voice.html']      = _.template(notification_room_voice);
-  JST['notification/room-devoice.html']    = _.template(notification_room_devoice);
-  JST['notification/room-topic.html']      = _.template(notification_room_topic);
-  JST['notification/room-join.html']       = _.template(notification_room_join);
-  JST['notification/user-mention.html']    = _.template(notification_user_mention);
-  JST['notification/room-message.html']    = _.template(notification_room_message);
-  JST['notification/user-message.html']    = _.template(notification_user_message);
-  JST['mention.html']    = _.template(mention);
+  JST['notification/room-op.html']          = _.template(notification_room_op);
+  JST['notification/room-deop.html']        = _.template(notification_room_deop);
+  JST['notification/room-kick.html']        = _.template(notification_room_kick);
+  JST['notification/room-ban.html']         = _.template(notification_room_ban);
+  JST['notification/room-deban.html']       = _.template(notification_room_deban);
+  JST['notification/room-voice.html']       = _.template(notification_room_voice);
+  JST['notification/room-devoice.html']     = _.template(notification_room_devoice);
+  JST['notification/room-topic.html']       = _.template(notification_room_topic);
+  JST['notification/room-join.html']        = _.template(notification_room_join);
+  JST['notification/user-mention.html']     = _.template(notification_user_mention);
+  JST['notification/room-message.html']     = _.template(notification_room_message);
+  JST['notification/user-message.html']     = _.template(notification_user_message);
+  JST['markup.html']                        = _.template(markup);
 
   return JST;
 });

@@ -18,7 +18,7 @@ module.exports = function (app) {
 
 var handler = Handler.prototype;
 
-handler.message = function (data, session, next) {
+handler.call = function (data, session, next) {
 
   var user = session.__currentUser__;
   var room = session.__room__;
@@ -86,7 +86,7 @@ handler.message = function (data, session, next) {
     },
 
     function mentionNotification(sentEvent, mentions, callback) {
-      if (!mentions.length)
+      if (!mentions || !mentions.length)
         return callback(null, sentEvent);
 
       var usersIds = _.first(_.map(mentions, 'id'), 10);

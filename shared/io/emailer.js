@@ -87,7 +87,7 @@ emailer.forgot = function (to, token, callback) {
   sendEmail(to, 'emails/forgot.html', {
     token: token,
     title: i18next.t("email.forgot.title"),
-    subject: i18next.t("email.forgot.subject"),
+    subject: i18next.t("email.forgot.subject")
   }, callback);
 };
 
@@ -100,14 +100,14 @@ emailer.welcome = function (to, callback) {
 
 emailer.passwordChanged = function (to, callback) {
   sendEmail(to, 'emails/password-changed.html', {
-    title: i18next.t("email.passwordchanged.title"),
+    title: i18next.t("email.passwordchanged.content.title"),
     subject: i18next.t("email.passwordchanged.subject")
   }, callback);
 };
 
 emailer.emailChanged = function (to, callback) {
   sendEmail(to, 'emails/email-changed.html', {
-    title: i18next.t("email.emailchanged.title"),
+    title: i18next.t("email.emailchanged.content.title"),
     subject: i18next.t("email.emailchanged.subject")
   }, callback);
 };

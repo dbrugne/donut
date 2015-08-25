@@ -61,7 +61,7 @@
                             </a>
                             <ul class="dropdown-menu" role="menu">
                                 <li class="arrow-up"></li>
-                                <li><a href="/!#room/Support"><i class="icon icon-life-ring"></i> <%= t('chat.help') %></a></li>
+                                <li><a href="/!#room/help"><i class="icon icon-life-ring"></i> <%= t('chat.help') %></a></li>
                                 <li><a href="/faq" target="_blank"><i class="icon icon-question-circle"></i> <%= t('page.faq.title') %></a></li>
                                 <li><a data-toggle="contactform"><i class="icon icon-envelope"></i> <%= t('page.contact.title') %></a></li>
                                 <li><a href="/eutc" target="_blank"><i class="icon icon-question-circle"></i> <%= t('page.eutc.title') %></a></li>
@@ -168,19 +168,38 @@
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
     <%- partial('contact') %>
-<script>
-    window.cloudinary_cloud_name = '<%- cloudinary.cloud_name %>';
-    window.cloudinary_api_key = '<%- cloudinary.api_key %>';
-    window.facebook_app_id = '<%- facebook.clientID %>';
-    window.recaptcha_site_key = '<%- recaptcha.sitekey %>';
-    window.room_default_color = '<%- room_default_color %>';
-    window.message_maxedittime = <%= message_maxedittime %>;
-    window.colors = <%= colors %>;
-</script>
-<script src="/javascripts/old-browser-update.js"></script>
-<script src='https://www.google.com/recaptcha/api.js' async defer></script>
-<script src="/web.js"></script>
-<%= googleanalytics %>
+
+    <script src="/javascripts/old-browser-update.js"></script>
+    <script src="//widget.cloudinary.com/global/all.js"></script>
+    <script src='https://www.google.com/recaptcha/api.js' async defer></script>
+    <script>
+        window.recaptcha_site_key = '<%- recaptcha.sitekey %>';
+        window.room_default_color = '<%- room_default_color %>';
+        window.message_maxedittime = <%= message_maxedittime %>;
+        window.colors = <%= colors %>;
+
+        window.fbAsyncInit = function() {
+            FB.init({
+                appId      : '<%- facebook.clientID %>',
+                xfbml      : true,
+                version    : 'v2.4'
+            });
+        };
+        (function(d, s, id){
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) {return;}
+            js = d.createElement(s); js.id = id;
+            js.src = "//connect.facebook.net/<%- locale_iso %>/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+
+        (function() {
+            cloudinary.setCloudName('<%- cloudinary.cloud_name %>');
+        }());
+    </script>
+    <script src="/web.js"></script>
+    <%= googleanalytics %>
+
 </body>
 </html>
 <!-- made with ♥ -->

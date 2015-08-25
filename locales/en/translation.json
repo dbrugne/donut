@@ -51,8 +51,11 @@
   },
   "global": {
     "or": "or",
+    "yes": "yes",
+    "no": "no",
     "else": "otherwise",
     "close": "close",
+    "add": "add",
     "change": "change",
     "edit": "edit",
     "delete": "delete",
@@ -297,6 +300,27 @@
     }
   },
   "chat": {
+    "rollup": {
+      "header": {
+        "commands": "Liste des commandes disponibles",
+        "rooms": "Liste des donuts disponibles",
+        "users": "Liste des utilisateurs",
+        "tonavigate": "to navigate",
+        "toselect": "to select",
+        "todismiss": "to dismiss"
+      },
+      "results": {
+        "users": {
+          "empty": "No user found"
+        },
+        "rooms": {
+          "empty": "No donut found"
+        },
+        "commands": {
+          "empty": "No command found"
+        }
+      }
+    },
     "loading": "Loading",
     "actions": {
       "search": "Search",
@@ -523,36 +547,45 @@
           "unmark-spam": "Unmark as spam"
         },
         "edit": "Edit my message"
-      }
+      },
+      "today": "Today",
+      "yesterday": "Yesterday",
+      "the-day-before": "The day before"
     },
-    "today" : "Today",
-    "yesterday" : "Yesterday",
-    "the-day-before" : "The day before"
+    "input": {
+      "typing": "is typing",
+      "typing_plural": "are typing"
+    }
   },
   "account": {
     "error": {
       "invalid": "Sorry, this account does not exist or the password is not valid"
     },
     "emailandpassword": {
-      "label": "E-mail and password",
-      "help": "You have not set e-mail and password. To log in without Facebook or unlink your account from Facebook:",
-      "add": "Add e-mail and password"
+      "label": "E-mail and password"
     },
     "email": {
       "label": "E-mail",
       "success": "Your new e-mail has been saved",
       "error": {
         "format": "Invalid e-mail",
-        "alreadyexists": "This e-mail is already used by another account"
+        "alreadyexists": "This e-mail is already used by another account",
+        "alreadyyours": "You already use this e-mail",
+        "empty": "The champ is empty"
       },
-      "format": "Invalid format"
+      "format": "Invalid format",
+      "new": "New E-mail"
     },
     "password": {
       "label": "Your password",
       "success": "Your new password has been saved.",
+      "new": "New password",
+      "confirm": "Confirm",
+      "current": "Current password",
       "error": {
         "confirm": "Pass two passwords are not the same.",
-        "length": "Password should have at least 6 characters length."
+        "length": "Password should have between 6 and 50 characters length.",
+        "wrong": "Sorry, your old password don't match"
       }
     },
     "facebook": {
@@ -643,6 +676,16 @@
           "permanent": "It is not possible to delete a 'permanent' donut"
         }
       }
+    },
+    "errors": {
+      "bio": "Bio should be 200 characters max.",
+      "location": "Location should be 70 characters max.",
+      "description": "Description should be 200 characters max.",
+      "website-size": "Website should be 5 characters min. and 255 characters max.",
+      "website-url": "Website should be a valid site URL.",
+      "color-hexadecimal": "Color should be explained has hexadecimal (e.g.: #FF00AA).",
+      "color-integer": "Priority should be explained has number (integer).",
+      "positions": "Positions should be an array."
     }
   },
   "page": {
@@ -661,7 +704,7 @@
       "global": {
         "content": {
           "team": "The DONUT.me team",
-          "ps": "P.S.: To avoid receiving these notification types, please uncheck it from your notification options in your account preferences on <a href=\"https://__fqdn__\">__fqdn__</a>. For any question, we are available on <a href=\"https://__fqdn__/!#room/Support\">#support</a>"
+          "ps": "P.S.: To avoid receiving these notification types, please uncheck it from your notification options in your account preferences on <a href=\"https://__fqdn__\">__fqdn__</a>. For any question, we are available on <a href=\"https://__fqdn__/!#room/help\">#help</a>"
         }
       },
       "welcome": {
@@ -712,7 +755,7 @@
           "title": "You were promoted to moderator in #__roomname__",
           "disclaimer": "Kudos! You are now a moderator in <strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>",
           "disclaimer2": "It's time to practice your new super powers.",
-          "action": "…and all of that thanks to <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#253b6c; text-decoration:none;\">@__username__</a></strong>",
+          "action": "…and all of that thanks to <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
           "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Go to chat\">Go to chat</a>"
         }
       },
@@ -721,7 +764,7 @@
         "content": {
           "title": "You are no longer a moderator of #__roomname__",
           "disclaimer": "This is sad news... But the good news is you will have more time to focus on your very own donut:)",
-          "action": "…and all of that thanks to <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#253b6c; text-decoration:none;\">@__username__</a></strong>",
+          "action": "…and all of that thanks to <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
           "button": "Return to DONUT"
         }
       },
@@ -729,7 +772,6 @@
         "subject": "You were kicked out of #__roomname__",
         "content": {
           "title": "You were kicked out of #__roomname__ by @__username__",
-          "reason": "<strong>Reason: \"__reason__\"</strong>",
           "disclaimer": "That can't be a big deal. The two of you just give a big hug and everything will be fine again!",
           "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Back to DONUT\">Back to DONUT</a>"
         }
@@ -738,7 +780,6 @@
         "subject": "You were banned from #__roomname__",
         "content": {
           "title": "You were banned from #__roomname__ by @__username__",
-          "reason": "<strong>Reason: \"__reason__\"</strong>",
           "disclaimer": "It looks like you were not meant to be together...<br/>But you'll be fine, one lost ten found. Just pick another donut!",
           "button": "Return to DONUT"
         }
@@ -749,7 +790,7 @@
           "title": "You are no longer banned from #__roomname__",
           "disclaimer": "You are no longer banned from <strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>.",
           "disclaimer2": "It looks like all is well that ends well!",
-          "action": "…and all of that thanks to <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#253b6c; text-decoration:none;\">@__username__</a></strong>",
+          "action": "…and all of that thanks to <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
           "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Go to chat\">Go to chat</a>"
         }
       },
@@ -766,7 +807,7 @@
         "content": {
           "title": "You were unmuted in #__roomname__",
           "disclaimer": "It looks like all is well that ends well!",
-          "action": "... and all of that thanks to <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#253b6c; text-decoration:none;\">@__username__</a></strong>",
+          "action": "... and all of that thanks to <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
           "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Go to chat\">Go to chat</a>"
         }
       },
@@ -774,9 +815,8 @@
         "subject": "You were muted in #__roomname__",
         "content": {
           "title": "You were muted in #__roomname__",
-          "reason": "<strong>Reason: \"__reason__\"</strong>",
           "disclaimer": "This is sad news... You are mute in #__roomname__",
-          "action": "... and all of that thanks to <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#253b6c; text-decoration:none;\">@__username__</a></strong>",
+          "action": "... and all of that thanks to <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
           "button": "Return to DONUT"
         }
       },
@@ -892,46 +932,21 @@
       ]
     },
     "passwordchanged": {
-      "subject": "Success ! Your password has been successfully changed.",
-      "text": [
-        "You are receiving this e-mail as the final confirmation of your password change. Let's go back to DONUT.me and join tasty conversations!",
-        "",
-        "https://__fqdn__",
-        "",
-        "The DONUT.me team",
-        "",
-        "PS : If you did not initiate this action, please report by forwarding this e-mail to __email__ or replying this e-mail."
-      ],
-      "html": [
-        "You are receiving this e-mail as the final confirmation of your password change. Let's go back to DONUT.me and join tasty conversations!<br>",
-        "<br>",
-        "<a href='https://__fqdn__'>Click here to connect</a><br>",
-        "<br>",
-        "The DONUT.me team<br>",
-        "<br>",
-        "PS : If you did not initiate this action, please report by forwarding this e-mail to <a href='mailto:__email__'>__email__</a> or replying this e-mail.<br>"
-      ]
+      "subject": "Your password has been successfully changed.",
+      "content": {
+        "title": "Password update",
+        "disclaimer": "You have changed your password. Your new password is now active.",
+        "button": "Click here to connect",
+        "info": "We are craving for it !"
+      }
     },
     "emailchanged": {
-      "subject": "Success ! The e-mail linked to your DONUT.me account has been successfully changed.",
-      "text": [
-        "You are receiving this e-mail because you requested to change the e-mail linked to yout DONUT.me account. It worked perfectly! You can use it to log in:",
-        "",
-        "https://__fqdn__",
-        "",
-        "The DONUT.me team",
-        "",
-        "PS : If you did not initiate this action, please report by forwarding this e-mail to __email__ or replying this e-mail."
-      ],
-      "html": [
-        "You are receiving this e-mail because you requested to change the e-mail linked to yout DONUT.me account. It worked perfectly! You can use it to log in:",
-        "<br>",
-        "<a href='https://__fqdn__'>Click here to log in</a><br>",
-        "<br>",
-        "The DONUT.me team<br>",
-        "<br>",
-        "PS : If you did not initiate this action, please report by forwarding this e-mail to <a href='mailto:__email__'>__email__</a> or replying this e-mail.<br>"
-      ]
+      "subject": "The e-mail linked to your DONUT.me account has been successfully changed.",
+      "content": {
+        "title": "Email update",
+        "disclaimer": "You have changed your email address.",
+        "button": "Click here to enjoy it!"
+      }
     },
     "contact": {
       "subject": "[DONUT] New contact form"
@@ -984,7 +999,7 @@
     "notif": {
       "title": "Notifications",
       "help": {
-        "user": "DONUT tries to limit smartly the amount of emails and mobile notifications. However if you find that we send too many notifications feel free to send your feedback <a data-toggle='contactform'>by email</a> or on <a href='#room/Support'>#Support</a>"
+        "user": "DONUT tries to limit smartly the amount of emails and mobile notifications. However if you find that we send too many notifications feel free to send your feedback <a data-toggle='contactform'>by email</a> or on <a href='#room/help'>#help</a>"
       },
       "nothing": {
         "label": "Never receive notifications about this donut",
