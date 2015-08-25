@@ -39,7 +39,6 @@ define([
     onResponse: function(room) {
       this.roomName = room.name;
 
-      // colorize drawer .opacity
       if (room.color)
         this.trigger('color', room.color);
 
@@ -59,7 +58,7 @@ define([
       this.$el.html(html);
 
       // color form
-      this.$el.find('.room').colorify();
+      //this.$el.find('.room').colorify();
 
       // description
       this.$el.find('#roomDescription').maxlength({

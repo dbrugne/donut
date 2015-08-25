@@ -44,8 +44,8 @@ define([
         rooms: welcome.featured
       });
       this.$el.find('.modal-body .rooms')
-          .html(html)
-          .colorify();
+          .html(html);
+          //.colorify();
       return this;
     },
     show: function() {

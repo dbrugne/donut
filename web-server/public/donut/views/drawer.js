@@ -79,11 +79,12 @@ define([
     },
     _height: function() {
       var newHeight = $('#center').innerHeight();
-      this.$content.height(newHeight - (55 + 40));
+      this.$content.height(newHeight - (40));
     },
     _show: function() {
       this._height();
 
+      //this.color(this.currentColor, true);
       this.trigger('show');
       this.shown = true;
 

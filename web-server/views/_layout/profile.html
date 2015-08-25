@@ -44,13 +44,11 @@
                     <% if (typeof user !== 'undefined' && typeof user.avatar !== 'undefined') { %>
                         <a href="javascript:;" class="avatar open-user-profile hidden-sm hidden-xs" data-username="<%= user.username %>">
                             <img src="<%= user.avatar %>" alt="<%= user.username %> avatar">
-                            <div class="overlay hidden-sm hidden-xs"></div>
-                            <span class="overlay-text hidden-sm hidden-xs"><%= t('chat.actions.see') %></span>
-                                <span class="title hidden-sm hidden-xs">
-                                    <span class="username">
-                                        @<%= user.username %>
-                                    </span>
+                            <span class="title hidden-sm hidden-xs">
+                                <span class="username">
+                                    @<%= user.username %>
                                 </span>
+                            </span>
                             <span class="selected"></span>
                             <span class="arrow"></span>
                         </a>

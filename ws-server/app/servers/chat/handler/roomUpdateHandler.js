@@ -183,15 +183,12 @@ handler.call = function(data, session, next) {
 					if (key == 'avatar')
 						sanitizedToNotify['avatar'] = room._avatar();
 					else if (key == 'poster') {
-						sanitizedToNotify['poster'] = room._poster();
-						sanitizedToNotify['posterblured'] = room._poster(true);
-					} else {
+            sanitizedToNotify['poster'] = room._poster();
+            sanitizedToNotify['posterblured'] = room._poster(true);
+          } else if (key == 'color') {
 					  sanitizedToNotify['color'] = sanitized[key];
-						// Also update colors of poster & sidebar when no image defined
-						if (room.avatar && room.avatar.length == 0)
-							sanitizedToNotify['avatar'] = room._avatar();
-						if (room.poster && room.poster.length == 0)
-							sanitizedToNotify['poster'] = room._poster();
+            sanitizedToNotify['avatar'] = room._avatar();
+            sanitizedToNotify['poster'] = room._poster();
 					}
 				}
 			});

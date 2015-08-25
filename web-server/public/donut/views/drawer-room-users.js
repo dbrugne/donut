@@ -42,9 +42,8 @@ define([
       return this;
     },
     onResponse: function(room) {
-      //// colorize drawer .opacity
-      //if (room.color)
-      //  this.trigger('color', room.color);
+      if (room.color)
+        this.trigger('color', room.color);
 
       room.isOwner = (room.owner)
           ? (room.owner.user_id == currentUser.get('user_id'))
@@ -83,7 +82,7 @@ define([
       this.$el.html(html);
 
       // color form
-      this.$el.find('.room').colorify();
+      //this.$el.find('.room').colorify();
     },
 
     /**
