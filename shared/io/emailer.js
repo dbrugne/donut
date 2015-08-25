@@ -100,15 +100,15 @@ emailer.welcome = function (to, callback) {
 
 emailer.passwordChanged = function (to, callback) {
   sendEmail(to, 'emails/password-changed.html', {
-    title: i18next.t("email.email.passwordchanged.content.title"),
-    subject: i18next.t("email.email.passwordchanged.subject")
+    title: i18next.t("email.passwordchanged.content.title"),
+    subject: i18next.t("email.passwordchanged.subject")
   }, callback);
 };
 
 emailer.emailChanged = function (to, callback) {
   sendEmail(to, 'emails/email-changed.html', {
-    title: i18next.t("email.email.emailchanged.content.title"),
-    subject: i18next.t("email.email.emailchanged.subject")
+    title: i18next.t("email.emailchanged.content.title"),
+    subject: i18next.t("email.emailchanged.subject")
   }, callback);
 };
 
