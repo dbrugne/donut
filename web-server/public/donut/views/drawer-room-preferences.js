@@ -36,9 +36,9 @@ define([
     },
     onResponse: function(data) {
       var color = this.model.get('color');
-      // colorize drawer .opacity
-      if (color)
-        this.trigger('color', color);
+      //// colorize drawer .opacity
+      //if (color)
+      //  this.trigger('color', color);
 
       var html = this.template({
         username: currentUser.get('username'),

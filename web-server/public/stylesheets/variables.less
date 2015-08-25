@@ -154,7 +154,8 @@
   .dc-@{code} {
     .dc-text { color: @color !important; }
     .dc-back { background-color: @color !important; }
-    .dc-back-darker { background-color: darken(@color, 10%) !important; }
+    .dc-back-opacity { background-color: fade(@color, 60%) !important; }
+    .dc-back-darker { background-color: darken(@color, 5%) !important; }
     .dc-text-contrast { .color-text(@color); }
     .dc-border { border-color: @color !important; }
     .dc-border-lighter { border-color: lighten(@color, 10%) !important; }

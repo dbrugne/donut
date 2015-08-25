@@ -36,9 +36,9 @@ define([
       return this;
     },
     onResponse: function (user) {
-      // colorize drawer .opacity
-      if (user.color)
-        this.trigger('color', user.color);
+      //// colorize drawer .opacity
+      //if (user.color)
+      //  this.trigger('color', user.color);
 
       var currentAvatar = user.avatar;
 

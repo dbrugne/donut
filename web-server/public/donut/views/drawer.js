@@ -67,9 +67,9 @@ define([
       color = (this._validHex(color))
           ? color
           : this.defaultColor;
-      var rgb = this._hexToRgb(color);
-      var rgbBg = 'rgba('+rgb.r+', '+rgb.g+', '+rgb.b+', 0.6)';
-      this.$opacity.css('background-color', rgbBg);
+      //var rgb = this._hexToRgb(color);
+      //var rgbBg = 'rgba('+rgb.r+', '+rgb.g+', '+rgb.b+', 0.6)';
+      //this.$opacity.css('background-color', rgbBg);
       this.mainView.color(color, true);
     },
     detectOutsideClick: function(event) {
@@ -144,20 +144,20 @@ define([
         return true;
 
       return false;
-    },
-    _hexToRgb: function(hex) {
-      // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
-      hex = hex.replace(this.shorthandRegex, function(m, r, g, b) {
-        return r + r + g + g + b + b;
-      });
-
-      var result = this.longhandRegex.exec(hex);
-      return result ? {
-        r: parseInt(result[1], 16),
-        g: parseInt(result[2], 16),
-        b: parseInt(result[3], 16)
-      } : null;
-    }
+    }//,
+    //_hexToRgb: function(hex) {
+    //  // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
+    //  hex = hex.replace(this.shorthandRegex, function(m, r, g, b) {
+    //    return r + r + g + g + b + b;
+    //  });
+    //
+    //  var result = this.longhandRegex.exec(hex);
+    //  return result ? {
+    //    r: parseInt(result[1], 16),
+    //    g: parseInt(result[2], 16),
+    //    b: parseInt(result[3], 16)
+    //  } : null;
+    //}
 
   });
 

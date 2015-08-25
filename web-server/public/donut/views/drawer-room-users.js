@@ -42,9 +42,9 @@ define([
       return this;
     },
     onResponse: function(room) {
-      // colorize drawer .opacity
-      if (room.color)
-        this.trigger('color', room.color);
+      //// colorize drawer .opacity
+      //if (room.color)
+      //  this.trigger('color', room.color);
 
       room.isOwner = (room.owner)
           ? (room.owner.user_id == currentUser.get('user_id'))
