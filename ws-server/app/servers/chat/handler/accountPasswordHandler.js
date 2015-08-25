@@ -19,27 +19,33 @@ handler.call = function (data, session, next) {
   async.waterfall([
 
     function check(callback) {
-      if(!data.password || data.password.length < 6 || data.password.length > 50)
+      if (!data.password || data.password.length < 6 || data.password.length > 50)
         return callback('length');
+
+      if (!user.validPassword(data.current_password) && user.local.password)
+        return callback('wrong-password');
 
       return callback(null);
     },
 
-    function save(callback) {
-      user.local.password = user.generateHash(data.password);
+    function mail(callback) {
       user.save(function (err) {
         if (err)
           return callback(err);
-
         emailer.passwordChanged(user.local.email, callback);
       });
+    },
+
+    function save(callback) {
+      user.local.password = user.generateHash(data.password);
+      return callback(null);
     }
 
   ], function(err) {
     if (err) {
       logger.error('[account:password] ' + err);
 
-      err = (['length'].indexOf(err) !== -1)
+      err = (['length', 'wrong-password'].indexOf(err) !== -1)
         ? err
         : 'internal';
       return next(null, { code: 500, err: err });
