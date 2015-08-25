@@ -573,15 +573,13 @@
         "empty": "The champ is empty"
       },
       "format": "Invalid format",
-      "new": "New E-mail",
-      "save": "Save e-mail"
+      "new": "New E-mail"
     },
     "password": {
       "label": "Your password",
       "success": "Your new password has been saved.",
       "new": "New password",
       "confirm": "Confirm",
-      "save": "Save password",
       "current": "Current password",
       "error": {
         "confirm": "Pass two passwords are not the same.",
