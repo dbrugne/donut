@@ -155,7 +155,7 @@ define([
       nothing: /([^\.])/,
       message: /(.+)/,
       messageNotMandatory: /(.*)/,
-      helpCommand: /^\/([a-z]+)/i,
+      helpCommand: /(^[a-z]+)/i,
       name: /(^[#][a-z-.|^]+)/i,
       username: /^[@]([a-z-.|^]+)/i,
       usernameName: /^([@#][a-z-.|^]+)/i,
@@ -297,7 +297,7 @@ define([
         parameters[1] = parameters[1].replace(/^@/, '');
         client.userRead(parameters[1], function (err, data) {
           if (err === 'unknown') {
-            that.errorCommand('profile', 'invaliduser');
+            that.errorCommand('profile', 'invalidusername');
             return;
           }
           if (!err)
@@ -375,17 +375,22 @@ define([
      *
      **********************************************************/
 
-    errorCommand: function(StringCommand, errorType) {
+    errorCommand: function(stringCommand, errorType) {
       var data = {
-        command: StringCommand,
+        command: stringCommand,
         error: $.t('chat.commands.errors.' + errorType),
-        type: errorType
       }
       var model = new EventModel({
         type: 'command:error',
         data: data
       });
       this.model.trigger('freshEvent', model);
+      if (errorType === 'invalidcommand')
+        this.help(null, null);
+      else {
+        var parameters = ['', stringCommand];
+        this.help(null, parameters);
+      }
     }
 
   });

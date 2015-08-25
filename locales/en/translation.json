@@ -432,7 +432,14 @@
       "profile": "Open donut or user profile",
       "me": "What are you doing?",
       "ping": "pong",
-      "help": "Commands help"
+      "help": "Commands help",
+      "errors": {
+        "parameters": "Invalid parameter",
+        "invalidcommand": "Command not found",
+        "invalidusername": "User not found",
+        "invalidroom": "Donut not found",
+        "commandaccess": "You can not use this command here"
+      }
     },
     "notifications": {
       "hello": "You enter",
