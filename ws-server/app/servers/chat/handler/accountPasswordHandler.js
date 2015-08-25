@@ -23,7 +23,7 @@ handler.call = function (data, session, next) {
         return callback('length');
 
       if (!user.validPassword(data.current_password) && user.local.password)
-        return callback('wrong-Password');
+        return callback('wrong-password');
 
       return callback(null);
     },

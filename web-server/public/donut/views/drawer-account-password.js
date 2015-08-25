@@ -106,7 +106,7 @@ define([
         this.$errorLabel.text($.t('account.password.error.length'));
       else if (err === 'confirm')
         this.$errorLabel.text($.t('account.password.error.confirm'));
-      else if (err === 'wrong-Password')
+      else if (err === 'wrong-password')
         this.$errorLabel.text($.t('account.password.error.wrong'));
       else
         this.$errorLabel.text($.t('global.unknownerror'));
