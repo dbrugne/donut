@@ -4,6 +4,8 @@
 * translations
 * moment fr ?
 * desktop-notify
-* Facebook SDK test
-* cat 'web-server/public/javascripts/plugins/cloudinary.widget.js' ???
 * mount mainview, $, _ on windows only on debug mode
+
+Build should be done:
+* By middleware in development (partially?)
+* By grunt tasks on staging/production

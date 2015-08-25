@@ -11,13 +11,8 @@ echo '' > $PLUGINS
 cat 'web-server/public/vendor/html5-desktop-notifications/desktop-notify.js' >> $PLUGINS
 cat 'web-server/public/javascripts/plugins/jquery.insertatcaret.js' >> $PLUGINS
 cat 'web-server/public/javascripts/plugins/jquery.maxlength.js' >> $PLUGINS
-#cat 'web-server/public/vendor/blueimp-file-upload/js/vendor/jquery.ui.widget.js' >> $PLUGINS
-#cat 'web-server/public/vendor/blueimp-file-upload/js/jquery.iframe-transport.js' >> $PLUGINS
-#cat 'web-server/public/vendor/blueimp-file-upload/js/jquery.fileupload.js' >> $PLUGINS
-#cat 'web-server/public/vendor/cloudinary_js/js/jquery.cloudinary.js' >> $PLUGINS
 cat 'web-server/public/javascripts/plugins/jquery.smilify.js' >> $PLUGINS
 cat 'web-server/public/javascripts/plugins/jquery.momentify.js' >> $PLUGINS
-cat 'web-server/public/javascripts/plugins/jquery.colorify.js' >> $PLUGINS
 cat 'web-server/public/javascripts/plugins/jquery.socialify.js' >> $PLUGINS
 cat 'web-server/public/javascripts/plugins/jquery.contactform.js' >> $PLUGINS
 cat 'web-server/public/vendor/html.sortable/dist/html.sortable.js' >> $PLUGINS

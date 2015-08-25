@@ -12,16 +12,7 @@ require('./web-plugins');
 
 var i18next = require('i18next-client');
 var moment = require('moment');
-var cloudinary = require('cloudinary_js');
-require('../../../shared/cloudinary/cloudinary');
-
 var app = require('./app');
-
-// Facebook
-var facebook;
-require('./libs/facebook')(function(FB) {
-  facebook = FB;
-});
 
 var desktopNotify = require('html5-desktop-notifications');
 
@@ -40,13 +31,6 @@ if (false)
 else
   i18nextOptions.resStore = require('../build/translations');
 i18next.init(i18nextOptions);
-
-// Cloudinary setup
-$.cloudinary.config({
-  cloud_name: window.cloudinary_cloud_name,
-  api_key: window.cloudinary_api_key
-});
-//$.cloudinary.setCloudName(window.cloudinary_cloud_name); // @global, widget
 
 // Moment language
 window.moment = moment;
