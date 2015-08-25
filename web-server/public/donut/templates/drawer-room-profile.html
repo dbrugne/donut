@@ -9,7 +9,7 @@
     <p class="name"><%= room.name %></p>
     <p class="owner"><%= t('global.by') %> <a class="open-user-profile" data-username="<%= room.owner.username %>" data-colorify-text="#ffffff">@<%= room.owner.username %></a></p>
     <% if (room.description) { %><p class="description"><%= room.description %></p><% }; %>
-    <% if (room.website) { %><p class="website"><i class="icon icon-link" data-colorify-text="#000"></i> <a href="<%= room.website.href %>" title="<%= room.website.title %>" data-colorify-text="#000"><%= room.website.title %></a></p><% }; %>
+    <% if (room.website) { %><p class="website"><i class="icon icon-link" data-colorify-text="#000"></i> <a href="<%= room.website.href %>" target="_blank" title="<%= room.website.title %>" data-colorify-text="#000"><%= room.website.title %></a></p><% }; %>
     <% if (room.created) { %><p class="created"><i class="icon icon-clock-o"  data-colorify-text="#000"></i> <%= t('profile.room.createdat') %> <span data-time="<%= room.created %>"></span></p><% }; %>
     <p class="permalink"><i class="icon icon-link"  data-colorify-text="#000"></i> <a href="<%= room.url %>" target="_blank" data-colorify-text="#000"><%= t('profile.room.permalink') %></a></p>
     <% if (room.isOwner || room.isAdmin) { %><p class="edit"><i class="icon icon-pencil" data-colorify-text="#000"></i> <a class="open-room-edit" data-room-name="<%= room.name %>"  data-colorify-text="#000"> <%= t('profile.room.editlink') %></a><p><% }; %>

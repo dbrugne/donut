@@ -32,7 +32,7 @@
                     </li>
                 </ul>
             </div>
-            <span class="location"><%= location %></span><% if (location && website) { print(', '); } %><a class="website" href="<%= website.href %>" title="<%= website.title %>"><%= website.title %></a>
+            <span class="location"><%= location %></span><% if (location && website) { print(', '); } %><a class="website" href="<%= website.href %>" target="_blank" title="<%= website.title %>" data-colorify-text="#000"><%= website.title %></a>
         </div>
         <div class="status-block">
             <i class="icon icon-circle status contrast"></i>
