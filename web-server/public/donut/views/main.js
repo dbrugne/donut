@@ -25,7 +25,7 @@ define([
   'views/drawer-user-profile',
   'views/drawer-user-edit',
   'views/drawer-user-preferences',
-  'views/drawer-user-account',
+  'views/drawer-account',
   'views/discussion-room',
   'views/discussion-onetoone',
   'views/discussions-block',
