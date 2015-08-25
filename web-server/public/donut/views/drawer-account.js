@@ -45,12 +45,12 @@ define([
       this.$el.html(html);
 
       this.emailView = new EmailView ({
-        el : this.$(".mail-form"),
+        el : this.$(".email-container"),
         user: this.user,
         model: this.model
       });
       this.passwordView = new PasswordView ({
-        el : this.$(".password-form"),
+        el : this.$(".password-container"),
         user: this.user,
         model: this.model
       });

@@ -45,6 +45,7 @@ define([
 
       this.$form.show();
       this.$link.hide();
+      this.$success.hide();
     },
 
     onCancel: function() {
@@ -69,17 +70,17 @@ define([
 
       this.$errorLabel.text('');
       this.$spinner.show();
+      this.$link.show();
       this.$form.removeClass('has-error');
 
       client.accountEmail(this.$input.val(), function (data) {
         that.$spinner.hide();
-        if (data.err) {
-          that.putError(data.err);
-        } else {
-          that.$mailUserLabel.text(that.$input.val());
-          that.$form.hide();
-          that.$success.show();
-        }
+        if (data.err)
+          return that.putError(data.err);
+
+        that.$mailUserLabel.text(that.$input.val());
+        that.$form.hide();
+        that.$success.show();
       });
     },
 
