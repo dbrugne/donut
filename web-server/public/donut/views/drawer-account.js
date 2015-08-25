@@ -7,7 +7,7 @@ define([
   'views/drawer-account-email',
   'views/drawer-account-password',
   '_templates'
-], function ($, _, Backbone, client, currentUser, EmailView, PasswordView,templates) {
+], function ($, _, Backbone, client, currentUser, EmailView, PasswordView, templates) {
   var DrawerUserEditView = Backbone.View.extend({
 
     template: templates['drawer-account.html'],
@@ -46,13 +46,11 @@ define([
 
       this.emailView = new EmailView ({
         el : this.$(".email-container"),
-        user: this.user,
-        model: this.model
+        user: this.user
       });
       this.passwordView = new PasswordView ({
         el : this.$(".password-container"),
-        user: this.user,
-        model: this.model
+        user: this.user
       });
     }
 
