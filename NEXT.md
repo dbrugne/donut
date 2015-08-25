@@ -4,3 +4,7 @@
 ```
 grunt mentions-migration
 ```
+* Replace old website attributes on rooms and users:
+```
+grunt website-migration
+```

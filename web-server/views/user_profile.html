@@ -17,9 +17,9 @@
         <% } %>
         <% if (_user.website) { %>
         <% if (_user.location) { %><span class="separation">|</span><% } %>
-        <span class="website" <% if (_user.color) { %>style="color: <%= _user.color %>;"<% } %>>
-        <%= _user.website %>
-        </span>
+        <a class="website" href="<%= _user.website.href %>" title="<%= _user.website.title %>"<% if (_user.color) { %>style="color: <%= _user.color %>;"<% } %>>
+        <%= _user.website.title %>
+        </a>
         <% } %>
         <% if (_user.bio) { %>
         <div class="bio">
