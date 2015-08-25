@@ -62,22 +62,20 @@ handler.call = function(data, session, next) {
 			}
 
 			// website
-			if (_.has(data.data, 'website')) {
-					if (data.data.website != '') {
-						var link = common.getLinkify().find(data.data.website);
-						if (data.data.website.length < 5 && data.data.website.length > 255)
-							errors.website = 'website-size'; //Website should be 5 characters min and 255 characters max.;
-						if (!link || !link[0] || !link[0].type || !link[0].value || !link[0].href)
-							errors.website = 'website-url'; //Website should be a valid site URL
-						else {
-							var website = {
-								href: link[0].href,
-								title: link[0].value
-							};
-						}
-					}
-					sanitized.website = website;
+			if (_.has(data.data, 'website') && data.data.website) {
+				if (data.data.website.length < 5 && data.data.website.length > 255)
+					errors.website = 'website-size'; //Website should be 5 characters min and 255 characters max.;
+				var link = common.getLinkify().find(data.data.website);
+				if (!link || !link[0] || !link[0].type || !link[0].value || !link[0].href)
+					errors.website = 'website-url'; //Website should be a valid site URL
+				else {
+					var website = {
+						href: link[0].href,
+						title: link[0].value
+					};
+				}
 			}
+			sanitized.website = website;
 
 			// color
 			if (_.has(data.data, 'color')) {

@@ -8,7 +8,6 @@ var roomSchema = mongoose.Schema({
 
   name            : String,
   permanent       : Boolean,
-  website         : mongoose.Schema.Types.Mixed,
   deleted         : { type: Boolean, default: false },
   visibility      : { type: Boolean, default: false },
   priority        : Number,
@@ -30,6 +29,7 @@ var roomSchema = mongoose.Schema({
   color           : String,
   topic           : String,
   description     : String,
+  website         : mongoose.Schema.Types.Mixed,
   created_at      : { type: Date, default: Date.now },
   lastjoin_at     : { type: Date }
 

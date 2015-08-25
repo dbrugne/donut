@@ -15,7 +15,7 @@
     </div>
     <div class="form-group">
         <label for="userWebsite"><%= t('edit.website.label') %></label>
-        <input name="website" type="text" class="form-control" id="userWebsite" placeholder="<%= t('edit.website.placeholder') %>" value="<%= user.website.title %>">
+        <input name="website" type="text" class="form-control" id="userWebsite" placeholder="<%= t('edit.website.placeholder') %>" value="<% if (user.website) { %><%= user.website.title %><% } %>">
         <p class="help-block"><%= t('edit.website.help') %></p>
     </div>
     <div class="form-group">

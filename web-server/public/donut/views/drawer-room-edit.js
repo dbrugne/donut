@@ -14,8 +14,6 @@ define([
 
     id: 'room-edit',
 
-    error: '',
-
     events  : {
       'submit form.room-form': 'onSubmit'
     },
@@ -106,10 +104,8 @@ define([
     onSubmit: function(event) {
       event.preventDefault();
 
-      if (!this.checkWebsite()) {
-        this.$el.find('.errors').html(this.error).show();
+      if (this.checkWebsite() !== true)
         return;
-      }
 
       var updateData = {
         description: this.$el.find('textarea[name=description]').val(),
@@ -133,15 +129,8 @@ define([
       var that = this;
       client.roomUpdate(this.roomName, updateData, function(data) {
         that.$el.find('.errors').hide();
-        if (data.err) {
-          var message = '';
-          _.each(data.err, function(error) {
-            var editerror = t('edit.errors.' + error);
-            message += editerror+'<br>';
-          });
-          that.$el.find('.errors').html(message).show();
-          return;
-        }
+        if (data.err)
+          return that.editError(data);
         that.trigger('close');
       });
     },
@@ -153,14 +142,8 @@ define([
       var that = this;
       client.roomUpdate(this.roomName, updateData, function (d) {
         that.$el.find('.errors').hide();
-        if (d.err) {
-          var message = '';
-          _.each(d.err, function (error) {
-            var editerror = t('edit.errors.' + error);
-            message += editerror+'<br>';
-          });
-          that.$el.find('.errors').html(message).show();
-        }
+        if (d.err)
+          that.editError(d);
       });
     },
 
@@ -171,34 +154,29 @@ define([
       var that = this;
       client.roomUpdate(this.roomName, updateData, function (d) {
         that.$el.find('.errors').hide();
-        if (d.err) {
-          var message = '';
-          _.each(d.err, function (error) {
-            var editerror = t('edit.errors.' + error);
-            message += editerror+'<br>';
-          });
-          that.$el.find('.errors').html(message).show();
-        }
+        if (d.err)
+          that.editError(d);
       });
     },
 
     checkWebsite: function() {
       var website = this.$website.val();
 
-      if (!website)
-        return true;
+      if (website && (website.length < 5 || website.length > 255))
+        return this.$el.find('.errors').html(t('edit.errors.website-size')).show();
 
-      if (website.length < 5 || website.length > 255) {
-        this.error = t('edit.errors.website-size');
-        return false;
-      }
-
-      if (!/^[^\s]+\.[^\s]+$/.test(website)) {
-        this.error = t('edit.errors.website-url');
-        return false;
-      }
+      if (website && !/^[^\s]+\.[^\s]+$/.test(website))
+        return this.$el.find('.errors').html(t('edit.errors.website-url')).show();
 
       return true;
+    },
+
+    editError: function(dataErrors) {
+      var message = '';
+      _.each(dataErrors.err, function (error) {
+        message += t('edit.errors.' + error)+'<br>';
+      });
+      this.$el.find('.errors').html(message).show();
     }
   });
 
