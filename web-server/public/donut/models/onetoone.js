@@ -120,7 +120,6 @@ define([
     },
 
     resetNew: function () {
-      this.set('unread', false);
       this.set('newmessage', false);
       this.set('newmention', false);
     },

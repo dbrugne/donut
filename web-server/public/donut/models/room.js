@@ -21,7 +21,6 @@ define([
         color         : '',
         type          : 'room',
         focused       : false,
-        unread        : false, // probably not needed in future
         newmessage    : false,
         newmention    : false,
         newuser       : false
@@ -293,13 +292,12 @@ define([
     },
 
     resetNew: function() {
-      this.set('unread', false);
       this.set('newmessage', false);
       this.set('newmention', false);
       this.set('newuser', false);
     },
     isThereNew: function() {
-      return !!(this.get('newmessage') || this.get('newmention') || this.get('newuser') || this.get('unread'));
+      return !!(this.get('newmessage') || this.get('newmention') || this.get('newuser'));
     },
     isInputActive: function() {
       return !(this.userIsDevoiced(currentUser.get('user_id')));
