@@ -454,24 +454,6 @@ define([
         }
       );
     },
-    userJoin: function (username) {
-      var data = {username: username};
-      debug('io:out:user:join', data);
-      var that = this;
-      pomelo.request(
-        'chat.userJoinHandler.join',
-        data,
-        function (response) {
-          if (response.err)
-            return debug('io:in:user:join error: ', response);
-        }
-      );
-    },
-    userLeave: function (username) {
-      var data = {username: username};
-      pomelo.notify('chat.userLeaveHandler.leave', data);
-      debug('io:out:user:leave', data);
-    },
     userMessage: function (username, message, images, callback) {
       var data = {username: username, message: message, images: images};
       debug('io:out:user:message', data);
