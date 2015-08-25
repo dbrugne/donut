@@ -1,26 +1,33 @@
 require.config({
   paths: {
     'jquery'                      : '../vendor/jquery/dist/jquery',
+    'underscore'                  : '../vendor/underscore-amd/underscore',
     'bootstrap'                   : '../vendor/bootstrap/dist/js/bootstrap',
     'facebook'                    : '//connect.facebook.net/fr_FR/all',
     'jquery.talkative'            : '../vendor/talkative/jquery.talkative',
-    'jquery.contactform'          : '../javascripts/plugins/jquery.contactform'
+    'jquery.socialify'            : '../vendor/talkative/jquery.socialify',
+    'jquery.contactform'          : '../javascripts/plugins/jquery.contactform',
+    'common': '../vendor/donut-common/index'
   },
   shim: {
     'bootstrap'          : ['jquery'],
     'facebook'           : { exports: 'FB' },
     'jquery.talkative'   : ['jquery'],
+    'jquery.socialify'   : ['jquery'],
     'jquery.contactform' : ['jquery']
   }
 });
 
 require([
   'jquery',
+  'underscore',
+  'common',
   'facebook',
   'bootstrap',
   'jquery.talkative',
+  'jquery.socialify',
   'jquery.contactform'
-], function ($, facebook) {
+], function ($, _, common, facebook) {
 
   // Landing text rotation
   if ($('#landing').length) {

@@ -35,7 +35,7 @@ define([
       this.$spinner.hide();
       this.$success.hide();
 
-      if (this.user.account && this.user.account.have_password)
+      if (this.user.account && this.user.account.has_password)
         this.$link.text($.t('global.change'));
       else
         this.$link.text($.t('global.add'));
@@ -49,7 +49,7 @@ define([
     onShowForm: function (event) {
       event.preventDefault();
 
-      if (this.user.account.have_password !== true)
+      if (this.user.account.has_password !== true)
         this.$inputCurrentPassword.hide();
 
       this.$form.show();
