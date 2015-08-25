@@ -8,7 +8,6 @@
     "bootstrap": "latest",
     "underscore-amd": "latest",
     "backbone-amd": "latest",
-    "cloudinary_js": "latest",
     "moment": "latest",
     "i18next": "latest",
     "talkative": "https://github.com/dbrugne/talkative.git",

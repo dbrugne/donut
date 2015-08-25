@@ -1,5 +1,5 @@
 var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
-var cloudinary = require('../../../../../shared/cloudinary/cloudinary');
+var common = require('@dbrugne/donut-common');
 var _ = require('underscore');
 var async = require('async');
 var NotificationModel = require('../../../../../shared/models/notification');
@@ -170,7 +170,7 @@ Notification.prototype.sendEmail = function (model, done) {
           : false;
         messages.push({
           current: isCurrentMessage,
-          user_avatar: cloudinary.userAvatar(event.data.avatar, 90),
+          user_avatar: common.cloudinarySize(event.data.avatar, 90),
           username: event.data.username,
           message: event.data.message,
           time_short: moment(event.data.time).format('Do MMMM, HH:mm'),

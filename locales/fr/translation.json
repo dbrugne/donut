@@ -326,6 +326,17 @@
         "tonavigate": "pour naviguer",
         "toselect": "pour séléctionner",
         "todismiss": "pour fermer"
+      },
+      "results": {
+        "users": {
+          "empty": "Aucun utilisateur correspondant"
+        },
+        "rooms": {
+          "empty": "Aucun donut correspondant"
+        },
+        "commands": {
+          "empty": "Aucune commande correspondante"
+        }
       }
     },
     "loading": "Chargement ",

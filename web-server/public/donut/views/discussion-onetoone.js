@@ -2,11 +2,12 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'common',
   'client',
   'views/discussion',
   'views/modal-confirmation',
   '_templates'
-], function ($, _, Backbone, client, DiscussionView, confirmationView, _templates) {
+], function ($, _, Backbone, common, client, DiscussionView, confirmationView, _templates) {
   var OneToOnePanelView = DiscussionView.extend({
 
     template: _templates['discussion-onetoone.html'],
@@ -32,8 +33,7 @@ define([
     _renderData: function () {
       var data = this.model.toJSON();
 
-      data.avatar = $.cd.userAvatar(data.avatar, 100);
-      data.poster = $.cd.poster(data.poster);
+      data.avatar = common.cloudinarySize(data.avatar, 100);
       data.url = '/user/' + ('' + data.username).toLocaleLowerCase();
 
       return data;
@@ -55,11 +55,10 @@ define([
       this.onPoster(model, model.get('poster'), options);
     },
     onAvatar: function (model, value, options) {
-      var url = $.cd.userAvatar(value, 100);
+      var url = common.cloudinarySize(value, 100);
       this.$el.find('.header img.avatar').attr('src', url);
     },
-    onPoster: function (model, value, options) {
-      var url = $.cd.poster(value);
+    onPoster: function (model, url, options) {
       this.$el.find('div.side').css('background-image', 'url(' + url + ')');
     },
     onLocation: function (model, value, options) {

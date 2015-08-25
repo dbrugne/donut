@@ -2,12 +2,13 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'common',
   'client',
   'models/current-user',
   'views/window',
   'views/modal-confirmation',
   '_templates'
-], function ($, _, Backbone, client, currentUser, windowView, confirmationView, templates) {
+], function ($, _, Backbone, common, client, currentUser, windowView, confirmationView, templates) {
   var DrawerUserPreferencesView = Backbone.View.extend({
 
     template: templates['drawer-user-preferences.html'],
@@ -44,6 +45,10 @@ define([
       // colorize drawer .opacity
       if (color)
         this.trigger('color', color);
+
+      _.each(data.bannedUsers, function(element, index, list) {
+        list[index].avatarUrl = common.cloudinarySize(element.avatar, 30);
+      });
 
       var html = this.template({
         username: currentUser.get('username'),

@@ -6,6 +6,7 @@
     .ctn_scroller { max-height: 400px; overflow-y: auto; overflow-x: hidden; margin-top: 5px;
       ul { list-style-type: none; margin: 0; padding: 0;
         li { font-size: 13px;cursor: pointer; padding: 3px 10px; font-weight: bold; border-bottom: 1px solid #fff; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+          &.empty { margin: 5px 0 10px; font-weight: normal; font-style: italic;; }
           &.active { background: #439fe0; color: #fff!important; border-bottom-color: #2a80b9; text-shadow: 0 1px rgba(0,0,0,0.1);
             span { color: #fff !important; }
           }

@@ -2,6 +2,7 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'common',
   'client',
   'collections/rooms',
   'collections/onetoones',
@@ -9,7 +10,7 @@ define([
   'moment',
   'views/window',
   '_templates'
-], function ($, _, Backbone, client, rooms, onetoones, currentUser, moment, windowView, templates) {
+], function ($, _, Backbone, common, client, rooms, onetoones, currentUser, moment, windowView, templates) {
   var NotificationsView = Backbone.View.extend({
 
     el: $("#notifications"),
@@ -54,10 +55,10 @@ define([
       this.$badge = this.$el.find('.badge').first();
       this.$count = this.$el.find('.unread-count .nb').first();
       this.$menu = this.$el.find('.dropdown-menu #main-navbar-messages');
-      this.$readMore = this.$el.find('.read-more');
-      this.$loader = this.$el.find('.loading');
       this.$scrollable = this.$el.find('.dropdown-menu .messages-list-ctn');
       this.$actions = this.$el.find('.dropdown-menu .messages-list-ctn .actions');
+      this.$readMore = this.$actions.find('.read-more');
+      this.$loader = this.$actions.find('.loading');
 
       this.$dropdown.dropdown();
 
@@ -176,9 +177,9 @@ define([
       var dateObject = moment(notification.time);
 
       if (notification.data.room)
-        notification.avatar = $.cd.roomAvatar(notification.data.room.avatar, 90);
+        notification.avatar = common.cloudinarySize(notification.data.room.avatar, 90);
       else if (notification.data.by_user)
-        notification.avatar = $.cd.userAvatar(notification.data.by_user.avatar, 90);
+        notification.avatar = common.cloudinarySize(notification.data.by_user.avatar, 90);
 
       return template({data: notification, from_now: dateObject.format("Do MMMM, HH:mm")});
     },
