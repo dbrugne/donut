@@ -12,25 +12,26 @@
             <p class="discuss hidden-xs hidden-sm"><a href="<% if (!user) { %><%= _user.discuss %><% } else { %><%= _user.chat %><% } %>" <% if (_user.color) { %>style="background-color: <%= _user.color %>;"<% } %>><%= t('actions.discuss') %></a></p>
         </div>
         <div class="info">
-            <a href="<%= _user.url %>" class="username hidden-xs hidden-sm">@<%= _user.username %></a>
-            <a href="<%= _user.url %>" class="username visible-xs visible-sm" data-colorify-text="contrast">@<%= _user.username %></a>
+            <div class="username hidden-xs hidden-sm">@<%= _user.username %></div>
+            <div class="username visible-xs visible-sm" data-colorify-text="contrast">@<%= _user.username %></div>
+            <div class="fb-like hidden-xs hidden-sm ml20" data-href="<%= _user.url %>" data-layout="button" data-action="like" data-show-faces="false" data-share="true" data-ref="profile-page"></div>
             <% if (_user.location) { %>
+                <br/>
                 <span class="location hidden-xs hidden-sm">
                     <%= _user.location %>
                 </span>
             <% } %>
             <% if (_user.website) { %>
-                <% if (_user.location) { %><span class="separation hidden-xs hidden-sm">|</span><% } %>
-                    <span class="website hidden-xs hidden-sm" <% if (_user.color) { %>style="color: <%= _user.color %>;"<% } %>>
-                    <%= _user.website %>
-                    </span>
-                <% } %>
-                <% if (_user.bio) { %>
-                <div class="bio hidden-xs hidden-sm">
+            <% if (_user.location) { %><span class="separation hidden-xs hidden-sm">|</span><% } %>
+            <span class="website hidden-xs hidden-sm" <% if (_user.color) { %>style="color: <%= _user.color %>;"<% } %>>
+            <%= _user.website %>
+            </span>
+            <% } %>
+            <% if (_user.bio) { %>
+            <div class="bio hidden-xs hidden-sm">
                     <p class="bio-content"><%= _user.bio %></p>
                 </div>
             <% } %>
-            <div class="fb-like hidden-xs hidden-sm" data-href="<%= _user.url %>" data-layout="button" data-action="like" data-show-faces="false" data-share="true" data-ref="profile-page"></div>
         </div>
     </div>
     <div class="events">

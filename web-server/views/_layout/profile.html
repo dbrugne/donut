@@ -4,9 +4,7 @@
     <nav id="color" class="navbar navbar-default navbar-fixed-top" data-colorify="<%- color %>" data-colorify-background="color">
         <div class="container">
             <div id="navbar">
-                <a class="navbar-brand-a hidden-xs hidden-sm" href="/!#"><img class="logo" src="/images/logo-onecolor.svg" alt="<%= t('title.chat') %>"> <span class="beta">alpha</span></a>
-
-
+                <a class="navbar-brand-a hidden-xs hidden-sm" href="/"><img class="logo" src="/images/logo-onecolor.svg" alt="<%= t('title.chat') %>"> <span class="beta">alpha</span></a>
                 <ul class="nav navbar-nav navbar-right">
                     <li class="visible-sm visible-xs">
                         <% if (typeof room !== "undefined") { %>
@@ -40,31 +38,82 @@
         <div id="left">
             <ul class="page-sidebar-menu">
                 <li id="block-current-user">
-                    <a href="#" class="avatar default">
-                        <img src="/images/user-default.png" alt="default avatar">
-                    </a>
-                    <span class="title hidden-sm hidden-xs">
-                        <span class="username"><a href="/login">Se connecter</a></span>
-                        <span class="username"><a href="/signup">S'inscrire</a></span>
-                    </span>
+
+                    <% if (typeof user !== 'undefined' && typeof user.avatar !== 'undefined') { %>
+                        <a href="javascript:;" class="avatar open-user-profile hidden-sm hidden-xs" data-username="<%= user.username %>">
+                            <img src="<%= user.avatar %>" alt="<%= user.username %> avatar">
+                            <div class="overlay hidden-sm hidden-xs"></div>
+                            <span class="overlay-text hidden-sm hidden-xs"><%= t('chat.actions.see') %></span>
+                                <span class="title hidden-sm hidden-xs">
+                                    <span class="username">
+                                        @<%= user.username %>
+                                    </span>
+                                </span>
+                            <span class="selected"></span>
+                            <span class="arrow"></span>
+                        </a>
+
+                        <ul class="sub-menu hidden-sm hidden-xs">
+                            <li>
+                                <div class="dropdown dropdown-user-actions">
+                                    <button class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true" id="settingsDropdown">
+                                        <i class="icon icon-chevron-down"></i>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu" aria-labelledby="settingsDropdown">
+                                        <li role="presentation"><a role="menuitem" tabindex="-1" href="/logout"><i class="icon icon-power-off"></i> <%= t('actions.logout') %></a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+
+                        <!--Only for responsive-->
+                        <a href="#" class="avatar dropdown-toggle visible-xs visible-sm" data-toggle="dropdown" aria-expanded="false" role="button">
+                            <img src="<%= user.avatar %>" alt="@<%= user.username %> avatar">
+                        </a>
+                        <ul class="sub-menu dropdown-menu visible-xs visible-sm">
+                            <li>
+                                <span class="title">
+                                    <span class="username">
+                                        @<%= user.username %>
+                                    </span>
+                                </span>
+                            </li>
+                            <li>
+                                <div class="dropdown dropdown-user-actions">
+                                    <ul class="dropdown-menu" role="menu" aria-labelledby="settingsDropdown">
+                                        <li role="presentation"><a role="menuitem" tabindex="-1" href="/logout"><i class="icon icon-power-off"></i> <%= t('actions.logout') %></a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+
+                    <% } else { %>
+                        <span class="avatar default">
+                            <img src="<%= userDefaultAvatar %>" alt="default avatar">
+                        </span>
+                        <span class="title hidden-sm hidden-xs">
+                            <span class="username"><a href="/login">Se connecter</a></span>
+                            <span class="username"><a href="/signup">S'inscrire</a></span>
+                        </span>
+                    <% } %>
                 </li><!-- /#block-current-user -->
 
                 <li id="block-actions">
                     <hr>
-                    <a class="go-to-search"><%= t('chat.actions.search') %></a> <%= t('global.or') %> <a class="open-create-room"><%= t('chat.actions.create') %></a> <%= t('chat.actions.adonut') %>
+                    <a href="/login" class="go-to-search"><%= t('chat.actions.search') %></a> <%= t('global.or') %> <a href="/create-a-room" class="open-create-room"><%= t('chat.actions.create') %></a> <%= t('chat.actions.adonut') %>
                     <hr>
                 </li>
 
-                <li id="block-discussions" style="padding: 15px; text-align: center;">
+                <li id="block-discussions" style="padding: 15px; text-align: left;">
                     <div class="list  hidden-sm hidden-xs">
 
                         <% if (typeof room !== "undefined") { %>
                             <%= t('profile.room.disclaimer.before') %>
-                            <a href="<%= room.url %>"><%= room.name %></a>
+                            <a class="dct" href="<%= room.url %>"><%= room.name %></a>
                             <%= t('profile.room.disclaimer.after') %>
                         <% } else { %>
                             <%= t('profile.user.disclaimer.before') %>
-                            <a href="<%= _user.url %>">@<%= _user.username %></a>
+                            <a class="dct" href="<%= _user.url %>">@<%= _user.username %></a>
                             <%= t('profile.user.disclaimer.after') %>
                         <% } %>
 

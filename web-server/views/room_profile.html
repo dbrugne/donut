@@ -1,11 +1,13 @@
 <% layout('profile') %>
+<% var roomOpsLength = (typeof room.op !== 'undefined' ? room.op.length : 0 ) %>
+<% var roomUsersLength = (typeof room.users !== 'undefined' ? room.users.length : 0 ) %>
 
 <div class="side" style="<% if (poster) { %>background-image: url(<%= poster %>);<% }; %>" data-colorify-background="color">
-    <div class="blur" style="<% if (posterBlured) { print("background-image: url(" + posterBlured + ")"); } %>" data-colorify-background="darker">
+    <div class="blur" style="<% if (posterBlured) { print('background-image: url(" + posterBlured + ")'); } %>" data-colorify-background="darker">
         <div class="users hidden-sm hidden-xs">
             <div class="header">
                 <p class="count">
-                    <%= t('chat.userscount', {count: (1 + room.op.length + room.users.length)}) %>
+                    <%= t('chat.userscount', {count: (1 + roomOpsLength + roomUsersLength)}) %>
                 </p>
             </div>
             <hr>
@@ -42,8 +44,10 @@
         </div>
         <div class="info">
             <div class="name open-room-profile hidden-xs hidden-sm" data-room-name="<%= room.name %>"><%= room.name %></div>
+            <div class="ml20 fb-like mt5 hidden-sm hidden-xs" data-href="<%= room.url %>" data-layout="button" data-action="like" data-show-faces="false" data-share="true" data-ref="profile-page"></div>
             <div class="name open-room-profile visible-xs visible-sm" data-room-name="<%= room.name %>" data-colorify-text="contrast" ><%= room.name %></div>
             <% if (room.owner && room.owner.username) { %>
+                <br/>
                 <div class="owner">
                     <%= t('global.by') %> <a href="<%= room.owner.url %>" <% if (room.color) { %>style="color: <%= room.color %>;"<% } %>>@<%= room.owner.username %></a>
                 </div>
@@ -51,21 +55,14 @@
             <% if (room.website) { %>
                 <% if (room.owner) { %><span class="separation hidden-sm hidden-xs">|</span><% } %>
                 <span class="website hidden-sm hidden-xs" <% if (room.color) { %>style="color: <%= room.color %>;"<% } %>>
-                <%= room.website %>
+                    <%= room.website %>
                 </span>
             <% } %>
             <% if (room.description) { %>
-                <div class="description ml110 hidden-sm hidden-xs">
+                <div class="description hidden-sm hidden-xs">
                     <p class="description-content"><%= room.description %></p>
                 </div>
             <% } %>
-            <div class="fb-like ml110 mt5 hidden-sm hidden-xs" data-href="<%= room.url %>" data-layout="button" data-action="like" data-show-faces="false" data-share="true" data-ref="profile-page"></div>
-        </div>
-        <div class="topic">
-            <p class="topic-current">
-                <label><%= t('chat.topic.label') %></label>
-                <span class="txt" title=""><%- room.topic %></span>
-            </p>
         </div>
     </div>
     <div class="events">
