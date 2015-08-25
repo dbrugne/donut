@@ -28,17 +28,14 @@ handler.call = function (data, session, next) {
       return callback(null);
     },
 
-    function mail(callback) {
+    function save(callback) {
+      user.local.password = user.generateHash(data.password);
       user.save(function (err) {
         if (err)
           return callback(err);
+
         emailer.passwordChanged(user.local.email, callback);
       });
-    },
-
-    function save(callback) {
-      user.local.password = user.generateHash(data.password);
-      return callback(null);
     }
 
   ], function(err) {

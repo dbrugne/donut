@@ -48,18 +48,27 @@ handler.call = function (data, session, next) {
       });
     },
 
-    function mail(callback) {
+    function save(callback) {
+      var oldEmail = (user.local && user.local.email)
+        ? user.local.email
+        : '';
+      user.local.email = email;
       user.save(function(err) {
         if (err)
           return callback(err);
-        emailer.emailChanged(email, callback);
+
+        emailer.emailChanged(email, function(err) {
+          if (err)
+            return callback(err);
+
+          if (oldEmail === email)
+            return callback(null);
+
+          // inform old email if different from new one
+          emailer.emailChanged(oldEmail, callback);
+        });
       });
     },
-
-    function save(callback) {
-      user.local.email = email;
-      return callback(null);
-    }
 
   ], function(err) {
     if (err) {
