@@ -45,7 +45,7 @@ handler.call = function (data, session, next) {
     if (err) {
       logger.error('[account:password] ' + err);
 
-      err = (['length', 'wrong-Password'].indexOf(err) !== -1)
+      err = (['length', 'wrong-password'].indexOf(err) !== -1)
         ? err
         : 'internal';
       return next(null, { code: 500, err: err });
