@@ -456,9 +456,9 @@
       "help": "Aide",
       "errors": {
         "parameters": "Paramètre(s) invalide(s).",
-        "invalidatecommand": "Cette commande n'existe pas.",
-        "invalidateuser": "Cette utilisateur n'existe pas.",
-        "invalidateroom": "Ce donut n'existe pas.",
+        "invalidcommand": "Cette commande n'existe pas.",
+        "invalidusername": "Cette utilisateur n'existe pas.",
+        "invalidroom": "Ce donut n'existe pas.",
         "commandaccess": "Vous ne pouvez pas utiliser cette commande ici."
       }
     },

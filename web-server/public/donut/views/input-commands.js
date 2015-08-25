@@ -34,7 +34,7 @@ define([
       });
 
       if (!this.commands[commandName])
-        return this.errorCommand(commandName, 'invalidatecommand');
+        return this.errorCommand(commandName, 'invalidcommand');
 
       // find parameters
       var parametersPattern = this.parameters[this.commands[commandName].parameters];
@@ -165,6 +165,7 @@ define([
     join: function(paramString, parameters) {
       if (!parameters)
         return this.errorCommand('join', 'parameters');
+
       currentUser.trigger('roomJoinCommand', parameters[1]);
     },
     leave: function(paramString, parameters) {
@@ -172,80 +173,94 @@ define([
         client.roomLeave(this.model.get('name'));
         return;
       }
+
       if (!parameters)
         return this.errorCommand('leave', 'parameters');
+
       client.roomLeave(parameters[1]);
     },
     topic: function(paramString, parameters) {
       if (this.model.get('type') !== 'room')
         return this.errorCommand('topic', 'commandaccess');
+
+      if (!parameters && paramString)
+        return this.errorCommand('topic', 'parameters')
+
       client.roomTopic(this.model.get('name'), parameters[1]);
     },
     op: function(paramString, parameters) {
+      if (this.model.get('type') !== 'room')
+        return this.errorCommand('op', 'commandaccess');
+
       if (!parameters)
         return this.errorCommand('op', 'parameters');
-      if (this.model.get('type') !== 'room')
-        return;
+
       var that = this;
       confirmationView.open({}, function() {
         client.roomOp(that.model.get('name'), parameters[1]);
       });
     },
     deop: function(paramString, parameters) {
+      if (this.model.get('type') !== 'room')
+        return this.errorCommand('deop', 'commandaccess');
+
       if (!parameters)
         return this.errorCommand('deop', 'parameters');
 
-      if (this.model.get('type') !== 'room')
-        return;
       var that = this;
       confirmationView.open({}, function() {
         client.roomDeop(that.model.get('name'), parameters[1]);
       });
     },
     kick: function(paramString, parameters) {
+      if (this.model.get('type') !== 'room')
+        return this.errorCommand('kick', 'commandaccess');
+
       if (!parameters)
         return this.errorCommand('kick', 'parameters');
 
-      if (this.model.get('type') !== 'room')
-        return;
       var that = this;
       confirmationView.open({input: true}, function (reason) {
         client.roomKick(that.model.get('name'), parameters[1], reason);
       });
     },
     ban: function(paramString, parameters) {
+      if (this.model.get('type') !== 'room')
+        return this.errorCommand('ban', 'commandaccess');
+
       if (!parameters)
         return this.errorCommand('ban', 'parameters');
 
-      if (this.model.get('type') !== 'room')
-        return;
       var that = this;
       confirmationView.open({input : true}, function (reason) {
         client.roomBan(that.model.get('name'), parameters[1], reason);
       });
     },
     deban: function(paramString, parameters) {
+      if (this.model.get('type') !== 'room')
+        return this.errorCommand('deban', 'commandaccess');
+
       if (!parameters)
         return this.errorCommand('deban', 'parameters');
 
-      if (this.model.get('type') !== 'room')
-        return;
       client.roomDeban(this.model.get('name'), parameters[1]);
     },
     voice: function(paramString, parameters) {
+      if (this.model.get('type') !== 'room')
+        return this.errorCommand('voice', 'commandaccess');
+
       if (!parameters)
         return this.errorCommand('voice', 'parameters');
 
-      if (this.model.get('type') !== 'room')
-        return;
       client.roomVoice(this.model.get('name'), parameters[1]);
     },
     devoice: function(paramString, parameters) {
+      if (this.model.get('type') !== 'room')
+        return this.errorCommand('devoice', 'commandaccess');
+
       if (!parameters)
         return this.errorCommand('devoice', 'parameters');
 
-      if (this.model.get('type') !== 'room')
-        return;
       var that = this;
       confirmationView.open({input : true}, function (reason) {
         client.roomDevoice(that.model.get('name'), parameters[1], reason);
@@ -253,7 +268,8 @@ define([
     },
     msg: function(paramString, parameters) {
 
-      var oneParam = (!parameters) ? ((this.model.get('type') === 'room') ? this.model.get('name') : this.model.get('id')) : parameters[1];
+      var oneParam = (!parameters) ? ((this.model.get('type') === 'room')
+        ? this.model.get('name') : this.model.get('id')) : parameters[1];
       var message = (!parameters) ? paramString : parameters[2];
 
       if (/^#/.test(oneParam))
@@ -264,7 +280,6 @@ define([
       }
     },
     profile: function(paramString, parameters) {
-
       if (!parameters)
         return this.errorCommand('profile', 'parameters');
 
@@ -272,7 +287,7 @@ define([
       if ((/^#/.test(parameters[1]))) {
         client.roomRead(parameters[1], function (err, data) {
           if (err === 'unknown') {
-            that.errorCommand('profile', 'invalidateroom');
+            that.errorCommand('profile', 'invalidroom');
             return;
           }
           if (!err)
@@ -282,7 +297,7 @@ define([
         parameters[1] = parameters[1].replace(/^@/, '');
         client.userRead(parameters[1], function (err, data) {
           if (err === 'unknown') {
-            that.errorCommand('profile', 'invalidateuser');
+            that.errorCommand('profile', 'invaliduser');
             return;
           }
           if (!err)
@@ -336,6 +351,30 @@ define([
       });
       this.model.trigger('freshEvent', model);
     },
+    getCommands: function(type) {
+      var commands = {};
+      _.each(this.commands, function(cmd, key) {
+        if (cmd.access === 'everywhere' || cmd.access === type)
+          commands[key] = cmd;
+      });
+      return commands;
+    },
+
+
+    /**********************************************************
+     *
+     * errors commands
+     *
+     * possible type:
+     *
+     *  - parameters
+     *  - commandaccess
+     *  - invalidcommand
+     *  - invalidusername
+     *  - invalidroom
+     *
+     **********************************************************/
+
     errorCommand: function(StringCommand, errorType) {
       var data = {
         command: StringCommand,
@@ -347,14 +386,6 @@ define([
         data: data
       });
       this.model.trigger('freshEvent', model);
-    },
-    getCommands: function(type) {
-      var commands = {};
-      _.each(this.commands, function(cmd, key) {
-        if (cmd.access === 'everywhere' || cmd.access === type)
-          commands[key] = cmd;
-      });
-      return commands;
     }
 
   });
