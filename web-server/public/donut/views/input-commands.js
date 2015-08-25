@@ -2,10 +2,11 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'client',
   'views/modal-confirmation',
   'models/event',
   'models/current-user'
-], function ($, _, Backbone, confirmationView, EventModel, currentUser) {
+], function ($, _, Backbone, client, confirmationView, EventModel, currentUser) {
   var InputCommandsView = Backbone.View.extend({
 
     commandRegexp: /^\/([-a-z0-9]+)/i,
@@ -164,7 +165,7 @@ define([
     join: function(paramString, parameters) {
       if (!parameters)
         return this.errorCommand('join', 'parameters');
-      client.roomJoin(parameters[1]);
+      currentUser.trigger('roomJoinCommand', parameters[1]);
     },
     leave: function(paramString, parameters) {
       if (!paramString) {
@@ -263,14 +264,30 @@ define([
       }
     },
     profile: function(paramString, parameters) {
+
       if (!parameters)
         return this.errorCommand('profile', 'parameters');
 
+      var that = this;
       if ((/^#/.test(parameters[1]))) {
-        currentUser.trigger('roomProfileCommand', parameters[1]);
+        client.roomRead(parameters[1], function (err, data) {
+          if (err === 'unknown') {
+            that.errorCommand('profile', 'invalidateroom');
+            return;
+          }
+          if (!err)
+            currentUser.trigger('roomProfileCommand', data);
+        });
       } else {
         parameters[1] = parameters[1].replace(/^@/, '');
-        currentUser.trigger('userProfileCommand', parameters[1]);
+        client.userRead(parameters[1], function (err, data) {
+          if (err === 'unknown') {
+            that.errorCommand('profile', 'invalidateuser');
+            return;
+          }
+          if (!err)
+            currentUser.trigger('userProfileCommand', data);
+        });
       }
     },
     me: function(paramString, parameters) {

@@ -26,13 +26,13 @@ define([
       // show spinner as temp content
       this.render();
 
+      if (options.data)
+        this.onResponse(options.data);
+
       var that = this;
       client.userRead(this.username, function(err, data) {
-        if (err === 'unknown') {
-          that.mainView.alert('warning', $.t('chat.alert.userprofile', { username: that.username }));
-          that.mainView.drawerView._hide();
+        if (err === 'unknown')
           return;
-        }
         if (!err)
           that.onResponse(data);
       });

@@ -96,8 +96,9 @@ define([
       this.listenTo(onetoones,  'remove', this.onRemoveDiscussion);
       this.listenTo(rooms,      'kickedOrBanned', this.roomKickedOrBanned);
       this.listenTo(rooms,      'deleted', this.roomRoomDeleted);
-      this.listenTo(currentUser, 'roomProfileCommand', this.openRoomProfile);
-      this.listenTo(currentUser, 'userProfileCommand', this.openUserProfile);
+      this.listenTo(currentUser, 'roomProfileCommand', this.openRoomProfileCommand);
+      this.listenTo(currentUser, 'userProfileCommand', this.openUserProfileCommand);
+      this.listenTo(currentUser, 'roomJoinCommand', this.focusRoomByName);
     },
     run: function() {
       // generate and attach subviews
@@ -274,10 +275,11 @@ define([
       if (!username)
         return;
 
-      this.openUserProfile(username);
-    },
-    openUserProfile: function(username) {
       var view = new DrawerUserProfileView({ mainView: this, username: username });
+      this.drawerView.setSize('380px').setView(view).open();
+    },
+    openUserProfileCommand: function(data) {
+      var view = new DrawerUserProfileView({ mainView: this, data: data });
       this.drawerView.setSize('380px').setView(view).open();
     },
     onOpenRoomProfile: function(event) {
@@ -287,10 +289,11 @@ define([
       if (!name)
         return;
 
-      this.openRoomProfile(name);
-    },
-    openRoomProfile: function(name) {
       var view = new DrawerRoomProfileView({ mainView: this, name: name });
+      this.drawerView.setSize('380px').setView(view).open();
+    },
+    openRoomProfileCommand: function(data) {
+      var view = new DrawerRoomProfileView({ mainView: this, data: data });
       this.drawerView.setSize('380px').setView(view).open();
     },
     openRoomEdit: function(event) {

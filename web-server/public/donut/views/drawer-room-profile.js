@@ -17,20 +17,20 @@ define([
       },
 
       initialize: function (options) {
-          this.mainView = options.mainView;
-          this.roomName = options.name;
+        this.mainView = options.mainView;
+        this.roomName = options.name;
 
-          // show spinner as temp content
-          this.render();
+        // show spinner as temp content
+        this.render();
+
+        if (options.data)
+          this.onResponse(options.data);
 
         // ask for data
         var that = this;
         client.roomRead(this.roomName, function(err, data) {
-          if (err === 'unknown') {
-            that.mainView.alert('warning', $.t('chat.alert.roomprofile', {roomname: that.roomName}));
-            that.mainView.drawerView._hide();
+          if (err === 'unknown')
             return;
-          }
           if (!err)
             that.onResponse(data);
         });
