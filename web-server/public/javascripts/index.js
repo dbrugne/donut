@@ -1,12 +1,12 @@
 require.config({
   paths: {
     'jquery'                      : '../vendor/jquery/dist/jquery',
-    'bootstrap'                   : '../vendor/bootstrap/dist/js/bootstrap',
     'underscore'                  : '../vendor/underscore-amd/underscore',
-    //'facebook'                    : '//connect.facebook.net/fr_FR/all',
+    'bootstrap'                   : '../vendor/bootstrap/dist/js/bootstrap',
+    'facebook'                    : '//connect.facebook.net/fr_FR/all',
     'jquery.talkative'            : '../vendor/talkative/jquery.talkative',
+    'jquery.socialify'            : '../vendor/talkative/jquery.socialify',
     'jquery.contactform'          : '../javascripts/plugins/jquery.contactform',
-    'jquery.socialify'            : '../javascripts/plugins/jquery.socialify',
     'i18next'                     : '../vendor/i18next/i18next.amd.withJQuery',
     'common'                      : '../vendor/donut-common/index'
   },
@@ -14,8 +14,8 @@ require.config({
     'bootstrap'          : ['jquery'],
     //'facebook'           : { exports: 'FB' },
     'jquery.talkative'   : ['jquery'],
-    'jquery.contactform' : ['jquery'],
-    'jquery.socialify'   : ['jquery']
+    'jquery.socialify'   : ['jquery'],
+    'jquery.contactform' : ['jquery']
   }
 });
 
@@ -27,8 +27,8 @@ require([
   'i18next',
   'bootstrap',
   'jquery.talkative',
-  'jquery.contactform',
-  'jquery.socialify'
+  'jquery.socialify',
+  'jquery.contactform'
 ], function ($, _, common, /*facebook, */i18next) {
 
   // Landing text rotation

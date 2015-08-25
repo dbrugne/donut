@@ -4,15 +4,17 @@ define([
   'backbone',
   'client',
   'models/current-user',
+  'views/drawer-account-email',
+  'views/drawer-account-password',
   '_templates'
-], function ($, _, Backbone, client, currentUser, templates) {
+], function ($, _, Backbone, client, currentUser, EmailView, PasswordView, templates) {
   var DrawerUserEditView = Backbone.View.extend({
 
-    template: templates['drawer-user-account.html'],
+    template: templates['drawer-account.html'],
 
     id: 'user-account',
 
-    events  : {},
+    events: {},
 
     initialize: function(options) {
       this.mainView = options.mainView;
@@ -23,14 +25,17 @@ define([
       // ask for data
       var that = this;
       client.userRead(currentUser.get('username'), function(data) {
+        that.user = data;
         that.onResponse(data);
       });
     },
+
     render: function() {
       // render spinner only
       this.$el.html(templates['spinner.html']);
       return this;
     },
+
     onResponse: function(user) {
       if (user.color)
         this.trigger('color', user.color);
@@ -38,8 +43,14 @@ define([
       var html = this.template({user: user});
       this.$el.html(html);
 
-      // color form
-      //this.$el.find('.user').colorify();
+      this.emailView = new EmailView ({
+        el : this.$(".email-container"),
+        user: this.user
+      });
+      this.passwordView = new PasswordView ({
+        el : this.$(".password-container"),
+        user: this.user
+      });
     }
 
   });

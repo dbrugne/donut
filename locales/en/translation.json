@@ -51,8 +51,11 @@
   },
   "global": {
     "or": "or",
+    "yes": "yes",
+    "no": "no",
     "else": "otherwise",
     "close": "close",
+    "add": "add",
     "change": "change",
     "edit": "edit",
     "delete": "delete",
@@ -561,25 +564,30 @@
       "invalid": "Sorry, this account does not exist or the password is not valid"
     },
     "emailandpassword": {
-      "label": "E-mail and password",
-      "help": "You have not set e-mail and password. To log in without Facebook or unlink your account from Facebook:",
-      "add": "Add e-mail and password"
+      "label": "E-mail and password"
     },
     "email": {
       "label": "E-mail",
       "success": "Your new e-mail has been saved",
       "error": {
         "format": "Invalid e-mail",
-        "alreadyexists": "This e-mail is already used by another account"
+        "alreadyexists": "This e-mail is already used by another account",
+        "alreadyyours": "You already use this e-mail",
+        "empty": "The champ is empty"
       },
-      "format": "Invalid format"
+      "format": "Invalid format",
+      "new": "New E-mail"
     },
     "password": {
       "label": "Your password",
       "success": "Your new password has been saved.",
+      "new": "New password",
+      "confirm": "Confirm",
+      "current": "Current password",
       "error": {
         "confirm": "Pass two passwords are not the same.",
-        "length": "Password should have at least 6 characters length."
+        "length": "Password should have between 6 and 50 characters length.",
+        "wrong": "Sorry, your old password don't match"
       }
     },
     "facebook": {
@@ -916,46 +924,21 @@
       ]
     },
     "passwordchanged": {
-      "subject": "Success ! Your password has been successfully changed.",
-      "text": [
-        "You are receiving this e-mail as the final confirmation of your password change. Let's go back to DONUT.me and join tasty conversations!",
-        "",
-        "https://__fqdn__",
-        "",
-        "The DONUT.me team",
-        "",
-        "PS : If you did not initiate this action, please report by forwarding this e-mail to __email__ or replying this e-mail."
-      ],
-      "html": [
-        "You are receiving this e-mail as the final confirmation of your password change. Let's go back to DONUT.me and join tasty conversations!<br>",
-        "<br>",
-        "<a href='https://__fqdn__'>Click here to connect</a><br>",
-        "<br>",
-        "The DONUT.me team<br>",
-        "<br>",
-        "PS : If you did not initiate this action, please report by forwarding this e-mail to <a href='mailto:__email__'>__email__</a> or replying this e-mail.<br>"
-      ]
+      "subject": "Your password has been successfully changed.",
+      "content": {
+        "title": "Password update",
+        "disclaimer": "You have changed your password. Your new password is now active.",
+        "button": "Click here to connect",
+        "info": "We are craving for it !"
+      }
     },
     "emailchanged": {
-      "subject": "Success ! The e-mail linked to your DONUT.me account has been successfully changed.",
-      "text": [
-        "You are receiving this e-mail because you requested to change the e-mail linked to yout DONUT.me account. It worked perfectly! You can use it to log in:",
-        "",
-        "https://__fqdn__",
-        "",
-        "The DONUT.me team",
-        "",
-        "PS : If you did not initiate this action, please report by forwarding this e-mail to __email__ or replying this e-mail."
-      ],
-      "html": [
-        "You are receiving this e-mail because you requested to change the e-mail linked to yout DONUT.me account. It worked perfectly! You can use it to log in:",
-        "<br>",
-        "<a href='https://__fqdn__'>Click here to log in</a><br>",
-        "<br>",
-        "The DONUT.me team<br>",
-        "<br>",
-        "PS : If you did not initiate this action, please report by forwarding this e-mail to <a href='mailto:__email__'>__email__</a> or replying this e-mail.<br>"
-      ]
+      "subject": "The e-mail linked to your DONUT.me account has been successfully changed.",
+      "content": {
+        "title": "Email update",
+        "disclaimer": "You have changed your email address.",
+        "button": "Click here to enjoy it!"
+      }
     },
     "contact": {
       "subject": "[DONUT] New contact form"
