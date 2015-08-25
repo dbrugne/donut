@@ -46,7 +46,9 @@ handler.call = function(data, session, next) {
       read.registered	    = readUser.created_at;
       read.banned         = user.isBanned(readUser.id); // for ban/deban menu
       read.i_am_banned    = readUser.isBanned(user.id); // for input enable/disable
-      read.have_password  = (readUser.local.password) ? true : false;
+      read.have_password  = (readUser.local && readUser.local.password)
+        ? true
+        : false;
       return callback(null);
     },
 
