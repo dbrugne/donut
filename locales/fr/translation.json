@@ -51,8 +51,11 @@
   },
   "global": {
     "or": "ou",
+    "yes": "oui",
+    "no": "non",
     "else": "sinon",
     "close": "fermer",
+    "add": "ajouter",
     "change": "modifier",
     "edit": "éditer",
     "delete": "supprimer",
@@ -581,25 +584,31 @@
       "invalid": "Désolé, ce compte n'existe pas ou le mot de passe est invalide"
     },
     "emailandpassword": {
-      "label": "Email et mot de passe",
-      "help": "Vous n'avez pas renseigné d'e-mail et mot de passe. Pour vous connecter sans Facebook ou délier votre compte de Facebook :",
-      "add": "Ajouter e-mail et mot de passe"
+      "label": "Email et mot de passe"
     },
     "email": {
       "label": "Email",
       "success": "Votre nouvelle adresse email a bien été enregistrée",
       "error": {
-        "format": "Cette adresse email n'est valide",
-        "alreadyexists": "Cette adresse email est déjà utilisée par un autre compte"
+        "format": "Cette adresse email n'est pas valide",
+        "alreadyexists": "Cette adresse email est déjà utilisée par un autre compte",
+        "alreadyyours": "Vous utilisez déjà cette adresse mail",
+        "empty": "Le champ est vide"
       },
-      "format": "account.email.format"
+      "format": "account.email.format",
+      "new": "Nouvel email",
+      "confirm": "Confirmer"
     },
     "password": {
       "label": "Mot de passe",
       "success": "Votre nouveau mot de passe a bien été enregistré.",
+      "new": "Nouveau mot de passe",
+      "confirm": "Confirmer",
+      "current": "Mot de passe actuel",
       "error": {
         "confirm": "Les deux mots de passe ne sont pas identiques.",
-        "length": "Le mot de passe doit au moins faire 6 caractères de long."
+        "length": "Le mot de passe doit faire entre 6 et 50 caractères de long.",
+        "wrong": "Désolé, votre ancien mot de passe ne correspond pas"
       }
     },
     "facebook": {

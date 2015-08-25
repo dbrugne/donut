@@ -51,8 +51,11 @@
   },
   "global": {
     "or": "or",
+    "yes": "yes",
+    "no": "no",
     "else": "otherwise",
     "close": "close",
+    "add": "add",
     "change": "change",
     "edit": "edit",
     "delete": "delete",
@@ -559,25 +562,30 @@
       "invalid": "Sorry, this account does not exist or the password is not valid"
     },
     "emailandpassword": {
-      "label": "E-mail and password",
-      "help": "You have not set e-mail and password. To log in without Facebook or unlink your account from Facebook:",
-      "add": "Add e-mail and password"
+      "label": "E-mail and password"
     },
     "email": {
       "label": "E-mail",
       "success": "Your new e-mail has been saved",
       "error": {
         "format": "Invalid e-mail",
-        "alreadyexists": "This e-mail is already used by another account"
+        "alreadyexists": "This e-mail is already used by another account",
+        "alreadyyours": "You already use this e-mail",
+        "empty": "The champ is empty"
       },
-      "format": "Invalid format"
+      "format": "Invalid format",
+      "new": "New E-mail"
     },
     "password": {
       "label": "Your password",
       "success": "Your new password has been saved.",
+      "new": "New password",
+      "confirm": "Confirm",
+      "current": "Current password",
       "error": {
         "confirm": "Pass two passwords are not the same.",
-        "length": "Password should have at least 6 characters length."
+        "length": "Password should have between 6 and 50 characters length.",
+        "wrong": "Sorry, your old password don't match"
       }
     },
     "facebook": {
