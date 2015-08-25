@@ -41,7 +41,6 @@ define([
         el: this.$el.find('.input'),
         model: this.model
       });
-      this.listenTo(this.inputView, 'resize', this.onResize);
       this.listenTo(this.inputView, 'send', this.onSend);
       this.listenTo(this.inputView, 'editPreviousInput', this.onEditPreviousInput);
 
@@ -146,7 +145,7 @@ define([
       var headerHeight = $content.find('.header').outerHeight();
 
       var inputHeight = this.inputView.$el.outerHeight();
-      var eventsHeight = totalHeight - (headerHeight + inputHeight) - 45; // 45px to push up the discussion frame
+      var eventsHeight = totalHeight - (headerHeight + inputHeight); // 45px to push up the discussion frame
 
       this.eventsView.resize(eventsHeight);
       debug('resize call by window ('+totalHeight+', '+headerHeight+', '+inputHeight+', '+eventsHeight+')');

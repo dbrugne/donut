@@ -170,9 +170,11 @@
       .navbar-brand-a { height: auto; padding: 5px 15px 0 0; float:left;
         &:hover { text-decoration: none; }
         .logo { display: inline-block; width: 130px; height: 32px; }
-        .beta { vertical-align: bottom; height: @size-color; color: @cl-background; .ft-raleway-medium; font-size: 12px; padding-left: 0px; padding-top: 18px; }
+        .beta { vertical-align: bottom; height: @size-color; color: @cl-background; .ft-raleway-medium; font-size: 13px; padding-left: 0px; padding-top: 18px; text-decoration: none; }
       }
-      .navbar-nav-ul>li>a { color:#FFF; }
+      .navbar-nav-ul>li>a { color:#FFF;
+        &:hover { text-decoration:underline; }
+      }
       #notifications {
         &.empty {
           .hide-empty {
@@ -1312,7 +1314,7 @@
         }
       }
       .side { float: right; width: @size-right; height: 100%; background-repeat: no-repeat; background-position: left top; margin: 0; padding: 0;
-        .blur { width: calc(@size-right-mid); position: relative; height: 100%; color: @cl-background; a { color: @cl-background; } hr { margin-left: 0; margin-right: 0; } font-size: 1.1em; overflow-y: auto; overflow-x: hidden;
+        .blur { width: calc(@size-right-mid); position: relative; height: 100%; color: @cl-background; a { color: @cl-background; } hr { margin-left: 0; margin-right: 0; } font-size: 1.1em;
           &::-webkit-scrollbar{
             width: 8px;
             background-color: transparent;
@@ -1331,21 +1333,21 @@
           &::-webkit-scrollbar-track{
             background-color: transparent;
           }
-          .users { position: relative; background-color: rgba(0, 0, 0, 0.2); padding: 10px 0 30px 0; min-height: 100%;
+          .users { position: relative; background-color: rgba(0, 0, 0, 0.2); padding: 10px 0 30px 0; height: 100%;
             .header { position: absolute;     white-space: nowrap; top: 14px; left: 16px; right: 10px;
               .count { .pull-left; }
               .between { font-size: 1.2em; line-height: 1; padding-left: 10px; padding-right: 10px; }
               .actions { .pull-right; }
             }
             > hr { position: absolute; left: 14px; right: 14px; top: @header-height; }
-            .list { width: 208px;
+            .list { width: 208px; overflow-y: auto;
               height: -webkit-calc(~'100%' - @header-height + 5px);
               height: -o-calc(~'100%' - @header-height + 5px);
               height: calc(~'100%' - @header-height + 5px);
               margin-top: -webkit-calc(@header-height + 10px);
               margin-top: -o-calc(@header-height + 10px);
               margin-top: calc(@header-height + 10px);
-              margin-bottom: 0; margin-left: 5px; padding: 0 0 10px 0; background-repeat: no-repeat; background-position: left top; position: relative; overflow-y: visible;
+              margin-bottom: 0; margin-left: 5px; padding: 0 0 10px 0; background-repeat: no-repeat; background-position: left top; position: relative;
 
               &::-webkit-scrollbar{ width: 5px; background-color: transparent; }
               &::-webkit-scrollbar-thumb{ background-color: @cl-background; border-radius: 10px; min-height: 30px; }

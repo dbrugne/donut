@@ -1,31 +1,44 @@
 <% layout('profile') %>
+<% var roomOpsLength = (typeof room.op !== 'undefined' ? room.op.length : 0 ) %>
+<% var roomUsersLength = (typeof room.users !== 'undefined' ? room.users.length : 0 ) %>
 
 <div class="side dc-back" style="<% if (poster) { %>background-image: url(<%= poster %>);<% }; %>">
     <div class="blur dc-back-darker" style="<% if (posterBlured) { %>background-image: url(<%= posterBlured %>);<% }; %>">
         <div class="users hidden-sm hidden-xs">
             <div class="header">
                 <p class="count">
-                    <%= t('chat.userscount', {count: (1 + room.op.length + room.users.length)}) %>
+                    <%= t('chat.userscount', {count: (1 + roomOpsLength + roomUsersLength)}) %>
                 </p>
             </div>
             <hr>
             <ul class="list">
 
-                <% var previous; %>
-                <% _.each(_.union([room.owner], room.op, room.users), function(user) { %>
-                <% if (previous && previous != user.status) { %>
-                <li class="li-title">
-                    <div class="title"><%= t('chat.usersoffline') %></div>
-                </li>
-                <% } %>
                 <li>
-                    <% previous = user.status; %>
-                    <div class="item <% if (user.is_op === true) { %>op<% }; %> <% if (user.is_owner === true) { %>owner<% }; %> <% if (user.is_devoice === true) { %> devoice<% }; %> <%= user.status %>">
+                    <a href="/user/<%= room.owner.username%>" class="item owner">
                         <span class="infos">
-                            <span class="avatar open-user-profile" data-username="<%= user.username %>"  style="background-image: url(<%= user.avatar %>)" title="<% if (user.is_op === true) { %><%= t('chat.op.is') %><% } else if (user.is_owner === true) { %><%= t('chat.owner.is') %><% }; %>"></span>
+                            <span class="avatar open-user-profile" data-username="<%= room.owner.username %>"  style="background-image: url(<%= room.owner.avatar %>)" title="<%= t('chat.owner.is') %>"></span>
+                            <span class="username open-user-profile" data-username="<%= room.owner.username %>" >@<%= room.owner.username %></span>
+                        </span>
+                    </a>
+                </li>
+                <% _.each(room.op, function(user) { %>
+                <li>
+                    <a href="/user/<%= user.username%>" class="item op">
+                        <span class="infos">
+                            <span class="avatar open-user-profile" data-username="<%= user.username %>"  style="background-image: url(<%= user.avatar %>)" title="<%= t('chat.op.is') %>"></span>
                             <span class="username open-user-profile" data-username="<%= user.username %>" title="<%= t('global.'+user.status) %>">@<%= user.username %></span>
                         </span>
-                    </div>
+                    </a>
+                </li>
+                <% }); %>
+                <% _.each(room.users, function(user) { %>
+                <li>
+                    <a href="/user/<%= user.username%>" class="item <% if (user.is_op === true) { %>op<% }; %> <% if (user.is_owner === true) { %>owner<% }; %> <% if (user.is_devoice === true) { %> devoice<% }; %> <%= user.status %>">
+                        <span class="infos">
+                            <span class="avatar open-user-profile" data-username="<%= user.username %>"  style="background-image: url(<%= user.avatar %>)" title=""></span>
+                            <span class="username open-user-profile" data-username="<%= user.username %>" title="<%= t('global.'+user.status) %>">@<%= user.username %></span>
+                        </span>
+                    </a>
                 </li>
                 <% }); %>
 
@@ -42,8 +55,15 @@
         </div>
         <div class="info">
             <div class="name open-room-profile hidden-xs hidden-sm" data-room-name="<%= room.name %>"><%= room.name %></div>
-            <div class="name open-room-profile visible-xs visible-sm dc-text-contrast" data-room-name="<%= room.name %>"><%= room.name %></div>
+            <div class="share hidden-xs hidden-sm">
+                <%= t('chat.share.label') %>
+                <i class="facebook icon icon-facebook-square"></i>
+                <i class="twitter icon icon-twitter-square"></i>
+                <i class="googleplus icon icon-google-plus-square"></i>
+            </div>
+            <div class="name open-room-profile visible-xs visible-sm dc-text-contrast" data-room-name="<%= room.name %>" data-colorify-text="contrast" ><%= room.name %></div>
             <% if (room.owner && room.owner.username) { %>
+                <br/>
                 <div class="owner">
                     <%= t('global.by') %> <a href="<%= room.owner.url %>" <% if (room.color) { %>style="color: <%= room.color %>;"<% } %>>@<%= room.owner.username %></a>
                 </div>
@@ -51,21 +71,14 @@
             <% if (room.website) { %>
                 <% if (room.owner) { %><span class="separation hidden-sm hidden-xs">|</span><% } %>
                 <span class="website hidden-sm hidden-xs" <% if (room.color) { %>style="color: <%= room.color %>;"<% } %>>
-                <%= room.website %>
+                    <%= room.website %>
                 </span>
             <% } %>
             <% if (room.description) { %>
-                <div class="description ml110 hidden-sm hidden-xs">
+                <div class="description hidden-sm hidden-xs">
                     <p class="description-content"><%= room.description %></p>
                 </div>
             <% } %>
-            <div class="fb-like ml110 mt5 hidden-sm hidden-xs" data-href="<%= room.url %>" data-layout="button" data-action="like" data-show-faces="false" data-share="true" data-ref="profile-page"></div>
-        </div>
-        <div class="topic">
-            <p class="topic-current">
-                <label><%= t('chat.topic.label') %></label>
-                <span class="txt" title=""><%- room.topic %></span>
-            </p>
         </div>
     </div>
     <div class="events">

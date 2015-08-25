@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var i18next = require('../../../shared/util/i18next');
 var bouncer = require('../middlewares/bouncer');
+var cd = require('../../../shared/util/cloudinary');
 var conf = require('../../../config/index');
 
 router.param('room', require('../middlewares/room-param'));
@@ -28,7 +29,8 @@ router.get('/room/:room', function(req, res) {
     room: req.room,
     poster: req.room.poster,
     posterBlured: req.room.posterBlured,
-    color: req.room.color
+    color: req.room.color,
+    userDefaultAvatar: cd.userAvatar('', conf.room.default.color, false, 50)
   });
 });
 
