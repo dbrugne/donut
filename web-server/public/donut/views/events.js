@@ -637,7 +637,6 @@ define([
           default:
             return;
         }
-        console.log(data);
         return template(data);
       } catch (e) {
         debug('Render exception, see below');
