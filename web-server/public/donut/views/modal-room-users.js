@@ -2,10 +2,11 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'common',
   'libs/donut-debug',
   'client',
   '_templates'
-], function ($, _, Backbone, donutDebug, client, templates) {
+], function ($, _, Backbone, common, donutDebug, client, templates) {
 
   var debug = donutDebug('donut:modal-welcome');
 
@@ -32,7 +33,7 @@ define([
       var users = [];
       _.each(this.collection.models, function(o) {
         var u = o.toJSON();
-        u.avatar = $.cd.userAvatar(u.avatar, 34);
+        u.avatar = common.cloudinarySize(u.avatar, 34);
         users.push(u);
       });
 
