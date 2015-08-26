@@ -88,7 +88,6 @@ define([
 
         // releasing UP / DOWN / TAB / LEFT / RIGHT : Do Nothing
         if (data.key == keyboard.UP || data.key == keyboard.DOWN || data.key == keyboard.TAB || data.key == keyboard.LEFT || data.key == keyboard.RIGHT || data.isCtrl || data.isAlt || data.isMeta) {
-          console.log('exit here');
           return;
         }
 
