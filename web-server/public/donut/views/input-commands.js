@@ -97,15 +97,27 @@ define([
       },
       ban: {
         parameters: 'username',
-        access: 'everywhere',
+        access: 'room',
         help: '@username',
         description: 'chat.commands.ban'
       },
       deban: {
         parameters: 'username',
-        access: 'everywhere',
+        access: 'room',
         help: '@username',
         description: 'chat.commands.deban'
+      },
+      block: {
+        parameters: 'username',
+        access: 'everywhere',
+        help: '@username',
+        description: 'chat.commands.block'
+      },
+      deblock: {
+        parameters: 'username',
+        access: 'everywhere',
+        help: '@username',
+        description: 'chat.commands.deblock'
       },
       voice: {
         parameters: 'username',
@@ -245,6 +257,42 @@ define([
 
       client.roomDeban(this.model.get('name'), parameters[1]);
     },
+    block: function(paramString, parameters) {
+      var username;
+      // from a room
+      if (this.model.get('type') !== 'onetoone') {
+        if (!paramString)
+          return this.errorCommand('block', 'commandaccess');
+        if (!parameters)
+          return this.errorCommand('block', 'parameters');
+
+        username = parameters[0].replace(/^@/, '');
+      } else {
+        // from a onetoone
+        username = this.model.get('username');
+      }
+
+      confirmationView.open({input : false}, function () {
+        client.userBan(username);
+      });
+    },
+    deblock: function(paramString, parameters) {
+      var username;
+      // from a room
+      if (this.model.get('type') !== 'onetoone') {
+        if (!paramString)
+          return this.errorCommand('deblock', 'commandaccess');
+        if (!parameters)
+          return this.errorCommand('deblock', 'parameters');
+
+        username = parameters[0].replace(/^@/, '');
+      } else {
+        // from a onetoone
+        username = this.model.get('username');
+      }
+
+      client.userDeban(username);
+    },
     voice: function(paramString, parameters) {
       if (this.model.get('type') !== 'room')
         return this.errorCommand('voice', 'commandaccess');
@@ -319,15 +367,10 @@ define([
         return this.errorCommand('ping', 'parameters');
 
       var that = this;
-      client.ping(function (duration){
-        var data = {
-          avatar : currentUser.get('avatar'),
-          username : currentUser.get('username'),
-          ping : 'responds in ' + duration + 'ms'
-        };
+      client.ping(function (duration) {
         var model = new EventModel({
           type: 'ping',
-          data: data
+          data: { duration: duration }
         });
         that.model.trigger('freshEvent', model);
       });
@@ -342,7 +385,6 @@ define([
       }
 
       var data = {
-        title: 'Help',
         help: (commandHelp) ? { cmd: commandHelp } : this.getCommands(this.model.get('type'))
       };
       var model = new EventModel({

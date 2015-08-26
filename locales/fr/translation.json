@@ -446,6 +446,8 @@
       "kick": "Expulser un utilisateur de ce donut",
       "ban": "Expulser et bannir un utilisateur de ce donut",
       "deban": "Débannir un utilisateur de ce donut",
+      "block": "Bloque les messages privés d'un utilisateur",
+      "deblock": "Débloquer les messages privés d'un utilisateur",
       "voice": "Rendre la parole à un utilisateur de ce donut",
       "devoice": "Rendre muet un utilisateur dans ce donut",
       "msg": "Envoyer un message",
@@ -460,6 +462,9 @@
         "invalidroom": "Ce donut n'existe pas.",
         "commandaccess": "Vous ne pouvez pas utiliser cette commande ici."
       }
+    },
+    "ping": {
+      "message": "La platforme DONUT a répondu en in __ms__ ms"
     },
     "notifications": {
       "hello": "Vous entrez dans",

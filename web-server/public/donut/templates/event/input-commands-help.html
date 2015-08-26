@@ -1,15 +1,12 @@
 <div class="block command-help">
-    <div class="event" id="<%= data.id %>"">
+    <div class="event" id="<%= data.id %>">
     <div class="text">
-        <div class="help-title"><%= data.title %></div>
-        <div class="help-content">
-            <% _.each(data.help, function(cmd, key){ %>
-                <div class="help-cmd">
-                    <span class="name-cmd"><% if (cmd.name) { %>/<%= cmd.name %><% } else { %>/<%= key %><% } %></span>
-                    <span class="params-cmd"><%= cmd.help %></span>
-                    <span class="desc-cmd"><%= t(cmd.description) %></span>
-                </div>
-            <% }); %>
+        <% _.each(data.help, function(cmd, key){ %>
+        <div class="help-cmd">
+            <span class="name-cmd"><% if (cmd.name) { %>/<%= cmd.name %><% } else { %>/<%= key %><% } %></span>
+            <span class="params-cmd"><%= cmd.help %></span>
+            <span class="desc-cmd"><%= t(cmd.description) %></span>
         </div>
+        <% }); %>
     </div>
 </div>
