@@ -27,7 +27,7 @@ module.exports = function(app, user, users, fn) {
 
     function newmessage(statuses, callback) {
       async.eachLimit(users, 5, function(u, fn) {
-           HistoryOne.findUnread(u.id, function(err, doc) {
+           HistoryOne.findUnread(u.id, user.id, function(err, doc) {
             if (err)
               fn(err);
 

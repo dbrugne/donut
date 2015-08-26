@@ -18,4 +18,10 @@ db['history-room'].ensureIndex({
   "room" : 1,
   "users" : 1
 });
+
+db['history-one'].ensureIndex({
+  "from" : 1,
+  "to" : 1,
+  "viewed" : 1
+});
 ```

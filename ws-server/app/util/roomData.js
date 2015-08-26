@@ -15,7 +15,7 @@ module.exports = function(app, uid, room, fn) {
   if (!room)
     return fn('Need to received a valid Room model as parameter');
 
-  var that = this;
+  var newMessage;
 
   async.waterfall([
 
@@ -24,7 +24,7 @@ module.exports = function(app, uid, room, fn) {
         if (err)
           return callback(err, null);
 
-        that.newMessage = (doc)
+        newMessage = (doc)
           ? true
           : false;
         return callback(null);
@@ -49,7 +49,7 @@ module.exports = function(app, uid, room, fn) {
         poster      : room._poster(),
         color       : room.color,
         topic       : room.topic,
-        new_message : that.newMessage,
+        new_message : newMessage,
         posterblured : room._poster(true)
       };
 

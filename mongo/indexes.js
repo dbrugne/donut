@@ -27,6 +27,11 @@ db['history-one'].ensureIndex({
 db['history-one'].ensureIndex({
   "event" : 1
 });
+db['history-one'].ensureIndex({
+  "from" : 1,
+  "to" : 1,
+  "viewed" : 1
+});
 // logs
 db['logs'].ensureIndex({
   "timestamp" : 1,
