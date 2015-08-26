@@ -24,14 +24,16 @@ define([
       this.listenTo(this.model, 'inputKeyUp', this.onCurrentUserTyping);
 
       this.usersTyping = {};
+      
+      this.$container = this.$('.typing-container');
     },
 
     render: function() {
       if(_.keys(this.usersTyping).length == 0)
-        return this.$el.html('');
-      var html = this.template({users: this.usersTyping});
+        return this.$container.html('');
 
-      this.$el.html(html);
+      var html = this.template({users: this.usersTyping});
+      this.$container.html(html);
       return this;
     },
 

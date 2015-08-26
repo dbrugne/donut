@@ -407,7 +407,9 @@
       .block.op,
       .block.deop,
       .block.voice,
-      .block.devoice {
+      .block.devoice,
+      .block.me,
+      .block.ping {
         padding: 5px;
         img { height: 20px; }
         .avatar {
@@ -426,6 +428,15 @@
             padding-right: 50px;
             img { margin-right: 3px; }
           }
+        }
+      }
+      .block.command-help {
+        padding: 5px;
+        .help-cmd {
+          margin: 5px;
+          .name-cmd { font-weight: bold; }
+          .params-cmd { color: #8699a4; }
+          .desc-cmd { font-style: italic; }
         }
       }
       .block.spinner {
