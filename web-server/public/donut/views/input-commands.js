@@ -156,8 +156,8 @@ define([
       message: /(.+)/,
       messageNotMandatory: /(.*)/,
       helpCommand: /(^[a-z]+)/i,
-      name: /(^[#][a-z-.|^]+)$/i,
-      username: /^[@]([a-z-.|^]+)$/i,
+      name: /(^[#][a-z-.|^]+)/i,
+      username: /^[@]([a-z-.|^]+)/i,
       usernameName: /^([@#][a-z-.|^]+)/i,
       usernameNameMsg: /^([@#][a-z-.|^]+)\s+(.+)/i
     },
