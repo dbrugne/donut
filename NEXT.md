@@ -15,8 +15,8 @@ db.getCollection('rooms').update({ _id: ObjectId("557ed3a4bcb50bc52b74745a")}, {
 * Add index MongoDB
 ```
 db['history-room'].ensureIndex({
-  "room" : 1,
-  "users" : 1
+  "users" : 1,
+  "room" : 1
 });
 
 db['history-one'].ensureIndex({
