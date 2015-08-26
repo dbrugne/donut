@@ -273,13 +273,4 @@ historySchema.statics.retrieveEventWithContext = function(eventId, limit, timeLi
 
 };
 
-historySchema.statics.findUnread = function(fromUserId, toUserId, fn) {
-  this.findOne({
-    viewed: false,
-    from: fromUserId,
-    to: toUserId,
-    event: { $in: ['user:message', 'user:me'] }
-  }, fn);
-};
-
 module.exports = mongoose.model('HistoryOne', historySchema, 'history-one');
