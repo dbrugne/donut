@@ -30,20 +30,12 @@ module.exports = function (grunt) {
             'bootstrap'                   : '../vendor/bootstrap/dist/js/bootstrap',
             'text'                        : '../vendor/requirejs-text/text',
             'socket.io'                   : '../../../node_modules/socket.io-client/socket.io',
-            'pomelo'                      : './libs/pomelo',
-            'underscore'                  : '../vendor/underscore-amd/underscore',
-            'backbone'                    : '../vendor/backbone-amd/backbone',
+            'underscore'                  : '../vendor/underscore/underscore',
+            'backbone'                    : '../vendor/backbone/backbone',
             'i18next'                     : '../vendor/i18next/i18next.amd.withJQuery',
             'moment'                      : '../vendor/moment/moment',
             'moment-fr'                   : '../vendor/moment/locale/fr',
-            'facebook'                    : 'empty:',
             'desktop-notify'              : '../vendor/html5-desktop-notifications/desktop-notify',
-            'jquery.ui.widget'            : '../vendor/blueimp-file-upload/js/vendor/jquery.ui.widget',
-            'jquery.iframe-transport'     : '../vendor/blueimp-file-upload/js/jquery.iframe-transport',
-            'jquery.fileupload'           : '../vendor/blueimp-file-upload/js/jquery.fileupload',
-            'jquery.cloudinary'           : '../vendor/cloudinary_js/js/jquery.cloudinary',
-            'cloudinary.widget'           : 'empty:',
-            'jquery.cloudinary-donut'     : '../../../shared/cloudinary/cloudinary',
             'jquery.insertatcaret'        : '../javascripts/plugins/jquery.insertatcaret',
             'jquery.maxlength'            : '../javascripts/plugins/jquery.maxlength',
             'jquery.linkify'              : '../javascripts/plugins/jquery.linkify',
@@ -57,8 +49,6 @@ module.exports = function (grunt) {
           },
           shim: {
             'bootstrap'                   : ['jquery'],
-            'jquery.cloudinary'           : ['jquery'],
-            'jquery.cloudinary-donut'     : ['jquery'],
             'jquery.insertatcaret'        : ['jquery'],
             'jquery.maxlength'            : ['jquery'],
             'jquery.linkify'              : ['jquery'],
@@ -69,9 +59,6 @@ module.exports = function (grunt) {
             'jquery.contactform'          : ['jquery'],
             'cloudinary.widget'           : ['jquery'],
             'html.sortable'               : ['jquery'],
-            'facebook' : {
-              exports: 'FB'
-            },
             'desktop-notify': {
               exports: 'notify'
             }
