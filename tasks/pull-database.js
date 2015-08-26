@@ -94,7 +94,8 @@ module.exports = function(grunt) {
     grunt.file.mkdir(tmp);
   });
   grunt.registerTask('donut-tmp-rmdir', function() {
-    grunt.file.delete(tmp);
+    var options = { force: true };
+    grunt.file.delete(tmp, options);
     grunt.log.ok('the directory ' + tmp + ' has been deleted');
   });
 
