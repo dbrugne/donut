@@ -61,7 +61,6 @@ define([
     },
 
     onKeyUp: function (event) {
-      console.log('keyUp');
       if (event.type != 'keyup')
         return;
 
