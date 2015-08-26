@@ -8,6 +8,11 @@ module.exports = function(grunt) {
 
   grunt.loadNpmTasks("grunt-extend-config");
 
+  /*****************************************************************************************************************
+   *
+   * grunt-prompt
+   *
+   *****************************************************************************************************************/
   grunt.loadNpmTasks('grunt-prompt');
   grunt.extendConfig({
     prompt: {
@@ -20,22 +25,85 @@ module.exports = function(grunt) {
             default: true
           }]
         }
+      },
+      confirmationuselast: {
+        options: {
+          questions: [{
+            config: 'confirmationuselast',
+            type: 'confirm',
+            message: tmp + '/last/ ALREADY EXISTS DO YOU WANT USE?',
+            default: true
+          }]
+        }
+      },
+      confirmationrmdir: {
+        options: {
+          questions: [{
+            config: 'confirmationrmdir',
+            type: 'confirm',
+            message: 'Are you sure, YOU REMOVE THE DIRECTORY ' + tmp,
+            default: false
+          }]
+        }
       }
     }
   });
 
+  /*****************************************************************************************************************
+   *
+   * registerTask Check-*
+   *
+   *****************************************************************************************************************/
   grunt.registerTask('check-confirmation', function() {
     var confirmation = grunt.config('confirmation');
     if (confirmation !== true)
       grunt.fail.fatal('Operation aborted by user');
   });
+  grunt.registerTask('check-confirmation-uselast', function() {
+    var confirmation = grunt.config('confirmationuselast');
+    if (confirmation !== true) {
+      grunt.task.run('untar:donut');
+      grunt.task.run('donut-find-last-folder');
+    }
+  });
+  grunt.registerTask('check-confirmation-rmdir', function() {
+    var confirmation = grunt.config('confirmationrmdir');
+    if (confirmation)
+      grunt.task.run('donut-tmp-rmdir');
+    else
+      grunt.log.ok('the directory ' + tmp + ' was not deleted');
+  });
+  grunt.registerTask('check-last-exists', function() {
+    if (grunt.file.exists(tmp + '/last/rooms.bson') && grunt.file.exists(tmp + '/last/rooms.metadata.json')) {
+      grunt.task.run('prompt:confirmationuselast');
+      grunt.task.run('check-confirmation-uselast');
+    }
+    else {
+      grunt.task.run('sftp:lastbackup');
+      grunt.task.run('untar:donut');
+      grunt.task.run('donut-find-last-folder');
+    }
+  });
+
+  /*****************************************************************************************************************
+   *
+   * registerTask Directory
+   *
+   *****************************************************************************************************************/
   grunt.registerTask('donut-tmp-mkdir', function() {
     grunt.file.mkdir(tmp);
   });
   grunt.registerTask('donut-tmp-rmdir', function() {
-    grunt.file.delete(tmp);
+    var options = { force: true };
+    grunt.file.delete(tmp, options);
+    grunt.log.ok('the directory ' + tmp + ' has been deleted');
   });
 
+  /*****************************************************************************************************************
+   *
+   * Other
+   *
+   *****************************************************************************************************************/
   grunt.loadNpmTasks('grunt-ssh');
   var sshKey = (process.env.HOME)
     ? process.env.HOME
@@ -107,10 +175,9 @@ module.exports = function(grunt) {
     'prompt:confirmation',
     'check-confirmation',
     'donut-tmp-mkdir',
-    'sftp:lastbackup',
-    'untar:donut',
-    'donut-find-last-folder',
+    'check-last-exists',
     'mongobackup:restore',
-    'donut-tmp-rmdir'
+    'prompt:confirmationrmdir',
+    'check-confirmation-rmdir'
   ]);
 };
