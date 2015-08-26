@@ -1,5 +1,8 @@
 <div class="block command-help">
     <div class="event" id="<%= data.id %>">
+    <% if (error) { %>
+    <div class="error" style="color: red;"><%= error %></div>
+    <% } %>
     <div class="text">
         <% _.each(data.help, function(cmd, key){ %>
         <div class="help-cmd">

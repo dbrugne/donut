@@ -38,10 +38,11 @@ define([
 
       // find parameters
       var parametersPattern = this.parameters[this.commands[commandName].parameters];
+      var paramsString;
       var parameters;
       if (parametersPattern) {
-        var paramsString = input.replace(this.commandRegexp, '').replace(/^[\s]+/, '');
-        var parameters = paramsString.match(parametersPattern);
+        paramsString = input.replace(this.commandRegexp, '').replace(/^\s+/, '');
+        parameters = paramsString.match(parametersPattern);
       }
 
       // run
@@ -107,18 +108,6 @@ define([
         help: '@username',
         description: 'chat.commands.deban'
       },
-      block: {
-        parameters: 'username',
-        access: 'everywhere',
-        help: '@username',
-        description: 'chat.commands.block'
-      },
-      deblock: {
-        parameters: 'username',
-        access: 'everywhere',
-        help: '@username',
-        description: 'chat.commands.deblock'
-      },
       voice: {
         parameters: 'username',
         access: 'room',
@@ -130,6 +119,18 @@ define([
         access: 'room',
         help: '@username',
         description: 'chat.commands.devoice'
+      },
+      block: {
+        parameters: 'username',
+        access: 'everywhere',
+        help: '@username',
+        description: 'chat.commands.block'
+      },
+      deblock: {
+        parameters: 'username',
+        access: 'everywhere',
+        help: '@username',
+        description: 'chat.commands.deblock'
       },
       msg: {
         parameters: 'usernameNameMsg',
@@ -168,10 +169,10 @@ define([
       message: /(.+)/,
       messageNotMandatory: /(.*)/,
       helpCommand: /(^[a-z]+)/i,
-      name: /(^[#][a-z-.|^]+)/i,
-      username: /^[@]([a-z-.|^]+)/i,
-      usernameName: /^([@#][a-z-.|^]+)/i,
-      usernameNameMsg: /^([@#][a-z-.|^]+)\s+(.+)/i
+      name: /^(#[-a-z0-9_^]{3,24})/i,
+      username: /^@([-a-z0-9_^\.]+)/i,
+      usernameName: /^([@#][-a-z0-9_^\.]+)/i,
+      usernameNameMsg: /^([@#][-a-z0-9_^\.]+)\s+(.+)/i
     },
 
     join: function(paramString, parameters) {
@@ -375,7 +376,7 @@ define([
         that.model.trigger('freshEvent', model);
       });
     },
-    help: function(paramString, parameters) {
+    help: function(paramString, parameters, error) {
       if (!parameters && paramString)
         return this.errorCommand('help', 'parameters');
 
@@ -389,7 +390,8 @@ define([
       };
       var model = new EventModel({
         type: 'command:help',
-        data: data
+        data: data,
+        error: error
       });
       this.model.trigger('freshEvent', model);
     },
@@ -418,20 +420,12 @@ define([
      **********************************************************/
 
     errorCommand: function(stringCommand, errorType) {
-      var data = {
-        command: stringCommand,
-        error: $.t('chat.commands.errors.' + errorType),
-      }
-      var model = new EventModel({
-        type: 'command:error',
-        data: data
-      });
-      this.model.trigger('freshEvent', model);
-      if (errorType === 'invalidcommand')
-        this.help(null, null);
-      else {
+      var error = $.t('chat.commands.errors.' + errorType);
+      if (errorType === 'invalidcommand') {
+        this.help(null, null, error);
+      } else {
         var parameters = ['', stringCommand];
-        this.help(null, parameters);
+        this.help(null, parameters, error);
       }
     }
 
