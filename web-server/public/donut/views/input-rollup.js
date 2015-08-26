@@ -43,6 +43,7 @@ define([
     },
 
     onKeyDown: function(event) {
+      console.log('in:onKeyDown');
       var data = keyboard._getLastKeyCode();
 
       // Avoid setting cursor at end of tab input
@@ -52,6 +53,7 @@ define([
     },
 
     onKeyUp: function (event) {
+      console.log('in:onKeyUp');
       if (event.type != 'keyup')
         return;
 
@@ -203,6 +205,7 @@ define([
           return;
 
         this._computeNewValue(this.$rollup.find('li.active .value').html() + ' ');
+        this.moveCursorToEnd();
       }
 
       this.$rollup.html('');
@@ -220,6 +223,9 @@ define([
     },
     onRollupClose: function() {
       this._closeRollup();
+      this.moveCursorToEnd();
+    },
+    moveCursorToEnd: function() {
       this.$editable.setCursorPosition(this.$editable.val().length, this.$editable.val().length);
     }
 
