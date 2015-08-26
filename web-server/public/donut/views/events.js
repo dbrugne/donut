@@ -590,12 +590,10 @@ define([
             template = templates['event/ping.html'];
             break;
           case 'room:message':
-          case 'user:message':
-            template = templates['event/message.html'];
-            break;
           case 'room:me':
+          case 'user:message':
           case 'user:me':
-            template = templates['event/me.html'];
+            template = templates['event/message.html'];
             break;
           case 'reconnected':
             template = templates['event/reconnected.html'];
@@ -622,13 +620,13 @@ define([
             template = templates['event/room-op.html'];
             break;
           case 'room:topic':
-            template = templates['event/room-topic.html']; 
+            template = templates['event/room-topic.html'];
             break;
           case 'user:ban':
-            template = templates['event/user-ban.html']; 
+            template = templates['event/user-ban.html'];
             break;
           case 'user:deban':
-            template = templates['event/user-deban.html']; 
+            template = templates['event/user-deban.html'];
             break;
           case 'command:error':
             template = templates['event/input-commands-error.html'];
@@ -639,6 +637,7 @@ define([
           default:
             return;
         }
+        console.log(data);
         return template(data);
       } catch (e) {
         debug('Render exception, see below');

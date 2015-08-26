@@ -51,7 +51,9 @@ define([
     getGenericType: function() {
       if ([
         'room:message',
-        'user:message'
+        'room:me',
+        'user:message',
+        'user:me'
       ].indexOf(this.get('type')) !== -1)
         return 'message';
       else if ([
