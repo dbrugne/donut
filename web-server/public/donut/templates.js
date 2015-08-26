@@ -34,7 +34,7 @@ define([
   'text!./templates/event/room-devoice.html',
   'text!./templates/event/user-ban.html',
   'text!./templates/event/user-deban.html',
-  'text!./templates/event/input-commands-help.html',
+  'text!./templates/event/help.html',
   'text!./templates/events.html',
   'text!./templates/home-rooms.html',
   'text!./templates/home-users.html',
@@ -98,7 +98,7 @@ define([
   event_room_devoice,
   event_user_ban,
   event_user_deban,
-  event_input_commands_help,
+  event_help,
   events,
   home_rooms,
   home_users,
@@ -176,7 +176,7 @@ define([
   JST['event/room-devoice.html']            = _.template(event_room_devoice);
   JST['event/user-ban.html']                = _.template(event_user_ban);
   JST['event/user-deban.html']              = _.template(event_user_deban);
-  JST['event/input-commands-help.html']     = _.template(event_input_commands_help);
+  JST['event/help.html']                    = _.template(event_help);
   JST['events.html']                        = _.template(events);
   JST['home-rooms.html']                    = _.template(home_rooms);
   JST['home-users.html']                    = _.template(home_users);

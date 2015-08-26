@@ -632,7 +632,7 @@ define([
             template = templates['event/input-commands-error.html'];
             break;
           case 'command:help':
-            template = templates['event/input-commands-help.html'];
+            template = templates['event/help.html'];
             break;
           default:
             return;
