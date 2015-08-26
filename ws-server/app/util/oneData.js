@@ -17,28 +17,10 @@ module.exports = function(app, user, users, fn) {
     single = true;
   }
 
-  var newMessage = {};
-
   async.waterfall([
 
     function status(callback) {
       app.statusService.getStatusByUids(_.map(users, 'id'), callback);
-    },
-
-    function newmessage(statuses, callback) {
-      async.eachLimit(users, 5, function(u, fn) {
-           HistoryOne.findUnread(u.id, user.id, function(err, doc) {
-            if (err)
-              fn(err);
-
-             newMessage[u.id] = (doc)
-              ? true
-              : false;
-             fn(null);
-          });
-      }, function(err) {
-        callback(err, statuses);
-      });
     },
 
     function prepare(statuses, callback) {
@@ -58,7 +40,7 @@ module.exports = function(app, user, users, fn) {
           website     : u.website,
           banned      : user.isBanned(u.id), // for ban/deban menu
           i_am_banned : u.isBanned(user.id), // for input enable/disable
-          new_message : newMessage[u.id]
+          new_message : user.hasMessageUnread(u.id)
         };
 
         if (statuses[u.id] === true) {

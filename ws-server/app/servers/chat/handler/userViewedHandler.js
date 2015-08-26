@@ -57,6 +57,12 @@ handler.call = function(data, session, next) {
 			});
 		},
 
+		function persistOnUser(callback) {
+			user.update({$pull: { 'onetoones_unviewed': withUser._id }}, function(err) {
+				return callback(err);
+			});
+		},
+
 		function sendToUserSockets(callback) {
 			var viewedEvent = {
 				username: withUser.username,

@@ -34,6 +34,7 @@ var userSchema = mongoose.Schema({
     },
     preferences    : mongoose.Schema.Types.Mixed,
     onetoones      : [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
+    onetoones_unviewed : [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
     bans: [{
       user: {type: mongoose.Schema.ObjectId, ref: 'User'},
       banned_at: {type: Date, default: Date.now}
@@ -385,6 +386,13 @@ userSchema.methods.isBanned = function (user_id) {
   });
 
   return (typeof subDocument != 'undefined');
+};
+
+userSchema.methods.hasMessageUnread = function (user_id) {
+  if (!this.onetoones_unviewed)
+    return false;
+
+  return (this.onetoones_unviewed.indexOf(user_id) !== -1);
 };
 
 module.exports = mongoose.model('User', userSchema);

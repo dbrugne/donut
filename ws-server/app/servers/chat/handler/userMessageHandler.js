@@ -43,7 +43,7 @@ handler.call = function(data, session, next) {
 			user.update({$addToSet: { onetoones: withUser._id }}, function(err) {
 				if (err)
 					return callback(err);
-        withUser.update({$addToSet: { onetoones: user._id }}, function(err) {
+        withUser.update({$addToSet: { onetoones: user._id, 'onetoones_unviewed': user._id }}, function(err) {
           return callback(err);
 				});
 			});
