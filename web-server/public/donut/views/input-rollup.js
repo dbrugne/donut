@@ -46,10 +46,11 @@ define([
       console.log('in:onKeyDown');
       var data = keyboard._getLastKeyCode();
 
-      // Avoid setting cursor at end of tab input
-      this.cursorPosition = null;
+      // Avoid setting cursor at end or start of tab input when pressing up or down (used to navigate)
       if (data.key === keyboard.DOWN || data.key === keyboard.UP)
         this.cursorPosition = this.$editable.getCursorPosition();
+      else
+        this.cursorPosition = null;
     },
 
     onKeyUp: function (event) {
@@ -114,7 +115,15 @@ define([
     },
 
     _isCommandCallable: function() {
-      return (this.$editable.val().trim().substr(0, 1) === "/")
+      // First caracter is a /
+      if (this.$editable.val().trim().substr(0, 1) !== "/")
+        return false;
+
+      // no space typed after command
+      if (this.$editable.val().split(' ').length > 1)
+        return false;
+
+      return true;
     },
 
     _rollupNavigate: function (key, target) {
@@ -205,10 +214,10 @@ define([
           return;
 
         this._computeNewValue(this.$rollup.find('li.active .value').html() + ' ');
-        this.moveCursorToEnd();
       }
 
       this.$rollup.html('');
+      this.moveCursorToEnd();
     },
 
     onRollupHover: function (event) {
