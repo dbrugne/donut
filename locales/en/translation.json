@@ -353,10 +353,6 @@
       "placeholder": "Donut name",
       "submit": "Create"
     },
-    "alert": {
-      "roomprofile": "Warning, the donut __roomname__ doesn't exist!",
-      "userprofile": "Warning, the user @__username__ doesn't exist!"
-    },
     "help": "Help",
     "placeholder": "Place here",
     "createadonut": "Create a donut",
