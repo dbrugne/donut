@@ -43,34 +43,38 @@ define([
     },
 
     onKeyDown: function(event) {
-      console.log('in:onKeyDown');
       var data = keyboard._getLastKeyCode();
 
-      // Avoid setting cursor at end or start of tab input when pressing up or down (used to navigate)
-      if (data.key === keyboard.DOWN || data.key === keyboard.UP)
-        this.cursorPosition = this.$editable.getCursorPosition();
-      else
-        this.cursorPosition = null;
+      if (!this.isClosed()) {
+        // Avoid setting cursor at end or start of tab input when pressing up or down (used to navigate)
+        if (data.key === keyboard.DOWN || data.key === keyboard.UP || data.key == keyboard.TAB) {
+          this.cursorPosition = this.$editable.getCursorPosition();
+          this._rollupNavigate(data.key, event.target);
+          event.preventDefault(); // avoid triggering keyUp
+          return;
+        } else if ( data.key == keyboard.LEFT || data.key == keyboard.RIGHT || data.isCtrl || data.isAlt || data.isMeta ) {
+          this.cursorPosition = this.$editable.getCursorPosition();
+        }
+      }
+
+      this.cursorPosition = null;
     },
 
     onKeyUp: function (event) {
-      console.log('in:onKeyUp');
+      console.log('keyUp');
       if (event.type != 'keyup')
         return;
 
       var data = keyboard._getLastKeyCode();
       var message = this.$editable.val();
 
-      // closed
-      if (this.$rollup.html().length == 0) {
-
+      if (this.isClosed()) {
         // If different from @, #, /, close rollup & do nothing more
         if (!this._isRollupCallValid(message))
           return this._closeRollup();
 
         return this._displayRollup();
 
-        // opened
       } else {
         // Cleaned the input
         // On key up, if input is empty or push Esc, close rollup
@@ -78,11 +82,16 @@ define([
           return this._closeRollup();
 
         // On Return && not Shift && something to select
-        if (data.key == keyboard.RETURN && !data.isShift && message.length != 0)
-          return this._closeRollup(event.target);
+        if (data.key == keyboard.RETURN && !data.isShift && message.length != 0) {
+          this._closeRollup(event.target);
+          this.moveCursorToEnd();
+        }
 
-        if (data.key == keyboard.UP || data.key == keyboard.DOWN || data.key == keyboard.TAB)
-          return this._rollupNavigate(data.key, event.target);
+        // releasing UP / DOWN / TAB / LEFT / RIGHT : Do Nothing
+        if (data.key == keyboard.UP || data.key == keyboard.DOWN || data.key == keyboard.TAB || data.key == keyboard.LEFT || data.key == keyboard.RIGHT || data.isCtrl || data.isAlt || data.isMeta) {
+          console.log('exit here');
+          return;
+        }
 
         if (!this._isRollupCallValid(message))
           return this._closeRollup();
@@ -217,7 +226,6 @@ define([
       }
 
       this.$rollup.html('');
-      this.moveCursorToEnd();
     },
 
     onRollupHover: function (event) {
