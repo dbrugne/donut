@@ -11,6 +11,8 @@ define([
 
     commandRegexp: /^\/([-a-z0-9]+)/i,
 
+    // @todo: bug when confirm in confirmation modal, input is not refocused
+
     initialize: function(options) {
     },
 
@@ -49,6 +51,13 @@ define([
       this[commandName](paramsString, parameters);
 
       return true;
+    },
+
+    inputFocus: function() {
+      var that = this;
+      return function() {
+        that.model.trigger('inputFocus');
+      };
     },
 
     /**********************************************************
@@ -211,7 +220,8 @@ define([
       var that = this;
       confirmationView.open({}, function() {
         client.roomOp(that.model.get('name'), parameters[1]);
-      });
+        that.model.trigger('inputFocus');
+      }, this.inputFocus());
     },
     deop: function(paramString, parameters) {
       if (this.model.get('type') !== 'room')
@@ -223,7 +233,8 @@ define([
       var that = this;
       confirmationView.open({}, function() {
         client.roomDeop(that.model.get('name'), parameters[1]);
-      });
+        that.model.trigger('inputFocus');
+      }, this.inputFocus());
     },
     kick: function(paramString, parameters) {
       if (this.model.get('type') !== 'room')
@@ -235,7 +246,8 @@ define([
       var that = this;
       confirmationView.open({input: true}, function (reason) {
         client.roomKick(that.model.get('name'), parameters[1], reason);
-      });
+        that.model.trigger('inputFocus');
+      }, this.inputFocus());
     },
     ban: function(paramString, parameters) {
       if (this.model.get('type') !== 'room')
@@ -247,7 +259,8 @@ define([
       var that = this;
       confirmationView.open({input : true}, function (reason) {
         client.roomBan(that.model.get('name'), parameters[1], reason);
-      });
+        that.model.trigger('inputFocus');
+      }, this.inputFocus());
     },
     deban: function(paramString, parameters) {
       if (this.model.get('type') !== 'room')
@@ -273,9 +286,11 @@ define([
         username = this.model.get('username');
       }
 
+      var that = this;
       confirmationView.open({input : false}, function () {
         client.userBan(username);
-      });
+        that.model.trigger('inputFocus');
+      }, this.inputFocus());
     },
     deblock: function(paramString, parameters) {
       var username;
@@ -313,7 +328,8 @@ define([
       var that = this;
       confirmationView.open({input : true}, function (reason) {
         client.roomDevoice(that.model.get('name'), parameters[1], reason);
-      });
+        that.model.trigger('inputFocus');
+      }, this.inputFocus());
     },
     msg: function(paramString, parameters) {
 
