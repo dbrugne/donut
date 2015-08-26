@@ -6,7 +6,7 @@
         <span class="overlay-text open-room-edit" data-room-name="<%= room.name %>"><%= t('profile.user.edit') %></span>
         <% } %>
     </div>
-    <p class="name dc-text"><%= room.name %></p>
+    <p class="name"><%= room.name %></p>
     <p class="owner"><%= t('global.by') %> <a class="open-user-profile dc-text" data-username="<%= room.owner.username %>">@<%= room.owner.username %></a></p>
     <% if (room.description) { %><p class="description"><%= room.description %></p><% }; %>
     <% if (room.website) { %><p class="website"><i class="icon icon-link dc-text"></i> <span><%= room.website %></span></p><% }; %>
@@ -29,7 +29,7 @@
 <div class="users">
     <p class="title"><i class="icon icon-users"></i> <%= t('profile.room.ownerops') %></p>
     <% _.each(room.users_list, function(user) { %>
-    <div class="user open-user-profile dc-text <% if (user.isOwner) { %>owner<% }; %> <% if (user.isOp) { %>op<% }; %>" data-username="<%= user.username %>">
+    <div class="user open-user-profile <% if (user.isOwner) { %>owner<% }; %> <% if (user.isOp) { %>op<% }; %>" data-username="<%= user.username %>">
         <img class="avatar" src="<%= user.avatar %>" />
         <span class="username">@<%= user.username %></span>
     </div>
