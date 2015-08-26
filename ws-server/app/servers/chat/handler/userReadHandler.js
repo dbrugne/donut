@@ -113,7 +113,7 @@ handler.call = function(data, session, next) {
         read.account.email = readUser.local.email;
 
       // password
-      read.account.have_password  = (readUser.local && readUser.local.password)
+      read.account.has_password  = (readUser.local && readUser.local.password)
         ? true
         : false;
 

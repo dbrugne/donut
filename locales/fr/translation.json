@@ -727,6 +727,16 @@
           "permanent": "Il n'est pas possible de supprimer un donut 'permanent'"
         }
       }
+    },
+    "errors": {
+      "bio": "La bio devrait contenir 200 caractères max.",
+      "location": "Le lieu devrait contenir 70 caractères max.",
+      "description": "La description devrait contenir 200 caractères max.",
+      "website-size": "L'URL du site Web doit être comprise entre 5 et 200 caractères",
+      "website-url": "Url du site web invalide.",
+      "color-hexadecimal": "La couleur doit être dans un format hexadécimale (e.g.: #FF00AA).",
+      "color-integer": "La priorité devrait être exprimer en nombre (entier).",
+      "positions": "Positions doit être un tableau."
     }
   },
   "page": {
@@ -744,7 +754,7 @@
     "global": {
       "content": {
         "team": "L'équipe DONUT.me",
-        "ps": "P.S.: pour ne plus recevoir ce type de notifications veuillez décocher les options de notifications dans les préférences de votre compte sur <a href=\"https://__fqdn__\">__fqdn__</a>, pour toute question nous sommes à votre écoute sur <a href=\"https://__fqdn__/!#room/Support\">#support</a>"
+        "ps": "P.S.: pour ne plus recevoir ce type de notifications veuillez décocher les options de notifications dans les préférences de votre compte sur <a href=\"https://__fqdn__\">__fqdn__</a>, pour toute question nous sommes à votre écoute sur <a href=\"https://__fqdn__/!#room/help\">#help</a>"
       }
     },
     "welcome": {
@@ -766,7 +776,7 @@
       }
     },
     "passwordchanged": {
-      "subject": "Succès ! Votre mot de passe DONUT.me a été changée avec succès",
+      "subject": "Votre mot de passe DONUT.me a été changée avec succès",
       "content": {
         "title": "Mise à jour du mot de passe",
         "disclaimer": "Vous avez procédé à un changement de mot de passe. Votre nouveau mot de passe est désormais actif. Il est grand temps d’en profiter !",
@@ -775,10 +785,10 @@
       }
     },
     "emailchanged": {
-      "subject": "Succès ! L'adresse email de votre compte DONUT.me a été changé avec succès",
+      "subject": "L'adresse email de votre compte DONUT.me a été changé avec succès",
       "content": {
         "title": "Mise à jour de votre email",
-        "disclaimer": "Vous avez procédé à un changement d'adresse email. Pour vous connecter veuillez vous rendre à cette adresse :",
+        "disclaimer": "Vous avez procédé à un changement d'adresse email. celle-ci est maintenant active. Il est grand temps d'en profiter !",
         "button": "Connectez-vous en cliquant ici"
       }
     },
@@ -937,7 +947,7 @@
     "notif": {
       "title": "Notifications",
       "help": {
-        "user": "DONUT cherche à limiter intelligemment le nombre de notifications que nous vous envoyons. Toutefois si vous trouvez que vous en recevez trop ou pas assez, n’hésitez pas à nous le dire <a data-toggle='contactform'>par email</a> ou sur le <a href='#room/Support'>#Support</a>"
+        "user": "DONUT cherche à limiter intelligemment le nombre de notifications que nous vous envoyons. Toutefois si vous trouvez que vous en recevez trop ou pas assez, n’hésitez pas à nous le dire <a data-toggle='contactform'>par email</a> ou sur le <a href='#room/help'>#help</a>"
       },
       "nothing": {
         "label": "Ne recevoir aucune notification pour ce donut",

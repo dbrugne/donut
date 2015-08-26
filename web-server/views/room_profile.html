@@ -17,9 +17,9 @@
         <% } %>
         <% if (room.website) { %>
         <% if (room.owner) { %><span class="separation">|</span><% } %>
-        <span class="website" <% if (room.color) { %>style="color: <%= room.color %>;"<% } %>>
-            <%= room.website %>
-        </span>
+        <a class="website" href="<%= room.website.href %>" title="<%= room.website.title %>" <% if (room.color) { %>style="color: <%= room.color %>;"<% } %>>
+            <%= room.website.title %>
+        </a>
         <% } %>
         <% if (room.description) { %>
         <div class="description">

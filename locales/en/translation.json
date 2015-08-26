@@ -704,6 +704,16 @@
           "permanent": "It is not possible to delete a 'permanent' donut"
         }
       }
+    },
+    "errors": {
+      "bio": "Bio should be 200 characters max.",
+      "location": "Location should be 70 characters max.",
+      "description": "Description should be 200 characters max.",
+      "website-size": "Website should be 5 characters min. and 255 characters max.",
+      "website-url": "Website should be a valid site URL.",
+      "color-hexadecimal": "Color should be explained has hexadecimal (e.g.: #FF00AA).",
+      "color-integer": "Priority should be explained has number (integer).",
+      "positions": "Positions should be an array."
     }
   },
   "page": {
@@ -722,7 +732,7 @@
       "global": {
         "content": {
           "team": "The DONUT.me team",
-          "ps": "P.S.: To avoid receiving these notification types, please uncheck it from your notification options in your account preferences on <a href=\"https://__fqdn__\">__fqdn__</a>. For any question, we are available on <a href=\"https://__fqdn__/!#room/Support\">#support</a>"
+          "ps": "P.S.: To avoid receiving these notification types, please uncheck it from your notification options in your account preferences on <a href=\"https://__fqdn__\">__fqdn__</a>. For any question, we are available on <a href=\"https://__fqdn__/!#room/help\">#help</a>"
         }
       },
       "welcome": {
@@ -950,46 +960,21 @@
       ]
     },
     "passwordchanged": {
-      "subject": "Success ! Your password has been successfully changed.",
-      "text": [
-        "You are receiving this e-mail as the final confirmation of your password change. Let's go back to DONUT.me and join tasty conversations!",
-        "",
-        "https://__fqdn__",
-        "",
-        "The DONUT.me team",
-        "",
-        "PS : If you did not initiate this action, please report by forwarding this e-mail to __email__ or replying this e-mail."
-      ],
-      "html": [
-        "You are receiving this e-mail as the final confirmation of your password change. Let's go back to DONUT.me and join tasty conversations!<br>",
-        "<br>",
-        "<a href='https://__fqdn__'>Click here to connect</a><br>",
-        "<br>",
-        "The DONUT.me team<br>",
-        "<br>",
-        "PS : If you did not initiate this action, please report by forwarding this e-mail to <a href='mailto:__email__'>__email__</a> or replying this e-mail.<br>"
-      ]
+      "subject": "Your password has been successfully changed.",
+      "content": {
+        "title": "Password update",
+        "disclaimer": "You have changed your password. Your new password is now active.",
+        "button": "Click here to connect",
+        "info": "We are craving for it !"
+      }
     },
     "emailchanged": {
-      "subject": "Success ! The e-mail linked to your DONUT.me account has been successfully changed.",
-      "text": [
-        "You are receiving this e-mail because you requested to change the e-mail linked to yout DONUT.me account. It worked perfectly! You can use it to log in:",
-        "",
-        "https://__fqdn__",
-        "",
-        "The DONUT.me team",
-        "",
-        "PS : If you did not initiate this action, please report by forwarding this e-mail to __email__ or replying this e-mail."
-      ],
-      "html": [
-        "You are receiving this e-mail because you requested to change the e-mail linked to yout DONUT.me account. It worked perfectly! You can use it to log in:",
-        "<br>",
-        "<a href='https://__fqdn__'>Click here to log in</a><br>",
-        "<br>",
-        "The DONUT.me team<br>",
-        "<br>",
-        "PS : If you did not initiate this action, please report by forwarding this e-mail to <a href='mailto:__email__'>__email__</a> or replying this e-mail.<br>"
-      ]
+      "subject": "The e-mail linked to your DONUT.me account has been successfully changed.",
+      "content": {
+        "title": "Email update",
+        "disclaimer": "You have changed your email address.",
+        "button": "Click here to enjoy it!"
+      }
     },
     "contact": {
       "subject": "[DONUT] New contact form"
@@ -1042,7 +1027,7 @@
     "notif": {
       "title": "Notifications",
       "help": {
-        "user": "DONUT tries to limit smartly the amount of emails and mobile notifications. However if you find that we send too many notifications feel free to send your feedback <a data-toggle='contactform'>by email</a> or on <a href='#room/Support'>#Support</a>"
+        "user": "DONUT tries to limit smartly the amount of emails and mobile notifications. However if you find that we send too many notifications feel free to send your feedback <a data-toggle='contactform'>by email</a> or on <a href='#room/help'>#help</a>"
       },
       "nothing": {
         "label": "Never receive notifications about this donut",
