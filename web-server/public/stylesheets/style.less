@@ -24,15 +24,39 @@ body { .ft-opensans; font-size: 14px; overflow-x: hidden;
     background-color: #f5f5f5;
   }
 }
-
+.big-button-light {
+  color:@cl-text;
+  border-color:@cl-text;
+  background: transparent;
+  -webkit-user-select: none;
+  background-image: none;
+  border-style:solid;
+  border-width:4px;
+  .border-radius(90px);
+  box-sizing: border-box;
+  cursor: pointer;
+  display: inline-block;
+  .ft-raleway-medium;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 21px;
+  margin: 0;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  touch-action: manipulation;
+  vertical-align: middle;
+  white-space: nowrap;
+  &:hover {
+    text-decoration:underline;
+  }
+}
 .big-button {
-  .btn;
   padding: 12px 20px;
   .ft-raleway-medium;
   font-size: 1.7em;
   text-transform:uppercase;
-  border: 5px solid @cl-second;
-  color: @cl-second;
   .border-radius(90px);
 }
 .input-picto {

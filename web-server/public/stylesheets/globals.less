@@ -1,8 +1,16 @@
 @import "./variables";
 
 .p0 { padding:0; }
-.ml20{ margin-left:20px; } .ml110 { margin-left:110px; }
-.mt5 { margin-top:5px; }
+
+// Generate .ml5 .ml10 ... utility classes
+.global-loop (@index) when (@index > 0){
+  .ml@{index} { margin-left: ~'@{index}px' !important; }
+  .mr@{index} { margin-right: ~'@{index}px' !important; }
+  .mt@{index} { margin-top: ~'@{index}px' !important; }
+  .mb@{index} { margin-bottom: ~'@{index}px' !important; }
+  .global-loop (@index - 5);
+}
+.global-loop(120);
 
 .cl-background            { color: @cl-background !important ;}
 .cl-first                 { color: @cl-first !important ;}

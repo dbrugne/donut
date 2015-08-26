@@ -621,21 +621,23 @@
       @header-height: 35px; @size-user-item: 195px;
       .content { height: 100%; margin-right: @size-right; position: relative; padding-left: 35px;
         .header { padding-top: 18px; padding-right: 10px;
-          .info .share { display: inline-block; margin-left: 6px;
-            i { font-size: 16px; color: @text-color; margin-left: 3px; vertical-align: middle; cursor: pointer;
-              &.facebook { color: #3b5998; }
-              &.twitter { color: #4099FF; }
-              &.googleplus { color: #dd4b39; }
+          .info { padding-left: 110px;
+            .share { display: inline-block;
+              i { font-size: 16px; color: @text-color; margin-left: 3px; vertical-align: middle; cursor: pointer;
+                &.facebook { color: #3b5998; }
+                &.twitter { color: #4099FF; }
+                &.googleplus { color: #dd4b39; }
+              }
             }
-          }
+          } // #chat #center .discussion .content .header .info
           &.room { min-height: 135px;
             .overlay-ctn {
               .avatar { position: absolute; width: 100px; height: 100px; }
-              .overlay { height: 100px; width: 100px; top:0; }
+              .overlay { height: 100px; width: 100px; top:0; .border-radius(50%); }
               .overlay-text { width: 100px; top: 40px; }
             }
             .info {
-              .name { display: inline-block; margin-top: 2px; margin-left: 110px; font-size: 2.2em; }
+              .name { display: inline-block; margin-top: 2px; font-size: 2.2em; } #chat #center .discussion .content .header.room .info .name
               .owner { display: inline-block; font-size: 1.2em; }
               .dropdown { display: inline-block; position: relative;
                 .dropdown-menu>li>a { color: @cl-subtext40; }
@@ -643,9 +645,9 @@
                   &:hover { color: @cl-subtext50; }
                 }
               }
-            }
-            .topic { min-height: 32px; margin-top: 4px; padding: 5px 15px 5px 115px;
-              .topic-current { .txt-bubble; overflow: hidden; text-overflow: ellipsis; padding: 0.6em 1.2em; display: inline-block; white-space: nowrap; max-width: 100%;
+            } // #chat #center .discussion .content .header.room .info
+            .topic { min-height: 32px; margin-top: 4px; padding: 5px 15px 5px 110px;
+              .topic-current { .txt-bubble; overflow: hidden; text-overflow: ellipsis; padding: 0.6em 1.2em; display: inline-block; white-space: nowrap; max-width: 100%; width: 100%;
                 label { font-size: 13px; display: block; width: 90px; float: left; margin: 0; color: @cl-subtext40; }
                 .txt { display: block; font-size: 13px; margin-left: 90px; overflow: hidden; }
                 .default { color: @cl-subtext20;
@@ -705,18 +707,18 @@
                 }
                 &::after { .clearfix; }
               }
-            }
-          }
-          &.user { min-height: 105px; position: relative;
+            } // #chat #center .discussion .content .header.room .topic
+          } // #chat #center .discussion .content .header.room
+          &.user { min-height: 135px; position: relative;
             .show-if-banned { display:none; }
             &.is-banned .show-if-banned { display:initial; }
             &.is-banned .show-if-unbanned { display:none; }
             &.is-banned .avatar::before { font-family: Donut; content: '\f002'; position: absolute; font-size: 80px; color: rgba(119, 119, 119, 0.75); top: 0; left: 0; line-height: 70px; }
-            .avatar { position: absolute; width: 80px; height: 80px;
+            .avatar { position: absolute; width: 100px; height: 100px;
               img { width:100%; }
             }
             .banned-status { color: rgb(255, 78, 78); font-style: italic; }
-            .info { margin-left: 86px; font-size: 1.2em;
+            .info { font-size: 1.2em;
               .username { display: inline-block; margin-top: 12px; margin-right: 4px; font-size: 2em; }
               .location, .website { }
               .dropdown { display: inline-block; position: relative;
@@ -724,13 +726,13 @@
                   &:hover { color: @cl-subtext50; }
                 }
               }
-            }
-            .status-block { font-size: 1.2em; margin-left: 86px;
+            } // #chat #center .discussion .content .header.user .info
+            .status-block { font-size: 1.2em; margin-left: 110px;
               i { font-size: 0.9em; }
               .ago { display: none; font-size: 0.9em; font-style: italic; }
-            }
-          }
-        }
+            } // #chat #center .discussion .content .header.user .status-block
+          } // #chat #center .discussion .content .header.user
+        } // #chat #center .discussion .content .header
         .events { position: relative; border-top: 1px solid @cl-subtext10;
           .go-to-top {
             display: none;
@@ -1445,7 +1447,7 @@
   .status.error { color: #d9534f; }
 
   #drawer { display: none; position: absolute; width: 100%; z-index: 11;
-
+    label { color: @cl-subtext40; }
     .scrollbar {
       overflow-y: auto;
       overflow-x: hidden;
@@ -1509,10 +1511,9 @@
         vertical-align: bottom;
         .ft-raleway-heavy;
         font-size: 2.9em;
-        color: @cl-first;
       }
       .input {
-        border: 0;
+        border-width: 5px;
         -webkit-border-radius: 25px;
         -moz-border-radius: 25px;
         border-radius: 25px;
@@ -1532,12 +1533,6 @@
       .submit {
         .big-button;
         margin-top: 15px;
-        background-color: @cl-first;
-        border-color: @cl-first;
-        color: @cl-background;
-        &:hover {
-          color: @cl-background;
-        }
       }
       &.has-error {
         .input {
@@ -1551,15 +1546,11 @@
         .hash {
           color: @cl-success;
         }
-        .submit {
-          background-color: @cl-success;
-          border-color: @cl-success;
-        }
         .help-block {
           color: lighten(@text-color, 25%);
         }
       }
-    }
+    } // #chat #drawer #room-delete // #chat #drawer #room-create
     #room-delete {
       .buttons {
         font-size: 1.1em;
@@ -1569,22 +1560,21 @@
           margin-right: 5px;
         }
         a.cancel-lnk {
-          color: @cl-first;
           font-weight: bold;
           &:hover {
             opacity: 0.8;
           }
         }
       }
-    }
+    } // #chat #drawer #room-delete
     #room-profile {
       .scrollbar;
       text-align: center;
       .room { position: relative;
         .overlay-ctn { width: 100px; height: 100px; margin: 0 auto;
-          .overlay { top:0; }
+          .overlay { top:0; .border-radius(50%); }
           .overlay-text { top: 40px; }
-        }
+        } // #chat #drawer #room-profile .room .overlay-ctn
         .name {
           margin-top: 20px;
         }
@@ -1614,7 +1604,7 @@
           margin-bottom: 20px;
           a {}
         }
-      }
+      } // #chat #drawer #room-profile .room
       .users {
         margin-top: 5px;
         text-align: left;
@@ -1642,7 +1632,7 @@
           &.owner::after { content: '\f00a'; font: normal normal normal 14px/1 'Donut'; position: absolute; left: 7px; z-index: 0; top: -14px; border-radius: 50%; padding: 5px; color: #fbec4d; font-size: 16px; }
         }
       }
-    }
+    } // #chat #drawer #room-profile
     #user-profile {
       .user .avatar-ctn { position:relative; cursor: pointer;
         &.is-banned::before {   font-family: Donut; content: '\f002'; position: absolute; font-size: 90px; color: rgba(119,119,119,0.75); top: -35px; left: 5px; line-height: 90px; width: 90px; }
@@ -1791,9 +1781,7 @@
       .values {
         font-size: 1.1em;
       }
-      .email-container {
-        margin-bottom: 10px;
-      }
+      .email-container { margin-bottom: 10px; }
       a {
         text-decoration: underline;
       }
@@ -1804,7 +1792,7 @@
         margin: 10px 0;
         display: block;
         .spinner {margin-bottom: 10px;}
-        input {width: 100%;margin-bottom: 10px;}
+        input { margin-bottom: 10px; }
       }
       .facebook {
         .infos {
@@ -1952,5 +1940,5 @@
         }
       }
     }
-  }
+  } // #chat #drawer
 }
