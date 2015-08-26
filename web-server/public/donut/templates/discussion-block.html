@@ -1,4 +1,4 @@
-<ul>
+
     <% _.each(list, function(item) { %>
     <li>
         <a href="<%= item.uri %>" class="item <% if (item.focused) { %>active<% }; %> hidden-xs hidden-sm" data-type="<%= item.type %>" data-identifier="<%= item.identifier %>">
@@ -28,4 +28,3 @@
     </li>
     <% }); %>
 
-</ul>

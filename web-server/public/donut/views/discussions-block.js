@@ -32,10 +32,7 @@ define([
 
       // @doc: https://github.com/voidberg/html5sortable
       this.$list.sortable({
-        items: '.item', // which items inside the element should be sortable
-        //handle: 'h2', // restrict drag start to the specified element
         forcePlaceholderSize: true, // if true, forces the placeholder to have a height
-        //connectWith: '.connected', // create connected lists
         placeholder : '<div class="placeholder">'+ $.t('chat.placeholder')+'</div>'
       });
 
