@@ -31,7 +31,7 @@ module.exports = function(grunt) {
           questions: [{
             config: 'confirmationuselast',
             type: 'confirm',
-            message: tmp + '/last/ ALREADY EXISTS DO YOU WANT USE?',
+            message: tmp + '/last/ already exists do you want use?',
             default: true
           }]
         }
@@ -41,7 +41,7 @@ module.exports = function(grunt) {
           questions: [{
             config: 'confirmationrmdir',
             type: 'confirm',
-            message: 'Are you sure, YOU REMOVE THE DIRECTORY ' + tmp,
+            message: 'Are you sure, you remove the directory ' + tmp,
             default: false
           }]
         }
