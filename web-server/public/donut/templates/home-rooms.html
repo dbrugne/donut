@@ -32,7 +32,7 @@
                 <p class="description"><%= room.description %></p>
             </div>
             <p class="join">
-                <a class="dc-back dc-text-contrast" href="#room/<%= room.name.replace('#', '') %>">
+                <a class="dc-back dc-back-hover dc-text-contrast" href="#room/<%= room.name.replace('#', '') %>">
                     <%= t('actions.join') %>
                     <% if (room.users > 0) { %><%= room.users %><% } %>
                     <i class="icon icon-user-custom"></i>

@@ -6,7 +6,7 @@
         <span class="overlay-text"><%= t('profile.user.edit') %></span>
         <% } %>
     </span>
-    <p class="username dc-text">@<%= user.username %></p>
+    <p class="username">@<%= user.username %></p>
     <% if (user.bio) { %><p class="bio"><%= user.bio %></p><% }; %>
     <% if (user.location) { %><p class="action location"><i class="icon icon-map-marker dc-text"></i> <%= user.location %></p><% }; %>
     <% if (user.website) { %><p class="action website"><i class="icon icon-link dc-text"></i> <span><%= user.website %></span></p><% }; %>

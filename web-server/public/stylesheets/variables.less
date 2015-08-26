@@ -159,6 +159,8 @@
     .dc-text-contrast { .color-text(@color); }
     .dc-border { border-color: @color; }
     .dc-border-lighter { border-color: lighten(@color, 10%); }
+
+    &:hover .dc-back-hover{ background-color: darken(@color, 5%);}
   }
 
   .dc-i-@{code} {
@@ -169,6 +171,8 @@
     .dc-text-contrast { .color-text(@color) !important; }
     .dc-border { border-color: @color !important; }
     .dc-border-lighter { border-color: lighten(@color, 10%) !important; }
+
+    &:hover .dc-back-hover{ background-color: darken(@color, 5%)  !important;}
   }
 
   .color-loop (@index - 1);
