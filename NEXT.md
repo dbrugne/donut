@@ -4,6 +4,14 @@
 ```
 grunt mentions-migration
 ```
+* Replace old website attributes on rooms and users:
+```
+grunt website-migration
+```
+* Rename #Support => #help
+```
+db.getCollection('rooms').update({ _id: ObjectId("557ed3a4bcb50bc52b74745a")}, {$set: {name: '#help'}})
+```
 * Add index MongoDB
 ```
 db['history-room'].ensureIndex({
