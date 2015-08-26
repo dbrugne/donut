@@ -23,7 +23,6 @@ define([
     events: {
       'keyup .editable'         : 'onKeyUp',
       'keydown .editable'       : 'onKeyDown',
-      'input .editable'         : 'onInput',
       'click .send'             : 'onSubmitMessage'
     },
 
@@ -155,10 +154,6 @@ define([
       }
 
       this.model.trigger('inputKeyUp', event);
-    },
-
-    onInput: function() {
-      this.model.trigger('inputInput', event);
     },
 
     sendMessage: function() {
