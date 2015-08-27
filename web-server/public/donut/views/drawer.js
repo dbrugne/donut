@@ -143,20 +143,7 @@ define([
         return true;
 
       return false;
-    }//,
-    //_hexToRgb: function(hex) {
-    //  // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
-    //  hex = hex.replace(this.shorthandRegex, function(m, r, g, b) {
-    //    return r + r + g + g + b + b;
-    //  });
-    //
-    //  var result = this.longhandRegex.exec(hex);
-    //  return result ? {
-    //    r: parseInt(result[1], 16),
-    //    g: parseInt(result[2], 16),
-    //    b: parseInt(result[3], 16)
-    //  } : null;
-    //}
+    }
 
   });
 
