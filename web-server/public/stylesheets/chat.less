@@ -137,7 +137,55 @@
     }
   }
 }
-
+#room-users-modal .modal-body .list { padding: 0; list-style: none;
+  > li { float:left; width: 50%;
+    &.loader { float:none; width:100%; }
+    &.li-title { clear: both; width: 100%;
+      .title { margin-top: 15px; padding-left: 10px; }
+    }
+    .item { position: relative; width: 100%; padding: 0; margin: 5px; font-size: 0.9em; font-weight: bold; white-space: nowrap; display: block;
+      .avatar { position: relative; display: inline-block; width: 34px; height: 34px; background-position: center center; background-size: 34px 34px; vertical-align: middle; }
+      .username { position: relative; font-size: 12px; margin-left: 9px; padding-right: 12px; overflow: hidden; display: inline-block; vertical-align: middle; max-width: 110px; white-space: nowrap;
+        .icon-dot-circle-o {
+          &.online { color: @cl-success; }
+          &.offline { color: @cl-error; }
+        }
+      }
+      .dropdown { float: none; top: 0; margin: 0; position: relative; display: inline-block; vertical-align: middle;
+        .dropdown-toggle { border: 0; background-color: transparent; }
+        .dropdown-menu {
+          > li {
+            > a { color: inherit; padding-left: 8px; cursor: pointer; padding-right: 8px;
+              p { display:inline; }
+              &.deop { padding-left: 5px;
+                .icon-stack { font-size: 11px; }
+              }
+            }
+          }
+        }
+      }
+      &.offline {
+        .username { .opacity(0.4); }
+        .avatar { .opacity(0.4); width: 30px; height: 30px; background-size: 30px 30px; }
+      }
+      &.op {
+        .avatar { .border-radius(5px); border: 2px solid @cl-success !important; }
+        .avatar::before { z-index: 5; position: absolute; content: " "; top: -10px; left: -7px; width: 12px; height: 16px; background-image: url("/images/op.png"); background-size: 12px 16px;
+        }
+      }
+      &.devoice {
+        .avatar { .border-radius(5px); border: 2px solid @cl-error !important;
+          &::after { content: '\f037'; display: inline-block; font: normal normal normal 14px/1 'Donut'; text-rendering: auto; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; transform: translate(0, 0); right: -9px; bottom: -10px; position: absolute; color: @cl-error; font-size: 19px; border-radius: 50%; }
+        }
+      }
+      &.owner {
+        .avatar { .border-radius(5px); border: 2px solid #fbec4d !important; }
+        .avatar::before { z-index: 5; position: absolute; content: url("/images/owner.png") !important; top: -15px !important; left: 7px !important; }
+      }
+    }
+  }
+  &::after { .clearfix; }
+}
 #chat {
   .container-fluid;
   height: 100%;
@@ -628,56 +676,6 @@
               }
               .topic-form { display: none;
                 input[type=text] { width: 100%; }
-              }
-
-              #room-users-modal .modal-body .list { padding: 0; list-style: none;
-                > li { float:left; width: 50%;
-                  &.loader { float:none; width:100%; }
-                  &.li-title { clear: both; width: 100%;
-                    .title { margin-top: 15px; padding-left: 10px; }
-                  }
-                  .item { position: relative; width: 100%; padding: 0; margin: 5px; font-size: 0.9em; font-weight: bold; white-space: nowrap; display: block;
-                    .avatar { position: relative; display: inline-block; width: 34px; height: 34px; background-position: center center; background-size: 34px 34px; vertical-align: middle; }
-                    .username { position: relative; font-size: 12px; margin-left: 9px; padding-right: 12px; overflow: hidden; display: inline-block; vertical-align: middle; max-width: 110px; white-space: nowrap;
-                      .icon-dot-circle-o {
-                        &.online { color: @cl-success; }
-                        &.offline { color: @cl-error; }
-                      }
-                    }
-                    .dropdown { float: none; top: 0; margin: 0; position: relative; display: inline-block; vertical-align: middle;
-                      .dropdown-toggle { border: 0; background-color: transparent; }
-                      .dropdown-menu {
-                        > li {
-                          > a { color: inherit; padding-left: 8px; cursor: pointer; padding-right: 8px;
-                            p { display:inline; }
-                            &.deop { padding-left: 5px;
-                              .icon-stack { font-size: 11px; }
-                            }
-                          }
-                        }
-                      }
-                    }
-                    &.offline {
-                      .username { .opacity(0.4); }
-                      .avatar { .opacity(0.4); width: 30px; height: 30px; background-size: 30px 30px; }
-                    }
-                    &.op {
-                      .avatar { .border-radius(5px); border: 2px solid @cl-success !important; }
-                      .avatar::before { z-index: 5; position: absolute; content: " "; top: -10px; left: -7px; width: 12px; height: 16px; background-image: url("/images/op.png"); background-size: 12px 16px;
-                      }
-                    }
-                    &.devoice {
-                      .avatar { .border-radius(5px); border: 2px solid @cl-error !important;
-                        &::after { content: '\f037'; display: inline-block; font: normal normal normal 14px/1 'Donut'; text-rendering: auto; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; transform: translate(0, 0); right: -9px; bottom: -10px; position: absolute; color: @cl-error; font-size: 19px; border-radius: 50%; }
-                      }
-                    }
-                    &.owner {
-                      .avatar { .border-radius(5px); border: 2px solid #fbec4d !important; }
-                      .avatar::before { z-index: 5; position: absolute; content: url("/images/owner.png") !important; top: -15px !important; left: 7px !important; }
-                    }
-                  }
-                }
-                &::after { .clearfix; }
               }
             } // #chat #center .discussion .content .header.room .topic
           } // #chat #center .discussion .content .header.room
