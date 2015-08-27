@@ -1,18 +1,16 @@
 require.config({
   paths: {
     'jquery'                      : '../vendor/jquery/dist/jquery',
-    'underscore'                  : '../vendor/underscore-amd/underscore',
+    'underscore'                  : '../vendor/underscore/underscore',
     'bootstrap'                   : '../vendor/bootstrap/dist/js/bootstrap',
-    'facebook'                    : '//connect.facebook.net/fr_FR/all',
     'jquery.talkative'            : '../vendor/talkative/jquery.talkative',
-    'jquery.socialify'            : '../vendor/talkative/jquery.socialify',
+    'jquery.socialify'            : '../javascripts/plugins/jquery.socialify',
     'jquery.contactform'          : '../javascripts/plugins/jquery.contactform',
     'i18next'                     : '../vendor/i18next/i18next.amd.withJQuery',
     'common'                      : '../vendor/donut-common/index'
   },
   shim: {
     'bootstrap'          : ['jquery'],
-    //'facebook'           : { exports: 'FB' },
     'jquery.talkative'   : ['jquery'],
     'jquery.socialify'   : ['jquery'],
     'jquery.contactform' : ['jquery']
@@ -23,7 +21,6 @@ require([
   'jquery',
   'underscore',
   'common',
-  //'facebook',
   'i18next',
   'bootstrap',
   'jquery.talkative',
