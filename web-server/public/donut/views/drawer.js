@@ -67,9 +67,7 @@ define([
       color = (this._validHex(color))
           ? color
           : this.defaultColor;
-      //var rgb = this._hexToRgb(color);
-      //var rgbBg = 'rgba('+rgb.r+', '+rgb.g+', '+rgb.b+', 0.6)';
-      //this.$opacity.css('background-color', rgbBg);
+
       this.mainView.color(color, true);
     },
     detectOutsideClick: function(event) {
