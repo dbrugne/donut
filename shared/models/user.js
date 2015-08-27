@@ -326,24 +326,24 @@ userSchema.statics.usernameAvailability = function (username, callback) {
   });
 };
 
-userSchema.statics.hasRoomsMessageUnread = function (room_id, user_id, fn) {
+userSchema.statics.hasRoomsMessageUnread = function (roomId, userId, fn) {
   return this.findOne({
-    _id: user_id,
-    'unviewed.room': {$in : [room_id]}
+    _id: userId,
+    'unviewed.room': {$in : [roomId]}
   }, function (err, doc) {
       return fn(err, doc);
   });
 };
 
-userSchema.statics.sendUnreadRoomMessage = function (room_id, users_id, userId ,event, fn) {
+userSchema.statics.sendUnreadRoomMessage = function (roomId, usersId, userId ,event, fn) {
   this.update(
     {
-      $and: [{_id: {$in: users_id}}, {_id: {$nin: [userId]}}],
-      'unviewed.room': {$nin: [room_id]}
+      $and: [{_id: {$in: usersId}}, {_id: {$nin: [userId]}}],
+      'unviewed.room': {$nin: [roomId]}
     },
     {$addToSet:
     {
-      'unviewed': {room: room_id, event: event}
+      'unviewed': {room: roomId, event: event}
     }},{multi: true}
     , function(err) {
       return fn(err);
@@ -418,28 +418,27 @@ userSchema.methods.posterId = function() {
   return id;
 };
 
-userSchema.methods.isBanned = function (user_id) {
+userSchema.methods.isBanned = function (userId) {
   if (!this.bans || !this.bans.length)
     return false;
 
   var subDocument = _.find(this.bans, function (ban) { // @warning: this shouldn't have .bans populated
-    if (ban.user.toString() == user_id)
+    if (ban.user.toString() == userId)
       return true;
   });
 
   return (typeof subDocument != 'undefined');
 };
 
-userSchema.methods.hasOnesMessageUnread = function (user_id) {
+userSchema.methods.hasOnesMessageUnread = function (userId) {
   if (!this.unviewed)
     return false;
 
   var found = false;
 
   _.each(this.unviewed, function(u){
-    if (u.user && u.user.toString() === user_id.toString()) {
+    if (u.user && u.user.toString() === userId.toString())
       found = true;
-    }
   });
 
   return found;
