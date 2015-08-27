@@ -11,3 +11,6 @@
 /web-server/public/stylesheets/style.css
 /web-server/public/stylesheets/dashboard.css
 /web-server/public/build
+
+# Data
+/mongotmp

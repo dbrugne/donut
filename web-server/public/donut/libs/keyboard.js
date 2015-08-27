@@ -16,12 +16,18 @@ define(function () {
       if (window.event) {
         return {
           key: window.event.keyCode,
-          isShift: !!window.event.shiftKey
+          isShift: !!window.event.shiftKey,
+          isCtrl: !!window.event.ctrlKey,
+          isAlt: !!window.event.altKey,
+          isMeta: !!window.event.metaKey
         };
       } else {
         return {
           key: event.which,
-          isShift: !!event.shiftKey
+          isShift: !!event.shiftKey,
+          isCtrl: !!event.ctrlKey,
+          isAlt: !!event.altKey,
+          isMeta: !!event.metaKey
         };
       }
     }

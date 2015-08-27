@@ -29,6 +29,7 @@ define([
         'room:join',
         'room:leave',
         'room:message',
+        'room:me',
         'room:message:edit',
         'room:topic',
         'room:in',
@@ -48,6 +49,7 @@ define([
         'user:join',
         'user:leave',
         'user:message',
+        'user:me',
         'user:message:edit',
         'user:online',
         'user:offline',
@@ -134,6 +136,18 @@ define([
         }
       );
     },
+    ping: function(fn) {
+      var start = Date.now();
+      pomelo.request(
+        'chat.pingHandler.call',
+        {},
+        function () {
+          var duration = Date.now() - start;
+          debug('io:in:ping');
+          return fn(duration);
+        }
+      );
+    },
 
     // ROOM
     // ======================================================
@@ -170,6 +184,18 @@ define([
         }
       );
     },
+    roomMe: function (name, message, callback) {
+      var data = {name: name, message: message};
+      pomelo.request(
+        'chat.roomMeHandler.call',
+        data,
+        function (response) {
+          debug('io:in:room:me', response);
+          if (_.isFunction(callback))
+            return callback(response);
+        }
+      );
+    },
     roomMessageEdit: function (name, messageId, message) {
       var data = {name: name, event: messageId, message: message};
       pomelo.notify('chat.roomMessageEditHandler.call', data);
@@ -197,10 +223,11 @@ define([
         data,
         function (response) {
           if (response.err)
-            return debug('io:in:room:read error: ', response);
+            debug('io:in:room:read error: ', response);
+          else
+            debug('io:in:room:read', response);
 
-          debug('io:in:room:read', response);
-          return fn(response);
+          return fn(response.err, response);
         }
       );
     },
@@ -469,6 +496,20 @@ define([
         }
       );
     },
+    userMe: function (username, message, callback) {
+      var data = {username: username, message: message};
+      debug('io:out:user:me', data);
+      var that = this;
+      pomelo.request(
+        'chat.userMeHandler.call',
+        data,
+        function (response) {
+          debug('io:in:user:me', response);
+          if (_.isFunction(callback))
+            return callback(response);
+        }
+      );
+    },
     userMessageEdit: function (username, messageId, message) {
       var data = { username: username, event: messageId, message: message };
       pomelo.notify('chat.userMessageEditHandler.call', data);
@@ -483,10 +524,11 @@ define([
         data,
         function (response) {
           if (response.err)
-            return debug('io:in:user:read error: ', response);
+            debug('io:in:user:read error: ', response);
+          else
+            debug('io:in:user:read', response);
 
-          debug('io:in:user:read', response);
-          return fn(response);
+          return fn(response.err, response);
         }
       );
     },

@@ -7,11 +7,12 @@ define([
   'libs/keyboard',
   'models/current-user',
   'views/input-rollup',
+  'views/input-commands',
   'views/input-typing',
   'views/input-images',
   'views/input-smileys',
   '_templates'
-], function ($, _, Backbone, common, donutDebug, keyboard, currentUser, RollupView, TypingView, ImagesView, SmileysView, templates) {
+], function ($, _, Backbone, common, donutDebug, keyboard, currentUser, RollupView, CommandsView, TypingView, ImagesView, SmileysView, templates) {
 
   var debug = donutDebug('donut:input');
 
@@ -22,7 +23,6 @@ define([
     events: {
       'keyup .editable'         : 'onKeyUp',
       'keydown .editable'       : 'onKeyDown',
-      'input .editable'         : 'onInput',
       'click .send'             : 'onSubmitMessage'
     },
 
@@ -33,9 +33,13 @@ define([
 
       this.render();
 
+      this.commandsView = new CommandsView({
+        model: this.model 
+      });
       this.rollupView = new RollupView({
         el: this.$el,
-        model: this.model
+        model: this.model,
+        commands: this.commandsView.getCommands(this.model.get('type'))
       });
       this.typingView = new TypingView({
         el: this.$('.typing-container'),
@@ -54,6 +58,9 @@ define([
     _remove: function () {
       this.imagesView.remove();
       this.smileysView.remove();
+      this.commandsView.remove();
+      this.rollupView.remove();
+      this.typingView.remove();
       this.remove();
     },
 
@@ -64,6 +71,7 @@ define([
       }));
 
       this.$editable = this.$('.editable');
+      this.$preview = this.$('.preview');
       this.$rollup = this.$('.rollup-container');
 
       if (!this.model.isInputActive())
@@ -120,14 +128,11 @@ define([
       if (data.key === keyboard.RETURN && !data.isShift)
         event.preventDefault();
 
-      // Avoid setting cursor at end of tab input
-      this.rollupView.cursorPosition = null;
-      if (data.key === keyboard.DOWN || data.key === keyboard.UP)
-        this.rollupView.cursorPosition = this.$editable.getCursorPosition();
-
       // Navigate between editable messages
       if (event.which == keyboard.UP && message === '')
         this.trigger('editPreviousInput');
+
+      this.model.trigger('inputKeyDown', event);
     },
 
     onKeyUp: function (event) {
@@ -138,8 +143,7 @@ define([
       var message = this.$editable.val();
       var images = this.imagesView.list();
 
-      // Rollup Closed
-      if (this.$rollup.html().length == 0) {
+      if (this.rollupView.isClosed()) {
         // Send message on Enter, not shift + Enter, only if there is something to send
         if (data.key == keyboard.RETURN && !data.isShift && (message.length != 0 || images.length))
           return this.sendMessage();
@@ -152,13 +156,15 @@ define([
       this.model.trigger('inputKeyUp', event);
     },
 
-    onInput: function() {
-      this.model.trigger('inputInput', event);
-    },
-
     sendMessage: function() {
       var message = this.$editable.val();
       var images = this.imagesView.list();
+
+      // check if input is a command
+      if (this.commandsView.checkInput(message) !== false) {
+        this.$editable.val('');
+        return false;
+      }
       
       // empty message and no image
       // trim to detect only whitespaces message
@@ -171,7 +177,7 @@ define([
         debug('message is too long');
         return false;
       }
-      
+
       // Send message to server
       this.model.sendMessage(message, images);
       this.trigger('send');

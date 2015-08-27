@@ -6,7 +6,7 @@
         <% var nb = 0; %>
         <ul class="type_<%= type %>">
             <% if (results.length > 0) { %>
-                <% _.each(results, function(result) { %>
+                <% _.each(results, function(result, key) { %>
                 <li class="ctn_item <%= nb == 0 ? 'active' : '' %>" data-index="<%= nb %>">
                     <% if (type === 'users') { %>
                     <img class="avatar_ctn" src="<%= result.avatarUrl %>">
@@ -18,9 +18,9 @@
                     <% } else if (type === 'commands') { %>
                     <div class="cmd-left-td">
                         <span class="name value">/<%= result.name %></span>
-                        <span class="args"><%= result.arguments %></span>
+                        <span class="args"><%= t(result.help) %></span>
                     </div>
-                    <div class="cmd-right-td"><span class="cmddesc"><span class="cmdtype"></span> <%= result.description %></span>
+                    <div class="cmd-right-td"><span class="cmddesc"><span class="cmdtype"></span> <%= t(result.description) %></span>
                     </div>
                     <% }; %>
                 </li>

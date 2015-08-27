@@ -39,6 +39,9 @@ handler.call = function(data, session, next) {
       if (!opedUser)
         return callback('unable to retrieve opedUser in room:op: ' + data.username);
 
+			if (room.isOwner(opedUser.id))
+				return callback(opedUser.username + ' is owner and can not be devoiced of ' + room.name);
+
       if (room.op.indexOf(opedUser._id) !== -1)
         return callback('user '+opedUser.username+' is already OP of ' + room.name);
 

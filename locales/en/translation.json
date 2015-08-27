@@ -418,6 +418,35 @@
       "cancel": "No, cancel",
       "confirm": "Yes, confirm"
     },
+    "commands": {
+      "join": "Join a donut",
+      "leave": "Leave this donut or another one",
+      "topic": "Change topic of current donut",
+      "op": "Make moderator in this donut",
+      "deop": "Remove from moderators of this donut",
+      "kick": "Kick out a user from this donut",
+      "ban": "Kick out and ban a user from this donut",
+      "deban": "Unban a user from this donut",
+      "block": "Block user private messages to you",
+      "deblock": "Deblock private messages from a user",
+      "voice": "Unmute a user from this donut",
+      "devoice": "Mute a user from this donut",
+      "msg": "Send a message",
+      "profile": "Open donut or user profile",
+      "me": "What are you doing?",
+      "ping": "pong",
+      "help": "Commands help",
+      "errors": {
+        "parameters": "Invalid parameter",
+        "invalidcommand": "Command not found",
+        "invalidusername": "User not found",
+        "invalidroom": "Donut not found",
+        "commandaccess": "You can not use this command here"
+      }
+    },
+    "ping": {
+      "message": "DONUT platform responds in __ms__ ms"
+    },
     "notifications": {
       "hello": "You enter",
       "disconnected": "You have been disconnected from the server, please wait",
@@ -678,6 +707,16 @@
           "permanent": "It is not possible to delete a 'permanent' donut"
         }
       }
+    },
+    "errors": {
+      "bio": "Bio should be 200 characters max.",
+      "location": "Location should be 70 characters max.",
+      "description": "Description should be 200 characters max.",
+      "website-size": "Website should be 5 characters min. and 255 characters max.",
+      "website-url": "Website should be a valid site URL.",
+      "color-hexadecimal": "Color should be explained has hexadecimal (e.g.: #FF00AA).",
+      "color-integer": "Priority should be explained has number (integer).",
+      "positions": "Positions should be an array."
     }
   },
   "page": {
@@ -696,7 +735,7 @@
       "global": {
         "content": {
           "team": "The DONUT.me team",
-          "ps": "P.S.: To avoid receiving these notification types, please uncheck it from your notification options in your account preferences on <a href=\"https://__fqdn__\">__fqdn__</a>. For any question, we are available on <a href=\"https://__fqdn__/!#room/Support\">#support</a>"
+          "ps": "P.S.: To avoid receiving these notification types, please uncheck it from your notification options in your account preferences on <a href=\"https://__fqdn__\">__fqdn__</a>. For any question, we are available on <a href=\"https://__fqdn__/!#room/help\">#help</a>"
         }
       },
       "welcome": {
@@ -991,7 +1030,7 @@
     "notif": {
       "title": "Notifications",
       "help": {
-        "user": "DONUT tries to limit smartly the amount of emails and mobile notifications. However if you find that we send too many notifications feel free to send your feedback <a data-toggle='contactform'>by email</a> or on <a href='#room/Support'>#Support</a>"
+        "user": "DONUT tries to limit smartly the amount of emails and mobile notifications. However if you find that we send too many notifications feel free to send your feedback <a data-toggle='contactform'>by email</a> or on <a href='#room/help'>#help</a>"
       },
       "nothing": {
         "label": "Never receive notifications about this donut",

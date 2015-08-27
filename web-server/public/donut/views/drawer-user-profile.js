@@ -26,9 +26,15 @@ define([
       // show spinner as temp content
       this.render();
 
+      if (options.data)
+        this.onResponse(options.data);
+
       var that = this;
-      client.userRead(this.username, function(data) {
-        that.onResponse(data);
+      client.userRead(this.username, function(err, data) {
+        if (err === 'unknown')
+          return;
+        if (!err)
+          that.onResponse(data);
       });
     },
     render: function () {
@@ -110,8 +116,9 @@ define([
 
     onUserBanChange: function() {
       this.render();
-      client.userRead(this.username, _.bind(function(data) {
-        this.onResponse(data);
+      client.userRead(this.username, _.bind(function(err, data) {
+        if (!err)
+          this.onResponse(data);
       }, this));
     }
 

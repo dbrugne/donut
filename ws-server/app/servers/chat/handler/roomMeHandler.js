@@ -3,10 +3,8 @@ var async = require('async');
 var _ = require('underscore');
 var roomEmitter = require('../../../util/roomEmitter');
 var inputUtil = require('../../../util/input');
-var imagesUtil = require('../../../util/images');
 var keenio = require('../../../../../shared/io/keenio');
 var Notifications = require('../../../components/notifications');
-var common = require('@dbrugne/donut-common');
 
 var Handler = function (app) {
   this.app = app;
@@ -38,7 +36,7 @@ handler.call = function (data, session, next) {
         return callback('this user ' + user.id + ' is not currently in room ' + room.name);
 
       if (room.isDevoice(user.id))
-        return callback('user is devoiced, he can\'t send message in room');
+        return callback('user is devoiced, he can\'t send message "/me" in room');
 
       return callback(null);
     },
@@ -47,37 +45,25 @@ handler.call = function (data, session, next) {
       // text filtering
       var message = inputUtil.filter(data.message, 512);
 
-      // images filtering
-      var images = imagesUtil.filter(data.images);
-
-      if (!message && !images)
-        return callback('Empty message (no text, no image)');
+      if (!message)
+        return callback('empty message (no text)');
 
       // mentions
       inputUtil.mentions(message, function(err, message, markups) {
-        return callback(err, message, images, markups.users);
+        return callback(err, message, markups.users);
       });
     },
 
-    function prepareEvent(message, images, mentions, callback) {
+    function historizeAndEmit(message, mentions, callback) {
       var event = {
         name: room.name,
         id: room.id,
-        time: Date.now(),
         user_id: user.id,
         username: user.username,
-        avatar: user._avatar()
+        avatar: user._avatar(),
+        message: message
       };
-      if (message)
-        event.message = message;
-      if (images && images.length)
-        event.images = images;
-
-      return callback(null, event, mentions);
-    },
-
-    function historizeAndEmit(event, mentions, callback) {
-      roomEmitter(that.app, 'room:message', event, function (err, sentEvent) {
+      roomEmitter(that.app, 'room:me', event, function (err, sentEvent) {
         if (err)
           return callback(err);
 
@@ -86,7 +72,7 @@ handler.call = function (data, session, next) {
     },
 
     function mentionNotification(sentEvent, mentions, callback) {
-      if (!mentions || !mentions.length)
+      if (!mentions.length)
         return callback(null, sentEvent);
 
       var usersIds = _.first(_.map(mentions, 'id'), 10);
@@ -100,8 +86,6 @@ handler.call = function (data, session, next) {
     },
 
     function messageNotification(sentEvent, callback) {
-      // @todo : change pattern for this event (particularly frequent) and tag historyRoomModel as "to_be_consumed" and
-      //         implement a consumer to treat notifications asynchronously
       Notifications(that.app).getType('roommessage').create(room, sentEvent.id, function (err) {
         if (err)
           logger.error(err);
@@ -124,11 +108,10 @@ handler.call = function (data, session, next) {
           name: room.name
         },
         message: {
-          length: (event.message && event.message.length) ? event.message.length : 0,
-          images: (event.images && event.images.length) ? event.images.length : 0
+          length: (event.message && event.message.length) ? event.message.length : 0
         }
       };
-      keenio.addEvent("room_message", messageEvent, function (err, res) {
+      keenio.addEvent("room_me", messageEvent, function (err, res) {
         if (err)
           logger.error(err);
 
@@ -138,7 +121,7 @@ handler.call = function (data, session, next) {
 
   ], function (err) {
     if (err) {
-      logger.error('[room:message] ' + err);
+      logger.error('[room:me] ' + err);
       return next(null, { code: 500, err: err });
     }
 

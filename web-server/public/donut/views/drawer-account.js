@@ -24,18 +24,19 @@ define([
 
       // ask for data
       var that = this;
-      client.userRead(currentUser.get('username'), function(data) {
+      client.userRead(currentUser.get('username'), function(err, data) {
+        if (err)
+          return;
+        
         that.user = data;
         that.onResponse(data);
       });
     },
-
     render: function() {
       // render spinner only
       this.$el.html(templates['spinner.html']);
       return this;
     },
-
     onResponse: function(user) {
       if (user.color)
         this.trigger('color', user.color);

@@ -71,7 +71,9 @@
             <% if (room.website) { %>
                 <% if (room.owner) { %><span class="separation hidden-sm hidden-xs">|</span><% } %>
                 <span class="website hidden-sm hidden-xs" <% if (room.color) { %>style="color: <%= room.color %>;"<% } %>>
-                    <%= room.website %>
+                    <a class="website" href="<%= room.website.href %>" title="<%= room.website.title %>">
+                    <%= room.website.title %>
+                    </a>
                 </span>
             <% } %>
             <% if (room.description) { %>

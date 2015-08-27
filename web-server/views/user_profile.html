@@ -28,8 +28,10 @@
             <% } %>
             <% if (_user.website) { %>
                 <% if (_user.location) { %><span class="separation hidden-xs hidden-sm">|</span><% } %>
-                <span class="website hidden-xs hidden-sm" <% if (_user.color) { %>style="color: <%= _user.color %>;"<% } %>>
-                <%= _user.website %>
+                <span class="website hidden-xs hidden-sm dc-text">
+                    <a class="website" href="<%= _user.website.href %>" title="<%= _user.website.title %>">
+                        <%= _user.website.title %>
+                    </a>
                 </span>
                 <% } %>
                 <% if (_user.bio) { %>

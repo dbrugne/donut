@@ -72,11 +72,11 @@ define([
       'click .open-user-edit'           : 'openUserEdit',
       'click .open-user-preferences'    : 'openUserPreferences',
       'click .open-user-account'        : 'openUserAccount',
-      'click .open-user-profile'        : 'openUserProfile',
+      'click .open-user-profile'        : 'onOpenUserProfile',
       'click .action-user-ban'          : 'userBan',
       'click .action-user-deban'        : 'userDeban',
-      'dblclick .dbl-open-user-profile' : 'openUserProfile',
-      'click .open-room-profile'        : 'openRoomProfile',
+      'dblclick .dbl-open-user-profile' : 'onOpenUserProfile',
+      'click .open-room-profile'        : 'onOpenRoomProfile',
       'click .open-room-edit'           : 'openRoomEdit',
       'click .open-room-preferences'    : 'openRoomPreferences',
       'click .open-room-users'          : 'openRoomUsers',
@@ -96,6 +96,9 @@ define([
       this.listenTo(onetoones,  'remove', this.onRemoveDiscussion);
       this.listenTo(rooms,      'kickedOrBanned', this.roomKickedOrBanned);
       this.listenTo(rooms,      'deleted', this.roomRoomDeleted);
+      this.listenTo(currentUser, 'roomProfileCommand', this.openRoomProfileCommand);
+      this.listenTo(currentUser, 'userProfileCommand', this.openUserProfileCommand);
+      this.listenTo(currentUser, 'roomJoinCommand', this.focusRoomByName);
     },
     run: function() {
       // generate and attach subviews
@@ -265,7 +268,7 @@ define([
       var view = new DrawerUserAccountView({ mainView: this });
       this.drawerView.setSize('320px').setView(view).open();
     },
-    openUserProfile: function(event) {
+    onOpenUserProfile: function(event) {
       event.preventDefault();
 
       var username = $(event.currentTarget).data('username');
@@ -275,7 +278,11 @@ define([
       var view = new DrawerUserProfileView({ mainView: this, username: username });
       this.drawerView.setSize('380px').setView(view).open();
     },
-    openRoomProfile: function(event) {
+    openUserProfileCommand: function(data) {
+      var view = new DrawerUserProfileView({ mainView: this, data: data });
+      this.drawerView.setSize('380px').setView(view).open();
+    },
+    onOpenRoomProfile: function(event) {
       event.preventDefault();
 
       var name = $(event.currentTarget).data('roomName');
@@ -283,6 +290,10 @@ define([
         return;
 
       var view = new DrawerRoomProfileView({ mainView: this, name: name });
+      this.drawerView.setSize('380px').setView(view).open();
+    },
+    openRoomProfileCommand: function(data) {
+      var view = new DrawerRoomProfileView({ mainView: this, data: data });
       this.drawerView.setSize('380px').setView(view).open();
     },
     openRoomEdit: function(event) {

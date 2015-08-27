@@ -4,7 +4,7 @@
         <div class="text">
             <div class="username" style="color: <%= _user.color %>;">@<%= _user.username %></div>
             <% if (_user.location) { %><p class="location"><%= _user.location %></p><% } %>
-            <% if (_user.website) { %><p class="website"><%= _user.website %></p><% } %>
+            <% if (_user.website) { %><p class="website"><%= _user.website.title %></p><% } %>
         </div>
     </div>
     <div class="back" <% if (_user.color) { %>style="background-color: <%= _user.color %>;"<% } %>>
@@ -12,7 +12,7 @@
         <div class="text">
             <div class="username">@<%= _user.username %></div>
             <% if (_user.location) { %><p class="location"><%= _user.location %></p><% } %>
-            <% if (_user.website) { %><p class="website"><%= _user.website %></p><% } %>
+            <% if (_user.website) { %><p class="website"><%= _user.website.title %></p><% } %>
         </div>
     </div>
 </a>
