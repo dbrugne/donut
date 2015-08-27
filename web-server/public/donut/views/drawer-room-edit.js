@@ -58,9 +58,6 @@ define([
       var html = this.template({room: room});
       this.$el.html(html);
 
-      // color form
-      //this.$el.find('.room').colorify();
-
       // description
       this.$el.find('#roomDescription').maxlength({
         counterContainer: this.$el.find('#roomDescription').siblings('.help-block').find('.counter'),
