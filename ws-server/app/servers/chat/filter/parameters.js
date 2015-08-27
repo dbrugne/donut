@@ -48,13 +48,27 @@ Filter.prototype.before = function(data, session, next) {
     },
 
     room: function (callback) {
-      if (!data.name || data.__route__ === 'chat.roomCreateHandler.call')
+      if (data.__route__ === 'chat.roomCreateHandler.call')
         return callback(null);
 
-      if (!common.validateName(data.name))
-        return callback('invalid room name parameter: ' + data.name);
+      if (!data.name && !data.room_id)
+        return callback(null);
 
-      var q = RoomModel.findByName(data.name);
+      var q;
+
+      if (data.name) {
+        if (!common.validateName(data.name))
+          return callback('invalid room name parameter: ' + data.name);
+
+        q = RoomModel.findByName(data.name);
+      }
+
+      if (data.room_id) {
+        if (!common.validateObjectId(data.room_id))
+          return callback('invalid room_id parameter: ' + data.room_id);
+
+        q = RoomModel.findOne({ _id: data.room_id });
+      }
 
       if (data.__route__ === 'chat.roomJoinHandler.call')
         q.populate('owner', 'username avatar color facebook');
