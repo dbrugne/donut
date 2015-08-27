@@ -26,7 +26,7 @@ require([
   'jquery.talkative',
   'jquery.socialify',
   'jquery.contactform'
-], function ($, _, common, /*facebook, */i18next) {
+], function ($, _, common, i18next) {
 
   // Landing text rotation
   if ($('#landing').length) {
