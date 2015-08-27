@@ -304,7 +304,7 @@
       "nouser": "Pas d'utilisateur dans le donut",
       "disclaimer": {
         "before": "Cette page est le profil du donut ",
-        "after": "sur la plateforme de chat <a href=\"/\">DONUT.me</a>. DONUT.me vous permet de rejoindre ou créer un salon de discussion thématique (donut) sur ce qui vous plait. Vous pouvez y discuter avec des gens qui partagent vos centres d'intérêt"
+        "after": "sur la plateforme de chat <a href=\"/\">DONUT.me</a>. <a href=\"/\">DONUT.me</a> vous permet de rejoindre ou créer un salon de discussion thématique (donut) sur ce qui vous plait. Vous pouvez y discuter avec des gens qui partagent vos centres d'intérêt"
       },
       "permalink": "Permalien de ce profil",
       "editlink": "Editer",
@@ -499,7 +499,7 @@
         "kick": "<a href=\"#room/__roomname__\">Vous êtes expulsé de </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
         "ban": "<a href=\"#room/__roomname__\">Vous êtes banni de </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
         "deban": "<a href=\"#room/__roomname__\">Vous n'êtes plus banni de </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
-        "voice": "<a href=\"#room/__roomname__\">Vous avez retrouvé la parole dans </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
+        "voice": "<a href=\"#room/__roomname__\">Vous n'êtes plus muet dans </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
         "devoice": "<a href=\"#room/__roomname__\">Vous êtes muet dans </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
         "roomjoin": "<span class=\"name open-user-profile\" data-username=\"__username__\">@__username__</span><a href=\"#room/__roomname__\"> rejoint </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
         "roomtopic": "<a href=\"#room/__roomname__\">Nouveau sujet dans </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
