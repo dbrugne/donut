@@ -14,10 +14,6 @@ db['history-room'].ensureIndex({
 db['history-room'].ensureIndex({
   "event" : 1
 });
-db['history-room'].ensureIndex({
-  "users" : 1,
-  "room" : 1
-});
 // onetoone history
 db['history-one'].ensureIndex({
   "from" : 1,
@@ -26,11 +22,6 @@ db['history-one'].ensureIndex({
 });
 db['history-one'].ensureIndex({
   "event" : 1
-});
-db['history-one'].ensureIndex({
-  "from" : 1,
-  "to" : 1,
-  "viewed" : 1
 });
 // logs
 db['logs'].ensureIndex({
