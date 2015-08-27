@@ -24,7 +24,6 @@ define([
         search: data.search
       });
       this.$el.html(html);
-      //this.$el.colorify();
       return this;
     }
 
