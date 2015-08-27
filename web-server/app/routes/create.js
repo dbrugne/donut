@@ -4,20 +4,20 @@ var i18next = require('../../../shared/util/i18next');
 var bouncer = require('../middlewares/bouncer');
 var conf = require('../../../config/index');
 
-router.get('/create-a-room', function(req, res) {
+router.get('/create', function(req, res) {
 
   var meta = {
-    title         : i18next.t("title.create-a-room"),
-    description   : i18next.t("title.create-a-room"),
-    ogtitle       : i18next.t("title.create-a-room"),
-    ogdescription : i18next.t("title.create-a-room"),
+    title         : i18next.t("title.create"),
+    description   : i18next.t("title.create"),
+    ogtitle       : i18next.t("title.create"),
+    ogdescription : i18next.t("title.create"),
     oglocale      : i18next.t("meta.locale"),
     ogalternate   : i18next.t("meta.alternate"),
-    image         : i18next.t("title.create-a-room"),
+    image         : i18next.t("title.create"),
     type          : 'object'
   };
 
-  res.render('create-a-room', {
+  res.render('create', {
     meta: meta
   });
 });
