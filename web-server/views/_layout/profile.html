@@ -42,7 +42,7 @@
                 <li id="block-current-user">
 
                     <% if (typeof user !== 'undefined' && typeof user.avatar !== 'undefined') { %>
-                        <a href="javascript:;" class="avatar open-user-profile hidden-sm hidden-xs" data-username="<%= user.username %>">
+                        <span class="avatar hidden-sm hidden-xs" data-username="<%= user.username %>">
                             <img src="<%= user.avatar %>" alt="<%= user.username %> avatar">
                             <span class="title hidden-sm hidden-xs">
                                 <span class="username">
@@ -51,7 +51,7 @@
                             </span>
                             <span class="selected"></span>
                             <span class="arrow"></span>
-                        </a>
+                        </span>
 
                         <ul class="sub-menu hidden-sm hidden-xs">
                             <li>

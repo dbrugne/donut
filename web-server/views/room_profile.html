@@ -54,23 +54,16 @@
             <p class="join hidden-sm hidden-xs"><a class="dc-back dc-text-contrast" href="<%= room.join %>"><%= t('actions.join') %> <% if (room.usersCount) { %><%= room.usersCount %><% } %> <i class="icon icon-user-custom"></i></a></p>
         </div>
         <div class="info">
-            <div class="name open-room-profile hidden-xs hidden-sm" data-room-name="<%= room.name %>"><%= room.name %></div>
-            <div class="share hidden-xs hidden-sm">
-                <%= t('chat.share.label') %>
-                <i class="facebook icon icon-facebook-square" data-url="<%- room.url %>" data-name="<%- room.name %>" data-avatar="<%- room.avatar %>"></i>
-                <i class="twitter icon icon-twitter-square" data-url="<%- room.url %>" data-name="<%- room.name %>"></i>
-                <i class="googleplus icon icon-google-plus-square" data-url="<%- room.url %>"></i>
-            </div>
-            <div class="name open-room-profile visible-xs visible-sm dc-text-contrast" data-room-name="<%= room.name %>"><%= room.name %></div>
+            <span class="name open-room-profile hidden-xs hidden-sm" data-room-name="<%= room.name %>"><%= room.name %></span>
+            <span class="name open-room-profile visible-xs visible-sm dc-text-contrast" data-room-name="<%= room.name %>"><%= room.name %></span>
             <% if (room.owner && room.owner.username) { %>
-                <br/>
-                <div class="owner">
-                    <%= t('global.by') %> <a href="<%= room.owner.url %>" <% if (room.color) { %>style="color: <%= room.color %>;"<% } %>>@<%= room.owner.username %></a>
-                </div>
+                <span class="owner">
+                    <%= t('global.by') %>&nbsp;<a class="dc-text" href="<%= room.owner.url %>">@<%= room.owner.username %></a>
+                </span>
             <% } %>
-            <% if (room.website) { %>
+            <% if (room.website.href) { %>
                 <% if (room.owner) { %><span class="separation hidden-sm hidden-xs">|</span><% } %>
-                <span class="website hidden-sm hidden-xs" <% if (room.color) { %>style="color: <%= room.color %>;"<% } %>>
+                <span class="website hidden-sm hidden-xs dc-text">
                     <a class="website" href="<%= room.website.href %>" title="<%= room.website.title %>">
                     <%= room.website.title %>
                     </a>
@@ -81,6 +74,12 @@
                     <p class="description-content"><%= room.description %></p>
                 </div>
             <% } %>
+            <div class="share hidden-xs hidden-sm">
+                <%= t('chat.share.label') %>
+                <i class="facebook icon icon-facebook-square" data-url="<%- room.url %>" data-name="<%- room.name %>" data-avatar="<%- room.avatar %>"></i>
+                <i class="twitter icon icon-twitter-square" data-url="<%- room.url %>" data-name="<%- room.name %>"></i>
+                <i class="googleplus icon icon-google-plus-square" data-url="<%- room.url %>"></i>
+            </div>
         </div>
     </div>
     <div class="events">
