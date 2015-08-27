@@ -11,7 +11,9 @@ define([
       "click .buttons .confirm": "onConfirm"
     },
 
-    callback: null,
+    confirmCallback: null,
+
+    cancelCallback: null,
 
     options: null,
 
@@ -30,9 +32,15 @@ define([
         show: false
       });
 
-      // On dismiss reset confirmation modal state
       var that = this;
+
+      this.$el.on('shown.bs.modal', function(e){
+        that.$input.focus();
+      });
       this.$el.on('hidden.bs.modal', function (e) {
+        if (_.isFunction(that.cancelCallback))
+          that.cancelCallback();
+
         that._reset();
       });
 
@@ -42,19 +50,21 @@ define([
     _reset: function() {
       this.$inputBlock.show();
       this.$input.val('');
-      this.callback = null;
+      this.confirmCallback = null;
+      this.cancelCallback = null;
       this.options = null;
 
       // unbind 'enter'
       $(document).off('keypress');
     },
-    open: function(options, callback) {
+    open: function(options, confirmCallback, cancelCallback) {
       if (!this.isRendered) {
         this.render();
       }
 
       this.options = options || {};
-      this.callback = callback;
+      this.confirmCallback = confirmCallback;
+      this.cancelCallback = cancelCallback || _.noop;
 
       // input field
       if (this.options.input)
@@ -75,10 +85,9 @@ define([
     onConfirm: function(event) {
       event.preventDefault();
 
-      var input = this.$input.val();
-      this.callback(input);
+      this.confirmCallback(this.$input.val());
+      this._reset(); // before hide to disable cancelCallback call
       this.$el.modal('hide');
-      this._reset();
     }
 
   });

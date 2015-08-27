@@ -79,7 +79,7 @@ Notification.prototype.create = function (room, history, done) {
         if (statuses[user.id] && that.facade.options.force !== true)
           return;
 
-        var model = NotificationModel.getNewModel(that.type, user, {
+        var model = NotificationModel.getNewModel(that.type, user._id, {
           event: historyModel._id,
           name: roomModel.name
         });

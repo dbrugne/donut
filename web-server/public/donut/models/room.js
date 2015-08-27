@@ -140,6 +140,17 @@ define([
 
       this.trigger('freshEvent', model);
     },
+    onMe: function(data) {
+      var model = new EventModel({
+        type: 'room:me',
+        data: data
+      });
+
+      if (currentUser.get('user_id') != model.get('data').user_id)
+        model.set('unviewed', true);
+
+      this.trigger('freshEvent', model);
+    },
     onOp: function(data) {
       // room.get('op')
       var ops = this.get('op');

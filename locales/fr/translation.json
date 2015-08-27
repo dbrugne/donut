@@ -437,6 +437,35 @@
       "cancel": "Non, j'annule",
       "confirm": "Oui, je confirme"
     },
+    "commands": {
+      "join": "Rejoindre le donut",
+      "leave": "Quitter un donut (ou celui-ci)",
+      "topic": "Changer le sujet de ce donut",
+      "op": "Nommer un utilisateur modérateur de ce donut",
+      "deop": "Retirer un utilisateur des modérateurs de ce donut",
+      "kick": "Expulser un utilisateur de ce donut",
+      "ban": "Expulser et bannir un utilisateur de ce donut",
+      "deban": "Débannir un utilisateur de ce donut",
+      "block": "Bloque les messages privés d'un utilisateur",
+      "deblock": "Débloquer les messages privés d'un utilisateur",
+      "voice": "Rendre la parole à un utilisateur de ce donut",
+      "devoice": "Rendre muet un utilisateur dans ce donut",
+      "msg": "Envoyer un message",
+      "profile": "Afficher le profil du donut ou de l'utilisateur",
+      "me": "Qu'êtes vous en train de faire ?",
+      "ping": "pong",
+      "help": "Aide",
+      "errors": {
+        "parameters": "Paramètre(s) invalide(s).",
+        "invalidcommand": "Cette commande n'existe pas.",
+        "invalidusername": "Cette utilisateur n'existe pas.",
+        "invalidroom": "Ce donut n'existe pas.",
+        "commandaccess": "Vous ne pouvez pas utiliser cette commande ici."
+      }
+    },
+    "ping": {
+      "message": "La platforme DONUT a répondu en in __ms__ ms"
+    },
     "notifications": {
       "hello": "Vous entrez dans",
       "disconnected": "Vous avez été deconnecté du serveur, veuillez patienter",

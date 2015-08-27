@@ -123,7 +123,7 @@ handler.call = function(data, session, next) {
 			};
 			keenio.addEvent("onetoone_message", messageEvent, function(err){
 				if (err)
-					logger.error('Error while tracking onetoone_message in keen.io for ' + user.id + ': '+err);
+					logger.error(err);
 
 				return callback(null);
 			});

@@ -416,6 +416,35 @@
       "cancel": "No, cancel",
       "confirm": "Yes, confirm"
     },
+    "commands": {
+      "join": "Join a donut",
+      "leave": "Leave this donut or another one",
+      "topic": "Change topic of current donut",
+      "op": "Make moderator in this donut",
+      "deop": "Remove from moderators of this donut",
+      "kick": "Kick out a user from this donut",
+      "ban": "Kick out and ban a user from this donut",
+      "deban": "Unban a user from this donut",
+      "block": "Block user private messages to you",
+      "deblock": "Deblock private messages from a user",
+      "voice": "Unmute a user from this donut",
+      "devoice": "Mute a user from this donut",
+      "msg": "Send a message",
+      "profile": "Open donut or user profile",
+      "me": "What are you doing?",
+      "ping": "pong",
+      "help": "Commands help",
+      "errors": {
+        "parameters": "Invalid parameter",
+        "invalidcommand": "Command not found",
+        "invalidusername": "User not found",
+        "invalidroom": "Donut not found",
+        "commandaccess": "You can not use this command here"
+      }
+    },
+    "ping": {
+      "message": "DONUT platform responds in __ms__ ms"
+    },
     "notifications": {
       "hello": "You enter",
       "disconnected": "You have been disconnected from the server, please wait",

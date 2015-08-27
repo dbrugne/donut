@@ -586,8 +586,13 @@ define([
           case 'room:out':
             template = templates['event/in-out-on-off.html'];
             break;
+          case 'ping':
+            template = templates['event/ping.html'];
+            break;
           case 'room:message':
+          case 'room:me':
           case 'user:message':
+          case 'user:me':
             template = templates['event/message.html'];
             break;
           case 'reconnected':
@@ -615,13 +620,19 @@ define([
             template = templates['event/room-op.html'];
             break;
           case 'room:topic':
-            template = templates['event/room-topic.html']; 
+            template = templates['event/room-topic.html'];
             break;
           case 'user:ban':
-            template = templates['event/user-ban.html']; 
+            template = templates['event/user-ban.html'];
             break;
           case 'user:deban':
-            template = templates['event/user-deban.html']; 
+            template = templates['event/user-deban.html'];
+            break;
+          case 'command:error':
+            template = templates['event/input-commands-error.html'];
+            break;
+          case 'command:help':
+            template = templates['event/help.html'];
             break;
           default:
             return;

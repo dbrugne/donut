@@ -46,6 +46,17 @@ define([
 
       this.trigger('freshEvent', model);
     },
+    onMe: function (data) {
+      var model = new EventModel({
+        type: 'user:me',
+        data: data
+      });
+
+      if (currentUser.get('user_id') != model.get('data').from_user_id)
+        model.set('unviewed', true);
+
+      this.trigger('freshEvent', model);
+    },
     onUserOnline: function (data) {
       this._onStatus('online', data);
     },
