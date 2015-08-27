@@ -157,7 +157,7 @@ Notification.prototype.sendEmail = function(model, done) {
         });
       });
 
-      emailer.userMessage(model.user.getEmail(), model.user.username, messages, callback);
+      emailer.userMessage(model.user.getEmail(), events[0].data.from_username, messages, callback);
     },
 
     function persist(callback) {
