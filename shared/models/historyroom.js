@@ -296,14 +296,4 @@ historySchema.statics.retrieveEventWithContext = function(eventId, userId, limit
 
 };
 
-historySchema.statics.findUnread = function(userId, roomId, fn) {
-  this.findOne({
-      viewed: { $nin: [userId] },
-      user: { $ne: userId },
-      users: { $in: [userId] },
-      event: { $in: ['room:message', 'room:topic', 'room:me'] },
-      room: roomId
-    }, fn);
-};
-
 module.exports = mongoose.model('HistoryRoom', historySchema, 'history-room');

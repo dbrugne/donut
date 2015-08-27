@@ -6,6 +6,7 @@ var oneEmitter = require('../../../util/oneEmitter');
 var inputUtil = require('../../../util/input');
 var imagesUtil = require('../../../util/images');
 var keenio = require('../../../../../shared/io/keenio');
+var User = require('../../../../../shared/models/user');
 
 var Handler = function(app) {
   this.app = app;
@@ -43,7 +44,7 @@ handler.call = function(data, session, next) {
 			user.update({$addToSet: { onetoones: withUser._id }}, function(err) {
 				if (err)
 					return callback(err);
-        withUser.update({$addToSet: { onetoones: user._id, 'onetoones_unviewed': user._id }}, function(err) {
+        withUser.update({$addToSet: { onetoones: user._id}}, function(err) {
           return callback(err);
 				});
 			});
@@ -85,6 +86,12 @@ handler.call = function(data, session, next) {
 
 		function historizeAndEmit(event, callback) {
 			oneEmitter(that.app, { from: user._id, to: withUser._id} , 'user:message', event, callback);
+		},
+
+		function persitUnViewed(event, callback) {
+			User.sendUnreadOneMessage(user._id, withUser._id, event.id, function (err){
+				return callback(err, event);
+			})
 		},
 
 		function notification(event, callback) {

@@ -35,6 +35,11 @@ var userSchema = mongoose.Schema({
     preferences    : mongoose.Schema.Types.Mixed,
     onetoones      : [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
     onetoones_unviewed : [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
+    unviewed : [{
+      room: {type: mongoose.Schema.ObjectId, ref: 'Room'},
+      user: {type: mongoose.Schema.ObjectId, ref: 'User'},
+      event: {type: mongoose.Schema.ObjectId} // Not use for the moment, first unread event
+    }],
     bans: [{
       user: {type: mongoose.Schema.ObjectId, ref: 'User'},
       banned_at: {type: Date, default: Date.now}
@@ -322,6 +327,44 @@ userSchema.statics.usernameAvailability = function (username, callback) {
   });
 };
 
+userSchema.statics.hasRoomsMessageUnread = function (room_id, user_id, fn) {
+  return this.findOne({
+    _id: user_id,
+    'unviewed.room': {$in : [room_id]}
+  }, function (err, doc) {
+      return fn(err, doc);
+  });
+};
+
+userSchema.statics.sendUnreadRoomMessage = function (room_id, users_id, userId ,event, fn) {
+  this.update(
+    {
+      $and: [{_id: {$in: users_id}}, {_id: {$nin: [userId]}}],
+      'unviewed.room': {$nin: [room_id]}
+    },
+    {$addToSet:
+    {
+      'unviewed': {room: room_id, event: event}
+    }},{multi: true}
+    , function(err) {
+      return fn(err);
+    });
+};
+
+userSchema.statics.sendUnreadOneMessage = function (fromUserId, ToUserId, event, fn) {
+  this.update(
+    {_id: {$in: [ToUserId]},
+      'unviewed.user': {$nin: [fromUserId]}
+    },
+    {$addToSet:
+    {
+      'unviewed': {user: fromUserId, event: event}
+    }},{multi: true}
+    , function(err) {
+      return fn(err);
+    });
+};
+
 /**
  * Check for username availability (on current user)
  * @param username
@@ -388,11 +431,16 @@ userSchema.methods.isBanned = function (user_id) {
   return (typeof subDocument != 'undefined');
 };
 
-userSchema.methods.hasMessageUnread = function (user_id) {
-  if (!this.onetoones_unviewed)
+userSchema.methods.hasOnesMessageUnread = function (user_id) {
+  if (!this.unviewed)
     return false;
 
-  return (this.onetoones_unviewed.indexOf(user_id) !== -1);
+  _.each(this.unviewed, function(u){
+    if (u.user === user_id)
+      return true;
+  });
+
+  return false;
 };
 
 module.exports = mongoose.model('User', userSchema);

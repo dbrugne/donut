@@ -58,6 +58,15 @@ handler.call = function(data, session, next) {
 			});
 		},
 
+		function persistOnUser(callback) {
+			user.update(
+				{$pull:
+					{unviewed: {room: room._id}}
+				}, function(err) {
+				return callback(err);
+			});
+		},
+
 		function sendToUserSockets(callback) {
 			var viewedEvent = {
 				name: room.name,

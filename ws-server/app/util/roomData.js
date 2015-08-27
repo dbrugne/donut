@@ -2,6 +2,7 @@ var logger = require('../../pomelo-logger').getLogger('donut', __filename);
 var async = require('async');
 var _ = require('underscore');
 var Room = require('../../../shared/models/room');
+var User = require('../../../shared/models/user');
 var HistoryRoom = require('../../../shared/models/historyroom');
 
 /**
@@ -12,22 +13,19 @@ var HistoryRoom = require('../../../shared/models/historyroom');
  */
 module.exports = function(app, uid, room, fn) {
 
+  var newMessage;
+
   if (!room)
     return fn('Need to received a valid Room model as parameter');
 
-  var newMessage;
-
   async.waterfall([
 
-    function newmessage(callback) {
-      HistoryRoom.findUnread(uid, room.id, function(err, doc) {
-        if (err)
-          return callback(err, null);
-
+    function checkUnread(callback) {
+      User.hasRoomsMessageUnread(room.id, uid, function (err, doc) {
         newMessage = (doc)
           ? true
           : false;
-        return callback(null);
+        callback(err);
       });
     },
 

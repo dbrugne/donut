@@ -7,6 +7,7 @@ var imagesUtil = require('../../../util/images');
 var keenio = require('../../../../../shared/io/keenio');
 var Notifications = require('../../../components/notifications');
 var common = require('@dbrugne/donut-common');
+var User = require('../../../../../shared/models/user');
 
 var Handler = function (app) {
   this.app = app;
@@ -82,6 +83,12 @@ handler.call = function (data, session, next) {
           return callback(err);
 
         return callback(null, sentEvent, mentions);
+      });
+    },
+
+    function persistOnUsers (event, mentions, callback) {
+      User.sendUnreadRoomMessage(room.id, room.users, user._id, event.id, function (err) {
+        return callback(err, event, mentions);
       });
     },
 
