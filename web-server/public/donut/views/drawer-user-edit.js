@@ -45,9 +45,6 @@ define([
       var html = this.template({user: user});
       this.$el.html(html);
 
-      // color form
-      //this.$el.find('.user').colorify();
-
       // description
       this.$el.find('#userBio').maxlength({
         counterContainer: this.$el.find('#userBio').siblings('.help-block').find('.counter'),
