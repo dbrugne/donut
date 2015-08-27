@@ -8,14 +8,16 @@ define([
   '_templates'
 ], function ($, _, Backbone, common, donutDebug, client, templates) {
 
-  var debug = donutDebug('donut:modal-welcome');
+  var debug = donutDebug('donut:modal-room-users');
 
   var RoomUsersModalView = Backbone.View.extend({
+
+    el: $('#room-users-modal'),
 
     template: templates['room-users-list.html'],
 
     events: {
-      "click .open-user-profile"   : "hide"
+      "click .open-user-profile": "hide"
     },
 
     callback: null,
@@ -24,14 +26,18 @@ define([
       this.$el.modal({
         show: false
       });
+
+      this.$content = this.$('.modal-body ul.list');
+      this.$title = this.$('.modal-header .modal-title');
     },
 
-    render: function() {
-      if (!this.collection || !this.collection.models || this.collection.models.length == 0)
+    render: function(model) {
+      var collection = model.users;
+      if (!collection || !collection.length)
         return this;
 
       var users = [];
-      _.each(this.collection.models, function(o) {
+      _.each(collection.models, function(o) {
         var u = o.toJSON();
         u.avatar = common.cloudinarySize(u.avatar, 34);
         users.push(u);
@@ -39,16 +45,20 @@ define([
 
       var html = this.template({
         list: users,
-        isOwner: this.model.currentUserIsOwner(),
-        isOp: this.model.currentUserIsOp(),
-        isAdmin: this.model.currentUserIsAdmin()
+        isOwner: model.currentUserIsOwner(),
+        isOp: model.currentUserIsOp(),
+        isAdmin: model.currentUserIsAdmin()
       });
-      this.$el.find('.modal-body ul.list').html(html);
-      this.$el.find('.modal-header .modal-title').html($.t("chat.userscount", {count: users.length}));
+      this.$content.html(html);
+      this.$title.html($.t("chat.userscount", {count: users.length}));
 
       return this;
     },
-    show: function() {
+    show: function(model) {
+      if (!model)
+        return;
+
+      this.render(model);
       this.$el.modal('show');
     },
     hide: function() {

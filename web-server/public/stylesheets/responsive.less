@@ -159,9 +159,9 @@
               .topic-form { width:100%;
                 .input-group .btn, .input-group .topic-input{ height: 28px; padding: 5px 10px; line-height: 16px; }
               }
-              #user-modal .modal-body .list li .item .username { max-width: 107px; }
+              #room-users-modal .modal-body .list li .item .username { max-width: 107px; }
             }
-            .drawer-users { position:absolute; top:0; right:0; border: 0; border-radius: 3px; height: 28px; width: 28px; padding: 4px;
+            .open-room-users { position:absolute; top:0; right:0; border: 0; border-radius: 3px; height: 28px; width: 28px; padding: 4px;
               i { font-size: 18px; }
             } // #chat #center .discussion .content .header.room .drawer-users
           } // #center .discussion .content .header.room
@@ -238,12 +238,12 @@
   .form-inline .input-group .form-control {
     width:auto;
   }
-  #chat #center .discussion .content .header.room .topic #user-modal .modal-body .list li { width: 100%; }
+  #chat #center .discussion .content .header.room .topic #room-users-modal .modal-body .list li { width: 100%; }
 }
 
 /** for <=480 screens resolutions **/
 @media screen and (max-width: @screen-xs-min) {
   #landing .header .cover { background-color: rgba(255, 255, 255, 0.8); }
-  #chat #center .discussion .content .header.room .topic #user-modal .modal-body .list li { width: 100%; }
+  #chat #center .discussion .content .header.room .topic #room-users-modal .modal-body .list li { width: 100%; }
 }
 
