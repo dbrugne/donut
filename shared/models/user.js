@@ -34,7 +34,6 @@ var userSchema = mongoose.Schema({
     },
     preferences    : mongoose.Schema.Types.Mixed,
     onetoones      : [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
-    onetoones_unviewed : [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
     unviewed : [{
       room: {type: mongoose.Schema.ObjectId, ref: 'Room'},
       user: {type: mongoose.Schema.ObjectId, ref: 'User'},
@@ -435,12 +434,15 @@ userSchema.methods.hasOnesMessageUnread = function (user_id) {
   if (!this.unviewed)
     return false;
 
+  var found = false;
+
   _.each(this.unviewed, function(u){
-    if (u.user === user_id)
-      return true;
+    if (u.user && u.user.toString() === user_id.toString()) {
+      found = true;
+    }
   });
 
-  return false;
+  return found;
 };
 
 module.exports = mongoose.model('User', userSchema);
