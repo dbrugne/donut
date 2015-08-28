@@ -26,11 +26,11 @@ handler.call = function (data, session, next) {
   async.waterfall([
 
     function check(callback) {
-      if (!data.name)
-        return callback('name is mandatory');
+      if (!data.room_id)
+        return callback('id is mandatory');
 
       if (!room)
-        return callback('unable to retrieve room from ' + data.name);
+        return callback('unable to retrieve room from ' + data.room_id);
 
       if (room.users.indexOf(user.id) === -1)
         return callback('this user ' + user.id + ' is not currently in room ' + room.name);
@@ -58,6 +58,7 @@ handler.call = function (data, session, next) {
       var event = {
         name: room.name,
         id: room.id,
+        room_id: room.id,
         user_id: user.id,
         username: user.username,
         avatar: user._avatar(),

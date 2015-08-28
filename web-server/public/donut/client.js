@@ -184,8 +184,8 @@ define([
         }
       );
     },
-    roomMe: function (name, message, callback) {
-      var data = {name: name, message: message};
+    roomMe: function (roomId, message, callback) {
+      var data = {room_id: roomId, message: message};
       pomelo.request(
         'chat.roomMeHandler.call',
         data,

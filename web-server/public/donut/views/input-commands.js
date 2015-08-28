@@ -336,7 +336,7 @@ define([
     msg: function(paramString, parameters) {
 
       var oneParam = (!parameters) ? ((this.model.get('type') === 'room')
-        ? this.model.get('name') : this.model.get('id')) : parameters[1];
+        ? this.model.get('id') : this.model.get('id')) : parameters[1];
       var message = (!parameters) ? paramString : parameters[2];
 
       //@todo
@@ -379,7 +379,7 @@ define([
         return this.errorCommand('me', 'parameters');
 
       if (this.model.get('type') === 'room')
-        client.roomMe(this.model.get('name'), parameters[1]);
+        client.roomMe(this.model.get('id'), parameters[1]);
       else
         client.userMe(this.model.get('id'), parameters[1]);
     },
