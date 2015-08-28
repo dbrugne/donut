@@ -49,7 +49,7 @@ module.exports = function(app, user, room, eventName, eventData, callback) {
         return callback('Error while pushing message: '+err);
 
       if (['room:message', 'room:topic', 'room:me'].indexOf(eventName) === -1)
-        return callback('Error while pushing message: '+err);
+        return callback(null);
 
       // set unviewed flag on users
       UserModel.setUnviewedRoomMessage(room._id, room.users, user._id, model._id, function (err) {

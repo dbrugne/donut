@@ -88,12 +88,6 @@ handler.call = function(data, session, next) {
 			oneEmitter(that.app, { from: user._id, to: withUser._id} , 'user:message', event, callback);
 		},
 
-		function persitUnViewed(event, callback) {
-			User.setUnviewedOneMessage(user._id, withUser._id, event.id, function (err){
-				return callback(err, event);
-			});
-		},
-
 		function notification(event, callback) {
 			Notifications(that.app).getType('usermessage').create(withUser, event.id, function(err) {
 				return callback(err, event);
