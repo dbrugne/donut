@@ -22,11 +22,11 @@ handler.call = function(data, session, next) {
 	async.waterfall([
 
 		function check(callback) {
-			if (!data.name)
-				return callback('name is mandatory');
+      if (!data.room_id)
+        return callback('room_id is mandatory');
 
 			if (!room)
-				return callback('unable to retrieve room: ' + data.name);
+				return callback('unable to retrieve room: ' + data.room_id);
 
       var roomUser = _.findIndex(room.users, function(u) {
         return (u.id === user.id);
@@ -67,7 +67,7 @@ handler.call = function(data, session, next) {
 
 		return next(null, {
       name: room.name,
-      id: room.id,
+      room_id: room.id,
       users: users
     });
 	});
