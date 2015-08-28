@@ -246,8 +246,8 @@ define([
         }
       );
     },
-    roomUpdate: function (name, fields, fn) {
-      var data = {name: name, data: fields};
+    roomUpdate: function (roomId, fields, fn) {
+      var data = {room_id: roomId, data: fields};
       debug('io:out:room:update', data);
       var that = this;
       pomelo.request(
