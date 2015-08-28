@@ -1,6 +1,8 @@
 <span class="labels"><%= t('account.email.label') %></span>
-<span class="values email-user"><%= user.account.email %></span>
-<a href="#" id="email-modal-link"></a>
+<div class="email-user-ctn">
+    <span class="values email-user"><%= user.account.email %></span>
+    <a href="#" id="email-modal-link"></a>
+</div>
 <div class="mail-form-container"></div>
 <div class="error">
     <span class="alert-danger" aria-hidden="true"></span>
@@ -11,8 +13,14 @@
     <span class="alert-success success-label"><%= t('account.email.success') %></span>
 </div>
 <form class="form-mail">
-    <span class="spinner"></span>
-    <input class="email-sub form-control" type="email" placeholder="<%= t('account.email.new') %>">
-    <input type="submit" class="btn btn-default submit-email" value="<%= t('global.save') %>">
-    <input type="button" class="btn btn-default cancel-email" value="<%= t('global.cancel') %>">
+    <div class="form-group mt15">
+        <span class="spinner"></span>
+        <label for="email-sub"><%= t('account.email.new') %></label>
+        <input id="email-sub" class="email-sub form-control" type="email" placeholder="<%= t('account.email.new') %>" value="<%= user.account.email %>">
+        <div class="pull-right">
+            <input type="submit" class="big-button-light submit-email" value="<%= t('global.save') %>">
+            <input type="button" class="big-button-light cancel-email" value="<%= t('global.cancel') %>">
+        </div>
+        <div class="clearfix"></div>
+    </div>
 </form>

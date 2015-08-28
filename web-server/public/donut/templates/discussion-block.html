@@ -1,18 +1,28 @@
 <% _.each(list, function(item) { %>
-<a href="<%= item.uri %>" class="item <% if (item.focused) { %>active<% }; %>" data-type="<%= item.type %>" data-identifier="<%= item.identifier %>">
-    <img src="<%= item.avatar %>" class="avatar" alt="<%= item.identifier %> avatar">
-    <% if (item.type == 'room') { %>
-    <span class="name"><span>#</span><%= item.name.replace('#', '') %></span>
-    <% } else { %>
-    <span class="name"><span>@</span><%= item.username %></span>
-    <% } %>
+<li>
+    <a href="<%= item.uri %>" class="item <% if (item.focused) { %>active<% }; %> hidden-xs hidden-sm" data-type="<%= item.type %>" data-identifier="<%= item.identifier %>">
+        <img src="<%= item.avatar %>" class="avatar" alt="<%= item.identifier %> avatar">
+        <span class="ctn">
+            <% if (item.type == 'room') { %>
+            <span class="name"><span>#</span><%= item.name.replace('#', '') %></span>
+            <% } else { %>
+            <span class="name"><span>@</span><%= item.username %></span>
+            <% } %>
+        </span>
+        <span class="selected"></span>
+    </a>
+
+    <a href="<%= item.uri %>" class="item <% if (item.focused) { %>active<% }; %> visible-xs visible-sm" data-type="<%= item.type %>" data-identifier="<%= item.identifier %>">
+        <img src="<%= item.avatar %>" class="avatar" alt="<%= item.identifier %> avatar">
+        <span class="selected"></span>
+    </a>
+
     <% if (item.newuser === true || item.newmention === true || item.unviewed === true) { %>
-    <div class="unread">
+    <span class="unread">
         <% if (item.newuser === true) { %><i class="icon icon-user-custom"></i><% } %>
         <% if (item.newmention === true) { %><i class="icon">@</i><% } %>
         <% if (item.unviewed === true) { %><i class="icon icon-envelope"></i><% } %>
-    </div>
+    </span>
     <% } %>
-    <i class="icon icon-times-circle-o close-discussion" title="Close this discussion"></i>
-</a>
+</li>
 <% }); %>

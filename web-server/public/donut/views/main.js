@@ -32,6 +32,7 @@ define([
   'views/discussions-block',
   'views/notifications',
   'views/modal-confirmation',
+  'views/modal-room-users',
   'views/mute'
 ], function ($, _, Backbone, donutDebug, app, client, currentUser, EventModel, rooms, onetoones, templates, windowView,
              ConnectionModalView, WelcomeModalView,
@@ -41,7 +42,7 @@ define([
              DrawerRoomDeleteView,
              DrawerUserProfileView, DrawerUserEditView, DrawerUserPreferencesView, DrawerUserAccountView,
              RoomView, OneToOneView,
-             DiscussionsBlockView, NotificationsView, ConfirmationView, MuteView) {
+             DiscussionsBlockView, NotificationsView, ConfirmationView, RoomUsersModalView, MuteView) {
 
   var debug = donutDebug('donut:main');
 
@@ -111,6 +112,7 @@ define([
       this.welcomeView = new WelcomeModalView({mainView: this});
       this.notificationsView = new NotificationsView({mainView: this});
       this.muteView = new MuteView({mainView: this});
+      this.roomUsersView = new RoomUsersModalView();
 
       // @debug
       window.current = currentUser;
@@ -211,9 +213,9 @@ define([
     },
 
     _color: function(color) {
-      this.$el.find('#color')
-        .attr('data-colorify', color)
-        .colorify();
+      $('body').removeClass (function (index, css) {
+        return (css.match (/(dc-\S+)+/g) || []).join(' ');
+      }).addClass('dc-'+color.replace('#', '').toLowerCase());
     },
 
     color: function(color, temporary, reset) {
@@ -226,6 +228,53 @@ define([
         this.currentColor = color;
 
       return this._color(color);
+    },
+
+    viewportIs: function (expression) {
+      var pattern = /^(<|>|=)(xs|sm|md|lg)$/;
+      if (!pattern.test(expression))
+        return;
+
+      var matches = expression.match(pattern);
+      if (!matches || !matches[1] || !matches[2])
+        return;
+
+      var $root = $('body > .responsive');
+      if (!$root || !$root.length)
+        return;
+      var breakpoints = {
+        xs: $root.find('.device-xs').is(':visible'),
+        sm: $root.find('.device-sm').is(':visible'),
+        md: $root.find('.device-md').is(':visible'),
+        lg: $root.find('.device-lg').is(':visible')
+      };
+
+      var compare = matches[1];
+      var breakpoint = matches[2];
+
+      if (compare === '=') {
+        return breakpoints[breakpoint];
+      }
+
+      if (compare === '>') {
+        if (breakpoint === 'xs')
+          return ((breakpoints['sm'] || breakpoints['md'] || breakpoints['lg']) && !breakpoints['xs']);
+        else if (breakpoint === 'sm')
+          return ((breakpoints['md'] || breakpoints['lg']) && !breakpoints['sm']);
+        else if (breakpoint === 'md')
+          return (breakpoints['lg'] && !breakpoints['md']);
+        else
+          return false;
+      } else if (compare === '<') {
+        if (breakpoint === 'lg')
+          return ((breakpoints['md'] || breakpoints['sm'] || breakpoints['xs']) && !breakpoints['lg']);
+        else if (breakpoint === 'md')
+          return ((breakpoints['sm'] || breakpoints['xs']) && !breakpoints['md']);
+        else if (breakpoint === 'sm')
+          return (breakpoints['xs'] && !breakpoints['sm']);
+        else
+          return false;
+      }
     },
 
     _handleAction: function(event) {
@@ -318,8 +367,14 @@ define([
       if (!model)
         return;
 
-      var view = new DrawerRoomUsersView({ mainView: this, model: model });
-      this.drawerView.setSize('450px').setView(view).open();
+      if (this.viewportIs('>md')) {
+        // drawer
+        var view = new DrawerRoomUsersView({ mainView: this, model: model });
+        this.drawerView.setSize('450px').setView(view).open();
+      } else {
+        // modal
+        this.roomUsersView.show(model);
+      }
     },
     openRoomPreferences: function(event) {
       event.preventDefault();
@@ -386,7 +441,7 @@ define([
     onCloseDiscussion: function(event) {
       this._handleAction(event);
 
-      var $target = $(event.currentTarget).closest('a.item').first();
+      var $target = $(event.currentTarget);
       if (!$target)
         return;
 

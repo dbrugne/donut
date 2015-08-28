@@ -6,6 +6,8 @@ var conf = require('../../../config/index');
 
 module.exports = function(req, res, next, username) {
 
+  var data = {};
+
   async.waterfall([
 
     function check(callback) {
@@ -30,15 +32,21 @@ module.exports = function(req, res, next, username) {
     },
 
     function prepare(user, callback) {
-
       // avatar & poster
-      user.avatar = user._avatar(160);
-      user.poster = user._poster();
+      data.id = user.id;
+      data.username = user.username;
+      data.avatar = user._avatar(160);
+      data.poster = user._poster();
+      data.color = user.color;
+      data.bio = user.bio;
+      data.location = user.location;
+      data.website = user.website;
 
       // url
-      user.url = req.protocol + '://' + conf.fqdn + '/user/' + (''+user.username).toLocaleLowerCase();
-      user.chat = req.protocol + '://' + conf.fqdn + '/!#user/' + (''+user.username);
-      user.discuss = req.protocol + '://' + conf.fqdn + '/user/discuss/' + (''+user.username);
+      var ident = (''+user.username).toLocaleLowerCase();
+      data.url = req.protocol + '://' + conf.fqdn + '/user/' + ident;
+      data.chat = req.protocol + '://' + conf.fqdn + '/!#user/' + ident;
+      data.discuss = req.protocol + '://' + conf.fqdn + '/user/discuss/' + ident;
 
       return callback(null, user);
 
@@ -74,8 +82,8 @@ module.exports = function(req, res, next, username) {
           list.push(room);
         });
 
-        user.roomsList = list;
-        user.hasRooms = true;
+        data.roomsList = list;
+        data.hasRooms = true;
         return callback(null, user);
 
       });
@@ -94,7 +102,7 @@ module.exports = function(req, res, next, username) {
       return res.redirect('/');
     }
 
-    req.requestedUser = user;
+    req.requestedUser = data;
     next();
 
   });

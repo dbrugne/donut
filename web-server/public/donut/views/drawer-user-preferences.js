@@ -42,9 +42,6 @@ define([
     },
     onResponse: function (data) {
       var color = currentUser.get('color');
-      // colorize drawer .opacity
-      if (color)
-        this.trigger('color', color);
 
       _.each(data.bannedUsers, function(element, index, list) {
         list[index].avatarUrl = common.cloudinarySize(element.avatar, 30);

@@ -357,7 +357,7 @@ define([
     },
     resize: function (viewportHeight) {
       if (typeof viewportHeight != "undefined") // was called on page resize by views/discussion, set the .events height
-        this.$scrollable.height(viewportHeight);
+        this.$scrollable.height(viewportHeight-5);
       else // was called by view itself to adapt .blank height, get the current .events height
         viewportHeight = this.$scrollable.height();
 

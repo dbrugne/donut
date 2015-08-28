@@ -21,6 +21,7 @@ define([
 
       this.render();
 
+      this.$emailUserCtn = this.$el.find('.email-user-ctn');
       this.$link = this.$('#email-modal-link');
       this.$form = this.$('.form-mail');
       this.$spinner = this.$('.spinner');
@@ -49,7 +50,7 @@ define([
       event.preventDefault();
 
       this.$form.show();
-      this.$link.hide();
+      this.$emailUserCtn.hide();
       this.$success.hide();
     },
 
@@ -57,10 +58,10 @@ define([
       event.preventDefault();
 
       this.$form.hide();
-      this.$link.show();
+      this.$emailUserCtn.show();
       this.$errorLabel.text('');
       this.$form.removeClass('has-error');
-      this.$input.val('');
+      this.$input.val((this.user.account && this.user.account.email) ? this.user.account.email : '');
     },
 
     onSubmit: function(event) {
@@ -75,7 +76,7 @@ define([
 
       this.$errorLabel.text('');
       this.$spinner.show();
-      this.$link.show();
+      this.$emailUserCtn.show();
       this.$form.removeClass('has-error');
 
       client.accountEmail(this.$input.val(), function (data) {

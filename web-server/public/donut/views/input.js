@@ -56,11 +56,11 @@ define([
     },
 
     _remove: function () {
-      this.imagesView.remove();
-      this.smileysView.remove();
       this.commandsView.remove();
       this.rollupView.remove();
       this.typingView.remove();
+      this.imagesView.remove();
+      this.smileysView.remove();
       this.remove();
     },
 

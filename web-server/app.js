@@ -70,6 +70,7 @@ app.use(require('./app/routes/room-profile'));
 app.use(require('./app/routes/chat'));
 app.use(require('./app/routes/contact-form'));
 app.use(require('./app/routes/static'));
+app.use(require('./app/routes/create'));
 
 // admin routes
 app.use(require('./app/dashboard/index'));

@@ -57,7 +57,6 @@ define([
 
         var html = this.template({room: room});
         this.$el.html(html);
-        this.$el.colorify();
         this.$el.find('.created span').momentify('date');
 
         if (room.color)
