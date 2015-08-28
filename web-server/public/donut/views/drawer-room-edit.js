@@ -129,7 +129,7 @@ define([
         updateData.poster = this.posterUploader.data;
 
       var that = this;
-      client.roomUpdate(this.roomName, updateData, function(data) {
+      client.roomUpdate(this.roomId, updateData, function(data) {
         that.$el.find('.errors').hide();
         if (data.err)
           return that.editError(data);
@@ -142,7 +142,7 @@ define([
         avatar: data
       };
       var that = this;
-      client.roomUpdate(this.roomName, updateData, function (d) {
+      client.roomUpdate(this.roomId, updateData, function (d) {
         that.$el.find('.errors').hide();
         if (d.err)
           that.editError(d);
@@ -154,7 +154,7 @@ define([
         poster: data
       };
       var that = this;
-      client.roomUpdate(this.roomName, updateData, function (d) {
+      client.roomUpdate(this.roomId, updateData, function (d) {
         that.$el.find('.errors').hide();
         if (d.err)
           that.editError(d);
