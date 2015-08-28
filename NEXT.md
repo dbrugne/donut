@@ -12,3 +12,8 @@ grunt website-migration
 ```
 db.getCollection('rooms').update({ _id: ObjectId("557ed3a4bcb50bc52b74745a")}, {$set: {name: '#help'}})
 ```
+* Cleanup 'user:online/offline' event from history
+```
+db.getCollection('history-room').remove({event: {$in: ['user:online','user:offline']}})
+db.getCollection('history-one').remove({event: {$in: ['user:online','user:offline']}})
+```
