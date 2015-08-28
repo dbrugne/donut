@@ -11,7 +11,7 @@
   }
 }
 
-/** for <=992 screens resolutions **/
+/** for <=992 screens resolutions ==> TABLET PORTRAIT & PHONE LANDSCAPE **/
 @media screen and (max-width: @screen-md-min) {
 
   .page-sidebar-menu { margin: 0; padding: 0;
@@ -107,13 +107,16 @@
       } // #chat #left #block-discussions
     } // #chat #left
     #center { margin-left: 45px;
-      #home .left { padding: 10px 15px;
-        .search { font-size: 1.2em; }
-        .rooms .title { margin-top: 15px; }
-      }
+      #home {
+        .left { padding: 20px; width: 100%;
+          .search { font-size: 1.2em; }
+          .rooms .title { margin-top: 15px; }
+        }
+        .right { display:none; }
+      } // #chat #center #home .left
       .discussion {
-        .content { padding-left: 0; margin-right: 0; position: initial;
-          .header { padding: 6px 5px 0 5px; min-height: 40px; margin-bottom: 5px; position:initial;
+        .content { padding-left: 0; margin-right: 0; position: initial; margin-left: 15px;
+          .header { padding: 15px 25px 0 0; min-height: 40px; margin-bottom: 0; position:initial;
             .avatar { width:30px; height:30px; border:0; top: 5px; left: 7px; z-index: 1031; cursor:pointer; }
             .info { line-height: 22px; position: absolute; top: 5px; left: 50px; z-index: 1031;     padding-left: 0;
               .name, .username { margin: 0 !important; font-size: 16px !important; margin-top: 5px !important; font-weight: bold; float:left; }
@@ -124,8 +127,8 @@
                 &:hover i { .opacity(1); }
               }
             }
-          }
-          .header.room { min-height: 40px;
+          } // #chat #center .discussion .content .header
+          .header.room { min-height: 50px;
             .overlay-ctn { position: initial;
               .avatar { width:30px; height:30px; border:0; top: 5px; left: 7px; z-index: 1031; cursor:pointer; } // #chat #center .discussion .content .header .overlay-ctn .avatar
               .overlay, .overlay-text { display:none; }
@@ -142,22 +145,22 @@
                 .input-group .btn, .input-group .topic-input{ height: 28px; padding: 5px 10px; line-height: 16px; }
               }
               #room-users-modal .modal-body .list li .item .username { max-width: 107px; }
+              .open-room-users { position:absolute; top:0; right:0; border: 0; border-radius: 3px; height: 28px; width: 28px; padding: 4px;
+                i { font-size: 18px; }
+              } // #chat #center .discussion .content .header.room .drawer-users
             }
-            .open-room-users { position:absolute; top:0; right:0; border: 0; border-radius: 3px; height: 28px; width: 28px; padding: 4px;
-              i { font-size: 18px; }
-            } // #chat #center .discussion .content .header.room .drawer-users
-          } // #center .discussion .content .header.room
-          .header.user { position:initial; min-height: 40px;
+          } // #chat #center .discussion .content .header.room
+          .header.user { position:initial; min-height: 51px;
             .avatar { width:30px; height:30px;border:0;  }
             .info { margin-left:0; }
             .status-block { float: left; width: 100%; margin: 8px; }
-          } // #center .discussion .content .header.user
-          .events { padding-left: 10px; border-top: none;
+          } // #chat #center .discussion .content .header.user
+          .events { border-top: none;
             .go-to-top, .go-to-bottom { display:none !important; }
             .scrollable .scrollable-content .realtime .block {
               &.date { margin-top: 10px;
                 .moment { font-size:1em; }
-              } // #chat #center .discussion .content .events .scrollable .scrollable-content .realtime .block.date
+              } // #chat #center .discussion .content .header .scrollable .scrollable-content .realtime .block.date
               &.message .event {
                 .text { padding: 0; }
                 .date { display:none; }
@@ -215,7 +218,7 @@
   }
 }
 
-/** for <=768 screens resolutions **/
+/** for <=768 screens resolutions ==> PHONE PORTRAIT **/
 @media screen and (max-width: @screen-sm-min) {
   .form-inline .input-group .form-control {
     width:auto;

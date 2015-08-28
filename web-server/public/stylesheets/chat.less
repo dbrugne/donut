@@ -395,19 +395,14 @@
             }
           }
         }
-      }
+      } // #color .container #notifications
       #mute .toggle, #notifications .dropdown-toggle, .help .dropdown-toggle {
         .icon {
-          color: @cl-background;
-          opacity: 0.5;
-          &:hover {
-            opacity: 1;
-          }
+          .opacity(0.5);
+          &:hover { .opacity(1); }
         }
         &[aria-expanded="true"] {
-          .icon {
-            opacity: 1;
-          }
+          .icon { .opacity(1); }
         }
       }
       .navbar-nav { float:left; margin: 0;
@@ -420,16 +415,14 @@
             box-shadow: 0 6px 12px rgba(0,0,0,0.175); }
         }
         & > li { float: left;
-          & > a { padding-top: 9px; padding-bottom: 8px; color: @cl-background;
+          & > a { padding-top: 9px; padding-bottom: 8px;
             &:active, &:visited, &:focus { background-color: transparent; }
-            .icon { font-size: 20px; color: @cl-first-dark-15;
-              &:hover { color: @cl-first-dark-25; }
-            }
-          }
+            .icon { font-size: 20px; } // #chat #color .container .navbar-nav>li>a .icon
+          } // #chat #color .container .navbar-nav>li>a
           &.open > a .icon { color: #FFF; }
           .dropdown-menu > .arrow-up { width: 0; height: 0; border-style: solid; border-width: 0 10px 10px 10px; border-color: transparent transparent #FFF transparent; position: absolute; top: -10px; right: 13px; display: block; padding: 0; }
-        }
-      }
+        } // #chat #color .container .navbar-nav>li
+      } // #chat #color .container .navbar-nav
       .navbar-nav-ul>.open>a, .navbar-nav-ul>li>a:hover { background-color: transparent; }
       .navbar-nav-ul>li { float:left; }
       .navbar-nav-ul>li>a { background-color: transparent; }
@@ -441,7 +434,7 @@
           }
         }
       }
-    }
+    } // #chat #color .container
   }
 
   #left {float: left; width: @size-left; height: 100%; background-color: @cl-subtext10; z-index: 12; position: relative; font-size: 14px;
@@ -1155,7 +1148,7 @@
             cursor: pointer;
           }
           .text-container { padding-bottom: 10px; position:relative;
-            .overlay { display:none; background-color: black; height: 91px;   width: 100%;   position: absolute;   top: 0;   cursor: pointer; z-index: 2; .opacity(20);
+            .overlay { display:none; background-color: black; height: 91px;   width: 100%;   position: absolute;   top: 0;   cursor: pointer; z-index: 2; .opacity(0.2);
               .overlay-text { color: white;   position: absolute; top: 33px;   width: 100%;   text-align: center;   cursor: pointer; font-size: 20px;}
               &::after { content: ""; position: absolute; bottom: -15px; right: 17px; border-style: solid; border-width: 15px 15px 0; border-right-color: transparent; border-left-color: transparent; border-top-color: black; border-bottom-color: black; display: block; width: 0; z-index: 1; }
             }
