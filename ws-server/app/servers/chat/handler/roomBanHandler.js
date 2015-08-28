@@ -65,10 +65,8 @@ handler.call = function(data, session, next) {
 			});
 		},
 
-		function prepareEvent(callback) {
+		function broadcast(callback) {
 			var event = {
-				name			 : room.name,
-				id				 : room.id,
 				by_user_id : user.id,
 				by_username: user.username,
 				by_avatar  : user._avatar(),
@@ -80,11 +78,7 @@ handler.call = function(data, session, next) {
 			if (reason !== false)
 				event.reason = reason;
 
-			return callback(null, event);
-		},
-
-		function historizeAndEmit(event, callback) {
-			roomEmitter(that.app, 'room:ban', event, callback);
+			roomEmitter(that.app, user, room, 'room:ban', event, callback);
 		},
 
 		/**

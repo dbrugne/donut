@@ -60,11 +60,8 @@ handler.call = function (data, session, next) {
       });
     },
 
-    function prepareEvent(message, images, mentions, callback) {
+    function broadcast(message, images, mentions, callback) {
       var event = {
-        name: room.name,
-        id: room.id,
-        time: Date.now(),
         user_id: user.id,
         username: user.username,
         avatar: user._avatar()
@@ -74,21 +71,11 @@ handler.call = function (data, session, next) {
       if (images && images.length)
         event.images = images;
 
-      return callback(null, event, mentions);
-    },
-
-    function historizeAndEmit(event, mentions, callback) {
-      roomEmitter(that.app, 'room:message', event, function (err, sentEvent) {
+      roomEmitter(that.app, user, room, 'room:message', event, function (err, sentEvent) {
         if (err)
           return callback(err);
 
         return callback(null, sentEvent, mentions);
-      });
-    },
-
-    function persistOnUsers (event, mentions, callback) {
-      User.setUnviewedRoomMessage(room.id, room.users, user._id, event.id, function (err) {
-        return callback(err, event, mentions);
       });
     },
 

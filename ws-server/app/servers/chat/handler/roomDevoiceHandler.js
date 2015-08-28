@@ -64,10 +64,8 @@ handler.call = function(data, session, next) {
       });
     },
 
-    function historizeAndEmit(callback) {
+    function broadcast(callback) {
       var event = {
-        name			 : room.name,
-        id				 : room.id,
         by_user_id : user.id,
         by_username: user.username,
         by_avatar  : user._avatar(),
@@ -78,7 +76,7 @@ handler.call = function(data, session, next) {
       if (reason !== false)
         event.reason = reason;
 
-      roomEmitter(that.app, 'room:devoice', event, callback);
+      roomEmitter(that.app, user, room, 'room:devoice', event, callback);
     },
 
     function notification(sentEvent, callback) {

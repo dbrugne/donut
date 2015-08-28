@@ -56,16 +56,15 @@ handler.call = function(data, session, next) {
 			});
 		},
 
-		function historizeAndEmit(topic, callback) {
+		function broadcast(topic, callback) {
       var event = {
-        name		: room.name,
-        id			: room.id,
         user_id : user.id,
         username: user.username,
         avatar  : user._avatar(),
         topic   : topic
       };
-			roomEmitter(that.app, 'room:topic', event, function(err, sentEvent) {
+
+			roomEmitter(that.app, user, room, 'room:topic', event, function(err, sentEvent) {
 				return callback(err, sentEvent);
 			});
 		},
