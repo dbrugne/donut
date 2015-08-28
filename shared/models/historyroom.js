@@ -62,22 +62,8 @@ historySchema.statics.record = function() {
     var wet = _.clone(data);
     model.data = _.omit(wet, dryFields) ;
 
-    Room.findById(data.id, 'users', function(err, room) { // @todo remove !!!
-      if (err)
-        return fn('Unable to retrieve room users list '+model.event+' for '+data.name);
-
-      if (!room)
-        return fn('Room not found '+model.event+' for '+data.name);
-      else
-        model.users = room.users;
-
-      model.save(function(err) {
-        if (err)
-          return fn('Unable to save roomHistory '+model.event+' for '+model.name);
-
-        return fn(null, model);
-      })
-    });
+    model.users = room.users;
+    model.save(fn);
   }
 };
 
