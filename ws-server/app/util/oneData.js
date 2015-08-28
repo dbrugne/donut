@@ -27,6 +27,7 @@ module.exports = function(app, user, users, fn) {
       _.each(users, function(u, index, list) {
         if (!u.username)
           return;
+
         var one = {
           user_id     : u.id,
           username    : u.username,
@@ -36,7 +37,8 @@ module.exports = function(app, user, users, fn) {
           location    : u.location,
           website     : u.website,
           banned      : user.isBanned(u.id), // for ban/deban menu
-          i_am_banned : u.isBanned(user.id) // for input enable/disable
+          i_am_banned : u.isBanned(user.id), // for input enable/disable
+          unviewed : user.hasUnviewedOneMessage(u)
         };
 
         if (statuses[u.id] === true) {

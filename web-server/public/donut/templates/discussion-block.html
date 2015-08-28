@@ -6,11 +6,11 @@
     <% } else { %>
     <span class="name"><span>@</span><%= item.username %></span>
     <% } %>
-    <% if (item.newuser == true || item.newmention == true || item.newmessage == true) { %>
+    <% if (item.newuser === true || item.newmention === true || item.unviewed === true) { %>
     <div class="unread">
-        <% if (item.newuser == true) { %><i class="icon icon-user-custom"></i><% } %>
-        <% if (item.newmention == true) { %><i class=" icon-atxx">@</i><% } %>
-        <% if (item.newmessage == true) { %><i class="icon icon-envelope"></i><% } %>
+        <% if (item.newuser === true) { %><i class="icon icon-user-custom"></i><% } %>
+        <% if (item.newmention === true) { %><i class="icon">@</i><% } %>
+        <% if (item.unviewed === true) { %><i class="icon icon-envelope"></i><% } %>
     </div>
     <% } %>
     <i class="icon icon-times-circle-o close-discussion" title="Close this discussion"></i>

@@ -3,6 +3,7 @@ var debug = require('debug')('donut:server:ws:room-emitter');
 var _ = require('underscore');
 var async = require('async');
 var recorder = require('../../../shared/models/historyone').record();
+var UserModel = require('../../../shared/models/user');
 var cloudinary = require('../../../shared/util/cloudinary');
 
 /**
@@ -21,11 +22,11 @@ module.exports = function(app, onetoone, eventName, eventData, callback) {
   eventData.from = onetoone.from;
   eventData.to = onetoone.to;
   eventData.time = Date.now();
-  recorder(eventName, eventData, function(err, history) {
+  recorder(eventName, eventData, function(err, model) {
     if (err)
       return fn('Error while saving event while emitting in onetoone '+eventName+': '+err);
 
-    eventData.id = history.id;
+    eventData.id = model.id;
 
     // @hack
     // images
@@ -43,21 +44,26 @@ module.exports = function(app, onetoone, eventName, eventData, callback) {
           app.globalChannelService.pushMessage('connector', eventName, eventData, 'user:'+onetoone.from.toString(), {}, function(err) {
             if (err)
               return fn('Error while pushing message to sender: '+err);
-            else
-              return fn(null);
+
+            return fn(null);
           });
         },
 
         function sendToReceiver(fn) {
           // (if sender!=receiver) Broadcast message to all 'receiver' devices
-          if (onetoone.from.toString() ==  onetoone.to.toString())
+          if (onetoone.from.toString() === onetoone.to.toString())
             return fn(null);
 
           app.globalChannelService.pushMessage('connector', eventName, eventData, 'user:'+onetoone.to.toString(), {}, function(err) {
             if (err)
               return fn('Error while pushing message to receiver: '+err);
-            else
+
+            if (['user:message', 'user:me'].indexOf(eventName) === -1)
               return fn(null);
+
+            UserModel.setUnviewedOneMessage(onetoone.from, onetoone.to, model.id, function (err) {
+              return fn(err);
+            });
           });
         }
 

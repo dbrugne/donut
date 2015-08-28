@@ -55,7 +55,8 @@ define([
         onlined: user.onlined,
         status: user.status,
         banned: user.banned,
-        i_am_banned: user.i_am_banned
+        i_am_banned: user.i_am_banned,
+        unviewed: user.unviewed
       };
 
       // update model

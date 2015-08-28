@@ -1,10 +1,11 @@
 define([
   'underscore',
   'backbone',
+  'models/app',
   'client',
   'models/current-user',
   'models/event'
-], function (_, Backbone, client, currentUser, EventModel) {
+], function (_, Backbone, app, client, currentUser, EventModel) {
   var OneToOneModel = Backbone.Model.extend({
 
     defaults: function () {
@@ -20,12 +21,9 @@ define([
         onlined: '',
         type: 'onetoone',
         focused: false,
-        unread: 0, // probably not needed in future
         banned: false,
         i_am_banned: false,
-        newmessage: false,
-        newmention: false,
-        newuser: false // not used by onetone, for compatibility
+        unviewed: false
       };
     },
     initialize: function () {
@@ -125,19 +123,20 @@ define([
       client.userViewed(this.get('username'), elements);
     },
     onViewed: function (data) {
+      this.resetNew();
       this.trigger('viewed', data);
     },
     sendMessage: function (message, images) {
       client.userMessage(this.get('username'), message, images);
     },
-
     resetNew: function () {
-      this.set('unread', 0);
-      this.set('newmessage', false);
-      this.set('newmention', false);
+      if (this.isThereNew()) { // avoid redraw if nothing to change
+        this.set('unviewed', false);
+        app.trigger('redraw-block');
+      }
     },
     isThereNew: function () {
-      return !!(this.get('newmessage') || this.get('newmention'));
+      return !!(this.get('unviewed'));
     },
     isInputActive: function() {
       return !(this.get('i_am_banned') === true);

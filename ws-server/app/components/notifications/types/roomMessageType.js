@@ -84,7 +84,7 @@ Notification.prototype.create = function (room, history, done) {
           name: roomModel.name
         });
 
-        model.to_browser = true; // will be displayed in browser on next connection
+        model.to_browser = false; // will not be displayed in browser on next connection
         model.to_email = (!user.getEmail() ? false : user.preferencesValue("notif:channels:email"));
         model.to_mobile = user.preferencesValue("notif:channels:mobile");
 
