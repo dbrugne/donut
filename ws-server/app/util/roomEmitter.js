@@ -2,10 +2,9 @@ var logger = require('../../pomelo-logger').getLogger('donut', __filename);
 var debug = require('debug')('donut:server:ws:room-emitter');
 var _ = require('underscore');
 var async = require('async');
-var HistoryRoom = require('../../../shared/models/historyroom');
+var recorder = require('../../../shared/models/historyroom').record();
+var UserModel = require('../../../shared/models/user');
 var cloudinary = require('../../../shared/util/cloudinary');
-
-var recorder = HistoryRoom.record();
 
 /**
  * Store history in MongoDB, emit event in corresponding room and call:
@@ -13,21 +12,28 @@ var recorder = HistoryRoom.record();
  *   callback(err, sentEvent)
  *
  * @param app
+ * @param Room
+ * @param User that made the action
  * @param eventName
  * @param eventData
  * @param callback
  */
-module.exports = function(app, eventName, eventData, callback) {
-
-  if (!eventData.name || !eventData.id)
-    return callback("roomEmitter was called with an event without 'name' and/or 'id'");
+module.exports = function(app, user, room, eventName, eventData, callback) {
+  if (!room)
+    return callback('roomEmitter require room parameter');
+  if (!user)
+    return callback('roomEmitter require user parameter');
 
   eventData.time = Date.now();
-  recorder(eventName, eventData, function(err, history) {
-    if (err)
-      return fn('Error while emitting room event '+eventName+' in '+eventName.name+': '+err);
+  eventData.name = room.name;
+  eventData.room_name = room.name;
+  eventData.room_id = room.id;
 
-    eventData.id = history.id;
+  recorder(room, eventName, eventData, function(err, model) {
+    if (err)
+      return fn('Error while emitting room event ' + eventName + ' in ' + room.name + ': '+err);
+
+    eventData.id = model.id;
 
     // @hack
     // images
@@ -38,11 +44,17 @@ module.exports = function(app, eventName, eventData, callback) {
       });
     }
 
-    app.globalChannelService.pushMessage('connector', eventName, eventData, eventData.name, {}, function(err) {
+    app.globalChannelService.pushMessage('connector', eventName, eventData, room.name, {}, function(err) {
       if (err)
         return callback('Error while pushing message: '+err);
 
-      return callback(null, eventData);
+      if (['room:message', 'room:topic', 'room:me'].indexOf(eventName) === -1)
+        return callback(null);
+
+      // set unviewed flag on users
+      UserModel.setUnviewedRoomMessage(room._id, room.users, user._id, model._id, function (err) {
+        callback(err, eventData);
+      });
     });
   });
 

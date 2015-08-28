@@ -1,30 +1,28 @@
+<% _.each(list, function(item) { %>
+<li>
+    <a href="<%= item.uri %>" class="item <% if (item.focused) { %>active<% }; %> hidden-xs hidden-sm" data-type="<%= item.type %>" data-identifier="<%= item.identifier %>">
+        <img src="<%= item.avatar %>" class="avatar" alt="<%= item.identifier %> avatar">
+        <span class="ctn">
+            <% if (item.type == 'room') { %>
+            <span class="name"><span>#</span><%= item.name.replace('#', '') %></span>
+            <% } else { %>
+            <span class="name"><span>@</span><%= item.username %></span>
+            <% } %>
+        </span>
+        <span class="selected"></span>
+    </a>
 
-    <% _.each(list, function(item) { %>
-    <li>
-        <a href="<%= item.uri %>" class="item <% if (item.focused) { %>active<% }; %> hidden-xs hidden-sm" data-type="<%= item.type %>" data-identifier="<%= item.identifier %>">
-            <img src="<%= item.avatar %>" class="avatar" alt="<%= item.identifier %> avatar">
-            <span class="ctn">
-                <% if (item.type == 'room') { %>
-                <span class="name"><span>#</span><%= item.name.replace('#', '') %></span>
-                <% } else { %>
-                <span class="name"><span>@</span><%= item.username %></span>
-                <% } %>
-            </span>
-            <span class="selected"></span>
-        </a>
+    <a href="<%= item.uri %>" class="item <% if (item.focused) { %>active<% }; %> visible-xs visible-sm" data-type="<%= item.type %>" data-identifier="<%= item.identifier %>">
+        <img src="<%= item.avatar %>" class="avatar" alt="<%= item.identifier %> avatar">
+        <span class="selected"></span>
+    </a>
 
-        <a href="<%= item.uri %>" class="item <% if (item.focused) { %>active<% }; %> visible-xs visible-sm" data-type="<%= item.type %>" data-identifier="<%= item.identifier %>">
-            <img src="<%= item.avatar %>" class="avatar" alt="<%= item.identifier %> avatar">
-            <span class="selected"></span>
-        </a>
-
-        <% if (item.newuser == true || item.newmention == true || item.newmessage == true) { %>
-            <span class="unread">
-                <% if (item.newuser == true) { %><i class="icon icon-user-custom"></i><% } %>
-                <% if (item.newmention == true) { %><i class=" icon-atxx">@</i><% } %>
-                <% if (item.newmessage == true) { %><i class="icon icon-envelope"></i><% } %>
-            </span>
-        <% } %>
-    </li>
-    <% }); %>
-
+    <% if (item.newuser === true || item.newmention === true || item.unviewed === true) { %>
+    <span class="unread">
+        <% if (item.newuser === true) { %><i class="icon icon-user-custom"></i><% } %>
+        <% if (item.newmention === true) { %><i class="icon">@</i><% } %>
+        <% if (item.unviewed === true) { %><i class="icon icon-envelope"></i><% } %>
+    </span>
+    <% } %>
+</li>
+<% }); %>

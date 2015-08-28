@@ -63,10 +63,8 @@ handler.call = function(data, session, next) {
       });
     },
 
-    function historizeAndEmit(callback) {
+    function broadcast(callback) {
       var event = {
-        name: room.name,
-        id: room.id,
         by_user_id : user.id,
         by_username: user.username,
         by_avatar  : user._avatar(),
@@ -74,7 +72,8 @@ handler.call = function(data, session, next) {
         username: devoicedUser.username,
         avatar: devoicedUser._avatar()
       };
-      roomEmitter(that.app, 'room:voice', event, callback);
+
+      roomEmitter(that.app, user, room, 'room:voice', event, callback);
     },
 
     function notification(sentEvent, callback) {

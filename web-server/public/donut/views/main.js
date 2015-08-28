@@ -3,6 +3,7 @@ define([
   'underscore',
   'backbone',
   'libs/donut-debug',
+  'models/app',
   'client',
   'models/current-user',
   'models/event',
@@ -33,7 +34,7 @@ define([
   'views/modal-confirmation',
   'views/modal-room-users',
   'views/mute'
-], function ($, _, Backbone, donutDebug, client, currentUser, EventModel, rooms, onetoones, templates, windowView,
+], function ($, _, Backbone, donutDebug, app, client, currentUser, EventModel, rooms, onetoones, templates, windowView,
              ConnectionModalView, WelcomeModalView,
              CurrentUserView, AlertView, HomeView,
              DrawerView,
@@ -606,7 +607,6 @@ define([
 
       // Focus the one we want
       model.set('focused', true);
-      model.resetNew();
       this.discussionsBlock.redraw();
 
       // Change interface color

@@ -2,12 +2,13 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'models/app',
   'common',
   'client',
   'models/current-user',
   'collections/rooms',
   'collections/onetoones'
-], function ($, _, Backbone, common, client, currentUser, rooms, onetoones) {
+], function ($, _, Backbone, app, common, client, currentUser, rooms, onetoones) {
   var WindowView = Backbone.View.extend({
 
     el: $(window),
@@ -114,16 +115,10 @@ define([
     onFocus: function () {
       this.focused = true;
 
-      // mark current focused model as read
+      // on window refocus execute some logic on current focused model
       var model = this._getFocusedModel();
-      if (model) {
-        var thereIsNew = model.isThereNew();
-        model.resetNew();
-        if (thereIsNew)
-          this.trigger('redraw-block'); // avoid useless redraw on window refocus
-
+      if (model)
         model.trigger('windowRefocused'); // mark visible as read for focused discussion when window recover its focus
-      }
 
       // reset limiters
       this.desktopNotificationsLimiters = {};
@@ -202,22 +197,24 @@ define([
         model.set('newuser', true); // will trigger tab badge and title when rendering
 
         // update tabs
-        this.trigger('redraw-block');
+        app.trigger('redraw-block');
 
         // update title
         this.renderTitle();
       }
     },
     triggerMessage: function (event, model) {
-      if (event.getGenericType() != 'message')
+      if (event.getGenericType() != 'message' &&  event.get('type') !== 'room:topic')
         return;
 
       // test if not from me (currentUser)
       if (event.get('data').username == currentUser.get('username'))
         return;
 
-      // test if i mentioned
-      var isMention = common.isUserMentionned(currentUser.get('user_id'), event.get('data').message);
+      // test if i mentioned (only for rooms)
+      var isMention = (event.getGenericType() != 'message' && model.get('type') === 'room' && common.isUserMentionned(currentUser.get('user_id'), event.get('data').message))
+        ? true
+        : false;
 
       // test if current discussion is focused
       var isFocused = (this.focused && model.get('focused'))
@@ -233,12 +230,12 @@ define([
       // badge and title only if discussion is not focused
       if (!isFocused) {
         if (!isMention)
-          model.set('newmessage', true); // will trigger tab badge and title when rendering
+          model.set('unviewed', true); // will trigger tab badge and title when rendering
         else
           model.set('newmention', true);
 
         // update tabs
-        this.trigger('redraw-block');
+        app.trigger('redraw-block');
 
         // update title
         this.renderTitle();

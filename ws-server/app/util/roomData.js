@@ -2,6 +2,8 @@ var logger = require('../../pomelo-logger').getLogger('donut', __filename);
 var async = require('async');
 var _ = require('underscore');
 var Room = require('../../../shared/models/room');
+var User = require('../../../shared/models/user');
+var HistoryRoom = require('../../../shared/models/historyroom');
 
 /**
  * Helper to retrieve/prepare all the room data needed for 'welcome' and 'room:welcome' events:
@@ -9,7 +11,7 @@ var Room = require('../../../shared/models/room');
  *   - owner
  *   - ops
  */
-module.exports = function(app, uid, room, fn) {
+module.exports = function(app, user, room, fn) {
 
   if (!room)
     return fn('Need to received a valid Room model as parameter');
@@ -25,17 +27,19 @@ module.exports = function(app, uid, room, fn) {
       });
 
       var roomData = {
-        name      : room.name,
-        id        : room.id,
-        owner     : {},
-        op        : room.op, // [ObjectId]
-        devoices  : devoices, // [ObjectId]
-        avatar    : room._avatar(),
-        poster    : room._poster(),
+        name        : room.name,
+        id          : room.id,
+        owner       : {},
+        op          : room.op, // [ObjectId]
+        devoices    : devoices, // [ObjectId]
+        avatar      : room._avatar(),
+        poster      : room._poster(),
+        color       : room.color,
+        topic       : room.topic,
         posterblured : room._poster(true),
-        color     : room.color,
-        topic     : room.topic
+        unviewed : user.hasUnviewedRoomMessage(room)
       };
+
       if (room.owner) {
         roomData.owner = {
           user_id: room.owner._id,
