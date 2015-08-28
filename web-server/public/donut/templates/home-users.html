@@ -1,16 +1,3 @@
-<script type="application/javascript">
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip({
-            html: true,
-            animation: false,
-            container: 'body',
-            template: '<div class="tooltip tooltip-home-users" role="tooltip"><div class="tooltip-inner"></div></div>',
-            title: function () {
-                return '<div class="username" style="' + this.dataset.bgcolor + '">@' + this.dataset.username + '</div>';
-            }
-        });
-    })
-</script>
 <div class="list <% if (search == true) { %>search<% } %>">
     <div class="title">
         <% if (search == true) { %><%= t('chat.search.userstitle') %><% } else { %><%= t('chat.home.userstitle') %><% } %>
@@ -24,7 +11,7 @@
         bgColor = "background-color: "+u.color;
         txtColor = "color: "+u.color;
         }; %>
-        <div class="item open-user-profile <%= u.status %>" data-bgcolor="<%= bgColor %>" data-txtcolor="<%= txtColor %>" data-username="<%= u.username %>" data-toggle="tooltip" data-placement="left">
+        <div class="item open-user-profile <%= u.status %>" data-bgcolor="<%= bgColor %>" data-type="room-users" data-txtcolor="<%= txtColor %>" data-username="<%= u.username %>" data-toggle="tooltip" data-placement="left">
             <!--<div class="username" style="<%= bgColor %>">@<%= u.username %></div>-->
             <div class="avatar" style="background-image:url(<%= u.avatar %>)"></div>
         </div>
