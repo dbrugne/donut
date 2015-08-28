@@ -230,8 +230,8 @@ define([
         }
       );
     },
-    roomUsers: function (name, fn) {
-      var data = {name: name};
+    roomUsers: function (roomId, fn) {
+      var data = {room_id: roomId};
       debug('io:out:room:users', data);
       var that = this;
       pomelo.request(
