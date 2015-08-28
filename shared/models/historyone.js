@@ -111,7 +111,7 @@ historySchema.methods.toClientJSON = function(userViewed) {
 
   e.data = data;
 
-  // unread status (true if message, i'm the receiver and current value is false)
+  // unviewed status (true if message, i'm the receiver and current value is false)
   if (userViewed && this.event == 'user:message' && data.to_user_id == userViewed && !this.viewed) {
     e.unviewed = true;
   }

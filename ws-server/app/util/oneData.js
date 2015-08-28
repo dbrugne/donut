@@ -38,7 +38,7 @@ module.exports = function(app, user, users, fn) {
           website     : u.website,
           banned      : user.isBanned(u.id), // for ban/deban menu
           i_am_banned : u.isBanned(user.id), // for input enable/disable
-          new_message : user.hasUnreadOneMessage(u)
+          unviewed : user.hasUnviewedOneMessage(u)
         };
 
         if (statuses[u.id] === true) {

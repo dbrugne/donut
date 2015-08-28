@@ -37,7 +37,7 @@ var userSchema = mongoose.Schema({
     unviewed : [{
       room: {type: mongoose.Schema.ObjectId, ref: 'Room'},
       user: {type: mongoose.Schema.ObjectId, ref: 'User'},
-      event: {type: mongoose.Schema.ObjectId} // Not use for the moment, first unread event
+      event: {type: mongoose.Schema.ObjectId} // not use actually, first unviewed event, could be use to replace current "heavy" viewed management
     }],
     bans: [{
       user: {type: mongoose.Schema.ObjectId, ref: 'User'},
@@ -241,7 +241,7 @@ userSchema.statics.retrieveUser = function (username) {
 
 /*********************************************************************************
  *
- * Unread messages
+ * Preferences
  *
  *********************************************************************************/
 
@@ -329,11 +329,11 @@ userSchema.methods.preferencesValue = function (key) {
 
 /*********************************************************************************
  *
- * Unread messages
+ * Unviewed
  *
  *********************************************************************************/
 
-userSchema.methods.hasUnreadRoomMessage = function (room) {
+userSchema.methods.hasUnviewedRoomMessage = function (room) {
   if (!this.unviewed)
     return false;
 
@@ -344,7 +344,7 @@ userSchema.methods.hasUnreadRoomMessage = function (room) {
 
   return !!found;
 };
-userSchema.methods.hasUnreadOneMessage = function (user) {
+userSchema.methods.hasUnviewedOneMessage = function (user) {
   if (!this.unviewed)
     return false;
 
@@ -355,7 +355,7 @@ userSchema.methods.hasUnreadOneMessage = function (user) {
 
   return !!found;
 };
-userSchema.statics.setUnreadRoomMessage = function (roomId, usersId, userId ,event, fn) {
+userSchema.statics.setUnviewedRoomMessage = function (roomId, usersId, userId ,event, fn) {
   this.update(
     {
       $and: [{_id: {$in: usersId}}, {_id: {$nin: [userId]}}],
@@ -369,7 +369,7 @@ userSchema.statics.setUnreadRoomMessage = function (roomId, usersId, userId ,eve
       return fn(err);
     });
 };
-userSchema.statics.setUnreadOneMessage = function (fromUserId, ToUserId, event, fn) {
+userSchema.statics.setUnviewedOneMessage = function (fromUserId, ToUserId, event, fn) {
   this.update(
     {_id: {$in: [ToUserId]},
       'unviewed.user': {$nin: [fromUserId]}

@@ -56,7 +56,7 @@ define([
         status: user.status,
         banned: user.banned,
         i_am_banned: user.i_am_banned,
-        newmessage: user.new_message
+        unviewed: user.unviewed
       };
 
       // update model

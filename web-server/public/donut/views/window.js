@@ -233,7 +233,7 @@ define([
       // badge and title only if discussion is not focused
       if (!isFocused) {
         if (!isMention)
-          model.set('newmessage', true); // will trigger tab badge and title when rendering
+          model.set('unviewed', true); // will trigger tab badge and title when rendering
         else
           model.set('newmention', true);
 

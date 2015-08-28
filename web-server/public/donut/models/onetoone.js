@@ -22,7 +22,7 @@ define([
         focused: false,
         banned: false,
         i_am_banned: false,
-        newmessage: false,
+        unviewed: false,
         newmention: false,
         newuser: false // not used by onetone, for compatibility
       };
@@ -131,11 +131,11 @@ define([
     },
 
     resetNew: function () {
-      this.set('newmessage', false);
-      this.set('newmention', false);
+      this.set('unviewed', false); // @todo : remove "remove flag on focus" logic
+      this.set('newmention', false); // @todo : remove new mention for onetoone
     },
     isThereNew: function () {
-      return !!(this.get('newmessage') || this.get('newmention'));
+      return !!(this.get('unviewed') || this.get('newmention'));
     },
     isInputActive: function() {
       return !(this.get('i_am_banned') === true);

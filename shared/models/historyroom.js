@@ -124,7 +124,7 @@ historySchema.methods.toClientJSON = function(userViewed) {
 
   e.data = data;
 
-  // unread status (true if message and if i'm not in .viewed)
+  // unviewed status (true if message and if i'm not in .viewed)
   if (userViewed && this.event == 'room:message' && data.user_id != userViewed && (
     !this.viewed
     || (_.isArray(this.viewed) && this.viewed.indexOf(userViewed) === -1)
