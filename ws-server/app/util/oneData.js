@@ -1,7 +1,6 @@
 var logger = require('../../pomelo-logger').getLogger('donut', __filename);
 var async = require('async');
 var _ = require('underscore');
-var HistoryOne = require('../../../shared/models/historyone');
 
 /**
  * Generate onetoone welcome object
