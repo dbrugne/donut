@@ -85,7 +85,7 @@ handler.call = function(data, session, next) {
 			});
 		},
 
-		function roooData(eventData, callback) {
+		function roomData(eventData, callback) {
 			roomDataHelper(that.app, user, room, function(err, roomData) {
 				if (err)
 					return callback(err);
