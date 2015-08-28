@@ -192,13 +192,15 @@ define([
     },
     leave: function(paramString, parameters) {
       if (!paramString) {
-        client.roomLeave(this.model.get('name'));
+        client.roomLeave(this.model.get('id'));
         return;
       }
 
       if (!parameters)
         return this.errorCommand('leave', 'parameters');
 
+      //@todo
+      // change parameters to his id
       client.roomLeave(parameters[1]);
     },
     topic: function(paramString, parameters) {

@@ -75,7 +75,7 @@ define([
         +this.get('name').replace('#', '').toLocaleLowerCase();
     },
     leave: function() {
-      client.roomLeave(this.get('name'));
+      client.roomLeave(this.get('id'));
     },
     userIsDevoiced: function(userId) {
       return (this.get('devoices') && this.get('devoices').indexOf(userId) !== -1);

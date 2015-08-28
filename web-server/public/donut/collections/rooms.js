@@ -74,16 +74,16 @@ define([
       };
 
       // update model
-      var isNew = (this.get(room.name) == undefined)
+      var isNew = (this.get(room.id) == undefined)
         ? true
         : false;
       if (!isNew) {
         // already exist in IHM (maybe reconnecting)
-        var model = this.get(room.name);
+        var model = this.get(room.id);
         model.set(roomData);
       } else {
         // add in IHM
-        roomData.id = room.name;
+        roomData.id = room.id;
         var model = new RoomModel(roomData);
       }
 
@@ -94,7 +94,7 @@ define([
     },
     onIn: function(data) {
       var model;
-      if (!data || !data.name || !(model = this.get(data.name)))
+      if (!data || !data.id || !(model = this.get(data.id)))
         return;
 
       model.onIn(data);
@@ -222,7 +222,7 @@ define([
     onLeave: function(data) {
       // server asks to this client to leave this room
       var model;
-      if (!data || !data.name || !(model = this.get(data.name)))
+      if (!data || !data.id || !(model = this.get(data.id)))
         return;
 
       this.remove(model);
