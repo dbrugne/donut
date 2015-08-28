@@ -211,8 +211,10 @@ define([
       if (event.get('data').username == currentUser.get('username'))
         return;
 
-      // test if i mentioned
-      var isMention = common.isUserMentionned(currentUser.get('user_id'), event.get('data').message);
+      // test if i mentioned (only for rooms)
+      var isMention = (model.get('type') === 'room' && common.isUserMentionned(currentUser.get('user_id'), event.get('data').message))
+        ? true
+        : false;
 
       // test if current discussion is focused
       var isFocused = (this.focused && model.get('focused'))

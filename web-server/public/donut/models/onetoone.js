@@ -23,9 +23,7 @@ define([
         focused: false,
         banned: false,
         i_am_banned: false,
-        unviewed: false,
-        newmention: false,
-        newuser: false // not used by onetone, for compatibility
+        unviewed: false
       };
     },
     initialize: function () {
@@ -134,12 +132,11 @@ define([
     resetNew: function () {
       if (this.isThereNew()) { // avoid redraw if nothing to change
         this.set('unviewed', false);
-        this.set('newmention', false); // @todo : remove new mention for onetoone
         app.trigger('redraw-block');
       }
     },
     isThereNew: function () {
-      return !!(this.get('unviewed') || this.get('newmention'));
+      return !!(this.get('unviewed'));
     },
     isInputActive: function() {
       return !(this.get('i_am_banned') === true);
