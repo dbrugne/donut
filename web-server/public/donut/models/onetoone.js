@@ -1,10 +1,11 @@
 define([
   'underscore',
   'backbone',
+  'models/app',
   'client',
   'models/current-user',
   'models/event'
-], function (_, Backbone, client, currentUser, EventModel) {
+], function (_, Backbone, app, client, currentUser, EventModel) {
   var OneToOneModel = Backbone.Model.extend({
 
     defaults: function () {
@@ -124,15 +125,18 @@ define([
       client.userViewed(this.get('username'), elements);
     },
     onViewed: function (data) {
+      this.resetNew();
       this.trigger('viewed', data);
     },
     sendMessage: function (message, images) {
       client.userMessage(this.get('username'), message, images);
     },
-
     resetNew: function () {
-      this.set('unviewed', false); // @todo : remove "remove flag on focus" logic
-      this.set('newmention', false); // @todo : remove new mention for onetoone
+      if (this.isThereNew()) { // avoid redraw if nothing to change
+        this.set('unviewed', false);
+        this.set('newmention', false); // @todo : remove new mention for onetoone
+        app.trigger('redraw-block');
+      }
     },
     isThereNew: function () {
       return !!(this.get('unviewed') || this.get('newmention'));
