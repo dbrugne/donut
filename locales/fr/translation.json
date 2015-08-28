@@ -716,7 +716,7 @@
     },
     "room": {
       "delete": {
-        "link": "Vous pouvez également supprimer ce donut <a class='open-room-delete' data-room-name=\"__name__\">en cliquant ici</a>.",
+        "link": "Vous pouvez également supprimer ce donut <a class='open-room-delete' data-room-name=\"__name__\" data-room-id=\"__id__\">en cliquant ici</a>.",
         "title": "Supprimer",
         "info": [
           "Vous êtes sur le point de supprimer ce donut, cette opération est immédiate et irréversible.<br><br>",
