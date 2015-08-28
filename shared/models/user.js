@@ -356,31 +356,20 @@ userSchema.methods.hasUnviewedOneMessage = function (user) {
   return !!found;
 };
 userSchema.statics.setUnviewedRoomMessage = function (roomId, usersId, userId ,event, fn) {
-  this.update(
-    {
-      $and: [{_id: {$in: usersId}}, {_id: {$nin: [userId]}}],
-      'unviewed.room': {$nin: [roomId]}
-    },
-    {$addToSet:
-    {
-      'unviewed': {room: roomId, event: event}
-    }},{multi: true}
-    , function(err) {
-      return fn(err);
-    });
+  this.update({
+      _id: { $in: usersId, $nin: [userId] },
+      'unviewed.room': { $nin: [roomId] }
+    }, {
+      $addToSet: { unviewed: { room: roomId, event: event }}
+    }, { multi: true }, fn);
 };
-userSchema.statics.setUnviewedOneMessage = function (fromUserId, ToUserId, event, fn) {
-  this.update(
-    {_id: {$in: [ToUserId]},
-      'unviewed.user': {$nin: [fromUserId]}
-    },
-    {$addToSet:
-    {
-      'unviewed': {user: fromUserId, event: event}
-    }},{multi: true}
-    , function(err) {
-      return fn(err);
-    });
+userSchema.statics.setUnviewedOneMessage = function (fromUserId, toUserId, event, fn) {
+  this.update({
+      _id: { $in: [toUserId] },
+      'unviewed.user': { $nin: [fromUserId] }
+    }, {
+      $addToSet: { 'unviewed': {user: fromUserId, event: event}}
+    }, fn);
 };
 
 
