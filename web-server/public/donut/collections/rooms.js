@@ -222,7 +222,7 @@ define([
     onLeave: function(data) {
       // server asks to this client to leave this room
       var model;
-      if (!data || !data.id || !(model = this.get(data.id)))
+      if (!data || !data.room_id || !(model = this.get(data.room_id)))
         return;
 
       this.remove(model);

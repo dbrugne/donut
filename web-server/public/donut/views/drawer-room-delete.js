@@ -59,7 +59,7 @@ define([
       if (!this._valid())
         return;
 
-      client.roomDelete(this.roomName);
+      client.roomDelete(this.roomId);
     },
     onDelete: function(data) {
       if (!data.name

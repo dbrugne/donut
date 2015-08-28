@@ -272,10 +272,9 @@ define([
         }
       );
     },
-    roomDelete: function (name) {
-      var data = {name: name};
+    roomDelete: function (roomId) {
+      var data = {room_id: roomId};
       debug('io:out:room:delete', data);
-      var that = this;
       pomelo.request(
         'chat.roomDeleteHandler.call',
         data,
