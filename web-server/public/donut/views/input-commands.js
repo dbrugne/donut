@@ -210,7 +210,7 @@ define([
       if (!parameters && paramString)
         return this.errorCommand('topic', 'parameters')
 
-      client.roomTopic(this.model.get('name'), parameters[1]);
+      client.roomTopic(this.model.get('id'), parameters[1]);
     },
     op: function(paramString, parameters) {
       if (this.model.get('type') !== 'room')

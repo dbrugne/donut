@@ -201,8 +201,8 @@ define([
       pomelo.notify('chat.roomMessageEditHandler.call', data);
       debug('io:out:room:message:edit', data);
     },
-    roomTopic: function (name, topic) {
-      var data = {name: name, topic: topic};
+    roomTopic: function (roomId, topic) {
+      var data = {room_id: roomId, topic: topic};
       debug('io:out:room:topic', data);
       var that = this;
       pomelo.request(
