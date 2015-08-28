@@ -336,7 +336,7 @@ define([
     msg: function(paramString, parameters) {
 
       var oneParam = (!parameters) ? ((this.model.get('type') === 'room')
-        ? this.model.get('id') : this.model.get('id')) : parameters[1];
+        ? this.model.get('id') : this.model.get('username')) : parameters[1];
       var message = (!parameters) ? paramString : parameters[2];
 
       //@todo
@@ -354,6 +354,8 @@ define([
 
       var that = this;
       if ((/^#/.test(parameters[1]))) {
+        //@todo
+        //convert parameters[1] to id
         client.roomRead(parameters[1], function (err, data) {
           if (err === 'unknown') {
             that.errorCommand('profile', 'invalidroom');

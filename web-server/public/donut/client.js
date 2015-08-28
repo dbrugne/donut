@@ -214,10 +214,9 @@ define([
         }
       );
     },
-    roomRead: function (name, fn) {
-      var data = {name: name};
+    roomRead: function (roomId, fn) {
+      var data = {room_id: roomId};
       debug('io:out:room:read', data);
-      var that = this;
       pomelo.request(
         'chat.roomReadHandler.call',
         data,

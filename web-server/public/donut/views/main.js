@@ -286,10 +286,11 @@ define([
       event.preventDefault();
 
       var name = $(event.currentTarget).data('roomName');
+      var id = $(event.currentTarget).data('roomId');
       if (!name)
         return;
 
-      var view = new DrawerRoomProfileView({ mainView: this, name: name });
+      var view = new DrawerRoomProfileView({ mainView: this, name: name, room_id: id });
       this.drawerView.setSize('380px').setView(view).open();
     },
     openRoomProfileCommand: function(data) {
@@ -300,10 +301,11 @@ define([
       event.preventDefault();
 
       var name = $(event.currentTarget).data('roomName');
+      var id = $(event.currentTarget).data('roomId');
       if (!name)
         return;
 
-      var view = new DrawerRoomEditView({ mainView: this, name: name });
+      var view = new DrawerRoomEditView({ mainView: this, name: name , room_id: id});
       this.drawerView.setSize('450px').setView(view).open();
     },
     openRoomUsers: function(event) {
@@ -337,10 +339,11 @@ define([
     openRoomDelete: function(event) {
       event.preventDefault();
       var name = $(event.currentTarget).data('roomName');
+      var id = $(event.currentTarget).data('roomId');
       if (!name)
         return;
 
-      var view = new DrawerRoomDeleteView({ mainView: this, name: name });
+      var view = new DrawerRoomDeleteView({ mainView: this, name: name, room_id: id });
       this.drawerView.setSize('450px').setView(view).open();
     },
     openUserEdit: function(event) {

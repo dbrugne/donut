@@ -56,6 +56,9 @@ define([
       // avatar
       data.avatar = common.cloudinarySize(data.avatar, 100);
 
+      // id
+      data.room_id = this.model.get('id');
+
       // url
       data.url = this.model.getUrl();
 

@@ -21,13 +21,14 @@ define([
     initialize: function(options) {
       this.mainView = options.mainView;
       this.roomName = options.name;
+      this.roomId = options.room_id;
 
       // show spinner as temp content
       this.render();
 
       // ask for data
       var that = this;
-      client.roomRead(this.roomName, function(err, data) {
+      client.roomRead(this.roomId, function(err, data) {
         if (!err)
           that.onResponse(data);
       });
