@@ -59,12 +59,7 @@ handler.call = function(data, session, next) {
 		},
 
 		function persistOnUser(callback) {
-			user.update(
-				{$pull:
-					{unviewed: {room: room._id}}
-				}, function(err) {
-				return callback(err);
-			});
+			user.resetUnviewedRoom(room._id, callback);
 		},
 
 		function sendToUserSockets(callback) {

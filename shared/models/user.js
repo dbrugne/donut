@@ -371,6 +371,20 @@ userSchema.statics.setUnviewedOneMessage = function (fromUserId, toUserId, event
       $addToSet: { 'unviewed': {user: fromUserId, event: event}}
     }, fn);
 };
+userSchema.methods.resetUnviewedRoom = function(roomId, fn) {
+  this.update({
+    $pull: { unviewed: { room: roomId }}
+  }).exec(function(err) {
+    fn(err); // there is a bug that cause a timeout when i call directly fn() without warping in a local function (!!!)
+  });
+};
+userSchema.methods.resetUnviewedOne = function(userId, fn) {
+  this.update({
+    $pull: { unviewed: { user: userId }}
+  }).exec(function(err) {
+    fn(err); // there is a bug that cause a timeout when i call directly fn() without warping in a local function (!!!)
+  });
+};
 
 
 /*********************************************************************************

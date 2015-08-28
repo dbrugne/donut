@@ -58,12 +58,7 @@ handler.call = function(data, session, next) {
 		},
 
 		function persistOnUser(callback) {
-			user.update(
-				{$pull:
-					{unviewed: {user: withUser._id}}
-				}, function(err) {
-				return callback(err);
-			});
+			user.resetUnviewedOne(withUser._id, callback);
 		},
 
 		function sendToUserSockets(callback) {
