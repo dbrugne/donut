@@ -11,7 +11,7 @@
             <span class="overlay-text open-room-profile" data-room-name="<%= name %>" data-room-id="<%= room_id %>" ><%= t('chat.actions.see') %></span>
         </div>
         <div class="info">
-            <div class="name open-room-profile" data-room-name="<%= name %>"><%= name %></div>
+            <div class="name open-room-profile" data-room-name="<%= name %>" data-room-id="<%= room_id %>"><%= name %></div>
             <div class="dropdown">
                 <button class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
                     <i class="icon icon-chevron-down"></i>
@@ -23,7 +23,7 @@
                         </a>
                     </li>
                     <li role="presentation">
-                        <a role="menuitem" tabindex="-1" class="open-room-profile" data-room-name="<%= name %>">
+                        <a role="menuitem" tabindex="-1" class="open-room-profile" data-room-name="<%= name %>" data-room-id="<%= room_id %>">
                             <i class="icon icon-eye"></i> <%= t('global.viewprofile') %>
                         </a>
                     </li>
