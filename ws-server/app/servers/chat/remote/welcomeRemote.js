@@ -98,7 +98,7 @@ WelcomeRemote.prototype.getMessage = function(uid, frontendId, globalCallback) {
 						}
 
 						parallels.push(function(fn) {
-							roomDataHelper(that.app, uid, room, function(err, r) {
+							roomDataHelper(that.app, user, room, function(err, r) {
 								fn(err, r);
 							});
 						});

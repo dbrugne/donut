@@ -11,23 +11,12 @@ var HistoryRoom = require('../../../shared/models/historyroom');
  *   - owner
  *   - ops
  */
-module.exports = function(app, uid, room, fn) {
-
-  var newMessage;
+module.exports = function(app, user, room, fn) {
 
   if (!room)
     return fn('Need to received a valid Room model as parameter');
 
   async.waterfall([
-
-    function checkUnread(callback) {
-      User.hasRoomsMessageUnread(room.id, uid, function (err, doc) {
-        newMessage = (doc)
-          ? true
-          : false;
-        callback(err);
-      });
-    },
 
     function prepare(callback) {
       if (room === null)
@@ -47,7 +36,7 @@ module.exports = function(app, uid, room, fn) {
         poster      : room._poster(),
         color       : room.color,
         topic       : room.topic,
-        new_message : newMessage,
+        new_message : user.hasUnreadRoomMessage(room),
         posterblured : room._poster(true)
       };
 

@@ -157,6 +157,18 @@ userSchema.methods.isAllowedToConnect = function () {
   return { allowed: (!err), err: err };
 };
 
+userSchema.methods.isBanned = function (userId) {
+  if (!this.bans || !this.bans.length)
+    return false;
+
+  var subDocument = _.find(this.bans, function (ban) { // @warning: this shouldn't have .bans populated
+    if (ban.user.toString() == userId)
+      return true;
+  });
+
+  return (typeof subDocument != 'undefined');
+};
+
 /**
  * Return user from database _id
  * @param uid
@@ -226,6 +238,12 @@ userSchema.statics.retrieveUser = function (username) {
     username: common.regExpBuildExact(username, 'i')
   }).populate('room', 'name');
 };
+
+/*********************************************************************************
+ *
+ * Unread messages
+ *
+ *********************************************************************************/
 
 /**
  * List the allowed preferences keys and configurations
@@ -308,34 +326,36 @@ userSchema.methods.preferencesValue = function (key) {
   return preferencesConfig[_key]['default'];
 };
 
-/**
- * Check for username availability (globally)
- * @param username
- * @param callback
- */
-userSchema.statics.usernameAvailability = function (username, callback) {
-  this.findOne({
-    username: common.regExpBuildExact(username, 'i')
-  }, function(err, user) {
-    if (err)
-      return callback(err);
-    if (user)
-      return callback('not-available');
 
-    return callback();
+/*********************************************************************************
+ *
+ * Unread messages
+ *
+ *********************************************************************************/
+
+userSchema.methods.hasUnreadRoomMessage = function (room) {
+  if (!this.unviewed)
+    return false;
+
+  var found = _.find(this.unviewed, function(e){
+    if (e.room && e.room.toString() === room.id)
+      return true;
   });
-};
 
-userSchema.statics.hasRoomsMessageUnread = function (roomId, userId, fn) {
-  return this.findOne({
-    _id: userId,
-    'unviewed.room': {$in : [roomId]}
-  }, function (err, doc) {
-      return fn(err, doc);
+  return !!found;
+};
+userSchema.methods.hasUnreadOneMessage = function (user) {
+  if (!this.unviewed)
+    return false;
+
+  var found = _.find(this.unviewed, function(u){
+    if (u.user && u.user.toString() === user.id)
+      return true;
   });
-};
 
-userSchema.statics.sendUnreadRoomMessage = function (roomId, usersId, userId ,event, fn) {
+  return !!found;
+};
+userSchema.statics.setUnreadRoomMessage = function (roomId, usersId, userId ,event, fn) {
   this.update(
     {
       $and: [{_id: {$in: usersId}}, {_id: {$nin: [userId]}}],
@@ -349,8 +369,7 @@ userSchema.statics.sendUnreadRoomMessage = function (roomId, usersId, userId ,ev
       return fn(err);
     });
 };
-
-userSchema.statics.sendUnreadOneMessage = function (fromUserId, ToUserId, event, fn) {
+userSchema.statics.setUnreadOneMessage = function (fromUserId, ToUserId, event, fn) {
   this.update(
     {_id: {$in: [ToUserId]},
       'unviewed.user': {$nin: [fromUserId]}
@@ -364,11 +383,25 @@ userSchema.statics.sendUnreadOneMessage = function (fromUserId, ToUserId, event,
     });
 };
 
-/**
- * Check for username availability (on current user)
- * @param username
- * @param callback
- */
+
+/*********************************************************************************
+ *
+ * Username availability
+ *
+ *********************************************************************************/
+
+userSchema.statics.usernameAvailability = function (username, callback) {
+  this.findOne({
+    username: common.regExpBuildExact(username, 'i')
+  }, function(err, user) {
+    if (err)
+      return callback(err);
+    if (user)
+      return callback('not-available');
+
+    return callback();
+  });
+};
 userSchema.methods.usernameAvailability = function (username, callback) {
   this.constructor.findOne({
     $and: [
@@ -389,6 +422,13 @@ userSchema.methods.usernameAvailability = function (username, callback) {
   });
 };
 
+
+/*********************************************************************************
+ *
+ * Avatar/poster
+ *
+ *********************************************************************************/
+
 userSchema.methods._avatar = function(size) {
   var facebook = (this.facebook && this.facebook.token && this.facebook.id)
     ? this.facebook.id
@@ -399,7 +439,6 @@ userSchema.methods._avatar = function(size) {
 userSchema.methods._poster = function(blur) {
   return cloudinary.poster(this.poster, this.color, blur);
 };
-
 userSchema.methods.avatarId = function() {
   if (!this.avatar) return '';
   var data = this.avatar.split('/');
@@ -407,7 +446,6 @@ userSchema.methods.avatarId = function() {
   var id = data[1].substr(0, data[1].lastIndexOf('.'));
   return id;
 };
-
 userSchema.methods.posterId = function() {
   if (!this.poster)
     return '';
@@ -416,32 +454,6 @@ userSchema.methods.posterId = function() {
   if (!data[1]) return '';
   var id = data[1].substr(0, data[1].lastIndexOf('.'));
   return id;
-};
-
-userSchema.methods.isBanned = function (userId) {
-  if (!this.bans || !this.bans.length)
-    return false;
-
-  var subDocument = _.find(this.bans, function (ban) { // @warning: this shouldn't have .bans populated
-    if (ban.user.toString() == userId)
-      return true;
-  });
-
-  return (typeof subDocument != 'undefined');
-};
-
-userSchema.methods.hasOnesMessageUnread = function (userId) {
-  if (!this.unviewed)
-    return false;
-
-  var found = false;
-
-  _.each(this.unviewed, function(u){
-    if (u.user && u.user.toString() === userId.toString())
-      found = true;
-  });
-
-  return found;
 };
 
 module.exports = mongoose.model('User', userSchema);

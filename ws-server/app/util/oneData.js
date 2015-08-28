@@ -23,7 +23,6 @@ module.exports = function(app, user, users, fn) {
     },
 
     function prepare(statuses, callback) {
-
       var data = [];
       _.each(users, function(u, index, list) {
         if (!u.username)
@@ -39,7 +38,7 @@ module.exports = function(app, user, users, fn) {
           website     : u.website,
           banned      : user.isBanned(u.id), // for ban/deban menu
           i_am_banned : u.isBanned(user.id), // for input enable/disable
-          new_message : user.hasOnesMessageUnread(u.id)
+          new_message : user.hasUnreadOneMessage(u)
         };
 
         if (statuses[u.id] === true) {

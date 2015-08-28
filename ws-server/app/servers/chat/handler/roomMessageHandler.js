@@ -87,7 +87,7 @@ handler.call = function (data, session, next) {
     },
 
     function persistOnUsers (event, mentions, callback) {
-      User.sendUnreadRoomMessage(room.id, room.users, user._id, event.id, function (err) {
+      User.setUnreadRoomMessage(room.id, room.users, user._id, event.id, function (err) {
         return callback(err, event, mentions);
       });
     },

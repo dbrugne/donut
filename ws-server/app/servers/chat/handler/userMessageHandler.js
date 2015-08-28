@@ -89,9 +89,9 @@ handler.call = function(data, session, next) {
 		},
 
 		function persitUnViewed(event, callback) {
-			User.sendUnreadOneMessage(user._id, withUser._id, event.id, function (err){
+			User.setUnreadOneMessage(user._id, withUser._id, event.id, function (err){
 				return callback(err, event);
-			})
+			});
 		},
 
 		function notification(event, callback) {
