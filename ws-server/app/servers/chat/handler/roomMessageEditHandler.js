@@ -27,8 +27,8 @@ handler.call = function(data, session, next) {
   async.waterfall([
 
     function check(callback) {
-      if (!data.name)
-        return callback('require name param');
+      if (!data.room_id)
+        return callback('id is mandatory');
 
       if (!data.event)
         return callback('require event param');
@@ -37,7 +37,7 @@ handler.call = function(data, session, next) {
         return callback('require message param');
 
       if (!room)
-        return callback('unable to retrieve room: ' + data.name);
+        return callback('unable to retrieve room: ' + data.room_id);
 
       if (!event)
         return callback('unable to retrieve event: ' + data.event);
@@ -78,6 +78,7 @@ handler.call = function(data, session, next) {
     function broadcast(message, mentions, callback) {
       var eventToSend = {
         name: room.name,
+        room_id: room.id,
         event: event.id,
         message: message,
         images: (event.data.images)

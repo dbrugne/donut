@@ -87,7 +87,7 @@ define([
       }
 
       if (this.model.get('type') == 'room') {
-        client.roomMessageEdit(this.model.get('name'), messageId, message);
+        client.roomMessageEdit(this.model.get('id'), messageId, message);
       } else {
         client.userMessageEdit(this.model.get('username'), messageId, message);
       }

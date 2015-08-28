@@ -196,8 +196,8 @@ define([
         }
       );
     },
-    roomMessageEdit: function (name, messageId, message) {
-      var data = {name: name, event: messageId, message: message};
+    roomMessageEdit: function (roomId, messageId, message) {
+      var data = {room_id: roomId, event: messageId, message: message};
       pomelo.notify('chat.roomMessageEditHandler.call', data);
       debug('io:out:room:message:edit', data);
     },
