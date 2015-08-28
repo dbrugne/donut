@@ -300,7 +300,7 @@ define([
     },
 
     sendMessage: function(message, images) {
-      client.roomMessage(this.get('name'), message, images);
+      client.roomMessage(this.get('id'), message, images);
     },
 
     resetNew: function() {

@@ -170,8 +170,8 @@ define([
       pomelo.notify('chat.roomLeaveHandler.call', data);
       debug('io:out:room:leave', data);
     },
-    roomMessage: function (name, message, images, callback) {
-      var data = {name: name, message: message, images: images};
+    roomMessage: function (roomId, message, images, callback) {
+      var data = {room_id: roomId, message: message, images: images};
       var that = this;
       pomelo.request(
         'chat.roomMessageHandler.call',

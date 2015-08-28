@@ -339,6 +339,8 @@ define([
         ? this.model.get('name') : this.model.get('id')) : parameters[1];
       var message = (!parameters) ? paramString : parameters[2];
 
+      //@todo
+      // change parameters to his id
       if (/^#/.test(oneParam))
         client.roomMessage(oneParam, message, null);
       else {
