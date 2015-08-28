@@ -128,6 +128,10 @@ define([
         type: 'room:topic',
         data: data
       });
+
+      if (currentUser.get('user_id') != model.get('data').user_id)
+        model.set('unviewed', true);
+
       this.trigger('freshEvent', model);
     },
     onMessage: function(data) {

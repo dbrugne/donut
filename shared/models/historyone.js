@@ -29,12 +29,6 @@ var dryFields = [
   'to_username',
 ]; // in user:online/offline event the fields are user_id, username, avatar
 
-/**
- * Archive following events:
- * - user:message
- * - user:online
- * - user:offline
- */
 historySchema.statics.record = function() {
   var that = this;
   /**
@@ -112,7 +106,7 @@ historySchema.methods.toClientJSON = function(userViewed) {
   e.data = data;
 
   // unviewed status (true if message, i'm the receiver and current value is false)
-  if (userViewed && this.event == 'user:message' && data.to_user_id == userViewed && !this.viewed) {
+  if (userViewed && ['user:message', 'user:me'].indexOf(this.event) !== -1 && data.to_user_id == userViewed && !this.viewed) {
     e.unviewed = true;
   }
 
@@ -133,8 +127,7 @@ historySchema.statics.retrieve = function() {
       $or: [
         {from: me, to: other},
         {from: other, to: me}
-      ],
-      event: { $nin: ['user:online', 'user:offline'] }
+      ]
     };
 
     // Since (timestamp, from present to past direction)
@@ -196,8 +189,7 @@ historySchema.statics.retrieveEventWithContext = function(eventId, limit, timeLi
   var criteria = {
     _id: { $ne: eventId },
     $or: [],
-    //event: { $nin: ['user:online', 'user:offline'] }
-    event: 'user:message'
+    event: { $in: ['user:message', 'user:me'] }
   };
 
   var model;

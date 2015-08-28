@@ -114,7 +114,7 @@ historySchema.methods.toClientJSON = function(userViewed) {
   e.data = data;
 
   // unviewed status (true if message and if i'm not in .viewed)
-  if (userViewed && this.event == 'room:message' && data.user_id != userViewed && (
+  if (userViewed && ['room:message', 'room:me', 'room:topic'].indexOf(this.event) !== -1 && data.user_id != userViewed && (
     !this.viewed
     || (_.isArray(this.viewed) && this.viewed.indexOf(userViewed) === -1)
     )) {
@@ -135,8 +135,7 @@ historySchema.statics.retrieve = function() {
   return function(roomId, userId, what, fn) {
     what = what || {};
     var criteria = {
-      room: roomId,
-      event: { $nin: ['user:online', 'user:offline'] }
+      room: roomId
     };
 
     if (what.isAdmin !== true) {
@@ -205,8 +204,7 @@ historySchema.statics.retrieveEventWithContext = function(eventId, userId, limit
 
   var criteria = {
     _id: { $ne: eventId },
-    //event: { $nin: ['user:online', 'user:offline'] },
-    event: 'room:message',
+    event: { $in: ['room:message', 'room:me'] },
     users: { $in: [userId] }
   };
 

@@ -46,7 +46,7 @@ handler.call = function(data, session, next) {
 		function persist(callback) {
 			HistoryOne.update({
 				_id: { $in: data.events },
-				event: 'user:message',
+				event: { $in: ['user:message', 'user:me'] },
 				to: user._id
 			}, {
 				$set: { viewed: true }

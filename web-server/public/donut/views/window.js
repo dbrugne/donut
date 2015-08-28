@@ -204,7 +204,7 @@ define([
       }
     },
     triggerMessage: function (event, model) {
-      if (event.getGenericType() != 'message')
+      if (event.getGenericType() != 'message' &&  event.get('type') !== 'room:topic')
         return;
 
       // test if not from me (currentUser)
@@ -212,7 +212,7 @@ define([
         return;
 
       // test if i mentioned (only for rooms)
-      var isMention = (model.get('type') === 'room' && common.isUserMentionned(currentUser.get('user_id'), event.get('data').message))
+      var isMention = (event.getGenericType() != 'message' && model.get('type') === 'room' && common.isUserMentionned(currentUser.get('user_id'), event.get('data').message))
         ? true
         : false;
 
