@@ -1,5 +1,5 @@
 .body-chat.body-profile {
-  #languages { position: relative; right: initial; top: initial; display: inline-block; padding-top: 9px; padding-bottom: 8px; color: @cl-background;
+  #languages { position: relative; right: initial; top: initial; display: inline-block; padding-top: 9px; padding-bottom: 8px;
     a { display: inline;
       &:hover { text-decoration:underline; }
     }
@@ -17,7 +17,9 @@
         }
       }
     }
-    #block-discussions .list a { font-weight:bold; }
+    #block-discussions .list { margin-left:0;
+      a { font-weight:bold; }
+    }
   }
   #chat #center .discussion .content { overflow:auto; padding-top: 55px; padding-left: 50px; padding-bottom: 40px;
     .events { margin-top: 20px; padding-top: 20px; }
@@ -50,9 +52,8 @@
         }
       }
       &.user {
-        .avatar { width: 160px; height:160px;
-          img { width: 100%; }
-          p { border-radius: 0; }
+        .overlay-ctn { float: left; width: 169px;
+          .avatar { width: 160px; height: 160px; position: relative; float: left; }
         }
         .bio { margin-bottom:5px; }
         .info { margin-left: 170px;
@@ -66,7 +67,6 @@
     }
   }
 }
-
 .body-profile { height: 100%; .ft-opensans; background-color: @cl-background; background-repeat: no-repeat; background-position: 0 @size-color;
   .upon { position: fixed; left: 0; right: 0; top: @size-color; }
   .color { position: fixed; left: 0; right: 0; top: 0; height: @size-color; background-color: @cl-first;
@@ -163,14 +163,29 @@
   .body-chat.body-profile #chat #left .page-sidebar-menu #block-current-user>ul>li .dropdown-user-actions { position: relative; right: initial; left:initial; top: 0; }
   .body-chat.body-profile #chat #left .page-sidebar-menu #block-current-user>ul>li .dropdown-user-actions .dropdown-menu { background-color: @cl-subtext10; .box-shadow(0 6px 12px rgba(0,0,0,0.175)); }
   .body-chat.body-profile #chat #left .page-sidebar-menu #block-current-user>ul>li .dropdown-user-actions .dropdown-menu a {     padding: 5px 10px; }
-  .body-chat.body-profile #chat #center .discussion .content { padding-top: 0; padding-left: 0; padding-bottom: 0; margin-top:30px; }
+  .body-chat.body-profile #chat #center .discussion .content { padding-top: 0; padding-left: 0; padding-bottom: 0; }
   .body-chat.body-profile #chat #center .discussion .content .header { min-height: initial; }
-  .body-chat.body-profile #chat #center .discussion .content .header .info { min-height: initial; margin-left: 0; padding-left: 0; padding-top: 0; }
+  .body-chat.body-profile #chat #center .discussion .content .header .info { min-height: initial; margin-left: 0; }
   .body-chat.body-profile #chat #center .discussion .content .header.room .overlay-ctn .avatar { width: 30px; height: 30px; float:none; position:absolute; }
   .body-chat.body-profile #chat #center .discussion .content .header.room .topic { padding: 5px 15px 5px 15px; }
   .body-chat.body-profile #chat #center .discussion .content .header.user .avatar { height:30px; width:30px; }
   .body-chat.body-profile #chat #center .discussion .content .header.user .info { margin-left:0; }
-  .body-chat.body-profile #chat #center .discussion .content .header.user .info .username { color:#FFF; }
   .body-chat.body-profile #chat #center .discussion .content .header.user { min-height:0; }
   .body-chat.body-profile #chat #center .discussion .content .events { margin-top:0; padding-top:0; }
+}
+
+@media screen and (max-width: @screen-lg-min) {
+  .body-chat.body-profile #chat #center .discussion .content { padding-top:30px; padding-left:15px;
+    .header.room, .header.user { min-height: 180px;
+      .overlay-ctn { width: 120px;
+        .avatar { width: 120px; height: 120px; }
+        .join, .discuss { top: 130px;
+          a { padding: 10px 15px; font-size: 12px; }
+        }
+      }
+      .info { margin-left: 120px; min-height: 180px;
+        .name, .username { font-size:40px; }
+      }
+    }
+  }
 }

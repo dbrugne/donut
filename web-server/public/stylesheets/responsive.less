@@ -13,7 +13,6 @@
 
 /** for <=992 screens resolutions ==> TABLET PORTRAIT & PHONE LANDSCAPE **/
 @media screen and (max-width: @screen-md-min) {
-
   .page-sidebar-menu { margin: 0; padding: 0;
     & > li { display: block; margin: 0; padding: 0; border: 0;
       & > a { display: block; position: relative; margin: 0; padding: 10px 15px; text-decoration: none; font-weight: 300; }
@@ -45,7 +44,6 @@
       }
     }
   }
-
   #chat {
     #drawer .opacity .wrap { width: auto !important; margin-right: 45px; } // #chat #drawer .opacity .wrap
     #color .container { padding: 0;
@@ -115,28 +113,13 @@
         .right { display:none; }
       } // #chat #center #home .left
       .discussion {
-        .content { padding-left: 0; margin-right: 0; position: initial; margin-left: 15px;
-          .header { padding: 15px 25px 0 0; min-height: 40px; margin-bottom: 0; position:initial;
-            .avatar { width:30px; height:30px; border:0; top: 5px; left: 7px; z-index: 1031; cursor:pointer; }
-            .info { line-height: 22px; position: absolute; top: 5px; left: 50px; z-index: 1031;     padding-left: 0;
-              .name, .username { margin: 0 !important; font-size: 16px !important; margin-top: 5px !important; font-weight: bold; float:left; }
-            }
-            .dropdown { float: left; margin-left: 0; top: 2px;
-              .dropdown-toggle { font-size: 18px !important;
-                i { .opacity(0.5); }
-                &:hover i { .opacity(1); }
-              }
-            }
-          } // #chat #center .discussion .content .header
+        .content { padding-left: 15px; margin-right: 0; position: initial;
+          .mini-header {     position: absolute; top: 1px; z-index: 1030; left: 5px;
+            .avatar {     width: 34px; height: 34px; top: 5px; left: 7px; z-index: 1031; cursor: pointer; border-width: 2px; border-style: solid; float: left; margin-top: 1px; margin-left: 0px; }
+            .name, .username {     margin: 0 !important; font-size: 16px !important; margin-top: 5px !important; font-weight: bold; padding-left: 10px; display: inline-block; padding-top: 3px; float: left; }
+            &.room .avatar { .border-radius(50%); }
+          }
           .header.room { min-height: 50px;
-            .overlay-ctn { position: initial;
-              .avatar { width:30px; height:30px; border:0; top: 5px; left: 7px; z-index: 1031; cursor:pointer; } // #chat #center .discussion .content .header .overlay-ctn .avatar
-              .overlay, .overlay-text { display:none; }
-            } // #chat #center .discussion .content .header .overlay-ctn
-            .info {
-              .owner { display: none; }
-              .share { margin-left: 0; display: block; }
-            } // #chat #center .discussion .content .header.room .info
             .topic {float: left; width: 100%; padding: 0; margin-top:0; position: relative; padding-right: 35px;
               .topic-current { padding: 5px 10px; width: 100%;
                 &::before {content:"";}
@@ -150,11 +133,9 @@
               } // #chat #center .discussion .content .header.room .drawer-users
             }
           } // #chat #center .discussion .content .header.room
-          .header.user { position:initial; min-height: 51px;
-            .avatar { width:30px; height:30px;border:0;  }
-            .info { margin-left:0; }
-            .status-block { float: left; width: 100%; margin: 8px; }
-          } // #chat #center .discussion .content .header.user
+          .header.user { min-height: 0;
+            .status-block { margin-left: 0; }
+          }
           .events { border-top: none;
             .go-to-top, .go-to-bottom { display:none !important; }
             .scrollable .scrollable-content .realtime .block {
@@ -190,7 +171,6 @@
       } // #chat #center .discussion
     } // #chat #center
   } // #chat
-
   #landing {
     .header {
       .cover { padding: 100px 30px 100px 75px; background: none; }
@@ -216,14 +196,19 @@
       .disclaimer { margin-top: 60px; }
     }
   }
+  .rooms.cards .room { width: 190px;
+    .avatar { width: 85px; height: 85px; }
+  }
+  .body-profile .rooms.cards .room { height: 276px; }
 }
 
 /** for <=768 screens resolutions ==> PHONE PORTRAIT **/
 @media screen and (max-width: @screen-sm-min) {
-  .form-inline .input-group .form-control {
-    width:auto;
-  }
+  .form-inline .input-group .form-control { width:auto; }
+  .body-chat.body-profile #chat #left { display:none; }
+  .body-chat.body-profile #chat #center { margin-left:0; }
   #chat #center .discussion .content .header.room .topic #room-users-modal .modal-body .list li { width: 100%; }
+
 }
 
 /** for <=480 screens resolutions **/

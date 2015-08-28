@@ -8,13 +8,6 @@
             <div id="navbar">
                 <a class="navbar-brand-a hidden-xs hidden-sm" href="/"><img class="logo" src="/images/logo-onecolor.svg" alt="<%= t('title.chat') %>"> <span class="beta">alpha</span></a>
                 <ul class="nav navbar-nav navbar-right">
-                    <li class="visible-sm visible-xs">
-                        <% if (typeof room !== "undefined") { %>
-                            <div style="margin: 9px 0 0 0;" class="fb-like" data-href="<%= room.url %>" data-layout="button" data-action="like" data-show-faces="false" data-share="true" data-ref="profile-page"></div>
-                        <% } else { %>
-                            <div style="margin: 9px 0 0 0;" class="fb-like" data-href="<%= _user.url %>" data-layout="button" data-action="like" data-show-faces="false" data-share="true" data-ref="profile-page"></div>
-                        <% } %>
-                    </li>
                     <li id="languages" class="hidden-sm hidden-xs dc-text-contrast">
                         <span><%= t('global.switchlanguage') %></span>
                         <a data-language="fr" class="switch dc-text-contrast">fr</a> -
@@ -40,7 +33,6 @@
         <div id="left">
             <ul class="page-sidebar-menu">
                 <li id="block-current-user">
-
                     <% if (typeof user !== 'undefined' && typeof user.avatar !== 'undefined') { %>
                         <span class="avatar hidden-sm hidden-xs" data-username="<%= user.username %>">
                             <img src="<%= user.avatar %>" alt="<%= user.username %> avatar">

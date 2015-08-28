@@ -188,7 +188,7 @@
   .dc-border-lighter { border-color: lighten(@cl-first, 10%); }
 }
 
-.color-text (@a) when (lightness(@a) >= 40%) { color: @cl-text; }
+.color-text (@a) when (lightness(@a) >= 60%) { color: @cl-text; }
 .color-text (@a) when (lightness(@a) < 60%)  { color: @cl-clouds; }
 
 .color-loop(length(@HKS_colors));

@@ -6,15 +6,18 @@
     </div>
 </div><!-- /.side -->
 <div class="content">
+    <div class="mini-header user visible-xs visible-sm">
+        <img class="avatar dc-border-lighter" src="<%= _user.avatar %>" alt="<%= _user.username %> avatar">
+        <span class="username dc-text-contrast" ><%= _user.username %></span>
+    </div>
     <div class="header user">
-        <div class="avatar">
-            <img src="<%= _user.avatar %>" alt="<%= _user.username %> avatar">
-            <p class="discuss hidden-xs hidden-sm"><a class="dc-back dc-text-contrast" href="<% if (!user) { %><%= _user.discuss %><% } else { %><%= _user.chat %><% } %>" ><%= t('actions.discuss') %></a></p>
+        <div class="overlay-ctn">
+            <img class="avatar" src="<%= _user.avatar %>" alt="<%= _user.username %> avatar">
+            <p class="discuss"><a class="dc-back dc-text-contrast" href="<% if (!user) { %><%= _user.discuss %><% } else { %><%= _user.chat %><% } %>" ><%= t('actions.discuss') %></a></p>
         </div>
         <div class="info">
-            <a href="<%= _user.url %>" class="username hidden-xs hidden-sm">@<%= _user.username %></a>
-            <a href="<%= _user.url %>" class="username visible-xs visible-sm dc-text-contrast">@<%= _user.username %></a>
-            <div class="share hidden-xs hidden-sm">
+            <a href="<%= _user.url %>" class="username">@<%= _user.username %></a>
+            <div class="share ">
                 <%= t('chat.share.label') %>
                 <i class="facebook icon icon-facebook-square" data-url="<%- _user.url %>" data-name="<%- _user.username %>" data-avatar="<%- _user.avatar %>"></i>
                 <i class="twitter icon icon-twitter-square" data-url="<%- _user.url %>" data-name="<%- _user.username %>"></i>
@@ -22,20 +25,20 @@
             </div>
             <% if (_user.location) { %>
                 <br/>
-                <span class="location hidden-xs hidden-sm">
+                <span class="location ">
                     <%= _user.location %>
                 </span>
             <% } %>
             <% if (_user.website && _user.website.href) { %>
-                <% if (_user.location) { %><span class="separation hidden-xs hidden-sm">|</span><% } %>
-                <span class="website hidden-xs hidden-sm dc-text">
+                <% if (_user.location) { %><span class="separation ">|</span><% } %>
+                <span class="website  dc-text">
                     <a class="website dc-text" href="<%= _user.website.href %>" title="<%= _user.website.title %>">
                         <%= _user.website.title %>
                     </a>
                 </span>
             <% } %>
             <% if (_user.bio) { %>
-                <div class="bio hidden-xs hidden-sm">
+                <div class="bio ">
                     <p class="bio-content"><%= _user.bio %></p>
                 </div>
             <% } %>
