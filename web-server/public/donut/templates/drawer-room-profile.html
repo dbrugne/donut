@@ -2,7 +2,7 @@
     <div class="overlay-ctn">
         <img class="avatar" src="<%= room.avatar %>" alt="<%= room.name %> avatar">
         <% if (room.isOwner || room.isAdmin) { %>
-        <span class="overlay open-room-edit" data-room-name="<%= room.name %>"></span>
+        <span class="overlay open-room-edit" data-room-name="<%= room.name %>" data-room-id="<%= room.id %>"></span>
         <span class="overlay-text open-room-edit" data-room-name="<%= room.name %>" data-room-id="<%= room.id %>"><%= t('profile.user.edit') %></span>
         <% } %>
     </div>
@@ -13,7 +13,7 @@
     <% if (room.created) { %><p class="created"><i class="icon icon-clock-o"  data-colorify-text="#000"></i> <%= t('profile.room.createdat') %> <span data-time="<%= room.created %>"></span></p><% }; %>
     <p class="permalink"><i class="icon icon-link"  data-colorify-text="#000"></i> <a href="<%= room.url %>" target="_blank" data-colorify-text="#000"><%= t('profile.room.permalink') %></a></p>
     <% if (room.isOwner || room.isAdmin) { %><p class="edit"><i class="icon icon-pencil" data-colorify-text="#000"></i> <a class="open-room-edit" data-room-name="<%= room.name %>" data-room-id="<%= room.id %>" data-colorify-text="#000"> <%= t('profile.room.editlink') %></a><p><% }; %>
-    <% if (room.isOwner || room.isOp ||room.isAdmin) { %><p class="users"><i class="icon icon-users"  data-colorify-text="#000"></i> <a class="open-room-users" data-room-name="<%= room.name %>"  data-colorify-text="#000"><%= t('profile.room.editusers') %></a></p><% }; %>
+    <% if (room.isOwner || room.isOp ||room.isAdmin) { %><p class="users"><i class="icon icon-users"  data-colorify-text="#000"></i> <a class="open-room-users" data-room-name="<%= room.name %>"  data-room-id="<%= room.id %>" data-colorify-text="#000"><%= t('profile.room.editusers') %></a></p><% }; %>
 </div>
 
 <div class="room" data-colorify="<%= room.color %>">

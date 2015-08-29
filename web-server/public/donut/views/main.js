@@ -302,7 +302,7 @@ define([
 
       var name = $(event.currentTarget).data('roomName');
       var id = $(event.currentTarget).data('roomId');
-      if (!name)
+      if (!name || !id)
         return;
 
       var view = new DrawerRoomEditView({ mainView: this, name: name , room_id: id});
@@ -312,10 +312,12 @@ define([
       event.preventDefault();
 
       var name = $(event.currentTarget).data('roomName');
-      if (!name)
+      var id = $(event.currentTarget).data('roomId');
+
+      if (!name || !id)
         return;
 
-      var model = rooms.get(name);
+      var model = rooms.get(id);
       if (!model)
         return;
 
@@ -326,10 +328,11 @@ define([
       event.preventDefault();
 
       var name = $(event.currentTarget).data('roomName');
-      if (!name)
+      var id = $(event.currentTarget).data('roomId');
+      if (!name || !id)
         return;
 
-      var model = rooms.get(name);
+      var model = rooms.get(id);
       if (!model)
         return;
 

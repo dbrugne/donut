@@ -28,7 +28,7 @@
                         </a>
                     </li>
                     <li role="presentation">
-                        <a role="menuitem" tabindex="-1" class="open-room-preferences" data-room-name="<%= name %>">
+                        <a role="menuitem" tabindex="-1" class="open-room-preferences" data-room-name="<%= name %>" data-room-id="<%= room_id %>">
                             <i class="icon icon-bell"></i> <%= t('chat.actions.notifications') %>
                         </a>
                     </li>
@@ -44,7 +44,7 @@
                     <% }; %>
                     <% if (isOwner === true || isOp === true || isAdmin === true) { %>
                     <li role="presentation">
-                        <a role="menuitem" tabindex="-1" class="open-room-users" data-room-name="<%= name %>">
+                        <a role="menuitem" tabindex="-1" class="open-room-users" data-room-name="<%= name %>" data-room-id="<%= room_id %>">
                             <i class="icon icon-users"></i> <%= t('chat.users.link') %>
                         </a>
                     </li>

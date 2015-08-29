@@ -20,7 +20,7 @@
             </p>
         </div>
         <div class="back" data-colorify-background="color" data-colorify-text="contrast">
-            <div class="open-room-profile" data-room-name="<%= room.name %>">
+            <div class="open-room-profile" data-room-name="<%= room.name %>" data-room-id="<%= room.id %>">
                 <div class="avatar" style="background-image:url(<%= room.avatar %>)" data-colorify-border="lighter"></div>
                 <p class="name" data-colorify-text="contrast"><%= room.name %></p>
                 <% if (room.owner && room.owner.username) { %>
