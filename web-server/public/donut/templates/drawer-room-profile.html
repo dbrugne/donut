@@ -9,7 +9,7 @@
     <p class="name"><%= room.name %></p>
     <p class="owner"><%= t('global.by') %> <a class="open-user-profile dc-text" data-username="<%= room.owner.username %>">@<%= room.owner.username %></a></p>
     <% if (room.description) { %><p class="description"><%= room.description %></p><% }; %>
-    <% if (room.website.href) { %><p class="website"><i class="icon icon-link dc-text"></i> <a href="<%= room.website.href %>" target="_blank" title="<%= room.website.title %>"><%= room.website.title %></a></p><% }; %>
+    <% if (room.website && room.website.href) { %><p class="website"><i class="icon icon-link dc-text"></i> <a href="<%= room.website.href %>" target="_blank" title="<%= room.website.title %>"><%= room.website.title %></a></p><% }; %>
     <% if (room.created) { %><p class="created"><i class="icon icon-clock-o dc-text"></i> <%= t('profile.room.createdat') %> <span data-time="<%= room.created %>"></span></p><% }; %>
     <p class="permalink"><i class="icon icon-link dc-text"></i> <a href="<%= room.url %>" target="_blank" class="dc-text"><%= t('profile.room.permalink') %></a></p>
     <% if (room.isOwner || room.isAdmin) { %><p class="edit"><i class="icon icon-pencil dc-text"></i> <a class="open-room-edit dc-text" data-room-name="<%= room.name %>"> <%= t('profile.room.editlink') %></a><p><% }; %>

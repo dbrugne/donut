@@ -64,7 +64,7 @@
                     <%= t('global.by') %>&nbsp;<a href="<%= room.owner.url %>">@<%= room.owner.username %></a>
                 </span>
             <% } %>
-            <% if (room.website.href) { %>
+            <% if (room.website && room.website.href) { %>
                 <% if (room.owner) { %><span class="separation">|</span><% } %>
                 <span class="website dc-text">
                     <a class="website dc-text" href="<%= room.website.href %>" title="<%= room.website.title %>">
