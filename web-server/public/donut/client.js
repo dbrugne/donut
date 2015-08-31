@@ -426,8 +426,8 @@ define([
         }
       );
     },
-    roomTyping: function (name) {
-      var data = { name: name };
+    roomTyping: function (roomId) {
+      var data = { room_id: roomId };
       debug('io:out:room:typing', data);
       pomelo.notify('chat.roomTypingHandler.call', data);
     },
