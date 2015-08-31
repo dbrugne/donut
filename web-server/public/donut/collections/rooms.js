@@ -19,6 +19,9 @@ define([
 
       return matches[0];
     },
+    getByName: function(name) {
+      return this.findWhere({ name: name });
+    },
 
     initialize: function() {
       this.listenTo(client, 'room:in', this.onIn);

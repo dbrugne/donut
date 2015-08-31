@@ -4,9 +4,10 @@ define([
   'backbone',
   'models/app',
   'client',
+  'collections/rooms',
   'views/modal-confirmation',
   'models/event'
-], function ($, _, Backbone, app, client, confirmationView, EventModel) {
+], function ($, _, Backbone, app, client, rooms, confirmationView, EventModel) {
   var InputCommandsView = Backbone.View.extend({
 
     commandRegexp: /^\/([-a-z0-9]+)/i,
@@ -203,9 +204,11 @@ define([
       if (!parameters)
         return this.errorCommand('leave', 'parameters');
 
-      //@todo
-      // change parameters to his id
-      client.roomLeave(parameters[1]);
+      var model = rooms.getByName(parameters[1]);
+      if (!model)
+        return;
+
+      client.roomLeave(model.get('id'));
     },
     topic: function(paramString, parameters) {
       if (this.model.get('type') !== 'room')
@@ -340,18 +343,32 @@ define([
       }, this.inputFocus());
     },
     msg: function(paramString, parameters) {
-
-      var oneParam = (!parameters) ? ((this.model.get('type') === 'room')
-        ? this.model.get('id') : this.model.get('username')) : parameters[1];
       var message = (!parameters) ? paramString : parameters[2];
+      if (!message)
+        return;
 
-      //@todo
-      // change parameters to his id
-      if (/^#/.test(oneParam))
-        client.roomMessage(oneParam, message, null);
-      else {
-        oneParam = oneParam.replace(/^@/, '');
-        client.userMessage(oneParam, message, null);
+      var model;
+      if  (!parameters) {
+        model = this.model;
+      } else if (/^#/.test(parameters[1])) {
+        model = rooms.getByName(parameters[1]);
+      } else if (/^@/.test(parameters[1])) {
+        // @todo : allow userMessage to use both username and user_id
+        client.userMessage(parameters[1], message, null);
+        return;
+      } else {
+        return;
+      }
+
+      if (!model)
+        return;
+
+      if (model.get('type') === 'room') {
+        client.roomMessage(model.get('id'), message, null);
+        return;
+      } else if (model.get('type') === 'onetoone') {
+        // @todo : use user id
+        client.userMessage(model.get('username'), message, null);
       }
     },
     profile: function(paramString, parameters) {

@@ -179,7 +179,7 @@ define([
     },
     roomMessage: function (roomId, message, images, callback) {
       var data = {room_id: roomId, message: message, images: images};
-      var that = this;
+      debug('io:out:room:message', data);
       pomelo.request(
         'chat.roomMessageHandler.call',
         data,
