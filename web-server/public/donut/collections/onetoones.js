@@ -82,6 +82,7 @@ define([
       return model;
     },
     getModelFromEvent: function(event, autoCreate) {
+      // @todo use user_id only
       if (!event.username) {
         var withUser;
         if (currentUser.get('username') == event.from_username) {
@@ -121,8 +122,7 @@ define([
 
         withUser.key = key;
         model = this.addModel(withUser);
-        var that = this;
-        client.userRead(withUser.username, function(err, data) {
+        client.userRead(null, withUser.username, function(err, data) {
           if (!err)
             model.set(data);
         });

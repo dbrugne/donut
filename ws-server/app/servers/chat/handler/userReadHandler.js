@@ -25,8 +25,8 @@ handler.call = function(data, session, next) {
 	async.waterfall([
 
 		function check(callback) {
-			if (!data.username)
-				return callback('invalid-username');
+      if (!data.user_id && !data.username)
+        return callback('user_id or name is mandatory');
 
       if (!readUser)
         return callback('unknown');
@@ -133,7 +133,7 @@ handler.call = function(data, session, next) {
     if (err) {
       logger.error('[user:read] ' + err);
 
-      err = (['invalid-username', 'unknown'].indexOf(err) !== -1)
+      err = (['unknown'].indexOf(err) !== -1)
         ? err
         : 'internal';
       return next(null, { code: 500, err: err });

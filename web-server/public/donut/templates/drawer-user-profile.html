@@ -41,7 +41,7 @@
     <div class="rooms">
         <p class="title"><i class="icon icon-empire"></i> <%= t('profile.user.hisrooms') %></p>
         <% _.each(user.rooms_list, function(room) { %>
-        <div class="room open-room-profile <% if (room.oped) { %>op<% } %> <% if (room.owned) { %>owner<% } %>" data-room-name="<%= room.name %>" data-room-id="<%= room.id %>" data-colorify="<%= room.color %>">
+        <div class="room open-room-profile <% if (room.oped) { %>op<% } %> <% if (room.owned) { %>owner<% } %>" data-room-id="<%= room.id %>">
             <img class="avatar" src="<%= room.avatar %>" />
             <span class="name"><%= room.name %></span>
         </div>

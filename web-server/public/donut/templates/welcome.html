@@ -20,7 +20,7 @@
             </p>
         </div>
         <div class="back dc-back dc-text-contrast">
-            <div class="open-room-profile" data-room-name="<%= room.name %>" data-room-id="<%= room.room_id %>">
+            <div class="open-room-profile" data-room-id="<%= room.room_id %>">
                 <div class="avatar dc-border-lighter" style="background-image:url(<%= room.avatar %>)" ></div>
                 <p class="name dc-text-contrast"><%= room.name %></p>
                 <% if (room.owner && room.owner.username) { %>

@@ -5,36 +5,36 @@
         <% if (type == 'user:online') { %>
         <div class="event online" data-time="<%= data.time %>" title="<%= data.username %> <%= t('chat.notifications.online') %> <% print(moment(data.time).format('HH:mm:ss')) %>" id="<%= data.id %>" data-time="<%= data.time %>">
             <div class="text">
-                <div class="avatar open-user-profile" data-username="<%= data.username %>" data-user-id="<%= data.user_id %>" style="background-image: url(<%= data.avatar %>)"></div>
+                <div class="avatar open-user-profile" data-user-id="<%= data.user_id %>" style="background-image: url(<%= data.avatar %>)"></div>
                 <i class="icon icon-plug"></i>
-                <div class="username open-user-profile" data-username="<%= data.username %>" data-user-id="<%= data.user_id %>">@<%= data.username %></div>
+                <div class="username open-user-profile" data-user-id="<%= data.user_id %>">@<%= data.username %></div>
             </div>
             <div class="date"><span class="moment" data-time="<%= data.time %>" title="<%= data.datefull %>"><%= data.dateshort %></span></div>
         </div>
         <% } else if (type == 'user:offline') { %>
         <div class="event offline" data-time="<%= data.time %>" title="<%= data.username %> <%= t('chat.notifications.offline') %> <% print(moment(data.time).format('HH:mm:ss')) %>" id="<%= data.id %>" data-time="<%= data.time %>">
             <div class="text">
-                <div class="avatar open-user-profile" data-username="<%= data.username %>" data-user-id="<%= data.user_id %>" style="background-image: url(<%= data.avatar %>)"></div>
+                <div class="avatar open-user-profile" data-user-id="<%= data.user_id %>" style="background-image: url(<%= data.avatar %>)"></div>
                 <i class="icon icon-plug"></i>
-                <div class="username open-user-profile" data-username="<%= data.username %>" data-user-id="<%= data.user_id %>">@<%= data.username %></div>
+                <div class="username open-user-profile" data-user-id="<%= data.user_id %>">@<%= data.username %></div>
             </div>
             <div class="date"><span class="moment" data-time="<%= data.time %>" title="<%= data.datefull %>"><%= data.dateshort %></span></div>
         </div>
         <% } else if (type =='room:in') { %>
         <div class="event in" data-time="<%= data.time %>" title="<%= data.username %> <%= t('chat.notifications.in') %> <% print(moment(data.time).format('HH:mm:ss')) %>" id="<%= data.id %>" data-time="<%= data.time %>">
             <div class="text">
-                <div class="avatar open-user-profile" data-username="<%= data.username %>" data-user-id="<%= data.user_id %>" style="background-image: url(<%= data.avatar %>)"></div>
+                <div class="avatar open-user-profile" data-user-id="<%= data.user_id %>" style="background-image: url(<%= data.avatar %>)"></div>
                 <i class="icon icon-in"></i>
-                <div class="username open-user-profile" data-username="<%= data.username %>" data-user-id="<%= data.user_id %>">@<%= data.username %></div>
+                <div class="username open-user-profile" data-user-id="<%= data.user_id %>">@<%= data.username %></div>
             </div>
             <div class="date"><span class="moment" data-time="<%= data.time %>" title="<%= data.datefull %>"><%= data.dateshort %></span></div>
         </div>
         <% } else if (type == 'room:out') { %>
         <div class="event out" data-time="<%= data.time %>" title="<%= data.username %> <%= t('chat.notifications.out') %> <% print(moment(data.time).format('HH:mm:ss')) %> <% if (data.reason == 'disconnect') { %>(disconnected)<% } %>" id="<%= data.id %>" data-time="<%= data.time %>">
             <div class="text">
-                <div class="avatar open-user-profile" data-username="<%= data.username %>" data-user-id="<%= data.user_id %>" style="background-image: url(<%= data.avatar %>)"></div>
+                <div class="avatar open-user-profile" data-user-id="<%= data.user_id %>" style="background-image: url(<%= data.avatar %>)"></div>
                 <i class="icon icon-out"></i>
-                <div class="username open-user-profile" data-username="<%= data.username %>" data-user-id="<%= data.user_id %>">@<%= data.username %></div>
+                <div class="username open-user-profile" data-user-id="<%= data.user_id %>">@<%= data.username %></div>
             </div>
             <div class="date"><span class="moment" data-time="<%= data.time %>" title="<%= data.datefull %>"><%= data.dateshort %></span></div>
         </div>

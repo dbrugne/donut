@@ -9,8 +9,8 @@
         <% previous = user.status; %>
         <div class="item <% if (user.is_op === true) { %>op<% }; %> <% if (user.is_owner === true) { %>owner<% }; %> <% if (user.is_devoice === true) { %> devoice<% }; %> <%= user.status %>">
             <span class="infos">
-                <span class="avatar open-user-profile" data-username="<%= user.username %>" data-user-id="<%= user.user_id %>" style="background-image: url(<%= user.avatar %>)" title="<% if (user.is_op === true) { %><%= t('chat.op.is') %><% } else if (user.is_owner === true) { %><%= t('chat.owner.is') %><% }; %>"></span>
-                <span class="username open-user-profile" data-username="<%= user.username %>" data-user-id="<%= user.user_id %>" title="<%= t('global.'+user.status) %>">@<%= user.username %> <i class="icon icon-dot-circle-o <%= user.status %>" title="online"></i></span>
+                <span class="avatar open-user-profile" data-user-id="<%= user.user_id %>" style="background-image: url(<%= user.avatar %>)" title="<% if (user.is_op === true) { %><%= t('chat.op.is') %><% } else if (user.is_owner === true) { %><%= t('chat.owner.is') %><% }; %>"></span>
+                <span class="username open-user-profile" data-user-id="<%= user.user_id %>" title="<%= t('global.'+user.status) %>">@<%= user.username %> <i class="icon icon-dot-circle-o <%= user.status %>" title="online"></i></span>
 
                 <% if (isAdmin === true || (!user.is_owner && (isOp === true || isOwner === true))) { %>
                 <span class="dropdown">
@@ -19,7 +19,7 @@
                     </button>
                     <ul class="dropdown-menu" role="menu">
                         <li role="presentation">
-                            <a role="menuitem" tabindex="-1" class="open-user-profile" data-username="<%= user.username %>" data-user-id="<%= user.user_id %>"><i class="icon icon-user"></i><p> <%= t('global.viewprofile') %></p></a>
+                            <a role="menuitem" tabindex="-1" class="open-user-profile" data-user-id="<%= user.user_id %>"><i class="icon icon-user"></i><p> <%= t('global.viewprofile') %></p></a>
                         </li>
                         <% if (!user.is_owner || isAdmin === true) { %>
                             <% if (!user.is_owner && user.is_op === true) { %>

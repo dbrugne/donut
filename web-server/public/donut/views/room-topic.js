@@ -31,7 +31,7 @@ define([
         isOwner: this.model.currentUserIsOwner(),
         isOp: this.model.currentUserIsOp(),
         isAdmin: this.model.currentUserIsAdmin(),
-        roomName: this.model.get('name')
+        roomId: this.model.get('room_id'),
       }));
 
       this.$el.find('.topic-current, .topic-form').hide();

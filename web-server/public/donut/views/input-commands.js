@@ -370,7 +370,7 @@ define([
         });
       } else {
         parameters[1] = parameters[1].replace(/^@/, '');
-        client.userRead(parameters[1], function (err, data) {
+        client.userRead(null, parameters[1], function (err, data) {
           if (err === 'unknown') {
             that.errorCommand('profile', 'invalidusername');
             return;

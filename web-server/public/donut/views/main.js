@@ -323,11 +323,11 @@ define([
     onOpenUserProfile: function(event) {
       event.preventDefault();
 
-      var username = $(event.currentTarget).data('username');
-      if (!username)
+      var userId = $(event.currentTarget).data('userId');
+      if (!userId)
         return;
 
-      var view = new DrawerUserProfileView({ mainView: this, username: username });
+      var view = new DrawerUserProfileView({ mainView: this, user_id: userId });
       this.drawerView.setSize('380px').setView(view).open();
     },
     openUserProfile: function(data) {
@@ -337,12 +337,11 @@ define([
     onOpenRoomProfile: function(event) {
       event.preventDefault();
 
-      var name = $(event.currentTarget).data('roomName');
-      var id = $(event.currentTarget).data('roomId');
-      if (!name)
+      var roomId = $(event.currentTarget).data('roomId');
+      if (!roomId)
         return;
 
-      var view = new DrawerRoomProfileView({ mainView: this, name: name, room_id: id });
+      var view = new DrawerRoomProfileView({ mainView: this, room_id: roomId });
       this.drawerView.setSize('380px').setView(view).open();
     },
     openRoomProfile: function(data) {
@@ -352,24 +351,21 @@ define([
     openRoomEdit: function(event) {
       event.preventDefault();
 
-      var name = $(event.currentTarget).data('roomName');
-      var id = $(event.currentTarget).data('roomId');
-      if (!name || !id)
+      var roomId = $(event.currentTarget).data('roomId');
+      if (!roomId)
         return;
 
-      var view = new DrawerRoomEditView({ mainView: this, name: name , room_id: id});
+      var view = new DrawerRoomEditView({ mainView: this, name: name , room_id: roomId});
       this.drawerView.setSize('450px').setView(view).open();
     },
     openRoomUsers: function(event) {
       event.preventDefault();
 
-      var name = $(event.currentTarget).data('roomName');
-      var id = $(event.currentTarget).data('roomId');
-
-      if (!name || !id)
+      var roomId = $(event.currentTarget).data('roomId');
+      if (!roomId)
         return;
 
-      var model = rooms.get(id);
+      var model = rooms.get(roomId);
       if (!model)
         return;
 
@@ -385,12 +381,11 @@ define([
     openRoomPreferences: function(event) {
       event.preventDefault();
 
-      var name = $(event.currentTarget).data('roomName');
-      var id = $(event.currentTarget).data('roomId');
-      if (!name || !id)
+      var roomId = $(event.currentTarget).data('roomId');
+      if (!roomId)
         return;
 
-      var model = rooms.get(id);
+      var model = rooms.get(roomId);
       if (!model)
         return;
 

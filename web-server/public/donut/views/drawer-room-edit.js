@@ -20,7 +20,6 @@ define([
 
     initialize: function(options) {
       this.mainView = options.mainView;
-      this.roomName = options.name;
       this.roomId = options.room_id;
 
       // show spinner as temp content
@@ -39,8 +38,6 @@ define([
       return this;
     },
     onResponse: function(room) {
-      this.roomName = room.name;
-
       if (room.color)
         this.trigger('color', room.color);
 

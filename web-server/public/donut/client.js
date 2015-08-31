@@ -520,10 +520,16 @@ define([
       pomelo.notify('chat.userMessageEditHandler.call', data);
       debug('io:out:user:message:edit', data);
     },
-    userRead: function (username, fn) {
-      var data = {username: username};
+    userRead: function (userId, username, fn) {
+      var data = {};
+      if (userId)
+        data.user_id = userId;
+      else if (username)
+        data.username = username;
+      else
+        return;
+
       debug('io:out:user:read', data);
-      var that = this;
       pomelo.request(
         'chat.userReadHandler.call',
         data,

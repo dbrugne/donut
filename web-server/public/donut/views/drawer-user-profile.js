@@ -18,7 +18,7 @@ define([
 
     initialize: function(options) {
       this.mainView = options.mainView;
-      this.username = options.username;
+      this.user_id = options.user_id;
 
       this.listenTo(this.mainView, 'userDeban', this.onUserBanChange);
       this.listenTo(this.mainView, 'userBan',   this.onUserBanChange);
@@ -30,7 +30,7 @@ define([
         this.onResponse(options.data);
 
       var that = this;
-      client.userRead(this.username, function(err, data) {
+      client.userRead(this.user_id, null, function(err, data) {
         if (err === 'unknown')
           return;
         if (!err)
@@ -115,7 +115,7 @@ define([
 
     onUserBanChange: function() {
       this.render();
-      client.userRead(this.username, _.bind(function(err, data) {
+      client.userRead(null, this.user_id, _.bind(function(err, data) {
         if (!err)
           this.onResponse(data);
       }, this));
