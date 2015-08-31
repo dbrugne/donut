@@ -329,7 +329,7 @@ define([
 
       var that = this;
       confirmationView.open({input : true}, function (reason) {
-        client.roomDevoice(that.model.get('name'), parameters[1], reason);
+        client.roomDevoice(that.model.get('id'), parameters[1], reason);
         that.model.trigger('inputFocus');
       }, this.inputFocus());
     },
