@@ -97,7 +97,7 @@ define([
 
       var that = this;
       confirmationView.open({}, function() {
-        client.roomOp(that.model.get('name'), username);
+        client.roomOp(that.model.get('id'), username);
         that.render();
       });
     },

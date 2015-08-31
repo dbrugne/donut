@@ -104,7 +104,7 @@ define([
 
       var that = this;
       confirmationView.open({}, function() {
-        client.roomOp(that.model.get('name'), username);
+        client.roomOp(that.model.get('id'), username);
       }, function () { that._showUserListModal()});
     },
     deopUser: function(event) {

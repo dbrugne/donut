@@ -221,7 +221,7 @@ define([
 
       var that = this;
       confirmationView.open({}, function() {
-        client.roomOp(that.model.get('name'), parameters[1]);
+        client.roomOp(that.model.get('id'), parameters[1]);
         that.model.trigger('inputFocus');
       }, this.inputFocus());
     },
