@@ -68,7 +68,7 @@ handler.call = function (data, session, next) {
           emailer.emailChanged(oldEmail, callback);
         });
       });
-    },
+    }
 
   ], function(err) {
     if (err) {

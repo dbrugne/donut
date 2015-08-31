@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 var i18next = require('../../../shared/util/i18next');
 var bouncer = require('../middlewares/bouncer');
+var cd = require('../../../shared/util/cloudinary');
+var conf = require('../../../config/index');
 
 router.param('user', require('../middlewares/user-param'));
 
@@ -26,7 +28,8 @@ router.get('/user/:user', function(req, res) {
     subtitle: req.requestedUser.username,
     _user: req.requestedUser,
     poster: req.requestedUser.poster,
-    color: req.requestedUser.color
+    color: req.requestedUser.color,
+    userDefaultAvatar: cd.userAvatar('', conf.room.default.color, false, 50)
   });
 });
 

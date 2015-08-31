@@ -37,7 +37,6 @@ define([
       return this;
     },
     onResponse: function (user) {
-      // colorize drawer .opacity
       if (user.color)
         this.trigger('color', user.color);
 
@@ -45,9 +44,6 @@ define([
 
       var html = this.template({user: user});
       this.$el.html(html);
-
-      // color form
-      this.$el.find('.user').colorify();
 
       // description
       this.$el.find('#userBio').maxlength({

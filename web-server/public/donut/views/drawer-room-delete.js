@@ -46,10 +46,6 @@ define([
 
       this.roomName = room.name;
 
-      // colorize drawer .opacity
-      if (room.color)
-        this.trigger('color', room.color);
-
       var html = this.template({room: room});
       this.$el.html(html);
       this.$input = this.$el.find('.input');

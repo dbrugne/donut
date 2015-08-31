@@ -2,13 +2,13 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'models/app',
   'common',
   'collections/rooms',
   'collections/onetoones',
   'models/current-user',
-  'views/window',
   '_templates'
-], function ($, _, Backbone, common, rooms, onetoones, currentUser, windowView, templates) {
+], function ($, _, Backbone, app, common, rooms, onetoones, currentUser, templates) {
   var DiscussionBlockView = Backbone.View.extend({
 
     el: $("#block-discussions"),
@@ -20,7 +20,7 @@ define([
     initialize: function(options) {
       this.mainView = options.mainView;
 
-      this.listenTo(windowView, 'redraw-block', this.render);
+      this.listenTo(app, 'redraw-block', this.render);
       this.listenTo(onetoones, 'change:avatar', this.render);
       this.listenTo(rooms, 'change:avatar', this.render);
       this.listenTo(currentUser, 'change:positions', this.onPositionsChange);
@@ -32,10 +32,7 @@ define([
 
       // @doc: https://github.com/voidberg/html5sortable
       this.$list.sortable({
-        items: '.item', // which items inside the element should be sortable
-        //handle: 'h2', // restrict drag start to the specified element
         forcePlaceholderSize: true, // if true, forces the placeholder to have a height
-        //connectWith: '.connected', // create connected lists
         placeholder : '<div class="placeholder">'+ $.t('chat.placeholder')+'</div>'
       });
 
@@ -59,11 +56,11 @@ define([
       function prepareItems(o) {
         var json = o.toJSON();
         if (o.get('type') == 'room') {
-          json.avatar = common.cloudinarySize(json.avatar, 20);
+          json.avatar = common.cloudinarySize(json.avatar, 40);
           json.uri = '#room/'+o.get('name').replace('#', '');
           json.identifier = o.get('name');
         } else {
-          json.avatar = common.cloudinarySize(json.avatar, 20);
+          json.avatar = common.cloudinarySize(json.avatar, 40);
           json.uri = '#user/'+o.get('username');
           json.identifier = o.get('username');
         }

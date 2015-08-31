@@ -2,7 +2,6 @@ var logger = require('../../pomelo-logger').getLogger('donut', __filename);
 var debug = require('debug')('donut:server:ws:room-emitter');
 var _ = require('underscore');
 var async = require('async');
-var recorder = require('../../../shared/models/historyone').record();
 
 /**
  * Store history in MongoDB, emit event in corresponding one to one and call callback
@@ -28,28 +27,19 @@ module.exports = function(app, onetoone, eventName, eventData, callback) {
       ed.from = one.from;
       ed.to = one.to;
       ed.time = Date.now();
-      recorder(eventName, ed, function(err, history) {
+
+      ed.id = Date.now() + one.from + one.to;
+
+      if (one.from.toString() ===  one.to.toString())
+        return fn(null);
+
+      app.globalChannelService.pushMessage('connector', eventName, ed, 'user:'+one.to.toString(), {}, function(err) {
         if (err)
-          return fn('Error while emitting user onetoone event '+eventName+': '+err);
-
-        ed.id = history.id;
-
-        // Broadcast message to all 'sender' devices (not needed for user status events)
-        if (eventName != 'user:online' && eventName != 'user:offline')
-          app.globalChannelService.pushMessage('connector', eventName, ed, 'user:'+one.from.toString(), {}, function(err) {
-            if (err)
-              return logger.error('Error while pushing message: '+err);
-          });
-
-        // (if sender!=receiver) Broadcast message to all 'receiver' devices
-        if (one.from.toString() !=  one.to.toString())
-          app.globalChannelService.pushMessage('connector', eventName, ed, 'user:'+one.to.toString(), {}, function(err) {
-            if (err)
-              return logger.error('Error while pushing message: '+err);
-          });
+          return logger.error('Error while pushing message: '+err);
 
         return fn(null);
       });
+
     });
   });
 

@@ -217,13 +217,10 @@ handler.call = function(data, session, next) {
 						sanitizedToNotify['avatar'] = user._avatar();
 					else if (key == 'poster')
 						sanitizedToNotify['poster'] = user._poster();
-					else {
+					else if (key == 'color') {
 						sanitizedToNotify['color'] = sanitized[key];
-						// Also update colors of poster & sidebar when no image defined
-						if (user.avatar && user.avatar.length == 0)
-							sanitizedToNotify['avatar'] = user._avatar();
-						if (user.poster && user.poster.length == 0)
-							sanitizedToNotify['poster'] = user._poster();
+            sanitizedToNotify['avatar'] = user._avatar();
+            sanitizedToNotify['poster'] = user._poster();
 					}
 				}
 			});

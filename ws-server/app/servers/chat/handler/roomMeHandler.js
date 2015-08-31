@@ -54,7 +54,7 @@ handler.call = function (data, session, next) {
       });
     },
 
-    function historizeAndEmit(message, mentions, callback) {
+    function broadcast(message, mentions, callback) {
       var event = {
         name: room.name,
         id: room.id,
@@ -64,7 +64,7 @@ handler.call = function (data, session, next) {
         avatar: user._avatar(),
         message: message
       };
-      roomEmitter(that.app, 'room:me', event, function (err, sentEvent) {
+      roomEmitter(that.app, user, room, 'room:me', event, function (err, sentEvent) {
         if (err)
           return callback(err);
 

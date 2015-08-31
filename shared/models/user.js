@@ -34,6 +34,11 @@ var userSchema = mongoose.Schema({
     },
     preferences    : mongoose.Schema.Types.Mixed,
     onetoones      : [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
+    unviewed : [{
+      room: {type: mongoose.Schema.ObjectId, ref: 'Room'},
+      user: {type: mongoose.Schema.ObjectId, ref: 'User'},
+      event: {type: mongoose.Schema.ObjectId} // not use actually, first unviewed event, could be use to replace current "heavy" viewed management
+    }],
     bans: [{
       user: {type: mongoose.Schema.ObjectId, ref: 'User'},
       banned_at: {type: Date, default: Date.now}
@@ -152,6 +157,18 @@ userSchema.methods.isAllowedToConnect = function () {
   return { allowed: (!err), err: err };
 };
 
+userSchema.methods.isBanned = function (userId) {
+  if (!this.bans || !this.bans.length)
+    return false;
+
+  var subDocument = _.find(this.bans, function (ban) { // @warning: this shouldn't have .bans populated
+    if (ban.user.toString() == userId)
+      return true;
+  });
+
+  return (typeof subDocument != 'undefined');
+};
+
 /**
  * Return user from database _id
  * @param uid
@@ -221,6 +238,12 @@ userSchema.statics.retrieveUser = function (username) {
     username: common.regExpBuildExact(username, 'i')
   }).populate('room', 'name');
 };
+
+/*********************************************************************************
+ *
+ * Preferences
+ *
+ *********************************************************************************/
 
 /**
  * List the allowed preferences keys and configurations
@@ -303,11 +326,73 @@ userSchema.methods.preferencesValue = function (key) {
   return preferencesConfig[_key]['default'];
 };
 
-/**
- * Check for username availability (globally)
- * @param username
- * @param callback
- */
+
+/*********************************************************************************
+ *
+ * Unviewed
+ *
+ *********************************************************************************/
+
+userSchema.methods.hasUnviewedRoomMessage = function (room) {
+  if (!this.unviewed)
+    return false;
+
+  var found = _.find(this.unviewed, function(e){
+    if (e.room && e.room.toString() === room.id)
+      return true;
+  });
+
+  return !!found;
+};
+userSchema.methods.hasUnviewedOneMessage = function (user) {
+  if (!this.unviewed)
+    return false;
+
+  var found = _.find(this.unviewed, function(u){
+    if (u.user && u.user.toString() === user.id)
+      return true;
+  });
+
+  return !!found;
+};
+userSchema.statics.setUnviewedRoomMessage = function (roomId, usersId, userId ,event, fn) {
+  this.update({
+      _id: { $in: usersId, $nin: [userId] },
+      'unviewed.room': { $nin: [roomId] }
+    }, {
+      $addToSet: { unviewed: { room: roomId, event: event }}
+    }, { multi: true }, fn);
+};
+userSchema.statics.setUnviewedOneMessage = function (fromUserId, toUserId, event, fn) {
+  this.update({
+      _id: { $in: [toUserId] },
+      'unviewed.user': { $nin: [fromUserId] }
+    }, {
+      $addToSet: { 'unviewed': {user: fromUserId, event: event}}
+    }, fn);
+};
+userSchema.methods.resetUnviewedRoom = function(roomId, fn) {
+  this.update({
+    $pull: { unviewed: { room: roomId }}
+  }).exec(function(err) {
+    fn(err); // there is a bug that cause a timeout when i call directly fn() without warping in a local function (!!!)
+  });
+};
+userSchema.methods.resetUnviewedOne = function(userId, fn) {
+  this.update({
+    $pull: { unviewed: { user: userId }}
+  }).exec(function(err) {
+    fn(err); // there is a bug that cause a timeout when i call directly fn() without warping in a local function (!!!)
+  });
+};
+
+
+/*********************************************************************************
+ *
+ * Username availability
+ *
+ *********************************************************************************/
+
 userSchema.statics.usernameAvailability = function (username, callback) {
   this.findOne({
     username: common.regExpBuildExact(username, 'i')
@@ -320,12 +405,6 @@ userSchema.statics.usernameAvailability = function (username, callback) {
     return callback();
   });
 };
-
-/**
- * Check for username availability (on current user)
- * @param username
- * @param callback
- */
 userSchema.methods.usernameAvailability = function (username, callback) {
   this.constructor.findOne({
     $and: [
@@ -346,6 +425,13 @@ userSchema.methods.usernameAvailability = function (username, callback) {
   });
 };
 
+
+/*********************************************************************************
+ *
+ * Avatar/poster
+ *
+ *********************************************************************************/
+
 userSchema.methods._avatar = function(size) {
   var facebook = (this.facebook && this.facebook.token && this.facebook.id)
     ? this.facebook.id
@@ -356,7 +442,6 @@ userSchema.methods._avatar = function(size) {
 userSchema.methods._poster = function(blur) {
   return cloudinary.poster(this.poster, this.color, blur);
 };
-
 userSchema.methods.avatarId = function() {
   if (!this.avatar) return '';
   var data = this.avatar.split('/');
@@ -364,7 +449,6 @@ userSchema.methods.avatarId = function() {
   var id = data[1].substr(0, data[1].lastIndexOf('.'));
   return id;
 };
-
 userSchema.methods.posterId = function() {
   if (!this.poster)
     return '';
@@ -373,18 +457,6 @@ userSchema.methods.posterId = function() {
   if (!data[1]) return '';
   var id = data[1].substr(0, data[1].lastIndexOf('.'));
   return id;
-};
-
-userSchema.methods.isBanned = function (user_id) {
-  if (!this.bans || !this.bans.length)
-    return false;
-
-  var subDocument = _.find(this.bans, function (ban) { // @warning: this shouldn't have .bans populated
-    if (ban.user.toString() == user_id)
-      return true;
-  });
-
-  return (typeof subDocument != 'undefined');
 };
 
 module.exports = mongoose.model('User', userSchema);

@@ -134,11 +134,9 @@ define([
     },
 
     colorify: function() {
-      this.$el.attr('data-colorify', this.model.get('color'));
-      this.$el.colorify();
+      this.mainView._color(this.model.get('color'));
       if (this.model.get('focused'))
         this.mainView.color(this.model.get('color'));
-      // + change data-colorify for side and blur (=darker)
     },
 
     onResize: function() {
@@ -147,7 +145,7 @@ define([
       var headerHeight = $content.find('.header').outerHeight();
 
       var inputHeight = this.inputView.$el.outerHeight();
-      var eventsHeight = totalHeight - (headerHeight + inputHeight) - 45; // 45px to push up the discussion frame
+      var eventsHeight = totalHeight - (headerHeight + inputHeight); // 45px to push up the discussion frame
 
       this.eventsView.resize(eventsHeight);
       debug('resize call by window ('+totalHeight+', '+headerHeight+', '+inputHeight+', '+eventsHeight+')');

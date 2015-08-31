@@ -43,7 +43,6 @@ define([
       return this;
     },
     onResponse: function(room) {
-      // colorize drawer .opacity
       if (room.color)
         this.trigger('color', room.color);
 
@@ -79,12 +78,8 @@ define([
         list[index].avatarUrl = common.cloudinarySize(element.avatar, 20);
       });
 
-
       var html = this.template({room: room});
       this.$el.html(html);
-
-      // color form
-      this.$el.find('.room').colorify();
     },
 
     /**

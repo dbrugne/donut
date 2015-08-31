@@ -41,15 +41,14 @@ handler.call = function(data, session, next) {
 		 * This step happen BEFORE user/room persistence and room subscription
 		 * to avoid noisy notifications
 		 */
-		function sendToUsers(callback) {
+		function broadcast(callback) {
 			var event = {
-				name			: room.name,
-				id				: room.id,
 				user_id		: user.id,
 				username  : user.username,
 				avatar    : user._avatar()
 			};
-			roomEmitter(that.app, 'room:in', event, callback);
+
+			roomEmitter(that.app, user, room, 'room:in', event, callback);
 		},
 
 		function persist(eventData, callback) {
@@ -86,8 +85,8 @@ handler.call = function(data, session, next) {
 			});
 		},
 
-		function roooData(eventData, callback) {
-			roomDataHelper(that.app, user.id, room, function(err, roomData) {
+		function roomData(eventData, callback) {
+			roomDataHelper(that.app, user, room, function(err, roomData) {
 				if (err)
 					return callback(err);
 

@@ -3,7 +3,7 @@
   .ft-opensans-light;
 
   .form .form-group .forgot-link {   margin-left: 30px; line-height: 34px; color: #555459;
-      i { left:0; }
+    i { left:0; }
   }
 
   .form {
@@ -319,11 +319,11 @@
         }
         i {
           content: " ";
-            padding: 5px;
-            width: 82px;
-            display: block;
-            margin: auto;
-            border-bottom: 1px solid #ffffff;
+          padding: 5px;
+          width: 82px;
+          display: block;
+          margin: auto;
+          border-bottom: 1px solid #ffffff;
         }
         p {
           margin: 10px auto;
@@ -418,84 +418,18 @@
       }
     }
 
-    .disclaimer {
-      text-align: center;
-      color: @cl-detail;
-    }
+    .disclaimer { text-align: center; color: @cl-detail; }
   }
 
   .footer {
     .row;
-    > div {
-      .make-sm-column(12);
-    }
-    text-align: center;
-    margin-top: 16px;
-    margin-bottom: 22px;
+    > div { .make-sm-column(12); }
+    text-align: center; margin-top: 16px; margin-bottom: 22px;
     ul {
-      li:before {
-        content: "•";
-        margin-left: 5px;
-        margin-right: 5px;
-      }
-      li:first-child:before {
-        content: "";
-      }
-      li {
-        display: inline-block;
-      }
+      li:before { content: "•"; margin-left: 5px; margin-right: 5px; }
+      li:first-child:before { content: ""; }
+      li { display: inline-block; }
     }
 
-  }
-
-  /* **************************************************
-   * Adjusting margin/padding/font-size
-   ***************************************************/
-  /* Extra-small devices (small phones) */
-  @media (min-width: @screen-xs-min) {
-    .header {
-      .cover {
-        background-color: rgba(255, 255, 255, 0.8);
-      }
-    }
-  }
-
-  /* Medium devices (desktops, 992px and up) */
-  @media (min-width: @screen-md-min) {
-    .header {
-      .cover { padding: 100px 30px 100px 75px; background: none; }
-      .text { margin-top: 65px; }
-      .btn-knowmore { margin-top: 75px; }
-    }
-    .login {
-      > div { padding: 90px 20px; }
-      .btn-facebook { margin-top: 64px; }
-      .logic {margin-top: 40px;}
-      .form { margin-top: 40px; margin-bottom: 80px; }
-      .form input[type=submit] { margin-top: 30px; }
-    }
-    .description {
-      padding: 50px 50px 0 50px;
-      h2 { p { font-size: 2.15em; } }
-      .definition { font-size: 1.8em; padding-top: 25px; }
-      .illustrations {
-        padding-bottom: 105px;
-        .illus { p { margin: 25px auto; } }
-      }
-    }
-    .signup {
-      padding-top: 100px;
-      padding-bottom: 32px;
-      .form { margin-top: 30px; }
-      .disclaimer { margin-top: 60px; }
-    }
-  }
-
-  /* Large devices (large desktops, 1200px and up) */
-  @media (min-width: @screen-lg-min) {
-    .header {
-      height: 995px;
-      .cover { background: none; }
-    }
   }
 }

@@ -74,15 +74,14 @@ handler.call = function(data, session, next) {
 		 * This step happen AFTER user/room persistence and room subscription
 		 * to avoid noisy notifications
 		 */
-		function sendToUsers(callback) {
+		function broadcast(callback) {
 			var event = {
-				name			: room.name,
-				id				: room.id,
 				user_id		: user.id,
 				username	: user.username,
 				avatar		: user._avatar()
 			};
-			roomEmitter(that.app, 'room:out', event, callback);
+
+			roomEmitter(that.app, user, room, 'room:out', event, callback);
 		}
 
 	], function(err) {

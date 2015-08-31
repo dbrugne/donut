@@ -1,0 +1,219 @@
+/** for <=1200 screens resolutions **/
+@media screen and (max-width: @screen-lg-min) {
+
+  #chat #center .discussion {
+    .content { margin-right: @size-right-mid; }
+    .side { width: @size-right-mid; }
+  }
+
+  #landing .header { height: 995px;
+    .cover { background: none; }
+  }
+}
+
+/** for <=992 screens resolutions ==> TABLET PORTRAIT & PHONE LANDSCAPE **/
+@media screen and (max-width: @screen-md-min) {
+  .page-sidebar-menu { margin: 0; padding: 0;
+    & > li { display: block; margin: 0; padding: 0; border: 0;
+      & > a { display: block; position: relative; margin: 0; padding: 10px 15px; text-decoration: none; font-weight: 300; }
+      .sub-menu { display:none; }
+      &.active > a { background: #E2E2E2; border-top-color: transparent; color: #f5f5f5; }
+      &.open { width: 256px !important; position: relative !important; z-index: 10000; display: block !important; box-shadow: 0 6px 12px rgba(0,0,0,0.175); background: #E2E2E2;
+        > a {  background: #f5f5f5;
+          .title { display: inline !important; padding: 0 0 0 20px; }
+          .selected { display: none; }
+        }
+        .sub-menu { padding: 10px 0 0; background: #E2E2E2; width: 210px; position: absolute; z-index: 2000; left: 46px; margin-top: 0; top: 100%; display: block !important; box-shadow: 0 6px 12px rgba(0,0,0,0.175);
+          li { list-style: none; margin: 0;
+            a { display: block; clear: both; font-weight: normal; line-height: 1.42857143; white-space: nowrap; color: #6f6f6f; padding: 5px 10px; cursor: pointer; text-decoration:none;
+              &:hover { background-color: #f5f5f5; }
+            }
+          }
+        }
+      }
+    }
+  }
+  .page-sidebar-menu.right {
+    & > li {
+      &:hover { right: 211px; box-shadow: 0 6px 12px rgba(0,0,0,0.175);
+        > a { text-align: right;
+          .title { padding: 0 20px 0 0; }
+          i { color:@cl-text !important; }
+        }
+        .sub-menu { left:initial; text-align: right; box-shadow: 0 6px 12px rgba(0,0,0,0.175); }
+      }
+    }
+  }
+  #chat {
+    #drawer .opacity .wrap { width: auto !important; margin-right: 45px; } // #chat #drawer .opacity .wrap
+    #color .container { padding: 0;
+      #navbar .navbar-right { margin:0; float: right; text-align: right;
+        > li { display: inline-block; } // #chat #color .container #navbar .navbar-right>li
+      } // #chat #color .container #navbar .navbar-right
+    } // #chat #color .container
+    #left { width: 45px;
+      .page-sidebar-menu {
+        #block-current-user { padding: 0; min-height: initial;
+          .avatar { padding: 5px; width: 45px; height: 45px; float: none; clear: both;
+            img { width: 35px; height: 35px; }
+          }
+          .content { float: left; margin-left: 0; width: 30px; padding-top: 5px; clear: both;
+            .connection { padding-left:9px; }
+            .dropdown { position: relative; top: 0; left: 0; right: initial; padding-left: 4px;
+              button { padding: 0; }
+            }
+          }
+          .title { padding:0; display: none; }
+          .sub-menu { display:none;     border: 0; }
+          &.open { background: #f5f5f5;
+            & > a { background: #f5f5f5; }
+            .sub-menu { width: 210px; border:0;
+              .title {     display: block; position: absolute; left: 8px; top: -43px; width: 195px; text-overflow: ellipsis; overflow: hidden; }
+              .connection { top: -27px; left: 9px; display: inline !important;
+                i { margin-right:3px; font-size:12px; }
+                .user-status { display: inline !important; font-size:12px; }
+              }
+              .dropdown-user-actions { position: relative; right: initial; top: 0;
+                .dropdown-toggle { display:none; }
+                .dropdown-menu { display: block; margin: 0; padding: 0; background-color: #E2E2E2; border: 0; width: 210px; box-shadow: 0 6px 12px rgba(0,0,0,0.175); .border-radius(0);
+                  & > li { padding: 0;
+                    > a { padding: 5px 10px; }
+                      .divider { padding-top: 10px; background-color: transparent; border-top: 1px solid #e5e5e5; margin-top: 10px;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      #block-actions { display: none; }
+      #block-discussions { border-top: 1px solid @cl-subtext0; padding-top:10px; overflow: visible; display: block;
+        .list { margin-left:0;
+          > li { overflow:hidden;
+            .item { padding: 5px 10px; height: 35px; display: none;
+              a.aname { display:none; }
+              .avatar { width: 25px; height: 25px; left: 0; position: relative; float: left; clear: both; top: 0; }
+              &:hover::before { content:""; }
+              &.active .selected { display: block; float: right; position: absolute; right: 0 !important; top: 10px; background: none; width: 0; height: 0; border-top: 8px solid transparent; border-bottom: 8px solid transparent; border-right: 8px solid #fff; }
+              &.active, &.active:hover { background-color: #e2e2e2; }
+              &.active li:hover { background-color: #f5f5f5; }
+            } // #chat #left #block-discussions .list>ul>li .item
+            .unread { top: 7px; height: 20px; .bounce-right-delayed; display: inline; left: initial; right: -60px;}
+          } // #chat #left #block-discussions .list ul li
+        } // #chat #left #block-discussions .list
+      } // #chat #left #block-discussions
+    } // #chat #left
+    #center { margin-left: 45px;
+      #home {
+        .left { padding: 20px; width: 100%;
+          .search { font-size: 1.2em; }
+          .rooms .title { margin-top: 15px; }
+        }
+        .right { display:none; }
+      } // #chat #center #home .left
+      .discussion {
+        .content { padding-left: 15px; margin-right: 0; position: initial;
+          .mini-header {     position: absolute; top: 1px; z-index: 1030; left: 5px;
+            .avatar {     width: 34px; height: 34px; top: 5px; left: 7px; z-index: 1031; cursor: pointer; border-width: 2px; border-style: solid; float: left; margin-top: 1px; margin-left: 0px; }
+            .name, .username {     margin: 0 !important; font-size: 16px !important; margin-top: 5px !important; font-weight: bold; padding-left: 10px; display: inline-block; padding-top: 3px; float: left; }
+            &.room .avatar { .border-radius(50%); }
+          }
+          .header.room { min-height: 50px;
+            .topic {float: left; width: 100%; padding: 0; margin-top:0; position: relative; padding-right: 35px;
+              .topic-current { padding: 5px 10px; width: 100%;
+                &::before {content:"";}
+              }
+              .topic-form { width:100%;
+                .input-group .btn, .input-group .topic-input{ height: 28px; padding: 5px 10px; line-height: 16px; }
+              }
+              #room-users-modal .modal-body .list li .item .username { max-width: 107px; }
+              .open-room-users { position:absolute; top:0; right:0; border: 0; border-radius: 3px; height: 28px; width: 28px; padding: 4px;
+                i { font-size: 18px; }
+              } // #chat #center .discussion .content .header.room .drawer-users
+            }
+          } // #chat #center .discussion .content .header.room
+          .header.user { min-height: 0;
+            .status-block { margin-left: 0; }
+          }
+          .events { border-top: none;
+            .go-to-top, .go-to-bottom { display:none !important; }
+            .scrollable .scrollable-content .realtime .block {
+              &.date { margin-top: 10px;
+                .moment { font-size:1em; }
+              } // #chat #center .discussion .content .header .scrollable .scrollable-content .realtime .block.date
+              &.message .event {
+                .text { padding: 0; }
+                .date { display:none; }
+                &:hover .actions { display:none; }
+              } // #chat #center .discussion .content .events .scrollable .scrollable-content .realtime .block.message .event
+              &.op, &.deop, &.ban, &.deban, &.kick, &.inout, &.topic { display:none; }
+            } // #chat #center .discussion .content .events .scrollable .scrollable-content .realtime .block
+          } // #chat #center .discussion .content .events
+          .input { padding-left: 10px; margin-bottom: 10px;
+            .text-container {   padding-bottom: 0;
+              .text { padding: 5px 70px 5px 5px; height: 32px;
+                .editable { height: 20px; min-height: 20px; }
+                .avatar { display: none; }
+                .mentions-input-box textarea {   min-height: 20px; }
+                .actions { top: 4px; right: 33px; font-size: 15px;
+                  .images { margin: 0; display: inline; }
+                }
+                .send { width: 30px; padding: 0; margin: 0; height: 30px;
+                  img { width: 20px; margin-top: 3px; height: initial; }
+                  .arrow-bottom:after { bottom: -7px; left: 7px; border-width: 7px 7px 0;}
+                }
+              }
+            }
+          } // #chat #center .discussion .content .input
+        } // #chat #center .discussion .content
+        .side { display:none; } // #chat #center .discussion .side
+      } // #chat #center .discussion
+    } // #chat #center
+  } // #chat
+  #landing {
+    .header {
+      .cover { padding: 100px 30px 100px 75px; background: none; }
+      .text { margin-top: 65px; }
+      .btn-knowmore { margin-top: 75px; }
+    }
+    .login {
+      > div { padding: 90px 20px; }
+      .btn-facebook { margin-top: 64px; }
+      .logic {margin-top: 40px;}
+      .form { margin-top: 40px; margin-bottom: 80px; }
+      .form input[type=submit] { margin-top: 30px; }
+    }
+    .description { padding: 50px 50px 0 50px;
+      h2 p { font-size: 2.15em; }
+      .definition { font-size: 1.8em; padding-top: 25px; }
+      .illustrations { padding-bottom: 105px;
+        .illus p { margin: 25px auto; }
+      }
+    }
+    .signup { padding-top: 100px; padding-bottom: 32px;
+      .form { margin-top: 30px; }
+      .disclaimer { margin-top: 60px; }
+    }
+  }
+  .rooms.cards .room { width: 190px;
+    .avatar { width: 85px; height: 85px; }
+  }
+  .body-profile .rooms.cards .room { height: 276px; }
+}
+
+/** for <=768 screens resolutions ==> PHONE PORTRAIT **/
+@media screen and (max-width: @screen-sm-min) {
+  .form-inline .input-group .form-control { width:auto; }
+  .body-chat.body-profile #chat #left { display:none; }
+  .body-chat.body-profile #chat #center { margin-left:0; }
+  #chat #center .discussion .content .header.room .topic #room-users-modal .modal-body .list li { width: 100%; }
+
+}
+
+/** for <=480 screens resolutions **/
+@media screen and (max-width: @screen-xs-min) {
+  #landing .header .cover { background-color: rgba(255, 255, 255, 0.8); }
+  #chat #center .discussion .content .header.room .topic #room-users-modal .modal-body .list li { width: 100%; }
+}
+

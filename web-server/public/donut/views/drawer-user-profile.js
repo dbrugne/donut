@@ -55,7 +55,6 @@ define([
 
       var html = this.template({user: user});
       this.$el.html(html);
-      this.$el.colorify();
       this.$el.find('.created span').momentify('date');
       this.$el.find('.onlined span').momentify('fromnow');
 

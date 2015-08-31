@@ -70,7 +70,8 @@ define([
         avatar: room.avatar,
         poster: room.poster,
         posterblured: room.posterblured,
-        color: room.color
+        color: room.color,
+        unviewed: room.unviewed
       };
 
       // update model

@@ -6,33 +6,33 @@
         <div class="nothing"><%= t('chat.search.noroom') %></div>
     <% } %>
     <% _.each(rooms, function(room) { %>
-    <div class="room" data-colorify="<%= room.color %>">
+    <div class="room dc-i-<%= room.color.replace('#', '').toLowerCase() %>">
         <div class="cover">
             <div class="avatar" style="background-image:url(<%= room.avatar %>)"></div>
             <p class="name"><%= room.name %></p>
             <% if (room.owner && room.owner.username) { %>
-            <p class="owner"><%= t('global.by') %> <a data-colorify-text="#ffffff">@<%= room.owner.username %></a></p>
+            <p class="owner"><%= t('global.by') %> <a class="dc-text">@<%= room.owner.username %></a></p>
             <% } %>
             <!-- p class="topic"><%= room.topic %></p -->
             <p class="join">
-                <a href="#room/<%= room.name.replace('#', '') %>" data-colorify-background="color" data-colorify-text="contrast">
+                <a class="dc-back dc-text-contrast" href="#room/<%= room.name.replace('#', '') %>">
                     <%= t('actions.join') %>
                     <% if (room.users > 0) { %><%= room.users %><% } %>
                     <i class="icon icon-user-custom"></i>
                 </a>
             </p>
         </div>
-        <div class="back" data-colorify-background="color" data-colorify-text="contrast">
-            <div class="open-room-profile" data-room-name="<%= room.name %>" data-room-id="<%= room.id %>">
-                <div class="avatar" style="background-image:url(<%= room.avatar %>)" data-colorify-border="lighter"></div>
-                <p class="name" data-colorify-text="contrast"><%= room.name %></p>
+        <div class="back dc-back dc-text-contrast">
+            <div class="open-room-profile" data-room-name="<%= room.name %>">
+                <div class="avatar dc-border-lighter" style="background-image:url(<%= room.avatar %>)"></div>
+                <p class="name dc-text-contrast"><%= room.name %></p>
                 <% if (room.owner && room.owner.username) { %>
-                <p class="owner"><%= t('global.by') %> <a class="open-user-profile" data-username="<%= room.owner.username %>" data-colorify-text="contrast">@<%= room.owner.username %></a></p>
+                <p class="owner"><%= t('global.by') %> <a class="open-user-profile dc-text-contrast" data-username="<%= room.owner.username %>">@<%= room.owner.username %></a></p>
                 <% } %>
                 <p class="description"><%= room.description %></p>
             </div>
             <p class="join">
-                <a href="#room/<%= room.name.replace('#', '') %>" data-colorify-background="<%= room.color %>" data-colorify-text="contrast">
+                <a class="dc-back dc-back-hover dc-text-contrast" href="#room/<%= room.name.replace('#', '') %>">
                     <%= t('actions.join') %>
                     <% if (room.users > 0) { %><%= room.users %><% } %>
                     <i class="icon icon-user-custom"></i>

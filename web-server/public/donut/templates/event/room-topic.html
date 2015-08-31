@@ -1,5 +1,5 @@
 <div class="block topic">
-    <div class="event" id="<%= data.id %>" data-time="<%= data.time %>">
+    <div class="event <% if (unviewed) { print('unviewed'); } %>" id="<%= data.id %>" data-time="<%= data.time %>">
         <div class="text">
             <i class="icon icon-quote"></i>
             <div class="avatar open-user-profile" data-username="<%= data.username %>" style="background-image: url(<%= data.avatar %>)"></div>

@@ -178,7 +178,7 @@ define([
       var topLimit = this.$scrollable.offset().top;
       var bottomLimit = topLimit + this.$scrollable.height();
 
-      var $items = this.$scrollableContent.find('.block.message .event.unviewed');
+      var $items = this.$scrollableContent.find('.block.message .event.unviewed, .block.topic .event.unviewed');
       if (!$items.length)
         return debug('Not enough .event.unviewed to compute visible elements');
       $items.removeClass('visible topElement bottomElement first big'); // @debug
@@ -357,7 +357,7 @@ define([
     },
     resize: function (viewportHeight) {
       if (typeof viewportHeight != "undefined") // was called on page resize by views/discussion, set the .events height
-        this.$scrollable.height(viewportHeight);
+        this.$scrollable.height(viewportHeight-5);
       else // was called by view itself to adapt .blank height, get the current .events height
         viewportHeight = this.$scrollable.height();
 
@@ -387,7 +387,7 @@ define([
     },
     addFreshEvent: function (model) {
       // browser notification
-      if (model.getGenericType() == 'message')
+      if (model.getGenericType() == 'message' || model.get('type') === 'room:topic')
         windowView.triggerMessage(model, this.model);
       else if (this.model.get('type') == 'room' && model.getGenericType() == 'inout')
         windowView.triggerInout(model, this.model);

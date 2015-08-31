@@ -1,12 +1,13 @@
 define([
   'underscore',
   'backbone',
+  'models/app',
   'client',
   'models/current-user',
   'models/user',
   'models/event',
   'collections/room-users'
-], function (_, Backbone, client, currentUser, UserModel, EventModel, RoomUsersCollection) {
+], function (_, Backbone, app, client, currentUser, UserModel, EventModel, RoomUsersCollection) {
   var RoomModel = Backbone.Model.extend({
 
     defaults: function() {
@@ -21,8 +22,7 @@ define([
         color         : '',
         type          : 'room',
         focused       : false,
-        unread        : 0, // probably not needed in future
-        newmessage    : false,
+        unviewed      : false,
         newmention    : false,
         newuser       : false
       };
@@ -128,6 +128,10 @@ define([
         type: 'room:topic',
         data: data
       });
+
+      if (currentUser.get('user_id') != model.get('data').user_id)
+        model.set('unviewed', true);
+
       this.trigger('freshEvent', model);
     },
     onMessage: function(data) {
@@ -284,9 +288,10 @@ define([
       client.roomViewed(this.get('name'), elements);
     },
     onViewed: function (data) {
+      this.resetNew();
       this.trigger('viewed', data);
     },
-    fetchUsers: function() {
+    fetchUsers: function(callback) {
       var that = this;
       client.roomUsers(this.get('id'), function(data) {
         that.users.reset();
@@ -296,6 +301,9 @@ define([
         });
         that.users.sort(); // sort after batch addition to collection to avoid performance issue
         that.users.trigger('users-redraw');
+
+        if (callback)
+          return callback();
       });
     },
 
@@ -304,13 +312,15 @@ define([
     },
 
     resetNew: function() {
-      this.set('unread', 0);
-      this.set('newmessage', false);
-      this.set('newmention', false);
-      this.set('newuser', false);
+      if (this.isThereNew()) { // avoid redraw if nothing to change
+        this.set('unviewed', false);
+        this.set('newmention', false);
+        this.set('newuser', false);
+        app.trigger('redraw-block');
+      }
     },
     isThereNew: function() {
-      return !!(this.get('newmessage') || this.get('newmention') || this.get('newuser'));
+      return !!(this.get('unviewed') || this.get('newmention') || this.get('newuser'));
     },
     isInputActive: function() {
       return !(this.userIsDevoiced(currentUser.get('user_id')));

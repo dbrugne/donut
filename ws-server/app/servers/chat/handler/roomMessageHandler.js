@@ -7,6 +7,7 @@ var imagesUtil = require('../../../util/images');
 var keenio = require('../../../../../shared/io/keenio');
 var Notifications = require('../../../components/notifications');
 var common = require('@dbrugne/donut-common');
+var User = require('../../../../../shared/models/user');
 
 var Handler = function (app) {
   this.app = app;
@@ -59,7 +60,7 @@ handler.call = function (data, session, next) {
       });
     },
 
-    function prepareEvent(message, images, mentions, callback) {
+    function broadcast(message, images, mentions, callback) {
       var event = {
         name: room.name,
         id: room.id,
@@ -74,11 +75,7 @@ handler.call = function (data, session, next) {
       if (images && images.length)
         event.images = images;
 
-      return callback(null, event, mentions);
-    },
-
-    function historizeAndEmit(event, mentions, callback) {
-      roomEmitter(that.app, 'room:message', event, function (err, sentEvent) {
+      roomEmitter(that.app, user, room, 'room:message', event, function (err, sentEvent) {
         if (err)
           return callback(err);
 

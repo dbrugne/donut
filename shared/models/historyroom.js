@@ -25,6 +25,8 @@ var historySchema = mongoose.Schema({
 var dryFields = [
   'time',
   'name',
+  'room_id',
+  'room_name',
   'id',
   'user_id',
   'username',
@@ -40,18 +42,18 @@ var dryFields = [
 historySchema.statics.record = function() {
   var that = this;
   /**
+   * @param room - Room model
    * @param event - event name as String
    * @param data - event data as Object
    * @param fn - callback function
    * @return event with event_id set
    */
-  return function(event, data, fn) {
+  return function(room, event, data, fn) {
     var model = new that();
-    model.event      = event;
-    model.room       = data.id;
-    model.time       = data.time;
+    model.event = event;
+    model.room = room._id;
+    model.time = data.time;
 
-    // persist 'user_id's to be able to hydrate data later
     model.user = data.user_id;
     if (data.by_user_id)
       model.by_user = data.by_user_id;
@@ -60,22 +62,8 @@ historySchema.statics.record = function() {
     var wet = _.clone(data);
     model.data = _.omit(wet, dryFields) ;
 
-    Room.findById(data.id, 'users', function(err, room) {
-      if (err)
-        return fn('Unable to retrieve room users list '+model.event+' for '+data.name);
-
-      if (!room)
-        return fn('Room not found '+model.event+' for '+data.name);
-      else
-        model.users = room.users;
-
-      model.save(function(err) {
-        if (err)
-          return fn('Unable to save roomHistory '+model.event+' for '+model.name);
-
-        return fn(null, model);
-      })
-    });
+    model.users = room.users;
+    model.save(fn);
   }
 };
 
@@ -96,6 +84,7 @@ historySchema.methods.toClientJSON = function(userViewed) {
     : {};
   data.id = this.id;
   data.name = this.room.name;
+  data.room_name = this.room.name;
   data.room_id = this.room.id;
   data.room_avatar = this.room._avatar();
   data.time = this.time;
@@ -124,8 +113,8 @@ historySchema.methods.toClientJSON = function(userViewed) {
 
   e.data = data;
 
-  // unread status (true if message and if i'm not in .viewed)
-  if (userViewed && this.event == 'room:message' && data.user_id != userViewed && (
+  // unviewed status (true if message and if i'm not in .viewed)
+  if (userViewed && ['room:message', 'room:me', 'room:topic'].indexOf(this.event) !== -1 && data.user_id != userViewed && (
     !this.viewed
     || (_.isArray(this.viewed) && this.viewed.indexOf(userViewed) === -1)
     )) {
@@ -146,8 +135,7 @@ historySchema.statics.retrieve = function() {
   return function(roomId, userId, what, fn) {
     what = what || {};
     var criteria = {
-      room: roomId,
-      event: { $nin: ['user:online', 'user:offline'] }
+      room: roomId
     };
 
     if (what.isAdmin !== true) {
@@ -216,8 +204,7 @@ historySchema.statics.retrieveEventWithContext = function(eventId, userId, limit
 
   var criteria = {
     _id: { $ne: eventId },
-    //event: { $nin: ['user:online', 'user:offline'] },
-    event: 'room:message',
+    event: { $in: ['room:message', 'room:me'] },
     users: { $in: [userId] }
   };
 
