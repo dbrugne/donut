@@ -132,7 +132,7 @@ define([
 
       var that = this;
       confirmationView.open({ input: true }, function(reason) {
-        client.roomKick(that.model.get('name'), username, reason);
+        client.roomKick(that.model.get('id'), username, reason);
       }, function () { that._showUserListModal()});
     },
     banUser: function(event) {

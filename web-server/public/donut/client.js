@@ -354,8 +354,8 @@ define([
         }
       );
     },
-    roomKick: function (name, username, reason) {
-      var data = {name: name, username: username};
+    roomKick: function (roomId, username, reason) {
+      var data = {room_id: roomId, username: username};
       if (reason)
         data.reason = reason;
       debug('io:out:room:kick', data);
