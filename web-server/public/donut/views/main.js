@@ -394,12 +394,11 @@ define([
     },
     openRoomDelete: function(event) {
       event.preventDefault();
-      var name = $(event.currentTarget).data('roomName');
-      var id = $(event.currentTarget).data('roomId');
-      if (!name)
+      var roomId = $(event.currentTarget).data('roomId');
+      if (!roomId)
         return;
 
-      var view = new DrawerRoomDeleteView({ mainView: this, name: name, room_id: id });
+      var view = new DrawerRoomDeleteView({ mainView: this, room_id: roomId });
       this.drawerView.setSize('450px').setView(view).open();
     },
     openUserEdit: function(event) {

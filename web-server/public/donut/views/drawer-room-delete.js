@@ -19,7 +19,6 @@ define([
 
     initialize: function(options) {
       this.mainView = options.mainView;
-      this.roomName = options.name;
       this.roomId = options.room_id;
 
       // show spinner as temp content
@@ -44,7 +43,7 @@ define([
       if (room.owner.user_id != currentUser.get('user_id') && !currentUser.isAdmin())
         return;
 
-      this.roomName = room.name;
+      this.roomNameConfirmation = room.name.toLocaleLowerCase();
 
       var html = this.template({room: room});
       this.$el.html(html);
@@ -59,7 +58,7 @@ define([
     },
     onDelete: function(data) {
       if (!data.name
-        || data.name.toLocaleLowerCase() != this.roomName.toLocaleLowerCase())
+        || data.name.toLocaleLowerCase() != this.roomNameConfirmation)
         return;
 
       this.$el.find('.errors').hide();
@@ -91,7 +90,7 @@ define([
     },
     _valid: function() {
       var name = '#'+this.$input.val();
-      var pattern = new RegExp('^'+this.roomName+'$', 'i');
+      var pattern = new RegExp('^'+this.roomNameConfirmation+'$', 'i');
       if (pattern.test(name)) {
         return true;
       } else {
