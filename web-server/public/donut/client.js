@@ -284,8 +284,8 @@ define([
         }
       );
     },
-    roomHistory: function (name, since, limit, fn) {
-      var data = {name: name, since: since, limit: limit};
+    roomHistory: function (roomId, since, limit, fn) {
+      var data = {room_id: roomId, since: since, limit: limit};
       debug('io:out:room:history', data);
       var that = this;
       pomelo.request(

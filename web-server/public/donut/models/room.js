@@ -280,7 +280,7 @@ define([
       this._onStatus('offline', data);
     },
     history: function(since, callback) {
-      client.roomHistory(this.get('name'), since, 100, function(data) {
+      client.roomHistory(this.get('id'), since, 100, function(data) {
         return callback(data);
       });
     },
