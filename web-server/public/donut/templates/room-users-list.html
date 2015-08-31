@@ -24,7 +24,7 @@
                         <% if (!user.is_owner || isAdmin === true) { %>
                             <% if (!user.is_owner && user.is_op === true) { %>
                             <li role="presentation">
-                                <a role="menuitem" tabindex="-1" class="deop deop-user" data-username="<%= user.username %>">
+                                <a role="menuitem" tabindex="-1" class="deop deop-user" data-username="<%= user.username %>" data-user-id="<%= user.user_id %>">
                                     <span class="icon-stack">
                                         <i class="icon icon-op icon-stack-1x"></i>
                                         <i class="icon icon-ban icon-stack-2x text-danger"></i>
@@ -34,7 +34,7 @@
                             </li>
                             <% } else if (!user.is_owner) { %>
                             <li role="presentation">
-                                <a role="menuitem" tabindex="-1" class="op op-user" data-username="<%= user.username %>">
+                                <a role="menuitem" tabindex="-1" class="op op-user" data-username="<%= user.username %>" data-user-id="<%= user.user_id %>">
                                     <i class="icon icon-op"></i><p> <%= t('chat.op.infobox') %></p>
                                 </a>
                             </li>
