@@ -89,7 +89,7 @@ handler.call = function(data, session, next) {
 
 						var r = {
 							name: room.name,
-							id: room.id,
+							room_id: room.id,
 							avatar: room._avatar(),
 							color: room.color,
 							lastjoin_at: new Date(room.lastjoin_at).getTime()

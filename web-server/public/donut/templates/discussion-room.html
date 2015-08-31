@@ -7,8 +7,8 @@
 </div><!-- /.side -->
 <div class="content">
     <div class="mini-header room visible-xs visible-sm">
-        <img class="avatar open-room-profile dc-border-lighter" data-room-name="<%= name %>" src="<%= avatar %>" alt="<%= name %> avatar">
-        <span class="name open-room-profile dc-text-contrast" data-room-name="<%= name %>"><%= name %></span>
+        <img class="avatar open-room-profile dc-border-lighter" data-room-name="<%= name %>" data-room-id="<%= room_id %>" src="<%= avatar %>" alt="<%= name %> avatar">
+        <span class="name open-room-profile dc-text-contrast" data-room-name="<%= name %>" data-room-id="<%= room_id %>"><%= name %></span>
     </div>
     <div class="header room">
         <div class="overlay-ctn hidden-xs hidden-sm">
@@ -17,8 +17,8 @@
             <span class="overlay-text open-room-profile" data-room-name="<%= name %>" data-room-id="<%= room_id %>" ><%= t('chat.actions.see') %></span>
         </div>
         <div class="info hidden-xs hidden-sm">
-            <div class="name open-room-profile hidden-xs hidden-sm" data-room-name="<%= name %>"><%= name %></div>
-            <div class="name open-room-profile visible-xs visible-sm dc-text-contrast" data-room-name="<%= name %>"><%= name %></div>
+            <div class="name open-room-profile hidden-xs hidden-sm" data-room-name="<%= name %>" data-room-id="<%= room_id %>"><%= name %></div>
+            <div class="name open-room-profile visible-xs visible-sm dc-text-contrast" data-room-name="<%= name %>" data-room-id="<%= room_id %>"><%= name %></div>
             <div class="dropdown">
                 <button class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
                     <i class="icon icon-chevron-down hidden-xs hidden-sm"></i>
@@ -31,7 +31,7 @@
                         </a>
                     </li>
                     <li role="presentation">
-                        <a role="menuitem" tabindex="-1" class="open-room-profile" data-room-name="<%= name %>">
+                        <a role="menuitem" tabindex="-1" class="open-room-profile" data-room-name="<%= name %>" data-room-id="<%= room_id %>">
                             <i class="icon icon-eye"></i> <%= t('global.viewprofile') %>
                         </a>
                     </li>
