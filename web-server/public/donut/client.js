@@ -152,8 +152,15 @@ define([
     // ROOM
     // ======================================================
 
-    roomJoin: function (name, callback) {
-      var data = {name: name};
+    roomJoin: function (roomId, roomName, callback) {
+      var data = {};
+      if (roomId)
+        data.room_id = roomId;
+      else if (roomName)
+        data.name = roomName;
+      else
+        return;
+
       debug('io:out:room:join', data);
       pomelo.request(
         'chat.roomJoinHandler.call',
@@ -219,7 +226,7 @@ define([
       if (roomId)
         data.room_id = roomId;
       else if (roomName)
-        data.name = roomName
+        data.name = roomName;
       else
         return;
 

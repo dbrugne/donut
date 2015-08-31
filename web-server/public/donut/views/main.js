@@ -557,7 +557,7 @@ define([
         // Not already open
         this.thisDiscussionShouldBeFocusedOnSuccess = name;
         var that = this;
-        client.roomJoin(name, function(response) {
+        client.roomJoin(null, name, function(response) {
           if (response.err == 'banned') {
             that.alert('error', $.t('chat.bannedfromroom', {name: name}));
             that.focus();
