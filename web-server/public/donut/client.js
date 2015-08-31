@@ -173,7 +173,7 @@ define([
       );
     },
     roomLeave: function (roomId) {
-      var data = {room_id: roomId};
+      var data = { room_id: roomId };
       pomelo.notify('chat.roomLeaveHandler.call', data);
       debug('io:out:room:leave', data);
     },
