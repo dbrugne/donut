@@ -402,8 +402,8 @@ define([
       pomelo.notify('chat.roomViewedHandler.call', data);
       debug('io:out:room:viewed', data);
     },
-    roomMessageSpam: function(name, messageId) {
-      var data = {name: name, event: messageId};
+    roomMessageSpam: function(roomId, messageId) {
+      var data = {room_id: roomId, event: messageId};
       debug('io:out:room:message:spam', data);
       pomelo.request(
         'chat.roomMessageSpamHandler.call',

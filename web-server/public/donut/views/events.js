@@ -722,10 +722,10 @@ define([
     onMarkAsSpam: function (event) {
       event.preventDefault();
       var parent = $(event.currentTarget).closest('.event');
-      var roomName = this.model.get('name');
+      var roomId = this.model.get('id');
       var messageId = parent.attr('id');
 
-      client.roomMessageSpam(roomName, messageId);
+      client.roomMessageSpam(roomId, messageId);
     },
     onUnmarkAsSpam: function (event) {
       event.preventDefault();

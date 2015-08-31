@@ -22,17 +22,17 @@ handler.call = function (data, session, next) {
   async.waterfall([
 
     function check(callback) {
-      if (!data.name)
-        return callback('require room name param');
+      if (!data.room_id)
+        return callback('id is mandatory');
 
       if (!data.event)
         return callback('require event param');
 
       if (!room)
-        return callback('unable to retrieve room: ' + data.name);
+        return callback('unable to retrieve room: ' + data.room_id);
 
       if (!room.isOwnerOrOp(user.id) && session.settings.admin !== true)
-        return callback('this user ' + user.id + ' isn\'t able to spammed a message in ' + data.name);
+        return callback('this user ' + user.id + ' isn\'t able to spammed a message in ' + room.name);
 
       if (!event)
         return callback('unable to retrieve event: ' + data.event);
@@ -56,7 +56,7 @@ handler.call = function (data, session, next) {
 
     function broadcast(callback) {
       var eventToSend = {
-        name: room.name,
+        room_id: room.id,
         event: event.id
       };
       that.app.globalChannelService.pushMessage('connector', 'room:message:spam', eventToSend, room.name, {}, callback);
