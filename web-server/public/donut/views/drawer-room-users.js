@@ -172,7 +172,7 @@ define([
 
       var that = this;
       confirmationView.open({}, function() {
-        client.roomVoice(that.model.get('name'), username);
+        client.roomVoice(that.model.get('id'), username);
         that.render();
       });
     }

@@ -157,7 +157,7 @@ define([
       if (!username)
         return;
 
-      client.roomVoice(this.model.get('name'), username);
+      client.roomVoice(this.model.get('id'), username);
       this._showUserListModal();
     },
     devoiceUser: function(event) {
