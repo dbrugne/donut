@@ -635,7 +635,7 @@ define([
     userBan: function(event) {
       event.preventDefault();
 
-      var username = $(event.currentTarget).data('username');
+      var username = $(event.currentTarget).data('username'); // @todo : migrate to user_id
       if (!username)
         return;
 
@@ -649,7 +649,7 @@ define([
     userDeban: function (event) {
       event.preventDefault();
 
-      var username = $(event.currentTarget).data('username');
+      var username = $(event.currentTarget).data('username'); // @todo : migrate to user_id
       if (!username)
         return;
 

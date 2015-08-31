@@ -91,7 +91,7 @@ define([
       if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin())
         return false;
 
-      var username = $(event.currentTarget).data('username');
+      var username = $(event.currentTarget).data('username'); // @todo : migrate to user_id
       if (!username)
         return;
 

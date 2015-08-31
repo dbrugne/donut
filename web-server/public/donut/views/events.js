@@ -579,7 +579,7 @@ define([
               newBlock = true;
             break;
           case 'message':
-            if (!previousElement.hasClass('message') || previousElement.data('username') != newModel.get('data').username)
+            if (!previousElement.hasClass('message') || previousElement.data('username') != newModel.get('data').username) // @todo : migrate to user_id
               newBlock = true;
             break;
         }
@@ -708,7 +708,7 @@ define([
       var $event = $(event.currentTarget).closest('.event');
       if (this.model.get('owner'))
         ownerUsername = this.model.get('owner').get('username');
-      var username = $event.closest('[data-username]').data('username');
+      var username = $event.closest('[data-username]').data('username'); // @todo : migrate to user_id
       var isMessageOwner = (ownerUsername === username);
 
       var isEditable = this.isEditableMessage($event);
@@ -822,7 +822,7 @@ define([
       this.editMessage($event);
     },
     isEditableMessage: function ($event) {
-      var username = $event.closest('[data-username]').data('username');
+      var username = $event.closest('[data-username]').data('username'); // @todo : migrate to user_id
       var time = $event.data('time');
       var isMessageCurrentUser = (currentUser.get('username') === username);
       var isNotTooOld = ((Date.now() - new Date(time)) < window.message_maxedittime);
@@ -846,7 +846,7 @@ define([
       var $currentEventMessage = $(event.currentTarget).closest('.event');
       var $currentBlockMessage = $(event.currentTarget).closest('.message');
 
-      var username = $currentBlockMessage.data('username');
+      var username = $currentBlockMessage.data('username'); // @todo : migrate to user_id
 
       // get sibling .event
       var $candidate = $currentEventMessage[direction]();
@@ -855,7 +855,7 @@ define([
       // no sibling .event, try with sibling .block
       if (!$candidate.length && $candidateBlock.length) {
         var _lastBlock = $candidateBlock;
-        while((_lastBlock.data('username') !== username)) {
+        while((_lastBlock.data('username') !== username)) { // @todo : migrate to user_id
           if (!_lastBlock[direction]().length)
             return;
           _lastBlock = _lastBlock[direction]();
@@ -874,7 +874,7 @@ define([
     },
     pushUpFromInput: function() {
       var _lastBlock = this.$realtime.find('.block.message').last();
-      while(_lastBlock.data('username') !== currentUser.get('username')) {
+      while(_lastBlock.data('username') !== currentUser.get('username')) { // @todo : migrate to user_id
         if (!_lastBlock.prev().length)
           return;
         _lastBlock = _lastBlock.prev();
