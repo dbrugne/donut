@@ -26,10 +26,10 @@ handler.call = function(data, session, next) {
 
     function check(callback) {
       if (!data.name)
-        return callback('name is mandatory');
+        return callback('mandatory');
 
       if (!common.validateName(data.name))
-        return callback('invalid room name: ' + data.name);
+        return callback('invalid-name');
 
       return callback(null);
     },
@@ -83,7 +83,11 @@ handler.call = function(data, session, next) {
     }
 
   ], function(err) {
-    if (err === 'alreadyexists')
+    if ([
+        'mandatory',
+        'invalid-name',
+        'alreadyexists'
+      ].indexOf(err) !== -1)
       return next(null, { code: 403, err: err });
     if (err)
       return next(null, { code: 500, err: err });

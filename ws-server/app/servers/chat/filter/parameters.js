@@ -47,14 +47,18 @@ Filter.prototype.before = function(data, session, next) {
       });
     },
 
-    /**
-     * @todo : Allow call with name for: roomCreateHandler, roomRead, roomLeave
-     */
     room: function (callback) {
       if (data.__route__ === 'chat.roomCreateHandler.call')
         return callback(null);
 
       if (!data.name && !data.room_id)
+        return callback(null);
+
+      if (!data.room_id && data.name && [
+          'chat.roomCreateHandler.call',
+          'chat.roomJoinHandler.call',
+          'chat.roomReadHandler.call'
+        ].indexOf(data.__route__) !== -1)
         return callback(null);
 
       var q;

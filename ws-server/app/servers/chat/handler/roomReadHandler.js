@@ -24,7 +24,7 @@ handler.call = function(data, session, next) {
 
 		function check(callback) {
 			if (!data.room_id && !data.name)
-				return callback('id or name is mandtory');
+				return callback('room_id or name is mandtory');
 
 			if (!room)
 				return callback('unknown');
