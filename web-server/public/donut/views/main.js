@@ -298,7 +298,7 @@ define([
         message += ' ' + $.t("chat.reason", {reason: _.escape(data.reason)});
       this.alert('warning', message);
     },
-     roomRoomDeleted: function(data) {
+    roomRoomDeleted: function(data) {
       this.focus();
       if (data && data.reason)
         this.alert('warning', data.reason);
