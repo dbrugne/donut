@@ -30,7 +30,7 @@ define([
       this.$textEdited = this.$el.find('.text-edited');
       this.$messageEdit = this.$el.find('.message-edit');
 
-      if (this.$el.data('edited'))
+      if (this.$el.data('edited') || this.$textEdited)
         this.$textEdited.remove();
 
       this.$messageEdit.html(this.template);
@@ -67,7 +67,7 @@ define([
     remove: function () {
       this.model.trigger('inputFocus'); // refocus discussion input field
       $('html').off('click', this.onClickOutsideHandler);
-      if (this.$el.data('edited'))
+      if (this.$el.data('edited') || this.$textEdited)
         this.$text.append(this.$textEdited);
       this.$text.removeClass('hidden');
       this.$messageForm.remove();

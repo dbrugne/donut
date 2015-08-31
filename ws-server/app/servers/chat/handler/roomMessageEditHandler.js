@@ -81,9 +81,6 @@ handler.call = function(data, session, next) {
         room_id: room.id,
         event: event.id,
         message: message,
-        images: (event.data.images)
-          ? event.data.images
-          : null
       };
       that.app.globalChannelService.pushMessage('connector', 'room:message:edit', eventToSend, room.name, {}, function(err) {
         return callback(err, mentions);

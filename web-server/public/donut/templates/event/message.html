@@ -14,6 +14,7 @@
              data-spammed="<%= (spammed === true ? 'true' : '')%>"
              data-edited="<%= (edited === true ? 'true' : '')%>">
             <div class="ctn">
+                <div class="message-edit"><!-- message-edit view --></div>
                 <% if (data.message) { %>
                 <div class="text"><%= data.message %><% if (edited) { %><span class="text-edited">&nbsp;(<%= t('chat.message.edition.edited') %>)</span><% } %></div>
                 <% } %>
@@ -33,7 +34,6 @@
                 <% if (spammed) { %>
                     <div class="text-spammed"><%= t('chat.message.text-spammed') %></div>
                 <% } %>
-                <div class="message-edit"><!-- message-edit view --></div>
             </div>
             <div class="date pull-right"><span class="moment" data-time="<%= data.time %>" title="<%= data.datefull %>"><%= data.dateshort %></span></div>
             <% if(!data.is_admin) { %> <!--Only display for non admin messages-->

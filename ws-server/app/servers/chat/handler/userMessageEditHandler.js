@@ -78,9 +78,6 @@ handler.call = function(data, session, next) {
         to_username: withUser.username,
         event: event.id,
         message: message,
-        images: (event.data.images)
-          ? event.data.images
-          : null
       };
 
       return callback(null, eventToSend);
