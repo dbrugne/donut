@@ -11,8 +11,6 @@ define([
 
     commandRegexp: /^\/([-a-z0-9]+)/i,
 
-    // @todo: bug when confirm in confirmation modal, input is not refocused
-
     initialize: function(options) {
     },
 
