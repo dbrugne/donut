@@ -900,12 +900,20 @@ define([
     },
     onMessageEdited: function (data) {
       var bottom = this.isScrollOnBottom();
+      var $event = this.$('#'+data.event);
 
-      if (this.$('#'+data.event).find('.text').html() === undefined)
+      if ($event.find('.text').html() === undefined)
         $('<div class="text"></div>').insertAfter(this.$('#'+data.event).find('.message-edit'));
 
+      var msg = common.markupToHtml(data.message, {
+        template: templates['markup.html'],
+        style: 'color: ' + this.model.get('color')
+      });
+      msg = $.smilify(msg);
+      data.message = msg;
+
       data.message += '<span class="text-edited">&nbsp;('+ $.t('chat.message.edition.edited') +')</span>';
-      this.$('#'+data.event).find('.ctn').find('.text').html(data.message);
+      $event.find('.ctn').find('.text').html(data.message);
 
       if (bottom)
         this.scrollDown();
