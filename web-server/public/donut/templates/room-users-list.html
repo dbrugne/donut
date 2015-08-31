@@ -19,7 +19,7 @@
                     </button>
                     <ul class="dropdown-menu" role="menu">
                         <li role="presentation">
-                            <a role="menuitem" tabindex="-1" class="open-user-profile" data-username="<%= user.username %>"><i class="icon icon-user"></i><p> <%= t('global.viewprofile') %></p></a>
+                            <a role="menuitem" tabindex="-1" class="open-user-profile" data-username="<%= user.username %>" data-user-id="<%= user.user_id %>"><i class="icon icon-user"></i><p> <%= t('global.viewprofile') %></p></a>
                         </li>
                         <% if (!user.is_owner || isAdmin === true) { %>
                             <% if (!user.is_owner && user.is_op === true) { %>
@@ -55,12 +55,12 @@
                         </li>
                         <% } %>
                         <li role="presentation">
-                            <a role="menuitem" tabindex="-1" class="kick kick-user" data-username="<%= user.username %>">
+                            <a role="menuitem" tabindex="-1" class="kick kick-user" data-username="<%= user.username %>" data-user-id="<%= user.user_id %>">
                                 <i class="icon icon-kick"></i><p> <%= t('chat.kick.infobox') %></p>
                             </a>
                         </li>
                         <li role="presentation">
-                            <a role="menuitem" tabindex="-1" class="ban ban-user" data-username="<%= user.username %>">
+                            <a role="menuitem" tabindex="-1" class="ban ban-user" data-username="<%= user.username %>" data-user-id="<%= user.user_id %>">
                                 <i class="icon icon-ban"></i><p> <%= t('chat.ban.infobox') %></p>
                             </a>
                         </li>
