@@ -901,19 +901,11 @@ define([
     onMessageEdited: function (data) {
       var bottom = this.isScrollOnBottom();
 
-      // prepare data
-      data = { data: data };
-      data.data.id = data.data.event;
-      data.edited = true;
-      if (this.model.get('type') == 'onetoone')
-        data.type = 'user:message';
-      if (this.model.get('type') == 'room')
-        data.type = 'room:message';
-      var model = new EventModel(data);
+      if (this.$('#'+data.event).find('.text').html() === undefined)
+        $('<div class="text"></div>').insertAfter(this.$('#'+data.event).find('.message-edit'));
 
-      // render
-      var html = this._renderEvent(model, false);
-      this.$('#'+data.data.event).replaceWith(html);
+      data.message += '<span class="text-edited">&nbsp;('+ $.t('chat.message.edition.edited') +')</span>';
+      this.$('#'+data.event).find('.ctn').find('.text').html(data.message);
 
       if (bottom)
         this.scrollDown();
