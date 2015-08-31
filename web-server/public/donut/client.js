@@ -369,8 +369,8 @@ define([
         }
       );
     },
-    roomBan: function (roomId, username, reason) {
-      var data = {room_id: roomId, username: username};
+    roomBan: function (roomId, userId, reason) {
+      var data = {room_id: roomId, user_id: userId};
       if (reason)
         data.reason = reason;
       debug('io:out:room:ban', data);

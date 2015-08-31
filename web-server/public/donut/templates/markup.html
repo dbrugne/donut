@@ -1,9 +1,9 @@
 <% if (markup.type === 'room') { %>
-<a class="mention open-room-profile" data-room-name="<%= markup.title %>" style="<%= options.style %>">
+<a class="mention open-room-profile" data-room-name="<%= markup.title %>" data-room-id="<%= markup.user_id %>" style="<%= options.style %>">
 <%= markup.title %>
 </a>
 <% } else if (markup.type === 'user') { %>
-<a class="mention open-user-profile" data-username="<%= markup.title.replace('@', '') %>" style="<%= options.style %>">
+<a class="mention open-user-profile" data-username="<%= markup.title.replace('@', '') %>" data-user-id="<%= markup.user_id %>" style="<%= options.style %>">
 <%= markup.title %>
 </a>
 <% } else if (markup.type === 'url') { %>

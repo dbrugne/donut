@@ -121,13 +121,13 @@ define([
       if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin())
         return false;
 
-      var username = $(event.currentTarget).data('username');
-      if (!username)
+      var userId = $(event.currentTarget).data('userId');
+      if (!userId)
         return;
 
       var that = this;
       confirmationView.open({ input: true }, function(reason) {
-        client.roomKick(that.model.get('id'), username, reason);
+        client.roomKick(that.model.get('id'), userId, reason);
         that.render();
       });
     },
@@ -136,13 +136,13 @@ define([
       if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin())
         return false;
 
-      var username = $(event.currentTarget).data('username');
-      if (!username)
+      var userId = $(event.currentTarget).data('userId');
+      if (!userId)
         return;
 
       var that = this;
       confirmationView.open({ input: true }, function(reason) {
-        client.roomBan(that.model.get('id'), username, reason);
+        client.roomBan(that.model.get('id'), userId, reason);
         that.render();
       });
     },
@@ -166,13 +166,13 @@ define([
       if (!this.model.currentUserIsOp() && ! this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin())
         return false;
 
-      var username = $(event.currentTarget).data('username');
-      if (!username)
+      var userId = $(event.currentTarget).data('userId');
+      if (!userId)
         return;
 
       var that = this;
       confirmationView.open({}, function() {
-        client.roomVoice(that.model.get('id'), username);
+        client.roomVoice(that.model.get('id'), userId);
         that.render();
       });
     }

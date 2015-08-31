@@ -140,13 +140,13 @@ define([
       if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin())
         return false;
 
-      var username = $(event.currentTarget).data('username');
-      if (!username)
+      var userId = $(event.currentTarget).data('userId');
+      if (!userId)
         return;
 
       var that = this;
       confirmationView.open({ input: true }, function(reason) {
-        client.roomBan(that.model.get('id'), username, reason);
+        client.roomBan(that.model.get('id'), userId, reason);
       });
     },
     voiceUser: function(event) {

@@ -29,13 +29,16 @@ handler.call = function(data, session, next) {
 
 		function check(callback) {
 			if (!data.room_id)
-				return callback('id is mandatory');
+				return callback('room id is mandatory');
 
-			if (!data.username)
-				return callback('require username param');
+			if (!data.user_id)
+				return callback('user id is mandatory');
 
 			if (!room)
 				return callback('unable to retrieve room: ' + data.room_id);
+
+			if (!user)
+				return callback('unable to retrieve room: ' + data.user_id);
 
 			if (!room.isOwnerOrOp(user.id) && session.settings.admin !== true)
 				return callback('this user ' + user.id + ' isn\'t able to ban another user in this room: ' + room.name);
