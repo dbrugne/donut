@@ -27,7 +27,7 @@ define([
 
       // ask for data
       var that = this;
-      client.roomRead(this.roomId, function(err, data) {
+      client.roomRead(this.roomId, null, function(err, data) {
         if (!err)
           that.onResponse(data);
       });

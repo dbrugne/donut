@@ -23,8 +23,8 @@ handler.call = function(data, session, next) {
 	async.waterfall([
 
 		function check(callback) {
-			if (!data.room_id)
-				return callback('id is mandtory');
+			if (!data.room_id && !data.name)
+				return callback('id or name is mandtory');
 
 			if (!room)
 				return callback('unknown');

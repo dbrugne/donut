@@ -89,18 +89,20 @@ define([
     initialize: function() {
       this.defaultColor = window.room_default_color;
 
-      this.listenTo(client,     'welcome', this.onWelcome);
-      this.listenTo(client,     'disconnect', this.onDisconnect);
-      this.listenTo(client,     'reconnect', this.onReconnect);
-      this.listenTo(rooms,      'add', this.addView);
-      this.listenTo(rooms,      'remove', this.onRemoveDiscussion);
-      this.listenTo(onetoones,  'add', this.addView);
-      this.listenTo(onetoones,  'remove', this.onRemoveDiscussion);
-      this.listenTo(rooms,      'kickedOrBanned', this.roomKickedOrBanned);
-      this.listenTo(rooms,      'deleted', this.roomRoomDeleted);
-      this.listenTo(currentUser, 'roomProfileCommand', this.openRoomProfileCommand);
-      this.listenTo(currentUser, 'userProfileCommand', this.openUserProfileCommand);
-      this.listenTo(currentUser, 'roomJoinCommand', this.focusRoomByName);
+      this.listenTo(client,      'welcome', this.onWelcome);
+      this.listenTo(client,      'disconnect', this.onDisconnect);
+      this.listenTo(client,      'reconnect', this.onReconnect);
+      this.listenTo(rooms,       'add', this.addView);
+      this.listenTo(rooms,       'remove', this.onRemoveDiscussion);
+      this.listenTo(onetoones,   'add', this.addView);
+      this.listenTo(onetoones,   'remove', this.onRemoveDiscussion);
+      this.listenTo(rooms,       'kickedOrBanned', this.roomKickedOrBanned);
+      this.listenTo(rooms,       'deleted', this.roomRoomDeleted);
+      this.listenTo(app,         'openRoomProfile', this.openRoomProfile);
+      this.listenTo(app,         'openUserProfile', this.openUserProfile);
+      this.listenTo(app,         'joinRoom', this.focusRoomByName);
+
+
     },
     run: function() {
       // generate and attach subviews
@@ -328,7 +330,7 @@ define([
       var view = new DrawerUserProfileView({ mainView: this, username: username });
       this.drawerView.setSize('380px').setView(view).open();
     },
-    openUserProfileCommand: function(data) {
+    openUserProfile: function(data) {
       var view = new DrawerUserProfileView({ mainView: this, data: data });
       this.drawerView.setSize('380px').setView(view).open();
     },
@@ -343,7 +345,7 @@ define([
       var view = new DrawerRoomProfileView({ mainView: this, name: name, room_id: id });
       this.drawerView.setSize('380px').setView(view).open();
     },
-    openRoomProfileCommand: function(data) {
+    openRoomProfile: function(data) {
       var view = new DrawerRoomProfileView({ mainView: this, data: data });
       this.drawerView.setSize('380px').setView(view).open();
     },
@@ -554,7 +556,6 @@ define([
       Backbone.history.navigate('#'); // just change URI, not run route action
     },
 
-    // called by router only
     focusRoomByName: function(name) {
       var model = rooms.iwhere('name', name);
       if (model == undefined) {
