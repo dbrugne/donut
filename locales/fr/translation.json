@@ -640,6 +640,7 @@
       "new": "Nouveau mot de passe",
       "confirm": "Confirmer",
       "current": "Mot de passe actuel",
+      "defined": "Mot de passe défini: ",
       "error": {
         "confirm": "Les deux mots de passe ne sont pas identiques.",
         "length": "Le mot de passe doit faire entre 6 et 50 caractères de long.",

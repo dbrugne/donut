@@ -76,7 +76,6 @@ define([
 
       this.$errorLabel.text('');
       this.$spinner.show();
-      this.$emailUserCtn.show();
       this.$form.removeClass('has-error');
 
       client.accountEmail(this.$input.val(), function (data) {

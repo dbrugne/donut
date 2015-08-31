@@ -621,6 +621,7 @@
       "new": "New password",
       "confirm": "Confirm",
       "current": "Current password",
+      "defined": "Password defined: ",
       "error": {
         "confirm": "Pass two passwords are not the same.",
         "length": "Password should have between 6 and 50 characters length.",
