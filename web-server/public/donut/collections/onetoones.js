@@ -8,7 +8,7 @@ define([
 ], function (_, Backbone, client, currentUser, OneToOneModel, EventModel) {
   var OnetoonesCollection = Backbone.Collection.extend({
 
-    iwhere : function(key, val){ // insencitive case search
+    iwhere : function(key, val){ // insensitive case search
       var matches = this.filter(function(item){
         return item.get(key).toLocaleLowerCase() === val.toLocaleLowerCase();
       });
