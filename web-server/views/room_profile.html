@@ -16,8 +16,8 @@
                 <li>
                     <a href="/user/<%= room.owner.username%>" class="item owner">
                         <span class="infos">
-                            <span class="avatar open-user-profile" data-username="<%= room.owner.username %>"  style="background-image: url(<%= room.owner.avatar %>)" title="<%= t('chat.owner.is') %>"></span>
-                            <span class="username open-user-profile" data-username="<%= room.owner.username %>" >@<%= room.owner.username %></span>
+                            <span class="avatar open-user-profile" data-username="<%= room.owner.username %>" data-user-id="<%= room.owner.user_id %>" style="background-image: url(<%= room.owner.avatar %>)" title="<%= t('chat.owner.is') %>"></span>
+                            <span class="username open-user-profile" data-username="<%= room.owner.username %>" data-user-id="<%= room.owner.user_id %>">@<%= room.owner.username %></span>
                         </span>
                     </a>
                 </li>
@@ -25,8 +25,8 @@
                 <li>
                     <a href="/user/<%= user.username%>" class="item op">
                         <span class="infos">
-                            <span class="avatar open-user-profile" data-username="<%= user.username %>"  style="background-image: url(<%= user.avatar %>)" title="<%= t('chat.op.is') %>"></span>
-                            <span class="username open-user-profile" data-username="<%= user.username %>" title="<%= t('global.'+user.status) %>">@<%= user.username %></span>
+                            <span class="avatar open-user-profile" data-username="<%= user.username %>" data-user-id="<%= user.user_id %>" style="background-image: url(<%= user.avatar %>)" title="<%= t('chat.op.is') %>"></span>
+                            <span class="username open-user-profile" data-username="<%= user.username %>" data-user-id="<%= user.user_id %>" title="<%= t('global.'+user.status) %>">@<%= user.username %></span>
                         </span>
                     </a>
                 </li>
@@ -35,8 +35,8 @@
                 <li>
                     <a href="/user/<%= user.username%>" class="item <% if (user.is_op === true) { %>op<% }; %> <% if (user.is_owner === true) { %>owner<% }; %> <% if (user.is_devoice === true) { %> devoice<% }; %> <%= user.status %>">
                         <span class="infos">
-                            <span class="avatar open-user-profile" data-username="<%= user.username %>"  style="background-image: url(<%= user.avatar %>)" title=""></span>
-                            <span class="username open-user-profile" data-username="<%= user.username %>" title="<%= t('global.'+user.status) %>">@<%= user.username %></span>
+                            <span class="avatar open-user-profile" data-username="<%= user.username %>"  data-user-id="<%= user.user_id %>" style="background-image: url(<%= user.avatar %>)" title=""></span>
+                            <span class="username open-user-profile" data-username="<%= user.username %>" data-user-id="<%= user.user_id %>" title="<%= t('global.'+user.status) %>">@<%= user.username %></span>
                         </span>
                     </a>
                 </li>

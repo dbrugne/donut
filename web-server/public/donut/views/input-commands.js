@@ -329,6 +329,8 @@ define([
 
       var that = this;
       confirmationView.open({input : true}, function (reason) {
+        //@todo
+        //replace parameters[1] with user_id
         client.roomDevoice(that.model.get('id'), parameters[1], reason);
         that.model.trigger('inputFocus');
       }, this.inputFocus());

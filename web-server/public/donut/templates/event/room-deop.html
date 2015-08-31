@@ -2,8 +2,8 @@
     <div class="event" id="<%= data.id %>" data-time="<%= data.time %>">
         <div class="text">
             <i class="icon icon-op"></i>
-            <div class="avatar open-user-profile" data-username="<%= data.username %>" style="background-image: url(<%= data.avatar %>)"></div>
-            <span class="username open-user-profile" data-username="<%= data.username %>">@<%= data.username %></span>
+            <div class="avatar open-user-profile" data-username="<%= data.username %>" data-user-id="<%= data.user_id %>" style="background-image: url(<%= data.avatar %>)"></div>
+            <span class="username open-user-profile" data-username="<%= data.username %>" data-user-id="<%= data.user_id %>">@<%= data.username %></span>
             <span class="message"><%= t('chat.notifications.deop') %></span>
             <div class="avatar open-user-profile" data-username="<%= data.by_username %>" style="background-image: url(<%= data.by_avatar %>)"></div>
             <span class="username open-user-profile" data-username="<%= data.by_username %>">@<%= data.by_username %></span>

@@ -339,8 +339,8 @@ define([
         }
       );
     },
-    roomDevoice: function (roomId, username, reason) {
-      var data = {room_id: roomId, username: username};
+    roomDevoice: function (roomId, userId, reason) {
+      var data = {room_id: roomId, user_id: userId};
       if (reason)
         data.reason = reason;
       debug('io:out:room:devoice', data);
