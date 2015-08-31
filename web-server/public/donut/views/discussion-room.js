@@ -153,11 +153,12 @@ define([
       event.preventDefault();
       if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() &&!this.model.currentUserIsAdmin())
         return false;
-      var username = $(event.currentTarget).data('username');
-      if (!username)
+
+      var userId = $(event.currentTarget).data('userId');
+      if (!userId)
         return;
 
-      client.roomVoice(this.model.get('id'), username);
+      client.roomVoice(this.model.get('id'), userId);
     },
     devoiceUser: function(event) {
       event.preventDefault();

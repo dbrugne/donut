@@ -326,8 +326,8 @@ define([
         }
       );
     },
-    roomVoice: function (roomId, username) {
-      var data = {room_id: roomId, username: username};
+    roomVoice: function (roomId, userId) {
+      var data = {room_id: roomId, user_id: userId};
       debug('io:out:room:voice', data);
       var that = this;
       pomelo.request(

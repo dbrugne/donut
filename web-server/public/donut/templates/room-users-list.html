@@ -49,7 +49,7 @@
                         </li>
                         <% } else { %>
                         <li role="presentation">
-                            <a role="menuitem" tabindex="-1" class="voice voice-user" data-username="<%= user.username %>">
+                            <a role="menuitem" tabindex="-1" class="voice voice-user" data-username="<%= user.username %>" data-user-id="<%= user.user_id %>">
                                 <i class="icon icon-microphone"></i><p> <%= t('chat.voice.infobox') %></p>
                             </a>
                         </li>
