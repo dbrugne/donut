@@ -47,6 +47,9 @@ Filter.prototype.before = function(data, session, next) {
       });
     },
 
+    /**
+     * @todo : Allow call with name for: roomCreateHandler, roomRead, roomLeave
+     */
     room: function (callback) {
       if (data.__route__ === 'chat.roomCreateHandler.call')
         return callback(null);
