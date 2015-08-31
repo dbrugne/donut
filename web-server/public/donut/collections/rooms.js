@@ -249,7 +249,7 @@ define([
     },
     onMessageUnspam: function(data) {
       var model;
-      if (!data || !data.name || !(model = this.get(data.name)))
+      if (!data || !data.room_id || !(model = this.get(data.room_id)))
         return;
 
       model.trigger('messageUnspam', data);

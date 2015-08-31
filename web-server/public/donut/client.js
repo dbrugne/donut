@@ -414,8 +414,8 @@ define([
         }
       );
     },
-    roomMessageUnspam: function(name, messageId) {
-      var data = {name: name, event: messageId};
+    roomMessageUnspam: function(roomId, messageId) {
+      var data = {room_id: roomId, event: messageId};
       debug('io:out:room:message:unspam', data);
       pomelo.request(
         'chat.roomMessageUnspamHandler.call',

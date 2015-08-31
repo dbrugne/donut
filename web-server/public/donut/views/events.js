@@ -730,14 +730,14 @@ define([
     onUnmarkAsSpam: function (event) {
       event.preventDefault();
       var parent = $(event.currentTarget).closest('.event');
-      var roomName = this.model.get('name');
+      var roomId = this.model.get('id');
       var messageId = parent.attr('id');
       parent.removeClass('viewed');
 
       var ctn = parent.find('.text') || parent.find('.image');
       ctn.find('.remask-spammed-message').remove();
 
-      client.roomMessageUnspam(roomName, messageId);
+      client.roomMessageUnspam(roomId, messageId);
     },
     onMarkedAsSpam: function (room) {
       var bottom = this.isScrollOnBottom();
