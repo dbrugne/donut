@@ -26,14 +26,14 @@ handler.call = function(data, session, next) {
 	async.waterfall([
 
 		function check(callback) {
-			if (!data.name)
-				return callback('name parameter is mandatory');
+			if (!data.room_id)
+				return callback('id is mandatory');
 
 			if (!data.events || !_.isArray(data.events))
 				return callback('events parameter is mandatory');
 
       if (!room)
-        return callback('unable to retrieve room: ' + data.name);
+        return callback('unable to retrieve room: ' + data.room_id);
 
 			data.events = _.filter(data.events, function(id) {
 			  // http://stackoverflow.com/questions/11985228/mongodb-node-check-if-objectid-is-valid
@@ -65,7 +65,7 @@ handler.call = function(data, session, next) {
 		function sendToUserSockets(callback) {
 			var viewedEvent = {
 				name: room.name,
-				id: room.id,
+				room_id: room.id,
 				events: data.events
 			};
 			that.app.globalChannelService.pushMessage('connector', 'room:viewed', viewedEvent, 'user:' + user.id, {}, callback);

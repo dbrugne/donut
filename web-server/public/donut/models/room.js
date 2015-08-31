@@ -285,7 +285,7 @@ define([
       });
     },
     viewedElements: function(elements) {
-      client.roomViewed(this.get('name'), elements);
+      client.roomViewed(this.get('id'), elements);
     },
     onViewed: function (data) {
       this.resetNew();

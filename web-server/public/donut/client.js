@@ -397,8 +397,8 @@ define([
         }
       );
     },
-    roomViewed: function (name, events) {
-      var data = {name: name, events: events};
+    roomViewed: function (roomId, events) {
+      var data = {room_id: roomId, events: events};
       pomelo.notify('chat.roomViewedHandler.call', data);
       debug('io:out:room:viewed', data);
     },
