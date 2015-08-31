@@ -313,8 +313,8 @@ define([
         }
       );
     },
-    roomDeop: function (roomId, username) {
-      var data = {room_id: roomId, username: username};
+    roomDeop: function (roomId, userId) {
+      var data = {room_id: roomId, user_id: userId};
       debug('io:out:room:deop', data);
       var that = this;
       pomelo.request(
