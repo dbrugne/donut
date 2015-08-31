@@ -384,8 +384,8 @@ define([
         }
       );
     },
-    roomDeban: function (name, username) {
-      var data = {name: name, username: username};
+    roomDeban: function (roomId, username) {
+      var data = {room_id: roomId, username: username};
       debug('io:out:room:deban', data);
       var that = this;
       pomelo.request(
