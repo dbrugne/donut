@@ -66,7 +66,6 @@ handler.call = function(data, session, next) {
     }
 
 		return next(null, {
-      name: room.name,
       room_id: room.id,
       users: users
     });

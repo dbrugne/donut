@@ -42,8 +42,7 @@ handler.call = function(data, session, next) {
 					return callback(err);
 
 				var historyEvent = {
-					name      : room.name,
-					id        : room.id,
+					room_id   : room.id,
 					history   : history.history,
 					more      : history.more
 				};
