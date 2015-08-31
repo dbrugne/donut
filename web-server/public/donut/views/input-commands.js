@@ -163,6 +163,12 @@ define([
         help: '',
         description: 'chat.commands.ping'
       },
+      clear: {
+        parameters: 'nothing',
+        access: 'everywhere',
+        help: '',
+        description: 'chat.commands.clear'
+      },
       help: {
         parameters: 'helpCommand',
         access: 'everywhere',
@@ -389,6 +395,12 @@ define([
         });
         that.model.trigger('freshEvent', model);
       });
+    },
+    clear: function(paramString, parameters) {
+      if (paramString)
+        return this.errorCommand('clear', 'parameters');
+
+      this.model.trigger('clearHistory');
     },
     help: function(paramString, parameters, error) {
       if (!parameters && paramString)

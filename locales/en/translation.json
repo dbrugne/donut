@@ -440,7 +440,8 @@
       "profile": "Open donut or user profile",
       "me": "What are you doing?",
       "ping": "pong",
-      "help": "Commands help",
+      "clear": "remove all visible history from interface",
+      "help": "this message",
       "errors": {
         "parameters": "Invalid parameter",
         "invalidcommand": "Command not found",

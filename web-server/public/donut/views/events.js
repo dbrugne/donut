@@ -51,6 +51,7 @@ define([
       this.listenTo(this.model, 'messageUnspam', this.onMarkedAsUnspam);
       this.listenTo(this.model, 'messageEdit', this.onMessageEdited);
       this.listenTo(this.model, 'editMessageClose', this.onEditMessageClose);
+      this.listenTo(this.model, 'clearHistory', this.onClearHistory);
       this.listenTo(client, 'admin:message', this.onAdminMessage);
 
       debug.start('discussion-events' + this.model.getIdentifier());
@@ -331,26 +332,40 @@ define([
     update: function () {
       this.cleanup();
     },
-    cleanup: function (event) {
-      if (this.isVisible() && !this.isScrollOnBottom())
-        return; // no action when focused AND scroll not on bottom
+    cleanup: function (everything) {
+      everything = everything || false;
+      var howToRemove;
 
-      var realtimeLength = this.$realtime.find('.block').length;
-      if (realtimeLength < 250) // not enough content, no need to cleanup
-        return debug('cleanup ' + this.model.getIdentifier() + ' not enough event to cleanup: ' + realtimeLength);
+      // determine if needed
+      if (!everything) {
+        if (this.isVisible() && !this.isScrollOnBottom())
+          return; // no action when focused AND scroll not on bottom
+
+        var realtimeLength = this.$realtime.find('.block').length;
+        if (realtimeLength < 250) // not enough content, no need to cleanup
+          return debug('cleanup ' + this.model.getIdentifier() + ' not enough event to cleanup: ' + realtimeLength);
+
+        // how many elements to remove
+        howToRemove = (realtimeLength > this.keepMaxEventsOnCleanup)
+          ? (realtimeLength - this.keepMaxEventsOnCleanup)
+          : false;
+
+        if (!howToRemove)
+          return debug('cleanup ' + this.model.getIdentifier() + ' not events to cleanup: ' + realtimeLength);
+      }
 
       // reset history loader
       this.toggleHistoryLoader(true);
 
       // cleanup .realtime
-      var length = this.$realtime.find('.block').length;
-      var remove = (length > this.keepMaxEventsOnCleanup)
-        ? (length - this.keepMaxEventsOnCleanup)
-        : 0;
-      if (remove > 0)
-        this.$realtime.find('.block').slice(0, remove).remove();
-
-      debug('cleanup discussion "' + this.model.getIdentifier() + '", with ' + length + ' length, ' + remove + ' removed');
+      if (everything) {
+        debug('cleanuped "' + this.model.getIdentifier() + '" (all removed)');
+        this.$realtime.empty();
+        this.resize();
+      } else {
+        this.$realtime.find('.block').slice(0, howToRemove).remove();
+        debug('cleanuped "' + this.model.getIdentifier() + '" (' + realtimeLength + ' length, ' + howToRemove + ' removed)');
+      }
 
       if (this.isVisible())
         this.scrollDown();
@@ -378,7 +393,7 @@ define([
      *****************************************************************************************************************/
     onAdminMessage: function(data) {
       data = { data: data };
-      data.data.avatar = 'cloudinary=v1409643461/rciev5ubaituvx5bclnz.png'; // @todo : fix at the end of cloudinary
+      data.data.avatar = 'cloudinary=v1409643461/rciev5ubaituvx5bclnz.png'; // @todo : add avatar URL in configuration
       data.data.username = 'DONUT';
       data.data.is_admin = true;
       data.type = 'room:message';
@@ -908,6 +923,9 @@ define([
         return;
       this.messageUnderEdition.remove();
       this.messageUnderEdition = null;
+    },
+    onClearHistory: function() {
+      this.cleanup(true);
     },
 
     /*****************************************************************************************************************

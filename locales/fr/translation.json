@@ -460,7 +460,8 @@
       "profile": "Afficher le profil du donut ou de l'utilisateur",
       "me": "Qu'êtes vous en train de faire ?",
       "ping": "pong",
-      "help": "Aide",
+      "clear": "remove all visible history from interface",
+      "help": "ce message",
       "errors": {
         "parameters": "Paramètre(s) invalide(s).",
         "invalidcommand": "Cette commande n'existe pas.",
