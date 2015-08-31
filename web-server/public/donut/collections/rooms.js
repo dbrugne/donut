@@ -230,8 +230,6 @@ define([
 
       if (data.reason && data.reason == 'deleted')
         this.trigger('deleted', {reason: $.t("chat.deletemessage", {name: data.name})});
-      else
-        this.trigger('deleted');
     },
     onViewed: function(data) {
       var model;

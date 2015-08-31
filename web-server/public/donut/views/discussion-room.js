@@ -105,7 +105,7 @@ define([
       var that = this;
       confirmationView.open({}, function() {
         client.roomOp(that.model.get('id'), username);
-      }, function () { that._showUserListModal()});
+      });
     },
     deopUser: function(event) {
       event.preventDefault();
@@ -119,7 +119,7 @@ define([
       var that = this;
       confirmationView.open({}, function() {
         client.roomDeop(that.model.get('id'), username);
-      }, function () { that._showUserListModal()});
+      });
     },
     kickUser: function(event) {
       event.preventDefault();
@@ -133,7 +133,7 @@ define([
       var that = this;
       confirmationView.open({ input: true }, function(reason) {
         client.roomKick(that.model.get('id'), username, reason);
-      }, function () { that._showUserListModal()});
+      });
     },
     banUser: function(event) {
       event.preventDefault();
@@ -147,7 +147,7 @@ define([
       var that = this;
       confirmationView.open({ input: true }, function(reason) {
         client.roomBan(that.model.get('id'), username, reason);
-      }, function () { that._showUserListModal()});
+      });
     },
     voiceUser: function(event) {
       event.preventDefault();
@@ -158,7 +158,6 @@ define([
         return;
 
       client.roomVoice(this.model.get('id'), username);
-      this._showUserListModal();
     },
     devoiceUser: function(event) {
       event.preventDefault();
@@ -171,8 +170,8 @@ define([
 
       var that = this;
       confirmationView.open({ input: true }, function(reason) {
-        client.roomDevoice(that.model.get('id'), userId, reason);
-      }, function () { that._showUserListModal()});
+        client.roomDevoice(that.model.get('id'), username, reason);
+      });
     },
 
     /**

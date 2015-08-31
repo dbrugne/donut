@@ -11,6 +11,8 @@ define([
       "click .buttons .confirm": "onConfirm"
     },
 
+    confirmed: false,
+
     confirmCallback: null,
 
     cancelCallback: null,
@@ -19,9 +21,7 @@ define([
 
     isRendered: false,
 
-    initialize: function(options) {
-
-    },
+    initialize: function(options) {},
     render: function() {
       this.$inputBlock = this.$el.find('.input');
       this.$input = this.$inputBlock.find('input[type="text"]');
@@ -32,17 +32,21 @@ define([
         show: false
       });
 
-      var that = this;
+      // on modal shown
+      this.$el.on('shown.bs.modal', _.bind(function(e){
+        this.$input.focus();
+      }, this));
 
-      this.$el.on('shown.bs.modal', function(e){
-        that.$input.focus();
-      });
-      this.$el.on('hidden.bs.modal', function (e) {
-        if (_.isFunction(that.cancelCallback))
-          that.cancelCallback();
+      // some callback action need to have modal properly closed before execution (e.g.: focus an element)
+      this.$el.on('hidden.bs.modal', _.bind(function (e) {
 
-        that._reset();
-      });
+        if (this.confirmed)
+          this.confirmCallback(this.$input.val()); // confirm
+        else if (_.isFunction(this.cancelCallback))
+          this.cancelCallback(); // cancel
+
+        this._reset();
+      }, this));
 
       this.isRendered = true; // avoid to early rendering on page load (cause bootstrap is not already loaded)
       return this;
@@ -53,14 +57,14 @@ define([
       this.confirmCallback = null;
       this.cancelCallback = null;
       this.options = null;
+      this.confirmed = false;
 
       // unbind 'enter'
       $(document).off('keypress');
     },
     open: function(options, confirmCallback, cancelCallback) {
-      if (!this.isRendered) {
+      if (!this.isRendered)
         this.render();
-      }
 
       this.options = options || {};
       this.confirmCallback = confirmCallback;
@@ -85,8 +89,7 @@ define([
     onConfirm: function(event) {
       event.preventDefault();
 
-      this.confirmCallback(this.$input.val());
-      this._reset(); // before hide to disable cancelCallback call
+      this.confirmed = true;
       this.$el.modal('hide');
     }
 
