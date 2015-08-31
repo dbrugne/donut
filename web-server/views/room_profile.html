@@ -49,16 +49,16 @@
 </div><!-- /.side -->
 <div class="content">
     <div class="mini-header room visible-xs visible-sm">
-        <img class="avatar open-room-profile dc-border-lighter" data-room-name="<%= room.name %>" src="<%= room.avatar %>" alt="<%= room.name %> avatar">
-        <span class="name open-room-profile dc-text-contrast" data-room-name="<%= room.name %>"><%= room.name %></span>
+        <img class="avatar open-room-profile dc-border-lighter" data-room-name="<%= room.name %>" data-room-id="<%= room.id %>" src="<%= room.avatar %>" alt="<%= room.name %> avatar">
+        <span class="name open-room-profile dc-text-contrast" data-room-name="<%= room.name %>" data-room-id="<%= room.id %>" ><%= room.name %></span>
     </div>
     <div class="header room">
         <div class="overlay-ctn">
-            <img class="avatar open-room-profile" data-room-name="<%= room.name %>" src="<%= room.avatar %>" alt="<%= room.name %> avatar">
+            <img class="avatar open-room-profile" data-room-name="<%= room.name %>" data-room-id="<%= room.id %>" src="<%= room.avatar %>" alt="<%= room.name %> avatar">
             <p class="join"><a class="dc-back dc-text-contrast" href="<%= room.join %>"><%= t('actions.join') %> <% if (room.usersCount) { %><%= room.usersCount %><% } %> <i class="icon icon-user-custom"></i></a></p>
         </div>
         <div class="info">
-            <span class="name open-room-profile" data-room-name="<%= room.name %>"><%= room.name %></span>
+            <span class="name open-room-profile" data-room-name="<%= room.name %>" data-room-id="<%= room.id %>"><%= room.name %></span>
             <% if (room.owner && room.owner.username) { %>
                 <span class="owner">
                     <%= t('global.by') %>&nbsp;<a href="<%= room.owner.url %>">@<%= room.owner.username %></a>
