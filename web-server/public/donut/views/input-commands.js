@@ -278,7 +278,7 @@ define([
       if (!parameters)
         return this.errorCommand('deban', 'parameters');
 
-      client.roomDeban(this.model.get('id'), parameters[1]);
+      client.roomDeban(this.model.get('id'), null, parameters[1]);
     },
     block: function(paramString, parameters) {
       var username;

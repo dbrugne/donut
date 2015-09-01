@@ -157,7 +157,7 @@ define([
 
       var that = this;
       confirmationView.open({}, function() {
-        client.roomDeban(that.model.get('id'), userId);
+        client.roomDeban(that.model.get('id'), userId, null);
         that.render();
       });
     },
