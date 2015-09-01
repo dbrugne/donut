@@ -13,7 +13,7 @@
     <% if (user.registered) { %><p class="action created"><i class="icon icon-clock-o dc-text"></i> <%= t('profile.user.signuped') %> <span data-time="<%= user.registered %>"></span></p><% }; %>
     <% if (user.status != 'online' && user.onlined) { %><p class="onlined"><i class="icon icon-clock-o dc-text"></i> <%= t('profile.user.onlined', {time: '<span data-time="'+user.onlined+'"></span>'}) %></p><% }; %>
     <p class="action permalink"><i class="icon icon-link dc-text"></i> <a href="<%= user.url %>" target="_blank" class="dc-text"><%= t('profile.user.permalink') %></a></p>
-    <% if (user.isCurrent) { %><p class="action edit"><i class="icon icon-pencil dc-text"></i> <a class="open-user-edit dc-text" data-username="<%= user.username %>"><%= t('profile.user.editlink') %></a></p><% }; %>
+    <% if (user.isCurrent) { %><p class="action edit"><i class="icon icon-pencil dc-text"></i> <a class="open-user-edit dc-text" data-user-id="<%= user.user_id %>"><%= t('profile.user.editlink') %></a></p><% }; %>
 
     <% if (!user.isCurrent) { %>
         <!--Check if I banned this user-->

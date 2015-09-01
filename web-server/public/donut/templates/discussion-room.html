@@ -82,7 +82,7 @@
                 </ul>
             </div>
             <% if (owner && owner.username) { %>
-            <div class="owner"><%= t('global.by') %> <a class="open-user-profile" data-username="<%= owner.username %>" data-user-id="<%= owner.user_id %>" data-colorify-text="color">@<%= owner.username %></a></div>
+            <div class="owner"><%= t('global.by') %> <a class="open-user-profile" data-user-id="<%= owner.user_id %>" data-colorify-text="color">@<%= owner.username %></a></div>
             <% } %>
             <div class="share">
                 <%= t('chat.share.label') %>

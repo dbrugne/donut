@@ -704,12 +704,13 @@ define([
      *
      *****************************************************************************************************************/
     onMessageMenuShow: function (event) {
-      var ownerUsername = '';
+      var ownerUserId = '';
       var $event = $(event.currentTarget).closest('.event');
-      if (this.model.get('owner'))
-        ownerUsername = this.model.get('owner').get('username');
-      var username = $event.closest('[data-username]').data('username'); // @todo : migrate to user_id
-      var isMessageOwner = (ownerUsername === username);
+      if (this.model.get('owner')) {
+        ownerUserId = this.model.get('owner').get('user_id');
+      }
+      var userId = $event.closest('[data-user-id]').data('userId');
+      var isMessageOwner = (ownerUserId === userId);
 
       var isEditable = this.isEditableMessage($event);
 
@@ -822,9 +823,9 @@ define([
       this.editMessage($event);
     },
     isEditableMessage: function ($event) {
-      var username = $event.closest('[data-username]').data('username'); // @todo : migrate to user_id
+      var userId = $event.closest('[data-user-id]').data('userId');
       var time = $event.data('time');
-      var isMessageCurrentUser = (currentUser.get('username') === username);
+      var isMessageCurrentUser = (currentUser.get('user_id') === userId);
       var isNotTooOld = ((Date.now() - new Date(time)) < window.message_maxedittime);
       var isSpammed = $event.hasClass('spammed');
 

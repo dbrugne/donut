@@ -483,7 +483,7 @@
         "deban": "<a href=\"#room/__roomname__\">You are no longer banned from </a><span class=\"name open-room-profile\" data-room-id=\"#__room_id__\">#__roomname__</span>",
         "voice": "<a href=\"#room/__roomname__\">You are unmute in </a><span class=\"name open-room-profile\" data-room-id=\"#__room_id__\">#__roomname__</span>",
         "devoice": "<a href=\"#room/__roomname__\">You are mute in </a><span class=\"name open-room-profile\" data-room-id=\"#__room_id__\">#__roomname__</span>",
-        "roomjoin": "<span class=\"name open-user-profile\" data-username=\"__username__\">@__username__</span><a href=\"#room/__roomname__\"> joined </a><span class=\"name open-room-profile\" data-room-id=\"#__room_id__\">#__roomname__</span>",
+        "roomjoin": "<span class=\"name open-user-profile\" data-user-id=\"__user_id__\">@__username__</span><a href=\"#room/__roomname__\"> joined </a><span class=\"name open-room-profile\" data-room-id=\"#__room_id__\">#__roomname__</span>",
         "roomtopic": "<a href=\"#room/__roomname__\">New topic in </a><span class=\"name open-room-profile\" data-room-id=\"#__room_id__\">#__roomname__</span>",
         "roommessage": "<a href=\"#room/__roomname__\">New message in </a><span class=\"name open-room-profile\" data-room-id=\"#__room_id__\">#__roomname__</span>",
         "usermention": "<a href=\"#room/__roomname__\">You were mentionned in </a><span class=\"name open-room-profile\" data-room-id=\"#__room_id__\">#__roomname__</span>",

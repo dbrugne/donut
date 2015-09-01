@@ -502,7 +502,7 @@
         "deban": "<a href=\"#room/__roomname__\">Vous n'êtes plus banni de </a><span class=\"name open-room-profile\" data-room-id=\"#__room_id__\">#__roomname__</span>",
         "voice": "<a href=\"#room/__roomname__\">Vous n'êtes plus muet dans </a><span class=\"name open-room-profile\" data-room-id=\"#__room_id__\">#__roomname__</span>",
         "devoice": "<a href=\"#room/__roomname__\">Vous êtes muet dans </a><span class=\"name open-room-profile\" data-room-id=\"#__room_id__\">#__roomname__</span>",
-        "roomjoin": "<span class=\"name open-user-profile\" data-username=\"__username__\">@__username__</span><a href=\"#room/__roomname__\"> rejoint </a><span class=\"name open-room-profile\" data-room-id=\"#__room_id__\">#__roomname__</span>",
+        "roomjoin": "<span class=\"name open-user-profile\" data-user-id=\"__user_id__\">@__username__</span><a href=\"#room/__roomname__\"> rejoint </a><span class=\"name open-room-profile\" data-room-id=\"#__room_id__\">#__roomname__</span>",
         "roomtopic": "<a href=\"#room/__roomname__\">Nouveau sujet dans </a><span class=\"name open-room-profile\" data-room-id=\"#__room_id__\">#__roomname__</span>",
         "roommessage": "<a href=\"#room/__roomname__\">Nouveaux messages dans </a><span class=\"name open-room-profile\" data-room-id=\"#__room_id__\">#__roomname__</span>",
         "usermention": "<a href=\"#room/__roomname__\">Vous êtes mentionné dans </a><span class=\"name open-room-profile\" data-room-id=\"#__room_id__\">#__roomname__</span>",
