@@ -27,14 +27,11 @@ handler.call = function(data, session, next) {
 			if (!data.room_id)
 				return callback('id is mandatory');
 
-			if (!data.user_id)
+			if (!data.user_id && !data.username)
 				return callback('require username param');
 
 			if (!room)
 				return callback('unable to retrieve room: ' + data.room_id);
-
-			if (!user)
-				return callback('unable to retrieve user: ' + data.user_id);
 
 			if (!room.isOwnerOrOp(user.id) && session.settings.admin !== true)
 				return callback('this user ' + user.id + ' isn\'t able to deop another user in this room: ' + room.name);

@@ -112,7 +112,7 @@ define([
 
       var that = this;
       confirmationView.open({}, function() {
-        client.roomDeop(that.model.get('id'), userId);
+        client.roomDeop(that.model.get('id'), userId, null);
         that.render();
       });
     },
