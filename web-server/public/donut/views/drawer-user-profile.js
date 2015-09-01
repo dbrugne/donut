@@ -115,7 +115,7 @@ define([
 
     onUserBanChange: function() {
       this.render();
-      client.userRead(null, this.user_id, _.bind(function(err, data) {
+      client.userRead(this.user_id, null, _.bind(function(err, data) {
         if (!err)
           this.onResponse(data);
       }, this));
