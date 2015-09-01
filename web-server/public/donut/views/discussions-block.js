@@ -58,11 +58,11 @@ define([
         if (o.get('type') == 'room') {
           json.avatar = common.cloudinarySize(json.avatar, 40);
           json.uri = '#room/'+o.get('name').replace('#', '');
-          json.identifier = o.get('name');
+          json.identifier = o.get('room_id');
         } else {
           json.avatar = common.cloudinarySize(json.avatar, 40);
           json.uri = '#user/'+o.get('username');
-          json.identifier = o.get('username');
+          json.identifier = o.get('user_id');
         }
         json.position = positions.indexOf(json.identifier);
         data.push(json);

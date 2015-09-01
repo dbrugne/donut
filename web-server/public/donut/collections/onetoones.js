@@ -60,17 +60,17 @@ define([
       };
 
       // update model
-      var isNew = (this.get(user.username) == undefined)
+      var isNew = (this.get(user.user_id) === undefined)
         ? true
         : false;
       if (!isNew) {
         // already exist in IHM (maybe reconnecting)
-        var model = this.get(user.username);
+        var model = this.get(user.user_id);
         model.set(oneData);
       } else {
         // add in IHM
-        oneData.id = user.username;
-        oneData.key = this._key(oneData.username, currentUser.get('username'));
+        oneData.id = user.user_id;
+        oneData.key = this._key(oneData.user_id, currentUser.get('user_id'));
         var model = new OneToOneModel(oneData);
       }
 
@@ -82,10 +82,10 @@ define([
       return model;
     },
     getModelFromEvent: function (event, autoCreate) {
-      // @todo use user_id only
-      if (!event.username) {
+      var key;
+      if (!event.user_id) {
         var withUser;
-        if (currentUser.get('username') === event.from_username) {
+        if (currentUser.get('user_id') === event.from_user_id) {
           // i'm emitter
           withUser = {
             username: event.to_username,
@@ -93,38 +93,39 @@ define([
             avatar: event.to_avatar,
             color: event.to_color
           };
-        } else if (currentUser.get('username') === event.to_username) {
+        } else if (currentUser.get('user_id') === event.to_user_id) {
           // i'm recipient
           withUser = {
-            username  : event.from_username,
-            user_id   : event.from_user_id,
-            avatar    : event.from_avatar,
-            color     : event.from_color
+            username: event.from_username,
+            user_id: event.from_user_id,
+            avatar: event.from_avatar,
+            color: event.from_color
           };
         } else {
           return; // visibly something goes wrong
         }
 
-        var key = this._key(event.from_username, event.to_username);
-      } else if (event.by_username) {
-        var key = (event.username === currentUser.get('username'))
-          ? this._key(event.by_username, currentUser.get('username'))
-          : this._key(event.username, currentUser.get('username'));
+        key = this._key(event.from_user_id, event.to_user_id);
+      } else if (event.by_user_id) {
+        key = (event.user_id === currentUser.get('user_id')) ?
+          this._key(event.by_user_id, currentUser.get('user_id')) :
+          this._key(event.user_id, currentUser.get('user_id'));
       } else {
-        var key = this._key(event.username, currentUser.get('username'));
+        key = this._key(event.user_id, currentUser.get('user_id'));
       }
 
       // retrieve the current onetoone model OR create a new one
       var model = this.findWhere({'key': key}); // already opened
-      if (model == undefined) { // should be opened
-        if (!autoCreate)
+      if (model === undefined) { // should be opened
+        if (!autoCreate) {
           return false;
-
+        }
         withUser.key = key;
         model = this.addModel(withUser);
-        client.userRead(null, withUser.username, function(err, data) {
-          if (!err)
+        client.userRead(null, withUser.user_id, function(err, data) {
+          if (!err) {
             model.set(data);
+          }
         });
       }
 
