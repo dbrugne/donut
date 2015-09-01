@@ -193,6 +193,7 @@ define([
     },
     roomMe: function (roomId, message, callback) {
       var data = {room_id: roomId, message: message};
+      debug('io:out:room:me', data);
       pomelo.request(
         'chat.roomMeHandler.call',
         data,
