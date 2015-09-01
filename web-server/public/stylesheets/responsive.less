@@ -152,6 +152,10 @@
           } // #chat #center .discussion .content .events
           .input { padding-left: 10px; margin-bottom: 10px;
             .text-container {   padding-bottom: 0;
+              .overlay { height:32px;
+                .overlay-text { top: 0; }
+                &::after { border-width: 7px 7px 0; bottom: -7px; right: 11px; } // #chat #center .discussion .content .input .text-container .overlay::after
+              } // #chat #center .discussion .content .input .text-container .overlay
               .text { padding: 5px 70px 5px 5px; height: 32px;
                 .editable { height: 20px; min-height: 20px; }
                 .avatar { display: none; }
@@ -164,7 +168,7 @@
                   .arrow-bottom:after { bottom: -7px; left: 7px; border-width: 7px 7px 0;}
                 }
               }
-            }
+            } // #chat #center .discussion .content .input .text-container
           } // #chat #center .discussion .content .input
         } // #chat #center .discussion .content
         .side { display:none; } // #chat #center .discussion .side
