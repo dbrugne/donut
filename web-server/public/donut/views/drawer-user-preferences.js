@@ -2,13 +2,14 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'models/app',
   'common',
   'client',
   'models/current-user',
   'views/window',
   'views/modal-confirmation',
   '_templates'
-], function ($, _, Backbone, common, client, currentUser, windowView, confirmationView, templates) {
+], function ($, _, Backbone, app, common, client, currentUser, windowView, confirmationView, templates) {
   var DrawerUserPreferencesView = Backbone.View.extend({
 
     template: templates['drawer-user-preferences.html'],
@@ -22,9 +23,7 @@ define([
     },
 
     initialize: function (options) {
-      this.mainView = options.mainView;
-
-      this.listenTo(this.mainView, 'userDeban', this.onDeban);
+      this.listenTo(app, 'userDeban', this.onDeban);
 
       // show spinner as temp content
       this.render();

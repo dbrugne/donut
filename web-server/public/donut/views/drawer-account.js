@@ -17,8 +17,6 @@ define([
     events: {},
 
     initialize: function(options) {
-      this.mainView = options.mainView;
-
       // show spinner as temp content
       this.render();
 

@@ -24,7 +24,6 @@ define([
     },
 
     initialize: function(options) {
-      this.mainView = options.mainView;
       this.model = options.model;
 
       this.render();

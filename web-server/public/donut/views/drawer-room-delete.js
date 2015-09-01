@@ -2,10 +2,11 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'models/app',
   'client',
   'models/current-user',
   '_templates'
-], function ($, _, Backbone, client, currentUser, templates) {
+], function ($, _, Backbone, app, client, currentUser, templates) {
   var DrawerRoomDeleteView = Backbone.View.extend({
 
     template: templates['drawer-room-delete.html'],
@@ -18,7 +19,6 @@ define([
     },
 
     initialize: function(options) {
-      this.mainView = options.mainView;
       this.roomId = options.room_id;
 
       // show spinner as temp content
@@ -72,7 +72,7 @@ define([
         return;
       }
 
-      this.mainView.alert('info', $.t('edit.room.delete.success'));
+      app.trigger('alert', 'info', $.t('edit.room.delete.success'));
       this.trigger('close');
     },
     onKeyup: function(event) {

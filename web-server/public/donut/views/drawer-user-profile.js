@@ -2,11 +2,12 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'models/app',
   'common',
   'client',
   'models/current-user',
   '_templates'
-], function ($, _, Backbone, common, client, currentUser, templates) {
+], function ($, _, Backbone, app, common, client, currentUser, templates) {
   var DrawerUserProfileView = Backbone.View.extend({
 
     template: templates['drawer-user-profile.html'],
@@ -17,11 +18,10 @@ define([
     },
 
     initialize: function(options) {
-      this.mainView = options.mainView;
       this.user_id = options.user_id;
 
-      this.listenTo(this.mainView, 'userDeban', this.onUserBanChange);
-      this.listenTo(this.mainView, 'userBan',   this.onUserBanChange);
+      this.listenTo(app, 'userDeban', this.onUserBanChange);
+      this.listenTo(app, 'userBan',   this.onUserBanChange);
 
       // show spinner as temp content
       this.render();

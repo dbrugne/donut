@@ -19,7 +19,6 @@ define([
     },
 
     initialize: function(options) {
-      this.mainView = options.mainView;
       this.roomId = options.room_id;
 
       // show spinner as temp content
