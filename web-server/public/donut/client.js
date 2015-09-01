@@ -507,8 +507,8 @@ define([
         }
       );
     },
-    userLeave: function (username) {
-      var data = {username: username};
+    userLeave: function (userId) {
+      var data = {user_id: userId};
       pomelo.notify('chat.userLeaveHandler.call', data);
       debug('io:out:user:leave', data);
     },

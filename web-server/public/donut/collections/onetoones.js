@@ -63,15 +63,16 @@ define([
       var isNew = (this.get(user.user_id) === undefined)
         ? true
         : false;
+      var model;
       if (!isNew) {
         // already exist in IHM (maybe reconnecting)
-        var model = this.get(user.user_id);
+        model = this.get(user.user_id);
         model.set(oneData);
       } else {
         // add in IHM
         oneData.id = user.user_id;
         oneData.key = this._key(oneData.user_id, currentUser.get('user_id'));
-        var model = new OneToOneModel(oneData);
+        model = new OneToOneModel(oneData);
       }
 
       if (isNew) {
@@ -137,8 +138,8 @@ define([
         : c2+'-'+c1;
     },
 
-    onLeave: function(data) {
-      var model = this.get(data.username);
+    onLeave: function (data) {
+      var model = this.get(data.user_id);
       if (model) {
         this.remove(model);
       }

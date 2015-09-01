@@ -32,7 +32,7 @@ define([
       return this.get('username');
     },
     leave: function () {
-      client.userLeave(this.get('username'));
+      client.userLeave(this.get('user_id'));
     },
     onMessage: function (data) {
       var model = new EventModel({
