@@ -525,22 +525,30 @@ define([
       pomelo.request(
         'chat.userBanHandler.call',
         data,
-        function(response) {
-          if (response.err)
+        function (response) {
+          if (response.err) {
             return debug('io:in:user:ban error: ', response);
+          }
         }
       );
     },
-    userDeban: function(username) {
-      var data = { username: username };
+    userDeban: function (userId, username) {
+      var data;
+      if (userId) {
+        data = {user_id: userId};
+      } else if (username) {
+        data = {username: username};
+      } else {
+        return;
+      }
       debug('io:out:user:deban', data);
-      var that = this;
       pomelo.request(
         'chat.userDebanHandler.call',
         data,
-        function(response) {
-          if (response.err)
-              return debug('io:in:user:deban error: ', response);
+        function (response) {
+          if (response.err) {
+            return debug('io:in:user:deban error: ', response);
+          }
         }
       );
     },

@@ -305,20 +305,22 @@ define([
     },
     deblock: function(paramString, parameters) {
       var username;
+      var userId;
       // from a room
       if (this.model.get('type') !== 'onetoone') {
-        if (!paramString)
+        if (!paramString) {
           return this.errorCommand('deblock', 'commandaccess');
-        if (!parameters)
+        } if (!parameters) {
           return this.errorCommand('deblock', 'parameters');
+        }
 
         username = parameters[0].replace(/^@/, '');
       } else {
         // from a onetoone
-        username = this.model.get('username');
+        userId = this.model.get('user_id');
       }
 
-      client.userDeban(username);
+      client.userDeban(userId, username);
     },
     voice: function(paramString, parameters) {
       if (this.model.get('type') !== 'room')
