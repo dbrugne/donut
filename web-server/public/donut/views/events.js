@@ -393,7 +393,7 @@ define([
      *****************************************************************************************************************/
     onAdminMessage: function(data) {
       data = { data: data };
-      data.data.avatar = 'cloudinary=v1409643461/rciev5ubaituvx5bclnz.png'; // @todo : add avatar URL in configuration
+      data.data.avatar = '//res.cloudinary.com/roomly/image/upload/v1409643461/rciev5ubaituvx5bclnz.png'; // @todo : add avatar URL in configuration
       data.data.username = 'DONUT';
       data.data.is_admin = true;
       data.type = 'room:message';
