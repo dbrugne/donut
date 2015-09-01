@@ -54,6 +54,9 @@ define([
           return;
         } else if ( data.key == keyboard.LEFT || data.key == keyboard.RIGHT || data.isCtrl || data.isAlt || data.isMeta ) {
           this.cursorPosition = this.$editable.getCursorPosition();
+          if (!this.isClosed()) {
+            return this._closeRollup();
+          }
         }
       }
 
@@ -87,7 +90,7 @@ define([
         }
 
         // releasing UP / DOWN / TAB / LEFT / RIGHT : Do Nothing
-        if (data.key == keyboard.UP || data.key == keyboard.DOWN || data.key == keyboard.TAB || data.key == keyboard.LEFT || data.key == keyboard.RIGHT || data.isCtrl || data.isAlt || data.isMeta) {
+        if (data.key == keyboard.UP || data.key == keyboard.DOWN || data.key == keyboard.LEFT || data.key == keyboard.RIGHT || data.key == keyboard.TAB || data.isCtrl || data.isAlt || data.isMeta) {
           return;
         }
 
