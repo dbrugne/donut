@@ -40,8 +40,9 @@ define([
         data: data
       });
 
-      if (currentUser.get('user_id') != model.get('data').from_user_id)
+      if (currentUser.get('user_id') !== model.get('data').from_user_id) {
         model.set('unviewed', true);
+      }
 
       this.trigger('freshEvent', model);
     },
@@ -127,7 +128,7 @@ define([
       this.trigger('viewed', data);
     },
     sendMessage: function (message, images) {
-      client.userMessage(this.get('username'), message, images);
+      client.userMessage(this.get('user_id'), null, message, images);
     },
     resetNew: function () {
       if (this.isThereNew()) { // avoid redraw if nothing to change

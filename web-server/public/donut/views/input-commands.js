@@ -355,22 +355,20 @@ define([
       } else if (/^#/.test(parameters[1])) {
         model = rooms.getByName(parameters[1]);
       } else if (/^@/.test(parameters[1])) {
-        // @todo : allow userMessage to use both username and user_id
-        client.userMessage(parameters[1], message, null);
+        client.userMessage(null, parameters[1].replace(/^@/, ''), message, null);
         return;
       } else {
         return;
       }
 
-      if (!model)
+      if (!model) {
         return;
+      }
 
       if (model.get('type') === 'room') {
         client.roomMessage(model.get('id'), message, null);
-        return;
       } else if (model.get('type') === 'onetoone') {
-        // @todo : use user id
-        client.userMessage(model.get('username'), message, null);
+        client.userMessage(model.get('user_id'), null, message, null);
       }
     },
     profile: function(paramString, parameters) {

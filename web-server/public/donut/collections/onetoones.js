@@ -144,9 +144,9 @@ define([
         this.remove(model);
       }
     },
-    onMessage: function(data) {
+    onMessage: function (data) {
       var model = this.getModelFromEvent(data, true);
-      _.defer(function() { // cause view will be really added only on next tick
+      _.defer(function () { // cause view will be really added only on next tick
         model.onMessage(data);
       });
     },

@@ -552,18 +552,26 @@ define([
         }
       );
     },
-    userMessage: function (username, message, images, callback) {
-      var data = {username: username, message: message, images: images};
+    userMessage: function (userId, username, message, images, callback) {
+      var data = {message: message, images: images};
+      if (userId) {
+        data.user_id = userId;
+      } else if (username) {
+        data.username = username;
+      } else {
+        return;
+      }
       debug('io:out:user:message', data);
-      var that = this;
       pomelo.request(
         'chat.userMessageHandler.call',
         data,
         function (response) {
-          if (response.err)
+          if (response.err) {
             debug('io:in:user:message error: ', response);
-          if (_.isFunction(callback))
+          }
+          if (_.isFunction(callback)) {
             return callback(response);
+          }
         }
       );
     },
