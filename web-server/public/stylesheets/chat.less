@@ -441,7 +441,7 @@
     hr {
       margin-bottom: 13px;
     }
-    .page-sidebar-menu { margin:0; padding:0;
+    .page-sidebar-menu { margin:0; padding:0; .display-flex; .flex-flow(column nowrap); height:100%;
       #block-current-user { list-style: none; .clearfix; padding: 12px 8px 0 18px; position: relative; min-height: 72px;
         .avatar { float:left; position: relative; display: inline-block; width: 60px; height: 60px;
           img { width: 60px; height: 60px; }
@@ -481,19 +481,11 @@
     }
 
 
-    #block-discussions { overflow: auto; padding-bottom: 10px; height: -webkit-calc(~'100%' - 155px); height: -o-calc(~'100%' - 155px); height: calc(~'100%' - 155px);
+    #block-discussions { overflow: auto; padding-bottom: 0; margin-bottom: 25px; .flex(1); .scrollbar-grey-thin;
       ul { padding:0;
         li { list-style: none; padding:0; margin:0;position: relative; }
       } // #chat #left #block-discussions ul
-      .list {
-        overflow-y: auto;
-        height: -webkit-calc(~'100%' - 155px);
-        height: -o-calc(~'100%' - 155px);
-        height: calc(~'100%' - 155px);
-        margin-bottom: 0; margin-left: 5px; padding: 0 0 10px 0; background-repeat: no-repeat; background-position: left top; position: relative;
-
-        .scrollbar-white;
-
+      .list { overflow-y: auto; height: 100%; margin-bottom: 0; margin-left: 5px; padding: 0; background-repeat: no-repeat; background-position: left top; position: relative;
         .item { display: block; position: relative; padding: 8px 18px 6px; color: @cl-title;
           .avatar { position: absolute; top: 7px; left: 16px; width: 22px; height: 22px; }
           &[data-type="room"] {
@@ -1262,7 +1254,7 @@
         }
       }
       .side { float: right; width: @size-right; height: 100%; background-repeat: no-repeat; background-position: left top; margin: 0; padding: 0;
-        .blur { width: calc(@size-right-mid); position: relative; height: 100%; color: @cl-background; a { color: @cl-background; } hr { margin-left: 0; margin-right: 0; } font-size: 1.1em; .scrollbar-grey;
+        .blur { width: @size-right-mid; position: relative; height: 100%; color: @cl-background; a { color: @cl-background; } hr { margin-left: 0; margin-right: 0; } font-size: 1.1em; .scrollbar-grey;
           .users { position: relative; background-color: rgba(0, 0, 0, 0.2); padding: 10px 0 30px 0; height: 100%;
             .header { position: absolute;     white-space: nowrap; top: 14px; left: 16px; right: 10px;
               .count { .pull-left; }
@@ -1270,16 +1262,7 @@
               .actions { .pull-right; }
             }
             > hr { position: absolute; left: 14px; right: 14px; top: @header-height; }
-            .list { width: 208px; overflow-y: auto;
-              height: -webkit-calc(~'100%' - @header-height + 5px);
-              height: -o-calc(~'100%' - @header-height + 5px);
-              height: calc(~'100%' - @header-height + 5px);
-              margin-top: -webkit-calc(@header-height + 10px);
-              margin-top: -o-calc(@header-height + 10px);
-              margin-top: calc(@header-height + 10px);
-              margin-bottom: 0; margin-left: 5px; padding: 0 0 10px 0; background-repeat: no-repeat; background-position: left top; position: relative;
-              .scrollbar-white;
-
+            .list { width: 208px; overflow-y: auto; height: 100%; margin-top: (@header-height + 10px); margin-bottom: 0; margin-left: 5px; padding: 0 0 10px 0; background-repeat: no-repeat; background-position: left top; position: relative; .scrollbar-white;
               .title { margin-top: 15px; padding-left: 10px; }
               .item { position: relative; width: @size-user-item; padding-top: 10px; padding-left: 10px; font-size: 0.9em; font-weight: bold; white-space: nowrap; display: block;
                 .avatar { position: relative; display: inline-block; width: 34px; height: 34px; background-position: center center; background-size: 34px 34px; vertical-align: middle; }
