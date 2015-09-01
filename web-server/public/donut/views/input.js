@@ -23,7 +23,8 @@ define([
     events: {
       'keyup .editable'         : 'onKeyUp',
       'keydown .editable'       : 'onKeyDown',
-      'click .send'             : 'onSubmitMessage'
+      'click .send'             : 'onSubmitMessage',
+      'click .editable'         : 'onInputClicked'
     },
 
     initialize: function (options) {
@@ -99,6 +100,10 @@ define([
     onSubmitMessage: function(event) {
       event.preventDefault();
       this.sendMessage();
+    },
+
+    onInputClicked: function(event) {
+      this.model.trigger('input:clicked');
     },
 
     /*****************************************************************************************************************

@@ -26,6 +26,7 @@ define([
     initialize: function (options) {
       this.listenTo(this.model, 'inputKeyUp', this.onKeyUp);
       this.listenTo(this.model, 'inputKeyDown', this.onKeyDown);
+      this.listenTo(this.model, 'input:clicked', this.onRollupClose);
 
       var commands = [];
       _.each(options.commands, function(command, key){
