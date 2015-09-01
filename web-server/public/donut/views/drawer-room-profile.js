@@ -17,7 +17,6 @@ define([
       },
 
       initialize: function (options) {
-        this.mainView = options.mainView;
         this.roomName = options.name;
         this.roomId = options.room_id;
 
