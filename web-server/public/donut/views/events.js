@@ -579,7 +579,7 @@ define([
               newBlock = true;
             break;
           case 'message':
-            if (!previousElement.hasClass('message') || previousElement.data('username') != newModel.get('data').username) // @todo : migrate to user_id
+            if (!previousElement.hasClass('message') || previousElement.data('userId') !== newModel.get('data').user_id)
               newBlock = true;
             break;
         }
@@ -847,7 +847,7 @@ define([
       var $currentEventMessage = $(event.currentTarget).closest('.event');
       var $currentBlockMessage = $(event.currentTarget).closest('.message');
 
-      var username = $currentBlockMessage.data('username'); // @todo : migrate to user_id
+      var userId = $currentBlockMessage.data('userId');
 
       // get sibling .event
       var $candidate = $currentEventMessage[direction]();
@@ -856,7 +856,7 @@ define([
       // no sibling .event, try with sibling .block
       if (!$candidate.length && $candidateBlock.length) {
         var _lastBlock = $candidateBlock;
-        while((_lastBlock.data('username') !== username)) { // @todo : migrate to user_id
+        while((_lastBlock.data('userId') !== userId)) {
           if (!_lastBlock[direction]().length)
             return;
           _lastBlock = _lastBlock[direction]();
@@ -875,7 +875,7 @@ define([
     },
     pushUpFromInput: function() {
       var _lastBlock = this.$realtime.find('.block.message').last();
-      while(_lastBlock.data('username') !== currentUser.get('username')) { // @todo : migrate to user_id
+      while(_lastBlock.data('userId') !== currentUser.get('user_id')) {
         if (!_lastBlock.prev().length)
           return;
         _lastBlock = _lastBlock.prev();
