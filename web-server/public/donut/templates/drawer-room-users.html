@@ -1,6 +1,6 @@
 <div class="room">
     <span class="name"><%= room.name %></span>
-    <span class="owner"><%= t('global.by') %> <a class="open-user-profile dc-text" data-username="<%= room.owner.username %>">@<%= room.owner.username %></a></span>
+    <span class="owner"><%= t('global.by') %> <a class="open-user-profile dc-text" data-user-id="<%= room.owner.user_id %>">@<%= room.owner.username %></a></span>
 </div>
 <% if (room.owner) { %>
 <div class="form-group owner">
@@ -28,7 +28,7 @@
                 <td class="avatar"><img src="<%= op.avatarUrl %>"></td>
                 <td class="username">@<%=op.username%></td>
                 <td class="actions">
-                    <div class="deop" data-toggle="confirmation" data-action="deop-user" title="<%= t('chat.deop.infobox') %>" data-username="<%= op.username %>" data-user-id="<%= op.user_id %>">
+                    <div class="deop" data-toggle="confirmation" data-action="deop-user" title="<%= t('chat.deop.infobox') %>" data-user-id="<%= op.user_id %>">
                         <i class="icon icon-op"></i>
                     </div>
                 </td>
@@ -49,7 +49,7 @@
             <td class="avatar"><img src="<%= devoice.avatarUrl %>"></td>
             <td class="username">@<%=devoice.username%></td>
             <td class="actions">
-                <div class="voice" data-toggle="confirmation" data-action="devocice-user" title="<%= t('chat.voice.infobox') %>" data-username="<%= devoice.username %>" data-user-id="<%= devoice.user_id %>">
+                <div class="voice" data-toggle="confirmation" data-action="devocice-user" title="<%= t('chat.voice.infobox') %>" data-user-id="<%= devoice.user_id %>">
                     <i class="icon icon-microphone"></i>
                 </div>
             </td>
@@ -70,7 +70,7 @@
             <td class="avatar"><img src="<%= ban.avatarUrl %>"></td>
             <td class="username">@<%=ban.username%></td>
             <td class="actions">
-                <div class="deban" data-toggle="confirmation" data-action="deban-user" title="<%= t('chat.deban.infobox') %>" data-username="<%= ban.username %>" data-user-id="<%= ban.user_id %>">
+                <div class="deban" data-toggle="confirmation" data-action="deban-user" title="<%= t('chat.deban.infobox') %>" data-user-id="<%= ban.user_id %>">
                     <i class="icon icon-ban"></i>
                 </div>
             </td>
@@ -91,13 +91,13 @@
             <td class="avatar"><img src="<%= user.avatarUrl %>"></td>
             <td class="username">@<%=user.username%></td>
             <td class="actions">
-                <div class="op" data-toggle="confirmation" data-action="op-user" title="<%= t('chat.op.infobox') %>" data-username="<%= user.username %>" data-user-id="<%= user.user_id %>">
+                <div class="op" data-toggle="confirmation" data-action="op-user" title="<%= t('chat.op.infobox') %>" data-user-id="<%= user.user_id %>">
                     <i class="icon icon-op"></i>
                 </div>
-                <div class="kick" data-toggle="confirmation" data-action="kick-user" title="<%= t('chat.kick.infobox') %>" data-username="<%= user.username %>" data-user-id="<%= user.user_id %>">
+                <div class="kick" data-toggle="confirmation" data-action="kick-user" title="<%= t('chat.kick.infobox') %>" data-user-id="<%= user.user_id %>">
                     <i class="icon icon-kick"></i>
                 </div>
-                <div class="ban" data-toggle="confirmation" data-action="ban-user" title="<%= t('chat.ban.infobox') %>" data-username="<%= user.username %>" data-user-id="<%= user.user_id %>">
+                <div class="ban" data-toggle="confirmation" data-action="ban-user" title="<%= t('chat.ban.infobox') %>" data-user-id="<%= user.user_id %>">
                     <i class="icon icon-ban"></i>
                 </div>
             </td>

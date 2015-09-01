@@ -91,13 +91,13 @@ define([
       if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin())
         return false;
 
-      var username = $(event.currentTarget).data('username'); // @todo : migrate to user_id
-      if (!username)
+      var userId = $(event.currentTarget).data('userId');
+      if (!userId)
         return;
 
       var that = this;
       confirmationView.open({}, function() {
-        client.roomOp(that.model.get('id'), username);
+        client.roomOp(that.model.get('id'), userId, null);
         that.render();
       });
     },
