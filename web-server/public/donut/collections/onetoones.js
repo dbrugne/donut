@@ -19,7 +19,7 @@ define([
       return matches[0];
     },
 
-    initialize: function() {
+    initialize: function () {
       this.listenTo(client, 'user:message', this.onMessage);
       this.listenTo(client, 'user:me', this.onMe);
       this.listenTo(client, 'user:updated', this.onUpdated);
@@ -33,11 +33,11 @@ define([
       this.listenTo(client, 'user:message:edit', this.onMessageEdited);
       this.listenTo(client, 'user:typing', this.onTyping);
     },
-    join: function(username) {
+    join: function (username) {
       // we ask to server to open this one to one
       client.userJoin(username);
     },
-    onJoin: function(data) {
+    onJoin: function (data) {
       // server ask to client to open this one to one in IHM
       this.addModel(data);
     },
@@ -81,19 +81,19 @@ define([
 
       return model;
     },
-    getModelFromEvent: function(event, autoCreate) {
+    getModelFromEvent: function (event, autoCreate) {
       // @todo use user_id only
       if (!event.username) {
         var withUser;
-        if (currentUser.get('username') == event.from_username) {
+        if (currentUser.get('username') === event.from_username) {
           // i'm emitter
           withUser = {
-            username  : event.to_username,
-            user_id   : event.to_user_id,
-            avatar    : event.to_avatar,
-            color     : event.to_color
+            username: event.to_username,
+            user_id: event.to_user_id,
+            avatar: event.to_avatar,
+            color: event.to_color
           };
-        } else if (currentUser.get('username') == event.to_username) {
+        } else if (currentUser.get('username') === event.to_username) {
           // i'm recipient
           withUser = {
             username  : event.from_username,
@@ -107,7 +107,7 @@ define([
 
         var key = this._key(event.from_username, event.to_username);
       } else if (event.by_username) {
-        var key = (event.username == currentUser.get('username'))
+        var key = (event.username === currentUser.get('username'))
           ? this._key(event.by_username, currentUser.get('username'))
           : this._key(event.username, currentUser.get('username'));
       } else {

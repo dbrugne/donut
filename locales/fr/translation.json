@@ -506,7 +506,7 @@
         "roomtopic": "<a href=\"#room/__roomname__\">Nouveau sujet dans </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
         "roommessage": "<a href=\"#room/__roomname__\">Nouveaux messages dans </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
         "usermention": "<a href=\"#room/__roomname__\">Vous êtes mentionné dans </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
-        "usermessage": "<span class=\"name open-user-profile\" data-username=\"__username__\">@__username__</span>: <a href=\"#user/__username__\">__message__</a>"
+        "usermessage": "<span class=\"name open-user-profile\" data-user-id=\"__user_id__\">@__username__</span>: <a href=\"#user/__username__\">__message__</a>"
       },
       "desktop": {
         "roomop": "Vous êtes modérateur de __roomname__",

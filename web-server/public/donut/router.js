@@ -35,7 +35,7 @@ define([
       mainView.focusRoomByName('#'+name);
     },
 
-    focusOneToOne: function(username) {
+    focusOneToOne: function (username) {
       mainView.focusOneToOneByUsername(username);
     },
 

@@ -447,7 +447,6 @@ define([
       else
         return;
       debug('io:out:room:deban', data);
-      var that = this;
       pomelo.request(
         'chat.roomDebanHandler.call',
         data,
@@ -468,19 +467,19 @@ define([
       pomelo.request(
         'chat.roomMessageSpamHandler.call',
         data,
-        function(response) {
+        function (response) {
           if (response.err)
             return debug('io:in:room:message:spam: ', response);
         }
       );
     },
-    roomMessageUnspam: function(roomId, messageId) {
+    roomMessageUnspam: function (roomId, messageId) {
       var data = {room_id: roomId, event: messageId};
       debug('io:out:room:message:unspam', data);
       pomelo.request(
         'chat.roomMessageUnspamHandler.call',
         data,
-        function(response) {
+        function (response) {
           if (response.err)
             return debug('io:in:room:message:unspam: ', response);
         }
@@ -498,13 +497,13 @@ define([
     userJoin: function (username) {
       var data = {username: username};
       debug('io:out:user:join', data);
-      var that = this;
       pomelo.request(
         'chat.userJoinHandler.call',
         data,
         function (response) {
-          if (response.err)
+          if (response.err) {
             return debug('io:in:user:join error: ', response);
+          }
         }
       );
     },

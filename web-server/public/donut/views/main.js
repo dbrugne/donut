@@ -574,13 +574,12 @@ define([
     },
 
     // called by router only
-    focusOneToOneByUsername: function(username) {
+    focusOneToOneByUsername: function (username) {
       var model = onetoones.iwhere('username', username);
-      if (model == undefined) {
+      if (model === undefined) {
         // Not already open
         this.thisDiscussionShouldBeFocusedOnSuccess = username;
         onetoones.join(username);
-        return;
       } else {
         this.focus(model);
       }
