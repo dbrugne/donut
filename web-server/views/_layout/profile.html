@@ -1,6 +1,7 @@
 <%- partial('head') %>
 <% var color = (typeof room !== 'undefined' ? room.color : typeof _user !== 'undefined' ? _user.color : ''); %>
 <% color = (_.isString(color) ? color.replace('#','').toLowerCase() : 'default') %>
+<% var isLogged = (typeof user !== 'undefined' && typeof user.avatar !== 'undefined'); %>
 <body class="body-chat body-profile dc-<%= color %>">
 <div id="chat">
     <nav id="color" class="navbar navbar-default navbar-fixed-top dc-back">
@@ -83,16 +84,20 @@
                         <span class="avatar default">
                             <img src="<%= userDefaultAvatar %>" alt="default avatar">
                         </span>
-                        <span class="title hidden-sm hidden-xs">
-                            <span class="username"><a href="/login">Se connecter</a></span>
-                            <span class="username"><a href="/signup">S'inscrire</a></span>
+                        <span class="title hidden-sm hidden-xs ml70">
+                            <strong><span class="username"><a href="/login">Se connecter</a></span></strong>
+                            <strong><span class="username"><a href="/signup">S'inscrire</a></span></strong>
                         </span>
                     <% } %>
                 </li><!-- /#block-current-user -->
 
                 <li id="block-actions">
                     <hr>
-                    <a href="/login" class="go-to-search"><%= t('chat.actions.search') %></a> <%= t('global.or') %> <a href="/create" class="open-create-room"><%= t('chat.actions.create') %></a> <%= t('chat.actions.adonut') %>
+                    <% if (isLogged) { %>
+                        <a class="go-to-search"><%= t('chat.actions.search') %></a> <%= t('global.or') %> <a class="open-create-room"><%= t('chat.actions.create') %></a> <%= t('chat.actions.adonut') %>
+                    <% } else { %>
+                        <a href="/login"><%= t('chat.actions.search') %></a> <%= t('global.or') %> <a href="/create" class="open-create-room"><%= t('chat.actions.create') %></a> <%= t('chat.actions.adonut') %>
+                    <% } %>
                     <hr>
                 </li>
 
@@ -117,9 +122,7 @@
         <div id="center">
             <div class="discussion">
 
-
                 <%= content() %>
-
 
             </div>
         </div><!-- /#center -->

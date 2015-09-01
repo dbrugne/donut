@@ -1,4 +1,5 @@
 <% layout('profile') %>
+<% var isLogged = (typeof user !== 'undefined' && typeof user.avatar !== 'undefined'); %>
 
 <div class="side dc-back" style="<% if (typeof poster !== 'undefined') { %>background-image: url(<%= poster %>);<% }; %>">
     <div class="blur dc-back-darker " style="<% if (typeof poster !== 'undefined') { %>background-image: url(<%= poster %>);<% }; %>">
@@ -54,6 +55,34 @@
                 <% _.each(_user.roomsList, function(room) { print(partial('room', {room: room})); }); %>
             </div>
             <% } %>
+        </div>
+    </div>
+    <div class="input">
+        <div class="text-container">
+            <div class="overlay">
+                <span class="overlay-text">
+                    <% if(isLogged) { %>
+                        <a href="#user/<%= user.name %>" data-identifier="<%= user.name %>"><%= t('actions.discuss') %></a>
+                    <% } else { %>
+                        <a href="/signup"><%= t('actions.signup') %></a>
+                    <% } %>
+                </span>
+            </div>
+            <div class="text">
+                <textarea class="editable" maxlength="512"></textarea>
+                <% if (typeof user !== 'undefined' && typeof user.avatar !== 'undefined') { %>
+                <img class="avatar" src="<%= user.avatar %>">
+                <% } else { %>
+                <img class="avatar" src="<%= userDefaultAvatar %>" alt="default avatar">
+                <% } %>
+                <div class="actions">
+                    <a class="images add-image"><i class="icon icon-camera dc-text"></i></a>
+                    <a class="images add-smiley"><i class="icon icon-smile-o dc-text"></i></a>
+                </div>
+                <a class="send dc-back dc-border"><img src="/images/input-arrow.svg" alt="send message">
+                    <span class="arrow-bottom dc-border"></span>
+                </a>
+            </div>
         </div>
     </div>
 </div><!-- /.content -->
