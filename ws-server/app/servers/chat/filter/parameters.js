@@ -58,7 +58,7 @@ Filter.prototype.before = function(data, session, next) {
           'chat.roomCreateHandler.call',
           'chat.roomJoinHandler.call',
           'chat.roomReadHandler.call'
-        ].indexOf(data.__route__) !== -1)
+        ].indexOf(data.__route__) === -1)
         return callback(null);
 
       var q;
