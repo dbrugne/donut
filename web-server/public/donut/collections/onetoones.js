@@ -195,13 +195,14 @@ define([
 
       model.onDeban(data);
     },
-    onMessageEdited: function(data) {
+    onMessageEdited: function (data) {
       var model = this.getModelFromEvent(data, false);
-      if (!model)
+      if (!model) {
         return;
+      }
 
       model.trigger('messageEdit', data);
-     },
+    },
     onTyping: function(data) {
       var model = this.getModelFromEvent(data, false);
       if (!model)

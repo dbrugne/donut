@@ -589,8 +589,8 @@ define([
         }
       );
     },
-    userMessageEdit: function (username, messageId, message) {
-      var data = { username: username, event: messageId, message: message };
+    userMessageEdit: function (userId, messageId, message) {
+      var data = { user_id: userId, event: messageId, message: message };
       pomelo.notify('chat.userMessageEditHandler.call', data);
       debug('io:out:user:message:edit', data);
     },
