@@ -325,7 +325,7 @@ define([
       if (!parameters)
         return this.errorCommand('voice', 'parameters');
 
-      client.roomVoice(this.model.get('id'), parameters[1]);
+      client.roomVoice(this.model.get('id'), null, parameters[1]);
     },
     devoice: function(paramString, parameters) {
       if (this.model.get('type') !== 'room')

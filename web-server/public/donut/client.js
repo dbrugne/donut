@@ -355,8 +355,15 @@ define([
         }
       );
     },
-    roomVoice: function (roomId, userId) {
-      var data = {room_id: roomId, user_id: userId};
+    roomVoice: function (roomId, userId, username) {
+      var data = {room_id: roomId};
+      if (userId)
+        data.user_id = userId;
+      else if (username)
+        data.username = username;
+      else
+        return;
+
       debug('io:out:room:voice', data);
       var that = this;
       pomelo.request(

@@ -158,7 +158,7 @@ define([
       if (!userId)
         return;
 
-      client.roomVoice(this.model.get('id'), userId);
+      client.roomVoice(this.model.get('id'), userId, null);
     },
     devoiceUser: function(event) {
       event.preventDefault();
