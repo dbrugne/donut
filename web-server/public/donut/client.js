@@ -512,10 +512,16 @@ define([
       pomelo.notify('chat.userLeaveHandler.call', data);
       debug('io:out:user:leave', data);
     },
-    userBan: function(username) {
-      var data = { username: username };
+    userBan: function (userId, username) {
+      var data;
+      if (userId) {
+        data = {user_id: userId};
+      } else if (username) {
+        data = {username: username};
+      } else {
+        return;
+      }
       debug('io:out:user:ban', data);
-      var that = this;
       pomelo.request(
         'chat.userBanHandler.call',
         data,

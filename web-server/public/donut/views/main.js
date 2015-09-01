@@ -631,16 +631,17 @@ define([
       this.drawerView.close();
     },
 
-    userBan: function(event) {
+    userBan: function (event) {
       event.preventDefault();
 
-      var username = $(event.currentTarget).data('username'); // @todo : migrate to user_id
-      if (!username)
+      var userId = $(event.currentTarget).data('userId');
+      if (!userId) {
         return;
+      }
 
       var that = this;
       ConfirmationView.open({}, function () {
-        client.userBan(username);
+        client.userBan(userId, null);
         that.trigger('userBan');
       });
     },

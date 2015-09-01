@@ -280,24 +280,26 @@ define([
 
       client.roomDeban(this.model.get('id'), null, parameters[1]);
     },
-    block: function(paramString, parameters) {
-      var username;
+    block: function (paramString, parameters) {
+      var username = null;
+      var userId = null;
       // from a room
       if (this.model.get('type') !== 'onetoone') {
-        if (!paramString)
+        if (!paramString) {
           return this.errorCommand('block', 'commandaccess');
-        if (!parameters)
+        } if (!parameters) {
           return this.errorCommand('block', 'parameters');
+        }
 
         username = parameters[0].replace(/^@/, '');
       } else {
         // from a onetoone
-        username = this.model.get('username');
+        userId = this.model.get('user_id');
       }
 
       var that = this;
-      confirmationView.open({input : false}, function () {
-        client.userBan(username);
+      confirmationView.open({input: false}, function () {
+        client.userBan(userId, username);
         that.model.trigger('inputFocus');
       }, this.inputFocus());
     },
