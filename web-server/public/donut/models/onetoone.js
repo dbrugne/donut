@@ -121,7 +121,7 @@ define([
       });
     },
     viewedElements: function (elements) {
-      client.userViewed(this.get('username'), elements);
+      client.userViewed(this.get('user_id'), elements);
     },
     onViewed: function (data) {
       this.resetNew();

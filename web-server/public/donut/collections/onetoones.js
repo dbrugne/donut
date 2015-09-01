@@ -177,14 +177,19 @@ define([
 
       model.onUserOffline(data);
     },
-    onViewed: function(data) {
+    onViewed: function (data) {
       var model = this.getModelFromEvent(data, false);
+      if (!model) {
+        return;
+      }
+
       model.onViewed(data);
     },
     onBan: function(data) {
       var model = this.getModelFromEvent(data, false);
-      if (!model)
+      if (!model) {
         return;
+      }
 
       model.onBan(data);
     },

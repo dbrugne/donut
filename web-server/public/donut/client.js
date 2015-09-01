@@ -647,8 +647,8 @@ define([
         }
       );
     },
-    userViewed: function (username, events) {
-      var data = {username: username, events: events};
+    userViewed: function (userId, events) {
+      var data = {user_id: userId, events: events};
       pomelo.notify('chat.userViewedHandler.call', data);
       debug('io:out:user:viewed', data);
     },
