@@ -471,7 +471,7 @@
       }
     },
     "ping": {
-      "message": "La platforme DONUT a répondu en in __ms__ ms"
+      "message": "La platforme DONUT a répondu en __ms__ ms"
     },
     "notifications": {
       "hello": "Vous entrez dans",
