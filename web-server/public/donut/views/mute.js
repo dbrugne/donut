@@ -2,10 +2,11 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'models/app',
   'libs/donut-debug',
   'client',
   'models/current-user'
-], function ($, _, Backbone, donutDebug, client, currentUser) {
+], function ($, _, Backbone, app, donutDebug, client, currentUser) {
 
   var debug = donutDebug('donut:mute');
 
@@ -18,7 +19,6 @@ define([
     },
 
     initialize: function (options) {
-      this.mainView = options.mainView;
       this.listenTo(client, 'preferences:update', this.render);
 
       this.$icon = this.$el.find('.icon');
@@ -28,8 +28,7 @@ define([
       if (!currentUser.get('preferences')['browser:sounds']) {
         this.$icon.removeClass('icon-volume-up');
         this.$icon.addClass('icon-volume-off');
-      }
-      else {
+      } else {
         this.$icon.removeClass('icon-volume-off');
         this.$icon.addClass('icon-volume-up');
       }
@@ -38,7 +37,7 @@ define([
 
     onToggle: function (event) {
       event.preventDefault();
-      this.mainView.drawerView.close();
+      app.trigger('drawerClose');
       client.userPreferencesUpdate({
         'browser:sounds': !currentUser.shouldPlaySound()
       });
