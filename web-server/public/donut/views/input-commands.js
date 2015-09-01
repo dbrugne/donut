@@ -405,9 +405,6 @@ define([
         client.userMe(this.model.get('id'), parameters[1]);
     },
     ping: function(paramString, parameters) {
-      if (paramString)
-        return this.errorCommand('ping', 'parameters');
-
       var that = this;
       client.ping(function (duration) {
         var model = new EventModel({
@@ -418,9 +415,6 @@ define([
       });
     },
     clear: function(paramString, parameters) {
-      if (paramString)
-        return this.errorCommand('clear', 'parameters');
-
       this.model.trigger('clearHistory');
     },
     help: function(paramString, parameters, error) {

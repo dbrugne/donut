@@ -1,9 +1,11 @@
-if (process.env.NODE_ENV !== 'development')
+'use strict';
+if (process.env.NODE_ENV !== 'development') {
   require('newrelic');
+}
 
 var pomelo = require('pomelo');
 var logger = require('./pomelo-logger').getLogger('donut', __filename);
-var scheduler = require('./app/components/scheduler')
+var scheduler = require('./app/components/scheduler');
 var dispatcher = require('./app/util/dispatcher');
 var connector = require('./app/connector/sioconnector');
 var globalChannel = require('pomelo-globalchannel-plugin');
@@ -41,7 +43,7 @@ app.use(status, {status: {
 }});
 
 // app configuration
-app.configure('production|test|development', 'connector', function() {
+app.configure('production|test|development', 'connector', function () {
 
   // filters
   app.before(pomelo.toobusy());
@@ -49,20 +51,21 @@ app.configure('production|test|development', 'connector', function() {
 
   app.set('connectorConfig',
     {
-      connector : connector,
-      options   : socketIoOptions
+      connector: connector,
+      options: socketIoOptions
     });
 });
 
-var chatRoute = function(session, msg, app, cb) {
+var chatRoute = function (session, msg, app, cb) {
   var chatServers = app.getServersByType('chat');
-  if(!chatServers || chatServers.length === 0)
+  if (!chatServers || chatServers.length === 0) {
     return cb(new Error('can not find chat servers.'));
+  }
 
   var res = dispatcher.dispatch(session.uid, chatServers);
   cb(null, res.id);
 };
-app.configure('production|test|development', 'chat', function() {
+app.configure('production|test|development', 'chat', function () {
   // route configures
   app.route('chat', chatRoute);
 
@@ -74,7 +77,7 @@ app.configure('production|test|development', 'chat', function() {
 });
 
 // Scheduler
-app.configure('production|test|development', 'master', function() {
+app.configure('production|test|development', 'master', function () {
   app.load(scheduler, {});
 });
 
@@ -89,7 +92,7 @@ app.start();
 /**
  * uncaughtException handler
  */
-process.on('uncaughtException', function(err) {
+process.on('uncaughtException', function (err) {
   try {
     logger.fatal('Uncaught exception: ', err.stack);
   } catch (e) {
