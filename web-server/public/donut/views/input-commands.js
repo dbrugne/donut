@@ -254,7 +254,7 @@ define([
 
       var that = this;
       confirmationView.open({input: true}, function (reason) {
-        client.roomKick(that.model.get('id'), parameters[1], reason);
+        client.roomKick(that.model.get('id'), null, parameters[1], reason);
         that.model.trigger('inputFocus');
       }, this.inputFocus());
     },
