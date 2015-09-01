@@ -652,7 +652,7 @@ define([
       pomelo.notify('chat.userViewedHandler.call', data);
       debug('io:out:user:viewed', data);
     },
-    userTyping: function(userId) {
+    userTyping: function (userId) {
       var data = { user_id: userId };
       debug('io:out:user:typing', data);
       pomelo.notify('chat.userTypingHandler.call', data);
@@ -661,18 +661,18 @@ define([
     // PREFERENCES
     // ======================================================
 
-    userPreferencesRead: function (name, fn) {
-      var data = (name) ? {name: name} : {};
-      debug('io:out:preferences:read', data);
-      var that = this;
+    userPreferencesRead: function (roomId, fn) {
+      var data = (roomId) ? {room_id: roomId} : {};
+      debug('io:out:user:preferences:read', data);
       pomelo.request(
         'chat.preferencesReadHandler.call',
         data,
         function (response) {
-          if (response.err)
-            return debug('io:in:preferences:read error: ', response);
+          if (response.err) {
+            return debug('io:in:user:preferences:read error: ', response);
+          }
 
-          debug('io:in:preferences:read', response);
+          debug('io:in:user:preferences:read', response);
           return fn(response);
         }
       );

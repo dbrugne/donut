@@ -375,16 +375,18 @@ define([
         this.roomUsersView.show(model);
       }
     },
-    openRoomPreferences: function(event) {
+    openRoomPreferences: function (event) {
       event.preventDefault();
 
       var roomId = $(event.currentTarget).data('roomId');
-      if (!roomId)
+      if (!roomId) {
         return;
+      }
 
       var model = rooms.get(roomId);
-      if (!model)
+      if (!model) {
         return;
+      }
 
       var view = new DrawerRoomPreferencesView({ model: model });
       this.drawerView.setSize('450px').setView(view).open();
