@@ -171,7 +171,7 @@ define([
 
       var that = this;
       confirmationView.open({ input: true }, function(reason) {
-        client.roomDevoice(that.model.get('id'), userId, reason);
+        client.roomDevoice(that.model.get('id'), userId, null, reason);
       });
     },
 
