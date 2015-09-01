@@ -417,8 +417,14 @@ define([
         }
       );
     },
-    roomBan: function (roomId, userId, reason) {
-      var data = {room_id: roomId, user_id: userId};
+    roomBan: function (roomId, userId, username, reason) {
+      var data = {room_id: roomId};
+      if (userId)
+        data.user_id = userId;
+      else if (username)
+        data.username = username;
+      else
+        return;
       if (reason)
         data.reason = reason;
       debug('io:out:room:ban', data);

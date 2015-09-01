@@ -31,8 +31,8 @@ handler.call = function(data, session, next) {
 			if (!data.room_id)
 				return callback('room_id is mandatory');
 
-			if (!data.user_id)
-				return callback('user_id is mandatory');
+			if (!data.user_id && !data.username)
+				return callback('user_id or username is mandatory');
 
 			if (!room)
 				return callback('unable to retrieve room: ' + data.room_id);
