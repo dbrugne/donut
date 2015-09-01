@@ -596,12 +596,13 @@ define([
     },
     userRead: function (userId, username, fn) {
       var data = {};
-      if (userId)
+      if (userId) {
         data.user_id = userId;
-      else if (username)
+      } else if (username) {
         data.username = username;
-      else
+      } else {
         return;
+      }
 
       debug('io:out:user:read', data);
       pomelo.request(

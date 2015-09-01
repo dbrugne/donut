@@ -29,7 +29,7 @@
 <div class="users">
     <p class="title"><i class="icon icon-users"></i> <%= t('profile.room.ownerops') %></p>
     <% _.each(room.users_list, function(user) { %>
-    <div class="user open-user-profile <% if (user.isOwner) { %>owner<% }; %> <% if (user.isOp) { %>op<% }; %>" data-username="<%= user.username %>">
+    <div class="user open-user-profile <% if (user.isOwner) { %>owner<% }; %> <% if (user.isOp) { %>op<% }; %>" data-user-id="<%= user.user_id %>">
         <img class="avatar" src="<%= user.avatar %>" />
         <span class="username">@<%= user.username %></span>
     </div>

@@ -1,15 +1,15 @@
 <div class="side dc-back" <% if (poster) { %>style="background-image: url(<%= poster %>);"<% }; %>></div>
 <div class="content" id="onetoone">
     <div class="mini-header user visible-xs visible-sm <% if (banned === true) { %> is-banned <% } %>">
-        <img class="avatar open-user-profile dc-border-lighter" data-username="<%= username %>" src="<%= avatar %>" alt="<%= username %> avatar">
-        <span class="name open-user-profile dc-text-contrast" data-username="<%= username %>"><%= username %></span>
+        <img class="avatar open-user-profile dc-border-lighter" data-user-id="<%= user_id %>" src="<%= avatar %>" alt="<%= username %> avatar">
+        <span class="name open-user-profile dc-text-contrast" data-user-id="<%= user_id %>"><%= username %></span>
     </div>
     <div class="header user <% if (banned === true) { %> is-banned <% } %>">
-        <div class="avatar relative open-user-profile  hidden-xs hidden-sm" data-username="<%= username %>">
+        <div class="avatar relative open-user-profile  hidden-xs hidden-sm" data-user-id="<%= user_id %>">
             <img src="<%= avatar %>" alt="<%= username %> avatar">
         </div>
         <div class="info hidden-xs hidden-sm">
-            <span class="username open-user-profile" data-username="<%= username %>" data-user-id="<%= user_id %>">@<%= username %></span>
+            <span class="username open-user-profile" data-user-id="<%= user_id %>">@<%= username %></span>
             <div class="dropdown">
                 <button class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
                     <i class="icon icon-chevron-down hidden-xs hidden-sm"></i>
@@ -22,7 +22,7 @@
                         </a>
                     </li>
                     <li role="presentation">
-                        <a role="menuitem" tabindex="-1" class="open-user-profile" data-username="<%= username %>">
+                        <a role="menuitem" tabindex="-1" class="open-user-profile" data-user-id="<%= user_id %>">
                             <i class="icon icon-eye"></i> <%= t('global.viewprofile') %>
                         </a>
                     </li>
