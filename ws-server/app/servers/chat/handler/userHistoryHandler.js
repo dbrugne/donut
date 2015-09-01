@@ -22,12 +22,14 @@ handler.call = function(data, session, next) {
 
 	async.waterfall([
 
-		function check(callback) {
-			if (!data.username)
+		function check (callback) {
+			if (!data.user_id) {
 				return callback('username is mandatory');
+			}
 
-			if (!withUser)
+			if (!withUser) {
 				return callback('unable to retrieve withUser: ' + data.username);
+			}
 
 			return callback(null);
 		},
@@ -42,9 +44,9 @@ handler.call = function(data, session, next) {
 					return callback(err);
 
 				var historyEvent = {
-					username  : withUser.username,
-					history   : history.history,
-					more      : history.more
+					user_id: withUser._id,
+					history: history.history,
+					more: history.more
 				};
 				return callback(null, historyEvent);
 			});

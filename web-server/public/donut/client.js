@@ -631,16 +631,16 @@ define([
         }
       );
     },
-    userHistory: function (username, since, limit, fn) {
-      var data = {username: username, since: since, limit: limit};
+    userHistory: function (userId, since, limit, fn) {
+      var data = {user_id: userId, since: since, limit: limit};
       debug('io:out:user:history', data);
-      var that = this;
       pomelo.request(
         'chat.userHistoryHandler.call',
         data,
         function (response) {
-          if (response.err)
+          if (response.err) {
             return debug('io:in:user:history error: ', response);
+          }
 
           debug('io:in:user:history', response);
           return fn(response);

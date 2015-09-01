@@ -116,7 +116,7 @@ define([
       this.trigger('freshEvent', model);
     },
     history: function (since, callback) {
-      client.userHistory(this.get('username'), since, 100, function (data) {
+      client.userHistory(this.get('user_id'), since, 100, function (data) {
         return callback(data);
       });
     },
