@@ -705,7 +705,7 @@
     },
     "room": {
       "delete": {
-        "link": "To delete this donut <a class='open-room-delete' data-room-name=\"__name__\" data-room-id=\"__id__\"> click here</a>.",
+        "link": "To delete this donut <a class='open-room-delete' data-room-id=\"__id__\"> click here</a>.",
         "title": "Delete",
         "info": [
           "You are about to delete this donut. This action is immediate and cannot be undone.<br><br>",
