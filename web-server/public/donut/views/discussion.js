@@ -22,12 +22,12 @@ define([
 
     initialize: function(options) {
       debug.start('discussion-'+((this.model.get('name'))?this.model.get('name'):this.model.get('username')));
-      var start = Date.now();
+      //var start = Date.now();
       this.mainView = options.mainView;
 
       // Events
       this.listenTo(this.model, 'change:focused', this.updateFocus);
-      this.listenTo(this.model, 'resize', this.onResize);
+      //this.listenTo(this.model, 'resize', this.onResize);
 
       // Parent view rendering
       this.render();
@@ -103,7 +103,7 @@ define([
         this.hasBeenFocused = true;
 
         // resize and scroll down
-        this.onResize();
+        //this.onResize();
         if (this.eventsView.scrollWasOnBottom)
           this.eventsView.scrollDown(); // will trigger markVisibleAsViewed() implicitly
         else
@@ -139,17 +139,17 @@ define([
         this.mainView.color(this.model.get('color'));
     },
 
-    onResize: function() {
-      var $content = this.$el.find('.content');
-      var totalHeight = $content.outerHeight();
-      var headerHeight = $content.find('.header').outerHeight();
-
-      var inputHeight = this.inputView.$el.outerHeight();
-      var eventsHeight = totalHeight - (headerHeight + inputHeight); // 45px to push up the discussion frame
-
-      this.eventsView.resize(eventsHeight);
-      debug('resize call by window ('+totalHeight+', '+headerHeight+', '+inputHeight+', '+eventsHeight+')');
-    },
+    //onResize: function() {
+    //  var $content = this.$el.find('.content');
+    //  var totalHeight = $content.outerHeight();
+    //  var headerHeight = $content.find('.header').outerHeight();
+    //
+    //  var inputHeight = this.inputView.$el.outerHeight();
+    //  var eventsHeight = totalHeight - (headerHeight + inputHeight); // 45px to push up the discussion frame
+    //
+    //  this.eventsView.resize(eventsHeight);
+    //  debug('resize call by window ('+totalHeight+', '+headerHeight+', '+inputHeight+', '+eventsHeight+')');
+    //},
 
     onSend: function() {
       this.eventsView.scrollDown(); // scroll down automatically when I send a message

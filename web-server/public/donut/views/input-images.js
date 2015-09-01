@@ -94,11 +94,11 @@ define([
     },
     showPreview: function () {
       this.$preview.show();
-      this.model.trigger('resize');
+      //this.model.trigger('resize');
     },
     hidePreview: function () {
       this.$preview.hide();
-      this.model.trigger('resize');
+      //this.model.trigger('resize');
     }
 
   });

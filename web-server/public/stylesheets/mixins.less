@@ -143,6 +143,47 @@
   -ms-user-select: @value;
   user-select: @value;
 }
+.scrollbar-grey{
+  &::-webkit-scrollbar{ width: 8px; background-color: transparent; }
+  &::-webkit-scrollbar-thumb{ background-color: @cl-subtext30; border-radius:10px; min-height: 30px; }
+  &::-webkit-scrollbar-thumb:hover{ background-color: @cl-subtext30; }
+  &::-webkit-scrollbar-thumb:active{ background-color: @cl-subtext30; }
+  &::-webkit-scrollbar-track{ background-color: transparent; }
+}
+.scrollbar-white {
+  &::-webkit-scrollbar{ width: 5px; background-color: transparent; }
+  &::-webkit-scrollbar-thumb{ background-color: @cl-background; border-radius: 10px; min-height: 30px; }
+  &::-webkit-scrollbar-thumb:hover{ background-color: @cl-background; }
+  &::-webkit-scrollbar-thumb:active{ background-color: @cl-background; }
+  &::-webkit-scrollbar-track{ background-color: transparent; }
+}
+
+.display-flex {
+  display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
+  display: -moz-box;         /* OLD - Firefox 19- (buggy but mostly works) */
+  display: -ms-flexbox;      /* TWEENER - IE 10 */
+  display: -webkit-flex;     /* NEW - Chrome */
+  display: flex;             /* NEW, Spec - Opera 12.1, Firefox 20+ */
+}
+.flex(@value) {
+  -webkit-box-flex: @value;      /* OLD - iOS 6-, Safari 3.1-6 */
+  -moz-box-flex: @value;         /* OLD - Firefox 19- */
+  -webkit-flex: @value;          /* Chrome */
+  -ms-flex: @value;              /* IE 10 */
+  flex: @value;                  /* NEW, Spec - Opera 12.1, Firefox 20+ */
+}
+.flex-order(@value) {
+  -webkit-box-ordinal-group: @value;
+  -moz-box-ordinal-group: @value;
+  -ms-flex-order: @value;
+  -webkit-order: @value;
+  order: @value;
+}
+.flex-flow(@value) {
+  -webkit-flex-flow: @value;
+  flex-flow: @value;
+}
+
 .bounce-left {
   animation-name: bounce-left;
   animation-duration: 1s;
@@ -178,7 +219,6 @@
     transform: translate3d(49px,0,0);
   }
 }
-
 @keyframes bounce-left {
   0%, 20%, 53%, 80%, 100% {
     -webkit-animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
@@ -206,7 +246,6 @@
     transform: translate3d(49px,0,0);
   }
 }
-
 .bounce-left-delayed {
   animation-name: bounce-left-delayed;
   animation-duration: 4s;
@@ -242,7 +281,6 @@
     transform: translate3d(49px,0,0);
   }
 }
-
 @keyframes bounce-left-delayed {
   0%, 5%, 13%, 20%, 25%, 100% {
     -webkit-animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
@@ -270,7 +308,6 @@
     transform: translate3d(49px,0,0);
   }
 }
-
 .bounce-right-delayed {
   animation-name: bounce-right-delayed;
   animation-duration: 4s;
@@ -306,7 +343,6 @@
     transform: translate3d(-49px,0,0);
   }
 }
-
 @keyframes bounce-right-delayed {
   0%, 5%, 13%, 20%, 25%, 100% {
     -webkit-animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
