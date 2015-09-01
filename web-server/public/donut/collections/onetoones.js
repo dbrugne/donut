@@ -150,9 +150,9 @@ define([
         model.onMessage(data);
       });
     },
-    onMe: function(data) {
+    onMe: function (data) {
       var model = this.getModelFromEvent(data, true);
-      _.defer(function() { // cause view will be really added only on next tick
+      _.defer(function () { // cause view will be really added only on next tick
         model.onMe(data);
       });
     },

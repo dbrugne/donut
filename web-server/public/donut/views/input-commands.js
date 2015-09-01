@@ -397,14 +397,16 @@ define([
         });
       }
     },
-    me: function(paramString, parameters) {
-      if (!parameters)
+    me: function (paramString, parameters) {
+      if (!parameters) {
         return this.errorCommand('me', 'parameters');
+      }
 
-      if (this.model.get('type') === 'room')
+      if (this.model.get('type') === 'room') {
         client.roomMe(this.model.get('id'), parameters[1]);
-      else
+      } else {
         client.userMe(this.model.get('id'), parameters[1]);
+      }
     },
     ping: function(paramString, parameters) {
       var that = this;

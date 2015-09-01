@@ -575,17 +575,17 @@ define([
         }
       );
     },
-    userMe: function (username, message, callback) {
-      var data = {username: username, message: message};
+    userMe: function (userId, message, callback) {
+      var data = {user_id: userId, message: message};
       debug('io:out:user:me', data);
-      var that = this;
       pomelo.request(
         'chat.userMeHandler.call',
         data,
         function (response) {
           debug('io:in:user:me', response);
-          if (_.isFunction(callback))
+          if (_.isFunction(callback)) {
             return callback(response);
+          }
         }
       );
     },

@@ -25,20 +25,23 @@ handler.call = function(data, session, next) {
 
   async.waterfall([
 
-    function check(callback) {
-      if (!data.username)
-        return callback('username is mandatory');
+    function check (callback) {
+      if (!data.user_id) {
+        return callback('user_id is mandatory');
+      }
 
-      if (!withUser)
-        return callback('unable to retrieve withUser: ' + data.username);
+      if (!withUser) {
+        return callback('unable to retrieve withUser: ' + data.user_id);
+      }
 
-      if (withUser.isBanned(user.id))
+      if (withUser.isBanned(user.id)) {
         return callback('user is banned by withUser');
+      }
 
       return callback(null);
     },
 
-    function persistOnBoth(callback) {
+    function persistOnBoth (callback) {
       user.update({$addToSet: { onetoones: withUser._id }}, function(err) {
         if (err)
           return callback(err);
@@ -48,7 +51,7 @@ handler.call = function(data, session, next) {
       });
     },
 
-    function prepareMessage(callback) {
+    function prepareMessage (callback) {
       // text filtering
       var message = inputUtil.filter(data.message, 512);
 
@@ -61,7 +64,7 @@ handler.call = function(data, session, next) {
       });
     },
 
-    function historizeAndEmit(message, callback) {
+    function historizeAndEmit (message, callback) {
       var event = {
         from_user_id  : user.id,
         from_username : user.username,
@@ -70,16 +73,16 @@ handler.call = function(data, session, next) {
         to_username   : withUser.username,
         message: message
       };
-      oneEmitter(that.app, { from: user._id, to: withUser._id } , 'user:me', event, callback);
+      oneEmitter(that.app, { from: user._id, to: withUser._id }, 'user:me', event, callback);
     },
 
-    function notification(event, callback) {
+    function notification (event, callback) {
       Notifications(that.app).getType('usermessage').create(withUser, event.id, function(err) {
         return callback(err, event);
       });
     },
 
-    function tracking(event, callback) {
+    function tracking (event, callback) {
       var messageEvent = {
         session: {
           id: session.settings.uuid,
@@ -107,7 +110,7 @@ handler.call = function(data, session, next) {
       });
     }
 
-  ], function(err) {
+  ], function (err) {
     if (err) {
       logger.error('[user:me] ' + err);
       return next(null, { code: 500, err: err });
