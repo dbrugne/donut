@@ -40,8 +40,6 @@ define([
 
       this.unread = 0;
       this.more = false;
-      this.mainView = options.mainView;
-
       this.render();
     },
     initializeNotificationState: function (data) {

@@ -1,8 +1,9 @@
 define([
   'jquery',
   'underscore',
-  'backbone'
-], function ($, _, Backbone) {
+  'backbone',
+  'models/app'
+], function ($, _, Backbone, app) {
   var DrawerView = Backbone.View.extend({
 
     defaultSize: '280px',
@@ -20,8 +21,6 @@ define([
     },
 
     initialize: function(options) {
-      this.mainView = options.mainView;
-
       this.$opacity = this.$el.find('.opacity').first();
       this.$wrap = this.$el.find('.wrap').first();
       this.$content = this.$el.find('.content').first();
@@ -29,7 +28,7 @@ define([
       this.shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
       this.longhandRegex = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i;
 
-      this.listenTo(this, 'hidden', this.onHidden);
+      this.listenTo(app, 'drawerClose', this.close);
     },
     render: function() {
       return this; // drawer container is already in DOM,
@@ -59,16 +58,12 @@ define([
     close: function() {
       this._hide();
     },
-    onHidden: function(event) {
-      if (this.contentView)
-        this.contentView.remove();
-    },
     color: function(color) {
       color = (this._validHex(color))
           ? color
           : this.defaultColor;
 
-      this.mainView.color(color, true);
+      app.trigger('changeColor', color, true);
     },
     detectOutsideClick: function(event) {
       var subject = this.$el.find('.content').first();
@@ -127,8 +122,10 @@ define([
           that.$wrap.css('left', '-10000px');
           that.$el.hide();
           if (wasShown)
-            that.mainView.color('', false, true);
-          that.trigger('hidden');
+            app.trigger('changeColor', '', false, true);
+          if (that.contentView) {
+            that.contentView.remove();
+          }
         }
       });
     },

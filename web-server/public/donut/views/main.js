@@ -101,19 +101,19 @@ define([
       this.listenTo(app,         'openRoomProfile', this.openRoomProfile);
       this.listenTo(app,         'openUserProfile', this.openUserProfile);
       this.listenTo(app,         'joinRoom', this.focusRoomByName);
-
-
+      this.listenTo(app,         'changeColor', this.onChangeColor);
+      this.listenTo(app,         'persistPositions', this.persistPositions);
     },
     run: function() {
       // generate and attach subviews
       this.currentUserView = new CurrentUserView({model: currentUser});
-      this.discussionsBlock = new DiscussionsBlockView({mainView: this});
-      this.drawerView = new DrawerView({mainView: this});
-      this.alertView = new AlertView({mainView: this});
-      this.connectionView = new ConnectionModalView({mainView: this});
-      this.welcomeView = new WelcomeModalView({mainView: this});
-      this.notificationsView = new NotificationsView({mainView: this});
-      this.muteView = new MuteView({mainView: this});
+      this.discussionsBlock = new DiscussionsBlockView();
+      this.drawerView = new DrawerView();
+      this.alertView = new AlertView();
+      this.connectionView = new ConnectionModalView();
+      this.welcomeView = new WelcomeModalView();
+      this.notificationsView = new NotificationsView();
+      this.muteView = new MuteView();
       this.roomUsersView = new RoomUsersModalView();
 
       // @debug
@@ -219,7 +219,6 @@ define([
         return (css.match (/(dc-\S+)+/g) || []).join(' ');
       }).addClass('dc-'+color.replace('#', '').toLowerCase());
     },
-
     color: function(color, temporary, reset) {
       if (reset)
         return this._color(this.currentColor);
@@ -230,6 +229,9 @@ define([
         this.currentColor = color;
 
       return this._color(color);
+    },
+    onChangeColor: function(color, temporary, reset) {
+      this.color(color, temporary, reset);
     },
 
     viewportIs: function (expression) {
