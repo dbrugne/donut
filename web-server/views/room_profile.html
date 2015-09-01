@@ -2,6 +2,7 @@
 <% var roomOpsLength = (typeof room.op !== 'undefined' ? room.op.length : 0 ) %>
 <% var roomUsersLength = (typeof room.users !== 'undefined' ? room.users.length : 0 ) %>
 <% var isLogged = (typeof user !== 'undefined' && typeof user.avatar !== 'undefined'); %>
+<% var roomName = room.name.replace('#','') %>
 
 <div class="side dc-back" style="<% if (poster) { %>background-image: url(<%= poster %>);<% }; %>">
     <div class="blur dc-back-darker" style="<% if (posterBlured) { %>background-image: url(<%= posterBlured %>);<% }; %>">
@@ -50,19 +51,26 @@
 </div><!-- /.side -->
 <div class="content">
     <div class="mini-header room visible-xs visible-sm">
-        <img class="avatar open-room-profile dc-border-lighter" data-room-name="<%= room.name %>" src="<%= room.avatar %>" alt="<%= room.name %> avatar">
-        <span class="name open-room-profile dc-text-contrast" data-room-name="<%= room.name %>"><%= room.name %></span>
+        <a href="/room/<%= roomName %>"><img class="avatar dc-border-lighter" data-room-name="<%= room.name %>" src="<%= room.avatar %>" alt="<%= room.name %> avatar"></a>
+        <a href="/room/<%= roomName %>" class="name dc-text-contrast"><%= room.name %></a>
     </div>
     <div class="header room">
         <div class="overlay-ctn">
-            <img class="avatar open-room-profile" data-room-name="<%= room.name %>" src="<%= room.avatar %>" alt="<%= room.name %> avatar">
-            <p class="join"><a class="dc-back dc-text-contrast" href="<%= room.join %>"><%= t('actions.join') %> <% if (room.usersCount) { %><%= room.usersCount %><% } %> <i class="icon icon-user-custom"></i></a></p>
+            <a href="/room/<%= roomName %>"><img class="avatar" data-room-name="<%= room.name %>" src="<%= room.avatar %>" alt="<%= room.name %> avatar"></a>
+            <p class="join"><a class="dc-back dc-text-contrast" href="<% if (!user) { %><%= room.join %><% } else { %><%= room.chat %><% } %>"><%= t('actions.join') %> <% if (room.usersCount) { %><%= room.usersCount %><% } %> <i class="icon icon-user-custom"></i></a></p>
         </div>
         <div class="info">
-            <span class="name open-room-profile" data-room-name="<%= room.name %>"><%= room.name %></span>
+            <a href="/room/<%= roomName %>" class="name"><%= room.name %></a>
+            <div class="share">
+                <%= t('chat.share.label') %>
+                <i class="facebook icon icon-facebook-square" data-url="<%- room.url %>" data-name="<%- room.name %>" data-avatar="<%- room.avatar %>"></i>
+                <i class="twitter icon icon-twitter-square" data-url="<%- room.url %>" data-name="<%- room.name %>"></i>
+                <i class="googleplus icon icon-google-plus-square" data-url="<%- room.url %>"></i>
+            </div>
             <% if (room.owner && room.owner.username) { %>
+                <br>
                 <span class="owner">
-                    <%= t('global.by') %>&nbsp;<a href="<%= room.owner.url %>">@<%= room.owner.username %></a>
+                    <%= t('global.by') %>&nbsp;<a class="dc-text" href="<%= room.owner.url %>">@<%= room.owner.username %></a>
                 </span>
             <% } %>
             <% if (room.website && room.website.href) { %>
@@ -73,12 +81,6 @@
                     </a>
                 </span>
             <% } %>
-            <div class="share">
-                <%= t('chat.share.label') %>
-                <i class="facebook icon icon-facebook-square" data-url="<%- room.url %>" data-name="<%- room.name %>" data-avatar="<%- room.avatar %>"></i>
-                <i class="twitter icon icon-twitter-square" data-url="<%- room.url %>" data-name="<%- room.name %>"></i>
-                <i class="googleplus icon icon-google-plus-square" data-url="<%- room.url %>"></i>
-            </div>
             <% if (room.description) { %>
                 <div class="description">
                     <p class="description-content"><%= room.description %></p>

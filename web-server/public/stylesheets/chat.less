@@ -1,7 +1,4 @@
-.body-chat { height: 100%; overflow-y: hidden; .ft-opensans;
-  a { color: @text-color; }
-  a:hover { color: @text-color; }
-}
+.body-chat { height: 100%; overflow-y: hidden; .ft-opensans; }
 .tooltip-home-users { padding: 0 !important; margin-left: 0 !important; margin-top: -2px;
   .tooltip-inner {     background-color: transparent; padding: 0; border: 0; max-width: initial; border-radius: 0;
     .username {     max-width: 200px; padding: 3px 8px; color: #fff; border-top-left-radius: 4px; border-bottom-left-radius: 4px; line-height: 24px; font-size: 12px; text-align: center; }
@@ -217,11 +214,11 @@
       width: 100%;
       padding-left: 7px;
       padding-right: 0;
-      .navbar-brand-a { height: auto; padding: 5px 15px 0 0; float:left;
+      .navbar-brand-a { height: auto; padding: 0 15px 0 10px; float:left;
         &:hover { text-decoration: none; }
-        .logo { display: inline-block; width: 130px; }
+        .logo { display: inline-block; width: 148px; }
         .beta { vertical-align: bottom; height: @size-color; color: @cl-background; .ft-raleway-medium; font-size: 13px; padding-left: 0px; padding-top: 18px; text-decoration: none; }
-      }
+      } // #chat #color .container .navbar-brand-a
       .navbar-nav-ul>li>a { color:#FFF;
         &:hover { text-decoration:underline; }
       }
@@ -643,10 +640,10 @@
           } // #chat #center .discussion .content .header .info
           &.room { min-height: 135px;
             .overlay-ctn {
-              .avatar { position: absolute; width: 100px; height: 100px; }
+              .avatar { position: absolute; width: 100px; height: 100px; border: 5px solid rgba(167,167,167,0.2); } // #chat #center .discussion .content .header.room .overlay-ctn .avatar
               .overlay { height: 100px; width: 100px; top:0; .border-radius(50%); }
               .overlay-text { width: 100px; top: 40px; }
-            }
+            } // #chat #center .discussion .content .header.room .overlay-ctn
             .info {
               .name { display: inline-block; margin-top: 2px; font-size: 2.2em; } #chat #center .discussion .content .header.room .info .name
               .owner { display: inline-block; font-size: 1.2em; }
@@ -674,7 +671,7 @@
             .show-if-banned { display:none; }
             &.is-banned .show-if-banned { display:initial; }
             &.is-banned .show-if-unbanned { display:none; }
-            &.is-banned .avatar::before { font-family: Donut; content: '\f002'; position: absolute; font-size: 80px; color: rgba(119, 119, 119, 0.75); top: 0; left: 0; line-height: 70px; }
+            &.is-banned .avatar::before { font-family: Donut; content: '\f002'; position: absolute; font-size: 90px; color: rgba(119, 119, 119, 0.75); top: 0; line-height: 90px; left:6px; }
             .avatar { position: absolute; width: 100px; height: 100px;
               img { width:100%; }
             }
@@ -1362,14 +1359,12 @@
       overflow-x: hidden;
       padding-right: 10px;
     }
-
     .errors {
       .alert;
       .alert-warning;
       display: none;
       font-size: 1.1em;
     }
-
     .opacity {
       width: 100%;
       height: 100%;
@@ -1401,7 +1396,6 @@
         }
       }
     } // #chat #drawer .opacity
-
     #room-create, #room-delete {
       padding-left: 10px;
       .room {
@@ -1481,8 +1475,8 @@
       .scrollbar;
       text-align: center;
       .room { position: relative;
-        .overlay-ctn { width: 100px; height: 100px; margin: 0 auto;
-          .overlay { top:0; .border-radius(50%); }
+        .overlay-ctn { width: 90px; height: 90px; margin: 0 auto;
+          .overlay { top:0; .border-radius(50%); height: 90px; }
           .overlay-text { top: 40px; }
         } // #chat #drawer #room-profile .room .overlay-ctn
         .name {
@@ -1692,8 +1686,8 @@
         font-size: 1.1em;
       }
       .email-container { margin-bottom: 10px; }
-      a {
-        text-decoration: underline;
+      a { text-decoration: none; font-weight:bold;
+        &:hover { text-decoration:underline; }
       }
       .alert-danger, .alert-success {
         background-color: transparent;
@@ -1738,7 +1732,7 @@
         i { color: #ffffff; }
         span { color: #ffffff; text-decoration: underline; }
       }
-    }
+    } // #chat #drawer #user-account
     #room-users, #user-preferences {
       .room {
         margin-bottom: 15px;
@@ -1849,6 +1843,10 @@
           display: block;
         }
       }
+    }
+    a { font-weight:bold; text-decoration:none;
+      &:hover { text-decoration:underline; }
+      &.dc-back:hover { text-decoration:none; }
     }
   } // #chat #drawer
 }

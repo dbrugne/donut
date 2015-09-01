@@ -2,7 +2,7 @@
 <div class="content" id="onetoone">
     <div class="mini-header user visible-xs visible-sm <% if (banned === true) { %> is-banned <% } %>">
         <img class="avatar open-user-profile dc-border-lighter" data-username="<%= username %>" src="<%= avatar %>" alt="<%= username %> avatar">
-        <span class="name open-user-profile dc-text-contrast" data-username="<%= username %>"><%= username %></span>
+        <span class="name open-user-profile dc-text-contrast" data-username="<%= username %>">@<%= username %></span>
     </div>
     <div class="header user <% if (banned === true) { %> is-banned <% } %>">
         <div class="avatar relative open-user-profile  hidden-xs hidden-sm" data-username="<%= username %>">

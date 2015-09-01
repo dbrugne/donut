@@ -167,7 +167,7 @@
     .dc-text { color: @color !important; }
     .dc-back { background-color: @color !important; }
     .dc-back-opacity { background-color: fade(@color, 60%) !important; }
-    .dc-back-darker { background-color: darken(@color, 5%) !important; }
+    .dc-back-darker { background-color: darken(@color, 10%) !important; }
     .dc-text-contrast { .color-text(@color) !important; }
     .dc-border { border-color: @color !important; }
     .dc-border-lighter { border-color: lighten(@color, 10%) !important; }
@@ -189,6 +189,6 @@
 }
 
 .color-text (@a) when (lightness(@a) >= 60%) { color: @cl-text; }
-.color-text (@a) when (lightness(@a) < 60%)  { color: @cl-clouds; }
+.color-text (@a) when (lightness(@a) < 60%)  { color: @cl-subtext0; }
 
 .color-loop(length(@HKS_colors));

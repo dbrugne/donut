@@ -6,22 +6,26 @@
   }
   #chat #left .page-sidebar-menu {
     #block-current-user {
-      .title { margin-top: 9px; display: block; }
-      .avatar .username { overflow: hidden; text-overflow: ellipsis; font-weight: bold; margin-left: 5px; cursor:default;  }
+      .title { margin-top: 9px; display: block;
+        .username a { color:@cl-subtext50; }
+      }
+      .avatar .username { overflow: hidden; text-overflow: ellipsis; font-weight: bold; margin-left: 5px; color:@cl-subtext50;  } // .body-chat.body-profile #chat #left .page-sidebar-menu #block-current-user .avatar .username
       > ul > li {
         .dropdown-user-actions {  position: absolute; top: 43px; left: 90px;
           button { display:none; }
           .dropdown-menu { display:block; .box-shadow(none); border:0;  background-color: transparent;
-            a {     padding: 0; background-color: transparent; }
+            a { padding: 0; background-color: transparent; display:inline;
+              &:hover { text-decoration:underline; }
+            }
           }
         }
       }
     }
     #block-discussions .list { margin-left:0;
-      a { font-weight:bold; }
+      a { font-weight:bold; color:@cl-subtext50; } // .body-chat.body-profile #chat #left .page-sidebar-menu #block-discussions .list a
     }
   }
-  #chat #center .discussion .content { overflow:auto; padding-top: 55px; padding-left: 50px; padding-bottom: 40px;
+  #chat #center .discussion .content { overflow:auto; padding-top: 50px; padding-left: 50px; padding-bottom: 0;
     .events { margin-top: 20px; padding-top: 20px; }
     .title { display: block; font-family: 'Raleway',sans-serif; font-weight: 900; font-size: 2em; margin-bottom: 10px; }
     .discuss { position: absolute; top: 180px; margin: 0; float: left; text-align: center; width: 100%;
@@ -35,7 +39,9 @@
        }
      }
     .header { padding-top: 0; min-height: 250px;
-      .info { min-height: 230px; margin-left: 160px; padding-left: 30px; padding-top: 20px; }
+      .info { min-height: 230px; margin-left: 160px; padding-left: 30px; padding-top: 20px;
+        .share { cursor:default;     font-size: 14px; }
+      }
       &.room {
         .overlay-ctn { float: left; width: 169px;
           .avatar { width: 160px; height: 160px; position: relative; float: left; }
@@ -45,11 +51,12 @@
         }
         .info {
           .name { margin-left: 0; font-size: 50px; }
+          .owner a:hover { text-decoration:none; }
           .owner, .separation, .website { font-size: 18px; }
           .description { margin-top: 20px; margin-bottom: 20px; max-width: 500px;
             .description-content {     font-size: 15px; font-style: italic; font-weight: 300; }
           }
-        }
+        } // .body-chat.body-profile #chat #center .discussion .content .header.room .info
       }
       &.user {
         .overlay-ctn { float: left; width: 169px;
@@ -57,15 +64,17 @@
         }
         .bio { margin-bottom:5px; }
         .info { margin-left: 170px;
-          .username { font-size: 50px; margin: 0; }
+          .username { font-size: 50px; margin: 0;
+            &:hover { text-decoration:none; }
+          }
           .owner, .separation, .website, .location { font-size: 18px; }
           .bio { margin-top: 20px; margin-bottom: 20px; max-width: 500px;
             .bio-content { font-size: 15px; font-style: italic; font-weight: 300; }
           }
-        }
-      }
-    }
-  }
+        } // .body-chat.body-profile #chat #center .discussion .content .header.user .info
+      } // .body-chat.body-profile #chat #center .discussion .content .header.user
+    } // .body-chat.body-profile #chat #center .discussion .content .header
+  } // .body-chat.body-profile #chat #center .discussion .content
 }
 .body-profile { height: 100%; .ft-opensans; background-color: @cl-background; background-repeat: no-repeat; background-position: 0 @size-color;
   .upon { position: fixed; left: 0; right: 0; top: @size-color; }
@@ -162,8 +171,8 @@
   .body-chat.body-profile #chat #left .page-sidebar-menu #block-current-user.open .sub-menu { display: block !important; }
   .body-chat.body-profile #chat #left .page-sidebar-menu #block-current-user>ul>li .dropdown-user-actions { position: relative; right: initial; left:initial; top: 0; }
   .body-chat.body-profile #chat #left .page-sidebar-menu #block-current-user>ul>li .dropdown-user-actions .dropdown-menu { background-color: @cl-subtext10; .box-shadow(0 6px 12px rgba(0,0,0,0.175)); }
-  .body-chat.body-profile #chat #left .page-sidebar-menu #block-current-user>ul>li .dropdown-user-actions .dropdown-menu a {     padding: 5px 10px; }
-  .body-chat.body-profile #chat #center .discussion .content { padding-top: 0; padding-left: 0; padding-bottom: 0; }
+  .body-chat.body-profile #chat #left .page-sidebar-menu #block-current-user>ul>li .dropdown-user-actions .dropdown-menu a { padding: 5px 10px; }
+  .body-chat.body-profile #chat #center .discussion .content { padding-top: 0; padding-left: 0; }
   .body-chat.body-profile #chat #center .discussion .content .header { min-height: initial; }
   .body-chat.body-profile #chat #center .discussion .content .header .info { min-height: initial; margin-left: 0; }
   .body-chat.body-profile #chat #center .discussion .content .header.room .overlay-ctn .avatar { width: 30px; height: 30px; float:none; position:absolute; }
@@ -175,7 +184,7 @@
 }
 
 @media screen and (max-width: @screen-lg-min) {
-  .body-chat.body-profile #chat #center .discussion .content { padding-top:30px; padding-left:15px; padding-bottom:0;
+  .body-chat.body-profile #chat #center .discussion .content { padding-top:15px; padding-left:15px; padding-bottom:0;
     .header.room, .header.user { min-height: 180px;
       .overlay-ctn { width: 120px;
         .avatar { width: 120px; height: 120px; }
