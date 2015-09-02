@@ -3,7 +3,7 @@
 <% color = (_.isString(color) ? color.replace('#','').toLowerCase() : 'default') %>
 <body class="body-chat body-profile dc-<%= color %>">
 <div id="chat">
-    <nav id="color" class="navbar navbar-default navbar-fixed-top dc-back">
+    <nav id="color" class="navbar navbar-fixed-top dc-back">
         <div class="container">
             <div id="navbar">
                 <a class="navbar-brand-a hidden-xs hidden-sm" href="/"><img class="logo" src="/images/logo-bordered-small.png" alt="<%= t('title.chat') %>"> <span class="beta">alpha</span></a>
@@ -37,9 +37,9 @@
                         <span class="avatar hidden-sm hidden-xs" data-username="<%= user.username %>">
                             <img src="<%= user.avatar %>" alt="<%= user.username %> avatar">
                             <span class="title hidden-sm hidden-xs">
-                                <span class="username">
+                                <a href="/user/<%= user.username %>" class="username">
                                     @<%= user.username %>
-                                </span>
+                                </a>
                             </span>
                             <span class="selected"></span>
                             <span class="arrow"></span>
@@ -52,7 +52,7 @@
                                         <i class="icon icon-chevron-down"></i>
                                     </button>
                                     <ul class="dropdown-menu" role="menu" aria-labelledby="settingsDropdown">
-                                        <li role="presentation"><a role="menuitem" tabindex="-1" href="/logout"><i class="icon icon-power-off"></i> <%= t('actions.logout') %></a></li>
+                                        <li role="presentation"><i class="icon icon-power-off"></i>&nbsp;<a role="menuitem" tabindex="-1" href="/logout"><%= t('actions.logout') %></a></li>
                                     </ul>
                                 </div>
                             </li>
@@ -83,16 +83,17 @@
                         <span class="avatar default">
                             <img src="<%= userDefaultAvatar %>" alt="default avatar">
                         </span>
-                        <span class="title hidden-sm hidden-xs">
-                            <span class="username"><a href="/login">Se connecter</a></span>
-                            <span class="username"><a href="/signup">S'inscrire</a></span>
+                        <span class="title hidden-sm hidden-xs ml70">
+                            <strong><span class="username"><a href="/login">Se connecter</a></span></strong>
+                            <strong><span class="username"><a href="/signup">S'inscrire</a></span></strong>
                         </span>
                     <% } %>
+                    <hr class="visible-xs visible-sm">
                 </li><!-- /#block-current-user -->
 
                 <li id="block-actions">
                     <hr>
-                    <a href="/login" class="go-to-search"><%= t('chat.actions.search') %></a> <%= t('global.or') %> <a href="/create" class="open-create-room"><%= t('chat.actions.create') %></a> <%= t('chat.actions.adonut') %>
+                        <a href="/"><%= t('chat.actions.search') %></a> <%= t('global.or') %> <a href="/create" class="open-create-room"><%= t('chat.actions.create') %></a> <%= t('chat.actions.adonut') %>
                     <hr>
                 </li>
 
@@ -117,9 +118,7 @@
         <div id="center">
             <div class="discussion">
 
-
                 <%= content() %>
-
 
             </div>
         </div><!-- /#center -->

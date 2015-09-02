@@ -7,8 +7,8 @@
 </div><!-- /.side -->
 <div class="content">
     <div class="mini-header user visible-xs visible-sm">
-        <img class="avatar dc-border-lighter" src="<%= _user.avatar %>" alt="<%= _user.username %> avatar">
-        <span class="username dc-text-contrast" ><%= _user.username %></span>
+        <img class="avatar" src="<%= _user.avatar %>" alt="<%= _user.username %> avatar">
+        <span class="username dc-text-contrast" >@<%= _user.username %></span>
     </div>
     <div class="header user">
         <div class="overlay-ctn">
@@ -54,6 +54,30 @@
                 <% _.each(_user.roomsList, function(room) { print(partial('room', {room: room})); }); %>
             </div>
             <% } %>
+        </div>
+    </div>
+    <div class="input">
+        <div class="text-container">
+            <div class="overlay">
+                <span class="overlay-text">
+                    <a href="<% if (!user) { %><%= _user.discuss %><% } else { %><%= _user.chat %><% } %>" data-identifier="<%= user.name %>"><%= t('actions.discuss') %></a>
+                </span>
+            </div>
+            <div class="text">
+                <textarea class="editable" maxlength="512"></textarea>
+                <% if (typeof user !== 'undefined' && typeof user.avatar !== 'undefined') { %>
+                <img class="avatar" src="<%= user.avatar %>">
+                <% } else { %>
+                <img class="avatar" src="<%= userDefaultAvatar %>" alt="default avatar">
+                <% } %>
+                <div class="actions">
+                    <a class="images add-image"><i class="icon icon-camera dc-text"></i></a>
+                    <a class="images add-smiley"><i class="icon icon-smile-o dc-text"></i></a>
+                </div>
+                <a class="send dc-back dc-border"><img src="/images/input-arrow.svg" alt="send message">
+                    <span class="arrow-bottom dc-border"></span>
+                </a>
+            </div>
         </div>
     </div>
 </div><!-- /.content -->
