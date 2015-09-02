@@ -58,9 +58,6 @@ define([
       this.$window.on('beforeunload', function () {
         return that.onClose();
       });
-      //this.$window.resize(function () {
-      //  that.onResize();
-      //});
 
       // Bind events to model
       this.listenTo(client, 'admin:exit', this.onAdminExit);
@@ -125,11 +122,6 @@ define([
 
       this.renderTitle();
     },
-    //onResize: function () {
-    //  var model = this._getFocusedModel();
-    //  if (model)
-    //    model.trigger('resize'); // transmit event only to the current focused model
-    //},
     onClose: function () {
 
       // sometimes we prevent exit popin
@@ -204,7 +196,7 @@ define([
       }
     },
     triggerMessage: function (event, model) {
-      if (event.getGenericType() != 'message' &&  event.get('type') !== 'room:topic')
+      if (event.getGenericType() != 'message' && event.get('type') !== 'room:topic')
         return;
 
       // test if not from me (currentUser)
@@ -252,7 +244,10 @@ define([
               return;
 
             var message = data.message || '';
-            var title = $.t('chat.notifications.desktop.usermessage', {username: data.from_username, message: message});
+            var title = $.t('chat.notifications.desktop.usermessage', {
+              username: data.from_username,
+              message: message
+            });
             this.desktopNotify(title, '');
             this.desktopNotificationsLimiters[key] = Date.now();
           }
