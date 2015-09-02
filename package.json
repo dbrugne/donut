@@ -6,6 +6,16 @@
   "scripts": {
     "test": "mocha"
   },
+  "semistandard": {
+    "ignore": [
+      "placeholders.min.js",
+      "typedarray.js"
+    ],
+    "global": [
+      "describe",
+      "it"
+    ]
+  },
   "repository": "https://github.com/dbrugne/donut",
   "dependencies": {
     "async": "1.x",

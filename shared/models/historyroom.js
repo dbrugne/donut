@@ -1,3 +1,4 @@
+'use strict';
 var debug = require('debug')('shared:models:historyRoom');
 var _ = require('underscore');
 var async = require('async');
@@ -6,20 +7,19 @@ var Room = require('./room');
 var cloudinary = require('../util/cloudinary');
 
 var historySchema = mongoose.Schema({
-
-  event         : String,
-  room          : { type: mongoose.Schema.ObjectId, ref: 'Room' },
-  mode_history  : { type: String },
-  time          : { type: Date, default: Date.now },
-  user          : { type: mongoose.Schema.ObjectId, ref: 'User' },
-  by_user       : { type: mongoose.Schema.ObjectId, ref: 'User' },
-  data          : mongoose.Schema.Types.Mixed,
-  users         : [{ type: mongoose.Schema.ObjectId, ref: 'User' }], // users in room at event time
-  viewed        : [{ type: mongoose.Schema.ObjectId, ref: 'User' }],  // users that have read this event
-  spammed       : { type: Boolean },
-  spammed_at    : { type: Date },
-  edited        : { type: Boolean },
-  edited_at     : { type: Date }
+  event: String,
+  room: { type: mongoose.Schema.ObjectId, ref: 'Room' },
+  mode_history: { type: String },
+  time: { type: Date, default: Date.now },
+  user: { type: mongoose.Schema.ObjectId, ref: 'User' },
+  by_user: { type: mongoose.Schema.ObjectId, ref: 'User' },
+  data: mongoose.Schema.Types.Mixed,
+  users: [{ type: mongoose.Schema.ObjectId, ref: 'User' }], // users in room at event time
+  viewed: [{ type: mongoose.Schema.ObjectId, ref: 'User' }], // users that have read this event
+  spammed: { type: Boolean },
+  spammed_at: { type: Date },
+  edited: { type: Boolean },
+  edited_at: { type: Date }
 
 }, {strict: false});
 
@@ -40,7 +40,7 @@ var dryFields = [
 /**
  * Archive events
  */
-historySchema.statics.record = function() {
+historySchema.statics.record = function () {
   var that = this;
   /**
    * @param room - Room model
@@ -71,7 +71,7 @@ historySchema.statics.record = function() {
   };
 };
 
-historySchema.methods.toClientJSON = function(userViewed) {
+historySchema.methods.toClientJSON = function (userViewed) {
   userViewed = userViewed || false;
 
   if (!this.room)
@@ -128,7 +128,7 @@ historySchema.methods.toClientJSON = function(userViewed) {
   return e;
 };
 
-historySchema.statics.retrieve = function() {
+historySchema.statics.retrieve = function () {
   var that = this;
   /**
    * @param roomId
@@ -167,9 +167,9 @@ historySchema.statics.retrieve = function() {
       .populate('user', 'username avatar color facebook')
       .populate('by_user', 'username avatar color facebook');
 
-    q.exec(function(err, entries) {
+    q.exec(function (err, entries) {
       if (err)
-        return fn('Error while retrieving room history: '+err);
+        return fn('Error while retrieving room history: ' + err);
 
       var more = (entries.length > howMany)
         ? true
@@ -178,7 +178,7 @@ historySchema.statics.retrieve = function() {
         entries.pop(); // remove last
 
       var history = [];
-      _.each(entries, function(model) {
+      _.each(entries, function (model) {
         history.push(model.toClientJSON(userId));
       });
 
@@ -187,7 +187,7 @@ historySchema.statics.retrieve = function() {
         more: more
       });
     });
-  }
+  };
 };
 
 /**
@@ -200,7 +200,7 @@ historySchema.statics.retrieve = function() {
  * @param before      Flag to retrieve (or not) the "before event events"
  * @param fn
  */
-historySchema.statics.retrieveEventWithContext = function(eventId, userId, limit, timeLimit, before, fn) {
+historySchema.statics.retrieveEventWithContext = function (eventId, userId, limit, timeLimit, before, fn) {
   if (!eventId)
     return fn('retrieveEventWithContext expect event ID as first parameter');
   if (!userId)
@@ -221,19 +221,19 @@ historySchema.statics.retrieveEventWithContext = function(eventId, userId, limit
   var that = this;
   async.waterfall([
 
-    function retrieveModel(callback) {
+    function retrieveModel (callback) {
       that.findOne({_id: eventId})
         .populate('room', 'name avatar color')
         .populate('user', 'username avatar color facebook')
         .populate('by_user', 'username avatar color facebook')
-        .exec(function(err, event) {
+        .exec(function (err, event) {
           model = event;
           criteria.room = model.room.id;
           fullResults.push(model);
           return callback(err);
         });
     },
-    function retrieveAfterEvents(callback) {
+    function retrieveAfterEvents (callback) {
       var afterLimit = new Date(model.time);
       afterLimit.setMinutes(afterLimit.getMinutes() + timeLimit);
       var _criteria = _.clone(criteria);
@@ -244,7 +244,7 @@ historySchema.statics.retrieveEventWithContext = function(eventId, userId, limit
         .populate('room', 'name avatar color')
         .populate('user', 'username avatar color facebook')
         .populate('by_user', 'username avatar color facebook')
-        .exec(function(err, results) {
+        .exec(function (err, results) {
           if (err)
             return callback(err);
 
@@ -253,7 +253,7 @@ historySchema.statics.retrieveEventWithContext = function(eventId, userId, limit
         });
     },
 
-    function retrieveBeforeEvents(callback) {
+    function retrieveBeforeEvents (callback) {
       if (!before)
         return callback(null);
 
@@ -267,7 +267,7 @@ historySchema.statics.retrieveEventWithContext = function(eventId, userId, limit
         .populate('room', 'name avatar color')
         .populate('user', 'username avatar color facebook')
         .populate('by_user', 'username avatar color facebook')
-        .exec(function(err, results) {
+        .exec(function (err, results) {
           if (err)
             return callback(err);
 
@@ -277,15 +277,15 @@ historySchema.statics.retrieveEventWithContext = function(eventId, userId, limit
         });
     },
 
-    function prepare(callback) {
+    function prepare (callback) {
       var history = [];
-      _.each(fullResults, function(e) {
+      _.each(fullResults, function (e) {
         history.push(e.toClientJSON(userId));
       });
       return callback(null, history);
     }
 
-  ], function(err, history) {
+  ], function (err, history) {
     fn(err, history);
   });
 

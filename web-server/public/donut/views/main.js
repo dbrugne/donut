@@ -448,10 +448,10 @@ define([
       var type = $target.data('type');
       var identifier = $target.data('identifier');
       var model;
-      if (type == 'room') {
-        model = rooms.findWhere({ name: identifier });
+      if (type === 'room') {
+        model = rooms.findWhere({ id: identifier });
       } else {
-        model = onetoones.findWhere({ username: ''+identifier }); // force string to handle fully numeric username
+        model = onetoones.findWhere({ user_id: ''+identifier }); // force string to handle fully numeric username
       }
 
       if (model == undefined)

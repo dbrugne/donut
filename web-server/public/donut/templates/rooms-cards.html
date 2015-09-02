@@ -26,10 +26,10 @@
                 </p>
             </div>
             <div class="back dc-back dc-text-contrast">
-                <div class="open-room-profile" data-room-name="<%= room.name %>">
+                <div class="open-room-profile" data-room-id="<%= room.name %>">
                     <p class="name dc-text-contrast"><%= room.name %></p>
                     <% if (room.owner && room.owner.username) { %>
-                    <p class="owner"><%= t('global.by') %> <a class="open-user-profile dc-text-contrast" data-username="<%= room.owner.username %>">@<%= room.owner.username %></a></p>
+                    <p class="owner"><%= t('global.by') %> <a class="open-user-profile dc-text-contrast" data-user-id="<%= room.owner.id %>">@<%= room.owner.username %></a></p>
                     <% } %>
                     <p class="description"><%= room.description %></p>
                 </div>

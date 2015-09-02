@@ -22,7 +22,7 @@
             <%= dropdown %>
 
             <% if (owner && owner.username) { %>
-            <span class="owner"><%= t('global.by') %> <a class="open-user-profile dc-text" data-username="<%= owner.username %>">@<%= owner.username %></a></span>
+            <span class="owner"><%= t('global.by') %> <a class="open-user-profile dc-text" data-user-id="<%= owner.id %>">@<%= owner.username %></a></span>
             <% } %>
             <div class="share hidden-xs hidden-sm">
                 <%= t('chat.share.label') %>
