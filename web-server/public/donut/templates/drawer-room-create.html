@@ -1,16 +1,59 @@
 <div class="room">
     <span class="name"><%= t('chat.create.label') %></span>
 </div>
-<div class="form-group">
-    <p class="help-block"><%= t('chat.create.info') %></p>
-</div>
-<div class="field">
-    <span class="hash dc-text">#</span>
-    <input type="text" class="input dc-border" placeholder="<%= t('chat.create.placeholder') %>" maxlength="24" value="<%= name %>" />
-</div>
-<div class="form-group">
-    <p class="help-block"><%= t('chat.create.help') %></p>
-</div>
-<div class="field">
-    <button class="submit dc-back dc-text-contrast" type="button"><%= t('chat.create.submit') %></button>
-</div>
+<form class="room-create-form scrollbar" role="form">
+    <div class="form-group">
+        <p class="help-block"><%= t('chat.create.info.warning') %></p>
+    </div>
+    <div class="field">
+        <span class="hash dc-text">#</span>
+        <input type="text" class="input dc-border" placeholder="<%= t('chat.create.placeholder') %>" maxlength="24" value="<%= name %>" />
+    </div>
+    <div class="form-group">
+        <p class="help-block"><%= t('chat.create.help') %></p>
+    </div>
+    <div class="form-group">
+        <label><%= t('chat.create.info.join') %></label>
+        <div class="radio">
+            <label>
+                <input type="radio" class="savable" name="" checked>
+                <%= t('chat.create.options.all') %>
+            </label>
+        </div>
+        <div class="radio">
+            <label>
+                <input type="radio" class="savable" name="">
+                <%= t('chat.create.options.join.authorized') %>
+            </label>
+        </div>
+        <div class="radio">
+            <label>
+                <input type="radio" class="savable" name="">
+                <%= t('chat.create.options.join.password') %>
+            </label>
+        </div>
+
+        <label><%= t('chat.create.info.history') %></label>
+        <div class="radio">
+            <label>
+                <input type="radio" class="savable" name="" checked>
+                <%= t('chat.create.options.all') %>
+            </label>
+        </div>
+        <div class="radio">
+            <label>
+                <input type="radio" class="savable" name="">
+                <%= t('chat.create.options.history.currentuser') %>(*)
+            </label>
+        </div>
+        <div class="radio">
+            <label>
+                <input type="radio" class="savable" name="">
+                <%= t('chat.create.options.history.nothing') %>
+            </label>
+        </div>
+    </div>
+    <div class="field">
+        <button class="submit dc-back dc-text-contrast" type="button"><%= t('chat.create.submit') %></button>
+    </div>
+</form>

@@ -369,7 +369,22 @@
       "unlock": "(Cliquez ici pour le débloquer)"
     },
     "create": {
-      "info": "Attention le nom du donut ne sera plus modifiable !",
+      "info": {
+        "warning": "Attention le nom du donut ne sera plus modifiable !",
+        "join": "Qui peut rejoindre le donut",
+        "history": "Qui peut voir l'historique des discussions"
+      },
+      "options": {
+        "all": "Tous le monde (défaut)",
+        "join": {
+          "authorized": "Utilisateur autorisé uniquement",
+          "password": "Utilisateur ayant le mot de passe"
+        },
+        "history": {
+          "currentuser": "Les utilisateurs dans le donut au moment du message",
+          "nothing": "Pas d'historique"
+        }
+      },
       "label": "Créez votre donut",
       "help": [
         "Entre 3 et 24 caractères.<br>",
