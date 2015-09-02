@@ -11,7 +11,7 @@
     <% _.each(rooms, function(room) { %>
         <div class="room dc-i-<%= room.color.replace('#', '').toLowerCase() %>">
             <div class="cover">
-                <div class="avatar dc-border-lighter" style="background-image:url(<%= room.avatar %>)"></div>
+                <div class="avatar" style="background-image:url(<%= room.avatar %>)"></div>
                 <p class="name"><%= room.name %></p>
                 <% if (room.owner && room.owner.username) { %>
                 <p class="owner"><%= t('global.by') %> <a class="dc-text">@<%= room.owner.username %></a></p>
