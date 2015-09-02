@@ -8,6 +8,10 @@ grunt mentions-migration
 ```
 grunt website-migration
 ```
+* Set preferences roommessage, roomtopic, roomjoin owner:
+```
+grunt preferences-owner-migration
+```
 * Rename #Support => #help
 ```
 db.getCollection('rooms').update({ _id: ObjectId("557ed3a4bcb50bc52b74745a")}, {$set: {name: '#help'}})
