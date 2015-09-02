@@ -33,7 +33,7 @@ handler.call = function(data, session, next) {
       if (!data.event)
         return callback('require event param');
 
-      if (!data.message)
+      if (!data.message && !data.images)
         return callback('require message param');
 
       if (!room)
@@ -54,13 +54,15 @@ handler.call = function(data, session, next) {
       if ((Date.now() - event.time) > conf.chat.message.maxedittime * 60 * 1000)
         return callback(user.id + ' tries to edit an old message: ' + event.id);
 
-      var message = inputUtil.filter(data.message, 512);
+      if (data.message) {
+        var message = inputUtil.filter(data.message, 512);
 
-      if (!message)
-        return callback('empty message (no text)');
+        if (!message)
+          return callback('empty message (no text)');
 
-      if (message === event.data.message)
-        return callback('posted message is the same as original');
+        if (message === event.data.message)
+          return callback('posted message is the same as original');
+      }
 
       inputUtil.mentions(message, function(err, message, markups) {
         return callback(err, message, markups.users);
