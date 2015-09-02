@@ -1,3 +1,4 @@
+'use strict';
 define([
   'jquery',
   'underscore',
@@ -6,14 +7,12 @@ define([
   '_templates'
 ], function ($, _, Backbone, common, templates) {
   var UsersView = Backbone.View.extend({
-
     template: templates['home-users.html'],
 
-    initialize: function(options) {
-    },
-    render: function(data) {
+    initialize: function (options) {},
+    render: function (data) {
       var users = [];
-      _.each(data.users.list, function(user) {
+      _.each(data.users.list, function (user) {
         user.avatar = common.cloudinarySize(user.avatar, 30);
         users.push(user);
       });
@@ -30,7 +29,7 @@ define([
       return this;
     },
 
-    initializeTooltips: function() {
+    initializeTooltips: function () {
       $('[data-toggle="tooltip"][data-type="room-users"]').tooltip({
         html: true,
         animation: false,

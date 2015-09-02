@@ -1,3 +1,4 @@
+'use strict';
 define([
   'jquery',
   'underscore',
@@ -9,19 +10,18 @@ define([
   '_templates'
 ], function ($, _, Backbone, app, common, client, currentUser, templates) {
   var DrawerUserProfileView = Backbone.View.extend({
-
     template: templates['drawer-user-profile.html'],
 
     id: 'user-profile',
 
-    events  : {
+    events: {
     },
 
-    initialize: function(options) {
+    initialize: function (options) {
       this.user_id = options.user_id;
 
       this.listenTo(app, 'userDeban', this.onUserBanChange);
-      this.listenTo(app, 'userBan',   this.onUserBanChange);
+      this.listenTo(app, 'userBan', this.onUserBanChange);
 
       // show spinner as temp content
       this.render();
@@ -30,7 +30,7 @@ define([
         this.onResponse(options.data);
 
       var that = this;
-      client.userRead(this.user_id, null, function(err, data) {
+      client.userRead(this.user_id, null, function (err, data) {
         if (err === 'unknown')
           return;
         if (!err)
@@ -49,7 +49,7 @@ define([
 
       user.avatar = common.cloudinarySize(user.avatar, 90);
 
-      user.url = '/user/' + (''+user.username).toLocaleLowerCase();
+      user.url = '/user/' + ('' + user.username).toLocaleLowerCase();
 
       this._rooms(user); // decorate user object with rooms_list
 
@@ -74,7 +74,7 @@ define([
         return;
 
       var alreadyIn = [];
-      function pushNew(room, owned, oped) {
+      function pushNew (room, owned, oped) {
         if (!room.name)
           return;
 
@@ -95,27 +95,27 @@ define([
       }
 
       if (user.rooms.owned && user.rooms.owned.length > 0) {
-        _.each(user.rooms.owned, function(room) {
+        _.each(user.rooms.owned, function (room) {
           pushNew(room, true, false);
         });
       }
 
       if (user.rooms.oped && user.rooms.oped.length > 0) {
-        _.each(user.rooms.oped, function(room) {
+        _.each(user.rooms.oped, function (room) {
           pushNew(room, false, true);
         });
       }
 
       if (user.rooms.joined && user.rooms.joined.length > 0) {
-        _.each(user.rooms.joined, function(room) {
+        _.each(user.rooms.joined, function (room) {
           pushNew(room, false, false);
         });
       }
     },
 
-    onUserBanChange: function() {
+    onUserBanChange: function () {
       this.render();
-      client.userRead(this.user_id, null, _.bind(function(err, data) {
+      client.userRead(this.user_id, null, _.bind(function (err, data) {
         if (!err)
           this.onResponse(data);
       }, this));

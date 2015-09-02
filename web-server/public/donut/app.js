@@ -1,3 +1,4 @@
+'use strict';
 define([
   'jquery',
   'underscore',
@@ -7,14 +8,14 @@ define([
   'views/main'
 ], function ($, _, Backbone, router, client, mainView) {
   var App = {
-    initialize: function() {
+    initialize: function () {
       // Render IHM
       mainView.run();
 
       // @debug
       window.router = router;
       window.client = client;
-      window.main   = mainView;
+      window.main = mainView;
 
       // Establish connection
       client.connect();

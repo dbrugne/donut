@@ -1,3 +1,4 @@
+'use strict';
 define([
   'underscore',
   'text!./templates/color-picker.html',
@@ -129,7 +130,6 @@ define([
   notification_user_message,
   rooms_cards,
   markup) {
-
   /**
    * Stub class to load compiled templates dynamically (in development for example)
    *
@@ -142,72 +142,72 @@ define([
    *   >$ grunt jst
    */
 
-  var JST={ };
+  var JST = { };
 
-  JST['color-picker.html']                  = _.template(color_picker);
-  JST['current-user.html']                  = _.template(current_user);
-  JST['discussion-block.html']              = _.template(discussion_block);
-  JST['discussion-onetoone.html']           = _.template(discussion_onetoone);
-  JST['discussion-room.html']               = _.template(discussion_room);
-  JST['drawer-room-create.html']            = _.template(drawer_room_create);
-  JST['drawer-room-delete.html']            = _.template(drawer_room_delete);
-  JST['drawer-room-edit.html']              = _.template(drawer_room_edit);
-  JST['drawer-room-users.html']             = _.template(drawer_room_users);
-  JST['drawer-room-profile.html']           = _.template(drawer_room_profile);
-  JST['drawer-room-preferences.html']       = _.template(drawer_room_preferences);
-  JST['drawer-account.html']                = _.template(drawer_account);
-  JST['drawer-account-password.html']       = _.template(drawer_user_account_password);
-  JST['drawer-account-email.html']          = _.template(drawer_user_account_email);
-  JST['drawer-user-edit.html']              = _.template(drawer_user_edit);
-  JST['drawer-user-preferences.html']       = _.template(drawer_user_preferences);
-  JST['drawer-user-profile.html']           = _.template(drawer_user_profile);
-  JST['dropdown-room-actions.html']         = _.template(dropdown_room_actions);
-  JST['dropdown-one-actions.html']          = _.template(dropdown_one_actions);
-  JST['events-dropdown.html']               = _.template(dropdown);
-  JST['event/date.html']                    = _.template(event_date);
-  JST['event/disconnected.html']            = _.template(event_disconnected);
-  JST['event/in-out-on-off.html']           = _.template(event_in_out_on_off);
-  JST['event/message.html']                 = _.template(event_message);
-  JST['event/ping.html']                    = _.template(event_ping);
-  JST['event/reconnected.html']             = _.template(event_reconnected);
-  JST['event/room-deop.html']               = _.template(event_room_deop);
-  JST['event/room-kick.html']               = _.template(event_room_kick);
-  JST['event/room-ban.html']                = _.template(event_room_ban);
-  JST['event/room-deban.html']              = _.template(event_room_deban);
-  JST['event/room-op.html']                 = _.template(event_room_op);
-  JST['event/room-topic.html']              = _.template(event_room_topic);
-  JST['event/room-voice.html']              = _.template(event_room_voice);
-  JST['event/room-devoice.html']            = _.template(event_room_devoice);
-  JST['event/user-ban.html']                = _.template(event_user_ban);
-  JST['event/user-deban.html']              = _.template(event_user_deban);
-  JST['event/help.html']                    = _.template(event_help);
-  JST['events.html']                        = _.template(events);
-  JST['home-users.html']                    = _.template(home_users);
-  JST['home.html']                          = _.template(home);
-  JST['image-uploader.html']                = _.template(image_uploader);
-  JST['input.html']                         = _.template(input);
-  JST['input-typing.html']                  = _.template(input_typing);
-  JST['input-images.html']                  = _.template(input_images);
-  JST['rollup.html']                        = _.template(rollup);
-  JST['room-topic.html']                    = _.template(room_topic);
-  JST['room-users-list.html']               = _.template(room_users_list);
-  JST['room-users.html']                    = _.template(room_users);
-  JST['spinner.html']                       = _.template(spinner);
-  JST['message-edit.html']                  = _.template(message_edit);
-  JST['notification/room-op.html']          = _.template(notification_room_op);
-  JST['notification/room-deop.html']        = _.template(notification_room_deop);
-  JST['notification/room-kick.html']        = _.template(notification_room_kick);
-  JST['notification/room-ban.html']         = _.template(notification_room_ban);
-  JST['notification/room-deban.html']       = _.template(notification_room_deban);
-  JST['notification/room-voice.html']       = _.template(notification_room_voice);
-  JST['notification/room-devoice.html']     = _.template(notification_room_devoice);
-  JST['notification/room-topic.html']       = _.template(notification_room_topic);
-  JST['notification/room-join.html']        = _.template(notification_room_join);
-  JST['notification/user-mention.html']     = _.template(notification_user_mention);
-  JST['notification/room-message.html']     = _.template(notification_room_message);
-  JST['notification/user-message.html']     = _.template(notification_user_message);
-  JST['rooms-cards.html']                   = _.template(rooms_cards);
-  JST['markup.html']                        = _.template(markup);
+  JST['color-picker.html'] = _.template(color_picker);
+  JST['current-user.html'] = _.template(current_user);
+  JST['discussion-block.html'] = _.template(discussion_block);
+  JST['discussion-onetoone.html'] = _.template(discussion_onetoone);
+  JST['discussion-room.html'] = _.template(discussion_room);
+  JST['drawer-room-create.html'] = _.template(drawer_room_create);
+  JST['drawer-room-delete.html'] = _.template(drawer_room_delete);
+  JST['drawer-room-edit.html'] = _.template(drawer_room_edit);
+  JST['drawer-room-users.html'] = _.template(drawer_room_users);
+  JST['drawer-room-profile.html'] = _.template(drawer_room_profile);
+  JST['drawer-room-preferences.html'] = _.template(drawer_room_preferences);
+  JST['drawer-account.html'] = _.template(drawer_account);
+  JST['drawer-account-password.html'] = _.template(drawer_user_account_password);
+  JST['drawer-account-email.html'] = _.template(drawer_user_account_email);
+  JST['drawer-user-edit.html'] = _.template(drawer_user_edit);
+  JST['drawer-user-preferences.html'] = _.template(drawer_user_preferences);
+  JST['drawer-user-profile.html'] = _.template(drawer_user_profile);
+  JST['dropdown-room-actions.html'] = _.template(dropdown_room_actions);
+  JST['dropdown-one-actions.html'] = _.template(dropdown_one_actions);
+  JST['events-dropdown.html'] = _.template(dropdown);
+  JST['event/date.html'] = _.template(event_date);
+  JST['event/disconnected.html'] = _.template(event_disconnected);
+  JST['event/in-out-on-off.html'] = _.template(event_in_out_on_off);
+  JST['event/message.html'] = _.template(event_message);
+  JST['event/ping.html'] = _.template(event_ping);
+  JST['event/reconnected.html'] = _.template(event_reconnected);
+  JST['event/room-deop.html'] = _.template(event_room_deop);
+  JST['event/room-kick.html'] = _.template(event_room_kick);
+  JST['event/room-ban.html'] = _.template(event_room_ban);
+  JST['event/room-deban.html'] = _.template(event_room_deban);
+  JST['event/room-op.html'] = _.template(event_room_op);
+  JST['event/room-topic.html'] = _.template(event_room_topic);
+  JST['event/room-voice.html'] = _.template(event_room_voice);
+  JST['event/room-devoice.html'] = _.template(event_room_devoice);
+  JST['event/user-ban.html'] = _.template(event_user_ban);
+  JST['event/user-deban.html'] = _.template(event_user_deban);
+  JST['event/help.html'] = _.template(event_help);
+  JST['events.html'] = _.template(events);
+  JST['home-users.html'] = _.template(home_users);
+  JST['home.html'] = _.template(home);
+  JST['image-uploader.html'] = _.template(image_uploader);
+  JST['input.html'] = _.template(input);
+  JST['input-typing.html'] = _.template(input_typing);
+  JST['input-images.html'] = _.template(input_images);
+  JST['rollup.html'] = _.template(rollup);
+  JST['room-topic.html'] = _.template(room_topic);
+  JST['room-users-list.html'] = _.template(room_users_list);
+  JST['room-users.html'] = _.template(room_users);
+  JST['spinner.html'] = _.template(spinner);
+  JST['message-edit.html'] = _.template(message_edit);
+  JST['notification/room-op.html'] = _.template(notification_room_op);
+  JST['notification/room-deop.html'] = _.template(notification_room_deop);
+  JST['notification/room-kick.html'] = _.template(notification_room_kick);
+  JST['notification/room-ban.html'] = _.template(notification_room_ban);
+  JST['notification/room-deban.html'] = _.template(notification_room_deban);
+  JST['notification/room-voice.html'] = _.template(notification_room_voice);
+  JST['notification/room-devoice.html'] = _.template(notification_room_devoice);
+  JST['notification/room-topic.html'] = _.template(notification_room_topic);
+  JST['notification/room-join.html'] = _.template(notification_room_join);
+  JST['notification/user-mention.html'] = _.template(notification_user_mention);
+  JST['notification/room-message.html'] = _.template(notification_room_message);
+  JST['notification/user-message.html'] = _.template(notification_user_message);
+  JST['rooms-cards.html'] = _.template(rooms_cards);
+  JST['markup.html'] = _.template(markup);
 
   return JST;
 });

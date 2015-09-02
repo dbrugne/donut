@@ -1,3 +1,4 @@
+'use strict';
 define([
   'jquery',
   'underscore',
@@ -5,7 +6,6 @@ define([
   'models/app'
 ], function ($, _, Backbone, app) {
   var AlertView = Backbone.View.extend({
-
     initialize: function () {
       this.listenTo(app, 'alert', this.onAlert);
 
@@ -39,7 +39,7 @@ define([
         .removeClass('info warning error')
         .addClass(type)
         .slideDown('fast')
-        .delay(1000*10)
+        .delay(1000 * 10)
         .slideUp('fast');
 
       return this;

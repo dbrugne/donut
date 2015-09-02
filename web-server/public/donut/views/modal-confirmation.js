@@ -1,14 +1,14 @@
+'use strict';
 define([
   'jquery',
   'underscore',
   'backbone'
 ], function ($, _, Backbone) {
   var ConfirmationModalView = Backbone.View.extend({
-
     el: $('#confirmation'),
 
     events: {
-      "click .buttons .confirm": "onConfirm"
+      'click .buttons .confirm': 'onConfirm'
     },
 
     confirmed: false,
@@ -21,8 +21,8 @@ define([
 
     isRendered: false,
 
-    initialize: function(options) {},
-    render: function() {
+    initialize: function (options) {},
+    render: function () {
       this.$inputBlock = this.$el.find('.input');
       this.$input = this.$inputBlock.find('input[type="text"]');
 
@@ -33,13 +33,12 @@ define([
       });
 
       // on modal shown
-      this.$el.on('shown.bs.modal', _.bind(function(e){
+      this.$el.on('shown.bs.modal', _.bind(function (e) {
         this.$input.focus();
       }, this));
 
       // some callback action need to have modal properly closed before execution (e.g.: focus an element)
       this.$el.on('hidden.bs.modal', _.bind(function (e) {
-
         if (this.confirmed)
           this.confirmCallback(this.$input.val()); // confirm
         else if (_.isFunction(this.cancelCallback))
@@ -51,7 +50,7 @@ define([
       this.isRendered = true; // avoid to early rendering on page load (cause bootstrap is not already loaded)
       return this;
     },
-    _reset: function() {
+    _reset: function () {
       this.$inputBlock.show();
       this.$input.val('');
       this.confirmCallback = null;
@@ -62,7 +61,7 @@ define([
       // unbind 'enter'
       $(document).off('keypress');
     },
-    open: function(options, confirmCallback, cancelCallback) {
+    open: function (options, confirmCallback, cancelCallback) {
       if (!this.isRendered)
         this.render();
 
@@ -78,15 +77,15 @@ define([
 
       // bind 'enter' only when showing popin
       var that = this;
-      $(document).keypress(function(e) {
-        if(e.which == 13) {
+      $(document).keypress(function (e) {
+        if (e.which == 13) {
           that.onConfirm(e);
         }
       });
 
       this.$el.modal('show');
     },
-    onConfirm: function(event) {
+    onConfirm: function (event) {
       event.preventDefault();
 
       this.confirmed = true;

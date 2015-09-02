@@ -1,3 +1,4 @@
+'use strict';
 define([
   'jquery',
   'underscore',
@@ -5,18 +6,17 @@ define([
   'client',
   'models/current-user',
   '_templates'
-], function ($, _, Backbone, client ,currentUser, templates) {
+], function ($, _, Backbone, client , currentUser, templates) {
   var DrawerAccountPasswordView = Backbone.View.extend({
-
     template: templates['drawer-account-password.html'],
 
     events: {
-      'submit .form-password'       : 'onSubmit',
-      'click .cancel-password'      : 'onCancel',
-      'click #password-modal-link'  : 'onShowForm'
+      'submit .form-password': 'onSubmit',
+      'click .cancel-password': 'onCancel',
+      'click #password-modal-link': 'onShowForm'
     },
 
-    initialize: function(options) {
+    initialize: function (options) {
       this.user = options.user;
 
       this.render();
@@ -41,7 +41,7 @@ define([
         this.$link.text($.t('global.add'));
     },
 
-    render: function() {
+    render: function () {
       this.$el.html(this.template({user: this.user}));
       return this;
     },
@@ -69,7 +69,7 @@ define([
       this.$inputNewPassword.val('');
     },
 
-    onSubmit: function(event) {
+    onSubmit: function (event) {
       event.preventDefault();
 
       var that = this;

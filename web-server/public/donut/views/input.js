@@ -1,3 +1,4 @@
+'use strict';
 define([
   'jquery',
   'underscore',
@@ -13,18 +14,16 @@ define([
   'views/input-smileys',
   '_templates'
 ], function ($, _, Backbone, common, donutDebug, keyboard, currentUser, RollupView, CommandsView, TypingView, ImagesView, SmileysView, templates) {
-
   var debug = donutDebug('donut:input');
 
   var DiscussionInputView = Backbone.View.extend({
-
     template: templates['input.html'],
 
     events: {
-      'keyup .editable'         : 'onKeyUp',
-      'keydown .editable'       : 'onKeyDown',
-      'click .send'             : 'onSubmitMessage',
-      'click .editable'         : 'onInputClicked'
+      'keyup .editable': 'onKeyUp',
+      'keydown .editable': 'onKeyDown',
+      'click .send': 'onSubmitMessage',
+      'click .editable': 'onInputClicked'
     },
 
     initialize: function (options) {
@@ -35,7 +34,7 @@ define([
       this.render();
 
       this.commandsView = new CommandsView({
-        model: this.model 
+        model: this.model
       });
       this.rollupView = new RollupView({
         el: this.$el,
@@ -81,28 +80,28 @@ define([
         this.$el.removeClass('inactive');
     },
 
-    onInputActiveChange: function() {
+    onInputActiveChange: function () {
       if (!this.model.isInputActive())
         this.$el.addClass('inactive');
       else
         this.$el.removeClass('inactive');
     },
 
-    onFocus: function() {
+    onFocus: function () {
       if (this.$editable)
         this.$editable.focus();
     },
 
-    onAvatar: function(model, value, options) {
+    onAvatar: function (model, value, options) {
       this.$el.find('.avatar').prop('src', common.cloudinarySize(value, 80));
     },
 
-    onSubmitMessage: function(event) {
+    onSubmitMessage: function (event) {
       event.preventDefault();
       this.sendMessage();
     },
 
-    onInputClicked: function(event) {
+    onInputClicked: function (event) {
       this.model.trigger('input:clicked');
     },
 
@@ -118,7 +117,7 @@ define([
      *
      * @param event
      */
-    onKeyDown: function(event) {
+    onKeyDown: function (event) {
       if (event.type != 'keydown')
         return;
 
@@ -161,7 +160,7 @@ define([
       this.model.trigger('inputKeyUp', event);
     },
 
-    sendMessage: function() {
+    sendMessage: function () {
       var message = this.$editable.val();
       var images = this.imagesView.list();
 
@@ -170,7 +169,7 @@ define([
         this.$editable.val('');
         return false;
       }
-      
+
       // empty message and no image
       // trim to detect only whitespaces message
       if (message.trim() === '' && !images.length)

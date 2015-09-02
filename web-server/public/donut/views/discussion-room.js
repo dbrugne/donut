@@ -1,3 +1,4 @@
+'use strict';
 define([
   'jquery',
   'underscore',
@@ -12,22 +13,21 @@ define([
   '_templates'
 ], function ($, _, Backbone, common, client, currentUser, confirmationView, DiscussionView, TopicView, UsersView, templates) {
   var RoomView = DiscussionView.extend({
-
     template: templates['discussion-room.html'],
     templateDropdown: templates['dropdown-room-actions.html'],
 
     events: {
-      'click .op-user'            : 'opUser',
-      'click .deop-user'          : 'deopUser',
-      'click .kick-user'          : 'kickUser',
-      'click .ban-user'           : 'banUser',
-      'click .voice-user'         : 'voiceUser',
-      'click .devoice-user'       : 'devoiceUser',
-      'click .share .facebook'    : 'shareFacebook',
-      'click .share .twitter'     : 'shareTwitter',
-      'click .share .googleplus'  : 'shareGoogle'
+      'click .op-user': 'opUser',
+      'click .deop-user': 'deopUser',
+      'click .kick-user': 'kickUser',
+      'click .ban-user': 'banUser',
+      'click .voice-user': 'voiceUser',
+      'click .devoice-user': 'devoiceUser',
+      'click .share .facebook': 'shareFacebook',
+      'click .share .twitter': 'shareTwitter',
+      'click .share .googleplus': 'shareGoogle'
     },
-    _initialize: function() {
+    _initialize: function () {
       this.listenTo(this.model, 'change:avatar', this.onAvatar);
       this.listenTo(this.model, 'change:poster', this.onPoster);
       this.listenTo(this.model, 'change:posterblured', this.onPosterBlured);
@@ -39,19 +39,19 @@ define([
       // color
       this.colorify();
     },
-    _remove: function(model) {
+    _remove: function (model) {
       this.stopListening();
       this.topicView._remove();
       this.usersView._remove();
     },
-    _renderData: function() {
+    _renderData: function () {
       var data = this.model.toJSON();
 
       // owner
       var owner = this.model.get('owner').toJSON();
       data.owner = owner;
       data.isOwner = this.model.currentUserIsOwner();
-      data.isOp    = this.model.currentUserIsOp();
+      data.isOp = this.model.currentUserIsOp();
       data.isAdmin = this.model.currentUserIsAdmin();
 
       // avatar
@@ -64,11 +64,11 @@ define([
       data.url = this.model.getUrl();
 
       // share widget
-      var share = 'share-room-'+ this.model.get('name').replace('#', '').toLocaleLowerCase()
+      var share = 'share-room-' + this.model.get('name').replace('#', '').toLocaleLowerCase();
       this.share = {
         class: share,
-        selector: '.'+share
-      }
+        selector: '.' + share
+      };
       data.share = this.share.class;
       data.dropdown = this.templateDropdown({
         data: data
@@ -76,13 +76,10 @@ define([
 
       return data;
     },
-    _render: function() {
-    },
-    _focus: function() {
-    },
-    _unfocus: function() {
-    },
-    _firstFocus: function() {
+    _render: function () {},
+    _focus: function () {},
+    _unfocus: function () {},
+    _firstFocus: function () {
       this.model.fetchUsers();
     },
 
@@ -90,13 +87,13 @@ define([
      * User actions methods
      */
 
-    _showUserListModal: function() {
+    _showUserListModal: function () {
       if (this.topicView.isUserModelRequired()) {
         this.topicView.loadUserModal();
       }
     },
 
-    opUser: function(event) {
+    opUser: function (event) {
       event.preventDefault();
       if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin())
         return false;
@@ -106,11 +103,11 @@ define([
         return;
 
       var that = this;
-      confirmationView.open({}, function() {
+      confirmationView.open({}, function () {
         client.roomOp(that.model.get('id'), userId, null);
       });
     },
-    deopUser: function(event) {
+    deopUser: function (event) {
       event.preventDefault();
       if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin())
         return false;
@@ -120,11 +117,11 @@ define([
         return;
 
       var that = this;
-      confirmationView.open({}, function() {
+      confirmationView.open({}, function () {
         client.roomDeop(that.model.get('id'), userId, null);
       });
     },
-    kickUser: function(event) {
+    kickUser: function (event) {
       event.preventDefault();
       if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin())
         return false;
@@ -134,11 +131,11 @@ define([
         return;
 
       var that = this;
-      confirmationView.open({ input: true }, function(reason) {
+      confirmationView.open({ input: true }, function (reason) {
         client.roomKick(that.model.get('id'), userId, null, reason);
       });
     },
-    banUser: function(event) {
+    banUser: function (event) {
       event.preventDefault();
       if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin())
         return false;
@@ -148,13 +145,13 @@ define([
         return;
 
       var that = this;
-      confirmationView.open({ input: true }, function(reason) {
+      confirmationView.open({ input: true }, function (reason) {
         client.roomBan(that.model.get('id'), userId, null, reason);
       });
     },
-    voiceUser: function(event) {
+    voiceUser: function (event) {
       event.preventDefault();
-      if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() &&!this.model.currentUserIsAdmin())
+      if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin())
         return false;
 
       var userId = $(event.currentTarget).data('userId');
@@ -163,7 +160,7 @@ define([
 
       client.roomVoice(this.model.get('id'), userId, null);
     },
-    devoiceUser: function(event) {
+    devoiceUser: function (event) {
       event.preventDefault();
       if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin())
         return false;
@@ -173,7 +170,7 @@ define([
         return;
 
       var that = this;
-      confirmationView.open({ input: true }, function(reason) {
+      confirmationView.open({ input: true }, function (reason) {
         client.roomDevoice(that.model.get('id'), userId, null, reason);
       });
     },
@@ -182,41 +179,41 @@ define([
      * Update room details methods
      */
 
-    onColor: function(model, value, options) {
+    onColor: function (model, value, options) {
       this.onAvatar(model, model.get('avatar'), options);
       this.onPoster(model, model.get('poster'), options);
       this.onPosterBlured(model, model.get('posterblured'), options);
       this.colorify();
     },
-    onAvatar: function(model, value, options) {
+    onAvatar: function (model, value, options) {
       var url = common.cloudinarySize(value, 100);
       this.$el.find('.header img.avatar').attr('src', url);
     },
-    onPoster: function(model, url, options) {
-      this.$el.find('div.side').css('background-image', 'url('+url+')');
+    onPoster: function (model, url, options) {
+      this.$el.find('div.side').css('background-image', 'url(' + url + ')');
     },
-    onPosterBlured: function(model, url, options) {
-      this.$el.find('div.blur').css('background-image', 'url('+url+')');
+    onPosterBlured: function (model, url, options) {
+      this.$el.find('div.blur').css('background-image', 'url(' + url + ')');
     },
 
     /**
      * Social sharing
      */
-    shareFacebook: function() {
+    shareFacebook: function () {
       $.socialify.facebook({
-        url         : this.model.getUrl(),
-        name        : $.t('chat.share.title', { name: this.model.get('name') }),
-        picture     : common.cloudinarySize(this.model.get('avatar'), 350),
-        description : $.t('chat.share.description', { name: this.model.get('name') })
+        url: this.model.getUrl(),
+        name: $.t('chat.share.title', { name: this.model.get('name') }),
+        picture: common.cloudinarySize(this.model.get('avatar'), 350),
+        description: $.t('chat.share.description', { name: this.model.get('name') })
       });
     },
-    shareTwitter: function() {
+    shareTwitter: function () {
       $.socialify.twitter({
-        url  :  this.model.getUrl(),
-        text : $.t('chat.share.description', { name: this.model.get('name') })
+        url: this.model.getUrl(),
+        text: $.t('chat.share.description', { name: this.model.get('name') })
       });
     },
-    shareGoogle: function() {
+    shareGoogle: function () {
       $.socialify.google({
         url: this.model.getUrl()
       });

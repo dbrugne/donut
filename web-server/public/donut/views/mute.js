@@ -1,3 +1,4 @@
+'use strict';
 define([
   'jquery',
   'underscore',
@@ -7,15 +8,13 @@ define([
   'client',
   'models/current-user'
 ], function ($, _, Backbone, app, donutDebug, client, currentUser) {
-
   var debug = donutDebug('donut:mute');
 
   var MuteView = Backbone.View.extend({
-
     el: $('#mute'),
 
     events: {
-      "click .toggle" : 'onToggle'
+      'click .toggle': 'onToggle'
     },
 
     initialize: function (options) {

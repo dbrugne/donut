@@ -1,3 +1,4 @@
+'use strict';
 define([
   'jquery',
   'underscore',
@@ -8,17 +9,16 @@ define([
   '_templates'
 ], function ($, _, Backbone, app, client, currentUser, templates) {
   var DrawerRoomDeleteView = Backbone.View.extend({
-
     template: templates['drawer-room-delete.html'],
 
     id: 'room-delete',
 
-    events  : {
+    events: {
       'keyup .input': 'onKeyup',
       'click .submit': 'onSubmit'
     },
 
-    initialize: function(options) {
+    initialize: function (options) {
       this.roomId = options.room_id;
 
       // show spinner as temp content
@@ -26,7 +26,7 @@ define([
 
       // ask for data
       var that = this;
-      client.roomRead(this.roomId, null, function(err, data) {
+      client.roomRead(this.roomId, null, function (err, data) {
         if (!err)
           that.onResponse(data);
       });
@@ -34,12 +34,12 @@ define([
       // on room:delete callback
       this.listenTo(client, 'room:delete', this.onDelete);
     },
-    render: function() {
+    render: function () {
       // render spinner only
       this.$el.html(templates['spinner.html']);
       return this;
     },
-    onResponse: function(room) {
+    onResponse: function (room) {
       if (room.owner.user_id != currentUser.get('user_id') && !currentUser.isAdmin())
         return;
 
@@ -49,14 +49,14 @@ define([
       this.$el.html(html);
       this.$input = this.$el.find('.input');
     },
-    onSubmit: function(event) {
+    onSubmit: function (event) {
       event.preventDefault();
       if (!this._valid())
         return;
 
       client.roomDelete(this.roomId);
     },
-    onDelete: function(data) {
+    onDelete: function (data) {
       if (!data.name
         || data.name.toLocaleLowerCase() != this.roomNameConfirmation)
         return;
@@ -65,8 +65,8 @@ define([
 
       if (!data.success) {
         var message = '';
-        _.each(data.errors, function(error) {
-          message += error+'<br>';
+        _.each(data.errors, function (error) {
+          message += error + '<br>';
         });
         this.$el.find('.errors').html(message).show();
         return;
@@ -75,7 +75,7 @@ define([
       app.trigger('alert', 'info', $.t('edit.room.delete.success'));
       this.trigger('close');
     },
-    onKeyup: function(event) {
+    onKeyup: function (event) {
       if (this._valid())
         this.$el.addClass('has-success');
       else
@@ -83,14 +83,14 @@ define([
 
       // Enter in field handling
       if (event.type == 'keyup') {
-        if(event.which == 13) {
+        if (event.which == 13) {
           return this.onSubmit(event);
         }
       }
     },
-    _valid: function() {
-      var name = '#'+this.$input.val();
-      var pattern = new RegExp('^'+this.roomNameConfirmation+'$', 'i');
+    _valid: function () {
+      var name = '#' + this.$input.val();
+      var pattern = new RegExp('^' + this.roomNameConfirmation + '$', 'i');
       if (pattern.test(name)) {
         return true;
       } else {

@@ -1,3 +1,4 @@
+'use strict';
 define([
   'jquery',
   'underscore',
@@ -13,24 +14,22 @@ define([
   'views/window',
   '_templates'
 ], function ($, _, Backbone, app, donutDebug, common, EventModel, moment, client, currentUser, MessageEditView, windowView, templates) {
-
   var debug = donutDebug('donut:events');
 
   var EventsView = Backbone.View.extend({
-
     template: templates['events.html'],
 
     events: {
-      "click .go-to-top a"             : 'scrollTop',
-      "click .go-to-bottom a"          : 'scrollDown',
-      "shown.bs.dropdown .actions"     : 'onMessageMenuShow',
-      "click .dropdown-menu .spammed"  : 'onMarkAsSpam',
-      "click .dropdown-menu .unspam"   : 'onUnmarkAsSpam',
-      "click .view-spammed-message"    : 'onViewSpammedMessage',
-      "click .remask-spammed-message"  : 'onRemaskSpammedMessage',
-      "click .dropdown-menu .edited"   : 'onEditMessage',
-      "dblclick .event"                : 'onEditMessage',
-      "keydown .form-message-edit"     : 'onPrevOrNextFormEdit'
+      'click .go-to-top a': 'scrollTop',
+      'click .go-to-bottom a': 'scrollDown',
+      'shown.bs.dropdown .actions': 'onMessageMenuShow',
+      'click .dropdown-menu .spammed': 'onMarkAsSpam',
+      'click .dropdown-menu .unspam': 'onUnmarkAsSpam',
+      'click .view-spammed-message': 'onViewSpammedMessage',
+      'click .remask-spammed-message': 'onRemaskSpammedMessage',
+      'click .dropdown-menu .edited': 'onEditMessage',
+      'dblclick .event': 'onEditMessage',
+      'keydown .form-message-edit': 'onPrevOrNextFormEdit'
     },
 
     historyLoading: false,
@@ -192,20 +191,17 @@ define([
       var visibility = this._isElementFullyVisibleInViewport(topLimit, bottomLimit, $candidateElement);
       debug($candidateElement.attr('id') + ' vib:', visibility);
       if (visibility == 'ok') {
-
         $firstVisibleElement = $candidateElement;
         firstVisibleIndex = candidateIndex;
         debug('we have visible element on first try');
 
       } else if (visibility == 'big') {
-
         // mark $candidateElement as top and stop
         $firstVisibleElement = $candidateElement;
         firstVisibleIndex = candidateIndex;
         debug('first is big');
 
       } else if (visibility == 'next') {
-
         // loop to find next 'ok'
         for (var nextIndex = candidateIndex + 1; nextIndex < $items.length; nextIndex++) {
           $nextElement = $items.eq(nextIndex);
@@ -222,7 +218,6 @@ define([
         }
 
       } else if (visibility == 'previous') {
-
         // loop to find previous 'ok'
         for (var previousIndex = candidateIndex - 1; previousIndex >= 0; previousIndex--) {
           $previousElement = $items.eq(previousIndex);
@@ -334,7 +329,7 @@ define([
       this.cleanup();
     },
     cleanup: function (everything) {
-      everything = everything || false;
+      everything = everything || false;
       var howToRemove;
 
       // determine if needed
@@ -376,7 +371,7 @@ define([
      * Events rendering
      *
      *****************************************************************************************************************/
-    onAdminMessage: function(data) {
+    onAdminMessage: function (data) {
       data = { data: data };
       data.data.avatar = '//res.cloudinary.com/roomly/image/upload/v1409643461/rciev5ubaituvx5bclnz.png'; // @todo : add avatar URL in configuration
       data.data.username = 'DONUT';
@@ -465,8 +460,8 @@ define([
       $html.find('>.block').prependTo(this.$realtime);
       debug.end('discussion-events-batch-' + this.model.getIdentifier());
 
-      // resize .blank
-      //this.resize();
+    // resize .blank
+    // this.resize();
     },
     _prepareEvent: function (model) {
       var data = model.toJSON();
@@ -482,10 +477,10 @@ define([
       var size = (model.getGenericType() != 'inout')
         ? 30
         : 20;
-      if (model.get("data").avatar)
-        data.data.avatar = common.cloudinarySize(model.get("data").avatar, size);
-      if (model.get("data").by_avatar)
-        data.data.by_avatar = common.cloudinarySize(model.get("data").by_avatar, size);
+      if (model.get('data').avatar)
+        data.data.avatar = common.cloudinarySize(model.get('data').avatar, size);
+      if (model.get('data').by_avatar)
+        data.data.by_avatar = common.cloudinarySize(model.get('data').by_avatar, size);
 
       var message = data.data.message;
       if (message) {
@@ -540,7 +535,7 @@ define([
       else // more than 1 year
         format = 'MM/YYYY';
       data.data.dateshort = dateObject.format(format);
-      data.data.datefull = dateObject.format("dddd Do MMMM YYYY à HH:mm:ss");
+      data.data.datefull = dateObject.format('dddd Do MMMM YYYY à HH:mm:ss');
 
       // rendering attributes
       data.unviewed = !!model.get('unviewed');
@@ -819,8 +814,7 @@ define([
       if (event.which == 38)
         direction = 'prev';
       else if (event.which == 40)
-        direction = 'next';
-      else {
+        direction = 'next'; else {
         if (bottom)
           this.scrollDown();
         return;
@@ -855,7 +849,7 @@ define([
       if (bottom)
         this.scrollDown();
     },
-    pushUpFromInput: function() {
+    pushUpFromInput: function () {
       var _lastBlock = this.$realtime.find('.block.message').last();
       while(_lastBlock.data('userId') !== currentUser.get('user_id')) {
         if (!_lastBlock.prev().length)
@@ -883,10 +877,10 @@ define([
     },
     onMessageEdited: function (data) {
       var bottom = this.isScrollOnBottom();
-      var $event = this.$('#'+data.event);
+      var $event = this.$('#' + data.event);
 
       if ($event.find('.text').html() === undefined)
-        $('<div class="text"></div>').insertAfter(this.$('#'+data.event).find('.message-edit'));
+        $('<div class="text"></div>').insertAfter(this.$('#' + data.event).find('.message-edit'));
 
       var msg = common.markupToHtml(data.message, {
         template: templates['markup.html'],
@@ -895,7 +889,7 @@ define([
       msg = $.smilify(msg);
       data.message = msg;
 
-      data.message += '<span class="text-edited">&nbsp;('+ $.t('chat.message.edition.edited') +')</span>';
+      data.message += '<span class="text-edited">&nbsp;(' + $.t('chat.message.edition.edited') + ')</span>';
       $event.find('.ctn').find('.text').html(data.message);
 
       if (bottom)
@@ -907,7 +901,7 @@ define([
       this.messageUnderEdition.remove();
       this.messageUnderEdition = null;
     },
-    onClearHistory: function() {
+    onClearHistory: function () {
       this.cleanup(true);
     },
 

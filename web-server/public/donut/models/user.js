@@ -1,3 +1,4 @@
+'use strict';
 define([
   'underscore',
   'backbone',
@@ -5,8 +6,7 @@ define([
   'client'
 ], function (_, Backbone, $, client) {
   var UserModel = Backbone.Model.extend({
-
-    defaults: function() {
+    defaults: function () {
       return {
         user_id: '',
         username: '',
@@ -16,19 +16,19 @@ define([
       };
     },
 
-    initialize: function(options) {
+    initialize: function (options) {
       this._initialize();
     },
 
-    _initialize: function(options) {
+    _initialize: function (options) {
       this.listenTo(client, 'user:updated', this.onUpdated); // @todo : performance leak, should be handled by rooms and onetoones and currentUser
     },
 
-    onUpdated: function(data) {
+    onUpdated: function (data) {
       if (data.username != this.get('username'))
         return;
       var that = this;
-      _.each(data.data, function(value, key, list) {
+      _.each(data.data, function (value, key, list) {
         that.set(key, value);
       });
     }

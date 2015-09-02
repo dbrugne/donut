@@ -1,3 +1,4 @@
+'use strict';
 define([
   'jquery',
   'underscore',
@@ -7,15 +8,14 @@ define([
   '_templates'
 ], function ($, _, Backbone, common, currentUser, templates) {
   var CurrentUserView = Backbone.View.extend({
-
     el: $('#block-current-user'),
 
     template: templates['current-user.html'],
 
-    initialize: function(options) {
+    initialize: function (options) {
       this.listenTo(this.model, 'change', this.render);
     },
-    render: function() {
+    render: function () {
       if (!currentUser.get('user_id'))
         return this; // nothing to render if welcome wasn't received
 

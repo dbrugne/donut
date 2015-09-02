@@ -1,3 +1,4 @@
+'use strict';
 define([
   'jquery',
   'underscore',
@@ -8,15 +9,14 @@ define([
   '_templates'
 ], function ($, _, Backbone, common, client, currentUser, templates) {
   var RoomTopicView = Backbone.View.extend({
-
     template: templates['room-topic.html'],
 
     events: {
       'click .topic-current': 'showForm',
-      'click .edit'         : 'showForm',
-      'click .cancel'       : 'hideForm',
-      'click .submit'       : 'sendNewTopic',
-      'keypress .topic-input': function(event) {
+      'click .edit': 'showForm',
+      'click .cancel': 'hideForm',
+      'click .submit': 'sendNewTopic',
+      'keypress .topic-input': function (event) {
         if (event.which == 13) {
           this.sendNewTopic(event);
         }
@@ -39,8 +39,8 @@ define([
       if (!currentTopic || currentTopic === '') {
         if (this.model.currentUserIsOp() || this.model.currentUserIsOwner() || this.model.currentUserIsAdmin()) {
           this.$el.find('.txt')
-            .html($.t("chat.topic.default"))
-            .attr('title', $.t("chat.topic.default"));
+            .html($.t('chat.topic.default'))
+            .attr('title', $.t('chat.topic.default'));
           this.$el.find('.topic-current').css('display', 'inline-block');
         } else {
           this.$el.find('.txt')

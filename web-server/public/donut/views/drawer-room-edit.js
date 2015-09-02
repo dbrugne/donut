@@ -1,3 +1,4 @@
+'use strict';
 define([
   'jquery',
   'underscore',
@@ -9,16 +10,15 @@ define([
   '_templates'
 ], function ($, _, Backbone, client, currentUser, ImageUploader, ColorPicker, templates) {
   var DrawerRoomEditView = Backbone.View.extend({
-
     template: templates['drawer-room-edit.html'],
 
     id: 'room-edit',
 
-    events  : {
+    events: {
       'submit form.room-form': 'onSubmit'
     },
 
-    initialize: function(options) {
+    initialize: function (options) {
       this.roomId = options.room_id;
 
       // show spinner as temp content
@@ -26,25 +26,25 @@ define([
 
       // ask for data
       var that = this;
-      client.roomRead(this.roomId, null, function(err, data) {
+      client.roomRead(this.roomId, null, function (err, data) {
         if (!err)
           that.onResponse(data);
       });
     },
-    render: function() {
+    render: function () {
       // render spinner only
       this.$el.html(templates['spinner.html']);
       return this;
     },
-    onResponse: function(room) {
+    onResponse: function (room) {
       if (room.color)
         this.trigger('color', room.color);
 
       room.isOwner = (room.owner)
-          ? (room.owner.user_id == currentUser.get('user_id'))
+        ? (room.owner.user_id == currentUser.get('user_id'))
           ? true
           : false
-          : false;
+        : false;
 
       room.isAdmin = (currentUser.get('admin') === true)
         ? true
@@ -58,7 +58,7 @@ define([
       // description
       this.$el.find('#roomDescription').maxlength({
         counterContainer: this.$el.find('#roomDescription').siblings('.help-block').find('.counter'),
-        text: $.t("edit.left")
+        text: $.t('edit.left')
       });
 
       // website
@@ -95,7 +95,7 @@ define([
         success: _.bind(this.onRoomPosterUpdate, this)
       });
     },
-    onSubmit: function(event) {
+    onSubmit: function (event) {
       event.preventDefault();
 
       if (this.checkWebsite() !== true)
@@ -121,7 +121,7 @@ define([
         updateData.poster = this.posterUploader.data;
 
       var that = this;
-      client.roomUpdate(this.roomId, updateData, function(data) {
+      client.roomUpdate(this.roomId, updateData, function (data) {
         that.$el.find('.errors').hide();
         if (data.err)
           return that.editError(data);
@@ -153,7 +153,7 @@ define([
       });
     },
 
-    checkWebsite: function() {
+    checkWebsite: function () {
       var website = this.$website.val();
 
       if (website && (website.length < 5 || website.length > 255))
@@ -165,10 +165,10 @@ define([
       return true;
     },
 
-    editError: function(dataErrors) {
+    editError: function (dataErrors) {
       var message = '';
       _.each(dataErrors.err, function (error) {
-        message += t('edit.errors.' + error)+'<br>';
+        message += t('edit.errors.' + error) + '<br>';
       });
       this.$el.find('.errors').html(message).show();
     }

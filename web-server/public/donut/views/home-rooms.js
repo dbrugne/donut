@@ -1,3 +1,4 @@
+'use strict';
 define([
   'jquery',
   'underscore',
@@ -6,11 +7,9 @@ define([
   '_templates'
 ], function ($, _, Backbone, common, templates) {
   var RoomsView = Backbone.View.extend({
-
     template: templates['rooms-cards.html'],
 
-    initialize: function (options) {
-    },
+    initialize: function (options) {},
     render: function (data) {
       var rooms = [];
       _.each(data.rooms.list, function (room) {

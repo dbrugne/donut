@@ -1,3 +1,4 @@
+'use strict';
 define([
   'underscore',
   'backbone',
@@ -7,7 +8,6 @@ define([
   'models/event'
 ], function (_, Backbone, app, client, currentUser, EventModel) {
   var OneToOneModel = Backbone.Model.extend({
-
     defaults: function () {
       return {
         username: '',
@@ -26,8 +26,7 @@ define([
         unviewed: false
       };
     },
-    initialize: function () {
-    },
+    initialize: function () {},
     getIdentifier: function () {
       return this.get('username');
     },
@@ -139,7 +138,7 @@ define([
     isThereNew: function () {
       return !!(this.get('unviewed'));
     },
-    isInputActive: function() {
+    isInputActive: function () {
       return !(this.get('i_am_banned') === true);
     }
   });

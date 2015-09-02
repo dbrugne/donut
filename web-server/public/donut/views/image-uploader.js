@@ -1,3 +1,4 @@
+'use strict';
 define([
   'jquery',
   'underscore',
@@ -6,11 +7,9 @@ define([
   'libs/donut-debug',
   '_templates'
 ], function ($, _, Backbone, common, donutDebug, templates) {
-
   var debug = donutDebug('donut:image-uploader');
 
   var ImageUploaderView = Backbone.View.extend({
-
     template: templates['image-uploader.html'],
 
     data: {}, // will be filled here and read in form view
@@ -33,7 +32,7 @@ define([
         sources: ['local', 'url', 'camera'], // ['local', 'url', 'camera']
         multiple: false,
         cropping: 'server',
-        client_allowed_formats: ["png", "gif", "jpeg"],
+        client_allowed_formats: ['png', 'gif', 'jpeg'],
         max_file_size: 20000000 // 20Mo
       }, options);
 
@@ -71,26 +70,26 @@ define([
       var that = this;
       // @doc: http://cloudinary.com/documentation/upload_widget#setup
       cloudinary.openUploadWidget(this.options, function (err, result) {
-          if (err) {
-            if (err.message && err.message == 'User closed widget')
-              return;
+        if (err) {
+          if (err.message && err.message == 'User closed widget')
+            return;
 
-            debug('cloudinary error: ', err);
-            that.options.error = err.message;
-            return that.render();
-          }
-          if (!result || !result[0])
-            return debug('cloudinary result is empty!!');
-
-          that.data = {
-            public_id: result[0].public_id,
-            version: result[0].version,
-            path: result[0].path
-          };
-
-          that.options.success(that.data);
-          that.render();
+          debug('cloudinary error: ', err);
+          that.options.error = err.message;
+          return that.render();
         }
+        if (!result || !result[0])
+          return debug('cloudinary result is empty!!');
+
+        that.data = {
+          public_id: result[0].public_id,
+          version: result[0].version,
+          path: result[0].path
+        };
+
+        that.options.success(that.data);
+        that.render();
+      }
       );
     },
     /**

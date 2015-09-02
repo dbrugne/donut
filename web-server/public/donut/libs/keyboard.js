@@ -1,3 +1,4 @@
+'use strict';
 define(function () {
   return {
     BACKSPACE: 8,

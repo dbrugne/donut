@@ -1,3 +1,4 @@
+'use strict';
 define([
   'jquery',
   'underscore',
@@ -7,11 +8,9 @@ define([
   'client',
   '_templates'
 ], function ($, _, Backbone, common, donutDebug, client, templates) {
-
   var debug = donutDebug('donut:modal-welcome');
 
   var WelcomeModalView = Backbone.View.extend({
-
     el: $('#welcome'),
 
     template: templates['rooms-cards.html'],
