@@ -1,3 +1,4 @@
+'use strict';
 var debug = require('debug')('donut:contact-form');
 var express = require('express');
 var router = express.Router();
@@ -5,15 +6,15 @@ var conf = require('../../../config/index');
 var emailer = require('../../../shared/io/emailer');
 var https = require('https');
 
-function verifyRecaptcha(key, ip, callback) {
-  var url = "https://www.google.com/recaptcha/api/siteverify?secret="+conf.google.recaptcha.secret+"&response="+key+"&remoteip="+ip;
+function verifyRecaptcha (key, ip, callback) {
+  var url = 'https://www.google.com/recaptcha/api/siteverify?secret=' + conf.google.recaptcha.secret + '&response=' + key + '&remoteip=' + ip;
   debug(url);
-  https.get(url, function(res) {
-    var data = "";
+  https.get(url, function (res) {
+    var data = '';
     res.on('data', function (chunk) {
       data += chunk.toString();
     });
-    res.on('end', function() {
+    res.on('end', function () {
       try {
         var parsedData = JSON.parse(data);
         debug(parsedData);
@@ -35,20 +36,20 @@ var validateInput = function (req, res, next) {
 
   // recaptcha
   if (process.env.NODE_ENV === 'development') {
-    debug("Ignore recaptcha in development");
+    debug('Ignore recaptcha in development');
     return next();
   }
   if (!req.body.recaptcha) {
     debug("Recaptcha field isn't present");
     return res.send({sent: false});
   } else {
-    verifyRecaptcha(req.body.recaptcha, req.ip, function(err, success) {
+    verifyRecaptcha(req.body.recaptcha, req.ip, function (err, success) {
       if (err || !success) {
-        debug("Recaptcha error", err);
+        debug('Recaptcha error', err);
         return res.send({sent: false});
       }
 
-      debug("Recaptcha field is ok");
+      debug('Recaptcha field is ok');
       return next();
     });
   }
@@ -56,30 +57,29 @@ var validateInput = function (req, res, next) {
 
 router.route('/contact-form')
   .post([validateInput], function (req, res) {
+    var data = {
+      name: req.body.name,
+      email: req.body.email,
+      message: req.body.message,
+      ip: req.ip,
+      fqdn: conf.url
+    };
 
-      var data = {
-        name      : req.body.name,
-        email     : req.body.email,
-        message   : req.body.message,
-        ip        : req.ip,
-        fqdn      : conf.url
-      };
+    if (req.user) {
+      if (req.user.username)
+        data.user = req.user.username;
+      else
+        data.user = req.user._id.toString();
+    }
 
-      if (req.user) {
-        if (req.user.username)
-          data.user = req.user.username;
-        else
-          data.user = req.user._id.toString();
+    emailer.contactForm(data, function (err) {
+      if (err) {
+        debug('Unable to contact form: ' + err);
+        return res.send({sent: false});
       }
 
-      emailer.contactForm(data, function(err) {
-        if (err) {
-          debug('Unable to contact form: '+err);
-          return res.send({sent: false});
-        }
-
-        res.send({sent: true});
-      });
+      res.send({sent: true});
+    });
   });
 
 module.exports = router;

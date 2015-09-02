@@ -1,10 +1,11 @@
+'use strict';
 var _ = require('underscore');
 var Room = require('../../../shared/models/room');
 var conf = require('../../../config/index');
 
-module.exports = function(req, res, next, roomname) {
+module.exports = function (req, res, next, roomname) {
   if (roomname == undefined || roomname == '') {
-    res.render('404', {}, function(err, html) {
+    res.render('404', {}, function (err, html) {
       res.send(404, html);
     });
   }
@@ -13,9 +14,9 @@ module.exports = function(req, res, next, roomname) {
     .populate('owner', 'username avatar color location website facebook')
     .populate('op', 'username avatar color location website facebook')
     .populate('users', 'username avatar color location website facebook')
-    .exec(function(err, model) {
+    .exec(function (err, model) {
       if (err) {
-        req.flash('error', err)
+        req.flash('error', err);
         return res.redirect('/');
       }
 
@@ -51,7 +52,7 @@ module.exports = function(req, res, next, roomname) {
             avatar: model.owner._avatar(80),
             color: model.owner.color,
             url: (model.owner.username)
-              ? req.protocol + '://' + conf.fqdn + '/user/' + (''+model.owner.username).toLocaleLowerCase()
+              ? req.protocol + '://' + conf.fqdn + '/user/' + ('' + model.owner.username).toLocaleLowerCase()
               : '',
             isOwner: true,
             isOp: false // could not be both
@@ -62,7 +63,7 @@ module.exports = function(req, res, next, roomname) {
         var opIds = [];
         if (model.op && model.op.length) {
           var opList = [];
-          _.each(model.op, function(_model) {
+          _.each(model.op, function (_model) {
             if (ownerId && ownerId === _model.id)
               return;
 
@@ -72,7 +73,7 @@ module.exports = function(req, res, next, roomname) {
               avatar: _model._avatar(80),
               color: _model.color,
               url: (_model.username)
-                ? req.protocol + '://' + conf.fqdn + '/user/' + (''+_model.username).toLocaleLowerCase()
+                ? req.protocol + '://' + conf.fqdn + '/user/' + ('' + _model.username).toLocaleLowerCase()
                 : '',
               isOp: true,
               isOwner: false
@@ -87,7 +88,7 @@ module.exports = function(req, res, next, roomname) {
         // users
         if (model.users && model.users.length) {
           var usersList = [];
-          _.each(model.users, function(_model) {
+          _.each(model.users, function (_model) {
             if (ownerId && ownerId === _model.id)
               return;
             if (opIds && opIds.indexOf(_model.id) !== -1)
@@ -99,7 +100,7 @@ module.exports = function(req, res, next, roomname) {
               avatar: _model._avatar(80),
               color: _model.color,
               url: (_model.username)
-                ? req.protocol + '://' + conf.fqdn + '/user/' + (''+_model.username).toLocaleLowerCase()
+                ? req.protocol + '://' + conf.fqdn + '/user/' + ('' + _model.username).toLocaleLowerCase()
                 : '',
               isOp: false,
               isOwner: false
@@ -113,10 +114,10 @@ module.exports = function(req, res, next, roomname) {
         req.room = room;
         next();
       } else {
-        res.render('404', {}, function(err, html) {
+        res.render('404', {}, function (err, html) {
           res.status(404).send(html);
         });
       }
 
     });
-}
+};

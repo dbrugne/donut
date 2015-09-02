@@ -1,3 +1,4 @@
+'use strict';
 var debug = require('debug')('donut:web:admin');
 var async = require('async');
 var _ = require('underscore');
@@ -10,7 +11,7 @@ var HistoryOne = require('../../../shared/models/historyone');
 var Logs = require('../../../shared/models/log');
 var common = require('@dbrugne/donut-common');
 
-var isAdmin = function(req, res, next) {
+var isAdmin = function (req, res, next) {
   if (!req.isAuthenticated() || req.user.admin !== true) {
     debug('Someone tried to access /dashboard without being authenticated as admin user');
     return res.redirect('/');
@@ -26,7 +27,7 @@ var readCollection = function (collection, query, searchable, populate, callback
   if (query.q && searchable) {
     var search = common.regExpBuildExact(query.q);
     var filters = [];
-    _.each(searchable, function(s) {
+    _.each(searchable, function (s) {
       var f = {};
       f[s] = search;
       filters.push(f);
@@ -44,22 +45,22 @@ var readCollection = function (collection, query, searchable, populate, callback
   var order = query.order || 'asc';
   sortOrder[sort] = order;
 
-  collection.count(filter).exec(function(err, count) {
-    if(err)
+  collection.count(filter).exec(function (err, count) {
+    if (err)
       throw err;
 
     var q = collection
       .find(filter)
       .sort(sortOrder)
-      .skip((page - 1)*limit)
+      .skip((page - 1) * limit)
       .limit(limit);
 
     if (populate) {
       q.populate(populate.path, populate.fields);
     }
 
-    q.exec(function(err, docs) {
-      if(err)
+    q.exec(function (err, docs) {
+      if (err)
         throw err;
       return callback({
         items: docs,
@@ -69,21 +70,21 @@ var readCollection = function (collection, query, searchable, populate, callback
   });
 };
 
-router.get('/rest/rooms', isAdmin, function(req, res) {
+router.get('/rest/rooms', isAdmin, function (req, res) {
   readCollection(
     Room,
     req.query,
     ['name'],
     {path: 'owner', fields: 'username avatar color facebook'},
-    function(result) {
+    function (result) {
       res.send(result);
     }
   );
 });
 
-router.get('/rest/rooms/:id', isAdmin, function(req, res) {
+router.get('/rest/rooms/:id', isAdmin, function (req, res) {
   if (!req.params.id) {
-    debug('No id given while retrieving room in /rest/rooms/:id: '+err);
+    debug('No id given while retrieving room in /rest/rooms/:id: ' + err);
     return res.send({});
   }
 
@@ -92,9 +93,9 @@ router.get('/rest/rooms/:id', isAdmin, function(req, res) {
   q.populate('owner', 'username color facebook');
   q.populate('op', 'username color facebook');
   q.populate('users', 'username color facebook');
-  q.exec(function(err, result) {
+  q.exec(function (err, result) {
     if (err) {
-      debug('Error while retrieving room in /rest/rooms/:id: '+err);
+      debug('Error while retrieving room in /rest/rooms/:id: ' + err);
       return res.send({});
     }
 
@@ -102,87 +103,87 @@ router.get('/rest/rooms/:id', isAdmin, function(req, res) {
   });
 });
 
-router.get('/rest/users', isAdmin, function(req, res) {
+router.get('/rest/users', isAdmin, function (req, res) {
   readCollection(
     User,
     req.query,
-    ['username','name','local.email','facebook.name'],
+    ['username', 'name', 'local.email', 'facebook.name'],
     null,
-    function(result) {
+    function (result) {
       res.send(result);
     }
   );
 });
 
-router.get('/rest/users/:id', isAdmin, function(req, res) {
+router.get('/rest/users/:id', isAdmin, function (req, res) {
   if (!req.params.id) {
-    debug('No id given while retrieving user in /rest/users/:id: '+err);
+    debug('No id given while retrieving user in /rest/users/:id: ' + err);
     return res.send({});
   }
 
   var id = req.params.id;
   var q = User.findById(id);
   q.populate('onetoones', 'username');
-  q.exec(function(err, user) {
+  q.exec(function (err, user) {
     if (err) {
-      debug('Error while retrieving user in /rest/users/:id: '+err);
+      debug('Error while retrieving user in /rest/users/:id: ' + err);
       return res.send({});
     }
 
     var data = user.toJSON();
     Room.findByUser(user.id)
-      .exec(function(err, rooms) {
+      .exec(function (err, rooms) {
         if (err) {
-          debug('Error while retrieving rooms in /rest/users/:id: '+err);
+          debug('Error while retrieving rooms in /rest/users/:id: ' + err);
           return res.send({});
         }
 
         if (!rooms || !rooms.length)
           return res.send(data);
 
-        data.rooms = _.map(rooms, function(r) {
+        data.rooms = _.map(rooms, function (r) {
           return {
             id: r.id,
             name: r.name
           };
         });
         res.send(data);
-    });
+      });
   });
 });
 
-router.get('/rest/home', isAdmin, function(req, res) {
+router.get('/rest/home', isAdmin, function (req, res) {
   async.parallel([
 
     // 0
-    function usersTotal(callback) {
+    function usersTotal (callback) {
       User.count().exec(callback);
     },
     // 1
-    function usersTrend(callback) {
-      var since = Date.now() - (1000*3600*24*7);
+    function usersTrend (callback) {
+      var since = Date.now() - (1000 * 3600 * 24 * 7);
       User.where('created_at').gte(since).count().exec(callback);
     },
     // 2
-    function roomsTotal(callback) {
+    function roomsTotal (callback) {
       Room.count().exec(callback);
     },
     // 3
-    function roomsTrend(callback) {
-      var since = Date.now() - (1000*3600*24*7);
+    function roomsTrend (callback) {
+      var since = Date.now() - (1000 * 3600 * 24 * 7);
       Room.where('created_at').gte(since).count().exec(callback);
     },
     // 4
-    function roomMessage(callback) {
+    function roomMessage (callback) {
       HistoryRoom.find({event: { $in: ['room:message'] }}).count().exec(callback);
     },
     // 5
-    function userMessage(callback) {
+    function userMessage (callback) {
       HistoryOne.find({event: { $in: ['user:message'] }}).count().exec(callback);
     }
 
-  ], function(err, result) {
-    if(err)
+  ], function (err, result) {
+    if (err)
       throw err;
 
     res.send({
@@ -196,13 +197,13 @@ router.get('/rest/home', isAdmin, function(req, res) {
         trend: result[3]
       },
       messages: {
-        total: result[4]+result[5]
+        total: result[4] + result[5]
       }
     });
   });
 });
 
-router.get('/rest/logs', isAdmin, function(req, res) {
+router.get('/rest/logs', isAdmin, function (req, res) {
   var params = req.query;
   var filter = {};
 
@@ -234,7 +235,7 @@ router.get('/rest/logs', isAdmin, function(req, res) {
   var sort = (params.sort && params.sort == 'asc') ? {timestamp: 'asc'} : {timestamp: 'desc'};
 
   var query = Logs.find(filter).sort(sort).limit(100);
-  query.exec(function(err, result) {
+  query.exec(function (err, result) {
     if (err)
       res.send({error: err});
 
