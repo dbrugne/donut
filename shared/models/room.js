@@ -70,6 +70,9 @@ roomSchema.statics.getNewRoom = function (data) {
   model.priority = data.priority;
   if (data.join_mode) {
     model.join_mode = data.join_mode;
+    if (data.join_mode === 'password') {
+      model.join_mode_password = data.join_mode_password;
+    }
   } if (data.history_mode) {
     model.history_mode = data.history_mode;
   }

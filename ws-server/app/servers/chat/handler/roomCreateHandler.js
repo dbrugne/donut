@@ -24,9 +24,10 @@ handler.call = function(data, session, next) {
 
   async.waterfall([
 
-    function check(callback) {
-      if (!data.name)
+    function check (callback) {
+      if (!data.name) {
         return callback('mandatory');
+      }
 
       if (data.join_mode && (['everyone', 'allowed', 'password'].indexOf(data.join_mode) === -1)) {
         return callback('join_mode not valid' + data.join_mode);
@@ -35,25 +36,38 @@ handler.call = function(data, session, next) {
       if (data.history_mode && (['everyone', 'joined', 'none'].indexOf(data.join_mode) === -1)) {
         return callback('history_mode not valid' + data.history_mode);
       }
-      if (!common.validateName(data.name))
+
+      if (data.join_mode === 'password' && !data.join_mode_password) {
+        return callback('join_mode_password is mandatory for password mode room');
+      }
+
+      if (!common.validateName(data.name)) {
         return callback('invalid-name');
+      }
 
       return callback(null);
     },
 
-    function create(callback) {
+    function create (callback) {
       var q = Room.findByName(data.name);
-      q.exec(function(err, room) {
-        if (err)
+      q.exec(function (err, room) {
+        if (err) {
           return callback(err);
-
-        if (room)
+        }
+        if (room) {
           return callback('alreadyexists');
+        }
+
+        var passwordHash;
+        if (data.join_mode === 'password') {
+          passwordHash = user.generateHash(data.join_mode_password);
+        }
 
         room = Room.getNewRoom({
           name: data.name,
           join_mode: data.join_mode,
           history_mode: data.history_mode,
+          join_mode_password: passwordHash,
           owner: user.id,
           color: conf.room.default.color,
           visibility: false, // not visible on home until admin change this value
