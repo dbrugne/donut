@@ -1,3 +1,4 @@
+'use strict';
 var colors = [
   {name: 'HKS 1 K',  hex: '#ffe263'},
   {name: 'HKS 2 K',  hex: '#ffe300'},
@@ -91,12 +92,12 @@ var colors = [
 
 module.exports = {
   list: colors,
-  toString: function() {
+  toString: function () {
     var list = [];
-    for (var i=0; i<colors.length; i++) {
+    for (var i = 0; i < colors.length; i++) {
       var color = colors[i];
       list.push("'" + color.hex + "'");
     }
-    return '['+list.join(',')+']';
+    return '[' + list.join(',') + ']';
   }
 };
