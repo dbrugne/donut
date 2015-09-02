@@ -412,11 +412,11 @@ define([
       } else if (parameters && parameters[1] == parseInt(parameters[1], 10) && parameters[2] == parseInt(parameters[2], 10)) {
         min = parseInt(parameters[1], 10);
         max = parseInt(parameters[2], 10);
-      } else {
+      } else if (paramString) {
         return this.errorCommand('random', 'parameters');
       }
       var result = Math.floor(Math.random() * (max - min + 1) + min);
-      var msg = $.t('chat.notifications.random') + ' ' + result + '(' + min + ' - ' + max + ')';
+      var msg = $.t('chat.notifications.random') + ' ' + result + ' (' + min + ' - ' + max + ')';
       if (this.model.get('type') === 'room') {
         client.roomMe(this.model.get('name'), msg);
       } else {
