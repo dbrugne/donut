@@ -137,7 +137,7 @@ historySchema.statics.retrieve = function() {
    * @param fn
    */
   return function (roomId, userId, what, fn) {
-    if (what.mode_history === 'none') {
+    if (what.mode_history === 'none' && !what.isAdmin) {
       fn(null, null);
     }
 
