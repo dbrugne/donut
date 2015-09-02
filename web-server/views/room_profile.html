@@ -1,7 +1,6 @@
 <% layout('profile') %>
 <% var roomOpsLength = (typeof room.op !== 'undefined' ? room.op.length : 0 ) %>
 <% var roomUsersLength = (typeof room.users !== 'undefined' ? room.users.length : 0 ) %>
-<% var isLogged = (typeof user !== 'undefined' && typeof user.avatar !== 'undefined'); %>
 <% var roomName = room.name.replace('#','') %>
 
 <div class="side dc-back" style="<% if (poster) { %>background-image: url(<%= poster %>);<% }; %>">
@@ -104,11 +103,7 @@
         <div class="text-container">
             <div class="overlay">
                 <span class="overlay-text">
-                    <% if(isLogged) { %>
-                        <a href="#room/<%= room.name %>" data-identifier="<%= room.name %>"><%= t('actions.join') %></a>
-                    <% } else { %>
-                        <a href="/signup"><%= t('actions.signup') %></a>
-                    <% } %>
+                    <a href="<% if (!user) { %><%= room.join %><% } else { %><%= room.chat %><% } %>" data-identifier="<%= room.name %>"><%= t('actions.join') %></a>
                 </span>
             </div>
             <div class="text">

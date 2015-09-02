@@ -1,5 +1,4 @@
 <% layout('profile') %>
-<% var isLogged = (typeof user !== 'undefined' && typeof user.avatar !== 'undefined'); %>
 
 <div class="side dc-back" style="<% if (typeof poster !== 'undefined') { %>background-image: url(<%= poster %>);<% }; %>">
     <div class="blur dc-back-darker " style="<% if (typeof poster !== 'undefined') { %>background-image: url(<%= poster %>);<% }; %>">
@@ -61,11 +60,7 @@
         <div class="text-container">
             <div class="overlay">
                 <span class="overlay-text">
-                    <% if(isLogged) { %>
-                        <a href="#user/<%= user.name %>" data-identifier="<%= user.name %>"><%= t('actions.discuss') %></a>
-                    <% } else { %>
-                        <a href="/signup"><%= t('actions.signup') %></a>
-                    <% } %>
+                    <a href="<% if (!user) { %><%= _user.discuss %><% } else { %><%= _user.chat %><% } %>" data-identifier="<%= user.name %>"><%= t('actions.discuss') %></a>
                 </span>
             </div>
             <div class="text">
