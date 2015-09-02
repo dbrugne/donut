@@ -25,14 +25,12 @@ handler.call = function (data, session, next) {
 
   async.waterfall([
 
-    function check (callback) {
-      if (!data.name) {
-        return callback('name is mandatory');
-      }
+    function check(callback) {
+      if (!data.room_id)
+        return callback('id is mandatory');
 
-      if (!room) {
-        return callback('unable to retrieve room from ' + data.name);
-      }
+      if (!room)
+        return callback('unable to retrieve room from ' + data.room_id);
 
       if (room.users.indexOf(user.id) === -1) {
         return callback('this user ' + user.id + ' is not currently in room ' + room.name);

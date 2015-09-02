@@ -32,7 +32,7 @@ define([
       return this.get('username');
     },
     leave: function () {
-      client.userLeave(this.get('username'));
+      client.userLeave(this.get('user_id'));
     },
     onMessage: function (data) {
       var model = new EventModel({
@@ -40,8 +40,9 @@ define([
         data: data
       });
 
-      if (currentUser.get('user_id') != model.get('data').from_user_id)
+      if (currentUser.get('user_id') !== model.get('data').from_user_id) {
         model.set('unviewed', true);
+      }
 
       this.trigger('freshEvent', model);
     },
@@ -115,19 +116,19 @@ define([
       this.trigger('freshEvent', model);
     },
     history: function (since, callback) {
-      client.userHistory(this.get('username'), since, 100, function (data) {
+      client.userHistory(this.get('user_id'), since, 100, function (data) {
         return callback(data);
       });
     },
     viewedElements: function (elements) {
-      client.userViewed(this.get('username'), elements);
+      client.userViewed(this.get('user_id'), elements);
     },
     onViewed: function (data) {
       this.resetNew();
       this.trigger('viewed', data);
     },
     sendMessage: function (message, images) {
-      client.userMessage(this.get('username'), message, images);
+      client.userMessage(this.get('user_id'), null, message, images);
     },
     resetNew: function () {
       if (this.isThereNew()) { // avoid redraw if nothing to change

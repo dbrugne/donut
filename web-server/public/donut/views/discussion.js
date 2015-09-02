@@ -2,10 +2,11 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'models/app',
   'libs/donut-debug',
   'views/events',
   'views/input'
-], function ($, _, Backbone, donutDebug, EventsView, InputView) {
+], function ($, _, Backbone, app, donutDebug, EventsView, InputView) {
 
   var debug = donutDebug('donut:discussion');
 
@@ -22,7 +23,7 @@ define([
 
     initialize: function(options) {
       debug.start('discussion-'+((this.model.get('name'))?this.model.get('name'):this.model.get('username')));
-      this.mainView = options.mainView;
+      var start = Date.now();
 
       // Events
       this.listenTo(this.model, 'change:focused', this.updateFocus);

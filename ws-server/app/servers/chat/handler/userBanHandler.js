@@ -23,8 +23,8 @@ handler.call = function(data, session, next) {
 	async.waterfall([
 
 		function check(callback) {
-			if (!data.username)
-				return callback('require username param');
+			if (!data.username && !data.user_id)
+				return callback('require username or user_id param');
 
       if (!bannedUser)
         return callback('unable to retrieve bannedUser: ' + data.username);

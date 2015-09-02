@@ -31,7 +31,7 @@ define([
         isOwner: this.model.currentUserIsOwner(),
         isOp: this.model.currentUserIsOp(),
         isAdmin: this.model.currentUserIsAdmin(),
-        roomName: this.model.get('name')
+        roomId: this.model.get('room_id'),
       }));
 
       this.$el.find('.topic-current, .topic-form').hide();
@@ -91,7 +91,7 @@ define([
 
       // only if not too long
       if (newTopic.length <= 512)
-        client.roomTopic(this.model.get('name'), newTopic);
+        client.roomTopic(this.model.get('id'), newTopic);
 
       // reset form state
       this.$el.find('.topic-input').val('');

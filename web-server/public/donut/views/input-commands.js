@@ -2,11 +2,12 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'models/app',
   'client',
+  'collections/rooms',
   'views/modal-confirmation',
-  'models/event',
-  'models/current-user'
-], function ($, _, Backbone, client, confirmationView, EventModel, currentUser) {
+  'models/event'
+], function ($, _, Backbone, app, client, rooms, confirmationView, EventModel) {
   var InputCommandsView = Backbone.View.extend({
 
     commandRegexp: /^\/([-a-z0-9]+)/i,
@@ -200,18 +201,22 @@ define([
       if (!parameters)
         return this.errorCommand('join', 'parameters');
 
-      currentUser.trigger('roomJoinCommand', parameters[1]);
+      app.trigger('joinRoom', parameters[1]);
     },
     leave: function(paramString, parameters) {
       if (!paramString) {
-        client.roomLeave(this.model.get('name'));
+        client.roomLeave(this.model.get('id'));
         return;
       }
 
       if (!parameters)
         return this.errorCommand('leave', 'parameters');
 
-      client.roomLeave(parameters[1]);
+      var model = rooms.getByName(parameters[1]);
+      if (!model)
+        return;
+
+      client.roomLeave(model.get('id'));
     },
     topic: function(paramString, parameters) {
       if (this.model.get('type') !== 'room')
@@ -220,7 +225,7 @@ define([
       if (!parameters && paramString)
         return this.errorCommand('topic', 'parameters')
 
-      client.roomTopic(this.model.get('name'), parameters[1]);
+      client.roomTopic(this.model.get('id'), parameters[1]);
     },
     op: function(paramString, parameters) {
       if (this.model.get('type') !== 'room')
@@ -231,7 +236,7 @@ define([
 
       var that = this;
       confirmationView.open({}, function() {
-        client.roomOp(that.model.get('name'), parameters[1]);
+        client.roomOp(that.model.get('id'), null, parameters[1]);
         that.model.trigger('inputFocus');
       }, this.inputFocus());
     },
@@ -244,7 +249,7 @@ define([
 
       var that = this;
       confirmationView.open({}, function() {
-        client.roomDeop(that.model.get('name'), parameters[1]);
+        client.roomDeop(that.model.get('id'), null, parameters[1]);
         that.model.trigger('inputFocus');
       }, this.inputFocus());
     },
@@ -257,7 +262,7 @@ define([
 
       var that = this;
       confirmationView.open({input: true}, function (reason) {
-        client.roomKick(that.model.get('name'), parameters[1], reason);
+        client.roomKick(that.model.get('id'), null, parameters[1], reason);
         that.model.trigger('inputFocus');
       }, this.inputFocus());
     },
@@ -270,7 +275,7 @@ define([
 
       var that = this;
       confirmationView.open({input : true}, function (reason) {
-        client.roomBan(that.model.get('name'), parameters[1], reason);
+        client.roomBan(that.model.get('id'), null, parameters[1], reason);
         that.model.trigger('inputFocus');
       }, this.inputFocus());
     },
@@ -281,45 +286,49 @@ define([
       if (!parameters)
         return this.errorCommand('deban', 'parameters');
 
-      client.roomDeban(this.model.get('name'), parameters[1]);
+      client.roomDeban(this.model.get('id'), null, parameters[1]);
     },
-    block: function(paramString, parameters) {
-      var username;
+    block: function (paramString, parameters) {
+      var username = null;
+      var userId = null;
       // from a room
       if (this.model.get('type') !== 'onetoone') {
-        if (!paramString)
+        if (!paramString) {
           return this.errorCommand('block', 'commandaccess');
-        if (!parameters)
+        } if (!parameters) {
           return this.errorCommand('block', 'parameters');
+        }
 
         username = parameters[0].replace(/^@/, '');
       } else {
         // from a onetoone
-        username = this.model.get('username');
+        userId = this.model.get('user_id');
       }
 
       var that = this;
-      confirmationView.open({input : false}, function () {
-        client.userBan(username);
+      confirmationView.open({input: false}, function () {
+        client.userBan(userId, username);
         that.model.trigger('inputFocus');
       }, this.inputFocus());
     },
     deblock: function(paramString, parameters) {
       var username;
+      var userId;
       // from a room
       if (this.model.get('type') !== 'onetoone') {
-        if (!paramString)
+        if (!paramString) {
           return this.errorCommand('deblock', 'commandaccess');
-        if (!parameters)
+        } if (!parameters) {
           return this.errorCommand('deblock', 'parameters');
+        }
 
         username = parameters[0].replace(/^@/, '');
       } else {
         // from a onetoone
-        username = this.model.get('username');
+        userId = this.model.get('user_id');
       }
 
-      client.userDeban(username);
+      client.userDeban(userId, username);
     },
     voice: function(paramString, parameters) {
       if (this.model.get('type') !== 'room')
@@ -328,7 +337,7 @@ define([
       if (!parameters)
         return this.errorCommand('voice', 'parameters');
 
-      client.roomVoice(this.model.get('name'), parameters[1]);
+      client.roomVoice(this.model.get('id'), null, parameters[1]);
     },
     devoice: function(paramString, parameters) {
       if (this.model.get('type') !== 'room')
@@ -339,21 +348,35 @@ define([
 
       var that = this;
       confirmationView.open({input : true}, function (reason) {
-        client.roomDevoice(that.model.get('name'), parameters[1], reason);
+        client.roomDevoice(that.model.get('id'), null, parameters[1], reason);
         that.model.trigger('inputFocus');
       }, this.inputFocus());
     },
     msg: function(paramString, parameters) {
-
-      var oneParam = (!parameters) ? ((this.model.get('type') === 'room')
-        ? this.model.get('name') : this.model.get('id')) : parameters[1];
       var message = (!parameters) ? paramString : parameters[2];
+      if (!message)
+        return;
 
-      if (/^#/.test(oneParam))
-        client.roomMessage(oneParam, message, null);
-      else {
-        oneParam = oneParam.replace(/^@/, '');
-        client.userMessage(oneParam, message, null);
+      var model;
+      if  (!parameters) {
+        model = this.model;
+      } else if (/^#/.test(parameters[1])) {
+        model = rooms.getByName(parameters[1]);
+      } else if (/^@/.test(parameters[1])) {
+        client.userMessage(null, parameters[1].replace(/^@/, ''), message, null);
+        return;
+      } else {
+        return;
+      }
+
+      if (!model) {
+        return;
+      }
+
+      if (model.get('type') === 'room') {
+        client.roomMessage(model.get('id'), message, null);
+      } else if (model.get('type') === 'onetoone') {
+        client.userMessage(model.get('user_id'), null, message, null);
       }
     },
     profile: function(paramString, parameters) {
@@ -362,34 +385,36 @@ define([
 
       var that = this;
       if ((/^#/.test(parameters[1]))) {
-        client.roomRead(parameters[1], function (err, data) {
+        client.roomRead(null, parameters[1], function (err, data) {
           if (err === 'unknown') {
             that.errorCommand('profile', 'invalidroom');
             return;
           }
           if (!err)
-            currentUser.trigger('roomProfileCommand', data);
+            app.trigger('openRoomProfile', data);
         });
       } else {
         parameters[1] = parameters[1].replace(/^@/, '');
-        client.userRead(parameters[1], function (err, data) {
+        client.userRead(null, parameters[1], function (err, data) {
           if (err === 'unknown') {
             that.errorCommand('profile', 'invalidusername');
             return;
           }
           if (!err)
-            currentUser.trigger('userProfileCommand', data);
+            app.trigger('openUserProfile', data);
         });
       }
     },
-    me: function(paramString, parameters) {
-      if (!parameters)
+    me: function (paramString, parameters) {
+      if (!parameters) {
         return this.errorCommand('me', 'parameters');
+      }
 
-      if (this.model.get('type') === 'room')
-        client.roomMe(this.model.get('name'), parameters[1]);
-      else
+      if (this.model.get('type') === 'room') {
+        client.roomMe(this.model.get('id'), parameters[1]);
+      } else {
         client.userMe(this.model.get('id'), parameters[1]);
+      }
     },
     ping: function(paramString, parameters) {
       var that = this;

@@ -1,11 +1,14 @@
 define([
   'jquery',
   'underscore',
-  'backbone'
-], function ($, _, Backbone) {
+  'backbone',
+  'models/app'
+], function ($, _, Backbone, app) {
   var AlertView = Backbone.View.extend({
 
     initialize: function () {
+      this.listenTo(app, 'alert', this.onAlert);
+
       this.$alert = $('#alert > .alert');
       this.$message = $('#alert > .alert > .message');
       this.$close = $('#alert > .alert > .close-btn');
@@ -23,21 +26,21 @@ define([
     /**
      * Display an automatic-hiddable alert box
      *
-     * @param typeOfAlert could be info warn or error
+     * @param type could be 'info', 'warn' or 'error'
      * @param message
      * @returns {AlertView}
      */
-    show: function (typeOfAlert, message) {
+    onAlert: function (type, message) {
+      type = type || 'info';
       this.$message
         .html(message);
       this.$alert
         .finish()
         .removeClass('info warning error')
-        .addClass(typeOfAlert)
+        .addClass(type)
         .slideDown('fast')
         .delay(1000*10)
-        .slideUp('fast')
-      ;
+        .slideUp('fast');
 
       return this;
     }

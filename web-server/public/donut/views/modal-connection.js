@@ -9,7 +9,6 @@ define([
     el: $('#connection'),
 
     initialize: function(options) {
-      this.mainView = options.mainView;
       this.listenTo(client, 'connecting',         function() { this.onEvent('connecting'); }, this);
       this.listenTo(client, 'connect',            function() { this.onEvent('connect'); }, this);
       this.listenTo(client, 'disconnect',         function(reason) { this.onEvent('disconnect', reason); }, this);

@@ -27,14 +27,21 @@ define([
     beepPlaying: false,
     beepOn: false,
 
-    desktopNotificationsLimiters: function () {
-    },
+    desktopNotificationsLimiters: null,
 
     initialize: function (options) {
+      this.listenTo(app, 'desktopNotification', this.desktopNotify);
+      this.listenTo(app, 'desktopNotificationForce', this._desktopNotify);
+      this.listenTo(app, 'playSound', this.play);
+      this.listenTo(app, 'playSoundForce', this._play);
+      this.listenTo(app, 'unviewedInOut', this.triggerInout);
+      this.listenTo(app, 'unviewedMessage', this.triggerMessage);
+
       this.$window = this.$el;
-      this.$document = $(document);
 
       this.defaultTitle = document.title; // save original title on page load
+
+      this.desktopNotificationsLimiters = {};
 
       // Load audio elements
       var that = this;

@@ -11,7 +11,7 @@
         bgColor = "background-color: "+u.color;
         txtColor = "color: "+u.color;
         }; %>
-        <div class="item open-user-profile <%= u.status %>" data-bgcolor="<%= bgColor %>" data-type="room-users" data-txtcolor="<%= txtColor %>" data-username="<%= u.username %>" data-toggle="tooltip" data-placement="left">
+        <div class="item open-user-profile <%= u.status %>" data-bgcolor="<%= bgColor %>" data-type="room-users" data-txtcolor="<%= txtColor %>" data-user-id="<%= u.user_id %>" data-toggle="tooltip" data-placement="left">
             <!--<div class="username" style="<%= bgColor %>">@<%= u.username %></div>-->
             <div class="avatar" style="background-image:url(<%= u.avatar %>)"></div>
         </div>

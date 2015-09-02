@@ -75,7 +75,7 @@ define([
         +this.get('name').replace('#', '').toLocaleLowerCase();
     },
     leave: function() {
-      client.roomLeave(this.get('name'));
+      client.roomLeave(this.get('id'));
     },
     userIsDevoiced: function(userId) {
       return (this.get('devoices') && this.get('devoices').indexOf(userId) !== -1);
@@ -104,7 +104,7 @@ define([
         type: 'room:in',
         data: data
       });
-      client.roomVoice(data.name, data.username);
+      client.roomVoice(data.room_id, data.user_id, null);
       this.trigger('freshEvent', model);
     },
     onOut: function(data) {
@@ -280,12 +280,12 @@ define([
       this._onStatus('offline', data);
     },
     history: function(since, callback) {
-      client.roomHistory(this.get('name'), since, 100, function(data) {
+      client.roomHistory(this.get('id'), since, 100, function(data) {
         return callback(data);
       });
     },
     viewedElements: function(elements) {
-      client.roomViewed(this.get('name'), elements);
+      client.roomViewed(this.get('id'), elements);
     },
     onViewed: function (data) {
       this.resetNew();
@@ -293,7 +293,7 @@ define([
     },
     fetchUsers: function(callback) {
       var that = this;
-      client.roomUsers(this.get('name'), function(data) {
+      client.roomUsers(this.get('id'), function(data) {
         that.users.reset();
 
         _.each(data.users, function(element, key, list) {
@@ -308,7 +308,7 @@ define([
     },
 
     sendMessage: function(message, images) {
-      client.roomMessage(this.get('name'), message, images);
+      client.roomMessage(this.get('id'), message, images);
     },
 
     resetNew: function() {

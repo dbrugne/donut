@@ -2,9 +2,10 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'models/app',
   'client',
   '_templates'
-], function ($, _, Backbone, client, _templates) {
+], function ($, _, Backbone, app, client, _templates) {
   var DrawerRoomCreateView = Backbone.View.extend({
 
     template: _templates['drawer-room-create.html'],
@@ -17,10 +18,7 @@ define([
     },
 
     initialize: function(options) {
-      this.mainView = options.mainView;
-
       this.render(options.name);
-
       this.$input = this.$el.find('.input');
     },
     /**
@@ -70,19 +68,19 @@ define([
       var that = this;
       client.roomCreate(name, function(response) {
         if (response.err == 'alreadyexists') {
-          that.mainView.alert('error', $.t('chat.alreadyexists', {name: name, uri: uri}));
+          app.trigger('alert', 'error', $.t('chat.alreadyexists', {name: name, uri: uri}));
           that.reset();
           that.trigger('close');
           return;
         } else if (response.err) {
-          that.mainView.alert('error', $.t('global.unknownerror'));
+          app.trigger('alert', 'error', $.t('global.unknownerror'));
           that.reset();
           that.trigger('close');
           return;
         }
 
         window.router.navigate(uri, {trigger: true});
-        that.mainView.alert('info', $.t('chat.successfullycreated', {name: name}));
+        app.trigger('alert', 'info', $.t('chat.successfullycreated', {name: name}));
         that.reset();
         that.trigger('close');
       });

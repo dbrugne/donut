@@ -22,8 +22,11 @@ handler.call = function(data, session, next) {
   async.waterfall([
 
     function check(callback) {
-      if (!data.name)
-        return callback('name is mandatory');
+      if (!data.room_id)
+        return callback('id is mandatory');
+
+      if (!room)
+        return callback('unable to retrieve room: ' + data.room_id);
 
       if (room.users.indexOf(user.id) === -1)
         return callback('this user ' + user.id + ' is not currently in room ' + room.name);
@@ -36,8 +39,7 @@ handler.call = function(data, session, next) {
 
     function broadcast(callback) {
       var typingEvent = {
-        name: room.name,
-        id: data.room_id,
+        room_id: room.id,
         user_id: user.id,
         username: user.username
       };

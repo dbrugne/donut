@@ -6,26 +6,23 @@
     </div>
 </div><!-- /.side -->
 <div class="content">
-    <div class="visible-xs visible-sm">
-        <div class="mini-header room">
-            <img class="avatar open-room-profile" data-room-name="<%= name %>" src="<%= avatar %>" alt="<%= name %> avatar">
-            <span class="name open-room-profile dc-text-contrast" data-room-name="<%= name %>"><%= name %></span>
-            <div class="info mt5"><%= dropdown %></div>
-        </div>
+    <div class="mini-header room visible-xs visible-sm">
+        <img class="avatar open-room-profile dc-border-lighter" data-room-id="<%= room_id %>" src="<%= avatar %>" alt="<%= name %> avatar">
+        <span class="name open-room-profile dc-text-contrast" data-room-id="<%= room_id %>"><%= name %></span>
     </div>
     <div class="header room">
         <div class="overlay-ctn hidden-xs hidden-sm">
-            <img class="avatar open-room-profile" data-room-name="<%= name %>" src="<%= avatar %>" alt="<%= name %> avatar">
-            <div class="overlay open-room-profile" data-room-name="<%= name %>" ></div>
-            <span class="overlay-text open-room-profile" data-room-name="<%= name %>" ><%= t('chat.actions.see') %></span>
+            <img class="avatar open-room-profile" data-room-id="<%= room_id %>" src="<%= avatar %>" alt="<%= name %> avatar">
+            <div class="overlay open-room-profile" data-room-id="<%= room_id %>" ></div>
+            <span class="overlay-text open-room-profile" data-room-id="<%= room_id %>" ><%= t('chat.actions.see') %></span>
         </div>
         <div class="info hidden-xs hidden-sm">
-            <div class="name open-room-profile" data-room-name="<%= name %>"><%= name %></div>
+            <div class="name open-room-profile" data-room-id="<%= name %>"><%= name %></div>
 
             <%= dropdown %>
 
             <% if (owner && owner.username) { %>
-            <span class="owner hidden-xs hidden-sm"><%= t('global.by') %> <a class="open-user-profile dc-text" data-username="<%= owner.username %>">@<%= owner.username %></a></span>
+            <span class="owner"><%= t('global.by') %> <a class="open-user-profile dc-text" data-username="<%= owner.username %>">@<%= owner.username %></a></span>
             <% } %>
             <div class="share hidden-xs hidden-sm">
                 <%= t('chat.share.label') %>
