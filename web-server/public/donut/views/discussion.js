@@ -131,9 +131,9 @@ define([
     },
 
     colorify: function() {
-      this.mainView._color(this.model.get('color'));
-      if (this.model.get('focused'))
-        this.mainView.color(this.model.get('color'));
+      if (this.model.get('focused')) {
+        app.trigger('changeColor', this.model.get('color'));
+      }
     },
 
     onSend: function() {
