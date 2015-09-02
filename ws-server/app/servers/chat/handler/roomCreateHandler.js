@@ -28,6 +28,13 @@ handler.call = function(data, session, next) {
       if (!data.name)
         return callback('name is mandatory');
 
+      if (data.join_mode && (['everyone', 'allowed', 'password'].indexOf(data.join_mode) === -1)) {
+        return callback('join_mode not valid' + data.join_mode);
+      }
+
+      if (data.history_mode && (['everyone', 'joined', 'none'].indexOf(data.join_mode) === -1)) {
+        return callback('history_mode not valid' + data.history_mode);
+      }
       if (!common.validateName(data.name))
         return callback('invalid room name: ' + data.name);
 
@@ -45,6 +52,8 @@ handler.call = function(data, session, next) {
 
         room = Room.getNewRoom({
           name: data.name,
+          join_mode: data.join_mode,
+          history_mode: data.history_mode,
           owner: user.id,
           color: conf.room.default.color,
           visibility: false, // not visible on home until admin change this value

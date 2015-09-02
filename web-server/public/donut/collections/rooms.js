@@ -71,7 +71,9 @@ define([
         poster: room.poster,
         posterblured: room.posterblured,
         color: room.color,
-        unviewed: room.unviewed
+        unviewed: room.unviewed,
+        join_mode: room.join_mode,
+        history_mode: room.history_mode
       };
 
       // update model

@@ -68,6 +68,11 @@ roomSchema.statics.getNewRoom = function (data) {
   model.color = data.color;
   model.visibility = data.visibility;
   model.priority = data.priority;
+  if (data.join_mode) {
+    model.join_mode = data.join_mode;
+  } if (data.history_mode) {
+    model.history_mode = data.history_mode;
+  }
   return model;
 };
 
