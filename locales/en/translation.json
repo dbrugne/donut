@@ -441,6 +441,7 @@
       "me": "What are you doing?",
       "ping": "pong",
       "clear": "remove all visible history from interface",
+      "random": "Display a random value (between 1 and 100 by default)",
       "help": "this message",
       "errors": {
         "parameters": "Invalid parameter",
@@ -475,6 +476,7 @@
       "count" : "<strong class=\"nb\"></strong><strong> New</strong> Notification(s)",
       "tag-as-read" : "Tag as read",
       "empty": "You have no new notification",
+      "random": "rolls",
       "dropdown": {
         "op": "<a href=\"#room/__roomname__\">You are a moderator of </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
         "deop": "<a href=\"#room/__roomname__\">You are no longer a moderator of </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
