@@ -34,6 +34,18 @@ handler.call = function(data, session, next) {
       if (room.isBanned(user.id))
         return callback('banned');
 
+			if (room.join_mode === 'allowed' && !room.isAllowed(user.id)) {
+				return callback('notallowed');
+			}
+
+			if (room.join_mode === 'password' && !data.join_mode_password) {
+				return callback('join_mode_password is mandatory for the password rooms');
+			}
+
+			if (room.join_mode === 'password' && !room.validPassword(data.join_mode_password)) {
+				return callback('wrong-password');
+			}
+
 			return callback(null);
 		},
 
@@ -113,7 +125,7 @@ handler.call = function(data, session, next) {
 	], function(err) {
 		if (err === 'notexists')
 			return next(null, {code: 404, err: err});
-		if (err === 'banned')
+		if (err === 'banned' || err === 'notallowed' || err === 'wrong-password')
 			return next(null, {code: 403, err: err});
 		if (err) {
       logger.error('[room:join] ' + err);

@@ -47,9 +47,6 @@ require([
   'i18next',
   'moment',
   'desktop-notify',
-/************************************
- * Load (once) and attach plugins to jQuery and underscore
- ************************************/
   'jquery.insertatcaret',
   'jquery.maxlength',
   'jquery.smilify',
@@ -67,54 +64,58 @@ require([
     debug: false // @debug
   };
   // @doc: http://i18next.com/pages/doc_init.html#getresources
-  if (_.isString(translations))
+  if (_.isString(translations)) {
     i18nextOptions = _.extend({
       resGetPath: translations,
       dynamicLoad: true
     }, i18nextOptions);
-  else
+  } else {
     i18nextOptions.resStore = translations;
+  }
   i18next.init(i18nextOptions);
   // make i18next available from all underscore templates views (<%= t('key') %>)
   window.t = i18next.t; // @global
 
   // Moment language
   window.moment = moment;
-  var momentFormat = (i18next.lng() == 'fr')
-    ? {
-    relativeTime: {
-      future: "%s",
-      past: "%s",
-      s: "à l'instant",
-      m: "1mn",
-      mm: "%dmin",
-      h: "1h",
-      hh: "%dh",
-      d: "hier",
-      dd: "%d jours",
-      M: "un mois",
-      MM: "%d mois",
-      y: "un an",
-      yy: "%d ans"
-    }
+  var momentFormat;
+  if (i18next.lng() === 'fr') {
+    momentFormat = {
+      relativeTime: {
+        future: '%s',
+        past: '%s',
+        s: 'à l\'instant',
+        m: '1mn',
+        mm: '%dmin',
+        h: '1h',
+        hh: '%dh',
+        d: 'hier',
+        dd: '%d jours',
+        M: 'un mois',
+        MM: '%d mois',
+        y: 'un an',
+        yy: '%d ans'
+      }
+    };
+  } else {
+    momentFormat = {
+      relativeTime: {
+        future: '%s',
+        past: '%s',
+        s: 'just now',
+        m: '1mn',
+        mm: '%dmin',
+        h: '1h',
+        hh: '%dh',
+        d: 'yesterday',
+        dd: '%d days',
+        M: 'one month',
+        MM: '%d months',
+        y: 'one year',
+        yy: '%d years'
+      }
+    };
   }
-    : {
-    relativeTime: {
-      future: "%s",
-      past: "%s",
-      s: "just now",
-      m: "1mn",
-      mm: "%dmin",
-      h: "1h",
-      hh: "%dh",
-      d: "yesterday",
-      dd: "%d days",
-      M: "one month",
-      MM: "%d months",
-      y: "one year",
-      yy: "%d years"
-    }
-  };
   moment.locale(i18next.lng(), momentFormat);
 
   // Contact form

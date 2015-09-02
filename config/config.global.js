@@ -1,4 +1,5 @@
-var conf = module.exports = {
+'use strict';
+module.exports = {
   url: '',
   fqdn: '',
   debug: {
@@ -13,22 +14,22 @@ var conf = module.exports = {
     }
   },
   mongo: {
-    'url' : ''
+    'url': ''
   },
   sessions: {
     key: 'donut.sid',
     secret: 'q4qsd65df45s4d5f45ds5fsf4s',
-    ttl: 7*24*3600 // 1 week, in seconds
+    ttl: 7 * 24 * 3600 // 1 week, in seconds
   },
   oauth: {
     secret: 'QmFzZTY0DQoNCkJhc2U2NCBpcyBhIGdlbmVyaWMgdGVybSBmb3IgYSBudW1iZ',
-    expire: 5*60 // 5 hours, in minutes
+    expire: 5 * 60 // 5 hours, in minutes
   },
   email: {
     fake: 'donutmetest+__name__@gmail.com',
     from: {
-      name: "DONUT.me",
-      email: "hello@donut.me"
+      name: 'DONUT.me',
+      email: 'hello@donut.me'
     },
     mailgun: {
       api_key: 'key-a302f604e9b1e7f1bca75beda26fd0c7',
@@ -36,9 +37,9 @@ var conf = module.exports = {
     }
   },
   facebook: {
-    'clientID' 		: '328600083963864', // your App ID
-    'clientSecret' 	: '89a61eab36ab0971e0400f9f3934addb', // your App Secret
-    'callbackURL' 	: '',
+    'clientID': '328600083963864', // your App ID
+    'clientSecret': '89a61eab36ab0971e0400f9f3934addb', // your App Secret
+    'callbackURL': '',
     url: 'https://www.facebook.com/donutdotme'
   },
   twitter: {
@@ -73,17 +74,17 @@ var conf = module.exports = {
   },
   notifications: {
     scheduler: 10, // seconds
-    delay: 5*60, // seconds
+    delay: 5 * 60, // seconds
     done: 1, // months
     types: {
       usermessage: {
-        creation: 5*60 // 5mn
+        creation: 5 * 60 // 5mn
       },
       roommessage: {
-        creation: 5*60 // 5mn
+        creation: 5 * 60 // 5mn
       },
       roomjoin: {
-        creation: 5*60 // 5mn
+        creation: 5 * 60 // 5mn
       }
     }
   }

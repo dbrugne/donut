@@ -26,7 +26,7 @@ handler.call = function(data, session, next) {
 
     function check (callback) {
       if (!data.name) {
-        return callback('mandatory');
+        return callback('name is mandatory');
       }
 
       if (data.join_mode && (['everyone', 'allowed', 'password'].indexOf(data.join_mode) === -1)) {
@@ -63,16 +63,20 @@ handler.call = function(data, session, next) {
           passwordHash = user.generateHash(data.join_mode_password);
         }
 
-        room = Room.getNewRoom({
-          name: data.name,
-          join_mode: data.join_mode,
-          history_mode: data.history_mode,
-          join_mode_password: passwordHash,
-          owner: user.id,
-          color: conf.room.default.color,
-          visibility: false, // not visible on home until admin change this value
-          priority: 0
-        });
+        room = Room.getNewRoom();
+        room.name = data.name;
+        room.owner = user.id;
+        room.color = conf.room.default.color;
+        room.visibility = false; // not visible on home until admin change this value
+        room.priority = 0;
+        if (data.join_mode) {
+          room.join_mode = data.join_mode;
+          if (data.join_mode === 'password') {
+            room.join_mode_password = passwordHash;
+          }
+        } if (data.history_mode) {
+          room.history_mode = data.history_mode;
+        }
         room.save(function (err) {
           return callback(err, room);
         });

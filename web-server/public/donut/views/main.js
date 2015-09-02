@@ -448,10 +448,10 @@ define([
       var type = $target.data('type');
       var identifier = $target.data('identifier');
       var model;
-      if (type == 'room') {
-        model = rooms.findWhere({ name: identifier });
+      if (type === 'room') {
+        model = rooms.findWhere({ id: identifier });
       } else {
-        model = onetoones.findWhere({ username: ''+identifier }); // force string to handle fully numeric username
+        model = onetoones.findWhere({ user_id: ''+identifier }); // force string to handle fully numeric username
       }
 
       if (model == undefined)
@@ -548,18 +548,24 @@ define([
       Backbone.history.navigate('#'); // just change URI, not run route action
     },
 
-    focusRoomByName: function(name) {
+    focusRoomByName: function (name) {
       var model = rooms.iwhere('name', name);
       if (model == undefined) {
         // Not already open
         this.thisDiscussionShouldBeFocusedOnSuccess = name;
         var that = this;
-        client.roomJoin(null, name, function(response) {
-          if (response.err == 'banned') {
+        client.roomJoin(null, name, function (response) {
+          if (response.err === 'banned') {
             app.trigger('alert', 'error', $.t('chat.bannedfromroom', {name: name}));
             that.focus();
-          } else if (response.err == 'notexists') {
+          } else if (response.err === 'notexists') {
             app.trigger('alert', 'error', $.t('chat.roomnotexists', {name: name}));
+            that.focus();
+          } else if (response.err === 'notallowed') {
+            app.trigger('alert', 'error', $.t('chat.notallowedinroom', {name: name}));
+            that.focus();
+          } else if (response.err === 'wrong-password') {
+            app.trigger('alert', 'error', $.t('chat.wrong-password', {name: name}));
             that.focus();
           } else if (response.err) {
             app.trigger('alert', 'error', $.t('global.unknownerror'));

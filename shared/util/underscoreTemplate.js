@@ -1,3 +1,4 @@
+'use strict';
 /**
  * This module allows usage of underscore template as server render engine.
  *
@@ -12,7 +13,7 @@ var async = require('async');
 var cons = require('consolidate');
 var path = require('path');
 
-var Renderer = function(options) {
+var Renderer = function (options) {
   options = options || {};
 
   // @todo : implement underscore template caching
@@ -31,16 +32,16 @@ var Renderer = function(options) {
     this.consolidateConfiguration.cache = true;
 };
 
-Renderer.prototype.resolve = function(directory, template) {
+Renderer.prototype.resolve = function (directory, template) {
   var ext = path.extname(template);
-  if (ext !== '.'+this.extension)
-    template += '.'+this.extension;
+  if (ext !== '.' + this.extension)
+    template += '.' + this.extension;
 
   return path.resolve(directory, template);
 };
 
-Renderer.prototype.render = function(template, variables, callback) {
-  debug('Renderer render called for '+template);
+Renderer.prototype.render = function (template, variables, callback) {
+  debug('Renderer render called for ' + template);
 
   variables = _.extend(this.consolidateConfiguration, this.defaultVariables, variables);
 
@@ -58,7 +59,7 @@ Renderer.prototype.render = function(template, variables, callback) {
  * @param content   | String, optionnal
  * @param callback
  */
-Renderer.prototype.renderView = function(template, variables, content, callback) {
+Renderer.prototype.renderView = function (template, variables, content, callback) {
   if (!_.isFunction(callback)) {
     callback = content;
     content = null;
@@ -69,19 +70,19 @@ Renderer.prototype.renderView = function(template, variables, content, callback)
   var partialsIndex = 1;
   var _variables = _.clone(variables);
 
-  _variables.layout = function(template) {
+  _variables.layout = function (template) {
     layout = template;
     return ''; // avoid accidental output
   };
 
-  _variables.content = function() {
+  _variables.content = function () {
     return content;
   };
 
-  _variables.partial = function(_template, partialVariables) {
+  _variables.partial = function (_template, partialVariables) {
     debug('include partial', _template);
 
-    var key = '#!_comprise_'+(partialsIndex++)+'_partial_!#';
+    var key = '#!_comprise_' + (partialsIndex++) + '_partial_!#';
 
     var vars;
     if (partialVariables) {
@@ -103,18 +104,18 @@ Renderer.prototype.renderView = function(template, variables, content, callback)
   var that = this;
   async.waterfall([
 
-    function renderTemplateWithConsolidate(fn) {
+    function renderTemplateWithConsolidate (fn) {
       cons['underscore'](template, _variables, fn);
     },
 
-    function renderPartialsTemplates(html, fn) {
+    function renderPartialsTemplates (html, fn) {
       if (!partials.length)
         return fn(null, html);
 
       that.renderPartials(partials, html, fn);
     },
 
-    function renderLayoutTemplate(html, fn) {
+    function renderLayoutTemplate (html, fn) {
       if (!layout)
         return fn(null, html);
 
@@ -124,29 +125,28 @@ Renderer.prototype.renderView = function(template, variables, content, callback)
   ], callback);
 };
 
-Renderer.prototype.renderPartials = function(partials, html, callback) {
+Renderer.prototype.renderPartials = function (partials, html, callback) {
   debug('render partials');
 
   var that = this;
-  async.each(partials, function(partial, fn) {
-
+  async.each(partials, function (partial, fn) {
     var filename = that.resolve(that.partialDir, partial.template);
 
     // avoid that the same Object reference is passed to consolidate that use it to store filename of each template rendering
     // bug viewed only on very fast machine (production)
     var variables = _.clone(partial.variables);
-    cons['underscore'](filename, variables, function(err, _html) {
+    cons['underscore'](filename, variables, function (err, _html) {
       if (err)
         return fn(err);
 
       html = html.replace(partial.key, _html);
 
-      debug('partial '+partial.template+' replaced in key '+partial.key);
+      debug('partial ' + partial.template + ' replaced in key ' + partial.key);
       return fn(null);
     });
 
-  }, function(err) {
-    if (err){
+  }, function (err) {
+    if (err) {
       return callback(err);}
 
     debug('partials done');
@@ -158,13 +158,13 @@ Renderer.prototype.renderPartials = function(partials, html, callback) {
 exports.Renderer = Renderer;
 
 // Express 4.0
-exports.express = function(options) {
-  return function(filename, variables, callback) {
-    debug('express render function called for '+filename+' with callback: '+!!(_.isFunction(callback)));
+exports.express = function (options) {
+  return function (filename, variables, callback) {
+    debug('express render function called for ' + filename + ' with callback: ' + !!(_.isFunction(callback)));
     new Renderer(options).render(filename, variables, callback);
   };
 };
 
-exports.standard = function(options) {
+exports.standard = function (options) {
   return new Renderer(options);
 };
