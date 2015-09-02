@@ -19,15 +19,14 @@ define([
     },
 
     initialize: function(options) {
-      this.mainView = options.mainView;
-      this.roomName = options.name;
+      this.roomId = options.room_id;
 
       // show spinner as temp content
       this.render();
 
       // ask for data
       var that = this;
-      client.roomRead(this.roomName, function(err, data) {
+      client.roomRead(this.roomId, null, function(err, data) {
         if (!err)
           that.onResponse(data);
       });
@@ -38,8 +37,6 @@ define([
       return this;
     },
     onResponse: function(room) {
-      this.roomName = room.name;
-
       if (room.color)
         this.trigger('color', room.color);
 
@@ -124,7 +121,7 @@ define([
         updateData.poster = this.posterUploader.data;
 
       var that = this;
-      client.roomUpdate(this.roomName, updateData, function(data) {
+      client.roomUpdate(this.roomId, updateData, function(data) {
         that.$el.find('.errors').hide();
         if (data.err)
           return that.editError(data);
@@ -137,7 +134,7 @@ define([
         avatar: data
       };
       var that = this;
-      client.roomUpdate(this.roomName, updateData, function (d) {
+      client.roomUpdate(this.roomId, updateData, function (d) {
         that.$el.find('.errors').hide();
         if (d.err)
           that.editError(d);
@@ -149,7 +146,7 @@ define([
         poster: data
       };
       var that = this;
-      client.roomUpdate(this.roomName, updateData, function (d) {
+      client.roomUpdate(this.roomId, updateData, function (d) {
         that.$el.find('.errors').hide();
         if (d.err)
           that.editError(d);

@@ -19,6 +19,9 @@ define([
 
       return matches[0];
     },
+    getByName: function(name) {
+      return this.findWhere({ name: name });
+    },
 
     initialize: function() {
       this.listenTo(client, 'room:in', this.onIn);
@@ -77,16 +80,16 @@ define([
       };
 
       // update model
-      var isNew = (this.get(room.name) == undefined)
+      var isNew = (this.get(room.id) == undefined)
         ? true
         : false;
       if (!isNew) {
         // already exist in IHM (maybe reconnecting)
-        var model = this.get(room.name);
+        var model = this.get(room.id);
         model.set(roomData);
       } else {
         // add in IHM
-        roomData.id = room.name;
+        roomData.id = room.id;
         var model = new RoomModel(roomData);
       }
 
@@ -97,49 +100,49 @@ define([
     },
     onIn: function(data) {
       var model;
-      if (!data || !data.name || !(model = this.get(data.name)))
+      if (!data || !data.room_id || !(model = this.get(data.room_id)))
         return;
 
       model.onIn(data);
     },
     onOut: function(data) {
       var model;
-      if (!data || !data.name || !(model = this.get(data.name)))
+      if (!data || !data.room_id || !(model = this.get(data.room_id)))
         return;
 
       model.onOut(data);
     },
     onTopic: function(data) {
       var model;
-      if (!data || !data.name || !(model = this.get(data.name)))
+      if (!data || !data.room_id || !(model = this.get(data.room_id)))
         return;
 
       model.onTopic(data);
     },
     onMessage: function(data) {
       var model;
-      if (!data || !data.name || !(model = this.get(data.name)))
+      if (!data || !data.room_id || !(model = this.get(data.room_id)))
         return;
 
       model.onMessage(data);
     },
     onMe: function(data) {
       var model;
-      if (!data || !data.name || !(model = this.get(data.name)))
+      if (!data || !data.room_id || !(model = this.get(data.room_id)))
         return;
 
       model.onMe(data);
     },
     onOp: function(data) {
       var model;
-      if (!data || !data.name || !(model = this.get(data.name)))
+      if (!data || !data.room_id || !(model = this.get(data.room_id)))
         return;
 
       model.onOp(data);
     },
     onDeop: function(data) {
       var model;
-      if (!data || !data.name || !(model = this.get(data.name)))
+      if (!data || !data.room_id || !(model = this.get(data.room_id)))
         return;
 
       model.onDeop(data);
@@ -173,7 +176,7 @@ define([
     },
     _kickBan: function(what, data) {
       var model;
-      if (!data || !data.name || !(model = this.get(data.name)))
+      if (!data || !data.room_id || !(model = this.get(data.room_id)))
         return;
 
       // if i'm the "targeted user" destroy the model/view
@@ -203,21 +206,21 @@ define([
     },
     onDeban: function(data) {
       var model;
-      if (!data || !data.name || !(model = this.get(data.name)))
+      if (!data || !data.room_id || !(model = this.get(data.room_id)))
         return;
 
       model.onDeban(data);
     },
     onVoice: function(data) {
       var model;
-      if (!data || !data.name || !(model = this.get(data.name)))
+      if (!data || !data.room_id || !(model = this.get(data.room_id)))
         return;
 
       model.onVoice(data);
     },
     onDevoice: function(data) {
       var model;
-      if (!data || !data.name || !(model = this.get(data.name)))
+      if (!data || !data.room_id || !(model = this.get(data.room_id)))
         return;
 
       model.onDevoice(data);
@@ -225,7 +228,7 @@ define([
     onLeave: function(data) {
       // server asks to this client to leave this room
       var model;
-      if (!data || !data.name || !(model = this.get(data.name)))
+      if (!data || !data.room_id || !(model = this.get(data.room_id)))
         return;
 
       this.remove(model);
@@ -235,35 +238,35 @@ define([
     },
     onViewed: function(data) {
       var model;
-      if (!data || !data.name || !(model = this.get(data.name)))
+      if (!data || !data.room_id || !(model = this.get(data.room_id)))
         return;
 
       model.onViewed(data);
     },
     onMessageSpam: function(data) {
       var model;
-      if (!data || !data.name || !(model = this.get(data.name)))
+      if (!data || !data.room_id || !(model = this.get(data.room_id)))
         return;
 
       model.trigger('messageSpam', data);
     },
     onMessageUnspam: function(data) {
       var model;
-      if (!data || !data.name || !(model = this.get(data.name)))
+      if (!data || !data.room_id || !(model = this.get(data.room_id)))
         return;
 
       model.trigger('messageUnspam', data);
     },
     onMessageEdited: function(data) {
       var model;
-      if (!data || !data.name || !(model = this.get(data.name)))
+      if (!data || !data.room_id || !(model = this.get(data.room_id)))
         return;
 
       model.trigger('messageEdit', data);
     },
     onTyping: function(data) {
       var model;
-      if(!data || !data.name || !(model = this.get(data.name)))
+      if(!data || !data.room_id || !(model = this.get(data.room_id)))
         return;
 
       model.trigger('typing', data);

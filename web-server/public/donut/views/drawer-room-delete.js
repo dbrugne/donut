@@ -2,10 +2,11 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'models/app',
   'client',
   'models/current-user',
   '_templates'
-], function ($, _, Backbone, client, currentUser, templates) {
+], function ($, _, Backbone, app, client, currentUser, templates) {
   var DrawerRoomDeleteView = Backbone.View.extend({
 
     template: templates['drawer-room-delete.html'],
@@ -18,15 +19,14 @@ define([
     },
 
     initialize: function(options) {
-      this.mainView = options.mainView;
-      this.roomName = options.name;
+      this.roomId = options.room_id;
 
       // show spinner as temp content
       this.render();
 
       // ask for data
       var that = this;
-      client.roomRead(this.roomName, function(err, data) {
+      client.roomRead(this.roomId, null, function(err, data) {
         if (!err)
           that.onResponse(data);
       });
@@ -43,7 +43,7 @@ define([
       if (room.owner.user_id != currentUser.get('user_id') && !currentUser.isAdmin())
         return;
 
-      this.roomName = room.name;
+      this.roomNameConfirmation = room.name.toLocaleLowerCase();
 
       var html = this.template({room: room});
       this.$el.html(html);
@@ -54,11 +54,11 @@ define([
       if (!this._valid())
         return;
 
-      client.roomDelete(this.roomName);
+      client.roomDelete(this.roomId);
     },
     onDelete: function(data) {
       if (!data.name
-        || data.name.toLocaleLowerCase() != this.roomName.toLocaleLowerCase())
+        || data.name.toLocaleLowerCase() != this.roomNameConfirmation)
         return;
 
       this.$el.find('.errors').hide();
@@ -72,7 +72,7 @@ define([
         return;
       }
 
-      this.mainView.alert('info', $.t('edit.room.delete.success'));
+      app.trigger('alert', 'info', $.t('edit.room.delete.success'));
       this.trigger('close');
     },
     onKeyup: function(event) {
@@ -90,7 +90,7 @@ define([
     },
     _valid: function() {
       var name = '#'+this.$input.val();
-      var pattern = new RegExp('^'+this.roomName+'$', 'i');
+      var pattern = new RegExp('^'+this.roomNameConfirmation+'$', 'i');
       if (pattern.test(name)) {
         return true;
       } else {

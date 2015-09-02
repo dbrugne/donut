@@ -60,7 +60,7 @@ define([
         return;
 
       if (this.model.get('type') === 'room')
-        client.roomTyping(this.model.get('name'));
+        client.roomTyping(this.model.get('id'));
       else
         client.userTyping(this.model.get('user_id'));
 

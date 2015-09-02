@@ -22,11 +22,11 @@ handler.call = function(data, session, next) {
 	async.waterfall([
 
 		function check(callback) {
-			if (!data.name)
-				return callback('name parameter is mandatory');
+			if (!data.room_id)
+				return callback('id parameter is mandatory');
 
 			if (!room)
-				return callback('unable to retrieve room: '+data.name);
+				return callback('unable to retrieve room: '+data.room_id);
 
 			return callback(null);
 		},
@@ -42,8 +42,7 @@ handler.call = function(data, session, next) {
 					return callback(err);
 
 				var historyEvent = {
-					name      : room.name,
-					id        : room.id,
+					room_id   : room.id,
 					history   : history.history,
 					more      : history.more
 				};

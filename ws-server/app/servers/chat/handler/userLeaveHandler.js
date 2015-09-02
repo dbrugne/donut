@@ -21,24 +21,26 @@ handler.call = function(data, session, next) {
 
 	async.waterfall([
 
-		function check(callback) {
-      if (!data.username)
-        return callback('username is mandatory');
+		function check (callback) {
+      if (!data.username && !data.user_id) {
+				return callback('username or user_id is mandatory');
+			}
 
-      if (!withUser)
-        return callback('unable to retrieve withUser: ' + data.username);
+      if (!withUser) {
+				return callback('unable to retrieve withUser: ' + data.username);
+			}
 
 			return callback(null);
 		},
 
-		function persist(callback) {
-			user.update({ $pull: { onetoones: withUser._id }}, function(err) {
+		function persist (callback) {
+			user.update({$pull: { onetoones: withUser._id }}, function (err) {
 				return callback(err);
 			});
 		},
 
-		function sendToUserClients(callback) {
-			that.app.globalChannelService.pushMessage('connector', 'user:leave', { username: withUser.username }, 'user:' + user.id, {}, callback);
+		function sendToUserClients (callback) {
+			that.app.globalChannelService.pushMessage('connector', 'user:leave', { user_id: withUser._id }, 'user:' + user.id, {}, callback);
 		}
 
 	], function(err) {

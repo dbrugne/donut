@@ -18,8 +18,6 @@ define([
     events: {},
 
     initialize: function(options) {
-      this.mainView = options.mainView;
-
       this.listenTo(app, 'redraw-block', this.render);
       this.listenTo(onetoones, 'change:avatar', this.render);
       this.listenTo(rooms, 'change:avatar', this.render);
@@ -37,15 +35,13 @@ define([
       });
 
       var that = this;
-      //this.$list.sortable().bind('sortstart', function(event, ui) {
-      //});
       this.$list.sortable().bind('sortupdate', function(event, ui) {
         /*
          ui.item contains the current dragged element.
          ui.item.index() contains the new index of the dragged element
          ui.oldindex contains the old index of the dragged element
          */
-        that.mainView.persistPositions(true); // silently
+        app.trigger('persistPositions', true); // silently
       });
     },
     render: function() {
@@ -58,11 +54,11 @@ define([
         if (o.get('type') == 'room') {
           json.avatar = common.cloudinarySize(json.avatar, 40);
           json.uri = '#room/'+o.get('name').replace('#', '');
-          json.identifier = o.get('name');
+          json.identifier = o.get('id');
         } else {
           json.avatar = common.cloudinarySize(json.avatar, 40);
           json.uri = '#user/'+o.get('username');
-          json.identifier = o.get('username');
+          json.identifier = o.get('user_id');
         }
         json.position = positions.indexOf(json.identifier);
         data.push(json);

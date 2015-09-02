@@ -14,6 +14,7 @@ define([
   var RoomView = DiscussionView.extend({
 
     template: templates['discussion-room.html'],
+    templateDropdown: templates['dropdown-room-actions.html'],
 
     events: {
       'click .op-user'            : 'opUser',
@@ -56,17 +57,22 @@ define([
       // avatar
       data.avatar = common.cloudinarySize(data.avatar, 100);
 
+      // id
+      data.room_id = this.model.get('id');
+
       // url
       data.url = this.model.getUrl();
 
       // share widget
-      var share = 'share-room-'
-        + this.model.get('name').replace('#', '').toLocaleLowerCase()
+      var share = 'share-room-'+ this.model.get('name').replace('#', '').toLocaleLowerCase()
       this.share = {
         class: share,
         selector: '.'+share
       }
       data.share = this.share.class;
+      data.dropdown = this.templateDropdown({
+        data: data
+      });
 
       return data;
     },
@@ -84,18 +90,24 @@ define([
      * User actions methods
      */
 
+    _showUserListModal: function() {
+      if (this.topicView.isUserModelRequired()) {
+        this.topicView.loadUserModal();
+      }
+    },
+
     opUser: function(event) {
       event.preventDefault();
       if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin())
         return false;
 
-      var username = $(event.currentTarget).data('username');
-      if (!username)
+      var userId = $(event.currentTarget).data('userId');
+      if (!userId)
         return;
 
       var that = this;
       confirmationView.open({}, function() {
-        client.roomOp(that.model.get('name'), username);
+        client.roomOp(that.model.get('id'), userId, null);
       });
     },
     deopUser: function(event) {
@@ -103,13 +115,13 @@ define([
       if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin())
         return false;
 
-      var username = $(event.currentTarget).data('username');
-      if (!username)
+      var userId = $(event.currentTarget).data('userId');
+      if (!userId)
         return;
 
       var that = this;
       confirmationView.open({}, function() {
-        client.roomDeop(that.model.get('name'), username);
+        client.roomDeop(that.model.get('id'), userId, null);
       });
     },
     kickUser: function(event) {
@@ -117,13 +129,13 @@ define([
       if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin())
         return false;
 
-      var username = $(event.currentTarget).data('username');
-      if (!username)
+      var userId = $(event.currentTarget).data('userId');
+      if (!userId)
         return;
 
       var that = this;
       confirmationView.open({ input: true }, function(reason) {
-        client.roomKick(that.model.get('name'), username, reason);
+        client.roomKick(that.model.get('id'), userId, null, reason);
       });
     },
     banUser: function(event) {
@@ -131,37 +143,38 @@ define([
       if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin())
         return false;
 
-      var username = $(event.currentTarget).data('username');
-      if (!username)
+      var userId = $(event.currentTarget).data('userId');
+      if (!userId)
         return;
 
       var that = this;
       confirmationView.open({ input: true }, function(reason) {
-        client.roomBan(that.model.get('name'), username, reason);
+        client.roomBan(that.model.get('id'), userId, null, reason);
       });
     },
     voiceUser: function(event) {
       event.preventDefault();
       if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() &&!this.model.currentUserIsAdmin())
         return false;
-      var username = $(event.currentTarget).data('username');
-      if (!username)
+
+      var userId = $(event.currentTarget).data('userId');
+      if (!userId)
         return;
 
-      client.roomVoice(this.model.get('name'), username);
+      client.roomVoice(this.model.get('id'), userId, null);
     },
     devoiceUser: function(event) {
       event.preventDefault();
       if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin())
         return false;
 
-      var username = $(event.currentTarget).data('username');
-      if (!username)
+      var userId = $(event.currentTarget).data('userId');
+      if (!userId)
         return;
 
       var that = this;
       confirmationView.open({ input: true }, function(reason) {
-        client.roomDevoice(that.model.get('name'), username, reason);
+        client.roomDevoice(that.model.get('id'), userId, null, reason);
       });
     },
 

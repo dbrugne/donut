@@ -25,17 +25,17 @@ handler.call = function(data, session, next) {
 	async.waterfall([
 
 		function check(callback) {
-			if (!data.name)
-				return callback('require room name param');
+			if (!data.room_id)
+				return callback('room id is mandatory');
 
-			if (!data.username)
-				return callback('require username param');
+			if (!data.user_id && !data.username)
+				return callback('user_id or username is mandatory');
 
 			if (!room)
-				return callback('unable to retrieve room: '+data.name);
+				return callback('unable to retrieve room: '+data.room_id);
 
 			if (!room.isOwnerOrOp(user.id) && session.settings.admin !== true)
-				return callback('this user ' + user.id + ' isn\'t able to kick another user in this room: ' + data.name);
+				return callback('this user ' + user.id + ' isn\'t able to kick another user in this room: ' + room.name);
 
       if (!kickedUser)
         return callback('unable to retrieve kickedUser: ' + data.username);

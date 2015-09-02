@@ -26,14 +26,14 @@ handler.call = function(data, session, next) {
 	async.waterfall([
 
 		function check(callback) {
-			if (!data.name)
-				return callback('name is mandatory');
+			if (!data.room_id)
+				return callback('room_id is mandatory');
 
       if (!room)
-        return callback('unable to retrieve room: ' + data.name);
+        return callback('unable to retrieve room: ' + data.room_id);
 
       if (!room.isOwner(user.id) && session.settings.admin !== true)
-        return callback('this user ' + user.id + ' isn\'t able to update data of ' + data.name);
+        return callback('this user ' + user.id + ' isn\'t able to update data of ' + data.room_id);
 
 			return callback(null);
 		},
@@ -198,7 +198,7 @@ handler.call = function(data, session, next) {
 
 			var event = {
 				name: room.name,
-				id: room.id,
+				room_id: room.id,
 				data: sanitizedToNotify
 			};
 			that.app.globalChannelService.pushMessage('connector', 'room:updated', event, room.name, {}, callback);

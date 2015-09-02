@@ -1,6 +1,6 @@
 <div class="room">
     <span class="name"><%= room.name %></span>
-    <span class="owner"><%= t('global.by') %> <a class="open-user-profile dc-text" data-username="<%= room.owner.username %>">@<%= room.owner.username %></a></span>
+    <span class="owner"><%= t('global.by') %> <a class="open-user-profile dc-text" data-user-id="<%= room.owner.user_id %>">@<%= room.owner.username %></a></span>
 </div>
 <div class="errors"></div>
 <form class="room-form" role="form">
@@ -56,6 +56,6 @@
 </form>
 <div class="footer">
     <p class="delete">
-        <i class="icon icon-trash"></i> <%= t('edit.room.delete.link', {name: room.name}) %>
+        <i class="icon icon-trash"></i> <%= t('edit.room.delete.link', {id: room.id}) %>
     </p>
 </div>

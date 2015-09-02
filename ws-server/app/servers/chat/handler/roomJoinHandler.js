@@ -25,8 +25,8 @@ handler.call = function(data, session, next) {
 	async.waterfall([
 
 		function check(callback) {
-			if (!data.name)
-				return callback('name is mandatory');
+			if (!data.room_id && !data.name)
+				return callback('room_id or name is mandatory');
 
       if (!room)
         return callback('notexists');

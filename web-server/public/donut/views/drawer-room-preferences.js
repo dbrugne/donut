@@ -17,24 +17,22 @@ define([
       'change .disable-others': 'onNothing'
     },
 
-    initialize: function(options) {
-      this.mainView = options.mainView;
-
+    initialize: function (options) {
       // show spinner as temp content
       this.render();
 
       // ask for data
       var that = this;
-      client.userPreferencesRead(this.model.get('name'), function(data) {
+      client.userPreferencesRead(this.model.get('id'), function (data) {
         that.onResponse(data);
       });
     },
-    render: function() {
+    render: function () {
       // render spinner only
       this.$el.html(templates['spinner.html']);
       return this;
     },
-    onResponse: function(data) {
+    onResponse: function (data) {
       var color = this.model.get('color');
       //// colorize drawer .opacity
       //if (color)
@@ -49,19 +47,19 @@ define([
       this.$el.html(html);
       return;
     },
-    onNothing: function(event) {
+    onNothing: function (event) {
       var $target = $(event.currentTarget);
       var value = $target.is(":checked");
       this.$el.find('.disableable').prop("disabled", value);
     },
-    onChangeValue: function(event) {
+    onChangeValue: function (event) {
       var $target = $(event.currentTarget);
       var key = $target.attr('value');
       var value = $target.is(":checked");
 
       // Radio button particular handling
-      if ($target.attr('type') == 'radio') {
-        value = (key.substr(key.lastIndexOf(':')+1) == 'true');
+      if ($target.attr('type') === 'radio') {
+        value = (key.substr(key.lastIndexOf(':')+1) === 'true');
         key = key.substr(0, key.lastIndexOf(':'));
       }
 
@@ -72,13 +70,12 @@ define([
       update[key] = value;
 
       var that = this;
-      client.userPreferencesUpdate(update, function(data) {
+      client.userPreferencesUpdate(update, function (data) {
         that.$el.find('.errors').hide();
         if (data.err) {
           that.$el.find('.errors').html($.t('global.unknownerror')).show();
-          return;
         }
-      })
+      });
     }
 
   });

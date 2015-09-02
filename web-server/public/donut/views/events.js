@@ -2,6 +2,7 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'models/app',
   'libs/donut-debug',
   'common',
   'models/event',
@@ -11,7 +12,7 @@ define([
   'views/message-edit',
   'views/window',
   '_templates'
-], function ($, _, Backbone, donutDebug, common, EventModel, moment, client, currentUser, MessageEditView, windowView, templates) {
+], function ($, _, Backbone, app, donutDebug, common, EventModel, moment, client, currentUser, MessageEditView, windowView, templates) {
 
   var debug = donutDebug('donut:events');
 
@@ -377,7 +378,7 @@ define([
      *****************************************************************************************************************/
     onAdminMessage: function(data) {
       data = { data: data };
-      data.data.avatar = 'cloudinary=v1409643461/rciev5ubaituvx5bclnz.png'; // @todo : add avatar URL in configuration
+      data.data.avatar = '//res.cloudinary.com/roomly/image/upload/v1409643461/rciev5ubaituvx5bclnz.png'; // @todo : add avatar URL in configuration
       data.data.username = 'DONUT';
       data.data.is_admin = true;
       data.type = 'room:message';
@@ -387,9 +388,9 @@ define([
     addFreshEvent: function (model) {
       // browser notification
       if (model.getGenericType() == 'message' || model.get('type') === 'room:topic')
-        windowView.triggerMessage(model, this.model);
+        app.trigger('unviewedMessage', model, this.model);
       else if (this.model.get('type') == 'room' && model.getGenericType() == 'inout')
-        windowView.triggerInout(model, this.model);
+        app.trigger('unviewedInOut', model, this.model);
 
       // render a 'fresh' event in realtime and scrolldown
       debug.start('discussion-events-fresh-' + this.model.getIdentifier());
@@ -560,7 +561,7 @@ define([
               newBlock = true;
             break;
           case 'message':
-            if (!previousElement.hasClass('message') || previousElement.data('username') != newModel.get('data').username)
+            if (!previousElement.hasClass('message') || previousElement.data('userId') !== newModel.get('data').user_id)
               newBlock = true;
             break;
         }
@@ -685,12 +686,13 @@ define([
      *
      *****************************************************************************************************************/
     onMessageMenuShow: function (event) {
-      var ownerUsername = '';
+      var ownerUserId = '';
       var $event = $(event.currentTarget).closest('.event');
-      if (this.model.get('owner'))
-        ownerUsername = this.model.get('owner').get('username');
-      var username = $event.closest('[data-username]').data('username');
-      var isMessageOwner = (ownerUsername === username);
+      if (this.model.get('owner')) {
+        ownerUserId = this.model.get('owner').get('user_id');
+      }
+      var userId = $event.closest('[data-user-id]').data('userId');
+      var isMessageOwner = (ownerUserId === userId);
 
       var isEditable = this.isEditableMessage($event);
 
@@ -718,22 +720,22 @@ define([
     onMarkAsSpam: function (event) {
       event.preventDefault();
       var parent = $(event.currentTarget).closest('.event');
-      var roomName = this.model.get('name');
+      var roomId = this.model.get('id');
       var messageId = parent.attr('id');
 
-      client.roomMessageSpam(roomName, messageId);
+      client.roomMessageSpam(roomId, messageId);
     },
     onUnmarkAsSpam: function (event) {
       event.preventDefault();
       var parent = $(event.currentTarget).closest('.event');
-      var roomName = this.model.get('name');
+      var roomId = this.model.get('id');
       var messageId = parent.attr('id');
       parent.removeClass('viewed');
 
       var ctn = parent.find('.text') || parent.find('.image');
       ctn.find('.remask-spammed-message').remove();
 
-      client.roomMessageUnspam(roomName, messageId);
+      client.roomMessageUnspam(roomId, messageId);
     },
     onMarkedAsSpam: function (room) {
       var bottom = this.isScrollOnBottom();
@@ -803,9 +805,9 @@ define([
       this.editMessage($event);
     },
     isEditableMessage: function ($event) {
-      var username = $event.closest('[data-username]').data('username');
+      var userId = $event.closest('[data-user-id]').data('userId');
       var time = $event.data('time');
-      var isMessageCurrentUser = (currentUser.get('username') === username);
+      var isMessageCurrentUser = (currentUser.get('user_id') === userId);
       var isNotTooOld = ((Date.now() - new Date(time)) < window.message_maxedittime);
       var isSpammed = $event.hasClass('spammed');
 
@@ -827,7 +829,7 @@ define([
       var $currentEventMessage = $(event.currentTarget).closest('.event');
       var $currentBlockMessage = $(event.currentTarget).closest('.message');
 
-      var username = $currentBlockMessage.data('username');
+      var userId = $currentBlockMessage.data('userId');
 
       // get sibling .event
       var $candidate = $currentEventMessage[direction]();
@@ -836,7 +838,7 @@ define([
       // no sibling .event, try with sibling .block
       if (!$candidate.length && $candidateBlock.length) {
         var _lastBlock = $candidateBlock;
-        while((_lastBlock.data('username') !== username)) {
+        while((_lastBlock.data('userId') !== userId)) {
           if (!_lastBlock[direction]().length)
             return;
           _lastBlock = _lastBlock[direction]();
@@ -855,7 +857,7 @@ define([
     },
     pushUpFromInput: function() {
       var _lastBlock = this.$realtime.find('.block.message').last();
-      while(_lastBlock.data('username') !== currentUser.get('username')) {
+      while(_lastBlock.data('userId') !== currentUser.get('user_id')) {
         if (!_lastBlock.prev().length)
           return;
         _lastBlock = _lastBlock.prev();

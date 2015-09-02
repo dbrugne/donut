@@ -26,7 +26,7 @@ handler.call = function(data, session, next) {
 
     function check(callback) {
       if (!data.name)
-        return callback('name is mandatory');
+        return callback('mandatory');
 
       if (data.join_mode && (['everyone', 'allowed', 'password'].indexOf(data.join_mode) === -1)) {
         return callback('join_mode not valid' + data.join_mode);
@@ -36,7 +36,7 @@ handler.call = function(data, session, next) {
         return callback('history_mode not valid' + data.history_mode);
       }
       if (!common.validateName(data.name))
-        return callback('invalid room name: ' + data.name);
+        return callback('invalid-name');
 
       return callback(null);
     },
@@ -92,7 +92,11 @@ handler.call = function(data, session, next) {
     }
 
   ], function(err) {
-    if (err === 'alreadyexists')
+    if ([
+        'mandatory',
+        'invalid-name',
+        'alreadyexists'
+      ].indexOf(err) !== -1)
       return next(null, { code: 403, err: err });
     if (err)
       return next(null, { code: 500, err: err });

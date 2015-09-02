@@ -25,17 +25,17 @@ handler.call = function(data, session, next) {
 	async.waterfall([
 
 		function check(callback) {
-			if (!data.name)
-				return callback('name is mandatory');
+			if (!data.room_id)
+				return callback('id is mandatory');
 
       if (!room)
-        return callback('unable to retrieve room: '+data.name);
+        return callback('unable to retrieve room: '+data.room_id);
 
       if (!room.isOwnerOrOp(user.id) && session.settings.admin !== true)
-        return callback('this user ' + user.id + ' isn\'t able to change topic of ' + data.name);
+        return callback('this user ' + user.id + ' isn\'t able to change topic of ' + data.room_id);
 
 			if (!common.validateTopic(data.topic))
-				return callback('invalid topic for  ' +data.name + ': ' + data.topic);
+				return callback('invalid topic for  ' +data.room_id + ': ' + data.topic);
 
 			return callback(null);
 		},
@@ -58,6 +58,7 @@ handler.call = function(data, session, next) {
 
 		function broadcast(topic, callback) {
       var event = {
+				room_id : room.id,
         user_id : user.id,
         username: user.username,
         avatar  : user._avatar(),

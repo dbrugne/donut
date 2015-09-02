@@ -2,15 +2,15 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'models/app',
   'common',
   'client',
   'collections/rooms',
   'collections/onetoones',
   'models/current-user',
   'moment',
-  'views/window',
   '_templates'
-], function ($, _, Backbone, common, client, rooms, onetoones, currentUser, moment, windowView, templates) {
+], function ($, _, Backbone, app, common, client, rooms, onetoones, currentUser, moment, templates) {
   var NotificationsView = Backbone.View.extend({
 
     el: $("#notifications"),
@@ -40,8 +40,6 @@ define([
 
       this.unread = 0;
       this.more = false;
-      this.mainView = options.mainView;
-
       this.render();
     },
     initializeNotificationState: function (data) {
@@ -128,7 +126,7 @@ define([
           : '')
       });
 
-      windowView.desktopNotify(desktopTitle, '');
+      app.trigger('desktopNotification', desktopTitle, '');
     },
     createNotificationFromTemplate: function (notification) {
       var template;

@@ -21,14 +21,14 @@ handler.call = function(data, session, next) {
 	async.waterfall([
 
 		function check(callback) {
-			if (!data.name)
-				return callback('require room name param');
+			if (!data.room_id)
+				return callback('id is mandatory');
 
       if (!room)
-        return callback('unable to retrieve room: ' + data.name);
+        return callback('unable to retrieve room: ' + data.room_id);
 
       if (!room.isOwner(user.id) && session.settings.admin !== true)
-        return callback(user.id + ' is not allowed to delete ' + data.name);
+        return callback(user.id + ' is not allowed to delete ' + data.room_id);
 
       if (room.permanent === true)
         return callback('permanent');
@@ -40,6 +40,7 @@ handler.call = function(data, session, next) {
 			var event = {
 				name: room.name,
 				id: room.id,
+				room_id: room.id,
 				reason: 'deleted'
 			};
 			that.app.globalChannelService.pushMessage('connector', 'room:leave', event, room.name, {}, function(err) {

@@ -7,10 +7,12 @@ define([
   'views/discussion',
   'views/modal-confirmation',
   '_templates'
-], function ($, _, Backbone, common, client, DiscussionView, confirmationView, _templates) {
+], function ($, _, Backbone, common, client, DiscussionView, confirmationView, templates) {
   var OneToOnePanelView = DiscussionView.extend({
 
-    template: _templates['discussion-onetoone.html'],
+    template: templates['discussion-onetoone.html'],
+    templateDropdown: templates['dropdown-one-actions.html'],
+
     events: {
       'click .ban-user': 'banUser',
       'click .deban-user': 'debanUser'
@@ -35,6 +37,10 @@ define([
 
       data.avatar = common.cloudinarySize(data.avatar, 100);
       data.url = '/user/' + ('' + data.username).toLocaleLowerCase();
+
+      data.dropdown = this.templateDropdown({
+        data: data
+      });
 
       return data;
     },

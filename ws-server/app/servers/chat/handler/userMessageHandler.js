@@ -27,9 +27,9 @@ handler.call = function(data, session, next) {
 
 	async.waterfall([
 
-		function check(callback) {
-			if (!data.username)
-				return callback('username is mandatory');
+		function check (callback) {
+			if (!data.username && !data.user_id)
+				return callback('username or user_id is mandatory');
 
       if (!withUser)
         return callback('unable to retrieve withUser: ' + data.username);

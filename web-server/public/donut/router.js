@@ -31,11 +31,11 @@ define([
       mainView.focusHome();
     },
 
-    focusRoom: function(name) {
-      mainView.focusRoomByName('#'+name);
+    focusRoom: function (name) {
+      mainView.focusRoomByName('#' + name);
     },
 
-    focusOneToOne: function(username) {
+    focusOneToOne: function (username) {
       mainView.focusOneToOneByUsername(username);
     },
 

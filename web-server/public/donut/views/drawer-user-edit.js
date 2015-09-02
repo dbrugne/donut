@@ -19,14 +19,12 @@ define([
     },
 
     initialize: function (options) {
-      this.mainView = options.mainView;
-
       // show spinner as temp content
       this.render();
 
       // ask for data
       var that = this;
-      client.userRead(currentUser.get('username'), function(err, data) {
+      client.userRead(currentUser.get('user_id'), null, function(err, data) {
         if (!err)
           that.onResponse(data);
       });
