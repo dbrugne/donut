@@ -18,6 +18,7 @@ define([
   'text!./templates/drawer-user-preferences.html',
   'text!./templates/drawer-user-profile.html',
   'text!./templates/dropdown-room-actions.html',
+  'text!./templates/dropdown-one-actions.html',
   'text!./templates/events-dropdown.html',
   'text!./templates/event/date.html',
   'text!./templates/event/disconnected.html',
@@ -82,6 +83,7 @@ define([
   drawer_user_preferences,
   drawer_user_profile,
   dropdown_room_actions,
+  dropdown_one_actions,
   dropdown,
   event_date,
   event_disconnected,
@@ -160,6 +162,7 @@ define([
   JST['drawer-user-preferences.html']       = _.template(drawer_user_preferences);
   JST['drawer-user-profile.html']           = _.template(drawer_user_profile);
   JST['dropdown-room-actions.html']         = _.template(dropdown_room_actions);
+  JST['dropdown-one-actions.html']          = _.template(dropdown_one_actions);
   JST['events-dropdown.html']               = _.template(dropdown);
   JST['event/date.html']                    = _.template(event_date);
   JST['event/disconnected.html']            = _.template(event_disconnected);
