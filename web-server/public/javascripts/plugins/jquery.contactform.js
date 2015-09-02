@@ -1,34 +1,13 @@
-/* ===========================================================
- * bootstrap-modal.js v2.2.5
- * ===========================================================
- * Copyright 2012 Jordan Schroter
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * ========================================================== */
+(function ($) {
+  'use strict';
 
-
-!function ($) {
-
-  "use strict"; // jshint ;_;
-
-  var Modal = {
-
+  var Modal;
+  Modal = {
     initialized: false,
 
     isShown: false,
 
-    init: function($element, $contactform, options) {
-
+    init: function ($element, $contactform, options) {
       var that = this;
       this.options = options;
       this.$element = $element;
@@ -58,43 +37,50 @@
       this.$sent = this.$contactform.find('.sent');
       this.$error = this.$contactform.find('.error');
       this.$fail = this.$contactform.find('.fail');
-      this.$contactform.find('.send').on('click', function(event) {
+      this.$contactform.find('.send').on('click', function (event) {
         event.preventDefault();
-        if (that.validate())
+        if (that.validate()) {
           that.send();
+        }
       });
 
       this.initialized = true;
     },
 
-    show: function() {
-      if (this.isShown === true)
+    show: function () {
+      if (this.isShown === true) {
         return;
+      }
 
       this.$contactform.modal('show');
     },
 
-    hide: function() {
-      if (this.isShown !== true)
+    hide: function () {
+      if (this.isShown !== true) {
         return;
+      }
 
       this.$contactform.modal('hide');
     },
 
-    validate: function() {
+    validate: function () {
       var error = false;
 
-      if (this.$name.val() == '')
+      if (this.$name.val() === '') {
         error = true;
+      }
 
-      if (this.$email.val() == '' || !this.validateEmail(this.$email.val()))
+      if (this.$email.val() === '' || !this.validateEmail(this.$email.val())) {
         error = true;
+      }
 
-      if (this.$message.val() == '')
+      if (this.$message.val() === '') {
         error = true;
+      }
 
-      if (!window.grecaptcha.getResponse())
+      if (!window.grecaptcha.getResponse()) {
         error = true;
+      }
 
       if (error) {
         this.toggleError();
@@ -104,47 +90,48 @@
       return true;
     },
 
-    send: function() {
+    send: function () {
       var data = {
-        name      : this.$name.val(),
-        email     : this.$email.val(),
-        message   : this.$message.val(),
-        recaptcha : window.grecaptcha.getResponse()
+        name: this.$name.val(),
+        email: this.$email.val(),
+        message: this.$message.val(),
+        recaptcha: window.grecaptcha.getResponse()
       };
       $.ajax({
-        url: "/contact-form",
+        url: '/contact-form',
         type: 'POST',
         context: this,
         data: data
       })
-        .fail(function(jqXHR, textStatus, errorThrown) {
+        .fail(function (jqXHR, textStatus, errorThrown) {
           this.toggleFail();
         })
-        .done(function(data, textStatus, jqXHR) {
-          if (!data || !data.sent)
+        .done(function (data, textStatus, jqXHR) {
+          if (!data || !data.sent) {
             return this.toggleFail();
+          }
 
           this.reset();
           this.toggleSent();
         });
     },
 
-    toggleError: function() {
+    toggleError: function () {
       this.$sent.hide();
       this.$fail.hide();
       this.$error.show();
     },
-    toggleFail: function() {
+    toggleFail: function () {
       this.$error.hide();
       this.$sent.hide();
       this.$fail.show();
     },
-    toggleSent: function() {
+    toggleSent: function () {
       this.$error.hide();
       this.$fail.hide();
       this.$sent.show();
     },
-    reset: function() {
+    reset: function () {
       this.$error.hide();
       this.$sent.hide();
       this.$fail.hide();
@@ -155,49 +142,54 @@
     },
 
     validateEmail: function (email) {
-      var at = email.lastIndexOf("@");
+      var at = email.lastIndexOf('@');
 
       // Make sure the at (@) sybmol exists and
       // it is not the first or last character
-      if (at < 1 || (at + 1) === email.length)
+      if (at < 1 || (at + 1) === email.length) {
         return false;
+      }
 
       // Make sure there aren't multiple periods together
-      if (/(\.{2,})/.test(email))
+      if (/(\.{2,})/.test(email)) {
         return false;
+      }
 
       // Break up the local and domain portions
       var local = email.substring(0, at);
       var domain = email.substring(at + 1);
 
       // Check lengths
-      if (local.length < 1 || local.length > 64 || domain.length < 4 || domain.length > 255)
+      if (local.length < 1 || local.length > 64 || domain.length < 4 || domain.length > 255) {
         return false;
+      }
 
       // Make sure local and domain don't start with or end with a period
-      if (/(^\.|\.$)/.test(local) || /(^\.|\.$)/.test(domain))
+      if (/(^\.|\.$)/.test(local) || /(^\.|\.$)/.test(domain)) {
         return false;
+      }
 
       // Check for quoted-string addresses
       // Since almost anything is allowed in a quoted-string address,
       // we're just going to let them go through
       if (!/^"(.+)"$/.test(local)) {
         // It's a dot-string address...check for valid characters
-        if (!/^[-a-zA-Z0-9!#$%*\/?|^{}`~&'+=_\.]*$/.test(local))
+        if (!/^[-a-zA-Z0-9!#$%*\/?|^{}`~&'+=_\.]*$/.test(local)) {
           return false;
+        }
       }
 
       // Make sure domain contains only valid characters and at least one period
-      if (!/^[-a-zA-Z0-9\.]*$/.test(domain) || domain.indexOf(".") === -1)
+      if (!/^[-a-zA-Z0-9\.]*$/.test(domain) || domain.indexOf('.') === -1) {
         return false;
+      }
 
       return true;
     }
 
   };
 
-  $.fn.contactform = function(opts) {
-
+  $.fn.contactform = function (opts) {
     var options = $.extend({
       backdrop: true,
       keyboard: true,
@@ -209,15 +201,16 @@
 
     window.cf = modal;
 
-    return this.each(function() {
+    return this.each(function () {
       var $this = $(this);
-      $this.on('click', function(event) {
+      $this.on('click', function (event) {
         event.preventDefault();
 
         if (!modal.initialized) { // first click
           var $contactform = $('#contactform');
-          if (!$contactform && !$contactform.length)
+          if (!$contactform && !$contactform.length) {
             return; // unable to find modal content
+          }
 
           modal.init($this, $contactform, options);
         }
@@ -228,4 +221,4 @@
 
   };
 
-}(window.jQuery);
+})(window.jQuery);
