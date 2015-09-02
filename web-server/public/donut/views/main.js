@@ -548,18 +548,24 @@ define([
       Backbone.history.navigate('#'); // just change URI, not run route action
     },
 
-    focusRoomByName: function(name) {
+    focusRoomByName: function (name) {
       var model = rooms.iwhere('name', name);
       if (model == undefined) {
         // Not already open
         this.thisDiscussionShouldBeFocusedOnSuccess = name;
         var that = this;
-        client.roomJoin(null, name, function(response) {
-          if (response.err == 'banned') {
+        client.roomJoin(null, name, function (response) {
+          if (response.err === 'banned') {
             app.trigger('alert', 'error', $.t('chat.bannedfromroom', {name: name}));
             that.focus();
-          } else if (response.err == 'notexists') {
+          } else if (response.err === 'notexists') {
             app.trigger('alert', 'error', $.t('chat.roomnotexists', {name: name}));
+            that.focus();
+          } else if (response.err === 'notallowed') {
+            app.trigger('alert', 'error', $.t('chat.notallowedinroom', {name: name}));
+            that.focus();
+          } else if (response.err === 'wrong-password') {
+            app.trigger('alert', 'error', $.t('chat.wrong-password', {name: name}));
             that.focus();
           } else if (response.err) {
             app.trigger('alert', 'error', $.t('global.unknownerror'));

@@ -160,4 +160,18 @@ roomSchema.methods.isDevoice = function (user_id) {
   return (typeof subDocument != 'undefined');
 };
 
+roomSchema.methods.isAllowed = function (user_id) {
+  if (this.owner._id === user_id) {
+    return true;
+  }
+
+  var subDocument = _.find(this.join_mode_allowed, function (alowed) {
+    if (alowed.user_id === user_id) {
+      return true;
+    }
+  });
+
+  return (typeof subDocument !== 'undefined');
+};
+
 module.exports = mongoose.model('Room', roomSchema);

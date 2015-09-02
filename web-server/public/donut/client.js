@@ -154,12 +154,13 @@ define([
 
     roomJoin: function (roomId, roomName, callback) {
       var data = {};
-      if (roomId)
+      if (roomId) {
         data.room_id = roomId;
-      else if (roomName)
+      } else if (roomName) {
         data.name = roomName;
-      else
+      } else {
         return;
+      }
 
       debug('io:out:room:join', data);
       pomelo.request(
