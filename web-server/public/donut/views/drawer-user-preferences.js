@@ -6,10 +6,9 @@ define([
   'common',
   'client',
   'models/current-user',
-  'views/window',
   'views/modal-confirmation',
   '_templates'
-], function ($, _, Backbone, app, common, client, currentUser, windowView, confirmationView, templates) {
+], function ($, _, Backbone, app, common, client, currentUser, confirmationView, templates) {
   var DrawerUserPreferencesView = Backbone.View.extend({
 
     template: templates['drawer-user-preferences.html'],
@@ -59,11 +58,11 @@ define([
     },
     onPlaySound: function (event) {
       event.preventDefault();
-      windowView._play();
+      app.trigger('playSoundForce');
     },
     onTestDesktopNotify: function (event) {
       event.preventDefault();
-      windowView._desktopNotify($.t('preferences.notif.channels.desktop-notify-test'), '');
+      app.trigger('desktopNotificationForce', $.t('preferences.notif.channels.desktop-notify-test'), '');
     },
     onChangeValue: function (event) {
       var $target = $(event.currentTarget);

@@ -98,7 +98,7 @@ define([
     },
     onIn: function(data) {
       var model;
-      if (!data || !data.id || !(model = this.get(data.id)))
+      if (!data || !data.room_id || !(model = this.get(data.room_id)))
         return;
 
       model.onIn(data);

@@ -1,5 +1,5 @@
 <% if (withBlock) { %>
-<div class="block message <%= (data.is_admin ? 'admin' : '') %>" data-username="<%= data.username %>">
+<div class="block message <%= (data.is_admin ? 'admin' : '') %>" data-user-id="<%= data.user_id %>">
     <div class="avatar open-user-profile" style="background-image: url(<%= data.avatar %>)"></div>
     <% if(data.is_admin) { %>
     <div class="username">@<%= data.username %></div>

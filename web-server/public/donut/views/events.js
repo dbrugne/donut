@@ -2,6 +2,7 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'models/app',
   'libs/donut-debug',
   'common',
   'models/event',
@@ -11,7 +12,7 @@ define([
   'views/message-edit',
   'views/window',
   '_templates'
-], function ($, _, Backbone, donutDebug, common, EventModel, moment, client, currentUser, MessageEditView, windowView, templates) {
+], function ($, _, Backbone, app, donutDebug, common, EventModel, moment, client, currentUser, MessageEditView, windowView, templates) {
 
   var debug = donutDebug('donut:events');
 
@@ -403,9 +404,9 @@ define([
     addFreshEvent: function (model) {
       // browser notification
       if (model.getGenericType() == 'message' || model.get('type') === 'room:topic')
-        windowView.triggerMessage(model, this.model);
+        app.trigger('unviewedMessage', model, this.model);
       else if (this.model.get('type') == 'room' && model.getGenericType() == 'inout')
-        windowView.triggerInout(model, this.model);
+        app.trigger('unviewedInOut', model, this.model);
 
       // render a 'fresh' event in realtime and scrolldown
       debug.start('discussion-events-fresh-' + this.model.getIdentifier());
