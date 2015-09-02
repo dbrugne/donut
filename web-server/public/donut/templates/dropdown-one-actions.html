@@ -10,22 +10,22 @@
             </a>
         </li>
         <li role="presentation">
-            <a role="menuitem" tabindex="-1" class="open-user-profile" data-username="<%= data.username %>">
+            <a role="menuitem" tabindex="-1" class="open-user-profile" data-user-id="<%= data.user_id %>">
                 <i class="icon icon-eye"></i> <%= t('global.viewprofile') %>
             </a>
         </li>
         <li role="presentation" class="divider"></li>
         <li role="presentation" class="ban-menu">
-            <a role="menuitem" tabindex="-1" data-toggle="confirmation" style="cursor: pointer;" class="show-if-banned action-user-deban" data-username="<%= data.username %>">
+            <a role="menuitem" tabindex="-1" data-toggle="confirmation" style="cursor: pointer;" class="show-if-banned action-user-deban" data-user-id="<%= data.user_id %>">
                 <i class="icon icon-ban"></i> <%= t('chat.actions.deban') %>
             </a>
-            <a role="menuitem" tabindex="-1" data-toggle="confirmation" style="cursor: pointer;" class="show-if-unbanned action-user-ban" data-username="<%= data.username %>">
+            <a role="menuitem" tabindex="-1" data-toggle="confirmation" style="cursor: pointer;" class="show-if-unbanned action-user-ban" data-user-id="<%= data.user_id %>">
                 <i class="icon icon-ban"></i> <%= t('chat.actions.ban') %>
             </a>
         </li>
         <li role="presentation" class="divider"></li>
         <li role="presentation">
-            <a role="menuitem" tabindex="-1" class="close-discussion" data-identifier="<%= data.username %>" data-type="user">
+            <a role="menuitem" tabindex="-1" class="close-discussion" data-identifier="<%= data.user_id %>" data-type="user">
                 <i class="icon icon-times"></i> <%= t('chat.actions.close') %>
             </a>
         </li>
