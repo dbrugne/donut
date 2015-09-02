@@ -495,7 +495,7 @@
       "count" : "<strong class=\"nb\"></strong><strong> Nouvelle(s)</strong> Notification(s)",
       "tag-as-read" : "Marquer comme lue(s)",
       "empty": "Vous n'avez pas de nouvelles notifications",
-      "random": "à fait un lancé de",
+      "random": "a fait un lancé de",
       "dropdown": {
         "op": "<a href=\"#room/__roomname__\">Vous êtes maintenant modérateur de </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
         "deop": "<a href=\"#room/__roomname__\">Vous n'êtes plus modérateur de </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
