@@ -115,10 +115,17 @@
       } // #chat #center #home .left
       .discussion {
         .content { padding-left: 15px; margin-right: 0; position: initial;
-          .mini-header {     position: absolute; top: 1px; z-index: 1030; left: 5px;
+          .mini-header { position: absolute; top: 1px; z-index: 1030; left: 5px; .display-flex; .flex-flow(row nowrap);
             .avatar { border: 2px solid rgba(167,167,167,0.2); width: 34px; height: 34px; top: 5px; left: 7px; z-index: 1031; cursor: pointer; float: left; margin-top: 1px; margin-left: 0px;  }
             .name, .username {     margin: 0 !important; font-size: 16px !important; margin-top: 5px !important; font-weight: bold; padding-left: 10px; display: inline-block; padding-top: 3px; float: left; }
             &.room .avatar { .border-radius(50%); }
+            .info .dropdown { display: inline-block; position: relative;
+              .dropdown-toggle { font-size: 20px; border: none; background-color: transparent; color: @cl-subtext20;
+                i { .opacity(0.5);
+                  &:hover { .opacity(1); }
+                }
+              } // #chat #center .discussion .content .mini-header .info .dropdown .dropdown-toggle
+            }
           }
           .header.room { min-height: 50px;
             .topic {float: left; width: 100%; padding: 0; margin-top:0; position: relative; padding-right: 35px;

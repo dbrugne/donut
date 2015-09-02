@@ -6,9 +6,12 @@
     </div>
 </div><!-- /.side -->
 <div class="content">
-    <div class="mini-header room visible-xs visible-sm">
-        <img class="avatar open-room-profile" data-room-name="<%= name %>" src="<%= avatar %>" alt="<%= name %> avatar">
-        <span class="name open-room-profile dc-text-contrast" data-room-name="<%= name %>"><%= name %></span>
+    <div class="visible-xs visible-sm">
+        <div class="mini-header room">
+            <img class="avatar open-room-profile" data-room-name="<%= name %>" src="<%= avatar %>" alt="<%= name %> avatar">
+            <span class="name open-room-profile dc-text-contrast" data-room-name="<%= name %>"><%= name %></span>
+            <div class="info mt5"><%= dropdown %></div>
+        </div>
     </div>
     <div class="header room">
         <div class="overlay-ctn hidden-xs hidden-sm">
@@ -17,72 +20,12 @@
             <span class="overlay-text open-room-profile" data-room-name="<%= name %>" ><%= t('chat.actions.see') %></span>
         </div>
         <div class="info hidden-xs hidden-sm">
-            <div class="name open-room-profile hidden-xs hidden-sm" data-room-name="<%= name %>"><%= name %></div>
-            <div class="name open-room-profile visible-xs visible-sm dc-text-contrast" data-room-name="<%= name %>"><%= name %></div>
-            <div class="dropdown">
-                <button class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-                    <i class="icon icon-chevron-down hidden-xs hidden-sm"></i>
-                    <i class="icon icon-chevron-down visible-xs visible-sm dc-text-contrast"></i>
-                </button>
-                <ul class="dropdown-menu" role="menu">
-                    <li role="presentation">
-                        <a role="menuitem" tabindex="-1" href="<%= url %>" target="_blank" title="<%= name %> <%= t('global.permalink') %>">
-                            <i class="icon icon-link"></i> <%= t('global.permalink') %>
-                        </a>
-                    </li>
-                    <li role="presentation">
-                        <a role="menuitem" tabindex="-1" class="open-room-profile" data-room-name="<%= name %>">
-                            <i class="icon icon-eye"></i> <%= t('global.viewprofile') %>
-                        </a>
-                    </li>
-                    <li role="presentation">
-                        <a role="menuitem" tabindex="-1" class="open-room-preferences" data-room-name="<%= name %>">
-                            <i class="icon icon-bell"></i> <%= t('chat.actions.notifications') %>
-                        </a>
-                    </li>
-                    <li role="presentation" class="divider"></li>
-                    <li role="presentation">
-                        <a role="menuitem" tabindex="-1" class="close-discussion" data-identifier="<%= name %>" data-type="room">
-                            <i class="icon icon-times"></i> <%= t('chat.actions.close') %>
-                        </a>
-                    </li>
-                    <% if (isOwner === true || isOp === true || isAdmin === true) { %>
-                    <li role="presentation" class="divider"></li>
-                    <% }; %>
-                    <% if (isOwner === true || isAdmin === true) { %>
-                    <li role="presentation">
-                        <a role="menuitem" tabindex="-1" class="open-room-edit" data-room-name="<%= name %>">
-                            <i class="icon icon-pencil"></i> <%= t('global.edit') %>
-                        </a>
-                    </li>
-                    <% }; %>
-                    <% if (isOwner === true || isOp === true || isAdmin === true) { %>
-                    <li role="presentation">
-                        <a role="menuitem" tabindex="-1" class="open-room-users" data-room-name="<%= name %>">
-                            <i class="icon icon-users"></i> <%= t('chat.users.link') %>
-                        </a>
-                    </li>
-                    <% }; %>
-                    <li role="presentation" class="divider hidden-md hidden-lg"></li>
-                    <li role="presentation" class="share hidden-md hidden-lg">
-                        <a role="menuitem" class="facebook" tabindex="-1">
-                            <i class="icon icon-facebook-square"></i> Facebook
-                        </a>
-                    </li>
-                    <li role="presentation" class="share hidden-md hidden-lg">
-                        <a role="menuitem" class="twitter" tabindex="-1">
-                            <i class="icon icon-twitter-square"></i> Twitter
-                        </a>
-                    </li>
-                    <li role="presentation" class="share hidden-md hidden-lg">
-                        <a role="menuitem" class="googleplus" tabindex="-1">
-                            <i class="icon icon-google-plus-square"></i> Google
-                        </a>
-                    </li>
-                </ul>
-            </div>
+            <div class="name open-room-profile" data-room-name="<%= name %>"><%= name %></div>
+
+            <%= dropdown %>
+
             <% if (owner && owner.username) { %>
-            <span class="owner"><%= t('global.by') %> <a class="open-user-profile dc-text" data-username="<%= owner.username %>">@<%= owner.username %></a></span>
+            <span class="owner hidden-xs hidden-sm"><%= t('global.by') %> <a class="open-user-profile dc-text" data-username="<%= owner.username %>">@<%= owner.username %></a></span>
             <% } %>
             <div class="share hidden-xs hidden-sm">
                 <%= t('chat.share.label') %>
