@@ -24,6 +24,10 @@ var roomSchema = mongoose.Schema({
     reason: String,
     devoiced_at: { type: Date, default: Date.now }
   }],
+  join_mode       : { type: String, default: 'everyone' },
+  join_mode_password: String,
+  join_mode_allowed: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
+  history_mode    : { type: String, default: 'everyone' },
   avatar          : String,
   poster          : String,
   color           : String,
