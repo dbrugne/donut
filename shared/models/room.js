@@ -61,22 +61,8 @@ roomSchema.statics.findByUser = function (userId) {
   return this.find({ users: { $in: [userId] }, deleted: {$ne: true} });
 };
 
-roomSchema.statics.getNewRoom = function (data) {
-  var model = new this();
-  model.name = data.name;
-  model.owner = data.owner;
-  model.color = data.color;
-  model.visibility = data.visibility;
-  model.priority = data.priority;
-  if (data.join_mode) {
-    model.join_mode = data.join_mode;
-    if (data.join_mode === 'password') {
-      model.join_mode_password = data.join_mode_password;
-    }
-  } if (data.history_mode) {
-    model.history_mode = data.history_mode;
-  }
-  return model;
+roomSchema.statics.getNewRoom = function () {
+  return new this();
 };
 
 roomSchema.methods._avatar = function(size) {
