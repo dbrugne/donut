@@ -9,6 +9,7 @@ var historySchema = mongoose.Schema({
 
   event         : String,
   room          : { type: mongoose.Schema.ObjectId, ref: 'Room' },
+  mode_history  : { type: String },
   time          : { type: Date, default: Date.now },
   user          : { type: mongoose.Schema.ObjectId, ref: 'User' },
   by_user       : { type: mongoose.Schema.ObjectId, ref: 'User' },
@@ -48,11 +49,12 @@ historySchema.statics.record = function() {
    * @param fn - callback function
    * @return event with event_id set
    */
-  return function(room, event, data, fn) {
+  return function (room, event, data, fn) {
     var model = new that();
     model.event = event;
     model.room = room._id;
     model.time = data.time;
+    model.mode_history = room.history_mode;
 
     model.user = data.user_id;
     if (data.by_user_id)
@@ -60,11 +62,13 @@ historySchema.statics.record = function() {
 
     // dry data
     var wet = _.clone(data);
-    model.data = _.omit(wet, dryFields) ;
+    model.data = _.omit(wet, dryFields);
 
-    model.users = room.users;
+    if (room.history_mode === 'joined') {
+      model.users = room.users;
+    }
     model.save(fn);
-  }
+  };
 };
 
 historySchema.methods.toClientJSON = function(userViewed) {
@@ -132,13 +136,17 @@ historySchema.statics.retrieve = function() {
    * @param what criteria Object: since (timestamp), isAdmin (boolean)
    * @param fn
    */
-  return function(roomId, userId, what, fn) {
+  return function (roomId, userId, what, fn) {
+    if (what.mode_history === 'none') {
+      fn(null, null);
+    }
+
     what = what || {};
     var criteria = {
       room: roomId
     };
 
-    if (what.isAdmin !== true) {
+    if (!what.isAdmin || what.mode_history === 'joined') {
       criteria.users = { $in: [userId] };
     }
 
