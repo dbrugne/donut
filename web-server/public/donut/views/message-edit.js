@@ -29,6 +29,7 @@ define([
       this.$text = this.$el.find('.text');
       this.$textEdited = this.$el.find('.text-edited');
       this.$messageEdit = this.$el.find('.message-edit');
+      this.$images = this.$el.find('.images');
 
       if (this.$el.data('edited') || this.$textEdited)
         this.$textEdited.remove();
@@ -86,10 +87,11 @@ define([
         return;
       }
 
+      var isImages = (this.$images.html() !== undefined);
       if (this.model.get('type') === 'room') {
-        client.roomMessageEdit(this.model.get('id'), messageId, message);
+        client.roomMessageEdit(this.model.get('id'), messageId, message, isImages);
       } else {
-        client.userMessageEdit(this.model.get('id'), messageId, message);
+        client.userMessageEdit(this.model.get('id'), messageId, message, isImages);
       }
 
       this.model.trigger('editMessageClose');
