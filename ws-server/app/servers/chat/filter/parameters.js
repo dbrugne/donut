@@ -97,6 +97,21 @@ Filter.prototype.before = function(data, session, next) {
       if (!data.username && !data.user_id)
         return callback(null);
 
+      if (!data.user_id && data.username && [
+          'chat.roomOpHandler.call',
+          'chat.roomDeopHandler.call',
+          'chat.roomVoiceHandler.call',
+          'chat.roomDevoiceHandler.call',
+          'chat.roomKickHandler.call',
+          'chat.roomBanHandler.call',
+          'chat.roomDebanHandler.call',
+          'chat.userBanHandler.call',
+          'chat.userDebanHandler.call',
+          'chat.userMessageHandler.call',
+          'chat.userReadHandler.call'
+        ].indexOf(data.__route__) === -1)
+        return callback(null);
+
       if (data.username) {
         if (!common.validateUsername(data.username))
           return callback('invalid username parameter: ' + data.username);
