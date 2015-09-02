@@ -1,5 +1,5 @@
 'use strict';
-var conf = module.exports = {
+module.exports = {
   url: '',
   fqdn: '',
   debug: {
