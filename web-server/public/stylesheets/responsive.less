@@ -13,6 +13,7 @@
 
 /** for <=992 screens resolutions ==> TABLET PORTRAIT & PHONE LANDSCAPE **/
 @media screen and (max-width: @screen-md-min) {
+  .modal-dialog { width:auto; margin: 30px; }
   .page-sidebar-menu { margin: 0; padding: 0;
     & > li { display: block; margin: 0; padding: 0; border: 0;
       & > a { display: block; position: relative; margin: 0; padding: 10px 15px; text-decoration: none; font-weight: 300; }
@@ -88,7 +89,7 @@
         }
       }
       #block-actions { display: none; }
-      #block-discussions { border-top: 1px solid @cl-subtext0; padding-top:10px; overflow: visible; display: block;
+      #block-discussions { overflow: visible; display: block;
         .list { margin-left:0;
           > li { overflow:hidden;
             .item { padding: 5px 10px; height: 35px; display: none;
@@ -114,10 +115,17 @@
       } // #chat #center #home .left
       .discussion {
         .content { padding-left: 15px; margin-right: 0; position: initial;
-          .mini-header {     position: absolute; top: 1px; z-index: 1030; left: 5px;
-            .avatar {     width: 34px; height: 34px; top: 5px; left: 7px; z-index: 1031; cursor: pointer; border-width: 2px; border-style: solid; float: left; margin-top: 1px; margin-left: 0px; }
+          .mini-header { position: absolute; top: 1px; z-index: 1030; left: 5px; .display-flex; .flex-flow(row nowrap);
+            .avatar { border: 2px solid rgba(167,167,167,0.2); width: 34px; height: 34px; top: 5px; left: 7px; z-index: 1031; cursor: pointer; float: left; margin-top: 1px; margin-left: 0px;  }
             .name, .username {     margin: 0 !important; font-size: 16px !important; margin-top: 5px !important; font-weight: bold; padding-left: 10px; display: inline-block; padding-top: 3px; float: left; }
             &.room .avatar { .border-radius(50%); }
+            .info .dropdown { display: inline-block; position: relative;
+              .dropdown-toggle { font-size: 20px; border: none; background-color: transparent; color: @cl-subtext20;
+                i { .opacity(0.5);
+                  &:hover { .opacity(1); }
+                }
+              } // #chat #center .discussion .content .mini-header .info .dropdown .dropdown-toggle
+            }
           }
           .header.room { min-height: 50px;
             .topic {float: left; width: 100%; padding: 0; margin-top:0; position: relative; padding-right: 35px;
@@ -201,6 +209,7 @@
     }
   }
   .rooms.cards .room { width: 190px;
+    .join a { font-size:13px; }
     .avatar { width: 85px; height: 85px; }
   }
   .body-profile .rooms.cards .room { height: 276px; }

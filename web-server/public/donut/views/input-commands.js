@@ -170,6 +170,13 @@ define([
         help: '',
         description: 'chat.commands.clear'
       },
+      random: {
+        alias: 'rand',
+        parameters: 'twoNumber',
+        access: 'everywhere',
+        help: 'max/min max',
+        description: 'chat.commands.random'
+      },
       help: {
         parameters: 'helpCommand',
         access: 'everywhere',
@@ -186,7 +193,8 @@ define([
       name: /^(#[-a-z0-9_^]{3,24})/i,
       username: /^@([-a-z0-9_^\.]+)/i,
       usernameName: /^([@#][-a-z0-9_^\.]+)/i,
-      usernameNameMsg: /^([@#][-a-z0-9_^\.]+)\s+(.+)/i
+      usernameNameMsg: /^([@#][-a-z0-9_^\.]+)\s+(.+)/i,
+      twoNumber: /(-?[0-9]+)(\s+(-?[0-9]+))?/
     },
 
     join: function(paramString, parameters) {
@@ -420,6 +428,25 @@ define([
     },
     clear: function(paramString, parameters) {
       this.model.trigger('clearHistory');
+    },
+    random: function (paramString, parameters) {
+      var max = 100;
+      var min = 1;
+      if (parameters && parameters[1] && !parameters[2] && parameters[1] == parseInt(parameters[1], 10)) {
+        max = parseInt(parameters[1], 10);
+      } else if (parameters && parameters[1] == parseInt(parameters[1], 10) && parameters[2] == parseInt(parameters[2], 10)) {
+        min = parseInt(parameters[1], 10);
+        max = parseInt(parameters[2], 10);
+      } else if (paramString) {
+        return this.errorCommand('random', 'parameters');
+      }
+      var result = Math.floor(Math.random() * (max - min + 1) + min);
+      var msg = $.t('chat.notifications.random') + ' ' + result + ' (' + min + ' - ' + max + ')';
+      if (this.model.get('type') === 'room') {
+        client.roomMe(this.model.get('name'), msg);
+      } else {
+        client.userMe(this.model.get('id'), msg);
+      }
     },
     help: function(paramString, parameters, error) {
       if (!parameters && paramString)

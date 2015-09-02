@@ -158,7 +158,6 @@
     .dc-back-darker { background-color: darken(@color, 5%); }
     .dc-text-contrast { .color-text(@color); }
     .dc-border { border-color: @color; }
-    .dc-border-lighter { border-color: lighten(@color, 10%); }
 
     &:hover .dc-back-hover{ background-color: darken(@color, 5%);}
   }
@@ -167,10 +166,9 @@
     .dc-text { color: @color !important; }
     .dc-back { background-color: @color !important; }
     .dc-back-opacity { background-color: fade(@color, 60%) !important; }
-    .dc-back-darker { background-color: darken(@color, 5%) !important; }
+    .dc-back-darker { background-color: darken(@color, 10%) !important; }
     .dc-text-contrast { .color-text(@color) !important; }
     .dc-border { border-color: @color !important; }
-    .dc-border-lighter { border-color: lighten(@color, 10%) !important; }
 
     &:hover .dc-back-hover{ background-color: darken(@color, 5%)  !important;}
   }
@@ -179,16 +177,15 @@
 }
 
 // Default colors
-.dc-default {
+.dc-default, .dc-i-default {
   .dc-text { color: @cl-first; }
   .dc-back { background-color: @cl-first; }
   .dc-back-darker { background-color: darken(@cl-first, 10%); }
   .dc-text-contrast { .color-text(@cl-first); }
   .dc-border { border-color: @cl-first; }
-  .dc-border-lighter { border-color: lighten(@cl-first, 10%); }
 }
 
 .color-text (@a) when (lightness(@a) >= 60%) { color: @cl-text; }
-.color-text (@a) when (lightness(@a) < 60%)  { color: @cl-clouds; }
+.color-text (@a) when (lightness(@a) < 60%)  { color: @cl-subtext0; }
 
 .color-loop(length(@HKS_colors));

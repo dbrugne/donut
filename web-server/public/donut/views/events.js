@@ -67,7 +67,7 @@ define([
       });
       this.$el.append(html);
 
-      this.$scrollable = this.$el.find('.scrollable');
+      this.$scrollable = this.$el;
       this.$scrollableContent = this.$scrollable.find('.scrollable-content');
       this.$pad = this.$scrollableContent.find('.pad');
       this.$loader = this.$scrollableContent.find('.loader');
@@ -362,7 +362,6 @@ define([
       if (everything) {
         debug('cleanuped "' + this.model.getIdentifier() + '" (all removed)');
         this.$realtime.empty();
-        this.resize();
       } else {
         this.$realtime.find('.block').slice(0, howToRemove).remove();
         debug('cleanuped "' + this.model.getIdentifier() + '" (' + realtimeLength + ' length, ' + howToRemove + ' removed)');
@@ -370,21 +369,6 @@ define([
 
       if (this.isVisible())
         this.scrollDown();
-    },
-    resize: function (viewportHeight) {
-      if (typeof viewportHeight != "undefined") // was called on page resize by views/discussion, set the .events height
-        this.$scrollable.height(viewportHeight-5);
-      else // was called by view itself to adapt .blank height, get the current .events height
-        viewportHeight = this.$scrollable.height();
-
-      // blank heigth
-      var blankHeight = 0;
-      var currentContentHeight = this.$realtime.outerHeight();
-      if (currentContentHeight > viewportHeight)
-        blankHeight = 0;
-      else
-        blankHeight = viewportHeight - currentContentHeight;
-      this.$blank.height(blankHeight);
     },
 
     /*****************************************************************************************************************
@@ -420,9 +404,6 @@ define([
         element = $(html).appendTo(previousElement.find('.items')); // @bug : element is the .event in this case not the .block
       else
         element = $(html).appendTo(this.$realtime);
-
-      // resize .blank
-      this.resize();
 
       if (needToScrollDown && !this.messageUnderEdition)
         this.scrollDown();
@@ -485,7 +466,7 @@ define([
       debug.end('discussion-events-batch-' + this.model.getIdentifier());
 
       // resize .blank
-      this.resize();
+      //this.resize();
     },
     _prepareEvent: function (model) {
       var data = model.toJSON();

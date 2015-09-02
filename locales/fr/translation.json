@@ -315,7 +315,7 @@
       "hisrooms": "Ses donuts",
       "disclaimer": {
         "before": "Cette page est le profil de l'utilisateur",
-        "after": "sur la plateforme de chat <a href=\"/\">DONUT.me</a>. DONUT.me vous permet de rejoindre ou créer un salon de discussion thématique (donut) sur ce qui vous plait. Vous pouvez y discuter avec des gens qui partagent vos centres d'intérêt"
+        "after": "sur la plateforme de chat <a href=\"/\">DONUT.me</a>. <a href=\"/\">DONUT.me</a> vous permet de rejoindre ou créer un salon de discussion thématique (donut) sur ce qui vous plait. Vous pouvez y discuter avec des gens qui partagent vos centres d'intérêt"
       },
       "permalink": "Permalien de ce profil",
       "editlink": "Editer",
@@ -460,7 +460,8 @@
       "profile": "Afficher le profil du donut ou de l'utilisateur",
       "me": "Qu'êtes vous en train de faire ?",
       "ping": "pong",
-      "clear": "remove all visible history from interface",
+      "clear": "Supprime tous message visible depuis l'interface",
+      "random": "Affiche une valeur aléatoire (entre 1 et 100 par défaut)",
       "help": "ce message",
       "errors": {
         "parameters": "Paramètre(s) invalide(s).",
@@ -494,6 +495,7 @@
       "count" : "<strong class=\"nb\"></strong><strong> Nouvelle(s)</strong> Notification(s)",
       "tag-as-read" : "Marquer comme lue(s)",
       "empty": "Vous n'avez pas de nouvelles notifications",
+      "random": "a fait un lancé de",
       "dropdown": {
         "op": "<a href=\"#room/__roomname__\">Vous êtes maintenant modérateur de </a><span class=\"name open-room-profile\" data-room-id=\"#__room_id__\">#__roomname__</span>",
         "deop": "<a href=\"#room/__roomname__\">Vous n'êtes plus modérateur de </a><span class=\"name open-room-profile\" data-room-id=\"#__room_id__\">#__roomname__</span>",

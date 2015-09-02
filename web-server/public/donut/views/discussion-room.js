@@ -14,6 +14,7 @@ define([
   var RoomView = DiscussionView.extend({
 
     template: templates['discussion-room.html'],
+    templateDropdown: templates['dropdown-room-actions.html'],
 
     events: {
       'click .op-user'            : 'opUser',
@@ -63,13 +64,15 @@ define([
       data.url = this.model.getUrl();
 
       // share widget
-      var share = 'share-room-'
-        + this.model.get('name').replace('#', '').toLocaleLowerCase()
+      var share = 'share-room-'+ this.model.get('name').replace('#', '').toLocaleLowerCase()
       this.share = {
         class: share,
         selector: '.'+share
       }
       data.share = this.share.class;
+      data.dropdown = this.templateDropdown({
+        data: data
+      });
 
       return data;
     },

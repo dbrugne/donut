@@ -295,7 +295,7 @@
       "hisrooms": "Active in these donuts",
       "disclaimer": {
         "before": "This page is the profile of the user ",
-        "after": "on the chat platform <a href=\"/\">DONUT.me</a>. On DONUT.me you can join or create a thematic chat room (a donut) about whatever you like. You can chat with people who share your interests."
+        "after": "on the chat platform <a href=\"/\">DONUT.me</a>. On <a href=\"/\">DONUT.me</a> you can join or create a thematic chat room (a donut) about whatever you like. You can chat with people who share your interests."
       },
       "permalink": "Permalink of this profile",
       "editlink": "Edit",
@@ -441,6 +441,7 @@
       "me": "What are you doing?",
       "ping": "pong",
       "clear": "remove all visible history from interface",
+      "random": "Display a random value (between 1 and 100 by default)",
       "help": "this message",
       "errors": {
         "parameters": "Invalid parameter",
@@ -475,6 +476,7 @@
       "count" : "<strong class=\"nb\"></strong><strong> New</strong> Notification(s)",
       "tag-as-read" : "Tag as read",
       "empty": "You have no new notification",
+      "random": "rolls",
       "dropdown": {
         "op": "<a href=\"#room/__roomname__\">You are a moderator of </a><span class=\"name open-room-profile\" data-room-id=\"#__room_id__\">#__roomname__</span>",
         "deop": "<a href=\"#room/__roomname__\">You are no longer a moderator of </a><span class=\"name open-room-profile\" data-room-id=\"#__room_id__\">#__roomname__</span>",
