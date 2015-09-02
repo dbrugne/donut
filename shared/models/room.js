@@ -1,3 +1,4 @@
+'use strict';
 var debug = require('debug')('shared:models:room');
 var _ = require('underscore');
 var mongoose = require('../io/mongoose');
@@ -5,33 +6,32 @@ var common = require('@dbrugne/donut-common');
 var cloudinary = require('../util/cloudinary');
 
 var roomSchema = mongoose.Schema({
-
-  name            : String,
-  permanent       : Boolean,
-  deleted         : { type: Boolean, default: false },
-  visibility      : { type: Boolean, default: false },
-  priority        : Number,
-  owner           : { type: mongoose.Schema.ObjectId, ref: 'User' },
-  op              : [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
-  users           : [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
-  bans            : [{
+  name: String,
+  permanent: Boolean,
+  deleted: { type: Boolean, default: false },
+  visibility: { type: Boolean, default: false },
+  priority: Number,
+  owner: { type: mongoose.Schema.ObjectId, ref: 'User' },
+  op: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
+  users: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
+  bans: [{
     user: { type: mongoose.Schema.ObjectId, ref: 'User' },
     reason: String,
     banned_at: { type: Date, default: Date.now }
   }],
-  devoices        : [{
+  devoices: [{
     user: { type: mongoose.Schema.ObjectId, ref: 'User' },
     reason: String,
     devoiced_at: { type: Date, default: Date.now }
   }],
-  avatar          : String,
-  poster          : String,
-  color           : String,
-  topic           : String,
-  description     : String,
-  website         : mongoose.Schema.Types.Mixed,
-  created_at      : { type: Date, default: Date.now },
-  lastjoin_at     : { type: Date }
+  avatar: String,
+  poster: String,
+  color: String,
+  topic: String,
+  description: String,
+  website: mongoose.Schema.Types.Mixed,
+  created_at: { type: Date, default: Date.now },
+  lastjoin_at: { type: Date }
 
 });
 
@@ -47,7 +47,7 @@ roomSchema.statics.listByName = function (names) {
     deleted: false,
     $or: []
   };
-  _.each(names, function(n) {
+  _.each(names, function (n) {
     criteria['$or'].push({ name: common.regExpBuildExact(n) });
   });
   return this.find(criteria, '_id name');
@@ -57,14 +57,14 @@ roomSchema.statics.findByUser = function (userId) {
   return this.find({ users: { $in: [userId] }, deleted: {$ne: true} });
 };
 
-roomSchema.methods._avatar = function(size) {
+roomSchema.methods._avatar = function (size) {
   return cloudinary.roomAvatar(this.avatar, this.color, size);
 };
-roomSchema.methods._poster = function(blur) {
+roomSchema.methods._poster = function (blur) {
   return cloudinary.poster(this.poster, this.color, blur);
 };
 
-roomSchema.methods.avatarId = function() {
+roomSchema.methods.avatarId = function () {
   if (!this.avatar) return '';
   var data = this.avatar.split('/');
   if (!data[1]) return '';
@@ -72,7 +72,7 @@ roomSchema.methods.avatarId = function() {
   return id;
 };
 
-roomSchema.methods.posterId = function() {
+roomSchema.methods.posterId = function () {
   if (!this.poster) return '';
   var data = this.poster.split('/');
   if (!data[1]) return '';
@@ -80,45 +80,45 @@ roomSchema.methods.posterId = function() {
   return id;
 };
 
-roomSchema.methods.isOwner = function(user_id) {
+roomSchema.methods.isOwner = function (user_id) {
   if (!this.owner)
     return false;
 
   if (
     (typeof this.owner.toString == 'function' && this.owner.toString() == user_id) // dry
     || (this.owner._id && this.owner._id.toString() == user_id) // hydrated
-  ) return true;
+    ) return true;
 
   return false;
 };
 
-roomSchema.methods.isOp = function(user_id) {
+roomSchema.methods.isOp = function (user_id) {
   if (!this.op)
     return false;
 
-  for (var i=0; i<this.op.length; i++) {
+  for (var i = 0; i < this.op.length; i++) {
     var u = this.op[i];
     if (
       (typeof u.toString == 'function' && u.toString() == user_id) // dry
       || (u._id && u._id.toString() == user_id) // hydrated
-    ) return true;
+      ) return true;
   }
 
   return false;
 };
 
-roomSchema.methods.isOwnerOrOp = function(user_id) {
+roomSchema.methods.isOwnerOrOp = function (user_id) {
   if (this.isOwner(user_id) || this.isOp(user_id))
     return true;
 
   return false;
 };
 
-roomSchema.methods.isBanned = function(user_id) {
+roomSchema.methods.isBanned = function (user_id) {
   if (!this.bans || !this.bans.length)
     return false;
 
-  var subDocument = _.find(this.bans, function(ban) { // @warning: this shouldn't have .bans populated
+  var subDocument = _.find(this.bans, function (ban) { // @warning: this shouldn't have .bans populated
     if (ban.user.toString() == user_id)
       return true;
   });

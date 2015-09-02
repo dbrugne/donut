@@ -1,3 +1,4 @@
+'use strict';
 var debug = require('debug')('shared:passport');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
@@ -10,7 +11,7 @@ var i18next = require('../util/i18next');
 var keenio = require('../io/keenio');
 
 // keen.io tracking
-var keenIoTracking = function(user, type) {
+var keenIoTracking = function (user, type) {
   var keenEvent = {
     method: type || 'unknown',
     session: {
@@ -20,9 +21,9 @@ var keenIoTracking = function(user, type) {
       id: user.id
     }
   };
-  keenio.addEvent('user_signup', keenEvent, function(err, res){
+  keenio.addEvent('user_signup', keenEvent, function (err, res) {
     if (err)
-      debug('Error while tracking user_signup in keen.io for '+user.id+': '+err);
+      debug('Error while tracking user_signup in keen.io for ' + user.id + ': ' + err);
   });
 };
 
@@ -40,13 +41,12 @@ passport.deserializeUser(function (id, done) {
 
 // email and password signup
 passport.use('local-signup', new LocalStrategy({
-    usernameField: 'email', // by default local strategy uses username
-    passwordField: 'password',
-    passReqToCallback: true
-  },
+  usernameField: 'email', // by default local strategy uses username
+  passwordField: 'password',
+  passReqToCallback: true
+},
   function (req, email, password, done) {
     process.nextTick(function () {
-
       // happen if user is already authenticated with another method (e.g.: Facebook)
       if (req.user) {
         var user = req.user;
@@ -69,7 +69,7 @@ passport.use('local-signup', new LocalStrategy({
           return done(err);
 
         if (user)
-          return done(null, false, req.flash('error', i18next.t("account.email.error.alreadyexists")));
+          return done(null, false, req.flash('error', i18next.t('account.email.error.alreadyexists')));
 
         // create
         var newUser = User.getNewUser();
@@ -84,9 +84,9 @@ passport.use('local-signup', new LocalStrategy({
           keenIoTracking(newUser, 'email');
 
           // email will be send on next tick but done() is called immediatly
-          emailer.welcome(newUser.local.email, function(err) {
+          emailer.welcome(newUser.local.email, function (err) {
             if (err)
-              return debug('Unable to sent welcome email: '+err);
+              return debug('Unable to sent welcome email: ' + err);
           });
 
           return done(null, newUser);
@@ -98,12 +98,11 @@ passport.use('local-signup', new LocalStrategy({
 
 // email and password login
 passport.use('local-login', new LocalStrategy({
-    usernameField: 'email', // by default local strategy uses username
-    passwordField: 'password',
-    passReqToCallback: true
-  },
+  usernameField: 'email', // by default local strategy uses username
+  passwordField: 'password',
+  passReqToCallback: true
+},
   function (req, email, password, done) {
-
     // find a user whose email is the same as the forms email
     // we are checking to see if the user trying to login already exists
     var searchEmail = email.toLocaleLowerCase();
@@ -115,18 +114,18 @@ passport.use('local-login', new LocalStrategy({
       // if no user is found, return the message
       if (!user) {
         req.flash('email', email);
-        return done(null, false, req.flash('error', i18next.t("account.error.invalid")));
+        return done(null, false, req.flash('error', i18next.t('account.error.invalid')));
       }
 
       // if the user is found but the password is wrong
       if (!user.validPassword(password)) {
         req.flash('email', email);
-        return done(null, false, req.flash('error', i18next.t("account.error.invalid")));
+        return done(null, false, req.flash('error', i18next.t('account.error.invalid')));
       }
 
       // all is well, return successful user
       user.lastlogin_at = Date.now();
-      user.save(function(err) {
+      user.save(function (err) {
         if (err)
           debug(err); // not a problem
 
@@ -138,16 +137,14 @@ passport.use('local-login', new LocalStrategy({
 
 // Facebook (Web browser, based on current Facebook session)
 passport.use(new FacebookStrategy({
-    clientID: conf.facebook.clientID,
-    clientSecret: conf.facebook.clientSecret,
-    callbackURL: conf.facebook.callbackURL,
-    passReqToCallback: true
-  },
+  clientID: conf.facebook.clientID,
+  clientSecret: conf.facebook.clientSecret,
+  callbackURL: conf.facebook.callbackURL,
+  passReqToCallback: true
+},
   function (req, token, refreshToken, profile, done) {
     process.nextTick(function () {
-
       if (!req.user) {
-
         User.findOne({ 'facebook.id': profile.id }, function (err, user) {
           if (err)
             return done(err);
@@ -194,7 +191,6 @@ passport.use(new FacebookStrategy({
         });
 
       } else {
-
         // user already exists and is logged in, we have to link accounts
         var user = req.user;
 
@@ -205,7 +201,7 @@ passport.use(new FacebookStrategy({
 
           if (existingUser)
             return done(null, false,
-              req.flash('error', i18next.t("account.facebook.error.alreadylinked")));
+              req.flash('error', i18next.t('account.facebook.error.alreadylinked')));
 
           // update the current users facebook credentials
           user.facebook.id = profile.id;
@@ -229,63 +225,58 @@ passport.use(new FacebookStrategy({
 
 // Facebook (mobile, based on token)
 passport.use(new FacebookTokenStrategy({
-    clientID: conf.facebook.clientID,
-    clientSecret: conf.facebook.clientSecret
-  }, function(accessToken, refreshToken, profile, done) {
+  clientID: conf.facebook.clientID,
+  clientSecret: conf.facebook.clientSecret
+}, function (accessToken, refreshToken, profile, done) {
+  console.log(accessToken);
+  console.log(profile);
 
-    console.log(accessToken);
-    console.log(profile);
+  var facebookId = profile.id;
+  User.findOne({ 'facebook.id': facebookId }, function (err, user) {
+    if (err)
+      return done(err);
 
-    var facebookId = profile.id;
-    User.findOne({ 'facebook.id': facebookId }, function (err, user) {
-      if (err)
-        return done(err);
+    if (user) {
+      user.lastlogin_at = Date.now();
+      // if there is a user id already but no token (user was linked at one point and then removed)
+      // just add our token and profile information
+      if (!user.facebook.token) {
+        user.facebook.token = accessToken;
 
-      if (user) {
-
-        user.lastlogin_at = Date.now();
-        // if there is a user id already but no token (user was linked at one point and then removed)
-        // just add our token and profile information
-        if (!user.facebook.token) {
-          user.facebook.token = accessToken;
-
-          user.facebook.name = profile.name.givenName + ' ' + profile.name.familyName;
-          if (profile.emails)
-            user.facebook.email = profile.emails[0].value;
-        }
-        user.save(function (err) {
-          if (err)
-            return done(err);
-
-          return done(null, user); // user found, return that user
-        });
-
-
-      } else {
-
-        // create account (=signup)
-        var newUser = User.getNewUser();
-        newUser.lastlogin_at = Date.now();
-        newUser.facebook.id = profile.id;
-        newUser.facebook.token = accessToken;
-        newUser.facebook.name = profile.name.givenName + ' ' + profile.name.familyName; // @todo :test
-        newUser.name = profile.displayName; // @todo :test
+        user.facebook.name = profile.name.givenName + ' ' + profile.name.familyName;
         if (profile.emails)
-          newUser.facebook.email = profile.emails[0].value; // facebook can return multiple emails so we'll take the first
-        newUser.save(function (err) {
-          if (err)
-            return done(err);
-
-          // tracking
-          keenIoTracking(newUser, 'facebook');
-
-          // if successful, return the new user
-          return done(null, newUser);
-        });
-
+          user.facebook.email = profile.emails[0].value;
       }
-    });
-  }));
+      user.save(function (err) {
+        if (err)
+          return done(err);
 
+        return done(null, user); // user found, return that user
+      });
+
+    } else {
+      // create account (=signup)
+      var newUser = User.getNewUser();
+      newUser.lastlogin_at = Date.now();
+      newUser.facebook.id = profile.id;
+      newUser.facebook.token = accessToken;
+      newUser.facebook.name = profile.name.givenName + ' ' + profile.name.familyName; // @todo :test
+      newUser.name = profile.displayName; // @todo :test
+      if (profile.emails)
+        newUser.facebook.email = profile.emails[0].value; // facebook can return multiple emails so we'll take the first
+      newUser.save(function (err) {
+        if (err)
+          return done(err);
+
+        // tracking
+        keenIoTracking(newUser, 'facebook');
+
+        // if successful, return the new user
+        return done(null, newUser);
+      });
+
+    }
+  });
+}));
 
 module.exports = passport;

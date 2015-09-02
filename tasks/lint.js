@@ -43,8 +43,8 @@ module.exports = function(grunt) {
     lint('/www/donut/config');
     lint('/www/donut/shared');
     lint('/www/donut/test');
-    lint('/www/donut/ws-server');
-    lint('/www/donut/web-server');
+    //lint('/www/donut/ws-server');
+    //lint('/www/donut/web-server');
 
     done();
   });
