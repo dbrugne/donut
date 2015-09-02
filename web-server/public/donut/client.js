@@ -204,8 +204,8 @@ define([
         }
       );
     },
-    roomMessageEdit: function (roomId, messageId, message) {
-      var data = {room_id: roomId, event: messageId, message: message};
+    roomMessageEdit: function (roomId, messageId, message, images) {
+      var data = {room_id: roomId, event: messageId, message: message, images: images};
       pomelo.notify('chat.roomMessageEditHandler.call', data);
       debug('io:out:room:message:edit', data);
     },
@@ -589,8 +589,8 @@ define([
         }
       );
     },
-    userMessageEdit: function (userId, messageId, message) {
-      var data = { user_id: userId, event: messageId, message: message };
+    userMessageEdit: function (userId, messageId, message, images) {
+      var data = { user_id: userId, event: messageId, message: message, images: images};
       pomelo.notify('chat.userMessageEditHandler.call', data);
       debug('io:out:user:message:edit', data);
     },

@@ -33,7 +33,7 @@ handler.call = function (data, session, next) {
         return callback('require event param');
       }
 
-      if (!data.message) {
+      if (!data.message && !data.images) {
         return callback('require message param');
       }
 
@@ -57,15 +57,16 @@ handler.call = function (data, session, next) {
         return callback('user ' + user.id + ' tries to edit an old message: ' + event.id);
       }
 
-      var message = inputUtil.filter(data.message, 512);
-      if (!message) {
-        return callback('empty message (no text)');
-      }
+      if (data.message) {
+        var message = inputUtil.filter(data.message, 512);
+        if (!message) {
+          return callback('empty message (no text)');
+        }
 
-      if (event.data.message === message) {
-        return callback('posted message is the same as original');
+        if (event.data.message === message) {
+          return callback('posted message is the same as original');
+        }
       }
-
       // mentions
       inputUtil.mentions(message, function(err, message) {
         return callback(err, message);
