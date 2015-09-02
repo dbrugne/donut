@@ -443,7 +443,7 @@ define([
       var result = Math.floor(Math.random() * (max - min + 1) + min);
       var msg = $.t('chat.notifications.random') + ' ' + result + ' (' + min + ' - ' + max + ')';
       if (this.model.get('type') === 'room') {
-        client.roomMe(this.model.get('name'), msg);
+        client.roomMe(this.model.get('id'), msg);
       } else {
         client.userMe(this.model.get('id'), msg);
       }

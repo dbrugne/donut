@@ -10,26 +10,26 @@
             </a>
         </li>
         <li role="presentation">
-            <a role="menuitem" tabindex="-1" class="open-room-profile" data-room-name="<%= data.name %>">
+            <a role="menuitem" tabindex="-1" class="open-room-profile" data-room-id="<%= data.room_id %>">
                 <i class="icon icon-eye"></i> <%= t('global.viewprofile') %>
             </a>
         </li>
         <li role="presentation" class="divider"></li>
         <li role="presentation">
-            <a role="menuitem" tabindex="-1" class="open-room-preferences" data-room-name="<%= data.name %>">
+            <a role="menuitem" tabindex="-1" class="open-room-preferences" data-room-id="<%= data.room_id %>">
                 <i class="icon icon-bell"></i> <%= t('chat.actions.notifications') %>
             </a>
         </li>
         <% if (data.isOwner === true || data.isAdmin === true) { %>
         <li role="presentation">
-            <a role="menuitem" tabindex="-1" class="open-room-edit" data-room-name="<%= data.name %>">
+            <a role="menuitem" tabindex="-1" class="open-room-edit" data-room-id="<%= data.room_id %>">
                 <i class="icon icon-pencil"></i> <%= t('global.edit') %>
             </a>
         </li>
         <% }; %>
         <% if (data.isOwner === true || data.isOp === true || data.isAdmin === true) { %>
         <li role="presentation">
-            <a role="menuitem" tabindex="-1" class="open-room-users" data-room-name="<%= data.name %>">
+            <a role="menuitem" tabindex="-1" class="open-room-users" data-room-id="<%= data.room_id %>">
                 <i class="icon icon-users"></i> <%= t('chat.users.link') %>
             </a>
         </li>
@@ -52,7 +52,7 @@
         </li>
         <li role="presentation" class="divider"></li>
         <li role="presentation">
-            <a role="menuitem" tabindex="-1" class="close-discussion" data-identifier="<%= data.name %>" data-type="room">
+            <a role="menuitem" tabindex="-1" class="close-discussion" data-identifier="<%= data.room_id %>" data-type="room">
                 <i class="icon icon-times"></i> <%= t('chat.actions.close') %>
             </a>
         </li>
