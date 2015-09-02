@@ -61,6 +61,16 @@ roomSchema.statics.findByUser = function (userId) {
   return this.find({ users: { $in: [userId] }, deleted: {$ne: true} });
 };
 
+roomSchema.statics.getNewRoom = function (data) {
+  var model = new this();
+  model.name = data.name;
+  model.owner = data.owner;
+  model.color = data.color;
+  model.visibility = data.visibility;
+  model.priority = data.priority;
+  return model;
+};
+
 roomSchema.methods._avatar = function(size) {
   return cloudinary.roomAvatar(this.avatar, this.color, size);
 };

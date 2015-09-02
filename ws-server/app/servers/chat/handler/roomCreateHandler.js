@@ -43,7 +43,7 @@ handler.call = function(data, session, next) {
         if (room)
           return callback('alreadyexists');
 
-        room = new Room({
+        room = Room.getNewRoom({
           name: data.name,
           owner: user.id,
           color: conf.room.default.color,
