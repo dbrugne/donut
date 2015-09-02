@@ -1,6 +1,6 @@
 <div class="room">
     <span class="name"><%= room.name %></span>
-    <span class="owner"><%= t('global.by') %> <a class="open-user-profile dc-text" data-user-id="<%= room.owner.user_id %>">@<%= room.owner.username %></a></span>
+    <span class="owner"><%= t('global.by') %> <a class="open-user-profile dc-text colored" data-user-id="<%= room.owner.user_id %>">@<%= room.owner.username %></a></span>
 </div>
 <% if (room.owner) { %>
 <div class="form-group owner">
