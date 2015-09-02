@@ -7,7 +7,7 @@ module.exports = function (grunt) {
     var count = 0;
 
     var lint = function (path) {
-      grunt.file.recurse(path, function (abspath, rootdir, subdir, filename) {
+      grunt.file.recurse(path, function (abspath) {
         if (!grunt.file.isFile(abspath)) {
           return grunt.log.warn('not a file', abspath);
         }
