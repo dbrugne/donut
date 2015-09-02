@@ -1,3 +1,4 @@
+'use strict';
 var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
 var async = require('async');
 var _ = require('underscore');
@@ -8,28 +9,27 @@ var imagesUtil = require('../../../util/images');
 var keenio = require('../../../../../shared/io/keenio');
 var User = require('../../../../../shared/models/user');
 
-var Handler = function(app) {
+var Handler = function (app) {
   this.app = app;
 };
 
-module.exports = function(app) {
-	return new Handler(app);
+module.exports = function (app) {
+  return new Handler(app);
 };
 
 var handler = Handler.prototype;
 
-handler.call = function(data, session, next) {
+handler.call = function (data, session, next) {
+  var user = session.__currentUser__;
+  var withUser = session.__user__;
 
-	var user = session.__currentUser__;
-	var withUser = session.__user__;
+  var that = this;
 
-	var that = this;
+  async.waterfall([
 
-	async.waterfall([
-
-		function check (callback) {
-			if (!data.username && !data.user_id)
-				return callback('username or user_id is mandatory');
+    function check (callback) {
+      if (!data.username && !data.user_id)
+        return callback('username or user_id is mandatory');
 
       if (!withUser)
         return callback('unable to retrieve withUser: ' + data.username);
@@ -37,99 +37,99 @@ handler.call = function(data, session, next) {
       if (withUser.isBanned(user.id))
         return callback('user is banned by withUser');
 
-			return callback(null);
-		},
+      return callback(null);
+    },
 
-		function persistOnBoth(callback) {
-			user.update({$addToSet: { onetoones: withUser._id }}, function(err) {
-				if (err)
-					return callback(err);
-        withUser.update({$addToSet: { onetoones: user._id}}, function(err) {
+    function persistOnBoth (callback) {
+      user.update({$addToSet: { onetoones: withUser._id }}, function (err) {
+        if (err)
           return callback(err);
-				});
-			});
-		},
+        withUser.update({$addToSet: { onetoones: user._id}}, function (err) {
+          return callback(err);
+        });
+      });
+    },
 
-		function prepareMessage(callback) {
-			// text filtering
-			var message = inputUtil.filter(data.message, 512);
+    function prepareMessage (callback) {
+      // text filtering
+      var message = inputUtil.filter(data.message, 512);
 
-			// images filtering
-			var images = imagesUtil.filter(data.images);
+      // images filtering
+      var images = imagesUtil.filter(data.images);
 
-			if (!message && !images)
-				return callback('empty message (no text, no image)');
+      if (!message && !images)
+        return callback('empty message (no text, no image)');
 
       // mentions
-      inputUtil.mentions(message, function(err, message) {
+      inputUtil.mentions(message, function (err, message) {
         return callback(err, message, images);
       });
-		},
+    },
 
-		function prepareEvent(message, images, callback) {
-			var event = {
-				from_user_id  : user.id,
-				from_username : user.username,
-				from_avatar   : user._avatar(),
-				to_user_id    : withUser.id,
-				to_username   : withUser.username,
-				time          : Date.now()
-			};
+    function prepareEvent (message, images, callback) {
+      var event = {
+        from_user_id: user.id,
+        from_username: user.username,
+        from_avatar: user._avatar(),
+        to_user_id: withUser.id,
+        to_username: withUser.username,
+        time: Date.now()
+      };
 
-			if (message)
-				event.message = message;
-			if (images && images.length)
-				event.images = images;
+      if (message)
+        event.message = message;
+      if (images && images.length)
+        event.images = images;
 
-			return callback(null, event);
-		},
+      return callback(null, event);
+    },
 
-		function historizeAndEmit(event, callback) {
-			oneEmitter(that.app, { from: user._id, to: withUser._id} , 'user:message', event, callback);
-		},
+    function historizeAndEmit (event, callback) {
+      oneEmitter(that.app, { from: user._id, to: withUser._id} , 'user:message', event, callback);
+    },
 
-		function notification(event, callback) {
-			Notifications(that.app).getType('usermessage').create(withUser, event.id, function(err) {
-				return callback(err, event);
-			});
-		},
+    function notification (event, callback) {
+      Notifications(that.app).getType('usermessage').create(withUser, event.id, function (err) {
+        return callback(err, event);
+      });
+    },
 
-		function tracking(event, callback) {
-			var messageEvent = {
-				session: {
-					id: session.settings.uuid,
-					connector: session.frontendId
-				},
-				user: {
-					id: user.id,
-					username: user.username,
-					admin: (session.settings.admin === true)
-				},
-				to: {
-					id: withUser.id,
-					username: withUser.username,
-					admin: (withUser.admin === true)
-				},
-				message: {
+    function tracking (event, callback) {
+      var messageEvent = {
+        session: {
+          id: session.settings.uuid,
+          connector: session.frontendId
+        },
+        user: {
+          id: user.id,
+          username: user.username,
+          admin: (session.settings.admin === true)
+        },
+        to: {
+          id: withUser.id,
+          username: withUser.username,
+          admin: (withUser.admin === true)
+        },
+        message: {
           length: (event.message && event.message.length) ? event.message.length : 0,
           images: (event.images && event.images.length) ? event.images.length : 0
-				}
-			};
-			keenio.addEvent("onetoone_message", messageEvent, function(err){
-				if (err)
-					logger.error(err);
+        }
+      };
+      keenio.addEvent('onetoone_message', messageEvent, function (err) {
+        if (err)
+          logger.error(err);
 
-				return callback(null);
-			});
-		}
+        return callback(null);
+      });
+    }
 
-	], function(err) {
-		if (err) {
+  ], function (err) {
+    if (err) {
       logger.error('[user:message] ' + err);
       return next(null, { code: 500, err: err });
     }
 
-		return next(null, { success: true });
-	});
+    return next(null, { success: true });
+  });
 
 };

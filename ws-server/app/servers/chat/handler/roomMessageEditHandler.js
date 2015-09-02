@@ -1,3 +1,4 @@
+'use strict';
 var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
 var async = require('async');
 var _ = require('underscore');
@@ -6,18 +7,17 @@ var conf = require('../../../../../config');
 var common = require('@dbrugne/donut-common');
 var Notifications = require('../../../components/notifications');
 
-var Handler = function(app) {
+var Handler = function (app) {
   this.app = app;
 };
 
-module.exports = function(app) {
+module.exports = function (app) {
   return new Handler(app);
 };
 
 var handler = Handler.prototype;
 
-handler.call = function(data, session, next) {
-
+handler.call = function (data, session, next) {
   var user = session.__currentUser__;
   var room = session.__room__;
   var event = session.__event__;
@@ -26,7 +26,7 @@ handler.call = function(data, session, next) {
 
   async.waterfall([
 
-    function check(callback) {
+    function check (callback) {
       if (!data.room_id)
         return callback('id is mandatory');
 
@@ -64,32 +64,32 @@ handler.call = function(data, session, next) {
           return callback('posted message is the same as original');
       }
 
-      inputUtil.mentions(message, function(err, message, markups) {
+      inputUtil.mentions(message, function (err, message, markups) {
         return callback(err, message, markups.users);
       });
     },
 
-    function persist(message, mentions, callback) {
+    function persist (message, mentions, callback) {
       event.update({
-        $set: { edited : true,  edited_at: new Date(), 'data.message': message }
-      }, function(err) {
+        $set: { edited: true,  edited_at: new Date(), 'data.message': message }
+      }, function (err) {
         return callback(err, message, mentions);
       });
     },
 
-    function broadcast(message, mentions, callback) {
+    function broadcast (message, mentions, callback) {
       var eventToSend = {
         name: room.name,
         room_id: room.id,
         event: event.id,
         message: message,
       };
-      that.app.globalChannelService.pushMessage('connector', 'room:message:edit', eventToSend, room.name, {}, function(err) {
+      that.app.globalChannelService.pushMessage('connector', 'room:message:edit', eventToSend, room.name, {}, function (err) {
         return callback(err, mentions);
       });
     },
 
-    function mentionNotification(mentions, callback) {
+    function mentionNotification (mentions, callback) {
       if (!mentions || !mentions.length)
         return callback(null);
 
@@ -111,4 +111,3 @@ handler.call = function(data, session, next) {
   });
 
 };
-

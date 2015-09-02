@@ -1,3 +1,4 @@
+'use strict';
 var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
 var _ = require('underscore');
 var async = require('async');
@@ -16,7 +17,6 @@ var Notification = function (facade) {
 };
 
 Notification.prototype.create = function (room, history, done) {
-
   var that = this;
   async.waterfall([
 
@@ -24,7 +24,7 @@ Notification.prototype.create = function (room, history, done) {
 
     utils.retrieveHistoryRoom(history),
 
-    function avoidRepetitive(roomModel, historyModel, callback) {
+    function avoidRepetitive (roomModel, historyModel, callback) {
       if (that.facade.options.force === true)
         return callback(null, roomModel, historyModel);
 
@@ -48,7 +48,7 @@ Notification.prototype.create = function (room, history, done) {
       });
     },
 
-    function retrieveUserList(roomModel, historyModel, callback) {
+    function retrieveUserList (roomModel, historyModel, callback) {
       UserModel.findRoomUsersHavingPreference(roomModel, that.type, historyModel.user.id, function (err, users) {
         if (err)
           return callback(err);
@@ -61,7 +61,7 @@ Notification.prototype.create = function (room, history, done) {
       });
     },
 
-    function checkStatus(roomModel, historyModel, users, callback) {
+    function checkStatus (roomModel, historyModel, users, callback) {
       that.facade.app.statusService.getStatusByUids(_.map(users, 'id'), function (err, statuses) {
         if (err)
           return callback('roomJoinType.create error while retrieving user statuses: ' + err);
@@ -70,7 +70,7 @@ Notification.prototype.create = function (room, history, done) {
       });
     },
 
-    function prepare(roomModel, historyModel, users, statuses, callback) {
+    function prepare (roomModel, historyModel, users, statuses, callback) {
       var notificationsToCreate = [];
       _.each(users, function (user) {
         var model = NotificationModel.getNewModel(that.type, user._id, {
@@ -79,8 +79,8 @@ Notification.prototype.create = function (room, history, done) {
         });
 
         model.to_browser = true;
-        model.to_email = (!user.getEmail() ? false : (statuses[user.id] ? false : user.preferencesValue("notif:channels:email")));
-        model.to_mobile = (statuses[user.id] ? false : user.preferencesValue("notif:channels:mobile"));
+        model.to_email = (!user.getEmail() ? false : (statuses[user.id] ? false : user.preferencesValue('notif:channels:email')));
+        model.to_mobile = (statuses[user.id] ? false : user.preferencesValue('notif:channels:mobile'));
 
         if (that.facade.options.force === true) {
           model.to_email = true;
@@ -93,7 +93,7 @@ Notification.prototype.create = function (room, history, done) {
       return callback(null, historyModel, notificationsToCreate);
     },
 
-    function create(historyModel, notificationsToCreate, callback) {
+    function create (historyModel, notificationsToCreate, callback) {
       NotificationModel.bulkInsert(notificationsToCreate, function (err, createdNotifications) {
         if (err)
           return callback(err);
@@ -103,7 +103,7 @@ Notification.prototype.create = function (room, history, done) {
       });
     },
 
-    function sendToBrowser(historyModel, createdNotifications, callback) {
+    function sendToBrowser (historyModel, createdNotifications, callback) {
       if (!createdNotifications.length)
         return callback(null);
 
@@ -151,11 +151,11 @@ Notification.prototype.sendEmail = function (model, done) {
 
     utils.retrieveHistoryRoom(model.data.event.toString()),
 
-    function send(history, callback) {
+    function send (history, callback) {
       emailer.roomJoin(model.user.getEmail(), history.user.username, history.room.name, callback);
     },
 
-    function persist(callback) {
+    function persist (callback) {
       model.sent_to_email = true;
       model.sent_to_email_at = new Date();
       model.save(callback);

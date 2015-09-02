@@ -1,3 +1,4 @@
+'use strict';
 var logger = require('../../pomelo-logger').getLogger('donut', __filename);
 var debug = require('debug')('donut:server:ws:room-emitter');
 var _ = require('underscore');
@@ -18,7 +19,7 @@ var cloudinary = require('../../../shared/util/cloudinary');
  * @param eventData
  * @param callback
  */
-module.exports = function(app, user, room, eventName, eventData, callback) {
+module.exports = function (app, user, room, eventName, eventData, callback) {
   if (!room)
     return callback('roomEmitter require room parameter');
   if (!user)
@@ -29,9 +30,9 @@ module.exports = function(app, user, room, eventName, eventData, callback) {
   eventData.room_name = room.name;
   eventData.room_id = room.id;
 
-  recorder(room, eventName, eventData, function(err, model) {
+  recorder(room, eventName, eventData, function (err, model) {
     if (err)
-      return fn('Error while emitting room event ' + eventName + ' in ' + room.name + ': '+err);
+      return fn('Error while emitting room event ' + eventName + ' in ' + room.name + ': ' + err);
 
     eventData.id = model.id;
 
@@ -44,9 +45,9 @@ module.exports = function(app, user, room, eventName, eventData, callback) {
       });
     }
 
-    app.globalChannelService.pushMessage('connector', eventName, eventData, room.name, {}, function(err) {
+    app.globalChannelService.pushMessage('connector', eventName, eventData, room.name, {}, function (err) {
       if (err)
-        return callback('Error while pushing message: '+err);
+        return callback('Error while pushing message: ' + err);
 
       if (['room:message', 'room:topic', 'room:me'].indexOf(eventName) === -1)
         return callback(null, eventData);

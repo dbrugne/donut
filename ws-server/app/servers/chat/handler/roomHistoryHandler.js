@@ -1,62 +1,62 @@
+'use strict';
 var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
 var async = require('async');
 var retriever = require('../../../../../shared/models/historyroom').retrieve();
 
-var Handler = function(app) {
-	this.app = app;
+var Handler = function (app) {
+  this.app = app;
 };
 
-module.exports = function(app) {
-	return new Handler(app);
+module.exports = function (app) {
+  return new Handler(app);
 };
 
 var handler = Handler.prototype;
 
-handler.call = function(data, session, next) {
+handler.call = function (data, session, next) {
+  var user = session.__currentUser__;
+  var room = session.__room__;
 
-	var user = session.__currentUser__;
-	var room = session.__room__;
+  var that = this;
 
-	var that = this;
+  async.waterfall([
 
-	async.waterfall([
+    function check (callback) {
+      if (!data.room_id)
+        return callback('id parameter is mandatory');
 
-		function check(callback) {
-			if (!data.room_id)
-				return callback('id parameter is mandatory');
+      if (!room)
+        return callback('unable to retrieve room: ' + data.room_id);
 
-			if (!room)
-				return callback('unable to retrieve room: '+data.room_id);
+      return callback(null);
+    },
 
-			return callback(null);
-		},
+    function history (callback) {
+      var options = {
+        isAdmin: (session.settings.admin === true), // allow admin to see whole rooms history
+        since: data.since,
+        limit: data.limit
+      };
+      retriever(room.id, user.id, options, function (err, history) {
+        if (err)
+          return callback(err);
 
-		function history(callback) {
-			var options = {
-				isAdmin: (session.settings.admin === true), // allow admin to see whole rooms history
-				since: data.since,
-				limit: data.limit
-			};
-			retriever(room.id, user.id, options, function(err, history) {
-				if (err)
-					return callback(err);
+        var historyEvent = {
+          room_id: room.id,
+          history: history.history,
+          more: history.more
+        };
+        return callback(null, historyEvent);
+      });
+    },
 
-				var historyEvent = {
-					room_id   : room.id,
-					history   : history.history,
-					more      : history.more
-				};
-				return callback(null, historyEvent);
-			});
-		},
+  ], function (err, historyEvent) {
+    if (err) {
+      logger.error('[room:history]' + err);
+      return next(null, {code: 500, err: err});
+    }
 
-	], function(err, historyEvent) {
-		if (err) {
-			logger.error('[room:history]' + err);
-			return next(null, {code: 500, err: err});
-		}
-
-		next(null, historyEvent);
-	});
+    next(null, historyEvent);
+  });
 
 };

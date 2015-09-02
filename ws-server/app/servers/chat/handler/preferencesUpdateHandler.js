@@ -1,3 +1,4 @@
+'use strict';
 var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
 var async = require('async');
 var _ = require('underscore');
@@ -15,15 +16,13 @@ module.exports = function (app) {
 var handler = Handler.prototype;
 
 handler.call = function (data, session, next) {
-
   var user = session.__currentUser__;
 
   var that = this;
 
   async.waterfall([
 
-    function validate(callback) {
-
+    function validate (callback) {
       // @doc: https://www.npmjs.org/package/validator
 
       if (!data.data || data.data.length < 1)
@@ -49,14 +48,14 @@ handler.call = function (data, session, next) {
       return callback(null, key, value);
     },
 
-    function update(key, value, callback) {
+    function update (key, value, callback) {
       user.set('preferences.' + key, value); // we can also remove the key when value === false ('$unset: {key: 1}') to save database space
       user.save(function (err) {
         return callback(err, key, value);
       });
     },
 
-    function broadcastUser(key, value, callback) {
+    function broadcastUser (key, value, callback) {
       // notify only certain fields
       var fieldToNotify = ['browser:exitpopin', 'browser:welcome', 'browser:sounds', 'notif:channels:desktop'];
       if (fieldToNotify.indexOf(key) === -1)

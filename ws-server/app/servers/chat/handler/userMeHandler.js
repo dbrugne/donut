@@ -1,3 +1,4 @@
+'use strict';
 var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
 var async = require('async');
 var _ = require('underscore');
@@ -6,18 +7,17 @@ var oneEmitter = require('../../../util/oneEmitter');
 var inputUtil = require('../../../util/input');
 var keenio = require('../../../../../shared/io/keenio');
 
-var Handler = function(app) {
+var Handler = function (app) {
   this.app = app;
 };
 
-module.exports = function(app) {
+module.exports = function (app) {
   return new Handler(app);
 };
 
 var handler = Handler.prototype;
 
-handler.call = function(data, session, next) {
-
+handler.call = function (data, session, next) {
   var user = session.__currentUser__;
   var withUser = session.__user__;
 
@@ -42,10 +42,10 @@ handler.call = function(data, session, next) {
     },
 
     function persistOnBoth (callback) {
-      user.update({$addToSet: { onetoones: withUser._id }}, function(err) {
+      user.update({$addToSet: { onetoones: withUser._id }}, function (err) {
         if (err)
           return callback(err);
-        withUser.update({$addToSet: { onetoones: user._id }}, function(err) {
+        withUser.update({$addToSet: { onetoones: user._id }}, function (err) {
           return callback(err);
         });
       });
@@ -59,25 +59,25 @@ handler.call = function(data, session, next) {
         return callback('empty message (no text)');
 
       // mentions
-      inputUtil.mentions(message, function(err, message) {
+      inputUtil.mentions(message, function (err, message) {
         return callback(err, message);
       });
     },
 
     function historizeAndEmit (message, callback) {
       var event = {
-        from_user_id  : user.id,
-        from_username : user.username,
-        from_avatar   : user._avatar(),
-        to_user_id    : withUser.id,
-        to_username   : withUser.username,
+        from_user_id: user.id,
+        from_username: user.username,
+        from_avatar: user._avatar(),
+        to_user_id: withUser.id,
+        to_username: withUser.username,
         message: message
       };
       oneEmitter(that.app, { from: user._id, to: withUser._id }, 'user:me', event, callback);
     },
 
     function notification (event, callback) {
-      Notifications(that.app).getType('usermessage').create(withUser, event.id, function(err) {
+      Notifications(that.app).getType('usermessage').create(withUser, event.id, function (err) {
         return callback(err, event);
       });
     },
@@ -102,7 +102,7 @@ handler.call = function(data, session, next) {
           length: (event.message && event.message.length) ? event.message.length : 0
         }
       };
-      keenio.addEvent("onetoone_me", messageEvent, function(err){
+      keenio.addEvent('onetoone_me', messageEvent, function (err) {
         if (err)
           logger.error(err);
 

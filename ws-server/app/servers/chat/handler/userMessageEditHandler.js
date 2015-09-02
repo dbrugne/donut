@@ -1,3 +1,4 @@
+'use strict';
 var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
 var async = require('async');
 var inputUtil = require('../../../util/input');
@@ -15,7 +16,6 @@ module.exports = function (app) {
 var handler = Handler.prototype;
 
 handler.call = function (data, session, next) {
-
   var user = session.__currentUser__;
   var withUser = session.__user__;
   var event = session.__event__;
@@ -68,7 +68,7 @@ handler.call = function (data, session, next) {
         }
       }
       // mentions
-      inputUtil.mentions(message, function(err, message) {
+      inputUtil.mentions(message, function (err, message) {
         return callback(err, message);
       });
     },
@@ -94,7 +94,7 @@ handler.call = function (data, session, next) {
       return callback(null, eventToSend);
     },
 
-    function broadcastFrom(eventToSend, callback) {
+    function broadcastFrom (eventToSend, callback) {
       that.app.globalChannelService.pushMessage('connector', 'user:message:edit', eventToSend, 'user:' + user.id, {}, function (err) {
         if (err)
           logger.error(err); // not 'return', we delete even if error happen
@@ -115,7 +115,7 @@ handler.call = function (data, session, next) {
       });
     }
 
-  ], function(err) {
+  ], function (err) {
     if (err)
       logger.error('[user:message:edit] ' + err);
 

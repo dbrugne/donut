@@ -1,3 +1,4 @@
+'use strict';
 var logger = require('../../pomelo-logger').getLogger('donut', __filename);
 var async = require('async');
 var _ = require('underscore');
@@ -11,33 +12,32 @@ var HistoryRoom = require('../../../shared/models/historyroom');
  *   - owner
  *   - ops
  */
-module.exports = function(app, user, room, fn) {
-
+module.exports = function (app, user, room, fn) {
   if (!room)
     return fn('Need to received a valid Room model as parameter');
 
   async.waterfall([
 
-    function prepare(callback) {
+    function prepare (callback) {
       if (room === null)
         return callback(null, null);
 
-      var devoices = _.map(room.devoices, function(element) {
+      var devoices = _.map(room.devoices, function (element) {
         return element.user.toString();
       });
 
       var roomData = {
-        name        : room.name,
-        id          : room.id,
-        owner       : {},
-        op          : room.op, // [ObjectId]
-        devoices    : devoices, // [ObjectId]
-        avatar      : room._avatar(),
-        poster      : room._poster(),
-        color       : room.color,
-        topic       : room.topic,
-        posterblured : room._poster(true),
-        unviewed : user.hasUnviewedRoomMessage(room)
+        name: room.name,
+        id: room.id,
+        owner: {},
+        op: room.op, // [ObjectId]
+        devoices: devoices, // [ObjectId]
+        avatar: room._avatar(),
+        poster: room._poster(),
+        color: room.color,
+        topic: room.topic,
+        posterblured: room._poster(true),
+        unviewed: user.hasUnviewedRoomMessage(room)
       };
 
       if (room.owner) {
@@ -50,7 +50,7 @@ module.exports = function(app, user, room, fn) {
       return callback(null, roomData);
     }
 
-  ], function(err, roomData) {
+  ], function (err, roomData) {
     if (err)
       return fn(err);
 

@@ -1,3 +1,4 @@
+'use strict';
 var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
 var async = require('async');
 
@@ -12,7 +13,6 @@ module.exports = function (app) {
 var handler = Handler.prototype;
 
 handler.call = function (data, session, next) {
-
   var user = session.__currentUser__;
   var room = session.__room__;
   var event = session.__event__;
@@ -21,7 +21,7 @@ handler.call = function (data, session, next) {
 
   async.waterfall([
 
-    function check(callback) {
+    function check (callback) {
       if (!data.room_id)
         return callback('id is mandatory');
 
@@ -32,7 +32,7 @@ handler.call = function (data, session, next) {
         return callback('unable to retrieve room: ' + data.room_id);
 
       if (!room.isOwnerOrOp(user.id) && session.settings.admin !== true)
-        return callback('this user ' + user.id + ' isn\'t able to spammed a message in ' + room.name);
+        return callback('this user ' + user.id + " isn't able to spammed a message in " + room.name);
 
       if (!event)
         return callback('unable to retrieve event: ' + data.event);
@@ -46,7 +46,7 @@ handler.call = function (data, session, next) {
       return callback(null);
     },
 
-    function persist(callback) {
+    function persist (callback) {
       event.spammed = true;
       event.spammed_at = new Date();
       event.save(function (err) {
@@ -54,7 +54,7 @@ handler.call = function (data, session, next) {
       });
     },
 
-    function broadcast(callback) {
+    function broadcast (callback) {
       var eventToSend = {
         room_id: room.id,
         event: event.id

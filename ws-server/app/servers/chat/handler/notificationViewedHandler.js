@@ -1,3 +1,4 @@
+'use strict';
 var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
 var async = require('async');
 var _ = require('underscore');
@@ -15,14 +16,13 @@ module.exports = function (app) {
 var handler = Handler.prototype;
 
 handler.call = function (data, session, next) {
-
   var user = session.__currentUser__;
 
   var that = this;
 
   async.waterfall([
 
-    function check(callback) {
+    function check (callback) {
       // Mark all as read
       if (data.all) {
         Notifications(that.app).retrieveUserNotificationsUnviewed(user.id, function (err, notifications) {
@@ -50,13 +50,13 @@ handler.call = function (data, session, next) {
       }
     },
 
-    function persist(notifications, callback) {
+    function persist (notifications, callback) {
       Notifications(that.app).markNotificationsAsViewed(user.id, notifications, function (err) {
         return callback(err, notifications);
       });
     },
 
-    function prepare(notifications, callback) {
+    function prepare (notifications, callback) {
       // count remaining unviewed notifications
       Notifications(that.app).retrieveUserNotificationsUnviewedCount(user.id, function (err, count) {
         if (err)
