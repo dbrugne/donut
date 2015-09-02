@@ -60,7 +60,7 @@ define([
   'text!./templates/notification/user-mention.html',
   'text!./templates/notification/room-message.html',
   'text!./templates/notification/user-message.html',
-  'text!./templates/partial-room-cards.html',
+  'text!./templates/rooms-cards.html',
   'text!./templates/markup.html'
 ], function (_,
   color_picker,
@@ -123,7 +123,7 @@ define([
   notification_user_mention,
   notification_room_message,
   notification_user_message,
-  partial_room_cards,
+  rooms_cards,
   markup) {
 
   /**
@@ -199,7 +199,7 @@ define([
   JST['notification/user-mention.html']     = _.template(notification_user_mention);
   JST['notification/room-message.html']     = _.template(notification_room_message);
   JST['notification/user-message.html']     = _.template(notification_user_message);
-  JST['partial-room-cards.html']            = _.template(partial_room_cards);
+  JST['rooms-cards.html']                   = _.template(rooms_cards);
   JST['markup.html']                        = _.template(markup);
 
   return JST;

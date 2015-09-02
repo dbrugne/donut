@@ -7,7 +7,7 @@ define([
 ], function ($, _, Backbone, common, templates) {
   var RoomsView = Backbone.View.extend({
 
-    template: templates['partial-room-cards.html'],
+    template: templates['rooms-cards.html'],
 
     initialize: function (options) {
     },

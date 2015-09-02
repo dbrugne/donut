@@ -14,7 +14,7 @@ define([
 
     el: $('#welcome'),
 
-    template: templates['partial-room-cards.html'],
+    template: templates['rooms-cards.html'],
 
     events: {
       'hidden.bs.modal': 'onHide',
