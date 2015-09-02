@@ -478,20 +478,23 @@
     }
 
 
-    #block-discussions { overflow: auto; padding-bottom: 0; margin-bottom: 25px; .flex(1); .scrollbar-grey-thin;
+    #block-discussions { overflow-x: hidden; overflow-y: auto; padding-bottom: 0; margin-bottom: 25px; .flex(1); .scrollbar-grey-thin;
       ul { padding:0;
         li { list-style: none; padding:0; margin:0;position: relative; }
       } // #chat #left #block-discussions ul
-      .list { overflow-y: auto; height: 100%; margin-bottom: 0; margin-left: 5px; padding: 0; background-repeat: no-repeat; background-position: left top; position: relative;
-        .item { display: block; position: relative; padding: 8px 18px 6px; color: @cl-title;
-          .avatar { position: absolute; top: 7px; left: 16px; width: 22px; height: 22px; }
+      .list { height: 100%; margin-bottom: 0; padding: 0; background-repeat: no-repeat; background-position: left top; position: relative;
+        .item { display: block; position: relative; color: @cl-title; .display-flex; .flex-flow(row nowrap);
+          a, a:hover { text-decoration:none; }
+          .avatar-ctn { margin: auto; }
+          .name-ctn { .flex(1); margin: auto; }
+          .avatar { width: 22px; height: 22px; margin-left: 16px; display: inline; }
           &[data-type="room"] {
             .avatar { .img-circle; }
           }
-          .name, .username { overflow: hidden; white-space : nowrap; width: 132px; display: inline-block; margin-left: 27px; font-family: "Open Sans"; font-size: 14px;
+          .name, .username { margin-top: 5px; margin-left: 5px; font-family: "Open Sans"; font-size: 14px; display: inline-block; width: 138px; overflow: hidden; text-overflow: ellipsis;
             > span { font-size: 13px; padding-right: 1px; }
           }
-          .close-discussion { font-size: 1.8em; color: @cl-subtext20; position: absolute; top: 8px; right: 10px;
+          .close-discussion { font-size: 1.8em; color: @cl-subtext20; margin-right:5px;
             &:hover { color: @cl-subtext20; }
           }
           &:hover { text-decoration: none;
