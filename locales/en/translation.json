@@ -3,6 +3,17 @@
     "title": "Page not found",
     "description": "Sorry we are not able to find this resource! You could just press this neat little button:"
   },
+  "landing": {
+    "signup" : "Sign up",
+    "login" : "Log in",
+    "start": "Start",
+    "loginwithfacebook": "Login with Facebook",
+    "orbymail": "or by email",
+    "username-placeholder": "Username",
+    "email-placeholder": "Mail",
+    "password-placeholder": "Password",
+    "yourinterests": "What are your interests ?"
+  },
   "title": {
     "default": "DONUT is made for you to chat about your interests and engage your communities!",
     "landing": "DONUT - Instant chat about your interests",
@@ -81,7 +92,6 @@
     "unknownerror": "Unknown error, please retry later"
   },
   "login": {
-    "title": "connect",
     "withfacebook": "with Facebook",
     "withpassword": "with a password",
     "email-placeholder": "your e-mail",

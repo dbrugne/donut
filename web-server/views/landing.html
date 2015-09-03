@@ -1,143 +1,156 @@
 <%- partial('head') %>
 <body>
-<div class="upon">
-    <% if (success) { %><div class="alert alert-success"><%= success %></div><% } %>
-    <% if (info) { %><div class="alert alert-info"><%= info %></div><% } %>
-    <% if (warning) { %><div class="alert alert-warning"><%= warning %></div><% } %>
-    <% if (error) { %><div class="alert alert-danger"><%= error %></div><% } %>
-</div>
-<div id="languages">
-    <span><%= t('global.switchlanguage') %></span>
-    <a data-language="fr" class="switch">fr</a> -
-    <a data-language="en" class="switch">en</a>
-</div>
 <div id="landing">
-    <div class="header">
-        <div class="cover">
-            <h1 class="logo"><a href="/"><img src="/images/logo.png" alt="<%= t('title') %> - <%= t('baseline') %>"></a></h1>
-            <div class="fb-like" data-href="https://www.facebook.com/donutdotme" data-layout="standard" data-action="like" data-show-faces="true" data-share="true" data-ref="landing"></div>
-            <div class="text">
-                <p><%= t('home.cover.line1') %></p>
-                <p data-toggle="talkative"><%= t('home.cover.line2') %></p>
-                <p><%= t('home.cover.line3') %></p>
-                <p data-toggle="talkative"><%= t('home.cover.line4') %></p>
-                <p><%= t('home.cover.line5') %></p>
-                <p data-toggle="talkative"><%= t('home.cover.line6') %></p>
-            </div>
-            <a href="#knowmore" class="btn-knowmore"><%= t('home.cover.knowmore') %></a>
-        </div><!--/.cover-->
-        <div class="login">
-            <% if (logged) { %>
-            <h2><%= t('logged.title') %></h2>
-            <div class="logged">
-                <a class="profile" href="<%= user.url %>" target="_blank">
-                    <img class="avatar" src="<%= user.avatar %>" alt="<%= user.username %> avatar">
-                    <p>@<%= user.username %></p>
-                </a>
-                <p><%= t('logged.text') %></p>
-                <p class="actions">
-                    <a class="chat" href="/!"><%= t('logged.chat') %></a>
-                    <a class="logout" href="/logout"><%= t('logged.logout') %></a>
-                </p>
-            </div>
-            <% } else { %>
-            <div>
-                <h2><%= t('login.title') %></h2>
-                <a href="/login/facebook" class="btn-facebook"><i class="icon icon-facebook"></i> | <span><%= t('login.withfacebook') %></span></a>
+    <!--<div class="upon">-->
+        <!--<% if (success) { %><div class="alert alert-success"><%= success %></div><% } %>-->
+        <!--<% if (info) { %><div class="alert alert-info"><%= info %></div><% } %>-->
+        <!--<% if (warning) { %><div class="alert alert-warning"><%= warning %></div><% } %>-->
+        <!--<% if (error) { %><div class="alert alert-danger"><%= error %></div><% } %>-->
+    <!--</div>-->
 
-                <p class="logic"><span><%= t('global.or') %></span></p>
-                <form id="login" action="/login" method="post" role="form" class="form">
-                    <input type="hidden" name="_csrf" value="<%= token %>">
-                    <div class="form-group">
-                        <input type="text" id="signin-email" class="form-control" name="email" placeholder="<%= t('login.email-placeholder') %>" tabindex="1">
-                        <img src="/images/arrow.svg">
-                    </div>
-                    <div class="form-group">
-                        <img src="/images/arrow.svg">
-                        <input type="password" id="signin-password" class="form-control" name="password" placeholder="<%= t('login.password-placeholder') %>" tabindex="2">
-                    </div>
-                    <div class="form-group pull-right relative">
-                        <a class="forgot-link" href="/forgot" title="<%= t('actions.forgot') %>" tabindex="5">
-                            <%= t('actions.forgot') %>
-                        </a>
-                        <i class="fa fa-question"></i>
-                    </div>
-                    <div class="clearfix"></div>
-                    <div class="form-group">
-                        <input type="submit" value="<%= t('actions.login') %>" tabindex="3">
-                    </div>
-                </form>
-                <p class="logic"><span><%= t('global.else') %></span></p>
-                <a href="#signup" class="btn-signup">
-                    <p><%= t('login.createanaccount1') %></p>
-                    <p><%= t('login.createanaccount2') %></p>
-                </a>
-            </div>
-            <% } %>
-        </div><!--/.login-->
-    </div><!--/.header-->
-    <div class="description">
-        <a name="knowmore"></a>
-        <div class="row">
-            <h2>
-                <p>Tasty</p>
-                <p>chatrooms<span class="asterisk">*</span></p>
-            </h2>
-            <div class="definition">
-                <p class="asterisk">*</p>
-                <p><%= t('home.description.definition') %></p>
-            </div>
-        </div>
-        <div class="illustrations">
-            <div class="illus"><img src="/images/illustration-1.svg" alt="<%= t('home.description.line1') %>"><i></i><p><%= t('home.description.line1') %></p></div>
-            <div class="illus"><img src="/images/illustration-2.svg" alt="<%= t('home.description.line2') %>"><i></i><p><%= t('home.description.line2') %></p></div>
-            <div class="illus"><img src="/images/illustration-3.svg" alt="<%= t('home.description.line3') %>"><i></i><p><%= t('home.description.line3') %></p></div>
-        </div>
-    </div><!--/.description-->
-    <div class="signup">
-        <a name="signup"></a>
-        <div>
-            <div class="title">
-                <span><%= t('home.signup.title1') %></span>
-                <img src="/images/signup-logo.jpg" alt="<%= t('title') %>">
-                <span><%= t('home.signup.title2') %></span>
-            </div>
-            <form id="signup" action="/signup" method="post" role="form" class="form">
-                <input type="hidden" name="_csrf" value="<%= token %>">
-                <div class="form-content">
-                    <div class="fields">
-                        <div class="form-group email-group">
-                            <input type="text" id="signup-email" class="form-control" name="email" placeholder="<%= t('login.email-placeholder') %>">
-                            <img src="/images/email.svg">
-                        </div>
-                        <div class="form-group password-group">
-                            <input type="password" id="signup-password" class="form-control" name="password" placeholder="<%= t('login.password-placeholder') %>">
-                            <img src="/images/password.svg">
-                        </div>
-                    </div>
-                    <div class="form-group submit">
-                        <input type="submit" value="<%= t('home.signup.etvoila') %>" />
-                    </div>
-                    <div class="facebook">
-                        <p class="logic"><span><%= t('global.or') %></span></p>
-                        <a href="/login/facebook" class="btn-facebook"><i class="icon icon-facebook"></i> | <span><%= t('login.withfacebook') %></span></a>
+    <div class="header">
+
+        <nav class="navbar">
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#"><img class="logo" src="/images/logo.png" alt="<%= t('title') %> - <%= t('baseline') %>"></a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="signup">
+                            <a href="/signup"><%= t('landing.signup') %></a>
+                        </li>
+                        <li class="divider-vertical"></li>
+                        <li class="nav-divider"></li>
+                        <li class="login">
+                            <a href="/login"><%= t('landing.login') %></a>
+                        </li>
+                        <li>
+                            <div id="languages">
+                                <span><%= t('global.switchlanguage') %></span>
+                                <a href="" data-language="fr" class="switch">fr</a> -
+                                <a href="" data-language="en" class="switch">en</a>
+                            </div>
+                        </li>
+                        <li class="help">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                <i class="icon icon-menu dc-text-contrast"></i>
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li class="arrow-up"></li>
+                                <li><a href="/!#room/help"><i class="icon icon-life-ring"></i> Aide</a></li>
+                                <li><a href="/faq" target="_blank"><i class="icon icon-question-circle"></i> FAQ</a></li>
+                                <li><a data-toggle="contactform"><i class="icon icon-envelope"></i> Contact</a></li>
+                                <li><a href="/eutc" target="_blank"><i class="icon icon-question-circle"></i> CGU</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+            </div><!-- /.container-fluid -->
+        </nav>
+
+        <div id="carousel-landing" class="carousel slide hidden-xs hidden-sm" data-ride="carousel">
+            <!-- Indicators -->
+            <ol class="carousel-indicators">
+                <li data-target="#carousel-landing" data-slide-to="0" class="active"></li>
+                <li data-target="#carousel-landing" data-slide-to="1"></li>
+            </ol>
+
+            <!-- Wrapper for slides -->
+            <div class="carousel-inner" role="listbox">
+                <div class="item active">
+                    <div class="img" style="background-image:url('/images/carousel1.jpg');"></div>
+                    <div class="carousel-caption">
+                        CAPTION 1st Image
                     </div>
                 </div>
-            </form>
-            <div class="disclaimer"><%= t('signup.disclaimer') %></div>
+                <div class="item">
+                    <div class="img" style="background-image:url('/images/carousel2.jpg');"></div>
+                    <div class="carousel-caption">
+                         CAPTION 2nd Image
+                    </div>
+                </div>
+            </div>
+
+            <div class="container ctn-baseline">
+                <div class="baseline">
+                    <p><%= t('home.cover.line1') %></p>
+                    <p data-toggle="talkative"><%= t('home.cover.line2') %></p>
+                    <p><%= t('home.cover.line3') %></p>
+                    <p data-toggle="talkative"><%= t('home.cover.line4') %></p>
+                    <p><%= t('home.cover.line5') %></p>
+                    <p data-toggle="talkative"><%= t('home.cover.line6') %></p>
+                </div>
+
+                <div class="authenticate">
+                    <% if (logged) { %>
+                    <h2><%= t('logged.title') %></h2>
+                    <div class="logged">
+                        <a class="profile" href="<%= user.url %>" target="_blank">
+                            <img class="avatar" src="<%= user.avatar %>" alt="<%= user.username %> avatar">
+                            <p>@<%= user.username %></p>
+                        </a>
+                        <p><%= t('logged.text') %></p>
+                        <p class="actions">
+                            <a class="chat" href="/!"><%= t('logged.chat') %></a>
+                            <a class="logout" href="/logout"><%= t('logged.logout') %></a>
+                        </p>
+                    </div>
+                    <% } else { %>
+
+                    <div>
+                        <h2><%= t('landing.start') %></h2>
+                        <a href="/login/facebook" class="btn-facebook"><i class="icon icon-facebook"></i> | <span><%= t('landing.loginwithfacebook') %></span></a>
+                        <p class="logic"><span><%= t('landing.orbymail') %></span></p>
+                        <form id="login" action="/login" method="post" role="form" class="form">
+                            <input type="hidden" name="_csrf" value="<%= token %>">
+
+                            <input type="text" id="signin-username" class="form-control" name="username" placeholder="<%= t('landing.email-placeholder') %>" tabindex="1">
+                            <input type="text" id="signin-email" class="form-control" name="email" placeholder="<%= t('landing.email-placeholder') %>" tabindex="1">
+                            <input type="password" id="signin-password" class="form-control" name="password" placeholder="<%= t('landing.password-placeholder') %>" tabindex="2">
+
+                            <div class="form-group pull-right relative">
+                                <a class="forgot-link" href="/forgot" title="<%= t('actions.forgot') %>" tabindex="5">
+                                    <%= t('actions.forgot') %>
+                                </a>
+                                <i class="fa fa-question"></i>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="form-group pull-right">
+                                <input type="submit" value="<%= t('actions.login') %>" tabindex="3">
+                            </div>
+                        </form>
+                    </div>
+                    <% } %>
+                </div>
+            </div>
         </div>
-    </div><!--/.signup-->
-    <div class="footer">
-        <div>
-            <ul>
-                <li><a href="/faq"><%= t('home.footer.faq') %></a></li>
-                <li><a href="/eutc"><%= t('home.footer.eutc') %></a></li>
-                <li><a href="/legals"><%= t('home.footer.legals') %></a></li>
-                <li><a data-toggle="contactform"><%= t('home.footer.contact') %></a></li>
-                <li>Copyright DONUT</li>
-            </ul>
+
+    </div><!--/.header-->
+
+    <div class="container">
+        <div class="search">
+            <input type="text" placeholder="<%= t('landing.yourinterests') %>">
+            <i class="icon icon-search"></i>
         </div>
-    </div><!--/.footer-->
+        <div class="results"></div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="fb-like" data-href="https://www.facebook.com/donutdotme" data-layout="standard" data-action="like" data-show-faces="true" data-share="true" data-ref="landing"></div>
+        </div>
+    </footer>
+
 </div><!--/#home-->
 <%- partial('contact') %>
 <%- partial('foot') %>

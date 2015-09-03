@@ -5,10 +5,6 @@
     .content { margin-right: @size-right-mid; }
     .side { width: @size-right-mid; }
   }
-
-  #landing .header { height: 995px;
-    .cover { background: none; }
-  }
 }
 
 /** for <=992 screens resolutions ==> TABLET PORTRAIT & PHONE LANDSCAPE **/
@@ -183,31 +179,6 @@
       } // #chat #center .discussion
     } // #chat #center
   } // #chat
-  #landing {
-    .header {
-      .cover { padding: 100px 30px 100px 75px; background: none; }
-      .text { margin-top: 65px; }
-      .btn-knowmore { margin-top: 75px; }
-    }
-    .login {
-      > div { padding: 90px 20px; }
-      .btn-facebook { margin-top: 64px; }
-      .logic {margin-top: 40px;}
-      .form { margin-top: 40px; margin-bottom: 80px; }
-      .form input[type=submit] { margin-top: 30px; }
-    }
-    .description { padding: 50px 50px 0 50px;
-      h2 p { font-size: 2.15em; }
-      .definition { font-size: 1.8em; padding-top: 25px; }
-      .illustrations { padding-bottom: 105px;
-        .illus p { margin: 25px auto; }
-      }
-    }
-    .signup { padding-top: 100px; padding-bottom: 32px;
-      .form { margin-top: 30px; }
-      .disclaimer { margin-top: 60px; }
-    }
-  }
   .rooms.cards .room { width: 190px;
     .join a { font-size:13px; }
     .avatar { width: 85px; height: 85px; }
@@ -226,7 +197,6 @@
 
 /** for <=480 screens resolutions **/
 @media screen and (max-width: @screen-xs-min) {
-  #landing .header .cover { background-color: rgba(255, 255, 255, 0.8); }
   #chat #center .discussion .content .header.room .topic #room-users-modal .modal-body .list li { width: 100%; }
 }
 
