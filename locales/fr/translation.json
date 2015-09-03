@@ -375,14 +375,14 @@
         "history": "Qui peut voir l'historique des discussions"
       },
       "options": {
-        "all": "Tous le monde (défaut)",
+        "everyone": "Tous le monde (défaut)",
         "join": {
-          "authorized": "Utilisateur autorisé uniquement",
+          "allowed": "Utilisateur autorisé uniquement",
           "password": "Utilisateur ayant le mot de passe"
         },
         "history": {
-          "currentuser": "Les utilisateurs dans le donut au moment du message",
-          "nothing": "Pas d'historique"
+          "joined": "Les utilisateurs dans le donut au moment du message",
+          "none": "Pas d'historique"
         }
       },
       "label": "Créez votre donut",
