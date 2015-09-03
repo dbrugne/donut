@@ -4,7 +4,7 @@ var async = require('async');
 var _ = require('underscore');
 var Room = require('../../../../../shared/models/room');
 var validator = require('validator');
-var cloudinary = require('../../../../../shared/cloudinary/cloudinary').cloudinary;
+var cloudinary = require('../../../../../shared/util/cloudinary').cloudinary;
 var common = require('@dbrugne/donut-common');
 
 var Handler = function (app) {
@@ -141,7 +141,7 @@ handler.call = function (data, session, next) {
 
           // remove previous picture
           cloudinary.api.delete_resources([user.avatarId()], function (result) {
-            console.log(result.deleted);
+            logger.warn(result.deleted);
           });
         }
       }
@@ -159,7 +159,7 @@ handler.call = function (data, session, next) {
 
           // remove previous picture
           cloudinary.api.delete_resources([user.posterId()], function (result) {
-            console.log(result.deleted);
+            logger.warn(result.deleted);
           });
         }
       }

@@ -138,7 +138,7 @@ handler.call = function (data, session, next) {
 
           // remove previous picture
           cloudinary.api.delete_resources([room.avatarId()], function (result) {
-            console.log(result.deleted);
+            logger.warn(result.deleted);
           });
         }
       }
@@ -156,7 +156,7 @@ handler.call = function (data, session, next) {
 
           // remove previous picture
           cloudinary.api.delete_resources([room.posterId()], function (result) {
-            console.log(result.deleted);
+            logger.warn(result.deleted);
           });
         }
       }
