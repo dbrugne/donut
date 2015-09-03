@@ -16,19 +16,19 @@
         <label><%= t('chat.create.info.join') %></label>
         <div class="radio">
             <label>
-                <input type="radio" class="savable" name="join:everyone" value="join:everyone:true" checked>
+                <input type="radio" class="savable join everyone" name="create:join" value="everyone" checked>
                 <%= t('chat.create.options.everyone') %>
             </label>
         </div>
         <div class="radio">
             <label>
-                <input type="radio" class="savable" name="join:allowed" value="join:allowed:false">
+                <input type="radio" class="savable join allowed" name="create:join" value="allowed" >
                 <%= t('chat.create.options.join.allowed') %>
             </label>
         </div>
         <div class="radio">
             <label>
-                <input type="radio" class="savable" name="join:password" value="join:password:false">
+                <input type="radio" class="savable join password" name="create:join" value="password" >
                 <%= t('chat.create.options.join.password') %>
             </label>
         </div>
@@ -36,19 +36,19 @@
         <label><%= t('chat.create.info.history') %></label>
         <div class="radio">
             <label>
-                <input type="radio" class="savable" name="history:everyone" value="history:everyone:true" checked>
+                <input type="radio" class="savable hystory everyone" name="create:history" value="everyone" checked>
                 <%= t('chat.create.options.everyone') %>
             </label>
         </div>
         <div class="radio">
             <label>
-                <input type="radio" class="savable" name="history:joined" value="history:joined:false">
+                <input type="radio" class="savable history joined" name="create:history" value="joined">
                 <%= t('chat.create.options.history.joined') %>(*)
             </label>
         </div>
         <div class="radio">
             <label>
-                <input type="radio" class="savable" name="history:none" value="history:none:false">
+                <input type="radio" class="savable history none" name="create:history" value="none">
                 <%= t('chat.create.options.history.none') %>
             </label>
         </div>

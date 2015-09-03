@@ -14,12 +14,16 @@ define([
 
     events: {
       'keyup .input': 'valid',
-      'click .submit': 'submit'
+      'click .submit': 'submit',
+      'change .savable': 'onChangeValue'
     },
 
     initialize: function (options) {
       this.render(options.name);
       this.$input = this.$el.find('.input');
+      this.$joinChecked = this.$el.find('.join .everyone');
+      this.$historyChecked = this.$el.find('.history .everyone');
+      console.log(this.$joinChecked.attr);
     },
     /**
      * Only set this.$el content
@@ -64,6 +68,12 @@ define([
 
       var name = '#' + this.$input.val();
       var uri = 'room/' + name.replace('#', '');
+      var join = this.$joinChecked.attr('value');
+      var history = this.$historyChecked.attr('value');
+      var opts = {
+        join_mode: join.substr(join.lastIndexOf(':') + 1),
+        history_mode: history.substr(history.lastIndexOf(':') + 1)
+      };
 
       var that = this;
       client.roomCreate(name, function (response) {
@@ -84,6 +94,17 @@ define([
         that.reset();
         that.trigger('close');
       });
+    },
+    onChangeValue: function (event) {
+      var $target = $(event.currentTarget);
+
+      if ($target.attr('type') === 'radio' && $target.hasClass('.join')) {
+        this.$joinChecked = $target;
+      }
+
+      if ($target.attr('type') === 'radio' && $target.hasClass('.history')) {
+        this.$historyChecked = $target;
+      }
     }
 
   });
