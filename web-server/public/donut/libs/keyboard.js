@@ -1,8 +1,8 @@
 'use strict';
 define([
-  'jquery'
-], function ($) {
-  return {
+  'underscore'
+], function (_) {
+  var keyboard = {
     BACKSPACE: 8,
     TAB: 9,
     RETURN: 13,
@@ -14,25 +14,19 @@ define([
     COMMA: 188,
     SPACE: 32,
     HOME: 36,
-    END: 35,
-    _getLastKeyCode: function () {
-      if (window.event) {
-        return {
-          key: window.event.keyCode,
-          isShift: !!window.event.shiftKey,
-          isCtrl: !!window.event.ctrlKey,
-          isAlt: !!window.event.altKey,
-          isMeta: !!window.event.metaKey
-        };
-      } else {
-        return {
-          key: event.which,
-          isShift: !!event.shiftKey,
-          isCtrl: !!event.ctrlKey,
-          isAlt: !!event.altKey,
-          isMeta: !!event.metaKey
-        };
-      }
-    }
+    END: 35
   };
+
+  keyboard._getLastKeyCode = function () {
+    var e = window.event || event;
+    return {
+      key: e.which,
+      isShift: !!e.shiftKey,
+      isCtrl: !!e.ctrlKey,
+      isAlt: !!e.altKey,
+      isMeta: !!e.metaKey
+    };
+  };
+
+  return keyboard;
 });

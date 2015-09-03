@@ -11,8 +11,6 @@ define([
   'collections/onetoones'
 ], function ($, _, Backbone, app, common, client, currentUser, rooms, onetoones) {
   var WindowView = Backbone.View.extend({
-    el: $(window),
-
     focused: true,
 
     defaultTitle: '',
@@ -37,7 +35,7 @@ define([
       this.listenTo(app, 'unviewedInOut', this.triggerInout);
       this.listenTo(app, 'unviewedMessage', this.triggerMessage);
 
-      this.$window = this.$el;
+      this.$window = $(window);
 
       this.defaultTitle = document.title; // save original title on page load
 
@@ -45,12 +43,12 @@ define([
 
       // Load audio elements
       var that = this;
-      if (typeof Audio !== 'undefined') {
+      if (typeof window.Audio !== 'undefined') {
         this.beepOn = true;
         var cb = function () {
           that.beepPlaying = false;
         };
-        this.beep = new Audio('/sounds/beep.mp3');
+        this.beep = new window.Audio('/sounds/beep.mp3');
         this.beep.onended = cb;
       }
 
@@ -287,17 +285,17 @@ define([
     },
     _desktopNotify: function (title, body) {
       // Not already accepted or denied notification permission, prompt popup
-      if (notify.permissionLevel() == notify.PERMISSION_DEFAULT)
-        return this._desktopNotifyRequestPermission(notify.permissionLevel(), notify.PERMISSION_GRANTED, this._desktopNotifyCreateNotification());
+      if (window.notify.permissionLevel() == window.notify.PERMISSION_DEFAULT)
+        return this._desktopNotifyRequestPermission(window.notify.permissionLevel(), window.notify.PERMISSION_GRANTED, this._desktopNotifyCreateNotification());
 
       // User denied it
-      if (notify.permissionLevel() == notify.PERMISSION_DENIED)
+      if (window.notify.permissionLevel() == window.notify.PERMISSION_DENIED)
         return;
 
       this._desktopNotifyCreateNotification(title, body);
     },
     _desktopNotifyCreateNotification: function (title, body) {
-      notify.createNotification(title, {
+      window.notify.createNotification(title, {
         body: body,
         icon: {
           'x16': 'images/donut_16x16.ico',
@@ -307,9 +305,9 @@ define([
     },
     _desktopNotifyRequestPermission: function (permissionLevel, permissionsGranted) {
       var statusClass = {};
-      statusClass[notify.PERMISSION_DEFAULT] = 'alert';
-      statusClass[notify.PERMISSION_GRANTED] = 'alert alert-success';
-      statusClass[notify.PERMISSION_DENIED] = 'alert alert-error';
+      statusClass[window.notify.PERMISSION_DEFAULT] = 'alert';
+      statusClass[window.notify.PERMISSION_GRANTED] = 'alert alert-success';
+      statusClass[window.notify.PERMISSION_DENIED] = 'alert alert-error';
 
       var win = window;
       var isIE = false;
@@ -323,19 +321,19 @@ define([
         notSupported: "<strong>Desktop Notifications not supported!</strong> Check supported browsers table and project's GitHub page."
       };
 
-      messages[notify.PERMISSION_DEFAULT] = '<strong>Warning!</strong> Click to allow displaying desktop notifications.';
-      messages[notify.PERMISSION_GRANTED] = '<strong>Success!</strong>';
-      messages[notify.PERMISSION_DENIED] = '<strong>Denied!</strong>';
+      messages[window.notify.PERMISSION_DEFAULT] = '<strong>Warning!</strong> Click to allow displaying desktop notifications.';
+      messages[window.notify.PERMISSION_GRANTED] = '<strong>Success!</strong>';
+      messages[window.notify.PERMISSION_DENIED] = '<strong>Denied!</strong>';
 
-      var isSupported = notify.isSupported;
-      var status = isSupported ? statusClass[permissionLevel] : statusClass[notify.PERMISSION_DENIED];
+      var isSupported = window.notify.isSupported;
+      var status = isSupported ? statusClass[permissionLevel] : statusClass[window.notify.PERMISSION_DENIED];
       var message = isSupported ? (isIE ? messages.notPinned : messages[permissionLevel]) : messages.notSupported;
 
-      if (permissionLevel === notify.PERMISSION_DEFAULT) {
-        notify.requestPermission(function () {
-          permissionLevel = notify.permissionLevel();
-          permissionsGranted = (permissionLevel === notify.PERMISSION_GRANTED);
-          status = isSupported ? statusClass[permissionLevel] : statusClass[notify.PERMISSION_DENIED];
+      if (permissionLevel === window.notify.PERMISSION_DEFAULT) {
+        window.notify.requestPermission(function () {
+          permissionLevel = window.notify.permissionLevel();
+          permissionsGranted = (permissionLevel === window.notify.PERMISSION_GRANTED);
+          status = isSupported ? statusClass[permissionLevel] : statusClass[window.notify.PERMISSION_DENIED];
           message = isSupported ? (isIE ? messages.notPinned : messages[permissionLevel]) : messages.notSupported;
         });
       }

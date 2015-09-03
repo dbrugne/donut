@@ -1,7 +1,7 @@
 var $ = require('jquery');
 global.jQuery = $;
 
-require('../vendor/html5-desktop-notifications/desktop-notify-min');
+require('../vendor/html5-desktop-notifications/desktop-notify');
 require('../vendor/html.sortable/dist/html.sortable.min');
 require('../javascripts/plugins/jquery.insertatcaret');
 require('../javascripts/plugins/jquery.maxlength');
@@ -84,7 +84,7 @@ $('[data-toggle="contactform"]').contactform({});
 
 // Desktop notifications configuration
 window.notify.config({
-  pageVisibility: true, // Always display, even if application is in background
+  pageVisibility: true, // always display, even if application is in background
   autoClose: 3000
 });
 
