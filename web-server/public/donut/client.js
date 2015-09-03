@@ -114,9 +114,6 @@ define([
         light: (light) // if the search should return a light version of results or not
           ? true
           : false,
-        limit: (limit)
-          ? limit
-          : 5,
         rooms: (rooms) // if we should search for rooms
           ? true
           : false,
@@ -245,16 +242,19 @@ define([
         }
       );
     },
-    roomUsers: function (roomId, fn) {
-      var data = {room_id: roomId};
+    roomUsers: function (roomId, type, searchString, fn) {
+      var data = {room_id: roomId, type: type};
+      if (searchString) {
+        data.searchString = searchString;
+      }
       debug('io:out:room:users', data);
-      var that = this;
       pomelo.request(
         'chat.roomUsersHandler.call',
         data,
         function (response) {
-          if (response.err)
+          if (response.err) {
             return debug('io:in:room:users error: ', response);
+          }
 
           debug('io:in:room:users', response);
           return fn(response);
