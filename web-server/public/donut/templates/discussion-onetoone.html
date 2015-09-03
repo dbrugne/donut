@@ -1,4 +1,4 @@
-<div class="side dc-back" <% if (poster) { %>style="background-image: url(<%= poster %>);"<% }; %>></div>
+<div class="side dc-back" style="<% if (poster) { %>background-image: url(<%= poster %>);<% }; %>"></div>
 <div class="content" id="onetoone">
     <div class="mini-header user visible-xs visible-sm <% if (banned === true) { %> is-banned <% } %>">
         <img class="avatar open-user-profile dc-border-lighter" data-user-id="<%= user_id %>" src="<%= avatar %>" alt="<%= username %> avatar">
