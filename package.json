@@ -19,8 +19,12 @@
   "repository": "https://github.com/dbrugne/donut",
   "dependencies": {
     "async": "1.x",
+    "backbone": "^1.2.1",
     "bcrypt-nodejs": "latest",
     "body-parser": "1.x",
+    "bootstrap": "^3.3.5",
+    "browserify": "^11.0.1",
+    "browserify-middleware": "^7.0.0"
     "cloudinary": "latest",
     "connect-flash": "0.1.x",
     "connect-redis": "2.x",
@@ -34,7 +38,9 @@
     "express": "4.x",
     "express-session": "1.x",
     "express-validator": "2.x",
-    "i18next": "1.x",
+    "i18next": "^1.10.4",
+    "i18next-client": "^1.10.2",
+    "jquery": "^2.1.4",
     "jsonwebtoken": "5.x",
     "keen-js": "^3.2.4",
     "less-middleware": "2.x",
@@ -75,6 +81,7 @@
     "grunt-ssh": "^0.12.3",
     "grunt-untar": "0.0.1",
     "chai": "latest",
-    "semistandard": "*"
+    "semistandard": "*",
+    "jstify": "^0.12.0"
   }
 }
