@@ -3,11 +3,12 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'models/app',
   'common',
   'client',
   'models/current-user',
   '_templates'
-], function ($, _, Backbone, common, client, currentUser, templates) {
+], function ($, _, Backbone, app, common, client, currentUser, templates) {
   var DrawerRoomProfileView = Backbone.View.extend({
     template: templates['drawer-room-profile.html'],
 
@@ -41,6 +42,9 @@ define([
       return this;
     },
     onResponse: function (room) {
+      if (!room.name)
+        return app.trigger('drawerClose');
+        
       room.isOwner = (room.owner)
         ? (room.owner.user_id == currentUser.get('user_id'))
           ? true
