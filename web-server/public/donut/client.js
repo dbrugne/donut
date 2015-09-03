@@ -242,10 +242,12 @@ define([
         }
       );
     },
-    roomUsers: function (roomId, type, searchString, fn) {
+    roomUsers: function (roomId, type, searchString, selector, fn) {
       var data = {room_id: roomId, type: type};
       if (searchString) {
         data.searchString = searchString;
+      } if (selector) {
+        data.selector = selector;
       }
       debug('io:out:room:users', data);
       pomelo.request(

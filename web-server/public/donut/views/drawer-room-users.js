@@ -20,8 +20,6 @@ define([
 
     nbPages: 0,
 
-    room: {},
-
     events: {},
 
     initialize: function (options) {
@@ -36,45 +34,24 @@ define([
 
       // ask for data
       var that = this;
-      client.roomRead(this.model.get('id'), null, function (err, data) {
-        if (!err) {
-          that.onResponse(data);
-        }
+      client.roomUsers(this.model.get('id'), 'all', null, {start: 0, length: this.paginate}, function (data) {
+        that.onResponse(data);
       });
-
       return this;
     },
-    onResponse: function (room) {
-      if (room.color) {
-        this.trigger('color', room.color);
-      }
-
-      // room.isPoOrOwner =
-      room.owner.avatarUrl = common.cloudinarySize(room.owner.avatar, 20);
-
-      _.each(room.users, function (element, index, list) {
+    onResponse: function (data) {
+      _.each(data.users, function (element, index, list) {
         list[index].avatarUrl = common.cloudinarySize(element.avatar, 20);
       });
-      _.each(room.op, function (element, index, list) {
-        list[index].avatarUrl = common.cloudinarySize(element.avatar, 20);
-      });
-      _.each(room.devoices, function (element, index, list) {
-        list[index].avatarUrl = common.cloudinarySize(element.avatar, 20);
-      });
-      _.each(room.bans, function (element, index, list) {
-        list[index].avatarUrl = common.cloudinarySize(element.avatar, 20);
-      });
-
-      this.room = room;
-      this.room.users_number = room.users.length;
-      this.nbPages = room.users.length / this.paginate;
 
       var html = this.template({
-        room: this.room,
-        users_to_print: room.users,
+        users_to_print: data.users,
         page: this.page,
         paginate: this.paginate,
-        nbPages: this.nbPages
+        nbPages: 1,
+        room_name: data.room_name,
+        owner_name: data.owner_name,
+        owner_id: data.owner_id
       });
       this.$el.html(html);
     }

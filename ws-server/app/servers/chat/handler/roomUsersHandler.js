@@ -52,53 +52,62 @@ handler.call = function (data, session, next) {
       var usersIds = [];
       var users = [];
 
-      users = _.map(_.filter(room.users, function (u) {
+      // filter by type
+      users = _.filter(room.users, function (u) {
         if ((data.type === 'op' && room.isOwnerOrOp(u.id)) ||
           (data.type === 'allowed' && room.isAllowed(u.id)) ||
           (data.type === 'all')) {
-          if ((data.searchString && u.username && u.username.indexOf(data.searchString) !== -1) ||
-          !data.searchString) {
-            usersIds.push(u.id);
-            return (u);
-          }
+          return (u);
         }
-      }), function (u) {
-        return {
+      });
+
+      // filter by type
+      if (!users[0] && (data.type === 'devoice' || data.type === 'ban')) {
+        var key;
+
+        if (data.type === 'devoice') {
+          key = room.devoices;
+        } else {
+          key = room.bans;
+        }
+        users = _.filter(key, function (type) {
+            return (type.user);
+          });
+      }
+
+      // filter by search string
+      users = _.filter(users, function (u) {
+        if ((data.searchString && u.username && u.username.indexOf(data.searchString) !== -1) ||
+          !data.searchString) {
+          usersIds.push(u.id);
+          return (u);
+        }
+      });
+
+      // filter by selector
+      if (data.selector) {
+        var usersTmp = [];
+        _.each(users, function (u, index) {
+          if (index >= data.selector.start && index < data.selector.start + data.selector.length) {
+            usersTmp.push(u);
+          }
+          if (index > data.selector.start + data.selector.length) {
+            return;
+          }
+        });
+        users = usersTmp;
+      }
+
+      // Set values
+      users = _.map(users, function (u) {
+        var userData = {
           user_id: u.id,
           username: u.username,
           avatar: u._avatar()
         };
+        return userData;
       });
 
-      if (data.type === 'ban' && room.bans && room.bans.length > 0) {
-        _.each(room.bans, function (ban) {
-          if ((data.searchString && ban.username && ban.username.indexOf(data.searchString) !== -1) ||
-            !data.searchString) {
-            usersIds.push(ban.user.id);
-            users.push({
-              user_id: ban.user.id,
-              username: ban.user.username,
-              avatar: ban.user._avatar(),
-              banned_at: ban.banned_at,
-              reason: ban.reason
-            });
-          }
-        });
-      } else if (data.type === 'devoice' && room.devoices && room.devoices.length > 0) {
-        _.each(room.devoices, function (devoice) {
-          if ((data.searchString && devoice.username && devoice.username.indexOf(data.searchString) !== -1) ||
-            !data.searchString) {
-            usersIds.push(devoice.user.id);
-            users.push({
-              user_id: devoice.user.id,
-              username: devoice.user.username,
-              avatar: devoice.user._avatar(),
-              devoiced_at: devoice.devoiced_at,
-              reason: devoice.reason
-            });
-          }
-        });
-      }
       that.app.statusService.getStatusByUids(usersIds, function (err, results) {
         if (err) {
           return callback(err);
@@ -120,7 +129,10 @@ handler.call = function (data, session, next) {
 
     return next(null, {
       room_id: room.id,
-      users: users
+      room_name: room.name,
+      users: users,
+      owner_name: room.owner.username,
+      owner_id: room.owner._id
     });
   });
 

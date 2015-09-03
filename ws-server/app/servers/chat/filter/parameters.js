@@ -89,7 +89,8 @@ Filter.prototype.before = function (data, session, next) {
       if (data.__route__ === 'chat.roomUsersHandler.call') {
         q.populate('users', 'username avatar color facebook')
           .populate('bans.user', 'username avatar color facebook')
-          .populate('devoices.user', 'username avatar color facebook');
+          .populate('devoices.user', 'username avatar color facebook')
+          .populate('owner', 'username avatar color facebook');
       }
 
       q.exec(callback);

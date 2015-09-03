@@ -1,9 +1,9 @@
 <div class="room">
-    <span class="name"><%= room.name %></span>
-    <span class="owner"><%= t('global.by') %> <a class="open-user-profile dc-text colored" data-user-id="<%= room.owner.user_id %>">@<%= room.owner.username %></a></span>
+    <span class="name"><%= room_name %></span>
+    <span class="owner"><%= t('global.by') %> <a class="open-user-profile dc-text colored" data-user-id="<%= owner_id %>">@<%= owner_name %></a></span>
 </div>
 <div class="user-number">
-    <span class="number"><strong><%= room.users_number %></strong></span>
+    <span class="number"><strong></strong></span>
     <span class="user-label"><%= t('chat.users.link') %></span>
 </div>
 <div class="search">
