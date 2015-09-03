@@ -24,7 +24,7 @@
     "body-parser": "1.x",
     "bootstrap": "^3.3.5",
     "browserify": "^11.0.1",
-    "browserify-middleware": "^7.0.0"
+    "browserify-middleware": "^7.0.0",
     "cloudinary": "latest",
     "connect-flash": "0.1.x",
     "connect-redis": "2.x",
