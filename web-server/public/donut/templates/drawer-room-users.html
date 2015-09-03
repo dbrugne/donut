@@ -3,7 +3,7 @@
     <span class="owner"><%= t('global.by') %> <a class="open-user-profile dc-text colored" data-user-id="<%= owner_id %>">@<%= owner_name %></a></span>
 </div>
 <div class="user-number">
-    <span class="number"><strong></strong></span>
+    <span class="number"><strong><%= nb_users %></strong></span>
     <span class="user-label"><%= t('chat.users.link') %></span>
 </div>
 <div class="search">
@@ -20,7 +20,7 @@
 <table class="table table-striped">
     <% _.each(users_to_print, function(u, index) { %>
     <% if (paginate * page > index && paginate * (page - 1) <= index) { %>
-    <tr><td>#<%= (index + 1) %></td><td><img src="<%= u.avatarUrl %>"></td><td>@<%= u.username %></td></tr>
+    <tr><td><img src="<%= u.avatarUrl %>"></td><td>@<%= u.username %></td></tr>
     <%}}); %>
 </table>
 <ul class="pagination">

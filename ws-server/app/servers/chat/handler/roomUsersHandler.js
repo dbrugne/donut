@@ -19,6 +19,8 @@ handler.call = function (data, session, next) {
 
   var that = this;
 
+  var usersNumber;
+
   async.waterfall([
 
     function check (callback) {
@@ -62,7 +64,7 @@ handler.call = function (data, session, next) {
       });
 
       // filter by type
-      if (!users[0] && (data.type === 'devoice' || data.type === 'ban')) {
+      if (!users.length && (data.type === 'devoice' || data.type === 'ban')) {
         var key;
 
         if (data.type === 'devoice') {
@@ -70,9 +72,7 @@ handler.call = function (data, session, next) {
         } else {
           key = room.bans;
         }
-        users = _.filter(key, function (type) {
-            return (type.user);
-          });
+        users = key;
       }
 
       // filter by search string
@@ -83,6 +83,8 @@ handler.call = function (data, session, next) {
           return (u);
         }
       });
+
+      usersNumber = users.length;
 
       // filter by selector
       if (data.selector) {
@@ -132,7 +134,8 @@ handler.call = function (data, session, next) {
       room_name: room.name,
       users: users,
       owner_name: room.owner.username,
-      owner_id: room.owner._id
+      owner_id: room.owner._id,
+      nbUsers: usersNumber
     });
   });
 

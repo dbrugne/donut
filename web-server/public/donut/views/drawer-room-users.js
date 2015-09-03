@@ -34,7 +34,7 @@ define([
 
       // ask for data
       var that = this;
-      client.roomUsers(this.model.get('id'), 'all', null, {start: 0, length: this.paginate}, function (data) {
+      client.roomUsers(this.model.get('id'), 'devoice', null, {start: 0, length: this.paginate}, function (data) {
         that.onResponse(data);
       });
       return this;
@@ -48,10 +48,11 @@ define([
         users_to_print: data.users,
         page: this.page,
         paginate: this.paginate,
-        nbPages: 1,
+        nbPages: data.nbUsers / this.paginate,
         room_name: data.room_name,
         owner_name: data.owner_name,
-        owner_id: data.owner_id
+        owner_id: data.owner_id,
+        nb_users: data.nbUsers
       });
       this.$el.html(html);
     }
