@@ -8,12 +8,13 @@ define([
   'common',
   'models/event',
   'moment',
+  'i18next-client',
   'client',
   'models/current-user',
   'views/message-edit',
   'views/window',
   '_templates'
-], function ($, _, Backbone, app, donutDebug, common, EventModel, moment, client, currentUser, MessageEditView, windowView, templates) {
+], function ($, _, Backbone, app, donutDebug, common, EventModel, moment, i18next, client, currentUser, MessageEditView, windowView, templates) {
   var debug = donutDebug('donut:events');
 
   var EventsView = Backbone.View.extend({
