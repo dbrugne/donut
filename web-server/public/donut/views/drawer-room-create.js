@@ -68,11 +68,9 @@ define([
 
       var name = '#' + this.$input.val();
       var uri = 'room/' + name.replace('#', '');
-      var join = this.$joinChecked.attr('value');
-      var history = this.$historyChecked.attr('value');
       var opts = {
-        join_mode: join.substr(join.lastIndexOf(':') + 1),
-        history_mode: history.substr(history.lastIndexOf(':') + 1)
+        join_mode: this.$joinChecked.attr('value'),
+        history_mode: this.$historyChecked.attr('value')
       };
 
       var that = this;
