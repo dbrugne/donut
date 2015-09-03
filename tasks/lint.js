@@ -1,17 +1,13 @@
-var async = require('async');
-var _ = require('underscore');
-var fs = require('fs');
-
 var semistandardFormat = require('semistandard/node_modules/semistandard-format');
 
-module.exports = function(grunt) {
-  grunt.registerTask('donut-lint', function() {
+module.exports = function (grunt) {
+  grunt.registerTask('donut-lint', function () {
     var done = this.async();
 
     var count = 0;
 
     var lint = function (path) {
-      grunt.file.recurse(path, function(abspath, rootdir, subdir, filename) {
+      grunt.file.recurse(path, function (abspath) {
         if (!grunt.file.isFile(abspath)) {
           return grunt.log.warn('not a file', abspath);
         }
@@ -40,11 +36,7 @@ module.exports = function(grunt) {
       });
     };
 
-    lint('/www/donut/config');
-    lint('/www/donut/shared');
-    lint('/www/donut/test');
-    //lint('/www/donut/ws-server');
-    //lint('/www/donut/web-server');
+    lint('/www/donut/');
 
     done();
   });

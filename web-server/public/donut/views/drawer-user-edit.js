@@ -1,3 +1,4 @@
+'use strict';
 define([
   'jquery',
   'underscore',
@@ -9,7 +10,6 @@ define([
   '_templates'
 ], function ($, _, Backbone, client, currentUser, ImageUploader, ColorPicker, templates) {
   var DrawerUserEditView = Backbone.View.extend({
-
     template: templates['drawer-user-edit.html'],
 
     id: 'user-edit',
@@ -24,7 +24,7 @@ define([
 
       // ask for data
       var that = this;
-      client.userRead(currentUser.get('user_id'), null, function(err, data) {
+      client.userRead(currentUser.get('user_id'), null, function (err, data) {
         if (!err)
           that.onResponse(data);
       });
@@ -46,7 +46,7 @@ define([
       // description
       this.$el.find('#userBio').maxlength({
         counterContainer: this.$el.find('#userBio').siblings('.help-block').find('.counter'),
-        text: $.t("edit.left")
+        text: $.t('edit.left')
       });
 
       // website
@@ -133,7 +133,7 @@ define([
       });
     },
 
-    checkWebsite: function() {
+    checkWebsite: function () {
       var website = this.$website.val();
 
       if (website && website.length < 5 || website.length > 255)
@@ -145,10 +145,10 @@ define([
       return true;
     },
 
-    editError: function(dataErrors) {
+    editError: function (dataErrors) {
       var message = '';
       _.each(dataErrors.err, function (error) {
-        message += t('edit.errors.' + error)+'<br>';
+        message += t('edit.errors.' + error) + '<br>';
       });
       this.$el.find('.errors').html(message).show();
     }

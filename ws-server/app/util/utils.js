@@ -76,7 +76,7 @@ utils.myPrint = function () {
       return;
     }
     var stack = getStack();
-    var aimStr = '\'' + getFileName(stack) + '\' @' + getLineNumber(stack) + ' :\n';
+    var aimStr = "'" + getFileName(stack) + "' @" + getLineNumber(stack) + ' :\n';
     for (var i = 0; i < len; ++i) {
       aimStr += arguments[i] + ' ';
     }

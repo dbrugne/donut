@@ -1,3 +1,4 @@
+'use strict';
 define([
   'jquery',
   'underscore',
@@ -9,17 +10,15 @@ define([
   'models/event'
 ], function ($, _, Backbone, app, client, rooms, confirmationView, EventModel) {
   var InputCommandsView = Backbone.View.extend({
-
     commandRegexp: /^\/([-a-z0-9]+)/i,
 
-    initialize: function(options) {
-    },
+    initialize: function (options) {},
 
-    render: function() {
+    render: function () {
       return this;
     },
 
-    checkInput: function(input) {
+    checkInput: function (input) {
       if (!this.commandRegexp.test(input))
         return false;
 
@@ -29,7 +28,7 @@ define([
         return false;
       var commandName = match[1];
 
-      _.each(this.commands, function(cmd, key) {
+      _.each(this.commands, function (cmd, key) {
         if (cmd.alias && cmd.alias == commandName)
           commandName = key;
       });
@@ -52,9 +51,9 @@ define([
       return true;
     },
 
-    inputFocus: function() {
+    inputFocus: function () {
       var that = this;
-      return function() {
+      return function () {
         that.model.trigger('inputFocus');
       };
     },
@@ -65,7 +64,7 @@ define([
      *
      **********************************************************/
 
-    commands : {
+    commands: {
       join: {
         alias: 'j',
         parameters: 'name',
@@ -197,13 +196,13 @@ define([
       twoNumber: /(-?[0-9]+)(\s+(-?[0-9]+))?/
     },
 
-    join: function(paramString, parameters) {
+    join: function (paramString, parameters) {
       if (!parameters)
         return this.errorCommand('join', 'parameters');
 
       app.trigger('joinRoom', parameters[1]);
     },
-    leave: function(paramString, parameters) {
+    leave: function (paramString, parameters) {
       if (!paramString) {
         client.roomLeave(this.model.get('id'));
         return;
@@ -218,16 +217,16 @@ define([
 
       client.roomLeave(model.get('id'));
     },
-    topic: function(paramString, parameters) {
+    topic: function (paramString, parameters) {
       if (this.model.get('type') !== 'room')
         return this.errorCommand('topic', 'commandaccess');
 
       if (!parameters && paramString)
-        return this.errorCommand('topic', 'parameters')
+        return this.errorCommand('topic', 'parameters');
 
       client.roomTopic(this.model.get('id'), parameters[1]);
     },
-    op: function(paramString, parameters) {
+    op: function (paramString, parameters) {
       if (this.model.get('type') !== 'room')
         return this.errorCommand('op', 'commandaccess');
 
@@ -235,12 +234,12 @@ define([
         return this.errorCommand('op', 'parameters');
 
       var that = this;
-      confirmationView.open({}, function() {
+      confirmationView.open({}, function () {
         client.roomOp(that.model.get('id'), null, parameters[1]);
         that.model.trigger('inputFocus');
       }, this.inputFocus());
     },
-    deop: function(paramString, parameters) {
+    deop: function (paramString, parameters) {
       if (this.model.get('type') !== 'room')
         return this.errorCommand('deop', 'commandaccess');
 
@@ -248,12 +247,12 @@ define([
         return this.errorCommand('deop', 'parameters');
 
       var that = this;
-      confirmationView.open({}, function() {
+      confirmationView.open({}, function () {
         client.roomDeop(that.model.get('id'), null, parameters[1]);
         that.model.trigger('inputFocus');
       }, this.inputFocus());
     },
-    kick: function(paramString, parameters) {
+    kick: function (paramString, parameters) {
       if (this.model.get('type') !== 'room')
         return this.errorCommand('kick', 'commandaccess');
 
@@ -266,7 +265,7 @@ define([
         that.model.trigger('inputFocus');
       }, this.inputFocus());
     },
-    ban: function(paramString, parameters) {
+    ban: function (paramString, parameters) {
       if (this.model.get('type') !== 'room')
         return this.errorCommand('ban', 'commandaccess');
 
@@ -274,12 +273,12 @@ define([
         return this.errorCommand('ban', 'parameters');
 
       var that = this;
-      confirmationView.open({input : true}, function (reason) {
+      confirmationView.open({input: true}, function (reason) {
         client.roomBan(that.model.get('id'), null, parameters[1], reason);
         that.model.trigger('inputFocus');
       }, this.inputFocus());
     },
-    deban: function(paramString, parameters) {
+    deban: function (paramString, parameters) {
       if (this.model.get('type') !== 'room')
         return this.errorCommand('deban', 'commandaccess');
 
@@ -311,7 +310,7 @@ define([
         that.model.trigger('inputFocus');
       }, this.inputFocus());
     },
-    deblock: function(paramString, parameters) {
+    deblock: function (paramString, parameters) {
       var username;
       var userId;
       // from a room
@@ -330,7 +329,7 @@ define([
 
       client.userDeban(userId, username);
     },
-    voice: function(paramString, parameters) {
+    voice: function (paramString, parameters) {
       if (this.model.get('type') !== 'room')
         return this.errorCommand('voice', 'commandaccess');
 
@@ -339,7 +338,7 @@ define([
 
       client.roomVoice(this.model.get('id'), null, parameters[1]);
     },
-    devoice: function(paramString, parameters) {
+    devoice: function (paramString, parameters) {
       if (this.model.get('type') !== 'room')
         return this.errorCommand('devoice', 'commandaccess');
 
@@ -347,18 +346,18 @@ define([
         return this.errorCommand('devoice', 'parameters');
 
       var that = this;
-      confirmationView.open({input : true}, function (reason) {
+      confirmationView.open({input: true}, function (reason) {
         client.roomDevoice(that.model.get('id'), null, parameters[1], reason);
         that.model.trigger('inputFocus');
       }, this.inputFocus());
     },
-    msg: function(paramString, parameters) {
+    msg: function (paramString, parameters) {
       var message = (!parameters) ? paramString : parameters[2];
       if (!message)
         return;
 
       var model;
-      if  (!parameters) {
+      if (!parameters) {
         model = this.model;
       } else if (/^#/.test(parameters[1])) {
         model = rooms.getByName(parameters[1]);
@@ -379,12 +378,12 @@ define([
         client.userMessage(model.get('user_id'), null, message, null);
       }
     },
-    profile: function(paramString, parameters) {
+    profile: function (paramString, parameters) {
       if (!parameters)
         return this.errorCommand('profile', 'parameters');
 
       var that = this;
-      if ((/^#/.test(parameters[1]))) {
+      if ( (/^#/.test(parameters[1]))) {
         client.roomRead(null, parameters[1], function (err, data) {
           if (err === 'unknown') {
             that.errorCommand('profile', 'invalidroom');
@@ -416,7 +415,7 @@ define([
         client.userMe(this.model.get('id'), parameters[1]);
       }
     },
-    ping: function(paramString, parameters) {
+    ping: function (paramString, parameters) {
       var that = this;
       client.ping(function (duration) {
         var model = new EventModel({
@@ -426,7 +425,7 @@ define([
         that.model.trigger('freshEvent', model);
       });
     },
-    clear: function(paramString, parameters) {
+    clear: function (paramString, parameters) {
       this.model.trigger('clearHistory');
     },
     random: function (paramString, parameters) {
@@ -448,7 +447,7 @@ define([
         client.userMe(this.model.get('id'), msg);
       }
     },
-    help: function(paramString, parameters, error) {
+    help: function (paramString, parameters, error) {
       if (!parameters && paramString)
         return this.errorCommand('help', 'parameters');
 
@@ -467,15 +466,14 @@ define([
       });
       this.model.trigger('freshEvent', model);
     },
-    getCommands: function(type) {
+    getCommands: function (type) {
       var commands = {};
-      _.each(this.commands, function(cmd, key) {
+      _.each(this.commands, function (cmd, key) {
         if (cmd.access === 'everywhere' || cmd.access === type)
           commands[key] = cmd;
       });
       return commands;
     },
-
 
     /**********************************************************
      *
@@ -491,7 +489,7 @@ define([
      *
      **********************************************************/
 
-    errorCommand: function(stringCommand, errorType) {
+    errorCommand: function (stringCommand, errorType) {
       var error = $.t('chat.commands.errors.' + errorType);
       if (errorType === 'invalidcommand') {
         this.help(null, null, error);
@@ -505,4 +503,3 @@ define([
 
   return InputCommandsView;
 });
-

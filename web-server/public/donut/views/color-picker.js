@@ -1,3 +1,4 @@
+'use strict';
 define([
   'jquery',
   'underscore',
@@ -5,7 +6,6 @@ define([
   '_templates'
 ], function ($, _, Backbone, templates) {
   var ColorPickerView = Backbone.View.extend({
-
     template: templates['color-picker.html'],
 
     colors: window.colors,
@@ -18,12 +18,12 @@ define([
       'click .color': 'onPick'
     },
 
-    initialize: function(options) {
+    initialize: function (options) {
       this.color = options.color || '#000000';
       this.name = options.name || 'color';
       this.render();
     },
-    render: function() {
+    render: function () {
       var html = this.template({
         color: this.color,
         colors: this.colors,
@@ -32,26 +32,26 @@ define([
       this.$el.html(html);
       return this;
     },
-    open: function(event) {
+    open: function (event) {
       this.$el.find('.picker').show();
     },
-    close: function(event) {
+    close: function (event) {
       this.$el.find('.picker').hide();
     },
-    onOver: function(event) {
+    onOver: function (event) {
       var color = $(event.currentTarget).data('color');
       this._setColor(color);
     },
-    onOut: function(event) {
+    onOut: function (event) {
       this._setColor(this.color);
     },
-    onPick: function(event) {
+    onPick: function (event) {
       this.color = $(event.currentTarget).data('color');
       this._setColor(this.color);
       this.$el.find('.input').val(this.color);
       this.close();
     },
-    _setColor: function(color) {
+    _setColor: function (color) {
       this.$el.find('.preview').css('background-color', color);
       this.$el.find('.hexadecimal').text(color);
     }

@@ -1,3 +1,4 @@
+'use strict';
 define([
   'jquery',
   'underscore',
@@ -9,11 +10,9 @@ define([
   'models/current-user',
   '_templates'
 ], function ($, _, Backbone, common, client, donutDebug, keyboard, currentUser, templates) {
-
   var debug = donutDebug('donut:input');
 
   var InputRollupView = Backbone.View.extend({
-
     template: templates['rollup.html'],
 
     cursorPosition: null,
@@ -29,7 +28,7 @@ define([
       this.listenTo(this.model, 'input:clicked', this.onRollupClose);
 
       var commands = [];
-      _.each(options.commands, function(command, key){
+      _.each(options.commands, function (command, key) {
         command.name = key;
         commands.push(command);
       });
@@ -43,7 +42,7 @@ define([
       return this;
     },
 
-    onKeyDown: function(event) {
+    onKeyDown: function (event) {
       var data = keyboard._getLastKeyCode();
 
       if (!this.isClosed()) {
@@ -53,7 +52,7 @@ define([
           this._rollupNavigate(data.key, event.target);
           event.preventDefault(); // avoid triggering keyUp
           return;
-        } else if ( data.key == keyboard.LEFT || data.key == keyboard.RIGHT || data.isCtrl || data.isAlt || data.isMeta ) {
+        } else if ( data.key == keyboard.LEFT || data.key == keyboard.RIGHT || data.isCtrl || data.isAlt || data.isMeta) {
           this.cursorPosition = this.$editable.getCursorPosition();
           if (!this.isClosed()) {
             return this._closeRollup();
@@ -102,18 +101,18 @@ define([
       }
     },
 
-    isClosed: function() {
+    isClosed: function () {
       return (this.$rollup.html().length === 0);
     },
 
-    _parseInput: function() {
+    _parseInput: function () {
       var pos = this._getCursorPosition(); // Get current cursor position in textarea
 
       // If space of nothing found after getCursorPosition, we continue, else return null
       if (this.$editable.val().length > pos && this.$editable.val().substr(pos, 1) !== ' ')
         return '';
 
-      var message = this.$editable.val().substr(0,pos); // Only keep text from start to current cursor position
+      var message = this.$editable.val().substr(0, pos); // Only keep text from start to current cursor position
       return _.last(message.split(' ')); // only keep the last typed command / mention
     },
 
@@ -125,9 +124,9 @@ define([
       return !(_.indexOf(['#', '@', '/'], message.substr(0, 1)) == -1);
     },
 
-    _isCommandCallable: function() {
+    _isCommandCallable: function () {
       // First caracter is a /
-      if (this.$editable.val().trim().substr(0, 1) !== "/")
+      if (this.$editable.val().trim().substr(0, 1) !== '/')
         return false;
 
       // no space typed after command
@@ -157,18 +156,17 @@ define([
         this._computeNewValue(li.find('.value').html() + ' ');
       }
     },
-    _getCursorPosition: function() {
+    _getCursorPosition: function () {
       return this.cursorPosition === null ? this.$editable.getCursorPosition() : this.cursorPosition;
     },
-    _getCommandList: function() {
+    _getCommandList: function () {
       var input = this._parseInput();
       var selectedCommands = [];
 
       if (input.length === 1) // First call
-        selectedCommands = this.commands;
-      else { // next calls
-        _.each(this.commands, function(command){
-          if (command.name.indexOf(input.substr(1,input.length)) == 0)
+        selectedCommands = this.commands; else { // next calls
+        _.each(this.commands, function (command) {
+          if (command.name.indexOf(input.substr(1, input.length)) == 0)
             selectedCommands.push(command);
         });
       }
@@ -194,27 +192,27 @@ define([
       var that = this;
 
       if (prefix === '#')
-        client.search(search, true, false, 15, false, function(data) {
-          _.each(data.rooms.list, function(d){
+        client.search(search, true, false, 15, false, function (data) {
+          _.each(data.rooms.list, function (d) {
             d.avatarUrl = common.cloudinarySize(d.avatar);
           });
           that.$rollup.html(that.template({ type: 'rooms', results: data.rooms.list }));
         });
 
       if (prefix === '@')
-        client.search(search, false, true, 15, false, function(data) {
-          _.each(data.users.list, function(d){
+        client.search(search, false, true, 15, false, function (data) {
+          _.each(data.users.list, function (d) {
             d.avatarUrl = common.cloudinarySize(d.avatar);
           });
           that.$rollup.html(that.template({ type: 'users', results: data.users.list }));
         });
     },
-    _computeNewValue: function(replaceValue) { // @michel
+    _computeNewValue: function (replaceValue) { // @michel
       var oldValue = this.$editable.val(); // #LeagueofLegend @mich #donut
       var currentInput = this._parseInput(); // @mich
       var cursorPosition = this._getCursorPosition();
-      var newCursorPosition = (oldValue.substr(0,(cursorPosition - currentInput.length)) + replaceValue).length - 1; // Remove last space
-      var newValue = oldValue.substr(0,(cursorPosition - currentInput.length)) + replaceValue + oldValue.substr(cursorPosition, oldValue.length).trim();
+      var newCursorPosition = (oldValue.substr(0, (cursorPosition - currentInput.length)) + replaceValue).length - 1; // Remove last space
+      var newValue = oldValue.substr(0, (cursorPosition - currentInput.length)) + replaceValue + oldValue.substr(cursorPosition, oldValue.length).trim();
 
       this.$editable.val(newValue);
       this.$editable.setCursorPosition(newCursorPosition, newCursorPosition);
@@ -240,11 +238,11 @@ define([
       li.addClass('active');
       this._computeNewValue(li.find('.value').html() + ' ');
     },
-    onRollupClose: function() {
+    onRollupClose: function () {
       this._closeRollup();
       this.moveCursorToEnd();
     },
-    moveCursorToEnd: function() {
+    moveCursorToEnd: function () {
       this.$editable.setCursorPosition(this.$editable.val().length, this.$editable.val().length);
     }
 

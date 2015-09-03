@@ -1,3 +1,4 @@
+'use strict';
 var logger = require('../../../pomelo-logger').getLogger('donut', __filename);
 var _ = require('underscore');
 var UserModel = require('../../../../shared/models/user');
@@ -8,7 +9,6 @@ var conf = require('../../../../config/index');
 var common = require('@dbrugne/donut-common');
 
 module.exports = {
-
   retrieveUser: function (user) {
     return function () {
       var args = _.toArray(arguments);
@@ -97,9 +97,9 @@ module.exports = {
     };
   },
 
-  mentionTemplate: _.template('<strong><% if (markup.type === \'room\') { %><a href="'+conf.url+'/room/<%= markup.title.replace(\'#\', \'\') %>" style="<%= options.style %>"><%= markup.title %></a><% } else if (markup.type === \'user\') { %><a href="'+conf.url+'/user/<%= markup.title.replace(\'@\', \'\') %>" style="<%= options.style %>"><%= markup.title %></a><% } else if (markup.type === \'url\') { %><a href="<%= markup.href %>" style="<%= options.style %>"><%= markup.title %></a><% } else if (markup.type === \'email\') { %><a href="mailto:<%= markup.href %>" style="<%= options.style %>"><%= markup.title %></a><% } %></strong>'),
+  mentionTemplate: _.template('<strong><% if (markup.type === \'room\') { %><a href="' + conf.url + '/room/<%= markup.title.replace(\'#\', \'\') %>" style="<%= options.style %>"><%= markup.title %></a><% } else if (markup.type === \'user\') { %><a href="' + conf.url + '/user/<%= markup.title.replace(\'@\', \'\') %>" style="<%= options.style %>"><%= markup.title %></a><% } else if (markup.type === \'url\') { %><a href="<%= markup.href %>" style="<%= options.style %>"><%= markup.title %></a><% } else if (markup.type === \'email\') { %><a href="mailto:<%= markup.href %>" style="<%= options.style %>"><%= markup.title %></a><% } %></strong>'),
 
-  mentionize: function(string, options) {
+  mentionize: function (string, options) {
     options.template = this.mentionTemplate;
     return common.markupToHtml(string, options);
   }

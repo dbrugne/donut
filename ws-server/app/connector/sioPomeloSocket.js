@@ -1,3 +1,4 @@
+'use strict';
 var logger = require('../../pomelo-logger').getLogger('donut', __filename);
 var _ = require('underscore');
 var util = require('util');
@@ -7,14 +8,14 @@ var ST_INITED = 0;
 var ST_CLOSED = 1;
 
 // message/socket limiter
-var LIMITER_MAX      = 30; // number of messages ...
-var LIMITER_PERIOD   = 5000; // ... in seconds ...
+var LIMITER_MAX = 30; // number of messages ...
+var LIMITER_PERIOD = 5000; // ... in seconds ...
 var LIMITER_BLOCKFOR = 10000; // ... is blocked for seconds
 
 /**
  * Socket class that wraps socket.io socket to provide unified interface for up level.
  */
-var Socket = function(id, socket) {
+var Socket = function (id, socket) {
   EventEmitter.call(this);
   this.id = id;
   this.socket = socket;
@@ -31,7 +32,7 @@ var Socket = function(id, socket) {
 
   this.__limiter__ = [];
   this.__limiter_blocked__ = false;
-  socket.on('message', function(msg) {
+  socket.on('message', function (msg) {
     self.limiterCleanup();
     self.limiterAdd();
 
@@ -39,7 +40,7 @@ var Socket = function(id, socket) {
     if (self.__limiter_blocked__ !== false) {
       if (self.__limiter__.length > LIMITER_MAX) {
         self.__limiter_blocked__ = (Date.now() + LIMITER_BLOCKFOR);
-        return logger.warn('[limiter] Socket blocked but message per time rate is still over limit, blocking prolongation '+LIMITER_BLOCKFOR+'ms');
+        return logger.warn('[limiter] Socket blocked but message per time rate is still over limit, blocking prolongation ' + LIMITER_BLOCKFOR + 'ms');
       }
       return logger.warn('[limiter] Socket is blocked');
     }
@@ -47,7 +48,7 @@ var Socket = function(id, socket) {
     // socket is now over the limit
     if (self.__limiter__.length > LIMITER_MAX) {
       self.__limiter_blocked__ = (Date.now() + LIMITER_BLOCKFOR);
-      return logger.warn('[limiter] Max message per time, socket blocked for '+LIMITER_BLOCKFOR+'ms');
+      return logger.warn('[limiter] Max message per time, socket blocked for ' + LIMITER_BLOCKFOR + 'ms');
     }
 
     self.emit('message', msg);
@@ -60,18 +61,18 @@ util.inherits(Socket, EventEmitter);
 
 module.exports = Socket;
 
-Socket.prototype.send = function(msg) {
-  if(this.state !== ST_INITED) {
+Socket.prototype.send = function (msg) {
+  if (this.state !== ST_INITED) {
     return;
   }
-  if(typeof msg !== 'string') {
+  if (typeof msg !== 'string') {
     msg = JSON.stringify(msg);
   }
   this.socket.send(msg);
 };
 
-Socket.prototype.disconnect = function() {
-  if(this.state === ST_CLOSED) {
+Socket.prototype.disconnect = function () {
+  if (this.state === ST_CLOSED) {
     return;
   }
 
@@ -79,21 +80,21 @@ Socket.prototype.disconnect = function() {
   this.socket.disconnect();
 };
 
-Socket.prototype.sendBatch = function(msgs) {
+Socket.prototype.sendBatch = function (msgs) {
   this.send(encodeBatch(msgs));
 };
 
 /**
  * Encode batch msg to client
  */
-var encodeBatch = function(msgs){
+var encodeBatch = function (msgs) {
   var res = '[', msg;
-  for(var i=0, l=msgs.length; i<l; i++) {
-    if(i > 0) {
+  for (var i = 0, l = msgs.length; i < l; i++) {
+    if (i > 0) {
       res += ',';
     }
     msg = msgs[i];
-    if(typeof msg === 'string') {
+    if (typeof msg === 'string') {
       res += msg;
     } else {
       res += JSON.stringify(msg);
@@ -106,10 +107,10 @@ var encodeBatch = function(msgs){
 /**
  * MESSAGE PER SOCKET LIMITER
  */
-Socket.prototype.limiterAdd = function() {
+Socket.prototype.limiterAdd = function () {
   this.__limiter__.push(Date.now()); // @todo : take event type in consideration: if message or room creation create 5 lines, else 1 line. Increase LIMITER_MAX
 };
-Socket.prototype.limiterCleanup = function() {
+Socket.prototype.limiterCleanup = function () {
   // cleanup blocked status
   if (this.__limiter_blocked__ !== false && this.__limiter_blocked__ < Date.now()) {
     this.__limiter_blocked__ = false;
@@ -117,11 +118,10 @@ Socket.prototype.limiterCleanup = function() {
 
   // cleanup expired messages
   var period = (Date.now()) - LIMITER_PERIOD;
-  this.__limiter__ = _.reject(this.__limiter__, function(m) {
+  this.__limiter__ = _.reject(this.__limiter__, function (m) {
     if (m <= period) {
       return true;
     }
   });
   this.__limiter__ = _.last(this.__limiter__, LIMITER_MAX * 2); // avoid memory leak
 };
-

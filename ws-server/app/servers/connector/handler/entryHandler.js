@@ -1,3 +1,4 @@
+'use strict';
 var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
 var _ = require('underscore');
 var async = require('async');
@@ -46,7 +47,7 @@ handler.enter = function (msg, session, next) {
 
   async.waterfall([
 
-    function bindSession(callback) {
+    function bindSession (callback) {
       logger.trace('bind session ' + session.id + ' to user ' + uid);
       session.bind(uid);
 
@@ -56,7 +57,7 @@ handler.enter = function (msg, session, next) {
       return callback(null);
     },
 
-    function determineIfFirstClient(callback) {
+    function determineIfFirstClient (callback) {
       // another session already exists on this frontend for this uid?
       var currentUidSessions = that.app.get('sessionService').getByUid(uid);
       if (currentUidSessions && currentUidSessions.length > 1) {
@@ -82,7 +83,7 @@ handler.enter = function (msg, session, next) {
       });
     },
 
-    function welcomeMessage(callback) {
+    function welcomeMessage (callback) {
       if (!that.app.rpc || !that.app.rpc.chat)
         return callback('app.rpc.chat not already exists, server is not ready');
 
@@ -95,7 +96,7 @@ handler.enter = function (msg, session, next) {
       );
     },
 
-    function declareIdentity(welcome, callback) {
+    function declareIdentity (welcome, callback) {
       // add username in connection monitoring
       that.app.components.__connection__.updateUserInfo(uid, {
         username: welcome.user.username,
@@ -121,7 +122,7 @@ handler.enter = function (msg, session, next) {
       });
     },
 
-    function subscribeRoomChannels(welcome, callback) {
+    function subscribeRoomChannels (welcome, callback) {
       if (!welcome.rooms || welcome.rooms.length < 1)
         return callback(null, welcome);
 
@@ -144,7 +145,7 @@ handler.enter = function (msg, session, next) {
       });
     },
 
-    function subscribeUserChannel(welcome, callback) {
+    function subscribeUserChannel (welcome, callback) {
       that.app.globalChannelService.add(USER_CHANNEL_PREFIX + uid, uid, session.frontendId, function (err) {
         if (err)
           return callback('Error while registering user in user channel: ' + err);
@@ -153,7 +154,7 @@ handler.enter = function (msg, session, next) {
       });
     },
 
-    function subscribeGlobalChannel(welcome, callback) {
+    function subscribeGlobalChannel (welcome, callback) {
       that.app.globalChannelService.add(GLOBAL_CHANNEL_NAME, uid, session.frontendId, function (err) {
         if (err)
           return callback('Error while registering user in global channel: ' + err);
@@ -162,16 +163,16 @@ handler.enter = function (msg, session, next) {
       });
     },
 
-		function cleanupNotifications(welcome, callback) {
-			Notifications(that.app).avoidNotificationsSending(uid, function(err) {
-				if (err)
-					return callback('Error while setting notifications as read for '+session.uid+': '+err);
+    function cleanupNotifications (welcome, callback) {
+      Notifications(that.app).avoidNotificationsSending(uid, function (err) {
+        if (err)
+          return callback('Error while setting notifications as read for ' + session.uid + ': ' + err);
 
-				return callback(null, welcome);
-			});
-		},
+        return callback(null, welcome);
+      });
+    },
 
-    function tracking(welcome, callback) {
+    function tracking (welcome, callback) {
       var _socket = session.__session__.__socket__.socket;
       var sessionEvent = {
         session: {
@@ -186,7 +187,7 @@ handler.enter = function (msg, session, next) {
           admin: (session.settings.admin === true)
         }
       };
-      keenio.addEvent("session_start", sessionEvent, function (err, res) {
+      keenio.addEvent('session_start', sessionEvent, function (err, res) {
         if (err)
           logger.error('Error while tracking session_start in keen.io for ' + uid + ': ' + err);
 
@@ -194,7 +195,7 @@ handler.enter = function (msg, session, next) {
       });
     },
 
-    function sendUserOnline(welcome, callback) {
+    function sendUserOnline (welcome, callback) {
       if (!firstClient)
         return callback(null, welcome);
 
@@ -251,7 +252,7 @@ var onUserLeave = function (app, session, reason) {
       admin: (session.settings.admin === true)
     }
   };
-  keenio.addEvent("session_end", sessionEvent, function (err, res) {
+  keenio.addEvent('session_end', sessionEvent, function (err, res) {
     if (err)
       logger.error('Error while tracking session_end in keen.io for ' + session.uid + ': ' + err);
 

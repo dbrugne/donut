@@ -1,3 +1,4 @@
+'use strict';
 define([
   'jquery',
   'underscore',
@@ -9,17 +10,15 @@ define([
   'models/current-user',
   '_templates'
 ], function ($, _, Backbone, donutDebug, keyboard, common, client, currentUser, templates) {
-
   var debug = donutDebug('donut:message-edit');
 
   var MessageEditView = Backbone.View.extend({
-
     template: templates['message-edit.html'],
 
     events: {
-      'click .message-form .enter' : 'onSubmit',
-      'click .message-form .esc'   : 'onEscape',
-      'keydown .form-message-edit' : 'onKeydown'
+      'click .message-form .enter': 'onSubmit',
+      'click .message-form .esc': 'onEscape',
+      'keydown .form-message-edit': 'onKeydown'
     },
 
     initialize: function (options) {
@@ -116,9 +115,9 @@ define([
         .css('height',
           (2 + this.$formMessageEdit.prop('scrollHeight')) + 'px');
     },
-    htmlSmileyToText: function(html) {
-      var $html = $('<div>'+html+'</div>');
-       _.each($html.find('.smilify'), function(e) {
+    htmlSmileyToText: function (html) {
+      var $html = $('<div>' + html + '</div>');
+      _.each($html.find('.smilify'), function (e) {
         $(e).replaceWith($.smilifyGetSymbolFromCode($(e).data('smilify-code')));
       });
       return $html.text();

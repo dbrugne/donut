@@ -1,3 +1,4 @@
+'use strict';
 define([
   'underscore',
   'backbone',
@@ -9,32 +10,31 @@ define([
   'collections/room-users'
 ], function (_, Backbone, app, client, currentUser, UserModel, EventModel, RoomUsersCollection) {
   var RoomModel = Backbone.Model.extend({
-
-    defaults: function() {
+    defaults: function () {
       return {
-        name          : '',
-        op            : [],
-        devoices      : [],
-        topic         : '',
-        avatar        : '',
-        poster        : '',
-        posterblured  : '',
-        color         : '',
-        type          : 'room',
-        focused       : false,
-        unviewed      : false,
-        newmention    : false,
-        newuser       : false
+        name: '',
+        op: [],
+        devoices: [],
+        topic: '',
+        avatar: '',
+        poster: '',
+        posterblured: '',
+        color: '',
+        type: 'room',
+        focused: false,
+        unviewed: false,
+        newmention: false,
+        newuser: false
       };
     },
 
-    initialize: function() {
+    initialize: function () {
       this.users = new RoomUsersCollection();
     },
-    getIdentifier: function() {
+    getIdentifier: function () {
       return this.get('name');
     },
-    addUser: function(data, sort) {
+    addUser: function (data, sort) {
       sort = (sort === false) ? false : true;
 
       // already in?
@@ -47,8 +47,8 @@ define([
       }
 
       var is_owner = (this.get('owner') && this.get('owner').get('user_id') == data.user_id)
-       ? true
-       : false;
+        ? true
+        : false;
 
       var is_op = false;
       if (this.get('op') && this.get('op').indexOf(data.user_id) !== -1)
@@ -68,19 +68,19 @@ define([
       this.users.add(model, {sort: sort});
       return model;
     },
-    getUrl: function() {
+    getUrl: function () {
       return window.location.protocol
-        +'//'+window.location.host
-        +'/room/'
-        +this.get('name').replace('#', '').toLocaleLowerCase();
+      + '//' + window.location.host
+      + '/room/'
+      + this.get('name').replace('#', '').toLocaleLowerCase();
     },
-    leave: function() {
+    leave: function () {
       client.roomLeave(this.get('id'));
     },
-    userIsDevoiced: function(userId) {
+    userIsDevoiced: function (userId) {
       return (this.get('devoices') && this.get('devoices').indexOf(userId) !== -1);
     },
-    currentUserIsOwner: function() {
+    currentUserIsOwner: function () {
       if (!this.get('owner'))
         return false;
 
@@ -88,13 +88,13 @@ define([
         ? true
         : false;
     },
-    currentUserIsOp: function() {
+    currentUserIsOp: function () {
       return (this.get('op') && this.get('op').indexOf(currentUser.get('user_id')) !== -1);
     },
-    currentUserIsAdmin: function() {
+    currentUserIsAdmin: function () {
       return currentUser.isAdmin();
     },
-    onIn: function(data) {
+    onIn: function (data) {
       data.status = 'online'; // only an online user can join a room
 
       this.addUser(data);
@@ -107,7 +107,7 @@ define([
       client.roomVoice(data.room_id, data.user_id, null);
       this.trigger('freshEvent', model);
     },
-    onOut: function(data) {
+    onOut: function (data) {
       var user = this.users.get(data.user_id);
 
       if (!user)
@@ -122,7 +122,7 @@ define([
       });
       this.trigger('freshEvent', model);
     },
-    onTopic: function(data) {
+    onTopic: function (data) {
       this.set('topic', data.topic);
       var model = new EventModel({
         type: 'room:topic',
@@ -134,7 +134,7 @@ define([
 
       this.trigger('freshEvent', model);
     },
-    onMessage: function(data) {
+    onMessage: function (data) {
       var model = new EventModel({
         type: 'room:message',
         data: data
@@ -145,7 +145,7 @@ define([
 
       this.trigger('freshEvent', model);
     },
-    onMe: function(data) {
+    onMe: function (data) {
       var model = new EventModel({
         type: 'room:me',
         data: data
@@ -156,7 +156,7 @@ define([
 
       this.trigger('freshEvent', model);
     },
-    onOp: function(data) {
+    onOp: function (data) {
       // room.get('op')
       var ops = this.get('op');
       ops.push(data.user_id);
@@ -176,9 +176,9 @@ define([
       });
       this.trigger('freshEvent', model);
     },
-    onDeop: function(data) {
+    onDeop: function (data) {
       // room.get('op')
-      var ops = _.reject(this.get('op'), function(opUserId) {
+      var ops = _.reject(this.get('op'), function (opUserId) {
         return (opUserId == data.user_id);
       });
       this.set('op', ops);
@@ -197,21 +197,21 @@ define([
       });
       this.trigger('freshEvent', model);
     },
-    onDeban: function(data) {
+    onDeban: function (data) {
       var model = new EventModel({
         type: 'room:deban',
         data: data
       });
       this.trigger('freshEvent', model);
     },
-    onVoice: function(data) {
+    onVoice: function (data) {
       var user = this.users.get(data.user_id);
       if (user)
         user.set({ is_devoice: false });
 
       var devoices = this.get('devoices');
       if (devoices.length)
-        this.set('devoices', _.reject(devoices, function(element) {
+        this.set('devoices', _.reject(devoices, function (element) {
           return (element === data.user_id);
         }));
 
@@ -228,7 +228,7 @@ define([
       if (currentUser.get('user_id') === data.user_id)
         this.trigger('inputActive');
     },
-    onDevoice: function(data) {
+    onDevoice: function (data) {
       var user = this.users.get(data.user_id);
       if (user)
         user.set({ is_devoice: true });
@@ -250,13 +250,13 @@ define([
       if (currentUser.get('user_id') === data.user_id)
         this.trigger('inputActive');
     },
-    onUpdated: function(data) {
+    onUpdated: function (data) {
       var that = this;
-      _.each(data.data, function(value, key, list) {
+      _.each(data.data, function (value, key, list) {
         that.set(key, value);
       });
     },
-    _onStatus: function(expect, data) {
+    _onStatus: function (expect, data) {
       var model = this.users.get(data.user_id);
 
       if (!model)
@@ -268,35 +268,35 @@ define([
       model.set({status: expect});
 
       var model = new EventModel({
-        type: 'user:'+expect,
+        type: 'user:' + expect,
         data: data
       });
       this.trigger('freshEvent', model);
     },
-    onUserOnline: function(data) {
+    onUserOnline: function (data) {
       this._onStatus('online', data);
     },
-    onUserOffline: function(data) {
+    onUserOffline: function (data) {
       this._onStatus('offline', data);
     },
-    history: function(since, callback) {
-      client.roomHistory(this.get('id'), since, 100, function(data) {
+    history: function (since, callback) {
+      client.roomHistory(this.get('id'), since, 100, function (data) {
         return callback(data);
       });
     },
-    viewedElements: function(elements) {
+    viewedElements: function (elements) {
       client.roomViewed(this.get('id'), elements);
     },
     onViewed: function (data) {
       this.resetNew();
       this.trigger('viewed', data);
     },
-    fetchUsers: function(callback) {
+    fetchUsers: function (callback) {
       var that = this;
-      client.roomUsers(this.get('id'), function(data) {
+      client.roomUsers(this.get('id'), function (data) {
         that.users.reset();
 
-        _.each(data.users, function(element, key, list) {
+        _.each(data.users, function (element, key, list) {
           that.addUser(element, false); // false: avoid automatic sorting on each model .add()
         });
         that.users.sort(); // sort after batch addition to collection to avoid performance issue
@@ -307,11 +307,11 @@ define([
       });
     },
 
-    sendMessage: function(message, images) {
+    sendMessage: function (message, images) {
       client.roomMessage(this.get('id'), message, images);
     },
 
-    resetNew: function() {
+    resetNew: function () {
       if (this.isThereNew()) { // avoid redraw if nothing to change
         this.set('unviewed', false);
         this.set('newmention', false);
@@ -319,10 +319,10 @@ define([
         app.trigger('redraw-block');
       }
     },
-    isThereNew: function() {
+    isThereNew: function () {
       return !!(this.get('unviewed') || this.get('newmention') || this.get('newuser'));
     },
-    isInputActive: function() {
+    isInputActive: function () {
       return !(this.userIsDevoiced(currentUser.get('user_id')));
     }
 

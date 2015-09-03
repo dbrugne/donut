@@ -1,3 +1,4 @@
+'use strict';
 var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
 var async = require('async');
 var _ = require('underscore');
@@ -25,7 +26,7 @@ handler.call = function (data, session, next) {
 
   async.waterfall([
 
-    function check(callback) {
+    function check (callback) {
       if (!data.room_id)
         return callback('id is mandatory');
 

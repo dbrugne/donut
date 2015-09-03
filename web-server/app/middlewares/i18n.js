@@ -1,3 +1,4 @@
+'use strict';
 var i18next = require('../../../shared/util/i18next');
 var express = require('express');
 var router = express.Router();

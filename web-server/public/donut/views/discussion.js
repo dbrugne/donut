@@ -1,3 +1,4 @@
+'use strict';
 define([
   'jquery',
   'underscore',
@@ -7,11 +8,9 @@ define([
   'views/events',
   'views/input'
 ], function ($, _, Backbone, app, donutDebug, EventsView, InputView) {
-
   var debug = donutDebug('donut:discussion');
 
   var DiscussionPanelView = Backbone.View.extend({
-
     tagName: 'div',
 
     className: 'discussion',
@@ -21,8 +20,8 @@ define([
     events: {
     },
 
-    initialize: function(options) {
-      debug.start('discussion-'+((this.model.get('name'))?this.model.get('name'):this.model.get('username')));
+    initialize: function (options) {
+      debug.start('discussion-' + ((this.model.get('name')) ? this.model.get('name') : this.model.get('username')));
       var start = Date.now();
 
       // Events
@@ -45,38 +44,31 @@ define([
 
       // Other subviews
       this._initialize(options);
-      debug.end('discussion-'+((this.model.get('name'))?this.model.get('name'):this.model.get('username')));
+      debug.end('discussion-' + ((this.model.get('name')) ? this.model.get('name') : this.model.get('username')));
     },
 
     // To override
-    _initialize: function(options) {
-    },
+    _initialize: function (options) {},
 
     // To override
-    _remove: function(model) {
-    },
+    _remove: function (model) {},
 
     // To override
-    _renderData: function() {
-    },
+    _renderData: function () {},
 
     // To override
-    _render: function() {
-    },
+    _render: function () {},
 
     // To override
-    _focus: function() {
-    },
+    _focus: function () {},
 
     // To override
-    _unfocus: function() {
-    },
+    _unfocus: function () {},
 
     // To override
-    _firstFocus: function() {
-    },
+    _firstFocus: function () {},
 
-    render: function() {
+    render: function () {
       var html = this.template(this._renderData());
       this.$el.html(html);
       this.$el.hide();
@@ -84,11 +76,11 @@ define([
       return this;
     },
 
-    update: function() {
+    update: function () {
       this.eventsView.update();
     },
 
-    updateFocus: function() {
+    updateFocus: function () {
       if (this.model.get('focused')) {
         // to focus
         this.$el.show();
@@ -117,30 +109,30 @@ define([
       }
     },
 
-    firstFocus: function() {
+    firstFocus: function () {
       this.eventsView.requestHistory('bottom'); // @todo : on reconnect (only), remove all events in view before requesting history // seems to work like that, wait and see if bugs happen ...
       this.eventsView.scrollDown();
       this._firstFocus();
     },
 
-    removeView: function(model) {
+    removeView: function (model) {
       this._remove();
       this.eventsView._remove();
       this.inputView._remove();
       this.remove();
     },
 
-    colorify: function() {
+    colorify: function () {
       if (this.model.get('focused')) {
         app.trigger('changeColor', this.model.get('color'));
       }
     },
 
-    onSend: function() {
+    onSend: function () {
       this.eventsView.scrollDown(); // scroll down automatically when I send a message
     },
 
-    onEditPreviousInput: function() {
+    onEditPreviousInput: function () {
       this.eventsView.pushUpFromInput();
     }
 

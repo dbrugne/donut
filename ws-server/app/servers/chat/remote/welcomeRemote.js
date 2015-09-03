@@ -1,3 +1,4 @@
+'use strict';
 var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
 var _ = require('underscore');
 var async = require('async');
@@ -25,7 +26,6 @@ var WelcomeRemote = function (app) {
  * @param {String} uid unique id for user
  */
 WelcomeRemote.prototype.getMessage = function (uid, frontendId, globalCallback) {
-
   var start = Date.now();
 
   // welcome event data

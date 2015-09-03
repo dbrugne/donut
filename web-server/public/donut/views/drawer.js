@@ -1,3 +1,4 @@
+'use strict';
 define([
   'jquery',
   'underscore',
@@ -5,7 +6,6 @@ define([
   'models/app'
 ], function ($, _, Backbone, app) {
   var DrawerView = Backbone.View.extend({
-
     defaultSize: '280px',
 
     defaultColor: '#000000',
@@ -20,7 +20,7 @@ define([
       'mouseup .opacity': 'detectOutsideClick'
     },
 
-    initialize: function(options) {
+    initialize: function (options) {
       this.$opacity = this.$el.find('.opacity').first();
       this.$wrap = this.$el.find('.wrap').first();
       this.$content = this.$el.find('.content').first();
@@ -30,18 +30,18 @@ define([
 
       this.listenTo(app, 'drawerClose', this.close);
     },
-    render: function() {
+    render: function () {
       return this; // drawer container is already in DOM,
     },
-    setSize: function(size) {
+    setSize: function (size) {
       this.currentSize = size;
       return this;
     },
-    setColor: function(color) {
+    setColor: function (color) {
       this.currentColor = color;
       return this;
     },
-    setView: function(view) {
+    setView: function (view) {
       this.contentView = view;
       this.$content.html(view.$el);
 
@@ -50,34 +50,34 @@ define([
 
       return this;
     },
-    open: function() {
+    open: function () {
       this._show();
       this.trigger('shown');
       return this;
     },
-    close: function() {
+    close: function () {
       this._hide();
     },
-    color: function(color) {
+    color: function (color) {
       color = (this._validHex(color))
-          ? color
-          : this.defaultColor;
+        ? color
+        : this.defaultColor;
 
       app.trigger('changeColor', color, true);
     },
-    detectOutsideClick: function(event) {
+    detectOutsideClick: function (event) {
       var subject = this.$el.find('.content').first();
-      if(event.target.className != subject.attr('class') && !subject.has(event.target).length)
+      if (event.target.className != subject.attr('class') && !subject.has(event.target).length)
         this.close();
     },
-    _height: function() {
+    _height: function () {
       var newHeight = $('#center').innerHeight();
       this.$content.height(newHeight - (40));
     },
-    _show: function() {
+    _show: function () {
       this._height();
 
-      //this.color(this.currentColor, true);
+      // this.color(this.currentColor, true);
       this.trigger('show');
       this.shown = true;
 
@@ -87,13 +87,13 @@ define([
       // escape key
       $(document).on('keydown', $.proxy(function (e) {
         if (e.which == 27)
-            this.close();
+          this.close();
       }, this));
 
       this.$el.show();
       var that = this;
       var width = this.$wrap.width();
-      this.$wrap.css('left', '-'+width+'px');
+      this.$wrap.css('left', '-' + width + 'px');
       this.$wrap.animate({
         left: '0'
       }, {
@@ -103,7 +103,7 @@ define([
         }
       });
     },
-    _hide: function() {
+    _hide: function () {
       this.trigger('hide');
 
       var wasShown = this.shown;
@@ -115,7 +115,7 @@ define([
       var that = this;
       var width = this.$wrap.width();
       this.$wrap.animate({
-        left: '-'+width+'px'
+        left: '-' + width + 'px'
       }, {
         duration: 250,
         complete: function () {
@@ -129,7 +129,7 @@ define([
         }
       });
     },
-    _validHex: function(hex) {
+    _validHex: function (hex) {
       if (!hex)
         return false;
 

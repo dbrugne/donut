@@ -1,3 +1,4 @@
+'use strict';
 define([
   'jquery',
   'underscore',
@@ -5,18 +6,17 @@ define([
   'client',
   'models/current-user',
   '_templates'
-], function ($, _, Backbone, client ,currentUser, templates) {
+], function ($, _, Backbone, client , currentUser, templates) {
   var DrawerAccountEmailView = Backbone.View.extend({
-
     template: templates['drawer-account-email.html'],
 
     events: {
-      'click #email-modal-link' : 'onShowForm',
-      'submit .form-mail'       : 'onSubmit',
-      'click .cancel-email'     : 'onCancel'
+      'click #email-modal-link': 'onShowForm',
+      'submit .form-mail': 'onSubmit',
+      'click .cancel-email': 'onCancel'
     },
 
-    initialize: function(options) {
+    initialize: function (options) {
       this.user = options.user;
 
       this.render();
@@ -41,12 +41,12 @@ define([
         this.$link.text($.t('global.add'));
     },
 
-    render: function() {
+    render: function () {
       this.$el.html(this.template({user: this.user}));
       return this;
     },
 
-    onShowForm: function(event) {
+    onShowForm: function (event) {
       event.preventDefault();
 
       this.$form.show();
@@ -54,7 +54,7 @@ define([
       this.$success.hide();
     },
 
-    onCancel: function() {
+    onCancel: function () {
       event.preventDefault();
 
       this.$form.hide();
@@ -64,7 +64,7 @@ define([
       this.$input.val((this.user.account && this.user.account.email) ? this.user.account.email : '');
     },
 
-    onSubmit: function(event) {
+    onSubmit: function (event) {
       event.preventDefault();
 
       var that = this;

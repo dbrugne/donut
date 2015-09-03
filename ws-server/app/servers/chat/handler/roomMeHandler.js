@@ -1,3 +1,4 @@
+'use strict';
 var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
 var async = require('async');
 var _ = require('underscore');
@@ -17,7 +18,6 @@ module.exports = function (app) {
 var handler = Handler.prototype;
 
 handler.call = function (data, session, next) {
-
   var user = session.__currentUser__;
   var room = session.__room__;
 
@@ -25,7 +25,7 @@ handler.call = function (data, session, next) {
 
   async.waterfall([
 
-    function check(callback) {
+    function check (callback) {
       if (!data.room_id)
         return callback('id is mandatory');
 
@@ -41,7 +41,7 @@ handler.call = function (data, session, next) {
       return callback(null);
     },
 
-    function prepareMessage(callback) {
+    function prepareMessage (callback) {
       // text filtering
       var message = inputUtil.filter(data.message, 512);
 
@@ -49,12 +49,12 @@ handler.call = function (data, session, next) {
         return callback('empty message (no text)');
 
       // mentions
-      inputUtil.mentions(message, function(err, message, markups) {
+      inputUtil.mentions(message, function (err, message, markups) {
         return callback(err, message, markups.users);
       });
     },
 
-    function broadcast(message, mentions, callback) {
+    function broadcast (message, mentions, callback) {
       var event = {
         room_id: room.id,
         user_id: user.id,
@@ -70,7 +70,7 @@ handler.call = function (data, session, next) {
       });
     },
 
-    function mentionNotification(sentEvent, mentions, callback) {
+    function mentionNotification (sentEvent, mentions, callback) {
       if (!mentions.length)
         return callback(null, sentEvent);
 
@@ -84,7 +84,7 @@ handler.call = function (data, session, next) {
       });
     },
 
-    function messageNotification(sentEvent, callback) {
+    function messageNotification (sentEvent, callback) {
       Notifications(that.app).getType('roommessage').create(room, sentEvent.id, function (err) {
         if (err)
           logger.error(err);
@@ -92,7 +92,7 @@ handler.call = function (data, session, next) {
       });
     },
 
-    function tracking(event, callback) {
+    function tracking (event, callback) {
       var messageEvent = {
         session: {
           id: session.settings.uuid,
@@ -110,7 +110,7 @@ handler.call = function (data, session, next) {
           length: (event.message && event.message.length) ? event.message.length : 0
         }
       };
-      keenio.addEvent("room_me", messageEvent, function (err, res) {
+      keenio.addEvent('room_me', messageEvent, function (err, res) {
         if (err)
           logger.error(err);
 

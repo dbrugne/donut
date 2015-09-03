@@ -35,24 +35,22 @@ define([
   'views/modal-room-users',
   'views/mute'
 ], function ($, _, Backbone, donutDebug, app, client, currentUser, EventModel, rooms, onetoones, templates, windowView,
-             ConnectionModalView, WelcomeModalView,
-             CurrentUserView, AlertView, HomeView,
-             DrawerView,
-             DrawerRoomCreateView, DrawerRoomProfileView, DrawerRoomEditView, DrawerRoomUsersView, DrawerRoomPreferencesView,
-             DrawerRoomDeleteView,
-             DrawerUserProfileView, DrawerUserEditView, DrawerUserPreferencesView, DrawerUserAccountView,
-             RoomView, OneToOneView,
-             DiscussionsBlockView, NotificationsView, ConfirmationView, RoomUsersModalView, MuteView) {
-
+  ConnectionModalView, WelcomeModalView,
+  CurrentUserView, AlertView, HomeView,
+  DrawerView,
+  DrawerRoomCreateView, DrawerRoomProfileView, DrawerRoomEditView, DrawerRoomUsersView, DrawerRoomPreferencesView,
+  DrawerRoomDeleteView,
+  DrawerUserProfileView, DrawerUserEditView, DrawerUserPreferencesView, DrawerUserAccountView,
+  RoomView, OneToOneView,
+  DiscussionsBlockView, NotificationsView, ConfirmationView, RoomUsersModalView, MuteView) {
   var debug = donutDebug('donut:main');
 
   var MainView = Backbone.View.extend({
-
-    el: $("#chat"),
+    el: $('#chat'),
 
     $home: $('#home'),
 
-    $discussionsPanelsContainer: $("#center"),
+    $discussionsPanelsContainer: $('#center'),
 
     firstConnection: true,
 
@@ -69,42 +67,42 @@ define([
     intervalDuration: 240000, // ms
 
     events: {
-      'click .go-to-search'             : 'focusOnSearch',
-      'click .open-create-room'         : 'openCreateRoom',
-      'click .open-user-edit'           : 'openUserEdit',
-      'click .open-user-preferences'    : 'openUserPreferences',
-      'click .open-user-account'        : 'openUserAccount',
-      'click .open-user-profile'        : 'onOpenUserProfile',
-      'click .action-user-ban'          : 'userBan',
-      'click .action-user-deban'        : 'userDeban',
-      'dblclick .dbl-open-user-profile' : 'onOpenUserProfile',
-      'click .open-room-profile'        : 'onOpenRoomProfile',
-      'click .open-room-edit'           : 'openRoomEdit',
-      'click .open-room-preferences'    : 'openRoomPreferences',
-      'click .open-room-users'          : 'openRoomUsers',
-      'click .open-room-delete'         : 'openRoomDelete',
-      'click .close-discussion'         : 'onCloseDiscussion'
+      'click .go-to-search': 'focusOnSearch',
+      'click .open-create-room': 'openCreateRoom',
+      'click .open-user-edit': 'openUserEdit',
+      'click .open-user-preferences': 'openUserPreferences',
+      'click .open-user-account': 'openUserAccount',
+      'click .open-user-profile': 'onOpenUserProfile',
+      'click .action-user-ban': 'userBan',
+      'click .action-user-deban': 'userDeban',
+      'dblclick .dbl-open-user-profile': 'onOpenUserProfile',
+      'click .open-room-profile': 'onOpenRoomProfile',
+      'click .open-room-edit': 'openRoomEdit',
+      'click .open-room-preferences': 'openRoomPreferences',
+      'click .open-room-users': 'openRoomUsers',
+      'click .open-room-delete': 'openRoomDelete',
+      'click .close-discussion': 'onCloseDiscussion'
     },
 
-    initialize: function() {
+    initialize: function () {
       this.defaultColor = window.room_default_color;
 
-      this.listenTo(client,      'welcome', this.onWelcome);
-      this.listenTo(client,      'disconnect', this.onDisconnect);
-      this.listenTo(client,      'reconnect', this.onReconnect);
-      this.listenTo(rooms,       'add', this.addView);
-      this.listenTo(rooms,       'remove', this.onRemoveDiscussion);
-      this.listenTo(onetoones,   'add', this.addView);
-      this.listenTo(onetoones,   'remove', this.onRemoveDiscussion);
-      this.listenTo(rooms,       'kickedOrBanned', this.roomKickedOrBanned);
-      this.listenTo(rooms,       'deleted', this.roomRoomDeleted);
-      this.listenTo(app,         'openRoomProfile', this.openRoomProfile);
-      this.listenTo(app,         'openUserProfile', this.openUserProfile);
-      this.listenTo(app,         'joinRoom', this.focusRoomByName);
-      this.listenTo(app,         'changeColor', this.onChangeColor);
-      this.listenTo(app,         'persistPositions', this.persistPositions);
+      this.listenTo(client, 'welcome', this.onWelcome);
+      this.listenTo(client, 'disconnect', this.onDisconnect);
+      this.listenTo(client, 'reconnect', this.onReconnect);
+      this.listenTo(rooms, 'add', this.addView);
+      this.listenTo(rooms, 'remove', this.onRemoveDiscussion);
+      this.listenTo(onetoones, 'add', this.addView);
+      this.listenTo(onetoones, 'remove', this.onRemoveDiscussion);
+      this.listenTo(rooms, 'kickedOrBanned', this.roomKickedOrBanned);
+      this.listenTo(rooms, 'deleted', this.roomRoomDeleted);
+      this.listenTo(app, 'openRoomProfile', this.openRoomProfile);
+      this.listenTo(app, 'openUserProfile', this.openUserProfile);
+      this.listenTo(app, 'joinRoom', this.focusRoomByName);
+      this.listenTo(app, 'changeColor', this.onChangeColor);
+      this.listenTo(app, 'persistPositions', this.persistPositions);
     },
-    run: function() {
+    run: function () {
       // generate and attach subviews
       this.currentUserView = new CurrentUserView({model: currentUser});
       this.discussionsBlock = new DiscussionsBlockView();
@@ -127,7 +125,7 @@ define([
      * time in a same session)
      * @param data
      */
-    onWelcome: function(data) {
+    onWelcome: function (data) {
       debug.start('welcome');
       debug.start('welcome-before');
       var that = this;
@@ -154,16 +152,16 @@ define([
 
       // Rooms
       debug.start('welcome-rooms');
-      _.each(data.rooms, function(room) {
-        debug.start('welcome-'+room.name);
+      _.each(data.rooms, function (room) {
+        debug.start('welcome-' + room.name);
         rooms.addModel(room);
-        debug.end('welcome-'+room.name);
+        debug.end('welcome-' + room.name);
       });
       debug.end('welcome-rooms');
 
       // One to ones
       debug.start('welcome-ones');
-      _.each(data.onetoones, function(one) {
+      _.each(data.onetoones, function (one) {
         onetoones.addModel(one);
       });
       debug.end('welcome-ones');
@@ -177,7 +175,7 @@ define([
       this.firstConnection = false;
 
       // set intervaller (set on 'connection')
-      this.interval = setTimeout(function() {
+      this.interval = setTimeout(function () {
         that.updateViews();
       }, this.intervalDuration);
 
@@ -186,7 +184,7 @@ define([
       this.connectionView.hide();
       debug.end('welcome');
     },
-    onDisconnect: function() {
+    onDisconnect: function () {
       // disable interval
       clearInterval(this.interval);
 
@@ -194,27 +192,27 @@ define([
       var e = new EventModel({
         type: 'disconnected'
       });
-      _.each(this.views, function(view) {
+      _.each(this.views, function (view) {
         view.eventsView.addFreshEvent(e);
         view.hasBeenFocused = false; // will force re-fetch data on next focus
       });
     },
-    onReconnect: function() {
+    onReconnect: function () {
       // add reconnected event in each discussion
       var e = new EventModel({
         type: 'reconnected'
       });
-      _.each(this.views, function(view) {
+      _.each(this.views, function (view) {
         view.eventsView.addFreshEvent(e);
       });
     },
 
-    _color: function(color) {
-      $('body').removeClass (function (index, css) {
-        return (css.match (/(dc-\S+)+/g) || []).join(' ');
-      }).addClass('dc-'+color.replace('#', '').toLowerCase());
+    _color: function (color) {
+      $('body').removeClass(function (index, css) {
+        return (css.match(/(dc-\S+)+/g) || []).join(' ');
+      }).addClass('dc-' + color.replace('#', '').toLowerCase());
     },
-    color: function(color, temporary, reset) {
+    color: function (color, temporary, reset) {
       if (reset)
         return this._color(this.currentColor);
 
@@ -225,7 +223,7 @@ define([
 
       return this._color(color);
     },
-    onChangeColor: function(color, temporary, reset) {
+    onChangeColor: function (color, temporary, reset) {
       this.color(color, temporary, reset);
     },
 
@@ -276,7 +274,7 @@ define([
       }
     },
 
-    _handleAction: function(event) {
+    _handleAction: function (event) {
       if (!event) return false;
       event.preventDefault();
       event.stopPropagation();
@@ -288,16 +286,16 @@ define([
      * @param event
      * @returns {boolean}
      */
-    roomKickedOrBanned: function(event) {
+    roomKickedOrBanned: function (event) {
       var what = event.what;
       var data = event.data;
       this.focus();
-      var message = (what == 'kick') ? $.t("chat.kickmessage", {name: data.name}) : $.t("chat.banmessage", {name: data.name});
+      var message = (what == 'kick') ? $.t('chat.kickmessage', {name: data.name}) : $.t('chat.banmessage', {name: data.name});
       if (data.reason)
-        message += ' ' + $.t("chat.reason", {reason: _.escape(data.reason)});
+        message += ' ' + $.t('chat.reason', {reason: _.escape(data.reason)});
       app.trigger('alert', 'warning', message);
     },
-    roomRoomDeleted: function(data) {
+    roomRoomDeleted: function (data) {
       this.focus();
       if (data && data.reason)
         app.trigger('alert', 'warning', data.reason);
@@ -306,18 +304,18 @@ define([
     // DRAWERS
     // ======================================================================
 
-    openCreateRoom: function(event) {
+    openCreateRoom: function (event) {
       event.preventDefault();
       var name = $(event.currentTarget).data('name') || '';
       var view = new DrawerRoomCreateView({ name: name });
       this.drawerView.setSize('450px').setView(view).open();
     },
-    openUserAccount: function(event) {
+    openUserAccount: function (event) {
       event.preventDefault();
       var view = new DrawerUserAccountView();
       this.drawerView.setSize('320px').setView(view).open();
     },
-    onOpenUserProfile: function(event) {
+    onOpenUserProfile: function (event) {
       event.preventDefault();
 
       var userId = $(event.currentTarget).data('userId');
@@ -327,11 +325,11 @@ define([
       var view = new DrawerUserProfileView({ user_id: userId });
       this.drawerView.setSize('380px').setView(view).open();
     },
-    openUserProfile: function(data) {
+    openUserProfile: function (data) {
       var view = new DrawerUserProfileView({ data: data });
       this.drawerView.setSize('380px').setView(view).open();
     },
-    onOpenRoomProfile: function(event) {
+    onOpenRoomProfile: function (event) {
       event.preventDefault();
 
       var roomId = $(event.currentTarget).data('roomId');
@@ -341,21 +339,21 @@ define([
       var view = new DrawerRoomProfileView({ room_id: roomId });
       this.drawerView.setSize('380px').setView(view).open();
     },
-    openRoomProfile: function(data) {
+    openRoomProfile: function (data) {
       var view = new DrawerRoomProfileView({ data: data });
       this.drawerView.setSize('380px').setView(view).open();
     },
-    openRoomEdit: function(event) {
+    openRoomEdit: function (event) {
       event.preventDefault();
 
       var roomId = $(event.currentTarget).data('roomId');
       if (!roomId)
         return;
 
-      var view = new DrawerRoomEditView({ name: name , room_id: roomId});
+      var view = new DrawerRoomEditView({ name: name,  room_id: roomId});
       this.drawerView.setSize('450px').setView(view).open();
     },
-    openRoomUsers: function(event) {
+    openRoomUsers: function (event) {
       event.preventDefault();
 
       var roomId = $(event.currentTarget).data('roomId');
@@ -391,7 +389,7 @@ define([
       var view = new DrawerRoomPreferencesView({ model: model });
       this.drawerView.setSize('450px').setView(view).open();
     },
-    openRoomDelete: function(event) {
+    openRoomDelete: function (event) {
       event.preventDefault();
       var roomId = $(event.currentTarget).data('roomId');
       if (!roomId)
@@ -400,12 +398,12 @@ define([
       var view = new DrawerRoomDeleteView({ room_id: roomId });
       this.drawerView.setSize('450px').setView(view).open();
     },
-    openUserEdit: function(event) {
+    openUserEdit: function (event) {
       event.preventDefault();
       var view = new DrawerUserEditView();
       this.drawerView.setSize('450px').setView(view).open();
     },
-    openUserPreferences: function(event) {
+    openUserPreferences: function (event) {
       event.preventDefault();
       var view = new DrawerUserPreferencesView();
       this.drawerView.setSize('450px').setView(view).open();
@@ -414,13 +412,13 @@ define([
     // DISCUSSIONS MANAGEMENT
     // ======================================================================
 
-    addView: function(model, collection, options) {
+    addView: function (model, collection, options) {
       var constructor = (model.get('type') == 'room') ? RoomView : OneToOneView;
 
       // create view
       var view = new constructor({
         collection: collection,
-        model:      model
+        model: model
       });
 
       // add to views list
@@ -438,7 +436,7 @@ define([
       this.discussionsBlock.redraw();
     },
 
-    onCloseDiscussion: function(event) {
+    onCloseDiscussion: function (event) {
       this._handleAction(event);
 
       var $target = $(event.currentTarget);
@@ -451,7 +449,7 @@ define([
       if (type === 'room') {
         model = rooms.findWhere({ id: identifier });
       } else {
-        model = onetoones.findWhere({ user_id: ''+identifier }); // force string to handle fully numeric username
+        model = onetoones.findWhere({ user_id: '' + identifier }); // force string to handle fully numeric username
       }
 
       if (model == undefined)
@@ -461,7 +459,7 @@ define([
 
       return false; // stop propagation
     },
-    onRemoveDiscussion: function(model, collection, options) {
+    onRemoveDiscussion: function (model, collection, options) {
       var view = this.views[model.get('id')];
       if (view === undefined)
         return debug('close discussion error: unable to find view');
@@ -480,33 +478,33 @@ define([
         this.discussionsBlock.redraw();
     },
 
-    persistPositions: function(silent) {
+    persistPositions: function (silent) {
       silent = silent | false;
 
       var positions = [];
-      this.discussionsBlock.$list.find('a.item').each(function() {
-        var identifier = ''+$(this).data('identifier'); // force string to handle fully numeric username
+      this.discussionsBlock.$list.find('a.item').each(function () {
+        var identifier = '' + $(this).data('identifier'); // force string to handle fully numeric username
         if (identifier)
           positions.push(identifier);
       });
 
       currentUser.set({positions: positions}, {silent: silent});
-      client.userUpdate({positions: positions}, function(data) {
+      client.userUpdate({positions: positions}, function (data) {
         if (data.err)
           debug('error(s) on userUpdate call', data.errors);
       });
     },
 
-    updateViews: function() {
+    updateViews: function () {
       // call update() method on each view
-      _.each(this.views, function(view) {
-        debug('update on '+view.model.get('id'));
+      _.each(this.views, function (view) {
+        debug('update on ' + view.model.get('id'));
         view.update();
       });
 
       // set next tick
       var that = this;
-      this.interval = setTimeout(function() {
+      this.interval = setTimeout(function () {
         that.updateViews();
       }, this.intervalDuration);
     },
@@ -514,25 +512,25 @@ define([
     // FOCUS TAB/PANEL MANAGEMENT
     // ======================================================================
 
-    focusOnSearch: function(event) {
+    focusOnSearch: function (event) {
       this.focusHome(true);
       this.homeView.searchView.$search
-          .focus();
+        .focus();
       this.drawerView.close();
     },
 
-    unfocusAll: function() {
-      rooms.each(function(o, key, list) {
+    unfocusAll: function () {
+      rooms.each(function (o, key, list) {
         o.set('focused', false);
       });
-      onetoones.each(function(o, key, list) {
+      onetoones.each(function (o, key, list) {
         o.set('focused', false);
       });
       this.$home.hide();
     },
 
     // called by router only
-    focusHome: function(avoidReload) {
+    focusHome: function (avoidReload) {
       // init view
       if (!this.homeView)
         this.homeView = new HomeView({});
@@ -589,7 +587,7 @@ define([
       }
     },
 
-    focus: function(model) {
+    focus: function (model) {
       // No opened discussion, display default
       if (rooms.length < 1 && onetoones.length < 1) {
         return this.focusHome();
@@ -623,10 +621,10 @@ define([
       var uri;
       var title;
       if (model.get('type') == 'room') {
-        uri = 'room/'+model.get('name').replace('#', '');
+        uri = 'room/' + model.get('name').replace('#', '');
         title = model.get('name');
       } else {
-        uri = 'user/'+model.get('username');
+        uri = 'user/' + model.get('username');
         title = model.get('username');
       }
       windowView.setTitle(title);
@@ -658,7 +656,7 @@ define([
         return;
       }
       var that = this;
-      ConfirmationView.open({}, function() {
+      ConfirmationView.open({}, function () {
         client.userDeban(userId);
         app.trigger('userDeban');
       });

@@ -1,3 +1,4 @@
+'use strict';
 define([
   'underscore',
   'backbone',
@@ -7,9 +8,8 @@ define([
   'models/event'
 ], function (_, Backbone, client, currentUser, OneToOneModel, EventModel) {
   var OnetoonesCollection = Backbone.Collection.extend({
-
-    iwhere : function(key, val){ // insensitive case search
-      var matches = this.filter(function(item){
+    iwhere: function (key, val) { // insensitive case search
+      var matches = this.filter(function (item) {
         return item.get(key).toLocaleLowerCase() === val.toLocaleLowerCase();
       });
 
@@ -41,7 +41,7 @@ define([
       // server ask to client to open this one to one in IHM
       this.addModel(data);
     },
-    addModel: function(user) {
+    addModel: function (user) {
       // server confirm that we was joined to the one to one and give us some data on user
       // prepare model data
       var oneData = {
@@ -132,10 +132,10 @@ define([
 
       return model;
     },
-    _key: function(c1, c2) {
+    _key: function (c1, c2) {
       return (c1 < c2)
-        ? c1+'-'+c2
-        : c2+'-'+c1;
+        ? c1 + '-' + c2
+        : c2 + '-' + c1;
     },
 
     onLeave: function (data) {
@@ -156,21 +156,21 @@ define([
         model.onMe(data);
       });
     },
-    onUpdated: function(data) {
+    onUpdated: function (data) {
       var model = this.getModelFromEvent(data, false);
       if (!model)
         return;
 
       model.onUpdated(data);
     },
-    onUserOnline: function(data) {
+    onUserOnline: function (data) {
       var model = this.getModelFromEvent(data, false);
       if (!model)
         return;
 
       model.onUserOnline(data);
     },
-    onUserOffline: function(data) {
+    onUserOffline: function (data) {
       var model = this.getModelFromEvent(data, false);
       if (!model)
         return;
@@ -185,7 +185,7 @@ define([
 
       model.onViewed(data);
     },
-    onBan: function(data) {
+    onBan: function (data) {
       var model = this.getModelFromEvent(data, false);
       if (!model) {
         return;
@@ -193,7 +193,7 @@ define([
 
       model.onBan(data);
     },
-    onDeban: function(data) {
+    onDeban: function (data) {
       var model = this.getModelFromEvent(data, false);
       if (!model)
         return;
@@ -208,7 +208,7 @@ define([
 
       model.trigger('messageEdit', data);
     },
-    onTyping: function(data) {
+    onTyping: function (data) {
       var model = this.getModelFromEvent(data, false);
       if (!model)
         return;

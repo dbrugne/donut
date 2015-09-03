@@ -1,3 +1,4 @@
+'use strict';
 require.config({
   paths: {
     '_templates': ['../build/templates', './templates'],
@@ -84,7 +85,7 @@ require([
       relativeTime: {
         future: '%s',
         past: '%s',
-        s: 'à l\'instant',
+        s: "à l'instant",
         m: '1mn',
         mm: '%dmin',
         h: '1h',

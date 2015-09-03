@@ -1,12 +1,13 @@
+'use strict';
 var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
 var async = require('async');
 var retriever = require('../../../../../shared/models/historyroom').retrieve();
 
-var Handler = function(app) {
-	this.app = app;
+var Handler = function (app) {
+  this.app = app;
 };
 
-module.exports = function(app) {
+module.exports = function (app) {
 	return new Handler(app);
 };
 

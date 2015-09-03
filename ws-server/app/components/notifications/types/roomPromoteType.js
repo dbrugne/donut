@@ -1,3 +1,4 @@
+'use strict';
 var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
 var _ = require('underscore');
 var async = require('async');
@@ -31,7 +32,7 @@ Notification.prototype.create = function (user, room, history, done) {
 
     utils.retrieveHistoryRoom(history),
 
-    function checkOwn(userModel, roomModel, historyModel, callback) {
+    function checkOwn (userModel, roomModel, historyModel, callback) {
       if (historyModel.by_user.id == userModel.id) {
         logger.debug('roomPromoteType.create no notification due to my own message');
         return callback(true);
@@ -40,7 +41,7 @@ Notification.prototype.create = function (user, room, history, done) {
       return callback(null, userModel, roomModel, historyModel);
     },
 
-    function checkPreferences(userModel, roomModel, historyModel, callback) {
+    function checkPreferences (userModel, roomModel, historyModel, callback) {
       if (userModel.preferencesValue('room:notif:nothing:__what__'.replace('__what__', roomModel.name))
         || !userModel.preferencesValue('room:notif:roompromote:__what__'.replace('__what__', roomModel.name))) {
         logger.debug('roomPromoteType.create no notification due to user preferences');
@@ -50,7 +51,7 @@ Notification.prototype.create = function (user, room, history, done) {
       return callback(null, userModel, roomModel, historyModel);
     },
 
-    function checkStatus(userModel, roomModel, historyModel, callback) {
+    function checkStatus (userModel, roomModel, historyModel, callback) {
       that.facade.app.statusService.getStatusByUid(userModel.id, function (err, status) {
         if (err)
           return callback(err);
@@ -59,11 +60,11 @@ Notification.prototype.create = function (user, room, history, done) {
       });
     },
 
-    function save(userModel, roomModel, historyModel, status, callback) {
+    function save (userModel, roomModel, historyModel, status, callback) {
       var model = NotificationModel.getNewModel(that.type, userModel, {event: historyModel._id});
       model.to_browser = true;
-      model.to_email = ( !userModel.getEmail() ? false : ( status ? false : userModel.preferencesValue("notif:channels:email")));
-      model.to_mobile = (status ? false : userModel.preferencesValue("notif:channels:mobile"));
+      model.to_email = ( !userModel.getEmail() ? false : ( status ? false : userModel.preferencesValue('notif:channels:email')));
+      model.to_mobile = (status ? false : userModel.preferencesValue('notif:channels:mobile'));
 
       if (that.facade.options.force === true) {
         model.to_email = true;
@@ -75,13 +76,13 @@ Notification.prototype.create = function (user, room, history, done) {
           return callback(err);
 
         logger.info('roomPromoteType.create notification created: ' + that.type + ' for ' + userModel.username);
-        that.sendToBrowser(model, userModel, roomModel, historyModel, function() {
+        that.sendToBrowser(model, userModel, roomModel, historyModel, function () {
           return callback(null);
         });
       });
     }
 
-  ], function(err) {
+  ], function (err) {
     if (err && err !== true)
       return done(err);
 
@@ -124,7 +125,7 @@ Notification.prototype.sendEmail = function (model, done) {
 
     utils.retrieveHistoryRoom(model.data.event.toString()),
 
-    function send(history, callback) {
+    function send (history, callback) {
       var method, data;
       switch (model.type) {
         case 'roomop':
@@ -163,7 +164,7 @@ Notification.prototype.sendEmail = function (model, done) {
       _.bind(method, emailer)(model.user.getEmail(), data, callback);
     },
 
-    function persist(callback) {
+    function persist (callback) {
       model.sent_to_email = true;
       model.sent_to_email_at = new Date();
       model.save(callback);

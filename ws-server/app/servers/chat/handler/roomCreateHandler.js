@@ -1,3 +1,4 @@
+'use strict';
 var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
 var async = require('async');
 var _ = require('underscore');
@@ -6,18 +7,17 @@ var conf = require('../../../../../config/index');
 var keenio = require('../../../../../shared/io/keenio');
 var common = require('@dbrugne/donut-common');
 
-var Handler = function(app) {
+var Handler = function (app) {
   this.app = app;
 };
 
-module.exports = function(app) {
+module.exports = function (app) {
   return new Handler(app);
 };
 
 var handler = Handler.prototype;
 
-handler.call = function(data, session, next) {
-
+handler.call = function (data, session, next) {
   var user = session.__currentUser__;
 
   var that = this;
@@ -83,15 +83,15 @@ handler.call = function(data, session, next) {
       });
     },
 
-    function setPreferencesOnOwner(room, callback) {
+    function setPreferencesOnOwner (room, callback) {
       user.set('preferences.room:notif:roomjoin:' + room.name, true);
       user.set('preferences.room:notif:roomtopic:' + room.name, true);
-      user.save(function(err) {
+      user.save(function (err) {
         return callback(err, room);
       });
     },
 
-    function tracking(room, callback) {
+    function tracking (room, callback) {
       var keenEvent = {
         session: {
           id: session.settings.uuid,
@@ -106,10 +106,10 @@ handler.call = function(data, session, next) {
           name: room.name
         }
       };
-      keenio.addEvent("room_creation", keenEvent, callback);
+      keenio.addEvent('room_creation', keenEvent, callback);
     }
 
-  ], function(err) {
+  ], function (err) {
     if ([
         'mandatory',
         'invalid-name',

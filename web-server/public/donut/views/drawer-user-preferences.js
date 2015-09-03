@@ -1,3 +1,4 @@
+'use strict';
 define([
   'jquery',
   'underscore',
@@ -10,7 +11,6 @@ define([
   '_templates'
 ], function ($, _, Backbone, app, common, client, currentUser, confirmationView, templates) {
   var DrawerUserPreferencesView = Backbone.View.extend({
-
     template: templates['drawer-user-preferences.html'],
 
     id: 'user-preferences',
@@ -41,7 +41,7 @@ define([
     onResponse: function (data) {
       var color = currentUser.get('color');
 
-      _.each(data.bannedUsers, function(element, index, list) {
+      _.each(data.bannedUsers, function (element, index, list) {
         list[index].avatarUrl = common.cloudinarySize(element.avatar, 30);
       });
 
@@ -67,7 +67,7 @@ define([
     onChangeValue: function (event) {
       var $target = $(event.currentTarget);
       var key = $target.attr('value');
-      var value = $target.is(":checked");
+      var value = $target.is(':checked');
 
       // Radio button particular handling
       if ($target.attr('type') == 'radio') {
@@ -85,7 +85,7 @@ define([
           that.$el.find('.errors').html($.t('global.unknownerror')).show();
           return;
         }
-      })
+      });
     },
     onDeban: function (data) {
       this.render();

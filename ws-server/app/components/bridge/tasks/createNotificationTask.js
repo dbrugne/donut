@@ -1,19 +1,20 @@
+'use strict';
 var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
 var _ = require('underscore');
 var async = require('async');
 var Notifications = require('../../notifications/index');
 var UserModel = require('../../../../../shared/models/user');
 
-module.exports = function(opts) {
+module.exports = function (opts) {
   return new Task(opts);
 };
 
-var Task = function(options) {
+var Task = function (options) {
   this.options = options;
-  this.app     = options.app;
+  this.app = options.app;
 };
 
-Task.prototype.createNotification = function(data, callback) {
+Task.prototype.createNotification = function (data, callback) {
   if (!data || !_.isObject(data))
     return callback('data should be a valid object');
   if (!data.type)
@@ -23,7 +24,7 @@ Task.prototype.createNotification = function(data, callback) {
 
   var notifier = Notifications(this.app, {force: true}).getType(data.type);
   if (!notifier)
-    return callback('Unable to find corresponding type: '+data.type);
+    return callback('Unable to find corresponding type: ' + data.type);
 
   // roommessage  : room, history
   // roomtopic    : room, history

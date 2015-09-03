@@ -1,3 +1,4 @@
+'use strict';
 define([
   'jquery',
   'underscore',
@@ -7,12 +8,11 @@ define([
   '_templates'
 ], function ($, _, Backbone, client, currentUser, templates) {
   var DrawerUserRoomPreferencesView = Backbone.View.extend({
-
     template: templates['drawer-room-preferences.html'],
 
     id: 'room-preferences',
 
-    events  : {
+    events: {
       'change .savable': 'onChangeValue',
       'change .disable-others': 'onNothing'
     },
@@ -34,8 +34,8 @@ define([
     },
     onResponse: function (data) {
       var color = this.model.get('color');
-      //// colorize drawer .opacity
-      //if (color)
+      // // colorize drawer .opacity
+      // if (color)
       //  this.trigger('color', color);
 
       var html = this.template({
@@ -49,17 +49,17 @@ define([
     },
     onNothing: function (event) {
       var $target = $(event.currentTarget);
-      var value = $target.is(":checked");
-      this.$el.find('.disableable').prop("disabled", value);
+      var value = $target.is(':checked');
+      this.$el.find('.disableable').prop('disabled', value);
     },
     onChangeValue: function (event) {
       var $target = $(event.currentTarget);
       var key = $target.attr('value');
-      var value = $target.is(":checked");
+      var value = $target.is(':checked');
 
       // Radio button particular handling
       if ($target.attr('type') === 'radio') {
-        value = (key.substr(key.lastIndexOf(':')+1) === 'true');
+        value = (key.substr(key.lastIndexOf(':') + 1) === 'true');
         key = key.substr(0, key.lastIndexOf(':'));
       }
 

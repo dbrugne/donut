@@ -1,3 +1,4 @@
+'use strict';
 define([
   'jquery',
   'underscore',
@@ -5,11 +6,9 @@ define([
   'libs/donut-debug',
   '_templates'
 ], function ($, _, Backbone, donutDebug, templates) {
-
   var debug = donutDebug('donut:input');
 
   var InputImagesView = Backbone.View.extend({
-
     template: templates['input-images.html'],
 
     images: '',
@@ -61,25 +60,25 @@ define([
 
       var that = this;
       cloudinary.openUploadWidget(options, function (err, result) {
-          if (err) {
-            if (err.message && err.message === 'User closed widget') {
-              return;
-            }
-            debug('cloudinary error: ', err);
+        if (err) {
+          if (err.message && err.message === 'User closed widget') {
+            return;
           }
-          if (!result) {
-            return debug('cloudinary result is empty!');
-          }
-
-          _.each(result, function (uploaded) {
-            // render preview
-            that.$preview.find('.add-image').before(that.template({data: uploaded}));
-            // add to collection
-            that.images[uploaded.public_id] = uploaded;
-            // show preview
-            that.showPreview();
-          });
+          debug('cloudinary error: ', err);
         }
+        if (!result) {
+          return debug('cloudinary result is empty!');
+        }
+
+        _.each(result, function (uploaded) {
+          // render preview
+          that.$preview.find('.add-image').before(that.template({data: uploaded}));
+          // add to collection
+          that.images[uploaded.public_id] = uploaded;
+          // show preview
+          that.showPreview();
+        });
+      }
       );
     },
     onRemoveImage: function (event) {

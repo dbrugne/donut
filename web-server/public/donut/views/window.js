@@ -1,3 +1,4 @@
+'use strict';
 define([
   'jquery',
   'underscore',
@@ -10,7 +11,6 @@ define([
   'collections/onetoones'
 ], function ($, _, Backbone, app, common, client, currentUser, rooms, onetoones) {
   var WindowView = Backbone.View.extend({
-
     el: $(window),
 
     focused: true,
@@ -49,7 +49,7 @@ define([
         this.beepOn = true;
         var cb = function () {
           that.beepPlaying = false;
-        }
+        };
         this.beep = new Audio('/sounds/beep.mp3');
         this.beep.onended = cb;
       }
@@ -130,7 +130,6 @@ define([
       this.renderTitle();
     },
     onClose: function () {
-
       // sometimes we prevent exit popin
       if (this.preventPopin)
         return;
@@ -141,10 +140,10 @@ define([
 
       // only if at least one discussion is open and preferences checked
       if ((!rooms || rooms.length < 1) && (!onetoones || onetoones.length < 1) && currentUser.shouldDisplayExitPopin())
-        return $.t("chat.closeapp");
+        return $.t('chat.closeapp');
 
       if (currentUser.shouldDisplayExitPopin())
-        return $.t("chat.closemessage");
+        return $.t('chat.closemessage');
     },
 
     _getFocusedModel: function () {
@@ -317,12 +316,11 @@ define([
 
       try {
         isIE = (win.external && win.external.msIsSiteMode() !== undefined);
-      } catch (e) {
-      }
+      } catch (e) {}
 
       var messages = {
         notPinned: 'Pin current page in the taskbar in order to receive notifications',
-        notSupported: '<strong>Desktop Notifications not supported!</strong> Check supported browsers table and project\'s GitHub page.'
+        notSupported: "<strong>Desktop Notifications not supported!</strong> Check supported browsers table and project's GitHub page."
       };
 
       messages[notify.PERMISSION_DEFAULT] = '<strong>Warning!</strong> Click to allow displaying desktop notifications.';

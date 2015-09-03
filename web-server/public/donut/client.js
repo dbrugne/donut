@@ -1,14 +1,13 @@
+'use strict';
 define([
   'underscore',
   'backbone',
   'libs/donut-debug',
   'libs/pomelo'
 ], function (_, Backbone, donutDebug, pomelo) {
-
   var debug = donutDebug('donut:client');
 
   var client = _.extend({
-
     initialize: function () {
       var events = [
         // connection/reconnection
@@ -63,10 +62,10 @@ define([
         'notification:read',
         'notification:done'
       ];
-      _.each(events, _.bind(function(event) {
-        pomelo.on(event, function(data) {
+      _.each(events, _.bind(function (event) {
+        pomelo.on(event, function (data) {
           debug('io:in:' + event, data);
-          this.trigger(event,  data);
+          this.trigger(event, data);
         }, this);
       }, this));
     },
@@ -77,42 +76,42 @@ define([
      * @param host could be use to force connection on given host
      * @param port could be use to force connection on given port
      */
-    connect: function(host, port) {
+    connect: function (host, port) {
       this.trigger('connecting');
       pomelo.connect(host, port);
     },
-    disconnect: function() {
+    disconnect: function () {
       pomelo.disconnect();
     },
-    isConnected: function() {
+    isConnected: function () {
       return pomelo.isConnected();
     },
 
     // GLOBAL
     // ======================================================
 
-    home: function() {
+    home: function () {
       var that = this;
       debug('io:out:home', {});
       pomelo.request(
-          'chat.homeHandler.call',
-          {},
-          function(response) {
-            if (response.err)
-              return debug('io:in:home error: ', response);
+        'chat.homeHandler.call',
+        {},
+        function (response) {
+          if (response.err)
+            return debug('io:in:home error: ', response);
 
-            debug('io:in:home', response);
-            that.trigger('home', response);
-          }
+          debug('io:in:home', response);
+          that.trigger('home', response);
+        }
       );
     },
-    search: function(search, rooms, users, limit, light, callback) {
+    search: function (search, rooms, users, limit, light, callback) {
       var data = {
         search: search, // string to search for
         limit: (limit)
           ? limit
           : 100,
-        light: (light)  // if the search should return a light version of results or not
+        light: (light) // if the search should return a light version of results or not
           ? true
           : false,
         limit: (limit)
@@ -136,7 +135,7 @@ define([
         }
       );
     },
-    ping: function(fn) {
+    ping: function (fn) {
       var start = Date.now();
       pomelo.request(
         'chat.pingHandler.call',
@@ -462,7 +461,7 @@ define([
       pomelo.notify('chat.roomViewedHandler.call', data);
       debug('io:out:room:viewed', data);
     },
-    roomMessageSpam: function(roomId, messageId) {
+    roomMessageSpam: function (roomId, messageId) {
       var data = {room_id: roomId, event: messageId};
       debug('io:out:room:message:spam', data);
       pomelo.request(
@@ -718,7 +717,7 @@ define([
           return fn(response);
         });
     },
-    
+
     // NOTIFICATION
     // ======================================================
 

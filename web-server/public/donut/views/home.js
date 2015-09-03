@@ -1,3 +1,4 @@
+'use strict';
 define([
   'jquery',
   'underscore',
@@ -9,12 +10,11 @@ define([
   '_templates'
 ], function ($, _, Backbone, client, RoomsView, UsersView, SearchView, templates) {
   var HomeView = Backbone.View.extend({
-
     el: $('#home'),
 
     template: templates['home.html'],
 
-    initialize: function(options) {
+    initialize: function (options) {
       this.listenTo(client, 'home', this.onHome);
 
       this.render();
@@ -24,18 +24,18 @@ define([
       this.searchView = new SearchView({el: this.$el.find('.search')});
       this.listenTo(this.searchView, 'searchResults', this.onSearchResults);
     },
-    render: function() {
+    render: function () {
       var html = this.template({});
       this.$el.html(html);
       return this;
     },
-    onHome: function(data) {
+    onHome: function (data) {
       // render both views even if no data to empty results list if no results
       // or empty result
       this.roomsView.render(data);
       this.usersView.render(data);
     },
-    onSearchResults: function(data) {
+    onSearchResults: function (data) {
       data.search = true;
       this.onHome(data);
     }
