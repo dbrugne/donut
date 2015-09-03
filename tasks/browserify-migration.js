@@ -4,7 +4,10 @@ var fs = require('fs');
 var path = require('path');
 
 module.exports = function (grunt) {
+  grunt.loadNpmTasks('grunt-extend-config');
+  grunt.loadNpmTasks('grunt-contrib-copy');
 
+  // .js migration
   var fromPath = './web-server/public/donut';
   var toPath = './web-server/public/web';
   var exclude = [
@@ -50,7 +53,6 @@ module.exports = function (grunt) {
         grunt.log.error('unable to find ' + file + ' type');
     });
   };
-
   var convertFile = function (from, to) {
     grunt.log.ok('convert file ' + from + ' to ' + to);
     var content = fs.readFileSync(from, {encoding: 'UTF-8'});
@@ -144,9 +146,26 @@ module.exports = function (grunt) {
     fs.writeFileSync(to, source, {flag: 'w+'});
   };
 
+  // template (copy)
+  grunt.extendConfig({
+    copy: {
+      templates: {
+        files: [
+          {
+            expand: true,
+            cwd: './web-server/public/donut/templates',
+            src: ['*.html', '**/*.html'],
+            dest: './web-server/public/web/templates'
+          }
+        ]
+      }
+    }
+  });
+
   grunt.registerTask('browserify-migration', 'Replace old mention markup with new one', function () {
     grunt.log.ok('starting');
     scanDir(fromPath);
+    grunt.task.run('copy:templates');
   });
 
 }
