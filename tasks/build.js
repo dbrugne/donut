@@ -1,27 +1,25 @@
-var async = require('async');
 var _ = require('underscore');
 var path = require('path');
 var fs = require('fs');
 
 module.exports = function (grunt) {
-  grunt.loadNpmTasks("grunt-extend-config");
+  grunt.loadNpmTasks('grunt-extend-config');
   grunt.loadNpmTasks('grunt-browserify');
   grunt.loadNpmTasks('grunt-contrib-jst');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
 
   // locales
-  grunt.registerTask('i18next', function() {
+  grunt.registerTask('i18next', function () {
     var locales = {};
     var localesPath = './locales';
     var languages = fs.readdirSync(localesPath);
     _.each(languages, function (l) {
       locales[l] = {};
       var namespaces = fs.readdirSync(path.join(localesPath, l));
-      _.each(namespaces, function(_ns) {
+      _.each(namespaces, function (_ns) {
         var ns = _ns.replace('.json', '');
-        var json = JSON.parse(fs.readFileSync(path.join(localesPath, l, _ns)));
-        locales[l][ns] = json;
+        locales[l][ns] = JSON.parse(fs.readFileSync(path.join(localesPath, l, _ns)));
       });
     });
     locales = _.omit(locales, ['404', 'title', 'meta', 'email']);
@@ -85,7 +83,7 @@ module.exports = function (grunt) {
           sourceMap: false
         },
         files: {
-          'web-server/public/build.js': ['web-server/public/web/bundle.js']
+          'web-server/public/web/bundle.js': ['web-server/public/web/bundle.js']
         }
       }
     }
@@ -102,8 +100,19 @@ module.exports = function (grunt) {
   });
   grunt.registerTask('chrono-end', function () {
     var duration = Date.now() - grunt.config.chronoStart;
-    var stats = fs.statSync('web-server/public/web/bundle.js')
-    grunt.log.ok('built in ' + duration + 'ms, size: ' + stats['size']/1024 + 'ko');
+    var stats = fs.statSync('web-server/public/web/bundle.js');
+    grunt.log.ok('built in ' + duration + 'ms, size: ' + stats['size'] / 1024 + 'ko');
+
+    // parts analysis
+    // var string = fs.readFileSync('web-server/public/web/bundle.js', {encoding: 'UTF-8'});
+    // var parts = string.split('[function(require,module,exports){');
+    // _.each(parts, function (p) {
+    //   if (p.length <= 1024 * 30) {
+    //     return;
+    //   }
+    //   grunt.log.ok('p is ' + Math.floor(p.length / 1024) + ' ko');
+    //   grunt.log.ok(p.substr(0, 100).replace('\n', ''));
+    // });
   });
 
   grunt.registerTask('build', 'Build Web client', [
@@ -117,8 +126,8 @@ module.exports = function (grunt) {
     'chrono-interval',
     'concat:donut',
     'chrono-interval',
-    //'uglify:donut',
-    //'chrono-interval',
+    'uglify:donut',
+    'chrono-interval',
     'chrono-end'
   ]);
 };
