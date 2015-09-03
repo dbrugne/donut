@@ -1,12 +1,13 @@
+'use strict';
 var colors = [
-  {name: 'HKS 1 K',  hex: '#ffe263'},
-  {name: 'HKS 2 K',  hex: '#ffe300'},
-  {name: 'HKS 3 K',  hex: '#ffdb00'},
-  {name: 'HKS 4 K',  hex: '#ffc900'},
-  {name: 'HKS 5 K',  hex: '#ffb800'},
-  {name: 'HKS 6 K',  hex: '#ff8f00'},
-  {name: 'HKS 7 K',  hex: '#ff7100'},
-  {name: 'HKS 8 K',  hex: '#ff6400'},
+  {name: 'HKS 1 K', hex: '#ffe263'},
+  {name: 'HKS 2 K', hex: '#ffe300'},
+  {name: 'HKS 3 K', hex: '#ffdb00'},
+  {name: 'HKS 4 K', hex: '#ffc900'},
+  {name: 'HKS 5 K', hex: '#ffb800'},
+  {name: 'HKS 6 K', hex: '#ff8f00'},
+  {name: 'HKS 7 K', hex: '#ff7100'},
+  {name: 'HKS 8 K', hex: '#ff6400'},
   {name: 'HKS 10 K', hex: '#ff4c02'},
   {name: 'HKS 11 K', hex: '#ff9b75'},
   {name: 'HKS 12 K', hex: '#f33b1d'},
@@ -91,12 +92,12 @@ var colors = [
 
 module.exports = {
   list: colors,
-  toString: function() {
+  toString: function () {
     var list = [];
-    for (var i=0; i<colors.length; i++) {
+    for (var i = 0; i < colors.length; i++) {
       var color = colors[i];
       list.push("'" + color.hex + "'");
     }
-    return '['+list.join(',')+']';
+    return '[' + list.join(',') + ']';
   }
 };

@@ -1,3 +1,4 @@
+'use strict';
 var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
 var async = require('async');
 var _ = require('underscore');
@@ -16,15 +17,13 @@ module.exports = function (app) {
 var handler = Handler.prototype;
 
 handler.call = function (data, session, next) {
-
   var user = session.__currentUser__;
 
   var that = this;
 
   async.waterfall([
 
-    function check(callback) {
-
+    function check (callback) {
       if (!data.id)
         return callback('id parameter is mandatory for notifications:done');
 
@@ -39,13 +38,13 @@ handler.call = function (data, session, next) {
       });
     },
 
-    function markAsDone(notification, callback) {
+    function markAsDone (notification, callback) {
       Notifications(that.app).markNotificationsAsDone(user.id, [notification.id], function (err) {
         return callback(err, notification);
       });
     },
 
-    function broadcast(notification, callback) {
+    function broadcast (notification, callback) {
       var event = {
         notification: notification.id
       };

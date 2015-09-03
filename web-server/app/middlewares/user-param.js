@@ -1,23 +1,24 @@
+'use strict';
 var async = require('async');
 var _ = require('underscore');
 var User = require('../../../shared/models/user');
 var Room = require('../../../shared/models/room');
 var conf = require('../../../config/index');
 
-module.exports = function(req, res, next, username) {
+module.exports = function (req, res, next, username) {
+  var data = {};
 
   async.waterfall([
 
-    function check(callback) {
+    function check (callback) {
       if (!username)
         return callback('404');
 
       return callback(null);
     },
 
-    function retrieve(callback) {
-
-      User.findByUsername(username).exec(function(err, user) {
+    function retrieve (callback) {
+      User.findByUsername(username).exec(function (err, user) {
         if (err)
           return callback(err);
 
@@ -29,42 +30,47 @@ module.exports = function(req, res, next, username) {
 
     },
 
-    function prepare(user, callback) {
-
+    function prepare (user, callback) {
       // avatar & poster
-      user.avatar = user._avatar(160);
-      user.poster = user._poster();
+      data.id = user.id;
+      data.username = user.username;
+      data.avatar = user._avatar(160);
+      data.poster = user._poster();
+      data.color = user.color;
+      data.bio = user.bio;
+      data.location = user.location;
+      data.website = user.website;
 
       // url
-      user.url = req.protocol + '://' + conf.fqdn + '/user/' + (''+user.username).toLocaleLowerCase();
-      user.chat = req.protocol + '://' + conf.fqdn + '/!#user/' + (''+user.username);
-      user.discuss = req.protocol + '://' + conf.fqdn + '/user/discuss/' + (''+user.username);
+      var ident = ('' + user.username).toLocaleLowerCase();
+      data.url = req.protocol + '://' + conf.fqdn + '/user/' + ident;
+      data.chat = req.protocol + '://' + conf.fqdn + '/!#user/' + ident;
+      data.discuss = req.protocol + '://' + conf.fqdn + '/user/discuss/' + ident;
 
       return callback(null, user);
 
     },
 
-    function rooms(user, callback) {
-
+    function rooms (user, callback) {
       var q = Room.find({$or: [
-        {owner: user._id},
-        {op: {$in: [user._id]}},
-        {users: {$in: [user._id]}}
+          {owner: user._id},
+          {op: {$in: [user._id]}},
+          {users: {$in: [user._id]}}
       ]}, 'name owner op avatar color description')
         .populate('owner', 'username');
-      q.exec(function(err, rooms) {
+      q.exec(function (err, rooms) {
         if (err)
-          return callback('Error while retrieving rooms for user profile: '+err);
+          return callback('Error while retrieving rooms for user profile: ' + err);
 
         if (!rooms || rooms.length < 1)
           return callback(null, user);
 
         var list = [];
 
-        _.each(rooms, function(dbroom) {
+        _.each(rooms, function (dbroom) {
           var room = dbroom.toJSON();
           if (room.owner)
-            room.owner.url = req.protocol + '://' + conf.fqdn + '/user/' + (''+room.owner.username).toLocaleLowerCase();
+            room.owner.url = req.protocol + '://' + conf.fqdn + '/user/' + ('' + room.owner.username).toLocaleLowerCase();
 
           room.avatar = dbroom._avatar(80);
           room.url = (room.name)
@@ -74,17 +80,16 @@ module.exports = function(req, res, next, username) {
           list.push(room);
         });
 
-        user.roomsList = list;
-        user.hasRooms = true;
+        data.roomsList = list;
+        data.hasRooms = true;
         return callback(null, user);
 
       });
     }
 
-  ], function(err, user) {
-
+  ], function (err, user) {
     if (err == '404') {
-      return res.render('404', {}, function(err, html) {
+      return res.render('404', {}, function (err, html) {
         res.status(404).send(html);
       });
     }
@@ -94,9 +99,9 @@ module.exports = function(req, res, next, username) {
       return res.redirect('/');
     }
 
-    req.requestedUser = user;
+    req.requestedUser = data;
     next();
 
   });
 
-}
+};

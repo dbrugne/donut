@@ -1,3 +1,4 @@
+'use strict';
 define([
   'jquery',
   'underscore',
@@ -9,17 +10,15 @@ define([
   'models/current-user',
   '_templates'
 ], function ($, _, Backbone, donutDebug, keyboard, common, client, currentUser, templates) {
-
   var debug = donutDebug('donut:message-edit');
 
   var MessageEditView = Backbone.View.extend({
-
     template: templates['message-edit.html'],
 
     events: {
-      'click .message-form .enter' : 'onSubmit',
-      'click .message-form .esc'   : 'onEscape',
-      'keydown .form-message-edit' : 'onKeydown'
+      'click .message-form .enter': 'onSubmit',
+      'click .message-form .esc': 'onEscape',
+      'keydown .form-message-edit': 'onKeydown'
     },
 
     initialize: function (options) {
@@ -29,8 +28,9 @@ define([
       this.$text = this.$el.find('.text');
       this.$textEdited = this.$el.find('.text-edited');
       this.$messageEdit = this.$el.find('.message-edit');
+      this.$images = this.$el.find('.images');
 
-      if (this.$el.data('edited'))
+      if (this.$el.data('edited') || this.$textEdited)
         this.$textEdited.remove();
 
       this.$messageEdit.html(this.template);
@@ -67,7 +67,7 @@ define([
     remove: function () {
       this.model.trigger('inputFocus'); // refocus discussion input field
       $('html').off('click', this.onClickOutsideHandler);
-      if (this.$el.data('edited'))
+      if (this.$el.data('edited') || this.$textEdited)
         this.$text.append(this.$textEdited);
       this.$text.removeClass('hidden');
       this.$messageForm.remove();
@@ -86,10 +86,11 @@ define([
         return;
       }
 
-      if (this.model.get('type') == 'room') {
-        client.roomMessageEdit(this.model.get('name'), messageId, message);
+      var isImages = (this.$images.html() !== undefined);
+      if (this.model.get('type') === 'room') {
+        client.roomMessageEdit(this.model.get('id'), messageId, message, isImages);
       } else {
-        client.userMessageEdit(this.model.get('username'), messageId, message);
+        client.userMessageEdit(this.model.get('id'), messageId, message, isImages);
       }
 
       this.model.trigger('editMessageClose');
@@ -114,9 +115,9 @@ define([
         .css('height',
           (2 + this.$formMessageEdit.prop('scrollHeight')) + 'px');
     },
-    htmlSmileyToText: function(html) {
-      var $html = $('<div>'+html+'</div>');
-       _.each($html.find('.smilify'), function(e) {
+    htmlSmileyToText: function (html) {
+      var $html = $('<div>' + html + '</div>');
+      _.each($html.find('.smilify'), function (e) {
         $(e).replaceWith($.smilifyGetSymbolFromCode($(e).data('smilify-code')));
       });
       return $html.text();

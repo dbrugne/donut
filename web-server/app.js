@@ -1,6 +1,9 @@
-if (process.env.NODE_ENV !== 'development')
+'use strict';
+if (process.env.NODE_ENV !== 'development') {
   require('newrelic');
+}
 
+// middleware declaration order is VERY important to avoid useless computing
 var debug = require('debug')('donut:web');
 var express = require('express');
 var errors = require('./app/middlewares/errors');
@@ -24,16 +27,12 @@ var facebookLocale = require('./app/middlewares/facebooklocale');
 var cors = require('cors');
 var browserifyMiddleware = require('browserify-middleware');
 
-/****************************************************************************
- * Order of middleware is VERY important to avoid useless computing/storage *
- ****************************************************************************/
-
 var app = express();
 app.enable('trust proxy'); // nginx
 
 app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(cors()); // allow requests from mobile client (@todo: whitelist allowed origins URLs)
-app.use(less(__dirname+'/public', { force: conf.less.force }));
+app.use(less(__dirname + '/public', { force: conf.less.force }));
 app.use(express.static(path.join(__dirname, '../node_modules/socket.io-client'))); // => require('socket.io-client');
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(logger('dev'));
@@ -99,6 +98,7 @@ app.use(require('./app/routes/room-profile'));
 app.use(require('./app/routes/chat'));
 app.use(require('./app/routes/contact-form'));
 app.use(require('./app/routes/static'));
+app.use(require('./app/routes/create'));
 
 // admin routes
 app.use(require('./app/dashboard/index'));
@@ -109,6 +109,6 @@ app.use(errors('500', app));
 
 // Launch HTTP server
 var port = process.env.PORT || 3000;
-var server = app.listen(port, function() {
+var server = app.listen(port, function () {
   debug('Express server listening on port ' + server.address().port);
 });

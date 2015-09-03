@@ -1,81 +1,111 @@
+'use strict';
 var _ = require('underscore');
 var Room = require('../../../shared/models/room');
 var conf = require('../../../config/index');
 
-module.exports = function(req, res, next, roomname) {
+module.exports = function (req, res, next, roomname) {
   if (roomname == undefined || roomname == '') {
-    res.render('404', {}, function(err, html) {
+    res.render('404', {}, function (err, html) {
       res.send(404, html);
     });
   }
 
-  Room.findByName('#'+roomname)
+  Room.findByName('#' + roomname)
     .populate('owner', 'username avatar color location website facebook')
     .populate('op', 'username avatar color location website facebook')
     .populate('users', 'username avatar color location website facebook')
-    .exec(function(err, room) {
+    .exec(function (err, model) {
       if (err) {
-        req.flash('error', err)
+        req.flash('error', err);
         return res.redirect('/');
       }
 
-      if (room) {
-        // avatar & poster
-        room.avatar = room._avatar(160);
-        room.poster = room._poster();
+      if (model) {
+        var room = {
+          id: model.id,
+          name: model.name,
+          permanent: model.permanent,
+          avatar: model._avatar(160),
+          poster: model._poster(),
+          posterBlured: model._poster(true),
+          color: model.color,
+          topic: model.topic,
+          description: model.description,
+          website: model.website,
+          created_at: model.created_at,
+          lastjoin_at: model.lastjoin_at
+        };
 
-        // url
-        room.url = req.protocol + '://' + conf.fqdn + '/room/' + room.name.replace('#', '').toLocaleLowerCase();
-        room.chat = req.protocol + '://' + conf.fqdn + '/!#room/' + room.name.replace('#', '');
-        room.join = req.protocol + '://' + conf.fqdn + '/room/join/' + room.name.replace('#', '');
+        // urls
+        var ident = model.name.replace('#', '').toLocaleLowerCase();
+        room.url = req.protocol + '://' + conf.fqdn + '/room/' + ident;
+        room.chat = req.protocol + '://' + conf.fqdn + '/!#room/' + ident;
+        room.join = req.protocol + '://' + conf.fqdn + '/room/join/' + ident;
 
         // owner
-        if (room.owner && room.owner._id) {
-          room.owner.avatar = room.owner._avatar(80);
-          room.owner.url = (room.owner.username)
-            ? req.protocol + '://' + conf.fqdn + '/user/' + (''+room.owner.username).toLocaleLowerCase()
-            : '';
-          room.owner.isOwner = true;
-          room.owner.isOp = false; // could not be both
+        var ownerId;
+        if (model.owner && model.owner._id) {
+          ownerId = model.owner.id;
+          room.owner = {
+            id: model.owner.id,
+            username: model.owner.username,
+            avatar: model.owner._avatar(80),
+            color: model.owner.color,
+            url: (model.owner.username)
+              ? req.protocol + '://' + conf.fqdn + '/user/' + ('' + model.owner.username).toLocaleLowerCase()
+              : '',
+            isOwner: true,
+            isOp: false // could not be both
+          };
         }
 
         // op
-        if (room.op && room.op.length) {
+        var opIds = [];
+        if (model.op && model.op.length) {
           var opList = [];
-          var opIds = [];
-          _.each(room.op, function(op) {
-            if (room.owner && room.owner._id && room.owner.id == op.id) {
+          _.each(model.op, function (_model) {
+            if (ownerId && ownerId === _model.id)
               return;
-            }
 
-            op.avatar = op._avatar(80);
-            op.url = (op.username)
-              ? req.protocol + '://' + conf.fqdn + '/user/' + (''+op.username).toLocaleLowerCase()
-              : '';
-            op.isOp = true;
-            op.isOwner = false;
-            opIds.push(op._id.toString());
+            var op = {
+              id: _model.id,
+              username: _model.username,
+              avatar: _model._avatar(80),
+              color: _model.color,
+              url: (_model.username)
+                ? req.protocol + '://' + conf.fqdn + '/user/' + ('' + _model.username).toLocaleLowerCase()
+                : '',
+              isOp: true,
+              isOwner: false
+            };
+
+            opIds.push(_model.id);
             opList.push(op);
           });
           room.op = opList;
         }
 
         // users
-        if (room.users && room.users.length) {
+        if (model.users && model.users.length) {
           var usersList = [];
-          _.each(room.users, function(u) {
-            if (room.owner && room.owner._id && room.owner.id == u.id)
+          _.each(model.users, function (_model) {
+            if (ownerId && ownerId === _model.id)
               return;
-            if (room.op && opIds && opIds.indexOf(u._id.toString()) !== -1)
+            if (opIds && opIds.indexOf(_model.id) !== -1)
               return;
 
-            u.avatar = u._avatar(80);
-            u.url = (u.username)
-              ? req.protocol + '://' + conf.fqdn + '/user/' + (''+u.username).toLocaleLowerCase()
-              : '';
-            u.isOp = false;
-            u.isOwner = false;
-            usersList.push(u);
+            var user = {
+              id: _model.id,
+              username: _model.username,
+              avatar: _model._avatar(80),
+              color: _model.color,
+              url: (_model.username)
+                ? req.protocol + '://' + conf.fqdn + '/user/' + ('' + _model.username).toLocaleLowerCase()
+                : '',
+              isOp: false,
+              isOwner: false
+            };
+            usersList.push(user);
           });
           room.users = usersList;
           room.usersCount = usersList.length;
@@ -84,10 +114,10 @@ module.exports = function(req, res, next, roomname) {
         req.room = room;
         next();
       } else {
-        res.render('404', {}, function(err, html) {
+        res.render('404', {}, function (err, html) {
           res.status(404).send(html);
         });
       }
 
     });
-}
+};

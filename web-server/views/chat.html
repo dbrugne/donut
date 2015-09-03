@@ -1,5 +1,5 @@
 <%- partial('head') %>
-<body class="body-chat">
+<body class="body-chat dc-default">
     <div id="fb-root"></div>
     <div id="chat">
         <div id="alert" role="banner">
@@ -9,30 +9,23 @@
             </div>
         </div>
         <div id="color-default"></div>
-        <nav id="color" class="navbar navbar-default navbar-fixed-top" data-colorify="<%- room_default_color %>" data-colorify-background="color">
+        <nav id="color" class="navbar navbar-default navbar-fixed-top dc-back">
             <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="/!#"><img class="logo" src="/images/logo-onecolor.svg" alt="<%= t('title.chat') %>"> <span class="beta">alpha</span></a>
-                </div>
-                <div id="navbar" class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        <li><a href="/!#">Home</a></li>
+                <div id="navbar">
+                    <a class="navbar-brand-a hidden-xs hidden-sm" href="/!#"><img class="logo" src="/images/logo-bordered-small.png" alt="<%= t('title.chat') %>"> <span class="beta">alpha</span></a>
+
+                    <ul class="nav navbar-nav-ul hidden-xs hidden-sm">
+                        <li><a href="/!#" class="dc-text-contrast">Home</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <li id="mute">
+                        <li id="mute" class="hidden-xs hidden-sm">
                             <a href="#" class="toggle">
-                                <i class="icon icon-volume-up" data-colorify-text="contrast"></i>
+                                <i class="icon icon-volume-up dc-text-contrast"></i>
                             </a>
                         </li>
                         <li id="notifications" class="dropdown empty">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                <i class="icon icon-globe" data-colorify-text="contrast"></i>
+                                <i class="icon icon-globe dc-text-contrast"></i>
                                 <span class="badge hide-empty"></span>
                             </a>
                             <div class="dropdown-menu p0" role="menu">
@@ -57,7 +50,7 @@
                         </li>
                         <li class="help">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                <i class="icon icon-question-circle" data-colorify-text="contrast"></i>
+                                <i class="icon icon-menu dc-text-contrast"></i>
                             </a>
                             <ul class="dropdown-menu" role="menu">
                                 <li class="arrow-up"></li>
@@ -73,38 +66,37 @@
         </nav>
         <div class="row">
             <div id="left">
-                <div id="block-current-user">
-                    <div class="avatar">
-                        <img class="open-user-profile" data-username="<%- user.username %>" src="<%- user.avatar %>" alt="@<%- user.username %> avatar">
-                    </div>
-                    <div class="content">
-                        <div class="username">
-                            @<%- user.username %>
-                        </div>
-                        <div class="connection">
-                            <i class="icon icon-circle status offline"></i> <%= t('global.offline') %>
-                        </div>
-                        <div class="dropdown">
-                            <button class="dropdown-toggle">
-                                <i class="icon icon-chevron-down"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div><!-- /#block-current-user -->
-                <hr>
-                <div id="block-actions">
-                    <a class="go-to-search"><%= t('chat.actions.search') %></a> <%= t('global.or') %> <a class="open-create-room"><%= t('chat.actions.create') %></a> <%= t('chat.actions.adonut') %>
-                </div>
-                <hr>
-                <div id="block-discussions">
-                    <div class="list">
-                        <!--discussions content-->
-                    </div>
-                </div>
+
+                <ul class="page-sidebar-menu">
+
+                    <li id="block-current-user">
+                        <a href="#" class="avatar dropdown-toggle visible-xs visible-sm" data-toggle="dropdown" aria-expanded="false" role="button">
+                            <img src="<%- user.avatar %>" alt="@<%- user.username %> avatar">
+                        </a>
+                    </li><!-- /#block-current-user -->
+                    <li class="visible-xs visible-sm">
+                        <a class="go-to-search"><i class="icon icon-search"></i></a>
+                        <a class="open-create-room"><i class="icon icon-pencil"></i></a>
+                        <hr>
+                    </li>
+
+                    <li id="block-actions">
+                        <hr>
+                        <a class="go-to-search"><%= t('chat.actions.search') %></a> <%= t('global.or') %> <a class="open-create-room"><%= t('chat.actions.create') %></a> <%= t('chat.actions.adonut') %>
+                        <hr>
+                    </li>
+
+                    <li id="block-discussions">
+                        <ul class="list">
+                            <!--discussions content-->
+                        </ul>
+                    </li>
+                </ul>
+
             </div><!-- /#left -->
             <div id="center">
                 <div id="drawer">
-                    <div class="opacity">
+                    <div class="opacity dc-back-opacity">
                         <div class="wrap">
                             <div class="content"></div>
                             <img src="/images/svg/close.svg" class="close" alt="close">
@@ -167,8 +159,33 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
+    <div id="room-users-modal" class="modal fade" role="dialog" aria-labelledby="userModal" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title"><%= t('chat.topic.users') %></h4>
+                </div>
+                <div class="modal-body">
+                    <ul class="list">
+                        <li class="loader">
+                            <div style="margin: 0 auto; display: block; width: 24px; ">
+                                <i class="icon icon-spinner icon-spin center-block" style=" font-size: 24px; "></i>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /#room-users-modal -->
     <%- partial('contact') %>
-
+    <div class="responsive">
+        <div class="device-xs visible-xs visible-xs-block"></div>
+        <div class="device-sm visible-sm visible-sm-block"></div>
+        <div class="device-md visible-md visible-md-block"></div>
+        <div class="device-lg visible-lg visible-lg-block"></div>
+    </div><!-- /.responsive -->
     <script src="/javascripts/old-browser-update.js"></script>
     <script src="//widget.cloudinary.com/global/all.js"></script>
     <script src='https://www.google.com/recaptcha/api.js' async defer></script>
@@ -197,9 +214,8 @@
             cloudinary.setCloudName('<%- cloudinary.cloud_name %>');
         }());
     </script>
-    <script src="/web.js"></script>
+    <script data-main="<%- build %>" src="/vendor/requirejs/require.js"></script>
     <%= googleanalytics %>
-
 </body>
 </html>
 <!-- made with ♥ -->

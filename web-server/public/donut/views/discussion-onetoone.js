@@ -1,3 +1,4 @@
+'use strict';
 define([
   'jquery',
   'underscore',
@@ -7,10 +8,11 @@ define([
   'views/discussion',
   'views/modal-confirmation',
   '_templates'
-], function ($, _, Backbone, common, client, DiscussionView, confirmationView, _templates) {
+], function ($, _, Backbone, common, client, DiscussionView, confirmationView, templates) {
   var OneToOnePanelView = DiscussionView.extend({
+    template: templates['discussion-onetoone.html'],
+    templateDropdown: templates['dropdown-one-actions.html'],
 
-    template: _templates['discussion-onetoone.html'],
     events: {
       'click .ban-user': 'banUser',
       'click .deban-user': 'debanUser'
@@ -28,23 +30,24 @@ define([
       this.colorify();
       this.onStatus();
     },
-    _remove: function (model) {
-    },
+    _remove: function (model) {},
     _renderData: function () {
       var data = this.model.toJSON();
 
       data.avatar = common.cloudinarySize(data.avatar, 100);
       data.url = '/user/' + ('' + data.username).toLocaleLowerCase();
 
+      data.dropdown = this.templateDropdown({
+        data: data
+      });
+
       return data;
     },
-    _render: function () {
-    },
+    _render: function () {},
     _focus: function () {
       this.$el.find('.ago span').momentify('fromnow'); // refocus an offline one after few times
     },
-    _unfocus: function () {
-    },
+    _unfocus: function () {},
 
     /**
      * Update user details methods
@@ -69,13 +72,13 @@ define([
     },
     onStatus: function () {
       if (this.model.get('status') == 'online') {
-        this.$el.find('.header .status-block em').text($.t("global.online"));
+        this.$el.find('.header .status-block em').text($.t('global.online'));
         this.$el.find('.header .status')
           .removeClass('offline online')
           .addClass('online');
         this.$el.find('.ago').hide();
       } else {
-        this.$el.find('.header .status-block em').text($.t("global.offline"));
+        this.$el.find('.header .status-block em').text($.t('global.offline'));
         this.$el.find('.header .status')
           .removeClass('offline online')
           .addClass('offline');
@@ -86,7 +89,7 @@ define([
         this.$el.find('.ago').show();
       }
     },
-    onBannedChange: function(model, value, options) {
+    onBannedChange: function (model, value, options) {
       if (value === true) {
         this.$('#onetoone .user').addClass('is-banned');
       } else {

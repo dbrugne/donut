@@ -1,10 +1,10 @@
+'use strict';
 define([
   'underscore',
   'backbone'
 ], function (_, Backbone) {
   var EventModel = Backbone.Model.extend({
-
-    default: function() {
+    default: function () {
       return {
         // id
         type: '',
@@ -16,7 +16,7 @@ define([
      * Hydrate model from .data property
      * @param options
      */
-    initialize: function(options) {
+    initialize: function (options) {
       var data = this.get('data');
       if (!data)
         data = {};
@@ -38,28 +38,30 @@ define([
         : false;
       this.set({new: isNew});
 
-      if (this.get('type') == 'user:message') {
-        data.user_id  = data.from_user_id;
+      if (this.get('type') == 'user:message' || this.get('type') == 'user:me') {
+        data.user_id = data.from_user_id;
         data.username = data.from_username;
-        data.avatar   = data.from_avatar;
-        data.color    = data.from_color;
+        data.avatar = data.from_avatar;
+        data.color = data.from_color;
       }
 
       this.set({data: data});
     },
 
-    getGenericType: function() {
+    getGenericType: function () {
       if ([
-        'room:message',
-        'user:message'
-      ].indexOf(this.get('type')) !== -1)
+          'room:message',
+          'room:me',
+          'user:message',
+          'user:me'
+        ].indexOf(this.get('type')) !== -1)
         return 'message';
       else if ([
-        'room:in',
-        'room:out',
-        'user:online',
-        'user:offline'
-      ].indexOf(this.get('type')) !== -1)
+          'room:in',
+          'room:out',
+          'user:online',
+          'user:offline'
+        ].indexOf(this.get('type')) !== -1)
         return 'inout';
       else
         return 'standard';

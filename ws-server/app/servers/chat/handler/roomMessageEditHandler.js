@@ -1,3 +1,4 @@
+'use strict';
 var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
 var async = require('async');
 var _ = require('underscore');
@@ -6,18 +7,17 @@ var conf = require('../../../../../config');
 var common = require('@dbrugne/donut-common');
 var Notifications = require('../../../components/notifications');
 
-var Handler = function(app) {
+var Handler = function (app) {
   this.app = app;
 };
 
-module.exports = function(app) {
+module.exports = function (app) {
   return new Handler(app);
 };
 
 var handler = Handler.prototype;
 
-handler.call = function(data, session, next) {
-
+handler.call = function (data, session, next) {
   var user = session.__currentUser__;
   var room = session.__room__;
   var event = session.__event__;
@@ -26,18 +26,18 @@ handler.call = function(data, session, next) {
 
   async.waterfall([
 
-    function check(callback) {
-      if (!data.name)
-        return callback('require name param');
+    function check (callback) {
+      if (!data.room_id)
+        return callback('id is mandatory');
 
       if (!data.event)
         return callback('require event param');
 
-      if (!data.message)
+      if (!data.message && !data.images)
         return callback('require message param');
 
       if (!room)
-        return callback('unable to retrieve room: ' + data.name);
+        return callback('unable to retrieve room: ' + data.room_id);
 
       if (!event)
         return callback('unable to retrieve event: ' + data.event);
@@ -54,42 +54,42 @@ handler.call = function(data, session, next) {
       if ((Date.now() - event.time) > conf.chat.message.maxedittime * 60 * 1000)
         return callback(user.id + ' tries to edit an old message: ' + event.id);
 
-      var message = inputUtil.filter(data.message, 512);
+      if (data.message) {
+        var message = inputUtil.filter(data.message, 512);
 
-      if (!message)
-        return callback('empty message (no text)');
+        if (!message)
+          return callback('empty message (no text)');
 
-      if (message === event.data.message)
-        return callback('posted message is the same as original');
+        if (message === event.data.message)
+          return callback('posted message is the same as original');
+      }
 
-      inputUtil.mentions(message, function(err, message, markups) {
+      inputUtil.mentions(message, function (err, message, markups) {
         return callback(err, message, markups.users);
       });
     },
 
-    function persist(message, mentions, callback) {
+    function persist (message, mentions, callback) {
       event.update({
-        $set: { edited : true,  edited_at: new Date(), 'data.message': message }
-      }, function(err) {
+        $set: { edited: true,  edited_at: new Date(), 'data.message': message }
+      }, function (err) {
         return callback(err, message, mentions);
       });
     },
 
-    function broadcast(message, mentions, callback) {
+    function broadcast (message, mentions, callback) {
       var eventToSend = {
         name: room.name,
+        room_id: room.id,
         event: event.id,
         message: message,
-        images: (event.data.images)
-          ? event.data.images
-          : null
       };
-      that.app.globalChannelService.pushMessage('connector', 'room:message:edit', eventToSend, room.name, {}, function(err) {
+      that.app.globalChannelService.pushMessage('connector', 'room:message:edit', eventToSend, room.name, {}, function (err) {
         return callback(err, mentions);
       });
     },
 
-    function mentionNotification(mentions, callback) {
+    function mentionNotification (mentions, callback) {
       if (!mentions || !mentions.length)
         return callback(null);
 
@@ -111,4 +111,3 @@ handler.call = function(data, session, next) {
   });
 
 };
-

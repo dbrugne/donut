@@ -1,21 +1,21 @@
+'use strict';
 var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
 var async = require('async');
 var _ = require('underscore');
 var roomEmitter = require('../../../util/roomEmitter');
 var Notifications = require('../../../components/notifications');
 
-var Handler = function(app) {
+var Handler = function (app) {
   this.app = app;
 };
 
-module.exports = function(app) {
+module.exports = function (app) {
   return new Handler(app);
 };
 
 var handler = Handler.prototype;
 
-handler.call = function(data, session, next) {
-
+handler.call = function (data, session, next) {
   var user = session.__currentUser__;
   var devoicedUser = session.__user__;
   var room = session.__room__;
@@ -24,64 +24,63 @@ handler.call = function(data, session, next) {
 
   async.waterfall([
 
-    function check(callback) {
-      if (!data.name)
-        return callback('require room name param');
+    function check (callback) {
+      if (!data.room_id)
+        return callback('room id is mandatory');
 
-      if (!data.username)
-        return callback('require username param');
+      if (!data.user_id && !data.username)
+        return callback('user id is mandatory');
 
       if (!room)
-        return callback('unable to retrieve room ' + data.name);
+        return callback('unable to retrieve room ' + data.room_id);
 
       if (!room.isOwnerOrOp(user.id) && session.settings.admin !== true)
-        return callback('this user ' + user.id + ' isn\'t able to voice another user in ' + data.name);
+        return callback('this user ' + user.id + " isn't able to voice another user in " + room.name);
 
       if (!devoicedUser)
         return callback('unable to retrieve devoicedUser: ' + user.id);
 
       if (room.isOwner(devoicedUser))
-        return callback(devoicedUser.username + ' is owner and can not be voiced in '+room.name);
+        return callback(devoicedUser.username + ' is owner and can not be voiced in ' + room.name);
 
       if (!room.isDevoice(devoicedUser.id))
-        return callback('user '+devoicedUser.username+' is already voiced in '+room.name);
+        return callback('user ' + devoicedUser.username + ' is already voiced in ' + room.name);
 
       return callback(null);
     },
 
-    function persist(callback) {
+    function persist (callback) {
       if (!room.devoices || !room.devoices.length)
-        return callback('there is no user to devoice in this room: '+room.name);
+        return callback('there is no user to devoice in this room: ' + room.name);
 
-      var subDocument = _.find(room.devoices, function(devoice) {
+      var subDocument = _.find(room.devoices, function (devoice) {
         if (devoice.user.toString() == devoicedUser.id)
           return true;
       });
       room.devoices.id(subDocument._id).remove();
-      room.save(function(err) {
+      room.save(function (err) {
         return callback(err);
       });
     },
 
-    function historizeAndEmit(callback) {
+    function broadcast (callback) {
       var event = {
-        name: room.name,
-        id: room.id,
-        by_user_id : user.id,
+        by_user_id: user.id,
         by_username: user.username,
-        by_avatar  : user._avatar(),
+        by_avatar: user._avatar(),
         user_id: devoicedUser.id,
         username: devoicedUser.username,
         avatar: devoicedUser._avatar()
       };
-      roomEmitter(that.app, 'room:voice', event, callback);
+
+      roomEmitter(that.app, user, room, 'room:voice', event, callback);
     },
 
-    function notification(sentEvent, callback) {
+    function notification (sentEvent, callback) {
       Notifications(that.app).getType('roomvoice').create(devoicedUser, room, sentEvent.id, callback);
     }
 
-  ], function(err) {
+  ], function (err) {
     if (err) {
       logger.error('[room:voice] ' + err);
       return next(null, {code: 500, err: err});

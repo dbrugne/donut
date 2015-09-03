@@ -8,6 +8,7 @@
     "landing": "DONUT - Discussions instantanées autour de vos centres d'intérêt",
     "profile": "Profil de __subtitle__ - DONUT vous permet de discuter autour de vos centres d'intérêt et d'animer vos communautés !",
     "chat": "DONUT",
+    "create": "Créer un nouveau donut",
     "static": {
       "faq": "Foire aux questions - DONUT",
       "eutc": "Conditions Générales d'Utilisation - DONUT",
@@ -41,6 +42,9 @@
     "logout": "déconnexion",
     "tologout": "déconnecter",
     "home": "retourner à l'accueil",
+    "menu": "menu",
+    "search": "Chercher un Donut",
+    "create": "Créer un Donut",
     "signup": "créer un compte",
     "forgot": "mot de passe oublié",
     "join": "rejoindre",
@@ -73,7 +77,7 @@
       "before": "Vous souhaitez vous",
       "after": " ?"
     },
-    "switchlanguage": "Language :",
+    "switchlanguage": "Langage:",
     "unknownerror": "Erreur inconnue, veuillez réessayer"
   },
   "login": {
@@ -295,12 +299,12 @@
   },
   "profile": {
     "room": {
-      "ownerops": "Les habitués",
+      "ownerops": "Les tauliers",
       "now": "En ce moment",
       "nouser": "Pas d'utilisateur dans le donut",
       "disclaimer": {
         "before": "Cette page est le profil du donut ",
-        "after": "sur la plateforme de chat <a href=\"/\">DONUT.me</a>. DONUT.me vous permet de rejoindre ou créer un salon de discussion thématique (donut) sur ce qui vous plait. Vous pouvez y discuter avec des gens qui partagent vos centres d'intérêt"
+        "after": "sur la plateforme de chat <a href=\"/\">DONUT.me</a>. <a href=\"/\">DONUT.me</a> vous permet de rejoindre ou créer un salon de discussion thématique (donut) sur ce qui vous plait. Vous pouvez y discuter avec des gens qui partagent vos centres d'intérêt"
       },
       "permalink": "Permalien de ce profil",
       "editlink": "Editer",
@@ -311,7 +315,7 @@
       "hisrooms": "Ses donuts",
       "disclaimer": {
         "before": "Cette page est le profil de l'utilisateur",
-        "after": "sur la plateforme de chat <a href=\"/\">DONUT.me</a>. DONUT.me vous permet de rejoindre ou créer un salon de discussion thématique (donut) sur ce qui vous plait. Vous pouvez y discuter avec des gens qui partagent vos centres d'intérêt"
+        "after": "sur la plateforme de chat <a href=\"/\">DONUT.me</a>. <a href=\"/\">DONUT.me</a> vous permet de rejoindre ou créer un salon de discussion thématique (donut) sur ce qui vous plait. Vous pouvez y discuter avec des gens qui partagent vos centres d'intérêt"
       },
       "permalink": "Permalien de ce profil",
       "editlink": "Editer",
@@ -350,6 +354,7 @@
       "account": "mon compte",
       "edit": "mon profil",
       "notifications": "notifications",
+      "close": "Fermer la discussion",
       "preferences": "préférences & notifications",
       "bannedusers": "utilisateurs bloqués",
       "update": "Editer",
@@ -388,13 +393,14 @@
       "roomstitle": "Voici les donuts correspondant à votre recherche, vous pouvez aussi en <a class='open-create-room'>créer un nouveau</a> :",
       "userstitle": "Utilisateurs correspondants"
     },
-    "userscount": "<strong>__count__</strong> utilisateur dans ce donut",
-    "userscount_plural": "<strong>__count__</strong> utilisateurs dans ce donut",
+    "userscount": "<strong>__count__</strong> <span>utilisateur dans ce donut</span>",
+    "userscount_plural": "<strong>__count__</strong> <span>utilisateurs dans ce donut</span>",
     "usersoffline": "Utilisateurs hors ligne",
     "topic": {
       "label": "En ce moment",
       "placeholder": "Entrez ici le sujet de la conversation, l'humeur, l'ambiance ...",
-      "default": "<span class='default'>Aucun sujet, cliquez ici pour modifier</span>"
+      "default": "<span class='default'>Aucun sujet, cliquez ici pour modifier</span>",
+      "users": "Liste des utilisateurs de ce donut"
     },
     "owner": {
       "is": "Cet utilisateur est le propriétaire de ce donut"
@@ -437,6 +443,37 @@
       "cancel": "Non, j'annule",
       "confirm": "Oui, je confirme"
     },
+    "commands": {
+      "join": "Rejoindre le donut",
+      "leave": "Quitter un donut (ou celui-ci)",
+      "topic": "Changer le sujet de ce donut",
+      "op": "Nommer un utilisateur modérateur de ce donut",
+      "deop": "Retirer un utilisateur des modérateurs de ce donut",
+      "kick": "Expulser un utilisateur de ce donut",
+      "ban": "Expulser et bannir un utilisateur de ce donut",
+      "deban": "Débannir un utilisateur de ce donut",
+      "block": "Bloque les messages privés d'un utilisateur",
+      "deblock": "Débloquer les messages privés d'un utilisateur",
+      "voice": "Rendre la parole à un utilisateur de ce donut",
+      "devoice": "Rendre muet un utilisateur dans ce donut",
+      "msg": "Envoyer un message",
+      "profile": "Afficher le profil du donut ou de l'utilisateur",
+      "me": "Qu'êtes vous en train de faire ?",
+      "ping": "pong",
+      "clear": "Supprime tous message visible depuis l'interface",
+      "random": "Affiche une valeur aléatoire (entre 1 et 100 par défaut)",
+      "help": "ce message",
+      "errors": {
+        "parameters": "Paramètre(s) invalide(s).",
+        "invalidcommand": "Cette commande n'existe pas.",
+        "invalidusername": "Cette utilisateur n'existe pas.",
+        "invalidroom": "Ce donut n'existe pas.",
+        "commandaccess": "Vous ne pouvez pas utiliser cette commande ici."
+      }
+    },
+    "ping": {
+      "message": "La platforme DONUT a répondu en __ms__ ms"
+    },
     "notifications": {
       "hello": "Vous entrez dans",
       "disconnected": "Vous avez été deconnecté du serveur, veuillez patienter",
@@ -458,19 +495,20 @@
       "count" : "<strong class=\"nb\"></strong><strong> Nouvelle(s)</strong> Notification(s)",
       "tag-as-read" : "Marquer comme lue(s)",
       "empty": "Vous n'avez pas de nouvelles notifications",
+      "random": "a fait un lancé de",
       "dropdown": {
-        "op": "<a href=\"#room/__roomname__\">Vous êtes maintenant modérateur de </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
-        "deop": "<a href=\"#room/__roomname__\">Vous n'êtes plus modérateur de </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
-        "kick": "<a href=\"#room/__roomname__\">Vous êtes expulsé de </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
-        "ban": "<a href=\"#room/__roomname__\">Vous êtes banni de </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
-        "deban": "<a href=\"#room/__roomname__\">Vous n'êtes plus banni de </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
-        "voice": "<a href=\"#room/__roomname__\">Vous avez retrouvé la parole dans </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
-        "devoice": "<a href=\"#room/__roomname__\">Vous êtes muet dans </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
-        "roomjoin": "<span class=\"name open-user-profile\" data-username=\"__username__\">@__username__</span><a href=\"#room/__roomname__\"> rejoint </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
-        "roomtopic": "<a href=\"#room/__roomname__\">Nouveau sujet dans </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
-        "roommessage": "<a href=\"#room/__roomname__\">Nouveaux messages dans </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
-        "usermention": "<a href=\"#room/__roomname__\">Vous êtes mentionné dans </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
-        "usermessage": "<span class=\"name open-user-profile\" data-username=\"__username__\">@__username__</span>: <a href=\"#user/__username__\">__message__</a>"
+        "op": "<a href=\"#room/__roomname__\">Vous êtes maintenant modérateur de </a><span class=\"name open-room-profile\" data-room-id=\"#__room_id__\">#__roomname__</span>",
+        "deop": "<a href=\"#room/__roomname__\">Vous n'êtes plus modérateur de </a><span class=\"name open-room-profile\" data-room-id=\"#__room_id__\">#__roomname__</span>",
+        "kick": "<a href=\"#room/__roomname__\">Vous êtes expulsé de </a><span class=\"name open-room-profile\" data-room-id=\"#__room_id__\">#__roomname__</span>",
+        "ban": "<a href=\"#room/__roomname__\">Vous êtes banni de </a><span class=\"name open-room-profile\" data-room-id=\"#__room_id__\">#__roomname__</span>",
+        "deban": "<a href=\"#room/__roomname__\">Vous n'êtes plus banni de </a><span class=\"name open-room-profile\" data-room-id=\"#__room_id__\">#__roomname__</span>",
+        "voice": "<a href=\"#room/__roomname__\">Vous n'êtes plus muet dans </a><span class=\"name open-room-profile\" data-room-id=\"#__room_id__\">#__roomname__</span>",
+        "devoice": "<a href=\"#room/__roomname__\">Vous êtes muet dans </a><span class=\"name open-room-profile\" data-room-id=\"#__room_id__\">#__roomname__</span>",
+        "roomjoin": "<span class=\"name open-user-profile\" data-user-id=\"__user_id__\">@__username__</span><a href=\"#room/__roomname__\"> rejoint </a><span class=\"name open-room-profile\" data-room-id=\"#__room_id__\">#__roomname__</span>",
+        "roomtopic": "<a href=\"#room/__roomname__\">Nouveau sujet dans </a><span class=\"name open-room-profile\" data-room-id=\"#__room_id__\">#__roomname__</span>",
+        "roommessage": "<a href=\"#room/__roomname__\">Nouveaux messages dans </a><span class=\"name open-room-profile\" data-room-id=\"#__room_id__\">#__roomname__</span>",
+        "usermention": "<a href=\"#room/__roomname__\">Vous êtes mentionné dans </a><span class=\"name open-room-profile\" data-room-id=\"#__room_id__\">#__roomname__</span>",
+        "usermessage": "<span class=\"name open-user-profile\" data-user-id=\"__user_id__\">@__username__</span>: <a href=\"#user/__username__\">__message__</a>"
       },
       "desktop": {
         "roomop": "Vous êtes modérateur de __roomname__",
@@ -605,6 +643,7 @@
       "new": "Nouveau mot de passe",
       "confirm": "Confirmer",
       "current": "Mot de passe actuel",
+      "defined": "Mot de passe défini: ",
       "error": {
         "confirm": "Les deux mots de passe ne sont pas identiques.",
         "length": "Le mot de passe doit faire entre 6 et 50 caractères de long.",
@@ -687,7 +726,7 @@
     },
     "room": {
       "delete": {
-        "link": "Vous pouvez également supprimer ce donut <a class='open-room-delete' data-room-name=\"__name__\">en cliquant ici</a>.",
+        "link": "Vous pouvez également supprimer ce donut <a class='open-room-delete' data-room-id=\"__id__\">en cliquant ici</a>.",
         "title": "Supprimer",
         "info": [
           "Vous êtes sur le point de supprimer ce donut, cette opération est immédiate et irréversible.<br><br>",

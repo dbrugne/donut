@@ -1,128 +1,137 @@
+'use strict';
 var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
 var async = require('async');
 var _ = require('underscore');
 
-var Handler = function(app) {
+var Handler = function (app) {
   this.app = app;
 };
 
-module.exports = function(app) {
-	return new Handler(app);
+module.exports = function (app) {
+  return new Handler(app);
 };
 
 var handler = Handler.prototype;
 
-handler.call = function(data, session, next) {
-
+handler.call = function (data, session, next) {
   var room = session.__room__;
 
-	var that = this;
+  var read = {};
 
-	async.waterfall([
+  var that = this;
 
-		function check(callback) {
-			if (!data.name)
-				return callback('name is mandatory');
+  async.waterfall([
 
-			if (!room)
-				return callback('unable to retrieve room: ' + data.name);
+    function check (callback) {
+      if (!data.room_id && !data.name)
+        return callback('room_id or name is mandtory');
 
-			return callback(null);
-		},
+      if (!room)
+        return callback('unknown');
 
-		function prepare(callback) {
-			// owner
-			var owner = {};
-			if (room.owner) {
-				owner = {
-					user_id: room.owner._id,
-					username: room.owner.username,
-					avatar: room.owner._avatar()
-				};
-			}
+      return callback(null);
+    },
 
-			// op
-			var ops = [];
-			if (room.op && room.op.length > 0) {
-				_.each(room.op, function(op) {
-					ops.push({
-						user_id: op.id,
-						username: op.username,
-						avatar: op._avatar()
-					});
-				});
-			}
+    function prepare (callback) {
+      // owner
+      var owner = {};
+      if (room.owner) {
+        owner = {
+          user_id: room.owner._id,
+          username: room.owner.username,
+          avatar: room.owner._avatar()
+        };
+      }
 
-			// ban
-			var bans = [];
-			if (room.bans && room.bans.length > 0) {
-				_.each(room.bans, function(ban) {
-					bans.push({
-						user_id: ban.user.id,
-						username: ban.user.username,
-						avatar: ban.user._avatar(),
-						banned_at: ban.banned_at,
-						reason: ban.reason
-					});
-				});
-			}
+      // op
+      var ops = [];
+      if (room.op && room.op.length > 0) {
+        _.each(room.op, function (op) {
+          ops.push({
+            user_id: op.id,
+            username: op.username,
+            avatar: op._avatar()
+          });
+        });
+      }
 
-			// devoices
-			var devoices = [];
-			if (room.devoices && room.devoices.length) {
-				_.each(room.devoices, function(devoice) {
-					devoices.push({
-						user_id: devoice.user.id,
-						username: devoice.user.username,
-						avatar: devoice.user._avatar(),
-						devoiced_at: devoice.devoiced_at,
-						reason: devoice.reason
-					});
-				});
-			}
+      // ban
+      var bans = [];
+      if (room.bans && room.bans.length > 0) {
+        _.each(room.bans, function (ban) {
+          bans.push({
+            user_id: ban.user.id,
+            username: ban.user.username,
+            avatar: ban.user._avatar(),
+            banned_at: ban.banned_at,
+            reason: ban.reason
+          });
+        });
+      }
 
-			// users
-			var users = [];
-			if (room.users && room.users.length > 0) {
-				_.each(room.users, function(u) {
-					users.push({
-						user_id: u.id,
-						username: u.username,
-						avatar: u._avatar()
-					});
-				});
-			}
+      // devoices
+      var devoices = [];
+      if (room.devoices && room.devoices.length) {
+        _.each(room.devoices, function (devoice) {
+          devoices.push({
+            user_id: devoice.user.id,
+            username: devoice.user.username,
+            avatar: devoice.user._avatar(),
+            devoiced_at: devoice.devoiced_at,
+            reason: devoice.reason
+          });
+        });
+      }
 
-			var roomData = {
-				name: room.name,
-				id: room.id,
-				owner: owner,
-				op: ops,
-				bans: bans,
-				devoices: devoices,
-				users: users,
-				avatar: room._avatar(),
-				poster: room._poster(),
-				color: room.color,
-				website: room.website,
-				topic: room.topic,
-				description: room.description,
-				created: room.created_at
-			};
+      // users
+      var users = [];
+      if (room.users && room.users.length > 0) {
+        _.each(room.users, function (u) {
+          users.push({
+            user_id: u.id,
+            username: u.username,
+            avatar: u._avatar()
+          });
+        });
+      }
 
-			if (session.settings.admin === true) {
-				roomData.visibility = room.visibility || false;
-				roomData.priority = room.priority || 0;
-			}
+      read = {
+        name: room.name,
+        id: room.id,
+        room_id: room.id,
+        owner: owner,
+        op: ops,
+        bans: bans,
+        devoices: devoices,
+        users: users,
+        avatar: room._avatar(),
+        poster: room._poster(),
+        color: room.color,
+        website: room.website,
+        topic: room.topic,
+        description: room.description,
+        created: room.created_at
+      };
 
-			return callback(null, roomData);
-		}
+      if (session.settings.admin === true) {
+        read.visibility = room.visibility || false;
+        read.priority = room.priority || 0;
+      }
 
-	], function(err, roomData) {
-		if (err)
-			return next(null, {code: 500, err: err});
+      return callback(null);
+    }
 
-		return next(null, roomData);
-	});
+  ], function (err) {
+    if (err) {
+      logger.error('[room:read] ' + err);
+
+      err = (['invalid-name', 'unknown'].indexOf(err) !== -1)
+        ? err
+        : 'internal';
+      return next(null, { code: 500, err: err });
+    }
+
+    return next(null, read);
+  });
 
 };

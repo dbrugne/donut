@@ -8,6 +8,7 @@
     "landing": "DONUT - Instant chat about your interests",
     "profile": "__subtitle__'s profile - DONUT is made for you to chat about your interests and engage your communities!",
     "chat": "DONUT",
+    "create": "Create a new donut",
     "static": {
       "faq": "Frequently asked questions - DONUT",
       "eutc": "Terms and Conditions - DONUT",
@@ -41,6 +42,9 @@
     "logout": "log out",
     "tologout": "log out",
     "home": "go back to homepage",
+    "menu": "menu",
+    "search": "search a donut",
+    "create": "create a donut",
     "signup": "sign up",
     "forgot": "forgotten password",
     "join": "join",
@@ -142,7 +146,8 @@
         "<span>share opinions</span>",
         "<span>debate</span>",
         "<span>joke</span>",
-        "<span>laugh</span>"
+        "<span>laugh</span>",
+        "<span>communicate</span>"
       ],
       "line3": "about",
       "line4": [
@@ -274,12 +279,12 @@
   },
   "profile": {
     "room": {
-      "ownerops": "The regulars",
+      "ownerops": "The bosses",
       "now": "Currently",
       "nouser": "No user in this donut",
       "disclaimer": {
         "before": "This page is the profile of the donut ",
-        "after": "on the chat platform <a href=\"/\">DONUT.me</a>. On DONUT.me you can join or create a thematic chat room (a donut) about whatever you like. You can chat with people who share your interests."
+        "after": "on the chat platform <a href=\"/\">DONUT.me</a>. On <a href=\"/\">DONUT.me</a> you can join or create a thematic chat room (a donut) about whatever you like. You can chat with people who share your interests."
       },
       "permalink": "Permalink of this profile",
       "editlink": "Edit",
@@ -290,7 +295,7 @@
       "hisrooms": "Active in these donuts",
       "disclaimer": {
         "before": "This page is the profile of the user ",
-        "after": "on the chat platform <a href=\"/\">DONUT.me</a>. On DONUT.me you can join or create a thematic chat room (a donut) about whatever you like. You can chat with people who share your interests."
+        "after": "on the chat platform <a href=\"/\">DONUT.me</a>. On <a href=\"/\">DONUT.me</a> you can join or create a thematic chat room (a donut) about whatever you like. You can chat with people who share your interests."
       },
       "permalink": "Permalink of this profile",
       "editlink": "Edit",
@@ -329,6 +334,7 @@
       "account": "my account",
       "edit": "my profile",
       "notifications": "notifications",
+      "close": "Close the discussion",
       "preferences": "settings and notifications",
       "bannedusers": "locked users",
       "update": "Edit",
@@ -373,7 +379,8 @@
     "topic": {
       "label": "Currently",
       "placeholder": "Enter the conversation topic, the mood,...",
-      "default": "<span class='default'>No topic, click here to edit</span>"
+      "default": "<span class='default'>No topic, click here to edit</span>",
+      "users": "User's list of this Donut"
     },
     "owner": {
       "is": "This user is the creator of this donut."
@@ -416,6 +423,37 @@
       "cancel": "No, cancel",
       "confirm": "Yes, confirm"
     },
+    "commands": {
+      "join": "Join a donut",
+      "leave": "Leave this donut or another one",
+      "topic": "Change topic of current donut",
+      "op": "Make moderator in this donut",
+      "deop": "Remove from moderators of this donut",
+      "kick": "Kick out a user from this donut",
+      "ban": "Kick out and ban a user from this donut",
+      "deban": "Unban a user from this donut",
+      "block": "Block user private messages to you",
+      "deblock": "Deblock private messages from a user",
+      "voice": "Unmute a user from this donut",
+      "devoice": "Mute a user from this donut",
+      "msg": "Send a message",
+      "profile": "Open donut or user profile",
+      "me": "What are you doing?",
+      "ping": "pong",
+      "clear": "remove all visible history from interface",
+      "random": "Display a random value (between 1 and 100 by default)",
+      "help": "this message",
+      "errors": {
+        "parameters": "Invalid parameter",
+        "invalidcommand": "Command not found",
+        "invalidusername": "User not found",
+        "invalidroom": "Donut not found",
+        "commandaccess": "You can not use this command here"
+      }
+    },
+    "ping": {
+      "message": "DONUT platform responds in __ms__ ms"
+    },
     "notifications": {
       "hello": "You enter",
       "disconnected": "You have been disconnected from the server, please wait",
@@ -438,17 +476,20 @@
       "count" : "<strong class=\"nb\"></strong><strong> New</strong> Notification(s)",
       "tag-as-read" : "Tag as read",
       "empty": "You have no new notification",
+      "random": "rolls",
       "dropdown": {
-        "op": "<a href=\"#room/__roomname__\">You are a moderator of </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
-        "deop": "<a href=\"#room/__roomname__\">You are no longer a moderator of </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
-        "kick": "<a href=\"#room/__roomname__\">You were kicked out of </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
-        "ban": "<a href=\"#room/__roomname__\">You were banned from </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
-        "deban": "<a href=\"#room/__roomname__\">You are no longer banned from </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
-        "roomjoin": "<span class=\"name open-user-profile\" data-username=\"__username__\">@__username__</span><a href=\"#room/__roomname__\"> joined </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
-        "roomtopic": "<a href=\"#room/__roomname__\">New topic in </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
-        "roommessage": "<a href=\"#room/__roomname__\">New message in </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
-        "usermention": "<a href=\"#room/__roomname__\">You were mentionned in </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
-        "usermessage": "<span class=\"name open-user-profile\" data-username=\"__username__\">@__username__</span>: <a href=\"#user/__username__\">__message__</a>"
+        "op": "<a href=\"#room/__roomname__\">You are a moderator of </a><span class=\"name open-room-profile\" data-room-id=\"#__room_id__\">#__roomname__</span>",
+        "deop": "<a href=\"#room/__roomname__\">You are no longer a moderator of </a><span class=\"name open-room-profile\" data-room-id=\"#__room_id__\">#__roomname__</span>",
+        "kick": "<a href=\"#room/__roomname__\">You were kicked out of </a><span class=\"name open-room-profile\" data-room-id=\"#__room_id__\">#__roomname__</span>",
+        "ban": "<a href=\"#room/__roomname__\">You were banned from </a><span class=\"name open-room-profile\" data-room-id=\"#__room_id__\">#__roomname__</span>",
+        "deban": "<a href=\"#room/__roomname__\">You are no longer banned from </a><span class=\"name open-room-profile\" data-room-id=\"#__room_id__\">#__roomname__</span>",
+        "voice": "<a href=\"#room/__roomname__\">You are unmute in </a><span class=\"name open-room-profile\" data-room-id=\"#__room_id__\">#__roomname__</span>",
+        "devoice": "<a href=\"#room/__roomname__\">You are mute in </a><span class=\"name open-room-profile\" data-room-id=\"#__room_id__\">#__roomname__</span>",
+        "roomjoin": "<span class=\"name open-user-profile\" data-user-id=\"__user_id__\">@__username__</span><a href=\"#room/__roomname__\"> joined </a><span class=\"name open-room-profile\" data-room-id=\"#__room_id__\">#__roomname__</span>",
+        "roomtopic": "<a href=\"#room/__roomname__\">New topic in </a><span class=\"name open-room-profile\" data-room-id=\"#__room_id__\">#__roomname__</span>",
+        "roommessage": "<a href=\"#room/__roomname__\">New message in </a><span class=\"name open-room-profile\" data-room-id=\"#__room_id__\">#__roomname__</span>",
+        "usermention": "<a href=\"#room/__roomname__\">You were mentionned in </a><span class=\"name open-room-profile\" data-room-id=\"#__room_id__\">#__roomname__</span>",
+        "usermessage": "<span class=\"name open-user-profile\" data-user-id=\"__user_id__\">@__username__</span>: <a href=\"#user/__username__\">__message__</a>"
       },
       "desktop": {
         "roomop": "You are moderator of __roomname__",
@@ -574,7 +615,8 @@
         "empty": "The champ is empty"
       },
       "format": "Invalid format",
-      "new": "New E-mail"
+      "new": "New E-mail",
+      "confirm": "Confirm"
     },
     "password": {
       "label": "Your password",
@@ -582,6 +624,7 @@
       "new": "New password",
       "confirm": "Confirm",
       "current": "Current password",
+      "defined": "Password defined: ",
       "error": {
         "confirm": "Pass two passwords are not the same.",
         "length": "Password should have between 6 and 50 characters length.",
@@ -664,7 +707,7 @@
     },
     "room": {
       "delete": {
-        "link": "To delete this donut <a class='open-room-delete' data-room-name=\"__name__\"> click here</a>.",
+        "link": "To delete this donut <a class='open-room-delete' data-room-id=\"__id__\"> click here</a>.",
         "title": "Delete",
         "info": [
           "You are about to delete this donut. This action is immediate and cannot be undone.<br><br>",
@@ -700,252 +743,149 @@
     }
   },
   "email": {
-    "email": {
-      "global": {
-        "content": {
-          "team": "The DONUT.me team",
-          "ps": "P.S.: To avoid receiving these notification types, please uncheck it from your notification options in your account preferences on <a href=\"https://__fqdn__\">__fqdn__</a>. For any question, we are available on <a href=\"https://__fqdn__/!#room/help\">#help</a>"
-        }
-      },
-      "welcome": {
-        "subject": "Welcome to DONUT.me! Your account was successfully created",
-        "content": {
-          "title": "Welcome to DONUT !",
-          "disclaimer": "Congratulations! Your user account was successfully created. Now you can join us and chat around a tasty donut by clicking right here",
-          "button": "Sign in",
-          "info": "We are craving for it!"
-        }
-      },
-      "forgot": {
-        "subject": "Password reset on DONUT.me",
-        "content": {
-          "title": "Password reset on DONUT.me",
-          "disclaimer": "You are receiving this e-mail because you have requested a password reset. Please click on the following link to complete the process",
-          "button": "Reset your password",
-          "info": "If you ignore this e-mail your password will remain unchanged"
-        }
-      },
-      "passwordchanged": {
-        "subject": "Success ! Your password has been successfully changed",
-        "content": {
-          "title": "Password update",
-          "disclaimer": "You are receiving this e-mail as the final confirmation of your password change. Let's go back to DONUT.me and join tasty conversations!",
-          "button": "Sign in",
-          "info": "We are craving for it!"
-        }
-      },
-      "emailchanged": {
-        "subject": "Success ! The e-mail linked to your DONUT.me account has been successfully changed",
-        "content": {
-          "title": "Email update",
-          "disclaimer": "You are receiving this e-mail because you requested to change the e-mail linked to yout DONUT.me account. It worked perfectly! You can use it to log in:",
-          "button": "Sign in"
-        }
-      },
-      "usermessage": {
-        "subject": "You have received a private message from @__username__",
-        "content": {
-          "title": "You have received a private message from @__username__",
-          "button": "See the message on DONUT"
-        }
-      },
-      "roomop": {
-        "subject": "You were promoted to moderator in #__roomname__",
-        "content": {
-          "title": "You were promoted to moderator in #__roomname__",
-          "disclaimer": "Kudos! You are now a moderator in <strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>",
-          "disclaimer2": "It's time to practice your new super powers.",
-          "action": "…and all of that thanks to <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
-          "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Go to chat\">Go to chat</a>"
-        }
-      },
-      "roomdeop": {
-        "subject": "You are no longer a moderator of #__roomname__",
-        "content": {
-          "title": "You are no longer a moderator of #__roomname__",
-          "disclaimer": "This is sad news... But the good news is you will have more time to focus on your very own donut:)",
-          "action": "…and all of that thanks to <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
-          "button": "Return to DONUT"
-        }
-      },
-      "roomkick": {
-        "subject": "You were kicked out of #__roomname__",
-        "content": {
-          "title": "You were kicked out of #__roomname__ by @__username__",
-          "disclaimer": "That can't be a big deal. The two of you just give a big hug and everything will be fine again!",
-          "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Back to DONUT\">Back to DONUT</a>"
-        }
-      },
-      "roomban": {
-        "subject": "You were banned from #__roomname__",
-        "content": {
-          "title": "You were banned from #__roomname__ by @__username__",
-          "disclaimer": "It looks like you were not meant to be together...<br/>But you'll be fine, one lost ten found. Just pick another donut!",
-          "button": "Return to DONUT"
-        }
-      },
-      "roomdeban": {
-        "subject": "You are no longer banned from #__roomname__",
-        "content": {
-          "title": "You are no longer banned from #__roomname__",
-          "disclaimer": "You are no longer banned from <strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>.",
-          "disclaimer2": "It looks like all is well that ends well!",
-          "action": "…and all of that thanks to <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
-          "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Go to chat\">Go to chat</a>"
-        }
-      },
-      "usermessage": {
-        "subject": "New private message from @__username__",
-        "content": {
-          "title": "New private message from @__username__",
-          "disclaimer": "You have a new private message from <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">@__username__</a></strong>",
-          "button": "Go to chat"
-        }
-      },
-      "roomvoice": {
-        "subject": "You were unmuted in #__roomname__",
-        "content": {
-          "title": "You were unmuted in #__roomname__",
-          "disclaimer": "It looks like all is well that ends well!",
-          "action": "... and all of that thanks to <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
-          "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Go to chat\">Go to chat</a>"
-        }
-      },
-      "roomdevoice": {
-        "subject": "You were muted in #__roomname__",
-        "content": {
-          "title": "You were muted in #__roomname__",
-          "disclaimer": "This is sad news... You are mute in #__roomname__",
-          "action": "... and all of that thanks to <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
-          "button": "Return to DONUT"
-        }
-      },
-      "roommessage": {
-        "subject": "New messages in #__roomname__",
-        "content": {
-          "title": "New messages in #__roomname__",
-          "inroom": "<strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>",
-          "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Go to chat\">Go to chat</a>"
-        }
-      },
-      "roomjoin": {
-        "subject": "@__username__ joined #__roomname__",
-        "content": {
-          "title": "@__username__ joined #__roomname__",
-          "disclaimer": "This is one more! Let's go welcome this marvelous person the right way :).",
-          "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Go to chat\">Go to chat</a>"
-        }
-      },
-      "roomtopic": {
-        "subject": "New topic in #__roomname__",
-        "content": {
-          "title": "@__username__ has defined a new topic in #__roomname__",
-          "topic": "<strong>New topic : \"__topic__\"</strong>",
-          "disclaimer": "You must a thousand things to say about it!",
-          "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Go to chat\">Go to chat</a>"
-        }
-      },
-      "usermention": {
-        "subject": "New mention: @__username__ mentionned you in #__roomname__",
-        "content": {
-          "title": "@__username__ mentionned you in #__roomname__",
-          "disclaimer": "It's always cool to have people thinking about you! Think about replying.",
-          "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Go to chat\">Go to chat</a>"
-        }
-      },
-
-      "contact": {
-        "subject": "[DONUT] Nouveau formulaire de contact",
-        "text": [
-          "Nom : __name__",
-          "Email : __email__",
-          "Utilisateur : __user__",
-          "IP : __ip__",
-          "",
-          "__message__",
-          "",
-          "<small>Depuis __ip__ sur __fqdn__</small>"
-        ],
-        "html": [
-          "Nom : __name__<br>",
-          "Email : __email__<br>",
-          "Utilisateur : __user__<br>",
-          "<br>",
-          "__message__<br>",
-          "<br>",
-          "<small>Depuis __ip__ sur __fqdn__</small>"
-        ]
+    "global": {
+      "content": {
+        "team": "The DONUT.me team",
+        "ps": "P.S.: To avoid receiving these notification types, please uncheck it from your notification options in your account preferences on <a href=\"https://__fqdn__\">__fqdn__</a>. For any question, we are available on <a href=\"https://__fqdn__/!#room/help\">#help</a>"
       }
     },
     "welcome": {
-      "subject": "Welcome to DONUT.me! Your account was successfully created.",
-      "text": [
-        "Congratulations! Your user account was successfully created.",
-        "",
-        "Now you can join us and chat around a tasty donut by clicking right here:",
-        "",
-        "https://__fqdn__",
-        "",
-        "We are craving for it!",
-        "",
-        "The DONUT.me team",
-        "",
-        "PS : If you did not initiate this action, please report by forwarding this e-mail to __email__ or replying this e-mail."
-      ],
-      "html": [
-        "Congratualations! Your user account was successfully created.<br>",
-        "<br>",
-        "Now you can join us and chat around a tasty donut by clicking right here:<br>",
-        "<br>",
-        "<a href='https://__fqdn__'>Se connecter</a><br>",
-        "<br>",
-        "We ara craving for it!<br>",
-        "<br>",
-        "The DONUT.me team<br>",
-        "<br>",
-        "PS : If you did not initiate this action, please report by forwarding this e-mail to <a href='mailto:__email__'>__email__</a> or replying this e-mail.<br>"
-      ]
+      "subject": "Welcome to DONUT.me! Your account was successfully created",
+      "content": {
+        "title": "Welcome to DONUT !",
+        "disclaimer": "Congratulations! Your user account was successfully created. Now you can join us and chat around a tasty donut by clicking right here",
+        "button": "Sign in",
+        "info": "We are craving for it!"
+      }
     },
     "forgot": {
       "subject": "Password reset on DONUT.me",
-      "text": [
-        "You are receiving this e-mail because you have requested a password reset. Please click on the following link to complete the process",
-        "",
-        "https://__fqdn__/reset/__token__",
-        "",
-        "If you ignore this e-mail your password will remain unchanged.",
-        "",
-        "The DONUT.me team",
-        "",
-        "PS : If you did not initiate this action, please report by forwarding this e-mail to __email__ or replying this e-mail."
-      ],
-      "html": [
-        "You are receiving this e-mail because you have requested a password reset. Please click on the following link to complete the process:<br>",
-        "<br>",
-        "<a href='https://__fqdn__/reset/__token__'>Reset your password</a><br>",
-        "<br>",
-        "If you ignore this e-mail your password will remain unchanged.<br>",
-        "<br>",
-        "The DONUT.me team<br>",
-        "<br>",
-        "PS : If you did not initiate this action, please report by forwarding this e-mail to <a href='mailto:__email__'>__email__</a> or replying this e-mail.<br>"
-      ]
+      "content": {
+        "title": "Password reset on DONUT.me",
+        "disclaimer": "You are receiving this e-mail because you have requested a password reset. Please click on the following link to complete the process",
+        "button": "Reset your password",
+        "info": "If you ignore this e-mail your password will remain unchanged"
+      }
     },
     "passwordchanged": {
-      "subject": "Your password has been successfully changed.",
+      "subject": "Success ! Your password has been successfully changed",
       "content": {
         "title": "Password update",
-        "disclaimer": "You have changed your password. Your new password is now active.",
-        "button": "Click here to connect",
-        "info": "We are craving for it !"
+        "disclaimer": "You are receiving this e-mail as the final confirmation of your password change. Let's go back to DONUT.me and join tasty conversations!",
+        "button": "Sign in",
+        "info": "We are craving for it!"
       }
     },
     "emailchanged": {
-      "subject": "The e-mail linked to your DONUT.me account has been successfully changed.",
+      "subject": "Success ! The e-mail linked to your DONUT.me account has been successfully changed",
       "content": {
         "title": "Email update",
-        "disclaimer": "You have changed your email address.",
-        "button": "Click here to enjoy it!"
+        "disclaimer": "You are receiving this e-mail because you requested to change the e-mail linked to yout DONUT.me account. It worked perfectly! You can use it to log in:",
+        "button": "Sign in"
+      }
+    },
+    "roomop": {
+      "subject": "You were promoted to moderator in #__roomname__",
+      "content": {
+        "title": "You were promoted to moderator in #__roomname__",
+        "disclaimer": "Kudos! You are now a moderator in <strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>",
+        "disclaimer2": "It's time to practice your new super powers.",
+        "action": "…and all of that thanks to <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
+        "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Go to chat\">Go to chat</a>"
+      }
+    },
+    "roomdeop": {
+      "subject": "You are no longer a moderator of #__roomname__",
+      "content": {
+        "title": "You are no longer a moderator of #__roomname__",
+        "disclaimer": "This is sad news... But the good news is you will have more time to focus on your very own donut:)",
+        "action": "…and all of that thanks to <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
+        "button": "Return to DONUT"
+      }
+    },
+    "roomkick": {
+      "subject": "You were kicked out of #__roomname__",
+      "content": {
+        "title": "You were kicked out of #__roomname__ by @__username__",
+        "disclaimer": "That can't be a big deal. The two of you just give a big hug and everything will be fine again!",
+        "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Back to DONUT\">Back to DONUT</a>"
+      }
+    },
+    "roomban": {
+      "subject": "You were banned from #__roomname__",
+      "content": {
+        "title": "You were banned from #__roomname__ by @__username__",
+        "disclaimer": "It looks like you were not meant to be together...<br/>But you'll be fine, one lost ten found. Just pick another donut!",
+        "button": "Return to DONUT"
+      }
+    },
+    "roomdeban": {
+      "subject": "You are no longer banned from #__roomname__",
+      "content": {
+        "title": "You are no longer banned from #__roomname__",
+        "disclaimer": "You are no longer banned from <strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>.",
+        "disclaimer2": "It looks like all is well that ends well!",
+        "action": "…and all of that thanks to <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
+        "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Go to chat\">Go to chat</a>"
+      }
+    },
+    "roomvoice": {
+      "subject": "You were unmuted in #__roomname__",
+      "content": {
+        "title": "You were unmuted in #__roomname__",
+        "disclaimer": "It looks like all is well that ends well!",
+        "action": "... and all of that thanks to <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
+        "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Go to chat\">Go to chat</a>"
+      }
+    },
+    "roomdevoice": {
+      "subject": "You were muted in #__roomname__",
+      "content": {
+        "title": "You were muted in #__roomname__",
+        "disclaimer": "This is sad news... You are mute in #__roomname__",
+        "action": "... and all of that thanks to <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
+        "button": "Return to DONUT"
+      }
+    },
+    "usermessage": {
+      "subject": "New private message from @__username__",
+      "content": {
+        "title": "New private message from @__username__",
+        "disclaimer": "You have a new private message from <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">@__username__</a></strong>",
+        "button": "Go to chat"
+      }
+    },
+    "roommessage": {
+      "subject": "New messages in #__roomname__",
+      "content": {
+        "title": "New messages in #__roomname__",
+        "inroom": "<strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>",
+        "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Go to chat\">Go to chat</a>"
+      }
+    },
+    "roomjoin": {
+      "subject": "@__username__ joined #__roomname__",
+      "content": {
+        "title": "@__username__ joined #__roomname__",
+        "disclaimer": "This is one more! Let's go welcome this marvelous person the right way :).",
+        "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Go to chat\">Go to chat</a>"
+      }
+    },
+    "roomtopic": {
+      "subject": "New topic in #__roomname__",
+      "content": {
+        "title": "@__username__ has defined a new topic in #__roomname__",
+        "topic": "<strong>New topic : \"__topic__\"</strong>",
+        "disclaimer": "You must a thousand things to say about it!",
+        "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Go to chat\">Go to chat</a>"
+      }
+    },
+    "usermention": {
+      "subject": "New mention: @__username__ mentionned you in #__roomname__",
+      "content": {
+        "title": "@__username__ mentionned you in #__roomname__",
+        "disclaimer": "It's always cool to have people thinking about you! Think about replying.",
+        "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Go to chat\">Go to chat</a>"
       }
     },
     "contact": {
@@ -1013,6 +953,7 @@
         "desktop-refused" : "You have chosen to <strong>refuse</strong> notifications on your desktop. To modify this choice, you must modify the settings of your browser.",
         "desktop-validated" : "You have chosen to <strong>accept</strong> notifications on your desktop. To modify this choice, you must modify the settings of your browser.",
         "desktop-test": "try",
+        "desktop-notify-test": "test notification",
         "email": "Email (only if you are offline)",
         "mobile": "Mobile"
       },

@@ -1,3 +1,4 @@
+'use strict';
 define([
   'jquery',
   'underscore',
@@ -7,23 +8,22 @@ define([
   'libs/keyboard',
   'models/current-user',
   'views/input-rollup',
+  'views/input-commands',
   'views/input-typing',
   'views/input-images',
   'views/input-smileys',
   '_templates'
-], function ($, _, Backbone, common, donutDebug, keyboard, currentUser, RollupView, TypingView, ImagesView, SmileysView, templates) {
-
+], function ($, _, Backbone, common, donutDebug, keyboard, currentUser, RollupView, CommandsView, TypingView, ImagesView, SmileysView, templates) {
   var debug = donutDebug('donut:input');
 
   var DiscussionInputView = Backbone.View.extend({
-
     template: templates['input.html'],
 
     events: {
-      'keyup .editable'         : 'onKeyUp',
-      'keydown .editable'       : 'onKeyDown',
-      'input .editable'         : 'onInput',
-      'click .send'             : 'onSubmitMessage'
+      'keyup .editable': 'onKeyUp',
+      'keydown .editable': 'onKeyDown',
+      'click .send': 'onSubmitMessage',
+      'click .editable': 'onInputClicked'
     },
 
     initialize: function (options) {
@@ -33,9 +33,13 @@ define([
 
       this.render();
 
+      this.commandsView = new CommandsView({
+        model: this.model
+      });
       this.rollupView = new RollupView({
         el: this.$el,
-        model: this.model
+        model: this.model,
+        commands: this.commandsView.getCommands(this.model.get('type'))
       });
       this.typingView = new TypingView({
         el: this.$('.typing-container'),
@@ -52,6 +56,9 @@ define([
     },
 
     _remove: function () {
+      this.commandsView.remove();
+      this.rollupView.remove();
+      this.typingView.remove();
       this.imagesView.remove();
       this.smileysView.remove();
       this.remove();
@@ -64,6 +71,7 @@ define([
       }));
 
       this.$editable = this.$('.editable');
+      this.$preview = this.$('.preview');
       this.$rollup = this.$('.rollup-container');
 
       if (!this.model.isInputActive())
@@ -72,25 +80,29 @@ define([
         this.$el.removeClass('inactive');
     },
 
-    onInputActiveChange: function() {
+    onInputActiveChange: function () {
       if (!this.model.isInputActive())
         this.$el.addClass('inactive');
       else
         this.$el.removeClass('inactive');
     },
 
-    onFocus: function() {
+    onFocus: function () {
       if (this.$editable)
         this.$editable.focus();
     },
 
-    onAvatar: function(model, value, options) {
+    onAvatar: function (model, value, options) {
       this.$el.find('.avatar').prop('src', common.cloudinarySize(value, 80));
     },
 
-    onSubmitMessage: function(event) {
+    onSubmitMessage: function (event) {
       event.preventDefault();
       this.sendMessage();
+    },
+
+    onInputClicked: function (event) {
+      this.model.trigger('input:clicked');
     },
 
     /*****************************************************************************************************************
@@ -105,7 +117,7 @@ define([
      *
      * @param event
      */
-    onKeyDown: function(event) {
+    onKeyDown: function (event) {
       if (event.type != 'keydown')
         return;
 
@@ -120,14 +132,11 @@ define([
       if (data.key === keyboard.RETURN && !data.isShift)
         event.preventDefault();
 
-      // Avoid setting cursor at end of tab input
-      this.rollupView.cursorPosition = null;
-      if (data.key === keyboard.DOWN || data.key === keyboard.UP)
-        this.rollupView.cursorPosition = this.$editable.getCursorPosition();
-
       // Navigate between editable messages
       if (event.which == keyboard.UP && message === '')
         this.trigger('editPreviousInput');
+
+      this.model.trigger('inputKeyDown', event);
     },
 
     onKeyUp: function (event) {
@@ -138,8 +147,7 @@ define([
       var message = this.$editable.val();
       var images = this.imagesView.list();
 
-      // Rollup Closed
-      if (this.$rollup.html().length == 0) {
+      if (this.rollupView.isClosed()) {
         // Send message on Enter, not shift + Enter, only if there is something to send
         if (data.key == keyboard.RETURN && !data.isShift && (message.length != 0 || images.length))
           return this.sendMessage();
@@ -152,14 +160,16 @@ define([
       this.model.trigger('inputKeyUp', event);
     },
 
-    onInput: function() {
-      this.model.trigger('inputInput', event);
-    },
-
-    sendMessage: function() {
+    sendMessage: function () {
       var message = this.$editable.val();
       var images = this.imagesView.list();
-      
+
+      // check if input is a command
+      if (this.commandsView.checkInput(message) !== false) {
+        this.$editable.val('');
+        return false;
+      }
+
       // empty message and no image
       // trim to detect only whitespaces message
       if (message.trim() === '' && !images.length)
@@ -171,7 +181,7 @@ define([
         debug('message is too long');
         return false;
       }
-      
+
       // Send message to server
       this.model.sendMessage(message, images);
       this.trigger('send');

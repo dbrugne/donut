@@ -1,16 +1,16 @@
+'use strict';
 define([
   'jquery',
   'underscore',
   'backbone',
+  'models/app',
   'common',
   'client',
   'models/current-user',
-  'views/window',
   'views/modal-confirmation',
   '_templates'
-], function ($, _, Backbone, common, client, currentUser, windowView, confirmationView, templates) {
+], function ($, _, Backbone, app, common, client, currentUser, confirmationView, templates) {
   var DrawerUserPreferencesView = Backbone.View.extend({
-
     template: templates['drawer-user-preferences.html'],
 
     id: 'user-preferences',
@@ -22,9 +22,7 @@ define([
     },
 
     initialize: function (options) {
-      this.mainView = options.mainView;
-
-      this.listenTo(this.mainView, 'userDeban', this.onDeban);
+      this.listenTo(app, 'userDeban', this.onDeban);
 
       // show spinner as temp content
       this.render();
@@ -42,11 +40,8 @@ define([
     },
     onResponse: function (data) {
       var color = currentUser.get('color');
-      // colorize drawer .opacity
-      if (color)
-        this.trigger('color', color);
 
-      _.each(data.bannedUsers, function(element, index, list) {
+      _.each(data.bannedUsers, function (element, index, list) {
         list[index].avatarUrl = common.cloudinarySize(element.avatar, 30);
       });
 
@@ -63,16 +58,16 @@ define([
     },
     onPlaySound: function (event) {
       event.preventDefault();
-      windowView._play();
+      app.trigger('playSoundForce');
     },
     onTestDesktopNotify: function (event) {
       event.preventDefault();
-      windowView._desktopNotify($.t('preferences.notif.channels.desktop-notify-test'), '');
+      app.trigger('desktopNotificationForce', $.t('preferences.notif.channels.desktop-notify-test'), '');
     },
     onChangeValue: function (event) {
       var $target = $(event.currentTarget);
       var key = $target.attr('value');
-      var value = $target.is(":checked");
+      var value = $target.is(':checked');
 
       // Radio button particular handling
       if ($target.attr('type') == 'radio') {
@@ -90,7 +85,7 @@ define([
           that.$el.find('.errors').html($.t('global.unknownerror')).show();
           return;
         }
-      })
+      });
     },
     onDeban: function (data) {
       this.render();

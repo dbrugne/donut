@@ -1,62 +1,131 @@
 <% layout('profile') %>
-<input type="hidden" name="id" value="<%= room._id %>"><!-- petit curieux -->
-<div id="profile" class="room-profile">
-    <div class="cover room">
-        <a href="<%= room.url %>"><img class="avatar" src="<%= room.avatar %>" alt="<%= room.name %> avatar"></a>
-        <p class="join"><a href="<% if (!user) { %><%= room.join %><% } else { %><%= room.chat %><% } %>" <% if (room.color) { %>style="background-color: <%= room.color %>;"<% } %>><%= t('actions.join') %> <% if (room.usersCount) { %><%= room.usersCount %><% } %> <i class="icon icon-user-custom"></i></a></p>
-    </div>
-    <div class="text room">
-        <div class="name-content">
-            <a href="<%= room.url %>" class="name"><%= room.name %></a>
-            <div class="fb-like" data-href="<%= room.url %>" data-layout="button" data-action="like" data-show-faces="false" data-share="true" data-ref="profile-page"></div>
+<% var roomOpsLength = (typeof room.op !== 'undefined' ? room.op.length : 0 ) %>
+<% var roomUsersLength = (typeof room.users !== 'undefined' ? room.users.length : 0 ) %>
+<% var roomName = room.name.replace('#','') %>
+
+<div class="side dc-back" style="<% if (poster) { %>background-image: url(<%= poster %>);<% }; %>">
+    <div class="blur dc-back-darker" style="<% if (posterBlured) { %>background-image: url(<%= posterBlured %>);<% }; %>">
+        <div class="users hidden-sm hidden-xs">
+            <div class="header">
+                <p class="count">
+                    <%= t('chat.userscount', {count: (1 + roomOpsLength + roomUsersLength)}) %>
+                </p>
+            </div>
+            <hr>
+            <ul class="list">
+
+                <li>
+                    <a href="/user/<%= room.owner.username%>" class="item owner">
+                        <span class="infos">
+                            <span class="avatar open-user-profile" data-user-id="<%= room.owner.user_id %>" style="background-image: url(<%= room.owner.avatar %>)" title="<%= t('chat.owner.is') %>"></span>
+                            <span class="username open-user-profile" data-user-id="<%= room.owner.user_id %>">@<%= room.owner.username %></span>
+                        </span>
+                    </a>
+                </li>
+                <% _.each(room.op, function(user) { %>
+                <li>
+                    <a href="/user/<%= user.username%>" class="item op">
+                        <span class="infos">
+                            <span class="avatar open-user-profile" data-user-id="<%= user.user_id %>" style="background-image: url(<%= user.avatar %>)" title="<%= t('chat.op.is') %>"></span>
+                            <span class="username open-user-profile" data-user-id="<%= user.user_id %>" title="<%= t('global.'+user.status) %>">@<%= user.username %></span>
+                        </span>
+                    </a>
+                </li>
+                <% }); %>
+                <% _.each(room.users, function(user) { %>
+                <li>
+                    <a href="/user/<%= user.username%>" class="item <% if (user.is_op === true) { %>op<% }; %> <% if (user.is_owner === true) { %>owner<% }; %> <% if (user.is_devoice === true) { %> devoice<% }; %> <%= user.status %>">
+                        <span class="infos">
+                            <span class="avatar open-user-profile" data-user-id="<%= user.user_id %>" style="background-image: url(<%= user.avatar %>)" title=""></span>
+                            <span class="username open-user-profile" data-user-id="<%= user.user_id %>" title="<%= t('global.'+user.status) %>">@<%= user.username %></span>
+                        </span>
+                    </a>
+                </li>
+                <% }); %>
+
+            </ul>
+            <div class="clearfix"></div>
         </div>
-        <% if (room.owner) { %>
-        <span class="owner">
-            <%= t('global.by') %> <a href="<%= room.owner.url %>" <% if (room.color) { %>style="color: <%= room.color %>;"<% } %>>@<%= room.owner.username %></a>
-        </span>
-        <% } %>
-        <% if (room.website) { %>
-        <% if (room.owner) { %><span class="separation">|</span><% } %>
-        <a class="website" href="<%= room.website.href %>" title="<%= room.website.title %>" <% if (room.color) { %>style="color: <%= room.color %>;"<% } %>>
-            <%= room.website.title %>
-        </a>
-        <% } %>
-        <% if (room.description) { %>
-        <div class="description">
-            <p class="description-content"><%= room.description %></p>
+    </div>
+</div><!-- /.side -->
+<div class="content">
+    <div class="mini-header room visible-xs visible-sm">
+        <a href="/room/<%= roomName %>"><img class="avatar" data-room-name="<%= room.name %>" src="<%= room.avatar %>" alt="<%= room.name %> avatar"></a>
+        <a href="/room/<%= roomName %>" class="name dc-text-contrast"><%= room.name %></a>
+    </div>
+    <div class="header room">
+        <div class="overlay-ctn">
+            <a href="/room/<%= roomName %>"><img class="avatar" data-room-name="<%= room.name %>" src="<%= room.avatar %>" alt="<%= room.name %> avatar"></a>
+            <p class="join"><a class="dc-back dc-text-contrast" href="<% if (!user) { %><%= room.join %><% } else { %><%= room.chat %><% } %>"><%= t('actions.join') %> <% if (room.usersCount) { %><%= room.usersCount %><% } %> <i class="icon icon-user-custom"></i></a></p>
         </div>
-        <% } %>
-    </div>
-    <hr class="clear">
-    <hr>
-    <p class="title"><%= t('profile.room.ownerops') %></p>
-    <div class="users cards">
-        <% if (room.owner) { %><%= partial('user', {_user: room.owner}) %><% } %>
-        <% _.each(room.op, function(_op) { print(partial('user', {_user: _op}));  }); %>
-    </div>
-    <hr class="clear">
-    <hr class="push-bottom">
-    <% if (room.topic) { %>
-    <div class="room">
-        <p class="title"><%= t('profile.room.now') %></p>
-        <div class="topic">
-            <div class="topic-content"><label><%= t('chat.topic.label') %></label> <%= room.topic %></div>
+        <div class="info">
+            <a href="/room/<%= roomName %>" class="name"><%= room.name %></a>
+            <div class="share">
+                <%= t('chat.share.label') %>
+                <i class="facebook icon icon-facebook-square" data-url="<%- room.url %>" data-name="<%- room.name %>" data-avatar="<%- room.avatar %>"></i>
+                <i class="twitter icon icon-twitter-square" data-url="<%- room.url %>" data-name="<%- room.name %>"></i>
+                <i class="googleplus icon icon-google-plus-square" data-url="<%- room.url %>"></i>
+            </div>
+            <% if (room.owner && room.owner.username) { %>
+                <br>
+                <span class="owner">
+                    <%= t('global.by') %>&nbsp;<a class="dc-text" href="<%= room.owner.url %>">@<%= room.owner.username %></a>
+                </span>
+            <% } %>
+            <% if (room.website && room.website.href) { %>
+                <% if (room.owner) { %><span class="separation">|</span><% } %>
+                <span class="website dc-text">
+                    <a class="website dc-text" href="<%= room.website.href %>" title="<%= room.website.title %>">
+                    <%= room.website.title %>
+                    </a>
+                </span>
+            <% } %>
+            <% if (room.description) { %>
+                <div class="description">
+                    <p class="description-content"><%= room.description %></p>
+                </div>
+            <% } %>
         </div>
     </div>
-    <% } %>
-    <div class="users cards">
-        <% _.each(room.users, function(u) { print(partial('user', {_user: u})); }); %>
-        <% if (!room.users) { %><div class="no"><%= t('profile.room.nouser') %></div><% } %>
+    <div class="events">
+        <div class="scrollable">
+            <input type="hidden" name="id" value="<%= room._id %>"><!-- petit curieux -->
+
+            <p class="title"><%= t('profile.room.ownerops') %></p>
+            <div class="users cards">
+                <% if (room.owner) { %><%= partial('user', {_user: room.owner}) %><% } %>
+                <% _.each(room.op, function(_op) { print(partial('user', {_user: _op}));  }); %>
+                <div class="clearfix"></div>
+            </div>
+        </div>
     </div>
-    <hr class="clear">
-    <hr class="push-bottom">
-    <div class="disclaimer">
-        <p>
-            <%= t('profile.room.disclaimer.before') %>
-            <a href="<%= room.url %>"><%= room.name %></a>
-            <%= t('profile.room.disclaimer.after') %>
-        </p>
-        <a href="/"><img src="/images/logo-onecolor-gr.svg" alt="DONUT logo"></a>
+    <div class="input">
+        <div class="text-container">
+            <div class="overlay">
+                <span class="overlay-text">
+                    <a href="<% if (!user) { %><%= room.join %><% } else { %><%= room.chat %><% } %>" data-identifier="<%= room.name %>"><%= t('actions.join') %></a>
+                </span>
+            </div>
+            <div class="text">
+                <textarea class="editable" maxlength="512"></textarea>
+                <% if (typeof user !== 'undefined' && typeof user.avatar !== 'undefined') { %>
+                    <img class="avatar" src="<%= user.avatar %>">
+                <% } else { %>
+                    <img class="avatar" src="<%= userDefaultAvatar %>" alt="default avatar">
+                <% } %>
+                <div class="actions">
+                    <a class="images add-image"><i class="icon icon-camera dc-text"></i></a>
+                    <a class="images add-smiley"><i class="icon icon-smile-o dc-text"></i></a>
+                </div>
+                <a class="send dc-back dc-border"><img src="/images/input-arrow.svg" alt="send message">
+                    <span class="arrow-bottom dc-border"></span>
+                </a>
+            </div>
+        </div>
     </div>
-    <hr class="clear">
-</div>
+</div><!-- /.content -->
+
+
+
+
+

@@ -1,3 +1,4 @@
+'use strict';
 var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
 var async = require('async');
 var _ = require('underscore');
@@ -7,10 +8,9 @@ var HistoryRoomModel = require('../../../../../shared/models/historyroom');
 var HistoryOneModel = require('../../../../../shared/models/historyone');
 var common = require('@dbrugne/donut-common');
 
-var Filter = function() {
-};
+var Filter = function () {};
 
-module.exports = function() {
+module.exports = function () {
   return new Filter();
 };
 
@@ -25,19 +25,18 @@ module.exports = function() {
  * @param next
  * @returns {*}
  */
-Filter.prototype.before = function(data, session, next) {
+Filter.prototype.before = function (data, session, next) {
   if (!data)
     return next();
 
   async.parallel({
-
     currentUser: function (callback) {
       var q = UserModel.findOne({ _id: session.uid });
 
       if (data.__route__ === 'chat.preferencesReadHandler.call')
         q.populate('bans.user', 'username avatar color facebook');
 
-      q.exec(function(err, user) {
+      q.exec(function (err, user) {
         if (err)
           return callback(err);
         if (!user)
@@ -48,23 +47,44 @@ Filter.prototype.before = function(data, session, next) {
     },
 
     room: function (callback) {
-      if (!data.name || data.__route__ === 'chat.roomCreateHandler.call')
+      if (data.__route__ === 'chat.roomCreateHandler.call')
         return callback(null);
 
-      if (!common.validateName(data.name))
-        return callback('invalid room name parameter: ' + data.name);
+      if (!data.name && !data.room_id)
+        return callback(null);
 
-      var q = RoomModel.findByName(data.name);
+      if (!data.room_id && data.name && [
+          'chat.roomCreateHandler.call',
+          'chat.roomJoinHandler.call',
+          'chat.roomReadHandler.call'
+        ].indexOf(data.__route__) === -1)
+        return callback(null);
+
+      var q;
+
+      if (data.name) {
+        if (!common.validateName(data.name))
+          return callback('invalid room name parameter: ' + data.name);
+
+        q = RoomModel.findByName(data.name);
+      }
+
+      if (data.room_id) {
+        if (!common.validateObjectId(data.room_id))
+          return callback('invalid room_id parameter: ' + data.room_id);
+
+        q = RoomModel.findOne({ _id: data.room_id });
+      }
 
       if (data.__route__ === 'chat.roomJoinHandler.call')
         q.populate('owner', 'username avatar color facebook');
 
       if (data.__route__ === 'chat.roomReadHandler.call')
         q.populate('owner', 'username avatar color facebook')
-         .populate('op', 'username avatar color facebook')
-         .populate('users', 'username avatar color facebook')
-         .populate('bans.user', 'username avatar color facebook')
-         .populate('devoices.user', 'username avatar color facebook');
+          .populate('op', 'username avatar color facebook')
+          .populate('users', 'username avatar color facebook')
+          .populate('bans.user', 'username avatar color facebook')
+          .populate('devoices.user', 'username avatar color facebook');
 
       if (data.__route__ === 'chat.roomUsersHandler.call')
         q.populate('users', 'username avatar color facebook');
@@ -74,6 +94,21 @@ Filter.prototype.before = function(data, session, next) {
 
     user: function (callback) {
       if (!data.username && !data.user_id)
+        return callback(null);
+
+      if (!data.user_id && data.username && [
+          'chat.roomOpHandler.call',
+          'chat.roomDeopHandler.call',
+          'chat.roomVoiceHandler.call',
+          'chat.roomDevoiceHandler.call',
+          'chat.roomKickHandler.call',
+          'chat.roomBanHandler.call',
+          'chat.roomDebanHandler.call',
+          'chat.userBanHandler.call',
+          'chat.userDebanHandler.call',
+          'chat.userMessageHandler.call',
+          'chat.userReadHandler.call'
+        ].indexOf(data.__route__) === -1)
         return callback(null);
 
       if (data.username) {
@@ -113,9 +148,9 @@ Filter.prototype.before = function(data, session, next) {
       }
     }
 
-  }, function(err, results) {
+  }, function (err, results) {
     if (err) {
-      logger.error('[' + data.__route__.replace('chat.', '') + '] '+err);
+      logger.error('[' + data.__route__.replace('chat.', '') + '] ' + err);
       return next(err);
     }
 

@@ -1,19 +1,19 @@
+'use strict';
 var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
 var async = require('async');
 var _ = require('underscore');
 
-var Handler = function(app) {
+var Handler = function (app) {
   this.app = app;
 };
 
-module.exports = function(app) {
+module.exports = function (app) {
   return new Handler(app);
 };
 
 var handler = Handler.prototype;
 
-handler.call = function(data, session, next) {
-
+handler.call = function (data, session, next) {
   var user = session.__currentUser__;
   var room = session.__room__;
 
@@ -21,30 +21,32 @@ handler.call = function(data, session, next) {
 
   async.waterfall([
 
-    function check(callback) {
-      if (!data.name)
-        return callback('name is mandatory');
+    function check (callback) {
+      if (!data.room_id)
+        return callback('id is mandatory');
+
+      if (!room)
+        return callback('unable to retrieve room: ' + data.room_id);
 
       if (room.users.indexOf(user.id) === -1)
         return callback('this user ' + user.id + ' is not currently in room ' + room.name);
 
       if (room.isDevoice(user.id))
-        return callback('user is devoiced, he can\'t type/send message in room');
+        return callback("user is devoiced, he can't type/send message in room");
 
       return callback(null);
     },
 
-    function broadcast(callback) {
+    function broadcast (callback) {
       var typingEvent = {
-        name: room.name,
-        id: data.room_id,
+        room_id: room.id,
         user_id: user.id,
         username: user.username
       };
       that.app.globalChannelService.pushMessage('connector', 'room:typing', typingEvent, room.name, {}, callback);
     }
 
-  ], function(err) {
+  ], function (err) {
     if (err)
       logger.error('[room:typing] ' + err);
 

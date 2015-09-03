@@ -1,3 +1,4 @@
+'use strict';
 var conf = require('./config.global.js');
 
 conf.url = 'https://donut.local';

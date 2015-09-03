@@ -1,3 +1,4 @@
+'use strict';
 define([
   'underscore',
   'backbone',
@@ -6,40 +7,40 @@ define([
 ], function (_, Backbone, client, mainView) {
   var DonutRouter = Backbone.Router.extend({
     routes: {
-      '':                 'root',
-      'room/:name':       'focusRoom',
-      'user/:user':       'focusOneToOne',
-      '*default':         'default'
+      '': 'root',
+      'room/:name': 'focusRoom',
+      'user/:user': 'focusOneToOne',
+      '*default': 'default'
     },
 
     clientOnline: false,
 
-    initialize: function(options) {
+    initialize: function (options) {
       var that = this;
       // Watch for client connection state
-      this.listenTo(mainView, 'ready', function() {
+      this.listenTo(mainView, 'ready', function () {
         that.clientOnline = true;
         Backbone.history.start();
       });
-      this.listenTo(client, 'disconnect', function() {
+      this.listenTo(client, 'disconnect', function () {
         that.clientOnline = false;
         Backbone.history.stop();
       });
     },
 
-    root: function() {
+    root: function () {
       mainView.focusHome();
     },
 
-    focusRoom: function(name) {
-      mainView.focusRoomByName('#'+name);
+    focusRoom: function (name) {
+      mainView.focusRoomByName('#' + name);
     },
 
-    focusOneToOne: function(username) {
+    focusOneToOne: function (username) {
       mainView.focusOneToOneByUsername(username);
     },
 
-    default: function() {
+    default: function () {
       Backbone.history.navigate('#', {trigger: true}); // redirect on home
     }
   });

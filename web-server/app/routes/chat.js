@@ -1,3 +1,4 @@
+'use strict';
 var express = require('express');
 var router = express.Router();
 var i18next = require('../../../shared/util/i18next');
@@ -5,17 +6,16 @@ var bouncer = require('../middlewares/bouncer');
 var colors = require('../../../config/colors');
 var hello = require('../../../shared/util/helloDolly');
 
-router.get('/!', function(req, res) {
-
+router.get('/!', function (req, res) {
   // Is user authenticated
   if (!req.isAuthenticated()) {
     // set Flash message (display on profile page or landing page depending
     // requested URL hash)
-    req.flash('warning', i18next.t("chat.shouldauthenticated"));
+    req.flash('warning', i18next.t('chat.shouldauthenticated'));
 
     // render an HTML DOM that redirect browser on corresponding profile page
     return res.render('chat_track_anchor', {
-      meta: {title: i18next.t("title.chat")},
+      meta: {title: i18next.t('title.chat')},
       colors: colors.toString()
     });
   }
@@ -28,7 +28,7 @@ router.get('/!', function(req, res) {
   // ... otherwise open chat
 
   bouncer.reset(req); // cleanup bouncer (not before cause other middleware can redirect
-                      // browser before, e.g.: choose-username)
+  // browser before, e.g.: choose-username)
 
   // donut build to load
   var build = '/donut/index.js'; // default to source
@@ -36,16 +36,16 @@ router.get('/!', function(req, res) {
     try {
       var last = require('../../public/build/last'); // /!\ reloaded on server restart only
       if (last.build)
-        build = '/build/'+last.build;
+        build = '/build/' + last.build;
     } catch (e) {
-      console.log('Error while reading last.json file to determine build to load: '+e);
+      console.log('Error while reading last.json file to determine build to load: ' + e);
     }
   }
 
   return res.render('chat', {
-    meta: {title: i18next.t("title.chat")},
+    meta: {title: i18next.t('title.chat')},
     colors: colors.toString(),
-    hello: hello().replace('%u', '<strong>@'+req.user.username+'</strong>'),
+    hello: hello().replace('%u', '<strong>@' + req.user.username + '</strong>'),
     avoidFa: true,
     build: build
   });

@@ -1,24 +1,23 @@
+'use strict';
 define([
   'jquery',
   'underscore',
   'backbone',
   'libs/donut-debug'
 ], function ($, _, Backbone, donutDebug) {
-
   var debug = donutDebug('donut:input');
 
   var InputSmileysView = Backbone.View.extend({
-
     events: {
-      'click .add-smiley'       : 'onOpenSmiley',
-      'click .smileys .smilify' : 'onPickSmiley'
+      'click .add-smiley': 'onOpenSmiley',
+      'click .smileys .smilify': 'onPickSmiley'
     },
 
-    initialize: function(options) {
+    initialize: function (options) {
       this.$editable = this.$('.editable');
     },
 
-    render: function() {
+    render: function () {
       return this;
     },
 

@@ -1,16 +1,16 @@
+'use strict';
 define([
   'jquery',
   'underscore',
   'backbone',
+  'models/app',
   'libs/donut-debug',
   'views/events',
   'views/input'
-], function ($, _, Backbone, donutDebug, EventsView, InputView) {
-
+], function ($, _, Backbone, app, donutDebug, EventsView, InputView) {
   var debug = donutDebug('donut:discussion');
 
   var DiscussionPanelView = Backbone.View.extend({
-
     tagName: 'div',
 
     className: 'discussion',
@@ -20,14 +20,12 @@ define([
     events: {
     },
 
-    initialize: function(options) {
-      debug.start('discussion-'+((this.model.get('name'))?this.model.get('name'):this.model.get('username')));
+    initialize: function (options) {
+      debug.start('discussion-' + ((this.model.get('name')) ? this.model.get('name') : this.model.get('username')));
       var start = Date.now();
-      this.mainView = options.mainView;
 
       // Events
       this.listenTo(this.model, 'change:focused', this.updateFocus);
-      this.listenTo(this.model, 'resize', this.onResize);
 
       // Parent view rendering
       this.render();
@@ -46,38 +44,31 @@ define([
 
       // Other subviews
       this._initialize(options);
-      debug.end('discussion-'+((this.model.get('name'))?this.model.get('name'):this.model.get('username')));
+      debug.end('discussion-' + ((this.model.get('name')) ? this.model.get('name') : this.model.get('username')));
     },
 
     // To override
-    _initialize: function(options) {
-    },
+    _initialize: function (options) {},
 
     // To override
-    _remove: function(model) {
-    },
+    _remove: function (model) {},
 
     // To override
-    _renderData: function() {
-    },
+    _renderData: function () {},
 
     // To override
-    _render: function() {
-    },
+    _render: function () {},
 
     // To override
-    _focus: function() {
-    },
+    _focus: function () {},
 
     // To override
-    _unfocus: function() {
-    },
+    _unfocus: function () {},
 
     // To override
-    _firstFocus: function() {
-    },
+    _firstFocus: function () {},
 
-    render: function() {
+    render: function () {
       var html = this.template(this._renderData());
       this.$el.html(html);
       this.$el.hide();
@@ -85,11 +76,11 @@ define([
       return this;
     },
 
-    update: function() {
+    update: function () {
       this.eventsView.update();
     },
 
-    updateFocus: function() {
+    updateFocus: function () {
       if (this.model.get('focused')) {
         // to focus
         this.$el.show();
@@ -102,8 +93,6 @@ define([
           this.firstFocus();
         this.hasBeenFocused = true;
 
-        // resize and scroll down
-        this.onResize();
         if (this.eventsView.scrollWasOnBottom)
           this.eventsView.scrollDown(); // will trigger markVisibleAsViewed() implicitly
         else
@@ -120,44 +109,30 @@ define([
       }
     },
 
-    firstFocus: function() {
+    firstFocus: function () {
       this.eventsView.requestHistory('bottom'); // @todo : on reconnect (only), remove all events in view before requesting history // seems to work like that, wait and see if bugs happen ...
       this.eventsView.scrollDown();
       this._firstFocus();
     },
 
-    removeView: function(model) {
+    removeView: function (model) {
       this._remove();
       this.eventsView._remove();
       this.inputView._remove();
       this.remove();
     },
 
-    colorify: function() {
-      this.$el.attr('data-colorify', this.model.get('color'));
-      this.$el.colorify();
-      if (this.model.get('focused'))
-        this.mainView.color(this.model.get('color'));
-      // + change data-colorify for side and blur (=darker)
+    colorify: function () {
+      if (this.model.get('focused')) {
+        app.trigger('changeColor', this.model.get('color'));
+      }
     },
 
-    onResize: function() {
-      var $content = this.$el.find('.content');
-      var totalHeight = $content.outerHeight();
-      var headerHeight = $content.find('.header').outerHeight();
-
-      var inputHeight = this.inputView.$el.outerHeight();
-      var eventsHeight = totalHeight - (headerHeight + inputHeight) - 45; // 45px to push up the discussion frame
-
-      this.eventsView.resize(eventsHeight);
-      debug('resize call by window ('+totalHeight+', '+headerHeight+', '+inputHeight+', '+eventsHeight+')');
-    },
-
-    onSend: function() {
+    onSend: function () {
       this.eventsView.scrollDown(); // scroll down automatically when I send a message
     },
 
-    onEditPreviousInput: function() {
+    onEditPreviousInput: function () {
       this.eventsView.pushUpFromInput();
     }
 

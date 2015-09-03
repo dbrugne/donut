@@ -1,3 +1,4 @@
+'use strict';
 var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
 var async = require('async');
 var User = require('../../../../../shared/models/user');
@@ -15,14 +16,13 @@ module.exports = function (app) {
 var handler = Handler.prototype;
 
 handler.call = function (data, session, next) {
-
   var user = session.__currentUser__;
 
   var email;
 
   async.waterfall([
 
-    function check(callback) {
+    function check (callback) {
       if (!data.email)
         return callback('wrong-format');
 
@@ -37,8 +37,8 @@ handler.call = function (data, session, next) {
       return callback(null);
     },
 
-    function exist(callback) {
-      User.findOne({'local.email': email}, function(err, user) {
+    function exist (callback) {
+      User.findOne({'local.email': email}, function (err, user) {
         if (err)
           return callback(err);
         if (user)
@@ -48,16 +48,16 @@ handler.call = function (data, session, next) {
       });
     },
 
-    function save(callback) {
+    function save (callback) {
       var oldEmail = (user.local && user.local.email)
         ? user.local.email
         : '';
       user.local.email = email;
-      user.save(function(err) {
+      user.save(function (err) {
         if (err)
           return callback(err);
 
-        emailer.emailChanged(email, function(err) {
+        emailer.emailChanged(email, function (err) {
           if (err)
             return callback(err);
 
@@ -68,9 +68,9 @@ handler.call = function (data, session, next) {
           emailer.emailChanged(oldEmail, callback);
         });
       });
-    },
+    }
 
-  ], function(err) {
+  ], function (err) {
     if (err) {
       logger.error('[user:email:edit] ' + err);
 

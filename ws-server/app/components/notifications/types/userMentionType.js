@@ -1,3 +1,4 @@
+'use strict';
 var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
 var common = require('@dbrugne/donut-common');
 var _ = require('underscore');
@@ -18,7 +19,6 @@ var Notification = function (facade) {
 };
 
 Notification.prototype.create = function (user, room, history, done) {
-
   var that = this;
   async.waterfall([
 
@@ -28,7 +28,7 @@ Notification.prototype.create = function (user, room, history, done) {
 
     utils.retrieveHistoryRoom(history),
 
-    function checkOwn(userModel, roomModel, historyModel, callback) {
+    function checkOwn (userModel, roomModel, historyModel, callback) {
       if (historyModel.user.id == userModel.id) {
         logger.debug('userMentionType.create no notification due to my own message');
         return callback(true);
@@ -37,7 +37,7 @@ Notification.prototype.create = function (user, room, history, done) {
       return callback(null, userModel, roomModel, historyModel);
     },
 
-    function checkPreferences(userModel, roomModel, historyModel, callback) {
+    function checkPreferences (userModel, roomModel, historyModel, callback) {
       var key1 = 'room:notif:nothing:__what__'.replace('__what__', roomModel.name);
       var key2 = 'room:notif:__type__:__what__'.replace('__type__', that.type).replace('__what__', roomModel.name);
       if (userModel.preferencesValue(key1) || !userModel.preferencesValue(key2)) {
@@ -48,7 +48,7 @@ Notification.prototype.create = function (user, room, history, done) {
       return callback(null, userModel, roomModel, historyModel);
     },
 
-    function avoidRepetitive(userModel, roomModel, historyModel, callback) {
+    function avoidRepetitive (userModel, roomModel, historyModel, callback) {
       if (that.facade.options.force === true)
         return callback(null, userModel, roomModel, historyModel);
 
@@ -65,7 +65,7 @@ Notification.prototype.create = function (user, room, history, done) {
       });
     },
 
-    function checkStatus(userModel, roomModel, historyModel, callback) {
+    function checkStatus (userModel, roomModel, historyModel, callback) {
       that.facade.app.statusService.getStatusByUid(userModel.id, function (err, status) {
         if (err)
           return callback(err);
@@ -74,13 +74,13 @@ Notification.prototype.create = function (user, room, history, done) {
       });
     },
 
-    function save(userModel, roomModel, historyModel, status, callback) {
+    function save (userModel, roomModel, historyModel, status, callback) {
       var model = NotificationModel.getNewModel(that.type, userModel, {
         event: historyModel._id
       });
       model.to_browser = true;
-      model.to_email = (!userModel.getEmail() ? false : (status ? false : userModel.preferencesValue("notif:channels:email")));
-      model.to_mobile = (status ? false : userModel.preferencesValue("notif:channels:mobile"));
+      model.to_email = (!userModel.getEmail() ? false : (status ? false : userModel.preferencesValue('notif:channels:email')));
+      model.to_mobile = (status ? false : userModel.preferencesValue('notif:channels:mobile'));
 
       if (that.facade.options.force === true) {
         model.to_email = true;
@@ -140,7 +140,7 @@ Notification.prototype.sendEmail = function (model, done) {
 
   async.waterfall([
 
-    function retrieveEvents(callback) {
+    function retrieveEvents (callback) {
       HistoryRoomModel.retrieveEventWithContext(model.data.event.toString(), model.user.id, 5, 10, true, function (err, events) {
         if (err)
           return callback(err);
@@ -149,20 +149,20 @@ Notification.prototype.sendEmail = function (model, done) {
       });
     },
 
-    function mentions(events, callback) {
-      _.each(events, function(event, index, list) {
+    function mentions (events, callback) {
+      _.each(events, function (event, index, list) {
         if (!event.data.message)
           return;
 
         list[index].data.message = utils.mentionize(event.data.message, {
-          style: 'color: '+conf.room.default.color+';'
+          style: 'color: ' + conf.room.default.color + ';'
         });
       });
 
       callback(null, events);
     },
 
-    function send(events, callback) {
+    function send (events, callback) {
       var messages = [];
       _.each(events, function (event) {
         var isCurrentMessage = (model.data.event.toString() == event.data.id)
@@ -181,7 +181,7 @@ Notification.prototype.sendEmail = function (model, done) {
       emailer.userMention(model.user.getEmail(), messages, events[0]['data']['username'], events[0]['data']['name'], callback);
     },
 
-    function persist(callback) {
+    function persist (callback) {
       model.sent_to_email = true;
       model.sent_to_email_at = new Date();
       model.save(callback);

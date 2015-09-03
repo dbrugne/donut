@@ -1,38 +1,22 @@
-<div class="side" style="<% if (poster) { print('background-image: url(' + poster + ');'); } %>" data-colorify-background="color"></div>
+<div class="side dc-back" <% if (poster) { %>style="background-image: url(<%= poster %>);"<% }; %>></div>
 <div class="content" id="onetoone">
+    <div class="mini-header user visible-xs visible-sm <% if (banned === true) { %> is-banned <% } %>">
+        <img class="avatar open-user-profile dc-border-lighter" data-user-id="<%= user_id %>" src="<%= avatar %>" alt="<%= username %> avatar">
+        <span class="name open-user-profile dc-text-contrast" data-user-id="<%= user_id %>"><%= username %></span>
+        <div class="info mt5"><%= dropdown %></div>
+    </div>
     <div class="header user <% if (banned === true) { %> is-banned <% } %>">
-        <div class="avatar relative open-user-profile" data-username="<%= username %>">
+        <div class="avatar relative open-user-profile  hidden-xs hidden-sm" data-user-id="<%= user_id %>">
             <img src="<%= avatar %>" alt="<%= username %> avatar">
         </div>
-        <div class="info">
-            <span class="username open-user-profile" data-username="<%= username %>">@<%= username %></span>
-            <div class="dropdown">
-                <button class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-                    <i class="icon icon-chevron-down"></i>
-                </button>
-                <ul class="dropdown-menu" role="menu">
-                    <li role="presentation">
-                        <a role="menuitem" tabindex="-1" href="<%= url %>" target="_blank" title="<%= username %> <%= t('global.permalink') %>">
-                            <i class="icon icon-link"></i> <%= t('global.permalink') %>
-                        </a>
-                    </li>
-                    <li role="presentation">
-                        <a role="menuitem" tabindex="-1" class="open-user-profile" data-username="<%= username %>">
-                            <i class="icon icon-eye"></i> <%= t('global.viewprofile') %>
-                        </a>
-                    </li>
-                    <li role="presentation" class="divider"></li>
-                    <li role="presentation" class="ban-menu">
-                        <a role="menuitem" tabindex="-1" data-toggle="confirmation" style="cursor: pointer;" class="show-if-banned action-user-deban" data-username="<%= username %>">
-                            <i class="icon icon-ban"></i> <%= t('chat.actions.deban') %>
-                        </a>
-                        <a role="menuitem" tabindex="-1" data-toggle="confirmation" style="cursor: pointer;" class="show-if-unbanned action-user-ban" data-username="<%= username %>">
-                            <i class="icon icon-ban"></i> <%= t('chat.actions.ban') %>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-            <span class="location"><%= location %></span><% if (location && website) { print(', '); } %><a class="website" href="<%= website.href %>" target="_blank" title="<%= website.title %>" data-colorify-text="#000"><%= website.title %></a>
+        <div class="info hidden-xs hidden-sm">
+            <span class="username open-user-profile" data-user-id="<%= user_id %>">@<%= username %></span>
+
+            <%= dropdown %>
+
+            <span class="hidden-xs hidden-sm">
+                <span class="location"><%= location %></span><% if (location && website) { print(', '); } %><a class="website" href="<%= website.href %>" target="_blank" title="<%= website.title %>"><%= website.title %></a>
+            </span>
         </div>
         <div class="status-block">
             <i class="icon icon-circle status contrast"></i>
@@ -41,7 +25,7 @@
             <span class="show-if-banned">
                 <span class="banned-status">
                     &nbsp;-&nbsp;<%= t('chat.actions.banned') %>&nbsp;
-                    <span class="action-user-deban" data-username="<%= username %>" style="cursor: pointer; text-decoration: underline;">
+                    <span class="action-user-deban" data-user-id="<%= user_id %>" style="cursor: pointer; text-decoration: underline;">
                         <%= t('chat.actions.unlock') %>
                     </span>
                 </span>

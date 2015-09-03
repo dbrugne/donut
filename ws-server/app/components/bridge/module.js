@@ -1,3 +1,4 @@
+'use strict';
 /**
  * Implement PomeloJS admin-module to listen and pass trough comment from client to cluster servers
  *
@@ -12,49 +13,48 @@ var dispatcher = require('../../util/dispatcher');
 var adminNotifyTask = require('./tasks/adminNotifyTask');
 var createNotificationTask = require('./tasks/createNotificationTask');
 
-module.exports = function(opts) {
+module.exports = function (opts) {
   return new Module(opts);
 };
 
 var moduleId = 'pomeloBridge';
 module.exports.moduleId = moduleId;
 
-var Module = function(options) {
+var Module = function (options) {
   this.options = options;
-  this.app     = options.app;
+  this.app = options.app;
 
   /**
    * Normally used for monitor purpose, if type is 'pull' a setInterval is set and call master every 'interval' seconds
    * if 'push' the setInterval will call monitor instead of master.
    */
-  this.type     = ''; //options.type || 'pull';
+  this.type = ''; // options.type || 'pull';
   this.interval = options.interval || 5;
 };
 
-Module.prototype.start = function(callback) {
-  logger.debug(moduleId+' starting on '+this.app.serverId);
+Module.prototype.start = function (callback) {
+  logger.debug(moduleId + ' starting on ' + this.app.serverId);
 
   // some specific starting actions
 
   return callback(null);
 };
 
-Module.prototype.retrieveTask = function(route) {
-
+Module.prototype.retrieveTask = function (route) {
   // @todo : make it dynamically
 
   if (route.indexOf('adminNotifyTask') !== -1) {
     var tasks = adminNotifyTask(this.options);
-    var method = route.substr(route.indexOf('.')+1);
+    var method = route.substr(route.indexOf('.') + 1);
     if (method && _.isFunction(tasks[method]))
-      return _.bind(tasks[method], tasks)
+      return _.bind(tasks[method], tasks);
   }
 
   if (route.indexOf('createNotificationTask') !== -1) {
     var tasks = createNotificationTask(this.options);
-    var method = route.substr(route.indexOf('.')+1);
+    var method = route.substr(route.indexOf('.') + 1);
     if (method && _.isFunction(tasks[method]))
-      return _.bind(tasks[method], tasks)
+      return _.bind(tasks[method], tasks);
   }
 
   return false;
@@ -67,16 +67,16 @@ Module.prototype.retrieveTask = function(route) {
  * @param request
  * @param fn
  */
-Module.prototype.monitorHandler = function(agent, request, fn) {
+Module.prototype.monitorHandler = function (agent, request, fn) {
   // avoid PomeloJS warning when calling callback (fn is always set as a Function) on notify call
   var callback = (request.type === 'request' && _.isFunction(fn))
     ? fn
-    : function(err, result) {
-    if (err)
-      return logger.error(err);
-    if (result)
-      return logger.debug(result);
-  };
+    : function (err, result) {
+      if (err)
+        return logger.error(err);
+      if (result)
+        return logger.debug(result);
+    };
 
   if (request.action == 'ping')
     return callback(null, 'pong');
@@ -86,7 +86,7 @@ Module.prototype.monitorHandler = function(agent, request, fn) {
     return task(request.data, callback);
   }
 
-  return callback('Unable to identify action to run on '+this.app.serverId);
+  return callback('Unable to identify action to run on ' + this.app.serverId);
 };
 
 /**
@@ -96,7 +96,7 @@ Module.prototype.monitorHandler = function(agent, request, fn) {
  * @param request
  * @param callback
  */
-Module.prototype.masterRequest = function(agent, request, callback) {
+Module.prototype.masterRequest = function (agent, request, callback) {
   if (request.action == 'ping')
     return callback(null, 'pong');
 
@@ -105,7 +105,7 @@ Module.prototype.masterRequest = function(agent, request, callback) {
     return task(request.data, callback);
   }
 
-  return callback('Unable to identify task to run on '+this.app.serverId);
+  return callback('Unable to identify task to run on ' + this.app.serverId);
 };
 
 /**
@@ -114,19 +114,19 @@ Module.prototype.masterRequest = function(agent, request, callback) {
  * @param agent (@doc: node_modules/pomelo/node_modules/pomelo-admin/lib/masterAgent.js)
  * @param request
  */
-Module.prototype.masterNotify = function(agent, request) {
+Module.prototype.masterNotify = function (agent, request) {
   if (request.action == 'ping')
     return logger.info('pong');
 
   var task = this.retrieveTask(request.action);
   if (task !== false) {
-    return task(request.data, function(err) {
+    return task(request.data, function (err) {
       if (err)
         logger.error(err);
     });
   }
 
-  return logger.info('Unable to identify task to run on '+this.app.serverId);
+  return logger.info('Unable to identify task to run on ' + this.app.serverId);
 };
 
 /**
@@ -134,7 +134,7 @@ Module.prototype.masterNotify = function(agent, request) {
  *
  * @param list Array
  */
-Module.prototype.dispatch = function(list) {
+Module.prototype.dispatch = function (list) {
   return dispatcher.dispatch(Math.floor(Math.random() * 10), list);
 };
 
@@ -145,16 +145,16 @@ Module.prototype.dispatch = function(list) {
  * @param query
  * @param fn
  */
-Module.prototype.clientHandler = function(agent, query, fn) {
-  logger.debug(moduleId+' client query on '+this.app.getServerId()+': '+JSON.stringify(query));
+Module.prototype.clientHandler = function (agent, query, fn) {
+  logger.debug(moduleId + ' client query on ' + this.app.getServerId() + ': ' + JSON.stringify(query));
 
   // avoid PomeloJS warning when calling callback (fn is always set as a Function) on notify call
   var callback = (query.type === 'request' && _.isFunction(fn))
     ? fn
-    : function(err) {
-    if (err)
-      logger.error(err);
-  };
+    : function (err) {
+      if (err)
+        logger.error(err);
+    };
 
   if (!query || !_.isObject(query))
     return callback('query should be an object');
@@ -183,6 +183,6 @@ Module.prototype.clientHandler = function(agent, query, fn) {
       break;
 
     default:
-      return callback('Unable to find the server corresponding to target parameter: '+query.target);
-  };
+      return callback('Unable to find the server corresponding to target parameter: ' + query.target);
+  }
 };

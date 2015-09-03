@@ -3,9 +3,7 @@
         <div class="pad"><i class="icon icon-spinner icon-spin"></i></div>
         <div class="loader">
             <span class="help">
-                <i class="icon icon-arrow-circle-o-up arrow"></i>
-                <%= t('chat.history.help') %>
-                <i class="icon icon-arrow-circle-o-up arrow"></i>
+                <a class="load-more" href="#"><%= t('chat.history.help') %></a>
             </span>
             <span class="loading">
                 <%= t('chat.history.loading') %>
@@ -16,14 +14,14 @@
         </div>
         <div class="blank"></div>
         <div class="realtime">
-            <% if (model.type == 'room') { %>
-            <div class="hello block">
+            <% if (model.type === 'room') { %>
+            <div class="hello block hidden-xs">
                 <div class="event">
                     <div class="text"><i class="icon icon-hello"></i> <%= t('chat.welcome.room', {name: model.name}) %></div>
                 </div>
             </div>
-            <% } else if (model.type == 'onetoone') { %>
-            <div class="hello block">
+            <% } else if (model.type === 'onetoone') { %>
+            <div class="hello block hidden-xs">
                 <div class="event">
                     <div class="text"><i class="icon icon-hello"></i> <%= t('chat.welcome.onetoone', {username: model.username}) %></div>
                 </div>

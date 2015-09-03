@@ -1,3 +1,4 @@
+'use strict';
 var logger = require('../../../pomelo-logger').getLogger('donut', __filename);
 var _ = require('underscore');
 var NotificationModel = require('../../../../shared/models/notification');
@@ -48,7 +49,6 @@ Facade.prototype.uidStatus = function (uid, fn) {
 Facade.prototype.getType = function (type) {
   var typeConstructor;
   switch (type) {
-
     case 'usermessage':
       typeConstructor = userMessage;
       break;
@@ -184,7 +184,7 @@ Facade.prototype.retrieveScheduledNotifications = function (callback) {
     time: { $lt: time }, // @todo : add delay before sending email/mobile for each notification type here
     $or: [
       { to_email: true, sent_to_email: false },
-      //{ to_mobile: true, sent_to_mobile: false }
+    // { to_mobile: true, sent_to_mobile: false }
     ]
   });
 
@@ -234,7 +234,7 @@ Facade.prototype.avoidNotificationsSending = function (userId, callback) {
   }, { $set: { to_email: false, to_mobile: false } }, { multi: true }, callback);
 };
 
-Facade.prototype.markOldNotificationsAsDone = function(callback) {
+Facade.prototype.markOldNotificationsAsDone = function (callback) {
   var timeLimit = new Date();
   timeLimit.setMonth(timeLimit.getMonth() - conf.notifications.done);
   NotificationModel.update({

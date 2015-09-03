@@ -1,22 +1,21 @@
-<div class="room card">
+<div class="room card dc-i-<% if (room.color) { %><%=room.color.replace('#','').toLowerCase()%><% } else { %>default<%}%>">
     <div class="cover">
         <a href="<%= room.url %>"><img src="<%= room.avatar %>" class="avatar" alt="<%= room.name %> avatar"></a>
         <div class="text">
             <div class="name"><a href="<%= room.url %>"><%= room.name %></a></div>
            <% if (room.owner) { %>
            <p class="owner">
-               <%= t('global.by') %> <a href="<%= room.owner.url %>" <% if (room.color) { %>style="color: <%= room.color %>;"<% } %>>@<%= room.owner.username %></a>
+               <%= t('global.by') %> <a class="dc-text" href="<%= room.owner.url %>" >@<%= room.owner.username %></a>
            </p>
            <% } %>
        </div>
     </div>
-    <div class="back" <% if (room.color) { %>style="background-color: <%= room.color %>;"<% } %>>
-        <a href="<%= room.url %>"><img src="<%= room.avatar %>" class="avatar" alt="<%= room.name %> avatar"></a>
+    <div class="back dc-back">
         <div class="text">
-            <div class="name"><a href="<%= room.url %>"><%= room.name %></a></div>
+            <div class="name"><a class="dc-text-contrast" href="<%= room.url %>"><%= room.name %></a></div>
             <% if (room.owner) { %>
             <p class="owner">
-                <%= t('global.by') %> <a href="<%= room.owner.url %>">@<%= room.owner.username %></a>
+                <%= t('global.by') %> <a href="<%= room.owner.url %>" class="dc-text-contrast">@<%= room.owner.username %></a>
             </p>
             <% } %>
             <% if (room.description) { %>

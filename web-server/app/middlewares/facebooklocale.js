@@ -1,3 +1,4 @@
+'use strict';
 /**
  * Fix the Facebook Open Graph crawler language
  *
@@ -5,7 +6,7 @@
  * But FB uses '_' language code ('fr_FR') where i18next uses '-' ('fr-FR')
  * This middleware add a force_locale query parameter based on fb_locale
  */
-module.exports = function(req, res, next) {
+module.exports = function (req, res, next) {
   if (req.query && req.query['fb_locale'])
     req.query['force_locale'] = req.query['fb_locale'].replace('_', '-');
 

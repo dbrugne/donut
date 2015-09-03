@@ -1,3 +1,4 @@
+'use strict';
 var i18next = require('i18next');
 var conf = require('../../config/index');
 

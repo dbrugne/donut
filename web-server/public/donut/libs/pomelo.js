@@ -1,3 +1,4 @@
+'use strict';
 define([
   'jquery',
   'underscore',
@@ -5,13 +6,11 @@ define([
   'libs/donut-debug',
   'socket.io'
 ], function ($, _, Backbone, donutDebug, io) {
-
   var debug = donutDebug('donut:pomelo');
 
   // @source: https://github.com/gloomyzerg/pomelo-jsclient-socket.io-bower
 
   var pomelo = _.extend({
-
     current: '', // store the current connector URL on which this client is connected
 
     token: null, // current JWT token used for WS authentication
@@ -24,7 +23,7 @@ define([
 
     protocolHeaderLength: 5, // pomelo protocol message header size (https://github.com/NetEase/pomelo/wiki/Communication-Protocol)
 
-    initialize: function(options) {
+    initialize: function (options) {
       this.settings = _.extend(options, {
         //
       });
@@ -33,14 +32,14 @@ define([
     /**
      * Public API
      */
-    connect: function(host, port) {
+    connect: function (host, port) {
       debug.start('sio_connect');
       if (this.isConnected())
         this.disconnect();
 
       // in console: client.connect('chat.local', 3050)
       if (!host) {
-        host = 'ws.'+window.location.hostname; // host should be a subdomain of current hostname to be able to receive cookies
+        host = 'ws.' + window.location.hostname; // host should be a subdomain of current hostname to be able to receive cookies
       }
 
       var server = {
@@ -49,18 +48,18 @@ define([
       };
       return this._connect(server);
     },
-    disconnect: function() {
+    disconnect: function () {
       if (!this.socket)
         return;
 
       this.socket.disconnect();
       this.socket = null;
     },
-    isConnected: function() {
+    isConnected: function () {
       return (this.socket && this.socket.connected === true);
     },
-    request: function(route) {
-      if(!route)
+    request: function (route) {
+      if (!route)
         return;
 
       var msg = {};
@@ -78,31 +77,31 @@ define([
         cb = arg[2];
       }
 
-      this.autoIncrement ++;
+      this.autoIncrement++;
       this.callbacks[this.autoIncrement] = cb;
       var sg = this._encode(this.autoIncrement, route, msg);
 
       this.socket.send(sg);
     },
-    notify: function(route, data) {
+    notify: function (route, data) {
       this.request(route, data);
     },
 
     /**
      * Private API
      */
-    _connect: function(server) {
+    _connect: function (server) {
       debug.end('sio_connect');
 
       var that = this;
-      this._requestToken(false, function(err, token) {
+      this._requestToken(false, function (err, token) {
         if (err)
           return that.trigger('error', err);
 
         that._sio(server);
       });
     },
-    _requestToken: function(force, fn) {
+    _requestToken: function (force, fn) {
       if (this.token && !force)
         return fn(null, this.token);
 
@@ -111,8 +110,8 @@ define([
       $.ajax({
         url: '/oauth/get-token-from-session',
         type: 'GET',
-        dataType : 'json',
-        success: function( json ) {
+        dataType: 'json',
+        success: function ( json ) {
           if (json.err)
             return fn(json.err);
 
@@ -120,47 +119,47 @@ define([
           debug.end('sio_token');
           return fn(null, json.token);
         },
-        error: function( xhr, status, errorThrown ) {
+        error: function ( xhr, status, errorThrown ) {
           debug.end('sio_token');
           return fn(errorThrown);
         }
       });
     },
-    _sio: function(server) {
+    _sio: function (server) {
       debug.start('sio_connect');
       // @doc: https://github.com/Automattic/engine.io-client#methods
       var options = {
-        //multiplex: true,
+        // multiplex: true,
         reconnection: true,
-        //reconnectionDelay: 1000,
-        //reconnectionDelayMax: 5000,
+        // reconnectionDelay: 1000,
+        // reconnectionDelayMax: 5000,
         timeout: 8000, // = between 2 heartbeat pings
-        //autoConnect: true,
-        forceNew    : true, // http://stackoverflow.com/questions/24566847/socket-io-client-connect-disconnect allow me to connect() disconnect() from console
-        query       : 'device=browser'
+        // autoConnect: true,
+        forceNew: true, // http://stackoverflow.com/questions/24566847/socket-io-client-connect-disconnect allow me to connect() disconnect() from console
+        query: 'device=browser'
       };
 
-      this.current = '//'+server.host;
+      this.current = '//' + server.host;
       if (server.port)
-        this.current += ':'+server.port;
+        this.current += ':' + server.port;
       this.socket = io(this.current, options);
 
       var that = this;
 
       // triggered when server has confirmed user authentication
       this.socket.on('authenticated', function () {
-        debug("authentication accepted");
+        debug('authentication accepted');
         debug.end('sio_connect');
         that.trigger('connect');
         that._requestWelcome();
       });
-      this.socket.on("unauthorized", function(error) {
+      this.socket.on('unauthorized', function (error) {
         debug.end('sio_connect');
-        debug("authentication rejected", error);
+        debug('authentication rejected', error);
 
         // special case, reconnection with an expired token
         if (error.message == 'jwt expired')
-          that._requestToken(true, function(err, token) {
+          that._requestToken(true, function (err, token) {
             if (err)
               return that.trigger('error', err);
 
@@ -170,21 +169,21 @@ define([
         that.trigger('error', error.message);
       });
 
-      this.socket.on('disconnect',         function(reason) { that.trigger('disconnect', reason); }); // disconnected
-      this.socket.on('error',              function(err) { that.trigger('error', err); }); // connection error
+      this.socket.on('disconnect', function (reason) { that.trigger('disconnect', reason); }); // disconnected
+      this.socket.on('error', function (err) { that.trigger('error', err); }); // connection error
 
       // reconnect events
-      this.socket.on('reconnect',          function(num) { that.trigger('reconnect', num); }); // successful reconnection
-      this.socket.on('reconnect_attempt',  function() { that.trigger('reconnect_attempt'); }); // will try a new reconnection
-      this.socket.on('reconnecting',       function(num) { that.trigger('reconnecting', num); }); // trying new reconnection
-      this.socket.on('reconnect_error',    function(err) { that.trigger('reconnect_error', err); }); // reconnection error
-      this.socket.on('reconnect_failed',   function() { that.trigger('reconnect_failed'); }); // couldn’t reconnect within reconnectionAttempts
+      this.socket.on('reconnect', function (num) { that.trigger('reconnect', num); }); // successful reconnection
+      this.socket.on('reconnect_attempt', function () { that.trigger('reconnect_attempt'); }); // will try a new reconnection
+      this.socket.on('reconnecting', function (num) { that.trigger('reconnecting', num); }); // trying new reconnection
+      this.socket.on('reconnect_error', function (err) { that.trigger('reconnect_error', err); }); // reconnection error
+      this.socket.on('reconnect_failed', function () { that.trigger('reconnect_failed'); }); // couldn’t reconnect within reconnectionAttempts
 
       // pomelo server send exclusively 'message' events
-      this.socket.on('message', function(data) {
+      this.socket.on('message', function (data) {
         if (typeof data === 'string')
           data = JSON.parse(data);
-        if(data instanceof Array)
+        if (data instanceof Array)
           that._messages(data);
         else
           that._message(data);
@@ -192,24 +191,24 @@ define([
 
       // socket listener are set, go connect, then authenticate
       this.socket.on('connect', function () {
-        debug("connected to "+that.current);
+        debug('connected to ' + that.current);
         that.socket.emit('authenticate', { token: that.token });
       });
     },
-    _requestWelcome: function() {
+    _requestWelcome: function () {
       var that = this;
       debug.start('sio_entryHandler');
       this.request('connector.entryHandler.enter', {}, function (data) {
         if (data.error)
-          return debug("connector.entryHandler.enter returns error", data);
+          return debug('connector.entryHandler.enter returns error', data);
 
-        debug("welcome received");
+        debug('welcome received');
         debug.end('sio_entryHandler');
 
         that.trigger('welcome', data);
       });
     },
-    _message: function(data) {
+    _message: function (data) {
       // .request(), client call server and get a response
       if (data.id) {
         var callback = this.callbacks[data.id];
@@ -225,7 +224,7 @@ define([
 
       // .push(), server call client
       var route = data.route;
-      if(!!route) {
+      if (!!route) {
         if (!!data.body) {
           var body = data.body.body;
           if (!body) {body = data.body;}
@@ -237,8 +236,8 @@ define([
         this.trigger(data.body.route, data.body);
       }
     },
-    _messages: function(msgs) {
-      _.each(msgs, function(msg) {
+    _messages: function (msgs) {
+      _.each(msgs, function (msg) {
         this._message(msg);
       }, this);
     },
@@ -253,23 +252,23 @@ define([
      * @param data
      * @returns String
      */
-    _encode: function(id, route, data) {
+    _encode: function (id, route, data) {
       var msgStr = JSON.stringify(data);
 
-      if (route.length>255)
+      if (route.length > 255)
         throw new Error('route maxlength is overflow');
 
       var byteArray = new Uint16Array(this.protocolHeaderLength + route.length + msgStr.length); // need polyfill in lte IE9
       var index = 0;
-      byteArray[index++] = (id>>24) & 0xFF;
-      byteArray[index++] = (id>>16) & 0xFF;
-      byteArray[index++] = (id>>8) & 0xFF;
+      byteArray[index++] = (id >> 24) & 0xFF;
+      byteArray[index++] = (id >> 16) & 0xFF;
+      byteArray[index++] = (id >> 8) & 0xFF;
       byteArray[index++] = id & 0xFF;
       byteArray[index++] = route.length & 0xFF;
-      for (var i = 0 ; i<route.length ; i++) {
+      for (var i = 0; i < route.length; i++) {
         byteArray[index++] = route.charCodeAt(i);
       }
-      for (var i = 0 ; i < msgStr.length ; i++) {
+      for (var i = 0; i < msgStr.length; i++) {
         byteArray[index++] = msgStr.charCodeAt(i);
       }
       return this._byteArrayToString(byteArray, 0, byteArray.length);
@@ -287,21 +286,21 @@ define([
       var idx;
       var len = data.length;
       var arr = new Array(len);
-      for (idx = 0 ; idx < len ; ++idx) {
+      for (idx = 0; idx < len; ++idx) {
         arr[idx] = data.charCodeAt(idx);
       }
       var index = 0;
       var buf = new Uint16Array(arr);
-      var id = ((buf[index++] <<24) | (buf[index++])  << 16  |  (buf[index++]) << 8 | buf[index++]) >>>0;
-      var routeLen = buf[this.protocolHeaderLength-1];
-      var route = this._byteArrayToString(buf, this.protocolHeaderLength, routeLen+this.protocolHeaderLength);
-      var body = this._byteArrayToString(buf, routeLen+this.protocolHeaderLength, buf.length);
+      var id = ((buf[index++] << 24) | (buf[index++]) << 16 | (buf[index++]) << 8 | buf[index++]) >>> 0;
+      var routeLen = buf[this.protocolHeaderLength - 1];
+      var route = this._byteArrayToString(buf, this.protocolHeaderLength, routeLen + this.protocolHeaderLength);
+      var body = this._byteArrayToString(buf, routeLen + this.protocolHeaderLength, buf.length);
       return { id: id, route: route, body: body };
     },
 
-    _byteArrayToString: function(byteArray, start, end) {
-      var result = "";
-      for (var i = start ; i < byteArray.length && i<end ; i++) {
+    _byteArrayToString: function (byteArray, start, end) {
+      var result = '';
+      for (var i = start; i < byteArray.length && i < end; i++) {
         result = result + String.fromCharCode(byteArray[i]);
       }
       return result;

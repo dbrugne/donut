@@ -1,14 +1,17 @@
+'use strict';
 define([
   'jquery',
   'underscore',
   'backbone',
+  'models/app',
   'common',
   'client',
   'models/current-user',
   'collections/rooms',
   'collections/onetoones'
-], function ($, _, Backbone, common, client, currentUser, rooms, onetoones) {
+], function ($, _, Backbone, app, common, client, currentUser, rooms, onetoones) {
   var WindowView = Backbone.View.extend({
+    el: $(window),
 
     focused: true,
 
@@ -24,15 +27,21 @@ define([
     beepPlaying: false,
     beepOn: false,
 
-    desktopNotificationsLimiters: function () {
-    },
+    desktopNotificationsLimiters: null,
 
     initialize: function (options) {
-      this.$el = $(window); // cannot use' window' on loading step due to browserify
+      this.listenTo(app, 'desktopNotification', this.desktopNotify);
+      this.listenTo(app, 'desktopNotificationForce', this._desktopNotify);
+      this.listenTo(app, 'playSound', this.play);
+      this.listenTo(app, 'playSoundForce', this._play);
+      this.listenTo(app, 'unviewedInOut', this.triggerInout);
+      this.listenTo(app, 'unviewedMessage', this.triggerMessage);
+
       this.$window = this.$el;
-      this.$document = $(document);
 
       this.defaultTitle = document.title; // save original title on page load
+
+      this.desktopNotificationsLimiters = {};
 
       // Load audio elements
       var that = this;
@@ -40,7 +49,7 @@ define([
         this.beepOn = true;
         var cb = function () {
           that.beepPlaying = false;
-        }
+        };
         this.beep = new Audio('/sounds/beep.mp3');
         this.beep.onended = cb;
       }
@@ -55,9 +64,6 @@ define([
       });
       this.$window.on('beforeunload', function () {
         return that.onClose();
-      });
-      this.$window.resize(function () {
-        that.onResize();
       });
 
       // Bind events to model
@@ -113,29 +119,17 @@ define([
     onFocus: function () {
       this.focused = true;
 
-      // mark current focused model as read
+      // on window refocus execute some logic on current focused model
       var model = this._getFocusedModel();
-      if (model) {
-        var thereIsNew = model.isThereNew();
-        model.resetNew();
-        if (thereIsNew)
-          this.trigger('redraw-block'); // avoid useless redraw on window refocus
-
+      if (model)
         model.trigger('windowRefocused'); // mark visible as read for focused discussion when window recover its focus
-      }
 
       // reset limiters
       this.desktopNotificationsLimiters = {};
 
       this.renderTitle();
     },
-    onResize: function () {
-      var model = this._getFocusedModel();
-      if (model)
-        model.trigger('resize'); // transmit event only to the current focused model
-    },
     onClose: function () {
-
       // sometimes we prevent exit popin
       if (this.preventPopin)
         return;
@@ -146,10 +140,10 @@ define([
 
       // only if at least one discussion is open and preferences checked
       if ((!rooms || rooms.length < 1) && (!onetoones || onetoones.length < 1) && currentUser.shouldDisplayExitPopin())
-        return $.t("chat.closeapp");
+        return $.t('chat.closeapp');
 
       if (currentUser.shouldDisplayExitPopin())
-        return $.t("chat.closemessage");
+        return $.t('chat.closemessage');
     },
 
     _getFocusedModel: function () {
@@ -201,22 +195,24 @@ define([
         model.set('newuser', true); // will trigger tab badge and title when rendering
 
         // update tabs
-        this.trigger('redraw-block');
+        app.trigger('redraw-block');
 
         // update title
         this.renderTitle();
       }
     },
     triggerMessage: function (event, model) {
-      if (event.getGenericType() != 'message')
+      if (event.getGenericType() != 'message' && event.get('type') !== 'room:topic')
         return;
 
       // test if not from me (currentUser)
       if (event.get('data').username == currentUser.get('username'))
         return;
 
-      // test if i mentioned
-      var isMention = common.isUserMentionned(currentUser.get('user_id'), event.get('data').message);
+      // test if i mentioned (only for rooms)
+      var isMention = (event.getGenericType() != 'message' && model.get('type') === 'room' && common.isUserMentionned(currentUser.get('user_id'), event.get('data').message))
+        ? true
+        : false;
 
       // test if current discussion is focused
       var isFocused = (this.focused && model.get('focused'))
@@ -232,12 +228,12 @@ define([
       // badge and title only if discussion is not focused
       if (!isFocused) {
         if (!isMention)
-          model.set('newmessage', true); // will trigger tab badge and title when rendering
+          model.set('unviewed', true); // will trigger tab badge and title when rendering
         else
           model.set('newmention', true);
 
         // update tabs
-        this.trigger('redraw-block');
+        app.trigger('redraw-block');
 
         // update title
         this.renderTitle();
@@ -254,7 +250,10 @@ define([
               return;
 
             var message = data.message || '';
-            var title = $.t('chat.notifications.desktop.usermessage', {username: data.from_username, message: message});
+            var title = $.t('chat.notifications.desktop.usermessage', {
+              username: data.from_username,
+              message: message
+            });
             this.desktopNotify(title, '');
             this.desktopNotificationsLimiters[key] = Date.now();
           }
@@ -317,12 +316,11 @@ define([
 
       try {
         isIE = (win.external && win.external.msIsSiteMode() !== undefined);
-      } catch (e) {
-      }
+      } catch (e) {}
 
       var messages = {
         notPinned: 'Pin current page in the taskbar in order to receive notifications',
-        notSupported: '<strong>Desktop Notifications not supported!</strong> Check supported browsers table and project\'s GitHub page.'
+        notSupported: "<strong>Desktop Notifications not supported!</strong> Check supported browsers table and project's GitHub page."
       };
 
       messages[notify.PERMISSION_DEFAULT] = '<strong>Warning!</strong> Click to allow displaying desktop notifications.';

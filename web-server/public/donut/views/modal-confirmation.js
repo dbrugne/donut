@@ -1,26 +1,28 @@
+'use strict';
 define([
   'jquery',
   'underscore',
   'backbone'
 ], function ($, _, Backbone) {
   var ConfirmationModalView = Backbone.View.extend({
-
     el: $('#confirmation'),
 
     events: {
-      "click .buttons .confirm": "onConfirm"
+      'click .buttons .confirm': 'onConfirm'
     },
 
-    callback: null,
+    confirmed: false,
+
+    confirmCallback: null,
+
+    cancelCallback: null,
 
     options: null,
 
     isRendered: false,
 
-    initialize: function(options) {
-
-    },
-    render: function() {
+    initialize: function (options) {},
+    render: function () {
       this.$inputBlock = this.$el.find('.input');
       this.$input = this.$inputBlock.find('input[type="text"]');
 
@@ -30,31 +32,42 @@ define([
         show: false
       });
 
-      // On dismiss reset confirmation modal state
-      var that = this;
-      this.$el.on('hidden.bs.modal', function (e) {
-        that._reset();
-      });
+      // on modal shown
+      this.$el.on('shown.bs.modal', _.bind(function (e) {
+        this.$input.focus();
+      }, this));
+
+      // some callback action need to have modal properly closed before execution (e.g.: focus an element)
+      this.$el.on('hidden.bs.modal', _.bind(function (e) {
+        if (this.confirmed)
+          this.confirmCallback(this.$input.val()); // confirm
+        else if (_.isFunction(this.cancelCallback))
+          this.cancelCallback(); // cancel
+
+        this._reset();
+      }, this));
 
       this.isRendered = true; // avoid to early rendering on page load (cause bootstrap is not already loaded)
       return this;
     },
-    _reset: function() {
+    _reset: function () {
       this.$inputBlock.show();
       this.$input.val('');
-      this.callback = null;
+      this.confirmCallback = null;
+      this.cancelCallback = null;
       this.options = null;
+      this.confirmed = false;
 
       // unbind 'enter'
       $(document).off('keypress');
     },
-    open: function(options, callback) {
-      if (!this.isRendered) {
+    open: function (options, confirmCallback, cancelCallback) {
+      if (!this.isRendered)
         this.render();
-      }
 
       this.options = options || {};
-      this.callback = callback;
+      this.confirmCallback = confirmCallback;
+      this.cancelCallback = cancelCallback || _.noop;
 
       // input field
       if (this.options.input)
@@ -64,21 +77,19 @@ define([
 
       // bind 'enter' only when showing popin
       var that = this;
-      $(document).keypress(function(e) {
-        if(e.which == 13) {
+      $(document).keypress(function (e) {
+        if (e.which == 13) {
           that.onConfirm(e);
         }
       });
 
       this.$el.modal('show');
     },
-    onConfirm: function(event) {
+    onConfirm: function (event) {
       event.preventDefault();
 
-      var input = this.$input.val();
-      this.callback(input);
+      this.confirmed = true;
       this.$el.modal('hide');
-      this._reset();
     }
 
   });

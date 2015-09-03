@@ -1,3 +1,4 @@
+'use strict';
 require.config({
   paths: {
     '_templates': ['../build/templates', './templates'],
@@ -7,8 +8,8 @@ require.config({
     'bootstrap': '../vendor/bootstrap/dist/js/bootstrap',
     'text': '../vendor/requirejs-text/text',
     'socket.io': '/socket.io',
-    'underscore': '../vendor/underscore-amd/underscore',
-    'backbone': '../vendor/backbone-amd/backbone',
+    'underscore': '../vendor/underscore/underscore',
+    'backbone': '../vendor/backbone/backbone',
     'i18next': '../vendor/i18next/i18next.amd.withJQuery',
     'moment': '../vendor/moment/moment',
     'moment-fr': '../vendor/moment/locale/fr',
@@ -17,7 +18,6 @@ require.config({
     'jquery.maxlength': '../javascripts/plugins/jquery.maxlength',
     'jquery.smilify': '../javascripts/plugins/jquery.smilify',
     'jquery.momentify': '../javascripts/plugins/jquery.momentify',
-    'jquery.colorify': '../javascripts/plugins/jquery.colorify',
     'jquery.socialify': '../javascripts/plugins/jquery.socialify',
     'jquery.contactform': '../javascripts/plugins/jquery.contactform',
     'html.sortable': '../vendor/html.sortable/dist/html.sortable',
@@ -29,7 +29,6 @@ require.config({
     'jquery.maxlength': ['jquery'],
     'jquery.smilify': ['jquery'],
     'jquery.momentify': ['jquery'],
-    'jquery.colorify': ['jquery'],
     'jquery.socialify': ['jquery'],
     'jquery.contactform': ['jquery'],
     'html.sortable': ['jquery'],
@@ -49,14 +48,10 @@ require([
   'i18next',
   'moment',
   'desktop-notify',
-/************************************
- * Load (once) and attach plugins to jQuery and underscore
- ************************************/
   'jquery.insertatcaret',
   'jquery.maxlength',
   'jquery.smilify',
   'jquery.momentify',
-  'jquery.colorify',
   'jquery.socialify',
   'jquery.contactform',
   'bootstrap',
@@ -70,54 +65,58 @@ require([
     debug: false // @debug
   };
   // @doc: http://i18next.com/pages/doc_init.html#getresources
-  if (_.isString(translations))
+  if (_.isString(translations)) {
     i18nextOptions = _.extend({
       resGetPath: translations,
       dynamicLoad: true
     }, i18nextOptions);
-  else
+  } else {
     i18nextOptions.resStore = translations;
+  }
   i18next.init(i18nextOptions);
   // make i18next available from all underscore templates views (<%= t('key') %>)
   window.t = i18next.t; // @global
 
   // Moment language
   window.moment = moment;
-  var momentFormat = (i18next.lng() == 'fr')
-    ? {
-    relativeTime: {
-      future: "%s",
-      past: "%s",
-      s: "à l'instant",
-      m: "1mn",
-      mm: "%dmin",
-      h: "1h",
-      hh: "%dh",
-      d: "hier",
-      dd: "%d jours",
-      M: "un mois",
-      MM: "%d mois",
-      y: "un an",
-      yy: "%d ans"
-    }
+  var momentFormat;
+  if (i18next.lng() === 'fr') {
+    momentFormat = {
+      relativeTime: {
+        future: '%s',
+        past: '%s',
+        s: "à l'instant",
+        m: '1mn',
+        mm: '%dmin',
+        h: '1h',
+        hh: '%dh',
+        d: 'hier',
+        dd: '%d jours',
+        M: 'un mois',
+        MM: '%d mois',
+        y: 'un an',
+        yy: '%d ans'
+      }
+    };
+  } else {
+    momentFormat = {
+      relativeTime: {
+        future: '%s',
+        past: '%s',
+        s: 'just now',
+        m: '1mn',
+        mm: '%dmin',
+        h: '1h',
+        hh: '%dh',
+        d: 'yesterday',
+        dd: '%d days',
+        M: 'one month',
+        MM: '%d months',
+        y: 'one year',
+        yy: '%d years'
+      }
+    };
   }
-    : {
-    relativeTime: {
-      future: "%s",
-      past: "%s",
-      s: "just now",
-      m: "1mn",
-      mm: "%dmin",
-      h: "1h",
-      hh: "%dh",
-      d: "yesterday",
-      dd: "%d days",
-      M: "one month",
-      MM: "%d months",
-      y: "one year",
-      yy: "%d years"
-    }
-  };
   moment.locale(i18next.lng(), momentFormat);
 
   // Contact form

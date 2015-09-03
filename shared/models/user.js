@@ -1,49 +1,54 @@
+'use strict';
 var debug = require('debug')('shared:models:user');
 var _ = require('underscore');
 var mongoose = require('../io/mongoose');
-var bcrypt   = require('bcrypt-nodejs');
+var bcrypt = require('bcrypt-nodejs');
 var colors = require('../../config/colors');
 var i18next = require('../util/i18next');
 var common = require('@dbrugne/donut-common');
 var cloudinary = require('../util/cloudinary');
 
 var userSchema = mongoose.Schema({
-
-    username       : String,
-    name           : String,
-    admin          : { type: Boolean, default: false },
-    deleted        : { type: Boolean, default: false },
-    suspended      : { type: Boolean, default: false },
-    bio            : String,
-    location       : String,
-    website        : mongoose.Schema.Types.Mixed,
-    avatar         : String,
-    poster         : String,
-    color          : String,
-    local            : {
-      email         : String,
-      password      : String,
-      resetToken    : String,
-      resetExpires  : Date
-    },
-    facebook         : {
-      id         : String,
-      token      : String,
-      email      : String,
-      name       : String
-    },
-    preferences    : mongoose.Schema.Types.Mixed,
-    onetoones      : [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
-    bans: [{
-      user: {type: mongoose.Schema.ObjectId, ref: 'User'},
-      banned_at: {type: Date, default: Date.now}
-    }],
-    positions      : { type: String },
-    created_at     : { type: Date, default: Date.now },
-    lastlogin_at   : { type: Date },
-    online         : Boolean,
-    lastonline_at  : { type: Date },
-    lastoffline_at : { type: Date }
+  username: String,
+  name: String,
+  admin: { type: Boolean, default: false },
+  deleted: { type: Boolean, default: false },
+  suspended: { type: Boolean, default: false },
+  bio: String,
+  location: String,
+  website: mongoose.Schema.Types.Mixed,
+  avatar: String,
+  poster: String,
+  color: String,
+  local: {
+    email: String,
+    password: String,
+    resetToken: String,
+    resetExpires: Date
+  },
+  facebook: {
+    id: String,
+    token: String,
+    email: String,
+    name: String
+  },
+  preferences: mongoose.Schema.Types.Mixed,
+  onetoones: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
+  unviewed: [{
+    room: {type: mongoose.Schema.ObjectId, ref: 'Room'},
+    user: {type: mongoose.Schema.ObjectId, ref: 'User'},
+    event: {type: mongoose.Schema.ObjectId} // not use actually, first unviewed event, could be use to replace current "heavy" viewed management
+  }],
+  bans: [{
+    user: {type: mongoose.Schema.ObjectId, ref: 'User'},
+    banned_at: {type: Date, default: Date.now}
+  }],
+  positions: { type: String },
+  created_at: { type: Date, default: Date.now },
+  lastlogin_at: { type: Date },
+  online: Boolean,
+  lastonline_at: { type: Date },
+  lastoffline_at: { type: Date }
 
 });
 
@@ -58,7 +63,7 @@ userSchema.statics.getNewUser = function () {
 
   var preferencesConfig = this.preferencesKeys();
   var preferences = {};
-  _.each(preferencesConfig, function(value, key) {
+  _.each(preferencesConfig, function (value, key) {
     if (key.indexOf('room:') === 0) // room specific preferences exclusion
       return;
     if (value && value.default === true)
@@ -84,7 +89,7 @@ userSchema.statics.listByUsername = function (usernames) {
   var criteria = {
     $or: []
   };
-  _.each(usernames, function(u) {
+  _.each(usernames, function (u) {
     criteria['$or'].push({ username: common.regExpBuildExact(u) });
   });
   return this.find(criteria, '_id username');
@@ -106,7 +111,7 @@ userSchema.methods.getEmail = function () {
  * @returns {*}
  */
 userSchema.methods.generateHash = function (password) {
-    return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+  return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
 };
 
 /**
@@ -123,7 +128,7 @@ userSchema.methods.validPassword = function (password) {
  *
  * @returns {allowed: Boolean, err: String}
  */
-userSchema.methods.isAllowedToLogin = function() {
+userSchema.methods.isAllowedToLogin = function () {
   var err = null;
   if (!this.id)
     err = 'unknown';
@@ -152,6 +157,18 @@ userSchema.methods.isAllowedToConnect = function () {
   return { allowed: (!err), err: err };
 };
 
+userSchema.methods.isBanned = function (userId) {
+  if (!this.bans || !this.bans.length)
+    return false;
+
+  var subDocument = _.find(this.bans, function (ban) { // @warning: this shouldn't have .bans populated
+    if (ban.user.toString() == userId)
+      return true;
+  });
+
+  return (typeof subDocument != 'undefined');
+};
+
 /**
  * Return user from database _id
  * @param uid
@@ -177,18 +194,18 @@ userSchema.statics.findByUid = function (uid) {
  * @param callback
  */
 userSchema.statics.findRoomUsersHavingPreference = function (room, preferenceName, userId, callback) {
-  var keyNothing = "preferences.room:notif:nothing:__what__".replace('__what__', room.name);
-  var keyTopic = "preferences.room:notif:__preference__:__what__".replace('__preference__', preferenceName).replace('__what__', room.name);
+  var keyNothing = 'preferences.room:notif:nothing:__what__'.replace('__what__', room.name);
+  var keyTopic = 'preferences.room:notif:__preference__:__what__'.replace('__preference__', preferenceName).replace('__what__', room.name);
 
   var criteria = {
     _id: {
-      $in: _.map(room.users, function(uid) { return uid.toString(); })
+      $in: _.map(room.users, function (uid) { return uid.toString(); })
     },
     $and: []
   };
 
   if (userId !== null)
-    criteria.$and.push({ _id: { '$ne' : userId } });
+    criteria.$and.push({ _id: { '$ne': userId } });
 
   var topicCriterion = {};
   topicCriterion[keyTopic] = true;
@@ -197,7 +214,7 @@ userSchema.statics.findRoomUsersHavingPreference = function (room, preferenceNam
   var o1 = {};
   var o2 = {};
   o1[keyNothing] = { '$exists': false };
-  o2[keyNothing] = false ;
+  o2[keyNothing] = false;
 
   var nothingCriterion = { $or: [] };
   nothingCriterion.$or.push(o1);
@@ -221,6 +238,12 @@ userSchema.statics.retrieveUser = function (username) {
     username: common.regExpBuildExact(username, 'i')
   }).populate('room', 'name');
 };
+
+/*********************************************************************************
+ *
+ * Preferences
+ *
+ *********************************************************************************/
 
 /**
  * List the allowed preferences keys and configurations
@@ -261,11 +284,11 @@ userSchema.statics.preferencesIsKeyAllowed = function (name) {
     return true;
 
   // loop test
-  var found = _.find(keys, function(key) {
+  var found = _.find(keys, function (key) {
     if (key.indexOf('room:') !== 0)
       return false; // plain key
 
-    var pattern = new RegExp('^'+key.replace('__what__', ''));
+    var pattern = new RegExp('^' + key.replace('__what__', ''));
     return pattern.test(name);
   });
 
@@ -287,7 +310,7 @@ userSchema.methods.preferencesValue = function (key) {
   var _key;
   if (key.indexOf('room:') === 0) {
     // if per-room preferences
-    _key = key.substr(0, key.lastIndexOf(':'))+':__what__';
+    _key = key.substr(0, key.lastIndexOf(':')) + ':__what__';
   } else {
     _key = key;
   }
@@ -296,22 +319,82 @@ userSchema.methods.preferencesValue = function (key) {
 
   // error in code/configuration
   if (!preferencesConfig || !_.has(preferencesConfig, _key) || !_.has(preferencesConfig[_key], 'default')) {
-    debug('Unable to find this preference configuration: '+_key);
+    debug('Unable to find this preference configuration: ' + _key);
     return false;
   }
 
   return preferencesConfig[_key]['default'];
 };
 
-/**
- * Check for username availability (globally)
- * @param username
- * @param callback
- */
+/*********************************************************************************
+ *
+ * Unviewed
+ *
+ *********************************************************************************/
+
+userSchema.methods.hasUnviewedRoomMessage = function (room) {
+  if (!this.unviewed)
+    return false;
+
+  var found = _.find(this.unviewed, function (e) {
+    if (e.room && e.room.toString() === room.id)
+      return true;
+  });
+
+  return !!found;
+};
+userSchema.methods.hasUnviewedOneMessage = function (user) {
+  if (!this.unviewed)
+    return false;
+
+  var found = _.find(this.unviewed, function (u) {
+    if (u.user && u.user.toString() === user.id)
+      return true;
+  });
+
+  return !!found;
+};
+userSchema.statics.setUnviewedRoomMessage = function (roomId, usersId, userId , event, fn) {
+  this.update({
+    _id: { $in: usersId, $nin: [userId] },
+    'unviewed.room': { $nin: [roomId] }
+  }, {
+    $addToSet: { unviewed: { room: roomId, event: event }}
+  }, { multi: true }, fn);
+};
+userSchema.statics.setUnviewedOneMessage = function (fromUserId, toUserId, event, fn) {
+  this.update({
+    _id: { $in: [toUserId] },
+    'unviewed.user': { $nin: [fromUserId] }
+  }, {
+    $addToSet: { 'unviewed': {user: fromUserId, event: event}}
+  }, fn);
+};
+userSchema.methods.resetUnviewedRoom = function (roomId, fn) {
+  this.update({
+    $pull: { unviewed: { room: roomId }}
+  }).exec(function (err) {
+    fn(err); // there is a bug that cause a timeout when i call directly fn() without warping in a local function (!!!)
+  });
+};
+userSchema.methods.resetUnviewedOne = function (userId, fn) {
+  this.update({
+    $pull: { unviewed: { user: userId }}
+  }).exec(function (err) {
+    fn(err); // there is a bug that cause a timeout when i call directly fn() without warping in a local function (!!!)
+  });
+};
+
+/*********************************************************************************
+ *
+ * Username availability
+ *
+ *********************************************************************************/
+
 userSchema.statics.usernameAvailability = function (username, callback) {
   this.findOne({
     username: common.regExpBuildExact(username, 'i')
-  }, function(err, user) {
+  }, function (err, user) {
     if (err)
       return callback(err);
     if (user)
@@ -320,12 +403,6 @@ userSchema.statics.usernameAvailability = function (username, callback) {
     return callback();
   });
 };
-
-/**
- * Check for username availability (on current user)
- * @param username
- * @param callback
- */
 userSchema.methods.usernameAvailability = function (username, callback) {
   this.constructor.findOne({
     $and: [
@@ -336,7 +413,7 @@ userSchema.methods.usernameAvailability = function (username, callback) {
         _id: { $ne: this._id }
       }
     ]
-  }, function(err, user) {
+  }, function (err, user) {
     if (err)
       return callback(err);
     if (user)
@@ -346,26 +423,30 @@ userSchema.methods.usernameAvailability = function (username, callback) {
   });
 };
 
-userSchema.methods._avatar = function(size) {
+/*********************************************************************************
+ *
+ * Avatar/poster
+ *
+ *********************************************************************************/
+
+userSchema.methods._avatar = function (size) {
   var facebook = (this.facebook && this.facebook.token && this.facebook.id)
     ? this.facebook.id
     : null;
 
   return cloudinary.userAvatar(this.avatar, this.color, facebook, size);
 };
-userSchema.methods._poster = function(blur) {
+userSchema.methods._poster = function (blur) {
   return cloudinary.poster(this.poster, this.color, blur);
 };
-
-userSchema.methods.avatarId = function() {
+userSchema.methods.avatarId = function () {
   if (!this.avatar) return '';
   var data = this.avatar.split('/');
   if (!data[1]) return '';
   var id = data[1].substr(0, data[1].lastIndexOf('.'));
   return id;
 };
-
-userSchema.methods.posterId = function() {
+userSchema.methods.posterId = function () {
   if (!this.poster)
     return '';
 
@@ -373,18 +454,6 @@ userSchema.methods.posterId = function() {
   if (!data[1]) return '';
   var id = data[1].substr(0, data[1].lastIndexOf('.'));
   return id;
-};
-
-userSchema.methods.isBanned = function (user_id) {
-  if (!this.bans || !this.bans.length)
-    return false;
-
-  var subDocument = _.find(this.bans, function (ban) { // @warning: this shouldn't have .bans populated
-    if (ban.user.toString() == user_id)
-      return true;
-  });
-
-  return (typeof subDocument != 'undefined');
 };
 
 module.exports = mongoose.model('User', userSchema);

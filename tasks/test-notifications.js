@@ -160,7 +160,7 @@ module.exports = function (grunt) {
             by_avatar: userFrom._avatar(),
             time: new Date()
           };
-          HistoryRoomModel.record()(item.event, event, function(err, history) {
+          HistoryRoomModel.record()(room, item.event, event, function(err, history) {
             if (err)
               return fn(err);
 
@@ -191,7 +191,7 @@ module.exports = function (grunt) {
           topic         : message,
           time          : new Date()
         };
-        HistoryRoomModel.record()('room:topic', event, function(err, history) {
+        HistoryRoomModel.record()(room, 'room:topic', event, function(err, history) {
           if (err)
             return callback(err);
 
@@ -220,7 +220,7 @@ module.exports = function (grunt) {
           message       : message,
           time          : new Date()
         };
-        HistoryRoomModel.record()('room:message', event, function(err, history) {
+        HistoryRoomModel.record()(room, 'room:message', event, function(err, history) {
           if (err)
             return callback(err);
 
@@ -248,7 +248,7 @@ module.exports = function (grunt) {
           avatar        : userFrom._avatar(),
           time          : new Date()
         };
-        HistoryRoomModel.record()('room:in', event, function(err, history) {
+        HistoryRoomModel.record()(room, 'room:in', event, function(err, history) {
           if (err)
             return callback(err);
 
@@ -277,7 +277,7 @@ module.exports = function (grunt) {
           message       : message+' [@:'+userTo.id+':'+userTo.username+'] suite du message',
           time          : new Date()
         };
-        HistoryRoomModel.record()('room:message', event, function(err, history) {
+        HistoryRoomModel.record()(room, 'room:message', event, function(err, history) {
           if (err)
             return callback(err);
 

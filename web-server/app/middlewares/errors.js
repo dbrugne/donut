@@ -1,6 +1,5 @@
-
-module.exports = function(code, app) {
-
+'use strict';
+module.exports = function (code, app) {
   // Error 404
   if (code == '404') {
     return function (req, res, next) {
@@ -22,7 +21,7 @@ module.exports = function(code, app) {
       res.status(err.status || 500);
       res.render('error', {
         message: err.message,
-        error  : {},
+        error: {},
         meta: {title: '500 (donuts) error'}
       });
     };
@@ -31,8 +30,8 @@ module.exports = function(code, app) {
     return function (err, req, res, next) {
       res.status(err.status || 500);
       res.render('error', {
-        message      : err.message,
-        errorObject  : err,
+        message: err.message,
+        errorObject: err,
         meta: {title: '500 (donuts) error'}
       });
     };

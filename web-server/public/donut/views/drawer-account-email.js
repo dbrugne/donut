@@ -1,3 +1,4 @@
+'use strict';
 define([
   'jquery',
   'underscore',
@@ -5,22 +6,22 @@ define([
   'client',
   'models/current-user',
   '_templates'
-], function ($, _, Backbone, client ,currentUser, templates) {
+], function ($, _, Backbone, client , currentUser, templates) {
   var DrawerAccountEmailView = Backbone.View.extend({
-
     template: templates['drawer-account-email.html'],
 
     events: {
-      'click #email-modal-link' : 'onShowForm',
-      'submit .form-mail'       : 'onSubmit',
-      'click .cancel-email'     : 'onCancel'
+      'click #email-modal-link': 'onShowForm',
+      'submit .form-mail': 'onSubmit',
+      'click .cancel-email': 'onCancel'
     },
 
-    initialize: function(options) {
+    initialize: function (options) {
       this.user = options.user;
 
       this.render();
 
+      this.$emailUserCtn = this.$el.find('.email-user-ctn');
       this.$link = this.$('#email-modal-link');
       this.$form = this.$('.form-mail');
       this.$spinner = this.$('.spinner');
@@ -40,30 +41,30 @@ define([
         this.$link.text($.t('global.add'));
     },
 
-    render: function() {
+    render: function () {
       this.$el.html(this.template({user: this.user}));
       return this;
     },
 
-    onShowForm: function(event) {
+    onShowForm: function (event) {
       event.preventDefault();
 
       this.$form.show();
-      this.$link.hide();
+      this.$emailUserCtn.hide();
       this.$success.hide();
     },
 
-    onCancel: function() {
+    onCancel: function () {
       event.preventDefault();
 
       this.$form.hide();
-      this.$link.show();
+      this.$emailUserCtn.show();
       this.$errorLabel.text('');
       this.$form.removeClass('has-error');
-      this.$input.val('');
+      this.$input.val((this.user.account && this.user.account.email) ? this.user.account.email : '');
     },
 
-    onSubmit: function(event) {
+    onSubmit: function (event) {
       event.preventDefault();
 
       var that = this;
@@ -75,7 +76,6 @@ define([
 
       this.$errorLabel.text('');
       this.$spinner.show();
-      this.$link.show();
       this.$form.removeClass('has-error');
 
       client.accountEmail(this.$input.val(), function (data) {

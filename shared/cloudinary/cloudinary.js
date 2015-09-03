@@ -1,14 +1,14 @@
-(function($) {
+'use strict';(function ($) {
   var exports, cloudinaryLibrary;
   if (typeof module !== 'undefined' && module.exports) {
     module.exports = exports = require('cloudinary');
     exports.config(require('../../config/index').cloudinary);
     cloudinaryLibrary = function () {
       return exports;
-    }
+    };
   } else if ($) {
     exports = $.cd = {};
-    cloudinaryLibrary = function() {
+    cloudinaryLibrary = function () {
       return $.cloudinary; // not ready on DOM loading
     };
   } else {
@@ -19,7 +19,7 @@
   var userAvatarDefault = 'user-avatar-default.png';
   var posterDefault = 'poster-default.png';
 
-  function parse(identifier) {
+  function parse (identifier) {
     var data = {
       cloudinary: null,
       color: null,
@@ -32,7 +32,7 @@
     else
       parts = [identifier];
 
-    for (var i=0; i<parts.length; i++) {
+    for (var i = 0; i < parts.length; i++) {
       if (parts[i].indexOf('=') === -1)
         continue;
       var pair = parts[i].split('=');
@@ -43,7 +43,7 @@
     return data;
   }
 
-  function _urlNoDefault(token, width, height) {
+  function _urlNoDefault (token, width, height) {
     if (!token) return;
     var opts = {
       width: width || 30,
@@ -61,7 +61,7 @@
 
       if (!identifier) {
         if (data.facebook) {
-          return 'https://graph.facebook.com/'+data.facebook+'/picture?height='+height+'&width='+width;
+          return 'https://graph.facebook.com/' + data.facebook + '/picture?height=' + height + '&width=' + width;
         }
 
         return; // no valid identifier found
@@ -71,7 +71,7 @@
     return cloudinaryLibrary().url(identifier, opts);
   }
 
-  function _url(token, defaultIdentifier, width, height, gravity, effect) {
+  function _url (token, defaultIdentifier, width, height, gravity, effect) {
     if (!token) return;
     var data = parse(token);
 
@@ -96,18 +96,18 @@
       crop: 'fill',
       gravity: gravity,
       default_image: defaultIdentifier,
-      background: 'rgb:'+background.replace('#', '').toLocaleLowerCase()
+      background: 'rgb:' + background.replace('#', '').toLocaleLowerCase()
     };
 
     if (width != 0)
-      options.width = ''+width;
+      options.width = '' + width;
     if (height != 0)
-      options.height = ''+height;
+      options.height = '' + height;
     if (effect)
       options.effect = effect;
 
     if (!identifier && facebook) {
-      return 'https://graph.facebook.com/'+facebook+'/picture?height='+height+'&width='+width;
+      return 'https://graph.facebook.com/' + facebook + '/picture?height=' + height + '&width=' + width;
     }
 
     if (!identifier) {
@@ -124,27 +124,27 @@
     return cloudinaryLibrary().url(identifier, options);
   }
 
-  exports.roomAvatar = function(identifier, size) {
+  exports.roomAvatar = function (identifier, size) {
     return _url(identifier, roomAvatarDefault, size, size);
   };
-  exports.userAvatar = function(identifier, size) {
+  exports.userAvatar = function (identifier, size) {
     return _url(identifier, userAvatarDefault, size, size);
   };
-  exports.poster = function(identifier) {
+  exports.poster = function (identifier) {
     if (!identifier)
       return '';
     return _url(identifier, posterDefault, 430, 1100, 'center');
   };
-  exports.posterBlured = function(identifier) {
+  exports.posterBlured = function (identifier) {
     if (!identifier)
       return '';
 
     return _url(identifier, posterDefault, 430, 1100, 'center', 'blur:800');
   };
-  exports.noDefault = function(identifier, width, height) {
+  exports.noDefault = function (identifier, width, height) {
     return _urlNoDefault(identifier, width, height);
   };
-  exports.natural = function(identifier, width, height, mode) {
+  exports.natural = function (identifier, width, height, mode) {
     width = width || 1500;
     height = height || 1000;
     mode = mode || 'limit';
@@ -157,4 +157,4 @@
     return cloudinaryLibrary().url(identifier, opts);
   };
 
-})((typeof jQuery != 'undefined')?jQuery:false);
+})((typeof jQuery != 'undefined') ? jQuery : false);

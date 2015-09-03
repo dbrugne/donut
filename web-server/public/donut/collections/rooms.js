@@ -1,3 +1,4 @@
+'use strict';
 define([
   'underscore',
   'backbone',
@@ -8,9 +9,8 @@ define([
   'models/event'
 ], function (_, Backbone, client, currentUser, RoomModel, UserModel, EventModel) {
   var RoomsCollection = Backbone.Collection.extend({
-
-    iwhere : function(key, val){ // insencitive case search
-      var matches = this.filter(function(item){
+    iwhere: function (key, val) { // insencitive case search
+      var matches = this.filter(function (item) {
         return item.get(key).toLocaleLowerCase() === val.toLocaleLowerCase();
       });
 
@@ -19,12 +19,16 @@ define([
 
       return matches[0];
     },
+    getByName: function (name) {
+      return this.findWhere({ name: name });
+    },
 
-    initialize: function() {
+    initialize: function () {
       this.listenTo(client, 'room:in', this.onIn);
       this.listenTo(client, 'room:out', this.onOut);
       this.listenTo(client, 'room:topic', this.onTopic);
       this.listenTo(client, 'room:message', this.onMessage);
+      this.listenTo(client, 'room:me', this.onMe);
       this.listenTo(client, 'room:op', this.onOp);
       this.listenTo(client, 'room:deop', this.onDeop);
       this.listenTo(client, 'room:updated', this.onUpdated);
@@ -43,21 +47,21 @@ define([
       this.listenTo(client, 'room:message:edit', this.onMessageEdited);
       this.listenTo(client, 'room:typing', this.onTyping);
     },
-    onJoin: function(data) {
+    onJoin: function (data) {
       // server ask to client to open this room in IHM
       this.addModel(data);
     },
-    addModel: function(room) {
+    addModel: function (room) {
       // server confirm that we was joined to the room and give us some data on room
 
       // prepare model data
       var owner = (room.owner.user_id)
         ? new UserModel({
-        id: room.owner.user_id,
-        user_id: room.owner.user_id,
-        username: room.owner.username,
-        avatar: room.owner.avatar
-      })
+          id: room.owner.user_id,
+          user_id: room.owner.user_id,
+          username: room.owner.username,
+          avatar: room.owner.avatar
+        })
         : new UserModel();
 
       var roomData = {
@@ -69,100 +73,108 @@ define([
         avatar: room.avatar,
         poster: room.poster,
         posterblured: room.posterblured,
-        color: room.color
+        color: room.color,
+        unviewed: room.unviewed
       };
 
       // update model
-      var isNew = (this.get(room.name) == undefined)
+      var isNew = (this.get(room.id) == undefined)
         ? true
         : false;
       if (!isNew) {
         // already exist in IHM (maybe reconnecting)
-        var model = this.get(room.name);
+        var model = this.get(room.id);
         model.set(roomData);
       } else {
         // add in IHM
-        roomData.id = room.name;
+        roomData.id = room.id;
         var model = new RoomModel(roomData);
       }
 
       if (isNew) {
         this.add(model);
-        // now the view exists (created by mainView)
+      // now the view exists (created by mainView)
       }
     },
-    onIn: function(data) {
+    onIn: function (data) {
       var model;
-      if (!data || !data.name || !(model = this.get(data.name)))
+      if (!data || !data.room_id || !(model = this.get(data.room_id)))
         return;
 
       model.onIn(data);
     },
-    onOut: function(data) {
+    onOut: function (data) {
       var model;
-      if (!data || !data.name || !(model = this.get(data.name)))
+      if (!data || !data.room_id || !(model = this.get(data.room_id)))
         return;
 
       model.onOut(data);
     },
-    onTopic: function(data) {
+    onTopic: function (data) {
       var model;
-      if (!data || !data.name || !(model = this.get(data.name)))
+      if (!data || !data.room_id || !(model = this.get(data.room_id)))
         return;
 
       model.onTopic(data);
     },
-    onMessage: function(data) {
+    onMessage: function (data) {
       var model;
-      if (!data || !data.name || !(model = this.get(data.name)))
+      if (!data || !data.room_id || !(model = this.get(data.room_id)))
         return;
 
       model.onMessage(data);
     },
-    onOp: function(data) {
+    onMe: function (data) {
       var model;
-      if (!data || !data.name || !(model = this.get(data.name)))
+      if (!data || !data.room_id || !(model = this.get(data.room_id)))
+        return;
+
+      model.onMe(data);
+    },
+    onOp: function (data) {
+      var model;
+      if (!data || !data.room_id || !(model = this.get(data.room_id)))
         return;
 
       model.onOp(data);
     },
-    onDeop: function(data) {
+    onDeop: function (data) {
       var model;
-      if (!data || !data.name || !(model = this.get(data.name)))
+      if (!data || !data.room_id || !(model = this.get(data.room_id)))
         return;
 
       model.onDeop(data);
     },
-    onUpdated: function(data) {
+    onUpdated: function (data) {
       var model;
       if (!data || !data.name || !(model = this.get(data.name)))
         return;
 
       model.onUpdated(data);
     },
-    onUserOnline: function(data) {
+    onUserOnline: function (data) {
       var model;
       if (!data || !data.name || !(model = this.get(data.name)))
         return;
 
       model.onUserOnline(data);
     },
-    onUserOffline: function(data) {
+    onUserOffline: function (data) {
       var model;
       if (!data || !data.name || !(model = this.get(data.name)))
         return;
 
       model.onUserOffline(data);
     },
-    onKick: function(data) {
+    onKick: function (data) {
       this._kickBan('kick', data);
     },
-    onBan: function(data) {
+    onBan: function (data) {
       this._kickBan('ban', data);
     },
-    _kickBan: function(what, data) {
+    _kickBan: function (what, data) {
       var model;
-      if (!data || !data.name || !(model = this.get(data.name)))
+      if (!data || !data.room_id || !(model = this.get(data.room_id)))
         return;
 
       // if i'm the "targeted user" destroy the model/view
@@ -186,75 +198,73 @@ define([
 
       // trigger event
       model.trigger('freshEvent', new EventModel({
-        type: 'room:'+what,
+        type: 'room:' + what,
         data: data
       }));
     },
-    onDeban: function(data) {
+    onDeban: function (data) {
       var model;
-      if (!data || !data.name || !(model = this.get(data.name)))
+      if (!data || !data.room_id || !(model = this.get(data.room_id)))
         return;
 
       model.onDeban(data);
     },
-    onVoice: function(data) {
+    onVoice: function (data) {
       var model;
-      if (!data || !data.name || !(model = this.get(data.name)))
+      if (!data || !data.room_id || !(model = this.get(data.room_id)))
         return;
 
       model.onVoice(data);
     },
-    onDevoice: function(data) {
+    onDevoice: function (data) {
       var model;
-      if (!data || !data.name || !(model = this.get(data.name)))
+      if (!data || !data.room_id || !(model = this.get(data.room_id)))
         return;
 
       model.onDevoice(data);
     },
-    onLeave: function(data) {
+    onLeave: function (data) {
       // server asks to this client to leave this room
       var model;
-      if (!data || !data.name || !(model = this.get(data.name)))
+      if (!data || !data.room_id || !(model = this.get(data.room_id)))
         return;
 
       this.remove(model);
 
       if (data.reason && data.reason == 'deleted')
-        this.trigger('deleted', {reason: $.t("chat.deletemessage", {name: data.name})});
-      else
-        this.trigger('deleted');
+        this.trigger('deleted', {reason: $.t('chat.deletemessage', {name: data.name})});
     },
-    onViewed: function(data) {
+    onViewed: function (data) {
       var model;
-      if (!data || !data.name || !(model = this.get(data.name)))
+      if (!data || !data.room_id || !(model = this.get(data.room_id)))
         return;
 
       model.onViewed(data);
     },
-    onMessageSpam: function(data) {
+    onMessageSpam: function (data) {
       var model;
-      if (!data || !data.name || !(model = this.get(data.name)))
+      if (!data || !data.room_id || !(model = this.get(data.room_id)))
         return;
 
       model.trigger('messageSpam', data);
     },
-    onMessageUnspam: function(data) {
+    onMessageUnspam: function (data) {
       var model;
-      if (!data || !data.name || !(model = this.get(data.name)))
+      if (!data || !data.room_id || !(model = this.get(data.room_id)))
         return;
 
       model.trigger('messageUnspam', data);
     },
-    onMessageEdited: function(data) {
+    onMessageEdited: function (data) {
       var model;
-      if (!data || !data.name || !(model = this.get(data.name)))
+      if (!data || !data.room_id || !(model = this.get(data.room_id)))
         return;
 
       model.trigger('messageEdit', data);
     },
-    onTyping: function(data) {
+    onTyping: function (data) {
       var model;
-      if(!data || !data.name || !(model = this.get(data.name)))
+      if (!data || !data.room_id || !(model = this.get(data.room_id)))
         return;
 
       model.trigger('typing', data);

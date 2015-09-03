@@ -1,3 +1,4 @@
+'use strict';
 var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
 var async = require('async');
 var emailer = require('../../../../../shared/io/emailer');
@@ -13,12 +14,11 @@ module.exports = function (app) {
 var handler = Handler.prototype;
 
 handler.call = function (data, session, next) {
-
   var user = session.__currentUser__;
 
   async.waterfall([
 
-    function check(callback) {
+    function check (callback) {
       if (!data.password || data.password.length < 6 || data.password.length > 50)
         return callback('length');
 
@@ -31,7 +31,7 @@ handler.call = function (data, session, next) {
       return callback(null);
     },
 
-    function save(callback) {
+    function save (callback) {
       user.local.password = user.generateHash(data.password);
       user.save(function (err) {
         if (err)
@@ -44,7 +44,7 @@ handler.call = function (data, session, next) {
       });
     }
 
-  ], function(err) {
+  ], function (err) {
     if (err) {
       logger.error('[account:password] ' + err);
 

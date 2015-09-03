@@ -1,3 +1,4 @@
+'use strict';
 define([
   'jquery',
   'underscore',
@@ -9,7 +10,6 @@ define([
   '_templates'
 ], function ($, _, Backbone, client, currentUser, ImageUploader, ColorPicker, templates) {
   var DrawerUserEditView = Backbone.View.extend({
-
     template: templates['drawer-user-edit.html'],
 
     id: 'user-edit',
@@ -19,15 +19,14 @@ define([
     },
 
     initialize: function (options) {
-      this.mainView = options.mainView;
-
       // show spinner as temp content
       this.render();
 
       // ask for data
       var that = this;
-      client.userRead(currentUser.get('username'), function (data) {
-        that.onResponse(data);
+      client.userRead(currentUser.get('user_id'), null, function (err, data) {
+        if (!err)
+          that.onResponse(data);
       });
     },
     render: function () {
@@ -36,7 +35,6 @@ define([
       return this;
     },
     onResponse: function (user) {
-      // colorize drawer .opacity
       if (user.color)
         this.trigger('color', user.color);
 
@@ -45,13 +43,10 @@ define([
       var html = this.template({user: user});
       this.$el.html(html);
 
-      // color form
-      this.$el.find('.user').colorify();
-
       // description
       this.$el.find('#userBio').maxlength({
         counterContainer: this.$el.find('#userBio').siblings('.help-block').find('.counter'),
-        text: $.t("edit.left")
+        text: $.t('edit.left')
       });
 
       // website
@@ -138,7 +133,7 @@ define([
       });
     },
 
-    checkWebsite: function() {
+    checkWebsite: function () {
       var website = this.$website.val();
 
       if (website && website.length < 5 || website.length > 255)
@@ -150,10 +145,10 @@ define([
       return true;
     },
 
-    editError: function(dataErrors) {
+    editError: function (dataErrors) {
       var message = '';
       _.each(dataErrors.err, function (error) {
-        message += t('edit.errors.' + error)+'<br>';
+        message += t('edit.errors.' + error) + '<br>';
       });
       this.$el.find('.errors').html(message).show();
     }

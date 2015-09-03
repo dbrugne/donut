@@ -1,4 +1,4 @@
-<div class="user" data-colorify="<%= user.color %>">
+<div class="user">
     <span class="username">@<%= user.username %></span>
 </div>
 <div class="errors"></div>
@@ -33,7 +33,7 @@
     </div>
     <!-- label><%= t('edit.othersettings') %></label -->
     <div class="form-group buttons">
-        <a class="btn btn-default btn-sm cancel"><%= t('global.cancel') %></a>
-        <input type="submit" value="<%= t('global.save') %>">
+        <a class="big-button-light cancel"><%= t('global.cancel') %></a>
+        <input class="big-button-light" type="submit" value="<%= t('global.save') %>">
     </div>
 </form>

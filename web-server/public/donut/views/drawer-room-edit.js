@@ -1,3 +1,4 @@
+'use strict';
 define([
   'jquery',
   'underscore',
@@ -9,45 +10,41 @@ define([
   '_templates'
 ], function ($, _, Backbone, client, currentUser, ImageUploader, ColorPicker, templates) {
   var DrawerRoomEditView = Backbone.View.extend({
-
     template: templates['drawer-room-edit.html'],
 
     id: 'room-edit',
 
-    events  : {
+    events: {
       'submit form.room-form': 'onSubmit'
     },
 
-    initialize: function(options) {
-      this.mainView = options.mainView;
-      this.roomName = options.name;
+    initialize: function (options) {
+      this.roomId = options.room_id;
 
       // show spinner as temp content
       this.render();
 
       // ask for data
       var that = this;
-      client.roomRead(this.roomName, function(data) {
-        that.onResponse(data);
+      client.roomRead(this.roomId, null, function (err, data) {
+        if (!err)
+          that.onResponse(data);
       });
     },
-    render: function() {
+    render: function () {
       // render spinner only
       this.$el.html(templates['spinner.html']);
       return this;
     },
-    onResponse: function(room) {
-      this.roomName = room.name;
-
-      // colorize drawer .opacity
+    onResponse: function (room) {
       if (room.color)
         this.trigger('color', room.color);
 
       room.isOwner = (room.owner)
-          ? (room.owner.user_id == currentUser.get('user_id'))
+        ? (room.owner.user_id == currentUser.get('user_id'))
           ? true
           : false
-          : false;
+        : false;
 
       room.isAdmin = (currentUser.get('admin') === true)
         ? true
@@ -58,13 +55,10 @@ define([
       var html = this.template({room: room});
       this.$el.html(html);
 
-      // color form
-      this.$el.find('.room').colorify();
-
       // description
       this.$el.find('#roomDescription').maxlength({
         counterContainer: this.$el.find('#roomDescription').siblings('.help-block').find('.counter'),
-        text: $.t("edit.left")
+        text: $.t('edit.left')
       });
 
       // website
@@ -101,7 +95,7 @@ define([
         success: _.bind(this.onRoomPosterUpdate, this)
       });
     },
-    onSubmit: function(event) {
+    onSubmit: function (event) {
       event.preventDefault();
 
       if (this.checkWebsite() !== true)
@@ -127,7 +121,7 @@ define([
         updateData.poster = this.posterUploader.data;
 
       var that = this;
-      client.roomUpdate(this.roomName, updateData, function(data) {
+      client.roomUpdate(this.roomId, updateData, function (data) {
         that.$el.find('.errors').hide();
         if (data.err)
           return that.editError(data);
@@ -140,7 +134,7 @@ define([
         avatar: data
       };
       var that = this;
-      client.roomUpdate(this.roomName, updateData, function (d) {
+      client.roomUpdate(this.roomId, updateData, function (d) {
         that.$el.find('.errors').hide();
         if (d.err)
           that.editError(d);
@@ -152,14 +146,14 @@ define([
         poster: data
       };
       var that = this;
-      client.roomUpdate(this.roomName, updateData, function (d) {
+      client.roomUpdate(this.roomId, updateData, function (d) {
         that.$el.find('.errors').hide();
         if (d.err)
           that.editError(d);
       });
     },
 
-    checkWebsite: function() {
+    checkWebsite: function () {
       var website = this.$website.val();
 
       if (website && (website.length < 5 || website.length > 255))
@@ -171,10 +165,10 @@ define([
       return true;
     },
 
-    editError: function(dataErrors) {
+    editError: function (dataErrors) {
       var message = '';
       _.each(dataErrors.err, function (error) {
-        message += t('edit.errors.' + error)+'<br>';
+        message += t('edit.errors.' + error) + '<br>';
       });
       this.$el.find('.errors').html(message).show();
     }

@@ -1,9 +1,9 @@
 <div class="block topic">
-    <div class="event" id="<%= data.id %>" data-time="<%= data.time %>">
+    <div class="event <% if (unviewed) { print('unviewed'); } %>" id="<%= data.id %>" data-time="<%= data.time %>">
         <div class="text">
             <i class="icon icon-quote"></i>
-            <div class="avatar open-user-profile" data-username="<%= data.username %>" style="background-image: url(<%= data.avatar %>)"></div>
-            <span class="username open-user-profile" data-username="<%= data.username %>">@<%= data.username %></span>
+            <div class="avatar open-user-profile" data-user-id="<%= data.user_id %>" style="background-image: url(<%= data.avatar %>)"></div>
+            <span class="username open-user-profile" data-user-id="<%= data.user_id %>">@<%= data.username %></span>
             <span class="topic"><%= t('chat.notifications.topic') %> <% if (data.topic != '') { %>"<%= data.topic %>"<% } else { %><em><%= t('chat.notifications.topicempty') %></em><% } %></span>
         </div>
         <div class="date"><span class="moment" data-time="<%= data.time %>" title="<%= data.datefull %>"><strong><%= data.dateshort %></span></div>

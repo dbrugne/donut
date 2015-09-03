@@ -1,8 +1,10 @@
+'use strict';
 define([
   'jquery',
   'underscore',
   'backbone',
   'libs/donut-debug',
+  'models/app',
   'client',
   'models/current-user',
   'models/event',
@@ -31,26 +33,25 @@ define([
   'views/discussions-block',
   'views/notifications',
   'views/modal-confirmation',
+  'views/modal-room-users',
   'views/mute'
-], function ($, _, Backbone, donutDebug, client, currentUser, EventModel, rooms, onetoones, templates, windowView,
-             ConnectionModalView, WelcomeModalView,
-             CurrentUserView, AlertView, HomeView,
-             DrawerView,
-             DrawerRoomCreateView, DrawerRoomProfileView, DrawerRoomEditView, DrawerRoomUsersView, DrawerRoomPreferencesView,
-             DrawerRoomDeleteView,
-             DrawerUserProfileView, DrawerUserEditView, DrawerUserPreferencesView, DrawerUserAccountView,
-             RoomView, OneToOneView,
-             DiscussionsBlockView, NotificationsView, ConfirmationView, MuteView) {
-
+], function ($, _, Backbone, donutDebug, app, client, currentUser, EventModel, rooms, onetoones, templates, windowView,
+  ConnectionModalView, WelcomeModalView,
+  CurrentUserView, AlertView, HomeView,
+  DrawerView,
+  DrawerRoomCreateView, DrawerRoomProfileView, DrawerRoomEditView, DrawerRoomUsersView, DrawerRoomPreferencesView,
+  DrawerRoomDeleteView,
+  DrawerUserProfileView, DrawerUserEditView, DrawerUserPreferencesView, DrawerUserAccountView,
+  RoomView, OneToOneView,
+  DiscussionsBlockView, NotificationsView, ConfirmationView, RoomUsersModalView, MuteView) {
   var debug = donutDebug('donut:main');
 
   var MainView = Backbone.View.extend({
-
-    el: $("#chat"),
+    el: $('#chat'),
 
     $home: $('#home'),
 
-    $discussionsPanelsContainer: $("#center"),
+    $discussionsPanelsContainer: $('#center'),
 
     firstConnection: true,
 
@@ -67,46 +68,52 @@ define([
     intervalDuration: 240000, // ms
 
     events: {
-      'click .go-to-search'             : 'focusOnSearch',
-      'click .open-create-room'         : 'openCreateRoom',
-      'click .open-user-edit'           : 'openUserEdit',
-      'click .open-user-preferences'    : 'openUserPreferences',
-      'click .open-user-account'        : 'openUserAccount',
-      'click .open-user-profile'        : 'openUserProfile',
-      'click .action-user-ban'          : 'userBan',
-      'click .action-user-deban'        : 'userDeban',
-      'dblclick .dbl-open-user-profile' : 'openUserProfile',
-      'click .open-room-profile'        : 'openRoomProfile',
-      'click .open-room-edit'           : 'openRoomEdit',
-      'click .open-room-preferences'    : 'openRoomPreferences',
-      'click .open-room-users'          : 'openRoomUsers',
-      'click .open-room-delete'         : 'openRoomDelete',
-      'click .close-discussion'         : 'onCloseDiscussion'
+      'click .go-to-search': 'focusOnSearch',
+      'click .open-create-room': 'openCreateRoom',
+      'click .open-user-edit': 'openUserEdit',
+      'click .open-user-preferences': 'openUserPreferences',
+      'click .open-user-account': 'openUserAccount',
+      'click .open-user-profile': 'onOpenUserProfile',
+      'click .action-user-ban': 'userBan',
+      'click .action-user-deban': 'userDeban',
+      'dblclick .dbl-open-user-profile': 'onOpenUserProfile',
+      'click .open-room-profile': 'onOpenRoomProfile',
+      'click .open-room-edit': 'openRoomEdit',
+      'click .open-room-preferences': 'openRoomPreferences',
+      'click .open-room-users': 'openRoomUsers',
+      'click .open-room-delete': 'openRoomDelete',
+      'click .close-discussion': 'onCloseDiscussion'
     },
 
-    initialize: function() {
+    initialize: function () {
       this.defaultColor = window.room_default_color;
 
-      this.listenTo(client,     'welcome', this.onWelcome);
-      this.listenTo(client,     'disconnect', this.onDisconnect);
-      this.listenTo(client,     'reconnect', this.onReconnect);
-      this.listenTo(rooms,      'add', this.addView);
-      this.listenTo(rooms,      'remove', this.onRemoveDiscussion);
-      this.listenTo(onetoones,  'add', this.addView);
-      this.listenTo(onetoones,  'remove', this.onRemoveDiscussion);
-      this.listenTo(rooms,      'kickedOrBanned', this.roomKickedOrBanned);
-      this.listenTo(rooms,      'deleted', this.roomRoomDeleted);
+      this.listenTo(client, 'welcome', this.onWelcome);
+      this.listenTo(client, 'disconnect', this.onDisconnect);
+      this.listenTo(client, 'reconnect', this.onReconnect);
+      this.listenTo(rooms, 'add', this.addView);
+      this.listenTo(rooms, 'remove', this.onRemoveDiscussion);
+      this.listenTo(onetoones, 'add', this.addView);
+      this.listenTo(onetoones, 'remove', this.onRemoveDiscussion);
+      this.listenTo(rooms, 'kickedOrBanned', this.roomKickedOrBanned);
+      this.listenTo(rooms, 'deleted', this.roomRoomDeleted);
+      this.listenTo(app, 'openRoomProfile', this.openRoomProfile);
+      this.listenTo(app, 'openUserProfile', this.openUserProfile);
+      this.listenTo(app, 'joinRoom', this.focusRoomByName);
+      this.listenTo(app, 'changeColor', this.onChangeColor);
+      this.listenTo(app, 'persistPositions', this.persistPositions);
     },
-    run: function() {
+    run: function () {
       // generate and attach subviews
       this.currentUserView = new CurrentUserView({model: currentUser});
-      this.discussionsBlock = new DiscussionsBlockView({mainView: this});
-      this.drawerView = new DrawerView({mainView: this});
-      this.alertView = new AlertView({mainView: this});
-      this.connectionView = new ConnectionModalView({mainView: this});
-      this.welcomeView = new WelcomeModalView({mainView: this});
-      this.notificationsView = new NotificationsView({mainView: this});
-      this.muteView = new MuteView({mainView: this});
+      this.discussionsBlock = new DiscussionsBlockView();
+      this.drawerView = new DrawerView();
+      this.alertView = new AlertView();
+      this.connectionView = new ConnectionModalView();
+      this.welcomeView = new WelcomeModalView();
+      this.notificationsView = new NotificationsView();
+      this.muteView = new MuteView();
+      this.roomUsersView = new RoomUsersModalView();
 
       // @debug
       window.current = currentUser;
@@ -119,7 +126,7 @@ define([
      * time in a same session)
      * @param data
      */
-    onWelcome: function(data) {
+    onWelcome: function (data) {
       debug.start('welcome');
       debug.start('welcome-before');
       var that = this;
@@ -146,16 +153,16 @@ define([
 
       // Rooms
       debug.start('welcome-rooms');
-      _.each(data.rooms, function(room) {
-        debug.start('welcome-'+room.name);
+      _.each(data.rooms, function (room) {
+        debug.start('welcome-' + room.name);
         rooms.addModel(room);
-        debug.end('welcome-'+room.name);
+        debug.end('welcome-' + room.name);
       });
       debug.end('welcome-rooms');
 
       // One to ones
       debug.start('welcome-ones');
-      _.each(data.onetoones, function(one) {
+      _.each(data.onetoones, function (one) {
         onetoones.addModel(one);
       });
       debug.end('welcome-ones');
@@ -169,7 +176,7 @@ define([
       this.firstConnection = false;
 
       // set intervaller (set on 'connection')
-      this.interval = setTimeout(function() {
+      this.interval = setTimeout(function () {
         that.updateViews();
       }, this.intervalDuration);
 
@@ -178,7 +185,7 @@ define([
       this.connectionView.hide();
       debug.end('welcome');
     },
-    onDisconnect: function() {
+    onDisconnect: function () {
       // disable interval
       clearInterval(this.interval);
 
@@ -186,33 +193,27 @@ define([
       var e = new EventModel({
         type: 'disconnected'
       });
-      _.each(this.views, function(view) {
+      _.each(this.views, function (view) {
         view.eventsView.addFreshEvent(e);
         view.hasBeenFocused = false; // will force re-fetch data on next focus
       });
     },
-    onReconnect: function() {
+    onReconnect: function () {
       // add reconnected event in each discussion
       var e = new EventModel({
         type: 'reconnected'
       });
-      _.each(this.views, function(view) {
+      _.each(this.views, function (view) {
         view.eventsView.addFreshEvent(e);
       });
     },
 
-    alert: function(type, message) {
-      type = type || 'info';
-      this.alertView.show(type, message);
+    _color: function (color) {
+      $('body').removeClass(function (index, css) {
+        return (css.match(/(dc-\S+)+/g) || []).join(' ');
+      }).addClass('dc-' + color.replace('#', '').toLowerCase());
     },
-
-    _color: function(color) {
-      this.$el.find('#color')
-        .attr('data-colorify', color)
-        .colorify();
-    },
-
-    color: function(color, temporary, reset) {
+    color: function (color, temporary, reset) {
       if (reset)
         return this._color(this.currentColor);
 
@@ -223,8 +224,58 @@ define([
 
       return this._color(color);
     },
+    onChangeColor: function (color, temporary, reset) {
+      this.color(color, temporary, reset);
+    },
 
-    _handleAction: function(event) {
+    viewportIs: function (expression) {
+      var pattern = /^(<|>|=)(xs|sm|md|lg)$/;
+      if (!pattern.test(expression))
+        return;
+
+      var matches = expression.match(pattern);
+      if (!matches || !matches[1] || !matches[2])
+        return;
+
+      var $root = $('body > .responsive');
+      if (!$root || !$root.length)
+        return;
+      var breakpoints = {
+        xs: $root.find('.device-xs').is(':visible'),
+        sm: $root.find('.device-sm').is(':visible'),
+        md: $root.find('.device-md').is(':visible'),
+        lg: $root.find('.device-lg').is(':visible')
+      };
+
+      var compare = matches[1];
+      var breakpoint = matches[2];
+
+      if (compare === '=') {
+        return breakpoints[breakpoint];
+      }
+
+      if (compare === '>') {
+        if (breakpoint === 'xs')
+          return ((breakpoints['sm'] || breakpoints['md'] || breakpoints['lg']) && !breakpoints['xs']);
+        else if (breakpoint === 'sm')
+          return ((breakpoints['md'] || breakpoints['lg']) && !breakpoints['sm']);
+        else if (breakpoint === 'md')
+          return (breakpoints['lg'] && !breakpoints['md']);
+        else
+          return false;
+      } else if (compare === '<') {
+        if (breakpoint === 'lg')
+          return ((breakpoints['md'] || breakpoints['sm'] || breakpoints['xs']) && !breakpoints['lg']);
+        else if (breakpoint === 'md')
+          return ((breakpoints['sm'] || breakpoints['xs']) && !breakpoints['md']);
+        else if (breakpoint === 'sm')
+          return (breakpoints['xs'] && !breakpoints['sm']);
+        else
+          return false;
+      }
+    },
+
+    _handleAction: function (event) {
       if (!event) return false;
       event.preventDefault();
       event.stopPropagation();
@@ -236,124 +287,139 @@ define([
      * @param event
      * @returns {boolean}
      */
-    roomKickedOrBanned: function(event) {
+    roomKickedOrBanned: function (event) {
       var what = event.what;
       var data = event.data;
       this.focus();
-      var message = (what == 'kick') ? $.t("chat.kickmessage", {name: data.name}) : $.t("chat.banmessage", {name: data.name});
+      var message = (what == 'kick') ? $.t('chat.kickmessage', {name: data.name}) : $.t('chat.banmessage', {name: data.name});
       if (data.reason)
-        message += ' ' + $.t("chat.reason", {reason: _.escape(data.reason)});
-      this.alert('warning', message);
+        message += ' ' + $.t('chat.reason', {reason: _.escape(data.reason)});
+      app.trigger('alert', 'warning', message);
     },
-     roomRoomDeleted: function(data) {
+    roomRoomDeleted: function (data) {
       this.focus();
       if (data && data.reason)
-        this.alert('warning', data.reason);
+        app.trigger('alert', 'warning', data.reason);
     },
 
     // DRAWERS
     // ======================================================================
 
-    openCreateRoom: function(event) {
+    openCreateRoom: function (event) {
       event.preventDefault();
       var name = $(event.currentTarget).data('name') || '';
-      var view = new DrawerRoomCreateView({ mainView: this, name: name });
+      var view = new DrawerRoomCreateView({ name: name });
       this.drawerView.setSize('450px').setView(view).open();
     },
-    openUserAccount: function(event) {
+    openUserAccount: function (event) {
       event.preventDefault();
-      var view = new DrawerUserAccountView({ mainView: this });
+      var view = new DrawerUserAccountView();
       this.drawerView.setSize('320px').setView(view).open();
     },
-    openUserProfile: function(event) {
+    onOpenUserProfile: function (event) {
       event.preventDefault();
 
-      var username = $(event.currentTarget).data('username');
-      if (!username)
+      var userId = $(event.currentTarget).data('userId');
+      if (!userId)
         return;
 
-      var view = new DrawerUserProfileView({ mainView: this, username: username });
+      var view = new DrawerUserProfileView({ user_id: userId });
       this.drawerView.setSize('380px').setView(view).open();
     },
-    openRoomProfile: function(event) {
-      event.preventDefault();
-
-      var name = $(event.currentTarget).data('roomName');
-      if (!name)
-        return;
-
-      var view = new DrawerRoomProfileView({ mainView: this, name: name });
+    openUserProfile: function (data) {
+      var view = new DrawerUserProfileView({ data: data });
       this.drawerView.setSize('380px').setView(view).open();
     },
-    openRoomEdit: function(event) {
+    onOpenRoomProfile: function (event) {
       event.preventDefault();
 
-      var name = $(event.currentTarget).data('roomName');
-      if (!name)
+      var roomId = $(event.currentTarget).data('roomId');
+      if (!roomId)
         return;
 
-      var view = new DrawerRoomEditView({ mainView: this, name: name });
+      var view = new DrawerRoomProfileView({ room_id: roomId });
+      this.drawerView.setSize('380px').setView(view).open();
+    },
+    openRoomProfile: function (data) {
+      var view = new DrawerRoomProfileView({ data: data });
+      this.drawerView.setSize('380px').setView(view).open();
+    },
+    openRoomEdit: function (event) {
+      event.preventDefault();
+
+      var roomId = $(event.currentTarget).data('roomId');
+      if (!roomId)
+        return;
+
+      var view = new DrawerRoomEditView({ name: name,  room_id: roomId});
       this.drawerView.setSize('450px').setView(view).open();
     },
-    openRoomUsers: function(event) {
+    openRoomUsers: function (event) {
       event.preventDefault();
 
-      var name = $(event.currentTarget).data('roomName');
-      if (!name)
+      var roomId = $(event.currentTarget).data('roomId');
+      if (!roomId)
         return;
 
-      var model = rooms.get(name);
+      var model = rooms.get(roomId);
       if (!model)
         return;
 
-      var view = new DrawerRoomUsersView({ mainView: this, model: model });
-      this.drawerView.setSize('450px').setView(view).open();
+      if (this.viewportIs('>md')) {
+        // drawer
+        var view = new DrawerRoomUsersView({ model: model });
+        this.drawerView.setSize('450px').setView(view).open();
+      } else {
+        // modal
+        this.roomUsersView.show(model);
+      }
     },
-    openRoomPreferences: function(event) {
+    openRoomPreferences: function (event) {
       event.preventDefault();
 
-      var name = $(event.currentTarget).data('roomName');
-      if (!name)
+      var roomId = $(event.currentTarget).data('roomId');
+      if (!roomId) {
+        return;
+      }
+
+      var model = rooms.get(roomId);
+      if (!model) {
+        return;
+      }
+
+      var view = new DrawerRoomPreferencesView({ model: model });
+      this.drawerView.setSize('450px').setView(view).open();
+    },
+    openRoomDelete: function (event) {
+      event.preventDefault();
+      var roomId = $(event.currentTarget).data('roomId');
+      if (!roomId)
         return;
 
-      var model = rooms.get(name);
-      if (!model)
-        return;
-
-      var view = new DrawerRoomPreferencesView({ mainView: this, model: model });
+      var view = new DrawerRoomDeleteView({ room_id: roomId });
       this.drawerView.setSize('450px').setView(view).open();
     },
-    openRoomDelete: function(event) {
+    openUserEdit: function (event) {
       event.preventDefault();
-      var name = $(event.currentTarget).data('roomName');
-      if (!name)
-        return;
-
-      var view = new DrawerRoomDeleteView({ mainView: this, name: name });
+      var view = new DrawerUserEditView();
       this.drawerView.setSize('450px').setView(view).open();
     },
-    openUserEdit: function(event) {
+    openUserPreferences: function (event) {
       event.preventDefault();
-      var view = new DrawerUserEditView({ mainView: this });
-      this.drawerView.setSize('450px').setView(view).open();
-    },
-    openUserPreferences: function(event) {
-      event.preventDefault();
-      var view = new DrawerUserPreferencesView({ mainView: this });
+      var view = new DrawerUserPreferencesView();
       this.drawerView.setSize('450px').setView(view).open();
     },
 
     // DISCUSSIONS MANAGEMENT
     // ======================================================================
 
-    addView: function(model, collection, options) {
+    addView: function (model, collection, options) {
       var constructor = (model.get('type') == 'room') ? RoomView : OneToOneView;
 
       // create view
       var view = new constructor({
         collection: collection,
-        model:      model,
-        mainView:   this
+        model: model
       });
 
       // add to views list
@@ -371,20 +437,20 @@ define([
       this.discussionsBlock.redraw();
     },
 
-    onCloseDiscussion: function(event) {
+    onCloseDiscussion: function (event) {
       this._handleAction(event);
 
-      var $target = $(event.currentTarget).closest('a.item').first();
+      var $target = $(event.currentTarget);
       if (!$target)
         return;
 
       var type = $target.data('type');
       var identifier = $target.data('identifier');
       var model;
-      if (type == 'room') {
-        model = rooms.findWhere({ name: identifier });
+      if (type === 'room') {
+        model = rooms.findWhere({ id: identifier });
       } else {
-        model = onetoones.findWhere({ username: ''+identifier }); // force string to handle fully numeric username
+        model = onetoones.findWhere({ user_id: '' + identifier }); // force string to handle fully numeric username
       }
 
       if (model == undefined)
@@ -394,7 +460,7 @@ define([
 
       return false; // stop propagation
     },
-    onRemoveDiscussion: function(model, collection, options) {
+    onRemoveDiscussion: function (model, collection, options) {
       var view = this.views[model.get('id')];
       if (view === undefined)
         return debug('close discussion error: unable to find view');
@@ -413,33 +479,33 @@ define([
         this.discussionsBlock.redraw();
     },
 
-    persistPositions: function(silent) {
+    persistPositions: function (silent) {
       silent = silent | false;
 
       var positions = [];
-      this.discussionsBlock.$list.find('a.item').each(function() {
-        var identifier = ''+$(this).data('identifier'); // force string to handle fully numeric username
+      this.discussionsBlock.$list.find('a.item').each(function () {
+        var identifier = '' + $(this).data('identifier'); // force string to handle fully numeric username
         if (identifier)
           positions.push(identifier);
       });
 
       currentUser.set({positions: positions}, {silent: silent});
-      client.userUpdate({positions: positions}, function(data) {
+      client.userUpdate({positions: positions}, function (data) {
         if (data.err)
           debug('error(s) on userUpdate call', data.errors);
       });
     },
 
-    updateViews: function() {
+    updateViews: function () {
       // call update() method on each view
-      _.each(this.views, function(view) {
-        debug('update on '+view.model.get('id'));
+      _.each(this.views, function (view) {
+        debug('update on ' + view.model.get('id'));
         view.update();
       });
 
       // set next tick
       var that = this;
-      this.interval = setTimeout(function() {
+      this.interval = setTimeout(function () {
         that.updateViews();
       }, this.intervalDuration);
     },
@@ -447,25 +513,25 @@ define([
     // FOCUS TAB/PANEL MANAGEMENT
     // ======================================================================
 
-    focusOnSearch: function(event) {
+    focusOnSearch: function (event) {
       this.focusHome(true);
       this.homeView.searchView.$search
-          .focus();
+        .focus();
       this.drawerView.close();
     },
 
-    unfocusAll: function() {
-      rooms.each(function(o, key, list) {
+    unfocusAll: function () {
+      rooms.each(function (o, key, list) {
         o.set('focused', false);
       });
-      onetoones.each(function(o, key, list) {
+      onetoones.each(function (o, key, list) {
         o.set('focused', false);
       });
       this.$home.hide();
     },
 
     // called by router only
-    focusHome: function(avoidReload) {
+    focusHome: function (avoidReload) {
       // init view
       if (!this.homeView)
         this.homeView = new HomeView({});
@@ -481,22 +547,21 @@ define([
       Backbone.history.navigate('#'); // just change URI, not run route action
     },
 
-    // called by router only
-    focusRoomByName: function(name) {
+    focusRoomByName: function (name) {
       var model = rooms.iwhere('name', name);
       if (model == undefined) {
         // Not already open
         this.thisDiscussionShouldBeFocusedOnSuccess = name;
         var that = this;
-        client.roomJoin(name, function(response) {
+        client.roomJoin(null, name, function (response) {
           if (response.err == 'banned') {
-            that.alert('error', $.t('chat.bannedfromroom', {name: name}));
+            app.trigger('alert', 'error', $.t('chat.bannedfromroom', {name: name}));
             that.focus();
           } else if (response.err == 'notexists') {
-            that.alert('error', $.t('chat.roomnotexists', {name: name}));
+            app.trigger('alert', 'error', $.t('chat.roomnotexists', {name: name}));
             that.focus();
           } else if (response.err) {
-            that.alert('error', $.t('global.unknownerror'));
+            app.trigger('alert', 'error', $.t('global.unknownerror'));
             that.focus();
           }
         });
@@ -506,19 +571,18 @@ define([
     },
 
     // called by router only
-    focusOneToOneByUsername: function(username) {
+    focusOneToOneByUsername: function (username) {
       var model = onetoones.iwhere('username', username);
-      if (model == undefined) {
+      if (model === undefined) {
         // Not already open
         this.thisDiscussionShouldBeFocusedOnSuccess = username;
         onetoones.join(username);
-        return;
       } else {
         this.focus(model);
       }
     },
 
-    focus: function(model) {
+    focus: function (model) {
       // No opened discussion, display default
       if (rooms.length < 1 && onetoones.length < 1) {
         return this.focusHome();
@@ -540,7 +604,6 @@ define([
 
       // Focus the one we want
       model.set('focused', true);
-      model.resetNew();
       this.discussionsBlock.redraw();
 
       // Change interface color
@@ -553,10 +616,10 @@ define([
       var uri;
       var title;
       if (model.get('type') == 'room') {
-        uri = 'room/'+model.get('name').replace('#', '');
+        uri = 'room/' + model.get('name').replace('#', '');
         title = model.get('name');
       } else {
-        uri = 'user/'+model.get('username');
+        uri = 'user/' + model.get('username');
         title = model.get('username');
       }
       windowView.setTitle(title);
@@ -565,31 +628,32 @@ define([
       this.drawerView.close();
     },
 
-    userBan: function(event) {
+    userBan: function (event) {
       event.preventDefault();
 
-      var username = $(event.currentTarget).data('username');
-      if (!username)
+      var userId = $(event.currentTarget).data('userId');
+      if (!userId) {
         return;
+      }
 
       var that = this;
       ConfirmationView.open({}, function () {
-        client.userBan(username);
-        that.trigger('userBan');
+        client.userBan(userId, null);
+        app.trigger('userBan');
       });
     },
 
     userDeban: function (event) {
       event.preventDefault();
 
-      var username = $(event.currentTarget).data('username');
-      if (!username)
+      var userId = $(event.currentTarget).data('userId');
+      if (!userId) {
         return;
-
+      }
       var that = this;
-      ConfirmationView.open({}, function() {
-        client.userDeban(username);
-        that.trigger('userDeban');
+      ConfirmationView.open({}, function () {
+        client.userDeban(userId);
+        app.trigger('userDeban');
       });
 
     }

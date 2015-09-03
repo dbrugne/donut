@@ -1,19 +1,19 @@
+'use strict';
 define([
   'jquery',
   'underscore',
   'backbone',
+  'models/app',
   'common',
   'client',
   'collections/rooms',
   'collections/onetoones',
   'models/current-user',
   'moment',
-  'views/window',
   '_templates'
-], function ($, _, Backbone, common, client, rooms, onetoones, currentUser, moment, windowView, templates) {
+], function ($, _, Backbone, app, common, client, rooms, onetoones, currentUser, moment, templates) {
   var NotificationsView = Backbone.View.extend({
-
-    el: $("#notifications"),
+    el: $('#notifications'),
 
     dropdownIsShown: false,
 
@@ -22,9 +22,9 @@ define([
     isThereMoreNotifications: false,
 
     events: {
-      "click .dropdown-menu .actions": 'onReadMore',
-      "click .action-tag-as-read": 'onTagAsRead',
-      "click .action-tag-as-done": 'onTagAsDone',
+      'click .dropdown-menu .actions': 'onReadMore',
+      'click .action-tag-as-read': 'onTagAsRead',
+      'click .action-tag-as-done': 'onTagAsDone',
       'show.bs.dropdown': 'onShow',
       'shown.bs.dropdown': 'onShown',
       'hide.bs.dropdown': 'onHide'
@@ -40,8 +40,6 @@ define([
 
       this.unread = 0;
       this.more = false;
-      this.mainView = options.mainView;
-
       this.render();
     },
     initializeNotificationState: function (data) {
@@ -89,10 +87,10 @@ define([
       this.setUnreadCount(this.unread + 1);
 
       // Highlight Badge
-      this.$badge.addClass("bounce");
+      this.$badge.addClass('bounce');
       var that = this;
       setTimeout(function () {
-        that.$badge.removeClass("bounce");
+        that.$badge.removeClass('bounce');
       }, 1500); // Remove class after animation to trigger animation later if needed
 
       // Insert new notification in dropdown
@@ -118,8 +116,8 @@ define([
         'username': ( data.data.by_user && data.data.by_user.username
           ? data.data.by_user.username
           : ( data.data.user && data.data.user.username
-          ? data.data.user.username
-          : '' )),
+            ? data.data.user.username
+            : '')),
         'topic': ( data.data.topic
           ? data.data.topic
           : ''),
@@ -128,7 +126,7 @@ define([
           : '')
       });
 
-      windowView.desktopNotify(desktopTitle, '');
+      app.trigger('desktopNotification', desktopTitle, '');
     },
     createNotificationFromTemplate: function (notification) {
       var template;
@@ -181,7 +179,7 @@ define([
       else if (notification.data.by_user)
         notification.avatar = common.cloudinarySize(notification.data.by_user.avatar, 90);
 
-      return template({data: notification, from_now: dateObject.format("Do MMMM, HH:mm")});
+      return template({data: notification, from_now: dateObject.format('Do MMMM, HH:mm')});
     },
     // User clicks on the notification icon in the header
     onShow: function (event) {
