@@ -43,6 +43,9 @@ define([
       return this;
     },
     onResponse: function (user) {
+      if (!user.username)
+        return app.trigger('drawerClose');
+        
       user.isCurrent = (user.user_id == currentUser.get('user_id'))
         ? true
         : false;

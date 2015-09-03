@@ -30,7 +30,8 @@ define([
       this.colorify();
       this.onStatus();
     },
-    _remove: function (model) {},
+    _remove: function (model) {
+    },
     _renderData: function () {
       var data = this.model.toJSON();
 
@@ -43,11 +44,13 @@ define([
 
       return data;
     },
-    _render: function () {},
+    _render: function () {
+    },
     _focus: function () {
       this.$el.find('.ago span').momentify('fromnow'); // refocus an offline one after few times
     },
-    _unfocus: function () {},
+    _unfocus: function () {
+    },
 
     /**
      * Update user details methods
@@ -59,7 +62,7 @@ define([
     },
     onAvatar: function (model, value, options) {
       var url = common.cloudinarySize(value, 100);
-      this.$el.find('.header img.avatar').attr('src', url);
+      this.$el.find('.header .avatar img').attr('src', url);
     },
     onPoster: function (model, url, options) {
       this.$el.find('div.side').css('background-image', 'url(' + url + ')');
@@ -71,7 +74,7 @@ define([
       this.$el.find('.header .website').text(value);
     },
     onStatus: function () {
-      if (this.model.get('status') == 'online') {
+      if (this.model.get('status') === 'online') {
         this.$el.find('.header .status-block em').text($.t('global.online'));
         this.$el.find('.header .status')
           .removeClass('offline online')

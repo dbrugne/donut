@@ -4,7 +4,7 @@ var async = require('async');
 var _ = require('underscore');
 var Room = require('../../../../../shared/models/room');
 var validator = require('validator');
-var cloudinary = require('../../../../../shared/cloudinary/cloudinary').cloudinary;
+var cloudinary = require('../../../../../shared/util/cloudinary').cloudinary;
 var common = require('@dbrugne/donut-common');
 
 var Handler = function (app) {
@@ -24,14 +24,11 @@ handler.call = function (data, session, next) {
 
   async.waterfall([
 
-    /**
-     * validate, sanitized and identify field to be update
-     */
-    function validate (callback) {
-      // @doc: https://www.npmjs.org/package/validator
+    function validate (callback) { // @doc: https://www.npmjs.org/package/validator
 
-      if (!data.data || data.data.length < 1)
+      if (!data.data || data.data.length < 1) {
         return callback('No data to update');
+      }
 
       var errors = {};
       var sanitized = {};
@@ -44,8 +41,9 @@ handler.call = function (data, session, next) {
           var bio = data.data.bio;
           bio = validator.stripLow(bio, true);
           bio = validator.escape(bio);
-          if (bio != user.bio)
+          if (bio !== user.bio) {
             sanitized.bio = bio;
+          }
         }
       }
 
@@ -57,8 +55,9 @@ handler.call = function (data, session, next) {
           var location = data.data.location;
           location = validator.trim(location);
           location = validator.escape(location);
-          if (location != user.location)
+          if (location !== user.location) {
             sanitized.location = location;
+          }
         }
       }
 
@@ -68,8 +67,9 @@ handler.call = function (data, session, next) {
           errors.website = 'website-size'; // website should be 5 characters min and 255 characters max.;
         } else {
           var link = common.getLinkify().find(data.data.website);
-          if (!link || !link[0] || !link[0].type || !link[0].value || !link[0].href || link[0].type !== 'url')
-            errors.website = 'website-url'; // website should be a valid site URL
+          if (!link || !link[0] || !link[0].type || !link[0].value || !link[0].href || link[0].type !== 'url') {
+            errors.website = 'website-url';
+          } // website should be a valid site URL
           else {
             var website = {
               href: link[0].href,
@@ -82,27 +82,30 @@ handler.call = function (data, session, next) {
 
       // color
       if (_.has(data.data, 'color')) {
-        if (data.data.color != '' && !validator.isHexColor(data.data.color)) {
+        if (data.data.color !== '' && !validator.isHexColor(data.data.color)) {
           errors.color = 'color-hexadecimal'; // Color should be explained has hexadecimal (e.g.: #FF00AA).
         } else {
           var color = data.data.color.toLocaleUpperCase();
-          if (color != user.color)
+          if (color !== user.color) {
             sanitized.color = color;
+          }
         }
       }
 
       // welcome
       if (_.has(data.data, 'welcome')) {
         var welcome = validator.toBoolean(data.data.welcome);
-        if (welcome != user.welcome)
+        if (welcome !== user.welcome) {
           sanitized.welcome = welcome;
+        }
       }
 
       // positions
       if (_.has(data.data, 'positions')) {
         var welcome = validator.toBoolean(data.data.welcome);
-        if (welcome != user.welcome)
+        if (welcome != user.welcome) {
           sanitized.welcome = welcome;
+        }
 
         if (!_.isArray(data.data.positions)) {
           errors.positions = 'positions'; // Positions should be an array
@@ -112,8 +115,9 @@ handler.call = function (data, session, next) {
       }
 
       var errNum = Object.keys(errors).length;
-      if (errNum > 0)
-        return callback(errors); // object
+      if (errNum > 0) {
+        return callback(errors);
+      } // object
 
       return callback(null, sanitized);
     },
@@ -127,7 +131,7 @@ handler.call = function (data, session, next) {
      *    path: 'v1407505236/jfs0fbpit5ozwnvx4uem.jpg'
      *  }
      */
-    function images (sanitized, callback) {
+      function images (sanitized, callback) {
       if (_.has(data.data, 'avatar')) {
         var avatar = data.data.avatar;
 
@@ -141,7 +145,7 @@ handler.call = function (data, session, next) {
 
           // remove previous picture
           cloudinary.api.delete_resources([user.avatarId()], function (result) {
-            console.log(result.deleted);
+            logger.warn(result.deleted);
           });
         }
       }
@@ -150,16 +154,17 @@ handler.call = function (data, session, next) {
         var poster = data.data.poster;
 
         // new image
-        if (poster.path)
+        if (poster.path) {
           sanitized.poster = poster.path;
+        }
 
         // remove actual image
-        if (poster.remove && poster.remove == true && user.poster) {
+        if (poster.remove && poster.remove === true && user.poster) {
           sanitized.poster = '';
 
           // remove previous picture
           cloudinary.api.delete_resources([user.posterId()], function (result) {
-            console.log(result.deleted);
+            logger.warn(result.deleted);
           });
         }
       }
@@ -182,25 +187,31 @@ handler.call = function (data, session, next) {
       var fieldToNotify = ['avatar', 'positions'];
       _.each(Object.keys(sanitized), function (key) {
         if (fieldToNotify.indexOf(key) != -1) {
-          if (key == 'avatar')
+          if (key === 'avatar') {
             sanitizedToNotify[key] = user._avatar();
-          else if (key == 'positions')
+          }
+          else if (key === 'positions') {
             sanitizedToNotify[key] = JSON.parse(sanitized[key]);
-          else
+          }
+          else {
             sanitizedToNotify[key] = sanitized[key];
+          }
         }
       });
 
-      if (Object.keys(sanitizedToNotify).length < 1)
-        return callback(null, sanitized); // nothing to notify
+      if (Object.keys(sanitizedToNotify).length < 1) {
+        return callback(null, sanitized);
+      } // nothing to notify
 
       var event = {
         username: user.username,
+        user_id: user.id,
         data: sanitizedToNotify
       };
       that.app.globalChannelService.pushMessage('connector', 'user:updated', event, 'user:' + user.id, {}, function (err) {
-        if (err)
+        if (err) {
           logger.error(err);
+        }
 
         return callback(null, sanitized);
       });
@@ -212,11 +223,13 @@ handler.call = function (data, session, next) {
       var fieldToNotify = ['avatar', 'poster', 'color'];
       _.each(Object.keys(sanitized), function (key) {
         if (fieldToNotify.indexOf(key) != -1) {
-          if (key == 'avatar')
+          if (key === 'avatar') {
             sanitizedToNotify['avatar'] = user._avatar();
-          else if (key == 'poster')
+          }
+          else if (key === 'poster') {
             sanitizedToNotify['poster'] = user._poster();
-          else if (key == 'color') {
+          }
+          else if (key === 'color') {
             sanitizedToNotify['color'] = sanitized[key];
             sanitizedToNotify['avatar'] = user._avatar();
             sanitizedToNotify['poster'] = user._poster();
@@ -224,11 +237,13 @@ handler.call = function (data, session, next) {
         }
       });
 
-      if (Object.keys(sanitizedToNotify).length < 1)
-        return callback(null, null); // nothing to notify
+      if (Object.keys(sanitizedToNotify).length < 1) {
+        return callback(null, null);
+      } // nothing to notify
 
       var event = {
         username: user.username,
+        user_id: user.id,
         data: sanitizedToNotify
       };
 
@@ -236,15 +251,17 @@ handler.call = function (data, session, next) {
     },
 
     function broadcastOneToOnes (event, callback) {
-      if (!event)
+      if (!event) {
         return callback(null, event);
+      }
 
       // inform onetoones
       if (user.onetoones && user.onetoones.length > 0) {
         _.each(user.onetoones, function (userId) {
           that.app.globalChannelService.pushMessage('connector', 'user:updated', event, 'user:' + userId, {}, function (err) {
-            if (err)
+            if (err) {
               logger.error('Error while pushing user:updated message to ' + userId + ' on user:update: ' + err);
+            }
           });
         });
       }
@@ -253,19 +270,22 @@ handler.call = function (data, session, next) {
     },
 
     function broadcastRooms (event, callback) {
-      if (!event)
+      if (!event) {
         return callback(null, event);
+      }
 
       Room.findByUser(user.id).exec(function (err, rooms) {
-        if (err)
+        if (err) {
           return callback(err);
+        }
 
         // inform rooms
         if (rooms && rooms.length) {
           _.each(rooms, function (room) {
             that.app.globalChannelService.pushMessage('connector', 'user:updated', event, room.name, {}, function (err) {
-              if (err)
+              if (err) {
                 logger.error('Error while pushing user:updated message to ' + room.name + ' on user:update: ' + err);
+              }
             });
           });
         }

@@ -1,5 +1,7 @@
 'use strict';
-define(function () {
+define([
+  'jquery'
+], function ($) {
   return {
     BACKSPACE: 8,
     TAB: 9,
