@@ -14,3 +14,7 @@
 
 # Data
 /mongotmp
+
+# Browserify migration
+/web-server/public/web/
+!/web-server/public/web/index.js
