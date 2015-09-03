@@ -17,4 +17,4 @@
 
 # Browserify migration
 /web-server/public/web/
-!/web-server/public/web/index.js
+!/web-server/public/web/web.js
