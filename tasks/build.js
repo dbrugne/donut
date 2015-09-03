@@ -23,8 +23,7 @@ module.exports = function (grunt) {
       });
     });
     locales = _.omit(locales, ['404', 'title', 'meta', 'email']);
-    // var content = 'module.exports = ' + JSON.stringify(locales) + ';';
-    fs.writeFileSync('./web-server/public/web/locales.json', JSON.stringify(locales), { flag: 'w+' });
+    fs.writeFileSync('./web-server/public/build/_locales.json', JSON.stringify(locales), { flag: 'w+' });
   });
 
   // templates
@@ -56,7 +55,7 @@ module.exports = function (grunt) {
   grunt.extendConfig({
     browserify: {
       donut: {
-        src: ['web-server/public/web/index.js'],
+        src: ['web-server/public/web/web.js'],
         dest: 'web-server/public/web/_build.js',
         options: {}
       }
