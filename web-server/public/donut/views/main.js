@@ -357,12 +357,14 @@ define([
       event.preventDefault();
 
       var roomId = $(event.currentTarget).data('roomId');
-      if (!roomId)
+      if (!roomId) {
         return;
+      }
 
       var model = rooms.get(roomId);
-      if (!model)
+      if (!model) {
         return;
+      }
 
       if (this.viewportIs('>md')) {
         // drawer

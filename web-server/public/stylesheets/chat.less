@@ -1700,93 +1700,63 @@
     } // #chat #drawer #user-account
     #room-users, #user-preferences {
       .room {
-        margin-bottom: 15px;
+        margin-bottom: 2px;
         > p {
           display: inline-block;
           vertical-align: middle;
         }
       }
-      .form-group.owner, .form-group.ops, .form-group.bans, .form-group.devoices, .form-group.users {
-        margin-bottom: 10px;
-        border-bottom: 1px solid @cl-subtext10;
-        padding-bottom: 10px;
-        &:last-child { border-bottom: 0; }
-        label {
-          margin-bottom: 0;
+      .user-number {
+        margin-bottom: 15px;
+      }
+      .search {
+        position: relative;
+        font-size: 0.8em;
+        width: 100%;
+        height: 30px;
+        margin-bottom: 15px;
+        input[type=text] {
+          position: absolute;
+          right: 0;
+          width: 70%;
+          border: 2px solid black;
+          -webkit-border-radius: 50px;
+          -moz-border-radius: 50px;
+          border-radius: 50px;
+          padding: 5px 75px 6px 30px;
+          .ft-raleway-medium;
+          color: @cl-subtext50;
+          outline: none; /* avoid Google Chrome blue outline on focused input */
         }
-        .help-block {
-          margin-top: 0;
-          margin-bottom: 5px;
-          font-size: .9em;
+        input[type=text]:focus {
         }
-        table {
+        i {
+          position: absolute;
+          top: 9px;
+          right: 19px;
+          color: @cl-subtext50;
+          cursor: pointer;
+        }
+      }
+      .nav-pills {
+        display: table;
+        width: 100%;
+        table-layout: fixed;
+        li {
+          float: none;
+          display: table-cell;
           width: 100%;
-          td.avatar { width: 20px; padding: 1px 0; img { width: 20px; height: 20px; }}
-          td.username {
-            padding-left: 5px;
-            width: 150px;
-            .ft-opensans-bold;
-          }
-          td.actions {
-            text-align: right;
-            > div {
-              display: inline-block;
-              cursor: pointer;
-              margin-left: 5px;
-              font-size: 10px;
-            }
-            .op {
-              i{
-                font-size: 18px;
-                color: @cl-success;
-              }
-            }
-            .deop {
-              i{
-                font-size: 18px;
-                color: @cl-subtext30;
-              }
-            }
-            .kick {
-              i {
-                color: @cl-error;
-                font-size: 18px;
-              }
-            }
-            .ban {
-              i{
-                color: @cl-error;
-                font-size: 17px;
-              }
-            }
-            .deban {
-              i{
-                color: @cl-subtext30;
-                font-size: 17px;
-              }
-            }
+          a {
+            text-align: center;
+            text-decoration: none;
           }
         }
       }
-      .owner {
-        label {
-          i {
-            color: @cl-warning;
-            font-size: 1.2em;
-          }
+      .pagination {
+        margin: 0;
+        a {
+          text-decoration: none;
         }
-      }
-      .ops {
-        label {
-          i {
-            color: @cl-success;
-            font-size: 1.3em;
-          }
-        }
-      }
-      .bans {
-      }
-      .users {
       }
     }
     #user-preferences, #room-preferences {
