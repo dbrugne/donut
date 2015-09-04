@@ -25,6 +25,22 @@
 
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+                    <div class="baseline">
+                        <div class="relative">
+                            <div class="ctn-text">
+                                <div class="flex-parent">
+                                    <p><%= t('home.cover.line1') %>&nbsp;</p>
+                                    <p data-toggle="talkative" class="flex-child"><%= t('home.cover.line2') %></p>
+                                </div>
+                                <div class="flex-parent">
+                                    <p><%= t('home.cover.line3') %>&nbsp;</p>
+                                    <p data-toggle="talkative" class="flex-child"><%= t('home.cover.line4') %></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <ul class="nav navbar-nav navbar-right">
                         <li class="signup">
                             <a href="/signup"><%= t('landing.signup') %></a>
@@ -59,37 +75,18 @@
         </nav>
 
         <div id="carousel-landing" class="carousel slide hidden-xs hidden-sm" data-ride="carousel">
-            <!-- Indicators -->
-            <ol class="carousel-indicators">
-                <li data-target="#carousel-landing" data-slide-to="0" class="active"></li>
-                <li data-target="#carousel-landing" data-slide-to="1"></li>
-            </ol>
 
             <!-- Wrapper for slides -->
             <div class="carousel-inner" role="listbox">
                 <div class="item active">
                     <div class="img" style="background-image:url('/images/carousel1.jpg');"></div>
-                    <div class="carousel-caption">
-                        CAPTION 1st Image
-                    </div>
                 </div>
                 <div class="item">
                     <div class="img" style="background-image:url('/images/carousel2.jpg');"></div>
-                    <div class="carousel-caption">
-                         CAPTION 2nd Image
-                    </div>
                 </div>
             </div>
 
             <div class="container ctn-baseline">
-                <div class="baseline">
-                    <p><%= t('home.cover.line1') %></p>
-                    <p data-toggle="talkative"><%= t('home.cover.line2') %></p>
-                    <p><%= t('home.cover.line3') %></p>
-                    <p data-toggle="talkative"><%= t('home.cover.line4') %></p>
-                    <p><%= t('home.cover.line5') %></p>
-                    <p data-toggle="talkative"><%= t('home.cover.line6') %></p>
-                </div>
 
                 <div class="authenticate">
                     <% if (logged) { %>
@@ -126,7 +123,7 @@
                             </div>
                             <div class="clearfix"></div>
                             <div class="form-group pull-right">
-                                <input type="submit" value="<%= t('actions.login') %>" tabindex="3">
+                                <input class="button" type="submit" value="<%= t('actions.login') %>" tabindex="3">
                             </div>
                         </form>
                     </div>
@@ -137,12 +134,160 @@
 
     </div><!--/.header-->
 
-    <div class="container">
-        <div class="search">
-            <input type="text" placeholder="<%= t('landing.yourinterests') %>">
-            <i class="icon icon-search"></i>
+    <div class="container ctn-results">
+        <div class="search flex-parent">
+            <div class="input-ctn flex-child relative">
+                <input type="text" placeholder="<%= t('landing.yourinterests') %>">
+                <i class="icon icon-search"></i>
+            </div>
+            <button class="button ml10"><%= t('actions.search') %></button>
+            <span class="ml10"><%= t('global.or') %></span>
+            <button class="button ml10 mr10"><%= t('actions.create') %></button>
         </div>
-        <div class="results"></div>
+        <div class="results">
+            <div class="rooms cards">
+
+                <div class="list ">
+
+                    <div class="room dc-i-2c57d2">
+                        <div class="cover">
+                            <div class="avatar" style="background-image:url(https://res.cloudinary.com/roomly/image/upload/b_rgb:2c57d2,c_fill,d_room-avatar-default.png,f_jpg,g_face,h_135,w_135/v1407620590/t9tpyjvxvqwh6ns6svg3.jpg)"></div>
+                            <p class="name">#paintball</p>
+
+                            <p class="owner">par <a class="dc-text">@yangs</a></p>
+
+                            <!-- p class="topic"></p -->
+                            <p class="join">
+                                <a class="dc-back dc-text-contrast" href="#room/paintball">
+                                    rejoindre
+                                    21
+                                    <i class="icon icon-user-custom"></i>
+                                </a>
+                            </p>
+                        </div>
+                        <div class="back dc-back dc-text-contrast">
+                            <div class="ctn">
+                                <p class="name dc-text-contrast open-room-profile" data-room-id="557ed3a4bcb50bc52b7473f5">#paintball</p>
+
+                                <p class="owner">par <a class="open-user-profile dc-text-contrast" data-user-id="54c8aabb63d4989965595ecc">@yangs</a></p>
+
+                                <p class="description">Paintball et barre de rire.</p>
+                            </div>
+                            <p class="join">
+                                <a class="dc-back dc-back-hover dc-text-contrast" href="#room/paintball">
+                                    rejoindre
+                                    21
+                                    <i class="icon icon-user-custom"></i>
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="room dc-i-fc2063">
+                        <div class="cover">
+                            <div class="avatar" style="background-image:url(https://res.cloudinary.com/roomly/image/upload/b_rgb:fc2063,c_fill,d_room-avatar-default.png,f_jpg,g_face,h_135,w_135/v1407620116/dw2rjfnzr8pfoj1rynz5.jpg)"></div>
+                            <p class="name">#help</p>
+
+                            <p class="owner">par <a class="dc-text">@David</a></p>
+
+                            <!-- p class="topic"></p -->
+                            <p class="join">
+                                <a class="dc-back dc-text-contrast" href="#room/help">
+                                    rejoindre
+                                    60
+                                    <i class="icon icon-user-custom"></i>
+                                </a>
+                            </p>
+                        </div>
+                        <div class="back dc-back dc-text-contrast">
+                            <div class="ctn">
+                                <p class="name dc-text-contrast open-room-profile" data-room-id="557ed3a4bcb50bc52b74745a">#help</p>
+
+                                <p class="owner">par <a class="open-user-profile dc-text-contrast" data-user-id="54285377bb6c3d101ec179cb">@David</a></p>
+
+                                <p class="description">C'est le donut officiel de support de DONUT. Venez échanger avec nous si vous avez une question, un problème ou même mieux: une bonne idée à nous suggérer.</p>
+                            </div>
+                            <p class="join">
+                                <a class="dc-back dc-back-hover dc-text-contrast" href="#room/help">
+                                    rejoindre
+                                    60
+                                    <i class="icon icon-user-custom"></i>
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="room dc-i-fc2063">
+                        <div class="cover">
+                            <div class="avatar" style="background-image:url(https://res.cloudinary.com/roomly/image/upload/b_rgb:fc2063,c_fill,d_room-avatar-default.png,f_jpg,g_face,h_135,w_135/v1409643461/rciev5ubaituvx5bclnz.jpg)"></div>
+                            <p class="name">#donut</p>
+
+                            <p class="owner">par <a class="dc-text">@David</a></p>
+
+                            <!-- p class="topic"></p -->
+                            <p class="join">
+                                <a class="dc-back dc-text-contrast" href="#room/donut">
+                                    rejoindre
+                                    505
+                                    <i class="icon icon-user-custom"></i>
+                                </a>
+                            </p>
+                        </div>
+                        <div class="back dc-back dc-text-contrast">
+                            <div class="ctn">
+                                <p class="name dc-text-contrast open-room-profile" data-room-id="557ed3a4bcb50bc52b74744b">#donut</p>
+
+                                <p class="owner">par <a class="open-user-profile dc-text-contrast" data-user-id="54285377bb6c3d101ec179cb">@David</a></p>
+
+                                <p class="description">C'est le donut officiel de DONUT! La discussion est libre et ouverte à tous. On accueille volontiers les petits nouveaux parce qu'on est sympas.</p>
+                            </div>
+                            <p class="join">
+                                <a class="dc-back dc-back-hover dc-text-contrast" href="#room/donut">
+                                    rejoindre
+                                    505
+                                    <i class="icon icon-user-custom"></i>
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="room dc-i-e2382a">
+                        <div class="cover">
+                            <div class="avatar" style="background-image:url(https://res.cloudinary.com/roomly/image/upload/b_rgb:e2382a,c_fill,d_room-avatar-default.png,f_jpg,g_face,h_135,w_135/v1425847579/ywheu6zvz6gpx3hp3u4r.png)"></div>
+                            <p class="name">#Videos_Du_Net</p>
+
+                            <p class="owner">par <a class="dc-text">@Lexonax</a></p>
+
+                            <!-- p class="topic"></p -->
+                            <p class="join">
+                                <a class="dc-back dc-text-contrast" href="#room/Videos_Du_Net">
+                                    rejoindre
+                                    33
+                                    <i class="icon icon-user-custom"></i>
+                                </a>
+                            </p>
+                        </div>
+                        <div class="back dc-back dc-text-contrast">
+                            <div class="ctn">
+                                <p class="name dc-text-contrast open-room-profile" data-room-id="557ed3a4bcb50bc52b7474bc">#Videos_Du_Net</p>
+
+                                <p class="owner">par <a class="open-user-profile dc-text-contrast" data-user-id="5478bbdbd6a5290d5c6377db">@Lexonax</a></p>
+
+                                <p class="description">Venez parler de vos trouvailles du jour !</p>
+                            </div>
+                            <p class="join">
+                                <a class="dc-back dc-back-hover dc-text-contrast" href="#room/Videos_Du_Net">
+                                    rejoindre
+                                    33
+                                    <i class="icon icon-user-custom"></i>
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
     </div>
 
     <footer>
