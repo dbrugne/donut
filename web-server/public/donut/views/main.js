@@ -117,9 +117,11 @@ define([
       this.roomUsersView = new RoomUsersModalView();
 
       // @debug
-      window.current = currentUser;
-      window.rooms = rooms;
-      window.onetoones = onetoones;
+      //window.current = currentUser;
+      //window.rooms = rooms;
+      //window.onetoones = onetoones;
+      //window.client = client;
+      //window.main = this;
 
       client.connect();
     },
