@@ -68,13 +68,19 @@ define([
 
       var name = '#' + this.$input.val();
       var uri = 'room/' + name.replace('#', '');
+      if (this.$joinChecked.attr('value') === 'password') {
+        var joinPassword = this.$el.find('.input-password').val();
+      }
       var opts = {
         join_mode: this.$joinChecked.attr('value'),
+        join_mode_password: joinPassword,
         history_mode: this.$historyChecked.attr('value')
       };
 
+      console.log(opts);
+
       var that = this;
-      client.roomCreate(name, function (response) {
+      client.roomCreate(name, opts, function (response) {
         if (response.err == 'alreadyexists') {
           app.trigger('alert', 'error', $.t('chat.alreadyexists', {name: name, uri: uri}));
           that.reset();
