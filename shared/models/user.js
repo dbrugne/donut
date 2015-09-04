@@ -370,6 +370,17 @@ userSchema.statics.setUnviewedOneMessage = function (fromUserId, toUserId, event
     $addToSet: { 'unviewed': {user: fromUserId, event: event}}
   }, fn);
 };
+
+userSchema.statics.searchUsers = function (query, selector) {
+  if (selector) {
+    return this.find(query)
+      .skip(selector.start)
+      .limit(selector.length);
+  } else {
+    return (this.find(query));
+  }
+};
+
 userSchema.methods.resetUnviewedRoom = function (roomId, fn) {
   this.update({
     $pull: { unviewed: { room: roomId }}

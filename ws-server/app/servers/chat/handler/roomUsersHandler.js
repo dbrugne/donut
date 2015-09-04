@@ -1,5 +1,6 @@
 'use strict';
 var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
+var User = require('../../../../../shared/models/user');
 var async = require('async');
 var _ = require('underscore');
 
@@ -40,84 +41,56 @@ handler.call = function (data, session, next) {
         return callback('unable to retrieve room: ' + data.room_id);
       }
 
-      var roomUser = _.findIndex(room.users, function (u) {
-        return (u.id === user.id);
-      });
-      if (roomUser === -1) {
+      if (!room.isIn(user.id)) {
         return callback('this user ' + user.id + ' is not currently in ' + room.name);
       }
 
       return callback(null);
     },
 
-    function listAndStatus (callback) {
-      var usersIds = [];
-      var users = [];
+    function selectIds (callback) {
+      var ids = room.getIdsByType(data.type);
+      return callback(null, ids);
+    },
 
-      // filter by type
-      users = _.filter(room.users, function (u) {
-        if ((data.type === 'op' && room.isOwnerOrOp(u.id)) ||
-          (data.type === 'allowed' && room.isAllowed(u.id)) ||
-          (data.type === 'all')) {
-          return (u);
-        }
-      });
-
-      // filter by type
-      if (!users.length && (data.type === 'devoice' || data.type === 'ban')) {
-        var key;
-
-        if (data.type === 'devoice') {
-          key = room.devoices;
-        } else {
-          key = room.bans;
-        }
-        users = key;
+    function prepareQuery (ids, callback) {
+      var query = {
+        _id: { $in: ids }
+      };
+      if (data.searchString) {
+        query.username = {$regex: data.searchString};
       }
+      return callback(null, query);
+    },
 
-      // filter by search string
-      users = _.filter(users, function (u) {
-        if ((data.searchString && u.username && u.username.indexOf(data.searchString) !== -1) ||
-          !data.searchString) {
-          usersIds.push(u.id);
-          return (u);
+    function query (query, callback) {
+      User.searchUsers(query, data.selector).exec(function (err, users) {
+        if (err) {
+          return callback(err);
         }
+        return callback(null, users);
       });
+    },
 
-      usersNumber = users.length;
-
-      // filter by selector
-      if (data.selector) {
-        var usersTmp = [];
-        _.each(users, function (u, index) {
-          if (index >= data.selector.start && index < data.selector.start + data.selector.length) {
-            usersTmp.push(u);
-          }
-          if (index > data.selector.start + data.selector.length) {
-            return;
-          }
-        });
-        users = usersTmp;
-      }
-
+    function listAndStatus (users, callback) {
       // Set values
       users = _.map(users, function (u) {
         var userData = {
-          user_id: u.id,
+          user_id: u._id,
           username: u.username,
           avatar: u._avatar()
         };
         return userData;
       });
-
-      that.app.statusService.getStatusByUids(usersIds, function (err, results) {
+      var ids = _.map(users, function (u) { return u.user_id; });
+      that.app.statusService.getStatusByUids(ids, function (err, results) {
         if (err) {
           return callback(err);
         }
         _.each(users, function (element, index, list) {
-          list[index].status = (results[element.user_id]) ?
-            'online' :
-            'offline';
+          list[index].status = (results[element.user_id])
+            ? 'online'
+            : 'offline';
         });
         return callback(null, users);
       });
@@ -138,5 +111,4 @@ handler.call = function (data, session, next) {
       nbUsers: usersNumber
     });
   });
-
 };

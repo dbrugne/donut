@@ -159,4 +159,48 @@ roomSchema.methods.isAllowed = function (user_id) {
   return (typeof subDocument !== 'undefined');
 };
 
+roomSchema.methods.isIn = function (user_id) {
+  if (this.owner._id === user_id) {
+    return true;
+  }
+
+  var subDocument = _.find(this.users, function (users) {
+    if (users.toString() === user_id) {
+      return true;
+    }
+  });
+
+  return (typeof subDocument !== 'undefined');
+};
+
+roomSchema.methods.getIdsByType = function (type) {
+  if (!type || ['all', 'op', 'allowed', 'ban', 'devoice'].indexOf(type) === -1) {
+    return;
+  }
+
+  var ids = [];
+  if (type === 'all') {
+    _.each(this.users, function (u) {
+      ids.push(u.toString());
+    });
+  } else if (type === 'op') {
+    _.each(this.op, function (u) {
+      ids.push(u.toString());
+    });
+  } else if (type === 'allowed') {
+    _.each(this.join_mode_allowed, function (u) {
+      ids.push(u.toString());
+    });
+  } else if (type === 'ban') {
+    _.each(this.bans, function (ban) {
+      ids.push(ban.user.toString());
+    });
+  } else if (type === 'devoice') {
+    _.each(this.devoices, function (devoice) {
+      ids.push(devoice.user.toString());
+    });
+  }
+  return ids;
+};
+
 module.exports = mongoose.model('Room', roomSchema);
