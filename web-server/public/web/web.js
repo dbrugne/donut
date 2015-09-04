@@ -1,6 +1,5 @@
 var $ = require('jquery');
-global.jQuery = $;
-
+global.jQuery = $; // expose jQuery globally, needed for some beside plugins
 require('../vendor/html5-desktop-notifications/desktop-notify');
 require('../vendor/html.sortable/dist/html.sortable.min');
 require('../javascripts/plugins/jquery.insertatcaret');
@@ -15,77 +14,30 @@ require('bootstrap/js/modal');
 require('bootstrap/js/tooltip');
 require('bootstrap/js/popover');
 
-// Backbone
-var Backbone = require('backbone');
-Backbone.$ = $;
-
-var i18next = require('i18next-client');
-var moment = require('moment');
-require('moment/locale/fr');
 var app = require('./app');
 
 // i18next
-var fr = require('../../../locales/fr/translation.json');
+var i18next = require('i18next-client');
+var locales = require('../../../locales/fr/translation.json'); // @todo : en/fr
 i18next.init({
   cookieName: 'donut.lng',
-  resStore: fr,
+  resStore: locales,
   debug: false // @debug
 });
 
 // moment
-window.moment = moment;
-// @todo : move in translation files
-var momentFormat = (i18next.lng() === 'fr') ?
-  {
-    relativeTime: {
-      future: '%s',
-      past: '%s',
-      s: 'à l\'instant',
-      m: '1mn',
-      mm: '%dmin',
-      h: '1h',
-      hh: '%dh',
-      d: 'hier',
-      dd: '%d jours',
-      M: 'un mois',
-      MM: '%d mois',
-      y: 'un an',
-      yy: '%d ans'
-    }
-  } :
-  {
-    relativeTime: {
-      future: '%s',
-      past: '%s',
-      s: 'just now',
-      m: '1mn',
-      mm: '%dmin',
-      h: '1h',
-      hh: '%dh',
-      d: 'yesterday',
-      dd: '%d days',
-      M: 'one month',
-      MM: '%d months',
-      y: 'one year',
-      yy: '%d years'
-    }
-  };
-moment.locale(i18next.lng(), momentFormat);
+var moment = require('moment');
+require('moment/locale/fr');
+moment.locale(i18next.lng(), locales[i18next.lng()]['translation']['moment']);
 
-// Contact form
+// contact form
 $('[data-toggle="contactform"]').contactform({});
 
-// Desktop notifications configuration
+// notify
 window.notify.config({
   pageVisibility: true, // always display, even if application is in background
   autoClose: 3000
 });
-
-// make i18next available from all underscore templates views (<%= t('key') %>)window.t = i18next.t; // @global
-$.t = global.t = window.t = i18next.t; // @global
-window.i18next = i18next;
-window.$ = window.jQuery = $;
-// @todo : mount mainview, $, _ on windows only on debug mode
 
 // run
 app.initialize();
