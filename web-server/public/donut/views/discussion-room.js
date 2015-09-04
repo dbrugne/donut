@@ -3,6 +3,7 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'i18next',
   'common',
   'client',
   'models/current-user',
@@ -11,7 +12,7 @@ define([
   'views/room-topic',
   'views/room-users',
   '_templates'
-], function ($, _, Backbone, common, client, currentUser, confirmationView, DiscussionView, TopicView, UsersView, templates) {
+], function ($, _, Backbone, i18next, common, client, currentUser, confirmationView, DiscussionView, TopicView, UsersView, templates) {
   var RoomView = DiscussionView.extend({
     template: templates['discussion-room.html'],
     templateDropdown: templates['dropdown-room-actions.html'],
@@ -202,15 +203,15 @@ define([
     shareFacebook: function () {
       $.socialify.facebook({
         url: this.model.getUrl(),
-        name: $.t('chat.share.title', { name: this.model.get('name') }),
+        name: i18next.t('chat.share.title', { name: this.model.get('name') }),
         picture: common.cloudinarySize(this.model.get('avatar'), 350),
-        description: $.t('chat.share.description', { name: this.model.get('name') })
+        description: i18next.t('chat.share.description', { name: this.model.get('name') })
       });
     },
     shareTwitter: function () {
       $.socialify.twitter({
         url: this.model.getUrl(),
-        text: $.t('chat.share.description', { name: this.model.get('name') })
+        text: i18next.t('chat.share.description', { name: this.model.get('name') })
       });
     },
     shareGoogle: function () {

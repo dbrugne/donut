@@ -3,11 +3,12 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'i18next',
   'models/app',
   'client',
   'models/current-user',
   '_templates'
-], function ($, _, Backbone, app, client, currentUser, templates) {
+], function ($, _, Backbone, i18next, app, client, currentUser, templates) {
   var DrawerRoomDeleteView = Backbone.View.extend({
     template: templates['drawer-room-delete.html'],
 
@@ -72,7 +73,7 @@ define([
         return;
       }
 
-      app.trigger('alert', 'info', $.t('edit.room.delete.success'));
+      app.trigger('alert', 'info', i18next.t('edit.room.delete.success'));
       this.trigger('close');
     },
     onKeyup: function (event) {

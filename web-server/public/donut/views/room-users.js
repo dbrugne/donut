@@ -3,11 +3,12 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'i18next',
   'common',
   'libs/donut-debug',
   'models/current-user',
   '_templates'
-], function ($, _, Backbone, common, donutDebug, currentUser, templates) {
+], function ($, _, Backbone, i18next, common, donutDebug, currentUser, templates) {
   var debug = donutDebug('donut:room-users');
 
   var RoomUsersView = Backbone.View.extend({
@@ -29,7 +30,7 @@ define([
     render: function () {
       debug.start('room-users' + this.model.get('name'));
       // update user count
-      var countHtml = $.t('chat.userscount', {count: this.collection.models.length});
+      var countHtml = i18next.t('chat.userscount', {count: this.collection.models.length});
       this.$count.html(countHtml);
 
       // redraw user list

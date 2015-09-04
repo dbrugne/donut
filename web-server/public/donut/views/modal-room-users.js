@@ -3,11 +3,12 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'i18next',
   'common',
   'libs/donut-debug',
   'client',
   '_templates'
-], function ($, _, Backbone, common, donutDebug, client, templates) {
+], function ($, _, Backbone, i18next, common, donutDebug, client, templates) {
   var debug = donutDebug('donut:modal-room-users');
 
   var RoomUsersModalView = Backbone.View.extend({
@@ -49,7 +50,7 @@ define([
         isAdmin: model.currentUserIsAdmin()
       });
       this.$content.html(html);
-      this.$title.html($.t('chat.userscount', {count: users.length}));
+      this.$title.html(i18next.t('chat.userscount', {count: users.length}));
 
       return this;
     },

@@ -3,12 +3,13 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'i18next',
   'client',
   'models/current-user',
   'views/image-uploader',
   'views/color-picker',
   '_templates'
-], function ($, _, Backbone, client, currentUser, ImageUploader, ColorPicker, templates) {
+], function ($, _, Backbone, i18next, client, currentUser, ImageUploader, ColorPicker, templates) {
   var DrawerUserEditView = Backbone.View.extend({
     template: templates['drawer-user-edit.html'],
 
@@ -46,7 +47,7 @@ define([
       // description
       this.$el.find('#userBio').maxlength({
         counterContainer: this.$el.find('#userBio').siblings('.help-block').find('.counter'),
-        text: $.t('edit.left')
+        text: i18next.t('edit.left')
       });
 
       // website
