@@ -3,6 +3,7 @@ var logger = require('../../../../pomelo-logger').getLogger('donut', __filename)
 var User = require('../../../../../shared/models/user');
 var async = require('async');
 var _ = require('underscore');
+var common = require('@dbrugne/donut-common');
 
 var Handler = function (app) {
   this.app = app;
@@ -56,7 +57,8 @@ handler.call = function (data, session, next) {
         _id: { $in: ids }
       };
       if (data.searchString) {
-        query.username = {$regex: data.searchString};
+        var regex = common.regExpBuildContains(data.searchString, 'i');
+        query.username = {$regex: regex};
       }
       return callback(null, query);
     },

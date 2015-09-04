@@ -21,7 +21,17 @@ define([
 
     nbPages: 0, // Store total number of pages
 
-    events: {},
+    currentType: 'all', // ['all', 'op', 'allowed', 'ban', 'devoice']
+
+    events: {
+      'click .all': 'onSelectAll',
+      'click .Op': 'onSelectOp',
+      'click .Allowed': 'onSelectAllowed',
+      'click .Banned': 'onSelectBanned',
+      'click .Devoiced': 'onSelectDevoiced',
+      'keyup input[type=text]': 'onKeyUp',
+      'click i.icon-search': 'onKeyUp'
+    },
 
     initialize: function (options) {
       this.model = options.model;
@@ -30,6 +40,8 @@ define([
       this.roomName = this.$('.name');
       this.ownerName = this.$('.open-user-profile');
       this.numberUsers = this.$('.number');
+      this.search = this.$('input[type=text]');
+
       this.tableView = new RoomUsersTableConfirmation({
         el: this.$('.table-users')
       });
@@ -38,13 +50,13 @@ define([
       this.ownerName.text('@' + this.model.get('owner').get('username'));
       this.ownerName.data('userId', this.model.get('owner').get('user_id'));
 
-      this.firstRender();
+      this.render(null);
     },
 
-    firstRender: function () {
+    render: function () {
       // ask for data
       var that = this;
-      client.roomUsers(this.model.get('id'), 'all', null, {start: 0, length: this.paginate}, function (data) {
+      client.roomUsers(this.model.get('id'), this.currentType, this.search.val(), {start: 0, length: this.paginate}, function (data) {
         that.onResponse(data);
       });
       return this;
@@ -52,6 +64,44 @@ define([
     onResponse: function (data) {
       this.tableView.render(data.users);
       this.numberUsers.text(data.nbUsers);
+    },
+    onSelectAll: function (event) {
+      event.preventDefault();
+      if (this.currentType !== 'all') {
+        this.currentType = 'all';
+        this.render();
+      }
+    },
+    onSelectOp: function (event) {
+      event.preventDefault();
+      if (this.currentType !== 'op') {
+        this.currentType = 'op';
+        this.render();
+      }
+    },
+    onSelectAllowed: function (event) {
+      event.preventDefault();
+      if (this.currentType !== 'allowed') {
+        this.currentType = 'allowed';
+        this.render();
+      }
+    },
+    onSelectBanned: function (event) {
+      event.preventDefault();
+      if (this.currentType !== 'ban') {
+        this.currentType = 'ban';
+        this.render();
+      }
+    },
+    onSelectDevoiced: function (event) {
+      event.preventDefault();
+      if (this.currentType !== 'devoice') {
+        this.currentType = 'devoice';
+        this.render();
+      }
+    },
+    onKeyUp: function (event) {
+      this.render();
     }
   });
   return DrawerRoomUsersView;
