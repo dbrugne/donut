@@ -15,6 +15,7 @@ require('bootstrap/js/modal');
 require('bootstrap/js/tooltip');
 require('bootstrap/js/popover');
 
+// Backbone
 var Backbone = require('backbone');
 Backbone.$ = $;
 
@@ -23,16 +24,17 @@ var moment = require('moment');
 require('moment/locale/fr');
 var app = require('./app');
 
-// i18n setup
-var i18nextOptions = {
+// i18next
+var fr = require('../../../locales/fr/translation.json');
+i18next.init({
   cookieName: 'donut.lng',
-  resStore: require('../build/_locales'),
+  resStore: fr,
   debug: false // @debug
-};
-i18next.init(i18nextOptions);
+});
 
-// Moment language
+// moment
 window.moment = moment;
+// @todo : move in translation files
 var momentFormat = (i18next.lng() === 'fr') ?
   {
     relativeTime: {
@@ -80,7 +82,8 @@ window.notify.config({
 });
 
 // make i18next available from all underscore templates views (<%= t('key') %>)window.t = i18next.t; // @global
-$.t = global.t = i18next.t; // @global
+$.t = global.t = window.t = i18next.t; // @global
+window.i18next = i18next;
 window.$ = window.jQuery = $;
 // @todo : mount mainview, $, _ on windows only on debug mode
 

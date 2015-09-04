@@ -39,7 +39,11 @@ app.use(logger('dev'));
 // on-the-fly browserify middleware
 if (process.env.NODE_ENV === 'development') {
   app.use(require('browserify-dev-middleware')({
-    src: __dirname + '/public/web'
+    src: __dirname + '/public/web',
+    transforms: [
+      require('../shared/util/browserifyJst'),
+      require('../shared/util/browserifyI18next')
+    ]
   }));
 }
 

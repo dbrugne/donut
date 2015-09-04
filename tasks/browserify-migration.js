@@ -3,6 +3,8 @@ var _ = require('underscore');
 var fs = require('fs');
 var path = require('path');
 
+var templatePattern = /templates\['([-a-z0-9\/]+\.html)'\]/ig;
+
 module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-extend-config');
   grunt.loadNpmTasks('grunt-contrib-copy');
@@ -21,6 +23,7 @@ module.exports = function (grunt) {
     'underscore',
     'debug',
     'jquery',
+    'i18next',
     'i18next-client',
     'moment',
     'moment-fr',
@@ -121,7 +124,6 @@ module.exports = function (grunt) {
       }
 
       if (key === '../_templates') {
-        source += 'var ' + name + " = require('../_templates')();\n";
         return;
       }
       if (key === 'common') {
@@ -133,15 +135,32 @@ module.exports = function (grunt) {
       if (key === '../socket.io') {
         key = 'socket.io-client';
       }
+      if (key === 'i18next') {
+        key = 'i18next-client';
+      }
 
       source += 'var ' + name + " = require('" + key + "');\n";
     });
     source += '\n';
     source += body;
 
+    // capture templates['drawer-account.html']
+    var matches;
+    var tplCall;
+    while ((matches = templatePattern.exec(source)) !== null) {
+      tplCall = 'require(\'';
+      tplCall += isDeep ? '..' : '.';
+      tplCall += '/templates/';
+      tplCall += matches[1];
+      tplCall += '\')';
+      // console.log(matches[0], '==>', tplCall);
+      source = source.replace(matches[0], tplCall);
+    }
+
     // check folder existence
-    if (!fs.existsSync(path.dirname(to)))
+    if (!fs.existsSync(path.dirname(to))) {
       fs.mkdirSync(path.dirname(to));
+    }
 
     fs.writeFileSync(to, source, {flag: 'w+'});
   };
