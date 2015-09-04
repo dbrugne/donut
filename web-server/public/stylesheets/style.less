@@ -228,6 +228,14 @@ body { .ft-opensans; font-size: 14px; overflow-x: hidden;
   }
 }
 
+.flex-parent { .display-flex;
+  &.row { .flex-flow(row nowrap); }
+  &.column { .flex-flow(column nowrap); }
+}
+.flex-children {
+  .flex(1);
+}
+
 @import "./landing.less"; /* = non authenticated homepage */
 @import "./static.less"; /* FAQ, eutc, legals */
 @import "./pages.less"; /* login, signup, forgot and choose-username pages */

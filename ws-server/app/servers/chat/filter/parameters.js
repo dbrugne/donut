@@ -111,7 +111,8 @@ Filter.prototype.before = function (data, session, next) {
           'chat.userBanHandler.call',
           'chat.userDebanHandler.call',
           'chat.userMessageHandler.call',
-          'chat.userReadHandler.call'
+          'chat.userReadHandler.call',
+          'chat.userJoinHandler.call'
         ].indexOf(data.__route__) === -1)
         return callback(null);
 

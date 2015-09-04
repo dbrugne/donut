@@ -8,12 +8,13 @@ define([
   'common',
   'models/event',
   'moment',
+  'i18next',
   'client',
   'models/current-user',
   'views/message-edit',
   'views/window',
   '_templates'
-], function ($, _, Backbone, app, donutDebug, common, EventModel, moment, client, currentUser, MessageEditView, windowView, templates) {
+], function ($, _, Backbone, app, donutDebug, common, EventModel, moment, i18next, client, currentUser, MessageEditView, windowView, templates) {
   var debug = donutDebug('donut:events');
 
   var EventsView = Backbone.View.extend({
@@ -185,7 +186,7 @@ define([
       $items.removeClass('visible topElement bottomElement first big'); // @debug
 
       // find the first visible element
-      var $firstVisibleElement, firstVisibleIndex;
+      var $firstVisibleElement, firstVisibleIndex, $nextElement, $previousElement;
       var candidateIndex = Math.floor(topLimit * $items.length / contentHeight); // optimistic way to find -in theory- the closest
       var $candidateElement = $items.eq(candidateIndex);
       var visibility = this._isElementFullyVisibleInViewport(topLimit, bottomLimit, $candidateElement);
