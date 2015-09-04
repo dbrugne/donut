@@ -1,0 +1,10 @@
+<table class="table table-striped">
+    <% _.each(users, function(u, index) { %>
+    <tr>
+        <td><img src="<%= u.avatarUrl %>"></td>
+        <td>@<%= u.username %></td>
+        <td><%= u.access %></td>
+        <td>ban: '<%= u.isBanned %>' devoice: '<%= u.isDevoiced %>'</td>
+    </tr>
+    <%}); %>
+</table>

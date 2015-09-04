@@ -10,6 +10,7 @@ define([
   'text!./templates/drawer-room-delete.html',
   'text!./templates/drawer-room-edit.html',
   'text!./templates/drawer-room-users.html',
+  'text!./templates/drawer-room-users-table.html',
   'text!./templates/drawer-room-profile.html',
   'text!./templates/drawer-room-preferences.html',
   'text!./templates/drawer-account.html',
@@ -75,6 +76,7 @@ define([
   drawer_room_delete,
   drawer_room_edit,
   drawer_room_users,
+  drawer_room_users_table,
   drawer_room_profile,
   drawer_room_preferences,
   drawer_account,
@@ -153,6 +155,7 @@ define([
   JST['drawer-room-delete.html'] = _.template(drawer_room_delete);
   JST['drawer-room-edit.html'] = _.template(drawer_room_edit);
   JST['drawer-room-users.html'] = _.template(drawer_room_users);
+  JST['drawer-room-users-table.html'] = _.template(drawer_room_users_table);
   JST['drawer-room-profile.html'] = _.template(drawer_room_profile);
   JST['drawer-room-preferences.html'] = _.template(drawer_room_preferences);
   JST['drawer-account.html'] = _.template(drawer_account);

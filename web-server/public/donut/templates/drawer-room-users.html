@@ -1,9 +1,9 @@
 <div class="room">
-    <span class="name"><%= room_name %></span>
-    <span class="owner"><%= t('global.by') %> <a class="open-user-profile dc-text colored" data-user-id="<%= owner_id %>">@<%= owner_name %></a></span>
+    <span class="name"></span>
+    <span class="owner"><%= t('global.by') %> <a class="open-user-profile dc-text colored" data-user-id=""></a></span>
 </div>
 <div class="user-number">
-    <span class="number"><strong><%= nb_users %></strong></span>
+    <span><strong class="number"></strong></span>
     <span class="user-label"><%= t('chat.users.link') %></span>
 </div>
 <div class="search">
@@ -11,38 +11,12 @@
     <i class="icon icon-search"></i>
 </div>
 <ul class="nav nav-pills">
-    <li role="presentation" class="active"><a href="#">all</a></li>
-    <li role="presentation"><a href="#">Op</a></li>
-    <li role="presentation"><a href="#">Allowed</a></li>
-    <li role="presentation"><a href="#">Banned</a></li>
-    <li role="presentation"><a href="#">Devoiced</a></li>
+    <li role="presentation" class="active"><a href="#" class="all">all</a></li>
+    <li role="presentation"><a href="#" class="Op">Op</a></li>
+    <li role="presentation"><a href="#" class="Allowed">Allowed</a></li>
+    <li role="presentation"><a href="#" class="Banned">Banned</a></li>
+    <li role="presentation"><a href="#" class="Devoiced">Devoiced</a></li>
 </ul>
-<table class="table table-striped">
-    <% _.each(users_to_print, function(u, index) { %>
-    <% if (paginate * page > index && paginate * (page - 1) <= index) { %>
-    <tr><td><img src="<%= u.avatarUrl %>"></td><td>@<%= u.username %></td></tr>
-    <%}}); %>
-</table>
+<div class="table-users"></div>
 <ul class="pagination">
-    <% if (nbPages > 2) { %>
-    <li>
-        <a href="#" aria-label="Previous">
-            <span aria-hidden="true">&laquo;</span>
-        </a>
-    </li>
-    <% } %>
-    <% for (var i = 0; i < nbPages && i < 5; i++) { %>
-        <% if (i == 0) { %>
-        <li class="active"><a href="#"><%= i + page %></a></li>
-        <% } else { %>
-        <li><a href="#"><%= i + page %></a></li>
-        <% } %>
-    <% } %>
-    <% if (nbPages > 2) { %>
-    <li>
-        <a href="#" aria-label="Next">
-            <span aria-hidden="true">&raquo;</span>
-        </a>
-    </li>
-    <% } %>
 </ul>

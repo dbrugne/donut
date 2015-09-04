@@ -20,8 +20,6 @@ handler.call = function (data, session, next) {
 
   var that = this;
 
-  var usersNumber;
-
   async.waterfall([
 
     function check (callback) {
@@ -68,21 +66,44 @@ handler.call = function (data, session, next) {
         if (err) {
           return callback(err);
         }
-        return callback(null, users);
+        return callback(null, query, users);
       });
     },
 
-    function listAndStatus (users, callback) {
+    function queryCount (query, users, callback) {
+      User.queryCount(query).exec(function (err, count) {
+        if (err) {
+          return callback(err);
+        }
+        return callback(null, users, count);
+      });
+    },
+
+    function listAndStatus (users, count, callback) {
       // Set values
       users = _.map(users, function (u) {
         var userData = {
           user_id: u._id,
           username: u.username,
-          avatar: u._avatar()
+          avatar: u._avatar(),
+          access: '-',
+          isBanned: false,
+          isDevoiced: false
         };
+        if (room.isOp(u.id)) {
+          userData.access = 'op';
+        } else if (room.isOwner(u.id)) {
+          userData.access = 'owner';
+        }
+        if (room.isBanned(u.id)) {
+          userData.isBanned = true;
+        }
+        if (room.isDevoice(u.id)) {
+          userData.isDevoiced = true;
+        }
         return userData;
       });
-      var ids = _.map(users, function (u) { return u.user_id; });
+      var ids = _.map(users, 'user_id');
       that.app.statusService.getStatusByUids(ids, function (err, results) {
         if (err) {
           return callback(err);
@@ -92,23 +113,19 @@ handler.call = function (data, session, next) {
             ? 'online'
             : 'offline';
         });
-        return callback(null, users);
+        return callback(null, users, count);
       });
     }
 
-  ], function (err, users) {
+  ], function (err, users, count) {
     if (err) {
       logger.error('[room:users] ' + err);
       return next(null, {code: 500, err: err});
     }
 
     return next(null, {
-      room_id: room.id,
-      room_name: room.name,
       users: users,
-      owner_name: room.owner.username,
-      owner_id: room.owner._id,
-      nbUsers: usersNumber
+      nbUsers: count // number of users that match who search
     });
   });
 };

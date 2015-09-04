@@ -374,11 +374,16 @@ userSchema.statics.setUnviewedOneMessage = function (fromUserId, toUserId, event
 userSchema.statics.searchUsers = function (query, selector) {
   if (selector) {
     return this.find(query)
+      .sort({username: 1})
       .skip(selector.start)
       .limit(selector.length);
   } else {
-    return (this.find(query));
+    return this.find(query);
   }
+};
+
+userSchema.statics.queryCount = function (query) {
+  return this.find(query).count();
 };
 
 userSchema.methods.resetUnviewedRoom = function (roomId, fn) {
