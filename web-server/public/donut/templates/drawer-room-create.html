@@ -1,8 +1,7 @@
 <div class="room">
     <span class="name"><%= t('chat.create.label') %></span>
 </div>
-<form class="room-create-form scrollbar" role="form">
-    <div class="form-group">
+    <div class="room">
         <p class="help-block"><%= t('chat.create.info.warning') %></p>
     </div>
     <div class="field">
@@ -29,8 +28,12 @@
         <div class="radio">
             <label>
                 <input type="radio" class="savable join password" name="create:join" value="password" >
-                <%= t('chat.create.options.join.password') %>
+                <%= t('chat.create.options.join.password.radio') %>
             </label>
+        </div>
+        <div class="field-password">
+            <label><%= t('chat.create.options.join.password.field') %> : </label>
+            <input type="text" class="input-password" placeholder="<%= t('chat.create.options.join.password.field') %>" maxlength="24" value="<%= name %>" />
         </div>
     </div>
     <div class="form-group">
@@ -57,4 +60,3 @@
     <div class="field">
         <button class="submit dc-back dc-text-contrast" type="button"><%= t('chat.create.submit') %></button>
     </div>
-</form>

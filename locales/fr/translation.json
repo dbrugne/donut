@@ -378,7 +378,10 @@
         "everyone": "Tous le monde (défaut)",
         "join": {
           "allowed": "Utilisateur autorisé uniquement",
-          "password": "Utilisateur ayant le mot de passe"
+          "password": {
+            "radio": "Utilisateur ayant le mot de passe",
+            "field": "Mot de passe"
+          }
         },
         "history": {
           "joined": "Les utilisateurs dans le donut au moment du message",
