@@ -1,3 +1,4 @@
+// jQuery
 var $ = require('jquery');
 global.jQuery = $; // expose jQuery globally, needed for some beside plugins
 require('../vendor/html5-desktop-notifications/desktop-notify');
@@ -13,8 +14,6 @@ require('bootstrap/js/dropdown');
 require('bootstrap/js/modal');
 require('bootstrap/js/tooltip');
 require('bootstrap/js/popover');
-
-var app = require('./app');
 
 // i18next
 var i18next = require('i18next-client');
@@ -40,4 +39,6 @@ window.notify.config({
 });
 
 // run
-app.initialize();
+var router = require('./router');
+var mainView = require('./views/main');
+mainView.run();

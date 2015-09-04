@@ -120,6 +120,8 @@ define([
       window.current = currentUser;
       window.rooms = rooms;
       window.onetoones = onetoones;
+
+      client.connect();
     },
 
     /**

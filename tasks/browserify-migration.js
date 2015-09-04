@@ -16,7 +16,8 @@ module.exports = function (grunt) {
     'index.js',
     'templates.js',
     'translations.js',
-    'templates'
+    'templates',
+    'app.js'
   ];
   var npms = [
     'backbone',
