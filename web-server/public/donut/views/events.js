@@ -8,7 +8,7 @@ define([
   'common',
   'models/event',
   'moment',
-  'i18next-client',
+  'i18next',
   'client',
   'models/current-user',
   'views/message-edit',
