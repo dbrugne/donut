@@ -3,10 +3,11 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'i18next',
   'client',
   'models/current-user',
   '_templates'
-], function ($, _, Backbone, client , currentUser, templates) {
+], function ($, _, Backbone, i18next, client , currentUser, templates) {
   var DrawerAccountEmailView = Backbone.View.extend({
     template: templates['drawer-account-email.html'],
 
@@ -36,9 +37,9 @@ define([
       this.$success.hide();
 
       if (this.user.account && this.user.account.email)
-        this.$link.text($.t('global.change'));
+        this.$link.text(i18next.t('global.change'));
       else
-        this.$link.text($.t('global.add'));
+        this.$link.text(i18next.t('global.add'));
     },
 
     render: function () {
@@ -86,7 +87,7 @@ define([
         that.$mailUserLabel.text(that.$input.val());
         that.$form.hide();
         that.$success.show();
-        that.$link.text($.t('global.change'));
+        that.$link.text(i18next.t('global.change'));
       });
     },
 
@@ -94,15 +95,15 @@ define([
       this.$form.addClass('has-error');
 
       if (error === 'wrong-format')
-        this.$errorLabel.text($.t('account.email.error.format'));
+        this.$errorLabel.text(i18next.t('account.email.error.format'));
       else if (error === 'same-mail')
-        this.$errorLabel.text($.t('account.email.error.alreadyyours'));
+        this.$errorLabel.text(i18next.t('account.email.error.alreadyyours'));
       else if (error === 'exist')
-        this.$errorLabel.text($.t('account.email.error.alreadyexists'));
+        this.$errorLabel.text(i18next.t('account.email.error.alreadyexists'));
       else if (error === 'empty')
-        this.$errorLabel.text($.t('account.email.error.empty'));
+        this.$errorLabel.text(i18next.t('account.email.error.empty'));
       else
-        this.$errorLabel.text($.t('global.unknownerror'));
+        this.$errorLabel.text(i18next.t('global.unknownerror'));
     }
 
   });

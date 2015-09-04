@@ -3,13 +3,14 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'i18next',
   'models/app',
   'common',
   'client',
   'models/current-user',
   'collections/rooms',
   'collections/onetoones'
-], function ($, _, Backbone, app, common, client, currentUser, rooms, onetoones) {
+], function ($, _, Backbone, i18next, app, common, client, currentUser, rooms, onetoones) {
   var WindowView = Backbone.View.extend({
     el: $(window),
 
@@ -85,7 +86,7 @@ define([
         });
 
       if (thereIsNew)
-        title += $.t('chat.unread.title') + ' ';
+        title += i18next.t('chat.unread.title') + ' ';
 
       title += this.defaultTitle;
 
@@ -140,10 +141,10 @@ define([
 
       // only if at least one discussion is open and preferences checked
       if ((!rooms || rooms.length < 1) && (!onetoones || onetoones.length < 1) && currentUser.shouldDisplayExitPopin())
-        return $.t('chat.closeapp');
+        return i18next.t('chat.closeapp');
 
       if (currentUser.shouldDisplayExitPopin())
-        return $.t('chat.closemessage');
+        return i18next.t('chat.closemessage');
     },
 
     _getFocusedModel: function () {
@@ -250,7 +251,7 @@ define([
               return;
 
             var message = data.message || '';
-            var title = $.t('chat.notifications.desktop.usermessage', {
+            var title = i18next.t('chat.notifications.desktop.usermessage', {
               username: data.from_username,
               message: message
             });

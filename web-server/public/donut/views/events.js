@@ -736,7 +736,7 @@ define([
         .addClass('spammed')
         .find('.ctn')
         .first()
-        .append('<div class="text-spammed">' + $.t('chat.message.text-spammed') + '</div>');
+        .append('<div class="text-spammed">' + i18next.t('chat.message.text-spammed') + '</div>');
       if (bottom)
         this.scrollDown();
     },
@@ -760,7 +760,7 @@ define([
       parent.removeClass('spammed').addClass('viewed');
       textSpammed.remove();
 
-      ctn.prepend('<a class="remask-spammed-message label label-danger">' + $.t('chat.message.text-remask') + '</a>');
+      ctn.prepend('<a class="remask-spammed-message label label-danger">' + i18next.t('chat.message.text-remask') + '</a>');
 
       if (bottom)
         this.scrollDown();
@@ -774,7 +774,7 @@ define([
       parent
         .find('.ctn')
         .first()
-        .append('<div class="text-spammed">' + $.t('chat.message.text-spammed') + '</div>');
+        .append('<div class="text-spammed">' + i18next.t('chat.message.text-spammed') + '</div>');
 
       ctn.find('.remask-spammed-message').remove();
 
@@ -887,7 +887,7 @@ define([
       msg = $.smilify(msg);
       data.message = msg;
 
-      data.message += '<span class="text-edited">&nbsp;(' + $.t('chat.message.edition.edited') + ')</span>';
+      data.message += '<span class="text-edited">&nbsp;(' + i18next.t('chat.message.edition.edited') + ')</span>';
       $event.find('.ctn').find('.text').html(data.message);
 
       if (bottom)

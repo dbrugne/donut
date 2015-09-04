@@ -3,12 +3,13 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'i18next',
   'client',
   'models/current-user',
   'views/image-uploader',
   'views/color-picker',
   '_templates'
-], function ($, _, Backbone, client, currentUser, ImageUploader, ColorPicker, templates) {
+], function ($, _, Backbone, i18next, client, currentUser, ImageUploader, ColorPicker, templates) {
   var DrawerRoomEditView = Backbone.View.extend({
     template: templates['drawer-room-edit.html'],
 
@@ -58,7 +59,7 @@ define([
       // description
       this.$el.find('#roomDescription').maxlength({
         counterContainer: this.$el.find('#roomDescription').siblings('.help-block').find('.counter'),
-        text: $.t('edit.left')
+        text: i18next.t('edit.left')
       });
 
       // website

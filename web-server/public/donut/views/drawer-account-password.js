@@ -3,10 +3,11 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'i18next',
   'client',
   'models/current-user',
   '_templates'
-], function ($, _, Backbone, client, currentUser, templates) {
+], function ($, _, Backbone, i18next, client, currentUser, templates) {
   var DrawerAccountPasswordView = Backbone.View.extend({
     template: templates['drawer-account-password.html'],
 
@@ -37,9 +38,9 @@ define([
       this.$success.hide();
 
       if (this.user.account && this.user.account.has_password) {
-        this.$link.text($.t('global.change'));
+        this.$link.text(i18next.t('global.change'));
       } else {
-        this.$link.text($.t('global.add'));
+        this.$link.text(i18next.t('global.add'));
       }
     },
 
@@ -104,7 +105,7 @@ define([
         that.$form.hide();
         that.$success.show();
         that.$link.show();
-        that.$link.text($.t('global.change'));
+        that.$link.text(i18next.t('global.change'));
         that.$inputCurrentPassword.show();
       });
     },
@@ -113,13 +114,13 @@ define([
       this.$form.addClass('has-error');
 
       if (err === 'length') {
-        this.$errorLabel.text($.t('account.password.error.length'));
+        this.$errorLabel.text(i18next.t('account.password.error.length'));
       } else if (err === 'confirm') {
-        this.$errorLabel.text($.t('account.password.error.confirm'));
+        this.$errorLabel.text(i18next.t('account.password.error.confirm'));
       } else if (err === 'wrong-password') {
-        this.$errorLabel.text($.t('account.password.error.wrong'));
+        this.$errorLabel.text(i18next.t('account.password.error.wrong'));
       } else {
-        this.$errorLabel.text($.t('global.unknownerror'));
+        this.$errorLabel.text(i18next.t('global.unknownerror'));
       }
     }
 

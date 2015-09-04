@@ -3,10 +3,11 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'i18next',
   'client',
   'models/current-user',
   '_templates'
-], function ($, _, Backbone, client, currentUser, templates) {
+], function ($, _, Backbone, i18next, client, currentUser, templates) {
   var DrawerUserRoomPreferencesView = Backbone.View.extend({
     template: templates['drawer-room-preferences.html'],
 
@@ -73,7 +74,7 @@ define([
       client.userPreferencesUpdate(update, function (data) {
         that.$el.find('.errors').hide();
         if (data.err) {
-          that.$el.find('.errors').html($.t('global.unknownerror')).show();
+          that.$el.find('.errors').html(i18next.t('global.unknownerror')).show();
         }
       });
     }
