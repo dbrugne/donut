@@ -104,7 +104,7 @@ define([
         type: 'room:in',
         data: data
       });
-      client.roomVoice(data.room_id, data.user_id, null);
+      //client.roomVoice(data.room_id, data.user_id, null);
       this.trigger('freshEvent', model);
     },
     onOut: function (data) {

@@ -88,8 +88,9 @@ define([
     },
 
     onFocus: function () {
-      if (this.$editable)
+      if (this.$editable && this.model.isInputActive()) {
         this.$editable.focus();
+      }
     },
 
     onAvatar: function (model, value, options) {
