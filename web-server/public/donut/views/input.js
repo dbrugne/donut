@@ -122,7 +122,7 @@ define([
       if (event.type != 'keydown')
         return;
 
-      var data = keyboard._getLastKeyCode();
+      var data = keyboard._getLastKeyCode(event);
       var message = this.$editable.val();
 
       // Avoid loosing focus when tab is pushed
@@ -144,7 +144,7 @@ define([
       if (event.type != 'keyup')
         return;
 
-      var data = keyboard._getLastKeyCode();
+      var data = keyboard._getLastKeyCode(event);
       var message = this.$editable.val();
       var images = this.imagesView.list();
 
