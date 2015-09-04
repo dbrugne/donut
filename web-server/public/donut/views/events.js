@@ -621,9 +621,6 @@ define([
           case 'user:deban':
             template = templates['event/user-deban.html'];
             break;
-          case 'command:error':
-            template = templates['event/input-commands-error.html'];
-            break;
           case 'command:help':
             template = templates['event/help.html'];
             break;
