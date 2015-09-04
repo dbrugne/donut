@@ -21,8 +21,8 @@ define([
     initialize: function (options) {
       this.render(options.name);
       this.$input = this.$el.find('.input');
-      this.$joinChecked = this.$el.find('.join .everyone');
-      this.$historyChecked = this.$el.find('.history .everyone');
+      this.$joinChecked = this.$el.find('.join.everyone');
+      this.$historyChecked = this.$el.find('.history.everyone');
       console.log(this.$joinChecked.attr);
     },
     /**
@@ -68,13 +68,19 @@ define([
 
       var name = '#' + this.$input.val();
       var uri = 'room/' + name.replace('#', '');
+      if (this.$joinChecked.attr('value') === 'password') {
+        var joinPassword = this.$el.find('.input-password').val();
+      }
       var opts = {
         join_mode: this.$joinChecked.attr('value'),
+        join_mode_password: joinPassword,
         history_mode: this.$historyChecked.attr('value')
       };
 
+      console.log(opts);
+
       var that = this;
-      client.roomCreate(name, function (response) {
+      client.roomCreate(name, opts, function (response) {
         if (response.err == 'alreadyexists') {
           app.trigger('alert', 'error', $.t('chat.alreadyexists', {name: name, uri: uri}));
           that.reset();
@@ -95,12 +101,19 @@ define([
     },
     onChangeValue: function (event) {
       var $target = $(event.currentTarget);
+      var type = $target.attr('type');
+      var name = $target.attr('name').substr($target.attr('name').lastIndexOf(':') + 1);
 
-      if ($target.attr('type') === 'radio' && $target.hasClass('.join')) {
+      if (type === 'radio' && name === 'join') {
         this.$joinChecked = $target;
+        if (this.$joinChecked.attr('value') === 'password') {
+          this.$el.find('.field-password').css('display', 'block');
+          this.$el.find('.input-password').focus();
+        } else {
+          this.$el.find('.field-password').css('display', 'none');
+        }
       }
-
-      if ($target.attr('type') === 'radio' && $target.hasClass('.history')) {
+      if (type === 'radio' && name === 'history') {
         this.$historyChecked = $target;
       }
     }

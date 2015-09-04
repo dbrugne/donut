@@ -1404,6 +1404,19 @@
         margin-top: 21px;
         text-align: center;
       }
+      .field-password {
+        display: none;
+        .input-password {
+          width: 50%;
+          height: 34px;
+          color: #555;
+          font-size: 14px;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          padding: 6px 12px;
+          transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+        }
+      }
       .help-block {
         margin-top: 15px;
         font-size: 1.1em;
@@ -1600,7 +1613,7 @@
         }
       }
     }
-    #room-edit, #user-edit, #room-users, #user-preferences, #room-preferences {
+    #room-edit, #user-edit, #room-users, #user-preferences, #room-preferences, #room-create{
       .scrollbar;
       font-size: 1.1em;
       padding: 0 15px;

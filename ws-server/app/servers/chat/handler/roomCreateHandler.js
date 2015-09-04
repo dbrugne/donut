@@ -33,7 +33,7 @@ handler.call = function (data, session, next) {
         return callback('join_mode not valid' + data.join_mode);
       }
 
-      if (data.history_mode && (['everyone', 'joined', 'none'].indexOf(data.join_mode) === -1)) {
+      if (data.history_mode && (['everyone', 'joined', 'none'].indexOf(data.history_mode) === -1)) {
         return callback('history_mode not valid' + data.history_mode);
       }
 

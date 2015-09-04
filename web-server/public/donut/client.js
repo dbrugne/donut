@@ -276,8 +276,13 @@ define([
         }
       );
     },
-    roomCreate: function (name, callback) {
-      var data = {name: name};
+    roomCreate: function (name, opts, callback) {
+      var data = {
+        name: name,
+        join_mode: opts.join_mode,
+        join_mode_password: opts.join_mode_password,
+        history_mode: opts.history_mode
+      };
       debug('io:out:room:create', data);
       pomelo.request(
         'chat.roomCreateHandler.call',
