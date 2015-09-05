@@ -5,6 +5,7 @@ define([
   'backbone',
   'models/app',
   'libs/donut-debug',
+  'libs/keyboard',
   'common',
   'models/event',
   'moment',
@@ -14,7 +15,7 @@ define([
   'views/message-edit',
   'views/window',
   '_templates'
-], function ($, _, Backbone, app, donutDebug, common, EventModel, moment, i18next, client, currentUser, MessageEditView, windowView, templates) {
+], function ($, _, Backbone, app, donutDebug, keyboard, common, EventModel, moment, i18next, client, currentUser, MessageEditView, windowView, templates) {
   var debug = donutDebug('donut:events');
 
   var EventsView = Backbone.View.extend({
@@ -44,7 +45,7 @@ define([
 
     keepMaxEventsOnCleanup: 500,
 
-    initialize: function (options) {
+    initialize: function () {
       this.listenTo(this.model, 'windowRefocused', this.onScroll);
       this.listenTo(this.model, 'freshEvent', this.addFreshEvent);
       this.listenTo(this.model, 'viewed', this.onViewed);
@@ -71,7 +72,6 @@ define([
       this.$scrollableContent = this.$scrollable.find('.scrollable-content');
       this.$pad = this.$scrollableContent.find('.pad');
       this.$loader = this.$scrollableContent.find('.loader');
-      this.$blank = this.$scrollableContent.find('.blank');
       this.$realtime = this.$scrollableContent.find('.realtime');
 
       this.$goToTop = this.$el.find('.go-to-top');
@@ -89,12 +89,12 @@ define([
       this.remove();
     },
 
-    /*****************************************************************************************************************
+    /** ***************************************************************************************************************
      *
      * Scroll methods
      *
      *****************************************************************************************************************/
-    onScroll: function (event) {
+    onScroll: function () {
       // cleanup scroll timeout
       this._scrollTimeoutCleanup();
 
@@ -103,14 +103,17 @@ define([
 
       // toggle the "go to top and bottom" links
       if (bottom > 100) { // content should be longer than 100px of viewport to avoid link display for few pixels
-        if (currentScrollPosition < 30)
+        if (currentScrollPosition < 30) {
           this.$goToTop.hide();
-        else
+        } else {
           this.$goToTop.show();
-        if (currentScrollPosition >= (bottom - 10)) // possible performance issue
+        }
+        // possible performance issue
+        if (currentScrollPosition >= (bottom - 10)) {
           this.$goToBottom.hide().removeClass('unread');
-        else
+        } else {
           this.$goToBottom.show();
+        }
       } else {
         // nothing to scroll, hide links
         this.$goToBottom.hide().removeClass('unread');
@@ -123,15 +126,18 @@ define([
       if (currentScrollPosition <= 0 && !this.historyNoMore) {
         this.toggleHistoryLoader('loading');
         this.scrollTopTimeout = setTimeout(function () {
-          if (that.$scrollable.scrollTop() <= 0)
+          if (that.$scrollable.scrollTop() <= 0) {
             that.requestHistory('top');
+          }
         }, 1500);
       }
 
       // everywhere
       this.scrollVisibleTimeout = setTimeout(function () {
-        if (that.$scrollable.scrollTop() == currentScrollPosition)
-          that.markVisibleAsViewed(); // scroll haven't change during timeout
+        if (that.$scrollable.scrollTop() === currentScrollPosition) {
+          // scroll haven't change until timeout
+          that.markVisibleAsViewed();
+        }
       }, 2000);
 
     },
@@ -168,7 +174,7 @@ define([
       this.$scrollable.scrollTop(targetTop - 8); // add a 8px margin
     },
 
-    /*****************************************************************************************************************
+    /** **************************************************************************************************************
      *
      * Visible elements detection
      *
@@ -181,8 +187,9 @@ define([
       var bottomLimit = topLimit + this.$scrollable.height();
 
       var $items = this.$scrollableContent.find('.block.message .event.unviewed, .block.topic .event.unviewed');
-      if (!$items.length)
+      if (!$items.length) {
         return debug('Not enough .event.unviewed to compute visible elements');
+      }
       $items.removeClass('visible topElement bottomElement first big'); // @debug
 
       // find the first visible element
@@ -191,23 +198,23 @@ define([
       var $candidateElement = $items.eq(candidateIndex);
       var visibility = this._isElementFullyVisibleInViewport(topLimit, bottomLimit, $candidateElement);
       debug($candidateElement.attr('id') + ' vib:', visibility);
-      if (visibility == 'ok') {
+      if (visibility === 'ok') {
         $firstVisibleElement = $candidateElement;
         firstVisibleIndex = candidateIndex;
         debug('we have visible element on first try');
-
-      } else if (visibility == 'big') {
+      } else if (visibility === 'big') {
         // mark $candidateElement as top and stop
         $firstVisibleElement = $candidateElement;
         firstVisibleIndex = candidateIndex;
         debug('first is big');
 
-      } else if (visibility == 'next') {
+      } else if (visibility === 'next') {
+        var _visibility;
         // loop to find next 'ok'
         for (var nextIndex = candidateIndex + 1; nextIndex < $items.length; nextIndex++) {
           $nextElement = $items.eq(nextIndex);
-          var _visibility = this._isElementFullyVisibleInViewport(topLimit, bottomLimit, $nextElement);
-          if (_visibility == 'ok' || _visibility == 'big') {
+          _visibility = this._isElementFullyVisibleInViewport(topLimit, bottomLimit, $nextElement);
+          if (_visibility === 'ok' || _visibility === 'big') {
             $firstVisibleElement = $nextElement;
             firstVisibleIndex = nextIndex;
             debug('$topCandidate found in next loop', $firstVisibleElement);
@@ -218,12 +225,12 @@ define([
           }
         }
 
-      } else if (visibility == 'previous') {
+      } else if (visibility === 'previous') {
         // loop to find previous 'ok'
         for (var previousIndex = candidateIndex - 1; previousIndex >= 0; previousIndex--) {
           $previousElement = $items.eq(previousIndex);
-          var _visibility = this._isElementFullyVisibleInViewport(topLimit, bottomLimit, $previousElement);
-          if (_visibility == 'ok' || _visibility == 'big') {
+          _visibility = this._isElementFullyVisibleInViewport(topLimit, bottomLimit, $previousElement);
+          if (_visibility === 'ok' || _visibility === 'big') {
             $firstVisibleElement = $previousElement;
             firstVisibleIndex = previousIndex;
             break;
@@ -235,7 +242,7 @@ define([
 
       } else {
         // heu??
-        debug(_visibility, 'heu');
+        debug(visibility, 'heu');
       }
 
       // no element is fully visible
@@ -256,7 +263,9 @@ define([
       });
 
       var duration = Date.now() - start;
-      debug('Current scroll position is ' + (topLimit - 5) + '/' + (contentHeight - this.$scrollable.height()) + ' ... (in ' + duration + 'ms)');
+      debug('Current scroll position is ' + (topLimit - 5) + '/' +
+        (contentHeight - this.$scrollable.height()) +
+        ' ... (in ' + duration + 'ms)');
 
       return callback(visibleElementIds);
     },
@@ -300,7 +309,7 @@ define([
       for (var previousIndex = index - 1; previousIndex >= 0; previousIndex--) {
         $e = $items.eq(previousIndex);
         v = this._isElementFullyVisibleInViewport(topLimit, bottomLimit, $e);
-        if (v == 'ok') {
+        if (v === 'ok') {
           list.unshift($e);
         } else {
           break;
@@ -311,7 +320,7 @@ define([
       for (var nextIndex = index + 1; nextIndex < $items.length; nextIndex++) {
         $e = $items.eq(nextIndex);
         v = this._isElementFullyVisibleInViewport(topLimit, bottomLimit, $e);
-        if (v == 'ok') {
+        if (v === 'ok') {
           list.push($e);
         } else {
           break;
@@ -321,7 +330,7 @@ define([
       return list;
     },
 
-    /*****************************************************************************************************************
+    /** ***************************************************************************************************************
      *
      * Size & cleanup
      *
@@ -335,20 +344,27 @@ define([
 
       // determine if needed
       if (!everything) {
-        if (this.isVisible() && !this.isScrollOnBottom())
-          return; // no action when focused AND scroll not on bottom
+        if (this.isVisible() && !this.isScrollOnBottom()) {
+          // no action when focused AND scroll not on bottom
+          return;
+        }
 
         var realtimeLength = this.$realtime.find('.block').length;
-        if (realtimeLength < 250) // not enough content, no need to cleanup
-          return debug('cleanup ' + this.model.getIdentifier() + ' not enough event to cleanup: ' + realtimeLength);
+        if (realtimeLength < 250) {
+          // not enough content, no need to cleanup
+          return debug('cleanup ' + this.model.getIdentifier() +
+            ' not enough event to cleanup: ' + realtimeLength);
+        }
 
         // how many elements to remove
-        howToRemove = (realtimeLength > this.keepMaxEventsOnCleanup)
-          ? (realtimeLength - this.keepMaxEventsOnCleanup)
-          : false;
+        howToRemove = (realtimeLength > this.keepMaxEventsOnCleanup) ?
+          (realtimeLength - this.keepMaxEventsOnCleanup) :
+          false;
 
-        if (!howToRemove)
-          return debug('cleanup ' + this.model.getIdentifier() + ' not events to cleanup: ' + realtimeLength);
+        if (!howToRemove) {
+          return debug('cleanup ' + this.model.getIdentifier() +
+            ' not events to cleanup: ' + realtimeLength);
+        }
       }
 
       // reset history loader
@@ -363,17 +379,18 @@ define([
         debug('cleanuped "' + this.model.getIdentifier() + '" (' + realtimeLength + ' length, ' + howToRemove + ' removed)');
       }
 
-      if (this.isVisible())
+      if (this.isVisible()) {
         this.scrollDown();
+      }
     },
 
-    /*****************************************************************************************************************
+    /** **************************************************************************************************************
      *
      * Events rendering
      *
      *****************************************************************************************************************/
     onAdminMessage: function (data) {
-      data = { data: data };
+      data = {data: data};
       data.data.avatar = '//res.cloudinary.com/roomly/image/upload/v1409643461/rciev5ubaituvx5bclnz.png'; // @todo : add avatar URL in configuration
       data.data.username = 'DONUT';
       data.data.is_admin = true;
@@ -383,34 +400,41 @@ define([
     },
     addFreshEvent: function (model) {
       // browser notification
-      if (model.getGenericType() == 'message' || model.get('type') === 'room:topic')
+      if (model.getGenericType() === 'message' || model.get('type') === 'room:topic') {
         app.trigger('unviewedMessage', model, this.model);
-      else if (this.model.get('type') == 'room' && model.getGenericType() == 'inout')
+      } else if (this.model.get('type') === 'room' && model.getGenericType() === 'inout') {
         app.trigger('unviewedInOut', model, this.model);
+      }
 
       // render a 'fresh' event in realtime and scrolldown
       debug.start('discussion-events-fresh-' + this.model.getIdentifier());
       // scrollDown only if already on bottom before DOM insertion
-      var needToScrollDown = ((this.model.get('focused') == true && this.isScrollOnBottom()) || (this.model.get('focused') == false && this.scrollWasOnBottom));
+      var needToScrollDown = (
+        (this.model.get('focused') === true && this.isScrollOnBottom()) ||
+        (this.model.get('focused') === false && this.scrollWasOnBottom)
+      );
       var previousElement = this.$realtime.find('.block:last').first();
       var newBlock = this._newBlock(model, previousElement);
       var html = this._renderEvent(model, newBlock);
-      var element;
-      if (!newBlock)
-        element = $(html).appendTo(previousElement.find('.items')); // @bug : element is the .event in this case not the .block
-      else
-        element = $(html).appendTo(this.$realtime);
+      if (!newBlock) {
+        // @bug : element is the .event in this case not the .block
+        $(html).appendTo(previousElement.find('.items'));
+      } else {
+        $(html).appendTo(this.$realtime);
+      }
 
-      if (needToScrollDown && !this.messageUnderEdition)
+      if (needToScrollDown && !this.messageUnderEdition) {
         this.scrollDown();
-      else
+      } else {
         this.$goToBottom.show().addClass('unread');
+      }
 
       debug.end('discussion-events-fresh-' + this.model.getIdentifier());
     },
-    addBatchEvents: function (events, more) {
-      if (events.length == 0)
+    addBatchEvents: function (events) {
+      if (events.length === 0) {
         return;
+      }
 
       // render a batch of events (sorted in 'desc' order)
       debug.start('discussion-events-batch-' + this.model.getIdentifier());
@@ -429,15 +453,15 @@ define([
           var previousTime = moment(previousModel.get('time'));
           if (!newTime.isSame(previousTime, 'day')) {
             previousTime.second(0).minute(0).hour(0);
-            var dateFull = ( moment().diff(previousTime, 'days') == 0
-              ? i18next.t('chat.message.today')
-              : ( moment().diff(previousTime, 'days') == 1
-                ? i18next.t('chat.message.yesterday')
-                : ( moment().diff(previousTime, 'days') == 2
-                  ? i18next.t('chat.message.the-day-before')
-                  : moment(previousModel.get('time')).format('dddd Do MMMM YYYY')
+            var dateFull = (moment().diff(previousTime, 'days') === 0 ?
+                i18next.t('chat.message.today') :
+                (moment().diff(previousTime, 'days') === 1 ?
+                    i18next.t('chat.message.yesterday') :
+                    (moment().diff(previousTime, 'days') === 2 ?
+                        i18next.t('chat.message.the-day-before') :
+                        moment(previousModel.get('time')).format('dddd Do MMMM YYYY')
+                    )
                 )
-              )
             );
 
             var dateHtml = templates['event/date.html']({
@@ -451,18 +475,17 @@ define([
 
         // render and insert
         var h = this._renderEvent(model, newBlock);
-        if (!newBlock)
-          $(h).prependTo(previousElement.find('.items')); // not define previousElement, remain the same .block
-        else
+        if (!newBlock) {
+          // not define previousElement, remain the same .block
+          $(h).prependTo(previousElement.find('.items'));
+        } else {
           previousElement = $(h).prependTo($html);
+        }
         previousModel = model;
       }, this));
 
       $html.find('>.block').prependTo(this.$realtime);
       debug.end('discussion-events-batch-' + this.model.getIdentifier());
-
-    // resize .blank
-    // this.resize();
     },
     _prepareEvent: function (model) {
       var data = model.toJSON();
@@ -475,13 +498,13 @@ define([
       }
 
       // avatar
-      var size = (model.getGenericType() != 'inout')
-        ? 30
-        : 20;
-      if (model.get('data').avatar)
+      var size = (model.getGenericType() !== 'inout') ? 30 : 20;
+      if (model.get('data').avatar) {
         data.data.avatar = common.cloudinarySize(model.get('data').avatar, size);
-      if (model.get('data').by_avatar)
+      }
+      if (model.get('data').by_avatar) {
         data.data.by_avatar = common.cloudinarySize(model.get('data').by_avatar, size);
+      }
 
       var message = data.data.message;
       if (message) {
@@ -519,22 +542,24 @@ define([
           });
         });
 
-        if (images && images.length > 0)
+        if (images && images.length > 0) {
           data.data.images = images;
+        }
       }
 
       // date
       var dateObject = moment(model.get('time'));
       var diff = (Date.now() - dateObject.valueOf()) / 1000;
       var format;
-      if (diff <= 86400) // 24h
-        format = 'HH:mm';
-      else if (diff <= 604800) // 7 days
-        format = 'dddd';
-      else if (2592000) // 1 month
-        format = 'DD/MM';
-      else // more than 1 year
-        format = 'MM/YYYY';
+      if (diff <= 86400) {
+        format = 'HH:mm'; // 24h
+      } else if (diff <= 604800) {
+        format = 'dddd'; // 7 days
+      } else if (2592000) {
+        format = 'DD/MM'; // 1 month
+      } else {
+        format = 'MM/YYYY'; // more than 1 year
+      }
       data.data.dateshort = dateObject.format(format);
       data.data.datefull = dateObject.format('dddd Do MMMM YYYY à HH:mm:ss');
 
@@ -553,12 +578,14 @@ define([
             newBlock = true;
             break;
           case 'inout':
-            if (!previousElement.hasClass('inout'))
+            if (!previousElement.hasClass('inout')) {
               newBlock = true;
+            }
             break;
           case 'message':
-            if (!previousElement.hasClass('message') || previousElement.data('userId') !== newModel.get('data').user_id)
+            if (!previousElement.hasClass('message') || previousElement.data('userId') !== newModel.get('data').user_id) {
               newBlock = true;
+            }
             break;
         }
       }
@@ -635,14 +662,16 @@ define([
       }
     },
 
-    /*****************************************************************************************************************
+    /** ***************************************************************************************************************
      *
      * Viewed management
      *
      *****************************************************************************************************************/
     markVisibleAsViewed: function () {
-      if (!this.isVisible())
-        return debug('markVisibleAsViewed: discussion/window not focused, do nothing'); // scroll could be triggered by freshevent event when window is not focused
+      if (!this.isVisible()) {
+        // scroll could be triggered by freshevent event when window is not focused
+        return debug('markVisibleAsViewed: discussion/window not focused, do nothing');
+      }
 
       var that = this;
       this.computeVisibleElements(function (elements) {
@@ -650,30 +679,30 @@ define([
       });
     },
     viewedElements: function (elements) {
-      if (elements.length)
+      if (elements.length) {
         this.model.viewedElements(elements);
+      }
     },
     onViewed: function (data) {
-      if (!data.events || !data.events.length)
+      if (!data.events || !data.events.length) {
         return;
+      }
 
       var selector = '';
       _.each(data.events, function (id) {
-        if (selector != '')
+        if (selector !== '') {
           selector += ', ';
+        }
         selector += '#' + id;
       });
 
       $(selector).removeClass('unviewed');
     },
     isVisible: function () {
-      if (!this.model.get('focused') || !windowView.focused)
-        return false;
-
-      return true;
+      return !(!this.model.get('focused') || !windowView.focused);
     },
 
-    /*****************************************************************************************************************
+    /** ***************************************************************************************************************
      *
      * Message actions menu
      *
@@ -737,8 +766,9 @@ define([
         .find('.ctn')
         .first()
         .append('<div class="text-spammed">' + i18next.t('chat.message.text-spammed') + '</div>');
-      if (bottom)
+      if (bottom) {
         this.scrollDown();
+      }
     },
     onMarkedAsUnspam: function (room) {
       var bottom = this.isScrollOnBottom();
@@ -748,8 +778,9 @@ define([
         .remove();
 
       this.$('#' + room.event).find('.remask-spammed-message').remove();
-      if (bottom)
+      if (bottom) {
         this.scrollDown();
+      }
     },
     onViewSpammedMessage: function (event) {
       var bottom = this.isScrollOnBottom();
@@ -762,8 +793,9 @@ define([
 
       ctn.prepend('<a class="remask-spammed-message label label-danger">' + i18next.t('chat.message.text-remask') + '</a>');
 
-      if (bottom)
+      if (bottom) {
         this.scrollDown();
+      }
     },
     onRemaskSpammedMessage: function (event) {
       var bottom = this.isScrollOnBottom();
@@ -778,11 +810,12 @@ define([
 
       ctn.find('.remask-spammed-message').remove();
 
-      if (bottom)
+      if (bottom) {
         this.scrollDown();
+      }
     },
 
-    /*****************************************************************************************************************
+    /** ***************************************************************************************************************
      *
      * Message edit
      *
@@ -792,9 +825,9 @@ define([
 
       var $event = $(event.currentTarget).closest('.event');
 
-      if (!this.isEditableMessage($event))
+      if (!this.isEditableMessage($event)) {
         return;
-
+      }
       this.editMessage($event);
     },
     isEditableMessage: function ($event) {
@@ -809,12 +842,15 @@ define([
     onPrevOrNextFormEdit: function (event) {
       var direction;
       var bottom = this.isScrollOnBottom();
-      if (event.which == 38)
+      var key = keyboard._getLastKeyCode(event);
+      if (key.which === keyboard.UP) {
         direction = 'prev';
-      else if (event.which == 40)
-        direction = 'next'; else {
-        if (bottom)
+      } else if (key.which === keyboard.DOWN) {
+        direction = 'next';
+      } else {
+        if (bottom) {
           this.scrollDown();
+        }
         return;
       }
 
@@ -830,56 +866,62 @@ define([
       // no sibling .event, try with sibling .block
       if (!$candidate.length && $candidateBlock.length) {
         var _lastBlock = $candidateBlock;
-        while((_lastBlock.data('userId') !== userId)) {
-          if (!_lastBlock[direction]().length)
+        while ((_lastBlock.data('userId') !== userId)) {
+          if (!_lastBlock[direction]().length) {
             return;
+          }
           _lastBlock = _lastBlock[direction]();
         }
 
-        $candidate = (direction == 'prev')
-          ? _lastBlock.find('.event').last()
-          : _lastBlock.find('.event').first();
+        $candidate = (direction === 'prev') ?
+          _lastBlock.find('.event').last() :
+          _lastBlock.find('.event').first();
       }
 
-      if (this.isEditableMessage($candidate))
+      if (this.isEditableMessage($candidate)) {
         this.editMessage($candidate);
-
-      if (bottom)
+      }
+      if (bottom) {
         this.scrollDown();
+      }
     },
     pushUpFromInput: function () {
       var _lastBlock = this.$realtime.find('.block.message').last();
-      while(_lastBlock.data('userId') !== currentUser.get('user_id')) {
-        if (!_lastBlock.prev().length)
+      while (_lastBlock.data('userId') !== currentUser.get('user_id')) {
+        if (!_lastBlock.prev().length) {
           return;
+        }
         _lastBlock = _lastBlock.prev();
       }
       var $event = _lastBlock.find('.event').last();
       var bottom = this.isScrollOnBottom();
-      if (this.isEditableMessage($event))
+      if (this.isEditableMessage($event)) {
         this.editMessage($event);
-      if (bottom)
+      }
+      if (bottom) {
         this.scrollDown();
+      }
     },
     editMessage: function ($event) {
       var bottom = this.isScrollOnBottom();
-      if (this.messageUnderEdition)
+      if (this.messageUnderEdition) {
         this.onEditMessageClose();
-
+      }
       this.messageUnderEdition = new MessageEditView({
         el: $event,
         model: this.model
       });
-      if (bottom)
+      if (bottom) {
         this.scrollDown();
+      }
     },
     onMessageEdited: function (data) {
       var bottom = this.isScrollOnBottom();
       var $event = this.$('#' + data.event);
 
-      if ($event.find('.text').html() === undefined)
+      if ($event.find('.text').html() === undefined) {
         $('<div class="text"></div>').insertAfter(this.$('#' + data.event).find('.message-edit'));
-
+      }
       var msg = common.markupToHtml(data.message, {
         template: templates['markup.html'],
         style: 'color: ' + this.model.get('color')
@@ -890,12 +932,14 @@ define([
       data.message += '<span class="text-edited">&nbsp;(' + i18next.t('chat.message.edition.edited') + ')</span>';
       $event.find('.ctn').find('.text').html(data.message);
 
-      if (bottom)
+      if (bottom) {
         this.scrollDown();
+      }
     },
     onEditMessageClose: function () {
-      if (!this.messageUnderEdition)
+      if (!this.messageUnderEdition) {
         return;
+      }
       this.messageUnderEdition.remove();
       this.messageUnderEdition = null;
     },
@@ -903,50 +947,48 @@ define([
       this.cleanup(true);
     },
 
-    /*****************************************************************************************************************
+    /** ***************************************************************************************************************
      *
      * History management
      *
      *****************************************************************************************************************/
     requestHistory: function (scrollTo) {
-      if (this.historyLoading)
+      if (this.historyLoading) {
         return;
-
+      }
       this.historyLoading = true;
 
       this.toggleHistoryLoader('loading');
 
       // save the current first element identifier
-      if (scrollTo == 'top')
+      if (scrollTo === 'top') {
         var $nextTopElement = $('<div class="nextTopPosition"></div>').prependTo(this.$realtime);
+      }
 
       // since
       var first = this.$realtime
         .find('.block:first').first()
         .find('.event').first();
-      var since = (!first || first.length < 1)
-        ? null
-        : first.data('time');
+      var since = (!first || first.length < 1) ?
+        null :
+        first.data('time');
 
       var that = this;
       this.model.history(since, function (data) {
         that.addBatchEvents(data.history, data.more);
 
-        if (scrollTo == 'top') { // on manual request
+        if (scrollTo === 'top') { // on manual request
           var targetTop = $nextTopElement.position().top;
           that.$scrollable.scrollTop(targetTop - 8); // add a 8px margin
           $nextTopElement.remove();
         }
 
-        if (scrollTo == 'bottom') // on first focus history load
+        if (scrollTo === 'bottom') {
+          // on first focus history load
           that.scrollDown();
-
+        }
         that.historyLoading = false;
-
-        if (data.more === true)
-          that.historyNoMore = false;
-        else
-          that.historyNoMore = true;
+        that.historyNoMore = data.more;
         that.toggleHistoryLoader(data.more);
       });
     },
