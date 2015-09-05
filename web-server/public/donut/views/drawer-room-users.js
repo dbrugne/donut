@@ -13,6 +13,8 @@ define([
   var DrawerRoomUsersView = Backbone.View.extend({
     template: templates['drawer-room-users.html'],
 
+    paginationTemplate: templates['pagination.html'],
+
     id: 'room-users',
 
     page: 1, // Start on index 1
@@ -29,8 +31,9 @@ define([
       'click .Allowed': 'onSelectAllowed',
       'click .Banned': 'onSelectBanned',
       'click .Devoiced': 'onSelectDevoiced',
-      'keyup input[type=text]': 'onKeyUp',
-      'click i.icon-search': 'onKeyUp'
+      'click i.icon-search': 'onSearch',
+      'click .pagination>li>a': 'onChangePage'
+
     },
 
     initialize: function (options) {
@@ -41,6 +44,7 @@ define([
       this.ownerName = this.$('.open-user-profile');
       this.numberUsers = this.$('.number');
       this.search = this.$('input[type=text]');
+      this.pagination = this.$('.paginate');
 
       this.tableView = new RoomUsersTableConfirmation({
         el: this.$('.table-users')
@@ -49,14 +53,13 @@ define([
       this.roomName.text(this.model.get('name'));
       this.ownerName.text('@' + this.model.get('owner').get('username'));
       this.ownerName.data('userId', this.model.get('owner').get('user_id'));
-
       this.render(null);
     },
 
     render: function () {
       // ask for data
       var that = this;
-      client.roomUsers(this.model.get('id'), this.currentType, this.search.val(), {start: 0, length: this.paginate}, function (data) {
+      client.roomUsers(this.model.get('id'), this.currentType, this.search.val(), {start: (this.page - 1) * this.paginate, length: this.paginate}, function (data) {
         that.onResponse(data);
       });
       return this;
@@ -64,9 +67,16 @@ define([
     onResponse: function (data) {
       this.tableView.render(data.users);
       this.numberUsers.text(data.nbUsers);
+      this.pagination.html(this.paginationTemplate({
+        currentPage: this.page,
+        totalNbPages: Math.ceil(data.nbUsers / this.paginate),
+        nbPages: 5
+      }));
     },
     onSelectAll: function (event) {
       event.preventDefault();
+      this.page = 1;
+      this.search.val('');
       if (this.currentType !== 'all') {
         this.currentType = 'all';
         this.render();
@@ -74,6 +84,8 @@ define([
     },
     onSelectOp: function (event) {
       event.preventDefault();
+      this.page = 1;
+      this.search.val('');
       if (this.currentType !== 'op') {
         this.currentType = 'op';
         this.render();
@@ -81,6 +93,8 @@ define([
     },
     onSelectAllowed: function (event) {
       event.preventDefault();
+      this.page = 1;
+      this.search.val('');
       if (this.currentType !== 'allowed') {
         this.currentType = 'allowed';
         this.render();
@@ -88,6 +102,8 @@ define([
     },
     onSelectBanned: function (event) {
       event.preventDefault();
+      this.page = 1;
+      this.search.val('');
       if (this.currentType !== 'ban') {
         this.currentType = 'ban';
         this.render();
@@ -95,12 +111,32 @@ define([
     },
     onSelectDevoiced: function (event) {
       event.preventDefault();
+      this.page = 1;
+      this.search.val('');
       if (this.currentType !== 'devoice') {
         this.currentType = 'devoice';
         this.render();
       }
     },
-    onKeyUp: function (event) {
+    onSearch: function (event) {
+      this.page = 1;
+      this.render();
+    },
+    onChangePage: function (event) {
+      event.preventDefault();
+
+      var id = $(event.currentTarget).data('identifier');
+      if (!id) {
+        return;
+      }
+
+      if (id === 'previous') {
+        this.page -= 1;
+      } else if (id === 'next') {
+        this.page += 1;
+      } else {
+        this.page = parseInt(id, 10);
+      }
       this.render();
     }
   });
