@@ -3,10 +3,11 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'i18next',
   'client',
   'models/current-user',
   '_templates'
-], function ($, _, Backbone, client , currentUser, templates) {
+], function ($, _, Backbone, i18next, client, currentUser, templates) {
   var DrawerAccountPasswordView = Backbone.View.extend({
     template: templates['drawer-account-password.html'],
 
@@ -27,6 +28,7 @@ define([
       this.$spinner.html(templates['spinner.html']);
       this.$errorLabel = this.$('.error-label');
       this.$success = this.$('.success');
+      this.$labelCurrentPassword = this.$('.label-current-password');
       this.$inputCurrentPassword = this.$('.input-current-password');
       this.$inputNewPassword = this.$('.input-new-password');
       this.$inputConfirmPassword = this.$('.input-password-confirm');
@@ -35,10 +37,11 @@ define([
       this.$spinner.hide();
       this.$success.hide();
 
-      if (this.user.account && this.user.account.has_password)
-        this.$link.text($.t('global.change'));
-      else
-        this.$link.text($.t('global.add'));
+      if (this.user.account && this.user.account.has_password) {
+        this.$link.text(i18next.t('global.change'));
+      } else {
+        this.$link.text(i18next.t('global.add'));
+      }
     },
 
     render: function () {
@@ -49,8 +52,10 @@ define([
     onShowForm: function (event) {
       event.preventDefault();
 
-      if (this.user.account.has_password !== true)
+      if (this.user.account.has_password !== true) {
         this.$inputCurrentPassword.hide();
+        this.$labelCurrentPassword.hide();
+      }
 
       this.$form.show();
       this.$link.hide();
@@ -90,8 +95,9 @@ define([
 
       client.accountPassword(this.$inputNewPassword.val(), this.$inputCurrentPassword.val(), function (data) {
         that.$spinner.hide();
-        if (data.err)
+        if (data.err) {
           return that.putError(data.err);
+        }
 
         that.$inputCurrentPassword.val('');
         that.$inputConfirmPassword.val('');
@@ -99,7 +105,7 @@ define([
         that.$form.hide();
         that.$success.show();
         that.$link.show();
-        that.$link.text($.t('global.change'));
+        that.$link.text(i18next.t('global.change'));
         that.$inputCurrentPassword.show();
       });
     },
@@ -107,14 +113,15 @@ define([
     putError: function (err) {
       this.$form.addClass('has-error');
 
-      if (err === 'length')
-        this.$errorLabel.text($.t('account.password.error.length'));
-      else if (err === 'confirm')
-        this.$errorLabel.text($.t('account.password.error.confirm'));
-      else if (err === 'wrong-password')
-        this.$errorLabel.text($.t('account.password.error.wrong'));
-      else
-        this.$errorLabel.text($.t('global.unknownerror'));
+      if (err === 'length') {
+        this.$errorLabel.text(i18next.t('account.password.error.length'));
+      } else if (err === 'confirm') {
+        this.$errorLabel.text(i18next.t('account.password.error.confirm'));
+      } else if (err === 'wrong-password') {
+        this.$errorLabel.text(i18next.t('account.password.error.wrong'));
+      } else {
+        this.$errorLabel.text(i18next.t('global.unknownerror'));
+      }
     }
 
   });

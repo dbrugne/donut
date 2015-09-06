@@ -3,13 +3,14 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'i18next',
   'models/app',
   'common',
   'client',
   'models/current-user',
   'views/modal-confirmation',
   '_templates'
-], function ($, _, Backbone, app, common, client, currentUser, confirmationView, templates) {
+], function ($, _, Backbone, i18next, app, common, client, currentUser, confirmationView, templates) {
   var DrawerUserPreferencesView = Backbone.View.extend({
     template: templates['drawer-user-preferences.html'],
 
@@ -62,7 +63,7 @@ define([
     },
     onTestDesktopNotify: function (event) {
       event.preventDefault();
-      app.trigger('desktopNotificationForce', $.t('preferences.notif.channels.desktop-notify-test'), '');
+      app.trigger('desktopNotificationForce', i18next.t('preferences.notif.channels.desktop-notify-test'), '');
     },
     onChangeValue: function (event) {
       var $target = $(event.currentTarget);
@@ -82,7 +83,7 @@ define([
       client.userPreferencesUpdate(update, function (data) {
         that.$el.find('.errors').hide();
         if (data.err) {
-          that.$el.find('.errors').html($.t('global.unknownerror')).show();
+          that.$el.find('.errors').html(i18next.t('global.unknownerror')).show();
           return;
         }
       });

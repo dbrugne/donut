@@ -101,7 +101,7 @@ define([
     },
     onKeydown: function (event) {
       this.updateFormSize();
-      var data = keyboard._getLastKeyCode();
+      var data = keyboard._getLastKeyCode(event);
       if (data.key === keyboard.ESC)
         this.onEscape(event);
       else if (data.key === keyboard.RETURN && !data.isShift)

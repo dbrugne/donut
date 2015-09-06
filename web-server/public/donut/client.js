@@ -114,9 +114,6 @@ define([
         light: (light) // if the search should return a light version of results or not
           ? true
           : false,
-        limit: (limit)
-          ? limit
-          : 5,
         rooms: (rooms) // if we should search for rooms
           ? true
           : false,

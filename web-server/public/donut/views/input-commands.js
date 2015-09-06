@@ -3,12 +3,13 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'i18next',
   'models/app',
   'client',
   'collections/rooms',
   'views/modal-confirmation',
   'models/event'
-], function ($, _, Backbone, app, client, rooms, confirmationView, EventModel) {
+], function ($, _, Backbone, i18next, app, client, rooms, confirmationView, EventModel) {
   var InputCommandsView = Backbone.View.extend({
     commandRegexp: /^\/([-a-z0-9]+)/i,
 
@@ -440,7 +441,7 @@ define([
         return this.errorCommand('random', 'parameters');
       }
       var result = Math.floor(Math.random() * (max - min + 1) + min);
-      var msg = $.t('chat.notifications.random') + ' ' + result + ' (' + min + ' - ' + max + ')';
+      var msg = i18next.t('chat.notifications.random') + ' ' + result + ' (' + min + ' - ' + max + ')';
       if (this.model.get('type') === 'room') {
         client.roomMe(this.model.get('id'), msg);
       } else {
@@ -490,7 +491,7 @@ define([
      **********************************************************/
 
     errorCommand: function (stringCommand, errorType) {
-      var error = $.t('chat.commands.errors.' + errorType);
+      var error = i18next.t('chat.commands.errors.' + errorType);
       if (errorType === 'invalidcommand') {
         this.help(null, null, error);
       } else {

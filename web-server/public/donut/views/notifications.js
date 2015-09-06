@@ -3,6 +3,7 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'i18next',
   'models/app',
   'common',
   'client',
@@ -11,7 +12,7 @@ define([
   'models/current-user',
   'moment',
   '_templates'
-], function ($, _, Backbone, app, common, client, rooms, onetoones, currentUser, moment, templates) {
+], function ($, _, Backbone, i18next, app, common, client, rooms, onetoones, currentUser, moment, templates) {
   var NotificationsView = Backbone.View.extend({
     el: $('#notifications'),
 
@@ -109,7 +110,7 @@ define([
       this._createDesktopNotify(data);
     },
     _createDesktopNotify: function (data) {
-      var desktopTitle = $.t('chat.notifications.desktop.' + data.type, {
+      var desktopTitle = i18next.t('chat.notifications.desktop.' + data.type, {
         'roomname': ( data.data.room && data.data.room.name
           ? data.data.room.name
           : ''),
