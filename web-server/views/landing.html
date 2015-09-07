@@ -63,10 +63,10 @@
                             </a>
                             <ul class="dropdown-menu" role="menu">
                                 <li class="arrow-up"></li>
-                                <li><a href="/!#room/help"><i class="icon icon-life-ring"></i> Aide</a></li>
-                                <li><a href="/faq" target="_blank"><i class="icon icon-question-circle"></i> FAQ</a></li>
-                                <li><a data-toggle="contactform"><i class="icon icon-envelope"></i> Contact</a></li>
-                                <li><a href="/eutc" target="_blank"><i class="icon icon-question-circle"></i> CGU</a></li>
+                                <li class="colored"><a href="/!#room/help"><i class="icon icon-life-ring"></i> Aide</a></li>
+                                <li class="colored"><a href="/faq" target="_blank"><i class="icon icon-question-circle"></i> FAQ</a></li>
+                                <li class="colored"><a data-toggle="contactform"><i class="icon icon-envelope"></i> Contact</a></li>
+                                <li class="colored"><a href="/eutc" target="_blank"><i class="icon icon-question-circle"></i> CGU</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -86,34 +86,47 @@
                 </div>
             </div>
 
-            <div class="container ctn-baseline">
+            <div class="ctn-baseline">
+
+                <div class="background"></div>
 
                 <div class="authenticate">
                     <% if (logged) { %>
                     <h2><%= t('logged.title') %></h2>
-                    <div class="logged">
-                        <a class="profile" href="<%= user.url %>" target="_blank">
+                    <div class="logged mt25 flex-parent column">
+                        <a class="profile flex-parent column" href="<%= user.url %>" target="_blank">
                             <img class="avatar" src="<%= user.avatar %>" alt="<%= user.username %> avatar">
                             <p>@<%= user.username %></p>
                         </a>
-                        <p><%= t('logged.text') %></p>
-                        <p class="actions">
-                            <a class="chat" href="/!"><%= t('logged.chat') %></a>
-                            <a class="logout" href="/logout"><%= t('logged.logout') %></a>
+                        <p class="text-center"><%= t('logged.text') %></p>
+                        <p class="actions flex-parent column">
+                            <a class="chat button" href="/!"><%= t('logged.chat') %></a>
+                            <a class="logout flex-end mt10" href="/logout"><%= t('logged.logout') %></a>
                         </p>
                     </div>
                     <% } else { %>
 
-                    <div>
+                    <div class="flex-parent column">
                         <h2><%= t('landing.start') %></h2>
                         <a href="/login/facebook" class="btn-facebook"><i class="icon icon-facebook"></i> | <span><%= t('landing.loginwithfacebook') %></span></a>
                         <p class="logic"><span><%= t('landing.orbymail') %></span></p>
-                        <form id="login" action="/login" method="post" role="form" class="form">
+                        <form id="login" action="/login" method="post" role="form" class="form mt10">
                             <input type="hidden" name="_csrf" value="<%= token %>">
 
-                            <input type="text" id="signin-username" class="form-control" name="username" placeholder="<%= t('landing.email-placeholder') %>" tabindex="1">
-                            <input type="text" id="signin-email" class="form-control" name="email" placeholder="<%= t('landing.email-placeholder') %>" tabindex="1">
-                            <input type="password" id="signin-password" class="form-control" name="password" placeholder="<%= t('landing.password-placeholder') %>" tabindex="2">
+                            <div class="form-group mb10">
+                                <input type="text" id="signin-username" class="form-control" name="username" placeholder="<%= t('landing.username-placeholder') %>" tabindex="1">
+                                <img src="/images/arrow.svg">
+                            </div>
+
+                            <div class="form-group mb10">
+                                <input type="text" id="signin-email" class="form-control" name="email" placeholder="<%= t('landing.email-placeholder') %>" tabindex="1">
+                                <img src="/images/arrow.svg">
+                            </div>
+
+                            <div class="form-group mb10">
+                                <input type="password" id="signin-password" class="form-control" name="password" placeholder="<%= t('landing.password-placeholder') %>" tabindex="2">
+                                <img src="/images/arrow.svg">
+                            </div>
 
                             <div class="form-group pull-right relative">
                                 <a class="forgot-link" href="/forgot" title="<%= t('actions.forgot') %>" tabindex="5">
@@ -136,13 +149,14 @@
 
     <div class="container ctn-results">
         <div class="search flex-parent">
-            <div class="input-ctn flex-child relative">
+            <div class="input-ctn flex-child relative flex-child-3">
                 <input type="text" placeholder="<%= t('landing.yourinterests') %>">
                 <i class="icon icon-search"></i>
             </div>
+            <div class="blank flex-child"></div>
             <button class="button ml10"><%= t('actions.search') %></button>
             <span class="ml10"><%= t('global.or') %></span>
-            <button class="button ml10 mr10"><%= t('actions.create') %></button>
+            <button class="button ml10"><%= t('actions.create') %></button>
         </div>
         <div class="results">
             <div class="rooms cards">
@@ -279,6 +293,280 @@
                                 <a class="dc-back dc-back-hover dc-text-contrast" href="#room/Videos_Du_Net">
                                     rejoindre
                                     33
+                                    <i class="icon icon-user-custom"></i>
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+
+
+                    <div class="room dc-i-00d2e2">
+                        <div class="cover">
+                            <div class="avatar" style="background-image:url(https://res.cloudinary.com/roomly/image/upload/b_rgb:00d2e2,c_fill,d_room-avatar-default.png,f_jpg,g_face,h_135,w_135/v1425843239/ytpm5gzhccmp6df5codq.jpg)"></div>
+                            <p class="name">#Manga</p>
+
+                            <p class="owner">par <a class="dc-text">@Mgn</a></p>
+
+                            <!-- p class="topic"></p -->
+                            <p class="join">
+                                <a class="dc-back dc-text-contrast" href="#room/Manga">
+                                    rejoindre
+                                    31
+                                    <i class="icon icon-user-custom"></i>
+                                </a>
+                            </p>
+                        </div>
+                        <div class="back dc-back dc-text-contrast">
+                            <div class="open-room-profile" data-room-name="#Manga">
+                                <p class="name dc-text-contrast">#Manga</p>
+
+                                <p class="owner">par <a class="open-user-profile dc-text-contrast" data-username="Mgn">@Mgn</a></p>
+
+                                <p class="description">Pour les passionnés de mangas et les curieux !</p>
+                            </div>
+                            <p class="join">
+                                <a class="dc-back dc-back-hover dc-text-contrast" href="#room/Manga">
+                                    rejoindre
+                                    31
+                                    <i class="icon icon-user-custom"></i>
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="room dc-i-284156">
+                        <div class="cover">
+                            <div class="avatar" style="background-image:url(https://res.cloudinary.com/roomly/image/upload/b_rgb:284156,c_fill,d_room-avatar-default.png,f_jpg,g_face,h_135,w_135/v1415473644/wdzxjhcz0dzikewpw3cu.png)"></div>
+                            <p class="name">#LeagueOfLegends</p>
+
+                            <p class="owner">par <a class="dc-text">@DarkInFire</a></p>
+
+                            <!-- p class="topic"></p -->
+                            <p class="join">
+                                <a class="dc-back dc-text-contrast" href="#room/LeagueOfLegends">
+                                    rejoindre
+                                    84
+                                    <i class="icon icon-user-custom"></i>
+                                </a>
+                            </p>
+                        </div>
+                        <div class="back dc-back dc-text-contrast">
+                            <div class="open-room-profile" data-room-name="#LeagueOfLegends">
+                                <p class="name dc-text-contrast">#LeagueOfLegends</p>
+
+                                <p class="owner">par <a class="open-user-profile dc-text-contrast" data-username="DarkInFire">@DarkInFire</a></p>
+
+                                <p class="description">Le Donut pour tous les joueurs de League of Legends - Venez discuter du jeu, des LCS et faites de nouvelles rencontres.</p>
+                            </div>
+                            <p class="join">
+                                <a class="dc-back dc-back-hover dc-text-contrast" href="#room/LeagueOfLegends">
+                                    rejoindre
+                                    84
+                                    <i class="icon icon-user-custom"></i>
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="room dc-i-00a513">
+                        <div class="cover">
+                            <div class="avatar" style="background-image:url(https://res.cloudinary.com/roomly/image/upload/b_rgb:00a513,c_fill,d_room-avatar-default.png,f_jpg,g_face,h_135,w_135/v1425546895/uiymomsfae8nipnivvjt.jpg)"></div>
+                            <p class="name">#HighTech</p>
+
+                            <p class="owner">par <a class="dc-text">@julien</a></p>
+
+                            <!-- p class="topic"></p -->
+                            <p class="join">
+                                <a class="dc-back dc-text-contrast" href="#room/HighTech">
+                                    rejoindre
+                                    16
+                                    <i class="icon icon-user-custom"></i>
+                                </a>
+                            </p>
+                        </div>
+                        <div class="back dc-back dc-text-contrast">
+                            <div class="open-room-profile" data-room-name="#HighTech">
+                                <p class="name dc-text-contrast">#HighTech</p>
+
+                                <p class="owner">par <a class="open-user-profile dc-text-contrast" data-username="julien">@julien</a></p>
+
+                                <p class="description">Pour les fans de technologie, ceux qui attendent le dernier iPhone ou ceux qui se demandent quel ordinateur acheter !</p>
+                            </div>
+                            <p class="join">
+                                <a class="dc-back dc-back-hover dc-text-contrast" href="#room/HighTech">
+                                    rejoindre
+                                    16
+                                    <i class="icon icon-user-custom"></i>
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="room dc-i-253b6c">
+                        <div class="cover">
+                            <div class="avatar" style="background-image:url(https://res.cloudinary.com/roomly/image/upload/b_rgb:253b6c,c_fill,d_room-avatar-default.png,f_jpg,g_face,h_135,w_135/v1425341460/fksl4ab9l5peu29jp6xl.gif)"></div>
+                            <p class="name">#Debat</p>
+
+                            <p class="owner">par <a class="dc-text">@Lexonax</a></p>
+
+                            <!-- p class="topic"></p -->
+                            <p class="join">
+                                <a class="dc-back dc-text-contrast" href="#room/Debat">
+                                    rejoindre
+                                    25
+                                    <i class="icon icon-user-custom"></i>
+                                </a>
+                            </p>
+                        </div>
+                        <div class="back dc-back dc-text-contrast">
+                            <div class="open-room-profile" data-room-name="#Debat">
+                                <p class="name dc-text-contrast">#Debat</p>
+
+                                <p class="owner">par <a class="open-user-profile dc-text-contrast" data-username="Lexonax">@Lexonax</a></p>
+
+                                <p class="description">Donut pour venir débattre en paix... ou pour se foutre sur la gueule.</p>
+                            </div>
+                            <p class="join">
+                                <a class="dc-back dc-back-hover dc-text-contrast" href="#room/Debat">
+                                    rejoindre
+                                    25
+                                    <i class="icon icon-user-custom"></i>
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="room dc-i-ffb800">
+                        <div class="cover">
+                            <div class="avatar" style="background-image:url(https://res.cloudinary.com/roomly/image/upload/b_rgb:ffb800,c_fill,d_room-avatar-default.png,f_jpg,g_face,h_135,w_135/v1419263085/v4blfv7pbv0eyackjt3o.jpg)"></div>
+                            <p class="name">#Cosplay</p>
+
+                            <p class="owner">par <a class="dc-text">@Madapanda</a></p>
+
+                            <!-- p class="topic"></p -->
+                            <p class="join">
+                                <a class="dc-back dc-text-contrast" href="#room/Cosplay">
+                                    rejoindre
+                                    69
+                                    <i class="icon icon-user-custom"></i>
+                                </a>
+                            </p>
+                        </div>
+                        <div class="back dc-back dc-text-contrast">
+                            <div class="open-room-profile" data-room-name="#Cosplay">
+                                <p class="name dc-text-contrast">#Cosplay</p>
+
+                                <p class="owner">par <a class="open-user-profile dc-text-contrast" data-username="Madapanda">@Madapanda</a></p>
+
+                                <p class="description">Fan de cosplays ici ! On poste ses photos, on se donner des conseils pour faire votre cosplay.</p>
+                            </div>
+                            <p class="join">
+                                <a class="dc-back dc-back-hover dc-text-contrast" href="#room/Cosplay">
+                                    rejoindre
+                                    69
+                                    <i class="icon icon-user-custom"></i>
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="room dc-i-fcc700">
+                        <div class="cover">
+                            <div class="avatar" style="background-image:url(https://res.cloudinary.com/roomly/image/upload/b_rgb:fcc700,c_fill,d_room-avatar-default.png,f_jpg,g_face,h_135,w_135/v1425593677/dwyivkblmgmmiyqqwfrq.jpg)"></div>
+                            <p class="name">#Blague</p>
+
+                            <p class="owner">par <a class="dc-text">@Naga</a></p>
+
+                            <!-- p class="topic"></p -->
+                            <p class="join">
+                                <a class="dc-back dc-text-contrast" href="#room/Blague">
+                                    rejoindre
+                                    26
+                                    <i class="icon icon-user-custom"></i>
+                                </a>
+                            </p>
+                        </div>
+                        <div class="back dc-back dc-text-contrast">
+                            <div class="open-room-profile" data-room-name="#Blague">
+                                <p class="name dc-text-contrast">#Blague</p>
+
+                                <p class="owner">par <a class="open-user-profile dc-text-contrast" data-username="Naga">@Naga</a></p>
+
+                                <p class="description">Pour les gens qui n'ont pas peur de dégainer des lol</p>
+                            </div>
+                            <p class="join">
+                                <a class="dc-back dc-back-hover dc-text-contrast" href="#room/Blague">
+                                    rejoindre
+                                    26
+                                    <i class="icon icon-user-custom"></i>
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="room dc-i-ff7100">
+                        <div class="cover">
+                            <div class="avatar" style="background-image:url(https://res.cloudinary.com/roomly/image/upload/b_rgb:ff7100,c_fill,d_room-avatar-default.png,f_jpg,g_face,h_135,w_135/v1425843150/unsqy9k1z3o4njnsp3e2.jpg)"></div>
+                            <p class="name">#Animaux</p>
+
+                            <p class="owner">par <a class="dc-text">@Mgn</a></p>
+
+                            <!-- p class="topic"></p -->
+                            <p class="join">
+                                <a class="dc-back dc-text-contrast" href="#room/Animaux">
+                                    rejoindre
+                                    7
+                                    <i class="icon icon-user-custom"></i>
+                                </a>
+                            </p>
+                        </div>
+                        <div class="back dc-back dc-text-contrast">
+                            <div class="open-room-profile" data-room-name="#Animaux">
+                                <p class="name dc-text-contrast">#Animaux</p>
+
+                                <p class="owner">par <a class="open-user-profile dc-text-contrast" data-username="Mgn">@Mgn</a></p>
+
+                                <p class="description">Pour nos 30 millions d'amis (qui savent taper sur un clavier), et leurs maîtres !
+                                </p>
+                            </div>
+                            <p class="join">
+                                <a class="dc-back dc-back-hover dc-text-contrast" href="#room/Animaux">
+                                    rejoindre
+                                    7
+                                    <i class="icon icon-user-custom"></i>
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="room dc-i-2f53a7">
+                        <div class="cover">
+                            <div class="avatar" style="background-image:url(https://res.cloudinary.com/roomly/image/upload/b_rgb:2f53a7,c_fill,d_room-avatar-default.png,f_jpg,g_face,h_135,w_135/v1425597761/xibazkptxqocf8of3nwc.jpg)"></div>
+                            <p class="name">#Actu</p>
+
+                            <p class="owner">par <a class="dc-text">@David</a></p>
+
+                            <!-- p class="topic"></p -->
+                            <p class="join">
+                                <a class="dc-back dc-text-contrast" href="#room/Actu">
+                                    rejoindre
+                                    3
+                                    <i class="icon icon-user-custom"></i>
+                                </a>
+                            </p>
+                        </div>
+                        <div class="back dc-back dc-text-contrast">
+                            <div class="open-room-profile" data-room-name="#Actu">
+                                <p class="name dc-text-contrast">#Actu</p>
+
+                                <p class="owner">par <a class="open-user-profile dc-text-contrast" data-username="David">@David</a></p>
+
+                                <p class="description">On parle de tout ce qui buzz dans les journaux et les réseaux sociaux.</p>
+                            </div>
+                            <p class="join">
+                                <a class="dc-back dc-back-hover dc-text-contrast" href="#room/Actu">
+                                    rejoindre
+                                    3
                                     <i class="icon icon-user-custom"></i>
                                 </a>
                             </p>

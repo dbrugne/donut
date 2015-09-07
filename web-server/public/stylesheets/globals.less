@@ -3,7 +3,7 @@
 .p0 { padding:0; }
 .curp { cursor:pointer; }
 
-// Generate .ml5 .ml10 ... utility classes
+// Generate .ml5 .ml10 ... .ml120 utility classes
 .global-loop (@index) when (@index > 0){
   .ml@{index} { margin-left: ~'@{index}px' !important; }
   .mr@{index} { margin-right: ~'@{index}px' !important; }
@@ -108,7 +108,11 @@
 }
 
 .navbar .divider-vertical {
-  height: 30px;
-  margin: 10px 0;
+  height: 20px;
+  margin: 15px 0;
   border-left: 1px solid #333;
+}
+
+.dropdown-menu > .arrow-up { width: 0; height: 0; border-style: solid; border-width: 0 10px 10px 10px; border-color: transparent transparent #D6D6D6 transparent; position: absolute; top: -10px; right: 13px; display: block; padding: 0;
+  &::before { content:'\f040'; font-family: Donut; color: #FFF; font-size: 25px; position: absolute; top: -10px; right: -10px; }
 }
