@@ -1,5 +1,6 @@
 var debug = require('debug')('shared:models:room');
 var _ = require('underscore');
+var bcrypt = require('bcrypt-nodejs');
 var mongoose = require('../io/mongoose');
 var common = require('@dbrugne/donut-common');
 var cloudinary = require('../util/cloudinary');
@@ -168,6 +169,10 @@ roomSchema.methods.isIn = function (userId) {
 
   return (typeof subDocument !== 'undefined');
 };
+
+roomSchema.methods.validPassword = function (password) {
+  return bcrypt.compareSync(password, this.join_mode_password);
+}
 
 roomSchema.methods.getIdsByType = function (type) {
   if (!type || ['all', 'users', 'op', 'allowed', 'regular', 'ban', 'devoice'].indexOf(type) === -1) {

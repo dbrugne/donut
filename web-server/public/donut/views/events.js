@@ -46,6 +46,7 @@ define([
     keepMaxEventsOnCleanup: 500,
 
     initialize: function () {
+      this.listenTo(this.model, 'change:focused', this.onFocusChange);
       this.listenTo(this.model, 'windowRefocused', this.onScroll);
       this.listenTo(this.model, 'freshEvent', this.addFreshEvent);
       this.listenTo(this.model, 'viewed', this.onViewed);
@@ -53,7 +54,10 @@ define([
       this.listenTo(this.model, 'messageUnspam', this.onMarkedAsUnspam);
       this.listenTo(this.model, 'messageEdit', this.onMessageEdited);
       this.listenTo(this.model, 'editMessageClose', this.onEditMessageClose);
+      this.listenTo(this.model, 'cleanup', this.cleanup);
       this.listenTo(this.model, 'clearHistory', this.onClearHistory);
+      this.listenTo(this.model, 'messageSent', this.scrollDown);
+      this.listenTo(this.model, 'editPreviousInput', this.pushUpFromInput);
       this.listenTo(client, 'admin:message', this.onAdminMessage);
 
       debug.start('discussion-events' + this.model.getIdentifier());
@@ -87,6 +91,20 @@ define([
     _remove: function () {
       this._scrollTimeoutCleanup();
       this.remove();
+    },
+    onFocusChange: function () {
+      if (this.model.get('focused')) {
+        if (this.scrollWasOnBottom) {
+          // will trigger markVisibleAsViewed() implicitly
+          this.scrollDown();
+        } else {
+          this.onScroll();
+        }
+        this.scrollWasOnBottom = false;
+      } else {
+        // persist scroll position before hiding
+        this.scrollWasOnBottom = this.isScrollOnBottom();
+      }
     },
 
     /** ***************************************************************************************************************
@@ -335,9 +353,6 @@ define([
      * Size & cleanup
      *
      *****************************************************************************************************************/
-    update: function () {
-      this.cleanup();
-    },
     cleanup: function (everything) {
       everything = everything || false;
       var howToRemove;

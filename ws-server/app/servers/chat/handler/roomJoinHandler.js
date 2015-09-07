@@ -37,10 +37,7 @@ handler.call = function (data, session, next) {
       if (room.join_mode === 'allowed' && !room.isAllowed(user.id)) {
         return callback('notallowed');
       }
-      if (room.join_mode === 'password' && !data.join_mode_password) {
-        return callback('join_mode_password is mandatory for the password rooms');
-      }
-      if (room.join_mode === 'password' && !room.validPassword(data.join_mode_password)) {
+      if (!room.isOwner(user.id) && room.join_mode === 'password' && !room.validPassword(data.join_mode_password)) {
         return callback('wrong-password');
       }
 
