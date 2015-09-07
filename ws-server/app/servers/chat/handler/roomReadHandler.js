@@ -95,6 +95,12 @@ handler.call = function (data, session, next) {
         });
       }
 
+      // options
+      var opts = {
+        join_mode: room.join_mode,
+        history_mode: room.history_mode
+      };
+
       read = {
         name: room.name,
         id: room.id,
@@ -110,7 +116,8 @@ handler.call = function (data, session, next) {
         website: room.website,
         topic: room.topic,
         description: room.description,
-        created: room.created_at
+        created: room.created_at,
+        opts: opts
       };
 
       if (session.settings.admin === true) {

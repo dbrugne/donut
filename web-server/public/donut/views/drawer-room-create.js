@@ -3,13 +3,12 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'i18next',
   'models/app',
   'client',
   '_templates'
-], function ($, _, Backbone, i18next, app, client, templates) {
+], function ($, _, Backbone, app, client, _templates) {
   var DrawerRoomCreateView = Backbone.View.extend({
-    template: templates['drawer-room-create.html'],
+    template: _templates['drawer-room-create.html'],
 
     id: 'room-create',
 
@@ -24,7 +23,6 @@ define([
       this.$input = this.$el.find('.input');
       this.$joinChecked = this.$el.find('.join.everyone');
       this.$historyChecked = this.$el.find('.history.everyone');
-      console.log(this.$joinChecked.attr);
     },
     /**
      * Only set this.$el content
@@ -38,19 +36,20 @@ define([
       this.$el.removeClass('has-error').removeClass('has-success').val('');
     },
     valid: function (event) {
-      if (this.$input.val() == '') {
+      if (this.$input.val() === '') {
         this.$el.removeClass('has-error').removeClass('has-success');
         return;
       }
 
       var valid = this._valid();
-      if (!valid)
+      if (!valid) {
         this.$el.addClass('has-error').removeClass('has-success');
-      else
+      } else {
         this.$el.addClass('has-success').removeClass('has-error');
+      }
 
       // Enter in field handling
-      if (valid && event.type == 'keyup' && event.which == 13) {
+      if (valid && event.type === 'keyup' && event.which === 13) {
         this.submit();
       }
     },
@@ -64,8 +63,9 @@ define([
       }
     },
     submit: function () {
-      if (!this._valid())
+      if (!this._valid()) {
         return false;
+      }
 
       var name = '#' + this.$input.val();
       var uri = 'room/' + name.replace('#', '');
@@ -82,20 +82,17 @@ define([
 
       var that = this;
       client.roomCreate(name, opts, function (response) {
-        if (response.err == 'alreadyexists') {
-          app.trigger('alert', 'error', i18next.t('chat.alreadyexists', {name: name, uri: uri}));
+        if (response.err === 'alreadyexists') {
+          app.trigger('alert', 'error', $.t('chat.alreadyexists', {name: name, uri: uri}));
           that.reset();
           that.trigger('close');
           return;
         } else if (response.err) {
-          app.trigger('alert', 'error', i18next.t('global.unknownerror'));
-          that.reset();
-          that.trigger('close');
-          return;
+          return that.createError(response);
         }
 
         window.router.navigate(uri, {trigger: true});
-        app.trigger('alert', 'info', i18next.t('chat.successfullycreated', {name: name}));
+        app.trigger('alert', 'info', $.t('chat.successfullycreated', {name: name}));
         that.reset();
         that.trigger('close');
       });
@@ -117,6 +114,14 @@ define([
       if (type === 'radio' && name === 'history') {
         this.$historyChecked = $target;
       }
+    },
+
+    createError: function (dataErrors) {
+      var message = '';
+      _.each(dataErrors.err, function (error) {
+        message += $.t('form.errors.' + error) + '<br>';
+      });
+      this.$el.find('.errors').html(message).show();
     }
 
   });

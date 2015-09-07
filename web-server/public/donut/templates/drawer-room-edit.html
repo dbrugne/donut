@@ -5,6 +5,10 @@
 <div class="errors"></div>
 <form class="room-form" role="form">
     <div class="form-group">
+        <label><%= t('edit.options.join') %> :</label>&nbsp;<p class="opts_mode"> <%= room.join_mode %></p>
+        <label><%= t('edit.options.history') %> :</label>&nbsp;<p class="opts_mode"> <%= room.history_mode %></p>
+    </div>
+    <div class="form-group">
         <label for="roomDescription"><%= t('edit.description.label') %></label>
         <textarea name="description" class="form-control" id="roomDescription" placeholder="<%= t('edit.description.placeholder') %>" maxlength="200"><%= room.description %></textarea>
         <p class="help-block"><%= t('edit.description.help') %> <span class="counter"></span></p>
@@ -52,19 +56,19 @@
         <label><%= t('chat.create.info.join') %></label>
         <div class="radio">
             <label>
-                <input type="radio" class="savable join everyone" name="create:join" value="everyone" checked>
+                <input type="radio" class="savable join everyone" name="create:join" value="everyone" <% if (room.opts.join_mode === "everyone") { %> checked <% } %>>
                 <%= t('chat.create.options.everyone') %>
             </label>
         </div>
         <div class="radio">
             <label>
-                <input type="radio" class="savable join allowed" name="create:join" value="allowed" >
+                <input type="radio" class="savable join allowed" name="create:join" value="allowed" <% if (room.opts.join_mode === "allowed") { %> checked <% } %>>
                 <%= t('chat.create.options.join.allowed') %>
             </label>
         </div>
         <div class="radio">
             <label>
-                <input type="radio" class="savable join password" name="create:join" value="password" >
+                <input type="radio" class="savable join password" name="create:join" value="password" <% if (room.opts.join_mode === "password") { %> checked <% } %>>
                 <%= t('chat.create.options.join.password.radio') %>
             </label>
         </div>
@@ -77,19 +81,19 @@
         <label><%= t('chat.create.info.history') %></label>
         <div class="radio">
             <label>
-                <input type="radio" class="savable history everyone" name="create:history" value="everyone" checked>
+                <input type="radio" class="savable history everyone" name="create:history" value="everyone" <% if (room.opts.history_mode === "everyone") { %> checked <% } %>>
                 <%= t('chat.create.options.everyone') %>
             </label>
         </div>
         <div class="radio">
             <label>
-                <input type="radio" class="savable history joined" name="create:history" value="joined">
+                <input type="radio" class="savable history joined" name="create:history" value="joined" <% if (room.opts.history_mode === "joined") { %> checked <% } %>>
                 <%= t('chat.create.options.history.joined') %>(*)
             </label>
         </div>
         <div class="radio">
             <label>
-                <input type="radio" class="savable history none" name="create:history" value="none">
+                <input type="radio" class="savable history none" name="create:history" value="none" <% if (room.opts.histroy_mode === "none") { %> checked <% } %>>
                 <%= t('chat.create.options.history.none') %>
             </label>
         </div>
