@@ -568,25 +568,13 @@
     "deletemessage": "Le donut __name__ vient d'être supprimé",
     "users": {
       "link": "utilisateurs",
-      "owner": {
-        "label": "Créateur",
-        "help": "Le créateur du donut dispose de tous les droits d'édition et de modération"
-      },
-      "ops": {
-        "label": "Modérateurs",
-        "help": "Les modérateurs peuvent changer le sujet du donut, expulser ou bannir des utilisateurs et ajouter/retirer des modérateurs"
-      },
-      "bans": {
-        "label": "Bannis",
-        "help": "Les utilisateurs bannis ne peuvent plus rejoindre le donut"
-      },
-      "devoices": {
-        "label": "Muet",
-        "help": "les utilisateurs muets ne peuvent plus envoyer de message"
-      },
-      "users": {
-        "label": "Utilisateurs",
-        "help": "Les utilisateurs du donut peuvent simplement voir et poster des messages"
+      "search": "rechercher des utilisateurs dans cette room",
+      "type": {
+        "users": "Utilisateurs",
+        "op": "Modérateurs",
+        "allowed": "Personnes autorisé",
+        "ban": "Bannis",
+        "devoice": "Muets"
       }
     },
     "share": {

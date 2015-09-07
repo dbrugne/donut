@@ -7,12 +7,12 @@
     <span class="user-label"><%= t('chat.users.link') %></span>
 </div>
 <div class="search">
-    <input type="text" placeholder="search for username in this room">
+    <input type="text" placeholder="<%= t('chat.users.search') %>">
     <i class="icon icon-search"></i>
 </div>
 <select name="type" id="type-select">
-    <% _.each(type, function(t) { %>
-    <option value="<%= t %>"><%= t %></option>
+    <% _.each(type, function(type) { %>
+    <option value="<%= type %>"><%= t('chat.users.type.' + type) %></option>
     <% }); %>
 </select>
 <div class="table-users"></div>

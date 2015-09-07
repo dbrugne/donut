@@ -25,11 +25,12 @@ define([
 
     currentType: 'users',
 
-    types: ['Users', 'Op', 'Allowed', 'Ban', 'Devoice'],
+    types: ['users', 'op', 'allowed', 'ban', 'devoice'],
 
     events: {
       'change select': 'onChangeType',
       'click i.icon-search': 'onSearch',
+      'keyup input[type=text]': 'onSearchEnter',
       'click .pagination>li>a': 'onChangePage'
     },
 
@@ -41,10 +42,9 @@ define([
       var isAdmin = this.model.currentUserIsAdmin();
 
       if (this.model.get('join_mode') !== 'allowed' || (!isOwner && !isAdmin && !isOp)) {
-        this.types = _.without(this.types, 'Allowed');
-      }
-      if (!isOwner && !isAdmin && !isOp) {
-        this.types = _.without(this.types, 'Ban', 'Devoice');
+        this.types = _.without(this.types, 'allowed');
+      } if (!isOwner && !isAdmin && !isOp) {
+        this.types = _.without(this.types, 'ban', 'devoice');
       }
 
       this.$el.html(this.template({type: this.types}));
@@ -90,22 +90,18 @@ define([
     onChangeType: function (event) {
       this.page = 1;
       this.search.val('');
-      if (this.typeSelected.val() === 'Users') {
-        this.currentType = 'users';
-      } else if (this.typeSelected.val() === 'Op') {
-        this.currentType = 'op';
-      } else if (this.typeSelected.val() === 'Allowed') {
-        this.currentType = 'allowed';
-      } else if (this.typeSelected.val() === 'Ban') {
-        this.currentType = 'ban';
-      } else if (this.typeSelected.val() === 'Devoice') {
-        this.currentType = 'devoice';
-      }
+      this.currentType = this.typeSelected.val();
       this.render();
     },
     onSearch: function (event) {
       this.page = 1;
       this.render();
+    },
+    onSearchEnter: function (event) {
+      if (event.keyCode === 13) {
+        this.page = 1;
+        this.render();
+      }
     },
     onChangePage: function (event) {
       event.preventDefault();
