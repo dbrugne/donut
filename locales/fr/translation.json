@@ -570,6 +570,7 @@
       "link": "utilisateurs",
       "search": "rechercher des utilisateurs dans cette room",
       "type": {
+        "owner": "Créateur",
         "users": "Utilisateurs",
         "op": "Modérateurs",
         "allowed": "Personnes autorisé",

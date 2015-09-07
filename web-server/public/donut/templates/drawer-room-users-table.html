@@ -1,19 +1,21 @@
 <table class="table table-striped">
     <% _.each(users, function(u, index) { %>
     <tr>
-        <td><img src="<%= u.avatarUrl %>">@<%= u.username %></td>
+        <td class="username open-user-profile" data-user-id="<%= u.user_id %>"><img src="<%= u.avatarUrl %>">@<%= u.username %></td>
         <td style="border-left: solid 2px; border-right: solid 2px;width: 105px;">
             <% if(u.isOwner) { %>
-            <i class="icon icon-owner" style="color: #ffda3e;font-size: 19px"></i>
+            <i class="icon icon-owner" style="color: #ffda3e;font-size: 19px" title="<%= t('chat.users.type.owner') %>"></i>
             <% } if (u.isOp) { %>
-            <i class="icon icon-op" style="color: #4fedc0;font-size: 19px"></i>
+            <i class="icon icon-op" style="color: #4fedc0;font-size: 19px" title="<%= t('chat.users.type.op') %>"></i>
             <% } if(u.isBanned) { %>
-            <i class="icon icon-ban" style="font-size: 19px"></i>
+            <i class="icon icon-ban" style="font-size: 19px" title="<%= t('chat.users.type.ban') %>"></i>
             <% } if(u.isDevoiced) { %>
-            <i class="glyphicon glyphicon-volume-off" style="font-size: 19px"></i>
+            <i class="glyphicon glyphicon-volume-off" style="font-size: 19px" title="<%= t('chat.users.type.devoice') %>"></i>
             <% } %>
         </td>
-        <td style="width: 120px;text-align: right;"></td>
+        <td style="width: 120px;text-align: right;">
+
+        </td>
     </tr>
     <%}); %>
 </table>

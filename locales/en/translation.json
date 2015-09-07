@@ -534,6 +534,7 @@
       "link": "users",
       "search": "search for username in this room",
       "type": {
+        "owner": "Owner",
         "users": "Users",
         "op": "Moderators",
         "allowed": "Allowed",
