@@ -17,12 +17,12 @@ define([
 
     hasBeenFocused: false,
 
-    events: {
-    },
+    events: {},
 
     initialize: function (options) {
-      debug.start('discussion-' + ((this.model.get('name')) ? this.model.get('name') : this.model.get('username')));
-      var start = Date.now();
+      debug.start('discussion-' + ((this.model.get('name')) ?
+          this.model.get('name') :
+          this.model.get('username')));
 
       // Events
       this.listenTo(this.model, 'change:focused', this.updateFocus);
@@ -44,29 +44,38 @@ define([
 
       // Other subviews
       this._initialize(options);
-      debug.end('discussion-' + ((this.model.get('name')) ? this.model.get('name') : this.model.get('username')));
+      debug.end('discussion-' + ((this.model.get('name')) ?
+          this.model.get('name') :
+          this.model.get('username')));
     },
 
     // To override
-    _initialize: function (options) {},
+    _initialize: function (options) {
+    },
 
     // To override
-    _remove: function (model) {},
+    _remove: function (model) {
+    },
 
     // To override
-    _renderData: function () {},
+    _renderData: function () {
+    },
 
     // To override
-    _render: function () {},
+    _render: function () {
+    },
 
     // To override
-    _focus: function () {},
+    _focus: function () {
+    },
 
     // To override
-    _unfocus: function () {},
+    _unfocus: function () {
+    },
 
     // To override
-    _firstFocus: function () {},
+    _firstFocus: function () {
+    },
 
     render: function () {
       var html = this.template(this._renderData());
@@ -89,15 +98,16 @@ define([
         this.model.trigger('inputFocus');
 
         // need to load history?
-        if (!this.hasBeenFocused)
+        if (!this.hasBeenFocused) {
           this.firstFocus();
+        }
         this.hasBeenFocused = true;
 
-        if (this.eventsView.scrollWasOnBottom)
+        if (this.eventsView.scrollWasOnBottom) {
           this.eventsView.scrollDown(); // will trigger markVisibleAsViewed() implicitly
-        else
+        } else {
           this.eventsView.onScroll(); // trigger markVisibleAsViewed()
-
+        }
         this.eventsView.scrollWasOnBottom = false;
 
         this._focus();
@@ -110,7 +120,7 @@ define([
     },
 
     firstFocus: function () {
-      this.eventsView.requestHistory('bottom'); // @todo : on reconnect (only), remove all events in view before requesting history // seems to work like that, wait and see if bugs happen ...
+      this.eventsView.requestHistory('bottom'); // @todo : on reconnect (only), remove all events in view before requesting history seems to work like that, wait and see if bugs happen ...
       this.eventsView.scrollDown();
       this._firstFocus();
     },
