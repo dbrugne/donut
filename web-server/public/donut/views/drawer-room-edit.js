@@ -55,8 +55,8 @@ define([
       // options
       this.$joinChecked = this.$el.find('.join.' + room.opts.join_mode);
       this.$historyChecked = this.$el.find('.history.' + room.opts.history_mode);
-      room.join_mode = $.t('edit.options.mode.' + room.opts.join_mode);
-      room.history_mode = $.t('edit.options.mode.' + room.opts.history_mode);
+      room.join_mode = $.t('form.options.join.' + room.opts.join_mode);
+      room.history_mode = $.t('form.options.history.' + room.opts.history_mode);
 
       var currentAvatar = room.avatar;
 

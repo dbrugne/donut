@@ -39,11 +39,11 @@ define([
       this.render();
 
       this.eventsView = new EventsView({
-        el: this.$el.find('.events'),
+        el: this.$('.events'),
         model: this.model
       });
       this.inputView = new InputView({
-        el: this.$el.find('.input'),
+        el: this.$('.input'),
         model: this.model
       });
     },
@@ -67,7 +67,6 @@ define([
       this.$el.hide();
 
       // other
-      this.changeColor();
       this.onStatus();
 
       return this;
@@ -93,7 +92,7 @@ define([
         this.hasBeenFocused = true;
 
         // refocus an offline one after few times
-        this.$el.find('.ago span').momentify('fromnow');
+        this.$('.ago span').momentify('fromnow');
       } else {
         this.$el.hide();
       }
@@ -114,34 +113,34 @@ define([
     },
     onAvatar: function (model, value, options) {
       var url = common.cloudinarySize(value, 100);
-      this.$el.find('.header .avatar img').attr('src', url);
+      this.$('.header .avatar img').attr('src', url);
     },
     onPoster: function (model, url, options) {
-      this.$el.find('div.side').css('background-image', 'url(' + url + ')');
+      this.$('div.side').css('background-image', 'url(' + url + ')');
     },
     onLocation: function (model, value, options) {
-      this.$el.find('.header .location').html(value);
+      this.$('.header .location').html(value);
     },
     onWebsite: function (model, value, options) {
-      this.$el.find('.header .website').text(value);
+      this.$('.header .website').text(value);
     },
     onStatus: function () {
       if (this.model.get('status') === 'online') {
-        this.$el.find('.header .status-block em').text(i18next.t('global.online'));
-        this.$el.find('.header .status')
+        this.$('.header .status-block em').text(i18next.t('global.online'));
+        this.$('.header .status')
           .removeClass('offline online')
           .addClass('online');
-        this.$el.find('.ago').hide();
+        this.$('.ago').hide();
       } else {
-        this.$el.find('.header .status-block em').text(i18next.t('global.offline'));
-        this.$el.find('.header .status')
+        this.$('.header .status-block em').text(i18next.t('global.offline'));
+        this.$('.header .status')
           .removeClass('offline online')
           .addClass('offline');
 
-        var $ago = this.$el.find('.ago span');
+        var $ago = this.$('.ago span');
         $ago.attr('data-time', this.model.get('onlined'));
         $ago.momentify('fromnow');
-        this.$el.find('.ago').show();
+        this.$('.ago').show();
       }
     },
     onBannedChange: function (model, value, options) {

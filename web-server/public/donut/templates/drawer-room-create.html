@@ -3,7 +3,7 @@
     <span class="name"><%= t('chat.create.label') %></span>
 </div>
 <div class="room">
-    <p class="help-block"><%= t('chat.create.info.warning') %></p>
+    <p class="help-block"><%= t('chat.create.info') %></p>
 </div>
 <div class="form-group">
     <div class="field">
@@ -13,48 +13,48 @@
     <p class="help-block"><%= t('chat.create.help') %></p>
 </div>
 <div class="form-group">
-    <label><%= t('chat.create.info.join') %></label>
+    <label><%= t('form.join-mode-label') %></label>
     <div class="radio">
         <label>
             <input type="radio" class="savable join everyone" name="create:join" value="everyone" checked>
-            <%= t('chat.create.options.everyone') %>
+            <%= t('form.options.everyone-def') %>
         </label>
     </div>
     <div class="radio">
         <label>
             <input type="radio" class="savable join allowed" name="create:join" value="allowed" >
-            <%= t('chat.create.options.join.allowed') %>
+            <%= t('form.options.join.allowed') %>
         </label>
     </div>
     <div class="radio">
         <label>
             <input type="radio" class="savable join password" name="create:join" value="password" >
-            <%= t('chat.create.options.join.password.radio') %>
+            <%= t('form.options.join.password.radio') %>
         </label>
     </div>
     <div class="field-password">
-        <label><%= t('chat.create.options.join.password.field') %> : </label>
-        <input type="text" class="input-password" placeholder="<%= t('chat.create.options.join.password.field') %>" maxlength="24" value="<%= name %>" />
+        <label><%= t('form.options.join.password.field') %> : </label>
+        <input type="text" class="input-password" placeholder="<%= t('form.options.join.password.field') %>" maxlength="24" value="<%= name %>" />
     </div>
 </div>
 <div class="form-group">
-    <label><%= t('chat.create.info.history') %></label>
+    <label><%= t('form.history-mode-label') %></label>
     <div class="radio">
         <label>
             <input type="radio" class="savable history everyone" name="create:history" value="everyone" checked>
-            <%= t('chat.create.options.everyone') %>
+            <%= t('form.options.everyone-def') %>
         </label>
     </div>
     <div class="radio">
         <label>
             <input type="radio" class="savable history joined" name="create:history" value="joined">
-            <%= t('chat.create.options.history.joined') %>*
+            <%= t('form.options.history.joined') %>*
         </label>
     </div>
     <div class="radio">
         <label>
             <input type="radio" class="savable history none" name="create:history" value="none">
-            <%= t('chat.create.options.history.none') %>
+            <%= t('form.options.history.none') %>
         </label>
     </div>
 </div>
@@ -62,5 +62,5 @@
     <button class="submit dc-back dc-text-contrast" type="button"><%= t('chat.create.submit') %></button>
 </div>
 <div class="form-group">
-    <p class="help-block">(*) <%= t('chat.create.options.history.help') %></p>
+    <p class="help-block">(*) <%= t('form.options.history.help') %></p>
 </div>
