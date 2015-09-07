@@ -147,26 +147,16 @@ roomSchema.methods.isDevoice = function (userId) {
 };
 
 roomSchema.methods.isAllowed = function (userId) {
-  if (this.owner.id === userId) {
-    return true;
-  }
-
   var subDocument = _.find(this.join_mode_allowed, function (allowed) {
     return (allowed.toString() === userId);
   });
-
   return (typeof subDocument !== 'undefined');
 };
 
 roomSchema.methods.isIn = function (userId) {
-  if (this.owner.id === userId) {
-    return true;
-  }
-
   var subDocument = _.find(this.users, function (users) {
     return (users.toString() === userId);
   });
-
   return (typeof subDocument !== 'undefined');
 };
 
