@@ -29,16 +29,10 @@ var common = require('@dbrugne/donut-common');
  */
 module.exports = function (search, searchInUsers, searchInRooms, limit, lightSearch, callback) {
 
-  if (!search) {
-    return callback(null, {});
-  }
-
   // remove diacritic, @ and #
   search = search.replace(/([@#])/g, '');
   search = diacritic2ascii(search);
-  if (!search || search === '') {
-    return callback(null, {});
-  }
+
   var _regexp = common.regExpBuildContains(search);
 
   async.parallel([

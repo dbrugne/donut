@@ -5,20 +5,20 @@
         </div>
     <% } %>
     <% if (rooms.length < 1) { %>
-        <div class="nothing mt20 mb20"><%= t('chat.search.noroom') %></div>
+        <div class="nothing"><%= t('chat.search.noroom') %></div>
     <% } %>
 
     <% _.each(rooms, function(room) { %>
         <div class="room dc-i-<%= room.color.replace('#', '').toLowerCase() %>">
             <div class="cover">
                 <div class="avatar" style="background-image:url(<%= room.avatar %>)"></div>
-                <p class="name"><%= room.name %></p>
+                <a href="<% if (!user) { %><%= room.join %><% } else { %><%= room.chat %><% } %>" class="name" style="display:block"><%= room.name %></a>
                 <% if (room.owner && room.owner.username) { %>
-                <p class="owner"><%= t('global.by') %> <a class="dc-text">@<%= room.owner.username %></a></p>
+                <p class="owner"><%= t('global.by') %> <a href="<% if (!user) { %><%= room.owner.discuss %><% } else { %><%= room.owner.chat %><% } %>" class="dc-text">@<%= room.owner.username %></a></p>
                 <% } %>
                 <!-- p class="topic"><%= room.topic %></p -->
                 <p class="join">
-                    <a class="dc-back dc-text-contrast" href="#room/<%= room.name.replace('#', '') %>">
+                    <a class="dc-back dc-text-contrast" href="<% if (!user) { %><%= room.join %><% } else { %><%= room.chat %><% } %>">
                         <%= t('actions.join') %>
                         <% if (room.users > 0) { %><%= room.users %><% } %>
                         <i class="icon icon-user-custom"></i>
@@ -34,7 +34,7 @@
                     <p class="description"><%= room.description %></p>
                 </div>
                 <p class="join">
-                    <a class="dc-back dc-back-hover dc-text-contrast" href="#room/<%= room.name.replace('#', '') %>">
+                    <a class="dc-back dc-back-hover dc-text-contrast" href="<% if (!user) { %><%= room.join %><% } else { %><%= room.chat %><% } %>">
                         <%= t('actions.join') %>
                         <% if (room.users > 0) { %><%= room.users %><% } %>
                         <i class="icon icon-user-custom"></i>
