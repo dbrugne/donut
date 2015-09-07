@@ -3,6 +3,7 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'i18next',
   'common',
   'libs/donut-debug',
   'libs/keyboard',
@@ -13,7 +14,7 @@ define([
   'views/input-images',
   'views/input-smileys',
   '_templates'
-], function ($, _, Backbone, common, donutDebug, keyboard, currentUser, RollupView, CommandsView, TypingView, ImagesView, SmileysView, templates) {
+], function ($, _, Backbone, i18next, common, donutDebug, keyboard, currentUser, RollupView, CommandsView, TypingView, ImagesView, SmileysView, templates) {
   var debug = donutDebug('donut:input');
 
   var DiscussionInputView = Backbone.View.extend({
@@ -67,7 +68,7 @@ define([
     render: function () {
       this.$el.html(this.template({
         avatar: common.cloudinarySize(currentUser.get('avatar'), 80),
-        bannedMessage: $.t('chat.actions.bannedMessage.__type__'.replace('__type__', this.model.get('type')))
+        bannedMessage: i18next.t('chat.actions.bannedMessage.__type__'.replace('__type__', this.model.get('type')))
       }));
 
       this.$editable = this.$('.editable');
@@ -88,8 +89,9 @@ define([
     },
 
     onFocus: function () {
-      if (this.$editable)
+      if (this.$editable && this.model.isInputActive()) {
         this.$editable.focus();
+      }
     },
 
     onAvatar: function (model, value, options) {
@@ -121,7 +123,7 @@ define([
       if (event.type != 'keydown')
         return;
 
-      var data = keyboard._getLastKeyCode();
+      var data = keyboard._getLastKeyCode(event);
       var message = this.$editable.val();
 
       // Avoid loosing focus when tab is pushed
@@ -143,7 +145,7 @@ define([
       if (event.type != 'keyup')
         return;
 
-      var data = keyboard._getLastKeyCode();
+      var data = keyboard._getLastKeyCode(event);
       var message = this.$editable.val();
       var images = this.imagesView.list();
 

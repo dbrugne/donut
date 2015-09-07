@@ -3,11 +3,12 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'i18next',
   'common',
   'client',
   'models/current-user',
   '_templates'
-], function ($, _, Backbone, common, client, currentUser, templates) {
+], function ($, _, Backbone, i18next, common, client, currentUser, templates) {
   var RoomTopicView = Backbone.View.extend({
     template: templates['room-topic.html'],
 
@@ -39,8 +40,8 @@ define([
       if (!currentTopic || currentTopic === '') {
         if (this.model.currentUserIsOp() || this.model.currentUserIsOwner() || this.model.currentUserIsAdmin()) {
           this.$el.find('.txt')
-            .html($.t('chat.topic.default'))
-            .attr('title', $.t('chat.topic.default'));
+            .html(i18next.t('chat.topic.default'))
+            .attr('title', i18next.t('chat.topic.default'));
           this.$el.find('.topic-current').css('display', 'inline-block');
         } else {
           this.$el.find('.txt')

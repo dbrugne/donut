@@ -2,6 +2,7 @@
   "globals": {
     "describe": true,
     "it": true,
-    "PROCESS.env.PORT": true
+    "PROCESS.env.PORT": true,
+    "define": true
   }
 }

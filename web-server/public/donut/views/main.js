@@ -1,7 +1,9 @@
+'use strict';
 define([
   'jquery',
   'underscore',
   'backbone',
+  'i18next',
   'libs/donut-debug',
   'models/app',
   'client',
@@ -34,7 +36,7 @@ define([
   'views/modal-confirmation',
   'views/modal-room-users',
   'views/mute'
-], function ($, _, Backbone, donutDebug, app, client, currentUser, EventModel, rooms, onetoones, templates, windowView,
+], function ($, _, Backbone, i18next, donutDebug, app, client, currentUser, EventModel, rooms, onetoones, templates, windowView,
   ConnectionModalView, WelcomeModalView,
   CurrentUserView, AlertView, HomeView,
   DrawerView,
@@ -290,9 +292,9 @@ define([
       var what = event.what;
       var data = event.data;
       this.focus();
-      var message = (what == 'kick') ? $.t('chat.kickmessage', {name: data.name}) : $.t('chat.banmessage', {name: data.name});
+      var message = (what === 'kick') ? i18next.t('chat.kickmessage', {name: data.name}) : i18next.t('chat.banmessage', {name: data.name});
       if (data.reason)
-        message += ' ' + $.t('chat.reason', {reason: _.escape(data.reason)});
+        message += ' ' + i18next.t('chat.reason', {reason: _.escape(data.reason)});
       app.trigger('alert', 'warning', message);
     },
     roomRoomDeleted: function (data) {
@@ -555,20 +557,20 @@ define([
         this.thisDiscussionShouldBeFocusedOnSuccess = name;
         var that = this;
         client.roomJoin(null, name, function (response) {
-          if (response.err === 'banned') {
-            app.trigger('alert', 'error', $.t('chat.bannedfromroom', {name: name}));
+          if (response.err == 'banned') {
+            app.trigger('alert', 'error', i18next.t('chat.bannedfromroom', {name: name}));
             that.focus();
-          } else if (response.err === 'notexists') {
-            app.trigger('alert', 'error', $.t('chat.roomnotexists', {name: name}));
+          } else if (response.err == 'notexists') {
+            app.trigger('alert', 'error', i18next.t('chat.roomnotexists', {name: name}));
             that.focus();
           } else if (response.err === 'notallowed') {
-            app.trigger('alert', 'error', $.t('chat.notallowedinroom', {name: name}));
+            app.trigger('alert', 'error', i18next.t('chat.notallowedinroom', {name: name}));
             that.focus();
           } else if (response.err === 'wrong-password') {
-            app.trigger('alert', 'error', $.t('chat.wrong-password', {name: name}));
+            app.trigger('alert', 'error', i18next.t('chat.wrong-password', {name: name}));
             that.focus();
           } else if (response.err) {
-            app.trigger('alert', 'error', $.t('global.unknownerror'));
+            app.trigger('alert', 'error', i18next.t('global.unknownerror'));
             that.focus();
           }
         });
