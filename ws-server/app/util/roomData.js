@@ -1,25 +1,24 @@
-var logger = require('../../pomelo-logger').getLogger('donut', __filename);
 var async = require('async');
 var _ = require('underscore');
-var Room = require('../../../shared/models/room');
-var User = require('../../../shared/models/user');
-var HistoryRoom = require('../../../shared/models/historyroom');
 
 /**
- * Helper to retrieve/prepare all the room data needed for 'welcome' and 'room:welcome' events:
+ * Helper to retrieve/prepare all the room data needed for 'welcome' and
+ * 'room:welcome' events:
  *   - room entity
  *   - owner
  *   - ops
  */
 module.exports = function (app, user, room, fn) {
-  if (!room)
+  if (!room) {
     return fn('Need to received a valid Room model as parameter');
+  }
 
   async.waterfall([
 
     function prepare (callback) {
-      if (room === null)
+      if (room === null) {
         return callback(null, null);
+      }
 
       var devoices = _.map(room.devoices, function (element) {
         return element.user.toString();
@@ -52,8 +51,9 @@ module.exports = function (app, user, room, fn) {
     }
 
   ], function (err, roomData) {
-    if (err)
+    if (err) {
       return fn(err);
+    }
 
     return fn(null, roomData);
   });
