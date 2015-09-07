@@ -424,7 +424,9 @@ define([
     // ======================================================================
 
     addView: function (model, collection) {
-      var constructor = (model.get('type') === 'room') ? RoomView : OneToOneView;
+      var constructor = (model.get('type') === 'room') ?
+        RoomView :
+        OneToOneView;
 
       // create view
       var view = new constructor({
