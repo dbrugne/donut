@@ -25,35 +25,31 @@ handler.call = function (data, session, next) {
   async.waterfall([
 
     function check (callback) {
-      if (!data.room_id && !data.name)
+      if (!data.room_id && !data.name) {
         return callback('room_id or name is mandatory');
-
-      if (!room)
+      }
+      if (!room) {
         return callback('notexists');
-
-      if (room.isBanned(user.id))
+      }
+      if (room.isBanned(user.id)) {
         return callback('banned');
+      }
+      if (room.join_mode === 'allowed' && !room.isAllowed(user.id)) {
+        return callback('notallowed');
+      }
+      if (room.join_mode === 'password' && !data.join_mode_password) {
+        return callback('join_mode_password is mandatory for the password rooms');
+      }
+      if (room.join_mode === 'password' && !room.validPassword(data.join_mode_password)) {
+        return callback('wrong-password');
+      }
 
-			if (room.join_mode === 'allowed' && !room.isAllowed(user.id)) {
-				return callback('notallowed');
-			}
+      return callback(null);
+    },
 
-			if (room.join_mode === 'password' && !data.join_mode_password) {
-				return callback('join_mode_password is mandatory for the password rooms');
-			}
-
-			if (room.join_mode === 'password' && !room.validPassword(data.join_mode_password)) {
-				return callback('wrong-password');
-			}
-
-			return callback(null);
-		},
-
-    /**
-     * This step happen BEFORE user/room persistence and room subscription
-     * to avoid noisy notifications
-     */
     function broadcast (callback) {
+      // this step happen BEFORE user/room persistence and room subscription
+      // to avoid noisy notifications
       var event = {
         user_id: user.id,
         username: user.username,
@@ -74,19 +70,19 @@ handler.call = function (data, session, next) {
     function joinClients (eventData, callback) {
       // search for all the user sessions (any frontends)
       that.app.statusService.getSidsByUid(user.id, function (err, sids) {
-        if (err)
+        if (err) {
           return callback(err);
-
-        if (!sids || sids.length < 1)
+        }
+        if (!sids || sids.length < 1) {
           return callback('no connector sessions for current user (probably a problem somewhere)');
-
+        }
         var parallels = [];
         _.each(sids, function (sid) {
           parallels.push(function (fn) {
             that.app.globalChannelService.add(room.name, user.id, sid, function (err) {
-              if (err)
+              if (err) {
                 return fn(sid + ': ' + err);
-
+              }
               return fn(null);
             });
           });
@@ -99,21 +95,21 @@ handler.call = function (data, session, next) {
 
     function roomData (eventData, callback) {
       roomDataHelper(that.app, user, room, function (err, roomData) {
-        if (err)
+        if (err) {
           return callback(err);
-
-        if (roomData == null)
+        }
+        if (roomData == null) {
           return callback('roomDataHelper was unable to return excepted data for ' + room.name);
-
+        }
         return callback(null, eventData, roomData);
       });
     },
 
     function sendToUserClients (eventData, roomData, callback) {
       that.app.globalChannelService.pushMessage('connector', 'room:join', roomData, 'user:' + user.id, {}, function (err) {
-        if (err)
-          return callback('Error while sending room:join message to user clients: ' + err);
-
+        if (err) {
+          return callback(err);
+        }
         return callback(null, eventData);
       });
     },
@@ -122,12 +118,14 @@ handler.call = function (data, session, next) {
       Notifications(that.app).getType('roomjoin').create(room, eventData.id, callback);
     }
 
-	], function(err) {
-		if (err === 'notexists')
-			return next(null, {code: 404, err: err});
-		if (err === 'banned' || err === 'notallowed' || err === 'wrong-password')
-			return next(null, {code: 403, err: err});
-		if (err) {
+  ], function (err) {
+    if (err === 'notexists') {
+      return next(null, {code: 404, err: err});
+    }
+    if (err === 'banned' || err === 'notallowed' || err === 'wrong-password') {
+      return next(null, {code: 403, err: err});
+    }
+    if (err) {
       logger.error('[room:join] ' + err);
       return next(null, {code: 500, err: err});
     }

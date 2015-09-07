@@ -16,7 +16,8 @@ define([
     id: 'room-edit',
 
     events: {
-      'submit form.room-form': 'onSubmit'
+      'submit form.room-form': 'onSubmit',
+      'change .savable': 'onChangeValue'
     },
 
     initialize: function (options) {
@@ -28,8 +29,9 @@ define([
       // ask for data
       var that = this;
       client.roomRead(this.roomId, null, function (err, data) {
-        if (!err)
+        if (!err) {
           that.onResponse(data);
+        }
       });
     },
     render: function () {
@@ -38,18 +40,23 @@ define([
       return this;
     },
     onResponse: function (room) {
-      if (room.color)
+      if (room.color) {
         this.trigger('color', room.color);
+      }
 
       room.isOwner = (room.owner)
-        ? (room.owner.user_id == currentUser.get('user_id'))
+        ? (room.owner.user_id === currentUser.get('user_id'))
           ? true
           : false
         : false;
 
-      room.isAdmin = (currentUser.get('admin') === true)
-        ? true
-        : false;
+      room.isAdmin = (currentUser.get('admin') === true);
+
+      // options
+      this.$joinChecked = this.$el.find('.join.' + room.opts.join_mode);
+      this.$historyChecked = this.$el.find('.history.' + room.opts.history_mode);
+      room.join_mode = $.t('edit.options.mode.' + room.opts.join_mode);
+      room.history_mode = $.t('edit.options.mode.' + room.opts.history_mode);
 
       var currentAvatar = room.avatar;
 
@@ -99,8 +106,9 @@ define([
     onSubmit: function (event) {
       event.preventDefault();
 
-      if (this.checkWebsite() !== true)
+      if (this.checkWebsite() !== true) {
         return;
+      }
 
       var updateData = {
         description: this.$el.find('textarea[name=description]').val(),
@@ -109,23 +117,34 @@ define([
       };
 
       if (currentUser.get('admin') === true) {
-        updateData.visibility = (this.$el.find('input[name=visibility]:checked').val() == 'true')
-          ? true
-          : false;
+        updateData.visibility = (this.$el.find('input[name=visibility]:checked').val() === 'true');
         updateData.priority = this.$el.find('input[name=priority]').val();
+
+        if (this.$joinChecked.attr('value') === 'everyone') {
+          var join_password = this.$el.find('.input-password').val();
+        }
+        var opts = {
+          join_mode: this.$joinChecked.attr('value'),
+          join_mode_password: join_password,
+          history_mode: this.$historyChecked.attr('value')
+        };
+        updateData.opts = opts;
       }
 
-      if (this.avatarUploader.data)
+      if (this.avatarUploader.data) {
         updateData.avatar = this.avatarUploader.data;
+      }
 
-      if (this.posterUploader.data)
+      if (this.posterUploader.data) {
         updateData.poster = this.posterUploader.data;
+      }
 
       var that = this;
       client.roomUpdate(this.roomId, updateData, function (data) {
         that.$el.find('.errors').hide();
-        if (data.err)
+        if (data.err) {
           return that.editError(data);
+        }
         that.trigger('close');
       });
     },
@@ -137,8 +156,9 @@ define([
       var that = this;
       client.roomUpdate(this.roomId, updateData, function (d) {
         that.$el.find('.errors').hide();
-        if (d.err)
+        if (d.err) {
           that.editError(d);
+        }
       });
     },
 
@@ -149,19 +169,41 @@ define([
       var that = this;
       client.roomUpdate(this.roomId, updateData, function (d) {
         that.$el.find('.errors').hide();
-        if (d.err)
+        if (d.err) {
           that.editError(d);
+        }
       });
+    },
+
+    onChangeValue: function (event) {
+      var $target = $(event.currentTarget);
+      var type = $target.attr('type');
+      var name = $target.attr('name').substr($target.attr('name').lastIndexOf(':') + 1);
+
+      if (type === 'radio' && name === 'join') {
+        this.$joinChecked = $target;
+        if (this.$joinChecked.attr('value') === 'password') {
+          this.$el.find('.field-password').css('display', 'block');
+          this.$el.find('.input-password').focus();
+        } else {
+          this.$el.find('.field-password').css('display', 'none');
+        }
+      }
+      if (type === 'radio' && name === 'history') {
+        this.$historyChecked = $target;
+      }
     },
 
     checkWebsite: function () {
       var website = this.$website.val();
 
-      if (website && (website.length < 5 || website.length > 255))
-        return this.$el.find('.errors').html(t('edit.errors.website-size')).show();
+      if (website && (website.length < 5 || website.length > 255)) {
+        return this.$el.find('.errors').html($.t('form.errors.website-size')).show();
+      }
 
-      if (website && !/^[^\s]+\.[^\s]+$/.test(website))
-        return this.$el.find('.errors').html(t('edit.errors.website-url')).show();
+      if (website && !/^[^\s]+\.[^\s]+$/.test(website)) {
+        return this.$el.find('.errors').html($.t('form.errors.website-url')).show();
+      }
 
       return true;
     },
@@ -169,7 +211,7 @@ define([
     editError: function (dataErrors) {
       var message = '';
       _.each(dataErrors.err, function (error) {
-        message += t('edit.errors.' + error) + '<br>';
+        message += $.t('form.errors.' + error) + '<br>';
       });
       this.$el.find('.errors').html(message).show();
     }

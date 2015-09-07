@@ -1,9 +1,9 @@
 'use strict';
 var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
 var async = require('async');
-var _ = require('underscore');
 var Room = require('../../../../../shared/models/room');
 var conf = require('../../../../../config/index');
+var _ = require('underscore');
 var keenio = require('../../../../../shared/io/keenio');
 var common = require('@dbrugne/donut-common');
 
@@ -20,8 +20,6 @@ var handler = Handler.prototype;
 handler.call = function (data, session, next) {
   var user = session.__currentUser__;
 
-  var that = this;
-
   async.waterfall([
 
     function check (callback) {
@@ -37,14 +35,27 @@ handler.call = function (data, session, next) {
         return callback('history_mode not valid' + data.history_mode);
       }
 
-      if (data.join_mode === 'password' && !data.join_mode_password) {
-        return callback('join_mode_password is mandatory for password mode room');
-      }
+      return callback(null);
+    },
 
+    function validate (callback) {
+      var errors = {};
+
+      // name
       if (!common.validateName(data.name)) {
-        return callback('invalid-name');
+        errors.name = 'invalid-name';
       }
 
+      // join_mode_password
+      if (_.has(data, 'join_mode') && _.has(data, 'join_mode_password')) {
+        if (data.join_mode_password.length < 4 || data.join_mode_password.length > 255) {
+          errors.join_mode_password = 'join-mode-password';
+        }
+      }
+
+      if (Object.keys(errors).length > 0) {
+        return callback(errors); // object
+      }
       return callback(null);
     },
 
@@ -110,14 +121,15 @@ handler.call = function (data, session, next) {
     }
 
   ], function (err) {
-    if ([
-        'mandatory',
-        'invalid-name',
-        'alreadyexists'
-      ].indexOf(err) !== -1)
-      return next(null, { code: 403, err: err });
-    if (err)
-      return next(null, { code: 500, err: err });
+    if (['mandatory', 'invalid-name', 'alreadyexists'].indexOf(err) !== -1) {
+      return next(null, {code: 403, err: err});
+    }
+    if (err) {
+      _.each(err, function (error) {
+        logger.error('[room:create] ' + error);
+      });
+      return next(null, {code: 500, err: err});
+    }
 
     return next(null, { success: true });
   });

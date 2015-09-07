@@ -2,7 +2,6 @@
 var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
 var async = require('async');
 var _ = require('underscore');
-var Room = require('../../../../../shared/models/room');
 var validator = require('validator');
 var cloudinary = require('../../../../../shared/util/cloudinary').cloudinary;
 var common = require('@dbrugne/donut-common');
@@ -26,14 +25,17 @@ handler.call = function (data, session, next) {
   async.waterfall([
 
     function check (callback) {
-      if (!data.room_id)
+      if (!data.room_id) {
         return callback('room_id is mandatory');
+      }
 
-      if (!room)
+      if (!room) {
         return callback('unable to retrieve room: ' + data.room_id);
+      }
 
-      if (!room.isOwner(user.id) && session.settings.admin !== true)
+      if (!room.isOwner(user.id) && session.settings.admin !== true) {
         return callback('this user ' + user.id + " isn't able to update data of " + data.room_id);
+      }
 
       return callback(null);
     },
@@ -41,8 +43,9 @@ handler.call = function (data, session, next) {
     function validate (callback) {
       // @doc: https://www.npmjs.org/package/validator
 
-      if (!data.data || data.data.length < 1)
+      if (!data.data || data.data.length < 1) {
         return callback('no data to update');
+      }
 
       var errors = {};
       var sanitized = {};
@@ -55,8 +58,9 @@ handler.call = function (data, session, next) {
           var description = data.data.description;
           description = validator.stripLow(description, true);
           description = validator.escape(description);
-          if (description != room.description)
+          if (description !== room.description) {
             sanitized.description = description;
+          }
         }
       }
 
@@ -66,9 +70,9 @@ handler.call = function (data, session, next) {
           errors.website = 'website-size'; // website should be 5 characters min and 255 characters max.;
         } else {
           var link = common.getLinkify().find(data.data.website);
-          if (!link || !link[0] || !link[0].type || !link[0].value || !link[0].href || link[0].type !== 'url')
+          if (!link || !link[0] || !link[0].type || !link[0].value || !link[0].href || link[0].type !== 'url') {
             errors.website = 'website-url'; // website should be a valid site URL
-          else {
+          } else {
             var website = {
               href: link[0].href,
               title: link[0].value
@@ -80,12 +84,13 @@ handler.call = function (data, session, next) {
 
       // color
       if (_.has(data.data, 'color')) {
-        if (data.data.color != '' && !validator.isHexColor(data.data.color)) {
+        if (data.data.color !== '' && !validator.isHexColor(data.data.color)) {
           errors.color = 'color-hexadecimal'; // Color should be explained has hexadecimal (e.g.: #FF00AA).
         } else {
           var color = data.data.color.toLocaleUpperCase();
-          if (color != room.color)
+          if (color !== room.color) {
             sanitized.color = color;
+          }
         }
       }
 
@@ -93,24 +98,45 @@ handler.call = function (data, session, next) {
         // visibility
         if (_.has(data.data, 'visibility')) {
           var visibility = !!data.data.visibility;
-          if (room.visibility != visibility)
+          if (room.visibility !== visibility) {
             sanitized.visibility = !!data.data.visibility;
+          }
         }
 
         // priority
         if (_.has(data.data, 'priority')) {
-          if (data.data.priority != '' && !validator.isNumeric(data.data.priority)) {
+          if (data.data.priority !== '' && !validator.isNumeric(data.data.priority)) {
             errors.color = 'color-integer'; // Priority should be explained has number (integer).
           } else {
             var priority = data.data.priority;
-            if (priority != room.priority)
+            if (priority !== room.priority) {
               sanitized.priority = priority;
+            }
           }
+        }
+
+        // options (join_mode)
+        if (_.has(data.data.opts, 'join_mode')) {
+          var join_mode = data.data.opts.join_mode;
+          if (join_mode === 'password' && !data.data.opts.join_mode_password) {
+            errors.join_password = 'join-mode-password';
+          } else if (data.join_mode_password.length < 4 || data.join_mode_password.length > 255) {
+            errors.join_password = 'join-mode-password';
+          } else {
+            sanitized.join_mode_password = data.data.opts.join_mode_password;
+          }
+          sanitized.join_mode = join_mode;
+        }
+
+        // options (history_mode)
+        if (_.has(data.data.opts, 'history_mode')) {
+          sanitized.history_mode = data.data.opts.history_mode;
         }
       }
 
-      if (Object.keys(errors).length > 0)
+      if (Object.keys(errors).length > 0) {
         return callback(errors); // object
+      }
 
       return callback(null, sanitized);
     },
@@ -129,11 +155,12 @@ handler.call = function (data, session, next) {
         var avatar = data.data.avatar;
 
         // new image
-        if (avatar.path)
+        if (avatar.path) {
           sanitized.avatar = avatar.path;
+        }
 
         // remove actual image
-        if (avatar.remove && avatar.remove == true && room.avatar) {
+        if (avatar.remove && avatar.remove === true && room.avatar) {
           sanitized.avatar = '';
 
           // remove previous picture
@@ -147,11 +174,12 @@ handler.call = function (data, session, next) {
         var poster = data.data.poster;
 
         // new image
-        if (poster.path)
+        if (poster.path) {
           sanitized.poster = poster.path;
+        }
 
         // remove actual image
-        if (poster.remove && poster.remove == true && room.poster) {
+        if (poster.remove && poster.remove === true && room.poster) {
           sanitized.poster = '';
 
           // remove previous picture
@@ -178,13 +206,13 @@ handler.call = function (data, session, next) {
       var sanitizedToNotify = {};
       var fieldToNotify = ['avatar', 'poster', 'color'];
       _.each(Object.keys(sanitized), function (key) {
-        if (fieldToNotify.indexOf(key) != -1) {
-          if (key == 'avatar')
+        if (fieldToNotify.indexOf(key) !== -1) {
+          if (key === 'avatar') {
             sanitizedToNotify['avatar'] = room._avatar();
-          else if (key == 'poster') {
+          } else if (key === 'poster') {
             sanitizedToNotify['poster'] = room._poster();
             sanitizedToNotify['posterblured'] = room._poster(true);
-          } else if (key == 'color') {
+          } else if (key === 'color') {
             sanitizedToNotify['color'] = sanitized[key];
             sanitizedToNotify['avatar'] = room._avatar();
             sanitizedToNotify['poster'] = room._poster();
@@ -192,8 +220,9 @@ handler.call = function (data, session, next) {
         }
       });
 
-      if (Object.keys(sanitizedToNotify).length < 1)
+      if (Object.keys(sanitizedToNotify).length < 1) {
         return callback(null);
+      }
 
       var event = {
         name: room.name,
@@ -205,7 +234,9 @@ handler.call = function (data, session, next) {
 
   ], function (err) {
     if (err) {
-      logger.error('[room:update] ' + err);
+      _.each(err, function (error) {
+        logger.error('[room:update] ' + error);
+      });
       return next(null, {code: 500, err: err});
     }
 
