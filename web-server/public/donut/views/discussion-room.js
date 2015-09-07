@@ -5,16 +5,25 @@ define([
   'backbone',
   'i18next',
   'common',
+  'models/app',
   'client',
+  'views/events',
+  'views/input',
   'models/current-user',
   'views/modal-confirmation',
-  'views/discussion',
   'views/room-topic',
   'views/room-users',
   '_templates'
-], function ($, _, Backbone, i18next, common, client, currentUser, confirmationView, DiscussionView, TopicView, UsersView, templates) {
-  var RoomView = DiscussionView.extend({
+], function ($, _, Backbone, i18next, common, app, client, EventsView, InputView, currentUser, confirmationView, TopicView, UsersView, templates) {
+  var RoomView = Backbone.View.extend({
+    tagName: 'div',
+
+    className: 'discussion',
+
+    hasBeenFocused: false,
+
     template: templates['discussion-room.html'],
+
     templateDropdown: templates['dropdown-room-actions.html'],
 
     events: {
@@ -29,12 +38,23 @@ define([
       'click .share .googleplus': 'shareGoogle'
     },
 
-    _initialize: function () {
+    initialize: function () {
+      this.listenTo(this.model, 'change:focused', this.onFocusChange);
       this.listenTo(this.model, 'change:avatar', this.onAvatar);
       this.listenTo(this.model, 'change:poster', this.onPoster);
       this.listenTo(this.model, 'change:posterblured', this.onPosterBlured);
       this.listenTo(this.model, 'change:color', this.onColor);
 
+      this.render();
+
+      this.eventsView = new EventsView({
+        el: this.$el.find('.events'),
+        model: this.model
+      });
+      this.inputView = new InputView({
+        el: this.$el.find('.input'),
+        model: this.model
+      });
       this.topicView = new TopicView({
         el: this.$el.find('.topic'),
         model: this.model
@@ -44,16 +64,8 @@ define([
         model: this.model,
         collection: this.model.users
       });
-
-      // color
-      this.colorify();
     },
-    _remove: function () {
-      this.stopListening();
-      this.topicView._remove();
-      this.usersView._remove();
-    },
-    _renderData: function () {
+    render: function () {
       var data = this.model.toJSON();
 
       // owner
@@ -82,19 +94,54 @@ define([
         selector: '.' + share
       };
       data.share = this.share.class;
+
+      // dropdown
       data.dropdown = this.templateDropdown({
         data: data
       });
 
-      return data;
+      // render
+      var html = this.template(data);
+      this.$el.html(html);
+      this.$el.hide();
+
+      // other
+      this.changeColor();
+
+      return this;
     },
-    _render: function () {
+    removeView: function () {
+      this.eventsView._remove();
+      this.inputView._remove();
+      this.topicView._remove();
+      this.usersView._remove();
+      this.remove();
     },
-    _focus: function () {
+    changeColor: function () {
+      if (this.model.get('focused')) {
+        app.trigger('changeColor', this.model.get('color'));
+      }
     },
-    _unfocus: function () {
+    onFocusChange: function () {
+      if (this.model.get('focused')) {
+        this.$el.show();
+
+        // need to load history?
+        if (!this.hasBeenFocused) {
+          this.onFirstFocus();
+        }
+        this.hasBeenFocused = true;
+
+        // refocus an offline one after few times
+        this.$el.find('.ago span').momentify('fromnow');
+      } else {
+        this.$el.hide();
+      }
     },
-    _firstFocus: function () {
+    onFirstFocus: function () {
+      // @todo : on reconnect (only), remove all events in view before requesting history
+      this.eventsView.requestHistory('bottom');
+      this.eventsView.scrollDown();
       this.model.fetchUsers();
     },
 
@@ -200,7 +247,7 @@ define([
       this.onAvatar(model, model.get('avatar'), options);
       this.onPoster(model, model.get('poster'), options);
       this.onPosterBlured(model, model.get('posterblured'), options);
-      this.colorify();
+      this.changeColor();
     },
     onAvatar: function (model, value) {
       var url = common.cloudinarySize(value, 100);

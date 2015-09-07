@@ -5,21 +5,29 @@ define([
   'backbone',
   'i18next',
   'common',
+  'models/app',
   'client',
-  'views/discussion',
+  'views/events',
+  'views/input',
   'views/modal-confirmation',
   '_templates'
-], function ($, _, Backbone, i18next, common, client, DiscussionView, confirmationView, templates) {
-  var OneToOnePanelView = DiscussionView.extend({
+], function ($, _, Backbone, i18next, common, app, client, EventsView, InputView, confirmationView, templates) {
+  var OneToOnePanelView = Backbone.View.extend({
+    tagName: 'div',
+
+    className: 'discussion',
+
+    hasBeenFocused: false,
+
     template: templates['discussion-onetoone.html'],
-    templateDropdown: templates['dropdown-one-actions.html'],
 
     events: {
       'click .ban-user': 'banUser',
       'click .deban-user': 'debanUser'
     },
 
-    _initialize: function () {
+    initialize: function () {
+      this.listenTo(this.model, 'change:focused', this.onFocusChange);
       this.listenTo(this.model, 'change:color', this.onColor);
       this.listenTo(this.model, 'change:avatar', this.onAvatar);
       this.listenTo(this.model, 'change:poster', this.onPoster);
@@ -28,29 +36,72 @@ define([
       this.listenTo(this.model, 'change:status', this.onStatus);
       this.listenTo(this.model, 'change:banned', this.onBannedChange);
 
-      this.colorify();
-      this.onStatus();
+      this.render();
+
+      this.eventsView = new EventsView({
+        el: this.$el.find('.events'),
+        model: this.model
+      });
+      this.inputView = new InputView({
+        el: this.$el.find('.input'),
+        model: this.model
+      });
     },
-    _remove: function (model) {
-    },
-    _renderData: function () {
+    render: function () {
       var data = this.model.toJSON();
 
+      // avatar
       data.avatar = common.cloudinarySize(data.avatar, 100);
+
+      // url
       data.url = '/user/' + ('' + data.username).toLocaleLowerCase();
 
-      data.dropdown = this.templateDropdown({
+      // dropdown
+      data.dropdown = templates['dropdown-one-actions.html']({
         data: data
       });
 
-      return data;
+      // render
+      var html = this.template(data);
+      this.$el.html(html);
+      this.$el.hide();
+
+      // other
+      this.changeColor();
+      this.onStatus();
+
+      return this;
     },
-    _render: function () {
+    removeView: function (model) {
+      this.eventsView._remove();
+      this.inputView._remove();
+      this.remove();
     },
-    _focus: function () {
-      this.$el.find('.ago span').momentify('fromnow'); // refocus an offline one after few times
+    changeColor: function () {
+      if (this.model.get('focused')) {
+        app.trigger('changeColor', this.model.get('color'));
+      }
     },
-    _unfocus: function () {
+    onFocusChange: function () {
+      if (this.model.get('focused')) {
+        this.$el.show();
+
+        // need to load history?
+        if (!this.hasBeenFocused) {
+          this.onFirstFocus();
+        }
+        this.hasBeenFocused = true;
+
+        // refocus an offline one after few times
+        this.$el.find('.ago span').momentify('fromnow');
+      } else {
+        this.$el.hide();
+      }
+    },
+    onFirstFocus: function () {
+      // @todo : on reconnect (only), remove all events in view before requesting history
+      this.eventsView.requestHistory('bottom');
+      this.eventsView.scrollDown();
     },
 
     /**
@@ -58,7 +109,7 @@ define([
      */
 
     onColor: function (model, value, options) {
-      this.colorify();
+      this.changeColor();
       this.onPoster(model, model.get('poster'), options);
     },
     onAvatar: function (model, value, options) {

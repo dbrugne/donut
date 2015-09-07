@@ -515,14 +515,13 @@ define([
       // call update() method on each view
       _.each(this.views, function (view) {
         debug('update on ' + view.model.get('id'));
-        view.update();
+        view.model.trigger('cleanup');
       });
 
       // set next tick
-      var that = this;
-      this.interval = setTimeout(function () {
-        that.updateViews();
-      }, this.intervalDuration);
+      this.interval = setTimeout(_.bind(function () {
+        this.updateViews();
+      }, this), this.intervalDuration);
     },
 
     // FOCUS TAB/PANEL MANAGEMENT
