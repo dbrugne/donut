@@ -369,29 +369,10 @@
       "unlock": "(Cliquez ici pour le débloquer)"
     },
     "create": {
-      "info": {
-        "warning": "Attention le nom du donut ne sera plus modifiable !",
-        "join": "Qui peut rejoindre le donut",
-        "history": "Qui peut voir l'historique des discussions"
-      },
-      "options": {
-        "everyone": "Tous le monde (défaut)",
-        "join": {
-          "allowed": "Utilisateur autorisé uniquement",
-          "password": {
-            "radio": "Utilisateur ayant le mot de passe",
-            "field": "Mot de passe"
-          }
-        },
-        "history": {
-          "joined": "Les utilisateurs dans le donut au moment du message",
-          "none": "Pas d'historique",
-          "help": "qu'ils soient en ligne ou pas au moment du message"
-        }
-      },
+      "info": "Attention le nom du donut ne sera plus modifiable !",
       "label": "Créez un donut",
       "help": [
-        "Entre 3 et 24 caractères, chiffres, lettres tirets (-) et underscores (_) uniquement"
+        "Entre 3 et 24 caractères, chiffres, lettres, tirets (-) et underscores (_) uniquement"
       ],
       "placeholder": "Nom du donut",
       "submit": "Créer le donut"
@@ -626,6 +607,25 @@
     }
   },
   "form": {
+    "join-mode-label": "Qui peut rejoindre le donut",
+    "history-mode-label": "Qui peut voir l'historique des discussions",
+    "options": {
+      "everyone-def": "Tous le monde (défaut)",
+      "join": {
+        "everyone": "Tous le monde",
+        "allowed": "Utilisateur autorisé uniquement",
+        "password": {
+          "radio": "Utilisateur ayant le mot de passe",
+          "field": "Mot de passe"
+        }
+      },
+      "history": {
+        "everyone": "Tous le monde",
+        "joined": "Les utilisateurs dans le donut au moment du message",
+        "none": "Pas d'historique",
+        "help": "qu'ils soient en ligne ou pas au moment du message"
+      }
+    },
     "errors": {
       "bio": "La bio devrait contenir 200 caractères max.",
       "location": "Le lieu devrait contenir 70 caractères max.",
@@ -760,28 +760,6 @@
           "permanent": "Il n'est pas possible de supprimer un donut 'permanent'"
         }
       }
-    },
-    "options": {
-      "join": "Qui peut rejoindre le donut",
-      "history": "Qui peut voir l'historique des discussions",
-      "mode": {
-        "everyone": "Tous le monde",
-        "allowed": "Utilisateurs autorisés uniquement",
-        "password": "Utilisateurs ayant le mot de passe",
-        "joined": "Les utilisateurs dans le donut au moment du message",
-        "none": "Pas d'historique"
-      }
-    },
-    "errors": {
-      "bio": "La bio devrait contenir 200 caractères max.",
-      "location": "Le lieu devrait contenir 70 caractères max.",
-      "description": "La description devrait contenir 200 caractères max.",
-      "website-size": "L'URL du site Web doit être comprise entre 5 et 200 caractères",
-      "website-url": "Url du site web invalide.",
-      "color-hexadecimal": "La couleur doit être dans un format hexadécimale (e.g.: #FF00AA).",
-      "color-integer": "La priorité devrait être exprimer en nombre (entier).",
-      "positions": "Positions doit être un tableau.",
-      "join-mode-password": "Le mot de passe doit être compris entre 4 et 255 caractères"
     }
   },
   "page": {
