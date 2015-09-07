@@ -28,11 +28,7 @@ define([
     types: ['Users', 'Op', 'Allowed', 'Ban', 'Devoice'],
 
     events: {
-      'click .Users': 'onSelectUsers',
-      'click .Op': 'onSelectOp',
-      'click .Allowed': 'onSelectAllowed',
-      'click .Ban': 'onSelectBanned',
-      'click .Devoice': 'onSelectDevoiced',
+      'change select': 'onChangeType',
       'click i.icon-search': 'onSearch',
       'click .pagination>li>a': 'onChangePage'
     },
@@ -57,6 +53,7 @@ define([
       this.numberUsers = this.$('.number');
       this.search = this.$('input[type=text]');
       this.pagination = this.$('.paginate');
+      this.typeSelected = this.$('#type-select');
 
       this.tableView = new RoomUsersTableConfirmation({
         el: this.$('.table-users')
@@ -90,50 +87,21 @@ define([
         nbPages: 5
       }));
     },
-    onSelectUsers: function (event) {
-      event.preventDefault();
+    onChangeType: function (event) {
       this.page = 1;
       this.search.val('');
-      if (this.currentType !== 'users') {
+      if (this.typeSelected.val() === 'Users') {
         this.currentType = 'users';
-        this.render();
-      }
-    },
-    onSelectOp: function (event) {
-      event.preventDefault();
-      this.page = 1;
-      this.search.val('');
-      if (this.currentType !== 'op') {
+      } else if (this.typeSelected.val() === 'Op') {
         this.currentType = 'op';
-        this.render();
-      }
-    },
-    onSelectAllowed: function (event) {
-      event.preventDefault();
-      this.page = 1;
-      this.search.val('');
-      if (this.currentType !== 'allowed') {
+      } else if (this.typeSelected.val() === 'Allowed') {
         this.currentType = 'allowed';
-        this.render();
-      }
-    },
-    onSelectBanned: function (event) {
-      event.preventDefault();
-      this.page = 1;
-      this.search.val('');
-      if (this.currentType !== 'ban') {
+      } else if (this.typeSelected.val() === 'Ban') {
         this.currentType = 'ban';
-        this.render();
-      }
-    },
-    onSelectDevoiced: function (event) {
-      event.preventDefault();
-      this.page = 1;
-      this.search.val('');
-      if (this.currentType !== 'devoice') {
+      } else if (this.typeSelected.val() === 'Devoice') {
         this.currentType = 'devoice';
-        this.render();
       }
+      this.render();
     },
     onSearch: function (event) {
       this.page = 1;

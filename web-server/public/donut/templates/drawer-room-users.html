@@ -10,10 +10,10 @@
     <input type="text" placeholder="search for username in this room">
     <i class="icon icon-search"></i>
 </div>
-<ul class="nav nav-justified">
+<select name="type" id="type-select">
     <% _.each(type, function(t) { %>
-    <li role="presentation"><a href="#" class="<%= t %>"><%= t %></a></li>
+    <option value="<%= t %>"><%= t %></option>
     <% }); %>
-</ul>
+</select>
 <div class="table-users"></div>
 <div class="paginate"></div>
