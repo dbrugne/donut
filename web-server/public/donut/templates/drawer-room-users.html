@@ -11,11 +11,9 @@
     <i class="icon icon-search"></i>
 </div>
 <ul class="nav nav-justified">
-    <li role="presentation" style="border-top: solid; border-bottom: solid; border-left: solid;"><a href="#" class="all">All</a></li>
-    <li role="presentation" style="border-top: solid; border-bottom: solid; border-left: solid;"><a href="#" class="Op">Op</a></li>
-    <li role="presentation" style="border-top: solid; border-bottom: solid; border-left: solid;"><a href="#" class="Allowed">Allowed</a></li>
-    <li role="presentation" style="border-top: solid; border-bottom: solid; border-left: solid;"><a href="#" class="Banned">Banned</a></li>
-    <li role="presentation" style="border: solid"><a href="#" class="Devoiced">Devoiced</a></li>
+    <% _.each(type, function(t) { %>
+    <li role="presentation"><a href="#" class="<%= t %>"><%= t %></a></li>
+    <% }); %>
 </ul>
 <div class="table-users"></div>
 <div class="paginate"></div>

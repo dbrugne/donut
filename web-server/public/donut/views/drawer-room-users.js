@@ -23,23 +23,35 @@ define([
 
     nbPages: 0, // Store total number of pages
 
-    currentType: 'all', // ['all', 'op', 'allowed', 'ban', 'devoice']
+    currentType: 'users',
+
+    types: ['Users', 'Op', 'Allowed', 'Ban', 'Devoice'],
 
     events: {
-      'click .all': 'onSelectAll',
+      'click .Users': 'onSelectUsers',
       'click .Op': 'onSelectOp',
       'click .Allowed': 'onSelectAllowed',
-      'click .Banned': 'onSelectBanned',
-      'click .Devoiced': 'onSelectDevoiced',
+      'click .Ban': 'onSelectBanned',
+      'click .Devoice': 'onSelectDevoiced',
       'click i.icon-search': 'onSearch',
       'click .pagination>li>a': 'onChangePage'
-
     },
 
     initialize: function (options) {
       this.model = options.model;
 
-      this.$el.html(this.template());
+      var isOwner = this.model.currentUserIsOwner();
+      var isOp = this.model.currentUserIsOp();
+      var isAdmin = this.model.currentUserIsAdmin();
+
+      if (this.model.get('join_mode') !== 'allowed' || (!isOwner && !isAdmin && !isOp)) {
+        this.types = _.without(this.types, 'Allowed');
+      }
+      if (!isOwner && !isAdmin && !isOp) {
+        this.types = _.without(this.types, 'Ban', 'Devoice');
+      }
+
+      this.$el.html(this.template({type: this.types}));
       this.roomName = this.$('.name');
       this.ownerName = this.$('.open-user-profile');
       this.numberUsers = this.$('.number');
@@ -73,12 +85,12 @@ define([
         nbPages: 5
       }));
     },
-    onSelectAll: function (event) {
+    onSelectUsers: function (event) {
       event.preventDefault();
       this.page = 1;
       this.search.val('');
-      if (this.currentType !== 'all') {
-        this.currentType = 'all';
+      if (this.currentType !== 'users') {
+        this.currentType = 'users';
         this.render();
       }
     },
