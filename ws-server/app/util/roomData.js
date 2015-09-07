@@ -50,12 +50,6 @@ module.exports = function (app, user, room, fn) {
       return callback(null, roomData);
     }
 
-  ], function (err, roomData) {
-    if (err) {
-      return fn(err);
-    }
-
-    return fn(null, roomData);
-  });
+  ], fn);
 
 };
