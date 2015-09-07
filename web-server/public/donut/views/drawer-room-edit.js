@@ -120,7 +120,7 @@ define([
         updateData.visibility = (this.$el.find('input[name=visibility]:checked').val() === 'true');
         updateData.priority = this.$el.find('input[name=priority]').val();
 
-        if (this.$joinChecked.attr('value') === 'everyone') {
+        if (this.$joinChecked.attr('value') === 'password') {
           var join_password = this.$el.find('.input-password').val();
         }
         var opts = {
