@@ -66,6 +66,9 @@ define([
       // avatar
       data.avatar = common.cloudinarySize(data.avatar, 100);
 
+      // poster
+      data.poster = data.poster || '';
+
       // id
       data.room_id = this.model.get('id');
 
