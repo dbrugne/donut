@@ -292,7 +292,7 @@ define([
     },
     fetchUsers: function (callback) {
       var that = this;
-      client.roomUsers(this.get('id'), 'all', null, null, function (data) {
+      client.roomUsers(this.get('id'), 'users', null, null, function (data) {
         that.users.reset();
 
         _.each(data.users, function (element, key, list) {

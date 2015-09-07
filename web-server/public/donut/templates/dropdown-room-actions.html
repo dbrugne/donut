@@ -27,13 +27,11 @@
             </a>
         </li>
         <% }; %>
-        <% if (data.isOwner === true || data.isOp === true || data.isAdmin === true) { %>
         <li role="presentation">
             <a role="menuitem" tabindex="-1" class="open-room-users" data-room-id="<%= data.room_id %>">
                 <i class="icon icon-users"></i> <%= t('chat.users.link') %>
             </a>
         </li>
-        <% }; %>
         <li role="presentation" class="divider hidden-md hidden-lg"></li>
         <li role="presentation" class="share hidden-md hidden-lg">
             <a role="menuitem" class="facebook" tabindex="-1">

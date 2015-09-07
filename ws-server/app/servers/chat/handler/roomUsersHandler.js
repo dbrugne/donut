@@ -21,6 +21,18 @@ handler.call = function (data, session, next) {
 
   var that = this;
 
+  var searchTypes = ['all', 'users', 'op', 'allowed', 'regular', 'ban', 'devoice'];
+
+  /* **************************
+  all: users + ban
+  users: users
+  op: op + owner
+  allowed: allowed
+  regular: users (not op/owner/ban/devoice)
+  ban: ban
+  devoice: devoice
+  ************************** */
+
   async.waterfall([
 
     function check (callback) {
@@ -32,8 +44,16 @@ handler.call = function (data, session, next) {
         return callback('type is mandatory');
       }
 
-      if (['all', 'op', 'allowed', 'ban', 'devoice'].indexOf(data.type) === -1) {
-        return callback('search type ' + data.type + 'don\'t exist');
+      if (searchTypes.indexOf(data.type) === -1) {
+        return callback('search type \'' + data.type + '\' don\'t exist');
+      }
+
+      if (data.type === 'allowed' && room.join_mode !== 'allowed') {
+        return callback('cannot make an allowed search on a no-allowed room');
+      }
+
+      if (data.type === 'regular' && room.join_mode === 'allowed') {
+        return callback('cannot make a regular search on an allowed room');
       }
 
       if (!room) {
@@ -127,7 +147,7 @@ handler.call = function (data, session, next) {
 
     return next(null, {
       users: users,
-      nbUsers: count // number of users that match who search
+      nbUsers: count // number of users that match the search
     });
   });
 };

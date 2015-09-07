@@ -174,7 +174,7 @@ roomSchema.methods.isIn = function (user_id) {
 };
 
 roomSchema.methods.getIdsByType = function (type) {
-  if (!type || ['all', 'op', 'allowed', 'ban', 'devoice'].indexOf(type) === -1) {
+  if (!type || ['all', 'users', 'op', 'allowed', 'regular', 'ban', 'devoice'].indexOf(type) === -1) {
     return;
   }
 
@@ -183,13 +183,28 @@ roomSchema.methods.getIdsByType = function (type) {
     _.each(this.users, function (u) {
       ids.push(u.toString());
     });
+    _.each(this.bans, function (ban) {
+      ids.push(ban.user.toString());
+    });
+  } else if (type === 'users') {
+    _.each(this.users, function (u) {
+      ids.push(u.toString());
+    });
   } else if (type === 'op') {
     _.each(this.op, function (u) {
       ids.push(u.toString());
     });
+    ids.push(this.owner.toString());
   } else if (type === 'allowed') {
     _.each(this.join_mode_allowed, function (u) {
       ids.push(u.toString());
+    });
+  } else if (type === 'regular') {
+    var that = this;
+    _.each(this.users, function (u) {
+      if (!that.isBanned(u.toString()) && !that.isDevoice(u.toString()) && !that.isOwnerOrOp(u.toString())) {
+        ids.push(u.toString());
+      }
     });
   } else if (type === 'ban') {
     _.each(this.bans, function (ban) {
