@@ -242,13 +242,8 @@ define([
         }
       );
     },
-    roomUsers: function (roomId, type, searchString, selector, fn) {
-      var data = {room_id: roomId, type: type};
-      if (searchString) {
-        data.searchString = searchString;
-      } if (selector) {
-        data.selector = selector;
-      }
+    roomUsers: function (roomId, attributes, fn) {
+      var data = {room_id: roomId, attributes: attributes};
       debug('io:out:room:users', data);
       pomelo.request(
         'chat.roomUsersHandler.call',

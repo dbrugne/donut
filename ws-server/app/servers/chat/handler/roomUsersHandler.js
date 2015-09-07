@@ -40,19 +40,19 @@ handler.call = function (data, session, next) {
         return callback('room_id is mandatory');
       }
 
-      if (!data.type) {
+      if (!data.attributes.type) {
         return callback('type is mandatory');
       }
 
-      if (searchTypes.indexOf(data.type) === -1) {
+      if (searchTypes.indexOf(data.attributes.type) === -1) {
         return callback('search type \'' + data.type + '\' don\'t exist');
       }
 
-      if (data.type === 'allowed' && room.join_mode !== 'allowed') {
+      if (data.attributes.type === 'allowed' && room.join_mode !== 'allowed') {
         return callback('cannot make an allowed search on a no-allowed room');
       }
 
-      if (data.type === 'regular' && room.join_mode === 'allowed') {
+      if (data.attributes.type === 'regular' && room.join_mode === 'allowed') {
         return callback('cannot make a regular search on an allowed room');
       }
 
@@ -68,7 +68,7 @@ handler.call = function (data, session, next) {
     },
 
     function selectIds (callback) {
-      var ids = room.getIdsByType(data.type);
+      var ids = room.getIdsByType(data.attributes.type);
       return callback(null, ids);
     },
 
@@ -76,15 +76,15 @@ handler.call = function (data, session, next) {
       var query = {
         _id: { $in: ids }
       };
-      if (data.searchString) {
-        var regex = common.regExpBuildContains(data.searchString, 'i');
+      if (data.attributes.searchString) {
+        var regex = common.regExpBuildContains(data.attributes.searchString, 'i');
         query.username = {$regex: regex};
       }
       return callback(null, query);
     },
 
     function query (query, callback) {
-      User.searchUsers(query, data.selector).exec(function (err, users) {
+      User.searchUsers(query, data.attributes.selector).exec(function (err, users) {
         if (err) {
           return callback(err);
         }

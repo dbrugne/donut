@@ -71,7 +71,12 @@ define([
     render: function () {
       // ask for data
       var that = this;
-      client.roomUsers(this.model.get('id'), this.currentType, this.search.val(), {start: (this.page - 1) * this.paginate, length: this.paginate}, function (data) {
+      var searchAttributes = {
+        type: this.currentType,
+        searchString: this.search.val(),
+        selector: {start: (this.page - 1) * this.paginate, length: this.paginate}
+      };
+      client.roomUsers(this.model.get('id'), searchAttributes, function (data) {
         that.onResponse(data);
       });
       return this;
