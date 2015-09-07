@@ -7,41 +7,41 @@ var cloudinary = require('../util/cloudinary');
 var roomSchema = mongoose.Schema({
   name: String,
   permanent: Boolean,
-  deleted: { type: Boolean, default: false },
-  visibility: { type: Boolean, default: false },
+  deleted: {type: Boolean, default: false},
+  visibility: {type: Boolean, default: false},
   priority: Number,
-  owner: { type: mongoose.Schema.ObjectId, ref: 'User' },
-  op: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
-  users: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
+  owner: {type: mongoose.Schema.ObjectId, ref: 'User'},
+  op: [{type: mongoose.Schema.ObjectId, ref: 'User'}],
+  users: [{type: mongoose.Schema.ObjectId, ref: 'User'}],
   bans: [{
-    user: { type: mongoose.Schema.ObjectId, ref: 'User' },
+    user: {type: mongoose.Schema.ObjectId, ref: 'User'},
     reason: String,
-    banned_at: { type: Date, default: Date.now }
+    banned_at: {type: Date, default: Date.now}
   }],
   devoices: [{
-    user: { type: mongoose.Schema.ObjectId, ref: 'User' },
+    user: {type: mongoose.Schema.ObjectId, ref: 'User'},
     reason: String,
-    devoiced_at: { type: Date, default: Date.now }
+    devoiced_at: {type: Date, default: Date.now}
   }],
-  join_mode: { type: String, default: 'everyone' },
+  join_mode: {type: String, default: 'everyone'},
   join_mode_password: String,
-  join_mode_allowed: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
-  history_mode: { type: String, default: 'everyone' },
+  join_mode_allowed: [{type: mongoose.Schema.ObjectId, ref: 'User'}],
+  history_mode: {type: String, default: 'everyone'},
   avatar: String,
   poster: String,
   color: String,
   topic: String,
   description: String,
   website: mongoose.Schema.Types.Mixed,
-  created_at: { type: Date, default: Date.now },
-  lastjoin_at: { type: Date }
+  created_at: {type: Date, default: Date.now},
+  lastjoin_at: {type: Date}
 
 });
 
 roomSchema.statics.findByName = function (name) {
   return this.findOne({
     name: common.regExpBuildExact(name, 'i'),
-    deleted: { $ne: true }
+    deleted: {$ne: true}
   });
 };
 
@@ -51,13 +51,13 @@ roomSchema.statics.listByName = function (names) {
     $or: []
   };
   _.each(names, function (n) {
-    criteria['$or'].push({ name: common.regExpBuildExact(n) });
+    criteria['$or'].push({name: common.regExpBuildExact(n)});
   });
   return this.find(criteria, '_id name');
 };
 
 roomSchema.statics.findByUser = function (userId) {
-  return this.find({ users: { $in: [userId] }, deleted: {$ne: true} });
+  return this.find({users: {$in: [userId]}, deleted: {$ne: true}});
 };
 
 roomSchema.statics.getNewRoom = function () {
@@ -94,7 +94,7 @@ roomSchema.methods.isOwner = function (user_id) {
   if (
     (typeof this.owner.toString == 'function' && this.owner.toString() == user_id) // dry
     || (this.owner._id && this.owner._id.toString() == user_id) // hydrated
-    ) return true;
+  ) return true;
 
   return false;
 };
@@ -108,7 +108,7 @@ roomSchema.methods.isOp = function (user_id) {
     if (
       (typeof u.toString == 'function' && u.toString() == user_id) // dry
       || (u._id && u._id.toString() == user_id) // hydrated
-      ) return true;
+    ) return true;
   }
 
   return false;
@@ -121,37 +121,12 @@ roomSchema.methods.isOwnerOrOp = function (user_id) {
   return false;
 };
 
-roomSchema.methods.isBanned = function (user_id) {
-  if (!this.bans || !this.bans.length)
+roomSchema.methods.isBanned = function (userId) {
+  if (!this.bans || !this.bans.length) {
     return false;
-
-  var subDocument = _.find(this.bans, function (ban) { // @warning: this shouldn't have .bans populated
-    if (ban.user.toString() == user_id)
-      return true;
-  });
-
-  return (typeof subDocument != 'undefined');
-};
-
-roomSchema.methods.isDevoice = function (user_id) {
-  if (!this.devoices || !this.devoices.length)
-    return false;
-
-  var subDocument = _.find(this.devoices, function (devoice) { // @warning: this shouldn't have .devoices populated
-    if (devoice.user.toString() == user_id)
-      return true;
-  });
-
-  return (typeof subDocument != 'undefined');
-};
-
-roomSchema.methods.isAllowed = function (user_id) {
-  if (this.owner._id === user_id) {
-    return true;
   }
-
-  var subDocument = _.find(this.join_mode_allowed, function (alowed) {
-    if (alowed.user_id === user_id) {
+  var subDocument = _.find(this.bans, function (ban) { // @warning: this shouldn't have .bans populated
+    if (ban.user.toString() === userId) {
       return true;
     }
   });
@@ -159,15 +134,36 @@ roomSchema.methods.isAllowed = function (user_id) {
   return (typeof subDocument !== 'undefined');
 };
 
-roomSchema.methods.isIn = function (user_id) {
-  if (this.owner._id === user_id) {
+roomSchema.methods.isDevoice = function (userId) {
+  if (!this.devoices || !this.devoices.length) {
+    return false;
+  }
+  var subDocument = _.find(this.devoices, function (devoice) { // @warning: this shouldn't have .devoices populated
+    return !!(devoice.user.toString() === userId);
+  });
+
+  return (typeof subDocument !== 'undefined');
+};
+
+roomSchema.methods.isAllowed = function (userId) {
+  if (this.owner.id === userId) {
+    return true;
+  }
+
+  var subDocument = _.find(this.join_mode_allowed, function (allowed) {
+    return !!(allowed.toString() === userId);
+  });
+
+  return (typeof subDocument !== 'undefined');
+};
+
+roomSchema.methods.isIn = function (userId) {
+  if (this.owner.id === userId) {
     return true;
   }
 
   var subDocument = _.find(this.users, function (users) {
-    if (users.toString() === user_id) {
-      return true;
-    }
+    return !!(users.toString() === userId);
   });
 
   return (typeof subDocument !== 'undefined');
