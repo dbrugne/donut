@@ -11,7 +11,7 @@
             <span aria-hidden="true">...</span>
     </li>
     <% } %>
-    <% for (var i = 1, j = 1; i <= totalNbPages && j <= nbPages; i++) { %>
+    <% for (var i = 1, j = 1; i <= totalNbPages && j <= nbPages && totalNbPages > 1; i++) { %>
         <% if (i === currentPage) { %>
             <li class="active"><a href="#" data-identifier="<%= i %>"><%= i %></a></li>
             <% j++; %>

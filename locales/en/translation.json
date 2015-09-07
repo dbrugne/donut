@@ -532,25 +532,13 @@
     "deletemessage": "The donut __name__ has been deleted",
     "users": {
       "link": "users",
-      "owner": {
-        "label": "Creator",
-        "help": "The donut creator has all priviledges"
-      },
-      "ops": {
-        "label": "Moderators",
-        "help": "Moderators can change the donut topic, kick or ban users and make/remove moderators"
-      },
-      "bans": {
-        "label": "Banned",
-        "help": "Banned users cannot join this donut any longer"
-      },
-      "devoices": {
-        "label": "Mutes",
-        "help": "The dumb users can not send messages"
-      },
-      "users": {
-        "label": "Users",
-        "help": "Users of the donut can only view and post messages"
+      "search": "search for username in this room",
+      "type": {
+        "users": "Users",
+        "op": "Moderators",
+        "allowed": "Allowed",
+        "ban": "Banned",
+        "devoice": "Devoiced"
       }
     },
     "share": {

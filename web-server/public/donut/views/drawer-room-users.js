@@ -25,15 +25,12 @@ define([
 
     currentType: 'users',
 
-    types: ['Users', 'Op', 'Allowed', 'Ban', 'Devoice'],
+    types: ['users', 'op', 'allowed', 'ban', 'devoice'],
 
     events: {
-      'click .Users': 'onSelectUsers',
-      'click .Op': 'onSelectOp',
-      'click .Allowed': 'onSelectAllowed',
-      'click .Ban': 'onSelectBanned',
-      'click .Devoice': 'onSelectDevoiced',
+      'change select': 'onChangeType',
       'click i.icon-search': 'onSearch',
+      'keyup input[type=text]': 'onSearchEnter',
       'click .pagination>li>a': 'onChangePage'
     },
 
@@ -45,10 +42,9 @@ define([
       var isAdmin = this.model.currentUserIsAdmin();
 
       if (this.model.get('join_mode') !== 'allowed' || (!isOwner && !isAdmin && !isOp)) {
-        this.types = _.without(this.types, 'Allowed');
-      }
-      if (!isOwner && !isAdmin && !isOp) {
-        this.types = _.without(this.types, 'Ban', 'Devoice');
+        this.types = _.without(this.types, 'allowed');
+      } if (!isOwner && !isAdmin && !isOp) {
+        this.types = _.without(this.types, 'ban', 'devoice');
       }
 
       this.$el.html(this.template({type: this.types}));
@@ -57,6 +53,7 @@ define([
       this.numberUsers = this.$('.number');
       this.search = this.$('input[type=text]');
       this.pagination = this.$('.paginate');
+      this.typeSelected = this.$('#type-select');
 
       this.tableView = new RoomUsersTableConfirmation({
         el: this.$('.table-users')
@@ -90,54 +87,21 @@ define([
         nbPages: 5
       }));
     },
-    onSelectUsers: function (event) {
-      event.preventDefault();
+    onChangeType: function (event) {
       this.page = 1;
       this.search.val('');
-      if (this.currentType !== 'users') {
-        this.currentType = 'users';
-        this.render();
-      }
-    },
-    onSelectOp: function (event) {
-      event.preventDefault();
-      this.page = 1;
-      this.search.val('');
-      if (this.currentType !== 'op') {
-        this.currentType = 'op';
-        this.render();
-      }
-    },
-    onSelectAllowed: function (event) {
-      event.preventDefault();
-      this.page = 1;
-      this.search.val('');
-      if (this.currentType !== 'allowed') {
-        this.currentType = 'allowed';
-        this.render();
-      }
-    },
-    onSelectBanned: function (event) {
-      event.preventDefault();
-      this.page = 1;
-      this.search.val('');
-      if (this.currentType !== 'ban') {
-        this.currentType = 'ban';
-        this.render();
-      }
-    },
-    onSelectDevoiced: function (event) {
-      event.preventDefault();
-      this.page = 1;
-      this.search.val('');
-      if (this.currentType !== 'devoice') {
-        this.currentType = 'devoice';
-        this.render();
-      }
+      this.currentType = this.typeSelected.val();
+      this.render();
     },
     onSearch: function (event) {
       this.page = 1;
       this.render();
+    },
+    onSearchEnter: function (event) {
+      if (event.keyCode === 13) {
+        this.page = 1;
+        this.render();
+      }
     },
     onChangePage: function (event) {
       event.preventDefault();
