@@ -6,6 +6,7 @@ define([
   'text!./templates/discussion-block.html',
   'text!./templates/discussion-onetoone.html',
   'text!./templates/discussion-room.html',
+  'text!./templates/discussion-room-blocked.html',
   'text!./templates/drawer-room-create.html',
   'text!./templates/drawer-room-delete.html',
   'text!./templates/drawer-room-edit.html',
@@ -73,6 +74,7 @@ define([
   discussion_block,
   discussion_onetoone,
   discussion_room,
+  discussion_room_blocked,
   drawer_room_create,
   drawer_room_delete,
   drawer_room_edit,
@@ -153,6 +155,7 @@ define([
   JST['discussion-block.html'] = _.template(discussion_block);
   JST['discussion-onetoone.html'] = _.template(discussion_onetoone);
   JST['discussion-room.html'] = _.template(discussion_room);
+  JST['discussion-room-blocked.html'] = _.template(discussion_room_blocked);
   JST['drawer-room-create.html'] = _.template(drawer_room_create);
   JST['drawer-room-delete.html'] = _.template(drawer_room_delete);
   JST['drawer-room-edit.html'] = _.template(drawer_room_edit);
