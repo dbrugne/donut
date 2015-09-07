@@ -23,6 +23,8 @@ handler.call = function (data, session, next) {
 
   var searchTypes = ['all', 'users', 'op', 'allowed', 'regular', 'ban', 'devoice'];
 
+  var searchTypesThatNeedPower = ['allowed', 'ban', 'devoice'];
+
   /* **************************
   all: users + ban
   users: users
@@ -41,7 +43,7 @@ handler.call = function (data, session, next) {
       }
 
       if (!data.attributes.type) {
-        return callback('type is mandatory');
+        return callback('attributes.type is mandatory');
       }
 
       if (searchTypes.indexOf(data.attributes.type) === -1) {
@@ -54,6 +56,11 @@ handler.call = function (data, session, next) {
 
       if (data.attributes.type === 'regular' && room.join_mode === 'allowed') {
         return callback('cannot make a regular search on an allowed room');
+      }
+
+      if ((searchTypesThatNeedPower.indexOf(data.attributes.type) !== -1) &&
+      !room.isOwnerOrOp(user.id) && !user.admin) {
+        return callback('this user ' + user.id + ' is not allowed to perform this type of search : ' + data.attributes.type);
       }
 
       if (!room) {
@@ -84,21 +91,24 @@ handler.call = function (data, session, next) {
     },
 
     function query (query, callback) {
-      User.searchUsers(query, data.attributes.selector).exec(function (err, users) {
-        if (err) {
-          return callback(err);
-        }
-        return callback(null, query, users);
-      });
+      if (!data.attributes.selector) {
+        data.attributes.selector = {start: 0, length: 0};
+      }
+      User.find(query)
+        .sort({username: 1})
+        .skip(data.attributes.selector.start)
+        .limit(data.attributes.selector.length)
+        .exec(function (err, users) {
+          return callback(err, query, users);
+        });
     },
 
     function queryCount (query, users, callback) {
-      User.queryCount(query).exec(function (err, count) {
-        if (err) {
-          return callback(err);
-        }
-        return callback(null, users, count);
-      });
+      User.find(query)
+        .count()
+        .exec(function (err, count) {
+          return callback(err, users, count);
+        });
     },
 
     function listAndStatus (users, count, callback) {
@@ -108,21 +118,11 @@ handler.call = function (data, session, next) {
           user_id: u._id,
           username: u.username,
           avatar: u._avatar(),
-          access: '-',
-          isBanned: false,
-          isDevoiced: false
+          isBanned: room.isBanned(u.id),
+          isDevoiced: room.isDevoice(u.id),
+          isOp: room.isOp(u.id),
+          isOwner: room.isOwner(u.id)
         };
-        if (room.isOp(u.id)) {
-          userData.access = 'op';
-        } else if (room.isOwner(u.id)) {
-          userData.access = 'owner';
-        }
-        if (room.isBanned(u.id)) {
-          userData.isBanned = true;
-        }
-        if (room.isDevoice(u.id)) {
-          userData.isDevoiced = true;
-        }
         return userData;
       });
       var ids = _.map(users, 'user_id');

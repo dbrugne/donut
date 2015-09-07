@@ -3,17 +3,16 @@
     <tr>
         <td><img src="<%= u.avatarUrl %>">@<%= u.username %></td>
         <td style="border-left: solid 2px; border-right: solid 2px;width: 105px;">
-            <% if(u.access === 'owner') { %>
+            <% if(u.isOwner) { %>
             <i class="icon icon-owner" style="color: #ffda3e;font-size: 19px"></i>
-            <% } else if (u.access === 'op') { %>
+            <% } if (u.isOp) { %>
             <i class="icon icon-op" style="color: #4fedc0;font-size: 19px"></i>
-            <% } %>
-            <% if(u.isBanned) { %>
+            <% } if(u.isBanned) { %>
             <i class="icon icon-ban" style="font-size: 19px"></i>
             <% } if(u.isDevoiced) { %>
             <i class="glyphicon glyphicon-volume-off" style="font-size: 19px"></i>
             <% } %>
-            <% if (u.access !== 'owner' && u.access !== 'op' && !u.isBanned && !u.isDevoiced) { %>
+            <% if (!u.isOwner && !u.isOp && !u.isBanned && !u.isDevoiced) { %>
             <%= u.access %>
             <% } %>
         </td>
