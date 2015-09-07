@@ -147,7 +147,7 @@ handler.call = function (data, session, next) {
 
     return next(null, {
       users: users,
-      nbUsers: count // number of users that match the search
+      count: count // number of users that match the search
     });
   });
 };

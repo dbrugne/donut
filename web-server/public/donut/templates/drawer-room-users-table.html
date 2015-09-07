@@ -4,17 +4,48 @@
         <td class="username open-user-profile" data-user-id="<%= u.user_id %>"><img src="<%= u.avatarUrl %>">@<%= u.username %></td>
         <td style="border-left: solid 2px; border-right: solid 2px;width: 105px;">
             <% if(u.isOwner) { %>
-            <i class="icon icon-owner" style="color: #ffda3e;font-size: 19px" title="<%= t('chat.users.type.owner') %>"></i>
+            <i class="icon icon-owner" title="<%= t('chat.users.type.owner') %>"></i>
             <% } if (u.isOp) { %>
-            <i class="icon icon-op" style="color: #4fedc0;font-size: 19px" title="<%= t('chat.users.type.op') %>"></i>
+            <i class="icon icon-op op" title="<%= t('chat.users.type.op') %>"></i>
             <% } if(u.isBanned) { %>
-            <i class="icon icon-ban" style="font-size: 19px" title="<%= t('chat.users.type.ban') %>"></i>
+            <i class="icon icon-ban" title="<%= t('chat.users.type.ban') %>"></i>
             <% } if(u.isDevoiced) { %>
-            <i class="glyphicon glyphicon-volume-off" style="font-size: 19px" title="<%= t('chat.users.type.devoice') %>"></i>
+            <i class="icon icon-microphone-slash" title="<%= t('chat.users.type.devoice') %>"></i>
             <% } %>
         </td>
-        <td style="width: 120px;text-align: right;">
-
+        <td class="actions" style="text-align: right">
+            <% if(op && !u.isOwner) { %>
+            <% if(!u.isOp) { %>
+            <div class="op" data-toggle="confirmation" data-action="op-user" title="<%= t('chat.op.infobox') %>" data-user-id="<%= u.user_id %>">
+                <i class="icon icon-op"></i>
+            </div>
+            <% } else { %>
+            <div class="deop" data-toggle="confirmation" data-action="deop-user" title="<%= t('chat.deop.infobox') %>" data-user-id="<%= u.user_id %>">
+                <i class="icon icon-op"></i>
+            </div>
+            <% } %>
+            <div class="kick" data-toggle="confirmation" data-action="kick-user" title="<%= t('chat.kick.infobox') %>" data-user-id="<%= u.user_id %>">
+                <i class="icon icon-kick"></i>
+            </div>
+            <% if(!u.isBanned) { %>
+            <div class="ban" data-toggle="confirmation" data-action="ban-user" title="<%= t('chat.ban.infobox') %>" data-user-id="<%= u.user_id %>">
+                <i class="icon icon-ban"></i>
+            </div>
+            <% } else { %>
+            <div class="deban" data-toggle="confirmation" data-action="deban-user" title="<%= t('chat.deban.infobox') %>" data-user-id="<%= u.user_id %>">
+                <i class="icon icon-ban"></i>
+            </div>
+            <% } %>
+            <% if(u.isDevoiced) { %>
+            <div class="voice" data-toggle="confirmation" data-action="vocice-user" title="<%= t('chat.voice.infobox') %>" data-user-id="<%= u.user_id %>">
+                <i class="icon icon-microphone"></i>
+            </div>
+            <% } else { %>
+            <div class="devoice" data-toggle="confirmation" data-action="devocice-user" title="<%= t('chat.devoice.infobox') %>" data-user-id="<%= u.user_id %>">
+                <i class="icon icon-microphone-slash"></i>
+            </div>
+            <% } %>
+            <% } %>
         </td>
     </tr>
     <%}); %>

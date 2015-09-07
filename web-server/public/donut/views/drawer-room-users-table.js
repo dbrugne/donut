@@ -12,17 +12,24 @@ define([
   var DrawerRoomUsersTableView = Backbone.View.extend({
     template: templates['drawer-room-users-table.html'],
 
+    op: false,
+
     events: {
       'click .op': 'opUser',
       'click .deop': 'deopUser',
       'click .kick': 'kickUser',
       'click .ban': 'banUser',
       'click .deban': 'debanUser',
-      'click .voice': 'voiceUser'
+      'click .voice': 'voiceUser',
+      'click .devoice': 'voiceUser'
     },
 
     initialize: function (options) {
       this.model = options.model;
+
+      if (this.model.currentUserIsOwner() || this.model.currentUserIsOp() || this.model.currentUserIsAdmin()) {
+        this.op = true;
+      }
     },
 
     render: function (users) {
@@ -30,7 +37,7 @@ define([
         list[index].avatarUrl = common.cloudinarySize(element.avatar, 20);
       });
 
-      this.$el.html(this.template({users: users}));
+      this.$el.html(this.template({users: users, op: this.op}));
       return this;
     },
     opUser: function (event) {
@@ -132,6 +139,23 @@ define([
       var that = this;
       confirmationView.open({}, function () {
         client.roomVoice(that.model.get('id'), userId, null);
+        that.render();
+      });
+    },
+    devoiceUser: function (event) {
+      event.preventDefault();
+      if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin()) {
+        return false;
+      }
+
+      var userId = $(event.currentTarget).data('userId');
+      if (!userId) {
+        return;
+      }
+
+      var that = this;
+      confirmationView.open({}, function () {
+        client.roomDevoice(that.model.get('id'), userId, null);
         that.render();
       });
     }

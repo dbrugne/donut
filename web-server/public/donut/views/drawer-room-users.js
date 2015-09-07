@@ -56,7 +56,8 @@ define([
       this.typeSelected = this.$('#type-select');
 
       this.tableView = new RoomUsersTableConfirmation({
-        el: this.$('.table-users')
+        el: this.$('.table-users'),
+        model: this.model
       });
 
       this.roomName.text(this.model.get('name'));
@@ -80,10 +81,10 @@ define([
     },
     onResponse: function (data) {
       this.tableView.render(data.users);
-      this.numberUsers.text(data.nbUsers);
+      this.numberUsers.text(data.count);
       this.pagination.html(this.paginationTemplate({
         currentPage: this.page,
-        totalNbPages: Math.ceil(data.nbUsers / this.paginate),
+        totalNbPages: Math.ceil(data.count / this.paginate),
         nbPages: 5
       }));
     },
