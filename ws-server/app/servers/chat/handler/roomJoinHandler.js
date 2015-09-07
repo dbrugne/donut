@@ -31,14 +31,16 @@ handler.call = function (data, session, next) {
       if (!room) {
         return callback('notexists');
       }
-      if (room.isBanned(user.id)) {
-        return callback('banned');
-      }
-      if (room.join_mode === 'allowed' && !room.isAllowed(user.id)) {
-        return callback('notallowed');
-      }
-      if (!room.isOwner(user.id) && room.join_mode === 'password' && !room.validPassword(data.join_mode_password)) {
-        return callback('wrong-password');
+      if (!room.isOwner(user.id)) {
+        if (room.isBanned(user.id)) {
+          return callback('banned');
+        }
+        if (room.join_mode === 'allowed' && !room.isAllowed(user.id)) {
+          return callback('notallowed');
+        }
+        if (room.join_mode === 'password' && !room.validPassword(data.join_mode_password)) {
+          return callback('wrong-password');
+        }
       }
 
       return callback(null);
