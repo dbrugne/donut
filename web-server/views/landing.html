@@ -121,9 +121,9 @@
 
                     <div class="flex-parent column">
                         <h2><%= t('landing.start') %></h2>
-                        <a href="/login/facebook" class="btn-facebook"><i class="icon icon-facebook"></i> | <span><%= t('landing.loginwithfacebook') %></span></a>
+                        <a href="/login/facebook" class="btn-facebook"><i class="icon icon-facebook"></i> | <%= t('actions.signup') %> <%= t('login.withfacebook') %></span></a>
                         <p class="logic"><span><%= t('landing.orbymail') %></span></p>
-                        <form id="login" action="/login" method="post" role="form" class="form mt10">
+                        <form id="login" action="/signup" method="post" role="form" class="form mt10">
                             <input type="hidden" name="_csrf" value="<%= token %>">
 
                             <div class="form-group mb10">
@@ -141,15 +141,9 @@
                                 <img src="/images/arrow.svg">
                             </div>
 
-                            <div class="form-group pull-right relative">
-                                <a class="forgot-link" href="/forgot" title="<%= t('actions.forgot') %>" tabindex="5">
-                                    <%= t('actions.forgot') %>
-                                </a>
-                                <i class="fa fa-question"></i>
-                            </div>
-                            <div class="clearfix"></div>
-                            <div class="form-group pull-right">
-                                <input class="button" type="submit" value="<%= t('actions.login') %>" tabindex="3">
+                            <div class="flex-parent links-ctn">
+                                <span class="blank flex-child"></span>
+                                <input class="button" type="submit" value="<%= t('home.signup.etvoila') %>" tabindex="3">
                             </div>
                         </form>
                     </div>
