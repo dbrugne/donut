@@ -1,4 +1,3 @@
-var debug = require('debug')('shared:models:room');
 var _ = require('underscore');
 var bcrypt = require('bcrypt-nodejs');
 var mongoose = require('../io/mongoose');
@@ -73,53 +72,54 @@ roomSchema.methods._poster = function (blur) {
 };
 
 roomSchema.methods.avatarId = function () {
-  if (!this.avatar) return '';
+  if (!this.avatar) {
+    return '';
+  }
   var data = this.avatar.split('/');
-  if (!data[1]) return '';
-  var id = data[1].substr(0, data[1].lastIndexOf('.'));
-  return id;
+  if (!data[1]) {
+    return '';
+  }
+  return data[1].substr(0, data[1].lastIndexOf('.'));
 };
 
 roomSchema.methods.posterId = function () {
-  if (!this.poster) return '';
+  if (!this.poster) {
+    return '';
+  }
   var data = this.poster.split('/');
-  if (!data[1]) return '';
-  var id = data[1].substr(0, data[1].lastIndexOf('.'));
-  return id;
+  if (!data[1]) {
+    return '';
+  }
+  return data[1].substr(0, data[1].lastIndexOf('.'));
 };
 
-roomSchema.methods.isOwner = function (user_id) {
-  if (!this.owner)
+roomSchema.methods.isOwner = function (userId) {
+  if (!this.owner) {
     return false;
+  }
 
-  if (
-    (typeof this.owner.toString == 'function' && this.owner.toString() == user_id) // dry
-    || (this.owner._id && this.owner._id.toString() == user_id) // hydrated
-  ) return true;
-
-  return false;
+  return (typeof this.owner.toString === 'function' && this.owner.toString() === userId) ||
+    (this.owner._id && this.owner.id === userId);
 };
 
-roomSchema.methods.isOp = function (user_id) {
-  if (!this.op)
+roomSchema.methods.isOp = function (userId) {
+  if (!this.op) {
     return false;
+  }
 
   for (var i = 0; i < this.op.length; i++) {
     var u = this.op[i];
-    if (
-      (typeof u.toString == 'function' && u.toString() == user_id) // dry
-      || (u._id && u._id.toString() == user_id) // hydrated
-    ) return true;
+    if ((typeof u.toString === 'function' && u.toString() === userId) ||
+      (u._id && u._id.toString() === userId)) {
+      return true;
+    }
   }
 
   return false;
 };
 
-roomSchema.methods.isOwnerOrOp = function (user_id) {
-  if (this.isOwner(user_id) || this.isOp(user_id))
-    return true;
-
-  return false;
+roomSchema.methods.isOwnerOrOp = function (userId) {
+  return (this.isOwner(userId) || this.isOp(userId));
 };
 
 roomSchema.methods.isBanned = function (userId) {
@@ -140,7 +140,7 @@ roomSchema.methods.isDevoice = function (userId) {
     return false;
   }
   var subDocument = _.find(this.devoices, function (devoice) { // @warning: this shouldn't have .devoices populated
-    return !!(devoice.user.toString() === userId);
+    return (devoice.user.toString() === userId);
   });
 
   return (typeof subDocument !== 'undefined');
@@ -152,7 +152,7 @@ roomSchema.methods.isAllowed = function (userId) {
   }
 
   var subDocument = _.find(this.join_mode_allowed, function (allowed) {
-    return !!(allowed.toString() === userId);
+    return (allowed.toString() === userId);
   });
 
   return (typeof subDocument !== 'undefined');
@@ -164,7 +164,7 @@ roomSchema.methods.isIn = function (userId) {
   }
 
   var subDocument = _.find(this.users, function (users) {
-    return !!(users.toString() === userId);
+    return (users.toString() === userId);
   });
 
   return (typeof subDocument !== 'undefined');
@@ -172,7 +172,7 @@ roomSchema.methods.isIn = function (userId) {
 
 roomSchema.methods.validPassword = function (password) {
   return bcrypt.compareSync(password, this.join_mode_password);
-}
+};
 
 roomSchema.methods.getIdsByType = function (type) {
   if (!type || ['all', 'users', 'op', 'allowed', 'regular', 'ban', 'devoice'].indexOf(type) === -1) {
