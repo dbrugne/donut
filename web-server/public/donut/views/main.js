@@ -37,14 +37,14 @@ define([
   'views/modal-room-users',
   'views/mute'
 ], function ($, _, Backbone, i18next, donutDebug, app, client, currentUser, EventModel, rooms, onetoones, templates, windowView,
-  ConnectionModalView, WelcomeModalView,
-  CurrentUserView, AlertView, HomeView,
-  DrawerView,
-  DrawerRoomCreateView, DrawerRoomProfileView, DrawerRoomEditView, DrawerRoomUsersView, DrawerRoomPreferencesView,
-  DrawerRoomDeleteView,
-  DrawerUserProfileView, DrawerUserEditView, DrawerUserPreferencesView, DrawerUserAccountView,
-  RoomView, OneToOneView,
-  DiscussionsBlockView, NotificationsView, ConfirmationView, RoomUsersModalView, MuteView) {
+             ConnectionModalView, WelcomeModalView,
+             CurrentUserView, AlertView, HomeView,
+             DrawerView,
+             DrawerRoomCreateView, DrawerRoomProfileView, DrawerRoomEditView, DrawerRoomUsersView, DrawerRoomPreferencesView,
+             DrawerRoomDeleteView,
+             DrawerUserProfileView, DrawerUserEditView, DrawerUserPreferencesView, DrawerUserAccountView,
+             RoomView, OneToOneView,
+             DiscussionsBlockView, NotificationsView, ConfirmationView, RoomUsersModalView, MuteView) {
   var debug = donutDebug('donut:main');
 
   var MainView = Backbone.View.extend({
@@ -171,9 +171,9 @@ define([
       this.discussionsBlock.redraw();
 
       // Notifications
-      if (data.notifications)
+      if (data.notifications) {
         this.notificationsView.initializeNotificationState(data.notifications);
-
+      }
       this.firstConnection = false;
 
       // set intervaller (set on 'connection')
@@ -215,14 +215,14 @@ define([
       }).addClass('dc-' + color.replace('#', '').toLowerCase());
     },
     color: function (color, temporary, reset) {
-      if (reset)
+      if (reset) {
         return this._color(this.currentColor);
-
+      }
       color = color || this.defaultColor;
 
-      if (!temporary)
+      if (!temporary) {
         this.currentColor = color;
-
+      }
       return this._color(color);
     },
     onChangeColor: function (color, temporary, reset) {
@@ -231,16 +231,17 @@ define([
 
     viewportIs: function (expression) {
       var pattern = /^(<|>|=)(xs|sm|md|lg)$/;
-      if (!pattern.test(expression))
+      if (!pattern.test(expression)) {
         return;
-
+      }
       var matches = expression.match(pattern);
-      if (!matches || !matches[1] || !matches[2])
+      if (!matches || !matches[1] || !matches[2]) {
         return;
-
+      }
       var $root = $('body > .responsive');
-      if (!$root || !$root.length)
+      if (!$root || !$root.length) {
         return;
+      }
       var breakpoints = {
         xs: $root.find('.device-xs').is(':visible'),
         sm: $root.find('.device-sm').is(':visible'),
@@ -256,28 +257,32 @@ define([
       }
 
       if (compare === '>') {
-        if (breakpoint === 'xs')
+        if (breakpoint === 'xs') {
           return ((breakpoints['sm'] || breakpoints['md'] || breakpoints['lg']) && !breakpoints['xs']);
-        else if (breakpoint === 'sm')
+        } else if (breakpoint === 'sm') {
           return ((breakpoints['md'] || breakpoints['lg']) && !breakpoints['sm']);
-        else if (breakpoint === 'md')
+        } else if (breakpoint === 'md') {
           return (breakpoints['lg'] && !breakpoints['md']);
-        else
+        } else {
           return false;
+        }
       } else if (compare === '<') {
-        if (breakpoint === 'lg')
+        if (breakpoint === 'lg') {
           return ((breakpoints['md'] || breakpoints['sm'] || breakpoints['xs']) && !breakpoints['lg']);
-        else if (breakpoint === 'md')
+        } else if (breakpoint === 'md') {
           return ((breakpoints['sm'] || breakpoints['xs']) && !breakpoints['md']);
-        else if (breakpoint === 'sm')
+        } else if (breakpoint === 'sm') {
           return (breakpoints['xs'] && !breakpoints['sm']);
-        else
+        } else {
           return false;
+        }
       }
     },
 
     _handleAction: function (event) {
-      if (!event) return false;
+      if (!event) {
+        return false;
+      }
       event.preventDefault();
       event.stopPropagation();
     },
@@ -293,14 +298,16 @@ define([
       var data = event.data;
       this.focus();
       var message = (what === 'kick') ? i18next.t('chat.kickmessage', {name: data.name}) : i18next.t('chat.banmessage', {name: data.name});
-      if (data.reason)
+      if (data.reason) {
         message += ' ' + i18next.t('chat.reason', {reason: _.escape(data.reason)});
+      }
       app.trigger('alert', 'warning', message);
     },
     roomRoomDeleted: function (data) {
       this.focus();
-      if (data && data.reason)
+      if (data && data.reason) {
         app.trigger('alert', 'warning', data.reason);
+      }
     },
 
     // DRAWERS
@@ -309,7 +316,7 @@ define([
     openCreateRoom: function (event) {
       event.preventDefault();
       var name = $(event.currentTarget).data('name') || '';
-      var view = new DrawerRoomCreateView({ name: name });
+      var view = new DrawerRoomCreateView({name: name});
       this.drawerView.setSize('450px').setView(view).open();
     },
     openUserAccount: function (event) {
@@ -321,38 +328,38 @@ define([
       event.preventDefault();
 
       var userId = $(event.currentTarget).data('userId');
-      if (!userId)
+      if (!userId) {
         return;
-
-      var view = new DrawerUserProfileView({ user_id: userId });
+      }
+      var view = new DrawerUserProfileView({user_id: userId});
       this.drawerView.setSize('380px').setView(view).open();
     },
     openUserProfile: function (data) {
-      var view = new DrawerUserProfileView({ data: data });
+      var view = new DrawerUserProfileView({data: data});
       this.drawerView.setSize('380px').setView(view).open();
     },
     onOpenRoomProfile: function (event) {
       event.preventDefault();
 
       var roomId = $(event.currentTarget).data('roomId');
-      if (!roomId)
+      if (!roomId) {
         return;
-
-      var view = new DrawerRoomProfileView({ room_id: roomId });
+      }
+      var view = new DrawerRoomProfileView({room_id: roomId});
       this.drawerView.setSize('380px').setView(view).open();
     },
     openRoomProfile: function (data) {
-      var view = new DrawerRoomProfileView({ data: data });
+      var view = new DrawerRoomProfileView({data: data});
       this.drawerView.setSize('380px').setView(view).open();
     },
     openRoomEdit: function (event) {
       event.preventDefault();
 
       var roomId = $(event.currentTarget).data('roomId');
-      if (!roomId)
+      if (!roomId) {
         return;
-
-      var view = new DrawerRoomEditView({ name: name,  room_id: roomId});
+      }
+      var view = new DrawerRoomEditView({room_id: roomId});
       this.drawerView.setSize('450px').setView(view).open();
     },
     openRoomUsers: function (event) {
@@ -370,7 +377,7 @@ define([
 
       if (this.viewportIs('>md')) {
         // drawer
-        var view = new DrawerRoomUsersView({ model: model });
+        var view = new DrawerRoomUsersView({model: model});
         this.drawerView.setSize('450px').setView(view).open();
       } else {
         // modal
@@ -390,16 +397,16 @@ define([
         return;
       }
 
-      var view = new DrawerRoomPreferencesView({ model: model });
+      var view = new DrawerRoomPreferencesView({model: model});
       this.drawerView.setSize('450px').setView(view).open();
     },
     openRoomDelete: function (event) {
       event.preventDefault();
       var roomId = $(event.currentTarget).data('roomId');
-      if (!roomId)
+      if (!roomId) {
         return;
-
-      var view = new DrawerRoomDeleteView({ room_id: roomId });
+      }
+      var view = new DrawerRoomDeleteView({room_id: roomId});
       this.drawerView.setSize('450px').setView(view).open();
     },
     openUserEdit: function (event) {
@@ -416,8 +423,8 @@ define([
     // DISCUSSIONS MANAGEMENT
     // ======================================================================
 
-    addView: function (model, collection, options) {
-      var constructor = (model.get('type') == 'room') ? RoomView : OneToOneView;
+    addView: function (model, collection) {
+      var constructor = (model.get('type') === 'room') ? RoomView : OneToOneView;
 
       // create view
       var view = new constructor({
@@ -431,8 +438,8 @@ define([
       // append to DOM
       this.$discussionsPanelsContainer.append(view.$el);
 
-      var identifier = (model.get('type') == 'room') ? model.get('name') : model.get('username');
-      if (this.thisDiscussionShouldBeFocusedOnSuccess == identifier) {
+      var identifier = (model.get('type') === 'room') ? model.get('name') : model.get('username');
+      if (this.thisDiscussionShouldBeFocusedOnSuccess === identifier) {
         this.focus(model);
         this.thisDiscussionShouldBeFocusedOnSuccess = null;
       }
@@ -444,30 +451,30 @@ define([
       this._handleAction(event);
 
       var $target = $(event.currentTarget);
-      if (!$target)
+      if (!$target) {
         return;
-
+      }
       var type = $target.data('type');
       var identifier = $target.data('identifier');
       var model;
       if (type === 'room') {
-        model = rooms.findWhere({ id: identifier });
+        model = rooms.findWhere({id: identifier});
       } else {
-        model = onetoones.findWhere({ user_id: '' + identifier }); // force string to handle fully numeric username
+        model = onetoones.findWhere({user_id: '' + identifier}); // force string to handle fully numeric username
       }
 
-      if (model == undefined)
+      if (typeof model === 'undefined') {
         return debug('close discussion error: unable to find model');
-
+      }
       model.leave(); // trigger a server back and forth, *:leave will remove view from interface
 
       return false; // stop propagation
     },
-    onRemoveDiscussion: function (model, collection, options) {
+    onRemoveDiscussion: function (model) {
       var view = this.views[model.get('id')];
-      if (view === undefined)
+      if (view === undefined) {
         return debug('close discussion error: unable to find view');
-
+      }
       var wasFocused = model.get('focused');
 
       view.removeView();
@@ -476,10 +483,11 @@ define([
       this.persistPositions(true); // warning, this call (will trigger broadcast to all user sockets) could generate weird behavior on discussion block on multi-devices
 
       // Focus default
-      if (wasFocused)
+      if (wasFocused) {
         this.focusHome();
-      else
+      } else {
         this.discussionsBlock.redraw();
+      }
     },
 
     persistPositions: function (silent) {
@@ -488,14 +496,16 @@ define([
       var positions = [];
       this.discussionsBlock.$list.find('a.item').each(function () {
         var identifier = '' + $(this).data('identifier'); // force string to handle fully numeric username
-        if (identifier)
+        if (identifier) {
           positions.push(identifier);
+        }
       });
 
       currentUser.set({positions: positions}, {silent: silent});
       client.userUpdate({positions: positions}, function (data) {
-        if (data.err)
+        if (data.err) {
           debug('error(s) on userUpdate call', data.errors);
+        }
       });
     },
 
@@ -516,7 +526,7 @@ define([
     // FOCUS TAB/PANEL MANAGEMENT
     // ======================================================================
 
-    focusOnSearch: function (event) {
+    focusOnSearch: function () {
       this.focusHome(true);
       this.homeView.searchView.$search
         .focus();
@@ -524,10 +534,10 @@ define([
     },
 
     unfocusAll: function () {
-      rooms.each(function (o, key, list) {
+      rooms.each(function (o) {
         o.set('focused', false);
       });
-      onetoones.each(function (o, key, list) {
+      onetoones.each(function (o) {
         o.set('focused', false);
       });
       this.$home.hide();
@@ -536,12 +546,12 @@ define([
     // called by router only
     focusHome: function (avoidReload) {
       // init view
-      if (!this.homeView)
+      if (!this.homeView) {
         this.homeView = new HomeView({});
-
-      if (avoidReload !== true)
+      }
+      if (avoidReload !== true) {
         client.home();
-
+      }
       this.unfocusAll();
       this.$home.show();
       windowView.setTitle();
@@ -552,15 +562,15 @@ define([
 
     focusRoomByName: function (name) {
       var model = rooms.iwhere('name', name);
-      if (model == undefined) {
+      if (typeof model === 'undefined') {
         // Not already open
         this.thisDiscussionShouldBeFocusedOnSuccess = name;
         var that = this;
         client.roomJoin(null, name, function (response) {
-          if (response.err == 'banned') {
+          if (response.err === 'banned') {
             app.trigger('alert', 'error', i18next.t('chat.bannedfromroom', {name: name}));
             that.focus();
-          } else if (response.err == 'notexists') {
+          } else if (response.err === 'notexists') {
             app.trigger('alert', 'error', i18next.t('chat.roomnotexists', {name: name}));
             that.focus();
           } else if (response.err === 'notallowed') {
@@ -598,17 +608,17 @@ define([
       }
 
       // No discussion provided, take first
-      if (model == undefined) {
+      if (typeof model === 'undefined') {
         model = rooms.first();
-        if (model == undefined) {
+        if (typeof model === 'undefined') {
           model = onetoones.first();
-          if (model == undefined) {
+          if (typeof model === 'undefined') {
             return this.focusHome();
           }
         }
       }
 
-      // Unfocus every model
+      // unfocus every model
       this.unfocusAll();
 
       // Focus the one we want
@@ -616,15 +626,15 @@ define([
       this.discussionsBlock.redraw();
 
       // Change interface color
-      if (model.get('color'))
+      if (model.get('color')) {
         this.color(model.get('color'));
-      else
+      } else {
         this.color(this.defaultColor);
-
+      }
       // Update URL (always!) and page title
       var uri;
       var title;
-      if (model.get('type') == 'room') {
+      if (model.get('type') === 'room') {
         uri = 'room/' + model.get('name').replace('#', '');
         title = model.get('name');
       } else {
@@ -645,11 +655,10 @@ define([
         return;
       }
 
-      var that = this;
-      ConfirmationView.open({}, function () {
+      ConfirmationView.open({}, _.bind(function () {
         client.userBan(userId, null);
         app.trigger('userBan');
-      });
+      }, this));
     },
 
     userDeban: function (event) {
@@ -659,11 +668,11 @@ define([
       if (!userId) {
         return;
       }
-      var that = this;
-      ConfirmationView.open({}, function () {
+
+      ConfirmationView.open({}, _.bind(function () {
         client.userDeban(userId);
         app.trigger('userDeban');
-      });
+      }, this));
 
     }
   });
