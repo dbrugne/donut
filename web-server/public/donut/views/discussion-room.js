@@ -24,8 +24,6 @@ define([
 
     template: templates['discussion-room.html'],
 
-    templateDropdown: templates['dropdown-room-actions.html'],
-
     events: {
       'click .op-user': 'opUser',
       'click .deop-user': 'deopUser',
@@ -48,19 +46,19 @@ define([
       this.render();
 
       this.eventsView = new EventsView({
-        el: this.$el.find('.events'),
+        el: this.$('.events'),
         model: this.model
       });
       this.inputView = new InputView({
-        el: this.$el.find('.input'),
+        el: this.$('.input'),
         model: this.model
       });
       this.topicView = new TopicView({
-        el: this.$el.find('.topic'),
+        el: this.$('.topic'),
         model: this.model
       });
       this.usersView = new UsersView({
-        el: this.$el.find('.side .users'),
+        el: this.$('.side .users'),
         model: this.model,
         collection: this.model.users
       });
@@ -96,7 +94,7 @@ define([
       data.share = this.share.class;
 
       // dropdown
-      data.dropdown = this.templateDropdown({
+      data.dropdown = templates['dropdown-room-actions.html']({
         data: data
       });
 
@@ -104,9 +102,6 @@ define([
       var html = this.template(data);
       this.$el.html(html);
       this.$el.hide();
-
-      // other
-      this.changeColor();
 
       return this;
     },
@@ -133,7 +128,7 @@ define([
         this.hasBeenFocused = true;
 
         // refocus an offline one after few times
-        this.$el.find('.ago span').momentify('fromnow');
+        this.$('.ago span').momentify('fromnow');
       } else {
         this.$el.hide();
       }
@@ -251,13 +246,13 @@ define([
     },
     onAvatar: function (model, value) {
       var url = common.cloudinarySize(value, 100);
-      this.$el.find('.header img.avatar').attr('src', url);
+      this.$('.header img.avatar').attr('src', url);
     },
     onPoster: function (model, url) {
-      this.$el.find('div.side').css('background-image', 'url(' + url + ')');
+      this.$('div.side').css('background-image', 'url(' + url + ')');
     },
     onPosterBlured: function (model, url) {
-      this.$el.find('div.blur').css('background-image', 'url(' + url + ')');
+      this.$('div.blur').css('background-image', 'url(' + url + ')');
     },
 
     /**
