@@ -20,40 +20,38 @@ var handler = Handler.prototype;
 handler.call = function (data, session, next) {
   var that = this;
 
-  if (!data.search)
+  if (!data.search) {
     return;
+  }
 
-  var searchInRooms = (data.rooms && data.rooms == true)
-    ? true
-    : false;
-
-  var searchInUsers = (data.users && data.users == true)
-    ? true
-    : false;
-
-  if (!searchInRooms && !searchInUsers)
+  var searchInRooms = (data.rooms && data.rooms === true);
+  var searchInUsers = (data.users && data.users === true);
+  if (!searchInRooms && !searchInUsers) {
     return;
+  }
 
-  var lightSearch = (data.light && data.light == true)
-    ? true
-    : false;
+  var lightSearch = (data.light && data.light === true);
 
-  var limit = (data.limit)
-    ? data.limit
-    : 150;
+  var limit = (data.limit) ?
+    data.limit :
+    150;
 
-  var search = diacritic2ascii(data.search).replace(/([@#])/g, ''); // remove @ and #
+  // remove diacritic, @ and #
+  var search = data.search;
+  search = search.replace(/([@#])/g, '');
+  search = diacritic2ascii(search);
   var _regexp = common.regExpBuildContains(search);
 
   async.parallel([
 
     function roomSearch (callback) {
-      if (!searchInRooms)
+      if (!searchInRooms) {
         return callback(null, false);
+      }
 
       var search = {
         name: _regexp,
-        deleted: { $ne: true }
+        deleted: {$ne: true}
       };
 
       var q;
@@ -70,22 +68,23 @@ handler.call = function (data, session, next) {
           .limit(limit + 1);
       }
       q.exec(function (err, rooms) {
-        if (err)
-          return callback('Error while searching for rooms: ' + err);
+        if (err) {
+          return callback(err);
+        }
 
         var results = [];
         _.each(rooms, function (room) {
           var owner = {};
-          if (room.owner != undefined) {
+          if (room.owner !== undefined) {
             owner = {
               user_id: room.owner.id,
               username: room.owner.username
             };
           }
 
-          var count = (room.users)
-            ? room.users.length
-            : 0;
+          var count = (room.users) ?
+            room.users.length :
+            0;
 
           var r = {
             name: room.name,
@@ -107,23 +106,27 @@ handler.call = function (data, session, next) {
 
         // sort (users, lastjoin_at, name)
         results.sort(function (a, b) {
-          if (a.users != b.users)
-            return (b.users - a.users); // b - a == descending
+          if (a.users !== b.users) {
+            // b - a == descending
+            return (b.users - a.users);
+          }
 
-          if (a.lastjoin_at != b.lastjoin_at)
-            return (b.lastjoin_at - a.lastjoin_at); // b - a == descending
+          if (a.lastjoin_at !== b.lastjoin_at) {
+            // b - a == descending
+            return (b.lastjoin_at - a.lastjoin_at);
+          }
 
           return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
         });
 
         return callback(null, results);
       });
-
     },
 
     function userSearch (callback) {
-      if (!searchInUsers)
+      if (!searchInUsers) {
         return callback(null, false);
+      }
 
       var search = {
         username: _regexp
@@ -133,8 +136,9 @@ handler.call = function (data, session, next) {
       q.sort({'lastonline_at': -1, 'lastoffline_at': -1})
         .limit(limit + 1);
       q.exec(function (err, users) {
-        if (err)
-          return callback('Error while searching for users: ' + err);
+        if (err) {
+          return callback(err);
+        }
 
         var list = [];
         _.each(users, function (user) {
@@ -152,28 +156,30 @@ handler.call = function (data, session, next) {
         if (lightSearch) {
           return callback(null, list);
         } else {
-          var uids = _.map(list, function (u) { return u.user_id; });
+          var uids = _.map(list, function (u) {
+            return u.user_id;
+          });
           that.app.statusService.getStatusByUids(uids, function (err, results) {
-            if (err)
-              return callback('Error while retrieving user status: ' + err);
+            if (err) {
+              return callback(err);
+            }
 
             _.each(list, function (element, index, _list) {
-              _list[index].status = (results[element.user_id])
-                ? 'online'
-                : 'offline';
+              _list[index].status = (results[element.user_id]) ?
+                'online' :
+                'offline';
             });
 
             return callback(null, list);
           });
         }
       });
-
     }
 
   ], function (err, results) {
     if (err) {
       logger('[search] ' + err);
-      return next(null, { code: 500, err: err });
+      return next(null, {code: 500, err: err});
     }
 
     var event = {};
@@ -207,7 +213,5 @@ handler.call = function (data, session, next) {
     }
 
     return next(null, event);
-  }
-  );
-
+  });
 };
