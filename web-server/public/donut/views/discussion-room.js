@@ -28,19 +28,27 @@ define([
       'click .share .twitter': 'shareTwitter',
       'click .share .googleplus': 'shareGoogle'
     },
+
     _initialize: function () {
       this.listenTo(this.model, 'change:avatar', this.onAvatar);
       this.listenTo(this.model, 'change:poster', this.onPoster);
       this.listenTo(this.model, 'change:posterblured', this.onPosterBlured);
       this.listenTo(this.model, 'change:color', this.onColor);
 
-      this.topicView = new TopicView({el: this.$el.find('.topic'), model: this.model});
-      this.usersView = new UsersView({el: this.$el.find('.side .users'), model: this.model, collection: this.model.users});
+      this.topicView = new TopicView({
+        el: this.$el.find('.topic'),
+        model: this.model
+      });
+      this.usersView = new UsersView({
+        el: this.$el.find('.side .users'),
+        model: this.model,
+        collection: this.model.users
+      });
 
       // color
       this.colorify();
     },
-    _remove: function (model) {
+    _remove: function () {
       this.stopListening();
       this.topicView._remove();
       this.usersView._remove();
@@ -77,9 +85,12 @@ define([
 
       return data;
     },
-    _render: function () {},
-    _focus: function () {},
-    _unfocus: function () {},
+    _render: function () {
+    },
+    _focus: function () {
+    },
+    _unfocus: function () {
+    },
     _firstFocus: function () {
       this.model.fetchUsers();
     },
@@ -96,13 +107,13 @@ define([
 
     opUser: function (event) {
       event.preventDefault();
-      if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin())
+      if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin()) {
         return false;
-
+      }
       var userId = $(event.currentTarget).data('userId');
-      if (!userId)
+      if (!userId) {
         return;
-
+      }
       var that = this;
       confirmationView.open({}, function () {
         client.roomOp(that.model.get('id'), userId, null);
@@ -110,13 +121,13 @@ define([
     },
     deopUser: function (event) {
       event.preventDefault();
-      if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin())
+      if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin()) {
         return false;
-
+      }
       var userId = $(event.currentTarget).data('userId');
-      if (!userId)
+      if (!userId) {
         return;
-
+      }
       var that = this;
       confirmationView.open({}, function () {
         client.roomDeop(that.model.get('id'), userId, null);
@@ -124,54 +135,56 @@ define([
     },
     kickUser: function (event) {
       event.preventDefault();
-      if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin())
+      if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin()) {
         return false;
-
+      }
       var userId = $(event.currentTarget).data('userId');
-      if (!userId)
+      if (!userId) {
         return;
-
+      }
       var that = this;
-      confirmationView.open({ input: true }, function (reason) {
+      confirmationView.open({input: true}, function (reason) {
         client.roomKick(that.model.get('id'), userId, null, reason);
       });
     },
     banUser: function (event) {
       event.preventDefault();
-      if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin())
+      if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin()) {
         return false;
-
+      }
       var userId = $(event.currentTarget).data('userId');
-      if (!userId)
+      if (!userId) {
         return;
-
+      }
       var that = this;
-      confirmationView.open({ input: true }, function (reason) {
+      confirmationView.open({input: true}, function (reason) {
         client.roomBan(that.model.get('id'), userId, null, reason);
       });
     },
     voiceUser: function (event) {
       event.preventDefault();
-      if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin())
+      if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin()) {
         return false;
-
+      }
       var userId = $(event.currentTarget).data('userId');
-      if (!userId)
+      if (!userId) {
         return;
-
+      }
       client.roomVoice(this.model.get('id'), userId, null);
     },
     devoiceUser: function (event) {
       event.preventDefault();
-      if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin())
+      if (!this.model.currentUserIsOp() &&
+        !this.model.currentUserIsOwner() &&
+        !this.model.currentUserIsAdmin()) {
         return false;
-
+      }
       var userId = $(event.currentTarget).data('userId');
-      if (!userId)
+      if (!userId) {
         return;
-
+      }
       var that = this;
-      confirmationView.open({ input: true }, function (reason) {
+      confirmationView.open({input: true}, function (reason) {
         client.roomDevoice(that.model.get('id'), userId, null, reason);
       });
     },
@@ -186,14 +199,14 @@ define([
       this.onPosterBlured(model, model.get('posterblured'), options);
       this.colorify();
     },
-    onAvatar: function (model, value, options) {
+    onAvatar: function (model, value) {
       var url = common.cloudinarySize(value, 100);
       this.$el.find('.header img.avatar').attr('src', url);
     },
-    onPoster: function (model, url, options) {
+    onPoster: function (model, url) {
       this.$el.find('div.side').css('background-image', 'url(' + url + ')');
     },
-    onPosterBlured: function (model, url, options) {
+    onPosterBlured: function (model, url) {
       this.$el.find('div.blur').css('background-image', 'url(' + url + ')');
     },
 
@@ -203,15 +216,15 @@ define([
     shareFacebook: function () {
       $.socialify.facebook({
         url: this.model.getUrl(),
-        name: i18next.t('chat.share.title', { name: this.model.get('name') }),
+        name: i18next.t('chat.share.title', {name: this.model.get('name')}),
         picture: common.cloudinarySize(this.model.get('avatar'), 350),
-        description: i18next.t('chat.share.description', { name: this.model.get('name') })
+        description: i18next.t('chat.share.description', {name: this.model.get('name')})
       });
     },
     shareTwitter: function () {
       $.socialify.twitter({
         url: this.model.getUrl(),
-        text: i18next.t('chat.share.description', { name: this.model.get('name') })
+        text: i18next.t('chat.share.description', {name: this.model.get('name')})
       });
     },
     shareGoogle: function () {
