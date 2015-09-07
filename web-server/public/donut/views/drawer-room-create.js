@@ -3,12 +3,13 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'i18next',
   'models/app',
   'client',
   '_templates'
-], function ($, _, Backbone, app, client, _templates) {
+], function ($, _, Backbone, i18next, app, client, templates) {
   var DrawerRoomCreateView = Backbone.View.extend({
-    template: _templates['drawer-room-create.html'],
+    template: templates['drawer-room-create.html'],
 
     id: 'room-create',
 
@@ -82,19 +83,19 @@ define([
       var that = this;
       client.roomCreate(name, opts, function (response) {
         if (response.err == 'alreadyexists') {
-          app.trigger('alert', 'error', $.t('chat.alreadyexists', {name: name, uri: uri}));
+          app.trigger('alert', 'error', i18next.t('chat.alreadyexists', {name: name, uri: uri}));
           that.reset();
           that.trigger('close');
           return;
         } else if (response.err) {
-          app.trigger('alert', 'error', $.t('global.unknownerror'));
+          app.trigger('alert', 'error', i18next.t('global.unknownerror'));
           that.reset();
           that.trigger('close');
           return;
         }
 
         window.router.navigate(uri, {trigger: true});
-        app.trigger('alert', 'info', $.t('chat.successfullycreated', {name: name}));
+        app.trigger('alert', 'info', i18next.t('chat.successfullycreated', {name: name}));
         that.reset();
         that.trigger('close');
       });

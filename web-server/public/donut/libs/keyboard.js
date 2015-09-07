@@ -17,8 +17,8 @@ define([
     END: 35
   };
 
-  keyboard._getLastKeyCode = function () {
-    var e = window.event || event;
+  keyboard._getLastKeyCode = function (event) {
+    var e = event || window.event;
     return {
       key: e.which,
       isShift: !!e.shiftKey,

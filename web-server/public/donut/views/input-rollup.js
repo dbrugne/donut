@@ -43,7 +43,7 @@ define([
     },
 
     onKeyDown: function (event) {
-      var data = keyboard._getLastKeyCode();
+      var data = keyboard._getLastKeyCode(event);
 
       if (!this.isClosed()) {
         // Avoid setting cursor at end or start of tab input when pressing up or down (used to navigate)
@@ -64,10 +64,11 @@ define([
     },
 
     onKeyUp: function (event) {
-      if (event.type != 'keyup')
+      if (event.type != 'keyup') {
         return;
+      }
 
-      var data = keyboard._getLastKeyCode();
+      var data = keyboard._getLastKeyCode(event);
       var message = this.$editable.val();
 
       if (this.isClosed()) {

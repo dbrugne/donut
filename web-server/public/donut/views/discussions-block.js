@@ -3,13 +3,14 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'i18next',
   'models/app',
   'common',
   'collections/rooms',
   'collections/onetoones',
   'models/current-user',
   '_templates'
-], function ($, _, Backbone, app, common, rooms, onetoones, currentUser, templates) {
+], function ($, _, Backbone, i18next, app, common, rooms, onetoones, currentUser, templates) {
   var DiscussionBlockView = Backbone.View.extend({
     el: $('#block-discussions'),
 
@@ -31,7 +32,7 @@ define([
       // @doc: https://github.com/voidberg/html5sortable
       this.$list.sortable({
         forcePlaceholderSize: true, // if true, forces the placeholder to have a height
-        placeholder: '<div class="placeholder">' + $.t('chat.placeholder') + '</div>'
+        placeholder: '<div class="placeholder">' + i18next.t('chat.placeholder') + '</div>'
       });
 
       var that = this;

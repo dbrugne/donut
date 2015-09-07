@@ -3,12 +3,13 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'i18next',
   'common',
   'client',
   'views/discussion',
   'views/modal-confirmation',
   '_templates'
-], function ($, _, Backbone, common, client, DiscussionView, confirmationView, templates) {
+], function ($, _, Backbone, i18next, common, client, DiscussionView, confirmationView, templates) {
   var OneToOnePanelView = DiscussionView.extend({
     template: templates['discussion-onetoone.html'],
     templateDropdown: templates['dropdown-one-actions.html'],
@@ -75,13 +76,13 @@ define([
     },
     onStatus: function () {
       if (this.model.get('status') === 'online') {
-        this.$el.find('.header .status-block em').text($.t('global.online'));
+        this.$el.find('.header .status-block em').text(i18next.t('global.online'));
         this.$el.find('.header .status')
           .removeClass('offline online')
           .addClass('online');
         this.$el.find('.ago').hide();
       } else {
-        this.$el.find('.header .status-block em').text($.t('global.offline'));
+        this.$el.find('.header .status-block em').text(i18next.t('global.offline'));
         this.$el.find('.header .status')
           .removeClass('offline online')
           .addClass('offline');

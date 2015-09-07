@@ -3,12 +3,13 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'i18next',
   'client',
   'models/current-user',
   'models/room',
   'models/user',
   'models/event'
-], function ($, _, Backbone, client, currentUser, RoomModel, UserModel, EventModel) {
+], function ($, _, Backbone, i18next, client, currentUser, RoomModel, UserModel, EventModel) {
   var RoomsCollection = Backbone.Collection.extend({
     iwhere: function (key, val) { // insencitive case search
       var matches = this.filter(function (item) {
@@ -250,7 +251,7 @@ define([
       this.remove(model);
 
       if (data.reason && data.reason === 'deleted') {
-        this.trigger('deleted', {reason: $.t('chat.deletemessage', {name: data.name})});
+        this.trigger('deleted', {reason: i18next.t('chat.deletemessage', {name: data.name})});
       }
     },
     onViewed: function (data) {
