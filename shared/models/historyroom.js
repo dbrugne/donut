@@ -137,7 +137,7 @@ historySchema.statics.retrieve = function () {
    * @param fn
    */
   return function (roomId, userId, what, fn) {
-    if (what.mode_history === 'none' && !what.isAdmin) {
+    if (what.mode_history === 'none') {
       fn(null, null);
     }
 
@@ -146,7 +146,7 @@ historySchema.statics.retrieve = function () {
       room: roomId
     };
 
-    if (!what.isAdmin || what.mode_history === 'joined') {
+    if (what.mode_history === 'joined') {
       criteria.users = { $in: [userId] };
     }
 

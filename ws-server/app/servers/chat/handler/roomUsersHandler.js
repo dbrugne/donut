@@ -42,6 +42,10 @@ handler.call = function (data, session, next) {
         return callback('room_id is mandatory');
       }
 
+      if (!data.attributes) {
+        return callback('attributes is mandatory');
+      }
+
       if (!data.attributes.type) {
         return callback('attributes.type is mandatory');
       }
