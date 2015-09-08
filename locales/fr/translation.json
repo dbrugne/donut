@@ -99,8 +99,6 @@
     "password-placeholder": "votre mot de passe",
     "confirm-placeholder": "confirmer le mot de passe",
     "username-placeholder": "choisissez un nom d'utilisateur",
-    "createanaccount1": "Créer un compte,",
-    "createanaccount2": "c'est gratuit",
     "emailerror": "Votre adresse e-mail n'est pas valide",
     "passworderror": "Vous avez oublié de saisir votre mot de passe"
   },
@@ -283,22 +281,10 @@
     },
     "description": {
       "title1": "tasty",
-      "title2": "chatrooms",
-      "definition": "Un donut est un espace convivial de discussion<br> instantanée, un salon de discussion,<br> une chat room en fait !",
-      "line1": "Vous pouvez créer votre donut personnalisé et retrouver votre communauté ...",
-      "line2": "... ou vous joindre aux discussions en cours autour de vos centres d'intérêt ...",
-      "line3": "... et découvrir des gens qui vous ressemblent, au cours de véritables conversations !"
+      "title2": "chatrooms"
     },
     "signup": {
-      "title1": "Créez un compte",
-      "title2": "en 1 bouchée",
       "etvoila": "et voilà !"
-    },
-    "footer": {
-      "faq": "FAQ",
-      "eutc": "Conditions d'utilisations",
-      "legals": "Mentions légales",
-      "contact": "Contact"
     }
   },
   "logged": {
