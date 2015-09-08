@@ -14,6 +14,8 @@ define([
 
     op: false,
 
+    users: [],
+
     events: {
       'click .op': 'opUser',
       'click .deop': 'deopUser',
@@ -21,7 +23,7 @@ define([
       'click .ban': 'banUser',
       'click .deban': 'debanUser',
       'click .voice': 'voiceUser',
-      'click .devoice': 'voiceUser'
+      'click .devoice': 'devoiceUser'
     },
 
     initialize: function (options) {
@@ -33,6 +35,8 @@ define([
     },
 
     render: function (users) {
+      this.users = users;
+
       _.each(users, function (element, index, list) {
         list[index].avatarUrl = common.cloudinarySize(element.avatar, 20);
       });
@@ -54,7 +58,13 @@ define([
       var that = this;
       confirmationView.open({}, function () {
         client.roomOp(that.model.get('id'), userId, null);
-        that.render();
+        that.users = _.map(that.users, function (u) {
+          if (u.user_id === userId) {
+            u.isOp = true;
+          }
+          return (u);
+        });
+        that.render(that.users);
       });
     },
     deopUser: function (event) {
@@ -71,7 +81,13 @@ define([
       var that = this;
       confirmationView.open({}, function () {
         client.roomDeop(that.model.get('id'), userId, null);
-        that.render();
+        that.users = _.map(that.users, function (u) {
+          if (u.user_id === userId) {
+            u.isOp = false;
+          }
+          return (u);
+        });
+        that.render(that.users);
       });
     },
     kickUser: function (event) {
@@ -88,7 +104,12 @@ define([
       var that = this;
       confirmationView.open({ input: true }, function (reason) {
         client.roomKick(that.model.get('id'), userId, null, reason);
-        that.render();
+        that.users = _.filter(that.users, function (u) {
+          if (u.user_id !== userId) {
+            return (u);
+          }
+        });
+        that.render(that.users);
       });
     },
     banUser: function (event) {
@@ -105,7 +126,13 @@ define([
       var that = this;
       confirmationView.open({ input: true }, function (reason) {
         client.roomBan(that.model.get('id'), userId, null, reason);
-        that.render();
+        that.users = _.map(that.users, function (u) {
+          if (u.user_id === userId) {
+            u.isBanned = true;
+          }
+          return (u);
+        });
+        that.render(that.users);
       });
     },
     debanUser: function (event) {
@@ -122,7 +149,13 @@ define([
       var that = this;
       confirmationView.open({}, function () {
         client.roomDeban(that.model.get('id'), userId, null);
-        that.render();
+        that.users = _.map(that.users, function (u) {
+          if (u.user_id === userId) {
+            u.isBanned = false;
+          }
+          return (u);
+        });
+        that.render(that.users);
       });
     },
     voiceUser: function (event) {
@@ -139,7 +172,13 @@ define([
       var that = this;
       confirmationView.open({}, function () {
         client.roomVoice(that.model.get('id'), userId, null);
-        that.render();
+        that.users = _.map(that.users, function (u) {
+          if (u.user_id === userId) {
+            u.isDevoiced = false;
+          }
+          return (u);
+        });
+        that.render(that.users);
       });
     },
     devoiceUser: function (event) {
@@ -156,7 +195,13 @@ define([
       var that = this;
       confirmationView.open({}, function () {
         client.roomDevoice(that.model.get('id'), userId, null);
-        that.render();
+        that.users = _.map(that.users, function (u) {
+          if (u.user_id === userId) {
+            u.isDevoiced = true;
+          }
+          return (u);
+        });
+        that.render(that.users);
       });
     }
   });

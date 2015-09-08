@@ -44,7 +44,7 @@ handler.call = function (data, session, next) {
         return callback('user ' + kickedUser.username + ' is owner of ' + room.name);
 
       if (room.users.indexOf(kickedUser.id) === -1)
-        return callback("can't kick user " + user.username + ' that is not actually in the room: ' + data.name);
+        return callback("can't kick user " + kickedUser.username + ' that is not actually in the room: ' + room.name);
 
       return callback(null);
     },

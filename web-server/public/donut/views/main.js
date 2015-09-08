@@ -34,7 +34,6 @@ define([
   'views/discussions-block',
   'views/notifications',
   'views/modal-confirmation',
-  'views/modal-room-users',
   'views/mute'
 ], function ($, _, Backbone, i18next, donutDebug, app, client, currentUser, EventModel, rooms, onetoones, templates, windowView,
              ConnectionModalView, WelcomeModalView,
@@ -44,7 +43,7 @@ define([
              DrawerRoomDeleteView,
              DrawerUserProfileView, DrawerUserEditView, DrawerUserPreferencesView, DrawerUserAccountView,
              RoomView, OneToOneView,
-             DiscussionsBlockView, NotificationsView, ConfirmationView, RoomUsersModalView, MuteView) {
+             DiscussionsBlockView, NotificationsView, ConfirmationView, MuteView) {
   var debug = donutDebug('donut:main');
 
   var MainView = Backbone.View.extend({
@@ -114,7 +113,6 @@ define([
       this.welcomeView = new WelcomeModalView();
       this.notificationsView = new NotificationsView();
       this.muteView = new MuteView();
-      this.roomUsersView = new RoomUsersModalView();
 
       // @debug
       window.current = currentUser;
@@ -375,14 +373,8 @@ define([
         return;
       }
 
-      if (this.viewportIs('>md')) {
-        // drawer
-        var view = new DrawerRoomUsersView({model: model});
-        this.drawerView.setSize('450px').setView(view).open();
-      } else {
-        // modal
-        this.roomUsersView.show(model);
-      }
+      var view = new DrawerRoomUsersView({model: model});
+      this.drawerView.setSize('450px').setView(view).open();
     },
     openRoomPreferences: function (event) {
       event.preventDefault();
