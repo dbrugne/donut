@@ -7,6 +7,7 @@ var Room = require('../../../shared/models/room');
 var i18next = require('../../../shared/util/i18next');
 var conf = require('../../../config/index');
 var common = require('@dbrugne/donut-common');
+var underscoreTemplate = require('../../../shared/util/underscoreTemplate');
 
 router.get('/', [require('csurf')()], function (req, res) {
   var logged = req.isAuthenticated();
@@ -24,6 +25,7 @@ router.get('/', [require('csurf')()], function (req, res) {
 
   var CACHE_NUMBER = 10;
   var rooms = [];
+  var results = '';
 
   async.waterfall([
 
@@ -82,6 +84,27 @@ router.get('/', [require('csurf')()], function (req, res) {
         room.avatar = common.cloudinarySize(room.avatar, 135);
       });
       return callback(null);
+    },
+
+    function renderTemplate (callback) {
+      var renderer = underscoreTemplate.standard({
+        defaultVariables: {
+          t: i18next.t
+        }
+      });
+
+      var data = {
+        title: false,   // display title
+        rooms: rooms,   // rooms to display
+        replace: true,  // replace content
+        search: false,  // display search querry
+        more: false     // display more button
+      };
+
+      renderer.render('../public/donut/templates/rooms-cards.html', data, function (err, html) {
+        results = html;
+        return callback(err);
+      });
     }
 
   ], function (err) {
@@ -96,7 +119,9 @@ router.get('/', [require('csurf')()], function (req, res) {
       logged: logged,
       rooms: rooms,
       title: false,
-      search: false
+      search: false,
+      results: results,
+      more: false
     });
   });
 });

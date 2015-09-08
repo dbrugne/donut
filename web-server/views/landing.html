@@ -2,7 +2,7 @@
 <body>
 <div id="landing" class="flex-parent column">
     <div class="header">
-
+        <input type="hidden" id="last-search" value="" />
         <nav class="navbar">
             <!--Header responsive-->
             <div class="visible-xs visible-sm mini-header">
@@ -169,10 +169,10 @@
         </div>
         <div class="results">
             <div class="rooms cards">
-                <div class="list ">
-                    <%- partial('rooms-cards') %>
-                </div>
+                <%= results %>
             </div>
+            <% visibility = (more && more === true) ? '' : 'hidden' %>
+            <button class="load-more button center-block mt20 mb20 <%= visibility %>"><%= t('landing.loadmore') %></button>
         </div>
     </div>
 

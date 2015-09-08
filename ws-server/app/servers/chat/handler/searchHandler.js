@@ -29,7 +29,11 @@ handler.call = function (data, session, next) {
     data.limit :
     150;
 
-  search(data.search, searchInUsers, searchInRooms, limit, lightSearch, function (err, results) {
+  var skip = (data.skip) ?
+    data.skip :
+    0;
+
+  search(data.search, searchInUsers, searchInRooms, limit, skip, lightSearch, function (err, results) {
     if (err) {
       logger('[search] ' + err);
       return next(null, { code: 500, err: err });

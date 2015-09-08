@@ -1,12 +1,14 @@
-<div class="list <% if (typeof(search) !== 'undefined' && search == true) { %>search<% } %>">
-    <% if (title) { %>
-        <div class="title">
-            <% if (search == true) { %><%= t('chat.search.roomstitle') %><% } else { %><%= t('chat.home.roomstitle') %><% } %>
-        </div>
-    <% } %>
-    <% if (rooms.length < 1) { %>
-        <div class="nothing mt20 mb20"><%= t('chat.search.noroom') %></div>
-    <% } %>
+<% if (replace) { %>
+    <div class="list <% if (typeof(search) !== 'undefined' && search == true) { %>search<% } %>">
+        <% if (title) { %>
+            <div class="title flex-child alone">
+                <% if (search == true) { %><%= t('chat.search.roomstitle') %><% } else { %><%= t('chat.home.roomstitle') %><% } %>
+            </div>
+        <% } %>
+        <% if (rooms.length < 1) { %>
+            <div class="nothing mt20 mb20"><%= t('chat.search.noroom') %></div>
+        <% } %>
+<% } %>
 
     <% _.each(rooms, function(room) { %>
         <div class="room dc-i-<%= room.color.replace('#', '').toLowerCase() %>">
@@ -44,4 +46,6 @@
         </div>
     <% }); %>
 
-</div>
+<% if (replace) { %>
+    </div>
+<% } %>

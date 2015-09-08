@@ -105,12 +105,15 @@ define([
         }
       );
     },
-    search: function (search, rooms, users, limit, light, callback) {
+    search: function (search, rooms, users, limit, skip, light, callback) {
       var data = {
         search: search, // string to search for
         limit: (limit)
           ? limit
           : 100,
+        skip: (skip)  // If the serach should skip n first items
+          ? skip
+          : 0,
         light: (light) // if the search should return a light version of results or not
           ? true
           : false,

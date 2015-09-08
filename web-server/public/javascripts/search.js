@@ -11,7 +11,9 @@ define([
 
     template: _.template(htmlTemplate),
 
-    initialize: function (options) { },
+    initialize: function (options) {
+      this.$searchMore = this.$el.parents('.results').find('.load-more');
+    },
 
     render: function (data) {
       var rooms = [];
@@ -23,10 +25,23 @@ define([
       var html = this.template({
         rooms: data.rooms,
         title: false,
-        search: data.search
+        search: data.search,
+        more: data.more,
+        replace: data.replace
       });
 
-      this.$el.html(html);
+      if (data.replace) {
+        this.$el.html(html);
+      } else {
+        this.$el.find('.list').append(html);
+      }
+
+      if (data.more) {
+        this.$searchMore.removeClass('hidden');
+      } else {
+        this.$searchMore.addClass('hidden');
+      }
+      
       return this;
     }
   });

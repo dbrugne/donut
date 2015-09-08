@@ -192,21 +192,29 @@ define([
 
       var that = this;
 
-      if (prefix === '#')
-        client.search(search, true, false, 15, false, function (data) {
+      if (prefix === '#') {
+        client.search(search, true, false, 15, 0, false, function (data) {
           _.each(data.rooms.list, function (d) {
             d.avatarUrl = common.cloudinarySize(d.avatar);
           });
-          that.$rollup.html(that.template({ type: 'rooms', results: data.rooms.list }));
+          that.$rollup.html(that.template({
+            type: 'rooms',
+            results: data.rooms.list
+          }));
         });
+      }
 
-      if (prefix === '@')
-        client.search(search, false, true, 15, false, function (data) {
+      if (prefix === '@') {
+        client.search(search, false, true, 15, 0, false, function (data) {
           _.each(data.users.list, function (d) {
             d.avatarUrl = common.cloudinarySize(d.avatar);
           });
-          that.$rollup.html(that.template({ type: 'users', results: data.users.list }));
+          that.$rollup.html(that.template({
+            type: 'users',
+            results: data.users.list
+          }));
         });
+      }
     },
     _computeNewValue: function (replaceValue) { // @michel
       var oldValue = this.$editable.val(); // #LeagueofLegend @mich #donut

@@ -59,27 +59,45 @@ require([
       delay: 5000,
       delay_animation: 900
     });
+    var limit = 20; // default limit on landing page (1st load)
 
-    var searchFunction = function (search) {
-      $.ajax('https://donut.local/rest/search?q=' + search, { // @yls todo clean search
-        success: function () {
+    var searchFunction = function (search, skip, replace) {
+      $.ajax('https://donut.local/rest/search?limit=' + limit + '&skip=' + skip + '&q=' + search, {
+        success: function (response) {
           that.searchView.render({
-            rooms: arguments[0].rooms.list,
+            rooms: (
+              response.rooms && response.rooms.list ?
+                response.rooms.list :
+                []
+            ),
             title: false,
-            search: false
+            search: false,
+            more: true,
+            replace: replace
           });
         }
       });
     };
 
-    $('#landing .searchbar .action-search').click(function (e) {
-      var search = $('#landing .searchbar input').val();
-      searchFunction(search);
+    // Click load more button
+    $('#landing').find('.load-more').click(function (e) {
+      var search = $('#landing #search-field').val();
+      var skip = $('#landing .ctn-results .results .rooms .list .room').length || 0;
+      searchFunction(search, skip, false);
     });
-    $('#landing .form-search').submit(function (e) {
+
+    // click search button (responsive)
+    $('#landing')
+      .find('.searchbar .action-search').click(function (e) {
+        var search = $('#landing .searchbar input').val();
+        searchFunction(search, 0, true);
+      });
+
+    // submit form (search results) on non responsive
+    $('#landing').find('.form-search').submit(function (e) {
       var search = $('#landing #search-field').val();
       e.preventDefault();
-      searchFunction(search);
+      searchFunction(search, 0, true);
     });
   }
 

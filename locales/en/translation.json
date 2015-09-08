@@ -12,7 +12,8 @@
     "username-placeholder": "Username",
     "email-placeholder": "Mail",
     "password-placeholder": "Password",
-    "yourinterests": "What are your interests ?"
+    "yourinterests": "What are your interests ?",
+    "loadmore": "Load more results"
   },
   "title": {
     "default": "DONUT is made for you to chat about your interests and engage your communities!",
