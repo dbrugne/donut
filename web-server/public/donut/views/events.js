@@ -289,7 +289,7 @@ define([
     },
     _isElementFullyVisibleInViewport: function (topLimit, bottomLimit, $e) {
       var elementTop = $e.offset().top;
-      var elementBottom = elementTop + $e.outerHeight();
+      var elementBottom = elementTop + $e.outerHeight() - 10; // accept a 10 px margin
 
       var v = '';
       if (elementTop <= topLimit && elementBottom >= bottomLimit) {
