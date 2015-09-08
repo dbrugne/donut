@@ -1,6 +1,6 @@
 'use strict';
 var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
-var featuredRooms = require('../../../util/featuredRooms');
+var featuredRooms = require('../../../../../shared/util/featuredRooms');
 
 module.exports = function (data) {
   logger.trace('[schedule:featuredRooms] starting');

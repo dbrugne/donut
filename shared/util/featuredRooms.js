@@ -1,10 +1,10 @@
 'use strict';
-var logger = require('../../pomelo-logger').getLogger('donut', __filename);
+var debug = require('debug')('donut:featured');
 var async = require('async');
 var _ = require('underscore');
-var redis = require('../../../shared/io/redis');
+var redis = require('../io/redis');
 var redisScan = require('redisscan');
-var Room = require('../../../shared/models/room');
+var Room = require('../models/room');
 
 /**
  * Retrieve 'hot rooms' data to show on homepage and welcome popin:
@@ -26,19 +26,19 @@ var retriever = function (app, fn) {
   // available list in cache?
   redis.get(CACHE_KEY, function (err, result) {
     if (err) {
-      logger.error('Error while retrieving cache: ' + err);
+      debug('Error while retrieving cache: ' + err);
     }
 
     try {
       var roomsData = JSON.parse(result);
       if (_.isArray(roomsData) && roomsData.length > 0) {
-        logger.trace('Get featured from cache');
+        debug('Get featured from cache');
         return fn(null, roomsData);
       } else {
         retrieve();
       }
     } catch (e) {
-      logger.error('Error while parsing cache: ', e);
+      debug('Error while parsing cache: ', e);
       retrieve();
     }
   });
@@ -167,6 +167,10 @@ var retriever = function (app, fn) {
       },
 
       function onlines (roomsData, callback) {
+        if (!app) {
+          // skip ws platform requesting if app is null (happen when called from express)
+          return callback(null, roomsData);
+        }
         var parallels = [];
         _.each(roomsData, function (room) {
           parallels.push(function (then) {
@@ -204,10 +208,10 @@ var retriever = function (app, fn) {
         multi.expire(CACHE_KEY, CACHE_TTL);
         multi.exec(function (err) {
           if (err) {
-            logger.error('Error while storing featured in cache: ' + err);
+            debug('Error while storing featured in cache: ' + err);
           }
 
-          logger.trace('Stored featured in cache');
+          debug('Stored featured in cache');
           return callback(null, roomsData);
         });
       }
