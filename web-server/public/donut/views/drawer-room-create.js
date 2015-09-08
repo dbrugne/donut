@@ -138,7 +138,7 @@ define([
     createError: function (dataErrors) {
       var message = '';
       _.each(dataErrors.err, function (error) {
-        message += $.t('form.errors.' + error) + '<br>';
+        message += $.t('chat.room-form.errors.' + error) + '<br>';
       });
       this.$el.find('.errors').html(message).show();
     }
