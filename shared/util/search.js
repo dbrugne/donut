@@ -74,7 +74,7 @@ module.exports = function (search, searchInUsers, searchInRooms, limit, lightSea
         var results = [];
         _.each(rooms, function (room) {
           var owner = {};
-          if (room.owner !== undefined) {
+          if (room.owner) {
             owner = {
               user_id: room.owner.id,
               username: room.owner.username
