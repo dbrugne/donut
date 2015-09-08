@@ -301,7 +301,7 @@ define([
     },
     fetchUsers: function (callback) {
       var that = this;
-      client.roomUsers(this.get('id'), {type: 'users'}, function (data) {
+      client.roomUsers(this.get('id'), {type: 'online'}, function (data) {
         that.users.reset();
 
         _.each(data.users, function (element, key, list) {
