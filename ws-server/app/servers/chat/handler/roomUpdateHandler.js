@@ -116,10 +116,10 @@ handler.call = function (data, session, next) {
         }
 
         // options (join_mode)
-        if (_.has(data.data.opts, 'join_mode')) {
-          var join_mode = data.data.opts.join_mode;
+        if (_.has(data.data, 'join_mode')) {
+          var join_mode = data.data.join_mode;
           if (join_mode === 'password') {
-            var join_mode_password = data.data.opts.join_mode_password;
+            var join_mode_password = data.data.join_mode_password;
             if (join_mode_password && (join_mode_password.length < 4 || join_mode_password.length > 255)) {
               errors.join_password = 'join-mode-password';
             } else {
@@ -133,8 +133,8 @@ handler.call = function (data, session, next) {
         }
 
         // options (history_mode)
-        if (_.has(data.data.opts, 'history_mode')) {
-          sanitized.history_mode = data.data.opts.history_mode;
+        if (_.has(data.data, 'history_mode')) {
+          sanitized.history_mode = data.data.history_mode;
         }
       }
 

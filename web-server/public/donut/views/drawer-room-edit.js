@@ -123,12 +123,10 @@ define([
         if (this.$joinChecked.attr('value') === 'password') {
           var join_password = this.$el.find('.input-password').val();
         }
-        var opts = {
-          join_mode: this.$joinChecked.attr('value'),
-          join_mode_password: join_password,
-          history_mode: this.$historyChecked.attr('value')
-        };
-        updateData.opts = opts;
+
+        updateData.join_mode = this.$joinChecked.attr('value');
+        updateData.join_mode_password = join_password;
+        updateData.history_mode = this.$historyChecked.attr('value');
       }
 
       if (this.avatarUploader.data) {
