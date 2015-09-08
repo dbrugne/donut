@@ -591,9 +591,9 @@
     "join-mode-label": "Who can join the donut",
     "history-mode-label": "Who can view discussions history",
     "options": {
-      "everyone-def": "Everybody (défault)",
+      "everyone-def": "Everyone (défault)",
       "join": {
-        "everyone": "Everybody",
+        "everyone": "Everyone",
         "allowed": "Only authorized user",
         "password": {
           "radio": "User with the password",
@@ -601,7 +601,7 @@
         }
       },
       "history": {
-        "everyone": "Everybody",
+        "everyone": "Everyone",
         "joined": "Users in the donut at the time of the message",
         "none": "No history",
         "help": "whether online or not at the time of the message"

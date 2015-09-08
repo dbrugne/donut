@@ -89,7 +89,7 @@
         <div class="radio">
             <label>
                 <input type="radio" class="savable history joined" name="create:history" value="joined" <% if (room.history_mode === "joined") { %> checked <% } %>>
-                <%= t('form.options.history.joined') %>(*)
+                <%= t('form.options.history.joined') %> (<%= t('form.options.history.help') %>)
             </label>
         </div>
         <div class="radio">
