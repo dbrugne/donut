@@ -87,17 +87,28 @@
 
         <div id="carousel-landing" class="carousel slide hidden-xs hidden-sm" data-ride="carousel">
 
+            <ol class="carousel-indicators">
+                <li data-target="#carousel-landing" data-slide-to="0" class="active"></li>
+                <li data-target="#carousel-landing" data-slide-to="1"></li>
+            </ol>
+
             <!-- Wrapper for slides -->
             <div class="carousel-inner" role="listbox">
                 <div class="item active">
                     <div class="container relative">
-                        <div class="disclaimer">DONUT </div>
+                        <div class="disclaimer">
+                            <h1>(DONUT === IRC)</h1>
+                            <span>DONUT est une plateforme de chatrooms. De la chatrooms à l'ancienne, comme sur IRC mais avec tout ce qu'on peut attendre de 2015</span>
+                        </div>
                     </div>
                     <div class="img" style="background-image:url('/images/carousel1.jpg');"></div>
                 </div>
                 <div class="item">
                     <div class="container relative">
-                        <div class="disclaimer">lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum </div>
+                        <div class="disclaimer">
+                            <h1>Easy chatrooms</h1>
+                            <span>Créer rapidement et simplement un espace de discussion instantanée pour fidéliser et développer votre communauté</span>
+                        </div>
                     </div>
                     <div class="img" style="background-image:url('/images/carousel2.jpg');"></div>
                 </div>
@@ -124,7 +135,7 @@
                         <h2><%= t('landing.start') %></h2>
                         <a href="/login/facebook" class="btn-facebook"><i class="icon icon-facebook"></i> | &nbsp;<%= t('actions.signup') %> <%= t('login.withfacebook') %></span></a>
                         <p class="logic"><span><%= t('landing.orbymail') %></span></p>
-                        <form id="login" action="/signup" method="post" role="form" class="form mt10">
+                        <form id="signup" action="/signup" method="post" role="form" class="form mt10">
                             <input type="hidden" name="_csrf" value="<%= token %>">
 
                             <div class="form-group mb10">
