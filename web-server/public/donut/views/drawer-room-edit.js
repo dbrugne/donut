@@ -44,11 +44,9 @@ define([
         this.trigger('color', room.color);
       }
 
-      room.isOwner = (room.owner)
-        ? (room.owner.user_id === currentUser.get('user_id'))
-          ? true
-          : false
-        : false;
+      room.isOwner = (room.owner) ?
+        (room.owner.user_id === currentUser.get('user_id')) :
+        false;
 
       room.isAdmin = (currentUser.get('admin') === true);
 
