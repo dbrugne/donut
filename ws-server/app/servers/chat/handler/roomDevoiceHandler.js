@@ -27,26 +27,37 @@ handler.call = function (data, session, next) {
   async.waterfall([
 
     function check (callback) {
-      if (!data.room_id)
+      if (!data.room_id) {
         return callback('room id is mandatory');
+      }
 
-      if (!data.user_id && !data.username)
+      if (!data.user_id && !data.username) {
         return callback('user_id or username is mandatory');
+      }
 
-      if (!room)
+      if (!room) {
         return callback('unable to retrieve room: ' + data.room_id);
+      }
 
-      if (!room.isOwnerOrOp(user.id) && session.settings.admin !== true)
+      if (!room.isOwnerOrOp(user.id) && session.settings.admin !== true) {
         return callback('this user ' + user.id + " isn't able to devoice another user in " + room.name);
+      }
 
-      if (!devoicedUser)
+      if (!devoicedUser) {
         return callback('unable to retrieve devoicedUser: ' + devoicedUser.id);
+      }
 
-      if (room.isOwner(devoicedUser.id))
+      if (room.isOwner(devoicedUser.id)) {
         return callback(devoicedUser.username + ' is owner and can not be devoiced of ' + room.name);
+      }
 
-      if (room.isDevoice(devoicedUser.id))
+      if (room.isDevoice(devoicedUser.id)) {
         return callback('this user ' + devoicedUser.username + ' is already devoiced');
+      }
+
+      if (!room.isIn(devoicedUser.id)) {
+        return callback('devoiced user : ' + devoicedUser.username + ' is not currently in room ' + room.name);
+      }
 
       return callback(null);
     },
@@ -56,8 +67,9 @@ handler.call = function (data, session, next) {
         user: devoicedUser._id,
         devoiced_at: new Date()
       };
-      if (reason !== false)
+      if (reason !== false) {
         devoice.reason = reason;
+      }
 
       room.update({$addToSet: { devoices: devoice }}, function (err) {
         return callback(err);
@@ -73,8 +85,9 @@ handler.call = function (data, session, next) {
         username: devoicedUser.username,
         avatar: devoicedUser._avatar()
       };
-      if (reason !== false)
+      if (reason !== false) {
         event.reason = reason;
+      }
 
       roomEmitter(that.app, user, room, 'room:devoice', event, callback);
     },
@@ -91,5 +104,4 @@ handler.call = function (data, session, next) {
 
     next(null, { success: true });
   });
-
 };

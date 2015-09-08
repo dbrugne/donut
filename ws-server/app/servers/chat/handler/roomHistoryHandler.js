@@ -23,11 +23,17 @@ handler.call = function(data, session, next) {
 	async.waterfall([
 
 		function check(callback) {
-			if (!data.room_id)
+			if (!data.room_id) {
 				return callback('id parameter is mandatory');
+			}
 
-			if (!room)
-				return callback('unable to retrieve room: '+data.room_id);
+			if (!room) {
+				return callback('unable to retrieve room: ' + data.room_id);
+			}
+
+			if (!room.isIn(user.id)) {
+				return callback('user : ' + user.username + ' is not currently in room ' + room.name);
+			}
 
 			return callback(null);
 		},

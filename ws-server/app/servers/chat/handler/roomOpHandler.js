@@ -24,26 +24,33 @@ handler.call = function (data, session, next) {
   async.waterfall([
 
     function check (callback) {
-      if (!data.room_id)
+      if (!data.room_id) {
         return callback('room_id is mandatory');
+      }
 
-      if (!data.user_id && !data.username)
+      if (!data.user_id && !data.username) {
         return callback('user_id or username mandatory');
+      }
 
-      if (!room)
+      if (!room) {
         return callback('unable to retrieve room: ' + data.room_id);
+      }
 
-      if (!room.isOwnerOrOp(user.id) && session.settings.admin !== true)
+      if (!room.isOwnerOrOp(user.id) && session.settings.admin !== true) {
         return callback('this user ' + user.id + " isn't able to op another user in this room: " + data.room_id);
+      }
 
-      if (!opedUser)
+      if (!opedUser) {
         return callback('unable to retrieve opedUser in room:op: ' + data.username);
+      }
 
-      if (room.isOwner(opedUser.id))
+      if (room.isOwner(opedUser.id)) {
         return callback(opedUser.username + ' is owner and can not be devoiced of ' + room.name);
+      }
 
-      if (room.op.indexOf(opedUser._id) !== -1)
+      if (!room.isOp(opedUser.id)) {
         return callback('user ' + opedUser.username + ' is already OP of ' + room.name);
+      }
 
       return callback(null);
     },
@@ -79,5 +86,4 @@ handler.call = function (data, session, next) {
 
     next(null, {});
   });
-
 };

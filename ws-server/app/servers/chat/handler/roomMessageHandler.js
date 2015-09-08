@@ -27,14 +27,16 @@ handler.call = function (data, session, next) {
   async.waterfall([
 
     function check (callback) {
-      if (!data.room_id)
+      if (!data.room_id) {
         return callback('id is mandatory');
+      }
 
-      if (!room)
+      if (!room) {
         return callback('unable to retrieve room from ' + data.room_id);
+      }
 
-      if (room.users.indexOf(user.id) === -1) {
-        return callback('this user ' + user.id + ' is not currently in room ' + room.name);
+      if (!room.isIn(user.id)) {
+        return callback('user : ' + user.username + ' is not currently in room ' + room.name);
       }
 
       if (room.isDevoice(user.id)) {
@@ -145,5 +147,4 @@ handler.call = function (data, session, next) {
 
     return next(null, { success: true });
   });
-
 };

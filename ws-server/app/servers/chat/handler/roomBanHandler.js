@@ -50,7 +50,7 @@ handler.call = function (data, session, next) {
         return callback('unable to retrieve bannedUser: ' + data.username);
       }
 
-      if (room.owner.toString() === bannedUser.id) {
+      if (room.isOwner(bannedUser.id)) {
         return callback('user ' + bannedUser.username + ' is owner of ' + room.name);
       }
 

@@ -25,26 +25,33 @@ handler.call = function (data, session, next) {
   async.waterfall([
 
     function check (callback) {
-      if (!data.room_id)
+      if (!data.room_id) {
         return callback('room id is mandatory');
+      }
 
-      if (!data.user_id && !data.username)
+      if (!data.user_id && !data.username) {
         return callback('user_id or username is mandatory');
+      }
 
-      if (!room)
+      if (!room) {
         return callback('unable to retrieve room: ' + data.room_id);
+      }
 
-      if (!room.isOwnerOrOp(user.id) && session.settings.admin !== true)
+      if (!room.isOwnerOrOp(user.id) && session.settings.admin !== true) {
         return callback('this user ' + user.id + " isn't able to kick another user in this room: " + room.name);
+      }
 
-      if (!kickedUser)
+      if (!kickedUser) {
         return callback('unable to retrieve kickedUser: ' + data.username);
+      }
 
-      if (room.owner.toString() == kickedUser.id)
+      if (room.isOwner(kickedUser.id)) {
         return callback('user ' + kickedUser.username + ' is owner of ' + room.name);
+      }
 
-      if (room.users.indexOf(kickedUser.id) === -1)
-        return callback("can't kick user " + kickedUser.username + ' that is not actually in the room: ' + room.name);
+      if (!room.isIn(kickedUser.id)) {
+        return callback('kickedUser : ' + kickedUser.username + ' is not currently in room ' + room.name);
+      }
 
       return callback(null);
     },
@@ -65,8 +72,9 @@ handler.call = function (data, session, next) {
         avatar: kickedUser._avatar()
       };
 
-      if (data.reason)
+      if (data.reason) {
         event.reason = data.reason;
+      }
 
       roomEmitter(that.app, user, room, 'room:kick', event, callback);
     },
@@ -77,8 +85,9 @@ handler.call = function (data, session, next) {
     function unsubscribeClients (sentEvent, callback) {
       // search for all the user sessions (any frontends)
       that.app.statusService.getSidsByUid(kickedUser.id, function (err, sids) {
-        if (err)
+        if (err) {
           return callback('Error while retrieving user status: ' + err);
+        }
 
         if (!sids || sids.length < 1) {
           return callback(null, sentEvent); // the targeted user could be offline at this time
@@ -88,16 +97,18 @@ handler.call = function (data, session, next) {
         _.each(sids, function (sid) {
           parallels.push(function (fn) {
             that.app.globalChannelService.leave(room.name, kickedUser.id, sid, function (err) {
-              if (err)
+              if (err) {
                 return fn(sid + ': ' + err);
+              }
 
               return fn(null);
             });
           });
         });
         async.parallel(parallels, function (err, results) {
-          if (err)
+          if (err) {
             return callback('error while unsubscribing user ' + kickedUser.id + ' from ' + room.name + ': ' + err);
+          }
 
           return callback(null, sentEvent);
         });
@@ -116,5 +127,4 @@ handler.call = function (data, session, next) {
 
     next(null, {});
   });
-
 };

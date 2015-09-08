@@ -26,17 +26,21 @@ handler.call = function (data, session, next) {
   async.waterfall([
 
     function check (callback) {
-      if (!data.room_id)
+      if (!data.room_id) {
         return callback('id is mandatory');
+      }
 
-      if (!room)
+      if (!room) {
         return callback('unable to retrieve room from ' + data.room_id);
+      }
 
-      if (room.users.indexOf(user.id) === -1)
-        return callback('this user ' + user.id + ' is not currently in room ' + room.name);
+      if (!room.isIn(user.id)) {
+        return callback('user : ' + user.username + ' is not currently in room ' + room.name);
+      }
 
-      if (room.isDevoice(user.id))
+      if (room.isDevoice(user.id)) {
         return callback('user is devoiced, he can\'t send message "/me" in room');
+      }
 
       return callback(null);
     },
@@ -45,8 +49,9 @@ handler.call = function (data, session, next) {
       // text filtering
       var message = inputUtil.filter(data.message, 512);
 
-      if (!message)
+      if (!message) {
         return callback('empty message (no text)');
+      }
 
       // mentions
       inputUtil.mentions(message, function (err, message, markups) {
@@ -63,31 +68,35 @@ handler.call = function (data, session, next) {
         message: message
       };
       roomEmitter(that.app, user, room, 'room:me', event, function (err, sentEvent) {
-        if (err)
+        if (err) {
           return callback(err);
+        }
 
         return callback(null, sentEvent, mentions);
       });
     },
 
     function mentionNotification (sentEvent, mentions, callback) {
-      if (!mentions.length)
+      if (!mentions.length) {
         return callback(null, sentEvent);
+      }
 
       var usersIds = _.first(_.map(mentions, 'id'), 10);
       async.each(usersIds, function (userId, fn) {
         Notifications(that.app).getType('usermention').create(userId, room, sentEvent.id, fn);
       }, function (err) {
-        if (err)
+        if (err) {
           logger.error(err);
+        }
         callback(null, sentEvent);
       });
     },
 
     function messageNotification (sentEvent, callback) {
       Notifications(that.app).getType('roommessage').create(room, sentEvent.id, function (err) {
-        if (err)
+        if (err) {
           logger.error(err);
+        }
         return callback(null, sentEvent);
       });
     },
@@ -111,8 +120,9 @@ handler.call = function (data, session, next) {
         }
       };
       keenio.addEvent('room_me', messageEvent, function (err, res) {
-        if (err)
+        if (err) {
           logger.error(err);
+        }
 
         return callback(null);
       });
@@ -126,5 +136,4 @@ handler.call = function (data, session, next) {
 
     return next(null, { success: true });
   });
-
 };
