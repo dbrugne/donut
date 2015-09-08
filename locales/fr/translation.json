@@ -602,93 +602,103 @@
       "banned": "Vous avez été banni de ce donut le __at__",
       "banned_reason": "Pour la raison suivante : "
     },
-    "room-form": {
-      "common" : {
-        "join-mode-label": "Qui peut rejoindre le donut",
-        "history-mode-label": "Qui peut voir l'historique des discussions",
-        "mode": {
-          "everyone-def": "Tous le monde (défaut)",
-          "everyone": "Tous le monde",
-          "allowed": "Utilisateur autorisé uniquement",
-          "password": "Utilisateur ayant le mot de passe",
-          "password-field": "Mot de passe",
-          "joined": "Les utilisateurs dans le donut au moment du message",
-          "none": "Pas d'historique",
-          "help": "qu'ils soient en ligne ou pas au moment du message"
+    "form": {
+      "common": {
+        "edit": {
+          "website": {
+            "label": "Site web",
+            "placeholder": "L'adresse d'un site web lié à ce profil",
+            "help": "Facultatif"
+          },
+          "avatar": {
+            "label": "Photo de profil"
+          },
+          "poster": {
+            "label": "Poster",
+            "help": "Le poster est la grande image en pleine hauteur que vos interlocuteurs voient à droite de la conversation. Dimensions recommandées : largeur 430px, hauteur 1100px mini."
+          },
+          "color": {
+            "label": "Couleur"
+          },
+          "upload": {
+            "nopicture": "Pas de photo",
+            "failed": "Téléchargement échoué",
+            "done": "Téléchargement terminé, attendez pour le traitement de l'image",
+            "help": {
+              "format": "Fichier image (.jpeg, .jpg, .png or .gif).",
+              "size": "Sera automatiquement redimenssionné au format __resized_width__x__resized_height__px."
+            }
+          },
+          "left": "<strong>%left</strong> restant"
         }
       },
-      "create": {
-        "info": "Attention le nom du donut ne sera plus modifiable !",
-        "label": "Créez un donut",
-        "help": "Entre 3 et 24 caractères, chiffres, lettres, tirets (-) et underscores (_) uniquement",
-        "placeholder": "Nom du donut",
-        "submit": "Créer le donut"
-      },
-      "edit": {
-        "upload": {
-          "nopicture": "Pas de photo",
-          "failed": "Téléchargement échoué",
-          "done": "Téléchargement terminé, attendez pour le traitement de l'image",
-          "help": {
-            "format": "Fichier image (.jpeg, .jpg, .png or .gif).",
-            "size": "Sera automatiquement redimenssionné au format __resized_width__x__resized_height__px."
+      "room-form": {
+        "common" : {
+          "join-mode-label": "Qui peut rejoindre le donut",
+          "history-mode-label": "Qui peut voir l'historique des discussions",
+          "mode": {
+            "everyone-def": "Tous le monde (défaut)",
+            "everyone": "Tous le monde",
+            "allowed": "Utilisateur autorisé uniquement",
+            "password": "Utilisateur ayant le mot de passe",
+            "password-field": "Mot de passe",
+            "joined": "Les utilisateurs dans le donut au moment du message",
+            "none": "Pas d'historique",
+            "help": "qu'ils soient en ligne ou pas au moment du message"
           }
         },
-        "left": "<strong>%left</strong> restant",
-        "othersettings": "Autres paramètres",
-        "description": {
-          "label": "Description",
-          "placeholder": "Décrivez le donut en quelques mots",
-          "help": "Facultatif"
+        "create": {
+          "info": "Attention le nom du donut ne sera plus modifiable !",
+          "label": "Créez un donut",
+          "help": "Entre 3 et 24 caractères, chiffres, lettres, tirets (-) et underscores (_) uniquement",
+          "placeholder": "Nom du donut",
+          "submit": "Créer le donut"
         },
-        "bio": {
-          "label": "Bio",
-          "placeholder": "Décrivez-vous en quelques mots",
-          "help": "Facultatif"
-        },
-        "location": {
-          "label": "Lieu",
-          "placeholder": "Ville, pays où vous êtes",
-          "help": "Facultatif"
-        },
-        "website": {
-          "label": "Site web",
-          "placeholder": "L'adresse d'un site web lié à ce profil",
-          "help": "Facultatif"
-        },
-        "avatar": {
-          "label": "Photo de profil"
-        },
-        "poster": {
-          "label": "Poster",
-          "help": "Le poster est la grande image en pleine hauteur que vos interlocuteurs voient à droite de la conversation. Dimensions recommandées : largeur 430px, hauteur 1100px mini."
-        },
-        "color": {
-          "label": "Couleur"
-        },
-        "visibility": {
-          "label": "Visibilité (administrateur)",
-          "true": "Le donut est visible sur la homepage",
-          "false": "Le donut <strong>n'est pas</strong> visible sur la homepage"
-        },
-        "priority": {
-          "label": "Priorité (administrateur)",
-          "placeholder": "",
-          "help": "Nombre, plus est grand, plus est prioritaire"
-        },
-        "room": {
-          "delete": {
-            "link": "Vous pouvez également supprimer ce donut <a class='open-room-delete' data-room-id=\"__id__\">en cliquant ici</a>.",
-            "title": "Supprimer",
-            "info": [
-              "Vous êtes sur le point de supprimer ce donut, cette opération est immédiate et irréversible.<br><br>",
-              "Veuillez confirmer la suppression en saissant le nom du donut (<strong>__name__</strong>) puis en cliquant sur supprimer :"
-            ],
-            "placeholder": "Saisir le nom du donut",
-            "success": "donut supprimé !",
-            "error": {
-              "permanent": "Il n'est pas possible de supprimer un donut 'permanent'"
+        "edit": {
+          "othersettings": "Autres paramètres",
+          "description": {
+            "label": "Description",
+            "placeholder": "Décrivez le donut en quelques mots",
+            "help": "Facultatif"
+          },
+          "visibility": {
+            "label": "Visibilité (administrateur)",
+            "true": "Le donut est visible sur la homepage",
+            "false": "Le donut <strong>n'est pas</strong> visible sur la homepage"
+          },
+          "priority": {
+            "label": "Priorité (administrateur)",
+            "placeholder": "",
+            "help": "Nombre, plus est grand, plus est prioritaire"
+          },
+          "room": {
+            "delete": {
+              "link": "Vous pouvez également supprimer ce donut <a class='open-room-delete' data-room-id=\"__id__\">en cliquant ici</a>.",
+              "title": "Supprimer",
+              "info": [
+                "Vous êtes sur le point de supprimer ce donut, cette opération est immédiate et irréversible.<br><br>",
+                "Veuillez confirmer la suppression en saissant le nom du donut (<strong>__name__</strong>) puis en cliquant sur supprimer :"
+              ],
+              "placeholder": "Saisir le nom du donut",
+              "success": "donut supprimé !",
+              "error": {
+                "permanent": "Il n'est pas possible de supprimer un donut 'permanent'"
+              }
             }
+          }
+        }
+      },
+      "user-form": {
+        "edit": {
+          "bio": {
+            "label": "Bio",
+            "placeholder": "Décrivez-vous en quelques mots",
+            "help": "Facultatif"
+          },
+          "location": {
+            "label": "Lieu",
+            "placeholder": "Ville, pays où vous êtes",
+            "help": "Facultatif"
           }
         }
       },

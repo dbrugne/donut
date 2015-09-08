@@ -1,67 +1,67 @@
 <div class="errors"></div>
 <div class="room">
-    <span class="name"><%= t('chat.room-form.create.label') %></span>
+    <span class="name"><%= t('chat.form.room-form.create.label') %></span>
 </div>
 <div class="room">
-    <p class="help-block"><%= t('chat.room-form.create.info') %></p>
+    <p class="help-block"><%= t('chat.form.room-form.create.info') %></p>
 </div>
 <div class="form-group">
     <div class="field">
         <span class="hash dc-text">#</span>
-        <input type="text" class="input dc-border" placeholder="<%= t('chat.room-form.create.placeholder') %>" maxlength="24" value="<%= name %>" />
+        <input type="text" class="input dc-border" placeholder="<%= t('chat.form.room-form.create.placeholder') %>" maxlength="24" value="<%= name %>" />
     </div>
-    <p class="help-block"><%= t('chat.room-form.create.help') %></p>
+    <p class="help-block"><%= t('chat.form.room-form.create.help') %></p>
 </div>
 <div class="form-group">
-    <label><%= t('chat.room-form.common.join-mode-label') %></label>
+    <label><%= t('chat.form.room-form.common.join-mode-label') %></label>
     <div class="radio">
         <label>
             <input type="radio" class="savable join everyone" name="create:join" value="everyone" checked>
-            <%= t('chat.room-form.common.mode.everyone-def') %>
+            <%= t('chat.form.room-form.common.mode.everyone-def') %>
         </label>
     </div>
     <div class="radio">
         <label>
             <input type="radio" class="savable join allowed" name="create:join" value="allowed" >
-            <%= t('chat.room-form.common.mode.allowed') %>
+            <%= t('chat.form.room-form.common.mode.allowed') %>
         </label>
     </div>
     <div class="radio">
         <label>
             <input type="radio" class="savable join password" name="create:join" value="password" >
-            <%= t('chat.room-form.common.mode.password') %>
+            <%= t('chat.form.room-form.common.mode.password') %>
         </label>
     </div>
     <div class="field-password">
-        <label><%= t('chat.room-form.common.mode.password-field') %> : </label>
-        <input type="text" class="input-password" placeholder="<%= t('chat.room-form.common.mode.password-field') %>" maxlength="255" value="<%= name %>" />
+        <label><%= t('chat.form.room-form.common.mode.password-field') %> : </label>
+        <input type="text" class="input-password" placeholder="<%= t('chat.form.room-form.common.mode.password-field') %>" maxlength="255" value="<%= name %>" />
         <a href="#" class="icon icon-refresh random-password dc-text"></a>
     </div>
 </div>
 <div class="form-group">
-    <label><%= t('chat.room-form.common.history-mode-label') %></label>
+    <label><%= t('chat.form.room-form.common.history-mode-label') %></label>
     <div class="radio">
         <label>
             <input type="radio" class="savable history everyone" name="create:history" value="everyone" checked>
-            <%= t('chat.room-form.common.mode.everyone-def') %>
+            <%= t('chat.form.room-form.common.mode.everyone-def') %>
         </label>
     </div>
     <div class="radio">
         <label>
             <input type="radio" class="savable history joined" name="create:history" value="joined">
-            <%= t('chat.room-form.common.mode.joined') %>*
+            <%= t('chat.form.room-form.common.mode.joined') %>*
         </label>
     </div>
     <div class="radio">
         <label>
             <input type="radio" class="savable history none" name="create:history" value="none">
-            <%= t('chat.room-form.common.mode.none') %>
+            <%= t('chat.form.room-form.common.mode.none') %>
         </label>
     </div>
 </div>
 <div class="field">
-    <button class="submit dc-back dc-text-contrast" type="button"><%= t('chat.room-form.create.submit') %></button>
+    <button class="submit dc-back dc-text-contrast" type="button"><%= t('chat.form.room-form.create.submit') %></button>
 </div>
 <div class="form-group">
-    <p class="help-block">(*) <%= t('chat.room-form.common.mode.help') %></p>
+    <p class="help-block">(*) <%= t('chat.form.room-form.common.mode.help') %></p>
 </div>

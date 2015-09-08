@@ -5,97 +5,97 @@
 <div class="errors"></div>
 <form class="room-form" role="form">
     <div class="form-group">
-        <label><%= t('chat.room-form.common.join-mode-label') %> :</label>&nbsp;<p class="opts_mode"><%= room.labelJoinMode %></p>
-        <label><%= t('chat.room-form.common.history-mode-label') %> :</label>&nbsp;<p class="opts_mode"><%= room.labelHistoryMode %></p>
+        <label><%= t('chat.form.room-form.common.join-mode-label') %> :</label>&nbsp;<p class="opts_mode"><%= room.labelJoinMode %></p>
+        <label><%= t('chat.form.room-form.common.history-mode-label') %> :</label>&nbsp;<p class="opts_mode"><%= room.labelHistoryMode %></p>
     </div>
     <div class="form-group">
-        <label for="roomDescription"><%= t('chat.room-form.edit.description.label') %></label>
-        <textarea name="description" class="form-control" id="roomDescription" placeholder="<%= t('chat.room-form.edit.description.placeholder') %>" maxlength="200"><%= room.description %></textarea>
-        <p class="help-block"><%= t('chat.room-form.edit.description.help') %> <span class="counter"></span></p>
+        <label for="roomDescription"><%= t('chat.form.room-form.edit.description.label') %></label>
+        <textarea name="description" class="form-control" id="roomDescription" placeholder="<%= t('chat.form.room-form.edit.description.placeholder') %>" maxlength="200"><%= room.description %></textarea>
+        <p class="help-block"><%= t('chat.form.room-form.edit.description.help') %> <span class="counter"></span></p>
     </div>
     <div class="form-group">
-        <label for="roomWebsite"><%= t('chat.room-form.edit.website.label') %></label>
-        <input name="website" type="text" class="form-control" id="roomWebsite" placeholder="<%= t('chat.room-form.edit.website.placeholder') %>" value="<% if (room.website) { %><%= room.website.title %><% } %>">
-        <p class="help-block"><%= t('chat.room-form.edit.website.help') %></p>
+        <label for="roomWebsite"><%= t('chat.form.common.edit.website.label') %></label>
+        <input name="website" type="text" class="form-control" id="roomWebsite" placeholder="<%= t('chat.form.common.edit.website.placeholder') %>" value="<% if (room.website) { %><%= room.website.title %><% } %>">
+        <p class="help-block"><%= t('chat.form.common.edit.website.help') %></p>
     </div>
     <div class="form-group">
-        <label><%= t('chat.room-form.edit.avatar.label') %></label>
+        <label><%= t('chat.form.common.edit.avatar.label') %></label>
         <div class="room-avatar"></div>
     </div>
     <div class="form-group">
-        <label><%= t('chat.room-form.edit.poster.label') %></label>
+        <label><%= t('chat.form.common.edit.poster.label') %></label>
         <div class="room-poster"></div>
-        <p class="help-block"><%= t('chat.room-form.edit.poster.help') %></p>
+        <p class="help-block"><%= t('chat.form.common.edit.poster.help') %></p>
     </div>
     <div class="form-group">
-        <label><%= t('chat.room-form.edit.color.label') %></label>
+        <label><%= t('chat.form.common.edit.color.label') %></label>
         <div class="room-color"></div>
     </div>
     <% if (room.isAdmin) { %>
     <div class="form-group">
-        <label><%= t('chat.room-form.edit.visibility.label') %></label>
+        <label><%= t('chat.form.room-form.edit.visibility.label') %></label>
         <div class="radio">
             <label>
                 <input type="radio" name="visibility" id="roomVisibilityTrue" value="true" <%= (room.visibility === true) ? 'checked' : '' %>>
-                <%= t('chat.room-form.edit.visibility.true') %>
+                <%= t('chat.form.room-form.edit.visibility.true') %>
             </label>
         </div>
         <div class="radio">
             <label>
                 <input type="radio" name="visibility" id="roomVisibilityFalse" value="false" <%= (room.visibility !== true) ? 'checked' : '' %>>
-                <%= t('chat.room-form.edit.visibility.false') %>
+                <%= t('chat.form.room-form.edit.visibility.false') %>
             </label>
         </div>
     </div>
     <div class="form-group">
-        <label for="roomPriority"><%= t('chat.room-form.edit.priority.label') %></label>
-        <input type="number" name="priority" class="form-control" id="roomPriority" placeholder="<%= t('chat.room-form.edit.priority.placeholder') %>" value="<%= room.priority %>">
-        <p class="help-block"><%= t('chat.room-form.edit.priority.help') %></p>
+        <label for="roomPriority"><%= t('chat.form.room-form.edit.priority.label') %></label>
+        <input type="number" name="priority" class="form-control" id="roomPriority" placeholder="<%= t('chat.form.room-form.edit.priority.placeholder') %>" value="<%= room.priority %>">
+        <p class="help-block"><%= t('chat.form.room-form.edit.priority.help') %></p>
     </div>
     <div class="form-group">
-        <label><%= t('chat.room-form.common.join-mode-label') %></label>
+        <label><%= t('chat.form.room-form.common.join-mode-label') %></label>
         <div class="radio">
             <label>
                 <input type="radio" class="savable join everyone" name="create:join" value="everyone" <% if (room.join_mode === "everyone") { %> checked <% } %>>
-                <%= t('chat.room-form.common.mode.everyone-def') %>
+                <%= t('chat.form.room-form.common.mode.everyone-def') %>
             </label>
         </div>
         <div class="radio">
             <label>
                 <input type="radio" class="savable join allowed" name="create:join" value="allowed" <% if (room.join_mode === "allowed") { %> checked <% } %>>
-                <%= t('chat.room-form.common.mode.allowed') %>
+                <%= t('chat.form.room-form.common.mode.allowed') %>
             </label>
         </div>
         <div class="radio">
             <label>
                 <input type="radio" class="savable join password" name="create:join" value="password" <% if (room.join_mode === "password") { %> checked <% } %>>
-                <%= t('chat.room-form.common.mode.password') %>
+                <%= t('chat.form.room-form.common.mode.password') %>
             </label>
         </div>
         <div class="field-password">
-            <label><%= t('chat.room-form.common.mode.password-field') %> : </label>
+            <label><%= t('chat.form.room-form.common.mode.password-field') %> : </label>
             <input type="text" class="input-password" placeholder="<%= t('chat.room-form.common.mode.password-field') %>" maxlength="255" value="<%= name %>" />
             <a href="#" class="icon icon-refresh random-password dc-text"></a>
         </div>
     </div>
     <div class="form-group">
-        <label><%= t('chat.room-form.common.history-mode-label') %></label>
+        <label><%= t('chat.form.room-form.common.history-mode-label') %></label>
         <div class="radio">
             <label>
                 <input type="radio" class="savable history everyone" name="create:history" value="everyone" <% if (room.history_mode === "everyone") { %> checked <% } %>>
-                <%= t('chat.room-form.common.mode.everyone-def') %>
+                <%= t('chat.form.room-form.common.mode.everyone-def') %>
             </label>
         </div>
         <div class="radio">
             <label>
                 <input type="radio" class="savable history joined" name="create:history" value="joined" <% if (room.history_mode === "joined") { %> checked <% } %>>
-                <%= t('chat.room-form.common.mode.joined') %> (<%= t('chat.room-form.common.mode.help') %>)
+                <%= t('chat.form.room-form.common.mode.joined') %> (<%= t('chat.form.room-form.common.mode.help') %>)
             </label>
         </div>
         <div class="radio">
             <label>
                 <input type="radio" class="savable history none" name="create:history" value="none" <% if (room.history_mode === "none") { %> checked <% } %>>
-                <%= t('chat.room-form.common.mode.none') %>
+                <%= t('chat.form.room-form.common.mode.none') %>
             </label>
         </div>
     </div>
@@ -107,6 +107,6 @@
 </form>
 <div class="footer">
     <p class="delete">
-        <i class="icon icon-trash"></i> <%= t('chat.room-form.edit.room.delete.link', {id: room.id}) %>
+        <i class="icon icon-trash"></i> <%= t('chat.form.room-form.edit.room.delete.link', {id: room.id}) %>
     </p>
 </div>
