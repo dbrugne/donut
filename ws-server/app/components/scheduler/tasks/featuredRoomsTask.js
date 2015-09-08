@@ -6,8 +6,9 @@ module.exports = function (data) {
   logger.trace('[schedule:featuredRooms] starting');
 
   featuredRooms(data.app, function (err, roomsData) {
-    if (err)
+    if (err) {
       return logger.error('[schedule:featuredRooms] error: ' + err);
+    }
 
     logger.trace('[schedule:featuredRooms] done (' + roomsData.length + ')');
   });
