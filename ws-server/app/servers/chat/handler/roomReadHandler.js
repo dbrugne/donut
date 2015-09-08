@@ -18,16 +18,16 @@ handler.call = function (data, session, next) {
 
   var read = {};
 
-  var that = this;
-
   async.waterfall([
 
     function check (callback) {
-      if (!data.room_id && !data.name)
+      if (!data.room_id && !data.name) {
         return callback('room_id or name is mandtory');
+      }
 
-      if (!room)
+      if (!room) {
         return callback('unknown');
+      }
 
       return callback(null);
     },
@@ -95,12 +95,6 @@ handler.call = function (data, session, next) {
         });
       }
 
-      // options
-      var opts = {
-        join_mode: room.join_mode,
-        history_mode: room.history_mode
-      };
-
       read = {
         name: room.name,
         id: room.id,
@@ -116,13 +110,14 @@ handler.call = function (data, session, next) {
         website: room.website,
         topic: room.topic,
         description: room.description,
-        created: room.created_at,
-        opts: opts
+        created: room.created_at
       };
 
       if (session.settings.admin === true) {
         read.visibility = room.visibility || false;
         read.priority = room.priority || 0;
+        read.join_mode = room.join_mode;
+        read.history_mode = room.history_mode;
       }
 
       return callback(null);
@@ -132,9 +127,9 @@ handler.call = function (data, session, next) {
     if (err) {
       logger.error('[room:read] ' + err);
 
-      err = (['invalid-name', 'unknown'].indexOf(err) !== -1)
-        ? err
-        : 'internal';
+      err = (['invalid-name', 'unknown'].indexOf(err) !== -1) ?
+        err :
+        'internal';
       return next(null, { code: 500, err: err });
     }
 
