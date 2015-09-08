@@ -21,19 +21,18 @@ handler.call = function (data, session, next) {
 
   var that = this;
 
-  var searchTypes = ['all', 'users', 'op', 'allowed', 'regular', 'ban', 'devoice'];
+  var searchTypes = [
+    'all',      // users + ban
+    'users',    // users
+    'op',       // op + owner
+    'allowed',  // allowed
+    'regular',  // users (not op/owner/ban/devoice)
+    'ban',      // ban
+    'devoice',  // devoice
+    'online'    // users (online)
+  ];
 
   var searchTypesThatNeedPower = ['allowed', 'ban', 'devoice'];
-
-  /* **************************
-  all: users + ban
-  users: users
-  op: op + owner
-  allowed: allowed
-  regular: users (not op/owner/ban/devoice)
-  ban: ban
-  devoice: devoice
-  ************************** */
 
   async.waterfall([
 
@@ -81,6 +80,25 @@ handler.call = function (data, session, next) {
     function selectIds (callback) {
       var ids = room.getIdsByType(data.attributes.type);
       return callback(null, ids);
+    },
+
+    function selectOnlines (ids, callback) {
+      if (data.attributes.type === 'online') {
+        that.app.statusService.getStatusByUids(ids, function (err, results) {
+          if (err) {
+            return callback(err);
+          }
+          var idsTmp = [];
+          _.each(ids, function (id) {
+            if (results[id]) {
+              idsTmp.push(id);
+            }
+          });
+          return callback(null, idsTmp);
+        });
+      } else {
+        return callback(null, ids);
+      }
     },
 
     function prepareQuery (ids, callback) {

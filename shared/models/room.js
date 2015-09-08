@@ -170,12 +170,9 @@ roomSchema.methods.validPassword = function (password) {
 };
 
 roomSchema.methods.getIdsByType = function (type) {
-  if (!type || ['all', 'users', 'op', 'allowed', 'regular', 'ban', 'devoice'].indexOf(type) === -1) {
-    return;
-  }
-
   var ids = [];
-  if (type === 'all') {
+
+  if (type === 'all' || type === 'online') {
     _.each(this.users, function (u) {
       ids.push(u.toString());
     });

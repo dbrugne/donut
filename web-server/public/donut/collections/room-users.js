@@ -10,14 +10,14 @@ define([
     comparator: function (model1, model2) {
       // create strings (sortable as string: aabfoobar)
       var string1 = '';
-      string1 += (model1.get('status') == 'online') ? 'a' : 'b';
+      string1 += (model1.get('status') === 'online') ? 'a' : 'b';
       string1 += (model1.get('is_owner')) ? 'a' : 'b';
       string1 += (model1.get('is_op')) ? 'a' : 'b';
       string1 += (model1.get('is_op') && model1.get('is_devoice')) ? 'a' : 'b';
       string1 += (model1.get('is_devoice')) ? 'a' : 'b';
       string1 += model1.get('username').toLowerCase();
       var string2 = '';
-      string2 += (model2.get('status') == 'online') ? 'a' : 'b';
+      string2 += (model2.get('status') === 'online') ? 'a' : 'b';
       string2 += (model2.get('is_owner')) ? 'a' : 'b';
       string2 += (model2.get('is_op')) ? 'a' : 'b';
       string2 += (model2.get('is_op') && model2.get('is_devoice')) ? 'a' : 'b';
@@ -31,8 +31,9 @@ define([
         return item.get(key).toLocaleLowerCase() === val.toLocaleLowerCase();
       });
 
-      if (matches.length < 1)
+      if (matches.length < 1) {
         return undefined;
+      }
 
       return matches[0];
     },
