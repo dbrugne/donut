@@ -23,31 +23,40 @@ handler.call = function (data, session, next) {
 
   var that = this;
 
-  var reason = (data.reason) ? inputUtil.filter(data.reason, 512) : false;
+  var reason = (data.reason) ?
+    inputUtil.filter(data.reason, 512) :
+    false;
 
   async.waterfall([
 
     function check (callback) {
-      if (!data.room_id)
+      if (!data.room_id) {
         return callback('room_id is mandatory');
+      }
 
-      if (!data.user_id && !data.username)
+      if (!data.user_id && !data.username) {
         return callback('user_id or username is mandatory');
+      }
 
-      if (!room)
+      if (!room) {
         return callback('unable to retrieve room: ' + data.room_id);
+      }
 
-      if (!room.isOwnerOrOp(user.id) && session.settings.admin !== true)
+      if (!room.isOwnerOrOp(user.id) && session.settings.admin !== true) {
         return callback('this user ' + user.id + " isn't able to ban another user in this room: " + room.name);
+      }
 
-      if (!bannedUser)
+      if (!bannedUser) {
         return callback('unable to retrieve bannedUser: ' + data.username);
+      }
 
-      if (room.owner.toString() == bannedUser.id)
+      if (room.owner.toString() === bannedUser.id) {
         return callback('user ' + bannedUser.username + ' is owner of ' + room.name);
+      }
 
-      if (room.isBanned(bannedUser.id))
+      if (room.isBanned(bannedUser.id)) {
         return callback('this user ' + bannedUser.username + ' is already banned from ' + room.name);
+      }
 
       return callback(null);
     },
@@ -57,10 +66,14 @@ handler.call = function (data, session, next) {
         user: bannedUser._id,
         banned_at: new Date()
       };
-      if (reason !== false)
+      if (reason !== false) {
         ban.reason = reason;
+      }
 
-      room.update({$addToSet: { bans: ban }, $pull: { users: bannedUser._id, op: bannedUser._id }}, function (err) {
+      room.update({
+        $addToSet: {bans: ban},
+        $pull: {users: bannedUser._id, op: bannedUser._id}
+      }, function (err) {
         return callback(err);
       });
     },
@@ -75,39 +88,44 @@ handler.call = function (data, session, next) {
         avatar: bannedUser._avatar()
       };
 
-      if (reason !== false)
+      if (reason !== false) {
         event.reason = reason;
+      }
 
       roomEmitter(that.app, user, room, 'room:ban', event, callback);
     },
 
-    /**
-     * /!\ .unsubscribeClients come after .historizeAndEmit to allow banned user to receive message
-     */
     function unsubscribeClients (event, callback) {
+      // /!\ .unsubscribeClients come after .historizeAndEmit to allow banned
+      // user to receive message
+
       // search for all the user sessions (any frontends)
       that.app.statusService.getSidsByUid(bannedUser.id, function (err, sids) {
-        if (err)
+        if (err) {
           return callback('Error while retrieving user status: ' + err);
+        }
 
         if (!sids || sids.length < 1) {
-          return callback(null, event); // the targeted user could be offline at this time
+          return callback(null, event); // the targeted user could be offline
+                                        // at this time
         }
 
         var parallels = [];
         _.each(sids, function (sid) {
           parallels.push(function (fn) {
             that.app.globalChannelService.leave(room.name, bannedUser.id, sid, function (err) {
-              if (err)
+              if (err) {
                 return fn(sid + ': ' + err);
+              }
 
               return fn(null);
             });
           });
         });
         async.parallel(parallels, function (err, results) {
-          if (err)
+          if (err) {
             return callback('Error while unsubscribing user ' + bannedUser.id + ' from ' + room.name + ': ' + err);
+          }
 
           return callback(null, event);
         });
