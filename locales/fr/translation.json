@@ -8,7 +8,7 @@
     "login" : "Connexion",
     "start": "Démarrer",
     "loginwithfacebook": "Connexion avec Facebook",
-    "orbymail": "ou par email",
+    "orbymail": "ou s'inscrire par email",
     "username-placeholder": "Nom d'utilisateur",
     "email-placeholder": "Email",
     "password-placeholder": "Mot de passe",
@@ -94,7 +94,7 @@
       "before": "Vous souhaitez vous",
       "after": " ?"
     },
-    "switchlanguage": "Langage:",
+    "switchlanguage": "Langue",
     "unknownerror": "Erreur inconnue, veuillez réessayer"
   },
   "login": {

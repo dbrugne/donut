@@ -8,7 +8,7 @@
     "login" : "Log in",
     "start": "Start",
     "loginwithfacebook": "Login with Facebook",
-    "orbymail": "or by email",
+    "orbymail": "or signup by email",
     "username-placeholder": "Username",
     "email-placeholder": "Mail",
     "password-placeholder": "Password",
@@ -89,7 +89,7 @@
       "before": "Would you like to",
       "after": "?"
     },
-    "switchlanguage": "Language:",
+    "switchlanguage": "Language",
     "unknownerror": "Unknown error, please retry later"
   },
   "login": {

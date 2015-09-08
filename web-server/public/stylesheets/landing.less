@@ -38,7 +38,6 @@
         .logo { height:40px; margin: auto 0; }
       }
       .signup a, .login a { font-size:2rem; color:@cl-first;.ft-opensans-bold; }
-      .navbar-collapse #languages { padding-top: 15px; padding-bottom: 15px; line-height: 20px; font-size: 1.2rem; }
     }
     #carousel-landing { border-top: 3px solid @cl-first;
       .carousel-inner { position: absolute; overflow: hidden; width: 100%;
@@ -48,7 +47,7 @@
       .ctn-baseline { height:@carousel-height; position: relative;
         .authenticate { position: absolute; z-index: 1; right: 0; padding: 15px; .ft-raleway; margin: auto; margin-top: 30px; background-color: @cl-subtext10; .border-radius(10px);
           h2 { margin: 0; text-align: center; .ft-raleway-heavy; font-size: 2.2rem; }
-          .btn-facebook { max-width:310px; margin:10px auto; font-size: 1.3rem; }
+          a.btn-facebook { max-width:310px; margin:10px auto; font-size: 1.3rem; text-decoration: none; }
           .logic { text-align:center; margin:0; }
           .form { width: 310px; margin: 0 auto;
             .form-group {
@@ -78,7 +77,9 @@
     }
     input[type=text] { width: 100%; border: 1px solid @cl-subtext10; .border-radius(50px); padding: 5px 75px 6px 30px; .ft-raleway-medium; color: @cl-subtext50; outline: none; }
   }
-  footer { padding: 20px 0; border-top:1px solid @cl-second; }
+  footer { padding: 20px 0; border-top:1px solid @cl-second;
+    .container { align-items: center; }
+  }
 
   @media screen and (max-width: @screen-md-min) {
     .ctn-results { background-color: @cl-subtext10; margin: 0; width: 100%;

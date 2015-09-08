@@ -128,7 +128,7 @@ require([
   }
 
   // Language switcher
-  $('#languages .switch').click(function (event) {
+  $('.switch[data-language]').click(function (event) {
     var language = $(this).data('language');
     if (!language) {
       return;
