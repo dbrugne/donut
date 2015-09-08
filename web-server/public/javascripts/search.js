@@ -41,7 +41,7 @@ define([
       } else {
         this.$searchMore.addClass('hidden');
       }
-      
+
       return this;
     }
   });

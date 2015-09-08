@@ -72,7 +72,10 @@ require([
             ),
             title: false,
             search: false,
-            more: true,
+            more: ( response.rooms && response.rooms.list && response.rooms.list.length == limit ?
+                true :
+                false
+            ),
             replace: replace
           });
         }
