@@ -24,6 +24,8 @@ var WelcomeRemote = function (app) {
  * - opened onetoones  details with short piece of history
  *
  * @param {String} uid unique id for user
+ * @param {String} frontendId
+ * @param {Function} globalCallback
  */
 WelcomeRemote.prototype.getMessage = function (uid, frontendId, globalCallback) {
   var start = Date.now();
@@ -99,7 +101,7 @@ WelcomeRemote.prototype.getMessage = function (uid, frontendId, globalCallback) 
           var parallels = [];
           _.each(rooms, function (room) {
             if (room.isBanned(user.id)) {
-              logger.warn('User ' + uid + ' seems to be banned from ' + room.name + ' but room name is still present in user.rooms array');
+              logger.warn('User ' + uid + ' seems to be banned from ' + room.name + ' but still present in rooms.users');
               return;
             }
 
