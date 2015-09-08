@@ -539,10 +539,7 @@
     "closemessage": "Etes-vous sur de vouloir quitter, l’historique de vos conversations sera perdu ?",
     "kickmessage": "Vous venez d'être expulsé de __name__",
     "banmessage": "Vous venez d'être banni de __name__",
-    "bannedfromroom": "Vous ne pouvez pas rejoindre __name__, vous avez été banni",
     "roomnotexists": "Le donut __name__ n'existe pas, <a class='open-create-room' data-name='__name__'>souhaitez-vous le créer </a> ?",
-    "notallowedinroom": "Vous ne pouvez pas rejoindre __name__, vous n'avez pas été autorisé",
-    "wrong-password": "Vous ne pouvez pas rejoindre __name__, le mot de passe que vous avez tapé est incorrect",
     "alreadyexists": "Le donut __name__ existe déjà, <a href='#__uri__'>voulez-vous le rejoindre</a> ?",
     "successfullycreated": "Le donut __name__ a bien été créé",
     "reason": "(motif : \"__reason__\")",
@@ -604,6 +601,15 @@
     "input": {
       "typing": "est en train de taper",
       "typing_plural": "sont en train de taper"
+    },
+    "blocked": {
+      "allowed": "Ce donut est privé, seul les utilisateurs autorisés par le propriétaire peuvent y accéder.",
+      "allowed_button": "Demander l'accès",
+      "password": "Ce donut est protégé par un mot de passe, si vous l'avez veuillez saisir le mot de passe.",
+      "password_placeholder": "Mot de passe",
+      "password_button": "Rejoindre",
+      "banned": "Vous avez été banni de ce donut le __at__",
+      "banned_reason": "Pour la raison suivante : "
     }
   },
   "form": {

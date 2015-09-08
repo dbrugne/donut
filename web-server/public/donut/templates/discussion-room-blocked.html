@@ -1,9 +1,33 @@
-<div class="content">
-    <div class="header room">
-        <div class="overlay-ctn hidden-xs hidden-sm">
+<div class="content flex-parent">
+    <div class="cover room flex-children">
+        <div class="margin-top: auto">
             <img class="avatar open-room-profile" data-room-id="<%= room_id %>" src="<%= avatar %>" alt="<%= name %> avatar">
-            <div class="overlay open-room-profile" data-room-id="<%= room_id %>" ></div>
-            <span class="overlay-text open-room-profile" data-room-id="<%= room_id %>" ><%= t('chat.actions.see') %></span>
+            <div class="name open-room-profile" data-room-id="<%= room_id %>"><%= name %></div>
+            <% if (owner && owner.username) { %>
+            <span class="owner"><%= t('global.by') %> <a class="open-user-profile dc-text" data-user-id="<%= owner.id %>">@<%= owner.username %></a></span>
+            <% } %>
+            <% if (join_mode === 'allowed') { %>
+            <div>
+                <%= t('chat.blocked.allowed') %>
+                <button><%= t('chat.blocked.allowed_button') %></button>
+            </div>
+            <% } else if (join_mode === 'password') { %>
+            <div>
+                <%= t('chat.blocked.password') %>
+                <input type="text" placeholder="<%= t('chat.blocked.password_placeholder') %>">
+                <button><%= t('chat.blocked.password_button') %></button>
+            </div>
+            <% } else { %>
+            <div>
+                <%= t('chat.blocked.banned', { at: banned_at }) %>
+                <% if (typeof banned_reason !== 'undefined') { %>
+                <p class="reason">
+                    <span class="title"><%= t('chat.blocked.banned_reason') %></span>
+                    <span class="reason"><i class="icon icon-quote"></i><%= banned_reason %></span>
+                </p>
+                <% } %>
+            </div>
+            <% } %>
         </div>
     </div>
 </div><!-- /.content -->

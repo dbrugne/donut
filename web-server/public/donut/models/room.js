@@ -24,7 +24,8 @@ define([
         focused: false,
         unviewed: false,
         newmention: false,
-        newuser: false
+        newuser: false,
+        blocked: false
       };
     },
 

@@ -520,10 +520,7 @@
     "closemessage": "Are you sure you want to leave? Your conversation log will be lost.",
     "kickmessage": "You have been kicked out of __name__",
     "banmessage": "You have been banned from __name__",
-    "bannedfromroom": "Unable to join __name__, you were banned",
     "roomnotexists": "The donut __name__ does not exist yet, <a class='open-create-room' data-name='__name__'>would you like to create it</a>?",
-    "notallowedinroom": "Unable to join __name__, you were not allowed",
-    "wrong-password": "Unable to join __name__, password is not correct",
     "alreadyexists": "Donut __name__ already exists, <a href='#__uri__'>would you like to join it</a>?",
     "successfullycreated": "Donut __name__ successfully created",
     "reason": "(reason: \"__reason__\")",
@@ -585,6 +582,15 @@
     "input": {
       "typing": "is typing",
       "typing_plural": "are typing"
+    },
+    "blocked": {
+      "allowed": "This donut is private, only allowed user can access.",
+      "allowed_button": "Ask for access",
+      "password": "This donut is password protected, if you have fill the password to join",
+      "password_placeholder": "Password",
+      "password_button": "Join",
+      "banned": "You were banned from this donut on __at__",
+      "banned_reason": "For following reason: "
     }
   },
   "form": {

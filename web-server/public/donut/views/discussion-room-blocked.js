@@ -4,11 +4,12 @@ define([
   'underscore',
   'backbone',
   'i18next',
+  'moment',
   'common',
   'models/app',
   'client',
   '_templates'
-], function ($, _, Backbone, i18next, common, app, client, templates) {
+], function ($, _, Backbone, i18next, moment, common, app, client, templates) {
   var RoomBlockedView = Backbone.View.extend({
     tagName: 'div',
 
@@ -30,18 +31,17 @@ define([
       // owner
       var owner = this.model.get('owner').toJSON();
       data.owner = owner;
-      data.isOwner = this.model.currentUserIsOwner();
-      data.isOp = this.model.currentUserIsOp();
-      data.isAdmin = this.model.currentUserIsAdmin();
+
+      // banned_at
+      if (data.banned_at) {
+        data.banned_at = moment(data.banned_at).format('dddd Do MMMM YYYY');
+      }
 
       // avatar
       data.avatar = common.cloudinarySize(data.avatar, 100);
 
       // id
       data.room_id = this.model.get('id');
-
-      // url
-      data.url = this.model.getUrl();
 
       // render
       var html = this.template(data);

@@ -54,16 +54,18 @@ define([
       // server ask to client to open this room in IHM
       this.addModel(data);
     },
-    addModel: function (room) {
-      // server confirm that we was joined to the room and give us some data on room
+    addModel: function (room, blocked) {
+      // server confirm that we was joined to the room and give us some data on
+      // room
 
       // prepare model data
-      var owner = (room.owner.user_id) ? new UserModel({
-        id: room.owner.user_id,
-        user_id: room.owner.user_id,
-        username: room.owner.username,
-        avatar: room.owner.avatar
-      }) :
+      var owner = (room.owner.user_id) ?
+        new UserModel({
+          id: room.owner.user_id,
+          user_id: room.owner.user_id,
+          username: room.owner.username,
+          avatar: room.owner.avatar
+        }) :
         new UserModel();
 
       var roomData = {
@@ -78,8 +80,14 @@ define([
         color: room.color,
         unviewed: room.unviewed,
         join_mode: room.join_mode,
-        history_mode: room.history_mode
+        history_mode: room.history_mode,
+        blocked: blocked || false
       };
+
+      if (roomData.blocked === 'banned') {
+        roomData.banned_at = room.banned_at;
+        roomData.banned_reason = room.banned_reason;
+      }
 
       // update model
       var isNew = (this.get(room.id) === undefined);

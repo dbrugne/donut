@@ -122,11 +122,34 @@ handler.call = function (data, session, next) {
       return next(null, {code: 404, err: err});
     }
     if (err === 'banned' || err === 'notallowed' || err === 'wrong-password') {
-      return next(null, {code: 403, err: err});
+      // @todo : factorize somewhere
+      var roomData = {
+        name: room.name,
+        id: room.id,
+        join_mode: room.join_mode,
+        history_mode: room.history_mode,
+        owner: {},
+        avatar: room._avatar(),
+        color: room.color
+      };
+      if (err === 'banned') {
+        var doc = room.isInBanned(user.id);
+        if (doc.reason) {
+          roomData.banned_reason = doc.reason;
+        }
+        roomData.banned_at = doc.banned_at;
+      }
+      if (room.owner) {
+        roomData.owner = {
+          user_id: room.owner._id,
+          username: room.owner.username
+        };
+      }
+      return next(null, {code: 403, err: err, room: roomData});
     }
     if (err) {
       logger.error('[room:join] ' + err);
-      return next(null, {code: 500, err: err});
+      return next(null, {code: 500, err: 'internal'});
     }
 
     return next(null);

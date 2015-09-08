@@ -30,6 +30,7 @@ define([
   'views/drawer-user-preferences',
   'views/drawer-account',
   'views/discussion-room',
+  'views/discussion-room-blocked',
   'views/discussion-onetoone',
   'views/discussions-block',
   'views/notifications',
@@ -42,7 +43,7 @@ define([
              DrawerRoomCreateView, DrawerRoomProfileView, DrawerRoomEditView, DrawerRoomUsersView, DrawerRoomPreferencesView,
              DrawerRoomDeleteView,
              DrawerUserProfileView, DrawerUserEditView, DrawerUserPreferencesView, DrawerUserAccountView,
-             RoomView, OneToOneView,
+             RoomView, RoomViewBlocked, OneToOneView,
              DiscussionsBlockView, NotificationsView, ConfirmationView, MuteView) {
   var debug = donutDebug('donut:main');
 
@@ -126,8 +127,6 @@ define([
      * @param data
      */
     onWelcome: function (data) {
-      debug.start('welcome');
-      debug.start('welcome-before');
       var that = this;
 
       // Current user data (should be done before onetoone logic)
@@ -148,23 +147,16 @@ define([
         $('#block-discussions').show();
       }
 
-      debug.end('welcome-before');
 
       // Rooms
-      debug.start('welcome-rooms');
       _.each(data.rooms, function (room) {
-        debug.start('welcome-' + room.name);
         rooms.addModel(room);
-        debug.end('welcome-' + room.name);
       });
-      debug.end('welcome-rooms');
 
       // One to ones
-      debug.start('welcome-ones');
       _.each(data.onetoones, function (one) {
         onetoones.addModel(one);
       });
-      debug.end('welcome-ones');
 
       this.discussionsBlock.redraw();
 
@@ -416,9 +408,16 @@ define([
     // ======================================================================
 
     addView: function (model, collection) {
-      var constructor = (model.get('type') === 'room') ?
-        RoomView :
-        OneToOneView;
+      var constructor;
+      if (model.get('type') === 'room') {
+        if (model.get('blocked')) {
+          constructor = RoomViewBlocked;
+        } else {
+          constructor = RoomView;
+        }
+      } else {
+        constructor = OneToOneView;
+      }
 
       // create view
       var view = new constructor({
@@ -555,31 +554,21 @@ define([
 
     focusRoomByName: function (name) {
       var model = rooms.iwhere('name', name);
-      if (typeof model === 'undefined') {
-        // Not already open
-        this.thisDiscussionShouldBeFocusedOnSuccess = name;
-        var that = this;
-        client.roomJoin(null, name, function (response) {
-          if (response.err === 'banned') {
-            app.trigger('alert', 'error', i18next.t('chat.bannedfromroom', {name: name}));
-            that.focus();
-          } else if (response.err === 'notexists') {
-            app.trigger('alert', 'error', i18next.t('chat.roomnotexists', {name: name}));
-            that.focus();
-          } else if (response.err === 'notallowed') {
-            app.trigger('alert', 'error', i18next.t('chat.notallowedinroom', {name: name}));
-            that.focus();
-          } else if (response.err === 'wrong-password') {
-            app.trigger('alert', 'error', i18next.t('chat.wrong-password', {name: name}));
-            that.focus();
-          } else if (response.err) {
-            app.trigger('alert', 'error', i18next.t('global.unknownerror'));
-            that.focus();
-          }
-        });
-      } else {
-        this.focus(model);
+      if (typeof model !== 'undefined') {
+        return this.focus(model);
       }
+
+      // Not already open
+      this.thisDiscussionShouldBeFocusedOnSuccess = name;
+      client.roomJoin(null, name, _.bind(function (response) {
+        if (response.code === 404) {
+          return app.trigger('alert', 'error', i18next.t('chat.roomnotexists', { name: name }));
+        } else if (response.code === 403) {
+          return rooms.addModel(response.room, response.err);
+        } else if (response.code === 500) {
+          return app.trigger('alert', 'error', i18next.t('global.unknownerror'));
+        }
+      }, this));
     },
 
     // called by router only

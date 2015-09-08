@@ -122,7 +122,7 @@ roomSchema.methods.isOwnerOrOp = function (userId) {
   return (this.isOwner(userId) || this.isOp(userId));
 };
 
-roomSchema.methods.isBanned = function (userId) {
+roomSchema.methods.isInBanned = function (userId) {
   if (!this.bans || !this.bans.length) {
     return false;
   }
@@ -132,7 +132,12 @@ roomSchema.methods.isBanned = function (userId) {
     }
   });
 
-  return (typeof subDocument !== 'undefined');
+  return subDocument;
+};
+
+roomSchema.methods.isBanned = function (userId) {
+  var doc = this.isInBanned(userId);
+  return (typeof doc !== 'undefined');
 };
 
 roomSchema.methods.isDevoice = function (userId) {
