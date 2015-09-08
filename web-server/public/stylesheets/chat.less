@@ -1722,84 +1722,27 @@
       }
     } // #chat #drawer #user-account
     #room-users, #user-preferences {
-      .paginate {
-        text-align: right;
+      #type-select { width: 100%; border: 1px solid @cl-subtext30; background-color: @cl-subtext15; color: #FFF; }
+      .room { margin-bottom: 2px;
+        > p { display: inline-block; vertical-align: middle; }
       }
-      .room {
-        margin-bottom: 2px;
-        > p {
-          display: inline-block;
-          vertical-align: middle;
+      .paginate { text-align: right;
+        .pagination { margin: auto;
+          a { text-decoration: none; }
+          >li>a { padding: 10px 15px; }
+          >li>span { color: #000011; padding: 10px 15px; cursor: default; }
         }
       }
-      .user-number {
-        margin-bottom: 15px;
-      }
-      .pagination>li>a {
-        padding: 10px 15px;
-      }
-      .pagination>li>span {
-        color: #000011;
-        padding: 10px 15px;
-        cursor: default;
-      }
-      .search {
-        position: relative;
-        font-size: 0.8em;
-        width: 100%;
-        height: 30px;
-        margin-bottom: 15px;
-        input[type=text] {
-          position: absolute;
-          right: 0;
-          width: 70%;
-          border: 2px solid black;
-          -webkit-border-radius: 50px;
-          -moz-border-radius: 50px;
-          border-radius: 50px;
-          padding: 5px 30px 6px 17px;
-          .ft-raleway-medium;
-          color: @cl-subtext50;
-          outline: none; /* avoid Google Chrome blue outline on focused input */
-        }
-        input[type=text]:focus {
-        }
-        i {
-          position: absolute;
-          top: 9px;
-          right: 19px;
-          color: @cl-subtext50;
-          cursor: pointer;
-        }
-      }
-      .pagination {
-        margin: 0;
-        a {
-          text-decoration: none;
-        }
+      .user-number { margin-bottom: 15px; }
+      .search { position: relative; font-size: 0.8em; width: 100%; height: 30px; margin-bottom: 15px;
+        input[type=text] { width:75%; position: absolute; right: 0; border: 2px solid black; .border-radius(50px); padding: 5px 30px 6px 17px; .ft-raleway-medium; color: @cl-subtext50; outline: none; font-size:1.1rem; }
+        i { position: absolute; top: 9px; right: 19px; color: @cl-subtext50; cursor: pointer; }
       }
       .table-users {
-        div {
-          display: inherit;
-          padding-left: 3px;
-        }
-        img {
-          width: 20px;
-          height: 20px;
-        }
-        .actions>div:hover {
-          cursor: pointer;
-        }
-        i {
-          font-size: 19px;
-        }
-        .icon-owner {color: #ffda3e}
-        .icon-kick {color: #ff3838}
-        .icon-microphone {color: #6f6f6f}
-        .ban {color: #ff3838}
-        .deban {color: #6f6f6f}
-        .op {color: #4fedc0}
-        .deop {color: #6f6f6f}
+        div { display: inherit;  }
+        img { width: 20px; height: 20px; }
+        .actions>div:hover { cursor: pointer; }
+        i { font-size: 18px; }
       }
     }
     #user-preferences, #room-preferences {

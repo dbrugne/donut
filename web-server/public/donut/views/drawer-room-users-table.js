@@ -42,6 +42,9 @@ define([
       });
 
       this.$el.html(this.template({users: users, op: this.op}));
+
+      this.initializeTooltips();
+
       return this;
     },
     opUser: function (event) {
@@ -203,6 +206,10 @@ define([
         });
         that.render(that.users);
       });
+    },
+
+    initializeTooltips: function () {
+      $('[data-toggle="tooltip"]').tooltip();
     }
   });
   return DrawerRoomUsersTableView;
