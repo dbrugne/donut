@@ -74,7 +74,8 @@
         </div>
         <div class="field-password">
             <label><%= t('form.options.join.password.field') %> : </label>
-            <input type="text" class="input-password" placeholder="<%= t('form.options.join.password.field') %>" maxlength="24" value="<%= name %>" />
+            <input type="text" class="input-password" placeholder="<%= t('form.options.join.password.field') %>" maxlength="255" value="<%= name %>" />
+            <a href="#" class="icon icon-refresh random-password dc-text"></a>
         </div>
     </div>
     <div class="form-group">

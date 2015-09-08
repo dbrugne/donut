@@ -15,7 +15,8 @@ define([
     events: {
       'keyup .input': 'valid',
       'click .submit': 'submit',
-      'change .savable': 'onChangeValue'
+      'change .savable': 'onChangeValue',
+      'click .random-password': 'onClickRandomPassword'
     },
 
     initialize: function (options) {
@@ -115,13 +116,20 @@ define([
       }
     },
 
+    onClickRandomPassword: function (event) {
+      event.preventDefault();
+      if (this.$joinChecked.attr('value') === 'password') {
+        this.$el.find('.input-password').val(this.generateRandomPassword());
+        this.$el.find('.input-password').focus();
+      }
+    },
+
     generateRandomPassword: function () {
-      var limit = 8;
+      var limit = (Math.random() * 12) + 8;
       var password = '';
       var chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-      var len = chars.length;
       for (var i = 0; i < limit; i++) {
-        var index = Math.floor(Math.random() * len);
+        var index = Math.floor(Math.random() * chars.length);
         password += chars[index];
       }
       return password;

@@ -17,7 +17,8 @@ define([
 
     events: {
       'submit form.room-form': 'onSubmit',
-      'change .savable': 'onChangeValue'
+      'change .savable': 'onChangeValue',
+      'click .random-password': 'onClickRandomPassword'
     },
 
     initialize: function (options) {
@@ -186,6 +187,25 @@ define([
       if (type === 'radio' && name === 'history') {
         this.$historyChecked = $target;
       }
+    },
+
+    onClickRandomPassword: function (event) {
+      event.preventDefault();
+      if (this.$joinChecked.attr('value') === 'password') {
+        this.$el.find('.input-password').val(this.generateRandomPassword());
+        this.$el.find('.input-password').focus();
+      }
+    },
+
+    generateRandomPassword: function () {
+      var limit = (Math.random() * 12) + 8;
+      var password = '';
+      var chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      for (var i = 0; i < limit; i++) {
+        var index = Math.floor(Math.random() * chars.length);
+        password += chars[index];
+      }
+      return password;
     },
 
     checkWebsite: function () {
