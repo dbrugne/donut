@@ -13,7 +13,12 @@
     "email-placeholder": "Email",
     "password-placeholder": "Mot de passe",
     "yourinterests": "Qu'est-ce qui vous intéresse ?",
-    "loadmore": "Plus de résultats"
+    "loadmore": "Plus de résultats",
+    "help": "Aide",
+    "faq": "FAQ",
+    "contact": "Contact",
+    "cgu": "CGU",
+    "legals": "Mentions légales"
   },
   "title": {
     "default": "DONUT vous permet de discuter autour de vos centres d'intérêt et d'animer vos communautés !",

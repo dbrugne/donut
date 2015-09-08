@@ -76,10 +76,11 @@
                             </a>
                             <ul class="dropdown-menu" role="menu">
                                 <li class="arrow-up"></li>
-                                <li class="colored"><a href="/!#room/help"><i class="icon icon-life-ring"></i> Aide</a></li>
-                                <li class="colored"><a href="/faq" target="_blank"><i class="icon icon-question-circle"></i> FAQ</a></li>
-                                <li class="colored"><a data-toggle="contactform"><i class="icon icon-envelope"></i> Contact</a></li>
-                                <li class="colored"><a href="/eutc" target="_blank"><i class="icon icon-question-circle"></i> CGU</a></li>
+                                <li class="colored"><a href="/!#room/help"><%= t('chat.help') %></a></li>
+                                <li class="colored"><a href="/faq" target="_blank"><%= t('page.faq.title') %></a></li>
+                                <li class="colored"><a data-toggle="contactform"><%= t('page.contact.title') %></a></li>
+                                <li class="colored"><a href="/eutc" target="_blank"><%= t('page.eutc.title') %></a></li>
+                                <li class="colored"><a href="/legals" target="_blank"><%=t('landing.legals')%></a></li>
                             </ul>
                         </li>
                     </ul>
@@ -99,9 +100,7 @@
                 </div>
             </div>
 
-            <div class="ctn-baseline">
-
-                <div class="background"></div>
+            <div class="ctn-baseline container">
 
                 <div class="authenticate">
                     <% if (logged) { %>
@@ -113,7 +112,7 @@
                         </a>
                         <p class="text-center"><%= t('logged.text') %></p>
                         <p class="actions flex-parent column">
-                            <a class="chat button" href="/!"><%= t('logged.chat') %></a>
+                            <a class="chat button button-blue" href="/!"><%= t('logged.chat') %></a>
                             <a class="logout flex-end mt10" href="/logout"><%= t('logged.logout') %></a>
                         </p>
                     </div>
@@ -143,7 +142,11 @@
 
                             <div class="flex-parent links-ctn">
                                 <span class="blank flex-child"></span>
-                                <input class="button" type="submit" value="<%= t('home.signup.etvoila') %>" tabindex="3">
+                                <input class="button button-blue" type="submit" value="<%= t('home.signup.etvoila') %>" tabindex="3">
+                            </div>
+
+                            <div class="text-center mt10">
+                                <%= t('signup.disclaimer') %>
                             </div>
                         </form>
                     </div>
@@ -161,10 +164,9 @@
                     <input id="search-field" type="text" placeholder="<%= t('landing.yourinterests') %>">
                     <i class="icon icon-search"></i>
                 </div>
-                <div class="blank flex-child"></div>
                 <button class="button ml10"><%= t('actions.search') %></button>
                 <span class="ml10"><%= t('global.or') %></span>
-                <button type="submit" class="button ml10"><%= t('actions.create') %></button>
+                <a href="/create" class="button ml10"><%= t('actions.create') %></a>
             </form>
         </div>
         <div class="results">
@@ -178,6 +180,7 @@
 
     <footer>
         <div class="container">
+            <div class="text-center">Copyright DONUT</div>
             <div class="fb-like" data-href="https://www.facebook.com/donutdotme" data-layout="standard" data-action="like" data-show-faces="true" data-share="true" data-ref="landing"></div>
         </div>
     </footer>
