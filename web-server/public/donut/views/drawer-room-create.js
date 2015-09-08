@@ -104,6 +104,7 @@ define([
         this.$joinChecked = $target;
         if (this.$joinChecked.attr('value') === 'password') {
           this.$el.find('.field-password').css('display', 'block');
+          this.$el.find('.input-password').val(this.generateRandomPassword());
           this.$el.find('.input-password').focus();
         } else {
           this.$el.find('.field-password').css('display', 'none');
@@ -112,6 +113,18 @@ define([
       if (type === 'radio' && name === 'history') {
         this.$historyChecked = $target;
       }
+    },
+
+    generateRandomPassword: function () {
+      var limit = 8;
+      var password = '';
+      var chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      var len = chars.length;
+      for (var i = 0; i < limit; i++) {
+        var index = Math.floor(Math.random() * len);
+        password += chars[index];
+      }
+      return password;
     },
 
     createError: function (dataErrors) {
