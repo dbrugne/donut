@@ -47,7 +47,7 @@
         <div class="ctn-baseline container">
 
             <div class="authenticate">
-                <% if (logged) { %>
+                <% if (user) { %>
                 <h2><%= t('logged.title') %></h2>
                 <div class="logged mt25 flex-parent column">
                     <a class="profile flex-parent column" href="<%= user.url %>" target="_blank">

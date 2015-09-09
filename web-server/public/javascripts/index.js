@@ -107,6 +107,48 @@ require([
       e.preventDefault();
       searchFunction(search, 0, true);
     });
+
+    // validate signup form
+    $('form#signup').submit(function (e) {
+      var $username = $('form#signup').find('#signin-username');
+      var $email = $('form#signup').find('#signin-email');
+      var $password = $('form#signup').find('#signin-password');
+
+      $username.parents('.form-group').removeClass(function (index, css) {
+        return (css.match(/(has-(success|error))+/g) || []).join(' ');
+      });
+      $email.parents('.form-group').removeClass(function (index, css) {
+        return (css.match(/(has-(success|error))+/g) || []).join(' ');
+      });
+      $password.parents('.form-group').removeClass(function (index, css) {
+        return (css.match(/(has-(success|error))+/g) || []).join(' ');
+      });
+
+      // Check validity of username
+      if ($username.val() === '' || !common.validateUsername($username.val())) {
+        $username.parents('.form-group').addClass('has-error');
+        e.preventDefault();
+      } else {
+        $username.parents('.form-group').addClass('has-success');
+      }
+
+      // Check validity of email
+      if ($email.val() === '' || !common.validateEmail($email.val())) {
+        $email.parents('.form-group').addClass('has-error');
+        e.preventDefault();
+      } else {
+        $email.parents('.form-group').addClass('has-success');
+      }
+
+      // Check validity of email
+      if ($password.val() === '' || !common.validatePassword($password.val())) {
+        $password.parents('.form-group').addClass('has-error');
+        e.preventDefault();
+      } else {
+        $password.parents('.form-group').addClass('has-success');
+      }
+
+    });
   }
 
   // User and room profiles
