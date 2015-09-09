@@ -130,7 +130,7 @@ handler.call = function (data, session, next) {
       err = (['invalid-name', 'unknown'].indexOf(err) !== -1) ?
         err :
         'internal';
-      return next(null, { code: 500, err: err });
+      return next(null, {code: 500, err: err});
     }
 
     return next(null, read);

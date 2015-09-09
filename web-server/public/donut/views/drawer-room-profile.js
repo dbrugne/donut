@@ -14,8 +14,7 @@ define([
 
     id: 'room-profile',
 
-    events: {
-    },
+    events: {},
 
     initialize: function (options) {
       this.roomName = options.name;
@@ -24,16 +23,19 @@ define([
       // show spinner as temp content
       this.render();
 
-      if (options.data)
+      if (options.data) {
         this.onResponse(options.data);
+      }
 
       // ask for data
       var that = this;
       client.roomRead(this.roomId, null, function (err, data) {
-        if (err === 'unknown')
+        if (err === 'unknown') {
           return;
-        if (!err)
+        }
+        if (!err) {
           that.onResponse(data);
+        }
       });
     },
     render: function () {
@@ -43,14 +45,11 @@ define([
       return this;
     },
     onResponse: function (room) {
-      if (!room.name)
+      if (!room.name) {
         return app.trigger('drawerClose');
-        
-      room.isOwner = (room.owner)
-        ? (room.owner.user_id == currentUser.get('user_id'))
-          ? true
-          : false
-        : false;
+      }
+
+      room.isOwner = (room.owner && room.owner.user_id === currentUser.get('user_id'));
 
       room.isAdmin = currentUser.isAdmin();
 
@@ -64,8 +63,9 @@ define([
       this.$el.html(html);
       this.$el.find('.created span').momentify('date');
 
-      if (room.color)
+      if (room.color) {
         this.trigger('color', room.color);
+      }
 
       this.initializeTooltips();
     },
@@ -79,28 +79,34 @@ define([
       var list = [];
 
       var alreadyIn = [];
+
       function pushNew (user, owner, op) {
-        if (!user.user_id)
+        if (!user.user_id) {
           return;
+        }
 
-        if (alreadyIn.indexOf(user.user_id) !== -1)
+        if (alreadyIn.indexOf(user.user_id) !== -1) {
           return;
-        else
+        } else {
           alreadyIn.push(user.user_id);
+        }
 
-        if (owner === true)
+        if (owner === true) {
           user.isOwner = true;
+        }
 
-        if (op === true)
+        if (op === true) {
           user.isOp = true;
+        }
 
         user.avatar = common.cloudinarySize(user.avatar, 34);
 
         list.push(user);
       }
 
-      if (room.owner)
+      if (room.owner) {
         pushNew(room.owner, true, false);
+      }
 
       if (room.op && room.op.length > 0) {
         _.each(room.op, function (user) {

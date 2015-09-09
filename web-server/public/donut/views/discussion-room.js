@@ -224,9 +224,7 @@ define([
     },
     devoiceUser: function (event) {
       event.preventDefault();
-      if (!this.model.currentUserIsOp() &&
-        !this.model.currentUserIsOwner() &&
-        !this.model.currentUserIsAdmin()) {
+      if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin()) {
         return false;
       }
       var userId = $(event.currentTarget).data('userId');
