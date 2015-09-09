@@ -47,7 +47,7 @@ define([
       // description
       this.$el.find('#userBio').maxlength({
         counterContainer: this.$el.find('#userBio').siblings('.help-block').find('.counter'),
-        text: i18next.t('edit.left')
+        text: i18next.t('chat.form.common.edit.left')
       });
 
       // website
@@ -138,10 +138,10 @@ define([
       var website = this.$website.val();
 
       if (website && website.length < 5 || website.length > 255)
-        return this.$el.find('.errors').html(t('edit.errors.website-size')).show();
+        return this.$el.find('.errors').html($.t('chat.form.errors.website-size')).show();
 
       if (website && !/^[^\s]+\.[^\s]+$/.test(website))
-        return this.$el.find('.errors').html(t('edit.errors.website-url')).show();
+        return this.$el.find('.errors').html($.t('chat.form.errors.website-url')).show();
 
       return true;
     },
@@ -149,9 +149,9 @@ define([
     editError: function (dataErrors) {
       var message = '';
       _.each(dataErrors.err, function (error) {
-        message += t('edit.errors.' + error) + '<br>';
+        message += $.t('chat.form.errors.' + error) + '<br>';
       });
-      this.$el.find('.errors').html(message).show();
+      this.$el.find('chat.form.errors').html(message).show();
     }
   });
 

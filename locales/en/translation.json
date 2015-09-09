@@ -78,7 +78,9 @@
       "after": "?"
     },
     "switchlanguage": "Language:",
-    "unknownerror": "Unknown error, please retry later"
+    "unknownerror": "Unknown error, please retry later",
+    "private-donut": "private Donut",
+    "public-donut": "public Donut"
   },
   "login": {
     "title": "connect",
@@ -585,93 +587,103 @@
       "banned": "You were banned from this donut on __at__",
       "banned_reason": "For following reason: "
     },
-    "room-form": {
+    "form": {
       "common": {
-        "join-mode-label": "Who can join the donut",
-        "history-mode-label": "Who can view discussions history",
-        "mode": {
-          "everyone-def": "Everyone (défault)",
-          "everyone": "Everyone",
-          "allowed": "Only authorized user",
-          "password": "User with the password",
-          "password-field": "Password",
-          "joined": "Users in the donut at the time of the message",
-          "none": "No history",
-          "help": "whether online or not at the time of the message"
+        "edit": {
+          "website": {
+            "label": "Website",
+            "placeholder": "URL of a website related to this account",
+            "help": "Optional"
+          },
+          "avatar": {
+            "label": "Profile picture"
+          },
+          "poster": {
+            "label": "Poster",
+            "help": "The poster is the large vertical image on the right-hand side of the chat thread. Recommended dimensions: 430px width, 975px height."
+          },
+          "color": {
+            "label": "Color"
+          },
+          "upload": {
+            "nopicture": "No picture",
+            "failed": "Upload failed",
+            "done": "Upload successful, please wait during image rendering",
+            "help": {
+              "format": "Image file (.jpeg, .jpg, .png or .gif).",
+              "size": "Will be automatically resized to __resized_width__x__resized_height__px."
+            }
+          },
+          "left": "<strong>%left</strong> to go"
         }
       },
-      "create": {
-        "info": "Attention, the donut name will not be editable later.",
-        "label": "Create a donut",
-        "help": "Between 3 and 24 characters, only letters, numbers,  dashes (-) and underscore (_)",
-        "placeholder": "Donut name",
-        "submit": "Create"
-      },
-      "edit": {
-        "upload": {
-          "nopicture": "No picture",
-          "failed": "Upload failed",
-          "done": "Upload successful, please wait during image rendering",
-          "help": {
-            "format": "Image file (.jpeg, .jpg, .png or .gif).",
-            "size": "Will be automatically resized to __resized_width__x__resized_height__px."
+      "room-form": {
+        "common": {
+          "join-mode-label": "Who can join the donut",
+          "history-mode-label": "Who can view discussions history",
+          "mode": {
+            "everyone-def": "Everyone (défault)",
+            "everyone": "Everyone",
+            "allowed": "Only authorized user",
+            "password": "User with the password",
+            "password-field": "Password",
+            "joined": "Users in the donut at the time of the message",
+            "none": "No history",
+            "help": "whether online or not at the time of the message"
           }
         },
-        "left": "<strong>%left</strong> to go",
-        "othersettings": "Other settings",
-        "description": {
-          "label": "Description",
-          "placeholder": "Describe the donut in a few words",
-          "help": "Optional"
+        "create": {
+          "info": "Attention, the donut name will not be editable later.",
+          "label": "Create a donut",
+          "help": "Between 3 and 24 characters, only letters, numbers,  dashes (-) and underscore (_)",
+          "placeholder": "Donut name",
+          "submit": "Create"
         },
-        "bio": {
-          "label": "Bio",
-          "placeholder": "Describe yourself in a few words",
-          "help": "Optional"
-        },
-        "location": {
-          "label": "Place",
-          "placeholder": "City, country where you are",
-          "help": "Optional"
-        },
-        "website": {
-          "label": "Website",
-          "placeholder": "URL of a website related to this account",
-          "help": "Optional"
-        },
-        "avatar": {
-          "label": "Profile picture"
-        },
-        "poster": {
-          "label": "Poster",
-          "help": "The poster is the large vertical image on the right-hand side of the chat thread. Recommended dimensions: 430px width, 975px height."
-        },
-        "color": {
-          "label": "Color"
-        },
-        "visibility": {
-          "label": "Visibility (admin only)",
-          "true": "This donut is displayed on homepage",
-          "false": "This donut <strong>is not</strong> displayed on homepage"
-        },
-        "priority": {
-          "label": "Priority (admin only)",
-          "placeholder": "",
-          "help": "Number, more is more prioritary"
-        },
-        "room": {
-          "delete": {
-            "link": "To delete this donut <a class='open-room-delete' data-room-id=\"__id__\"> click here</a>.",
-            "title": "Delete",
-            "info": [
-              "You are about to delete this donut. This action is immediate and cannot be undone.<br><br>",
-              "To confirm deletion please enter donut name (<strong>__name__</strong>) and then click the button:"
-            ],
-            "placeholder": "Enter the donut name",
-            "success": "donut deleted!",
-            "error": {
-              "permanent": "It is not possible to delete a 'permanent' donut"
+        "edit": {
+          "othersettings": "Other settings",
+          "description": {
+            "label": "Description",
+            "placeholder": "Describe the donut in a few words",
+            "help": "Optional"
+          },
+          "visibility": {
+            "label": "Visibility (admin only)",
+            "true": "This donut is displayed on homepage",
+            "false": "This donut <strong>is not</strong> displayed on homepage"
+          },
+          "priority": {
+            "label": "Priority (admin only)",
+            "placeholder": "",
+            "help": "Number, more is more prioritary"
+          },
+          "room": {
+            "delete": {
+              "link": "To delete this donut <a class='open-room-delete' data-room-id=\"__id__\"> click here</a>.",
+              "title": "Delete",
+              "info": [
+                "You are about to delete this donut. This action is immediate and cannot be undone.<br><br>",
+                "To confirm deletion please enter donut name (<strong>__name__</strong>) and then click the button:"
+              ],
+              "placeholder": "Enter the donut name",
+              "success": "donut deleted!",
+              "error": {
+                "permanent": "It is not possible to delete a 'permanent' donut"
+              }
             }
+          }
+        }
+      },
+      "user-form": {
+        "edit": {
+          "bio": {
+            "label": "Bio",
+            "placeholder": "Describe yourself in a few words",
+            "help": "Optional"
+          },
+          "location": {
+            "label": "Place",
+            "placeholder": "City, country where you are",
+            "help": "Optional"
           }
         }
       },

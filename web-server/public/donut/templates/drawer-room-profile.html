@@ -6,7 +6,10 @@
         <span class="overlay-text open-room-edit" data-room-id="<%= room.id %>"><%= t('profile.user.edit') %></span>
         <% } %>
     </div>
-    <p class="name"><%= room.name %></p>
+    <p class="name">
+        <%= room.name %>
+        <span class="room-profile <%= room.join_mode %>" data-toggle="tooltip" data-placement="top" title="<%= room.join_mode === 'everyone' ? t('global.public-donut') : t('global.private-donut') %>"> </span>
+    </p>
     <p class="owner"><%= t('global.by') %> <a class="colored open-user-profile dc-text" data-user-id="<%= room.owner.user_id %>">@<%= room.owner.username %></a></p>
     <% if (room.description) { %><p class="description"><%= room.description %></p><% }; %>
     <% if (room.website && room.website.href) { %><p class="website"><i class="icon icon-link dc-text"></i> <a class="colored dc-text" href="<%= room.website.href %>" target="_blank" title="<%= room.website.title %>"><%= room.website.title %></a></p><% }; %>

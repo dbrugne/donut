@@ -113,9 +113,9 @@ define([
         limit: (limit) ?
           limit :
           100,
-        light: (light),  // if the search should return a light version of results or not
+        light: (light), // if the search should return a light version of results or not
         rooms: (rooms), // if we should search for rooms
-        users: (users)  // if we should search for users
+        users: (users) // if we should search for users
       };
       debug('io:out:search', data);
       pomelo.request(
@@ -160,10 +160,10 @@ define([
         'chat.roomJoinHandler.call',
         data,
         function (response) {
-          if (response.err) {
-            debug('io:in:room:join error: ', response);
+          debug('io:in:room:join', response);
+          if (_.isFunction(callback)) {
+            return callback(response);
           }
-          return callback(response);
         }
       );
     },
@@ -202,13 +202,8 @@ define([
         }
       );
     },
-    roomMessageEdit: function (roomId, messageId, message, images) {
-      var data = {
-        room_id: roomId,
-        event: messageId,
-        message: message,
-        images: images
-      };
+    roomMessageEdit: function (roomId, messageId, message) {
+      var data = {room_id: roomId, event: messageId, message: message};
       pomelo.notify('chat.roomMessageEditHandler.call', data);
       debug('io:out:room:message:edit', data);
     },
@@ -613,13 +608,8 @@ define([
         }
       );
     },
-    userMessageEdit: function (userId, messageId, message, images) {
-      var data = {
-        user_id: userId,
-        event: messageId,
-        message: message,
-        images: images
-      };
+    userMessageEdit: function (userId, messageId, message) {
+      var data = {user_id: userId, event: messageId, message: message};
       pomelo.notify('chat.userMessageEditHandler.call', data);
       debug('io:out:user:message:edit', data);
     },

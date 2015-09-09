@@ -110,13 +110,13 @@ handler.call = function (data, session, next) {
         website: room.website,
         topic: room.topic,
         description: room.description,
-        created: room.created_at
+        created: room.created_at,
+        join_mode: room.join_mode
       };
 
       if (session.settings.admin === true) {
         read.visibility = room.visibility || false;
         read.priority = room.priority || 0;
-        read.join_mode = room.join_mode;
         read.history_mode = room.history_mode;
       }
 
@@ -130,7 +130,7 @@ handler.call = function (data, session, next) {
       err = (['invalid-name', 'unknown'].indexOf(err) !== -1) ?
         err :
         'internal';
-      return next(null, { code: 500, err: err });
+      return next(null, {code: 500, err: err});
     }
 
     return next(null, read);

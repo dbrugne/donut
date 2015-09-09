@@ -85,6 +85,9 @@ define([
       // url
       data.url = this.model.getUrl();
 
+      // room mode
+      data.join_mode = this.model.get('join_mode');
+
       // share widget
       var share = 'share-room-' + this.model.get('name').replace('#', '').toLocaleLowerCase();
       this.share = {
@@ -102,6 +105,8 @@ define([
       var html = this.template(data);
       this.$el.html(html);
       this.$el.hide();
+
+      this.initializeTooltips();
 
       return this;
     },
@@ -219,9 +224,7 @@ define([
     },
     devoiceUser: function (event) {
       event.preventDefault();
-      if (!this.model.currentUserIsOp() &&
-        !this.model.currentUserIsOwner() &&
-        !this.model.currentUserIsAdmin()) {
+      if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin()) {
         return false;
       }
       var userId = $(event.currentTarget).data('userId');
@@ -276,6 +279,10 @@ define([
       $.socialify.google({
         url: this.model.getUrl()
       });
+    },
+
+    initializeTooltips: function () {
+      this.$el.find('[data-toggle="tooltip"]').tooltip();
     }
 
   });

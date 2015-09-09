@@ -9,8 +9,9 @@ var conf = require('../../../config/index');
 router.param('room', require('../middlewares/room-param'));
 
 router.get('/room/:room', function (req, res) {
-  if (req.query.redirect && req.query.redirect == 'true')
+  if (req.query.redirect && req.query.redirect === 'true') {
     bouncer.set(req, req.room.chat);
+  }
 
   var meta = {
     url: req.room.url,
@@ -31,7 +32,8 @@ router.get('/room/:room', function (req, res) {
     poster: req.room.poster,
     posterBlured: req.room.posterBlured,
     color: req.room.color,
-    userDefaultAvatar: cd.userAvatar('', conf.room.default.color, false, 50)
+    userDefaultAvatar: cd.userAvatar('', conf.room.default.color, false, 50),
+    joinMode: req.room.join_mode
   });
 });
 

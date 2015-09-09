@@ -51,6 +51,9 @@
         }
         .info {
           .name { margin-left: 0; font-size: 50px; }
+          .room-profile { display: inline-block; vertical-align: text-bottom;
+            &::after { font-size:2rem; }
+          }
           .owner a:hover { text-decoration:none; }
           .owner, .separation, .website { font-size: 18px; }
           .description { margin-top: 20px; margin-bottom: 20px; max-width: 500px;
@@ -74,6 +77,11 @@
         } // .body-chat.body-profile #chat #center .discussion .content .header.user .info
       } // .body-chat.body-profile #chat #center .discussion .content .header.user
     } // .body-chat.body-profile #chat #center .discussion .content .header
+    .input .text-container .overlay { display:block; cursor:default;
+      .overlay-text { text-transform: capitalize; cursor:default;
+        a { color:#FFF; }
+      }
+    }
   } // .body-chat.body-profile #chat #center .discussion .content
 }
 .body-profile { height: 100%; .ft-opensans; background-color: @cl-background; background-repeat: no-repeat; background-position: 0 @size-color;
@@ -194,11 +202,7 @@
       }
       .info { margin-left: 120px; min-height: 180px;
         .name, .username { font-size:40px; }
-      }
-    }
-    .input .text-container .overlay { display:block; cursor:default;
-      .overlay-text { text-transform: capitalize; cursor:default;
-        a { color:#FFF; }
+        .room-profile::after { font-size:1.6rem; }
       }
     }
   }

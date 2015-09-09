@@ -54,8 +54,8 @@ define([
       // options
       this.$joinChecked = this.$el.find('.join.' + room.join_mode);
       this.$historyChecked = this.$el.find('.history.' + room.history_mode);
-      room.labelJoinMode = $.t('chat.room-form.common.mode.' + room.join_mode);
-      room.labelHistoryMode = $.t('chat.room-form.common.mode.' + room.history_mode);
+      room.labelJoinMode = $.t('chat.form.room-form.common.mode.' + room.join_mode);
+      room.labelHistoryMode = $.t('chat.form.room-form.common.mode.' + room.history_mode);
 
       var currentAvatar = room.avatar;
 
@@ -65,7 +65,7 @@ define([
       // description
       this.$el.find('#roomDescription').maxlength({
         counterContainer: this.$el.find('#roomDescription').siblings('.help-block').find('.counter'),
-        text: i18next.t('chat.room-form.edit.left')
+        text: i18next.t('chat.form.common.edit.left')
       });
 
       // website
@@ -214,11 +214,11 @@ define([
       var website = this.$website.val();
 
       if (website && (website.length < 5 || website.length > 255)) {
-        return this.$el.find('.errors').html($.t('chat.room-form.errors.website-size')).show();
+        return this.$el.find('.errors').html($.t('chat.form.errors.website-size')).show();
       }
 
       if (website && !/^[^\s]+\.[^\s]+$/.test(website)) {
-        return this.$el.find('.errors').html($.t('chat.room-form.errors.website-url')).show();
+        return this.$el.find('.errors').html($.t('chat.form.errors.website-url')).show();
       }
 
       return true;
@@ -227,7 +227,7 @@ define([
     editError: function (dataErrors) {
       var message = '';
       _.each(dataErrors.err, function (error) {
-        message += $.t('chat.room-form.errors.' + error) + '<br>';
+        message += $.t('chat.form.errors.' + error) + '<br>';
       });
       this.$el.find('.errors').html(message).show();
     }
