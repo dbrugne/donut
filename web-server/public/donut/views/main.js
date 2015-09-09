@@ -185,7 +185,7 @@ define([
         type: 'disconnected'
       });
       _.each(this.views, function (view) {
-        view.eventsView.addFreshEvent(e);
+        view.eventsView.addFreshEvent(e); // @todo : move to app.trigger()
         view.hasBeenFocused = false; // will force re-fetch data on next focus
       });
     },
@@ -195,7 +195,7 @@ define([
         type: 'reconnected'
       });
       _.each(this.views, function (view) {
-        view.eventsView.addFreshEvent(e);
+        view.eventsView.addFreshEvent(e); // @todo : move to app.trigger()
       });
     },
 
