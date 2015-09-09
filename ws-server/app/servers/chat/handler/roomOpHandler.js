@@ -44,6 +44,10 @@ handler.call = function (data, session, next) {
         return callback('unable to retrieve opedUser in room:op: ' + data.username);
       }
 
+      if (!room.isIn(opedUser.id)) {
+        return callback('opedUser : ' + opedUser.username + ' is not currently in room ' + room.name);
+      }
+
       if (room.isOwner(opedUser.id)) {
         return callback(opedUser.username + ' is owner and can not be devoiced of ' + room.name);
       }
