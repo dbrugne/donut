@@ -13,11 +13,13 @@
                     <span><%= t('choose-username.description') %></span>
                 </div>
 
-                <div class="form-group username">
+                <div class="form-group username flex-parent center">
                     <span class="arobase">@</span>
-                    <input type="username" class="form-control placeholder-no-fix" id="username-field" name="user[fields][username]" placeholder="<%= t('login.username-placeholder') %>" value="<%- userFields.username %>" tabindex="1" maxlength="15">
-                    <p class="help-block"><%= t('choose-username.help') %></p>
+                    <input type="username" class="form-control flex-child" id="username-field" name="user[fields][username]" placeholder="<%= t('login.username-placeholder') %>" value="<%- userFields.username %>" tabindex="1" maxlength="15">
+                    <img src="/images/arrow.svg">
                 </div>
+
+                <p class="help-block"><%= t('choose-username.help') %></p>
 
                 <div class="form-group pull-right mt10">
                     <input type="submit" class="button button-blue" value="<%= t('global.save') %>" tabindex="4">
