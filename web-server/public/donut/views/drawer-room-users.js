@@ -37,6 +37,14 @@ define([
     initialize: function (options) {
       this.model = options.model;
 
+      this.listenTo(client, 'room:ban', this.render);
+      this.listenTo(client, 'room:deban', this.render);
+      this.listenTo(client, 'room:voice', this.render);
+      this.listenTo(client, 'room:devoice', this.render);
+      this.listenTo(client, 'room:kick', this.render);
+      this.listenTo(client, 'room:op', this.render);
+      this.listenTo(client, 'room:deop', this.render);
+
       var isOwner = this.model.currentUserIsOwner();
       var isOp = this.model.currentUserIsOp();
       var isAdmin = this.model.currentUserIsAdmin();

@@ -45,10 +45,6 @@ handler.call = function (data, session, next) {
         return callback('unable to retrieve bannedUser: ' + data.username);
       }
 
-      if (!room.isIn(bannedUser.id)) {
-        return callback('banned user : ' + bannedUser.username + ' is not currently in room ' + room.name);
-      }
-
       return callback(null);
     },
 

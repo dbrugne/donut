@@ -134,7 +134,7 @@ roomSchema.methods.isInBanned = function (userId) {
   var subDocument = _.find(this.bans, function (ban) {
     if (ban._id) {
       // populated
-      return (ban.id === userId);
+      return (ban.user.toString() === userId); // @todo ask Dbrugne what was the fk
     } else {
       return (ban.user.toString() === userId);
     }
