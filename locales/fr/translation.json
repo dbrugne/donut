@@ -78,7 +78,9 @@
       "after": " ?"
     },
     "switchlanguage": "Langage:",
-    "unknownerror": "Erreur inconnue, veuillez réessayer"
+    "unknownerror": "Erreur inconnue, veuillez réessayer",
+    "private-donut": "Donut privé",
+    "public-donut": "Donut public"
   },
   "login": {
     "title": "se connecter",

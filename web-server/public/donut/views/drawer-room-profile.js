@@ -39,6 +39,7 @@ define([
     render: function () {
       // render spinner only
       this.$el.html(templates['spinner.html']);
+
       return this;
     },
     onResponse: function (room) {
@@ -65,6 +66,8 @@ define([
 
       if (room.color)
         this.trigger('color', room.color);
+
+      this.initializeTooltips();
     },
     /**
      * Construct the room users list for profile displaying
@@ -112,6 +115,10 @@ define([
       }
 
       room.users_list = list;
+    },
+
+    initializeTooltips: function () {
+      this.$el.find('[data-toggle="tooltip"]').tooltip();
     }
 
   });

@@ -78,7 +78,9 @@
       "after": "?"
     },
     "switchlanguage": "Language:",
-    "unknownerror": "Unknown error, please retry later"
+    "unknownerror": "Unknown error, please retry later",
+    "private-donut": "private Donut",
+    "public-donut": "public Donut"
   },
   "login": {
     "title": "connect",
