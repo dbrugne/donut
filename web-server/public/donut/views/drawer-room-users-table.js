@@ -60,7 +60,7 @@ define([
 
       var that = this;
       confirmationView.open({}, function () {
-        client.roomOp(that.model.get('id'), userId, null);
+        client.roomOp(that.model.get('id'), userId, null, null);
       });
     },
     deopUser: function (event) {
@@ -76,7 +76,7 @@ define([
 
       var that = this;
       confirmationView.open({}, function () {
-        client.roomDeop(that.model.get('id'), userId, null);
+        client.roomDeop(that.model.get('id'), userId, null, null);
       });
     },
     kickUser: function (event) {
