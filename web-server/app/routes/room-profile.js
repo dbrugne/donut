@@ -9,8 +9,9 @@ var conf = require('../../../config/index');
 router.param('room', require('../middlewares/room-param'));
 
 router.get('/room/:room', function (req, res) {
-  if (req.query.redirect && req.query.redirect == 'true')
+  if (req.query.redirect && req.query.redirect === 'true') {
     bouncer.set(req, req.room.chat);
+  }
 
   var meta = {
     url: req.room.url,

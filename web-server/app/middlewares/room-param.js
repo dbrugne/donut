@@ -52,9 +52,9 @@ module.exports = function (req, res, next, roomname) {
             username: model.owner.username,
             avatar: model.owner._avatar(80),
             color: model.owner.color,
-            url: (model.owner.username)
-              ? req.protocol + '://' + conf.fqdn + '/user/' + ('' + model.owner.username).toLocaleLowerCase()
-              : '',
+            url: (model.owner.username) ?
+            req.protocol + '://' + conf.fqdn + '/user/' + ('' + model.owner.username).toLocaleLowerCase() :
+              '',
             isOwner: true,
             isOp: false // could not be both
           };
@@ -65,17 +65,18 @@ module.exports = function (req, res, next, roomname) {
         if (model.op && model.op.length) {
           var opList = [];
           _.each(model.op, function (_model) {
-            if (ownerId && ownerId === _model.id)
+            if (ownerId && ownerId === _model.id) {
               return;
+            }
 
             var op = {
               id: _model.id,
               username: _model.username,
               avatar: _model._avatar(80),
               color: _model.color,
-              url: (_model.username)
-                ? req.protocol + '://' + conf.fqdn + '/user/' + ('' + _model.username).toLocaleLowerCase()
-                : '',
+              url: (_model.username) ?
+              req.protocol + '://' + conf.fqdn + '/user/' + ('' + _model.username).toLocaleLowerCase() :
+                '',
               isOp: true,
               isOwner: false
             };
@@ -90,19 +91,21 @@ module.exports = function (req, res, next, roomname) {
         if (model.users && model.users.length) {
           var usersList = [];
           _.each(model.users, function (_model) {
-            if (ownerId && ownerId === _model.id)
+            if (ownerId && ownerId === _model.id) {
               return;
-            if (opIds && opIds.indexOf(_model.id) !== -1)
+            }
+            if (opIds && opIds.indexOf(_model.id) !== -1) {
               return;
+            }
 
             var user = {
               id: _model.id,
               username: _model.username,
               avatar: _model._avatar(80),
               color: _model.color,
-              url: (_model.username)
-                ? req.protocol + '://' + conf.fqdn + '/user/' + ('' + _model.username).toLocaleLowerCase()
-                : '',
+              url: (_model.username) ?
+              req.protocol + '://' + conf.fqdn + '/user/' + ('' + _model.username).toLocaleLowerCase() :
+                '',
               isOp: false,
               isOwner: false
             };
