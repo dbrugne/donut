@@ -22,8 +22,10 @@ var validateInput = function (req, res, next) {
 
 router.route('/login')
   .get([require('csurf')()], function (req, res) {
+    var logged = req.isAuthenticated();
     res.render('login', {
       meta: {title: i18next.t('title.default')},
+      logged: logged,
       userFields: {email: req.flash('email')},
       token: req.csrfToken()
     });

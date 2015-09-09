@@ -36,13 +36,13 @@ var validateAvailability = function (req, res, next) {
       errorMessage = i18next.t('global.unknownerror');
 
     return res.render('signup', {
-      meta: { title: i18next.t('title.default') },
+      meta: {title: i18next.t('title.default')},
       userFields: {
         email: req.body.email,
         username: req.body.username
       },
       errors: [
-        { param: 'username', msg: errorMessage, value: req.body.username }
+        {param: 'username', msg: errorMessage, value: req.body.username}
       ],
       token: req.csrfToken()
     });

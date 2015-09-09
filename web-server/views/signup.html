@@ -6,7 +6,7 @@
             <form class="login-form form" method="post" role="form">
                 <input type="hidden" name="_csrf" value="<%= token %>">
 
-                <a href="/login/facebook" class="btn-facebook"><i class="icon icon-facebook"></i> | &nbsp;<%= t('actions.signup') %> <%= t('login.withfacebook') %></span></a>
+                <a href="/login/facebook" class="btn-facebook"><i class="icon icon-facebook"></i> | &nbsp;<%= t('actions.signup') %> <%= t('login.withfacebook') %></a>
 
                 <div class="method-facebook-or">
                     <div class="outer"><div class="inner">Ou</div></div>
@@ -33,7 +33,7 @@
                 </div>
 
                 <div class="form-group pull-right mt10">
-                    <input type="submit" value="<%= t('home.signup.etvoila') %>" tabindex="4">
+                    <input type="submit" class="button button-blue" value="<%= t('home.signup.etvoila') %>" tabindex="4">
                 </div>
 
                 <div class="clearfix"></div>
