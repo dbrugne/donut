@@ -16,7 +16,7 @@
   .modal-dialog { width:auto; margin: 30px; }
   .page-sidebar-menu { margin: 0; padding: 0;
     & > li { display: block; margin: 0; padding: 0; border: 0;
-      & > a { display: block; position: relative; margin: 0; padding: 10px 15px; text-decoration: none; font-weight: 300; }
+      & > a { display: block; position: relative; margin: 0; padding: 10px 14px; text-decoration: none; font-weight: 300; }
       .sub-menu { display:none; }
       &.active > a { background: #E2E2E2; border-top-color: transparent; color: #f5f5f5; }
       &.open { width: 256px !important; position: relative !important; z-index: 10000; display: block !important; box-shadow: 0 6px 12px rgba(0,0,0,0.175); background: #E2E2E2;
@@ -122,12 +122,14 @@
               &::after { font-size: 1rem;  }
             }
             &.room .avatar { .border-radius(50%); }
-            .info .dropdown { display: inline-block; position: relative;
-              .dropdown-toggle { font-size: 20px; border: none; background-color: transparent; color: @cl-subtext20;
-                i { .opacity(0.5);
-                  &:hover { .opacity(1); }
-                }
-              } // #chat #center .discussion .content .mini-header .info .dropdown .dropdown-toggle
+            .info { float:left;
+              .dropdown { display: inline-block; position: relative;
+                .dropdown-toggle { font-size: 20px; border: none; background-color: transparent; color: @cl-subtext20;
+                  i { .opacity(0.5);
+                    &:hover { .opacity(1); }
+                  }
+                } // #chat #center .discussion .content .mini-header .info .dropdown .dropdown-toggle
+              }
             }
           }
           .header.room { min-height: 50px;
