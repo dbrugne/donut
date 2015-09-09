@@ -60,7 +60,7 @@ define([
 
       var that = this;
       confirmationView.open({}, function () {
-        client.roomOp(that.model.get('id'), userId, null);
+        client.roomOp(that.model.get('id'), userId, null, null);
         that.users = _.map(that.users, function (u) {
           if (u.user_id === userId) {
             u.isOp = true;

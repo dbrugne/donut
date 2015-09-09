@@ -237,7 +237,11 @@ define([
 
       var that = this;
       confirmationView.open({}, function () {
-        client.roomOp(that.model.get('id'), null, parameters[1]);
+        client.roomOp(that.model.get('id'), null, parameters[1], function (response) {
+          if (response.err) {
+            return that.errorCommand('op', 'invalidusername');
+          }
+        });
         that.model.trigger('inputFocus');
       }, this.inputFocus());
     },
