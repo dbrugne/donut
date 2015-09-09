@@ -10,8 +10,6 @@ define([
   'models/current-user',
   '_templates'
 ], function ($, _, Backbone, donutDebug, keyboard, common, client, currentUser, templates) {
-  var debug = donutDebug('donut:message-edit');
-
   var MessageEditView = Backbone.View.extend({
     template: templates['message-edit.html'],
 
@@ -30,8 +28,9 @@ define([
       this.$messageEdit = this.$el.find('.message-edit');
       this.$images = this.$el.find('.images');
 
-      if (this.$el.data('edited') || this.$textEdited)
+      if (this.$el.data('edited') || this.$textEdited) {
         this.$textEdited.remove();
+      }
 
       this.$messageEdit.html(this.template);
       this.$text.addClass('hidden');
@@ -55,8 +54,9 @@ define([
       // bind click outside listener
       var that = this;
       this.onClickOutsideHandler = function (event) {
-        if ($(event.target).hasClass('form-message-edit') || $(event.target).hasClass('edited'))
+        if ($(event.target).hasClass('form-message-edit') || $(event.target).hasClass('edited')) {
           return;
+        }
 
         that.model.trigger('editMessageClose');
       };
@@ -67,8 +67,9 @@ define([
     remove: function () {
       this.model.trigger('inputFocus'); // refocus discussion input field
       $('html').off('click', this.onClickOutsideHandler);
-      if (this.$el.data('edited') || this.$textEdited)
+      if (this.$el.data('edited') || this.$textEdited) {
         this.$text.append(this.$textEdited);
+      }
       this.$text.removeClass('hidden');
       this.$messageForm.remove();
       this.$el.addClass('has-hover');
@@ -86,11 +87,10 @@ define([
         return;
       }
 
-      var isImages = (this.$images.html() !== undefined);
       if (this.model.get('type') === 'room') {
-        client.roomMessageEdit(this.model.get('id'), messageId, message, isImages);
+        client.roomMessageEdit(this.model.get('id'), messageId, message);
       } else {
-        client.userMessageEdit(this.model.get('id'), messageId, message, isImages);
+        client.userMessageEdit(this.model.get('id'), messageId, message);
       }
 
       this.model.trigger('editMessageClose');
@@ -102,14 +102,16 @@ define([
     onKeydown: function (event) {
       this.updateFormSize();
       var data = keyboard._getLastKeyCode(event);
-      if (data.key === keyboard.ESC)
+      if (data.key === keyboard.ESC) {
         this.onEscape(event);
-      else if (data.key === keyboard.RETURN && !data.isShift)
+      } else if (data.key === keyboard.RETURN && !data.isShift) {
         this.onSubmit(event);
+      }
     },
     updateFormSize: function () {
-      if (!this.$formMessageEdit)
+      if (!this.$formMessageEdit) {
         return;
+      }
       this.$formMessageEdit.css('height', '1px');
       this.$formMessageEdit
         .css('height',
