@@ -94,7 +94,7 @@ define([
     onIn: function (data) {
       data.status = 'online'; // only an online user can join a room
 
-      this.addUser(data);
+      this.addUser(data, true);
       this.users.trigger('users-redraw');
 
       var model = new EventModel({
