@@ -110,19 +110,19 @@ define([
         help: '@username',
         description: 'chat.commands.ban'
       },
-      deban: {
+      unban: {
         parameters: 'username',
         access: 'room',
         help: '@username',
         description: 'chat.commands.deban'
       },
-      voice: {
+      unmute: {
         parameters: 'username',
         access: 'room',
         help: '@username',
         description: 'chat.commands.voice'
       },
-      devoice: {
+      mute: {
         parameters: 'username',
         access: 'room',
         help: '@username',
@@ -134,7 +134,7 @@ define([
         help: '@username',
         description: 'chat.commands.block'
       },
-      deblock: {
+      unblock: {
         parameters: 'username',
         access: 'everywhere',
         help: '@username',
@@ -441,7 +441,7 @@ define([
         return this.errorCommand('random', 'parameters');
       }
       var result = Math.floor(Math.random() * (max - min + 1) + min);
-      var msg = i18next.t('chat.notifications.random') + ' ' + result + ' (' + min + ' - ' + max + ')';
+      var msg = i18next.t('chat.notifications.random') + ' ' + result + '(' + min + ' - ' + max + ')';
       if (this.model.get('type') === 'room') {
         client.roomMe(this.model.get('id'), msg);
       } else {

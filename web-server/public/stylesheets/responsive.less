@@ -12,7 +12,7 @@
   .modal-dialog { width:auto; margin: 30px; }
   .page-sidebar-menu { margin: 0; padding: 0;
     & > li { display: block; margin: 0; padding: 0; border: 0;
-      & > a { display: block; position: relative; margin: 0; padding: 10px 15px; text-decoration: none; font-weight: 300; }
+      & > a { display: block; position: relative; margin: 0; padding: 10px 14px; text-decoration: none; font-weight: 300; }
       .sub-menu { display:none; }
       &.active > a { background: #E2E2E2; border-top-color: transparent; color: #f5f5f5; }
       &.open { width: 256px !important; position: relative !important; z-index: 10000; display: block !important; box-shadow: 0 6px 12px rgba(0,0,0,0.175); background: #E2E2E2;
@@ -115,12 +115,14 @@
             .avatar { border: 2px solid rgba(167,167,167,0.2); width: 34px; height: 34px; top: 5px; left: 7px; z-index: 1031; cursor: pointer; float: left; margin-top: 1px; margin-left: 0px;  }
             .name, .username {     margin: 0 !important; font-size: 16px !important; margin-top: 5px !important; font-weight: bold; padding-left: 10px; display: inline-block; padding-top: 3px; float: left; }
             &.room .avatar { .border-radius(50%); }
-            .info .dropdown { display: inline-block; position: relative;
-              .dropdown-toggle { font-size: 20px; border: none; background-color: transparent; color: @cl-subtext20;
-                i { .opacity(0.5);
-                  &:hover { .opacity(1); }
-                }
-              } // #chat #center .discussion .content .mini-header .info .dropdown .dropdown-toggle
+            .info { float:left;
+              .dropdown { display: inline-block; position: relative;
+                .dropdown-toggle { font-size: 20px; border: none; background-color: transparent; color: @cl-subtext20;
+                  i { .opacity(0.5);
+                    &:hover { .opacity(1); }
+                  }
+                } // #chat #center .discussion .content .mini-header .info .dropdown .dropdown-toggle
+              }
             }
           }
           .header.room { min-height: 50px;
