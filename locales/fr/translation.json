@@ -461,7 +461,9 @@
         "invalidcommand": "Cette commande n'existe pas.",
         "invalidusername": "Cette utilisateur n'existe pas.",
         "invalidroom": "Ce donut n'existe pas.",
-        "invalidusernameroom": "Cette utilisateur n'existe pas dans ce donut",
+        "unknown-user-room": "Cette utilisateur n'existe pas dans ce donut",
+        "already-oped": "Cette utilisateur est déjà modérateur de ce donut",
+        "no-op": "Vous n'avez pas les droits pour faire ça",
         "commandaccess": "Vous ne pouvez pas utiliser cette commande ici."
       }
     },

@@ -321,7 +321,7 @@ define([
         }
       );
     },
-    roomOp: function (roomId, userId, username) {
+    roomOp: function (roomId, userId, username, fn) {
       var data = {room_id: roomId};
       if (userId) {
         data.user_id = userId;
@@ -337,8 +337,9 @@ define([
         data,
         function (response) {
           if (response.err) {
-            return debug('io:in:room:op error: ', response);
+            debug('io:in:room:op error: ', response);
           }
+          return fn(response.err);
         }
       );
     },
