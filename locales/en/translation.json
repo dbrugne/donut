@@ -444,6 +444,7 @@
         "invalidcommand": "Command not found",
         "invalidusername": "User not found",
         "invalidroom": "Donut not found",
+        "invalidusernameroom": "User not found in this donut",
         "commandaccess": "You can not use this command here"
       }
     },

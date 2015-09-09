@@ -228,11 +228,12 @@ define([
       client.roomTopic(this.model.get('id'), parameters[1]);
     },
     op: function (paramString, parameters) {
-      if (this.model.get('type') !== 'room')
+      if (this.model.get('type') !== 'room') {
         return this.errorCommand('op', 'commandaccess');
-
-      if (!parameters)
+      }
+      if (!parameters) {
         return this.errorCommand('op', 'parameters');
+      }
 
       var that = this;
       confirmationView.open({}, function () {
@@ -487,6 +488,7 @@ define([
      *  - invalidcommand
      *  - invalidusername
      *  - invalidroom
+     *  - invalidusernameroom
      *
      **********************************************************/
 
