@@ -128,11 +128,15 @@ roomSchema.methods.isOwnerOrOp = function (userId) {
 
 roomSchema.methods.isInBanned = function (userId) {
   if (!this.bans || !this.bans.length) {
-    return false;
+    return;
   }
-  var subDocument = _.find(this.bans, function (ban) { // @warning: this shouldn't have .bans populated
-    if (ban.user.toString() === userId) {
-      return true;
+
+  var subDocument = _.find(this.bans, function (ban) {
+    if (ban._id) {
+      // populated
+      return (ban.id === userId);
+    } else {
+      return (ban.user.toString() === userId);
     }
   });
 
