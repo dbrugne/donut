@@ -1,183 +1,101 @@
 <%- partial('head') %>
 <body>
 <div id="landing" class="flex-parent column">
-    <div class="header">
-        <input type="hidden" id="last-search" value="" />
-        <nav class="navbar">
-            <!--Header responsive-->
-            <div class="visible-xs visible-sm mini-header">
-                <div class="flex-parent cl-back-first links">
-                    <% if (logged) { %>
-                        <a class="flex-child text-center" href="/!"><%= t('logged.chat') %></a>
-                        <a class="flex-child text-center" href="/logout"><%= t('logged.logout') %></a>
-                    <% } else { %>
-                        <a href="/signup" class="flex-child text-center"><%= t('landing.signup') %></a>
-                        <span class="divider"></span>
-                        <a href="/login"  class="flex-child text-center"><%= t('landing.login') %></a>
-                    <% } %>
-                </div>
 
-                <div class="flex-parent searchbar">
-                    <input class="flex-child" type="text" placeholder="<%= t('landing.yourinterests') %>">
-                    <button class="action-search"><i class="icon icon-search"></i></button>
+    <%- partial('header') %>
+
+    <input type="hidden" id="last-search" value="" />
+    <div id="carousel-landing" class="carousel slide hidden-xs hidden-sm" data-ride="carousel">
+
+        <ol class="carousel-indicators">
+            <li data-target="#carousel-landing" data-slide-to="0" class="active"></li>
+            <li data-target="#carousel-landing" data-slide-to="1"></li>
+            <li data-target="#carousel-landing" data-slide-to="2"></li>
+        </ol>
+
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner" role="listbox">
+            <div class="item item-1 active">
+                <div class="container relative">
+                    <div class="disclaimer">
+                        <h1>DONUT chatrooms</h1>
+                        <span>Une chatroom c'est comme un bar sympa ou une soirée entre amis. On se rencontre, on discute, on refait le monde.</span>
+                    </div>
                 </div>
+                <div class="img" style="background-image:url('/images/carousel1.jpg');"></div>
             </div>
-
-            <!--Header non responsive-->
-            <div class="container hidden-sm hidden-xs">
-                <!-- Brand and toggle get grouped for better mobile display -->
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="#"><img class="logo" src="/images/logo.png" alt="<%= t('title') %> - <%= t('baseline') %>"></a>
-                </div>
-
-                <!-- Collect the nav links, forms, and other content for toggling -->
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-
-                    <div class="baseline hidden-sm hidden-xs">
-                        <div class="relative">
-                            <div class="ctn-text">
-                                <div class="flex-parent">
-                                    <p><%= t('home.cover.line1') %>&nbsp;</p>
-                                    <p data-toggle="talkative" class="flex-child"><%= t('home.cover.line2') %></p>
-                                </div>
-                                <div class="flex-parent">
-                                    <p><%= t('home.cover.line3') %>&nbsp;</p>
-                                    <p data-toggle="talkative" class="flex-child"><%= t('home.cover.line4') %></p>
-                                </div>
-                            </div>
-                        </div>
+            <div class="item item-2">
+                <div class="container relative">
+                    <div class="disclaimer">
+                        <h1>IRC for n00bz</h1>
+                        <span>IRC c'était le top.<br>Mais ça c'était avant.</span>
                     </div>
-
-                    <ul class="nav navbar-nav navbar-right">
-                        <li class="signup">
-                            <a href="/signup"><%= t('landing.signup') %></a>
-                        </li>
-                        <li class="divider-vertical"></li>
-                        <li class="nav-divider"></li>
-                        <li class="login">
-                            <a href="/login"><%= t('landing.login') %></a>
-                        </li>
-                        <li class="help">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                <i class="icon icon-menu dc-text-contrast"></i>
-                            </a>
-                            <ul class="dropdown-menu" role="menu">
-                                <li class="arrow-up"></li>
-                                <li class="colored"><a href="/!#room/help"><%= t('chat.help') %></a></li>
-                                <li class="colored"><a href="/faq" target="_blank"><%= t('page.faq.title') %></a></li>
-                                <li class="colored"><a data-toggle="contactform"><%= t('page.contact.title') %></a></li>
-                                <li class="colored"><a href="/eutc" target="_blank"><%= t('page.eutc.title') %></a></li>
-                                <li class="colored"><a href="/legals" target="_blank"><%=t('landing.legals')%></a></li>
-                                <li role="separator" class="divider"></li>
-                                <li class="dropdown-header"><%= t('global.switchlanguage') %></li>
-                                <li class="colored"><a href="" data-language="fr" class="switch">Français</a></li>
-                                <li class="colored"><a href="" data-language="en" class="switch">English</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div><!-- /.navbar-collapse -->
-            </div><!-- /.container-fluid -->
-        </nav>
-
-        <div id="carousel-landing" class="carousel slide hidden-xs hidden-sm" data-ride="carousel">
-
-            <ol class="carousel-indicators">
-                <li data-target="#carousel-landing" data-slide-to="0" class="active"></li>
-                <li data-target="#carousel-landing" data-slide-to="1"></li>
-                <li data-target="#carousel-landing" data-slide-to="2"></li>
-            </ol>
-
-            <!-- Wrapper for slides -->
-            <div class="carousel-inner" role="listbox">
-                <div class="item item-1 active">
-                    <div class="container relative">
-                        <div class="disclaimer">
-                            <h1>DONUT chatrooms</h1>
-                            <span>Une chatroom c'est comme un bar sympa ou une soirée entre amis. On se rencontre, on discute, on refait le monde.</span>
-                        </div>
-                    </div>
-                    <div class="img" style="background-image:url('/images/carousel1.jpg');"></div>
                 </div>
-                <div class="item item-2">
-                    <div class="container relative">
-                        <div class="disclaimer">
-                            <h1>IRC for n00bz</h1>
-                            <span>IRC c'était le top.<br>Mais ça c'était avant.</span>
-                        </div>
-                    </div>
-                    <div class="img" style="background-image:url('/images/carousel2.jpg');"></div>
-                </div>
-                <div class="item item-3">
-                    <div class="container relative">
-                        <div class="disclaimer">
-                            <h1>Simple, moderne mais à l'ancienne</h1>
-                            <span>Un salon de discussion en deux clics, avec tout ce qu'on peut attendre en 2015 mais la simplicité des chats d'antans</span>
-                        </div>
-                    </div>
-                    <div class="img" style="background-image:url('/images/carousel3.jpg');"></div>
-                </div>
+                <div class="img" style="background-image:url('/images/carousel2.jpg');"></div>
             </div>
-
-            <div class="ctn-baseline container">
-
-                <div class="authenticate">
-                    <% if (logged) { %>
-                    <h2><%= t('logged.title') %></h2>
-                    <div class="logged mt25 flex-parent column">
-                        <a class="profile flex-parent column" href="<%= user.url %>" target="_blank">
-                            <img class="avatar" src="<%= user.avatar %>" alt="<%= user.username %> avatar">
-                            <p>@<%= user.username %></p>
-                        </a>
-                        <p class="text-center"><%= t('logged.text') %></p>
-                        <p class="actions flex-parent column">
-                            <a class="chat button button-blue" href="/!"><%= t('logged.chat') %></a>
-                            <a class="logout flex-end mt10" href="/logout"><%= t('logged.logout') %></a>
-                        </p>
+            <div class="item item-3">
+                <div class="container relative">
+                    <div class="disclaimer">
+                        <h1>Simple, moderne mais à l'ancienne</h1>
+                        <span>Un salon de discussion en deux clics, avec tout ce qu'on peut attendre en 2015 mais la simplicité des chats d'antans</span>
                     </div>
-                    <% } else { %>
-                    <div class="flex-parent column">
-                        <a href="/login/facebook" class="btn-facebook"><i class="icon icon-facebook"></i> | &nbsp;<%= t('actions.signup') %> <%= t('login.withfacebook') %></span></a>
-                        <p class="logic"><span><%= t('landing.orbymail') %></span></p>
-                        <form id="signup" action="/signup" method="post" role="form" class="form mt10">
-                            <input type="hidden" name="_csrf" value="<%= token %>">
-
-                            <div class="form-group mb10">
-                                <input type="text" id="signin-username" class="form-control" name="username" placeholder="<%= t('landing.username-placeholder') %>" tabindex="1">
-                                <img src="/images/arrow.svg">
-                            </div>
-
-                            <div class="form-group mb10">
-                                <input type="text" id="signin-email" class="form-control" name="email" placeholder="<%= t('landing.email-placeholder') %>" tabindex="1">
-                                <img src="/images/arrow.svg">
-                            </div>
-
-                            <div class="form-group mb10">
-                                <input type="password" id="signin-password" class="form-control" name="password" placeholder="<%= t('landing.password-placeholder') %>" tabindex="2">
-                                <img src="/images/arrow.svg">
-                            </div>
-
-                            <div class="flex-parent links-ctn">
-                                <span class="blank flex-child"></span>
-                                <input class="button button-blue" type="submit" value="<%= t('home.signup.etvoila') %>" tabindex="3">
-                            </div>
-
-                            <div class="text-center mt10">
-                                <%= t('signup.disclaimer') %>
-                            </div>
-                        </form>
-                    </div>
-                    <% } %>
                 </div>
+                <div class="img" style="background-image:url('/images/carousel3.jpg');"></div>
             </div>
         </div>
 
-    </div><!--/.header-->
+        <div class="ctn-baseline container">
+
+            <div class="authenticate">
+                <% if (logged) { %>
+                <h2><%= t('logged.title') %></h2>
+                <div class="logged mt25 flex-parent column">
+                    <a class="profile flex-parent column" href="<%= user.url %>" target="_blank">
+                        <img class="avatar" src="<%= user.avatar %>" alt="<%= user.username %> avatar">
+                        <p>@<%= user.username %></p>
+                    </a>
+                    <p class="text-center"><%= t('logged.text') %></p>
+                    <p class="actions flex-parent column">
+                        <a class="chat button button-blue" href="/!"><%= t('logged.chat') %></a>
+                        <a class="logout flex-end mt10" href="/logout"><%= t('logged.logout') %></a>
+                    </p>
+                </div>
+                <% } else { %>
+                <div class="flex-parent column">
+                    <a href="/login/facebook" class="btn-facebook"><i class="icon icon-facebook"></i> | &nbsp;<%= t('actions.signup') %> <%= t('login.withfacebook') %></span></a>
+                    <p class="logic"><span><%= t('landing.orbymail') %></span></p>
+                    <form id="signup" action="/signup" method="post" role="form" class="form mt10">
+                        <input type="hidden" name="_csrf" value="<%= token %>">
+
+                        <div class="form-group mb10">
+                            <input type="text" id="signin-username" class="form-control" name="username" placeholder="<%= t('landing.username-placeholder') %>" tabindex="1">
+                            <img src="/images/arrow.svg">
+                        </div>
+
+                        <div class="form-group mb10">
+                            <input type="text" id="signin-email" class="form-control" name="email" placeholder="<%= t('landing.email-placeholder') %>" tabindex="1">
+                            <img src="/images/arrow.svg">
+                        </div>
+
+                        <div class="form-group mb10">
+                            <input type="password" id="signin-password" class="form-control" name="password" placeholder="<%= t('landing.password-placeholder') %>" tabindex="2">
+                            <img src="/images/arrow.svg">
+                        </div>
+
+                        <div class="flex-parent links-ctn">
+                            <span class="blank flex-child"></span>
+                            <input class="button button-blue" type="submit" value="<%= t('home.signup.etvoila') %>" tabindex="3">
+                        </div>
+
+                        <div class="text-center mt10">
+                            <%= t('signup.disclaimer') %>
+                        </div>
+                    </form>
+                </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
 
     <div class="container ctn-results flex-child">
         <div class="search hidden-sm hidden-xs mb10">
