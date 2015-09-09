@@ -57,6 +57,9 @@ require([
     delay_animation: 900
   });
 
+  // Contact form
+  $('[data-toggle="contactform"]').contactform({});
+
   // Landing Page
   if ($('#landing').length) {
     var that = this;
@@ -142,8 +145,5 @@ require([
     document.cookie = 'donut.lng' + '=' + language + '; ' + expires;
     window.location.reload();
   });
-
-  // Contact form
-  $('[data-toggle="contactform"]').contactform({});
 
 });
