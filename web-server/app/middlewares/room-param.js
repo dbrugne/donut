@@ -33,7 +33,8 @@ module.exports = function (req, res, next, roomname) {
           description: model.description,
           website: model.website,
           created_at: model.created_at,
-          lastjoin_at: model.lastjoin_at
+          lastjoin_at: model.lastjoin_at,
+          join_mode: model.join_mode
         };
 
         // urls
