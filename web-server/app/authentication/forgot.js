@@ -113,10 +113,8 @@ var reset = function (req, res) {
 
 router.route('/forgot')
   .get(require('csurf')(), function (req, res) {
-    var logged = req.isAuthenticated();
     res.render('account_forgot', {
       email: '',
-      logged: logged,
       meta: {title: i18next.t('title.default')},
       token: req.csrfToken()
     });
@@ -125,7 +123,6 @@ router.route('/forgot')
 
 router.route('/reset/:token')
   .get(require('csurf')(), function (req, res) {
-    var logged = req.isAuthenticated();
     User.findOne({
       'local.resetToken': req.params.token,
       'local.resetExpires': { $gt: Date.now() }
@@ -136,7 +133,6 @@ router.route('/reset/:token')
       }
       res.render('account_reset', {
         email: '',
-        logged: logged,
         meta: {title: i18next.t('title.default')},
         user: req.user,
         token: req.csrfToken()

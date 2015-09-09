@@ -3,7 +3,7 @@
         <!--Header responsive-->
         <div class="visible-xs visible-sm mini-header">
             <div class="flex-parent cl-back-first links">
-                <% if (logged) { %>
+                <% if (user) { %>
                 <a class="flex-child text-center" href="/!"><%= t('logged.chat') %></a>
                 <a class="flex-child text-center" href="/logout"><%= t('logged.logout') %></a>
                 <% } else { %>

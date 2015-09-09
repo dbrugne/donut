@@ -16,7 +16,6 @@ var renderer = underscoreTemplate.standard({
 });
 
 router.get('/', [require('csurf')()], function (req, res) {
-  var logged = req.isAuthenticated();
   var baseUrl = req.protocol + '://' + conf.fqdn + '/';
   var meta = {
     url: baseUrl,
@@ -67,7 +66,6 @@ router.get('/', [require('csurf')()], function (req, res) {
     return res.render('landing', {
       token: req.csrfToken(),
       meta: meta,
-      logged: logged,
       title: false,
       search: false,
       roomsHtml: html,
