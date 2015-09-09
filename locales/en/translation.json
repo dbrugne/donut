@@ -6,7 +6,6 @@
   "landing": {
     "signup" : "Sign up",
     "login" : "Log in",
-    "start": "Start",
     "loginwithfacebook": "Login with Facebook",
     "orbymail": "or signup by email",
     "username-placeholder": "Username",
