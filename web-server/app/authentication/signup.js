@@ -51,8 +51,10 @@ var validateAvailability = function (req, res, next) {
 
 router.route('/signup')
   .get([require('csurf')()], function (req, res) {
+    var logged = req.isAuthenticated();
     res.render('signup', {
       meta: {title: i18next.t('title.default')},
+      logged: logged,
       userFields: {},
       token: req.csrfToken()
     });

@@ -1,4 +1,4 @@
-.header-out {
+.header-out { border-bottom: 3px solid @cl-first; background-color: #FFF;
   .navbar { margin-bottom:0; border:0;
     .mini-header {
       .flex-parent.links { padding:10px;
@@ -11,6 +11,7 @@
       }
     }
     .baseline { float: left; margin-left: 30px; min-width: 310px; margin-top: 8px;
+      [data-toggle="talkative"] > * { padding:0;  }
       .ctn-text {
         p { .ft-opensans-bold; font-weight: 700; color: @cl-second; font-size: 1.3rem; text-transform: uppercase; margin-bottom: 0px; line-height: normal; }
         [data-toggle="talkative"] > div.talkative-container > * { padding:0; }
@@ -38,10 +39,20 @@
   }
 }
 
+#landing, #signup, #login {
+  .form {
+    .form-group {
+      .form-control { padding: 4px 14px 4px 48px; }
+      img { color: @cl-first; font-size: 22px; left: 10px; position: absolute; display: block; line-height: 34px; text-align: center; z-index: 2; width: 15px; height: 15px; top: 9px; }
+    }
+    a.btn-facebook { text-decoration: none; color:#FFF; display: inline-block; font-size:1.3rem; }
+  }
+}
+
 #landing {
   @carousel-height:420px;
   .ft-opensans-light;
-  #carousel-landing { border-top: 3px solid @cl-first;
+  #carousel-landing {
     .carousel-inner { position: absolute; overflow: hidden; width: 100%;
       .disclaimer { position: absolute; top: 50px; color: #FFF; font-size: 3rem; max-width: 35%; }
       .img { height: @carousel-height; max-width: 100%; background-size: cover; background-repeat:none; }
@@ -52,13 +63,9 @@
     .ctn-baseline { height:@carousel-height; position: relative;
       .authenticate { position: absolute; z-index: 1; right: 0; padding: 15px; .ft-raleway; margin: auto; margin-top: 30px; background-color: @cl-subtext10; .border-radius(10px);
         h2 { margin: 0; text-align: center; .ft-raleway-heavy; font-size: 2.2rem; }
-        a.btn-facebook { max-width:310px; margin:10px auto; font-size: 1.3rem; text-decoration: none; }
+        a.btn-facebook { max-width:310px; }
         .logic { text-align:center; margin:0; }
         .form { width: 310px; margin: 0 auto;
-          .form-group {
-            .form-control { padding: 4px 14px 4px 48px; }
-            img { color: @cl-first; font-size: 22px; left: 10px; position: absolute; display: block; line-height: 34px; text-align: center; z-index: 2; width: 15px; height: 15px; top: 9px; }
-          }
           input[type=submit] { padding: 7px 12px;font-size: 1.3rem; }
         }
         .logged .profile {

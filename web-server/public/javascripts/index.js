@@ -50,15 +50,17 @@ require([
   // make i18next available from all underscore templates views (<%= t('key') %>)
   window.t = i18next.t; // @global
 
+  // Intialize Talkative on all pages
+  $('[data-toggle="talkative"]').talkative({
+    start: 2000,
+    delay: 5000,
+    delay_animation: 900
+  });
+
   // Landing Page
   if ($('#landing').length) {
     var that = this;
     this.searchView = new SearchView({el: $('#landing .ctn-results .results .rooms')});
-    $('[data-toggle="talkative"]').talkative({
-      start: 2000,
-      delay: 5000,
-      delay_animation: 900
-    });
     var limit = 20; // default limit on landing page (1st load)
 
     var searchFunction = function (search, skip, replace) {
