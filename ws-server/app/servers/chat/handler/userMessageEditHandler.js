@@ -3,7 +3,6 @@ var logger = require('../../../../pomelo-logger').getLogger('donut', __filename)
 var async = require('async');
 var inputUtil = require('../../../util/input');
 var conf = require('../../../../../config');
-var common = require('@dbrugne/donut-common');
 
 var Handler = function (app) {
   this.app = app;
@@ -33,7 +32,7 @@ handler.call = function (data, session, next) {
         return callback('require event param');
       }
 
-      if (!data.message && !data.images) {
+      if (!data.message && !event.data.images) {
         return callback('require message param');
       }
 
@@ -96,28 +95,31 @@ handler.call = function (data, session, next) {
 
     function broadcastFrom (eventToSend, callback) {
       that.app.globalChannelService.pushMessage('connector', 'user:message:edit', eventToSend, 'user:' + user.id, {}, function (err) {
-        if (err)
+        if (err) {
           logger.error(err); // not 'return', we delete even if error happen
+        }
 
         return callback(null, eventToSend);
       });
     },
 
     function broadcastTo (eventToSend, callback) {
-      if (user.id === withUser.id)
+      if (user.id === withUser.id) {
         return callback(null);
-
+      }
       that.app.globalChannelService.pushMessage('connector', 'user:message:edit', eventToSend, 'user:' + withUser.id, {}, function (err) {
-        if (err)
+        if (err) {
           logger.error(err); // not 'return', we delete even if error happen
+        }
 
         return callback(null);
       });
     }
 
   ], function (err) {
-    if (err)
+    if (err) {
       logger.error('[user:message:edit] ' + err);
+    }
 
     next(null); // even for .notify
   });
