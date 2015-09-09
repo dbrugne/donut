@@ -44,7 +44,7 @@ handler.call = function (data, session, next) {
         return callback('unable to retrieve opedUser: ' + data.username);
       }
 
-      if (!room.isOp(opedUser)) {
+      if (!room.isOp(opedUser.id)) {
         return callback('user ' + opedUser.username + ' is not OP of ' + room.name);
       }
 

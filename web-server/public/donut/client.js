@@ -339,7 +339,7 @@ define([
           if (response.err) {
             debug('io:in:room:op error: ', response);
           }
-          return fn(response);
+          return fn(response.err);
         }
       );
     },

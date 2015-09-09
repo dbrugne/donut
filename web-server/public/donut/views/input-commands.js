@@ -237,9 +237,12 @@ define([
 
       var that = this;
       confirmationView.open({}, function () {
-        client.roomOp(that.model.get('id'), null, parameters[1], function (response) {
-          if (response.err) {
-            return that.errorCommand('op', 'invalidusername');
+        client.roomOp(that.model.get('id'), null, parameters[1], function (err) {
+          if (err && ['unknow-user-room', 'already-oped', 'no-op'].indexOf(err)) {
+            return that.errorCommand('op', err);
+          }
+          if (err) {
+            return that.errorCommand('op', 'parameters');
           }
         });
         that.model.trigger('inputFocus');
@@ -492,7 +495,9 @@ define([
      *  - invalidcommand
      *  - invalidusername
      *  - invalidroom
-     *  - invalidusernameroom
+     *  - unknown-user-room
+     *  - already-oped
+     *  - no-op
      *
      **********************************************************/
 

@@ -37,7 +37,7 @@ handler.call = function (data, session, next) {
       }
 
       if (!room.isOwnerOrOp(user.id) && session.settings.admin !== true) {
-        return callback('this user ' + user.id + " isn't able to op another user in this room: " + data.room_id);
+        return callback('no-op');
       }
 
       if (!opedUser) {
@@ -45,7 +45,7 @@ handler.call = function (data, session, next) {
       }
 
       if (!room.isIn(opedUser.id)) {
-        return callback('opedUser : ' + opedUser.username + ' is not currently in room ' + room.name);
+        return callback('unknown-user-room');
       }
 
       if (room.isOwner(opedUser.id)) {
@@ -53,7 +53,7 @@ handler.call = function (data, session, next) {
       }
 
       if (room.isOp(opedUser.id)) {
-        return callback('user ' + opedUser.username + ' is already OP of ' + room.name);
+        return callback('already-oped');
       }
 
       return callback(null);
