@@ -384,6 +384,8 @@
     },
     "userscount": "<strong>__count__</strong> <span>utilisateur dans ce donut</span>",
     "userscount_plural": "<strong>__count__</strong> <span>utilisateurs dans ce donut</span>",
+    "usersonlinecount": "<strong>__count__</strong> <span>utilisateur en ligne dans ce donut</span>",
+    "usersonlinecount_plural": "<strong>__count__</strong> <span>utilisateurs en ligne dans ce donut</span>",
     "usersoffline": "Utilisateurs hors ligne",
     "topic": {
       "label": "En ce moment",

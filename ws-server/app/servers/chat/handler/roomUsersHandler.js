@@ -28,11 +28,26 @@ handler.call = function (data, session, next) {
     'allowed',  // allowed
     'regular',  // users (not op/owner/ban/devoice)
     'ban',      // ban
-    'devoice',  // devoice
-    'online'    // users (online)
+    'devoice'   // devoice
   ];
 
   var searchTypesThatNeedPower = ['allowed', 'ban', 'devoice'];
+
+  /**
+   * @param room_id (@mandatory)
+   * @param attributes (@mandatory)
+   * {
+   *   type: select the type of search (@mandatory)
+   *   searchString: string to match
+   *   selector:
+   *   {
+   *      start: index to start
+   *      length: number of result
+   *   }
+   *   status: (online or offline)
+   * }
+   * @returns users, count
+   */
 
   async.waterfall([
 
@@ -61,6 +76,10 @@ handler.call = function (data, session, next) {
         return callback('cannot make a regular search on an allowed room');
       }
 
+      if (data.attributes.status && data.attributes.status !== 'online' && data.attributes.status !== 'offline') {
+        return callback('status attribute ' + data.attributes.status + ' don\'t exist');
+      }
+
       if ((searchTypesThatNeedPower.indexOf(data.attributes.type) !== -1) &&
       !room.isOwnerOrOp(user.id) && !user.admin) {
         return callback('this user ' + user.id + ' is not allowed to perform this type of search : ' + data.attributes.type);
@@ -82,15 +101,16 @@ handler.call = function (data, session, next) {
       return callback(null, ids);
     },
 
-    function selectOnlines (ids, callback) {
-      if (data.attributes.type === 'online') {
+    function selectByStatus (ids, callback) {
+      if (data.attributes.status === 'online' || data.attributes.status === 'offline') {
         that.app.statusService.getStatusByUids(ids, function (err, results) {
           if (err) {
             return callback(err);
           }
           var idsTmp = [];
           _.each(ids, function (id) {
-            if (results[id]) {
+            if ((results[id] && data.attributes.status === 'online') ||
+              (!(results[id]) && data.attributes.status === 'offline')) {
               idsTmp.push(id);
             }
           });

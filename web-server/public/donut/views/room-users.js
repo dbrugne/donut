@@ -30,7 +30,7 @@ define([
     render: function () {
       debug.start('room-users' + this.model.get('name'));
       // update user count
-      var countHtml = i18next.t('chat.userscount', {count: this.collection.models.length});
+      var countHtml = i18next.t('chat.userscount', {count: this.model.get('users_number')});
       this.$count.html(countHtml);
 
       // redraw user list

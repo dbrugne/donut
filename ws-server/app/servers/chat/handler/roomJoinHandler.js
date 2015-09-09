@@ -130,7 +130,8 @@ handler.call = function (data, session, next) {
         history_mode: room.history_mode,
         owner: {},
         avatar: room._avatar(),
-        color: room.color
+        color: room.color,
+        users_number: room.numberOfUsers()
       };
       if (err === 'banned') {
         var doc = room.isInBanned(user.id);

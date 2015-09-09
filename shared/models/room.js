@@ -93,6 +93,10 @@ roomSchema.methods.posterId = function () {
   return data[1].substr(0, data[1].lastIndexOf('.'));
 };
 
+roomSchema.methods.numberOfUsers = function () {
+  return this.users.length;
+};
+
 roomSchema.methods.isOwner = function (userId) {
   if (!this.owner) {
     return false;
@@ -172,7 +176,7 @@ roomSchema.methods.validPassword = function (password) {
 roomSchema.methods.getIdsByType = function (type) {
   var ids = [];
 
-  if (type === 'all' || type === 'online') {
+  if (type === 'all') {
     _.each(this.users, function (u) {
       ids.push(u.toString());
     });

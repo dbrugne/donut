@@ -301,20 +301,34 @@ define([
     },
     fetchUsers: function (callback) {
       var that = this;
-      client.roomUsers(this.get('id'), {type: 'online'}, function (data) {
+      client.roomUsers(this.get('id'), {type: 'users', status: 'online'}, function (data) {
         that.users.reset();
 
         _.each(data.users, function (element, key, list) {
           that.addUser(element, false); // false: avoid automatic sorting on
                                         // each model .add()
         });
-        that.users.sort(); // sort after batch addition to collection to avoid
-                           // performance issue
-        that.users.trigger('users-redraw');
 
-        if (callback) {
-          return callback();
-        }
+        var maxOfflineUsersToDisplay = (15 - data.count > 0) ? 15 - data.count : 2;
+        var searchAttributes = {
+          type: 'users',
+          status: 'offline',
+          selector: {start: 0, length: maxOfflineUsersToDisplay}
+        };
+        client.roomUsers(that.get('id'), searchAttributes, function (data) {
+          _.each(data.users, function (element, key, list) {
+            that.addUser(element, false); // false: avoid automatic sorting on
+                                          // each model .add()
+          });
+
+          that.users.sort(); // sort after batch addition to collection to avoid
+          // performance issue
+
+          that.users.trigger('users-redraw');
+          if (callback) {
+            return callback();
+          }
+        });
       });
     },
 

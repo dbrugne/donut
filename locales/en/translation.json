@@ -364,6 +364,8 @@
     },
     "userscount": "<strong>__count__</strong> user in this donut",
     "userscount_plural": "<strong>__count__</strong> users in this donut",
+    "usersonlinecount": "<strong>__count__</strong> <span>user online in this donut</span>",
+    "usersonlinecount_plural": "<strong>__count__</strong> <span>users online in this donut</span>",
     "usersoffline": "Offline users",
     "topic": {
       "label": "Currently",
