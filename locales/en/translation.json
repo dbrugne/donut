@@ -12,7 +12,19 @@
     "email-placeholder": "Mail",
     "password-placeholder": "Password",
     "yourinterests": "What are your interests ?",
-    "loadmore": "Load more results"
+    "loadmore": "Load more results",
+    "help": "Help",
+    "faq": "FAQ",
+    "contact": "Contact",
+    "cgu": "TOU",
+    "legals": "Legals"
+  },
+  "forms": {
+    "username-required": "username is required",
+    "username-error": "this username does not meet the constraints.",
+    "email-required": "email is required",
+    "password-required": "password is required",
+    "password-error": "this password does not meet the constraints."
   },
   "title": {
     "default": "DONUT is made for you to chat about your interests and engage your communities!",

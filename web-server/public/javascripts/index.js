@@ -111,41 +111,83 @@ require([
     // validate signup form
     $('form#signup').submit(function (e) {
       var $username = $('form#signup').find('#signin-username');
+      var $usernameParent = $username.parents('.form-group');
       var $email = $('form#signup').find('#signin-email');
+      var $emailParent = $email.parents('.form-group');
       var $password = $('form#signup').find('#signin-password');
+      var $passwordParent = $password.parents('.form-group');
+      var errors = [];
 
-      $username.parents('.form-group').removeClass(function (index, css) {
+      // Cleanup classes on form submission
+      $usernameParent.removeClass(function (index, css) {
         return (css.match(/(has-(success|error))+/g) || []).join(' ');
       });
-      $email.parents('.form-group').removeClass(function (index, css) {
+      $emailParent.removeClass(function (index, css) {
         return (css.match(/(has-(success|error))+/g) || []).join(' ');
       });
-      $password.parents('.form-group').removeClass(function (index, css) {
+      $passwordParent.removeClass(function (index, css) {
         return (css.match(/(has-(success|error))+/g) || []).join(' ');
       });
 
+      // Cleanup popover also
+      $usernameParent.find('.help-block').html('');
+      $emailParent.find('.help-block').html('');
+      $passwordParent.find('.help-block').html('');
+
+      // Check presense of username
+      if ($username.val() === '') {
+        errors.push({
+          parent: $usernameParent,
+          sibling: $username.siblings('.help-block'),
+          message: i18next.t('forms.username-required')
+        });
       // Check validity of username
-      if ($username.val() === '' || !common.validateUsername($username.val())) {
-        $username.parents('.form-group').addClass('has-error');
-        e.preventDefault();
-      } else {
-        $username.parents('.form-group').addClass('has-success');
+      } else if (!common.validateUsername($username.val())) {
+        errors.push({
+          parent: $usernameParent,
+          sibling: $username.siblings('.help-block'),
+          message: i18next.t('forms.username-error')
+        });
       }
 
+      // Check presense of email
+      if ($email.val() === '') {
+        errors.push({
+          parent: $emailParent,
+          sibling: $email.siblings('.help-block'),
+          message: i18next.t('forms.email-required')
+        });
       // Check validity of email
-      if ($email.val() === '' || !common.validateEmail($email.val())) {
-        $email.parents('.form-group').addClass('has-error');
-        e.preventDefault();
-      } else {
-        $email.parents('.form-group').addClass('has-success');
+      } else if (!common.validateEmail($email.val())) {
+        errors.push({
+          parent: $emailParent,
+          sibling: $email.siblings('.help-block'),
+          message: i18next.t('account.password.error.length')
+        });
       }
 
-      // Check validity of email
-      if ($password.val() === '' || !common.validatePassword($password.val())) {
-        $password.parents('.form-group').addClass('has-error');
-        e.preventDefault();
-      } else {
-        $password.parents('.form-group').addClass('has-success');
+      // Check presense of password
+      if ($password.val() === '') {
+        errors.push({
+          parent: $passwordParent,
+          sibling: $password.siblings('.help-block'),
+          message: i18next.t('forms.password-required')
+        });
+      // Check validity of password
+      } else if (!common.validatePassword($password.val())) {
+        errors.push({
+          parent: $passwordParent,
+          sibling: $password.siblings('.help-block'),
+          message: i18next.t('forms.password-error')
+        });
+      }
+
+      if (errors.length > 0) {
+        e.preventDefault(); // Prevent form submission
+        _.each(errors, function (error) {
+          error.parent.addClass('has-error');
+          error.sibling.append(error.message);
+        });
       }
 
     });

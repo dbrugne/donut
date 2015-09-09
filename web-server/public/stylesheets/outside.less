@@ -44,6 +44,10 @@
     .form-group {
       .form-control { padding: 4px 14px 4px 48px; }
       img { color: @cl-first; font-size: 22px; left: 10px; position: absolute; display: block; line-height: 34px; text-align: center; z-index: 2; width: 15px; height: 15px; top: 9px; }
+      &.has-error .help-block { position: absolute; right: 320px; background-color: #FFF; padding: 5px 10px; top: -5px; width: auto; white-space: nowrap;; text-align: right; border: 1px solid @cl-subtext30;
+        &::before { content: ''; width: 0; height: 0; border-style: solid; border-width: 8px 0 8px 8px; border-color: transparent transparent transparent @cl-subtext30; position: absolute; top: 7px; right: -9px; display: block; padding: 0; }
+        &::after { content: ''; width: 0; height: 0; border-style: solid; border-width: 8px 0 8px 8px; border-color: transparent transparent transparent #FFF; position: absolute; top: 7px; right: -8px; display: block; padding: 0; }
+      }
     }
     a.btn-facebook { text-decoration: none; color:#FFF; display: inline-block; font-size:1.3rem; }
   }

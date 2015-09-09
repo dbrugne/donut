@@ -19,6 +19,13 @@
     "cgu": "CGU",
     "legals": "Mentions légales"
   },
+  "forms": {
+    "username-required": "Le nom d'utilisateur est requis",
+    "username-error": "Ce nom d'utilisateur ne respecte pas les contraintes.",
+    "email-required": "L'email est requis",
+    "password-required": "Le mot de passe est requis",
+    "password-error": "Le mot de passe ne respecte pas les contraintes."
+  },
   "title": {
     "default": "DONUT vous permet de discuter autour de vos centres d'intérêt et d'animer vos communautés !",
     "landing": "DONUT - Discussions instantanées autour de vos centres d'intérêt",
