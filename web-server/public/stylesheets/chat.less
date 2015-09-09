@@ -428,7 +428,7 @@
         li { list-style: none; padding:0; margin:0;position: relative; }
       } // #chat #left #block-discussions ul
       .list { height: 100%; margin-bottom: 0; padding: 0; background-repeat: no-repeat; background-position: left top; position: relative;
-        .item { display: block; position: relative; color: @cl-title; .display-flex; .flex-flow(row nowrap);
+        .item { display: block; position: relative; color: @cl-title; .display-flex; .flex-flow(row nowrap); padding-right:5px;
           a, a:hover { text-decoration:none; }
           .avatar-ctn { margin: auto; }
           .name-ctn { .flex(1); margin: auto; }
@@ -439,7 +439,7 @@
           .name, .username { margin-top: 5px; margin-left: 5px; font-family: "Open Sans"; font-size: 14px; display: inline-block; width: 138px; overflow: hidden; text-overflow: ellipsis;
             > span { font-size: 13px; padding-right: 1px; }
           }
-          .close-discussion { font-size: 1.8em; color: @cl-subtext20; margin-right:5px;
+          .close-discussion { font-size: 1.8em; color: @cl-subtext20;
             &:hover { color: @cl-subtext20; }
           }
           &:hover { text-decoration: none;
@@ -452,7 +452,7 @@
             background-color: @cl-background;
           }
         }
-        .unread { display: inline-block; position: absolute; top: 8px; right: 28px; padding: 1px 6px; font-size: 11px; min-width: 20px; text-align: center; background-color: @cl-first; color: @cl-background; .border-radius(10px);
+        .unread { padding: 1px 6px; font-size: 11px; background-color: @cl-first; color: #fff; .border-radius(10px); align-self: center;
           i { line-height: 1.5; margin-left: 2px;
             &:last-child { margin-left: 0; }
           }
