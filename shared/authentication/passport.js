@@ -50,6 +50,7 @@ var localStrategyOptions = {
 passport.use('local-signup', new LocalStrategy(localStrategyOptions,
   function (req, email, password, done) {
     process.nextTick(function () {
+
       // happen if user is already authenticated with another method (e.g.:
       // Facebook)
       if (req.user) {
@@ -62,7 +63,7 @@ passport.use('local-signup', new LocalStrategy(localStrategyOptions,
             throw err;
           }
 
-          return done(null, user);
+          done(null, user);
         });
         return;
       }
@@ -82,6 +83,7 @@ passport.use('local-signup', new LocalStrategy(localStrategyOptions,
         var newUser = User.getNewUser();
         newUser.local.email = email;
         newUser.local.password = newUser.generateHash(password);
+        newUser.username = req.body.username;
         newUser.lastlogin_at = Date.now();
         newUser.save(function (err) {
           if (err) {

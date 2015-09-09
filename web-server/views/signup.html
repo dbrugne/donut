@@ -26,6 +26,13 @@
                 <div class="form-group">
                     <div class="input-icon">
                         <i class="fa fa-user"></i>
+                        <input type="text" id="signin-username" class="form-control placeholder-no-fix" name="username" placeholder="<%= t('login.username-placeholder') %>" value="<%- userFields.username %>" tabindex="2">
+                        <p class="help-block"><%= t('choose-username.help') %></p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-icon">
+                        <i class="fa fa-envelope"></i>
                         <input type="text" id="signin-email" class="form-control placeholder-no-fix" name="email" placeholder="<%= t('login.email-placeholder') %>" value="<%- userFields.email %>" tabindex="2">
                     </div>
                 </div>
