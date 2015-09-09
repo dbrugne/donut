@@ -22,7 +22,7 @@ define([
       this.initialRender();
     },
     initialRender: function () {
-      var html = this.template({room_id: this.model.get('id')});
+      var html = this.template({});
       this.$el.html(html);
       this.$count = this.$el.find('.count');
       this.$list = this.$el.find('.list');
@@ -49,7 +49,8 @@ define([
         list: listJSON,
         isOwner: this.model.currentUserIsOwner(),
         isOp: this.model.currentUserIsOp(),
-        isAdmin: this.model.currentUserIsAdmin()
+        isAdmin: this.model.currentUserIsAdmin(),
+        room_id: this.model.get('id')
       });
       this.$list.html(html);
       debug.end('room-users' + that.model.get('name'));
