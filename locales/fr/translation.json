@@ -491,7 +491,7 @@
       "count" : "<strong class=\"nb\"></strong><strong> Nouvelle(s)</strong> Notification(s)",
       "tag-as-read" : "Marquer comme lue(s)",
       "empty": "Vous n'avez pas de nouvelles notifications",
-      "random": "Obtient au hasard",
+      "random": "Obtient au hasard __result__ (entre __min__ et __max__)",
       "dropdown": {
         "op": "Vous êtes maintenant modérateur de <a href=\"#room/__roomname__\"><span class=\"name\">#__roomname__</span></a>",
         "deop": "Vous n'êtes plus modérateur de <a href=\"#room/__roomname__\"><span class=\"name\">#__roomname__</span></a>",

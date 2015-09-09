@@ -343,7 +343,7 @@ define([
         }
       );
     },
-    roomDeop: function (roomId, userId, username) {
+    roomDeop: function (roomId, userId, username, fn) {
       var data = {room_id: roomId};
       if (userId) {
         data.user_id = userId;
@@ -359,8 +359,9 @@ define([
         data,
         function (response) {
           if (response.err) {
-            return debug('io:in:room:deop error: ', response);
+            debug('io:in:room:deop error: ', response);
           }
+          return fn(response.err);
         }
       );
     },

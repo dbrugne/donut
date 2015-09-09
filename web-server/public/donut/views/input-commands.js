@@ -20,22 +20,26 @@ define([
     },
 
     checkInput: function (input) {
-      if (!this.commandRegexp.test(input))
+      if (!this.commandRegexp.test(input)) {
         return false;
+      }
 
       // find alias and command
       var match = this.commandRegexp.exec(input.toLowerCase());
-      if (!match[1])
+      if (!match[1]) {
         return false;
+      }
       var commandName = match[1];
 
       _.each(this.commands, function (cmd, key) {
-        if (cmd.alias && cmd.alias == commandName)
+        if (cmd.alias && cmd.alias === commandName) {
           commandName = key;
+        }
       });
 
-      if (!this.commands[commandName])
+      if (!this.commands[commandName]) {
         return this.errorCommand(commandName, 'invalidcommand');
+      }
 
       // find parameters
       var parametersPattern = this.parameters[this.commands[commandName].parameters];
@@ -198,8 +202,9 @@ define([
     },
 
     join: function (paramString, parameters) {
-      if (!parameters)
+      if (!parameters) {
         return this.errorCommand('join', 'parameters');
+      }
 
       app.trigger('joinRoom', parameters[1]);
     },
@@ -209,21 +214,25 @@ define([
         return;
       }
 
-      if (!parameters)
+      if (!parameters) {
         return this.errorCommand('leave', 'parameters');
+      }
 
       var model = rooms.getByName(parameters[1]);
-      if (!model)
+      if (!model) {
         return;
+      }
 
       client.roomLeave(model.get('id'));
     },
     topic: function (paramString, parameters) {
-      if (this.model.get('type') !== 'room')
+      if (this.model.get('type') !== 'room') {
         return this.errorCommand('topic', 'commandaccess');
+      }
 
-      if (!parameters && paramString)
+      if (!parameters && paramString) {
         return this.errorCommand('topic', 'parameters');
+      }
 
       client.roomTopic(this.model.get('id'), parameters[1]);
     },
@@ -249,24 +258,32 @@ define([
       }, this.inputFocus());
     },
     deop: function (paramString, parameters) {
-      if (this.model.get('type') !== 'room')
+      if (this.model.get('type') !== 'room') {
         return this.errorCommand('deop', 'commandaccess');
+      }
 
-      if (!parameters)
+      if (!parameters) {
         return this.errorCommand('deop', 'parameters');
+      }
 
       var that = this;
       confirmationView.open({}, function () {
-        client.roomDeop(that.model.get('id'), null, parameters[1]);
+        client.roomDeop(that.model.get('id'), null, parameters[1], function (err) {
+          if (err) {
+            return that.errorCommand('op', 'parameters');
+          }
+        });
         that.model.trigger('inputFocus');
       }, this.inputFocus());
     },
     kick: function (paramString, parameters) {
-      if (this.model.get('type') !== 'room')
+      if (this.model.get('type') !== 'room') {
         return this.errorCommand('kick', 'commandaccess');
+      }
 
-      if (!parameters)
+      if (!parameters) {
         return this.errorCommand('kick', 'parameters');
+      }
 
       var that = this;
       confirmationView.open({input: true}, function (reason) {
@@ -275,11 +292,13 @@ define([
       }, this.inputFocus());
     },
     ban: function (paramString, parameters) {
-      if (this.model.get('type') !== 'room')
+      if (this.model.get('type') !== 'room') {
         return this.errorCommand('ban', 'commandaccess');
+      }
 
-      if (!parameters)
+      if (!parameters) {
         return this.errorCommand('ban', 'parameters');
+      }
 
       var that = this;
       confirmationView.open({input: true}, function (reason) {
@@ -288,11 +307,13 @@ define([
       }, this.inputFocus());
     },
     deban: function (paramString, parameters) {
-      if (this.model.get('type') !== 'room')
+      if (this.model.get('type') !== 'room') {
         return this.errorCommand('deban', 'commandaccess');
+      }
 
-      if (!parameters)
+      if (!parameters) {
         return this.errorCommand('deban', 'parameters');
+      }
 
       client.roomDeban(this.model.get('id'), null, parameters[1]);
     },
@@ -339,20 +360,24 @@ define([
       client.userDeban(userId, username);
     },
     voice: function (paramString, parameters) {
-      if (this.model.get('type') !== 'room')
+      if (this.model.get('type') !== 'room') {
         return this.errorCommand('voice', 'commandaccess');
+      }
 
-      if (!parameters)
+      if (!parameters) {
         return this.errorCommand('voice', 'parameters');
+      }
 
       client.roomVoice(this.model.get('id'), null, parameters[1]);
     },
     devoice: function (paramString, parameters) {
-      if (this.model.get('type') !== 'room')
+      if (this.model.get('type') !== 'room') {
         return this.errorCommand('devoice', 'commandaccess');
+      }
 
-      if (!parameters)
+      if (!parameters) {
         return this.errorCommand('devoice', 'parameters');
+      }
 
       var that = this;
       confirmationView.open({input: true}, function (reason) {
@@ -362,8 +387,9 @@ define([
     },
     msg: function (paramString, parameters) {
       var message = (!parameters) ? paramString : parameters[2];
-      if (!message)
+      if (!message) {
         return;
+      }
 
       var model;
       if (!parameters) {
@@ -388,18 +414,20 @@ define([
       }
     },
     profile: function (paramString, parameters) {
-      if (!parameters)
+      if (!parameters) {
         return this.errorCommand('profile', 'parameters');
+      }
 
       var that = this;
-      if ( (/^#/.test(parameters[1]))) {
+      if ((/^#/.test(parameters[1]))) {
         client.roomRead(null, parameters[1], function (err, data) {
           if (err === 'unknown') {
             that.errorCommand('profile', 'invalidroom');
             return;
           }
-          if (!err)
+          if (!err) {
             app.trigger('openRoomProfile', data);
+          }
         });
       } else {
         parameters[1] = parameters[1].replace(/^@/, '');
@@ -408,8 +436,9 @@ define([
             that.errorCommand('profile', 'invalidusername');
             return;
           }
-          if (!err)
+          if (!err) {
             app.trigger('openUserProfile', data);
+          }
         });
       }
     },
@@ -449,7 +478,7 @@ define([
         return this.errorCommand('random', 'parameters');
       }
       var result = Math.floor(Math.random() * (max - min + 1) + min);
-      var msg = i18next.t('chat.notifications.random') + ' ' + result + '(' + min + ' - ' + max + ')';
+      var msg = i18next.t('chat.notifications.random', {result: result, min: min, max: max}); //+ ' ' + result + '(' + min + ' - ' + max + ')';
       if (this.model.get('type') === 'room') {
         client.roomMe(this.model.get('id'), msg);
       } else {
@@ -457,8 +486,9 @@ define([
       }
     },
     help: function (paramString, parameters, error) {
-      if (!parameters && paramString)
+      if (!parameters && paramString) {
         return this.errorCommand('help', 'parameters');
+      }
 
       if (parameters && this.commands[parameters[1]]) {
         var commandHelp = this.commands[parameters[1]];
@@ -478,8 +508,9 @@ define([
     getCommands: function (type) {
       var commands = {};
       _.each(this.commands, function (cmd, key) {
-        if (cmd.access === 'everywhere' || cmd.access === type)
+        if (cmd.access === 'everywhere' || cmd.access === type) {
           commands[key] = cmd;
+        }
       });
       return commands;
     },
