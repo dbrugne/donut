@@ -22,7 +22,7 @@ define([
       this.initialRender();
     },
     initialRender: function () {
-      var html = this.template({});
+      var html = this.template({room_id: this.model.get('id')});
       this.$el.html(html);
       this.$count = this.$el.find('.count');
       this.$list = this.$el.find('.list');

@@ -48,7 +48,7 @@ handler.call = function (data, session, next) {
         return callback(opedUser.username + ' is owner and can not be devoiced of ' + room.name);
       }
 
-      if (!room.isOp(opedUser.id)) {
+      if (room.isOp(opedUser.id)) {
         return callback('user ' + opedUser.username + ' is already OP of ' + room.name);
       }
 
