@@ -30,7 +30,7 @@ define([
       this.$input = this.$el.find('.input');
       this.$errors = this.$('.errors');
       this.$password = this.$('.input-password');
-      this.$password.val(this.randomPassword());
+      this.$password.val(common.randomString());
       return this;
     },
     reset: function () {
@@ -78,6 +78,7 @@ define([
       }
       var mode = checked.attr('value');
 
+      // password
       var password;
       if (mode === 'password') {
         password = this.$password.val();
@@ -117,18 +118,8 @@ define([
 
     onRandomPassword: function (event) {
       event.preventDefault();
-      this.$password.val(this.randomPassword());
+      this.$password.val(common.randomString());
       this.$password.focus();
-    },
-
-    randomPassword: function () {
-      var chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
-      var password = '';
-      for (var i = 0; i < 6; i++) {
-        var index = Math.floor(Math.random() * chars.length);
-        password += chars[index];
-      }
-      return password;
     }
 
   });
