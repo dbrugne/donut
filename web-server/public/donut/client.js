@@ -510,7 +510,7 @@ define([
       debug('io:out:room:typing', data);
       pomelo.notify('chat.roomTypingHandler.call', data);
     },
-    roomRequestAllowance: function (roomId, fn) {
+    roomJoinRequest: function (roomId, fn) {
       var data = {room_id: roomId};
       debug('io:out:room:join:request', data);
       pomelo.request(

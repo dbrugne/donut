@@ -74,7 +74,7 @@ define([
       }
     },
     onRequestAllowance: function () {
-      client.roomRequestAllowance(this.model.get('id'), function (response) {
+      client.roomJoinRequest(this.model.get('id'), function (response) {
         if (response.err) {
           if (response.err === 'banned' || response.err === 'allowed') {
             app.trigger('alert', 'error', i18next.t('chat.allowed.error.' + response.err));
