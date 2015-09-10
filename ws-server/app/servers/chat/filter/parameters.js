@@ -80,6 +80,9 @@ Filter.prototype.before = function (data, session, next) {
       if (data.__route__ === 'chat.roomJoinHandler.call') {
         q.populate('owner', 'username avatar color facebook');
       }
+      if (data.__route__ === 'chat.roomJoinRequestHandler.call') {
+        q.populate('owner', 'username avatar color facebook');
+      }
       if (data.__route__ === 'chat.roomReadHandler.call') {
         q.populate('owner', 'username avatar color facebook')
           .populate('op', 'username avatar color facebook')

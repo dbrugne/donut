@@ -512,15 +512,15 @@ define([
     },
     roomRequestAllowance: function (roomId, fn) {
       var data = {room_id: roomId};
-      debug('io:out:room:request:allowance', data);
+      debug('io:out:room:join:request', data);
       pomelo.request(
-        'chat.roomRequestAllowance.call',
+        'chat.roomJoinRequestHandler.call',
         data,
         function (response) {
           if (response.err) {
-            debug('io:in:room:request:allowance error: ', response);
+            debug('io:in:room:join:request error: ', response);
           } else {
-            debug('io:in:room:request:allowance', response);
+            debug('io:in:room:join:request', response);
           }
           return fn(response);
         }
