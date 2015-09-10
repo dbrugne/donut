@@ -1,7 +1,7 @@
-<div class="errors"></div>
 <div class="room">
     <span class="name"><%= t('chat.form.room-form.create.label') %></span>
 </div>
+<div class="errors"></div>
 <div class="room">
     <p class="help-block"><%= t('chat.form.room-form.create.info') %></p>
 </div>
@@ -16,19 +16,19 @@
     <label><%= t('chat.form.room-form.common.join-mode-label') %></label>
     <div class="radio">
         <label>
-            <input type="radio" class="savable join everyone" name="create:join" value="everyone" checked>
+            <input type="radio" class="savable everyone" name="mode" value="everyone" checked>
             <%= t('chat.form.room-form.common.mode.everyone-def') %>
         </label>
     </div>
     <div class="radio">
         <label>
-            <input type="radio" class="savable join allowed" name="create:join" value="allowed" >
+            <input type="radio" class="savable allowed" name="mode" value="allowed">
             <%= t('chat.form.room-form.common.mode.allowed') %>
         </label>
     </div>
     <div class="radio">
         <label>
-            <input type="radio" class="savable join password" name="create:join" value="password" >
+            <input type="radio" class="savable password" name="mode" value="password">
             <%= t('chat.form.room-form.common.mode.password') %>
         </label>
     </div>
@@ -38,30 +38,6 @@
         <a href="#" class="icon icon-refresh random-password dc-text"></a>
     </div>
 </div>
-<div class="form-group">
-    <label><%= t('chat.form.room-form.common.history-mode-label') %></label>
-    <div class="radio">
-        <label>
-            <input type="radio" class="savable history everyone" name="create:history" value="everyone" checked>
-            <%= t('chat.form.room-form.common.mode.everyone-def') %>
-        </label>
-    </div>
-    <div class="radio">
-        <label>
-            <input type="radio" class="savable history joined" name="create:history" value="joined">
-            <%= t('chat.form.room-form.common.mode.joined') %>*
-        </label>
-    </div>
-    <div class="radio">
-        <label>
-            <input type="radio" class="savable history none" name="create:history" value="none">
-            <%= t('chat.form.room-form.common.mode.none') %>
-        </label>
-    </div>
-</div>
 <div class="field">
     <button class="submit dc-back dc-text-contrast" type="button"><%= t('chat.form.room-form.create.submit') %></button>
-</div>
-<div class="form-group">
-    <p class="help-block">(*) <%= t('chat.form.room-form.common.mode.help') %></p>
 </div>

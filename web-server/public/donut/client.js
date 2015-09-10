@@ -273,12 +273,11 @@ define([
         }
       );
     },
-    roomCreate: function (name, options, callback) {
+    roomCreate: function (name, mode, password, callback) {
       var data = {
         name: name,
-        join_mode: options.join_mode,
-        join_mode_password: options.join_mode_password,
-        history_mode: options.history_mode
+        mode: mode,
+        password: password
       };
       debug('io:out:room:create', data);
       pomelo.request(

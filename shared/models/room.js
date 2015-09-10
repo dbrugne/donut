@@ -27,7 +27,6 @@ var roomSchema = mongoose.Schema({
   join_mode_password: String,
   join_mode_allowed: [{type: mongoose.Schema.ObjectId, ref: 'User'}],
   allowed_pending: [{type: mongoose.Schema.ObjectId, ref: 'User'}],
-  history_mode: {type: String, default: 'everyone'},
   avatar: String,
   poster: String,
   color: String,
@@ -133,9 +132,9 @@ roomSchema.methods.isInBanned = function (userId) {
   }
 
   var subDocument = _.find(this.bans, function (ban) {
-    if (ban._id) {
+    if (ban.user._id) {
       // populated
-      return (ban.user.toString() === userId); // @todo ask Dbrugne what was the fk
+      return (ban.user.id === userId);
     } else {
       return (ban.user.toString() === userId);
     }

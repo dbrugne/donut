@@ -23,39 +23,20 @@ handler.call = function (data, session, next) {
   async.waterfall([
 
     function check (callback) {
-      if (!data.name) {
-        return callback('name is mandatory');
+      if (!data.name || !common.validateName(data.name)) {
+        return callback('invalid-name');
       }
 
-      if (data.join_mode && (['everyone', 'allowed', 'password'].indexOf(data.join_mode) === -1)) {
-        return callback('join_mode not valid' + data.join_mode);
+      if (!data.mode || (['everyone', 'allowed', 'password'].indexOf(data.mode) === -1)) {
+        return callback('invalid-mode');
       }
 
-      if (data.history_mode && (['everyone', 'joined', 'none'].indexOf(data.history_mode) === -1)) {
-        return callback('history_mode not valid' + data.history_mode);
-      }
-
-      return callback(null);
-    },
-
-    function validate (callback) {
-      var errors = {};
-
-      // name
-      if (!common.validateName(data.name)) {
-        errors.name = 'invalid-name';
-      }
-
-      // join_mode_password
-      if (_.has(data, 'join_mode') && _.has(data, 'join_mode_password')) {
-        if (data.join_mode_password.length < 4 || data.join_mode_password.length > 255) {
-          errors.join_mode_password = 'join-mode-password';
+      if (data.mode === 'password') {
+        if (!data.password || data.password.length < 4 || data.password.length > 255) {
+          return callback('invalid-password');
         }
       }
 
-      if (Object.keys(errors).length > 0) {
-        return callback(errors); // object
-      }
       return callback(null);
     },
 
@@ -69,25 +50,17 @@ handler.call = function (data, session, next) {
           return callback('alreadyexists');
         }
 
-        var passwordHash;
-        if (data.join_mode === 'password') {
-          passwordHash = user.generateHash(data.join_mode_password);
-        }
-
         room = Room.getNewRoom();
         room.name = data.name;
         room.owner = user.id;
         room.color = conf.room.default.color;
         room.visibility = false; // not visible on home until admin change this value
         room.priority = 0;
-        if (data.join_mode) {
-          room.join_mode = data.join_mode;
-          if (data.join_mode === 'password') {
-            room.join_mode_password = passwordHash;
-          }
-        } if (data.history_mode) {
-          room.history_mode = data.history_mode;
+        room.join_mode = data.join_mode;
+        if (data.join_mode === 'password') {
+          room.join_mode_password = user.generateHash(data.password);
         }
+
         room.save(function (err) {
           return callback(err, room);
         });
@@ -121,8 +94,8 @@ handler.call = function (data, session, next) {
     }
 
   ], function (err) {
-    if (['mandatory', 'invalid-name', 'alreadyexists'].indexOf(err) !== -1) {
-      return next(null, {code: 403, err: err});
+    if (['invalid-name', 'invalid-mode', 'invalid-password', 'alreadyexists'].indexOf(err) !== -1) {
+      return next(null, {code: 400, err: err});
     }
     if (err) {
       _.each(err, function (error) {

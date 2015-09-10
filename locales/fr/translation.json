@@ -545,7 +545,6 @@
     "kickmessage": "Vous venez d'être expulsé de __name__",
     "banmessage": "Vous venez d'être banni de __name__",
     "roomnotexists": "Le donut __name__ n'existe pas, <a class='open-create-room' data-name='__name__'>souhaitez-vous le créer </a> ?",
-    "alreadyexists": "Le donut __name__ existe déjà, <a href='#__uri__'>voulez-vous le rejoindre</a> ?",
     "successfullycreated": "Le donut __name__ a bien été créé",
     "reason": "(motif : \"__reason__\")",
     "deletemessage": "Le donut __name__ vient d'être supprimé",
@@ -649,7 +648,6 @@
       "room-form": {
         "common" : {
           "join-mode-label": "Qui peut rejoindre le donut",
-          "history-mode-label": "Qui peut voir l'historique des discussions",
           "mode": {
             "everyone-def": "Tous le monde (défaut)",
             "everyone": "Tous le monde",
@@ -657,8 +655,7 @@
             "password": "Utilisateur ayant le mot de passe",
             "password-field": "Mot de passe",
             "joined": "Les utilisateurs dans le donut au moment du message",
-            "none": "Pas d'historique",
-            "help": "qu'ils soient en ligne ou pas au moment du message"
+            "none": "Pas d'historique"
           }
         },
         "create": {
@@ -726,7 +723,9 @@
         "color-integer": "La priorité devrait être exprimer en nombre (entier).",
         "positions": "Positions doit être un tableau.",
         "invalid-name": "Le nom du donut est invalide",
-        "join-mode-password": "Le mot de passe doit être compris entre 4 et 255 caractères"
+        "invalid-mode": "Vous devez séléctionner un mode pour ce donut",
+        "invalid-password": "Le mot de passe doit être compris entre 4 et 255 caractères",
+        "alreadyexists": "Le donut __name__ existe déjà, <a href='#__uri__'>voulez-vous le rejoindre</a> ?"
       }
     }
   },

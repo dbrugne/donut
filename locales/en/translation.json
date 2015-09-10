@@ -526,7 +526,6 @@
     "kickmessage": "You have been kicked out of __name__",
     "banmessage": "You have been banned from __name__",
     "roomnotexists": "The donut __name__ does not exist yet, <a class='open-create-room' data-name='__name__'>would you like to create it</a>?",
-    "alreadyexists": "Donut __name__ already exists, <a href='#__uri__'>would you like to join it</a>?",
     "successfullycreated": "Donut __name__ successfully created",
     "reason": "(reason: \"__reason__\")",
     "deletemessage": "The donut __name__ has been deleted",
@@ -630,7 +629,6 @@
       "room-form": {
         "common": {
           "join-mode-label": "Who can join the donut",
-          "history-mode-label": "Who can view discussions history",
           "mode": {
             "everyone-def": "Everyone (défault)",
             "everyone": "Everyone",
@@ -638,8 +636,7 @@
             "password": "User with the password",
             "password-field": "Password",
             "joined": "Users in the donut at the time of the message",
-            "none": "No history",
-            "help": "whether online or not at the time of the message"
+            "none": "No history"
           }
         },
         "create": {
@@ -707,7 +704,9 @@
         "color-integer": "Priority should be explained has number (integer).",
         "positions": "Positions should be an array.",
         "invalid-name": "Invalid name",
-        "join-mode-password": "The password should be 4 and 255 characters"
+        "invalid-mode": "You should select a mode for this room",
+        "invalid-password": "The password should be 4 and 255 characters",
+        "alreadyexists": "Donut __name__ already exists, <a href='#__uri__'>would you like to join it</a>?"
       }
     }
   },
