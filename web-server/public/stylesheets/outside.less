@@ -57,7 +57,7 @@
   @carousel-height:420px;
   .ft-opensans-light;
   #carousel-landing {
-    .carousel-inner { position: absolute; overflow: hidden; width: 100%;
+    .carousel-inner { position: absolute; overflow: hidden; width: 100%; z-index: 10;
       .disclaimer { position: absolute; top: 50px; color: #FFF; font-size: 3rem;  }
       .img { height: @carousel-height; max-width: 100%; background-size: cover; background-repeat: no-repeat; opacity: 0.7; }
       .item-1 .disclaimer { z-index: 10;
@@ -80,11 +80,28 @@
           opacity: .95;
           color: #FFF;
           font-size: 24px;
+          &.more {
+            margin-top: 42px;
+            a {
+              font-size: 22px;
+              font-weight: normal;
+              color: @cl-background;
+              border: 3px solid #FFF;
+              border-radius: 23px;
+              padding: 3px 15px 5px;
+              &:hover {
+                text-decoration: none;
+                color: @cl-second;
+                background-color: @cl-background;
+                text-shadow: none;
+              }
+            }
+          }
         }
       }
     }
     .ctn-baseline { height:@carousel-height; position: relative;
-      .authenticate { position: absolute; z-index: 1; right: 0; padding: 15px; .ft-raleway; margin: auto; margin-top: 30px; background-color: @cl-subtext10; .border-radius(10px);
+      .authenticate { position: absolute; z-index: 12; right: 0; padding: 15px; .ft-raleway; margin: auto; margin-top: 30px; background-color: @cl-subtext10; .border-radius(10px);
         h2 { margin: 0; text-align: center; .ft-raleway-heavy; font-size: 2.2rem; }
         a.btn-facebook { max-width:310px; }
         .logic { text-align:center; margin:0; }
