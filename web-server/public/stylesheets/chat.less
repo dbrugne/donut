@@ -218,12 +218,12 @@
       width: 100%;
       padding-left: 7px;
       padding-right: 0;
-      .navbar-brand-a { height: auto; padding: 0 15px 0 10px; float:left;
+      .navbar-brand-a { height: auto; padding: 0 15px 0 10px; float:left; margin-top:1px;
         &:hover { text-decoration: none; }
-        .logo { display: inline-block; width: 148px; }
-        .beta { vertical-align: bottom; height: @size-color; color: @cl-background; .ft-raleway-medium; font-size: 13px; padding-left: 0px; padding-top: 18px; text-decoration: none; }
+        .logo { display: inline-block; width: 144px; }
+        .beta { vertical-align: bottom; height: @size-color; .ft-raleway-medium; font-size: 13px; padding-left: 0px; padding-top: 18px; text-decoration: none; }
       } // #chat #color .container .navbar-brand-a
-      .navbar-nav-ul>li>a { color:#FFF;
+      .navbar-nav-ul>li>a {
         &:hover { text-decoration:underline; }
       }
       #notifications {
@@ -362,7 +362,10 @@
             &:active, &:visited, &:focus { background-color: transparent; }
             .icon { font-size: 20px; } // #chat #color .container .navbar-nav>li>a .icon
           } // #chat #color .container .navbar-nav>li>a
-          &.open > a .icon { color: #FFF; }
+          .dropdown-menu > .arrow-up { width: 0; height: 0; border-style: solid; border-width: 0 10px 10px 10px; border-color: transparent transparent #C4C4C4 transparent; position: absolute; top: -10px; right: 13px; display: block; padding: 0;
+            &::after { content:''; width: 0; height: 0; border-style: solid; border-width: 0 10px 10px 10px; border-color: transparent transparent #FFF transparent; position: absolute; top: 1px; right: -10px; display: block; padding: 0; }
+            &.colored::after { border-color: transparent transparent #F1F1F1 transparent; }
+          }
         } // #chat #color .container .navbar-nav>li
       } // #chat #color .container .navbar-nav
       .navbar-nav-ul>.open>a, .navbar-nav-ul>li>a:hover { background-color: transparent; }
@@ -575,7 +578,7 @@
     } // #chat #center #home
     .discussion { background-color: @cl-background; height: 100%;
       @header-height: 35px; @size-user-item: 195px;
-      .content { height: 100%; margin-right: @size-right; position: relative; padding-left: 35px; .display-flex; .flex-flow(column nowrap);
+      .content { height: 100%; position: relative; padding-left: 35px; .display-flex; .flex-flow(column nowrap);
         .header { padding-top: 18px; padding-right: 10px;
           .info { padding-left: 110px;
             .share { display: inline-block;
@@ -639,11 +642,11 @@
             } // #chat #center .discussion .content .header.user .status-block
           } // #chat #center .discussion .content .header.user
         } // #chat #center .discussion .content .header
-        .events { position: relative; border-top: 1px solid @cl-subtext10; overflow-y: scroll; overflow-x: hidden; .flex(1); .scrollbar-grey;
+        .events { border-top: 1px solid @cl-subtext10; overflow-y: scroll; overflow-x: hidden; .flex(1); .scrollbar-grey;
           .go-to-top {
             display: none;
             position: absolute;
-            top: -1px; right: 20px;
+            top: 135px; right: 20px;
             padding: 4px 8px 8px;
             background-color: @cl-background;
             border: 1px solid @cl-subtext10;
@@ -665,7 +668,7 @@
           .go-to-bottom {
             display: none;
             position: absolute;
-            bottom: -6px; right: 25px;
+            bottom: 111px; right: 25px;
             padding: 8px;
             background-color: @cl-background;
             border: 1px solid @cl-subtext10;
@@ -716,27 +719,22 @@
                   }
                 }
               }
-              .loader {
-                padding: 10px;
-                background-color: @cl-subtext10;
-                color: @cl-subtext30;
-                text-align: center;
-                font-size: 1.1em;
-                border-radius: 2px;
-                .arrow {
-                  font-size: 1.4em;
-                  color: @cl-subtext30;
-                  padding-left: 50px;
-                  padding-right: 50px;
+              .loader { padding: 10px; text-align: center; font-size: 1.1em; border-radius: 2px;
+                .arrow { font-size: 1.4em; padding-left: 50px; padding-right: 50px; }
+                .loading { display: none;
+                  .spinner { font-size: 1.3em; }
                 }
-                .loading {
-                  display: none;
-                  .spinner {
-                    font-size: 1.3em;
+                .no-more { margin:50px 0; display: none; text-align: left;
+                  .title { font-size:3rem; .ft-raleway-heavy; }
+                  .info { font-size: 2rem;
+                    .name, .owner { font-size:2rem; font-weight:normal; }
                   }
-                }
-                .no-more {
-                  display: none;
+                  .actions { padding: 15px 0;
+                    > a { margin: 0 10px; text-decoration:underline;
+                      &:first-child { margin-left:0; }
+                      &:hover { text-decoration:none; }
+                    }
+                  }
                 }
               }
               .blank {
@@ -1199,6 +1197,9 @@
         }
       }
       .side { float: right; width: @size-right; height: 100%; background-repeat: no-repeat; background-position: left top; margin: 0; padding: 0;
+        &.oneside { width:@size-right-mid; }
+        &.poster-empty { width:40px; }
+        &.poster-empty.roomside { width:@size-right-mid; }
         .blur { width: @size-right-mid; position: relative; height: 100%; color: @cl-background; a { color: @cl-background; } hr { margin-left: 0; margin-right: 0; } font-size: 1.1em; .scrollbar-grey;
           .users { position: relative; background-color: rgba(0, 0, 0, 0.2); padding: 10px 0 30px 0; height: 100%;
             .header { position: absolute;     white-space: nowrap; top: 14px; left: 16px; right: 10px;

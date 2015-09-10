@@ -522,9 +522,10 @@
     "history": {
       "help": "Scroll up to see more",
       "loading": "Loading more...",
-      "nomore": "Conversation history fully displayed",
       "top": "go to top",
-      "bottom": "go to bottom"
+      "bottom": "go to bottom",
+      "currently": "You are at the very first start of Donut <span class=\"name dc-text open-room-profile\" data-room-id=\"__roomid__\">__roomname__</span>, created by <span class=\"owner dc-text open-user-profile\" data-user-id=\"__ownerid__\">@__owner__</span> on <span class=\"date\">__creation-date__</span>",
+      "onestart": "You are at the very first start of your private discussion with <span class=\"name dc-text\">@__username__</span>. Everything said here will stay here :)"
     },
     "shouldauthenticated": "You must be logged in to access chat (<a href='/signup'>signup</a> or <a href='/login'>login</a>)",
     "closeapp": "Are you sure you want to leave ?",

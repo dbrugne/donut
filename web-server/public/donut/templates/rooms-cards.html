@@ -19,8 +19,8 @@
                 <p class="owner"><%= t('global.by') %> <a class="dc-text">@<%= room.owner.username %></a></p>
                 <% } %>
                 <!-- p class="topic"><%= room.topic %></p -->
-                <p class="join">
-                    <a class="dc-back dc-text-contrast" href="#room/<%= room.name.replace('#', '') %>">
+                <p class="join dc-back">
+                    <a class="dc-text-contrast" href="#room/<%= room.name.replace('#', '') %>">
                         <%= t('actions.join') %>
                         <% if (room.users > 0) { %><%= room.users %><% } %>
                         <i class="icon icon-user-custom"></i>
@@ -35,8 +35,8 @@
                     <% } %>
                     <p class="description"><%= room.description %></p>
                 </div>
-                <p class="join">
-                    <a class="dc-back dc-back-hover dc-text-contrast" href="#room/<%= room.name.replace('#', '') %>">
+                <p class="join dc-back dc-back-hover">
+                    <a class="dc-text-contrast" href="#room/<%= room.name.replace('#', '') %>">
                         <%= t('actions.join') %>
                         <% if (room.users > 0) { %><%= room.users %><% } %>
                         <i class="icon icon-user-custom"></i>

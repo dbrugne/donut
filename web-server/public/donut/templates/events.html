@@ -8,9 +8,37 @@
             <span class="loading">
                 <%= t('chat.history.loading') %>
             </span>
-            <span class="no-more">
-                <%= t('chat.history.nomore') %>
-            </span>
+            <div class="no-more">
+                <% if (model.type === 'room') { %>
+                    <div class="room">
+                        <div class="title">
+                            <span class="open-room-profile" data-room-id="<%= model.id %>"><%= model.name %></span>
+                        </div>
+                        <div class="info">
+                            <%= t('chat.history.currently', {
+                                'roomname': model.name,
+                                'roomid': model.id,
+                                'owner': model.owner.username,
+                                'ownerid': model.owner.id,
+                                'creation-date': moment(model.created_at).format('Do MMMM YYYY, h:mm:ss')
+                            }) %>
+                        </div>
+                        <% if(isOwner) { %>
+                            <div class="actions flex-parent">
+                                <a href="#" class="open-room-edit" data-room-id="<%= model.id %>"><%= t('global.edit') %></a>
+                                <a href="#" class="open-room-users" data-room-id="<%= model.id %>"><%= t('chat.users.link') %></a>
+                            </div>
+                        <% } %>
+                    </div>
+                <% } else if (model.type === 'onetoone') { %>
+                    <div class="user">
+                        <div class="title">@<%= model.username %></div>
+                        <div class="info">
+                            <%= t('chat.history.onestart', { 'username': model.username }) %>
+                        </div>
+                    </div>
+                <% }; %>
+            </div>
         </div>
         <div class="blank flex-child"></div>
         <div class="realtime">

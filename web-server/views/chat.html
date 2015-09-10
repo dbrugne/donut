@@ -12,13 +12,13 @@
         <nav id="color" class="navbar navbar-default navbar-fixed-top dc-back">
             <div class="container">
                 <div id="navbar">
-                    <a class="navbar-brand-a hidden-xs hidden-sm" href="/!#"><img class="logo" src="/images/logo-bordered-small.png" alt="<%= t('title.chat') %>"> <span class="beta">alpha</span></a>
+                    <a class="navbar-brand-a hidden-xs hidden-sm" href="/!#"><img class="logo" src="/images/logo-bordered-small.png" alt="<%= t('title.chat') %>"> <span class="beta dc-text-contrast">alpha</span></a>
 
                     <ul class="nav navbar-nav-ul hidden-xs hidden-sm">
                         <li><a href="/!#" class="dc-text-contrast">Home</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <li id="mute" class="hidden-xs hidden-sm">
+                        <li id="mute">
                             <a href="#" class="toggle">
                                 <i class="icon icon-volume-up dc-text-contrast"></i>
                             </a>
@@ -29,7 +29,7 @@
                                 <span class="badge hide-empty dc-border-darker dc-text"></span>
                             </a>
                             <div class="dropdown-menu p0" role="menu">
-                                <div class="arrow-up"></div>
+                                <div class="arrow-up colored"></div>
                                 <div class="unread-count">
                                     <span class="show-empty text-center">
                                         <span><%= t('chat.notifications.empty') %></span>

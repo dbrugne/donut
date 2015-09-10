@@ -153,7 +153,6 @@
                 .date { display:none; }
                 &:hover .actions { display:none; }
               } // #chat #center .discussion .content .events .scrollable .scrollable-content .realtime .block.message .event
-              &.op, &.deop, &.ban, &.deban, &.kick, &.inout, &.topic { display:none; }
             } // #chat #center .discussion .content .events .scrollable .scrollable-content .realtime .block
           } // #chat #center .discussion .content .events
           .input { padding-left: 10px; margin-bottom: 10px;
@@ -181,10 +180,39 @@
       } // #chat #center .discussion
     } // #chat #center
   } // #chat
+  #landing {
+    .header {
+      .cover { padding: 100px 30px 100px 75px; background: none; }
+      .text { margin-top: 65px; }
+      .btn-knowmore { margin-top: 75px; }
+    }
+    .login {
+      > div { padding: 90px 20px; }
+      .btn-facebook { margin-top: 64px; }
+      .logic {margin-top: 40px;}
+      .form { margin-top: 40px; margin-bottom: 80px; }
+      .form input[type=submit] { margin-top: 30px; }
+    }
+    .description { padding: 50px 50px 0 50px;
+      h2 p { font-size: 2.15em; }
+      .definition { font-size: 1.8em; padding-top: 25px; }
+      .illustrations { padding-bottom: 105px;
+        .illus p { margin: 25px auto; }
+      }
+    }
+    .signup { padding-top: 100px; padding-bottom: 32px;
+      .form { margin-top: 30px; }
+      .disclaimer { margin-top: 60px; }
+    }
+  }
+  .rooms.cards .room { width: 169px;
+    .avatar {     width: 90px; height: 90px; background-size: contain; }
+    .join {     padding: 5px;
+      a {     font-size: 1.3rem; white-space: nowrap; }
+    }
   .rooms.cards .room { width: 190px;
     .join a { font-size:13px; }
   }
-  .body-profile .rooms.cards .room { height: 276px; }
 }
 
 /** for <=768 screens resolutions ==> PHONE PORTRAIT **/
@@ -194,6 +222,29 @@
   .body-chat.body-profile #chat #center { margin-left:0; }
   #chat #center .discussion .content .header.room .topic #room-users-modal .modal-body .list li { width: 100%; }
 
+  #welcome { // only on welcome popin
+    .rooms.cards .room { width: 100%; height: 60px;
+      &:hover {
+        .cover { display: block; }
+        .back { display: none; }
+      }
+      .cover { position: relative;
+        .avatar { width: 60px; background-size: contain; height: 60px; float: left;    margin-right: 20px; }
+        .name { float: left; margin-top: 5px; }
+        .owner { float: left; margin-top: 9px; margin-left: 8px; clear: right; }
+        .join { left: 80px; padding: 8px 20px 0; top: 35px; bottom: initial; right: initial; margin: 0;
+          a { padding:0; font-size:1.2rem; }
+        }
+      }
+    }
+  }
+
+  #chat #color .container #notifications .dropdown-menu .messages-list-ctn .messages-list .message { .display-flex; .flex-flow(row nowrap);
+    img { display:none; }
+    .message-subject { padding: 0; .flex(1); }
+    .action-tag-as-done { display:none; }
+    .message-description { padding: 0; }
+  }
 }
 
 /** for <=480 screens resolutions **/
