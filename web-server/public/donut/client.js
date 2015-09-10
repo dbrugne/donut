@@ -511,6 +511,22 @@ define([
       debug('io:out:room:typing', data);
       pomelo.notify('chat.roomTypingHandler.call', data);
     },
+    roomRequestAllowance: function (roomId, fn) {
+      var data = {room_id: roomId};
+      debug('io:out:room:request:allowance', data);
+      pomelo.request(
+        'chat.roomRequestAllowance.call',
+        data,
+        function (response) {
+          if (response.err) {
+            debug('io:in:room:request:allowance error: ', response);
+          } else {
+            debug('io:in:room:request:allowance', response);
+          }
+          return fn(response);
+        }
+      );
+    },
 
     // ONETOONE
     // ======================================================

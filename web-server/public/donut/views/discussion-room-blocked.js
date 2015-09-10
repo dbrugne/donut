@@ -19,7 +19,9 @@ define([
 
     template: templates['discussion-room-blocked.html'],
 
-    events: {},
+    events: {
+      'click .ask-for-allowance': 'onRequestAllowance'
+    },
 
     initialize: function () {
       this.listenTo(this.model, 'change:focused', this.onFocusChange);
@@ -65,6 +67,19 @@ define([
       } else {
         this.$el.hide();
       }
+    },
+    onRequestAllowance: function () {
+      client.roomRequestAllowance(this.model.get('id'), function (response) {
+        if (response.err) {
+          if (response.err === 'banned' || response.err === 'allowed') {
+            app.trigger('alert', 'error', i18next.t('chat.allowed.error.' + response.err));
+          } else {
+            app.trigger('alert', 'error', i18next.t('global.unknownerror'));
+          }
+        } else {
+          app.trigger('alert', 'info', i18next.t('chat.allowed.success'));
+        }
+      });
     }
 
   });

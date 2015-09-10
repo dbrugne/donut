@@ -430,6 +430,13 @@
     "profile": {
       "infobox": "Voir le profil de cet utilisateur"
     },
+    "allowed": {
+      "success": "La demande d'accès à bien été envoyé",
+      "error" : {
+        "allowed": "Une demande d'accès a déjà été envoyé",
+        "banned": "Vous êtes banni de ce donut"
+      }
+    },
     "confirmation": {
       "sure": "Vous confirmez que vous voulez faire cela ?",
       "placeholder": "Expliquez pourquoi, visible dans le donut (optionnel)",

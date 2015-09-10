@@ -410,6 +410,13 @@
     "profile": {
       "infobox": "View the user profile"
     },
+    "allowed": {
+      "success": "Access request have been successfully sent",
+      "error" : {
+        "allowed": "An access request is allready pending",
+        "banned": "You have been ban from this donut"
+      }
+    },
     "confirmation": {
       "sure": "Do you confirm this action?",
       "placeholder": "Explain why, visible in this donut (optional)",

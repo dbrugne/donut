@@ -26,6 +26,7 @@ var roomSchema = mongoose.Schema({
   join_mode: {type: String, default: 'everyone'},
   join_mode_password: String,
   join_mode_allowed: [{type: mongoose.Schema.ObjectId, ref: 'User'}],
+  allowed_pending: [{type: mongoose.Schema.ObjectId, ref: 'User'}],
   history_mode: {type: String, default: 'everyone'},
   avatar: String,
   poster: String,
@@ -162,6 +163,13 @@ roomSchema.methods.isDevoice = function (userId) {
 roomSchema.methods.isAllowed = function (userId) {
   var subDocument = _.find(this.join_mode_allowed, function (allowed) {
     return (allowed.toString() === userId);
+  });
+  return (typeof subDocument !== 'undefined');
+};
+
+roomSchema.methods.isAllowedPending = function (userId) {
+  var subDocument = _.find(this.allowed_pending, function (u) {
+    return (u.toString() === userId);
   });
   return (typeof subDocument !== 'undefined');
 };

@@ -29,10 +29,6 @@ handler.call = function (data, session, next) {
         return callback('unable to retrieve room: ' + data.room_id);
       }
 
-      if (room.users.indexOf(user.id) === -1) {
-        return callback('this user ' + user.id + ' is not currently in room ' + room.name);
-      }
-
       if (room.isDevoice(user.id)) {
         return callback("user is devoiced, he can't type/send message in room");
       }
