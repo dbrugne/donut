@@ -25,7 +25,8 @@ define([
     template: templates['discussion-room-blocked.html'],
 
     events: {
-      'click .ask-for-allowance': 'onRequestAllowance'
+      'click .ask-for-allowance': 'onRequestAllowance',
+      'click .valid-password': 'onClickValidPassword'
     },
 
     initialize: function () {
@@ -83,6 +84,17 @@ define([
           }
         } else {
           app.trigger('alert', 'info', i18next.t('chat.allowed.success'));
+        }
+      });
+    },
+    onClickValidPassword: function (event) {
+      var password = $(event.currentTarget).closest('.password-form').find('.input-password').val();
+      client.roomJoin(this.model.get('id'), this.model.get('name'), password, function (response) {
+        if (response.err && response.err === 'wrongpassword') {
+
+        }
+        if (response.err) {
+          return;
         }
       });
     }

@@ -145,7 +145,7 @@ define([
     // ROOM
     // ======================================================
 
-    roomJoin: function (roomId, roomName, callback) {
+    roomJoin: function (roomId, roomName, password, callback) {
       var data = {};
       if (roomId) {
         data.room_id = roomId;
@@ -153,6 +153,10 @@ define([
         data.name = roomName;
       } else {
         return;
+      }
+
+      if (password) {
+        data.password = password;
       }
 
       debug('io:out:room:join', data);
