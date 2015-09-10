@@ -1,7 +1,7 @@
 <div class="message <% if (data.viewed == false) { %>unread<% } %>" data-notification-id="<%= data.id %>" data-time="<%= data.time %>">
     <img src="<%= data.avatar %>" alt="<%= data.data.room.name %>" />
     <div class="message-subject">
-        <%= t('chat.notifications.dropdown.roomjoinrequest', { username: data.data.by_user.username, userid: data.data.by_user.id, roomname: data.data.room.name.replace('#', '' )}) %>
+        <%= t('chat.notifications.dropdown.roomjoinrequest', { username: data.data.by_user.username, userid: data.data.by_user._id, roomname: data.data.room.name.replace('#', '' )}) %>
     </div>
     <span class="icon icon-times action-tag-as-done"></span>
     <div class="message-description unviewed">
