@@ -157,7 +157,6 @@
                 .date { display:none; }
                 &:hover .actions { display:none; }
               } // #chat #center .discussion .content .events .scrollable .scrollable-content .realtime .block.message .event
-              &.op, &.deop, &.ban, &.deban, &.kick, &.inout, &.topic { display:none; }
             } // #chat #center .discussion .content .events .scrollable .scrollable-content .realtime .block
           } // #chat #center .discussion .content .events
           .input { padding-left: 10px; margin-bottom: 10px;
@@ -240,6 +239,13 @@
         }
       }
     }
+  }
+
+  #chat #color .container #notifications .dropdown-menu .messages-list-ctn .messages-list .message { .display-flex; .flex-flow(row nowrap);
+    img { display:none; }
+    .message-subject { padding: 0; .flex(1); }
+    .action-tag-as-done { display:none; }
+    .message-description { padding: 0; }
   }
 }
 
