@@ -36,6 +36,11 @@ define([
       this.$el.html(templates['spinner.html']);
       return this;
     },
+    _remove: function () {
+      this.emailView.remove();
+      this.passwordView.remove();
+      this.remove();
+    },
     onResponse: function (user) {
       if (user.color) {
         this.trigger('color', user.color);

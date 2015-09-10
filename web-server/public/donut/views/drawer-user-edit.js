@@ -35,6 +35,12 @@ define([
       this.$el.html(templates['spinner.html']);
       return this;
     },
+    _remove: function () {
+      this.colorPicker.remove();
+      this.avatarUploader.remove();
+      this.posterUploader.remove();
+      this.remove();
+    },
     onResponse: function (user) {
       if (user.color)
         this.trigger('color', user.color);
@@ -54,7 +60,7 @@ define([
       this.$website = this.$el.find('input[name=website]');
 
       // color
-      var colorPicker = new ColorPicker({
+      this.colorPicker = new ColorPicker({
         color: user.color,
         name: 'color',
         el: this.$el.find('.user-color').first()

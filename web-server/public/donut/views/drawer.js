@@ -127,7 +127,11 @@ define([
             app.trigger('changeColor', '', false, true);
           }
           if (that.contentView) {
-            that.contentView.remove();
+            if (_.isFunction(that.contentView._remove)) {
+              that.contentView._remove();
+            } else {
+              that.contentView.remove();
+            }
           }
         }
       });
