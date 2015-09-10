@@ -23,8 +23,9 @@ define([
       // ask for data
       var that = this;
       client.userRead(currentUser.get('user_id'), null, function (err, data) {
-        if (err)
+        if (err) {
           return;
+        }
 
         that.user = data;
         that.onResponse(data);
@@ -36,8 +37,9 @@ define([
       return this;
     },
     onResponse: function (user) {
-      if (user.color)
+      if (user.color) {
         this.trigger('color', user.color);
+      }
 
       var html = this.template({user: user});
       this.$el.html(html);
