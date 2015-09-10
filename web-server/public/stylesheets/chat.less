@@ -1462,31 +1462,23 @@
           a {}
         }
       } // #chat #drawer #room-profile .room
-      .users {
-        margin-top: 5px;
-        text-align: left;
+      .users { margin-top: 5px; text-align: left; .display-flex; .flex-flow(row wrap); justify-content: space-between; padding: 0 5px;
         hr {clear: both; border-color: transparent;}
-        .title {
-          font-size: 1.2em;
-          padding-left: 10px;
-          margin-bottom: 10px;
-        }
-        .user { display: inline-block;  position: relative;
-          .avatar {
-            width: 40px;
-            height: 40px;
-          }
-          .username {
-            .ft-opensans;
-            font-size: 1.1em;
-          }
+        .title { font-size: 1.2em; padding-left: 10px; margin-bottom: 10px; width: 100%; }
+        .user { display: inline-block;  position: relative; margin: 3px 0;
+          .avatar { width: 40px; height: 40px; }
+          .username { .ft-opensans; font-size: 1.1em; }
           &:hover {
-            .username {
-              color: @cl-subtext30;
-            }
+            .username { color: @cl-subtext30; }
           }
-          &.op::after { content: '\f008'; font: normal normal normal 14px/1 'Donut'; position: absolute; left: -5px; z-index: 0; top: -5px; border-radius: 50%; padding: 5px; color: rgb(59, 236, 186); font-size: 16px; }
-          &.owner::after { content: '\f00a'; font: normal normal normal 14px/1 'Donut'; position: absolute; left: 7px; z-index: 0; top: -14px; border-radius: 50%; padding: 5px; color: #fbec4d; font-size: 16px; }
+          &.op {
+            &::after { content: '\f008'; font: normal normal normal 14px/1 'Donut'; position: absolute; left: -8px; z-index: 0; top: -10px; border-radius: 50%; padding: 5px; color: @cl-success; font-size: 16px; }
+            img { border: 2px solid @cl-success; .border-radius(5px); }
+          }
+          &.owner {
+            &::after { content: '\f00a'; font: normal normal normal 14px/1 'Donut'; position: absolute; left: 7px; z-index: 0; top: -15px; border-radius: 50%; padding: 5px; color: @cl-warning; font-size: 16px; }
+            img { border: 2px solid @cl-warning;  .border-radius(5px); }
+          }
         }
       }
     } // #chat #drawer #room-profile
