@@ -59,16 +59,17 @@ define([
       this._hide();
     },
     color: function (color) {
-      color = (this._validHex(color))
-        ? color
-        : this.defaultColor;
+      color = (this._validHex(color)) ?
+        color :
+        this.defaultColor;
 
       app.trigger('changeColor', color, true);
     },
     detectOutsideClick: function (event) {
       var subject = this.$el.find('.content').first();
-      if (event.target.className != subject.attr('class') && !subject.has(event.target).length)
+      if (event.target.className !== subject.attr('class') && !subject.has(event.target).length) {
         this.close();
+      }
     },
     _height: function () {
       var newHeight = $('#center').innerHeight();
@@ -86,8 +87,9 @@ define([
 
       // escape key
       $(document).on('keydown', $.proxy(function (e) {
-        if (e.which == 27)
+        if (e.which === 27) {
           this.close();
+        }
       }, this));
 
       this.$el.show();
@@ -121,8 +123,9 @@ define([
         complete: function () {
           that.$wrap.css('left', '-10000px');
           that.$el.hide();
-          if (wasShown)
+          if (wasShown) {
             app.trigger('changeColor', '', false, true);
+          }
           if (that.contentView) {
             that.contentView.remove();
           }
@@ -130,16 +133,10 @@ define([
       });
     },
     _validHex: function (hex) {
-      if (!hex)
+      if (!hex) {
         return false;
-
-      if (this.shorthandRegex.test(hex))
-        return true;
-
-      if (this.longhandRegex.test(hex))
-        return true;
-
-      return false;
+      }
+      return (this.shorthandRegex.test(hex) || this.longhandRegex.test(hex));
     }
 
   });
