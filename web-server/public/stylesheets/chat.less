@@ -572,7 +572,7 @@
     } // #chat #center #home
     .discussion { background-color: @cl-background; height: 100%;
       @header-height: 35px; @size-user-item: 195px;
-      .content { height: 100%; margin-right: @size-right; position: relative; padding-left: 35px; .display-flex; .flex-flow(column nowrap);
+      .content { height: 100%; position: relative; padding-left: 35px; .display-flex; .flex-flow(column nowrap);
         .header { padding-top: 18px; padding-right: 10px;
           .info { padding-left: 110px;
             .share { display: inline-block;
@@ -1191,6 +1191,8 @@
         }
       }
       .side { float: right; width: @size-right; height: 100%; background-repeat: no-repeat; background-position: left top; margin: 0; padding: 0;
+        &.poster-empty { width:40px; }
+        &.poster-empty.roomside { width:@size-right-mid; }
         .blur { width: @size-right-mid; position: relative; height: 100%; color: @cl-background; a { color: @cl-background; } hr { margin-left: 0; margin-right: 0; } font-size: 1.1em; .scrollbar-grey;
           .users { position: relative; background-color: rgba(0, 0, 0, 0.2); padding: 10px 0 30px 0; height: 100%;
             .header { position: absolute;     white-space: nowrap; top: 14px; left: 16px; right: 10px;

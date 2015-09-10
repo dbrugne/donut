@@ -1,4 +1,4 @@
-<div class="side dc-back" style="<% if (typeof poster !== 'undefined') { %>background-image: url(<%= poster %>);<% }; %>">
+<div class="side roomside dc-back <% if (!poster) { %>poster-empty<% } %>" style="<% if (typeof poster !== 'undefined') { %>background-image: url(<%= poster %>);<% }; %>">
     <div class="blur dc-back-darker" style="<% if (typeof posterblured !== 'undefined') { %>background-image: url(<%= posterblured %>);<% }; %>">
         <div class="users hidden-sm hidden-xs">
             <div class="scrollable"></div>
