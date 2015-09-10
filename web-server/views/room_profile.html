@@ -4,10 +4,10 @@
 <% var roomName = room.name.replace('#','') %>
 
 <div class="side roomside dc-back <% if (!poster) { %>poster-empty<% } %>" style="<% if (poster) { %>background-image: url(<%= poster %>);<% }; %>">
-    <div class="blur dc-back-darker" style="<% if (posterBlured) { %>background-image: url(<%= posterBlured %>);<% }; %>">
+    <div class="blur dc-back" style="<% if (posterBlured) { %>background-image: url(<%= posterBlured %>);<% }; %>">
         <div class="users hidden-sm hidden-xs">
             <div class="header">
-                <p class="count">
+                <p class="count dc-text-contrast">
                     <%= t('chat.userscount', {count: (1 + roomOpsLength + roomUsersLength)}) %>
                 </p>
             </div>
