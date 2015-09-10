@@ -14,8 +14,7 @@ define([
 
     id: 'user-profile',
 
-    events: {
-    },
+    events: {},
 
     initialize: function (options) {
       this.user_id = options.user_id;
@@ -26,15 +25,18 @@ define([
       // show spinner as temp content
       this.render();
 
-      if (options.data)
+      if (options.data) {
         this.onResponse(options.data);
+      }
 
       var that = this;
       client.userRead(this.user_id, null, function (err, data) {
-        if (err === 'unknown')
+        if (err === 'unknown') {
           return;
-        if (!err)
+        }
+        if (!err) {
           that.onResponse(data);
+        }
       });
     },
     render: function () {
@@ -43,12 +45,11 @@ define([
       return this;
     },
     onResponse: function (user) {
-      if (!user.username)
+      if (!user.username) {
         return app.trigger('drawerClose');
-        
-      user.isCurrent = (user.user_id == currentUser.get('user_id'))
-        ? true
-        : false;
+      }
+
+      user.isCurrent = (user.user_id === currentUser.get('user_id'));
 
       user.avatar = common.cloudinarySize(user.avatar, 90);
 
@@ -61,8 +62,9 @@ define([
       this.$el.find('.created span').momentify('date');
       this.$el.find('.onlined span').momentify('fromnow');
 
-      if (user.color)
+      if (user.color) {
         this.trigger('color', user.color);
+      }
     },
     /**
      * Construct the user room list for profile displaying
@@ -73,24 +75,30 @@ define([
     _rooms: function (user) {
       user.rooms_list = [];
 
-      if (!user.rooms)
+      if (!user.rooms) {
         return;
+      }
 
       var alreadyIn = [];
+
       function pushNew (room, owned, oped) {
-        if (!room.name)
+        if (!room.name) {
           return;
+        }
 
-        if (alreadyIn.indexOf(room.name) !== -1)
+        if (alreadyIn.indexOf(room.name) !== -1) {
           return;
-        else
+        } else {
           alreadyIn.push(room.name);
+        }
 
-        if (owned === true)
+        if (owned === true) {
           room.owned = true;
+        }
 
-        if (oped === true)
+        if (oped === true) {
           room.oped = true;
+        }
 
         room.avatar = common.cloudinarySize(room.avatar, 40);
 
@@ -119,8 +127,9 @@ define([
     onUserBanChange: function () {
       this.render();
       client.userRead(this.user_id, null, _.bind(function (err, data) {
-        if (!err)
+        if (!err) {
           this.onResponse(data);
+        }
       }, this));
     }
 
