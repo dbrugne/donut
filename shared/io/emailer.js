@@ -87,14 +87,14 @@ function sendEmail (to, template, data, callback) {
 emailer.forgot = function (to, token, callback) {
   sendEmail(to, 'emails/forgot.html', {
     token: token,
-    title: i18next.t('email.forgot.title'),
+    title: i18next.t('email.forgot.content.title'),
     subject: i18next.t('email.forgot.subject')
   }, callback);
 };
 
 emailer.welcome = function (to, callback) {
   sendEmail(to, 'emails/signup.html', {
-    title: i18next.t('email.welcome.title'),
+    title: i18next.t('email.welcome.content.title'),
     subject: i18next.t('email.welcome.subject')
   }, callback);
 };

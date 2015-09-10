@@ -5,10 +5,6 @@
     .content { margin-right: @size-right-mid; }
     .side { width: @size-right-mid; }
   }
-
-  #landing .header { height: 995px;
-    .cover { background: none; }
-  }
 }
 
 /** for <=992 screens resolutions ==> TABLET PORTRAIT & PHONE LANDSCAPE **/
@@ -214,6 +210,8 @@
     .join {     padding: 5px;
       a {     font-size: 1.3rem; white-space: nowrap; }
     }
+  .rooms.cards .room { width: 190px;
+    .join a { font-size:13px; }
   }
 }
 
@@ -251,7 +249,6 @@
 
 /** for <=480 screens resolutions **/
 @media screen and (max-width: @screen-xs-min) {
-  #landing .header .cover { background-color: rgba(255, 255, 255, 0.8); }
   #chat #center .discussion .content .header.room .topic #room-users-modal .modal-body .list li { width: 100%; }
 }
 

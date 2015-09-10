@@ -191,6 +191,10 @@
   margin: 0;
   padding: 0;
 
+  #languages {
+    a { padding: 3px 5px; cursor: pointer; }
+  }
+
   > .row {
     margin: 0; /* Cancel bootstrap negative .row margin */
     height: 100%;
@@ -523,7 +527,7 @@
             color: @cl-subtext50;
             cursor: pointer;
           }
-        }
+        } // #chat #center #home .left>.search
 
         .rooms {
           .title {
@@ -531,7 +535,7 @@
             margin-bottom: 10px;
           }
         }
-      }
+      } // #chat #center #home .left
       .right { .make-xs-column(0); .make-sm-column(2); .make-lg-column(3); height: 100%; padding: 20px 5px 50px 14px; background-color: @cl-subtext10;
         .users { height:100%;
           .list { overflow-y: auto; overflow-x: hidden; height: 100%; .scrollbar-white;
@@ -1637,7 +1641,7 @@
       .btn-facebook:hover {
         color: #ffffff;
         i { color: #ffffff; }
-        span { color: #ffffff; text-decoration: underline; }
+        span { color: #ffffff; }
       }
     } // #chat #drawer #user-account
     #room-users, #user-preferences {

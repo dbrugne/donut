@@ -41,7 +41,10 @@ define([
 
       var html = this.template({
         title: false,
-        rooms: welcome.featured
+        rooms: welcome.featured,
+        search: false,
+        more: false,
+        replace: true
       });
       this.$el.find('.modal-body .rooms')
         .html(html);
