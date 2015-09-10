@@ -26,8 +26,9 @@ define([
       // ask for data
       var that = this;
       client.userRead(currentUser.get('user_id'), null, function (err, data) {
-        if (!err)
+        if (!err) {
           that.onResponse(data);
+        }
       });
     },
     render: function () {
@@ -42,8 +43,9 @@ define([
       this.remove();
     },
     onResponse: function (user) {
-      if (user.color)
+      if (user.color) {
         this.trigger('color', user.color);
+      }
 
       var currentAvatar = user.avatar;
 
@@ -93,8 +95,9 @@ define([
     onSubmit: function (event) {
       event.preventDefault();
 
-      if (this.checkWebsite() !== true)
+      if (this.checkWebsite() !== true) {
         return;
+      }
 
       var updateData = {
         bio: this.$el.find('textarea[name=bio]').val(),
@@ -103,17 +106,20 @@ define([
         color: this.$el.find('input[name=color]').val()
       };
 
-      if (this.avatarUploader.data)
+      if (this.avatarUploader.data) {
         updateData.avatar = this.avatarUploader.data;
+      }
 
-      if (this.posterUploader.data)
+      if (this.posterUploader.data) {
         updateData.poster = this.posterUploader.data;
+      }
 
       var that = this;
       client.userUpdate(updateData, function (data) {
         that.$el.find('.errors').hide();
-        if (data.err)
+        if (data.err) {
           return that.editError(data);
+        }
         that.trigger('close');
       });
     },
@@ -124,8 +130,9 @@ define([
       var that = this;
       client.userUpdate(updateData, function (d) {
         that.$el.find('.errors').hide();
-        if (d.err)
+        if (d.err) {
           that.editError(d);
+        }
       });
     },
     onUserPosterUpdate: function (data) {
@@ -135,19 +142,22 @@ define([
       var that = this;
       client.userUpdate(updateData, function (d) {
         that.$el.find('.errors').hide();
-        if (d.err)
+        if (d.err) {
           that.editError(d);
+        }
       });
     },
 
     checkWebsite: function () {
       var website = this.$website.val();
 
-      if (website && website.length < 5 || website.length > 255)
+      if (website && website.length < 5 || website.length > 255) {
         return this.$el.find('.errors').html($.t('chat.form.errors.website-size')).show();
+      }
 
-      if (website && !/^[^\s]+\.[^\s]+$/.test(website))
+      if (website && !/^[^\s]+\.[^\s]+$/.test(website)) {
         return this.$el.find('.errors').html($.t('chat.form.errors.website-url')).show();
+      }
 
       return true;
     },
