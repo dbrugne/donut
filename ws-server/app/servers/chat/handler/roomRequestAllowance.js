@@ -56,7 +56,7 @@ handler.call = function (data, session, next) {
     }
 
 /*    function notification (sentEvent, callback) {
-      Notifications(that.app).getType('requestAllowance').create(opedUser, room, sentEvent.id, callback);
+      Notifications(that.app).getType('requestAllowance').create(user, room, sentEvent.id, callback);
     }*/
 
   ], function (err) {

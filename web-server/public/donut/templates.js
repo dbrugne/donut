@@ -63,6 +63,7 @@ define([
   'text!./templates/notification/room-devoice.html',
   'text!./templates/notification/room-topic.html',
   'text!./templates/notification/room-join.html',
+  'text!./templates/notification/room-join-request.html',
   'text!./templates/notification/user-mention.html',
   'text!./templates/notification/room-message.html',
   'text!./templates/notification/user-message.html',
@@ -131,6 +132,7 @@ define([
   notification_room_devoice,
   notification_room_topic,
   notification_room_join,
+  notification_room_join_request,
   notification_user_mention,
   notification_room_message,
   notification_user_message,
@@ -212,6 +214,7 @@ define([
   JST['notification/room-devoice.html'] = _.template(notification_room_devoice);
   JST['notification/room-topic.html'] = _.template(notification_room_topic);
   JST['notification/room-join.html'] = _.template(notification_room_join);
+  JST['notification/room-join-request.html'] = _.template(notification_room_join_request);
   JST['notification/user-mention.html'] = _.template(notification_user_mention);
   JST['notification/room-message.html'] = _.template(notification_room_message);
   JST['notification/user-message.html'] = _.template(notification_user_message);
