@@ -628,15 +628,14 @@
       },
       "room-form": {
         "common": {
-          "join-mode-label": "Who can join the donut",
+          "join-mode-label": "Who can join the donut (admin only)",
           "mode": {
             "everyone-def": "Everyone (défault)",
             "everyone": "Everyone",
             "allowed": "Only authorized user",
             "password": "User with the password",
-            "password-field": "Password",
-            "joined": "Users in the donut at the time of the message",
-            "none": "No history"
+            "password-change": "Change password",
+            "password-field": "Password"
           }
         },
         "create": {

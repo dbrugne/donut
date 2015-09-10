@@ -3,13 +3,14 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'common',
   'i18next',
   'client',
   'models/current-user',
   'views/image-uploader',
   'views/color-picker',
   '_templates'
-], function ($, _, Backbone, i18next, client, currentUser, ImageUploader, ColorPicker, templates) {
+], function ($, _, Backbone, common, i18next, client, currentUser, ImageUploader, ColorPicker, templates) {
   var DrawerRoomEditView = Backbone.View.extend({
     template: templates['drawer-room-edit.html'],
 
@@ -17,8 +18,8 @@ define([
 
     events: {
       'submit form.room-form': 'onSubmit',
-      'change .savable': 'onChangeValue',
-      'click .random-password': 'onClickRandomPassword'
+      'change input[name="mode"]': 'onChangeMode',
+      'click .random-password': 'onRandomPassword'
     },
 
     initialize: function (options) {
@@ -40,6 +41,12 @@ define([
       this.$el.html(templates['spinner.html']);
       return this;
     },
+    _remove: function () {
+      this.colorPicker.remove();
+      this.avatarUploader.remove();
+      this.posterUploader.remove();
+      this.remove();
+    },
     onResponse: function (room) {
       if (room.color) {
         this.trigger('color', room.color);
@@ -49,38 +56,37 @@ define([
         (room.owner.user_id === currentUser.get('user_id')) :
         false;
 
-      room.isAdmin = (currentUser.get('admin') === true);
+      room.mode = room.join_mode;
 
-      // options
-      this.$joinChecked = this.$el.find('.join.' + room.join_mode);
-      this.$historyChecked = this.$el.find('.history.' + room.history_mode);
-      room.labelJoinMode = $.t('chat.form.room-form.common.mode.' + room.join_mode);
-      room.labelHistoryMode = $.t('chat.form.room-form.common.mode.' + room.history_mode);
+      room.isAdmin = (currentUser.get('admin') === true);
 
       var currentAvatar = room.avatar;
 
       var html = this.template({room: room});
       this.$el.html(html);
 
+      this.$passwordBlock = this.$('.form-group.password');
+      this.$password = this.$('input[name="password"]');
+
       // description
-      this.$el.find('#roomDescription').maxlength({
-        counterContainer: this.$el.find('#roomDescription').siblings('.help-block').find('.counter'),
+      this.$('#roomDescription').maxlength({
+        counterContainer: this.$('#roomDescription').siblings('.help-block').find('.counter'),
         text: i18next.t('chat.form.common.edit.left')
       });
 
       // website
-      this.$website = this.$el.find('input[name=website]');
+      this.$website = this.$('input[name=website]');
 
       // color
-      var colorPicker = new ColorPicker({
+      this.colorPicker = new ColorPicker({
         color: room.color,
         name: 'color',
-        el: this.$el.find('.room-color').first()
+        el: this.$('.room-color').first()
       });
 
       // avatar
       this.avatarUploader = new ImageUploader({
-        el: this.$el.find('.room-avatar').first(),
+        el: this.$('.room-avatar').first(),
         current: currentAvatar,
         tags: 'room,avatar',
         field_name: 'avatar',
@@ -92,7 +98,7 @@ define([
 
       // poster
       this.posterUploader = new ImageUploader({
-        el: this.$el.find('.room-poster').first(),
+        el: this.$('.room-poster').first(),
         current: room.poster,
         tags: 'room,poster',
         field_name: 'poster',
@@ -110,22 +116,28 @@ define([
       }
 
       var updateData = {
-        description: this.$el.find('textarea[name=description]').val(),
+        description: this.$('textarea[name=description]').val(),
         website: this.$website.val(),
-        color: this.$el.find('input[name=color]').val()
+        color: this.$('input[name=color]').val()
       };
 
       if (currentUser.get('admin') === true) {
-        updateData.visibility = (this.$el.find('input[name=visibility]:checked').val() === 'true');
-        updateData.priority = this.$el.find('input[name=priority]').val();
+        updateData.visibility = (this.$('input[name=visibility]:checked').val() === 'true');
+        updateData.priority = this.$('input[name=priority]').val();
 
-        if (this.$joinChecked.attr('value') === 'password') {
-          var join_password = this.$el.find('.input-password').val();
+        // mode
+        var checked = this.$('[name="mode"]:checked');
+        if (!checked.length) {
+          // @todo handle error
+          return;
         }
+        updateData.mode = checked.attr('value');
 
-        updateData.join_mode = this.$joinChecked.attr('value');
-        updateData.join_mode_password = join_password;
-        updateData.history_mode = this.$historyChecked.attr('value');
+        // password
+        var password = this.$password.val();
+        if (updateData.mode === 'password' && password) {
+          updateData.password = password;
+        }
       }
 
       if (this.avatarUploader.data) {
@@ -136,14 +148,13 @@ define([
         updateData.poster = this.posterUploader.data;
       }
 
-      var that = this;
-      client.roomUpdate(this.roomId, updateData, function (data) {
-        that.$el.find('.errors').hide();
+      client.roomUpdate(this.roomId, updateData, _.bind(function (data) {
+        this.$('.errors').hide();
         if (data.err) {
-          return that.editError(data);
+          return this.editError(data);
         }
-        that.trigger('close');
-      });
+        this.trigger('close');
+      }, this));
     },
 
     onRoomAvatarUpdate: function (data) {
@@ -172,53 +183,33 @@ define([
       });
     },
 
-    onChangeValue: function (event) {
-      var $target = $(event.currentTarget);
-      var type = $target.attr('type');
-      var name = $target.attr('name').substr($target.attr('name').lastIndexOf(':') + 1);
-
-      if (type === 'radio' && name === 'join') {
-        this.$joinChecked = $target;
-        if (this.$joinChecked.attr('value') === 'password') {
-          this.$el.find('.field-password').css('display', 'block');
-          this.$el.find('.input-password').focus();
+    onChangeMode: function (event) {
+      var $target = $(event.currentTarget).first();
+      if ($target.attr('type') === 'radio' && $target.attr('name') === 'mode') {
+        if ($target.attr('value') !== 'password') {
+          this.$passwordBlock.addClass('hidden');
         } else {
-          this.$el.find('.field-password').css('display', 'none');
+          this.$passwordBlock.removeClass('hidden');
+          this.$password.focus();
         }
       }
-      if (type === 'radio' && name === 'history') {
-        this.$historyChecked = $target;
-      }
     },
 
-    onClickRandomPassword: function (event) {
+    onRandomPassword: function (event) {
       event.preventDefault();
-      if (this.$joinChecked.attr('value') === 'password') {
-        this.$el.find('.input-password').val(this.generateRandomPassword());
-        this.$el.find('.input-password').focus();
-      }
-    },
-
-    generateRandomPassword: function () {
-      var limit = (Math.random() * 12) + 8;
-      var password = '';
-      var chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-      for (var i = 0; i < limit; i++) {
-        var index = Math.floor(Math.random() * chars.length);
-        password += chars[index];
-      }
-      return password;
+      this.$password.val(common.randomString());
+      this.$password.focus();
     },
 
     checkWebsite: function () {
       var website = this.$website.val();
 
       if (website && (website.length < 5 || website.length > 255)) {
-        return this.$el.find('.errors').html($.t('chat.form.errors.website-size')).show();
+        return this.$('.errors').html($.t('chat.form.errors.website-size')).show();
       }
 
       if (website && !/^[^\s]+\.[^\s]+$/.test(website)) {
-        return this.$el.find('.errors').html($.t('chat.form.errors.website-url')).show();
+        return this.$('.errors').html($.t('chat.form.errors.website-url')).show();
       }
 
       return true;
@@ -229,8 +220,9 @@ define([
       _.each(dataErrors.err, function (error) {
         message += $.t('chat.form.errors.' + error) + '<br>';
       });
-      this.$el.find('.errors').html(message).show();
+      this.$('.errors').html(message).show();
     }
+
   });
 
   return DrawerRoomEditView;

@@ -39,7 +39,7 @@ handler.call = function (data, session, next) {
           return callback('notallowed');
         }
         if (room.join_mode === 'password' && !room.validPassword(data.join_mode_password)) {
-          return callback('wrong-password');
+          return callback('wrongpassword');
         }
       }
 
@@ -121,7 +121,7 @@ handler.call = function (data, session, next) {
     if (err === 'notexists') {
       return next(null, {code: 404, err: err});
     }
-    if (err === 'banned' || err === 'notallowed' || err === 'wrong-password') {
+    if (err === 'banned' || err === 'notallowed' || err === 'wrongpassword') {
       // @todo : factorize somewhere
       var roomData = {
         name: room.name,

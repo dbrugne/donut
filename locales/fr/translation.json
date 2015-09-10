@@ -647,15 +647,14 @@
       },
       "room-form": {
         "common" : {
-          "join-mode-label": "Qui peut rejoindre le donut",
+          "join-mode-label": "Qui peut rejoindre le donut (administrateur)",
           "mode": {
             "everyone-def": "Tous le monde (défaut)",
             "everyone": "Tous le monde",
             "allowed": "Utilisateur autorisé uniquement",
             "password": "Utilisateur ayant le mot de passe",
-            "password-field": "Mot de passe",
-            "joined": "Les utilisateurs dans le donut au moment du message",
-            "none": "Pas d'historique"
+            "password-change": "Changer le mot de passe",
+            "password-field": "Mot de passe"
           }
         },
         "create": {

@@ -5,10 +5,6 @@
 <div class="errors"></div>
 <form class="room-form" role="form">
     <div class="form-group">
-        <label><%= t('chat.form.room-form.common.join-mode-label') %> :</label>&nbsp;<p class="opts_mode"><%= room.labelJoinMode %></p>
-        <label><%= t('chat.form.room-form.common.history-mode-label') %> :</label>&nbsp;<p class="opts_mode"><%= room.labelHistoryMode %></p>
-    </div>
-    <div class="form-group">
         <label for="roomDescription"><%= t('chat.form.room-form.edit.description.label') %></label>
         <textarea name="description" class="form-control" id="roomDescription" placeholder="<%= t('chat.form.room-form.edit.description.placeholder') %>" maxlength="200"><%= room.description %></textarea>
         <p class="help-block"><%= t('chat.form.room-form.edit.description.help') %> <span class="counter"></span></p>
@@ -31,7 +27,33 @@
         <label><%= t('chat.form.common.edit.color.label') %></label>
         <div class="room-color"></div>
     </div>
+    <div class="form-group password <% if (room.mode !== 'password') { print('hidden'); }; %>">
+        <label><%= t('chat.form.room-form.common.mode.password-change') %> : </label>
+        <input type="text" class="input-password" name="password" placeholder="<%= t('chat.form.room-form.common.mode.password-field') %>" maxlength="255" value="<%= name %>" />
+        <a href="#" class="icon icon-refresh random-password dc-text"></a>
+    </div>
     <% if (room.isAdmin) { %>
+    <div class="form-group">
+        <label><%= t('chat.form.room-form.common.join-mode-label') %></label>
+        <div class="radio">
+            <label>
+                <input type="radio" class="savable everyone" name="mode" value="everyone" <% if (room.mode === 'everyone') { print('checked'); }; %>>
+                <%= t('chat.form.room-form.common.mode.everyone-def') %>
+            </label>
+        </div>
+        <div class="radio">
+            <label>
+                <input type="radio" class="savable allowed" name="mode" value="allowed" <% if (room.mode === 'allowed') { print('checked'); }; %>>
+                <%= t('chat.form.room-form.common.mode.allowed') %>
+            </label>
+        </div>
+        <div class="radio">
+            <label>
+                <input type="radio" class="savable password" name="mode" value="password" <% if (room.mode === 'password') { print('checked'); }; %>>
+                <%= t('chat.form.room-form.common.mode.password') %>
+            </label>
+        </div>
+    </div>
     <div class="form-group">
         <label><%= t('chat.form.room-form.edit.visibility.label') %></label>
         <div class="radio">
@@ -51,53 +73,6 @@
         <label for="roomPriority"><%= t('chat.form.room-form.edit.priority.label') %></label>
         <input type="number" name="priority" class="form-control" id="roomPriority" placeholder="<%= t('chat.form.room-form.edit.priority.placeholder') %>" value="<%= room.priority %>">
         <p class="help-block"><%= t('chat.form.room-form.edit.priority.help') %></p>
-    </div>
-    <div class="form-group">
-        <label><%= t('chat.form.room-form.common.join-mode-label') %></label>
-        <div class="radio">
-            <label>
-                <input type="radio" class="savable join everyone" name="create:join" value="everyone" <% if (room.join_mode === "everyone") { %> checked <% } %>>
-                <%= t('chat.form.room-form.common.mode.everyone-def') %>
-            </label>
-        </div>
-        <div class="radio">
-            <label>
-                <input type="radio" class="savable join allowed" name="create:join" value="allowed" <% if (room.join_mode === "allowed") { %> checked <% } %>>
-                <%= t('chat.form.room-form.common.mode.allowed') %>
-            </label>
-        </div>
-        <div class="radio">
-            <label>
-                <input type="radio" class="savable join password" name="create:join" value="password" <% if (room.join_mode === "password") { %> checked <% } %>>
-                <%= t('chat.form.room-form.common.mode.password') %>
-            </label>
-        </div>
-        <div class="field-password">
-            <label><%= t('chat.form.room-form.common.mode.password-field') %> : </label>
-            <input type="text" class="input-password" placeholder="<%= t('chat.room-form.common.mode.password-field') %>" maxlength="255" value="<%= name %>" />
-            <a href="#" class="icon icon-refresh random-password dc-text"></a>
-        </div>
-    </div>
-    <div class="form-group">
-        <label><%= t('chat.form.room-form.common.history-mode-label') %></label>
-        <div class="radio">
-            <label>
-                <input type="radio" class="savable history everyone" name="create:history" value="everyone" <% if (room.history_mode === "everyone") { %> checked <% } %>>
-                <%= t('chat.form.room-form.common.mode.everyone-def') %>
-            </label>
-        </div>
-        <div class="radio">
-            <label>
-                <input type="radio" class="savable history joined" name="create:history" value="joined" <% if (room.history_mode === "joined") { %> checked <% } %>>
-                <%= t('chat.form.room-form.common.mode.joined') %> (<%= t('chat.form.room-form.common.mode.help') %>)
-            </label>
-        </div>
-        <div class="radio">
-            <label>
-                <input type="radio" class="savable history none" name="create:history" value="none" <% if (room.history_mode === "none") { %> checked <% } %>>
-                <%= t('chat.form.room-form.common.mode.none') %>
-            </label>
-        </div>
     </div>
     <% } %>
     <div class="form-group buttons">

@@ -115,26 +115,25 @@ handler.call = function (data, session, next) {
           }
         }
 
-        // options (join_mode)
-        if (_.has(data.data, 'join_mode')) {
-          var join_mode = data.data.join_mode;
-          if (join_mode === 'password') {
-            var join_mode_password = data.data.join_mode_password;
-            if (join_mode_password && (join_mode_password.length < 4 || join_mode_password.length > 255)) {
-              errors.join_password = 'join-mode-password';
-            } else {
-              sanitized.join_mode = join_mode;
-              join_mode_password = user.generateHash(join_mode_password);
-              sanitized.join_mode_password = join_mode_password;
-            }
+        // mode
+        if (_.has(data.data, 'mode')) {
+          var mode = data.data.mode;
+          if (!common.validateMode(mode)) {
+            errors.mode = 'invalid-mode';
           } else {
-            sanitized.join_mode = join_mode;
+            if (sanitized.join_mode !== mode) {
+              // @todo implement state machine on room mode change
+              sanitized.join_mode = mode;
+            }
+            if (mode === 'password' && _.has(data.data, 'password')) {
+              var password = data.data.password;
+              if (!password || password.length < 4 || password.length > 255) {
+                errors.password = 'invalid-password';
+              } else {
+                sanitized.join_mode_password = user.generateHash(password);
+              }
+            }
           }
-        }
-
-        // options (history_mode)
-        if (_.has(data.data, 'history_mode')) {
-          sanitized.history_mode = data.data.history_mode;
         }
       }
 
@@ -197,9 +196,9 @@ handler.call = function (data, session, next) {
     },
 
     function update (sanitized, callback) {
-      for (var field in sanitized) {
-        room.set(field, sanitized[field]);
-      }
+      _.each(sanitized, function (element, key) {
+        room.set(key, sanitized[key]);
+      });
       room.save(function (err) {
         return callback(err, sanitized);
       });
@@ -238,10 +237,12 @@ handler.call = function (data, session, next) {
 
   ], function (err) {
     if (err) {
-      _.each(err, function (error) {
-        logger.error('[room:update] ' + error);
-      });
-      return next(null, {code: 500, err: err});
+      logger.error('[room:update] ', err);
+      if (_.isObject(err)) {
+        return next(null, {code: 400, err: err});
+      } else {
+        return next(null, {code: 500});
+      }
     }
 
     next(null, {});
