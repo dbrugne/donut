@@ -713,27 +713,22 @@
                   }
                 }
               }
-              .loader {
-                padding: 10px;
-                background-color: @cl-subtext10;
-                color: @cl-subtext30;
-                text-align: center;
-                font-size: 1.1em;
-                border-radius: 2px;
-                .arrow {
-                  font-size: 1.4em;
-                  color: @cl-subtext30;
-                  padding-left: 50px;
-                  padding-right: 50px;
+              .loader { padding: 10px; text-align: center; font-size: 1.1em; border-radius: 2px;
+                .arrow { font-size: 1.4em; padding-left: 50px; padding-right: 50px; }
+                .loading { display: none;
+                  .spinner { font-size: 1.3em; }
                 }
-                .loading {
-                  display: none;
-                  .spinner {
-                    font-size: 1.3em;
+                .no-more { margin:50px 0; display: none; text-align: left;
+                  .title { font-size:3rem; .ft-raleway-heavy; }
+                  .info { font-size: 2rem;
+                    .name, .owner { font-size:2rem; font-weight:normal; }
                   }
-                }
-                .no-more {
-                  display: none;
+                  .actions { padding: 15px 0;
+                    > a { margin: 0 10px; text-decoration:underline;
+                      &:first-child { margin-left:0; }
+                      &:hover { text-decoration:none; }
+                    }
+                  }
                 }
               }
               .blank {

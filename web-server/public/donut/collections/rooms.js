@@ -76,7 +76,8 @@ define([
         poster: room.poster,
         posterblured: room.posterblured,
         color: room.color,
-        unviewed: room.unviewed
+        unviewed: room.unviewed,
+        created_at: room.created_at
       };
 
       // update model
