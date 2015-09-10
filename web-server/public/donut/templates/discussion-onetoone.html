@@ -15,7 +15,7 @@
             <%= dropdown %>
 
             <span class="hidden-xs hidden-sm">
-                <span class="location"><%= location %></span><% if (location && website) { print(', '); } %><a class="website" href="<%= website.href %>" target="_blank" title="<%= website.title %>"><%= website.title %></a>
+                <span class="location"><%= location %></span><% if (website) { %>&nbsp<a class="website dc-text" href="<%= website.href %>" target="_blank" title="<%= website.title %>"><%= website.title %></a><% } %>
             </span>
         </div>
         <div class="status-block">
