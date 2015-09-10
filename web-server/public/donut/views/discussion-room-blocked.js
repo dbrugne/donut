@@ -26,7 +26,7 @@ define([
 
     events: {
       'click .ask-for-allowance': 'onRequestAllowance',
-      'click .valid-password': 'onClickValidPassword'
+      'click .valid-password': 'onValidPassword'
     },
 
     initialize: function () {
@@ -87,7 +87,7 @@ define([
         }
       });
     },
-    onClickValidPassword: function (event) {
+    onValidPassword: function (event) {
       var password = $(event.currentTarget).closest('.password-form').find('.input-password').val();
       client.roomJoin(this.model.get('id'), this.model.get('name'), password, function (response) {
         if (response.err && response.err === 'wrongpassword') {
