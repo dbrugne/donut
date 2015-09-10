@@ -3,6 +3,7 @@ var logger = require('../../../../pomelo-logger').getLogger('donut', __filename)
 var async = require('async');
 var Room = require('../../../../../shared/models/room');
 var Notifications = require('../../../components/notifications');
+var roomEmitter = require('../../../util/roomEmitter');
 
 var Handler = function (app) {
   this.app = app;
@@ -46,22 +47,37 @@ handler.call = function (data, session, next) {
       return callback(null);
     },
 
-    function addToPending (callback) {
+    function broadcast (callback) {
+      var event = {
+        by_user_id: user.id,
+        by_username: user.username,
+        by_avatar: user._avatar(),
+        user_id: room.owner.id,
+        username: room.owner.username,
+        avatar: room.owner._avatar()
+      };
+
+      roomEmitter(that.app, user, room, 'room:request', event, callback);
+    },
+
+    function persist (eventData, callback) {
       Room.update(
         {_id: { $in: [room.id] }},
         {$addToSet: {allowed_pending: user._id}}, function (err) {
-          return callback(err);
+          return callback(err, eventData);
         }
       );
-    }
+    },
 
-/*    function notification (sentEvent, callback) {
-      Notifications(that.app).getType('requestAllowance').create(user, room, sentEvent.id, callback);
-    }*/
+    function notification (event, callback) {
+      Notifications(that.app).getType('roomjoinrequest').create(room.owner, room, event.id, function (err) {
+        return callback(err, event);
+      });
+    }
 
   ], function (err) {
     if (err) {
-      logger.error('[room:request:allowance] ' + err);
+      logger.error('[room:join:request] ' + err);
 
       err = (['banned', 'allowed'].indexOf(err) !== -1)
         ? err

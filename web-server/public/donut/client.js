@@ -148,7 +148,7 @@ define([
     // ROOM
     // ======================================================
 
-    roomJoin: function (roomId, roomName, callback) {
+    roomJoin: function (roomId, roomName, password, callback) {
       var data = {};
       if (roomId) {
         data.room_id = roomId;
@@ -156,6 +156,10 @@ define([
         data.name = roomName;
       } else {
         return;
+      }
+
+      if (password) {
+        data.password = password;
       }
 
       debug('io:out:room:join', data);
@@ -513,17 +517,17 @@ define([
       debug('io:out:room:typing', data);
       pomelo.notify('chat.roomTypingHandler.call', data);
     },
-    roomRequestAllowance: function (roomId, fn) {
+    roomJoinRequest: function (roomId, fn) {
       var data = {room_id: roomId};
-      debug('io:out:room:request:allowance', data);
+      debug('io:out:room:join:request', data);
       pomelo.request(
-        'chat.roomRequestAllowance.call',
+        'chat.roomJoinRequestHandler.call',
         data,
         function (response) {
           if (response.err) {
-            debug('io:in:room:request:allowance error: ', response);
+            debug('io:in:room:join:request error: ', response);
           } else {
-            debug('io:in:room:request:allowance', response);
+            debug('io:in:room:join:request', response);
           }
           return fn(response);
         }

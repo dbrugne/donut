@@ -560,7 +560,7 @@ define([
 
       // Not already open
       this.thisDiscussionShouldBeFocusedOnSuccess = name;
-      client.roomJoin(null, name, _.bind(function (response) {
+      client.roomJoin(null, name, null, _.bind(function (response) {
         if (response.code === 404) {
           return app.trigger('alert', 'error', i18next.t('chat.roomnotexists', { name: name }));
         } else if (response.code === 403) {

@@ -12,10 +12,10 @@
                 <button class="ask-for-allowance"><%= t('chat.blocked.allowed_button') %></button>
             </div>
             <% } else if (join_mode === 'password') { %>
-            <div>
+            <div class="password-form">
                 <%= t('chat.blocked.password') %>
-                <input type="text" placeholder="<%= t('chat.blocked.password_placeholder') %>">
-                <button><%= t('chat.blocked.password_button') %></button>
+                <input class="input-password" type="text" placeholder="<%= t('chat.blocked.password_placeholder') %>">
+                <button class="valid-password"><%= t('chat.blocked.password_button') %></button>
             </div>
             <% } else { %>
             <div>
