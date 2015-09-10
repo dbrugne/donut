@@ -20,7 +20,9 @@ define([
       var html = this.template({
         rooms: rooms,
         title: true,
-        search: data.search
+        search: data.search,
+        more: false,
+        replace: true
       });
 
       this.$el.html(html);

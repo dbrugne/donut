@@ -183,7 +183,7 @@ define([
       else if (notification.data.by_user)
         notification.avatar = common.cloudinarySize(notification.data.by_user.avatar, 90);
 
-      return template({data: notification, from_now: dateObject.format('Do MMMM, HH:mm')});
+      return template({data: notification, from_now: dateObject.format('Do MMMM, HH:mm'), from_now_short: dateObject.format('D/MM, HH:mm')});
     },
     // User clicks on the notification icon in the header
     onShow: function (event) {

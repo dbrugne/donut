@@ -3,6 +3,29 @@
     "title": "Page not found",
     "description": "Sorry we are not able to find this resource! You could just press this neat little button:"
   },
+  "landing": {
+    "signup" : "Sign up",
+    "login" : "Log in",
+    "loginwithfacebook": "Login with Facebook",
+    "orbymail": "or signup by email",
+    "username-placeholder": "Username",
+    "email-placeholder": "Mail",
+    "password-placeholder": "Password",
+    "yourinterests": "What are your interests ?",
+    "loadmore": "Load more results",
+    "help": "Help",
+    "faq": "FAQ",
+    "contact": "Contact",
+    "cgu": "TOU",
+    "legals": "Legals"
+  },
+  "forms": {
+    "username-required": "username is required",
+    "username-error": "this username does not meet the constraints.",
+    "email-required": "email is required",
+    "password-required": "password is required",
+    "password-error": "this password does not meet the constraints."
+  },
   "title": {
     "default": "DONUT is made for you to chat about your interests and engage your communities!",
     "landing": "DONUT - Instant chat about your interests",
@@ -77,21 +100,18 @@
       "before": "Would you like to",
       "after": "?"
     },
-    "switchlanguage": "Language:",
+    "switchlanguage": "Language",
     "unknownerror": "Unknown error, please retry later",
     "private-donut": "private Donut",
     "public-donut": "public Donut"
   },
   "login": {
-    "title": "connect",
     "withfacebook": "with Facebook",
     "withpassword": "with a password",
     "email-placeholder": "your e-mail",
     "password-placeholder": "your password",
     "confirm-placeholder": "confirm your password",
     "username-placeholder": "choose a username",
-    "createanaccount1": "Sign-up,",
-    "createanaccount2": "its free",
     "emailerror": "Invalid e-mail",
     "passworderror": "Your forgot to enter a password"
   },
@@ -254,22 +274,10 @@
     },
     "description": {
       "title1": "tasty",
-      "title2": "chatrooms",
-      "definition": "A donut is a cosy discussion spot,<br>a cool place to hang out,<br> a chat room indeed!",
-      "line1": "You can create your very own customized donut and hang out with you community...",
-      "line2": "...or join ongoing discussions around your interests...",
-      "line3": "...and discover like-minded people, during true conversations!"
+      "title2": "chatrooms"
     },
     "signup": {
-      "title1": "Create a",
-      "title2": "account here in 1 bite",
       "etvoila": "Here we go!"
-    },
-    "footer": {
-      "faq": "FAQ",
-      "eutc": "Terms and conditions",
-      "legals": "Legal notices",
-      "contact": "Contact"
     }
   },
   "logged": {
@@ -517,9 +525,10 @@
     "history": {
       "help": "Scroll up to see more",
       "loading": "Loading more...",
-      "nomore": "Conversation history fully displayed",
       "top": "go to top",
-      "bottom": "go to bottom"
+      "bottom": "go to bottom",
+      "currently": "You are at the very first start of Donut <span class=\"name dc-text open-room-profile\" data-room-id=\"__roomid__\">__roomname__</span>, created by <span class=\"owner dc-text open-user-profile\" data-user-id=\"__ownerid__\">@__owner__</span> on <span class=\"date\">__creation-date__</span>",
+      "onestart": "You are at the very first start of your private discussion with <span class=\"name dc-text\">@__username__</span>. Everything said here will stay here :)"
     },
     "shouldauthenticated": "You must be logged in to access chat (<a href='/signup'>signup</a> or <a href='/login'>login</a>)",
     "closeapp": "Are you sure you want to leave ?",

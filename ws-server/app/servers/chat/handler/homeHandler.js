@@ -3,7 +3,7 @@ var async = require('async');
 var _ = require('underscore');
 var User = require('../../../../../shared/models/user');
 var Room = require('../../../../../shared/models/room');
-var featuredRooms = require('../../../util/featuredRooms');
+var featuredRooms = require('../../../../../shared/util/featuredRooms');
 
 var Handler = function (app) {
   this.app = app;

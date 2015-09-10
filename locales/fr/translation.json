@@ -3,6 +3,29 @@
     "title": "Page non trouvée",
     "description": "Désolé, nous n'avons pas trouvé ce que vous cherchiez. Et si on repartait du bon pied ? Cliquez ici :"
   },
+  "landing": {
+    "signup" : "Inscription",
+    "login" : "Connexion",
+    "loginwithfacebook": "Connexion avec Facebook",
+    "orbymail": "ou s'inscrire par email",
+    "username-placeholder": "Nom d'utilisateur",
+    "email-placeholder": "Email",
+    "password-placeholder": "Mot de passe",
+    "yourinterests": "Qu'est-ce qui vous intéresse ?",
+    "loadmore": "Plus de résultats",
+    "help": "Aide",
+    "faq": "FAQ",
+    "contact": "Contact",
+    "cgu": "CGU",
+    "legals": "Mentions légales"
+  },
+  "forms": {
+    "username-required": "Le nom d'utilisateur est requis",
+    "username-error": "Ce nom d'utilisateur ne respecte pas les contraintes.",
+    "email-required": "L'email est requis",
+    "password-required": "Le mot de passe est requis",
+    "password-error": "Le mot de passe ne respecte pas les contraintes."
+  },
   "title": {
     "default": "DONUT vous permet de discuter autour de vos centres d'intérêt et d'animer vos communautés !",
     "landing": "DONUT - Discussions instantanées autour de vos centres d'intérêt",
@@ -77,21 +100,18 @@
       "before": "Vous souhaitez vous",
       "after": " ?"
     },
-    "switchlanguage": "Langage:",
+    "switchlanguage": "Langue",
     "unknownerror": "Erreur inconnue, veuillez réessayer",
     "private-donut": "Donut privé",
     "public-donut": "Donut public"
   },
   "login": {
-    "title": "se connecter",
     "withfacebook": "avec Facebook",
     "withpassword": "par mot de passe",
     "email-placeholder": "votre email",
     "password-placeholder": "votre mot de passe",
     "confirm-placeholder": "confirmer le mot de passe",
     "username-placeholder": "choisissez un nom d'utilisateur",
-    "createanaccount1": "Créer un compte,",
-    "createanaccount2": "c'est gratuit",
     "emailerror": "Votre adresse e-mail n'est pas valide",
     "passworderror": "Vous avez oublié de saisir votre mot de passe"
   },
@@ -274,22 +294,10 @@
     },
     "description": {
       "title1": "tasty",
-      "title2": "chatrooms",
-      "definition": "Un donut est un espace convivial de discussion<br> instantanée, un salon de discussion,<br> une chat room en fait !",
-      "line1": "Vous pouvez créer votre donut personnalisé et retrouver votre communauté ...",
-      "line2": "... ou vous joindre aux discussions en cours autour de vos centres d'intérêt ...",
-      "line3": "... et découvrir des gens qui vous ressemblent, au cours de véritables conversations !"
+      "title2": "chatrooms"
     },
     "signup": {
-      "title1": "Créez un compte",
-      "title2": "en 1 bouchée",
       "etvoila": "et voilà !"
-    },
-    "footer": {
-      "faq": "FAQ",
-      "eutc": "Conditions d'utilisations",
-      "legals": "Mentions légales",
-      "contact": "Contact"
     }
   },
   "logged": {
@@ -468,8 +476,8 @@
         "invalidcommand": "Cette commande n'existe pas.",
         "invalidusername": "Cette utilisateur n'existe pas.",
         "invalidroom": "Ce donut n'existe pas.",
-        "unknown-user-room": "Cette utilisateur n'existe pas dans ce donut",
-        "already-oped": "Cette utilisateur est déjà modérateur de ce donut",
+        "unknown-user-room": "Cet utilisateur n'existe pas dans ce donut",
+        "already-oped": "Cet utilisateur est déjà modérateur de ce donut",
         "no-op": "Vous n'avez pas les droits pour faire ça",
         "commandaccess": "Vous ne pouvez pas utiliser cette commande ici."
       }
@@ -536,9 +544,10 @@
     "history": {
       "help": "Remonter pour en voir plus",
       "loading": "Chargement de l'historique ...",
-      "nomore": "Historique de conversation chargé intégralement",
       "top": "aller tout en haut",
-      "bottom": "aller tout en bas"
+      "bottom": "aller tout en bas",
+      "currently": "Vous êtes au tout début du Donut <span class=\"name dc-text open-room-profile\" data-room-id=\"__roomid__\">__roomname__</span>, créé par <span class=\"owner dc-text open-user-profile\" data-user-id=\"__ownerid__\">@__owner__</span> le <span class=\"date\">__creation-date__</span>",
+      "onestart": "Vous êtes au tout début de votre discussion privée avec <span class=\"name dc-text\">@__username__</span>. Tout ce qui est dit ici restera entre vous deux :)"
     },
     "shouldauthenticated": "Vous devez être identifié pour accéder aux discussions (<a href='/signup'>créer un compte</a> ou <a href='/login'>se connecter</a>)",
     "closeapp": "Etes-vous sur de vouloir quitter ?",

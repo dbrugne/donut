@@ -2,7 +2,7 @@
 <div id="signup">
     <div class="login" id="choose-username">
         <div class="content">
-            <form class="login-form" method="post" role="form">
+            <form class="login-form form" method="post" role="form">
                 <input type="hidden" name="_csrf" value="<%= token %>">
 
                 <h3 class="form-title"><%= t('choose-username.title') %></h3>
@@ -13,16 +13,19 @@
                     <span><%= t('choose-username.description') %></span>
                 </div>
 
-                <div class="form-group username">
+                <div class="form-group username flex-parent center">
                     <span class="arobase">@</span>
-                    <input type="username" class="form-control placeholder-no-fix" id="username-field" name="user[fields][username]" placeholder="<%= t('login.username-placeholder') %>" value="<%- userFields.username %>" tabindex="1" maxlength="15">
-                    <p class="help-block"><%= t('choose-username.help') %></p>
+                    <input type="username" class="form-control flex-child" id="username-field" name="user[fields][username]" placeholder="<%= t('login.username-placeholder') %>" value="<%- userFields.username %>" tabindex="1" maxlength="15">
+                    <img src="/images/arrow.svg">
                 </div>
 
-                <div class="form-group">
-                    <input type="submit" value="<%= t('global.save') %>" tabindex="4">
-                    <div class="clearfix"></div>
+                <p class="help-block"><%= t('choose-username.help') %></p>
+
+                <div class="form-group pull-right mt10">
+                    <input type="submit" class="button button-blue" value="<%= t('global.save') %>" tabindex="4">
                 </div>
+
+                <div class="clearfix"></div>
 
             </form>
         </div>

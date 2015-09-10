@@ -24,21 +24,16 @@ var common = require('@dbrugne/donut-common');
  * @param searchInUsers
  * @param searchInRooms
  * @param limit
+ * @param skip
  * @param lightSearch
  * @param callback
  */
-module.exports = function (search, searchInUsers, searchInRooms, limit, lightSearch, callback) {
-
-  if (!search) {
-    return callback(null, {});
-  }
+module.exports = function (search, searchInUsers, searchInRooms, limit, skip, lightSearch, callback) {
 
   // remove diacritic, @ and #
   search = search.replace(/([@#])/g, '');
   search = diacritic2ascii(search);
-  if (!search || search === '') {
-    return callback(null, {});
-  }
+
   var _regexp = common.regExpBuildContains(search);
 
   async.parallel([
@@ -58,13 +53,20 @@ module.exports = function (search, searchInUsers, searchInRooms, limit, lightSea
         q = Room
           .find(criteria, 'name owner description topic avatar color users lastjoin_at')
           .sort({'lastjoin_at': -1})
-          .limit(limit + 1)
-          .populate('owner', 'username');
+          .skip(skip)
+          .limit(limit)
+          .populate({
+            path: 'owner',
+            select: 'username'
+          })
+        ;
       } else {
         q = Room
           .find(criteria, 'name avatar color lastjoin_at')
           .sort({'lastjoin_at': -1})
-          .limit(limit + 1);
+          .skip(skip)
+          .limit(limit)
+          ;
       }
       q.exec(function (err, rooms) {
         if (err) {

@@ -66,8 +66,13 @@ define([
     },
     render: function () {
       // render view
+      var modelJson = this.model.toJSON();
+      if (modelJson.owner) {
+        modelJson.owner = modelJson.owner.toJSON();
+      }
       var html = this.template({
-        model: this.model,
+        model: modelJson,
+        isOwner: (this.model.get('type') === 'room' && this.model.currentUserIsOwner()),
         time: Date.now()
       });
       this.$el.append(html);

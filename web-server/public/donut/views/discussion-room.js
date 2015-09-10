@@ -259,8 +259,12 @@ define([
       var url = common.cloudinarySize(value, 100);
       this.$('.header img.avatar').attr('src', url);
     },
-    onPoster: function (model, url) {
-      this.$('div.side').css('background-image', 'url(' + url + ')');
+    onPoster: function (model, url, options) {
+      this.$el.find('div.side').css('background-image', 'url(' + url + ')');
+      this.$el.find('div.side').removeClass('poster-empty');
+      if (url === '') {
+        this.$el.find('div.side').addClass('poster-empty');
+      }
     },
     onPosterBlured: function (model, url) {
       this.$('div.blur').css('background-image', 'url(' + url + ')');

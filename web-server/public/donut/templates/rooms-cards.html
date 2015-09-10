@@ -1,12 +1,14 @@
-<div class="list <% if (typeof(search) !== 'undefined' && search == true) { %>search<% } %>">
-    <% if (title) { %>
-        <div class="title">
-            <% if (search == true) { %><%= t('chat.search.roomstitle') %><% } else { %><%= t('chat.home.roomstitle') %><% } %>
-        </div>
-    <% } %>
-    <% if (rooms.length < 1) { %>
-        <div class="nothing"><%= t('chat.search.noroom') %></div>
-    <% } %>
+<% if (replace) { %>
+    <div class="list <% if (typeof(search) !== 'undefined' && search == true) { %>search<% } %>">
+        <% if (title) { %>
+            <div class="title flex-child alone">
+                <% if (search == true) { %><%= t('chat.search.roomstitle') %><% } else { %><%= t('chat.home.roomstitle') %><% } %>
+            </div>
+        <% } %>
+        <% if (rooms.length < 1) { %>
+            <div class="nothing mt20 mb20"><%= t('chat.search.noroom') %></div>
+        <% } %>
+<% } %>
 
     <% _.each(rooms, function(room) { %>
         <div class="room dc-i-<%= room.color.replace('#', '').toLowerCase() %>">
@@ -17,8 +19,8 @@
                 <p class="owner"><%= t('global.by') %> <a class="dc-text">@<%= room.owner.username %></a></p>
                 <% } %>
                 <!-- p class="topic"><%= room.topic %></p -->
-                <p class="join">
-                    <a class="dc-back dc-text-contrast" href="#room/<%= room.name.replace('#', '') %>">
+                <p class="join dc-back">
+                    <a class="dc-text-contrast" href="#room/<%= room.name.replace('#', '') %>">
                         <%= t('actions.join') %>
                         <% if (room.users > 0) { %><%= room.users %><% } %>
                         <i class="icon icon-user-custom"></i>
@@ -33,8 +35,8 @@
                     <% } %>
                     <p class="description"><%= room.description %></p>
                 </div>
-                <p class="join">
-                    <a class="dc-back dc-back-hover dc-text-contrast" href="#room/<%= room.name.replace('#', '') %>">
+                <p class="join dc-back dc-back-hover">
+                    <a class="dc-text-contrast" href="#room/<%= room.name.replace('#', '') %>">
                         <%= t('actions.join') %>
                         <% if (room.users > 0) { %><%= room.users %><% } %>
                         <i class="icon icon-user-custom"></i>
@@ -44,4 +46,6 @@
         </div>
     <% }); %>
 
-</div>
+<% if (replace) { %>
+    </div>
+<% } %>

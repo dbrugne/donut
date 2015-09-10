@@ -81,7 +81,8 @@ define([
         unviewed: room.unviewed,
         join_mode: room.join_mode,
         blocked: blocked || false,
-        users_number: room.users_number
+        users_number: room.users_number,
+        created_at: room.created_at
       };
 
       if (roomData.blocked === 'banned') {

@@ -12,13 +12,13 @@
         <nav id="color" class="navbar navbar-default navbar-fixed-top dc-back">
             <div class="container">
                 <div id="navbar">
-                    <a class="navbar-brand-a hidden-xs hidden-sm" href="/!#"><img class="logo" src="/images/logo-bordered-small.png" alt="<%= t('title.chat') %>"> <span class="beta">alpha</span></a>
+                    <a class="navbar-brand-a hidden-xs hidden-sm" href="/!#"><img class="logo" src="/images/logo-bordered-small.png" alt="<%= t('title.chat') %>"> <span class="beta dc-text-contrast">alpha</span></a>
 
                     <ul class="nav navbar-nav-ul hidden-xs hidden-sm">
                         <li><a href="/!#" class="dc-text-contrast">Home</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <li id="mute" class="hidden-xs hidden-sm">
+                        <li id="mute">
                             <a href="#" class="toggle">
                                 <i class="icon icon-volume-up dc-text-contrast"></i>
                             </a>
@@ -29,7 +29,7 @@
                                 <span class="badge hide-empty dc-border-darker dc-text"></span>
                             </a>
                             <div class="dropdown-menu p0" role="menu">
-                                <div class="arrow-up"></div>
+                                <div class="arrow-up colored"></div>
                                 <div class="unread-count">
                                     <span class="show-empty text-center">
                                         <span><%= t('chat.notifications.empty') %></span>
@@ -54,10 +54,11 @@
                             </a>
                             <ul class="dropdown-menu" role="menu">
                                 <li class="arrow-up"></li>
-                                <li><a href="/!#room/help"><i class="icon icon-life-ring"></i> <%= t('chat.help') %></a></li>
-                                <li><a href="/faq" target="_blank"><i class="icon icon-question-circle"></i> <%= t('page.faq.title') %></a></li>
-                                <li><a data-toggle="contactform"><i class="icon icon-envelope"></i> <%= t('page.contact.title') %></a></li>
-                                <li><a href="/eutc" target="_blank"><i class="icon icon-question-circle"></i> <%= t('page.eutc.title') %></a></li>
+                                <li><a href="/!#room/help"><%= t('chat.help') %></a></li>
+                                <li><a href="/faq" target="_blank"><%= t('page.faq.title') %></a></li>
+                                <li><a data-toggle="contactform"><%= t('page.contact.title') %></a></li>
+                                <li><a href="/eutc" target="_blank"><%= t('page.eutc.title') %></a></li>
+                                <li><a href="/legals" target="_blank"><%=t('landing.legals')%></a></li>
                             </ul>
                         </li>
                     </ul>

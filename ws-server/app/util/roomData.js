@@ -37,7 +37,8 @@ module.exports = function (app, user, room, fn) {
         topic: room.topic,
         posterblured: room._poster(true),
         unviewed: user.hasUnviewedRoomMessage(room),
-        users_number: room.numberOfUsers()
+        users_number: room.numberOfUsers(),
+        created_at: room.created_at
       };
 
       if (room.owner) {
