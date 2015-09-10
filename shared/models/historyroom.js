@@ -1,4 +1,5 @@
 'use strict';
+var debug = require('debug')('donut:history');
 var _ = require('underscore');
 var async = require('async');
 var mongoose = require('../io/mongoose');
@@ -7,21 +8,17 @@ var cloudinary = require('../util/cloudinary');
 
 var historySchema = mongoose.Schema({
   event: String,
-  room: {type: mongoose.Schema.ObjectId, ref: 'Room'},
-  time: {type: Date, default: Date.now},
-  user: {type: mongoose.Schema.ObjectId, ref: 'User'},
-  by_user: {type: mongoose.Schema.ObjectId, ref: 'User'},
+  room: { type: mongoose.Schema.ObjectId, ref: 'Room' },
+  time: { type: Date, default: Date.now },
+  user: { type: mongoose.Schema.ObjectId, ref: 'User' },
+  by_user: { type: mongoose.Schema.ObjectId, ref: 'User' },
   data: mongoose.Schema.Types.Mixed,
-  users: [{type: mongoose.Schema.ObjectId, ref: 'User'}], // users in room at
-                                                          // event time
-  viewed: [{type: mongoose.Schema.ObjectId, ref: 'User'}], // users that have
-                                                           // read this event
-  spammed: {type: Boolean},
-  spammed_at: {type: Date},
-  edited: {type: Boolean},
-  edited_at: {type: Date}
-
-}, {strict: false});
+  viewed: [ { type: mongoose.Schema.ObjectId, ref: 'User' } ],
+  spammed: { type: Boolean },
+  spammed_at: { type: Date },
+  edited: { type: Boolean },
+  edited_at: { type: Date }
+}, { strict: false });
 
 var dryFields = [
   'time',
@@ -64,7 +61,6 @@ historySchema.statics.record = function () {
     var wet = _.clone(data);
     model.data = _.omit(wet, dryFields);
 
-    model.users = room.users;
     model.save(fn);
   };
 };
@@ -85,7 +81,7 @@ historySchema.methods.toClientJSON = function (userViewed) {
   // re-hydrate data
   var data = (this.data) ?
     _.clone(this.data) :
-    {};
+  {};
   data.id = this.id;
   data.name = this.room.name;
   data.room_name = this.room.name;
@@ -122,7 +118,7 @@ historySchema.methods.toClientJSON = function (userViewed) {
 
   // unviewed status (true if message and if i'm not in .viewed)
   if (userViewed &&
-    ['room:message', 'room:me', 'room:topic'].indexOf(this.event) !== -1 &&
+    [ 'room:message', 'room:me', 'room:topic' ].indexOf(this.event) !== -1 &&
     data.user_id !== userViewed &&
     (!this.viewed || (_.isArray(this.viewed) && this.viewed.indexOf(userViewed) === -1))) {
     e.unviewed = true;
@@ -145,7 +141,13 @@ historySchema.statics.retrieve = function () {
       room: roomId
     };
 
-    criteria.users = {$in: [userId]};
+    if (!what.isAdmin) {
+      // legacy history event
+      criteria.$or = [
+        { users: { $exists: true, $in: [userId] } }, // legacy
+        { users: { $exists: false } } // new
+      ];
+    }
 
     // Since (timestamp, from present to past direction)
     if (what.since) {
@@ -158,17 +160,21 @@ historySchema.statics.retrieve = function () {
     var limit = howMany + 1;
 
     var q = that.find(criteria)
-      .sort({time: 'desc'}) // important for timeline logic but also optimize
-                            // rendering on frontend
+      .sort({ time: 'desc' }) // important for timeline logic but also optimize
+                              // rendering on frontend
       .limit(limit)
       .populate('room', 'name')
       .populate('user', 'username avatar color facebook')
       .populate('by_user', 'username avatar color facebook');
 
+    var start = Date.now();
     q.exec(function (err, entries) {
       if (err) {
         return fn('Error while retrieving room history: ' + err);
       }
+
+      var duration = Date.now() - start;
+      debug('History requested in ' + duration + 'ms');
 
       var more = (entries.length > howMany);
       if (more) {
@@ -213,9 +219,8 @@ historySchema.statics.retrieveEventWithContext = function (eventId, userId, limi
   before = before || false;
 
   var criteria = {
-    _id: {$ne: eventId},
-    event: {$in: ['room:message', 'room:me']},
-    users: {$in: [userId]}
+    _id: { $ne: eventId },
+    event: { $in: [ 'room:message', 'room:me' ] }
   };
 
   var model;
@@ -224,7 +229,7 @@ historySchema.statics.retrieveEventWithContext = function (eventId, userId, limi
   async.waterfall([
 
     function retrieveModel (callback) {
-      that.findOne({_id: eventId})
+      that.findOne({ _id: eventId })
         .populate('room', 'name avatar color')
         .populate('user', 'username avatar color facebook')
         .populate('by_user', 'username avatar color facebook')
@@ -239,9 +244,9 @@ historySchema.statics.retrieveEventWithContext = function (eventId, userId, limi
       var afterLimit = new Date(model.time);
       afterLimit.setMinutes(afterLimit.getMinutes() + timeLimit);
       var _criteria = _.clone(criteria);
-      _criteria.time = {$lte: afterLimit, $gte: model.time};
+      _criteria.time = { $lte: afterLimit, $gte: model.time };
       that.find(_criteria)
-        .sort({time: 'asc'})
+        .sort({ time: 'asc' })
         .limit(limit)
         .populate('room', 'name avatar color')
         .populate('user', 'username avatar color facebook')
@@ -264,9 +269,9 @@ historySchema.statics.retrieveEventWithContext = function (eventId, userId, limi
       var beforeLimit = new Date(model.time);
       beforeLimit.setMinutes(beforeLimit.getMinutes() - timeLimit);
       var _criteria = _.clone(criteria);
-      _criteria.time = {$gte: beforeLimit, $lte: model.time};
+      _criteria.time = { $gte: beforeLimit, $lte: model.time };
       that.find(_criteria)
-        .sort({time: 'desc'})
+        .sort({ time: 'desc' })
         .limit(limit)
         .populate('room', 'name avatar color')
         .populate('user', 'username avatar color facebook')
