@@ -8,7 +8,6 @@ var cloudinary = require('../util/cloudinary');
 var historySchema = mongoose.Schema({
   event: String,
   room: {type: mongoose.Schema.ObjectId, ref: 'Room'},
-  mode_history: {type: String},
   time: {type: Date, default: Date.now},
   user: {type: mongoose.Schema.ObjectId, ref: 'User'},
   by_user: {type: mongoose.Schema.ObjectId, ref: 'User'},
@@ -55,7 +54,6 @@ historySchema.statics.record = function () {
     model.event = event;
     model.room = room._id;
     model.time = data.time;
-    model.mode_history = room.history_mode;
 
     model.user = data.user_id;
     if (data.by_user_id) {
@@ -66,9 +64,7 @@ historySchema.statics.record = function () {
     var wet = _.clone(data);
     model.data = _.omit(wet, dryFields);
 
-    if (room.history_mode === 'joined') {
-      model.users = room.users;
-    }
+    model.users = room.users;
     model.save(fn);
   };
 };
@@ -144,18 +140,12 @@ historySchema.statics.retrieve = function () {
    * @param fn
    */
   return function (roomId, userId, what, fn) {
-    if (what.mode_history === 'none') {
-      fn(null, null);
-    }
-
     what = what || {};
     var criteria = {
       room: roomId
     };
 
-    if (what.mode_history === 'joined') {
-      criteria.users = {$in: [userId]};
-    }
+    criteria.users = {$in: [userId]};
 
     // Since (timestamp, from present to past direction)
     if (what.since) {

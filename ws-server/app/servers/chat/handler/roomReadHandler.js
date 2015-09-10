@@ -117,7 +117,7 @@ handler.call = function (data, session, next) {
       if (session.settings.admin === true) {
         read.visibility = room.visibility || false;
         read.priority = room.priority || 0;
-        read.history_mode = room.history_mode;
+        // @todo : pass current password to admin only
       }
 
       return callback(null);

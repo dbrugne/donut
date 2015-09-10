@@ -127,7 +127,6 @@ handler.call = function (data, session, next) {
         name: room.name,
         id: room.id,
         join_mode: room.join_mode,
-        history_mode: room.history_mode,
         owner: {},
         avatar: room._avatar(),
         color: room.color,

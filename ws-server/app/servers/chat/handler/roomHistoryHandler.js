@@ -40,7 +40,6 @@ handler.call = function(data, session, next) {
 
 		function history(callback) {
 			var options = {
-				mode_history: room.history_mode,
 				limit: data.limit
 			};
 			retriever(room.id, user.id, options, function(err, history) {
