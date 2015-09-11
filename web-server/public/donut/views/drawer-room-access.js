@@ -67,10 +67,6 @@ define([
 
       var that = this;
       client.search(this.search.val(), false, true, 15, 0, false, function (data) {
-        console.log(data.users.list);
-        _.each(data.users.list, function (u) {
-          console.log(u.username);
-        });
         that.dropdownMenu.html(that.dropdownTemplate({users: data.users.list}));
       });
     },
