@@ -18,6 +18,8 @@
     "contact": "Contact",
     "cgu": "CGU",
     "legals": "Mentions légales",
+    "signup-self": "S'inscrire",
+    "login-self": "Se connecter",
     "carousel": {
       "heading": "chat room network >",
       "slogan": "Discuter autour de vos centres d'intérêt.<br>Entrez en relation avec des gens de votre univers.<br>Créez et animez votre propre communauté."
@@ -73,6 +75,7 @@
     "search": "Chercher un Donut",
     "create": "Créer un Donut",
     "signup": "créer un compte",
+    "orsignup": "ou créer un compte",
     "forgot": "mot de passe oublié",
     "join": "rejoindre",
     "discuss": "discuter",

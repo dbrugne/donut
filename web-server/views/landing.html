@@ -7,12 +7,6 @@
     <input type="hidden" id="last-search" value="" />
     <div id="carousel-landing" class="carousel slide hidden-xs hidden-sm" data-ride="carousel">
 
-        <!-- ol class="carousel-indicators">
-            <li data-target="#carousel-landing" data-slide-to="0" class="active"></li>
-            <li data-target="#carousel-landing" data-slide-to="1"></li>
-            <li data-target="#carousel-landing" data-slide-to="2"></li>
-        </ol -->
-
         <!-- Wrapper for slides -->
         <div class="relative">
             <div class="carousel-inner" role="listbox">
@@ -50,7 +44,7 @@
                 <% } else { %>
                 <div class="flex-parent column">
                     <div class="method-facebook-or">
-                        <div class="outer"><div class="inner">S'inscrire</div></div>
+                        <div class="outer"><div class="inner"><%= t('landing.signup-self') %></div></div>
                     </div>
                     <a href="/login/facebook" class="btn-facebook"><i class="icon icon-facebook"></i> | &nbsp;<%= t('login.withfacebook') %></span></a>
                     <p class="logic"><span><%= t('landing.orbymail') %></span></p>
