@@ -3,7 +3,7 @@
 <% var roomUsersLength = (typeof room.users !== 'undefined' ? room.users.length : 0 ) %>
 <% var roomName = room.name.replace('#','') %>
 
-<div class="side roomside dc-back <% if (!poster) { %>poster-empty<% } %>" style="<% if (poster) { %>background-image: url(<%= poster %>);<% }; %>">
+<div class="side roomside dc-back <% if (!poster) { %>poster-empty<% } else { %>poster-full<% } %>" style="<% if (poster) { %>background-image: url(<%= poster %>);<% }; %>">
     <div class="blur dc-back" style="<% if (posterBlured) { %>background-image: url(<%= posterBlured %>);<% }; %>">
         <div class="users hidden-sm hidden-xs">
             <div class="header">

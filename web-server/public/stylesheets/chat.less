@@ -1253,7 +1253,9 @@
         &.oneside { width:@size-right-mid; }
         &.poster-empty { width:40px;
           &.roomside { width:@size-right-mid; }
-          .blur .users { background-color: transparent; }
+          .blur { width:0;
+            .users { background-color: transparent; }
+          }
         }
         &.poster-full .dc-text-contrast { color:#fff; }
       } // #chat #center .discussion .side
