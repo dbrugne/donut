@@ -55,7 +55,6 @@ define([
       this.listenTo(this.model, 'messageUnspam', this.onMarkedAsUnspam);
       this.listenTo(this.model, 'messageEdit', this.onMessageEdited);
       this.listenTo(this.model, 'editMessageClose', this.onEditMessageClose);
-      this.listenTo(this.model, 'clearHistory', this.onClearHistory);
       this.listenTo(this.model, 'messageSent', this.scrollDown);
       this.listenTo(this.model, 'editPreviousInput', this.pushUpFromInput);
       this.listenTo(client, 'admin:message', this.onAdminMessage);
@@ -118,23 +117,13 @@ define([
     isVisible: function () {
       return !(!this.model.get('focused') || !windowView.focused);
     },
-    clear: function () {
-      // reset history loader
-      this.toggleHistoryLoader(true);
-
-      // empty .realtime
-      this.$realtime.empty();
-
-      if (this.isVisible()) {
-        this.scrollDown();
-      }
-    },
 
     /** ***************************************************************************************************************
      *
      * Scroll methods
      *
      *****************************************************************************************************************/
+
     onScroll: function () {
       // cleanup scroll timeout
       this._scrollTimeoutCleanup();
@@ -184,7 +173,6 @@ define([
         }
       }, 2000);
     },
-
     _scrollTimeoutCleanup: function () {
       if (this.scrollTopTimeout) {
         clearInterval(this.scrollTopTimeout);
@@ -507,6 +495,7 @@ define([
      * Message actions menu
      *
      *****************************************************************************************************************/
+
     onMessageMenuShow: function (event) {
       var ownerUserId = '';
       var $event = $(event.currentTarget).closest('.event');
@@ -751,9 +740,6 @@ define([
       }
       this.messageUnderEdition.remove();
       this.messageUnderEdition = null;
-    },
-    onClearHistory: function () {
-      this.clear();
     },
 
     /** ***************************************************************************************************************

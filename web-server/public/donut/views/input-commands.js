@@ -168,12 +168,6 @@ define([
         help: '',
         description: 'chat.commands.ping'
       },
-      clear: {
-        parameters: 'nothing',
-        access: 'everywhere',
-        help: '',
-        description: 'chat.commands.clear'
-      },
       random: {
         alias: 'rand',
         parameters: 'twoNumber',
@@ -463,9 +457,6 @@ define([
         });
         that.model.trigger('freshEvent', model);
       });
-    },
-    clear: function (paramString, parameters) {
-      this.model.trigger('clearHistory');
     },
     random: function (paramString, parameters) {
       var max = 100;
