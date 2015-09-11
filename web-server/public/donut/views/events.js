@@ -40,6 +40,7 @@ define([
     historyNoMore: false,
 
     scrollTopTimeout: null,
+
     scrollVisibleTimeout: null,
 
     scrollWasOnBottom: true, // ... before unfocus (scroll position is not
@@ -116,6 +117,17 @@ define([
     },
     isVisible: function () {
       return !(!this.model.get('focused') || !windowView.focused);
+    },
+    clear: function () {
+      // reset history loader
+      this.toggleHistoryLoader(true);
+
+      // empty .realtime
+      this.$realtime.empty();
+
+      if (this.isVisible()) {
+        this.scrollDown();
+      }
     },
 
     /** ***************************************************************************************************************
@@ -210,17 +222,6 @@ define([
     scrollTop: function () {
       var targetTop = this.$loader.position().top;
       this.$scrollable.scrollTop(targetTop - 8); // add a 8px margin
-    },
-    clear: function () {
-      // reset history loader
-      this.toggleHistoryLoader(true);
-
-      // empty .realtime
-      this.$realtime.empty();
-
-      if (this.isVisible()) {
-        this.scrollDown();
-      }
     },
 
     /** **************************************************************************************************************
