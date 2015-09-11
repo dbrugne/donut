@@ -1,4 +1,5 @@
 'use strict';
+var debug = require('debug')('donut:history');
 var _ = require('underscore');
 var async = require('async');
 var mongoose = require('../io/mongoose');
@@ -149,10 +150,14 @@ historySchema.statics.retrieve = function () {
       .populate('from', 'username avatar color facebook')
       .populate('to', 'username avatar color facebook');
 
+    var start = Date.now();
     q.exec(function (err, entries) {
       if (err) {
         return fn('Error while retrieving room history: ' + err);
       }
+
+      var duration = Date.now() - start;
+      debug('History requested in ' + duration + 'ms');
 
       var more = (entries.length > howMany);
       if (more) {
