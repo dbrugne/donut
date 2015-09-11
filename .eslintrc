@@ -1,4 +1,5 @@
 {
+  "extends": ["semistandard", "standard-react"],
   "globals": {
     "describe": true,
     "it": true,
