@@ -56,6 +56,7 @@ define([
   'text!./templates/room-users.html',
   'text!./templates/spinner.html',
   'text!./templates/message-edit.html',
+  'text!./templates/notification/room-allowed.html',
   'text!./templates/notification/room-op.html',
   'text!./templates/notification/room-deop.html',
   'text!./templates/notification/room-kick.html',
@@ -127,6 +128,7 @@ define([
   room_users,
   spinner,
   message_edit,
+  notification_room_allowed,
   notification_room_op,
   notification_room_deop,
   notification_room_kick,
@@ -211,6 +213,7 @@ define([
   JST['room-users.html'] = _.template(room_users);
   JST['spinner.html'] = _.template(spinner);
   JST['message-edit.html'] = _.template(message_edit);
+  JST['notification/room-allowed.html'] = _.template(notification_room_allowed);
   JST['notification/room-op.html'] = _.template(notification_room_op);
   JST['notification/room-deop.html'] = _.template(notification_room_deop);
   JST['notification/room-kick.html'] = _.template(notification_room_kick);

@@ -8,8 +8,9 @@ define([
   'common',
   'models/app',
   'client',
+  'views/modal-confirmation',
   '_templates'
-], function ($, _, Backbone, i18next, moment, common, app, client, templates) {
+], function ($, _, Backbone, i18next, moment, common, app, client, ConfirmationView, templates) {
   var RoomAccessView = Backbone.View.extend({
 
     template: templates['drawer-room-access.html'],
@@ -33,7 +34,8 @@ define([
     types: ['allowed', 'allowedPending'],
 
     events: {
-      'keyup input[type=text]': 'onSearch'
+      'keyup input[type=text]': 'onSearch',
+      'click .dropdown-menu>li': 'onAllowUser'
     },
 
     initialize: function (options) {
@@ -67,6 +69,9 @@ define([
 
       var that = this;
       client.search(this.search.val(), false, true, 15, 0, false, function (data) {
+        _.each(data.users.list, function (element, index, list) {
+          list[index].avatarUrl = common.cloudinarySize(element.avatar, 20);
+        });
         that.dropdownMenu.html(that.dropdownTemplate({users: data.users.list}));
       });
     },
@@ -88,6 +93,14 @@ define([
         clearTimeout(this.timeout);
         this.dropdown.removeClass('open');
       }
+    },
+    onAllowUser: function (event) {
+      event.preventDefault();
+
+      var userId = $(event.currentTarget).data('userId');
+      ConfirmationView.open({}, _.bind(function () {
+        client.roomAllowed(this.model.get('id'), userId);
+      }, this));
     }
 
   });

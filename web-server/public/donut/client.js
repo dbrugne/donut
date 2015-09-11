@@ -522,6 +522,24 @@ define([
         }
       );
     },
+    roomAllowed: function (roomId, userId, fn) {
+      var data = {room_id: roomId, user_id: userId};
+      debug('io:out:room:allowed', data);
+      pomelo.request(
+        'chat.roomAllowedHandler.call',
+        data,
+        function (response) {
+          if (response.err) {
+            debug('io:in:room:allowed error: ', response);
+          } else {
+            debug('io:in:room:allowed', response);
+          }
+          if (_.isFunction(fn)) {
+            return fn(response);
+          }
+        }
+      );
+    },
 
     // ONETOONE
     // ======================================================

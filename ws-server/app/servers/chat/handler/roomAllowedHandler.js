@@ -1,0 +1,100 @@
+'use strict';
+var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
+var async = require('async');
+var Room = require('../../../../../shared/models/room');
+var Notifications = require('../../../components/notifications');
+var roomEmitter = require('../../../util/roomEmitter');
+
+var Handler = function (app) {
+  this.app = app;
+};
+
+module.exports = function (app) {
+  return new Handler(app);
+};
+
+var handler = Handler.prototype;
+
+handler.call = function (data, session, next) {
+  var user = session.__user__;
+  var currentUser = session.__currentUser__;
+  var room = session.__room__;
+
+  var that = this;
+
+  async.waterfall([
+
+    function check (callback) {
+      if (!data.room_id) {
+        return callback('room_id is mandatory');
+      }
+
+      if (!data.user_id) {
+        return callback('user_id is mandatory');
+      }
+
+      if (!room) {
+        return callback('unable to retrieve room: ' + data.room_id);
+      }
+
+      if (!room.isOwner(currentUser.id)) {
+        return callback('User ' + currentUser.username + ' is not owner');
+      }
+
+      if (room.isAllowed(user.id)) {
+        return callback('user is allready allowed in room ' + room.name);
+      }
+
+      if (room.isBanned(user.id)) {
+        return callback('User ' + user.username + 'is banned in room: ' + room.name);
+      }
+
+      return callback(null);
+    },
+
+    function broadcast (callback) {
+      var event = {
+        by_user_id: currentUser.id,
+        by_username: currentUser.username,
+        by_avatar: currentUser._avatar(),
+        user_id: user.id,
+        username: user.username,
+        avatar: user._avatar()
+      };
+
+      roomEmitter(that.app, user, room, 'room:allowed', event, callback);
+    },
+
+    function persist (eventData, callback) {
+      Room.update(
+        {_id: { $in: [room.id] }},
+        {$addToSet: {join_mode_allowed: user.id}}, function (err) {
+          if (room.isAllowedPending(user.id)) {
+            Room.update(
+              {_id: { $in: [room.id] }},
+              {$pull: {allowed_pending: user.id}}, function (err) {
+                return callback(err, eventData);
+              }
+            );
+          } else {
+            return callback(err, eventData);
+          }
+        }
+      );
+    },
+
+    function notification (event, callback) {
+      Notifications(that.app).getType('roomallowed').create(user.id, room, event.id, function (err) {
+        return callback(err, event);
+      });
+    }
+
+  ], function (err) {
+    if (err) {
+      logger.error('[room:allowed] ' + err);
+      return next(null, { code: 500, err: err });
+    }
+
+    return next(null, {success: true});
+  });
+};

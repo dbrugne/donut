@@ -61,6 +61,7 @@ Facade.prototype.getType = function (type) {
     case 'roomvoice':
     case 'roomdevoice':
     case 'roomjoinrequest':
+    case 'roomallowed':
       typeConstructor = roomPromote;
       break;
 
