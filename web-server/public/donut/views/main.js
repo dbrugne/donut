@@ -168,10 +168,10 @@ define([
       }
       this.firstConnection = false;
 
-      // set intervaller (set on 'connection')
-      this.interval = setTimeout(function () {
-        that.updateViews();
-      }, this.intervalDuration);
+//      // set intervaller (set on 'connection')
+//      this.interval = setTimeout(function () {
+//        that.updateViews();
+//      }, this.intervalDuration);
 
       // Run routing only when everything in interface is ready
       this.trigger('ready');
@@ -520,18 +520,17 @@ define([
       });
     },
 
-    updateViews: function () {
-      // call update() method on each view
-      _.each(this.views, function (view) {
-        debug('update on ' + view.model.get('id'));
-        view.model.trigger('cleanup');
-      });
-
-      // set next tick
-      this.interval = setTimeout(_.bind(function () {
-        this.updateViews();
-      }, this), this.intervalDuration);
-    },
+//    updateViews: function () {
+//      // call update() method on each view
+//      _.each(this.views, function (view) {
+//        debug('update on ' + view.model.get('id'));
+//      });
+//
+//      // set next tick
+//      this.interval = setTimeout(_.bind(function () {
+//        this.updateViews();
+//      }, this), this.intervalDuration);
+//    },
 
     // FOCUS TAB/PANEL MANAGEMENT
     // ======================================================================
