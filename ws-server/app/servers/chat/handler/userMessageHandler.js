@@ -1,13 +1,11 @@
 'use strict';
 var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
 var async = require('async');
-var _ = require('underscore');
 var Notifications = require('../../../components/notifications');
 var oneEmitter = require('../../../util/oneEmitter');
 var inputUtil = require('../../../util/input');
 var imagesUtil = require('../../../util/images');
 var keenio = require('../../../../../shared/io/keenio');
-var User = require('../../../../../shared/models/user');
 
 var Handler = function (app) {
   this.app = app;
@@ -28,23 +26,27 @@ handler.call = function (data, session, next) {
   async.waterfall([
 
     function check (callback) {
-      if (!data.username && !data.user_id)
+      if (!data.username && !data.user_id) {
         return callback('username or user_id is mandatory');
+      }
 
-      if (!withUser)
+      if (!withUser) {
         return callback('unable to retrieve withUser: ' + data.username);
+      }
 
-      if (withUser.isBanned(user.id))
+      if (withUser.isBanned(user.id)) {
         return callback('user is banned by withUser');
+      }
 
       return callback(null);
     },
 
     function persistOnBoth (callback) {
-      user.update({$addToSet: { onetoones: withUser._id }}, function (err) {
-        if (err)
+      user.update({ $addToSet: { onetoones: withUser._id } }, function (err) {
+        if (err) {
           return callback(err);
-        withUser.update({$addToSet: { onetoones: user._id}}, function (err) {
+        }
+        withUser.update({ $addToSet: { onetoones: user._id } }, function (err) {
           return callback(err);
         });
       });
@@ -57,8 +59,9 @@ handler.call = function (data, session, next) {
       // images filtering
       var images = imagesUtil.filter(data.images);
 
-      if (!message && !images)
+      if (!message && !images) {
         return callback('empty message (no text, no image)');
+      }
 
       // mentions
       inputUtil.mentions(message, function (err, message) {
@@ -76,16 +79,21 @@ handler.call = function (data, session, next) {
         time: Date.now()
       };
 
-      if (message)
+      if (message) {
         event.message = message;
-      if (images && images.length)
+      }
+      if (images && images.length) {
         event.images = images;
+      }
 
       return callback(null, event);
     },
 
     function historizeAndEmit (event, callback) {
-      oneEmitter(that.app, { from: user._id, to: withUser._id} , 'user:message', event, callback);
+      oneEmitter(that.app, {
+        from: user._id,
+        to: withUser._id
+      }, 'user:message', event, callback);
     },
 
     function notification (event, callback) {
@@ -111,13 +119,18 @@ handler.call = function (data, session, next) {
           admin: (withUser.admin === true)
         },
         message: {
-          length: (event.message && event.message.length) ? event.message.length : 0,
-          images: (event.images && event.images.length) ? event.images.length : 0
+          length: (event.message && event.message.length)
+            ? event.message.length
+            : 0,
+          images: (event.images && event.images.length)
+            ? event.images.length
+            : 0
         }
       };
       keenio.addEvent('onetoone_message', messageEvent, function (err) {
-        if (err)
+        if (err) {
           logger.error(err);
+        }
 
         return callback(null);
       });
@@ -131,5 +144,4 @@ handler.call = function (data, session, next) {
 
     return next(null, { success: true });
   });
-
 };
