@@ -18,25 +18,26 @@ define([
      */
     initialize: function (options) {
       var data = this.get('data');
-      if (!data)
+      if (!data) {
         data = {};
+      }
 
       var id = (data.id)
         ? data.id
         : _.uniqueId('auto_'); // non-server events (disconnected, reconnected)
-      this.set({id: id});
+      this.set({ id: id });
       data.id = id; // non-server events
 
       var time = (data.time)
         ? data.time
         : Date.now(); // non-server events (disconnected, reconnected)
-      this.set({time: time});
+      this.set({ time: time });
       data.time = time; // non-server events (disconnected, reconnected)
 
       var isNew = (this.get('new'))
         ? true
         : false;
-      this.set({new: isNew});
+      this.set({ new: isNew });
 
       if (this.get('type') == 'user:message' || this.get('type') == 'user:me') {
         data.user_id = data.from_user_id;
@@ -45,7 +46,7 @@ define([
         data.color = data.from_color;
       }
 
-      this.set({data: data});
+      this.set({ data: data });
     },
 
     getGenericType: function () {
@@ -54,17 +55,18 @@ define([
           'room:me',
           'user:message',
           'user:me'
-        ].indexOf(this.get('type')) !== -1)
+        ].indexOf(this.get('type')) !== -1) {
         return 'message';
-      else if ([
+      } else if ([
           'room:in',
           'room:out',
           'user:online',
           'user:offline'
-        ].indexOf(this.get('type')) !== -1)
+        ].indexOf(this.get('type')) !== -1) {
         return 'inout';
-      else
+      } else {
         return 'standard';
+      }
     }
 
   });
