@@ -18,8 +18,6 @@ var DonutScheduler = function (app, opts) {
   this.timerId = null;
 };
 
-DonutScheduler.name = '__DonutSchedule__';
-
 DonutScheduler.prototype.start = function (cb) {
   process.nextTick(cb);
 };
