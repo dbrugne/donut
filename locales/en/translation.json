@@ -18,6 +18,8 @@
     "contact": "Contact",
     "cgu": "TOU",
     "legals": "Legals",
+    "signup-self": "Sign up",
+    "login-self": "Log in",
     "carousel": {
       "heading": "chat room network >",
       "slogan": "Talk about your interests. <br/>Get in touch with people in your universe. <br> Create and animate your own community."
@@ -73,6 +75,7 @@
     "search": "search a donut",
     "create": "create a donut",
     "signup": "sign up",
+    "orsignup": "os sign up",
     "forgot": "forgotten password",
     "join": "join",
     "discuss": "chat",

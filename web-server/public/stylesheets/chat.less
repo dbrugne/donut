@@ -1259,7 +1259,9 @@
         &.oneside { width:@size-right-mid; }
         &.poster-empty { width:40px;
           &.roomside { width:@size-right-mid; }
-          .blur .users { background-color: transparent; }
+          .blur { width:0;
+            .users { background-color: transparent; }
+          }
         }
         &.poster-full .dc-text-contrast { color:#fff; }
       } // #chat #center .discussion .side
@@ -1389,7 +1391,7 @@
         border-width: 5px;
         .border-radius(25px);
         padding: 7px 12px;
-        width: 320px;
+        max-width: 320px;
         .ft-raleway;
         font-size: 1.7em;
         outline: none; /* avoid Google Chrome blue outline on focused input */
@@ -1638,26 +1640,9 @@
           }
         }
       }
-      .btn-facebook {
-        .btn;
-        margin-top: 15px;
-        margin-left: 10px;
-        background-color: #4a649d;
-        color: #ffffff;
-        border-radius: 25px;
-        padding: 11px 20px;
-        .ft-opensans-light;
-        font-size: 1.3em;
-        text-decoration: none;
-        display: inline-block;
-        span {
-          margin-left: 7px;
-        }
-        i {
-          font-size: 1.4em;
-          margin-right: 4px;
-          vertical-align: middle;
-        }
+      .btn-facebook { margin-top: 15px; margin-left: 10px; background-color: #4a649d; color: #ffffff; border-radius: 25px; padding: 11px 20px; .ft-opensans-light; font-size: 1.3em; text-decoration: none; display: inline-block;
+        span { margin-left: 7px; }
+        i { font-size: 1.4em; margin-right: 4px; vertical-align: middle; }
       }
       .btn-facebook:hover {
         color: #ffffff;

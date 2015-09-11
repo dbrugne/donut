@@ -2,16 +2,16 @@
 <div id="signup">
     <div class="login">
         <div class="content">
-            <form class="login-form form" method="post" role="form">
+            <form class="login-form form flex-parent column" method="post" role="form">
                 <input type="hidden" name="_csrf" value="<%= token %>">
 
-                <a href="/login/facebook" class="btn-facebook"><i class="icon icon-facebook"></i> | &nbsp;<%= t('actions.signup') %> <%= t('login.withfacebook') %></a>
-
                 <div class="method-facebook-or">
-                    <div class="outer"><div class="inner">Ou</div></div>
+                    <div class="outer"><div class="inner"><%= t('landing.login-self') %></div></div>
                 </div>
 
-                <h3 class="form-title text-center"><%= t('actions.login') %> <%= t('login.withpassword') %></h3>
+                <a href="/login/facebook" class="btn-facebook"><i class="icon icon-facebook"></i> | &nbsp;<%= t('login.withfacebook') %></a>
+
+                <h3 class="form-title text-center"><%= t('global.or') %> <%= t('login.withpassword') %></h3>
 
                 <%= partial('errors') %>
 

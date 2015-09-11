@@ -2,7 +2,6 @@
 @media screen and (max-width: @screen-lg-min) {
 
   #chat #center .discussion {
-    .content { margin-right: @size-right-mid; }
     .side { width: @size-right-mid; }
   }
 }
@@ -42,7 +41,9 @@
     }
   }
   #chat {
-    #drawer .opacity .wrap { width: auto !important; margin-right: 45px; } // #chat #drawer .opacity .wrap
+    #drawer { width:auto;
+      .opacity .wrap { width: auto !important; margin-right: 0; } // #chat #drawer .opacity .wrap
+    }
     #color .container { padding: 0;
       #navbar .navbar-right { margin:0; float: right; text-align: right;
         > li { display: inline-block; } // #chat #color .container #navbar .navbar-right>li
@@ -214,6 +215,8 @@
       a {     font-size: 1.3rem; white-space: nowrap; }
     }
   }
+  #room-users-modal .modal-body .dc-text-contrast { color:@cl-text; }
+  .smileys br { display:none; }
 }
 
 /** for <=768 screens resolutions ==> PHONE PORTRAIT **/
@@ -221,7 +224,7 @@
   .form-inline .input-group .form-control { width:auto; }
   .body-chat.body-profile #chat #left { display:none; }
   .body-chat.body-profile #chat #center { margin-left:0; }
-  #chat #center .discussion .content .header.room .topic #room-users-modal .modal-body .list li { width: 100%; }
+  #room-users-modal .modal-body .list li { width: 100%; }
 
   #chat #color .container #notifications .dropdown-menu .messages-list-ctn .messages-list .message { .display-flex; .flex-flow(row nowrap);
     img { display:none; }
@@ -230,7 +233,7 @@
     .message-description { padding: 0; }
   }
 
-  #landing, #welcome {
+  //#landing, #welcome {
     .ctn-results .rooms.cards .room { width: 100%; height: 110px; margin-bottom: 10px; padding-bottom: 10px;
       &:hover .cover { display:none; }
       .mini-card { display:block !important;
@@ -244,11 +247,25 @@
       &:last-child .mini-card::after { border-color:transparent; }
       .cover, .back { display:none; }
     }
+  //}
+  #welcome {     overflow: auto; height: 100%;
+    p { font-size: 1.2rem; }
+  }
+  .wrapper {  margin: 10px; width: auto; top: initial; position: relative; .transform(initial); }
+  #signup .login .content .form-title { font-size: 1.8rem; }
+  #signup .form .form-group .form-control { padding: 4px 14px 4px 30px; }
+  #signup .form .form-group .help-block { font-size: 1.1rem; }
+  #signup .form .create-account { font-size: 1.1rem; }
+  #chat #color .container #navbar .navbar-right { position:initial; }
+  #chat #color .container .navbar-nav>#notifications { position:initial;
+    .dropdown-menu { width:100%; min-width: initial;
+      &>.arrow-up { right: 58px; }
+    }
   }
 }
 
 /** for <=480 screens resolutions **/
 @media screen and (max-width: @screen-xs-min) {
-  #chat #center .discussion .content .header.room .topic #room-users-modal .modal-body .list li { width: 100%; }
+  #room-users-modal .modal-body .list li { width: 100%; }
   #landing footer { display:none; }
 }

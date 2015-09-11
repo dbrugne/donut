@@ -3,7 +3,7 @@
 <% var roomUsersLength = (typeof room.users !== 'undefined' ? room.users.length : 0 ) %>
 <% var roomName = room.name.replace('#','') %>
 
-<div class="side roomside dc-back <% if (!poster) { %>poster-empty<% } %>" style="<% if (poster) { %>background-image: url(<%= poster %>);<% }; %>">
+<div class="side roomside dc-back <% if (!poster) { %>poster-empty<% } else { %>poster-full<% } %>" style="<% if (poster) { %>background-image: url(<%= poster %>);<% }; %>">
     <div class="blur dc-back" style="<% if (posterBlured) { %>background-image: url(<%= posterBlured %>);<% }; %>">
         <div class="users hidden-sm hidden-xs">
             <div class="header">
@@ -57,7 +57,7 @@
     <div class="header room">
         <div class="overlay-ctn">
             <a href="/room/<%= roomName %>"><img class="avatar" data-room-name="<%= room.name %>" src="<%= room.avatar %>" alt="<%= room.name %> avatar"></a>
-            <p class="join"><a class="dc-back dc-text-contrast" href="<% if (!user) { %><%= room.join %><% } else { %><%= room.chat %><% } %>"><%= t('actions.join') %> <% if (room.usersCount) { %><%= room.usersCount %><% } %> <i class="icon icon-user-custom"></i></a></p>
+            <p class="joinroom"><a class="dc-back dc-text-contrast" href="<% if (!user) { %><%= room.join %><% } else { %><%= room.chat %><% } %>"><%= t('actions.join') %> <% if (room.usersCount) { %><%= room.usersCount %><% } %> <i class="icon icon-user-custom"></i></a></p>
         </div>
         <div class="info">
             <a href="/room/<%= roomName %>" class="name"><%= room.name %></a>
