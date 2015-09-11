@@ -445,6 +445,10 @@
         "banned": "Vous êtes banni de ce donut"
       }
     },
+    "password": {
+      "wrong-password": "Mauvais mot de passe",
+      "error": "Une erreur est survenue"
+    },
     "confirmation": {
       "sure": "Vous confirmez que vous voulez faire cela ?",
       "placeholder": "Expliquez pourquoi, visible dans le donut (optionnel)",

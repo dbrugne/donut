@@ -425,6 +425,10 @@
         "banned": "You have been ban from this donut"
       }
     },
+    "password": {
+      "wrong-password": "Wrong password",
+      "error": "An error has occurred"
+    },
     "confirmation": {
       "sure": "Do you confirm this action?",
       "placeholder": "Explain why, visible in this donut (optional)",
