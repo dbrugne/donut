@@ -12,10 +12,11 @@ define([
   'i18next',
   'client',
   'models/current-user',
+  'views/events-viewed',
   'views/message-edit',
   'views/window',
   '_templates'
-], function ($, _, Backbone, app, donutDebug, keyboard, common, EventModel, moment, i18next, client, currentUser, MessageEditView, windowView, templates) {
+], function ($, _, Backbone, app, donutDebug, keyboard, common, EventModel, moment, i18next, client, currentUser, EventsViewedView, MessageEditView, windowView, templates) {
   var debug = donutDebug('donut:events');
 
   var EventsView = Backbone.View.extend({
@@ -49,7 +50,6 @@ define([
       this.listenTo(this.model, 'change:focused', this.onFocusChange);
       this.listenTo(this.model, 'windowRefocused', this.onScroll);
       this.listenTo(this.model, 'freshEvent', this.addFreshEvent);
-      this.listenTo(this.model, 'viewed', this.onViewed);
       this.listenTo(this.model, 'messageSpam', this.onMarkedAsSpam);
       this.listenTo(this.model, 'messageUnspam', this.onMarkedAsUnspam);
       this.listenTo(this.model, 'messageEdit', this.onMessageEdited);
@@ -59,9 +59,12 @@ define([
       this.listenTo(this.model, 'editPreviousInput', this.pushUpFromInput);
       this.listenTo(client, 'admin:message', this.onAdminMessage);
 
-      debug.start('discussion-events' + this.model.getIdentifier());
       this.render();
-      debug.end('discussion-events' + this.model.getIdentifier());
+
+      this.eventsViewedView = new EventsViewedView({
+        el: this.$scrollable,
+        model: this.model
+      });
     },
     render: function () {
       // render view
@@ -93,13 +96,14 @@ define([
       this.scrollDown();
     },
     _remove: function () {
+      this.eventsViewedView.remove();
       this._scrollTimeoutCleanup();
       this.remove();
     },
     onFocusChange: function () {
       if (this.model.get('focused')) {
         if (this.scrollWasOnBottom) {
-          // will trigger markVisibleAsViewed() implicitly
+          // will trigger visible element detection implicitly
           this.scrollDown();
         } else {
           this.onScroll();
@@ -109,6 +113,9 @@ define([
         // persist scroll position before hiding
         this.scrollWasOnBottom = this.isScrollOnBottom();
       }
+    },
+    isVisible: function () {
+      return !(!this.model.get('focused') || !windowView.focused);
     },
 
     /** ***************************************************************************************************************
@@ -157,9 +164,11 @@ define([
 
       // everywhere
       this.scrollVisibleTimeout = setTimeout(function () {
+        // scroll haven't change until timeout
         if (that.$scrollable.scrollTop() === currentScrollPosition) {
-          // scroll haven't change until timeout
-          that.markVisibleAsViewed();
+          if (that.isVisible()) {
+            that.eventsViewedView.markVisibleAsViewed();
+          }
         }
       }, 2000);
     },
@@ -201,161 +210,6 @@ define([
     scrollTop: function () {
       var targetTop = this.$loader.position().top;
       this.$scrollable.scrollTop(targetTop - 8); // add a 8px margin
-    },
-
-    /** **************************************************************************************************************
-     *
-     * Visible elements detection
-     *
-     *****************************************************************************************************************/
-    computeVisibleElements: function (callback) {
-      var start = Date.now();
-
-      var contentHeight = this.$scrollableContent.height();
-      var topLimit = this.$scrollable.offset().top;
-      var bottomLimit = topLimit + this.$scrollable.height();
-
-      var $items = this.$scrollableContent.find('.block.message .event.unviewed, .block.topic .event.unviewed');
-      if (!$items.length) {
-        return debug('Not enough .event.unviewed to compute visible elements');
-      }
-      $items.removeClass('visible topElement bottomElement first big'); // @debug
-
-      // find the first visible element
-      var $firstVisibleElement, firstVisibleIndex, $nextElement, $previousElement;
-      var candidateIndex = Math.floor(topLimit * $items.length / contentHeight); // optimistic way to find -in theory- the closest
-      var $candidateElement = $items.eq(candidateIndex);
-      var visibility = this._isElementFullyVisibleInViewport(topLimit, bottomLimit, $candidateElement);
-      debug($candidateElement.attr('id') + ' vib:', visibility);
-      if (visibility === 'ok') {
-        $firstVisibleElement = $candidateElement;
-        firstVisibleIndex = candidateIndex;
-        debug('we have visible element on first try');
-      } else if (visibility === 'big') {
-        // mark $candidateElement as top and stop
-        $firstVisibleElement = $candidateElement;
-        firstVisibleIndex = candidateIndex;
-        debug('first is big');
-      } else if (visibility === 'next') {
-        var _visibility;
-        // loop to find next 'ok'
-        for (var nextIndex = candidateIndex + 1; nextIndex < $items.length; nextIndex++) {
-          $nextElement = $items.eq(nextIndex);
-          _visibility = this._isElementFullyVisibleInViewport(topLimit, bottomLimit, $nextElement);
-          if (_visibility === 'ok' || _visibility === 'big') {
-            $firstVisibleElement = $nextElement;
-            firstVisibleIndex = nextIndex;
-            debug('$topCandidate found in next loop', $firstVisibleElement);
-            break;
-          } else {
-            $candidateElement = $nextElement;
-            candidateIndex = nextIndex;
-          }
-        }
-      } else if (visibility === 'previous') {
-        // loop to find previous 'ok'
-        for (var previousIndex = candidateIndex - 1; previousIndex >= 0; previousIndex--) {
-          $previousElement = $items.eq(previousIndex);
-          _visibility = this._isElementFullyVisibleInViewport(topLimit, bottomLimit, $previousElement);
-          if (_visibility === 'ok' || _visibility === 'big') {
-            $firstVisibleElement = $previousElement;
-            firstVisibleIndex = previousIndex;
-            break;
-          } else {
-            $candidateElement = $previousElement;
-            candidateIndex = previousIndex;
-          }
-        }
-      } else {
-        // heu??
-        debug(visibility, 'heu');
-      }
-
-      // no element is fully visible
-      if (!$firstVisibleElement) {
-        debug('no element fully visible found');
-        return callback([]);
-      }
-
-      // decorate list
-      $firstVisibleElement.addClass('first');
-      var $elements = this._listFullyVisibleElementsInViewport(topLimit, bottomLimit, $items, $firstVisibleElement, firstVisibleIndex);
-      $elements[ 0 ].addClass('topElement');
-      $elements[ ($elements.length - 1) ].addClass('bottomElement');
-      var visibleElementIds = [];
-      $.each($elements, function () {
-        $(this).addClass('visible');
-        visibleElementIds.push($(this).attr('id'));
-      });
-
-      var duration = Date.now() - start;
-      debug('Current scroll position is ' + (topLimit - 5) + '/' +
-        (contentHeight - this.$scrollable.height()) +
-        ' ... (in ' + duration + 'ms)');
-
-      return callback(visibleElementIds);
-    },
-    _isElementFullyVisibleInViewport: function (topLimit, bottomLimit, $e) {
-      var elementTop = $e.offset().top;
-      var elementBottom = elementTop + $e.outerHeight() - 10; // accept a 10 px
-                                                              // margin
-
-      var v = '';
-      if (elementTop <= topLimit && elementBottom >= bottomLimit) {
-        // top is above topLimit && bottom is under bottomLimit => big element
-        $e.addClass('big');
-        v = 'big';
-      } else if (elementTop >= bottomLimit) {
-        // element is fully under viewport => find previous
-        v = 'previous';
-      } else if (elementTop > topLimit && elementBottom > bottomLimit) {
-        // top is under topLimit && bottom is under bottomLimit => search for
-        // previous
-        v = 'previous';
-      } else if (elementBottom <= topLimit) {
-        // element is fully above viewport => search for next
-        v = 'next';
-      } else if (elementTop <= topLimit) {
-        // top is above topLimit => search for next
-        v = 'next';
-      } else if (elementTop > topLimit && elementBottom <= bottomLimit) {
-        // top is under topLimit && bottom is above bottomLimit => ok
-        v = 'ok';
-      } else {
-        v = 'error';
-      }
-      return v;
-    },
-    _listFullyVisibleElementsInViewport: function (topLimit, bottomLimit, $items, $element, index) {
-      // determine fully visible element before and after $firstVisibleElement
-      var list = [];
-      list.push($element);
-
-      var $e, v;
-
-      // loop backward
-      for (var previousIndex = index - 1; previousIndex >= 0; previousIndex--) {
-        $e = $items.eq(previousIndex);
-        v = this._isElementFullyVisibleInViewport(topLimit, bottomLimit, $e);
-        if (v === 'ok') {
-          list.unshift($e);
-        } else {
-          break;
-        }
-      }
-
-      // loop forward
-      for (var nextIndex = index + 1; nextIndex < $items.length; nextIndex++) {
-        $e = $items.eq(nextIndex);
-        v = this._isElementFullyVisibleInViewport(topLimit, bottomLimit, $e);
-        if (v === 'ok') {
-          list.push($e);
-        } else {
-          break;
-        }
-      }
-
-      return list;
     },
     clear: function () {
       // reset history loader
@@ -645,47 +499,6 @@ define([
         debug(e);
         return false;
       }
-    },
-
-    /** ***************************************************************************************************************
-     *
-     * Viewed management
-     *
-     *****************************************************************************************************************/
-    markVisibleAsViewed: function () {
-      if (!this.isVisible()) {
-        // scroll could be triggered by freshevent event when window is not
-        // focused
-        return debug('markVisibleAsViewed: discussion/window not focused, do nothing');
-      }
-
-      var that = this;
-      this.computeVisibleElements(function (elements) {
-        that.viewedElements(elements);
-      });
-    },
-    viewedElements: function (elements) {
-      if (elements.length) {
-        this.model.viewedElements(elements);
-      }
-    },
-    onViewed: function (data) {
-      if (!data.events || !data.events.length) {
-        return;
-      }
-
-      var selector = '';
-      _.each(data.events, function (id) {
-        if (selector !== '') {
-          selector += ', ';
-        }
-        selector += '#' + id;
-      });
-
-      $(selector).removeClass('unviewed');
-    },
-    isVisible: function () {
-      return !(!this.model.get('focused') || !windowView.focused);
     },
 
     /** ***************************************************************************************************************
