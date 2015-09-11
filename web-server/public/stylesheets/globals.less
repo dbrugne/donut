@@ -13,6 +13,14 @@
 }
 .global-loop(120);
 
+// Generate .fs01 ... .fs30 utility classes
+.fs-loop (@index) when (@index > 0){
+  @size: @index / 10;
+  .fs@{index} { font-size: ~'@{size}rem' !important; }
+  .fs-loop (@index - 1);
+}
+.fs-loop(30);
+
 .cl-background            { color: @cl-background !important ;}
 .cl-first                 { color: @cl-first !important ;}
 .cl-first-dark-15         { color: @cl-first-dark-15 !important ;}
