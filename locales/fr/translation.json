@@ -7,7 +7,7 @@
     "signup" : "Inscription",
     "login" : "Connexion",
     "loginwithfacebook": "Connexion avec Facebook",
-    "orbymail": "ou s'inscrire par email",
+    "orbymail": "ou par email",
     "username-placeholder": "Nom d'utilisateur",
     "email-placeholder": "Email",
     "password-placeholder": "Mot de passe",
@@ -19,7 +19,7 @@
     "cgu": "CGU",
     "legals": "Mentions légales",
     "carousel": {
-      "heading": "chat room network",
+      "heading": "chat room network >",
       "slogan": "Discuter autour de vos centres d'intérêt.<br>Entrez en relation avec des gens de votre univers.<br>Créez et animez votre propre communauté."
     }
   },

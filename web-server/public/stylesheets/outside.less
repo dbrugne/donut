@@ -32,10 +32,12 @@
         }
       }
     }
-    .navbar-brand { .display-flex; .flex-flow(column nowrap); padding:0;
+    .navbar-brand { .display-flex; .flex-flow(column nowrap); padding:0; margin-left:0;
       .logo { height:40px; margin: auto 0; }
     }
-    .signup a, .login a { font-size:2rem; color:@cl-first;.ft-opensans-bold; }
+    .signup a, .login a { font-size:1.5rem; color:@cl-text; .ft-opensans; text-decoration:none !important;
+      &:hover { text-decoration:underline; }
+    }
   }
 }
 
@@ -54,12 +56,13 @@
 }
 
 #landing {
-  @carousel-height:420px;
+  @carousel-height:460px;
+  @blockColor: @cl-subtext10;
   .ft-opensans-light;
   #carousel-landing {
-    .carousel-inner { position: absolute; overflow: hidden; width: 100%; z-index: 10;
+    .carousel-inner { position: absolute; overflow: hidden; width: 100%; z-index: 10; left: 0; border-bottom: 5px solid @blockColor;
       .disclaimer { position: absolute; top: 50px; color: #FFF; font-size: 3rem;  }
-      .img { height: @carousel-height; max-width: 100%; background-size: cover; background-repeat: no-repeat; opacity: 0.7; }
+      .img { height: @carousel-height; max-width: 100%; background-size: cover; background-repeat: no-repeat; .opacity(0.8); }
       .item-1 .disclaimer { z-index: 10;
         h1 { color: @cl-background; font-size: 50px; text-shadow: 1px 1px 2px rgba(0,0,0,.65); padding-bottom: 0; letter-spacing: -1px; .ft-raleway-heavy; font-weight: bold; }
         p { display: block; text-shadow: 1px 1px 2px rgba(0,0,0,0.65); font-weight: bold; line-height: 3.5rem; margin-bottom: 0; letter-spacing: 0; opacity: .95; color: #fff; font-size: 24px; margin-top: 130px;
@@ -72,11 +75,18 @@
       }
     }
     .ctn-baseline { height:@carousel-height; position: relative;
-      .authenticate { position: absolute; z-index: 12; right: 0; padding: 15px; .ft-raleway; margin: auto; margin-top: 30px; background-color: @cl-subtext10; .border-radius(10px);
+      .authenticate { z-index: 12; padding: 20px; .ft-raleway; background-color: @cl-subtext10; .border-radius(10px); align-self: flex-end; margin: auto 0; width: 300px;
+        .method-facebook-or { border-bottom: 1px solid @cl-subtext20; margin-bottom: 20px; padding: 20px 0 0 0;
+          .outer { width:100px;
+            .inner { background-color: @cl-subtext10; width:100px; top: 10px; }
+          }
+        }
         h2 { margin: 0; text-align: center; .ft-raleway-heavy; font-size: 2.2rem; }
-        a.btn-facebook { max-width:310px; }
+        a.btn-facebook { width:250px; align-self: center; margin: 10px auto;
+          &:hover { text-decoration:none; }
+        }
         .logic { text-align:center; margin:0; }
-        .form { width: 310px; margin: 0 auto;
+        .form { margin: 0 auto;
           input[type=submit] { padding: 7px 12px;font-size: 1.3rem; }
         }
         .logged .profile {
@@ -92,11 +102,12 @@
       } // #landing #carousel-landing .ctn-baseline .authenticate
     } // #landing #carousel-landing .ctn-baseline
   } // #landing #carousel-landing
-  .ctn-results { padding: 0;
-    .search { position: relative; font-size: 2rem;background-color: @cl-subtext10; padding:10px; .border-radiuses(0, 25px, 25px, 0);
+  .ctn-results { padding: 0; position:relative;
+    .search { position: absolute; font-size: 2rem; background-color: @blockColor; padding:5px; .border-radiuses(0, 25px, 25px, 0); width: 100%; top: -22px; z-index: 99; border-radius: 25px;
       i { position: absolute; top: 9px; right: 19px; color: @cl-subtext10; cursor: default; }
       span { line-height: 4rem; }
     }
+    .results { margin-top: 50px; }
     input[type=text] { width: 100%; border: 1px solid @cl-subtext10; .border-radius(50px); padding: 5px 75px 6px 30px; .ft-raleway-medium; color: @cl-subtext50; outline: none; }
   }
   footer { margin-top: 30px; padding: 10px 0 20px; border-top:5px solid @cl-first;
