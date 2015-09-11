@@ -1,6 +1,4 @@
 'use strict';
-var logger = require('../../pomelo-logger').getLogger('donut', __filename);
-var debug = require('debug')('donut:server:ws:room-emitter');
 var _ = require('underscore');
 var async = require('async');
 var recorder = require('../../../shared/models/historyone').record();
@@ -23,8 +21,9 @@ module.exports = function (app, onetoone, eventName, eventData, callback) {
   eventData.to = onetoone.to;
   eventData.time = Date.now();
   recorder(eventName, eventData, function (err, model) {
-    if (err)
-      return fn('Error while saving event while emitting in onetoone ' + eventName + ': ' + err);
+    if (err) {
+      return callback('Error while saving event while emitting in onetoone ' + eventName + ': ' + err);
+    }
 
     eventData.id = model.id;
 
@@ -32,7 +31,8 @@ module.exports = function (app, onetoone, eventName, eventData, callback) {
     // images
     if (eventData.images && eventData.images.length > 0) {
       eventData.images = _.map(eventData.images, function (element, key, value) {
-        // @important: use .path to obtain URL with file extension and avoid CORS errors
+        // @important: use .path to obtain URL with file extension and avoid
+        // CORS errors
         return cloudinary.messageImage(element.path);
       });
     }
@@ -42,8 +42,9 @@ module.exports = function (app, onetoone, eventName, eventData, callback) {
       function sendToSender (fn) {
         // Broadcast message to all 'sender' devices
         app.globalChannelService.pushMessage('connector', eventName, eventData, 'user:' + onetoone.from.toString(), {}, function (err) {
-          if (err)
+          if (err) {
             return fn('Error while pushing message to sender: ' + err);
+          }
 
           return fn(null);
         });
@@ -51,15 +52,18 @@ module.exports = function (app, onetoone, eventName, eventData, callback) {
 
       function sendToReceiver (fn) {
         // (if sender!=receiver) Broadcast message to all 'receiver' devices
-        if (onetoone.from.toString() === onetoone.to.toString())
+        if (onetoone.from.toString() === onetoone.to.toString()) {
           return fn(null);
+        }
 
         app.globalChannelService.pushMessage('connector', eventName, eventData, 'user:' + onetoone.to.toString(), {}, function (err) {
-          if (err)
+          if (err) {
             return fn('Error while pushing message to receiver: ' + err);
+          }
 
-          if (['user:message', 'user:me'].indexOf(eventName) === -1)
+          if ([ 'user:message', 'user:me' ].indexOf(eventName) === -1) {
             return fn(null);
+          }
 
           UserModel.setUnviewedOneMessage(onetoone.from, onetoone.to, model.id, function (err) {
             return fn(err);
@@ -70,7 +74,5 @@ module.exports = function (app, onetoone, eventName, eventData, callback) {
     ], function (err) {
       return callback(err, eventData);
     });
-
   });
-
 };
