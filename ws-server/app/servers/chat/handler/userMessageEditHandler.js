@@ -48,6 +48,10 @@ handler.call = function (data, session, next) {
         return callback('event should be a user:message: ' + data.event);
       }
 
+      if (event.data.special && event.data.special !== 'me') {
+        return callback('only special me could be edited: ' + data.event);
+      }
+
       if (user.id !== event.from.toString()) {
         return callback(user.username + ' tries to modify a message ' + data.event + ' from ' + event.from.toString());
       }
@@ -123,5 +127,4 @@ handler.call = function (data, session, next) {
 
     next(null); // even for .notify
   });
-
 };

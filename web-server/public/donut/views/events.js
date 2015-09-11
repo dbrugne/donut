@@ -817,13 +817,22 @@ define([
       this.editMessage($event);
     },
     isEditableMessage: function ($event) {
+      var special = $event.data('special');
+      if (special && special !== 'me') {
+        return false;
+      }
       var userId = $event.closest('[data-user-id]').data('userId');
+      if (currentUser.get('user_id') !== userId) {
+        return false;
+      }
       var time = $event.data('time');
-      var isMessageCurrentUser = (currentUser.get('user_id') === userId);
-      var isNotTooOld = ((Date.now() - new Date(time)) < window.message_maxedittime);
-      var isSpammed = $event.hasClass('spammed');
-
-      return (isMessageCurrentUser && isNotTooOld && !isSpammed);
+      if (((Date.now() - new Date(time)) > window.message_maxedittime)) {
+        return false;
+      }
+      if ($event.hasClass('spammed')) {
+        return false;
+      }
+      return true;
     },
     onPrevOrNextFormEdit: function (event) {
       var direction;
