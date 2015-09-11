@@ -261,9 +261,13 @@ define([
     },
     onPoster: function (model, url, options) {
       this.$el.find('div.side').css('background-image', 'url(' + url + ')');
-      this.$el.find('div.side').removeClass('poster-empty');
+      this.$el.find('div.side').removeClass(function (index, css) {
+        return (css.match(/(poster-[\w]{4,5})+/g) || []).join(' ');
+      });
       if (url === '') {
         this.$el.find('div.side').addClass('poster-empty');
+      } else {
+        this.$el.find('div.side').addClass('poster-full');
       }
     },
     onPosterBlured: function (model, url) {
