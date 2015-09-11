@@ -56,7 +56,7 @@
     <div class="header room">
         <div class="overlay-ctn">
             <a href="/room/<%= roomName %>"><img class="avatar" data-room-name="<%= room.name %>" src="<%= room.avatar %>" alt="<%= room.name %> avatar"></a>
-            <p class="join"><a class="dc-back dc-text-contrast" href="<% if (!user) { %><%= room.join %><% } else { %><%= room.chat %><% } %>"><%= t('actions.join') %> <% if (room.usersCount) { %><%= room.usersCount %><% } %> <i class="icon icon-user-custom"></i></a></p>
+            <p class="joinroom"><a class="dc-back dc-text-contrast" href="<% if (!user) { %><%= room.join %><% } else { %><%= room.chat %><% } %>"><%= t('actions.join') %> <% if (room.usersCount) { %><%= room.usersCount %><% } %> <i class="icon icon-user-custom"></i></a></p>
         </div>
         <div class="info">
             <a href="/room/<%= roomName %>" class="name"><%= room.name %></a>
