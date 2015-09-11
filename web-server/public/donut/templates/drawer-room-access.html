@@ -2,3 +2,13 @@
     <span class="name"><%= room_name %></span>
     <span class="owner"><%= t('global.by') %> <a class="open-user-profile dc-text colored" data-user-id="<%= owner_id %>">@<%= owner_name %></a></span>
 </div>
+<div class="search dropdown">
+    <label for="input-search"><%= t('chat.access.labelsearch') %></label>
+    <input type="text" id="input-search" placeholder="<%= t('chat.actions.searchuser') %>">
+    <i class="icon icon-search"></i>
+</div>
+<div class="dropdown">
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+
+    </ul>
+</div>

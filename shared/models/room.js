@@ -223,6 +223,10 @@ roomSchema.methods.getIdsByType = function (type) {
     _.each(this.join_mode_allowed, function (u) {
       ids.push(u.toString());
     });
+  } else if (type === 'allowedPending') {
+    _.each(this.allowed_pending, function (u) {
+      ids.push(u.toString());
+    });
   } else if (type === 'regular') {
     var that = this;
     _.each(this.users, function (u) {

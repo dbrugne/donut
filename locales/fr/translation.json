@@ -363,6 +363,7 @@
     "loading": "Chargement ",
     "actions": {
       "search": "Chercher",
+      "searchuser": "Rechercher un utilisateur",
       "create": "créer",
       "adonut": "un donut",
       "account": "mon compte",
@@ -580,7 +581,13 @@
       }
     },
     "access": {
-      "link": "accés"
+      "link": "accés",
+      "labelsearch": "Ajouter des utilisateurs dans la liste des personnes autorisées",
+      "types": {
+        "all": "Tous",
+        "allowed": "Autorisés",
+        "allowedPending": "En attente d'autorisation"
+      }
     },
     "share": {
       "label": "partager :",

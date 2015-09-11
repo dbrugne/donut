@@ -1,0 +1,6 @@
+<% _.each(users, function (u) { %>
+    <li><a href="#"><%= u.username %></a></li>
+<% });%>
+<% if (!users.length) { %>
+<li><%= t('chat.search.nouser') %></li>
+<% } %>

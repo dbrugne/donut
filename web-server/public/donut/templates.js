@@ -13,6 +13,7 @@ define([
   'text!./templates/drawer-room-users.html',
   'text!./templates/drawer-room-users-table.html',
   'text!./templates/drawer-room-access.html',
+  'text!./templates/drawer-room-access-dropdown.html',
   'text!./templates/pagination.html',
   'text!./templates/drawer-room-profile.html',
   'text!./templates/drawer-room-preferences.html',
@@ -83,6 +84,7 @@ define([
   drawer_room_users,
   drawer_room_users_table,
   drawer_room_access,
+  drawer_room_access_dropdown,
   paginate,
   drawer_room_profile,
   drawer_room_preferences,
@@ -166,6 +168,7 @@ define([
   JST['drawer-room-users.html'] = _.template(drawer_room_users);
   JST['drawer-room-users-table.html'] = _.template(drawer_room_users_table);
   JST['drawer-room-access.html'] = _.template(drawer_room_access);
+  JST['drawer-room-access-dropdown.html'] = _.template(drawer_room_access_dropdown);
   JST['pagination.html'] = _.template(paginate);
   JST['drawer-room-profile.html'] = _.template(drawer_room_profile);
   JST['drawer-room-preferences.html'] = _.template(drawer_room_preferences);

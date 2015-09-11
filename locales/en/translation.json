@@ -343,6 +343,7 @@
     "loading": "Loading",
     "actions": {
       "search": "Search",
+      "searchuser": "Search an user",
       "create": "create",
       "adonut": "a donut",
       "account": "my account",
@@ -560,7 +561,13 @@
       }
     },
     "access": {
-      "link": "access"
+      "link": "access",
+      "labelsearch": "Add users to the allowed list",
+      "types": {
+        "all": "All",
+        "allowed": "Allowed",
+        "allowedPending": "Allow pending"
+      }
     },
     "share": {
       "label": "share:",

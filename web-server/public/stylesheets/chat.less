@@ -1677,7 +1677,7 @@
       }
       .user-number { margin-bottom: 15px; }
       .search { position: relative; font-size: 0.8em; width: 100%; height: 30px; margin-bottom: 15px;
-        input[type=text] { width:75%; position: absolute; right: 0; border: 2px solid black; .border-radius(50px); padding: 5px 30px 6px 17px; .ft-raleway-medium; color: @cl-subtext50; outline: none; font-size:1.1rem; }
+        input[type=text] { width:75%; position: absolute; right: 0; border: 1px solid black; .border-radius(50px); padding: 5px 30px 6px 17px; .ft-raleway-medium; color: @cl-subtext50; outline: none; font-size:1.1rem; }
         i { position: absolute; top: 9px; right: 19px; color: @cl-subtext50; cursor: pointer; }
       }
       .table-users {
@@ -1685,6 +1685,15 @@
         img { width: 20px; height: 20px; }
         .actions>div:hover { cursor: pointer; }
         i { font-size: 18px; }
+      }
+    }
+    #room-access {
+      .search { position: relative; font-size: 1.1em; width: 100%; height: 30px; margin-bottom: 21px; margin-top: 15px;
+        input[type=text] { width:100%; .border-radius(50px); padding: 5px 30px 6px 17px; .ft-raleway-medium; color: @cl-subtext50; outline: none; font-size:1.1rem; }
+        i { position: absolute; top: 30px; right: 9px; color: @cl-subtext50; cursor: pointer; }
+      }
+      .dropdown-menu{ width: 100%;
+        a {text-decoration: none}
       }
     }
     #user-preferences, #room-preferences {

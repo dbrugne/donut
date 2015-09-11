@@ -22,16 +22,17 @@ handler.call = function (data, session, next) {
   var that = this;
 
   var searchTypes = [
-    'all',      // users + ban
-    'users',    // users
-    'op',       // op + owner
-    'allowed',  // allowed
-    'regular',  // users (not op/owner/ban/devoice)
-    'ban',      // ban
-    'devoice'   // devoice
+    'all',              // users + ban
+    'users',            // users
+    'op',               // op + owner
+    'allowed',          // allowed
+    'allowedPending',   // allowed pending
+    'regular',          // users (not op/owner/ban/devoice)
+    'ban',              // ban
+    'devoice'           // devoice
   ];
 
-  var searchTypesThatNeedPower = ['allowed', 'ban', 'devoice'];
+  var searchTypesThatNeedPower = ['allowed', 'allowedPending', 'ban', 'devoice'];
 
   /**
    * @param room_id (@mandatory)
