@@ -99,7 +99,7 @@ define([
 
       var userId = $(event.currentTarget).data('userId');
       ConfirmationView.open({}, _.bind(function () {
-        client.roomAllowed(this.model.get('id'), userId);
+        client.roomAllow(this.model.get('id'), userId);
       }, this));
     }
 

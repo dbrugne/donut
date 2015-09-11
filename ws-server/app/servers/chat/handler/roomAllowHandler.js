@@ -91,7 +91,7 @@ handler.call = function (data, session, next) {
 
   ], function (err) {
     if (err) {
-      logger.error('[room:allowed] ' + err);
+      logger.error('[room:allow] ' + err);
       return next(null, { code: 500, err: err });
     }
 

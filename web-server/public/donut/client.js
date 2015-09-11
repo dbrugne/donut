@@ -522,17 +522,17 @@ define([
         }
       );
     },
-    roomAllowed: function (roomId, userId, fn) {
+    roomAllow: function (roomId, userId, fn) {
       var data = {room_id: roomId, user_id: userId};
-      debug('io:out:room:allowed', data);
+      debug('io:out:room:allow', data);
       pomelo.request(
-        'chat.roomAllowedHandler.call',
+        'chat.roomAllowHandler.call',
         data,
         function (response) {
           if (response.err) {
-            debug('io:in:room:allowed error: ', response);
+            debug('io:in:room:allow error: ', response);
           } else {
-            debug('io:in:room:allowed', response);
+            debug('io:in:room:allow', response);
           }
           if (_.isFunction(fn)) {
             return fn(response);
