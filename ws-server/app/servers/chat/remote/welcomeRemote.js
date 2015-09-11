@@ -62,10 +62,10 @@ WelcomeRemote.prototype.getMessage = function (uid, frontendId, globalCallback) 
           }
 
           welcomeEvent.preferences = {};
-          welcomeEvent.preferences['browser:exitpopin'] = (typeof user.preferences['browser:exitpopin'] === 'undefined' || user.preferences['browser:exitpopin'] === true);
-          welcomeEvent.preferences['browser:welcome'] = (user.preferences && user.preferences['browser:welcome'] === true);
-          welcomeEvent.preferences['browser:sounds'] = (user.preferences && user.preferences['browser:sounds'] === true);
-          welcomeEvent.preferences['notif:channels:desktop'] = (user.preferences && user.preferences['notif:channels:desktop'] === true);
+          welcomeEvent.preferences[ 'browser:exitpopin' ] = (typeof user.preferences[ 'browser:exitpopin' ] === 'undefined' || user.preferences[ 'browser:exitpopin' ] === true);
+          welcomeEvent.preferences[ 'browser:welcome' ] = (user.preferences && user.preferences[ 'browser:welcome' ] === true);
+          welcomeEvent.preferences[ 'browser:sounds' ] = (user.preferences && user.preferences[ 'browser:sounds' ] === true);
+          welcomeEvent.preferences[ 'notif:channels:desktop' ] = (user.preferences && user.preferences[ 'notif:channels:desktop' ] === true);
 
           return callback(null, user);
         });
@@ -128,7 +128,7 @@ WelcomeRemote.prototype.getMessage = function (uid, frontendId, globalCallback) 
     },
 
     function featured (user, callback) {
-      if (!(user.preferences && user.preferences['browser:welcome'] === true)) {
+      if (!(user.preferences && user.preferences[ 'browser:welcome' ] === true)) {
         return callback(null, user);
       }
 
@@ -176,5 +176,4 @@ WelcomeRemote.prototype.getMessage = function (uid, frontendId, globalCallback) 
 
     return globalCallback(err, welcomeEvent);
   });
-
 };
