@@ -182,24 +182,17 @@ define([
     isScrollOnBottom: function () {
       var scrollMargin = 10;
       if (this.messageUnderEdition) {
-        scrollMargin = this.messageUnderEdition.$el.height(); // @todo yls this
-                                                              // logic is
-                                                              // really needed?
-                                                              // Are you sure
-                                                              // this is not
-                                                              // needed only
-                                                              // for "last"
-                                                              // .event edition
-                                                              // and not for
-                                                              // all event
-                                                              // edition?
+        // @todo yls this logic is really needed?
+        // Are you sure this is not needed only for "last" .event edition
+        // and not for all event edition?
+        scrollMargin = this.messageUnderEdition.$el.height();
       }
 
-      var bottom = this._scrollBottomPosition() - scrollMargin; // add a 10px
-                                                                // margin
-      return (this.$scrollable.scrollTop() >= bottom); // if get current
-                                                       // position, we are on
-                                                       // bottom
+      // add a 10px margin
+      var bottom = this._scrollBottomPosition() - scrollMargin;
+
+      // if get current position, we are on bottom
+      return (this.$scrollable.scrollTop() >= bottom);
     },
     scrollDown: function () {
       var bottom = this._scrollBottomPosition();
