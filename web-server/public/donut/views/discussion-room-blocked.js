@@ -94,8 +94,6 @@ define([
           app.trigger('alert', 'error', i18next.t('chat.password.wrong-password'));
         } else if (response.err) {
           app.trigger('alert', 'error', i18next.t('chat.password.error'));
-        } else {
-          return;
         }
       });
     }

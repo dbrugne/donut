@@ -25,6 +25,11 @@ var roomSchema = mongoose.Schema({
   }],
   join_mode: {type: String, default: 'everyone'},
   join_mode_password: String,
+  password_tries: [{
+    user: {type: mongoose.Schema.ObjectId, ref: 'User'},
+    count: Number(0),
+    timer: {type: Date, default: Date.now}
+  }],
   join_mode_allowed: [{type: mongoose.Schema.ObjectId, ref: 'User'}],
   allowed_pending: [{type: mongoose.Schema.ObjectId, ref: 'User'}],
   avatar: String,
@@ -182,6 +187,17 @@ roomSchema.methods.isIn = function (userId) {
 
 roomSchema.methods.validPassword = function (password) {
   return bcrypt.compareSync(password, this.join_mode_password);
+};
+
+roomSchema.methods.isPasswordTries = function (userId) {
+  var subDocument = _.find(this.password_tries, function (tries) {
+    if (tries.user._id) {
+      return (tries.user.id === userId);
+    } else {
+      return (tries.user.toString() === userId);
+    }
+  });
+  return (typeof subDocument !== 'undefined');
 };
 
 roomSchema.methods.getIdsByType = function (type) {

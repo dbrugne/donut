@@ -38,19 +38,38 @@ handler.call = function (data, session, next) {
         if (room.join_mode === 'allowed' && !room.isAllowed(user.id)) {
           return callback('notallowed');
         }
-
-        if (room.join_mode === 'password') {
-          if (!room.join_mode_password) {
-            return callback('wrongpassword');
-          }
-          if (!data.password || !room.validPassword(data.password)) {
-            return callback('wrongpassword');
-          }
-        }
-
       }
 
       return callback(null);
+    },
+
+    function checkPassword (callback) {
+
+      if (room.isOwner(user.id) || room.join_mode !== 'password') {
+        return callback(null);
+      }
+
+      if (!room.join_mode_password) {
+        return callback('wrongpassword');
+      }
+
+      if (!data.password || !room.validPassword(data.password)) {
+        if (room.isPasswordTries(user.id)) {
+          return callback('test');
+        } else {
+          var passwordTries = {
+            user: user.id,
+            count: 0
+          };
+          room.password_tries.addToSet(passwordTries);
+          room.save(function (err) {
+            if (err) {
+              return callback(err);
+            }
+          });
+        }
+        return callback('wrongpassword');
+      }
     },
 
     function broadcast (callback) {
