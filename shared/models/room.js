@@ -27,8 +27,7 @@ var roomSchema = mongoose.Schema({
   join_mode_password: String,
   password_tries: [{
     user: {type: mongoose.Schema.ObjectId, ref: 'User'},
-    count: Number(0),
-    timer: {type: Date, default: Date.now}
+    count: Number
   }],
   join_mode_allowed: [{type: mongoose.Schema.ObjectId, ref: 'User'}],
   allowed_pending: [{type: mongoose.Schema.ObjectId, ref: 'User'}],

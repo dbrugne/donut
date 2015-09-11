@@ -5,6 +5,7 @@ var _ = require('underscore');
 var roomDataHelper = require('../../../util/roomData');
 var roomEmitter = require('../../../util/roomEmitter');
 var Notifications = require('../../../components/notifications');
+var RoomModel = require('../../../../../shared/models/room');
 
 var Handler = function (app) {
   this.app = app;
@@ -49,26 +50,33 @@ handler.call = function (data, session, next) {
         return callback(null);
       }
 
-      if (!room.join_mode_password) {
+      if (!room.join_mode_password || !data.password) {
         return callback('wrongpassword');
       }
 
-      if (!data.password || !room.validPassword(data.password)) {
-        if (room.isPasswordTries(user.id)) {
-          return callback('test');
-        } else {
-          var passwordTries = {
-            user: user.id,
-            count: 0
-          };
-          room.password_tries.addToSet(passwordTries);
-          room.save(function (err) {
-            if (err) {
-              return callback(err);
-            }
-          });
-        }
+      if (room.validPassword(data.password)) {
+        return callback(null);
+      }
+
+      if (!room.isPasswordTries(user.id)) {
+        var passwordTries = {
+          user: user.id,
+          count: 1
+        };
+        room.password_tries.addToSet(passwordTries);
+        room.save(function (err) {
+          if (err) {
+            return callback(err);
+          }
+        });
         return callback('wrongpassword');
+      } else {
+        RoomModel.update({'_id': room._id, 'password_tries.user': user._id}, {$inc: {'password_tries.$.count': 1}}, function (err) {
+          if (err) {
+            return callback(err);
+          }
+          return callback('wrongpassword');
+        });
       }
     },
 
