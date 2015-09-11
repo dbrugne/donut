@@ -14,7 +14,6 @@ module.exports = function (app) {
 var handler = Handler.prototype;
 
 handler.call = function (data, session, next) {
-
   var user = session.__currentUser__;
   var room = session.__room__;
 
@@ -38,7 +37,8 @@ handler.call = function (data, session, next) {
 
     function history (callback) {
       var options = {
-        isAdmin: (session.settings.admin === true), // allow admin to see whole rooms history
+        isAdmin: (session.settings.admin === true), // allow admin to see whole
+                                                    // rooms history
         since: data.since,
         limit: data.limit
       };
