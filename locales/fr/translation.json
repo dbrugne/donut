@@ -17,7 +17,11 @@
     "faq": "FAQ",
     "contact": "Contact",
     "cgu": "CGU",
-    "legals": "Mentions légales"
+    "legals": "Mentions légales",
+    "carousel": {
+      "heading": "chat room network",
+      "slogan": "Discuter autour de vos centres d'intérêt.<br>Entrez en relation avec des gens de votre univers.<br>Créez et animez votre propre communauté."
+    }
   },
   "forms": {
     "username-required": "Le nom d'utilisateur est requis",
