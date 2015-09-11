@@ -209,7 +209,7 @@ define([
     },
     scrollTop: function () {
       var targetTop = this.$loader.position().top;
-      this.$scrollable.scrollTop(targetTop - 8); // add a 8px margin
+      this.$scrollable.scrollTop(targetTop); // add a 8px margin
     },
 
     /** **************************************************************************************************************
