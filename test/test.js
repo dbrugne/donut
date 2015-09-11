@@ -40,14 +40,11 @@ describe('util/input', function () {
       var complexString = 'words are :P <3 </3 :) but \'style\' is "still" or <strong>enabled</strong>, and <a href="http://google.com">links</a>. Or www.google.com and http://yahoo.fr/ with an XSS <script>alert(\'go go go!\')</script> @damien dans #donut';
       input.filter(complexString).should.equal(complexString);
     });
-
   });
 
   describe('.mentions()', function () {
     it('is function', function () {
       input.mentions.should.be.a('function');
     });
-
   });
-
 });
