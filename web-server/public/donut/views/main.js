@@ -19,6 +19,7 @@ define([
   'views/alert',
   'views/home',
   'views/drawer',
+  'views/drawer-room-access',
   'views/drawer-room-create',
   'views/drawer-room-profile',
   'views/drawer-room-edit',
@@ -40,7 +41,7 @@ define([
              ConnectionModalView, WelcomeModalView,
              CurrentUserView, AlertView, HomeView,
              DrawerView,
-             DrawerRoomCreateView, DrawerRoomProfileView, DrawerRoomEditView, DrawerRoomUsersView, DrawerRoomPreferencesView,
+             DrawerRoomAccessView, DrawerRoomCreateView, DrawerRoomProfileView, DrawerRoomEditView, DrawerRoomUsersView, DrawerRoomPreferencesView,
              DrawerRoomDeleteView,
              DrawerUserProfileView, DrawerUserEditView, DrawerUserPreferencesView, DrawerUserAccountView,
              RoomView, RoomViewBlocked, OneToOneView,
@@ -83,7 +84,8 @@ define([
       'click .open-room-preferences': 'openRoomPreferences',
       'click .open-room-users': 'openRoomUsers',
       'click .open-room-delete': 'openRoomDelete',
-      'click .close-discussion': 'onCloseDiscussion'
+      'click .close-discussion': 'onCloseDiscussion',
+      'click .open-room-access': 'openRoomAccess'
     },
 
     initialize: function () {
@@ -366,6 +368,22 @@ define([
       }
 
       var view = new DrawerRoomUsersView({model: model});
+      this.drawerView.setSize('450px').setView(view).open();
+    },
+    openRoomAccess: function (event) {
+      event.preventDefault();
+
+      var roomId = $(event.currentTarget).data('roomId');
+      if (!roomId) {
+        return;
+      }
+
+      var model = rooms.get(roomId);
+      if (!model) {
+        return;
+      }
+
+      var view = new DrawerRoomAccessView({model: model});
       this.drawerView.setSize('450px').setView(view).open();
     },
     openRoomPreferences: function (event) {

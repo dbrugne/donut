@@ -555,6 +555,9 @@
         "devoice": "Devoiced"
       }
     },
+    "access": {
+      "link": "access"
+    },
     "share": {
       "label": "share:",
       "title": "Come to discuss with me in the donut __name__",

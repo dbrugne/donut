@@ -574,6 +574,9 @@
         "devoice": "Muets"
       }
     },
+    "access": {
+      "link": "accés"
+    },
     "share": {
       "label": "partager :",
       "title": "Rejoignez-moi dans le donut __name__",
