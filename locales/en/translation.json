@@ -7,7 +7,7 @@
     "signup" : "Sign up",
     "login" : "Log in",
     "loginwithfacebook": "Login with Facebook",
-    "orbymail": "or signup by email",
+    "orbymail": "or by email",
     "username-placeholder": "Username",
     "email-placeholder": "Mail",
     "password-placeholder": "Password",
@@ -17,7 +17,11 @@
     "faq": "FAQ",
     "contact": "Contact",
     "cgu": "TOU",
-    "legals": "Legals"
+    "legals": "Legals",
+    "carousel": {
+      "heading": "chat room network >",
+      "slogan": "Talk about your interests. <br/>Get in touch with people in your universe. <br> Create and animate your own community."
+    }
   },
   "forms": {
     "username-required": "username is required",
