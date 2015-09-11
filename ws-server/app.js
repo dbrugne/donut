@@ -35,12 +35,14 @@ app.use(globalChannel, {
   }
 });
 
-app.use(status, {status: {
+app.use(status, {
+  status: {
     host: '127.0.0.1',
     port: 6379,
     prefix: 'pomelo:status',
     cleanOnStartUp: true
-}});
+  }
+});
 
 // app configuration
 app.configure('production|test|development', 'connector', function () {
