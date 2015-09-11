@@ -37,8 +37,6 @@ handler.call = function (data, session, next) {
 
     function history (callback) {
       var options = {
-        isAdmin: (session.settings.admin === true), // allow admin to see whole
-                                                    // rooms history
         since: data.since,
         limit: data.limit
       };

@@ -132,7 +132,7 @@ historySchema.statics.retrieve = function () {
   /**
    * @param roomId
    * @param userId
-   * @param what criteria Object: since (timestamp), isAdmin (boolean)
+   * @param what criteria Object: since (timestamp)
    * @param fn
    */
   return function (roomId, userId, what, fn) {
@@ -140,14 +140,6 @@ historySchema.statics.retrieve = function () {
     var criteria = {
       room: roomId
     };
-
-    if (!what.isAdmin) {
-      // legacy history event
-      criteria.$or = [
-        { users: { $exists: true, $in: [userId] } }, // legacy
-        { users: { $exists: false } } // new
-      ];
-    }
 
     // Since (timestamp, from present to past direction)
     if (what.since) {
@@ -298,7 +290,6 @@ historySchema.statics.retrieveEventWithContext = function (eventId, userId, limi
   ], function (err, history) {
     fn(err, history);
   });
-
 };
 
 module.exports = mongoose.model('HistoryRoom', historySchema, 'history-room');
