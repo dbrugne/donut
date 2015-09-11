@@ -51,7 +51,7 @@ module.exports = function (app, user, room, eventName, eventData, callback) {
         return callback('Error while pushing message: ' + err);
       }
 
-      if ([ 'room:message', 'room:topic', 'room:me' ].indexOf(eventName) === -1) {
+      if ([ 'room:message', 'room:topic' ].indexOf(eventName) === -1) {
         return callback(null, eventData);
       }
 

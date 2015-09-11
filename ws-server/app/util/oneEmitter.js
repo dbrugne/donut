@@ -61,7 +61,7 @@ module.exports = function (app, onetoone, eventName, eventData, callback) {
             return fn('Error while pushing message to receiver: ' + err);
           }
 
-          if ([ 'user:message', 'user:me' ].indexOf(eventName) === -1) {
+          if ([ 'user:message' ].indexOf(eventName) === -1) {
             return fn(null);
           }
 

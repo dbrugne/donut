@@ -38,6 +38,10 @@ handler.call = function (data, session, next) {
         return callback('user is banned by withUser');
       }
 
+      if (data.special && ['me', 'random'].indexOf(data.special) === -1) {
+        return callback('not allowed special type: ' + data.special);
+      }
+
       return callback(null);
     },
 
@@ -69,7 +73,7 @@ handler.call = function (data, session, next) {
       });
     },
 
-    function prepareEvent (message, images, callback) {
+    function historizeAndEmit (message, images, callback) {
       var event = {
         from_user_id: user.id,
         from_username: user.username,
@@ -85,11 +89,9 @@ handler.call = function (data, session, next) {
       if (images && images.length) {
         event.images = images;
       }
-
-      return callback(null, event);
-    },
-
-    function historizeAndEmit (event, callback) {
+      if (data.special) {
+        event.special = data.special;
+      }
       oneEmitter(that.app, {
         from: user._id,
         to: withUser._id

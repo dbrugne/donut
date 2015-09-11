@@ -28,7 +28,6 @@ define([
         'room:join',
         'room:leave',
         'room:message',
-        'room:me',
         'room:message:edit',
         'room:topic',
         'room:in',
@@ -48,7 +47,6 @@ define([
         'user:join',
         'user:leave',
         'user:message',
-        'user:me',
         'user:message:edit',
         'user:online',
         'user:offline',
@@ -110,9 +108,9 @@ define([
     search: function (search, rooms, users, limit, skip, light, callback) {
       var data = {
         search: search, // string to search for
-        limit: (limit) ?
-          limit :
-          100,
+        limit: (limit)
+          ? limit
+          : 100,
         skip: (skip)  // if the serach should skip n first items
           ? skip
           : 0,
@@ -179,8 +177,13 @@ define([
       pomelo.notify('chat.roomLeaveHandler.call', data);
       debug('io:out:room:leave', data);
     },
-    roomMessage: function (roomId, message, images, callback) {
-      var data = {room_id: roomId, message: message, images: images};
+    roomMessage: function (roomId, message, images, special, callback) {
+      var data = {
+        room_id: roomId,
+        message: message,
+        images: images,
+        special: special
+      };
       debug('io:out:room:message', data);
       pomelo.request(
         'chat.roomMessageHandler.call',
@@ -189,20 +192,6 @@ define([
           if (response.err) {
             debug('io:in:room:message error: ', response);
           }
-          if (_.isFunction(callback)) {
-            return callback(response);
-          }
-        }
-      );
-    },
-    roomMe: function (roomId, message, callback) {
-      var data = {room_id: roomId, message: message};
-      debug('io:out:room:me', data);
-      pomelo.request(
-        'chat.roomMeHandler.call',
-        data,
-        function (response) {
-          debug('io:in:room:me', response);
           if (_.isFunction(callback)) {
             return callback(response);
           }
@@ -595,8 +584,14 @@ define([
         }
       );
     },
-    userMessage: function (userId, username, message, images, callback) {
-      var data = {message: message, images: images};
+    userMessage: function (userId, username, message, images, special, callback) {
+      var data = {
+        message: message,
+        images: images
+      };
+      if (special) {
+        data.special = special;
+      }
       if (userId) {
         data.user_id = userId;
       } else if (username) {
@@ -612,20 +607,6 @@ define([
           if (response.err) {
             debug('io:in:user:message error: ', response);
           }
-          if (_.isFunction(callback)) {
-            return callback(response);
-          }
-        }
-      );
-    },
-    userMe: function (userId, message, callback) {
-      var data = {user_id: userId, message: message};
-      debug('io:out:user:me', data);
-      pomelo.request(
-        'chat.userMeHandler.call',
-        data,
-        function (response) {
-          debug('io:in:user:me', response);
           if (_.isFunction(callback)) {
             return callback(response);
           }

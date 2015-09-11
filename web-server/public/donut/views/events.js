@@ -597,9 +597,7 @@ define([
             template = templates[ 'event/ping.html' ];
             break;
           case 'room:message':
-          case 'room:me':
           case 'user:message':
-          case 'user:me':
             template = templates[ 'event/message.html' ];
             break;
           case 'reconnected':

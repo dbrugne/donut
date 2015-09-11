@@ -118,7 +118,7 @@ historySchema.methods.toClientJSON = function (userViewed) {
 
   // unviewed status (true if message and if i'm not in .viewed)
   if (userViewed &&
-    [ 'room:message', 'room:me', 'room:topic' ].indexOf(this.event) !== -1 &&
+    [ 'room:message', 'room:topic' ].indexOf(this.event) !== -1 &&
     data.user_id !== userViewed &&
     (!this.viewed || (_.isArray(this.viewed) && this.viewed.indexOf(userViewed) === -1))) {
     e.unviewed = true;
@@ -220,7 +220,7 @@ historySchema.statics.retrieveEventWithContext = function (eventId, userId, limi
 
   var criteria = {
     _id: { $ne: eventId },
-    event: { $in: [ 'room:message', 'room:me' ] }
+    event: { $in: [ 'room:message' ] }
   };
 
   var model;

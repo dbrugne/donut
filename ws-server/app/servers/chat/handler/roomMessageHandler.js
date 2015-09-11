@@ -40,7 +40,11 @@ handler.call = function (data, session, next) {
       }
 
       if (room.isDevoice(user.id)) {
-        return callback("user is devoiced, he can't send message in room");
+        return callback('user is devoiced, he can\'t send message in room');
+      }
+
+      if (data.special && ['me', 'random'].indexOf(data.special) === -1) {
+        return callback('not allowed special type: ' + data.special);
       }
 
       return callback(null);
@@ -74,6 +78,9 @@ handler.call = function (data, session, next) {
       }
       if (images && images.length) {
         event.images = images;
+      }
+      if (data.special) {
+        event.special = data.special;
       }
 
       roomEmitter(that.app, user, room, 'room:message', event, function (err, sentEvent) {

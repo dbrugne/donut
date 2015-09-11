@@ -21,7 +21,6 @@ define([
 
     initialize: function () {
       this.listenTo(client, 'user:message', this.onMessage);
-      this.listenTo(client, 'user:me', this.onMe);
       this.listenTo(client, 'user:updated', this.onUpdated);
       this.listenTo(client, 'user:online', this.onUserOnline);
       this.listenTo(client, 'user:offline', this.onUserOffline);

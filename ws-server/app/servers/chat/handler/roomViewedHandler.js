@@ -48,7 +48,7 @@ handler.call = function (data, session, next) {
     function persist (callback) {
       HistoryRoom.update({
         _id: { $in: data.events },
-        event: { $in: ['room:message', 'room:topic', 'room:me'] },
+        event: { $in: ['room:message', 'room:topic'] }
       }, {
         $addToSet: { viewed: user._id }
       }, {

@@ -63,7 +63,7 @@ define([
       };
     },
 
-    /**********************************************************
+    /** ********************************************************
      *
      * Commands
      *
@@ -397,7 +397,7 @@ define([
       } else if (/^#/.test(parameters[1])) {
         model = rooms.getByName(parameters[1]);
       } else if (/^@/.test(parameters[1])) {
-        client.userMessage(null, parameters[1].replace(/^@/, ''), message, null);
+        client.userMessage(null, parameters[1].replace(/^@/, ''), message);
         return;
       } else {
         return;
@@ -408,9 +408,9 @@ define([
       }
 
       if (model.get('type') === 'room') {
-        client.roomMessage(model.get('id'), message, null);
+        client.roomMessage(model.get('id'), message);
       } else if (model.get('type') === 'onetoone') {
-        client.userMessage(model.get('user_id'), null, message, null);
+        client.userMessage(model.get('user_id'), null, message);
       }
     },
     profile: function (paramString, parameters) {
@@ -447,10 +447,11 @@ define([
         return this.errorCommand('me', 'parameters');
       }
 
+      var message = parameters[1];
       if (this.model.get('type') === 'room') {
-        client.roomMe(this.model.get('id'), parameters[1]);
+        client.roomMessage(this.model.get('id'), message, null, 'me');
       } else {
-        client.userMe(this.model.get('id'), parameters[1]);
+        client.userMessage(this.model.get('id'), null, message, null, 'me');
       }
     },
     ping: function (paramString, parameters) {
@@ -469,20 +470,20 @@ define([
     random: function (paramString, parameters) {
       var max = 100;
       var min = 1;
-      if (parameters && parameters[1] && !parameters[2] && parameters[1] == parseInt(parameters[1], 10)) {
+      if (parameters && parameters[1] && !parameters[2] && parameters[1] === parseInt(parameters[1], 10)) {
         max = parseInt(parameters[1], 10);
-      } else if (parameters && parameters[1] == parseInt(parameters[1], 10) && parameters[2] == parseInt(parameters[2], 10)) {
+      } else if (parameters && parameters[1] === parseInt(parameters[1], 10) && parameters[2] === parseInt(parameters[2], 10)) {
         min = parseInt(parameters[1], 10);
         max = parseInt(parameters[2], 10);
       } else if (paramString) {
         return this.errorCommand('random', 'parameters');
       }
       var result = Math.floor(Math.random() * (max - min + 1) + min);
-      var msg = i18next.t('chat.notifications.random', {result: result, min: min, max: max}); //+ ' ' + result + '(' + min + ' - ' + max + ')';
+      var message = i18next.t('chat.notifications.random', {result: result, min: min, max: max});
       if (this.model.get('type') === 'room') {
-        client.roomMe(this.model.get('id'), msg);
+        client.roomMessage(this.model.get('id'), message, null, 'random');
       } else {
-        client.userMe(this.model.get('id'), msg);
+        client.userMessage(this.model.get('id'), null, message, null, 'random');
       }
     },
     help: function (paramString, parameters, error) {
@@ -514,24 +515,6 @@ define([
       });
       return commands;
     },
-
-    /**********************************************************
-     *
-     * errors commands
-     *
-     * possible type:
-     *
-     *  - parameters
-     *  - commandaccess
-     *  - invalidcommand
-     *  - invalidusername
-     *  - invalidroom
-     *  - unknown-user-room
-     *  - already-oped
-     *  - no-op
-     *
-     **********************************************************/
-
     errorCommand: function (stringCommand, errorType) {
       var error = i18next.t('chat.commands.errors.' + errorType);
       if (errorType === 'invalidcommand') {
