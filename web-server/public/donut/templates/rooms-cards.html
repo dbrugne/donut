@@ -12,20 +12,39 @@
 
     <% _.each(rooms, function(room) { %>
         <div class="room dc-i-<%= room.color.replace('#', '').toLowerCase() %>">
+
+            <div class="mini-card hidden">
+                <div class="flex-parent">
+                    <div class="avatar" style="background-image:url(<%= room.avatar %>)"></div>
+                    <div class="ctn">
+                        <span class="name"><%= room.name %></span>
+                        <a class="dc-text" href="#room/<%= room.name.replace('#', '') %>">
+                            <%= t('actions.join') %>
+                            <% if (room.users > 0) { %><%= room.users %><% } %>
+                            <i class="icon icon-user-custom"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
             <div class="cover">
                 <div class="avatar" style="background-image:url(<%= room.avatar %>)"></div>
-                <p class="name"><%= room.name %></p>
-                <% if (room.owner && room.owner.username) { %>
-                <p class="owner"><%= t('global.by') %> <a class="dc-text">@<%= room.owner.username %></a></p>
-                <% } %>
-                <!-- p class="topic"><%= room.topic %></p -->
-                <p class="join dc-back">
-                    <a class="dc-text-contrast" href="#room/<%= room.name.replace('#', '') %>">
-                        <%= t('actions.join') %>
-                        <% if (room.users > 0) { %><%= room.users %><% } %>
-                        <i class="icon icon-user-custom"></i>
-                    </a>
-                </p>
+                <div class="top">
+                    <div class="ctn">
+                        <span class="name"><%= room.name %></span>
+                        <% if (room.owner && room.owner.username) { %>
+                        <span class="owner"><%= t('global.by') %> <a class="dc-text">@<%= room.owner.username %></a></span>
+                        <% } %>
+                    </div>
+                    <!-- p class="topic"><%= room.topic %></p -->
+                    <p class="join dc-back">
+                        <a class="dc-text-contrast" href="#room/<%= room.name.replace('#', '') %>">
+                            <%= t('actions.join') %>
+                            <% if (room.users > 0) { %><%= room.users %><% } %>
+                            <i class="icon icon-user-custom"></i>
+                        </a>
+                    </p>
+                </div>
             </div>
             <div class="back dc-back dc-text-contrast">
                 <div class="ctn">

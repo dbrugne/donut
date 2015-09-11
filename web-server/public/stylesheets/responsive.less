@@ -205,13 +205,11 @@
       .disclaimer { margin-top: 60px; }
     }
   }
-  .rooms.cards .room { width: 169px;
+  .rooms.cards .room { width: 190px;
     .avatar {     width: 90px; height: 90px; background-size: contain; }
     .join {     padding: 5px;
       a {     font-size: 1.3rem; white-space: nowrap; }
     }
-  .rooms.cards .room { width: 190px;
-    .join a { font-size:13px; }
   }
 }
 
@@ -222,33 +220,32 @@
   .body-chat.body-profile #chat #center { margin-left:0; }
   #chat #center .discussion .content .header.room .topic #room-users-modal .modal-body .list li { width: 100%; }
 
-  #welcome { // only on welcome popin
-    .rooms.cards .room { width: 100%; height: 60px;
-      &:hover {
-        .cover { display: block; }
-        .back { display: none; }
-      }
-      .cover { position: relative;
-        .avatar { width: 60px; background-size: contain; height: 60px; float: left;    margin-right: 20px; }
-        .name { float: left; margin-top: 5px; }
-        .owner { float: left; margin-top: 9px; margin-left: 8px; clear: right; }
-        .join { left: 80px; padding: 8px 20px 0; top: 35px; bottom: initial; right: initial; margin: 0;
-          a { padding:0; font-size:1.2rem; }
-        }
-      }
-    }
-  }
-
   #chat #color .container #notifications .dropdown-menu .messages-list-ctn .messages-list .message { .display-flex; .flex-flow(row nowrap);
     img { display:none; }
     .message-subject { padding: 0; .flex(1); }
     .action-tag-as-done { display:none; }
     .message-description { padding: 0; }
   }
+
+  #landing, #welcome {
+    .ctn-results .rooms.cards .room { width: 100%; height: 110px; margin-bottom: 10px; padding-bottom: 10px;
+      &:hover .cover { display:none; }
+      .mini-card { display:block !important;
+        &::after { content: ""; width: 100%; position: absolute; bottom: 0; left: 0; border-bottom: 1px solid @cl-subtext20;}
+        .avatar { background-size: 110%; float: left; margin-left: 10px; margin-right: 20px; }
+        .ctn { .flex(1); margin-right: 10px; position: relative; overflow: hidden;
+          .name { float: left; white-space: nowrap; }
+          a { float:right; position: absolute; bottom: 10px; .ft-raleway-medium; font-size: 1.7rem; white-space: nowrap; right:20px; }
+        }
+      }
+      &:last-child .mini-card::after { border-color:transparent; }
+      .cover, .back { display:none; }
+    }
+  }
 }
 
 /** for <=480 screens resolutions **/
 @media screen and (max-width: @screen-xs-min) {
   #chat #center .discussion .content .header.room .topic #room-users-modal .modal-body .list li { width: 100%; }
+  #landing footer { display:none; }
 }
-
