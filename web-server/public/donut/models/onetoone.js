@@ -26,7 +26,8 @@ define([
         unviewed: false
       };
     },
-    initialize: function () {},
+    initialize: function () {
+    },
     getIdentifier: function () {
       return this.get('username');
     },
@@ -51,8 +52,9 @@ define([
         data: data
       });
 
-      if (currentUser.get('user_id') != model.get('data').from_user_id)
+      if (currentUser.get('user_id') !== model.get('data').from_user_id) {
         model.set('unviewed', true);
+      }
 
       this.trigger('freshEvent', model);
     },
@@ -63,8 +65,9 @@ define([
       this._onStatus('offline', data);
     },
     _onStatus: function (expect, data) {
-      if (this.get('status') == expect)
+      if (this.get('status') === expect) {
         return;
+      }
 
       this.set({
         status: expect,
