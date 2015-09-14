@@ -30,7 +30,7 @@ body { .ft-opensans; font-size: 14px; overflow-x: hidden;
     &:hover { color: @cl-first; }
   }
 }
-.button { padding: 10px 15px; font-family: 'Raleway',sans-serif; font-weight: normal; font-size: 1.5rem; text-transform: uppercase; .border-radius(25px); background-color: @cl-first; border: 0; color: #fff !important;text-decoration:none; text-align: center;
+.button { padding: 10px 15px; font-family: 'Raleway',sans-serif; font-weight: normal; font-size: 1.5rem; text-transform: uppercase; .border-radius(25px); background-color: @cl-first; border: 0; color: #fff;text-decoration:none; text-align: center;
   &:hover { text-decoration: none; background-color: lighten(@cl-first, 10%); }
   &.square { .border-radius(0); }
   &.button-blue { background: @cl-second;
@@ -38,6 +38,9 @@ body { .ft-opensans; font-size: 14px; overflow-x: hidden;
   }
   &.button-gray { background: @cl-subtext20;
    &:hover { background-color: darken(@cl-subtext20, 10%); }
+  }
+  &.button-white { background: #FFF; color:@cl-subtext50;
+    &:hover { background-color: @cl-clouds; }
   }
   &.button-small { padding: 7px 12px; font-size: 1.3rem; display: flex; margin: auto; }
 }

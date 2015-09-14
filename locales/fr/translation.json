@@ -21,7 +21,7 @@
     "signup-self": "S'inscrire",
     "login-self": "Se connecter",
     "carousel": {
-      "heading": "chat room network >",
+      "heading": "chatroom network ",
       "slogan": "Discuter autour de vos centres d'intérêt.<br>Entrez en relation avec des gens de votre univers.<br>Créez et animez votre propre communauté."
     }
   },
@@ -133,7 +133,7 @@
     }
   },
   "signup": {
-    "disclaimer": "En cliquant sur \"Et voilà !\" j’accepte les conditions d'utilisation de DONUT"
+    "disclaimer": "En créant mon compte, j'accepte les <strong><a href=\"/eutc\" target=\"_blank\">CGU</a></strong>"
   },
   "choose-username": {
     "title": "Il est temps de choisir un nom d'utilisateur !",
@@ -295,7 +295,7 @@
         "<span>votre tribu !</span>",
         "<span>vos voisins !</span>"
       ],
-      "knowmore": "en savoir +"
+      "knowmore": "en savoir plus"
     },
     "description": {
       "title1": "tasty",

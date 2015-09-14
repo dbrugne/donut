@@ -21,7 +21,7 @@
     "signup-self": "Sign up",
     "login-self": "Log in",
     "carousel": {
-      "heading": "chat room network >",
+      "heading": "chatroom network ",
       "slogan": "Talk about your interests. <br/>Get in touch with people in your universe. <br> Create and animate your own community."
     }
   },
@@ -133,7 +133,7 @@
     }
   },
   "signup": {
-    "disclaimer": "by clicking the \"Here we go!\" button I accept the user terms and conditions of DONUT."
+    "disclaimer": "By creating an account, I accept <strong><a href=\"/eutc\" target=\"_blank\">TOU</a></strong>"
   },
   "choose-username": {
     "title": "It's time to choose a username!",
