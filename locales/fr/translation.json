@@ -785,6 +785,9 @@
         "ps": "P.S.: pour ne plus recevoir ce type de notifications veuillez décocher les options de notifications dans les préférences de votre compte sur <a href=\"https://__fqdn__\">__fqdn__</a>, pour toute question nous sommes à votre écoute sur <a href=\"https://__fqdn__/!#room/help\">#help</a>"
       }
     },
+    "common": {
+      "reason": "Motif: __reason__"
+    },
     "welcome": {
       "subject": "Bienvenue sur DONUT.me ! Votre compte a été créé avec succès",
       "content": {
@@ -875,10 +878,10 @@
       }
     },
     "roomdevoice": {
-      "subject": "On vous a rendu muet dans #__roomname__",
+      "subject": "Vous êtes muet dans #__roomname__",
       "content": {
-        "title": "On vous a rendu muet dans #__roomname__",
-        "disclaimer": "Aïe, on vous a rendu muet muet dans #__roomname__",
+        "title": "Vous êtes muet dans #__roomname__",
+        "disclaimer": "Aïe, vous êtes désormais muet dans <strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>. Ca ne concerne que <strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>. Mais ne vous inquiétez pas, les modérateurs de <strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong> ne devraient pas tarder à vous rendre la parole. Pendant ce temps, profitez-en pour aller vous chercher un petit donut et rejoindre une autre discussion !",
         "action": "... et tout ça à cause de <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
         "button": "Retourner sur DONUT"
       }

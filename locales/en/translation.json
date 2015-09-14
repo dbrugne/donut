@@ -424,10 +424,10 @@
       "infobox": "Unblock this user"
     },
     "voice": {
-      "infobox": "Voice this user"
+      "infobox": "Unmute this user"
     },
     "devoice": {
-      "infobox": "Devoice this user"
+      "infobox": "Mute this user"
     },
     "profile": {
       "infobox": "View the user profile"
@@ -766,6 +766,9 @@
         "ps": "P.S.: To avoid receiving these notification types, please uncheck it from your notification options in your account preferences on <a href=\"https://__fqdn__\">__fqdn__</a>. For any question, we are available on <a href=\"https://__fqdn__/!#room/help\">#help</a>"
       }
     },
+    "common": {
+      "reason": "Reason: __reason__"
+    },
     "welcome": {
       "subject": "Welcome to DONUT.me! Your account was successfully created",
       "content": {
@@ -847,21 +850,21 @@
       }
     },
     "roomvoice": {
-      "subject": "You were unmuted in #__roomname__",
+      "subject": "You are unmute in #__roomname__",
       "content": {
-        "title": "You were unmuted in #__roomname__",
-        "disclaimer": "It looks like all is well that ends well!",
+        "title": "You are unmute in #__roomname__",
+        "disclaimer": "You are unmute in <strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>... as requested by <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong> Now can write as much as you want. Enjoy !",
         "action": "... and all of that thanks to <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
         "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Go to chat\">Go to chat</a>"
       }
     },
     "roomdevoice": {
-      "subject": "You were muted in #__roomname__",
+      "subject": "You are mute in #__roomname__",
       "content": {
-        "title": "You were muted in #__roomname__",
-        "disclaimer": "This is sad news... You are mute in #__roomname__",
+        "title": "You are mute in #__roomname__",
+        "disclaimer": "You have been muted in <strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>. This only applies to <strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>. Don't worry, the moderators of <strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong> should unmute you very shortly. Meanwhile pick a donut and join another discussion!",
         "action": "... and all of that thanks to <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
-        "button": "Return to DONUT"
+        "button": "Back to DONUT"
       }
     },
     "usermessage": {

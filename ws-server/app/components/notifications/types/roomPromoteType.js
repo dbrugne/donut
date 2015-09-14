@@ -154,7 +154,7 @@ Notification.prototype.sendEmail = function (model, done) {
           break;
         case 'roomdevoice':
           method = emailer.roomDevoice;
-          data = { username: history.by_user.username, roomname: history.room.name };
+          data = { username: history.by_user.username, roomname: history.room.name, reason: (history.data && history.data.reason ? history.data.reason : null) };
           break;
         default:
           return callback('roomPromoteType.sendEmail unknown notification type: ' + model.type);
