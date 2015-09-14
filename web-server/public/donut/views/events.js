@@ -993,7 +993,7 @@ define([
           that.scrollDown();
         }
         that.historyLoading = false;
-        that.historyNoMore = data.more;
+        that.historyNoMore = !data.more;
         that.toggleHistoryLoader(data.more);
       });
     },
