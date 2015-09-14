@@ -379,7 +379,7 @@
       "banned": "Vous avez bloqué cet utilisateur",
       "bannedMessage": {
         "onetoone": "Vous avez été bloqué par cet utilisateur",
-        "room": "Vous avez été bloqué dans ce Donut"
+        "room": "Vous êtes muet dans ce donut à la demande d'un modérateur"
       },
       "unlock": "(Cliquez ici pour le débloquer)"
     },
@@ -501,8 +501,8 @@
       "deban": "n'est plus banni à la demande de",
       "op": " est maintenant modérateur à la demande de ",
       "deop": " n'est plus modérateur à la demande de ",
-      "voice": " rend la parole à ",
-      "devoice": " a rendu muet ",
+      "voice": " a retrouvé la parole à la demande de ",
+      "devoice": " est muet à la demande de ",
       "in": " est entré à",
       "out": " est sorti à",
       "online": " est en ligne,",

@@ -359,7 +359,7 @@
       "banned": "You have lock this user",
       "bannedMessage": {
         "onetoone": "You have been locked by this user",
-        "room": "You have been locked in this Donut"
+        "room": "You are mute in this donut as requested by a moderator"
       },
       "unlock": "(Click here to unlock)"
     },
@@ -482,8 +482,8 @@
       "deban": " is no longer banned as requested by",
       "op": "  is now a moderator as requested by",
       "deop": "  is no longer a moderator as requested by",
-      "voice": " makes speech of ",
-      "devoice": " mutes ",
+      "voice": " is no longer mute as requested by ",
+      "devoice": " is now mute as requested by ",
       "in": " entered at ",
       "out": " left at ",
       "online": " is online,",
