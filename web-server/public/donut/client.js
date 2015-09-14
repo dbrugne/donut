@@ -542,15 +542,33 @@ define([
     },
     roomRefuse: function (roomId, userId, fn) {
       var data = {room_id: roomId, user_id: userId};
-      debug('io:out:room:allow', data);
+      debug('io:out:room:refuse', data);
       pomelo.request(
         'chat.roomAllowHandler.refuse',
         data,
         function (response) {
           if (response.err) {
-            debug('io:in:room:allow error: ', response);
+            debug('io:in:room:refuse error: ', response);
           } else {
-            debug('io:in:room:allow', response);
+            debug('io:in:room:refuse', response);
+          }
+          if (_.isFunction(fn)) {
+            return fn(response);
+          }
+        }
+      );
+    },
+    roomDisallow: function (roomId, userId, fn) {
+      var data = {room_id: roomId, user_id: userId};
+      debug('io:out:room:disallow', data);
+      pomelo.request(
+        'chat.roomDisallowHandler.call',
+        data,
+        function (response) {
+          if (response.err) {
+            debug('io:in:room:disallow error: ', response);
+          } else {
+            debug('io:in:room:disallow', response);
           }
           if (_.isFunction(fn)) {
             return fn(response);

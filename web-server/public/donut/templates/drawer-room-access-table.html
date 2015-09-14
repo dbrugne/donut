@@ -13,6 +13,10 @@
             <div class="refuse-allow" data-toggle="confirmation" data-action="refuse-allow-user" title="<%= t('global.refuse') %>" data-user-id="<%= u.user_id %>">
                 <i class="icon icon-fw icon-times" data-toggle="tooltip" data-placement="top" title="<%= t('chat.allow.infobox.refuse') %>"></i>
             </div>
+            <% } else { %>
+            <div class="disallow" data-toggle="confirmation" data-action="disallow-user" data-user-id="<%= u.user_id %>">
+                <i class="icon icon-fw icon-times" data-toggle="tooltip" data-placement="top" title="<%= t('chat.disallow.infobox') %>"></i>
+            </div>
             <% } %>
         </td>
     </tr>

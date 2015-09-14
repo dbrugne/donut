@@ -43,6 +43,8 @@ define([
     initialize: function (options) {
       this.model = options.model;
 
+      this.listenTo(this.model, 'redraw-tables', this.renderTables);
+
       this.initialRender();
     },
     initialRender: function () {
@@ -64,10 +66,15 @@ define([
         el: this.$('#table-allow-pending'),
         model: this.model
       });
+      this.tableAllowed = new TableView({
+        el: this.$('#table-allowed'),
+        model: this.model
+      });
       this.renderTables();
     },
     renderTables: function () {
       this.tablePending.render('pending');
+      this.tableAllowed.render('allowed');
     },
     renderDropDown: function () {
       this.dropdown.addClass('open');

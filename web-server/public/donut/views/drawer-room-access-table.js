@@ -12,11 +12,10 @@ define([
   var DrawerRoomUsersTableView = Backbone.View.extend({
     template: templates['drawer-room-access-table.html'],
 
-    type: '',
-
     events: {
       'click .accept-allow': 'onAllowUser',
-      'click .refuse-allow': 'onRefuseUser'
+      'click .refuse-allow': 'onRefuseUser',
+      'click .disallow': 'onDisallow'
     },
 
     initialize: function (options) {
@@ -24,10 +23,12 @@ define([
     },
 
     render: function (type) {
-      this.type = type;
-
       if (type === 'pending') {
         client.roomUsers(this.model.get('id'), {type: 'allowedPending'}, _.bind(function (data) {
+          this.onResponse(data.users);
+        }, this));
+      } else if (type === 'allowed') {
+        client.roomUsers(this.model.get('id'), {type: 'allowed'}, _.bind(function (data) {
           this.onResponse(data.users);
         }, this));
       }
@@ -49,7 +50,7 @@ define([
 
       if (userId) {
         client.roomAllow(this.model.get('id'), userId, true, _.bind(function (data) {
-          this.render(this.type);
+          this.model.trigger('redraw-tables');
         }, this));
       }
     },
@@ -59,7 +60,17 @@ define([
 
       if (userId) {
         client.roomRefuse(this.model.get('id'), userId, _.bind(function (data) {
-          this.render(this.type);
+          this.model.trigger('redraw-tables');
+        }, this));
+      }
+    },
+
+    onDisallow: function (event) {
+      var userId = $(event.currentTarget).data('userId');
+
+      if (userId) {
+        client.roomDisallow(this.model.get('id'), userId, _.bind(function (data) {
+          this.model.trigger('redraw-tables');
         }, this));
       }
     },
