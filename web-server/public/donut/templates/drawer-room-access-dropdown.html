@@ -2,5 +2,5 @@
     <li data-user-id="<%= u.user_id %>"><a href="#"><img src="<%= u.avatarUrl %>" class="mr5"><%= u.username %></a></li>
 <% });%>
 <% if (!users.length) { %>
-<li><%= t('chat.search.nouser') %></li>
+<li><a href="#"><%= t('chat.search.nouser') %></a></li>
 <% } %>

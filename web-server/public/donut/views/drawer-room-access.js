@@ -9,8 +9,9 @@ define([
   'models/app',
   'client',
   'views/modal-confirmation',
+  'views/drawer-room-access-table',
   '_templates'
-], function ($, _, Backbone, i18next, moment, common, app, client, ConfirmationView, templates) {
+], function ($, _, Backbone, i18next, moment, common, app, client, ConfirmationView, TableView, templates) {
   var RoomAccessView = Backbone.View.extend({
 
     template: templates['drawer-room-access.html'],
@@ -35,6 +36,7 @@ define([
 
     events: {
       'keyup input[type=text]': 'onSearch',
+      'click i.icon-search': 'onSearch',
       'click .dropdown-menu>li': 'onAllowUser'
     },
 
@@ -58,10 +60,14 @@ define([
       this.search = this.$('input[type=text]');
       this.dropdown = this.$('.dropdown');
       this.dropdownMenu = this.$('.dropdown-menu');
-
-      this.render();
+      this.tablePending = new TableView({
+        el: this.$('#table-allow-pending'),
+        model: this.model
+      });
+      this.renderTables();
     },
-    render: function () {
+    renderTables: function () {
+      this.tablePending.render('pending');
     },
     renderDropDown: function () {
       this.dropdown.addClass('open');
@@ -72,10 +78,9 @@ define([
         _.each(data.users.list, function (element, index, list) {
           list[index].avatarUrl = common.cloudinarySize(element.avatar, 20);
         });
+
         that.dropdownMenu.html(that.dropdownTemplate({users: data.users.list}));
       });
-    },
-    onResponse: function (data) {
     },
     removeView: function () {
       this.remove();
@@ -83,24 +88,32 @@ define([
     onSearch: function (event) {
       event.preventDefault();
 
-      if (this.search.val() !== '') {
-        var that = this;
-        clearTimeout(this.timeout);
-        this.timeout = setTimeout(function () {
-          that.renderDropDown();
-        }, this.timeBufferBeforeSearch);
-      } else {
-        clearTimeout(this.timeout);
+      clearTimeout(this.timeout);
+
+      if (this.search.val() === '') {
         this.dropdown.removeClass('open');
+        return;
       }
+
+      if (event.type === 'click' || event.keyCode === 13) { // instant search when user click on icon or press enter
+        this.renderDropDown();
+        return;
+      }
+
+      this.timeout = setTimeout(_.bind(function () {
+        this.renderDropDown();
+      }, this), this.timeBufferBeforeSearch);
     },
     onAllowUser: function (event) {
       event.preventDefault();
 
       var userId = $(event.currentTarget).data('userId');
-      ConfirmationView.open({}, _.bind(function () {
-        client.roomAllow(this.model.get('id'), userId);
-      }, this));
+
+      if (userId) {
+        ConfirmationView.open({}, _.bind(function () {
+          client.roomAllow(this.model.get('id'), userId, false);
+        }, this));
+      }
     }
 
   });

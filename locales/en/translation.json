@@ -96,6 +96,8 @@
     "save": "save",
     "cancel": "cancel",
     "view": "view",
+    "accept": "accept",
+    "refuse": "refuse",
     "viewprofile": "view profile",
     "online": "online",
     "offline": "offline",
@@ -394,6 +396,15 @@
     "owner": {
       "is": "This user is the creator of this donut."
     },
+    "allow": {
+      "infobox": {
+        "accept": "Authorize",
+        "refuse": "Refuse"
+      }
+    },
+    "disallow": {
+      "infobox": "Disallow"
+    },
     "op": {
       "is": "This user is the moderator of this donut.",
       "infobox": "Make moderator"
@@ -509,6 +520,7 @@
         "voice": "You are unmute in <a href=\"#room/__roomname__\"><span class=\"name\">#__roomname__</span></a>",
         "devoice": "You are mute in <a href=\"#room/__roomname__\"><span class=\"name\">#__roomname__</span></a>",
         "roomallowed": "You are now authorized to join <a href=\"#room/__roomname__\"><span class=\"name\">#__roomname__</span></a>",
+        "roomallowrefuse": "Your request to join <a href=\"#room/__roomname__\"><span class=\"name\">#__roomname__</span></a></br> has been refused",
         "roomjoin": "<span class=\"name open-user-profile\" data-user-id=\"__userid__\">@__username__</span> joined <a href=\"#room/__roomname__\"><span class=\"name\">#__roomname__</span></a>",
         "roomjoinrequest": "<span class=\"name open-user-profile\" data-user-id=\"__userid__\">@__username__</span> whant to join <a href=\"#room/__roomname__\"><span class=\"name\">#__roomname__</span></a>",
         "roomtopic": "New topic in <a href=\"#room/__roomname__\"><span class=\"name\">#__roomname__</span></a>",
@@ -567,6 +579,7 @@
     "access": {
       "link": "access",
       "labelsearch": "Add users to the allowed list",
+      "labelpending": "Users pending approval",
       "types": {
         "all": "All",
         "allowed": "Allowed",

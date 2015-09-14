@@ -22,6 +22,8 @@ handler.call = function (data, session, next) {
 
   var that = this;
 
+  var wasPending = false;
+
   async.waterfall([
 
     function check (callback) {
@@ -53,6 +55,8 @@ handler.call = function (data, session, next) {
     },
 
     function broadcast (callback) {
+      wasPending = room.isAllowedPending(user.id);
+
       var event = {
         by_user_id: currentUser.id,
         by_username: currentUser.username,
@@ -69,7 +73,7 @@ handler.call = function (data, session, next) {
       Room.update(
         {_id: { $in: [room.id] }},
         {$addToSet: {join_mode_allowed: user.id}}, function (err) {
-          if (room.isAllowedPending(user.id)) {
+          if (wasPending) {
             Room.update(
               {_id: { $in: [room.id] }},
               {$pull: {allowed_pending: user.id}}, function (err) {
@@ -84,6 +88,10 @@ handler.call = function (data, session, next) {
     },
 
     function notification (event, callback) {
+      if (!data.notification && !wasPending) {
+        return callback(null, event);
+      }
+
       Notifications(that.app).getType('roomallowed').create(user.id, room, event.id, function (err) {
         return callback(err, event);
       });
@@ -92,6 +100,85 @@ handler.call = function (data, session, next) {
   ], function (err) {
     if (err) {
       logger.error('[room:allow] ' + err);
+      return next(null, { code: 500, err: err });
+    }
+
+    return next(null, {success: true});
+  });
+};
+
+handler.refuse = function (data, session, next) {
+  var user = session.__user__;
+  var currentUser = session.__currentUser__;
+  var room = session.__room__;
+
+  var that = this;
+
+  async.waterfall([
+
+    function check (callback) {
+      if (!data.room_id) {
+        return callback('room_id is mandatory');
+      }
+
+      if (!data.user_id) {
+        return callback('user_id is mandatory');
+      }
+
+      if (!room) {
+        return callback('unable to retrieve room: ' + data.room_id);
+      }
+
+      if (!room.isOwner(currentUser.id)) {
+        return callback('User ' + currentUser.username + ' is not owner');
+      }
+
+      if (room.isAllowed(user.id)) {
+        return callback('user is allowed in room ' + room.name);
+      }
+
+      if (room.isBanned(user.id)) {
+        return callback('User ' + user.username + 'is banned in room: ' + room.name);
+      }
+
+      if (!room.isAllowedPending(user.id)) {
+        return callback('User ' + user.username + 'don\'t have allow pending in room: ' + room.name);
+      }
+
+      return callback(null);
+    },
+
+    function broadcast (callback) {
+      var event = {
+        by_user_id: currentUser.id,
+        by_username: currentUser.username,
+        by_avatar: currentUser._avatar(),
+        user_id: user.id,
+        username: user.username,
+        avatar: user._avatar()
+      };
+
+      roomEmitter(that.app, user, room, 'room:refuse', event, callback);
+    },
+
+    function persist (eventData, callback) {
+      Room.update(
+        {_id: { $in: [room.id] }},
+        {$pull: {allowed_pending: user.id}}, function (err) {
+          return callback(err, eventData);
+        }
+      );
+    },
+
+    function notification (event, callback) {
+      Notifications(that.app).getType('roomrefuse').create(user.id, room, event.id, function (err) {
+        return callback(err, event);
+      });
+    }
+
+  ], function (err) {
+    if (err) {
+      logger.error('[room:refuse] ' + err);
       return next(null, { code: 500, err: err });
     }
 

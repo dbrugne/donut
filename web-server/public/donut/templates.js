@@ -13,6 +13,7 @@ define([
   'text!./templates/drawer-room-users.html',
   'text!./templates/drawer-room-users-table.html',
   'text!./templates/drawer-room-access.html',
+  'text!./templates/drawer-room-access-table.html',
   'text!./templates/drawer-room-access-dropdown.html',
   'text!./templates/pagination.html',
   'text!./templates/drawer-room-profile.html',
@@ -56,6 +57,7 @@ define([
   'text!./templates/room-users.html',
   'text!./templates/spinner.html',
   'text!./templates/message-edit.html',
+  'text!./templates/notification/room-allow-refuse.html',
   'text!./templates/notification/room-allowed.html',
   'text!./templates/notification/room-op.html',
   'text!./templates/notification/room-deop.html',
@@ -85,6 +87,7 @@ define([
   drawer_room_users,
   drawer_room_users_table,
   drawer_room_access,
+  drawer_room_access_table,
   drawer_room_access_dropdown,
   paginate,
   drawer_room_profile,
@@ -128,6 +131,7 @@ define([
   room_users,
   spinner,
   message_edit,
+  notification_room_allow_refuse,
   notification_room_allowed,
   notification_room_op,
   notification_room_deop,
@@ -170,6 +174,7 @@ define([
   JST['drawer-room-users.html'] = _.template(drawer_room_users);
   JST['drawer-room-users-table.html'] = _.template(drawer_room_users_table);
   JST['drawer-room-access.html'] = _.template(drawer_room_access);
+  JST['drawer-room-access-table.html'] = _.template(drawer_room_access_table);
   JST['drawer-room-access-dropdown.html'] = _.template(drawer_room_access_dropdown);
   JST['pagination.html'] = _.template(paginate);
   JST['drawer-room-profile.html'] = _.template(drawer_room_profile);
@@ -214,6 +219,7 @@ define([
   JST['spinner.html'] = _.template(spinner);
   JST['message-edit.html'] = _.template(message_edit);
   JST['notification/room-allowed.html'] = _.template(notification_room_allowed);
+  JST['notification/room-allow-refuse.html'] = _.template(notification_room_allow_refuse);
   JST['notification/room-op.html'] = _.template(notification_room_op);
   JST['notification/room-deop.html'] = _.template(notification_room_deop);
   JST['notification/room-kick.html'] = _.template(notification_room_kick);

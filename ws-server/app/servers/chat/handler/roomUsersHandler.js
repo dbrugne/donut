@@ -164,7 +164,8 @@ handler.call = function (data, session, next) {
           isBanned: room.isBanned(u.id),
           isDevoiced: room.isDevoice(u.id),
           isOp: room.isOp(u.id),
-          isOwner: room.isOwner(u.id)
+          isOwner: room.isOwner(u.id),
+          isPending: room.isAllowedPending(u.id)
         };
         return userData;
       });
