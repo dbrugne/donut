@@ -138,7 +138,7 @@ emailer.roomKick = function (to, data, callback) {
     username: data.username,
     roomname: data.roomname.replace('#', ''),
     reason: data.reason,
-    title: i18next.t('email.roomkick.content.title', { roomname: data.roomname.replace('#', ''), username: data.username }),
+    title: i18next.t('email.roomkick.content.title', { roomname: data.roomname.replace('#', '') }),
     subject: i18next.t('email.roomkick.subject', { roomname: data.roomname.replace('#', '') })
   }, callback);
 };
@@ -148,7 +148,7 @@ emailer.roomBan = function (to, data, callback) {
     username: data.username,
     roomname: data.roomname.replace('#', ''),
     reason: data.reason,
-    title: i18next.t('email.roomban.content.title', {roomname: data.roomname.replace('#', ''), username: data.username}),
+    title: i18next.t('email.roomban.content.title', {roomname: data.roomname.replace('#', '')}),
     subject: i18next.t('email.roomban.subject', {roomname: data.roomname.replace('#', '')})
   }, callback);
 };

@@ -96,7 +96,7 @@
     "save": "enregistrer",
     "cancel": "annuler",
     "view": "voir",
-    "viewprofile": "voir le profil",
+    "viewprofile": "Voir le profil",
     "online": "en ligne",
     "offline": "hors ligne",
     "connecting": "connexion ...",
@@ -314,7 +314,7 @@
   },
   "profile": {
     "room": {
-      "ownerops": "Les tauliers",
+      "ownerops": "Les habitués",
       "now": "En ce moment",
       "nouser": "Pas d'utilisateur dans le donut",
       "disclaimer": {
@@ -816,10 +816,10 @@
       }
     },
     "emailchanged": {
-      "subject": "L'adresse email de votre compte DONUT.me a été changé avec succès",
+      "subject": "L'adresse email de votre compte DONUT.me a été changée avec succès",
       "content": {
         "title": "Mise à jour de votre email",
-        "disclaimer": "Vous avez procédé à un changement d'adresse email. celle-ci est maintenant active. Il est grand temps d'en profiter !",
+        "disclaimer": "Vous avez procédé à un changement d'adresse email. Celle-ci est maintenant active. Il est grand temps d'en profiter !",
         "button": "Connectez-vous en cliquant ici"
       }
     },
@@ -845,7 +845,7 @@
     "roomkick": {
       "subject": "Vous avez été expulsé de #__roomname__",
       "content": {
-        "title": "Vous avez été expulsé de #__roomname__ par @__username__",
+        "title": "Vous avez été expulsé de #__roomname__",
         "disclaimer": "Ca ne doit pas être si grave, faites-vous un gros câlin et on oublie ça!",
         "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Accéder à la discussion\">Accéder à la discussion</a>"
       }
@@ -853,7 +853,7 @@
     "roomban": {
       "subject": "Vous avez été banni de #__roomname__",
       "content": {
-        "title": "Vous avez été banni de #__roomname__ par @__username__",
+        "title": "Vous avez été banni de #__roomname__",
         "disclaimer": "On dirait bien que vous n'étiez pas faits l'un pour l'autre.<br/>Vous savez ce qu'on dit : \"un donut de perdu, dix de retrouvés !\".",
         "button": "Retourner sur DONUT"
       }

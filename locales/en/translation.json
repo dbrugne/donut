@@ -96,7 +96,7 @@
     "save": "save",
     "cancel": "cancel",
     "view": "view",
-    "viewprofile": "view profile",
+    "viewprofile": "View profile",
     "online": "online",
     "offline": "offline",
     "connecting": "connection ...",
@@ -322,9 +322,9 @@
   "chat": {
     "rollup": {
       "header": {
-        "commands": "Liste des commandes disponibles",
-        "rooms": "Liste des donuts disponibles",
-        "users": "Liste des utilisateurs",
+        "commands": "List of available commands",
+        "rooms": "List of available donuts",
+        "users": "User list",
         "tonavigate": "to navigate",
         "toselect": "to select",
         "todismiss": "to dismiss"
@@ -356,12 +356,12 @@
       "see": "See",
       "ban": "Ban",
       "deban": "Deban",
-      "banned": "You have lock this user",
+      "banned": "You have blocked this user",
       "bannedMessage": {
         "onetoone": "You have been locked by this user",
         "room": "You are mute in this donut as requested by a moderator"
       },
-      "unlock": "(Click here to unlock)"
+      "unlock": "(Click here to unblock)"
     },
     "create": {
       "info": "Attention, the donut name will not be editable later.",
