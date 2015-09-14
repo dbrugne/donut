@@ -145,16 +145,20 @@
           }
           .events { border-top: none;
             .go-to-top, .go-to-bottom { display:none !important; }
-            .scrollable .scrollable-content .realtime .block {
-              &.date { margin-top: 10px;
-                .moment { font-size:1em; }
-              } // #chat #center .discussion .content .header .scrollable .scrollable-content .realtime .block.date
-              .event .date { display:none; } // #chat #center .discussion .content .events .scrollable .scrollable-content .realtime .block .event .date
-              &.message .event {
-                .text { padding: 0; }
-                &:hover .actions { display:none; }
-              } // #chat #center .discussion .content .events .scrollable .scrollable-content .realtime .block.message .event
-            } // #chat #center .discussion .content .events .scrollable .scrollable-content .realtime .block
+            .scrollable .scrollable-content {
+              .pad { min-height: 0; }
+              .loader .no-more { margin: 0; }
+              .realtime .block {
+                &.date { margin-top: 10px;
+                  .moment { font-size:1em; }
+                } // #chat #center .discussion .content .header .scrollable .scrollable-content .realtime .block.date
+                .event .date { display:none; } // #chat #center .discussion .content .events .scrollable .scrollable-content .realtime .block .event .date
+                &.message .event {
+                  .text { padding: 0; }
+                  &:hover .actions { display:none; }
+                } // #chat #center .discussion .content .events .scrollable .scrollable-content .realtime .block.message .event
+              } // #chat #center .discussion .content .events .scrollable .scrollable-content .realtime .block
+            }
           } // #chat #center .discussion .content .events
           .input { padding-left: 10px; margin-bottom: 10px;
             .text-container {   padding-bottom: 0;
@@ -162,17 +166,14 @@
                 .overlay-text { top: 0; }
                 &::after { border-width: 7px 7px 0; bottom: -7px; right: 11px; } // #chat #center .discussion .content .input .text-container .overlay::after
               } // #chat #center .discussion .content .input .text-container .overlay
-              .text { padding: 5px 70px 5px 5px; height: 32px;
+              .text { padding: 5px 70px 5px 5px; height: 32px; // #chat #center .discussion .content .input .text-container .text
                 .editable { height: 20px; min-height: 20px; }
                 .avatar { display: none; }
                 .mentions-input-box textarea {   min-height: 20px; }
-                .actions { top: 4px; right: 33px; font-size: 15px;
+                .actions { top: 0; right: 10px; font-size: 21px;
                   .images { margin: 0; display: inline; }
                 }
-                .send { width: 30px; padding: 0; margin: 0; height: 30px;
-                  img { width: 20px; margin-top: 3px; height: initial; }
-                  .arrow-bottom:after { bottom: -7px; left: 7px; border-width: 7px 7px 0;}
-                }
+                .send { display:none; } // #chat #center .discussion .content .input .text-container .text .send
               }
             } // #chat #center .discussion .content .input .text-container
           } // #chat #center .discussion .content .input
@@ -230,21 +231,20 @@
     .message-description { padding: 0; }
   }
 
-  //#landing, #welcome {
-    .ctn-results .rooms.cards .room { width: 100%; height: 110px; margin-bottom: 10px; padding-bottom: 10px;
-      &:hover .cover { display:none; }
-      .mini-card { display:block !important;
-        &::after { content: ""; width: 100%; position: absolute; bottom: 0; left: 0; border-bottom: 1px solid @cl-subtext20;}
-        .avatar { background-size: 110%; float: left; margin-left: 10px; margin-right: 20px; }
-        .ctn { .flex(1); margin-right: 10px; position: relative; overflow: hidden;
-          .name { float: left; white-space: nowrap; }
-          a.dc-text { float:right; position: absolute; bottom: 10px; .ft-raleway-medium; font-size: 1.7rem; white-space: nowrap; right:20px; }
-        }
+  .ctn-results .rooms.cards .room { width: 100%; height: 110px; margin-bottom: 10px; padding-bottom: 10px;
+    &:hover .cover { display:none; }
+    .mini-card { display:block !important;
+      &::after { content: ""; width: 100%; position: absolute; bottom: 0; left: 0; border-bottom: 1px solid @cl-subtext20;}
+      .avatar { background-size: 110%; float: left; margin-left: 10px; margin-right: 20px; }
+      .ctn { .flex(1); margin-right: 10px; position: relative; overflow: hidden;
+        .name { float: left; white-space: nowrap; }
+        a.dc-text { float:right; position: absolute; bottom: 10px; .ft-raleway-medium; font-size: 1.7rem; white-space: nowrap; right:20px; }
       }
-      &:last-child .mini-card::after { border-color:transparent; }
-      .cover, .back { display:none; }
     }
-  //}
+    &:last-child .mini-card::after { border-color:transparent; }
+    .cover, .back { display:none; }
+  }
+
   #welcome {     overflow: auto; height: 100%;
     p { font-size: 1.2rem; }
   }
@@ -263,6 +263,12 @@
 
 /** for <=480 screens resolutions **/
 @media screen and (max-width: @screen-xs-min) {
+  #chat #center #home .nothing,
+  #chat #center #home .left .rooms .title { font-size:1.2rem; }
+  #chat #center .discussion .content .events .scrollable .scrollable-content .loader .no-more .title { font-size:2rem; }
+  #chat #center .discussion .content .events .scrollable .scrollable-content .loader .no-more .info,
+  #chat #center .discussion .content .events .scrollable .scrollable-content .loader .no-more .info .name,
+  #chat #center .discussion .content .events .scrollable .scrollable-content .loader .no-more .info .owner { font-size:1.5rem; }
   #room-users-modal .modal-body .list li { width: 100%; }
   #landing footer { display:none; }
 }
