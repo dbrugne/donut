@@ -1,8 +1,8 @@
 'use strict';
 var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
 var async = require('async');
+var _ = require('underscore');
 var Room = require('../../../../../shared/models/room');
-var Notifications = require('../../../components/notifications');
 var roomEmitter = require('../../../util/roomEmitter');
 
 var Handler = function (app) {
@@ -58,7 +58,43 @@ handler.call = function (data, session, next) {
         avatar: user._avatar()
       };
 
-      roomEmitter(that.app, user, room, 'room:disallow', event, callback);
+      roomEmitter(that.app, user, room, 'room:kick', event, callback);
+    },
+
+    /**
+     * /!\ .unsubscribeClients come after .historizeAndEmit to allow kicked user to receive message
+     */
+    function unsubscribeClients (sentEvent, callback) {
+      // search for all the user sessions (any frontends)
+      that.app.statusService.getSidsByUid(user.id, function (err, sids) {
+        if (err) {
+          return callback('Error while retrieving user status: ' + err);
+        }
+
+        if (!sids || sids.length < 1) {
+          return callback(null, sentEvent); // the targeted user could be offline at this time
+        }
+
+        var parallels = [];
+        _.each(sids, function (sid) {
+          parallels.push(function (fn) {
+            that.app.globalChannelService.leave(room.name, user.id, sid, function (err) {
+              if (err) {
+                return fn(sid + ': ' + err);
+              }
+
+              return fn(null);
+            });
+          });
+        });
+        async.parallel(parallels, function (err, results) {
+          if (err) {
+            return callback('error while unsubscribing user ' + user.id + ' from ' + room.name + ': ' + err);
+          }
+
+          return callback(null, sentEvent);
+        });
+      });
     },
 
     function persist (eventData, callback) {
