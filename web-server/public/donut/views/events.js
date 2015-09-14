@@ -848,9 +848,9 @@ define([
       var direction;
       var bottom = this.isScrollOnBottom();
       var key = keyboard._getLastKeyCode(event);
-      if (key.which === keyboard.UP) {
+      if (key.key === keyboard.UP) {
         direction = 'prev';
-      } else if (key.which === keyboard.DOWN) {
+      } else if (key.key === keyboard.DOWN) {
         direction = 'next';
       } else {
         if (bottom) {
