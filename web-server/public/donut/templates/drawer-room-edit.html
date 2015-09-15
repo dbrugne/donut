@@ -43,14 +43,8 @@
         </div>
         <div class="radio">
             <label>
-                <input type="radio" class="savable allowed" name="mode" value="allowed" <% if (room.mode === 'allowed') { print('checked'); }; %>>
-                <%= t('chat.form.room-form.common.mode.allowed') %>
-            </label>
-        </div>
-        <div class="radio">
-            <label>
-                <input type="radio" class="savable password" name="mode" value="password" <% if (room.mode === 'password') { print('checked'); }; %>>
-                <%= t('chat.form.room-form.common.mode.password') %>
+                <input type="radio" class="savable private" name="mode" value="private" <% if (room.mode === 'private') { print('checked'); }; %>>
+                <%= t('chat.form.room-form.common.mode.private') %>
             </label>
         </div>
     </div>

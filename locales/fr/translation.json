@@ -697,8 +697,6 @@
           "mode": {
             "public": "Publique",
             "private": "Privée",
-            "allowed": "Utilisateur autorisé uniquement",
-            "password": "Utilisateur ayant le mot de passe",
             "password-change": "Changer le mot de passe",
             "password-field": "Mot de passe"
           }

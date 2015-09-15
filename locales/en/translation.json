@@ -677,8 +677,6 @@
           "mode": {
             "public": "Public",
             "private": "Private",
-            "allowed": "Only authorized user",
-            "password": "User with the password",
             "password-change": "Change password",
             "password-field": "Password"
           }

@@ -11,12 +11,7 @@
             <% if (owner && owner.username) { %>
             <span class="owner"><%= t('global.by') %> <a class="open-user-profile dc-text" data-user-id="<%= owner.id %>">@<%= owner.username %></a></span>
             <% } %>
-            <% if (join_mode === 'allowed') { %>
-            <div>
-                <%= t('chat.blocked.allowed') %>
-                <button class="ask-for-allowance"><%= t('chat.blocked.allowed_button') %></button>
-            </div>
-            <% } else if (join_mode === 'password') { %>
+            <% if (join_mode === 'private') { %>
             <div class="password-form mt15 fs15">
                 <%= t('chat.blocked.password') %>
                 <br/>

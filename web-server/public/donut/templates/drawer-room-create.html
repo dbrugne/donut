@@ -11,7 +11,7 @@
 <div class="form-group">
     <div class="field flex-parent">
         <span class="hash dc-text">#</span>
-        <input type="text" class="input dc-border flex-child" placeholder="<%= t('chat.create.placeholder') %>" maxlength="24" value="<%= name %>" />
+        <input type="text" class="input dc-border flex-child" placeholder="<%= t('chat.form.room-form.create.placeholder') %>" maxlength="24" value="<%= name %>" />
     </div>
     <p class="help-block"><%= t('chat.form.room-form.create.help') %></p>
 </div>
@@ -25,14 +25,8 @@
     </div>
     <div class="radio">
         <label>
-            <input type="radio" class="savable allowed" name="mode" value="allowed">
-            <%= t('chat.form.room-form.common.mode.allowed') %>
-        </label>
-    </div>
-    <div class="radio">
-        <label>
-            <input type="radio" class="savable password" name="mode" value="password">
-            <%= t('chat.form.room-form.common.mode.password') %>
+            <input type="radio" class="savable private" name="mode" value="private">
+            <%= t('chat.form.room-form.common.mode.private') %>
         </label>
     </div>
     <div class="field-password">

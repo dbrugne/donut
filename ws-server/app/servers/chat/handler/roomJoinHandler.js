@@ -36,7 +36,7 @@ handler.call = function (data, session, next) {
         if (room.isBanned(user.id)) {
           return callback('banned');
         }
-        if (room.join_mode === 'allowed' && !room.isAllowed(user.id)) {
+        if (room.join_mode === 'private' && !room.isAllowed(user.id)) {
           return callback('notallowed');
         }
       }

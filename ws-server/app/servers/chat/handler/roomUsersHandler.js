@@ -69,11 +69,11 @@ handler.call = function (data, session, next) {
         return callback('search type \'' + data.type + '\' don\'t exist');
       }
 
-      if (data.attributes.type === 'allowed' && room.join_mode !== 'allowed') {
+      if (data.attributes.type === 'allowed' && room.join_mode !== 'private') {
         return callback('cannot make an allowed search on a no-allowed room');
       }
 
-      if (data.attributes.type === 'regular' && room.join_mode === 'allowed') {
+      if (data.attributes.type === 'regular' && room.join_mode === 'private') {
         return callback('cannot make a regular search on an allowed room');
       }
 

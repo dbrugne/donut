@@ -49,8 +49,8 @@ define([
       var isOp = this.model.currentUserIsOp();
       var isAdmin = this.model.currentUserIsAdmin();
 
-      if (this.model.get('join_mode') !== 'allowed' || (!isOwner && !isAdmin && !isOp)) {
-        this.types = _.without(this.types, 'allowed');
+      if (this.model.get('join_mode') !== 'private' || (!isOwner && !isAdmin && !isOp)) {
+        this.types = _.without(this.types, 'private');
       } if (!isOwner && !isAdmin && !isOp) {
         this.types = _.without(this.types, 'ban', 'devoice');
       }
