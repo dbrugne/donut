@@ -38,6 +38,7 @@ define([
       this.listenTo(client, 'user:offline', this.onUserOffline);
       this.listenTo(client, 'room:kick', this.onKick);
       this.listenTo(client, 'room:ban', this.onBan);
+      this.listenTo(client, 'room:disallow', this.onDisallow);
       this.listenTo(client, 'room:deban', this.onDeban);
       this.listenTo(client, 'room:voice', this.onVoice);
       this.listenTo(client, 'room:devoice', this.onDevoice);
@@ -180,12 +181,15 @@ define([
       model.onUserOffline(data);
     },
     onKick: function (data) {
-      this._kickBan('kick', data);
+      this._kickBanDisallow('kick', data);
     },
     onBan: function (data) {
-      this._kickBan('ban', data);
+      this._kickBanDisallow('ban', data);
     },
-    _kickBan: function (what, data) {
+    onDisallow: function (data) {
+      this._kickBanDisallow('disallow', data);
+    },
+    _kickBanDisallow: function (what, data) {
       var model;
       if (!data || !data.room_id || !(model = this.get(data.room_id))) {
         return;

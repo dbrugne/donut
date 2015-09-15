@@ -560,6 +560,7 @@
     "closemessage": "Are you sure you want to leave? Your conversation log will be lost.",
     "kickmessage": "You have been kicked out of __name__",
     "banmessage": "You have been banned from __name__",
+    "disallowmessage": "You are not allowed anymore in __name__",
     "roomnotexists": "The donut __name__ does not exist yet, <a class='open-create-room' data-name='__name__'>would you like to create it</a>?",
     "successfullycreated": "Donut __name__ successfully created",
     "reason": "(reason: \"__reason__\")",

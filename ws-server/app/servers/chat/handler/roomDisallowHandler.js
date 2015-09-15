@@ -58,7 +58,7 @@ handler.call = function (data, session, next) {
         avatar: user._avatar()
       };
 
-      roomEmitter(that.app, user, room, 'room:kick', event, callback);
+      roomEmitter(that.app, user, room, 'room:disallow', event, callback);
     },
 
     /**
@@ -100,7 +100,7 @@ handler.call = function (data, session, next) {
     function persistOnRoom (eventData, callback) {
       Room.update(
         {_id: { $in: [room.id] }},
-        {$pull: {join_mode_allowed: user.id, users: user.id}}, function (err) {
+        {$pull: {allowed: user.id, users: user.id}}, function (err) {
           return callback(err, eventData);
         }
       );

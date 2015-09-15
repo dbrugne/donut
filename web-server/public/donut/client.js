@@ -38,6 +38,8 @@ define([
         'room:voice',
         'room:devoice',
         'room:kick',
+        'room:allow',
+        'room:disallow',
         'room:ban',
         'room:deban',
         'room:viewed',

@@ -295,7 +295,18 @@ define([
       if (event.wasFocused) { // if remove model was focused, focused the new one
         this.focus(event.model);
       }
-      var message = (what === 'kick') ? i18next.t('chat.kickmessage', {name: data.name}) : i18next.t('chat.banmessage', {name: data.name});
+      var message;
+      switch (what) {
+        case 'kick':
+          message = i18next.t('chat.kickmessage', {name: data.name});
+          break;
+        case 'ban':
+          message = i18next.t('chat.banmessage', {name: data.name});
+          break;
+        case 'disallow':
+          message = i18next.t('chat.disallowmessage', {name: data.name});
+          break;
+      }
       if (data.reason) {
         message += ' ' + i18next.t('chat.reason', {reason: _.escape(data.reason)});
       }
