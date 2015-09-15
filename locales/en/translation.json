@@ -440,7 +440,7 @@
     "allowed": {
       "success": "Access request have been successfully sent",
       "error" : {
-        "allowed": "An access request is allready pending",
+        "notallowed": "An access request is allready pending",
         "banned": "You have been ban from this donut"
       }
     },
