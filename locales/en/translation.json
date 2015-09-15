@@ -639,7 +639,8 @@
       "password_placeholder": "Password",
       "password_button": "Join",
       "banned": "You were banned from this donut on __at__",
-      "banned_reason": "For following reason: "
+      "banned_reason": "For following reason: ",
+      "disclaimer": "This donut is private, only allowed user can access. To add new users, please use the list bellow."
     },
     "form": {
       "common": {

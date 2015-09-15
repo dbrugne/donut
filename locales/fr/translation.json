@@ -659,7 +659,8 @@
       "password_placeholder": "Mot de passe",
       "password_button": "Rejoindre",
       "banned": "Vous avez été banni de ce donut le __at__",
-      "banned_reason": "Pour la raison suivante : "
+      "banned_reason": "Pour la raison suivante : ",
+      "disclaimer": "Ce donut est privé, seul les utilisateurs autorisés par le propriétaire peuvent y accéder. Pour ajouter de nouveaux utilisateurs, merci de les rechercher dans la liste ci-dessous."
     },
     "form": {
       "common": {

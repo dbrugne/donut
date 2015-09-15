@@ -2,6 +2,9 @@
     <span class="name"><%= room_name %></span>
     <span class="owner"><%= t('global.by') %> <a class="open-user-profile dc-text colored" data-user-id="<%= owner_id %>">@<%= owner_name %></a></span>
 </div>
+<div class="mode mt20 mb20 fs14">
+    <p><%= t('chat.blocked.disclaimer') %></p>
+</div>
 <div class="search dropdown">
     <label for="input-search"><%= t('chat.access.labelsearch') %></label>
     <input type="text" id="input-search" placeholder="<%= t('chat.actions.searchuser') %>">

@@ -47,6 +47,7 @@ define([
         owner_name: this.model.get('owner').get('username'),
         room_id: this.model.get('id'),
         room_name: this.model.get('name'),
+        join_mode: this.model.get('join_mode'),
         types: this.types
       };
 
