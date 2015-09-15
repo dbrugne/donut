@@ -50,7 +50,7 @@ handler.call = function (data, session, next) {
         return callback(null);
       }
 
-      if (!room.join_mode_password || !data.password) {
+      if (!room.password || !data.password) {
         return callback('wrongpassword');
       }
 

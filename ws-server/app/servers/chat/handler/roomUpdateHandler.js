@@ -130,7 +130,7 @@ handler.call = function (data, session, next) {
               if (!password || password.length < 4 || password.length > 255) {
                 errors.password = 'invalid-password';
               } else {
-                sanitized.join_mode_password = user.generateHash(password);
+                sanitized.password = user.generateHash(password);
               }
             }
           }

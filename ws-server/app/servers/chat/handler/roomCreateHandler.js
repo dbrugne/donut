@@ -57,7 +57,7 @@ handler.call = function (data, session, next) {
         room.priority = 0;
         room.join_mode = data.mode;
         if (data.mode === 'password') {
-          room.join_mode_password = user.generateHash(data.password);
+          room.password = user.generateHash(data.password);
         }
 
         room.save(function (err) {

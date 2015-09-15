@@ -72,7 +72,7 @@ handler.call = function (data, session, next) {
 
       room.update({
         $addToSet: {bans: ban},
-        $pull: {users: bannedUser._id, op: bannedUser._id, join_mode_allowed: bannedUser._id}
+        $pull: {users: bannedUser._id, op: bannedUser._id, allowed: bannedUser._id}
       }, function (err) {
         return callback(err);
       });
