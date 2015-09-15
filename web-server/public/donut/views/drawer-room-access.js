@@ -20,12 +20,6 @@ define([
 
     id: 'room-access',
 
-    page: 1, // Start on index 1
-
-    paginate: 15, // Number of users display on a page
-
-    nbPages: 0, // Store total number of pages
-
     timeBufferBeforeSearch: 1000,
 
     timeout: 0,

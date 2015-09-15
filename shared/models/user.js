@@ -34,6 +34,7 @@ var userSchema = mongoose.Schema({
   },
   preferences: mongoose.Schema.Types.Mixed,
   onetoones: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
+  blocked: [{ type: mongoose.Schema.ObjectId, ref: 'Room' }],
   unviewed: [{
     room: {type: mongoose.Schema.ObjectId, ref: 'Room'},
     user: {type: mongoose.Schema.ObjectId, ref: 'User'},
