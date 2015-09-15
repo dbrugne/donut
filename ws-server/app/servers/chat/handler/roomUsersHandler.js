@@ -103,23 +103,23 @@ handler.call = function (data, session, next) {
     },
 
     function selectByStatus (ids, callback) {
-      if (data.attributes.status === 'online' || data.attributes.status === 'offline') {
-        that.app.statusService.getStatusByUids(ids, function (err, results) {
-          if (err) {
-            return callback(err);
-          }
-          var idsTmp = [];
-          _.each(ids, function (id) {
-            if ((results[id] && data.attributes.status === 'online') ||
-              (!(results[id]) && data.attributes.status === 'offline')) {
-              idsTmp.push(id);
-            }
-          });
-          return callback(null, idsTmp);
-        });
-      } else {
+      if (data.attributes.status !== 'online' && data.attributes.status !== 'offline') {
         return callback(null, ids);
       }
+
+      this.app.statusService.getStatusByUids(ids, function (err, results) {
+        if (err) {
+          return callback(err);
+        }
+        var idsTmp = [];
+        _.each(ids, function (id) {
+          if ((results[id] && data.attributes.status === 'online') ||
+            (!(results[id]) && data.attributes.status === 'offline')) {
+            idsTmp.push(id);
+          }
+        });
+        return callback(null, idsTmp);
+      });
     },
 
     function prepareQuery (ids, callback) {
