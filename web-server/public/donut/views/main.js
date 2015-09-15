@@ -559,7 +559,7 @@ define([
         this.homeView = new HomeView({});
       }
       if (avoidReload !== true) {
-        client.home();
+        this.homeView.request();
       }
       this.unfocusAll();
       this.$home.show();

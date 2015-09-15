@@ -26,7 +26,7 @@ define([
     search: function () {
       var s = this.$search.val();
       if (!s || s.length < 1) {
-        return client.home();
+        return this.trigger('emptySearch');
       }
 
       this.lastSearch = s;

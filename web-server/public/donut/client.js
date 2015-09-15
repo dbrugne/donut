@@ -68,6 +68,17 @@ define([
       }, this));
     },
 
+    applyRequestCallback: function (key, fn) {
+      return _.bind(function (response) {
+        if (response.err) {
+          return debug('io:in:' + key + ' error: ', response);
+        }
+        if (_.isFunction(fn)) {
+          return fn(response);
+        }
+      }, this);
+    },
+
     /**
      * Should be done at the end of App initialization to allow interface
      * binding to work
@@ -89,8 +100,7 @@ define([
     // GLOBAL
     // ======================================================
 
-    home: function () {
-      var that = this;
+    home: function (callback) {
       debug('io:out:home', {});
       pomelo.request(
         'chat.homeHandler.call',
@@ -99,9 +109,9 @@ define([
           if (response.err) {
             return debug('io:in:home error: ', response);
           }
-
-          debug('io:in:home', response);
-          that.trigger('home', response);
+          if (_.isFunction(callback)) {
+            callback(response);
+          }
         }
       );
     },
@@ -123,6 +133,9 @@ define([
         'chat.searchHandler.call',
         data,
         function (response) {
+          if (response.err) {
+            return debug('io:in:search error: ', response);
+          }
           debug('io:in:search', response);
           if (_.isFunction(callback)) {
             return callback(response);
