@@ -27,11 +27,6 @@
         <label><%= t('chat.form.common.edit.color.label') %></label>
         <div class="room-color"></div>
     </div>
-    <div class="form-group password <% if (room.mode !== 'password') { print('hidden'); }; %>">
-        <label><%= t('chat.form.room-form.common.mode.password-change') %> : </label>
-        <input type="text" class="input-password" name="password" placeholder="<%= t('chat.form.room-form.common.mode.password-field') %>" maxlength="255" value="<%= name %>" />
-        <a href="#" class="icon icon-refresh random-password dc-text"></a>
-    </div>
     <% if (room.isAdmin) { %>
     <div class="form-group">
         <label><%= t('chat.form.room-form.common.join-mode-label') %></label>

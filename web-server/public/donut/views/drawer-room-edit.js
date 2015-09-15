@@ -3,23 +3,21 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'common',
   'i18next',
   'client',
   'models/current-user',
   'views/image-uploader',
   'views/color-picker',
   '_templates'
-], function ($, _, Backbone, common, i18next, client, currentUser, ImageUploader, ColorPicker, templates) {
+], function ($, _, Backbone, i18next, client, currentUser, ImageUploader, ColorPicker, templates) {
   var DrawerRoomEditView = Backbone.View.extend({
     template: templates['drawer-room-edit.html'],
 
     id: 'room-edit',
 
     events: {
-      'submit form.room-form': 'onSubmit',
-      'change input[name="mode"]': 'onChangeMode',
-      'click .random-password': 'onRandomPassword'
+      'submit form.room-form': 'onSubmit'
+//    'change input[name="mode"]': 'onChangeMode'
     },
 
     initialize: function (options) {
@@ -52,9 +50,9 @@ define([
         this.trigger('color', room.color);
       }
 
-      room.isOwner = (room.owner) ?
-        (room.owner.user_id === currentUser.get('user_id')) :
-        false;
+      room.isOwner = (room.owner)
+        ? (room.owner.user_id === currentUser.get('user_id'))
+        : false;
 
       room.mode = room.join_mode;
 
@@ -64,9 +62,6 @@ define([
 
       var html = this.template({room: room});
       this.$el.html(html);
-
-      this.$passwordBlock = this.$('.form-group.password');
-      this.$password = this.$('input[name="password"]');
 
       // description
       this.$('#roomDescription').maxlength({
@@ -132,12 +127,6 @@ define([
           return;
         }
         updateData.mode = checked.attr('value');
-
-        // password
-        var password = this.$password.val();
-        if (updateData.mode === 'password' && password) {
-          updateData.password = password;
-        }
       }
 
       if (this.avatarUploader.data) {
@@ -183,23 +172,16 @@ define([
       });
     },
 
-    onChangeMode: function (event) {
-      var $target = $(event.currentTarget).first();
-      if ($target.attr('type') === 'radio' && $target.attr('name') === 'mode') {
-        if ($target.attr('value') !== 'password') {
-          this.$passwordBlock.addClass('hidden');
-        } else {
-          this.$passwordBlock.removeClass('hidden');
-          this.$password.focus();
-        }
-      }
-    },
-
-    onRandomPassword: function (event) {
-      event.preventDefault();
-      this.$password.val(common.randomString());
-      this.$password.focus();
-    },
+//    onChangeMode: function (event) {
+//      var $target = $(event.currentTarget).first();
+//      if ($target.attr('type') === 'radio' && $target.attr('name') === 'mode') {
+//        if ($target.attr('value') !== 'public') {
+//
+//        } else { // private
+//
+//        }
+//      }
+//    },
 
     checkWebsite: function () {
       var website = this.$website.val();
