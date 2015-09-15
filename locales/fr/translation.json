@@ -655,7 +655,7 @@
     "blocked": {
       "allowed": "Ce donut est privé, seul les utilisateurs autorisés par le propriétaire peuvent y accéder.",
       "allowed_button": "Demander l'accès",
-      "password": "Ce donut est protégé par un mot de passe, si vous l'avez veuillez saisir le mot de passe.",
+      "password": "Ce donut est protégé par un mot de passe.",
       "password_placeholder": "Mot de passe",
       "password_button": "Rejoindre",
       "banned": "Vous avez été banni de ce donut le __at__",

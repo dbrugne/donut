@@ -51,6 +51,11 @@ define([
       // id
       data.room_id = this.model.get('id');
 
+      // dropdown
+      data.dropdown = templates['dropdown-room-actions.html']({
+        data: data
+      });
+
       // render
       var html = this.template(data);
       this.$el.html(html);

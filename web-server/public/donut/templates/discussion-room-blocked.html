@@ -1,36 +1,42 @@
 <div class="content blocked flex-parent">
     <div class="cover room">
-        <div class="margin-top: auto">
-            <img class="avatar open-room-profile" data-room-id="<%= room_id %>" src="<%= avatar %>" alt="<%= name %> avatar">
-            <div class="name open-room-profile" data-room-id="<%= room_id %>">
-                <%= name %>
-                <% if (join_mode === 'private') { %>
-                    <span class="room-profile private" data-toggle="tooltip" data-placement="top" title="<%= t('global.private-donut') %>"> </span>
-                <% } %>
-            </div>
-            <% if (owner && owner.username) { %>
-            <span class="owner"><%= t('global.by') %> <a class="open-user-profile dc-text" data-user-id="<%= owner.id %>">@<%= owner.username %></a></span>
-            <% } %>
-            <% if (join_mode === 'private') { %>
-            <div class="password-form mt15 fs15">
-                <%= t('chat.blocked.password') %>
-                <br/>
-                <div class="form-inline mt15">
-                    <input class="input-password form-control " type="text" placeholder="<%= t('chat.blocked.password_placeholder') %>">
-                    <button class="valid-password big-button-light"><%= t('chat.blocked.password_button') %></button>
+        <div class="header room">
+            <div class="margin-top: auto">
+                <img class="avatar open-room-profile" data-room-id="<%= room_id %>" src="<%= avatar %>" alt="<%= name %> avatar">
+                <div>
+                    <span class="name open-room-profile" data-room-id="<%= room_id %>"><%= name %></span>
+                    <% if (join_mode === 'private') { %>
+                        <span class="room-profile private" data-toggle="tooltip" data-placement="top" title="<%= t('global.private-donut') %>"> </span>
+                    <% } %>
+                    <span class="info">
+                        <%= dropdown %>
+                    </span>
                 </div>
-            </div>
-            <% } else { %>
-            <div class="mt15 fs15">
-                <%= t('chat.blocked.banned', { at: banned_at }) %>
-                <% if (typeof banned_reason !== 'undefined') { %>
-                <p class="reason">
-                    <span class="title"><%= t('chat.blocked.banned_reason') %></span>
-                    <span class="reason"><i class="icon icon-quote"></i><%= banned_reason %></span>
-                </p>
+
+                <% if (owner && owner.username) { %>
+                <span class="owner"><%= t('global.by') %> <a class="open-user-profile dc-text" data-user-id="<%= owner.id %>">@<%= owner.username %></a></span>
+                <% } %>
+                <% if (join_mode === 'private') { %>
+                <div class="password-form mt5 fs15">
+                    <%= t('chat.blocked.password') %>
+                    <br/>
+                    <div class="form-inline mt15">
+                        <input class="input-password form-control " type="text" placeholder="<%= t('chat.blocked.password_placeholder') %>">
+                        <button class="valid-password big-button-light"><%= t('chat.blocked.password_button') %></button>
+                    </div>
+                </div>
+                <% } else { %>
+                <div class="mt15 fs15">
+                    <%= t('chat.blocked.banned', { at: banned_at }) %>
+                    <% if (typeof banned_reason !== 'undefined') { %>
+                    <p class="reason">
+                        <span class="title"><%= t('chat.blocked.banned_reason') %></span>
+                        <span class="reason"><i class="icon icon-quote"></i><%= banned_reason %></span>
+                    </p>
+                    <% } %>
+                </div>
                 <% } %>
             </div>
-            <% } %>
         </div>
     </div>
 </div><!-- /.content -->
