@@ -182,8 +182,11 @@ handler.call = function (data, session, next) {
       user.update({
         $addToSet: {blocked: room.id}
       }, function (err) {
-        return next(err, {code: 403, err: err, room: roomData});
+        if (err) {
+          return next(err);
+        }
       });
+      return next(null, {code: 403, err: err, room: roomData});
     }
     if (err) {
       logger.error('[room:join] ' + err);
