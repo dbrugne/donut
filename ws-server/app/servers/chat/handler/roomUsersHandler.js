@@ -186,7 +186,7 @@ handler.call = function (data, session, next) {
   ], function (err, users, count) {
     if (err) {
       logger.error('[room:users] ' + err);
-      return next(null, {code: 500, err: err});
+      return next(null, {code: 500, err: 'internal'});
     }
 
     return next(null, {

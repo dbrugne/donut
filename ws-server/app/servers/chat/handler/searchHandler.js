@@ -36,7 +36,7 @@ handler.call = function (data, session, next) {
   search(data.search, searchInUsers, searchInRooms, limit, skip, lightSearch, function (err, results) {
     if (err) {
       logger('[search] ' + err);
-      return next(null, { code: 500, err: err });
+      return next(null, { code: 500, err: 'internal' });
     }
 
     return next(null, results);

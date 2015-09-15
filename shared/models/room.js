@@ -188,15 +188,24 @@ roomSchema.methods.validPassword = function (password) {
   return bcrypt.compareSync(password, this.password);
 };
 
-roomSchema.methods.isPasswordTries = function (userId) {
-  var subDocument = _.find(this.password_tries, function (tries) {
-    if (tries.user._id) {
-      return (tries.user.id === userId);
+roomSchema.methods.isInPasswordTries = function (userId) {
+  if (!this.password_tries && !this.password_tries.length) {
+    return;
+  }
+
+  var subDocument = _.find(this.password_tries, function (pass_try) {
+    if (pass_try.user._id) {
+      return (pass_try.user.id === userId);
     } else {
-      return (tries.user.toString() === userId);
+      return (pass_try.user.toString() === userId);
     }
   });
-  return (typeof subDocument !== 'undefined');
+  return subDocument;
+};
+
+roomSchema.methods.isPasswordTries = function (userId) {
+  var doc = this.isInPasswordTries(userId);
+  return (typeof doc !== 'undefined');
 };
 
 roomSchema.methods.getIdsByType = function (type) {

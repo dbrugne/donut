@@ -82,7 +82,7 @@ handler.call = function (data, session, next) {
       err = (['banned', 'allowed'].indexOf(err) !== -1)
         ? err
         : 'internal';
-      return next(null, { code: 500, err: err });
+      return next(null, { code: 500, err: 'internal' });
     }
 
     return next(null, {success: true});

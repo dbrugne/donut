@@ -149,7 +149,7 @@ handler.call = function (data, session, next) {
   ], function (err) {
     if (err) {
       logger.error('[room:message] ' + err);
-      return next(null, { code: 500, err: err });
+      return next(null, { code: 500, err: 'internal' });
     }
 
     return next(null, { success: true });

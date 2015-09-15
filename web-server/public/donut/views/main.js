@@ -149,7 +149,6 @@ define([
         $('#block-discussions').show();
       }
 
-
       // Rooms
       _.each(data.rooms, function (room) {
         rooms.addModel(room);
@@ -158,6 +157,11 @@ define([
       // One to ones
       _.each(data.onetoones, function (one) {
         onetoones.addModel(one);
+      });
+
+      // blocked
+      _.each(data.blocked, function (lock) {
+        rooms.addModel(lock, true);
       });
 
       this.discussionsBlock.redraw();
@@ -559,7 +563,7 @@ define([
         this.homeView = new HomeView({});
       }
       if (avoidReload !== true) {
-        client.home();
+        this.homeView.request();
       }
       this.unfocusAll();
       this.$home.show();

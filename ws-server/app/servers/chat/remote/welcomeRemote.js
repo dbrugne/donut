@@ -42,6 +42,7 @@ WelcomeRemote.prototype.getMessage = function (uid, frontendId, globalCallback) 
     function retrieveUser (callback) {
       User.findById(uid)
         .populate('onetoones')
+        .populate('blocked')
         .exec(function (err, user) {
           if (err) {
             return callback('Unable to find user: ' + err, null);
@@ -125,6 +126,30 @@ WelcomeRemote.prototype.getMessage = function (uid, frontendId, globalCallback) 
             return callback(null, user);
           });
         });
+    },
+
+    function populateBlocked (user, callback) {
+      var parallels = [];
+      _.each(user.blocked, function (room) {
+        parallels.push(function (fn) {
+          roomDataHelper(that.app, user, room, function (err, r) {
+            fn(err, r);
+          });
+        });
+      });
+
+      if (!parallels.length) {
+        return callback(null, user);
+      }
+
+      async.parallel(parallels, function (err, results) {
+        if (err) {
+          return callback('Error while populating rooms: ' + err);
+        }
+
+        welcomeEvent.blocked = results;
+        return callback(null, user);
+      });
     },
 
     function featured (user, callback) {
