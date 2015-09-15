@@ -103,23 +103,23 @@ handler.call = function (data, session, next) {
     },
 
     function selectByStatus (ids, callback) {
-      if (data.attributes.status === 'online' || data.attributes.status === 'offline') {
-        that.app.statusService.getStatusByUids(ids, function (err, results) {
-          if (err) {
-            return callback(err);
-          }
-          var idsTmp = [];
-          _.each(ids, function (id) {
-            if ((results[id] && data.attributes.status === 'online') ||
-              (!(results[id]) && data.attributes.status === 'offline')) {
-              idsTmp.push(id);
-            }
-          });
-          return callback(null, idsTmp);
-        });
-      } else {
+      if (data.attributes.status !== 'online' && data.attributes.status !== 'offline') {
         return callback(null, ids);
       }
+
+      that.app.statusService.getStatusByUids(ids, function (err, results) {
+        if (err) {
+          return callback(err);
+        }
+        var idsTmp = [];
+        _.each(ids, function (id) {
+          if ((results[id] && data.attributes.status === 'online') ||
+            (!(results[id]) && data.attributes.status === 'offline')) {
+            idsTmp.push(id);
+          }
+        });
+        return callback(null, idsTmp);
+      });
     },
 
     function prepareQuery (ids, callback) {
@@ -186,7 +186,7 @@ handler.call = function (data, session, next) {
   ], function (err, users, count) {
     if (err) {
       logger.error('[room:users] ' + err);
-      return next(null, {code: 500, err: err});
+      return next(null, {code: 500, err: 'internal'});
     }
 
     return next(null, {

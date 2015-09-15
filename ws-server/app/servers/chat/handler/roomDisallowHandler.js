@@ -97,19 +97,27 @@ handler.call = function (data, session, next) {
       });
     },
 
-    function persist (eventData, callback) {
+    function persistOnRoom (eventData, callback) {
       Room.update(
         {_id: { $in: [room.id] }},
         {$pull: {join_mode_allowed: user.id, users: user.id}}, function (err) {
           return callback(err, eventData);
         }
       );
+    },
+
+    function persistOnUser (callback) {
+      user.update({
+        $addToSet: {blocked: room.id}
+      }, function (err) {
+        return callback(err);
+      });
     }
 
   ], function (err) {
     if (err) {
       logger.error('[room:disallow] ' + err);
-      return next(null, { code: 500, err: err });
+      return next(null, { code: 500, err: 'internal' });
     }
 
     return next(null, {success: true});

@@ -77,7 +77,7 @@ handler.call = function (data, session, next) {
       err = (['wrong-format', 'same-mail', 'exist'].indexOf(err) !== -1)
         ? err
         : 'internal';
-      return next(null, { code: 500, err: err });
+      return next(null, { code: 500, err: 'internal' });
     }
     return next(null, { success: true });
   });

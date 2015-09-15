@@ -182,6 +182,13 @@ handler.call = function (data, session, next) {
           username: room.owner.username
         };
       }
+      user.update({
+        $addToSet: {blocked: room.id}
+      }, function (err) { // @todo when factorize call next(null, {code: 403, err: err, room: roomData}) in this callback
+        if (err) {
+          return next(err);
+        }
+      });
       return next(null, {code: 403, err: err, room: roomData});
     }
     if (err) {
