@@ -72,7 +72,7 @@ handler.call = function (data, session, next) {
     function persist (eventData, callback) {
       Room.update(
         {_id: { $in: [room.id] }},
-        {$addToSet: {join_mode_allowed: user.id}}, function (err) {
+        {$addToSet: {allowed: user.id}}, function (err) {
           if (wasPending) {
             Room.update(
               {_id: { $in: [room.id] }},
