@@ -70,7 +70,7 @@ handler.call = function (data, session, next) {
   ], function (err) {
     if (err) {
       logger.error('[preferences:update] ' + err);
-      return next(null, {code: 500, err: err});
+      return next(null, {code: 500, err: 'internal'});
     }
 
     next(null, {});

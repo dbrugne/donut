@@ -98,7 +98,7 @@ handler.call = function (data, session, next) {
       if (['invalid-name', 'invalid-mode', 'invalid-password', 'alreadyexists'].indexOf(err) !== -1) {
         return next(null, {code: 400, err: err});
       } else {
-        return next(null, {code: 500});
+        return next(null, {code: 500, err: 'internal'});
       }
     }
 

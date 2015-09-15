@@ -123,8 +123,9 @@ handler.call = function (data, session, next) {
   ], function (err) {
     if (err) {
       logger.error('[user:message:edit] ' + err);
+      return next(null, { code: 500, err: 'internal' });
     }
 
-    next(null); // even for .notify
+    return next(null, { success: true });
   });
 };

@@ -200,8 +200,16 @@ define([
     },
     roomMessageEdit: function (roomId, messageId, message) {
       var data = {room_id: roomId, event: messageId, message: message};
-      pomelo.notify('chat.roomMessageEditHandler.call', data);
-      debug('io:out:room:message:edit', data);
+      debug('io:out:room:message:edit');
+      pomelo.request(
+        'chat.roomMessageEditHandler.call',
+        data,
+        function (response) {
+          if (response.err) {
+            debug('io:in:room:message:edit error: ', response);
+          }
+        }
+      );
     },
     roomTopic: function (roomId, topic) {
       var data = {room_id: roomId, topic: topic};
@@ -669,8 +677,16 @@ define([
     },
     userMessageEdit: function (userId, messageId, message) {
       var data = {user_id: userId, event: messageId, message: message};
-      pomelo.notify('chat.userMessageEditHandler.call', data);
       debug('io:out:user:message:edit', data);
+      pomelo.request(
+        'chat.userMessageEditHandler.call',
+        data,
+        function (response) {
+          if (response.err) {
+            debug('io:in:user:message:edit error: ', response);
+          }
+        }
+      );
     },
     userRead: function (userId, username, fn) {
       var data = {};

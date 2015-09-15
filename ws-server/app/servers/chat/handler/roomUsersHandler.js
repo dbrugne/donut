@@ -107,7 +107,7 @@ handler.call = function (data, session, next) {
         return callback(null, ids);
       }
 
-      this.app.statusService.getStatusByUids(ids, function (err, results) {
+      that.app.statusService.getStatusByUids(ids, function (err, results) {
         if (err) {
           return callback(err);
         }
@@ -186,7 +186,7 @@ handler.call = function (data, session, next) {
   ], function (err, users, count) {
     if (err) {
       logger.error('[room:users] ' + err);
-      return next(null, {code: 500, err: err});
+      return next(null, {code: 500, err: 'internal'});
     }
 
     return next(null, {
