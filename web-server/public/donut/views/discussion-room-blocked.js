@@ -56,6 +56,8 @@ define([
       this.$el.html(html);
       this.$el.hide();
 
+      this.initializeTooltips();
+
       return this;
     },
     removeView: function () {
@@ -96,6 +98,10 @@ define([
           app.trigger('alert', 'error', i18next.t('chat.password.error'));
         }
       });
+    },
+
+    initializeTooltips: function () {
+      this.$el.find('[data-toggle="tooltip"]').tooltip();
     }
 
   });

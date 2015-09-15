@@ -580,9 +580,8 @@
     .discussion { background-color: @cl-background; height: 100%;
       @header-height: 35px; @size-user-item: 195px;
       .content { height: 100%; position: relative; padding-left: 35px; .display-flex; .flex-flow(column nowrap);
-        .cover {
-          text-align: center;
-        }
+        &.blocked { align-items: center; justify-content: center; }
+        .cover { text-align: center; }
         .header { padding-top: 18px; padding-right: 10px;
           .info { padding-left: 110px;
             .share { display: inline-block;
@@ -706,24 +705,11 @@
             }
           }
           .scrollable { margin-right: 5px;
-            .scrollable-content {
-              position: relative; /* Important */
-              padding-right: 10px; // scrollbar spacing
-              hr {
-                border-color: @cl-subtext5;
-              }
-              .pad {
-                min-height: 30px;
-                text-align: center;
-                font-size: 2em;
-                i {
-                  display: none;
-                }
-                &.loading {
-                  i {
-                    display: inline;
-                  }
-                }
+            .scrollable-content { position: relative; padding-right: 10px;
+              hr { border-color: @cl-subtext5; }
+              .pad { min-height: 30px; text-align: center; font-size: 2em;
+                i { display: none; }
+                &.loading  i { display: inline; }
               }
               .loader { padding: 10px; text-align: center; font-size: 1.1em; border-radius: 2px;
                 .arrow { font-size: 1.4em; padding-left: 50px; padding-right: 50px; }
@@ -743,38 +729,18 @@
                   }
                 }
               }
-              .blank {
-              }
               .realtime {
-                a.linkified {
-                  position: relative;
-                  text-decoration: underline;
-                }
-                a.mention {
-                  font-weight: bold;
-                }
+                a.linkified { position: relative; text-decoration: underline; }
+                a.mention { font-weight: bold; }
                 .block { line-height: 19px; position: relative; margin: 0; border-top: 1px solid @cl-subtext0; font-size: 1.1em;
-                  &.date + .block {
-                    border-top: transparent;
-                  }
-                  &.date {
-                    margin-top: 16px;
-                    margin-bottom: 10px;
+                  &.date + .block { border-top: transparent; }
+                  &.date { margin-top: 16px; margin-bottom: 10px;
                     .event {
                       height: 2px;
                       background-color: @cl-subtext0;
                       text-align: center;
                     }
-                    .moment {
-                      position: relative;
-                      top: -0.7em;
-                      background-color: @cl-background;
-                      text-align: center;
-                      font-size: 1.2em;
-                      font-weight: bold;
-                      color: @cl-subtext30;
-                      padding: 0 10px;
-                    }
+                    .moment { position: relative; top: -0.7em; background-color: @cl-background; text-align: center; font-size: 1.2em; font-weight: bold; color: @cl-subtext30; padding: 0 10px; }
                   }
                   &.hello {
                     i {
@@ -1063,10 +1029,10 @@
                     .desc-cmd { font-style: italic; }
                   }
                 }
-              }
-            }
-          }
-        }
+              } // #chat #center .discussion .content .events .scrollable .scrollable-content .realtime
+            } // // #chat #center .discussion .content .events .scrollable .scrollable-content
+          } // #chat #center .discussion .content .events .scrollable
+        } // #chat #center .discussion .content .events
         .input { padding-top: 5px; margin-right: 25px; padding-bottom: 10px; position: relative;
           .add-image, .add-smiley {
             cursor: pointer;
@@ -1201,7 +1167,7 @@
             }
           }
         }
-      }
+      } // #chat #center .discussion .content
       .side { float: right; width: @size-right; height: 100%; background-repeat: no-repeat; background-position: left top; margin: 0; padding: 0;
         .blur { width: @size-right-mid; position: relative; height: 100%; color: @cl-background; font-size: 1.1em; .scrollbar-grey;
           hr { margin-left: 0; margin-right: 0; }

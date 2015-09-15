@@ -1,8 +1,11 @@
-<div class="content flex-parent">
-    <div class="cover room flex-children">
+<div class="content blocked flex-parent">
+    <div class="cover room">
         <div class="margin-top: auto">
             <img class="avatar open-room-profile" data-room-id="<%= room_id %>" src="<%= avatar %>" alt="<%= name %> avatar">
-            <div class="name open-room-profile" data-room-id="<%= room_id %>"><%= name %></div>
+            <div class="name open-room-profile" data-room-id="<%= room_id %>">
+                <%= name %>
+                <span class="room-profile <%= join_mode %>" data-toggle="tooltip" data-placement="top" title="<%= join_mode === 'everyone' ? t('global.public-donut') : t('global.private-donut') %>"> </span>
+            </div>
             <% if (owner && owner.username) { %>
             <span class="owner"><%= t('global.by') %> <a class="open-user-profile dc-text" data-user-id="<%= owner.id %>">@<%= owner.username %></a></span>
             <% } %>
@@ -12,13 +15,16 @@
                 <button class="ask-for-allowance"><%= t('chat.blocked.allowed_button') %></button>
             </div>
             <% } else if (join_mode === 'password') { %>
-            <div class="password-form">
+            <div class="password-form mt15 fs15">
                 <%= t('chat.blocked.password') %>
-                <input class="input-password" type="text" placeholder="<%= t('chat.blocked.password_placeholder') %>">
-                <button class="valid-password"><%= t('chat.blocked.password_button') %></button>
+                <br/>
+                <div class="form-inline mt15">
+                    <input class="input-password form-control " type="text" placeholder="<%= t('chat.blocked.password_placeholder') %>">
+                    <button class="valid-password big-button-light"><%= t('chat.blocked.password_button') %></button>
+                </div>
             </div>
             <% } else { %>
-            <div>
+            <div class="mt15 fs15">
                 <%= t('chat.blocked.banned', { at: banned_at }) %>
                 <% if (typeof banned_reason !== 'undefined') { %>
                 <p class="reason">
