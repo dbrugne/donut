@@ -103,6 +103,12 @@ handler.call = function (data, session, next) {
       });
     },
 
+    function persistOnUser (eventData, callback) {
+      user.update({$pull: {blocked: user._id}}, function (err) {
+        return callback(err, eventData);
+      });
+    },
+
     function joinClients (eventData, callback) {
       // search for all the user sessions (any frontends)
       that.app.statusService.getSidsByUid(user.id, function (err, sids) {

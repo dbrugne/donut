@@ -106,11 +106,11 @@ handler.call = function (data, session, next) {
       );
     },
 
-    function persistOnUser (callback) {
+    function persistOnUser (eventData, callback) {
       user.update({
         $addToSet: {blocked: room.id}
       }, function (err) {
-        return callback(err);
+        return callback(err, eventData);
       });
     }
 

@@ -193,8 +193,13 @@ define([
 
       // if i'm the "targeted user" destroy the model/view
       if (currentUser.get('user_id') === data.user_id) {
+        var isFocused = model.get('focused');
+        var roomTmp = model.attributes;
         this.remove(model);
+        this.addModel(roomTmp, true);
         this.trigger('kickedOrBanned', {
+          model: this.get(data.room_id),
+          wasFocused: isFocused,
           what: what,
           data: data
         }); // focus + alert

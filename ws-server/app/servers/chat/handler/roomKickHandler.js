@@ -57,7 +57,7 @@ handler.call = function (data, session, next) {
     },
 
     function persist (callback) {
-      room.update({$pull: { users: kickedUser._id }}, function (err) {
+      room.update({$pull: { users: kickedUser._id, allowed: kickedUser._id }}, function (err) {
         return callback(err);
       });
     },

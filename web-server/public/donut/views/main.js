@@ -292,7 +292,9 @@ define([
     roomKickedOrBanned: function (event) {
       var what = event.what;
       var data = event.data;
-      this.focus();
+      if (event.wasFocused) { // if remove model was focused, focused the new one
+        this.focus(event.model);
+      }
       var message = (what === 'kick') ? i18next.t('chat.kickmessage', {name: data.name}) : i18next.t('chat.banmessage', {name: data.name});
       if (data.reason) {
         message += ' ' + i18next.t('chat.reason', {reason: _.escape(data.reason)});
