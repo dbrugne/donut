@@ -21,7 +21,7 @@
     "signup-self": "S'inscrire",
     "login-self": "Se connecter",
     "carousel": {
-      "heading": "chat room network >",
+      "heading": "chatroom network ",
       "slogan": "Discuter autour de vos centres d'intérêt.<br>Entrez en relation avec des gens de votre univers.<br>Créez et animez votre propre communauté."
     }
   },
@@ -137,7 +137,7 @@
     }
   },
   "signup": {
-    "disclaimer": "En cliquant sur \"Et voilà !\" j’accepte les conditions d'utilisation de DONUT"
+    "disclaimer": "En créant mon compte, j'accepte les <strong><a href=\"/eutc\" target=\"_blank\">CGU</a></strong>"
   },
   "choose-username": {
     "title": "Il est temps de choisir un nom d'utilisateur !",
@@ -299,7 +299,7 @@
         "<span>votre tribu !</span>",
         "<span>vos voisins !</span>"
       ],
-      "knowmore": "en savoir +"
+      "knowmore": "en savoir plus"
     },
     "description": {
       "title1": "tasty",
@@ -318,7 +318,7 @@
   },
   "profile": {
     "room": {
-      "ownerops": "Les tauliers",
+      "ownerops": "Les habitués",
       "now": "En ce moment",
       "nouser": "Pas d'utilisateur dans le donut",
       "disclaimer": {
@@ -384,7 +384,7 @@
       "banned": "Vous avez bloqué cet utilisateur",
       "bannedMessage": {
         "onetoone": "Vous avez été bloqué par cet utilisateur",
-        "room": "Vous avez été bloqué dans ce Donut"
+        "room": "Vous êtes muet dans ce donut à la demande d'un modérateur"
       },
       "unlock": "(Cliquez ici pour le débloquer)"
     },
@@ -520,8 +520,8 @@
       "deban": "n'est plus banni à la demande de",
       "op": " est maintenant modérateur à la demande de ",
       "deop": " n'est plus modérateur à la demande de ",
-      "voice": " rend la parole à ",
-      "devoice": " a rendu muet ",
+      "voice": " a retrouvé la parole à la demande de ",
+      "devoice": " est muet à la demande de ",
       "in": " est entré à",
       "out": " est sorti à",
       "online": " est en ligne,",
@@ -847,6 +847,9 @@
         "ps": "P.S.: pour ne plus recevoir ce type de notifications veuillez décocher les options de notifications dans les préférences de votre compte sur <a href=\"https://__fqdn__\">__fqdn__</a>, pour toute question nous sommes à votre écoute sur <a href=\"https://__fqdn__/!#room/help\">#help</a>"
       }
     },
+    "common": {
+      "reason": "Motif: __reason__"
+    },
     "welcome": {
       "subject": "Bienvenue sur DONUT.me ! Votre compte a été créé avec succès",
       "content": {
@@ -875,10 +878,10 @@
       }
     },
     "emailchanged": {
-      "subject": "L'adresse email de votre compte DONUT.me a été changé avec succès",
+      "subject": "L'adresse email de votre compte DONUT.me a été changée avec succès",
       "content": {
         "title": "Mise à jour de votre email",
-        "disclaimer": "Vous avez procédé à un changement d'adresse email. celle-ci est maintenant active. Il est grand temps d'en profiter !",
+        "disclaimer": "Vous avez procédé à un changement d'adresse email. Celle-ci est maintenant active. Il est grand temps d'en profiter !",
         "button": "Connectez-vous en cliquant ici"
       }
     },
@@ -904,7 +907,7 @@
     "roomkick": {
       "subject": "Vous avez été expulsé de #__roomname__",
       "content": {
-        "title": "Vous avez été expulsé de #__roomname__ par @__username__",
+        "title": "Vous avez été expulsé de #__roomname__",
         "disclaimer": "Ca ne doit pas être si grave, faites-vous un gros câlin et on oublie ça!",
         "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Accéder à la discussion\">Accéder à la discussion</a>"
       }
@@ -912,7 +915,7 @@
     "roomban": {
       "subject": "Vous avez été banni de #__roomname__",
       "content": {
-        "title": "Vous avez été banni de #__roomname__ par @__username__",
+        "title": "Vous avez été banni de #__roomname__",
         "disclaimer": "On dirait bien que vous n'étiez pas faits l'un pour l'autre.<br/>Vous savez ce qu'on dit : \"un donut de perdu, dix de retrouvés !\".",
         "button": "Retourner sur DONUT"
       }
@@ -937,10 +940,10 @@
       }
     },
     "roomdevoice": {
-      "subject": "On vous a rendu muet dans #__roomname__",
+      "subject": "Vous êtes muet dans #__roomname__",
       "content": {
-        "title": "On vous a rendu muet dans #__roomname__",
-        "disclaimer": "Aïe, on vous a rendu muet muet dans #__roomname__",
+        "title": "Vous êtes muet dans #__roomname__",
+        "disclaimer": "Aïe, vous êtes désormais muet dans <strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>. Ca ne concerne que <strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>. Mais ne vous inquiétez pas, les modérateurs de <strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong> ne devraient pas tarder à vous rendre la parole. Pendant ce temps, profitez-en pour aller vous chercher un petit donut et rejoindre une autre discussion !",
         "action": "... et tout ça à cause de <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
         "button": "Retourner sur DONUT"
       }

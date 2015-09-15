@@ -13,14 +13,14 @@
                 <div class="item item-1 active">
                     <div class="container relative">
                         <div class="disclaimer">
-                            <h1><%= t('landing.carousel.heading') %><span class="blink">_</span></h1>
+                            <h1><%= t('landing.carousel.heading') %><span class="blink">|</span></h1>
                             <p><%= t('landing.carousel.slogan') %></p>
                             <p class="more">
                                 <a href="/create"><%= t('home.cover.knowmore') %></a>
                             </p>
                         </div>
                     </div>
-                    <div class="img" style="background-image:url('/images/carousel1.jpg');"></div>
+                    <div class="img" style="background-image:url('/images/couverture.png');"></div>
                 </div>
             </div>
         </div>
@@ -28,6 +28,7 @@
         <div class="ctn-baseline container flex-parent column">
 
             <div class="authenticate">
+                <div class="background"></div>
                 <% if (user) { %>
                 <h2><%= t('logged.title') %></h2>
                 <div class="logged mt25 flex-parent column">
@@ -37,7 +38,7 @@
                     </a>
                     <p class="text-center"><%= t('logged.text') %></p>
                     <p class="actions flex-parent column">
-                        <a class="chat button button-blue" href="/!"><%= t('logged.chat') %></a>
+                        <a class="chat button button-gray" href="/!"><%= t('logged.chat') %></a>
                         <a class="logout flex-end mt10" href="/logout"><%= t('logged.logout') %></a>
                     </p>
                 </div>
@@ -47,7 +48,7 @@
                         <div class="outer"><div class="inner"><%= t('landing.signup-self') %></div></div>
                     </div>
                     <a href="/login/facebook" class="btn-facebook"><i class="icon icon-facebook"></i> | &nbsp;<%= t('login.withfacebook') %></span></a>
-                    <p class="logic"><span><%= t('landing.orbymail') %></span></p>
+                    <p class="logic"><span><%= t('global.or') %></span></p>
                     <form id="signup" action="/signup" method="post" role="form" class="form mt10">
                         <input type="hidden" name="_csrf" value="<%= token %>">
 
@@ -71,7 +72,7 @@
 
                         <div class="flex-parent links-ctn">
                             <span class="blank flex-child"></span>
-                            <input class="button button-gray" type="submit" value="<%= t('home.signup.etvoila') %>" tabindex="3">
+                            <input class="button button-first" type="submit" value="<%= t('home.signup.etvoila') %>" tabindex="3">
                         </div>
 
                         <div class="text-center mt10 fs11">
@@ -91,9 +92,9 @@
                     <input id="search-field" type="text" placeholder="<%= t('landing.yourinterests') %>">
                     <i class="icon icon-search"></i>
                 </div>
-                <button class="button button-gray button-small ml10"><%= t('chat.actions.search') %></button>
+                <button class="button button-white button-small ml10"><%= t('chat.actions.search') %></button>
                 <span class="ml10"><%= t('global.or') %></span>
-                <a href="/create" class="button button-gray button-small ml10 mr5"><%= t('actions.create') %></a>
+                <a href="/create" class="button button-white button-small ml10 mr5"><%= t('actions.create') %></a>
             </form>
         </div>
         <div class="results">
