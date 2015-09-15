@@ -61,7 +61,7 @@ handler.call = function (data, session, next) {
       return callback(null);
     },
 
-    function persist (callback) {
+    function persistOnRoom (callback) {
       var ban = {
         user: bannedUser._id,
         banned_at: new Date()
@@ -73,6 +73,14 @@ handler.call = function (data, session, next) {
       room.update({
         $addToSet: {bans: ban},
         $pull: {users: bannedUser._id, op: bannedUser._id, allowed: bannedUser._id}
+      }, function (err) {
+        return callback(err);
+      });
+    },
+
+    function persistOnUser (callback) {
+      bannedUser.update({
+        $addToSet: {blocked: room.id}
       }, function (err) {
         return callback(err);
       });

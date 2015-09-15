@@ -62,6 +62,14 @@ handler.call = function (data, session, next) {
       });
     },
 
+    function persistOnUser (callback) {
+      kickedUser.update({
+        $addToSet: {blocked: room.id}
+      }, function (err) {
+        return callback(err);
+      });
+    },
+
     function broadcast (callback) {
       var event = {
         by_user_id: user.id,
