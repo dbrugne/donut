@@ -107,7 +107,7 @@ handler.call = function (data, session, next) {
         return callback(null, ids);
       }
 
-      this.app.statusService.getStatusByUids(ids, function (err, results) {
+      that.app.statusService.getStatusByUids(ids, function (err, results) {
         if (err) {
           return callback(err);
         }
