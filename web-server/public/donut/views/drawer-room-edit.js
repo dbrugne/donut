@@ -30,8 +30,8 @@ define([
 
       // ask for data
       var that = this;
-      client.roomRead(this.roomId, null, function (err, data) {
-        if (!err) {
+      client.roomRead(this.roomId, null, function (data) {
+        if (!data.err) {
           that.onResponse(data);
         }
       });

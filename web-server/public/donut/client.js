@@ -71,7 +71,7 @@ define([
     applyRequestCallback: function (key, callback) {
       return _.bind(function (response) {
         if (response.err) {
-          return debug('io:in:' + key + ' error: ', response);
+          debug('io:in:' + key + ' error: ', response);
         }
         if (_.isFunction(callback)) {
           return callback(response);

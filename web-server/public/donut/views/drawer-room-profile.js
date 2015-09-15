@@ -29,11 +29,11 @@ define([
 
       // ask for data
       var that = this;
-      client.roomRead(this.roomId, null, function (err, data) {
-        if (err === 'unknown') {
+      client.roomRead(this.roomId, null, function (data) {
+        if (data.err === 'unknown') {
           return;
         }
-        if (!err) {
+        if (!data.err) {
           that.onResponse(data);
         }
       });
