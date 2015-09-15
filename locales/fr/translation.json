@@ -84,6 +84,7 @@
     "muted": "son désactivé"
   },
   "global": {
+    "admin": "(administrateur)",
     "default": "défaut",
     "or": "ou",
     "yes": "oui",
@@ -694,12 +695,14 @@
       },
       "room-form": {
         "common" : {
-          "join-mode-label": "Qui peut rejoindre le donut (administrateur)",
+          "join-mode-label": "Qui peut rejoindre le donut",
           "mode": {
             "public": "Publique",
             "private": "Privée",
             "password-change": "Changer le mot de passe",
-            "password-field": "Mot de passe"
+            "password-field": "Mot de passe",
+            "password-disclaimer": "Vous avez la possibilité de mettre un mot de passe sur ce donut",
+            "password-protection": "Protéger par un mot de passe"
           }
         },
         "create": {

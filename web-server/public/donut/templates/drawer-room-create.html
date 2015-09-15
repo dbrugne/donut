@@ -15,26 +15,9 @@
     </div>
     <p class="help-block"><%= t('chat.form.room-form.create.help') %></p>
 </div>
-<div class="form-group">
-    <label><%= t('chat.form.room-form.common.join-mode-label') %></label>
-    <div class="radio">
-        <label>
-            <input type="radio" class="savable public" name="mode" value="public" checked>
-            <%= t('chat.form.room-form.common.mode.public') %> (<%= t('global.default') %>)
-        </label>
-    </div>
-    <div class="radio">
-        <label>
-            <input type="radio" class="savable private" name="mode" value="private">
-            <%= t('chat.form.room-form.common.mode.private') %>
-        </label>
-    </div>
-    <div class="field-password">
-        <label><%= t('chat.form.room-form.common.mode.password-field') %> : </label>
-        <input type="text" class="input-password" placeholder="<%= t('chat.form.room-form.common.mode.password-field') %>" maxlength="255" value="<%= name %>" />
-        <a href="#" class="icon icon-refresh random-password dc-text"></a>
-    </div>
-</div>
+
+<div class="drawer-room-create-mode-ctn"></div>
+
 <div class="field">
     <button class="submit dc-back dc-text-contrast" type="button"><%= t('chat.form.room-form.create.submit') %></button>
 </div>

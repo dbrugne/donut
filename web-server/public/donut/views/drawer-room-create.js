@@ -4,11 +4,12 @@ define([
   'underscore',
   'backbone',
   'models/app',
+  'views/drawer-room-create-mode',
   'common',
   'client',
   'i18next',
   '_templates'
-], function ($, _, Backbone, app, common, client, i18next, _templates) {
+], function ($, _, Backbone, app, DrawerRoomCreateModeView, common, client, i18next, _templates) {
   var DrawerRoomCreateView = Backbone.View.extend({
     template: _templates['drawer-room-create.html'],
 
@@ -16,13 +17,16 @@ define([
 
     events: {
       'keyup .input': 'valid',
-      'click .submit': 'submit',
-      'change input[name="mode"]': 'onChangeMode',
-      'click .random-password': 'onRandomPassword'
+      'click .submit': 'submit'
     },
 
     initialize: function (options) {
       this.render(options.name);
+      this.drawerRoomCreateModeView = new DrawerRoomCreateModeView({
+        name: options.name,   // default empty
+        mode: 'creation',     // default
+        el: this.$el.find('.drawer-room-create-mode-ctn')
+      });
     },
     render: function (name) {
       var html = this.template({name: name.replace('#', '')});
@@ -102,24 +106,6 @@ define([
         this.reset();
         this.trigger('close');
       }, this));
-    },
-
-    onChangeMode: function (event) {
-      var $target = $(event.currentTarget).first();
-      if ($target.attr('type') === 'radio' && $target.attr('name') === 'mode') {
-        if ($target.attr('value') !== 'password') {
-          this.$('.field-password').css('display', 'none');
-        } else {
-          this.$('.field-password').css('display', 'block');
-          this.$password.focus();
-        }
-      }
-    },
-
-    onRandomPassword: function (event) {
-      event.preventDefault();
-      this.$password.val(common.randomString());
-      this.$password.focus();
     }
 
   });
