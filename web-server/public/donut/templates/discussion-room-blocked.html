@@ -4,7 +4,9 @@
             <img class="avatar open-room-profile" data-room-id="<%= room_id %>" src="<%= avatar %>" alt="<%= name %> avatar">
             <div class="name open-room-profile" data-room-id="<%= room_id %>">
                 <%= name %>
-                <span class="room-profile <%= join_mode %>" data-toggle="tooltip" data-placement="top" title="<%= join_mode === 'everyone' ? t('global.public-donut') : t('global.private-donut') %>"> </span>
+                <% if (join_mode === 'private') { %>
+                    <span class="room-profile private" data-toggle="tooltip" data-placement="top" title="<%= t('global.private-donut') %>"> </span>
+                <% } %>
             </div>
             <% if (owner && owner.username) { %>
             <span class="owner"><%= t('global.by') %> <a class="open-user-profile dc-text" data-user-id="<%= owner.id %>">@<%= owner.username %></a></span>

@@ -37,8 +37,8 @@
         <label><%= t('chat.form.room-form.common.join-mode-label') %></label>
         <div class="radio">
             <label>
-                <input type="radio" class="savable everyone" name="mode" value="everyone" <% if (room.mode === 'everyone') { print('checked'); }; %>>
-                <%= t('chat.form.room-form.common.mode.everyone-def') %>
+                <input type="radio" class="savable public" name="mode" value="public" <% if (room.mode === 'public') { print('checked'); }; %>>
+                <%= t('chat.form.room-form.common.mode.public') %> (<%= t('global.default') %>)
             </label>
         </div>
         <div class="radio">

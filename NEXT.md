@@ -1,11 +1,11 @@
 # Things to do on next deploy
 
-* Query mongo to set all existing room  with join_mode=everyone
+* Query mongo to set all existing room  with join_mode=public
 ```
 db.getCollection('rooms').update({},
     {
         $set: {
-            join_mode: "everyone"
+            join_mode: "public"
         }
     },
     {"multi" : true});

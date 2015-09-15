@@ -84,6 +84,7 @@
     "muted": "sound off"
   },
   "global": {
+    "default": "default",
     "or": "or",
     "yes": "yes",
     "no": "no",
@@ -111,8 +112,7 @@
     },
     "switchlanguage": "Language",
     "unknownerror": "Unknown error, please retry later",
-    "private-donut": "private Donut",
-    "public-donut": "public Donut"
+    "private-donut": "private Donut"
   },
   "login": {
     "withfacebook": "with Facebook",
@@ -675,8 +675,8 @@
         "common": {
           "join-mode-label": "Who can join the donut (admin only)",
           "mode": {
-            "everyone-def": "Everyone (défault)",
-            "everyone": "Everyone",
+            "public": "Public",
+            "private": "Private",
             "allowed": "Only authorized user",
             "password": "User with the password",
             "password-change": "Change password",

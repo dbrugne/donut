@@ -84,6 +84,7 @@
     "muted": "son désactivé"
   },
   "global": {
+    "default": "défaut",
     "or": "ou",
     "yes": "oui",
     "no": "non",
@@ -111,8 +112,7 @@
     },
     "switchlanguage": "Langue",
     "unknownerror": "Erreur inconnue, veuillez réessayer",
-    "private-donut": "Donut privé",
-    "public-donut": "Donut public"
+    "private-donut": "Donut privé"
   },
   "login": {
     "withfacebook": "avec Facebook",
@@ -695,8 +695,8 @@
         "common" : {
           "join-mode-label": "Qui peut rejoindre le donut (administrateur)",
           "mode": {
-            "everyone-def": "Tous le monde (défaut)",
-            "everyone": "Tous le monde",
+            "public": "Publique",
+            "private": "Privée",
             "allowed": "Utilisateur autorisé uniquement",
             "password": "Utilisateur ayant le mot de passe",
             "password-change": "Changer le mot de passe",
