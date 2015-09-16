@@ -4,7 +4,7 @@ if (process.env.NODE_ENV !== 'development') {
 }
 
 var pomelo = require('pomelo');
-var logger = require('./../shared/util/logger').getLogger('donut', __filename);
+var logger = require('../shared/util/logger').getLogger('donut', __filename);
 var scheduler = require('./app/components/scheduler');
 var dispatcher = require('./app/util/dispatcher');
 var connector = require('./app/connector/sioconnector');
