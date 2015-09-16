@@ -22,6 +22,8 @@ handler.call = function (data, session, next) {
 
   var that = this;
 
+  var event = {};
+
   async.waterfall([
 
     function check (callback) {
@@ -49,7 +51,7 @@ handler.call = function (data, session, next) {
     },
 
     function broadcast (callback) {
-      var event = {
+      event = {
         by_user_id: currentUser.id,
         by_username: currentUser.username,
         by_avatar: currentUser._avatar(),
@@ -59,6 +61,12 @@ handler.call = function (data, session, next) {
       };
 
       roomEmitter(that.app, user, room, 'room:disallow', event, callback);
+    },
+
+    function broadcastToUser (eventData, callback) {
+      that.app.globalChannelService.pushMessage('connector', 'room:disallow', event, 'user:' + user.id, {}, function (reponse) {
+        callback(null, eventData);
+      });
     },
 
     /**

@@ -99,6 +99,7 @@ define([
       this.listenTo(onetoones, 'add', this.addView);
       this.listenTo(onetoones, 'remove', this.onRemoveDiscussion);
       this.listenTo(rooms, 'kickedOrBanned', this.roomKickedOrBanned);
+      this.listenTo(rooms, 'allowed', this.roomAllowed);
       this.listenTo(rooms, 'deleted', this.roomRoomDeleted);
       this.listenTo(app, 'openRoomProfile', this.openRoomProfile);
       this.listenTo(app, 'openUserProfile', this.openUserProfile);
@@ -311,6 +312,11 @@ define([
         message += ' ' + i18next.t('chat.reason', {reason: _.escape(data.reason)});
       }
       app.trigger('alert', 'warning', message);
+    },
+    roomAllowed: function (event) {
+      if (event.wasFocused) { // if remove model was focused, focused the new one
+        this.focus(event.model);
+      }
     },
     roomRoomDeleted: function (data) {
       this.focus();

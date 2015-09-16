@@ -30,11 +30,11 @@ define([
       }
 
       var that = this;
-      client.userRead(this.user_id, null, function (err, data) {
-        if (err === 'unknown') {
+      client.userRead(this.user_id, null, function (data) {
+        if (data.err === 'unknown') {
           return;
         }
-        if (!err) {
+        if (!data.err) {
           that.onResponse(data);
         }
       });
@@ -126,8 +126,8 @@ define([
 
     onUserBanChange: function () {
       this.render();
-      client.userRead(this.user_id, null, _.bind(function (err, data) {
-        if (!err) {
+      client.userRead(this.user_id, null, _.bind(function (data) {
+        if (!data.err) {
           this.onResponse(data);
         }
       }, this));
