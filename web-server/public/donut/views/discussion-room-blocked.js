@@ -95,6 +95,7 @@ define([
         if (response.err && (response.err === 'wrong-password' || response.err === 'spam-password')) {
           app.trigger('alert', 'error', i18next.t('chat.password.' + response.err));
         } else if (response.err) {
+          console.log(response.err);
           app.trigger('alert', 'error', i18next.t('chat.password.error'));
         }
       });

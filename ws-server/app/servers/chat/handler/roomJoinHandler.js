@@ -53,6 +53,24 @@ handler.call = function (data, session, next) {
         return callback('wrong-password');
       }
 
+      if (room.isPasswordTries(user.id)) {
+        var doc = room.isInPasswordTries(user.id);
+
+        if (doc) {
+          var date = Date.now() - new Date(doc.createdAt);
+          // 15 seconds
+          if (date > (15 * 60 * 100)) {
+            RoomModel.update({'_id': room._id, 'password_tries.user': user._id}, {$pull: {'password_tries': {'password_tries.user': user._id}}}, function (err) {
+              if (err) {
+                return callback(err);
+              }
+            });
+          } else if (!room.validPassword(data.password) && doc.count > 5) {
+            return callback('spam-password');
+          }
+        }
+      }
+
       if (room.validPassword(data.password)) {
         return callback(null);
       }
@@ -70,10 +88,6 @@ handler.call = function (data, session, next) {
         });
         return callback('wrong-password');
       } else {
-        var doc = room.isInPasswordTries(user.id);
-        if (doc && doc.count > 5) {
-          return callback('spam-password');
-        }
         RoomModel.update({'_id': room._id, 'password_tries.user': user._id}, {$inc: {'password_tries.$.count': 1}}, function (err) {
           if (err) {
             return callback(err);

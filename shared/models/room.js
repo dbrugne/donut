@@ -27,7 +27,8 @@ var roomSchema = mongoose.Schema({
   password: String,
   password_tries: [{
     user: {type: mongoose.Schema.ObjectId, ref: 'User'},
-    count: Number
+    count: Number,
+    createdAt: {type: Date, default: Date.now}
   }],
   allowed: [{type: mongoose.Schema.ObjectId, ref: 'User'}],
   allowed_pending: [{type: mongoose.Schema.ObjectId, ref: 'User'}],
