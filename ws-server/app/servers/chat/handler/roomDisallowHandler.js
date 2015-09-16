@@ -22,6 +22,8 @@ handler.call = function (data, session, next) {
 
   var that = this;
 
+  var event = {};
+
   async.waterfall([
 
     function check (callback) {
@@ -49,7 +51,7 @@ handler.call = function (data, session, next) {
     },
 
     function broadcast (callback) {
-      var event = {
+      event = {
         by_user_id: currentUser.id,
         by_username: currentUser.username,
         by_avatar: currentUser._avatar(),
@@ -58,7 +60,13 @@ handler.call = function (data, session, next) {
         avatar: user._avatar()
       };
 
-      roomEmitter(that.app, user, room, 'room:kick', event, callback);
+      roomEmitter(that.app, user, room, 'room:disallow', event, callback);
+    },
+
+    function broadcastToUser (eventData, callback) {
+      that.app.globalChannelService.pushMessage('connector', 'room:disallow', event, 'user:' + user.id, {}, function (reponse) {
+        callback(null, eventData);
+      });
     },
 
     /**
@@ -100,17 +108,17 @@ handler.call = function (data, session, next) {
     function persistOnRoom (eventData, callback) {
       Room.update(
         {_id: { $in: [room.id] }},
-        {$pull: {join_mode_allowed: user.id, users: user.id}}, function (err) {
+        {$pull: {allowed: user.id, users: user.id}}, function (err) {
           return callback(err, eventData);
         }
       );
     },
 
-    function persistOnUser (callback) {
+    function persistOnUser (eventData, callback) {
       user.update({
         $addToSet: {blocked: room.id}
       }, function (err) {
-        return callback(err);
+        return callback(err, eventData);
       });
     }
 

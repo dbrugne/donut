@@ -38,6 +38,8 @@ define([
       this.listenTo(client, 'user:offline', this.onUserOffline);
       this.listenTo(client, 'room:kick', this.onKick);
       this.listenTo(client, 'room:ban', this.onBan);
+      this.listenTo(client, 'room:disallow', this.onDisallow);
+      this.listenTo(client, 'room:allow', this.onAllow);
       this.listenTo(client, 'room:deban', this.onDeban);
       this.listenTo(client, 'room:voice', this.onVoice);
       this.listenTo(client, 'room:devoice', this.onDevoice);
@@ -180,12 +182,15 @@ define([
       model.onUserOffline(data);
     },
     onKick: function (data) {
-      this._kickBan('kick', data);
+      this._kickBanDisallow('kick', data);
     },
     onBan: function (data) {
-      this._kickBan('ban', data);
+      this._kickBanDisallow('ban', data);
     },
-    _kickBan: function (what, data) {
+    onDisallow: function (data) {
+      this._kickBanDisallow('disallow', data);
+    },
+    _kickBanDisallow: function (what, data) {
       var model;
       if (!data || !data.room_id || !(model = this.get(data.room_id))) {
         return;
@@ -193,8 +198,14 @@ define([
 
       // if i'm the "targeted user" destroy the model/view
       if (currentUser.get('user_id') === data.user_id) {
+        var isFocused = model.get('focused');
+        var roomTmp = model.attributes;
+        roomTmp.blocked = true;
         this.remove(model);
+        this.addModel(roomTmp, true);
         this.trigger('kickedOrBanned', {
+          model: this.get(data.room_id),
+          wasFocused: isFocused,
           what: what,
           data: data
         }); // focus + alert
@@ -216,6 +227,24 @@ define([
         type: 'room:' + what,
         data: data
       }));
+    },
+    onAllow: function (data) {
+      var model;
+      if (!data || !data.room_id || !(model = this.get(data.room_id))) {
+        return;
+      }
+
+      if (currentUser.get('user_id') === data.user_id) {
+        var isFocused = model.get('focused');
+        var roomTmp = model.attributes;
+        roomTmp.blocked = true;
+        this.remove(model);
+        this.addModel(roomTmp);
+        this.trigger('allowed', {
+          model: this.get(data.room_id),
+          wasFocused: isFocused
+        }); // focus + alert
+      }
     },
     onDeban: function (data) {
       var model;

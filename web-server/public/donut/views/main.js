@@ -99,6 +99,7 @@ define([
       this.listenTo(onetoones, 'add', this.addView);
       this.listenTo(onetoones, 'remove', this.onRemoveDiscussion);
       this.listenTo(rooms, 'kickedOrBanned', this.roomKickedOrBanned);
+      this.listenTo(rooms, 'allowed', this.roomAllowed);
       this.listenTo(rooms, 'deleted', this.roomRoomDeleted);
       this.listenTo(app, 'openRoomProfile', this.openRoomProfile);
       this.listenTo(app, 'openUserProfile', this.openUserProfile);
@@ -292,12 +293,30 @@ define([
     roomKickedOrBanned: function (event) {
       var what = event.what;
       var data = event.data;
-      this.focus();
-      var message = (what === 'kick') ? i18next.t('chat.kickmessage', {name: data.name}) : i18next.t('chat.banmessage', {name: data.name});
+      if (event.wasFocused) { // if remove model was focused, focused the new one
+        this.focus(event.model);
+      }
+      var message;
+      switch (what) {
+        case 'kick':
+          message = i18next.t('chat.kickmessage', {name: data.name});
+          break;
+        case 'ban':
+          message = i18next.t('chat.banmessage', {name: data.name});
+          break;
+        case 'disallow':
+          message = i18next.t('chat.disallowmessage', {name: data.name});
+          break;
+      }
       if (data.reason) {
         message += ' ' + i18next.t('chat.reason', {reason: _.escape(data.reason)});
       }
       app.trigger('alert', 'warning', message);
+    },
+    roomAllowed: function (event) {
+      if (event.wasFocused) { // if remove model was focused, focused the new one
+        this.focus(event.model);
+      }
     },
     roomRoomDeleted: function (data) {
       this.focus();

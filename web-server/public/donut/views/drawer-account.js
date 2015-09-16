@@ -22,8 +22,8 @@ define([
 
       // ask for data
       var that = this;
-      client.userRead(currentUser.get('user_id'), null, function (err, data) {
-        if (err) {
+      client.userRead(currentUser.get('user_id'), null, function (data) {
+        if (data.err) {
           return;
         }
 

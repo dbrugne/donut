@@ -24,6 +24,8 @@ handler.call = function (data, session, next) {
 
   var wasPending = false;
 
+  var event = {};
+
   async.waterfall([
 
     function check (callback) {
@@ -57,7 +59,7 @@ handler.call = function (data, session, next) {
     function broadcast (callback) {
       wasPending = room.isAllowedPending(user.id);
 
-      var event = {
+      event = {
         by_user_id: currentUser.id,
         by_username: currentUser.username,
         by_avatar: currentUser._avatar(),
@@ -66,7 +68,17 @@ handler.call = function (data, session, next) {
         avatar: user._avatar()
       };
 
-      roomEmitter(that.app, user, room, 'room:allowed', event, callback);
+      roomEmitter(that.app, user, room, 'room:allow', event, callback);
+    },
+
+    function broadcastToUser (eventData, callback) {
+      if (!data.notification && !wasPending) {
+        return callback(null, eventData);
+      }
+
+      that.app.globalChannelService.pushMessage('connector', 'room:allow', event, 'user:' + user.id, {}, function (reponse) {
+        callback(null, eventData);
+      });
     },
 
     function persist (eventData, callback) {
