@@ -1,6 +1,4 @@
 'use strict';
-var logger = require('../../../shared/util/logger').getLogger('donut', __filename);
-var debug = require('debug')('donut:server:input');
 var async = require('async');
 var _ = require('underscore');
 var RoomModel = require('../../../shared/models/room');

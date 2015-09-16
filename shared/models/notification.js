@@ -1,8 +1,6 @@
 'use strict';
-var debug = require('debug')('donut:notifications');
 var _ = require('underscore');
 var mongoose = require('../io/mongoose');
-var User = require('./user');
 
 var notificationSchema = mongoose.Schema({
   type: String,
@@ -10,7 +8,8 @@ var notificationSchema = mongoose.Schema({
   data: mongoose.Schema.Types.Mixed,
   time: { type: Date, default: Date.now },
 
-  done: { type: Boolean, default: false }, // avoid totally sending of this notification
+  done: { type: Boolean, default: false }, // avoid totally sending of this
+                                           // notification
 
   to_browser: { type: Boolean, default: false },
   sent_to_browser: { type: Boolean, default: false },
@@ -30,7 +29,8 @@ var notificationSchema = mongoose.Schema({
 });
 
 /**
- * Return new Notification instance with some attributes pre-filled with default values
+ * Return new Notification instance with some attributes pre-filled with
+ * default values
  *
  * @param type
  * @param user
@@ -48,7 +48,8 @@ notificationSchema.statics.getNewModel = function (type, user, data) {
 };
 
 /**
- * Return the Event type associated to current notification, depending of its type
+ * Return the Event type associated to current notification, depending of its
+ * type
  *
  * @returns historyroom || historyone || undefined
  */
@@ -66,12 +67,10 @@ notificationSchema.methods.getEventType = function () {
     case 'roomjoin':
     case 'usermention':
       return 'historyroom';
-      break;
     case 'userban':
     case 'userdeban':
     case 'usermessage':
       return 'historyone';
-      break;
   }
 
   return undefined;
@@ -86,23 +85,26 @@ notificationSchema.methods.getEventType = function () {
  * @param fn(err, [{Notification}])
  */
 notificationSchema.statics.bulkInsert = function (models, fn) {
-  if (!models || !models.length)
+  if (!models || !models.length) {
     return fn(null, models);
+  }
 
   var bulk = this.collection.initializeOrderedBulkOp();
-  if (!bulk)
+  if (!bulk) {
     return fn('bulkInsertModels: MongoDb connection is not yet established');
+  }
 
   _.each(models, function (model) {
     bulk.insert(model.toJSON());
   });
 
   bulk.execute(function (err, results) {
-    if (err)
+    if (err) {
       return fn(err);
+    }
 
     _.each(models, function (model, index, list) {
-      list[index].isNew = false;
+      list[ index ].isNew = false;
     });
 
     fn(null, models);
