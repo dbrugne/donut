@@ -491,6 +491,10 @@
       "message": "La platforme DONUT a répondu en __ms__ ms"
     },
     "notifications": {
+      "onetoone": {
+        "ban": " est bloqué à la demande de",
+        "deban": " n'est plus bloqué à la demande de"
+      },
       "hello": "Vous entrez dans",
       "disconnected": "Vous avez été deconnecté du serveur, veuillez patienter",
       "reconnected": "Vous êtes reconnecté",
