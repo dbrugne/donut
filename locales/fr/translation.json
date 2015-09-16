@@ -603,7 +603,7 @@
       }
     },
     "access": {
-      "link": "accés",
+      "link": "Accès",
       "labelsearch": "Ajouter des utilisateurs dans la liste des personnes autorisées",
       "labelpending": "Utilisateurs en attente d'autorisation",
       "types": {
