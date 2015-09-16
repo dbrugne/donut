@@ -285,7 +285,7 @@ var onUserLeave = function (app, session, reason) {
     if (reason) {
       log.reason = reason;
     }
-    logger.trace(JSON.stringify(log));
+    logger.trace(log);
 
     // user:offline
     app.rpc.chat.statusRemote.socketGoesOffline(

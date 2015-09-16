@@ -156,22 +156,18 @@ WelcomeRemote.prototype.getMessage = function (uid, frontendId, globalCallback) 
 
   ], function (err, user) {
     if (err) {
-      logger.error(JSON.stringify({
-        route: 'welcomeRemote.welcome',
+      logger.error('welcomeRemote.welcome', {
         result: 'fail',
         uid: uid,
-        frontendId: frontendId,
-        time: new Date(start)
-      }));
+        frontendId: frontendId
+      });
     } else {
-      logger.debug(JSON.stringify({
-        route: 'welcomeRemote.welcome',
+      logger.debug('welcomeRemote.welcome', {
         result: 'success',
         username: user.username,
         frontendId: frontendId,
-        time: new Date(start),
         timeUsed: (Date.now() - start)
-      }));
+      });
     }
 
     return globalCallback(err, welcomeEvent);

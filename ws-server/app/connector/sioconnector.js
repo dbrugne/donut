@@ -4,7 +4,7 @@ var conf = require('../../../config/index');
 var util = require('util');
 var EventEmitter = require('events').EventEmitter;
 var socketio = require('socket.io');
-var socketioPomeloSocket = require('./sioPomeloSocket');
+var SocketioPomeloSocket = require('./sioPomeloSocket');
 var socketioRedis = require('socket.io-redis');
 var socketioJwt = require('socketio-jwt');
 var User = require('../../../shared/models/user');
@@ -79,13 +79,10 @@ Connector.prototype.start = function (cb) {
   // step 2 - once token is validated the socket is considered authenticated
   this.sio.sockets.on('authenticated', function (socket) {
     // log who is authenticated
-    var log = {
-      type: 'ws:authenticated',
-      result: 'success',
-      username: socket.decoded_token.username,
-      'remote_ip': (socket.handshake.headers['x-forwarded-for']) ? socket.handshake.headers['x-forwarded-for'] : socket.conn.remoteAddress
-    };
-    logger.info(JSON.stringify(log));
+    var ip = (socket.handshake.headers['x-forwarded-for'])
+      ? socket.handshake.headers['x-forwarded-for']
+      : socket.conn.remoteAddress;
+    logger.info('ws:authenticated', socket.decoded_token.username, ip);
 
     // add test event
     socket.on('ping', function (data) {
@@ -93,14 +90,13 @@ Connector.prototype.start = function (cb) {
     });
 
     // wrap the socket
-    var pomeloSocket = new socketioPomeloSocket(curId++, socket);
+    var pomeloSocket = new SocketioPomeloSocket(curId++, socket);
     that.emit('connection', pomeloSocket);
 
     pomeloSocket.on('closing', function (reason) {
       logger.debug('socket.io socket closing: ', socket.id);
       pomeloSocket.send({route: 'onKick', reason: reason});
     });
-
   });
 
   process.nextTick(cb);

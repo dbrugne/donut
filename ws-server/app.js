@@ -10,9 +10,8 @@ var dispatcher = require('./app/util/dispatcher');
 var connector = require('./app/connector/sioconnector');
 var globalChannel = require('pomelo-globalchannel-plugin');
 var status = require('pomelo-status-plugin');
-var chatLoggerFilter = require('./app/servers/chat/filter/logger');
-var chatParametersFilter = require('./app/servers/chat/filter/parameters');
-var connectorLoggerFilter = require('./app/servers/connector/filter/logger');
+var loggerFilter = require('./app/util/logger-filter');
+var parametersFilter = require('./app/servers/chat/filter/parameters');
 var pomeloBridge = require('./app/components/bridge');
 
 /**
@@ -48,7 +47,7 @@ app.use(status, {
 app.configure('production|test|development', 'connector', function () {
   // filters
   app.before(pomelo.toobusy());
-  app.filter(connectorLoggerFilter());
+  app.filter(loggerFilter());
 
   app.set('connectorConfig',
     {
@@ -73,8 +72,8 @@ app.configure('production|test|development', 'chat', function () {
   // filters
   app.before(pomelo.toobusy());
   app.filter(pomelo.timeout());
-  app.filter(chatLoggerFilter());
-  app.filter(chatParametersFilter());
+  app.filter(loggerFilter());
+  app.filter(parametersFilter());
 });
 
 // Scheduler
@@ -90,13 +89,10 @@ app.registerAdmin(pomeloBridge.Module, {
 // start app
 app.start();
 
-/**
- * uncaughtException handler
- */
 process.on('uncaughtException', function (err) {
   try {
-    logger.fatal('Uncaught exception: ', err.stack);
+    logger.fatal('uncaught exception', err.stack);
   } catch (e) {
-    console.error('Uncaught exception: ', err.stack);
+    console.error('uncaught exception', err.stack);
   }
 });

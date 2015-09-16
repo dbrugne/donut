@@ -4,74 +4,115 @@
       "type": "console"
     },
     {
-      "type": "log4js-node-mongodb",
-      "connectionString": "localhost:27017/donut",
-      "collectionName": "logs",
+      "type": "loggly",
+      "token": "a8e38745-bdeb-4ff6-947c-86ee7f6fa182",
+      "subdomain": "donut",
+      "tags": [
+        "ws",
+        "con-log"
+      ],
+      "json": true,
       "category": "con-log"
     },
     {
-      "type": "log4js-node-mongodb",
-      "connectionString": "localhost:27017/donut",
-      "collectionName": "logs",
+      "type": "loggly",
+      "token": "a8e38745-bdeb-4ff6-947c-86ee7f6fa182",
+      "subdomain": "donut",
+      "tags": [
+        "ws",
+        "rpc-log"
+      ],
+      "json": true,
       "category": "rpc-log"
     },
     {
-      "type": "log4js-node-mongodb",
-      "connectionString": "localhost:27017/donut",
-      "collectionName": "logs",
+      "type": "loggly",
+      "token": "a8e38745-bdeb-4ff6-947c-86ee7f6fa182",
+      "subdomain": "donut",
+      "tags": [
+        "ws",
+        "forward-log"
+      ],
+      "json": true,
       "category": "forward-log"
     },
     {
-      "type": "log4js-node-mongodb",
-      "connectionString": "localhost:27017/donut",
-      "collectionName": "logs",
-     "category": "rpc-debug"
+      "type": "loggly",
+      "token": "a8e38745-bdeb-4ff6-947c-86ee7f6fa182",
+      "subdomain": "donut",
+      "tags": [
+        "ws",
+        "rpc-debug"
+      ],
+      "json": true,
+      "category": "rpc-debug"
     },
     {
-      "type": "log4js-node-mongodb",
-      "connectionString": "localhost:27017/donut",
-      "collectionName": "logs",
-      "category":"crash-log"
+      "type": "loggly",
+      "token": "a8e38745-bdeb-4ff6-947c-86ee7f6fa182",
+      "subdomain": "donut",
+      "tags": [
+        "ws"
+      ],
+      "json": true,
+      "category": "crash-log"
     },
     {
-      "type": "log4js-node-mongodb",
-      "connectionString": "localhost:27017/donut",
-      "collectionName": "logs",
-      "category":"admin-log"
+      "type": "loggly",
+      "token": "a8e38745-bdeb-4ff6-947c-86ee7f6fa182",
+      "subdomain": "donut",
+      "tags": [
+        "ws"
+      ],
+      "json": true,
+      "category": "admin-log"
     },
     {
-      "type": "log4js-node-mongodb",
-      "connectionString": "localhost:27017/donut",
-      "collectionName": "logs",
-      "category":"pomelo"
+      "type": "loggly",
+      "token": "a8e38745-bdeb-4ff6-947c-86ee7f6fa182",
+      "subdomain": "donut",
+      "tags": [
+        "ws"
+      ],
+      "json": true,
+      "category": "pomelo"
     },
     {
-      "type": "log4js-node-mongodb",
-      "connectionString": "localhost:27017/donut",
-      "collectionName": "logs",
-      "category":"donut"
+      "type": "loggly",
+      "token": "a8e38745-bdeb-4ff6-947c-86ee7f6fa182",
+      "subdomain": "donut",
+      "tags": [
+        "ws"
+      ],
+      "json": true,
+      "category": "donut"
     },
     {
-      "type": "log4js-node-mongodb",
-      "connectionString": "localhost:27017/donut",
-      "collectionName": "logs",
-      "category":"pomelo-admin"
+      "type": "loggly",
+      "token": "a8e38745-bdeb-4ff6-947c-86ee7f6fa182",
+      "subdomain": "donut",
+      "tags": [
+        "ws"
+      ],
+      "json": true,
+      "category": "pomelo-admin"
     },
     {
-      "type": "log4js-node-mongodb",
-      "connectionString": "localhost:27017/donut",
-      "collectionName": "logs",
-      "category":"pomelo-rpc"
+      "type": "loggly",
+      "token": "a8e38745-bdeb-4ff6-947c-86ee7f6fa182",
+      "subdomain": "donut",
+      "tags": [
+        "ws"
+      ],
+      "json": true,
+      "category": "pomelo-rpc"
     }
   ],
-
   "levels": {
     "[all]": "INFO",
     "forward-log": "WARN",
-    "donut": "DEBUG"
+    "donut": "INFO"
   },
-
   "replaceConsole": false,
-
   "lineDebug": false
 }
