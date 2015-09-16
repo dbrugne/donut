@@ -15,3 +15,13 @@ db.getCollection('rooms').update({},
 ```
 db.getCollection('history-room').update({users: {$exists: true}}, {$unset: {users: true}}, {multi: true});
 ```
+
+* Remove flag from env: 
+```
+"RAW_MESSAGE": true
+```
+
+* Cleanup logs collection
+```
+db.getCollection('logs').drop()
+```

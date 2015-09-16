@@ -1,33 +1,40 @@
 'use strict';
-var debug = require('debug')('shared:redis');
+var logger = require('../util/logger').getLogger('redis', __filename);
 var redis = require('redis');
 
 redis.debug_mode = false; // @debug
 
-// redis client used by express-session, passport and featuredRooms only, could maybe be removed
+// redis client used by express-session, passport and featuredRooms only, could
+// maybe be removed
 var client = redis.createClient(null, null, {});
 module.exports = client;
 
 client.on('connect', function () {
-  debug('Connection to Redis established (connect)');
+  logger.debug('Connection to Redis established (connect)');
 });
 
 client.on('ready', function () {
-  if (redis.debug_mode) debug('Connection to Redis established (ready)');
+  if (redis.debug_mode) {
+    logger.debug('Connection to Redis established (ready)');
+  }
 });
 
 client.on('end', function () {
-  debug('Connection to Redis closed (end)');
+  logger.debug('Connection to Redis closed (end)');
 });
 
 client.on('drain', function () {
-  if (redis.debug_mode) debug('Connection to Redis (drain)');
+  if (redis.debug_mode) {
+    logger.debug('Connection to Redis (drain)');
+  }
 });
 
 client.on('idle', function () {
-  if (redis.debug_mode) debug('Connection to Redis (idle)');
+  if (redis.debug_mode) {
+    logger.debug('Connection to Redis (idle)');
+  }
 });
 
 client.on('error', function (err) {
-  debug('Redis: error ' + err);
+  logger.error('Redis: error ' + err);
 });

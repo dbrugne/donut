@@ -1,5 +1,5 @@
 'use strict';
-var debug = require('debug')('donut:history');
+var logger = require('../util/logger').getLogger('history', __filename);
 var _ = require('underscore');
 var async = require('async');
 var mongoose = require('../io/mongoose');
@@ -157,7 +157,7 @@ historySchema.statics.retrieve = function () {
       }
 
       var duration = Date.now() - start;
-      debug('History requested in ' + duration + 'ms');
+      logger.debug('History requested in ' + duration + 'ms');
 
       var more = (entries.length > howMany);
       if (more) {

@@ -7,7 +7,7 @@
  * - all:chat|connector: send message only to this kind of servers
  * - chat|connector: send message only to one server of this type
  */
-var logger = require('../../../pomelo-logger').getLogger('donut', __filename);
+var logger = require('../../../../shared/util/logger').getLogger('donut', __filename);
 var _ = require('underscore');
 var dispatcher = require('../../util/dispatcher');
 var adminNotifyTask = require('./tasks/adminNotifyTask');

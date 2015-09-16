@@ -1,5 +1,5 @@
 'use strict';
-var debug = require('debug')('donut:history');
+var logger = require('../util/logger').getLogger('history', __filename);
 var _ = require('underscore');
 var async = require('async');
 var mongoose = require('../io/mongoose');
@@ -79,9 +79,9 @@ historySchema.methods.toClientJSON = function (userViewed) {
   };
 
   // re-hydrate data
-  var data = (this.data) ?
-    _.clone(this.data) :
-  {};
+  var data = (this.data)
+    ? _.clone(this.data)
+    : {};
   data.id = this.id;
   data.name = this.room.name;
   data.room_name = this.room.name;
@@ -166,7 +166,7 @@ historySchema.statics.retrieve = function () {
       }
 
       var duration = Date.now() - start;
-      debug('History requested in ' + duration + 'ms');
+      logger.debug('History requested in ' + duration + 'ms');
 
       var more = (entries.length > howMany);
       if (more) {

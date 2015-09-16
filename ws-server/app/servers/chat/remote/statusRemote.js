@@ -1,5 +1,5 @@
 'use strict';
-var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
+var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename);
 var _ = require('underscore');
 var async = require('async');
 var User = require('../../../../../shared/models/user');
@@ -123,20 +123,16 @@ DisconnectRemote.prototype.online = function (uid, welcome, globalCallback) {
 
   ], function (err, event) {
     if (err) {
-      logger.error(JSON.stringify({
-        route: 'statusRemote.online',
+      logger.error('statusRemote.online', {
         result: 'fail',
-        username: welcome.user.username,
-        time: new Date(start)
-      }));
+        username: welcome.user.username
+      });
     } else {
-      logger.debug(JSON.stringify({
-        route: 'statusRemote.online',
+      logger.debug('statusRemote.online', {
         result: 'success',
         username: welcome.user.username,
-        time: new Date(start),
         timeUsed: (Date.now() - start)
-      }));
+      });
     }
 
     return globalCallback(err);
@@ -310,20 +306,16 @@ DisconnectRemote.prototype.offline = function (uid) {
 
   ], function (err, user) {
     if (err) {
-      logger.error(JSON.stringify({
-        route: 'statusRemote.offline',
+      logger.error('statusRemote.offline', {
         result: 'fail',
-        username: user.username,
-        time: new Date(start)
-      }));
+        username: user.username
+      });
     } else {
-      logger.debug(JSON.stringify({
-        route: 'statusRemote.offline',
+      logger.debug('statusRemote.offline', {
         result: 'success',
         username: user.username,
-        time: new Date(start),
         timeUsed: (Date.now() - start)
-      }));
+      });
     }
   });
 };
