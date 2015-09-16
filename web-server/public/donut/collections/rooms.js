@@ -39,6 +39,7 @@ define([
       this.listenTo(client, 'room:kick', this.onKick);
       this.listenTo(client, 'room:ban', this.onBan);
       this.listenTo(client, 'room:disallow', this.onDisallow);
+      this.listenTo(client, 'room:allow', this.onAllow);
       this.listenTo(client, 'room:deban', this.onDeban);
       this.listenTo(client, 'room:voice', this.onVoice);
       this.listenTo(client, 'room:devoice', this.onDevoice);
@@ -199,6 +200,8 @@ define([
       if (currentUser.get('user_id') === data.user_id) {
         var isFocused = model.get('focused');
         var roomTmp = model.attributes;
+        roomTmp.blocked = true;
+        console.log(roomTmp);
         this.remove(model);
         this.addModel(roomTmp, true);
         this.trigger('kickedOrBanned', {
@@ -225,6 +228,24 @@ define([
         type: 'room:' + what,
         data: data
       }));
+    },
+    onAllow: function (data) {
+      var model;
+      if (!data || !data.room_id || !(model = this.get(data.room_id))) {
+        return;
+      }
+
+      if (currentUser.get('user_id') === data.user_id) {
+        var isFocused = model.get('focused');
+        var roomTmp = model.attributes;
+        roomTmp.blocked = true;
+        this.remove(model);
+        this.addModel(roomTmp);
+        this.trigger('allowed', {
+          model: this.get(data.room_id),
+          wasFocused: isFocused
+        }); // focus + alert
+      }
     },
     onDeban: function (data) {
       var model;
