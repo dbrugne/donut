@@ -1,5 +1,5 @@
 'use strict';
-var debug = require('debug')('donut:web:admin');
+var logger = require('../../../shared/util/logger').getLogger('web', __filename);
 var express = require('express');
 var router = express.Router();
 var async = require('async');
@@ -9,7 +9,7 @@ var conf = require('../../../config/index');
 
 var isAdmin = function (req, res, next) {
   if (!req.isAuthenticated() || req.user.admin !== true) {
-    debug('Someone tried to access /dashboard without being authenticated as admin user');
+    logger.warn('Someone tried to access /dashboard without being authenticated as admin user');
     return res.redirect('/');
   }
   next();
@@ -30,12 +30,13 @@ router.get('/dashboard/users-list', isAdmin, function (req, res) {
   async.waterfall([
 
     function retrieve (callback) {
-      User.find({}).sort({_id: 'asc'}).exec(callback);
+      User.find({}).sort({ _id: 'asc' }).exec(callback);
     },
 
     function prepare (users, callback) {
-      if (!users || users.length < 1)
+      if (!users || users.length < 1) {
         return callback('No user to list in current database');
+      }
 
       var csv = '"id";"username";"name";"email";"facebook";"created time";"last time online"';
       _.each(users, function (u) {
@@ -46,26 +47,29 @@ router.get('/dashboard/users-list', isAdmin, function (req, res) {
         cols.push(u.username);
 
         // name
-        if (u.name)
+        if (u.name) {
           cols.push(u.name);
-        else if (u.facebook && u.facebook.name)
+        } else if (u.facebook && u.facebook.name) {
           cols.push(u.facebook.name);
-        else
+        } else {
           cols.push('N/A');
+        }
 
         // email
-        if (u.local.email)
+        if (u.local.email) {
           cols.push(u.local.email);
-        else if (u.facebook && u.facebook.email)
+        } else if (u.facebook && u.facebook.email) {
           cols.push(u.facebook.email);
-        else
+        } else {
           cols.push('N/A');
+        }
 
         // is Facebook?
-        if (u.facebook && u.facebook.token)
+        if (u.facebook && u.facebook.token) {
           cols.push('yes');
-        else
+        } else {
           cols.push('no');
+        }
 
         // dates
         var d;
@@ -86,8 +90,9 @@ router.get('/dashboard/users-list', isAdmin, function (req, res) {
     }
 
   ], function (err, csv) {
-    if (err)
+    if (err) {
       return res.send('Error while generating users CSV: ' + err);
+    }
 
     var d = new Date();
     var date = '' + d.getFullYear() + ('0' + (d.getMonth() + 1)).substr(-2, 2) + ('0' + (d.getDate())).substr(-2, 2) + d.getHours() + d.getMinutes() + d.getSeconds() + d.getMilliseconds();
@@ -95,7 +100,6 @@ router.get('/dashboard/users-list', isAdmin, function (req, res) {
     res.attachment(filename);
     res.send(csv);
   });
-
 });
 
 module.exports = router;

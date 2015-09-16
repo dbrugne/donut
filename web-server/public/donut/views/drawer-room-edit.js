@@ -118,6 +118,20 @@ define([
       if (currentUser.get('admin') === true) {
         updateData.visibility = (this.$('input[name=visibility]:checked').val() === 'true');
         updateData.priority = this.$('input[name=priority]').val();
+
+        // mode
+        var checked = this.$('[name="mode"]:checked');
+        if (!checked.length) {
+          // @todo handle error
+          return;
+        }
+        updateData.mode = checked.attr('value');
+
+        // password
+        var password = this.$password.val();
+        if (updateData.mode === 'password' && password) {
+          updateData.password = password;
+        }
       }
 
       if (this.avatarUploader.data) {

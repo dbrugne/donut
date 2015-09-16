@@ -1,5 +1,5 @@
 'use strict';
-var logger = require('../../../pomelo-logger').getLogger('donut', __filename);
+var logger = require('../../../../shared/util/logger').getLogger('donut', __filename);
 var _ = require('underscore');
 var NotificationModel = require('../../../../shared/models/notification');
 var HistoryOne = require('../../../../shared/models/historyone');

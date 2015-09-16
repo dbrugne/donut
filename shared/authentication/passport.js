@@ -1,5 +1,5 @@
 'use strict';
-var debug = require('debug')('shared:passport');
+var logger = require('../util/logger').getLogger('passport', __filename);
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
@@ -23,7 +23,7 @@ var keenIoTracking = function (user, type) {
   };
   keenio.addEvent('user_signup', keenEvent, function (err, res) {
     if (err) {
-      debug('Error while tracking user_signup in keen.io for ' + user.id + ': ' + err);
+      logger.error('Error while tracking user_signup in keen.io for ' + user.id + ': ' + err);
     }
   });
 };
@@ -50,7 +50,6 @@ var localStrategyOptions = {
 passport.use('local-signup', new LocalStrategy(localStrategyOptions,
   function (req, email, password, done) {
     process.nextTick(function () {
-
       // happen if user is already authenticated with another method (e.g.:
       // Facebook)
       if (req.user) {
@@ -70,7 +69,7 @@ passport.use('local-signup', new LocalStrategy(localStrategyOptions,
 
       // find existing user with this email
       email = email.toLowerCase();
-      User.findOne({'local.email': email}, function (err, user) {
+      User.findOne({ 'local.email': email }, function (err, user) {
         if (err) {
           return done(err);
         }
@@ -96,7 +95,7 @@ passport.use('local-signup', new LocalStrategy(localStrategyOptions,
           // email will be send on next tick but done() is called immediatly
           emailer.welcome(newUser.local.email, function (err) {
             if (err) {
-              return debug('Unable to sent welcome email: ' + err);
+              return logger.error('Unable to sent welcome email: ' + err);
             }
           });
 
@@ -104,7 +103,6 @@ passport.use('local-signup', new LocalStrategy(localStrategyOptions,
         });
       });
     });
-
   }));
 
 // email and password login
@@ -113,7 +111,7 @@ passport.use('local-login', new LocalStrategy(localStrategyOptions,
     // find a user whose email is the same as the forms email
     // we are checking to see if the user trying to login already exists
     var searchEmail = email.toLocaleLowerCase();
-    User.findOne({'local.email': searchEmail}, function (err, user) {
+    User.findOne({ 'local.email': searchEmail }, function (err, user) {
       // if there are any errors, return the error before anything else
       if (err) {
         return done(err);
@@ -135,13 +133,12 @@ passport.use('local-login', new LocalStrategy(localStrategyOptions,
       user.lastlogin_at = Date.now();
       user.save(function (err) {
         if (err) {
-          debug(err);
+          logger.error(err);
         } // not a problem
 
         return done(null, user);
       });
     });
-
   }));
 
 // Facebook (Web browser, based on current Facebook session)
@@ -156,7 +153,7 @@ passport.use(new FacebookStrategy(facebookStrategyOptions,
   function (req, token, refreshToken, profile, done) {
     process.nextTick(function () {
       if (!req.user) {
-        User.findOne({'facebook.id': profile.id}, function (err, user) {
+        User.findOne({ 'facebook.id': profile.id }, function (err, user) {
           if (err) {
             return done(err);
           }
@@ -170,7 +167,7 @@ passport.use(new FacebookStrategy(facebookStrategyOptions,
               user.facebook.token = token;
               user.facebook.name = profile.name.givenName + ' ' + profile.name.familyName;
               if (profile.emails) {
-                user.facebook.email = profile.emails[0].value;
+                user.facebook.email = profile.emails[ 0 ].value;
               }
             }
             user.save(function (err) {
@@ -189,7 +186,7 @@ passport.use(new FacebookStrategy(facebookStrategyOptions,
             newUser.facebook.name = profile.name.givenName + ' ' + profile.name.familyName;
             newUser.name = profile.displayName;
             if (profile.emails) {
-              newUser.facebook.email = profile.emails[0].value;
+              newUser.facebook.email = profile.emails[ 0 ].value;
             } // facebook can return multiple emails so we'll take the first
 
             newUser.save(function (err) {
@@ -204,15 +201,13 @@ passport.use(new FacebookStrategy(facebookStrategyOptions,
               return done(null, newUser);
             });
           }
-
         });
-
       } else {
         // user already exists and is logged in, we have to link accounts
         var user = req.user;
 
         // Look for another user account that use this identifier
-        User.findOne({'facebook.id': profile.id}, function (err, existingUser) {
+        User.findOne({ 'facebook.id': profile.id }, function (err, existingUser) {
           if (err) {
             return done(err);
           }
@@ -227,7 +222,7 @@ passport.use(new FacebookStrategy(facebookStrategyOptions,
           user.facebook.token = token;
           user.facebook.name = profile.name.givenName + ' ' + profile.name.familyName;
           if (profile.emails) {
-            user.facebook.email = profile.emails[0].value;
+            user.facebook.email = profile.emails[ 0 ].value;
           }
 
           // save the user
@@ -238,10 +233,8 @@ passport.use(new FacebookStrategy(facebookStrategyOptions,
             return done(null, user);
           });
         });
-
       }
     });
-
   }));
 
 // Facebook (mobile, based on token)
@@ -253,7 +246,7 @@ passport.use(new FacebookTokenStrategy({
   console.log(profile);
 
   var facebookId = profile.id;
-  User.findOne({'facebook.id': facebookId}, function (err, user) {
+  User.findOne({ 'facebook.id': facebookId }, function (err, user) {
     if (err) {
       return done(err);
     }
@@ -267,7 +260,7 @@ passport.use(new FacebookTokenStrategy({
 
         user.facebook.name = profile.name.givenName + ' ' + profile.name.familyName;
         if (profile.emails) {
-          user.facebook.email = profile.emails[0].value;
+          user.facebook.email = profile.emails[ 0 ].value;
         }
       }
       user.save(function (err) {
@@ -277,7 +270,6 @@ passport.use(new FacebookTokenStrategy({
 
         return done(null, user); // user found, return that user
       });
-
     } else {
       // create account (=signup)
       var newUser = User.getNewUser();
@@ -287,7 +279,7 @@ passport.use(new FacebookTokenStrategy({
       newUser.facebook.name = profile.name.givenName + ' ' + profile.name.familyName; // @todo :test
       newUser.name = profile.displayName; // @todo :test
       if (profile.emails) {
-        newUser.facebook.email = profile.emails[0].value;
+        newUser.facebook.email = profile.emails[ 0 ].value;
       } // facebook can return multiple emails so we'll take the first
       newUser.save(function (err) {
         if (err) {
@@ -300,7 +292,6 @@ passport.use(new FacebookTokenStrategy({
         // if successful, return the new user
         return done(null, newUser);
       });
-
     }
   });
 }));

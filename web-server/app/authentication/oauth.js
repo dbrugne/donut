@@ -1,5 +1,5 @@
 'use strict';
-var debug = require('debug')('donut:oauth');
+var logger = require('../../../shared/util/logger').getLogger('web', __filename);
 var async = require('async');
 var _ = require('underscore');
 var express = require('express');
@@ -64,7 +64,7 @@ router.route('/oauth/get-token-from-credentials')
 
     User.findOne({'local.email': req.body.email}, function (err, user) {
       if (err) {
-        debug('internal error: ' + err);
+        logger.error('internal error: ' + err);
         return res.json({err: 'internal-error'});
       }
       if (!user) {
@@ -86,11 +86,11 @@ router.route('/oauth/get-token-from-credentials')
         try {
           var payload = jwt.verify(req.body.code, conf.oauth.secret, {});
           if (payload.id !== user.id) {
-            debug('Error within oauth by secure code: secure code not correspond to this user');
+            logger.error('Error within oauth by secure code: secure code not correspond to this user');
             return res.json({err: 'invalid'});
           }
         } catch (e) {
-          debug('Error within oauth by secure code: ' + e.message);
+          logger.error('Error within oauth by secure code: ' + e.message);
           return res.json({err: 'invalid'});
         }
       }
@@ -130,11 +130,11 @@ router.route('/oauth/check-token')
 
     jwt.verify(req.body.token, conf.oauth.secret, function (err, decoded) {
       if (err) {
-        debug('Error while checking oauth token: ' + err);
+        logger.error('Error while checking oauth token: ' + err);
         return res.json({validity: false});
       }
       if (!decoded.id) {
-        debug('oauth token is invalid', decoded);
+        logger.error('oauth token is invalid', decoded);
         return res.json({validity: false});
       }
 
@@ -202,7 +202,7 @@ router.route('/oauth/save-username')
 
     jwt.verify(req.body.token, conf.oauth.secret, function (err, decoded) {
       if (err) {
-        debug('Error while saving username: ' + err);
+        logger.error('Error while saving username: ' + err);
         return res.json({err: 'internal'});
       }
 
@@ -212,7 +212,7 @@ router.route('/oauth/save-username')
 
       User.findOne({_id: decoded.id}, function (err, user) {
         if (err) {
-          debug('Error while retrieving user: ' + err);
+          logger.error('Error while retrieving user: ' + err);
           return res.json({err: 'internal'});
         }
 
@@ -221,20 +221,19 @@ router.route('/oauth/save-username')
             if (err === 'not-available') {
               return res.json({err: 'not-available'});
             } else {
-              debug('Error while checking username availability: ' + err);
+              logger.error('Error while checking username availability: ' + err);
               return res.json({err: 'internal'});
             }
           }
 
           user.update({$set: {username: username}}, function (err) {
             if (err) {
-              debug('Error while saving username: ' + err);
+              logger.error('Error while saving username: ' + err);
               return res.json({err: 'internal'});
             }
             return res.json({success: true}); // success
           });
         });
-
       });
     });
   });
@@ -326,7 +325,7 @@ router.route('/oauth/signup')
       function email (user, callback) {
         emailer.welcome(user.local.email, function (err) {
           if (err) {
-            return debug('Unable to sent welcome email: ' + err);
+            return logger.error('Unable to sent welcome email: ' + err);
           }
         });
         return callback(null, user);
@@ -344,7 +343,7 @@ router.route('/oauth/signup')
         };
         keenio.addEvent('user_signup', keenEvent, function (err) {
           if (err) {
-            debug('Error while tracking user_signup in keen.io for ' + user.id + ': ' + err);
+            logger.error('Error while tracking user_signup in keen.io for ' + user.id + ': ' + err);
           }
 
           return callback(null, user);
@@ -363,7 +362,7 @@ router.route('/oauth/signup')
 
     ], function (err, token) {
       if (_.isObject(err)) {
-        debug('Error while signuping new mobile user: ' + err.detail);
+        logger.error('Error while signuping new mobile user: ' + err.detail);
         return res.json({err: err.err});
       } else if (err) {
         return res.json({err: err});
@@ -371,7 +370,6 @@ router.route('/oauth/signup')
 
       return res.json({success: true, token: token});
     });
-
   });
 
 module.exports = router;

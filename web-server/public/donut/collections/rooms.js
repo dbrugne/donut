@@ -212,9 +212,12 @@ define([
       if (currentUser.get('user_id') === data.user_id) {
         var isFocused = model.get('focused');
         var roomTmp = model.attributes;
-        roomTmp.blocked = true;
+        var isPublic = (model.get('join_mode') === 'public');
         this.remove(model);
-        this.addModel(roomTmp, true);
+        if (!isPublic) {
+          roomTmp.blocked = true;
+          this.addModel(roomTmp, true);
+        }
         this.trigger('kickedOrBanned', {
           model: this.get(data.room_id),
           wasFocused: isFocused,

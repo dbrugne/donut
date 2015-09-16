@@ -1,5 +1,5 @@
 'use strict';
-var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
+var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename);
 var featuredRooms = require('../../../../../shared/util/featuredRooms');
 
 module.exports = function (data) {
