@@ -56,15 +56,15 @@ define([
       var html = this.template(data);
       this.$el.html(html);
 
-      this.search = this.$('input[type=text]');
-      this.dropdown = this.$('.dropdown');
-      this.dropdownMenu = this.$('.dropdown-menu');
+      this.search = this.$el.find('input[type=text]');
+      this.dropdown = this.$el.find('.dropdown');
+      this.dropdownMenu = this.$el.find('.dropdown-menu');
       this.tablePending = new TableView({
-        el: this.$('#table-allow-pending'),
+        el: this.$el.find('#table-allow-pending'),
         model: this.model
       });
       this.tableAllowed = new TableView({
-        el: this.$('#table-allowed'),
+        el: this.$el.find('#table-allowed'),
         model: this.model
       });
       this.renderTables();
@@ -121,9 +121,15 @@ define([
 
       if (userId) {
         ConfirmationView.open({}, _.bind(function () {
-          client.roomAllow(this.model.get('id'), userId, false);
+          client.roomAllow(this.model.get('id'), userId, false, _.bind(function () {
+            this.renderTables();
+          }, this));
         }, this));
       }
+
+      // Close dropdown
+      this.dropdown.removeClass('open');
+      this.search.val('');
     }
 
   });

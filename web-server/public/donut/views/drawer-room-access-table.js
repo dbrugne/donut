@@ -51,6 +51,7 @@ define([
       if (userId) {
         client.roomAllow(this.model.get('id'), userId, true, _.bind(function (data) {
           this.model.trigger('redraw-tables');
+          console.log('trigger redraw-tables');
         }, this));
       }
     },
@@ -61,6 +62,7 @@ define([
       if (userId) {
         client.roomRefuse(this.model.get('id'), userId, _.bind(function (data) {
           this.model.trigger('redraw-tables');
+          console.log('trigger redraw-tables');
         }, this));
       }
     },
@@ -71,6 +73,7 @@ define([
       if (userId) {
         client.roomDisallow(this.model.get('id'), userId, _.bind(function (data) {
           this.model.trigger('redraw-tables');
+          console.log('trigger redraw-tables');
         }, this));
       }
     },
