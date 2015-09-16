@@ -6,7 +6,7 @@
     <span class="icon icon-times action-tag-as-done"></span>
     <div class="message-description unviewed">
         <span class="hidden-xs hidden-sm">
-            <%= t('global.by') %> <span class="username open-user-profile" data-user-id="<%= data.data.user.user_id %>">@<%= data.data.user.username %></span>
+            <%= t('global.by') %> <span class="username open-user-profile" data-user-id="<%= (data.data.by_user._id) ? data.data.by_user._id : data.data.by_user.id %>">@<%= data.data.user.username %></span>
         </span>
         <div class="date">
             <span class="moment hidden-xs hidden-sm" data-time="<%= data.time %>" title="<%= data.time %>"><%= from_now %></span>
