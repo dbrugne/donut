@@ -447,6 +447,7 @@
     },
     "password": {
       "wrong-password": "Wrong password",
+      "spam-password": "please wait",
       "error": "An error has occurred"
     },
     "confirmation": {

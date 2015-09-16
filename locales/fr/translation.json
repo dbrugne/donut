@@ -466,7 +466,7 @@
       }
     },
     "password": {
-      "spam-password": "Vous devez patienter 2 min",
+      "spam-password": "Vous devez patienter",
       "wrong-password": "Mauvais mot de passe",
       "error": "Une erreur est survenue"
     },
