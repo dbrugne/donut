@@ -134,8 +134,11 @@ define([
         updateData.mode = checked.attr('value');
 
         // password
-        var password = this.$password.val();
-        if (updateData.mode === 'password' && password) {
+        if (updateData.mode === 'password') {
+          var password = this.$password.val();
+          if (!password) {
+            return this.$('.errors').html($.t('chat.form.errors.invalid-password')).show();
+          }
           updateData.password = password;
         }
       }
