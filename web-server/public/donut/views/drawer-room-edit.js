@@ -17,7 +17,6 @@ define([
 
     events: {
       'submit form.room-form': 'onSubmit'
-//    'change input[name="mode"]': 'onChangeMode'
     },
 
     initialize: function (options) {
@@ -119,14 +118,6 @@ define([
       if (currentUser.get('admin') === true) {
         updateData.visibility = (this.$('input[name=visibility]:checked').val() === 'true');
         updateData.priority = this.$('input[name=priority]').val();
-
-        // mode
-        var checked = this.$('[name="mode"]:checked');
-        if (!checked.length) {
-          // @todo handle error
-          return;
-        }
-        updateData.mode = checked.attr('value');
       }
 
       if (this.avatarUploader.data) {
@@ -171,17 +162,6 @@ define([
         }
       });
     },
-
-//    onChangeMode: function (event) {
-//      var $target = $(event.currentTarget).first();
-//      if ($target.attr('type') === 'radio' && $target.attr('name') === 'mode') {
-//        if ($target.attr('value') !== 'public') {
-//
-//        } else { // private
-//
-//        }
-//      }
-//    },
 
     checkWebsite: function () {
       var website = this.$website.val();
