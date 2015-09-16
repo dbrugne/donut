@@ -360,11 +360,11 @@
       "bannedusers": "locked users",
       "update": "Edit",
       "see": "See",
-      "ban": "Ban",
-      "deban": "Deban",
+      "ban": "Block",
+      "deban": "Unblock",
       "banned": "You have blocked this user",
       "bannedMessage": {
-        "onetoone": "You have been locked by this user",
+        "onetoone": "You have been blocked by this user",
         "room": "You are mute in this donut as requested by a moderator"
       },
       "unlock": "(Click here to unblock)"
@@ -491,6 +491,10 @@
       "message": "DONUT platform responds in __ms__ ms"
     },
     "notifications": {
+      "onetoone": {
+        "ban": " was blocked by",
+        "deban": " is no longer blocked as requested by"
+      },
       "hello": "You enter",
       "disconnected": "You have been disconnected from the server, please wait",
       "reconnected": "You have been reconnected",
