@@ -100,6 +100,7 @@ define([
       this.listenTo(onetoones, 'remove', this.onRemoveDiscussion);
       this.listenTo(rooms, 'kickedOrBanned', this.roomKickedOrBanned);
       this.listenTo(rooms, 'allowed', this.roomAllowed);
+      this.listenTo(rooms, 'join', this.roomJoin);
       this.listenTo(rooms, 'deleted', this.roomRoomDeleted);
       this.listenTo(app, 'openRoomProfile', this.openRoomProfile);
       this.listenTo(app, 'openUserProfile', this.openUserProfile);
@@ -314,6 +315,11 @@ define([
       app.trigger('alert', 'warning', message);
     },
     roomAllowed: function (event) {
+      if (event.wasFocused) { // if remove model was focused, focused the new one
+        this.focus(event.model);
+      }
+    },
+    roomJoin: function (event) {
       if (event.wasFocused) { // if remove model was focused, focused the new one
         this.focus(event.model);
       }

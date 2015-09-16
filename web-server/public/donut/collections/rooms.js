@@ -52,8 +52,19 @@ define([
       this.listenTo(client, 'room:typing', this.onTyping);
     },
     onJoin: function (data) {
-      // server ask to client to open this room in IHM
-      this.addModel(data);
+      var model;
+      if ((model = this.get(data.id)) && model.get('blocked')) {
+        var isFocused = model.get('focused');
+        this.remove(model);
+        this.addModel(data);
+        this.trigger('join', {
+          model: this.get(data.id),
+          wasFocused: isFocused
+        }); // focus
+      } else {
+        // server ask to client to open this room in IHM
+        this.addModel(data);
+      }
     },
     addModel: function (room, blocked) {
       // server confirm that we was joined to the room and give us some data on
