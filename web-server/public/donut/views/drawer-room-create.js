@@ -67,30 +67,26 @@ define([
       return common.validateName(name);
     },
     submit: function () {
+      this.reset();
       // name
       if (!this._valid()) {
         return this.setError(i18next.t('chat.form.errors.invalid-name'));
       }
-      var name = '#' + this.$input.val();
-      var uri = 'room/' + name.replace('#', '');
 
       // mode
-      var checked = this.$('[name="mode"]:checked');
-      if (!checked.length) {
-        this.setError(i18next.t('chat.form.errors.invalid-mode'));
-        return;
+      if (!this.drawerRoomCreateModeView.isValidMode()) {
+        return this.setError(i18next.t('chat.form.errors.invalid-mode'));
       }
-      var mode = checked.attr('value');
+      var mode = this.drawerRoomCreateModeView.getMode();
 
       // password
-      var password;
-      if (mode === 'password') {
-        password = this.$password.val();
-        if (!password) {
-          this.setError(i18next.t('chat.form.errors.invalid-password'));
-          return;
-        }
+      if (!this.drawerRoomCreateModeView.isValidPassword()) {
+        return this.setError(i18next.t('chat.form.errors.invalid-password'));
       }
+      var password = this.drawerRoomCreateModeView.getPassword();
+
+      var name = '#' + this.$input.val();
+      var uri = 'room/' + name.replace('#', '');
 
       client.roomCreate(name, mode, password, _.bind(function (response) {
         if (response.code === 400) {

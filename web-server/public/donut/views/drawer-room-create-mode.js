@@ -14,9 +14,11 @@ define([
 
     id: 'drawer-room-create-mode',
 
+    passwordPattern: /([^\s]{4,255})$/i,
+
     events: {
       'change input[name="mode"]': 'onChangeMode',
-      'click [type="checkbox"]': 'onChoosePassword',
+      'change [type="checkbox"]': 'onChoosePassword',
       'click .random-password': 'onRandomPassword'
     },
 
@@ -31,20 +33,14 @@ define([
       var html = this.template(options);
 
       this.$el.html(html);
-      this.$input = this.$el.find('.input');
-      this.$errors = this.$('.errors');
       this.$password = this.$('.input-password');
       this.$password.val(common.randomString());
 
       this.$fieldPassword = this.$el.find('.field-password');
       this.$passwordBlock = this.$fieldPassword.find('.password-block');
+      this.$toggleCheckbox = this.$el.find('#input-password-checkbox');
 
       return this;
-    },
-
-    reset: function () {
-      this.$errors.html('').hide();
-      this.$el.removeClass('has-error').removeClass('has-success').val('');
     },
 
     onChangeMode: function (event) {
@@ -60,10 +56,9 @@ define([
       }
     },
 
-    onChoosePassword: function(event) {
+    onChoosePassword: function (event) {
       // Display block on click
-      var $target = $(event.currentTarget).first();
-      if ($target.attr('type') === 'checkbox' && $target.attr('name') === 'input-password-checkbox' && $target.val() === 'on') {
+      if (this.$toggleCheckbox.is(':checked')) {
         this.$passwordBlock.show();
       } else {
         this.$passwordBlock.hide();
@@ -74,6 +69,28 @@ define([
       event.preventDefault();
       this.$password.val(common.randomString());
       this.$password.focus();
+    },
+
+    isValidMode: function () {
+      return (common.validateMode(this.getMode()));
+    },
+
+    isValidPassword: function () {
+      return (this.getMode() === 'public' ||
+      (this.getMode() === 'private' && !this.$toggleCheckbox.is(':checked')) ||
+      (this.getMode() === 'private' && this.$toggleCheckbox.is(':checked') && this.passwordPattern.test(this.getPassword())));
+    },
+
+    getMode: function () {
+      return this.$el.find('input[name="mode"]:checked').val();
+    },
+
+    getPassword: function () {
+      if (this.$toggleCheckbox.is(':checked')) {
+        return this.$password.val();
+      }
+
+      return null;
     }
 
   });
