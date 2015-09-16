@@ -18,6 +18,7 @@ var handler = Handler.prototype;
 
 handler.call = function (data, session, next) {
   var user = session.__currentUser__;
+  var passwordPattern = /([^\s]{4,255})$/i;
 
   async.waterfall([
 
@@ -31,7 +32,7 @@ handler.call = function (data, session, next) {
       }
 
       if (data.mode === 'private') {
-        if (!data.password || data.password.length < 4 || data.password.length > 255) {
+        if (!passwordPattern.test(data.password)) {
           return callback('invalid-password');
         }
       }
@@ -56,7 +57,7 @@ handler.call = function (data, session, next) {
         room.visibility = false; // not visible on home until admin change this value
         room.priority = 0;
         room.join_mode = data.mode;
-        if (data.mode === 'private') {
+        if (data.mode === 'private' && data.password !== null) {
           room.password = user.generateHash(data.password);
         }
 
