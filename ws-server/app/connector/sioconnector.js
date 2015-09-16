@@ -1,5 +1,5 @@
 'use strict';
-var logger = require('../../pomelo-logger').getLogger('donut', __filename);
+var logger = require('../../../shared/util/logger').getLogger('donut', __filename);
 var conf = require('../../../config/index');
 var util = require('util');
 var EventEmitter = require('events').EventEmitter;

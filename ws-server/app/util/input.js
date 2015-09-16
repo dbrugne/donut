@@ -1,5 +1,5 @@
 'use strict';
-var logger = require('../../pomelo-logger').getLogger('donut', __filename);
+var logger = require('../../../shared/util/logger').getLogger('donut', __filename);
 var debug = require('debug')('donut:server:input');
 var async = require('async');
 var _ = require('underscore');

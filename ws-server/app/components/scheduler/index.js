@@ -1,5 +1,5 @@
 'use strict';
-var logger = require('../../../pomelo-logger').getLogger('donut', __filename);
+var logger = require('../../../../shared/util/logger').getLogger('donut', __filename);
 var schedule = require('pomelo-scheduler');
 var conf = require('../../../../config');
 
