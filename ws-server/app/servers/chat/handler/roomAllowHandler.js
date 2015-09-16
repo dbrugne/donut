@@ -66,7 +66,7 @@ handler.call = function (data, session, next) {
         avatar: user._avatar()
       };
 
-      roomEmitter(that.app, user, room, 'room:allowed', event, callback);
+      roomEmitter(that.app, user, room, 'room:allow', event, callback);
     },
 
     function persist (eventData, callback) {
