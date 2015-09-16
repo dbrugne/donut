@@ -34,7 +34,9 @@ define([
 
       this.$el.html(html);
       this.$password = this.$('.input-password');
-      this.$password.val(common.randomString());
+      if (!options.model || options.model.hasPassword === false) {
+        this.$password.val(common.randomString());
+      }
 
       this.$fieldPassword = this.$el.find('.field-password');
       this.$passwordBlock = this.$fieldPassword.find('.password-block');

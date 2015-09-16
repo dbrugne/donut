@@ -2,24 +2,37 @@
     <span class="name"><%= room_name %></span>
     <span class="owner"><%= t('global.by') %> <a class="open-user-profile dc-text colored" data-user-id="<%= owner_id %>">@<%= owner_name %></a></span>
 </div>
-<div class="mode mt20 mb20 fs14">
-    <p><%= t('chat.blocked.disclaimer') %></p>
-</div>
-<div class="search dropdown">
-    <label for="input-search"><%= t('chat.access.labelsearch') %></label>
-    <input type="text" id="input-search" placeholder="<%= t('chat.actions.searchuser') %>">
-    <i class="icon icon-search"></i>
-</div>
-<div class="dropdown">
-    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+<% if(join_mode === 'public') { %>
+    <div class="mode mt20 mb20 fs14">
+        <p><%= t('chat.blocked.disclaimer-public') %></p>
+        <p><%= t('chat.blocked.disclaimer-changing') %></p>
+    </div>
+    <div class="drawer-room-create-mode-ctn"></div>
+<% } else { %>
+    <div class="mode mt20 mb20 fs14">
+        <% if(has_password) { %>
+            <p><%= t('chat.blocked.disclaimer-private') %></p>
+            <p><%= t('chat.blocked.disclaimer-password') %></p>
+        <% } else { %>
+            <p><%= t('chat.blocked.disclaimer-private') %></p>
+        <% } %>
+    </div>
+    <div class="drawer-room-create-mode-ctn"></div>
 
-    </ul>
-</div>
-<div class="allow-pending">
-    <label for="table-allow-pending"><%= t('chat.access.labelpending') %></label>
-    <div id="table-allow-pending"></div>
-</div>
-<div class="allowed">
-    <label for="table-allowed"><%= t('chat.users.type.allowed') %></label>
-    <div id="table-allowed"></div>
-</div>
+    <div class="search dropdown">
+        <label for="input-search"><%= t('chat.access.labelsearch') %></label>
+        <input type="text" id="input-search" placeholder="<%= t('chat.actions.searchuser') %>">
+        <i class="icon icon-search"></i>
+    </div>
+    <div class="dropdown">
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1"></ul>
+    </div>
+    <div class="allow-pending">
+        <label for="table-allow-pending"><%= t('chat.access.labelpending') %></label>
+        <div id="table-allow-pending"></div>
+    </div>
+    <div class="allowed">
+        <label for="table-allowed"><%= t('chat.users.type.allowed') %></label>
+        <div id="table-allowed"></div>
+    </div>
+<% } %>

@@ -662,7 +662,10 @@
       "password_button": "Rejoindre",
       "banned": "Vous avez été banni de ce donut le __at__",
       "banned_reason": "Pour la raison suivante : ",
-      "disclaimer": "Ce donut est privé, seul les utilisateurs autorisés par le propriétaire peuvent y accéder. Pour ajouter de nouveaux utilisateurs, merci de les rechercher dans la liste ci-dessous."
+      "disclaimer-private": "Ce donut est privé, seul les utilisateurs explicitement autorisés par le propriétaire peuvent y accéder. Pour ajouter de nouveaux utilisateurs, merci de les rechercher dans la liste ci-dessous.",
+      "disclaimer-public": "Ce donut est public. N'importe quel utilisateur pourra y accéder.",
+      "disclaimer-password": "Vous avez également choisi de mettre un mot de passe. Les utilisateurs avec le mot de passe pourront y entrer sans avoir besoin d'être invités au préalable.",
+      "disclaimer-changing": "Vous avez la possibilité de faire passer ce donut en mode privé (avec éventuellement un mot de passe). Attention, une fois fait, cela ne sera plus modifiable. Ce donut ne sera donc plus ouvert au public, les invitations se feront uniquement par le propriétaire ou par mot de passe."
     },
     "form": {
       "common": {
@@ -694,14 +697,22 @@
           "left": "<strong>%left</strong> restant"
         }
       },
+      "room-mode-form": {
+        "disclaimer": {
+          "public": "En sélectionnant cette option, votre donut sera public. N'importe quel utilisateur pourra y entrer et voir ce qu'il s'y passe.",
+          "private": "En sélectionnant cette option, votre donut sera privé. Seuls les utilisateurs explicitement autorisés par le Propriétaire ou les Op pourront y entrer.",
+          "password": "Vous avez également la possibilité de mettre un mot de passe sur ce donut. Les utilisateurs avec le mot de passe pourront y entrer sans avoir besoin d'être invités au préalable."
+        }
+      },
       "room-form": {
         "common" : {
           "join-mode-label": "Qui peut rejoindre le donut",
           "mode": {
-            "public": "Publique",
-            "private": "Privée",
+            "public": "Public",
+            "private": "Privé",
             "password-change": "Changer le mot de passe",
             "password-field": "Mot de passe",
+            "password-keep": "laisser vide pour garder le même",
             "password-disclaimer": "Vous avez la possibilité de mettre un mot de passe sur ce donut",
             "password-protection": "Protéger par un mot de passe"
           }

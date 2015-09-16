@@ -10,8 +10,9 @@ define([
   'client',
   'views/modal-confirmation',
   'views/drawer-room-access-table',
+  'views/drawer-room-create-mode',
   '_templates'
-], function ($, _, Backbone, i18next, moment, common, app, client, ConfirmationView, TableView, templates) {
+], function ($, _, Backbone, i18next, moment, common, app, client, ConfirmationView, TableView, DrawerRoomCreateModeView, templates) {
   var RoomAccessView = Backbone.View.extend({
 
     template: templates['drawer-room-access.html'],
@@ -48,6 +49,7 @@ define([
         room_id: this.model.get('id'),
         room_name: this.model.get('name'),
         join_mode: this.model.get('join_mode'),
+        has_password: this.model.get('hasPassword'),
         types: this.types
       };
 
@@ -66,6 +68,12 @@ define([
         model: this.model
       });
       this.renderTables();
+
+      this.drawerRoomCreateModeView = new DrawerRoomCreateModeView({
+        model: this.model.toJSON(),
+        mode: 'edition',
+        el: this.$el.find('.drawer-room-create-mode-ctn')
+      });
     },
     renderTables: function () {
       this.tablePending.render('pending');

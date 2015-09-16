@@ -21,7 +21,7 @@
         </td>
     </tr>
     <%}); %>
-    <% if(!users.length) { %>
+    <% if(!users || !users.length) { %>
     <tr><td><%= t('chat.rollup.results.users.empty') %></td></tr>
     <% } %>
 </table>

@@ -7,16 +7,18 @@
             <label>
                 <input type="radio" class="savable public" name="mode" value="public" checked>
                 <%= t('chat.form.room-form.common.mode.public') %> (<%= t('global.default') %>)
+                <br/><%= t('chat.form.room-mode-form.disclaimer.public') %>
             </label>
         </div>
         <div class="radio">
             <label>
                 <input type="radio" class="savable private" name="mode" value="private">
                 <%= t('chat.form.room-form.common.mode.private') %>
+                <br/><%= t('chat.form.room-mode-form.disclaimer.private') %>
             </label>
         </div>
-        <div class="field-password" style="display:none;" >
-            <label><%= t('chat.form.room-form.common.mode.password-disclaimer') %></label>
+        <div class="field-password radio" style="display:none;" >
+            <label><%= t('chat.form.room-mode-form.disclaimer.password') %></label>
             <label style="font-weight:normal; cursor:pointer;">
                 <input type="checkbox" id="input-password-checkbox" name="input-password-checkbox" />
                 <%= t('chat.form.room-form.common.mode.password-protection') %>
@@ -30,24 +32,42 @@
 
     <% } else { %>
 
-        <div class="radio">
+        <div class="radio <%= (model.join_mode === 'private') ? 'disabled' : '' %>">
             <label>
-                <input type="radio" class="savable public" name="mode" value="public" <% if (join_mode === 'public') { %> checked <% } %> >
+                <input type="radio"
+                       class="savable public <%= (model.join_mode === 'private') ? 'disabled' : '' %>"
+                       name="mode"
+                       value="public"
+                        <% if (model.join_mode === 'public') { %> checked <% } %>
+                        <% if (model.join_mode === 'private') { %> disabled <% } %>
+                />
                 <%= t('chat.form.room-form.common.mode.public') %> (<%= t('global.default') %>)
+                <br/><%= t('chat.form.room-mode-form.disclaimer.public') %>
             </label>
         </div>
         <div class="radio">
             <label>
-                <input type="radio" class="savable private" name="mode" value="private" <% if (join_mode === 'private') { %> checked <% } %> >
+                <input type="radio" class="savable private" name="mode" value="private" <% if (model.join_mode === 'private') { %> checked <% } %> >
                 <%= t('chat.form.room-form.common.mode.private') %>
+                <br/><%= t('chat.form.room-mode-form.disclaimer.private') %>
             </label>
         </div>
-        <div class="field-password" <% if (join_mode === 'public') { %> style="display:none" <% } %> >
-        <label for="input-password-checkbox"><%= t('chat.form.room-form.common.mode.password-field') %> : </label>
-        <input type="checkbox" id="input-password-checkbox" name="input-password-checkbox" <% if (has_password === true) { %> checked <% } %>/>
-        <label><%= t('chat.form.room-form.common.mode.password-field') %> : </label>
-        <input type="text" class="input-password" placeholder="<%= t('chat.form.room-form.common.mode.password-field') %>" maxlength="255" value="<%= name %>" />
-        <a href="#" class="icon icon-refresh random-password dc-text"></a>
+
+        <div class="field-password radio" <% if (model.join_mode === 'public') { %> style="display:none;" <% } %> >
+            <label><%= t('chat.form.room-mode-form.disclaimer.password') %></label>
+            <label class="mt10" style="font-weight:normal; cursor:pointer;">
+                <input type="checkbox" id="input-password-checkbox" name="input-password-checkbox" <% if (model.hasPassword) { %> checked <% } %> />
+                <%= t('chat.form.room-form.common.mode.password-protection') %>
+            </label>
+            <div class="password-block form-inline mt10 flex-parent baseline space-between" <% if (!model.hasPassword) { %> style="display:none" <% } %> >
+                <label><%= t('chat.form.room-form.common.mode.password-field') %> : </label>
+                <input type="text"
+                       class="input-password form-control ml10 mr10 flex-child"
+                       placeholder="<%= (model.hasPassword ? t('chat.form.room-form.common.mode.password-keep') : t('chat.form.room-form.common.mode.password-field') ) %>"
+                       maxlength="255"
+                       value="" />
+                <a href="#" class="icon icon-refresh random-password dc-text"></a>
+            </div>
         </div>
 
     <% } %>

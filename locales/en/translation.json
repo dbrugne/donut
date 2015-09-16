@@ -643,7 +643,11 @@
       "password_button": "Join",
       "banned": "You were banned from this donut on __at__",
       "banned_reason": "For following reason: ",
-      "disclaimer": "This donut is private, only allowed user can access. To add new users, please use the list bellow."
+      "disclaimer-private": "This donut is private, Only users specifically authorized by the owner can access it. To add new users, thanks to search in the list below.",
+      "disclaimer-public": "This donut is public. Any user can access it.",
+      "disclaimer-password": "You have also chosen to put a password. Users with the password can enter without having to be asked first.",
+      "disclaimer-changing": "You have the ability to get that donut off the record (possibly with a password). Remember, once made, this will not be editable. This donut will no longer be opened to the public, invitations will be made only by the owner or password."
+
     },
     "form": {
       "common": {
@@ -675,6 +679,13 @@
           "left": "<strong>%left</strong> to go"
         }
       },
+      "room-mode-form": {
+        "disclaimer": {
+          "public": "By selecting this option, your donut will be public. Any user can enter and see what happens there.",
+          "private": "By selecting this option, your donut will be private. Only users specifically authorized by the owner or Op can enter.",
+          "password": "You also have the possibility to put a password on that donut. Users with the password can enter without having to be asked first."
+        }
+      },
       "room-form": {
         "common": {
           "join-mode-label": "Who can join the donut",
@@ -683,6 +694,7 @@
             "private": "Private",
             "password-change": "Change password",
             "password-field": "Password",
+            "password-keep": "leave blank to keep the same",
             "password-disclaimer": "You can set a password on this donut",
             "password-protection": "Protect by a password"
           }
