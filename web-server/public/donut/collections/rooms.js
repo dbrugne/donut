@@ -80,6 +80,7 @@ define([
         color: room.color,
         unviewed: room.unviewed,
         join_mode: room.join_mode,
+        hasPassword: room.hasPassword,
         blocked: blocked || false,
         users_number: room.users_number,
         created_at: room.created_at

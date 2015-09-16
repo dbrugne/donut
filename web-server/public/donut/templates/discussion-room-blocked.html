@@ -17,14 +17,20 @@
                 <span class="owner"><%= t('global.by') %> <a class="open-user-profile dc-text" data-user-id="<%= owner.id %>">@<%= owner.username %></a></span>
                 <% } %>
                 <% if (join_mode === 'private') { %>
-                <div class="password-form mt5 fs15">
-                    <%= t('chat.blocked.password') %>
-                    <br/>
-                    <div class="form-inline mt15">
-                        <input class="input-password form-control " type="text" placeholder="<%= t('chat.blocked.password_placeholder') %>">
-                        <button class="valid-password big-button-light"><%= t('chat.blocked.password_button') %></button>
+                    <% if (hasPassword) { %>
+                    <div class="password-form mt5 fs15">
+                        <%= t('chat.blocked.password') %>
+                        <br/>
+                        <div class="form-inline mt15">
+                            <input class="input-password form-control " type="text" placeholder="<%= t('chat.blocked.password_placeholder') %>">
+                            <button class="valid-password big-button-light"><%= t('chat.blocked.password_button') %></button>
+                        </div>
                     </div>
+                <% } else { %>
+                <div class="mt5 mb5 fs15">
+                    <%= t('chat.blocked.allowed') %>
                 </div>
+                <% } %>
                 <% } else { %>
                 <div class="mt15 fs15">
                     <%= t('chat.blocked.banned', { at: banned_at }) %>
