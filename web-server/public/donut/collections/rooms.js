@@ -201,7 +201,6 @@ define([
         var isFocused = model.get('focused');
         var roomTmp = model.attributes;
         roomTmp.blocked = true;
-        console.log(roomTmp);
         this.remove(model);
         this.addModel(roomTmp, true);
         this.trigger('kickedOrBanned', {
