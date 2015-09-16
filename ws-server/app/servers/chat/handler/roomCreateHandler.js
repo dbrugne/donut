@@ -30,7 +30,7 @@ handler.call = function (data, session, next) {
         return callback('invalid-mode');
       }
 
-      if (data.mode === 'password') {
+      if (data.mode === 'private') {
         if (!data.password || data.password.length < 4 || data.password.length > 255) {
           return callback('invalid-password');
         }
@@ -56,7 +56,7 @@ handler.call = function (data, session, next) {
         room.visibility = false; // not visible on home until admin change this value
         room.priority = 0;
         room.join_mode = data.mode;
-        if (data.mode === 'password') {
+        if (data.mode === 'private') {
           room.password = user.generateHash(data.password);
         }
 
@@ -102,7 +102,6 @@ handler.call = function (data, session, next) {
       }
     }
 
-    return next(null, { success: true });
+    return next(null, {success: true});
   });
-
 };
