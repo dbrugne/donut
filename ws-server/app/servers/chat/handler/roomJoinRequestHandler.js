@@ -41,7 +41,7 @@ handler.call = function (data, session, next) {
       }
 
       if (room.isAllowedPending(user.id)) {
-        return callback('allowed');
+        return callback('notallowed');
       }
 
       return callback(null);
@@ -79,10 +79,10 @@ handler.call = function (data, session, next) {
     if (err) {
       logger.error('[room:join:request] ' + err);
 
-      err = (['banned', 'allowed'].indexOf(err) !== -1)
+      err = (['banned', 'notallowed'].indexOf(err) !== -1)
         ? err
         : 'internal';
-      return next(null, { code: 500, err: 'internal' });
+      return next(null, { code: 500, err: err });
     }
 
     return next(null, {success: true});

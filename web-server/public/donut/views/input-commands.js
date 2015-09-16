@@ -414,23 +414,23 @@ define([
 
       var that = this;
       if ((/^#/.test(parameters[1]))) {
-        client.roomRead(null, parameters[1], function (err, data) {
-          if (err === 'unknown') {
+        client.roomRead(null, parameters[1], function (data) {
+          if (data.err === 'unknown') {
             that.errorCommand('profile', 'invalidroom');
             return;
           }
-          if (!err) {
+          if (!data.err) {
             app.trigger('openRoomProfile', data);
           }
         });
       } else {
         parameters[1] = parameters[1].replace(/^@/, '');
-        client.userRead(null, parameters[1], function (err, data) {
-          if (err === 'unknown') {
+        client.userRead(null, parameters[1], function (data) {
+          if (data.err === 'unknown') {
             that.errorCommand('profile', 'invalidusername');
             return;
           }
-          if (!err) {
+          if (!data.err) {
             app.trigger('openUserProfile', data);
           }
         });

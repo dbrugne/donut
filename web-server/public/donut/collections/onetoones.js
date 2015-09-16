@@ -122,8 +122,8 @@ define([
         }
         withUser.key = key;
         model = this.addModel(withUser);
-        client.userRead(withUser.user_id, null, function (err, data) {
-          if (!err) {
+        client.userRead(withUser.user_id, null, function (data) {
+          if (!data.err) {
             model.set(data);
           }
         });

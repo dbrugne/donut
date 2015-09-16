@@ -45,13 +45,30 @@ handler.call = function (data, session, next) {
     },
 
     function checkPassword (callback) {
-
       if (room.isOwner(user.id) || room.join_mode !== 'password') {
         return callback(null);
       }
 
       if (!room.password || !data.password) {
-        return callback('wrongpassword');
+        return callback('wrong-password');
+      }
+
+      if (room.isPasswordTries(user.id)) {
+        var doc = room.isInPasswordTries(user.id);
+
+        if (doc) {
+          var date = Date.now() - new Date(doc.createdAt);
+          // 15 seconds
+          if (date > (15 * 60 * 100)) {
+            RoomModel.update({'_id': room._id, 'password_tries.user': user._id}, {$pull: {'password_tries': {'password_tries.user': user._id}}}, function (err) {
+              if (err) {
+                return callback(err);
+              }
+            });
+          } else if (!room.validPassword(data.password) && doc.count > 5) {
+            return callback('spam-password');
+          }
+        }
       }
 
       if (room.validPassword(data.password)) {
@@ -59,23 +76,23 @@ handler.call = function (data, session, next) {
       }
 
       if (!room.isPasswordTries(user.id)) {
-        var passwordTries = {
+        var tries = {
           user: user.id,
           count: 1
         };
-        room.password_tries.addToSet(passwordTries);
+        room.password_tries.addToSet(tries);
         room.save(function (err) {
           if (err) {
             return callback(err);
           }
         });
-        return callback('wrongpassword');
+        return callback('wrong-password');
       } else {
         RoomModel.update({'_id': room._id, 'password_tries.user': user._id}, {$inc: {'password_tries.$.count': 1}}, function (err) {
           if (err) {
             return callback(err);
           }
-          return callback('wrongpassword');
+          return callback('wrong-password');
         });
       }
     },
@@ -96,6 +113,12 @@ handler.call = function (data, session, next) {
       room.lastjoin_at = Date.now();
       room.users.addToSet(user._id);
       room.save(function (err) {
+        return callback(err, eventData);
+      });
+    },
+
+    function persistOnUser (eventData, callback) {
+      user.update({$pull: {blocked: user._id}}, function (err) {
         return callback(err, eventData);
       });
     },
@@ -155,7 +178,7 @@ handler.call = function (data, session, next) {
     if (err === 'notexists') {
       return next(null, {code: 404, err: err});
     }
-    if (err === 'banned' || err === 'notallowed' || err === 'wrongpassword') {
+    if (err === 'banned' || err === 'notallowed' || err === 'wrong-password' || err === 'spam-password') {
       // @todo : factorize somewhere
       var roomData = {
         name: room.name,
