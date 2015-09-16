@@ -15,3 +15,8 @@ db.getCollection('rooms').update({},
 ```
 db.getCollection('history-room').update({users: {$exists: true}}, {$unset: {users: true}}, {multi: true});
 ```
+
+* Cleanup logs collection
+```
+db.getCollection('logs').drop()
+```
