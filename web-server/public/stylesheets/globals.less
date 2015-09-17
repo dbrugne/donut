@@ -183,7 +183,15 @@ body { .ft-opensans; font-size: 14px; overflow-x: hidden;
   }
 
   &.button-small { padding: 7px 12px; font-size: 1.3rem; display: flex; }
-  &.button-big { padding: 12px 20px; font-size: 1.3rem; display: flex; .ft-raleway-medium; }
+  &.button-big { padding: 12px 20px; font-size: 2rem; display: flex; .ft-raleway-medium; }
+
+  &.loading { position:relative; .opacity(0.65); background-color: @cl-subtext15; cursor: not-allowed; color: #FFFFFF; padding: 10px 15px 10px 35px;
+    &:after { .icon-spinner; .spin; position: absolute; left: 10px; font-size: inherit; margin-top: 1px; }
+    &.button-big {  padding: 12px 20px 12px 40px;
+      &:after { margin-top: 2px; }
+    }
+    &:hover { background-color:@cl-subtext15 !important; }
+  }
 }
 
 .big-button { padding: 12px 20px; .ft-raleway-medium; font-size: 1.7em; text-transform:uppercase; .border-radius(90px); }
