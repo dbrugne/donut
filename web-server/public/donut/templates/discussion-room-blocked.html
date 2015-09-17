@@ -32,7 +32,7 @@
                     <% } %>
                 <% } else if (blocked === 'banned') { %>
                 <div class="mt15 fs15">
-                    <% if (typeof banned_at !== 'undefined') { print t('chat.blocked.banned', { at: banned_at }); } %>
+                    <% if (typeof banned_at !== 'undefined') { print(t('chat.blocked.banned', { at: banned_at })); } %>
                     <% if (typeof banned_reason !== 'undefined') { %>
                     <p class="reason">
                         <span class="title"><%= t('chat.blocked.banned_reason') %></span>
