@@ -8,9 +8,6 @@
                     <% if (mode === 'private') { %>
                         <span class="room-profile private" data-toggle="tooltip" data-placement="top" title="<%= t('global.private-donut') %>"> </span>
                     <% } %>
-                    <span class="info">
-                        <%= dropdown %>
-                    </span>
                 </div>
 
                 <% if (owner && owner.username) { %>
@@ -33,9 +30,9 @@
                         <button class="ask-for-allowance"><%= t('chat.blocked.allowed_button') %></button>
                     </div>
                     <% } %>
-                <% } else if (typeof banned_at !== 'undefined') { %>
+                <% } else if (blocked === 'banned') { %>
                 <div class="mt15 fs15">
-                    <%= t('chat.blocked.banned', { at: banned_at }) %>
+                    <% if (typeof banned_at !== 'undefined') { print t('chat.blocked.banned', { at: banned_at }); } %>
                     <% if (typeof banned_reason !== 'undefined') { %>
                     <p class="reason">
                         <span class="title"><%= t('chat.blocked.banned_reason') %></span>
@@ -43,7 +40,13 @@
                     </p>
                     <% } %>
                 </div>
+                <% } else { %>
+                <div class="mt15 fs15">
+                    <%= t('chat.blocked.kicked') %>
+                    <button class="big-button-light"><%= t('chat.blocked.password_button') %></button>
+                </div>
                 <% } %>
+                <a href="#" class="close-room"><%= t('chat.blocked.close') %></a>
             </div>
         </div>
     </div>

@@ -79,7 +79,7 @@ handler.join = function (user, room, next) {
     },
 
     function removeBlocked (eventData, callback) {
-      user.update({$pull: {blocked: user._id}}, function (err) {
+      user.update({$pull: {blocked: room._id}}, function (err) {
         return callback(err, eventData);
       });
     },

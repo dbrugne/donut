@@ -99,6 +99,12 @@ handler.call = function (data, session, next) {
       );
     },
 
+    function persistOnUser (eventData, callback) {
+      user.update({$pull: {blocked: room.id}}, function (err) {
+        return callback(err, eventData);
+      });
+    },
+
     function notification (event, callback) {
       if (!data.notification && !wasPending) {
         return callback(null, event);

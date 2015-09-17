@@ -37,11 +37,11 @@ router.get('/', [require('csurf')()], function (req, res) {
     function renderTemplate (featured, callback) {
       _.each(featured, function (element, index, list) {
         list[index].avatar = common.cloudinarySize(element.avatar, 135);
-        var identifier = element.name.replace('#', '').toLocaleLowerCase();
+        var identifier = element.name.replace('#', '');
         list[index].url = req.protocol + '://' + conf.fqdn + '/room/' + identifier;
-        list[index].join = (req.user) ?
-          req.protocol + '://' + conf.fqdn + '/!#room/' + identifier :
-          req.protocol + '://' + conf.fqdn + '/room/join/' + identifier;
+        list[index].join = (req.user)
+          ? req.protocol + '://' + conf.fqdn + '/!#room/' + identifier
+          : req.protocol + '://' + conf.fqdn + '/room/join/' + identifier;
         if (element.owner) {
           list[index].owner.url = req.protocol + '://' + conf.fqdn + '/user/' +
             ('' + element.owner.username).toLocaleLowerCase();

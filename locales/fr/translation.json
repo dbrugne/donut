@@ -669,10 +669,13 @@
       "password_button": "Rejoindre",
       "banned": "Vous avez été banni de ce donut le __at__",
       "banned_reason": "Pour la raison suivante : ",
+      "kicked": "Vous avez été expulsé de ce donut",
+      "kicked_button": "Rejoindre",
       "disclaimer-private": "Ce donut est privé, seul les utilisateurs explicitement autorisés par le propriétaire peuvent y accéder. Pour ajouter de nouveaux utilisateurs, merci de les rechercher dans la liste ci-dessous.",
       "disclaimer-public": "Ce donut est public. N'importe quel utilisateur pourra y accéder.",
       "disclaimer-password": "Vous avez également choisi de mettre un mot de passe. Les utilisateurs avec le mot de passe pourront y entrer sans avoir besoin d'être invités au préalable.",
-      "disclaimer-changing": "Vous avez la possibilité de faire passer ce donut en mode privé (avec éventuellement un mot de passe). Attention, une fois fait, cela ne sera plus modifiable. Ce donut ne sera donc plus ouvert au public, les invitations se feront uniquement par le propriétaire ou par mot de passe."
+      "disclaimer-changing": "Vous avez la possibilité de faire passer ce donut en mode privé (avec éventuellement un mot de passe). Attention, une fois fait, cela ne sera plus modifiable. Ce donut ne sera donc plus ouvert au public, les invitations se feront uniquement par le propriétaire ou par mot de passe.",
+      "close": "Fermer ce donut"
     },
     "form": {
       "common": {

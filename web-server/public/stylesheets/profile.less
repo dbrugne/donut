@@ -86,8 +86,8 @@
   } // .body-chat.body-profile #chat #center .discussion .content
 }
 .body-profile { height: 100%; .ft-opensans; background-color: @cl-background; background-repeat: no-repeat; background-position: 0 @size-color;
-  .upon { position: fixed; left: 0; right: 0; top: @size-color; }
-  .color { position: fixed; left: 0; right: 0; top: 0; height: @size-color; background-color: @cl-first;
+  .upon { position: fixed; left: 0; right: 0; top: @size-color; z-index: 1; }
+  .color { position: fixed; left: 0; right: 0; top: 0; height: @size-color; background-color: @cl-first; z-index: 10;
     a.logo { color: @cl-background; display: inline-block; vertical-align: top; margin: 4px 0 0 4px; line-height: 1em;
       img { display: block; width: 130px; height: 32px; }
       &:hover { text-decoration: none; }
@@ -118,7 +118,7 @@
     .cover, .back { min-height: 140px; width: 190px; position: absolute; top: 0; left: 0;
       .text { padding-bottom: 20px; }
     }
-    .back { display: none; .border-radius(12px); color: @cl-background;
+    .back { display: none; .border-radius(12px); color: @cl-background; z-index: 1;
       .avatar { margin-top: 14px; }
     }
     &:hover {
@@ -138,7 +138,7 @@
         .website { font-size: 0.8em; overflow: hidden; white-space: pre; max-width: 180px; margin: auto; }
       }
     }
-    .back {
+    .back { z-index: 1;
       .avatar { .border-radius(5px); border-color: @cl-background; }
       .username { color: @cl-background; }
       .website { a { color: @cl-background; } }

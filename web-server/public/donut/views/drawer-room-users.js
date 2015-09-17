@@ -50,7 +50,7 @@ define([
       var isAdmin = this.model.currentUserIsAdmin();
 
       if (this.model.get('mode') !== 'private' || (!isOwner && !isAdmin && !isOp)) {
-        this.types = _.without(this.types, 'private');
+        this.types = _.without(this.types, 'allowed');
       } if (!isOwner && !isAdmin && !isOp) {
         this.types = _.without(this.types, 'ban', 'devoice');
       }

@@ -4,7 +4,7 @@ var Room = require('../../../shared/models/room');
 var conf = require('../../../config/index');
 
 module.exports = function (req, res, next, roomname) {
-  if (roomname == undefined || roomname == '') {
+  if (roomname == undefined || roomname === '') {
     res.render('404', {}, function (err, html) {
       res.send(404, html);
     });
@@ -38,7 +38,7 @@ module.exports = function (req, res, next, roomname) {
         };
 
         // urls
-        var ident = model.name.replace('#', '').toLocaleLowerCase();
+        var ident = model.name.replace('#', '');
         room.url = req.protocol + '://' + conf.fqdn + '/room/' + ident;
         room.chat = req.protocol + '://' + conf.fqdn + '/!#room/' + ident;
         room.join = req.protocol + '://' + conf.fqdn + '/room/join/' + ident;
