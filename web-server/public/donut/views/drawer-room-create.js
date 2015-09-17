@@ -32,9 +32,8 @@ define([
       var html = this.template({name: name.replace('#', '')});
       this.$el.html(html);
       this.$input = this.$el.find('.input');
-      this.$errors = this.$('.errors');
-      this.$password = this.$('.input-password');
-      this.$password.val(common.randomString());
+      this.$errors = this.$el.find('.errors');
+      this.$submit = this.$el.find('.submit');
       return this;
     },
     reset: function () {
@@ -83,16 +82,12 @@ define([
       }
       var mode = this.drawerRoomCreateModeView.getMode();
 
-      // password
-      if (!this.drawerRoomCreateModeView.isValidPassword()) {
-        return this.setError(i18next.t('chat.form.errors.invalid-password'));
-      }
-      var password = this.drawerRoomCreateModeView.getPassword();
-
       var name = '#' + this.$input.val();
       var uri = 'room/' + name.replace('#', '');
 
-      client.roomCreate(name, mode, password, _.bind(function (response) {
+      this.$submit.addClass('loading');
+      client.roomCreate(name, mode, null, _.bind(function (response) {
+        this.$submit.removeClass('loading');
         if (response.code === 400) {
           var error = i18next.t('chat.form.errors.' +
             response.err, {name: name, uri: uri});
