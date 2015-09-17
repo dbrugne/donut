@@ -36,7 +36,7 @@ handler.call = function (data, session, next) {
 };
 
 handler.blocked = function (user, room, blocked, next) {
-  async.series([
+  async.waterfall([
     function (callback) {
       user.update({ $addToSet: {blocked: room.id} }, function (err) {
         return callback(err);
