@@ -771,6 +771,9 @@ define([
       var that = this;
       this.model.history(since, function (data) {
         that.addBatchEvents(data.history, data.more);
+        that.historyLoading = false;
+        that.historyNoMore = !data.more;
+        that.toggleHistoryLoader(data.more);
 
         if (scrollTo === 'top') { // on manual request
           var targetTop = $nextTopElement.position().top;
@@ -782,9 +785,6 @@ define([
           // on first focus history load
           that.scrollDown();
         }
-        that.historyLoading = false;
-        that.historyNoMore = !data.more;
-        that.toggleHistoryLoader(data.more);
       });
     },
     toggleHistoryLoader: function (more) {
