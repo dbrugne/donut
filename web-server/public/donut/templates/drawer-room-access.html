@@ -1,5 +1,10 @@
 <div class="room">
-    <span class="name"><%= room_name %></span>
+    <span class="name">
+        <%= room_name %>
+        <% if (mode === 'private') { %>
+            <span class="room-profile private" data-toggle="tooltip" data-placement="top" title="<%= t('global.private-donut') %>"> </span>
+        <% } %>
+    </span>
     <span class="owner"><%= t('global.by') %> <a class="open-user-profile dc-text colored" data-user-id="<%= owner_id %>">@<%= owner_name %></a></span>
 </div>
 <div class="errors"></div>

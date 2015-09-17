@@ -63,6 +63,8 @@ define([
         model: this.model
       });
       this.renderTables();
+
+      this.initializeTooltips();
     },
     renderTables: function () {
       this.tablePending.render('pending');
@@ -121,6 +123,10 @@ define([
       // Close dropdown
       this.dropdown.removeClass('open');
       this.search.val('');
+    },
+
+    initializeTooltips: function () {
+      this.$el.find('[data-toggle="tooltip"]').tooltip();
     }
 
   });
