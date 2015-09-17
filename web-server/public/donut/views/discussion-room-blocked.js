@@ -26,7 +26,8 @@ define([
 
     events: {
       'click .ask-for-allowance': 'onRequestAllowance',
-      'click .valid-password': 'onValidPassword'
+      'click .valid-password': 'onValidPassword',
+      'click .close-room': 'onCloseRoom'
     },
 
     initialize: function () {
@@ -107,6 +108,9 @@ define([
       });
     },
 
+    onCloseRoom: function (event) {
+      event.preventDefault();
+    },
     initializeTooltips: function () {
       this.$el.find('[data-toggle="tooltip"]').tooltip();
     }

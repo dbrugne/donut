@@ -655,8 +655,8 @@
       "disclaimer-private": "This donut is private, Only users specifically authorized by the owner can access it. To add new users, thanks to search in the list below.",
       "disclaimer-public": "This donut is public. Any user can access it.",
       "disclaimer-password": "You have also chosen to put a password. Users with the password can enter without having to be asked first.",
-      "disclaimer-changing": "You have the ability to get that donut off the record (possibly with a password). Remember, once made, this will not be editable. This donut will no longer be opened to the public, invitations will be made only by the owner or password."
-
+      "disclaimer-changing": "You have the ability to get that donut off the record (possibly with a password). Remember, once made, this will not be editable. This donut will no longer be opened to the public, invitations will be made only by the owner or password.",
+      "close-room": "Close this donut"
     },
     "form": {
       "common": {
