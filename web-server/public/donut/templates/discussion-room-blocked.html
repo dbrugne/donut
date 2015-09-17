@@ -27,11 +27,12 @@
                         </div>
                     </div>
                     <span class="error"></span>
-                <% } else { %>
-                <div class="mt5 mb5 fs15">
-                    <%= t('chat.blocked.allowed') %>
-                </div>
-                <% } %>
+                    <% } else { %>
+                    <div class="mt5 mb5 fs15">
+                        <%= t('chat.blocked.allowed') %>
+                        <button class="ask-for-allowance"><%= t('chat.blocked.allowed_button') %></button>
+                    </div>
+                    <% } %>
                 <% } else { %>
                 <div class="mt15 fs15">
                     <%= t('chat.blocked.banned', { at: banned_at }) %>
