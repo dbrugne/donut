@@ -28,7 +28,7 @@ var roomSchema = mongoose.Schema({
   password_tries: [{
     user: {type: mongoose.Schema.ObjectId, ref: 'User'},
     count: Number,
-    createdAt: {type: Date, default: Date.now}
+    created_at: {type: Date, default: Date.now}
   }],
   allowed: [{type: mongoose.Schema.ObjectId, ref: 'User'}],
   allowed_pending: [{type: mongoose.Schema.ObjectId, ref: 'User'}],
@@ -207,6 +207,36 @@ roomSchema.methods.isInPasswordTries = function (userId) {
 roomSchema.methods.isPasswordTries = function (userId) {
   var doc = this.isInPasswordTries(userId);
   return (typeof doc !== 'undefined');
+};
+
+roomSchema.methods.isUserBlocked = function (userId, password) {
+  if (this.isOwner(userId)) {
+    return false;
+  }
+  if (this.isBanned(userId)) {
+    return 'banned';
+  }
+  if (this.join_mode === 'public') {
+    return false;
+  }
+  if (this.isIn(userId)) {
+    return false;
+  }
+  if (this.isAllowed(userId)) {
+    return false;
+  }
+  if (this.password && password) {
+    if (this.validPassword(password)) {
+      return false;
+    } else {
+      // @todo : increment password_tries
+      // @todo : 'spam-password'
+
+      return 'wrong-password';
+    }
+  }
+
+  return 'notallowed';
 };
 
 roomSchema.methods.getIdsByType = function (type) {

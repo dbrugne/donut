@@ -5,7 +5,6 @@ var _ = require('underscore');
 var roomDataHelper = require('../../../util/roomData');
 var roomEmitter = require('../../../util/roomEmitter');
 var Notifications = require('../../../components/notifications');
-var RoomModel = require('../../../../../shared/models/room');
 
 var Handler = function (app) {
   this.app = app;
@@ -21,82 +20,42 @@ handler.call = function (data, session, next) {
   var user = session.__currentUser__;
   var room = session.__room__;
 
+  if (!data.room_id && !data.name) {
+    return next(null, {code: 400, err: 'params'});
+  }
+  if (!room) {
+    return next(null, {code: 404, err: 'notexists'});
+  }
+
+  var blocked = room.isUserBlocked(user.id, data.password);
+  if (blocked === false) {
+    this.join(user, room, next);
+  } else {
+    this.blocked(user, room, blocked, next);
+  }
+};
+
+handler.blocked = function (user, room, blocked, next) {
+  async.series([
+    function (callback) {
+      user.update({ $addToSet: {blocked: room.id} }, callback);
+    },
+    function (callback) {
+      roomDataHelper(user, room, callback);
+    }
+  ], function (err, data) {
+    if (err) {
+      logger.error('[room:join] ' + err);
+      return next(null, {code: 500, err: 'internal'});
+    }
+
+    return next(null, {code: 403, err: blocked, room: data});
+  });
+};
+
+handler.join = function (user, room, next) {
   var that = this;
-
   async.waterfall([
-
-    function check (callback) {
-      if (!data.room_id && !data.name) {
-        return callback('room_id or name is mandatory');
-      }
-      if (!room) {
-        return callback('notexists');
-      }
-      if (!room.isOwner(user.id)) {
-        if (room.isBanned(user.id)) {
-          return callback('banned');
-        }
-        if (room.join_mode === 'private' && (!room.isAllowed(user.id) && !room.password)) {
-          return callback('notallowed');
-        }
-      }
-
-      return callback(null);
-    },
-
-    function checkPassword (callback) {
-      if (room.isOwner(user.id) || room.join_mode !== 'private') {
-        return callback(null);
-      }
-
-      if (!room.password || !data.password) {
-        return callback('wrong-password');
-      }
-
-      if (room.isPasswordTries(user.id)) {
-        var doc = room.isInPasswordTries(user.id);
-
-        if (doc) {
-          var date = Date.now() - new Date(doc.createdAt);
-          // 15 seconds
-          if (date > (15 * 60 * 100)) {
-            RoomModel.update({'_id': room._id, 'password_tries.user': user._id}, {$pull: {'password_tries': {'password_tries.user': user._id}}}, function (err) {
-              if (err) {
-                return callback(err);
-              }
-            });
-          } else if (!room.validPassword(data.password) && doc.count > 5) {
-            return callback('spam-password');
-          }
-        }
-      }
-
-      if (room.validPassword(data.password)) {
-        return callback(null);
-      }
-
-      if (!room.isPasswordTries(user.id)) {
-        var tries = {
-          user: user.id,
-          count: 1
-        };
-        room.password_tries.addToSet(tries);
-        room.save(function (err) {
-          if (err) {
-            return callback(err);
-          }
-        });
-        return callback('wrong-password');
-      } else {
-        RoomModel.update({'_id': room._id, 'password_tries.user': user._id}, {$inc: {'password_tries.$.count': 1}}, function (err) {
-          if (err) {
-            return callback(err);
-          }
-          return callback('wrong-password');
-        });
-      }
-    },
-
     function broadcast (callback) {
       // this step happen BEFORE user/room persistence and room subscription
       // to avoid noisy notifications
@@ -117,7 +76,7 @@ handler.call = function (data, session, next) {
       });
     },
 
-    function persistOnUser (eventData, callback) {
+    function removeBlocked (eventData, callback) {
       user.update({$pull: {blocked: user._id}}, function (err) {
         return callback(err, eventData);
       });
@@ -154,9 +113,6 @@ handler.call = function (data, session, next) {
         if (err) {
           return callback(err);
         }
-        if (roomData == null) {
-          return callback('roomDataHelper was unable to return excepted data for ' + room.name);
-        }
         return callback(null, eventData, roomData);
       });
     },
@@ -175,22 +131,6 @@ handler.call = function (data, session, next) {
     }
 
   ], function (err) {
-    if (err === 'notexists') {
-      return next(null, {code: 404, err: err});
-    }
-    if (err === 'banned' || err === 'notallowed' || err === 'wrong-password' || err === 'spam-password') {
-      roomDataHelper(user, room, function (err, roomData) {
-        user.update({
-          $addToSet: {blocked: room.id}
-        }, function (err) { // @todo when factorize call next(null, {code: 403, err: err, room: roomData}) in this callback
-          if (err) {
-            return next(err);
-          }
-          return next(null, {code: 403, err: err, room: roomData});
-        });
-      });
-      return;
-    }
     if (err) {
       logger.error('[room:join] ' + err);
       return next(null, {code: 500, err: 'internal'});
