@@ -23,6 +23,8 @@ handler.call = function (data, session, next) {
 
   var that = this;
 
+  var event = {};
+
   var reason = (data.reason) ?
     inputUtil.filter(data.reason, 512) :
     false;
@@ -74,26 +76,27 @@ handler.call = function (data, session, next) {
         $addToSet: {bans: ban},
         $pull: {users: bannedUser._id, op: bannedUser._id, allowed: bannedUser._id}
       }, function (err) {
-        return callback(err);
+        return callback(err, ban);
       });
     },
 
-    function persistOnUser (callback) {
+    function persistOnUser (banEvent, callback) {
       bannedUser.update({
         $addToSet: {blocked: room.id}
       }, function (err) {
-        return callback(err);
+        return callback(err, banEvent);
       });
     },
 
-    function broadcast (callback) {
-      var event = {
+    function broadcast (banEvent, callback) {
+      event = {
         by_user_id: user.id,
         by_username: user.username,
         by_avatar: user._avatar(),
         user_id: bannedUser.id,
         username: bannedUser.username,
-        avatar: bannedUser._avatar()
+        avatar: bannedUser._avatar(),
+        banned_at: banEvent.banned_at
       };
 
       if (reason !== false) {
@@ -101,6 +104,12 @@ handler.call = function (data, session, next) {
       }
 
       roomEmitter(that.app, user, room, 'room:ban', event, callback);
+    },
+
+    function broadcastToBannedUser (sentEvent, callback) {
+      that.app.globalChannelService.pushMessage('connector', 'room:ban', event, 'user:' + bannedUser.id, {}, function (reponse) {
+        callback(null, sentEvent);
+      });
     },
 
     function unsubscribeClients (event, callback) {
@@ -152,5 +161,4 @@ handler.call = function (data, session, next) {
 
     next(null, {});
   });
-
 };

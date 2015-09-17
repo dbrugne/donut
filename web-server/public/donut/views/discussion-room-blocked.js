@@ -43,6 +43,8 @@ define([
       // banned_at
       if (data.banned_at) {
         data.banned_at = moment(data.banned_at).format('dddd Do MMMM YYYY');
+      } else if (data.blocked === 'banned') {
+        data.banned_at = 'unable to retrieve';
       }
 
       // avatar

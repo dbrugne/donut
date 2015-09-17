@@ -211,13 +211,13 @@ define([
       // if i'm the "targeted user" destroy the model/view
       if (currentUser.get('user_id') === data.user_id) {
         var isFocused = model.get('focused');
-        var roomTmp = model.attributes;
-        var isPublic = (model.get('mode') === 'public');
-        this.remove(model);
-        if (!isPublic) {
-          roomTmp.blocked = true;
-          this.addModel(roomTmp, true);
+        var blocked = (what === 'ban') ? 'banned' : true;
+        var modelTmp = model.attributes;
+        if (what === 'ban' && data.banned_at) {
+          modelTmp.banned_at = data.banned_at;
         }
+        this.remove(model);
+        this.addModel(modelTmp, blocked);
         this.trigger('kickedOrBanned', {
           model: this.get(data.room_id),
           wasFocused: isFocused,

@@ -33,7 +33,7 @@
                         <button class="ask-for-allowance"><%= t('chat.blocked.allowed_button') %></button>
                     </div>
                     <% } %>
-                <% } else { %>
+                <% } else if (blocked === 'banned') { %>
                 <div class="mt15 fs15">
                     <%= t('chat.blocked.banned', { at: banned_at }) %>
                     <% if (typeof banned_reason !== 'undefined') { %>
@@ -42,6 +42,11 @@
                         <span class="reason"><i class="icon icon-quote"></i><%= banned_reason %></span>
                     </p>
                     <% } %>
+                </div>
+                <% } else { %>
+                <div class="mt15 fs15">
+                    <%= t('chat.blocked.kicked') %>
+                    <button class="ask-for-allowance big-button-light"><%= t('chat.blocked.password_button') %></button>
                 </div>
                 <% } %>
             </div>

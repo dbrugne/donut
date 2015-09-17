@@ -67,6 +67,15 @@ handler.call = function (data, session, next) {
       });
     },
 
+    function persistOnUser (callback) {
+      bannedUser.update({
+        $pull: {blocked: room.id}
+      }, function (err) {
+          return callback(err);
+        }
+      );
+    },
+
     function broadcast (callback) {
       var event = {
         by_user_id: user.id,
