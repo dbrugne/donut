@@ -53,8 +53,6 @@ define([
         ? (room.owner.user_id === currentUser.get('user_id'))
         : false;
 
-      room.mode = room.join_mode;
-
       room.isAdmin = (currentUser.get('admin') === true);
 
       var currentAvatar = room.avatar;
@@ -101,6 +99,8 @@ define([
         cropping_aspect_ratio: 0.36, // portrait
         success: _.bind(this.onRoomPosterUpdate, this)
       });
+
+      this.initializeTooltips();
     },
     onSubmit: function (event) {
       event.preventDefault();
@@ -118,20 +118,6 @@ define([
       if (currentUser.get('admin') === true) {
         updateData.visibility = (this.$('input[name=visibility]:checked').val() === 'true');
         updateData.priority = this.$('input[name=priority]').val();
-
-        // mode
-        var checked = this.$('[name="mode"]:checked');
-        if (!checked.length) {
-          // @todo handle error
-          return;
-        }
-        updateData.mode = checked.attr('value');
-
-        // password
-        var password = this.$password.val();
-        if (updateData.mode === 'password' && password) {
-          updateData.password = password;
-        }
       }
 
       if (this.avatarUploader.data) {
@@ -181,11 +167,11 @@ define([
       var website = this.$website.val();
 
       if (website && (website.length < 5 || website.length > 255)) {
-        return this.$('.errors').html($.t('chat.form.errors.website-size')).show();
+        return this.$('.errors').html(i18next.t('chat.form.errors.website-size')).show();
       }
 
       if (website && !/^[^\s]+\.[^\s]+$/.test(website)) {
-        return this.$('.errors').html($.t('chat.form.errors.website-url')).show();
+        return this.$('.errors').html(i18next.t('chat.form.errors.website-url')).show();
       }
 
       return true;
@@ -194,9 +180,13 @@ define([
     editError: function (dataErrors) {
       var message = '';
       _.each(dataErrors.err, function (error) {
-        message += $.t('chat.form.errors.' + error) + '<br>';
+        message += i18next.t('chat.form.errors.' + error) + '<br>';
       });
       this.$('.errors').html(message).show();
+    },
+
+    initializeTooltips: function () {
+      this.$el.find('[data-toggle="tooltip"]').tooltip();
     }
 
   });
