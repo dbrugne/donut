@@ -4,7 +4,7 @@ var Room = require('../../../shared/models/room');
 var conf = require('../../../config/index');
 
 module.exports = function (req, res, next, roomname) {
-  if (roomname == undefined || roomname == '') {
+  if (roomname == undefined || roomname === '') {
     res.render('404', {}, function (err, html) {
       res.send(404, html);
     });
@@ -37,7 +37,7 @@ module.exports = function (req, res, next, roomname) {
         };
 
         // urls
-        var ident = model.name.replace('#', '').toLocaleLowerCase();
+        var ident = model.name.replace('#', '');
         room.url = req.protocol + '://' + conf.fqdn + '/room/' + ident;
         room.chat = req.protocol + '://' + conf.fqdn + '/!#room/' + ident;
         room.join = req.protocol + '://' + conf.fqdn + '/room/join/' + ident;
@@ -64,8 +64,9 @@ module.exports = function (req, res, next, roomname) {
         if (model.op && model.op.length) {
           var opList = [];
           _.each(model.op, function (_model) {
-            if (ownerId && ownerId === _model.id)
+            if (ownerId && ownerId === _model.id) {
               return;
+            }
 
             var op = {
               id: _model.id,
@@ -89,10 +90,12 @@ module.exports = function (req, res, next, roomname) {
         if (model.users && model.users.length) {
           var usersList = [];
           _.each(model.users, function (_model) {
-            if (ownerId && ownerId === _model.id)
+            if (ownerId && ownerId === _model.id) {
               return;
-            if (opIds && opIds.indexOf(_model.id) !== -1)
+            }
+            if (opIds && opIds.indexOf(_model.id) !== -1) {
               return;
+            }
 
             var user = {
               id: _model.id,
@@ -118,6 +121,5 @@ module.exports = function (req, res, next, roomname) {
           res.status(404).send(html);
         });
       }
-
     });
 };

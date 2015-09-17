@@ -14,6 +14,7 @@ define([
       var rooms = [];
       _.each(data.rooms.list, function (room) {
         room.avatar = common.cloudinarySize(room.avatar, 135);
+        room.join = '#room/' + room.name.replace('#', '');
         rooms.push(room);
       });
 
