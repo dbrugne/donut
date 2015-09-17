@@ -36,7 +36,7 @@ handler.call = function (data, session, next) {
         if (room.isBanned(user.id)) {
           return callback('banned');
         }
-        if (room.join_mode === 'private' && !room.isAllowed(user.id)) {
+        if (room.join_mode === 'private' && (!room.isAllowed(user.id) && !room.password)) {
           return callback('notallowed');
         }
       }
@@ -45,7 +45,7 @@ handler.call = function (data, session, next) {
     },
 
     function checkPassword (callback) {
-      if (room.isOwner(user.id) || room.join_mode !== 'password') {
+      if (room.isOwner(user.id) || room.join_mode !== 'private') {
         return callback(null);
       }
 
