@@ -100,7 +100,7 @@ handler.call = function (data, session, next) {
       };
 
       if (reason !== false) {
-        event.reason = reason;
+        event.banned_reason = reason;
       }
 
       roomEmitter(that.app, user, room, 'room:ban', event, callback);
