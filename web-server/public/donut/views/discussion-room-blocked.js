@@ -110,6 +110,7 @@ define([
 
     onCloseRoom: function (event) {
       event.preventDefault();
+      client.roomLeaveBlock(this.model.get('id'));
     },
     initializeTooltips: function () {
       this.$el.find('[data-toggle="tooltip"]').tooltip();

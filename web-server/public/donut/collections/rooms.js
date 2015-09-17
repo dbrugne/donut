@@ -45,6 +45,7 @@ define([
       this.listenTo(client, 'room:devoice', this.onDevoice);
       this.listenTo(client, 'room:join', this.onJoin);
       this.listenTo(client, 'room:leave', this.onLeave);
+      this.listenTo(client, 'room:leave:block', this.onLeaveBlock);
       this.listenTo(client, 'room:viewed', this.onViewed);
       this.listenTo(client, 'room:message:spam', this.onMessageSpam);
       this.listenTo(client, 'room:message:unspam', this.onMessageUnspam);
@@ -297,6 +298,14 @@ define([
       if (data.reason && data.reason === 'deleted') {
         this.trigger('deleted', {reason: i18next.t('chat.deletemessage', {name: data.name})});
       }
+    },
+    onLeaveBlock: function (data) {
+      var model;
+      if (!data || !data.room_id || !(model = this.get(data.room_id))) {
+        return;
+      }
+
+      this.remove(model);
     },
     onViewed: function (data) {
       var model;

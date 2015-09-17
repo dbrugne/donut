@@ -172,6 +172,11 @@ define([
       pomelo.notify('chat.roomLeaveHandler.call', data);
       debug('io:out:room:leave', data);
     },
+    roomLeaveBlock: function (roomId) {
+      var data = {room_id: roomId};
+      pomelo.notify('chat.roomLeaveBlockHandler.call', data);
+      debug('io:out:room:leave:block', data);
+    },
     roomMessage: function (roomId, message, images, special, callback) {
       var data = {
         room_id: roomId,
