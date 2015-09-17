@@ -118,7 +118,7 @@ handler.call = function (data, session, next) {
     },
 
     function persistOnUser (eventData, callback) {
-      user.update({$pull: {blocked: user._id}}, function (err) {
+      user.update({$pull: {blocked: room.id}}, function (err) {
         return callback(err, eventData);
       });
     },
