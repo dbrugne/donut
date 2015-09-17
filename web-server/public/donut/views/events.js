@@ -702,6 +702,7 @@ define([
       });
 
       $(selector).removeClass('unviewed');
+      app.trigger('renderTitle');
     },
     isVisible: function () {
       return !(!this.model.get('focused') || !windowView.focused);

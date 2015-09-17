@@ -37,6 +37,7 @@ define([
       this.listenTo(app, 'playSoundForce', this._play);
       this.listenTo(app, 'unviewedInOut', this.triggerInout);
       this.listenTo(app, 'unviewedMessage', this.triggerMessage);
+      this.listenTo(app, 'renderTitle', this.renderTitle);
 
       this.$window = this.$el;
 
@@ -56,7 +57,6 @@ define([
       }
 
       // Bind events to browser window
-      var that = this;
       this.$window.focus(function (event) {
         that.onFocus();
       });
@@ -80,19 +80,20 @@ define([
       thereIsNew = rooms.some(function (d) { // first looks in rooms
         return d.isThereNew();
       });
-      if (!thereIsNew)
+      if (!thereIsNew) {
         thereIsNew = onetoones.some(function (d) { // then looks in onetoones
           return d.isThereNew();
         });
+      }
 
-      if (thereIsNew)
+      if (thereIsNew) {
         title += i18next.t('chat.unread.title') + ' ';
-
+      }
       title += this.defaultTitle;
 
-      if (this.title && this.title.length)
+      if (this.title && this.title.length) {
         title += ' | ' + this.title;
-
+      }
       document.title = title;
 
       if (!thereIsNew) {
@@ -105,10 +106,10 @@ define([
       var even = this.defaultTitle;
       clearInterval(this.titleBlinker);
       this.titleBlinker = setInterval(function () {
-        document.title = (document.title == odd) ? even : odd;
+        document.title = (document.title === odd) ? even : odd;
       }, 1000);
-
     },
+
     setTitle: function (title) {
       this.title = title;
       this.renderTitle();
@@ -122,8 +123,9 @@ define([
 
       // on window refocus execute some logic on current focused model
       var model = this._getFocusedModel();
-      if (model)
+      if (model) {
         model.trigger('windowRefocused'); // mark visible as read for focused discussion when window recover its focus
+      }
 
       // reset limiters
       this.desktopNotificationsLimiters = {};
@@ -132,30 +134,35 @@ define([
     },
     onClose: function () {
       // sometimes we prevent exit popin
-      if (this.preventPopin)
+      if (this.preventPopin) {
         return;
+      }
 
       // only if connected
-      if (!client.isConnected())
+      if (!client.isConnected()) {
         return;
+      }
 
       // only if at least one discussion is open and preferences checked
-      if ((!rooms || rooms.length < 1) && (!onetoones || onetoones.length < 1) && currentUser.shouldDisplayExitPopin())
+      if ((!rooms || rooms.length < 1) && (!onetoones || onetoones.length < 1) && currentUser.shouldDisplayExitPopin()) {
         return i18next.t('chat.closeapp');
+      }
 
-      if (currentUser.shouldDisplayExitPopin())
+      if (currentUser.shouldDisplayExitPopin()) {
         return i18next.t('chat.closemessage');
+      }
     },
 
     _getFocusedModel: function () {
       var model = rooms.findWhere({focused: true});
-      if (!model)
+      if (!model) {
         model = onetoones.findWhere({focused: true});
+      }
 
       return model; // could be 'undefined'
     },
 
-    /***************************************************
+    /** *************************************************
      * Admin events
      ***************************************************/
     onAdminExit: function () {
@@ -167,29 +174,30 @@ define([
       window.location.reload();
     },
 
-    /***************************************************
+    /** *************************************************
      * Notifications
      ***************************************************/
 
     triggerInout: function (event, model) {
-      if (event.get('type') != 'room:in')
+      if (event.get('type') !== 'room:in') {
         return;
+      }
 
       // test if not from me (currentUser)
-      if (event.get('data').username == currentUser.get('username'))
+      if (event.get('data').username === currentUser.get('username')) {
         return;
+      }
 
       // test if i'm owner or op
-      if (!model.currentUserIsOwner() && !model.currentUserIsOp())
+      if (!model.currentUserIsOwner() && !model.currentUserIsOp()) {
         return;
+      }
 
       // play sound (even if discussion/window is focused or not)
       this.play();
 
       // test if current discussion is focused
-      var isFocused = (this.focused && model.get('focused'))
-        ? true
-        : false;
+      var isFocused = (this.focused && model.get('focused'));
 
       // badge and title only if discussion is not focused
       if (!isFocused) {
@@ -203,35 +211,35 @@ define([
       }
     },
     triggerMessage: function (event, model) {
-      if (event.getGenericType() != 'message' && event.get('type') !== 'room:topic')
+      if (event.getGenericType() !== 'message' && event.get('type') !== 'room:topic') {
         return;
+      }
 
       // test if not from me (currentUser)
-      if (event.get('data').username == currentUser.get('username'))
+      if (event.get('data').username === currentUser.get('username')) {
         return;
+      }
 
       // test if i mentioned (only for rooms)
-      var isMention = (event.getGenericType() != 'message' && model.get('type') === 'room' && common.isUserMentionned(currentUser.get('user_id'), event.get('data').message))
-        ? true
-        : false;
+      var isMention = (event.getGenericType() !== 'message' && model.get('type') === 'room' && common.isUserMentionned(currentUser.get('user_id'), event.get('data').message));
 
       // test if current discussion is focused
-      var isFocused = (this.focused && model.get('focused'))
-        ? true
-        : false;
+      var isFocused = (this.focused && model.get('focused'));
 
       // play sound (could be played for current focused discussion, but not for my own messages)
-      if (isMention)
+      if (isMention) {
         this.play(); // even if discussion is focused
-      else if (!isFocused)
+      } else if (!isFocused) {
         this.play(); // only if not focused
+      }
 
       // badge and title only if discussion is not focused
       if (!isFocused) {
-        if (!isMention)
+        if (!isMention) {
           model.set('unviewed', true); // will trigger tab badge and title when rendering
-        else
+        } else {
           model.set('newmention', true);
+        }
 
         // update tabs
         app.trigger('redraw-block');
@@ -242,13 +250,14 @@ define([
 
       // desktop notification (only for one to one and if windows is not focused
       if (!this.focused) {
-        if (model.get('type') == 'onetoone') {
+        if (model.get('type') === 'onetoone') {
           var data = event.get('data');
           if (data) {
             var key = 'usermessage:' + model.get('username');
             var last = this.desktopNotificationsLimiters[key];
-            if (last && (Date.now() - last) <= 1 * 60 * 1000) // 1mn
+            if (last && (Date.now() - last) <= 1 * 60 * 1000) {// 1mn
               return;
+            }
 
             var message = data.message || '';
             var title = i18next.t('chat.notifications.desktop.usermessage', {
@@ -262,38 +271,45 @@ define([
       }
     },
     play: function () {
-      if (!currentUser.shouldPlaySound())
+      if (!currentUser.shouldPlaySound()) {
         return;
+      }
 
       // @source: // http://stackoverflow.com/questions/9419263/playing-audio-with-javascript
-      if (!this.beepOn)
+      if (!this.beepOn) {
         return; // Audio not supported
-      if (this.beepPlaying)
+      }
+      if (this.beepPlaying) {
         return;
+      }
 
       this.beepPlaying = true;
       this._play();
     },
     _play: function () {
       var beep = this.beep;
-      if (!beep)
+      if (!beep) {
         return;
+      }
       beep.play();
     },
     desktopNotify: function (title, body) {
-      if (!currentUser.shouldDisplayDesktopNotif())
+      if (!currentUser.shouldDisplayDesktopNotif()) {
         return;
+      }
 
       this._desktopNotify(title, body);
     },
     _desktopNotify: function (title, body) {
       // Not already accepted or denied notification permission, prompt popup
-      if (notify.permissionLevel() == notify.PERMISSION_DEFAULT)
+      if (notify.permissionLevel() === notify.PERMISSION_DEFAULT) {
         return this._desktopNotifyRequestPermission(notify.permissionLevel(), notify.PERMISSION_GRANTED, this._desktopNotifyCreateNotification());
+      }
 
       // User denied it
-      if (notify.permissionLevel() == notify.PERMISSION_DENIED)
+      if (notify.permissionLevel() === notify.PERMISSION_DENIED) {
         return;
+      }
 
       this._desktopNotifyCreateNotification(title, body);
     },
