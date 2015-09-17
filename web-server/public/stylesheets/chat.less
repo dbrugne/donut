@@ -169,7 +169,7 @@
       }
       &.op {
         .avatar { .border-radius(5px); border: 2px solid @cl-success !important; }
-        .avatar::before { z-index: 5; position: absolute; content: " "; top: -10px; left: -7px; width: 12px; height: 16px; background-image: url("/images/op.png"); background-size: 12px 16px;
+        .avatar::before { z-index: 5; position: absolute; content: " "; top: -10px; left: -7px; width: 12px; height: 16px; background-image: url("@{img-path}/op.png"); background-size: 12px 16px;
         }
       }
       &.devoice {
@@ -179,7 +179,7 @@
       }
       &.owner {
         .avatar { .border-radius(5px); border: 2px solid #fbec4d !important; }
-        .avatar::before { z-index: 5; position: absolute; content: url("/images/owner.png") !important; top: -15px !important; left: 7px !important; }
+        .avatar::before { z-index: 5; position: absolute; content: url("@{img-path}/owner.png") !important; top: -15px !important; left: 7px !important; }
       }
     }
   }
@@ -191,7 +191,7 @@
   margin: 0;
   padding: 0;
 
-  #languages {
+  #languages { z-index: 5;
     a { padding: 3px 5px; cursor: pointer; }
   }
 
@@ -447,7 +447,7 @@
           }
           &:hover { text-decoration: none;
             span.name { color: @cl-subtext50; }
-            &::before { content: url('/images/svg/draggable.svg'); position: absolute; left: 4px; top: 8px; }
+            &::before { content: url('@{img-path}/svg/draggable.svg'); position: absolute; left: 4px; top: 8px; }
           }
           &.blocked { span.name { color: green; } }
           &.active,
@@ -476,7 +476,7 @@
     } // #chat #left #block-discussions
   }
 
-  #center { height: 100%; z-index: 5; margin-left: @size-left; font-size: 12px; background-color: @cl-subtext0; background-image: url('/images/logo-onecolor-gr.svg'); background-repeat: no-repeat; background-position: center center; background-size: 60%;
+  #center { height: 100%; z-index: 5; margin-left: @size-left; font-size: 12px; background-color: @cl-subtext0; background-image: url('@{img-path}/logo-onecolor-gr.svg'); background-repeat: no-repeat; background-position: center center; background-size: 60%;
     #home { height: 100%; display: none; background-color: @cl-background;
 
       .title {
@@ -587,7 +587,7 @@
         .header { padding-top: 18px; padding-right: 10px;
           .info { padding-left: 110px;
             .share { display: inline-block;
-              i { font-size: 16px; color: @text-color; margin-left: 3px; vertical-align: middle; cursor: pointer;
+              i { font-size: 16px; color: @cl-text; margin-left: 3px; vertical-align: middle; cursor: pointer;
                 &.facebook { color: #3b5998; }
                 &.twitter { color: #4099FF; }
                 &.googleplus { color: #dd4b39; }
@@ -1208,7 +1208,7 @@
                 }
                 &.op {
                   .avatar { .border-radius(5px); border: 2px solid @cl-success !important; }
-                  .avatar::before { z-index: 5; position: absolute; content: " "; top: -10px; left: -7px; width: 12px; height: 16px; background-image: url("/images/op.png"); background-size: 12px 16px;
+                  .avatar::before { z-index: 5; position: absolute; content: " "; top: -10px; left: -7px; width: 12px; height: 16px; background-image: url("@{img-path}/op.png"); background-size: 12px 16px;
                   }
                 }
                 &.devoice {
@@ -1218,7 +1218,7 @@
                 }
                 &.owner {
                   .avatar { .border-radius(5px); border: 2px solid #fbec4d !important; }
-                  .avatar::before { z-index: 5; position: absolute; content: url("/images/owner.png") !important; top: -15px !important; left: 7px !important; }
+                  .avatar::before { z-index: 5; position: absolute; content: url("@{img-path}/owner.png") !important; top: -15px !important; left: 7px !important; }
                 }
               }
             }
@@ -1365,11 +1365,6 @@
         color: @cl-subtext20;
         font-style: italic;
       }
-      .submit {
-        .big-button;
-        margin-top: 15px;
-        border:0;
-      }
       &.has-error {
         .input {
           border-color: @cl-error;
@@ -1383,20 +1378,10 @@
           color: @cl-success;
         }
         .help-block {
-          color: lighten(@text-color, 25%);
+          color: lighten(@cl-text, 25%);
         }
       }
     } // #chat #drawer #room-delete // #chat #drawer #room-create
-    #room-delete {
-      .buttons {
-        font-size: 1.1em;
-        .submit {
-          vertical-align: baseline;
-          padding: 8px 16px;
-          margin-right: 5px;
-        }
-      }
-    } // #chat #drawer #room-delete
     #room-profile {
       .scrollbar;
       text-align: center;

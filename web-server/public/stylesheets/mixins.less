@@ -451,8 +451,7 @@
   }
 }
 
-.css-typing
-{
+.css-typing {
   width: 30em;
   white-space:nowrap;
   overflow:hidden;
@@ -468,3 +467,69 @@
 @-webkit-keyframes type{
   from { width: 0; }
 }
+
+/*******************************************************************************
+
+              Generate .ml5 .ml10 ... .ml120 utility classes
+
+*******************************************************************************/
+
+.margin-loop (@index) when (@index > 0){
+  .ml@{index} { margin-left: ~'@{index}px' !important; }
+  .mr@{index} { margin-right: ~'@{index}px' !important; }
+  .mt@{index} { margin-top: ~'@{index}px' !important; }
+  .mb@{index} { margin-bottom: ~'@{index}px' !important; }
+  .margin-loop (@index - 5);
+}
+
+/*******************************************************************************
+
+              Generate .fs01 ... .fs30 utility classes
+
+*******************************************************************************/
+.font-size-loop (@index) when (@index > 0){
+  @size: @index / 10;
+  .fs@{index} { font-size: ~'@{size}rem' !important; }
+  .font-size-loop (@index - 1);
+}
+
+/*******************************************************************************
+
+                          COLOR MANAGEMENT
+
+*******************************************************************************/
+
+.color-loop (@index) when (@index > 0){
+  @e: extract(@HKS_colors, @index); // gets color Code with extra spaces
+  @e2: ~'@{e}'; // Convert color code to string
+  @code: replace(@e2, '[\s]*#', ''); // remove leading # & extra spaces to keep only color code
+  @color: color(replace(@e2, '[\s]*', '')); // remove extra spaces
+  // Generated classes
+  .dc-@{code} {
+    .dc-text { color: @color; }
+    .dc-back { background-color: @color;
+      &.dc-back-hover:hover { background-color: darken(@color, 5%);}
+    }
+    .dc-back-opacity { background-color: fade(@color, 60%); }
+    .dc-back-darker { background-color: darken(@color, 10%); }
+    .dc-text-contrast { .color-text(@color); }
+    .dc-border { border-color: @color; }
+    .dc-border-darker { border-color: darken(@color, 10%); }
+  }
+
+  .dc-i-@{code} {
+    .dc-text { color: @color !important; }
+    .dc-back { background-color: @color !important;
+      &.dc-back-hover:hover { background-color: darken(@color, 10%)  !important;}
+    }
+    .dc-back-opacity { background-color: fade(@color, 60%) !important; }
+    .dc-back-darker { background-color: darken(@color, 10%) !important; }
+    .dc-text-contrast { .color-text(@color) !important; }
+    .dc-border { border-color: @color !important; }
+  }
+
+  .color-loop (@index - 1);
+}
+
+.color-text (@a) when (lightness(@a) >= 60%) { color: @cl-text; }
+.color-text (@a) when (lightness(@a) < 60%)  { color: @cl-subtext0; }
