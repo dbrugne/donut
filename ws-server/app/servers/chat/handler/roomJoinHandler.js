@@ -38,7 +38,9 @@ handler.call = function (data, session, next) {
 handler.blocked = function (user, room, blocked, next) {
   async.series([
     function (callback) {
-      user.update({ $addToSet: {blocked: room.id} }, callback);
+      user.update({ $addToSet: {blocked: room.id} }, function (err) {
+        return callback(err);
+      });
     },
     function (callback) {
       roomDataHelper(user, room, callback);

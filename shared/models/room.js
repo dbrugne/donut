@@ -1,8 +1,12 @@
+var logger = require('../util/logger').getLogger('models', __filename);
 var _ = require('underscore');
 var bcrypt = require('bcrypt-nodejs');
 var mongoose = require('../io/mongoose');
 var common = require('@dbrugne/donut-common');
 var cloudinary = require('../util/cloudinary');
+
+var MAX_PASSWORD_TRIES = 5;
+var MAX_PASSWORD_TIME = 60 * 1000; // 1mn
 
 var roomSchema = mongoose.Schema({
   name: String,
@@ -190,15 +194,15 @@ roomSchema.methods.validPassword = function (password) {
 };
 
 roomSchema.methods.isInPasswordTries = function (userId) {
-  if (!this.password_tries && !this.password_tries.length) {
+  if (!this.password_tries || !this.password_tries.length) {
     return;
   }
 
-  var subDocument = _.find(this.password_tries, function (pass_try) {
-    if (pass_try.user._id) {
-      return (pass_try.user.id === userId);
+  var subDocument = _.find(this.password_tries, function (doc) {
+    if (doc.user._id) {
+      return (doc.user.id === userId);
     } else {
-      return (pass_try.user.toString() === userId);
+      return (doc.user.toString() === userId);
     }
   });
   return subDocument;
@@ -209,6 +213,27 @@ roomSchema.methods.isPasswordTries = function (userId) {
   return (typeof doc !== 'undefined');
 };
 
+roomSchema.methods.cleanupPasswordTries = function () {
+  if (!this.password_tries || !this.password_tries.length) {
+    return;
+  }
+  _.each(this.password_tries, function (doc) {
+    if (!doc) {
+      return; // strange behavior of mongoose when removing subdocuments
+    }
+    if ((Date.now() - new Date(doc.created_at)) > MAX_PASSWORD_TIME) {
+      doc.remove();
+    }
+  });
+
+  // persistence of removed document will happen later
+  this.save(function (err) {
+    if (err) {
+      logger.error(err);
+    }
+  });
+};
+
 roomSchema.methods.isUserBlocked = function (userId, password) {
   if (this.isOwner(userId)) {
     return false;
@@ -216,7 +241,7 @@ roomSchema.methods.isUserBlocked = function (userId, password) {
   if (this.isBanned(userId)) {
     return 'banned';
   }
-  if (this.join_mode === 'public') {
+  if (this.mode === 'public') {
     return false;
   }
   if (this.isIn(userId)) {
@@ -226,14 +251,30 @@ roomSchema.methods.isUserBlocked = function (userId, password) {
     return false;
   }
   if (this.password && password) {
+    // remove expired subdocs on model synchronously and in database asynchronously
+    this.cleanupPasswordTries();
+    var tries = this.isInPasswordTries(userId);
+    if (tries && tries.count > MAX_PASSWORD_TRIES) {
+      return 'spam-password';
+    }
     if (this.validPassword(password)) {
       return false;
-    } else {
-      // @todo : increment password_tries
-      // @todo : 'spam-password'
-
-      return 'wrong-password';
     }
+    if (tries) {
+      tries.count ++;
+    } else {
+      this.password_tries.push({
+        user: userId,
+        count: 1
+      });
+    }
+    // persistence will happen later
+    this.save(function (err) {
+      if (err) {
+        logger.error(err);
+      }
+    });
+    return 'wrong-password';
   }
 
   return 'notallowed';
