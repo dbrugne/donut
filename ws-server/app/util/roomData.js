@@ -27,7 +27,7 @@ module.exports = function (app, user, room, fn) {
       var roomData = {
         name: room.name,
         id: room.id,
-        join_mode: room.join_mode,
+        mode: room.mode,
         hasPassword: !!room.password,
         owner: {},
         op: room.op, // [ObjectId]

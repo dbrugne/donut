@@ -86,7 +86,7 @@ define([
       data.url = this.model.getUrl();
 
       // room mode
-      data.join_mode = this.model.get('join_mode');
+      data.mode = this.model.get('mode');
 
       // share widget
       var share = 'share-room-' + this.model.get('name').replace('#', '').toLocaleLowerCase();

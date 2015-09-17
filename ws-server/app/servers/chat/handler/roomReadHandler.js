@@ -111,7 +111,7 @@ handler.call = function (data, session, next) {
         topic: room.topic,
         description: room.description,
         created: room.created_at,
-        join_mode: room.join_mode
+        mode: room.mode
       };
 
       if (session.settings.admin === true) {
@@ -127,13 +127,12 @@ handler.call = function (data, session, next) {
     if (err) {
       logger.error('[room:read] ' + err);
 
-      err = (['invalid-name', 'unknown'].indexOf(err) !== -1) ?
-        err :
-        'internal';
+      err = (['invalid-name', 'unknown'].indexOf(err) !== -1)
+        ? err
+        : 'internal';
       return next(null, {code: 500, err: 'internal'});
     }
 
     return next(null, read);
   });
-
 };

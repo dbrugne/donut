@@ -23,7 +23,7 @@ var roomSchema = mongoose.Schema({
     reason: String,
     devoiced_at: {type: Date, default: Date.now}
   }],
-  join_mode: {type: String, default: 'public'},
+  mode: {type: String, default: 'public'},
   password: String,
   password_tries: [{
     user: {type: mongoose.Schema.ObjectId, ref: 'User'},

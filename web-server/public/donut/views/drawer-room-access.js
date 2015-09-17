@@ -10,9 +10,8 @@ define([
   'client',
   'views/modal-confirmation',
   'views/drawer-room-access-table',
-  'views/drawer-room-create-mode',
   '_templates'
-], function ($, _, Backbone, i18next, moment, common, app, client, ConfirmationView, TableView, DrawerRoomCreateModeView, templates) {
+], function ($, _, Backbone, i18next, moment, common, app, client, ConfirmationView, TableView, templates) {
   var RoomAccessView = Backbone.View.extend({
 
     template: templates['drawer-room-access.html'],
@@ -24,10 +23,6 @@ define([
     timeBufferBeforeSearch: 1000,
 
     timeout: 0,
-
-    currentType: 'allowed',
-
-    types: ['allowed', 'allowedPending'],
 
     events: {
       'keyup input[type=text]': 'onSearch',
@@ -48,9 +43,8 @@ define([
         owner_name: this.model.get('owner').get('username'),
         room_id: this.model.get('id'),
         room_name: this.model.get('name'),
-        join_mode: this.model.get('join_mode'),
-        has_password: this.model.get('hasPassword'),
-        types: this.types
+        mode: this.model.get('mode'),
+        has_password: this.model.get('hasPassword')
       };
 
       var html = this.template(data);
@@ -59,6 +53,7 @@ define([
       this.search = this.$el.find('input[type=text]');
       this.dropdown = this.$el.find('.dropdown');
       this.dropdownMenu = this.$el.find('.dropdown-menu');
+
       this.tablePending = new TableView({
         el: this.$el.find('#table-allow-pending'),
         model: this.model
@@ -68,12 +63,6 @@ define([
         model: this.model
       });
       this.renderTables();
-
-      this.drawerRoomCreateModeView = new DrawerRoomCreateModeView({
-        model: this.model.toJSON(),
-        mode: 'edition',
-        el: this.$el.find('.drawer-room-create-mode-ctn')
-      });
     },
     renderTables: function () {
       this.tablePending.render('pending');
@@ -92,7 +81,9 @@ define([
         that.dropdownMenu.html(that.dropdownTemplate({users: data.users.list}));
       });
     },
-    removeView: function () {
+    _remove: function () {
+      this.tablePending.remove();
+      this.tableAllowed.remove();
       this.remove();
     },
     onSearch: function (event) {

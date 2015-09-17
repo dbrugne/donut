@@ -1,11 +1,16 @@
 # Things to do on next deploy
 
-* Query mongo to set all existing room  with join_mode=public
+* Query mongo to change the property name
+```
+db.getCollection('rooms').update({}, {$rename: { 'join_mode': 'mode' }}, {multi: true});
+```
+
+* Query mongo to set all existing room  with mode=public
 ```
 db.getCollection('rooms').update({},
     {
         $set: {
-            join_mode: "public"
+            mode: "public"
         }
     },
     {"multi" : true});

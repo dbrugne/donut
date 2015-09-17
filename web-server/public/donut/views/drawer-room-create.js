@@ -44,6 +44,10 @@ define([
     setError: function (error) {
       this.$errors.html(error).show();
     },
+    removeView: function () {
+      this.drawerRoomCreateModeView.remove();
+      this.remove();
+    },
     valid: function (event) {
       if (this.$input.val() === '') {
         this.$el.removeClass('has-error').removeClass('has-success');
