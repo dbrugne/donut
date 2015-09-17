@@ -150,7 +150,7 @@ handler.call = function (data, session, next) {
     },
 
     function roomData (eventData, callback) {
-      roomDataHelper(that.app, user, room, function (err, roomData) {
+      roomDataHelper(user, room, function (err, roomData) {
         if (err) {
           return callback(err);
         }
@@ -179,37 +179,17 @@ handler.call = function (data, session, next) {
       return next(null, {code: 404, err: err});
     }
     if (err === 'banned' || err === 'notallowed' || err === 'wrong-password' || err === 'spam-password') {
-      // @todo : factorize somewhere
-      var roomData = {
-        name: room.name,
-        id: room.id,
-        join_mode: room.join_mode,
-        owner: {},
-        avatar: room._avatar(),
-        color: room.color,
-        users_number: room.numberOfUsers()
-      };
-      if (err === 'banned') {
-        var doc = room.isInBanned(user.id);
-        if (doc.reason) {
-          roomData.banned_reason = doc.reason;
-        }
-        roomData.banned_at = doc.banned_at;
-      }
-      if (room.owner) {
-        roomData.owner = {
-          user_id: room.owner._id,
-          username: room.owner.username
-        };
-      }
-      user.update({
-        $addToSet: {blocked: room.id}
-      }, function (err) { // @todo when factorize call next(null, {code: 403, err: err, room: roomData}) in this callback
-        if (err) {
-          return next(err);
-        }
+      roomDataHelper(user, room, function (err, roomData) {
+        user.update({
+          $addToSet: {blocked: room.id}
+        }, function (err) { // @todo when factorize call next(null, {code: 403, err: err, room: roomData}) in this callback
+          if (err) {
+            return next(err);
+          }
+          return next(null, {code: 403, err: err, room: roomData});
+        });
       });
-      return next(null, {code: 403, err: err, room: roomData});
+      return;
     }
     if (err) {
       logger.error('[room:join] ' + err);

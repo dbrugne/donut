@@ -1,57 +1,56 @@
-var async = require('async');
 var _ = require('underscore');
 
-/**
- * Helper to retrieve/prepare all the room data needed for 'welcome' and
- * 'room:welcome' events:
- *   - room entity
- *   - owner
- *   - ops
- */
-module.exports = function (app, user, room, fn) {
+module.exports = function (user, room, fn) {
+  if (!user) {
+    return fn('need to received a valid User model as parameter');
+  }
   if (!room) {
-    return fn('Need to received a valid Room model as parameter');
+    return fn('need to received a valid Room model as parameter');
   }
 
-  async.waterfall([
+  var data = {
+    name: room.name,
+    id: room.id,
+    join_mode: room.join_mode,
+    hasPassword: !!room.password,
+    owner: {},
+    avatar: room._avatar(),
+    color: room.color,
+    users_number: room.numberOfUsers(),
+    created_at: room.created_at
+  };
+  if (room.owner) {
+    data.owner = {
+      user_id: room.owner._id,
+      username: room.owner.username
+    };
+  }
 
-    function prepare (callback) {
-      if (room === null) {
-        return callback(null, null);
-      }
+  var blocked = false;
 
-      var devoices = _.map(room.devoices, function (element) {
-        return element.user.toString();
-      });
-
-      var roomData = {
-        name: room.name,
-        id: room.id,
-        join_mode: room.join_mode,
-        hasPassword: !!room.password,
-        owner: {},
-        op: room.op, // [ObjectId]
-        devoices: devoices, // [ObjectId]
-        avatar: room._avatar(),
-        poster: room._poster(),
-        color: room.color,
-        topic: room.topic,
-        posterblured: room._poster(true),
-        unviewed: user.hasUnviewedRoomMessage(room),
-        users_number: room.numberOfUsers(),
-        created_at: room.created_at
-      };
-
-      if (room.owner) {
-        roomData.owner = {
-          user_id: room.owner._id,
-          username: room.owner.username
-        };
-      }
-
-      return callback(null, roomData);
+  // banned user
+  if (room.isBanned(user.id)) {
+    blocked = true;
+    var doc = room.isInBanned(user.id);
+    data.banned_at = doc.banned_at;
+    if (doc.reason) {
+      data.banned_reason = doc.reason;
     }
+  }
 
-  ], fn);
+  // user can join
+  if (!blocked) {
+    data = {
+      op: room.op,
+      devoices: _.map(room.devoices, function (element) {
+        return element.user.toString();
+      }),
+      topic: room.topic,
+      poster: room._poster(),
+      posterblured: room._poster(true),
+      unviewed: user.hasUnviewedRoomMessage(room)
+    };
+  }
 
+  fn(null, data);
 };

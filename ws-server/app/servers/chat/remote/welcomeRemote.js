@@ -107,7 +107,7 @@ WelcomeRemote.prototype.getMessage = function (uid, frontendId, globalCallback) 
             }
 
             parallels.push(function (fn) {
-              roomDataHelper(that.app, user, room, function (err, r) {
+              roomDataHelper(user, room, function (err, r) {
                 fn(err, r);
               });
             });
@@ -132,7 +132,7 @@ WelcomeRemote.prototype.getMessage = function (uid, frontendId, globalCallback) 
       var parallels = [];
       _.each(user.blocked, function (room) {
         parallels.push(function (fn) {
-          roomDataHelper(that.app, user, room, function (err, r) {
+          roomDataHelper(user, room, function (err, r) {
             fn(err, r);
           });
         });
