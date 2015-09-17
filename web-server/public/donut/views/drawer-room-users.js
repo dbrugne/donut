@@ -55,22 +55,17 @@ define([
         this.types = _.without(this.types, 'ban', 'devoice');
       }
 
-      this.$el.html(this.template({type: this.types}));
-      this.roomName = this.$('.name');
-      this.ownerName = this.$('.open-user-profile');
-      this.numberUsers = this.$('.number');
-      this.search = this.$('input[type=text]');
-      this.pagination = this.$('.paginate');
-      this.typeSelected = this.$('#type-select');
+      this.$el.html(this.template({room: this.model.toJSON(), owner: this.model.get('owner').toJSON(), type: this.types}));
+      this.numberUsers = this.$el.find('.number');
+      this.search = this.$el.find('input[type=text]');
+      this.pagination = this.$el.find('.paginate');
+      this.typeSelected = this.$el.find('#type-select');
 
       this.tableView = new RoomUsersTableConfirmation({
         el: this.$('.table-users'),
         model: this.model
       });
 
-      this.roomName.text(this.model.get('name'));
-      this.ownerName.text('@' + this.model.get('owner').get('username'));
-      this.ownerName.data('userId', this.model.get('owner').get('user_id'));
       this.render(null);
     },
 
@@ -95,6 +90,8 @@ define([
         totalNbPages: Math.ceil(data.count / this.paginate),
         nbPages: 5
       }));
+
+      this.initializeTooltips();
     },
     onChangeType: function (event) {
       this.page = 1;
@@ -128,6 +125,10 @@ define([
         this.page = parseInt(id, 10);
       }
       this.render();
+    },
+
+    initializeTooltips: function () {
+      this.$el.find('[data-toggle="tooltip"]').tooltip();
     }
   });
   return DrawerRoomUsersView;
