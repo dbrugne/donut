@@ -21,7 +21,7 @@ module.exports = function (user, room, fn) {
   };
   if (room.owner) {
     data.owner = {
-      user_id: room.owner._id,
+      user_id: room.owner.id,
       username: room.owner.username
     };
   }
@@ -40,16 +40,14 @@ module.exports = function (user, room, fn) {
 
   // user can join
   if (!blocked) {
-    data = {
-      op: room.op,
-      devoices: _.map(room.devoices, function (element) {
-        return element.user.toString();
-      }),
-      topic: room.topic,
-      poster: room._poster(),
-      posterblured: room._poster(true),
-      unviewed: user.hasUnviewedRoomMessage(room)
-    };
+    data.op = room.op;
+    data.devoices = _.map(room.devoices, function (element) {
+      return element.user.toString();
+    });
+    data.topic = room.topic;
+    data.poster = room._poster();
+    data.posterblured = room._poster(true);
+    data.unviewed = user.hasUnviewedRoomMessage(room);
   }
 
   fn(null, data);
