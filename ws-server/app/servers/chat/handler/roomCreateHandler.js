@@ -56,7 +56,7 @@ handler.call = function (data, session, next) {
         room.color = conf.room.default.color;
         room.visibility = false; // not visible on home until admin change this value
         room.priority = 0;
-        room.join_mode = data.mode;
+        room.mode = data.mode;
         if (data.mode === 'private' && data.password !== null) {
           room.password = user.generateHash(data.password);
         }

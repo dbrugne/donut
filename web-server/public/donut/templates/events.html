@@ -23,8 +23,9 @@
                         </div>
                         <% if(isOwner) { %>
                             <div class="actions flex-parent">
-                                <a href="#" class="open-room-edit" data-room-id="<%= model.id %>"><%= t('global.edit') %></a>
-                                <a href="#" class="open-room-users" data-room-id="<%= model.id %>"><%= t('chat.users.link') %></a>
+                                <a href="#" class="open-room-edit" data-room-id="<%= model.id %>"><%= t('chat.history.edit') %></a>
+                                <a href="#" class="open-room-users" data-room-id="<%= model.id %>"><%= t('chat.history.users') %></a>
+                                <a href="#" class="open-room-access" data-room-id="<%= model.id %>"><%= t('chat.history.access') %></a>
                             </div>
                         <% } %>
                     </div>

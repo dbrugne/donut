@@ -559,7 +559,10 @@
       "top": "go to top",
       "bottom": "go to bottom",
       "currently": "You are at the very first start of Donut <span class=\"name dc-text open-room-profile\" data-room-id=\"__roomid__\">__roomname__</span>, created by <span class=\"owner dc-text open-user-profile\" data-user-id=\"__ownerid__\">@__owner__</span> on <span class=\"date\">__creation-date__</span>",
-      "onestart": "You are at the very first start of your private discussion with <span class=\"name dc-text\">@__username__</span>. Everything said here will stay here :)"
+      "onestart": "You are at the very first start of your private discussion with <span class=\"name dc-text\">@__username__</span>. Everything said here will stay here :)",
+      "edit": "Edit profile",
+      "users": "Manage users",
+      "access": "Manage access"
     },
     "shouldauthenticated": "You must be logged in to access chat (<a href='/signup'>signup</a> or <a href='/login'>login</a>)",
     "closeapp": "Are you sure you want to leave ?",
@@ -683,13 +686,6 @@
           "left": "<strong>%left</strong> to go"
         }
       },
-      "room-mode-form": {
-        "disclaimer": {
-          "public": "By selecting this option, your donut will be public. Any user can enter and see what happens there.",
-          "private": "By selecting this option, your donut will be private. Only users specifically authorized by the owner or Op can enter.",
-          "password": "You also have the possibility to put a password on that donut. Users with the password can enter without having to be asked first."
-        }
-      },
       "room-form": {
         "common": {
           "join-mode-label": "Who can join the donut",
@@ -701,6 +697,13 @@
             "password-keep": "leave blank to keep the same",
             "password-disclaimer": "You can set a password on this donut",
             "password-protection": "Protect by a password"
+          }
+        },
+        "mode": {
+          "disclaimer": {
+            "public": "By selecting this option, your donut will be public. Any user can enter and see what happens there.",
+            "private": "By selecting this option, your donut will be private. Only users specifically authorized by the owner or Op can enter.",
+            "password": "You also have the possibility to put a password on that donut. Users with the password can enter without having to be asked first."
           }
         },
         "create": {
@@ -759,18 +762,19 @@
         }
       },
       "errors": {
-        "bio": "Bio should be 200 characters max.",
-        "location": "Location should be 70 characters max.",
-        "description": "Description should be 200 characters max.",
-        "website-size": "Website should be 5 characters min. and 255 characters max.",
-        "website-url": "Website should be a valid site URL.",
-        "color-hexadecimal": "Color should be explained has hexadecimal (e.g.: #FF00AA).",
-        "color-integer": "Priority should be explained has number (integer).",
-        "positions": "Positions should be an array.",
+        "bio": "Bio must be 200 characters max.",
+        "location": "Location must be 70 characters max.",
+        "description": "Description must be 200 characters max.",
+        "website-size": "Website must be 5 characters min. and 255 characters max.",
+        "website-url": "Website must be a valid site URL.",
+        "color-hexadecimal": "Color must be explained has hexadecimal (e.g.: #FF00AA).",
+        "color-integer": "Priority must be explained has number (integer).",
+        "positions": "Positions must be an array.",
         "invalid-name": "Invalid name",
-        "invalid-mode": "You should select a mode for this room",
-        "invalid-password": "The password should be 4 and 255 characters",
-        "alreadyexists": "Donut __name__ already exists, <a href='#__uri__'>would you like to join it</a>?"
+        "invalid-mode": "You must select a mode for this room",
+        "invalid-password": "The password must be 4 and 255 characters",
+        "alreadyexists": "Donut __name__ already exists, <a href='#__uri__'>would you like to join it</a>?",
+        "invalid-rights": "You do not have access to do this."
       }
     }
   },
@@ -803,7 +807,7 @@
       "defined": "Password defined: ",
       "error": {
         "confirm": "Pass two passwords are not the same.",
-        "length": "Password should have between 6 and 50 characters length.",
+        "length": "Password must have between 6 and 50 characters length.",
         "wrong": "Sorry, your old password don't match"
       }
     },

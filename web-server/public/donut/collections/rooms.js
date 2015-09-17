@@ -91,7 +91,7 @@ define([
         posterblured: room.posterblured,
         color: room.color,
         unviewed: room.unviewed,
-        join_mode: room.join_mode,
+        mode: room.mode,
         hasPassword: room.hasPassword,
         blocked: blocked || false,
         users_number: room.users_number,
@@ -212,7 +212,7 @@ define([
       if (currentUser.get('user_id') === data.user_id) {
         var isFocused = model.get('focused');
         var roomTmp = model.attributes;
-        var isPublic = (model.get('join_mode') === 'public');
+        var isPublic = (model.get('mode') === 'public');
         this.remove(model);
         if (!isPublic) {
           roomTmp.blocked = true;

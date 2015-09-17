@@ -33,7 +33,7 @@ router.get('/room/:room', function (req, res) {
     posterBlured: req.room.posterBlured,
     color: req.room.color,
     userDefaultAvatar: cd.userAvatar('', conf.room.default.color, false, 50),
-    joinMode: req.room.join_mode
+    mode: req.room.mode
   });
 });
 

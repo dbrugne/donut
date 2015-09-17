@@ -578,7 +578,10 @@
       "top": "aller tout en haut",
       "bottom": "aller tout en bas",
       "currently": "Vous êtes au tout début du Donut <span class=\"name dc-text open-room-profile\" data-room-id=\"__roomid__\">__roomname__</span>, créé par <span class=\"owner dc-text open-user-profile\" data-user-id=\"__ownerid__\">@__owner__</span> le <span class=\"date\">__creation-date__</span>",
-      "onestart": "Vous êtes au tout début de votre discussion privée avec <span class=\"name dc-text\">@__username__</span>. Tout ce qui est dit ici restera entre vous deux :)"
+      "onestart": "Vous êtes au tout début de votre discussion privée avec <span class=\"name dc-text\">@__username__</span>. Tout ce qui est dit ici restera entre vous deux :)",
+      "edit": "Editer le profil",
+      "users": "Gérer les utilisateurs",
+      "access": "Gérer les accès"
     },
     "shouldauthenticated": "Vous devez être identifié pour accéder aux discussions (<a href='/signup'>créer un compte</a> ou <a href='/login'>se connecter</a>)",
     "closeapp": "Etes-vous sur de vouloir quitter ?",
@@ -701,13 +704,6 @@
           "left": "<strong>%left</strong> restant"
         }
       },
-      "room-mode-form": {
-        "disclaimer": {
-          "public": "En sélectionnant cette option, votre donut sera public. N'importe quel utilisateur pourra y entrer et voir ce qu'il s'y passe.",
-          "private": "En sélectionnant cette option, votre donut sera privé. Seuls les utilisateurs explicitement autorisés par le Propriétaire ou les Op pourront y entrer.",
-          "password": "Vous avez également la possibilité de mettre un mot de passe sur ce donut. Les utilisateurs avec le mot de passe pourront y entrer sans avoir besoin d'être invités au préalable."
-        }
-      },
       "room-form": {
         "common" : {
           "join-mode-label": "Qui peut rejoindre le donut",
@@ -719,6 +715,13 @@
             "password-keep": "laisser vide pour garder le même",
             "password-disclaimer": "Vous avez la possibilité de mettre un mot de passe sur ce donut",
             "password-protection": "Protéger par un mot de passe"
+          }
+        },
+        "mode": {
+          "disclaimer": {
+            "public": "En sélectionnant cette option, votre donut sera public. N'importe quel utilisateur pourra y entrer et voir ce qu'il s'y passe.",
+            "private": "En sélectionnant cette option, votre donut sera privé. Seuls les utilisateurs explicitement autorisés par le Propriétaire ou les Op pourront y entrer.",
+            "password": "Vous avez également la possibilité de mettre un mot de passe sur ce donut. Les utilisateurs avec le mot de passe pourront y entrer sans avoir besoin d'être invités au préalable."
           }
         },
         "create": {
@@ -788,7 +791,8 @@
         "invalid-name": "Le nom du donut est invalide",
         "invalid-mode": "Vous devez séléctionner un mode pour ce donut",
         "invalid-password": "Le mot de passe doit être compris entre 4 et 255 caractères",
-        "alreadyexists": "Le donut __name__ existe déjà, <a href='#__uri__'>voulez-vous le rejoindre</a> ?"
+        "alreadyexists": "Le donut __name__ existe déjà, <a href='#__uri__'>voulez-vous le rejoindre</a> ?",
+        "invalid-rights": "Vous n'avez pas les droits pour faire cela."
       }
     }
   },

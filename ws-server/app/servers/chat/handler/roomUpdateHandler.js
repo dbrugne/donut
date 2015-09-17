@@ -121,9 +121,9 @@ handler.call = function (data, session, next) {
           if (!common.validateMode(mode)) {
             errors.mode = 'invalid-mode';
           } else {
-            if (sanitized.join_mode !== mode) {
+            if (sanitized.mode !== mode) {
               // @todo implement state machine on room mode change
-              sanitized.join_mode = mode;
+              sanitized.mode = mode;
             }
             if (mode === 'password' && _.has(data.data, 'password')) {
               var password = data.data.password;
