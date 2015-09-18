@@ -43,18 +43,22 @@ Module.prototype.start = function (callback) {
 Module.prototype.retrieveTask = function (route) {
   // @todo : make it dynamically
 
+  var tasks;
+  var method;
   if (route.indexOf('adminNotifyTask') !== -1) {
-    var tasks = adminNotifyTask(this.options);
-    var method = route.substr(route.indexOf('.') + 1);
-    if (method && _.isFunction(tasks[method]))
+    tasks = adminNotifyTask(this.options);
+    method = route.substr(route.indexOf('.') + 1);
+    if (method && _.isFunction(tasks[method])) {
       return _.bind(tasks[method], tasks);
+    }
   }
 
   if (route.indexOf('createNotificationTask') !== -1) {
-    var tasks = createNotificationTask(this.options);
-    var method = route.substr(route.indexOf('.') + 1);
-    if (method && _.isFunction(tasks[method]))
+    tasks = createNotificationTask(this.options);
+    method = route.substr(route.indexOf('.') + 1);
+    if (method && _.isFunction(tasks[method])) {
       return _.bind(tasks[method], tasks);
+    }
   }
 
   return false;
@@ -72,14 +76,17 @@ Module.prototype.monitorHandler = function (agent, request, fn) {
   var callback = (request.type === 'request' && _.isFunction(fn))
     ? fn
     : function (err, result) {
-      if (err)
+      if (err) {
         return logger.error(err);
-      if (result)
+      }
+      if (result) {
         return logger.debug(result);
+      }
     };
 
-  if (request.action == 'ping')
+  if (request.action === 'ping') {
     return callback(null, 'pong');
+  }
 
   var task = this.retrieveTask(request.action);
   if (task !== false) {
@@ -97,8 +104,9 @@ Module.prototype.monitorHandler = function (agent, request, fn) {
  * @param callback
  */
 Module.prototype.masterRequest = function (agent, request, callback) {
-  if (request.action == 'ping')
+  if (request.action === 'ping') {
     return callback(null, 'pong');
+  }
 
   var task = this.retrieveTask(request.action);
   if (task !== false) {
@@ -115,14 +123,16 @@ Module.prototype.masterRequest = function (agent, request, callback) {
  * @param request
  */
 Module.prototype.masterNotify = function (agent, request) {
-  if (request.action == 'ping')
+  if (request.action === 'ping') {
     return logger.info('pong');
+  }
 
   var task = this.retrieveTask(request.action);
   if (task !== false) {
     return task(request.data, function (err) {
-      if (err)
+      if (err) {
         logger.error(err);
+      }
     });
   }
 
@@ -152,34 +162,41 @@ Module.prototype.clientHandler = function (agent, query, fn) {
   var callback = (query.type === 'request' && _.isFunction(fn))
     ? fn
     : function (err) {
-      if (err)
+      if (err) {
         logger.error(err);
+      }
     };
 
-  if (!query || !_.isObject(query))
+  if (!query || !_.isObject(query)) {
     return callback('query should be an object');
-  if (!query.type)
+  }
+  if (!query.type) {
     return callback('query should contains a type parameter');
-  if (!query.target)
+  }
+  if (!query.target) {
     return callback('query should contains a target parameter');
-  if (!query.action)
+  }
+  if (!query.action) {
     return callback('query should contains an action parameter');
+  }
 
   switch (query.target) {
     case 'master':
       // i'm already on the master
-      if (query.type === 'request')
+      if (query.type === 'request') {
         this.masterRequest(agent, query, callback);
-      else
+      } else {
         this.masterNotify(agent, query);
+      }
       break;
     case 'connector':
     case 'chat':
       var server = this.dispatch(agent.typeMap[query.target]);
-      if (query.type === 'request')
+      if (query.type === 'request') {
         agent.request(server.id, moduleId, query, callback);
-      else
+      } else {
         agent.notifyById(server.id, moduleId, query);
+      }
       break;
 
     default:
