@@ -49,11 +49,11 @@ handler.call = function (data, session, next) {
 
     function persist (callback) {
       HistoryOne.update({
-        _id: { $in: data.events },
-        event: { $in: ['user:message'] },
+        _id: {$in: data.events},
+        event: {$in: ['user:message']},
         to: user._id
       }, {
-        $set: { viewed: true }
+        $set: {viewed: true}
       }, {
         multi: true
       }, function (err) {
@@ -75,10 +75,10 @@ handler.call = function (data, session, next) {
     }
 
   ], function (err) {
-    if (err)
+    if (err) {
       logger.error('[user:viewed] ' + err);
+    }
 
     next(err);
   });
-
 };
