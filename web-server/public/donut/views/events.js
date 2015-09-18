@@ -13,14 +13,15 @@ define([
   'client',
   'models/current-user',
   'views/events-viewed',
+  'views/events-history',
   'views/message-edit',
   'views/window',
   '_templates'
-], function ($, _, Backbone, app, donutDebug, keyboard, common, EventModel, moment, i18next, client, currentUser, EventsViewedView, MessageEditView, windowView, templates) {
+], function ($, _, Backbone, app, donutDebug, keyboard, common, EventModel, moment, i18next, client, currentUser, EventsViewedView, EventsHistoryView, MessageEditView, windowView, templates) {
   var debug = donutDebug('donut:events');
 
   var EventsView = Backbone.View.extend({
-    template: templates[ 'events.html' ],
+    template: templates['events.html'],
 
     events: {
       'click .go-to-top a': 'scrollTop',
@@ -34,10 +35,6 @@ define([
       'dblclick .event': 'onEditMessage',
       'keydown .form-message-edit': 'onPrevOrNextFormEdit'
     },
-
-    historyLoading: false,
-
-    historyNoMore: false,
 
     scrollTopTimeout: null,
 
@@ -65,6 +62,18 @@ define([
         el: this.$scrollable,
         model: this.model
       });
+
+      this.eventsHistoryView = new EventsHistoryView({
+        el: this.$el,
+        model: this.model
+      });
+
+      this.listenTo(this.eventsHistoryView, 'addBatchEvents', _.bind(function (data) {
+        this.addBatchEvents(data.history, data.more);
+      }, this));
+      this.listenTo(this.eventsHistoryView, 'scrollDown', _.bind(function () {
+        this.scrollDown();
+      }, this));
     },
     render: function () {
       // render view
@@ -81,8 +90,6 @@ define([
 
       this.$scrollable = this.$el;
       this.$scrollableContent = this.$scrollable.find('.scrollable-content');
-      this.$pad = this.$scrollableContent.find('.pad');
-      this.$loader = this.$scrollableContent.find('.loader');
       this.$realtime = this.$scrollableContent.find('.realtime');
 
       this.$goToTop = this.$el.find('.go-to-top');
@@ -97,6 +104,7 @@ define([
     },
     _remove: function () {
       this.eventsViewedView.remove();
+      this.eventsHistoryView.remove();
       this._scrollTimeoutCleanup();
       this.remove();
     },
@@ -154,11 +162,11 @@ define([
       var that = this;
 
       // hit the top and history could be loaded, setTimeout
-      if (currentScrollPosition <= 0 && !this.historyNoMore) {
-        this.toggleHistoryLoader('loading');
+      if (currentScrollPosition <= 0 && !this.eventsHistoryView.getHistoryNoMore()) {
+        this.eventsHistoryView.toggleHistoryLoader('loading');
         this.scrollTopTimeout = setTimeout(function () {
           if (that.$scrollable.scrollTop() <= 0) {
-            that.requestHistory('top');
+            that.eventsHistoryView.requestHistory('top');
           }
         }, 1500);
       }
@@ -208,7 +216,7 @@ define([
       this.$scrollable.scrollTop(bottom);
     },
     scrollTop: function () {
-      var targetTop = this.$loader.position().top;
+      var targetTop = this.eventsHistoryView.getLoaderTop();
       this.$scrollable.scrollTop(targetTop); // add a 8px margin
     },
 
@@ -218,7 +226,7 @@ define([
      *
      *****************************************************************************************************************/
     onAdminMessage: function (data) {
-      data = { data: data };
+      data = {data: data};
       data.data.avatar = '//res.cloudinary.com/roomly/image/upload/v1409643461/rciev5ubaituvx5bclnz.png'; // @todo : add avatar URL in configuration
       data.data.username = 'DONUT';
       data.data.is_admin = true;
@@ -259,63 +267,7 @@ define([
 
       debug.end('discussion-events-fresh-' + this.model.getIdentifier());
     },
-    addBatchEvents: function (events) {
-      if (events.length === 0) {
-        return;
-      }
-
-      // render a batch of events (sorted in 'desc' order)
-      debug.start('discussion-events-batch-' + this.model.getIdentifier());
-      var $html = $('<div/>');
-      var previousModel;
-      var previousElement;
-      var now = moment();
-      now.second(0).minute(0).hour(0);
-      _.each(events, _.bind(function (event) {
-        var model = new EventModel(event);
-        var newBlock = this._newBlock(model, previousElement);
-
-        // inter-date block
-        if (previousModel) {
-          var newTime = moment(model.get('time'));
-          var previousTime = moment(previousModel.get('time'));
-          if (!newTime.isSame(previousTime, 'day')) {
-            previousTime.second(0).minute(0).hour(0);
-            var dateFull = (moment().diff(previousTime, 'days') === 0
-                ? i18next.t('chat.message.today')
-                : (moment().diff(previousTime, 'days') === 1
-                  ? i18next.t('chat.message.yesterday')
-                  : (moment().diff(previousTime, 'days') === 2
-                    ? i18next.t('chat.message.the-day-before')
-                    : moment(previousModel.get('time')).format('dddd Do MMMM YYYY')
-                )
-              )
-            );
-
-            var dateHtml = templates[ 'event/date.html' ]({
-              time: previousModel.get('time'),
-              datefull: dateFull
-            });
-            previousElement = $(dateHtml).prependTo($html);
-            newBlock = true;
-          }
-        }
-
-        // render and insert
-        var h = this._renderEvent(model, newBlock);
-        if (!newBlock) {
-          // not define previousElement, remain the same .block
-          $(h).prependTo(previousElement.find('.items'));
-        } else {
-          previousElement = $(h).prependTo($html);
-        }
-        previousModel = model;
-      }, this));
-
-      $html.find('>.block').prependTo(this.$realtime);
-      debug.end('discussion-events-batch-' + this.model.getIdentifier());
-    },
-    _prepareEvent: function (model) {
+    _prepareEvent: function (model) { // @todo tyls refactorize with events.js
       var data = model.toJSON();
       data.data = _.clone(model.get('data'));
 
@@ -340,7 +292,7 @@ define([
       if (message) {
         // prepare
         message = common.markupToHtml(message, {
-          template: templates[ 'markup.html' ],
+          template: templates['markup.html'],
           style: 'color: ' + this.model.get('color')
         });
 
@@ -353,7 +305,7 @@ define([
       if (topic) {
         // prepare
         topic = common.markupToHtml(topic, {
-          template: templates[ 'markup.html' ],
+          template: templates['markup.html'],
           style: 'color: ' + this.model.get('color')
         });
 
@@ -398,7 +350,7 @@ define([
 
       return data;
     },
-    _newBlock: function (newModel, previousElement) {
+    _newBlock: function (newModel, previousElement) { // @todo tyls refactorize with events.js
       var newBlock = false;
       if (!previousElement || previousElement.length < 1) {
         newBlock = true;
@@ -421,63 +373,119 @@ define([
       }
       return newBlock;
     },
-    _renderEvent: function (model, withBlock) {
+    addBatchEvents: function (events) {
+      if (events.length === 0) {
+        return;
+      }
+
+      // render a batch of events (sorted in 'desc' order)
+      debug.start('discussion-events-batch-' + this.model.getIdentifier());
+      var $html = $('<div/>');
+      var previousModel;
+      var previousElement;
+      var now = moment();
+      now.second(0).minute(0).hour(0);
+      _.each(events, _.bind(function (event) {
+        var model = new EventModel(event);
+        var newBlock = this._newBlock(model, previousElement);
+
+        // inter-date block
+        if (previousModel) {
+          var newTime = moment(model.get('time'));
+          var previousTime = moment(previousModel.get('time'));
+          if (!newTime.isSame(previousTime, 'day')) {
+            previousTime.second(0).minute(0).hour(0);
+            var dateFull = (moment().diff(previousTime, 'days') === 0
+                ? i18next.t('chat.message.today')
+                : (moment().diff(previousTime, 'days') === 1
+                  ? i18next.t('chat.message.yesterday')
+                  : (moment().diff(previousTime, 'days') === 2
+                    ? i18next.t('chat.message.the-day-before')
+                    : moment(previousModel.get('time')).format('dddd Do MMMM YYYY')
+                )
+              )
+            );
+
+            var dateHtml = templates['event/date.html']({
+              time: previousModel.get('time'),
+              datefull: dateFull
+            });
+            previousElement = $(dateHtml).prependTo($html);
+            newBlock = true;
+          }
+        }
+
+        // render and insert
+        var h = this._renderEvent(model, newBlock);
+        if (!newBlock) {
+          // not define previousElement, remain the same .block
+          $(h).prependTo(previousElement.find('.items'));
+        } else {
+          previousElement = $(h).prependTo($html);
+        }
+        previousModel = model;
+      }, this));
+
+      $html.find('>.block').prependTo(this.$realtime);
+      debug.end('discussion-events-batch-' + this.model.getIdentifier());
+    },
+    _renderEvent: function (model, withBlock) { // @todo tyls refactorize with events.js
       var data = this._prepareEvent(model);
       data.withBlock = withBlock || false;
       try {
         var template;
         switch (data.type) {
           case 'disconnected':
-            template = templates[ 'event/disconnected.html' ];
+            template = templates['event/disconnected.html'];
             break;
           case 'user:online':
           case 'user:offline':
           case 'room:in':
           case 'room:out':
-            template = templates[ 'event/in-out-on-off.html' ];
+            template = templates['event/in-out-on-off.html'];
             break;
           case 'ping':
-            template = templates[ 'event/ping.html' ];
+            template = templates['event/ping.html'];
             break;
           case 'room:message':
           case 'user:message':
-            template = templates[ 'event/message.html' ];
+            template = templates['event/message.html'];
             break;
           case 'reconnected':
-            template = templates[ 'event/reconnected.html' ];
+            template = templates['event/reconnected.html'];
             break;
           case 'room:deop':
-            template = templates[ 'event/room-deop.html' ];
+            template = templates['event/room-deop.html'];
             break;
           case 'room:kick':
-            template = templates[ 'event/room-kick.html' ];
+            template = templates['event/room-kick.html'];
             break;
           case 'room:ban':
-            template = templates[ 'event/room-ban.html' ];
+            template = templates['event/room-ban.html'];
             break;
           case 'room:deban':
-            template = templates[ 'event/room-deban.html' ];
+            template = templates['event/room-deban.html'];
             break;
           case 'room:voice':
-            template = templates[ 'event/room-voice.html' ];
+            template = templates['event/room-voice.html'];
             break;
           case 'room:devoice':
-            template = templates[ 'event/room-devoice.html' ];
+            template = templates['event/room-devoice.html'];
             break;
           case 'room:op':
-            template = templates[ 'event/room-op.html' ];
+            template = templates['event/room-op.html'];
             break;
           case 'room:topic':
-            template = templates[ 'event/room-topic.html' ];
+            template = templates['event/room-topic.html'];
             break;
           case 'user:ban':
-            template = templates[ 'event/user-ban.html' ];
+            template = templates['event/user-ban.html'];
             break;
           case 'user:deban':
-            template = templates[ 'event/user-deban.html' ];
+            template = templates['event/user-deban.html'];
             break;
           case 'command:help':
-            template = templates[ 'event/help.html' ];
+            template = templates['event/help.html'];
             break;
           default:
             return;
@@ -517,7 +525,7 @@ define([
         $(event.currentTarget).find('.dropdown-menu').dropdown('toggle');
         return;
       }
-      var html = templates[ 'events-dropdown.html' ]({
+      var html = templates['events-dropdown.html']({
         data: {
           isOp: isOp,
           isOwner: isOwner,
@@ -658,17 +666,17 @@ define([
       var userId = $currentBlockMessage.data('userId');
 
       // get sibling .event
-      var $candidate = $currentEventMessage[ direction ]();
-      var $candidateBlock = $currentBlockMessage[ direction ]();
+      var $candidate = $currentEventMessage[direction]();
+      var $candidateBlock = $currentBlockMessage[direction]();
 
       // no sibling .event, try with sibling .block
       if (!$candidate.length && $candidateBlock.length) {
         var _lastBlock = $candidateBlock;
         while ((_lastBlock.data('userId') !== userId)) {
-          if (!_lastBlock[ direction ]().length) {
+          if (!_lastBlock[direction]().length) {
             return;
           }
-          _lastBlock = _lastBlock[ direction ]();
+          _lastBlock = _lastBlock[direction]();
         }
 
         $candidate = (direction === 'prev')
@@ -721,7 +729,7 @@ define([
         $('<div class="text"></div>').insertAfter(this.$('#' + data.event).find('.message-edit'));
       }
       var msg = common.markupToHtml(data.message, {
-        template: templates[ 'markup.html' ],
+        template: templates['markup.html'],
         style: 'color: ' + this.model.get('color')
       });
       msg = $.smilify(msg);
@@ -742,67 +750,9 @@ define([
       this.messageUnderEdition = null;
     },
 
-    /** ***************************************************************************************************************
-     *
-     * History management
-     *
-     *****************************************************************************************************************/
     requestHistory: function (scrollTo) {
-      if (this.historyLoading) {
-        return;
-      }
-      this.historyLoading = true;
-
-      this.toggleHistoryLoader('loading');
-
-      // save the current first element identifier
-      if (scrollTo === 'top') {
-        var $nextTopElement = $('<div class="nextTopPosition"></div>').prependTo(this.$realtime);
-      }
-
-      // since
-      var first = this.$realtime
-        .find('.block:first').first()
-        .find('.event').first();
-      var since = (!first || first.length < 1)
-        ? null
-        : first.data('time');
-
-      var that = this;
-      this.model.history(since, function (data) {
-        that.addBatchEvents(data.history, data.more);
-        that.historyLoading = false;
-        that.historyNoMore = !data.more;
-        that.toggleHistoryLoader(data.more);
-
-        if (scrollTo === 'top') { // on manual request
-          var targetTop = $nextTopElement.position().top;
-          that.$scrollable.scrollTop(targetTop - 8); // add a 8px margin
-          $nextTopElement.remove();
-        }
-
-        if (scrollTo === 'bottom') {
-          // on first focus history load
-          that.scrollDown();
-        }
-      });
-    },
-    toggleHistoryLoader: function (more) {
-      this.$loader.find('.help, .loading, .no-more').hide();
-      this.$pad.removeClass('loading');
-      if (more === 'loading') {
-        // 'loading'
-        this.$loader.find('.loading').show();
-        this.$pad.addClass('loading');
-      } else if (more) {
-        // 'scroll to display more'
-        this.$loader.find('.help').show();
-      } else {
-        // no more history indication
-        this.$loader.find('.no-more').show();
-      }
+      this.eventsHistoryView.requestHistory(scrollTo);
     }
-
   });
 
   return EventsView;
