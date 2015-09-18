@@ -946,6 +946,15 @@
         "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Go to chat\">Go to chat</a>"
       }
     },
+    "roomjoinrequest": {
+      "subject": "An user whant to join #__roomname__",
+      "content": {
+        "title": "__username__ ask for allowance in #__roomname__",
+        "disclaimer": "Looks like your donut have great success!",
+        "action": "<strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
+        "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Accéder à la discussion</a>"
+      }
+    },
     "roomdevoice": {
       "subject": "You are mute in #__roomname__",
       "content": {

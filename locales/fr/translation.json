@@ -965,6 +965,15 @@
         "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Accéder à la discussion\">Accéder à la discussion</a>"
       }
     },
+    "roomjoinrequest": {
+      "subject": "Un utilisateur souhaite rejoindre #__roomname__",
+      "content": {
+        "title": "__username__ demande à rejoindre #__roomname__",
+        "disclaimer": "On dirait que votre donut est populaire !",
+        "action": "<strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
+        "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-acces\">Accéder à la discussion</a>"
+      }
+    },
     "roomdevoice": {
       "subject": "Vous êtes muet dans #__roomname__",
       "content": {

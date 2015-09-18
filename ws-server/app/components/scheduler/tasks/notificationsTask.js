@@ -23,7 +23,7 @@ module.exports = {
 
         // Send to email
         if (_.isFunction(type.sendEmail) && notification.sent_to_email === false && notification.to_email === true &&
-          notification.type !== 'roomallowed' && notification.type !== 'roomjoinrequest' && notifications !== 'roomrefuse') {
+          notification.type !== 'roomallowed' && notifications !== 'roomrefuse') {
           type.sendEmail(notification, function (err) {
             if (err) {
               return logger.warn('notificationsTask.send sending ' + notification.id + ' error: ' + err);
