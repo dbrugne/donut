@@ -69,8 +69,7 @@ handler.call = function (data, session, next) {
           var link = common.getLinkify().find(data.data.website);
           if (!link || !link[0] || !link[0].type || !link[0].value || !link[0].href || link[0].type !== 'url') {
             errors.website = 'website-url';
-          } // website should be a valid site URL
-          else {
+          } else { // website should be a valid site URL
             var website = {
               href: link[0].href,
               title: link[0].value
@@ -93,8 +92,9 @@ handler.call = function (data, session, next) {
       }
 
       // welcome
+      var welcome;
       if (_.has(data.data, 'welcome')) {
-        var welcome = validator.toBoolean(data.data.welcome);
+        welcome = validator.toBoolean(data.data.welcome);
         if (welcome !== user.welcome) {
           sanitized.welcome = welcome;
         }
@@ -102,8 +102,8 @@ handler.call = function (data, session, next) {
 
       // positions
       if (_.has(data.data, 'positions')) {
-        var welcome = validator.toBoolean(data.data.welcome);
-        if (welcome != user.welcome) {
+        welcome = validator.toBoolean(data.data.welcome);
+        if (welcome !== user.welcome) {
           sanitized.welcome = welcome;
         }
 
@@ -131,16 +131,18 @@ handler.call = function (data, session, next) {
      *    path: 'v1407505236/jfs0fbpit5ozwnvx4uem.jpg'
      *  }
      */
-      function images (sanitized, callback) {
+
+    function images (sanitized, callback) {
       if (_.has(data.data, 'avatar')) {
         var avatar = data.data.avatar;
 
         // new image
-        if (avatar.path)
+        if (avatar.path) {
           sanitized.avatar = avatar.path;
+        }
 
         // remove actual image
-        if (avatar.remove && avatar.remove == true && user.avatar) {
+        if (avatar.remove && avatar.remove === true && user.avatar) {
           sanitized.avatar = '';
 
           // remove previous picture
@@ -186,14 +188,12 @@ handler.call = function (data, session, next) {
       var sanitizedToNotify = {};
       var fieldToNotify = ['avatar', 'positions'];
       _.each(Object.keys(sanitized), function (key) {
-        if (fieldToNotify.indexOf(key) != -1) {
+        if (fieldToNotify.indexOf(key) !== -1) {
           if (key === 'avatar') {
             sanitizedToNotify[key] = user._avatar();
-          }
-          else if (key === 'positions') {
+          } else if (key === 'positions') {
             sanitizedToNotify[key] = JSON.parse(sanitized[key]);
-          }
-          else {
+          } else {
             sanitizedToNotify[key] = sanitized[key];
           }
         }
@@ -222,14 +222,12 @@ handler.call = function (data, session, next) {
       var sanitizedToNotify = {};
       var fieldToNotify = ['avatar', 'poster', 'color'];
       _.each(Object.keys(sanitized), function (key) {
-        if (fieldToNotify.indexOf(key) != -1) {
+        if (fieldToNotify.indexOf(key) !== -1) {
           if (key === 'avatar') {
             sanitizedToNotify['avatar'] = user._avatar();
-          }
-          else if (key === 'poster') {
+          } else if (key === 'poster') {
             sanitizedToNotify['poster'] = user._poster();
-          }
-          else if (key === 'color') {
+          } else if (key === 'color') {
             sanitizedToNotify['color'] = sanitized[key];
             sanitizedToNotify['avatar'] = user._avatar();
             sanitizedToNotify['poster'] = user._poster();
@@ -302,5 +300,4 @@ handler.call = function (data, session, next) {
 
     next(null, {});
   });
-
 };

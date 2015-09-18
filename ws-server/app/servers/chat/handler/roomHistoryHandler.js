@@ -59,8 +59,6 @@ handler.call = function (data, session, next) {
       logger.error('[room:history]' + err);
       return next(null, { code: 500, err: 'internal' });
     }
-
     next(null, historyEvent);
   });
-
 };

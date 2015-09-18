@@ -27,7 +27,8 @@ define([
     events: {
       'click .ask-for-allowance': 'onRequestAllowance',
       'click .valid-password': 'onValidPassword',
-      'click .close-room': 'onCloseRoom'
+      'click .close-room': 'onCloseRoom',
+      'click .rejoin': 'onRejoin'
     },
 
     initialize: function () {
@@ -104,6 +105,13 @@ define([
           $(event.currentTarget).closest('.password-form').find('.error').html($.t('chat.password.' + response.err));
         } else if (response.err) {
           $(event.currentTarget).closest('.password-form').find('.error').html($.t('chat.password.error'));
+        }
+      });
+    },
+    onRejoin: function (event) {
+      client.roomJoin(this.model.get('id'), null, null, function (response) {
+        if (response.err) {
+          app.trigger('alert', 'error', i18next.t('global.unknownerror'));
         }
       });
     },

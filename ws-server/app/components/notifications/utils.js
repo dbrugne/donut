@@ -13,8 +13,9 @@ module.exports = {
     return function () {
       var args = _.toArray(arguments);
       var callback = args.pop();
-      if (!_.isFunction(callback))
+      if (!_.isFunction(callback)) {
         return logger.error('retrieveUser parameters error, missing callback');
+      }
 
       if (_.isObject(user)) {
         args.unshift(null);
@@ -34,8 +35,9 @@ module.exports = {
     return function () {
       var args = _.toArray(arguments);
       var callback = args.pop();
-      if (!_.isFunction(callback))
+      if (!_.isFunction(callback)) {
         return logger.error('retrieveRoom parameters error, missing callback');
+      }
 
       if (_.isObject(room)) {
         args.unshift(null);
@@ -54,8 +56,9 @@ module.exports = {
   _retrieveHistory: function (type, history, previousArguments) {
     var args = _.toArray(previousArguments);
     var callback = args.pop();
-    if (!_.isFunction(callback))
+    if (!_.isFunction(callback)) {
       return logger.error('_retrieveHistory parameters error, missing callback');
+    }
 
     if (_.isObject(history)) {
       args.unshift(null);
@@ -64,17 +67,18 @@ module.exports = {
     }
 
     var q;
-    if (type == 'historyroom')
+    if (type === 'historyroom') {
       q = HistoryRoomModel.findById(history)
         .populate('user')
         .populate('by_user')
         .populate('room');
-    else if (type == 'historyone')
+    } else if (type === 'historyone') {
       q = HistoryOneModel.findById(history)
         .populate('to')
         .populate('from');
-    else
-      return callback.apply(undefined, ['Unable to determine history event type to retrieve: ' + type]);
+    } else {
+      return callback('Unable to determine history event type to retrieve: ' + type);
+    }
 
     q.exec(function (err, model) {
       args.unshift(err);

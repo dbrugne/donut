@@ -27,20 +27,21 @@ handler.call = function (data, session, next) {
     function roomsList (callback) {
       var q = Room.find({
         visibility: true,
-        deleted: { $ne: true }
+        deleted: {$ne: true}
       })
         .sort({priority: -1, 'lastjoin_at': -1})
         .limit(roomLimit + 1)
         .populate('owner', 'username avatar');
 
       q.exec(function (err, rooms) {
-        if (err)
+        if (err) {
           return callback('Error while retrieving home rooms: ' + err);
+        }
 
         var _rooms = [];
         _.each(rooms, function (room) {
           var _owner = {};
-          if (room.owner != undefined) {
+          if (room.owner !== undefined) {
             _owner = {
               user_id: room.owner.id,
               username: room.owner.username
@@ -69,21 +70,25 @@ handler.call = function (data, session, next) {
 
         // sort (priority, users, lastjoin_at, name)
         _rooms.sort(function (a, b) {
-          if (a.priority != b.priority)
+          if (a.priority !== b.priority) {
             return b.priority - a.priority;
+          }
 
-          if (a.users != b.users)
-            return (b.users - a.users); // b - a == descending
+          if (a.users !== b.users) {
+            return (b.users - a.users);
+          } // b - a == descending
 
-          if (a.avatar && !b.avatar)
+          if (a.avatar && !b.avatar) {
             return -1;
-          else if (!a.avatar && b.avatar)
+          } else if (!a.avatar && b.avatar) {
             return 1;
-          else
+          } else {
             return 0;
+          }
 
-          if (a.lastjoin_at != b.lastjoin_at)
-            return (b.lastjoin_at - a.lastjoin_at); // b - a == descending
+          if (a.lastjoin_at !== b.lastjoin_at) {
+            return (b.lastjoin_at - a.lastjoin_at);
+          } // b - a == descending
 
           return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
         });
@@ -99,17 +104,17 @@ handler.call = function (data, session, next) {
 
         return callback(null);
       });
-
     },
 
     function usersList (callback) {
-      var q = User.find({ username: {$ne: null} }, 'username avatar color facebook');
+      var q = User.find({username: {$ne: null}}, 'username avatar color facebook');
       q.sort({'lastonline_at': -1, 'lastoffline_at': -1})
         .limit(userLimit + 1);
 
       q.exec(function (err, users) {
-        if (err)
+        if (err) {
           return callback('Error while retrieving users list: ' + err);
+        }
 
         var list = [];
         _.each(users, function (u, index) {
@@ -127,16 +132,21 @@ handler.call = function (data, session, next) {
     },
 
     function status (users, callback) {
-      var uids = _.map(users, function (u) { return u.user_id; });
+      var uids = _.map(users, function (u) {
+        return u.user_id;
+      });
       that.app.statusService.getStatusByUids(uids, function (err, results) {
-        if (err)
+        if (err) {
           return callback('Error while retrieving user status: ' + err);
+        }
 
         _.each(users, function (element, index, list) {
           list[index].status = (results[element.user_id])
             ? 'online'
             : 'offline';
-          list[index].sort = ((results[element.user_id]) ? 0 : 1) + '' + list[index].sort;
+          list[index].sort = ((results[element.user_id])
+              ? 0
+              : 1) + '' + list[index].sort;
         });
 
         users = _.sortBy(users, 'sort');
@@ -155,28 +165,29 @@ handler.call = function (data, session, next) {
 
     function featured (callback) {
       featuredRooms(that.app, function (err, featured) {
-        if (err)
-          logger.error('Error while retrieving featured rooms: ' + err);
+        if (err) {
+          return callback('Error while retrieving featured rooms: ' + err);
+        }
 
         // union lists
         var alreadyInNames = _.map(featured, function (r) {
           return r.name;
         });
         _.each(homeEvent.rooms.list, function (room) {
-          if (alreadyInNames.indexOf(room.name) === -1)
+          if (alreadyInNames.indexOf(room.name) === -1) {
             featured.push(room);
+          }
         });
         homeEvent.rooms.list = featured;
 
         return callback(null);
       });
     }
-
   ], function (err) {
-    if (err)
-      return next(null, {code: 500, err: 'internal'});
-
-    return next(null, homeEvent);
-  }
+      if (err) {
+        return next(null, {code: 500, err: 'internal'});
+      }
+      return next(null, homeEvent);
+    }
   );
 };

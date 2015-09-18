@@ -60,8 +60,9 @@ handler.call = function (data, session, next) {
       }
 
       var subDocument = _.find(room.bans, function (ban) {
-        if (ban.user.toString() == bannedUser.id)
+        if (ban.user.toString() === bannedUser.id) {
           return true;
+        }
       });
       room.bans.id(subDocument._id).remove();
       room.save(function (err) {

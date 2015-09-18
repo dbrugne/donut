@@ -1,7 +1,6 @@
 'use strict';
 var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename);
 var async = require('async');
-var _ = require('underscore');
 var oneDataHelper = require('../../../util/oneData');
 
 var Handler = function (app) {

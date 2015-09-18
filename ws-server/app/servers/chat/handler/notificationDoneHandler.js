@@ -1,10 +1,8 @@
 'use strict';
 var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename);
 var async = require('async');
-var _ = require('underscore');
 var NotificationModel = require('../../../../../shared/models/notification');
 var Notifications = require('../../../components/notifications');
-var common = require('@dbrugne/donut-common');
 
 var Handler = function (app) {
   this.app = app;
@@ -24,15 +22,18 @@ handler.call = function (data, session, next) {
   async.waterfall([
 
     function check (callback) {
-      if (!data.id)
+      if (!data.id) {
         return callback('id parameter is mandatory for notifications:done');
+      }
 
       NotificationModel.findOne({_id: data.id}, function (err, notification) {
-        if (err)
+        if (err) {
           return callback('Error while retrieving notification: ' + err);
+        }
 
-        if (notification.user.toString() !== user.id)
+        if (notification.user.toString() !== user.id) {
           return callback('This notification is not associated to this user');
+        }
 
         return callback(null, notification);
       });
@@ -61,5 +62,4 @@ handler.call = function (data, session, next) {
 
     next(null, event);
   });
-
 };

@@ -2,8 +2,6 @@
 var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename);
 var async = require('async');
 var _ = require('underscore');
-var User = require('../../../../../shared/models/user');
-var Room = require('../../../../../shared/models/room');
 var HistoryRoom = require('../../../../../shared/models/historyroom');
 var pattern = new RegExp('^[0-9a-fA-F]{24}$');
 
@@ -26,31 +24,35 @@ handler.call = function (data, session, next) {
   async.waterfall([
 
     function check (callback) {
-      if (!data.room_id)
+      if (!data.room_id) {
         return callback('id is mandatory');
+      }
 
-      if (!data.events || !_.isArray(data.events))
+      if (!data.events || !_.isArray(data.events)) {
         return callback('events parameter is mandatory');
+      }
 
-      if (!room)
+      if (!room) {
         return callback('unable to retrieve room: ' + data.room_id);
+      }
 
       data.events = _.filter(data.events, function (id) {
         // http://stackoverflow.com/questions/11985228/mongodb-node-check-if-objectid-is-valid
         return pattern.test(id);
       });
-      if (!data.events.length)
+      if (!data.events.length) {
         return callback('events parameter should contains at least one valid event _id');
+      }
 
       return callback(null);
     },
 
     function persist (callback) {
       HistoryRoom.update({
-        _id: { $in: data.events },
-        event: { $in: ['room:message', 'room:topic'] }
+        _id: {$in: data.events},
+        event: {$in: ['room:message', 'room:topic']}
       }, {
-        $addToSet: { viewed: user._id }
+        $addToSet: {viewed: user._id}
       }, {
         multi: true
       }, function (err) {
@@ -72,10 +74,10 @@ handler.call = function (data, session, next) {
     }
 
   ], function (err) {
-    if (err)
+    if (err) {
       logger.error('[room:viewed] ' + err);
+    }
 
     next(err);
   });
-
 };

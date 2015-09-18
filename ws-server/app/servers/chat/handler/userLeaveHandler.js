@@ -1,7 +1,6 @@
 'use strict';
 var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename);
 var async = require('async');
-var _ = require('underscore');
 
 var Handler = function (app) {
   this.app = app;
@@ -51,5 +50,4 @@ handler.call = function (data, session, next) {
 
     return next(null);
   });
-
 };

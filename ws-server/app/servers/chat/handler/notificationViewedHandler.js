@@ -26,25 +26,29 @@ handler.call = function (data, session, next) {
       // Mark all as read
       if (data.all) {
         Notifications(that.app).retrieveUserNotificationsUnviewed(user.id, function (err, notifications) {
-          if (err)
+          if (err) {
             return callback(err);
+          }
 
           return callback(null, notifications);
         });
       } else {
         var notifications = [];
-        if (!data.ids || !_.isArray(data.ids))
+        if (!data.ids || !_.isArray(data.ids)) {
           return callback('ids parameter is mandatory for notifications:viewed');
+        }
 
         // filter array to preserve only valid
         _.each(data.ids, function (elt) {
-          if (common.objectIdPattern.test(elt))
+          if (common.objectIdPattern.test(elt)) {
             notifications.push(elt);
+          }
         });
 
         // test if at least one entry remain
-        if (notifications.length == 0)
+        if (notifications.length === 0) {
           return callback('No notification to set as Read remaining');
+        }
 
         return callback(null, notifications);
       }
@@ -59,8 +63,9 @@ handler.call = function (data, session, next) {
     function prepare (notifications, callback) {
       // count remaining unviewed notifications
       Notifications(that.app).retrieveUserNotificationsUnviewedCount(user.id, function (err, count) {
-        if (err)
+        if (err) {
           return callback(err);
+        }
 
         return callback(null, {
           notifications: notifications,
@@ -77,5 +82,4 @@ handler.call = function (data, session, next) {
 
     next(null, event);
   });
-
 };
