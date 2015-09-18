@@ -2,7 +2,7 @@ var async = require('async');
 var _ = require('underscore');
 var User = require('../models/user');
 var Room = require('../models/room');
-var diacritic2ascii = require('./diacritic2ascii');
+var diacritics = require('diacritics').remove;
 var common = require('@dbrugne/donut-common');
 
 /**
@@ -32,7 +32,7 @@ module.exports = function (search, searchInUsers, searchInRooms, limit, skip, li
 
   // remove diacritic, @ and #
   search = search.replace(/([@#])/g, '');
-  search = diacritic2ascii(search);
+  search = diacritics(search);
 
   var _regexp = common.regExpBuildContains(search);
 
