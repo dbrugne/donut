@@ -24,7 +24,8 @@ define([
         focused: false,
         unviewed: false,
         newmention: false,
-        newuser: false
+        newuser: false,
+        blocked: false
       };
     },
 
@@ -35,7 +36,7 @@ define([
       return this.get('name');
     },
     addUser: function (data, sort) {
-      sort = (sort === false) ? false : true;
+      sort = !!sort;
 
       // already in?
       var model = this.users.get(data.user_id);
@@ -46,13 +47,10 @@ define([
         return model;
       }
 
-      var is_owner = (this.get('owner') && this.get('owner').get('user_id') == data.user_id)
-        ? true
-        : false;
+      var is_owner = (this.get('owner') &&
+      this.get('owner').get('user_id') === data.user_id);
 
-      var is_op = false;
-      if (this.get('op') && this.get('op').indexOf(data.user_id) !== -1)
-        is_op = true;
+      var is_op = (this.get('op') && this.get('op').indexOf(data.user_id) !== -1);
 
       model = new UserModel({
         id: data.user_id,
@@ -69,10 +67,11 @@ define([
       return model;
     },
     getUrl: function () {
-      return window.location.protocol
-      + '//' + window.location.host
-      + '/room/'
-      + this.get('name').replace('#', '').toLocaleLowerCase();
+      return window.location.protocol +
+        '//' +
+        window.location.host +
+        '/room/' +
+        this.get('name').replace('#', '').toLocaleLowerCase();
     },
     leave: function () {
       client.roomLeave(this.get('id'));
@@ -81,12 +80,10 @@ define([
       return (this.get('devoices') && this.get('devoices').indexOf(userId) !== -1);
     },
     currentUserIsOwner: function () {
-      if (!this.get('owner'))
+      if (!this.get('owner')) {
         return false;
-
-      return (this.get('owner').get('user_id') == currentUser.get('user_id'))
-        ? true
-        : false;
+      }
+      return (this.get('owner').get('user_id') === currentUser.get('user_id'));
     },
     currentUserIsOp: function () {
       return (this.get('op') && this.get('op').indexOf(currentUser.get('user_id')) !== -1);
@@ -97,7 +94,7 @@ define([
     onIn: function (data) {
       data.status = 'online'; // only an online user can join a room
 
-      this.addUser(data);
+      this.addUser(data, true);
       this.users.trigger('users-redraw');
 
       var model = new EventModel({
@@ -109,9 +106,10 @@ define([
     onOut: function (data) {
       var user = this.users.get(data.user_id);
 
-      if (!user)
-        return; // if user has more that one socket we receive n room:out
-
+      if (!user) {
+        // if user has more that one socket we receive n room:out
+        return;
+      }
       this.users.remove(user);
       this.users.trigger('users-redraw');
 
@@ -128,8 +126,9 @@ define([
         data: data
       });
 
-      if (currentUser.get('user_id') != model.get('data').user_id)
+      if (currentUser.get('user_id') !== model.get('data').user_id) {
         model.set('unviewed', true);
+      }
 
       this.trigger('freshEvent', model);
     },
@@ -139,19 +138,9 @@ define([
         data: data
       });
 
-      if (currentUser.get('user_id') != model.get('data').user_id)
+      if (currentUser.get('user_id') !== model.get('data').user_id) {
         model.set('unviewed', true);
-
-      this.trigger('freshEvent', model);
-    },
-    onMe: function (data) {
-      var model = new EventModel({
-        type: 'room:me',
-        data: data
-      });
-
-      if (currentUser.get('user_id') != model.get('data').user_id)
-        model.set('unviewed', true);
+      }
 
       this.trigger('freshEvent', model);
     },
@@ -163,8 +152,9 @@ define([
 
       // user.get('is_op')
       var user = this.users.get(data.user_id);
-      if (user)
+      if (user) {
         user.set({is_op: true});
+      }
       this.users.sort();
 
       this.users.trigger('users-redraw');
@@ -178,14 +168,15 @@ define([
     onDeop: function (data) {
       // room.get('op')
       var ops = _.reject(this.get('op'), function (opUserId) {
-        return (opUserId == data.user_id);
+        return (opUserId === data.user_id);
       });
       this.set('op', ops);
 
       // user.get('is_op')
       var user = this.users.get(data.user_id);
-      if (user)
+      if (user) {
         user.set({is_op: false});
+      }
       this.users.sort();
 
       this.users.trigger('users-redraw');
@@ -205,14 +196,16 @@ define([
     },
     onVoice: function (data) {
       var user = this.users.get(data.user_id);
-      if (user)
-        user.set({ is_devoice: false });
+      if (user) {
+        user.set({is_devoice: false});
+      }
 
       var devoices = this.get('devoices');
-      if (devoices.length)
+      if (devoices.length) {
         this.set('devoices', _.reject(devoices, function (element) {
           return (element === data.user_id);
         }));
+      }
 
       this.users.sort();
       this.users.trigger('users-redraw');
@@ -224,13 +217,15 @@ define([
       });
       this.trigger('freshEvent', model);
 
-      if (currentUser.get('user_id') === data.user_id)
+      if (currentUser.get('user_id') === data.user_id) {
         this.trigger('inputActive');
+      }
     },
     onDevoice: function (data) {
       var user = this.users.get(data.user_id);
-      if (user)
-        user.set({ is_devoice: true });
+      if (user) {
+        user.set({is_devoice: true});
+      }
 
       var devoices = this.get('devoices') || [];
       devoices.push(data.user_id);
@@ -246,8 +241,9 @@ define([
       });
       this.trigger('freshEvent', model);
 
-      if (currentUser.get('user_id') === data.user_id)
+      if (currentUser.get('user_id') === data.user_id) {
         this.trigger('inputActive');
+      }
     },
     onUpdated: function (data) {
       var that = this;
@@ -258,19 +254,21 @@ define([
     _onStatus: function (expect, data) {
       var model = this.users.get(data.user_id);
 
-      if (!model)
+      if (!model) {
         return;
+      }
 
-      if (model.get('status') == expect)
+      if (model.get('status') === expect) {
         return;
+      }
 
       model.set({status: expect});
 
-      var model = new EventModel({
+      var event = new EventModel({
         type: 'user:' + expect,
         data: data
       });
-      this.trigger('freshEvent', model);
+      this.trigger('freshEvent', event);
     },
     onUserOnline: function (data) {
       this._onStatus('online', data);
@@ -292,17 +290,34 @@ define([
     },
     fetchUsers: function (callback) {
       var that = this;
-      client.roomUsers(this.get('id'), function (data) {
+      client.roomUsers(this.get('id'), {type: 'users', status: 'online'}, function (data) {
         that.users.reset();
 
         _.each(data.users, function (element, key, list) {
-          that.addUser(element, false); // false: avoid automatic sorting on each model .add()
+          that.addUser(element, false); // false: avoid automatic sorting on
+                                        // each model .add()
         });
-        that.users.sort(); // sort after batch addition to collection to avoid performance issue
-        that.users.trigger('users-redraw');
 
-        if (callback)
-          return callback();
+        var maxOfflineUsersToDisplay = (15 - data.count > 0) ? 15 - data.count : 2;
+        var searchAttributes = {
+          type: 'users',
+          status: 'offline',
+          selector: {start: 0, length: maxOfflineUsersToDisplay}
+        };
+        client.roomUsers(that.get('id'), searchAttributes, function (data) {
+          _.each(data.users, function (element, key, list) {
+            that.addUser(element, false); // false: avoid automatic sorting on
+                                          // each model .add()
+          });
+
+          that.users.sort(); // sort after batch addition to collection to avoid
+          // performance issue
+
+          that.users.trigger('users-redraw');
+          if (callback) {
+            return callback();
+          }
+        });
       });
     },
 

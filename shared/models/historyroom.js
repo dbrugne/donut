@@ -1,5 +1,5 @@
 'use strict';
-var debug = require('debug')('shared:models:historyRoom');
+var logger = require('../util/logger').getLogger('history', __filename);
 var _ = require('underscore');
 var async = require('async');
 var mongoose = require('../io/mongoose');
@@ -13,14 +13,12 @@ var historySchema = mongoose.Schema({
   user: { type: mongoose.Schema.ObjectId, ref: 'User' },
   by_user: { type: mongoose.Schema.ObjectId, ref: 'User' },
   data: mongoose.Schema.Types.Mixed,
-  users: [{ type: mongoose.Schema.ObjectId, ref: 'User' }], // users in room at event time
-  viewed: [{ type: mongoose.Schema.ObjectId, ref: 'User' }], // users that have read this event
+  viewed: [ { type: mongoose.Schema.ObjectId, ref: 'User' } ],
   spammed: { type: Boolean },
   spammed_at: { type: Date },
   edited: { type: Boolean },
   edited_at: { type: Date }
-
-}, {strict: false});
+}, { strict: false });
 
 var dryFields = [
   'time',
@@ -40,7 +38,7 @@ var dryFields = [
  * Archive events
  */
 historySchema.statics.record = function () {
-  var that = this;
+  var Model = this;
   /**
    * @param room - Room model
    * @param event - event name as String
@@ -49,20 +47,20 @@ historySchema.statics.record = function () {
    * @return event with event_id set
    */
   return function (room, event, data, fn) {
-    var model = new that();
+    var model = new Model();
     model.event = event;
     model.room = room._id;
     model.time = data.time;
 
     model.user = data.user_id;
-    if (data.by_user_id)
+    if (data.by_user_id) {
       model.by_user = data.by_user_id;
+    }
 
     // dry data
     var wet = _.clone(data);
     model.data = _.omit(wet, dryFields);
 
-    model.users = room.users;
     model.save(fn);
   };
 };
@@ -70,8 +68,10 @@ historySchema.statics.record = function () {
 historySchema.methods.toClientJSON = function (userViewed) {
   userViewed = userViewed || false;
 
-  if (!this.room)
-    this.room = new Room(); // some rooms was removed (but not their history) before Room.deleted flag introduction
+  if (!this.room) {
+    this.room = new Room();
+  } // some rooms was removed (but not their history) before Room.deleted flag
+    // introduction
 
   // record
   var e = {
@@ -98,15 +98,18 @@ historySchema.methods.toClientJSON = function (userViewed) {
     data.by_username = this.by_user.username;
     data.by_avatar = this.by_user._avatar();
   }
-  if (this.spammed === true)
+  if (this.spammed === true) {
     e.spammed = this.spammed;
-  if (this.edited === true)
+  }
+  if (this.edited === true) {
     e.edited = this.edited;
+  }
 
   // images
   if (data.images && data.images.length > 0) {
     data.images = _.map(data.images, function (element, key, value) {
-      // @important: use .path to obtain URL with file extension and avoid CORS errors
+      // @important: use .path to obtain URL with file extension and avoid CORS
+      // errors
       return cloudinary.messageImage(element.path);
     });
   }
@@ -114,10 +117,10 @@ historySchema.methods.toClientJSON = function (userViewed) {
   e.data = data;
 
   // unviewed status (true if message and if i'm not in .viewed)
-  if (userViewed && ['room:message', 'room:me', 'room:topic'].indexOf(this.event) !== -1 && data.user_id != userViewed && (
-    !this.viewed
-    || (_.isArray(this.viewed) && this.viewed.indexOf(userViewed) === -1)
-    )) {
+  if (userViewed &&
+    [ 'room:message', 'room:topic' ].indexOf(this.event) !== -1 &&
+    data.user_id !== userViewed &&
+    (!this.viewed || (_.isArray(this.viewed) && this.viewed.indexOf(userViewed) === -1))) {
     e.unviewed = true;
   }
 
@@ -129,7 +132,7 @@ historySchema.statics.retrieve = function () {
   /**
    * @param roomId
    * @param userId
-   * @param what criteria Object: since (timestamp), isAdmin (boolean)
+   * @param what criteria Object: since (timestamp)
    * @param fn
    */
   return function (roomId, userId, what, fn) {
@@ -137,10 +140,6 @@ historySchema.statics.retrieve = function () {
     var criteria = {
       room: roomId
     };
-
-    if (what.isAdmin !== true) {
-      criteria.users = { $in: [userId] };
-    }
 
     // Since (timestamp, from present to past direction)
     if (what.since) {
@@ -153,21 +152,26 @@ historySchema.statics.retrieve = function () {
     var limit = howMany + 1;
 
     var q = that.find(criteria)
-      .sort({time: 'desc'}) // important for timeline logic but also optimize rendering on frontend
+      .sort({ time: 'desc' }) // important for timeline logic but also optimize
+                              // rendering on frontend
       .limit(limit)
       .populate('room', 'name')
       .populate('user', 'username avatar color facebook')
       .populate('by_user', 'username avatar color facebook');
 
+    var start = Date.now();
     q.exec(function (err, entries) {
-      if (err)
+      if (err) {
         return fn('Error while retrieving room history: ' + err);
+      }
 
-      var more = (entries.length > howMany)
-        ? true
-        : false;
-      if (more)
-        entries.pop(); // remove last
+      var duration = Date.now() - start;
+      logger.debug('History requested in ' + duration + 'ms');
+
+      var more = (entries.length > howMany);
+      if (more) {
+        entries.pop();
+      } // remove last
 
       var history = [];
       _.each(entries, function (model) {
@@ -187,16 +191,20 @@ historySchema.statics.retrieve = function () {
  *
  * @param eventId     Event ID to retrieve
  * @param userId      User ID
- * @param limit       Number of maximum event to return in both before and after direction
- * @param timeLimit   Limit of time to retrieve event in both before and after direction
+ * @param limit       Number of maximum event to return in both before and
+ *   after direction
+ * @param timeLimit   Limit of time to retrieve event in both before and after
+ *   direction
  * @param before      Flag to retrieve (or not) the "before event events"
  * @param fn
  */
 historySchema.statics.retrieveEventWithContext = function (eventId, userId, limit, timeLimit, before, fn) {
-  if (!eventId)
+  if (!eventId) {
     return fn('retrieveEventWithContext expect event ID as first parameter');
-  if (!userId)
+  }
+  if (!userId) {
     return fn('retrieveEventWithContext expect user ID as second parameter');
+  }
 
   limit = limit || 5;
   timeLimit = timeLimit || 5; // in mn
@@ -204,8 +212,7 @@ historySchema.statics.retrieveEventWithContext = function (eventId, userId, limi
 
   var criteria = {
     _id: { $ne: eventId },
-    event: { $in: ['room:message', 'room:me'] },
-    users: { $in: [userId] }
+    event: { $in: [ 'room:message' ] }
   };
 
   var model;
@@ -214,7 +221,7 @@ historySchema.statics.retrieveEventWithContext = function (eventId, userId, limi
   async.waterfall([
 
     function retrieveModel (callback) {
-      that.findOne({_id: eventId})
+      that.findOne({ _id: eventId })
         .populate('room', 'name avatar color')
         .populate('user', 'username avatar color facebook')
         .populate('by_user', 'username avatar color facebook')
@@ -229,16 +236,17 @@ historySchema.statics.retrieveEventWithContext = function (eventId, userId, limi
       var afterLimit = new Date(model.time);
       afterLimit.setMinutes(afterLimit.getMinutes() + timeLimit);
       var _criteria = _.clone(criteria);
-      _criteria.time = {$lte: afterLimit, $gte: model.time};
+      _criteria.time = { $lte: afterLimit, $gte: model.time };
       that.find(_criteria)
-        .sort({time: 'asc'})
+        .sort({ time: 'asc' })
         .limit(limit)
         .populate('room', 'name avatar color')
         .populate('user', 'username avatar color facebook')
         .populate('by_user', 'username avatar color facebook')
         .exec(function (err, results) {
-          if (err)
+          if (err) {
             return callback(err);
+          }
 
           fullResults = fullResults.concat(results);
           return callback(null);
@@ -246,22 +254,24 @@ historySchema.statics.retrieveEventWithContext = function (eventId, userId, limi
     },
 
     function retrieveBeforeEvents (callback) {
-      if (!before)
+      if (!before) {
         return callback(null);
+      }
 
       var beforeLimit = new Date(model.time);
       beforeLimit.setMinutes(beforeLimit.getMinutes() - timeLimit);
       var _criteria = _.clone(criteria);
       _criteria.time = { $gte: beforeLimit, $lte: model.time };
       that.find(_criteria)
-        .sort({time: 'desc'})
+        .sort({ time: 'desc' })
         .limit(limit)
         .populate('room', 'name avatar color')
         .populate('user', 'username avatar color facebook')
         .populate('by_user', 'username avatar color facebook')
         .exec(function (err, results) {
-          if (err)
+          if (err) {
             return callback(err);
+          }
 
           results.reverse();
           fullResults = results.concat(fullResults);
@@ -280,7 +290,6 @@ historySchema.statics.retrieveEventWithContext = function (eventId, userId, limi
   ], function (err, history) {
     fn(err, history);
   });
-
 };
 
 module.exports = mongoose.model('HistoryRoom', historySchema, 'history-room');

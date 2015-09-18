@@ -1,8 +1,7 @@
 'use strict';
-var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
+var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename);
 var _ = require('underscore');
 var async = require('async');
-var conf = require('../../../../../config/index');
 var uuid = require('node-uuid');
 var keenio = require('../../../../../shared/io/keenio');
 var Notifications = require('../../../components/notifications');
@@ -26,17 +25,16 @@ var handler = Handler.prototype;
  * @param  {Object}   msg     request message
  * @param  {Object}   session current session object
  * @param  {Function} next    next stemp callback
- * @return {Void}
  */
 handler.enter = function (msg, session, next) {
   var that = this;
 
-  if (!session
-    || !session.__session__
-    || !session.__session__.__socket__
-    || !session.__session__.__socket__.socket
-    || !session.__session__.__socket__.socket.decoded_token) {
-    return callback('No user data provided by connector');
+  if (!session ||
+    !session.__session__ ||
+    !session.__session__.__socket__ ||
+    !session.__session__.__socket__.socket ||
+    !session.__session__.__socket__.socket.decoded_token) {
+    return next('No user data provided by connector');
   }
 
   var uid = session.__session__.__socket__.socket.decoded_token.id;
@@ -68,12 +66,13 @@ handler.enter = function (msg, session, next) {
 
       // search for session on other frontends
       that.app.statusService.getSidsByUid(uid, function (err, sids) {
-        if (err)
+        if (err) {
           return callback('Error while retrieving user status: ' + err);
+        }
 
         if (sids && sids.length > 0) {
           _.each(sids, function (sid) {
-            if (sid != session.frontendId) {
+            if (sid !== session.frontendId) {
               firstClient = false;
             }
           });
@@ -84,10 +83,12 @@ handler.enter = function (msg, session, next) {
     },
 
     function welcomeMessage (callback) {
-      if (!that.app.rpc || !that.app.rpc.chat)
+      if (!that.app.rpc || !that.app.rpc.chat) {
         return callback('app.rpc.chat not already exists, server is not ready');
+      }
 
-      // delegate connect logic to 'chat' server and get welcome message in return
+      // delegate connect logic to 'chat' server and get welcome message in
+      // return
       return that.app.rpc.chat.welcomeRemote.getMessage(
         session,
         uid,
@@ -112,34 +113,39 @@ handler.enter = function (msg, session, next) {
       session.set('avatar', welcome.user.avatar);
       session.set('color', welcome.user.color);
       session.set('started', Date.now());
-      if (welcome.user.admin === true)
+      if (welcome.user.admin === true) {
         session.set('admin', true);
+      }
 
       session.pushAll(function (err) {
-        if (err)
+        if (err) {
           return callback('Error while updating session infos: ' + err);
+        }
         return callback(null, welcome);
       });
     },
 
     function subscribeRoomChannels (welcome, callback) {
-      if (!welcome.rooms || welcome.rooms.length < 1)
+      if (!welcome.rooms || welcome.rooms.length < 1) {
         return callback(null, welcome);
+      }
 
       var parallels = [];
       _.each(welcome.rooms, function (room) {
         parallels.push(function (fn) {
           that.app.globalChannelService.add(room.name, uid, session.frontendId, function (err) {
-            if (err)
+            if (err) {
               return fn('Error while registering user in room channel: ' + err);
+            }
 
             return fn(null, room.name);
           });
         });
       });
       async.parallel(parallels, function (err, results) {
-        if (err)
+        if (err) {
           return callback('Error while registering user in rooms channels: ' + err);
+        }
 
         return callback(null, welcome);
       });
@@ -147,8 +153,9 @@ handler.enter = function (msg, session, next) {
 
     function subscribeUserChannel (welcome, callback) {
       that.app.globalChannelService.add(USER_CHANNEL_PREFIX + uid, uid, session.frontendId, function (err) {
-        if (err)
+        if (err) {
           return callback('Error while registering user in user channel: ' + err);
+        }
 
         return callback(null, welcome);
       });
@@ -156,8 +163,9 @@ handler.enter = function (msg, session, next) {
 
     function subscribeGlobalChannel (welcome, callback) {
       that.app.globalChannelService.add(GLOBAL_CHANNEL_NAME, uid, session.frontendId, function (err) {
-        if (err)
+        if (err) {
           return callback('Error while registering user in global channel: ' + err);
+        }
 
         return callback(null, welcome);
       });
@@ -165,8 +173,9 @@ handler.enter = function (msg, session, next) {
 
     function cleanupNotifications (welcome, callback) {
       Notifications(that.app).avoidNotificationsSending(uid, function (err) {
-        if (err)
+        if (err) {
           return callback('Error while setting notifications as read for ' + session.uid + ': ' + err);
+        }
 
         return callback(null, welcome);
       });
@@ -179,7 +188,7 @@ handler.enter = function (msg, session, next) {
           id: session.settings.uuid,
           connector: session.frontendId,
           device: _socket.handshake.query.device || 'unknown',
-          ip: _socket.handshake.headers['x-forwarded-for'] || _socket.handshake.address
+          ip: _socket.handshake.headers[ 'x-forwarded-for' ] || _socket.handshake.address
         },
         user: {
           id: uid,
@@ -188,24 +197,27 @@ handler.enter = function (msg, session, next) {
         }
       };
       keenio.addEvent('session_start', sessionEvent, function (err, res) {
-        if (err)
+        if (err) {
           logger.error('Error while tracking session_start in keen.io for ' + uid + ': ' + err);
+        }
 
         return callback(null, welcome);
       });
     },
 
     function sendUserOnline (welcome, callback) {
-      if (!firstClient)
+      if (!firstClient) {
         return callback(null, welcome);
+      }
 
       that.app.rpc.chat.statusRemote.online(
         session,
         uid,
         welcome,
         function (err) {
-          if (err)
+          if (err) {
             logger.error('Error while statusRemote.online: ' + err);
+          }
         }
       );
 
@@ -216,7 +228,7 @@ handler.enter = function (msg, session, next) {
   ], function (err, welcome) {
     if (err) {
       logger.error(err);
-      return next(null, {code: 500, error: true, msg: err});
+      return next(null, { code: 500, error: true, msg: err });
     }
 
     return next(null, welcome);
@@ -228,11 +240,14 @@ handler.enter = function (msg, session, next) {
  *
  * @param {Object} app current application
  * @param {Object} session current session object
+ * @param {String} reason
  *
  */
 var onUserLeave = function (app, session, reason) {
-  if (!session || !session.uid)
-    return; // could happen if a uid was not already bound before disconnect (crash, bug, debug session, ...)
+  if (!session || !session.uid) {
+    return;
+  } // could happen if a uid was not already bound before disconnect (crash,
+    // bug, debug session, ...)
 
   var duration = Math.ceil((Date.now() - session.settings.started) / 1000); // seconds
 
@@ -243,7 +258,7 @@ var onUserLeave = function (app, session, reason) {
       id: session.settings.uuid,
       connector: session.frontendId,
       device: _socket.handshake.query.device || 'unknown',
-      ip: _socket.handshake.headers['x-forwarded-for'] || _socket.handshake.address,
+      ip: _socket.handshake.headers[ 'x-forwarded-for' ] || _socket.handshake.address,
       duration: duration
     },
     user: {
@@ -253,8 +268,9 @@ var onUserLeave = function (app, session, reason) {
     }
   };
   keenio.addEvent('session_end', sessionEvent, function (err, res) {
-    if (err)
+    if (err) {
       logger.error('Error while tracking session_end in keen.io for ' + session.uid + ': ' + err);
+    }
 
     // logger
     var log = {
@@ -263,21 +279,23 @@ var onUserLeave = function (app, session, reason) {
       time: new Date(),
       session_duration: duration
     };
-    if (session.settings.username)
+    if (session.settings.username) {
       log.username = session.settings.username;
-    if (reason)
+    }
+    if (reason) {
       log.reason = reason;
-    logger.trace(JSON.stringify(log));
+    }
+    logger.trace(log);
 
     // user:offline
     app.rpc.chat.statusRemote.socketGoesOffline(
       session,
       session.uid,
       function (err) {
-        if (err)
+        if (err) {
           logger.error('Error while statusRemote.socketGoesOffline: ' + err);
+        }
       }
     );
   });
-
 };

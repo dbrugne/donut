@@ -1,5 +1,4 @@
 'use strict';
-var debug = require('debug')('donut:server:images');
 var _ = require('underscore');
 
 var allowedFields = [

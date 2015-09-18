@@ -84,6 +84,8 @@
     "muted": "son désactivé"
   },
   "global": {
+    "admin": "(administrateur)",
+    "default": "défaut",
     "or": "ou",
     "yes": "oui",
     "no": "non",
@@ -96,7 +98,9 @@
     "save": "enregistrer",
     "cancel": "annuler",
     "view": "voir",
-    "viewprofile": "Voir le profil",
+    "accept": "accepter",
+    "refuse": "refuser",
+    "viewprofile": "voir le profil",
     "online": "en ligne",
     "offline": "hors ligne",
     "connecting": "connexion ...",
@@ -108,7 +112,8 @@
       "after": " ?"
     },
     "switchlanguage": "Langue",
-    "unknownerror": "Erreur inconnue, veuillez réessayer"
+    "unknownerror": "Erreur inconnue, veuillez réessayer",
+    "private-donut": "Donut privé"
   },
   "login": {
     "withfacebook": "avec Facebook",
@@ -308,7 +313,7 @@
   "logged": {
     "title": "Déjà connecté",
     "hello": "Bonjour",
-    "text": "Vous êtes déjà connecté, accédez à DONUT:",
+    "text": "Vous êtes déjà connecté, accédez à DONUT :",
     "chat": "Discuter",
     "logout": "Déconnexion"
   },
@@ -364,6 +369,7 @@
     "loading": "Chargement ",
     "actions": {
       "search": "Chercher",
+      "searchuser": "Rechercher un utilisateur",
       "create": "créer",
       "adonut": "un donut",
       "account": "mon compte",
@@ -383,17 +389,6 @@
       },
       "unlock": "(Cliquez ici pour le débloquer)"
     },
-    "create": {
-      "info": "Attention le nom du donut ne sera plus modifiable !",
-      "label": "Créez votre donut",
-      "help": [
-        "Entre 3 et 24 caractères.<br>",
-        "Autorisés : lettres, chiffres et caractères spéciaux : <strong>-_^</strong><br>",
-        "Interdits : espaces, accents et caractères spéciaux non listés ci-dessus.<br>"
-      ],
-      "placeholder": "Nom du donut",
-      "submit": "Créer le donut"
-    },
     "help": "Aide",
     "placeholder": "Déplacer ici",
     "createadonut": "Nouveau",
@@ -410,6 +405,8 @@
     },
     "userscount": "<strong>__count__</strong> <span>utilisateur dans ce donut</span>",
     "userscount_plural": "<strong>__count__</strong> <span>utilisateurs dans ce donut</span>",
+    "usersonlinecount": "<strong>__count__</strong> <span>utilisateur en ligne dans ce donut</span>",
+    "usersonlinecount_plural": "<strong>__count__</strong> <span>utilisateurs en ligne dans ce donut</span>",
     "usersoffline": "Utilisateurs hors ligne",
     "topic": {
       "label": "En ce moment",
@@ -423,6 +420,15 @@
     "op": {
       "is": "Cet utilisateur est modérateur de ce donut",
       "infobox": "Faire modérateur"
+    },
+    "allow": {
+      "infobox": {
+        "accept": "Autoriser",
+        "refuse": "Refuser"
+      }
+    },
+    "disallow": {
+      "infobox": "Supprimer"
     },
     "deop": {
       "infobox": "Retirer des modérateurs"
@@ -451,6 +457,18 @@
     },
     "profile": {
       "infobox": "Voir le profil de cet utilisateur"
+    },
+    "allowed": {
+      "success": "La demande d'accès à bien été envoyé",
+      "error" : {
+        "notallowed": "Une demande d'accès a déjà été envoyé",
+        "banned": "Vous êtes banni de ce donut"
+      }
+    },
+    "password": {
+      "spam-password": "Vous devez patienter",
+      "wrong-password": "Mauvais mot de passe",
+      "error": "Une erreur est survenue"
     },
     "confirmation": {
       "sure": "Vous confirmez que vous voulez faire cela ?",
@@ -483,7 +501,9 @@
         "invalidcommand": "Cette commande n'existe pas.",
         "invalidusername": "Cette utilisateur n'existe pas.",
         "invalidroom": "Ce donut n'existe pas.",
-        "invalidusernameroom": "Cette utilisateur n'existe pas dans ce donut",
+        "unknown-user-room": "Cet utilisateur n'existe pas dans ce donut",
+        "already-oped": "Cet utilisateur est déjà modérateur de ce donut",
+        "no-op": "Vous n'avez pas les droits pour faire ça",
         "commandaccess": "Vous ne pouvez pas utiliser cette commande ici."
       }
     },
@@ -515,7 +535,7 @@
       "count" : "<strong class=\"nb\"></strong><strong> Nouvelle(s)</strong> Notification(s)",
       "tag-as-read" : "Marquer comme lue(s)",
       "empty": "Vous n'avez pas de nouvelles notifications",
-      "random": "Obtient au hasard",
+      "random": "Obtient au hasard __result__ (entre __min__ et __max__)",
       "dropdown": {
         "op": "Vous êtes maintenant modérateur de <a href=\"#room/__roomname__\"><span class=\"name\">#__roomname__</span></a>",
         "deop": "Vous n'êtes plus modérateur de <a href=\"#room/__roomname__\"><span class=\"name\">#__roomname__</span></a>",
@@ -524,7 +544,10 @@
         "deban": "Vous n'êtes plus banni de <a href=\"#room/__roomname__\"><span class=\"name\">#__roomname__</span></a>",
         "voice": "Vous n'êtes plus muet dans <a href=\"#room/__roomname__\"><span class=\"name\">#__roomname__</span></a>",
         "devoice": "Vous êtes muet dans <a href=\"#room/__roomname__\"><span class=\"name\">#__roomname__</span></a>",
+        "roomallowed": "Vous êtes autorisé à rejoindre <a href=\"#room/__roomname__\"><span class=\"name\">#__roomname__</span></a>",
+        "roomallowrefuse": "Votre demande de rejoinde <a href=\"#room/__roomname__\"><span class=\"name\">#__roomname__</span></a></br> n'a pas été acceptée",
         "roomjoin": "<span class=\"name open-user-profile\" data-user-id=\"__userid__\">@__username__</span> rejoint <a href=\"#room/__roomname__\"><span class=\"name\">#__roomname__</span></a>",
+        "roomjoinrequest": "<span class=\"name open-user-profile\" data-user-id=\"__userid__\">@__username__</span> souhaite rejoindre <a href=\"#room/__roomname__\"><span class=\"name\">#__roomname__</span></a>",
         "roomtopic": "Nouveau sujet dans <a href=\"#room/__roomname__\"><span class=\"name\">#__roomname__</span></a>",
         "roommessage": "Nouveaux messages dans <a href=\"#room/__roomname__\"><span class=\"name\">#__roomname__</span></a>",
         "usermention": "Vous êtes mentionné dans <a href=\"#room/__roomname__\"><span class=\"name\">#__roomname__</span></a>",
@@ -555,40 +578,41 @@
       "top": "aller tout en haut",
       "bottom": "aller tout en bas",
       "currently": "Vous êtes au tout début du Donut <span class=\"name dc-text open-room-profile\" data-room-id=\"__roomid__\">__roomname__</span>, créé par <span class=\"owner dc-text open-user-profile\" data-user-id=\"__ownerid__\">@__owner__</span> le <span class=\"date\">__creation-date__</span>",
-      "onestart": "Vous êtes au tout début de votre discussion privée avec <span class=\"name dc-text\">@__username__</span>. Tout ce qui est dit ici restera entre vous deux :)"
+      "onestart": "Vous êtes au tout début de votre discussion privée avec <span class=\"name dc-text\">@__username__</span>. Tout ce qui est dit ici restera entre vous deux :)",
+      "edit": "Editer le profil",
+      "users": "Gérer les utilisateurs",
+      "access": "Gérer les accès"
     },
     "shouldauthenticated": "Vous devez être identifié pour accéder aux discussions (<a href='/signup'>créer un compte</a> ou <a href='/login'>se connecter</a>)",
     "closeapp": "Etes-vous sur de vouloir quitter ?",
     "closemessage": "Etes-vous sur de vouloir quitter, l’historique de vos conversations sera perdu ?",
     "kickmessage": "Vous venez d'être expulsé de __name__",
     "banmessage": "Vous venez d'être banni de __name__",
-    "bannedfromroom": "Vous nous pouvez pas rejoindre __name__, vous avez été banni",
+    "disallowmessage": "Vous ne faites plus partie de la liste des gens autorisés dans __name__",
     "roomnotexists": "Le donut __name__ n'existe pas, <a class='open-create-room' data-name='__name__'>souhaitez-vous le créer </a> ?",
-    "alreadyexists": "Le donut __name__ existe déjà, <a href='#__uri__'>voulez-vous le rejoindre</a> ?",
     "successfullycreated": "Le donut __name__ a bien été créé",
     "reason": "(motif : \"__reason__\")",
     "deletemessage": "Le donut __name__ vient d'être supprimé",
     "users": {
       "link": "utilisateurs",
-      "owner": {
-        "label": "Créateur",
-        "help": "Le créateur du donut dispose de tous les droits d'édition et de modération"
-      },
-      "ops": {
-        "label": "Modérateurs",
-        "help": "Les modérateurs peuvent changer le sujet du donut, expulser ou bannir des utilisateurs et ajouter/retirer des modérateurs"
-      },
-      "bans": {
-        "label": "Bannis",
-        "help": "Les utilisateurs bannis ne peuvent plus rejoindre le donut"
-      },
-      "devoices": {
-        "label": "Muet",
-        "help": "les utilisateurs muets ne peuvent plus envoyer de message"
-      },
-      "users": {
-        "label": "Utilisateurs",
-        "help": "Les utilisateurs du donut peuvent simplement voir et poster des messages"
+      "search": "rechercher des utilisateurs dans cette room",
+      "type": {
+        "owner": "Créateur",
+        "users": "Utilisateurs",
+        "op": "Modérateurs",
+        "allowed": "Utilisateurs autorisé",
+        "ban": "Bannis",
+        "devoice": "Muets"
+      }
+    },
+    "access": {
+      "link": "Accès",
+      "labelsearch": "Ajouter des utilisateurs dans la liste des personnes autorisées",
+      "labelpending": "Utilisateurs en attente d'autorisation",
+      "types": {
+        "all": "Tous",
+        "allowed": "Autorisés",
+        "allowedPending": "En attente d'autorisation"
       }
     },
     "share": {
@@ -644,7 +668,14 @@
       "password_placeholder": "Mot de passe",
       "password_button": "Rejoindre",
       "banned": "Vous avez été banni de ce donut le __at__",
-      "banned_reason": "Pour la raison suivante : "
+      "banned_reason": "Pour la raison suivante : ",
+      "kicked": "Vous avez été expulsé de ce donut",
+      "kicked_button": "Rejoindre",
+      "disclaimer-private": "Ce donut est privé, seul les utilisateurs explicitement autorisés par le propriétaire peuvent y accéder. Pour ajouter de nouveaux utilisateurs, merci de les rechercher dans la liste ci-dessous.",
+      "disclaimer-public": "Ce donut est public. N'importe quel utilisateur pourra y accéder.",
+      "disclaimer-password": "Vous avez également choisi de mettre un mot de passe. Les utilisateurs avec le mot de passe pourront y entrer sans avoir besoin d'être invités au préalable.",
+      "disclaimer-changing": "Vous avez la possibilité de faire passer ce donut en mode privé (avec éventuellement un mot de passe). Attention, une fois fait, cela ne sera plus modifiable. Ce donut ne sera donc plus ouvert au public, les invitations se feront uniquement par le propriétaire ou par mot de passe.",
+      "close": "Fermer ce donut"
     },
     "form": {
       "common": {
@@ -678,14 +709,22 @@
       },
       "room-form": {
         "common" : {
-          "join-mode-label": "Qui peut rejoindre le donut (administrateur)",
+          "join-mode-label": "Qui peut rejoindre le donut",
           "mode": {
-            "everyone-def": "Tous le monde (défaut)",
-            "everyone": "Tous le monde",
-            "allowed": "Utilisateur autorisé uniquement",
-            "password": "Utilisateur ayant le mot de passe",
+            "public": "Public",
+            "private": "Privé",
             "password-change": "Changer le mot de passe",
-            "password-field": "Mot de passe"
+            "password-field": "Mot de passe",
+            "password-keep": "laisser vide pour garder le même",
+            "password-disclaimer": "Vous avez la possibilité de mettre un mot de passe sur ce donut",
+            "password-protection": "Protéger par un mot de passe"
+          }
+        },
+        "mode": {
+          "disclaimer": {
+            "public": "En sélectionnant cette option, votre donut sera public. N'importe quel utilisateur pourra y entrer et voir ce qu'il s'y passe.",
+            "private": "En sélectionnant cette option, votre donut sera privé. Seuls les utilisateurs explicitement autorisés par le Propriétaire ou les Op pourront y entrer.",
+            "password": "Vous avez également la possibilité de mettre un mot de passe sur ce donut. Les utilisateurs avec le mot de passe pourront y entrer sans avoir besoin d'être invités au préalable."
           }
         },
         "create": {
@@ -755,7 +794,8 @@
         "invalid-name": "Le nom du donut est invalide",
         "invalid-mode": "Vous devez séléctionner un mode pour ce donut",
         "invalid-password": "Le mot de passe doit être compris entre 4 et 255 caractères",
-        "alreadyexists": "Le donut __name__ existe déjà, <a href='#__uri__'>voulez-vous le rejoindre</a> ?"
+        "alreadyexists": "Le donut __name__ existe déjà, <a href='#__uri__'>voulez-vous le rejoindre</a> ?",
+        "invalid-rights": "Vous n'avez pas les droits pour faire cela."
       }
     }
   },
@@ -812,84 +852,6 @@
     },
     "delete": {
       "success": "Compte supprimé avec succés, à bientôt !"
-    }
-  },
-  "edit": {
-    "upload": {
-      "nopicture": "Pas de photo",
-      "failed": "Téléchargement échoué",
-      "done": "Téléchargement terminé, attendez pour le traitement de l'image",
-      "help": {
-        "format": "Fichier image (.jpeg, .jpg, .png or .gif).",
-        "size": "Sera automatiquement redimenssionné au format __resized_width__x__resized_height__px."
-      }
-    },
-    "left": "<strong>%left</strong> restant",
-    "othersettings": "Autres paramètres",
-    "description": {
-      "label": "Description",
-      "placeholder": "Décrivez le donut en quelques mots",
-      "help": "Facultatif"
-    },
-    "bio": {
-      "label": "Bio",
-      "placeholder": "Décrivez-vous en quelques mots",
-      "help": "Facultatif"
-    },
-    "location": {
-      "label": "Lieu",
-      "placeholder": "Ville, pays où vous êtes",
-      "help": "Facultatif"
-    },
-    "website": {
-      "label": "Site web",
-      "placeholder": "L'adresse d'un site web lié à ce profil",
-      "help": "Facultatif"
-    },
-    "avatar": {
-      "label": "Photo de profil"
-    },
-    "poster": {
-      "label": "Poster",
-      "help": "Le poster est la grande image en pleine hauteur que vos interlocuteurs voient à droite de la conversation. Dimensions recommandées : largeur 430px, hauteur 1100px mini."
-    },
-    "color": {
-      "label": "Couleur"
-    },
-    "visibility": {
-      "label": "Visibilité (administrateur)",
-      "true": "Le donut est visible sur la homepage",
-      "false": "Le donut <strong>n'est pas</strong> visible sur la homepage"
-    },
-    "priority": {
-      "label": "Priorité (administrateur)",
-      "placeholder": "",
-      "help": "Nombre, plus est grand, plus est prioritaire"
-    },
-    "room": {
-      "delete": {
-        "link": "Vous pouvez également supprimer ce donut <a class='open-room-delete' data-room-id=\"__id__\">en cliquant ici</a>.",
-        "title": "Supprimer",
-        "info": [
-          "Vous êtes sur le point de supprimer ce donut, cette opération est immédiate et irréversible.<br><br>",
-          "Veuillez confirmer la suppression en saissant le nom du donut (<strong>__name__</strong>) puis en cliquant sur supprimer :"
-        ],
-        "placeholder": "Saisir le nom du donut",
-        "success": "donut supprimé !",
-        "error": {
-          "permanent": "Il n'est pas possible de supprimer un donut 'permanent'"
-        }
-      }
-    },
-    "errors": {
-      "bio": "La bio devrait contenir 200 caractères max.",
-      "location": "Le lieu devrait contenir 70 caractères max.",
-      "description": "La description devrait contenir 200 caractères max.",
-      "website-size": "L'URL du site Web doit être comprise entre 5 et 200 caractères",
-      "website-url": "Url du site web invalide.",
-      "color-hexadecimal": "La couleur doit être dans un format hexadécimale (e.g.: #FF00AA).",
-      "color-integer": "La priorité devrait être exprimer en nombre (entier).",
-      "positions": "Positions doit être un tableau."
     }
   },
   "page": {

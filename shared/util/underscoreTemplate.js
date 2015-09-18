@@ -7,7 +7,7 @@
  * @source: https://github.com/jerolimov/comprise
  */
 
-var debug = require('debug')('donut:templating');
+var logger = require('./logger').getLogger('templating', __filename);
 var _ = require('underscore');
 var async = require('async');
 var cons = require('consolidate');
@@ -41,7 +41,7 @@ Renderer.prototype.resolve = function (directory, template) {
 };
 
 Renderer.prototype.render = function (template, variables, callback) {
-  debug('Renderer render called for ' + template);
+  logger.debug('Renderer render called for ' + template);
 
   variables = _.extend(this.consolidateConfiguration, this.defaultVariables, variables);
 
@@ -80,7 +80,7 @@ Renderer.prototype.renderView = function (template, variables, content, callback
   };
 
   _variables.partial = function (_template, partialVariables) {
-    debug('include partial', _template);
+    logger.debug('include partial', _template);
 
     var key = '#!_comprise_' + (partialsIndex++) + '_partial_!#';
 
@@ -126,7 +126,7 @@ Renderer.prototype.renderView = function (template, variables, content, callback
 };
 
 Renderer.prototype.renderPartials = function (partials, html, callback) {
-  debug('render partials');
+  logger.debug('render partials');
 
   var that = this;
   async.each(partials, function (partial, fn) {
@@ -141,7 +141,7 @@ Renderer.prototype.renderPartials = function (partials, html, callback) {
 
       html = html.replace(partial.key, _html);
 
-      debug('partial ' + partial.template + ' replaced in key ' + partial.key);
+      logger.debug('partial ' + partial.template + ' replaced in key ' + partial.key);
       return fn(null);
     });
 
@@ -149,7 +149,7 @@ Renderer.prototype.renderPartials = function (partials, html, callback) {
     if (err) {
       return callback(err);}
 
-    debug('partials done');
+    logger.debug('partials done');
     return callback(null, html);
   });
 
@@ -160,7 +160,7 @@ exports.Renderer = Renderer;
 // Express 4.0
 exports.express = function (options) {
   return function (filename, variables, callback) {
-    debug('express render function called for ' + filename + ' with callback: ' + !!(_.isFunction(callback)));
+    logger.debug('express render function called for ' + filename + ' with callback: ' + !!(_.isFunction(callback)));
     new Renderer(options).render(filename, variables, callback);
   };
 };

@@ -1,16 +1,14 @@
-var async = require('async');
 var _ = require('underscore');
 var fs = require('fs');
 
-module.exports = function(grunt) {
-
+module.exports = function (grunt) {
   var tmp = './mongotmp';
   var last = null;
-  var pattern = new RegExp("[0-9]{8}-[0-9]{6}");
+  var pattern = new RegExp('[0-9]{8}-[0-9]{6}');
 
-  grunt.loadNpmTasks("grunt-extend-config");
+  grunt.loadNpmTasks('grunt-extend-config');
 
-  /*****************************************************************************************************************
+  /** ***************************************************************************************************************
    *
    * grunt-prompt
    *
@@ -20,97 +18,100 @@ module.exports = function(grunt) {
     prompt: {
       confirmation: {
         options: {
-          questions: [{
+          questions: [ {
             config: 'confirmation',
             type: 'confirm',
             message: 'Are you sure, YOU WILL OVERRIDE YOUR LOCAL DATABASE TOTALLY?',
             default: true
-          }]
+          } ]
         }
       },
       confirmationuselast: {
         options: {
-          questions: [{
+          questions: [ {
             config: 'confirmationuselast',
             type: 'confirm',
             message: 'Backup already exists do you want use?',
             default: true
-          }]
+          } ]
         }
       },
       confirmationrmdir: {
         options: {
-          questions: [{
+          questions: [ {
             config: 'confirmationrmdir',
             type: 'confirm',
             message: 'Are you sure, you remove the directory ' + tmp,
             default: false
-          }]
+          } ]
         }
       }
     }
   });
 
-  /*****************************************************************************************************************
+  /** ***************************************************************************************************************
    *
    * registerTask Check-*
    *
    *****************************************************************************************************************/
-  grunt.registerTask('check-confirmation', function() {
+  grunt.registerTask('check-confirmation', function () {
     var confirmation = grunt.config('confirmation');
-    if (confirmation !== true)
+    if (confirmation !== true) {
       grunt.fail.fatal('Operation aborted by user');
+    }
   });
-  grunt.registerTask('check-confirmation-uselast', function() {
+  grunt.registerTask('check-confirmation-uselast', function () {
     var confirmation = grunt.config('confirmationuselast');
     if (confirmation !== true) {
       grunt.task.run('sftp:lastbackup');
       grunt.task.run('untar:donut');
     }
   });
-  grunt.registerTask('check-confirmation-rmdir', function() {
+  grunt.registerTask('check-confirmation-rmdir', function () {
     var confirmation = grunt.config('confirmationrmdir');
-    if (confirmation)
+    if (confirmation) {
       grunt.task.run('donut-tmp-rmdir');
-    else
+    } else {
       grunt.log.ok('the directory ' + tmp + ' was not deleted');
+    }
   });
-  grunt.registerTask('check-last-exists', function() {
+  grunt.registerTask('check-last-exists', function () {
     var files = fs.readdirSync(tmp);
     var islast = false;
-    _.each(files, function(file) {
-      if (fs.lstatSync(tmp).isDirectory(file) && pattern.test(file) && fs.lstatSync(tmp+'/'+file).isDirectory('donut'))
+    _.each(files, function (file) {
+      if (fs.lstatSync(tmp).isDirectory(file) && pattern.test(file) && fs.lstatSync(tmp + '/' + file).isDirectory('donut')) {
         islast = true;
+      }
     });
     if (islast) {
       grunt.task.run('prompt:confirmationuselast');
       grunt.task.run('check-confirmation-uselast');
-    }
-    else {
+    } else {
       grunt.task.run('sftp:lastbackup');
       grunt.task.run('untar:donut');
     }
   });
 
-  /*****************************************************************************************************************
+  /** ***************************************************************************************************************
    *
    * registerTask Directory
    *
    *****************************************************************************************************************/
-  grunt.registerTask('donut-tmp-mkdir', function() {
+  grunt.registerTask('donut-tmp-mkdir', function () {
     grunt.file.mkdir(tmp);
   });
-  grunt.registerTask('donut-tmp-rmdir', function() {
+  grunt.registerTask('donut-tmp-rmdir', function () {
     var options = { force: true };
     grunt.file.delete(tmp, options);
     grunt.log.ok('the directory ' + tmp + ' has been deleted');
   });
-  grunt.registerTask('donut-tmp-rmtar', function() {
-    if (grunt.file.exists(tmp + '/last.tar.gz'))
-      grunt.file.delete(tmp + '/last.tar.gz', {force : true});
+  grunt.registerTask('donut-tmp-rmtar', function () {
+    if (grunt.file.exists(tmp + '/last.tar.gz')) {
+      grunt.file.delete(tmp + '/last.tar.gz', { force: true });
+    }
   });
 
-  /*****************************************************************************************************************
+  /** ***************************************************************************************************************
    *
    * Other
    *
@@ -144,38 +145,39 @@ module.exports = function(grunt) {
   var untarConfig = {
     untar: {
       donut: {
-        files: {
-        }
+        files: {}
       }
     }
   };
-  untarConfig.untar.donut.files[tmp] = tmp+'/last.tar.gz';
+  untarConfig.untar.donut.files[ tmp ] = tmp + '/last.tar.gz';
   grunt.extendConfig(untarConfig);
 
-  grunt.registerTask('donut-find-and-restore-last-backup', function() {
+  grunt.registerTask('donut-find-and-restore-last-backup', function () {
     var backup = [];
     var files = fs.readdirSync(tmp);
-    _.each(files, function(file) {
-      if (fs.lstatSync(tmp).isDirectory(file) && pattern.test(file) && fs.lstatSync(tmp+'/'+file).isDirectory('donut'))
-        backup.push(tmp+'/'+file+'/donut');
+    _.each(files, function (file) {
+      if (fs.lstatSync(tmp).isDirectory(file) && pattern.test(file) && fs.lstatSync(tmp + '/' + file).isDirectory('donut')) {
+        backup.push(tmp + '/' + file + '/donut');
+      }
     });
 
     grunt.log.ok('mongotmp backup found: [' + backup + ']');
     backup = _.sortBy(backup, 'name').reverse();
-    last = backup[0];
+    last = backup[ 0 ];
 
-    if (!last)
-      grunt.fail.fatal('Unable to find a valid database dump in '+tmp);
-    grunt.log.ok('Last backup found: '+last);
+    if (!last) {
+      grunt.fail.fatal('Unable to find a valid database dump in ' + tmp);
+    }
+    grunt.log.ok('Last backup found: ' + last);
 
     grunt.loadNpmTasks('grunt-mongo-backup');
     grunt.extendConfig({
       mongobackup: {
         options: {
-          db : 'donut',
+          db: 'donut',
           restore: {
             path: last,
-            drop : true
+            drop: true
           }
         }
       }
@@ -183,8 +185,7 @@ module.exports = function(grunt) {
     grunt.task.run('mongobackup:restore');
   });
 
-
-  grunt.registerTask("donut-pull-database", "Retrieve last production database backup and replace local one",[
+  grunt.registerTask('donut-pull-database', 'Retrieve last production database backup and replace local one', [
     'prompt:confirmation',
     'check-confirmation',
     'donut-tmp-mkdir',

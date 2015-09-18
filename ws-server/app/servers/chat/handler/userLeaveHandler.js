@@ -1,5 +1,5 @@
 'use strict';
-var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
+var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename);
 var async = require('async');
 var _ = require('underscore');
 
@@ -46,7 +46,7 @@ handler.call = function (data, session, next) {
   ], function (err) {
     if (err) {
       logger.error('[user:join] ' + err);
-      return next(null, { code: 500, err: err });
+      return next(null, { code: 500, err: 'internal' });
     }
 
     return next(null);

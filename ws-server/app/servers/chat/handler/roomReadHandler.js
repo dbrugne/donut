@@ -1,5 +1,5 @@
 'use strict';
-var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
+var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename);
 var async = require('async');
 var _ = require('underscore');
 
@@ -18,16 +18,16 @@ handler.call = function (data, session, next) {
 
   var read = {};
 
-  var that = this;
-
   async.waterfall([
 
     function check (callback) {
-      if (!data.room_id && !data.name)
+      if (!data.room_id && !data.name) {
         return callback('room_id or name is mandtory');
+      }
 
-      if (!room)
+      if (!room) {
         return callback('unknown');
+      }
 
       return callback(null);
     },
@@ -110,12 +110,14 @@ handler.call = function (data, session, next) {
         website: room.website,
         topic: room.topic,
         description: room.description,
-        created: room.created_at
+        created: room.created_at,
+        mode: room.mode
       };
 
       if (session.settings.admin === true) {
         read.visibility = room.visibility || false;
         read.priority = room.priority || 0;
+        // @todo : pass current password to admin only
       }
 
       return callback(null);
@@ -128,10 +130,9 @@ handler.call = function (data, session, next) {
       err = (['invalid-name', 'unknown'].indexOf(err) !== -1)
         ? err
         : 'internal';
-      return next(null, { code: 500, err: err });
+      return next(null, {code: 500, err: 'internal'});
     }
 
     return next(null, read);
   });
-
 };

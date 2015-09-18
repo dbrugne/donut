@@ -1,5 +1,5 @@
 'use strict';
-var debug = require('debug')('donut:web:admin');
+var logger = require('../../../shared/util/logger').getLogger('web', __filename);
 var async = require('async');
 var _ = require('underscore');
 var express = require('express');
@@ -8,19 +8,18 @@ var Room = require('../../../shared/models/room');
 var User = require('../../../shared/models/user');
 var HistoryRoom = require('../../../shared/models/historyroom');
 var HistoryOne = require('../../../shared/models/historyone');
-var Logs = require('../../../shared/models/log');
 var common = require('@dbrugne/donut-common');
 
 var isAdmin = function (req, res, next) {
   if (!req.isAuthenticated() || req.user.admin !== true) {
-    debug('Someone tried to access /dashboard without being authenticated as admin user');
+    logger.warn('Someone tried to access /dashboard without being authenticated as admin user');
     return res.redirect('/');
   }
   next();
 };
 
 var readCollection = function (collection, query, searchable, populate, callback) {
-  debug(query);
+  logger.debug(query);
 
   // filter
   var filter = {};
@@ -29,10 +28,10 @@ var readCollection = function (collection, query, searchable, populate, callback
     var filters = [];
     _.each(searchable, function (s) {
       var f = {};
-      f[s] = search;
+      f[ s ] = search;
       filters.push(f);
     });
-    filter['$or'] = filters;
+    filter[ '$or' ] = filters;
   }
 
   // limit
@@ -42,12 +41,12 @@ var readCollection = function (collection, query, searchable, populate, callback
   // sort
   var sortOrder = {};
   var sort = query.sort_by || 'name';
-  var order = query.order || 'asc';
-  sortOrder[sort] = order;
+  sortOrder[ sort ] = query.order || 'asc';
 
   collection.count(filter).exec(function (err, count) {
-    if (err)
+    if (err) {
       throw err;
+    }
 
     var q = collection
       .find(filter)
@@ -60,8 +59,9 @@ var readCollection = function (collection, query, searchable, populate, callback
     }
 
     q.exec(function (err, docs) {
-      if (err)
+      if (err) {
         throw err;
+      }
       return callback({
         items: docs,
         totalRecords: count
@@ -74,8 +74,8 @@ router.get('/rest/rooms', isAdmin, function (req, res) {
   readCollection(
     Room,
     req.query,
-    ['name'],
-    {path: 'owner', fields: 'username avatar color facebook'},
+    [ 'name' ],
+    { path: 'owner', fields: 'username avatar color facebook' },
     function (result) {
       res.send(result);
     }
@@ -84,7 +84,7 @@ router.get('/rest/rooms', isAdmin, function (req, res) {
 
 router.get('/rest/rooms/:id', isAdmin, function (req, res) {
   if (!req.params.id) {
-    debug('No id given while retrieving room in /rest/rooms/:id: ' + err);
+    logger.debug('No id given while retrieving room in /rest/rooms/:id');
     return res.send({});
   }
 
@@ -95,7 +95,7 @@ router.get('/rest/rooms/:id', isAdmin, function (req, res) {
   q.populate('users', 'username color facebook');
   q.exec(function (err, result) {
     if (err) {
-      debug('Error while retrieving room in /rest/rooms/:id: ' + err);
+      logger.error('Error while retrieving room in /rest/rooms/:id: ' + err);
       return res.send({});
     }
 
@@ -107,7 +107,7 @@ router.get('/rest/users', isAdmin, function (req, res) {
   readCollection(
     User,
     req.query,
-    ['username', 'name', 'local.email', 'facebook.name'],
+    [ 'username', 'name', 'local.email', 'facebook.name' ],
     null,
     function (result) {
       res.send(result);
@@ -117,7 +117,7 @@ router.get('/rest/users', isAdmin, function (req, res) {
 
 router.get('/rest/users/:id', isAdmin, function (req, res) {
   if (!req.params.id) {
-    debug('No id given while retrieving user in /rest/users/:id: ' + err);
+    logger.debug('No id given while retrieving user in /rest/users/:id');
     return res.send({});
   }
 
@@ -126,7 +126,7 @@ router.get('/rest/users/:id', isAdmin, function (req, res) {
   q.populate('onetoones', 'username');
   q.exec(function (err, user) {
     if (err) {
-      debug('Error while retrieving user in /rest/users/:id: ' + err);
+      logger.error('Error while retrieving user in /rest/users/:id: ' + err);
       return res.send({});
     }
 
@@ -134,12 +134,13 @@ router.get('/rest/users/:id', isAdmin, function (req, res) {
     Room.findByUser(user.id)
       .exec(function (err, rooms) {
         if (err) {
-          debug('Error while retrieving rooms in /rest/users/:id: ' + err);
+          logger.error('Error while retrieving rooms in /rest/users/:id: ' + err);
           return res.send({});
         }
 
-        if (!rooms || !rooms.length)
+        if (!rooms || !rooms.length) {
           return res.send(data);
+        }
 
         data.rooms = _.map(rooms, function (r) {
           return {
@@ -175,72 +176,32 @@ router.get('/rest/home', isAdmin, function (req, res) {
     },
     // 4
     function roomMessage (callback) {
-      HistoryRoom.find({event: { $in: ['room:message'] }}).count().exec(callback);
+      HistoryRoom.find({ event: { $in: [ 'room:message' ] } }).count().exec(callback);
     },
     // 5
     function userMessage (callback) {
-      HistoryOne.find({event: { $in: ['user:message'] }}).count().exec(callback);
+      HistoryOne.find({ event: { $in: [ 'user:message' ] } }).count().exec(callback);
     }
 
   ], function (err, result) {
-    if (err)
+    if (err) {
       throw err;
+    }
 
     res.send({
       time: Date.now(),
       users: {
-        total: result[0],
-        trend: result[1]
+        total: result[ 0 ],
+        trend: result[ 1 ]
       },
       rooms: {
-        total: result[2],
-        trend: result[3]
+        total: result[ 2 ],
+        trend: result[ 3 ]
       },
       messages: {
-        total: result[4] + result[5]
+        total: result[ 4 ] + result[ 5 ]
       }
     });
-  });
-});
-
-router.get('/rest/logs', isAdmin, function (req, res) {
-  var params = req.query;
-  var filter = {};
-
-  // start
-  if (params.start) {
-    filter['_id'] = {'$gt': params.start};
-  }
-
-  // category:filter
-  if (params.category) {
-    var categories = (_.isArray(params.category)) ? params.category : [params.category];
-    filter['category'] = {'$in': categories};
-  }
-
-  // category:level
-  // ALL    : 0
-  // TRACE  : 5000
-  // DEBUG  : 10000
-  // INFO   : 20000
-  // WARN   : 30000
-  // ERROR  : 40000
-  // FATAL  : 50000
-  // OFF    : 0
-  if (params.level) {
-    filter['level.level'] = {'$gte': parseInt(params.level)};
-  }
-
-  // direction
-  var sort = (params.sort && params.sort == 'asc') ? {timestamp: 'asc'} : {timestamp: 'desc'};
-
-  var query = Logs.find(filter).sort(sort).limit(100);
-  query.exec(function (err, result) {
-    if (err)
-      res.send({error: err});
-
-    result.reverse();
-    res.send(result);
   });
 });
 

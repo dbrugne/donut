@@ -26,7 +26,6 @@ define([
       this.$text = this.$el.find('.text');
       this.$textEdited = this.$el.find('.text-edited');
       this.$messageEdit = this.$el.find('.message-edit');
-      this.$images = this.$el.find('.images');
 
       if (this.$el.data('edited') || this.$textEdited) {
         this.$textEdited.remove();

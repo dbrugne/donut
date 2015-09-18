@@ -163,6 +163,15 @@ define([
         case 'roomjoin':
           template = templates['notification/room-join.html'];
           break;
+        case 'roomjoinrequest':
+          template = templates['notification/room-join-request.html'];
+          break;
+        case 'roomallowed':
+          template = templates['notification/room-allowed.html'];
+          break;
+        case 'roomrefuse':
+          template = templates['notification/room-allow-refuse.html'];
+          break;
         case 'roommessage':
           template = templates['notification/room-message.html'];
           break;

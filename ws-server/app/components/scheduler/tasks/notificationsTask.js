@@ -1,5 +1,5 @@
 'use strict';
-var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
+var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename);
 var Notifications = require('../../notifications/index');
 var _ = require('underscore');
 
@@ -20,7 +20,8 @@ module.exports = {
           return logger.warn('notificationsTask.send unable to identify notification type: ' + notification.type);
 
         // Send to email
-        if (_.isFunction(type.sendEmail) && notification.sent_to_email === false && notification.to_email === true)
+        if (_.isFunction(type.sendEmail) && notification.sent_to_email === false && notification.to_email === true
+          && notification.type !== 'roomallowed' && notification.type !== 'roomjoinrequest' && notifications !== 'roomrefuse')
           type.sendEmail(notification, function (err) {
             if (err)
               return logger.warn('notificationsTask.send sending ' + notification.id + ' error: ' + err);

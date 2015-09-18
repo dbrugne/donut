@@ -1,5 +1,5 @@
 'use strict';
-var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
+var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename);
 var async = require('async');
 var _ = require('underscore');
 var HistoryOne = require('../../../../../shared/models/historyone');
@@ -50,7 +50,7 @@ handler.call = function (data, session, next) {
     function persist (callback) {
       HistoryOne.update({
         _id: { $in: data.events },
-        event: { $in: ['user:message', 'user:me'] },
+        event: { $in: ['user:message'] },
         to: user._id
       }, {
         $set: { viewed: true }

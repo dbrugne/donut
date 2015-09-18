@@ -27,9 +27,10 @@ define([
 
       // ask for data
       var that = this;
-      client.roomRead(this.roomId, null, function (err, data) {
-        if (!err)
+      client.roomRead(this.roomId, null, function (data) {
+        if (!data.err) {
           that.onResponse(data);
+        }
       });
 
       // on room:delete callback
@@ -41,8 +42,9 @@ define([
       return this;
     },
     onResponse: function (room) {
-      if (room.owner.user_id != currentUser.get('user_id') && !currentUser.isAdmin())
+      if (room.owner.user_id != currentUser.get('user_id') && !currentUser.isAdmin()) {
         return;
+      }
 
       this.roomNameConfirmation = room.name.toLocaleLowerCase();
 
@@ -52,15 +54,17 @@ define([
     },
     onSubmit: function (event) {
       event.preventDefault();
-      if (!this._valid())
+      if (!this._valid()) {
         return;
+      }
 
       client.roomDelete(this.roomId);
     },
     onDelete: function (data) {
       if (!data.name
-        || data.name.toLocaleLowerCase() != this.roomNameConfirmation)
+        || data.name.toLocaleLowerCase() != this.roomNameConfirmation) {
         return;
+      }
 
       this.$el.find('.errors').hide();
 
@@ -77,10 +81,11 @@ define([
       this.trigger('close');
     },
     onKeyup: function (event) {
-      if (this._valid())
+      if (this._valid()) {
         this.$el.addClass('has-success');
-      else
+      } else {
         this.$el.removeClass('has-success');
+      }
 
       // Enter in field handling
       if (event.type == 'keyup') {

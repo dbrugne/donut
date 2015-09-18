@@ -3,11 +3,9 @@
         <div class="pad"><i class="icon icon-spinner icon-spin"></i></div>
         <div class="loader">
             <span class="help">
-                <a class="load-more" href="#"><%= t('chat.history.help') %></a>
+                <%= t('chat.history.help') %>
             </span>
-            <span class="loading">
-                <%= t('chat.history.loading') %>
-            </span>
+            <span class="loading"></span>
             <div class="no-more">
                 <% if (model.type === 'room') { %>
                     <div class="room">
@@ -25,8 +23,9 @@
                         </div>
                         <% if(isOwner) { %>
                             <div class="actions flex-parent">
-                                <a href="#" class="open-room-edit" data-room-id="<%= model.id %>"><%= t('global.edit') %></a>
-                                <a href="#" class="open-room-users" data-room-id="<%= model.id %>"><%= t('chat.users.link') %></a>
+                                <a href="#" class="open-room-edit" data-room-id="<%= model.id %>"><%= t('chat.history.edit') %></a>
+                                <a href="#" class="open-room-users" data-room-id="<%= model.id %>"><%= t('chat.history.users') %></a>
+                                <a href="#" class="open-room-access" data-room-id="<%= model.id %>"><%= t('chat.history.access') %></a>
                             </div>
                         <% } %>
                     </div>
@@ -59,8 +58,8 @@
     </div>
 </div>
 <div class="go-to-top">
-    <a><i class="icon icon-arrow-circle-o-up"></i> <%= t('chat.history.top') %></a>
+    <a><i class="icon icon-arrow-circle-o-up"></i></a>
 </div>
 <div class="go-to-bottom">
-    <a><i class="icon icon-arrow-circle-o-down"></i> <%= t('chat.history.bottom') %> <span class="unread"><%= t('chat.unread.title') %></span></a>
+    <a><i class="icon icon-arrow-circle-o-down"></i><span class="unread"><%= t('chat.unread.title') %></span></a>
 </div>

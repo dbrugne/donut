@@ -6,10 +6,17 @@ define([
   'text!./templates/discussion-block.html',
   'text!./templates/discussion-onetoone.html',
   'text!./templates/discussion-room.html',
+  'text!./templates/discussion-room-blocked.html',
   'text!./templates/drawer-room-create.html',
+  'text!./templates/drawer-room-create-mode.html',
   'text!./templates/drawer-room-delete.html',
   'text!./templates/drawer-room-edit.html',
   'text!./templates/drawer-room-users.html',
+  'text!./templates/drawer-room-users-table.html',
+  'text!./templates/drawer-room-access.html',
+  'text!./templates/drawer-room-access-table.html',
+  'text!./templates/drawer-room-access-dropdown.html',
+  'text!./templates/pagination.html',
   'text!./templates/drawer-room-profile.html',
   'text!./templates/drawer-room-preferences.html',
   'text!./templates/drawer-account.html',
@@ -51,6 +58,8 @@ define([
   'text!./templates/room-users.html',
   'text!./templates/spinner.html',
   'text!./templates/message-edit.html',
+  'text!./templates/notification/room-allow-refuse.html',
+  'text!./templates/notification/room-allowed.html',
   'text!./templates/notification/room-op.html',
   'text!./templates/notification/room-deop.html',
   'text!./templates/notification/room-kick.html',
@@ -60,6 +69,7 @@ define([
   'text!./templates/notification/room-devoice.html',
   'text!./templates/notification/room-topic.html',
   'text!./templates/notification/room-join.html',
+  'text!./templates/notification/room-join-request.html',
   'text!./templates/notification/user-mention.html',
   'text!./templates/notification/room-message.html',
   'text!./templates/notification/user-message.html',
@@ -71,10 +81,17 @@ define([
   discussion_block,
   discussion_onetoone,
   discussion_room,
+  discussion_room_blocked,
   drawer_room_create,
+  drawer_room_create_mode,
   drawer_room_delete,
   drawer_room_edit,
   drawer_room_users,
+  drawer_room_users_table,
+  drawer_room_access,
+  drawer_room_access_table,
+  drawer_room_access_dropdown,
+  paginate,
   drawer_room_profile,
   drawer_room_preferences,
   drawer_account,
@@ -116,6 +133,8 @@ define([
   room_users,
   spinner,
   message_edit,
+  notification_room_allow_refuse,
+  notification_room_allowed,
   notification_room_op,
   notification_room_deop,
   notification_room_kick,
@@ -125,6 +144,7 @@ define([
   notification_room_devoice,
   notification_room_topic,
   notification_room_join,
+  notification_room_join_request,
   notification_user_mention,
   notification_room_message,
   notification_user_message,
@@ -149,10 +169,17 @@ define([
   JST['discussion-block.html'] = _.template(discussion_block);
   JST['discussion-onetoone.html'] = _.template(discussion_onetoone);
   JST['discussion-room.html'] = _.template(discussion_room);
+  JST['discussion-room-blocked.html'] = _.template(discussion_room_blocked);
   JST['drawer-room-create.html'] = _.template(drawer_room_create);
+  JST['drawer-room-create-mode.html'] = _.template(drawer_room_create_mode);
   JST['drawer-room-delete.html'] = _.template(drawer_room_delete);
   JST['drawer-room-edit.html'] = _.template(drawer_room_edit);
   JST['drawer-room-users.html'] = _.template(drawer_room_users);
+  JST['drawer-room-users-table.html'] = _.template(drawer_room_users_table);
+  JST['drawer-room-access.html'] = _.template(drawer_room_access);
+  JST['drawer-room-access-table.html'] = _.template(drawer_room_access_table);
+  JST['drawer-room-access-dropdown.html'] = _.template(drawer_room_access_dropdown);
+  JST['pagination.html'] = _.template(paginate);
   JST['drawer-room-profile.html'] = _.template(drawer_room_profile);
   JST['drawer-room-preferences.html'] = _.template(drawer_room_preferences);
   JST['drawer-account.html'] = _.template(drawer_account);
@@ -194,6 +221,8 @@ define([
   JST['room-users.html'] = _.template(room_users);
   JST['spinner.html'] = _.template(spinner);
   JST['message-edit.html'] = _.template(message_edit);
+  JST['notification/room-allowed.html'] = _.template(notification_room_allowed);
+  JST['notification/room-allow-refuse.html'] = _.template(notification_room_allow_refuse);
   JST['notification/room-op.html'] = _.template(notification_room_op);
   JST['notification/room-deop.html'] = _.template(notification_room_deop);
   JST['notification/room-kick.html'] = _.template(notification_room_kick);
@@ -203,6 +232,7 @@ define([
   JST['notification/room-devoice.html'] = _.template(notification_room_devoice);
   JST['notification/room-topic.html'] = _.template(notification_room_topic);
   JST['notification/room-join.html'] = _.template(notification_room_join);
+  JST['notification/room-join-request.html'] = _.template(notification_room_join_request);
   JST['notification/user-mention.html'] = _.template(notification_user_mention);
   JST['notification/room-message.html'] = _.template(notification_room_message);
   JST['notification/user-message.html'] = _.template(notification_user_message);

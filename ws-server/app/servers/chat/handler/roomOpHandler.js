@@ -1,5 +1,5 @@
 'use strict';
-var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
+var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename);
 var async = require('async');
 var Notifications = require('../../../components/notifications');
 var roomEmitter = require('../../../util/roomEmitter');
@@ -24,26 +24,37 @@ handler.call = function (data, session, next) {
   async.waterfall([
 
     function check (callback) {
-      if (!data.room_id)
+      if (!data.room_id) {
         return callback('room_id is mandatory');
+      }
 
-      if (!data.user_id && !data.username)
+      if (!data.user_id && !data.username) {
         return callback('user_id or username mandatory');
+      }
 
-      if (!room)
+      if (!room) {
         return callback('unable to retrieve room: ' + data.room_id);
+      }
 
-      if (!room.isOwnerOrOp(user.id) && session.settings.admin !== true)
-        return callback('this user ' + user.id + " isn't able to op another user in this room: " + data.room_id);
+      if (!room.isOwnerOrOp(user.id) && session.settings.admin !== true) {
+        return callback('no-op');
+      }
 
-      if (!opedUser)
+      if (!opedUser) {
         return callback('unable to retrieve opedUser in room:op: ' + data.username);
+      }
 
-      if (room.isOwner(opedUser.id))
+      if (!room.isIn(opedUser.id)) {
+        return callback('unknown-user-room');
+      }
+
+      if (room.isOwner(opedUser.id)) {
         return callback(opedUser.username + ' is owner and can not be devoiced of ' + room.name);
+      }
 
-      if (room.op.indexOf(opedUser._id) !== -1)
-        return callback('user ' + opedUser.username + ' is already OP of ' + room.name);
+      if (room.isOp(opedUser.id)) {
+        return callback('already-oped');
+      }
 
       return callback(null);
     },
@@ -74,10 +85,9 @@ handler.call = function (data, session, next) {
   ], function (err) {
     if (err) {
       logger.error('[room:op] ' + err);
-      return next(null, {code: 500, err: err});
+      return next(null, {code: 500, err: 'internal'});
     }
 
     next(null, {});
   });
-
 };

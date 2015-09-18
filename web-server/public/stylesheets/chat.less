@@ -169,7 +169,7 @@
       }
       &.op {
         .avatar { .border-radius(5px); border: 2px solid @cl-success !important; }
-        .avatar::before { z-index: 5; position: absolute; content: " "; top: -10px; left: -7px; width: 12px; height: 16px; background-image: url("/images/op.png"); background-size: 12px 16px;
+        .avatar::before { z-index: 5; position: absolute; content: " "; top: -10px; left: -7px; width: 12px; height: 16px; background-image: url("@{img-path}/op.png"); background-size: 12px 16px;
         }
       }
       &.devoice {
@@ -179,7 +179,7 @@
       }
       &.owner {
         .avatar { .border-radius(5px); border: 2px solid #fbec4d !important; }
-        .avatar::before { z-index: 5; position: absolute; content: url("/images/owner.png") !important; top: -15px !important; left: 7px !important; }
+        .avatar::before { z-index: 5; position: absolute; content: url("@{img-path}/owner.png") !important; top: -15px !important; left: 7px !important; }
       }
     }
   }
@@ -191,7 +191,7 @@
   margin: 0;
   padding: 0;
 
-  #languages {
+  #languages { z-index: 5;
     a { padding: 3px 5px; cursor: pointer; }
   }
 
@@ -447,8 +447,9 @@
           }
           &:hover { text-decoration: none;
             span.name { color: @cl-subtext50; }
-            &::before { content: url('/images/svg/draggable.svg'); position: absolute; left: 4px; top: 8px; }
+            &::before { content: url('@{img-path}/svg/draggable.svg'); position: absolute; left: 4px; top: 8px; }
           }
+          &.blocked { span.name { color: green; } }
           &.active,
           &.active:hover,
           &.active:focus {
@@ -475,7 +476,7 @@
     } // #chat #left #block-discussions
   }
 
-  #center { height: 100%; z-index: 5; margin-left: @size-left; font-size: 12px; background-color: @cl-subtext0; background-image: url('/images/logo-onecolor-gr.svg'); background-repeat: no-repeat; background-position: center center; background-size: 60%;
+  #center { height: 100%; z-index: 5; margin-left: @size-left; font-size: 12px; background-color: @cl-subtext0; background-image: url('@{img-path}/logo-onecolor-gr.svg'); background-repeat: no-repeat; background-position: center center; background-size: 60%;
     #home { height: 100%; display: none; background-color: @cl-background;
 
       .title {
@@ -579,12 +580,14 @@
     .discussion { background-color: @cl-background; height: 100%;
       @header-height: 35px; @size-user-item: 195px;
       .content { height: 100%; position: relative; padding-left: 35px; .display-flex; .flex-flow(column nowrap);
-        &.blocked { align-items: center; justify-content: center; }
+        &.blocked { align-items: center; justify-content: center;
+          .header .info { padding:0; }
+        }
         .cover { text-align: center; }
         .header { padding-top: 18px; padding-right: 10px;
           .info { padding-left: 110px;
             .share { display: inline-block;
-              i { font-size: 16px; color: @text-color; margin-left: 3px; vertical-align: middle; cursor: pointer;
+              i { font-size: 16px; color: @cl-text; margin-left: 3px; vertical-align: middle; cursor: pointer;
                 &.facebook { color: #3b5998; }
                 &.twitter { color: #4099FF; }
                 &.googleplus { color: #dd4b39; }
@@ -593,7 +596,7 @@
           } // #chat #center .discussion .content .header .info
           &.room { min-height: 135px;
             .overlay-ctn {
-              .avatar { position: absolute; width: 100px; height: 100px; border: 5px solid rgba(167,167,167,0.1); } // #chat #center .discussion .content .header.room .overlay-ctn .avatar
+              .avatar { position: absolute; width: 100px; height: 100px; .border-shadow; } // #chat #center .discussion .content .header.room .overlay-ctn .avatar
               .overlay { height: 100px; width: 100px; top:0; .border-radius(50%); }
               .overlay-text { width: 100px; top: 40px; }
             } // #chat #center .discussion .content .header.room .overlay-ctn
@@ -648,13 +651,14 @@
           .go-to-top {
             display: none;
             position: absolute;
-            top: 135px; right: 20px;
-            padding: 4px 8px 8px;
+            top: 135px;
+            right: 0;
+            padding: 4px 8px 6px;
             background-color: @cl-background;
             border: 1px solid @cl-subtext10;
+            border-right: 0;
             border-top-color: @cl-background;
             border-bottom-left-radius: 5px;
-            border-bottom-right-radius: 5px;
             a {
               color: @cl-subtext30;
               cursor: pointer;
@@ -669,14 +673,15 @@
           }
           .go-to-bottom {
             display: none;
+            opacity: .5;
             position: absolute;
-            bottom: 111px; right: 25px;
+            bottom: 115px; right: 0;
             padding: 8px;
             background-color: @cl-background;
             border: 1px solid @cl-subtext10;
-            border-bottom-color: @cl-background;
+            border-right: 0;
             border-top-left-radius: 5px;
-            border-top-right-radius: 5px;
+            border-bottom-left-radius: 5px;
             a {
               color: @cl-subtext30;
               cursor: pointer;
@@ -1203,7 +1208,7 @@
                 }
                 &.op {
                   .avatar { .border-radius(5px); border: 2px solid @cl-success !important; }
-                  .avatar::before { z-index: 5; position: absolute; content: " "; top: -10px; left: -7px; width: 12px; height: 16px; background-image: url("/images/op.png"); background-size: 12px 16px;
+                  .avatar::before { z-index: 5; position: absolute; content: " "; top: -10px; left: -7px; width: 12px; height: 16px; background-image: url("@{img-path}/op.png"); background-size: 12px 16px;
                   }
                 }
                 &.devoice {
@@ -1213,7 +1218,7 @@
                 }
                 &.owner {
                   .avatar { .border-radius(5px); border: 2px solid #fbec4d !important; }
-                  .avatar::before { z-index: 5; position: absolute; content: url("/images/owner.png") !important; top: -15px !important; left: 7px !important; }
+                  .avatar::before { z-index: 5; position: absolute; content: url("@{img-path}/owner.png") !important; top: -15px !important; left: 7px !important; }
                 }
               }
             }
@@ -1245,7 +1250,7 @@
     font-size: 1.1em;
   }
 
-  .home>.dropdown-menu>li>a, .share, .open-room-profile, .open-user-profile, .open-room-edit, .open-room-delete, .open-room-users, .open-user-edit, .open-create-room, .go-to-search, .ban-user, .deban-user, .open-room-preferences, .close-discussion {
+  .home>.dropdown-menu>li>a, .share, .open-room-profile, .open-user-profile, .open-room-edit, .open-room-delete, .open-room-users, .open-room-access, .open-user-edit, .open-create-room, .go-to-search, .ban-user, .deban-user, .open-room-preferences, .close-discussion {
     cursor:pointer;
   }
 
@@ -1279,12 +1284,7 @@
   #drawer { display: none; position: absolute; width: 100%; z-index: 11;
     label { color: @cl-subtext40; }
     .scrollbar { overflow-y: auto; overflow-x: hidden; padding-right: 10px; }
-    .errors {
-      .alert;
-      .alert-warning;
-      display: none;
-      font-size: 1.1em;
-    }
+    .errors { .alert; .alert-warning; display: none; font-size: 1.1em; margin: 20px 0; }
     .opacity {
       width: 100%;
       height: 100%;
@@ -1325,6 +1325,19 @@
         margin-top: 21px;
         text-align: center;
       }
+      .field-password {
+        .input-password {
+          width: 50%;
+          height: 34px;
+          color: #555;
+          font-size: 14px;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          padding: 6px 12px;
+          transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+        }
+        a { margin-left: 5px; font-size: 18px; text-decoration: none;}
+      }
       .help-block {
         margin-top: 15px;
         font-size: 1.1em;
@@ -1352,11 +1365,6 @@
         color: @cl-subtext20;
         font-style: italic;
       }
-      .submit {
-        .big-button;
-        margin-top: 15px;
-        border:0;
-      }
       &.has-error {
         .input {
           border-color: @cl-error;
@@ -1370,26 +1378,16 @@
           color: @cl-success;
         }
         .help-block {
-          color: lighten(@text-color, 25%);
+          color: lighten(@cl-text, 25%);
         }
       }
     } // #chat #drawer #room-delete // #chat #drawer #room-create
-    #room-delete {
-      .buttons {
-        font-size: 1.1em;
-        .submit {
-          vertical-align: baseline;
-          padding: 8px 16px;
-          margin-right: 5px;
-        }
-      }
-    } // #chat #drawer #room-delete
     #room-profile {
       .scrollbar;
       text-align: center;
       .room { position: relative;
         .overlay-ctn { width: 90px; height: 90px; margin: 0 auto;
-          .avatar { border: 5px solid rgba(167,167,167,0.1); }
+          .avatar { .border-shadow; }
           .overlay { top:0; .border-radius(50%);     height: 100px; width: 100px; }
           .overlay-text { top: 40px; width:100px; }
         } // #chat #drawer #room-profile .room .overlay-ctn
@@ -1403,14 +1401,7 @@
           font-size: 1.2em;
           padding-left: 10px;
         }
-        .website, .permalink, .edit, .users {
-          margin-top: 5px;
-          text-align: left;
-          font-size: 1.2em;
-          padding-left: 10px;
-          text-decoration: none;
-          a:hover { text-decoration: underline; }
-        }
+        p.left { margin-top: 5px; text-align: left; font-size: 1.2em; padding-left: 10px; text-decoration: none; a:hover { text-decoration: underline; } }
         .created {
           margin-top: 5px;
           text-align: left;
@@ -1423,31 +1414,23 @@
           a {}
         }
       } // #chat #drawer #room-profile .room
-      .users {
-        margin-top: 5px;
-        text-align: left;
+      .users { margin-top: 5px; text-align: left; .display-flex; .flex-flow(row wrap); padding: 0 5px;
         hr {clear: both; border-color: transparent;}
-        .title {
-          font-size: 1.2em;
-          padding-left: 10px;
-          margin-bottom: 10px;
-        }
-        .user { display: inline-block;  position: relative;
-          .avatar {
-            width: 40px;
-            height: 40px;
-          }
-          .username {
-            .ft-opensans;
-            font-size: 1.1em;
-          }
+        .title { font-size: 1.2em; padding-left: 10px; margin-bottom: 10px; width: 100%; }
+        .user { display: inline-block;  position: relative; margin: 3px 0;
+          .avatar { width: 40px; height: 40px; }
+          .username { .ft-opensans; font-size: 1.1em; }
           &:hover {
-            .username {
-              color: @cl-subtext30;
-            }
+            .username { color: @cl-subtext30; }
           }
-          &.op::after { content: '\f008'; font: normal normal normal 14px/1 'Donut'; position: absolute; left: -5px; z-index: 0; top: -5px; border-radius: 50%; padding: 5px; color: rgb(59, 236, 186); font-size: 16px; }
-          &.owner::after { content: '\f00a'; font: normal normal normal 14px/1 'Donut'; position: absolute; left: 7px; z-index: 0; top: -14px; border-radius: 50%; padding: 5px; color: #fbec4d; font-size: 16px; }
+          &.op {
+            &::after { content: '\f008'; font: normal normal normal 14px/1 'Donut'; position: absolute; left: -8px; z-index: 0; top: -10px; border-radius: 50%; padding: 5px; color: @cl-success; font-size: 16px; }
+            img { border: 2px solid @cl-success; .border-radius(5px); }
+          }
+          &.owner {
+            &::after { content: '\f00a'; font: normal normal normal 14px/1 'Donut'; position: absolute; left: 7px; z-index: 0; top: -15px; border-radius: 50%; padding: 5px; color: @cl-warning; font-size: 16px; }
+            img { border: 2px solid @cl-warning;  .border-radius(5px); }
+          }
         }
       }
     } // #chat #drawer #room-profile
@@ -1516,12 +1499,12 @@
               color: @cl-subtext30;
             }
           }
-          &.op::after { content: '\f008'; font: normal normal normal 14px/1 'Donut'; position: absolute; left: -5px; z-index: 0; top: -5px; border-radius: 50%; padding: 5px; color: rgb(59, 236, 186); font-size: 16px; }
-          &.owner::after { content: '\f00a'; font: normal normal normal 14px/1 'Donut'; position: absolute; left: 7px; z-index: 0; top: -14px; border-radius: 50%; padding: 5px; color: #fbec4d; font-size: 16px; }
+          &.op::before { content: '\f008'; font: normal normal normal 14px/1 'Donut'; position: absolute; left: -5px; z-index: 0; top: -5px; border-radius: 50%; padding: 5px; color: rgb(59, 236, 186); font-size: 16px; }
+          &.owner::before { content: '\f00a'; font: normal normal normal 14px/1 'Donut'; position: absolute; left: 7px; z-index: 0; top: -14px; border-radius: 50%; padding: 5px; color: #fbec4d; font-size: 16px; }
         }
       }
     }
-    #room-edit, #user-edit, #room-users, #user-preferences, #room-preferences {
+    #room-edit, #user-edit, #room-users, #user-preferences, #room-preferences, #room-create{
       .scrollbar;
       font-size: 1.1em;
       padding: 0 15px;
@@ -1534,6 +1517,10 @@
       .buttons {
         text-align: right;
         margin-top: 24px;
+      }
+      .opts_mode { font-style: italic; }
+      .field-password {
+        a { margin-left: 5px; font-size: 18px; text-decoration: none;}
       }
     }
     #room-edit {
@@ -1603,94 +1590,46 @@
       }
     } // #chat #drawer #user-account
     #room-users, #user-preferences {
-      .room {
-        margin-bottom: 15px;
-        > p {
-          display: inline-block;
-          vertical-align: middle;
+      #type-select { width: 100%; border: 1px solid @cl-subtext30; background-color: @cl-subtext15; color: #FFF; }
+      .room { margin-bottom: 2px;
+        > p { display: inline-block; vertical-align: middle; }
+      }
+      .paginate { text-align: right;
+        .pagination { margin: auto;
+          a { text-decoration: none; }
+          >li>a { padding: 10px 15px; }
+          >li>span { color: #000011; padding: 10px 15px; cursor: default; }
         }
       }
-      .form-group.owner, .form-group.ops, .form-group.bans, .form-group.devoices, .form-group.users {
-        margin-bottom: 10px;
-        border-bottom: 1px solid @cl-subtext10;
-        padding-bottom: 10px;
-        &:last-child { border-bottom: 0; }
-        label {
-          margin-bottom: 0;
-        }
-        .help-block {
-          margin-top: 0;
-          margin-bottom: 5px;
-          font-size: .9em;
-        }
-        table {
-          width: 100%;
-          td.avatar { width: 20px; padding: 1px 0; img { width: 20px; height: 20px; }}
-          td.username {
-            padding-left: 5px;
-            width: 150px;
-            .ft-opensans-bold;
-          }
-          td.actions {
-            text-align: right;
-            > div {
-              display: inline-block;
-              cursor: pointer;
-              margin-left: 5px;
-              font-size: 10px;
-            }
-            .op {
-              i{
-                font-size: 18px;
-                color: @cl-success;
-              }
-            }
-            .deop {
-              i{
-                font-size: 18px;
-                color: @cl-subtext30;
-              }
-            }
-            .kick {
-              i {
-                color: @cl-error;
-                font-size: 18px;
-              }
-            }
-            .ban {
-              i{
-                color: @cl-error;
-                font-size: 17px;
-              }
-            }
-            .deban {
-              i{
-                color: @cl-subtext30;
-                font-size: 17px;
-              }
-            }
-          }
-        }
+      .user-number { margin-bottom: 15px; }
+      .search { position: relative; font-size: 0.8em; width: 100%; height: 30px; margin-bottom: 15px;
+        input[type=text] { width:75%; position: absolute; right: 0; .border-radius(50px); padding: 5px 30px 6px 17px; .ft-raleway-medium; color: @cl-subtext50; outline: none; font-size:1.1rem; }
+        i { position: absolute; top: 9px; right: 19px; color: @cl-subtext50; cursor: pointer; }
       }
-      .owner {
-        label {
-          i {
-            color: @cl-warning;
-            font-size: 1.2em;
-          }
-        }
+      .table-users {
+        div { display: inherit;  }
+        img { width: 20px; height: 20px; }
+        .actions>div:hover { cursor: pointer; }
+        i { font-size: 18px; }
       }
-      .ops {
-        label {
-          i {
-            color: @cl-success;
-            font-size: 1.3em;
-          }
-        }
+    }
+    #room-access {
+      .search { position: relative; font-size: 1.1em; width: 100%; height: 30px; margin-bottom: 21px; margin-top: 15px;
+        input[type=text] { width:100%; .border-radius(50px); padding: 5px 30px 6px 17px; .ft-raleway-medium; color: @cl-subtext50; outline: none; font-size:1.1rem; }
+        i { position: absolute; top: 30px; right: 9px; color: @cl-subtext50; cursor: pointer; }
       }
-      .bans {
+      .dropdown-menu{ width: 100%;
+        a {text-decoration: none}
       }
-      .users {
+      .allow-pending {
+        margin-top: 40px; font-size: 1.1em;
+        .refuse-allow, .accept-allow {display: inherit;}
+        .refuse-allow:hover, .accept-allow:hover { cursor: pointer; }
+        i { font-size: 16px }
+      }
+      .allowed {
+        i { font-size: 18px }
+        .disallow:hover { cursor: pointer; }
       }
     }
     #user-preferences, #room-preferences {
@@ -1735,6 +1674,11 @@
 }
 
 #chat #center .discussion .content .events .scrollable .scrollable-content .realtime .event.me {
+  font-style: italic;
+  color: @cl-subtext30;
+}
+
+#chat #center .discussion .content .events .scrollable .scrollable-content .realtime .event.random {
   font-style: italic;
   color: @cl-subtext30;
 }

@@ -22,9 +22,10 @@ define([
 
       // ask for data
       var that = this;
-      client.userRead(currentUser.get('user_id'), null, function (err, data) {
-        if (err)
+      client.userRead(currentUser.get('user_id'), null, function (data) {
+        if (data.err) {
           return;
+        }
 
         that.user = data;
         that.onResponse(data);
@@ -35,9 +36,15 @@ define([
       this.$el.html(templates['spinner.html']);
       return this;
     },
+    _remove: function () {
+      this.emailView.remove();
+      this.passwordView.remove();
+      this.remove();
+    },
     onResponse: function (user) {
-      if (user.color)
+      if (user.color) {
         this.trigger('color', user.color);
+      }
 
       var html = this.template({user: user});
       this.$el.html(html);

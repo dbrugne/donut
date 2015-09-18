@@ -5,17 +5,24 @@ define([
   'backbone',
   'i18next',
   'common',
+  'models/app',
   'client',
+  'views/events',
+  'views/input',
   'models/current-user',
   'views/modal-confirmation',
-  'views/discussion',
   'views/room-topic',
   'views/room-users',
   '_templates'
-], function ($, _, Backbone, i18next, common, client, currentUser, confirmationView, DiscussionView, TopicView, UsersView, templates) {
-  var RoomView = DiscussionView.extend({
+], function ($, _, Backbone, i18next, common, app, client, EventsView, InputView, currentUser, confirmationView, TopicView, UsersView, templates) {
+  var RoomView = Backbone.View.extend({
+    tagName: 'div',
+
+    className: 'discussion',
+
+    hasBeenFocused: false,
+
     template: templates['discussion-room.html'],
-    templateDropdown: templates['dropdown-room-actions.html'],
 
     events: {
       'click .op-user': 'opUser',
@@ -28,24 +35,35 @@ define([
       'click .share .twitter': 'shareTwitter',
       'click .share .googleplus': 'shareGoogle'
     },
-    _initialize: function () {
+
+    initialize: function () {
+      this.listenTo(this.model, 'change:focused', this.onFocusChange);
       this.listenTo(this.model, 'change:avatar', this.onAvatar);
       this.listenTo(this.model, 'change:poster', this.onPoster);
       this.listenTo(this.model, 'change:posterblured', this.onPosterBlured);
       this.listenTo(this.model, 'change:color', this.onColor);
 
-      this.topicView = new TopicView({el: this.$el.find('.topic'), model: this.model});
-      this.usersView = new UsersView({el: this.$el.find('.side .users'), model: this.model, collection: this.model.users});
+      this.render();
 
-      // color
-      this.colorify();
+      this.eventsView = new EventsView({
+        el: this.$('.events'),
+        model: this.model
+      });
+      this.inputView = new InputView({
+        el: this.$('.input'),
+        model: this.model
+      });
+      this.topicView = new TopicView({
+        el: this.$('.topic'),
+        model: this.model
+      });
+      this.usersView = new UsersView({
+        el: this.$('.side .users'),
+        model: this.model,
+        collection: this.model.users
+      });
     },
-    _remove: function (model) {
-      this.stopListening();
-      this.topicView._remove();
-      this.usersView._remove();
-    },
-    _renderData: function () {
+    render: function () {
       var data = this.model.toJSON();
 
       // owner
@@ -58,11 +76,17 @@ define([
       // avatar
       data.avatar = common.cloudinarySize(data.avatar, 100);
 
+      // poster
+      data.poster = data.poster || '';
+
       // id
       data.room_id = this.model.get('id');
 
       // url
       data.url = this.model.getUrl();
+
+      // room mode
+      data.mode = this.model.get('mode');
 
       // share widget
       var share = 'share-room-' + this.model.get('name').replace('#', '').toLocaleLowerCase();
@@ -71,16 +95,53 @@ define([
         selector: '.' + share
       };
       data.share = this.share.class;
-      data.dropdown = this.templateDropdown({
+
+      // dropdown
+      data.dropdown = templates['dropdown-room-actions.html']({
         data: data
       });
 
-      return data;
+      // render
+      var html = this.template(data);
+      this.$el.html(html);
+      this.$el.hide();
+
+      this.initializeTooltips();
+
+      return this;
     },
-    _render: function () {},
-    _focus: function () {},
-    _unfocus: function () {},
-    _firstFocus: function () {
+    removeView: function () {
+      this.eventsView._remove();
+      this.inputView._remove();
+      this.topicView._remove();
+      this.usersView._remove();
+      this.remove();
+    },
+    changeColor: function () {
+      if (this.model.get('focused')) {
+        app.trigger('changeColor', this.model.get('color'));
+      }
+    },
+    onFocusChange: function () {
+      if (this.model.get('focused')) {
+        this.$el.show();
+
+        // need to load history?
+        if (!this.hasBeenFocused) {
+          this.onFirstFocus();
+        }
+        this.hasBeenFocused = true;
+
+        // refocus an offline one after few times
+        this.$('.ago span').momentify('fromnow');
+      } else {
+        this.$el.hide();
+      }
+    },
+    onFirstFocus: function () {
+      // @todo : on reconnect (only), remove all events in view before requesting history
+      this.eventsView.requestHistory('bottom');
+      this.eventsView.scrollDown();
       this.model.fetchUsers();
     },
 
@@ -96,82 +157,90 @@ define([
 
     opUser: function (event) {
       event.preventDefault();
-      if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin())
+      if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin()) {
         return false;
-
+      }
       var userId = $(event.currentTarget).data('userId');
-      if (!userId)
+      if (!userId) {
         return;
-
+      }
       var that = this;
       confirmationView.open({}, function () {
-        client.roomOp(that.model.get('id'), userId, null);
+        client.roomOp(that.model.get('id'), userId, null, function (err) {
+          if (err) {
+            return;
+          }
+        });
       });
     },
     deopUser: function (event) {
       event.preventDefault();
-      if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin())
+      if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin()) {
         return false;
-
+      }
       var userId = $(event.currentTarget).data('userId');
-      if (!userId)
+      if (!userId) {
         return;
-
+      }
       var that = this;
       confirmationView.open({}, function () {
-        client.roomDeop(that.model.get('id'), userId, null);
+        client.roomDeop(that.model.get('id'), userId, null, function (err) {
+          if (err) {
+            return;
+          }
+        });
       });
     },
     kickUser: function (event) {
       event.preventDefault();
-      if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin())
+      if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin()) {
         return false;
-
+      }
       var userId = $(event.currentTarget).data('userId');
-      if (!userId)
+      if (!userId) {
         return;
-
+      }
       var that = this;
-      confirmationView.open({ input: true }, function (reason) {
+      confirmationView.open({input: true}, function (reason) {
         client.roomKick(that.model.get('id'), userId, null, reason);
       });
     },
     banUser: function (event) {
       event.preventDefault();
-      if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin())
+      if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin()) {
         return false;
-
+      }
       var userId = $(event.currentTarget).data('userId');
-      if (!userId)
+      if (!userId) {
         return;
-
+      }
       var that = this;
-      confirmationView.open({ input: true }, function (reason) {
+      confirmationView.open({input: true}, function (reason) {
         client.roomBan(that.model.get('id'), userId, null, reason);
       });
     },
     voiceUser: function (event) {
       event.preventDefault();
-      if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin())
+      if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin()) {
         return false;
-
+      }
       var userId = $(event.currentTarget).data('userId');
-      if (!userId)
+      if (!userId) {
         return;
-
+      }
       client.roomVoice(this.model.get('id'), userId, null);
     },
     devoiceUser: function (event) {
       event.preventDefault();
-      if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin())
+      if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin()) {
         return false;
-
+      }
       var userId = $(event.currentTarget).data('userId');
-      if (!userId)
+      if (!userId) {
         return;
-
+      }
       var that = this;
-      confirmationView.open({ input: true }, function (reason) {
+      confirmationView.open({input: true}, function (reason) {
         client.roomDevoice(that.model.get('id'), userId, null, reason);
       });
     },
@@ -184,11 +253,11 @@ define([
       this.onAvatar(model, model.get('avatar'), options);
       this.onPoster(model, model.get('poster'), options);
       this.onPosterBlured(model, model.get('posterblured'), options);
-      this.colorify();
+      this.changeColor();
     },
-    onAvatar: function (model, value, options) {
+    onAvatar: function (model, value) {
       var url = common.cloudinarySize(value, 100);
-      this.$el.find('.header img.avatar').attr('src', url);
+      this.$('.header img.avatar').attr('src', url);
     },
     onPoster: function (model, url, options) {
       this.$el.find('div.side').css('background-image', 'url(' + url + ')');
@@ -201,8 +270,8 @@ define([
         this.$el.find('div.side').addClass('poster-full');
       }
     },
-    onPosterBlured: function (model, url, options) {
-      this.$el.find('div.blur').css('background-image', 'url(' + url + ')');
+    onPosterBlured: function (model, url) {
+      this.$('div.blur').css('background-image', 'url(' + url + ')');
     },
 
     /**
@@ -211,21 +280,25 @@ define([
     shareFacebook: function () {
       $.socialify.facebook({
         url: this.model.getUrl(),
-        name: i18next.t('chat.share.title', { name: this.model.get('name') }),
+        name: i18next.t('chat.share.title', {name: this.model.get('name')}),
         picture: common.cloudinarySize(this.model.get('avatar'), 350),
-        description: i18next.t('chat.share.description', { name: this.model.get('name') })
+        description: i18next.t('chat.share.description', {name: this.model.get('name')})
       });
     },
     shareTwitter: function () {
       $.socialify.twitter({
         url: this.model.getUrl(),
-        text: i18next.t('chat.share.description', { name: this.model.get('name') })
+        text: i18next.t('chat.share.description', {name: this.model.get('name')})
       });
     },
     shareGoogle: function () {
       $.socialify.google({
         url: this.model.getUrl()
       });
+    },
+
+    initializeTooltips: function () {
+      this.$el.find('[data-toggle="tooltip"]').tooltip();
     }
 
   });

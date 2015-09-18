@@ -1,5 +1,5 @@
 'use strict';
-var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
+var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename);
 var async = require('async');
 var emailer = require('../../../../../shared/io/emailer');
 
@@ -51,7 +51,7 @@ handler.call = function (data, session, next) {
       err = (['length', 'wrong-password'].indexOf(err) !== -1)
         ? err
         : 'internal';
-      return next(null, { code: 500, err: err });
+      return next(null, { code: 500, err: 'internal' });
     }
     return next(null, { success: true });
   });

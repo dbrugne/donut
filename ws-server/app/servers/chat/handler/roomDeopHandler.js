@@ -1,5 +1,5 @@
 'use strict';
-var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
+var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename);
 var async = require('async');
 var Notifications = require('../../../components/notifications');
 var roomEmitter = require('../../../util/roomEmitter');
@@ -24,23 +24,33 @@ handler.call = function (data, session, next) {
   async.waterfall([
 
     function check (callback) {
-      if (!data.room_id)
+      if (!data.room_id) {
         return callback('id is mandatory');
+      }
 
-      if (!data.user_id && !data.username)
+      if (!data.user_id && !data.username) {
         return callback('require username param');
+      }
 
-      if (!room)
+      if (!room) {
         return callback('unable to retrieve room: ' + data.room_id);
+      }
 
-      if (!room.isOwnerOrOp(user.id) && session.settings.admin !== true)
+      if (!room.isOwnerOrOp(user.id) && session.settings.admin !== true) {
         return callback('this user ' + user.id + " isn't able to deop another user in this room: " + room.name);
+      }
 
-      if (!opedUser)
+      if (!opedUser) {
         return callback('unable to retrieve opedUser: ' + data.username);
+      }
 
-      if (room.op.indexOf(opedUser._id) === -1)
+      if (!room.isOp(opedUser.id)) {
         return callback('user ' + opedUser.username + ' is not OP of ' + room.name);
+      }
+
+      if (!room.isIn(opedUser.id)) {
+        return callback('Oped user : ' + opedUser.username + ' is not currently in room ' + room.name);
+      }
 
       return callback(null);
     },
@@ -71,10 +81,9 @@ handler.call = function (data, session, next) {
   ], function (err) {
     if (err) {
       logger.error('[room:deop] ' + err);
-      return next(null, {code: 500, err: err});
+      return next(null, {code: 500, err: 'internal'});
     }
 
     next(null, {});
   });
-
 };

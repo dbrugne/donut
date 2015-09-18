@@ -4,14 +4,14 @@
             <% if (imgTag) { %>
                 <%= imgTag %>
             <% } else { %>
-                <%= t('edit.upload.nopicture') %>,
+                <%= t('chat.form.common.edit.upload.nopicture') %>,
             <% } %>
         </span>
         (<a class="change"><%= t('global.change') %></a> <%= t('global.or') %> <a class="remove"><%= t('global.delete') %></a>).
         <% if (typeof error != 'undefined') { %><p class="error-block"><%= error %></p><% } %>
         <p class="help-block">
-            <%= t('edit.upload.help.format') %>
-            <% if (resized_width && resized_width > 0) { print(t('edit.upload.help.size', {resized_width: resized_width, resized_height: resized_height})); } %>
+            <%= t('chat.form.common.edit.upload.help.format') %>
+            <% if (resized_width && resized_width > 0) { print(t('chat.form.common.edit.upload.help.size', {resized_width: resized_width, resized_height: resized_height})); } %>
         </p>
     </div>
 </div>

@@ -26,7 +26,8 @@ define([
 
     events: {
       'click .ask-for-allowance': 'onRequestAllowance',
-      'click .valid-password': 'onValidPassword'
+      'click .valid-password': 'onValidPassword',
+      'click .close-room': 'onCloseRoom'
     },
 
     initialize: function () {
@@ -43,6 +44,8 @@ define([
       // banned_at
       if (data.banned_at) {
         data.banned_at = moment(data.banned_at).format('dddd Do MMMM YYYY');
+      } else if (data.blocked === 'banned') {
+        data.banned_at = 'unable to retrieve';
       }
 
       // avatar
@@ -50,6 +53,11 @@ define([
 
       // id
       data.room_id = this.model.get('id');
+
+      // dropdown
+      data.dropdown = templates['dropdown-room-actions.html']({
+        data: data
+      });
 
       // render
       var html = this.template(data);
@@ -79,7 +87,7 @@ define([
     onRequestAllowance: function () {
       client.roomJoinRequest(this.model.get('id'), function (response) {
         if (response.err) {
-          if (response.err === 'banned' || response.err === 'allowed') {
+          if (response.err === 'banned' || response.err === 'notallowed') {
             app.trigger('alert', 'error', i18next.t('chat.allowed.error.' + response.err));
           } else {
             app.trigger('alert', 'error', i18next.t('global.unknownerror'));
@@ -92,14 +100,18 @@ define([
     onValidPassword: function (event) {
       var password = $(event.currentTarget).closest('.password-form').find('.input-password').val();
       client.roomJoin(this.model.get('id'), this.model.get('name'), password, function (response) {
-        if (response.err && response.err === 'wrongpassword') {
-          app.trigger('alert', 'error', i18next.t('chat.password.wrong-password'));
+        if (response.err && (response.err === 'wrong-password' || response.err === 'spam-password')) {
+          $(event.currentTarget).closest('.password-form').find('.error').html($.t('chat.password.' + response.err));
         } else if (response.err) {
-          app.trigger('alert', 'error', i18next.t('chat.password.error'));
+          $(event.currentTarget).closest('.password-form').find('.error').html($.t('chat.password.error'));
         }
       });
     },
 
+    onCloseRoom: function (event) {
+      event.preventDefault();
+      client.roomLeaveBlock(this.model.get('id'));
+    },
     initializeTooltips: function () {
       this.$el.find('[data-toggle="tooltip"]').tooltip();
     }
