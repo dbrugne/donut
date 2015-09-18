@@ -25,25 +25,30 @@ handler.call = function (data, session, next) {
   async.waterfall([
 
     function check (callback) {
-      if (!data.room_id)
+      if (!data.room_id) {
         return callback('id is mandatory');
+      }
 
-      if (!room)
+      if (!room) {
         return callback('unable to retrieve room: ' + data.room_id);
+      }
 
-      if (!room.isOwnerOrOp(user.id) && session.settings.admin !== true)
+      if (!room.isOwnerOrOp(user.id) && session.settings.admin !== true) {
         return callback('this user ' + user.id + " isn't able to change topic of " + data.room_id);
+      }
 
-      if (!common.validateTopic(data.topic))
+      if (!common.validateTopic(data.topic)) {
         return callback('invalid topic for  ' + data.room_id + ': ' + data.topic);
+      }
 
       return callback(null);
     },
 
     function prepareTopic (callback) {
       var topic = inputUtil.filter(data.topic, 512);
-      if (topic === false)
+      if (topic === false) {
         topic = '';
+      }
 
       inputUtil.mentions(topic, function (err, topic) {
         return callback(err, topic);
@@ -51,7 +56,7 @@ handler.call = function (data, session, next) {
     },
 
     function persist (topic, callback) {
-      room.update({ $set: { topic: topic }}, function (err) {
+      room.update({$set: {topic: topic}}, function (err) {
         return callback(err, topic);
       });
     },
@@ -80,7 +85,6 @@ handler.call = function (data, session, next) {
       return next(null, {code: 500, err: 'internal'});
     }
 
-    next(null, { success: true });
+    next(null, {success: true});
   });
-
 };

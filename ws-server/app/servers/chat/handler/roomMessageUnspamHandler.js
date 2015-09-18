@@ -22,32 +22,39 @@ handler.call = function (data, session, next) {
   async.waterfall([
 
     function check (callback) {
-      if (!data.room_id)
+      if (!data.room_id) {
         return callback('id is mandatory');
+      }
 
-      if (!data.event)
+      if (!data.event) {
         return callback('require event param');
+      }
 
-      if (!room)
+      if (!room) {
         return callback('unable to retrieve room: ' + data.room_id);
+      }
 
-      if (!room.isOwnerOrOp(user.id) && session.settings.admin !== true)
+      if (!room.isOwnerOrOp(user.id) && session.settings.admin !== true) {
         return callback('this user ' + user.id + " isn't able to unspammed a message in " + room.name);
+      }
 
-      if (!event)
+      if (!event) {
         return callback('unable to retrieve event: ' + data.event);
+      }
 
-      if (event.room != room.id)
+      if (event.room.toString() !== room.id) {
         return callback('event and room parameters not correspond ' + data.event);
+      }
 
-      if (event.event !== 'room:message')
+      if (event.event !== 'room:message') {
         return callback('event ' + data.event + ' should be a room:message');
+      }
 
       return callback(null);
     },
 
     function persist (callback) {
-      event.update({ $unset: { spammed: true, spammed_at: true }}, function (err) {
+      event.update({$unset: {spammed: true, spammed_at: true}}, function (err) {
         return callback(err);
       });
     },
@@ -68,5 +75,4 @@ handler.call = function (data, session, next) {
 
     next(null, {});
   });
-
 };

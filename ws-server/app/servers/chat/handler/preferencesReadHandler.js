@@ -63,5 +63,4 @@ handler.call = function (data, session, next) {
 
     next(null, event);
   });
-
 };
