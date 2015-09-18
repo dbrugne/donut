@@ -54,6 +54,7 @@ define([
     initialRender: function (room) {
       this.model = room;
       this.listenTo(app, 'redraw-tables', this.renderTables);
+      this.listenTo(client, 'room:request', this.renderPendingTable);
       var data = {
         owner_id: this.model.owner.user_id,
         owner_name: this.model.owner.username,
@@ -89,6 +90,9 @@ define([
     renderTables: function () {
       this.tablePending.render('pending');
       this.tableAllowed.render('allowed');
+    },
+    renderPendingTable: function () {
+      this.tablePending.render('pending');
     },
     renderDropDown: function () {
       this.$dropdown.addClass('open');
