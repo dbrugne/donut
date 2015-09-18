@@ -15,10 +15,10 @@ define([
   'views/events-viewed',
   'views/events-history',
   'views/events-spam',
-  'views/message-edit',
+  'views/events-edit',
   'views/window',
   '_templates'
-], function ($, _, Backbone, app, donutDebug, keyboard, common, EventModel, moment, i18next, client, currentUser, EventsViewedView, EventsHistoryView, EventsSpamView, MessageEditView, windowView, templates) {
+], function ($, _, Backbone, app, donutDebug, keyboard, common, EventModel, moment, i18next, client, currentUser, EventsViewedView, EventsHistoryView, EventsSpamView, EventsEditView, windowView, templates) {
   var debug = donutDebug('donut:events');
 
   var EventsView = Backbone.View.extend({
@@ -61,13 +61,15 @@ define([
         model: this.model
       });
 
+      this.eventsEditView = new EventsEditView({
+        el: this.$el,
+        model: this.model
+      });
+
       this.listenTo(this.eventsHistoryView, 'addBatchEvents', _.bind(function (data) {
         this.addBatchEvents(data.history, data.more);
       }, this));
-      this.listenTo(this.eventsHistoryView, 'scrollDown', _.bind(function () {
-        this.scrollDown();
-      }, this));
-      this.listenTo(this.eventsSpamView, 'scrollDown', _.bind(function (data) {
+      this.listenTo(app, 'scrollDown', _.bind(function () {
         this.scrollDown();
       }, this));
     },
@@ -101,7 +103,8 @@ define([
     _remove: function () {
       this.eventsViewedView.remove();
       this.eventsHistoryView.remove();
-      this.eventsSpamView._remove();
+      this.eventsSpamView.remove();
+      this.eventsEditView._remove();
       this._scrollTimeoutCleanup();
       this.remove();
     },
@@ -261,7 +264,7 @@ define([
 
       debug.end('discussion-events-fresh-' + this.model.getIdentifier());
     },
-    _prepareEvent: function (model) { // @todo tyls refactorize with events.js
+    _prepareEvent: function (model) {
       var data = model.toJSON();
       data.data = _.clone(model.get('data'));
 
@@ -344,7 +347,7 @@ define([
 
       return data;
     },
-    _newBlock: function (newModel, previousElement) { // @todo tyls refactorize with events.js
+    _newBlock: function (newModel, previousElement) {
       var newBlock = false;
       if (!previousElement || previousElement.length < 1) {
         newBlock = true;
@@ -423,7 +426,7 @@ define([
       $html.find('>.block').prependTo(this.$realtime);
       debug.end('discussion-events-batch-' + this.model.getIdentifier());
     },
-    _renderEvent: function (model, withBlock) { // @todo tyls refactorize with events.js
+    _renderEvent: function (model, withBlock) {
       var data = this._prepareEvent(model);
       data.withBlock = withBlock || false;
       try {

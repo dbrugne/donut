@@ -2,8 +2,9 @@
 define([
   'jquery',
   'underscore',
-  'backbone'
-], function ($, _, Backbone) {
+  'backbone',
+  'models/app'
+], function ($, _, Backbone, app) {
   var HistoryView = Backbone.View.extend({
 
     historyLoading: false,
@@ -61,7 +62,7 @@ define([
 
         if (scrollTo === 'bottom') {
           // on first focus history load
-          that.trigger('scrollDown');
+          app.trigger('scrollDown');
         }
       });
     },
