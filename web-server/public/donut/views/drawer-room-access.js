@@ -3,6 +3,7 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'libs/keyboard',
   'i18next',
   'moment',
   'common',
@@ -11,12 +12,14 @@ define([
   'views/modal-confirmation',
   'views/drawer-room-access-table',
   '_templates'
-], function ($, _, Backbone, i18next, moment, common, app, client, ConfirmationView, TableView, templates) {
+], function ($, _, Backbone, keyboard, i18next, moment, common, app, client, ConfirmationView, TableView, templates) {
   var RoomAccessView = Backbone.View.extend({
 
     template: templates['drawer-room-access.html'],
 
     dropdownTemplate: templates['drawer-room-access-dropdown.html'],
+
+    passwordPattern: /([^\s]{4,255})$/i,
 
     id: 'room-access',
 
@@ -26,40 +29,57 @@ define([
 
     events: {
       'keyup input[type=text]': 'onSearch',
+      'click input.save-access': 'onSubmit',
       'click i.icon-search': 'onSearch',
-      'click .dropdown-menu>li': 'onAllowUser'
+      'click .dropdown-menu>li': 'onAllowUser',
+      'change [type="checkbox"]': 'onChoosePassword',
+      'click .random-password': 'onRandomPassword'
     },
 
     initialize: function (options) {
-      this.model = options.model;
+      this.render();
 
-      this.listenTo(this.model, 'redraw-tables', this.renderTables);
-
-      this.initialRender();
+      var that = this;
+      client.roomRead(options.model.get('id'), null, function (data) {
+        if (!data.err) {
+          that.initialRender(data);
+        }
+      });
     },
-    initialRender: function () {
+    render: function () {
+      // render spinner only
+      this.$el.html(templates['spinner.html']);
+      return this;
+    },
+    initialRender: function (room) {
+      this.model = room;
+      this.listenTo(app, 'redraw-tables', this.renderTables);
       var data = {
-        owner_id: this.model.get('owner').get('user_id'),
-        owner_name: this.model.get('owner').get('username'),
-        room_id: this.model.get('id'),
-        room_name: this.model.get('name'),
-        mode: this.model.get('mode'),
-        has_password: this.model.get('hasPassword')
+        owner_id: this.model.owner.user_id,
+        owner_name: this.model.owner.username,
+        room_id: this.model.id,
+        room_name: this.model.name,
+        mode: this.model.mode,
+        has_password: this.model.has_password
       };
 
       var html = this.template(data);
       this.$el.html(html);
 
-      this.search = this.$el.find('input[type=text]');
-      this.dropdown = this.$el.find('.dropdown');
-      this.dropdownMenu = this.$el.find('.dropdown-menu');
+      this.$errors = this.$el.find('.errors');
+      this.$search = this.$el.find('input[type=text]');
+      this.$dropdown = this.$el.find('.dropdown');
+      this.$dropdownMenu = this.$el.find('.dropdown-menu');
+      this.$toggleCheckbox = this.$el.find('#input-password-checkbox');
+      this.$password = this.$el.find('.input-password');
+      this.$randomPassword = this.$el.find('.random-password');
 
       this.tablePending = new TableView({
-        el: this.$el.find('#table-allow-pending'),
+        el: this.$el.find('.allow-pending'),
         model: this.model
       });
       this.tableAllowed = new TableView({
-        el: this.$el.find('#table-allowed'),
+        el: this.$el.find('.allowed'),
         model: this.model
       });
       this.renderTables();
@@ -71,16 +91,16 @@ define([
       this.tableAllowed.render('allowed');
     },
     renderDropDown: function () {
-      this.dropdown.addClass('open');
-      this.dropdownMenu.html(templates['spinner.html']);
+      this.$dropdown.addClass('open');
+      this.$dropdownMenu.html(templates['spinner.html']);
 
       var that = this;
-      client.search(this.search.val(), false, true, 15, 0, false, function (data) {
+      client.search(this.$search.val(), false, true, 15, 0, false, function (data) {
         _.each(data.users.list, function (element, index, list) {
           list[index].avatarUrl = common.cloudinarySize(element.avatar, 20);
         });
 
-        that.dropdownMenu.html(that.dropdownTemplate({users: data.users.list}));
+        that.$dropdownMenu.html(that.dropdownTemplate({users: data.users.list}));
       });
     },
     _remove: function () {
@@ -93,12 +113,12 @@ define([
 
       clearTimeout(this.timeout);
 
-      if (this.search.val() === '') {
-        this.dropdown.removeClass('open');
+      if (this.$search.val() === '') {
+        this.$dropdown.removeClass('open');
         return;
       }
-
-      if (event.type === 'click' || event.keyCode === 13) { // instant search when user click on icon or press enter
+      var key = keyboard._getLastKeyCode(event);
+      if (event.type === 'click' || key.key === keyboard.RETURN) { // instant search when user click on icon or press enter
         this.renderDropDown();
         return;
       }
@@ -114,15 +134,76 @@ define([
 
       if (userId) {
         ConfirmationView.open({}, _.bind(function () {
-          client.roomAllow(this.model.get('id'), userId, false, _.bind(function () {
+          client.roomAllow(this.model.id, userId, false, _.bind(function () {
             this.renderTables();
           }, this));
         }, this));
       }
 
       // Close dropdown
-      this.dropdown.removeClass('open');
-      this.search.val('');
+      this.$dropdown.removeClass('open');
+      this.$search.val('');
+    },
+    onChoosePassword: function (event) {
+      // Display block on click
+      if (this.$toggleCheckbox.is(':checked')) {
+        this.$password.removeAttr('disabled').removeClass('disabled');
+        this.$randomPassword.removeClass('disabled');
+        if (this.$password.val() === '') {
+          this.$password.val(common.randomString());
+        }
+      } else {
+        this.$password.attr('disabled', true).addClass('disabled');
+        this.$password.val('');
+        this.$randomPassword.addClass('disabled');
+      }
+    },
+    onRandomPassword: function (event) {
+      event.preventDefault();
+      if (this.$randomPassword.hasClass('disabled') === true) {
+        return;
+      }
+      this.$password.val(common.randomString());
+      this.$password.focus();
+    },
+    reset: function () {
+      this.$errors.html('').hide();
+      this.$el.removeClass('has-error').removeClass('has-success').val('');
+    },
+    setError: function (error) {
+      this.$errors.html(error).show();
+    },
+    onSubmit: function (event) {
+      this.reset();
+
+      // password
+      if (!this.isValidPassword()) {
+        return this.setError(i18next.t('chat.form.errors.invalid-password'));
+      }
+
+      client.roomUpdate(this.model.id, { password: this.getPassword() }, _.bind(function (data) {
+        if (data.err) {
+          return this.editError(data);
+        }
+        this.trigger('close');
+      }, this));
+    },
+    isValidPassword: function () {
+      return (!this.$toggleCheckbox.is(':checked') || (this.$toggleCheckbox.is(':checked') && this.model.has_password && this.getPassword() === '') || (this.$toggleCheckbox.is(':checked') && this.passwordPattern.test(this.getPassword())));
+    },
+    getPassword: function () {
+      if (this.$toggleCheckbox.is(':checked')) {
+        return this.$password.val();
+      }
+
+      return null;
+    },
+    editError: function (dataErrors) {
+      var message = '';
+      _.each(dataErrors.err, function (error) {
+        message += i18next.t('chat.form.errors.' + error) + '<br>';
+      });
+      this.$errors.html(message).show();
     },
 
     initializeTooltips: function () {

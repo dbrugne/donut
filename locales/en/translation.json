@@ -588,7 +588,8 @@
     },
     "access": {
       "link": "access",
-      "labelsearch": "Add users to the allowed list",
+      "labelsearch": "Allow users",
+      "add": "Add user",
       "labelpending": "Users pending approval",
       "types": {
         "all": "All",
@@ -696,7 +697,7 @@
             "private": "Private",
             "password-change": "Change password",
             "password-field": "Password",
-            "password-keep": "leave blank to keep the same",
+            "password-keep": "Change the password",
             "password-disclaimer": "You can set a password on this donut",
             "password-protection": "Protect by a password"
           }

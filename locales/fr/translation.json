@@ -607,7 +607,8 @@
     },
     "access": {
       "link": "Accès",
-      "labelsearch": "Ajouter des utilisateurs dans la liste des personnes autorisées",
+      "labelsearch": "Autoriser des utilisateurs",
+      "add": "Ajouter un utilisateur",
       "labelpending": "Utilisateurs en attente d'autorisation",
       "types": {
         "all": "Tous",
@@ -715,7 +716,7 @@
             "private": "Privé",
             "password-change": "Changer le mot de passe",
             "password-field": "Mot de passe",
-            "password-keep": "laisser vide pour garder le même",
+            "password-keep": "Changer le mot de passe",
             "password-disclaimer": "Vous avez la possibilité de mettre un mot de passe sur ce donut",
             "password-protection": "Protéger par un mot de passe"
           }

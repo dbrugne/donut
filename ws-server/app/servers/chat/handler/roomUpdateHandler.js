@@ -19,6 +19,7 @@ var handler = Handler.prototype;
 handler.call = function (data, session, next) {
   var user = session.__currentUser__;
   var room = session.__room__;
+  var passwordPattern = /([^\s]{4,255})$/i;
 
   var that = this;
 
@@ -94,6 +95,45 @@ handler.call = function (data, session, next) {
         }
       }
 
+      // mode
+      if (_.has(data.data, 'mode')) {
+        var mode = data.data.mode;
+        if (!common.validateMode(mode)) {
+          errors.mode = 'invalid-mode';
+        } else {
+          if (sanitized.mode !== mode) {
+            // @todo implement state machine on room mode change
+            sanitized.mode = mode;
+          }
+        }
+      }
+
+      // password
+      if (room.mode === 'public') {
+        if (_.has(data.data, 'password')) {
+          errors.password = 'invalid-mode';
+        }
+        // Private mode
+      } else {
+        // A password is to update
+        if (_.has(data.data, 'password')) {
+          var password = data.data.password;
+          // Add password or change password
+          if (password !== null) {
+            // Change password
+            if (passwordPattern.test(password) && (user.generateHash(password) !== room.password || !_.has(room.toJSON(), 'password'))) {
+              sanitized.password = user.generateHash(password);
+            }
+            // password is null, Remove password attr from document
+          } else {
+            // a password is set on the room, so remove it
+            if (_.has(room.toJSON(), 'password')) {
+              sanitized.password = undefined;
+            }
+          }
+        }
+      }
+
       if (session.settings.admin === true) {
         // visibility
         if (_.has(data.data, 'visibility')) {
@@ -111,27 +151,6 @@ handler.call = function (data, session, next) {
             var priority = data.data.priority;
             if (priority !== room.priority) {
               sanitized.priority = priority;
-            }
-          }
-        }
-
-        // mode
-        if (_.has(data.data, 'mode')) {
-          var mode = data.data.mode;
-          if (!common.validateMode(mode)) {
-            errors.mode = 'invalid-mode';
-          } else {
-            if (sanitized.mode !== mode) {
-              // @todo implement state machine on room mode change
-              sanitized.mode = mode;
-            }
-            if (mode === 'password' && _.has(data.data, 'password')) {
-              var password = data.data.password;
-              if (!password || password.length < 4 || password.length > 255) {
-                errors.password = 'invalid-password';
-              } else {
-                sanitized.password = user.generateHash(password);
-              }
             }
           }
         }
@@ -247,5 +266,4 @@ handler.call = function (data, session, next) {
 
     next(null, {});
   });
-
 };
