@@ -14,10 +14,11 @@ define([
   'models/current-user',
   'views/events-viewed',
   'views/events-history',
+  'views/events-spam',
   'views/message-edit',
   'views/window',
   '_templates'
-], function ($, _, Backbone, app, donutDebug, keyboard, common, EventModel, moment, i18next, client, currentUser, EventsViewedView, EventsHistoryView, MessageEditView, windowView, templates) {
+], function ($, _, Backbone, app, donutDebug, keyboard, common, EventModel, moment, i18next, client, currentUser, EventsViewedView, EventsHistoryView, EventsSpamView, MessageEditView, windowView, templates) {
   var debug = donutDebug('donut:events');
 
   var EventsView = Backbone.View.extend({
@@ -25,15 +26,7 @@ define([
 
     events: {
       'click .go-to-top a': 'scrollTop',
-      'click .go-to-bottom a': 'scrollDown',
-      'shown.bs.dropdown .actions': 'onMessageMenuShow',
-      'click .dropdown-menu .spammed': 'onMarkAsSpam',
-      'click .dropdown-menu .unspam': 'onUnmarkAsSpam',
-      'click .view-spammed-message': 'onViewSpammedMessage',
-      'click .remask-spammed-message': 'onRemaskSpammedMessage',
-      'click .dropdown-menu .edited': 'onEditMessage',
-      'dblclick .event': 'onEditMessage',
-      'keydown .form-message-edit': 'onPrevOrNextFormEdit'
+      'click .go-to-bottom a': 'scrollDown'
     },
 
     scrollTopTimeout: null,
@@ -48,12 +41,7 @@ define([
       this.listenTo(this.model, 'change:focused', this.onFocusChange);
       this.listenTo(this.model, 'windowRefocused', this.onScroll);
       this.listenTo(this.model, 'freshEvent', this.addFreshEvent);
-      this.listenTo(this.model, 'messageSpam', this.onMarkedAsSpam);
-      this.listenTo(this.model, 'messageUnspam', this.onMarkedAsUnspam);
-      this.listenTo(this.model, 'messageEdit', this.onMessageEdited);
-      this.listenTo(this.model, 'editMessageClose', this.onEditMessageClose);
       this.listenTo(this.model, 'messageSent', this.scrollDown);
-      this.listenTo(this.model, 'editPreviousInput', this.pushUpFromInput);
       this.listenTo(client, 'admin:message', this.onAdminMessage);
 
       this.render();
@@ -68,10 +56,18 @@ define([
         model: this.model
       });
 
+      this.eventsSpamView = new EventsSpamView({
+        el: this.$el,
+        model: this.model
+      });
+
       this.listenTo(this.eventsHistoryView, 'addBatchEvents', _.bind(function (data) {
         this.addBatchEvents(data.history, data.more);
       }, this));
       this.listenTo(this.eventsHistoryView, 'scrollDown', _.bind(function () {
+        this.scrollDown();
+      }, this));
+      this.listenTo(this.eventsSpamView, 'scrollDown', _.bind(function (data) {
         this.scrollDown();
       }, this));
     },
@@ -105,6 +101,7 @@ define([
     _remove: function () {
       this.eventsViewedView.remove();
       this.eventsHistoryView.remove();
+      this.eventsSpamView._remove();
       this._scrollTimeoutCleanup();
       this.remove();
     },
@@ -199,9 +196,6 @@ define([
     isScrollOnBottom: function () {
       var scrollMargin = 10;
       if (this.messageUnderEdition) {
-        // @todo yls this logic is really needed?
-        // Are you sure this is not needed only for "last" .event edition
-        // and not for all event edition?
         scrollMargin = this.messageUnderEdition.$el.height();
       }
 
@@ -496,258 +490,6 @@ define([
         debug(e);
         return false;
       }
-    },
-
-    /** ***************************************************************************************************************
-     *
-     * Message actions menu
-     *
-     *****************************************************************************************************************/
-
-    onMessageMenuShow: function (event) {
-      var ownerUserId = '';
-      var $event = $(event.currentTarget).closest('.event');
-      if (this.model.get('owner')) {
-        ownerUserId = this.model.get('owner').get('user_id');
-      }
-      var userId = $event.closest('[data-user-id]').data('userId');
-      var isMessageOwner = (ownerUserId === userId);
-
-      var isEditable = this.isEditableMessage($event);
-
-      if (this.model.get('type') === 'room') {
-        var isOp = this.model.currentUserIsOp();
-        var isOwner = this.model.currentUserIsOwner();
-        var isAdmin = this.model.currentUserIsAdmin();
-      }
-
-      if (((!isOwner && !isAdmin && !isOp) || (isOp && isMessageOwner)) && (!isEditable)) {
-        $(event.currentTarget).find('.dropdown-menu').dropdown('toggle');
-        return;
-      }
-      var html = templates['events-dropdown.html']({
-        data: {
-          isOp: isOp,
-          isOwner: isOwner,
-          isAdmin: isAdmin,
-          isMessageOwner: isMessageOwner,
-          isEditable: isEditable
-        }
-      });
-      $(event.currentTarget).find('.dropdown-menu').html(html);
-    },
-    onMarkAsSpam: function (event) {
-      event.preventDefault();
-      var parent = $(event.currentTarget).closest('.event');
-      var roomId = this.model.get('id');
-      var messageId = parent.attr('id');
-
-      client.roomMessageSpam(roomId, messageId);
-    },
-    onUnmarkAsSpam: function (event) {
-      event.preventDefault();
-      var parent = $(event.currentTarget).closest('.event');
-      var roomId = this.model.get('id');
-      var messageId = parent.attr('id');
-      parent.removeClass('viewed');
-
-      var ctn = parent.find('.text') || parent.find('.image');
-      ctn.find('.remask-spammed-message').remove();
-
-      client.roomMessageUnspam(roomId, messageId);
-    },
-    onMarkedAsSpam: function (room) {
-      var bottom = this.isScrollOnBottom();
-      this.$('#' + room.event)
-        .addClass('spammed')
-        .find('.ctn')
-        .first()
-        .append('<div class="text-spammed">' + i18next.t('chat.message.text-spammed') + '</div>');
-      if (bottom) {
-        this.scrollDown();
-      }
-    },
-    onMarkedAsUnspam: function (room) {
-      var bottom = this.isScrollOnBottom();
-      this.$('#' + room.event)
-        .removeClass('spammed')
-        .find('.ctn .text-spammed')
-        .remove();
-
-      this.$('#' + room.event).find('.remask-spammed-message').remove();
-      if (bottom) {
-        this.scrollDown();
-      }
-    },
-    onViewSpammedMessage: function (event) {
-      var bottom = this.isScrollOnBottom();
-      event.preventDefault();
-      var parent = $(event.currentTarget).closest('.event');
-      var textSpammed = $(event.currentTarget).closest('.text-spammed');
-      var ctn = parent.children('.ctn');
-      parent.removeClass('spammed').addClass('viewed');
-      textSpammed.remove();
-
-      ctn.prepend('<a class="remask-spammed-message label label-danger">' + i18next.t('chat.message.text-remask') + '</a>');
-
-      if (bottom) {
-        this.scrollDown();
-      }
-    },
-    onRemaskSpammedMessage: function (event) {
-      var bottom = this.isScrollOnBottom();
-      event.preventDefault();
-      var parent = $(event.currentTarget).closest('.event');
-      var ctn = parent.children('.ctn');
-      parent.addClass('spammed').removeClass('viewed');
-      parent
-        .find('.ctn')
-        .first()
-        .append('<div class="text-spammed">' + i18next.t('chat.message.text-spammed') + '</div>');
-
-      ctn.find('.remask-spammed-message').remove();
-
-      if (bottom) {
-        this.scrollDown();
-      }
-    },
-
-    /** ***************************************************************************************************************
-     *
-     * Message edit
-     *
-     *****************************************************************************************************************/
-    onEditMessage: function (event) {
-      event.preventDefault();
-
-      var $event = $(event.currentTarget).closest('.event');
-
-      if (!this.isEditableMessage($event)) {
-        return;
-      }
-      this.editMessage($event);
-    },
-    isEditableMessage: function ($event) {
-      var special = $event.data('special');
-      if (special && special !== 'me') {
-        return false;
-      }
-      var userId = $event.closest('[data-user-id]').data('userId');
-      if (currentUser.get('user_id') !== userId) {
-        return false;
-      }
-      var time = $event.data('time');
-      if (((Date.now() - new Date(time)) > window.message_maxedittime)) {
-        return false;
-      }
-      if ($event.hasClass('spammed')) {
-        return false;
-      }
-      return true;
-    },
-    onPrevOrNextFormEdit: function (event) {
-      var direction;
-      var bottom = this.isScrollOnBottom();
-      var key = keyboard._getLastKeyCode(event);
-      if (key.key === keyboard.UP) {
-        direction = 'prev';
-      } else if (key.key === keyboard.DOWN) {
-        direction = 'next';
-      } else {
-        if (bottom) {
-          this.scrollDown();
-        }
-        return;
-      }
-
-      var $currentEventMessage = $(event.currentTarget).closest('.event');
-      var $currentBlockMessage = $(event.currentTarget).closest('.message');
-
-      var userId = $currentBlockMessage.data('userId');
-
-      // get sibling .event
-      var $candidate = $currentEventMessage[direction]();
-      var $candidateBlock = $currentBlockMessage[direction]();
-
-      // no sibling .event, try with sibling .block
-      if (!$candidate.length && $candidateBlock.length) {
-        var _lastBlock = $candidateBlock;
-        while ((_lastBlock.data('userId') !== userId)) {
-          if (!_lastBlock[direction]().length) {
-            return;
-          }
-          _lastBlock = _lastBlock[direction]();
-        }
-
-        $candidate = (direction === 'prev')
-          ? _lastBlock.find('.event').last()
-          : _lastBlock.find('.event').first();
-      }
-
-      if (this.isEditableMessage($candidate)) {
-        this.editMessage($candidate);
-      }
-      if (bottom) {
-        this.scrollDown();
-      }
-    },
-    pushUpFromInput: function () {
-      var _lastBlock = this.$realtime.find('.block.message').last();
-      while (_lastBlock.data('userId') !== currentUser.get('user_id')) {
-        if (!_lastBlock.prev().length) {
-          return;
-        }
-        _lastBlock = _lastBlock.prev();
-      }
-      var $event = _lastBlock.find('.event').last();
-      var bottom = this.isScrollOnBottom();
-      if (this.isEditableMessage($event)) {
-        this.editMessage($event);
-      }
-      if (bottom) {
-        this.scrollDown();
-      }
-    },
-    editMessage: function ($event) {
-      var bottom = this.isScrollOnBottom();
-      if (this.messageUnderEdition) {
-        this.onEditMessageClose();
-      }
-      this.messageUnderEdition = new MessageEditView({
-        el: $event,
-        model: this.model
-      });
-      if (bottom) {
-        this.scrollDown();
-      }
-    },
-    onMessageEdited: function (data) {
-      var bottom = this.isScrollOnBottom();
-      var $event = this.$('#' + data.event);
-
-      if ($event.find('.text').html() === undefined) {
-        $('<div class="text"></div>').insertAfter(this.$('#' + data.event).find('.message-edit'));
-      }
-      var msg = common.markupToHtml(data.message, {
-        template: templates['markup.html'],
-        style: 'color: ' + this.model.get('color')
-      });
-      msg = $.smilify(msg);
-      data.message = msg;
-
-      data.message += '<span class="text-edited">&nbsp;(' + i18next.t('chat.message.edition.edited') + ')</span>';
-      $event.find('.ctn').find('.text').html(data.message);
-
-      if (bottom) {
-        this.scrollDown();
-      }
-    },
-    onEditMessageClose: function () {
-      if (!this.messageUnderEdition) {
-        return;
-      }
-      this.messageUnderEdition.remove();
-      this.messageUnderEdition = null;
     },
 
     requestHistory: function (scrollTo) {
