@@ -12,16 +12,19 @@ var async = require('async');
  * @param callback
  */
 module.exports = function (app, rooms, eventName, eventData, callback) {
-  if (!Array.isArray(rooms))
+  if (!Array.isArray(rooms)) {
     return callback("roomMultiEmitter need to received an array as 'rooms' parameter");
+  }
 
   var parallels = [];
   _.each(rooms, function (room) {
-    if (!room)
+    if (!room) {
       return logger.error('roomMultiEmitter room parameter is mandatory');
+    }
 
     parallels.push(function (fn) {
-      var data = _.clone(eventData); // avoid modification on the object reference
+      var data = _.clone(eventData); // avoid modification on the object
+                                     // reference
       // always add room name and time to event
       data.name = room.name;
       data.room_id = room.id;
@@ -32,8 +35,9 @@ module.exports = function (app, rooms, eventName, eventData, callback) {
       // emit event to room users
       data.id = Date.now() + room.id + data.user_id;
       app.globalChannelService.pushMessage('connector', eventName, data, room.name, {}, function (err) {
-        if (err)
+        if (err) {
           return logger.error('Error while pushing message: ' + err);
+        }
 
         return fn(null);
       });
@@ -44,5 +48,4 @@ module.exports = function (app, rooms, eventName, eventData, callback) {
   async.parallel(parallels, function (err) {
     return callback(err);
   });
-
 };

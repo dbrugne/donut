@@ -19,7 +19,7 @@ var Notification = function (facade) {
  *
  * @param user (User|String)
  * @param room (Room|String)
- * @param event (HistoryRoom|String)
+ * @param history (HistoryRoom|String)
  * @param done
  */
 Notification.prototype.create = function (user, room, history, done) {
@@ -33,7 +33,7 @@ Notification.prototype.create = function (user, room, history, done) {
     utils.retrieveHistoryRoom(history),
 
     function checkOwn (userModel, roomModel, historyModel, callback) {
-      if (historyModel.by_user.id == userModel.id) {
+      if (historyModel.by_user.id === userModel.id) {
         logger.debug('roomPromoteType.create no notification due to my own message');
         return callback(true);
       }
@@ -42,8 +42,8 @@ Notification.prototype.create = function (user, room, history, done) {
     },
 
     function checkPreferences (userModel, roomModel, historyModel, callback) {
-      if (userModel.preferencesValue('room:notif:nothing:__what__'.replace('__what__', roomModel.name))
-        || !userModel.preferencesValue('room:notif:roompromote:__what__'.replace('__what__', roomModel.name))) {
+      if (userModel.preferencesValue('room:notif:nothing:__what__'.replace('__what__', roomModel.name)) ||
+        !userModel.preferencesValue('room:notif:roompromote:__what__'.replace('__what__', roomModel.name))) {
         logger.debug('roomPromoteType.create no notification due to user preferences');
         return callback(true);
       }
@@ -53,18 +53,25 @@ Notification.prototype.create = function (user, room, history, done) {
 
     function checkStatus (userModel, roomModel, historyModel, callback) {
       that.facade.app.statusService.getStatusByUid(userModel.id, function (err, status) {
-        if (err)
+        if (err) {
           return callback(err);
+        }
 
         return callback(null, userModel, roomModel, historyModel, status);
       });
     },
 
     function save (userModel, roomModel, historyModel, status, callback) {
-      var model = NotificationModel.getNewModel(that.type, userModel, {event: historyModel._id});
+      var model = NotificationModel.getNewModel(that.type, userModel, { event: historyModel._id });
       model.to_browser = true;
-      model.to_email = ( !userModel.getEmail() ? false : ( status ? false : userModel.preferencesValue('notif:channels:email')));
-      model.to_mobile = (status ? false : userModel.preferencesValue('notif:channels:mobile'));
+      model.to_email = (!userModel.getEmail()
+        ? false
+        : (status
+        ? false
+        : userModel.preferencesValue('notif:channels:email')));
+      model.to_mobile = (status
+        ? false
+        : userModel.preferencesValue('notif:channels:mobile'));
 
       if (that.facade.options.force === true) {
         model.to_email = true;
@@ -72,8 +79,9 @@ Notification.prototype.create = function (user, room, history, done) {
       }
 
       model.save(function (err) {
-        if (err)
+        if (err) {
           return callback(err);
+        }
 
         logger.info('roomPromoteType.create notification created: ' + that.type + ' for ' + userModel.username);
         that.sendToBrowser(model, userModel, roomModel, historyModel, function () {
@@ -83,8 +91,9 @@ Notification.prototype.create = function (user, room, history, done) {
     }
 
   ], function (err) {
-    if (err && err !== true)
+    if (err && err !== true) {
       return done(err);
+    }
 
     return done(null);
   });
@@ -118,8 +127,9 @@ Notification.prototype.sendToBrowser = function (model, user, room, history, don
 };
 
 Notification.prototype.sendEmail = function (model, done) {
-  if (!model.data || !model.data.event)
+  if (!model.data || !model.data.event) {
     return done('roomPromoteType.sendEmail data.event left');
+  }
 
   async.waterfall([
 
@@ -130,35 +140,67 @@ Notification.prototype.sendEmail = function (model, done) {
       switch (model.type) {
         case 'roomop':
           method = emailer.roomOp;
-          data = { username: history.by_user.username, roomname: history.room.name };
+          data = {
+            username: history.by_user.username,
+            roomname: history.room.name
+          };
           break;
         case 'roomdeop':
           method = emailer.roomDeop;
-          data = { username: history.by_user.username, roomname: history.room.name };
+          data = {
+            username: history.by_user.username,
+            roomname: history.room.name
+          };
           break;
         case 'roomkick':
           method = emailer.roomKick;
-          data = { username: history.by_user.username, roomname: history.room.name, reason: (history.data && history.data.reason ? history.data.reason : null) };
+          data = {
+            username: history.by_user.username,
+            roomname: history.room.name,
+            reason: (history.data && history.data.reason
+              ? history.data.reason
+              : null)
+          };
           break;
         case 'roomban':
           method = emailer.roomBan;
-          data = { username: history.by_user.username, roomname: history.room.name, reason: (history.data && history.data.reason ? history.data.reason : null) };
+          data = {
+            username: history.by_user.username,
+            roomname: history.room.name,
+            reason: (history.data && history.data.reason
+              ? history.data.reason
+              : null)
+          };
           break;
         case 'roomdeban':
           method = emailer.roomDeban;
-          data = { username: history.by_user.username, roomname: history.room.name };
+          data = {
+            username: history.by_user.username,
+            roomname: history.room.name
+          };
           break;
         case 'roomvoice':
           method = emailer.roomVoice;
-          data = { username: history.by_user.username, roomname: history.room.name, reason: (history.data && history.data.reason ? history.data.reason : null) };
+          data = {
+            username: history.by_user.username,
+            roomname: history.room.name,
+            reason: (history.data && history.data.reason
+              ? history.data.reason
+              : null)
+          };
           break;
         case 'roomdevoice':
           method = emailer.roomDevoice;
-          data = { username: history.by_user.username, roomname: history.room.name, reason: (history.data && history.data.reason ? history.data.reason : null) };
+          data = {
+            username: history.by_user.username,
+            roomname: history.room.name,
+            reason: (history.data && history.data.reason
+              ? history.data.reason
+              : null)
+          };
           break;
         default:
           return callback('roomPromoteType.sendEmail unknown notification type: ' + model.type);
-          break;
       }
 
       _.bind(method, emailer)(model.user.getEmail(), data, callback);

@@ -4,7 +4,8 @@ var _ = require('underscore');
 var async = require('async');
 
 /**
- * Store history in MongoDB, emit event in corresponding one to one and call callback
+ * Store history in MongoDB, emit event in corresponding one to one and call
+ * callback
  *
  * @param app
  * @param onetoone // {from: String, to: String}
@@ -14,10 +15,11 @@ var async = require('async');
  */
 module.exports = function (app, onetoone, eventName, eventData, callback) {
   var onetoones = [];
-  if (Array.isArray(onetoone))
+  if (Array.isArray(onetoone)) {
     onetoones = onetoone;
-  else
+  } else {
     onetoones.push(onetoone);
+  }
 
   var parallels = [];
   _.each(onetoones, function (one) {
@@ -29,16 +31,17 @@ module.exports = function (app, onetoone, eventName, eventData, callback) {
 
       ed.id = Date.now() + one.from + one.to;
 
-      if (one.from.toString() === one.to.toString())
+      if (one.from.toString() === one.to.toString()) {
         return fn(null);
+      }
 
       app.globalChannelService.pushMessage('connector', eventName, ed, 'user:' + one.to.toString(), {}, function (err) {
-        if (err)
+        if (err) {
           return logger.error('Error while pushing message: ' + err);
+        }
 
         return fn(null);
       });
-
     });
   });
 
@@ -46,5 +49,4 @@ module.exports = function (app, onetoone, eventName, eventData, callback) {
   async.parallel(parallels, function (err, results) {
     return callback(err);
   });
-
 };

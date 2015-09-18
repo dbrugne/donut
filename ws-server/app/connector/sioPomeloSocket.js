@@ -88,7 +88,8 @@ Socket.prototype.sendBatch = function (msgs) {
  * Encode batch msg to client
  */
 var encodeBatch = function (msgs) {
-  var res = '[', msg;
+  var res = '[';
+  var msg;
   for (var i = 0, l = msgs.length; i < l; i++) {
     if (i > 0) {
       res += ',';
