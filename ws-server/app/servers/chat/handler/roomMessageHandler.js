@@ -1,5 +1,5 @@
 'use strict';
-var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
+var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename);
 var async = require('async');
 var _ = require('underscore');
 var roomEmitter = require('../../../util/roomEmitter');
@@ -27,18 +27,24 @@ handler.call = function (data, session, next) {
   async.waterfall([
 
     function check (callback) {
-      if (!data.room_id)
+      if (!data.room_id) {
         return callback('id is mandatory');
+      }
 
-      if (!room)
+      if (!room) {
         return callback('unable to retrieve room from ' + data.room_id);
+      }
 
-      if (room.users.indexOf(user.id) === -1) {
-        return callback('this user ' + user.id + ' is not currently in room ' + room.name);
+      if (!room.isIn(user.id)) {
+        return callback('user : ' + user.username + ' is not currently in room ' + room.name);
       }
 
       if (room.isDevoice(user.id)) {
-        return callback("user is devoiced, he can't send message in room");
+        return callback('user is devoiced, he can\'t send message in room');
+      }
+
+      if (data.special && ['me', 'random'].indexOf(data.special) === -1) {
+        return callback('not allowed special type: ' + data.special);
       }
 
       return callback(null);
@@ -72,6 +78,9 @@ handler.call = function (data, session, next) {
       }
       if (images && images.length) {
         event.images = images;
+      }
+      if (data.special) {
+        event.special = data.special;
       }
 
       roomEmitter(that.app, user, room, 'room:message', event, function (err, sentEvent) {
@@ -140,10 +149,9 @@ handler.call = function (data, session, next) {
   ], function (err) {
     if (err) {
       logger.error('[room:message] ' + err);
-      return next(null, { code: 500, err: err });
+      return next(null, { code: 500, err: 'internal' });
     }
 
     return next(null, { success: true });
   });
-
 };

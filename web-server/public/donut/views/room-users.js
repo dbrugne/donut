@@ -30,7 +30,7 @@ define([
     render: function () {
       debug.start('room-users' + this.model.get('name'));
       // update user count
-      var countHtml = i18next.t('chat.userscount', {count: this.collection.models.length});
+      var countHtml = i18next.t('chat.userscount', {count: this.model.get('users_number')});
       this.$count.html(countHtml);
 
       // redraw user list
@@ -49,7 +49,8 @@ define([
         list: listJSON,
         isOwner: this.model.currentUserIsOwner(),
         isOp: this.model.currentUserIsOp(),
-        isAdmin: this.model.currentUserIsAdmin()
+        isAdmin: this.model.currentUserIsAdmin(),
+        room_id: this.model.get('id')
       });
       this.$list.html(html);
       debug.end('room-users' + that.model.get('name'));

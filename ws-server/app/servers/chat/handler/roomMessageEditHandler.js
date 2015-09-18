@@ -1,5 +1,5 @@
 'use strict';
-var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
+var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename);
 var async = require('async');
 var _ = require('underscore');
 var inputUtil = require('../../../util/input');
@@ -50,7 +50,11 @@ handler.call = function (data, session, next) {
         return callback('event should be room:message: ' + data.event);
       }
 
-      if (event.room != room.id) {
+      if (event.data.special && event.data.special !== 'me') {
+        return callback('only special me could be edited: ' + data.event);
+      }
+
+      if (event.room.toString() !== room.id) {
         return callback('event ' + data.event + ' not correspond to given room ' + room.name);
       }
 
@@ -118,9 +122,9 @@ handler.call = function (data, session, next) {
   ], function (err) {
     if (err) {
       logger.error('[room:message:edit] ' + err);
+      return next(null, { code: 500, err: 'internal' });
     }
 
-    next(null); // even for .notify
+    return next(null, { success: true });
   });
-
 };

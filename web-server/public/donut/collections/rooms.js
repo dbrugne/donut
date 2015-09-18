@@ -31,7 +31,6 @@ define([
       this.listenTo(client, 'room:out', this.onOut);
       this.listenTo(client, 'room:topic', this.onTopic);
       this.listenTo(client, 'room:message', this.onMessage);
-      this.listenTo(client, 'room:me', this.onMe);
       this.listenTo(client, 'room:op', this.onOp);
       this.listenTo(client, 'room:deop', this.onDeop);
       this.listenTo(client, 'room:updated', this.onUpdated);
@@ -39,11 +38,14 @@ define([
       this.listenTo(client, 'user:offline', this.onUserOffline);
       this.listenTo(client, 'room:kick', this.onKick);
       this.listenTo(client, 'room:ban', this.onBan);
+      this.listenTo(client, 'room:disallow', this.onDisallow);
+      this.listenTo(client, 'room:allow', this.onAllow);
       this.listenTo(client, 'room:deban', this.onDeban);
       this.listenTo(client, 'room:voice', this.onVoice);
       this.listenTo(client, 'room:devoice', this.onDevoice);
       this.listenTo(client, 'room:join', this.onJoin);
       this.listenTo(client, 'room:leave', this.onLeave);
+      this.listenTo(client, 'room:leave:block', this.onLeaveBlock);
       this.listenTo(client, 'room:viewed', this.onViewed);
       this.listenTo(client, 'room:message:spam', this.onMessageSpam);
       this.listenTo(client, 'room:message:unspam', this.onMessageUnspam);
@@ -51,19 +53,32 @@ define([
       this.listenTo(client, 'room:typing', this.onTyping);
     },
     onJoin: function (data) {
-      // server ask to client to open this room in IHM
-      this.addModel(data);
+      var model;
+      if ((model = this.get(data.id)) && model.get('blocked')) {
+        var isFocused = model.get('focused');
+        this.remove(model);
+        this.addModel(data);
+        this.trigger('join', {
+          model: this.get(data.id),
+          wasFocused: isFocused
+        }); // focus
+      } else {
+        // server ask to client to open this room in IHM
+        this.addModel(data);
+      }
     },
-    addModel: function (room) {
-      // server confirm that we was joined to the room and give us some data on room
+    addModel: function (room, blocked) {
+      // server confirm that we was joined to the room and give us some data on
+      // room
 
       // prepare model data
-      var owner = (room.owner.user_id) ? new UserModel({
-        id: room.owner.user_id,
-        user_id: room.owner.user_id,
-        username: room.owner.username,
-        avatar: room.owner.avatar
-      }) :
+      var owner = (room.owner.user_id) ?
+        new UserModel({
+          id: room.owner.user_id,
+          user_id: room.owner.user_id,
+          username: room.owner.username,
+          avatar: room.owner.avatar
+        }) :
         new UserModel();
 
       var roomData = {
@@ -77,8 +92,17 @@ define([
         posterblured: room.posterblured,
         color: room.color,
         unviewed: room.unviewed,
+        mode: room.mode,
+        hasPassword: room.hasPassword,
+        blocked: blocked || false,
+        users_number: room.users_number,
         created_at: room.created_at
       };
+
+      if (roomData.blocked === 'banned') {
+        roomData.banned_at = room.banned_at;
+        roomData.banned_reason = room.banned_reason;
+      }
 
       // update model
       var isNew = (this.get(room.id) === undefined);
@@ -130,14 +154,6 @@ define([
 
       model.onMessage(data);
     },
-    onMe: function (data) {
-      var model;
-      if (!data || !data.room_id || !(model = this.get(data.room_id))) {
-        return;
-      }
-
-      model.onMe(data);
-    },
     onOp: function (data) {
       var model;
       if (!data || !data.room_id || !(model = this.get(data.room_id))) {
@@ -179,12 +195,15 @@ define([
       model.onUserOffline(data);
     },
     onKick: function (data) {
-      this._kickBan('kick', data);
+      this._kickBanDisallow('kick', data);
     },
     onBan: function (data) {
-      this._kickBan('ban', data);
+      this._kickBanDisallow('ban', data);
     },
-    _kickBan: function (what, data) {
+    onDisallow: function (data) {
+      this._kickBanDisallow('disallow', data);
+    },
+    _kickBanDisallow: function (what, data) {
       var model;
       if (!data || !data.room_id || !(model = this.get(data.room_id))) {
         return;
@@ -192,8 +211,17 @@ define([
 
       // if i'm the "targeted user" destroy the model/view
       if (currentUser.get('user_id') === data.user_id) {
+        var isFocused = model.get('focused');
+        var blocked = (what === 'ban') ? 'banned' : true;
+        var modelTmp = model.attributes;
+        if (what === 'ban' && data.banned_at) {
+          modelTmp.banned_at = data.banned_at;
+        }
         this.remove(model);
+        this.addModel(modelTmp, blocked);
         this.trigger('kickedOrBanned', {
+          model: this.get(data.room_id),
+          wasFocused: isFocused,
           what: what,
           data: data
         }); // focus + alert
@@ -216,10 +244,35 @@ define([
         data: data
       }));
     },
+    onAllow: function (data) {
+      if (!data || !data.room_id || !(this.get(data.room_id))) {
+        return;
+      }
+
+      if (currentUser.get('user_id') === data.user_id) {
+        client.roomJoin(data.room_id, null, null, function (data) {
+        });
+      }
+    },
     onDeban: function (data) {
       var model;
       if (!data || !data.room_id || !(model = this.get(data.room_id))) {
         return;
+      }
+
+      if (currentUser.get('user_id') === data.user_id) {
+        client.roomJoin(data.room_id, null, null, _.bind(function (response) {
+          if (response.room.mode === 'private') {
+            var isFocused = model.get('focused');
+            var modelTmp = model.attributes;
+            this.remove(model);
+            this.addModel(modelTmp, true);
+            this.trigger('allowed', {
+              model: this.get(data.room_id),
+              wasFocused: isFocused
+            }); // focus + alert
+          }
+        }, this));
       }
 
       model.onDeban(data);
@@ -252,6 +305,14 @@ define([
       if (data.reason && data.reason === 'deleted') {
         this.trigger('deleted', {reason: i18next.t('chat.deletemessage', {name: data.name})});
       }
+    },
+    onLeaveBlock: function (data) {
+      var model;
+      if (!data || !data.room_id || !(model = this.get(data.room_id))) {
+        return;
+      }
+
+      this.remove(model);
     },
     onViewed: function (data) {
       var model;

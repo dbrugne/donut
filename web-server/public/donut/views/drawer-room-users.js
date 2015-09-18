@@ -7,176 +7,129 @@ define([
   'client',
   'models/current-user',
   'views/modal-confirmation',
+  'views/drawer-room-users-table',
   '_templates'
-], function ($, _, Backbone, common, client, currentUser, confirmationView, templates) {
+], function ($, _, Backbone, common, client, currentUser, confirmationView, RoomUsersTableConfirmation, templates) {
   var DrawerRoomUsersView = Backbone.View.extend({
     template: templates['drawer-room-users.html'],
 
+    paginationTemplate: templates['pagination.html'],
+
     id: 'room-users',
 
+    page: 1, // Start on index 1
+
+    paginate: 15, // Number of users display on a page
+
+    nbPages: 0, // Store total number of pages
+
+    currentType: 'users',
+
+    types: ['users', 'op', 'allowed', 'ban', 'devoice'],
+
     events: {
-      'click .op': 'opUser',
-      'click .deop': 'deopUser',
-      'click .kick': 'kickUser',
-      'click .ban': 'banUser',
-      'click .deban': 'debanUser',
-      'click .voice': 'voiceUser',
+      'change select': 'onChangeType',
+      'click i.icon-search': 'onSearch',
+      'keyup input[type=text]': 'onSearchEnter',
+      'click .pagination>li>a': 'onChangePage'
     },
 
     initialize: function (options) {
       this.model = options.model;
 
-      this.render();
-    },
-    render: function () {
-      // render spinner only
-      this.$el.html(templates['spinner.html']);
+      this.listenTo(client, 'room:ban', this.render);
+      this.listenTo(client, 'room:deban', this.render);
+      this.listenTo(client, 'room:voice', this.render);
+      this.listenTo(client, 'room:devoice', this.render);
+      this.listenTo(client, 'room:kick', this.render);
+      this.listenTo(client, 'room:op', this.render);
+      this.listenTo(client, 'room:deop', this.render);
 
+      var isOwner = this.model.currentUserIsOwner();
+      var isOp = this.model.currentUserIsOp();
+      var isAdmin = this.model.currentUserIsAdmin();
+
+      if (this.model.get('mode') !== 'private' || (!isOwner && !isAdmin && !isOp)) {
+        this.types = _.without(this.types, 'allowed');
+      } if (!isOwner && !isAdmin && !isOp) {
+        this.types = _.without(this.types, 'ban', 'devoice');
+      }
+
+      this.$el.html(this.template({room: this.model.toJSON(), owner: this.model.get('owner').toJSON(), type: this.types}));
+      this.numberUsers = this.$el.find('.number');
+      this.search = this.$el.find('input[type=text]');
+      this.pagination = this.$el.find('.paginate');
+      this.typeSelected = this.$el.find('#type-select');
+
+      this.tableView = new RoomUsersTableConfirmation({
+        el: this.$('.table-users'),
+        model: this.model
+      });
+
+      this.render(null);
+    },
+
+    render: function () {
       // ask for data
       var that = this;
-      client.roomRead(this.model.get('id'), null, function (err, data) {
-        if (!err)
-          that.onResponse(data);
+      var searchAttributes = {
+        type: this.currentType,
+        searchString: this.search.val(),
+        selector: {start: (this.page - 1) * this.paginate, length: this.paginate}
+      };
+      client.roomUsers(this.model.get('id'), searchAttributes, function (data) {
+        that.onResponse(data);
       });
-
       return this;
     },
-    onResponse: function (room) {
-      if (room.color)
-        this.trigger('color', room.color);
+    onResponse: function (data) {
+      this.tableView.render(data.users);
+      this.numberUsers.text(data.count);
+      this.pagination.html(this.paginationTemplate({
+        currentPage: this.page,
+        totalNbPages: Math.ceil(data.count / this.paginate),
+        nbPages: 5
+      }));
 
-      room.isOwner = (room.owner)
-        ? (room.owner.user_id == currentUser.get('user_id'))
-          ? true
-          : false
-        : false;
+      this.initializeTooltips();
+    },
+    onChangeType: function (event) {
+      this.page = 1;
+      this.search.val('');
+      this.currentType = this.typeSelected.val();
+      this.render();
+    },
+    onSearch: function (event) {
+      this.page = 1;
+      this.render();
+    },
+    onSearchEnter: function (event) {
+      if (event.keyCode === 13) {
+        this.page = 1;
+        this.render();
+      }
+    },
+    onChangePage: function (event) {
+      event.preventDefault();
 
-      room.owner.avatarUrl = common.cloudinarySize(room.owner.avatar, 20);
+      var id = $(event.currentTarget).data('identifier');
+      if (!id) {
+        return;
+      }
 
-      // owner and ops aren't displayed in users list
-      var notDisplayed = _.map(room.op, function (op) {
-        return op.user_id;
-      });
-      if (room.owner)
-        notDisplayed.push(room.owner.user_id);
-      var users = _.filter(room.users, function (u) {
-        return (notDisplayed.indexOf(u.user_id) === -1);
-      });
-      room.users = users;
-
-      _.each(room.users, function (element, index, list) {
-        list[index].avatarUrl = common.cloudinarySize(element.avatar, 20);
-      });
-      _.each(room.op, function (element, index, list) {
-        list[index].avatarUrl = common.cloudinarySize(element.avatar, 20);
-      });
-      _.each(room.devoices, function (element, index, list) {
-        list[index].avatarUrl = common.cloudinarySize(element.avatar, 20);
-      });
-      _.each(room.bans, function (element, index, list) {
-        list[index].avatarUrl = common.cloudinarySize(element.avatar, 20);
-      });
-
-      var html = this.template({room: room});
-      this.$el.html(html);
+      if (id === 'previous') {
+        this.page -= 1;
+      } else if (id === 'next') {
+        this.page += 1;
+      } else {
+        this.page = parseInt(id, 10);
+      }
+      this.render();
     },
 
-    /**
-     * User actions methods
-     */
-
-    opUser: function (event) {
-      event.preventDefault();
-      if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin())
-        return false;
-
-      var userId = $(event.currentTarget).data('userId');
-      if (!userId)
-        return;
-
-      var that = this;
-      confirmationView.open({}, function () {
-        client.roomOp(that.model.get('id'), userId, null);
-        that.render();
-      });
-    },
-    deopUser: function (event) {
-      event.preventDefault();
-      if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin())
-        return false;
-
-      var userId = $(event.currentTarget).data('userId');
-      if (!userId)
-        return;
-
-      var that = this;
-      confirmationView.open({}, function () {
-        client.roomDeop(that.model.get('id'), userId, null);
-        that.render();
-      });
-    },
-    kickUser: function (event) {
-      event.preventDefault();
-      if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin())
-        return false;
-
-      var userId = $(event.currentTarget).data('userId');
-      if (!userId)
-        return;
-
-      var that = this;
-      confirmationView.open({ input: true }, function (reason) {
-        client.roomKick(that.model.get('id'), userId, null, reason);
-        that.render();
-      });
-    },
-    banUser: function (event) {
-      event.preventDefault();
-      if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin())
-        return false;
-
-      var userId = $(event.currentTarget).data('userId');
-      if (!userId)
-        return;
-
-      var that = this;
-      confirmationView.open({ input: true }, function (reason) {
-        client.roomBan(that.model.get('id'), userId, null, reason);
-        that.render();
-      });
-    },
-    debanUser: function (event) {
-      event.preventDefault();
-      if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin())
-        return false;
-
-      var userId = $(event.currentTarget).data('userId');
-      if (!userId)
-        return;
-
-      var that = this;
-      confirmationView.open({}, function () {
-        client.roomDeban(that.model.get('id'), userId, null);
-        that.render();
-      });
-    },
-    voiceUser: function (event) {
-      event.preventDefault();
-      if (!this.model.currentUserIsOp() && ! this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin())
-        return false;
-
-      var userId = $(event.currentTarget).data('userId');
-      if (!userId)
-        return;
-
-      var that = this;
-      confirmationView.open({}, function () {
-        client.roomVoice(that.model.get('id'), userId, null);
-        that.render();
-      });
+    initializeTooltips: function () {
+      this.$el.find('[data-toggle="tooltip"]').tooltip();
     }
-
   });
-
   return DrawerRoomUsersView;
 });

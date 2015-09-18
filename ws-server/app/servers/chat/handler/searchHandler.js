@@ -1,5 +1,5 @@
 'use strict';
-var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
+var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename);
 var search = require('../../../../../shared/util/search');
 
 var Handler = function (app) {
@@ -36,7 +36,7 @@ handler.call = function (data, session, next) {
   search(data.search, searchInUsers, searchInRooms, limit, skip, lightSearch, function (err, results) {
     if (err) {
       logger('[search] ' + err);
-      return next(null, { code: 500, err: err });
+      return next(null, { code: 500, err: 'internal' });
     }
 
     return next(null, results);

@@ -27,9 +27,10 @@ define([
 
       // ask for data
       var that = this;
-      client.roomRead(this.roomId, null, function (err, data) {
-        if (!err)
+      client.roomRead(this.roomId, null, function (data) {
+        if (!data.err) {
           that.onResponse(data);
+        }
       });
     },
     render: function () {
@@ -37,19 +38,22 @@ define([
       this.$el.html(templates['spinner.html']);
       return this;
     },
+    _remove: function () {
+      this.colorPicker.remove();
+      this.avatarUploader.remove();
+      this.posterUploader.remove();
+      this.remove();
+    },
     onResponse: function (room) {
-      if (room.color)
+      if (room.color) {
         this.trigger('color', room.color);
+      }
 
       room.isOwner = (room.owner)
-        ? (room.owner.user_id == currentUser.get('user_id'))
-          ? true
-          : false
+        ? (room.owner.user_id === currentUser.get('user_id'))
         : false;
 
-      room.isAdmin = (currentUser.get('admin') === true)
-        ? true
-        : false;
+      room.isAdmin = (currentUser.get('admin') === true);
 
       var currentAvatar = room.avatar;
 
@@ -57,24 +61,24 @@ define([
       this.$el.html(html);
 
       // description
-      this.$el.find('#roomDescription').maxlength({
-        counterContainer: this.$el.find('#roomDescription').siblings('.help-block').find('.counter'),
-        text: i18next.t('edit.left')
+      this.$('#roomDescription').maxlength({
+        counterContainer: this.$('#roomDescription').siblings('.help-block').find('.counter'),
+        text: i18next.t('chat.form.common.edit.left')
       });
 
       // website
-      this.$website = this.$el.find('input[name=website]');
+      this.$website = this.$('input[name=website]');
 
       // color
-      var colorPicker = new ColorPicker({
+      this.colorPicker = new ColorPicker({
         color: room.color,
         name: 'color',
-        el: this.$el.find('.room-color').first()
+        el: this.$('.room-color').first()
       });
 
       // avatar
       this.avatarUploader = new ImageUploader({
-        el: this.$el.find('.room-avatar').first(),
+        el: this.$('.room-avatar').first(),
         current: currentAvatar,
         tags: 'room,avatar',
         field_name: 'avatar',
@@ -86,7 +90,7 @@ define([
 
       // poster
       this.posterUploader = new ImageUploader({
-        el: this.$el.find('.room-poster').first(),
+        el: this.$('.room-poster').first(),
         current: room.poster,
         tags: 'room,poster',
         field_name: 'poster',
@@ -95,39 +99,42 @@ define([
         cropping_aspect_ratio: 0.36, // portrait
         success: _.bind(this.onRoomPosterUpdate, this)
       });
+
+      this.initializeTooltips();
     },
     onSubmit: function (event) {
       event.preventDefault();
 
-      if (this.checkWebsite() !== true)
+      if (this.checkWebsite() !== true) {
         return;
+      }
 
       var updateData = {
-        description: this.$el.find('textarea[name=description]').val(),
+        description: this.$('textarea[name=description]').val(),
         website: this.$website.val(),
-        color: this.$el.find('input[name=color]').val()
+        color: this.$('input[name=color]').val()
       };
 
       if (currentUser.get('admin') === true) {
-        updateData.visibility = (this.$el.find('input[name=visibility]:checked').val() == 'true')
-          ? true
-          : false;
-        updateData.priority = this.$el.find('input[name=priority]').val();
+        updateData.visibility = (this.$('input[name=visibility]:checked').val() === 'true');
+        updateData.priority = this.$('input[name=priority]').val();
       }
 
-      if (this.avatarUploader.data)
+      if (this.avatarUploader.data) {
         updateData.avatar = this.avatarUploader.data;
+      }
 
-      if (this.posterUploader.data)
+      if (this.posterUploader.data) {
         updateData.poster = this.posterUploader.data;
+      }
 
-      var that = this;
-      client.roomUpdate(this.roomId, updateData, function (data) {
-        that.$el.find('.errors').hide();
-        if (data.err)
-          return that.editError(data);
-        that.trigger('close');
-      });
+      client.roomUpdate(this.roomId, updateData, _.bind(function (data) {
+        this.$('.errors').hide();
+        if (data.err) {
+          return this.editError(data);
+        }
+        this.trigger('close');
+      }, this));
     },
 
     onRoomAvatarUpdate: function (data) {
@@ -137,8 +144,9 @@ define([
       var that = this;
       client.roomUpdate(this.roomId, updateData, function (d) {
         that.$el.find('.errors').hide();
-        if (d.err)
+        if (d.err) {
           that.editError(d);
+        }
       });
     },
 
@@ -149,19 +157,22 @@ define([
       var that = this;
       client.roomUpdate(this.roomId, updateData, function (d) {
         that.$el.find('.errors').hide();
-        if (d.err)
+        if (d.err) {
           that.editError(d);
+        }
       });
     },
 
     checkWebsite: function () {
       var website = this.$website.val();
 
-      if (website && (website.length < 5 || website.length > 255))
-        return this.$el.find('.errors').html(t('edit.errors.website-size')).show();
+      if (website && (website.length < 5 || website.length > 255)) {
+        return this.$('.errors').html(i18next.t('chat.form.errors.website-size')).show();
+      }
 
-      if (website && !/^[^\s]+\.[^\s]+$/.test(website))
-        return this.$el.find('.errors').html(t('edit.errors.website-url')).show();
+      if (website && !/^[^\s]+\.[^\s]+$/.test(website)) {
+        return this.$('.errors').html(i18next.t('chat.form.errors.website-url')).show();
+      }
 
       return true;
     },
@@ -169,10 +180,15 @@ define([
     editError: function (dataErrors) {
       var message = '';
       _.each(dataErrors.err, function (error) {
-        message += t('edit.errors.' + error) + '<br>';
+        message += i18next.t('chat.form.errors.' + error) + '<br>';
       });
-      this.$el.find('.errors').html(message).show();
+      this.$('.errors').html(message).show();
+    },
+
+    initializeTooltips: function () {
+      this.$el.find('[data-toggle="tooltip"]').tooltip();
     }
+
   });
 
   return DrawerRoomEditView;

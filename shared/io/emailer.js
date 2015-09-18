@@ -1,12 +1,11 @@
 'use strict';
-var debug = require('debug')('donut:emailer');
+var logger = require('../util/logger').getLogger('emailer', __filename);
 var _ = require('underscore');
 var nodemailer = require('nodemailer');
 var underscoreTemplate = require('../util/underscoreTemplate');
 var i18next = require('../util/i18next');
 var conf = require('../../config/index');
 var mailgunTransport = require('nodemailer-mailgun-transport');
-var path = require('path');
 
 var emailer = {};
 module.exports = emailer;
@@ -38,22 +37,28 @@ var transporter = nodemailer.createTransport(mailgunTransport({
  * @param callback
  */
 function sendEmail (to, template, data, callback) {
-  if (!to)
+  if (!to) {
     return callback('"to" param is mandatory');
-  if (!template)
+  }
+  if (!template) {
     return callback('"template" param is mandatory');
-  if (!data.subject)
+  }
+  if (!data.subject) {
     return callback('"subject" param is mandatory');
-  if (!_.isObject(data))
+  }
+  if (!_.isObject(data)) {
     return callback('Third argument should be an object with email data');
+  }
 
   // stub in non-production environment (@debug)
-  if (process.env.NODE_ENV !== 'production')
+  if (process.env.NODE_ENV !== 'production') {
     to = conf.email.fake.replace('__name__', to.substr(0, to.indexOf('@')));
+  }
 
   renderer.render(template, data, function (err, html) {
-    if (err)
+    if (err) {
       return callback(err);
+    }
 
     var options = {
       from: conf.email.from.name + ' <' + conf.email.from.email + '>',
@@ -61,17 +66,18 @@ function sendEmail (to, template, data, callback) {
       subject: data.subject,
       html: html
     };
-    if (data.text)
+    if (data.text) {
       options.text = data.text;
+    }
 
     process.nextTick(function () {
       transporter.sendMail(options, function (err, info) {
         if (err) {
-          debug('Error while sending email to "' + options.to + '": ' + err);
+          logger.error('Error while sending email to "' + options.to + '": ' + err);
           return callback(err);
         }
 
-        debug('Message sent', info);
+        logger.debug('Message sent', info);
         return callback(null);
       });
     });
@@ -117,9 +123,12 @@ emailer.roomOp = function (to, data, callback) {
   sendEmail(to, 'emails/room-op.html', {
     username: data.username,
     roomname: data.roomname.replace('#', ''),
-    title: i18next.t('email.roomop.content.title', {roomname: data.roomname.replace('#', '')}),
-    email_heading_action: i18next.t('email.roomop.content.action', {fqdn: conf.fqdn, username: data.username}),
-    subject: i18next.t('email.roomop.subject', {roomname: data.roomname.replace('#', '')})
+    title: i18next.t('email.roomop.content.title', { roomname: data.roomname.replace('#', '') }),
+    email_heading_action: i18next.t('email.roomop.content.action', {
+      fqdn: conf.fqdn,
+      username: data.username
+    }),
+    subject: i18next.t('email.roomop.subject', { roomname: data.roomname.replace('#', '') })
   }, callback);
 };
 
@@ -128,7 +137,10 @@ emailer.roomDeop = function (to, data, callback) {
     username: data.username,
     roomname: data.roomname.replace('#', ''),
     title: i18next.t('email.roomdeop.content.title', { roomname: data.roomname.replace('#', '') }),
-    email_heading_action: i18next.t('email.roomdeop.content.action', { fqdn: conf.fqdn, username: data.username }),
+    email_heading_action: i18next.t('email.roomdeop.content.action', {
+      fqdn: conf.fqdn,
+      username: data.username
+    }),
     subject: i18next.t('email.roomdeop.subject', { roomname: data.roomname.replace('#', '') })
   }, callback);
 };
@@ -148,8 +160,8 @@ emailer.roomBan = function (to, data, callback) {
     username: data.username,
     roomname: data.roomname.replace('#', ''),
     reason: data.reason,
-    title: i18next.t('email.roomban.content.title', {roomname: data.roomname.replace('#', '')}),
-    subject: i18next.t('email.roomban.subject', {roomname: data.roomname.replace('#', '')})
+    title: i18next.t('email.roomban.content.title', { roomname: data.roomname.replace('#', '') }),
+    subject: i18next.t('email.roomban.subject', { roomname: data.roomname.replace('#', '') })
   }, callback);
 };
 
@@ -158,9 +170,12 @@ emailer.roomDeban = function (to, data, callback) {
     username: data.username,
     roomname: data.roomname.replace('#', ''),
     reason: data.reason,
-    title: i18next.t('email.roomdeban.content.title', {roomname: data.roomname.replace('#', '')}),
-    email_heading_action: i18next.t('email.roomdeban.content.action', {fqdn: conf.fqdn, username: data.username}),
-    subject: i18next.t('email.roomdeban.subject', {roomname: data.roomname.replace('#', '')})
+    title: i18next.t('email.roomdeban.content.title', { roomname: data.roomname.replace('#', '') }),
+    email_heading_action: i18next.t('email.roomdeban.content.action', {
+      fqdn: conf.fqdn,
+      username: data.username
+    }),
+    subject: i18next.t('email.roomdeban.subject', { roomname: data.roomname.replace('#', '') })
   }, callback);
 };
 
@@ -168,9 +183,12 @@ emailer.roomVoice = function (to, data, callback) {
   sendEmail(to, 'emails/room-voice.html', {
     username: data.username,
     roomname: data.roomname.replace('#', ''),
-    title: i18next.t('email.roomvoice.content.title', {roomname: data.roomname.replace('#', '')}),
-    email_heading_action: i18next.t('email.roomvoice.content.action', {fqdn: conf.fqdn, username: data.username}),
-    subject: i18next.t('email.roomvoice.subject', {roomname: data.roomname.replace('#', '')})
+    title: i18next.t('email.roomvoice.content.title', { roomname: data.roomname.replace('#', '') }),
+    email_heading_action: i18next.t('email.roomvoice.content.action', {
+      fqdn: conf.fqdn,
+      username: data.username
+    }),
+    subject: i18next.t('email.roomvoice.subject', { roomname: data.roomname.replace('#', '') })
   }, callback);
 };
 
@@ -179,9 +197,12 @@ emailer.roomDevoice = function (to, data, callback) {
     username: data.username,
     roomname: data.roomname.replace('#', ''),
     reason: data.reason,
-    title: i18next.t('email.roomdevoice.content.title', {roomname: data.roomname.replace('#', '')}),
-    email_heading_action: i18next.t('email.roomdevoice.content.action', {fqdn: conf.fqdn, username: data.username}),
-    subject: i18next.t('email.roomdevoice.subject', {roomname: data.roomname.replace('#', '')})
+    title: i18next.t('email.roomdevoice.content.title', { roomname: data.roomname.replace('#', '') }),
+    email_heading_action: i18next.t('email.roomdevoice.content.action', {
+      fqdn: conf.fqdn,
+      username: data.username
+    }),
+    subject: i18next.t('email.roomdevoice.subject', { roomname: data.roomname.replace('#', '') })
   }, callback);
 };
 
@@ -196,8 +217,14 @@ emailer.roomJoin = function (to, from, room, callback) {
   sendEmail(to, 'emails/room-join.html', {
     username: from,
     roomname: room.replace('#', ''),
-    title: i18next.t('email.roomjoin.content.title', {username: from, roomname: room.replace('#', '')}),
-    subject: i18next.t('email.roomjoin.subject', {username: from, roomname: room.replace('#', '')})
+    title: i18next.t('email.roomjoin.content.title', {
+      username: from,
+      roomname: room.replace('#', '')
+    }),
+    subject: i18next.t('email.roomjoin.subject', {
+      username: from,
+      roomname: room.replace('#', '')
+    })
   }, callback);
 };
 
@@ -205,9 +232,17 @@ emailer.roomTopic = function (to, from, room, topic, callback) {
   sendEmail(to, 'emails/room-topic.html', {
     username: from,
     roomname: room.replace('#', ''),
-    title: i18next.t('email.roomtopic.content.title', {topic: topic, username: from, fqdn: conf.fqdn, roomname: room.replace('#', '')}),
+    title: i18next.t('email.roomtopic.content.title', {
+      topic: topic,
+      username: from,
+      fqdn: conf.fqdn,
+      roomname: room.replace('#', '')
+    }),
     topic: topic,
-    subject: i18next.t('email.roomtopic.subject', {username: from, roomname: room.replace('#', '')})
+    subject: i18next.t('email.roomtopic.subject', {
+      username: from,
+      roomname: room.replace('#', '')
+    })
   }, callback);
 };
 
@@ -216,8 +251,14 @@ emailer.userMention = function (to, events, from, room, callback) {
     events: events,
     username: from,
     roomname: room.replace('#', ''),
-    title: i18next.t('email.usermention.content.title', {username: from, roomname: room.replace('#', '')}),
-    subject: i18next.t('email.usermention.subject', {username: from, roomname: room.replace('#', '')})
+    title: i18next.t('email.usermention.content.title', {
+      username: from,
+      roomname: room.replace('#', '')
+    }),
+    subject: i18next.t('email.usermention.subject', {
+      username: from,
+      roomname: room.replace('#', '')
+    })
   }, callback);
 };
 

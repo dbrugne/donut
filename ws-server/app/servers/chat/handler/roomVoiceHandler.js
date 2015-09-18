@@ -1,5 +1,5 @@
 'use strict';
-var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
+var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename);
 var async = require('async');
 var _ = require('underscore');
 var roomEmitter = require('../../../util/roomEmitter');
@@ -25,37 +25,46 @@ handler.call = function (data, session, next) {
   async.waterfall([
 
     function check (callback) {
-      if (!data.room_id)
+      if (!data.room_id) {
         return callback('room id is mandatory');
+      }
 
-      if (!data.user_id && !data.username)
+      if (!data.user_id && !data.username) {
         return callback('user id is mandatory');
+      }
 
-      if (!room)
+      if (!room) {
         return callback('unable to retrieve room ' + data.room_id);
+      }
 
-      if (!room.isOwnerOrOp(user.id) && session.settings.admin !== true)
+      if (!room.isOwnerOrOp(user.id) && session.settings.admin !== true) {
         return callback('this user ' + user.id + " isn't able to voice another user in " + room.name);
+      }
 
-      if (!devoicedUser)
+      if (!devoicedUser) {
         return callback('unable to retrieve devoicedUser: ' + user.id);
+      }
 
-      if (room.isOwner(devoicedUser))
+      if (room.isOwner(devoicedUser)) {
         return callback(devoicedUser.username + ' is owner and can not be voiced in ' + room.name);
+      }
 
-      if (!room.isDevoice(devoicedUser.id))
+      if (!room.isDevoice(devoicedUser.id)) {
         return callback('user ' + devoicedUser.username + ' is already voiced in ' + room.name);
+      }
 
       return callback(null);
     },
 
     function persist (callback) {
-      if (!room.devoices || !room.devoices.length)
+      if (!room.devoices || !room.devoices.length) {
         return callback('there is no user to devoice in this room: ' + room.name);
+      }
 
       var subDocument = _.find(room.devoices, function (devoice) {
-        if (devoice.user.toString() == devoicedUser.id)
+        if (devoice.user.toString() == devoicedUser.id) {
           return true;
+        }
       });
       room.devoices.id(subDocument._id).remove();
       room.save(function (err) {
@@ -83,10 +92,9 @@ handler.call = function (data, session, next) {
   ], function (err) {
     if (err) {
       logger.error('[room:voice] ' + err);
-      return next(null, {code: 500, err: err});
+      return next(null, {code: 500, err: 'internal'});
     }
 
     next(null, { success: true });
   });
-
 };

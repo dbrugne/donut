@@ -12,10 +12,12 @@ define([
   'i18next',
   'client',
   'models/current-user',
+  'views/events-viewed',
+  'views/events-history',
   'views/message-edit',
   'views/window',
   '_templates'
-], function ($, _, Backbone, app, donutDebug, keyboard, common, EventModel, moment, i18next, client, currentUser, MessageEditView, windowView, templates) {
+], function ($, _, Backbone, app, donutDebug, keyboard, common, EventModel, moment, i18next, client, currentUser, EventsViewedView, EventsHistoryView, MessageEditView, windowView, templates) {
   var debug = donutDebug('donut:events');
 
   var EventsView = Backbone.View.extend({
@@ -34,31 +36,44 @@ define([
       'keydown .form-message-edit': 'onPrevOrNextFormEdit'
     },
 
-    historyLoading: false,
+    scrollTopTimeout: null,
 
-    historyNoMore: false,
+    scrollVisibleTimeout: null,
 
-    scrollTopTimeout: false,
-    scrollVisibleTimeout: false,
-
-    scrollWasOnBottom: true, // ... before unfocus (scroll position is not available when discussion is hidden (default: true, for first focus)
-
-    keepMaxEventsOnCleanup: 500,
+    scrollWasOnBottom: true, // ... before unfocus (scroll position is not
+                             // available when discussion is hidden (default:
+                             // true, for first focus)
 
     initialize: function () {
+      this.listenTo(this.model, 'change:focused', this.onFocusChange);
       this.listenTo(this.model, 'windowRefocused', this.onScroll);
       this.listenTo(this.model, 'freshEvent', this.addFreshEvent);
-      this.listenTo(this.model, 'viewed', this.onViewed);
       this.listenTo(this.model, 'messageSpam', this.onMarkedAsSpam);
       this.listenTo(this.model, 'messageUnspam', this.onMarkedAsUnspam);
       this.listenTo(this.model, 'messageEdit', this.onMessageEdited);
       this.listenTo(this.model, 'editMessageClose', this.onEditMessageClose);
-      this.listenTo(this.model, 'clearHistory', this.onClearHistory);
+      this.listenTo(this.model, 'messageSent', this.scrollDown);
+      this.listenTo(this.model, 'editPreviousInput', this.pushUpFromInput);
       this.listenTo(client, 'admin:message', this.onAdminMessage);
 
-      debug.start('discussion-events' + this.model.getIdentifier());
       this.render();
-      debug.end('discussion-events' + this.model.getIdentifier());
+
+      this.eventsViewedView = new EventsViewedView({
+        el: this.$scrollable,
+        model: this.model
+      });
+
+      this.eventsHistoryView = new EventsHistoryView({
+        el: this.$el,
+        model: this.model
+      });
+
+      this.listenTo(this.eventsHistoryView, 'addBatchEvents', _.bind(function (data) {
+        this.addBatchEvents(data.history, data.more);
+      }, this));
+      this.listenTo(this.eventsHistoryView, 'scrollDown', _.bind(function () {
+        this.scrollDown();
+      }, this));
     },
     render: function () {
       // render view
@@ -75,8 +90,6 @@ define([
 
       this.$scrollable = this.$el;
       this.$scrollableContent = this.$scrollable.find('.scrollable-content');
-      this.$pad = this.$scrollableContent.find('.pad');
-      this.$loader = this.$scrollableContent.find('.loader');
       this.$realtime = this.$scrollableContent.find('.realtime');
 
       this.$goToTop = this.$el.find('.go-to-top');
@@ -90,8 +103,27 @@ define([
       this.scrollDown();
     },
     _remove: function () {
+      this.eventsViewedView.remove();
+      this.eventsHistoryView.remove();
       this._scrollTimeoutCleanup();
       this.remove();
+    },
+    onFocusChange: function () {
+      if (this.model.get('focused')) {
+        if (this.scrollWasOnBottom) {
+          // will trigger visible element detection implicitly
+          this.scrollDown();
+        } else {
+          this.onScroll();
+        }
+        this.scrollWasOnBottom = false;
+      } else {
+        // persist scroll position before hiding
+        this.scrollWasOnBottom = this.isScrollOnBottom();
+      }
+    },
+    isVisible: function () {
+      return !(!this.model.get('focused') || !windowView.focused);
     },
 
     /** ***************************************************************************************************************
@@ -99,6 +131,7 @@ define([
      * Scroll methods
      *
      *****************************************************************************************************************/
+
     onScroll: function () {
       // cleanup scroll timeout
       this._scrollTimeoutCleanup();
@@ -107,7 +140,8 @@ define([
       var bottom = this._scrollBottomPosition();
 
       // toggle the "go to top and bottom" links
-      if (bottom > 100) { // content should be longer than 100px of viewport to avoid link display for few pixels
+      if (bottom > 100) { // content should be longer than 100px of viewport to avoid link display for
+        // few pixels
         if (currentScrollPosition < 30) {
           this.$goToTop.hide();
         } else {
@@ -128,32 +162,33 @@ define([
       var that = this;
 
       // hit the top and history could be loaded, setTimeout
-      if (currentScrollPosition <= 0 && !this.historyNoMore) {
-        this.toggleHistoryLoader('loading');
+      if (currentScrollPosition <= 0 && !this.eventsHistoryView.getHistoryNoMore()) {
+        this.eventsHistoryView.toggleHistoryLoader('loading');
         this.scrollTopTimeout = setTimeout(function () {
           if (that.$scrollable.scrollTop() <= 0) {
-            that.requestHistory('top');
+            that.eventsHistoryView.requestHistory('top');
           }
         }, 1500);
       }
 
       // everywhere
       this.scrollVisibleTimeout = setTimeout(function () {
+        // scroll haven't change until timeout
         if (that.$scrollable.scrollTop() === currentScrollPosition) {
-          // scroll haven't change until timeout
-          that.markVisibleAsViewed();
+          if (that.isVisible()) {
+            that.eventsViewedView.markVisibleAsViewed();
+          }
         }
       }, 2000);
-
     },
     _scrollTimeoutCleanup: function () {
       if (this.scrollTopTimeout) {
         clearInterval(this.scrollTopTimeout);
-        this.scrollTopTimeout = false;
+        this.scrollTopTimeout = null;
       }
       if (this.scrollVisibleTimeout) {
         clearInterval(this.scrollVisibleTimeout);
-        this.scrollVisibleTimeout = false;
+        this.scrollVisibleTimeout = null;
       }
     },
     _scrollBottomPosition: function () {
@@ -164,229 +199,25 @@ define([
     isScrollOnBottom: function () {
       var scrollMargin = 10;
       if (this.messageUnderEdition) {
-        scrollMargin = this.messageUnderEdition.$el.height(); // @todo yls this logic is really needed? Are you sure this is not needed only for "last" .event edition and not for all event edition?
+        // @todo yls this logic is really needed?
+        // Are you sure this is not needed only for "last" .event edition
+        // and not for all event edition?
+        scrollMargin = this.messageUnderEdition.$el.height();
       }
 
-      var bottom = this._scrollBottomPosition() - scrollMargin; // add a 10px margin
-      return (this.$scrollable.scrollTop() >= bottom); // if get current position, we are on bottom
+      // add a 10px margin
+      var bottom = this._scrollBottomPosition() - scrollMargin;
+
+      // if get current position, we are on bottom
+      return (this.$scrollable.scrollTop() >= bottom);
     },
     scrollDown: function () {
       var bottom = this._scrollBottomPosition();
       this.$scrollable.scrollTop(bottom);
     },
     scrollTop: function () {
-      var targetTop = this.$loader.position().top;
-      this.$scrollable.scrollTop(targetTop - 8); // add a 8px margin
-    },
-
-    /** **************************************************************************************************************
-     *
-     * Visible elements detection
-     *
-     *****************************************************************************************************************/
-    computeVisibleElements: function (callback) {
-      var start = Date.now();
-
-      var contentHeight = this.$scrollableContent.height();
-      var topLimit = this.$scrollable.offset().top;
-      var bottomLimit = topLimit + this.$scrollable.height();
-
-      var $items = this.$scrollableContent.find('.block.message .event.unviewed, .block.topic .event.unviewed');
-      if (!$items.length) {
-        return debug('Not enough .event.unviewed to compute visible elements');
-      }
-      $items.removeClass('visible topElement bottomElement first big'); // @debug
-
-      // find the first visible element
-      var $firstVisibleElement, firstVisibleIndex, $nextElement, $previousElement;
-      var candidateIndex = Math.floor(topLimit * $items.length / contentHeight); // optimistic way to find -in theory- the closest
-      var $candidateElement = $items.eq(candidateIndex);
-      var visibility = this._isElementFullyVisibleInViewport(topLimit, bottomLimit, $candidateElement);
-      debug($candidateElement.attr('id') + ' vib:', visibility);
-      if (visibility === 'ok') {
-        $firstVisibleElement = $candidateElement;
-        firstVisibleIndex = candidateIndex;
-        debug('we have visible element on first try');
-      } else if (visibility === 'big') {
-        // mark $candidateElement as top and stop
-        $firstVisibleElement = $candidateElement;
-        firstVisibleIndex = candidateIndex;
-        debug('first is big');
-
-      } else if (visibility === 'next') {
-        var _visibility;
-        // loop to find next 'ok'
-        for (var nextIndex = candidateIndex + 1; nextIndex < $items.length; nextIndex++) {
-          $nextElement = $items.eq(nextIndex);
-          _visibility = this._isElementFullyVisibleInViewport(topLimit, bottomLimit, $nextElement);
-          if (_visibility === 'ok' || _visibility === 'big') {
-            $firstVisibleElement = $nextElement;
-            firstVisibleIndex = nextIndex;
-            debug('$topCandidate found in next loop', $firstVisibleElement);
-            break;
-          } else {
-            $candidateElement = $nextElement;
-            candidateIndex = nextIndex;
-          }
-        }
-
-      } else if (visibility === 'previous') {
-        // loop to find previous 'ok'
-        for (var previousIndex = candidateIndex - 1; previousIndex >= 0; previousIndex--) {
-          $previousElement = $items.eq(previousIndex);
-          _visibility = this._isElementFullyVisibleInViewport(topLimit, bottomLimit, $previousElement);
-          if (_visibility === 'ok' || _visibility === 'big') {
-            $firstVisibleElement = $previousElement;
-            firstVisibleIndex = previousIndex;
-            break;
-          } else {
-            $candidateElement = $previousElement;
-            candidateIndex = previousIndex;
-          }
-        }
-
-      } else {
-        // heu??
-        debug(visibility, 'heu');
-      }
-
-      // no element is fully visible
-      if (!$firstVisibleElement) {
-        debug('no element fully visible found');
-        return callback([]);
-      }
-
-      // decorate list
-      $firstVisibleElement.addClass('first');
-      var $elements = this._listFullyVisibleElementsInViewport(topLimit, bottomLimit, $items, $firstVisibleElement, firstVisibleIndex);
-      $elements[0].addClass('topElement');
-      $elements[($elements.length - 1)].addClass('bottomElement');
-      var visibleElementIds = [];
-      $.each($elements, function () {
-        $(this).addClass('visible');
-        visibleElementIds.push($(this).attr('id'));
-      });
-
-      var duration = Date.now() - start;
-      debug('Current scroll position is ' + (topLimit - 5) + '/' +
-        (contentHeight - this.$scrollable.height()) +
-        ' ... (in ' + duration + 'ms)');
-
-      return callback(visibleElementIds);
-    },
-    _isElementFullyVisibleInViewport: function (topLimit, bottomLimit, $e) {
-      var elementTop = $e.offset().top;
-      var elementBottom = elementTop + $e.outerHeight() - 10; // accept a 10 px margin
-
-      var v = '';
-      if (elementTop <= topLimit && elementBottom >= bottomLimit) {
-        // top is above topLimit && bottom is under bottomLimit => big element
-        $e.addClass('big');
-        v = 'big';
-      } else if (elementTop >= bottomLimit) {
-        // element is fully under viewport => find previous
-        v = 'previous';
-      } else if (elementTop > topLimit && elementBottom > bottomLimit) {
-        // top is under topLimit && bottom is under bottomLimit => search for previous
-        v = 'previous';
-      } else if (elementBottom <= topLimit) {
-        // element is fully above viewport => search for next
-        v = 'next';
-      } else if (elementTop <= topLimit) {
-        // top is above topLimit => search for next
-        v = 'next';
-      } else if (elementTop > topLimit && elementBottom <= bottomLimit) {
-        // top is under topLimit && bottom is above bottomLimit => ok
-        v = 'ok';
-      } else {
-        v = 'error';
-      }
-      return v;
-    },
-    _listFullyVisibleElementsInViewport: function (topLimit, bottomLimit, $items, $element, index) {
-      // determine fully visible element before and after $firstVisibleElement
-      var list = [];
-      list.push($element);
-
-      var $e, v;
-
-      // loop backward
-      for (var previousIndex = index - 1; previousIndex >= 0; previousIndex--) {
-        $e = $items.eq(previousIndex);
-        v = this._isElementFullyVisibleInViewport(topLimit, bottomLimit, $e);
-        if (v === 'ok') {
-          list.unshift($e);
-        } else {
-          break;
-        }
-      }
-
-      // loop forward
-      for (var nextIndex = index + 1; nextIndex < $items.length; nextIndex++) {
-        $e = $items.eq(nextIndex);
-        v = this._isElementFullyVisibleInViewport(topLimit, bottomLimit, $e);
-        if (v === 'ok') {
-          list.push($e);
-        } else {
-          break;
-        }
-      }
-
-      return list;
-    },
-
-    /** ***************************************************************************************************************
-     *
-     * Size & cleanup
-     *
-     *****************************************************************************************************************/
-    update: function () {
-      this.cleanup();
-    },
-    cleanup: function (everything) {
-      everything = everything || false;
-      var howToRemove;
-
-      // determine if needed
-      if (!everything) {
-        if (this.isVisible() && !this.isScrollOnBottom()) {
-          // no action when focused AND scroll not on bottom
-          return;
-        }
-
-        var realtimeLength = this.$realtime.find('.block').length;
-        if (realtimeLength < 250) {
-          // not enough content, no need to cleanup
-          return debug('cleanup ' + this.model.getIdentifier() +
-            ' not enough event to cleanup: ' + realtimeLength);
-        }
-
-        // how many elements to remove
-        howToRemove = (realtimeLength > this.keepMaxEventsOnCleanup) ?
-          (realtimeLength - this.keepMaxEventsOnCleanup) :
-          false;
-
-        if (!howToRemove) {
-          return debug('cleanup ' + this.model.getIdentifier() +
-            ' not events to cleanup: ' + realtimeLength);
-        }
-      }
-
-      // reset history loader
-      this.toggleHistoryLoader(true);
-
-      // cleanup .realtime
-      if (everything) {
-        debug('cleanuped "' + this.model.getIdentifier() + '" (all removed)');
-        this.$realtime.empty();
-      } else {
-        this.$realtime.find('.block').slice(0, howToRemove).remove();
-        debug('cleanuped "' + this.model.getIdentifier() + '" (' + realtimeLength + ' length, ' + howToRemove + ' removed)');
-      }
-
-      if (this.isVisible()) {
-        this.scrollDown();
-      }
+      var targetTop = this.eventsHistoryView.getLoaderTop();
+      this.$scrollable.scrollTop(targetTop); // add a 8px margin
     },
 
     /** **************************************************************************************************************
@@ -436,63 +267,7 @@ define([
 
       debug.end('discussion-events-fresh-' + this.model.getIdentifier());
     },
-    addBatchEvents: function (events) {
-      if (events.length === 0) {
-        return;
-      }
-
-      // render a batch of events (sorted in 'desc' order)
-      debug.start('discussion-events-batch-' + this.model.getIdentifier());
-      var $html = $('<div/>');
-      var previousModel;
-      var previousElement;
-      var now = moment();
-      now.second(0).minute(0).hour(0);
-      _.each(events, _.bind(function (event) {
-        var model = new EventModel(event);
-        var newBlock = this._newBlock(model, previousElement);
-
-        // inter-date block
-        if (previousModel) {
-          var newTime = moment(model.get('time'));
-          var previousTime = moment(previousModel.get('time'));
-          if (!newTime.isSame(previousTime, 'day')) {
-            previousTime.second(0).minute(0).hour(0);
-            var dateFull = (moment().diff(previousTime, 'days') === 0 ?
-                i18next.t('chat.message.today') :
-                (moment().diff(previousTime, 'days') === 1 ?
-                    i18next.t('chat.message.yesterday') :
-                    (moment().diff(previousTime, 'days') === 2 ?
-                        i18next.t('chat.message.the-day-before') :
-                        moment(previousModel.get('time')).format('dddd Do MMMM YYYY')
-                    )
-                )
-            );
-
-            var dateHtml = templates['event/date.html']({
-              time: previousModel.get('time'),
-              datefull: dateFull
-            });
-            previousElement = $(dateHtml).prependTo($html);
-            newBlock = true;
-          }
-        }
-
-        // render and insert
-        var h = this._renderEvent(model, newBlock);
-        if (!newBlock) {
-          // not define previousElement, remain the same .block
-          $(h).prependTo(previousElement.find('.items'));
-        } else {
-          previousElement = $(h).prependTo($html);
-        }
-        previousModel = model;
-      }, this));
-
-      $html.find('>.block').prependTo(this.$realtime);
-      debug.end('discussion-events-batch-' + this.model.getIdentifier());
-    },
-    _prepareEvent: function (model) {
+    _prepareEvent: function (model) { // @todo tyls refactorize with events.js
       var data = model.toJSON();
       data.data = _.clone(model.get('data'));
 
@@ -503,7 +278,9 @@ define([
       }
 
       // avatar
-      var size = (model.getGenericType() !== 'inout') ? 30 : 20;
+      var size = (model.getGenericType() !== 'inout')
+        ? 30
+        : 20;
       if (model.get('data').avatar) {
         data.data.avatar = common.cloudinarySize(model.get('data').avatar, size);
       }
@@ -573,7 +350,7 @@ define([
 
       return data;
     },
-    _newBlock: function (newModel, previousElement) {
+    _newBlock: function (newModel, previousElement) { // @todo tyls refactorize with events.js
       var newBlock = false;
       if (!previousElement || previousElement.length < 1) {
         newBlock = true;
@@ -596,7 +373,63 @@ define([
       }
       return newBlock;
     },
-    _renderEvent: function (model, withBlock) {
+    addBatchEvents: function (events) {
+      if (events.length === 0) {
+        return;
+      }
+
+      // render a batch of events (sorted in 'desc' order)
+      debug.start('discussion-events-batch-' + this.model.getIdentifier());
+      var $html = $('<div/>');
+      var previousModel;
+      var previousElement;
+      var now = moment();
+      now.second(0).minute(0).hour(0);
+      _.each(events, _.bind(function (event) {
+        var model = new EventModel(event);
+        var newBlock = this._newBlock(model, previousElement);
+
+        // inter-date block
+        if (previousModel) {
+          var newTime = moment(model.get('time'));
+          var previousTime = moment(previousModel.get('time'));
+          if (!newTime.isSame(previousTime, 'day')) {
+            previousTime.second(0).minute(0).hour(0);
+            var dateFull = (moment().diff(previousTime, 'days') === 0
+                ? i18next.t('chat.message.today')
+                : (moment().diff(previousTime, 'days') === 1
+                  ? i18next.t('chat.message.yesterday')
+                  : (moment().diff(previousTime, 'days') === 2
+                    ? i18next.t('chat.message.the-day-before')
+                    : moment(previousModel.get('time')).format('dddd Do MMMM YYYY')
+                )
+              )
+            );
+
+            var dateHtml = templates['event/date.html']({
+              time: previousModel.get('time'),
+              datefull: dateFull
+            });
+            previousElement = $(dateHtml).prependTo($html);
+            newBlock = true;
+          }
+        }
+
+        // render and insert
+        var h = this._renderEvent(model, newBlock);
+        if (!newBlock) {
+          // not define previousElement, remain the same .block
+          $(h).prependTo(previousElement.find('.items'));
+        } else {
+          previousElement = $(h).prependTo($html);
+        }
+        previousModel = model;
+      }, this));
+
+      $html.find('>.block').prependTo(this.$realtime);
+      debug.end('discussion-events-batch-' + this.model.getIdentifier());
+    },
+    _renderEvent: function (model, withBlock) { // @todo tyls refactorize with events.js
       var data = this._prepareEvent(model);
       data.withBlock = withBlock || false;
       try {
@@ -615,9 +448,7 @@ define([
             template = templates['event/ping.html'];
             break;
           case 'room:message':
-          case 'room:me':
           case 'user:message':
-          case 'user:me':
             template = templates['event/message.html'];
             break;
           case 'reconnected':
@@ -669,50 +500,10 @@ define([
 
     /** ***************************************************************************************************************
      *
-     * Viewed management
-     *
-     *****************************************************************************************************************/
-    markVisibleAsViewed: function () {
-      if (!this.isVisible()) {
-        // scroll could be triggered by freshevent event when window is not focused
-        return debug('markVisibleAsViewed: discussion/window not focused, do nothing');
-      }
-
-      var that = this;
-      this.computeVisibleElements(function (elements) {
-        that.viewedElements(elements);
-      });
-    },
-    viewedElements: function (elements) {
-      if (elements.length) {
-        this.model.viewedElements(elements);
-      }
-    },
-    onViewed: function (data) {
-      if (!data.events || !data.events.length) {
-        return;
-      }
-
-      var selector = '';
-      _.each(data.events, function (id) {
-        if (selector !== '') {
-          selector += ', ';
-        }
-        selector += '#' + id;
-      });
-
-      $(selector).removeClass('unviewed');
-      app.trigger('renderTitle');
-    },
-    isVisible: function () {
-      return !(!this.model.get('focused') || !windowView.focused);
-    },
-
-    /** ***************************************************************************************************************
-     *
      * Message actions menu
      *
      *****************************************************************************************************************/
+
     onMessageMenuShow: function (event) {
       var ownerUserId = '';
       var $event = $(event.currentTarget).closest('.event');
@@ -837,13 +628,22 @@ define([
       this.editMessage($event);
     },
     isEditableMessage: function ($event) {
+      var special = $event.data('special');
+      if (special && special !== 'me') {
+        return false;
+      }
       var userId = $event.closest('[data-user-id]').data('userId');
+      if (currentUser.get('user_id') !== userId) {
+        return false;
+      }
       var time = $event.data('time');
-      var isMessageCurrentUser = (currentUser.get('user_id') === userId);
-      var isNotTooOld = ((Date.now() - new Date(time)) < window.message_maxedittime);
-      var isSpammed = $event.hasClass('spammed');
-
-      return (isMessageCurrentUser && isNotTooOld && !isSpammed);
+      if (((Date.now() - new Date(time)) > window.message_maxedittime)) {
+        return false;
+      }
+      if ($event.hasClass('spammed')) {
+        return false;
+      }
+      return true;
     },
     onPrevOrNextFormEdit: function (event) {
       var direction;
@@ -879,9 +679,9 @@ define([
           _lastBlock = _lastBlock[direction]();
         }
 
-        $candidate = (direction === 'prev') ?
-          _lastBlock.find('.event').last() :
-          _lastBlock.find('.event').first();
+        $candidate = (direction === 'prev')
+          ? _lastBlock.find('.event').last()
+          : _lastBlock.find('.event').first();
       }
 
       if (this.isEditableMessage($candidate)) {
@@ -949,71 +749,10 @@ define([
       this.messageUnderEdition.remove();
       this.messageUnderEdition = null;
     },
-    onClearHistory: function () {
-      this.cleanup(true);
-    },
 
-    /** ***************************************************************************************************************
-     *
-     * History management
-     *
-     *****************************************************************************************************************/
     requestHistory: function (scrollTo) {
-      if (this.historyLoading) {
-        return;
-      }
-      this.historyLoading = true;
-
-      this.toggleHistoryLoader('loading');
-
-      // save the current first element identifier
-      if (scrollTo === 'top') {
-        var $nextTopElement = $('<div class="nextTopPosition"></div>').prependTo(this.$realtime);
-      }
-
-      // since
-      var first = this.$realtime
-        .find('.block:first').first()
-        .find('.event').first();
-      var since = (!first || first.length < 1) ?
-        null :
-        first.data('time');
-
-      var that = this;
-      this.model.history(since, function (data) {
-        that.addBatchEvents(data.history, data.more);
-
-        if (scrollTo === 'top') { // on manual request
-          var targetTop = $nextTopElement.position().top;
-          that.$scrollable.scrollTop(targetTop - 8); // add a 8px margin
-          $nextTopElement.remove();
-        }
-
-        if (scrollTo === 'bottom') {
-          // on first focus history load
-          that.scrollDown();
-        }
-        that.historyLoading = false;
-        that.historyNoMore = !data.more;
-        that.toggleHistoryLoader(data.more);
-      });
-    },
-    toggleHistoryLoader: function (more) {
-      this.$loader.find('.help, .loading, .no-more').hide();
-      this.$pad.removeClass('loading');
-      if (more === 'loading') {
-        // 'loading'
-        this.$loader.find('.loading').show();
-        this.$pad.addClass('loading');
-      } else if (more) {
-        // 'scroll to display more'
-        this.$loader.find('.help').show();
-      } else {
-        // no more history indication
-        this.$loader.find('.no-more').show();
-      }
+      this.eventsHistoryView.requestHistory(scrollTo);
     }
-
   });
 
   return EventsView;

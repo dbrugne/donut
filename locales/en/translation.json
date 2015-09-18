@@ -84,6 +84,8 @@
     "muted": "sound off"
   },
   "global": {
+    "admin": "(admin only)",
+    "default": "default",
     "or": "or",
     "yes": "yes",
     "no": "no",
@@ -96,7 +98,9 @@
     "save": "save",
     "cancel": "cancel",
     "view": "view",
-    "viewprofile": "View profile",
+    "accept": "accept",
+    "refuse": "refuse",
+    "viewprofile": "view profile",
     "online": "online",
     "offline": "offline",
     "connecting": "connection ...",
@@ -108,7 +112,8 @@
       "after": "?"
     },
     "switchlanguage": "Language",
-    "unknownerror": "Unknown error, please retry later"
+    "unknownerror": "Unknown error, please retry later",
+    "private-donut": "private Donut"
   },
   "login": {
     "withfacebook": "with Facebook",
@@ -344,6 +349,7 @@
     "loading": "Loading",
     "actions": {
       "search": "Search",
+      "searchuser": "Search an user",
       "create": "create",
       "adonut": "a donut",
       "account": "my account",
@@ -363,17 +369,6 @@
       },
       "unlock": "(Click here to unblock)"
     },
-    "create": {
-      "info": "Attention, the donut name will not be editable later.",
-      "label": "Create your donut",
-      "help": [
-        "Between 3 and 15 characters.<br>",
-        "Valid : letters, numbers and special characters: <strong>-_^</strong><br>",
-        "Invalid: spaces, accents and special characters not listed above.<br>"
-      ],
-      "placeholder": "Donut name",
-      "submit": "Create"
-    },
     "help": "Help",
     "placeholder": "Place here",
     "createadonut": "Create a donut",
@@ -390,6 +385,8 @@
     },
     "userscount": "<strong>__count__</strong> user in this donut",
     "userscount_plural": "<strong>__count__</strong> users in this donut",
+    "usersonlinecount": "<strong>__count__</strong> <span>user online in this donut</span>",
+    "usersonlinecount_plural": "<strong>__count__</strong> <span>users online in this donut</span>",
     "usersoffline": "Offline users",
     "topic": {
       "label": "Currently",
@@ -399,6 +396,15 @@
     },
     "owner": {
       "is": "This user is the creator of this donut."
+    },
+    "allow": {
+      "infobox": {
+        "accept": "Authorize",
+        "refuse": "Refuse"
+      }
+    },
+    "disallow": {
+      "infobox": "Disallow"
     },
     "op": {
       "is": "This user is the moderator of this donut.",
@@ -432,6 +438,18 @@
     "profile": {
       "infobox": "View the user profile"
     },
+    "allowed": {
+      "success": "Access request have been successfully sent",
+      "error" : {
+        "notallowed": "An access request is allready pending",
+        "banned": "You have been ban from this donut"
+      }
+    },
+    "password": {
+      "wrong-password": "Wrong password",
+      "spam-password": "please wait",
+      "error": "An error has occurred"
+    },
     "confirmation": {
       "sure": "Do you confirm this action?",
       "placeholder": "Explain why, visible in this donut (optional)",
@@ -463,7 +481,9 @@
         "invalidcommand": "Command not found",
         "invalidusername": "User not found",
         "invalidroom": "Donut not found",
-        "invalidusernameroom": "User not found in this donut",
+        "unknown-user-room": "User not found in this donut",
+        "already-oped": "This user is already modérator in this donut",
+        "no-op": "You do not have permission to do that",
         "commandaccess": "You can not use this command here"
       }
     },
@@ -496,7 +516,7 @@
       "count" : "<strong class=\"nb\"></strong><strong> New</strong> Notification(s)",
       "tag-as-read" : "Tag as read",
       "empty": "You have no new notification",
-      "random": "Gets",
+      "random": "Gets __result__ (randomly between __min__ and __max__)",
       "dropdown": {
         "op": "You are a moderator of <a href=\"#room/__roomname__\"><span class=\"name\">#__roomname__</span></a>",
         "deop": "You are no longer a moderator of <a href=\"#room/__roomname__\"><span class=\"name\">#__roomname__</span></a>",
@@ -505,7 +525,10 @@
         "deban": "You are no longer banned from <a href=\"#room/__roomname__\"><span class=\"name\">#__roomname__</span></a>",
         "voice": "You are unmute in <a href=\"#room/__roomname__\"><span class=\"name\">#__roomname__</span></a>",
         "devoice": "You are mute in <a href=\"#room/__roomname__\"><span class=\"name\">#__roomname__</span></a>",
-        "roomjoin": "<span class=\"name open-user-profile\" data-user-id=\"__userid__\">@__username__</span><a href=\"#room/__roomname__\"> joined </a><a href=\"#room/__roomname__\"><span class=\"name\">#__roomname__</span></a>",
+        "roomallowed": "You are now authorized to join <a href=\"#room/__roomname__\"><span class=\"name\">#__roomname__</span></a>",
+        "roomallowrefuse": "Your request to join <a href=\"#room/__roomname__\"><span class=\"name\">#__roomname__</span></a></br> has been refused",
+        "roomjoin": "<span class=\"name open-user-profile\" data-user-id=\"__userid__\">@__username__</span> joined <a href=\"#room/__roomname__\"><span class=\"name\">#__roomname__</span></a>",
+        "roomjoinrequest": "<span class=\"name open-user-profile\" data-user-id=\"__userid__\">@__username__</span> whant to join <a href=\"#room/__roomname__\"><span class=\"name\">#__roomname__</span></a>",
         "roomtopic": "New topic in <a href=\"#room/__roomname__\"><span class=\"name\">#__roomname__</span></a>",
         "roommessage": "New message in <a href=\"#room/__roomname__\"><span class=\"name\">#__roomname__</span></a>",
         "usermention": "You were mentionned in <a href=\"#room/__roomname__\"><span class=\"name\">#__roomname__</span></a>",
@@ -536,40 +559,42 @@
       "top": "go to top",
       "bottom": "go to bottom",
       "currently": "You are at the very first start of Donut <span class=\"name dc-text open-room-profile\" data-room-id=\"__roomid__\">__roomname__</span>, created by <span class=\"owner dc-text open-user-profile\" data-user-id=\"__ownerid__\">@__owner__</span> on <span class=\"date\">__creation-date__</span>",
-      "onestart": "You are at the very first start of your private discussion with <span class=\"name dc-text\">@__username__</span>. Everything said here will stay here :)"
+      "onestart": "You are at the very first start of your private discussion with <span class=\"name dc-text\">@__username__</span>. Everything said here will stay here :)",
+      "edit": "Edit profile",
+      "users": "Manage users",
+      "access": "Manage access"
     },
     "shouldauthenticated": "You must be logged in to access chat (<a href='/signup'>signup</a> or <a href='/login'>login</a>)",
     "closeapp": "Are you sure you want to leave ?",
     "closemessage": "Are you sure you want to leave? Your conversation log will be lost.",
     "kickmessage": "You have been kicked out of __name__",
     "banmessage": "You have been banned from __name__",
-    "bannedfromroom": "Unable to join __name__, you were banned",
+    "disallowmessage": "You are not allowed anymore in __name__",
     "roomnotexists": "The donut __name__ does not exist yet, <a class='open-create-room' data-name='__name__'>would you like to create it</a>?",
-    "alreadyexists": "Donut __name__ already exists, <a href='#__uri__'>would you like to join it</a>?",
     "successfullycreated": "Donut __name__ successfully created",
     "reason": "(reason: \"__reason__\")",
     "deletemessage": "The donut __name__ has been deleted",
     "users": {
       "link": "users",
-      "owner": {
-        "label": "Creator",
-        "help": "The donut creator has all priviledges"
-      },
-      "ops": {
-        "label": "Moderators",
-        "help": "Moderators can change the donut topic, kick or ban users and make/remove moderators"
-      },
-      "bans": {
-        "label": "Banned",
-        "help": "Banned users cannot join this donut any longer"
-      },
-      "devoices": {
-        "label": "Mutes",
-        "help": "The dumb users can not send messages"
-      },
-      "users": {
-        "label": "Users",
-        "help": "Users of the donut can only view and post messages"
+      "search": "search for username in this room",
+      "type": {
+        "owner": "Owner",
+        "users": "Users",
+        "op": "Moderators",
+        "allowed": "Allowed",
+        "ban": "Banned",
+        "devoice": "Devoiced"
+      }
+    },
+    "access": {
+      "link": "access",
+      "labelsearch": "Allow users",
+      "add": "Add user",
+      "labelpending": "Users pending approval",
+      "types": {
+        "all": "All",
+        "allowed": "Allowed",
+        "allowedPending": "Allow pending"
       }
     },
     "share": {
@@ -625,7 +650,14 @@
       "password_placeholder": "Password",
       "password_button": "Join",
       "banned": "You were banned from this donut on __at__",
-      "banned_reason": "For following reason: "
+      "banned_reason": "For following reason: ",
+      "kicked": "You were kicked from this donut",
+      "kicked_button": "Join",
+      "disclaimer-private": "This donut is private, Only users specifically authorized by the owner can access it. To add new users, thanks to search in the list below.",
+      "disclaimer-public": "This donut is public. Any user can access it.",
+      "disclaimer-password": "You have also chosen to put a password. Users with the password can enter without having to be asked first.",
+      "disclaimer-changing": "You have the ability to get that donut off the record (possibly with a password). Remember, once made, this will not be editable. This donut will no longer be opened to the public, invitations will be made only by the owner or password.",
+      "close-room": "Close this donut"
     },
     "form": {
       "common": {
@@ -659,14 +691,22 @@
       },
       "room-form": {
         "common": {
-          "join-mode-label": "Who can join the donut (admin only)",
+          "join-mode-label": "Who can join the donut",
           "mode": {
-            "everyone-def": "Everyone (défault)",
-            "everyone": "Everyone",
-            "allowed": "Only authorized user",
-            "password": "User with the password",
+            "public": "Public",
+            "private": "Private",
             "password-change": "Change password",
-            "password-field": "Password"
+            "password-field": "Password",
+            "password-keep": "Change the password",
+            "password-disclaimer": "You can set a password on this donut",
+            "password-protection": "Protect by a password"
+          }
+        },
+        "mode": {
+          "disclaimer": {
+            "public": "By selecting this option, your donut will be public. Any user can enter and see what happens there.",
+            "private": "By selecting this option, your donut will be private. Only users specifically authorized by the owner or Op can enter.",
+            "password": "You also have the possibility to put a password on that donut. Users with the password can enter without having to be asked first."
           }
         },
         "create": {
@@ -725,18 +765,19 @@
         }
       },
       "errors": {
-        "bio": "Bio should be 200 characters max.",
-        "location": "Location should be 70 characters max.",
-        "description": "Description should be 200 characters max.",
-        "website-size": "Website should be 5 characters min. and 255 characters max.",
-        "website-url": "Website should be a valid site URL.",
-        "color-hexadecimal": "Color should be explained has hexadecimal (e.g.: #FF00AA).",
-        "color-integer": "Priority should be explained has number (integer).",
-        "positions": "Positions should be an array.",
+        "bio": "Bio must be 200 characters max.",
+        "location": "Location must be 70 characters max.",
+        "description": "Description must be 200 characters max.",
+        "website-size": "Website must be 5 characters min. and 255 characters max.",
+        "website-url": "Website must be a valid site URL.",
+        "color-hexadecimal": "Color must be explained has hexadecimal (e.g.: #FF00AA).",
+        "color-integer": "Priority must be explained has number (integer).",
+        "positions": "Positions must be an array.",
         "invalid-name": "Invalid name",
-        "invalid-mode": "You should select a mode for this room",
-        "invalid-password": "The password should be 4 and 255 characters",
-        "alreadyexists": "Donut __name__ already exists, <a href='#__uri__'>would you like to join it</a>?"
+        "invalid-mode": "You must select a mode for this room",
+        "invalid-password": "The password must be 4 and 255 characters",
+        "alreadyexists": "Donut __name__ already exists, <a href='#__uri__'>would you like to join it</a>?",
+        "invalid-rights": "You do not have access to do this."
       }
     }
   },
@@ -769,7 +810,7 @@
       "defined": "Password defined: ",
       "error": {
         "confirm": "Pass two passwords are not the same.",
-        "length": "Password should have between 6 and 50 characters length.",
+        "length": "Password must have between 6 and 50 characters length.",
         "wrong": "Sorry, your old password don't match"
       }
     },
@@ -793,84 +834,6 @@
     },
     "delete": {
       "success": "Account successfully deleted, see you soon!"
-    }
-  },
-  "edit": {
-    "upload": {
-      "nopicture": "No picture",
-      "failed": "Upload failed",
-      "done": "Upload successful, please wait during image rendering",
-      "help": {
-        "format": "Image file (.jpeg, .jpg, .png or .gif).",
-        "size": "Will be automatically resized to __resized_width__x__resized_height__px."
-      }
-    },
-    "left": "<strong>%left</strong> to go",
-    "othersettings": "Other settings",
-    "description": {
-      "label": "Description",
-      "placeholder": "Describe the donut in a few words",
-      "help": "Optional"
-    },
-    "bio": {
-      "label": "Bio",
-      "placeholder": "Describe yourself in a few words",
-      "help": "Optional"
-    },
-    "location": {
-      "label": "Place",
-      "placeholder": "City, country where you are",
-      "help": "Optional"
-    },
-    "website": {
-      "label": "Website",
-      "placeholder": "URL of a website related to this account",
-      "help": "Optional"
-    },
-    "avatar": {
-      "label": "Profile picture"
-    },
-    "poster": {
-      "label": "Poster",
-      "help": "The poster is the large vertical image on the right-hand side of the chat thread. Recommended dimensions: 430px width, 975px height."
-    },
-    "color": {
-      "label": "Color"
-    },
-    "visibility": {
-      "label": "Visibility (admin only)",
-      "true": "This donut is displayed on homepage",
-      "false": "This donut <strong>is not</strong> displayed on homepage"
-    },
-    "priority": {
-      "label": "Priority (admin only)",
-      "placeholder": "",
-      "help": "Number, more is more prioritary"
-    },
-    "room": {
-      "delete": {
-        "link": "To delete this donut <a class='open-room-delete' data-room-id=\"__id__\"> click here</a>.",
-        "title": "Delete",
-        "info": [
-          "You are about to delete this donut. This action is immediate and cannot be undone.<br><br>",
-          "To confirm deletion please enter donut name (<strong>__name__</strong>) and then click the button:"
-        ],
-        "placeholder": "Enter the donut name",
-        "success": "donut deleted!",
-        "error": {
-          "permanent": "It is not possible to delete a 'permanent' donut"
-        }
-      }
-    },
-    "errors": {
-      "bio": "Bio should be 200 characters max.",
-      "location": "Location should be 70 characters max.",
-      "description": "Description should be 200 characters max.",
-      "website-size": "Website should be 5 characters min. and 255 characters max.",
-      "website-url": "Website should be a valid site URL.",
-      "color-hexadecimal": "Color should be explained has hexadecimal (e.g.: #FF00AA).",
-      "color-integer": "Priority should be explained has number (integer).",
-      "positions": "Positions should be an array."
     }
   },
   "page": {

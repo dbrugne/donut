@@ -214,6 +214,8 @@ require([
         url: $(this).data('url')
       });
     });
+
+    $('.body-profile').find('[data-toggle="tooltip"]').tooltip();
   }
 
   // Language switcher

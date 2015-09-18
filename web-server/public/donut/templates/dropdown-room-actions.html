@@ -20,17 +20,22 @@
                 <i class="icon icon-bell"></i> <%= t('chat.actions.notifications') %>
             </a>
         </li>
-        <% if (data.isOwner === true || data.isAdmin === true) { %>
+        <% if (data.isOwner || data.isAdmin ) { %>
         <li role="presentation">
             <a role="menuitem" tabindex="-1" class="open-room-edit" data-room-id="<%= data.room_id %>">
                 <i class="icon icon-pencil"></i> <%= t('global.edit') %>
             </a>
         </li>
         <% }; %>
-        <% if (data.isOwner === true || data.isOp === true || data.isAdmin === true) { %>
         <li role="presentation">
             <a role="menuitem" tabindex="-1" class="open-room-users" data-room-id="<%= data.room_id %>">
                 <i class="icon icon-users"></i> <%= t('chat.users.link') %>
+            </a>
+        </li>
+        <% if (data.isOwner || data.isAdmin ) { %>
+        <li role="presentation">
+            <a role="menuitem" tabindex="-1" class="open-room-access" data-room-id="<%= data.room_id %>">
+                <i class="icon icon-public"></i> <%= t('chat.access.link') %>
             </a>
         </li>
         <% }; %>

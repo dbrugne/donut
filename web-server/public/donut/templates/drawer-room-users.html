@@ -1,109 +1,24 @@
 <div class="room">
-    <span class="name"><%= room.name %></span>
-    <span class="owner"><%= t('global.by') %> <a class="open-user-profile dc-text colored" data-user-id="<%= room.owner.user_id %>">@<%= room.owner.username %></a></span>
+    <span class="name">
+        <%= room.name %>
+        <% if (room.mode === 'private') { %>
+            <span class="room-profile private" data-toggle="tooltip" data-placement="top" title="<%= t('global.private-donut') %>"> </span>
+        <% } %>
+    </span>
+    <span class="owner"><%= t('global.by') %> <a class="open-user-profile dc-text colored" data-user-id="<%= owner.id %>">@<%= owner.username %></a></span>
 </div>
-<% if (room.owner) { %>
-<div class="form-group owner">
-    <label><i class="icon icon-owner"></i> <%= t('chat.users.owner.label') %></label>
-    <p class="help-block"><%= t('chat.users.owner.help') %></p>
-    <table>
-        <tbody>
-            <tr>
-                <td class="avatar"><img src="<%= room.owner.avatarUrl %>"></td>
-                <td class="username">@<%=room.owner.username%></td>
-                <td class="actions">&nbsp;</td>
-            </tr>
-        </tbody>
-    </table>
+<div class="user-number">
+    <span><strong class="number"></strong></span>
+    <span class="user-label"><%= t('chat.users.link') %></span>
 </div>
-<% } %>
-<% if (room.op && room.op.length) { %>
-<div class="form-group ops">
-    <label><i class="icon icon-op"></i> <%= t('chat.users.ops.label') %></label>
-    <p class="help-block"><%= t('chat.users.ops.help') %></p>
-    <table>
-        <tbody>
-            <% _.each(room.op, function(op) { %>
-            <tr>
-                <td class="avatar"><img src="<%= op.avatarUrl %>"></td>
-                <td class="username">@<%=op.username%></td>
-                <td class="actions">
-                    <div class="deop" data-toggle="confirmation" data-action="deop-user" title="<%= t('chat.deop.infobox') %>" data-user-id="<%= op.user_id %>">
-                        <i class="icon icon-op"></i>
-                    </div>
-                </td>
-            </tr>
-            <% }); %>
-        </tbody>
-    </table>
+<div class="search">
+    <input type="text" placeholder="<%= t('chat.users.search') %>">
+    <i class="icon icon-search"></i>
 </div>
-<% } %>
-<% if (room.devoices && room.devoices.length) { %>
-<div class="form-group devoices">
-    <label><i class="icon icon-microphone-slash"></i> <%= t('chat.users.devoices.label') %></label>
-    <p class="help-block"><%= t('chat.users.devoices.help') %></p>
-    <table>
-        <tbody>
-        <% _.each(room.devoices, function(devoice) { %>
-        <tr>
-            <td class="avatar"><img src="<%= devoice.avatarUrl %>"></td>
-            <td class="username">@<%=devoice.username%></td>
-            <td class="actions">
-                <div class="voice" data-toggle="confirmation" data-action="devocice-user" title="<%= t('chat.voice.infobox') %>" data-user-id="<%= devoice.user_id %>">
-                    <i class="icon icon-microphone"></i>
-                </div>
-            </td>
-        </tr>
-        <% }); %>
-        </tbody>
-    </table>
-</div>
-<% } %>
-<% if (room.bans && room.bans.length) { %>
-<div class="form-group bans">
-    <label><i class="icon icon-ban"></i> <%= t('chat.users.bans.label') %></label>
-    <p class="help-block"><%= t('chat.users.bans.help') %></p>
-    <table>
-        <tbody>
-        <% _.each(room.bans, function(ban) { %>
-        <tr>
-            <td class="avatar"><img src="<%= ban.avatarUrl %>"></td>
-            <td class="username">@<%=ban.username%></td>
-            <td class="actions">
-                <div class="deban" data-toggle="confirmation" data-action="deban-user" title="<%= t('chat.deban.infobox') %>" data-user-id="<%= ban.user_id %>">
-                    <i class="icon icon-ban"></i>
-                </div>
-            </td>
-        </tr>
-        <% }); %>
-        </tbody>
-    </table>
-</div>
-<% } %>
-<% if (room.users && room.users.length) { %>
-<div class="form-group users">
-    <label><%= t('chat.users.users.label') %></label>
-    <p class="help-block"><%= t('chat.users.users.help') %></p>
-    <table>
-        <tbody>
-        <% _.each(room.users, function(user) { %>
-        <tr>
-            <td class="avatar"><img src="<%= user.avatarUrl %>"></td>
-            <td class="username">@<%=user.username%></td>
-            <td class="actions">
-                <div class="op" data-toggle="confirmation" data-action="op-user" title="<%= t('chat.op.infobox') %>" data-user-id="<%= user.user_id %>">
-                    <i class="icon icon-op"></i>
-                </div>
-                <div class="kick" data-toggle="confirmation" data-action="kick-user" title="<%= t('chat.kick.infobox') %>" data-user-id="<%= user.user_id %>">
-                    <i class="icon icon-kick"></i>
-                </div>
-                <div class="ban" data-toggle="confirmation" data-action="ban-user" title="<%= t('chat.ban.infobox') %>" data-user-id="<%= user.user_id %>">
-                    <i class="icon icon-ban"></i>
-                </div>
-            </td>
-        </tr>
-        <% }); %>
-        </tbody>
-    </table>
-</div>
-<% } %>
+<select name="type" id="type-select" class="form-control mb5">
+    <% _.each(type, function(type) { %>
+    <option value="<%= type %>"><%= t('chat.users.type.' + type) %></option>
+    <% }); %>
+</select>
+<div class="table-users"></div>
+<div class="paginate flex-parent"></div>

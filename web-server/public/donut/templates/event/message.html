@@ -8,9 +8,10 @@
     <% } %>
     <div class="items">
         <% } %>
-        <div class="event has-hover <% if (type === 'room:me' || type === 'user:me') { %>me<% } %> <% if (spammed) { %>spammed<% } %> <% if (edited) { %>edited<% } %>  <% if (unviewed) { print('unviewed'); } %>"
+        <div class="event has-hover <%= data.special %> <% if (spammed) { %>spammed<% } %> <% if (edited) { %>edited<% } %>  <% if (unviewed) { print('unviewed'); } %>"
              id="<%= data.id %>"
              data-time="<%= data.time %>"
+             data-special="<%= data.special %>"
              data-spammed="<%= (spammed === true ? 'true' : '')%>"
              data-edited="<%= (edited === true ? 'true' : '')%>">
             <div class="ctn">

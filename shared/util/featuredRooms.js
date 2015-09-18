@@ -1,5 +1,5 @@
 'use strict';
-var debug = require('debug')('donut:featured');
+var logger = require('./logger').getLogger('featured', __filename);
 var async = require('async');
 var _ = require('underscore');
 var redis = require('../io/redis');
@@ -26,19 +26,19 @@ var retriever = function (app, fn) {
   // available list in cache?
   redis.get(CACHE_KEY, function (err, result) {
     if (err) {
-      debug('Error while retrieving cache: ' + err);
+      logger.error('Error while retrieving cache: ' + err);
     }
 
     try {
       var roomsData = JSON.parse(result);
       if (_.isArray(roomsData) && roomsData.length > 0) {
-        debug('Get featured from cache');
+        logger.debug('Get featured from cache');
         return fn(null, roomsData);
       } else {
         retrieve();
       }
     } catch (e) {
-      debug('Error while parsing cache: ', e);
+      logger.error('Error while parsing cache: ', e);
       retrieve();
     }
   });
@@ -208,10 +208,10 @@ var retriever = function (app, fn) {
         multi.expire(CACHE_KEY, CACHE_TTL);
         multi.exec(function (err) {
           if (err) {
-            debug('Error while storing featured in cache: ' + err);
+            logger.error('Error while storing featured in cache: ' + err);
           }
 
-          debug('Stored featured in cache');
+          logger.debug('Stored featured in cache');
           return callback(null, roomsData);
         });
       }

@@ -7,7 +7,7 @@ define([
   'client',
   'models/current-user',
   '_templates'
-], function ($, _, Backbone, i18next, client , currentUser, templates) {
+], function ($, _, Backbone, i18next, client, currentUser, templates) {
   var DrawerAccountEmailView = Backbone.View.extend({
     template: templates['drawer-account-email.html'],
 
@@ -36,10 +36,11 @@ define([
       this.$spinner.hide();
       this.$success.hide();
 
-      if (this.user.account && this.user.account.email)
+      if (this.user.account && this.user.account.email) {
         this.$link.text(i18next.t('global.change'));
-      else
+      } else {
         this.$link.text(i18next.t('global.add'));
+      }
     },
 
     render: function () {
@@ -55,14 +56,16 @@ define([
       this.$success.hide();
     },
 
-    onCancel: function () {
+    onCancel: function (event) {
       event.preventDefault();
 
       this.$form.hide();
       this.$emailUserCtn.show();
       this.$errorLabel.text('');
       this.$form.removeClass('has-error');
-      this.$input.val((this.user.account && this.user.account.email) ? this.user.account.email : '');
+      this.$input.val((this.user.account && this.user.account.email) ?
+        this.user.account.email :
+        '');
     },
 
     onSubmit: function (event) {
@@ -81,8 +84,9 @@ define([
 
       client.accountEmail(this.$input.val(), function (data) {
         that.$spinner.hide();
-        if (data.err)
+        if (data.err) {
           return that.putError(data.err);
+        }
 
         that.$mailUserLabel.text(that.$input.val());
         that.$form.hide();
@@ -94,16 +98,17 @@ define([
     putError: function (error) {
       this.$form.addClass('has-error');
 
-      if (error === 'wrong-format')
+      if (error === 'wrong-format') {
         this.$errorLabel.text(i18next.t('account.email.error.format'));
-      else if (error === 'same-mail')
+      } else if (error === 'same-mail') {
         this.$errorLabel.text(i18next.t('account.email.error.alreadyyours'));
-      else if (error === 'exist')
+      } else if (error === 'exist') {
         this.$errorLabel.text(i18next.t('account.email.error.alreadyexists'));
-      else if (error === 'empty')
+      } else if (error === 'empty') {
         this.$errorLabel.text(i18next.t('account.email.error.empty'));
-      else
+      } else {
         this.$errorLabel.text(i18next.t('global.unknownerror'));
+      }
     }
 
   });

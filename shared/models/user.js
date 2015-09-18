@@ -1,10 +1,8 @@
 'use strict';
-var debug = require('debug')('shared:models:user');
 var _ = require('underscore');
 var mongoose = require('../io/mongoose');
 var bcrypt = require('bcrypt-nodejs');
 var colors = require('../../config/colors');
-var i18next = require('../util/i18next');
 var common = require('@dbrugne/donut-common');
 var cloudinary = require('../util/cloudinary');
 
@@ -34,6 +32,7 @@ var userSchema = mongoose.Schema({
   },
   preferences: mongoose.Schema.Types.Mixed,
   onetoones: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
+  blocked: [{ type: mongoose.Schema.ObjectId, ref: 'Room' }],
   unviewed: [{
     room: {type: mongoose.Schema.ObjectId, ref: 'Room'},
     user: {type: mongoose.Schema.ObjectId, ref: 'User'},
@@ -319,7 +318,6 @@ userSchema.methods.preferencesValue = function (key) {
 
   // error in code/configuration
   if (!preferencesConfig || !_.has(preferencesConfig, _key) || !_.has(preferencesConfig[_key], 'default')) {
-    debug('Unable to find this preference configuration: ' + _key);
     return false;
   }
 

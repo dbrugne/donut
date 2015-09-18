@@ -1,5 +1,5 @@
 'use strict';
-var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
+var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename);
 var async = require('async');
 var _ = require('underscore');
 var Notifications = require('../../../components/notifications');
@@ -23,91 +23,126 @@ handler.call = function (data, session, next) {
 
   var that = this;
 
-  var reason = (data.reason) ? inputUtil.filter(data.reason, 512) : false;
+  var event = {};
+
+  var reason = (data.reason) ?
+    inputUtil.filter(data.reason, 512) :
+    false;
 
   async.waterfall([
 
     function check (callback) {
-      if (!data.room_id)
+      if (!data.room_id) {
         return callback('room_id is mandatory');
+      }
 
-      if (!data.user_id && !data.username)
+      if (!data.user_id && !data.username) {
         return callback('user_id or username is mandatory');
+      }
 
-      if (!room)
+      if (!room) {
         return callback('unable to retrieve room: ' + data.room_id);
+      }
 
-      if (!room.isOwnerOrOp(user.id) && session.settings.admin !== true)
+      if (!room.isOwnerOrOp(user.id) && session.settings.admin !== true) {
         return callback('this user ' + user.id + " isn't able to ban another user in this room: " + room.name);
+      }
 
-      if (!bannedUser)
+      if (!bannedUser) {
         return callback('unable to retrieve bannedUser: ' + data.username);
+      }
 
-      if (room.owner.toString() == bannedUser.id)
+      if (room.isOwner(bannedUser.id)) {
         return callback('user ' + bannedUser.username + ' is owner of ' + room.name);
+      }
 
-      if (room.isBanned(bannedUser.id))
+      if (room.isBanned(bannedUser.id)) {
         return callback('this user ' + bannedUser.username + ' is already banned from ' + room.name);
+      }
 
       return callback(null);
     },
 
-    function persist (callback) {
+    function persistOnRoom (callback) {
       var ban = {
         user: bannedUser._id,
         banned_at: new Date()
       };
-      if (reason !== false)
+      if (reason !== false) {
         ban.reason = reason;
+      }
 
-      room.update({$addToSet: { bans: ban }, $pull: { users: bannedUser._id, op: bannedUser._id }}, function (err) {
-        return callback(err);
+      room.update({
+        $addToSet: {bans: ban},
+        $pull: {users: bannedUser._id, op: bannedUser._id, allowed: bannedUser._id}
+      }, function (err) {
+        return callback(err, ban);
       });
     },
 
-    function broadcast (callback) {
-      var event = {
+    function persistOnUser (banEvent, callback) {
+      bannedUser.update({
+        $addToSet: {blocked: room.id}
+      }, function (err) {
+        return callback(err, banEvent);
+      });
+    },
+
+    function broadcast (banEvent, callback) {
+      event = {
         by_user_id: user.id,
         by_username: user.username,
         by_avatar: user._avatar(),
         user_id: bannedUser.id,
         username: bannedUser.username,
-        avatar: bannedUser._avatar()
+        avatar: bannedUser._avatar(),
+        banned_at: banEvent.banned_at
       };
 
-      if (reason !== false)
-        event.reason = reason;
+      if (reason !== false) {
+        event.banned_reason = reason;
+      }
 
       roomEmitter(that.app, user, room, 'room:ban', event, callback);
     },
 
-    /**
-     * /!\ .unsubscribeClients come after .historizeAndEmit to allow banned user to receive message
-     */
+    function broadcastToBannedUser (sentEvent, callback) {
+      that.app.globalChannelService.pushMessage('connector', 'room:ban', event, 'user:' + bannedUser.id, {}, function (reponse) {
+        callback(null, sentEvent);
+      });
+    },
+
     function unsubscribeClients (event, callback) {
+      // /!\ .unsubscribeClients come after .historizeAndEmit to allow banned
+      // user to receive message
+
       // search for all the user sessions (any frontends)
       that.app.statusService.getSidsByUid(bannedUser.id, function (err, sids) {
-        if (err)
+        if (err) {
           return callback('Error while retrieving user status: ' + err);
+        }
 
         if (!sids || sids.length < 1) {
-          return callback(null, event); // the targeted user could be offline at this time
+          return callback(null, event); // the targeted user could be offline
+                                        // at this time
         }
 
         var parallels = [];
         _.each(sids, function (sid) {
           parallels.push(function (fn) {
             that.app.globalChannelService.leave(room.name, bannedUser.id, sid, function (err) {
-              if (err)
+              if (err) {
                 return fn(sid + ': ' + err);
+              }
 
               return fn(null);
             });
           });
         });
         async.parallel(parallels, function (err, results) {
-          if (err)
+          if (err) {
             return callback('Error while unsubscribing user ' + bannedUser.id + ' from ' + room.name + ': ' + err);
+          }
 
           return callback(null, event);
         });
@@ -121,10 +156,9 @@ handler.call = function (data, session, next) {
   ], function (err) {
     if (err) {
       logger.error('[room:ban] ' + err);
-      return next(null, {code: 500, err: err});
+      return next(null, {code: 500, err: 'internal'});
     }
 
     next(null, {});
   });
-
 };

@@ -1,5 +1,5 @@
 'use strict';
-var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
+var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename);
 var _ = require('underscore');
 var async = require('async');
 var User = require('../../../../../shared/models/user');
@@ -8,15 +8,15 @@ var roomMultiEmitter = require('../../../util/roomMultiEmitter');
 var oneMultiEmitter = require('../../../util/oneMultiEmitter');
 
 /**
- * @todo : replace actual logic for user:on/offline and remove roomMultiEmitter + oneMultiEmitter
+ * @todo : replace actual logic for user:on/offline and remove roomMultiEmitter
+ *   + oneMultiEmitter
  *  - on status change detection retrieve user rooms and onetoones,
  *  - extract full online user list from redis
  *  - deduplicate list
  *  - push message
- *  - on client side handle user:online/offline globally and update discussion accordingly
+ *  - on client side handle user:online/offline globally and update discussion
+ *   accordingly
  */
-
-var GLOBAL_CHANNEL_NAME = 'global';
 
 var TIMEOUT_BEFORE_OFFLINE = 4000; // 4s
 
@@ -36,6 +36,7 @@ var DisconnectRemote = function (app) {
  *
  * @param {String} uid unique id for user
  * @param {String} welcome message
+ * @param {Function} globalCallback
  */
 DisconnectRemote.prototype.online = function (uid, welcome, globalCallback) {
   var start = Date.now();
@@ -45,12 +46,13 @@ DisconnectRemote.prototype.online = function (uid, welcome, globalCallback) {
   async.waterfall([
 
     function persistOnUser (callback) {
-      User.update({_id: uid}, {
+      User.update({ _id: uid }, {
         'lastonline_at': Date.now(),
         online: true
       }, function (err) {
-        if (err)
+        if (err) {
           return callback('Error while updating user online status: ' + err);
+        }
 
         return callback(null);
       });
@@ -65,8 +67,9 @@ DisconnectRemote.prototype.online = function (uid, welcome, globalCallback) {
     },
 
     function toRooms (event, callback) {
-      if (!welcome.rooms || welcome.rooms.length < 1)
+      if (!welcome.rooms || welcome.rooms.length < 1) {
         return callback(null, event);
+      }
 
       var roomsToInform = _.map(welcome.rooms, function (room) {
         return {
@@ -76,8 +79,9 @@ DisconnectRemote.prototype.online = function (uid, welcome, globalCallback) {
       });
 
       roomMultiEmitter(that.app, roomsToInform, 'user:online', event, function (err) {
-        if (err)
+        if (err) {
           return callback(err);
+        }
 
         logger.trace('inform following rooms: ', roomsToInform);
         return callback(null, event);
@@ -85,27 +89,32 @@ DisconnectRemote.prototype.online = function (uid, welcome, globalCallback) {
     },
 
     function toOnes (event, callback) {
-      if (!welcome.onetoones || welcome.onetoones.length < 1)
+      if (!welcome.onetoones || welcome.onetoones.length < 1) {
         return callback(null, event);
+      }
 
-      User.find({onetoones: { $in: [uid] }}, 'username', function (err, ones) {
-        if (err)
+      User.find({ onetoones: { $in: [ uid ] } }, 'username', function (err, ones) {
+        if (err) {
           return callback('Unable to find onetoones to inform on connection: ' + err);
+        }
 
         var onesToInform = [];
         _.each(ones, function (one) {
-          if (!one || !one.username)
+          if (!one || !one.username) {
             return;
+          }
 
-          onesToInform.push({from: uid, to: one._id.toString()});
+          onesToInform.push({ from: uid, to: one._id.toString() });
         });
 
-        if (onesToInform.length < 1)
+        if (onesToInform.length < 1) {
           return callback(null, event);
+        }
 
         oneMultiEmitter(that.app, onesToInform, 'user:online', event, function (err) {
-          if (err)
+          if (err) {
             return callback(err);
+          }
 
           return callback(null, event);
         });
@@ -114,34 +123,31 @@ DisconnectRemote.prototype.online = function (uid, welcome, globalCallback) {
 
   ], function (err, event) {
     if (err) {
-      logger.error(JSON.stringify({
-        route: 'statusRemote.online',
+      logger.error('statusRemote.online', {
         result: 'fail',
-        username: welcome.user.username,
-        time: new Date(start)
-      }));
+        username: welcome.user.username
+      });
     } else {
-      logger.debug(JSON.stringify({
-        route: 'statusRemote.online',
+      logger.debug('statusRemote.online', {
         result: 'success',
         username: welcome.user.username,
-        time: new Date(start),
         timeUsed: (Date.now() - start)
-      }));
+      });
     }
 
     return globalCallback(err);
   });
-
 };
 
 /**
- * Determine if user is really disconnected: socket.io connexion in browser could suffer micro-disconnection.
- * The purpose of this proxy method is too wait 2s before declaring the user "offline".
+ * Determine if user is really disconnected: socket.io connexion in browser
+ * could suffer micro-disconnection. The purpose of this proxy method is too
+ * wait 2s before declaring the user "offline".
  *
  * Logic:
  * - test if last socket and if yes launch a timeout of 2 seconds
- * - after timeout test if user is really offline or not, if still offline call .offline()
+ * - after timeout test if user is really offline or not, if still offline call
+ * .offline()
  */
 DisconnectRemote.prototype.socketGoesOffline = function (uid, globalCallback) {
   var that = this;
@@ -151,19 +157,23 @@ DisconnectRemote.prototype.socketGoesOffline = function (uid, globalCallback) {
 
     function isLastClient (callback) {
       that.app.statusService.getStatusByUid(uid, function (err, status) {
-        return callback(err, !status); // at least an other socket is live for this user or not
+        return callback(err, !status); // at least an other socket is live for
+                                       // this user or not
       });
     },
 
     function sendUserOffline (itIsLastClient, callback) {
-      if (!itIsLastClient)
-        return callback(null); // no-op
+      if (!itIsLastClient) {
+        return callback(null);
+      } // no-op
 
       setTimeout(function () {
-        // re-test if user is still offline after timeout (!= micro-disconnection)
+        // re-test if user is still offline after timeout (!=
+        // micro-disconnection)
         that.app.statusService.getStatusByUid(uid, function (err, status) {
-          if (err)
+          if (err) {
             return logger.error('Error while retrieving user status: ' + err);
+          }
 
           if (status) {
             logger.trace('socketGoesOffline for ' + uid + ': finally now he is online (micro-disconnection)');
@@ -173,7 +183,6 @@ DisconnectRemote.prototype.socketGoesOffline = function (uid, globalCallback) {
           logger.trace('socketGoesOffline for ' + uid + ': finally he is really offline');
           that.offline(uid);
         });
-
       }, TIMEOUT_BEFORE_OFFLINE);
 
       // don't wait for response before re-giving hand to entryHandler
@@ -183,7 +192,6 @@ DisconnectRemote.prototype.socketGoesOffline = function (uid, globalCallback) {
   ], function (err) {
     return globalCallback(err);
   });
-
 };
 
 /**
@@ -205,8 +213,9 @@ DisconnectRemote.prototype.offline = function (uid) {
     function retrieveUser (callback) {
       User.findById(uid)
         .exec(function (err, user) {
-          if (err)
+          if (err) {
             return callback('Unable to find user: ' + err, null);
+          }
 
           return callback(null, user);
         });
@@ -216,15 +225,17 @@ DisconnectRemote.prototype.offline = function (uid) {
       user.set('lastoffline_at', Date.now());
       user.set('online', false);
       user.save(function (err) {
-        if (err)
+        if (err) {
           return callback('Error while updating user offliness: ' + err);
+        }
 
         return callback(null, user);
       });
     },
 
     function determineIfGracefullShutdown (user, callback) {
-      // @todo : no-op after user lastoffline_at persistence if gracefull shutdown
+      // @todo : no-op after user lastoffline_at persistence if gracefull
+      // shutdown
       return callback(null, user);
     },
 
@@ -238,8 +249,9 @@ DisconnectRemote.prototype.offline = function (uid) {
 
     function emitUserOfflineToRooms (user, event, callback) {
       Room.findByUser(user.id).exec(function (err, rooms) {
-        if (err)
+        if (err) {
           return callback(err);
+        }
 
         var roomsToInform = _.map(rooms, function (room) {
           return {
@@ -248,12 +260,14 @@ DisconnectRemote.prototype.offline = function (uid) {
           };
         });
 
-        if (roomsToInform.length < 1)
+        if (roomsToInform.length < 1) {
           return callback(null, user, event);
+        }
 
         roomMultiEmitter(that.app, roomsToInform, 'user:offline', event, function (err) {
-          if (err)
+          if (err) {
             return callback(err);
+          }
 
           logger.trace('Following rooms informed: ' + roomsToInform.join(', '));
           return callback(null, user, event);
@@ -262,47 +276,46 @@ DisconnectRemote.prototype.offline = function (uid) {
     },
 
     function emitUserOfflineToOnes (user, event, callback) {
-      User.find({onetoones: { $in: [uid] }}, 'username', function (err, ones) {
-        if (err)
+      User.find({ onetoones: { $in: [ uid ] } }, 'username', function (err, ones) {
+        if (err) {
           return callback('Unable to find onetoones to inform on connection: ' + err);
+        }
 
         var onesToInform = [];
         _.each(ones, function (one) {
-          if (!one || !one.username)
+          if (!one || !one.username) {
             return;
+          }
 
-          onesToInform.push({from: uid, to: one._id.toString()});
+          onesToInform.push({ from: uid, to: one._id.toString() });
         });
 
-        if (onesToInform.length < 1)
+        if (onesToInform.length < 1) {
           return callback(null, user, event);
+        }
 
         oneMultiEmitter(that.app, onesToInform, 'user:offline', event, function (err) {
-          if (err)
+          if (err) {
             return callback(err);
+          }
 
           return callback(null, user);
         });
       });
-    },
+    }
 
   ], function (err, user) {
     if (err) {
-      logger.error(JSON.stringify({
-        route: 'statusRemote.offline',
+      logger.error('statusRemote.offline', {
         result: 'fail',
-        username: user.username,
-        time: new Date(start)
-      }));
+        username: user.username
+      });
     } else {
-      logger.debug(JSON.stringify({
-        route: 'statusRemote.offline',
+      logger.debug('statusRemote.offline', {
         result: 'success',
         username: user.username,
-        time: new Date(start),
         timeUsed: (Date.now() - start)
-      }));
+      });
     }
   });
-
 };

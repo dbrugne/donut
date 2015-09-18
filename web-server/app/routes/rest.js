@@ -1,5 +1,5 @@
 'use strict';
-var debug = require('debug')('donut:web');
+var logger = require('../../../shared/util/logger').getLogger('web', __filename);
 var express = require('express');
 var router = express.Router();
 
@@ -14,7 +14,7 @@ router.get('/rest/search', function (req, res) {
     false,                  // lightsearch
     function (err, results) {
       if (err) {
-        debug('rest/search error: ' + err);
+        logger.debug('rest/search error: ' + err);
         res.status(500).send('internal error');
       } else {
         res.status(200).send(results);

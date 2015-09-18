@@ -8,7 +8,12 @@
 <div class="content">
     <div class="mini-header room visible-xs visible-sm">
         <img class="avatar open-room-profile dc-border-lighter" data-room-id="<%= room_id %>" src="<%= avatar %>" alt="<%= name %> avatar">
-        <span class="name open-room-profile dc-text-contrast" data-room-id="<%= room_id %>"><%= name %></span>
+        <span class="name open-room-profile dc-text-contrast" data-room-id="<%= room_id %>">
+            <%= name %>
+            <% if (mode === 'private') { %>
+                <span class="room-profile private" data-toggle="tooltip" data-placement="right" title="<%= t('global.private-donut') %>"> </span>
+            <% } %>
+        </span>
         <div class="info mt5"><%= dropdown %></div>
     </div>
     <div class="header room">
@@ -18,7 +23,12 @@
             <span class="overlay-text open-room-profile" data-room-id="<%= room_id %>" ><%= t('chat.actions.see') %></span>
         </div>
         <div class="info hidden-xs hidden-sm">
-            <div class="name open-room-profile" data-room-id="<%= room_id %>"><%= name %></div>
+            <div class="name open-room-profile" data-room-id="<%= room_id %>">
+                <%= name %>
+                <% if (mode === 'private') { %>
+                    <span class="room-profile private" data-toggle="tooltip" data-placement="top" title="<%= t('global.private-donut') %>"> </span>
+                <% } %>
+            </div>
 
             <%= dropdown %>
 
@@ -35,6 +45,5 @@
         <div class="topic"><!-- topic view --></div>
     </div>
     <div class="events flex-parent column"><!--/events view--></div>
-    <!-- div class="truc" style="background-color: #ff41de; width: 30px; height: 5px; position: absolute; right: 5px; z-index: 200px;"></div -->
     <div class="input"><!-- input view --></div>
 </div><!-- /.content -->

@@ -25,9 +25,10 @@ define([
 
       // ask for data
       var that = this;
-      client.userRead(currentUser.get('user_id'), null, function (err, data) {
-        if (!err)
+      client.userRead(currentUser.get('user_id'), null, function (data) {
+        if (!data.err) {
           that.onResponse(data);
+        }
       });
     },
     render: function () {
@@ -35,9 +36,16 @@ define([
       this.$el.html(templates['spinner.html']);
       return this;
     },
+    _remove: function () {
+      this.colorPicker.remove();
+      this.avatarUploader.remove();
+      this.posterUploader.remove();
+      this.remove();
+    },
     onResponse: function (user) {
-      if (user.color)
+      if (user.color) {
         this.trigger('color', user.color);
+      }
 
       var currentAvatar = user.avatar;
 
@@ -47,14 +55,14 @@ define([
       // description
       this.$el.find('#userBio').maxlength({
         counterContainer: this.$el.find('#userBio').siblings('.help-block').find('.counter'),
-        text: i18next.t('edit.left')
+        text: i18next.t('chat.form.common.edit.left')
       });
 
       // website
       this.$website = this.$el.find('input[name=website]');
 
       // color
-      var colorPicker = new ColorPicker({
+      this.colorPicker = new ColorPicker({
         color: user.color,
         name: 'color',
         el: this.$el.find('.user-color').first()
@@ -87,8 +95,9 @@ define([
     onSubmit: function (event) {
       event.preventDefault();
 
-      if (this.checkWebsite() !== true)
+      if (this.checkWebsite() !== true) {
         return;
+      }
 
       var updateData = {
         bio: this.$el.find('textarea[name=bio]').val(),
@@ -97,17 +106,20 @@ define([
         color: this.$el.find('input[name=color]').val()
       };
 
-      if (this.avatarUploader.data)
+      if (this.avatarUploader.data) {
         updateData.avatar = this.avatarUploader.data;
+      }
 
-      if (this.posterUploader.data)
+      if (this.posterUploader.data) {
         updateData.poster = this.posterUploader.data;
+      }
 
       var that = this;
       client.userUpdate(updateData, function (data) {
         that.$el.find('.errors').hide();
-        if (data.err)
+        if (data.err) {
           return that.editError(data);
+        }
         that.trigger('close');
       });
     },
@@ -118,8 +130,9 @@ define([
       var that = this;
       client.userUpdate(updateData, function (d) {
         that.$el.find('.errors').hide();
-        if (d.err)
+        if (d.err) {
           that.editError(d);
+        }
       });
     },
     onUserPosterUpdate: function (data) {
@@ -129,19 +142,22 @@ define([
       var that = this;
       client.userUpdate(updateData, function (d) {
         that.$el.find('.errors').hide();
-        if (d.err)
+        if (d.err) {
           that.editError(d);
+        }
       });
     },
 
     checkWebsite: function () {
       var website = this.$website.val();
 
-      if (website && website.length < 5 || website.length > 255)
-        return this.$el.find('.errors').html(t('edit.errors.website-size')).show();
+      if (website && website.length < 5 || website.length > 255) {
+        return this.$el.find('.errors').html($.t('chat.form.errors.website-size')).show();
+      }
 
-      if (website && !/^[^\s]+\.[^\s]+$/.test(website))
-        return this.$el.find('.errors').html(t('edit.errors.website-url')).show();
+      if (website && !/^[^\s]+\.[^\s]+$/.test(website)) {
+        return this.$el.find('.errors').html($.t('chat.form.errors.website-url')).show();
+      }
 
       return true;
     },
@@ -149,9 +165,9 @@ define([
     editError: function (dataErrors) {
       var message = '';
       _.each(dataErrors.err, function (error) {
-        message += t('edit.errors.' + error) + '<br>';
+        message += $.t('chat.form.errors.' + error) + '<br>';
       });
-      this.$el.find('.errors').html(message).show();
+      this.$el.find('chat.form.errors').html(message).show();
     }
   });
 

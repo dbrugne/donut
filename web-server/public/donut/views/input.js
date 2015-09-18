@@ -28,6 +28,7 @@ define([
     },
 
     initialize: function (options) {
+      this.listenTo(this.model, 'change:focused', this.onFocusChange);
       this.listenTo(currentUser, 'change:avatar', this.onAvatar);
       this.listenTo(this.model, 'inputFocus', this.onFocus);
       this.listenTo(this.model, 'inputActive', this.onInputActiveChange);
@@ -55,7 +56,6 @@ define([
         model: this.model
       });
     },
-
     _remove: function () {
       this.commandsView.remove();
       this.rollupView.remove();
@@ -64,7 +64,6 @@ define([
       this.smileysView.remove();
       this.remove();
     },
-
     render: function () {
       this.$el.html(this.template({
         avatar: common.cloudinarySize(currentUser.get('avatar'), 80),
@@ -75,17 +74,23 @@ define([
       this.$preview = this.$('.preview');
       this.$rollup = this.$('.rollup-container');
 
-      if (!this.model.isInputActive())
+      if (!this.model.isInputActive()) {
         this.$el.addClass('inactive');
-      else
+      } else {
         this.$el.removeClass('inactive');
+      }
     },
-
+    onFocusChange: function () {
+      if (this.model.get('focused')) {
+        this.onFocus();
+      }
+    },
     onInputActiveChange: function () {
-      if (!this.model.isInputActive())
+      if (!this.model.isInputActive()) {
         this.$el.addClass('inactive');
-      else
+      } else {
         this.$el.removeClass('inactive');
+      }
     },
 
     onFocus: function () {
@@ -107,7 +112,7 @@ define([
       this.model.trigger('input:clicked');
     },
 
-    /*****************************************************************************************************************
+    /** ***************************************************************************************************************
      *
      * Listener
      *
@@ -120,43 +125,39 @@ define([
      * @param event
      */
     onKeyDown: function (event) {
-      if (event.type != 'keydown')
-        return;
-
       var data = keyboard._getLastKeyCode(event);
       var message = this.$editable.val();
 
       // Avoid loosing focus when tab is pushed
-      if (data.key === keyboard.TAB)
+      if (data.key === keyboard.TAB) {
         event.preventDefault();
-
+      }
       // Avoid adding new line on enter press (=submit message)
-      if (data.key === keyboard.RETURN && !data.isShift)
+      if (data.key === keyboard.RETURN && !data.isShift) {
         event.preventDefault();
-
+      }
       // Navigate between editable messages
-      if (event.which == keyboard.UP && message === '')
-        this.trigger('editPreviousInput');
+      if (event.which === keyboard.UP && message === '') {
+        this.model.trigger('editPreviousInput');
+      }
 
       this.model.trigger('inputKeyDown', event);
     },
 
     onKeyUp: function (event) {
-      if (event.type != 'keyup')
-        return;
-
       var data = keyboard._getLastKeyCode(event);
       var message = this.$editable.val();
       var images = this.imagesView.list();
 
       if (this.rollupView.isClosed()) {
         // Send message on Enter, not shift + Enter, only if there is something to send
-        if (data.key == keyboard.RETURN && !data.isShift && (message.length != 0 || images.length))
+        if (data.key === keyboard.RETURN && !data.isShift && (message.length || images.length)) {
           return this.sendMessage();
-
+        }
         // Edit previous message on key Up
-        if (data.key == keyboard.UP && ($(event.currentTarget).val() === ''))
-          return this.trigger('editPreviousInput');
+        if (data.key === keyboard.UP && ($(event.currentTarget).val() === '')) {
+          return this.model.trigger('editPreviousInput');
+        }
       }
 
       this.model.trigger('inputKeyUp', event);
@@ -174,8 +175,9 @@ define([
 
       // empty message and no image
       // trim to detect only whitespaces message
-      if (message.trim() === '' && !images.length)
+      if (message.trim() === '' && !images.length) {
         return false;
+      }
 
       // check length (max)
       // @todo: replace with a "withoutSmileysCodes" logic
@@ -186,7 +188,7 @@ define([
 
       // Send message to server
       this.model.sendMessage(message, images);
-      this.trigger('send');
+      this.model.trigger('messageSent');
 
       // reset
       this.$editable.val('');

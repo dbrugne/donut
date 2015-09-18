@@ -78,7 +78,6 @@ describe('shared/util/cloudinary', function () {
       cloudinary.messageImage('v1440415743/discussion/eolog13xgtatjhfqixbr.png', 120).should.equal('https://res.cloudinary.com/roomly/image/upload/b_rgb:ffffff,c___crop__,f_jpg,g_center,h_120,w_120/v1440415743/discussion/eolog13xgtatjhfqixbr.png');
     });
   });
-
 });
 
 describe('shared/models/room', function () {
@@ -103,7 +102,6 @@ describe('shared/models/room', function () {
     model.poster = null;
     model._poster().should.equal('');
   });
-
 });
 
 describe('shared/models/user', function () {
@@ -133,5 +131,4 @@ describe('shared/models/user', function () {
     model.poster = null;
     model._poster().should.equal('');
   });
-
 });

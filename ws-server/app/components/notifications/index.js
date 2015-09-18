@@ -1,5 +1,5 @@
 'use strict';
-var logger = require('../../../pomelo-logger').getLogger('donut', __filename);
+var logger = require('../../../../shared/util/logger').getLogger('donut', __filename);
 var _ = require('underscore');
 var NotificationModel = require('../../../../shared/models/notification');
 var HistoryOne = require('../../../../shared/models/historyone');
@@ -60,6 +60,9 @@ Facade.prototype.getType = function (type) {
     case 'roomdeban':
     case 'roomvoice':
     case 'roomdevoice':
+    case 'roomjoinrequest':
+    case 'roomallowed':
+    case 'roomrefuse':
       typeConstructor = roomPromote;
       break;
 

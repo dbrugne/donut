@@ -1,8 +1,7 @@
 'use strict';
-var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
+var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename);
 var async = require('async');
-var _ = require('underscore');
-var Room = require('../../../../../shared/models/room');
+var RoomModel = require('../../../../../shared/models/room');
 var conf = require('../../../../../config/index');
 var keenio = require('../../../../../shared/io/keenio');
 var common = require('@dbrugne/donut-common');
@@ -19,37 +18,49 @@ var handler = Handler.prototype;
 
 handler.call = function (data, session, next) {
   var user = session.__currentUser__;
-
-  var that = this;
+  var passwordPattern = /([^\s]{4,255})$/i;
 
   async.waterfall([
 
     function check (callback) {
-      if (!data.name)
-        return callback('mandatory');
-
-      if (!common.validateName(data.name))
+      if (!data.name || !common.validateName(data.name)) {
         return callback('invalid-name');
+      }
+
+      if (!data.mode || !common.validateMode(data.mode)) {
+        return callback('invalid-mode');
+      }
+
+      if (data.mode === 'private') {
+        if (!passwordPattern.test(data.password)) {
+          return callback('invalid-password');
+        }
+      }
 
       return callback(null);
     },
 
     function create (callback) {
-      var q = Room.findByName(data.name);
+      var q = RoomModel.findByName(data.name);
       q.exec(function (err, room) {
-        if (err)
+        if (err) {
           return callback(err);
-
-        if (room)
+        }
+        if (room) {
           return callback('alreadyexists');
+        }
 
-        room = new Room({
-          name: data.name,
-          owner: user.id,
-          color: conf.room.default.color,
-          visibility: false, // not visible on home until admin change this value
-          priority: 0
-        });
+        room = RoomModel.getNewRoom();
+        room.name = data.name;
+        room.owner = user.id;
+        room.color = conf.room.default.color;
+        room.visibility = false; // not visible on home until admin change this value
+        room.priority = 0;
+        room.mode = data.mode;
+        if (data.mode === 'private' && data.password !== null) {
+          room.password = user.generateHash(data.password);
+        }
+
         room.save(function (err) {
           return callback(err, room);
         });
@@ -83,16 +94,15 @@ handler.call = function (data, session, next) {
     }
 
   ], function (err) {
-    if ([
-        'mandatory',
-        'invalid-name',
-        'alreadyexists'
-      ].indexOf(err) !== -1)
-      return next(null, { code: 403, err: err });
-    if (err)
-      return next(null, { code: 500, err: err });
+    if (err) {
+      logger.error('[room:create] ' + err);
+      if (['invalid-name', 'invalid-mode', 'invalid-password', 'alreadyexists'].indexOf(err) !== -1) {
+        return next(null, {code: 400, err: err});
+      } else {
+        return next(null, {code: 500, err: 'internal'});
+      }
+    }
 
-    return next(null, { success: true });
+    return next(null, {success: true});
   });
-
 };

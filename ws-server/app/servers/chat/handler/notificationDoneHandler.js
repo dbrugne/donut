@@ -1,5 +1,5 @@
 'use strict';
-var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
+var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename);
 var async = require('async');
 var _ = require('underscore');
 var NotificationModel = require('../../../../../shared/models/notification');
@@ -56,7 +56,7 @@ handler.call = function (data, session, next) {
   ], function (err, event) {
     if (err) {
       logger.error('[notification:done] ' + err);
-      return next(null, {code: 500, err: err});
+      return next(null, {code: 500, err: 'internal'});
     }
 
     next(null, event);

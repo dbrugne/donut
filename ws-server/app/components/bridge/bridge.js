@@ -1,13 +1,13 @@
 'use strict';
-var debug = require('debug')('donut:pomelo-client');
 var _ = require('underscore');
-var pomeloAdmin = require('../../../../node_modules/pomelo/node_modules/pomelo-admin/index');
-var adminClient = pomeloAdmin.adminClient;
+var pomeloAdmin = require('../../../../node_modules/pomelo-admin/index');
+var AdminClient = pomeloAdmin.adminClient;
 
 var moduleId = 'pomeloBridge';
 
 /**
- * Allows external programs to communicate with PomeloJS cluster thought PomeloJS administration framework
+ * Allows external programs to communicate with PomeloJS cluster thought
+ * PomeloJS administration framework
  *
  * @doc: https://github.com/NetEase/pomelo/wiki/Adding-an-Admin-Module
  */
@@ -33,12 +33,14 @@ var Bridge = function (options) {
  * @param callback
  */
 Bridge.prototype.getConnection = function (callback) {
-  if (this.client)
+  if (this.client) {
     return callback(null, this.client);
+  }
 
   this.connect(_.bind(function (err) {
-    if (err)
+    if (err) {
       return callback(err);
+    }
 
     return callback(null, this.client);
   }, this));
@@ -51,7 +53,7 @@ Bridge.prototype.getConnection = function (callback) {
  * @param callback
  */
 Bridge.prototype.connect = function (callback) {
-  this.client = new adminClient({
+  this.client = new AdminClient({
     username: this.username,
     password: this.password,
     md5: true
@@ -63,8 +65,9 @@ Bridge.prototype.connect = function (callback) {
  * Cleanly disconnect client from master
  */
 Bridge.prototype.disconnect = function () {
-  if (this.client && this.client.socket && this.client.socket.connected === true)
+  if (this.client && this.client.socket && this.client.socket.connected === true) {
     this.client.socket.disconnect();
+  }
 
   this.client = null;
 };
@@ -79,8 +82,9 @@ Bridge.prototype.disconnect = function () {
  */
 Bridge.prototype.request = function (target, action, data, callback) {
   this.getConnection(_.bind(function (err, client) {
-    if (err)
+    if (err) {
       return callback(err);
+    }
 
     var query = {
       type: 'request',
@@ -102,8 +106,9 @@ Bridge.prototype.request = function (target, action, data, callback) {
  */
 Bridge.prototype.notify = function (target, action, data, callback) {
   this.getConnection(_.bind(function (err, client) {
-    if (err)
+    if (err) {
       return callback(err);
+    }
 
     var query = {
       type: 'notify',
@@ -114,6 +119,7 @@ Bridge.prototype.notify = function (target, action, data, callback) {
 
     client.notify(moduleId, query);
 
-    callback(null); // allow sequential calls even if on a notify call not response are received
+    callback(null); // allow sequential calls even if on a notify call not
+                    // response are received
   }, this));
 };
