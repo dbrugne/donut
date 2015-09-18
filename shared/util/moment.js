@@ -1,9 +1,8 @@
 'use strict';
 var moment = require('../../node_modules/moment/moment');
-var l = require('../../node_modules/moment/locale/fr');
 var i18next = require('./i18next');
 
-var momentFormat = (i18next.lng() == 'fr')
+var momentFormat = (i18next.lng() === 'fr')
   ? {
     relativeTime: {
       future: '%s',

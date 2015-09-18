@@ -29,7 +29,6 @@ var common = require('@dbrugne/donut-common');
  * @param callback
  */
 module.exports = function (search, searchInUsers, searchInRooms, limit, skip, lightSearch, callback) {
-
   // remove diacritic, @ and #
   search = search.replace(/([@#])/g, '');
   search = diacritics(search);
@@ -83,9 +82,7 @@ module.exports = function (search, searchInUsers, searchInRooms, limit, skip, li
             };
           }
 
-          var count = (room.users) ?
-            room.users.length :
-            0;
+          var count = (room.users) ? room.users.length : 0;
 
           var r = {
             name: room.name,
