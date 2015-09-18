@@ -1,4 +1,4 @@
-var semistandardFormat = require('semistandard/node_modules/semistandard-format');
+var semistandardFormat = require('semistandard-format');
 
 module.exports = function (grunt) {
   grunt.registerTask('donut-lint', function () {
