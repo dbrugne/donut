@@ -245,27 +245,34 @@ define([
       }));
     },
     onAllow: function (data) {
-      var model;
-      if (!data || !data.room_id || !(model = this.get(data.room_id))) {
+      if (!data || !data.room_id || !(this.get(data.room_id))) {
         return;
       }
 
       if (currentUser.get('user_id') === data.user_id) {
-        var isFocused = model.get('focused');
-        var roomTmp = model.attributes;
-        roomTmp.blocked = true;
-        this.remove(model);
-        this.addModel(roomTmp);
-        this.trigger('allowed', {
-          model: this.get(data.room_id),
-          wasFocused: isFocused
-        }); // focus + alert
+        client.roomJoin(data.room_id, null, null, function (data) {
+        });
       }
     },
     onDeban: function (data) {
       var model;
       if (!data || !data.room_id || !(model = this.get(data.room_id))) {
         return;
+      }
+
+      if (currentUser.get('user_id') === data.user_id) {
+        client.roomJoin(data.room_id, null, null, _.bind(function (response) {
+          if (response.room.mode === 'private') {
+            var isFocused = model.get('focused');
+            var modelTmp = model.attributes;
+            this.remove(model);
+            this.addModel(modelTmp, true);
+            this.trigger('allowed', {
+              model: this.get(data.room_id),
+              wasFocused: isFocused
+            }); // focus + alert
+          }
+        }, this));
       }
 
       model.onDeban(data);

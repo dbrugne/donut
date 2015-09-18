@@ -163,7 +163,7 @@ define([
 
       // blocked
       _.each(data.blocked, function (lock) {
-        rooms.addModel(lock, true);
+        rooms.addModel(lock, lock.blocked ? lock.blocked : true);
       });
 
       this.discussionsBlock.redraw();

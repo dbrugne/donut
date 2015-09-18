@@ -13,7 +13,7 @@
                 <% if (owner && owner.username) { %>
                 <span class="owner"><%= t('global.by') %> <a class="open-user-profile dc-text" data-user-id="<%= owner.id %>">@<%= owner.username %></a></span>
                 <% } %>
-                <% if (mode === 'private') { %>
+                <% if (mode === 'private' && blocked !== 'banned') { %>
                     <% if (hasPassword) { %>
                     <div class="password-form mt5 fs15">
                         <%= t('chat.blocked.password') %>

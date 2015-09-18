@@ -22,6 +22,8 @@ handler.call = function (data, session, next) {
 
   var that = this;
 
+  var event = {};
+
   async.waterfall([
 
     function check (callback) {
@@ -77,7 +79,7 @@ handler.call = function (data, session, next) {
     },
 
     function broadcast (callback) {
-      var event = {
+      event = {
         by_user_id: user.id,
         by_username: user.username,
         by_avatar: user._avatar(),
@@ -87,6 +89,12 @@ handler.call = function (data, session, next) {
       };
 
       roomEmitter(that.app, user, room, 'room:deban', event, callback);
+    },
+
+    function broadcastToBannedUser (sentEvent, callback) {
+      that.app.globalChannelService.pushMessage('connector', 'room:deban', event, 'user:' + bannedUser.id, {}, function (reponse) {
+        callback(null, sentEvent);
+      });
     },
 
     function notification (event, callback) {
