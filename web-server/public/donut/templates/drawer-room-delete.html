@@ -1,15 +1,15 @@
 <div class="room">
-    <span class="name"><%= t('edit.room.delete.title') %></span>
+    <span class="name"><%= t('chat.form.room-form.edit.room.delete.title') %></span>
     <span class="name"><%= room.name %></span>
 </div>
 <div class="form-group">
-    <p class="help-block"><%= t('edit.room.delete.info', {name: room.name.replace('#', '')}) %></p>
+    <p class="help-block"><%= t('chat.form.room-form.edit.room.delete.info', {name: room.name.replace('#', '')}) %></p>
 </div>
 <div class="errors"></div>
 <div class="form-group">
     <div class="field">
         <span class="hash dc-text">#</span>
-        <input type="text" class="input dc-border" name="name" placeholder="<%= t('edit.room.delete.placeholder') %>" maxlength="24" />
+        <input type="text" class="input dc-border" name="name" placeholder="<%= t('chat.form.room-form.edit.room.delete.placeholder') %>" maxlength="24" />
     </div>
 </div>
 <div class="field buttons mt15 flex-parent center jc-center">
