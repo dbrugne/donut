@@ -1,4 +1,4 @@
-<div class="side dc-back" style="<% if (poster) { %>background-image: url(<%= poster %>);<% }; %>"></div>
+<div class="side oneside dc-back <% if (!poster) { %>poster-empty<% } %>" style="<% if (poster) { %>background-image: url(<%= poster %>);<% }; %>"></div>
 <div class="content" id="onetoone">
     <div class="mini-header user visible-xs visible-sm <% if (banned === true) { %> is-banned <% } %>">
         <img class="avatar open-user-profile dc-border-lighter" data-user-id="<%= user_id %>" src="<%= avatar %>" alt="<%= username %> avatar">
@@ -15,7 +15,7 @@
             <%= dropdown %>
 
             <span class="hidden-xs hidden-sm">
-                <span class="location"><%= location %></span><% if (location && website) { print(', '); } %><a class="website" href="<%= website.href %>" target="_blank" title="<%= website.title %>"><%= website.title %></a>
+                <span class="location"><%= location %></span><% if (website) { %>&nbsp<a class="website dc-text" href="<%= website.href %>" target="_blank" title="<%= website.title %>"><%= website.title %></a><% } %>
             </span>
         </div>
         <div class="status-block">

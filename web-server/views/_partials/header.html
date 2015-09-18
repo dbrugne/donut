@@ -1,0 +1,83 @@
+<div class="header-out">
+    <nav class="navbar">
+        <!--Header responsive-->
+        <div class="visible-xs visible-sm mini-header">
+            <div class="flex-parent cl-back-first links">
+                <% if (user) { %>
+                <a class="flex-child text-center" href="/!"><%= t('logged.chat') %></a>
+                <a class="flex-child text-center" href="/logout"><%= t('logged.logout') %></a>
+                <% } else { %>
+                <a href="/signup" class="flex-child text-center"><%= t('landing.signup') %></a>
+                <span class="divider"></span>
+                <a href="/login"  class="flex-child text-center"><%= t('landing.login') %></a>
+                <% } %>
+            </div>
+
+            <div class="flex-parent searchbar">
+                <input class="flex-child" type="text" placeholder="<%= t('landing.yourinterests') %>">
+                <button class="action-search"><i class="icon icon-search cl-neutral"></i></button>
+            </div>
+        </div>
+
+        <!--Header non responsive-->
+        <div class="container hidden-sm hidden-xs">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#"><img class="logo" src="/images/logo.png" alt="<%= t('title') %> - <%= t('baseline') %>"></a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+                <div class="baseline hidden-sm hidden-xs">
+                    <div class="relative">
+                        <!-- div class="ctn-text">
+                            <div class="flex-parent">
+                                <p><%= t('home.cover.line1') %>&nbsp;</p>
+                                <p data-toggle="talkative" class="flex-child"><%= t('home.cover.line2') %></p>
+                            </div>
+                            <div class="flex-parent">
+                                <p><%= t('home.cover.line3') %>&nbsp;</p>
+                                <p data-toggle="talkative" class="flex-child"><%= t('home.cover.line4') %></p>
+                            </div>
+                        </div -->
+                    </div>
+                </div>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="signup">
+                        <a href="/signup"><%= t('landing.signup') %></a>
+                    </li>
+                    <li class="divider-vertical"></li>
+                    <li class="nav-divider"></li>
+                    <li class="login">
+                        <a href="/login"><%= t('landing.login') %></a>
+                    </li>
+                    <li class="help">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                            <i class="icon icon-menu dc-text-contrast"></i>
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li class="arrow-up"></li>
+                            <li class="colored"><a href="/!#room/help"><%= t('chat.help') %></a></li>
+                            <li class="colored"><a href="/faq" target="_blank"><%= t('page.faq.title') %></a></li>
+                            <li class="colored"><a data-toggle="contactform"><%= t('page.contact.title') %></a></li>
+                            <li class="colored"><a href="/eutc" target="_blank"><%= t('page.eutc.title') %></a></li>
+                            <li class="colored"><a href="/legals" target="_blank"><%=t('landing.legals')%></a></li>
+                            <li role="separator" class="divider"></li>
+                            <li class="dropdown-header"><%= t('global.switchlanguage') %></li>
+                            <li class="colored"><a href="" data-language="fr" class="switch">Français</a></li>
+                            <li class="colored"><a href="" data-language="en" class="switch">English</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+</div>

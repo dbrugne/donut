@@ -1,5 +1,5 @@
-<div class="side dc-back" style="<% if (typeof poster !== 'undefined') { %>background-image: url(<%= poster %>);<% }; %>">
-    <div class="blur dc-back-darker" style="<% if (typeof posterblured !== 'undefined') { %>background-image: url(<%= posterblured %>);<% }; %>">
+<div class="side roomside dc-back <% if (!poster) { %>poster-empty<% } else { %> poster-full <% } %>" style="<% if (typeof poster !== 'undefined') { %>background-image: url(<%= poster %>);<% }; %>">
+    <div class="blur dc-back" style="<% if (typeof posterblured !== 'undefined') { %>background-image: url(<%= posterblured %>);<% }; %>">
         <div class="users hidden-sm hidden-xs">
             <div class="scrollable"></div>
         </div>
@@ -9,6 +9,7 @@
     <div class="mini-header room visible-xs visible-sm">
         <img class="avatar open-room-profile dc-border-lighter" data-room-id="<%= room_id %>" src="<%= avatar %>" alt="<%= name %> avatar">
         <span class="name open-room-profile dc-text-contrast" data-room-id="<%= room_id %>"><%= name %></span>
+        <div class="info mt5"><%= dropdown %></div>
     </div>
     <div class="header room">
         <div class="overlay-ctn hidden-xs hidden-sm">

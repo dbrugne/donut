@@ -12,7 +12,6 @@ DONUT is a node.js/backbonejs based chatroom platform. Usage is inspired of IRC 
 
 **Global NPM packages** *(generally installed as root)*
 * bower
-* grunt-cli
 * pm2 (hosted deployment only)
 
 Be sure you have correct DNS address, e.g.:

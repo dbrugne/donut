@@ -2,7 +2,7 @@
 <% _.each(list, function(user) { %>
     <% if (previous && previous != user.status) { %>
     <li class="li-title">
-        <div class="title"><%= t('chat.usersoffline') %></div>
+        <div class="title dc-text-contrast"><%= t('chat.usersoffline') %></div>
     </li>
     <% } %>
     <li>
@@ -10,12 +10,12 @@
         <div class="item <% if (user.is_op === true) { %>op<% }; %> <% if (user.is_owner === true) { %>owner<% }; %> <% if (user.is_devoice === true) { %> devoice<% }; %> <%= user.status %>">
             <span class="infos">
                 <span class="avatar open-user-profile" data-user-id="<%= user.user_id %>" style="background-image: url(<%= user.avatar %>)" title="<% if (user.is_op === true) { %><%= t('chat.op.is') %><% } else if (user.is_owner === true) { %><%= t('chat.owner.is') %><% }; %>"></span>
-                <span class="username open-user-profile" data-user-id="<%= user.user_id %>" title="<%= t('global.'+user.status) %>">@<%= user.username %> <i class="icon icon-dot-circle-o <%= user.status %>" title="online"></i></span>
+                <span class="username open-user-profile dc-text-contrast" data-user-id="<%= user.user_id %>" title="<%= t('global.'+user.status) %>">@<%= user.username %> <i class="icon icon-dot-circle-o <%= user.status %>" title="online"></i></span>
 
                 <% if (isAdmin === true || (!user.is_owner && (isOp === true || isOwner === true))) { %>
                 <span class="dropdown">
                     <button class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-                        <i class="icon icon-chevron-down"></i>
+                        <i class="icon icon-chevron-down dc-text-contrast"></i>
                     </button>
                     <ul class="dropdown-menu" role="menu">
                         <li role="presentation">

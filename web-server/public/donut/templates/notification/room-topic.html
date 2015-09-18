@@ -5,7 +5,12 @@
     </div>
     <span class="icon icon-times action-tag-as-done"></span>
     <div class="message-description unviewed">
-        par <span class="username open-user-profile" data-user-id="<%= data.data.user.user_id %>">@<%= data.data.user.username %></span>
-        <div class="date"><span class="moment" data-time="<%= data.time %>" title="<%= data.time %>"><%= from_now %></span></div>
+        <span class="hidden-xs hidden-sm">
+            <%= t('global.by') %> <span class="username open-user-profile" data-user-id="<%= data.data.user.user_id %>">@<%= data.data.user.username %></span>
+        </span>
+        <div class="date">
+            <span class="moment hidden-xs hidden-sm" data-time="<%= data.time %>" title="<%= data.time %>"><%= from_now %></span>
+            <span class="moment visible-xs visible-sm" data-time="<%= data.time %>" title="<%= data.time %>"><%= from_now_short %></span>
+        </div>
     </div>
 </div> <!-- / .message -->

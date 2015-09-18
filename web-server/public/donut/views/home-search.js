@@ -25,11 +25,12 @@ define([
     },
     search: function () {
       var s = this.$search.val();
-      if (!s || s.length < 1)
+      if (!s || s.length < 1) {
         return client.home();
+      }
 
       this.lastSearch = s;
-      client.search(s, true, true, 100, false, _.bind(function (data) {
+      client.search(s, true, true, 100, 0, false, _.bind(function (data) {
         this.trigger('searchResults', data);
       }, this));
     }

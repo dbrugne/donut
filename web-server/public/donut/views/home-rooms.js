@@ -14,13 +14,16 @@ define([
       var rooms = [];
       _.each(data.rooms.list, function (room) {
         room.avatar = common.cloudinarySize(room.avatar, 135);
+        room.join = '#room/' + room.name.replace('#', '');
         rooms.push(room);
       });
 
       var html = this.template({
         rooms: rooms,
         title: true,
-        search: data.search
+        search: data.search,
+        more: false,
+        replace: true
       });
 
       this.$el.html(html);

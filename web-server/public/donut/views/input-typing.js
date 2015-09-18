@@ -4,9 +4,10 @@ define([
   'underscore',
   'backbone',
   'libs/donut-debug',
+  'client',
   'models/current-user',
   '_templates'
-], function ($, _, Backbone, donutDebug, currentUser, templates) {
+], function ($, _, Backbone, donutDebug, client, currentUser, templates) {
   var debug = donutDebug('donut:input');
 
   var InputTypingView = Backbone.View.extend({

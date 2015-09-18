@@ -4,8 +4,8 @@ var redis = require('redis');
 
 redis.debug_mode = false; // @debug
 
-var client = redis.createClient(null, null, {}); // redis client used by express-session, passport and featuredRooms only
-// , could maybe be removed
+// redis client used by express-session, passport and featuredRooms only, could maybe be removed
+var client = redis.createClient(null, null, {});
 module.exports = client;
 
 client.on('connect', function () {

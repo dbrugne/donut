@@ -1,11 +1,16 @@
 <div class="message <% if (data.viewed == false) { %>unread<% } %>" data-notification-id="<%= data.id %>" data-time="<%= data.time %>">
     <img src="<%= data.avatar %>" alt="<%= data.data.room.name %>" />
     <div class="message-subject">
-        <%= t('chat.notifications.dropdown.roomjoin', { username: data.data.user.username, user_id: data.data.user.user_id, roomname: data.data.room.name.replace('#', '' ), room_id: data.data.room.room_id}) %>
+        <%= t('chat.notifications.dropdown.roomjoin', { username: data.data.user.username, userid: (data.data.user._id) ? data.data.user._id : data.data.user.id, roomname: data.data.room.name.replace('#', '' )}) %>
     </div>
     <span class="icon icon-times action-tag-as-done"></span>
     <div class="message-description unviewed">
-        <span class="username">&nbsp;</span>
-        <div class="date"><span class="moment" data-time="<%= data.time %>" title="<%= data.time %>"><%= from_now %></span></div>
+        <span class="hidden-xs hidden-sm">
+            <span class="username">&nbsp;</span>
+        </span>
+        <div class="date">
+            <span class="moment hidden-xs hidden-sm" data-time="<%= data.time %>" title="<%= data.time %>"><%= from_now %></span>
+            <span class="moment visible-xs visible-sm" data-time="<%= data.time %>" title="<%= data.time %>"><%= from_now_short %></span>
+        </div>
     </div>
 </div> <!-- / .message -->

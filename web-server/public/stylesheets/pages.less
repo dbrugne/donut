@@ -52,10 +52,10 @@
       .ft-raleway-heavy;
     }
   }
-  .above { color: #9e9ea6;
+  .above { color: @cl-text;
     padding: 5px;
     a {
-      color: #9e9ea6;
+      color: @cl-text;
       font-weight: bold;
     }
   }
@@ -89,48 +89,27 @@
   .method-password {
     text-align: center;
   }
-  input[type=submit] {
-    .big-button;
-    background-color: @cl-first;
-    border: 0;
-    color: #ffffff;
-    margin-top: 20px;
-  }
-  input[type=submit]:hover {
-    color: #ffffff;
-    text-decoration: underline;
-  }
-  input[type=submit]:focus {
-    color: #ffffff;
-  }
 }
 
 /*
   FQDN : /signup
 */
 #signup {
-  .method-facebook .facebook-button { width: 100%; font-size: 16px;
-    span { color:#FFF !important; }
-  }
   .login .content { background-color: #fff; margin: 0 auto; padding: 20px 30px 15px; .border-radius(5px); .box-shadow(0 1px 0 rgba(0,0,0,.25)); border: 1px solid #e8e8e8;
-    h3,p,a { color: #555459; }
     .input-icon { border-left: 2px solid @cl-first; }
     .form-title { font-weight: 300; margin-bottom: 25px; }
     .form-actions { background-color: #fff; clear: both; border: 0; border-bottom: 1px solid #eee; padding: 0 30px 25px 30px;  }
-    .create-account { border-top: 1px dotted #eee; padding-top: 10px; margin-top: 15px; color:#555459; }
+    .create-account { border-top: 1px dotted @cl-subtext15; padding-top: 10px; }
     .form-group a { line-height: 34px; }
   }
   .input-icon > i { color: #ccc; display: block; position: absolute; margin: 8px 2px 4px 10px; width: 16px; font-size: 16px; text-align: center; left: 0; height: initial; line-height: initial; }
   .input-icon .form-control { padding-left: 33px !important; border-radius: 0 !important; color: #555459; }
-  input[type=submit] { padding: 7px 14px; font-size: 14px; .border-radius(5px); margin:0; float:right; background-color: @cl-first;
-    &:hover { background-color: darken(@cl-first, 10%); text-decoration:none;}
-  }
 }
 
 .body-pages .navbar-default { background-color: @cl-first; min-height: 40px;
   .navbar-brand { height: auto; padding: 5px 15px 0;
     .logo { display: inline-block; width: 130px; height: 32px; }
-    .beta { vertical-align: bottom; height: @size-color; color: @cl-background; .ft-raleway-medium; font-size: 13px; padding-left: 0px; padding-top: 18px; text-decoration: none; }
+    .beta { vertical-align: bottom; height: @size-color; .ft-raleway-medium; font-size: 13px; padding-left: 0px; padding-top: 18px; text-decoration: none; }
   }
 }
 
@@ -142,13 +121,13 @@
   }
 }
 #choose-username {
-  .content { color:#737373; }
-  .form-group.username {
-    text-align: center;
+  //.content { color:#737373; }
+  .form-group.username { text-align: center;
+    img { left:45px; top:15px; }
     .help-block { margin: 15px 0;   font-style: italic; font-size: 12px; text-align: left;
       strong { color:#e60348;   font-size: 16px; }
     }
   }
-  .arobase { margin-right: 2px; vertical-align: sub; .ft-raleway-heavy; font-size: 2.5em; color: @cl-second; }
+  .arobase { margin-right: 2px; vertical-align: sub; .ft-raleway-heavy; font-size: 2.5em; color: @cl-second; margin-top: -6px; padding-bottom: 2px; }
   #username-field { display: inline-block; width: 312px; }
 }

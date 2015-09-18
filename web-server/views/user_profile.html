@@ -1,6 +1,6 @@
 <% layout('profile') %>
 
-<div class="side dc-back" style="<% if (typeof poster !== 'undefined') { %>background-image: url(<%= poster %>);<% }; %>">
+<div class="side oneside dc-back <% if (!poster) { %>poster-empty<% } %>" style="<% if (typeof poster !== 'undefined') { %>background-image: url(<%= poster %>);<% }; %>">
     <div class="blur dc-back-darker " style="<% if (typeof poster !== 'undefined') { %>background-image: url(<%= poster %>);<% }; %>">
 
     </div>
@@ -50,8 +50,10 @@
 
             <% if (_user.hasRooms) { %>
             <p class="title"><%= t('profile.user.hisrooms') %></p>
-            <div class="rooms cards">
-                <% _.each(_user.roomsList, function(room) { print(partial('room', {room: room})); }); %>
+            <div class="ctn-results">
+                <div class="rooms cards">
+                    <% _.each(_user.roomsList, function(room) { print(partial('room', {room: room})); }); %>
+                </div>
             </div>
             <% } %>
         </div>
