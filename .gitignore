@@ -22,4 +22,6 @@
 /web-server/public/web/templates/*
 /web-server/public/web/views
 /web-server/public/web/*.js
-!/web-server/public/web/web.js
+!/web-server/public/web/en.js
+!/web-server/public/web/fr.js
+!/web-server/public/web/index.js
