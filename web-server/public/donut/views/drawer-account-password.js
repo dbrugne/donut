@@ -52,14 +52,14 @@ define([
     onShowForm: function (event) {
       event.preventDefault();
 
-      if (this.user.account.has_password !== true) {
-        this.$inputCurrentPassword.hide();
-        this.$labelCurrentPassword.hide();
-      }
-
       this.$form.show();
       this.$link.hide();
       this.$success.hide();
+
+      if (!this.user.account.has_password) {
+        this.$inputCurrentPassword.hide();
+        this.$labelCurrentPassword.hide();
+      }
     },
 
     onCancel: function (event) {

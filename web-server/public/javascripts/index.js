@@ -134,22 +134,6 @@ require([
       $emailParent.find('.help-block').html('');
       $passwordParent.find('.help-block').html('');
 
-      // Check presense of username
-      if ($username.val() === '') {
-        errors.push({
-          parent: $usernameParent,
-          sibling: $username.siblings('.help-block'),
-          message: i18next.t('forms.username-required')
-        });
-      // Check validity of username
-      } else if (!common.validateUsername($username.val())) {
-        errors.push({
-          parent: $usernameParent,
-          sibling: $username.siblings('.help-block'),
-          message: i18next.t('forms.username-error')
-        });
-      }
-
       // Check presense of email
       if ($email.val() === '') {
         errors.push({
@@ -189,7 +173,6 @@ require([
           error.sibling.append(error.message);
         });
       }
-
     });
   }
 

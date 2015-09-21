@@ -75,31 +75,49 @@ passport.use('local-signup', new LocalStrategy(localStrategyOptions,
         }
 
         if (user) {
-          return done(null, false, req.flash('error', i18next.t('account.email.error.alreadyexists')));
+          if (user.validPassword(password)) { // user type both password and mail of user so connect him
+            return done(null, user);
+          } else {
+            return done(null, false, req.flash('error', i18next.t('account.email.error.alreadyexists')));
+          }
         }
 
-        // create
-        var newUser = User.getNewUser();
-        newUser.local.email = email;
-        newUser.local.password = newUser.generateHash(password);
-        newUser.username = req.body.username;
-        newUser.lastlogin_at = Date.now();
-        newUser.save(function (err) {
+        req.checkBody('username', i18next.t('choose-username.usernameerror')).isUsername();
+        if (req.validationErrors()) {
+          return done(null, false, req.flash('error', i18next.t('choose-username.usernameerror')));
+        }
+
+        User.usernameAvailability(req.body.username, function (err) {
           if (err) {
-            throw err;
+            var errorMessage = (err === 'not-available')
+              ? i18next.t('choose-username.usernameexists')
+              : i18next.t('global.unknownerror');
+            return done(null, false, req.flash('error', errorMessage));
           }
 
-          // tracking
-          keenIoTracking(newUser, 'email');
-
-          // email will be send on next tick but done() is called immediatly
-          emailer.welcome(newUser.local.email, function (err) {
+          // create
+          var newUser = User.getNewUser();
+          newUser.local.email = email;
+          newUser.local.password = newUser.generateHash(password);
+          newUser.username = req.body.username;
+          newUser.lastlogin_at = Date.now();
+          newUser.save(function (err) {
             if (err) {
-              return logger.error('Unable to sent welcome email: ' + err);
+              throw err;
             }
-          });
 
-          return done(null, newUser);
+            // tracking
+            keenIoTracking(newUser, 'email');
+
+            // email will be send on next tick but done() is called immediatly
+            emailer.welcome(newUser.local.email, function (err) {
+              if (err) {
+                return logger.error('Unable to sent welcome email: ' + err);
+              }
+            });
+
+            return done(null, newUser);
+          });
         });
       });
     });
