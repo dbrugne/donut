@@ -193,6 +193,21 @@ Facade.prototype.retrieveUserNotificationsUnviewedCount = function (uid, callbac
   }).count().exec(callback);
 };
 
+Facade.prototype.retrieveUserNotificationsCount = function (uid, time, callback) {
+  var criteria = {
+    user: uid,
+    done: false,
+    to_browser: true
+  };
+  if (time !== null) {
+    criteria.time = {};
+    criteria.time.$lt = new Date(time);
+  }
+  
+  NotificationModel.find(criteria).count().exec(callback);
+};
+
+
 Facade.prototype.retrieveScheduledNotifications = function (callback) {
   var time = new Date();
   time.setSeconds(time.getSeconds() - conf.notifications.delay);
@@ -202,7 +217,6 @@ Facade.prototype.retrieveScheduledNotifications = function (callback) {
     time: {$lt: time}, // @todo : add delay before sending email/mobile for each notification type here
     $or: [
       {to_email: true, sent_to_email: false}
-      // { to_mobile: true, sent_to_mobile: false }
     ]
   });
 

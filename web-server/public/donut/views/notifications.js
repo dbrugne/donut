@@ -46,8 +46,9 @@ define([
     initializeNotificationState: function (data) {
       this.$menu.html('');
       this.$dropdown.parent().removeClass('open');
-      if (data.unread)
+      if (data.unread) {
         this.setUnreadCount(data.unread);
+      }
     },
     render: function () {
       this.$dropdown = this.$el.find('.dropdown-toggle');
@@ -64,10 +65,11 @@ define([
       return this;
     },
     scrollTop: function () {
-      if (this.dropdownIsShown || this.shouldScrollTopOnNextShow)
+      if (this.dropdownIsShown || this.shouldScrollTopOnNextShow) {
         this.$scrollable.scrollTop(0);
-      else
+      } else {
         this.shouldScrollTopOnNextShow = true;
+      }
     },
     setUnreadCount: function (count) {
       if (count > 0) {
@@ -111,18 +113,20 @@ define([
     },
     _createDesktopNotify: function (data) {
       var desktopTitle = i18next.t('chat.notifications.desktop.' + data.type, {
-        'roomname': ( data.data.room && data.data.room.name
+        'roomname': (data.data.room && data.data.room.name
           ? data.data.room.name
           : ''),
-        'username': ( data.data.by_user && data.data.by_user.username
-          ? data.data.by_user.username
-          : ( data.data.user && data.data.user.username
+        'username': (
+          data.data.by_user && data.data.by_user.username
+            ? data.data.by_user.username
+            : (data.data.user && data.data.user.username
             ? data.data.user.username
-            : '')),
-        'topic': ( data.data.topic
+            : '')
+        ),
+        'topic': (data.data.topic
           ? data.data.topic
           : ''),
-        'message': ( data.data.message
+        'message': (data.data.message
           ? data.data.message
           : '')
       });
@@ -180,16 +184,20 @@ define([
           break;
         default:
           return '';
-          break;
       }
       var dateObject = moment(notification.time);
 
-      if (notification.data.room)
+      if (notification.data.room) {
         notification.avatar = common.cloudinarySize(notification.data.room.avatar, 90);
-      else if (notification.data.by_user)
+      } else if (notification.data.by_user) {
         notification.avatar = common.cloudinarySize(notification.data.by_user.avatar, 90);
+      }
 
-      return template({data: notification, from_now: dateObject.format('Do MMMM, HH:mm'), from_now_short: dateObject.format('D/MM, HH:mm')});
+      return template({
+        data: notification,
+        from_now: dateObject.format('Do MMMM, HH:mm'),
+        from_now_short: dateObject.format('D/MM, HH:mm')
+      });
     },
     // User clicks on the notification icon in the header
     onShow: function (event) {
@@ -197,7 +205,6 @@ define([
         this.markHasRead = setTimeout(_.bind(function () {
           this.clearNotifications();
         }, this), this.timeToMarkAsRead);
-        return;
       }
 
       client.notificationRead(null, this.lastNotifDisplayedTime(), 10, _.bind(function (data) {
@@ -236,8 +243,9 @@ define([
       });
 
       // Only call Client if at least something to tag as viewed
-      if (ids.length == 0)
+      if (ids.length === 0) {
         return;
+      }
 
       client.notificationViewed(ids, false, _.bind(function (data) {
         // For each notification in the list, tag them as read
@@ -280,25 +288,28 @@ define([
         }, this.timeToMarkAsRead);
 
         this.toggleReadMore();
-
       }, this));
     },
 
     lastNotifDisplayedTime: function () {
       var last = this.$menu.find('.message').last();
-      var time = (!last || last.length < 1) ? null : last.data('time');
+      var time = (!last || last.length < 1)
+        ? null
+        : last.data('time');
       return time;
     },
 
     toggleReadMore: function () {
       // Only display if at least 10 messages displayed, and more messages to display on server
-      if (this.$menu.find('.message').length < 10)
+      if (this.$menu.find('.message').length < 10) {
         return this.$actions.addClass('hidden');
+      }
 
-      if (!this.isThereMoreNotifications)
+      if (!this.isThereMoreNotifications) {
         this.$actions.addClass('hidden');
-      else
+      } else {
         this.$actions.removeClass('hidden');
+      }
     },
 
     onTagAsRead: function (event) {
@@ -328,8 +339,9 @@ define([
 
       var message = $('.message[data-notification-id=' + data.notification + ']');
 
-      if (message.hasClass('unread'))
+      if (message.hasClass('unread')) {
         this.unread--;
+      }
 
       message.fadeOut(500, function () {
         $(this).remove();
