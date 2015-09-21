@@ -15,7 +15,7 @@ define([
       this.render();
     },
     render: function () {
-      this.$scrollableContent = this.$el.find('.scrollable-content');
+      this.$scrollableContent = this.$('.scrollable-content');
       this.$pad = this.$scrollableContent.find('.pad');
       this.$loader = this.$scrollableContent.find('.loader');
       this.$realtime = this.$scrollableContent.find('.realtime');

@@ -56,10 +56,10 @@ define([
       }
 
       this.$el.html(this.template({room: this.model.toJSON(), owner: this.model.get('owner').toJSON(), type: this.types}));
-      this.numberUsers = this.$el.find('.number');
-      this.search = this.$el.find('input[type=text]');
-      this.pagination = this.$el.find('.paginate');
-      this.typeSelected = this.$el.find('#type-select');
+      this.numberUsers = this.$('.number');
+      this.search = this.$('input[type=text]');
+      this.pagination = this.$('.paginate');
+      this.typeSelected = this.$('#type-select');
 
       this.tableView = new RoomUsersTableConfirmation({
         el: this.$('.table-users'),
@@ -128,7 +128,7 @@ define([
     },
 
     initializeTooltips: function () {
-      this.$el.find('[data-toggle="tooltip"]').tooltip();
+      this.$('[data-toggle="tooltip"]').tooltip();
     }
   });
   return DrawerRoomUsersView;

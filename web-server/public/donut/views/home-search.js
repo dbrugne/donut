@@ -14,7 +14,7 @@ define([
     },
 
     initialize: function (options) {
-      this.$search = this.$el.find('input[type=text]').first();
+      this.$search = this.$('input[type=text]').first();
     },
     render: function (data) {
       return this;

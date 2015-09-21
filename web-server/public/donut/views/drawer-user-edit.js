@@ -53,24 +53,24 @@ define([
       this.$el.html(html);
 
       // description
-      this.$el.find('#userBio').maxlength({
-        counterContainer: this.$el.find('#userBio').siblings('.help-block').find('.counter'),
+      this.$('#userBio').maxlength({
+        counterContainer: this.$('#userBio').siblings('.help-block').find('.counter'),
         text: i18next.t('chat.form.common.edit.left')
       });
 
       // website
-      this.$website = this.$el.find('input[name=website]');
+      this.$website = this.$('input[name=website]');
 
       // color
       this.colorPicker = new ColorPicker({
         color: user.color,
         name: 'color',
-        el: this.$el.find('.user-color').first()
+        el: this.$('.user-color').first()
       });
 
       // avatar
       this.avatarUploader = new ImageUploader({
-        el: this.$el.find('.user-avatar').first(),
+        el: this.$('.user-avatar').first(),
         current: currentAvatar,
         tags: 'user,avatar',
         field_name: 'avatar',
@@ -82,7 +82,7 @@ define([
 
       // poster
       this.posterUploader = new ImageUploader({
-        el: this.$el.find('.user-poster').first(),
+        el: this.$('.user-poster').first(),
         current: user.poster,
         tags: 'user,poster',
         field_name: 'poster',
@@ -100,10 +100,10 @@ define([
       }
 
       var updateData = {
-        bio: this.$el.find('textarea[name=bio]').val(),
-        location: this.$el.find('input[name=location]').val(),
-        website: this.$el.find('input[name=website]').val(),
-        color: this.$el.find('input[name=color]').val()
+        bio: this.$('textarea[name=bio]').val(),
+        location: this.$('input[name=location]').val(),
+        website: this.$('input[name=website]').val(),
+        color: this.$('input[name=color]').val()
       };
 
       if (this.avatarUploader.data) {
@@ -116,7 +116,7 @@ define([
 
       var that = this;
       client.userUpdate(updateData, function (data) {
-        that.$el.find('.errors').hide();
+        that.$('.errors').hide();
         if (data.err) {
           return that.editError(data);
         }
@@ -129,7 +129,7 @@ define([
       };
       var that = this;
       client.userUpdate(updateData, function (d) {
-        that.$el.find('.errors').hide();
+        that.$('.errors').hide();
         if (d.err) {
           that.editError(d);
         }
@@ -141,7 +141,7 @@ define([
       };
       var that = this;
       client.userUpdate(updateData, function (d) {
-        that.$el.find('.errors').hide();
+        that.$('.errors').hide();
         if (d.err) {
           that.editError(d);
         }
@@ -152,11 +152,11 @@ define([
       var website = this.$website.val();
 
       if (website && website.length < 5 || website.length > 255) {
-        return this.$el.find('.errors').html($.t('chat.form.errors.website-size')).show();
+        return this.$('.errors').html($.t('chat.form.errors.website-size')).show();
       }
 
       if (website && !/^[^\s]+\.[^\s]+$/.test(website)) {
-        return this.$el.find('.errors').html($.t('chat.form.errors.website-url')).show();
+        return this.$('.errors').html($.t('chat.form.errors.website-url')).show();
       }
 
       return true;
@@ -167,7 +167,7 @@ define([
       _.each(dataErrors.err, function (error) {
         message += $.t('chat.form.errors.' + error) + '<br>';
       });
-      this.$el.find('chat.form.errors').html(message).show();
+      this.$('chat.form.errors').html(message).show();
     }
   });
 

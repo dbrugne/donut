@@ -21,9 +21,9 @@ define([
     },
 
     initialize: function (options) {
-      this.$opacity = this.$el.find('.opacity').first();
-      this.$wrap = this.$el.find('.wrap').first();
-      this.$content = this.$el.find('.content').first();
+      this.$opacity = this.$('.opacity').first();
+      this.$wrap = this.$('.wrap').first();
+      this.$content = this.$('.content').first();
 
       this.shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
       this.longhandRegex = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i;
@@ -66,7 +66,7 @@ define([
       app.trigger('changeColor', color, true);
     },
     detectOutsideClick: function (event) {
-      var subject = this.$el.find('.content').first();
+      var subject = this.$('.content').first();
       if (event.target.className !== subject.attr('class') && !subject.has(event.target).length) {
         this.close();
       }

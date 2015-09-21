@@ -24,8 +24,8 @@ define([
     initialRender: function () {
       var html = this.template({});
       this.$el.html(html);
-      this.$count = this.$el.find('.count');
-      this.$list = this.$el.find('.list');
+      this.$count = this.$('.count');
+      this.$list = this.$('.list');
     },
     render: function () {
       debug.start('room-users' + this.model.get('name'));

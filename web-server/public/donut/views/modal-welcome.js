@@ -29,7 +29,7 @@ define([
     },
     render: function (welcome) {
       if (!welcome || !welcome.featured || !welcome.featured.length) {
-        this.$el.find('.modal-body .rooms').empty();
+        this.$('.modal-body .rooms').empty();
         return;
       }
 
@@ -46,7 +46,7 @@ define([
         more: false,
         replace: true
       });
-      this.$el.find('.modal-body .rooms')
+      this.$('.modal-body .rooms')
         .html(html);
       return this;
     },
@@ -58,7 +58,7 @@ define([
     },
     onHide: function () {
       // set welcome as false on user if checkbox is checked
-      if (this.$el.find("input[type='checkbox'].avoid").prop('checked') === true) {
+      if (this.$("input[type='checkbox'].avoid").prop('checked') === true) {
         client.userPreferencesUpdate({'browser:welcome': false}, function (data) {
           debug('user preference saved: ', data);
         });

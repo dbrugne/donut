@@ -20,7 +20,7 @@ define([
     initialize: function (options) {
       this.listenTo(client, 'preferences:update', this.render);
 
-      this.$icon = this.$el.find('.icon');
+      this.$icon = this.$('.icon');
     },
 
     render: function () {

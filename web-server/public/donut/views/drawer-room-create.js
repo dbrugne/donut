@@ -26,9 +26,9 @@ define([
     render: function (name) {
       var html = this.template({name: name.replace('#', '')});
       this.$el.html(html);
-      this.$input = this.$el.find('.input');
-      this.$errors = this.$el.find('.errors');
-      this.$submit = this.$el.find('.submit');
+      this.$input = this.$('.input');
+      this.$errors = this.$('.errors');
+      this.$submit = this.$('.submit');
       return this;
     },
     reset: function () {
@@ -70,7 +70,7 @@ define([
       return common.validateName(name) && common.validateMode(mode);
     },
     _getMode: function () {
-      return this.$el.find('input[name="mode"]:checked').val();
+      return this.$('input[name="mode"]:checked').val();
     },
     isValidMode: function () {
       return (common.validateMode(this._getMode()));

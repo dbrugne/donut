@@ -94,8 +94,8 @@ define([
       this.$scrollableContent = this.$scrollable.find('.scrollable-content');
       this.$realtime = this.$scrollableContent.find('.realtime');
 
-      this.$goToTop = this.$el.find('.go-to-top');
-      this.$goToBottom = this.$el.find('.go-to-bottom');
+      this.$goToTop = this.$('.go-to-top');
+      this.$goToBottom = this.$('.go-to-bottom');
 
       var that = this;
       this.$scrollable.on('scroll', $.proxy(function () {

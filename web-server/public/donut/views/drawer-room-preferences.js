@@ -51,7 +51,7 @@ define([
     onNothing: function (event) {
       var $target = $(event.currentTarget);
       var value = $target.is(':checked');
-      this.$el.find('.disableable').prop('disabled', value);
+      this.$('.disableable').prop('disabled', value);
     },
     onChangeValue: function (event) {
       var $target = $(event.currentTarget);
@@ -72,9 +72,9 @@ define([
 
       var that = this;
       client.userPreferencesUpdate(update, function (data) {
-        that.$el.find('.errors').hide();
+        that.$('.errors').hide();
         if (data.err) {
-          that.$el.find('.errors').html(i18next.t('global.unknownerror')).show();
+          that.$('.errors').html(i18next.t('global.unknownerror')).show();
         }
       });
     }

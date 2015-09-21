@@ -143,7 +143,7 @@ define([
       };
       var that = this;
       client.roomUpdate(this.roomId, updateData, function (d) {
-        that.$el.find('.errors').hide();
+        that.$('.errors').hide();
         if (d.err) {
           that.editError(d);
         }
@@ -156,7 +156,7 @@ define([
       };
       var that = this;
       client.roomUpdate(this.roomId, updateData, function (d) {
-        that.$el.find('.errors').hide();
+        that.$('.errors').hide();
         if (d.err) {
           that.editError(d);
         }
@@ -186,7 +186,7 @@ define([
     },
 
     initializeTooltips: function () {
-      this.$el.find('[data-toggle="tooltip"]').tooltip();
+      this.$('[data-toggle="tooltip"]').tooltip();
     }
 
   });

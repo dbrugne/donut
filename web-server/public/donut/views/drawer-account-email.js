@@ -22,7 +22,7 @@ define([
 
       this.render();
 
-      this.$emailUserCtn = this.$el.find('.email-user-ctn');
+      this.$emailUserCtn = this.$('.email-user-ctn');
       this.$link = this.$('#email-modal-link');
       this.$form = this.$('.form-mail');
       this.$spinner = this.$('.spinner');

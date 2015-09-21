@@ -23,7 +23,7 @@ define([
 
     initialize: function (options) {},
     render: function () {
-      this.$inputBlock = this.$el.find('.input');
+      this.$inputBlock = this.$('.input');
       this.$input = this.$inputBlock.find('input[type="text"]');
 
       // Configure modal

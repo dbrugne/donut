@@ -28,9 +28,9 @@ define([
         show: true
       });
 
-      this.$error = this.$el.find('.current .error').first();
-      this.$all = this.$el.find('.current > span');
-      this.$errorMessage = this.$el.find('.error-message').first();
+      this.$error = this.$('.current .error').first();
+      this.$all = this.$('.current > span');
+      this.$errorMessage = this.$('.error-message').first();
 
       return this;
     },

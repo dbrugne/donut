@@ -51,12 +51,12 @@ define([
       }
     },
     render: function () {
-      this.$dropdown = this.$el.find('.dropdown-toggle');
-      this.$badge = this.$el.find('.badge').first();
-      this.$count = this.$el.find('.unread-count .nb').first();
-      this.$menu = this.$el.find('.dropdown-menu #main-navbar-messages');
-      this.$scrollable = this.$el.find('.dropdown-menu .messages-list-ctn');
-      this.$actions = this.$el.find('.dropdown-menu .messages-list-ctn .actions');
+      this.$dropdown = this.$('.dropdown-toggle');
+      this.$badge = this.$('.badge').first();
+      this.$count = this.$('.unread-count .nb').first();
+      this.$menu = this.$('.dropdown-menu #main-navbar-messages');
+      this.$scrollable = this.$('.dropdown-menu .messages-list-ctn');
+      this.$actions = this.$('.dropdown-menu .messages-list-ctn .actions');
       this.$readMore = this.$actions.find('.read-more');
       this.$loader = this.$actions.find('.loading');
 

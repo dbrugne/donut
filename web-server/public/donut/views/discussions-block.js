@@ -27,7 +27,7 @@ define([
       this.initialRender();
     },
     initialRender: function () {
-      this.$list = this.$el.find('.list');
+      this.$list = this.$('.list');
 
       // @doc: https://github.com/voidberg/html5sortable
       this.$list.sortable({

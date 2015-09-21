@@ -33,7 +33,7 @@ define([
           this.onResponse(data.users);
         }, this));
       }
-      this.$ctn = this.$el.find('.ctn');
+      this.$ctn = this.$('.ctn');
       return this;
     },
 
