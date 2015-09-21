@@ -1,9 +1,10 @@
 var _ = require('underscore');
 var through = require('through');
 var filenamePattern = /translation\.json/;
+var localePattern = /\/([a-z]+)\/translation\.json/;
 
-var wrap = function (template) {
-  return 'module.exports = {"fr":{"translation":' + template + '}}';
+var wrap = function (template, locale) {
+  return 'module.exports = {"' + locale + '":{"translation":' + template + '}}';
 };
 
 function compiler (text) {
@@ -21,7 +22,8 @@ module.exports = function (file, b) {
     input += buffer;
   };
   var end = function () {
-    this.queue(wrap(compiler(input)));
+    var matches = file.match(localePattern);
+    this.queue(wrap(compiler(input), matches[1]));
     this.queue(null);
   };
   return through(write, end);

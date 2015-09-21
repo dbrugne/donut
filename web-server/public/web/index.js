@@ -15,20 +15,6 @@ require('bootstrap/js/modal');
 require('bootstrap/js/tooltip');
 require('bootstrap/js/popover');
 
-// i18next
-var i18next = require('i18next-client');
-var locales = require('../../../locales/fr/translation.json'); // @todo : en/fr
-i18next.init({
-  cookieName: 'donut.lng',
-  resStore: locales,
-  debug: false // @debug
-});
-
-// moment
-var moment = require('moment');
-require('moment/locale/fr');
-moment.locale(i18next.lng(), locales[i18next.lng()]['translation']['moment']);
-
 // contact form
 $('[data-toggle="contactform"]').contactform({});
 
