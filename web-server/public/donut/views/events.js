@@ -202,8 +202,8 @@ define([
     },
     isScrollOnBottom: function () {
       var scrollMargin = 10;
-      if (this.messageUnderEdition) {
-        scrollMargin = this.messageUnderEdition.$el.height();
+      if (this.eventsEditView.getMessageUnderEdition()) {
+        scrollMargin = this.eventsEditView.getMessageUnderEdition().$el.height();
       }
 
       // add a 10px margin
@@ -260,7 +260,7 @@ define([
         $(html).appendTo(this.$realtime);
       }
 
-      if (needToScrollDown && !this.messageUnderEdition) {
+      if (needToScrollDown && !this.eventsEditView.getMessageUnderEdition()) {
         this.scrollDown();
       } else {
         this.$goToBottom.show().addClass('unread');
