@@ -1,0 +1,124 @@
+<div class="user">
+    <span class="username"><%= t('preferences.title') %></span>
+</div>
+<div class="errors"></div>
+<form class="user-form" role="form">
+    <div class="form-group">
+        <label><%= t('preferences.welcome.title') %></label>
+        <div class="radio">
+            <label>
+                <input type="radio" class="savable" name="browser:welcome" value="browser:welcome:true" <% if (preferences['browser:welcome']) { print('checked'); } %>>
+                <%= t('preferences.welcome.label-true') %>
+            </label>
+        </div>
+        <div class="radio">
+            <label>
+                <input type="radio" class="savable" name="browser:welcome" value="browser:welcome:false" <% if (!preferences['browser:welcome']) { print('checked'); } %>>
+                <%= t('preferences.welcome.label-false') %>
+            </label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label><%= t('preferences.sounds.title') %></label>
+        <div class="radio">
+            <label>
+                <input type="radio" class="savable" name="browser:sounds" value="browser:sounds:true" <% if (preferences['browser:sounds']) { print('checked'); } %>>
+                <%= t('preferences.browser.sounds.label-true') %> (<a class="play-sound-test"><i class="icon icon-bell"></i> <%= t('preferences.sounds.test') %></a>)
+            </label>
+        </div>
+        <div class="radio">
+            <label>
+                <input type="radio" class="savable" name="browser:sounds" value="browser:sounds:false" <% if (!preferences['browser:sounds']) { print('checked'); } %>>
+                <%= t('preferences.browser.sounds.label-false') %>
+            </label>
+        </div>
+    </div>
+    <label><%= t('preferences.notif.title') %></label>
+    <p class="help-block"><%= t('preferences.notif.help.user') %>
+    <div class="form-group">
+        <div class="notification">
+            <label class="level-2"><%= t('preferences.notif.channels.title') %></label>
+            <div class="checkbox">
+                <label>
+                    <input class="savable" type="checkbox" value="notif:channels:desktop" <% if (preferences['notif:channels:desktop']) { print('checked'); } %>> <%= t('preferences.notif.channels.desktop') %> (<a class="desktop-notification-test"><i class="icon icon-bolt"></i> <%= t('preferences.notif.channels.desktop-test') %></a>)
+                </label>
+                <% if (notify.permissionLevel() == notify.PERMISSION_DEFAULT) { %>
+                    <label style=" font-style: italic; display: block; ">
+                        <%= t('preferences.notif.channels.desktop-default') %>
+                    </label>
+                <% } %>
+                <% if (notify.permissionLevel() == notify.PERMISSION_DENIED) { %>
+                <label style=" font-style: italic; display: block; ">
+                    <%= t('preferences.notif.channels.desktop-refused') %>
+                </label>
+                <% } %>
+                <% if (notify.permissionLevel() == notify.PERMISSION_GRANTED) { %>
+                <label style=" font-style: italic; display: block; ">
+                    <%= t('preferences.notif.channels.desktop-validated') %>
+                </label>
+                <% } %>
+            </div>
+            <div class="checkbox">
+                <label>
+                    <input class="savable" type="checkbox" value="notif:channels:email" <% if (preferences['notif:channels:email']) { print('checked'); } %>> <%= t('preferences.notif.channels.email') %>
+                </label>
+            </div>
+            <!--<div class="checkbox">-->
+            <!--<label>-->
+            <!--<input class="savable" type="checkbox" value="notif:channels:mobile" <% if (preferences['notif:channels:mobile']) { print('checked'); } %>> <%= t('preferences.notif.channels.mobile') %>-->
+            <!--</label>-->
+            <!--</div>-->
+            <p class="help-block"><%= t('preferences.notif.channels.help') %></p>
+        </div>
+    </div>
+    <div class="form-group">
+        <p class="help-block"><%= t('preferences.notif.events.title') %></p>
+        <!--<% var notifications = ['notif:usermessage', 'notif:roominvite']; %>-->
+        <% var notifications = ['notif:usermessage']; %>
+        <% _.each(notifications, function(key) { %>
+        <div class="notification">
+            <div class="checkbox">
+                <label>
+                    <input class="savable" type="checkbox" value="<%= key %>" <% if (preferences[key]) { print('checked'); } %>> <%= t('preferences.notif.events.'+key.replace('notif:', '').replace(':', '.')+'.label') %>
+                </label>
+            </div>
+            <p class="help-block"><%= t('preferences.notif.events.'+key.replace('notif:', '').replace(':', '.')+'.help') %></p>
+        </div>
+        <% }); %>
+    </div>
+    <div class="form-group">
+        <label><%= t('preferences.exit.title') %></label>
+        <div class="radio">
+            <label>
+                <input type="radio" class="savable" name="browser:exitpopin" value="browser:exitpopin:true" <% if (typeof preferences['browser:exitpopin'] == 'undefined' || preferences['browser:exitpopin']) { print('checked'); } %>>
+                <%= t('preferences.exit.label-true') %>
+            </label>
+        </div>
+        <div class="radio">
+            <label>
+                <input type="radio" class="savable" name="browser:exitpopin" value="browser:exitpopin:false" <% if (preferences['browser:exitpopin'] === false) { print('checked'); } %>>
+                <%= t('preferences.exit.label-false') %>
+            </label>
+        </div>
+    </div>
+    <% if(bannedUsers.length > 0) { %>
+    <div class="form-group users">
+        <label><%= t('preferences.notif.banned-users') %></label>
+        <table>
+            <tbody>
+            <% _.each(bannedUsers, function(u){ %>
+            <tr>
+                <td class="avatar open-user-profile" data-user-id="<%= u.user_id %>"><img src="<%= u.avatarUrl %>" alt="<%= u.username %>"></td>
+                <td class="username"><span class="open-user-profile" data-user-id="<%= u.user_id %>"><%= u.username %></span></td>
+                <td class="actions">
+                    <span class="action-user-deban" style="cursor:pointer;" data-user-id="<%= u.user_id %>">
+                        <i class="icon icon-ban"></i>
+                    </span>
+                </td>
+            </tr>
+            <% }); %>
+            </tbody>
+        </table>
+    </div>
+    <% } %>
+</form>

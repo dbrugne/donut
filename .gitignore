@@ -14,14 +14,3 @@
 
 # Data
 /mongotmp
-
-# Browserify migration
-/web-server/public/web/collections
-/web-server/public/web/libs
-/web-server/public/web/models
-/web-server/public/web/templates/*
-/web-server/public/web/views
-/web-server/public/web/*.js
-!/web-server/public/web/en.js
-!/web-server/public/web/fr.js
-!/web-server/public/web/index.js

@@ -1,0 +1,56 @@
+<div class="user">
+    <span class="avatar-ctn <% if (user.isCurrent) { %>open-user-edit <% } %> <% if (user.banned) { %>is-banned <% } %>">
+        <img class="avatar" src="<%= user.avatar %>" alt="<%= user.username %> avatar">
+        <% if (user.isCurrent) { %>
+        <span class="overlay"></span>
+        <span class="overlay-text"><%= t('profile.user.edit') %></span>
+        <% } %>
+    </span>
+    <p class="username">@<%= user.username %></p>
+    <% if (user.bio) { %><p class="bio"><%= user.bio %></p><% }; %>
+    <% if (user.location) { %><p class="action location"><i class="icon icon-map-marker dc-text"></i> <%= user.location %></p><% }; %>
+    <% if (user.website && user.website.href) { %><p class="action website"><i class="icon icon-link dc-text"></i> <a class="colored" href="<%= user.website.href %>" target="_blank" title="<%= user.website.title %>"><%= user.website.title %></a></p><% }; %>
+    <% if (user.registered) { %><p class="action created"><i class="icon icon-clock-o dc-text"></i> <%= t('profile.user.signuped') %> <span data-time="<%= user.registered %>"></span></p><% }; %>
+    <% if (user.status != 'online' && user.onlined) { %><p class="onlined"><i class="icon icon-clock-o dc-text"></i> <%= t('profile.user.onlined', {time: '<span data-time="'+user.onlined+'"></span>'}) %></p><% }; %>
+    <p class="action permalink"><i class="icon icon-link dc-text"></i> <a class="colored dc-text" href="<%= user.url %>" target="_blank" ><%= t('profile.user.permalink') %></a></p>
+    <% if (user.isCurrent) { %><p class="action edit"><i class="icon icon-pencil dc-text"></i> <a class="colored open-user-edit dc-text" data-user-id="<%= user.user_id %>"><%= t('profile.user.editlink') %></a></p><% }; %>
+
+    <% if (!user.isCurrent) { %>
+        <!--Check if I banned this user-->
+        <% if (user.banned) { %>
+            <p class="action action-user-deban" data-user-id="<%= user.user_id %>">
+                <i class="icon icon-ban dc-text"></i> <a href="" class="colored dc-text"><%= t('chat.debanuser.infobox') %></a>
+            </p>
+        <% } else { %>
+            <p class="action action-user-ban" data-user-id="<%= user.user_id %>">
+                <i class="icon icon-ban cl-error"></i> <a href="" class="colored dc-text"><%= t('chat.banuser.infobox') %></a>
+            </p>
+        <% }; %>
+
+        <!--Check if this user banned me-->
+        <% if (user.i_am_banned) { %>
+        <p class="action cl-error">
+            <i class="icon icon-ban cl-error"></i>
+            <%= t('chat.banuser.banned-too') %>
+        </p>
+        <% }; %>
+    <% }; %>
+
+    <% if (user.status == 'online') { %>
+    <p class="discuss"><a href="#user/<%= user.username %>" class="dc-text-contrast dc-back"><%= t('actions.discuss') %></a></p>
+    <% } else { %>
+    <p class="offline"><a href="#user/<%= user.username %>"><%= t('global.offline') %></a></p>
+    <% }; %>
+    <% if (user.rooms_list.length > 0) { %>
+    <div class="rooms">
+        <p class="title"><i class="icon icon-empire"></i> <%= t('profile.user.hisrooms') %></p>
+        <% _.each(user.rooms_list, function(room) { %>
+        <div class="room open-room-profile <% if (room.oped) { %>op<% } %> <% if (room.owned) { %>owner<% } %>" data-room-id="<%= room.id %>">
+            <img class="avatar" src="<%= room.avatar %>" />
+            <span class="name"><%= room.name %></span>
+        </div>
+        <% }); %>
+        <hr>
+    </div>
+    <% } %>
+</div>

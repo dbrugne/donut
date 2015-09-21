@@ -1,0 +1,24 @@
+<div class="room">
+    <span class="name">
+        <%= room.name %>
+        <% if (room.mode === 'private') { %>
+            <span class="room-profile private" data-toggle="tooltip" data-placement="top" title="<%= t('global.private-donut') %>"> </span>
+        <% } %>
+    </span>
+    <span class="owner"><%= t('global.by') %> <a class="open-user-profile dc-text colored" data-user-id="<%= owner.id %>">@<%= owner.username %></a></span>
+</div>
+<div class="user-number">
+    <span><strong class="number"></strong></span>
+    <span class="user-label"><%= t('chat.users.link') %></span>
+</div>
+<div class="search">
+    <input type="text" placeholder="<%= t('chat.users.search') %>">
+    <i class="icon icon-search"></i>
+</div>
+<select name="type" id="type-select" class="form-control mb5">
+    <% _.each(type, function(type) { %>
+    <option value="<%= type %>"><%= t('chat.users.type.' + type) %></option>
+    <% }); %>
+</select>
+<div class="table-users"></div>
+<div class="paginate flex-parent"></div>

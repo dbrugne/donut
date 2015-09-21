@@ -1,0 +1,65 @@
+<div class="scrollable flex-parent column flex-child">
+    <div class="scrollable-content flex-parent column flex-child">
+        <div class="pad"><i class="icon icon-spinner icon-spin"></i></div>
+        <div class="loader">
+            <span class="help">
+                <%= t('chat.history.help') %>
+            </span>
+            <span class="loading"></span>
+            <div class="no-more">
+                <% if (model.type === 'room') { %>
+                    <div class="room">
+                        <div class="title">
+                            <span class="open-room-profile" data-room-id="<%= model.id %>"><%= model.name %></span>
+                        </div>
+                        <div class="info">
+                            <%= t('chat.history.currently', {
+                                'roomname': model.name,
+                                'roomid': model.id,
+                                'owner': model.owner.username,
+                                'ownerid': model.owner.id,
+                                'creation-date': created_at
+                            }) %>
+                        </div>
+                        <% if(isOwner) { %>
+                            <div class="actions flex-parent">
+                                <a href="#" class="open-room-edit" data-room-id="<%= model.id %>"><%= t('chat.history.edit') %></a>
+                                <a href="#" class="open-room-users" data-room-id="<%= model.id %>"><%= t('chat.history.users') %></a>
+                                <a href="#" class="open-room-access" data-room-id="<%= model.id %>"><%= t('chat.history.access') %></a>
+                            </div>
+                        <% } %>
+                    </div>
+                <% } else if (model.type === 'onetoone') { %>
+                    <div class="user">
+                        <div class="title">@<%= model.username %></div>
+                        <div class="info">
+                            <%= t('chat.history.onestart', { 'username': model.username }) %>
+                        </div>
+                    </div>
+                <% }; %>
+            </div>
+        </div>
+        <div class="blank flex-child"></div>
+        <div class="realtime">
+            <% if (model.type === 'room') { %>
+            <div class="hello block hidden-xs">
+                <div class="event">
+                    <div class="text"><i class="icon icon-hello"></i> <%= t('chat.welcome.room', {name: model.name}) %></div>
+                </div>
+            </div>
+            <% } else if (model.type === 'onetoone') { %>
+            <div class="hello block hidden-xs">
+                <div class="event">
+                    <div class="text"><i class="icon icon-hello"></i> <%= t('chat.welcome.onetoone', {username: model.username}) %></div>
+                </div>
+            </div>
+            <% }; %>
+        </div>
+    </div>
+</div>
+<div class="go-to-top">
+    <a><i class="icon icon-arrow-circle-o-up"></i></a>
+</div>
+<div class="go-to-bottom">
+    <a><i class="icon icon-arrow-circle-o-down"></i><span class="unread"><%= t('chat.unread.title') %></span></a>
+</div>
