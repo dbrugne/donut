@@ -968,10 +968,19 @@
     "roomjoinrequest": {
       "subject": "Un utilisateur souhaite rejoindre #__roomname__",
       "content": {
-        "title": "__username__ demande à rejoindre #__roomname__",
+        "title": "@__username__ demande à rejoindre #__roomname__",
         "disclaimer": "On dirait que votre donut est populaire !",
         "action": "<strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
         "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-acces\">Accéder à la discussion</a>"
+      }
+    },
+    "roomallow": {
+      "subject": "Un utilisateur a accepté votre demande de rejoindre #__roomname__",
+      "content": {
+        "title": "@__username__ vous autorise à rejoindre #__roomname__",
+        "disclaimer": "Vous pouvez maintenant profiter de ce donut !",
+        "action": "<strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
+        "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Accéder à la discussion</a>"
       }
     },
     "roomdevoice": {
