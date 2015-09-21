@@ -178,7 +178,9 @@ define([
       app.trigger('scrollDown');
     },
     _remove: function () {
-      this.messageUnderEdition.remove();
+      if (this.messageUnderEdition) {
+        this.messageUnderEdition.remove();
+      }
       this.remove();
     },
     onEditMessageClose: function () {
@@ -187,8 +189,11 @@ define([
       }
       this.messageUnderEdition.remove();
       this.messageUnderEdition = null;
+    },
+    getMessageUnderEdition: function () {
+      return this.messageUnderEdition;
     }
   });
-  
+
   return EventsEdit;
 });
