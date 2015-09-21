@@ -39,6 +39,6 @@ window.notify.config({
 });
 
 // run
-var router = require('./router');
+require('./router');
 var mainView = require('./views/main');
 mainView.run();
