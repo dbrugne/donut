@@ -79,8 +79,12 @@ define([
       if (modelJson.owner) {
         modelJson.owner = modelJson.owner.toJSON();
       }
+      created_at = (modelJson.created_at) 
+        ? moment(this.model.get('created_at')).format('Do MMMM YYYY, h:mm:ss') 
+        : '';
       var html = this.template({
         model: modelJson,
+        created_at: created_at,
         isOwner: (this.model.get('type') === 'room' && this.model.currentUserIsOwner()),
         time: Date.now()
       });
