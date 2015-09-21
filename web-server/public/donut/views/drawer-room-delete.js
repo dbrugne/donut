@@ -3,12 +3,13 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'libs/keyboard',
   'i18next',
   'models/app',
   'client',
   'models/current-user',
   '_templates'
-], function ($, _, Backbone, i18next, app, client, currentUser, templates) {
+], function ($, _, Backbone, keyboard, i18next, app, client, currentUser, templates) {
   var DrawerRoomDeleteView = Backbone.View.extend({
     template: templates['drawer-room-delete.html'],
 
@@ -42,7 +43,7 @@ define([
       return this;
     },
     onResponse: function (room) {
-      if (room.owner.user_id != currentUser.get('user_id') && !currentUser.isAdmin()) {
+      if (room.owner.user_id !== currentUser.get('user_id') && !currentUser.isAdmin()) {
         return;
       }
 
@@ -61,8 +62,7 @@ define([
       client.roomDelete(this.roomId);
     },
     onDelete: function (data) {
-      if (!data.name
-        || data.name.toLocaleLowerCase() != this.roomNameConfirmation) {
+      if (!data.name || data.name.toLocaleLowerCase() !== this.roomNameConfirmation) {
         return;
       }
 
@@ -81,6 +81,8 @@ define([
       this.trigger('close');
     },
     onKeyup: function (event) {
+      this._cleanupState();
+
       if (this._valid()) {
         this.$el.addClass('has-success');
       } else {
@@ -88,22 +90,21 @@ define([
       }
 
       // Enter in field handling
-      if (event.type == 'keyup') {
-        if (event.which == 13) {
-          return this.onSubmit(event);
-        }
+      var key = keyboard._getLastKeyCode(event);
+      if (event.type === 'keyup' && key.key === keyboard.RETURN) {
+        return this.onSubmit(event);
       }
     },
     _valid: function () {
       var name = '#' + this.$input.val();
       var pattern = new RegExp('^' + this.roomNameConfirmation + '$', 'i');
-      if (pattern.test(name)) {
-        return true;
-      } else {
-        return false;
-      }
+      return pattern.test(name);
     },
-
+    _cleanupState: function () {
+      this.$el.removeClass(function (index, css) {
+        return (css.match(/(has-(success|error))+/g) || []).join(' ');
+      });
+    }
   });
 
   return DrawerRoomDeleteView;
