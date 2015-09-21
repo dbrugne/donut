@@ -15,8 +15,7 @@ module.exports = function (grunt) {
     'index.js',
     'templates.js',
     'translations.js',
-    'templates',
-    'app.js'
+    'templates'
   ];
   var npms = [
     'backbone',
@@ -41,7 +40,8 @@ module.exports = function (grunt) {
       if (f.substr(0, 1) === '.') {
         return;
       }
-      if (exclude.indexOf(f) !== -1) {
+      if (exclude.indexOf(f) !== -1 || (f === 'app.js' &&
+        relativeFromPath === './web-server/public/donut/')) {
         grunt.log.ok('ignore ' + relativeFromPath + f);
         return;
       }
