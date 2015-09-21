@@ -947,10 +947,19 @@
       }
     },
     "roomjoinrequest": {
-      "subject": "An user whant to join #__roomname__",
+      "subject": "An user want to join #__roomname__",
       "content": {
-        "title": "__username__ ask for allowance in #__roomname__",
+        "title": "@__username__ ask for allowance in #__roomname__",
         "disclaimer": "Looks like your donut have great success!",
+        "action": "<strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
+        "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Accéder à la discussion</a>"
+      }
+    },
+    "roomallow": {
+      "subject": "An user accept your request to join #__roomname__",
+      "content": {
+        "title": "@__username__ allow you to join #__roomname__",
+        "disclaimer": "You can now enjoy this donut !",
         "action": "<strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
         "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Accéder à la discussion</a>"
       }

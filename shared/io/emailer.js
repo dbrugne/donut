@@ -241,6 +241,19 @@ emailer.roomJoinRequest = function (to, data, callback) {
   }, callback);
 };
 
+emailer.roomAllow = function (to, data, callback) {
+  sendEmail(to, 'emails/room-allow.html', {
+    username: data.username,
+    roomname: data.roomname.replace('#', ''),
+    title: i18next.t('email.roomallow.content.title', { roomname: data.roomname.replace('#', ''), username: data.username }),
+    email_heading_action: i18next.t('email.roomallow.content.action', {
+      fqdn: conf.fqdn,
+      username: data.username
+    }),
+    subject: i18next.t('email.roomallow.subject', { roomname: data.roomname.replace('#', '') })
+  }, callback);
+};
+
 emailer.roomTopic = function (to, from, room, topic, callback) {
   sendEmail(to, 'emails/room-topic.html', {
     username: from,
