@@ -79,7 +79,7 @@ define([
       if (modelJson.owner) {
         modelJson.owner = modelJson.owner.toJSON();
       }
-      var created_at = (modelJson.created_at) 
+      var created_at = (this.model.get('created_at')) 
         ? moment(this.model.get('created_at')).format('Do MMMM YYYY, h:mm:ss') 
         : '';
       var html = this.template({
