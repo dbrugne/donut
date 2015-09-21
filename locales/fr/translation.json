@@ -590,7 +590,6 @@
     "banmessage": "Vous venez d'être banni de __name__",
     "disallowmessage": "Vous ne faites plus partie de la liste des gens autorisés dans __name__",
     "roomnotexists": "Le donut __name__ n'existe pas, <a class='open-create-room' data-name='__name__'>souhaitez-vous le créer </a> ?",
-    "successfullycreated": "Le donut __name__ a bien été créé",
     "reason": "(motif : \"__reason__\")",
     "deletemessage": "Le donut __name__ vient d'être supprimé",
     "users": {

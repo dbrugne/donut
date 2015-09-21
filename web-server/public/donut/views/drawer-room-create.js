@@ -89,12 +89,12 @@ define([
       var mode = this._getMode();
 
       var name = '#' + this.$input.val();
-      var uri = 'room/' + name.replace('#', '');
 
       this.$submit.addClass('loading');
       client.roomCreate(name, mode, null, _.bind(function (response) {
         this.$submit.removeClass('loading');
         if (response.code === 400) {
+          var uri = 'room/' + name.replace('#', '');
           var error = i18next.t('chat.form.errors.' +
             response.err, {name: name, uri: uri});
           return this.setError(error);
@@ -102,8 +102,7 @@ define([
           return this.setError(i18next.t('global.unknownerror'));
         }
 
-        window.router.navigate(uri, {trigger: true});
-        app.trigger('alert', 'info', i18next.t('chat.successfullycreated', {name: name}));
+        app.trigger('focusRoom', name);
         this.reset();
         this.trigger('close');
       }, this));
