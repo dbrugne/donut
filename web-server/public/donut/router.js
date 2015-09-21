@@ -2,9 +2,9 @@
 define([
   'underscore',
   'backbone',
-  'client',
-  'views/main'
-], function (_, Backbone, client, mainView) {
+  'models/app',
+  'client'
+], function (_, Backbone, app, client) {
   var DonutRouter = Backbone.Router.extend({
     routes: {
       '': 'root',
@@ -17,27 +17,26 @@ define([
 
     initialize: function (options) {
       var that = this;
-      // Watch for client connection state
-      this.listenTo(mainView, 'ready', function () {
+      this.listenTo(app, 'readyToRoute', _.bind(function () {
         that.clientOnline = true;
         Backbone.history.start();
-      });
-      this.listenTo(client, 'disconnect', function () {
+      }, this));
+      this.listenTo(client, 'disconnect', _.bind(function () {
         that.clientOnline = false;
         Backbone.history.stop();
-      });
+      }, this));
     },
 
     root: function () {
-      mainView.focusHome();
+      app.trigger('focusHome');
     },
 
     focusRoom: function (name) {
-      mainView.focusRoomByName('#' + name);
+      app.trigger('focusRoom', '#' + name);
     },
 
     focusOneToOne: function (username) {
-      mainView.focusOneToOneByUsername(username);
+      app.trigger('focusOneToOne', username);
     },
 
     default: function () {

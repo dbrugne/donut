@@ -260,14 +260,14 @@ define([
       this.$('.header img.avatar').attr('src', url);
     },
     onPoster: function (model, url, options) {
-      this.$el.find('div.side').css('background-image', 'url(' + url + ')');
-      this.$el.find('div.side').removeClass(function (index, css) {
+      this.$('div.side').css('background-image', 'url(' + url + ')');
+      this.$('div.side').removeClass(function (index, css) {
         return (css.match(/(poster-[\w]{4,5})+/g) || []).join(' ');
       });
       if (url === '') {
-        this.$el.find('div.side').addClass('poster-empty');
+        this.$('div.side').addClass('poster-empty');
       } else {
-        this.$el.find('div.side').addClass('poster-full');
+        this.$('div.side').addClass('poster-full');
       }
     },
     onPosterBlured: function (model, url) {
@@ -298,7 +298,7 @@ define([
     },
 
     initializeTooltips: function () {
-      this.$el.find('[data-toggle="tooltip"]').tooltip();
+      this.$('[data-toggle="tooltip"]').tooltip();
     }
 
   });

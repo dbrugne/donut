@@ -13,7 +13,23 @@
     <p class="help-block"><%= t('chat.form.room-form.create.help') %></p>
 </div>
 
-<div class="drawer-room-create-mode-ctn"></div>
+<div class="form-group">
+    <label><%= t('chat.form.room-form.common.join-mode-label') %></label>
+    <div class="radio">
+        <label>
+            <input type="radio" class="savable public" name="mode" value="public" checked>
+            <%= t('chat.form.room-form.common.mode.public') %> (<%= t('global.default') %>)
+            <br/><%= t('chat.form.room-form.mode.disclaimer.public') %>
+        </label>
+    </div>
+    <div class="radio">
+        <label>
+            <input type="radio" class="savable private" name="mode" value="private">
+            <%= t('chat.form.room-form.common.mode.private') %>
+            <br/><%= t('chat.form.room-form.mode.disclaimer.private') %>
+        </label>
+    </div>
+</div>
 
 <div class="field mt15 flex-parent jc-center center">
     <button class="submit dc-back dc-back-hover dc-text-contrast button button-big" type="button"><%= t('chat.form.room-form.create.submit') %></button>

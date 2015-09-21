@@ -34,8 +34,8 @@ define([
       });
       this.commands = commands;
 
-      this.$editable = this.$el.find('.editable');
-      this.$rollup = this.$el.find('.rollup-container');
+      this.$editable = this.$('.editable');
+      this.$rollup = this.$('.rollup-container');
     },
 
     render: function () {

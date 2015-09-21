@@ -50,7 +50,7 @@ define([
 
       var html = this.template({room: room});
       this.$el.html(html);
-      this.$input = this.$el.find('.input');
+      this.$input = this.$('.input');
     },
     onSubmit: function (event) {
       event.preventDefault();
@@ -66,14 +66,14 @@ define([
         return;
       }
 
-      this.$el.find('.errors').hide();
+      this.$('.errors').hide();
 
       if (!data.success) {
         var message = '';
         _.each(data.errors, function (error) {
           message += error + '<br>';
         });
-        this.$el.find('.errors').html(message).show();
+        this.$('.errors').html(message).show();
         return;
       }
 

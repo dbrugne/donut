@@ -67,20 +67,20 @@ define([
       var html = this.template(data);
       this.$el.html(html);
 
-      this.$errors = this.$el.find('.errors');
-      this.$search = this.$el.find('input[type=text]');
-      this.$dropdown = this.$el.find('.dropdown');
-      this.$dropdownMenu = this.$el.find('.dropdown-menu');
-      this.$toggleCheckbox = this.$el.find('#input-password-checkbox');
-      this.$password = this.$el.find('.input-password');
-      this.$randomPassword = this.$el.find('.random-password');
+      this.$errors = this.$('.errors');
+      this.$search = this.$('input[type=text]');
+      this.$dropdown = this.$('.dropdown');
+      this.$dropdownMenu = this.$('.dropdown-menu');
+      this.$toggleCheckbox = this.$('#input-password-checkbox');
+      this.$password = this.$('.input-password');
+      this.$randomPassword = this.$('.random-password');
 
       this.tablePending = new TableView({
-        el: this.$el.find('.allow-pending'),
+        el: this.$('.allow-pending'),
         model: this.model
       });
       this.tableAllowed = new TableView({
-        el: this.$el.find('.allowed'),
+        el: this.$('.allowed'),
         model: this.model
       });
       this.renderTables();
@@ -211,7 +211,7 @@ define([
     },
 
     initializeTooltips: function () {
-      this.$el.find('[data-toggle="tooltip"]').tooltip();
+      this.$('[data-toggle="tooltip"]').tooltip();
     }
 
   });

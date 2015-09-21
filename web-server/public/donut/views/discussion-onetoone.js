@@ -116,10 +116,10 @@ define([
       this.$('.header .avatar img').attr('src', url);
     },
     onPoster: function (model, url, options) {
-      this.$el.find('div.side').css('background-image', 'url(' + url + ')');
-      this.$el.find('div.side').removeClass('poster-empty');
+      this.$('div.side').css('background-image', 'url(' + url + ')');
+      this.$('div.side').removeClass('poster-empty');
       if (url === '') {
-        this.$el.find('div.side').addClass('poster-empty');
+        this.$('div.side').addClass('poster-empty');
       }
     },
     onLocation: function (model, value, options) {

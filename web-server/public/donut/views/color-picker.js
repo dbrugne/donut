@@ -33,10 +33,10 @@ define([
       return this;
     },
     open: function (event) {
-      this.$el.find('.picker').show();
+      this.$('.picker').show();
     },
     close: function (event) {
-      this.$el.find('.picker').hide();
+      this.$('.picker').hide();
     },
     onOver: function (event) {
       var color = $(event.currentTarget).data('color');
@@ -48,12 +48,12 @@ define([
     onPick: function (event) {
       this.color = $(event.currentTarget).data('color');
       this._setColor(this.color);
-      this.$el.find('.input').val(this.color);
+      this.$('.input').val(this.color);
       this.close();
     },
     _setColor: function (color) {
-      this.$el.find('.preview').css('background-color', color);
-      this.$el.find('.hexadecimal').text(color);
+      this.$('.preview').css('background-color', color);
+      this.$('.hexadecimal').text(color);
     }
 
   });

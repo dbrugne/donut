@@ -17,9 +17,9 @@ define([
     initialize: function (options) {
       this.render();
 
-      this.roomsView = new RoomsView({el: this.$el.find('.rooms')});
-      this.usersView = new UsersView({el: this.$el.find('.users')});
-      this.searchView = new SearchView({el: this.$el.find('.search')});
+      this.roomsView = new RoomsView({el: this.$('.rooms')});
+      this.usersView = new UsersView({el: this.$('.users')});
+      this.searchView = new SearchView({el: this.$('.search')});
       this.listenTo(this.searchView, 'searchResults', this.onSearchResults);
       this.listenTo(this.searchView, 'emptySearch', this.request);
     },

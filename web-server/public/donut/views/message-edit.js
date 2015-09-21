@@ -23,9 +23,9 @@ define([
       this.render();
     },
     render: function () {
-      this.$text = this.$el.find('.text');
-      this.$textEdited = this.$el.find('.text-edited');
-      this.$messageEdit = this.$el.find('.message-edit');
+      this.$text = this.$('.text');
+      this.$textEdited = this.$('.text-edited');
+      this.$messageEdit = this.$('.message-edit');
 
       if (this.$el.data('edited') || this.$textEdited) {
         this.$textEdited.remove();
@@ -39,14 +39,14 @@ define([
       this.originalMessage = common.markupToText(this.originalMessage);
       this.originalMessage = this.htmlSmileyToText(this.originalMessage);
 
-      this.$messageForm = this.$el.find('.message-form');
+      this.$messageForm = this.$('.message-form');
       this.$messageForm
         .css('display', 'block')
         .find('.form-message-edit')
         .val(this.originalMessage)
         .focus();
 
-      this.$formMessageEdit = this.$el.find('.form-message-edit');
+      this.$formMessageEdit = this.$('.form-message-edit');
 
       this.updateFormSize();
 

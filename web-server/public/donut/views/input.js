@@ -100,7 +100,7 @@ define([
     },
 
     onAvatar: function (model, value, options) {
-      this.$el.find('.avatar').prop('src', common.cloudinarySize(value, 80));
+      this.$('.avatar').prop('src', common.cloudinarySize(value, 80));
     },
 
     onSubmitMessage: function (event) {

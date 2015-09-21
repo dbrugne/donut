@@ -81,9 +81,9 @@ define([
 
       var that = this;
       client.userPreferencesUpdate(update, function (data) {
-        that.$el.find('.errors').hide();
+        that.$('.errors').hide();
         if (data.err) {
-          that.$el.find('.errors').html(i18next.t('global.unknownerror')).show();
+          that.$('.errors').html(i18next.t('global.unknownerror')).show();
           return;
         }
       });

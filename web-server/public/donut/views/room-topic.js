@@ -35,16 +35,16 @@ define([
         roomId: this.model.get('id')
       }));
 
-      this.$el.find('.topic-current, .topic-form').hide();
+      this.$('.topic-current, .topic-form').hide();
       var currentTopic = this.model.get('topic');
       if (!currentTopic || currentTopic === '') {
         if (this.model.currentUserIsOp() || this.model.currentUserIsOwner() || this.model.currentUserIsAdmin()) {
-          this.$el.find('.txt')
+          this.$('.txt')
             .html(i18next.t('chat.topic.default'))
             .attr('title', i18next.t('chat.topic.default'));
-          this.$el.find('.topic-current').css('display', 'inline-block');
+          this.$('.topic-current').css('display', 'inline-block');
         } else {
-          this.$el.find('.txt')
+          this.$('.txt')
             .html('')
             .attr('title', '');
         }
@@ -54,11 +54,11 @@ define([
           template: templates['markup.html'],
           style: 'color: ' + this.model.get('color')
         });
-        this.$el.find('.txt')
+        this.$('.txt')
           .html(htmlTopic)
           .attr('title', common.markupToText(currentTopic))
           .smilify();
-        this.$el.find('.topic-current').css('display', 'inline-block');
+        this.$('.topic-current').css('display', 'inline-block');
       }
 
       return this;
@@ -71,18 +71,18 @@ define([
         return false;
 
       var topic = common.markupToText(this.model.get('topic'));
-      this.$el.find('.topic-current').hide();
-      this.$el.find('.topic-form').css('display', 'block');
-      this.$el.find('.topic-input').val(topic).focus();
+      this.$('.topic-current').hide();
+      this.$('.topic-form').css('display', 'block');
+      this.$('.topic-input').val(topic).focus();
     },
     hideForm: function () {
-      this.$el.find('.topic-form').hide();
-      this.$el.find('.topic-current').css('display', 'inline-block');
+      this.$('.topic-form').hide();
+      this.$('.topic-current').css('display', 'inline-block');
     },
     sendNewTopic: function (event) {
       if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin()) return false;
 
-      var newTopic = this.$el.find('.topic-input').val();
+      var newTopic = this.$('.topic-input').val();
 
       // only if different
       if (newTopic == this.model.get('topic')) {
@@ -95,7 +95,7 @@ define([
         client.roomTopic(this.model.get('id'), newTopic);
 
       // reset form state
-      this.$el.find('.topic-input').val('');
+      this.$('.topic-input').val('');
       this.hideForm();
     },
     _remove: function () {

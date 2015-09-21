@@ -571,7 +571,6 @@
     "banmessage": "You have been banned from __name__",
     "disallowmessage": "You are not allowed anymore in __name__",
     "roomnotexists": "The donut __name__ does not exist yet, <a class='open-create-room' data-name='__name__'>would you like to create it</a>?",
-    "successfullycreated": "Donut __name__ successfully created",
     "reason": "(reason: \"__reason__\")",
     "deletemessage": "The donut __name__ has been deleted",
     "users": {
@@ -952,7 +951,7 @@
         "title": "@__username__ ask for allowance in #__roomname__",
         "disclaimer": "Looks like your donut have great success!",
         "action": "<strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
-        "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Accéder à la discussion</a>"
+        "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Go to chat</a>"
       }
     },
     "roomallow": {
@@ -961,7 +960,16 @@
         "title": "@__username__ allow you to join #__roomname__",
         "disclaimer": "You can now enjoy this donut !",
         "action": "<strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
-        "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Accéder à la discussion</a>"
+        "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Go to chat</a>"
+      }
+    },
+    "roomrefuse": {
+      "subject": "An user refuse your request to join #__roomname__",
+      "content": {
+        "title": "@__username__ refuse your request to join #__roomname__",
+        "disclaimer": "Don't worry you can make another request to join this donut later !",
+        "action": "<strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
+        "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Go to chat</a>"
       }
     },
     "roomdevoice": {

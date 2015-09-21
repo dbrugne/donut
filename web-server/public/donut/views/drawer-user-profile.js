@@ -59,8 +59,8 @@ define([
 
       var html = this.template({user: user});
       this.$el.html(html);
-      this.$el.find('.created span').momentify('date');
-      this.$el.find('.onlined span').momentify('fromnow');
+      this.$('.created span').momentify('date');
+      this.$('.onlined span').momentify('fromnow');
 
       if (user.color) {
         this.trigger('color', user.color);
