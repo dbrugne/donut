@@ -205,7 +205,6 @@ define([
         this.markHasRead = setTimeout(_.bind(function () {
           this.clearNotifications();
         }, this), this.timeToMarkAsRead);
-        return;
       }
 
       client.notificationRead(null, this.lastNotifDisplayedTime(), 10, _.bind(function (data) {
