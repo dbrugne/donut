@@ -35,6 +35,18 @@ app.use(less(__dirname + '/public', { force: conf.less.force }));
 app.use(express.static(path.join(__dirname, '../node_modules/socket.io-client'))); // => require('socket.io-client');
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(httpLogger('dev'));
+
+// on-the-fly browserify middleware
+if (process.env.NODE_ENV === 'development') {
+  app.use(require('browserify-dev-middleware')({
+    src: __dirname + '/public/web',
+    transforms: [
+      require('../shared/util/browserifyJst'),
+      require('../shared/util/browserifyI18next')
+    ]
+  }));
+}
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(expressValidator()); // must be immediately after bodyParser()
 app.use(cookieParser());
