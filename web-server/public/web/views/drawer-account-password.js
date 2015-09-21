@@ -49,7 +49,7 @@ var DrawerAccountPasswordView = Backbone.View.extend({
   onShowForm: function (event) {
     event.preventDefault();
 
-    if (this.user.account.has_password !== true) {
+    if (!this.user.account.has_password) {
       this.$inputCurrentPassword.hide();
       this.$labelCurrentPassword.hide();
     }
