@@ -8,7 +8,6 @@ define([
   'text!./templates/discussion-room.html',
   'text!./templates/discussion-room-blocked.html',
   'text!./templates/drawer-room-create.html',
-  'text!./templates/drawer-room-create-mode.html',
   'text!./templates/drawer-room-delete.html',
   'text!./templates/drawer-room-edit.html',
   'text!./templates/drawer-room-users.html',
@@ -83,7 +82,6 @@ define([
   discussion_room,
   discussion_room_blocked,
   drawer_room_create,
-  drawer_room_create_mode,
   drawer_room_delete,
   drawer_room_edit,
   drawer_room_users,
@@ -171,7 +169,6 @@ define([
   JST['discussion-room.html'] = _.template(discussion_room);
   JST['discussion-room-blocked.html'] = _.template(discussion_room_blocked);
   JST['drawer-room-create.html'] = _.template(drawer_room_create);
-  JST['drawer-room-create-mode.html'] = _.template(drawer_room_create_mode);
   JST['drawer-room-delete.html'] = _.template(drawer_room_delete);
   JST['drawer-room-edit.html'] = _.template(drawer_room_edit);
   JST['drawer-room-users.html'] = _.template(drawer_room_users);
