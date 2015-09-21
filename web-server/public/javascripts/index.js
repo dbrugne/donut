@@ -6,7 +6,6 @@ require.config({
     'backbone': '../vendor/backbone/backbone',
     'bootstrap': '../vendor/bootstrap/dist/js/bootstrap',
     'text': '../vendor/requirejs-text/text',
-    'jquery.talkative': '../vendor/talkative/jquery.talkative',
     'jquery.socialify': '../javascripts/plugins/jquery.socialify',
     'jquery.contactform': '../javascripts/plugins/jquery.contactform',
     'i18next': '../vendor/i18next/i18next.amd.withJQuery',
@@ -14,7 +13,6 @@ require.config({
   },
   shim: {
     'bootstrap': ['jquery'],
-    'jquery.talkative': ['jquery'],
     'jquery.socialify': ['jquery'],
     'jquery.contactform': ['jquery']
   }
@@ -28,7 +26,6 @@ require([
   'i18next',
   './search',
   'bootstrap',
-  'jquery.talkative',
   'jquery.socialify',
   'jquery.contactform'
 ], function (translations, $, _, Backbone, common, i18next, SearchView) {
@@ -49,13 +46,6 @@ require([
   i18next.init(i18nextOptions);
   // make i18next available from all underscore templates views (<%= t('key') %>)
   window.t = i18next.t; // @global
-
-  // Intialize Talkative on all pages
-  $('[data-toggle="talkative"]').talkative({
-    start: 2000,
-    delay: 5000,
-    delay_animation: 900
-  });
 
   // Contact form
   $('[data-toggle="contactform"]').contactform({});

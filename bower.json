@@ -10,7 +10,6 @@
     "backbone": "latest",
     "moment": "latest",
     "i18next": "latest",
-    "talkative": "https://github.com/dbrugne/talkative.git",
     "html.sortable": "latest",
     "visionmedia-debug": "latest",
     "html5-desktop-notifications": "latest",
