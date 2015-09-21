@@ -9,9 +9,9 @@ define([
   'client',
   'i18next',
   '_templates'
-], function ($, _, Backbone, app, DrawerRoomCreateModeView, common, client, i18next, _templates) {
+], function ($, _, Backbone, app, DrawerRoomCreateModeView, common, client, i18next, templates) {
   var DrawerRoomCreateView = Backbone.View.extend({
-    template: _templates['drawer-room-create.html'],
+    template: templates['drawer-room-create.html'],
 
     id: 'room-create',
 
