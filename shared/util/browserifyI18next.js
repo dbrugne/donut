@@ -22,6 +22,7 @@ module.exports = function (file, b) {
     input += buffer;
   };
   var end = function () {
+    file = file.replace(/\\/g, '/'); // Windows workaround
     var matches = file.match(localePattern);
     this.queue(wrap(compiler(input), matches[1]));
     this.queue(null);
