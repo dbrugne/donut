@@ -79,18 +79,6 @@ handler.call = function (data, session, next) {
 
       return callback(null, event);
     }
-    //,
-    //
-    //function unviewed (event, callback) {
-    //  Notifications(that.app).retrieveUserNotificationsUnviewedCount(user.id, function (err, count) {
-    //    if (err) {
-    //      return callback(err);
-    //    }
-    //
-    //    event.unviewed = count || 0;
-    //    return callback(null, event);
-    //  });
-    //}
 
   ], function (err, event) {
     if (err) {
