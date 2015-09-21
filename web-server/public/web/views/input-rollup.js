@@ -1,7 +1,7 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
-var common = require('@dbrugne/donut-common');
+var common = require('@dbrugne/donut-common/browser');
 var client = require('../client');
 var donutDebug = require('../libs/donut-debug');
 var keyboard = require('../libs/keyboard');
@@ -192,7 +192,7 @@ var InputRollupView = Backbone.View.extend({
     if (prefix === '#') {
       client.search(search, true, false, 15, 0, false, function (data) {
         _.each(data.rooms.list, function (d) {
-          d.avatarUrl = common.cloudinarySize(d.avatar);
+          d.avatarUrl = common.cloudinary.prepare(d.avatar);
         });
         that.$rollup.html(that.template({
           type: 'rooms',
@@ -204,7 +204,7 @@ var InputRollupView = Backbone.View.extend({
     if (prefix === '@') {
       client.search(search, false, true, 15, 0, false, function (data) {
         _.each(data.users.list, function (d) {
-          d.avatarUrl = common.cloudinarySize(d.avatar);
+          d.avatarUrl = common.cloudinary.prepare(d.avatar);
         });
         that.$rollup.html(that.template({
           type: 'users',

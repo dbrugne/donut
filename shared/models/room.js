@@ -2,7 +2,7 @@ var logger = require('../util/logger').getLogger('models', __filename);
 var _ = require('underscore');
 var bcrypt = require('bcrypt-nodejs');
 var mongoose = require('../io/mongoose');
-var common = require('@dbrugne/donut-common');
+var common = require('@dbrugne/donut-common/server');
 var cloudinary = require('../util/cloudinary');
 
 var MAX_PASSWORD_TRIES = 5;
@@ -49,7 +49,7 @@ var roomSchema = mongoose.Schema({
 
 roomSchema.statics.findByName = function (name) {
   return this.findOne({
-    name: common.regExpBuildExact(name, 'i'),
+    name: common.regexp.exact(name, 'i'),
     deleted: {$ne: true}
   });
 };
@@ -60,7 +60,7 @@ roomSchema.statics.listByName = function (names) {
     $or: []
   };
   _.each(names, function (n) {
-    criteria['$or'].push({name: common.regExpBuildExact(n)});
+    criteria['$or'].push({name: common.regexp.exact(n)});
   });
   return this.find(criteria, '_id name');
 };

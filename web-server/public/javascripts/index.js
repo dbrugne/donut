@@ -134,7 +134,7 @@ require([
           message: i18next.t('forms.username-required')
         });
         // Check validity of username
-      } else if (!common.validateUsername($username.val())) {
+      } else if (!common.validate.username($username.val())) {
         errors.push({
           parent: $usernameParent,
           sibling: $username.siblings('.help-block'),
@@ -190,7 +190,7 @@ require([
       $.socialify.facebook({
         url: $(this).data('url'),
         name: i18next.t('chat.share.title', {name: $(this).data('name')}),
-        picture: common.cloudinarySize($(this).data('avatar'), 350),
+        picture: common.cloudinary.prepare($(this).data('avatar'), 350),
         description: i18next.t('chat.share.description', {name: $(this).data('name')})
       });
     });

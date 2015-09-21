@@ -2,7 +2,7 @@ var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var i18next = require('i18next-client');
-var common = require('@dbrugne/donut-common');
+var common = require('@dbrugne/donut-common/browser');
 var client = require('../client');
 var currentUser = require('../models/current-user');
 
@@ -47,13 +47,13 @@ var RoomTopicView = Backbone.View.extend({
       }
     } else {
       // mentions
-      var htmlTopic = common.markupToHtml(currentTopic, {
+      var htmlTopic = common.markup.toHtml(currentTopic, {
         template: require('../templates/markup.html'),
         style: 'color: ' + this.model.get('color')
       });
       this.$('.txt')
         .html(htmlTopic)
-        .attr('title', common.markupToText(currentTopic))
+        .attr('title', common.markup.toText(currentTopic))
         .smilify();
       this.$('.topic-current').css('display', 'inline-block');
     }
@@ -67,7 +67,7 @@ var RoomTopicView = Backbone.View.extend({
     if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin())
       return false;
 
-    var topic = common.markupToText(this.model.get('topic'));
+    var topic = common.markup.toText(this.model.get('topic'));
     this.$('.topic-current').hide();
     this.$('.topic-form').css('display', 'block');
     this.$('.topic-input').val(topic).focus();

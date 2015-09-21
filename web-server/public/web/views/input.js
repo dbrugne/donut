@@ -2,7 +2,7 @@ var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var i18next = require('i18next-client');
-var common = require('@dbrugne/donut-common');
+var common = require('@dbrugne/donut-common/browser');
 var donutDebug = require('../libs/donut-debug');
 var keyboard = require('../libs/keyboard');
 var currentUser = require('../models/current-user');
@@ -63,7 +63,7 @@ var DiscussionInputView = Backbone.View.extend({
   },
   render: function () {
     this.$el.html(this.template({
-      avatar: common.cloudinarySize(currentUser.get('avatar'), 80),
+      avatar: common.cloudinary.prepare(currentUser.get('avatar'), 80),
       bannedMessage: i18next.t('chat.actions.bannedMessage.__type__'.replace('__type__', this.model.get('type')))
     }));
 
@@ -97,7 +97,7 @@ var DiscussionInputView = Backbone.View.extend({
   },
 
   onAvatar: function (model, value, options) {
-    this.$('.avatar').prop('src', common.cloudinarySize(value, 80));
+    this.$('.avatar').prop('src', common.cloudinary.prepare(value, 80));
   },
 
   onSubmitMessage: function (event) {

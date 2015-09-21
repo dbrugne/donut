@@ -5,7 +5,7 @@ var _ = require('underscore');
 var Room = require('../../../../../shared/models/room');
 var validator = require('validator');
 var cloudinary = require('../../../../../shared/util/cloudinary').cloudinary;
-var common = require('@dbrugne/donut-common');
+var linkify = require('linkifyjs');
 
 var Handler = function (app) {
   this.app = app;
@@ -66,7 +66,7 @@ handler.call = function (data, session, next) {
         if (data.data.website.length < 5 && data.data.website.length > 255) {
           errors.website = 'website-size'; // website should be 5 characters min and 255 characters max.;
         } else {
-          var link = common.getLinkify().find(data.data.website);
+          var link = linkify.find(data.data.website);
           if (!link || !link[0] || !link[0].type || !link[0].value || !link[0].href || link[0].type !== 'url') {
             errors.website = 'website-url';
           } else { // website should be a valid site URL

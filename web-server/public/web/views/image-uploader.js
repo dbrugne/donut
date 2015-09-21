@@ -1,7 +1,7 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
-var common = require('@dbrugne/donut-common');
+var common = require('@dbrugne/donut-common/browser');
 var donutDebug = require('../libs/donut-debug');
 
 var debug = donutDebug('donut:image-uploader');
@@ -108,7 +108,7 @@ var ImageUploaderView = Backbone.View.extend({
         + 'v' + version + '/' + identifier + '.jpg';
     } else {
       if (identifier.indexOf('__width__') !== -1)
-        url = common.cloudinarySize(identifier, 30);
+        url = common.cloudinary.prepare(identifier, 30);
       else
         url = identifier.replace('h_1100,w_430', 'h_30,w_30');
     }

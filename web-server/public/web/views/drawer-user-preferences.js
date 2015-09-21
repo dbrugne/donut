@@ -3,7 +3,7 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var i18next = require('i18next-client');
 var app = require('../models/app');
-var common = require('@dbrugne/donut-common');
+var common = require('@dbrugne/donut-common/browser');
 var client = require('../client');
 var currentUser = require('../models/current-user');
 var confirmationView = require('./modal-confirmation');
@@ -40,7 +40,7 @@ var DrawerUserPreferencesView = Backbone.View.extend({
     var color = currentUser.get('color');
 
     _.each(data.bannedUsers, function (element, index, list) {
-      list[index].avatarUrl = common.cloudinarySize(element.avatar, 30);
+      list[index].avatarUrl = common.cloudinary.prepare(element.avatar, 30);
     });
 
     var html = this.template({

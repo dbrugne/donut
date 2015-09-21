@@ -4,7 +4,7 @@ var async = require('async');
 var RoomModel = require('../../../../../shared/models/room');
 var conf = require('../../../../../config/index');
 var keenio = require('../../../../../shared/io/keenio');
-var common = require('@dbrugne/donut-common');
+var common = require('@dbrugne/donut-common/server');
 
 var Handler = function (app) {
   this.app = app;
@@ -23,11 +23,11 @@ handler.call = function (data, session, next) {
   async.waterfall([
 
     function check (callback) {
-      if (!data.name || !common.validateName(data.name)) {
+      if (!data.name || !common.validate.name(data.name)) {
         return callback('invalid-name');
       }
 
-      if (!data.mode || !common.validateMode(data.mode)) {
+      if (!data.mode || !common.validate.mode(data.mode)) {
         return callback('invalid-mode');
       }
 

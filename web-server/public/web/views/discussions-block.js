@@ -3,7 +3,7 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var i18next = require('i18next-client');
 var app = require('../models/app');
-var common = require('@dbrugne/donut-common');
+var common = require('@dbrugne/donut-common/browser');
 var rooms = require('../collections/rooms');
 var onetoones = require('../collections/onetoones');
 var currentUser = require('../models/current-user');
@@ -50,11 +50,11 @@ var DiscussionBlockView = Backbone.View.extend({
     function prepareItems (o) {
       var json = o.toJSON();
       if (o.get('type') == 'room') {
-        json.avatar = common.cloudinarySize(json.avatar, 40);
+        json.avatar = common.cloudinary.prepare(json.avatar, 40);
         json.uri = '#room/' + o.get('name').replace('#', '');
         json.identifier = o.get('id');
       } else {
-        json.avatar = common.cloudinarySize(json.avatar, 40);
+        json.avatar = common.cloudinary.prepare(json.avatar, 40);
         json.uri = '#user/' + o.get('username');
         json.identifier = o.get('user_id');
       }

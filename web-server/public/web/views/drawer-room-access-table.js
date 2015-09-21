@@ -1,7 +1,7 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
-var common = require('@dbrugne/donut-common');
+var common = require('@dbrugne/donut-common/browser');
 var client = require('../client');
 var app = require('../models/app');
 var currentUser = require('../models/current-user');
@@ -42,7 +42,7 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
 
     this.$el.show();
     _.each(users, function (element, index, list) {
-      list[index].avatarUrl = common.cloudinarySize(element.avatar, 20);
+      list[index].avatarUrl = common.cloudinary.prepare(element.avatar, 20);
     });
 
     this.$ctn.html(this.template({users: users}));

@@ -1,6 +1,6 @@
 'use strict';
 var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename);
-var common = require('@dbrugne/donut-common');
+var common = require('@dbrugne/donut-common/server');
 var _ = require('underscore');
 var async = require('async');
 var NotificationModel = require('../../../../../shared/models/notification');
@@ -181,7 +181,7 @@ Notification.prototype.sendEmail = function (model, done) {
         var isCurrentMessage = (model.data.event.toString() === event.data.id);
         messages.push({
           current: isCurrentMessage,
-          user_avatar: common.cloudinarySize(event.data.avatar, 90),
+          user_avatar: common.cloudinary.prepare(event.data.avatar, 90),
           username: event.data.username,
           message: event.data.message,
           time_short: moment(event.data.time).format('Do MMMM, HH:mm'),

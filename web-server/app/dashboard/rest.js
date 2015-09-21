@@ -8,7 +8,7 @@ var Room = require('../../../shared/models/room');
 var User = require('../../../shared/models/user');
 var HistoryRoom = require('../../../shared/models/historyroom');
 var HistoryOne = require('../../../shared/models/historyone');
-var common = require('@dbrugne/donut-common');
+var common = require('@dbrugne/donut-common/server');
 
 var isAdmin = function (req, res, next) {
   if (!req.isAuthenticated() || req.user.admin !== true) {
@@ -24,7 +24,7 @@ var readCollection = function (collection, query, searchable, populate, callback
   // filter
   var filter = {};
   if (query.q && searchable) {
-    var search = common.regExpBuildExact(query.q);
+    var search = common.regexp.exact(query.q);
     var filters = [];
     _.each(searchable, function (s) {
       var f = {};

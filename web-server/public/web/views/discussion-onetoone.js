@@ -2,7 +2,7 @@ var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var i18next = require('i18next-client');
-var common = require('@dbrugne/donut-common');
+var common = require('@dbrugne/donut-common/browser');
 var app = require('../models/app');
 var client = require('../client');
 var EventsView = require('./events');
@@ -48,7 +48,7 @@ var OneToOnePanelView = Backbone.View.extend({
     var data = this.model.toJSON();
 
     // avatar
-    data.avatar = common.cloudinarySize(data.avatar, 100);
+    data.avatar = common.cloudinary.prepare(data.avatar, 100);
 
     // url
     data.url = '/user/' + ('' + data.username).toLocaleLowerCase();
@@ -109,7 +109,7 @@ var OneToOnePanelView = Backbone.View.extend({
     this.onPoster(model, model.get('poster'), options);
   },
   onAvatar: function (model, value, options) {
-    var url = common.cloudinarySize(value, 100);
+    var url = common.cloudinary.prepare(value, 100);
     this.$('.header .avatar img').attr('src', url);
   },
   onPoster: function (model, url, options) {

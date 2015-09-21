@@ -3,7 +3,7 @@ var _ = require('underscore');
 var mongoose = require('../io/mongoose');
 var bcrypt = require('bcrypt-nodejs');
 var colors = require('../../config/colors');
-var common = require('@dbrugne/donut-common');
+var common = require('@dbrugne/donut-common/server');
 var cloudinary = require('../util/cloudinary');
 
 var userSchema = mongoose.Schema({
@@ -82,7 +82,7 @@ userSchema.statics.getNewUser = function () {
  */
 userSchema.statics.findByUsername = function (username) {
   return this.findOne({
-    username: common.regExpBuildExact(username, 'i')
+    username: common.regexp.exact(username, 'i')
   });
 };
 
@@ -91,7 +91,7 @@ userSchema.statics.listByUsername = function (usernames) {
     $or: []
   };
   _.each(usernames, function (u) {
-    criteria['$or'].push({username: common.regExpBuildExact(u)});
+    criteria['$or'].push({username: common.regexp.exact(u)});
   });
   return this.find(criteria, '_id username');
 };
@@ -246,7 +246,7 @@ userSchema.statics.findRoomUsersHavingPreference = function (room, preferenceNam
  */
 userSchema.statics.retrieveUser = function (username) {
   return this.findOne({
-    username: common.regExpBuildExact(username, 'i')
+    username: common.regexp.exact(username, 'i')
   }).populate('room', 'name');
 };
 
@@ -410,7 +410,7 @@ userSchema.methods.resetUnviewedOne = function (userId, fn) {
 
 userSchema.statics.usernameAvailability = function (username, callback) {
   this.findOne({
-    username: common.regExpBuildExact(username, 'i')
+    username: common.regexp.exact(username, 'i')
   }, function (err, user) {
     if (err) {
       return callback(err);
@@ -426,7 +426,7 @@ userSchema.methods.usernameAvailability = function (username, callback) {
   this.constructor.findOne({
     $and: [
       {
-        username: common.regExpBuildExact(username, 'i')
+        username: common.regexp.exact(username, 'i')
       },
       {
         _id: {$ne: this._id}

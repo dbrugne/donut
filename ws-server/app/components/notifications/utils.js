@@ -6,7 +6,7 @@ var RoomModel = require('../../../../shared/models/room');
 var HistoryOneModel = require('../../../../shared/models/historyone');
 var HistoryRoomModel = require('../../../../shared/models/historyroom');
 var conf = require('../../../../config/index');
-var common = require('@dbrugne/donut-common');
+var common = require('@dbrugne/donut-common/server');
 
 module.exports = {
   retrieveUser: function (user) {
@@ -105,7 +105,7 @@ module.exports = {
 
   mentionize: function (string, options) {
     options.template = this.mentionTemplate;
-    return common.markupToHtml(string, options);
+    return common.markup.toHtml(string, options);
   }
 
 };

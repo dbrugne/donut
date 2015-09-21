@@ -3,7 +3,7 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var keyboard = require('../libs/keyboard');
 var app = require('../models/app');
-var common = require('@dbrugne/donut-common');
+var common = require('@dbrugne/donut-common/browser');
 var client = require('../client');
 var i18next = require('i18next-client');
 
@@ -62,13 +62,13 @@ var DrawerRoomCreateView = Backbone.View.extend({
   _valid: function () {
     var name = '#' + this.$input.val();
     var mode = this._getMode();
-    return common.validateName(name) && common.validateMode(mode);
+    return common.validate.name(name) && common.validate.mode(mode);
   },
   _getMode: function () {
     return this.$('input[name="mode"]:checked').val();
   },
   isValidMode: function () {
-    return (common.validateMode(this._getMode()));
+    return (common.validate.mode(this._getMode()));
   },
   submit: function () {
     this.reset();

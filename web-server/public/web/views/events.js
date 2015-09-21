@@ -4,7 +4,7 @@ var Backbone = require('backbone');
 var app = require('../models/app');
 var donutDebug = require('../libs/donut-debug');
 var keyboard = require('../libs/keyboard');
-var common = require('@dbrugne/donut-common');
+var common = require('@dbrugne/donut-common/browser');
 var EventModel = require('../models/event');
 var moment = require('moment');
 var i18next = require('i18next-client');
@@ -280,16 +280,16 @@ var EventsView = Backbone.View.extend({
       ? 30
       : 20;
     if (model.get('data').avatar) {
-      data.data.avatar = common.cloudinarySize(model.get('data').avatar, size);
+      data.data.avatar = common.cloudinary.prepare(model.get('data').avatar, size);
     }
     if (model.get('data').by_avatar) {
-      data.data.by_avatar = common.cloudinarySize(model.get('data').by_avatar, size);
+      data.data.by_avatar = common.cloudinary.prepare(model.get('data').by_avatar, size);
     }
 
     var message = data.data.message;
     if (message) {
       // prepare
-      message = common.markupToHtml(message, {
+      message = common.markup.toHtml(message, {
         template: require('../templates/markup.html'),
         style: 'color: ' + this.model.get('color')
       });
@@ -302,7 +302,7 @@ var EventsView = Backbone.View.extend({
     var topic = data.data.topic;
     if (topic) {
       // prepare
-      topic = common.markupToHtml(topic, {
+      topic = common.markup.toHtml(topic, {
         template: require('../templates/markup.html'),
         style: 'color: ' + this.model.get('color')
       });
@@ -317,8 +317,8 @@ var EventsView = Backbone.View.extend({
       var images = [];
       _.each(data.data.images, function (i) {
         images.push({
-          url: common.cloudinarySize(i, 1500, 'limit'),
-          thumbnail: common.cloudinarySize(i, 50, 'fill')
+          url: common.cloudinary.prepare(i, 1500, 'limit'),
+          thumbnail: common.cloudinary.prepare(i, 50, 'fill')
         });
       });
 

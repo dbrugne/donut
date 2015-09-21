@@ -4,7 +4,7 @@ var async = require('async');
 var Notifications = require('../../../components/notifications');
 var roomEmitter = require('../../../util/roomEmitter');
 var inputUtil = require('../../../util/input');
-var common = require('@dbrugne/donut-common');
+var common = require('@dbrugne/donut-common/server');
 
 var Handler = function (app) {
   this.app = app;
@@ -37,7 +37,7 @@ handler.call = function (data, session, next) {
         return callback('no-op');
       }
 
-      if (!common.validateTopic(data.topic)) {
+      if (!common.validate.topic(data.topic)) {
         return callback('invalid topic for  ' + data.room_id + ': ' + data.topic);
       }
 

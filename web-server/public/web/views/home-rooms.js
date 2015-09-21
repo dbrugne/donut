@@ -1,7 +1,7 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
-var common = require('@dbrugne/donut-common');
+var common = require('@dbrugne/donut-common/browser');
 
 var RoomsView = Backbone.View.extend({
   template: require('../templates/rooms-cards.html'),
@@ -10,7 +10,7 @@ var RoomsView = Backbone.View.extend({
   render: function (data) {
     var rooms = [];
     _.each(data.rooms.list, function (room) {
-      room.avatar = common.cloudinarySize(room.avatar, 135);
+      room.avatar = common.cloudinary.prepare(room.avatar, 135);
       room.join = '#room/' + room.name.replace('#', '');
       rooms.push(room);
     });

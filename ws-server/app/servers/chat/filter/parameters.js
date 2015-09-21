@@ -5,7 +5,7 @@ var RoomModel = require('../../../../../shared/models/room');
 var UserModel = require('../../../../../shared/models/user');
 var HistoryRoomModel = require('../../../../../shared/models/historyroom');
 var HistoryOneModel = require('../../../../../shared/models/historyone');
-var common = require('@dbrugne/donut-common');
+var common = require('@dbrugne/donut-common/server');
 
 var Filter = function () {
 };
@@ -64,14 +64,14 @@ Filter.prototype.before = function (data, session, next) {
       var q;
 
       if (data.name) {
-        if (!common.validateName(data.name)) {
+        if (!common.validate.name(data.name)) {
           return callback('invalid room name parameter: ' + data.name);
         }
         q = RoomModel.findByName(data.name);
       }
 
       if (data.room_id) {
-        if (!common.validateObjectId(data.room_id)) {
+        if (!common.validate.objectId(data.room_id)) {
           return callback('invalid room_id parameter: ' + data.room_id);
         }
         q = RoomModel.findOne({ _id: data.room_id });
@@ -115,12 +115,12 @@ Filter.prototype.before = function (data, session, next) {
       }
 
       if (data.username) {
-        if (!common.validateUsername(data.username)) {
+        if (!common.validate.username(data.username)) {
           return callback('invalid username parameter: ' + data.username);
         }
         UserModel.findByUsername(data.username).exec(callback);
       } else {
-        if (!common.validateObjectId(data.user_id)) {
+        if (!common.validate.objectId(data.user_id)) {
           return callback('invalid user_id parameter: ' + data.user_id);
         }
         UserModel.findByUid(data.user_id).exec(callback);
@@ -131,7 +131,7 @@ Filter.prototype.before = function (data, session, next) {
       if (!data.event) {
         return callback(null);
       }
-      if (!common.objectIdPattern.test(data.event)) {
+      if (!common.validate.objectId(data.event)) {
         return callback('invalid event ID parameter: ' + data.event);
       }
       switch (data.__route__) {
