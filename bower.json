@@ -2,20 +2,7 @@
   "name": "donut",
   "version": "1.0",
   "dependencies": {
-    "requirejs": "latest",
-    "requirejs-text": "latest",
-    "jquery": "1.x",
-    "bootstrap": "latest",
-    "underscore": "latest",
-    "backbone": "latest",
-    "moment": "latest",
-    "i18next": "latest",
     "html.sortable": "latest",
-    "visionmedia-debug": "latest",
     "html5-desktop-notifications": "latest",
-    "donut-common": "git+ssh://git@github.com/dbrugne/donut-common.git"
-  },
-  "resolutions": {
-    "jquery": "1.x"
   }
 }
