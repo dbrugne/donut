@@ -18,7 +18,7 @@
                                 'roomid': model.id,
                                 'owner': model.owner.username,
                                 'ownerid': model.owner.id,
-                                'creation-date': moment(model.created_at).format('Do MMMM YYYY, h:mm:ss')
+                                'creation-date': created_at
                             }) %>
                         </div>
                         <% if(isOwner) { %>
